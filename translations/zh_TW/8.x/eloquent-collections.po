@@ -1,0 +1,681 @@
+# SOME DESCRIPTIVE TITLE
+# Copyright (C) YEAR Free Software Foundation, Inc.
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"POT-Creation-Date: 2021-03-23 04:11+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: Cornch <cornch@cornch.dev>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: zh_TW\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 2.4.2\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#. type: Title #
+#: docs/8.x/eloquent-collections.md:1
+#, no-wrap
+msgid "Eloquent: Collections"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/eloquent-collections.md:6
+msgid ""
+"- [Introduction](#introduction)  - [Available Methods](#available-methods)  "
+"- [Custom Collections](#custom-collections)"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/eloquent-collections.md:8
+#, no-wrap
+msgid "<a name=\"introduction\"></a>\n"
+msgstr ""
+
+#. type: Title ##
+#: docs/8.x/eloquent-collections.md:8
+#, no-wrap
+msgid "Introduction"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/eloquent-collections.md:11
+msgid ""
+"All Eloquent methods that return more than one model result will return "
+"instances of the `Illuminate\\Database\\Eloquent\\Collection` class, "
+"including results retrieved via the `get` method or accessed via a "
+"relationship. The Eloquent collection object extends Laravel's [base "
+"collection](/docs/{{version}}/collections), so it naturally inherits dozens "
+"of methods used to fluently work with the underlying array of Eloquent "
+"models. Be sure to review the Laravel collection documentation to learn all "
+"about these helpful methods!"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/eloquent-collections.md:13
+msgid ""
+"All collections also serve as iterators, allowing you to loop over them as "
+"if they were simple PHP arrays:"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/eloquent-collections.md:15 docs/8.x/eloquent-collections.md:87
+#: docs/8.x/eloquent-collections.md:121 docs/8.x/eloquent-collections.md:178
+#, no-wrap
+msgid "    use App\\Models\\User;\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/eloquent-collections.md:17
+#, no-wrap
+msgid "    $users = User::where('active', 1)->get();\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/eloquent-collections.md:21
+#, no-wrap
+msgid ""
+"    foreach ($users as $user) {\n"
+"        echo $user->name;\n"
+"    }\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/eloquent-collections.md:23
+msgid ""
+"However, as previously mentioned, collections are much more powerful than "
+"arrays and expose a variety of map / reduce operations that may be chained "
+"using an intuitive interface. For example, we may remove all inactive models "
+"and then gather the first name for each remaining user:"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/eloquent-collections.md:29
+#, no-wrap
+msgid ""
+"    $names = User::all()->reject(function ($user) {\n"
+"        return $user->active === false;\n"
+"    })->map(function ($user) {\n"
+"        return $user->name;\n"
+"    });\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/eloquent-collections.md:31
+#, no-wrap
+msgid "<a name=\"eloquent-collection-conversion\"></a>\n"
+msgstr ""
+
+#. type: Title ####
+#: docs/8.x/eloquent-collections.md:31
+#, no-wrap
+msgid "Eloquent Collection Conversion"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/eloquent-collections.md:34
+msgid ""
+"While most Eloquent collection methods return a new instance of an Eloquent "
+"collection, the `collapse`, `flatten`, `flip`, `keys`, `pluck`, and `zip` "
+"methods return a [base collection](/docs/{{version}}/collections) instance. "
+"Likewise, if a `map` operation returns a collection that does not contain "
+"any Eloquent models, it will be converted to a base collection instance."
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/eloquent-collections.md:36
+#, no-wrap
+msgid "<a name=\"available-methods\"></a>\n"
+msgstr ""
+
+#. type: Title ##
+#: docs/8.x/eloquent-collections.md:36
+#, no-wrap
+msgid "Available Methods"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/eloquent-collections.md:39
+msgid ""
+"All Eloquent collections extend the base [Laravel collection](/docs/"
+"{{version}}/collections#available-methods) object; therefore, they inherit "
+"all of the powerful methods provided by the base collection class."
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/eloquent-collections.md:41
+msgid ""
+"In addition, the `Illuminate\\Database\\Eloquent\\Collection` class provides "
+"a superset of methods to aid with managing your model collections. Most "
+"methods return `Illuminate\\Database\\Eloquent\\Collection` instances; "
+"however, some methods, like `modelKeys`, return an `Illuminate\\Support"
+"\\Collection` instance."
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/eloquent-collections.md:47
+#, no-wrap
+msgid ""
+"<style>\n"
+"    #collection-method-list > p {\n"
+"        column-count: 1; -moz-column-count: 1; -webkit-column-count: 1;\n"
+"        column-gap: 2em; -moz-column-gap: 2em; -webkit-column-gap: 2em;\n"
+"    }\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/eloquent-collections.md:52
+#, no-wrap
+msgid ""
+"    #collection-method-list a {\n"
+"        display: block;\n"
+"    }\n"
+"</style>\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/eloquent-collections.md:54
+#, no-wrap
+msgid "<div id=\"collection-method-list\" markdown=\"1\">\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/eloquent-collections.md:69
+msgid ""
+"[contains](#method-contains)  [diff](#method-diff)  [except](#method-"
+"except)  [find](#method-find)  [fresh](#method-fresh)  [intersect](#method-"
+"intersect)  [load](#method-load)  [loadMissing](#method-loadMissing)  "
+"[modelKeys](#method-modelKeys)  [makeVisible](#method-makeVisible)  "
+"[makeHidden](#method-makeHidden)  [only](#method-only)  [toQuery](#method-"
+"toquery)  [unique](#method-unique)"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/eloquent-collections.md:71
+#, no-wrap
+msgid "</div>\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/eloquent-collections.md:73
+#, no-wrap
+msgid "<a name=\"method-contains\"></a>\n"
+msgstr ""
+
+#. type: Title ####
+#: docs/8.x/eloquent-collections.md:73
+#, no-wrap
+msgid "`contains($key, $operator = null, $value = null)`"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/eloquent-collections.md:76
+msgid ""
+"The `contains` method may be used to determine if a given model instance is "
+"contained by the collection. This method accepts a primary key or a model "
+"instance:"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/eloquent-collections.md:78
+#, no-wrap
+msgid "    $users->contains(1);\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/eloquent-collections.md:80
+#, no-wrap
+msgid "    $users->contains(User::find(1));\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/eloquent-collections.md:82
+#, no-wrap
+msgid "<a name=\"method-diff\"></a>\n"
+msgstr ""
+
+#. type: Title ####
+#: docs/8.x/eloquent-collections.md:82
+#, no-wrap
+msgid "`diff($items)`"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/eloquent-collections.md:85
+msgid ""
+"The `diff` method returns all of the models that are not present in the "
+"given collection:"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/eloquent-collections.md:89
+#, no-wrap
+msgid "    $users = $users->diff(User::whereIn('id', [1, 2, 3])->get());\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/eloquent-collections.md:91
+#, no-wrap
+msgid "<a name=\"method-except\"></a>\n"
+msgstr ""
+
+#. type: Title ####
+#: docs/8.x/eloquent-collections.md:91
+#, no-wrap
+msgid "`except($keys)`"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/eloquent-collections.md:94
+msgid ""
+"The `except` method returns all of the models that do not have the given "
+"primary keys:"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/eloquent-collections.md:96
+#, no-wrap
+msgid "    $users = $users->except([1, 2, 3]);\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/eloquent-collections.md:98
+#, no-wrap
+msgid "<a name=\"method-find\"></a>\n"
+msgstr ""
+
+#. type: Title ####
+#: docs/8.x/eloquent-collections.md:98
+#, no-wrap
+msgid "`find($key)` {#collection-method .first-collection-method}"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/eloquent-collections.md:101
+msgid ""
+"The `find` method returns the model that has a primary key matching the "
+"given key. If `$key` is a model instance, `find` will attempt to return a "
+"model matching the primary key. If `$key` is an array of keys, `find` will "
+"return all models which have a primary key in the given array:"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/eloquent-collections.md:103
+#, no-wrap
+msgid "    $users = User::all();\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/eloquent-collections.md:105
+#, no-wrap
+msgid "    $user = $users->find(1);\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/eloquent-collections.md:107
+#, no-wrap
+msgid "<a name=\"method-fresh\"></a>\n"
+msgstr ""
+
+#. type: Title ####
+#: docs/8.x/eloquent-collections.md:107
+#, no-wrap
+msgid "`fresh($with = [])`"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/eloquent-collections.md:110
+msgid ""
+"The `fresh` method retrieves a fresh instance of each model in the "
+"collection from the database. In addition, any specified relationships will "
+"be eager loaded:"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/eloquent-collections.md:112
+#, no-wrap
+msgid "    $users = $users->fresh();\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/eloquent-collections.md:114
+#, no-wrap
+msgid "    $users = $users->fresh('comments');\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/eloquent-collections.md:116
+#, no-wrap
+msgid "<a name=\"method-intersect\"></a>\n"
+msgstr ""
+
+#. type: Title ####
+#: docs/8.x/eloquent-collections.md:116
+#, no-wrap
+msgid "`intersect($items)`"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/eloquent-collections.md:119
+msgid ""
+"The `intersect` method returns all of the models that are also present in "
+"the given collection:"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/eloquent-collections.md:123
+#, no-wrap
+msgid "    $users = $users->intersect(User::whereIn('id', [1, 2, 3])->get());\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/eloquent-collections.md:125
+#, no-wrap
+msgid "<a name=\"method-load\"></a>\n"
+msgstr ""
+
+#. type: Title ####
+#: docs/8.x/eloquent-collections.md:125
+#, no-wrap
+msgid "`load($relations)`"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/eloquent-collections.md:128
+msgid ""
+"The `load` method eager loads the given relationships for all models in the "
+"collection:"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/eloquent-collections.md:130
+#, no-wrap
+msgid "    $users->load(['comments', 'posts']);\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/eloquent-collections.md:132
+#, no-wrap
+msgid "    $users->load('comments.author');\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/eloquent-collections.md:134
+#, no-wrap
+msgid "<a name=\"method-loadMissing\"></a>\n"
+msgstr ""
+
+#. type: Title ####
+#: docs/8.x/eloquent-collections.md:134
+#, no-wrap
+msgid "`loadMissing($relations)`"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/eloquent-collections.md:137
+msgid ""
+"The `loadMissing` method eager loads the given relationships for all models "
+"in the collection if the relationships are not already loaded:"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/eloquent-collections.md:139
+#, no-wrap
+msgid "    $users->loadMissing(['comments', 'posts']);\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/eloquent-collections.md:141
+#, no-wrap
+msgid "    $users->loadMissing('comments.author');\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/eloquent-collections.md:143
+#, no-wrap
+msgid "<a name=\"method-modelKeys\"></a>\n"
+msgstr ""
+
+#. type: Title ####
+#: docs/8.x/eloquent-collections.md:143
+#, no-wrap
+msgid "`modelKeys()`"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/eloquent-collections.md:146
+msgid ""
+"The `modelKeys` method returns the primary keys for all models in the "
+"collection:"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/eloquent-collections.md:148
+#, no-wrap
+msgid "    $users->modelKeys();\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/eloquent-collections.md:150
+#, no-wrap
+msgid "    // [1, 2, 3, 4, 5]\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/eloquent-collections.md:152
+#, no-wrap
+msgid "<a name=\"method-makeVisible\"></a>\n"
+msgstr ""
+
+#. type: Title ####
+#: docs/8.x/eloquent-collections.md:152
+#, no-wrap
+msgid "`makeVisible($attributes)`"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/eloquent-collections.md:155
+msgid ""
+"The `makeVisible` method [makes attributes visible](/docs/{{version}}/"
+"eloquent-serialization#hiding-attributes-from-json) that are typically "
+"\"hidden\" on each model in the collection:"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/eloquent-collections.md:157
+#, no-wrap
+msgid "    $users = $users->makeVisible(['address', 'phone_number']);\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/eloquent-collections.md:159
+#, no-wrap
+msgid "<a name=\"method-makeHidden\"></a>\n"
+msgstr ""
+
+#. type: Title ####
+#: docs/8.x/eloquent-collections.md:159
+#, no-wrap
+msgid "`makeHidden($attributes)`"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/eloquent-collections.md:162
+msgid ""
+"The `makeHidden` method [hides attributes](/docs/{{version}}/eloquent-"
+"serialization#hiding-attributes-from-json) that are typically \"visible\" on "
+"each model in the collection:"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/eloquent-collections.md:164
+#, no-wrap
+msgid "    $users = $users->makeHidden(['address', 'phone_number']);\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/eloquent-collections.md:166
+#, no-wrap
+msgid "<a name=\"method-only\"></a>\n"
+msgstr ""
+
+#. type: Title ####
+#: docs/8.x/eloquent-collections.md:166
+#, no-wrap
+msgid "`only($keys)`"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/eloquent-collections.md:169
+msgid ""
+"The `only` method returns all of the models that have the given primary keys:"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/eloquent-collections.md:171
+#, no-wrap
+msgid "    $users = $users->only([1, 2, 3]);\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/eloquent-collections.md:173
+#, no-wrap
+msgid "<a name=\"method-toquery\"></a>\n"
+msgstr ""
+
+#. type: Title ####
+#: docs/8.x/eloquent-collections.md:173
+#, no-wrap
+msgid "`toQuery()`"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/eloquent-collections.md:176
+msgid ""
+"The `toQuery` method returns an Eloquent query builder instance containing a "
+"`whereIn` constraint on the collection model's primary keys:"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/eloquent-collections.md:180
+#, no-wrap
+msgid "    $users = User::where('status', 'VIP')->get();\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/eloquent-collections.md:184
+#, no-wrap
+msgid ""
+"    $users->toQuery()->update([\n"
+"        'status' => 'Administrator',\n"
+"    ]);\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/eloquent-collections.md:186
+#, no-wrap
+msgid "<a name=\"method-unique\"></a>\n"
+msgstr ""
+
+#. type: Title ####
+#: docs/8.x/eloquent-collections.md:186
+#, no-wrap
+msgid "`unique($key = null, $strict = false)`"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/eloquent-collections.md:189
+msgid ""
+"The `unique` method returns all of the unique models in the collection. Any "
+"models of the same type with the same primary key as another model in the "
+"collection are removed:"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/eloquent-collections.md:191
+#, no-wrap
+msgid "    $users = $users->unique();\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/eloquent-collections.md:193
+#, no-wrap
+msgid "<a name=\"custom-collections\"></a>\n"
+msgstr ""
+
+#. type: Title ##
+#: docs/8.x/eloquent-collections.md:193
+#, no-wrap
+msgid "Custom Collections"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/eloquent-collections.md:196
+msgid ""
+"If you would like to use a custom `Collection` object when interacting with "
+"a given model, you may define a `newCollection` method on your model:"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/eloquent-collections.md:198
+#, no-wrap
+msgid "    <?php\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/eloquent-collections.md:200
+#, no-wrap
+msgid "    namespace App\\Models;\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/eloquent-collections.md:203
+#, no-wrap
+msgid ""
+"    use App\\Support\\UserCollection;\n"
+"    use Illuminate\\Database\\Eloquent\\Model;\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/eloquent-collections.md:217
+#, no-wrap
+msgid ""
+"    class User extends Model\n"
+"    {\n"
+"        /**\n"
+"         * Create a new Eloquent Collection instance.\n"
+"         *\n"
+"         * @param  array  $models\n"
+"         * @return \\Illuminate\\Database\\Eloquent\\Collection\n"
+"         */\n"
+"        public function newCollection(array $models = [])\n"
+"        {\n"
+"            return new UserCollection($models);\n"
+"        }\n"
+"    }\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/eloquent-collections.md:218
+msgid ""
+"Once you have defined a `newCollection` method, you will receive an instance "
+"of your custom collection anytime Eloquent would normally return an "
+"`Illuminate\\Database\\Eloquent\\Collection` instance. If you would like to "
+"use a custom collection for every model in your application, you should "
+"define the `newCollection` method on a base model class that is extended by "
+"all of your application's models."
+msgstr ""
+
+#, no-wrap
+#~ msgid "Laravel Fortify"
+#~ msgstr "Laravel Fortify"
+
+#~ msgid "[What Is Fortify?](#what-is-fortify)"
+#~ msgstr "[什麼是 Fortify？](#what-is-fortify)"
+
+#~ msgid "[When Should I Use Fortify?](#when-should-i-use-fortify)"
+#~ msgstr "[什麼時候該用 Fortify？](#when-should-i-use-fortify)"

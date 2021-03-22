@@ -1,0 +1,7266 @@
+# SOME DESCRIPTIVE TITLE
+# Copyright (C) YEAR Free Software Foundation, Inc.
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"POT-Creation-Date: 2021-03-23 04:11+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: Cornch <cornch@cornch.dev>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: zh_TW\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 2.4.2\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#. type: Title #
+#: docs/8.x/collections.md:1
+#, no-wrap
+msgid "Collections"
+msgstr ""
+
+#. type: Bullet: '- '
+#: docs/8.x/collections.md:13
+msgid "[Introduction](#introduction)"
+msgstr ""
+
+#. type: Bullet: '    - '
+#: docs/8.x/collections.md:13
+msgid "[Creating Collections](#creating-collections)"
+msgstr ""
+
+#. type: Bullet: '    - '
+#: docs/8.x/collections.md:13
+msgid "[Extending Collections](#extending-collections)"
+msgstr ""
+
+#. type: Bullet: '- '
+#: docs/8.x/collections.md:13
+msgid "[Available Methods](#available-methods)"
+msgstr ""
+
+#. type: Bullet: '- '
+#: docs/8.x/collections.md:13
+msgid "[Higher Order Messages](#higher-order-messages)"
+msgstr ""
+
+#. type: Bullet: '- '
+#: docs/8.x/collections.md:13
+msgid "[Lazy Collections](#lazy-collections)"
+msgstr ""
+
+#. type: Bullet: '    - '
+#: docs/8.x/collections.md:13
+msgid "[Introduction](#lazy-collection-introduction)"
+msgstr ""
+
+#. type: Bullet: '    - '
+#: docs/8.x/collections.md:13
+msgid "[Creating Lazy Collections](#creating-lazy-collections)"
+msgstr ""
+
+#. type: Bullet: '    - '
+#: docs/8.x/collections.md:13
+msgid "[The Enumerable Contract](#the-enumerable-contract)"
+msgstr ""
+
+#. type: Bullet: '    - '
+#: docs/8.x/collections.md:13
+msgid "[Lazy Collection Methods](#lazy-collection-methods)"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:15
+#, no-wrap
+msgid "<a name=\"introduction\"></a>\n"
+msgstr ""
+
+#. type: Title ###
+#: docs/8.x/collections.md:15 docs/8.x/collections.md:2899
+#, no-wrap
+msgid "Introduction"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:18
+msgid ""
+"The `Illuminate\\Support\\Collection` class provides a fluent, convenient "
+"wrapper for working with arrays of data. For example, check out the "
+"following code. We'll use the `collect` helper to create a new collection "
+"instance from the array, run the `strtoupper` function on each element, and "
+"then remove all empty elements:"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:24
+#, no-wrap
+msgid ""
+"    $collection = collect(['taylor', 'abigail', null])->map(function ($name) {\n"
+"        return strtoupper($name);\n"
+"    })->reject(function ($name) {\n"
+"        return empty($name);\n"
+"    });\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:26
+msgid ""
+"As you can see, the `Collection` class allows you to chain its methods to "
+"perform fluent mapping and reducing of the underlying array. In general, "
+"collections are immutable, meaning every `Collection` method returns an "
+"entirely new `Collection` instance."
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:28
+#, no-wrap
+msgid "<a name=\"creating-collections\"></a>\n"
+msgstr ""
+
+#. type: Title ###
+#: docs/8.x/collections.md:28
+#, no-wrap
+msgid "Creating Collections"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:31
+msgid ""
+"As mentioned above, the `collect` helper returns a new `Illuminate\\Support"
+"\\Collection` instance for the given array. So, creating a collection is as "
+"simple as:"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:33 docs/8.x/collections.md:1496
+#: docs/8.x/collections.md:1528 docs/8.x/collections.md:1697
+#: docs/8.x/collections.md:2448 docs/8.x/collections.md:2517
+#, no-wrap
+msgid "    $collection = collect([1, 2, 3]);\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:35
+#, no-wrap
+msgid "> {tip} The results of [Eloquent](/docs/{{version}}/eloquent) queries are always returned as `Collection` instances.\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:37
+#, no-wrap
+msgid "<a name=\"extending-collections\"></a>\n"
+msgstr ""
+
+#. type: Title ###
+#: docs/8.x/collections.md:37
+#, no-wrap
+msgid "Extending Collections"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:40
+msgid ""
+"Collections are \"macroable\", which allows you to add additional methods to "
+"the `Collection` class at run time. The `Illuminate\\Support\\Collection` "
+"class' `macro` method accepts a closure that will be executed when your "
+"macro is called. The macro closure may access the collection's other methods "
+"via `$this`, just as if it were a real method of the collection class. For "
+"example, the following code adds a `toUpper` method to the `Collection` "
+"class:"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:43
+#, no-wrap
+msgid ""
+"    use Illuminate\\Support\\Collection;\n"
+"    use Illuminate\\Support\\Str;\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:49
+#, no-wrap
+msgid ""
+"    Collection::macro('toUpper', function () {\n"
+"        return $this->map(function ($value) {\n"
+"            return Str::upper($value);\n"
+"        });\n"
+"    });\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:51 docs/8.x/collections.md:74
+#, no-wrap
+msgid "    $collection = collect(['first', 'second']);\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:53
+#, no-wrap
+msgid "    $upper = $collection->toUpper();\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:55
+#, no-wrap
+msgid "    // ['FIRST', 'SECOND']\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:57
+msgid ""
+"Typically, you should declare collection macros in the `boot` method of a "
+"[service provider](/docs/{{version}}/providers)."
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:59
+#, no-wrap
+msgid "<a name=\"macro-arguments\"></a>\n"
+msgstr ""
+
+#. type: Title ####
+#: docs/8.x/collections.md:59
+#, no-wrap
+msgid "Macro Arguments"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:62
+msgid "If necessary, you may define macros that accept additional arguments:"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:66
+#, no-wrap
+msgid ""
+"    use Illuminate\\Support\\Collection;\n"
+"    use Illuminate\\Support\\Facades\\Lang;\n"
+"    use Illuminate\\Support\\Str;\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:72
+#, no-wrap
+msgid ""
+"    Collection::macro('toLocale', function ($locale) {\n"
+"        return $this->map(function ($value) use ($locale) {\n"
+"            return Lang::get($value, [], $locale);\n"
+"        });\n"
+"    });\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:76
+#, no-wrap
+msgid "    $translated = $collection->toLocale('es');\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:78
+#, no-wrap
+msgid "<a name=\"available-methods\"></a>\n"
+msgstr ""
+
+#. type: Title ##
+#: docs/8.x/collections.md:78
+#, no-wrap
+msgid "Available Methods"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:81
+msgid ""
+"For the majority of the remaining collection documentation, we'll discuss "
+"each method available on the `Collection` class. Remember, all of these "
+"methods may be chained to fluently manipulate the underlying array. "
+"Furthermore, almost every method returns a new `Collection` instance, "
+"allowing you to preserve the original copy of the collection when necessary:"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:87
+#, no-wrap
+msgid ""
+"<style>\n"
+"    #collection-method-list > p {\n"
+"        column-count: 3; -moz-column-count: 3; -webkit-column-count: 3;\n"
+"        column-gap: 2em; -moz-column-gap: 2em; -webkit-column-gap: 2em;\n"
+"    }\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:92
+#, no-wrap
+msgid ""
+"    #collection-method-list a {\n"
+"        display: block;\n"
+"    }\n"
+"</style>\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:94 docs/8.x/collections.md:2963
+#, no-wrap
+msgid "<div id=\"collection-method-list\" markdown=\"1\">\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:221
+msgid ""
+"[all](#method-all)  [average](#method-average)  [avg](#method-avg)  [chunk]"
+"(#method-chunk)  [chunkWhile](#method-chunkwhile)  [collapse](#method-"
+"collapse)  [collect](#method-collect)  [combine](#method-combine)  [concat]"
+"(#method-concat)  [contains](#method-contains)  [containsStrict](#method-"
+"containsstrict)  [count](#method-count)  [countBy](#method-countBy)  "
+"[crossJoin](#method-crossjoin)  [dd](#method-dd)  [diff](#method-diff)  "
+"[diffAssoc](#method-diffassoc)  [diffKeys](#method-diffkeys)  [dump](#method-"
+"dump)  [duplicates](#method-duplicates)  [duplicatesStrict](#method-"
+"duplicatesstrict)  [each](#method-each)  [eachSpread](#method-eachspread)  "
+"[every](#method-every)  [except](#method-except)  [filter](#method-filter)  "
+"[first](#method-first)  [firstWhere](#method-first-where)  [flatMap](#method-"
+"flatmap)  [flatten](#method-flatten)  [flip](#method-flip)  [forget](#method-"
+"forget)  [forPage](#method-forpage)  [get](#method-get)  [groupBy](#method-"
+"groupby)  [has](#method-has)  [implode](#method-implode)  [intersect]"
+"(#method-intersect)  [intersectByKeys](#method-intersectbykeys)  [isEmpty]"
+"(#method-isempty)  [isNotEmpty](#method-isnotempty)  [join](#method-join)  "
+"[keyBy](#method-keyby)  [keys](#method-keys)  [last](#method-last)  [macro]"
+"(#method-macro)  [make](#method-make)  [map](#method-map)  [mapInto](#method-"
+"mapinto)  [mapSpread](#method-mapspread)  [mapToGroups](#method-"
+"maptogroups)  [mapWithKeys](#method-mapwithkeys)  [max](#method-max)  "
+"[median](#method-median)  [merge](#method-merge)  [mergeRecursive](#method-"
+"mergerecursive)  [min](#method-min)  [mode](#method-mode)  [nth](#method-"
+"nth)  [only](#method-only)  [pad](#method-pad)  [partition](#method-"
+"partition)  [pipe](#method-pipe)  [pipeInto](#method-pipeinto)  [pluck]"
+"(#method-pluck)  [pop](#method-pop)  [prepend](#method-prepend)  [pull]"
+"(#method-pull)  [push](#method-push)  [put](#method-put)  [random](#method-"
+"random)  [reduce](#method-reduce)  [reject](#method-reject)  [replace]"
+"(#method-replace)  [replaceRecursive](#method-replacerecursive)  [reverse]"
+"(#method-reverse)  [search](#method-search)  [shift](#method-shift)  "
+"[shuffle](#method-shuffle)  [skip](#method-skip)  [skipUntil](#method-"
+"skipuntil)  [skipWhile](#method-skipwhile)  [slice](#method-slice)  [some]"
+"(#method-some)  [sort](#method-sort)  [sortBy](#method-sortby)  [sortByDesc]"
+"(#method-sortbydesc)  [sortDesc](#method-sortdesc)  [sortKeys](#method-"
+"sortkeys)  [sortKeysDesc](#method-sortkeysdesc)  [splice](#method-splice)  "
+"[split](#method-split)  [splitIn](#method-splitin)  [sum](#method-sum)  "
+"[take](#method-take)  [takeUntil](#method-takeuntil)  [takeWhile](#method-"
+"takewhile)  [tap](#method-tap)  [times](#method-times)  [toArray](#method-"
+"toarray)  [toJson](#method-tojson)  [transform](#method-transform)  [union]"
+"(#method-union)  [unique](#method-unique)  [uniqueStrict](#method-"
+"uniquestrict)  [unless](#method-unless)  [unlessEmpty](#method-unlessempty)  "
+"[unlessNotEmpty](#method-unlessnotempty)  [unwrap](#method-unwrap)  [values]"
+"(#method-values)  [when](#method-when)  [whenEmpty](#method-whenempty)  "
+"[whenNotEmpty](#method-whennotempty)  [where](#method-where)  [whereStrict]"
+"(#method-wherestrict)  [whereBetween](#method-wherebetween)  [whereIn]"
+"(#method-wherein)  [whereInStrict](#method-whereinstrict)  [whereInstanceOf]"
+"(#method-whereinstanceof)  [whereNotBetween](#method-wherenotbetween)  "
+"[whereNotIn](#method-wherenotin)  [whereNotInStrict](#method-"
+"wherenotinstrict)  [whereNotNull](#method-wherenotnull)  [whereNull](#method-"
+"wherenull)  [wrap](#method-wrap)  [zip](#method-zip)"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:223 docs/8.x/collections.md:3074
+#, no-wrap
+msgid "</div>\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:225
+#, no-wrap
+msgid "<a name=\"method-listing\"></a>\n"
+msgstr ""
+
+#. type: Title ##
+#: docs/8.x/collections.md:225
+#, no-wrap
+msgid "Method Listing"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:231
+#, no-wrap
+msgid ""
+"<style>\n"
+"    #collection-method code {\n"
+"        font-size: 14px;\n"
+"    }\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:236
+#, no-wrap
+msgid ""
+"    #collection-method:not(.first-collection-method) {\n"
+"        margin-top: 50px;\n"
+"    }\n"
+"</style>\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:238
+#, no-wrap
+msgid "<a name=\"method-all\"></a>\n"
+msgstr ""
+
+#. type: Title ####
+#: docs/8.x/collections.md:238
+#, no-wrap
+msgid "`all()` {#collection-method .first-collection-method}"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:241
+msgid ""
+"The `all` method returns the underlying array represented by the collection:"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:243
+#, no-wrap
+msgid "    collect([1, 2, 3])->all();\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:245 docs/8.x/collections.md:349
+#: docs/8.x/collections.md:367 docs/8.x/collections.md:726
+#: docs/8.x/collections.md:1534
+#, no-wrap
+msgid "    // [1, 2, 3]\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:247
+#, no-wrap
+msgid "<a name=\"method-average\"></a>\n"
+msgstr ""
+
+#. type: Title ####
+#: docs/8.x/collections.md:247
+#, no-wrap
+msgid "`average()` {#collection-method}"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:250
+msgid "Alias for the [`avg`](#method-avg) method."
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:252
+#, no-wrap
+msgid "<a name=\"method-avg\"></a>\n"
+msgstr ""
+
+#. type: Title ####
+#: docs/8.x/collections.md:252
+#, no-wrap
+msgid "`avg()` {#collection-method}"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:255
+msgid ""
+"The `avg` method returns the [average value](https://en.wikipedia.org/wiki/"
+"Average) of a given key:"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:262
+#, no-wrap
+msgid ""
+"    $average = collect([\n"
+"        ['foo' => 10],\n"
+"        ['foo' => 10],\n"
+"        ['foo' => 20],\n"
+"        ['foo' => 40]\n"
+"    ])->avg('foo');\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:264 docs/8.x/collections.md:1313
+#, no-wrap
+msgid "    // 20\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:266
+#, no-wrap
+msgid "    $average = collect([1, 1, 2, 4])->avg();\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:268 docs/8.x/collections.md:1156
+#: docs/8.x/collections.md:1831
+#, no-wrap
+msgid "    // 2\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:270
+#, no-wrap
+msgid "<a name=\"method-chunk\"></a>\n"
+msgstr ""
+
+#. type: Title ####
+#: docs/8.x/collections.md:270
+#, no-wrap
+msgid "`chunk()` {#collection-method}"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:273
+msgid ""
+"The `chunk` method breaks the collection into multiple, smaller collections "
+"of a given size:"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:275
+#, no-wrap
+msgid "    $collection = collect([1, 2, 3, 4, 5, 6, 7]);\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:277
+#, no-wrap
+msgid "    $chunks = $collection->chunk(4);\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:279 docs/8.x/collections.md:304
+#, no-wrap
+msgid "    $chunks->all();\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:281
+#, no-wrap
+msgid "    // [[1, 2, 3, 4], [5, 6, 7]]\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:283
+msgid ""
+"This method is especially useful in [views](/docs/{{version}}/views) when "
+"working with a grid system such as [Bootstrap](https://getbootstrap.com/"
+"docs/4.1/layout/grid/). For example, imagine you have a collection of "
+"[Eloquent](/docs/{{version}}/eloquent) models you want to display in a grid:"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:291
+#, no-wrap
+msgid ""
+"    @foreach ($products->chunk(3) as $chunk)\n"
+"        <div class=\"row\">\n"
+"            @foreach ($chunk as $product)\n"
+"                <div class=\"col-xs-4\">{{ $product->name }}</div>\n"
+"            @endforeach\n"
+"        </div>\n"
+"    @endforeach\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:293
+#, no-wrap
+msgid "<a name=\"method-chunkwhile\"></a>\n"
+msgstr ""
+
+#. type: Title ####
+#: docs/8.x/collections.md:293
+#, no-wrap
+msgid "`chunkWhile()` {#collection-method}"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:296
+msgid ""
+"The `chunkWhile` method breaks the collection into multiple, smaller "
+"collections based on the evaluation of the given callback. The `$chunk` "
+"variable passed to the closure may be used to inspect the previous element:"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:298
+#, no-wrap
+msgid "    $collection = collect(str_split('AABBCCCD'));\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:302
+#, no-wrap
+msgid ""
+"    $chunks = $collection->chunkWhile(function ($value, $key, $chunk) {\n"
+"        return $value === $chunk->last();\n"
+"    });\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:306
+#, no-wrap
+msgid "    // [['A', 'A'], ['B', 'B'], ['C', 'C', 'C'], ['D']]\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:308
+#, no-wrap
+msgid "<a name=\"method-collapse\"></a>\n"
+msgstr ""
+
+#. type: Title ####
+#: docs/8.x/collections.md:308
+#, no-wrap
+msgid "`collapse()` {#collection-method}"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:311
+msgid ""
+"The `collapse` method collapses a collection of arrays into a single, flat "
+"collection:"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:317
+#, no-wrap
+msgid ""
+"    $collection = collect([\n"
+"        [1, 2, 3],\n"
+"        [4, 5, 6],\n"
+"        [7, 8, 9],\n"
+"    ]);\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:319
+#, no-wrap
+msgid "    $collapsed = $collection->collapse();\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:321
+#, no-wrap
+msgid "    $collapsed->all();\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:323
+#, no-wrap
+msgid "    // [1, 2, 3, 4, 5, 6, 7, 8, 9]\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:325
+#, no-wrap
+msgid "<a name=\"method-combine\"></a>\n"
+msgstr ""
+
+#. type: Title ####
+#: docs/8.x/collections.md:325
+#, no-wrap
+msgid "`combine()` {#collection-method}"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:328
+msgid ""
+"The `combine` method combines the values of the collection, as keys, with "
+"the values of another array or collection:"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:330
+#, no-wrap
+msgid "    $collection = collect(['name', 'age']);\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:332
+#, no-wrap
+msgid "    $combined = $collection->combine(['George', 29]);\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:334
+#, no-wrap
+msgid "    $combined->all();\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:336
+#, no-wrap
+msgid "    // ['name' => 'George', 'age' => 29]\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:338
+#, no-wrap
+msgid "<a name=\"method-collect\"></a>\n"
+msgstr ""
+
+#. type: Title ####
+#: docs/8.x/collections.md:338
+#, no-wrap
+msgid "`collect()` {#collection-method}"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:341
+msgid ""
+"The `collect` method returns a new `Collection` instance with the items "
+"currently in the collection:"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:343
+#, no-wrap
+msgid "    $collectionA = collect([1, 2, 3]);\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:345
+#, no-wrap
+msgid "    $collectionB = $collectionA->collect();\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:347
+#, no-wrap
+msgid "    $collectionB->all();\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:351
+msgid ""
+"The `collect` method is primarily useful for converting [lazy collections]"
+"(#lazy-collections) into standard `Collection` instances:"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:357
+#, no-wrap
+msgid ""
+"    $lazyCollection = LazyCollection::make(function () {\n"
+"        yield 1;\n"
+"        yield 2;\n"
+"        yield 3;\n"
+"    });\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:359
+#, no-wrap
+msgid "    $collection = $lazyCollection->collect();\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:361
+#, no-wrap
+msgid "    get_class($collection);\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:363
+#, no-wrap
+msgid "    // 'Illuminate\\Support\\Collection'\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:365 docs/8.x/collections.md:864
+#: docs/8.x/collections.md:1603 docs/8.x/collections.md:1616
+#: docs/8.x/collections.md:1626 docs/8.x/collections.md:1641
+#: docs/8.x/collections.md:1654 docs/8.x/collections.md:1667
+#: docs/8.x/collections.md:1844 docs/8.x/collections.md:1870
+#: docs/8.x/collections.md:2139 docs/8.x/collections.md:2153
+#: docs/8.x/collections.md:2167 docs/8.x/collections.md:2321
+#: docs/8.x/collections.md:2364 docs/8.x/collections.md:2458
+#: docs/8.x/collections.md:2527 docs/8.x/collections.md:2544
+#: docs/8.x/collections.md:2555 docs/8.x/collections.md:2569
+#: docs/8.x/collections.md:2586 docs/8.x/collections.md:2597
+#: docs/8.x/collections.md:2611 docs/8.x/collections.md:2848
+#: docs/8.x/collections.md:2854 docs/8.x/collections.md:2860
+#, no-wrap
+msgid "    $collection->all();\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:369
+#, no-wrap
+msgid "> {tip} The `collect` method is especially useful when you have an instance of `Enumerable` and need a non-lazy collection instance. Since `collect()` is part of the `Enumerable` contract, you can safely use it to get a `Collection` instance.\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:371
+#, no-wrap
+msgid "<a name=\"method-concat\"></a>\n"
+msgstr ""
+
+#. type: Title ####
+#: docs/8.x/collections.md:371
+#, no-wrap
+msgid "`concat()` {#collection-method}"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:374
+msgid ""
+"The `concat` method appends the given `array` or collection's values onto "
+"the end of another collection:"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:376
+#, no-wrap
+msgid "    $collection = collect(['John Doe']);\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:378
+#, no-wrap
+msgid "    $concatenated = $collection->concat(['Jane Doe'])->concat(['name' => 'Johnny Doe']);\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:380
+#, no-wrap
+msgid "    $concatenated->all();\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:382
+#, no-wrap
+msgid "    // ['John Doe', 'Jane Doe', 'Johnny Doe']\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:384
+#, no-wrap
+msgid "<a name=\"method-contains\"></a>\n"
+msgstr ""
+
+#. type: Title ####
+#: docs/8.x/collections.md:384
+#, no-wrap
+msgid "`contains()` {#collection-method}"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:387
+msgid ""
+"You may also pass a closure to the `contains` to determine if an element "
+"exists in the collection matching a given truth test:"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:389 docs/8.x/collections.md:529
+#: docs/8.x/collections.md:1179 docs/8.x/collections.md:1597
+#: docs/8.x/collections.md:1612 docs/8.x/collections.md:1676
+#: docs/8.x/collections.md:1838 docs/8.x/collections.md:1853
+#: docs/8.x/collections.md:2131 docs/8.x/collections.md:2145
+#: docs/8.x/collections.md:2159 docs/8.x/collections.md:2176
+#: docs/8.x/collections.md:2358
+#, no-wrap
+msgid "    $collection = collect([1, 2, 3, 4, 5]);\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:393
+#, no-wrap
+msgid ""
+"    $collection->contains(function ($value, $key) {\n"
+"        return $value > 5;\n"
+"    });\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:395 docs/8.x/collections.md:407
+#: docs/8.x/collections.md:418 docs/8.x/collections.md:676
+#: docs/8.x/collections.md:1012 docs/8.x/collections.md:1082
+#: docs/8.x/collections.md:1823
+#, no-wrap
+msgid "    // false\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:397
+msgid ""
+"Alternatively, you may pass a string to the `contains` method to determine "
+"whether the collection contains a given item value:"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:399
+#, no-wrap
+msgid "    $collection = collect(['name' => 'Desk', 'price' => 100]);\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:401
+#, no-wrap
+msgid "    $collection->contains('Desk');\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:403 docs/8.x/collections.md:686
+#: docs/8.x/collections.md:1004 docs/8.x/collections.md:1008
+#: docs/8.x/collections.md:1073
+#, no-wrap
+msgid "    // true\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:405
+#, no-wrap
+msgid "    $collection->contains('New York');\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:409
+msgid ""
+"You may also pass a key / value pair to the `contains` method, which will "
+"determine if the given pair exists in the collection:"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:414
+#, no-wrap
+msgid ""
+"    $collection = collect([\n"
+"        ['product' => 'Desk', 'price' => 200],\n"
+"        ['product' => 'Chair', 'price' => 100],\n"
+"    ]);\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:416
+#, no-wrap
+msgid "    $collection->contains('product', 'Bookcase');\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:420
+msgid ""
+"The `contains` method uses \"loose\" comparisons when checking item values, "
+"meaning a string with an integer value will be considered equal to an "
+"integer of the same value. Use the [`containsStrict`](#method-"
+"containsstrict) method to filter using \"strict\" comparisons."
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:422
+#, no-wrap
+msgid "<a name=\"method-containsstrict\"></a>\n"
+msgstr ""
+
+#. type: Title ####
+#: docs/8.x/collections.md:422
+#, no-wrap
+msgid "`containsStrict()` {#collection-method}"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:425
+msgid ""
+"This method has the same signature as the [`contains`](#method-contains) "
+"method; however, all values are compared using \"strict\" comparisons."
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:427
+#, no-wrap
+msgid "> {tip} This method's behavior is modified when using [Eloquent Collections](/docs/{{version}}/eloquent-collections#method-contains).\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:429
+#, no-wrap
+msgid "<a name=\"method-count\"></a>\n"
+msgstr ""
+
+#. type: Title ####
+#: docs/8.x/collections.md:429
+#, no-wrap
+msgid "`count()` {#collection-method}"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:432
+msgid "The `count` method returns the total number of items in the collection:"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:434 docs/8.x/collections.md:710
+#: docs/8.x/collections.md:1650 docs/8.x/collections.md:1738
+#: docs/8.x/collections.md:1879 docs/8.x/collections.md:1891
+#: docs/8.x/collections.md:1906 docs/8.x/collections.md:2259
+#: docs/8.x/collections.md:2271 docs/8.x/collections.md:2286
+#, no-wrap
+msgid "    $collection = collect([1, 2, 3, 4]);\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:436
+#, no-wrap
+msgid "    $collection->count();\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:438 docs/8.x/collections.md:1162
+#, no-wrap
+msgid "    // 4\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:440
+#, no-wrap
+msgid "<a name=\"method-countBy\"></a>\n"
+msgstr ""
+
+#. type: Title ####
+#: docs/8.x/collections.md:440
+#, no-wrap
+msgid "`countBy()` {#collection-method}"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:443
+msgid ""
+"The `countBy` method counts the occurrences of values in the collection. By "
+"default, the method counts the occurrences of every element, allowing you to "
+"count certain \"types\" of elements in the collection:"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:445
+#, no-wrap
+msgid "    $collection = collect([1, 2, 2, 2, 3]);\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:447
+#, no-wrap
+msgid "    $counted = $collection->countBy();\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:449 docs/8.x/collections.md:461
+#, no-wrap
+msgid "    $counted->all();\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:451
+#, no-wrap
+msgid "    // [1 => 1, 2 => 3, 3 => 1]\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:453
+msgid ""
+"You pass a closure to the `countBy` method to count all items by a custom "
+"value:"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:455
+#, no-wrap
+msgid "    $collection = collect(['alice@gmail.com', 'bob@yahoo.com', 'carlos@gmail.com']);\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:459
+#, no-wrap
+msgid ""
+"    $counted = $collection->countBy(function ($email) {\n"
+"        return substr(strrchr($email, \"@\"), 1);\n"
+"    });\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:463
+#, no-wrap
+msgid "    // ['gmail.com' => 2, 'yahoo.com' => 1]\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:465
+#, no-wrap
+msgid "<a name=\"method-crossjoin\"></a>\n"
+msgstr ""
+
+#. type: Title ####
+#: docs/8.x/collections.md:465
+#, no-wrap
+msgid "`crossJoin()` {#collection-method}"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:468
+msgid ""
+"The `crossJoin` method cross joins the collection's values among the given "
+"arrays or collections, returning a Cartesian product with all possible "
+"permutations:"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:470 docs/8.x/collections.md:485
+#, no-wrap
+msgid "    $collection = collect([1, 2]);\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:472
+#, no-wrap
+msgid "    $matrix = $collection->crossJoin(['a', 'b']);\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:474 docs/8.x/collections.md:489
+#, no-wrap
+msgid "    $matrix->all();\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:483
+#, no-wrap
+msgid ""
+"    /*\n"
+"        [\n"
+"            [1, 'a'],\n"
+"            [1, 'b'],\n"
+"            [2, 'a'],\n"
+"            [2, 'b'],\n"
+"        ]\n"
+"    */\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:487
+#, no-wrap
+msgid "    $matrix = $collection->crossJoin(['a', 'b'], ['I', 'II']);\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:502
+#, no-wrap
+msgid ""
+"    /*\n"
+"        [\n"
+"            [1, 'a', 'I'],\n"
+"            [1, 'a', 'II'],\n"
+"            [1, 'b', 'I'],\n"
+"            [1, 'b', 'II'],\n"
+"            [2, 'a', 'I'],\n"
+"            [2, 'a', 'II'],\n"
+"            [2, 'b', 'I'],\n"
+"            [2, 'b', 'II'],\n"
+"        ]\n"
+"    */\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:504
+#, no-wrap
+msgid "<a name=\"method-dd\"></a>\n"
+msgstr ""
+
+#. type: Title ####
+#: docs/8.x/collections.md:504
+#, no-wrap
+msgid "`dd()` {#collection-method}"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:507
+msgid ""
+"The `dd` method dumps the collection's items and ends execution of the "
+"script:"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:509 docs/8.x/collections.md:590
+#, no-wrap
+msgid "    $collection = collect(['John Doe', 'Jane Doe']);\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:511
+#, no-wrap
+msgid "    $collection->dd();\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:520 docs/8.x/collections.md:601
+#, no-wrap
+msgid ""
+"    /*\n"
+"        Collection {\n"
+"            #items: array:2 [\n"
+"                0 => \"John Doe\"\n"
+"                1 => \"Jane Doe\"\n"
+"            ]\n"
+"        }\n"
+"    */\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:522
+msgid ""
+"If you do not want to stop executing the script, use the [`dump`](#method-"
+"dump) method instead."
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:524
+#, no-wrap
+msgid "<a name=\"method-diff\"></a>\n"
+msgstr ""
+
+#. type: Title ####
+#: docs/8.x/collections.md:524
+#, no-wrap
+msgid "`diff()` {#collection-method}"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:527
+msgid ""
+"The `diff` method compares the collection against another collection or a "
+"plain PHP `array` based on its values. This method will return the values in "
+"the original collection that are not present in the given collection:"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:531
+#, no-wrap
+msgid "    $diff = $collection->diff([2, 4, 6, 8]);\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:533 docs/8.x/collections.md:557
+#: docs/8.x/collections.md:581
+#, no-wrap
+msgid "    $diff->all();\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:535
+#, no-wrap
+msgid "    // [1, 3, 5]\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:537
+#, no-wrap
+msgid "> {tip} This method's behavior is modified when using [Eloquent Collections](/docs/{{version}}/eloquent-collections#method-diff).\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:539
+#, no-wrap
+msgid "<a name=\"method-diffassoc\"></a>\n"
+msgstr ""
+
+#. type: Title ####
+#: docs/8.x/collections.md:539
+#, no-wrap
+msgid "`diffAssoc()` {#collection-method}"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:542
+msgid ""
+"The `diffAssoc` method compares the collection against another collection or "
+"a plain PHP `array` based on its keys and values. This method will return "
+"the key / value pairs in the original collection that are not present in the "
+"given collection:"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:548
+#, no-wrap
+msgid ""
+"    $collection = collect([\n"
+"        'color' => 'orange',\n"
+"        'type' => 'fruit',\n"
+"        'remain' => 6,\n"
+"    ]);\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:555
+#, no-wrap
+msgid ""
+"    $diff = $collection->diffAssoc([\n"
+"        'color' => 'yellow',\n"
+"        'type' => 'fruit',\n"
+"        'remain' => 3,\n"
+"        'used' => 6,\n"
+"    ]);\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:559
+#, no-wrap
+msgid "    // ['color' => 'orange', 'remain' => 6]\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:561
+#, no-wrap
+msgid "<a name=\"method-diffkeys\"></a>\n"
+msgstr ""
+
+#. type: Title ####
+#: docs/8.x/collections.md:561
+#, no-wrap
+msgid "`diffKeys()` {#collection-method}"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:564
+msgid ""
+"The `diffKeys` method compares the collection against another collection or "
+"a plain PHP `array` based on its keys. This method will return the key / "
+"value pairs in the original collection that are not present in the given "
+"collection:"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:572
+#, no-wrap
+msgid ""
+"    $collection = collect([\n"
+"        'one' => 10,\n"
+"        'two' => 20,\n"
+"        'three' => 30,\n"
+"        'four' => 40,\n"
+"        'five' => 50,\n"
+"    ]);\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:579
+#, no-wrap
+msgid ""
+"    $diff = $collection->diffKeys([\n"
+"        'two' => 2,\n"
+"        'four' => 4,\n"
+"        'six' => 6,\n"
+"        'eight' => 8,\n"
+"    ]);\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:583
+#, no-wrap
+msgid "    // ['one' => 10, 'three' => 30, 'five' => 50]\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:585
+#, no-wrap
+msgid "<a name=\"method-dump\"></a>\n"
+msgstr ""
+
+#. type: Title ####
+#: docs/8.x/collections.md:585
+#, no-wrap
+msgid "`dump()` {#collection-method}"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:588
+msgid "The `dump` method dumps the collection's items:"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:592
+#, no-wrap
+msgid "    $collection->dump();\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:603
+msgid ""
+"If you want to stop executing the script after dumping the collection, use "
+"the [`dd`](#method-dd) method instead."
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:605
+#, no-wrap
+msgid "<a name=\"method-duplicates\"></a>\n"
+msgstr ""
+
+#. type: Title ####
+#: docs/8.x/collections.md:605
+#, no-wrap
+msgid "`duplicates()` {#collection-method}"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:608
+msgid ""
+"The `duplicates` method retrieves and returns duplicate values from the "
+"collection:"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:610
+#, no-wrap
+msgid "    $collection = collect(['a', 'b', 'a', 'c', 'b']);\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:612
+#, no-wrap
+msgid "    $collection->duplicates();\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:614
+#, no-wrap
+msgid "    // [2 => 'a', 4 => 'b']\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:616
+msgid ""
+"If the collection contains arrays or objects, you can pass the key of the "
+"attributes that you wish to check for duplicate values:"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:622
+#, no-wrap
+msgid ""
+"    $employees = collect([\n"
+"        ['email' => 'abigail@example.com', 'position' => 'Developer'],\n"
+"        ['email' => 'james@example.com', 'position' => 'Designer'],\n"
+"        ['email' => 'victoria@example.com', 'position' => 'Developer'],\n"
+"    ])\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:624
+#, no-wrap
+msgid "    $employees->duplicates('position');\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:626
+#, no-wrap
+msgid "    // [2 => 'Developer']\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:628
+#, no-wrap
+msgid "<a name=\"method-duplicatesstrict\"></a>\n"
+msgstr ""
+
+#. type: Title ####
+#: docs/8.x/collections.md:628
+#, no-wrap
+msgid "`duplicatesStrict()` {#collection-method}"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:631
+msgid ""
+"This method has the same signature as the [`duplicates`](#method-duplicates) "
+"method; however, all values are compared using \"strict\" comparisons."
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:633
+#, no-wrap
+msgid "<a name=\"method-each\"></a>\n"
+msgstr ""
+
+#. type: Title ####
+#: docs/8.x/collections.md:633
+#, no-wrap
+msgid "`each()` {#collection-method}"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:636
+msgid ""
+"The `each` method iterates over the items in the collection and passes each "
+"item to a closure:"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:640
+#, no-wrap
+msgid ""
+"    $collection->each(function ($item, $key) {\n"
+"        //\n"
+"    });\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:642
+msgid ""
+"If you would like to stop iterating through the items, you may return "
+"`false` from your closure:"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:648
+#, no-wrap
+msgid ""
+"    $collection->each(function ($item, $key) {\n"
+"        if (/* condition */) {\n"
+"            return false;\n"
+"        }\n"
+"    });\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:650
+#, no-wrap
+msgid "<a name=\"method-eachspread\"></a>\n"
+msgstr ""
+
+#. type: Title ####
+#: docs/8.x/collections.md:650
+#, no-wrap
+msgid "`eachSpread()` {#collection-method}"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:653
+msgid ""
+"The `eachSpread` method iterates over the collection's items, passing each "
+"nested item value into the given callback:"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:655
+#, no-wrap
+msgid "    $collection = collect([['John Doe', 35], ['Jane Doe', 33]]);\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:659
+#, no-wrap
+msgid ""
+"    $collection->eachSpread(function ($name, $age) {\n"
+"        //\n"
+"    });\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:661
+msgid ""
+"You may stop iterating through the items by returning `false` from the "
+"callback:"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:665
+#, no-wrap
+msgid ""
+"    $collection->eachSpread(function ($name, $age) {\n"
+"        return false;\n"
+"    });\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:667
+#, no-wrap
+msgid "<a name=\"method-every\"></a>\n"
+msgstr ""
+
+#. type: Title ####
+#: docs/8.x/collections.md:667
+#, no-wrap
+msgid "`every()` {#collection-method}"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:670
+msgid ""
+"The `every` method may be used to verify that all elements of a collection "
+"pass a given truth test:"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:674
+#, no-wrap
+msgid ""
+"    collect([1, 2, 3, 4])->every(function ($value, $key) {\n"
+"        return $value > 2;\n"
+"    });\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:678
+msgid "If the collection is empty, the `every` method will return true:"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:680
+#, no-wrap
+msgid "    $collection = collect([]);\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:684
+#, no-wrap
+msgid ""
+"    $collection->every(function ($value, $key) {\n"
+"        return $value > 2;\n"
+"    });\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:688
+#, no-wrap
+msgid "<a name=\"method-except\"></a>\n"
+msgstr ""
+
+#. type: Title ####
+#: docs/8.x/collections.md:688
+#, no-wrap
+msgid "`except()` {#collection-method}"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:691
+msgid ""
+"The `except` method returns all items in the collection except for those "
+"with the specified keys:"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:693
+#, no-wrap
+msgid "    $collection = collect(['product_id' => 1, 'price' => 100, 'discount' => false]);\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:695
+#, no-wrap
+msgid "    $filtered = $collection->except(['price', 'discount']);\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:697 docs/8.x/collections.md:716
+#: docs/8.x/collections.md:1443 docs/8.x/collections.md:1462
+#: docs/8.x/collections.md:1468 docs/8.x/collections.md:1744
+#: docs/8.x/collections.md:2631 docs/8.x/collections.md:2652
+#: docs/8.x/collections.md:2681 docs/8.x/collections.md:2705
+#: docs/8.x/collections.md:2737 docs/8.x/collections.md:2756
+#: docs/8.x/collections.md:2779 docs/8.x/collections.md:2808
+#: docs/8.x/collections.md:2830
+#, no-wrap
+msgid "    $filtered->all();\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:699
+#, no-wrap
+msgid "    // ['product_id' => 1]\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:701
+msgid "For the inverse of `except`, see the [only](#method-only) method."
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:703
+#, no-wrap
+msgid "> {tip} This method's behavior is modified when using [Eloquent Collections](/docs/{{version}}/eloquent-collections#method-except).\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:705
+#, no-wrap
+msgid "<a name=\"method-filter\"></a>\n"
+msgstr ""
+
+#. type: Title ####
+#: docs/8.x/collections.md:705
+#, no-wrap
+msgid "`filter()` {#collection-method}"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:708
+msgid ""
+"The `filter` method filters the collection using the given callback, keeping "
+"only those items that pass a given truth test:"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:714
+#, no-wrap
+msgid ""
+"    $filtered = $collection->filter(function ($value, $key) {\n"
+"        return $value > 2;\n"
+"    });\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:718 docs/8.x/collections.md:1887
+#: docs/8.x/collections.md:1897
+#, no-wrap
+msgid "    // [3, 4]\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:720
+msgid ""
+"If no callback is supplied, all entries of the collection that are "
+"equivalent to `false` will be removed:"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:722
+#, no-wrap
+msgid "    $collection = collect([1, 2, 3, null, false, '', 0, []]);\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:724
+#, no-wrap
+msgid "    $collection->filter()->all();\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:728
+msgid "For the inverse of `filter`, see the [reject](#method-reject) method."
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:730
+#, no-wrap
+msgid "<a name=\"method-first\"></a>\n"
+msgstr ""
+
+#. type: Title ####
+#: docs/8.x/collections.md:730
+#, no-wrap
+msgid "`first()` {#collection-method}"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:733
+msgid ""
+"The `first` method returns the first element in the collection that passes a "
+"given truth test:"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:737
+#, no-wrap
+msgid ""
+"    collect([1, 2, 3, 4])->first(function ($value, $key) {\n"
+"        return $value > 2;\n"
+"    });\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:739
+#, no-wrap
+msgid "    // 3\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:741
+msgid ""
+"You may also call the `first` method with no arguments to get the first "
+"element in the collection. If the collection is empty, `null` is returned:"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:743
+#, no-wrap
+msgid "    collect([1, 2, 3, 4])->first();\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:745 docs/8.x/collections.md:1388
+#: docs/8.x/collections.md:1817 docs/8.x/collections.md:1842
+#: docs/8.x/collections.md:2310
+#, no-wrap
+msgid "    // 1\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:747
+#, no-wrap
+msgid "<a name=\"method-first-where\"></a>\n"
+msgstr ""
+
+#. type: Title ####
+#: docs/8.x/collections.md:747
+#, no-wrap
+msgid "`firstWhere()` {#collection-method}"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:750
+msgid ""
+"The `firstWhere` method returns the first element in the collection with the "
+"given key / value pair:"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:757
+#, no-wrap
+msgid ""
+"    $collection = collect([\n"
+"        ['name' => 'Regena', 'age' => null],\n"
+"        ['name' => 'Linda', 'age' => 14],\n"
+"        ['name' => 'Diego', 'age' => 23],\n"
+"        ['name' => 'Linda', 'age' => 84],\n"
+"    ]);\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:759
+#, no-wrap
+msgid "    $collection->firstWhere('name', 'Linda');\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:761 docs/8.x/collections.md:773
+#, no-wrap
+msgid "    // ['name' => 'Linda', 'age' => 14]\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:763
+msgid "You may also call the `firstWhere` method with a comparison operator:"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:765
+#, no-wrap
+msgid "    $collection->firstWhere('age', '>=', 18);\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:767
+#, no-wrap
+msgid "    // ['name' => 'Diego', 'age' => 23]\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:769
+msgid ""
+"Like the [where](#method-where) method, you may pass one argument to the "
+"`firstWhere` method. In this scenario, the `firstWhere` method will return "
+"the first item where the given item key's value is \"truthy\":"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:771
+#, no-wrap
+msgid "    $collection->firstWhere('age');\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:775
+#, no-wrap
+msgid "<a name=\"method-flatmap\"></a>\n"
+msgstr ""
+
+#. type: Title ####
+#: docs/8.x/collections.md:775
+#, no-wrap
+msgid "`flatMap()` {#collection-method}"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:778
+msgid ""
+"The `flatMap` method iterates through the collection and passes each value "
+"to the given closure. The closure is free to modify the item and return it, "
+"thus forming a new collection of modified items. Then, the array is "
+"flattened by one level:"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:784
+#, no-wrap
+msgid ""
+"    $collection = collect([\n"
+"        ['name' => 'Sally'],\n"
+"        ['school' => 'Arkansas'],\n"
+"        ['age' => 28]\n"
+"    ]);\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:788
+#, no-wrap
+msgid ""
+"    $flattened = $collection->flatMap(function ($values) {\n"
+"        return array_map('strtoupper', $values);\n"
+"    });\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:790 docs/8.x/collections.md:808
+#, no-wrap
+msgid "    $flattened->all();\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:792
+#, no-wrap
+msgid "    // ['name' => 'SALLY', 'school' => 'ARKANSAS', 'age' => '28'];\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:794
+#, no-wrap
+msgid "<a name=\"method-flatten\"></a>\n"
+msgstr ""
+
+#. type: Title ####
+#: docs/8.x/collections.md:794
+#, no-wrap
+msgid "`flatten()` {#collection-method}"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:797
+msgid ""
+"The `flatten` method flattens a multi-dimensional collection into a single "
+"dimension:"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:804
+#, no-wrap
+msgid ""
+"    $collection = collect([\n"
+"        'name' => 'taylor',\n"
+"        'languages' => [\n"
+"            'php', 'javascript'\n"
+"        ]\n"
+"    ]);\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:806
+#, no-wrap
+msgid "    $flattened = $collection->flatten();\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:810
+#, no-wrap
+msgid "    // ['taylor', 'php', 'javascript'];\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:812
+msgid "If necessary, you may pass the `flatten` method a \"depth\" argument:"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:827
+#, no-wrap
+msgid ""
+"    $collection = collect([\n"
+"        'Apple' => [\n"
+"            [\n"
+"                'name' => 'iPhone 6S',\n"
+"                'brand' => 'Apple'\n"
+"            ],\n"
+"        ],\n"
+"        'Samsung' => [\n"
+"            [\n"
+"                'name' => 'Galaxy S7',\n"
+"                'brand' => 'Samsung'\n"
+"            ],\n"
+"        ],\n"
+"    ]);\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:829
+#, no-wrap
+msgid "    $products = $collection->flatten(1);\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:831
+#, no-wrap
+msgid "    $products->values()->all();\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:838
+#, no-wrap
+msgid ""
+"    /*\n"
+"        [\n"
+"            ['name' => 'iPhone 6S', 'brand' => 'Apple'],\n"
+"            ['name' => 'Galaxy S7', 'brand' => 'Samsung'],\n"
+"        ]\n"
+"    */\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:840
+msgid ""
+"In this example, calling `flatten` without providing the depth would have "
+"also flattened the nested arrays, resulting in `['iPhone 6S', 'Apple', "
+"'Galaxy S7', 'Samsung']`. Providing a depth allows you to specify the number "
+"of levels nested arrays will be flattened."
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:842
+#, no-wrap
+msgid "<a name=\"method-flip\"></a>\n"
+msgstr ""
+
+#. type: Title ####
+#: docs/8.x/collections.md:842
+#, no-wrap
+msgid "`flip()` {#collection-method}"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:845
+msgid ""
+"The `flip` method swaps the collection's keys with their corresponding "
+"values:"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:847 docs/8.x/collections.md:860
+#: docs/8.x/collections.md:888 docs/8.x/collections.md:896
+#, no-wrap
+msgid "    $collection = collect(['name' => 'taylor', 'framework' => 'laravel']);\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:849
+#, no-wrap
+msgid "    $flipped = $collection->flip();\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:851
+#, no-wrap
+msgid "    $flipped->all();\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:853
+#, no-wrap
+msgid "    // ['taylor' => 'name', 'laravel' => 'framework']\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:855
+#, no-wrap
+msgid "<a name=\"method-forget\"></a>\n"
+msgstr ""
+
+#. type: Title ####
+#: docs/8.x/collections.md:855
+#, no-wrap
+msgid "`forget()` {#collection-method}"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:858
+msgid "The `forget` method removes an item from the collection by its key:"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:862
+#, no-wrap
+msgid "    $collection->forget('name');\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:866
+#, no-wrap
+msgid "    // ['framework' => 'laravel']\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:868
+#, no-wrap
+msgid "> {note} Unlike most other collection methods, `forget` does not return a new modified collection; it modifies the collection it is called on.\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:870
+#, no-wrap
+msgid "<a name=\"method-forpage\"></a>\n"
+msgstr ""
+
+#. type: Title ####
+#: docs/8.x/collections.md:870
+#, no-wrap
+msgid "`forPage()` {#collection-method}"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:873
+msgid ""
+"The `forPage` method returns a new collection containing the items that "
+"would be present on a given page number. The method accepts the page number "
+"as its first argument and the number of items to show per page as its second "
+"argument:"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:875
+#, no-wrap
+msgid "    $collection = collect([1, 2, 3, 4, 5, 6, 7, 8, 9]);\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:877
+#, no-wrap
+msgid "    $chunk = $collection->forPage(2, 3);\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:879 docs/8.x/collections.md:2135
+#: docs/8.x/collections.md:2149 docs/8.x/collections.md:2163
+#: docs/8.x/collections.md:2240 docs/8.x/collections.md:2250
+#, no-wrap
+msgid "    $chunk->all();\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:881
+#, no-wrap
+msgid "    // [4, 5, 6]\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:883
+#, no-wrap
+msgid "<a name=\"method-get\"></a>\n"
+msgstr ""
+
+#. type: Title ####
+#: docs/8.x/collections.md:883
+#, no-wrap
+msgid "`get()` {#collection-method}"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:886
+msgid ""
+"The `get` method returns the item at a given key. If the key does not exist, "
+"`null` is returned:"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:890
+#, no-wrap
+msgid "    $value = $collection->get('name');\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:892
+#, no-wrap
+msgid "    // taylor\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:894
+msgid "You may optionally pass a default value as the second argument:"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:898
+#, no-wrap
+msgid "    $value = $collection->get('age', 34);\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:900
+#, no-wrap
+msgid "    // 34\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:902
+msgid ""
+"You may even pass a callback as the method's default value. The result of "
+"the callback will be returned if the specified key does not exist:"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:906
+#, no-wrap
+msgid ""
+"    $collection->get('email', function () {\n"
+"        return 'taylor@example.com';\n"
+"    });\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:908
+#, no-wrap
+msgid "    // taylor@example.com\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:910
+#, no-wrap
+msgid "<a name=\"method-groupby\"></a>\n"
+msgstr ""
+
+#. type: Title ####
+#: docs/8.x/collections.md:910
+#, no-wrap
+msgid "`groupBy()` {#collection-method}"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:913
+msgid "The `groupBy` method groups the collection's items by a given key:"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:919
+#, no-wrap
+msgid ""
+"    $collection = collect([\n"
+"        ['account_id' => 'account-x10', 'product' => 'Chair'],\n"
+"        ['account_id' => 'account-x10', 'product' => 'Bookcase'],\n"
+"        ['account_id' => 'account-x11', 'product' => 'Desk'],\n"
+"    ]);\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:921
+#, no-wrap
+msgid "    $grouped = $collection->groupBy('account_id');\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:923 docs/8.x/collections.md:943
+#: docs/8.x/collections.md:1259
+#, no-wrap
+msgid "    $grouped->all();\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:935
+#, no-wrap
+msgid ""
+"    /*\n"
+"        [\n"
+"            'account-x10' => [\n"
+"                ['account_id' => 'account-x10', 'product' => 'Chair'],\n"
+"                ['account_id' => 'account-x10', 'product' => 'Bookcase'],\n"
+"            ],\n"
+"            'account-x11' => [\n"
+"                ['account_id' => 'account-x11', 'product' => 'Desk'],\n"
+"            ],\n"
+"        ]\n"
+"    */\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:937
+msgid ""
+"Instead of passing a string `key`, you may pass a callback. The callback "
+"should return the value you wish to key the group by:"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:941
+#, no-wrap
+msgid ""
+"    $grouped = $collection->groupBy(function ($item, $key) {\n"
+"        return substr($item['account_id'], -3);\n"
+"    });\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:955
+#, no-wrap
+msgid ""
+"    /*\n"
+"        [\n"
+"            'x10' => [\n"
+"                ['account_id' => 'account-x10', 'product' => 'Chair'],\n"
+"                ['account_id' => 'account-x10', 'product' => 'Bookcase'],\n"
+"            ],\n"
+"            'x11' => [\n"
+"                ['account_id' => 'account-x11', 'product' => 'Desk'],\n"
+"            ],\n"
+"        ]\n"
+"    */\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:957
+msgid ""
+"Multiple grouping criteria may be passed as an array. Each array element "
+"will be applied to the corresponding level within a multi-dimensional array:"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:964
+#, no-wrap
+msgid ""
+"    $data = new Collection([\n"
+"        10 => ['user' => 1, 'skill' => 1, 'roles' => ['Role_1', 'Role_3']],\n"
+"        20 => ['user' => 2, 'skill' => 1, 'roles' => ['Role_1', 'Role_2']],\n"
+"        30 => ['user' => 3, 'skill' => 2, 'roles' => ['Role_1']],\n"
+"        40 => ['user' => 4, 'skill' => 2, 'roles' => ['Role_2']],\n"
+"    ]);\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:968
+#, no-wrap
+msgid ""
+"    $result = $data->groupBy(['skill', function ($item) {\n"
+"        return $item['roles'];\n"
+"    }], $preserveKeys = true);\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:993
+#, no-wrap
+msgid ""
+"    /*\n"
+"    [\n"
+"        1 => [\n"
+"            'Role_1' => [\n"
+"                10 => ['user' => 1, 'skill' => 1, 'roles' => ['Role_1', 'Role_3']],\n"
+"                20 => ['user' => 2, 'skill' => 1, 'roles' => ['Role_1', 'Role_2']],\n"
+"            ],\n"
+"            'Role_2' => [\n"
+"                20 => ['user' => 2, 'skill' => 1, 'roles' => ['Role_1', 'Role_2']],\n"
+"            ],\n"
+"            'Role_3' => [\n"
+"                10 => ['user' => 1, 'skill' => 1, 'roles' => ['Role_1', 'Role_3']],\n"
+"            ],\n"
+"        ],\n"
+"        2 => [\n"
+"            'Role_1' => [\n"
+"                30 => ['user' => 3, 'skill' => 2, 'roles' => ['Role_1']],\n"
+"            ],\n"
+"            'Role_2' => [\n"
+"                40 => ['user' => 4, 'skill' => 2, 'roles' => ['Role_2']],\n"
+"            ],\n"
+"        ],\n"
+"    ];\n"
+"    */\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:995
+#, no-wrap
+msgid "<a name=\"method-has\"></a>\n"
+msgstr ""
+
+#. type: Title ####
+#: docs/8.x/collections.md:995
+#, no-wrap
+msgid "`has()` {#collection-method}"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:998
+msgid "The `has` method determines if a given key exists in the collection:"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1000
+#, no-wrap
+msgid "    $collection = collect(['account_id' => 1, 'product' => 'Desk', 'amount' => 5]);\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1002
+#, no-wrap
+msgid "    $collection->has('product');\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1006
+#, no-wrap
+msgid "    $collection->has(['product', 'amount']);\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1010
+#, no-wrap
+msgid "    $collection->has(['amount', 'price']);\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1014
+#, no-wrap
+msgid "<a name=\"method-implode\"></a>\n"
+msgstr ""
+
+#. type: Title ####
+#: docs/8.x/collections.md:1014
+#, no-wrap
+msgid "`implode()` {#collection-method}"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1017
+msgid ""
+"The `implode` method joins items in a collection. Its arguments depend on "
+"the type of items in the collection. If the collection contains arrays or "
+"objects, you should pass the key of the attributes you wish to join, and the "
+"\"glue\" string you wish to place between the values:"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1022
+#, no-wrap
+msgid ""
+"    $collection = collect([\n"
+"        ['account_id' => 1, 'product' => 'Desk'],\n"
+"        ['account_id' => 2, 'product' => 'Chair'],\n"
+"    ]);\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1024
+#, no-wrap
+msgid "    $collection->implode('product', ', ');\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1026
+#, no-wrap
+msgid "    // Desk, Chair\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1028
+msgid ""
+"If the collection contains simple strings or numeric values, you should pass "
+"the \"glue\" as the only argument to the method:"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1030
+#, no-wrap
+msgid "    collect([1, 2, 3, 4, 5])->implode('-');\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1032
+#, no-wrap
+msgid "    // '1-2-3-4-5'\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1034
+#, no-wrap
+msgid "<a name=\"method-intersect\"></a>\n"
+msgstr ""
+
+#. type: Title ####
+#: docs/8.x/collections.md:1034
+#, no-wrap
+msgid "`intersect()` {#collection-method}"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1037
+msgid ""
+"The `intersect` method removes any values from the original collection that "
+"are not present in the given `array` or collection. The resulting collection "
+"will preserve the original collection's keys:"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1039
+#, no-wrap
+msgid "    $collection = collect(['Desk', 'Sofa', 'Chair']);\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1041
+#, no-wrap
+msgid "    $intersect = $collection->intersect(['Desk', 'Chair', 'Bookcase']);\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1043 docs/8.x/collections.md:1062
+#, no-wrap
+msgid "    $intersect->all();\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1045
+#, no-wrap
+msgid "    // [0 => 'Desk', 2 => 'Chair']\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1047
+#, no-wrap
+msgid "> {tip} This method's behavior is modified when using [Eloquent Collections](/docs/{{version}}/eloquent-collections#method-intersect).\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1049
+#, no-wrap
+msgid "<a name=\"method-intersectbykeys\"></a>\n"
+msgstr ""
+
+#. type: Title ####
+#: docs/8.x/collections.md:1049
+#, no-wrap
+msgid "`intersectByKeys()` {#collection-method}"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1052
+msgid ""
+"The `intersectByKeys` method removes any keys and their corresponding values "
+"from the original collection that are not present in the given `array` or "
+"collection:"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1056
+#, no-wrap
+msgid ""
+"    $collection = collect([\n"
+"        'serial' => 'UX301', 'type' => 'screen', 'year' => 2009,\n"
+"    ]);\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1060
+#, no-wrap
+msgid ""
+"    $intersect = $collection->intersectByKeys([\n"
+"        'reference' => 'UX404', 'type' => 'tab', 'year' => 2011,\n"
+"    ]);\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1064
+#, no-wrap
+msgid "    // ['type' => 'screen', 'year' => 2009]\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1066
+#, no-wrap
+msgid "<a name=\"method-isempty\"></a>\n"
+msgstr ""
+
+#. type: Title ####
+#: docs/8.x/collections.md:1066
+#, no-wrap
+msgid "`isEmpty()` {#collection-method}"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1069
+msgid ""
+"The `isEmpty` method returns `true` if the collection is empty; otherwise, "
+"`false` is returned:"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1071
+#, no-wrap
+msgid "    collect([])->isEmpty();\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1075
+#, no-wrap
+msgid "<a name=\"method-isnotempty\"></a>\n"
+msgstr ""
+
+#. type: Title ####
+#: docs/8.x/collections.md:1075
+#, no-wrap
+msgid "`isNotEmpty()` {#collection-method}"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1078
+msgid ""
+"The `isNotEmpty` method returns `true` if the collection is not empty; "
+"otherwise, `false` is returned:"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1080
+#, no-wrap
+msgid "    collect([])->isNotEmpty();\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1084
+#, no-wrap
+msgid "<a name=\"method-join\"></a>\n"
+msgstr ""
+
+#. type: Title ####
+#: docs/8.x/collections.md:1084
+#, no-wrap
+msgid "`join()` {#collection-method}"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1087
+msgid ""
+"The `join` method joins the collection's values with a string. Using this "
+"method's second argument, you may also specify how the final element should "
+"be appended to the string:"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1093
+#, no-wrap
+msgid ""
+"    collect(['a', 'b', 'c'])->join(', '); // 'a, b, c'\n"
+"    collect(['a', 'b', 'c'])->join(', ', ', and '); // 'a, b, and c'\n"
+"    collect(['a', 'b'])->join(', ', ' and '); // 'a and b'\n"
+"    collect(['a'])->join(', ', ' and '); // 'a'\n"
+"    collect([])->join(', ', ' and '); // ''\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1095
+#, no-wrap
+msgid "<a name=\"method-keyby\"></a>\n"
+msgstr ""
+
+#. type: Title ####
+#: docs/8.x/collections.md:1095
+#, no-wrap
+msgid "`keyBy()` {#collection-method}"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1098
+msgid ""
+"The `keyBy` method keys the collection by the given key. If multiple items "
+"have the same key, only the last one will appear in the new collection:"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1103 docs/8.x/collections.md:1544
+#, no-wrap
+msgid ""
+"    $collection = collect([\n"
+"        ['product_id' => 'prod-100', 'name' => 'Desk'],\n"
+"        ['product_id' => 'prod-200', 'name' => 'Chair'],\n"
+"    ]);\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1105
+#, no-wrap
+msgid "    $keyed = $collection->keyBy('product_id');\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1107 docs/8.x/collections.md:1122
+#: docs/8.x/collections.md:1294
+#, no-wrap
+msgid "    $keyed->all();\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1114
+#, no-wrap
+msgid ""
+"    /*\n"
+"        [\n"
+"            'prod-100' => ['product_id' => 'prod-100', 'name' => 'Desk'],\n"
+"            'prod-200' => ['product_id' => 'prod-200', 'name' => 'Chair'],\n"
+"        ]\n"
+"    */\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1116
+msgid ""
+"You may also pass a callback to the method. The callback should return the "
+"value to key the collection by:"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1120
+#, no-wrap
+msgid ""
+"    $keyed = $collection->keyBy(function ($item) {\n"
+"        return strtoupper($item['product_id']);\n"
+"    });\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1129
+#, no-wrap
+msgid ""
+"    /*\n"
+"        [\n"
+"            'PROD-100' => ['product_id' => 'prod-100', 'name' => 'Desk'],\n"
+"            'PROD-200' => ['product_id' => 'prod-200', 'name' => 'Chair'],\n"
+"        ]\n"
+"    */\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1131
+#, no-wrap
+msgid "<a name=\"method-keys\"></a>\n"
+msgstr ""
+
+#. type: Title ####
+#: docs/8.x/collections.md:1131
+#, no-wrap
+msgid "`keys()` {#collection-method}"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1134
+msgid "The `keys` method returns all of the collection's keys:"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1139
+#, no-wrap
+msgid ""
+"    $collection = collect([\n"
+"        'prod-100' => ['product_id' => 'prod-100', 'name' => 'Desk'],\n"
+"        'prod-200' => ['product_id' => 'prod-200', 'name' => 'Chair'],\n"
+"    ]);\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1141
+#, no-wrap
+msgid "    $keys = $collection->keys();\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1143
+#, no-wrap
+msgid "    $keys->all();\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1145
+#, no-wrap
+msgid "    // ['prod-100', 'prod-200']\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1147
+#, no-wrap
+msgid "<a name=\"method-last\"></a>\n"
+msgstr ""
+
+#. type: Title ####
+#: docs/8.x/collections.md:1147
+#, no-wrap
+msgid "`last()` {#collection-method}"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1150
+msgid ""
+"The `last` method returns the last element in the collection that passes a "
+"given truth test:"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1154
+#, no-wrap
+msgid ""
+"    collect([1, 2, 3, 4])->last(function ($value, $key) {\n"
+"        return $value < 3;\n"
+"    });\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1158
+msgid ""
+"You may also call the `last` method with no arguments to get the last "
+"element in the collection. If the collection is empty, `null` is returned:"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1160
+#, no-wrap
+msgid "    collect([1, 2, 3, 4])->last();\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1164
+#, no-wrap
+msgid "<a name=\"method-macro\"></a>\n"
+msgstr ""
+
+#. type: Title ####
+#: docs/8.x/collections.md:1164
+#, no-wrap
+msgid "`macro()` {#collection-method}"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1167
+msgid ""
+"The static `macro` method allows you to add methods to the `Collection` "
+"class at run time. Refer to the documentation on [extending collections]"
+"(#extending-collections) for more information."
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1169
+#, no-wrap
+msgid "<a name=\"method-make\"></a>\n"
+msgstr ""
+
+#. type: Title ####
+#: docs/8.x/collections.md:1169
+#, no-wrap
+msgid "`make()` {#collection-method}"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1172
+msgid ""
+"The static `make` method creates a new collection instance. See the "
+"[Creating Collections](#creating-collections) section."
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1174
+#, no-wrap
+msgid "<a name=\"method-map\"></a>\n"
+msgstr ""
+
+#. type: Title ####
+#: docs/8.x/collections.md:1174
+#, no-wrap
+msgid "`map()` {#collection-method}"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1177
+msgid ""
+"The `map` method iterates through the collection and passes each value to "
+"the given callback. The callback is free to modify the item and return it, "
+"thus forming a new collection of modified items:"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1183
+#, no-wrap
+msgid ""
+"    $multiplied = $collection->map(function ($item, $key) {\n"
+"        return $item * 2;\n"
+"    });\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1185
+#, no-wrap
+msgid "    $multiplied->all();\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1187 docs/8.x/collections.md:2366
+#, no-wrap
+msgid "    // [2, 4, 6, 8, 10]\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1189
+#, no-wrap
+msgid "> {note} Like most other collection methods, `map` returns a new collection instance; it does not modify the collection it is called on. If you want to transform the original collection, use the [`transform`](#method-transform) method.\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1191
+#, no-wrap
+msgid "<a name=\"method-mapinto\"></a>\n"
+msgstr ""
+
+#. type: Title ####
+#: docs/8.x/collections.md:1191
+#, no-wrap
+msgid "`mapInto()` {#collection-method}"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1194
+msgid ""
+"The `mapInto()` method iterates over the collection, creating a new instance "
+"of the given class by passing the value into the constructor:"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1208
+#, no-wrap
+msgid ""
+"    class Currency\n"
+"    {\n"
+"        /**\n"
+"         * Create a new currency instance.\n"
+"         *\n"
+"         * @param  string  $code\n"
+"         * @return void\n"
+"         */\n"
+"        function __construct(string $code)\n"
+"        {\n"
+"            $this->code = $code;\n"
+"        }\n"
+"    }\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1210
+#, no-wrap
+msgid "    $collection = collect(['USD', 'EUR', 'GBP']);\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1212
+#, no-wrap
+msgid "    $currencies = $collection->mapInto(Currency::class);\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1214
+#, no-wrap
+msgid "    $currencies->all();\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1216
+#, no-wrap
+msgid "    // [Currency('USD'), Currency('EUR'), Currency('GBP')]\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1218
+#, no-wrap
+msgid "<a name=\"method-mapspread\"></a>\n"
+msgstr ""
+
+#. type: Title ####
+#: docs/8.x/collections.md:1218
+#, no-wrap
+msgid "`mapSpread()` {#collection-method}"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1221
+msgid ""
+"The `mapSpread` method iterates over the collection's items, passing each "
+"nested item value into the given closure. The closure is free to modify the "
+"item and return it, thus forming a new collection of modified items:"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1223
+#, no-wrap
+msgid "    $collection = collect([0, 1, 2, 3, 4, 5, 6, 7, 8, 9]);\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1225
+#, no-wrap
+msgid "    $chunks = $collection->chunk(2);\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1229
+#, no-wrap
+msgid ""
+"    $sequence = $chunks->mapSpread(function ($even, $odd) {\n"
+"        return $even + $odd;\n"
+"    });\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1231
+#, no-wrap
+msgid "    $sequence->all();\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1233
+#, no-wrap
+msgid "    // [1, 5, 9, 13, 17]\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1235
+#, no-wrap
+msgid "<a name=\"method-maptogroups\"></a>\n"
+msgstr ""
+
+#. type: Title ####
+#: docs/8.x/collections.md:1235
+#, no-wrap
+msgid "`mapToGroups()` {#collection-method}"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1238
+msgid ""
+"The `mapToGroups` method groups the collection's items by the given closure. "
+"The closure should return an associative array containing a single key / "
+"value pair, thus forming a new collection of grouped values:"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1253
+#, no-wrap
+msgid ""
+"    $collection = collect([\n"
+"        [\n"
+"            'name' => 'John Doe',\n"
+"            'department' => 'Sales',\n"
+"        ],\n"
+"        [\n"
+"            'name' => 'Jane Doe',\n"
+"            'department' => 'Sales',\n"
+"        ],\n"
+"        [\n"
+"            'name' => 'Johnny Doe',\n"
+"            'department' => 'Marketing',\n"
+"        ]\n"
+"    ]);\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1257
+#, no-wrap
+msgid ""
+"    $grouped = $collection->mapToGroups(function ($item, $key) {\n"
+"        return [$item['department'] => $item['name']];\n"
+"    });\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1266
+#, no-wrap
+msgid ""
+"    /*\n"
+"        [\n"
+"            'Sales' => ['John Doe', 'Jane Doe'],\n"
+"            'Marketing' => ['Johnny Doe'],\n"
+"        ]\n"
+"    */\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1268
+#, no-wrap
+msgid "    $grouped->get('Sales')->all();\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1270
+#, no-wrap
+msgid "    // ['John Doe', 'Jane Doe']\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1272
+#, no-wrap
+msgid "<a name=\"method-mapwithkeys\"></a>\n"
+msgstr ""
+
+#. type: Title ####
+#: docs/8.x/collections.md:1272
+#, no-wrap
+msgid "`mapWithKeys()` {#collection-method}"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1275
+msgid ""
+"The `mapWithKeys` method iterates through the collection and passes each "
+"value to the given callback. The callback should return an associative array "
+"containing a single key / value pair:"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1288
+#, no-wrap
+msgid ""
+"    $collection = collect([\n"
+"        [\n"
+"            'name' => 'John',\n"
+"            'department' => 'Sales',\n"
+"            'email' => 'john@example.com',\n"
+"        ],\n"
+"        [\n"
+"            'name' => 'Jane',\n"
+"            'department' => 'Marketing',\n"
+"            'email' => 'jane@example.com',\n"
+"        ]\n"
+"    ]);\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1292
+#, no-wrap
+msgid ""
+"    $keyed = $collection->mapWithKeys(function ($item) {\n"
+"        return [$item['email'] => $item['name']];\n"
+"    });\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1301
+#, no-wrap
+msgid ""
+"    /*\n"
+"        [\n"
+"            'john@example.com' => 'John',\n"
+"            'jane@example.com' => 'Jane',\n"
+"        ]\n"
+"    */\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1303
+#, no-wrap
+msgid "<a name=\"method-max\"></a>\n"
+msgstr ""
+
+#. type: Title ####
+#: docs/8.x/collections.md:1303
+#, no-wrap
+msgid "`max()` {#collection-method}"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1306
+msgid "The `max` method returns the maximum value of a given key:"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1311
+#, no-wrap
+msgid ""
+"    $max = collect([\n"
+"        ['foo' => 10],\n"
+"        ['foo' => 20]\n"
+"    ])->max('foo');\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1315
+#, no-wrap
+msgid "    $max = collect([1, 2, 3, 4, 5])->max();\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1317 docs/8.x/collections.md:1601
+#, no-wrap
+msgid "    // 5\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1319
+#, no-wrap
+msgid "<a name=\"method-median\"></a>\n"
+msgstr ""
+
+#. type: Title ####
+#: docs/8.x/collections.md:1319
+#, no-wrap
+msgid "`median()` {#collection-method}"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1322
+msgid ""
+"The `median` method returns the [median value](https://en.wikipedia.org/wiki/"
+"Median) of a given key:"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1329
+#, no-wrap
+msgid ""
+"    $median = collect([\n"
+"        ['foo' => 10],\n"
+"        ['foo' => 10],\n"
+"        ['foo' => 20],\n"
+"        ['foo' => 40]\n"
+"    ])->median('foo');\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1331 docs/8.x/collections.md:2204
+#, no-wrap
+msgid "    // 15\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1333
+#, no-wrap
+msgid "    $median = collect([1, 1, 2, 4])->median();\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1335
+#, no-wrap
+msgid "    // 1.5\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1337
+#, no-wrap
+msgid "<a name=\"method-merge\"></a>\n"
+msgstr ""
+
+#. type: Title ####
+#: docs/8.x/collections.md:1337
+#, no-wrap
+msgid "`merge()` {#collection-method}"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1340
+msgid ""
+"The `merge` method merges the given array or collection with the original "
+"collection. If a string key in the given items matches a string key in the "
+"original collection, the given items's value will overwrite the value in the "
+"original collection:"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1342 docs/8.x/collections.md:1365
+#, no-wrap
+msgid "    $collection = collect(['product_id' => 1, 'price' => 100]);\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1344
+#, no-wrap
+msgid "    $merged = $collection->merge(['price' => 200, 'discount' => false]);\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1346 docs/8.x/collections.md:1356
+#: docs/8.x/collections.md:1373
+#, no-wrap
+msgid "    $merged->all();\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1348
+#, no-wrap
+msgid "    // ['product_id' => 1, 'price' => 200, 'discount' => false]\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1350
+msgid ""
+"If the given items's keys are numeric, the values will be appended to the "
+"end of the collection:"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1352
+#, no-wrap
+msgid "    $collection = collect(['Desk', 'Chair']);\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1354
+#, no-wrap
+msgid "    $merged = $collection->merge(['Bookcase', 'Door']);\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1358
+#, no-wrap
+msgid "    // ['Desk', 'Chair', 'Bookcase', 'Door']\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1360
+#, no-wrap
+msgid "<a name=\"method-mergerecursive\"></a>\n"
+msgstr ""
+
+#. type: Title ####
+#: docs/8.x/collections.md:1360
+#, no-wrap
+msgid "`mergeRecursive()` {#collection-method}"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1363
+msgid ""
+"The `mergeRecursive` method merges the given array or collection recursively "
+"with the original collection. If a string key in the given items matches a "
+"string key in the original collection, then the values for these keys are "
+"merged together into an array, and this is done recursively:"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1371
+#, no-wrap
+msgid ""
+"    $merged = $collection->mergeRecursive([\n"
+"        'product_id' => 2,\n"
+"        'price' => 200,\n"
+"        'discount' => false\n"
+"    ]);\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1375
+#, no-wrap
+msgid "    // ['product_id' => [1, 2], 'price' => [100, 200], 'discount' => false]\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1377
+#, no-wrap
+msgid "<a name=\"method-min\"></a>\n"
+msgstr ""
+
+#. type: Title ####
+#: docs/8.x/collections.md:1377
+#, no-wrap
+msgid "`min()` {#collection-method}"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1380
+msgid "The `min` method returns the minimum value of a given key:"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1382
+#, no-wrap
+msgid "    $min = collect([['foo' => 10], ['foo' => 20]])->min('foo');\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1384 docs/8.x/collections.md:1711
+#, no-wrap
+msgid "    // 10\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1386
+#, no-wrap
+msgid "    $min = collect([1, 2, 3, 4, 5])->min();\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1390
+#, no-wrap
+msgid "<a name=\"method-mode\"></a>\n"
+msgstr ""
+
+#. type: Title ####
+#: docs/8.x/collections.md:1390
+#, no-wrap
+msgid "`mode()` {#collection-method}"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1393
+msgid ""
+"The `mode` method returns the [mode value](https://en.wikipedia.org/wiki/"
+"Mode_(statistics)) of a given key:"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1400
+#, no-wrap
+msgid ""
+"    $mode = collect([\n"
+"        ['foo' => 10],\n"
+"        ['foo' => 10],\n"
+"        ['foo' => 20],\n"
+"        ['foo' => 40]\n"
+"    ])->mode('foo');\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1402
+#, no-wrap
+msgid "    // [10]\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1404
+#, no-wrap
+msgid "    $mode = collect([1, 1, 2, 4])->mode();\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1406
+#, no-wrap
+msgid "    // [1]\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1408
+#, no-wrap
+msgid "    $mode = collect([1, 1, 2, 2])->mode();\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1410 docs/8.x/collections.md:1485
+#: docs/8.x/collections.md:1746 docs/8.x/collections.md:2141
+#: docs/8.x/collections.md:2267 docs/8.x/collections.md:2277
+#: docs/8.x/collections.md:2294
+#, no-wrap
+msgid "    // [1, 2]\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1412
+#, no-wrap
+msgid "<a name=\"method-nth\"></a>\n"
+msgstr ""
+
+#. type: Title ####
+#: docs/8.x/collections.md:1412
+#, no-wrap
+msgid "`nth()` {#collection-method}"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1415
+msgid ""
+"The `nth` method creates a new collection consisting of every n-th element:"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1417
+#, no-wrap
+msgid "    $collection = collect(['a', 'b', 'c', 'd', 'e', 'f']);\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1419
+#, no-wrap
+msgid "    $collection->nth(4);\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1421
+#, no-wrap
+msgid "    // ['a', 'e']\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1423
+msgid "You may optionally pass a starting offset as the second argument:"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1425
+#, no-wrap
+msgid "    $collection->nth(4, 1);\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1427
+#, no-wrap
+msgid "    // ['b', 'f']\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1429
+#, no-wrap
+msgid "<a name=\"method-only\"></a>\n"
+msgstr ""
+
+#. type: Title ####
+#: docs/8.x/collections.md:1429
+#, no-wrap
+msgid "`only()` {#collection-method}"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1432
+msgid ""
+"The `only` method returns the items in the collection with the specified "
+"keys:"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1439
+#, no-wrap
+msgid ""
+"    $collection = collect([\n"
+"        'product_id' => 1,\n"
+"        'name' => 'Desk',\n"
+"        'price' => 100,\n"
+"        'discount' => false\n"
+"    ]);\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1441
+#, no-wrap
+msgid "    $filtered = $collection->only(['product_id', 'name']);\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1445
+#, no-wrap
+msgid "    // ['product_id' => 1, 'name' => 'Desk']\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1447
+msgid "For the inverse of `only`, see the [except](#method-except) method."
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1449
+#, no-wrap
+msgid "> {tip} This method's behavior is modified when using [Eloquent Collections](/docs/{{version}}/eloquent-collections#method-only).\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1451
+#, no-wrap
+msgid "<a name=\"method-pad\"></a>\n"
+msgstr ""
+
+#. type: Title ####
+#: docs/8.x/collections.md:1451
+#, no-wrap
+msgid "`pad()` {#collection-method}"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1454
+msgid ""
+"The `pad` method will fill the array with the given value until the array "
+"reaches the specified size. This method behaves like the [array_pad](https://"
+"secure.php.net/manual/en/function.array-pad.php) PHP function."
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1456
+msgid ""
+"To pad to the left, you should specify a negative size. No padding will take "
+"place if the absolute value of the given size is less than or equal to the "
+"length of the array:"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1458
+#, no-wrap
+msgid "    $collection = collect(['A', 'B', 'C']);\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1460
+#, no-wrap
+msgid "    $filtered = $collection->pad(5, 0);\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1464
+#, no-wrap
+msgid "    // ['A', 'B', 'C', 0, 0]\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1466
+#, no-wrap
+msgid "    $filtered = $collection->pad(-5, 0);\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1470
+#, no-wrap
+msgid "    // [0, 0, 'A', 'B', 'C']\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1472
+#, no-wrap
+msgid "<a name=\"method-partition\"></a>\n"
+msgstr ""
+
+#. type: Title ####
+#: docs/8.x/collections.md:1472
+#, no-wrap
+msgid "`partition()` {#collection-method}"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1475
+msgid ""
+"The `partition` method may be combined with the `list` PHP function to "
+"separate elements that pass a given truth test from those that do not:"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1477
+#, no-wrap
+msgid "    $collection = collect([1, 2, 3, 4, 5, 6]);\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1481
+#, no-wrap
+msgid ""
+"    list($underThree, $equalOrAboveThree) = $collection->partition(function ($i) {\n"
+"        return $i < 3;\n"
+"    });\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1483
+#, no-wrap
+msgid "    $underThree->all();\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1487
+#, no-wrap
+msgid "    $equalOrAboveThree->all();\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1489
+#, no-wrap
+msgid "    // [3, 4, 5, 6]\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1491
+#, no-wrap
+msgid "<a name=\"method-pipe\"></a>\n"
+msgstr ""
+
+#. type: Title ####
+#: docs/8.x/collections.md:1491
+#, no-wrap
+msgid "`pipe()` {#collection-method}"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1494
+msgid ""
+"The `pipe` method passes the collection to the given closure and returns the "
+"result of the executed closure:"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1500
+#, no-wrap
+msgid ""
+"    $piped = $collection->pipe(function ($collection) {\n"
+"        return $collection->sum();\n"
+"    });\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1502 docs/8.x/collections.md:1703
+#: docs/8.x/collections.md:2229
+#, no-wrap
+msgid "    // 6\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1504
+#, no-wrap
+msgid "<a name=\"method-pipeinto\"></a>\n"
+msgstr ""
+
+#. type: Title ####
+#: docs/8.x/collections.md:1504
+#, no-wrap
+msgid "`pipeInto()` {#collection-method}"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1507
+msgid ""
+"The `pipeInto` method creates a new instance of the given class and passes "
+"the collection into the constructor:"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1514
+#, no-wrap
+msgid ""
+"    class ResourceCollection\n"
+"    {\n"
+"        /**\n"
+"         * The Collection instance.\n"
+"         */\n"
+"        public $collection;\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1526
+#, no-wrap
+msgid ""
+"        /**\n"
+"         * Create a new ResourceCollection instance.\n"
+"         *\n"
+"         * @param  Collection  $collection\n"
+"         * @return void\n"
+"         */\n"
+"        public function __construct(Collection $collection)\n"
+"        {\n"
+"            $this->collection = $collection;\n"
+"        }\n"
+"    }\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1530
+#, no-wrap
+msgid "    $resource = $collection->pipeInto(ResourceCollection::class);\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1532
+#, no-wrap
+msgid "    $resource->collection->all();\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1536
+#, no-wrap
+msgid "<a name=\"method-pluck\"></a>\n"
+msgstr ""
+
+#. type: Title ####
+#: docs/8.x/collections.md:1536
+#, no-wrap
+msgid "`pluck()` {#collection-method}"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1539
+msgid "The `pluck` method retrieves all of the values for a given key:"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1546
+#, no-wrap
+msgid "    $plucked = $collection->pluck('name');\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1548 docs/8.x/collections.md:1556
+#: docs/8.x/collections.md:1573 docs/8.x/collections.md:1588
+#, no-wrap
+msgid "    $plucked->all();\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1550
+#, no-wrap
+msgid "    // ['Desk', 'Chair']\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1552
+msgid "You may also specify how you wish the resulting collection to be keyed:"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1554
+#, no-wrap
+msgid "    $plucked = $collection->pluck('name', 'product_id');\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1558
+#, no-wrap
+msgid "    // ['prod-100' => 'Desk', 'prod-200' => 'Chair']\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1560
+msgid ""
+"The `pluck` method also supports retrieving nested values using \"dot\" "
+"notation:"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1569
+#, no-wrap
+msgid ""
+"    $collection = collect([\n"
+"        [\n"
+"            'speakers' => [\n"
+"                'first_day' => ['Rosa', 'Judith'],\n"
+"                'second_day' => ['Angela', 'Kathleen'],\n"
+"            ],\n"
+"        ],\n"
+"    ]);\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1571
+#, no-wrap
+msgid "    $plucked = $collection->pluck('speakers.first_day');\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1575
+#, no-wrap
+msgid "    // ['Rosa', 'Judith']\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1577
+msgid ""
+"If duplicate keys exist, the last matching element will be inserted into the "
+"plucked collection:"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1584
+#, no-wrap
+msgid ""
+"    $collection = collect([\n"
+"        ['brand' => 'Tesla',  'color' => 'red'],\n"
+"        ['brand' => 'Pagani', 'color' => 'white'],\n"
+"        ['brand' => 'Tesla',  'color' => 'black'],\n"
+"        ['brand' => 'Pagani', 'color' => 'orange'],\n"
+"    ]);\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1586
+#, no-wrap
+msgid "    $plucked = $collection->pluck('color', 'brand');\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1590
+#, no-wrap
+msgid "    // ['Tesla' => 'black', 'Pagani' => 'orange']\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1592
+#, no-wrap
+msgid "<a name=\"method-pop\"></a>\n"
+msgstr ""
+
+#. type: Title ####
+#: docs/8.x/collections.md:1592
+#, no-wrap
+msgid "`pop()` {#collection-method}"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1595
+msgid "The `pop` method removes and returns the last item from the collection:"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1599
+#, no-wrap
+msgid "    $collection->pop();\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1605 docs/8.x/collections.md:2394
+#: docs/8.x/collections.md:2529
+#, no-wrap
+msgid "    // [1, 2, 3, 4]\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1607
+#, no-wrap
+msgid "<a name=\"method-prepend\"></a>\n"
+msgstr ""
+
+#. type: Title ####
+#: docs/8.x/collections.md:1607
+#, no-wrap
+msgid "`prepend()` {#collection-method}"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1610
+msgid "The `prepend` method adds an item to the beginning of the collection:"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1614
+#, no-wrap
+msgid "    $collection->prepend(0);\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1618
+#, no-wrap
+msgid "    // [0, 1, 2, 3, 4, 5]\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1620
+msgid ""
+"You may also pass a second argument to specify the key of the prepended item:"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1622
+#, no-wrap
+msgid "    $collection = collect(['one' => 1, 'two' => 2]);\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1624
+#, no-wrap
+msgid "    $collection->prepend(0, 'zero');\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1628
+#, no-wrap
+msgid "    // ['zero' => 0, 'one' => 1, 'two' => 2]\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1630
+#, no-wrap
+msgid "<a name=\"method-pull\"></a>\n"
+msgstr ""
+
+#. type: Title ####
+#: docs/8.x/collections.md:1630
+#, no-wrap
+msgid "`pull()` {#collection-method}"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1633
+msgid ""
+"The `pull` method removes and returns an item from the collection by its key:"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1635
+#, no-wrap
+msgid "    $collection = collect(['product_id' => 'prod-100', 'name' => 'Desk']);\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1637
+#, no-wrap
+msgid "    $collection->pull('name');\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1639
+#, no-wrap
+msgid "    // 'Desk'\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1643
+#, no-wrap
+msgid "    // ['product_id' => 'prod-100']\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1645
+#, no-wrap
+msgid "<a name=\"method-push\"></a>\n"
+msgstr ""
+
+#. type: Title ####
+#: docs/8.x/collections.md:1645
+#, no-wrap
+msgid "`push()` {#collection-method}"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1648
+msgid "The `push` method appends an item to the end of the collection:"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1652
+#, no-wrap
+msgid "    $collection->push(5);\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1656 docs/8.x/collections.md:1957
+#, no-wrap
+msgid "    // [1, 2, 3, 4, 5]\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1658
+#, no-wrap
+msgid "<a name=\"method-put\"></a>\n"
+msgstr ""
+
+#. type: Title ####
+#: docs/8.x/collections.md:1658
+#, no-wrap
+msgid "`put()` {#collection-method}"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1661
+msgid "The `put` method sets the given key and value in the collection:"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1663
+#, no-wrap
+msgid "    $collection = collect(['product_id' => 1, 'name' => 'Desk']);\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1665
+#, no-wrap
+msgid "    $collection->put('price', 100);\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1669
+#, no-wrap
+msgid "    // ['product_id' => 1, 'name' => 'Desk', 'price' => 100]\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1671
+#, no-wrap
+msgid "<a name=\"method-random\"></a>\n"
+msgstr ""
+
+#. type: Title ####
+#: docs/8.x/collections.md:1671
+#, no-wrap
+msgid "`random()` {#collection-method}"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1674
+msgid "The `random` method returns a random item from the collection:"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1678
+#, no-wrap
+msgid "    $collection->random();\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1680
+#, no-wrap
+msgid "    // 4 - (retrieved randomly)\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1682
+msgid ""
+"You may pass an integer to `random` to specify how many items you would like "
+"to randomly retrieve. A collection of items is always returned when "
+"explicitly passing the number of items you wish to receive:"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1684
+#, no-wrap
+msgid "    $random = $collection->random(3);\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1686
+#, no-wrap
+msgid "    $random->all();\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1688
+#, no-wrap
+msgid "    // [2, 4, 5] - (retrieved randomly)\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1690
+msgid ""
+"If the collection instance has fewer items than requested, the `random` "
+"method will throw an `InvalidArgumentException`."
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1692
+#, no-wrap
+msgid "<a name=\"method-reduce\"></a>\n"
+msgstr ""
+
+#. type: Title ####
+#: docs/8.x/collections.md:1692
+#, no-wrap
+msgid "`reduce()` {#collection-method}"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1695
+msgid ""
+"The `reduce` method reduces the collection to a single value, passing the "
+"result of each iteration into the subsequent iteration:"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1701
+#, no-wrap
+msgid ""
+"    $total = $collection->reduce(function ($carry, $item) {\n"
+"        return $carry + $item;\n"
+"    });\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1705
+msgid ""
+"The value for `$carry` on the first iteration is `null`; however, you may "
+"specify its initial value by passing a second argument to `reduce`:"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1709
+#, no-wrap
+msgid ""
+"    $collection->reduce(function ($carry, $item) {\n"
+"        return $carry + $item;\n"
+"    }, 4);\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1713
+msgid ""
+"The `reduce` method also passes array keys in associative collections to the "
+"given callback:"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1719
+#, no-wrap
+msgid ""
+"    $collection = collect([\n"
+"        'usd' => 1400,\n"
+"        'gbp' => 1200,\n"
+"        'eur' => 1000,\n"
+"    ]);\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1725
+#, no-wrap
+msgid ""
+"    $ratio = [\n"
+"        'usd' => 1,\n"
+"        'gbp' => 1.37,\n"
+"        'eur' => 1.22,\n"
+"    ];\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1729
+#, no-wrap
+msgid ""
+"    $collection->reduceWithKeys(function ($carry, $value, $key) use ($ratio) {\n"
+"        return $carry + ($value * $ratio[$key]);\n"
+"    });\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1731
+#, no-wrap
+msgid "    // 4264\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1733
+#, no-wrap
+msgid "<a name=\"method-reject\"></a>\n"
+msgstr ""
+
+#. type: Title ####
+#: docs/8.x/collections.md:1733
+#, no-wrap
+msgid "`reject()` {#collection-method}"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1736
+msgid ""
+"The `reject` method filters the collection using the given closure. The "
+"closure should return `true` if the item should be removed from the "
+"resulting collection:"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1742
+#, no-wrap
+msgid ""
+"    $filtered = $collection->reject(function ($value, $key) {\n"
+"        return $value > 2;\n"
+"    });\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1748
+msgid ""
+"For the inverse of the `reject` method, see the [`filter`](#method-filter) "
+"method."
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1750
+#, no-wrap
+msgid "<a name=\"method-replace\"></a>\n"
+msgstr ""
+
+#. type: Title ####
+#: docs/8.x/collections.md:1750
+#, no-wrap
+msgid "`replace()` {#collection-method}"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1753
+msgid ""
+"The `replace` method behaves similarly to `merge`; however, in addition to "
+"overwriting matching items that have string keys, the `replace` method will "
+"also overwrite items in the collection that have matching numeric keys:"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1755
+#, no-wrap
+msgid "    $collection = collect(['Taylor', 'Abigail', 'James']);\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1757
+#, no-wrap
+msgid "    $replaced = $collection->replace([1 => 'Victoria', 3 => 'Finn']);\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1759 docs/8.x/collections.md:1783
+#, no-wrap
+msgid "    $replaced->all();\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1761
+#, no-wrap
+msgid "    // ['Taylor', 'Victoria', 'James', 'Finn']\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1763
+#, no-wrap
+msgid "<a name=\"method-replacerecursive\"></a>\n"
+msgstr ""
+
+#. type: Title ####
+#: docs/8.x/collections.md:1763
+#, no-wrap
+msgid "`replaceRecursive()` {#collection-method}"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1766
+msgid ""
+"This method works like `replace`, but it will recur into arrays and apply "
+"the same replacement process to the inner values:"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1776
+#, no-wrap
+msgid ""
+"    $collection = collect([\n"
+"        'Taylor',\n"
+"        'Abigail',\n"
+"        [\n"
+"            'James',\n"
+"            'Victoria',\n"
+"            'Finn'\n"
+"        ]\n"
+"    ]);\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1781
+#, no-wrap
+msgid ""
+"    $replaced = $collection->replaceRecursive([\n"
+"        'Charlie',\n"
+"        2 => [1 => 'King']\n"
+"    ]);\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1785
+#, no-wrap
+msgid "    // ['Charlie', 'Abigail', ['James', 'King', 'Finn']]\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1787
+#, no-wrap
+msgid "<a name=\"method-reverse\"></a>\n"
+msgstr ""
+
+#. type: Title ####
+#: docs/8.x/collections.md:1787
+#, no-wrap
+msgid "`reverse()` {#collection-method}"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1790
+msgid ""
+"The `reverse` method reverses the order of the collection's items, "
+"preserving the original keys:"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1792
+#, no-wrap
+msgid "    $collection = collect(['a', 'b', 'c', 'd', 'e']);\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1794
+#, no-wrap
+msgid "    $reversed = $collection->reverse();\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1796
+#, no-wrap
+msgid "    $reversed->all();\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1806
+#, no-wrap
+msgid ""
+"    /*\n"
+"        [\n"
+"            4 => 'e',\n"
+"            3 => 'd',\n"
+"            2 => 'c',\n"
+"            1 => 'b',\n"
+"            0 => 'a',\n"
+"        ]\n"
+"    */\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1808
+#, no-wrap
+msgid "<a name=\"method-search\"></a>\n"
+msgstr ""
+
+#. type: Title ####
+#: docs/8.x/collections.md:1808
+#, no-wrap
+msgid "`search()` {#collection-method}"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1811
+msgid ""
+"The `search` method searches the collection for the given value and returns "
+"its key if found. If the item is not found, `false` is returned:"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1813
+#, no-wrap
+msgid "    $collection = collect([2, 4, 6, 8]);\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1815
+#, no-wrap
+msgid "    $collection->search(4);\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1819
+msgid ""
+"The search is done using a \"loose\" comparison, meaning a string with an "
+"integer value will be considered equal to an integer of the same value. To "
+"use \"strict\" comparison, pass `true` as the second argument to the method:"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1821
+#, no-wrap
+msgid "    collect([2, 4, 6, 8])->search('4', $strict = true);\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1825
+msgid ""
+"Alternatively, you may provide your own closure to search for the first item "
+"that passes a given truth test:"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1829
+#, no-wrap
+msgid ""
+"    collect([2, 4, 6, 8])->search(function ($item, $key) {\n"
+"        return $item > 5;\n"
+"    });\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1833
+#, no-wrap
+msgid "<a name=\"method-shift\"></a>\n"
+msgstr ""
+
+#. type: Title ####
+#: docs/8.x/collections.md:1833
+#, no-wrap
+msgid "`shift()` {#collection-method}"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1836
+msgid ""
+"The `shift` method removes and returns the first item from the collection:"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1840
+#, no-wrap
+msgid "    $collection->shift();\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1846
+#, no-wrap
+msgid "    // [2, 3, 4, 5]\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1848
+#, no-wrap
+msgid "<a name=\"method-shuffle\"></a>\n"
+msgstr ""
+
+#. type: Title ####
+#: docs/8.x/collections.md:1848
+#, no-wrap
+msgid "`shuffle()` {#collection-method}"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1851
+msgid "The `shuffle` method randomly shuffles the items in the collection:"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1855
+#, no-wrap
+msgid "    $shuffled = $collection->shuffle();\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1857
+#, no-wrap
+msgid "    $shuffled->all();\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1859
+#, no-wrap
+msgid "    // [3, 2, 5, 1, 4] - (generated randomly)\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1861
+#, no-wrap
+msgid "<a name=\"method-skip\"></a>\n"
+msgstr ""
+
+#. type: Title ####
+#: docs/8.x/collections.md:1861
+#, no-wrap
+msgid "`skip()` {#collection-method}"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1864
+msgid ""
+"The `skip` method returns a new collection, with the given number of "
+"elements removed from the beginning of the collection:"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1866 docs/8.x/collections.md:1923
+#: docs/8.x/collections.md:2189
+#, no-wrap
+msgid "    $collection = collect([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1868
+#, no-wrap
+msgid "    $collection = $collection->skip(4);\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1872 docs/8.x/collections.md:1929
+#, no-wrap
+msgid "    // [5, 6, 7, 8, 9, 10]\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1874
+#, no-wrap
+msgid "<a name=\"method-skipuntil\"></a>\n"
+msgstr ""
+
+#. type: Title ####
+#: docs/8.x/collections.md:1874
+#, no-wrap
+msgid "`skipUntil()` {#collection-method}"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1877
+msgid ""
+"The `skipUntil` method skips over items from the collection until the given "
+"callback returns `true` and then returns the remaining items in the "
+"collection as a new collection instance:"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1883
+#, no-wrap
+msgid ""
+"    $subset = $collection->skipUntil(function ($item) {\n"
+"        return $item >= 3;\n"
+"    });\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1885 docs/8.x/collections.md:1895
+#: docs/8.x/collections.md:1912 docs/8.x/collections.md:2265
+#: docs/8.x/collections.md:2275 docs/8.x/collections.md:2292
+#, no-wrap
+msgid "    $subset->all();\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1889
+msgid ""
+"You may also pass a simple value to the `skipUntil` method to skip all items "
+"until the given value is found:"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1893
+#, no-wrap
+msgid "    $subset = $collection->skipUntil(3);\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1899
+#, no-wrap
+msgid "> {note} If the given value is not found or the callback never returns `true`, the `skipUntil` method will return an empty collection.\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1901
+#, no-wrap
+msgid "<a name=\"method-skipwhile\"></a>\n"
+msgstr ""
+
+#. type: Title ####
+#: docs/8.x/collections.md:1901
+#, no-wrap
+msgid "`skipWhile()` {#collection-method}"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1904
+msgid ""
+"The `skipWhile` method skips over items from the collection while the given "
+"callback returns `true` and then returns the remaining items in the "
+"collection as a new collection:"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1910
+#, no-wrap
+msgid ""
+"    $subset = $collection->skipWhile(function ($item) {\n"
+"        return $item <= 3;\n"
+"    });\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1914
+#, no-wrap
+msgid "    // [4]\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1916
+#, no-wrap
+msgid "> {note} If the callback never returns `true`, the `skipWhile` method will return an empty collection.\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1918
+#, no-wrap
+msgid "<a name=\"method-slice\"></a>\n"
+msgstr ""
+
+#. type: Title ####
+#: docs/8.x/collections.md:1918
+#, no-wrap
+msgid "`slice()` {#collection-method}"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1921
+msgid ""
+"The `slice` method returns a slice of the collection starting at the given "
+"index:"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1925
+#, no-wrap
+msgid "    $slice = $collection->slice(4);\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1927 docs/8.x/collections.md:1935
+#, no-wrap
+msgid "    $slice->all();\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1931
+msgid ""
+"If you would like to limit the size of the returned slice, pass the desired "
+"size as the second argument to the method:"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1933
+#, no-wrap
+msgid "    $slice = $collection->slice(4, 2);\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1937
+#, no-wrap
+msgid "    // [5, 6]\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1939
+msgid ""
+"The returned slice will preserve keys by default. If you do not wish to "
+"preserve the original keys, you can use the [`values`](#method-values) "
+"method to reindex them."
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1941
+#, no-wrap
+msgid "<a name=\"method-some\"></a>\n"
+msgstr ""
+
+#. type: Title ####
+#: docs/8.x/collections.md:1941
+#, no-wrap
+msgid "`some()` {#collection-method}"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1944
+msgid "Alias for the [`contains`](#method-contains) method."
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1946
+#, no-wrap
+msgid "<a name=\"method-sort\"></a>\n"
+msgstr ""
+
+#. type: Title ####
+#: docs/8.x/collections.md:1946
+#, no-wrap
+msgid "`sort()` {#collection-method}"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1949
+msgid ""
+"The `sort` method sorts the collection. The sorted collection keeps the "
+"original array keys, so in the following example we will use the [`values`]"
+"(#method-values) method to reset the keys to consecutively numbered indexes:"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1951 docs/8.x/collections.md:2088
+#, no-wrap
+msgid "    $collection = collect([5, 3, 1, 2, 4]);\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1953
+#, no-wrap
+msgid "    $sorted = $collection->sort();\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1955 docs/8.x/collections.md:1976
+#: docs/8.x/collections.md:1996 docs/8.x/collections.md:2018
+#: docs/8.x/collections.md:2042 docs/8.x/collections.md:2067
+#: docs/8.x/collections.md:2092
+#, no-wrap
+msgid "    $sorted->values()->all();\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1959
+msgid ""
+"If your sorting needs are more advanced, you may pass a callback to `sort` "
+"with your own algorithm. Refer to the PHP documentation on [`uasort`]"
+"(https://secure.php.net/manual/en/function.uasort.php#refsect1-function."
+"uasort-parameters), which is what the collection's `sort` method calls "
+"utilizes internally."
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1961
+#, no-wrap
+msgid "> {tip} If you need to sort a collection of nested arrays or objects, see the [`sortBy`](#method-sortby) and [`sortByDesc`](#method-sortbydesc) methods.\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1963
+#, no-wrap
+msgid "<a name=\"method-sortby\"></a>\n"
+msgstr ""
+
+#. type: Title ####
+#: docs/8.x/collections.md:1963
+#, no-wrap
+msgid "`sortBy()` {#collection-method}"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1966
+msgid ""
+"The `sortBy` method sorts the collection by the given key. The sorted "
+"collection keeps the original array keys, so in the following example we "
+"will use the [`values`](#method-values) method to reset the keys to "
+"consecutively numbered indexes:"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1972
+#, no-wrap
+msgid ""
+"    $collection = collect([\n"
+"        ['name' => 'Desk', 'price' => 200],\n"
+"        ['name' => 'Chair', 'price' => 100],\n"
+"        ['name' => 'Bookcase', 'price' => 150],\n"
+"    ]);\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1974
+#, no-wrap
+msgid "    $sorted = $collection->sortBy('price');\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1984
+#, no-wrap
+msgid ""
+"    /*\n"
+"        [\n"
+"            ['name' => 'Chair', 'price' => 100],\n"
+"            ['name' => 'Bookcase', 'price' => 150],\n"
+"            ['name' => 'Desk', 'price' => 200],\n"
+"        ]\n"
+"    */\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1986
+msgid ""
+"The `sort` method accepts [sort flags](https://www.php.net/manual/en/"
+"function.sort.php) as its second argument:"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1992
+#, no-wrap
+msgid ""
+"    $collection = collect([\n"
+"        ['title' => 'Item 1'],\n"
+"        ['title' => 'Item 12'],\n"
+"        ['title' => 'Item 3'],\n"
+"    ]);\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:1994
+#, no-wrap
+msgid "    $sorted = $collection->sortBy('title', SORT_NATURAL);\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2004
+#, no-wrap
+msgid ""
+"    /*\n"
+"        [\n"
+"            ['title' => 'Item 1'],\n"
+"            ['title' => 'Item 3'],\n"
+"            ['title' => 'Item 12'],\n"
+"        ]\n"
+"    */\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2006
+msgid ""
+"Alternatively, you may pass your own closure to determine how to sort the "
+"collection's values:"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2012
+#, no-wrap
+msgid ""
+"    $collection = collect([\n"
+"        ['name' => 'Desk', 'colors' => ['Black', 'Mahogany']],\n"
+"        ['name' => 'Chair', 'colors' => ['Black']],\n"
+"        ['name' => 'Bookcase', 'colors' => ['Red', 'Beige', 'Brown']],\n"
+"    ]);\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2016
+#, no-wrap
+msgid ""
+"    $sorted = $collection->sortBy(function ($product, $key) {\n"
+"        return count($product['colors']);\n"
+"    });\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2026
+#, no-wrap
+msgid ""
+"    /*\n"
+"        [\n"
+"            ['name' => 'Chair', 'colors' => ['Black']],\n"
+"            ['name' => 'Desk', 'colors' => ['Black', 'Mahogany']],\n"
+"            ['name' => 'Bookcase', 'colors' => ['Red', 'Beige', 'Brown']],\n"
+"        ]\n"
+"    */\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2028
+msgid ""
+"If you would like to sort your collection by multiple attributes, you may "
+"pass an array of sort operations to the `sortBy` method. Each sort operation "
+"should be an array consisting of the attribute that you wish to sort by and "
+"the direction of the desired sort:"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2035 docs/8.x/collections.md:2060
+#, no-wrap
+msgid ""
+"    $collection = collect([\n"
+"        ['name' => 'Taylor Otwell', 'age' => 34],\n"
+"        ['name' => 'Abigail Otwell', 'age' => 30],\n"
+"        ['name' => 'Taylor Otwell', 'age' => 36],\n"
+"        ['name' => 'Abigail Otwell', 'age' => 32],\n"
+"    ]);\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2040
+#, no-wrap
+msgid ""
+"    $sorted = $collection->sortBy([\n"
+"        ['name', 'asc'],\n"
+"        ['age', 'desc'],\n"
+"    ]);\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2051 docs/8.x/collections.md:2076
+#, no-wrap
+msgid ""
+"    /*\n"
+"        [\n"
+"            ['name' => 'Abigail Otwell', 'age' => 32],\n"
+"            ['name' => 'Abigail Otwell', 'age' => 30],\n"
+"            ['name' => 'Taylor Otwell', 'age' => 36],\n"
+"            ['name' => 'Taylor Otwell', 'age' => 34],\n"
+"        ]\n"
+"    */\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2053
+msgid ""
+"When sorting a collection by multiple attributes, you may also provide "
+"closures that define each sort operation:"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2065
+#, no-wrap
+msgid ""
+"    $sorted = $collection->sortBy([\n"
+"        fn ($a, $b) => $a['name'] <=> $b['name'],\n"
+"        fn ($a, $b) => $b['age'] <=> $a['age'],\n"
+"    ]);\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2078
+#, no-wrap
+msgid "<a name=\"method-sortbydesc\"></a>\n"
+msgstr ""
+
+#. type: Title ####
+#: docs/8.x/collections.md:2078
+#, no-wrap
+msgid "`sortByDesc()` {#collection-method}"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2081
+msgid ""
+"This method has the same signature as the [`sortBy`](#method-sortby) method, "
+"but will sort the collection in the opposite order."
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2083
+#, no-wrap
+msgid "<a name=\"method-sortdesc\"></a>\n"
+msgstr ""
+
+#. type: Title ####
+#: docs/8.x/collections.md:2083
+#, no-wrap
+msgid "`sortDesc()` {#collection-method}"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2086
+msgid ""
+"This method will sort the collection in the opposite order as the [`sort`]"
+"(#method-sort) method:"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2090
+#, no-wrap
+msgid "    $sorted = $collection->sortDesc();\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2094
+#, no-wrap
+msgid "    // [5, 4, 3, 2, 1]\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2096
+msgid ""
+"Unlike `sort`, you may not pass a closure to `sortDesc`. Instead, you should "
+"use the [`sort`](#method-sort) method and invert your comparison."
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2098
+#, no-wrap
+msgid "<a name=\"method-sortkeys\"></a>\n"
+msgstr ""
+
+#. type: Title ####
+#: docs/8.x/collections.md:2098
+#, no-wrap
+msgid "`sortKeys()` {#collection-method}"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2101
+msgid ""
+"The `sortKeys` method sorts the collection by the keys of the underlying "
+"associative array:"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2107
+#, no-wrap
+msgid ""
+"    $collection = collect([\n"
+"        'id' => 22345,\n"
+"        'first' => 'John',\n"
+"        'last' => 'Doe',\n"
+"    ]);\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2109
+#, no-wrap
+msgid "    $sorted = $collection->sortKeys();\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2111
+#, no-wrap
+msgid "    $sorted->all();\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2119
+#, no-wrap
+msgid ""
+"    /*\n"
+"        [\n"
+"            'first' => 'John',\n"
+"            'id' => 22345,\n"
+"            'last' => 'Doe',\n"
+"        ]\n"
+"    */\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2121
+#, no-wrap
+msgid "<a name=\"method-sortkeysdesc\"></a>\n"
+msgstr ""
+
+#. type: Title ####
+#: docs/8.x/collections.md:2121
+#, no-wrap
+msgid "`sortKeysDesc()` {#collection-method}"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2124
+msgid ""
+"This method has the same signature as the [`sortKeys`](#method-sortkeys) "
+"method, but will sort the collection in the opposite order."
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2126
+#, no-wrap
+msgid "<a name=\"method-splice\"></a>\n"
+msgstr ""
+
+#. type: Title ####
+#: docs/8.x/collections.md:2126
+#, no-wrap
+msgid "`splice()` {#collection-method}"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2129
+msgid ""
+"The `splice` method removes and returns a slice of items starting at the "
+"specified index:"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2133
+#, no-wrap
+msgid "    $chunk = $collection->splice(2);\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2137
+#, no-wrap
+msgid "    // [3, 4, 5]\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2143
+msgid ""
+"You may pass a second argument to limit the size of the resulting collection:"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2147
+#, no-wrap
+msgid "    $chunk = $collection->splice(2, 1);\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2151 docs/8.x/collections.md:2165
+#, no-wrap
+msgid "    // [3]\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2155
+#, no-wrap
+msgid "    // [1, 2, 4, 5]\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2157
+msgid ""
+"In addition, you may pass a third argument containing the new items to "
+"replace the items removed from the collection:"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2161
+#, no-wrap
+msgid "    $chunk = $collection->splice(2, 1, [10, 11]);\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2169
+#, no-wrap
+msgid "    // [1, 2, 10, 11, 4, 5]\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2171
+#, no-wrap
+msgid "<a name=\"method-split\"></a>\n"
+msgstr ""
+
+#. type: Title ####
+#: docs/8.x/collections.md:2171
+#, no-wrap
+msgid "`split()` {#collection-method}"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2174
+msgid "The `split` method breaks a collection into the given number of groups:"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2178
+#, no-wrap
+msgid "    $groups = $collection->split(3);\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2180 docs/8.x/collections.md:2193
+#, no-wrap
+msgid "    $groups->all();\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2182
+#, no-wrap
+msgid "    // [[1, 2], [3, 4], [5]]\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2184
+#, no-wrap
+msgid "<a name=\"method-splitin\"></a>\n"
+msgstr ""
+
+#. type: Title ####
+#: docs/8.x/collections.md:2184
+#, no-wrap
+msgid "`splitIn()` {#collection-method}"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2187
+msgid ""
+"The `splitIn` method breaks a collection into the given number of groups, "
+"filling non-terminal groups completely before allocating the remainder to "
+"the final group:"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2191
+#, no-wrap
+msgid "    $groups = $collection->splitIn(3);\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2195
+#, no-wrap
+msgid "    // [[1, 2, 3, 4], [5, 6, 7, 8], [9, 10]]\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2197
+#, no-wrap
+msgid "<a name=\"method-sum\"></a>\n"
+msgstr ""
+
+#. type: Title ####
+#: docs/8.x/collections.md:2197
+#, no-wrap
+msgid "`sum()` {#collection-method}"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2200
+msgid "The `sum` method returns the sum of all items in the collection:"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2202
+#, no-wrap
+msgid "    collect([1, 2, 3, 4, 5])->sum();\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2206
+msgid ""
+"If the collection contains nested arrays or objects, you should pass a key "
+"that will be used to determine which values to sum:"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2211
+#, no-wrap
+msgid ""
+"    $collection = collect([\n"
+"        ['name' => 'JavaScript: The Good Parts', 'pages' => 176],\n"
+"        ['name' => 'JavaScript: The Definitive Guide', 'pages' => 1096],\n"
+"    ]);\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2213
+#, no-wrap
+msgid "    $collection->sum('pages');\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2215
+#, no-wrap
+msgid "    // 1272\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2217
+msgid ""
+"In addition, you may pass your own closure to determine which values of the "
+"collection to sum:"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2223
+#, no-wrap
+msgid ""
+"    $collection = collect([\n"
+"        ['name' => 'Chair', 'colors' => ['Black']],\n"
+"        ['name' => 'Desk', 'colors' => ['Black', 'Mahogany']],\n"
+"        ['name' => 'Bookcase', 'colors' => ['Red', 'Beige', 'Brown']],\n"
+"    ]);\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2227
+#, no-wrap
+msgid ""
+"    $collection->sum(function ($product) {\n"
+"        return count($product['colors']);\n"
+"    });\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2231
+#, no-wrap
+msgid "<a name=\"method-take\"></a>\n"
+msgstr ""
+
+#. type: Title ####
+#: docs/8.x/collections.md:2231
+#, no-wrap
+msgid "`take()` {#collection-method}"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2234
+msgid ""
+"The `take` method returns a new collection with the specified number of "
+"items:"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2236 docs/8.x/collections.md:2246
+#, no-wrap
+msgid "    $collection = collect([0, 1, 2, 3, 4, 5]);\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2238
+#, no-wrap
+msgid "    $chunk = $collection->take(3);\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2242
+#, no-wrap
+msgid "    // [0, 1, 2]\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2244
+msgid ""
+"You may also pass a negative integer to take the specified number of items "
+"from the end of the collection:"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2248
+#, no-wrap
+msgid "    $chunk = $collection->take(-2);\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2252
+#, no-wrap
+msgid "    // [4, 5]\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2254
+#, no-wrap
+msgid "<a name=\"method-takeuntil\"></a>\n"
+msgstr ""
+
+#. type: Title ####
+#: docs/8.x/collections.md:2254
+#, no-wrap
+msgid "`takeUntil()` {#collection-method}"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2257
+msgid ""
+"The `takeUntil` method returns items in the collection until the given "
+"callback returns `true`:"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2263
+#, no-wrap
+msgid ""
+"    $subset = $collection->takeUntil(function ($item) {\n"
+"        return $item >= 3;\n"
+"    });\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2269
+msgid ""
+"You may also pass a simple value to the `takeUntil` method to get the items "
+"until the given value is found:"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2273
+#, no-wrap
+msgid "    $subset = $collection->takeUntil(3);\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2279
+#, no-wrap
+msgid "> {note} If the given value is not found or the callback never returns `true`, the `takeUntil` method will return all items in the collection.\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2281
+#, no-wrap
+msgid "<a name=\"method-takewhile\"></a>\n"
+msgstr ""
+
+#. type: Title ####
+#: docs/8.x/collections.md:2281
+#, no-wrap
+msgid "`takeWhile()` {#collection-method}"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2284
+msgid ""
+"The `takeWhile` method returns items in the collection until the given "
+"callback returns `false`:"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2290
+#, no-wrap
+msgid ""
+"    $subset = $collection->takeWhile(function ($item) {\n"
+"        return $item < 3;\n"
+"    });\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2296
+#, no-wrap
+msgid "> {note} If the callback never returns `false`, the `takeWhile` method will return all items in the collection.\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2298
+#, no-wrap
+msgid "<a name=\"method-tap\"></a>\n"
+msgstr ""
+
+#. type: Title ####
+#: docs/8.x/collections.md:2298
+#, no-wrap
+msgid "`tap()` {#collection-method}"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2301
+msgid ""
+"The `tap` method passes the collection to the given callback, allowing you "
+"to \"tap\" into the collection at a specific point and do something with the "
+"items while not affecting the collection itself. The collection is then "
+"returned by the `tap` method:"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2308
+#, no-wrap
+msgid ""
+"    collect([2, 4, 3, 1, 5])\n"
+"        ->sort()\n"
+"        ->tap(function ($collection) {\n"
+"            Log::debug('Values after sorting', $collection->values()->all());\n"
+"        })\n"
+"        ->shift();\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2312
+#, no-wrap
+msgid "<a name=\"method-times\"></a>\n"
+msgstr ""
+
+#. type: Title ####
+#: docs/8.x/collections.md:2312
+#, no-wrap
+msgid "`times()` {#collection-method}"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2315
+msgid ""
+"The static `times` method creates a new collection by invoking the given "
+"closure a specified number of times:"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2319
+#, no-wrap
+msgid ""
+"    $collection = Collection::times(10, function ($number) {\n"
+"        return $number * 9;\n"
+"    });\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2323
+#, no-wrap
+msgid "    // [9, 18, 27, 36, 45, 54, 63, 72, 81, 90]\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2325
+#, no-wrap
+msgid "<a name=\"method-toarray\"></a>\n"
+msgstr ""
+
+#. type: Title ####
+#: docs/8.x/collections.md:2325
+#, no-wrap
+msgid "`toArray()` {#collection-method}"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2328
+msgid ""
+"The `toArray` method converts the collection into a plain PHP `array`. If "
+"the collection's values are [Eloquent](/docs/{{version}}/eloquent) models, "
+"the models will also be converted to arrays:"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2330 docs/8.x/collections.md:2347
+#, no-wrap
+msgid "    $collection = collect(['name' => 'Desk', 'price' => 200]);\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2332
+#, no-wrap
+msgid "    $collection->toArray();\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2338
+#, no-wrap
+msgid ""
+"    /*\n"
+"        [\n"
+"            ['name' => 'Desk', 'price' => 200],\n"
+"        ]\n"
+"    */\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2340
+#, no-wrap
+msgid "> {note} `toArray` also converts all of the collection's nested objects that are an instance of `Arrayable` to an array. If you want to get the raw array underlying the collection, use the [`all`](#method-all) method instead.\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2342
+#, no-wrap
+msgid "<a name=\"method-tojson\"></a>\n"
+msgstr ""
+
+#. type: Title ####
+#: docs/8.x/collections.md:2342
+#, no-wrap
+msgid "`toJson()` {#collection-method}"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2345
+msgid ""
+"The `toJson` method converts the collection into a JSON serialized string:"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2349
+#, no-wrap
+msgid "    $collection->toJson();\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2351
+#, no-wrap
+msgid "    // '{\"name\":\"Desk\", \"price\":200}'\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2353
+#, no-wrap
+msgid "<a name=\"method-transform\"></a>\n"
+msgstr ""
+
+#. type: Title ####
+#: docs/8.x/collections.md:2353
+#, no-wrap
+msgid "`transform()` {#collection-method}"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2356
+msgid ""
+"The `transform` method iterates over the collection and calls the given "
+"callback with each item in the collection. The items in the collection will "
+"be replaced by the values returned by the callback:"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2362
+#, no-wrap
+msgid ""
+"    $collection->transform(function ($item, $key) {\n"
+"        return $item * 2;\n"
+"    });\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2368
+#, no-wrap
+msgid "> {note} Unlike most other collection methods, `transform` modifies the collection itself. If you wish to create a new collection instead, use the [`map`](#method-map) method.\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2370
+#, no-wrap
+msgid "<a name=\"method-union\"></a>\n"
+msgstr ""
+
+#. type: Title ####
+#: docs/8.x/collections.md:2370
+#, no-wrap
+msgid "`union()` {#collection-method}"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2373
+msgid ""
+"The `union` method adds the given array to the collection. If the given "
+"array contains keys that are already in the original collection, the "
+"original collection's values will be preferred:"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2375
+#, no-wrap
+msgid "    $collection = collect([1 => ['a'], 2 => ['b']]);\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2377
+#, no-wrap
+msgid "    $union = $collection->union([3 => ['c'], 1 => ['b']]);\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2379
+#, no-wrap
+msgid "    $union->all();\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2381
+#, no-wrap
+msgid "    // [1 => ['a'], 2 => ['b'], 3 => ['c']]\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2383
+#, no-wrap
+msgid "<a name=\"method-unique\"></a>\n"
+msgstr ""
+
+#. type: Title ####
+#: docs/8.x/collections.md:2383
+#, no-wrap
+msgid "`unique()` {#collection-method}"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2386
+msgid ""
+"The `unique` method returns all of the unique items in the collection. The "
+"returned collection keeps the original array keys, so in the following "
+"example we will use the [`values`](#method-values) method to reset the keys "
+"to consecutively numbered indexes:"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2388
+#, no-wrap
+msgid "    $collection = collect([1, 1, 2, 2, 3, 4, 2]);\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2390
+#, no-wrap
+msgid "    $unique = $collection->unique();\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2392 docs/8.x/collections.md:2408
+#: docs/8.x/collections.md:2423
+#, no-wrap
+msgid "    $unique->values()->all();\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2396
+msgid ""
+"When dealing with nested arrays or objects, you may specify the key used to "
+"determine uniqueness:"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2404
+#, no-wrap
+msgid ""
+"    $collection = collect([\n"
+"        ['name' => 'iPhone 6', 'brand' => 'Apple', 'type' => 'phone'],\n"
+"        ['name' => 'iPhone 5', 'brand' => 'Apple', 'type' => 'phone'],\n"
+"        ['name' => 'Apple Watch', 'brand' => 'Apple', 'type' => 'watch'],\n"
+"        ['name' => 'Galaxy S6', 'brand' => 'Samsung', 'type' => 'phone'],\n"
+"        ['name' => 'Galaxy Gear', 'brand' => 'Samsung', 'type' => 'watch'],\n"
+"    ]);\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2406
+#, no-wrap
+msgid "    $unique = $collection->unique('brand');\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2415
+#, no-wrap
+msgid ""
+"    /*\n"
+"        [\n"
+"            ['name' => 'iPhone 6', 'brand' => 'Apple', 'type' => 'phone'],\n"
+"            ['name' => 'Galaxy S6', 'brand' => 'Samsung', 'type' => 'phone'],\n"
+"        ]\n"
+"    */\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2417
+msgid ""
+"Finally, you may also pass your own closure to the `unique` method to "
+"specify which value should determine an item's uniqueness:"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2421
+#, no-wrap
+msgid ""
+"    $unique = $collection->unique(function ($item) {\n"
+"        return $item['brand'].$item['type'];\n"
+"    });\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2432
+#, no-wrap
+msgid ""
+"    /*\n"
+"        [\n"
+"            ['name' => 'iPhone 6', 'brand' => 'Apple', 'type' => 'phone'],\n"
+"            ['name' => 'Apple Watch', 'brand' => 'Apple', 'type' => 'watch'],\n"
+"            ['name' => 'Galaxy S6', 'brand' => 'Samsung', 'type' => 'phone'],\n"
+"            ['name' => 'Galaxy Gear', 'brand' => 'Samsung', 'type' => 'watch'],\n"
+"        ]\n"
+"    */\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2434
+msgid ""
+"The `unique` method uses \"loose\" comparisons when checking item values, "
+"meaning a string with an integer value will be considered equal to an "
+"integer of the same value. Use the [`uniqueStrict`](#method-uniquestrict) "
+"method to filter using \"strict\" comparisons."
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2436
+#, no-wrap
+msgid "> {tip} This method's behavior is modified when using [Eloquent Collections](/docs/{{version}}/eloquent-collections#method-unique).\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2438
+#, no-wrap
+msgid "<a name=\"method-uniquestrict\"></a>\n"
+msgstr ""
+
+#. type: Title ####
+#: docs/8.x/collections.md:2438
+#, no-wrap
+msgid "`uniqueStrict()` {#collection-method}"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2441
+msgid ""
+"This method has the same signature as the [`unique`](#method-unique) method; "
+"however, all values are compared using \"strict\" comparisons."
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2443
+#, no-wrap
+msgid "<a name=\"method-unless\"></a>\n"
+msgstr ""
+
+#. type: Title ####
+#: docs/8.x/collections.md:2443
+#, no-wrap
+msgid "`unless()` {#collection-method}"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2446
+msgid ""
+"The `unless` method will execute the given callback unless the first "
+"argument given to the method evaluates to `true`:"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2452
+#, no-wrap
+msgid ""
+"    $collection->unless(true, function ($collection) {\n"
+"        return $collection->push(4);\n"
+"    });\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2456
+#, no-wrap
+msgid ""
+"    $collection->unless(false, function ($collection) {\n"
+"        return $collection->push(5);\n"
+"    });\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2460
+#, no-wrap
+msgid "    // [1, 2, 3, 5]\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2462
+msgid "For the inverse of `unless`, see the [`when`](#method-when) method."
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2464
+#, no-wrap
+msgid "<a name=\"method-unlessempty\"></a>\n"
+msgstr ""
+
+#. type: Title ####
+#: docs/8.x/collections.md:2464
+#, no-wrap
+msgid "`unlessEmpty()` {#collection-method}"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2467
+msgid "Alias for the [`whenNotEmpty`](#method-whennotempty) method."
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2469
+#, no-wrap
+msgid "<a name=\"method-unlessnotempty\"></a>\n"
+msgstr ""
+
+#. type: Title ####
+#: docs/8.x/collections.md:2469
+#, no-wrap
+msgid "`unlessNotEmpty()` {#collection-method}"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2472
+msgid "Alias for the [`whenEmpty`](#method-whenempty) method."
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2474
+#, no-wrap
+msgid "<a name=\"method-unwrap\"></a>\n"
+msgstr ""
+
+#. type: Title ####
+#: docs/8.x/collections.md:2474
+#, no-wrap
+msgid "`unwrap()` {#collection-method}"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2477
+msgid ""
+"The static `unwrap` method returns the collection's underlying items from "
+"the given value when applicable:"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2479
+#, no-wrap
+msgid "    Collection::unwrap(collect('John Doe'));\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2481 docs/8.x/collections.md:2485
+#: docs/8.x/collections.md:2850 docs/8.x/collections.md:2856
+#: docs/8.x/collections.md:2862
+#, no-wrap
+msgid "    // ['John Doe']\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2483
+#, no-wrap
+msgid "    Collection::unwrap(['John Doe']);\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2487
+#, no-wrap
+msgid "    Collection::unwrap('John Doe');\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2489
+#, no-wrap
+msgid "    // 'John Doe'\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2491
+#, no-wrap
+msgid "<a name=\"method-values\"></a>\n"
+msgstr ""
+
+#. type: Title ####
+#: docs/8.x/collections.md:2491
+#, no-wrap
+msgid "`values()` {#collection-method}"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2494
+msgid ""
+"The `values` method returns a new collection with the keys reset to "
+"consecutive integers:"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2499
+#, no-wrap
+msgid ""
+"    $collection = collect([\n"
+"        10 => ['product' => 'Desk', 'price' => 200],\n"
+"        11 => ['product' => 'Desk', 'price' => 200],\n"
+"    ]);\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2501
+#, no-wrap
+msgid "    $values = $collection->values();\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2503
+#, no-wrap
+msgid "    $values->all();\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2510
+#, no-wrap
+msgid ""
+"    /*\n"
+"        [\n"
+"            0 => ['product' => 'Desk', 'price' => 200],\n"
+"            1 => ['product' => 'Desk', 'price' => 200],\n"
+"        ]\n"
+"    */\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2512
+#, no-wrap
+msgid "<a name=\"method-when\"></a>\n"
+msgstr ""
+
+#. type: Title ####
+#: docs/8.x/collections.md:2512
+#, no-wrap
+msgid "`when()` {#collection-method}"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2515
+msgid ""
+"The `when` method will execute the given callback when the first argument "
+"given to the method evaluates to `true`:"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2521
+#, no-wrap
+msgid ""
+"    $collection->when(true, function ($collection) {\n"
+"        return $collection->push(4);\n"
+"    });\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2525
+#, no-wrap
+msgid ""
+"    $collection->when(false, function ($collection) {\n"
+"        return $collection->push(5);\n"
+"    });\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2531
+msgid "For the inverse of `when`, see the [`unless`](#method-unless) method."
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2533
+#, no-wrap
+msgid "<a name=\"method-whenempty\"></a>\n"
+msgstr ""
+
+#. type: Title ####
+#: docs/8.x/collections.md:2533
+#, no-wrap
+msgid "`whenEmpty()` {#collection-method}"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2536
+msgid ""
+"The `whenEmpty` method will execute the given callback when the collection "
+"is empty:"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2538 docs/8.x/collections.md:2561
+#, no-wrap
+msgid "    $collection = collect(['Michael', 'Tom']);\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2542 docs/8.x/collections.md:2553
+#, no-wrap
+msgid ""
+"    $collection->whenEmpty(function ($collection) {\n"
+"        return $collection->push('Adam');\n"
+"    });\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2546
+#, no-wrap
+msgid "    // ['Michael', 'Tom']\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2549 docs/8.x/collections.md:2591
+#: docs/8.x/collections.md:2603
+#, no-wrap
+msgid "    $collection = collect();\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2557
+#, no-wrap
+msgid "    // ['Adam']\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2559
+msgid ""
+"A second closure may be passed to the `whenEmpty` method that will be "
+"executed when the collection is not empty:"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2567
+#, no-wrap
+msgid ""
+"    $collection->whenEmpty(function ($collection) {\n"
+"        return $collection->push('Adam');\n"
+"    }, function ($collection) {\n"
+"        return $collection->push('Taylor');\n"
+"    });\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2571
+#, no-wrap
+msgid "    // ['Michael', 'Tom', 'Taylor']\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2573
+msgid ""
+"For the inverse of `whenEmpty`, see the [`whenNotEmpty`](#method-"
+"whennotempty) method."
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2575
+#, no-wrap
+msgid "<a name=\"method-whennotempty\"></a>\n"
+msgstr ""
+
+#. type: Title ####
+#: docs/8.x/collections.md:2575
+#, no-wrap
+msgid "`whenNotEmpty()` {#collection-method}"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2578
+msgid ""
+"The `whenNotEmpty` method will execute the given callback when the "
+"collection is not empty:"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2580
+#, no-wrap
+msgid "    $collection = collect(['michael', 'tom']);\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2584 docs/8.x/collections.md:2595
+#, no-wrap
+msgid ""
+"    $collection->whenNotEmpty(function ($collection) {\n"
+"        return $collection->push('adam');\n"
+"    });\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2588
+#, no-wrap
+msgid "    // ['michael', 'tom', 'adam']\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2599
+#, no-wrap
+msgid "    // []\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2601
+msgid ""
+"A second closure may be passed to the `whenNotEmpty` method that will be "
+"executed when the collection is empty:"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2609
+#, no-wrap
+msgid ""
+"    $collection->whenNotEmpty(function ($collection) {\n"
+"        return $collection->push('adam');\n"
+"    }, function ($collection) {\n"
+"        return $collection->push('taylor');\n"
+"    });\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2613
+#, no-wrap
+msgid "    // ['taylor']\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2615
+msgid ""
+"For the inverse of `whenNotEmpty`, see the [`whenEmpty`](#method-whenempty) "
+"method."
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2617
+#, no-wrap
+msgid "<a name=\"method-where\"></a>\n"
+msgstr ""
+
+#. type: Title ####
+#: docs/8.x/collections.md:2617
+#, no-wrap
+msgid "`where()` {#collection-method}"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2620
+msgid "The `where` method filters the collection by a given key / value pair:"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2627 docs/8.x/collections.md:2701
+#: docs/8.x/collections.md:2775
+#, no-wrap
+msgid ""
+"    $collection = collect([\n"
+"        ['product' => 'Desk', 'price' => 200],\n"
+"        ['product' => 'Chair', 'price' => 100],\n"
+"        ['product' => 'Bookcase', 'price' => 150],\n"
+"        ['product' => 'Door', 'price' => 100],\n"
+"    ]);\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2629
+#, no-wrap
+msgid "    $filtered = $collection->where('price', 100);\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2638 docs/8.x/collections.md:2786
+#, no-wrap
+msgid ""
+"    /*\n"
+"        [\n"
+"            ['product' => 'Chair', 'price' => 100],\n"
+"            ['product' => 'Door', 'price' => 100],\n"
+"        ]\n"
+"    */\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2640
+msgid ""
+"The `where` method uses \"loose\" comparisons when checking item values, "
+"meaning a string with an integer value will be considered equal to an "
+"integer of the same value. Use the [`whereStrict`](#method-wherestrict) "
+"method to filter using \"strict\" comparisons."
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2642
+msgid "Optionally, you may pass a comparison operator as the second parameter."
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2648
+#, no-wrap
+msgid ""
+"    $collection = collect([\n"
+"        ['name' => 'Jim', 'deleted_at' => '2019-01-01 00:00:00'],\n"
+"        ['name' => 'Sally', 'deleted_at' => '2019-01-02 00:00:00'],\n"
+"        ['name' => 'Sue', 'deleted_at' => null],\n"
+"    ]);\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2650
+#, no-wrap
+msgid "    $filtered = $collection->where('deleted_at', '!=', null);\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2659
+#, no-wrap
+msgid ""
+"    /*\n"
+"        [\n"
+"            ['name' => 'Jim', 'deleted_at' => '2019-01-01 00:00:00'],\n"
+"            ['name' => 'Sally', 'deleted_at' => '2019-01-02 00:00:00'],\n"
+"        ]\n"
+"    */\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2661
+#, no-wrap
+msgid "<a name=\"method-wherestrict\"></a>\n"
+msgstr ""
+
+#. type: Title ####
+#: docs/8.x/collections.md:2661
+#, no-wrap
+msgid "`whereStrict()` {#collection-method}"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2664
+msgid ""
+"This method has the same signature as the [`where`](#method-where) method; "
+"however, all values are compared using \"strict\" comparisons."
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2666
+#, no-wrap
+msgid "<a name=\"method-wherebetween\"></a>\n"
+msgstr ""
+
+#. type: Title ####
+#: docs/8.x/collections.md:2666
+#, no-wrap
+msgid "`whereBetween()` {#collection-method}"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2669
+msgid ""
+"The `whereBetween` method filters the collection by determining if a "
+"specified item value is within a given range:"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2677 docs/8.x/collections.md:2752
+#, no-wrap
+msgid ""
+"    $collection = collect([\n"
+"        ['product' => 'Desk', 'price' => 200],\n"
+"        ['product' => 'Chair', 'price' => 80],\n"
+"        ['product' => 'Bookcase', 'price' => 150],\n"
+"        ['product' => 'Pencil', 'price' => 30],\n"
+"        ['product' => 'Door', 'price' => 100],\n"
+"    ]);\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2679
+#, no-wrap
+msgid "    $filtered = $collection->whereBetween('price', [100, 200]);\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2689
+#, no-wrap
+msgid ""
+"    /*\n"
+"        [\n"
+"            ['product' => 'Desk', 'price' => 200],\n"
+"            ['product' => 'Bookcase', 'price' => 150],\n"
+"            ['product' => 'Door', 'price' => 100],\n"
+"        ]\n"
+"    */\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2691
+#, no-wrap
+msgid "<a name=\"method-wherein\"></a>\n"
+msgstr ""
+
+#. type: Title ####
+#: docs/8.x/collections.md:2691
+#, no-wrap
+msgid "`whereIn()` {#collection-method}"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2694
+msgid ""
+"The `whereIn` method removes elements from the collection that do not have a "
+"specified item value that is contained within the given array:"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2703
+#, no-wrap
+msgid "    $filtered = $collection->whereIn('price', [150, 200]);\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2712
+#, no-wrap
+msgid ""
+"    /*\n"
+"        [\n"
+"            ['product' => 'Desk', 'price' => 200],\n"
+"            ['product' => 'Bookcase', 'price' => 150],\n"
+"        ]\n"
+"    */\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2714
+msgid ""
+"The `whereIn` method uses \"loose\" comparisons when checking item values, "
+"meaning a string with an integer value will be considered equal to an "
+"integer of the same value. Use the [`whereInStrict`](#method-whereinstrict) "
+"method to filter using \"strict\" comparisons."
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2716
+#, no-wrap
+msgid "<a name=\"method-whereinstrict\"></a>\n"
+msgstr ""
+
+#. type: Title ####
+#: docs/8.x/collections.md:2716
+#, no-wrap
+msgid "`whereInStrict()` {#collection-method}"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2719
+msgid ""
+"This method has the same signature as the [`whereIn`](#method-wherein) "
+"method; however, all values are compared using \"strict\" comparisons."
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2721
+#, no-wrap
+msgid "<a name=\"method-whereinstanceof\"></a>\n"
+msgstr ""
+
+#. type: Title ####
+#: docs/8.x/collections.md:2721
+#, no-wrap
+msgid "`whereInstanceOf()` {#collection-method}"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2724
+msgid ""
+"The `whereInstanceOf` method filters the collection by a given class type:"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2727
+#, no-wrap
+msgid ""
+"    use App\\Models\\User;\n"
+"    use App\\Models\\Post;\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2733
+#, no-wrap
+msgid ""
+"    $collection = collect([\n"
+"        new User,\n"
+"        new User,\n"
+"        new Post,\n"
+"    ]);\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2735
+#, no-wrap
+msgid "    $filtered = $collection->whereInstanceOf(User::class);\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2739
+#, no-wrap
+msgid "    // [App\\Models\\User, App\\Models\\User]\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2741
+#, no-wrap
+msgid "<a name=\"method-wherenotbetween\"></a>\n"
+msgstr ""
+
+#. type: Title ####
+#: docs/8.x/collections.md:2741
+#, no-wrap
+msgid "`whereNotBetween()` {#collection-method}"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2744
+msgid ""
+"The `whereNotBetween` method filters the collection by determining if a "
+"specified item value is outside of a given range:"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2754
+#, no-wrap
+msgid "    $filtered = $collection->whereNotBetween('price', [100, 200]);\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2763
+#, no-wrap
+msgid ""
+"    /*\n"
+"        [\n"
+"            ['product' => 'Chair', 'price' => 80],\n"
+"            ['product' => 'Pencil', 'price' => 30],\n"
+"        ]\n"
+"    */\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2765
+#, no-wrap
+msgid "<a name=\"method-wherenotin\"></a>\n"
+msgstr ""
+
+#. type: Title ####
+#: docs/8.x/collections.md:2765
+#, no-wrap
+msgid "`whereNotIn()` {#collection-method}"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2768
+msgid ""
+"The `whereNotIn` method removes elements from the collection that have a "
+"specified item value that is not contained within the given array:"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2777
+#, no-wrap
+msgid "    $filtered = $collection->whereNotIn('price', [150, 200]);\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2788
+msgid ""
+"The `whereNotIn` method uses \"loose\" comparisons when checking item "
+"values, meaning a string with an integer value will be considered equal to "
+"an integer of the same value. Use the [`whereNotInStrict`](#method-"
+"wherenotinstrict) method to filter using \"strict\" comparisons."
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2790
+#, no-wrap
+msgid "<a name=\"method-wherenotinstrict\"></a>\n"
+msgstr ""
+
+#. type: Title ####
+#: docs/8.x/collections.md:2790
+#, no-wrap
+msgid "`whereNotInStrict()` {#collection-method}"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2793
+msgid ""
+"This method has the same signature as the [`whereNotIn`](#method-wherenotin) "
+"method; however, all values are compared using \"strict\" comparisons."
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2795
+#, no-wrap
+msgid "<a name=\"method-wherenotnull\"></a>\n"
+msgstr ""
+
+#. type: Title ####
+#: docs/8.x/collections.md:2795
+#, no-wrap
+msgid "`whereNotNull()` {#collection-method}"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2798
+msgid ""
+"The `whereNotNull` method returns items from the collection where the given "
+"key is not `null`:"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2804 docs/8.x/collections.md:2826
+#, no-wrap
+msgid ""
+"    $collection = collect([\n"
+"        ['name' => 'Desk'],\n"
+"        ['name' => null],\n"
+"        ['name' => 'Bookcase'],\n"
+"    ]);\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2806
+#, no-wrap
+msgid "    $filtered = $collection->whereNotNull('name');\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2815
+#, no-wrap
+msgid ""
+"    /*\n"
+"        [\n"
+"            ['name' => 'Desk'],\n"
+"            ['name' => 'Bookcase'],\n"
+"        ]\n"
+"    */\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2817
+#, no-wrap
+msgid "<a name=\"method-wherenull\"></a>\n"
+msgstr ""
+
+#. type: Title ####
+#: docs/8.x/collections.md:2817
+#, no-wrap
+msgid "`whereNull()` {#collection-method}"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2820
+msgid ""
+"The `whereNull` method returns items from the collection where the given key "
+"is `null`:"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2828
+#, no-wrap
+msgid "    $filtered = $collection->whereNull('name');\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2836
+#, no-wrap
+msgid ""
+"    /*\n"
+"        [\n"
+"            ['name' => null],\n"
+"        ]\n"
+"    */\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2839
+#, no-wrap
+msgid "<a name=\"method-wrap\"></a>\n"
+msgstr ""
+
+#. type: Title ####
+#: docs/8.x/collections.md:2839
+#, no-wrap
+msgid "`wrap()` {#collection-method}"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2842
+msgid ""
+"The static `wrap` method wraps the given value in a collection when "
+"applicable:"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2844
+#, no-wrap
+msgid "    use Illuminate\\Support\\Collection;\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2846
+#, no-wrap
+msgid "    $collection = Collection::wrap('John Doe');\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2852
+#, no-wrap
+msgid "    $collection = Collection::wrap(['John Doe']);\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2858
+#, no-wrap
+msgid "    $collection = Collection::wrap(collect('John Doe'));\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2864
+#, no-wrap
+msgid "<a name=\"method-zip\"></a>\n"
+msgstr ""
+
+#. type: Title ####
+#: docs/8.x/collections.md:2864
+#, no-wrap
+msgid "`zip()` {#collection-method}"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2867
+msgid ""
+"The `zip` method merges together the values of the given array with the "
+"values of the original collection at their corresponding index:"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2869
+#, no-wrap
+msgid "    $collection = collect(['Chair', 'Desk']);\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2871
+#, no-wrap
+msgid "    $zipped = $collection->zip([100, 200]);\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2873
+#, no-wrap
+msgid "    $zipped->all();\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2875
+#, no-wrap
+msgid "    // [['Chair', 100], ['Desk', 200]]\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2877
+#, no-wrap
+msgid "<a name=\"higher-order-messages\"></a>\n"
+msgstr ""
+
+#. type: Title ##
+#: docs/8.x/collections.md:2877
+#, no-wrap
+msgid "Higher Order Messages"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2880
+msgid ""
+"Collections also provide support for \"higher order messages\", which are "
+"short-cuts for performing common actions on collections. The collection "
+"methods that provide higher order messages are: [`average`](#method-"
+"average), [`avg`](#method-avg), [`contains`](#method-contains), [`each`]"
+"(#method-each), [`every`](#method-every), [`filter`](#method-filter), "
+"[`first`](#method-first), [`flatMap`](#method-flatmap), [`groupBy`](#method-"
+"groupby), [`keyBy`](#method-keyby), [`map`](#method-map), [`max`](#method-"
+"max), [`min`](#method-min), [`partition`](#method-partition), [`reject`]"
+"(#method-reject), [`skipUntil`](#method-skipuntil), [`skipWhile`](#method-"
+"skipwhile), [`some`](#method-some), [`sortBy`](#method-sortby), "
+"[`sortByDesc`](#method-sortbydesc), [`sum`](#method-sum), [`takeUntil`]"
+"(#method-takeuntil), [`takeWhile`](#method-takewhile), and [`unique`]"
+"(#method-unique)."
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2882
+msgid ""
+"Each higher order message can be accessed as a dynamic property on a "
+"collection instance. For instance, let's use the `each` higher order message "
+"to call a method on each object within a collection:"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2884 docs/8.x/collections.md:2925
+#: docs/8.x/collections.md:2933
+#, no-wrap
+msgid "    use App\\Models\\User;\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2886
+#, no-wrap
+msgid "    $users = User::where('votes', '>', 500)->get();\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2888
+#, no-wrap
+msgid "    $users->each->markAsVip();\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2890
+msgid ""
+"Likewise, we can use the `sum` higher order message to gather the total "
+"number of \"votes\" for a collection of users:"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2892
+#, no-wrap
+msgid "    $users = User::where('group', 'Development')->get();\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2894
+#, no-wrap
+msgid "    return $users->sum->votes;\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2896
+#, no-wrap
+msgid "<a name=\"lazy-collections\"></a>\n"
+msgstr ""
+
+#. type: Title ##
+#: docs/8.x/collections.md:2896
+#, no-wrap
+msgid "Lazy Collections"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2899
+#, no-wrap
+msgid "<a name=\"lazy-collection-introduction\"></a>\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2902
+#, no-wrap
+msgid "> {note} Before learning more about Laravel's lazy collections, take some time to familiarize yourself with [PHP generators](https://www.php.net/manual/en/language.generators.overview.php).\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2904
+msgid ""
+"To supplement the already powerful `Collection` class, the `LazyCollection` "
+"class leverages PHP's [generators](https://www.php.net/manual/en/language."
+"generators.overview.php) to allow you to work with very large datasets while "
+"keeping memory usage low."
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2906
+msgid ""
+"For example, imagine your application needs to process a multi-gigabyte log "
+"file while taking advantage of Laravel's collection methods to parse the "
+"logs. Instead of reading the entire file into memory at once, lazy "
+"collections may be used to keep only a small part of the file in memory at a "
+"given time:"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2909
+#, no-wrap
+msgid ""
+"    use App\\Models\\LogEntry;\n"
+"    use Illuminate\\Support\\LazyCollection;\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2912 docs/8.x/collections.md:2951
+#, no-wrap
+msgid ""
+"    LazyCollection::make(function () {\n"
+"        $handle = fopen('log.txt', 'r');\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2921
+#, no-wrap
+msgid ""
+"        while (($line = fgets($handle)) !== false) {\n"
+"            yield $line;\n"
+"        }\n"
+"    })->chunk(4)->map(function ($lines) {\n"
+"        return LogEntry::fromLines($lines);\n"
+"    })->each(function (LogEntry $logEntry) {\n"
+"        // Process the log entry...\n"
+"    });\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2923
+msgid ""
+"Or, imagine you need to iterate through 10,000 Eloquent models. When using "
+"traditional Laravel collections, all 10,000 Eloquent models must be loaded "
+"into memory at the same time:"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2929
+#, no-wrap
+msgid ""
+"    $users = User::all()->filter(function ($user) {\n"
+"        return $user->id > 500;\n"
+"    });\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2931
+msgid ""
+"However, the query builder's `cursor` method returns a `LazyCollection` "
+"instance. This allows you to still only run a single query against the "
+"database but also only keep one Eloquent model loaded in memory at a time. "
+"In this example, the `filter` callback is not executed until we actually "
+"iterate over each user individually, allowing for a drastic reduction in "
+"memory usage:"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2937
+#, no-wrap
+msgid ""
+"    $users = User::cursor()->filter(function ($user) {\n"
+"        return $user->id > 500;\n"
+"    });\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2941
+#, no-wrap
+msgid ""
+"    foreach ($users as $user) {\n"
+"        echo $user->id;\n"
+"    }\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2943
+#, no-wrap
+msgid "<a name=\"creating-lazy-collections\"></a>\n"
+msgstr ""
+
+#. type: Title ###
+#: docs/8.x/collections.md:2943
+#, no-wrap
+msgid "Creating Lazy Collections"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2946
+msgid ""
+"To create a lazy collection instance, you should pass a PHP generator "
+"function to the collection's `make` method:"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2948
+#, no-wrap
+msgid "    use Illuminate\\Support\\LazyCollection;\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2956
+#, no-wrap
+msgid ""
+"        while (($line = fgets($handle)) !== false) {\n"
+"            yield $line;\n"
+"        }\n"
+"    });\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2958
+#, no-wrap
+msgid "<a name=\"the-enumerable-contract\"></a>\n"
+msgstr ""
+
+#. type: Title ###
+#: docs/8.x/collections.md:2958
+#, no-wrap
+msgid "The Enumerable Contract"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:2961
+msgid ""
+"Almost all methods available on the `Collection` class are also available on "
+"the `LazyCollection` class. Both of these classes implement the `Illuminate"
+"\\Support\\Enumerable` contract, which defines the following methods:"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:3072
+msgid ""
+"[all](#method-all)  [average](#method-average)  [avg](#method-avg)  [chunk]"
+"(#method-chunk)  [chunkWhile](#method-chunkwhile)  [collapse](#method-"
+"collapse)  [collect](#method-collect)  [combine](#method-combine)  [concat]"
+"(#method-concat)  [contains](#method-contains)  [containsStrict](#method-"
+"containsstrict)  [count](#method-count)  [countBy](#method-countBy)  "
+"[crossJoin](#method-crossjoin)  [dd](#method-dd)  [diff](#method-diff)  "
+"[diffAssoc](#method-diffassoc)  [diffKeys](#method-diffkeys)  [dump](#method-"
+"dump)  [duplicates](#method-duplicates)  [duplicatesStrict](#method-"
+"duplicatesstrict)  [each](#method-each)  [eachSpread](#method-eachspread)  "
+"[every](#method-every)  [except](#method-except)  [filter](#method-filter)  "
+"[first](#method-first)  [firstWhere](#method-first-where)  [flatMap](#method-"
+"flatmap)  [flatten](#method-flatten)  [flip](#method-flip)  [forPage]"
+"(#method-forpage)  [get](#method-get)  [groupBy](#method-groupby)  [has]"
+"(#method-has)  [implode](#method-implode)  [intersect](#method-intersect)  "
+"[intersectByKeys](#method-intersectbykeys)  [isEmpty](#method-isempty)  "
+"[isNotEmpty](#method-isnotempty)  [join](#method-join)  [keyBy](#method-"
+"keyby)  [keys](#method-keys)  [last](#method-last)  [macro](#method-macro)  "
+"[make](#method-make)  [map](#method-map)  [mapInto](#method-mapinto)  "
+"[mapSpread](#method-mapspread)  [mapToGroups](#method-maptogroups)  "
+"[mapWithKeys](#method-mapwithkeys)  [max](#method-max)  [median](#method-"
+"median)  [merge](#method-merge)  [mergeRecursive](#method-mergerecursive)  "
+"[min](#method-min)  [mode](#method-mode)  [nth](#method-nth)  [only](#method-"
+"only)  [pad](#method-pad)  [partition](#method-partition)  [pipe](#method-"
+"pipe)  [pluck](#method-pluck)  [random](#method-random)  [reduce](#method-"
+"reduce)  [reject](#method-reject)  [replace](#method-replace)  "
+"[replaceRecursive](#method-replacerecursive)  [reverse](#method-reverse)  "
+"[search](#method-search)  [shuffle](#method-shuffle)  [skip](#method-skip)  "
+"[slice](#method-slice)  [some](#method-some)  [sort](#method-sort)  [sortBy]"
+"(#method-sortby)  [sortByDesc](#method-sortbydesc)  [sortKeys](#method-"
+"sortkeys)  [sortKeysDesc](#method-sortkeysdesc)  [split](#method-split)  "
+"[sum](#method-sum)  [take](#method-take)  [tap](#method-tap)  [times]"
+"(#method-times)  [toArray](#method-toarray)  [toJson](#method-tojson)  "
+"[union](#method-union)  [unique](#method-unique)  [uniqueStrict](#method-"
+"uniquestrict)  [unless](#method-unless)  [unlessEmpty](#method-unlessempty)  "
+"[unlessNotEmpty](#method-unlessnotempty)  [unwrap](#method-unwrap)  [values]"
+"(#method-values)  [when](#method-when)  [whenEmpty](#method-whenempty)  "
+"[whenNotEmpty](#method-whennotempty)  [where](#method-where)  [whereStrict]"
+"(#method-wherestrict)  [whereBetween](#method-wherebetween)  [whereIn]"
+"(#method-wherein)  [whereInStrict](#method-whereinstrict)  [whereInstanceOf]"
+"(#method-whereinstanceof)  [whereNotBetween](#method-wherenotbetween)  "
+"[whereNotIn](#method-wherenotin)  [whereNotInStrict](#method-"
+"wherenotinstrict)  [wrap](#method-wrap)  [zip](#method-zip)"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:3076
+#, no-wrap
+msgid "> {note} Methods that mutate the collection (such as `shift`, `pop`, `prepend` etc.) are **not** available on the `LazyCollection` class.\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:3078
+#, no-wrap
+msgid "<a name=\"lazy-collection-methods\"></a>\n"
+msgstr ""
+
+#. type: Title ###
+#: docs/8.x/collections.md:3078
+#, no-wrap
+msgid "Lazy Collection Methods"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:3081
+msgid ""
+"In addition to the methods defined in the `Enumerable` contract, the "
+"`LazyCollection` class contains the following methods:"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:3083
+#, no-wrap
+msgid "<a name=\"method-takeUntilTimeout\"></a>\n"
+msgstr ""
+
+#. type: Title ####
+#: docs/8.x/collections.md:3083
+#, no-wrap
+msgid "`takeUntilTimeout()` {#collection-method}"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:3086
+msgid ""
+"The `takeUntilTimeout` method returns a new lazy collection that will "
+"enumerate values until the specified time. After that time, the collection "
+"will then stop enumerating:"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:3089
+#, no-wrap
+msgid ""
+"    $lazyCollection = LazyCollection::times(INF)\n"
+"        ->takeUntilTimeout(now()->addMinute());\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:3092
+#, no-wrap
+msgid ""
+"    $lazyCollection->each(function ($number) {\n"
+"        dump($number);\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:3095
+#, no-wrap
+msgid ""
+"        sleep(1);\n"
+"    });\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:3101
+#, no-wrap
+msgid ""
+"    // 1\n"
+"    // 2\n"
+"    // ...\n"
+"    // 58\n"
+"    // 59\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:3103
+msgid ""
+"To illustrate the usage of this method, imagine an application that submits "
+"invoices from the database using a cursor. You could define a [scheduled "
+"task](/docs/{{version}}/scheduling) that runs every 15 minutes and only "
+"processes invoices for a maximum of 14 minutes:"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:3106
+#, no-wrap
+msgid ""
+"    use App\\Models\\Invoice;\n"
+"    use Illuminate\\Support\\Carbon;\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:3112
+#, no-wrap
+msgid ""
+"    Invoice::pending()->cursor()\n"
+"        ->takeUntilTimeout(\n"
+"            Carbon::createFromTimestamp(LARAVEL_START)->add(14, 'minutes')\n"
+"        )\n"
+"        ->each(fn ($invoice) => $invoice->submit());\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:3114
+#, no-wrap
+msgid "<a name=\"method-tapEach\"></a>\n"
+msgstr ""
+
+#. type: Title ####
+#: docs/8.x/collections.md:3114
+#, no-wrap
+msgid "`tapEach()` {#collection-method}"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:3117
+msgid ""
+"While the `each` method calls the given callback for each item in the "
+"collection right away, the `tapEach` method only calls the given callback as "
+"the items are being pulled out of the list one by one:"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:3122
+#, no-wrap
+msgid ""
+"    // Nothing has been dumped so far...\n"
+"    $lazyCollection = LazyCollection::times(INF)->tapEach(function ($value) {\n"
+"        dump($value);\n"
+"    });\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:3125
+#, no-wrap
+msgid ""
+"    // Three items are dumped...\n"
+"    $array = $lazyCollection->take(3)->all();\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:3129
+#, no-wrap
+msgid ""
+"    // 1\n"
+"    // 2\n"
+"    // 3\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:3131
+#, no-wrap
+msgid "<a name=\"method-remember\"></a>\n"
+msgstr ""
+
+#. type: Title ####
+#: docs/8.x/collections.md:3131
+#, no-wrap
+msgid "`remember()` {#collection-method}"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:3134
+msgid ""
+"The `remember` method returns a new lazy collection that will remember any "
+"values that have already been enumerated and will not retrieve them again on "
+"subsequent collection enumerations:"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:3137
+#, no-wrap
+msgid ""
+"    // No query has been executed yet...\n"
+"    $users = User::cursor()->remember();\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:3141
+#, no-wrap
+msgid ""
+"    // The query is executed...\n"
+"    // The first 5 users are hydrated from the database...\n"
+"    $users->take(5)->all();\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/collections.md:3145
+#, no-wrap
+msgid ""
+"    // First 5 users come from the collection's cache...\n"
+"    // The rest are hydrated from the database...\n"
+"    $users->take(20)->all();\n"
+msgstr ""
+
+#, no-wrap
+#~ msgid "Laravel Fortify"
+#~ msgstr "Laravel Fortify"
+
+#~ msgid "[What Is Fortify?](#what-is-fortify)"
+#~ msgstr "[什麼是 Fortify？](#what-is-fortify)"
+
+#~ msgid "[When Should I Use Fortify?](#when-should-i-use-fortify)"
+#~ msgstr "[什麼時候該用 Fortify？](#when-should-i-use-fortify)"

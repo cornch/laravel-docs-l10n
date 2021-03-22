@@ -16,6 +16,14 @@ git submodule foreach git pull
 ```
 2. Run `update_template.sh` to extract strings into pot files.
 
+### Build Translated Markdown
+
+Run `build.sh`:
+
+```bash
+zsh build.sh zh_TW
+```
+
 ## License
 
 Source files are released under MIT license.

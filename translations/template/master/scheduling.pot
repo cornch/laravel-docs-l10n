@@ -1,0 +1,1273 @@
+# SOME DESCRIPTIVE TITLE
+# Copyright (C) YEAR Free Software Foundation, Inc.
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"POT-Creation-Date: 2021-03-23 04:12+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#. type: Title #
+#: docs/master/scheduling.md:1
+#, markdown-text, no-wrap
+msgid "Task Scheduling"
+msgstr ""
+
+#. type: Bullet: '- '
+#: docs/master/scheduling.md:18
+#, markdown-text
+msgid "[Introduction](#introduction)"
+msgstr ""
+
+#. type: Bullet: '- '
+#: docs/master/scheduling.md:18
+#, markdown-text
+msgid "[Defining Schedules](#defining-schedules)"
+msgstr ""
+
+#. type: Bullet: '    - '
+#: docs/master/scheduling.md:18
+#, markdown-text
+msgid "[Scheduling Artisan Commands](#scheduling-artisan-commands)"
+msgstr ""
+
+#. type: Bullet: '    - '
+#: docs/master/scheduling.md:18
+#, markdown-text
+msgid "[Scheduling Queued Jobs](#scheduling-queued-jobs)"
+msgstr ""
+
+#. type: Bullet: '    - '
+#: docs/master/scheduling.md:18
+#, markdown-text
+msgid "[Scheduling Shell Commands](#scheduling-shell-commands)"
+msgstr ""
+
+#. type: Bullet: '    - '
+#: docs/master/scheduling.md:18
+#, markdown-text
+msgid "[Schedule Frequency Options](#schedule-frequency-options)"
+msgstr ""
+
+#. type: Bullet: '    - '
+#: docs/master/scheduling.md:18
+#, markdown-text
+msgid "[Timezones](#timezones)"
+msgstr ""
+
+#. type: Bullet: '    - '
+#: docs/master/scheduling.md:18
+#, markdown-text
+msgid "[Preventing Task Overlaps](#preventing-task-overlaps)"
+msgstr ""
+
+#. type: Bullet: '    - '
+#: docs/master/scheduling.md:18
+#, markdown-text
+msgid "[Running Tasks On One Server](#running-tasks-on-one-server)"
+msgstr ""
+
+#. type: Bullet: '    - '
+#: docs/master/scheduling.md:18
+#, markdown-text
+msgid "[Background Tasks](#background-tasks)"
+msgstr ""
+
+#. type: Bullet: '    - '
+#: docs/master/scheduling.md:18
+#, markdown-text
+msgid "[Maintenance Mode](#maintenance-mode)"
+msgstr ""
+
+#. type: Bullet: '- '
+#: docs/master/scheduling.md:18
+#, markdown-text
+msgid "[Running The Scheduler](#running-the-scheduler)"
+msgstr ""
+
+#. type: Bullet: '    - '
+#: docs/master/scheduling.md:18
+#, markdown-text
+msgid "[Running The Scheduler Locally](#running-the-scheduler-locally)"
+msgstr ""
+
+#. type: Bullet: '- '
+#: docs/master/scheduling.md:18
+#, markdown-text
+msgid "[Task Output](#task-output)"
+msgstr ""
+
+#. type: Bullet: '- '
+#: docs/master/scheduling.md:18
+#, markdown-text
+msgid "[Task Hooks](#task-hooks)"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/scheduling.md:20
+#, markdown-text, no-wrap
+msgid "<a name=\"introduction\"></a>\n"
+msgstr ""
+
+#. type: Title ##
+#: docs/master/scheduling.md:20
+#, markdown-text, no-wrap
+msgid "Introduction"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/scheduling.md:23
+#, markdown-text
+msgid ""
+"In the past, you may have written a cron configuration entry for each task "
+"you needed to schedule on your server. However, this can quickly become a "
+"pain because your task schedule is no longer in source control and you must "
+"SSH into your server to view your existing cron entries or add additional "
+"entries."
+msgstr ""
+
+#. type: Plain text
+#: docs/master/scheduling.md:25
+#, markdown-text
+msgid ""
+"Laravel's command scheduler offers a fresh approach to managing scheduled "
+"tasks on your server. The scheduler allows you to fluently and expressively "
+"define your command schedule within your Laravel application itself. When "
+"using the scheduler, only a single cron entry is needed on your server. Your "
+"task schedule is defined in the `app/Console/Kernel.php` file's `schedule` "
+"method. To help you get started, a simple example is defined within the "
+"method."
+msgstr ""
+
+#. type: Plain text
+#: docs/master/scheduling.md:27
+#, markdown-text, no-wrap
+msgid "<a name=\"defining-schedules\"></a>\n"
+msgstr ""
+
+#. type: Title ##
+#: docs/master/scheduling.md:27
+#, markdown-text, no-wrap
+msgid "Defining Schedules"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/scheduling.md:30
+#, markdown-text
+msgid ""
+"You may define all of your scheduled tasks in the `schedule` method of your "
+"application's `App\\Console\\Kernel` class. To get started, let's take a "
+"look at an example. In this example, we will schedule a closure to be called "
+"every day at midnight. Within the closure we will execute a database query "
+"to clear a table:"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/scheduling.md:32
+#, markdown-text, no-wrap
+msgid "    <?php\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/scheduling.md:34
+#, markdown-text, no-wrap
+msgid "    namespace App\\Console;\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/scheduling.md:38
+#, markdown-text, no-wrap
+msgid ""
+"    use Illuminate\\Console\\Scheduling\\Schedule;\n"
+"    use Illuminate\\Foundation\\Console\\Kernel as ConsoleKernel;\n"
+"    use Illuminate\\Support\\Facades\\DB;\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/scheduling.md:49
+#, markdown-text, no-wrap
+msgid ""
+"    class Kernel extends ConsoleKernel\n"
+"    {\n"
+"        /**\n"
+"         * The Artisan commands provided by your application.\n"
+"         *\n"
+"         * @var array\n"
+"         */\n"
+"        protected $commands = [\n"
+"            //\n"
+"        ];\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/scheduling.md:63
+#, markdown-text, no-wrap
+msgid ""
+"        /**\n"
+"         * Define the application's command schedule.\n"
+"         *\n"
+"         * @param  \\Illuminate\\Console\\Scheduling\\Schedule  $schedule\n"
+"         * @return void\n"
+"         */\n"
+"        protected function schedule(Schedule $schedule)\n"
+"        {\n"
+"            $schedule->call(function () {\n"
+"                DB::table('recent_users')->delete();\n"
+"            })->daily();\n"
+"        }\n"
+"    }\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/scheduling.md:65
+#, markdown-text
+msgid ""
+"In addition to scheduling using closures, you may also schedule [invokable "
+"objects](https://secure.php.net/manual/en/language.oop5.magic.php#object.invoke). "
+"Invokable objects are simple PHP classes that contain an `__invoke` method:"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/scheduling.md:67
+#, markdown-text, no-wrap
+msgid "    $schedule->call(new DeleteRecentUsers)->daily();\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/scheduling.md:69
+#, markdown-text
+msgid ""
+"If you would like to view an overview of your scheduled tasks and the next "
+"time they are scheduled to run, you may use the `schedule:list` Artisan "
+"command:"
+msgstr ""
+
+#. type: Fenced code block (nothing)
+#: docs/master/scheduling.md:70
+#, no-wrap
+msgid "php artisan schedule:list\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/scheduling.md:75
+#, markdown-text, no-wrap
+msgid "<a name=\"scheduling-artisan-commands\"></a>\n"
+msgstr ""
+
+#. type: Title ###
+#: docs/master/scheduling.md:75
+#, markdown-text, no-wrap
+msgid "Scheduling Artisan Commands"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/scheduling.md:78
+#, markdown-text
+msgid ""
+"In addition to scheduling closures, you may also schedule [Artisan "
+"commands](/docs/{{version}}/artisan) and system commands. For example, you "
+"may use the `command` method to schedule an Artisan command using either the "
+"command's name or class."
+msgstr ""
+
+#. type: Plain text
+#: docs/master/scheduling.md:80
+#, markdown-text
+msgid ""
+"When scheduling Artisan commands using the command's class name, you may "
+"pass an array of additional command-line arguments that should be provided "
+"to the command when it is invoked:"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/scheduling.md:82
+#, markdown-text, no-wrap
+msgid "    use App\\Console\\Commands\\SendEmailsCommand;\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/scheduling.md:84
+#, markdown-text, no-wrap
+msgid "    $schedule->command('emails:send Taylor --force')->daily();\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/scheduling.md:86
+#, markdown-text, no-wrap
+msgid ""
+"    $schedule->command(SendEmailsCommand::class, ['Taylor', "
+"'--force'])->daily();\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/scheduling.md:88
+#, markdown-text, no-wrap
+msgid "<a name=\"scheduling-queued-jobs\"></a>\n"
+msgstr ""
+
+#. type: Title ###
+#: docs/master/scheduling.md:88
+#, markdown-text, no-wrap
+msgid "Scheduling Queued Jobs"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/scheduling.md:91
+#, markdown-text
+msgid ""
+"The `job` method may be used to schedule a [queued "
+"job](/docs/{{version}}/queues). This method provides a convenient way to "
+"schedule queued jobs without using the `call` method to define closures to "
+"queue the job:"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/scheduling.md:93 docs/master/scheduling.md:99
+#, markdown-text, no-wrap
+msgid "    use App\\Jobs\\Heartbeat;\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/scheduling.md:95
+#, markdown-text, no-wrap
+msgid "    $schedule->job(new Heartbeat)->everyFiveMinutes();\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/scheduling.md:97
+#, markdown-text
+msgid ""
+"Optional second and third arguments may be provided to the `job` method "
+"which specifies the queue name and queue connection that should be used to "
+"queue the job:"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/scheduling.md:102
+#, markdown-text, no-wrap
+msgid ""
+"    // Dispatch the job to the \"heartbeats\" queue on the \"sqs\" "
+"connection...\n"
+"    $schedule->job(new Heartbeat, 'heartbeats', "
+"'sqs')->everyFiveMinutes();\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/scheduling.md:104
+#, markdown-text, no-wrap
+msgid "<a name=\"scheduling-shell-commands\"></a>\n"
+msgstr ""
+
+#. type: Title ###
+#: docs/master/scheduling.md:104
+#, markdown-text, no-wrap
+msgid "Scheduling Shell Commands"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/scheduling.md:107
+#, markdown-text
+msgid "The `exec` method may be used to issue a command to the operating system:"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/scheduling.md:109
+#, markdown-text, no-wrap
+msgid "    $schedule->exec('node /home/forge/script.js')->daily();\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/scheduling.md:111
+#, markdown-text, no-wrap
+msgid "<a name=\"schedule-frequency-options\"></a>\n"
+msgstr ""
+
+#. type: Title ###
+#: docs/master/scheduling.md:111
+#, markdown-text, no-wrap
+msgid "Schedule Frequency Options"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/scheduling.md:114
+#, markdown-text
+msgid ""
+"We've already seen a few examples of how you may configure a task to run at "
+"specified intervals. However, there are many more task schedule frequencies "
+"that you may assign to a task:"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/scheduling.md:145
+#, markdown-text, no-wrap
+msgid ""
+"Method  | Description\n"
+"------------- | -------------\n"
+"`->cron('* * * * *');`  |  Run the task on a custom cron schedule\n"
+"`->everyMinute();`  |  Run the task every minute\n"
+"`->everyTwoMinutes();`  |  Run the task every two minutes\n"
+"`->everyThreeMinutes();`  |  Run the task every three minutes\n"
+"`->everyFourMinutes();`  |  Run the task every four minutes\n"
+"`->everyFiveMinutes();`  |  Run the task every five minutes\n"
+"`->everyTenMinutes();`  |  Run the task every ten minutes\n"
+"`->everyFifteenMinutes();`  |  Run the task every fifteen minutes\n"
+"`->everyThirtyMinutes();`  |  Run the task every thirty minutes\n"
+"`->hourly();`  |  Run the task every hour\n"
+"`->hourlyAt(17);`  |  Run the task every hour at 17 minutes past the hour\n"
+"`->everyTwoHours();`  |  Run the task every two hours\n"
+"`->everyThreeHours();`  |  Run the task every three hours\n"
+"`->everyFourHours();`  |  Run the task every four hours\n"
+"`->everySixHours();`  |  Run the task every six hours\n"
+"`->daily();`  |  Run the task every day at midnight\n"
+"`->dailyAt('13:00');`  |  Run the task every day at 13:00\n"
+"`->twiceDaily(1, 13);`  |  Run the task daily at 1:00 & 13:00\n"
+"`->weekly();`  |  Run the task every Sunday at 00:00\n"
+"`->weeklyOn(1, '8:00');`  |  Run the task every week on Monday at 8:00\n"
+"`->monthly();`  |  Run the task on the first day of every month at 00:00\n"
+"`->monthlyOn(4, '15:00');`  |  Run the task every month on the 4th at "
+"15:00\n"
+"`->twiceMonthly(1, 16, '13:00');`  |  Run the task monthly on the 1st and "
+"16th at 13:00\n"
+"`->lastDayOfMonth('15:00');` | Run the task on the last day of the month at "
+"15:00\n"
+"`->quarterly();` |  Run the task on the first day of every quarter at "
+"00:00\n"
+"`->yearly();`  |  Run the task on the first day of every year at 00:00\n"
+"`->yearlyOn(6, 1, '17:00');`  |  Run the task every year on June 1st at "
+"17:00\n"
+"`->timezone('America/New_York');` | Set the timezone for the task\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/scheduling.md:147
+#, markdown-text
+msgid ""
+"These methods may be combined with additional constraints to create even "
+"more finely tuned schedules that only run on certain days of the week. For "
+"example, you may schedule a command to run weekly on Monday:"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/scheduling.md:152
+#, markdown-text, no-wrap
+msgid ""
+"    // Run once per week on Monday at 1 PM...\n"
+"    $schedule->call(function () {\n"
+"        //\n"
+"    })->weekly()->mondays()->at('13:00');\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/scheduling.md:159
+#, markdown-text, no-wrap
+msgid ""
+"    // Run hourly from 8 AM to 5 PM on weekdays...\n"
+"    $schedule->command('foo')\n"
+"              ->weekdays()\n"
+"              ->hourly()\n"
+"              ->timezone('America/Chicago')\n"
+"              ->between('8:00', '17:00');\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/scheduling.md:161
+#, markdown-text
+msgid "A list of additional schedule constraints may be found below:"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/scheduling.md:178
+#, markdown-text, no-wrap
+msgid ""
+"Method  | Description\n"
+"------------- | -------------\n"
+"`->weekdays();`  |  Limit the task to weekdays\n"
+"`->weekends();`  |  Limit the task to weekends\n"
+"`->sundays();`  |  Limit the task to Sunday\n"
+"`->mondays();`  |  Limit the task to Monday\n"
+"`->tuesdays();`  |  Limit the task to Tuesday\n"
+"`->wednesdays();`  |  Limit the task to Wednesday\n"
+"`->thursdays();`  |  Limit the task to Thursday\n"
+"`->fridays();`  |  Limit the task to Friday\n"
+"`->saturdays();`  |  Limit the task to Saturday\n"
+"`->days(array|mixed);`  |  Limit the task to specific days\n"
+"`->between($startTime, $endTime);`  |  Limit the task to run between start "
+"and end times\n"
+"`->unlessBetween($startTime, $endTime);`  |  Limit the task to not run "
+"between start and end times\n"
+"`->when(Closure);`  |  Limit the task based on a truth test\n"
+"`->environments($env);`  |  Limit the task to specific environments\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/scheduling.md:180
+#, markdown-text, no-wrap
+msgid "<a name=\"day-constraints\"></a>\n"
+msgstr ""
+
+#. type: Title ####
+#: docs/master/scheduling.md:180
+#, markdown-text, no-wrap
+msgid "Day Constraints"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/scheduling.md:183
+#, markdown-text
+msgid ""
+"The `days` method may be used to limit the execution of a task to specific "
+"days of the week. For example, you may schedule a command to run hourly on "
+"Sundays and Wednesdays:"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/scheduling.md:187
+#, markdown-text, no-wrap
+msgid ""
+"    $schedule->command('emails:send')\n"
+"                    ->hourly()\n"
+"                    ->days([0, 3]);\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/scheduling.md:189
+#, markdown-text
+msgid ""
+"Alternatively, you may use the constants available on the "
+"`Illuminate\\Console\\Scheduling\\Schedule` class when defining the days on "
+"which a task should run:"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/scheduling.md:191
+#, markdown-text, no-wrap
+msgid "    use Illuminate\\Console\\Scheduling\\Schedule;\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/scheduling.md:195
+#, markdown-text, no-wrap
+msgid ""
+"    $schedule->command('emails:send')\n"
+"                    ->hourly()\n"
+"                    ->days([Schedule::SUNDAY, Schedule::WEDNESDAY]);\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/scheduling.md:197
+#, markdown-text, no-wrap
+msgid "<a name=\"between-time-constraints\"></a>\n"
+msgstr ""
+
+#. type: Title ####
+#: docs/master/scheduling.md:197
+#, markdown-text, no-wrap
+msgid "Between Time Constraints"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/scheduling.md:200
+#, markdown-text
+msgid ""
+"The `between` method may be used to limit the execution of a task based on "
+"the time of day:"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/scheduling.md:204
+#, markdown-text, no-wrap
+msgid ""
+"    $schedule->command('emails:send')\n"
+"                        ->hourly()\n"
+"                        ->between('7:00', '22:00');\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/scheduling.md:206
+#, markdown-text
+msgid ""
+"Similarly, the `unlessBetween` method can be used to exclude the execution "
+"of a task for a period of time:"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/scheduling.md:210
+#, markdown-text, no-wrap
+msgid ""
+"    $schedule->command('emails:send')\n"
+"                        ->hourly()\n"
+"                        ->unlessBetween('23:00', '4:00');\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/scheduling.md:212
+#, markdown-text, no-wrap
+msgid "<a name=\"truth-test-constraints\"></a>\n"
+msgstr ""
+
+#. type: Title ####
+#: docs/master/scheduling.md:212
+#, markdown-text, no-wrap
+msgid "Truth Test Constraints"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/scheduling.md:215
+#, markdown-text
+msgid ""
+"The `when` method may be used to limit the execution of a task based on the "
+"result of a given truth test. In other words, if the given closure returns "
+"`true`, the task will execute as long as no other constraining conditions "
+"prevent the task from running:"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/scheduling.md:219
+#, markdown-text, no-wrap
+msgid ""
+"    $schedule->command('emails:send')->daily()->when(function () {\n"
+"        return true;\n"
+"    });\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/scheduling.md:221
+#, markdown-text
+msgid ""
+"The `skip` method may be seen as the inverse of `when`. If the `skip` method "
+"returns `true`, the scheduled task will not be executed:"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/scheduling.md:225
+#, markdown-text, no-wrap
+msgid ""
+"    $schedule->command('emails:send')->daily()->skip(function () {\n"
+"        return true;\n"
+"    });\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/scheduling.md:227
+#, markdown-text
+msgid ""
+"When using chained `when` methods, the scheduled command will only execute "
+"if all `when` conditions return `true`."
+msgstr ""
+
+#. type: Plain text
+#: docs/master/scheduling.md:229
+#, markdown-text, no-wrap
+msgid "<a name=\"environment-constraints\"></a>\n"
+msgstr ""
+
+#. type: Title ####
+#: docs/master/scheduling.md:229
+#, markdown-text, no-wrap
+msgid "Environment Constraints"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/scheduling.md:232
+#, markdown-text
+msgid ""
+"The `environments` method may be used to execute tasks only on the given "
+"environments (as defined by the `APP_ENV` [environment "
+"variable](/docs/{{version}}/configuration#environment-configuration)):"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/scheduling.md:236
+#, markdown-text, no-wrap
+msgid ""
+"    $schedule->command('emails:send')\n"
+"                ->daily()\n"
+"                ->environments(['staging', 'production']);\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/scheduling.md:238
+#, markdown-text, no-wrap
+msgid "<a name=\"timezones\"></a>\n"
+msgstr ""
+
+#. type: Title ###
+#: docs/master/scheduling.md:238
+#, markdown-text, no-wrap
+msgid "Timezones"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/scheduling.md:241
+#, markdown-text
+msgid ""
+"Using the `timezone` method, you may specify that a scheduled task's time "
+"should be interpreted within a given timezone:"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/scheduling.md:245
+#, markdown-text, no-wrap
+msgid ""
+"    $schedule->command('report:generate')\n"
+"             ->timezone('America/New_York')\n"
+"             ->at('2:00')\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/scheduling.md:247
+#, markdown-text
+msgid ""
+"If you are repeatedly assigning the same timezone to all of your scheduled "
+"tasks, you may wish to define a `scheduleTimezone` method in your "
+"`App\\Console\\Kernel` class. This method should return the default timezone "
+"that should be assigned to all scheduled tasks:"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/scheduling.md:257
+#, markdown-text, no-wrap
+msgid ""
+"    /**\n"
+"     * Get the timezone that should be used by default for scheduled "
+"events.\n"
+"     *\n"
+"     * @return \\DateTimeZone|string|null\n"
+"     */\n"
+"    protected function scheduleTimezone()\n"
+"    {\n"
+"        return 'America/Chicago';\n"
+"    }\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/scheduling.md:259
+#, markdown-text, no-wrap
+msgid ""
+"> {note} Remember that some timezones utilize daylight savings time. When "
+"daylight saving time changes occur, your scheduled task may run twice or "
+"even not run at all. For this reason, we recommend avoiding timezone "
+"scheduling when possible.\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/scheduling.md:261
+#, markdown-text, no-wrap
+msgid "<a name=\"preventing-task-overlaps\"></a>\n"
+msgstr ""
+
+#. type: Title ###
+#: docs/master/scheduling.md:261
+#, markdown-text, no-wrap
+msgid "Preventing Task Overlaps"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/scheduling.md:264
+#, markdown-text
+msgid ""
+"By default, scheduled tasks will be run even if the previous instance of the "
+"task is still running. To prevent this, you may use the `withoutOverlapping` "
+"method:"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/scheduling.md:266
+#, markdown-text, no-wrap
+msgid "    $schedule->command('emails:send')->withoutOverlapping();\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/scheduling.md:268
+#, markdown-text
+msgid ""
+"In this example, the `emails:send` [Artisan "
+"command](/docs/{{version}}/artisan) will be run every minute if it is not "
+"already running. The `withoutOverlapping` method is especially useful if you "
+"have tasks that vary drastically in their execution time, preventing you "
+"from predicting exactly how long a given task will take."
+msgstr ""
+
+#. type: Plain text
+#: docs/master/scheduling.md:270
+#, markdown-text
+msgid ""
+"If needed, you may specify how many minutes must pass before the \"without "
+"overlapping\" lock expires. By default, the lock will expire after 24 hours:"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/scheduling.md:272
+#, markdown-text, no-wrap
+msgid "    $schedule->command('emails:send')->withoutOverlapping(10);\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/scheduling.md:274
+#, markdown-text, no-wrap
+msgid "<a name=\"running-tasks-on-one-server\"></a>\n"
+msgstr ""
+
+#. type: Title ###
+#: docs/master/scheduling.md:274
+#, markdown-text, no-wrap
+msgid "Running Tasks On One Server"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/scheduling.md:277
+#, markdown-text, no-wrap
+msgid ""
+"> {note} To utilize this feature, your application must be using the "
+"`database`, `memcached`, `dynamodb`, or `redis` cache driver as your "
+"application's default cache driver. In addition, all servers must be "
+"communicating with the same central cache server.\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/scheduling.md:279
+#, markdown-text
+msgid ""
+"If your application's scheduler is running on multiple servers, you may "
+"limit a scheduled job to only execute on a single server. For instance, "
+"assume you have a scheduled task that generates a new report every Friday "
+"night. If the task scheduler is running on three worker servers, the "
+"scheduled task will run on all three servers and generate the report three "
+"times. Not good!"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/scheduling.md:281
+#, markdown-text
+msgid ""
+"To indicate that the task should run on only one server, use the "
+"`onOneServer` method when defining the scheduled task. The first server to "
+"obtain the task will secure an atomic lock on the job to prevent other "
+"servers from running the same task at the same time:"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/scheduling.md:286
+#, markdown-text, no-wrap
+msgid ""
+"    $schedule->command('report:generate')\n"
+"                    ->fridays()\n"
+"                    ->at('17:00')\n"
+"                    ->onOneServer();\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/scheduling.md:288
+#, markdown-text, no-wrap
+msgid "<a name=\"background-tasks\"></a>\n"
+msgstr ""
+
+#. type: Title ###
+#: docs/master/scheduling.md:288
+#, markdown-text, no-wrap
+msgid "Background Tasks"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/scheduling.md:291
+#, markdown-text
+msgid ""
+"By default, multiple tasks scheduled at the same time will execute "
+"sequentially based on the order they are defined in your `schedule` "
+"method. If you have long-running tasks, this may cause subsequent tasks to "
+"start much later than anticipated. If you would like to run tasks in the "
+"background so that they may all run simultaneously, you may use the "
+"`runInBackground` method:"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/scheduling.md:295
+#, markdown-text, no-wrap
+msgid ""
+"    $schedule->command('analytics:report')\n"
+"             ->daily()\n"
+"             ->runInBackground();\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/scheduling.md:297
+#, markdown-text, no-wrap
+msgid ""
+"> {note} The `runInBackground` method may only be used when scheduling tasks "
+"via the `command` and `exec` methods.\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/scheduling.md:299
+#, markdown-text, no-wrap
+msgid "<a name=\"maintenance-mode\"></a>\n"
+msgstr ""
+
+#. type: Title ###
+#: docs/master/scheduling.md:299
+#, markdown-text, no-wrap
+msgid "Maintenance Mode"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/scheduling.md:302
+#, markdown-text
+msgid ""
+"Your application's scheduled tasks will not run when the application is in "
+"[maintenance mode](/docs/{{version}}/configuration#maintenance-mode), since "
+"we don't want your tasks to interfere with any unfinished maintenance you "
+"may be performing on your server. However, if you would like to force a task "
+"to run even in maintenance mode, you may call the `evenInMaintenanceMode` "
+"method when defining the task:"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/scheduling.md:304
+#, markdown-text, no-wrap
+msgid "    $schedule->command('emails:send')->evenInMaintenanceMode();\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/scheduling.md:306
+#, markdown-text, no-wrap
+msgid "<a name=\"running-the-scheduler\"></a>\n"
+msgstr ""
+
+#. type: Title ##
+#: docs/master/scheduling.md:306
+#, markdown-text, no-wrap
+msgid "Running The Scheduler"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/scheduling.md:309
+#, markdown-text
+msgid ""
+"Now that we have learned how to define scheduled tasks, let's discuss how to "
+"actually run them on our server. The `schedule:run` Artisan command will "
+"evaluate all of your scheduled tasks and determine if they need to run based "
+"on the server's current time."
+msgstr ""
+
+#. type: Plain text
+#: docs/master/scheduling.md:311
+#, markdown-text
+msgid ""
+"So, when using Laravel's scheduler, we only need to add a single cron "
+"configuration entry to our server that runs the `schedule:run` command every "
+"minute. If you do not know how to add cron entries to your server, consider "
+"using a service such as [Laravel Forge](https://forge.laravel.com) which can "
+"manage the cron entries for you:"
+msgstr ""
+
+#. type: Bullet: '    * '
+#: docs/master/scheduling.md:313
+#, markdown-text
+msgid ""
+"* * * * cd /path-to-your-project && php artisan schedule:run >> /dev/null "
+"2>&1"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/scheduling.md:315
+#, markdown-text, no-wrap
+msgid "<a name=\"running-the-scheduler-locally\"></a>\n"
+msgstr ""
+
+#. type: Title ##
+#: docs/master/scheduling.md:315
+#, markdown-text, no-wrap
+msgid "Running The Scheduler Locally"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/scheduling.md:318
+#, markdown-text
+msgid ""
+"Typically, you would not add a scheduler cron entry to your local "
+"development machine. Instead, you may use the `schedule:work` Artisan "
+"command. This command will run in the foreground and invoke the scheduler "
+"every minute until you terminate the command:"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/scheduling.md:320
+#, markdown-text, no-wrap
+msgid "    php artisan schedule:work\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/scheduling.md:322
+#, markdown-text, no-wrap
+msgid "<a name=\"task-output\"></a>\n"
+msgstr ""
+
+#. type: Title ##
+#: docs/master/scheduling.md:322
+#, markdown-text, no-wrap
+msgid "Task Output"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/scheduling.md:325
+#, markdown-text
+msgid ""
+"The Laravel scheduler provides several convenient methods for working with "
+"the output generated by scheduled tasks. First, using the `sendOutputTo` "
+"method, you may send the output to a file for later inspection:"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/scheduling.md:329
+#, markdown-text, no-wrap
+msgid ""
+"    $schedule->command('emails:send')\n"
+"             ->daily()\n"
+"             ->sendOutputTo($filePath);\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/scheduling.md:331
+#, markdown-text
+msgid ""
+"If you would like to append the output to a given file, you may use the "
+"`appendOutputTo` method:"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/scheduling.md:335
+#, markdown-text, no-wrap
+msgid ""
+"    $schedule->command('emails:send')\n"
+"             ->daily()\n"
+"             ->appendOutputTo($filePath);\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/scheduling.md:337
+#, markdown-text
+msgid ""
+"Using the `emailOutputTo` method, you may email the output to an email "
+"address of your choice. Before emailing the output of a task, you should "
+"configure Laravel's [email services](/docs/{{version}}/mail):"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/scheduling.md:342
+#, markdown-text, no-wrap
+msgid ""
+"    $schedule->command('report:generate')\n"
+"             ->daily()\n"
+"             ->sendOutputTo($filePath)\n"
+"             ->emailOutputTo('taylor@example.com');\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/scheduling.md:344
+#, markdown-text
+msgid ""
+"If you only want to email the output if the scheduled Artisan or system "
+"command terminates with a non-zero exit code, use the `emailOutputOnFailure` "
+"method:"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/scheduling.md:348
+#, markdown-text, no-wrap
+msgid ""
+"    $schedule->command('report:generate')\n"
+"             ->daily()\n"
+"             ->emailOutputOnFailure('taylor@example.com');\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/scheduling.md:350
+#, markdown-text, no-wrap
+msgid ""
+"> {note} The `emailOutputTo`, `emailOutputOnFailure`, `sendOutputTo`, and "
+"`appendOutputTo` methods are exclusive to the `command` and `exec` "
+"methods.\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/scheduling.md:352
+#, markdown-text, no-wrap
+msgid "<a name=\"task-hooks\"></a>\n"
+msgstr ""
+
+#. type: Title ##
+#: docs/master/scheduling.md:352
+#, markdown-text, no-wrap
+msgid "Task Hooks"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/scheduling.md:355
+#, markdown-text
+msgid ""
+"Using the `before` and `after` methods, you may specify code to be executed "
+"before and after the scheduled task is executed:"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/scheduling.md:364
+#, markdown-text, no-wrap
+msgid ""
+"    $schedule->command('emails:send')\n"
+"             ->daily()\n"
+"             ->before(function () {\n"
+"                 // The task is about to execute...\n"
+"             })\n"
+"             ->after(function () {\n"
+"                 // The task has executed...\n"
+"             });\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/scheduling.md:366
+#, markdown-text
+msgid ""
+"The `onSuccess` and `onFailure` methods allow you to specify code to be "
+"executed if the scheduled task succeeds or fails. A failure indicates that "
+"the scheduled Artisan or system command terminated with a non-zero exit "
+"code:"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/scheduling.md:375
+#, markdown-text, no-wrap
+msgid ""
+"    $schedule->command('emails:send')\n"
+"             ->daily()\n"
+"             ->onSuccess(function () {\n"
+"                 // The task succeeded...\n"
+"             })\n"
+"             ->onFailure(function () {\n"
+"                 // The task failed...\n"
+"             });\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/scheduling.md:377
+#, markdown-text
+msgid ""
+"If output is available from your command, you may access it in your `after`, "
+"`onSuccess` or `onFailure` hooks by type-hinting an "
+"`Illuminate\\Support\\Stringable` instance as the `$output` argument of your "
+"hook's closure definition:"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/scheduling.md:379
+#, markdown-text, no-wrap
+msgid "    use Illuminate\\Support\\Stringable;\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/scheduling.md:388
+#, markdown-text, no-wrap
+msgid ""
+"    $schedule->command('emails:send')\n"
+"             ->daily()\n"
+"             ->onSuccess(function (Stringable $output) {\n"
+"                 // The task succeeded...\n"
+"             })\n"
+"             ->onFailure(function (Stringable $output) {\n"
+"                 // The task failed...\n"
+"             });\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/scheduling.md:390
+#, markdown-text, no-wrap
+msgid "<a name=\"pinging-urls\"></a>\n"
+msgstr ""
+
+#. type: Title ####
+#: docs/master/scheduling.md:390
+#, markdown-text, no-wrap
+msgid "Pinging URLs"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/scheduling.md:393
+#, markdown-text
+msgid ""
+"Using the `pingBefore` and `thenPing` methods, the scheduler can "
+"automatically ping a given URL before or after a task is executed. This "
+"method is useful for notifying an external service, such as "
+"[Envoyer](https://envoyer.io), that your scheduled task is beginning or has "
+"finished execution:"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/scheduling.md:398
+#, markdown-text, no-wrap
+msgid ""
+"    $schedule->command('emails:send')\n"
+"             ->daily()\n"
+"             ->pingBefore($url)\n"
+"             ->thenPing($url);\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/scheduling.md:400
+#, markdown-text
+msgid ""
+"The `pingBeforeIf` and `thenPingIf` methods may be used to ping a given URL "
+"only if a given condition is `true`:"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/scheduling.md:405
+#, markdown-text, no-wrap
+msgid ""
+"    $schedule->command('emails:send')\n"
+"             ->daily()\n"
+"             ->pingBeforeIf($condition, $url)\n"
+"             ->thenPingIf($condition, $url);\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/scheduling.md:407
+#, markdown-text
+msgid ""
+"The `pingOnSuccess` and `pingOnFailure` methods may be used to ping a given "
+"URL only if the task succeeds or fails. A failure indicates that the "
+"scheduled Artisan or system command terminated with a non-zero exit code:"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/scheduling.md:412
+#, markdown-text, no-wrap
+msgid ""
+"    $schedule->command('emails:send')\n"
+"             ->daily()\n"
+"             ->pingOnSuccess($successUrl)\n"
+"             ->pingOnFailure($failureUrl);\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/scheduling.md:414
+#, markdown-text
+msgid ""
+"All of the ping methods require the Guzzle HTTP library. Guzzle is typically "
+"installed in all new Laravel projects by default, but, you may manually "
+"install Guzzle into your project using the Composer package manager if it "
+"has been accidentally removed:"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/scheduling.md:415
+#, markdown-text, no-wrap
+msgid "    composer require guzzlehttp/guzzle\n"
+msgstr ""

@@ -1,0 +1,675 @@
+# SOME DESCRIPTIVE TITLE
+# Copyright (C) YEAR Free Software Foundation, Inc.
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"POT-Creation-Date: 2021-03-23 04:12+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#. type: Title #
+#: docs/8.x/localization.md:1
+#, markdown-text, no-wrap
+msgid "Localization"
+msgstr ""
+
+#. type: Bullet: '- '
+#: docs/8.x/localization.md:12
+#, markdown-text
+msgid "[Introduction](#introduction)"
+msgstr ""
+
+#. type: Bullet: '    - '
+#: docs/8.x/localization.md:12
+#, markdown-text
+msgid "[Configuring The Locale](#configuring-the-locale)"
+msgstr ""
+
+#. type: Bullet: '- '
+#: docs/8.x/localization.md:12
+#, markdown-text
+msgid "[Defining Translation Strings](#defining-translation-strings)"
+msgstr ""
+
+#. type: Bullet: '    - '
+#: docs/8.x/localization.md:12
+#, markdown-text
+msgid "[Using Short Keys](#using-short-keys)"
+msgstr ""
+
+#. type: Bullet: '    - '
+#: docs/8.x/localization.md:12
+#, markdown-text
+msgid "[Using Translation Strings As Keys](#using-translation-strings-as-keys)"
+msgstr ""
+
+#. type: Bullet: '- '
+#: docs/8.x/localization.md:12
+#, markdown-text
+msgid "[Retrieving Translation Strings](#retrieving-translation-strings)"
+msgstr ""
+
+#. type: Bullet: '    - '
+#: docs/8.x/localization.md:12
+#, markdown-text
+msgid ""
+"[Replacing Parameters In Translation "
+"Strings](#replacing-parameters-in-translation-strings)"
+msgstr ""
+
+#. type: Bullet: '    - '
+#: docs/8.x/localization.md:12
+#, markdown-text
+msgid "[Pluralization](#pluralization)"
+msgstr ""
+
+#. type: Bullet: '- '
+#: docs/8.x/localization.md:12
+#, markdown-text
+msgid "[Overriding Package Language Files](#overriding-package-language-files)"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/localization.md:14
+#, markdown-text, no-wrap
+msgid "<a name=\"introduction\"></a>\n"
+msgstr ""
+
+#. type: Title ##
+#: docs/8.x/localization.md:14
+#, markdown-text, no-wrap
+msgid "Introduction"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/localization.md:17
+#, markdown-text
+msgid ""
+"Laravel's localization features provide a convenient way to retrieve strings "
+"in various languages, allowing you to easily support multiple languages "
+"within your application."
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/localization.md:19
+#, markdown-text
+msgid ""
+"Laravel provides two ways to manage translation strings. First, language "
+"strings may be stored in files within the `resources/lang` directory. Within "
+"this directory, there may be subdirectories for each language supported by "
+"the application. This is the approach Laravel uses to manage translation "
+"strings for built-in Laravel features such as validation error messages:"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/localization.md:26 docs/8.x/localization.md:86
+#, markdown-text, no-wrap
+msgid ""
+"    /resources\n"
+"        /lang\n"
+"            /en\n"
+"                messages.php\n"
+"            /es\n"
+"                messages.php\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/localization.md:28
+#, markdown-text
+msgid ""
+"Or, translation strings may be defined within JSON files that are placed "
+"within the `resources/lang` directory. When taking this approach, each "
+"language supported by your application would have a corresponding JSON file "
+"within this directory. This approach is recommended for application's that "
+"have a large number of translatable strings:"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/localization.md:33
+#, markdown-text, no-wrap
+msgid ""
+"    /resources\n"
+"        /lang\n"
+"            en.json\n"
+"            es.json\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/localization.md:35
+#, markdown-text
+msgid ""
+"We'll discuss each approach to managing translation strings within this "
+"documentation."
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/localization.md:37
+#, markdown-text, no-wrap
+msgid "<a name=\"configuring-the-locale\"></a>\n"
+msgstr ""
+
+#. type: Title ###
+#: docs/8.x/localization.md:37
+#, markdown-text, no-wrap
+msgid "Configuring The Locale"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/localization.md:40
+#, markdown-text
+msgid ""
+"The default language for your application is stored in the `config/app.php` "
+"configuration file's `locale` configuration option. You are free to modify "
+"this value to suit the needs of your application."
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/localization.md:42
+#, markdown-text
+msgid ""
+"You may modify the default language for a single HTTP request at runtime "
+"using the `setLocale` method provided by the `App` facade:"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/localization.md:44 docs/8.x/localization.md:65
+#, markdown-text, no-wrap
+msgid "    use Illuminate\\Support\\Facades\\App;\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/localization.md:49
+#, markdown-text, no-wrap
+msgid ""
+"    Route::get('/greeting/{locale}', function ($locale) {\n"
+"        if (! in_array($locale, ['en', 'es', 'fr'])) {\n"
+"            abort(400);\n"
+"        }\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/localization.md:51
+#, markdown-text, no-wrap
+msgid "        App::setLocale($locale);\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/localization.md:54
+#, markdown-text, no-wrap
+msgid ""
+"        //\n"
+"    });\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/localization.md:56
+#, markdown-text
+msgid ""
+"You may configure a \"fallback language\", which will be used when the "
+"active language does not contain a given translation string. Like the "
+"default language, the fallback language is also configured in the "
+"`config/app.php` configuration file:"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/localization.md:58
+#, markdown-text, no-wrap
+msgid "    'fallback_locale' => 'en',\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/localization.md:60
+#, markdown-text, no-wrap
+msgid "<a name=\"determining-the-current-locale\"></a>\n"
+msgstr ""
+
+#. type: Title ####
+#: docs/8.x/localization.md:60
+#, markdown-text, no-wrap
+msgid "Determining The Current Locale"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/localization.md:63
+#, markdown-text
+msgid ""
+"You may use the `currentLocale` and `isLocale` methods on the `App` facade "
+"to determine the current locale or check if the locale is a given value:"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/localization.md:67
+#, markdown-text, no-wrap
+msgid "    $locale = App::currentLocale();\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/localization.md:71
+#, markdown-text, no-wrap
+msgid ""
+"    if (App::isLocale('en')) {\n"
+"        //\n"
+"    }\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/localization.md:73
+#, markdown-text, no-wrap
+msgid "<a name=\"defining-translation-strings\"></a>\n"
+msgstr ""
+
+#. type: Title ##
+#: docs/8.x/localization.md:73
+#, markdown-text, no-wrap
+msgid "Defining Translation Strings"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/localization.md:76
+#, markdown-text, no-wrap
+msgid "<a name=\"using-short-keys\"></a>\n"
+msgstr ""
+
+#. type: Title ###
+#: docs/8.x/localization.md:76
+#, markdown-text, no-wrap
+msgid "Using Short Keys"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/localization.md:79
+#, markdown-text
+msgid ""
+"Typically, translation strings are stored in files within the "
+"`resources/lang` directory. Within this directory, there should be a "
+"subdirectory for each language supported by your application. This is the "
+"approach Laravel uses to manage translation strings for built-in Laravel "
+"features such as validation error messages:"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/localization.md:88
+#, markdown-text
+msgid "All language files return an array of keyed strings. For example:"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/localization.md:90
+#, markdown-text, no-wrap
+msgid "    <?php\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/localization.md:92
+#, markdown-text, no-wrap
+msgid "    // resources/lang/en/messages.php\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/localization.md:96
+#, markdown-text, no-wrap
+msgid ""
+"    return [\n"
+"        'welcome' => 'Welcome to our application!',\n"
+"    ];\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/localization.md:98
+#, markdown-text, no-wrap
+msgid ""
+"> {note} For languages that differ by territory, you should name the "
+"language directories according to the ISO 15897. For example, \"en_GB\" "
+"should be used for British English rather than \"en-gb\".\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/localization.md:100
+#, markdown-text, no-wrap
+msgid "<a name=\"using-translation-strings-as-keys\"></a>\n"
+msgstr ""
+
+#. type: Title ###
+#: docs/8.x/localization.md:100
+#, markdown-text, no-wrap
+msgid "Using Translation Strings As Keys"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/localization.md:103
+#, markdown-text
+msgid ""
+"For applications with a large number of translatable strings, defining every "
+"string with a \"short key\" can become confusing when referencing the keys "
+"in your views and it is cumbersome to continually invent keys for every "
+"translation string supported by your application."
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/localization.md:105
+#, markdown-text
+msgid ""
+"For this reason, Laravel also provides support for defining translation "
+"strings using the \"default\" translation of the string as the "
+"key. Translation files that use translation strings as keys are stored as "
+"JSON files in the `resources/lang` directory. For example, if your "
+"application has a Spanish translation, you should create a "
+"`resources/lang/es.json` file:"
+msgstr ""
+
+#. type: Fenced code block (js)
+#: docs/8.x/localization.md:106
+#, no-wrap
+msgid ""
+"{\n"
+"    \"I love programming.\": \"Me encanta programar.\"\n"
+"}\n"
+msgstr ""
+
+#. type: Title ####
+#: docs/8.x/localization.md:112
+#, markdown-text, no-wrap
+msgid "Key / File Conflicts"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/localization.md:115
+#, markdown-text
+msgid ""
+"You should not define translation string keys that conflict with other "
+"translation filenames. For example, translating `__('Action')` for the "
+"\"NL\" locale while a `nl/action.php` file exists but a `nl.json` file does "
+"not exist will result in the translator returning the contents of "
+"`nl/action.php`."
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/localization.md:117
+#, markdown-text, no-wrap
+msgid "<a name=\"retrieving-translation-strings\"></a>\n"
+msgstr ""
+
+#. type: Title ##
+#: docs/8.x/localization.md:117
+#, markdown-text, no-wrap
+msgid "Retrieving Translation Strings"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/localization.md:120
+#, markdown-text
+msgid ""
+"You may retrieve translation strings from your language files using the `__` "
+"helper function. If you are using \"short keys\" to define your translation "
+"strings, you should pass the file that contains the key and the key itself "
+"to the `__` function using \"dot\" syntax. For example, let's retrieve the "
+"`welcome` translation string from the `resources/lang/en/messages.php` "
+"language file:"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/localization.md:122
+#, markdown-text, no-wrap
+msgid "    echo __('messages.welcome');\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/localization.md:124
+#, markdown-text
+msgid ""
+"If the specified translation string does not exist, the `__` function will "
+"return the translation string key. So, using the example above, the `__` "
+"function would return `messages.welcome` if the translation string does not "
+"exist."
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/localization.md:126
+#, markdown-text, no-wrap
+msgid ""
+" If you are using your [default translation strings as your translation "
+"keys](#using-translation-strings-as-keys), you should pass the default "
+"translation of your string to the `__` function;\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/localization.md:128
+#, markdown-text, no-wrap
+msgid "    echo __('I love programming.');\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/localization.md:130
+#, markdown-text
+msgid ""
+"Again, if the translation string does not exist, the `__` function will "
+"return the translation string key that it was given."
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/localization.md:132
+#, markdown-text
+msgid ""
+"If you are using the [Blade templating engine](/docs/{{version}}/blade), you "
+"may use the `{{ }}` echo syntax to display the translation string:"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/localization.md:134
+#, markdown-text, no-wrap
+msgid "    {{ __('messages.welcome') }}\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/localization.md:136
+#, markdown-text, no-wrap
+msgid "<a name=\"replacing-parameters-in-translation-strings\"></a>\n"
+msgstr ""
+
+#. type: Title ###
+#: docs/8.x/localization.md:136
+#, markdown-text, no-wrap
+msgid "Replacing Parameters In Translation Strings"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/localization.md:139
+#, markdown-text
+msgid ""
+"If you wish, you may define placeholders in your translation strings. All "
+"placeholders are prefixed with a `:`. For example, you may define a welcome "
+"message with a placeholder name:"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/localization.md:141
+#, markdown-text, no-wrap
+msgid "    'welcome' => 'Welcome, :name',\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/localization.md:143
+#, markdown-text
+msgid ""
+"To replace the placeholders when retrieving a translation string, you may "
+"pass an array of replacements as the second argument to the `__` function:"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/localization.md:145
+#, markdown-text, no-wrap
+msgid "    echo __('messages.welcome', ['name' => 'dayle']);\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/localization.md:147
+#, markdown-text
+msgid ""
+"If your placeholder contains all capital letters, or only has its first "
+"letter capitalized, the translated value will be capitalized accordingly:"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/localization.md:150
+#, markdown-text, no-wrap
+msgid ""
+"    'welcome' => 'Welcome, :NAME', // Welcome, DAYLE\n"
+"    'goodbye' => 'Goodbye, :Name', // Goodbye, Dayle\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/localization.md:152
+#, markdown-text, no-wrap
+msgid "<a name=\"pluralization\"></a>\n"
+msgstr ""
+
+#. type: Title ###
+#: docs/8.x/localization.md:152
+#, markdown-text, no-wrap
+msgid "Pluralization"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/localization.md:155
+#, markdown-text
+msgid ""
+"Pluralization is a complex problem, as different languages have a variety of "
+"complex rules for pluralization; however, Laravel can help you translate "
+"strings differently based on pluralization rules that you define. Using a "
+"`|` character, you may distinguish singular and plural forms of a string:"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/localization.md:157
+#, markdown-text, no-wrap
+msgid "    'apples' => 'There is one apple|There are many apples',\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/localization.md:159
+#, markdown-text
+msgid ""
+"Of course, pluralization is also supported when using [translation strings "
+"as keys](#using-translation-strings-as-keys):"
+msgstr ""
+
+#. type: Fenced code block (js)
+#: docs/8.x/localization.md:160
+#, no-wrap
+msgid ""
+"{\n"
+"    \"There is one apple|There are many apples\": \"Hay una manzana|Hay "
+"muchas manzanas\"\n"
+"}\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/localization.md:167
+#, markdown-text
+msgid ""
+"You may even create more complex pluralization rules which specify "
+"translation strings for multiple ranges of values:"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/localization.md:169
+#, markdown-text, no-wrap
+msgid ""
+"    'apples' => '{0} There are none|[1,19] There are some|[20,*] There are "
+"many',\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/localization.md:171
+#, markdown-text
+msgid ""
+"After defining a translation string that has pluralization options, you may "
+"use the `trans_choice` function to retrieve the line for a given "
+"\"count\". In this example, since the count is greater than one, the plural "
+"form of the translation string is returned:"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/localization.md:173
+#, markdown-text, no-wrap
+msgid "    echo trans_choice('messages.apples', 10);\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/localization.md:175
+#, markdown-text
+msgid ""
+"You may also define placeholder attributes in pluralization strings. These "
+"placeholders may be replaced by passing an array as the third argument to "
+"the `trans_choice` function:"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/localization.md:177
+#, markdown-text, no-wrap
+msgid "    'minutes_ago' => '{1} :value minute ago|[2,*] :value minutes ago',\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/localization.md:179
+#, markdown-text, no-wrap
+msgid "    echo trans_choice('time.minutes_ago', 5, ['value' => 5]);\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/localization.md:181
+#, markdown-text
+msgid ""
+"If you would like to display the integer value that was passed to the "
+"`trans_choice` function, you may use the built-in `:count` placeholder:"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/localization.md:183
+#, markdown-text, no-wrap
+msgid ""
+"    'apples' => '{0} There are none|{1} There is one|[2,*] There are "
+":count',\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/localization.md:185
+#, markdown-text, no-wrap
+msgid "<a name=\"overriding-package-language-files\"></a>\n"
+msgstr ""
+
+#. type: Title ##
+#: docs/8.x/localization.md:185
+#, markdown-text, no-wrap
+msgid "Overriding Package Language Files"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/localization.md:188
+#, markdown-text
+msgid ""
+"Some packages may ship with their own language files. Instead of changing "
+"the package's core files to tweak these lines, you may override them by "
+"placing files in the `resources/lang/vendor/{package}/{locale}` directory."
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/localization.md:189
+#, markdown-text
+msgid ""
+"So, for example, if you need to override the English translation strings in "
+"`messages.php` for a package named `skyrim/hearthfire`, you should place a "
+"language file at: `resources/lang/vendor/hearthfire/en/messages.php`. Within "
+"this file, you should only define the translation strings you wish to "
+"override. Any translation strings you don't override will still be loaded "
+"from the package's original language files."
+msgstr ""

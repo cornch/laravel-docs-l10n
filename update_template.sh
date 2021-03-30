@@ -13,5 +13,5 @@ for file in docs/**/*.md; do
           --po $pot_path 
 done
 
-msgcat -o po/docs.pot translations/**/*.pot
+msgcat --strict -o po/docs.pot translations/**/*.pot
 

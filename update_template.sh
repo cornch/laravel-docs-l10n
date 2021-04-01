@@ -13,5 +13,9 @@ for file in docs/**/*.md; do
           --po $pot_path 
 done
 
+for po in translations/**/*.po; do
+  
+done
+
 msgcat --strict -o po/docs.pot translations/**/*.pot
 

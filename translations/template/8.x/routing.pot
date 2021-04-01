@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Laravel Documentation VERSION\n"
-"POT-Creation-Date: 2021-03-30 14:16+0800\n"
+"POT-Creation-Date: 2021-04-01 22:46+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -188,7 +188,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/routing.md:34 docs/8.x/routing.md:647
+#: docs/8.x/routing.md:34 docs/8.x/routing.md:655
 #, markdown-text, no-wrap
 msgid "    use Illuminate\\Support\\Facades\\Route;\n"
 msgstr ""
@@ -1832,18 +1832,38 @@ msgstr ""
 
 #. type: Plain text
 #: docs/8.x/routing.md:591
+#, markdown-text
+msgid ""
+"To illustrate this feature using another example, we can limit access to the "
+"route to 100 times per minute per authenticated user ID or 10 times per "
+"minute per IP address for guests:"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/routing.md:597
+#, markdown-text, no-wrap
+msgid ""
+"    RateLimiter::for('uploads', function (Request $request) {\n"
+"        return $request->user()\n"
+"                    ? Limit::perMinute(100)->by($request->user()->id)\n"
+"                    : Limit::perMinute(10)->by($request->ip());\n"
+"    });\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/routing.md:599
 #, markdown-text, no-wrap
 msgid "<a name=\"multiple-rate-limits\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/8.x/routing.md:591
+#: docs/8.x/routing.md:599
 #, markdown-text, no-wrap
 msgid "Multiple Rate Limits"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/routing.md:594
+#: docs/8.x/routing.md:602
 #, markdown-text
 msgid ""
 "If needed, you may return an array of rate limits for a given rate limiter "
@@ -1852,7 +1872,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/routing.md:601
+#: docs/8.x/routing.md:609
 #, markdown-text, no-wrap
 msgid ""
 "    RateLimiter::for('login', function (Request $request) {\n"
@@ -1864,19 +1884,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/routing.md:603
+#: docs/8.x/routing.md:611
 #, markdown-text, no-wrap
 msgid "<a name=\"attaching-rate-limiters-to-routes\"></a>\n"
 msgstr ""
 
 #. type: Title ###
-#: docs/8.x/routing.md:603
+#: docs/8.x/routing.md:611
 #, markdown-text, no-wrap
 msgid "Attaching Rate Limiters To Routes"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/routing.md:606
+#: docs/8.x/routing.md:614
 #, markdown-text
 msgid ""
 "Rate limiters may be attached to routes or route groups using the `throttle` "
@@ -1885,7 +1905,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/routing.md:611
+#: docs/8.x/routing.md:619
 #, markdown-text, no-wrap
 msgid ""
 "    Route::middleware(['throttle:uploads'])->group(function () {\n"
@@ -1895,7 +1915,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/routing.md:616
+#: docs/8.x/routing.md:624
 #, markdown-text, no-wrap
 msgid ""
 "        Route::post('/video', function () {\n"
@@ -1905,19 +1925,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/routing.md:618
+#: docs/8.x/routing.md:626
 #, markdown-text, no-wrap
 msgid "<a name=\"throttling-with-redis\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/8.x/routing.md:618
+#: docs/8.x/routing.md:626
 #, markdown-text, no-wrap
 msgid "Throttling With Redis"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/routing.md:621
+#: docs/8.x/routing.md:629
 #, markdown-text
 msgid ""
 "Typically, the `throttle` middleware is mapped to the "
@@ -1930,7 +1950,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/routing.md:623
+#: docs/8.x/routing.md:631
 #, markdown-text, no-wrap
 msgid ""
 "    'throttle' => "
@@ -1938,19 +1958,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/routing.md:625
+#: docs/8.x/routing.md:633
 #, markdown-text, no-wrap
 msgid "<a name=\"form-method-spoofing\"></a>\n"
 msgstr ""
 
 #. type: Title ##
-#: docs/8.x/routing.md:625
+#: docs/8.x/routing.md:633
 #, markdown-text, no-wrap
 msgid "Form Method Spoofing"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/routing.md:628
+#: docs/8.x/routing.md:636
 #, markdown-text
 msgid ""
 "HTML forms do not support `PUT`, `PATCH`, or `DELETE` actions. So, when "
@@ -1960,7 +1980,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/routing.md:633
+#: docs/8.x/routing.md:641
 #, markdown-text, no-wrap
 msgid ""
 "    <form action=\"/example\" method=\"POST\">\n"
@@ -1971,7 +1991,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/routing.md:635
+#: docs/8.x/routing.md:643
 #, markdown-text
 msgid ""
 "For convenience, you may use the `@method` [Blade "
@@ -1979,7 +1999,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/routing.md:640
+#: docs/8.x/routing.md:648
 #, markdown-text, no-wrap
 msgid ""
 "    <form action=\"/example\" method=\"POST\">\n"
@@ -1989,19 +2009,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/routing.md:642
+#: docs/8.x/routing.md:650
 #, markdown-text, no-wrap
 msgid "<a name=\"accessing-the-current-route\"></a>\n"
 msgstr ""
 
 #. type: Title ##
-#: docs/8.x/routing.md:642
+#: docs/8.x/routing.md:650
 #, markdown-text, no-wrap
 msgid "Accessing The Current Route"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/routing.md:645
+#: docs/8.x/routing.md:653
 #, markdown-text
 msgid ""
 "You may use the `current`, `currentRouteName`, and `currentRouteAction` "
@@ -2010,7 +2030,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/routing.md:651
+#: docs/8.x/routing.md:659
 #, markdown-text, no-wrap
 msgid ""
 "    $route = Route::current(); // Illuminate\\Routing\\Route\n"
@@ -2019,7 +2039,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/routing.md:653
+#: docs/8.x/routing.md:661
 #, markdown-text
 msgid ""
 "You may refer to the API documentation for both the [underlying class of the "
@@ -2032,19 +2052,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/routing.md:655
+#: docs/8.x/routing.md:663
 #, markdown-text, no-wrap
 msgid "<a name=\"cors\"></a>\n"
 msgstr ""
 
 #. type: Title ##
-#: docs/8.x/routing.md:655
+#: docs/8.x/routing.md:663
 #, markdown-text, no-wrap
 msgid "Cross-Origin Resource Sharing (CORS)"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/routing.md:658
+#: docs/8.x/routing.md:666
 #, markdown-text
 msgid ""
 "Laravel can automatically respond to CORS `OPTIONS` HTTP requests with "
@@ -2057,7 +2077,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/routing.md:660
+#: docs/8.x/routing.md:668
 #, markdown-text, no-wrap
 msgid ""
 "> {tip} For more information on CORS and CORS headers, please consult the "
@@ -2066,19 +2086,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/routing.md:662
+#: docs/8.x/routing.md:670
 #, markdown-text, no-wrap
 msgid "<a name=\"route-caching\"></a>\n"
 msgstr ""
 
 #. type: Title ##
-#: docs/8.x/routing.md:662
+#: docs/8.x/routing.md:670
 #, markdown-text, no-wrap
 msgid "Route Caching"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/routing.md:665
+#: docs/8.x/routing.md:673
 #, markdown-text
 msgid ""
 "When deploying your application to production, you should take advantage of "
@@ -2088,13 +2108,13 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/routing.md:667
+#: docs/8.x/routing.md:675
 #, markdown-text, no-wrap
 msgid "    php artisan route:cache\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/routing.md:669
+#: docs/8.x/routing.md:677
 #, markdown-text
 msgid ""
 "After running this command, your cached routes file will be loaded on every "
@@ -2104,13 +2124,13 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/routing.md:671
+#: docs/8.x/routing.md:679
 #, markdown-text
 msgid "You may use the `route:clear` command to clear the route cache:"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/routing.md:672
+#: docs/8.x/routing.md:680
 #, markdown-text, no-wrap
 msgid "    php artisan route:clear\n"
 msgstr ""

@@ -10,10 +10,14 @@ for monopo in po/*.po; do
     mkdir -p `dirname "translations/$locale/$file"`
 
     if [[ -f $file ]]; then
-      po4a-updatepo -f text -o markdown -m $pot -p $file
+      po4a-updatepo \
+        -f text -o markdown \
+        --master-charset utf-8 --localized-charset utf-8 \
+        -m $pot \
+        -p $file
     fi
 
-    msgmerge "$monopo" "$pot" > "translations/$locale/$file.po" 
+    msgmerge "$monopo" "$pot" > "translations/$locale/$file.po"
   done
 done
 

@@ -9,12 +9,9 @@ for file in docs/**/*.md; do
           --package-name "Laravel Documentation" \
           --copyright-holder "Taylor Otwell" \
           --format text --option markdown \
+          --master-charset utf-8 --localized-charset utf-8 \
           --master $file \
-          --po $pot_path 
-done
-
-for po in translations/**/*.po; do
-  
+          --po $pot_path
 done
 
 msgcat --strict -o po/docs.pot translations/**/*.pot

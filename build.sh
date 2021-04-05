@@ -20,6 +20,7 @@ for source_dir in docs/*; do
     md_filename=`echo "$md" | sed -E "s#$target_dir/(.+)\.md#\1#g"`
 
     po4a-translate --format text --option markdown \
+      --master-charset utf-8 --localized-charset utf-8 \
       --keep 0 \
       --master "$source_dir/$md_filename.md" \
       --po "$po_dir/$md_filename.po" \

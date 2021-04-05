@@ -1,0 +1,40 @@
+name: Build Translated Markdown
+
+on:
+  pull_request:
+    types: [closed]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    if: ${{ github.head_ref == 'l10n_main' && github.event.merged == true }}
+    steps:
+      - name: Checkout Build
+        uses: actions/checkout@v2
+        with:
+          ref: build
+
+      - name: Checkout Submodules
+        run: git submodule update --init --recursive
+
+      - name: Prepare Environment
+        run: |
+          sudo apt-get install po4a zsh
+
+      - name: Update
+        run: |
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          git fetch origin main
+          git merge origin/main --no-edit
+
+      - name: Build
+        run: |
+          zsh generate_translations.sh
+          zsh build.sh zh_TW
+
+      - name: Commit & Push
+        run: |
+          git add .
+          git commit -m "Build fresh translations"
+          git push origin build

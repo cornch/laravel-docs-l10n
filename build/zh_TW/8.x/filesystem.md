@@ -90,7 +90,7 @@ run the `storage:link` command:
     ],
 
 <a name="driver-prerequisites"></a>
-### Driver Prerequisites
+### Driver 需求
 
 <a name="composer-packages"></a>
 #### Composer Packages

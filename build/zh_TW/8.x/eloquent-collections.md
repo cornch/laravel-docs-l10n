@@ -48,7 +48,7 @@ contain any Eloquent models, it will be converted to a base collection
 instance.
 
 <a name="available-methods"></a>
-## Available Methods
+## 可用方法
 
 All Eloquent collections extend the base [Laravel
 collection](/docs/{{version}}/collections#available-methods) object;

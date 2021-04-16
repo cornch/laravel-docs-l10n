@@ -74,7 +74,7 @@ Finally, examine any other third-party packages consumed by your application
 and verify you are using the proper version for Laravel 8 support.
 
 <a name="collections"></a>
-### Collections
+### Collection
 
 <a name="the-isset-method"></a>
 #### The `isset` Method
@@ -95,7 +95,7 @@ collection items that have a value of `null`:
     isset($collection[0]);
 
 <a name="database"></a>
-### Database
+### 資料庫
 
 <a name="seeder-factory-namespaces"></a>
 #### Seeder & Factory Namespaces

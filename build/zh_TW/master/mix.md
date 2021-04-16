@@ -485,7 +485,7 @@ the environment variable's value changes while the task is running:
     process.env.MIX_SENTRY_DSN_PUBLIC
 
 <a name="notifications"></a>
-## Notifications
+## 通知
 
 When available, Mix will automatically display OS notifications when
 compiling, giving you instant feedback as to whether the compilation was

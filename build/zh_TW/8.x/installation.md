@@ -333,9 +333,7 @@ laravel new example-app --github="--public" --organization="laravel"
 <a name="initial-configuration"></a>
 ## Initial Configuration
 
-All of the configuration files for the Laravel framework are stored in the
-`config` directory. Each option is documented, so feel free to look through
-the files and get familiar with the options available to you.
+Laravel 框架的所有組態設定檔都儲存在 `config` 目錄內。各個選項都有說明文件，歡迎閱讀這些檔案並熟悉可用的選項。
 
 Laravel needs almost no additional configuration out of the box. You are
 free to get started developing! However, you may wish to review the
@@ -351,11 +349,8 @@ whether your application is running on your local computer or on a
 production web server, many important configuration values are defined using
 the `.env` file that exists at the root of your application.
 
-Your `.env` file should not be committed to your application's source
-control, since each developer / server using your application could require
-a different environment configuration. Furthermore, this would be a security
-risk in the event an intruder gains access to your source control
-repository, since any sensitive credentials would get exposed.
+`.env` 檔不應被簽入應用程式的版本控制中，因為每個使用應用程式的開發人員／伺服器都可能需要不同的環境組態。此外，若將 `.env`
+檔簽入版本控制的話，當有入侵者取得了版本控制儲存庫的存取權限，就可能會造成安全性風險，因為其中的機敏認證資料都會被暴露。
 
 > {tip} For more information about the `.env` file and environment based configuration, check out the full [configuration documentation](/docs/{{version}}/configuration#environment-configuration).
 

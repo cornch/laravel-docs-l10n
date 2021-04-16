@@ -53,10 +53,10 @@ box:
 > {tip} The array driver is primarily used during [testing](/docs/{{version}}/testing) and prevents the data stored in the session from being persisted.
 
 <a name="driver-prerequisites"></a>
-### Driver Prerequisites
+### Driver 需求
 
 <a name="database"></a>
-#### Database
+#### 資料庫
 
 When using the `database` session driver, you will need to create a table to
 contain the session records. An example `Schema` declaration for the table
@@ -379,7 +379,7 @@ quickly cover what each of the methods do:
 </div>
 
 <a name="registering-the-driver"></a>
-#### Registering The Driver
+#### 註冊 Driver
 
 Once your driver has been implemented, you are ready to register it with
 Laravel. To add additional drivers to Laravel's session backend, you may use

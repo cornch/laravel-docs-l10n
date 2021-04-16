@@ -1,4 +1,4 @@
-# Notifications
+# 通知
 
 - [簡介](#introduction)
 - [Generating Notifications](#generating-notifications)

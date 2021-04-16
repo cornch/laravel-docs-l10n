@@ -286,26 +286,18 @@ maintenance mode bypass token:
 
     php artisan down --secret="1630542a-246b-4b66-afa1-dd72a4c43515"
 
-After placing the application in maintenance mode, you may navigate to the
-application URL matching this token and Laravel will issue a maintenance
-mode bypass cookie to your browser:
+將應用程式放入維護模式後，可以瀏覽符合該權杖的應用程式網址，Laravel 會簽發一個繞過維護模式的 Cookie 給瀏覽器：
 
     https://example.com/1630542a-246b-4b66-afa1-dd72a4c43515
 
-When accessing this hidden route, you will then be redirected to the `/`
-route of the application. Once the cookie has been issued to your browser,
-you will be able to browse the application normally as if it was not in
-maintenance mode.
+在存取該隱藏路由時，會接著被重新導向至應用程式的 `/` 路由。該 Cookie 被簽發給瀏覽器後，就可以像沒有在維護模式一樣正常地瀏覽應用程式。
 
 <a name="pre-rendering-the-maintenance-mode-view"></a>
-#### Pre-Rendering The Maintenance Mode View
+#### 預轉譯維護模式 View
 
-If you utilize the `php artisan down` command during deployment, your users
-may still occasionally encounter errors if they access the application while
-your Composer dependencies or other infrastructure components are
-updating. This occurs because a significant part of the Laravel framework
-must boot in order to determine your application is in maintenance mode and
-render the maintenance mode view using the templating engine.
+若在部署過程中使用了 `php artisan down` 指令，若使用者在 Composer
+依賴或其他基礎設施元件更新時存取了應用程式，則可能會遇到錯誤。這是因為 Laravel
+框架中重要的部分必須要先啟動才能判斷應用程式是否在維護模式下，並才能接著使用樣板引擎來轉譯維護模式的 View。
 
 For this reason, Laravel now allows you to pre-render a maintenance mode
 view that will be returned at the very beginning of the request cycle. This

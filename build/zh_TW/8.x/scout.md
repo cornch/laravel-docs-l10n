@@ -66,7 +66,7 @@ automatically keep the model in sync with your search driver:
     }
 
 <a name="driver-prerequisites"></a>
-### Driver Prerequisites
+### Driver 需求
 
 <a name="algolia"></a>
 #### Algolia

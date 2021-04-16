@@ -107,7 +107,7 @@ them higher processing priority:
 ### Driver Notes & Prerequisites
 
 <a name="database"></a>
-#### Database
+#### 資料庫
 
 In order to use the `database` queue driver, you will need a database table
 to hold the jobs. To generate a migration that creates this table, run the

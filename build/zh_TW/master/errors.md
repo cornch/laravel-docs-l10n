@@ -21,10 +21,8 @@ user. We'll dive deeper into this class throughout this documentation.
 <a name="configuration"></a>
 ## 組態設定
 
-The `debug` option in your `config/app.php` configuration file determines
-how much information about an error is actually displayed to the user. By
-default, this option is set to respect the value of the `APP_DEBUG`
-environment variable, which is stored in your `.env` file.
+`config/app.php` 組態設定檔中的 `debug` 選項用來判斷錯誤在實際顯示給使用者時要包含多少資訊。預設情況下，這個選項被設為依照
+`APP_DEBUG` 環境變數值，該環境變數儲存於 `.env` 檔內。
 
 During local development, you should set the `APP_DEBUG` environment
 variable to `true`. **In your production environment, this value should

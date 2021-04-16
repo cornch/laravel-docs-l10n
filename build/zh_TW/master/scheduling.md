@@ -365,7 +365,7 @@ background so that they may all run simultaneously, you may use the
 > {note} The `runInBackground` method may only be used when scheduling tasks via the `command` and `exec` methods.
 
 <a name="maintenance-mode"></a>
-### Maintenance Mode
+### 維護模式
 
 Your application's scheduled tasks will not run when the application is in
 [maintenance mode](/docs/{{version}}/configuration#maintenance-mode), since

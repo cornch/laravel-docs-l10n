@@ -145,7 +145,7 @@ This command precompiles all your Blade views so they are not compiled on
 demand, improving the performance of each request that returns a view.
 
 <a name="debug-mode"></a>
-## Debug Mode
+## 除錯模式
 
 The debug option in your config/app.php configuration file determines how
 much information about an error is actually displayed to the user. By

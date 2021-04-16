@@ -365,7 +365,7 @@ refreshed as well:
     $flight->number; // "FR 900"
 
 <a name="collections"></a>
-### Collections
+### Collection
 
 As we have seen, Eloquent methods like `all` and `get` retrieve multiple
 records from the database. However, these methods don't return a plain PHP

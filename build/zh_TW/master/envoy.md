@@ -232,7 +232,7 @@ declaration. This option is particularly useful for destructive operations:
 ```
 
 <a name="notifications"></a>
-## Notifications
+## 通知
 
 <a name="slack"></a>
 ### Slack

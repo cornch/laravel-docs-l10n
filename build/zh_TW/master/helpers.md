@@ -10,7 +10,7 @@ functions are used by the framework itself; however, you are free to use
 them in your own applications if you find them convenient.
 
 <a name="available-methods"></a>
-## Available Methods
+## 可用方法
 
 <style>
     .collection-method-list > p {
@@ -198,7 +198,7 @@ them in your own applications if you find them convenient.
 </div>
 
 <a name="method-listing"></a>
-## Method Listing
+## 方法列表
 
 <style>
     #collection-method code {
@@ -627,7 +627,7 @@ The `Arr::random` method returns a random value from an array:
 
     $random = Arr::random($array);
 
-    // 4 - (retrieved randomly)
+    // 4 -（隨機取得）
 
 You may also specify the number of items to return as an optional second
 argument. Note that providing this argument will return an array even if
@@ -662,7 +662,7 @@ The `Arr::shuffle` method randomly shuffles the items in the array:
 
     $array = Arr::shuffle([1, 2, 3, 4, 5]);
 
-    // [3, 2, 5, 1, 4] - (generated randomly)
+    // [3, 2, 5, 1, 4] -（隨機產生）
 
 <a name="method-array-sort"></a>
 #### `Arr::sort()` {#collection-method}

@@ -119,7 +119,7 @@ not already installed:
 > {note} Valet only serves one PHP version at a time, even if you have multiple PHP versions installed.
 
 <a name="database"></a>
-#### Database
+#### 資料庫
 
 If your application needs a database, check out
 [DBngin](https://dbngin.com). DBngin provides a free, all-in-one database

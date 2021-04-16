@@ -409,7 +409,7 @@ objects, you may define a `tags` method on the class:
     }
 
 <a name="notifications"></a>
-## Notifications
+## 通知
 
 > {note} When configuring Horizon to send Slack or SMS notifications, you should review the [prerequisites for the relevant notification channel](/docs/{{version}}/notifications).
 

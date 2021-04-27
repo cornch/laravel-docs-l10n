@@ -1,42 +1,38 @@
-# Database Testing
+# 資料庫測試
 
-- [Introduction](#introduction)
-    - [Resetting The Database After Each Test](#resetting-the-database-after-each-test)
-- [Defining Model Factories](#defining-model-factories)
-    - [Concept Overview](#concept-overview)
-    - [Generating Factories](#generating-factories)
-    - [Factory States](#factory-states)
-    - [Factory Callbacks](#factory-callbacks)
-- [Creating Models Using Factories](#creating-models-using-factories)
-    - [Instantiating Models](#instantiating-models)
-    - [Persisting Models](#persisting-models)
-    - [Sequences](#sequences)
-- [Factory Relationships](#factory-relationships)
-    - [Has Many Relationships](#has-many-relationships)
-    - [Belongs To Relationships](#belongs-to-relationships)
-    - [Many To Many Relationships](#many-to-many-relationships)
-    - [Polymorphic Relationships](#polymorphic-relationships)
-    - [Defining Relationships Within Factories](#defining-relationships-within-factories)
-- [Running Seeders](#running-seeders)
-- [Available Assertions](#available-assertions)
+- [簡介](#introduction)
+    - [為每個測試重設資料庫](#resetting-the-database-after-each-test)
+- [定義 Model Factory](#defining-model-factories)
+    - [概念概覽](#concept-overview)
+    - [產生 Factory](#generating-factories)
+    - [Factory State](#factory-states)
+    - [Factory 回呼](#factory-callbacks)
+- [使用 Factory 來建立 Model](#creating-models-using-factories)
+    - [建立 Model](#instantiating-models)
+    - [維持 Model](#persisting-models)
+    - [序列](#sequences)
+- [Factory 關聯](#factory-relationships)
+    - [Has Many 關聯](#has-many-relationships)
+    - [Belongs To 關聯](#belongs-to-relationships)
+    - [Many To Many 關聯](#many-to-many-relationships)
+    - [Polymorphic 關聯](#polymorphic-relationships)
+    - [使用 Factory 定義關聯](#defining-relationships-within-factories)
+- [執行 Seeder](#running-seeders)
+- [可用的 Assertion](#available-assertions)
 
 <a name="introduction"></a>
 ## 簡介
 
-Laravel provides a variety of helpful tools and assertions to make it easier
-to test your database driven applications. In addition, Laravel model
-factories and seeders make it painless to create test database records using
-your application's Eloquent models and relationships. We'll discuss all of
-these powerful features in the following documentation.
+Laravel 提供了數種實用工具與 Assertion (判斷提示) 讓你能更輕鬆地測試資料庫驅動的應用程式。此外，Laravel 的 Model
+Factory 與 Seeder 也讓使用應用程式的 Eloquent Model
+與關聯來測試資料庫記錄更容易。我們會在接下來的說明文件內討論這些強大的工具。
 
 <a name="resetting-the-database-after-each-test"></a>
-### Resetting The Database After Each Test
+### 在每個測試後重設資料庫
 
-Before proceeding much further, let's discuss how to reset your database
-after each of your tests so that data from a previous test does not
-interfere with subsequent tests. Laravel's included
-`Illuminate\Foundation\Testing\RefreshDatabase` trait will take care of this
-for you. Simply use the trait on your test class:
+在進一步繼續之前，我們先來討論如何在每個測試前重設資料庫，這樣一來前一個測試的資料就不會影響到接下來的測試。Laravel 內含了
+`Illuminate\Foundation\Testing\RefreshDatabase` Trait，會處理這樣的重設。只需要在測試類別內 use
+這個 Trait 即可：
 
     <?php
 
@@ -64,22 +60,17 @@ for you. Simply use the trait on your test class:
     }
 
 <a name="defining-model-factories"></a>
-## Defining Model Factories
+## 定義 Model Factory
 
 <a name="concept-overview"></a>
 ### 概念概覽
 
-First, let's talk about Eloquent model factories. When testing, you may need
-to insert a few records into your database before executing your
-test. Instead of manually specifying the value of each column when you
-create this test data, Laravel allows you to define a set of default
-attributes for each of your [Eloquent models](/docs/{{version}}/eloquent)
-using model factories.
+首先，來討論有關 Eloquent Model
+Factory。在測試時，我們可能會需要在執行測試前先插入一些資料到資料庫內。比起在建立這個測試資料時手動指定各個欄位的值，Laravel 中可以使用
+Model Factory 來為各個 [Eloquent Model](/docs/{{version}}/eloquent) 定義一系列的預設屬性。
 
-To see an example of how to write a factory, take a look at the
-`database/factories/UserFactory.php` file in your application. This factory
-is included with all new Laravel applications and contains the following
-factory definition:
+若要看看如何撰寫 Factory 的範例，請參考應用程式中的 `database/factories/UserFactory.php`。該
+Factory 包含在所有新的 Laravel 應用程式內，且包含了下列 Factory 定義：
 
     namespace Database\Factories;
 
@@ -113,45 +104,38 @@ factory definition:
         }
     }
 
-As you can see, in their most basic form, factories are classes that extend
-Laravel's base factory class and define a `model` property and `definition`
-method. The `definition` method returns the default set of attribute values
-that should be applied when creating a model using the factory.
+如你所見，最基礎的 Factory 格式就像這樣，繼承 Laravel 的基礎 Factory 類別並定義一個 `model` 屬性與
+`definition` 方法。`definition` 方法應回傳一組預設的屬性至，會在使用 Factory 建立 Model 時被套用到該
+Model 上。
 
-Via the `faker` property, factories have access to the
-[Faker](https://github.com/FakerPHP/Faker) PHP library, which allows you to
-conveniently generate various kinds of random data for testing.
+通過 `faker` 屬性，Factory 就可以存取 [Faker](https://github.com/FakerPHP/Faker) PHP
+函式庫。該函式庫可用來方便地產生各種類型的隨機資料以進行測試。
 
-> {tip} You can set your application's Faker locale by adding a `faker_locale` option to your `config/app.php` configuration file.
+> {tip} 可以通過在 `config/app.php` 組態設定檔中加上 `faker_locale` 選項來設定應用程式的 Faker 地區設定。
 
 <a name="generating-factories"></a>
-### Generating Factories
+### 產生 Factory
 
-To create a factory, execute the `make:factory` [Artisan
-command](/docs/{{version}}/artisan):
+若要建立 Factory，請執行 `make:factory` [Artisan 指令](/docs/{{version}}/artisan)：
 
     php artisan make:factory PostFactory
 
-The new factory class will be placed in your `database/factories` directory.
+新的 Factory 類別會被放在 `database/factories` 目錄內。
 
-The `--model` option may be used to indicate the name of the model created
-by the factory. This option will pre-fill the generated factory file with
-the given model:
+`--model` 選項可用來指定 Factory 要建立的 Model 名稱。這個選項會用來將給定的 Model 預先填寫到產生的 Factory
+檔內：
 
     php artisan make:factory PostFactory --model=Post
 
 <a name="factory-states"></a>
-### Factory States
+### Factory State
 
-State manipulation methods allow you to define discrete modifications that
-can be applied to your model factories in any combination. For example, your
-`Database\Factories\UserFactory` factory might contain a `suspended` state
-method that modifies one of its default attribute values.
+State 操作方法可定義一些個別的修改，並可任意組合套用到 Model Factory
+上。舉例來說，`Database\Factories\UserFactory` Factory 可包含一個 `suspended` (已停用)
+State 方法，用來修改該 Model Factory 的預設屬性值。
 
-State transformation methods typically call the `state` method provided by
-Laravel's base factory class. The `state` method accepts a closure which
-will receive the array of raw attributes defined for the factory and should
-return an array of attributes to modify:
+State 變換方法通常是呼叫 Laravel 基礎 Factory 類別所提供的 `state` 方法。這個 `state`
+方法接受一個閉包，該閉包會收到一組陣列，陣列內包含了由這個 Factory 所定義的原始屬性。該閉包應回傳一組陣列，期中包含要修改的屬性：
 
     /**
      * Indicate that the user is suspended.
@@ -168,13 +152,11 @@ return an array of attributes to modify:
     }
 
 <a name="factory-callbacks"></a>
-### Factory Callbacks
+### Factory 回呼
 
-Factory callbacks are registered using the `afterMaking` and `afterCreating`
-methods and allow you to perform additional tasks after making or creating a
-model. You should register these callbacks by defining a `configure` method
-on your factory class. This method will be automatically called by Laravel
-when the factory is instantiated:
+Factory 回呼使用 `afterMaking` 與 `afterCreating` 方法來註冊，能讓你在產生或建立 Model
+時執行額外的任務。要註冊這些回呼，應在 Factory 類別上定義一個 `configure` 方法。Laravel 會在 Factory
+初始化後自動呼叫這個方法：
 
     namespace Database\Factories;
 
@@ -209,17 +191,14 @@ when the factory is instantiated:
     }
 
 <a name="creating-models-using-factories"></a>
-## Creating Models Using Factories
+## 使用 Factory 來建立 Model
 
 <a name="instantiating-models"></a>
-### Instantiating Models
+### 產生 Model
 
-Once you have defined your factories, you may use the static `factory`
-method provided to your models by the
-`Illuminate\Database\Eloquent\Factories\HasFactory` trait in order to
-instantiate a factory instance for that model. Let's take a look at a few
-examples of creating models. First, we'll use the `make` method to create
-models without persisting them to the database:
+定義好 Factory 後，就可以使用 `Illuminate\Database\Eloquent\Factories\HasFactory`
+trait 提供給 Model 的 `factory` 靜態方法來產生用於該 Model 的 Factory 實體。來看看一些建立 Model
+的範例。首先，我們先使用 `make` 方法來在不儲存進資料庫的情況下建立 Model：
 
     use App\Models\User;
 
@@ -227,53 +206,45 @@ models without persisting them to the database:
     {
         $user = User::factory()->make();
 
-        // Use model in tests...
+        // 在測試中使用 Model…
     }
 
-You may create a collection of many models using the `count` method:
+可以使用 `count` 方法來建立包含多個 Model 的 Collection：
 
     $users = User::factory()->count(3)->make();
 
 <a name="applying-states"></a>
-#### Applying States
+#### 套用 State
 
-You may also apply any of your [states](#factory-states) to the models. If
-you would like to apply multiple state transformations to the models, you
-may simply call the state transformation methods directly:
+也可以將 [State](#factory-states) 套用至 Model 上。若想套用多個 State 變換到 Model 上，只需要直接呼叫
+State 變換方法即可：
 
     $users = User::factory()->count(5)->suspended()->make();
 
 <a name="overriding-attributes"></a>
-#### Overriding Attributes
+#### 複寫屬性
 
-If you would like to override some of the default values of your models, you
-may pass an array of values to the `make` method. Only the specified
-attributes will be replaced while the rest of the attributes remain set to
-their default values as specified by the factory:
+若想複寫 Model 上的一些預設值，可以傳入陣列到 `make` 方法上。只要指定要取代的屬性即可，剩下的屬性會保持 Factory 所指定的預設值：
 
     $user = User::factory()->make([
         'name' => 'Abigail Otwell',
     ]);
 
-Alternatively, the `state` method may be called directly on the factory
-instance to perform an inline state transformation:
+或者，也可以直接在 Factory 實體上呼叫 `state` 方法來內嵌 State 變換：
 
     $user = User::factory()->state([
         'name' => 'Abigail Otwell',
     ])->make();
 
-> {tip} [Mass assignment protection](/docs/{{version}}/eloquent#mass-assignment) is automatically disabled when creating models using factories.
+> {tip} [大量賦值保護](/docs/{{version}}/eloquent#mass-assignment) 會在使用 Factory 建立 Model 時自動禁用。
 
 <a name="connecting-factories-and-models"></a>
-#### Connecting Factories & Models
+#### 連結 Factory 與 Model
 
-The `HasFactory` trait's `factory` method will use conventions to determine
-the proper factory for the model. Specifically, the method will look for a
-factory in the `Database\Factories` namespace that has a class name matching
-the model name and is suffixed with `Factory`. If these conventions do not
-apply to your particular application or factory, you may overwrite the
-`newFactory` method on your model to return an instance of the model's
-corresponding factory directly:
+`HasFactory` Trait 的 `factory` 方法會使用慣例來判斷用於該 Model 的適當 Factory。更準確來講，該方法會在
+`Database\Factories` 命名空間下尋找符合該 Model 名稱並以 `Factory`
+作為後綴的類別。若這些慣例不符合特定的應用程式或 Factory，則可以在 Model 上複寫 `newFactory` 方法來直接回傳與該 Model
+對應的 Factory 實體：
 
     use Database\Factories\Administration\FlightFactory;
 
@@ -288,38 +259,34 @@ corresponding factory directly:
     }
 
 <a name="persisting-models"></a>
-### Persisting Models
+### 持續性 Model
 
-The `create` method instantiates model instances and persists them to the
-database using Eloquent's `save` method:
+`create` 方法會產生 Model 實體並使用 Eloquent 的 `save` 方法來將其永久保存於資料庫內：
 
     use App\Models\User;
 
     public function test_models_can_be_persisted()
     {
-        // Create a single App\Models\User instance...
+        // 建立單一 App\Models\User 實體…
         $user = User::factory()->create();
 
-        // Create three App\Models\User instances...
+        // 建立三個 App\Models\User 實體…
         $users = User::factory()->count(3)->create();
 
-        // Use model in tests...
+        // 在測試中使用 Model…
     }
 
-You may override the factory's default model attributes by passing an array
-of attributes to the `create` method:
+可以通過將一組屬性陣列傳入 `create` 方法來複寫該 Factory 的預設 Model 屬性：
 
     $user = User::factory()->create([
         'name' => 'Abigail',
     ]);
 
 <a name="sequences"></a>
-### Sequences
+### 序列
 
-Sometimes you may wish to alternate the value of a given model attribute for
-each created model. You may accomplish this by defining a state
-transformation as a sequence. For example, you may wish to alternate the
-value of an `admin` column between `Y` and `N` for each created user:
+有時候，我們可能會需要為每個建立的 Model 更改某個特定的屬性。可以通過將 State
+變換定義為序列來達成。舉例來說，我們可能會想為每個建立的使用者設定 `admin` 欄位的值為 `Y` 或 `N`：
 
     use App\Models\User;
     use Illuminate\Database\Eloquent\Factories\Sequence;
@@ -332,14 +299,13 @@ value of an `admin` column between `Y` and `N` for each created user:
                     ))
                     ->create();
 
-In this example, five users will be created with an `admin` value of `Y` and
-five users will be created with an `admin` value of `N`.
+在上面的範例中，有五個使用者會以 `admin` 值 `Y` 建立，另外五個使用者將以 `admin` 值 `N` 建立。
 
 <a name="factory-relationships"></a>
-## Factory Relationships
+## Factory 關聯
 
 <a name="has-many-relationships"></a>
-### Has Many Relationships
+### Has Many 關聯
 
 Next, let's explore building Eloquent model relationships using Laravel's
 fluent factory methods. First, let's assume our application has an

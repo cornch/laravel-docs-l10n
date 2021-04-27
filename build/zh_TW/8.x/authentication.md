@@ -53,7 +53,7 @@ Provider 則定義了要如何從長期儲存空間內取得使用者。Laravel 
 應用程式入門套件](docs/{{version}}/starter-kits)。完成資料庫遷移後，在瀏覽器上開啟 `/register`
 或其他任何指派到應用程式的 URL。這些入門套件會幫你搞定整個驗證系統的 Scaffolding。
 
-**就算最後不會在 Laravel 應用程式上使用其中一種入門套件，也可以安裝 [Laravel Breeze](/docs/{{version}}/starter-kits#laravel-breeze) 入門套件也可以個學習如何在實際 Laravel 專案上實作所有 Laravel 驗證功能的好機會。** 由於 Laravel Breeze 會為你建立好驗證控制器、路由、以及檢視器，因此可以通過閱讀這些檔案的程式碼來學習 Laravel 的驗證功能可以怎麼進行實作。
+**就算最後不會在 Laravel 應用程式上使用其中一種入門套件，安裝 [Laravel Breeze](/docs/{{version}}/starter-kits#laravel-breeze) 入門套件也是個學習如何在實際 Laravel 專案上實作所有驗證功能的好機會。** 由於 Laravel Breeze 會為你建立好驗證 Controller、路由、以及 View，因此可以通過閱讀這些檔案的程式碼來學習 Laravel 的驗證功能可以怎麼進行實作。
 
 <a name="introduction-database-considerations"></a>
 ### 資料庫選擇

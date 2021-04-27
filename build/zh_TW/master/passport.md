@@ -1428,7 +1428,7 @@ class:
     }
 
 <a name="csrf-protection"></a>
-#### CSRF Protection
+#### CSRF 保護
 
 When using this method of authentication, you will need to ensure a valid
 CSRF token header is included in your requests. The default Laravel

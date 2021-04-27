@@ -63,7 +63,7 @@
     - [關聯](/docs/{{version}}/eloquent-relationships)
     - [Collection](/docs/{{version}}/eloquent-collections)
     - [Mutator / Cast](/docs/{{version}}/eloquent-mutators)
-    - [API 字元](/docs/{{version}}/eloquent-resources)
+    - [API 資源](/docs/{{version}}/eloquent-resources)
     - [序列化](/docs/{{version}}/eloquent-serialization)
 - ## 測試
     - [入門](/docs/{{version}}/testing)

@@ -106,7 +106,7 @@ automatically injected into your route callback:
     });
 
 <a name="csrf-protection"></a>
-#### CSRF Protection
+#### CSRF 保護
 
 Remember, any HTML forms pointing to `POST`, `PUT`, `PATCH`, or `DELETE`
 routes that are defined in the `web` routes file should include a CSRF token
@@ -537,7 +537,7 @@ relationship named `posts` (the plural form of the route parameter name)
 which can be used to retrieve the `Post` model.
 
 <a name="customizing-missing-model-behavior"></a>
-#### Customizing Missing Model Behavior
+#### 自定找不到 Model 的行為
 
 Typically, a 404 HTTP response will be generated if an implicitly bound
 model is not found. However, you may customize this behavior by calling the

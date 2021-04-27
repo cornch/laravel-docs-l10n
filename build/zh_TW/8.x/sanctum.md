@@ -358,7 +358,7 @@ this by prefixing the domain with a leading `.` within your application's
 ### Authenticating
 
 <a name="csrf-protection"></a>
-#### CSRF Protection
+#### CSRF 保護
 
 To authenticate your SPA, your SPA's "login" page should first make a
 request to the `/sanctum/csrf-cookie` endpoint to initialize CSRF protection

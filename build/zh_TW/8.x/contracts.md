@@ -1,76 +1,58 @@
-# Contracts
+# Contract
 
-- [Introduction](#introduction)
-    - [Contracts Vs. Facades](#contracts-vs-facades)
-- [When To Use Contracts](#when-to-use-contracts)
-- [How To Use Contracts](#how-to-use-contracts)
-- [Contract Reference](#contract-reference)
+- [簡介](#introduction)
+    - [Contract Vs. Facade](#contracts-vs-facades)
+- [什麼時候使用 Contract](#when-to-use-contracts)
+- [如何使用 Contract](#how-to-use-contracts)
+- [Contract 參照](#contract-reference)
 
 <a name="introduction"></a>
 ## 簡介
 
-Laravel's "contracts" are a set of interfaces that define the core services
-provided by the framework. For example, an
-`Illuminate\Contracts\Queue\Queue` contract defines the methods needed for
-queueing jobs, while the `Illuminate\Contracts\Mail\Mailer` contract defines
-the methods needed for sending e-mail.
+Laravel
+的「Contract」是一組介面，這些介面定義了框架提供的核心服務。舉例來說，`Illuminate\Contracts\Queue\Queue`
+Contract 定義了佇列任務所需要的方法；而 `Illuminate\Contracts\Mail\Mailer` Contract 則定義了寄送
+E-Mail 所需要的方法。
 
-Each contract has a corresponding implementation provided by the
-framework. For example, Laravel provides a queue implementation with a
-variety of drivers, and a mailer implementation that is powered by
-[SwiftMailer](https://swiftmailer.symfony.com/).
+各個 Contract 都有對應框架所提供的實作。舉例來說，Laravel 提供改了一個有數種 Driver 的佇列實作，以及一個由
+[SwiftMailer](https://swiftmailer.symfony.com/) 驅動的 Mailer 實作。
 
-All of the Laravel contracts live in [their own GitHub
-repository](https://github.com/illuminate/contracts). This provides a quick
-reference point for all available contracts, as well as a single, decoupled
-package that may be utilized when building packages that interact with
-Laravel services.
+所有的 Laravel Contract 都放在 [Contract 自己的 GitHub
+儲存庫](https://github.com/illuminate/contracts)內。該儲存庫提供了所有可用 Contract
+的快速參照點，同時也一個單一、解藕的套件，可以在製作與 Laravel 服務互動的套件時使用。
 
 <a name="contracts-vs-facades"></a>
-### Contracts Vs. Facades
+### Contract Vs. Facade
 
-Laravel's [facades](/docs/{{version}}/facades) and helper functions provide
-a simple way of utilizing Laravel's services without needing to type-hint
-and resolve contracts out of the service container. In most cases, each
-facade has an equivalent contract.
+Laravel 的 [Facade](/docs/{{version}}/facades) 與輔助函式提供了在不使用型別提示或是從 Service
+Container 中解析 Contract 的情況下簡單地使用 Laravel 服務的方法。在大多數的情況下，各個 Facade 都有其對應的
+Contract。
 
-Unlike facades, which do not require you to require them in your class'
-constructor, contracts allow you to define explicit dependencies for your
-classes. Some developers prefer to explicitly define their dependencies in
-this way and therefore prefer to use contracts, while other developers enjoy
-the convenience of facades. **In general, most applications can use facades
-without issue during development.**
+與 Facade 不同，使用 Facade 不需要在類別的建構函式內要求這些類別。Contract
+可以讓你為類別定義明顯的依賴。某些開發人員偏好明顯定義依賴，因此他們也偏好使用 Contract；而其他開發人員則比較享受 Facade
+帶來的方便性。**一般來說，大多數應用程式在開發起見都可以使用 Facade 而不會遇到問題。**
 
 <a name="when-to-use-contracts"></a>
-## When To Use Contracts
+## 什麼時候使用 Contract
 
-The decision to use contracts or facades will come down to personal taste
-and the tastes of your development team. Both contracts and facades can be
-used to create robust, well-tested Laravel applications. Contracts and
-facades are not mutually exclusive. Some parts of your applications may use
-facades while others depend on contracts. As long as you are keeping your
-class' responsibilities focused, you will notice very few practical
-differences between using contracts and facades.
+要決定使用 Contract 還是 Facade，取決於個人偏好以及開發團隊的偏好。Contract 與 Facade
+都提供了能建立強健的、經得起測試的 Laravel 應用程式的能力。Contract 與 Facade 並非互斥。你的應用程式中可以在某些部分使用
+Facade、而其他部分則使用 Contract。只要能保持類別的職責專一，就不會注意到太多 Contract 與 Facade 間的差異。
 
-In general, most applications can use facades without issue during
-development. If you are building a package that integrates with multiple PHP
-frameworks you may wish to use the `illuminate/contracts` package to define
-your integration with Laravel's services without the need to require
-Laravel's concrete implementations in your package's `composer.json` file.
+通常來說，大多數的應用程式在開發期間使用 Facade 都不會遇到問題。若你正在建立會整合多個 PHP 框架的套件，則你可以使用
+`illuminate/contracts` 套件來定義與 Laravel 服務的整合，而不需要在套件的 `composer.json` 檔中
+require 整個 Laravel 的實際實作。
 
 <a name="how-to-use-contracts"></a>
-## How To Use Contracts
+## 如何使用 Contract
 
-So, how do you get an implementation of a contract? It's actually quite
-simple.
+那麼，如何取得某個 Contract 的實作呢？這其實很簡單。
 
-Many types of classes in Laravel are resolved through the [service
-container](/docs/{{version}}/container), including controllers, event
-listeners, middleware, queued jobs, and even route closures. So, to get an
-implementation of a contract, you can just "type-hint" the interface in the
-constructor of the class being resolved.
+Laravel 中，許多類型的類別都會通過 [Service Container](/docs/{{version}}/container)
+來解析。包含 Controller、事件監聽程式、Middleware、佇列任務、甚至是路由閉包。因此，若要取得一個 Contract
+的實作，只需要在被解析類別的建構函式上對介面進行「型別提示」即可。
 
-For example, take a look at this event listener:
+舉例來說，來看看這個事件監聽程式：
 
     <?php
 
@@ -112,18 +94,17 @@ For example, take a look at this event listener:
         }
     }
 
-When the event listener is resolved, the service container will read the
-type-hints on the constructor of the class, and inject the appropriate
-value. To learn more about registering things in the service container,
-check out [its documentation](/docs/{{version}}/container).
+當事件監聽程式被解析時，Service Container 會讀取該類別建構函式的型別提示，並注入合適的值。要瞭解更多有關向 Service
+Container 註冊東西的資訊，請參考 [Service Container
+的說明文件](/docs/{{version}}/container)。
 
 <a name="contract-reference"></a>
-## Contract Reference
+## Contract 參照
 
-This table provides a quick reference to all of the Laravel contracts and
-their equivalent facades:
+這個表格提供了所有 Laravel Contract 的快速參照，及其相等的 Facade：
 
-Contract | References Facade ------------- | -------------
+Contract | 參照 Facade
+------------- | -------------
 [Illuminate\Contracts\Auth\Access\Authorizable](https://github.com/illuminate/contracts/blob/{{version}}/Auth/Access/Authorizable.php)
 | &nbsp;
 [Illuminate\Contracts\Auth\Access\Gate](https://github.com/illuminate/contracts/blob/{{version}}/Auth/Access/Gate.php)

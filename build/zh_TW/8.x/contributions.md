@@ -1,45 +1,37 @@
-# Contribution Guide
+# 參與貢獻指南
 
-- [Bug Reports](#bug-reports)
-- [Support Questions](#support-questions)
-- [Core Development Discussion](#core-development-discussion)
-- [Which Branch?](#which-branch)
-- [Compiled Assets](#compiled-assets)
-- [Security Vulnerabilities](#security-vulnerabilities)
-- [Coding Style](#coding-style)
+- [Bug 回報](#bug-reports)
+- [支援提問](#support-questions)
+- [核心開發討論](#core-development-discussion)
+- [要用哪個分支？](#which-branch)
+- [編譯素材](#compiled-assets)
+- [安全性漏洞](#security-vulnerabilities)
+- [編碼樣式](#coding-style)
     - [PHPDoc](#phpdoc)
     - [StyleCI](#styleci)
-- [Code of Conduct](#code-of-conduct)
+- [行為準則 Code of Conduct](#code-of-conduct)
 
 <a name="bug-reports"></a>
-## Bug Reports
+## Bug 回報
 
-To encourage active collaboration, Laravel strongly encourages pull
-requests, not just bug reports. "Bug reports" may also be sent in the form
-of a pull request containing a failing test.
+為了鼓勵活躍的協作，Laravel 強烈建議不只要有 Bug 回報，還要開 Pull Request。「Bug 回報」可以通過一個包含失敗測試的
+Pull Request 的形式提供。
 
-However, if you file a bug report, your issue should contain a title and a
-clear description of the issue. You should also include as much relevant
-information as possible and a code sample that demonstrates the issue. The
-goal of a bug report is to make it easy for yourself - and others - to
-replicate the bug and develop a fix.
+不過，若要提出 Bug 回報，則 Issue 內應包含標題以及對該問題的清楚敘述。也應儘可能提供相關資訊、以及能展示此問題的範例程式碼。Bug
+回報的目標就是要能讓你自己——以及其他人——能重現此 Bug 並著手修正。
 
-Remember, bug reports are created in the hope that others with the same
-problem will be able to collaborate with you on solving it. Do not expect
-that the bug report will automatically see any activity or that others will
-jump to fix it. Creating a bug report serves to help yourself and others
-start on the path of fixing the problem. If you want to chip in, you can
-help out by fixing [any bugs listed in our issue
-trackers](https://github.com/issues?q=is%3Aopen+is%3Aissue+label%3Abug+user%3Alaravel).
-You must be authenticated with GitHub to view all of Laravel's issues.
+請記得，進行 Bug 回報的目的是為了能讓其他有相同問題的人能與你一起協作來解決此問題。請不要期待回報了 Bug 後，該 Bug
+就會自動吸引到人，或是就有人自動來修正此 Bug。回報 Bug 是為了幫助你自己以及其他人能作為修正問題的出發點。若你想參與，可以協助修正[任何列在我們
+Issue Tracker 上的
+Bug](https://github.com/issues?q=is%3Aopen+is%3Aissue+label%3Abug+user%3Alaravel)。你必須先登入
+GitHub 才能檢視所有的 Laravel Issue。
 
-The Laravel source code is managed on GitHub, and there are repositories for
-each of the Laravel projects:
+Laravel 的原始碼託管於 GitHub，而各個 Laravel 專案都有各自的儲存庫：
 
 <div class="content-list" markdown="1">
-- [Laravel Application](https://github.com/laravel/laravel)
+- [Laravel 應用程式](https://github.com/laravel/laravel)
 - [Laravel Art](https://github.com/laravel/art)
-- [Laravel Documentation](https://github.com/laravel/docs)
+- [Laravel 說明文件](https://github.com/laravel/docs)
 - [Laravel Dusk](https://github.com/laravel/dusk)
 - [Laravel Cashier Stripe](https://github.com/laravel/cashier)
 - [Laravel Cashier Paddle](https://github.com/laravel/cashier-paddle)
@@ -47,7 +39,7 @@ each of the Laravel projects:
 - [Laravel Envoy](https://github.com/laravel/envoy)
 - [Laravel Framework](https://github.com/laravel/framework)
 - [Laravel Homestead](https://github.com/laravel/homestead)
-- [Laravel Homestead Build Scripts](https://github.com/laravel/settler)
+- [Laravel Homestead 建制指令碼](https://github.com/laravel/settler)
 - [Laravel Horizon](https://github.com/laravel/horizon)
 - [Laravel Jetstream](https://github.com/laravel/jetstream)
 - [Laravel Passport](https://github.com/laravel/passport)
@@ -56,19 +48,18 @@ each of the Laravel projects:
 - [Laravel Scout](https://github.com/laravel/scout)
 - [Laravel Socialite](https://github.com/laravel/socialite)
 - [Laravel Telescope](https://github.com/laravel/telescope)
-- [Laravel Website](https://github.com/laravel/laravel.com-next)
+- [Laravel 網站](https://github.com/laravel/laravel.com-next)
 </div>
 
 <a name="support-questions"></a>
-## Support Questions
+## 支援提問
 
-Laravel's GitHub issue trackers are not intended to provide Laravel help or
-support. Instead, use one of the following channels:
+Laravel 的 GitHub Issue Tracker 並不是用來提供 Laravel 說明或協助的。請改用下列其中一種管道：
 
 <div class="content-list" markdown="1">
 - [GitHub Discussions](https://github.com/laravel/framework/discussions)
-- [Laracasts Forums](https://laracasts.com/discuss)
-- [Laravel.io Forums](https://laravel.io/forum)
+- [Laracasts 討論區](https://laracasts.com/discuss)
+- [Laravel.io 討論區](https://laravel.io/forum)
 - [StackOverflow](https://stackoverflow.com/questions/tagged/laravel)
 - [Discord](https://discordapp.com/invite/KxwQuKb)
 - [Larachat](https://larachat.co)
@@ -76,64 +67,55 @@ support. Instead, use one of the following channels:
 </div>
 
 <a name="core-development-discussion"></a>
-## Core Development Discussion
+## 核心開發討論
 
-You may propose new features or improvements of existing Laravel behavior in
-the Laravel Ideas [issue board](https://github.com/laravel/ideas/issues). If
-you propose a new feature, please be willing to implement at least some of
-the code that would be needed to complete the feature.
+可以在 Laravel Ideas [Issue
+板塊](https://github.com/laravel/ideas/issues)上提議新功能或是改進現有的 Laravel
+行為。若要提議新功能，請至少準備好要能實作完成此功能所需的部分程式碼。
 
-Informal discussion regarding bugs, new features, and implementation of
-existing features takes place in the `#internals` channel of the [Laravel
-Discord server](https://discordapp.com/invite/mPZNm7A). Taylor Otwell, the
-maintainer of Laravel, is typically present in the channel on weekdays from
-8am-5pm (UTC-06:00 or America/Chicago), and sporadically present in the
-channel at other times.
+有關 Bug、新功能、以及現有功能實作的一些比較不正式的討論，會在 [Laravel Discord
+伺服器](https://discordapp.com/invite/mPZNm7A)上的 `#internals` 頻道內進行。Taylor
+Otwell（Laravel 的維護人員），通常會在工作日的上午 8 時至下午 5 時（UTC-06:00 或
+America/Chicago）或是其他不定期時間出現在此頻道內。
 
 <a name="which-branch"></a>
-## Which Branch?
+## 要用哪個分支？
 
-**All** bug fixes should be sent to the latest stable branch or to the [current LTS branch](/docs/{{version}}/releases#support-policy). Bug fixes should **never** be sent to the `master` branch unless they fix features that exist only in the upcoming release.
+**所有** 的 Bug 修正都應送交至穩定版分支或是[目前的 LTS 分支](/docs/{{version}}/releases#support-policy)。Bug 修正**不該**送交至 `master` 分支，除非要修正的功能只出現在未來的版本中。
 
-**Minor** features that are **fully backward compatible** with the current release may be sent to the latest stable branch.
+對於目前版本有**完整向下相容性**的**次要**功能，可以送交至最新的穩定分支。
 
-**Major** new features should always be sent to the `master` branch, which contains the upcoming release.
+**主要**新功能則應送交至 `master` 分支，這個分支包含了未來的版本。
 
-If you are unsure if your feature qualifies as a major or minor, please ask
-Taylor Otwell in the `#internals` channel of the [Laravel Discord
-server](https://discordapp.com/invite/mPZNm7A).
+若不確定你的功能是主要功能還是次要功能，請在 [Laravel Discord
+伺服器](https://discordapp.com/invite/mPZNm7A)的 `#internals` 頻道內詢問 Taylor
+Otwell。
 
 <a name="compiled-assets"></a>
-## Compiled Assets
+## 編譯素材
 
-If you are submitting a change that will affect a compiled file, such as
-most of the files in `resources/css` or `resources/js` of the
-`laravel/laravel` repository, do not commit the compiled files. Due to their
-large size, they cannot realistically be reviewed by a maintainer. This
-could be exploited as a way to inject malicious code into Laravel. In order
-to defensively prevent this, all compiled files will be generated and
-committed by Laravel maintainers.
+若要送交的修改會影響到經過編譯的檔案（通常是 `laravel/laravel` 儲存庫的 `resources/css` 或
+`resources/js`），請不要簽入 (Commit) 這些編譯後的檔案。由於這些檔案的大小很大，因此無法實際被維護人員審閱，進而造成能向
+Laravel 插入惡意程式碼的機會。為了避免此一問題，所有經過編譯的檔案都應由 Laravel 維護人員產生並簽入。
 
 <a name="security-vulnerabilities"></a>
-## Security Vulnerabilities
+## 安全性漏洞
 
-If you discover a security vulnerability within Laravel, please send an email to Taylor Otwell at <a href="mailto:taylor@laravel.com">taylor@laravel.com</a>. All security vulnerabilities will be promptly addressed.
+若在 Laravel 內發現了安全性漏洞，請傳送電子郵件給 Taylor Otwell，<a href="mailto:taylor@laravel.com">taylor@laravel.com</a>。所有的安全性漏洞都會被即時處理。
 
 <a name="coding-style"></a>
-## Coding Style
+## 編碼樣式
 
-Laravel follows the
+Laravel 遵守
 [PSR-2](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-2-coding-style-guide.md)
-coding standard and the
+編碼標準以及
 [PSR-4](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-4-autoloader.md)
-autoloading standard.
+Autoload 標準。
 
 <a name="phpdoc"></a>
 ### PHPDoc
 
-Below is an example of a valid Laravel documentation block. Note that the
-`@param` attribute is followed by two spaces, the argument type, two more
-spaces, and finally the variable name:
+下列為一個有效的 Laravel 文件區塊範例。請注意，`@param` 屬性後有兩個空格，然後是引數型別，然後是兩個空格，最後才是變數名稱：
 
     /**
      * Register a binding with the container.
@@ -153,21 +135,22 @@ spaces, and finally the variable name:
 <a name="styleci"></a>
 ### StyleCI
 
-Don't worry if your code styling isn't perfect!
-[StyleCI](https://styleci.io/) will automatically merge any style fixes into
-the Laravel repository after pull requests are merged. This allows us to
-focus on the content of the contribution and not the code style.
+不用擔心你的編碼風格不正確！[StyleCI](https://styleci.io/) 會在 Pull Request 被 Merge
+後自動合併任何的樣式修正。這樣一來我們就能專注在參與貢獻的內容而非程式碼風格。
 
 <a name="code-of-conduct"></a>
-## Code of Conduct
+## 行為準則 Code of Conduct
 
-The Laravel code of conduct is derived from the Ruby code of conduct. Any
-violations of the code of conduct may be reported to Taylor Otwell
-(taylor@laravel.com):
+Laravel 的行為準則改編自 Ruby 的 Code of Conduct。有任何違反 Code of Conduct 的行為，可以回報給
+Taylor Otwell (taylor@laravel.com)：
 
 <div class="content-list" markdown="1">
-- Participants will be tolerant of opposing views.
-- Participants must ensure that their language and actions are free of personal attacks and disparaging personal remarks.
-- When interpreting the words and actions of others, participants should always assume good intentions.
-- Behavior that can be reasonably considered harassment will not be tolerated.
+- 參與者應容忍相反的意見。
+   Participants will be tolerant of opposing views.
+- 參與者必須確保所使用的話語與行為不包含人身攻擊以及詆譭個人的言論。
+   Participants must ensure that their language and actions are free of personal attacks and disparaging personal remarks.
+- 在理解他人的文字或行為時，參與者應總是假設其為善意的。
+   When interpreting the words and actions of others, participants should always assume good intentions.
+- 可被合理視為騷擾的行為不會被容忍。
+   Behavior that can be reasonably considered harassment will not be tolerated.
 </div>

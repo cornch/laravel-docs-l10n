@@ -266,7 +266,7 @@ entries are recorded by Telescope:
     }
 
 <a name="tagging"></a>
-## Tagging
+## 標籤
 
 Telescope allows you to search entries by "tag". Often, tags are Eloquent
 model class names or authenticated user IDs which Telescope automatically

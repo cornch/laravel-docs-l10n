@@ -1,23 +1,19 @@
-# Console Tests
+# 主控台測試
 
-- [Introduction](#introduction)  - [Input / Output
-Expectations](#input-output-expectations)
+- [簡介](#introduction)
+- [預期的輸入／輸出](#input-output-expectations)
 
 <a name="introduction"></a>
 ## 簡介
 
-In addition to simplifying HTTP testing, Laravel provides a simple API for
-testing your application's [custom console
-commands](/docs/{{version}}/artisan).
+除了簡化 HTTP 測試，Laravel 提供了一個簡單的 API
+來測試應用程式的[自定主控台指令](/docs/{{version}}/artisan)。
 
 <a name="input-output-expectations"></a>
-## Input / Output Expectations
+## 預期的輸入／輸出
 
-Laravel allows you to easily "mock" user input for your console commands
-using the `expectsQuestion` method. In addition, you may specify the exit
-code and text that you expect to be output by the console command using the
-`assertExitCode` and `expectsOutput` methods. For example, consider the
-following console command:
+Laravel 能讓你輕鬆地通過 `expectsQuestion` 方法來為主控台指令「模擬（Mock）」使用者輸入。此外，還可以通過
+`assertExitCode` 與 `expectsOutput` 來指定主控台預期的結束代碼與輸出文字。舉例來說，假設有下列主控台指令：
 
     Artisan::command('question', function () {
         $name = $this->ask('What is your name?');
@@ -31,9 +27,8 @@ following console command:
         $this->line('Your name is '.$name.' and you prefer '.$language.'.');
     });
 
-You may test this command with the following test which utilizes the
-`expectsQuestion`, `expectsOutput`, `doesntExpectOutput`, and
-`assertExitCode` methods:
+可以通過下列這個使用了 `expectsQuestion`, `expectsOutput`, `doesntExpectOutput` 與
+`assertExitCode` 方法的測試來測試該指令：
 
     /**
      * Test a console command.
@@ -51,23 +46,19 @@ You may test this command with the following test which utilizes the
     }
 
 <a name="confirmation-expectations"></a>
-#### Confirmation Expectations
+#### 預期確認
 
-When writing a command which expects confirmation in the form of a "yes" or
-"no" answer, you may utilize the `expectsConfirmation` method:
+當撰寫預期答案為「yes」或「no」確認的指令時，可以使用 `expectsConfirmation` 方法：
 
     $this->artisan('module:import')
         ->expectsConfirmation('Do you really wish to run this command?', 'no')
         ->assertExitCode(1);
 
 <a name="table-expectations"></a>
-#### Table Expectations
+#### 預期表格
 
-If your command displays a table of information using Artisan's `table`
-method, it can be cumbersome to write output expectations for the entire
-table. Instead, you may use the `expectsTable` method. This method accepts
-the table's headers as its first argument and the table's data as its second
-argument:
+若指令使用 Artisan 的 `table` 方法來以表格顯示資訊，則要為整個表格撰寫預期的輸出可能很麻煩。因此可以改用 `expectsTable`
+方法來代替。該方法接收表格的標頭作為其第一個引數，以及表格的資料作為其第二引數：
 
     $this->artisan('users:all')
         ->expectsTable([

@@ -1,39 +1,39 @@
 # Blade 樣板
 
 - [簡介](#introduction)
-- [顯示資料](#displaying-data)
-    - [HTML 實體編碼](#html-entity-encoding)
-    - [Blade 與 JavaScript 框架](#blade-and-javascript-frameworks)
-- [Blade 指示詞](#blade-directives)
-    - [If 陳述式](#if-statements)
-    - [Switch 陳述式](#switch-statements)
-    - [迴圈](#loops)
-    - [迴圈變數](#the-loop-variable)
-    - [註解](#comments)
-    - [Include 子 View](#including-subviews)
-    - [`@once` 指示詞](#the-once-directive)
-    - [原始 PHP](#raw-php)
-- [元件](#components)
-    - [轉譯元件](#rendering-components)
-    - [將資料傳給元件](#passing-data-to-components)
-    - [元件屬性](#component-attributes)
-    - [保留字](#reserved-keywords)
-    - [Slot](#slots)
-    - [內崁元件 View](#inline-component-views)
-    - [匿名元件](#anonymous-components)
-    - [動態元件](#dynamic-components)
-    - [手動註冊元件](#manually-registering-components)
-- [製作 Layout](#building-layouts)
-    - [使用元件的 Layout](#layouts-using-components)
-    - [使用樣板繼承的 Layout](#layouts-using-template-inheritance)
-- [表單](#forms)
-    - [CSRF 欄位](#csrf-field)
-    - [方法欄位](#method-field)
-    - [表單驗證錯誤](#validation-errors)
-- [Stack](#stacks)
-- [服務注入](#service-injection)
-- [擴充 Blade](#extending-blade)
-    - [自定 If 陳述式](#custom-if-statements)
+- [Displaying Data](#displaying-data)
+    - [HTML Entity Encoding](#html-entity-encoding)
+    - [Blade & JavaScript Frameworks](#blade-and-javascript-frameworks)
+- [Blade Directives](#blade-directives)
+    - [If Statements](#if-statements)
+    - [Switch Statements](#switch-statements)
+    - [Loops](#loops)
+    - [The Loop Variable](#the-loop-variable)
+    - [Comments](#comments)
+    - [Including Subviews](#including-subviews)
+    - [The `@once` Directive](#the-once-directive)
+    - [Raw PHP](#raw-php)
+- [Components](#components)
+    - [Rendering Components](#rendering-components)
+    - [Passing Data To Components](#passing-data-to-components)
+    - [Component Attributes](#component-attributes)
+    - [Reserved Keywords](#reserved-keywords)
+    - [Slots](#slots)
+    - [Inline Component Views](#inline-component-views)
+    - [Anonymous Components](#anonymous-components)
+    - [Dynamic Components](#dynamic-components)
+    - [Manually Registering Components](#manually-registering-components)
+- [Building Layouts](#building-layouts)
+    - [Layouts Using Components](#layouts-using-components)
+    - [Layouts Using Template Inheritance](#layouts-using-template-inheritance)
+- [Forms](#forms)
+    - [CSRF Field](#csrf-field)
+    - [Method Field](#method-field)
+    - [Validation Errors](#validation-errors)
+- [Stacks](#stacks)
+- [Service Injection](#service-injection)
+- [Extending Blade](#extending-blade)
+    - [Custom If Statements](#custom-if-statements)
 
 <a name="introduction"></a>
 ## 簡介
@@ -1209,9 +1209,11 @@ Blade 檢視比較方便：
 <a name="csrf-field"></a>
 ### CSRF 欄位
 
-不管什麼時候在應用程式內定義 HTML 表單時，都應該要在表單內包含一個隱藏的 CSRF 權杖欄位來讓 [CSRF
-保護](https://laravel.com/docs/{{version}}/csrf) Middleware 能驗證請求。可以使用 `@csrf`
-Blade 指示詞來產生這個權杖欄位：
+Anytime you define an HTML form in your application, you should include a
+hidden CSRF token field in the form so that [the CSRF
+protection](https://laravel.com/docs/{{version}}/csrf) middleware can
+validate the request. You may use the `@csrf` Blade directive to generate
+the token field:
 
 ```html
 <form method="POST" action="/profile">

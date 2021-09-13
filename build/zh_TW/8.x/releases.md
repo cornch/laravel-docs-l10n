@@ -8,9 +8,11 @@
 <a name="versioning-scheme"></a>
 ## 版本策略
 
-Laravel 及其第一方套件都遵守
-[語義化版本](https://semver.org/lang/zh-Tw/)。框架的主要更新會每年釋出（約在九月時），而次版本與修訂版則可能頻繁到每週更新。此版本與修訂版
-**絕對不會** 包含中斷性變更（Breaking Change）。
+Laravel and its other first-party packages follow [Semantic
+Versioning](https://semver.org). Major framework releases are released every
+year (~September), while minor and patch releases may be released as often
+as every week. Minor and patch releases should **never** contain breaking
+changes.
 
 由於 Laravel 的主要更新會包含中斷性變更，因此在應用程式或套件中參照 Laravel 框架或其組件時，應使用如 `^8.0`
 這樣的版本限制式。然而，我們竭力確保主要更新應可於一天之內完成。
@@ -29,17 +31,20 @@ Laravel 方法時應格外注意，並瞭解到引數名稱未來可能會有所
 <a name="support-policy"></a>
 ## 支援政策
 
-LTS 版本，如 Laravel 6，提供 2 年的 Bug 修正以及 3 年的安全性修正。這些版本提供了最長的支援與維護期間。而一般性版本，則提供
-18 個月的 Bug 修正以及 2 年的安全性更新。其他額外的函式庫，如 Lumen，則至為最新版本提供 Bug 修正。此外，請參考 [Laravel
-支援的](/docs/{{version}}/database#introduction) 資料庫版本。
+For LTS releases, such as Laravel 6, bug fixes are provided for 2 years and
+security fixes are provided for 3 years. These releases provide the longest
+window of support and maintenance. For general releases, bug fixes are
+provided for 18 months and security fixes are provided for 2 years. For all
+additional libraries, including Lumen, only the latest release receives bug
+fixes. In addition, please review the database versions [supported by
+Laravel](/docs/{{version}}/database#introduction).
 
-| 版本 | 釋出日期 | Bug 修正至 | 安全性更新至 |
-| --- | --- | --- | --- |
-| 6 (LTS) | 2019 年 9 月 3 日 | 2021 年 9 月 7 日 | 2022 年 9 月 6 日 |
-| 7 | 2020 年 3 月 3 日 | 2020 年 10 月 6 日 | 2021 年 3 月 3 日 |
-| 8 | 2020 年 9 月 8 日 | 2022 年 3 月 1 日 | 2022 年 9 月 6 日 |
-| 9 (LTS) | 2021 年 9 月 | 2023 年 9 月 | 2024 年 9 月 |
-| 10 | 2022 年 9 月 | 2024 年 3 月 | 2024 年 9 月 |
+| Version | Release | Bug Fixes Until | Security Fixes Until | | --- | --- |
+--- | --- | | 6 (LTS) | September 3rd, 2019 | September 7th, 2021 |
+September 6th, 2022 | | 7 | March 3rd, 2020 | October 6th, 2020 | March 3rd,
+2021 | | 8 | September 8th, 2020 | March 1st, 2022 | September 6th, 2022 | |
+9 (LTS) | September, 2021 | September, 2023 | September, 2024 | | 10 |
+September, 2022 | March, 2024 | September, 2024 |
 
 <a name="laravel-8"></a>
 ## Laravel 8

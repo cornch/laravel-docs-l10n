@@ -490,7 +490,7 @@ given field, `null` will be returned:
     <input type="text" name="username" value="{{ old('username') }}">
 
 <a name="cookies"></a>
-### Cookies
+### Cookie
 
 <a name="retrieving-cookies-from-requests"></a>
 #### Retrieving Cookies From Requests

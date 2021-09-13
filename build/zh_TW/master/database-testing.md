@@ -307,12 +307,10 @@ State 變換方法即可：
 <a name="has-many-relationships"></a>
 ### Has Many 關聯
 
-Next, let's explore building Eloquent model relationships using Laravel's
-fluent factory methods. First, let's assume our application has an
-`App\Models\User` model and an `App\Models\Post` model. Also, let's assume
-that the `User` model defines a `hasMany` relationship with `Post`. We can
-create a user that has three posts using the `has` method provided by the
-Laravel's factories. The `has` method accepts a factory instance:
+接著，來看看如何使用 Laravel 中流利的 Factory 方法建立 Eloquent Model 關聯。首先，假設應用程式中有個
+`App\Models\User` Model 以及 `App\Models\Post` Model。此外，假設 `User` Model 中定義了對
+`Post` 的 `hasMany` 關聯。我們可以使用 Laravel Factory 提供的 `has` 方法來建立一個有三篇貼文的使用者。這個
+`has` 方法接受一個 Factory 實體：
 
     use App\Models\Post;
     use App\Models\User;
@@ -321,18 +319,14 @@ Laravel's factories. The `has` method accepts a factory instance:
                 ->has(Post::factory()->count(3))
                 ->create();
 
-By convention, when passing a `Post` model to the `has` method, Laravel will
-assume that the `User` model must have a `posts` method that defines the
-relationship. If necessary, you may explicitly specify the name of the
-relationship that you would like to manipulate:
+依照慣例，當傳入 `Post` Model 給 `has` 方法時，Laravel 會假設 `User` Model 中有定義這個關聯的 `posts`
+方法。若有需要，可以明顯指定要操作的關聯名稱：
 
     $user = User::factory()
                 ->has(Post::factory()->count(3), 'posts')
                 ->create();
 
-Of course, you may perform state manipulations on the related models. In
-addition, you may pass a closure based state transformation if your state
-change requires access to the parent model:
+當然，也可以在關聯 Model 上進行 State 操作。此外，若 State 更改需要存取上層 Model，也可以傳入基於閉包的 State 變換：
 
     $user = User::factory()
                 ->has(
@@ -345,19 +339,16 @@ change requires access to the parent model:
                 ->create();
 
 <a name="has-many-relationships-using-magic-methods"></a>
-#### Using Magic Methods
+#### 使用魔術方法
 
-For convenience, you may use Laravel's magic factory relationship methods to
-build relationships. For example, the following example will use convention
-to determine that the related models should be created via a `posts`
-relationship method on the `User` model:
+為了方便起見，可以使用 Laravel 的魔術 Factory 關聯方法來建立關聯。舉例來說，下列範例會使用慣例來判斷應通過 `User` Model
+上的 `posts` 關聯方法來建立關聯 Model：
 
     $user = User::factory()
                 ->hasPosts(3)
                 ->create();
 
-When using magic methods to create factory relationships, you may pass an
-array of attributes to override on the related models:
+在使用魔術方法建立 Factory 關聯時，可以傳入包含屬性的陣列來在關聯 Model 上複寫：
 
     $user = User::factory()
                 ->hasPosts(3, [
@@ -365,8 +356,7 @@ array of attributes to override on the related models:
                 ])
                 ->create();
 
-You may provide a closure based state transformation if your state change
-requires access to the parent model:
+若 State 更改需要存取上層 Model，可以提供一個基於閉包的 State 變換：
 
     $user = User::factory()
                 ->hasPosts(3, function (array $attributes, User $user) {
@@ -375,13 +365,11 @@ requires access to the parent model:
                 ->create();
 
 <a name="belongs-to-relationships"></a>
-### Belongs To Relationships
+### Belongs To 關聯
 
-Now that we have explored how to build "has many" relationships using
-factories, let's explore the inverse of the relationship. The `for` method
-may be used to define the parent model that factory created models belong
-to. For example, we can create three `App\Models\Post` model instances that
-belong to a single user:
+我們已經瞭解如何使用 Factory 來建立「Has Many」關聯了，接著來看看這種關聯的想法。使用 `for` 方法可以用來定義使用 Factory
+建立的 Model 所隸屬 (Belong To) 的上層 Model。舉例來說，我們可以建立三個隸屬於單一使用者的 `App\Models\Post`
+Model 實體：
 
     use App\Models\Post;
     use App\Models\User;
@@ -393,9 +381,7 @@ belong to a single user:
                 ]))
                 ->create();
 
-If you already have a parent model instance that should be associated with
-the models you are creating, you may pass the model instance to the `for`
-method:
+若已經有應與這些正在建立的 Model 關聯的上層 Model 實體，可以將該 Model 實體傳入 `for` 方法：
 
     $user = User::factory()->create();
 
@@ -405,12 +391,10 @@ method:
                 ->create();
 
 <a name="belongs-to-relationships-using-magic-methods"></a>
-#### Using Magic Methods
+#### 使用魔術方法
 
-For convenience, you may use Laravel's magic factory relationship methods to
-define "belongs to" relationships. For example, the following example will
-use convention to determine that the three posts should belong to the `user`
-relationship on the `Post` model:
+為了方便起見，可以使用 Laravel 的魔術 Factory 關聯方法來定義「Belongs To」關聯。舉例來說，下列範例會使用慣例來判斷應使用
+`Post` Model 上的 `user` 關聯方法來設定這三個貼文應隸屬於哪裡：
 
     $posts = Post::factory()
                 ->count(3)
@@ -420,10 +404,9 @@ relationship on the `Post` model:
                 ->create();
 
 <a name="many-to-many-relationships"></a>
-### Many To Many Relationships
+### Many To Many 關聯
 
-Like [has many relationships](#has-many-relationships), "many to many"
-relationships may be created using the `has` method:
+與 [Has Many 關聯](#has-many-relationships)，「Many to Many」關聯也可以通過 `has` 方法建立：
 
     use App\Models\Role;
     use App\Models\User;
@@ -433,12 +416,10 @@ relationships may be created using the `has` method:
                 ->create();
 
 <a name="pivot-table-attributes"></a>
-#### Pivot Table Attributes
+#### Pivot 表屬性
 
-If you need to define attributes that should be set on the pivot /
-intermediate table linking the models, you may use the `hasAttached`
-method. This method accepts an array of pivot table attribute names and
-values as its second argument:
+若有需要為這些 Model 定義關聯 Pivot／中介資料表上的屬性，則可使用 `hasAttached` 方法。這個方法接受一個陣列，其中包含
+Pivot 資料表上的屬性名稱，第二個引數則為其值：
 
     use App\Models\Role;
     use App\Models\User;
@@ -450,8 +431,7 @@ values as its second argument:
                 )
                 ->create();
 
-You may provide a closure based state transformation if your state change
-requires access to the related model:
+若 State 更改需要存取關聯 Model，可以提供一個基於閉包的 State 變換：
 
     $user = User::factory()
                 ->hasAttached(
@@ -464,10 +444,8 @@ requires access to the related model:
                 )
                 ->create();
 
-If you already have model instances that you would like to be attached to
-the models you are creating, you may pass the model instances to the
-`hasAttached` method. In this example, the same three roles will be attached
-to all three users:
+若已有 Model 實體想讓正在建立的 Model 附加，可以將該 Model 實體傳入 `hasAttached`
+方法。在此範例中，會將三個相同的角色附加給三個使用者：
 
     $roles = Role::factory()->count(3)->create();
 
@@ -477,12 +455,10 @@ to all three users:
                 ->create();
 
 <a name="many-to-many-relationships-using-magic-methods"></a>
-#### Using Magic Methods
+#### 使用魔術方法
 
-For convenience, you may use Laravel's magic factory relationship methods to
-define many to many relationships. For example, the following example will
-use convention to determine that the related models should be created via a
-`roles` relationship method on the `User` model:
+為了方便起見，可以使用 Laravel 的魔術 Factory 關聯方法來定義 Many to Many 關聯。舉例來說，下列範例會使用慣例來判斷應通過
+`User` Model 上的 `roles` 關聯方法來建立關聯 Model：
 
     $user = User::factory()
                 ->hasRoles(1, [
@@ -491,38 +467,34 @@ use convention to determine that the related models should be created via a
                 ->create();
 
 <a name="polymorphic-relationships"></a>
-### Polymorphic Relationships
+### Polymorphic (多型) 關聯
 
-[Polymorphic
-relationships](/docs/{{version}}/eloquent-relationships#polymorphic-relationships)
-may also be created using factories. Polymorphic "morph many" relationships
-are created in the same way as typical "has many" relationships. For
-example, if a `App\Models\Post` model has a `morphMany` relationship with a
-`App\Models\Comment` model:
+[Polymorphic (多型)
+關聯](/docs/{{version}}/eloquent-relationships#polymorphic-relationships)
+也可以使用 Factory 來建立。Polymorphic 的「Morph Many」關聯使用與一般的「Has
+Many」關聯相同的方法來建立。舉例來說，若 `App\Models\Post` Model 有與 `App\Models\Comment` Model
+的 `morphMany` 關聯：
 
     use App\Models\Post;
 
     $post = Post::factory()->hasComments(3)->create();
 
 <a name="morph-to-relationships"></a>
-#### Morph To Relationships
+#### Morph To 關聯
 
-Magic methods may not be used to create `morphTo` relationships. Instead,
-the `for` method must be used directly and the name of the relationship must
-be explicitly provided. For example, imagine that the `Comment` model has a
-`commentable` method that defines a `morphTo` relationship. In this
-situation, we may create three comments that belong to a single post by
-using the `for` method directly:
+在建立 `morphTo` 關聯時無法使用魔法方法。必須直接使用 `for` 方法，並明顯提供該關聯的名稱。舉例來說，假設 `Comment`
+Model 有個 `commantable` 方法，該方法定義了 `morphTo` 關聯。在這種情況下，我們可以直接使用 `for`
+方法來建立三個隸屬於單一貼文的留言：
 
     $comments = Comment::factory()->count(3)->for(
         Post::factory(), 'commentable'
     )->create();
 
 <a name="polymorphic-many-to-many-relationships"></a>
-#### Polymorphic Many To Many Relationships
+#### Polymorphic (多型) Many to Many 關聯
 
-Polymorphic "many to many" (`morphToMany` / `morphedByMany`) relationships
-may be created just like non-polymorphic "many to many" relationships:
+Polymorphic (多型)「Many to Many」(`morphyToMany` / `morphedByMany`) 關聯可以像非
+Polymorphic「Many to Many」關聯一樣建立：
 
     use App\Models\Tag;
     use App\Models\Video;
@@ -534,21 +506,17 @@ may be created just like non-polymorphic "many to many" relationships:
                 )
                 ->create();
 
-Of course, the magic `has` method may also be used to create polymorphic
-"many to many" relationships:
+當然，也可以使用 `has` 魔法方法來建立 Polymorphic「Many to Many」關聯：
 
     $videos = Video::factory()
                 ->hasTags(3, ['public' => true])
                 ->create();
 
 <a name="defining-relationships-within-factories"></a>
-### Defining Relationships Within Factories
+### 在 Factory 中定義關聯
 
-To define a relationship within your model factory, you will typically
-assign a new factory instance to the foreign key of the relationship. This
-is normally done for the "inverse" relationships such as `belongsTo` and
-`morphTo` relationships. For example, if you would like to create a new user
-when creating a post, you may do the following:
+若要在 Model Factory 中定義關聯，則通常需要為該關聯的外鍵 (Foreign Key) 指定新的 Factory
+實體。一般是使用「相反」的關聯來處理，如 `belongsTo` 與 `morphTo` 關聯。舉例來說，若想在建立貼文時建立新使用者，可以像這樣：
 
     use App\Models\User;
 
@@ -566,9 +534,7 @@ when creating a post, you may do the following:
         ];
     }
 
-If the relationship's columns depend on the factory that defines it you may
-assign a closure to an attribute. The closure will receive the factory's
-evaluated attribute array:
+若該關聯的欄位仰賴定義其的 Factory，則可以在屬性中放入閉包。該閉包會收到該 Factory 取值結果的屬性陣列：
 
     /**
      * Define the model's default state.
@@ -588,13 +554,11 @@ evaluated attribute array:
     }
 
 <a name="running-seeders"></a>
-## Running Seeders
+## 執行 Seeder
 
-If you would like to use [database seeders](/docs/{{version}}/seeding) to
-populate your database during a feature test, you may invoke the `seed`
-method. By default, the `seed` method will execute the `DatabaseSeeder`,
-which should execute all of your other seeders. Alternatively, you pass a
-specific seeder class name to the `seed` method:
+若想使用[資料庫 Seeder](/docs/{{version}}/seeding) 來在功能測試時修改資料庫，則可以叫用 `seed`
+方法。預設情況下，`seed` 方法會執行 `DatabaseSeeder`，該 Seeder 應用來執行所有其他的
+Seeder。或者，也可以傳入指定的 Seeder 類別名稱給 `seed` 方法：
 
     <?php
 
@@ -616,19 +580,18 @@ specific seeder class name to the `seed` method:
          */
         public function test_orders_can_be_created()
         {
-            // Run the DatabaseSeeder...
+            // 執行 DatabaseSeeder…
             $this->seed();
 
-            // Run a specific seeder...
+            // 執行特定的 Seeder…
             $this->seed(OrderStatusSeeder::class);
 
             // ...
         }
     }
 
-Alternatively, you may instruct the `RefreshDatabase` trait to automatically
-seed the database before each test. You may accomplish this by defining a
-`$seed` property on your test class:
+或者，也可以告訴 `RefreshDatabase` Trait 自動在各個測試前 Seed 資料庫。為此，可以在測試類別內定義一個 `$seed`
+屬性：
 
     <?php
 
@@ -649,10 +612,8 @@ seed the database before each test. You may accomplish this by defining a
         // ...
     }
 
-When the `$seed` property is `true`, the test will run the
-`Database\Seeders\DatabaseSeeder` class before each test. However, you may
-specify a specific seeder that should be executed by defining a `$seeder`
-property on your test class:
+當 `$seed` 屬性為 `true` 時，測試會在各個測試前執行 `Database\Seeders\DatabaseSeeder`
+類別。不過，也可以通過在測試類別內定義 `$seeder` 屬性來指定要執行的 Seeder。
 
     use Database\Seeders\OrderStatusSeeder;
 
@@ -664,24 +625,21 @@ property on your test class:
     protected $seeder = OrderStatusSeeder::class;
 
 <a name="available-assertions"></a>
-## Available Assertions
+## 可用的 Assertion
 
-Laravel provides several database assertions for your
-[PHPUnit](https://phpunit.de/) feature tests. We'll discuss each of these
-assertions below.
+Laravel 為 [PHPUnit] 功能測試提供了多個資料庫 Assertion。我們會在下方討論逐個討論這些 Assertion。
 
 <a name="assert-database-count"></a>
 #### assertDatabaseCount
 
-Assert that a table in the database contains the given number of records:
+判斷資料庫中的某個資料表是否包含給定數量的記錄：
 
     $this->assertDatabaseCount('users', 5);
 
 <a name="assert-database-has"></a>
 #### assertDatabaseHas
 
-Assert that a table in the database contains records matching the given key
-/ value query constraints:
+判斷資料庫中的某個資料表包含符合給定索引鍵／值查詢條件的記錄：
 
     $this->assertDatabaseHas('users', [
         'email' => 'sally@example.com',
@@ -690,8 +648,7 @@ Assert that a table in the database contains records matching the given key
 <a name="assert-database-missing"></a>
 #### assertDatabaseMissing
 
-Assert that a table in the database does not contain records matching the
-given key / value query constraints:
+判斷資料庫中的某個資料表是否不包含符合給定索引鍵／值查詢條件的記錄：
 
     $this->assertDatabaseMissing('users', [
         'email' => 'sally@example.com',
@@ -700,8 +657,7 @@ given key / value query constraints:
 <a name="assert-deleted"></a>
 #### assertDeleted
 
-The `assertDeleted` asserts that a given Eloquent model has been deleted
-from the database:
+`assertDeleted` 判斷給定的 Eloquent Model 是否已從資料庫內刪除：
 
     use App\Models\User;
 
@@ -711,7 +667,6 @@ from the database:
 
     $this->assertDeleted($user);
 
-The `assertSoftDeleted` method may be used to assert a given Eloquent model
-has been "soft deleted":
+`assertSoftDeleted` 方法可用來判斷給定 Eloquent Model 是否已「軟刪除 (Soft Delete)」：
 
     $this->assertSoftDeleted($user);

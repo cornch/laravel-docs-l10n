@@ -42,7 +42,9 @@ Provider 則定義了要如何從長期儲存空間內取得使用者。Laravel 
 [Eloquent](/docs/{{version}}/eloquent)
 以及通過資料庫查詢構造器取得使用者的支援。但是，你也可以自行依據需求額外定期其他 Provider。
 
-你的應用程式的驗證組態設定檔位於 `config/auth.php` 內。該檔案包含了多個有文件說明的選項，可以調整 Laravel 驗證服務的行為。
+Your application's authentication configuration file is located at
+`config/auth.php`. This file contains several well documented options for
+tweaking the behavior of Laravel's authentication services.
 
 > {tip} Guard 與 Provider 與「角色」以及「權限」不同，不應溷肴。要瞭解如何依照權限來授權使用者的方法，請參考 [授權](/docs/{{version}}/authorization) 說明文件。
 
@@ -53,7 +55,7 @@ Provider 則定義了要如何從長期儲存空間內取得使用者。Laravel 
 應用程式入門套件](docs/{{version}}/starter-kits)。完成資料庫遷移後，在瀏覽器上開啟 `/register`
 或其他任何指派到應用程式的 URL。這些入門套件會幫你搞定整個驗證系統的 Scaffolding。
 
-**就算最後不會在 Laravel 應用程式上使用其中一種入門套件，安裝 [Laravel Breeze](/docs/{{version}}/starter-kits#laravel-breeze) 入門套件也是個學習如何在實際 Laravel 專案上實作所有驗證功能的好機會。** 由於 Laravel Breeze 會為你建立好驗證 Controller、路由、以及 View，因此可以通過閱讀這些檔案的程式碼來學習 Laravel 的驗證功能可以怎麼進行實作。
+**Even if you choose to not use a starter kit in your final Laravel application, installing the [Laravel Breeze](/docs/{{version}}/starter-kits#laravel-breeze) starter kit can be a wonderful opportunity to learn how to implement all of Laravel's authentication functionality in an actual Laravel project.** Since Laravel Breeze creates authentication controllers, routes, and views for you, you can examine the code within these files to learn how Laravel's authentication features may be implemented.
 
 <a name="introduction-database-considerations"></a>
 ### 資料庫選擇
@@ -85,10 +87,14 @@ Session ID 來取得 Session 資料。請注意，由於驗證這些已經被保
 <a name="laravels-built-in-browser-authentication-services"></a>
 #### Laravel 的內建瀏覽器驗證服務
 
-Laravel 的內建驗證與 Session 服務通常會通過 `Auth` 與 `Session` Facade
-來存取。這些功能為從瀏覽器發起的請求提供了基於 Cookie
-的驗證功能。這些功能也提供了能驗證使用者憑證與驗證使用者的方法。此外，這些服務也會自動將正確的資料儲存在使用者的 Session 內，並為使用者核發
-Session Cookie。本文件中包含了如何使用這些服務的討論。
+Laravel includes built-in authentication and session services which are
+typically accessed via the `Auth` and `Session` facades. These features
+provide cookie based authentication for requests that are initiated from web
+browsers. They provide methods that allow you to verify a user's credentials
+and authenticate the user. In addition, these services will automatically
+store the proper authentication data in the user's session and issue the
+user's session cookie. A discussion of how to use these services is
+contained within this documentation.
 
 **應用程式入門套件**
 
@@ -184,10 +190,11 @@ Fortify](/docs/{{version}}/fortify)
 應用程式入門套件](/docs/{{version}}/starter-kits)。我們目前的入門套件，Laravel Breeze 與 Laravel
 Jetstream，都提供了能為你的全新 Laravel 應用程式帶來漂亮設計的開始點。
 
-Laravel Breeze 是一個簡單且最小化實作出所有 Laravel
-驗證功能的套件，包含登入、註冊、密碼重設、電子郵件驗證、以及密碼確認。Laravel Breeze 的檢視器層是通過簡單的 [Blade
-樣板](/docs/{{version}}/blade) 搭配 [Tailwind CSS](https://tailwindcss.com)
-提供樣式組合而成的。
+Laravel Breeze is a minimal, simple implementation of all of Laravel's
+authentication features, including login, registration, password reset,
+email verification, and password confirmation. Laravel Breeze's view layer
+is made up of simple [Blade templates](/docs/{{version}}/blade) styled with
+[Tailwind CSS](https://tailwindcss.com).
 
 [Laravel Jetstream](https://jetstream.laravel.com) 是一個更複雜的應用程式入門套件，其中包含了使用
 [Livewire](https://laravel-livewire.com) 或 [Inertia.js 與
@@ -299,15 +306,20 @@ IP 位址來區分的。
 <a name="authenticating-users"></a>
 ## 手動驗證使用者
 
-不一定要使用 Laravel [應用程式入門套件](/docs/{{version}}/starter-kits) 內包含的驗證
-Scaffolding。若選擇不使用這些 Scaffolding 的話，則需要直接通過 Laravel
-的驗證類別來處理使用者驗證。別擔心，這只是小菜一碟！
+You are not required to use the authentication scaffolding included with
+Laravel's [application starter kits](/docs/{{version}}/starter-kits). If you
+choose to not use this scaffolding, you will need to manage user
+authentication using the Laravel authentication classes directly. Don't
+worry, it's a cinch!
 
-我們會通過 `Auth` [Facade](/docs/{{version}}/facades) 來存取 Laravel
-的驗證服務。因此，我們需要確保有在該類別的最上方引入 `Auth` Facade。接著，還要確認一下我們的 `attempt` 方法。這個
-`attempt` 方法通常是用來處理來自應用程式「登入」表單的驗證嘗試。若成功驗證，則應該重新產生使用者的
-[session](/docs/{{version}}/session) 來防止 [Session
-Fixation（英語）](https://en.wikipedia.org/wiki/Session_fixation)：
+We will access Laravel's authentication services via the `Auth`
+[facade](/docs/{{version}}/facades), so we'll need to make sure to import
+the `Auth` facade at the top of the class. Next, let's check out the
+`attempt` method. The `attempt` method is normally used to handle
+authentication attempt's from your application's "login" form. If
+authentication is successful, you should regenerate the user's
+[session](/docs/{{version}}/session) to prevent [session
+fixation](https://en.wikipedia.org/wiki/Session_fixation):
 
     <?php
 
@@ -319,7 +331,7 @@ Fixation（英語）](https://en.wikipedia.org/wiki/Session_fixation)：
     class LoginController extends Controller
     {
         /**
-         * 處理登入嘗試。
+         * Handle an authentication attempt.
          *
          * @param  \Illuminate\Http\Request $request
          * @return \Illuminate\Http\Response
@@ -511,7 +523,7 @@ Session 將永久可用，直到使用者手動登出應用程式：
     use Illuminate\Support\Facades\Auth;
 
     /**
-     * 將使用者登出應用程式。
+     * Log the user out of the application.
      *
      * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
@@ -573,7 +585,8 @@ Middleware
 <a name="the-password-confirmation-form"></a>
 #### 密碼確認表單
 
-首先，我們先定義用來顯示要求使用者確認密碼的路由：
+First, we will define a route to display a view that requests that the user
+confirm their password:
 
     Route::get('/confirm-password', function () {
         return view('auth.confirm-password');

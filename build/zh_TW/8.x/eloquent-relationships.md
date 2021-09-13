@@ -506,7 +506,7 @@ argument is the local key of the intermediate model:
     }
 
 <a name="many-to-many"></a>
-## Many To Many Relationships
+## Many To Many 關聯
 
 Many-to-many relations are slightly more complicated than `hasOne` and
 `hasMany` relationships. An example of a many-to-many relationship is a user
@@ -775,7 +775,7 @@ is set to `true`.
     public $incrementing = true;
 
 <a name="polymorphic-relationships"></a>
-## Polymorphic Relationships
+## Polymorphic (多型) 關聯
 
 A polymorphic relationship allows the child model to belong to more than one
 type of model using a single association. For example, imagine you are
@@ -1994,7 +1994,7 @@ relationships](https://laravel.com/docs/{{version}}/eloquent#upserts).
 > {tip} Before using the `create` method, be sure to review the [mass assignment](/docs/{{version}}/eloquent#mass-assignment) documentation.
 
 <a name="updating-belongs-to-relationships"></a>
-### Belongs To Relationships
+### Belongs To 關聯
 
 If you would like to assign a child model to a new parent model, you may use
 the `associate` method. In this example, the `User` model defines a
@@ -2017,7 +2017,7 @@ method. This method will set the relationship's foreign key to `null`:
     $user->save();
 
 <a name="updating-many-to-many-relationships"></a>
-### Many To Many Relationships
+### Many To Many 關聯
 
 <a name="attaching-detaching"></a>
 #### Attaching / Detaching

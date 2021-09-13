@@ -329,7 +329,8 @@ Provider](/docs/{{version}}/providers) 的 `boot` 方法內。
 <a name="method-contains"></a>
 #### `contains()` {#collection-method}
 
-可以將一個閉包傳入 `contains` 來使用給定的布林測試判斷某個元素是否存在於 Collection 中：
+You may also pass a closure to the `contains` to determine if an element
+exists in the collection matching a given truth test:
 
     $collection = collect([1, 2, 3, 4, 5]);
 

@@ -130,15 +130,19 @@ null | (null) null
 <a name="maintenance-mode"></a>
 ## 維護模式
 
-當應用程式在維護模式下時，所有連入應用程式的請求都會顯示一個自定的
-View。這樣一來便能在進行維護時輕鬆地「禁用」應用程式。維護模式的檢查包含在應用程式的預設 Middleware
-堆疊中。若應用程式在維護模式，則會拋出 `MaintenanceModeException`，以及狀態碼 503。
+When your application is in maintenance mode, a custom view will be
+displayed for all requests into your application. This makes it easy to
+"disable" your application while it is updating or when you are performing
+maintenance. A maintenance mode check is included in the default middleware
+stack for your application. If the application is in maintenance mode, a
+`MaintenanceModeException` will be thrown with a status code of 503.
 
 若要啟用維護模式，請執行 `down` Artisan 指令：
 
     php artisan down
 
-也可以傳入一個 `retry` 選項給 `down` 指令，會用來設為 `Retry-After` HTTP 標頭的值：
+You may also provide a `retry` option to the `down` command, which will be
+set as the `Retry-After` HTTP header's value:
 
     php artisan down --retry=60
 

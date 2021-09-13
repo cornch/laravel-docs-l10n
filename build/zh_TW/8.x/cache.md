@@ -105,8 +105,10 @@ Driver。甚至也可以為相同的 Driver 設定多個快取設定。
 資料表以儲存所有的快取資料。通常來說，這個資料表應命名為 `cache`。不過，應依照應用程式的 `cache` 組態設定檔中的
 `stores.dynamodb.table` 設定值來設定這個資料表的名稱。
 
-該資料表也應擁有一個字串 Partition Key，其名稱應對應應用程式的 `cache` 組態設定檔的 `stores.dynamodb.key`
-設定值。預設情況下，該 Partition Key 應命名為 `key`。
+This table should also have a string partition key with a name that
+corresponds to the value of the `stores.dynamodb.key` configuration item
+within your application's `cache` configuration file. By default, the
+partition key should be named `key`.
 
 <a name="cache-usage"></a>
 ## 使用快取

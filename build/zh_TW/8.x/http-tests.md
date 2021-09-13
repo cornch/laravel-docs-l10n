@@ -120,7 +120,7 @@ custom headers you would like to the request:
     }
 
 <a name="cookies"></a>
-### Cookies
+### Cookie
 
 You may use the `withCookie` or `withCookies` methods to set cookie values
 before making a request. The `withCookie` method accepts a cookie name and
@@ -623,7 +623,7 @@ component](/docs/{{version}}/blade#components). Like the `view` method, the
     $view->assertSee('Taylor');
 
 <a name="available-assertions"></a>
-## Available Assertions
+## 可用的 Assertion
 
 <a name="response-assertions"></a>
 ### Response Assertions

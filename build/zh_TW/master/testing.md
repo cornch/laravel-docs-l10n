@@ -105,7 +105,7 @@ terminal:
 > {note} If you define your own `setUp` / `tearDown` methods within a test class, be sure to call the respective `parent::setUp()` / `parent::tearDown()` methods on the parent class.
 
 <a name="running-tests"></a>
-## Running Tests
+## 執行測試
 
 As mentioned previously, once you've written tests, you may run them using
 `phpunit`:

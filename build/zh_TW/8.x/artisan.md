@@ -432,9 +432,11 @@ artisan help` 指令時顯示：
 <a name="writing-output"></a>
 ### 撰寫輸出
 
-若要將輸出傳送至主控台，可以使用 `line`, `info`, `comment`, `question` 與 `error`
-方法。這幾個方法會依不同目的來使用適當的 ANSI 色彩。舉例來說，我們來顯示一些一般的資訊給使用者看。通常來說，`info`
-方法會在主控台上顯示出綠色的文字：
+To send output to the console, you may use the `line`, `info`, `comment`,
+`question` and `error` methods. Each of these methods will use appropriate
+ANSI colors for their purpose. For example, let's display some general
+information to the user. Typically, the `info` method will display in the
+console as green colored text:
 
     /**
      * 執行主控台指令。

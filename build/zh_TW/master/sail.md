@@ -252,7 +252,7 @@ may use a graphical database management application such as
 accessible at `localhost` port 6379.
 
 <a name="running-tests"></a>
-## Running Tests
+## 執行測試
 
 Laravel provides amazing testing support out of the box, and you may use
 Sail's `test` command to run your applications [feature and unit

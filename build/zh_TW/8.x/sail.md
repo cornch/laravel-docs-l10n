@@ -272,7 +272,7 @@ administration panel by navigating to `http://localhost:7700` in your web
 browser.
 
 <a name="running-tests"></a>
-## Running Tests
+## 執行測試
 
 Laravel provides amazing testing support out of the box, and you may use
 Sail's `test` command to run your applications [feature and unit

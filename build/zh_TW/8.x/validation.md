@@ -272,7 +272,7 @@ variable to display the error message:
 ```html
 <!-- /resources/views/post/create.blade.php -->
 
-<label for="title">貼文標題</label>
+<label for="title">Post Title</label>
 
 <input id="title" type="text" class="@error('title') is-invalid @enderror">
 

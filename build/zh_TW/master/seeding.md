@@ -116,7 +116,7 @@ be executed:
     }
 
 <a name="running-seeders"></a>
-## Running Seeders
+## 執行 Seeder
 
 You may execute the `db:seed` Artisan command to seed your database. By
 default, the `db:seed` command runs the `Database\Seeders\DatabaseSeeder`

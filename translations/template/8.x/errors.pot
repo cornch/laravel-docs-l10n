@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Laravel Documentation VERSION\n"
-"POT-Creation-Date: 2021-04-16 04:29+0000\n"
+"POT-Creation-Date: 2021-09-12 16:10+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -267,19 +267,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/errors.md:84 docs/8.x/errors.md:165
+#: docs/8.x/errors.md:84 docs/8.x/errors.md:185
 #, no-wrap
 msgid "    <?php\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/errors.md:86 docs/8.x/errors.md:167
+#: docs/8.x/errors.md:86 docs/8.x/errors.md:187
 #, no-wrap
 msgid "    namespace App\\Exceptions;\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/errors.md:88 docs/8.x/errors.md:169
+#: docs/8.x/errors.md:88 docs/8.x/errors.md:189
 #, no-wrap
 msgid "    use Exception;\n"
 msgstr ""
@@ -445,18 +445,55 @@ msgstr ""
 
 #. type: Plain text
 #: docs/8.x/errors.md:160
+msgid ""
+"You may also use the `renderable` method to override the rendering behavior "
+"for built-in Laravel or Symfony exceptions such as "
+"`NotFoundHttpException`. If the closure given to the `renderable` method "
+"does not return a value, Laravel's default exception rendering will be "
+"utilized:"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/errors.md:162
+#, no-wrap
+msgid "    use Symfony\\Component\\HttpKernel\\Exception\\NotFoundHttpException;\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/errors.md:178
+#, no-wrap
+msgid ""
+"    /**\n"
+"     * Register the exception handling callbacks for the application.\n"
+"     *\n"
+"     * @return void\n"
+"     */\n"
+"    public function register()\n"
+"    {\n"
+"        $this->renderable(function (NotFoundHttpException $e, $request) {\n"
+"            if ($request->is('api/*')) {\n"
+"                return response()->json([\n"
+"                    'message' => 'Record not found.'\n"
+"                ], 404);\n"
+"            }\n"
+"        });\n"
+"    }\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/errors.md:180
 #, no-wrap
 msgid "<a name=\"renderable-exceptions\"></a>\n"
 msgstr ""
 
 #. type: Title ###
-#: docs/8.x/errors.md:160
+#: docs/8.x/errors.md:180
 #, no-wrap
 msgid "Reportable & Renderable Exceptions"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/errors.md:163
+#: docs/8.x/errors.md:183
 msgid ""
 "Instead of type-checking exceptions in the exception handler's `register` "
 "method, you may define `report` and `render` methods directly on your custom "
@@ -465,7 +502,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/errors.md:181
+#: docs/8.x/errors.md:201
 #, no-wrap
 msgid ""
 "    class InvalidOrderException extends Exception\n"
@@ -482,7 +519,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/errors.md:193
+#: docs/8.x/errors.md:213
 #, no-wrap
 msgid ""
 "        /**\n"
@@ -499,7 +536,38 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/errors.md:195
+#: docs/8.x/errors.md:215
+msgid ""
+"If your exception extends an exception that is already renderable, such as a "
+"built-in Laravel or Symfony exception, you may return `false` from the "
+"exception's `render` method to render the exception's default HTTP response:"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/errors.md:225
+#, no-wrap
+msgid ""
+"    /**\n"
+"     * Render the exception into an HTTP response.\n"
+"     *\n"
+"     * @param  \\Illuminate\\Http\\Request  $request\n"
+"     * @return \\Illuminate\\Http\\Response\n"
+"     */\n"
+"    public function render($request)\n"
+"    {\n"
+"        // Determine if the exception needs custom rendering...\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/errors.md:228 docs/8.x/errors.md:242
+#, no-wrap
+msgid ""
+"        return false;\n"
+"    }\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/errors.md:230
 msgid ""
 "If your exception contains custom reporting logic that is only necessary "
 "when certain conditions are met, you may need to instruct Laravel to "
@@ -509,7 +577,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/errors.md:204
+#: docs/8.x/errors.md:239
 #, no-wrap
 msgid ""
 "    /**\n"
@@ -523,15 +591,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/errors.md:207
-#, no-wrap
-msgid ""
-"        return false;\n"
-"    }\n"
-msgstr ""
-
-#. type: Plain text
-#: docs/8.x/errors.md:209
+#: docs/8.x/errors.md:244
 #, no-wrap
 msgid ""
 "> {tip} You may type-hint any required dependencies of the `report` method "
@@ -540,19 +600,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/errors.md:211
+#: docs/8.x/errors.md:246
 #, no-wrap
 msgid "<a name=\"http-exceptions\"></a>\n"
 msgstr ""
 
 #. type: Title ##
-#: docs/8.x/errors.md:211
+#: docs/8.x/errors.md:246
 #, no-wrap
 msgid "HTTP Exceptions"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/errors.md:214
+#: docs/8.x/errors.md:249
 msgid ""
 "Some exceptions describe HTTP error codes from the server. For example, this "
 "may be a \"page not found\" error (404), an \"unauthorized error\" (401) or "
@@ -561,25 +621,25 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/errors.md:216
+#: docs/8.x/errors.md:251
 #, no-wrap
 msgid "    abort(404);\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/errors.md:218
+#: docs/8.x/errors.md:253
 #, no-wrap
 msgid "<a name=\"custom-http-error-pages\"></a>\n"
 msgstr ""
 
 #. type: Title ###
-#: docs/8.x/errors.md:218
+#: docs/8.x/errors.md:253
 #, no-wrap
 msgid "Custom HTTP Error Pages"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/errors.md:221
+#: docs/8.x/errors.md:256
 msgid ""
 "Laravel makes it easy to display custom error pages for various HTTP status "
 "codes. For example, if you wish to customize the error page for 404 HTTP "
@@ -593,13 +653,13 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/errors.md:223
+#: docs/8.x/errors.md:258
 #, no-wrap
 msgid "    <h2>{{ $exception->getMessage() }}</h2>\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/errors.md:225
+#: docs/8.x/errors.md:260
 msgid ""
 "You may publish Laravel's default error page templates using the "
 "`vendor:publish` Artisan command. Once the templates have been published, "
@@ -607,7 +667,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/errors.md:226
+#: docs/8.x/errors.md:261
 #, no-wrap
 msgid "    php artisan vendor:publish --tag=laravel-errors\n"
 msgstr ""

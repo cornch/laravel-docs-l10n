@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Laravel Documentation VERSION\n"
-"POT-Creation-Date: 2021-04-16 04:29+0000\n"
+"POT-Creation-Date: 2021-09-12 16:10+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -201,7 +201,7 @@ msgstr ""
 #: docs/8.x/urls.md:59
 #, no-wrap
 msgid ""
-"    Route::get('/post/{post}', function () {\n"
+"    Route::get('/post/{post}', function (Post $post) {\n"
 "        //\n"
 "    })->name('post.show');\n"
 msgstr ""
@@ -234,7 +234,8 @@ msgstr ""
 #: docs/8.x/urls.md:71
 #, no-wrap
 msgid ""
-"    Route::get('/post/{post}/comment/{comment}', function () {\n"
+"    Route::get('/post/{post}/comment/{comment}', function (Post $post, "
+"Comment $comment) {\n"
 "        //\n"
 "    })->name('comment.show');\n"
 msgstr ""
@@ -285,10 +286,10 @@ msgstr ""
 #. type: Plain text
 #: docs/8.x/urls.md:86
 msgid ""
-"You will often be generating URLs using the primary key of [Eloquent "
-"models](/docs/{{version}}/eloquent). For this reason, you may pass Eloquent "
-"models as parameter values. The `route` helper will automatically extract "
-"the model's primary key:"
+"You will often be generating URLs using the route key (typically the primary "
+"key) of [Eloquent models](/docs/{{version}}/eloquent). For this reason, you "
+"may pass Eloquent models as parameter values. The `route` helper will "
+"automatically extract the model's route key:"
 msgstr ""
 
 #. type: Plain text
@@ -442,34 +443,79 @@ msgstr ""
 #. type: Plain text
 #: docs/8.x/urls.md:143
 #, no-wrap
-msgid "<a name=\"urls-for-controller-actions\"></a>\n"
+msgid "<a name=\"responding-to-invalid-signed-routes\"></a>\n"
 msgstr ""
 
-#. type: Title ##
+#. type: Title ####
 #: docs/8.x/urls.md:143
 #, no-wrap
-msgid "URLs For Controller Actions"
+msgid "Responding To Invalid Signed Routes"
 msgstr ""
 
 #. type: Plain text
 #: docs/8.x/urls.md:146
-msgid "The `action` function generates a URL for the given controller action:"
+msgid ""
+"When someone visits a signed URL that has expired, they will receive a "
+"generic error page for the `403` HTTP status code. However, you can "
+"customize this behavior by defining a custom \"renderable\" closure for the "
+"`InvalidSignatureException` exception in your exception handler. This "
+"closure should return an HTTP response:"
 msgstr ""
 
 #. type: Plain text
 #: docs/8.x/urls.md:148
 #, no-wrap
+msgid "    use Illuminate\\Routing\\Exceptions\\InvalidSignatureException;\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/urls.md:160
+#, no-wrap
+msgid ""
+"    /**\n"
+"     * Register the exception handling callbacks for the application.\n"
+"     *\n"
+"     * @return void\n"
+"     */\n"
+"    public function register()\n"
+"    {\n"
+"        $this->renderable(function (InvalidSignatureException $e) {\n"
+"            return response()->view('error.link-expired', [], 403);\n"
+"        });\n"
+"    }\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/urls.md:162
+#, no-wrap
+msgid "<a name=\"urls-for-controller-actions\"></a>\n"
+msgstr ""
+
+#. type: Title ##
+#: docs/8.x/urls.md:162
+#, no-wrap
+msgid "URLs For Controller Actions"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/urls.md:165
+msgid "The `action` function generates a URL for the given controller action:"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/urls.md:167
+#, no-wrap
 msgid "    use App\\Http\\Controllers\\HomeController;\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/urls.md:150
+#: docs/8.x/urls.md:169
 #, no-wrap
 msgid "    $url = action([HomeController::class, 'index']);\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/urls.md:152
+#: docs/8.x/urls.md:171
 msgid ""
 "If the controller method accepts route parameters, you may pass an "
 "associative array of route parameters as the second argument to the "
@@ -477,25 +523,25 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/urls.md:154
+#: docs/8.x/urls.md:173
 #, no-wrap
 msgid "    $url = action([UserController::class, 'profile'], ['id' => 1]);\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/urls.md:156
+#: docs/8.x/urls.md:175
 #, no-wrap
 msgid "<a name=\"default-values\"></a>\n"
 msgstr ""
 
 #. type: Title ##
-#: docs/8.x/urls.md:156
+#: docs/8.x/urls.md:175
 #, no-wrap
 msgid "Default Values"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/urls.md:159
+#: docs/8.x/urls.md:178
 msgid ""
 "For some applications, you may wish to specify request-wide default values "
 "for certain URL parameters. For example, imagine many of your routes define "
@@ -503,7 +549,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/urls.md:163
+#: docs/8.x/urls.md:182
 #, no-wrap
 msgid ""
 "    Route::get('/{locale}/posts', function () {\n"
@@ -512,7 +558,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/urls.md:165
+#: docs/8.x/urls.md:184
 msgid ""
 "It is cumbersome to always pass the `locale` every time you call the `route` "
 "helper. So, you may use the `URL::defaults` method to define a default value "
@@ -523,19 +569,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/urls.md:167
+#: docs/8.x/urls.md:186
 #, no-wrap
 msgid "    <?php\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/urls.md:169
+#: docs/8.x/urls.md:188
 #, no-wrap
 msgid "    namespace App\\Http\\Middleware;\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/urls.md:172
+#: docs/8.x/urls.md:191
 #, no-wrap
 msgid ""
 "    use Closure;\n"
@@ -543,7 +589,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/urls.md:185
+#: docs/8.x/urls.md:204
 #, no-wrap
 msgid ""
 "    class SetDefaultLocaleForUrls\n"
@@ -561,7 +607,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/urls.md:189
+#: docs/8.x/urls.md:208
 #, no-wrap
 msgid ""
 "            return $next($request);\n"
@@ -570,7 +616,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/urls.md:191
+#: docs/8.x/urls.md:210
 msgid ""
 "Once the default value for the `locale` parameter has been set, you are no "
 "longer required to pass its value when generating URLs via the `route` "
@@ -578,31 +624,31 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/urls.md:193
+#: docs/8.x/urls.md:212
 #, no-wrap
 msgid "<a name=\"url-defaults-middleware-priority\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/8.x/urls.md:193
+#: docs/8.x/urls.md:212
 #, no-wrap
 msgid "URL Defaults & Middleware Priority"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/urls.md:196
+#: docs/8.x/urls.md:215
 msgid ""
 "Setting URL default values can interfere with Laravel's handling of implicit "
 "model bindings. Therefore, you should [prioritize your "
-"middleware](https://laravel.com/docs/{{version}}/middleware#sorting-middleware) "
-"that set URL defaults to be executed before Laravel's own "
-"`SubstituteBindings` middleware. You can accomplish this by making sure your "
-"middleware occurs before the `SubstituteBindings` middleware within the "
-"`$middlewarePriority` property of your application's HTTP kernel."
+"middleware](/docs/{{version}}/middleware#sorting-middleware) that set URL "
+"defaults to be executed before Laravel's own `SubstituteBindings` "
+"middleware. You can accomplish this by making sure your middleware occurs "
+"before the `SubstituteBindings` middleware within the `$middlewarePriority` "
+"property of your application's HTTP kernel."
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/urls.md:198
+#: docs/8.x/urls.md:217
 msgid ""
 "The `$middlewarePriority` property is defined in the base "
 "`Illuminate\\Foundation\\Http\\Kernel` class. You may copy its definition "
@@ -611,7 +657,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/urls.md:211
+#: docs/8.x/urls.md:230
 #, no-wrap
 msgid ""
 "    /**\n"

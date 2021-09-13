@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Laravel Documentation VERSION\n"
-"POT-Creation-Date: 2021-04-16 04:29+0000\n"
+"POT-Creation-Date: 2021-09-12 16:10+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -234,7 +234,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/mocking.md:80 docs/8.x/mocking.md:103 docs/8.x/mocking.md:154 docs/8.x/mocking.md:228 docs/8.x/mocking.md:306 docs/8.x/mocking.md:349 docs/8.x/mocking.md:410 docs/8.x/mocking.md:480 docs/8.x/mocking.md:551
+#: docs/8.x/mocking.md:80 docs/8.x/mocking.md:103 docs/8.x/mocking.md:154 docs/8.x/mocking.md:228 docs/8.x/mocking.md:306 docs/8.x/mocking.md:349 docs/8.x/mocking.md:418 docs/8.x/mocking.md:488 docs/8.x/mocking.md:559
 #, no-wrap
 msgid "    <?php\n"
 msgstr ""
@@ -289,7 +289,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/mocking.md:105 docs/8.x/mocking.md:156 docs/8.x/mocking.md:230 docs/8.x/mocking.md:308 docs/8.x/mocking.md:351 docs/8.x/mocking.md:412 docs/8.x/mocking.md:482 docs/8.x/mocking.md:553
+#: docs/8.x/mocking.md:105 docs/8.x/mocking.md:156 docs/8.x/mocking.md:230 docs/8.x/mocking.md:308 docs/8.x/mocking.md:351 docs/8.x/mocking.md:420 docs/8.x/mocking.md:490 docs/8.x/mocking.md:561
 #, no-wrap
 msgid "    namespace Tests\\Feature;\n"
 msgstr ""
@@ -447,7 +447,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/mocking.md:170 docs/8.x/mocking.md:248 docs/8.x/mocking.md:365 docs/8.x/mocking.md:426 docs/8.x/mocking.md:498
+#: docs/8.x/mocking.md:170 docs/8.x/mocking.md:248 docs/8.x/mocking.md:365 docs/8.x/mocking.md:434 docs/8.x/mocking.md:506
 #, no-wrap
 msgid "            // Perform order shipping...\n"
 msgstr ""
@@ -496,7 +496,7 @@ msgid "<a name=\"bus-job-chains\"></a>\n"
 msgstr ""
 
 #. type: Title ###
-#: docs/8.x/mocking.md:186 docs/8.x/mocking.md:520
+#: docs/8.x/mocking.md:186 docs/8.x/mocking.md:528
 #, no-wrap
 msgid "Job Chains"
 msgstr ""
@@ -532,7 +532,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/mocking.md:202 docs/8.x/mocking.md:535
+#: docs/8.x/mocking.md:202 docs/8.x/mocking.md:543
 msgid ""
 "As you can see in the example above, the array of chained jobs may be an "
 "array of the job's class names. However, you may also provide an array of "
@@ -568,7 +568,7 @@ msgstr ""
 #: docs/8.x/mocking.md:213
 msgid ""
 "The `Bus` facade's `assertBatched` method may be used to assert that a "
-"[batch of jobs](/docs/{{version}}/queues#job-batches) was dispatched. The "
+"[batch of jobs](/docs/{{version}}/queues#job-batching) was dispatched. The "
 "closure given to the `assertBatched` method receives an instance of "
 "`Illuminate\\Bus\\PendingBatch`, which may be used to inspect the jobs "
 "within the batch:"
@@ -706,7 +706,7 @@ msgstr ""
 msgid ""
 "    Event::assertListening(\n"
 "        OrderShipped::class,\n"
-"        [SendShipmentNotification::class, 'handle']\n"
+"        SendShipmentNotification::class\n"
 "    );\n"
 msgstr ""
 
@@ -1014,18 +1014,42 @@ msgstr ""
 
 #. type: Plain text
 #: docs/8.x/mocking.md:403
+msgid ""
+"You may have noticed that there are two methods for asserting that mail was "
+"not sent: `assertNotSent` and `assertNotQueued`. Sometimes you may wish to "
+"assert that no mail was sent **or** queued. To accomplish this, you may use "
+"the `assertNothingOutgoing` and `assertNotOutgoing` methods:"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/mocking.md:405
+#, no-wrap
+msgid "    Mail::assertNothingOutgoing();\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/mocking.md:409
+#, no-wrap
+msgid ""
+"    Mail::assertNotOutgoing(function (OrderShipped $mail) use ($order) {\n"
+"        return $mail->order->id === $order->id;\n"
+"    });\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/mocking.md:411
 #, no-wrap
 msgid "<a name=\"notification-fake\"></a>\n"
 msgstr ""
 
 #. type: Title ##
-#: docs/8.x/mocking.md:403
+#: docs/8.x/mocking.md:411
 #, no-wrap
 msgid "Notification Fake"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/mocking.md:406
+#: docs/8.x/mocking.md:414
 msgid ""
 "You may use the `Notification` facade's `fake` method to prevent "
 "notifications from being sent. Typically, sending notifications is unrelated "
@@ -1034,7 +1058,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/mocking.md:408
+#: docs/8.x/mocking.md:416
 msgid ""
 "After calling the `Notification` facade's `fake` method, you may then assert "
 "that [notifications](/docs/{{version}}/notifications) were instructed to be "
@@ -1042,7 +1066,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/mocking.md:418
+#: docs/8.x/mocking.md:426
 #, no-wrap
 msgid ""
 "    use App\\Notifications\\OrderShipped;\n"
@@ -1053,7 +1077,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/mocking.md:424
+#: docs/8.x/mocking.md:432
 #, no-wrap
 msgid ""
 "    class ExampleTest extends TestCase\n"
@@ -1064,7 +1088,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/mocking.md:429
+#: docs/8.x/mocking.md:437
 #, no-wrap
 msgid ""
 "            // Assert that no notifications were sent...\n"
@@ -1072,7 +1096,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/mocking.md:434
+#: docs/8.x/mocking.md:442
 #, no-wrap
 msgid ""
 "            // Assert a notification was sent to the given users...\n"
@@ -1082,7 +1106,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/mocking.md:441
+#: docs/8.x/mocking.md:449
 #, no-wrap
 msgid ""
 "            // Assert a notification was not sent...\n"
@@ -1094,7 +1118,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/mocking.md:443
+#: docs/8.x/mocking.md:451
 msgid ""
 "You may pass a closure to the `assertSentTo` or `assertNotSentTo` methods in "
 "order to assert that a notification was sent that passes a given \"truth "
@@ -1103,7 +1127,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/mocking.md:450
+#: docs/8.x/mocking.md:458
 #, no-wrap
 msgid ""
 "    Notification::assertSentTo(\n"
@@ -1115,19 +1139,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/mocking.md:452
+#: docs/8.x/mocking.md:460
 #, no-wrap
 msgid "<a name=\"on-demand-notifications\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/8.x/mocking.md:452
+#: docs/8.x/mocking.md:460
 #, no-wrap
 msgid "On-Demand Notifications"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/mocking.md:455
+#: docs/8.x/mocking.md:463
 msgid ""
 "If the code you are testing sends [on-demand "
 "notifications](/docs/{{version}}/notifications#on-demand-notifications), you "
@@ -1136,13 +1160,13 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/mocking.md:457
+#: docs/8.x/mocking.md:465
 #, no-wrap
 msgid "    use Illuminate\\Notifications\\AnonymousNotifiable;\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/mocking.md:461
+#: docs/8.x/mocking.md:469
 #, no-wrap
 msgid ""
 "    Notification::assertSentTo(\n"
@@ -1151,7 +1175,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/mocking.md:463
+#: docs/8.x/mocking.md:471
 msgid ""
 "By passing a closure as the third argument to the notification assertion "
 "methods, you may determine if an on-demand notification was sent to the "
@@ -1159,7 +1183,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/mocking.md:471
+#: docs/8.x/mocking.md:479
 #, no-wrap
 msgid ""
 "    Notification::assertSentTo(\n"
@@ -1172,19 +1196,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/mocking.md:473
+#: docs/8.x/mocking.md:481
 #, no-wrap
 msgid "<a name=\"queue-fake\"></a>\n"
 msgstr ""
 
 #. type: Title ##
-#: docs/8.x/mocking.md:473
+#: docs/8.x/mocking.md:481
 #, no-wrap
 msgid "Queue Fake"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/mocking.md:476
+#: docs/8.x/mocking.md:484
 msgid ""
 "You may use the `Queue` facade's `fake` method to prevent queued jobs from "
 "being pushed to the queue. Most likely, it is sufficient to simply assert "
@@ -1193,14 +1217,14 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/mocking.md:478
+#: docs/8.x/mocking.md:486
 msgid ""
 "After calling the `Queue` facade's `fake` method, you may then assert that "
 "the application attempted to push jobs to the queue:"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/mocking.md:490
+#: docs/8.x/mocking.md:498
 #, no-wrap
 msgid ""
 "    use App\\Jobs\\AnotherJob;\n"
@@ -1213,7 +1237,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/mocking.md:496
+#: docs/8.x/mocking.md:504
 #, no-wrap
 msgid ""
 "    class ExampleTest extends TestCase\n"
@@ -1224,7 +1248,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/mocking.md:501
+#: docs/8.x/mocking.md:509
 #, no-wrap
 msgid ""
 "            // Assert that no jobs were pushed...\n"
@@ -1232,7 +1256,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/mocking.md:504
+#: docs/8.x/mocking.md:512
 #, no-wrap
 msgid ""
 "            // Assert a job was pushed to a given queue...\n"
@@ -1240,7 +1264,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/mocking.md:507
+#: docs/8.x/mocking.md:515
 #, no-wrap
 msgid ""
 "            // Assert a job was pushed twice...\n"
@@ -1248,7 +1272,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/mocking.md:512
+#: docs/8.x/mocking.md:520
 #, no-wrap
 msgid ""
 "            // Assert a job was not pushed...\n"
@@ -1258,7 +1282,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/mocking.md:514
+#: docs/8.x/mocking.md:522
 msgid ""
 "You may pass a closure to the `assertPushed` or `assertNotPushed` methods in "
 "order to assert that a job was pushed that passes a given \"truth test\". If "
@@ -1267,7 +1291,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/mocking.md:518
+#: docs/8.x/mocking.md:526
 #, no-wrap
 msgid ""
 "    Queue::assertPushed(function (ShipOrder $job) use ($order) {\n"
@@ -1276,13 +1300,13 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/mocking.md:520
+#: docs/8.x/mocking.md:528
 #, no-wrap
 msgid "<a name=\"job-chains\"></a>\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/mocking.md:523
+#: docs/8.x/mocking.md:531
 msgid ""
 "The `Queue` facade's `assertPushedWithChain` and `assertPushedWithoutChain` "
 "methods may be used to inspect the job chain of a pushed job. The "
@@ -1291,7 +1315,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/mocking.md:528
+#: docs/8.x/mocking.md:536
 #, no-wrap
 msgid ""
 "    use App\\Jobs\\RecordShipment;\n"
@@ -1301,7 +1325,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/mocking.md:533
+#: docs/8.x/mocking.md:541
 #, no-wrap
 msgid ""
 "    Queue::assertPushedWithChain(ShipOrder::class, [\n"
@@ -1311,7 +1335,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/mocking.md:540
+#: docs/8.x/mocking.md:548
 #, no-wrap
 msgid ""
 "    Queue::assertPushedWithChain(ShipOrder::class, [\n"
@@ -1321,32 +1345,32 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/mocking.md:542
+#: docs/8.x/mocking.md:550
 msgid ""
 "You may use the `assertPushedWithoutChain` method to assert that a job was "
 "pushed without a chain of jobs:"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/mocking.md:544
+#: docs/8.x/mocking.md:552
 #, no-wrap
 msgid "    Queue::assertPushedWithoutChain(ShipOrder::class);\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/mocking.md:546
+#: docs/8.x/mocking.md:554
 #, no-wrap
 msgid "<a name=\"storage-fake\"></a>\n"
 msgstr ""
 
 #. type: Title ##
-#: docs/8.x/mocking.md:546
+#: docs/8.x/mocking.md:554
 #, no-wrap
 msgid "Storage Fake"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/mocking.md:549
+#: docs/8.x/mocking.md:557
 msgid ""
 "The `Storage` facade's `fake` method allows you to easily generate a fake "
 "disk that, combined with the file generation utilities of the "
@@ -1355,7 +1379,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/mocking.md:559
+#: docs/8.x/mocking.md:567
 #, no-wrap
 msgid ""
 "    use Illuminate\\Foundation\\Testing\\RefreshDatabase;\n"
@@ -1366,7 +1390,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/mocking.md:565
+#: docs/8.x/mocking.md:573
 #, no-wrap
 msgid ""
 "    class ExampleTest extends TestCase\n"
@@ -1377,7 +1401,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/mocking.md:570
+#: docs/8.x/mocking.md:578
 #, no-wrap
 msgid ""
 "            $response = $this->json('POST', '/photos', [\n"
@@ -1387,7 +1411,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/mocking.md:574
+#: docs/8.x/mocking.md:582
 #, no-wrap
 msgid ""
 "            // Assert one or more files were stored...\n"
@@ -1397,7 +1421,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/mocking.md:580
+#: docs/8.x/mocking.md:588
 #, no-wrap
 msgid ""
 "            // Assert one or more files were not stored...\n"
@@ -1409,7 +1433,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/mocking.md:582
+#: docs/8.x/mocking.md:590
 msgid ""
 "For more information on testing file uploads, you may consult the [HTTP "
 "testing documentation's information on file "
@@ -1417,7 +1441,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/mocking.md:584
+#: docs/8.x/mocking.md:592
 #, no-wrap
 msgid ""
 "> {tip} By default, the `fake` method will delete all files in its temporary "
@@ -1426,19 +1450,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/mocking.md:586
+#: docs/8.x/mocking.md:594
 #, no-wrap
 msgid "<a name=\"interacting-with-time\"></a>\n"
 msgstr ""
 
 #. type: Title ##
-#: docs/8.x/mocking.md:586
+#: docs/8.x/mocking.md:594
 #, no-wrap
 msgid "Interacting With Time"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/mocking.md:589
+#: docs/8.x/mocking.md:597
 msgid ""
 "When testing, you may occasionally need to modify the time returned by "
 "helpers such as `now` or `Illuminate\\Support\\Carbon::now()`. Thankfully, "
@@ -1447,7 +1471,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/mocking.md:600
+#: docs/8.x/mocking.md:608
 #, no-wrap
 msgid ""
 "    public function testTimeCanBeManipulated()\n"
@@ -1463,7 +1487,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/mocking.md:603
+#: docs/8.x/mocking.md:611
 #, no-wrap
 msgid ""
 "        // Travel into the past...\n"
@@ -1471,7 +1495,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/mocking.md:606
+#: docs/8.x/mocking.md:614
 #, no-wrap
 msgid ""
 "        // Travel to an explicit time...\n"
@@ -1479,7 +1503,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/mocking.md:609
+#: docs/8.x/mocking.md:617
 #, no-wrap
 msgid ""
 "        // Return back to the present time...\n"

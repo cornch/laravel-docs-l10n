@@ -1,6 +1,8 @@
 #!/bin/zsh
 
 for file in docs/**/*.md; do
+  echo "Processing $file"
+
   pot_path=`echo $file | sed -E 's#docs/(.+)\.md#translations/template/\1.pot#g'`
 
   mkdir -p `dirname $pot_path`

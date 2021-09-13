@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Laravel Documentation VERSION\n"
-"POT-Creation-Date: 2021-04-16 04:29+0000\n"
+"POT-Creation-Date: 2021-09-12 16:10+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -436,7 +436,8 @@ msgid ""
 "\"disable\" your application while it is updating or when you are performing "
 "maintenance. A maintenance mode check is included in the default middleware "
 "stack for your application. If the application is in maintenance mode, a "
-"`MaintenanceModeException` will be thrown with a status code of 503."
+"`Symfony\\Component\\HttpKernel\\Exception\\HttpException` instance will be "
+"thrown with a status code of 503."
 msgstr ""
 
 #. type: Plain text
@@ -453,43 +454,59 @@ msgstr ""
 #. type: Plain text
 #: docs/8.x/configuration.md:128
 msgid ""
-"You may also provide a `retry` option to the `down` command, which will be "
-"set as the `Retry-After` HTTP header's value:"
+"If you would like the `Refresh` HTTP header to be sent with all maintenance "
+"mode responses, you may provide the `refresh` option when invoking the "
+"`down` command. The `Refresh` header will instruct the browser to "
+"automatically refresh the page after the specified number of seconds:"
 msgstr ""
 
 #. type: Plain text
 #: docs/8.x/configuration.md:130
 #, no-wrap
-msgid "    php artisan down --retry=60\n"
+msgid "    php artisan down --refresh=15\n"
 msgstr ""
 
 #. type: Plain text
 #: docs/8.x/configuration.md:132
+msgid ""
+"You may also provide a `retry` option to the `down` command, which will be "
+"set as the `Retry-After` HTTP header's value, although browsers generally "
+"ignore this header:"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/configuration.md:134
+#, no-wrap
+msgid "    php artisan down --retry=60\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/configuration.md:136
 #, no-wrap
 msgid "<a name=\"bypassing-maintenance-mode\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/8.x/configuration.md:132
+#: docs/8.x/configuration.md:136
 #, no-wrap
 msgid "Bypassing Maintenance Mode"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/configuration.md:135
+#: docs/8.x/configuration.md:139
 msgid ""
 "Even while in maintenance mode, you may use the `secret` option to specify a "
 "maintenance mode bypass token:"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/configuration.md:137
+#: docs/8.x/configuration.md:141
 #, no-wrap
 msgid "    php artisan down --secret=\"1630542a-246b-4b66-afa1-dd72a4c43515\"\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/configuration.md:139
+#: docs/8.x/configuration.md:143
 msgid ""
 "After placing the application in maintenance mode, you may navigate to the "
 "application URL matching this token and Laravel will issue a maintenance "
@@ -497,13 +514,13 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/configuration.md:141
+#: docs/8.x/configuration.md:145
 #, no-wrap
 msgid "    https://example.com/1630542a-246b-4b66-afa1-dd72a4c43515\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/configuration.md:143
+#: docs/8.x/configuration.md:147
 msgid ""
 "When accessing this hidden route, you will then be redirected to the `/` "
 "route of the application. Once the cookie has been issued to your browser, "
@@ -512,19 +529,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/configuration.md:145
+#: docs/8.x/configuration.md:149
 #, no-wrap
 msgid "<a name=\"pre-rendering-the-maintenance-mode-view\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/8.x/configuration.md:145
+#: docs/8.x/configuration.md:149
 #, no-wrap
 msgid "Pre-Rendering The Maintenance Mode View"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/configuration.md:148
+#: docs/8.x/configuration.md:152
 msgid ""
 "If you utilize the `php artisan down` command during deployment, your users "
 "may still occasionally encounter errors if they access the application while "
@@ -535,7 +552,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/configuration.md:150
+#: docs/8.x/configuration.md:154
 msgid ""
 "For this reason, Laravel allows you to pre-render a maintenance mode view "
 "that will be returned at the very beginning of the request cycle. This view "
@@ -545,25 +562,25 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/configuration.md:152
+#: docs/8.x/configuration.md:156
 #, no-wrap
 msgid "    php artisan down --render=\"errors::503\"\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/configuration.md:154
+#: docs/8.x/configuration.md:158
 #, no-wrap
 msgid "<a name=\"redirecting-maintenance-mode-requests\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/8.x/configuration.md:154
+#: docs/8.x/configuration.md:158
 #, no-wrap
 msgid "Redirecting Maintenance Mode Requests"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/configuration.md:157
+#: docs/8.x/configuration.md:161
 msgid ""
 "While in maintenance mode, Laravel will display the maintenance mode view "
 "for all application URLs the user attempts to access. If you wish, you may "
@@ -573,36 +590,36 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/configuration.md:159
+#: docs/8.x/configuration.md:163
 #, no-wrap
 msgid "    php artisan down --redirect=/\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/configuration.md:161
+#: docs/8.x/configuration.md:165
 #, no-wrap
 msgid "<a name=\"disabling-maintenance-mode\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/8.x/configuration.md:161
+#: docs/8.x/configuration.md:165
 #, no-wrap
 msgid "Disabling Maintenance Mode"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/configuration.md:164
+#: docs/8.x/configuration.md:168
 msgid "To disable maintenance mode, use the `up` command:"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/configuration.md:166
+#: docs/8.x/configuration.md:170
 #, no-wrap
 msgid "    php artisan up\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/configuration.md:168
+#: docs/8.x/configuration.md:172
 #, no-wrap
 msgid ""
 "> {tip} You may customize the default maintenance mode template by defining "
@@ -610,19 +627,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/configuration.md:170
+#: docs/8.x/configuration.md:174
 #, no-wrap
 msgid "<a name=\"maintenance-mode-queues\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/8.x/configuration.md:170
+#: docs/8.x/configuration.md:174
 #, no-wrap
 msgid "Maintenance Mode & Queues"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/configuration.md:173
+#: docs/8.x/configuration.md:177
 msgid ""
 "While your application is in maintenance mode, no [queued "
 "jobs](/docs/{{version}}/queues) will be handled. The jobs will continue to "
@@ -630,19 +647,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/configuration.md:175
+#: docs/8.x/configuration.md:179
 #, no-wrap
 msgid "<a name=\"alternatives-to-maintenance-mode\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/8.x/configuration.md:175
+#: docs/8.x/configuration.md:179
 #, no-wrap
 msgid "Alternatives To Maintenance Mode"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/configuration.md:177
+#: docs/8.x/configuration.md:181
 msgid ""
 "Since maintenance mode requires your application to have several seconds of "
 "downtime, consider alternatives like [Laravel "

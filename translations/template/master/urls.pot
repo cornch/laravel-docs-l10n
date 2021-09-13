@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Laravel Documentation VERSION\n"
-"POT-Creation-Date: 2021-04-16 04:29+0000\n"
+"POT-Creation-Date: 2021-09-12 16:10+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -368,7 +368,8 @@ msgstr ""
 #: docs/master/urls.md:112
 msgid ""
 "To verify that an incoming request has a valid signature, you should call "
-"the `hasValidSignature` method on the incoming `Request`:"
+"the `hasValidSignature` method on the incoming `Illuminate\\Http\\Request` "
+"instance:"
 msgstr ""
 
 #. type: Plain text
@@ -398,15 +399,35 @@ msgstr ""
 #. type: Plain text
 #: docs/master/urls.md:124
 msgid ""
-"Alternatively, you may assign the "
-"`Illuminate\\Routing\\Middleware\\ValidateSignature` "
+"Sometimes, you may need to allow your application's frontend to append data "
+"to a signed URL, such as when performing client-side pagination. Therefore, "
+"you can specify request query parameters that should be ignored when "
+"validating a signed URL using the `hasValidSignatureWhileIgnoring` "
+"method. Remember, ignoring parameters allows anyone to modify those "
+"parameters on the request:"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/urls.md:128
+#, no-wrap
+msgid ""
+"    if (! $request->hasValidSignatureWhileIgnoring(['page', 'order'])) {\n"
+"        abort(401);\n"
+"    }\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/urls.md:130
+msgid ""
+"Instead of validating signed URLs using the incoming request instance, you "
+"may assign the `Illuminate\\Routing\\Middleware\\ValidateSignature` "
 "[middleware](/docs/{{version}}/middleware) to the route. If it is not "
 "already present, you should assign this middleware a key in your HTTP "
 "kernel's `routeMiddleware` array:"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/urls.md:135
+#: docs/master/urls.md:141
 #, no-wrap
 msgid ""
 "    /**\n"
@@ -423,7 +444,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/urls.md:137
+#: docs/master/urls.md:143
 msgid ""
 "Once you have registered the middleware in your kernel, you may attach it to "
 "a route. If the incoming request does not have a valid signature, the "
@@ -431,7 +452,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/urls.md:141
+#: docs/master/urls.md:147
 #, no-wrap
 msgid ""
 "    Route::post('/unsubscribe/{user}', function (Request $request) {\n"
@@ -440,36 +461,36 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/urls.md:143
+#: docs/master/urls.md:149
 #, no-wrap
 msgid "<a name=\"urls-for-controller-actions\"></a>\n"
 msgstr ""
 
 #. type: Title ##
-#: docs/master/urls.md:143
+#: docs/master/urls.md:149
 #, no-wrap
 msgid "URLs For Controller Actions"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/urls.md:146
+#: docs/master/urls.md:152
 msgid "The `action` function generates a URL for the given controller action:"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/urls.md:148
+#: docs/master/urls.md:154
 #, no-wrap
 msgid "    use App\\Http\\Controllers\\HomeController;\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/urls.md:150
+#: docs/master/urls.md:156
 #, no-wrap
 msgid "    $url = action([HomeController::class, 'index']);\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/urls.md:152
+#: docs/master/urls.md:158
 msgid ""
 "If the controller method accepts route parameters, you may pass an "
 "associative array of route parameters as the second argument to the "
@@ -477,25 +498,25 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/urls.md:154
+#: docs/master/urls.md:160
 #, no-wrap
 msgid "    $url = action([UserController::class, 'profile'], ['id' => 1]);\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/urls.md:156
+#: docs/master/urls.md:162
 #, no-wrap
 msgid "<a name=\"default-values\"></a>\n"
 msgstr ""
 
 #. type: Title ##
-#: docs/master/urls.md:156
+#: docs/master/urls.md:162
 #, no-wrap
 msgid "Default Values"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/urls.md:159
+#: docs/master/urls.md:165
 msgid ""
 "For some applications, you may wish to specify request-wide default values "
 "for certain URL parameters. For example, imagine many of your routes define "
@@ -503,7 +524,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/urls.md:163
+#: docs/master/urls.md:169
 #, no-wrap
 msgid ""
 "    Route::get('/{locale}/posts', function () {\n"
@@ -512,7 +533,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/urls.md:165
+#: docs/master/urls.md:171
 msgid ""
 "It is cumbersome to always pass the `locale` every time you call the `route` "
 "helper. So, you may use the `URL::defaults` method to define a default value "
@@ -523,19 +544,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/urls.md:167
+#: docs/master/urls.md:173
 #, no-wrap
 msgid "    <?php\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/urls.md:169
+#: docs/master/urls.md:175
 #, no-wrap
 msgid "    namespace App\\Http\\Middleware;\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/urls.md:172
+#: docs/master/urls.md:178
 #, no-wrap
 msgid ""
 "    use Closure;\n"
@@ -543,7 +564,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/urls.md:185
+#: docs/master/urls.md:191
 #, no-wrap
 msgid ""
 "    class SetDefaultLocaleForUrls\n"
@@ -561,7 +582,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/urls.md:189
+#: docs/master/urls.md:195
 #, no-wrap
 msgid ""
 "            return $next($request);\n"
@@ -570,7 +591,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/urls.md:191
+#: docs/master/urls.md:197
 msgid ""
 "Once the default value for the `locale` parameter has been set, you are no "
 "longer required to pass its value when generating URLs via the `route` "
@@ -578,19 +599,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/urls.md:193
+#: docs/master/urls.md:199
 #, no-wrap
 msgid "<a name=\"url-defaults-middleware-priority\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/master/urls.md:193
+#: docs/master/urls.md:199
 #, no-wrap
 msgid "URL Defaults & Middleware Priority"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/urls.md:196
+#: docs/master/urls.md:202
 msgid ""
 "Setting URL default values can interfere with Laravel's handling of implicit "
 "model bindings. Therefore, you should [prioritize your "
@@ -602,7 +623,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/urls.md:198
+#: docs/master/urls.md:204
 msgid ""
 "The `$middlewarePriority` property is defined in the base "
 "`Illuminate\\Foundation\\Http\\Kernel` class. You may copy its definition "
@@ -611,7 +632,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/urls.md:211
+#: docs/master/urls.md:217
 #, no-wrap
 msgid ""
 "    /**\n"

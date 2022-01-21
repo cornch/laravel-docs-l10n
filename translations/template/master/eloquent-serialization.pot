@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Laravel Documentation VERSION\n"
-"POT-Creation-Date: 2021-09-13 05:07+0000\n"
+"POT-Creation-Date: 2022-01-21 20:16+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -275,19 +275,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent-serialization.md:78 docs/master/eloquent-serialization.md:98 docs/master/eloquent-serialization.md:130 docs/master/eloquent-serialization.md:151
+#: docs/master/eloquent-serialization.md:78 docs/master/eloquent-serialization.md:98 docs/master/eloquent-serialization.md:130 docs/master/eloquent-serialization.md:154
 #, no-wrap
 msgid "    <?php\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent-serialization.md:80 docs/master/eloquent-serialization.md:100 docs/master/eloquent-serialization.md:132 docs/master/eloquent-serialization.md:153
+#: docs/master/eloquent-serialization.md:80 docs/master/eloquent-serialization.md:100 docs/master/eloquent-serialization.md:132 docs/master/eloquent-serialization.md:156
 #, no-wrap
 msgid "    namespace App\\Models;\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent-serialization.md:82 docs/master/eloquent-serialization.md:102 docs/master/eloquent-serialization.md:134 docs/master/eloquent-serialization.md:155
+#: docs/master/eloquent-serialization.md:82 docs/master/eloquent-serialization.md:102 docs/master/eloquent-serialization.md:158
 #, no-wrap
 msgid "    use Illuminate\\Database\\Eloquent\\Model;\n"
 msgstr ""
@@ -400,7 +400,15 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent-serialization.md:147
+#: docs/master/eloquent-serialization.md:135
+#, no-wrap
+msgid ""
+"    use Illuminate\\Database\\Eloquent\\Casts\\Attribute;\n"
+"    use Illuminate\\Database\\Eloquent\\Model;\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/eloquent-serialization.md:150
 #, no-wrap
 msgid ""
 "    class User extends Model\n"
@@ -408,17 +416,19 @@ msgid ""
 "        /**\n"
 "         * Determine if the user is an administrator.\n"
 "         *\n"
-"         * @return bool\n"
+"         * @return \\Illuminate\\Database\\Eloquent\\Casts\\Attribute\n"
 "         */\n"
-"        public function getIsAdminAttribute()\n"
+"        protected function isAdmin(): Attribute\n"
 "        {\n"
-"            return $this->attributes['admin'] === 'yes';\n"
+"            return new Attribute(\n"
+"                get: fn () => 'yes';\n"
+"            );\n"
 "        }\n"
 "    }\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent-serialization.md:149
+#: docs/master/eloquent-serialization.md:152
 msgid ""
 "After creating the accessor, add the attribute name to the `appends` "
 "property of your model. Note that attribute names are typically referenced "
@@ -427,7 +437,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent-serialization.md:165
+#: docs/master/eloquent-serialization.md:168
 #, no-wrap
 msgid ""
 "    class User extends Model\n"
@@ -442,7 +452,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent-serialization.md:167
+#: docs/master/eloquent-serialization.md:170
 msgid ""
 "Once the attribute has been added to the `appends` list, it will be included "
 "in both the model's array and JSON representations. Attributes in the "
@@ -451,19 +461,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent-serialization.md:169
+#: docs/master/eloquent-serialization.md:172
 #, no-wrap
 msgid "<a name=\"appending-at-run-time\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/master/eloquent-serialization.md:169
+#: docs/master/eloquent-serialization.md:172
 #, no-wrap
 msgid "Appending At Run Time"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent-serialization.md:172
+#: docs/master/eloquent-serialization.md:175
 msgid ""
 "At runtime, you may instruct a model instance to append additional "
 "attributes using the `append` method. Or, you may use the `setAppends` "
@@ -472,43 +482,43 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent-serialization.md:174
+#: docs/master/eloquent-serialization.md:177
 #, no-wrap
 msgid "    return $user->append('is_admin')->toArray();\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent-serialization.md:176
+#: docs/master/eloquent-serialization.md:179
 #, no-wrap
 msgid "    return $user->setAppends(['is_admin'])->toArray();\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent-serialization.md:178
+#: docs/master/eloquent-serialization.md:181
 #, no-wrap
 msgid "<a name=\"date-serialization\"></a>\n"
 msgstr ""
 
 #. type: Title ##
-#: docs/master/eloquent-serialization.md:178
+#: docs/master/eloquent-serialization.md:181
 #, no-wrap
 msgid "Date Serialization"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent-serialization.md:181
+#: docs/master/eloquent-serialization.md:184
 #, no-wrap
 msgid "<a name=\"customizing-the-default-date-format\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/master/eloquent-serialization.md:181
+#: docs/master/eloquent-serialization.md:184
 #, no-wrap
 msgid "Customizing The Default Date Format"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent-serialization.md:184
+#: docs/master/eloquent-serialization.md:187
 msgid ""
 "You may customize the default serialization format by overriding the "
 "`serializeDate` method. This method does not affect how your dates are "
@@ -516,7 +526,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent-serialization.md:195
+#: docs/master/eloquent-serialization.md:198
 #, no-wrap
 msgid ""
 "    /**\n"
@@ -532,19 +542,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent-serialization.md:197
+#: docs/master/eloquent-serialization.md:200
 #, no-wrap
 msgid "<a name=\"customizing-the-date-format-per-attribute\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/master/eloquent-serialization.md:197
+#: docs/master/eloquent-serialization.md:200
 #, no-wrap
 msgid "Customizing The Date Format Per Attribute"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent-serialization.md:200
+#: docs/master/eloquent-serialization.md:203
 msgid ""
 "You may customize the serialization format of individual Eloquent date "
 "attributes by specifying the date format in the model's [cast "
@@ -552,7 +562,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent-serialization.md:204
+#: docs/master/eloquent-serialization.md:207
 #, no-wrap
 msgid ""
 "    protected $casts = [\n"

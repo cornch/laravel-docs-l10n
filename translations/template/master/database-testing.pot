@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Laravel Documentation VERSION\n"
-"POT-Creation-Date: 2021-09-13 05:07+0000\n"
+"POT-Creation-Date: 2022-01-21 20:16+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -94,13 +94,13 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/database-testing.md:34 docs/master/database-testing.md:520 docs/master/database-testing.md:552
+#: docs/master/database-testing.md:34 docs/master/database-testing.md:538 docs/master/database-testing.md:578
 #, no-wrap
 msgid "    <?php\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/database-testing.md:36 docs/master/database-testing.md:522 docs/master/database-testing.md:554
+#: docs/master/database-testing.md:36 docs/master/database-testing.md:540
 #, no-wrap
 msgid "    namespace Tests\\Feature;\n"
 msgstr ""
@@ -115,7 +115,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/database-testing.md:44 docs/master/database-testing.md:531
+#: docs/master/database-testing.md:44 docs/master/database-testing.md:550
 #, no-wrap
 msgid ""
 "    class ExampleTest extends TestCase\n"
@@ -138,7 +138,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/database-testing.md:57 docs/master/database-testing.md:548
+#: docs/master/database-testing.md:57
 #, no-wrap
 msgid ""
 "            // ...\n"
@@ -148,30 +148,49 @@ msgstr ""
 
 #. type: Plain text
 #: docs/master/database-testing.md:59
+msgid ""
+"The `Illuminate\\Foundation\\Testing\\RefreshDatabase` trait does not "
+"migrate your database if your schema is up to date. Instead, it will only "
+"execute the test within a database transaction. Therefore, any records added "
+"to the database by test cases that do not use this trait may still exist in "
+"the database."
+msgstr ""
+
+#. type: Plain text
+#: docs/master/database-testing.md:61
+msgid ""
+"If you would like to totally reset the database using migrations, you may "
+"use the `Illuminate\\Foundation\\Testing\\DatabaseMigrations` trait "
+"instead. However, the `DatabaseMigrations` trait is significantly slower "
+"than the `RefreshDatabase` trait."
+msgstr ""
+
+#. type: Plain text
+#: docs/master/database-testing.md:63
 #, no-wrap
 msgid "<a name=\"defining-model-factories\"></a>\n"
 msgstr ""
 
 #. type: Title ##
-#: docs/master/database-testing.md:59
+#: docs/master/database-testing.md:63
 #, no-wrap
 msgid "Defining Model Factories"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/database-testing.md:62
+#: docs/master/database-testing.md:66
 #, no-wrap
 msgid "<a name=\"concept-overview\"></a>\n"
 msgstr ""
 
 #. type: Title ###
-#: docs/master/database-testing.md:62
+#: docs/master/database-testing.md:66
 #, no-wrap
 msgid "Concept Overview"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/database-testing.md:65
+#: docs/master/database-testing.md:69
 msgid ""
 "First, let's talk about Eloquent model factories. When testing, you may need "
 "to insert a few records into your database before executing your "
@@ -182,7 +201,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/database-testing.md:67
+#: docs/master/database-testing.md:71
 msgid ""
 "To see an example of how to write a factory, take a look at the "
 "`database/factories/UserFactory.php` file in your application. This factory "
@@ -191,38 +210,25 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/database-testing.md:69 docs/master/database-testing.md:146
+#: docs/master/database-testing.md:73 docs/master/database-testing.md:172
 #, no-wrap
 msgid "    namespace Database\\Factories;\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/database-testing.md:73 docs/master/database-testing.md:150
+#: docs/master/database-testing.md:76
 #, no-wrap
 msgid ""
-"    use App\\Models\\User;\n"
 "    use Illuminate\\Database\\Eloquent\\Factories\\Factory;\n"
 "    use Illuminate\\Support\\Str;\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/database-testing.md:82 docs/master/database-testing.md:159
+#: docs/master/database-testing.md:95
 #, no-wrap
 msgid ""
 "    class UserFactory extends Factory\n"
 "    {\n"
-"        /**\n"
-"         * The name of the factory's corresponding model.\n"
-"         *\n"
-"         * @var string\n"
-"         */\n"
-"        protected $model = User::class;\n"
-msgstr ""
-
-#. type: Plain text
-#: docs/master/database-testing.md:99
-#, no-wrap
-msgid ""
 "        /**\n"
 "         * Define the model's default state.\n"
 "         *\n"
@@ -231,8 +237,8 @@ msgid ""
 "        public function definition()\n"
 "        {\n"
 "            return [\n"
-"                'name' => $this->faker->name,\n"
-"                'email' => $this->faker->unique()->safeEmail,\n"
+"                'name' => $this->faker->name(),\n"
+"                'email' => $this->faker->unique()->safeEmail(),\n"
 "                'email_verified_at' => now(),\n"
 "                'password' => "
 "'$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // "
@@ -244,16 +250,16 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/database-testing.md:101
+#: docs/master/database-testing.md:97
 msgid ""
 "As you can see, in their most basic form, factories are classes that extend "
-"Laravel's base factory class and define a `model` property and `definition` "
-"method. The `definition` method returns the default set of attribute values "
-"that should be applied when creating a model using the factory."
+"Laravel's base factory class and define `definition` method. The "
+"`definition` method returns the default set of attribute values that should "
+"be applied when creating a model using the factory."
 msgstr ""
 
 #. type: Plain text
-#: docs/master/database-testing.md:103
+#: docs/master/database-testing.md:99
 msgid ""
 "Via the `faker` property, factories have access to the "
 "[Faker](https://github.com/FakerPHP/Faker) PHP library, which allows you to "
@@ -261,7 +267,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/database-testing.md:105
+#: docs/master/database-testing.md:101
 #, no-wrap
 msgid ""
 "> {tip} You can set your application's Faker locale by adding a "
@@ -269,63 +275,131 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/database-testing.md:107
+#: docs/master/database-testing.md:103
 #, no-wrap
 msgid "<a name=\"generating-factories\"></a>\n"
 msgstr ""
 
 #. type: Title ###
-#: docs/master/database-testing.md:107
+#: docs/master/database-testing.md:103
 #, no-wrap
 msgid "Generating Factories"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/database-testing.md:110
+#: docs/master/database-testing.md:106
 msgid ""
 "To create a factory, execute the `make:factory` [Artisan "
 "command](/docs/{{version}}/artisan):"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/database-testing.md:112
+#: docs/master/database-testing.md:108
 #, no-wrap
 msgid "    php artisan make:factory PostFactory\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/database-testing.md:114
+#: docs/master/database-testing.md:110
 msgid "The new factory class will be placed in your `database/factories` directory."
 msgstr ""
 
 #. type: Plain text
-#: docs/master/database-testing.md:116
-msgid ""
-"The `--model` option may be used to indicate the name of the model created "
-"by the factory. This option will pre-fill the generated factory file with "
-"the given model:"
-msgstr ""
-
-#. type: Plain text
-#: docs/master/database-testing.md:118
+#: docs/master/database-testing.md:112
 #, no-wrap
-msgid "    php artisan make:factory PostFactory --model=Post\n"
+msgid "<a name=\"factory-and-model-discovery-conventions\"></a>\n"
+msgstr ""
+
+#. type: Title ####
+#: docs/master/database-testing.md:112
+#, no-wrap
+msgid "Model & Factory Discovery Conventions"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/database-testing.md:120
+#: docs/master/database-testing.md:115
+msgid ""
+"Once you have defined your factories, you may use the static `factory` "
+"method provided to your models by the "
+"`Illuminate\\Database\\Eloquent\\Factories\\HasFactory` trait in order to "
+"instantiate a factory instance for that model."
+msgstr ""
+
+#. type: Plain text
+#: docs/master/database-testing.md:117
+msgid ""
+"The `HasFactory` trait's `factory` method will use conventions to determine "
+"the proper factory for the model the trait is assigned to. Specifically, the "
+"method will look for a factory in the `Database\\Factories` namespace that "
+"has a class name matching the model name and is suffixed with `Factory`. If "
+"these conventions do not apply to your particular application or factory, "
+"you may overwrite the `newFactory` method on your model to return an "
+"instance of the model's corresponding factory directly:"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/database-testing.md:119
+#, no-wrap
+msgid "    use Database\\Factories\\Administration\\FlightFactory;\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/database-testing.md:129
+#, no-wrap
+msgid ""
+"    /**\n"
+"     * Create a new factory instance for the model.\n"
+"     *\n"
+"     * @return \\Illuminate\\Database\\Eloquent\\Factories\\Factory\n"
+"     */\n"
+"    protected static function newFactory()\n"
+"    {\n"
+"        return FlightFactory::new();\n"
+"    }\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/database-testing.md:131
+msgid "Next, define a `model` property on the corresponding factory:"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/database-testing.md:134
+#, no-wrap
+msgid ""
+"    use App\\Administration\\Flight;\n"
+"    use Illuminate\\Database\\Eloquent\\Factories\\Factory;\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/database-testing.md:144
+#, no-wrap
+msgid ""
+"    class FlightFactory extends Factory\n"
+"    {\n"
+"        /**\n"
+"         * The name of the factory's corresponding model.\n"
+"         *\n"
+"         * @var string\n"
+"         */\n"
+"        protected $model = Flight::class;\n"
+"    }\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/database-testing.md:146
 #, no-wrap
 msgid "<a name=\"factory-states\"></a>\n"
 msgstr ""
 
 #. type: Title ###
-#: docs/master/database-testing.md:120
+#: docs/master/database-testing.md:146
 #, no-wrap
 msgid "Factory States"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/database-testing.md:123
+#: docs/master/database-testing.md:149
 msgid ""
 "State manipulation methods allow you to define discrete modifications that "
 "can be applied to your model factories in any combination. For example, your "
@@ -334,7 +408,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/database-testing.md:125
+#: docs/master/database-testing.md:151
 msgid ""
 "State transformation methods typically call the `state` method provided by "
 "Laravel's base factory class. The `state` method accepts a closure which "
@@ -343,7 +417,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/database-testing.md:139
+#: docs/master/database-testing.md:165
 #, no-wrap
 msgid ""
 "    /**\n"
@@ -362,19 +436,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/database-testing.md:141
+#: docs/master/database-testing.md:167
 #, no-wrap
 msgid "<a name=\"factory-callbacks\"></a>\n"
 msgstr ""
 
 #. type: Title ###
-#: docs/master/database-testing.md:141
+#: docs/master/database-testing.md:167
 #, no-wrap
 msgid "Factory Callbacks"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/database-testing.md:144
+#: docs/master/database-testing.md:170
 msgid ""
 "Factory callbacks are registered using the `afterMaking` and `afterCreating` "
 "methods and allow you to perform additional tasks after making or creating a "
@@ -384,9 +458,20 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/database-testing.md:173
+#: docs/master/database-testing.md:176
 #, no-wrap
 msgid ""
+"    use App\\Models\\User;\n"
+"    use Illuminate\\Database\\Eloquent\\Factories\\Factory;\n"
+"    use Illuminate\\Support\\Str;\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/database-testing.md:192
+#, no-wrap
+msgid ""
+"    class UserFactory extends Factory\n"
+"    {\n"
 "        /**\n"
 "         * Configure the model factory.\n"
 "         *\n"
@@ -403,7 +488,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/database-testing.md:176 docs/master/database-testing.md:569
+#: docs/master/database-testing.md:195
 #, no-wrap
 msgid ""
 "        // ...\n"
@@ -411,31 +496,31 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/database-testing.md:178
+#: docs/master/database-testing.md:197
 #, no-wrap
 msgid "<a name=\"creating-models-using-factories\"></a>\n"
 msgstr ""
 
 #. type: Title ##
-#: docs/master/database-testing.md:178
+#: docs/master/database-testing.md:197
 #, no-wrap
 msgid "Creating Models Using Factories"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/database-testing.md:181
+#: docs/master/database-testing.md:200
 #, no-wrap
 msgid "<a name=\"instantiating-models\"></a>\n"
 msgstr ""
 
 #. type: Title ###
-#: docs/master/database-testing.md:181
+#: docs/master/database-testing.md:200
 #, no-wrap
 msgid "Instantiating Models"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/database-testing.md:184
+#: docs/master/database-testing.md:203
 msgid ""
 "Once you have defined your factories, you may use the static `factory` "
 "method provided to your models by the "
@@ -446,13 +531,13 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/database-testing.md:186 docs/master/database-testing.md:245 docs/master/database-testing.md:480 docs/master/database-testing.md:617
+#: docs/master/database-testing.md:205 docs/master/database-testing.md:247 docs/master/database-testing.md:498 docs/master/database-testing.md:642 docs/master/database-testing.md:659 docs/master/database-testing.md:670
 #, no-wrap
 msgid "    use App\\Models\\User;\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/database-testing.md:190
+#: docs/master/database-testing.md:209
 #, no-wrap
 msgid ""
 "    public function test_models_can_be_instantiated()\n"
@@ -461,7 +546,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/database-testing.md:193 docs/master/database-testing.md:256
+#: docs/master/database-testing.md:212 docs/master/database-testing.md:258
 #, no-wrap
 msgid ""
 "        // Use model in tests...\n"
@@ -469,30 +554,30 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/database-testing.md:195
+#: docs/master/database-testing.md:214
 msgid "You may create a collection of many models using the `count` method:"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/database-testing.md:197
+#: docs/master/database-testing.md:216
 #, no-wrap
 msgid "    $users = User::factory()->count(3)->make();\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/database-testing.md:199
+#: docs/master/database-testing.md:218
 #, no-wrap
 msgid "<a name=\"applying-states\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/master/database-testing.md:199
+#: docs/master/database-testing.md:218
 #, no-wrap
 msgid "Applying States"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/database-testing.md:202
+#: docs/master/database-testing.md:221
 msgid ""
 "You may also apply any of your [states](#factory-states) to the models. If "
 "you would like to apply multiple state transformations to the models, you "
@@ -500,25 +585,25 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/database-testing.md:204
+#: docs/master/database-testing.md:223
 #, no-wrap
 msgid "    $users = User::factory()->count(5)->suspended()->make();\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/database-testing.md:206
+#: docs/master/database-testing.md:225
 #, no-wrap
 msgid "<a name=\"overriding-attributes\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/master/database-testing.md:206
+#: docs/master/database-testing.md:225
 #, no-wrap
 msgid "Overriding Attributes"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/database-testing.md:209
+#: docs/master/database-testing.md:228
 msgid ""
 "If you would like to override some of the default values of your models, you "
 "may pass an array of values to the `make` method. Only the specified "
@@ -527,7 +612,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/database-testing.md:213
+#: docs/master/database-testing.md:232
 #, no-wrap
 msgid ""
 "    $user = User::factory()->make([\n"
@@ -536,14 +621,14 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/database-testing.md:215
+#: docs/master/database-testing.md:234
 msgid ""
 "Alternatively, the `state` method may be called directly on the factory "
 "instance to perform an inline state transformation:"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/database-testing.md:219
+#: docs/master/database-testing.md:238
 #, no-wrap
 msgid ""
 "    $user = User::factory()->state([\n"
@@ -552,7 +637,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/database-testing.md:221
+#: docs/master/database-testing.md:240
 #, no-wrap
 msgid ""
 "> {tip} [Mass assignment "
@@ -561,71 +646,26 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/database-testing.md:223
-#, no-wrap
-msgid "<a name=\"connecting-factories-and-models\"></a>\n"
-msgstr ""
-
-#. type: Title ####
-#: docs/master/database-testing.md:223
-#, no-wrap
-msgid "Connecting Factories & Models"
-msgstr ""
-
-#. type: Plain text
-#: docs/master/database-testing.md:226
-msgid ""
-"The `HasFactory` trait's `factory` method will use conventions to determine "
-"the proper factory for the model. Specifically, the method will look for a "
-"factory in the `Database\\Factories` namespace that has a class name "
-"matching the model name and is suffixed with `Factory`. If these conventions "
-"do not apply to your particular application or factory, you may overwrite "
-"the `newFactory` method on your model to return an instance of the model's "
-"corresponding factory directly:"
-msgstr ""
-
-#. type: Plain text
-#: docs/master/database-testing.md:228
-#, no-wrap
-msgid "    use Database\\Factories\\Administration\\FlightFactory;\n"
-msgstr ""
-
-#. type: Plain text
-#: docs/master/database-testing.md:238
-#, no-wrap
-msgid ""
-"    /**\n"
-"     * Create a new factory instance for the model.\n"
-"     *\n"
-"     * @return \\Illuminate\\Database\\Eloquent\\Factories\\Factory\n"
-"     */\n"
-"    protected static function newFactory()\n"
-"    {\n"
-"        return FlightFactory::new();\n"
-"    }\n"
-msgstr ""
-
-#. type: Plain text
-#: docs/master/database-testing.md:240
+#: docs/master/database-testing.md:242
 #, no-wrap
 msgid "<a name=\"persisting-models\"></a>\n"
 msgstr ""
 
 #. type: Title ###
-#: docs/master/database-testing.md:240
+#: docs/master/database-testing.md:242
 #, no-wrap
 msgid "Persisting Models"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/database-testing.md:243
+#: docs/master/database-testing.md:245
 msgid ""
 "The `create` method instantiates model instances and persists them to the "
 "database using Eloquent's `save` method:"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/database-testing.md:250
+#: docs/master/database-testing.md:252
 #, no-wrap
 msgid ""
 "    public function test_models_can_be_persisted()\n"
@@ -635,7 +675,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/database-testing.md:253
+#: docs/master/database-testing.md:255
 #, no-wrap
 msgid ""
 "        // Create three App\\Models\\User instances...\n"
@@ -643,14 +683,14 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/database-testing.md:258
+#: docs/master/database-testing.md:260
 msgid ""
 "You may override the factory's default model attributes by passing an array "
 "of attributes to the `create` method:"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/database-testing.md:262
+#: docs/master/database-testing.md:264
 #, no-wrap
 msgid ""
 "    $user = User::factory()->create([\n"
@@ -659,19 +699,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/database-testing.md:264
+#: docs/master/database-testing.md:266
 #, no-wrap
 msgid "<a name=\"sequences\"></a>\n"
 msgstr ""
 
 #. type: Title ###
-#: docs/master/database-testing.md:264
+#: docs/master/database-testing.md:266
 #, no-wrap
 msgid "Sequences"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/database-testing.md:267
+#: docs/master/database-testing.md:269
 msgid ""
 "Sometimes you may wish to alternate the value of a given model attribute for "
 "each created model. You may accomplish this by defining a state "
@@ -680,7 +720,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/database-testing.md:270
+#: docs/master/database-testing.md:272
 #, no-wrap
 msgid ""
 "    use App\\Models\\User;\n"
@@ -688,7 +728,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/database-testing.md:278
+#: docs/master/database-testing.md:280
 #, no-wrap
 msgid ""
 "    $users = User::factory()\n"
@@ -701,38 +741,79 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/database-testing.md:280
+#: docs/master/database-testing.md:282
 msgid ""
 "In this example, five users will be created with an `admin` value of `Y` and "
 "five users will be created with an `admin` value of `N`."
 msgstr ""
 
 #. type: Plain text
-#: docs/master/database-testing.md:282
+#: docs/master/database-testing.md:284
+msgid ""
+"If necessary, you may include a closure as a sequence value. The closure "
+"will be invoked each time the sequence needs a new value:"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/database-testing.md:291
+#, no-wrap
+msgid ""
+"    $users = User::factory()\n"
+"                    ->count(10)\n"
+"                    ->state(new Sequence(\n"
+"                        fn ($sequence) => ['role' => "
+"UserRoles::all()->random()],\n"
+"                    ))\n"
+"                    ->create();\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/database-testing.md:293
+msgid ""
+"Within a sequence closure, you may access the `$index` or `$count` "
+"properties on the sequence instance that is injected into the closure. The "
+"`$index` property contains the number of iterations through the sequence "
+"that have occurred thus far, while the `$count` property contains the total "
+"number of times the sequence will be invoked:"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/database-testing.md:298
+#, no-wrap
+msgid ""
+"    $users = User::factory()\n"
+"                    ->count(10)\n"
+"                    ->sequence(fn ($sequence) => ['name' => 'Name "
+"'.$sequence->index])\n"
+"                    ->create();\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/database-testing.md:300
 #, no-wrap
 msgid "<a name=\"factory-relationships\"></a>\n"
 msgstr ""
 
 #. type: Title ##
-#: docs/master/database-testing.md:282
+#: docs/master/database-testing.md:300
 #, no-wrap
 msgid "Factory Relationships"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/database-testing.md:285
+#: docs/master/database-testing.md:303
 #, no-wrap
 msgid "<a name=\"has-many-relationships\"></a>\n"
 msgstr ""
 
 #. type: Title ###
-#: docs/master/database-testing.md:285
+#: docs/master/database-testing.md:303
 #, no-wrap
 msgid "Has Many Relationships"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/database-testing.md:288
+#: docs/master/database-testing.md:306
 msgid ""
 "Next, let's explore building Eloquent model relationships using Laravel's "
 "fluent factory methods. First, let's assume our application has an "
@@ -744,7 +825,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/database-testing.md:291 docs/master/database-testing.md:346
+#: docs/master/database-testing.md:309 docs/master/database-testing.md:364
 #, no-wrap
 msgid ""
 "    use App\\Models\\Post;\n"
@@ -752,7 +833,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/database-testing.md:295
+#: docs/master/database-testing.md:313
 #, no-wrap
 msgid ""
 "    $user = User::factory()\n"
@@ -761,7 +842,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/database-testing.md:297
+#: docs/master/database-testing.md:315
 msgid ""
 "By convention, when passing a `Post` model to the `has` method, Laravel will "
 "assume that the `User` model must have a `posts` method that defines the "
@@ -770,7 +851,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/database-testing.md:301
+#: docs/master/database-testing.md:319
 #, no-wrap
 msgid ""
 "    $user = User::factory()\n"
@@ -779,7 +860,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/database-testing.md:303
+#: docs/master/database-testing.md:321
 msgid ""
 "Of course, you may perform state manipulations on the related models. In "
 "addition, you may pass a closure based state transformation if your state "
@@ -787,7 +868,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/database-testing.md:313
+#: docs/master/database-testing.md:331
 #, no-wrap
 msgid ""
 "    $user = User::factory()\n"
@@ -803,19 +884,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/database-testing.md:315
+#: docs/master/database-testing.md:333
 #, no-wrap
 msgid "<a name=\"has-many-relationships-using-magic-methods\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/master/database-testing.md:315 docs/master/database-testing.md:364 docs/master/database-testing.md:425
+#: docs/master/database-testing.md:333 docs/master/database-testing.md:382 docs/master/database-testing.md:443
 #, no-wrap
 msgid "Using Magic Methods"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/database-testing.md:318
+#: docs/master/database-testing.md:336
 msgid ""
 "For convenience, you may use Laravel's magic factory relationship methods to "
 "build relationships. For example, the following example will use convention "
@@ -824,7 +905,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/database-testing.md:322
+#: docs/master/database-testing.md:340
 #, no-wrap
 msgid ""
 "    $user = User::factory()\n"
@@ -833,14 +914,14 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/database-testing.md:324
+#: docs/master/database-testing.md:342
 msgid ""
 "When using magic methods to create factory relationships, you may pass an "
 "array of attributes to override on the related models:"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/database-testing.md:330
+#: docs/master/database-testing.md:348
 #, no-wrap
 msgid ""
 "    $user = User::factory()\n"
@@ -851,14 +932,14 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/database-testing.md:332
+#: docs/master/database-testing.md:350
 msgid ""
 "You may provide a closure based state transformation if your state change "
 "requires access to the parent model:"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/database-testing.md:338
+#: docs/master/database-testing.md:356
 #, no-wrap
 msgid ""
 "    $user = User::factory()\n"
@@ -869,19 +950,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/database-testing.md:340
+#: docs/master/database-testing.md:358
 #, no-wrap
 msgid "<a name=\"belongs-to-relationships\"></a>\n"
 msgstr ""
 
 #. type: Title ###
-#: docs/master/database-testing.md:340
+#: docs/master/database-testing.md:358
 #, no-wrap
 msgid "Belongs To Relationships"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/database-testing.md:343
+#: docs/master/database-testing.md:361
 msgid ""
 "Now that we have explored how to build \"has many\" relationships using "
 "factories, let's explore the inverse of the relationship. The `for` method "
@@ -891,7 +972,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/database-testing.md:353
+#: docs/master/database-testing.md:371
 #, no-wrap
 msgid ""
 "    $posts = Post::factory()\n"
@@ -903,7 +984,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/database-testing.md:355
+#: docs/master/database-testing.md:373
 msgid ""
 "If you already have a parent model instance that should be associated with "
 "the models you are creating, you may pass the model instance to the `for` "
@@ -911,13 +992,13 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/database-testing.md:357
+#: docs/master/database-testing.md:375 docs/master/database-testing.md:661 docs/master/database-testing.md:672
 #, no-wrap
 msgid "    $user = User::factory()->create();\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/database-testing.md:362
+#: docs/master/database-testing.md:380
 #, no-wrap
 msgid ""
 "    $posts = Post::factory()\n"
@@ -927,13 +1008,13 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/database-testing.md:364
+#: docs/master/database-testing.md:382
 #, no-wrap
 msgid "<a name=\"belongs-to-relationships-using-magic-methods\"></a>\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/database-testing.md:367
+#: docs/master/database-testing.md:385
 msgid ""
 "For convenience, you may use Laravel's magic factory relationship methods to "
 "define \"belongs to\" relationships. For example, the following example will "
@@ -942,7 +1023,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/database-testing.md:374
+#: docs/master/database-testing.md:392
 #, no-wrap
 msgid ""
 "    $posts = Post::factory()\n"
@@ -954,26 +1035,26 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/database-testing.md:376
+#: docs/master/database-testing.md:394
 #, no-wrap
 msgid "<a name=\"many-to-many-relationships\"></a>\n"
 msgstr ""
 
 #. type: Title ###
-#: docs/master/database-testing.md:376
+#: docs/master/database-testing.md:394
 #, no-wrap
 msgid "Many To Many Relationships"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/database-testing.md:379
+#: docs/master/database-testing.md:397
 msgid ""
 "Like [has many relationships](#has-many-relationships), \"many to many\" "
 "relationships may be created using the `has` method:"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/database-testing.md:382 docs/master/database-testing.md:394
+#: docs/master/database-testing.md:400 docs/master/database-testing.md:412
 #, no-wrap
 msgid ""
 "    use App\\Models\\Role;\n"
@@ -981,7 +1062,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/database-testing.md:386
+#: docs/master/database-testing.md:404
 #, no-wrap
 msgid ""
 "    $user = User::factory()\n"
@@ -990,19 +1071,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/database-testing.md:388
+#: docs/master/database-testing.md:406
 #, no-wrap
 msgid "<a name=\"pivot-table-attributes\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/master/database-testing.md:388
+#: docs/master/database-testing.md:406
 #, no-wrap
 msgid "Pivot Table Attributes"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/database-testing.md:391
+#: docs/master/database-testing.md:409
 msgid ""
 "If you need to define attributes that should be set on the pivot / "
 "intermediate table linking the models, you may use the `hasAttached` "
@@ -1011,7 +1092,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/database-testing.md:401
+#: docs/master/database-testing.md:419
 #, no-wrap
 msgid ""
 "    $user = User::factory()\n"
@@ -1023,14 +1104,14 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/database-testing.md:403
+#: docs/master/database-testing.md:421
 msgid ""
 "You may provide a closure based state transformation if your state change "
 "requires access to the related model:"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/database-testing.md:414
+#: docs/master/database-testing.md:432
 #, no-wrap
 msgid ""
 "    $user = User::factory()\n"
@@ -1046,7 +1127,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/database-testing.md:416
+#: docs/master/database-testing.md:434
 msgid ""
 "If you already have model instances that you would like to be attached to "
 "the models you are creating, you may pass the model instances to the "
@@ -1055,13 +1136,13 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/database-testing.md:418
+#: docs/master/database-testing.md:436
 #, no-wrap
 msgid "    $roles = Role::factory()->count(3)->create();\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/database-testing.md:423
+#: docs/master/database-testing.md:441
 #, no-wrap
 msgid ""
 "    $user = User::factory()\n"
@@ -1071,13 +1152,13 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/database-testing.md:425
+#: docs/master/database-testing.md:443
 #, no-wrap
 msgid "<a name=\"many-to-many-relationships-using-magic-methods\"></a>\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/database-testing.md:428
+#: docs/master/database-testing.md:446
 msgid ""
 "For convenience, you may use Laravel's magic factory relationship methods to "
 "define many to many relationships. For example, the following example will "
@@ -1086,7 +1167,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/database-testing.md:434
+#: docs/master/database-testing.md:452
 #, no-wrap
 msgid ""
 "    $user = User::factory()\n"
@@ -1097,19 +1178,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/database-testing.md:436
+#: docs/master/database-testing.md:454
 #, no-wrap
 msgid "<a name=\"polymorphic-relationships\"></a>\n"
 msgstr ""
 
 #. type: Title ###
-#: docs/master/database-testing.md:436
+#: docs/master/database-testing.md:454
 #, no-wrap
 msgid "Polymorphic Relationships"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/database-testing.md:439
+#: docs/master/database-testing.md:457
 msgid ""
 "[Polymorphic "
 "relationships](/docs/{{version}}/eloquent-relationships#polymorphic-relationships) "
@@ -1120,31 +1201,31 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/database-testing.md:441
+#: docs/master/database-testing.md:459
 #, no-wrap
 msgid "    use App\\Models\\Post;\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/database-testing.md:443
+#: docs/master/database-testing.md:461
 #, no-wrap
 msgid "    $post = Post::factory()->hasComments(3)->create();\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/database-testing.md:445
+#: docs/master/database-testing.md:463
 #, no-wrap
 msgid "<a name=\"morph-to-relationships\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/master/database-testing.md:445
+#: docs/master/database-testing.md:463
 #, no-wrap
 msgid "Morph To Relationships"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/database-testing.md:448
+#: docs/master/database-testing.md:466
 msgid ""
 "Magic methods may not be used to create `morphTo` relationships. Instead, "
 "the `for` method must be used directly and the name of the relationship must "
@@ -1155,7 +1236,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/database-testing.md:452
+#: docs/master/database-testing.md:470
 #, no-wrap
 msgid ""
 "    $comments = Comment::factory()->count(3)->for(\n"
@@ -1164,26 +1245,26 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/database-testing.md:454
+#: docs/master/database-testing.md:472
 #, no-wrap
 msgid "<a name=\"polymorphic-many-to-many-relationships\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/master/database-testing.md:454
+#: docs/master/database-testing.md:472
 #, no-wrap
 msgid "Polymorphic Many To Many Relationships"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/database-testing.md:457
+#: docs/master/database-testing.md:475
 msgid ""
 "Polymorphic \"many to many\" (`morphToMany` / `morphedByMany`) relationships "
 "may be created just like non-polymorphic \"many to many\" relationships:"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/database-testing.md:460
+#: docs/master/database-testing.md:478
 #, no-wrap
 msgid ""
 "    use App\\Models\\Tag;\n"
@@ -1191,7 +1272,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/database-testing.md:467
+#: docs/master/database-testing.md:485
 #, no-wrap
 msgid ""
 "    $videos = Video::factory()\n"
@@ -1203,14 +1284,14 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/database-testing.md:469
+#: docs/master/database-testing.md:487
 msgid ""
 "Of course, the magic `has` method may also be used to create polymorphic "
 "\"many to many\" relationships:"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/database-testing.md:473
+#: docs/master/database-testing.md:491
 #, no-wrap
 msgid ""
 "    $videos = Video::factory()\n"
@@ -1219,19 +1300,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/database-testing.md:475
+#: docs/master/database-testing.md:493
 #, no-wrap
 msgid "<a name=\"defining-relationships-within-factories\"></a>\n"
 msgstr ""
 
 #. type: Title ###
-#: docs/master/database-testing.md:475
+#: docs/master/database-testing.md:493
 #, no-wrap
 msgid "Defining Relationships Within Factories"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/database-testing.md:478
+#: docs/master/database-testing.md:496
 msgid ""
 "To define a relationship within your model factory, you will typically "
 "assign a new factory instance to the foreign key of the relationship. This "
@@ -1241,7 +1322,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/database-testing.md:494
+#: docs/master/database-testing.md:512
 #, no-wrap
 msgid ""
 "    /**\n"
@@ -1253,14 +1334,14 @@ msgid ""
 "    {\n"
 "        return [\n"
 "            'user_id' => User::factory(),\n"
-"            'title' => $this->faker->title,\n"
-"            'content' => $this->faker->paragraph,\n"
+"            'title' => $this->faker->title(),\n"
+"            'content' => $this->faker->paragraph(),\n"
 "        ];\n"
 "    }\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/database-testing.md:496
+#: docs/master/database-testing.md:514
 msgid ""
 "If the relationship's columns depend on the factory that defines it you may "
 "assign a closure to an attribute. The closure will receive the factory's "
@@ -1268,7 +1349,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/database-testing.md:513
+#: docs/master/database-testing.md:531
 #, no-wrap
 msgid ""
 "    /**\n"
@@ -1283,26 +1364,26 @@ msgid ""
 "            'user_type' => function (array $attributes) {\n"
 "                return User::find($attributes['user_id'])->type;\n"
 "            },\n"
-"            'title' => $this->faker->title,\n"
-"            'content' => $this->faker->paragraph,\n"
+"            'title' => $this->faker->title(),\n"
+"            'content' => $this->faker->paragraph(),\n"
 "        ];\n"
 "    }\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/database-testing.md:515
+#: docs/master/database-testing.md:533
 #, no-wrap
 msgid "<a name=\"running-seeders\"></a>\n"
 msgstr ""
 
 #. type: Title ##
-#: docs/master/database-testing.md:515
+#: docs/master/database-testing.md:533
 #, no-wrap
 msgid "Running Seeders"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/database-testing.md:518
+#: docs/master/database-testing.md:536
 msgid ""
 "If you would like to use [database seeders](/docs/{{version}}/seeding) to "
 "populate your database during a feature test, you may invoke the `seed` "
@@ -1312,17 +1393,18 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/database-testing.md:527
+#: docs/master/database-testing.md:546
 #, no-wrap
 msgid ""
 "    use Database\\Seeders\\OrderStatusSeeder;\n"
+"    use Database\\Seeders\\TransactionStatusSeeder;\n"
 "    use Illuminate\\Foundation\\Testing\\RefreshDatabase;\n"
 "    use Illuminate\\Foundation\\Testing\\WithoutMiddleware;\n"
 "    use Tests\\TestCase;\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/database-testing.md:541
+#: docs/master/database-testing.md:560
 #, no-wrap
 msgid ""
 "        /**\n"
@@ -1337,7 +1419,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/database-testing.md:544
+#: docs/master/database-testing.md:563
 #, no-wrap
 msgid ""
 "            // Run a specific seeder...\n"
@@ -1345,27 +1427,58 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/database-testing.md:550
-msgid ""
-"Alternatively, you may instruct the `RefreshDatabase` trait to automatically "
-"seed the database before each test. You may accomplish this by defining a "
-"`$seed` property on your test class:"
+#: docs/master/database-testing.md:565
+#, no-wrap
+msgid "            // ...\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/database-testing.md:557
+#: docs/master/database-testing.md:574
 #, no-wrap
 msgid ""
-"    use Illuminate\\Foundation\\Testing\\RefreshDatabase;\n"
-"    use Tests\\TestCase;\n"
+"            // Run an array of specific seeders...\n"
+"            $this->seed([\n"
+"                OrderStatusSeeder::class,\n"
+"                TransactionStatusSeeder::class,\n"
+"                // ...\n"
+"            ]);\n"
+"        }\n"
+"    }\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/database-testing.md:566
+#: docs/master/database-testing.md:576
+msgid ""
+"Alternatively, you may instruct Laravel to automatically seed the database "
+"before each test that uses the `RefreshDatabase` trait. You may accomplish "
+"this by defining a `$seed` property on your base test class:"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/database-testing.md:580
+#, no-wrap
+msgid "    namespace Tests;\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/database-testing.md:582
+#, no-wrap
+msgid "    use Illuminate\\Foundation\\Testing\\TestCase as BaseTestCase;\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/database-testing.md:586
 #, no-wrap
 msgid ""
-"    class ExampleTest extends TestCase\n"
+"    abstract class TestCase extends BaseTestCase\n"
 "    {\n"
+"        use CreatesApplication;\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/database-testing.md:594
+#, no-wrap
+msgid ""
 "        /**\n"
 "         * Indicates whether the default seeder should run before each "
 "test.\n"
@@ -1373,25 +1486,26 @@ msgid ""
 "         * @var bool\n"
 "         */\n"
 "        protected $seed = true;\n"
+"    }\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/database-testing.md:571
+#: docs/master/database-testing.md:596
 msgid ""
 "When the `$seed` property is `true`, the test will run the "
-"`Database\\Seeders\\DatabaseSeeder` class before each test. However, you may "
-"specify a specific seeder that should be executed by defining a `$seeder` "
-"property on your test class:"
+"`Database\\Seeders\\DatabaseSeeder` class before each test that uses the "
+"`RefreshDatabase` trait. However, you may specify a specific seeder that "
+"should be executed by defining a `$seeder` property on your test class:"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/database-testing.md:573
+#: docs/master/database-testing.md:598
 #, no-wrap
 msgid "    use Database\\Seeders\\OrderStatusSeeder;\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/database-testing.md:580
+#: docs/master/database-testing.md:605
 #, no-wrap
 msgid ""
 "    /**\n"
@@ -1403,19 +1517,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/database-testing.md:582
+#: docs/master/database-testing.md:607
 #, no-wrap
 msgid "<a name=\"available-assertions\"></a>\n"
 msgstr ""
 
 #. type: Title ##
-#: docs/master/database-testing.md:582
+#: docs/master/database-testing.md:607
 #, no-wrap
 msgid "Available Assertions"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/database-testing.md:585
+#: docs/master/database-testing.md:610
 msgid ""
 "Laravel provides several database assertions for your "
 "[PHPUnit](https://phpunit.de/) feature tests. We'll discuss each of these "
@@ -1423,49 +1537,49 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/database-testing.md:587
+#: docs/master/database-testing.md:612
 #, no-wrap
 msgid "<a name=\"assert-database-count\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/master/database-testing.md:587
+#: docs/master/database-testing.md:612
 #, no-wrap
 msgid "assertDatabaseCount"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/database-testing.md:590
+#: docs/master/database-testing.md:615
 msgid "Assert that a table in the database contains the given number of records:"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/database-testing.md:592
+#: docs/master/database-testing.md:617
 #, no-wrap
 msgid "    $this->assertDatabaseCount('users', 5);\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/database-testing.md:594
+#: docs/master/database-testing.md:619
 #, no-wrap
 msgid "<a name=\"assert-database-has\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/master/database-testing.md:594
+#: docs/master/database-testing.md:619
 #, no-wrap
 msgid "assertDatabaseHas"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/database-testing.md:597
+#: docs/master/database-testing.md:622
 msgid ""
 "Assert that a table in the database contains records matching the given key "
 "/ value query constraints:"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/database-testing.md:601
+#: docs/master/database-testing.md:626
 #, no-wrap
 msgid ""
 "    $this->assertDatabaseHas('users', [\n"
@@ -1474,26 +1588,26 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/database-testing.md:603
+#: docs/master/database-testing.md:628
 #, no-wrap
 msgid "<a name=\"assert-database-missing\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/master/database-testing.md:603
+#: docs/master/database-testing.md:628
 #, no-wrap
 msgid "assertDatabaseMissing"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/database-testing.md:606
+#: docs/master/database-testing.md:631
 msgid ""
 "Assert that a table in the database does not contain records matching the "
 "given key / value query constraints:"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/database-testing.md:610
+#: docs/master/database-testing.md:635
 #, no-wrap
 msgid ""
 "    $this->assertDatabaseMissing('users', [\n"
@@ -1502,51 +1616,97 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/database-testing.md:612
+#: docs/master/database-testing.md:637
 #, no-wrap
 msgid "<a name=\"assert-deleted\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/master/database-testing.md:612
+#: docs/master/database-testing.md:637
 #, no-wrap
 msgid "assertDeleted"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/database-testing.md:615
+#: docs/master/database-testing.md:640
 msgid ""
 "The `assertDeleted` asserts that a given Eloquent model has been deleted "
 "from the database:"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/database-testing.md:619
+#: docs/master/database-testing.md:644
 #, no-wrap
 msgid "    $user = User::find(1);\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/database-testing.md:621
+#: docs/master/database-testing.md:646 docs/master/database-testing.md:674
 #, no-wrap
 msgid "    $user->delete();\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/database-testing.md:623
+#: docs/master/database-testing.md:648
 #, no-wrap
 msgid "    $this->assertDeleted($user);\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/database-testing.md:625
+#: docs/master/database-testing.md:650
 msgid ""
 "The `assertSoftDeleted` method may be used to assert a given Eloquent model "
 "has been \"soft deleted\":"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/database-testing.md:626
+#: docs/master/database-testing.md:652
 #, no-wrap
 msgid "    $this->assertSoftDeleted($user);\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/database-testing.md:654
+#, no-wrap
+msgid "<a name=\"assert-model-exists\"></a>\n"
+msgstr ""
+
+#. type: Title ####
+#: docs/master/database-testing.md:654
+#, no-wrap
+msgid "assertModelExists"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/database-testing.md:657
+msgid "Assert that a given model exists in the database:"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/database-testing.md:663
+#, no-wrap
+msgid "    $this->assertModelExists($user);\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/database-testing.md:665
+#, no-wrap
+msgid "<a name=\"assert-model-missing\"></a>\n"
+msgstr ""
+
+#. type: Title ####
+#: docs/master/database-testing.md:665
+#, no-wrap
+msgid "assertModelMissing"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/database-testing.md:668
+msgid "Assert that a given model does not exist in the database:"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/database-testing.md:675
+#, no-wrap
+msgid "    $this->assertModelMissing($user);\n"
 msgstr ""

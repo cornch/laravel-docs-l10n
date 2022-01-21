@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Laravel Documentation VERSION\n"
-"POT-Creation-Date: 2021-09-13 05:07+0000\n"
+"POT-Creation-Date: 2022-01-21 20:16+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -23,12 +23,12 @@ msgid "Authorization"
 msgstr ""
 
 #. type: Bullet: '- '
-#: docs/8.x/authorization.md:24
+#: docs/8.x/authorization.md:25
 msgid "[Introduction](#introduction)"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/authorization.md:24
+#: docs/8.x/authorization.md:25
 #, no-wrap
 msgid ""
 "- [Gates](#gates)\n"
@@ -36,6 +36,7 @@ msgid ""
 "    - [Authorizing Actions](#authorizing-actions-via-gates)\n"
 "    - [Gate Responses](#gate-responses)\n"
 "    - [Intercepting Gate Checks](#intercepting-gate-checks)\n"
+"    - [Inline Authorization](#inline-authorization)\n"
 "- [Creating Policies](#creating-policies)\n"
 "    - [Generating Policies](#generating-policies)\n"
 "    - [Registering Policies](#registering-policies)\n"
@@ -55,19 +56,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/authorization.md:26
+#: docs/8.x/authorization.md:27
 #, no-wrap
 msgid "<a name=\"introduction\"></a>\n"
 msgstr ""
 
 #. type: Title ##
-#: docs/8.x/authorization.md:26
+#: docs/8.x/authorization.md:27
 #, no-wrap
 msgid "Introduction"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/authorization.md:29
+#: docs/8.x/authorization.md:30
 msgid ""
 "In addition to providing built-in "
 "[authentication](/docs/{{version}}/authentication) services, Laravel also "
@@ -79,7 +80,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/authorization.md:31
+#: docs/8.x/authorization.md:32
 msgid ""
 "Laravel provides two primary ways of authorizing actions: [gates](#gates) "
 "and [policies](#creating-policies). Think of gates and policies like routes "
@@ -90,7 +91,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/authorization.md:33
+#: docs/8.x/authorization.md:34
 msgid ""
 "You do not need to choose between exclusively using gates or exclusively "
 "using policies when building an application. Most applications will most "
@@ -102,31 +103,31 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/authorization.md:35
+#: docs/8.x/authorization.md:36
 #, no-wrap
 msgid "<a name=\"gates\"></a>\n"
 msgstr ""
 
 #. type: Title ##
-#: docs/8.x/authorization.md:35
+#: docs/8.x/authorization.md:36
 #, no-wrap
 msgid "Gates"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/authorization.md:38
+#: docs/8.x/authorization.md:39
 #, no-wrap
 msgid "<a name=\"writing-gates\"></a>\n"
 msgstr ""
 
 #. type: Title ###
-#: docs/8.x/authorization.md:38
+#: docs/8.x/authorization.md:39
 #, no-wrap
 msgid "Writing Gates"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/authorization.md:41
+#: docs/8.x/authorization.md:42
 #, no-wrap
 msgid ""
 "> {note} Gates are a great way to learn the basics of Laravel's "
@@ -136,7 +137,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/authorization.md:43
+#: docs/8.x/authorization.md:44
 msgid ""
 "Gates are simply closures that determine if a user is authorized to perform "
 "a given action. Typically, gates are defined within the `boot` method of the "
@@ -146,7 +147,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/authorization.md:45
+#: docs/8.x/authorization.md:46
 msgid ""
 "In this example, we'll define a gate to determine if a user can update a "
 "given `App\\Models\\Post` model. The gate will accomplish this by comparing "
@@ -154,7 +155,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/authorization.md:49
+#: docs/8.x/authorization.md:50
 #, no-wrap
 msgid ""
 "    use App\\Models\\Post;\n"
@@ -163,7 +164,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/authorization.md:58 docs/8.x/authorization.md:77
+#: docs/8.x/authorization.md:59 docs/8.x/authorization.md:78
 #, no-wrap
 msgid ""
 "    /**\n"
@@ -177,7 +178,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/authorization.md:63
+#: docs/8.x/authorization.md:64
 #, no-wrap
 msgid ""
 "        Gate::define('update-post', function (User $user, Post $post) {\n"
@@ -187,12 +188,12 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/authorization.md:65
+#: docs/8.x/authorization.md:66
 msgid "Like controllers, gates may also be defined using a class callback array:"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/authorization.md:68
+#: docs/8.x/authorization.md:69
 #, no-wrap
 msgid ""
 "    use App\\Policies\\PostPolicy;\n"
@@ -200,7 +201,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/authorization.md:80
+#: docs/8.x/authorization.md:81
 #, no-wrap
 msgid ""
 "        Gate::define('update-post', [PostPolicy::class, 'update']);\n"
@@ -208,19 +209,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/authorization.md:82
+#: docs/8.x/authorization.md:83
 #, no-wrap
 msgid "<a name=\"authorizing-actions-via-gates\"></a>\n"
 msgstr ""
 
 #. type: Title ###
-#: docs/8.x/authorization.md:82
+#: docs/8.x/authorization.md:83
 #, no-wrap
 msgid "Authorizing Actions"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/authorization.md:85
+#: docs/8.x/authorization.md:86
 msgid ""
 "To authorize an action using gates, you should use the `allows` or `denies` "
 "methods provided by the `Gate` facade. Note that you are not required to "
@@ -231,19 +232,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/authorization.md:87 docs/8.x/authorization.md:246 docs/8.x/authorization.md:304 docs/8.x/authorization.md:394 docs/8.x/authorization.md:449 docs/8.x/authorization.md:483 docs/8.x/authorization.md:516 docs/8.x/authorization.md:573
+#: docs/8.x/authorization.md:88 docs/8.x/authorization.md:262 docs/8.x/authorization.md:320 docs/8.x/authorization.md:410 docs/8.x/authorization.md:465 docs/8.x/authorization.md:499 docs/8.x/authorization.md:532 docs/8.x/authorization.md:589
 #, no-wrap
 msgid "    <?php\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/authorization.md:89 docs/8.x/authorization.md:451 docs/8.x/authorization.md:485 docs/8.x/authorization.md:518 docs/8.x/authorization.md:575
+#: docs/8.x/authorization.md:90 docs/8.x/authorization.md:467 docs/8.x/authorization.md:501 docs/8.x/authorization.md:534 docs/8.x/authorization.md:591
 #, no-wrap
 msgid "    namespace App\\Http\\Controllers;\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/authorization.md:94
+#: docs/8.x/authorization.md:95
 #, no-wrap
 msgid ""
 "    use App\\Http\\Controllers\\Controller;\n"
@@ -253,7 +254,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/authorization.md:109
+#: docs/8.x/authorization.md:110
 #, no-wrap
 msgid ""
 "    class PostController extends Controller\n"
@@ -273,7 +274,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/authorization.md:113 docs/8.x/authorization.md:474
+#: docs/8.x/authorization.md:114 docs/8.x/authorization.md:490
 #, no-wrap
 msgid ""
 "            // Update the post...\n"
@@ -282,7 +283,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/authorization.md:115
+#: docs/8.x/authorization.md:116
 msgid ""
 "If you would like to determine if a user other than the currently "
 "authenticated user is authorized to perform an action, you may use the "
@@ -290,7 +291,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/authorization.md:119
+#: docs/8.x/authorization.md:120
 #, no-wrap
 msgid ""
 "    if (Gate::forUser($user)->allows('update-post', $post)) {\n"
@@ -299,7 +300,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/authorization.md:123
+#: docs/8.x/authorization.md:124
 #, no-wrap
 msgid ""
 "    if (Gate::forUser($user)->denies('update-post', $post)) {\n"
@@ -308,14 +309,14 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/authorization.md:125
+#: docs/8.x/authorization.md:126
 msgid ""
 "You may authorize multiple actions at a time using the `any` or `none` "
 "methods:"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/authorization.md:129
+#: docs/8.x/authorization.md:130
 #, no-wrap
 msgid ""
 "    if (Gate::any(['update-post', 'delete-post'], $post)) {\n"
@@ -324,7 +325,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/authorization.md:133
+#: docs/8.x/authorization.md:134
 #, no-wrap
 msgid ""
 "    if (Gate::none(['update-post', 'delete-post'], $post)) {\n"
@@ -333,19 +334,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/authorization.md:135
+#: docs/8.x/authorization.md:136
 #, no-wrap
 msgid "<a name=\"authorizing-or-throwing-exceptions\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/8.x/authorization.md:135
+#: docs/8.x/authorization.md:136
 #, no-wrap
 msgid "Authorizing Or Throwing Exceptions"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/authorization.md:138
+#: docs/8.x/authorization.md:139
 msgid ""
 "If you would like to attempt to authorize an action and automatically throw "
 "an `Illuminate\\Auth\\Access\\AuthorizationException` if the user is not "
@@ -355,31 +356,31 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/authorization.md:140
+#: docs/8.x/authorization.md:141
 #, no-wrap
 msgid "    Gate::authorize('update-post', $post);\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/authorization.md:142 docs/8.x/authorization.md:196 docs/8.x/authorization.md:371
+#: docs/8.x/authorization.md:143 docs/8.x/authorization.md:197 docs/8.x/authorization.md:387
 #, no-wrap
 msgid "    // The action is authorized...\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/authorization.md:144
+#: docs/8.x/authorization.md:145
 #, no-wrap
 msgid "<a name=\"gates-supplying-additional-context\"></a>\n"
 msgstr ""
 
 #. type: Title ###
-#: docs/8.x/authorization.md:144 docs/8.x/authorization.md:688
+#: docs/8.x/authorization.md:145 docs/8.x/authorization.md:720
 #, no-wrap
 msgid "Supplying Additional Context"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/authorization.md:147
+#: docs/8.x/authorization.md:148
 msgid ""
 "The gate methods for authorizing abilities (`allows`, `denies`, `check`, "
 "`any`, `none`, `authorize`, `can`, `cannot`) and the authorization [Blade "
@@ -390,7 +391,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/authorization.md:151
+#: docs/8.x/authorization.md:152
 #, no-wrap
 msgid ""
 "    use App\\Models\\Category;\n"
@@ -399,7 +400,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/authorization.md:158
+#: docs/8.x/authorization.md:159
 #, no-wrap
 msgid ""
 "    Gate::define('create-post', function (User $user, Category $category, "
@@ -412,7 +413,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/authorization.md:161
+#: docs/8.x/authorization.md:162
 #, no-wrap
 msgid ""
 "        return true;\n"
@@ -420,7 +421,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/authorization.md:165
+#: docs/8.x/authorization.md:166
 #, no-wrap
 msgid ""
 "    if (Gate::check('create-post', [$category, $pinned])) {\n"
@@ -429,19 +430,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/authorization.md:167
+#: docs/8.x/authorization.md:168
 #, no-wrap
 msgid "<a name=\"gate-responses\"></a>\n"
 msgstr ""
 
 #. type: Title ###
-#: docs/8.x/authorization.md:167
+#: docs/8.x/authorization.md:168
 #, no-wrap
 msgid "Gate Responses"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/authorization.md:170
+#: docs/8.x/authorization.md:171
 msgid ""
 "So far, we have only examined gates that return simple boolean "
 "values. However, sometimes you may wish to return a more detailed response, "
@@ -450,7 +451,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/authorization.md:174
+#: docs/8.x/authorization.md:175
 #, no-wrap
 msgid ""
 "    use App\\Models\\User;\n"
@@ -459,7 +460,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/authorization.md:180
+#: docs/8.x/authorization.md:181
 #, no-wrap
 msgid ""
 "    Gate::define('edit-settings', function (User $user) {\n"
@@ -470,7 +471,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/authorization.md:182
+#: docs/8.x/authorization.md:183
 msgid ""
 "Even when you return an authorization response from your gate, the "
 "`Gate::allows` method will still return a simple boolean value; however, you "
@@ -479,13 +480,13 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/authorization.md:184
+#: docs/8.x/authorization.md:185
 #, no-wrap
 msgid "    $response = Gate::inspect('edit-settings');\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/authorization.md:190 docs/8.x/authorization.md:365
+#: docs/8.x/authorization.md:191 docs/8.x/authorization.md:381
 #, no-wrap
 msgid ""
 "    if ($response->allowed()) {\n"
@@ -496,7 +497,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/authorization.md:192 docs/8.x/authorization.md:367
+#: docs/8.x/authorization.md:193 docs/8.x/authorization.md:383
 msgid ""
 "When using the `Gate::authorize` method, which throws an "
 "`AuthorizationException` if the action is not authorized, the error message "
@@ -505,25 +506,25 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/authorization.md:194
+#: docs/8.x/authorization.md:195
 #, no-wrap
 msgid "    Gate::authorize('edit-settings');\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/authorization.md:198
+#: docs/8.x/authorization.md:199
 #, no-wrap
 msgid "<a name=\"intercepting-gate-checks\"></a>\n"
 msgstr ""
 
 #. type: Title ###
-#: docs/8.x/authorization.md:198
+#: docs/8.x/authorization.md:199
 #, no-wrap
 msgid "Intercepting Gate Checks"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/authorization.md:201
+#: docs/8.x/authorization.md:202
 msgid ""
 "Sometimes, you may wish to grant all abilities to a specific user. You may "
 "use the `before` method to define a closure that is run before all other "
@@ -531,13 +532,13 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/authorization.md:203 docs/8.x/authorization.md:286 docs/8.x/authorization.md:357
+#: docs/8.x/authorization.md:204 docs/8.x/authorization.md:302 docs/8.x/authorization.md:373
 #, no-wrap
 msgid "    use Illuminate\\Support\\Facades\\Gate;\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/authorization.md:209
+#: docs/8.x/authorization.md:210
 #, no-wrap
 msgid ""
 "    Gate::before(function ($user, $ability) {\n"
@@ -548,21 +549,21 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/authorization.md:211
+#: docs/8.x/authorization.md:212
 msgid ""
 "If the `before` closure returns a non-null result that result will be "
 "considered the result of the authorization check."
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/authorization.md:213
+#: docs/8.x/authorization.md:214
 msgid ""
 "You may use the `after` method to define a closure to be executed after all "
 "other authorization checks:"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/authorization.md:219
+#: docs/8.x/authorization.md:220
 #, no-wrap
 msgid ""
 "    Gate::after(function ($user, $ability, $result, $arguments) {\n"
@@ -573,38 +574,87 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/authorization.md:221
+#: docs/8.x/authorization.md:222
 msgid ""
 "Similar to the `before` method, if the `after` closure returns a non-null "
 "result that result will be considered the result of the authorization check."
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/authorization.md:223
+#: docs/8.x/authorization.md:224
+#, no-wrap
+msgid "<a name=\"inline-authorization\"></a>\n"
+msgstr ""
+
+#. type: Title ###
+#: docs/8.x/authorization.md:224
+#, no-wrap
+msgid "Inline Authorization"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/authorization.md:227
+msgid ""
+"Occasionally, you may wish to determine if the currently authenticated user "
+"is authorized to perform a given action without writing a dedicate gate that "
+"corresponds to the action. Laravel allows you to perform these types of "
+"\"inline\" authorization checks via the `Gate::allowIf` and `Gate::denyIf` "
+"methods:"
+msgstr ""
+
+#. type: Code fence info string
+#: docs/8.x/authorization.md:228
+#, no-wrap
+msgid "php"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/authorization.md:228
+#, no-wrap
+msgid ""
+"use Illuminate\\Support\\Facades\\Auth;\n"
+"\n"
+"Gate::allowIf(fn ($user) => $user->isAdministrator());\n"
+"\n"
+"Gate::denyIf(fn ($user) => $user->banned());\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/authorization.md:237
+msgid ""
+"If the action is not authorized or if no user is currently authenticated, "
+"Laravel will automatically throw an "
+"`Illuminate\\Auth\\Access\\AuthorizationException` exception. Instances of "
+"`AuthorizationException` are automatically converted to a 403 HTTP response "
+"by Laravel's exception handler:"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/authorization.md:239
 #, no-wrap
 msgid "<a name=\"creating-policies\"></a>\n"
 msgstr ""
 
 #. type: Title ##
-#: docs/8.x/authorization.md:223
+#: docs/8.x/authorization.md:239
 #, no-wrap
 msgid "Creating Policies"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/authorization.md:226
+#: docs/8.x/authorization.md:242
 #, no-wrap
 msgid "<a name=\"generating-policies\"></a>\n"
 msgstr ""
 
 #. type: Title ###
-#: docs/8.x/authorization.md:226
+#: docs/8.x/authorization.md:242
 #, no-wrap
 msgid "Generating Policies"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/authorization.md:229
+#: docs/8.x/authorization.md:245
 msgid ""
 "Policies are classes that organize authorization logic around a particular "
 "model or resource. For example, if your application is a blog, you may have "
@@ -613,7 +663,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/authorization.md:231
+#: docs/8.x/authorization.md:247
 msgid ""
 "You may generate a policy using the `make:policy` Artisan command. The "
 "generated policy will be placed in the `app/Policies` directory. If this "
@@ -622,13 +672,13 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/authorization.md:233
+#: docs/8.x/authorization.md:249
 #, no-wrap
 msgid "    php artisan make:policy PostPolicy\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/authorization.md:235
+#: docs/8.x/authorization.md:251
 msgid ""
 "The `make:policy` command will generate an empty policy class. If you would "
 "like to generate a class with example policy methods related to viewing, "
@@ -637,25 +687,25 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/authorization.md:237
+#: docs/8.x/authorization.md:253
 #, no-wrap
 msgid "    php artisan make:policy PostPolicy --model=Post\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/authorization.md:239
+#: docs/8.x/authorization.md:255
 #, no-wrap
 msgid "<a name=\"registering-policies\"></a>\n"
 msgstr ""
 
 #. type: Title ###
-#: docs/8.x/authorization.md:239
+#: docs/8.x/authorization.md:255
 #, no-wrap
 msgid "Registering Policies"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/authorization.md:242
+#: docs/8.x/authorization.md:258
 msgid ""
 "Once the policy class has been created, it needs to be "
 "registered. Registering policies is how we can inform Laravel which policy "
@@ -663,7 +713,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/authorization.md:244
+#: docs/8.x/authorization.md:260
 msgid ""
 "The `App\\Providers\\AuthServiceProvider` included with fresh Laravel "
 "applications contains a `policies` property which maps your Eloquent models "
@@ -673,13 +723,13 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/authorization.md:248
+#: docs/8.x/authorization.md:264
 #, no-wrap
 msgid "    namespace App\\Providers;\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/authorization.md:253
+#: docs/8.x/authorization.md:269
 #, no-wrap
 msgid ""
 "    use App\\Models\\Post;\n"
@@ -690,7 +740,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/authorization.md:264
+#: docs/8.x/authorization.md:280
 #, no-wrap
 msgid ""
 "    class AuthServiceProvider extends ServiceProvider\n"
@@ -706,7 +756,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/authorization.md:273
+#: docs/8.x/authorization.md:289
 #, no-wrap
 msgid ""
 "        /**\n"
@@ -721,7 +771,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/authorization.md:277
+#: docs/8.x/authorization.md:293
 #, no-wrap
 msgid ""
 "            //\n"
@@ -730,19 +780,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/authorization.md:279
+#: docs/8.x/authorization.md:295
 #, no-wrap
 msgid "<a name=\"policy-auto-discovery\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/8.x/authorization.md:279
+#: docs/8.x/authorization.md:295
 #, no-wrap
 msgid "Policy Auto-Discovery"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/authorization.md:282
+#: docs/8.x/authorization.md:298
 msgid ""
 "Instead of manually registering model policies, Laravel can automatically "
 "discover policies as long as the model and policy follow standard Laravel "
@@ -757,7 +807,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/authorization.md:284
+#: docs/8.x/authorization.md:300
 msgid ""
 "If you would like to define your own policy discovery logic, you may "
 "register a custom policy discovery callback using the "
@@ -766,7 +816,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/authorization.md:290
+#: docs/8.x/authorization.md:306
 #, no-wrap
 msgid ""
 "    Gate::guessPolicyNamesUsing(function ($modelClass) {\n"
@@ -775,7 +825,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/authorization.md:292
+#: docs/8.x/authorization.md:308
 #, no-wrap
 msgid ""
 "> {note} Any policies that are explicitly mapped in your "
@@ -784,31 +834,31 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/authorization.md:294
+#: docs/8.x/authorization.md:310
 #, no-wrap
 msgid "<a name=\"writing-policies\"></a>\n"
 msgstr ""
 
 #. type: Title ##
-#: docs/8.x/authorization.md:294
+#: docs/8.x/authorization.md:310
 #, no-wrap
 msgid "Writing Policies"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/authorization.md:297
+#: docs/8.x/authorization.md:313
 #, no-wrap
 msgid "<a name=\"policy-methods\"></a>\n"
 msgstr ""
 
 #. type: Title ###
-#: docs/8.x/authorization.md:297
+#: docs/8.x/authorization.md:313
 #, no-wrap
 msgid "Policy Methods"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/authorization.md:300
+#: docs/8.x/authorization.md:316
 msgid ""
 "Once the policy class has been registered, you may add methods for each "
 "action it authorizes. For example, let's define an `update` method on our "
@@ -817,7 +867,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/authorization.md:302
+#: docs/8.x/authorization.md:318
 msgid ""
 "The `update` method will receive a `User` and a `Post` instance as its "
 "arguments, and should return `true` or `false` indicating whether the user "
@@ -826,13 +876,13 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/authorization.md:306 docs/8.x/authorization.md:396
+#: docs/8.x/authorization.md:322 docs/8.x/authorization.md:412
 #, no-wrap
 msgid "    namespace App\\Policies;\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/authorization.md:309 docs/8.x/authorization.md:399
+#: docs/8.x/authorization.md:325 docs/8.x/authorization.md:415
 #, no-wrap
 msgid ""
 "    use App\\Models\\Post;\n"
@@ -840,7 +890,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/authorization.md:324
+#: docs/8.x/authorization.md:340
 #, no-wrap
 msgid ""
 "    class PostPolicy\n"
@@ -860,7 +910,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/authorization.md:326
+#: docs/8.x/authorization.md:342
 msgid ""
 "You may continue to define additional methods on the policy as needed for "
 "the various actions it authorizes. For example, you might define `view` or "
@@ -869,7 +919,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/authorization.md:328
+#: docs/8.x/authorization.md:344
 msgid ""
 "If you used the `--model` option when generating your policy via the Artisan "
 "console, it will already contain methods for the `viewAny`, `view`, "
@@ -877,7 +927,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/authorization.md:330
+#: docs/8.x/authorization.md:346
 #, no-wrap
 msgid ""
 "> {tip} All policies are resolved via the Laravel [service "
@@ -887,19 +937,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/authorization.md:332
+#: docs/8.x/authorization.md:348
 #, no-wrap
 msgid "<a name=\"policy-responses\"></a>\n"
 msgstr ""
 
 #. type: Title ###
-#: docs/8.x/authorization.md:332
+#: docs/8.x/authorization.md:348
 #, no-wrap
 msgid "Policy Responses"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/authorization.md:335
+#: docs/8.x/authorization.md:351
 msgid ""
 "So far, we have only examined policy methods that return simple boolean "
 "values. However, sometimes you may wish to return a more detailed response, "
@@ -908,7 +958,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/authorization.md:339
+#: docs/8.x/authorization.md:355
 #, no-wrap
 msgid ""
 "    use App\\Models\\Post;\n"
@@ -917,7 +967,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/authorization.md:353
+#: docs/8.x/authorization.md:369
 #, no-wrap
 msgid ""
 "    /**\n"
@@ -936,7 +986,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/authorization.md:355
+#: docs/8.x/authorization.md:371
 msgid ""
 "When returning an authorization response from your policy, the "
 "`Gate::allows` method will still return a simple boolean value; however, you "
@@ -945,31 +995,31 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/authorization.md:359
+#: docs/8.x/authorization.md:375
 #, no-wrap
 msgid "    $response = Gate::inspect('update', $post);\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/authorization.md:369
+#: docs/8.x/authorization.md:385
 #, no-wrap
 msgid "    Gate::authorize('update', $post);\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/authorization.md:373
+#: docs/8.x/authorization.md:389
 #, no-wrap
 msgid "<a name=\"methods-without-models\"></a>\n"
 msgstr ""
 
 #. type: Title ###
-#: docs/8.x/authorization.md:373
+#: docs/8.x/authorization.md:389
 #, no-wrap
 msgid "Methods Without Models"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/authorization.md:376
+#: docs/8.x/authorization.md:392
 msgid ""
 "Some policy methods only receive an instance of the currently authenticated "
 "user. This situation is most common when authorizing `create` actions. For "
@@ -979,7 +1029,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/authorization.md:387
+#: docs/8.x/authorization.md:403
 #, no-wrap
 msgid ""
 "    /**\n"
@@ -995,19 +1045,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/authorization.md:389
+#: docs/8.x/authorization.md:405
 #, no-wrap
 msgid "<a name=\"guest-users\"></a>\n"
 msgstr ""
 
 #. type: Title ###
-#: docs/8.x/authorization.md:389
+#: docs/8.x/authorization.md:405
 #, no-wrap
 msgid "Guest Users"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/authorization.md:392
+#: docs/8.x/authorization.md:408
 msgid ""
 "By default, all gates and policies automatically return `false` if the "
 "incoming HTTP request was not initiated by an authenticated user. However, "
@@ -1017,7 +1067,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/authorization.md:414
+#: docs/8.x/authorization.md:430
 #, no-wrap
 msgid ""
 "    class PostPolicy\n"
@@ -1037,19 +1087,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/authorization.md:416
+#: docs/8.x/authorization.md:432
 #, no-wrap
 msgid "<a name=\"policy-filters\"></a>\n"
 msgstr ""
 
 #. type: Title ###
-#: docs/8.x/authorization.md:416
+#: docs/8.x/authorization.md:432
 #, no-wrap
 msgid "Policy Filters"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/authorization.md:419
+#: docs/8.x/authorization.md:435
 msgid ""
 "For certain users, you may wish to authorize all actions within a given "
 "policy. To accomplish this, define a `before` method on the policy. The "
@@ -1060,13 +1110,13 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/authorization.md:421
+#: docs/8.x/authorization.md:437
 #, no-wrap
 msgid "    use App\\Models\\User;\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/authorization.md:435
+#: docs/8.x/authorization.md:451
 #, no-wrap
 msgid ""
 "    /**\n"
@@ -1085,7 +1135,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/authorization.md:437
+#: docs/8.x/authorization.md:453
 msgid ""
 "If you would like to deny all authorization checks for a particular type of "
 "user then you may return `false` from the `before` method. If `null` is "
@@ -1093,7 +1143,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/authorization.md:439
+#: docs/8.x/authorization.md:455
 #, no-wrap
 msgid ""
 "> {note} The `before` method of a policy class will not be called if the "
@@ -1102,31 +1152,31 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/authorization.md:441
+#: docs/8.x/authorization.md:457
 #, no-wrap
 msgid "<a name=\"authorizing-actions-using-policies\"></a>\n"
 msgstr ""
 
 #. type: Title ##
-#: docs/8.x/authorization.md:441
+#: docs/8.x/authorization.md:457
 #, no-wrap
 msgid "Authorizing Actions Using Policies"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/authorization.md:444
+#: docs/8.x/authorization.md:460
 #, no-wrap
 msgid "<a name=\"via-the-user-model\"></a>\n"
 msgstr ""
 
 #. type: Title ###
-#: docs/8.x/authorization.md:444
+#: docs/8.x/authorization.md:460
 #, no-wrap
 msgid "Via The User Model"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/authorization.md:447
+#: docs/8.x/authorization.md:463
 msgid ""
 "The `App\\Models\\User` model that is included with your Laravel application "
 "includes two helpful methods for authorizing actions: `can` and "
@@ -1137,7 +1187,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/authorization.md:455 docs/8.x/authorization.md:489 docs/8.x/authorization.md:522 docs/8.x/authorization.md:579
+#: docs/8.x/authorization.md:471 docs/8.x/authorization.md:505 docs/8.x/authorization.md:538 docs/8.x/authorization.md:595
 #, no-wrap
 msgid ""
 "    use App\\Http\\Controllers\\Controller;\n"
@@ -1146,7 +1196,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/authorization.md:470
+#: docs/8.x/authorization.md:486
 #, no-wrap
 msgid ""
 "    class PostController extends Controller\n"
@@ -1166,7 +1216,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/authorization.md:476
+#: docs/8.x/authorization.md:492
 msgid ""
 "If a [policy is registered](#registering-policies) for the given model, the "
 "`can` method will automatically call the appropriate policy and return the "
@@ -1175,19 +1225,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/authorization.md:478
+#: docs/8.x/authorization.md:494
 #, no-wrap
 msgid "<a name=\"user-model-actions-that-dont-require-models\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/8.x/authorization.md:478 docs/8.x/authorization.md:543 docs/8.x/authorization.md:621 docs/8.x/authorization.md:673
+#: docs/8.x/authorization.md:494 docs/8.x/authorization.md:559 docs/8.x/authorization.md:645 docs/8.x/authorization.md:705
 #, no-wrap
 msgid "Actions That Don't Require Models"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/authorization.md:481
+#: docs/8.x/authorization.md:497
 msgid ""
 "Remember, some actions may correspond to policy methods like `create` that "
 "do not require a model instance. In these situations, you may pass a class "
@@ -1196,7 +1246,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/authorization.md:503
+#: docs/8.x/authorization.md:519
 #, no-wrap
 msgid ""
 "    class PostController extends Controller\n"
@@ -1215,7 +1265,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/authorization.md:507
+#: docs/8.x/authorization.md:523
 #, no-wrap
 msgid ""
 "            // Create the post...\n"
@@ -1224,19 +1274,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/authorization.md:509
+#: docs/8.x/authorization.md:525
 #, no-wrap
 msgid "<a name=\"via-controller-helpers\"></a>\n"
 msgstr ""
 
 #. type: Title ###
-#: docs/8.x/authorization.md:509
+#: docs/8.x/authorization.md:525
 #, no-wrap
 msgid "Via Controller Helpers"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/authorization.md:512
+#: docs/8.x/authorization.md:528
 msgid ""
 "In addition to helpful methods provided to the `App\\Models\\User` model, "
 "Laravel provides a helpful `authorize` method to any of your controllers "
@@ -1244,7 +1294,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/authorization.md:514
+#: docs/8.x/authorization.md:530
 msgid ""
 "Like the `can` method, this method accepts the name of the action you wish "
 "to authorize and the relevant model. If the action is not authorized, the "
@@ -1255,7 +1305,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/authorization.md:537
+#: docs/8.x/authorization.md:553
 #, no-wrap
 msgid ""
 "    class PostController extends Controller\n"
@@ -1275,7 +1325,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/authorization.md:541
+#: docs/8.x/authorization.md:557
 #, no-wrap
 msgid ""
 "            // The current user can update the blog post...\n"
@@ -1284,13 +1334,13 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/authorization.md:543
+#: docs/8.x/authorization.md:559
 #, no-wrap
 msgid "<a name=\"controller-actions-that-dont-require-models\"></a>\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/authorization.md:546
+#: docs/8.x/authorization.md:562
 msgid ""
 "As previously discussed, some policy methods like `create` do not require a "
 "model instance. In these situations, you should pass a class name to the "
@@ -1299,7 +1349,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/authorization.md:549
+#: docs/8.x/authorization.md:565
 #, no-wrap
 msgid ""
 "    use App\\Models\\Post;\n"
@@ -1307,7 +1357,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/authorization.md:561
+#: docs/8.x/authorization.md:577
 #, no-wrap
 msgid ""
 "    /**\n"
@@ -1324,7 +1374,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/authorization.md:564
+#: docs/8.x/authorization.md:580
 #, no-wrap
 msgid ""
 "        // The current user can create blog posts...\n"
@@ -1332,19 +1382,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/authorization.md:566
+#: docs/8.x/authorization.md:582
 #, no-wrap
 msgid "<a name=\"authorizing-resource-controllers\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/8.x/authorization.md:566
+#: docs/8.x/authorization.md:582
 #, no-wrap
 msgid "Authorizing Resource Controllers"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/authorization.md:569
+#: docs/8.x/authorization.md:585
 msgid ""
 "If you are utilizing [resource "
 "controllers](/docs/{{version}}/controllers#resource-controllers), you may "
@@ -1354,7 +1404,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/authorization.md:571
+#: docs/8.x/authorization.md:587
 msgid ""
 "The `authorizeResource` method accepts the model's class name as its first "
 "argument, and the name of the route / request parameter that will contain "
@@ -1365,7 +1415,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/authorization.md:592
+#: docs/8.x/authorization.md:608
 #, no-wrap
 msgid ""
 "    class PostController extends Controller\n"
@@ -1383,7 +1433,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/authorization.md:594
+#: docs/8.x/authorization.md:610
 msgid ""
 "The following controller methods will be mapped to their corresponding "
 "policy method. When requests are routed to the given controller method, the "
@@ -1392,7 +1442,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/authorization.md:604
+#: docs/8.x/authorization.md:620
 msgid ""
 "| Controller Method | Policy Method | | --- | --- | | index | viewAny | | "
 "show | view | | create | create | | store | create | | edit | update | | "
@@ -1400,7 +1450,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/authorization.md:606
+#: docs/8.x/authorization.md:622
 #, no-wrap
 msgid ""
 "> {tip} You may use the `make:policy` command with the `--model` option to "
@@ -1409,19 +1459,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/authorization.md:608
+#: docs/8.x/authorization.md:624
 #, no-wrap
 msgid "<a name=\"via-middleware\"></a>\n"
 msgstr ""
 
 #. type: Title ###
-#: docs/8.x/authorization.md:608
+#: docs/8.x/authorization.md:624
 #, no-wrap
 msgid "Via Middleware"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/authorization.md:611
+#: docs/8.x/authorization.md:627
 msgid ""
 "Laravel includes a middleware that can authorize actions before the incoming "
 "request even reaches your routes or controllers. By default, the "
@@ -1431,13 +1481,13 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/authorization.md:613
+#: docs/8.x/authorization.md:629 docs/8.x/authorization.md:639 docs/8.x/authorization.md:656
 #, no-wrap
 msgid "    use App\\Models\\Post;\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/authorization.md:617
+#: docs/8.x/authorization.md:633
 #, no-wrap
 msgid ""
 "    Route::put('/post/{post}', function (Post $post) {\n"
@@ -1446,7 +1496,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/authorization.md:619
+#: docs/8.x/authorization.md:635
 msgid ""
 "In this example, we're passing the `can` middleware two arguments. The first "
 "is the name of the action we wish to authorize and the second is the route "
@@ -1458,13 +1508,29 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/authorization.md:621
+#: docs/8.x/authorization.md:637
+msgid ""
+"For convenience, you may also attach the `can` middleware to your route "
+"using the `can` method:"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/authorization.md:643
+#, no-wrap
+msgid ""
+"    Route::put('/post/{post}', function (Post $post) {\n"
+"        // The current user may update the post...\n"
+"    })->can('update', 'post');\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/authorization.md:645
 #, no-wrap
 msgid "<a name=\"middleware-actions-that-dont-require-models\"></a>\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/authorization.md:624
+#: docs/8.x/authorization.md:648
 msgid ""
 "Again, some policy methods like `create` do not require a model instance. In "
 "these situations, you may pass a class name to the middleware. The class "
@@ -1473,7 +1539,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/authorization.md:628
+#: docs/8.x/authorization.md:652
 #, no-wrap
 msgid ""
 "    Route::post('/post', function () {\n"
@@ -1482,19 +1548,36 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/authorization.md:630
+#: docs/8.x/authorization.md:654
+msgid ""
+"Specifying the entire class name within a string middleware definition can "
+"become cumbersome. For that reason, you may choose to attach the `can` "
+"middleware to your route using the `can` method:"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/authorization.md:660
+#, no-wrap
+msgid ""
+"    Route::post('/post', function () {\n"
+"        // The current user may create posts...\n"
+"    })->can('create', Post::class);\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/authorization.md:662
 #, no-wrap
 msgid "<a name=\"via-blade-templates\"></a>\n"
 msgstr ""
 
 #. type: Title ###
-#: docs/8.x/authorization.md:630
+#: docs/8.x/authorization.md:662
 #, no-wrap
 msgid "Via Blade Templates"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/authorization.md:633
+#: docs/8.x/authorization.md:665
 msgid ""
 "When writing Blade templates, you may wish to display a portion of the page "
 "only if the user is authorized to perform a given action. For example, you "
@@ -1504,13 +1587,13 @@ msgid ""
 msgstr ""
 
 #. type: Code fence info string
-#: docs/8.x/authorization.md:634 docs/8.x/authorization.md:652 docs/8.x/authorization.md:664 docs/8.x/authorization.md:677
+#: docs/8.x/authorization.md:666 docs/8.x/authorization.md:684 docs/8.x/authorization.md:696 docs/8.x/authorization.md:709
 #, no-wrap
 msgid "html"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/authorization.md:634
+#: docs/8.x/authorization.md:666
 #, no-wrap
 msgid ""
 "@can('update', $post)\n"
@@ -1529,7 +1612,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/authorization.md:651
+#: docs/8.x/authorization.md:683
 msgid ""
 "These directives are convenient shortcuts for writing `@if` and `@unless` "
 "statements. The `@can` and `@cannot` statements above are equivalent to the "
@@ -1537,7 +1620,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/authorization.md:652
+#: docs/8.x/authorization.md:684
 #, no-wrap
 msgid ""
 "@if (Auth::user()->can('update', $post))\n"
@@ -1550,14 +1633,14 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/authorization.md:663
+#: docs/8.x/authorization.md:695
 msgid ""
 "You may also determine if a user is authorized to perform any action from a "
 "given array of actions. To accomplish this, use the `@canany` directive:"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/authorization.md:664
+#: docs/8.x/authorization.md:696
 #, no-wrap
 msgid ""
 "@canany(['update', 'view', 'delete'], $post)\n"
@@ -1568,13 +1651,13 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/authorization.md:673
+#: docs/8.x/authorization.md:705
 #, no-wrap
 msgid "<a name=\"blade-actions-that-dont-require-models\"></a>\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/authorization.md:676
+#: docs/8.x/authorization.md:708
 msgid ""
 "Like most of the other authorization methods, you may pass a class name to "
 "the `@can` and `@cannot` directives if the action does not require a model "
@@ -1582,7 +1665,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/authorization.md:677
+#: docs/8.x/authorization.md:709
 #, no-wrap
 msgid ""
 "@can('create', App\\Models\\Post::class)\n"
@@ -1595,13 +1678,13 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/authorization.md:688
+#: docs/8.x/authorization.md:720
 #, no-wrap
 msgid "<a name=\"supplying-additional-context\"></a>\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/authorization.md:691
+#: docs/8.x/authorization.md:723
 msgid ""
 "When authorizing actions using policies, you may pass an array as the second "
 "argument to the various authorization functions and helpers. The first "
@@ -1613,7 +1696,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/authorization.md:705
+#: docs/8.x/authorization.md:737
 #, no-wrap
 msgid ""
 "    /**\n"
@@ -1632,14 +1715,14 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/authorization.md:707
+#: docs/8.x/authorization.md:739
 msgid ""
 "When attempting to determine if the authenticated user can update a given "
 "post, we can invoke this policy method like so:"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/authorization.md:720
+#: docs/8.x/authorization.md:752
 #, no-wrap
 msgid ""
 "    /**\n"
@@ -1657,7 +1740,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/authorization.md:722
+#: docs/8.x/authorization.md:754
 #, no-wrap
 msgid ""
 "        // The current user can update the blog post...\n"

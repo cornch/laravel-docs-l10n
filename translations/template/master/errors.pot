@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Laravel Documentation VERSION\n"
-"POT-Creation-Date: 2021-09-13 05:07+0000\n"
+"POT-Creation-Date: 2022-01-21 20:16+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -145,7 +145,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/errors.md:36 docs/master/errors.md:100 docs/master/errors.md:120
+#: docs/master/errors.md:36 docs/master/errors.md:126 docs/master/errors.md:146
 #, no-wrap
 msgid "    use App\\Exceptions\\InvalidOrderException;\n"
 msgstr ""
@@ -201,8 +201,8 @@ msgstr ""
 #, no-wrap
 msgid ""
 "> {tip} To customize the exception reporting for a given exception, you may "
-"also consider using [reportable "
-"exceptions](/docs/{{version}}/errors#renderable-exceptions)\n"
+"also utilize [reportable "
+"exceptions](/docs/{{version}}/errors#renderable-exceptions).\n"
 msgstr ""
 
 #. type: Plain text
@@ -247,17 +247,82 @@ msgstr ""
 #. type: Plain text
 #: docs/master/errors.md:79
 #, no-wrap
-msgid "<a name=\"the-report-helper\"></a>\n"
+msgid "<a name=\"exception-log-context\"></a>\n"
 msgstr ""
 
 #. type: Title ####
 #: docs/master/errors.md:79
 #, no-wrap
-msgid "The `report` Helper"
+msgid "Exception Log Context"
 msgstr ""
 
 #. type: Plain text
 #: docs/master/errors.md:82
+msgid ""
+"While adding context to every log message can be useful, sometimes a "
+"particular exception may have unique context that you would like to include "
+"in your logs. By defining a `context` method on one of your application's "
+"custom exceptions, you may specify any data relevant to that exception that "
+"should be added to the exception's log entry:"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/errors.md:84 docs/master/errors.md:185
+#, no-wrap
+msgid "    <?php\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/errors.md:86 docs/master/errors.md:187
+#, no-wrap
+msgid "    namespace App\\Exceptions;\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/errors.md:88 docs/master/errors.md:189
+#, no-wrap
+msgid "    use Exception;\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/errors.md:92
+#, no-wrap
+msgid ""
+"    class InvalidOrderException extends Exception\n"
+"    {\n"
+"        // ...\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/errors.md:103
+#, no-wrap
+msgid ""
+"        /**\n"
+"         * Get the exception's context information.\n"
+"         *\n"
+"         * @return array\n"
+"         */\n"
+"        public function context()\n"
+"        {\n"
+"            return ['order_id' => $this->orderId];\n"
+"        }\n"
+"    }\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/errors.md:105
+#, no-wrap
+msgid "<a name=\"the-report-helper\"></a>\n"
+msgstr ""
+
+#. type: Title ####
+#: docs/master/errors.md:105
+#, no-wrap
+msgid "The `report` Helper"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/errors.md:108
 msgid ""
 "Sometimes you may need to report an exception but continue handling the "
 "current request. The `report` helper function allows you to quickly report "
@@ -266,7 +331,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/errors.md:89
+#: docs/master/errors.md:115
 #, no-wrap
 msgid ""
 "    public function isValid($value)\n"
@@ -278,7 +343,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/errors.md:93
+#: docs/master/errors.md:119
 #, no-wrap
 msgid ""
 "            return false;\n"
@@ -287,19 +352,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/errors.md:95
+#: docs/master/errors.md:121
 #, no-wrap
 msgid "<a name=\"ignoring-exceptions-by-type\"></a>\n"
 msgstr ""
 
 #. type: Title ###
-#: docs/master/errors.md:95
+#: docs/master/errors.md:121
 #, no-wrap
 msgid "Ignoring Exceptions By Type"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/errors.md:98
+#: docs/master/errors.md:124
 msgid ""
 "When building your application, there will be some types of exceptions you "
 "simply want to ignore and never report. Your application's exception handler "
@@ -309,7 +374,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/errors.md:109
+#: docs/master/errors.md:135
 #, no-wrap
 msgid ""
 "    /**\n"
@@ -323,7 +388,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/errors.md:111
+#: docs/master/errors.md:137
 #, no-wrap
 msgid ""
 "> {tip} Behind the scenes, Laravel already ignores some types of errors for "
@@ -332,19 +397,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/errors.md:113
+#: docs/master/errors.md:139
 #, no-wrap
 msgid "<a name=\"rendering-exceptions\"></a>\n"
 msgstr ""
 
 #. type: Title ###
-#: docs/master/errors.md:113
+#: docs/master/errors.md:139
 #, no-wrap
 msgid "Rendering Exceptions"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/errors.md:116
+#: docs/master/errors.md:142
 msgid ""
 "By default, the Laravel exception handler will convert exceptions into an "
 "HTTP response for you. However, you are free to register a custom rendering "
@@ -353,7 +418,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/errors.md:118
+#: docs/master/errors.md:144
 msgid ""
 "The closure passed to the `renderable` method should return an instance of "
 "`Illuminate\\Http\\Response`, which may be generated via the `response` "
@@ -362,7 +427,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/errors.md:132
+#: docs/master/errors.md:158
 #, no-wrap
 msgid ""
 "    /**\n"
@@ -379,19 +444,56 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/errors.md:134
+#: docs/master/errors.md:160
+msgid ""
+"You may also use the `renderable` method to override the rendering behavior "
+"for built-in Laravel or Symfony exceptions such as "
+"`NotFoundHttpException`. If the closure given to the `renderable` method "
+"does not return a value, Laravel's default exception rendering will be "
+"utilized:"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/errors.md:162
+#, no-wrap
+msgid "    use Symfony\\Component\\HttpKernel\\Exception\\NotFoundHttpException;\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/errors.md:178
+#, no-wrap
+msgid ""
+"    /**\n"
+"     * Register the exception handling callbacks for the application.\n"
+"     *\n"
+"     * @return void\n"
+"     */\n"
+"    public function register()\n"
+"    {\n"
+"        $this->renderable(function (NotFoundHttpException $e, $request) {\n"
+"            if ($request->is('api/*')) {\n"
+"                return response()->json([\n"
+"                    'message' => 'Record not found.'\n"
+"                ], 404);\n"
+"            }\n"
+"        });\n"
+"    }\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/errors.md:180
 #, no-wrap
 msgid "<a name=\"renderable-exceptions\"></a>\n"
 msgstr ""
 
 #. type: Title ###
-#: docs/master/errors.md:134
+#: docs/master/errors.md:180
 #, no-wrap
 msgid "Reportable & Renderable Exceptions"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/errors.md:137
+#: docs/master/errors.md:183
 msgid ""
 "Instead of type-checking exceptions in the exception handler's `register` "
 "method, you may define `report` and `render` methods directly on your custom "
@@ -400,25 +502,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/errors.md:139
-#, no-wrap
-msgid "    <?php\n"
-msgstr ""
-
-#. type: Plain text
-#: docs/master/errors.md:141
-#, no-wrap
-msgid "    namespace App\\Exceptions;\n"
-msgstr ""
-
-#. type: Plain text
-#: docs/master/errors.md:143
-#, no-wrap
-msgid "    use Exception;\n"
-msgstr ""
-
-#. type: Plain text
-#: docs/master/errors.md:155
+#: docs/master/errors.md:201
 #, no-wrap
 msgid ""
 "    class InvalidOrderException extends Exception\n"
@@ -435,7 +519,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/errors.md:167
+#: docs/master/errors.md:213
 #, no-wrap
 msgid ""
 "        /**\n"
@@ -452,7 +536,38 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/errors.md:169
+#: docs/master/errors.md:215
+msgid ""
+"If your exception extends an exception that is already renderable, such as a "
+"built-in Laravel or Symfony exception, you may return `false` from the "
+"exception's `render` method to render the exception's default HTTP response:"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/errors.md:225
+#, no-wrap
+msgid ""
+"    /**\n"
+"     * Render the exception into an HTTP response.\n"
+"     *\n"
+"     * @param  \\Illuminate\\Http\\Request  $request\n"
+"     * @return \\Illuminate\\Http\\Response\n"
+"     */\n"
+"    public function render($request)\n"
+"    {\n"
+"        // Determine if the exception needs custom rendering...\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/errors.md:228 docs/master/errors.md:242
+#, no-wrap
+msgid ""
+"        return false;\n"
+"    }\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/errors.md:230
 msgid ""
 "If your exception contains custom reporting logic that is only necessary "
 "when certain conditions are met, you may need to instruct Laravel to "
@@ -462,7 +577,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/errors.md:178
+#: docs/master/errors.md:239
 #, no-wrap
 msgid ""
 "    /**\n"
@@ -476,15 +591,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/errors.md:181
-#, no-wrap
-msgid ""
-"        return false;\n"
-"    }\n"
-msgstr ""
-
-#. type: Plain text
-#: docs/master/errors.md:183
+#: docs/master/errors.md:244
 #, no-wrap
 msgid ""
 "> {tip} You may type-hint any required dependencies of the `report` method "
@@ -493,19 +600,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/errors.md:185
+#: docs/master/errors.md:246
 #, no-wrap
 msgid "<a name=\"http-exceptions\"></a>\n"
 msgstr ""
 
 #. type: Title ##
-#: docs/master/errors.md:185
+#: docs/master/errors.md:246
 #, no-wrap
 msgid "HTTP Exceptions"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/errors.md:188
+#: docs/master/errors.md:249
 msgid ""
 "Some exceptions describe HTTP error codes from the server. For example, this "
 "may be a \"page not found\" error (404), an \"unauthorized error\" (401) or "
@@ -514,45 +621,45 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/errors.md:190
+#: docs/master/errors.md:251
 #, no-wrap
 msgid "    abort(404);\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/errors.md:192
+#: docs/master/errors.md:253
 #, no-wrap
 msgid "<a name=\"custom-http-error-pages\"></a>\n"
 msgstr ""
 
 #. type: Title ###
-#: docs/master/errors.md:192
+#: docs/master/errors.md:253
 #, no-wrap
 msgid "Custom HTTP Error Pages"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/errors.md:195
+#: docs/master/errors.md:256
 msgid ""
 "Laravel makes it easy to display custom error pages for various HTTP status "
 "codes. For example, if you wish to customize the error page for 404 HTTP "
-"status codes, create a `resources/views/errors/404.blade.php`. This file "
-"will be served on all 404 errors generated by your application. The views "
-"within this directory should be named to match the HTTP status code they "
-"correspond to. The "
+"status codes, create a `resources/views/errors/404.blade.php` view "
+"template. This view will be rendered on all 404 errors generated by your "
+"application. The views within this directory should be named to match the "
+"HTTP status code they correspond to. The "
 "`Symfony\\Component\\HttpKernel\\Exception\\HttpException` instance raised "
 "by the `abort` function will be passed to the view as an `$exception` "
 "variable:"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/errors.md:197
+#: docs/master/errors.md:258
 #, no-wrap
 msgid "    <h2>{{ $exception->getMessage() }}</h2>\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/errors.md:199
+#: docs/master/errors.md:260
 msgid ""
 "You may publish Laravel's default error page templates using the "
 "`vendor:publish` Artisan command. Once the templates have been published, "
@@ -560,7 +667,29 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/errors.md:200
+#: docs/master/errors.md:262
 #, no-wrap
 msgid "    php artisan vendor:publish --tag=laravel-errors\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/errors.md:264
+#, no-wrap
+msgid "<a name=\"fallback-http-error-pages\"></a>\n"
+msgstr ""
+
+#. type: Title ####
+#: docs/master/errors.md:264
+#, no-wrap
+msgid "Fallback HTTP Error Pages"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/errors.md:266
+msgid ""
+"You may also define a \"fallback\" error page for a given series of HTTP "
+"status codes. This page will be rendered if there is not a corresponding "
+"page for the specific HTTP status code that occurred. To accomplish this, "
+"define a `4xx.blade.php` template and a `5xx.blade.php` template in your "
+"application's `resources/views/errors` directory."
 msgstr ""

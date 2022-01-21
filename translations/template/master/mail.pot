@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Laravel Documentation VERSION\n"
-"POT-Creation-Date: 2021-09-13 05:07+0000\n"
+"POT-Creation-Date: 2022-01-21 20:16+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -23,12 +23,13 @@ msgid "Mail"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/mail.md:26
+#: docs/master/mail.md:27
 #, no-wrap
 msgid ""
 "- [Introduction](#introduction)\n"
 "    - [Configuration](#configuration)\n"
 "    - [Driver Prerequisites](#driver-prerequisites)\n"
+"    - [Failover Configuration](#failover-configuration)\n"
 "- [Generating Mailables](#generating-mailables)\n"
 "- [Writing Mailables](#writing-mailables)\n"
 "    - [Configuring The Sender](#configuring-the-sender)\n"
@@ -36,8 +37,7 @@ msgid ""
 "    - [View Data](#view-data)\n"
 "    - [Attachments](#attachments)\n"
 "    - [Inline Attachments](#inline-attachments)\n"
-"    - [Customizing The SwiftMailer "
-"Message](#customizing-the-swiftmailer-message)\n"
+"    - [Customizing The Symfony Message](#customizing-the-symfony-message)\n"
 "- [Markdown Mailables](#markdown-mailables)\n"
 "    - [Generating Markdown Mailables](#generating-markdown-mailables)\n"
 "    - [Writing Markdown Messages](#writing-markdown-messages)\n"
@@ -54,42 +54,42 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/mail.md:28
+#: docs/master/mail.md:29
 #, no-wrap
 msgid "<a name=\"introduction\"></a>\n"
 msgstr ""
 
 #. type: Title ##
-#: docs/master/mail.md:28
+#: docs/master/mail.md:29
 #, no-wrap
 msgid "Introduction"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/mail.md:31
+#: docs/master/mail.md:32
 msgid ""
 "Sending email doesn't have to be complicated. Laravel provides a clean, "
-"simple email API powered by the popular "
-"[SwiftMailer](https://swiftmailer.symfony.com/) library. Laravel and "
-"SwiftMailer provide drivers for sending email via SMTP, Mailgun, Postmark, "
-"Amazon SES, and `sendmail`, allowing you to quickly get started sending mail "
-"through a local or cloud based service of your choice."
+"simple email API powered by the popular [Symfony "
+"Mailer](https://symfony.com/doc/6.0/mailer.html) component. Laravel and "
+"Symfony Mailer provide drivers for sending email via SMTP, Mailgun, "
+"Postmark, Amazon SES, and `sendmail`, allowing you to quickly get started "
+"sending mail through a local or cloud based service of your choice."
 msgstr ""
 
 #. type: Plain text
-#: docs/master/mail.md:33
+#: docs/master/mail.md:34
 #, no-wrap
 msgid "<a name=\"configuration\"></a>\n"
 msgstr ""
 
 #. type: Title ###
-#: docs/master/mail.md:33
+#: docs/master/mail.md:34
 #, no-wrap
 msgid "Configuration"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/mail.md:36
+#: docs/master/mail.md:37
 msgid ""
 "Laravel's email services may be configured via your application's "
 "`config/mail.php` configuration file. Each mailer configured within this "
@@ -101,7 +101,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/mail.md:38
+#: docs/master/mail.md:39
 msgid ""
 "Within your `mail` configuration file, you will find a `mailers` "
 "configuration array. This array contains a sample configuration entry for "
@@ -111,56 +111,61 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/mail.md:40
+#: docs/master/mail.md:41
 #, no-wrap
 msgid "<a name=\"driver-prerequisites\"></a>\n"
 msgstr ""
 
 #. type: Title ###
-#: docs/master/mail.md:40
+#: docs/master/mail.md:41
 #, no-wrap
 msgid "Driver / Transport Prerequisites"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/mail.md:43
+#: docs/master/mail.md:44
 msgid ""
 "The API based drivers such as Mailgun and Postmark are often simpler and "
 "faster than sending mail via SMTP servers. Whenever possible, we recommend "
-"that you use one of these drivers. All of the API based drivers require the "
-"Guzzle HTTP library, which may be installed via the Composer package "
-"manager:"
+"that you use one of these drivers."
 msgstr ""
 
 #. type: Plain text
-#: docs/master/mail.md:45
-#, no-wrap
-msgid "    composer require guzzlehttp/guzzle\n"
-msgstr ""
-
-#. type: Plain text
-#: docs/master/mail.md:47
+#: docs/master/mail.md:46
 #, no-wrap
 msgid "<a name=\"mailgun-driver\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/master/mail.md:47
+#: docs/master/mail.md:46
 #, no-wrap
 msgid "Mailgun Driver"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/mail.md:50
+#: docs/master/mail.md:49
 msgid ""
-"To use the Mailgun driver, first install the Guzzle HTTP library. Then, set "
-"the `default` option in your `config/mail.php` configuration file to "
-"`mailgun`. Next, verify that your `config/services.php` configuration file "
+"To use the Mailgun driver, install Symfony's Mailgun Mailer transport via "
+"Composer:"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/mail.md:51
+#, no-wrap
+msgid "    composer require symfony/mailgun-mailer\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/mail.md:53
+msgid ""
+"Next, set the `default` option in your application's `config/mail.php` "
+"configuration file to `mailgun`. After configuring your application's "
+"default mailer, verify that your `config/services.php` configuration file "
 "contains the following options:"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/mail.md:55
+#: docs/master/mail.md:58
 #, no-wrap
 msgid ""
 "    'mailgun' => [\n"
@@ -170,7 +175,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/mail.md:57
+#: docs/master/mail.md:60
 msgid ""
 "If you are not using the United States [Mailgun "
 "region](https://documentation.mailgun.com/en/latest/api-intro.html#mailgun-regions), "
@@ -178,7 +183,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/mail.md:63
+#: docs/master/mail.md:66
 #, no-wrap
 msgid ""
 "    'mailgun' => [\n"
@@ -189,41 +194,41 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/mail.md:65
+#: docs/master/mail.md:68
 #, no-wrap
 msgid "<a name=\"postmark-driver\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/master/mail.md:65
+#: docs/master/mail.md:68
 #, no-wrap
 msgid "Postmark Driver"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/mail.md:68
+#: docs/master/mail.md:71
 msgid ""
-"To use the Postmark driver, install Postmark's SwiftMailer transport via "
+"To use the Postmark driver, install Symfony's Postmark Mailer transport via "
 "Composer:"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/mail.md:70
+#: docs/master/mail.md:73
 #, no-wrap
-msgid "    composer require wildbit/swiftmailer-postmark\n"
+msgid "    composer require symfony/postmark-mailer\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/mail.md:72
+#: docs/master/mail.md:75
 msgid ""
-"Next, install the Guzzle HTTP library and set the `default` option in your "
-"`config/mail.php` configuration file to `postmark`. Finally, verify that "
-"your `config/services.php` configuration file contains the following "
-"options:"
+"Next, set the `default` option in your application's `config/mail.php` "
+"configuration file to `postmark`. After configuring your application's "
+"default mailer, verify that your `config/services.php` configuration file "
+"contains the following options:"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/mail.md:76
+#: docs/master/mail.md:79
 #, no-wrap
 msgid ""
 "    'postmark' => [\n"
@@ -232,7 +237,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/mail.md:78
+#: docs/master/mail.md:81
 msgid ""
 "If you would like to specify the Postmark message stream that should be used "
 "by a given mailer, you may add the `message_stream_id` configuration option "
@@ -241,7 +246,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/mail.md:83
+#: docs/master/mail.md:86
 #, no-wrap
 msgid ""
 "    'postmark' => [\n"
@@ -251,45 +256,45 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/mail.md:85
+#: docs/master/mail.md:88
 msgid ""
 "This way you are also able to set up multiple Postmark mailers with "
 "different message streams."
 msgstr ""
 
 #. type: Plain text
-#: docs/master/mail.md:87
+#: docs/master/mail.md:90
 #, no-wrap
 msgid "<a name=\"ses-driver\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/master/mail.md:87
+#: docs/master/mail.md:90
 #, no-wrap
 msgid "SES Driver"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/mail.md:90
+#: docs/master/mail.md:93
 msgid ""
-"To use the Amazon SES driver you must first install the Amazon AWS SDK for "
-"PHP. You may install this library via the Composer package manager:"
+"To use the SES driver, install Symfony's Amazon Mailer transport via "
+"Composer:"
 msgstr ""
 
 #. type: Code fence info string
-#: docs/master/mail.md:91
+#: docs/master/mail.md:94
 #, no-wrap
 msgid "bash"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/mail.md:91
+#: docs/master/mail.md:94
 #, no-wrap
-msgid "composer require aws/aws-sdk-php\n"
+msgid "composer require symfony/amazon-mailer\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/mail.md:96
+#: docs/master/mail.md:99
 msgid ""
 "Next, set the `default` option in your `config/mail.php` configuration file "
 "to `ses` and verify that your `config/services.php` configuration file "
@@ -297,7 +302,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/mail.md:102
+#: docs/master/mail.md:105
 #, no-wrap
 msgid ""
 "    'ses' => [\n"
@@ -308,7 +313,28 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/mail.md:104
+#: docs/master/mail.md:107
+msgid ""
+"To utilize AWS [temporary "
+"credentials](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_temp_use-resources.html) "
+"via a session token, you may add a `token` key to your application's SES "
+"configuration:"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/mail.md:114
+#, no-wrap
+msgid ""
+"    'ses' => [\n"
+"        'key' => env('AWS_ACCESS_KEY_ID'),\n"
+"        'secret' => env('AWS_SECRET_ACCESS_KEY'),\n"
+"        'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),\n"
+"        'token' => env('AWS_SESSION_TOKEN'),\n"
+"    ],\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/mail.md:116
 msgid ""
 "If you would like to define [additional "
 "options](https://docs.aws.amazon.com/aws-sdk-php/v3/api/api-sesv2-2019-09-27.html#sendemail) "
@@ -317,7 +343,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/mail.md:116
+#: docs/master/mail.md:128
 #, no-wrap
 msgid ""
 "    'ses' => [\n"
@@ -334,19 +360,88 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/mail.md:118
+#: docs/master/mail.md:130
+#, no-wrap
+msgid "<a name=\"failover-configuration\"></a>\n"
+msgstr ""
+
+#. type: Title ###
+#: docs/master/mail.md:130
+#, no-wrap
+msgid "Failover Configuration"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/mail.md:133
+msgid ""
+"Sometimes, an external service you have configured to send your "
+"application's mail may be down. In these cases, it can be useful to define "
+"one or more backup mail delivery configurations that will be used in case "
+"your primary delivery driver is down."
+msgstr ""
+
+#. type: Plain text
+#: docs/master/mail.md:135
+msgid ""
+"To accomplish this, you should define a mailer within your application's "
+"`mail` configuration file that uses the `failover` transport. The "
+"configuration array for your application's `failover` mailer should contain "
+"an array of `mailers` that reference the order in which mail drivers should "
+"be chosen for delivery:"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/mail.md:145
+#, no-wrap
+msgid ""
+"    'mailers' => [\n"
+"        'failover' => [\n"
+"            'transport' => 'failover',\n"
+"            'mailers' => [\n"
+"                'postmark',\n"
+"                'mailgun',\n"
+"                'sendmail',\n"
+"            ],\n"
+"        ],\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/mail.md:148
+#, no-wrap
+msgid ""
+"        // ...\n"
+"    ],\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/mail.md:150
+msgid ""
+"Once your failover mailer has been defined, you should set this mailer as "
+"the default mailer used by your application by specifying its name as the "
+"value of the `default` configuration key within your application's `mail` "
+"configuration file:"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/mail.md:152
+#, no-wrap
+msgid "    'default' => env('MAIL_MAILER', 'failover'),\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/mail.md:154
 #, no-wrap
 msgid "<a name=\"generating-mailables\"></a>\n"
 msgstr ""
 
 #. type: Title ##
-#: docs/master/mail.md:118
+#: docs/master/mail.md:154
 #, no-wrap
 msgid "Generating Mailables"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/mail.md:121
+#: docs/master/mail.md:157
 msgid ""
 "When building Laravel applications, each type of email sent by your "
 "application is represented as a \"mailable\" class. These classes are stored "
@@ -356,25 +451,25 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/mail.md:123
+#: docs/master/mail.md:159
 #, no-wrap
 msgid "    php artisan make:mail OrderShipped\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/mail.md:125
+#: docs/master/mail.md:161
 #, no-wrap
 msgid "<a name=\"writing-mailables\"></a>\n"
 msgstr ""
 
 #. type: Title ##
-#: docs/master/mail.md:125
+#: docs/master/mail.md:161
 #, no-wrap
 msgid "Writing Mailables"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/mail.md:128
+#: docs/master/mail.md:164
 msgid ""
 "Once you have generated a mailable class, open it up so we can explore its "
 "contents. First, note that all of a mailable class' configuration is done in "
@@ -384,31 +479,40 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/mail.md:130
+#: docs/master/mail.md:166
+#, no-wrap
+msgid ""
+"> {tip} You may type-hint dependencies on the mailable's `build` method. The "
+"Laravel [service container](/docs/{{version}}/container) automatically "
+"injects these dependencies.\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/mail.md:168
 #, no-wrap
 msgid "<a name=\"configuring-the-sender\"></a>\n"
 msgstr ""
 
 #. type: Title ###
-#: docs/master/mail.md:130
+#: docs/master/mail.md:168
 #, no-wrap
 msgid "Configuring The Sender"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/mail.md:133
+#: docs/master/mail.md:171
 #, no-wrap
 msgid "<a name=\"using-the-from-method\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/master/mail.md:133
+#: docs/master/mail.md:171
 #, no-wrap
 msgid "Using The `from` Method"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/mail.md:136
+#: docs/master/mail.md:174
 msgid ""
 "First, let's explore configuring the sender of the email. Or, in other "
 "words, who the email is going to be \"from\". There are two ways to "
@@ -417,7 +521,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/mail.md:147
+#: docs/master/mail.md:185
 #, no-wrap
 msgid ""
 "    /**\n"
@@ -427,25 +531,25 @@ msgid ""
 "     */\n"
 "    public function build()\n"
 "    {\n"
-"        return $this->from('example@example.com')\n"
+"        return $this->from('example@example.com', 'Example')\n"
 "                    ->view('emails.orders.shipped');\n"
 "    }\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/mail.md:149
+#: docs/master/mail.md:187
 #, no-wrap
 msgid "<a name=\"using-a-global-from-address\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/master/mail.md:149
+#: docs/master/mail.md:187
 #, no-wrap
 msgid "Using A Global `from` Address"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/mail.md:152
+#: docs/master/mail.md:190
 msgid ""
 "However, if your application uses the same \"from\" address for all of its "
 "emails, it can become cumbersome to call the `from` method in each mailable "
@@ -455,20 +559,20 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/mail.md:154
+#: docs/master/mail.md:192
 #, no-wrap
 msgid "    'from' => ['address' => 'example@example.com', 'name' => 'App Name'],\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/mail.md:156
+#: docs/master/mail.md:194
 msgid ""
 "In addition, you may define a global \"reply_to\" address within your "
 "`config/mail.php` configuration file:"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/mail.md:158
+#: docs/master/mail.md:196
 #, no-wrap
 msgid ""
 "    'reply_to' => ['address' => 'example@example.com', 'name' => 'App "
@@ -476,19 +580,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/mail.md:160
+#: docs/master/mail.md:198
 #, no-wrap
 msgid "<a name=\"configuring-the-view\"></a>\n"
 msgstr ""
 
 #. type: Title ###
-#: docs/master/mail.md:160
+#: docs/master/mail.md:198
 #, no-wrap
 msgid "Configuring The View"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/mail.md:163
+#: docs/master/mail.md:201
 msgid ""
 "Within a mailable class' `build` method, you may use the `view` method to "
 "specify which template should be used when rendering the email's "
@@ -499,7 +603,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/mail.md:173
+#: docs/master/mail.md:211
 #, no-wrap
 msgid ""
 "    /**\n"
@@ -514,7 +618,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/mail.md:175
+#: docs/master/mail.md:213
 #, no-wrap
 msgid ""
 "> {tip} You may wish to create a `resources/views/emails` directory to house "
@@ -523,19 +627,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/mail.md:177
+#: docs/master/mail.md:215
 #, no-wrap
 msgid "<a name=\"plain-text-emails\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/master/mail.md:177
+#: docs/master/mail.md:215
 #, no-wrap
 msgid "Plain Text Emails"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/mail.md:180
+#: docs/master/mail.md:218
 msgid ""
 "If you would like to define a plain-text version of your email, you may use "
 "the `text` method. Like the `view` method, the `text` method accepts a "
@@ -544,7 +648,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/mail.md:191
+#: docs/master/mail.md:229
 #, no-wrap
 msgid ""
 "    /**\n"
@@ -560,31 +664,31 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/mail.md:193
+#: docs/master/mail.md:231
 #, no-wrap
 msgid "<a name=\"view-data\"></a>\n"
 msgstr ""
 
 #. type: Title ###
-#: docs/master/mail.md:193
+#: docs/master/mail.md:231
 #, no-wrap
 msgid "View Data"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/mail.md:196
+#: docs/master/mail.md:234
 #, no-wrap
 msgid "<a name=\"via-public-properties\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/master/mail.md:196
+#: docs/master/mail.md:234
 #, no-wrap
 msgid "Via Public Properties"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/mail.md:199
+#: docs/master/mail.md:237
 msgid ""
 "Typically, you will want to pass some data to your view that you can utilize "
 "when rendering the email's HTML. There are two ways you may make data "
@@ -595,19 +699,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/mail.md:201 docs/master/mail.md:254 docs/master/mail.md:545
+#: docs/master/mail.md:239 docs/master/mail.md:292 docs/master/mail.md:587 docs/master/mail.md:704
 #, no-wrap
 msgid "    <?php\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/mail.md:203 docs/master/mail.md:256
+#: docs/master/mail.md:241 docs/master/mail.md:294 docs/master/mail.md:706
 #, no-wrap
 msgid "    namespace App\\Mail;\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/mail.md:208 docs/master/mail.md:261
+#: docs/master/mail.md:246 docs/master/mail.md:299
 #, no-wrap
 msgid ""
 "    use App\\Models\\Order;\n"
@@ -617,7 +721,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/mail.md:212 docs/master/mail.md:265
+#: docs/master/mail.md:250 docs/master/mail.md:303
 #, no-wrap
 msgid ""
 "    class OrderShipped extends Mailable\n"
@@ -626,7 +730,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/mail.md:219
+#: docs/master/mail.md:257
 #, no-wrap
 msgid ""
 "        /**\n"
@@ -638,7 +742,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/mail.md:230
+#: docs/master/mail.md:268 docs/master/mail.md:321
 #, no-wrap
 msgid ""
 "        /**\n"
@@ -654,7 +758,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/mail.md:241
+#: docs/master/mail.md:279
 #, no-wrap
 msgid ""
 "        /**\n"
@@ -670,7 +774,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/mail.md:243
+#: docs/master/mail.md:281
 msgid ""
 "Once the data has been set to a public property, it will automatically be "
 "available in your view, so you may access it like you would access any other "
@@ -678,7 +782,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/mail.md:247
+#: docs/master/mail.md:285
 #, no-wrap
 msgid ""
 "    <div>\n"
@@ -687,19 +791,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/mail.md:249
+#: docs/master/mail.md:287
 #, no-wrap
 msgid "<a name=\"via-the-with-method\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/master/mail.md:249
+#: docs/master/mail.md:287
 #, no-wrap
 msgid "Via The `with` Method:"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/mail.md:252
+#: docs/master/mail.md:290
 msgid ""
 "If you would like to customize the format of your email's data before it is "
 "sent to the template, you may manually pass your data to the view via the "
@@ -711,7 +815,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/mail.md:272
+#: docs/master/mail.md:310
 #, no-wrap
 msgid ""
 "        /**\n"
@@ -723,23 +827,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/mail.md:283
-#, no-wrap
-msgid ""
-"        /**\n"
-"         * Create a new message instance.\n"
-"         *\n"
-"         * @param  \\App\\Models\\Order $order\n"
-"         * @return void\n"
-"         */\n"
-"        public function __construct(Order $order)\n"
-"        {\n"
-"            $this->order = $order;\n"
-"        }\n"
-msgstr ""
-
-#. type: Plain text
-#: docs/master/mail.md:298
+#: docs/master/mail.md:336
 #, no-wrap
 msgid ""
 "        /**\n"
@@ -759,7 +847,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/mail.md:300
+#: docs/master/mail.md:338
 msgid ""
 "Once the data has been passed to the `with` method, it will automatically be "
 "available in your view, so you may access it like you would access any other "
@@ -767,7 +855,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/mail.md:304
+#: docs/master/mail.md:342
 #, no-wrap
 msgid ""
 "    <div>\n"
@@ -776,19 +864,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/mail.md:306
+#: docs/master/mail.md:344
 #, no-wrap
 msgid "<a name=\"attachments\"></a>\n"
 msgstr ""
 
 #. type: Title ###
-#: docs/master/mail.md:306
+#: docs/master/mail.md:344
 #, no-wrap
 msgid "Attachments"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/mail.md:309
+#: docs/master/mail.md:347
 msgid ""
 "To add attachments to an email, use the `attach` method within the mailable "
 "class' `build` method. The `attach` method accepts the full path to the file "
@@ -796,7 +884,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/mail.md:320
+#: docs/master/mail.md:358
 #, no-wrap
 msgid ""
 "    /**\n"
@@ -812,7 +900,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/mail.md:322
+#: docs/master/mail.md:360
 msgid ""
 "When attaching files to a message, you may also specify the display name and "
 "/ or MIME type by passing an `array` as the second argument to the `attach` "
@@ -820,7 +908,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/mail.md:336
+#: docs/master/mail.md:374
 #, no-wrap
 msgid ""
 "    /**\n"
@@ -839,19 +927,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/mail.md:338
+#: docs/master/mail.md:376
 #, no-wrap
 msgid "<a name=\"attaching-files-from-disk\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/master/mail.md:338
+#: docs/master/mail.md:376
 #, no-wrap
-msgid "Attaching Files from Disk"
+msgid "Attaching Files From Disk"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/mail.md:341
+#: docs/master/mail.md:379
 msgid ""
 "If you have stored a file on one of your [filesystem "
 "disks](/docs/{{version}}/filesystem), you may attach it to the email using "
@@ -859,7 +947,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/mail.md:352
+#: docs/master/mail.md:390
 #, no-wrap
 msgid ""
 "    /**\n"
@@ -875,7 +963,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/mail.md:354
+#: docs/master/mail.md:392
 msgid ""
 "If necessary, you may specify the file's attachment name and additional "
 "options using the second and third arguments to the `attachFromStorage` "
@@ -883,7 +971,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/mail.md:367
+#: docs/master/mail.md:405
 #, no-wrap
 msgid ""
 "    /**\n"
@@ -901,14 +989,14 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/mail.md:369
+#: docs/master/mail.md:407
 msgid ""
 "The `attachFromStorageDisk` method may be used if you need to specify a "
 "storage disk other than your default disk:"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/mail.md:380
+#: docs/master/mail.md:418
 #, no-wrap
 msgid ""
 "    /**\n"
@@ -924,19 +1012,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/mail.md:382
+#: docs/master/mail.md:420
 #, no-wrap
 msgid "<a name=\"raw-data-attachments\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/master/mail.md:382
+#: docs/master/mail.md:420
 #, no-wrap
 msgid "Raw Data Attachments"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/mail.md:385
+#: docs/master/mail.md:423
 msgid ""
 "The `attachData` method may be used to attach a raw string of bytes as an "
 "attachment. For example, you might use this method if you have generated a "
@@ -947,7 +1035,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/mail.md:398
+#: docs/master/mail.md:436
 #, no-wrap
 msgid ""
 "    /**\n"
@@ -965,19 +1053,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/mail.md:400
+#: docs/master/mail.md:438
 #, no-wrap
 msgid "<a name=\"inline-attachments\"></a>\n"
 msgstr ""
 
 #. type: Title ###
-#: docs/master/mail.md:400
+#: docs/master/mail.md:438
 #, no-wrap
 msgid "Inline Attachments"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/mail.md:403
+#: docs/master/mail.md:441
 msgid ""
 "Embedding inline images into your emails is typically cumbersome; however, "
 "Laravel provides a convenient way to attach images to your emails. To embed "
@@ -988,7 +1076,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/mail.md:406
+#: docs/master/mail.md:444
 #, no-wrap
 msgid ""
 "    <body>\n"
@@ -996,7 +1084,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/mail.md:409
+#: docs/master/mail.md:447
 #, no-wrap
 msgid ""
 "        <img src=\"{{ $message->embed($pathToImage) }}\">\n"
@@ -1004,7 +1092,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/mail.md:411
+#: docs/master/mail.md:449
 #, no-wrap
 msgid ""
 "> {note} The `$message` variable is not available in plain-text message "
@@ -1012,19 +1100,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/mail.md:413
+#: docs/master/mail.md:451
 #, no-wrap
 msgid "<a name=\"embedding-raw-data-attachments\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/master/mail.md:413
+#: docs/master/mail.md:451
 #, no-wrap
 msgid "Embedding Raw Data Attachments"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/mail.md:416
+#: docs/master/mail.md:454
 msgid ""
 "If you already have a raw image data string you wish to embed into an email "
 "template, you may call the `embedData` method on the `$message` "
@@ -1033,7 +1121,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/mail.md:419
+#: docs/master/mail.md:457
 #, no-wrap
 msgid ""
 "    <body>\n"
@@ -1041,7 +1129,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/mail.md:422
+#: docs/master/mail.md:460
 #, no-wrap
 msgid ""
 "        <img src=\"{{ $message->embedData($data, 'example-image.jpg') "
@@ -1050,28 +1138,34 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/mail.md:424
+#: docs/master/mail.md:462
 #, no-wrap
-msgid "<a name=\"customizing-the-swiftmailer-message\"></a>\n"
+msgid "<a name=\"customizing-the-symfony-message\"></a>\n"
 msgstr ""
 
 #. type: Title ###
-#: docs/master/mail.md:424
+#: docs/master/mail.md:462
 #, no-wrap
-msgid "Customizing The SwiftMailer Message"
+msgid "Customizing The Symfony Message"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/mail.md:427
+#: docs/master/mail.md:465
 msgid ""
-"The `withSwiftMessage` method of the `Mailable` base class allows you to "
-"register a closure which will be invoked with the SwiftMailer message "
-"instance before sending the message. This gives you an opportunity to deeply "
+"The `withSymfonyMessage` method of the `Mailable` base class allows you to "
+"register a closure which will be invoked with the Symfony Message instance "
+"before sending the message. This gives you an opportunity to deeply "
 "customize the message before it is delivered:"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/mail.md:436
+#: docs/master/mail.md:467
+#, no-wrap
+msgid "    use Symfony\\Component\\Mime\\Email;\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/mail.md:476
 #, no-wrap
 msgid ""
 "    /**\n"
@@ -1085,31 +1179,38 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/mail.md:443
+#: docs/master/mail.md:482
 #, no-wrap
 msgid ""
-"        $this->withSwiftMessage(function ($message) {\n"
+"        $this->withSymfonyMessage(function (Email $message) {\n"
 "            $message->getHeaders()->addTextHeader(\n"
 "                'Custom-Header', 'Header Value'\n"
 "            );\n"
 "        });\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/mail.md:485
+#, no-wrap
+msgid ""
+"        return $this;\n"
 "    }\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/mail.md:445
+#: docs/master/mail.md:487
 #, no-wrap
 msgid "<a name=\"markdown-mailables\"></a>\n"
 msgstr ""
 
 #. type: Title ##
-#: docs/master/mail.md:445
+#: docs/master/mail.md:487
 #, no-wrap
 msgid "Markdown Mailables"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/mail.md:448
+#: docs/master/mail.md:490
 msgid ""
 "Markdown mailable messages allow you to take advantage of the pre-built "
 "templates and components of [mail "
@@ -1120,32 +1221,32 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/mail.md:450
+#: docs/master/mail.md:492
 #, no-wrap
 msgid "<a name=\"generating-markdown-mailables\"></a>\n"
 msgstr ""
 
 #. type: Title ###
-#: docs/master/mail.md:450
+#: docs/master/mail.md:492
 #, no-wrap
 msgid "Generating Markdown Mailables"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/mail.md:453
+#: docs/master/mail.md:495
 msgid ""
 "To generate a mailable with a corresponding Markdown template, you may use "
 "the `--markdown` option of the `make:mail` Artisan command:"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/mail.md:455
+#: docs/master/mail.md:497
 #, no-wrap
 msgid "    php artisan make:mail OrderShipped --markdown=emails.orders.shipped\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/mail.md:457
+#: docs/master/mail.md:499
 msgid ""
 "Then, when configuring the mailable within its `build` method, call the "
 "`markdown` method instead of the `view` method. The `markdown` method "
@@ -1154,7 +1255,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/mail.md:470
+#: docs/master/mail.md:512
 #, no-wrap
 msgid ""
 "    /**\n"
@@ -1172,19 +1273,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/mail.md:472
+#: docs/master/mail.md:514
 #, no-wrap
 msgid "<a name=\"writing-markdown-messages\"></a>\n"
 msgstr ""
 
 #. type: Title ###
-#: docs/master/mail.md:472
+#: docs/master/mail.md:514
 #, no-wrap
 msgid "Writing Markdown Messages"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/mail.md:475
+#: docs/master/mail.md:517
 msgid ""
 "Markdown mailables use a combination of Blade components and Markdown syntax "
 "which allow you to easily construct mail messages while leveraging Laravel's "
@@ -1192,7 +1293,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/mail.md:478
+#: docs/master/mail.md:520
 #, no-wrap
 msgid ""
 "    @component('mail::message')\n"
@@ -1200,13 +1301,13 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/mail.md:480
+#: docs/master/mail.md:522
 #, no-wrap
 msgid "    Your order has been shipped!\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/mail.md:484
+#: docs/master/mail.md:526
 #, no-wrap
 msgid ""
 "    @component('mail::button', ['url' => $url])\n"
@@ -1215,7 +1316,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/mail.md:488
+#: docs/master/mail.md:530
 #, no-wrap
 msgid ""
 "    Thanks,<br>\n"
@@ -1224,7 +1325,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/mail.md:490
+#: docs/master/mail.md:532
 #, no-wrap
 msgid ""
 "> {tip} Do not use excess indentation when writing Markdown emails. Per "
@@ -1233,19 +1334,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/mail.md:492
+#: docs/master/mail.md:534
 #, no-wrap
 msgid "<a name=\"button-component\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/master/mail.md:492
+#: docs/master/mail.md:534
 #, no-wrap
 msgid "Button Component"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/mail.md:495
+#: docs/master/mail.md:537
 msgid ""
 "The button component renders a centered button link. The component accepts "
 "two arguments, a `url` and an optional `color`. Supported colors are "
@@ -1254,7 +1355,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/mail.md:499
+#: docs/master/mail.md:541
 #, no-wrap
 msgid ""
 "    @component('mail::button', ['url' => $url, 'color' => 'success'])\n"
@@ -1263,19 +1364,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/mail.md:501
+#: docs/master/mail.md:543
 #, no-wrap
 msgid "<a name=\"panel-component\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/master/mail.md:501
+#: docs/master/mail.md:543
 #, no-wrap
 msgid "Panel Component"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/mail.md:504
+#: docs/master/mail.md:546
 msgid ""
 "The panel component renders the given block of text in a panel that has a "
 "slightly different background color than the rest of the message. This "
@@ -1283,7 +1384,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/mail.md:508
+#: docs/master/mail.md:550
 #, no-wrap
 msgid ""
 "    @component('mail::panel')\n"
@@ -1292,19 +1393,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/mail.md:510
+#: docs/master/mail.md:552
 #, no-wrap
 msgid "<a name=\"table-component\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/master/mail.md:510
+#: docs/master/mail.md:552
 #, no-wrap
 msgid "Table Component"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/mail.md:513
+#: docs/master/mail.md:555
 msgid ""
 "The table component allows you to transform a Markdown table into an HTML "
 "table. The component accepts the Markdown table as its content. Table column "
@@ -1312,7 +1413,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/mail.md:520
+#: docs/master/mail.md:562
 #, no-wrap
 msgid ""
 "    @component('mail::table')\n"
@@ -1324,19 +1425,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/mail.md:522
+#: docs/master/mail.md:564
 #, no-wrap
 msgid "<a name=\"customizing-the-components\"></a>\n"
 msgstr ""
 
 #. type: Title ###
-#: docs/master/mail.md:522
+#: docs/master/mail.md:564
 #, no-wrap
 msgid "Customizing The Components"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/mail.md:525
+#: docs/master/mail.md:567
 msgid ""
 "You may export all of the Markdown mail components to your own application "
 "for customization. To export the components, use the `vendor:publish` "
@@ -1344,13 +1445,13 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/mail.md:527
+#: docs/master/mail.md:569
 #, no-wrap
 msgid "    php artisan vendor:publish --tag=laravel-mail\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/mail.md:529
+#: docs/master/mail.md:571
 msgid ""
 "This command will publish the Markdown mail components to the "
 "`resources/views/vendor/mail` directory. The `mail` directory will contain "
@@ -1360,19 +1461,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/mail.md:531
+#: docs/master/mail.md:573
 #, no-wrap
 msgid "<a name=\"customizing-the-css\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/master/mail.md:531
+#: docs/master/mail.md:573
 #, no-wrap
 msgid "Customizing The CSS"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/mail.md:534
+#: docs/master/mail.md:576
 msgid ""
 "After exporting the components, the "
 "`resources/views/vendor/mail/html/themes` directory will contain a "
@@ -1382,7 +1483,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/mail.md:536
+#: docs/master/mail.md:578
 msgid ""
 "If you would like to build an entirely new theme for Laravel's Markdown "
 "components, you may place a CSS file within the `html/themes` "
@@ -1392,7 +1493,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/mail.md:538
+#: docs/master/mail.md:580
 msgid ""
 "To customize the theme for an individual mailable, you may set the `$theme` "
 "property of the mailable class to the name of the theme that should be used "
@@ -1400,19 +1501,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/mail.md:540
+#: docs/master/mail.md:582
 #, no-wrap
 msgid "<a name=\"sending-mail\"></a>\n"
 msgstr ""
 
 #. type: Title ##
-#: docs/master/mail.md:540
+#: docs/master/mail.md:582
 #, no-wrap
 msgid "Sending Mail"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/mail.md:543
+#: docs/master/mail.md:585
 msgid ""
 "To send a message, use the `to` method on the `Mail` "
 "[facade](/docs/{{version}}/facades). The `to` method accepts an email "
@@ -1425,13 +1526,13 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/mail.md:547
+#: docs/master/mail.md:589
 #, no-wrap
 msgid "    namespace App\\Http\\Controllers;\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/mail.md:553
+#: docs/master/mail.md:595
 #, no-wrap
 msgid ""
 "    use App\\Http\\Controllers\\Controller;\n"
@@ -1442,7 +1543,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/mail.md:565
+#: docs/master/mail.md:607
 #, no-wrap
 msgid ""
 "    class OrderShipmentController extends Controller\n"
@@ -1459,13 +1560,13 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/mail.md:567
+#: docs/master/mail.md:609
 #, no-wrap
 msgid "            // Ship the order...\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/mail.md:571
+#: docs/master/mail.md:613
 #, no-wrap
 msgid ""
 "            Mail::to($request->user())->send(new OrderShipped($order));\n"
@@ -1474,7 +1575,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/mail.md:573
+#: docs/master/mail.md:615
 msgid ""
 "You are not limited to just specifying the \"to\" recipients when sending a "
 "message. You are free to set \"to\", \"cc\", and \"bcc\" recipients by "
@@ -1482,7 +1583,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/mail.md:578
+#: docs/master/mail.md:620
 #, no-wrap
 msgid ""
 "    Mail::to($request->user())\n"
@@ -1492,19 +1593,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/mail.md:580
+#: docs/master/mail.md:622
 #, no-wrap
 msgid "<a name=\"looping-over-recipients\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/master/mail.md:580
+#: docs/master/mail.md:622
 #, no-wrap
 msgid "Looping Over Recipients"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/mail.md:583
+#: docs/master/mail.md:625
 msgid ""
 "Occasionally, you may need to send a mailable to a list of recipients by "
 "iterating over an array of recipients / email addresses. However, since the "
@@ -1515,7 +1616,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/mail.md:587
+#: docs/master/mail.md:629
 #, no-wrap
 msgid ""
 "    foreach (['taylor@example.com', 'dries@example.com'] as $recipient) {\n"
@@ -1524,19 +1625,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/mail.md:589
+#: docs/master/mail.md:631
 #, no-wrap
 msgid "<a name=\"sending-mail-via-a-specific-mailer\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/master/mail.md:589
+#: docs/master/mail.md:631
 #, no-wrap
 msgid "Sending Mail Via A Specific Mailer"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/mail.md:592
+#: docs/master/mail.md:634
 msgid ""
 "By default, Laravel will send email using the mailer configured as the "
 "`default` mailer in your application's `mail` configuration file. However, "
@@ -1545,7 +1646,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/mail.md:596
+#: docs/master/mail.md:638
 #, no-wrap
 msgid ""
 "    Mail::mailer('postmark')\n"
@@ -1554,31 +1655,31 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/mail.md:598
+#: docs/master/mail.md:640
 #, no-wrap
 msgid "<a name=\"queueing-mail\"></a>\n"
 msgstr ""
 
 #. type: Title ###
-#: docs/master/mail.md:598
+#: docs/master/mail.md:640
 #, no-wrap
 msgid "Queueing Mail"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/mail.md:601
+#: docs/master/mail.md:643
 #, no-wrap
 msgid "<a name=\"queueing-a-mail-message\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/master/mail.md:601
+#: docs/master/mail.md:643
 #, no-wrap
 msgid "Queueing A Mail Message"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/mail.md:604
+#: docs/master/mail.md:646
 msgid ""
 "Since sending email messages can negatively impact the response time of your "
 "application, many developers choose to queue email messages for background "
@@ -1588,7 +1689,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/mail.md:609
+#: docs/master/mail.md:651
 #, no-wrap
 msgid ""
 "    Mail::to($request->user())\n"
@@ -1598,7 +1699,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/mail.md:611
+#: docs/master/mail.md:653
 msgid ""
 "This method will automatically take care of pushing a job onto the queue so "
 "the message is sent in the background. You will need to [configure your "
@@ -1606,19 +1707,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/mail.md:613
+#: docs/master/mail.md:655
 #, no-wrap
 msgid "<a name=\"delayed-message-queueing\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/master/mail.md:613
+#: docs/master/mail.md:655
 #, no-wrap
 msgid "Delayed Message Queueing"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/mail.md:616
+#: docs/master/mail.md:658
 msgid ""
 "If you wish to delay the delivery of a queued email message, you may use the "
 "`later` method. As its first argument, the `later` method accepts a "
@@ -1626,7 +1727,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/mail.md:621
+#: docs/master/mail.md:663
 #, no-wrap
 msgid ""
 "    Mail::to($request->user())\n"
@@ -1636,19 +1737,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/mail.md:623
+#: docs/master/mail.md:665
 #, no-wrap
 msgid "<a name=\"pushing-to-specific-queues\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/master/mail.md:623
+#: docs/master/mail.md:665
 #, no-wrap
 msgid "Pushing To Specific Queues"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/mail.md:626
+#: docs/master/mail.md:668
 msgid ""
 "Since all mailable classes generated using the `make:mail` command make use "
 "of the `Illuminate\\Bus\\Queueable` trait, you may call the `onQueue` and "
@@ -1657,7 +1758,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/mail.md:630
+#: docs/master/mail.md:672
 #, no-wrap
 msgid ""
 "    $message = (new OrderShipped($order))\n"
@@ -1666,7 +1767,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/mail.md:635
+#: docs/master/mail.md:677
 #, no-wrap
 msgid ""
 "    Mail::to($request->user())\n"
@@ -1676,19 +1777,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/mail.md:637
+#: docs/master/mail.md:679
 #, no-wrap
 msgid "<a name=\"queueing-by-default\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/master/mail.md:637
+#: docs/master/mail.md:679
 #, no-wrap
 msgid "Queueing By Default"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/mail.md:640
+#: docs/master/mail.md:682
 msgid ""
 "If you have mailable classes that you want to always be queued, you may "
 "implement the `ShouldQueue` contract on the class. Now, even if you call the "
@@ -1697,13 +1798,13 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/mail.md:642 docs/master/mail.md:656
+#: docs/master/mail.md:684
 #, no-wrap
 msgid "    use Illuminate\\Contracts\\Queue\\ShouldQueue;\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/mail.md:647
+#: docs/master/mail.md:689
 #, no-wrap
 msgid ""
 "    class OrderShipped extends Mailable implements ShouldQueue\n"
@@ -1713,19 +1814,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/mail.md:649
+#: docs/master/mail.md:691
 #, no-wrap
 msgid "<a name=\"queued-mailables-and-database-transactions\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/master/mail.md:649
+#: docs/master/mail.md:691
 #, no-wrap
 msgid "Queued Mailables & Database Transactions"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/mail.md:652
+#: docs/master/mail.md:694
 msgid ""
 "When queued mailables are dispatched within database transactions, they may "
 "be processed by the queue before the database transaction has "
@@ -1738,26 +1839,67 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/mail.md:654
+#: docs/master/mail.md:696
 msgid ""
 "If your queue connection's `after_commit` configuration option is set to "
 "`false`, you may still indicate that a particular queued mailable should be "
 "dispatched after all open database transactions have been committed by "
-"defining an `$afterCommit` property on the mailable class:"
+"calling the `afterCommit` method when sending the mail message:"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/mail.md:661
+#: docs/master/mail.md:700
+#, no-wrap
+msgid ""
+"    Mail::to($request->user())->send(\n"
+"        (new OrderShipped($order))->afterCommit()\n"
+"    );\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/mail.md:702
+msgid ""
+"Alternatively, you may call the `afterCommit` method from your mailable's "
+"constructor:"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/mail.md:711
+#, no-wrap
+msgid ""
+"    use Illuminate\\Bus\\Queueable;\n"
+"    use Illuminate\\Contracts\\Queue\\ShouldQueue;\n"
+"    use Illuminate\\Mail\\Mailable;\n"
+"    use Illuminate\\Queue\\SerializesModels;\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/mail.md:715
 #, no-wrap
 msgid ""
 "    class OrderShipped extends Mailable implements ShouldQueue\n"
 "    {\n"
-"        public $afterCommit = true;\n"
+"        use Queueable, SerializesModels;\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/mail.md:726
+#, no-wrap
+msgid ""
+"        /**\n"
+"         * Create a new message instance.\n"
+"         *\n"
+"         * @return void\n"
+"         */\n"
+"        public function __construct()\n"
+"        {\n"
+"            $this->afterCommit();\n"
+"        }\n"
 "    }\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/mail.md:663
+#: docs/master/mail.md:728
 #, no-wrap
 msgid ""
 "> {tip} To learn more about working around these issues, please review the "
@@ -1766,19 +1908,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/mail.md:665
+#: docs/master/mail.md:730
 #, no-wrap
 msgid "<a name=\"rendering-mailables\"></a>\n"
 msgstr ""
 
 #. type: Title ##
-#: docs/master/mail.md:665
+#: docs/master/mail.md:730
 #, no-wrap
 msgid "Rendering Mailables"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/mail.md:668
+#: docs/master/mail.md:733
 msgid ""
 "Sometimes you may wish to capture the HTML content of a mailable without "
 "sending it. To accomplish this, you may call the `render` method of the "
@@ -1787,7 +1929,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/mail.md:671
+#: docs/master/mail.md:736
 #, no-wrap
 msgid ""
 "    use App\\Mail\\InvoicePaid;\n"
@@ -1795,31 +1937,31 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/mail.md:673
+#: docs/master/mail.md:738
 #, no-wrap
 msgid "    $invoice = Invoice::find(1);\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/mail.md:675
+#: docs/master/mail.md:740
 #, no-wrap
 msgid "    return (new InvoicePaid($invoice))->render();\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/mail.md:677
+#: docs/master/mail.md:742
 #, no-wrap
 msgid "<a name=\"previewing-mailables-in-the-browser\"></a>\n"
 msgstr ""
 
 #. type: Title ###
-#: docs/master/mail.md:677
+#: docs/master/mail.md:742
 #, no-wrap
 msgid "Previewing Mailables In The Browser"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/mail.md:680
+#: docs/master/mail.md:745
 msgid ""
 "When designing a mailable's template, it is convenient to quickly preview "
 "the rendered mailable in your browser like a typical Blade template. For "
@@ -1830,7 +1972,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/mail.md:683
+#: docs/master/mail.md:748
 #, no-wrap
 msgid ""
 "    Route::get('/mailable', function () {\n"
@@ -1838,7 +1980,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/mail.md:686
+#: docs/master/mail.md:751
 #, no-wrap
 msgid ""
 "        return new App\\Mail\\InvoicePaid($invoice);\n"
@@ -1846,7 +1988,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/mail.md:688
+#: docs/master/mail.md:753
 #, no-wrap
 msgid ""
 "> {note} [Inline attachments](#inline-attachments) will not be rendered when "
@@ -1857,26 +1999,26 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/mail.md:690
+#: docs/master/mail.md:755
 #, no-wrap
 msgid "<a name=\"localizing-mailables\"></a>\n"
 msgstr ""
 
 #. type: Title ##
-#: docs/master/mail.md:690
+#: docs/master/mail.md:755
 #, no-wrap
 msgid "Localizing Mailables"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/mail.md:693
+#: docs/master/mail.md:758
 msgid ""
 "Laravel allows you to send mailables in a locale other than the request's "
 "current locale, and will even remember this locale if the mail is queued."
 msgstr ""
 
 #. type: Plain text
-#: docs/master/mail.md:695
+#: docs/master/mail.md:760
 msgid ""
 "To accomplish this, the `Mail` facade offers a `locale` method to set the "
 "desired language. The application will change into this locale when the "
@@ -1885,7 +2027,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/mail.md:699
+#: docs/master/mail.md:764
 #, no-wrap
 msgid ""
 "    Mail::to($request->user())->locale('es')->send(\n"
@@ -1894,19 +2036,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/mail.md:701
+#: docs/master/mail.md:766
 #, no-wrap
 msgid "<a name=\"user-preferred-locales\"></a>\n"
 msgstr ""
 
 #. type: Title ###
-#: docs/master/mail.md:701
+#: docs/master/mail.md:766
 #, no-wrap
 msgid "User Preferred Locales"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/mail.md:704
+#: docs/master/mail.md:769
 msgid ""
 "Sometimes, applications store each user's preferred locale. By implementing "
 "the `HasLocalePreference` contract on one or more of your models, you may "
@@ -1914,13 +2056,13 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/mail.md:706
+#: docs/master/mail.md:771
 #, no-wrap
 msgid "    use Illuminate\\Contracts\\Translation\\HasLocalePreference;\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/mail.md:719
+#: docs/master/mail.md:784
 #, no-wrap
 msgid ""
 "    class User extends Model implements HasLocalePreference\n"
@@ -1938,7 +2080,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/mail.md:721
+#: docs/master/mail.md:786
 msgid ""
 "Once you have implemented the interface, Laravel will automatically use the "
 "preferred locale when sending mailables and notifications to the "
@@ -1947,33 +2089,34 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/mail.md:723
+#: docs/master/mail.md:788
 #, no-wrap
 msgid "    Mail::to($request->user())->send(new OrderShipped($order));\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/mail.md:725
+#: docs/master/mail.md:790
 #, no-wrap
 msgid "<a name=\"testing-mailables\"></a>\n"
 msgstr ""
 
 #. type: Title ##
-#: docs/master/mail.md:725
+#: docs/master/mail.md:790
 #, no-wrap
 msgid "Testing Mailables"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/mail.md:728
+#: docs/master/mail.md:793
 msgid ""
 "Laravel provides several convenient methods for testing that your mailables "
 "contain the content that you expect. These methods are: `assertSeeInHtml`, "
-"`assertDontSeeInHtml`, `assertSeeInText`, and `assertDontSeeInText`."
+"`assertDontSeeInHtml`, `assertSeeInOrderInHtml`, `assertSeeInText`, "
+"`assertDontSeeInText`, and `assertSeeInOrderInText`."
 msgstr ""
 
 #. type: Plain text
-#: docs/master/mail.md:730
+#: docs/master/mail.md:795
 msgid ""
 "As you might expect, the \"HTML\" assertions assert that the HTML version of "
 "your mailable contains a given string, while the \"text\" assertions assert "
@@ -1981,7 +2124,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/mail.md:733
+#: docs/master/mail.md:798
 #, no-wrap
 msgid ""
 "    use App\\Mail\\InvoicePaid;\n"
@@ -1989,7 +2132,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/mail.md:737
+#: docs/master/mail.md:802
 #, no-wrap
 msgid ""
 "    public function test_mailable_content()\n"
@@ -1998,42 +2141,43 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/mail.md:739
+#: docs/master/mail.md:804
 #, no-wrap
 msgid "        $mailable = new InvoicePaid($user);\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/mail.md:742
+#: docs/master/mail.md:808
 #, no-wrap
 msgid ""
 "        $mailable->assertSeeInHtml($user->email);\n"
 "        $mailable->assertSeeInHtml('Invoice Paid');\n"
+"        $mailable->assertSeeInOrderInHtml(['Invoice Paid', 'Thanks']);\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/mail.md:746
+#: docs/master/mail.md:812
 #, no-wrap
 msgid ""
 "        $mailable->assertSeeInText($user->email);\n"
-"        $mailable->assertSeeInText('Invoice Paid');\n"
+"        $mailable->assertSeeInOrderInText(['Invoice Paid', 'Thanks']);\n"
 "    }\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/mail.md:748
+#: docs/master/mail.md:814
 #, no-wrap
 msgid "<a name=\"testing-mailable-sending\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/master/mail.md:748
+#: docs/master/mail.md:814
 #, no-wrap
 msgid "Testing Mailable Sending"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/mail.md:751
+#: docs/master/mail.md:817
 msgid ""
 "We suggest testing the content of your mailables separately from your tests "
 "that assert that a given mailable was \"sent\" to a specific user. To learn "
@@ -2042,19 +2186,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/mail.md:753
+#: docs/master/mail.md:819
 #, no-wrap
 msgid "<a name=\"mail-and-local-development\"></a>\n"
 msgstr ""
 
 #. type: Title ##
-#: docs/master/mail.md:753
+#: docs/master/mail.md:819
 #, no-wrap
 msgid "Mail & Local Development"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/mail.md:756
+#: docs/master/mail.md:822
 msgid ""
 "When developing an application that sends email, you probably don't want to "
 "actually send emails to live email addresses. Laravel provides several ways "
@@ -2062,19 +2206,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/mail.md:758
+#: docs/master/mail.md:824
 #, no-wrap
 msgid "<a name=\"log-driver\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/master/mail.md:758
+#: docs/master/mail.md:824
 #, no-wrap
 msgid "Log Driver"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/mail.md:761
+#: docs/master/mail.md:827
 msgid ""
 "Instead of sending your emails, the `log` mail driver will write all email "
 "messages to your log files for inspection. Typically, this driver would only "
@@ -2084,19 +2228,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/mail.md:763
+#: docs/master/mail.md:829
 #, no-wrap
 msgid "<a name=\"mailtrap\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/master/mail.md:763
+#: docs/master/mail.md:829
 #, no-wrap
 msgid "HELO / Mailtrap / MailHog"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/mail.md:766
+#: docs/master/mail.md:832
 msgid ""
 "Finally, you may use a service like [HELO](https://usehelo.com) or "
 "[Mailtrap](https://mailtrap.io) and the `smtp` driver to send your email "
@@ -2106,7 +2250,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/mail.md:768
+#: docs/master/mail.md:834
 msgid ""
 "If you are using [Laravel Sail](/docs/{{version}}/sail), you may preview "
 "your messages using [MailHog](https://github.com/mailhog/MailHog). When Sail "
@@ -2115,19 +2259,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/mail.md:770
+#: docs/master/mail.md:836
 #, no-wrap
 msgid "<a name=\"events\"></a>\n"
 msgstr ""
 
 #. type: Title ##
-#: docs/master/mail.md:770
+#: docs/master/mail.md:836
 #, no-wrap
 msgid "Events"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/mail.md:773
+#: docs/master/mail.md:839
 msgid ""
 "Laravel fires two events during the process of sending mail messages. The "
 "`MessageSending` event is fired prior to a message being sent, while the "
@@ -2138,7 +2282,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/mail.md:786
+#: docs/master/mail.md:852
 #, no-wrap
 msgid ""
 "    /**\n"

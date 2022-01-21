@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Laravel Documentation VERSION\n"
-"POT-Creation-Date: 2021-09-13 05:07+0000\n"
+"POT-Creation-Date: 2022-01-21 20:16+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -23,12 +23,12 @@ msgid "Laravel Scout"
 msgstr ""
 
 #. type: Bullet: '- '
-#: docs/master/scout.md:26
+#: docs/master/scout.md:29
 msgid "[Introduction](#introduction)"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/scout.md:26
+#: docs/master/scout.md:29
 #, no-wrap
 msgid ""
 "- [Installation](#installation)\n"
@@ -39,6 +39,9 @@ msgid ""
 "    - [Configuring Searchable Data](#configuring-searchable-data)\n"
 "    - [Configuring The Model ID](#configuring-the-model-id)\n"
 "    - [Identifying Users](#identifying-users)\n"
+"- [Database / Collection Engines](#database-and-collection-engines)\n"
+"    - [Database Engine](#database-engine)\n"
+"    - [Collection Engine](#collection-engine)\n"
 "- [Indexing](#indexing)\n"
 "    - [Batch Import](#batch-import)\n"
 "    - [Adding Records](#adding-records)\n"
@@ -57,59 +60,63 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/scout.md:28
+#: docs/master/scout.md:31
 #, no-wrap
 msgid "<a name=\"introduction\"></a>\n"
 msgstr ""
 
 #. type: Title ##
-#: docs/master/scout.md:28
+#: docs/master/scout.md:31
 #, no-wrap
 msgid "Introduction"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/scout.md:31
+#: docs/master/scout.md:34
 msgid ""
-"Laravel Scout provides a simple, driver based solution for adding full-text "
-"search to your [Eloquent models](/docs/{{version}}/eloquent). Using model "
-"observers, Scout will automatically keep your search indexes in sync with "
-"your Eloquent records."
+"[Laravel Scout](https://github.com/laravel/scout) provides a simple, driver "
+"based solution for adding full-text search to your [Eloquent "
+"models](/docs/{{version}}/eloquent). Using model observers, Scout will "
+"automatically keep your search indexes in sync with your Eloquent records."
 msgstr ""
 
 #. type: Plain text
-#: docs/master/scout.md:33
+#: docs/master/scout.md:36
 msgid ""
-"Currently, Scout ships with an [Algolia](https://www.algolia.com/) driver; "
-"however, writing custom drivers is simple and you are free to extend Scout "
-"with your own search implementations."
+"Currently, Scout ships with [Algolia](https://www.algolia.com/), "
+"[MeiliSearch](https://www.meilisearch.com), and MySQL / PostgreSQL "
+"(`database`) drivers. In addition, Scout includes a \"collection\" driver "
+"that is designed for local development usage and does not require any "
+"external dependencies or third-party services. Furthermore, writing custom "
+"drivers is simple and you are free to extend Scout with your own search "
+"implementations."
 msgstr ""
 
 #. type: Plain text
-#: docs/master/scout.md:35
+#: docs/master/scout.md:38
 #, no-wrap
 msgid "<a name=\"installation\"></a>\n"
 msgstr ""
 
 #. type: Title ##
-#: docs/master/scout.md:35
+#: docs/master/scout.md:38
 #, no-wrap
 msgid "Installation"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/scout.md:38
+#: docs/master/scout.md:41
 msgid "First, install Scout via the Composer package manager:"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/scout.md:40
+#: docs/master/scout.md:43
 #, no-wrap
 msgid "    composer require laravel/scout\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/scout.md:42
+#: docs/master/scout.md:45
 msgid ""
 "After installing Scout, you should publish the Scout configuration file "
 "using the `vendor:publish` Artisan command. This command will publish the "
@@ -117,7 +124,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/scout.md:44
+#: docs/master/scout.md:47
 #, no-wrap
 msgid ""
 "    php artisan vendor:publish "
@@ -125,7 +132,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/scout.md:46
+#: docs/master/scout.md:49
 msgid ""
 "Finally, add the `Laravel\\Scout\\Searchable` trait to the model you would "
 "like to make searchable. This trait will register a model observer that will "
@@ -133,19 +140,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/scout.md:48 docs/master/scout.md:87 docs/master/scout.md:114 docs/master/scout.md:145
+#: docs/master/scout.md:51 docs/master/scout.md:111 docs/master/scout.md:138 docs/master/scout.md:169
 #, no-wrap
 msgid "    <?php\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/scout.md:50 docs/master/scout.md:89 docs/master/scout.md:116 docs/master/scout.md:147
+#: docs/master/scout.md:53 docs/master/scout.md:113 docs/master/scout.md:140 docs/master/scout.md:171
 #, no-wrap
 msgid "    namespace App\\Models;\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/scout.md:53 docs/master/scout.md:92 docs/master/scout.md:119 docs/master/scout.md:150
+#: docs/master/scout.md:56 docs/master/scout.md:116 docs/master/scout.md:143 docs/master/scout.md:174
 #, no-wrap
 msgid ""
 "    use Illuminate\\Database\\Eloquent\\Model;\n"
@@ -153,7 +160,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/scout.md:58
+#: docs/master/scout.md:61
 #, no-wrap
 msgid ""
 "    class Post extends Model\n"
@@ -163,31 +170,31 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/scout.md:60
+#: docs/master/scout.md:63
 #, no-wrap
 msgid "<a name=\"driver-prerequisites\"></a>\n"
 msgstr ""
 
 #. type: Title ###
-#: docs/master/scout.md:60
+#: docs/master/scout.md:63
 #, no-wrap
 msgid "Driver Prerequisites"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/scout.md:63
+#: docs/master/scout.md:66
 #, no-wrap
 msgid "<a name=\"algolia\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/master/scout.md:63
+#: docs/master/scout.md:66
 #, no-wrap
 msgid "Algolia"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/scout.md:66
+#: docs/master/scout.md:69
 msgid ""
 "When using the Algolia driver, you should configure your Algolia `id` and "
 "`secret` credentials in your `config/scout.php` configuration file. Once "
@@ -196,25 +203,105 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/scout.md:68
+#: docs/master/scout.md:71
 #, no-wrap
 msgid "    composer require algolia/algoliasearch-client-php\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/scout.md:70
+#: docs/master/scout.md:73
+#, no-wrap
+msgid "<a name=\"meilisearch\"></a>\n"
+msgstr ""
+
+#. type: Title ####
+#: docs/master/scout.md:73
+#, no-wrap
+msgid "MeiliSearch"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/scout.md:76
+msgid ""
+"[MeiliSearch](https://www.meilisearch.com) is a blazingly fast and open "
+"source search engine. If you aren't sure how to install MeiliSearch on your "
+"local machine, you may use [Laravel "
+"Sail](/docs/{{version}}/sail#meilisearch), Laravel's officially supported "
+"Docker development environment."
+msgstr ""
+
+#. type: Plain text
+#: docs/master/scout.md:78
+msgid ""
+"When using the MeiliSearch driver you will need to install the MeiliSearch "
+"PHP SDK via the Composer package manager:"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/scout.md:80
+#, no-wrap
+msgid ""
+"    composer require meilisearch/meilisearch-php "
+"http-interop/http-factory-guzzle\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/scout.md:82
+msgid ""
+"Then, set the `SCOUT_DRIVER` environment variable as well as your "
+"MeiliSearch `host` and `key` credentials within your application's `.env` "
+"file:"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/scout.md:86
+#, no-wrap
+msgid ""
+"    SCOUT_DRIVER=meilisearch\n"
+"    MEILISEARCH_HOST=http://127.0.0.1:7700\n"
+"    MEILISEARCH_KEY=masterKey\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/scout.md:88
+msgid ""
+"For more information regarding MeiliSearch, please consult the [MeiliSearch "
+"documentation](https://docs.meilisearch.com/learn/getting_started/quick_start.html)."
+msgstr ""
+
+#. type: Plain text
+#: docs/master/scout.md:90
+msgid ""
+"In addition, you should ensure that you install a version of "
+"`meilisearch/meilisearch-php` that is compatible with your MeiliSearch "
+"binary version by reviewing [MeiliSearch's documentation regarding binary "
+"compatibility](https://github.com/meilisearch/meilisearch-php#-compatibility-with-meilisearch)."
+msgstr ""
+
+#. type: Plain text
+#: docs/master/scout.md:92
+#, no-wrap
+msgid ""
+"> {note} When upgrading Scout on an application that utilizes MeiliSearch, "
+"you should always [review any additional breaking "
+"changes](https://github.com/meilisearch/MeiliSearch/releases) to the "
+"MeiliSearch service itself.\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/scout.md:94
 #, no-wrap
 msgid "<a name=\"queueing\"></a>\n"
 msgstr ""
 
 #. type: Title ###
-#: docs/master/scout.md:70
+#: docs/master/scout.md:94
 #, no-wrap
 msgid "Queueing"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/scout.md:73
+#: docs/master/scout.md:97
 msgid ""
 "While not strictly required to use Scout, you should strongly consider "
 "configuring a [queue driver](/docs/{{version}}/queues) before using the "
@@ -224,44 +311,44 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/scout.md:75
+#: docs/master/scout.md:99
 msgid ""
 "Once you have configured a queue driver, set the value of the `queue` option "
 "in your `config/scout.php` configuration file to `true`:"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/scout.md:77
+#: docs/master/scout.md:101
 #, no-wrap
 msgid "    'queue' => true,\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/scout.md:79
+#: docs/master/scout.md:103
 #, no-wrap
 msgid "<a name=\"configuration\"></a>\n"
 msgstr ""
 
 #. type: Title ##
-#: docs/master/scout.md:79
+#: docs/master/scout.md:103
 #, no-wrap
 msgid "Configuration"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/scout.md:82
+#: docs/master/scout.md:106
 #, no-wrap
 msgid "<a name=\"configuring-model-indexes\"></a>\n"
 msgstr ""
 
 #. type: Title ###
-#: docs/master/scout.md:82
+#: docs/master/scout.md:106
 #, no-wrap
 msgid "Configuring Model Indexes"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/scout.md:85
+#: docs/master/scout.md:109
 msgid ""
 "Each Eloquent model is synced with a given search \"index\", which contains "
 "all of the searchable records for that model. In other words, you can think "
@@ -272,7 +359,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/scout.md:96 docs/master/scout.md:123
+#: docs/master/scout.md:120 docs/master/scout.md:147
 #, no-wrap
 msgid ""
 "    class Post extends Model\n"
@@ -281,7 +368,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/scout.md:107
+#: docs/master/scout.md:131
 #, no-wrap
 msgid ""
 "        /**\n"
@@ -297,19 +384,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/scout.md:109
+#: docs/master/scout.md:133
 #, no-wrap
 msgid "<a name=\"configuring-searchable-data\"></a>\n"
 msgstr ""
 
 #. type: Title ###
-#: docs/master/scout.md:109
+#: docs/master/scout.md:133
 #, no-wrap
 msgid "Configuring Searchable Data"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/scout.md:112
+#: docs/master/scout.md:136
 msgid ""
 "By default, the entire `toArray` form of a given model will be persisted to "
 "its search index. If you would like to customize the data that is "
@@ -318,7 +405,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/scout.md:132
+#: docs/master/scout.md:156
 #, no-wrap
 msgid ""
 "        /**\n"
@@ -332,13 +419,13 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/scout.md:134
+#: docs/master/scout.md:158
 #, no-wrap
 msgid "            // Customize the data array...\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/scout.md:138
+#: docs/master/scout.md:162
 #, no-wrap
 msgid ""
 "            return $array;\n"
@@ -347,19 +434,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/scout.md:140
+#: docs/master/scout.md:164
 #, no-wrap
 msgid "<a name=\"configuring-the-model-id\"></a>\n"
 msgstr ""
 
 #. type: Title ###
-#: docs/master/scout.md:140
+#: docs/master/scout.md:164
 #, no-wrap
 msgid "Configuring The Model ID"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/scout.md:143
+#: docs/master/scout.md:167
 msgid ""
 "By default, Scout will use the primary key of the model as model's unique ID "
 "/ key that is stored in the search index. If you need to customize this "
@@ -368,7 +455,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/scout.md:154
+#: docs/master/scout.md:178
 #, no-wrap
 msgid ""
 "    class User extends Model\n"
@@ -377,7 +464,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/scout.md:164
+#: docs/master/scout.md:188
 #, no-wrap
 msgid ""
 "        /**\n"
@@ -392,7 +479,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/scout.md:175
+#: docs/master/scout.md:199
 #, no-wrap
 msgid ""
 "        /**\n"
@@ -408,19 +495,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/scout.md:177
+#: docs/master/scout.md:201
 #, no-wrap
 msgid "<a name=\"identifying-users\"></a>\n"
 msgstr ""
 
 #. type: Title ###
-#: docs/master/scout.md:177
+#: docs/master/scout.md:201
 #, no-wrap
 msgid "Identifying Users"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/scout.md:180
+#: docs/master/scout.md:204
 msgid ""
 "Scout also allows you to auto identify users when using "
 "[Algolia](https://algolia.com). Associating the authenticated user with "
@@ -431,13 +518,13 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/scout.md:182
+#: docs/master/scout.md:206
 #, no-wrap
 msgid "    SCOUT_IDENTIFY=true\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/scout.md:184
+#: docs/master/scout.md:208
 msgid ""
 "Enabling this feature this will also pass the request's IP address and your "
 "authenticated user's primary identifier to Algolia so this data is "
@@ -445,31 +532,242 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/scout.md:186
+#: docs/master/scout.md:210
+#, no-wrap
+msgid "<a name=\"database-and-collection-engines\"></a>\n"
+msgstr ""
+
+#. type: Title ##
+#: docs/master/scout.md:210
+#, no-wrap
+msgid "Database / Collection Engines"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/scout.md:213
+#, no-wrap
+msgid "<a name=\"database-engine\"></a>\n"
+msgstr ""
+
+#. type: Title ###
+#: docs/master/scout.md:213
+#, no-wrap
+msgid "Database Engine"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/scout.md:216
+#, no-wrap
+msgid "> {note} The database engine currently supports MySQL and PostgreSQL.\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/scout.md:218
+msgid ""
+"If your application interacts with small to medium sized databases or has a "
+"light workload, you may find it more convenient to get started with Scout's "
+"\"database\" engine. The database engine will use \"where like\" clauses and "
+"full text indexes when filtering results from your existing database to "
+"determine the applicable search results for your query."
+msgstr ""
+
+#. type: Plain text
+#: docs/master/scout.md:220
+msgid ""
+"To use the database engine, you may simply set the value of the "
+"`SCOUT_DRIVER` environment variable to `database`, or specify the `database` "
+"driver directly in your application's `scout` configuration file:"
+msgstr ""
+
+#. type: Code fence info string
+#: docs/master/scout.md:221 docs/master/scout.md:264
+#, no-wrap
+msgid "ini"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/scout.md:221
+#, no-wrap
+msgid "SCOUT_DRIVER=database\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/scout.md:226
+msgid ""
+"Once you have specified the database engine as your preferred driver, you "
+"must [configure your searchable data](#configuring-searchable-data). Then, "
+"you may start [executing search queries](#searching) against your "
+"models. Search engine indexing, such as the indexing needed to seed Algolia "
+"or MeiliSearch indexes, is unnecessary when using the collection engine."
+msgstr ""
+
+#. type: Title ####
+#: docs/master/scout.md:227
+#, no-wrap
+msgid "Customizing Database Searching Strategies"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/scout.md:230
+msgid ""
+"By default, the database engine will execute a \"where like\" query against "
+"every model attribute that you have [configured as "
+"searchable](#configuring-searchable-data). However, in some situations, this "
+"may result in poor performance. Therefore, the database engine's search "
+"strategy can be configured so that some specified columns utilize full text "
+"search queries or only use \"where like\" constraints to search the prefixes "
+"of strings (`example%`) instead of searching within the entire string "
+"(`%example%`)."
+msgstr ""
+
+#. type: Plain text
+#: docs/master/scout.md:232
+msgid ""
+"To define this behavior, you may assign PHP attributes to your model's "
+"`toSearchableArray` method. Any columns that are not assigned additional "
+"search strategy behavior will continue to use the default \"where like\" "
+"strategy:"
+msgstr ""
+
+#. type: Code fence info string
+#: docs/master/scout.md:233
+#, no-wrap
+msgid "php"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/scout.md:233
+#, no-wrap
+msgid ""
+"use Laravel\\Scout\\Attributes\\SearchUsingFullText;\n"
+"use Laravel\\Scout\\Attributes\\SearchUsingPrefix;\n"
+"\n"
+"/**\n"
+" * Get the indexable data array for the model.\n"
+" *\n"
+" * @return array\n"
+" */\n"
+"#[SearchUsingPrefix(['id', 'email'])]\n"
+"#[SearchUsingFullText(['bio'])]\n"
+"public function toSearchableArray()\n"
+"{\n"
+"    return [\n"
+"        'id' => $this->id,\n"
+"        'name' => $this->name,\n"
+"        'email' => $this->email,\n"
+"        'bio' => $this->bio,\n"
+"    ];\n"
+"}\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/scout.md:256
+#, no-wrap
+msgid ""
+"> {note} Before specifying that a column should use full text query "
+"constraints, ensure that the column has been assigned a [full text "
+"index](/docs/{{version}}/migrations#available-index-types).\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/scout.md:258
+#, no-wrap
+msgid "<a name=\"collection-engine\"></a>\n"
+msgstr ""
+
+#. type: Title ###
+#: docs/master/scout.md:258
+#, no-wrap
+msgid "Collection Engine"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/scout.md:261
+msgid ""
+"While you are free to use the Algolia or MeiliSearch search engines during "
+"local development, you may find it more convenient to get started with the "
+"\"collection\" engine. The collection engine will use \"where\" clauses and "
+"collection filtering on results from your existing database to determine the "
+"applicable search results for your query. When using this engine, it is not "
+"necessary to \"index\" your searchable models, as they will simply be "
+"retrieved from your local database."
+msgstr ""
+
+#. type: Plain text
+#: docs/master/scout.md:263
+msgid ""
+"To use the collection engine, you may simply set the value of the "
+"`SCOUT_DRIVER` environment variable to `collection`, or specify the "
+"`collection` driver directly in your application's `scout` configuration "
+"file:"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/scout.md:264
+#, no-wrap
+msgid "SCOUT_DRIVER=collection\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/scout.md:269
+msgid ""
+"Once you have specified the collection driver as your preferred driver, you "
+"may start [executing search queries](#searching) against your models. Search "
+"engine indexing, such as the indexing needed to seed Algolia or MeiliSearch "
+"indexes, is unnecessary when using the collection engine."
+msgstr ""
+
+#. type: Title ####
+#: docs/master/scout.md:270
+#, no-wrap
+msgid "Differences From Database Engine"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/scout.md:273
+msgid ""
+"On first glance, the \"database\" and \"collections\" engines are fairly "
+"similar. They both interact directly with your database to retrieve search "
+"results. However, the collection engine does not utilize full text indexes "
+"or `LIKE` clauses to find matching records. Instead, it pulls all possible "
+"records and uses Laravel's `Str::is` helper to determine if the search "
+"string exists within the model attribute values."
+msgstr ""
+
+#. type: Plain text
+#: docs/master/scout.md:275
+msgid ""
+"The collection engine is the most portable search engine as it works across "
+"all relational databases supported by Laravel (including SQLite and SQL "
+"Server); however, it is less efficient than Scout's database engine."
+msgstr ""
+
+#. type: Plain text
+#: docs/master/scout.md:277
 #, no-wrap
 msgid "<a name=\"indexing\"></a>\n"
 msgstr ""
 
 #. type: Title ##
-#: docs/master/scout.md:186
+#: docs/master/scout.md:277
 #, no-wrap
 msgid "Indexing"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/scout.md:189
+#: docs/master/scout.md:280
 #, no-wrap
 msgid "<a name=\"batch-import\"></a>\n"
 msgstr ""
 
 #. type: Title ###
-#: docs/master/scout.md:189
+#: docs/master/scout.md:280
 #, no-wrap
 msgid "Batch Import"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/scout.md:192
+#: docs/master/scout.md:283
 msgid ""
 "If you are installing Scout into an existing project, you may already have "
 "database records you need to import into your indexes. Scout provides a "
@@ -478,38 +776,38 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/scout.md:194
+#: docs/master/scout.md:285
 #, no-wrap
 msgid "    php artisan scout:import \"App\\Models\\Post\"\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/scout.md:196
+#: docs/master/scout.md:287
 msgid ""
 "The `flush` command may be used to remove all of a model's records from your "
 "search indexes:"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/scout.md:198
+#: docs/master/scout.md:289
 #, no-wrap
 msgid "    php artisan scout:flush \"App\\Models\\Post\"\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/scout.md:200
+#: docs/master/scout.md:291
 #, no-wrap
 msgid "<a name=\"modifying-the-import-query\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/master/scout.md:200
+#: docs/master/scout.md:291
 #, no-wrap
 msgid "Modifying The Import Query"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/scout.md:203
+#: docs/master/scout.md:294
 msgid ""
 "If you would like to modify the query that is used to retrieve all of your "
 "models for batch importing, you may define a `makeAllSearchableUsing` method "
@@ -518,7 +816,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/scout.md:214
+#: docs/master/scout.md:305
 #, no-wrap
 msgid ""
 "    /**\n"
@@ -535,19 +833,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/scout.md:216
+#: docs/master/scout.md:307
 #, no-wrap
 msgid "<a name=\"adding-records\"></a>\n"
 msgstr ""
 
 #. type: Title ###
-#: docs/master/scout.md:216
+#: docs/master/scout.md:307
 #, no-wrap
 msgid "Adding Records"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/scout.md:219
+#: docs/master/scout.md:310
 msgid ""
 "Once you have added the `Laravel\\Scout\\Searchable` trait to a model, all "
 "you need to do is `save` or `create` a model instance and it will "
@@ -557,43 +855,43 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/scout.md:221 docs/master/scout.md:234 docs/master/scout.md:253 docs/master/scout.md:278 docs/master/scout.md:301 docs/master/scout.md:329 docs/master/scout.md:360 docs/master/scout.md:369 docs/master/scout.md:407 docs/master/scout.md:507
+#: docs/master/scout.md:312 docs/master/scout.md:325 docs/master/scout.md:344 docs/master/scout.md:369 docs/master/scout.md:392 docs/master/scout.md:422 docs/master/scout.md:453 docs/master/scout.md:470 docs/master/scout.md:508 docs/master/scout.md:608
 #, no-wrap
 msgid "    use App\\Models\\Order;\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/scout.md:223
+#: docs/master/scout.md:314
 #, no-wrap
 msgid "    $order = new Order;\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/scout.md:225
+#: docs/master/scout.md:316
 #, no-wrap
 msgid "    // ...\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/scout.md:227 docs/master/scout.md:259
+#: docs/master/scout.md:318 docs/master/scout.md:350
 #, no-wrap
 msgid "    $order->save();\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/scout.md:229
+#: docs/master/scout.md:320
 #, no-wrap
 msgid "<a name=\"adding-records-via-query\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/master/scout.md:229
+#: docs/master/scout.md:320
 #, no-wrap
 msgid "Adding Records Via Query"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/scout.md:232
+#: docs/master/scout.md:323
 msgid ""
 "If you would like to add a collection of models to your search index via an "
 "Eloquent query, you may chain the `searchable` method onto the Eloquent "
@@ -605,26 +903,26 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/scout.md:236 docs/master/scout.md:263
+#: docs/master/scout.md:327 docs/master/scout.md:354
 #, no-wrap
 msgid "    Order::where('price', '>', 100)->searchable();\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/scout.md:238
+#: docs/master/scout.md:329
 msgid ""
 "You may also call the `searchable` method on an Eloquent relationship "
 "instance:"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/scout.md:240 docs/master/scout.md:267
+#: docs/master/scout.md:331 docs/master/scout.md:358
 #, no-wrap
 msgid "    $user->orders()->searchable();\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/scout.md:242
+#: docs/master/scout.md:333
 msgid ""
 "Or, if you already have a collection of Eloquent models in memory, you may "
 "call the `searchable` method on the collection instance to add the model "
@@ -632,13 +930,13 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/scout.md:244 docs/master/scout.md:271
+#: docs/master/scout.md:335 docs/master/scout.md:362
 #, no-wrap
 msgid "    $orders->searchable();\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/scout.md:246
+#: docs/master/scout.md:337
 #, no-wrap
 msgid ""
 "> {tip} The `searchable` method can be considered an \"upsert\" "
@@ -648,19 +946,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/scout.md:248
+#: docs/master/scout.md:339
 #, no-wrap
 msgid "<a name=\"updating-records\"></a>\n"
 msgstr ""
 
 #. type: Title ###
-#: docs/master/scout.md:248
+#: docs/master/scout.md:339
 #, no-wrap
 msgid "Updating Records"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/scout.md:251
+#: docs/master/scout.md:342
 msgid ""
 "To update a searchable model, you only need to update the model instance's "
 "properties and `save` the model to your database. Scout will automatically "
@@ -668,19 +966,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/scout.md:255 docs/master/scout.md:280
+#: docs/master/scout.md:346 docs/master/scout.md:371
 #, no-wrap
 msgid "    $order = Order::find(1);\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/scout.md:257
+#: docs/master/scout.md:348
 #, no-wrap
 msgid "    // Update the order...\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/scout.md:261
+#: docs/master/scout.md:352
 msgid ""
 "You may also invoke the `searchable` method on an Eloquent query instance to "
 "update a collection of models. If the models do not exist in your search "
@@ -688,7 +986,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/scout.md:265
+#: docs/master/scout.md:356
 msgid ""
 "If you would like to update the search index records for all of the models "
 "in a relationship, you may invoke the `searchable` on the relationship "
@@ -696,7 +994,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/scout.md:269
+#: docs/master/scout.md:360
 msgid ""
 "Or, if you already have a collection of Eloquent models in memory, you may "
 "call the `searchable` method on the collection instance to update the model "
@@ -704,19 +1002,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/scout.md:273
+#: docs/master/scout.md:364
 #, no-wrap
 msgid "<a name=\"removing-records\"></a>\n"
 msgstr ""
 
 #. type: Title ###
-#: docs/master/scout.md:273
+#: docs/master/scout.md:364
 #, no-wrap
 msgid "Removing Records"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/scout.md:276
+#: docs/master/scout.md:367
 msgid ""
 "To remove a record from your index you may simply `delete` the model from "
 "the database. This may be done even if you are using [soft "
@@ -724,26 +1022,26 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/scout.md:282
+#: docs/master/scout.md:373
 #, no-wrap
 msgid "    $order->delete();\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/scout.md:284
+#: docs/master/scout.md:375
 msgid ""
 "If you do not want to retrieve the model before deleting the record, you may "
 "use the `unsearchable` method on an Eloquent query instance:"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/scout.md:286
+#: docs/master/scout.md:377
 #, no-wrap
 msgid "    Order::where('price', '>', 100)->unsearchable();\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/scout.md:288
+#: docs/master/scout.md:379
 msgid ""
 "If you would like to remove the search index records for all of the models "
 "in a relationship, you may invoke the `unsearchable` on the relationship "
@@ -751,13 +1049,13 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/scout.md:290
+#: docs/master/scout.md:381
 #, no-wrap
 msgid "    $user->orders()->unsearchable();\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/scout.md:292
+#: docs/master/scout.md:383
 msgid ""
 "Or, if you already have a collection of Eloquent models in memory, you may "
 "call the `unsearchable` method on the collection instance to remove the "
@@ -765,25 +1063,25 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/scout.md:294
+#: docs/master/scout.md:385
 #, no-wrap
 msgid "    $orders->unsearchable();\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/scout.md:296
+#: docs/master/scout.md:387
 #, no-wrap
 msgid "<a name=\"pausing-indexing\"></a>\n"
 msgstr ""
 
 #. type: Title ###
-#: docs/master/scout.md:296
+#: docs/master/scout.md:387
 #, no-wrap
 msgid "Pausing Indexing"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/scout.md:299
+#: docs/master/scout.md:390
 msgid ""
 "Sometimes you may need to perform a batch of Eloquent operations on a model "
 "without syncing the model data to your search index. You may do this using "
@@ -793,7 +1091,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/scout.md:305
+#: docs/master/scout.md:396
 #, no-wrap
 msgid ""
 "    Order::withoutSyncingToSearch(function () {\n"
@@ -802,19 +1100,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/scout.md:307
+#: docs/master/scout.md:398
 #, no-wrap
 msgid "<a name=\"conditionally-searchable-model-instances\"></a>\n"
 msgstr ""
 
 #. type: Title ###
-#: docs/master/scout.md:307
+#: docs/master/scout.md:398
 #, no-wrap
 msgid "Conditionally Searchable Model Instances"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/scout.md:310
+#: docs/master/scout.md:401
 msgid ""
 "Sometimes you may need to only make a model searchable under certain "
 "conditions. For example, imagine you have `App\\Models\\Post` model that may "
@@ -824,7 +1122,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/scout.md:320
+#: docs/master/scout.md:411
 #, no-wrap
 msgid ""
 "    /**\n"
@@ -839,7 +1137,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/scout.md:322
+#: docs/master/scout.md:413
 msgid ""
 "The `shouldBeSearchable` method is only applied when manipulating models "
 "through the `save` and `create` methods, queries, or relationships. Directly "
@@ -848,19 +1146,29 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/scout.md:324
+#: docs/master/scout.md:415
+#, no-wrap
+msgid ""
+"> {note} The `shouldBeSearchable` method is not applicable when using "
+"Scout's \"database\" engine, as all searchable data is always stored in the "
+"database. To achieve similar behavior when using the database engine, you "
+"should use [where clauses](#where-clauses) instead.\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/scout.md:417
 #, no-wrap
 msgid "<a name=\"searching\"></a>\n"
 msgstr ""
 
 #. type: Title ##
-#: docs/master/scout.md:324
+#: docs/master/scout.md:417
 #, no-wrap
 msgid "Searching"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/scout.md:327
+#: docs/master/scout.md:420
 msgid ""
 "You may begin searching a model using the `search` method. The search method "
 "accepts a single string that will be used to search your models. You should "
@@ -869,13 +1177,13 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/scout.md:331
+#: docs/master/scout.md:424
 #, no-wrap
 msgid "    $orders = Order::search('Star Trek')->get();\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/scout.md:333
+#: docs/master/scout.md:426
 msgid ""
 "Since Scout searches return a collection of Eloquent models, you may even "
 "return the results directly from a route or controller and they will "
@@ -883,7 +1191,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/scout.md:336 docs/master/scout.md:392
+#: docs/master/scout.md:429 docs/master/scout.md:493
 #, no-wrap
 msgid ""
 "    use App\\Models\\Order;\n"
@@ -891,7 +1199,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/scout.md:340
+#: docs/master/scout.md:433
 #, no-wrap
 msgid ""
 "    Route::get('/search', function (Request $request) {\n"
@@ -900,32 +1208,32 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/scout.md:342
+#: docs/master/scout.md:435
 msgid ""
 "If you would like to get the raw search results before they are converted to "
 "Eloquent models, you may use the `raw` method:"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/scout.md:344
+#: docs/master/scout.md:437
 #, no-wrap
 msgid "    $orders = Order::search('Star Trek')->raw();\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/scout.md:346
+#: docs/master/scout.md:439
 #, no-wrap
 msgid "<a name=\"custom-indexes\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/master/scout.md:346
+#: docs/master/scout.md:439
 #, no-wrap
 msgid "Custom Indexes"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/scout.md:349
+#: docs/master/scout.md:442
 msgid ""
 "Search queries will typically be performed on the index specified by the "
 "model's [`searchableAs`](#configuring-model-indexes) method. However, you "
@@ -934,7 +1242,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/scout.md:353
+#: docs/master/scout.md:446
 #, no-wrap
 msgid ""
 "    $orders = Order::search('Star Trek')\n"
@@ -943,47 +1251,68 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/scout.md:355
+#: docs/master/scout.md:448
 #, no-wrap
 msgid "<a name=\"where-clauses\"></a>\n"
 msgstr ""
 
 #. type: Title ###
-#: docs/master/scout.md:355
+#: docs/master/scout.md:448
 #, no-wrap
 msgid "Where Clauses"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/scout.md:358
+#: docs/master/scout.md:451
 msgid ""
 "Scout allows you to add simple \"where\" clauses to your search "
 "queries. Currently, these clauses only support basic numeric equality checks "
-"and are primarily useful for scoping search queries by an owner ID. Since a "
-"search index is not a relational database, more advanced \"where\" clauses "
-"are not currently supported:"
+"and are primarily useful for scoping search queries by an owner ID:"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/scout.md:362
+#: docs/master/scout.md:455
 #, no-wrap
 msgid "    $orders = Order::search('Star Trek')->where('user_id', 1)->get();\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/scout.md:364
+#: docs/master/scout.md:457
+msgid ""
+"You may use the `whereIn` method to constrain results against a given set of "
+"values:"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/scout.md:461
+#, no-wrap
+msgid ""
+"    $orders = Order::search('Star Trek')->whereIn(\n"
+"        'status', ['paid', 'open']\n"
+"    )->get();\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/scout.md:463
+msgid ""
+"Since a search index is not a relational database, more advanced \"where\" "
+"clauses are not currently supported."
+msgstr ""
+
+#. type: Plain text
+#: docs/master/scout.md:465
 #, no-wrap
 msgid "<a name=\"pagination\"></a>\n"
 msgstr ""
 
 #. type: Title ###
-#: docs/master/scout.md:364
+#: docs/master/scout.md:465
 #, no-wrap
 msgid "Pagination"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/scout.md:367
+#: docs/master/scout.md:468
 msgid ""
 "In addition to retrieving a collection of models, you may paginate your "
 "search results using the `paginate` method. This method will return an "
@@ -992,26 +1321,26 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/scout.md:371
+#: docs/master/scout.md:472
 #, no-wrap
 msgid "    $orders = Order::search('Star Trek')->paginate();\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/scout.md:373
+#: docs/master/scout.md:474
 msgid ""
 "You may specify how many models to retrieve per page by passing the amount "
 "as the first argument to the `paginate` method:"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/scout.md:375
+#: docs/master/scout.md:476
 #, no-wrap
 msgid "    $orders = Order::search('Star Trek')->paginate(15);\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/scout.md:377
+#: docs/master/scout.md:478
 msgid ""
 "Once you have retrieved the results, you may display the results and render "
 "the page links using [Blade](/docs/{{version}}/blade) just as if you had "
@@ -1019,13 +1348,13 @@ msgid ""
 msgstr ""
 
 #. type: Code fence info string
-#: docs/master/scout.md:378
+#: docs/master/scout.md:479
 #, no-wrap
 msgid "html"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/scout.md:378
+#: docs/master/scout.md:479
 #, no-wrap
 msgid ""
 "<div class=\"container\">\n"
@@ -1038,14 +1367,14 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/scout.md:389
+#: docs/master/scout.md:490
 msgid ""
 "Of course, if you would like to retrieve the pagination results as JSON, you "
 "may return the paginator instance directly from a route or controller:"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/scout.md:396
+#: docs/master/scout.md:497
 #, no-wrap
 msgid ""
 "    Route::get('/orders', function (Request $request) {\n"
@@ -1054,19 +1383,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/scout.md:398
+#: docs/master/scout.md:499
 #, no-wrap
 msgid "<a name=\"soft-deleting\"></a>\n"
 msgstr ""
 
 #. type: Title ###
-#: docs/master/scout.md:398
+#: docs/master/scout.md:499
 #, no-wrap
 msgid "Soft Deleting"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/scout.md:401
+#: docs/master/scout.md:502
 msgid ""
 "If your indexed models are [soft "
 "deleting](/docs/{{version}}/eloquent#soft-deleting) and you need to search "
@@ -1075,13 +1404,13 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/scout.md:403
+#: docs/master/scout.md:504
 #, no-wrap
 msgid "    'soft_delete' => true,\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/scout.md:405
+#: docs/master/scout.md:506
 msgid ""
 "When this configuration option is `true`, Scout will not remove soft deleted "
 "models from the search index. Instead, it will set a hidden `__soft_deleted` "
@@ -1090,7 +1419,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/scout.md:410
+#: docs/master/scout.md:511
 #, no-wrap
 msgid ""
 "    // Include trashed records when retrieving results...\n"
@@ -1098,7 +1427,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/scout.md:413
+#: docs/master/scout.md:514
 #, no-wrap
 msgid ""
 "    // Only include trashed records when retrieving results...\n"
@@ -1106,7 +1435,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/scout.md:415
+#: docs/master/scout.md:516
 #, no-wrap
 msgid ""
 "> {tip} When a soft deleted model is permanently deleted using "
@@ -1114,19 +1443,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/scout.md:417
+#: docs/master/scout.md:518
 #, no-wrap
 msgid "<a name=\"customizing-engine-searches\"></a>\n"
 msgstr ""
 
 #. type: Title ###
-#: docs/master/scout.md:417
+#: docs/master/scout.md:518
 #, no-wrap
 msgid "Customizing Engine Searches"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/scout.md:420
+#: docs/master/scout.md:521
 msgid ""
 "If you need to perform advanced customization of the search behavior of an "
 "engine you may pass a closure as the second argument to the `search` "
@@ -1135,7 +1464,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/scout.md:423
+#: docs/master/scout.md:524
 #, no-wrap
 msgid ""
 "    use Algolia\\AlgoliaSearch\\SearchIndex;\n"
@@ -1143,7 +1472,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/scout.md:431
+#: docs/master/scout.md:532
 #, no-wrap
 msgid ""
 "    Order::search(\n"
@@ -1157,7 +1486,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/scout.md:435
+#: docs/master/scout.md:536
 #, no-wrap
 msgid ""
 "            return $algolia->search($query, $options);\n"
@@ -1166,31 +1495,31 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/scout.md:437
+#: docs/master/scout.md:538
 #, no-wrap
 msgid "<a name=\"custom-engines\"></a>\n"
 msgstr ""
 
 #. type: Title ##
-#: docs/master/scout.md:437
+#: docs/master/scout.md:538
 #, no-wrap
 msgid "Custom Engines"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/scout.md:440
+#: docs/master/scout.md:541
 #, no-wrap
 msgid "<a name=\"writing-the-engine\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/master/scout.md:440
+#: docs/master/scout.md:541
 #, no-wrap
 msgid "Writing The Engine"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/scout.md:443
+#: docs/master/scout.md:544
 msgid ""
 "If one of the built-in Scout search engines doesn't fit your needs, you may "
 "write your own custom engine and register it with Scout. Your engine should "
@@ -1199,13 +1528,13 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/scout.md:445
+#: docs/master/scout.md:546
 #, no-wrap
 msgid "    use Laravel\\Scout\\Builder;\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/scout.md:454
+#: docs/master/scout.md:555
 #, no-wrap
 msgid ""
 "    abstract public function update($models);\n"
@@ -1219,7 +1548,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/scout.md:456
+#: docs/master/scout.md:557
 msgid ""
 "You may find it helpful to review the implementations of these methods on "
 "the `Laravel\\Scout\\Engines\\AlgoliaEngine` class. This class will provide "
@@ -1228,19 +1557,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/scout.md:458
+#: docs/master/scout.md:559
 #, no-wrap
 msgid "<a name=\"registering-the-engine\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/master/scout.md:458
+#: docs/master/scout.md:559
 #, no-wrap
 msgid "Registering The Engine"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/scout.md:461
+#: docs/master/scout.md:562
 msgid ""
 "Once you have written your custom engine, you may register it with Scout "
 "using the `extend` method of the Scout engine manager. Scout's engine "
@@ -1251,7 +1580,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/scout.md:464
+#: docs/master/scout.md:565
 #, no-wrap
 msgid ""
 "    use App\\ScoutExtensions\\MySqlSearchEngine\n"
@@ -1259,7 +1588,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/scout.md:476
+#: docs/master/scout.md:577
 #, no-wrap
 msgid ""
 "    /**\n"
@@ -1276,32 +1605,32 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/scout.md:478
+#: docs/master/scout.md:579
 msgid ""
 "Once your engine has been registered, you may specify it as your default "
 "Scout `driver` in your application's `config/scout.php` configuration file:"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/scout.md:480
+#: docs/master/scout.md:581
 #, no-wrap
 msgid "    'driver' => 'mysql',\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/scout.md:482
+#: docs/master/scout.md:583
 #, no-wrap
 msgid "<a name=\"builder-macros\"></a>\n"
 msgstr ""
 
 #. type: Title ##
-#: docs/master/scout.md:482
+#: docs/master/scout.md:583
 #, no-wrap
 msgid "Builder Macros"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/scout.md:485
+#: docs/master/scout.md:586
 msgid ""
 "If you would like to define a custom Scout search builder method, you may "
 "use the `macro` method on the `Laravel\\Scout\\Builder` class. Typically, "
@@ -1310,7 +1639,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/scout.md:489
+#: docs/master/scout.md:590
 #, no-wrap
 msgid ""
 "    use Illuminate\\Support\\Facades\\Response;\n"
@@ -1319,7 +1648,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/scout.md:503
+#: docs/master/scout.md:604
 #, no-wrap
 msgid ""
 "    /**\n"
@@ -1338,7 +1667,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/scout.md:505
+#: docs/master/scout.md:606
 msgid ""
 "The `macro` function accepts a macro name as its first argument and a "
 "closure as its second argument. The macro's closure will be executed when "
@@ -1346,7 +1675,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/scout.md:508
+#: docs/master/scout.md:609
 #, no-wrap
 msgid "    Order::search('Star Trek')->count();\n"
 msgstr ""

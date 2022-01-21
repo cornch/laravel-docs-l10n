@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Laravel Documentation VERSION\n"
-"POT-Creation-Date: 2021-09-13 05:07+0000\n"
+"POT-Creation-Date: 2022-01-21 20:16+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -23,7 +23,7 @@ msgid "Queues"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:43
+#: docs/master/queues.md:47
 #, no-wrap
 msgid ""
 "- [Introduction](#introduction)\n"
@@ -36,6 +36,7 @@ msgid ""
 "- [Job Middleware](#job-middleware)\n"
 "    - [Rate Limiting](#rate-limiting)\n"
 "    - [Preventing Job Overlaps](#preventing-job-overlaps)\n"
+"    - [Throttling Exceptions](#throttling-exceptions)\n"
 "- [Dispatching Jobs](#dispatching-jobs)\n"
 "    - [Delayed Dispatching](#delayed-dispatching)\n"
 "    - [Synchronous Dispatching](#synchronous-dispatching)\n"
@@ -65,25 +66,28 @@ msgid ""
 "    - [Cleaning Up After Failed Jobs](#cleaning-up-after-failed-jobs)\n"
 "    - [Retrying Failed Jobs](#retrying-failed-jobs)\n"
 "    - [Ignoring Missing Models](#ignoring-missing-models)\n"
+"    - [Storing Failed Jobs In DynamoDB](#storing-failed-jobs-in-dynamodb)\n"
+"    - [Pruning Failed Jobs](#pruning-failed-jobs)\n"
 "    - [Failed Job Events](#failed-job-events)\n"
 "- [Clearing Jobs From Queues](#clearing-jobs-from-queues)\n"
+"- [Monitoring Your Queues](#monitoring-your-queues)\n"
 "- [Job Events](#job-events)\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:45
+#: docs/master/queues.md:49
 #, no-wrap
 msgid "<a name=\"introduction\"></a>\n"
 msgstr ""
 
 #. type: Title ##
-#: docs/master/queues.md:45
+#: docs/master/queues.md:49
 #, no-wrap
 msgid "Introduction"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:48
+#: docs/master/queues.md:52
 msgid ""
 "While building your web application, you may have some tasks, such as "
 "parsing and storing an uploaded CSV file, that take too long to perform "
@@ -94,7 +98,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:50
+#: docs/master/queues.md:54
 msgid ""
 "Laravel queues provide a unified queueing API across a variety of different "
 "queue backends, such as [Amazon SQS](https://aws.amazon.com/sqs/), "
@@ -102,7 +106,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:52
+#: docs/master/queues.md:56
 msgid ""
 "Laravel's queue configuration options are stored in your application's "
 "`config/queue.php` configuration file. In this file, you will find "
@@ -116,7 +120,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:54
+#: docs/master/queues.md:58
 #, no-wrap
 msgid ""
 "> {tip} Laravel now offers Horizon, a beautiful dashboard and configuration "
@@ -125,19 +129,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:56
+#: docs/master/queues.md:60
 #, no-wrap
 msgid "<a name=\"connections-vs-queues\"></a>\n"
 msgstr ""
 
 #. type: Title ###
-#: docs/master/queues.md:56
+#: docs/master/queues.md:60
 #, no-wrap
 msgid "Connections Vs. Queues"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:59
+#: docs/master/queues.md:63
 msgid ""
 "Before getting started with Laravel queues, it is important to understand "
 "the distinction between \"connections\" and \"queues\". In your "
@@ -149,7 +153,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:61
+#: docs/master/queues.md:65
 msgid ""
 "Note that each connection configuration example in the `queue` configuration "
 "file contains a `queue` attribute. This is the default queue that jobs will "
@@ -160,13 +164,13 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:63 docs/master/queues.md:641
+#: docs/master/queues.md:67 docs/master/queues.md:736
 #, no-wrap
 msgid "    use App\\Jobs\\ProcessPodcast;\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:66
+#: docs/master/queues.md:70
 #, no-wrap
 msgid ""
 "    // This job is sent to the default connection's default queue...\n"
@@ -174,7 +178,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:69
+#: docs/master/queues.md:73
 #, no-wrap
 msgid ""
 "    // This job is sent to the default connection's \"emails\" queue...\n"
@@ -182,7 +186,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:71
+#: docs/master/queues.md:75
 msgid ""
 "Some applications may not need to ever push jobs onto multiple queues, "
 "instead preferring to have one simple queue. However, pushing jobs to "
@@ -194,37 +198,37 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:73
+#: docs/master/queues.md:77
 #, no-wrap
 msgid "    php artisan queue:work --queue=high,default\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:75
+#: docs/master/queues.md:79
 #, no-wrap
 msgid "<a name=\"driver-prerequisites\"></a>\n"
 msgstr ""
 
 #. type: Title ###
-#: docs/master/queues.md:75
+#: docs/master/queues.md:79
 #, no-wrap
 msgid "Driver Notes & Prerequisites"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:78
+#: docs/master/queues.md:82
 #, no-wrap
 msgid "<a name=\"database\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/master/queues.md:78
+#: docs/master/queues.md:82
 #, no-wrap
 msgid "Database"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:81
+#: docs/master/queues.md:85
 msgid ""
 "In order to use the `database` queue driver, you will need a database table "
 "to hold the jobs. To generate a migration that creates this table, run the "
@@ -233,44 +237,58 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:83
+#: docs/master/queues.md:87
 #, no-wrap
 msgid "    php artisan queue:table\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:85 docs/master/queues.md:1010 docs/master/queues.md:1480
+#: docs/master/queues.md:89 docs/master/queues.md:1119 docs/master/queues.md:1595
 #, no-wrap
 msgid "    php artisan migrate\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:87
+#: docs/master/queues.md:91
+msgid ""
+"Finally, don't forget to instruct your application to use the `database` "
+"driver by updating the `QUEUE_CONNECTION` variable in your application's "
+"`.env` file:"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/queues.md:93
+#, no-wrap
+msgid "    QUEUE_CONNECTION=database\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/queues.md:95
 #, no-wrap
 msgid "<a name=\"redis\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/master/queues.md:87
+#: docs/master/queues.md:95
 #, no-wrap
 msgid "Redis"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:90
+#: docs/master/queues.md:98
 msgid ""
 "In order to use the `redis` queue driver, you should configure a Redis "
 "database connection in your `config/database.php` configuration file."
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:92
+#: docs/master/queues.md:100
 #, no-wrap
 msgid "**Redis Cluster**\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:94
+#: docs/master/queues.md:102
 msgid ""
 "If your Redis queue connection uses a Redis Cluster, your queue names must "
 "contain a [key hash "
@@ -280,7 +298,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:101
+#: docs/master/queues.md:109
 #, no-wrap
 msgid ""
 "    'redis' => [\n"
@@ -292,13 +310,13 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:103
+#: docs/master/queues.md:111
 #, no-wrap
 msgid "**Blocking**\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:105
+#: docs/master/queues.md:113
 msgid ""
 "When using the Redis queue, you may use the `block_for` configuration option "
 "to specify how long the driver should wait for a job to become available "
@@ -306,7 +324,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:107
+#: docs/master/queues.md:115
 msgid ""
 "Adjusting this value based on your queue load can be more efficient than "
 "continually polling the Redis database for new jobs. For instance, you may "
@@ -315,7 +333,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:115
+#: docs/master/queues.md:123
 #, no-wrap
 msgid ""
 "    'redis' => [\n"
@@ -328,7 +346,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:117
+#: docs/master/queues.md:125
 #, no-wrap
 msgid ""
 "> {note} Setting `block_for` to `0` will cause queue workers to block "
@@ -337,26 +355,26 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:119
+#: docs/master/queues.md:127
 #, no-wrap
 msgid "<a name=\"other-driver-prerequisites\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/master/queues.md:119
+#: docs/master/queues.md:127
 #, no-wrap
 msgid "Other Driver Prerequisites"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:122
+#: docs/master/queues.md:130
 msgid ""
 "The following dependencies are needed for the listed queue drivers. These "
 "dependencies may be installed via the Composer package manager:"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:128
+#: docs/master/queues.md:136
 #, no-wrap
 msgid ""
 "<div class=\"content-list\" markdown=\"1\">\n"
@@ -367,31 +385,31 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:130
+#: docs/master/queues.md:138
 #, no-wrap
 msgid "<a name=\"creating-jobs\"></a>\n"
 msgstr ""
 
 #. type: Title ##
-#: docs/master/queues.md:130
+#: docs/master/queues.md:138
 #, no-wrap
 msgid "Creating Jobs"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:133
+#: docs/master/queues.md:141
 #, no-wrap
 msgid "<a name=\"generating-job-classes\"></a>\n"
 msgstr ""
 
 #. type: Title ###
-#: docs/master/queues.md:133
+#: docs/master/queues.md:141
 #, no-wrap
 msgid "Generating Job Classes"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:136
+#: docs/master/queues.md:144
 msgid ""
 "By default, all of the queueable jobs for your application are stored in the "
 "`app/Jobs` directory. If the `app/Jobs` directory doesn't exist, it will be "
@@ -399,13 +417,13 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:138
+#: docs/master/queues.md:146
 #, no-wrap
 msgid "    php artisan make:job ProcessPodcast\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:140
+#: docs/master/queues.md:148
 msgid ""
 "The generated class will implement the "
 "`Illuminate\\Contracts\\Queue\\ShouldQueue` interface, indicating to Laravel "
@@ -413,27 +431,27 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:142
+#: docs/master/queues.md:150
 #, no-wrap
 msgid ""
 "> {tip} Job stubs may be customized using [stub "
-"publishing](/docs/{{version}}/artisan#stub-customization)\n"
+"publishing](/docs/{{version}}/artisan#stub-customization).\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:144
+#: docs/master/queues.md:152
 #, no-wrap
 msgid "<a name=\"class-structure\"></a>\n"
 msgstr ""
 
 #. type: Title ###
-#: docs/master/queues.md:144
+#: docs/master/queues.md:152
 #, no-wrap
 msgid "Class Structure"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:147
+#: docs/master/queues.md:155
 msgid ""
 "Job classes are very simple, normally containing only a `handle` method that "
 "is invoked when the job is processed by the queue. To get started, let's "
@@ -443,19 +461,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:149 docs/master/queues.md:238 docs/master/queues.md:252 docs/master/queues.md:292 docs/master/queues.md:356 docs/master/queues.md:499 docs/master/queues.md:537 docs/master/queues.md:590 docs/master/queues.md:712 docs/master/queues.md:741 docs/master/queues.md:771 docs/master/queues.md:806 docs/master/queues.md:847 docs/master/queues.md:883 docs/master/queues.md:938 docs/master/queues.md:1017 docs/master/queues.md:1528 docs/master/queues.md:1635 docs/master/queues.md:1690
+#: docs/master/queues.md:157 docs/master/queues.md:246 docs/master/queues.md:260 docs/master/queues.md:300 docs/master/queues.md:364 docs/master/queues.md:594 docs/master/queues.md:632 docs/master/queues.md:685 docs/master/queues.md:807 docs/master/queues.md:836 docs/master/queues.md:866 docs/master/queues.md:901 docs/master/queues.md:942 docs/master/queues.md:978 docs/master/queues.md:1033 docs/master/queues.md:1126 docs/master/queues.md:1643 docs/master/queues.md:1790 docs/master/queues.md:1882
 #, no-wrap
 msgid "    <?php\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:151 docs/master/queues.md:743 docs/master/queues.md:808 docs/master/queues.md:849 docs/master/queues.md:885 docs/master/queues.md:940 docs/master/queues.md:1019 docs/master/queues.md:1530
+#: docs/master/queues.md:159 docs/master/queues.md:838 docs/master/queues.md:903 docs/master/queues.md:944 docs/master/queues.md:980 docs/master/queues.md:1035 docs/master/queues.md:1128 docs/master/queues.md:1645
 #, no-wrap
 msgid "    namespace App\\Jobs;\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:159
+#: docs/master/queues.md:167
 #, no-wrap
 msgid ""
 "    use App\\Models\\Podcast;\n"
@@ -468,7 +486,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:163 docs/master/queues.md:753 docs/master/queues.md:818
+#: docs/master/queues.md:171 docs/master/queues.md:848 docs/master/queues.md:913
 #, no-wrap
 msgid ""
 "    class ProcessPodcast implements ShouldQueue\n"
@@ -477,7 +495,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:170
+#: docs/master/queues.md:178
 #, no-wrap
 msgid ""
 "        /**\n"
@@ -489,7 +507,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:181
+#: docs/master/queues.md:189
 #, no-wrap
 msgid ""
 "        /**\n"
@@ -505,7 +523,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:193
+#: docs/master/queues.md:201
 #, no-wrap
 msgid ""
 "        /**\n"
@@ -522,7 +540,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:195
+#: docs/master/queues.md:203
 msgid ""
 "In this example, note that we were able to pass an [Eloquent "
 "model](/docs/{{version}}/eloquent) directly into the queued job's "
@@ -532,7 +550,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:197
+#: docs/master/queues.md:205
 msgid ""
 "If your queued job accepts an Eloquent model in its constructor, only the "
 "identifier for the model will be serialized onto the queue. When the job is "
@@ -543,19 +561,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:199
+#: docs/master/queues.md:207
 #, no-wrap
 msgid "<a name=\"handle-method-dependency-injection\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/master/queues.md:199
+#: docs/master/queues.md:207
 #, no-wrap
 msgid "`handle` Method Dependency Injection"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:202
+#: docs/master/queues.md:210
 msgid ""
 "The `handle` method is invoked when the job is processed by the queue. Note "
 "that we are able to type-hint dependencies on the `handle` method of the "
@@ -564,7 +582,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:204
+#: docs/master/queues.md:212
 msgid ""
 "If you would like to take total control over how the container injects "
 "dependencies into the `handle` method, you may use the container's "
@@ -576,7 +594,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:207
+#: docs/master/queues.md:215
 #, no-wrap
 msgid ""
 "    use App\\Jobs\\ProcessPodcast;\n"
@@ -584,7 +602,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:211
+#: docs/master/queues.md:219
 #, no-wrap
 msgid ""
 "    $this->app->bindMethod([ProcessPodcast::class, 'handle'], function "
@@ -594,7 +612,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:213
+#: docs/master/queues.md:221
 #, no-wrap
 msgid ""
 "> {note} Binary data, such as raw image contents, should be passed through "
@@ -603,19 +621,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:215
+#: docs/master/queues.md:223
 #, no-wrap
 msgid "<a name=\"handling-relationships\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/master/queues.md:215
+#: docs/master/queues.md:223
 #, no-wrap
 msgid "Handling Relationships"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:218
+#: docs/master/queues.md:226
 msgid ""
 "Because loaded relationships also get serialized, the serialized job string "
 "can sometimes become quite large. To prevent relations from being "
@@ -625,7 +643,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:229
+#: docs/master/queues.md:237
 #, no-wrap
 msgid ""
 "    /**\n"
@@ -641,19 +659,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:231
+#: docs/master/queues.md:239
 #, no-wrap
 msgid "<a name=\"unique-jobs\"></a>\n"
 msgstr ""
 
 #. type: Title ###
-#: docs/master/queues.md:231
+#: docs/master/queues.md:239
 #, no-wrap
 msgid "Unique Jobs"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:234
+#: docs/master/queues.md:242
 #, no-wrap
 msgid ""
 "> {note} Unique jobs require a cache driver that supports "
@@ -664,7 +682,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:236
+#: docs/master/queues.md:244
 msgid ""
 "Sometimes, you may want to ensure that only one instance of a specific job "
 "is on the queue at any point in time. You may do so by implementing the "
@@ -673,7 +691,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:241
+#: docs/master/queues.md:249
 #, no-wrap
 msgid ""
 "    use Illuminate\\Contracts\\Queue\\ShouldQueue;\n"
@@ -681,7 +699,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:246
+#: docs/master/queues.md:254
 #, no-wrap
 msgid ""
 "    class UpdateSearchIndex implements ShouldQueue, ShouldBeUnique\n"
@@ -691,7 +709,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:248
+#: docs/master/queues.md:256
 msgid ""
 "In the example above, the `UpdateSearchIndex` job is unique. So, the job "
 "will not be dispatched if another instance of the job is already on the "
@@ -699,7 +717,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:250
+#: docs/master/queues.md:258
 msgid ""
 "In certain cases, you may want to define a specific \"key\" that makes the "
 "job unique or you may want to specify a timeout beyond which the job no "
@@ -708,7 +726,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:256
+#: docs/master/queues.md:264
 #, no-wrap
 msgid ""
 "    use App\\Product;\n"
@@ -717,7 +735,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:265
+#: docs/master/queues.md:273
 #, no-wrap
 msgid ""
 "    class UpdateSearchIndex implements ShouldQueue, ShouldBeUnique\n"
@@ -731,27 +749,27 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:272
+#: docs/master/queues.md:280
 #, no-wrap
 msgid ""
 "        /**\n"
-"        * The number of seconds after which the job's unique lock will be "
+"         * The number of seconds after which the job's unique lock will be "
 "released.\n"
-"        *\n"
-"        * @var int\n"
-"        */\n"
+"         *\n"
+"         * @var int\n"
+"         */\n"
 "        public $uniqueFor = 3600;\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:283
+#: docs/master/queues.md:291
 #, no-wrap
 msgid ""
 "        /**\n"
-"        * The unique ID of the job.\n"
-"        *\n"
-"        * @return string\n"
-"        */\n"
+"         * The unique ID of the job.\n"
+"         *\n"
+"         * @return string\n"
+"         */\n"
 "        public function uniqueId()\n"
 "        {\n"
 "            return $this->product->id;\n"
@@ -760,7 +778,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:285
+#: docs/master/queues.md:293
 msgid ""
 "In the example above, the `UpdateSearchIndex` job is unique by a product "
 "ID. So, any new dispatches of the job with the same product ID will be "
@@ -771,19 +789,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:287
+#: docs/master/queues.md:295
 #, no-wrap
 msgid "<a name=\"keeping-jobs-unique-until-processing-begins\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/master/queues.md:287
+#: docs/master/queues.md:295
 #, no-wrap
 msgid "Keeping Jobs Unique Until Processing Begins"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:290
+#: docs/master/queues.md:298
 msgid ""
 "By default, unique jobs are \"unlocked\" after a job completes processing or "
 "fails all of its retry attempts. However, there may be situations where you "
@@ -794,7 +812,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:296
+#: docs/master/queues.md:304
 #, no-wrap
 msgid ""
 "    use App\\Product;\n"
@@ -803,7 +821,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:301
+#: docs/master/queues.md:309
 #, no-wrap
 msgid ""
 "    class UpdateSearchIndex implements ShouldQueue, "
@@ -814,19 +832,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:303
+#: docs/master/queues.md:311
 #, no-wrap
 msgid "<a name=\"unique-job-locks\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/master/queues.md:303
+#: docs/master/queues.md:311
 #, no-wrap
 msgid "Unique Job Locks"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:306
+#: docs/master/queues.md:314
 msgid ""
 "Behind the scenes, when a `ShouldBeUnique` job is dispatched, Laravel "
 "attempts to acquire a [lock](/docs/{{version}}/cache#atomic-locks) with the "
@@ -839,13 +857,13 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:308
+#: docs/master/queues.md:316
 #, no-wrap
 msgid "    use Illuminate\\Support\\Facades\\Cache;\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:312
+#: docs/master/queues.md:320
 #, no-wrap
 msgid ""
 "    class UpdateSearchIndex implements ShouldQueue, ShouldBeUnique\n"
@@ -854,14 +872,14 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:323
+#: docs/master/queues.md:331
 #, no-wrap
 msgid ""
 "        /**\n"
-"        * Get the cache driver for the unique job lock.\n"
-"        *\n"
-"        * @return \\Illuminate\\Contracts\\Cache\\Repository\n"
-"        */\n"
+"         * Get the cache driver for the unique job lock.\n"
+"         *\n"
+"         * @return \\Illuminate\\Contracts\\Cache\\Repository\n"
+"         */\n"
 "        public function uniqueVia()\n"
 "        {\n"
 "            return Cache::driver('redis');\n"
@@ -870,7 +888,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:325
+#: docs/master/queues.md:333
 #, no-wrap
 msgid ""
 "> {tip} If you only need to limit the concurrent processing of a job, use "
@@ -879,19 +897,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:327
+#: docs/master/queues.md:335
 #, no-wrap
 msgid "<a name=\"job-middleware\"></a>\n"
 msgstr ""
 
 #. type: Title ##
-#: docs/master/queues.md:327
+#: docs/master/queues.md:335
 #, no-wrap
 msgid "Job Middleware"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:330
+#: docs/master/queues.md:338
 msgid ""
 "Job middleware allow you to wrap custom logic around the execution of queued "
 "jobs, reducing boilerplate in the jobs themselves. For example, consider the "
@@ -900,13 +918,13 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:332 docs/master/queues.md:360 docs/master/queues.md:887
+#: docs/master/queues.md:340 docs/master/queues.md:368 docs/master/queues.md:982
 #, no-wrap
 msgid "    use Illuminate\\Support\\Facades\\Redis;\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:342
+#: docs/master/queues.md:350
 #, no-wrap
 msgid ""
 "    /**\n"
@@ -922,7 +940,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:346
+#: docs/master/queues.md:354
 #, no-wrap
 msgid ""
 "            // Handle job...\n"
@@ -931,7 +949,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:350
+#: docs/master/queues.md:358
 #, no-wrap
 msgid ""
 "            return $this->release(5);\n"
@@ -940,7 +958,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:352
+#: docs/master/queues.md:360
 msgid ""
 "While this code is valid, the implementation of the `handle` method becomes "
 "noisy since it is cluttered with Redis rate limiting logic. In addition, "
@@ -949,7 +967,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:354
+#: docs/master/queues.md:362
 msgid ""
 "Instead of rate limiting in the handle method, we could define a job "
 "middleware that handles rate limiting. Laravel does not have a default "
@@ -959,13 +977,13 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:358
+#: docs/master/queues.md:366
 #, no-wrap
 msgid "    namespace App\\Jobs\\Middleware;\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:376
+#: docs/master/queues.md:384
 #, no-wrap
 msgid ""
 "    class RateLimited\n"
@@ -986,7 +1004,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:380
+#: docs/master/queues.md:388
 #, no-wrap
 msgid ""
 "                        $next($job);\n"
@@ -995,7 +1013,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:385
+#: docs/master/queues.md:393
 #, no-wrap
 msgid ""
 "                        $job->release(5);\n"
@@ -1005,7 +1023,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:387
+#: docs/master/queues.md:395
 msgid ""
 "As you can see, like [route middleware](/docs/{{version}}/middleware), job "
 "middleware receive the job being processed and a callback that should be "
@@ -1013,7 +1031,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:389
+#: docs/master/queues.md:397
 msgid ""
 "After creating job middleware, they may be attached to a job by returning "
 "them from the job's `middleware` method. This method does not exist on jobs "
@@ -1022,13 +1040,13 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:391
+#: docs/master/queues.md:399
 #, no-wrap
 msgid "    use App\\Jobs\\Middleware\\RateLimited;\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:401
+#: docs/master/queues.md:409
 #, no-wrap
 msgid ""
 "    /**\n"
@@ -1043,19 +1061,27 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:403
+#: docs/master/queues.md:411
+#, no-wrap
+msgid ""
+"> {tip} Job middleware can also be assigned to queueable event listeners, "
+"mailables, and notifications.\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/queues.md:413
 #, no-wrap
 msgid "<a name=\"rate-limiting\"></a>\n"
 msgstr ""
 
 #. type: Title ###
-#: docs/master/queues.md:403
+#: docs/master/queues.md:413
 #, no-wrap
 msgid "Rate Limiting"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:406
+#: docs/master/queues.md:416
 msgid ""
 "Although we just demonstrated how to write your own rate limiting job "
 "middleware, Laravel actually includes a rate limiting middleware that you "
@@ -1065,7 +1091,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:408
+#: docs/master/queues.md:418
 msgid ""
 "For example, you may wish to allow users to backup their data once per hour "
 "while imposing no such limit on premium customers. To accomplish this, you "
@@ -1074,7 +1100,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:411
+#: docs/master/queues.md:421
 #, no-wrap
 msgid ""
 "    use Illuminate\\Cache\\RateLimiting\\Limit;\n"
@@ -1082,7 +1108,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:425
+#: docs/master/queues.md:435
 #, no-wrap
 msgid ""
 "    /**\n"
@@ -1101,7 +1127,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:427
+#: docs/master/queues.md:437
 msgid ""
 "In the example above, we defined an hourly rate limit; however, you may "
 "easily define a rate limit based on minutes using the `perMinute` method. In "
@@ -1111,13 +1137,13 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:429
+#: docs/master/queues.md:439
 #, no-wrap
 msgid "    return Limit::perMinute(50)->by($job->user->id);\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:431
+#: docs/master/queues.md:441
 msgid ""
 "Once you have defined your rate limit, you may attach the rate limiter to "
 "your backup job using the `Illuminate\\Queue\\Middleware\\RateLimited` "
@@ -1127,13 +1153,13 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:433
+#: docs/master/queues.md:443
 #, no-wrap
 msgid "    use Illuminate\\Queue\\Middleware\\RateLimited;\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:443
+#: docs/master/queues.md:453
 #, no-wrap
 msgid ""
 "    /**\n"
@@ -1148,7 +1174,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:445
+#: docs/master/queues.md:455
 msgid ""
 "Releasing a rate limited job back onto the queue will still increment the "
 "job's total number of `attempts`. You may wish to tune your `tries` and "
@@ -1158,7 +1184,29 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:447
+#: docs/master/queues.md:457
+msgid ""
+"If you do not want a job to be retried when it is rate limited, you may use "
+"the `dontRelease` method:"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/queues.md:467
+#, no-wrap
+msgid ""
+"    /**\n"
+"     * Get the middleware the job should pass through.\n"
+"     *\n"
+"     * @return array\n"
+"     */\n"
+"    public function middleware()\n"
+"    {\n"
+"        return [(new RateLimited('backups'))->dontRelease()];\n"
+"    }\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/queues.md:469
 #, no-wrap
 msgid ""
 "> {tip} If you are using Redis, you may use the "
@@ -1168,19 +1216,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:449
+#: docs/master/queues.md:471
 #, no-wrap
 msgid "<a name=\"preventing-job-overlaps\"></a>\n"
 msgstr ""
 
 #. type: Title ###
-#: docs/master/queues.md:449
+#: docs/master/queues.md:471
 #, no-wrap
 msgid "Preventing Job Overlaps"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:452
+#: docs/master/queues.md:474
 msgid ""
 "Laravel includes an `Illuminate\\Queue\\Middleware\\WithoutOverlapping` "
 "middleware that allows you to prevent job overlaps based on an arbitrary "
@@ -1189,7 +1237,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:454
+#: docs/master/queues.md:476
 msgid ""
 "For example, let's imagine you have a queued job that updates a user's "
 "credit score and you want to prevent credit score update job overlaps for "
@@ -1198,13 +1246,13 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:456
+#: docs/master/queues.md:478
 #, no-wrap
 msgid "    use Illuminate\\Queue\\Middleware\\WithoutOverlapping;\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:466
+#: docs/master/queues.md:488
 #, no-wrap
 msgid ""
 "    /**\n"
@@ -1219,7 +1267,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:468
+#: docs/master/queues.md:490
 msgid ""
 "Any overlapping jobs will be released back to the queue. You may also "
 "specify the number of seconds that must elapse before the released job will "
@@ -1227,7 +1275,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:478
+#: docs/master/queues.md:500
 #, no-wrap
 msgid ""
 "    /**\n"
@@ -1243,14 +1291,14 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:480
+#: docs/master/queues.md:502
 msgid ""
 "If you wish to immediately delete any overlapping jobs so that they will not "
 "be retried, you may use the `dontRelease` method:"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:490
+#: docs/master/queues.md:512
 #, no-wrap
 msgid ""
 "    /**\n"
@@ -1266,7 +1314,34 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:492
+#: docs/master/queues.md:514
+msgid ""
+"The `WithoutOverlapping` middleware is powered by Laravel's atomic lock "
+"feature. Sometimes, your job may unexpectedly fail or timeout in such a way "
+"that the lock is not released. Therefore, you may explicitly define a lock "
+"expiration time using the `expireAfter` method. For example, the example "
+"below will instruct Laravel to release the `WithoutOverlapping` lock three "
+"minutes after the job has started processing:"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/queues.md:524
+#, no-wrap
+msgid ""
+"    /**\n"
+"     * Get the middleware the job should pass through.\n"
+"     *\n"
+"     * @return array\n"
+"     */\n"
+"    public function middleware()\n"
+"    {\n"
+"        return [(new "
+"WithoutOverlapping($this->order->id))->expireAfter(180)];\n"
+"    }\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/queues.md:526
 #, no-wrap
 msgid ""
 "> {note} The `WithoutOverlapping` middleware requires a cache driver that "
@@ -1276,19 +1351,159 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:494
+#: docs/master/queues.md:528
+#, no-wrap
+msgid "<a name=\"throttling-exceptions\"></a>\n"
+msgstr ""
+
+#. type: Title ###
+#: docs/master/queues.md:528
+#, no-wrap
+msgid "Throttling Exceptions"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/queues.md:531
+msgid ""
+"Laravel includes a `Illuminate\\Queue\\Middleware\\ThrottlesExceptions` "
+"middleware that allows you to throttle exceptions. Once the job throws a "
+"given number of exceptions, all further attempts to execute the job are "
+"delayed until a specified time interval lapses. This middleware is "
+"particularly useful for jobs that interact with third-party services that "
+"are unstable."
+msgstr ""
+
+#. type: Plain text
+#: docs/master/queues.md:533
+msgid ""
+"For example, let's imagine a queued job that interacts with a third-party "
+"API that begins throwing exceptions. To throttle exceptions, you can return "
+"the `ThrottlesExceptions` middleware from your job's `middleware` "
+"method. Typically, this middleware should be paired with a job that "
+"implements [time based attempts](#time-based-attempts):"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/queues.md:535 docs/master/queues.md:561 docs/master/queues.md:575
+#, no-wrap
+msgid "    use Illuminate\\Queue\\Middleware\\ThrottlesExceptions;\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/queues.md:545
+#, no-wrap
+msgid ""
+"    /**\n"
+"     * Get the middleware the job should pass through.\n"
+"     *\n"
+"     * @return array\n"
+"     */\n"
+"    public function middleware()\n"
+"    {\n"
+"        return [new ThrottlesExceptions(10, 5)];\n"
+"    }\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/queues.md:555
+#, no-wrap
+msgid ""
+"    /**\n"
+"     * Determine the time at which the job should timeout.\n"
+"     *\n"
+"     * @return \\DateTime\n"
+"     */\n"
+"    public function retryUntil()\n"
+"    {\n"
+"        return now()->addMinutes(5);\n"
+"    }\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/queues.md:557
+msgid ""
+"The first constructor argument accepted by the middleware is the number of "
+"exceptions the job can throw before being throttled, while the second "
+"constructor argument is the number of minutes that should elapse before the "
+"job is attempted again once it has been throttled. In the code example "
+"above, if the job throws 10 exceptions within 5 minutes, we will wait 5 "
+"minutes before attempting the job again."
+msgstr ""
+
+#. type: Plain text
+#: docs/master/queues.md:559
+msgid ""
+"When a job throws an exception but the exception threshold has not yet been "
+"reached, the job will typically be retried immediately. However, you may "
+"specify the number of minutes such a job should be delayed by calling the "
+"`backoff` method when attaching the middleware to the job:"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/queues.md:571
+#, no-wrap
+msgid ""
+"    /**\n"
+"     * Get the middleware the job should pass through.\n"
+"     *\n"
+"     * @return array\n"
+"     */\n"
+"    public function middleware()\n"
+"    {\n"
+"        return [(new ThrottlesExceptions(10, 5))->backoff(5)];\n"
+"    }\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/queues.md:573
+msgid ""
+"Internally, this middleware uses Laravel's cache system to implement rate "
+"limiting, and the job's class name is utilized as the cache \"key\". You may "
+"override this key by calling the `by` method when attaching the middleware "
+"to your job. This may be useful if you have multiple jobs interacting with "
+"the same third-party service and you would like them to share a common "
+"throttling \"bucket\":"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/queues.md:585
+#, no-wrap
+msgid ""
+"    /**\n"
+"     * Get the middleware the job should pass through.\n"
+"     *\n"
+"     * @return array\n"
+"     */\n"
+"    public function middleware()\n"
+"    {\n"
+"        return [(new ThrottlesExceptions(10, 10))->by('key')];\n"
+"    }\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/queues.md:587
+#, no-wrap
+msgid ""
+"> {tip} If you are using Redis, you may use the "
+"`Illuminate\\Queue\\Middleware\\ThrottlesExceptionsWithRedis` middleware, "
+"which is fine-tuned for Redis and more efficient than the basic exception "
+"throttling middleware.\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/queues.md:589
 #, no-wrap
 msgid "<a name=\"dispatching-jobs\"></a>\n"
 msgstr ""
 
 #. type: Title ##
-#: docs/master/queues.md:494
+#: docs/master/queues.md:589
 #, no-wrap
 msgid "Dispatching Jobs"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:497
+#: docs/master/queues.md:592
 msgid ""
 "Once you have written your job class, you may dispatch it using the "
 "`dispatch` method on the job itself. The arguments passed to the `dispatch` "
@@ -1296,13 +1511,13 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:501 docs/master/queues.md:539 docs/master/queues.md:592 docs/master/queues.md:714 docs/master/queues.md:773
+#: docs/master/queues.md:596 docs/master/queues.md:634 docs/master/queues.md:687 docs/master/queues.md:809 docs/master/queues.md:868
 #, no-wrap
 msgid "    namespace App\\Http\\Controllers;\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:506 docs/master/queues.md:544 docs/master/queues.md:597 docs/master/queues.md:719 docs/master/queues.md:778
+#: docs/master/queues.md:601 docs/master/queues.md:639 docs/master/queues.md:692 docs/master/queues.md:814 docs/master/queues.md:873
 #, no-wrap
 msgid ""
 "    use App\\Http\\Controllers\\Controller;\n"
@@ -1312,7 +1527,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:518 docs/master/queues.md:556 docs/master/queues.md:609 docs/master/queues.md:731 docs/master/queues.md:790
+#: docs/master/queues.md:613 docs/master/queues.md:651 docs/master/queues.md:704 docs/master/queues.md:826 docs/master/queues.md:885
 #, no-wrap
 msgid ""
 "    class PodcastController extends Controller\n"
@@ -1329,13 +1544,13 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:520 docs/master/queues.md:558
+#: docs/master/queues.md:615 docs/master/queues.md:653
 #, no-wrap
 msgid "            // ...\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:524
+#: docs/master/queues.md:619
 #, no-wrap
 msgid ""
 "            ProcessPodcast::dispatch($podcast);\n"
@@ -1344,38 +1559,38 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:526
+#: docs/master/queues.md:621
 msgid ""
 "If you would like to conditionally dispatch a job, you may use the "
 "`dispatchIf` and `dispatchUnless` methods:"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:528
+#: docs/master/queues.md:623
 #, no-wrap
 msgid "    ProcessPodcast::dispatchIf($accountActive, $podcast);\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:530
+#: docs/master/queues.md:625
 #, no-wrap
 msgid "    ProcessPodcast::dispatchUnless($accountSuspended, $podcast);\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:532
+#: docs/master/queues.md:627
 #, no-wrap
 msgid "<a name=\"delayed-dispatching\"></a>\n"
 msgstr ""
 
 #. type: Title ###
-#: docs/master/queues.md:532
+#: docs/master/queues.md:627
 #, no-wrap
 msgid "Delayed Dispatching"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:535
+#: docs/master/queues.md:630
 msgid ""
 "If you would like to specify that a job should not be immediately available "
 "for processing by a queue worker, you may use the `delay` method when "
@@ -1384,7 +1599,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:563
+#: docs/master/queues.md:658
 #, no-wrap
 msgid ""
 "            ProcessPodcast::dispatch($podcast)\n"
@@ -1394,7 +1609,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:565
+#: docs/master/queues.md:660
 #, no-wrap
 msgid ""
 "> {note} The Amazon SQS queue service has a maximum delay time of 15 "
@@ -1402,19 +1617,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:567
+#: docs/master/queues.md:662
 #, no-wrap
 msgid "<a name=\"dispatching-after-the-response-is-sent-to-browser\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/master/queues.md:567
+#: docs/master/queues.md:662
 #, no-wrap
 msgid "Dispatching After The Response Is Sent To Browser"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:570
+#: docs/master/queues.md:665
 msgid ""
 "Alternatively, the `dispatchAfterResponse` method delays dispatching a job "
 "until after the HTTP response is sent to the user's browser. This will still "
@@ -1426,19 +1641,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:572
+#: docs/master/queues.md:667
 #, no-wrap
 msgid "    use App\\Jobs\\SendNotification;\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:574
+#: docs/master/queues.md:669
 #, no-wrap
 msgid "    SendNotification::dispatchAfterResponse();\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:576
+#: docs/master/queues.md:671
 msgid ""
 "You may also `dispatch` a closure and chain the `afterResponse` method onto "
 "the `dispatch` helper to execute a closure after the HTTP response has been "
@@ -1446,7 +1661,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:579
+#: docs/master/queues.md:674
 #, no-wrap
 msgid ""
 "    use App\\Mail\\WelcomeMessage;\n"
@@ -1454,7 +1669,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:583
+#: docs/master/queues.md:678
 #, no-wrap
 msgid ""
 "    dispatch(function () {\n"
@@ -1463,19 +1678,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:585
+#: docs/master/queues.md:680
 #, no-wrap
 msgid "<a name=\"synchronous-dispatching\"></a>\n"
 msgstr ""
 
 #. type: Title ###
-#: docs/master/queues.md:585
+#: docs/master/queues.md:680
 #, no-wrap
 msgid "Synchronous Dispatching"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:588
+#: docs/master/queues.md:683
 msgid ""
 "If you would like to dispatch a job immediately (synchronously), you may use "
 "the `dispatchSync` method. When using this method, the job will not be "
@@ -1483,13 +1698,13 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:611 docs/master/queues.md:733 docs/master/queues.md:792
+#: docs/master/queues.md:706 docs/master/queues.md:828 docs/master/queues.md:887
 #, no-wrap
 msgid "            // Create podcast...\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:615
+#: docs/master/queues.md:710
 #, no-wrap
 msgid ""
 "            ProcessPodcast::dispatchSync($podcast);\n"
@@ -1498,19 +1713,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:617
+#: docs/master/queues.md:712
 #, no-wrap
 msgid "<a name=\"jobs-and-database-transactions\"></a>\n"
 msgstr ""
 
 #. type: Title ###
-#: docs/master/queues.md:617
+#: docs/master/queues.md:712
 #, no-wrap
 msgid "Jobs & Database Transactions"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:620
+#: docs/master/queues.md:715
 msgid ""
 "While it is perfectly fine to dispatch jobs within database transactions, "
 "you should take special care to ensure that your job will actually be able "
@@ -1523,7 +1738,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:622
+#: docs/master/queues.md:717
 msgid ""
 "Thankfully, Laravel provides several methods of working around this "
 "problem. First, you may set the `after_commit` connection option in your "
@@ -1531,7 +1746,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:628
+#: docs/master/queues.md:723
 #, no-wrap
 msgid ""
 "    'redis' => [\n"
@@ -1542,7 +1757,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:630
+#: docs/master/queues.md:725
 msgid ""
 "When the `after_commit` option is `true`, you may dispatch jobs within "
 "database transactions; however, Laravel will wait until all open database "
@@ -1552,7 +1767,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:632
+#: docs/master/queues.md:727
 msgid ""
 "If a transaction is rolled back due to an exception that occurs during the "
 "transaction, the dispatched jobs that were dispatched during that "
@@ -1560,7 +1775,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:634
+#: docs/master/queues.md:729
 #, no-wrap
 msgid ""
 "> {tip} Setting the `after_commit` configuration option to `true` will also "
@@ -1570,19 +1785,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:636
+#: docs/master/queues.md:731
 #, no-wrap
 msgid "<a name=\"specifying-commit-dispatch-behavior-inline\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/master/queues.md:636
+#: docs/master/queues.md:731
 #, no-wrap
 msgid "Specifying Commit Dispatch Behavior Inline"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:639
+#: docs/master/queues.md:734
 msgid ""
 "If you do not set the `after_commit` queue connection configuration option "
 "to `true`, you may still indicate that a specific job should be dispatched "
@@ -1591,13 +1806,13 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:643
+#: docs/master/queues.md:738
 #, no-wrap
 msgid "    ProcessPodcast::dispatch($podcast)->afterCommit();\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:645
+#: docs/master/queues.md:740
 msgid ""
 "Likewise, if the `after_commit` configuration option is set to `true`, you "
 "may indicate that a specific job should be dispatched immediately without "
@@ -1605,25 +1820,25 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:647
+#: docs/master/queues.md:742
 #, no-wrap
 msgid "    ProcessPodcast::dispatch($podcast)->beforeCommit();\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:649
+#: docs/master/queues.md:744
 #, no-wrap
 msgid "<a name=\"job-chaining\"></a>\n"
 msgstr ""
 
 #. type: Title ###
-#: docs/master/queues.md:649
+#: docs/master/queues.md:744
 #, no-wrap
 msgid "Job Chaining"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:652
+#: docs/master/queues.md:747
 msgid ""
 "Job chaining allows you to specify a list of queued jobs that should be run "
 "in sequence after the primary job has executed successfully. If one job in "
@@ -1634,7 +1849,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:657
+#: docs/master/queues.md:752
 #, no-wrap
 msgid ""
 "    use App\\Jobs\\OptimizePodcast;\n"
@@ -1644,7 +1859,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:663
+#: docs/master/queues.md:758
 #, no-wrap
 msgid ""
 "    Bus::chain([\n"
@@ -1655,12 +1870,12 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:665
+#: docs/master/queues.md:760
 msgid "In addition to chaining job class instances, you may also chain closures:"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:673
+#: docs/master/queues.md:768
 #, no-wrap
 msgid ""
 "    Bus::chain([\n"
@@ -1673,7 +1888,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:675
+#: docs/master/queues.md:770
 #, no-wrap
 msgid ""
 "> {note} Deleting jobs using the `$this->delete()` method within the job "
@@ -1682,19 +1897,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:677
+#: docs/master/queues.md:772
 #, no-wrap
 msgid "<a name=\"chain-connection-queue\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/master/queues.md:677
+#: docs/master/queues.md:772
 #, no-wrap
 msgid "Chain Connection & Queue"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:680
+#: docs/master/queues.md:775
 msgid ""
 "If you would like to specify the connection and queue that should be used "
 "for the chained jobs, you may use the `onConnection` and `onQueue` "
@@ -1704,7 +1919,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:686
+#: docs/master/queues.md:781
 #, no-wrap
 msgid ""
 "    Bus::chain([\n"
@@ -1715,19 +1930,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:688
+#: docs/master/queues.md:783
 #, no-wrap
 msgid "<a name=\"chain-failures\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/master/queues.md:688
+#: docs/master/queues.md:783
 #, no-wrap
 msgid "Chain Failures"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:691
+#: docs/master/queues.md:786
 msgid ""
 "When chaining jobs, you may use the `catch` method to specify a closure that "
 "should be invoked if a job within the chain fails. The given callback will "
@@ -1735,7 +1950,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:694
+#: docs/master/queues.md:789
 #, no-wrap
 msgid ""
 "    use Illuminate\\Support\\Facades\\Bus;\n"
@@ -1743,7 +1958,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:702
+#: docs/master/queues.md:797
 #, no-wrap
 msgid ""
 "    Bus::chain([\n"
@@ -1756,31 +1971,31 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:704
+#: docs/master/queues.md:799
 #, no-wrap
 msgid "<a name=\"customizing-the-queue-and-connection\"></a>\n"
 msgstr ""
 
 #. type: Title ###
-#: docs/master/queues.md:704
+#: docs/master/queues.md:799
 #, no-wrap
 msgid "Customizing The Queue & Connection"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:707
+#: docs/master/queues.md:802
 #, no-wrap
 msgid "<a name=\"dispatching-to-a-particular-queue\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/master/queues.md:707
+#: docs/master/queues.md:802
 #, no-wrap
 msgid "Dispatching To A Particular Queue"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:710
+#: docs/master/queues.md:805
 msgid ""
 "By pushing jobs to different queues, you may \"categorize\" your queued jobs "
 "and even prioritize how many workers you assign to various queues. Keep in "
@@ -1791,7 +2006,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:737
+#: docs/master/queues.md:832
 #, no-wrap
 msgid ""
 "            ProcessPodcast::dispatch($podcast)->onQueue('processing');\n"
@@ -1800,14 +2015,14 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:739
+#: docs/master/queues.md:834
 msgid ""
 "Alternatively, you may specify the job's queue by calling the `onQueue` "
 "method within the job's constructor:"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:749 docs/master/queues.md:814
+#: docs/master/queues.md:844 docs/master/queues.md:909
 #, no-wrap
 msgid ""
 "     use Illuminate\\Bus\\Queueable;\n"
@@ -1818,7 +2033,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:764
+#: docs/master/queues.md:859
 #, no-wrap
 msgid ""
 "        /**\n"
@@ -1834,26 +2049,26 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:766
+#: docs/master/queues.md:861
 #, no-wrap
 msgid "<a name=\"dispatching-to-a-particular-connection\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/master/queues.md:766
+#: docs/master/queues.md:861
 #, no-wrap
 msgid "Dispatching To A Particular Connection"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:769
+#: docs/master/queues.md:864
 msgid ""
 "If your application interacts with multiple queue connections, you may "
 "specify which connection to push a job to using the `onConnection` method:"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:796
+#: docs/master/queues.md:891
 #, no-wrap
 msgid ""
 "            ProcessPodcast::dispatch($podcast)->onConnection('sqs');\n"
@@ -1862,14 +2077,14 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:798
+#: docs/master/queues.md:893
 msgid ""
 "You may chain the `onConnection` and `onQueue` methods together to specify "
 "the connection and the queue for a job:"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:802
+#: docs/master/queues.md:897
 #, no-wrap
 msgid ""
 "    ProcessPodcast::dispatch($podcast)\n"
@@ -1878,14 +2093,14 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:804
+#: docs/master/queues.md:899
 msgid ""
 "Alternatively, you may specify the job's connection by calling the "
 "`onConnection` method within the job's constructor:"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:829
+#: docs/master/queues.md:924
 #, no-wrap
 msgid ""
 "        /**\n"
@@ -1901,31 +2116,31 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:831
+#: docs/master/queues.md:926
 #, no-wrap
 msgid "<a name=\"max-job-attempts-and-timeout\"></a>\n"
 msgstr ""
 
 #. type: Title ###
-#: docs/master/queues.md:831
+#: docs/master/queues.md:926
 #, no-wrap
 msgid "Specifying Max Job Attempts / Timeout Values"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:834
+#: docs/master/queues.md:929
 #, no-wrap
 msgid "<a name=\"max-attempts\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/master/queues.md:834
+#: docs/master/queues.md:929
 #, no-wrap
 msgid "Max Attempts"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:837
+#: docs/master/queues.md:932
 msgid ""
 "If one of your queued jobs is encountering an error, you likely do not want "
 "it to keep retrying indefinitely. Therefore, Laravel provides various ways "
@@ -1933,7 +2148,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:839
+#: docs/master/queues.md:934
 msgid ""
 "One approach to specifying the maximum number of times a job may be "
 "attempted is via the `--tries` switch on the Artisan command line. This will "
@@ -1942,13 +2157,13 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:841
+#: docs/master/queues.md:936
 #, no-wrap
 msgid "    php artisan queue:work --tries=3\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:843
+#: docs/master/queues.md:938
 msgid ""
 "If a job exceeds its maximum number of attempts, it will be considered a "
 "\"failed\" job. For more information on handling failed jobs, consult the "
@@ -1956,7 +2171,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:845
+#: docs/master/queues.md:940
 msgid ""
 "You may take a more granular approach by defining the maximum number of "
 "times a job may be attempted on the job class itself. If the maximum number "
@@ -1965,7 +2180,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:859
+#: docs/master/queues.md:954
 #, no-wrap
 msgid ""
 "    class ProcessPodcast implements ShouldQueue\n"
@@ -1980,19 +2195,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:861
+#: docs/master/queues.md:956
 #, no-wrap
 msgid "<a name=\"time-based-attempts\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/master/queues.md:861
+#: docs/master/queues.md:956
 #, no-wrap
 msgid "Time Based Attempts"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:864
+#: docs/master/queues.md:959
 msgid ""
 "As an alternative to defining how many times a job may be attempted before "
 "it fails, you may define a time at which the job should no longer be "
@@ -2003,7 +2218,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:874
+#: docs/master/queues.md:969
 #, no-wrap
 msgid ""
 "    /**\n"
@@ -2018,7 +2233,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:876
+#: docs/master/queues.md:971
 #, no-wrap
 msgid ""
 "> {tip} You may also define a `tries` property or `retryUntil` method on "
@@ -2027,19 +2242,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:878
+#: docs/master/queues.md:973
 #, no-wrap
 msgid "<a name=\"max-exceptions\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/master/queues.md:878
+#: docs/master/queues.md:973
 #, no-wrap
 msgid "Max Exceptions"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:881
+#: docs/master/queues.md:976
 msgid ""
 "Sometimes you may wish to specify that a job may be attempted many times, "
 "but should fail if the retries are triggered by a given number of unhandled "
@@ -2049,7 +2264,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:896
+#: docs/master/queues.md:991
 #, no-wrap
 msgid ""
 "    class ProcessPodcast implements ShouldQueue\n"
@@ -2063,7 +2278,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:903
+#: docs/master/queues.md:998
 #, no-wrap
 msgid ""
 "        /**\n"
@@ -2076,7 +2291,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:919
+#: docs/master/queues.md:1014
 #, no-wrap
 msgid ""
 "        /**\n"
@@ -2098,7 +2313,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:921
+#: docs/master/queues.md:1016
 msgid ""
 "In this example, the job is released for ten seconds if the application is "
 "unable to obtain a Redis lock and will continue to be retried up to 25 "
@@ -2107,19 +2322,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:923
+#: docs/master/queues.md:1018
 #, no-wrap
 msgid "<a name=\"timeout\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/master/queues.md:923
+#: docs/master/queues.md:1018
 #, no-wrap
 msgid "Timeout"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:926
+#: docs/master/queues.md:1021
 #, no-wrap
 msgid ""
 "> {note} The `pcntl` PHP extension must be installed in order to specify job "
@@ -2127,7 +2342,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:928
+#: docs/master/queues.md:1023
 msgid ""
 "Often, you know roughly how long you expect your queued jobs to take. For "
 "this reason, Laravel allows you to specify a \"timeout\" value. If a job is "
@@ -2138,27 +2353,27 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:930
+#: docs/master/queues.md:1025
 msgid ""
 "The maximum number of seconds that jobs can run may be specified using the "
 "`--timeout` switch on the Artisan command line:"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:932
+#: docs/master/queues.md:1027
 #, no-wrap
 msgid "    php artisan queue:work --timeout=30\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:934
+#: docs/master/queues.md:1029
 msgid ""
 "If the job exceeds its maximum attempts by continually timing out, it will "
 "be marked as failed."
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:936
+#: docs/master/queues.md:1031
 msgid ""
 "You may also define the maximum number of seconds a job should be allowed to "
 "run on the job class itself. If the timeout is specified on the job, it will "
@@ -2166,7 +2381,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:950
+#: docs/master/queues.md:1045
 #, no-wrap
 msgid ""
 "    class ProcessPodcast implements ShouldQueue\n"
@@ -2181,7 +2396,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:952
+#: docs/master/queues.md:1047
 msgid ""
 "Sometimes, IO blocking processes such as sockets or outgoing HTTP "
 "connections may not respect your specified timeout. Therefore, when using "
@@ -2191,19 +2406,57 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:954
+#: docs/master/queues.md:1049
+#, no-wrap
+msgid "<a name=\"failing-on-timeout\"></a>\n"
+msgstr ""
+
+#. type: Title ####
+#: docs/master/queues.md:1049
+#, no-wrap
+msgid "Failing On Timeout"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/queues.md:1052
+msgid ""
+"If you would like to indicate that a job should be marked as "
+"[failed](#dealing-with-failed-jobs) on timeout, you may define the "
+"`$failOnTimeout` property on the job class:"
+msgstr ""
+
+#. type: Code fence info string
+#: docs/master/queues.md:1053 docs/master/queues.md:1763 docs/master/queues.md:1852
+#, no-wrap
+msgid "php"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/queues.md:1053
+#, no-wrap
+msgid ""
+"/**\n"
+" * Indicate if the job should be marked as failed on timeout.\n"
+" *\n"
+" * @var bool\n"
+" */\n"
+"public $failOnTimeout = true;\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/queues.md:1063
 #, no-wrap
 msgid "<a name=\"error-handling\"></a>\n"
 msgstr ""
 
 #. type: Title ###
-#: docs/master/queues.md:954
+#: docs/master/queues.md:1063
 #, no-wrap
 msgid "Error Handling"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:957
+#: docs/master/queues.md:1066
 msgid ""
 "If an exception is thrown while the job is being processed, the job will "
 "automatically be released back onto the queue so it may be attempted "
@@ -2216,19 +2469,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:959
+#: docs/master/queues.md:1068
 #, no-wrap
 msgid "<a name=\"manually-releasing-a-job\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/master/queues.md:959
+#: docs/master/queues.md:1068
 #, no-wrap
 msgid "Manually Releasing A Job"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:962
+#: docs/master/queues.md:1071
 msgid ""
 "Sometimes you may wish to manually release a job back onto the queue so that "
 "it can be attempted again at a later time. You may accomplish this by "
@@ -2236,7 +2489,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:971 docs/master/queues.md:992
+#: docs/master/queues.md:1080 docs/master/queues.md:1101
 #, no-wrap
 msgid ""
 "    /**\n"
@@ -2250,7 +2503,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:974
+#: docs/master/queues.md:1083
 #, no-wrap
 msgid ""
 "        $this->release();\n"
@@ -2258,7 +2511,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:976
+#: docs/master/queues.md:1085
 msgid ""
 "By default, the `release` method will release the job back onto the queue "
 "for immediate processing. However, by passing an integer to the `release` "
@@ -2267,32 +2520,32 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:978
+#: docs/master/queues.md:1087
 #, no-wrap
-msgid "    $this->release(10)\n"
+msgid "    $this->release(10);\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:980
+#: docs/master/queues.md:1089
 #, no-wrap
 msgid "<a name=\"manually-failing-a-job\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/master/queues.md:980
+#: docs/master/queues.md:1089
 #, no-wrap
 msgid "Manually Failing A Job"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:983
+#: docs/master/queues.md:1092
 msgid ""
 "Occasionally you may need to manually mark a job as \"failed\". To do so, "
 "you may call the `fail` method:"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:995
+#: docs/master/queues.md:1104
 #, no-wrap
 msgid ""
 "        $this->fail();\n"
@@ -2300,20 +2553,20 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:997
+#: docs/master/queues.md:1106
 msgid ""
 "If you would like to mark your job as failed because of an exception that "
 "you have caught, you may pass the exception to the `fail` method:"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:999
+#: docs/master/queues.md:1108
 #, no-wrap
 msgid "    $this->fail($exception);\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:1001
+#: docs/master/queues.md:1110
 #, no-wrap
 msgid ""
 "> {tip} For more information on failed jobs, check out the [documentation on "
@@ -2321,19 +2574,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:1003
+#: docs/master/queues.md:1112
 #, no-wrap
 msgid "<a name=\"job-batching\"></a>\n"
 msgstr ""
 
 #. type: Title ##
-#: docs/master/queues.md:1003
+#: docs/master/queues.md:1112
 #, no-wrap
 msgid "Job Batching"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:1006
+#: docs/master/queues.md:1115
 msgid ""
 "Laravel's job batching feature allows you to easily execute a batch of jobs "
 "and then perform some action when the batch of jobs has completed "
@@ -2344,25 +2597,25 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:1008
+#: docs/master/queues.md:1117
 #, no-wrap
 msgid "    php artisan queue:batches-table\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:1012
+#: docs/master/queues.md:1121
 #, no-wrap
 msgid "<a name=\"defining-batchable-jobs\"></a>\n"
 msgstr ""
 
 #. type: Title ###
-#: docs/master/queues.md:1012
+#: docs/master/queues.md:1121
 #, no-wrap
 msgid "Defining Batchable Jobs"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:1015
+#: docs/master/queues.md:1124
 msgid ""
 "To define a batchable job, you should [create a queueable "
 "job](#creating-jobs) as normal; however, you should add the "
@@ -2372,7 +2625,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:1026
+#: docs/master/queues.md:1135
 #, no-wrap
 msgid ""
 "    use Illuminate\\Bus\\Batchable;\n"
@@ -2384,7 +2637,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:1030
+#: docs/master/queues.md:1139
 #, no-wrap
 msgid ""
 "    class ImportCsv implements ShouldQueue\n"
@@ -2394,7 +2647,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:1040
+#: docs/master/queues.md:1149
 #, no-wrap
 msgid ""
 "        /**\n"
@@ -2409,7 +2662,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:1043
+#: docs/master/queues.md:1152
 #, no-wrap
 msgid ""
 "                return;\n"
@@ -2417,7 +2670,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:1047
+#: docs/master/queues.md:1156
 #, no-wrap
 msgid ""
 "            // Import a portion of the CSV file...\n"
@@ -2426,19 +2679,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:1049
+#: docs/master/queues.md:1158
 #, no-wrap
 msgid "<a name=\"dispatching-batches\"></a>\n"
 msgstr ""
 
 #. type: Title ###
-#: docs/master/queues.md:1049
+#: docs/master/queues.md:1158
 #, no-wrap
 msgid "Dispatching Batches"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:1052
+#: docs/master/queues.md:1161
 msgid ""
 "To dispatch a batch of jobs, you should use the `batch` method of the `Bus` "
 "facade. Of course, batching is primarily useful when combined with "
@@ -2450,7 +2703,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:1057
+#: docs/master/queues.md:1166
 #, no-wrap
 msgid ""
 "    use App\\Jobs\\ImportCsv;\n"
@@ -2460,7 +2713,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:1071
+#: docs/master/queues.md:1180
 #, no-wrap
 msgid ""
 "    $batch = Bus::batch([\n"
@@ -2479,13 +2732,13 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:1073
+#: docs/master/queues.md:1182
 #, no-wrap
 msgid "    return $batch->id;\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:1075
+#: docs/master/queues.md:1184
 #, no-wrap
 msgid ""
 "The batch's ID, which may be accessed via the `$batch->id` property, may be "
@@ -2494,19 +2747,28 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:1077
+#: docs/master/queues.md:1186
+#, no-wrap
+msgid ""
+"> {note} Since batch callbacks are serialized and executed at a later time "
+"by the Laravel queue, you should not use the `$this` variable within the "
+"callbacks.\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/queues.md:1188
 #, no-wrap
 msgid "<a name=\"naming-batches\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/master/queues.md:1077
+#: docs/master/queues.md:1188
 #, no-wrap
 msgid "Naming Batches"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:1080
+#: docs/master/queues.md:1191
 msgid ""
 "Some tools such as Laravel Horizon and Laravel Telescope may provide more "
 "user-friendly debug information for batches if batches are named. To assign "
@@ -2515,7 +2777,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:1086
+#: docs/master/queues.md:1197
 #, no-wrap
 msgid ""
 "    $batch = Bus::batch([\n"
@@ -2526,19 +2788,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:1088
+#: docs/master/queues.md:1199
 #, no-wrap
 msgid "<a name=\"batch-connection-queue\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/master/queues.md:1088
+#: docs/master/queues.md:1199
 #, no-wrap
 msgid "Batch Connection & Queue"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:1091
+#: docs/master/queues.md:1202
 msgid ""
 "If you would like to specify the connection and queue that should be used "
 "for the batched jobs, you may use the `onConnection` and `onQueue` "
@@ -2546,7 +2808,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:1097
+#: docs/master/queues.md:1208
 #, no-wrap
 msgid ""
 "    $batch = Bus::batch([\n"
@@ -2557,19 +2819,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:1099
+#: docs/master/queues.md:1210
 #, no-wrap
 msgid "<a name=\"chains-within-batches\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/master/queues.md:1099
+#: docs/master/queues.md:1210
 #, no-wrap
 msgid "Chains Within Batches"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:1102
+#: docs/master/queues.md:1213
 msgid ""
 "You may define a set of [chained jobs](#job-chaining) within a batch by "
 "placing the chained jobs within an array. For example, we may execute two "
@@ -2578,7 +2840,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:1107
+#: docs/master/queues.md:1218
 #, no-wrap
 msgid ""
 "    use App\\Jobs\\ReleasePodcast;\n"
@@ -2588,7 +2850,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:1120
+#: docs/master/queues.md:1231
 #, no-wrap
 msgid ""
 "    Bus::batch([\n"
@@ -2606,19 +2868,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:1122
+#: docs/master/queues.md:1233
 #, no-wrap
 msgid "<a name=\"adding-jobs-to-batches\"></a>\n"
 msgstr ""
 
 #. type: Title ###
-#: docs/master/queues.md:1122
+#: docs/master/queues.md:1233
 #, no-wrap
 msgid "Adding Jobs To Batches"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:1125
+#: docs/master/queues.md:1236
 msgid ""
 "Sometimes it may be useful to add additional jobs to a batch from within a "
 "batched job. This pattern can be useful when you need to batch thousands of "
@@ -2628,7 +2890,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:1133
+#: docs/master/queues.md:1244
 #, no-wrap
 msgid ""
 "    $batch = Bus::batch([\n"
@@ -2641,7 +2903,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:1135
+#: docs/master/queues.md:1246
 msgid ""
 "In this example, we will use the `LoadImportBatch` job to hydrate the batch "
 "with additional jobs. To accomplish this, we may use the `add` method on the "
@@ -2649,7 +2911,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:1138
+#: docs/master/queues.md:1249
 #, no-wrap
 msgid ""
 "    use App\\Jobs\\ImportContacts;\n"
@@ -2657,7 +2919,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:1149 docs/master/queues.md:1239
+#: docs/master/queues.md:1260 docs/master/queues.md:1350
 #, no-wrap
 msgid ""
 "    /**\n"
@@ -2673,7 +2935,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:1154
+#: docs/master/queues.md:1265
 #, no-wrap
 msgid ""
 "        $this->batch()->add(Collection::times(1000, function () {\n"
@@ -2683,7 +2945,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:1156
+#: docs/master/queues.md:1267
 #, no-wrap
 msgid ""
 "> {note} You may only add jobs to a batch from within a job that belongs to "
@@ -2691,19 +2953,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:1158
+#: docs/master/queues.md:1269
 #, no-wrap
 msgid "<a name=\"inspecting-batches\"></a>\n"
 msgstr ""
 
 #. type: Title ###
-#: docs/master/queues.md:1158
+#: docs/master/queues.md:1269
 #, no-wrap
 msgid "Inspecting Batches"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:1161
+#: docs/master/queues.md:1272
 msgid ""
 "The `Illuminate\\Bus\\Batch` instance that is provided to batch completion "
 "callbacks has a variety of properties and methods to assist you in "
@@ -2711,7 +2973,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:1164
+#: docs/master/queues.md:1275
 #, no-wrap
 msgid ""
 "    // The UUID of the batch...\n"
@@ -2719,7 +2981,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:1167
+#: docs/master/queues.md:1278
 #, no-wrap
 msgid ""
 "    // The name of the batch (if applicable)...\n"
@@ -2727,7 +2989,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:1170
+#: docs/master/queues.md:1281
 #, no-wrap
 msgid ""
 "    // The number of jobs assigned to the batch...\n"
@@ -2735,7 +2997,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:1173
+#: docs/master/queues.md:1284
 #, no-wrap
 msgid ""
 "    // The number of jobs that have not been processed by the queue...\n"
@@ -2743,7 +3005,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:1176
+#: docs/master/queues.md:1287
 #, no-wrap
 msgid ""
 "    // The number of jobs that have failed...\n"
@@ -2751,7 +3013,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:1179
+#: docs/master/queues.md:1290
 #, no-wrap
 msgid ""
 "    // The number of jobs that have been processed thus far...\n"
@@ -2759,7 +3021,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:1182
+#: docs/master/queues.md:1293
 #, no-wrap
 msgid ""
 "    // The completion percentage of the batch (0-100)...\n"
@@ -2767,7 +3029,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:1185
+#: docs/master/queues.md:1296
 #, no-wrap
 msgid ""
 "    // Indicates if the batch has finished executing...\n"
@@ -2775,7 +3037,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:1188
+#: docs/master/queues.md:1299
 #, no-wrap
 msgid ""
 "    // Cancel the execution of the batch...\n"
@@ -2783,7 +3045,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:1191
+#: docs/master/queues.md:1302
 #, no-wrap
 msgid ""
 "    // Indicates if the batch has been cancelled...\n"
@@ -2791,19 +3053,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:1193
+#: docs/master/queues.md:1304
 #, no-wrap
 msgid "<a name=\"returning-batches-from-routes\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/master/queues.md:1193
+#: docs/master/queues.md:1304
 #, no-wrap
 msgid "Returning Batches From Routes"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:1196
+#: docs/master/queues.md:1307
 msgid ""
 "All `Illuminate\\Bus\\Batch` instances are JSON serializable, meaning you "
 "can return them directly from one of your application's routes to retrieve a "
@@ -2813,14 +3075,14 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:1198
+#: docs/master/queues.md:1309
 msgid ""
 "To retrieve a batch by its ID, you may use the `Bus` facade's `findBatch` "
 "method:"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:1201
+#: docs/master/queues.md:1312
 #, no-wrap
 msgid ""
 "    use Illuminate\\Support\\Facades\\Bus;\n"
@@ -2828,7 +3090,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:1205
+#: docs/master/queues.md:1316
 #, no-wrap
 msgid ""
 "    Route::get('/batch/{batchId}', function (string $batchId) {\n"
@@ -2837,19 +3099,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:1207
+#: docs/master/queues.md:1318
 #, no-wrap
 msgid "<a name=\"cancelling-batches\"></a>\n"
 msgstr ""
 
 #. type: Title ###
-#: docs/master/queues.md:1207
+#: docs/master/queues.md:1318
 #, no-wrap
 msgid "Cancelling Batches"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:1210
+#: docs/master/queues.md:1321
 msgid ""
 "Sometimes you may need to cancel a given batch's execution. This can be "
 "accomplished by calling the `cancel` method on the `Illuminate\\Bus\\Batch` "
@@ -2857,7 +3119,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:1221
+#: docs/master/queues.md:1332
 #, no-wrap
 msgid ""
 "    /**\n"
@@ -2873,7 +3135,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:1226
+#: docs/master/queues.md:1337
 #, no-wrap
 msgid ""
 "        if ($this->batch()->cancelled()) {\n"
@@ -2883,7 +3145,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:1228
+#: docs/master/queues.md:1339
 msgid ""
 "As you may have noticed in previous examples, batched jobs should typically "
 "check to see if the batch has been cancelled at the beginning of their "
@@ -2891,7 +3153,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:1242
+#: docs/master/queues.md:1353
 #, no-wrap
 msgid ""
 "        // Continue processing...\n"
@@ -2899,19 +3161,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:1244
+#: docs/master/queues.md:1355
 #, no-wrap
 msgid "<a name=\"batch-failures\"></a>\n"
 msgstr ""
 
 #. type: Title ###
-#: docs/master/queues.md:1244
+#: docs/master/queues.md:1355
 #, no-wrap
 msgid "Batch Failures"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:1247
+#: docs/master/queues.md:1358
 msgid ""
 "When a batched job fails, the `catch` callback (if assigned) will be "
 "invoked. This callback is only invoked for the first job that fails within "
@@ -2919,19 +3181,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:1249
+#: docs/master/queues.md:1360
 #, no-wrap
 msgid "<a name=\"allowing-failures\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/master/queues.md:1249
+#: docs/master/queues.md:1360
 #, no-wrap
 msgid "Allowing Failures"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:1252
+#: docs/master/queues.md:1363
 msgid ""
 "When a job within a batch fails, Laravel will automatically mark the batch "
 "as \"cancelled\". If you wish, you may disable this behavior so that a job "
@@ -2941,7 +3203,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:1258
+#: docs/master/queues.md:1369
 #, no-wrap
 msgid ""
 "    $batch = Bus::batch([\n"
@@ -2952,19 +3214,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:1260
+#: docs/master/queues.md:1371
 #, no-wrap
 msgid "<a name=\"retrying-failed-batch-jobs\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/master/queues.md:1260
+#: docs/master/queues.md:1371
 #, no-wrap
 msgid "Retrying Failed Batch Jobs"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:1263
+#: docs/master/queues.md:1374
 msgid ""
 "For convenience, Laravel provides a `queue:retry-batch` Artisan command that "
 "allows you to easily retry all of the failed jobs for a given batch. The "
@@ -2973,31 +3235,31 @@ msgid ""
 msgstr ""
 
 #. type: Code fence info string
-#: docs/master/queues.md:1264 docs/master/queues.md:1409 docs/master/queues.md:1462
+#: docs/master/queues.md:1375 docs/master/queues.md:1524 docs/master/queues.md:1577 docs/master/queues.md:1846
 #, no-wrap
 msgid "bash"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:1264
+#: docs/master/queues.md:1375
 #, no-wrap
 msgid "php artisan queue:retry-batch 32dbc76c-4f82-4749-b610-a639fe0099b5\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:1269
+#: docs/master/queues.md:1380
 #, no-wrap
 msgid "<a name=\"pruning-batches\"></a>\n"
 msgstr ""
 
 #. type: Title ###
-#: docs/master/queues.md:1269
+#: docs/master/queues.md:1380
 #, no-wrap
 msgid "Pruning Batches"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:1272
+#: docs/master/queues.md:1383
 msgid ""
 "Without pruning, the `job_batches` table can accumulate records very "
 "quickly. To mitigate this, you should "
@@ -3006,13 +3268,13 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:1274
+#: docs/master/queues.md:1385
 #, no-wrap
 msgid "    $schedule->command('queue:prune-batches')->daily();\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:1276
+#: docs/master/queues.md:1387
 msgid ""
 "By default, all finished batches that are more than 24 hours old will be "
 "pruned. You may use the `hours` option when calling the command to determine "
@@ -3021,25 +3283,43 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:1278
+#: docs/master/queues.md:1389
 #, no-wrap
 msgid "    $schedule->command('queue:prune-batches --hours=48')->daily();\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:1280
+#: docs/master/queues.md:1391
+msgid ""
+"Sometimes, your `jobs_batches` table may accumulate batch records for "
+"batches that never completed successfully, such as batches where a job "
+"failed and that job was never retried successfully. You may instruct the "
+"`queue:prune-batches` command to prune these unfinished batch records using "
+"the `unfinished` option:"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/queues.md:1393
+#, no-wrap
+msgid ""
+"    $schedule->command('queue:prune-batches --hours=48 "
+"--unfinished=72')->daily();\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/queues.md:1395
 #, no-wrap
 msgid "<a name=\"queueing-closures\"></a>\n"
 msgstr ""
 
 #. type: Title ##
-#: docs/master/queues.md:1280
+#: docs/master/queues.md:1395
 #, no-wrap
 msgid "Queueing Closures"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:1283
+#: docs/master/queues.md:1398
 msgid ""
 "Instead of dispatching a job class to the queue, you may also dispatch a "
 "closure. This is great for quick, simple tasks that need to be executed "
@@ -3049,13 +3329,13 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:1285
+#: docs/master/queues.md:1400
 #, no-wrap
 msgid "    $podcast = App\\Podcast::find(1);\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:1289
+#: docs/master/queues.md:1404
 #, no-wrap
 msgid ""
 "    dispatch(function () use ($podcast) {\n"
@@ -3064,7 +3344,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:1291
+#: docs/master/queues.md:1406
 msgid ""
 "Using the `catch` method, you may provide a closure that should be executed "
 "if the queued closure fails to complete successfully after exhausting all of "
@@ -3072,13 +3352,13 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:1293
+#: docs/master/queues.md:1408
 #, no-wrap
 msgid "    use Throwable;\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:1299
+#: docs/master/queues.md:1414
 #, no-wrap
 msgid ""
 "    dispatch(function () use ($podcast) {\n"
@@ -3089,31 +3369,31 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:1301
+#: docs/master/queues.md:1416
 #, no-wrap
 msgid "<a name=\"running-the-queue-worker\"></a>\n"
 msgstr ""
 
 #. type: Title ##
-#: docs/master/queues.md:1301
+#: docs/master/queues.md:1416
 #, no-wrap
 msgid "Running The Queue Worker"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:1304
+#: docs/master/queues.md:1419
 #, no-wrap
 msgid "<a name=\"the-queue-work-command\"></a>\n"
 msgstr ""
 
 #. type: Title ###
-#: docs/master/queues.md:1304
+#: docs/master/queues.md:1419
 #, no-wrap
 msgid "The `queue:work` Command"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:1307
+#: docs/master/queues.md:1422
 msgid ""
 "Laravel includes an Artisan command that will start a queue worker and "
 "process new jobs as they are pushed onto the queue. You may run the worker "
@@ -3123,13 +3403,13 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:1309
+#: docs/master/queues.md:1424
 #, no-wrap
 msgid "    php artisan queue:work\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:1311
+#: docs/master/queues.md:1426
 #, no-wrap
 msgid ""
 "> {tip} To keep the `queue:work` process running permanently in the "
@@ -3139,7 +3419,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:1313
+#: docs/master/queues.md:1428
 msgid ""
 "Remember, queue workers, are long-lived processes and store the booted "
 "application state in memory. As a result, they will not notice changes in "
@@ -3151,7 +3431,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:1315
+#: docs/master/queues.md:1430
 msgid ""
 "Alternatively, you may run the `queue:listen` command. When using the "
 "`queue:listen` command, you don't have to manually restart the worker when "
@@ -3161,25 +3441,25 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:1317
+#: docs/master/queues.md:1432
 #, no-wrap
 msgid "    php artisan queue:listen\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:1319
+#: docs/master/queues.md:1434
 #, no-wrap
 msgid "<a name=\"running-multiple-queue-workers\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/master/queues.md:1319
+#: docs/master/queues.md:1434
 #, no-wrap
 msgid "Running Multiple Queue Workers"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:1322
+#: docs/master/queues.md:1437
 msgid ""
 "To assign multiple workers to a queue and process jobs concurrently, you "
 "should simply start multiple `queue:work` processes. This can either be done "
@@ -3190,19 +3470,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:1324
+#: docs/master/queues.md:1439
 #, no-wrap
 msgid "<a name=\"specifying-the-connection-queue\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/master/queues.md:1324
+#: docs/master/queues.md:1439
 #, no-wrap
 msgid "Specifying The Connection & Queue"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:1327
+#: docs/master/queues.md:1442
 msgid ""
 "You may also specify which queue connection the worker should utilize. The "
 "connection name passed to the `work` command should correspond to one of the "
@@ -3210,54 +3490,55 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:1329
+#: docs/master/queues.md:1444
 #, no-wrap
 msgid "    php artisan queue:work redis\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:1331
+#: docs/master/queues.md:1446
 msgid ""
-"You may customize your queue worker even further by only processing "
-"particular queues for a given connection. For example, if all of your emails "
-"are processed in an `emails` queue on your `redis` queue connection, you may "
-"issue the following command to start a worker that only processes that "
-"queue:"
+"By default, the `queue:work` command only processes jobs for the default "
+"queue on a given connection. However, you may customize your queue worker "
+"even further by only processing particular queues for a given "
+"connection. For example, if all of your emails are processed in an `emails` "
+"queue on your `redis` queue connection, you may issue the following command "
+"to start a worker that only processes that queue:"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:1333
+#: docs/master/queues.md:1448
 #, no-wrap
 msgid "    php artisan queue:work redis --queue=emails\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:1335
+#: docs/master/queues.md:1450
 #, no-wrap
 msgid "<a name=\"processing-a-specified-number-of-jobs\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/master/queues.md:1335
+#: docs/master/queues.md:1450
 #, no-wrap
 msgid "Processing A Specified Number Of Jobs"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:1338
+#: docs/master/queues.md:1453
 msgid ""
 "The `--once` option may be used to instruct the worker to only process a "
 "single job from the queue:"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:1340
+#: docs/master/queues.md:1455
 #, no-wrap
 msgid "    php artisan queue:work --once\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:1342
+#: docs/master/queues.md:1457
 msgid ""
 "The `--max-jobs` option may be used to instruct the worker to process the "
 "given number of jobs and then exit. This option may be useful when combined "
@@ -3267,25 +3548,25 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:1344
+#: docs/master/queues.md:1459
 #, no-wrap
 msgid "    php artisan queue:work --max-jobs=1000\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:1346
+#: docs/master/queues.md:1461
 #, no-wrap
 msgid "<a name=\"processing-all-queued-jobs-then-exiting\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/master/queues.md:1346
+#: docs/master/queues.md:1461
 #, no-wrap
 msgid "Processing All Queued Jobs & Then Exiting"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:1349
+#: docs/master/queues.md:1464
 msgid ""
 "The `--stop-when-empty` option may be used to instruct the worker to process "
 "all jobs and then exit gracefully. This option can be useful when processing "
@@ -3294,25 +3575,25 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:1351
+#: docs/master/queues.md:1466
 #, no-wrap
 msgid "    php artisan queue:work --stop-when-empty\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:1353
+#: docs/master/queues.md:1468
 #, no-wrap
 msgid "<a name=\"processing-jobs-for-a-given-number-of-seconds\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/master/queues.md:1353
+#: docs/master/queues.md:1468
 #, no-wrap
 msgid "Processing Jobs For A Given Number Of Seconds"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:1356
+#: docs/master/queues.md:1471
 msgid ""
 "The `--max-time` option may be used to instruct the worker to process jobs "
 "for the given number of seconds and then exit. This option may be useful "
@@ -3322,7 +3603,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:1359
+#: docs/master/queues.md:1474
 #, no-wrap
 msgid ""
 "    // Process jobs for one hour and then exit...\n"
@@ -3330,19 +3611,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:1361
+#: docs/master/queues.md:1476
 #, no-wrap
 msgid "<a name=\"worker-sleep-duration\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/master/queues.md:1361
+#: docs/master/queues.md:1476
 #, no-wrap
 msgid "Worker Sleep Duration"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:1364
+#: docs/master/queues.md:1479
 msgid ""
 "When jobs are available on the queue, the worker will keep processing jobs "
 "with no delay in between them. However, the `sleep` option determines how "
@@ -3352,25 +3633,25 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:1366
+#: docs/master/queues.md:1481
 #, no-wrap
 msgid "    php artisan queue:work --sleep=3\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:1368
+#: docs/master/queues.md:1483
 #, no-wrap
 msgid "<a name=\"resource-considerations\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/master/queues.md:1368
+#: docs/master/queues.md:1483
 #, no-wrap
 msgid "Resource Considerations"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:1371
+#: docs/master/queues.md:1486
 msgid ""
 "Daemon queue workers do not \"reboot\" the framework before processing each "
 "job. Therefore, you should release any heavy resources after each job "
@@ -3380,19 +3661,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:1373
+#: docs/master/queues.md:1488
 #, no-wrap
 msgid "<a name=\"queue-priorities\"></a>\n"
 msgstr ""
 
 #. type: Title ###
-#: docs/master/queues.md:1373
+#: docs/master/queues.md:1488
 #, no-wrap
 msgid "Queue Priorities"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:1376
+#: docs/master/queues.md:1491
 msgid ""
 "Sometimes you may wish to prioritize how your queues are processed. For "
 "example, in your `config/queue.php` configuration file, you may set the "
@@ -3401,13 +3682,13 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:1378
+#: docs/master/queues.md:1493
 #, no-wrap
 msgid "    dispatch((new Job)->onQueue('high'));\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:1380
+#: docs/master/queues.md:1495
 msgid ""
 "To start a worker that verifies that all of the `high` queue jobs are "
 "processed before continuing to any jobs on the `low` queue, pass a "
@@ -3415,25 +3696,25 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:1382
+#: docs/master/queues.md:1497
 #, no-wrap
 msgid "    php artisan queue:work --queue=high,low\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:1384
+#: docs/master/queues.md:1499
 #, no-wrap
 msgid "<a name=\"queue-workers-and-deployment\"></a>\n"
 msgstr ""
 
 #. type: Title ###
-#: docs/master/queues.md:1384
+#: docs/master/queues.md:1499
 #, no-wrap
 msgid "Queue Workers & Deployment"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:1387
+#: docs/master/queues.md:1502
 msgid ""
 "Since queue workers are long-lived processes, they will not notice changes "
 "to your code without being restarted. So, the simplest way to deploy an "
@@ -3443,13 +3724,13 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:1389
+#: docs/master/queues.md:1504
 #, no-wrap
 msgid "    php artisan queue:restart\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:1391
+#: docs/master/queues.md:1506
 msgid ""
 "This command will instruct all queue workers to gracefully exit after they "
 "finish processing their current job so that no existing jobs are lost. Since "
@@ -3460,7 +3741,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:1393
+#: docs/master/queues.md:1508
 #, no-wrap
 msgid ""
 "> {tip} The queue uses the [cache](/docs/{{version}}/cache) to store restart "
@@ -3469,31 +3750,31 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:1395
+#: docs/master/queues.md:1510
 #, no-wrap
 msgid "<a name=\"job-expirations-and-timeouts\"></a>\n"
 msgstr ""
 
 #. type: Title ###
-#: docs/master/queues.md:1395
+#: docs/master/queues.md:1510
 #, no-wrap
 msgid "Job Expirations & Timeouts"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:1398
+#: docs/master/queues.md:1513
 #, no-wrap
 msgid "<a name=\"job-expiration\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/master/queues.md:1398
+#: docs/master/queues.md:1513
 #, no-wrap
 msgid "Job Expiration"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:1401
+#: docs/master/queues.md:1516
 msgid ""
 "In your `config/queue.php` configuration file, each queue connection defines "
 "a `retry_after` option. This option specifies how many seconds the queue "
@@ -3506,7 +3787,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:1403
+#: docs/master/queues.md:1518
 #, no-wrap
 msgid ""
 "> {note} The only queue connection which does not contain a `retry_after` "
@@ -3516,19 +3797,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:1405
+#: docs/master/queues.md:1520
 #, no-wrap
 msgid "<a name=\"worker-timeouts\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/master/queues.md:1405
+#: docs/master/queues.md:1520
 #, no-wrap
 msgid "Worker Timeouts"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:1408
+#: docs/master/queues.md:1523
 msgid ""
 "The `queue:work` Artisan command exposes a `--timeout` option. If a job is "
 "processing for longer than the number of seconds specified by the timeout "
@@ -3538,13 +3819,13 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:1409
+#: docs/master/queues.md:1524
 #, no-wrap
 msgid "php artisan queue:work --timeout=60\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:1414
+#: docs/master/queues.md:1529
 msgid ""
 "The `retry_after` configuration option and the `--timeout` CLI option are "
 "different, but work together to ensure that jobs are not lost and that jobs "
@@ -3552,7 +3833,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:1416
+#: docs/master/queues.md:1531
 #, no-wrap
 msgid ""
 "> {note} The `--timeout` value should always be at least several seconds "
@@ -3563,19 +3844,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:1418
+#: docs/master/queues.md:1533
 #, no-wrap
 msgid "<a name=\"supervisor-configuration\"></a>\n"
 msgstr ""
 
 #. type: Title ##
-#: docs/master/queues.md:1418
+#: docs/master/queues.md:1533
 #, no-wrap
 msgid "Supervisor Configuration"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:1421
+#: docs/master/queues.md:1536
 msgid ""
 "In production, you need a way to keep your `queue:work` processes running. A "
 "`queue:work` process may stop running for a variety of reasons, such as an "
@@ -3583,7 +3864,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:1423
+#: docs/master/queues.md:1538
 msgid ""
 "For this reason, you need to configure a process monitor that can detect "
 "when your `queue:work` processes exit and automatically restart them. In "
@@ -3594,19 +3875,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:1425
+#: docs/master/queues.md:1540
 #, no-wrap
 msgid "<a name=\"installing-supervisor\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/master/queues.md:1425
+#: docs/master/queues.md:1540
 #, no-wrap
 msgid "Installing Supervisor"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:1428
+#: docs/master/queues.md:1543
 msgid ""
 "Supervisor is a process monitor for the Linux operating system, and will "
 "automatically restart your `queue:work` processes if they fail. To install "
@@ -3614,13 +3895,13 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:1430
+#: docs/master/queues.md:1545
 #, no-wrap
 msgid "    sudo apt-get install supervisor\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:1432
+#: docs/master/queues.md:1547
 #, no-wrap
 msgid ""
 "> {tip} If configuring and managing Supervisor yourself sounds overwhelming, "
@@ -3630,19 +3911,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:1434
+#: docs/master/queues.md:1549
 #, no-wrap
 msgid "<a name=\"configuring-supervisor\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/master/queues.md:1434
+#: docs/master/queues.md:1549
 #, no-wrap
 msgid "Configuring Supervisor"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:1437
+#: docs/master/queues.md:1552
 msgid ""
 "Supervisor configuration files are typically stored in the "
 "`/etc/supervisor/conf.d` directory. Within this directory, you may create "
@@ -3652,13 +3933,13 @@ msgid ""
 msgstr ""
 
 #. type: Code fence info string
-#: docs/master/queues.md:1438
+#: docs/master/queues.md:1553
 #, no-wrap
 msgid "ini"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:1438
+#: docs/master/queues.md:1553
 #, no-wrap
 msgid ""
 "[program:laravel-worker]\n"
@@ -3677,7 +3958,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:1454
+#: docs/master/queues.md:1569
 msgid ""
 "In this example, the `numprocs` directive will instruct Supervisor to run "
 "eight `queue:work` processes and monitor all of them, automatically "
@@ -3687,7 +3968,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:1456
+#: docs/master/queues.md:1571
 #, no-wrap
 msgid ""
 "> {note} You should ensure that the value of `stopwaitsecs` is greater than "
@@ -3696,26 +3977,26 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:1458
+#: docs/master/queues.md:1573
 #, no-wrap
 msgid "<a name=\"starting-supervisor\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/master/queues.md:1458
+#: docs/master/queues.md:1573
 #, no-wrap
 msgid "Starting Supervisor"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:1461
+#: docs/master/queues.md:1576
 msgid ""
 "Once the configuration file has been created, you may update the Supervisor "
 "configuration and start the processes using the following commands:"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:1462
+#: docs/master/queues.md:1577
 #, no-wrap
 msgid ""
 "sudo supervisorctl reread\n"
@@ -3726,26 +4007,26 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:1471
+#: docs/master/queues.md:1586
 msgid ""
 "For more information on Supervisor, consult the [Supervisor "
 "documentation](http://supervisord.org/index.html)."
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:1473
+#: docs/master/queues.md:1588
 #, no-wrap
 msgid "<a name=\"dealing-with-failed-jobs\"></a>\n"
 msgstr ""
 
 #. type: Title ##
-#: docs/master/queues.md:1473
+#: docs/master/queues.md:1588
 #, no-wrap
 msgid "Dealing With Failed Jobs"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:1476
+#: docs/master/queues.md:1591
 msgid ""
 "Sometimes your queued jobs will fail. Don't worry, things don't always go as "
 "planned! Laravel includes a convenient way to [specify the maximum number of "
@@ -3757,13 +4038,13 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:1478
+#: docs/master/queues.md:1593
 #, no-wrap
 msgid "    php artisan queue:failed-table\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:1482
+#: docs/master/queues.md:1597
 msgid ""
 "When running a [queue worker](#running-the-queue-worker) process, you may "
 "specify the maximum number of times a job should be attempted using the "
@@ -3773,13 +4054,13 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:1484
+#: docs/master/queues.md:1599
 #, no-wrap
 msgid "    php artisan queue:work redis --tries=3\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:1486
+#: docs/master/queues.md:1601
 msgid ""
 "Using the `--backoff` option, you may specify how many seconds Laravel "
 "should wait before retrying a job that has encountered an exception. By "
@@ -3788,13 +4069,13 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:1488
+#: docs/master/queues.md:1603
 #, no-wrap
 msgid "    php artisan queue:work redis --tries=3 --backoff=3\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:1490
+#: docs/master/queues.md:1605
 msgid ""
 "If you would like to configure how many seconds Laravel should wait before "
 "retrying a job that has encountered an exception on a per-job basis, you may "
@@ -3802,7 +4083,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:1497
+#: docs/master/queues.md:1612
 #, no-wrap
 msgid ""
 "    /**\n"
@@ -3814,14 +4095,14 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:1499
+#: docs/master/queues.md:1614
 msgid ""
 "If you require more complex logic for determining the job's backoff time, "
 "you may define a `backoff` method on your job class:"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:1509
+#: docs/master/queues.md:1624
 #, no-wrap
 msgid ""
 "    /**\n"
@@ -3836,7 +4117,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:1511
+#: docs/master/queues.md:1626
 msgid ""
 "You may easily configure \"exponential\" backoffs by returning an array of "
 "backoff values from the `backoff` method. In this example, the retry delay "
@@ -3845,7 +4126,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:1521
+#: docs/master/queues.md:1636
 #, no-wrap
 msgid ""
 "    /**\n"
@@ -3860,19 +4141,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:1523
+#: docs/master/queues.md:1638
 #, no-wrap
 msgid "<a name=\"cleaning-up-after-failed-jobs\"></a>\n"
 msgstr ""
 
 #. type: Title ###
-#: docs/master/queues.md:1523
+#: docs/master/queues.md:1638
 #, no-wrap
 msgid "Cleaning Up After Failed Jobs"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:1526
+#: docs/master/queues.md:1641
 msgid ""
 "When a particular job fails, you may want to send an alert to your users or "
 "revert any actions that were partially completed by the job. To accomplish "
@@ -3881,7 +4162,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:1538
+#: docs/master/queues.md:1653
 #, no-wrap
 msgid ""
 "    use App\\Models\\Podcast;\n"
@@ -3894,7 +4175,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:1542
+#: docs/master/queues.md:1657
 #, no-wrap
 msgid ""
 "    class ProcessPodcast implements ShouldQueue\n"
@@ -3903,7 +4184,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:1549
+#: docs/master/queues.md:1664
 #, no-wrap
 msgid ""
 "        /**\n"
@@ -3915,7 +4196,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:1560
+#: docs/master/queues.md:1675
 #, no-wrap
 msgid ""
 "        /**\n"
@@ -3931,7 +4212,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:1571
+#: docs/master/queues.md:1686
 #, no-wrap
 msgid ""
 "        /**\n"
@@ -3947,7 +4228,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:1583
+#: docs/master/queues.md:1698
 #, no-wrap
 msgid ""
 "        /**\n"
@@ -3964,19 +4245,28 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:1585
+#: docs/master/queues.md:1700
+#, no-wrap
+msgid ""
+"> {note} A new instance of the job is instantiated before invoking the "
+"`failed` method; therefore, any class property modifications that may have "
+"occurred within the `handle` method will be lost.\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/queues.md:1702
 #, no-wrap
 msgid "<a name=\"retrying-failed-jobs\"></a>\n"
 msgstr ""
 
 #. type: Title ###
-#: docs/master/queues.md:1585
+#: docs/master/queues.md:1702
 #, no-wrap
 msgid "Retrying Failed Jobs"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:1588
+#: docs/master/queues.md:1705
 msgid ""
 "To view all of the failed jobs that have been inserted into your "
 "`failed_jobs` database table, you may use the `queue:failed` Artisan "
@@ -3984,73 +4274,78 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:1590
+#: docs/master/queues.md:1707
 #, no-wrap
 msgid "    php artisan queue:failed\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:1592
+#: docs/master/queues.md:1709
 msgid ""
 "The `queue:failed` command will list the job ID, connection, queue, failure "
 "time, and other information about the job. The job ID may be used to retry "
-"the failed job. For instance, to retry a failed job that has an ID of `5`, "
-"issue the following command:"
+"the failed job. For instance, to retry a failed job that has an ID of "
+"`ce7bb17c-cdd8-41f0-a8ec-7b4fef4e5ece`, issue the following command:"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:1594
+#: docs/master/queues.md:1711
 #, no-wrap
-msgid "    php artisan queue:retry 5\n"
+msgid "    php artisan queue:retry ce7bb17c-cdd8-41f0-a8ec-7b4fef4e5ece\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:1596
+#: docs/master/queues.md:1713
+msgid "If necessary, you may pass multiple IDs to the command:"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/queues.md:1715
+#, no-wrap
 msgid ""
-"If necessary, you may pass multiple IDs or an ID range (when using numeric "
-"IDs) to the command:"
+"    php artisan queue:retry ce7bb17c-cdd8-41f0-a8ec-7b4fef4e5ece "
+"91401d2c-0784-4f43-824c-34f94a33c24d\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:1598
+#: docs/master/queues.md:1717
+msgid "You may also retry all of the failed jobs for a particular queue:"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/queues.md:1719
 #, no-wrap
-msgid "    php artisan queue:retry 5 6 7 8 9 10\n"
+msgid "    php artisan queue:retry --queue=name\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:1600
-#, no-wrap
-msgid "    php artisan queue:retry --range=5-10\n"
-msgstr ""
-
-#. type: Plain text
-#: docs/master/queues.md:1602
+#: docs/master/queues.md:1721
 msgid ""
 "To retry all of your failed jobs, execute the `queue:retry` command and pass "
 "`all` as the ID:"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:1604
+#: docs/master/queues.md:1723
 #, no-wrap
 msgid "    php artisan queue:retry all\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:1606
+#: docs/master/queues.md:1725
 msgid ""
 "If you would like to delete a failed job, you may use the `queue:forget` "
 "command:"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:1608
+#: docs/master/queues.md:1727
 #, no-wrap
-msgid "    php artisan queue:forget 5\n"
+msgid "    php artisan queue:forget 91401d2c-0784-4f43-824c-34f94a33c24d\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:1610
+#: docs/master/queues.md:1729
 #, no-wrap
 msgid ""
 "> {tip} When using [Horizon](/docs/{{version}}/horizon), you should use the "
@@ -4059,32 +4354,32 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:1612
+#: docs/master/queues.md:1731
 msgid ""
 "To delete all of your failed jobs from the `failed_jobs` table, you may use "
 "the `queue:flush` command:"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:1614
+#: docs/master/queues.md:1733
 #, no-wrap
 msgid "    php artisan queue:flush\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:1616
+#: docs/master/queues.md:1735
 #, no-wrap
 msgid "<a name=\"ignoring-missing-models\"></a>\n"
 msgstr ""
 
 #. type: Title ###
-#: docs/master/queues.md:1616
+#: docs/master/queues.md:1735
 #, no-wrap
 msgid "Ignoring Missing Models"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:1619
+#: docs/master/queues.md:1738
 msgid ""
 "When injecting an Eloquent model into a job, the model is automatically "
 "serialized before being placed on the queue and re-retrieved from the "
@@ -4094,7 +4389,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:1621
+#: docs/master/queues.md:1740
 msgid ""
 "For convenience, you may choose to automatically delete jobs with missing "
 "models by setting your job's `deleteWhenMissingModels` property to "
@@ -4103,7 +4398,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:1628
+#: docs/master/queues.md:1747
 #, no-wrap
 msgid ""
 "    /**\n"
@@ -4115,19 +4410,136 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:1630
+#: docs/master/queues.md:1749
+#, no-wrap
+msgid "<a name=\"storing-failed-jobs-in-dynamodb\"></a>\n"
+msgstr ""
+
+#. type: Title ###
+#: docs/master/queues.md:1749
+#, no-wrap
+msgid "Storing Failed Jobs In DynamoDB"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/queues.md:1752
+msgid ""
+"Laravel also provides support for storing your failed job records in "
+"[DynamoDB](https://aws.amazon.com/dynamodb) instead of a relational database "
+"table. However, you must create a DynamoDB table to store all of the failed "
+"job records. Typically, this table should be named `failed_jobs`, but you "
+"should name the table based on the value of the `queue.failed.table` "
+"configuration value within your application's `queue` configuration file."
+msgstr ""
+
+#. type: Plain text
+#: docs/master/queues.md:1754
+msgid ""
+"The `failed_jobs` table should have a string primary partition key named "
+"`application` and a string primary sort key named `uuid`. The `application` "
+"portion of the key will contain your application's name as defined by the "
+"`name` configuration value within your application's `app` configuration "
+"file. Since the application name is part of the DynamoDB table's key, you "
+"can use the same table to store failed jobs for multiple Laravel "
+"applications."
+msgstr ""
+
+#. type: Plain text
+#: docs/master/queues.md:1756
+msgid ""
+"In addition, ensure that you install the AWS SDK so that your Laravel "
+"application can communicate with Amazon DynamoDB:"
+msgstr ""
+
+#. type: Code fence info string
+#: docs/master/queues.md:1757
+#, no-wrap
+msgid "nothing"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/queues.md:1757
+#, no-wrap
+msgid "composer require aws/aws-sdk-php\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/queues.md:1762
+msgid ""
+"Next, set the `queue.failed.driver` configuration option's value to "
+"`dynamodb`. In addition, you should define `key`, `secret`, and `region` "
+"configuration options within the failed job configuration array. These "
+"options will be used to authenticate with AWS. When using the `dynamodb` "
+"driver, the `queue.failed.database` configuration option is unnecessary:"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/queues.md:1763
+#, no-wrap
+msgid ""
+"'failed' => [\n"
+"    'driver' => env('QUEUE_FAILED_DRIVER', 'dynamodb'),\n"
+"    'key' => env('AWS_ACCESS_KEY_ID'),\n"
+"    'secret' => env('AWS_SECRET_ACCESS_KEY'),\n"
+"    'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),\n"
+"    'table' => 'failed_jobs',\n"
+"],\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/queues.md:1774
+#, no-wrap
+msgid "<a name=\"pruning-failed-jobs\"></a>\n"
+msgstr ""
+
+#. type: Title ###
+#: docs/master/queues.md:1774
+#, no-wrap
+msgid "Pruning Failed Jobs"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/queues.md:1777
+msgid ""
+"You may delete all of the records in your application's `failed_jobs` table "
+"by invoking the `queue:prune-failed` Artisan command:"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/queues.md:1779
+#, no-wrap
+msgid "    php artisan queue:prune-failed\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/queues.md:1781
+msgid ""
+"If you provide the `--hours` option to the command, only the failed job "
+"records that were inserted within the last N number of hours will be "
+"retained. For example, the following command will delete all of the failed "
+"job records that were inserted more than 48 hours ago:"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/queues.md:1783
+#, no-wrap
+msgid "    php artisan queue:prune-failed --hours=48\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/queues.md:1785
 #, no-wrap
 msgid "<a name=\"failed-job-events\"></a>\n"
 msgstr ""
 
 #. type: Title ###
-#: docs/master/queues.md:1630
+#: docs/master/queues.md:1785
 #, no-wrap
 msgid "Failed Job Events"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:1633
+#: docs/master/queues.md:1788
 msgid ""
 "If you would like to register an event listener that will be invoked when a "
 "job fails, you may use the `Queue` facade's `failing` method. For example, "
@@ -4136,13 +4548,13 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:1637 docs/master/queues.md:1692
+#: docs/master/queues.md:1792 docs/master/queues.md:1884
 #, no-wrap
 msgid "    namespace App\\Providers;\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:1641
+#: docs/master/queues.md:1796
 #, no-wrap
 msgid ""
 "    use Illuminate\\Support\\Facades\\Queue;\n"
@@ -4151,7 +4563,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:1653 docs/master/queues.md:1709
+#: docs/master/queues.md:1808 docs/master/queues.md:1901
 #, no-wrap
 msgid ""
 "    class AppServiceProvider extends ServiceProvider\n"
@@ -4168,7 +4580,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:1668
+#: docs/master/queues.md:1823
 #, no-wrap
 msgid ""
 "        /**\n"
@@ -4188,19 +4600,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:1670
+#: docs/master/queues.md:1825
 #, no-wrap
 msgid "<a name=\"clearing-jobs-from-queues\"></a>\n"
 msgstr ""
 
 #. type: Title ##
-#: docs/master/queues.md:1670
+#: docs/master/queues.md:1825
 #, no-wrap
 msgid "Clearing Jobs From Queues"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:1673
+#: docs/master/queues.md:1828
 #, no-wrap
 msgid ""
 "> {tip} When using [Horizon](/docs/{{version}}/horizon), you should use the "
@@ -4209,33 +4621,33 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:1675
+#: docs/master/queues.md:1830
 msgid ""
 "If you would like to delete all jobs from the default queue of the default "
 "connection, you may do so using the `queue:clear` Artisan command:"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:1677
+#: docs/master/queues.md:1832
 #, no-wrap
 msgid "    php artisan queue:clear\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:1679
+#: docs/master/queues.md:1834
 msgid ""
 "You may also provide the `connection` argument and `queue` option to delete "
 "jobs from a specific connection and queue:"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:1681
+#: docs/master/queues.md:1836
 #, no-wrap
 msgid "    php artisan queue:clear redis --queue=emails\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:1683
+#: docs/master/queues.md:1838
 #, no-wrap
 msgid ""
 "> {note} Clearing jobs from queues is only available for the SQS, Redis, and "
@@ -4245,19 +4657,92 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:1685
+#: docs/master/queues.md:1840
+#, no-wrap
+msgid "<a name=\"monitoring-your-queues\"></a>\n"
+msgstr ""
+
+#. type: Title ##
+#: docs/master/queues.md:1840
+#, no-wrap
+msgid "Monitoring Your Queues"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/queues.md:1843
+msgid ""
+"If your queue receives a sudden influx of jobs, it could become overwhelmed, "
+"leading to a long wait time for jobs to complete. If you wish, Laravel can "
+"alert you when your queue job count exceeds a specified threshold."
+msgstr ""
+
+#. type: Plain text
+#: docs/master/queues.md:1845
+msgid ""
+"To get started, you should schedule the `queue:monitor` command to [run "
+"every minute](/docs/{{version}}/scheduling). The command accepts the names "
+"of the queues you wish to monitor as well as your desired job count "
+"threshold:"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/queues.md:1846
+#, no-wrap
+msgid "php artisan queue:monitor redis:default,redis:deployments --max=100\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/queues.md:1851
+msgid ""
+"Scheduling this command alone is not enough to trigger a notification "
+"alerting you of the queue's overwhelmed status. When the command encounters "
+"a queue that has a job count exceeding your threshold, an "
+"`Illuminate\\Queue\\Events\\QueueBusy` event will be dispatched. You may "
+"listen for this event within your application's `EventServiceProvider` in "
+"order to send a notification to you or your development team:"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/queues.md:1852
+#, no-wrap
+msgid ""
+"use App\\Notifications\\QueueHasLongWaitTime;\n"
+"use Illuminate\\Queue\\Events\\QueueBusy;\n"
+"use Illuminate\\Support\\Facades\\Event;\n"
+"use Illuminate\\Support\\Facades\\Notification;\n"
+"\n"
+"/**\n"
+" * Register any other events for your application.\n"
+" *\n"
+" * @return void\n"
+" */\n"
+"public function boot()\n"
+"{\n"
+"    Event::listen(function (QueueBusy $event) {\n"
+"        Notification::route('mail', 'dev@example.com')\n"
+"                ->notify(new QueueHasLongWaitTime(\n"
+"                    $event->connection,\n"
+"                    $event->queue,\n"
+"                    $event->size\n"
+"                ));\n"
+"    });\n"
+"}\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/queues.md:1877
 #, no-wrap
 msgid "<a name=\"job-events\"></a>\n"
 msgstr ""
 
 #. type: Title ##
-#: docs/master/queues.md:1685
+#: docs/master/queues.md:1877
 #, no-wrap
 msgid "Job Events"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:1688
+#: docs/master/queues.md:1880
 msgid ""
 "Using the `before` and `after` methods on the `Queue` "
 "[facade](/docs/{{version}}/facades), you may specify callbacks to be "
@@ -4269,7 +4754,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:1697
+#: docs/master/queues.md:1889
 #, no-wrap
 msgid ""
 "    use Illuminate\\Support\\Facades\\Queue;\n"
@@ -4279,7 +4764,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:1722
+#: docs/master/queues.md:1914
 #, no-wrap
 msgid ""
 "        /**\n"
@@ -4297,7 +4782,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:1730
+#: docs/master/queues.md:1922
 #, no-wrap
 msgid ""
 "            Queue::after(function (JobProcessed $event) {\n"
@@ -4310,7 +4795,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:1732
+#: docs/master/queues.md:1924
 msgid ""
 "Using the `looping` method on the `Queue` "
 "[facade](/docs/{{version}}/facades), you may specify callbacks that execute "
@@ -4320,7 +4805,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:1735
+#: docs/master/queues.md:1927
 #, no-wrap
 msgid ""
 "    use Illuminate\\Support\\Facades\\DB;\n"
@@ -4328,7 +4813,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/queues.md:1740
+#: docs/master/queues.md:1932
 #, no-wrap
 msgid ""
 "    Queue::looping(function () {\n"

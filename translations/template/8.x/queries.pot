@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Laravel Documentation VERSION\n"
-"POT-Creation-Date: 2021-09-13 05:07+0000\n"
+"POT-Creation-Date: 2022-01-21 20:16+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -458,7 +458,7 @@ msgstr ""
 msgid ""
 "use Illuminate\\Support\\Facades\\DB;\n"
 "\n"
-"DB::table('users')->lazy()->each(function ($user) {\n"
+"DB::table('users')->orderBy('id')->lazy()->each(function ($user) {\n"
 "    //\n"
 "});\n"
 msgstr ""
@@ -467,8 +467,9 @@ msgstr ""
 #: docs/8.x/queries.md:172
 msgid ""
 "Once again, if you plan to update the retrieved records while iterating over "
-"them, it is best to use the `lazyById` method instead. This method will "
-"automatically paginate the results based on the record's primary key:"
+"them, it is best to use the `lazyById` or `lazyByIdDesc` methods "
+"instead. These methods will automatically paginate the results based on the "
+"record's primary key:"
 msgstr ""
 
 #. type: Plain text
@@ -2296,8 +2297,8 @@ msgstr ""
 #. type: Plain text
 #: docs/8.x/queries.md:816
 msgid ""
-"The `insertOrIgnore` method will ignore duplicate record errors while "
-"inserting records into the database:"
+"The `insertOrIgnore` method will ignore errors while inserting records into "
+"the database:"
 msgstr ""
 
 #. type: Plain text
@@ -2313,24 +2314,34 @@ msgstr ""
 #. type: Plain text
 #: docs/8.x/queries.md:823
 #, no-wrap
+msgid ""
+"> {note} `insertOrIgnore` will ignore duplicate records and also may ignore "
+"other types of errors depending on the database engine. For example, "
+"`insertOrIgnore` will [bypass MySQL's strict "
+"mode](https://dev.mysql.com/doc/refman/en/sql-mode.html#ignore-effect-on-execution).\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/queries.md:825
+#, no-wrap
 msgid "<a name=\"auto-incrementing-ids\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/8.x/queries.md:823
+#: docs/8.x/queries.md:825
 #, no-wrap
 msgid "Auto-Incrementing IDs"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/queries.md:826
+#: docs/8.x/queries.md:828
 msgid ""
 "If the table has an auto-incrementing id, use the `insertGetId` method to "
 "insert a record and then retrieve the ID:"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/queries.md:830
+#: docs/8.x/queries.md:832
 #, no-wrap
 msgid ""
 "    $id = DB::table('users')->insertGetId(\n"
@@ -2339,7 +2350,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/queries.md:832
+#: docs/8.x/queries.md:834
 #, no-wrap
 msgid ""
 "> {note} When using PostgreSQL the `insertGetId` method expects the "
@@ -2349,19 +2360,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/queries.md:834
+#: docs/8.x/queries.md:836
 #, no-wrap
 msgid "<a name=\"upserts\"></a>\n"
 msgstr ""
 
 #. type: Title ###
-#: docs/8.x/queries.md:834
+#: docs/8.x/queries.md:836
 #, no-wrap
 msgid "Upserts"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/queries.md:837
+#: docs/8.x/queries.md:839
 msgid ""
 "The `upsert` method will insert records that do not exist and update the "
 "records that already exist with new values that you may specify. The "
@@ -2373,7 +2384,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/queries.md:842
+#: docs/8.x/queries.md:844
 #, no-wrap
 msgid ""
 "    DB::table('flights')->upsert([\n"
@@ -2385,7 +2396,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/queries.md:844
+#: docs/8.x/queries.md:846
 msgid ""
 "In the example above, Laravel will attempt to insert two records. If a "
 "record already exists with the same `departure` and `destination` column "
@@ -2393,7 +2404,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/queries.md:846
+#: docs/8.x/queries.md:848
 #, no-wrap
 msgid ""
 "> {note} All databases except SQL Server require the columns in the second "
@@ -2404,29 +2415,30 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/queries.md:848
+#: docs/8.x/queries.md:850
 #, no-wrap
 msgid "<a name=\"update-statements\"></a>\n"
 msgstr ""
 
 #. type: Title ##
-#: docs/8.x/queries.md:848
+#: docs/8.x/queries.md:850
 #, no-wrap
 msgid "Update Statements"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/queries.md:851
+#: docs/8.x/queries.md:853
 msgid ""
 "In addition to inserting records into the database, the query builder can "
 "also update existing records using the `update` method. The `update` method, "
 "like the `insert` method, accepts an array of column and value pairs "
-"indicating the columns to be updated. You may constrain the `update` query "
-"using `where` clauses:"
+"indicating the columns to be updated. The `update` method returns the number "
+"of affected rows. You may constrain the `update` query using `where` "
+"clauses:"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/queries.md:855
+#: docs/8.x/queries.md:857
 #, no-wrap
 msgid ""
 "    $affected = DB::table('users')\n"
@@ -2435,19 +2447,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/queries.md:857
+#: docs/8.x/queries.md:859
 #, no-wrap
 msgid "<a name=\"update-or-insert\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/8.x/queries.md:857
+#: docs/8.x/queries.md:859
 #, no-wrap
 msgid "Update Or Insert"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/queries.md:860
+#: docs/8.x/queries.md:862
 msgid ""
 "Sometimes you may want to update an existing record in the database or "
 "create it if no matching record exists. In this scenario, the "
@@ -2457,7 +2469,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/queries.md:862
+#: docs/8.x/queries.md:864
 msgid ""
 "The `updateOrInsert` method will attempt to locate a matching database "
 "record using the first argument's column and value pairs. If the record "
@@ -2467,7 +2479,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/queries.md:868
+#: docs/8.x/queries.md:870
 #, no-wrap
 msgid ""
 "    DB::table('users')\n"
@@ -2478,19 +2490,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/queries.md:870
+#: docs/8.x/queries.md:872
 #, no-wrap
 msgid "<a name=\"updating-json-columns\"></a>\n"
 msgstr ""
 
 #. type: Title ###
-#: docs/8.x/queries.md:870
+#: docs/8.x/queries.md:872
 #, no-wrap
 msgid "Updating JSON Columns"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/queries.md:873
+#: docs/8.x/queries.md:875
 #, no-wrap
 msgid ""
 "When updating a JSON column, you should use `->` syntax to update the "
@@ -2499,7 +2511,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/queries.md:877
+#: docs/8.x/queries.md:879
 #, no-wrap
 msgid ""
 "    $affected = DB::table('users')\n"
@@ -2508,19 +2520,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/queries.md:879
+#: docs/8.x/queries.md:881
 #, no-wrap
 msgid "<a name=\"increment-and-decrement\"></a>\n"
 msgstr ""
 
 #. type: Title ###
-#: docs/8.x/queries.md:879
+#: docs/8.x/queries.md:881
 #, no-wrap
 msgid "Increment & Decrement"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/queries.md:882
+#: docs/8.x/queries.md:884
 msgid ""
 "The query builder also provides convenient methods for incrementing or "
 "decrementing the value of a given column. Both of these methods accept at "
@@ -2530,74 +2542,75 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/queries.md:884
+#: docs/8.x/queries.md:886
 #, no-wrap
 msgid "    DB::table('users')->increment('votes');\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/queries.md:886
+#: docs/8.x/queries.md:888
 #, no-wrap
 msgid "    DB::table('users')->increment('votes', 5);\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/queries.md:888
+#: docs/8.x/queries.md:890
 #, no-wrap
 msgid "    DB::table('users')->decrement('votes');\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/queries.md:890
+#: docs/8.x/queries.md:892
 #, no-wrap
 msgid "    DB::table('users')->decrement('votes', 5);\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/queries.md:892
+#: docs/8.x/queries.md:894
 msgid "You may also specify additional columns to update during the operation:"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/queries.md:894
+#: docs/8.x/queries.md:896
 #, no-wrap
 msgid "    DB::table('users')->increment('votes', 1, ['name' => 'John']);\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/queries.md:896
+#: docs/8.x/queries.md:898
 #, no-wrap
 msgid "<a name=\"delete-statements\"></a>\n"
 msgstr ""
 
 #. type: Title ##
-#: docs/8.x/queries.md:896
+#: docs/8.x/queries.md:898
 #, no-wrap
 msgid "Delete Statements"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/queries.md:899
+#: docs/8.x/queries.md:901
 msgid ""
 "The query builder's `delete` method may be used to delete records from the "
-"table. You may constrain `delete` statements by adding \"where\" clauses "
-"before calling the `delete` method:"
-msgstr ""
-
-#. type: Plain text
-#: docs/8.x/queries.md:901
-#, no-wrap
-msgid "    DB::table('users')->delete();\n"
+"table. The `delete` method returns the number of affected rows. You may "
+"constrain `delete` statements by adding \"where\" clauses before calling the "
+"`delete` method:"
 msgstr ""
 
 #. type: Plain text
 #: docs/8.x/queries.md:903
 #, no-wrap
-msgid "    DB::table('users')->where('votes', '>', 100)->delete();\n"
+msgid "    $deleted = DB::table('users')->delete();\n"
 msgstr ""
 
 #. type: Plain text
 #: docs/8.x/queries.md:905
+#, no-wrap
+msgid "    $deleted = DB::table('users')->where('votes', '>', 100)->delete();\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/queries.md:907
 msgid ""
 "If you wish to truncate an entire table, which will remove all records from "
 "the table and reset the auto-incrementing ID to zero, you may use the "
@@ -2605,25 +2618,25 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/queries.md:907
+#: docs/8.x/queries.md:909
 #, no-wrap
 msgid "    DB::table('users')->truncate();\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/queries.md:909
+#: docs/8.x/queries.md:911
 #, no-wrap
 msgid "<a name=\"table-truncation-and-postgresql\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/8.x/queries.md:909
+#: docs/8.x/queries.md:911
 #, no-wrap
 msgid "Table Truncation & PostgreSQL"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/queries.md:912
+#: docs/8.x/queries.md:914
 msgid ""
 "When truncating a PostgreSQL database, the `CASCADE` behavior will be "
 "applied. This means that all foreign key related records in other tables "
@@ -2631,19 +2644,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/queries.md:914
+#: docs/8.x/queries.md:916
 #, no-wrap
 msgid "<a name=\"pessimistic-locking\"></a>\n"
 msgstr ""
 
 #. type: Title ##
-#: docs/8.x/queries.md:914
+#: docs/8.x/queries.md:916
 #, no-wrap
 msgid "Pessimistic Locking"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/queries.md:917
+#: docs/8.x/queries.md:919
 msgid ""
 "The query builder also includes a few functions to help you achieve "
 "\"pessimistic locking\" when executing your `select` statements. To execute "
@@ -2653,7 +2666,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/queries.md:922
+#: docs/8.x/queries.md:924
 #, no-wrap
 msgid ""
 "    DB::table('users')\n"
@@ -2663,7 +2676,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/queries.md:924
+#: docs/8.x/queries.md:926
 msgid ""
 "Alternatively, you may use the `lockForUpdate` method. A \"for update\" lock "
 "prevents the selected records from being modified or from being selected "
@@ -2671,7 +2684,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/queries.md:929
+#: docs/8.x/queries.md:931
 #, no-wrap
 msgid ""
 "    DB::table('users')\n"
@@ -2681,19 +2694,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/queries.md:931
+#: docs/8.x/queries.md:933
 #, no-wrap
 msgid "<a name=\"debugging\"></a>\n"
 msgstr ""
 
 #. type: Title ##
-#: docs/8.x/queries.md:931
+#: docs/8.x/queries.md:933
 #, no-wrap
 msgid "Debugging"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/queries.md:934
+#: docs/8.x/queries.md:936
 msgid ""
 "You may use the `dd` and `dump` methods while building a query to dump the "
 "current query bindings and SQL. The `dd` method will display the debug "
@@ -2702,13 +2715,13 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/queries.md:936
+#: docs/8.x/queries.md:938
 #, no-wrap
 msgid "    DB::table('users')->where('votes', '>', 100)->dd();\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/queries.md:937
+#: docs/8.x/queries.md:939
 #, no-wrap
 msgid "    DB::table('users')->where('votes', '>', 100)->dump();\n"
 msgstr ""

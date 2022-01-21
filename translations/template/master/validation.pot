@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Laravel Documentation VERSION\n"
-"POT-Creation-Date: 2021-09-13 05:07+0000\n"
+"POT-Creation-Date: 2022-01-21 20:16+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -23,12 +23,12 @@ msgid "Validation"
 msgstr ""
 
 #. type: Bullet: '- '
-#: docs/master/validation.md:32
+#: docs/master/validation.md:35
 msgid "[Introduction](#introduction)"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:32
+#: docs/master/validation.md:35
 #, no-wrap
 msgid ""
 "- [Validation Quickstart](#validation-quickstart)\n"
@@ -50,6 +50,7 @@ msgid ""
 "    - [Customizing The Error "
 "Messages](#manual-customizing-the-error-messages)\n"
 "    - [After Validation Hook](#after-validation-hook)\n"
+"- [Working With Validated Input](#working-with-validated-input)\n"
 "- [Working With Error Messages](#working-with-error-messages)\n"
 "    - [Specifying Custom Messages In Language "
 "Files](#specifying-custom-messages-in-language-files)\n"
@@ -60,6 +61,8 @@ msgid ""
 "- [Available Validation Rules](#available-validation-rules)\n"
 "- [Conditionally Adding Rules](#conditionally-adding-rules)\n"
 "- [Validating Arrays](#validating-arrays)\n"
+"    - [Validating Nested Array Input](#validating-nested-array-input)\n"
+"- [Validating Passwords](#validating-passwords)\n"
 "- [Custom Validation Rules](#custom-validation-rules)\n"
 "    - [Using Rule Objects](#using-rule-objects)\n"
 "    - [Using Closures](#using-closures)\n"
@@ -67,19 +70,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:34
+#: docs/master/validation.md:37
 #, no-wrap
 msgid "<a name=\"introduction\"></a>\n"
 msgstr ""
 
 #. type: Title ##
-#: docs/master/validation.md:34
+#: docs/master/validation.md:37
 #, no-wrap
 msgid "Introduction"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:37
+#: docs/master/validation.md:40
 msgid ""
 "Laravel provides several different approaches to validate your application's "
 "incoming data. It is most common to use the `validate` method available on "
@@ -88,7 +91,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:39
+#: docs/master/validation.md:42
 msgid ""
 "Laravel includes a wide variety of convenient validation rules that you may "
 "apply to data, even providing the ability to validate if values are unique "
@@ -97,19 +100,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:41
+#: docs/master/validation.md:44
 #, no-wrap
 msgid "<a name=\"validation-quickstart\"></a>\n"
 msgstr ""
 
 #. type: Title ##
-#: docs/master/validation.md:41
+#: docs/master/validation.md:44
 #, no-wrap
 msgid "Validation Quickstart"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:44
+#: docs/master/validation.md:47
 msgid ""
 "To learn about Laravel's powerful validation features, let's look at a "
 "complete example of validating a form and displaying the error messages back "
@@ -119,32 +122,32 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:46
+#: docs/master/validation.md:49
 #, no-wrap
 msgid "<a name=\"quick-defining-the-routes\"></a>\n"
 msgstr ""
 
 #. type: Title ###
-#: docs/master/validation.md:46
+#: docs/master/validation.md:49
 #, no-wrap
 msgid "Defining The Routes"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:49
+#: docs/master/validation.md:52
 msgid ""
 "First, let's assume we have the following routes defined in our "
 "`routes/web.php` file:"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:51
+#: docs/master/validation.md:54
 #, no-wrap
 msgid "    use App\\Http\\Controllers\\PostController;\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:54
+#: docs/master/validation.md:57
 #, no-wrap
 msgid ""
 "    Route::get('/post/create', [PostController::class, 'create']);\n"
@@ -152,45 +155,45 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:56
+#: docs/master/validation.md:59
 msgid ""
 "The `GET` route will display a form for the user to create a new blog post, "
 "while the `POST` route will store the new blog post in the database."
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:58
+#: docs/master/validation.md:61
 #, no-wrap
 msgid "<a name=\"quick-creating-the-controller\"></a>\n"
 msgstr ""
 
 #. type: Title ###
-#: docs/master/validation.md:58
+#: docs/master/validation.md:61
 #, no-wrap
 msgid "Creating The Controller"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:61
+#: docs/master/validation.md:64
 msgid ""
 "Next, let's take a look at a simple controller that handles incoming "
 "requests to these routes. We'll leave the `store` method empty for now:"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:63 docs/master/validation.md:412 docs/master/validation.md:1379
+#: docs/master/validation.md:66 docs/master/validation.md:463 docs/master/validation.md:1749 docs/master/validation.md:1804 docs/master/validation.md:1838
 #, no-wrap
 msgid "    <?php\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:65 docs/master/validation.md:414
+#: docs/master/validation.md:68 docs/master/validation.md:465
 #, no-wrap
 msgid "    namespace App\\Http\\Controllers;\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:68
+#: docs/master/validation.md:71
 #, no-wrap
 msgid ""
 "    use App\\Http\\Controllers\\Controller;\n"
@@ -198,7 +201,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:80
+#: docs/master/validation.md:83
 #, no-wrap
 msgid ""
 "    class PostController extends Controller\n"
@@ -215,7 +218,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:92
+#: docs/master/validation.md:95
 #, no-wrap
 msgid ""
 "        /**\n"
@@ -232,30 +235,30 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:94
+#: docs/master/validation.md:97
 #, no-wrap
 msgid "<a name=\"quick-writing-the-validation-logic\"></a>\n"
 msgstr ""
 
 #. type: Title ###
-#: docs/master/validation.md:94
+#: docs/master/validation.md:97
 #, no-wrap
 msgid "Writing The Validation Logic"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:97
+#: docs/master/validation.md:100
 msgid ""
 "Now we are ready to fill in our `store` method with the logic to validate "
 "the new blog post. To do this, we will use the `validate` method provided by "
 "the `Illuminate\\Http\\Request` object. If the validation rules pass, your "
 "code will keep executing normally; however, if validation fails, an "
-"exception will be thrown and the proper error response will automatically be "
-"sent back to the user."
+"`Illuminate\\Validation\\ValidationException` exception will be thrown and "
+"the proper error response will automatically be sent back to the user."
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:99
+#: docs/master/validation.md:102
 msgid ""
 "If validation fails during a traditional HTTP request, a redirect response "
 "to the previous URL will be generated. If the incoming request is an XHR "
@@ -264,14 +267,14 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:101
+#: docs/master/validation.md:104
 msgid ""
 "To get a better understanding of the `validate` method, let's jump back into "
 "the `store` method:"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:114
+#: docs/master/validation.md:117
 #, no-wrap
 msgid ""
 "    /**\n"
@@ -289,7 +292,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:117
+#: docs/master/validation.md:120
 #, no-wrap
 msgid ""
 "        // The blog post is valid...\n"
@@ -297,7 +300,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:119
+#: docs/master/validation.md:122
 msgid ""
 "As you can see, the validation rules are passed into the `validate` "
 "method. Don't worry - all available validation rules are "
@@ -307,14 +310,14 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:121
+#: docs/master/validation.md:124
 msgid ""
 "Alternatively, validation rules may be specified as arrays of rules instead "
 "of a single `|` delimited string:"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:126
+#: docs/master/validation.md:129
 #, no-wrap
 msgid ""
 "    $validatedData = $request->validate([\n"
@@ -324,14 +327,14 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:128
+#: docs/master/validation.md:131
 msgid ""
 "In addition, you may use the `validateWithBag` method to validate a request "
 "and store any error messages within a [named error bag](#named-error-bags):"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:133
+#: docs/master/validation.md:136
 #, no-wrap
 msgid ""
 "    $validatedData = $request->validateWithBag('post', [\n"
@@ -341,19 +344,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:135
+#: docs/master/validation.md:138
 #, no-wrap
 msgid "<a name=\"stopping-on-first-validation-failure\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/master/validation.md:135
+#: docs/master/validation.md:138 docs/master/validation.md:506
 #, no-wrap
 msgid "Stopping On First Validation Failure"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:138
+#: docs/master/validation.md:141
 msgid ""
 "Sometimes you may wish to stop running validation rules on an attribute "
 "after the first validation failure. To do so, assign the `bail` rule to the "
@@ -361,7 +364,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:143
+#: docs/master/validation.md:146
 #, no-wrap
 msgid ""
 "    $request->validate([\n"
@@ -371,7 +374,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:145
+#: docs/master/validation.md:148
 msgid ""
 "In this example, if the `unique` rule on the `title` attribute fails, the "
 "`max` rule will not be checked. Rules will be validated in the order they "
@@ -379,26 +382,26 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:147
+#: docs/master/validation.md:150
 #, no-wrap
 msgid "<a name=\"a-note-on-nested-attributes\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/master/validation.md:147
+#: docs/master/validation.md:150
 #, no-wrap
 msgid "A Note On Nested Attributes"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:150
+#: docs/master/validation.md:153
 msgid ""
 "If the incoming HTTP request contains \"nested\" field data, you may specify "
 "these fields in your validation rules using \"dot\" syntax:"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:156
+#: docs/master/validation.md:159
 #, no-wrap
 msgid ""
 "    $request->validate([\n"
@@ -409,7 +412,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:158
+#: docs/master/validation.md:161
 msgid ""
 "On the other hand, if your field name contains a literal period, you can "
 "explicitly prevent this from being interpreted as \"dot\" syntax by escaping "
@@ -417,7 +420,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:163
+#: docs/master/validation.md:166
 #, no-wrap
 msgid ""
 "    $request->validate([\n"
@@ -427,19 +430,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:165
+#: docs/master/validation.md:168
 #, no-wrap
 msgid "<a name=\"quick-displaying-the-validation-errors\"></a>\n"
 msgstr ""
 
 #. type: Title ###
-#: docs/master/validation.md:165
+#: docs/master/validation.md:168
 #, no-wrap
 msgid "Displaying The Validation Errors"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:168
+#: docs/master/validation.md:171
 msgid ""
 "So, what if the incoming request fields do not pass the given validation "
 "rules? As mentioned previously, Laravel will automatically redirect the user "
@@ -450,7 +453,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:170
+#: docs/master/validation.md:173
 msgid ""
 "An `$errors` variable is shared with all of your application's views by the "
 "`Illuminate\\View\\Middleware\\ShareErrorsFromSession` middleware, which is "
@@ -463,7 +466,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:172
+#: docs/master/validation.md:175
 msgid ""
 "So, in our example, the user will be redirected to our controller's `create` "
 "method when validation fails, allowing us to display the error messages in "
@@ -471,13 +474,13 @@ msgid ""
 msgstr ""
 
 #. type: Code fence info string
-#: docs/master/validation.md:173 docs/master/validation.md:208
+#: docs/master/validation.md:176 docs/master/validation.md:211 docs/master/validation.md:225
 #, no-wrap
 msgid "html"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:173
+#: docs/master/validation.md:176
 #, no-wrap
 msgid ""
 "<!-- /resources/views/post/create.blade.php -->\n"
@@ -498,19 +501,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:192
+#: docs/master/validation.md:195
 #, no-wrap
 msgid "<a name=\"quick-customizing-the-error-messages\"></a>\n"
 msgstr ""
 
 #. type: Title ###
-#: docs/master/validation.md:192 docs/master/validation.md:353 docs/master/validation.md:477
+#: docs/master/validation.md:195 docs/master/validation.md:404 docs/master/validation.md:543
 #, no-wrap
 msgid "Customizing The Error Messages"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:195 docs/master/validation.md:582
+#: docs/master/validation.md:198 docs/master/validation.md:685
 msgid ""
 "Laravel's built-in validation rules each has an error message that is "
 "located in your application's `resources/lang/en/validation.php` "
@@ -520,7 +523,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:197 docs/master/validation.md:584
+#: docs/master/validation.md:200 docs/master/validation.md:687
 msgid ""
 "In addition, you may copy this file to another translation language "
 "directory to translate the messages for your application's language. To "
@@ -529,19 +532,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:199
+#: docs/master/validation.md:202
 #, no-wrap
 msgid "<a name=\"quick-xhr-requests-and-validation\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/master/validation.md:199
+#: docs/master/validation.md:202
 #, no-wrap
 msgid "XHR Requests & Validation"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:202
+#: docs/master/validation.md:205
 msgid ""
 "In this example, we used a traditional form to send data to the "
 "application. However, many applications receive XHR requests from a "
@@ -552,19 +555,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:204
+#: docs/master/validation.md:207
 #, no-wrap
 msgid "<a name=\"the-at-error-directive\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/master/validation.md:204
+#: docs/master/validation.md:207
 #, no-wrap
 msgid "The `@error` Directive"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:207
+#: docs/master/validation.md:210
 msgid ""
 "You may use the `@error` [Blade](/docs/{{version}}/blade) directive to "
 "quickly determine if validation error messages exist for a given "
@@ -573,15 +576,15 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:208
+#: docs/master/validation.md:211
 #, no-wrap
 msgid ""
 "<!-- /resources/views/post/create.blade.php -->\n"
 "\n"
 "<label for=\"title\">Post Title</label>\n"
 "\n"
-"<input id=\"title\" type=\"text\" class=\"@error('title') is-invalid "
-"@enderror\">\n"
+"<input id=\"title\" type=\"text\" name=\"title\" class=\"@error('title') "
+"is-invalid @enderror\">\n"
 "\n"
 "@error('title')\n"
 "    <div class=\"alert alert-danger\">{{ $message }}</div>\n"
@@ -589,19 +592,32 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:221
+#: docs/master/validation.md:224
+msgid ""
+"If you are using [named error bags](#named-error-bags), you may pass the "
+"name of the error bag as the second argument to the `@error` directive:"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/validation.md:225
+#, no-wrap
+msgid "<input ... class=\"@error('title', 'post') is-invalid @enderror\">\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/validation.md:230
 #, no-wrap
 msgid "<a name=\"repopulating-forms\"></a>\n"
 msgstr ""
 
 #. type: Title ###
-#: docs/master/validation.md:221
+#: docs/master/validation.md:230
 #, no-wrap
 msgid "Repopulating Forms"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:224
+#: docs/master/validation.md:233
 msgid ""
 "When Laravel generates a redirect response due to a validation error, the "
 "framework will automatically [flash all of the request's input to the "
@@ -611,7 +627,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:226
+#: docs/master/validation.md:235
 msgid ""
 "To retrieve flashed input from the previous request, invoke the `old` method "
 "on an instance of `Illuminate\\Http\\Request`. The `old` method will pull "
@@ -620,13 +636,13 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:228
+#: docs/master/validation.md:237
 #, no-wrap
 msgid "    $title = $request->old('title');\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:230
+#: docs/master/validation.md:239
 msgid ""
 "Laravel also provides a global `old` helper. If you are displaying old input "
 "within a [Blade template](/docs/{{version}}/blade), it is more convenient to "
@@ -635,25 +651,25 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:232
+#: docs/master/validation.md:241
 #, no-wrap
 msgid "    <input type=\"text\" name=\"title\" value=\"{{ old('title') }}\">\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:234
+#: docs/master/validation.md:243
 #, no-wrap
 msgid "<a name=\"a-note-on-optional-fields\"></a>\n"
 msgstr ""
 
 #. type: Title ###
-#: docs/master/validation.md:234
+#: docs/master/validation.md:243
 #, no-wrap
 msgid "A Note On Optional Fields"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:237
+#: docs/master/validation.md:246
 msgid ""
 "By default, Laravel includes the `TrimStrings` and "
 "`ConvertEmptyStringsToNull` middleware in your application's global "
@@ -664,7 +680,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:243
+#: docs/master/validation.md:252
 #, no-wrap
 msgid ""
 "    $request->validate([\n"
@@ -675,7 +691,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:245
+#: docs/master/validation.md:254
 msgid ""
 "In this example, we are specifying that the `publish_at` field may be either "
 "`null` or a valid date representation. If the `nullable` modifier is not "
@@ -684,31 +700,31 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:247
+#: docs/master/validation.md:256
 #, no-wrap
 msgid "<a name=\"form-request-validation\"></a>\n"
 msgstr ""
 
 #. type: Title ##
-#: docs/master/validation.md:247
+#: docs/master/validation.md:256
 #, no-wrap
 msgid "Form Request Validation"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:250
+#: docs/master/validation.md:259
 #, no-wrap
 msgid "<a name=\"creating-form-requests\"></a>\n"
 msgstr ""
 
 #. type: Title ###
-#: docs/master/validation.md:250
+#: docs/master/validation.md:259
 #, no-wrap
 msgid "Creating Form Requests"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:253
+#: docs/master/validation.md:262
 msgid ""
 "For more complex validation scenarios, you may wish to create a \"form "
 "request\". Form requests are custom request classes that encapsulate their "
@@ -717,13 +733,13 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:255
+#: docs/master/validation.md:264
 #, no-wrap
 msgid "    php artisan make:request StorePostRequest\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:257
+#: docs/master/validation.md:266
 msgid ""
 "The generated form request class will be placed in the `app/Http/Requests` "
 "directory. If this directory does not exist, it will be created when you run "
@@ -732,7 +748,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:259
+#: docs/master/validation.md:268
 msgid ""
 "As you might have guessed, the `authorize` method is responsible for "
 "determining if the currently authenticated user can perform the action "
@@ -741,7 +757,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:272
+#: docs/master/validation.md:281
 #, no-wrap
 msgid ""
 "    /**\n"
@@ -759,7 +775,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:274
+#: docs/master/validation.md:283
 #, no-wrap
 msgid ""
 "> {tip} You may type-hint any dependencies you require within the `rules` "
@@ -768,7 +784,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:276
+#: docs/master/validation.md:285
 msgid ""
 "So, how are the validation rules evaluated? All you need to do is type-hint "
 "the request on your controller method. The incoming form request is "
@@ -777,7 +793,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:286
+#: docs/master/validation.md:295
 #, no-wrap
 msgid ""
 "    /**\n"
@@ -792,16 +808,25 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:290
+#: docs/master/validation.md:298
 #, no-wrap
 msgid ""
 "        // Retrieve the validated input data...\n"
 "        $validated = $request->validated();\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/validation.md:303
+#, no-wrap
+msgid ""
+"        // Retrieve a portion of the validated input data...\n"
+"        $validated = $request->safe()->only(['name', 'email']);\n"
+"        $validated = $request->safe()->except(['name', 'email']);\n"
 "    }\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:292
+#: docs/master/validation.md:305
 msgid ""
 "If validation fails, a redirect response will be generated to send the user "
 "back to their previous location. The errors will also be flashed to the "
@@ -811,19 +836,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:294
+#: docs/master/validation.md:307
 #, no-wrap
 msgid "<a name=\"adding-after-hooks-to-form-requests\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/master/validation.md:294
+#: docs/master/validation.md:307
 #, no-wrap
 msgid "Adding After Hooks To Form Requests"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:297
+#: docs/master/validation.md:310
 msgid ""
 "If you would like to add an \"after\" validation hook to a form request, you "
 "may use the `withValidator` method. This method receives the fully "
@@ -832,7 +857,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:312
+#: docs/master/validation.md:325
 #, no-wrap
 msgid ""
 "    /**\n"
@@ -853,19 +878,103 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:314
+#: docs/master/validation.md:328
+#, no-wrap
+msgid "<a name=\"request-stopping-on-first-validation-rule-failure\"></a>\n"
+msgstr ""
+
+#. type: Title ####
+#: docs/master/validation.md:328
+#, no-wrap
+msgid "Stopping On First Validation Failure Attribute"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/validation.md:331
+msgid ""
+"By adding a `stopOnFirstFailure` property to your request class, you may "
+"inform the validator that it should stop validating all attributes once a "
+"single validation failure has occurred:"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/validation.md:338
+#, no-wrap
+msgid ""
+"    /**\n"
+"     * Indicates if the validator should stop on the first rule failure.\n"
+"     *\n"
+"     * @var bool\n"
+"     */\n"
+"    protected $stopOnFirstFailure = true;\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/validation.md:340
+#, no-wrap
+msgid "<a name=\"customizing-the-redirect-location\"></a>\n"
+msgstr ""
+
+#. type: Title ####
+#: docs/master/validation.md:340
+#, no-wrap
+msgid "Customizing The Redirect Location"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/validation.md:343
+msgid ""
+"As previously discussed, a redirect response will be generated to send the "
+"user back to their previous location when form request validation "
+"fails. However, you are free to customize this behavior. To do so, define a "
+"`$redirect` property on your form request:"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/validation.md:350
+#, no-wrap
+msgid ""
+"    /**\n"
+"     * The URI that users should be redirected to if validation fails.\n"
+"     *\n"
+"     * @var string\n"
+"     */\n"
+"    protected $redirect = '/dashboard';\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/validation.md:352
+msgid ""
+"Or, if you would like to redirect users to a named route, you may define a "
+"`$redirectRoute` property instead:"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/validation.md:359
+#, no-wrap
+msgid ""
+"    /**\n"
+"     * The route that users should be redirected to if validation fails.\n"
+"     *\n"
+"     * @var string\n"
+"     */\n"
+"    protected $redirectRoute = 'dashboard';\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/validation.md:361
 #, no-wrap
 msgid "<a name=\"authorizing-form-requests\"></a>\n"
 msgstr ""
 
 #. type: Title ###
-#: docs/master/validation.md:314
+#: docs/master/validation.md:361
 #, no-wrap
 msgid "Authorizing Form Requests"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:317
+#: docs/master/validation.md:364
 msgid ""
 "The form request class also contains an `authorize` method. Within this "
 "method, you may determine if the authenticated user actually has the "
@@ -876,13 +985,13 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:319
+#: docs/master/validation.md:366
 #, no-wrap
 msgid "    use App\\Models\\Comment;\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:328
+#: docs/master/validation.md:375
 #, no-wrap
 msgid ""
 "    /**\n"
@@ -896,7 +1005,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:331
+#: docs/master/validation.md:378
 #, no-wrap
 msgid ""
 "        return $comment && $this->user()->can('update', $comment);\n"
@@ -904,7 +1013,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:333
+#: docs/master/validation.md:380
 msgid ""
 "Since all form requests extend the base Laravel request class, we may use "
 "the `user` method to access the currently authenticated user. Also, note the "
@@ -914,13 +1023,28 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:335
+#: docs/master/validation.md:382
 #, no-wrap
 msgid "    Route::post('/comment/{comment}');\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:337
+#: docs/master/validation.md:384
+msgid ""
+"Therefore, if your application is taking advantage of [route model "
+"binding](/docs/{{version}}/routing#route-model-binding), your code may be "
+"made even more succinct by accessing the resolved model as a property of the "
+"request:"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/validation.md:386
+#, no-wrap
+msgid "    return $this->user()->can('update', $this->comment);\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/validation.md:388
 msgid ""
 "If the `authorize` method returns `false`, an HTTP response with a 403 "
 "status code will automatically be returned and your controller method will "
@@ -928,14 +1052,14 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:339
+#: docs/master/validation.md:390
 msgid ""
 "If you plan to handle authorization logic for the request in another part of "
 "your application, you may simply return `true` from the `authorize` method:"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:349
+#: docs/master/validation.md:400
 #, no-wrap
 msgid ""
 "    /**\n"
@@ -950,7 +1074,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:351
+#: docs/master/validation.md:402
 #, no-wrap
 msgid ""
 "> {tip} You may type-hint any dependencies you need within the `authorize` "
@@ -959,13 +1083,13 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:353
+#: docs/master/validation.md:404
 #, no-wrap
 msgid "<a name=\"customizing-the-error-messages\"></a>\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:356
+#: docs/master/validation.md:407
 msgid ""
 "You may customize the error messages used by the form request by overriding "
 "the `messages` method. This method should return an array of attribute / "
@@ -973,7 +1097,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:369
+#: docs/master/validation.md:420
 #, no-wrap
 msgid ""
 "    /**\n"
@@ -991,19 +1115,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:371
+#: docs/master/validation.md:422
 #, no-wrap
 msgid "<a name=\"customizing-the-validation-attributes\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/master/validation.md:371
+#: docs/master/validation.md:422
 #, no-wrap
 msgid "Customizing The Validation Attributes"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:374
+#: docs/master/validation.md:425
 msgid ""
 "Many of Laravel's built-in validation rule error messages contain an "
 "`:attribute` placeholder. If you would like the `:attribute` placeholder of "
@@ -1013,7 +1137,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:386
+#: docs/master/validation.md:437
 #, no-wrap
 msgid ""
 "    /**\n"
@@ -1030,32 +1154,32 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:388
+#: docs/master/validation.md:439
 #, no-wrap
 msgid "<a name=\"preparing-input-for-validation\"></a>\n"
 msgstr ""
 
 #. type: Title ###
-#: docs/master/validation.md:388
+#: docs/master/validation.md:439
 #, no-wrap
 msgid "Preparing Input For Validation"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:391
+#: docs/master/validation.md:442
 msgid ""
 "If you need to prepare or sanitize any data from the request before you "
 "apply your validation rules, you may use the `prepareForValidation` method:"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:393
+#: docs/master/validation.md:444
 #, no-wrap
 msgid "    use Illuminate\\Support\\Str;\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:405
+#: docs/master/validation.md:456
 #, no-wrap
 msgid ""
 "    /**\n"
@@ -1072,19 +1196,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:407
+#: docs/master/validation.md:458
 #, no-wrap
 msgid "<a name=\"manually-creating-validators\"></a>\n"
 msgstr ""
 
 #. type: Title ##
-#: docs/master/validation.md:407
+#: docs/master/validation.md:458
 #, no-wrap
 msgid "Manually Creating Validators"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:410
+#: docs/master/validation.md:461
 msgid ""
 "If you do not want to use the `validate` method on the request, you may "
 "create a validator instance manually using the `Validator` "
@@ -1093,7 +1217,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:418
+#: docs/master/validation.md:469
 #, no-wrap
 msgid ""
 "    use App\\Http\\Controllers\\Controller;\n"
@@ -1102,7 +1226,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:433
+#: docs/master/validation.md:484
 #, no-wrap
 msgid ""
 "    class PostController extends Controller\n"
@@ -1122,7 +1246,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:439
+#: docs/master/validation.md:490
 #, no-wrap
 msgid ""
 "            if ($validator->fails()) {\n"
@@ -1133,7 +1257,24 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:443
+#: docs/master/validation.md:493
+#, no-wrap
+msgid ""
+"            // Retrieve the validated input...\n"
+"            $validated = $validator->validated();\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/validation.md:497
+#, no-wrap
+msgid ""
+"            // Retrieve a portion of the validated input...\n"
+"            $validated = $validator->safe()->only(['name', 'email']);\n"
+"            $validated = $validator->safe()->except(['name', 'email']);\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/validation.md:501
 #, no-wrap
 msgid ""
 "            // Store the blog post...\n"
@@ -1142,7 +1283,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:445
+#: docs/master/validation.md:503
 msgid ""
 "The first argument passed to the `make` method is the data under "
 "validation. The second argument is an array of the validation rules that "
@@ -1150,7 +1291,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:447
+#: docs/master/validation.md:505
 msgid ""
 "After determining whether the request validation failed, you may use the "
 "`withErrors` method to flash the error messages to the session. When using "
@@ -1161,19 +1302,36 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:449
+#: docs/master/validation.md:509
+msgid ""
+"The `stopOnFirstFailure` method will inform the validator that it should "
+"stop validating all attributes once a single validation failure has "
+"occurred:"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/validation.md:513 docs/master/validation.md:913
+#, no-wrap
+msgid ""
+"    if ($validator->stopOnFirstFailure()->fails()) {\n"
+"        // ...\n"
+"    }\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/validation.md:515
 #, no-wrap
 msgid "<a name=\"automatic-redirection\"></a>\n"
 msgstr ""
 
 #. type: Title ###
-#: docs/master/validation.md:449
+#: docs/master/validation.md:515
 #, no-wrap
 msgid "Automatic Redirection"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:452
+#: docs/master/validation.md:518
 msgid ""
 "If you would like to create a validator instance manually but still take "
 "advantage of the automatic redirection offered by the HTTP request's "
@@ -1184,7 +1342,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:457
+#: docs/master/validation.md:523
 #, no-wrap
 msgid ""
 "    Validator::make($request->all(), [\n"
@@ -1194,14 +1352,14 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:459
+#: docs/master/validation.md:525
 msgid ""
 "You may use the `validateWithBag` method to store the error messages in a "
 "[named error bag](#named-error-bags) if validation fails:"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:464
+#: docs/master/validation.md:530
 #, no-wrap
 msgid ""
 "    Validator::make($request->all(), [\n"
@@ -1211,19 +1369,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:466
+#: docs/master/validation.md:532
 #, no-wrap
 msgid "<a name=\"named-error-bags\"></a>\n"
 msgstr ""
 
 #. type: Title ###
-#: docs/master/validation.md:466
+#: docs/master/validation.md:532
 #, no-wrap
 msgid "Named Error Bags"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:469
+#: docs/master/validation.md:535
 msgid ""
 "If you have multiple forms on a single page, you may wish to name the "
 "`MessageBag` containing the validation errors, allowing you to retrieve the "
@@ -1232,32 +1390,32 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:471
+#: docs/master/validation.md:537
 #, no-wrap
 msgid "    return redirect('register')->withErrors($validator, 'login');\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:473
+#: docs/master/validation.md:539
 msgid ""
 "You may then access the named `MessageBag` instance from the `$errors` "
 "variable:"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:475
+#: docs/master/validation.md:541
 #, no-wrap
 msgid "    {{ $errors->login->first('email') }}\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:477
+#: docs/master/validation.md:543
 #, no-wrap
 msgid "<a name=\"manual-customizing-the-error-messages\"></a>\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:480
+#: docs/master/validation.md:546
 msgid ""
 "If needed, you may provide custom error messages that a validator instance "
 "should use instead of the default error messages provided by Laravel. There "
@@ -1266,7 +1424,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:484
+#: docs/master/validation.md:550
 #, no-wrap
 msgid ""
 "    $validator = Validator::make($input, $rules, $messages = [\n"
@@ -1275,7 +1433,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:486
+#: docs/master/validation.md:552
 msgid ""
 "In this example, the `:attribute` placeholder will be replaced by the actual "
 "name of the field under validation. You may also utilize other placeholders "
@@ -1283,7 +1441,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:493
+#: docs/master/validation.md:559
 #, no-wrap
 msgid ""
 "    $messages = [\n"
@@ -1297,19 +1455,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:495
+#: docs/master/validation.md:561
 #, no-wrap
 msgid "<a name=\"specifying-a-custom-message-for-a-given-attribute\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/master/validation.md:495
+#: docs/master/validation.md:561
 #, no-wrap
 msgid "Specifying A Custom Message For A Given Attribute"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:498
+#: docs/master/validation.md:564
 msgid ""
 "Sometimes you may wish to specify a custom error message only for a specific "
 "attribute. You may do so using \"dot\" notation. Specify the attribute's "
@@ -1317,7 +1475,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:502
+#: docs/master/validation.md:568
 #, no-wrap
 msgid ""
 "    $messages = [\n"
@@ -1326,21 +1484,21 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:504
+#: docs/master/validation.md:570
 #, no-wrap
 msgid "<a name=\"specifying-custom-attribute-values\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/master/validation.md:504
+#: docs/master/validation.md:570
 #, no-wrap
 msgid "Specifying Custom Attribute Values"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:507
+#: docs/master/validation.md:573
 msgid ""
-"Many of Laravel's built-in error messages include an `:attribute:` "
+"Many of Laravel's built-in error messages include an `:attribute` "
 "placeholder that is replaced with the name of the field or attribute under "
 "validation. To customize the values used to replace these placeholders for "
 "specific fields, you may pass an array of custom attributes as the fourth "
@@ -1348,7 +1506,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:511
+#: docs/master/validation.md:577
 #, no-wrap
 msgid ""
 "    $validator = Validator::make($input, $rules, $messages, [\n"
@@ -1357,19 +1515,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:513
+#: docs/master/validation.md:579
 #, no-wrap
 msgid "<a name=\"after-validation-hook\"></a>\n"
 msgstr ""
 
 #. type: Title ###
-#: docs/master/validation.md:513
+#: docs/master/validation.md:579
 #, no-wrap
 msgid "After Validation Hook"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:516
+#: docs/master/validation.md:582
 msgid ""
 "You may also attach callbacks to be run after validation is completed. This "
 "allows you to easily perform further validation and even add more error "
@@ -1378,13 +1536,13 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:518
+#: docs/master/validation.md:584
 #, no-wrap
 msgid "    $validator = Validator::make(...);\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:526
+#: docs/master/validation.md:592
 #, no-wrap
 msgid ""
 "    $validator->after(function ($validator) {\n"
@@ -1397,7 +1555,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:530
+#: docs/master/validation.md:596
 #, no-wrap
 msgid ""
 "    if ($validator->fails()) {\n"
@@ -1406,19 +1564,140 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:532
+#: docs/master/validation.md:598
+#, no-wrap
+msgid "<a name=\"working-with-validated-input\"></a>\n"
+msgstr ""
+
+#. type: Title ##
+#: docs/master/validation.md:598
+#, no-wrap
+msgid "Working With Validated Input"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/validation.md:601
+msgid ""
+"After validating incoming request data using a form request or a manually "
+"created validator instance, you may wish to retrieve the incoming request "
+"data that actually underwent validation. This can be accomplished in several "
+"ways. First, you may call the `validated` method on a form request or "
+"validator instance. This method returns an array of the data that was "
+"validated:"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/validation.md:603
+#, no-wrap
+msgid "    $validated = $request->validated();\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/validation.md:605
+#, no-wrap
+msgid "    $validated = $validator->validated();\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/validation.md:607
+msgid ""
+"Alternatively, you may call the `safe` method on a form request or validator "
+"instance. This method returns an instance of "
+"`Illuminate\\Support\\ValidatedInput`. This object exposes `only`, `except`, "
+"and `all` methods to retrieve a subset of the validated data or the entire "
+"array of validated data:"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/validation.md:609
+#, no-wrap
+msgid "    $validated = $request->safe()->only(['name', 'email']);\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/validation.md:611
+#, no-wrap
+msgid "    $validated = $request->safe()->except(['name', 'email']);\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/validation.md:613
+#, no-wrap
+msgid "    $validated = $request->safe()->all();\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/validation.md:615
+msgid ""
+"In addition, the `Illuminate\\Support\\ValidatedInput` instance may be "
+"iterated over and accessed like an array:"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/validation.md:620
+#, no-wrap
+msgid ""
+"    // Validated data may be iterated...\n"
+"    foreach ($request->safe() as $key => $value) {\n"
+"        //\n"
+"    }\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/validation.md:623
+#, no-wrap
+msgid ""
+"    // Validated data may be accessed as an array...\n"
+"    $validated = $request->safe();\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/validation.md:625
+#, no-wrap
+msgid "    $email = $validated['email'];\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/validation.md:627
+msgid ""
+"If you would like to add additional fields to the validated data, you may "
+"call the `merge` method:"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/validation.md:629
+#, no-wrap
+msgid "    $validated = $request->safe()->merge(['name' => 'Taylor Otwell']);\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/validation.md:631
+msgid ""
+"If you would like to retrieve the validated data as a "
+"[collection](/docs/{{version}}/collections) instance, you may call the "
+"`collect` method:"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/validation.md:633
+#, no-wrap
+msgid "    $collection = $request->safe()->collect();\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/validation.md:635
 #, no-wrap
 msgid "<a name=\"working-with-error-messages\"></a>\n"
 msgstr ""
 
 #. type: Title ##
-#: docs/master/validation.md:532
+#: docs/master/validation.md:635
 #, no-wrap
 msgid "Working With Error Messages"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:535
+#: docs/master/validation.md:638
 msgid ""
 "After calling the `errors` method on a `Validator` instance, you will "
 "receive an `Illuminate\\Support\\MessageBag` instance, which has a variety "
@@ -1428,57 +1707,57 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:537
+#: docs/master/validation.md:640
 #, no-wrap
 msgid "<a name=\"retrieving-the-first-error-message-for-a-field\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/master/validation.md:537
+#: docs/master/validation.md:640
 #, no-wrap
 msgid "Retrieving The First Error Message For A Field"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:540
+#: docs/master/validation.md:643
 msgid ""
 "To retrieve the first error message for a given field, use the `first` "
 "method:"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:542
+#: docs/master/validation.md:645
 #, no-wrap
 msgid "    $errors = $validator->errors();\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:544
+#: docs/master/validation.md:647
 #, no-wrap
 msgid "    echo $errors->first('email');\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:546
+#: docs/master/validation.md:649
 #, no-wrap
 msgid "<a name=\"retrieving-all-error-messages-for-a-field\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/master/validation.md:546
+#: docs/master/validation.md:649
 #, no-wrap
 msgid "Retrieving All Error Messages For A Field"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:549
+#: docs/master/validation.md:652
 msgid ""
 "If you need to retrieve an array of all the messages for a given field, use "
 "the `get` method:"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:553
+#: docs/master/validation.md:656
 #, no-wrap
 msgid ""
 "    foreach ($errors->get('email') as $message) {\n"
@@ -1487,14 +1766,14 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:555
+#: docs/master/validation.md:658
 msgid ""
 "If you are validating an array form field, you may retrieve all of the "
 "messages for each of the array elements using the `*` character:"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:559
+#: docs/master/validation.md:662
 #, no-wrap
 msgid ""
 "    foreach ($errors->get('attachments.*') as $message) {\n"
@@ -1503,24 +1782,24 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:561
+#: docs/master/validation.md:664
 #, no-wrap
 msgid "<a name=\"retrieving-all-error-messages-for-all-fields\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/master/validation.md:561
+#: docs/master/validation.md:664
 #, no-wrap
 msgid "Retrieving All Error Messages For All Fields"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:564
+#: docs/master/validation.md:667
 msgid "To retrieve an array of all messages for all fields, use the `all` method:"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:568
+#: docs/master/validation.md:671
 #, no-wrap
 msgid ""
 "    foreach ($errors->all() as $message) {\n"
@@ -1529,26 +1808,26 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:570
+#: docs/master/validation.md:673
 #, no-wrap
 msgid "<a name=\"determining-if-messages-exist-for-a-field\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/master/validation.md:570
+#: docs/master/validation.md:673
 #, no-wrap
 msgid "Determining If Messages Exist For A Field"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:573
+#: docs/master/validation.md:676
 msgid ""
 "The `has` method may be used to determine if any error messages exist for a "
 "given field:"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:577
+#: docs/master/validation.md:680
 #, no-wrap
 msgid ""
 "    if ($errors->has('email')) {\n"
@@ -1557,31 +1836,31 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:579
+#: docs/master/validation.md:682
 #, no-wrap
 msgid "<a name=\"specifying-custom-messages-in-language-files\"></a>\n"
 msgstr ""
 
 #. type: Title ###
-#: docs/master/validation.md:579
+#: docs/master/validation.md:682
 #, no-wrap
 msgid "Specifying Custom Messages In Language Files"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:586
+#: docs/master/validation.md:689
 #, no-wrap
 msgid "<a name=\"custom-messages-for-specific-attributes\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/master/validation.md:586
+#: docs/master/validation.md:689
 #, no-wrap
 msgid "Custom Messages For Specific Attributes"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:589
+#: docs/master/validation.md:692
 msgid ""
 "You may customize the error messages used for specified attribute and rule "
 "combinations within your application's validation language files. To do so, "
@@ -1590,7 +1869,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:596
+#: docs/master/validation.md:699
 #, no-wrap
 msgid ""
 "    'custom' => [\n"
@@ -1602,21 +1881,21 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:598
+#: docs/master/validation.md:701
 #, no-wrap
 msgid "<a name=\"specifying-attribute-in-language-files\"></a>\n"
 msgstr ""
 
 #. type: Title ###
-#: docs/master/validation.md:598
+#: docs/master/validation.md:701
 #, no-wrap
 msgid "Specifying Attributes In Language Files"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:601
+#: docs/master/validation.md:704
 msgid ""
-"Many of Laravel's built-in error messages include an `:attribute:` "
+"Many of Laravel's built-in error messages include an `:attribute` "
 "placeholder that is replaced with the name of the field or attribute under "
 "validation. If you would like the `:attribute` portion of your validation "
 "message to be replaced with a custom value, you may specify the custom "
@@ -1625,7 +1904,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:605
+#: docs/master/validation.md:708
 #, no-wrap
 msgid ""
 "    'attributes' => [\n"
@@ -1634,19 +1913,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:607
+#: docs/master/validation.md:710
 #, no-wrap
 msgid "<a name=\"specifying-values-in-language-files\"></a>\n"
 msgstr ""
 
 #. type: Title ###
-#: docs/master/validation.md:607
+#: docs/master/validation.md:710
 #, no-wrap
 msgid "Specifying Values In Language Files"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:610
+#: docs/master/validation.md:713
 msgid ""
 "Some of Laravel's built-in validation rule error messages contain a `:value` "
 "placeholder that is replaced with the current value of the request "
@@ -1657,7 +1936,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:614
+#: docs/master/validation.md:717
 #, no-wrap
 msgid ""
 "    Validator::make($request->all(), [\n"
@@ -1666,18 +1945,18 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:616
+#: docs/master/validation.md:719
 msgid "If this validation rule fails, it will produce the following error message:"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:618
+#: docs/master/validation.md:721
 #, no-wrap
 msgid "    The credit card number field is required when payment type is cc.\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:620
+#: docs/master/validation.md:723
 msgid ""
 "Instead of displaying `cc` as the payment type value, you may specify a more "
 "user-friendly value representation in your "
@@ -1686,7 +1965,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:626
+#: docs/master/validation.md:729
 #, no-wrap
 msgid ""
 "    'values' => [\n"
@@ -1697,14 +1976,14 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:628
+#: docs/master/validation.md:731
 msgid ""
 "After defining this value, the validation rule will produce the following "
 "error message:"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:630
+#: docs/master/validation.md:733
 #, no-wrap
 msgid ""
 "    The credit card number field is required when payment type is credit "
@@ -1712,24 +1991,24 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:632
+#: docs/master/validation.md:735
 #, no-wrap
 msgid "<a name=\"available-validation-rules\"></a>\n"
 msgstr ""
 
 #. type: Title ##
-#: docs/master/validation.md:632
+#: docs/master/validation.md:735
 #, no-wrap
 msgid "Available Validation Rules"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:635
+#: docs/master/validation.md:738
 msgid "Below is a list of all available validation rules and their function:"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:641
+#: docs/master/validation.md:744
 #, no-wrap
 msgid ""
 "<style>\n"
@@ -1740,7 +2019,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:646
+#: docs/master/validation.md:749
 #, no-wrap
 msgid ""
 "    .collection-method-list a {\n"
@@ -1750,85 +2029,111 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:648
+#: docs/master/validation.md:751
 #, no-wrap
 msgid "<div class=\"collection-method-list\" markdown=\"1\">\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:716
+#: docs/master/validation.md:831
 msgid ""
-"[Accepted](#rule-accepted)  [Active URL](#rule-active-url)  [After "
-"(Date)](#rule-after)  [After Or Equal (Date)](#rule-after-or-equal)  "
-"[Alpha](#rule-alpha)  [Alpha Dash](#rule-alpha-dash)  [Alpha "
-"Numeric](#rule-alpha-num)  [Array](#rule-array)  [Bail](#rule-bail)  [Before "
-"(Date)](#rule-before)  [Before Or Equal (Date)](#rule-before-or-equal)  "
-"[Between](#rule-between)  [Boolean](#rule-boolean)  "
-"[Confirmed](#rule-confirmed)  [Date](#rule-date)  [Date "
+"[Accepted](#rule-accepted)  [Accepted If](#rule-accepted-if)  [Active "
+"URL](#rule-active-url)  [After (Date)](#rule-after)  [After Or Equal "
+"(Date)](#rule-after-or-equal)  [Alpha](#rule-alpha)  [Alpha "
+"Dash](#rule-alpha-dash)  [Alpha Numeric](#rule-alpha-num)  "
+"[Array](#rule-array)  [Bail](#rule-bail)  [Before (Date)](#rule-before)  "
+"[Before Or Equal (Date)](#rule-before-or-equal)  [Between](#rule-between)  "
+"[Boolean](#rule-boolean)  [Confirmed](#rule-confirmed)  [Current "
+"Password](#rule-current-password)  [Date](#rule-date)  [Date "
 "Equals](#rule-date-equals)  [Date Format](#rule-date-format)  "
+"[Declined](#rule-declined)  [Declined If](#rule-declined-if)  "
 "[Different](#rule-different)  [Digits](#rule-digits)  [Digits "
 "Between](#rule-digits-between)  [Dimensions (Image Files)](#rule-dimensions)  "
 "[Distinct](#rule-distinct)  [Email](#rule-email)  [Ends "
-"With](#rule-ends-with)  [Exclude If](#rule-exclude-if)  [Exclude "
-"Unless](#rule-exclude-unless)  [Exists (Database)](#rule-exists)  "
+"With](#rule-ends-with)  [Enum](#rule-enum)  [Exclude](#rule-exclude)  "
+"[Exclude If](#rule-exclude-if)  [Exclude Unless](#rule-exclude-unless)  "
+"[Exclude Without](#rule-exclude-without)  [Exists (Database)](#rule-exists)  "
 "[File](#rule-file)  [Filled](#rule-filled)  [Greater Than](#rule-gt)  "
 "[Greater Than Or Equal](#rule-gte)  [Image (File)](#rule-image)  "
 "[In](#rule-in)  [In Array](#rule-in-array)  [Integer](#rule-integer)  [IP "
-"Address](#rule-ip)  [JSON](#rule-json)  [Less Than](#rule-lt)  [Less Than Or "
-"Equal](#rule-lte)  [Max](#rule-max)  [MIME Types](#rule-mimetypes)  [MIME "
-"Type By File Extension](#rule-mimes)  [Min](#rule-min)  [Multiple "
-"Of](#multiple-of)  [Not In](#rule-not-in)  [Not Regex](#rule-not-regex)  "
-"[Nullable](#rule-nullable)  [Numeric](#rule-numeric)  "
-"[Password](#rule-password)  [Present](#rule-present)  [Regular "
-"Expression](#rule-regex)  [Required](#rule-required)  [Required "
-"If](#rule-required-if)  [Required Unless](#rule-required-unless)  [Required "
-"With](#rule-required-with)  [Required With All](#rule-required-with-all)  "
-"[Required Without](#rule-required-without)  [Required Without "
+"Address](#rule-ip)  [MAC Address](#rule-mac)  [JSON](#rule-json)  [Less "
+"Than](#rule-lt)  [Less Than Or Equal](#rule-lte)  [Max](#rule-max)  [MIME "
+"Types](#rule-mimetypes)  [MIME Type By File Extension](#rule-mimes)  "
+"[Min](#rule-min)  [Multiple Of](#multiple-of)  [Not In](#rule-not-in)  [Not "
+"Regex](#rule-not-regex)  [Nullable](#rule-nullable)  "
+"[Numeric](#rule-numeric)  [Password](#rule-password)  "
+"[Present](#rule-present)  [Prohibited](#rule-prohibited)  [Prohibited "
+"If](#rule-prohibited-if)  [Prohibited Unless](#rule-prohibited-unless)  "
+"[Prohibits](#rule-prohibits)  [Regular Expression](#rule-regex)  "
+"[Required](#rule-required)  [Required If](#rule-required-if)  [Required "
+"Unless](#rule-required-unless)  [Required With](#rule-required-with)  "
+"[Required With All](#rule-required-with-all)  [Required "
+"Without](#rule-required-without)  [Required Without "
 "All](#rule-required-without-all)  [Same](#rule-same)  [Size](#rule-size)  "
-"[Sometimes](#conditionally-adding-rules)  [Starts With](#rule-starts-with)  "
+"[Sometimes](#validating-when-present)  [Starts With](#rule-starts-with)  "
 "[String](#rule-string)  [Timezone](#rule-timezone)  [Unique "
 "(Database)](#rule-unique)  [URL](#rule-url)  [UUID](#rule-uuid)"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:718 docs/master/validation.md:1125
+#: docs/master/validation.md:833 docs/master/validation.md:1358
 #, no-wrap
 msgid "</div>\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:720
+#: docs/master/validation.md:835
 #, no-wrap
 msgid "<a name=\"rule-accepted\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/master/validation.md:720
+#: docs/master/validation.md:835
 #, no-wrap
 msgid "accepted"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:723
+#: docs/master/validation.md:838
 msgid ""
 "The field under validation must be `\"yes\"`, `\"on\"`, `1`, or `true`. This "
 "is useful for validating \"Terms of Service\" acceptance or similar fields."
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:725
+#: docs/master/validation.md:840
+#, no-wrap
+msgid "<a name=\"rule-accepted-if\"></a>\n"
+msgstr ""
+
+#. type: Title ####
+#: docs/master/validation.md:840
+#, no-wrap
+msgid "accepted_if:anotherfield,value,..."
+msgstr ""
+
+#. type: Plain text
+#: docs/master/validation.md:843
+msgid ""
+"The field under validation must be `\"yes\"`, `\"on\"`, `1`, or `true` if "
+"another field under validation is equal to a specified value. This is useful "
+"for validating \"Terms of Service\" acceptance or similar fields."
+msgstr ""
+
+#. type: Plain text
+#: docs/master/validation.md:845
 #, no-wrap
 msgid "<a name=\"rule-active-url\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/master/validation.md:725
+#: docs/master/validation.md:845
 #, no-wrap
 msgid "active_url"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:728
+#: docs/master/validation.md:848
 msgid ""
 "The field under validation must have a valid A or AAAA record according to "
 "the `dns_get_record` PHP function. The hostname of the provided URL is "
@@ -1837,19 +2142,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:730
+#: docs/master/validation.md:850
 #, no-wrap
 msgid "<a name=\"rule-after\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/master/validation.md:730
+#: docs/master/validation.md:850
 #, no-wrap
 msgid "after:_date_"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:733
+#: docs/master/validation.md:853
 msgid ""
 "The field under validation must be a value after a given date. The dates "
 "will be passed into the `strtotime` PHP function in order to be converted to "
@@ -1857,144 +2162,200 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:735
+#: docs/master/validation.md:855
 #, no-wrap
 msgid "    'start_date' => 'required|date|after:tomorrow'\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:737
+#: docs/master/validation.md:857
 msgid ""
 "Instead of passing a date string to be evaluated by `strtotime`, you may "
 "specify another field to compare against the date:"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:739
+#: docs/master/validation.md:859
 #, no-wrap
 msgid "    'finish_date' => 'required|date|after:start_date'\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:741
+#: docs/master/validation.md:861
 #, no-wrap
 msgid "<a name=\"rule-after-or-equal\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/master/validation.md:741
+#: docs/master/validation.md:861
 #, no-wrap
 msgid "after\\_or\\_equal:_date_"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:744
+#: docs/master/validation.md:864
 msgid ""
 "The field under validation must be a value after or equal to the given "
 "date. For more information, see the [after](#rule-after) rule."
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:746
+#: docs/master/validation.md:866
 #, no-wrap
 msgid "<a name=\"rule-alpha\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/master/validation.md:746
+#: docs/master/validation.md:866
 #, no-wrap
 msgid "alpha"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:749
+#: docs/master/validation.md:869
 msgid "The field under validation must be entirely alphabetic characters."
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:751
+#: docs/master/validation.md:871
 #, no-wrap
 msgid "<a name=\"rule-alpha-dash\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/master/validation.md:751
+#: docs/master/validation.md:871
 #, no-wrap
 msgid "alpha_dash"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:754
+#: docs/master/validation.md:874
 msgid ""
 "The field under validation may have alpha-numeric characters, as well as "
 "dashes and underscores."
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:756
+#: docs/master/validation.md:876
 #, no-wrap
 msgid "<a name=\"rule-alpha-num\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/master/validation.md:756
+#: docs/master/validation.md:876
 #, no-wrap
 msgid "alpha_num"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:759
+#: docs/master/validation.md:879
 msgid "The field under validation must be entirely alpha-numeric characters."
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:761
+#: docs/master/validation.md:881
 #, no-wrap
 msgid "<a name=\"rule-array\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/master/validation.md:761
+#: docs/master/validation.md:881
 #, no-wrap
 msgid "array"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:764
+#: docs/master/validation.md:884
 msgid "The field under validation must be a PHP `array`."
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:766
+#: docs/master/validation.md:886
+msgid ""
+"When additional values are provided to the `array` rule, each key in the "
+"input array must be present within the list of values provided to the "
+"rule. In the following example, the `admin` key in the input array is "
+"invalid since it is not contained in the list of values provided to the "
+"`array` rule:"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/validation.md:888 docs/master/validation.md:1519 docs/master/validation.md:1553 docs/master/validation.md:1607 docs/master/validation.md:1628 docs/master/validation.md:1875 docs/master/validation.md:1894
+#, no-wrap
+msgid "    use Illuminate\\Support\\Facades\\Validator;\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/validation.md:896 docs/master/validation.md:1615
+#, no-wrap
+msgid ""
+"    $input = [\n"
+"        'user' => [\n"
+"            'name' => 'Taylor Otwell',\n"
+"            'username' => 'taylorotwell',\n"
+"            'admin' => true,\n"
+"        ],\n"
+"    ];\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/validation.md:900 docs/master/validation.md:1619
+#, no-wrap
+msgid ""
+"    Validator::make($input, [\n"
+"        'user' => 'array:username,locale',\n"
+"    ]);\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/validation.md:902
+msgid ""
+"In general, you should always specify the array keys that are allowed to be "
+"present within your array."
+msgstr ""
+
+#. type: Plain text
+#: docs/master/validation.md:904
 #, no-wrap
 msgid "<a name=\"rule-bail\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/master/validation.md:766
+#: docs/master/validation.md:904
 #, no-wrap
 msgid "bail"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:769
-msgid "Stop running validation rules after the first validation failure."
+#: docs/master/validation.md:907
+msgid ""
+"Stop running validation rules for the field after the first validation "
+"failure."
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:771
+#: docs/master/validation.md:909
+msgid ""
+"While the `bail` rule will only stop validating a specific field when it "
+"encounters a validation failure, the `stopOnFirstFailure` method will inform "
+"the validator that it should stop validating all attributes once a single "
+"validation failure has occurred:"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/validation.md:915
 #, no-wrap
 msgid "<a name=\"rule-before\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/master/validation.md:771
+#: docs/master/validation.md:915
 #, no-wrap
 msgid "before:_date_"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:774
+#: docs/master/validation.md:918
 msgid ""
 "The field under validation must be a value preceding the given date. The "
 "dates will be passed into the PHP `strtotime` function in order to be "
@@ -2004,19 +2365,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:776
+#: docs/master/validation.md:920
 #, no-wrap
 msgid "<a name=\"rule-before-or-equal\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/master/validation.md:776
+#: docs/master/validation.md:920
 #, no-wrap
 msgid "before\\_or\\_equal:_date_"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:779
+#: docs/master/validation.md:923
 msgid ""
 "The field under validation must be a value preceding or equal to the given "
 "date. The dates will be passed into the PHP `strtotime` function in order to "
@@ -2026,19 +2387,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:781
+#: docs/master/validation.md:925
 #, no-wrap
 msgid "<a name=\"rule-between\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/master/validation.md:781
+#: docs/master/validation.md:925
 #, no-wrap
 msgid "between:_min_,_max_"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:784
+#: docs/master/validation.md:928
 msgid ""
 "The field under validation must have a size between the given _min_ and "
 "_max_. Strings, numerics, arrays, and files are evaluated in the same "
@@ -2046,38 +2407,38 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:786
+#: docs/master/validation.md:930
 #, no-wrap
 msgid "<a name=\"rule-boolean\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/master/validation.md:786
+#: docs/master/validation.md:930
 #, no-wrap
 msgid "boolean"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:789
+#: docs/master/validation.md:933
 msgid ""
 "The field under validation must be able to be cast as a boolean. Accepted "
 "input are `true`, `false`, `1`, `0`, `\"1\"`, and `\"0\"`."
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:791
+#: docs/master/validation.md:935
 #, no-wrap
 msgid "<a name=\"rule-confirmed\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/master/validation.md:791
+#: docs/master/validation.md:935
 #, no-wrap
 msgid "confirmed"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:794
+#: docs/master/validation.md:938
 msgid ""
 "The field under validation must have a matching field of "
 "`{field}_confirmation`. For example, if the field under validation is "
@@ -2086,38 +2447,64 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:796
+#: docs/master/validation.md:940
+#, no-wrap
+msgid "<a name=\"rule-current-password\"></a>\n"
+msgstr ""
+
+#. type: Title ####
+#: docs/master/validation.md:940
+#, no-wrap
+msgid "current_password"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/validation.md:943
+msgid ""
+"The field under validation must match the authenticated user's password. You "
+"may specify an [authentication guard](/docs/{{version}}/authentication) "
+"using the rule's first parameter:"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/validation.md:945
+#, no-wrap
+msgid "    'password' => 'current_password:api'\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/validation.md:947
 #, no-wrap
 msgid "<a name=\"rule-date\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/master/validation.md:796
+#: docs/master/validation.md:947
 #, no-wrap
 msgid "date"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:799
+#: docs/master/validation.md:950
 msgid ""
 "The field under validation must be a valid, non-relative date according to "
 "the `strtotime` PHP function."
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:801
+#: docs/master/validation.md:952
 #, no-wrap
 msgid "<a name=\"rule-date-equals\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/master/validation.md:801
+#: docs/master/validation.md:952
 #, no-wrap
 msgid "date_equals:_date_"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:804
+#: docs/master/validation.md:955
 msgid ""
 "The field under validation must be equal to the given date. The dates will "
 "be passed into the PHP `strtotime` function in order to be converted into a "
@@ -2125,19 +2512,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:806
+#: docs/master/validation.md:957
 #, no-wrap
 msgid "<a name=\"rule-date-format\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/master/validation.md:806
+#: docs/master/validation.md:957
 #, no-wrap
 msgid "date_format:_format_"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:809
+#: docs/master/validation.md:960
 msgid ""
 "The field under validation must match the given _format_. You should use "
 "**either** `date` or `date_format` when validating a field, not both. This "
@@ -2146,114 +2533,150 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:811
+#: docs/master/validation.md:962
+#, no-wrap
+msgid "<a name=\"rule-declined\"></a>\n"
+msgstr ""
+
+#. type: Title ####
+#: docs/master/validation.md:962
+#, no-wrap
+msgid "declined"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/validation.md:965
+msgid "The field under validation must be `\"no\"`, `\"off\"`, `0`, or `false`."
+msgstr ""
+
+#. type: Plain text
+#: docs/master/validation.md:967
+#, no-wrap
+msgid "<a name=\"rule-declined-if\"></a>\n"
+msgstr ""
+
+#. type: Title ####
+#: docs/master/validation.md:967
+#, no-wrap
+msgid "declined_if:anotherfield,value,..."
+msgstr ""
+
+#. type: Plain text
+#: docs/master/validation.md:970
+msgid ""
+"The field under validation must be `\"no\"`, `\"off\"`, `0`, or `false` if "
+"another field under validation is equal to a specified value."
+msgstr ""
+
+#. type: Plain text
+#: docs/master/validation.md:972
 #, no-wrap
 msgid "<a name=\"rule-different\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/master/validation.md:811
+#: docs/master/validation.md:972
 #, no-wrap
 msgid "different:_field_"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:814
+#: docs/master/validation.md:975
 msgid "The field under validation must have a different value than _field_."
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:816
+#: docs/master/validation.md:977
 #, no-wrap
 msgid "<a name=\"rule-digits\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/master/validation.md:816
+#: docs/master/validation.md:977
 #, no-wrap
 msgid "digits:_value_"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:819
+#: docs/master/validation.md:980
 msgid ""
 "The field under validation must be _numeric_ and must have an exact length "
 "of _value_."
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:821
+#: docs/master/validation.md:982
 #, no-wrap
 msgid "<a name=\"rule-digits-between\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/master/validation.md:821
+#: docs/master/validation.md:982
 #, no-wrap
 msgid "digits_between:_min_,_max_"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:824
+#: docs/master/validation.md:985
 msgid ""
 "The field under validation must be _numeric_ and must have a length between "
 "the given _min_ and _max_."
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:826
+#: docs/master/validation.md:987
 #, no-wrap
 msgid "<a name=\"rule-dimensions\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/master/validation.md:826
+#: docs/master/validation.md:987
 #, no-wrap
 msgid "dimensions"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:829
+#: docs/master/validation.md:990
 msgid ""
 "The file under validation must be an image meeting the dimension constraints "
 "as specified by the rule's parameters:"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:831
+#: docs/master/validation.md:992
 #, no-wrap
 msgid "    'avatar' => 'dimensions:min_width=100,min_height=200'\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:833
+#: docs/master/validation.md:994
 msgid ""
 "Available constraints are: _min\\_width_, _max\\_width_, _min\\_height_, "
 "_max\\_height_, _width_, _height_, _ratio_."
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:835
+#: docs/master/validation.md:996
 msgid ""
 "A _ratio_ constraint should be represented as width divided by height. This "
 "can be specified either by a fraction like `3/2` or a float like `1.5`:"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:837
+#: docs/master/validation.md:998
 #, no-wrap
 msgid "    'avatar' => 'dimensions:ratio=3/2'\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:839
+#: docs/master/validation.md:1000
 msgid ""
 "Since this rule requires several arguments, you may use the "
 "`Rule::dimensions` method to fluently construct the rule:"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:842 docs/master/validation.md:928 docs/master/validation.md:970 docs/master/validation.md:1135 docs/master/validation.md:1237
+#: docs/master/validation.md:1003 docs/master/validation.md:1117 docs/master/validation.md:1159 docs/master/validation.md:1171 docs/master/validation.md:1368 docs/master/validation.md:1470
 #, no-wrap
 msgid ""
 "    use Illuminate\\Support\\Facades\\Validator;\n"
@@ -2261,7 +2684,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:849
+#: docs/master/validation.md:1010
 #, no-wrap
 msgid ""
 "    Validator::make($data, [\n"
@@ -2274,57 +2697,71 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:851
+#: docs/master/validation.md:1012
 #, no-wrap
 msgid "<a name=\"rule-distinct\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/master/validation.md:851
+#: docs/master/validation.md:1012
 #, no-wrap
 msgid "distinct"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:854
+#: docs/master/validation.md:1015
 msgid ""
 "When validating arrays, the field under validation must not have any "
 "duplicate values:"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:856
+#: docs/master/validation.md:1017
 #, no-wrap
 msgid "    'foo.*.id' => 'distinct'\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:858
+#: docs/master/validation.md:1019
+msgid ""
+"Distinct uses loose variable comparisons by default. To use strict "
+"comparisons, you may add the `strict` parameter to your validation rule "
+"definition:"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/validation.md:1021
+#, no-wrap
+msgid "    'foo.*.id' => 'distinct:strict'\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/validation.md:1023
 msgid ""
 "You may add `ignore_case` to the validation rule's arguments to make the "
 "rule ignore capitalization differences:"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:860
+#: docs/master/validation.md:1025
 #, no-wrap
 msgid "    'foo.*.id' => 'distinct:ignore_case'\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:862
+#: docs/master/validation.md:1027
 #, no-wrap
 msgid "<a name=\"rule-email\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/master/validation.md:862
+#: docs/master/validation.md:1027
 #, no-wrap
 msgid "email"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:865
+#: docs/master/validation.md:1030
 msgid ""
 "The field under validation must be formatted as an email address. This "
 "validation rule utilizes the "
@@ -2334,20 +2771,20 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:867
+#: docs/master/validation.md:1032
 #, no-wrap
 msgid "    'email' => 'email:rfc,dns'\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:869
+#: docs/master/validation.md:1034
 msgid ""
 "The example above will apply the `RFCValidation` and `DNSCheckValidation` "
 "validations. Here's a full list of validation styles you can apply:"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:877
+#: docs/master/validation.md:1042
 #, no-wrap
 msgid ""
 "<div class=\"content-list\" markdown=\"1\">\n"
@@ -2360,7 +2797,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:879
+#: docs/master/validation.md:1044
 msgid ""
 "The `filter` validator, which uses PHP's `filter_var` function, ships with "
 "Laravel and was Laravel's default email validation behavior prior to Laravel "
@@ -2368,7 +2805,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:881
+#: docs/master/validation.md:1046
 #, no-wrap
 msgid ""
 "> {note} The `dns` and `spoof` validators require the PHP `intl` "
@@ -2376,36 +2813,98 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:883
+#: docs/master/validation.md:1048
 #, no-wrap
 msgid "<a name=\"rule-ends-with\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/master/validation.md:883
+#: docs/master/validation.md:1048
 #, no-wrap
 msgid "ends_with:_foo_,_bar_,..."
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:886
+#: docs/master/validation.md:1051
 msgid "The field under validation must end with one of the given values."
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:888
+#: docs/master/validation.md:1053
+#, no-wrap
+msgid "<a name=\"rule-enum\"></a>\n"
+msgstr ""
+
+#. type: Title ####
+#: docs/master/validation.md:1053
+#, no-wrap
+msgid "enum"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/validation.md:1056
+msgid ""
+"The `Enum` rule is a class based rule that validates whether the field under "
+"validation contains a valid enum value. The `Enum` rule accepts the name of "
+"the enum as its only constructor argument:"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/validation.md:1059
+#, no-wrap
+msgid ""
+"    use App\\Enums\\ServerStatus;\n"
+"    use Illuminate\\Validation\\Rules\\Enum;\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/validation.md:1063
+#, no-wrap
+msgid ""
+"    $request->validate([\n"
+"        'status' => [new Enum(ServerStatus::class)],\n"
+"    ]);\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/validation.md:1065
+#, no-wrap
+msgid "> {note} Enums are only available on PHP 8.1+.\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/validation.md:1067
+#, no-wrap
+msgid "<a name=\"rule-exclude\"></a>\n"
+msgstr ""
+
+#. type: Title ####
+#: docs/master/validation.md:1067
+#, no-wrap
+msgid "exclude"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/validation.md:1070
+msgid ""
+"The field under validation will be excluded from the request data returned "
+"by the `validate` and `validated` methods."
+msgstr ""
+
+#. type: Plain text
+#: docs/master/validation.md:1072
 #, no-wrap
 msgid "<a name=\"rule-exclude-if\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/master/validation.md:888
+#: docs/master/validation.md:1072
 #, no-wrap
 msgid "exclude_if:_anotherfield_,_value_"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:891
+#: docs/master/validation.md:1075
 msgid ""
 "The field under validation will be excluded from the request data returned "
 "by the `validate` and `validated` methods if the _anotherfield_ field is "
@@ -2413,62 +2912,84 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:893
+#: docs/master/validation.md:1077
 #, no-wrap
 msgid "<a name=\"rule-exclude-unless\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/master/validation.md:893
+#: docs/master/validation.md:1077
 #, no-wrap
 msgid "exclude_unless:_anotherfield_,_value_"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:896
+#: docs/master/validation.md:1080
 msgid ""
 "The field under validation will be excluded from the request data returned "
 "by the `validate` and `validated` methods unless _anotherfield_'s field is "
-"equal to _value_."
+"equal to _value_. If _value_ is `null` (`exclude_unless:name,null`), the "
+"field under validation will be excluded unless the comparison field is "
+"`null` or the comparison field is missing from the request data."
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:898
+#: docs/master/validation.md:1082
+#, no-wrap
+msgid "<a name=\"rule-exclude-without\"></a>\n"
+msgstr ""
+
+#. type: Title ####
+#: docs/master/validation.md:1082
+#, no-wrap
+msgid "exclude_without:_anotherfield_"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/validation.md:1085
+msgid ""
+"The field under validation will be excluded from the request data returned "
+"by the `validate` and `validated` methods if the _anotherfield_ field is not "
+"present."
+msgstr ""
+
+#. type: Plain text
+#: docs/master/validation.md:1087
 #, no-wrap
 msgid "<a name=\"rule-exists\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/master/validation.md:898
+#: docs/master/validation.md:1087
 #, no-wrap
 msgid "exists:_table_,_column_"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:901
+#: docs/master/validation.md:1090
 msgid "The field under validation must exist in a given database table."
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:903
+#: docs/master/validation.md:1092
 #, no-wrap
 msgid "<a name=\"basic-usage-of-exists-rule\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/master/validation.md:903
+#: docs/master/validation.md:1092
 #, no-wrap
 msgid "Basic Usage Of Exists Rule"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:906
+#: docs/master/validation.md:1095
 #, no-wrap
 msgid "    'state' => 'exists:states'\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:908
+#: docs/master/validation.md:1097
 msgid ""
 "If the `column` option is not specified, the field name will be used. So, in "
 "this case, the rule will validate that the `states` database table contains "
@@ -2477,32 +2998,32 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:910
+#: docs/master/validation.md:1099
 #, no-wrap
 msgid "<a name=\"specifying-a-custom-column-name\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/master/validation.md:910
+#: docs/master/validation.md:1099
 #, no-wrap
 msgid "Specifying A Custom Column Name"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:913
+#: docs/master/validation.md:1102
 msgid ""
 "You may explicitly specify the database column name that should be used by "
 "the validation rule by placing it after the database table name:"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:915
+#: docs/master/validation.md:1104
 #, no-wrap
 msgid "    'state' => 'exists:states,abbreviation'\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:917
+#: docs/master/validation.md:1106
 msgid ""
 "Occasionally, you may need to specify a specific database connection to be "
 "used for the `exists` query. You can accomplish this by prepending the "
@@ -2510,26 +3031,26 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:919
+#: docs/master/validation.md:1108
 #, no-wrap
 msgid "    'email' => 'exists:connection.staff,email'\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:921 docs/master/validation.md:1216
+#: docs/master/validation.md:1110 docs/master/validation.md:1449
 msgid ""
 "Instead of specifying the table name directly, you may specify the Eloquent "
 "model which should be used to determine the table name:"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:923
+#: docs/master/validation.md:1112
 #, no-wrap
 msgid "    'user_id' => 'exists:App\\Models\\User,id'\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:925
+#: docs/master/validation.md:1114
 msgid ""
 "If you would like to customize the query executed by the validation rule, "
 "you may use the `Rule` class to fluently define the rule. In this example, "
@@ -2538,7 +3059,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:937
+#: docs/master/validation.md:1126
 #, no-wrap
 msgid ""
 "    Validator::make($data, [\n"
@@ -2552,53 +3073,53 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:939
+#: docs/master/validation.md:1128
 #, no-wrap
 msgid "<a name=\"rule-file\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/master/validation.md:939
+#: docs/master/validation.md:1128
 #, no-wrap
 msgid "file"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:942
+#: docs/master/validation.md:1131
 msgid "The field under validation must be a successfully uploaded file."
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:944
+#: docs/master/validation.md:1133
 #, no-wrap
 msgid "<a name=\"rule-filled\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/master/validation.md:944
+#: docs/master/validation.md:1133
 #, no-wrap
 msgid "filled"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:947
+#: docs/master/validation.md:1136
 msgid "The field under validation must not be empty when it is present."
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:949
+#: docs/master/validation.md:1138
 #, no-wrap
 msgid "<a name=\"rule-gt\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/master/validation.md:949
+#: docs/master/validation.md:1138
 #, no-wrap
 msgid "gt:_field_"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:952
+#: docs/master/validation.md:1141
 msgid ""
 "The field under validation must be greater than the given _field_. The two "
 "fields must be of the same type. Strings, numerics, arrays, and files are "
@@ -2606,19 +3127,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:954
+#: docs/master/validation.md:1143
 #, no-wrap
 msgid "<a name=\"rule-gte\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/master/validation.md:954
+#: docs/master/validation.md:1143
 #, no-wrap
 msgid "gte:_field_"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:957
+#: docs/master/validation.md:1146
 msgid ""
 "The field under validation must be greater than or equal to the given "
 "_field_. The two fields must be of the same type. Strings, numerics, arrays, "
@@ -2627,38 +3148,38 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:959
+#: docs/master/validation.md:1148
 #, no-wrap
 msgid "<a name=\"rule-image\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/master/validation.md:959
+#: docs/master/validation.md:1148
 #, no-wrap
 msgid "image"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:962
+#: docs/master/validation.md:1151
 msgid ""
 "The file under validation must be an image (jpg, jpeg, png, bmp, gif, svg, "
 "or webp)."
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:964
+#: docs/master/validation.md:1153
 #, no-wrap
 msgid "<a name=\"rule-in\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/master/validation.md:964
+#: docs/master/validation.md:1153
 #, no-wrap
 msgid "in:_foo_,_bar_,..."
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:967
+#: docs/master/validation.md:1156
 msgid ""
 "The field under validation must be included in the given list of "
 "values. Since this rule often requires you to `implode` an array, the "
@@ -2666,7 +3187,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:977
+#: docs/master/validation.md:1166
 #, no-wrap
 msgid ""
 "    Validator::make($data, [\n"
@@ -2678,130 +3199,181 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:979
+#: docs/master/validation.md:1168
+msgid ""
+"When the `in` rule is combined with the `array` rule, each value in the "
+"input array must be present within the list of values provided to the `in` "
+"rule. In the following example, the `LAS` airport code in the input array is "
+"invalid since it is not contained in the list of airports provided to the "
+"`in` rule:"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/validation.md:1175
+#, no-wrap
+msgid ""
+"    $input = [\n"
+"        'airports' => ['NYC', 'LAS'],\n"
+"    ];\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/validation.md:1183
+#, no-wrap
+msgid ""
+"    Validator::make($input, [\n"
+"        'airports' => [\n"
+"            'required',\n"
+"            'array',\n"
+"            Rule::in(['NYC', 'LIT']),\n"
+"        ],\n"
+"    ]);\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/validation.md:1185
 #, no-wrap
 msgid "<a name=\"rule-in-array\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/master/validation.md:979
+#: docs/master/validation.md:1185
 #, no-wrap
 msgid "in_array:_anotherfield_.*"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:982
+#: docs/master/validation.md:1188
 msgid "The field under validation must exist in _anotherfield_'s values."
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:984
+#: docs/master/validation.md:1190
 #, no-wrap
 msgid "<a name=\"rule-integer\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/master/validation.md:984
+#: docs/master/validation.md:1190
 #, no-wrap
 msgid "integer"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:987
+#: docs/master/validation.md:1193
 msgid "The field under validation must be an integer."
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:989
+#: docs/master/validation.md:1195
 #, no-wrap
 msgid ""
 "> {note} This validation rule does not verify that the input is of the "
-"\"integer\" variable type, only that the input is a string or numeric value "
-"that contains an integer.\n"
+"\"integer\" variable type, only that the input is of a type accepted by "
+"PHP's `FILTER_VALIDATE_INT` rule. If you need to validate the input as being "
+"a number please use this rule in combination with [the `numeric` validation "
+"rule](#rule-numeric).\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:991
+#: docs/master/validation.md:1197
 #, no-wrap
 msgid "<a name=\"rule-ip\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/master/validation.md:991
+#: docs/master/validation.md:1197
 #, no-wrap
 msgid "ip"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:994
+#: docs/master/validation.md:1200
 msgid "The field under validation must be an IP address."
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:996
+#: docs/master/validation.md:1202
 #, no-wrap
 msgid "<a name=\"ipv4\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/master/validation.md:996
+#: docs/master/validation.md:1202
 #, no-wrap
 msgid "ipv4"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:999
+#: docs/master/validation.md:1205
 msgid "The field under validation must be an IPv4 address."
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:1001
+#: docs/master/validation.md:1207
 #, no-wrap
 msgid "<a name=\"ipv6\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/master/validation.md:1001
+#: docs/master/validation.md:1207
 #, no-wrap
 msgid "ipv6"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:1004
+#: docs/master/validation.md:1210
 msgid "The field under validation must be an IPv6 address."
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:1006
+#: docs/master/validation.md:1212
+#, no-wrap
+msgid "<a name=\"rule-mac\"></a>\n"
+msgstr ""
+
+#. type: Title ####
+#: docs/master/validation.md:1212
+#, no-wrap
+msgid "mac_address"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/validation.md:1215
+msgid "The field under validation must be a MAC address."
+msgstr ""
+
+#. type: Plain text
+#: docs/master/validation.md:1217
 #, no-wrap
 msgid "<a name=\"rule-json\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/master/validation.md:1006
+#: docs/master/validation.md:1217
 #, no-wrap
 msgid "json"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:1009
+#: docs/master/validation.md:1220
 msgid "The field under validation must be a valid JSON string."
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:1011
+#: docs/master/validation.md:1222
 #, no-wrap
 msgid "<a name=\"rule-lt\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/master/validation.md:1011
+#: docs/master/validation.md:1222
 #, no-wrap
 msgid "lt:_field_"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:1014
+#: docs/master/validation.md:1225
 msgid ""
 "The field under validation must be less than the given _field_. The two "
 "fields must be of the same type. Strings, numerics, arrays, and files are "
@@ -2809,19 +3381,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:1016
+#: docs/master/validation.md:1227
 #, no-wrap
 msgid "<a name=\"rule-lte\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/master/validation.md:1016
+#: docs/master/validation.md:1227
 #, no-wrap
 msgid "lte:_field_"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:1019
+#: docs/master/validation.md:1230
 msgid ""
 "The field under validation must be less than or equal to the given "
 "_field_. The two fields must be of the same type. Strings, numerics, arrays, "
@@ -2830,19 +3402,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:1021
+#: docs/master/validation.md:1232
 #, no-wrap
 msgid "<a name=\"rule-max\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/master/validation.md:1021
+#: docs/master/validation.md:1232
 #, no-wrap
 msgid "max:_value_"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:1024
+#: docs/master/validation.md:1235
 msgid ""
 "The field under validation must be less than or equal to a maximum "
 "_value_. Strings, numerics, arrays, and files are evaluated in the same "
@@ -2850,30 +3422,30 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:1026
+#: docs/master/validation.md:1237
 #, no-wrap
 msgid "<a name=\"rule-mimetypes\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/master/validation.md:1026
+#: docs/master/validation.md:1237
 #, no-wrap
 msgid "mimetypes:_text/plain_,..."
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:1029
+#: docs/master/validation.md:1240
 msgid "The file under validation must match one of the given MIME types:"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:1031
+#: docs/master/validation.md:1242
 #, no-wrap
 msgid "    'video' => 'mimetypes:video/avi,video/mpeg,video/quicktime'\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:1033
+#: docs/master/validation.md:1244
 msgid ""
 "To determine the MIME type of the uploaded file, the file's contents will be "
 "read and the framework will attempt to guess the MIME type, which may be "
@@ -2881,44 +3453,44 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:1035
+#: docs/master/validation.md:1246
 #, no-wrap
 msgid "<a name=\"rule-mimes\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/master/validation.md:1035
+#: docs/master/validation.md:1246
 #, no-wrap
 msgid "mimes:_foo_,_bar_,..."
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:1038
+#: docs/master/validation.md:1249
 msgid ""
 "The file under validation must have a MIME type corresponding to one of the "
 "listed extensions."
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:1040
+#: docs/master/validation.md:1251
 #, no-wrap
 msgid "<a name=\"basic-usage-of-mime-rule\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/master/validation.md:1040
+#: docs/master/validation.md:1251
 #, no-wrap
 msgid "Basic Usage Of MIME Rule"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:1043
+#: docs/master/validation.md:1254
 #, no-wrap
 msgid "    'photo' => 'mimes:jpg,bmp,png'\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:1045
+#: docs/master/validation.md:1256
 msgid ""
 "Even though you only need to specify the extensions, this rule actually "
 "validates the MIME type of the file by reading the file's contents and "
@@ -2927,24 +3499,24 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:1047
+#: docs/master/validation.md:1258
 msgid "[https://svn.apache.org/repos/asf/httpd/httpd/trunk/docs/conf/mime.types](https://svn.apache.org/repos/asf/httpd/httpd/trunk/docs/conf/mime.types)"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:1049
+#: docs/master/validation.md:1260
 #, no-wrap
 msgid "<a name=\"rule-min\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/master/validation.md:1049
+#: docs/master/validation.md:1260
 #, no-wrap
 msgid "min:_value_"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:1052
+#: docs/master/validation.md:1263
 msgid ""
 "The field under validation must have a minimum _value_. Strings, numerics, "
 "arrays, and files are evaluated in the same fashion as the "
@@ -2952,49 +3524,58 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:1054
+#: docs/master/validation.md:1265
 #, no-wrap
 msgid "<a name=\"multiple-of\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/master/validation.md:1054
+#: docs/master/validation.md:1265
 #, no-wrap
 msgid "multiple_of:_value_"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:1057
+#: docs/master/validation.md:1268
 msgid "The field under validation must be a multiple of _value_."
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:1059
+#: docs/master/validation.md:1270
+#, no-wrap
+msgid ""
+"> {note} The [`bcmath` PHP "
+"extension](https://www.php.net/manual/en/book.bc.php) is required in order "
+"to use the `multiple_of` rule.\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/validation.md:1272
 #, no-wrap
 msgid "<a name=\"rule-not-in\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/master/validation.md:1059
+#: docs/master/validation.md:1272
 #, no-wrap
 msgid "not_in:_foo_,_bar_,..."
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:1062
+#: docs/master/validation.md:1275
 msgid ""
 "The field under validation must not be included in the given list of "
 "values. The `Rule::notIn` method may be used to fluently construct the rule:"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:1064
+#: docs/master/validation.md:1277
 #, no-wrap
 msgid "    use Illuminate\\Validation\\Rule;\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:1071
+#: docs/master/validation.md:1284
 #, no-wrap
 msgid ""
 "    Validator::make($data, [\n"
@@ -3006,24 +3587,24 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:1073
+#: docs/master/validation.md:1286
 #, no-wrap
 msgid "<a name=\"rule-not-regex\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/master/validation.md:1073
+#: docs/master/validation.md:1286
 #, no-wrap
 msgid "not_regex:_pattern_"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:1076
+#: docs/master/validation.md:1289
 msgid "The field under validation must not match the given regular expression."
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:1078
+#: docs/master/validation.md:1291
 #, no-wrap
 msgid ""
 "Internally, this rule uses the PHP `preg_match` function. The pattern "
@@ -3033,7 +3614,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:1080
+#: docs/master/validation.md:1293
 #, no-wrap
 msgid ""
 "> {note} When using the `regex` / `not_regex` patterns, it may be necessary "
@@ -3042,105 +3623,179 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:1082
+#: docs/master/validation.md:1295
 #, no-wrap
 msgid "<a name=\"rule-nullable\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/master/validation.md:1082
+#: docs/master/validation.md:1295
 #, no-wrap
 msgid "nullable"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:1085
+#: docs/master/validation.md:1298
 msgid "The field under validation may be `null`."
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:1087
+#: docs/master/validation.md:1300
 #, no-wrap
 msgid "<a name=\"rule-numeric\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/master/validation.md:1087
+#: docs/master/validation.md:1300
 #, no-wrap
 msgid "numeric"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:1090
+#: docs/master/validation.md:1303
 msgid ""
 "The field under validation must be "
 "[numeric](https://www.php.net/manual/en/function.is-numeric.php)."
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:1092
+#: docs/master/validation.md:1305
 #, no-wrap
 msgid "<a name=\"rule-password\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/master/validation.md:1092
+#: docs/master/validation.md:1305
 #, no-wrap
 msgid "password"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:1095
-msgid ""
-"The field under validation must match the authenticated user's password. You "
-"may specify an [authentication guard](/docs/{{version}}/authentication) "
-"using the rule's first parameter:"
+#: docs/master/validation.md:1308
+msgid "The field under validation must match the authenticated user's password."
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:1097
+#: docs/master/validation.md:1310
 #, no-wrap
-msgid "    'password' => 'password:api'\n"
+msgid ""
+"> {note} This rule was renamed to `current_password` with the intention of "
+"removing it in Laravel 9. Please use the [Current "
+"Password](#rule-current-password) rule instead.\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:1099
+#: docs/master/validation.md:1312
 #, no-wrap
 msgid "<a name=\"rule-present\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/master/validation.md:1099
+#: docs/master/validation.md:1312
 #, no-wrap
 msgid "present"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:1102
+#: docs/master/validation.md:1315
 msgid ""
 "The field under validation must be present in the input data but can be "
 "empty."
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:1104
+#: docs/master/validation.md:1317
+#, no-wrap
+msgid "<a name=\"rule-prohibited\"></a>\n"
+msgstr ""
+
+#. type: Title ####
+#: docs/master/validation.md:1317
+#, no-wrap
+msgid "prohibited"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/validation.md:1320
+msgid "The field under validation must be empty or not present."
+msgstr ""
+
+#. type: Plain text
+#: docs/master/validation.md:1322
+#, no-wrap
+msgid "<a name=\"rule-prohibited-if\"></a>\n"
+msgstr ""
+
+#. type: Title ####
+#: docs/master/validation.md:1322
+#, no-wrap
+msgid "prohibited_if:_anotherfield_,_value_,..."
+msgstr ""
+
+#. type: Plain text
+#: docs/master/validation.md:1325
+msgid ""
+"The field under validation must be empty or not present if the "
+"_anotherfield_ field is equal to any _value_."
+msgstr ""
+
+#. type: Plain text
+#: docs/master/validation.md:1327
+#, no-wrap
+msgid "<a name=\"rule-prohibited-unless\"></a>\n"
+msgstr ""
+
+#. type: Title ####
+#: docs/master/validation.md:1327
+#, no-wrap
+msgid "prohibited_unless:_anotherfield_,_value_,..."
+msgstr ""
+
+#. type: Plain text
+#: docs/master/validation.md:1330
+msgid ""
+"The field under validation must be empty or not present unless the "
+"_anotherfield_ field is equal to any _value_."
+msgstr ""
+
+#. type: Plain text
+#: docs/master/validation.md:1332
+#, no-wrap
+msgid "<a name=\"rule-prohibits\"></a>\n"
+msgstr ""
+
+#. type: Title ####
+#: docs/master/validation.md:1332
+#, no-wrap
+msgid "prohibits:_anotherfield_,..."
+msgstr ""
+
+#. type: Plain text
+#: docs/master/validation.md:1335
+msgid ""
+"If the field under validation is present, no fields in _anotherfield_ can be "
+"present, even if empty."
+msgstr ""
+
+#. type: Plain text
+#: docs/master/validation.md:1337
 #, no-wrap
 msgid "<a name=\"rule-regex\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/master/validation.md:1104
+#: docs/master/validation.md:1337
 #, no-wrap
 msgid "regex:_pattern_"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:1107
+#: docs/master/validation.md:1340
 msgid "The field under validation must match the given regular expression."
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:1109
+#: docs/master/validation.md:1342
 #, no-wrap
 msgid ""
 "Internally, this rule uses the PHP `preg_match` function. The pattern "
@@ -3150,7 +3805,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:1111
+#: docs/master/validation.md:1344
 #, no-wrap
 msgid ""
 "> {note} When using the `regex` / `not_regex` patterns, it may be necessary "
@@ -3159,19 +3814,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:1113
+#: docs/master/validation.md:1346
 #, no-wrap
 msgid "<a name=\"rule-required\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/master/validation.md:1113
+#: docs/master/validation.md:1346
 #, no-wrap
 msgid "required"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:1116
+#: docs/master/validation.md:1349
 msgid ""
 "The field under validation must be present in the input data and not "
 "empty. A field is considered \"empty\" if one of the following conditions "
@@ -3179,13 +3834,13 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:1118
+#: docs/master/validation.md:1351
 #, no-wrap
 msgid "<div class=\"content-list\" markdown=\"1\">\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:1123
+#: docs/master/validation.md:1356
 msgid ""
 "- The value is `null`.  - The value is an empty string.  - The value is an "
 "empty array or empty `Countable` object.  - The value is an uploaded file "
@@ -3193,26 +3848,26 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:1127
+#: docs/master/validation.md:1360
 #, no-wrap
 msgid "<a name=\"rule-required-if\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/master/validation.md:1127
+#: docs/master/validation.md:1360
 #, no-wrap
 msgid "required_if:_anotherfield_,_value_,..."
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:1130
+#: docs/master/validation.md:1363
 msgid ""
 "The field under validation must be present and not empty if the "
 "_anotherfield_ field is equal to any _value_."
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:1132
+#: docs/master/validation.md:1365
 msgid ""
 "If you would like to construct a more complex condition for the "
 "`required_if` rule, you may use the `Rule::requiredIf` method. This method "
@@ -3222,7 +3877,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:1139
+#: docs/master/validation.md:1372
 #, no-wrap
 msgid ""
 "    Validator::make($request->all(), [\n"
@@ -3231,7 +3886,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:1145
+#: docs/master/validation.md:1378
 #, no-wrap
 msgid ""
 "    Validator::make($request->all(), [\n"
@@ -3242,131 +3897,135 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:1147
+#: docs/master/validation.md:1380
 #, no-wrap
 msgid "<a name=\"rule-required-unless\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/master/validation.md:1147
+#: docs/master/validation.md:1380
 #, no-wrap
 msgid "required_unless:_anotherfield_,_value_,..."
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:1150
+#: docs/master/validation.md:1383
 msgid ""
 "The field under validation must be present and not empty unless the "
-"_anotherfield_ field is equal to any _value_."
+"_anotherfield_ field is equal to any _value_. This also means _anotherfield_ "
+"must be present in the request data unless _value_ is `null`. If _value_ is "
+"`null` (`required_unless:name,null`), the field under validation will be "
+"required unless the comparison field is `null` or the comparison field is "
+"missing from the request data."
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:1152
+#: docs/master/validation.md:1385
 #, no-wrap
 msgid "<a name=\"rule-required-with\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/master/validation.md:1152
+#: docs/master/validation.md:1385
 #, no-wrap
 msgid "required_with:_foo_,_bar_,..."
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:1155
+#: docs/master/validation.md:1388
 msgid ""
 "The field under validation must be present and not empty _only if_ any of "
-"the other specified fields are present."
+"the other specified fields are present and not empty."
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:1157
+#: docs/master/validation.md:1390
 #, no-wrap
 msgid "<a name=\"rule-required-with-all\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/master/validation.md:1157
+#: docs/master/validation.md:1390
 #, no-wrap
 msgid "required_with_all:_foo_,_bar_,..."
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:1160
+#: docs/master/validation.md:1393
 msgid ""
 "The field under validation must be present and not empty _only if_ all of "
-"the other specified fields are present."
+"the other specified fields are present and not empty."
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:1162
+#: docs/master/validation.md:1395
 #, no-wrap
 msgid "<a name=\"rule-required-without\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/master/validation.md:1162
+#: docs/master/validation.md:1395
 #, no-wrap
 msgid "required_without:_foo_,_bar_,..."
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:1165
+#: docs/master/validation.md:1398
 msgid ""
 "The field under validation must be present and not empty _only when_ any of "
-"the other specified fields are not present."
+"the other specified fields are empty or not present."
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:1167
+#: docs/master/validation.md:1400
 #, no-wrap
 msgid "<a name=\"rule-required-without-all\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/master/validation.md:1167
+#: docs/master/validation.md:1400
 #, no-wrap
 msgid "required_without_all:_foo_,_bar_,..."
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:1170
+#: docs/master/validation.md:1403
 msgid ""
 "The field under validation must be present and not empty _only when_ all of "
-"the other specified fields are not present."
+"the other specified fields are empty or not present."
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:1172
+#: docs/master/validation.md:1405
 #, no-wrap
 msgid "<a name=\"rule-same\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/master/validation.md:1172
+#: docs/master/validation.md:1405
 #, no-wrap
 msgid "same:_field_"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:1175
+#: docs/master/validation.md:1408
 msgid "The given _field_ must match the field under validation."
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:1177
+#: docs/master/validation.md:1410
 #, no-wrap
 msgid "<a name=\"rule-size\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/master/validation.md:1177
+#: docs/master/validation.md:1410
 #, no-wrap
 msgid "size:_value_"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:1180
+#: docs/master/validation.md:1413
 msgid ""
 "The field under validation must have a size matching the given _value_. For "
 "string data, _value_ corresponds to the number of characters. For numeric "
@@ -3377,7 +4036,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:1183
+#: docs/master/validation.md:1416
 #, no-wrap
 msgid ""
 "    // Validate that a string is exactly 12 characters long...\n"
@@ -3385,7 +4044,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:1186
+#: docs/master/validation.md:1419
 #, no-wrap
 msgid ""
 "    // Validate that a provided integer equals 10...\n"
@@ -3393,7 +4052,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:1189
+#: docs/master/validation.md:1422
 #, no-wrap
 msgid ""
 "    // Validate that an array has exactly 5 elements...\n"
@@ -3401,7 +4060,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:1192
+#: docs/master/validation.md:1425
 #, no-wrap
 msgid ""
 "    // Validate that an uploaded file is exactly 512 kilobytes...\n"
@@ -3409,91 +4068,91 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:1194
+#: docs/master/validation.md:1427
 #, no-wrap
 msgid "<a name=\"rule-starts-with\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/master/validation.md:1194
+#: docs/master/validation.md:1427
 #, no-wrap
 msgid "starts_with:_foo_,_bar_,..."
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:1197
+#: docs/master/validation.md:1430
 msgid "The field under validation must start with one of the given values."
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:1199
+#: docs/master/validation.md:1432
 #, no-wrap
 msgid "<a name=\"rule-string\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/master/validation.md:1199
+#: docs/master/validation.md:1432
 #, no-wrap
 msgid "string"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:1202
+#: docs/master/validation.md:1435
 msgid ""
 "The field under validation must be a string. If you would like to allow the "
 "field to also be `null`, you should assign the `nullable` rule to the field."
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:1204
+#: docs/master/validation.md:1437
 #, no-wrap
 msgid "<a name=\"rule-timezone\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/master/validation.md:1204
+#: docs/master/validation.md:1437
 #, no-wrap
 msgid "timezone"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:1207
+#: docs/master/validation.md:1440
 msgid ""
 "The field under validation must be a valid timezone identifier according to "
 "the `timezone_identifiers_list` PHP function."
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:1209
+#: docs/master/validation.md:1442
 #, no-wrap
 msgid "<a name=\"rule-unique\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/master/validation.md:1209
+#: docs/master/validation.md:1442
 #, no-wrap
-msgid "unique:_table_,_column_,_except_,_idColumn_"
+msgid "unique:_table_,_column_"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:1212
+#: docs/master/validation.md:1445
 msgid "The field under validation must not exist within the given database table."
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:1214
+#: docs/master/validation.md:1447
 #, no-wrap
 msgid "**Specifying A Custom Table / Column Name:**\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:1218
+#: docs/master/validation.md:1451
 #, no-wrap
 msgid "    'email' => 'unique:App\\Models\\User,email_address'\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:1220
+#: docs/master/validation.md:1453
 msgid ""
 "The `column` option may be used to specify the field's corresponding "
 "database column. If the `column` option is not specified, the name of the "
@@ -3501,19 +4160,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:1222
+#: docs/master/validation.md:1455
 #, no-wrap
 msgid "    'email' => 'unique:users,email_address'\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:1224
+#: docs/master/validation.md:1457
 #, no-wrap
 msgid "**Specifying A Custom Database Connection**\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:1226
+#: docs/master/validation.md:1459
 msgid ""
 "Occasionally, you may need to set a custom connection for database queries "
 "made by the Validator. To accomplish this, you may prepend the connection "
@@ -3521,19 +4180,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:1228
+#: docs/master/validation.md:1461
 #, no-wrap
 msgid "    'email' => 'unique:connection.users,email_address'\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:1230
+#: docs/master/validation.md:1463
 #, no-wrap
 msgid "**Forcing A Unique Rule To Ignore A Given ID:**\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:1232
+#: docs/master/validation.md:1465
 msgid ""
 "Sometimes, you may wish to ignore a given ID during unique validation. For "
 "example, consider an \"update profile\" screen that includes the user's "
@@ -3544,7 +4203,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:1234
+#: docs/master/validation.md:1467
 msgid ""
 "To instruct the validator to ignore the user's ID, we'll use the `Rule` "
 "class to fluently define the rule. In this example, we'll also specify the "
@@ -3553,7 +4212,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:1244
+#: docs/master/validation.md:1477
 #, no-wrap
 msgid ""
 "    Validator::make($data, [\n"
@@ -3565,7 +4224,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:1246
+#: docs/master/validation.md:1479
 #, no-wrap
 msgid ""
 "> {note} You should never pass any user controlled request input into the "
@@ -3576,7 +4235,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:1248
+#: docs/master/validation.md:1481
 msgid ""
 "Instead of passing the model key's value to the `ignore` method, you may "
 "also pass the entire model instance. Laravel will automatically extract the "
@@ -3584,26 +4243,26 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:1250
+#: docs/master/validation.md:1483
 #, no-wrap
 msgid "    Rule::unique('users')->ignore($user)\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:1252
+#: docs/master/validation.md:1485
 msgid ""
 "If your table uses a primary key column name other than `id`, you may "
 "specify the name of the column when calling the `ignore` method:"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:1254
+#: docs/master/validation.md:1487
 #, no-wrap
 msgid "    Rule::unique('users')->ignore($user->id, 'user_id')\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:1256
+#: docs/master/validation.md:1489
 msgid ""
 "By default, the `unique` rule will check the uniqueness of the column "
 "matching the name of the attribute being validated. However, you may pass a "
@@ -3611,19 +4270,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:1258
+#: docs/master/validation.md:1491
 #, no-wrap
 msgid "    Rule::unique('users', 'email_address')->ignore($user->id),\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:1260
+#: docs/master/validation.md:1493
 #, no-wrap
 msgid "**Adding Additional Where Clauses:**\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:1262
+#: docs/master/validation.md:1495
 msgid ""
 "You may specify additional query conditions by customizing the query using "
 "the `where` method. For example, let's add a query condition that scopes the "
@@ -3631,7 +4290,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:1266
+#: docs/master/validation.md:1499
 #, no-wrap
 msgid ""
 "    'email' => Rule::unique('users')->where(function ($query) {\n"
@@ -3640,67 +4299,67 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:1268
+#: docs/master/validation.md:1501
 #, no-wrap
 msgid "<a name=\"rule-url\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/master/validation.md:1268
+#: docs/master/validation.md:1501
 #, no-wrap
 msgid "url"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:1271
+#: docs/master/validation.md:1504
 msgid "The field under validation must be a valid URL."
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:1273
+#: docs/master/validation.md:1506
 #, no-wrap
 msgid "<a name=\"rule-uuid\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/master/validation.md:1273
+#: docs/master/validation.md:1506
 #, no-wrap
 msgid "uuid"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:1276
+#: docs/master/validation.md:1509
 msgid ""
 "The field under validation must be a valid RFC 4122 (version 1, 3, 4, or 5) "
 "universally unique identifier (UUID)."
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:1278
+#: docs/master/validation.md:1511
 #, no-wrap
 msgid "<a name=\"conditionally-adding-rules\"></a>\n"
 msgstr ""
 
 #. type: Title ##
-#: docs/master/validation.md:1278
+#: docs/master/validation.md:1511
 #, no-wrap
 msgid "Conditionally Adding Rules"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:1281
+#: docs/master/validation.md:1514
 #, no-wrap
 msgid "<a name=\"skipping-validation-when-fields-have-certain-values\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/master/validation.md:1281
+#: docs/master/validation.md:1514
 #, no-wrap
 msgid "Skipping Validation When Fields Have Certain Values"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:1284
+#: docs/master/validation.md:1517
 msgid ""
 "You may occasionally wish to not validate a given field if another field has "
 "a given value. You may accomplish this using the `exclude_if` validation "
@@ -3709,17 +4368,11 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:1286 docs/master/validation.md:1320 docs/master/validation.md:1346 docs/master/validation.md:1435 docs/master/validation.md:1454
-#, no-wrap
-msgid "    use Illuminate\\Support\\Facades\\Validator;\n"
-msgstr ""
-
-#. type: Plain text
-#: docs/master/validation.md:1292
+#: docs/master/validation.md:1525
 #, no-wrap
 msgid ""
 "    $validator = Validator::make($data, [\n"
-"        'has_appointment' => 'required|bool',\n"
+"        'has_appointment' => 'required|boolean',\n"
 "        'appointment_date' => "
 "'exclude_if:has_appointment,false|required|date',\n"
 "        'doctor_name' => "
@@ -3728,18 +4381,18 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:1294
+#: docs/master/validation.md:1527
 msgid ""
 "Alternatively, you may use the `exclude_unless` rule to not validate a given "
 "field unless another field has a given value:"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:1300
+#: docs/master/validation.md:1533
 #, no-wrap
 msgid ""
 "    $validator = Validator::make($data, [\n"
-"        'has_appointment' => 'required|bool',\n"
+"        'has_appointment' => 'required|boolean',\n"
 "        'appointment_date' => "
 "'exclude_unless:has_appointment,true|required|date',\n"
 "        'doctor_name' => "
@@ -3748,19 +4401,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:1302
+#: docs/master/validation.md:1535
 #, no-wrap
 msgid "<a name=\"validating-when-present\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/master/validation.md:1302
+#: docs/master/validation.md:1535
 #, no-wrap
 msgid "Validating When Present"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:1305
+#: docs/master/validation.md:1538
 msgid ""
 "In some situations, you may wish to run validation checks against a field "
 "**only** if that field is present in the data being validated. To quickly "
@@ -3768,44 +4421,44 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:1309
+#: docs/master/validation.md:1542
 #, no-wrap
 msgid ""
-"    $v = Validator::make($request->all(), [\n"
+"    $v = Validator::make($data, [\n"
 "        'email' => 'sometimes|required|email',\n"
 "    ]);\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:1311
+#: docs/master/validation.md:1544
 msgid ""
 "In the example above, the `email` field will only be validated if it is "
 "present in the `$data` array."
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:1313
+#: docs/master/validation.md:1546
 #, no-wrap
 msgid ""
 "> {tip} If you are attempting to validate a field that should always be "
 "present but may be empty, check out [this note on optional "
-"fields](#a-note-on-optional-fields)\n"
+"fields](#a-note-on-optional-fields).\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:1315
+#: docs/master/validation.md:1548
 #, no-wrap
 msgid "<a name=\"complex-conditional-validation\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/master/validation.md:1315
+#: docs/master/validation.md:1548
 #, no-wrap
 msgid "Complex Conditional Validation"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:1318
+#: docs/master/validation.md:1551
 msgid ""
 "Sometimes you may wish to add validation rules based on more complex "
 "conditional logic. For example, you may wish to require a given field only "
@@ -3816,7 +4469,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:1325
+#: docs/master/validation.md:1558
 #, no-wrap
 msgid ""
 "    $validator = Validator::make($request->all(), [\n"
@@ -3826,7 +4479,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:1327
+#: docs/master/validation.md:1560
 msgid ""
 "Let's assume our web application is for game collectors. If a game collector "
 "registers with our application and they own more than 100 games, we want "
@@ -3837,16 +4490,17 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:1331
+#: docs/master/validation.md:1564
 #, no-wrap
 msgid ""
-"    $v->sometimes('reason', 'required|max:500', function ($input) {\n"
+"    $validator->sometimes('reason', 'required|max:500', function ($input) "
+"{\n"
 "        return $input->games >= 100;\n"
 "    });\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:1333
+#: docs/master/validation.md:1566
 msgid ""
 "The first argument passed to the `sometimes` method is the name of the field "
 "we are conditionally validating. The second argument is a list of the rules "
@@ -3857,16 +4511,17 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:1337
+#: docs/master/validation.md:1570
 #, no-wrap
 msgid ""
-"    $v->sometimes(['reason', 'cost'], 'required', function ($input) {\n"
+"    $validator->sometimes(['reason', 'cost'], 'required', function ($input) "
+"{\n"
 "        return $input->games >= 100;\n"
 "    });\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:1339
+#: docs/master/validation.md:1572
 #, no-wrap
 msgid ""
 "> {tip} The `$input` parameter passed to your closure will be an instance of "
@@ -3875,28 +4530,125 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:1341
+#: docs/master/validation.md:1574
+#, no-wrap
+msgid "<a name=\"complex-conditional-array-validation\"></a>\n"
+msgstr ""
+
+#. type: Title ####
+#: docs/master/validation.md:1574
+#, no-wrap
+msgid "Complex Conditional Array Validation"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/validation.md:1577
+msgid ""
+"Sometimes you may want to validate a field based on another field in the "
+"same nested array whose index you do not know. In these situations, you may "
+"allow your closure to receive a second argument which will be the current "
+"individual item in the array being validated:"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/validation.md:1590
+#, no-wrap
+msgid ""
+"    $input = [\n"
+"        'channels' => [\n"
+"            [\n"
+"                'type' => 'email',\n"
+"                'address' => 'abigail@example.com',\n"
+"            ],\n"
+"            [\n"
+"                'type' => 'url',\n"
+"                'address' => 'https://example.com',\n"
+"            ],\n"
+"        ],\n"
+"    ];\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/validation.md:1594
+#, no-wrap
+msgid ""
+"    $validator->sometimes('channels.*.address', 'email', function ($input, "
+"$item) {\n"
+"        return $item->type === 'email';\n"
+"    });\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/validation.md:1598
+#, no-wrap
+msgid ""
+"    $validator->sometimes('channels.*.address', 'url', function ($input, "
+"$item) {\n"
+"        return $item->type !== 'email';\n"
+"    });\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/validation.md:1600
+msgid ""
+"Like the `$input` parameter passed to the closure, the `$item` parameter is "
+"an instance of `Illuminate\\Support\\Fluent` when the attribute data is an "
+"array; otherwise, it is a string."
+msgstr ""
+
+#. type: Plain text
+#: docs/master/validation.md:1602
 #, no-wrap
 msgid "<a name=\"validating-arrays\"></a>\n"
 msgstr ""
 
 #. type: Title ##
-#: docs/master/validation.md:1341
+#: docs/master/validation.md:1602
 #, no-wrap
 msgid "Validating Arrays"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:1344
+#: docs/master/validation.md:1605
 msgid ""
-"Validating array based form input fields doesn't have to be a pain. You may "
-"use \"dot notation\" to validate attributes within an array. For example, if "
-"the incoming HTTP request contains a `photos[profile]` field, you may "
-"validate it like so:"
+"As discussed in the [`array` validation rule documentation](#rule-array), "
+"the `array` rule accepts a list of allowed array keys. If any additional "
+"keys are present within the array, validation will fail:"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:1350
+#: docs/master/validation.md:1621
+msgid ""
+"In general, you should always specify the array keys that are allowed to be "
+"present within your array. Otherwise, the validator's `validate` and "
+"`validated` methods will return all of the validated data, including the "
+"array and all of its keys, even if those keys were not validated by other "
+"nested array validation rules."
+msgstr ""
+
+#. type: Plain text
+#: docs/master/validation.md:1623
+#, no-wrap
+msgid "<a name=\"validating-nested-array-input\"></a>\n"
+msgstr ""
+
+#. type: Title ###
+#: docs/master/validation.md:1623
+#, no-wrap
+msgid "Validating Nested Array Input"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/validation.md:1626
+msgid ""
+"Validating nested array based form input fields doesn't have to be a "
+"pain. You may use \"dot notation\" to validate attributes within an "
+"array. For example, if the incoming HTTP request contains a "
+"`photos[profile]` field, you may validate it like so:"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/validation.md:1632
 #, no-wrap
 msgid ""
 "    $validator = Validator::make($request->all(), [\n"
@@ -3905,7 +4657,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:1352
+#: docs/master/validation.md:1634
 msgid ""
 "You may also validate each element of an array. For example, to validate "
 "that each email in a given array input field is unique, you may do the "
@@ -3913,7 +4665,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:1357
+#: docs/master/validation.md:1639
 #, no-wrap
 msgid ""
 "    $validator = Validator::make($request->all(), [\n"
@@ -3923,7 +4675,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:1359
+#: docs/master/validation.md:1641
 msgid ""
 "Likewise, you may use the `*` character when specifying [custom validation "
 "messages in your language files](#custom-messages-for-specific-attributes), "
@@ -3932,7 +4684,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:1365
+#: docs/master/validation.md:1647
 #, no-wrap
 msgid ""
 "    'custom' => [\n"
@@ -3943,31 +4695,270 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:1367
+#: docs/master/validation.md:1649
+#, no-wrap
+msgid "<a name=\"validating-passwords\"></a>\n"
+msgstr ""
+
+#. type: Title ##
+#: docs/master/validation.md:1649
+#, no-wrap
+msgid "Validating Passwords"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/validation.md:1652
+msgid ""
+"To ensure that passwords have an adequate level of complexity, you may use "
+"Laravel's `Password` rule object:"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/validation.md:1655
+#, no-wrap
+msgid ""
+"    use Illuminate\\Support\\Facades\\Validator;\n"
+"    use Illuminate\\Validation\\Rules\\Password;\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/validation.md:1659
+#, no-wrap
+msgid ""
+"    $validator = Validator::make($request->all(), [\n"
+"        'password' => ['required', 'confirmed', Password::min(8)],\n"
+"    ]);\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/validation.md:1661
+msgid ""
+"The `Password` rule object allows you to easily customize the password "
+"complexity requirements for your application, such as specifying that "
+"passwords require at least one letter, number, symbol, or characters with "
+"mixed casing:"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/validation.md:1664
+#, no-wrap
+msgid ""
+"    // Require at least 8 characters...\n"
+"    Password::min(8)\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/validation.md:1667
+#, no-wrap
+msgid ""
+"    // Require at least one letter...\n"
+"    Password::min(8)->letters()\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/validation.md:1670
+#, no-wrap
+msgid ""
+"    // Require at least one uppercase and one lowercase letter...\n"
+"    Password::min(8)->mixedCase()\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/validation.md:1673
+#, no-wrap
+msgid ""
+"    // Require at least one number...\n"
+"    Password::min(8)->numbers()\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/validation.md:1676
+#, no-wrap
+msgid ""
+"    // Require at least one symbol...\n"
+"    Password::min(8)->symbols()\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/validation.md:1678
+msgid ""
+"In addition, you may ensure that a password has not been compromised in a "
+"public password data breach leak using the `uncompromised` method:"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/validation.md:1680
+#, no-wrap
+msgid "    Password::min(8)->uncompromised()\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/validation.md:1682
+msgid ""
+"Internally, the `Password` rule object uses the "
+"[k-Anonymity](https://en.wikipedia.org/wiki/K-anonymity) model to determine "
+"if a password has been leaked via the "
+"[haveibeenpwned.com](https://haveibeenpwned.com) service without sacrificing "
+"the user's privacy or security."
+msgstr ""
+
+#. type: Plain text
+#: docs/master/validation.md:1684
+msgid ""
+"By default, if a password appears at least once in a data leak, it will be "
+"considered compromised. You can customize this threshold using the first "
+"argument of the `uncompromised` method:"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/validation.md:1687
+#, no-wrap
+msgid ""
+"    // Ensure the password appears less than 3 times in the same data "
+"leak...\n"
+"    Password::min(8)->uncompromised(3);\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/validation.md:1689
+msgid "Of course, you may chain all the methods in the examples above:"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/validation.md:1696
+#, no-wrap
+msgid ""
+"    Password::min(8)\n"
+"        ->letters()\n"
+"        ->mixedCase()\n"
+"        ->numbers()\n"
+"        ->symbols()\n"
+"        ->uncompromised()\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/validation.md:1698
+#, no-wrap
+msgid "<a name=\"defining-default-password-rules\"></a>\n"
+msgstr ""
+
+#. type: Title ####
+#: docs/master/validation.md:1698
+#, no-wrap
+msgid "Defining Default Password Rules"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/validation.md:1701
+msgid ""
+"You may find it convenient to specify the default validation rules for "
+"passwords in a single location of your application. You can easily "
+"accomplish this using the `Password::defaults` method, which accepts a "
+"closure. The closure given to the `defaults` method should return the "
+"default configuration of the Password rule. Typically, the `defaults` rule "
+"should be called within the `boot` method of one of your application's "
+"service providers:"
+msgstr ""
+
+#. type: Code fence info string
+#: docs/master/validation.md:1702
+#, no-wrap
+msgid "php"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/validation.md:1702
+#, no-wrap
+msgid ""
+"use Illuminate\\Validation\\Rules\\Password;\n"
+"\n"
+"/**\n"
+" * Bootstrap any application services.\n"
+" *\n"
+" * @return void\n"
+" */\n"
+"public function boot()\n"
+"{\n"
+"    Password::defaults(function () {\n"
+"        $rule = Password::min(8);\n"
+"\n"
+"        return $this->app->isProduction()\n"
+"                    ? $rule->mixedCase()->uncompromised()\n"
+"                    : $rule;\n"
+"    });\n"
+"}\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/validation.md:1723
+msgid ""
+"Then, when you would like to apply the default rules to a particular "
+"password undergoing validation, you may invoke the `defaults` method with no "
+"arguments:"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/validation.md:1725
+#, no-wrap
+msgid "    'password' => ['required', Password::defaults()],\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/validation.md:1727
+msgid ""
+"Occasionally, you may want to attach additional validation rules to your "
+"default password validation rules. You may use the `rules` method to "
+"accomplish this:"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/validation.md:1729
+#, no-wrap
+msgid "    use App\\Rules\\ZxcvbnRule;\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/validation.md:1732
+#, no-wrap
+msgid ""
+"    Password::defaults(function () {\n"
+"        $rule = Password::min(8)->rules([new ZxcvbnRule]);\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/validation.md:1735
+#, no-wrap
+msgid ""
+"        // ...\n"
+"    });\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/validation.md:1737
 #, no-wrap
 msgid "<a name=\"custom-validation-rules\"></a>\n"
 msgstr ""
 
 #. type: Title ##
-#: docs/master/validation.md:1367
+#: docs/master/validation.md:1737
 #, no-wrap
 msgid "Custom Validation Rules"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:1370
+#: docs/master/validation.md:1740
 #, no-wrap
 msgid "<a name=\"using-rule-objects\"></a>\n"
 msgstr ""
 
 #. type: Title ###
-#: docs/master/validation.md:1370
+#: docs/master/validation.md:1740
 #, no-wrap
 msgid "Using Rule Objects"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:1373
+#: docs/master/validation.md:1743
 msgid ""
 "Laravel provides a variety of helpful validation rules; however, you may "
 "wish to specify some of your own. One method of registering custom "
@@ -3979,13 +4970,13 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:1375
+#: docs/master/validation.md:1745
 #, no-wrap
 msgid "    php artisan make:rule Uppercase\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:1377
+#: docs/master/validation.md:1747
 msgid ""
 "Once the rule has been created, we are ready to define its behavior. A rule "
 "object contains two methods: `passes` and `message`. The `passes` method "
@@ -3996,19 +4987,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:1381
+#: docs/master/validation.md:1751 docs/master/validation.md:1806 docs/master/validation.md:1840
 #, no-wrap
 msgid "    namespace App\\Rules;\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:1383
+#: docs/master/validation.md:1753
 #, no-wrap
 msgid "    use Illuminate\\Contracts\\Validation\\Rule;\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:1397
+#: docs/master/validation.md:1767
 #, no-wrap
 msgid ""
 "    class Uppercase implements Rule\n"
@@ -4027,7 +5018,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:1408
+#: docs/master/validation.md:1778
 #, no-wrap
 msgid ""
 "        /**\n"
@@ -4043,14 +5034,14 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:1410
+#: docs/master/validation.md:1780
 msgid ""
 "You may call the `trans` helper from your `message` method if you would like "
 "to return an error message from your translation files:"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:1420
+#: docs/master/validation.md:1790
 #, no-wrap
 msgid ""
 "    /**\n"
@@ -4065,20 +5056,20 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:1422
+#: docs/master/validation.md:1792
 msgid ""
 "Once the rule has been defined, you may attach it to a validator by passing "
 "an instance of the rule object with your other validation rules:"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:1424
+#: docs/master/validation.md:1794
 #, no-wrap
 msgid "    use App\\Rules\\Uppercase;\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:1428
+#: docs/master/validation.md:1798
 #, no-wrap
 msgid ""
 "    $request->validate([\n"
@@ -4086,20 +5077,134 @@ msgid ""
 "    ]);\n"
 msgstr ""
 
+#. type: Title ####
+#: docs/master/validation.md:1799
+#, no-wrap
+msgid "Accessing Additional Data"
+msgstr ""
+
 #. type: Plain text
-#: docs/master/validation.md:1430
+#: docs/master/validation.md:1802
+msgid ""
+"If your custom validation rule class needs to access all of the other data "
+"undergoing validation, your rule class may implement the "
+"`Illuminate\\Contracts\\Validation\\DataAwareRule` interface. This interface "
+"requires your class to define a `setData` method. This method will "
+"automatically be invoked by Laravel (before validation proceeds) with all of "
+"the data under validation:"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/validation.md:1809
+#, no-wrap
+msgid ""
+"    use Illuminate\\Contracts\\Validation\\Rule;\n"
+"    use Illuminate\\Contracts\\Validation\\DataAwareRule;\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/validation.md:1818
+#, no-wrap
+msgid ""
+"    class Uppercase implements Rule, DataAwareRule\n"
+"    {\n"
+"        /**\n"
+"         * All of the data under validation.\n"
+"         *\n"
+"         * @var array\n"
+"         */\n"
+"        protected $data = [];\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/validation.md:1820 docs/master/validation.md:1854
+#, no-wrap
+msgid "        // ...\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/validation.md:1830
+#, no-wrap
+msgid ""
+"        /**\n"
+"         * Set the data under validation.\n"
+"         *\n"
+"         * @param  array  $data\n"
+"         * @return $this\n"
+"         */\n"
+"        public function setData($data)\n"
+"        {\n"
+"            $this->data = $data;\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/validation.md:1834 docs/master/validation.md:1868
+#, no-wrap
+msgid ""
+"            return $this;\n"
+"        }\n"
+"    }\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/validation.md:1836
+msgid ""
+"Or, if your validation rule requires access to the validator instance "
+"performing the validation, you may implement the `ValidatorAwareRule` "
+"interface:"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/validation.md:1843
+#, no-wrap
+msgid ""
+"    use Illuminate\\Contracts\\Validation\\Rule;\n"
+"    use Illuminate\\Contracts\\Validation\\ValidatorAwareRule;\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/validation.md:1852
+#, no-wrap
+msgid ""
+"    class Uppercase implements Rule, ValidatorAwareRule\n"
+"    {\n"
+"        /**\n"
+"         * The validator instance.\n"
+"         *\n"
+"         * @var \\Illuminate\\Validation\\Validator\n"
+"         */\n"
+"        protected $validator;\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/validation.md:1864
+#, no-wrap
+msgid ""
+"        /**\n"
+"         * Set the current validator.\n"
+"         *\n"
+"         * @param  \\Illuminate\\Validation\\Validator  $validator\n"
+"         * @return $this\n"
+"         */\n"
+"        public function setValidator($validator)\n"
+"        {\n"
+"            $this->validator = $validator;\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/validation.md:1870
 #, no-wrap
 msgid "<a name=\"using-closures\"></a>\n"
 msgstr ""
 
 #. type: Title ###
-#: docs/master/validation.md:1430
+#: docs/master/validation.md:1870
 #, no-wrap
 msgid "Using Closures"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:1433
+#: docs/master/validation.md:1873
 msgid ""
 "If you only need the functionality of a custom rule once throughout your "
 "application, you may use a closure instead of a rule object. The closure "
@@ -4108,7 +5213,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:1447
+#: docs/master/validation.md:1887
 #, no-wrap
 msgid ""
 "    $validator = Validator::make($request->all(), [\n"
@@ -4125,19 +5230,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:1449
+#: docs/master/validation.md:1889
 #, no-wrap
 msgid "<a name=\"implicit-rules\"></a>\n"
 msgstr ""
 
 #. type: Title ###
-#: docs/master/validation.md:1449
+#: docs/master/validation.md:1889
 #, no-wrap
 msgid "Implicit Rules"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:1452
+#: docs/master/validation.md:1892
 msgid ""
 "By default, when an attribute being validated is not present or contains an "
 "empty string, normal validation rules, including custom rules, are not "
@@ -4146,25 +5251,25 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:1456
+#: docs/master/validation.md:1896
 #, no-wrap
 msgid "    $rules = ['name' => 'unique:users,name'];\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:1458
+#: docs/master/validation.md:1898
 #, no-wrap
 msgid "    $input = ['name' => ''];\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:1460
+#: docs/master/validation.md:1900
 #, no-wrap
 msgid "    Validator::make($input, $rules)->passes(); // true\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:1462
+#: docs/master/validation.md:1902
 msgid ""
 "For a custom rule to run even when an attribute is empty, the rule must "
 "imply that the attribute is required. To create an \"implicit\" rule, "
@@ -4175,7 +5280,20 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/validation.md:1463
+#: docs/master/validation.md:1904
+msgid ""
+"To generate a new implicit rule object, you may use the `make:rule` Artisan "
+"command with the `--implicit` option :"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/validation.md:1906
+#, no-wrap
+msgid "     php artisan make:rule Uppercase --implicit\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/validation.md:1907
 #, no-wrap
 msgid ""
 "> {note} An \"implicit\" rule only _implies_ that the attribute is "

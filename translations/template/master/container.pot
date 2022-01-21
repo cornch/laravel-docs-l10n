@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Laravel Documentation VERSION\n"
-"POT-Creation-Date: 2021-09-13 05:07+0000\n"
+"POT-Creation-Date: 2022-01-21 20:16+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -23,7 +23,7 @@ msgid "Service Container"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/container.md:19
+#: docs/master/container.md:20
 #, no-wrap
 msgid ""
 "- [Introduction](#introduction)\n"
@@ -41,24 +41,25 @@ msgid ""
 "- [Resolving](#resolving)\n"
 "    - [The Make Method](#the-make-method)\n"
 "    - [Automatic Injection](#automatic-injection)\n"
+"- [Method Invocation & Injection](#method-invocation-and-injection)\n"
 "- [Container Events](#container-events)\n"
 "- [PSR-11](#psr-11)\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/container.md:21
+#: docs/master/container.md:22
 #, no-wrap
 msgid "<a name=\"introduction\"></a>\n"
 msgstr ""
 
 #. type: Title ##
-#: docs/master/container.md:21
+#: docs/master/container.md:22
 #, no-wrap
 msgid "Introduction"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/container.md:24
+#: docs/master/container.md:25
 msgid ""
 "The Laravel service container is a powerful tool for managing class "
 "dependencies and performing dependency injection. Dependency injection is a "
@@ -68,24 +69,24 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/container.md:26
+#: docs/master/container.md:27
 msgid "Let's look at a simple example:"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/container.md:28 docs/master/container.md:79 docs/master/container.md:234 docs/master/container.md:377
+#: docs/master/container.md:29 docs/master/container.md:80 docs/master/container.md:253 docs/master/container.md:396 docs/master/container.md:439
 #, no-wrap
 msgid "    <?php\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/container.md:30 docs/master/container.md:379
+#: docs/master/container.md:31 docs/master/container.md:398
 #, no-wrap
 msgid "    namespace App\\Http\\Controllers;\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/container.md:34
+#: docs/master/container.md:35
 #, no-wrap
 msgid ""
 "    use App\\Http\\Controllers\\Controller;\n"
@@ -94,7 +95,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/container.md:43
+#: docs/master/container.md:44
 #, no-wrap
 msgid ""
 "    class UserController extends Controller\n"
@@ -108,7 +109,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/container.md:54
+#: docs/master/container.md:55
 #, no-wrap
 msgid ""
 "        /**\n"
@@ -124,7 +125,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/container.md:64
+#: docs/master/container.md:65
 #, no-wrap
 msgid ""
 "        /**\n"
@@ -139,7 +140,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/container.md:68
+#: docs/master/container.md:69
 #, no-wrap
 msgid ""
 "            return view('user.profile', ['user' => $user]);\n"
@@ -148,7 +149,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/container.md:70
+#: docs/master/container.md:71
 msgid ""
 "In this example, the `UserController` needs to retrieve users from a data "
 "source. So, we will **inject** a service that is able to retrieve users. In "
@@ -161,7 +162,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/container.md:72
+#: docs/master/container.md:73
 msgid ""
 "A deep understanding of the Laravel service container is essential to "
 "building a powerful, large application, as well as for contributing to the "
@@ -169,19 +170,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/container.md:74
+#: docs/master/container.md:75
 #, no-wrap
 msgid "<a name=\"zero-configuration-resolution\"></a>\n"
 msgstr ""
 
 #. type: Title ###
-#: docs/master/container.md:74
+#: docs/master/container.md:75
 #, no-wrap
 msgid "Zero Configuration Resolution"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/container.md:77
+#: docs/master/container.md:78
 msgid ""
 "If a class has no dependencies or only depends on other concrete classes "
 "(not interfaces), the container does not need to be instructed on how to "
@@ -190,7 +191,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/container.md:84
+#: docs/master/container.md:85
 #, no-wrap
 msgid ""
 "    class Service\n"
@@ -200,7 +201,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/container.md:88
+#: docs/master/container.md:89
 #, no-wrap
 msgid ""
 "    Route::get('/', function (Service $service) {\n"
@@ -209,7 +210,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/container.md:90
+#: docs/master/container.md:91
 msgid ""
 "In this example, hitting your application's `/` route will automatically "
 "resolve the `Service` class and inject it into your route's handler. This is "
@@ -218,7 +219,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/container.md:92
+#: docs/master/container.md:93
 msgid ""
 "Thankfully, many of the classes you will be writing when building a Laravel "
 "application automatically receive their dependencies via the container, "
@@ -232,19 +233,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/container.md:94
+#: docs/master/container.md:95
 #, no-wrap
 msgid "<a name=\"when-to-use-the-container\"></a>\n"
 msgstr ""
 
 #. type: Title ###
-#: docs/master/container.md:94
+#: docs/master/container.md:95
 #, no-wrap
 msgid "When To Use The Container"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/container.md:97
+#: docs/master/container.md:98
 msgid ""
 "Thanks to zero configuration resolution, you will often type-hint "
 "dependencies on routes, controllers, event listeners, and elsewhere without "
@@ -256,13 +257,13 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/container.md:99
+#: docs/master/container.md:100
 #, no-wrap
 msgid "    use Illuminate\\Http\\Request;\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/container.md:103
+#: docs/master/container.md:104
 #, no-wrap
 msgid ""
 "    Route::get('/', function (Request $request) {\n"
@@ -271,7 +272,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/container.md:105
+#: docs/master/container.md:106
 msgid ""
 "In many cases, thanks to automatic dependency injection and "
 "[facades](/docs/{{version}}/facades), you can build Laravel applications "
@@ -281,7 +282,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/container.md:107
+#: docs/master/container.md:108
 msgid ""
 "First, if you write a class that implements an interface and you wish to "
 "type-hint that interface on a route or class constructor, you must [tell the "
@@ -293,43 +294,43 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/container.md:109
+#: docs/master/container.md:110
 #, no-wrap
 msgid "<a name=\"binding\"></a>\n"
 msgstr ""
 
 #. type: Title ##
-#: docs/master/container.md:109
+#: docs/master/container.md:110
 #, no-wrap
 msgid "Binding"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/container.md:112
+#: docs/master/container.md:113
 #, no-wrap
 msgid "<a name=\"binding-basics\"></a>\n"
 msgstr ""
 
 #. type: Title ###
-#: docs/master/container.md:112
+#: docs/master/container.md:113
 #, no-wrap
 msgid "Binding Basics"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/container.md:115
+#: docs/master/container.md:116
 #, no-wrap
 msgid "<a name=\"simple-bindings\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/master/container.md:115
+#: docs/master/container.md:116
 #, no-wrap
 msgid "Simple Bindings"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/container.md:118
+#: docs/master/container.md:119
 msgid ""
 "Almost all of your service container bindings will be registered within "
 "[service providers](/docs/{{version}}/providers), so most of these examples "
@@ -337,7 +338,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/container.md:120
+#: docs/master/container.md:121
 #, no-wrap
 msgid ""
 "Within a service provider, you always have access to the container via the "
@@ -347,7 +348,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/container.md:123 docs/master/container.md:148 docs/master/container.md:160
+#: docs/master/container.md:124 docs/master/container.md:149 docs/master/container.md:161 docs/master/container.md:173
 #, no-wrap
 msgid ""
 "    use App\\Services\\Transistor;\n"
@@ -355,7 +356,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/container.md:127
+#: docs/master/container.md:128
 #, no-wrap
 msgid ""
 "    $this->app->bind(Transistor::class, function ($app) {\n"
@@ -364,7 +365,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/container.md:129
+#: docs/master/container.md:130
 msgid ""
 "Note that we receive the container itself as an argument to the resolver. We "
 "can then use the container to resolve sub-dependencies of the object we are "
@@ -372,7 +373,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/container.md:131
+#: docs/master/container.md:132
 msgid ""
 "As mentioned, you will typically be interacting with the container within "
 "service providers; however, if you would like to interact with the container "
@@ -381,7 +382,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/container.md:134 docs/master/container.md:351
+#: docs/master/container.md:135 docs/master/container.md:370
 #, no-wrap
 msgid ""
 "    use App\\Services\\Transistor;\n"
@@ -389,7 +390,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/container.md:138
+#: docs/master/container.md:139
 #, no-wrap
 msgid ""
 "    App::bind(Transistor::class, function ($app) {\n"
@@ -398,7 +399,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/container.md:140
+#: docs/master/container.md:141
 #, no-wrap
 msgid ""
 "> {tip} There is no need to bind classes into the container if they do not "
@@ -408,19 +409,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/container.md:142
+#: docs/master/container.md:143
 #, no-wrap
 msgid "<a name=\"binding-a-singleton\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/master/container.md:142
+#: docs/master/container.md:143
 #, no-wrap
 msgid "Binding A Singleton"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/container.md:145
+#: docs/master/container.md:146
 msgid ""
 "The `singleton` method binds a class or interface into the container that "
 "should only be resolved one time. Once a singleton binding is resolved, the "
@@ -429,7 +430,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/container.md:152
+#: docs/master/container.md:153
 #, no-wrap
 msgid ""
 "    $this->app->singleton(Transistor::class, function ($app) {\n"
@@ -438,19 +439,52 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/container.md:154
+#: docs/master/container.md:155
+#, no-wrap
+msgid "<a name=\"binding-scoped\"></a>\n"
+msgstr ""
+
+#. type: Title ####
+#: docs/master/container.md:155
+#, no-wrap
+msgid "Binding Scoped Singletons"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/container.md:158
+msgid ""
+"The `scoped` method binds a class or interface into the container that "
+"should only be resolved one time within a given Laravel request / job "
+"lifecycle. While this method is similar to the `singleton` method, instances "
+"registered using the `scoped` method will be flushed whenever the Laravel "
+"application starts a new \"lifecycle\", such as when a [Laravel "
+"Octane](/docs/{{version}}/octane) worker processes a new request or when a "
+"Laravel [queue worker](/docs/{{version}}/queues) processes a new job:"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/container.md:165
+#, no-wrap
+msgid ""
+"    $this->app->scoped(Transistor::class, function ($app) {\n"
+"        return new Transistor($app->make(PodcastParser::class));\n"
+"    });\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/container.md:167
 #, no-wrap
 msgid "<a name=\"binding-instances\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/master/container.md:154
+#: docs/master/container.md:167
 #, no-wrap
 msgid "Binding Instances"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/container.md:157
+#: docs/master/container.md:170
 msgid ""
 "You may also bind an existing object instance into the container using the "
 "`instance` method. The given instance will always be returned on subsequent "
@@ -458,31 +492,31 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/container.md:162
+#: docs/master/container.md:175
 #, no-wrap
 msgid "    $service = new Transistor(new PodcastParser);\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/container.md:164
+#: docs/master/container.md:177
 #, no-wrap
 msgid "    $this->app->instance(Transistor::class, $service);\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/container.md:166
+#: docs/master/container.md:179
 #, no-wrap
 msgid "<a name=\"binding-interfaces-to-implementations\"></a>\n"
 msgstr ""
 
 #. type: Title ###
-#: docs/master/container.md:166
+#: docs/master/container.md:179
 #, no-wrap
 msgid "Binding Interfaces To Implementations"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/container.md:169
+#: docs/master/container.md:182
 msgid ""
 "A very powerful feature of the service container is its ability to bind an "
 "interface to a given implementation. For example, let's assume we have an "
@@ -492,7 +526,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/container.md:172
+#: docs/master/container.md:185
 #, no-wrap
 msgid ""
 "    use App\\Contracts\\EventPusher;\n"
@@ -500,13 +534,13 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/container.md:174
+#: docs/master/container.md:187
 #, no-wrap
 msgid "    $this->app->bind(EventPusher::class, RedisEventPusher::class);\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/container.md:176
+#: docs/master/container.md:189
 msgid ""
 "This statement tells the container that it should inject the "
 "`RedisEventPusher` when a class needs an implementation of "
@@ -517,13 +551,13 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/container.md:178
+#: docs/master/container.md:191
 #, no-wrap
 msgid "    use App\\Contracts\\EventPusher;\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/container.md:189
+#: docs/master/container.md:202
 #, no-wrap
 msgid ""
 "    /**\n"
@@ -539,19 +573,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/container.md:191
+#: docs/master/container.md:204
 #, no-wrap
 msgid "<a name=\"contextual-binding\"></a>\n"
 msgstr ""
 
 #. type: Title ###
-#: docs/master/container.md:191
+#: docs/master/container.md:204
 #, no-wrap
 msgid "Contextual Binding"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/container.md:194
+#: docs/master/container.md:207
 msgid ""
 "Sometimes you may have two classes that utilize the same interface, but you "
 "wish to inject different implementations into each class. For example, two "
@@ -562,7 +596,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/container.md:200
+#: docs/master/container.md:213
 #, no-wrap
 msgid ""
 "    use App\\Http\\Controllers\\PhotoController;\n"
@@ -573,7 +607,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/container.md:206
+#: docs/master/container.md:219
 #, no-wrap
 msgid ""
 "    $this->app->when(PhotoController::class)\n"
@@ -584,7 +618,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/container.md:212
+#: docs/master/container.md:225
 #, no-wrap
 msgid ""
 "    $this->app->when([VideoController::class, UploadController::class])\n"
@@ -595,19 +629,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/container.md:214
+#: docs/master/container.md:227
 #, no-wrap
 msgid "<a name=\"binding-primitives\"></a>\n"
 msgstr ""
 
 #. type: Title ###
-#: docs/master/container.md:214
+#: docs/master/container.md:227
 #, no-wrap
 msgid "Binding Primitives"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/container.md:217
+#: docs/master/container.md:230
 msgid ""
 "Sometimes you may have a class that receives some injected classes, but also "
 "needs an injected primitive value such as an integer. You may easily use "
@@ -615,7 +649,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/container.md:221
+#: docs/master/container.md:234
 #, no-wrap
 msgid ""
 "    $this->app->when('App\\Http\\Controllers\\UserController')\n"
@@ -624,7 +658,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/container.md:223
+#: docs/master/container.md:236
 msgid ""
 "Sometimes a class may depend on an array of [tagged](#tagging) "
 "instances. Using the `giveTagged` method, you may easily inject all of the "
@@ -632,7 +666,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/container.md:227
+#: docs/master/container.md:240
 #, no-wrap
 msgid ""
 "    $this->app->when(ReportAggregator::class)\n"
@@ -641,26 +675,42 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/container.md:229
+#: docs/master/container.md:242
+msgid ""
+"If you need to inject a value from one of your application's configuration "
+"files, you may use the `giveConfig` method:"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/container.md:246
+#, no-wrap
+msgid ""
+"    $this->app->when(ReportAggregator::class)\n"
+"        ->needs('$timezone')\n"
+"        ->giveConfig('app.timezone');\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/container.md:248
 #, no-wrap
 msgid "<a name=\"binding-typed-variadics\"></a>\n"
 msgstr ""
 
 #. type: Title ###
-#: docs/master/container.md:229
+#: docs/master/container.md:248
 #, no-wrap
 msgid "Binding Typed Variadics"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/container.md:232
+#: docs/master/container.md:251
 msgid ""
-"Occasionally you may have a class that receives an array of typed objects "
+"Occasionally, you may have a class that receives an array of typed objects "
 "using a variadic constructor argument:"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/container.md:237
+#: docs/master/container.md:256
 #, no-wrap
 msgid ""
 "    use App\\Models\\Filter;\n"
@@ -668,7 +718,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/container.md:246
+#: docs/master/container.md:265
 #, no-wrap
 msgid ""
 "    class Firewall\n"
@@ -682,7 +732,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/container.md:253
+#: docs/master/container.md:272
 #, no-wrap
 msgid ""
 "        /**\n"
@@ -694,7 +744,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/container.md:267
+#: docs/master/container.md:286
 #, no-wrap
 msgid ""
 "        /**\n"
@@ -713,7 +763,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/container.md:269
+#: docs/master/container.md:288
 msgid ""
 "Using contextual binding, you may resolve this dependency by providing the "
 "`give` method with a closure that returns an array of resolved `Filter` "
@@ -721,7 +771,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/container.md:279
+#: docs/master/container.md:298
 #, no-wrap
 msgid ""
 "    $this->app->when(Firewall::class)\n"
@@ -736,14 +786,14 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/container.md:281
+#: docs/master/container.md:300
 msgid ""
 "For convenience, you may also just provide an array of class names to be "
 "resolved by the container whenever `Firewall` needs `Filter` instances:"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/container.md:289
+#: docs/master/container.md:308
 #, no-wrap
 msgid ""
 "    $this->app->when(Firewall::class)\n"
@@ -756,19 +806,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/container.md:291
+#: docs/master/container.md:310
 #, no-wrap
 msgid "<a name=\"variadic-tag-dependencies\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/master/container.md:291
+#: docs/master/container.md:310
 #, no-wrap
 msgid "Variadic Tag Dependencies"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/container.md:294
+#: docs/master/container.md:313
 msgid ""
 "Sometimes a class may have a variadic dependency that is type-hinted as a "
 "given class (`Report ...$reports`). Using the `needs` and `giveTagged` "
@@ -777,7 +827,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/container.md:298
+#: docs/master/container.md:317
 #, no-wrap
 msgid ""
 "    $this->app->when(ReportAggregator::class)\n"
@@ -786,19 +836,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/container.md:300
+#: docs/master/container.md:319
 #, no-wrap
 msgid "<a name=\"tagging\"></a>\n"
 msgstr ""
 
 #. type: Title ###
-#: docs/master/container.md:300
+#: docs/master/container.md:319
 #, no-wrap
 msgid "Tagging"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/container.md:303
+#: docs/master/container.md:322
 msgid ""
 "Occasionally, you may need to resolve all of a certain \"category\" of "
 "binding. For example, perhaps you are building a report analyzer that "
@@ -808,7 +858,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/container.md:307
+#: docs/master/container.md:326
 #, no-wrap
 msgid ""
 "    $this->app->bind(CpuReport::class, function () {\n"
@@ -817,7 +867,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/container.md:311
+#: docs/master/container.md:330
 #, no-wrap
 msgid ""
 "    $this->app->bind(MemoryReport::class, function () {\n"
@@ -826,20 +876,20 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/container.md:313
+#: docs/master/container.md:332
 #, no-wrap
 msgid "    $this->app->tag([CpuReport::class, MemoryReport::class], 'reports');\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/container.md:315
+#: docs/master/container.md:334
 msgid ""
 "Once the services have been tagged, you may easily resolve them all via the "
 "container's `tagged` method:"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/container.md:319
+#: docs/master/container.md:338
 #, no-wrap
 msgid ""
 "    $this->app->bind(ReportAnalyzer::class, function ($app) {\n"
@@ -848,19 +898,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/container.md:321
+#: docs/master/container.md:340
 #, no-wrap
 msgid "<a name=\"extending-bindings\"></a>\n"
 msgstr ""
 
 #. type: Title ###
-#: docs/master/container.md:321
+#: docs/master/container.md:340
 #, no-wrap
 msgid "Extending Bindings"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/container.md:324
+#: docs/master/container.md:343
 msgid ""
 "The `extend` method allows the modification of resolved services. For "
 "example, when a service is resolved, you may run additional code to decorate "
@@ -870,7 +920,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/container.md:328
+#: docs/master/container.md:347
 #, no-wrap
 msgid ""
 "    $this->app->extend(Service::class, function ($service, $app) {\n"
@@ -879,31 +929,31 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/container.md:330
+#: docs/master/container.md:349
 #, no-wrap
 msgid "<a name=\"resolving\"></a>\n"
 msgstr ""
 
 #. type: Title ##
-#: docs/master/container.md:330
+#: docs/master/container.md:349
 #, no-wrap
 msgid "Resolving"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/container.md:333
+#: docs/master/container.md:352
 #, no-wrap
 msgid "<a name=\"the-make-method\"></a>\n"
 msgstr ""
 
 #. type: Title ###
-#: docs/master/container.md:333
+#: docs/master/container.md:352
 #, no-wrap
 msgid "The `make` Method"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/container.md:336
+#: docs/master/container.md:355
 msgid ""
 "You may use the `make` method to resolve a class instance from the "
 "container. The `make` method accepts the name of the class or interface you "
@@ -911,19 +961,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/container.md:338 docs/master/container.md:344 docs/master/container.md:420
+#: docs/master/container.md:357 docs/master/container.md:363 docs/master/container.md:480
 #, no-wrap
 msgid "    use App\\Services\\Transistor;\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/container.md:340
+#: docs/master/container.md:359
 #, no-wrap
 msgid "    $transistor = $this->app->make(Transistor::class);\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/container.md:342
+#: docs/master/container.md:361
 msgid ""
 "If some of your class' dependencies are not resolvable via the container, "
 "you may inject them by passing them as an associative array into the "
@@ -932,13 +982,13 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/container.md:346
+#: docs/master/container.md:365
 #, no-wrap
 msgid "    $transistor = $this->app->makeWith(Transistor::class, ['id' => 1]);\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/container.md:348
+#: docs/master/container.md:367
 msgid ""
 "If you are outside of a service provider in a location of your code that "
 "does not have access to the `$app` variable, you may use the `App` "
@@ -947,13 +997,13 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/container.md:353
+#: docs/master/container.md:372
 #, no-wrap
 msgid "    $transistor = App::make(Transistor::class);\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/container.md:355
+#: docs/master/container.md:374
 msgid ""
 "If you would like to have the Laravel container instance itself injected "
 "into a class that is being resolved by the container, you may type-hint the "
@@ -961,19 +1011,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/container.md:357
+#: docs/master/container.md:376
 #, no-wrap
 msgid "    use Illuminate\\Container\\Container;\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/container.md:368
+#: docs/master/container.md:387
 #, no-wrap
 msgid ""
 "    /**\n"
 "     * Create a new class instance.\n"
 "     *\n"
-"     * @param  \\Illuminate\\Container\\Container\n"
+"     * @param  \\Illuminate\\Container\\Container  $container\n"
 "     * @return void\n"
 "     */\n"
 "    public function __construct(Container $container)\n"
@@ -983,19 +1033,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/container.md:370
+#: docs/master/container.md:389
 #, no-wrap
 msgid "<a name=\"automatic-injection\"></a>\n"
 msgstr ""
 
 #. type: Title ###
-#: docs/master/container.md:370
+#: docs/master/container.md:389
 #, no-wrap
 msgid "Automatic Injection"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/container.md:373
+#: docs/master/container.md:392
 msgid ""
 "Alternatively, and importantly, you may type-hint the dependency in the "
 "constructor of a class that is resolved by the container, including "
@@ -1008,7 +1058,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/container.md:375
+#: docs/master/container.md:394
 msgid ""
 "For example, you may type-hint a repository defined by your application in a "
 "controller's constructor. The repository will automatically be resolved and "
@@ -1016,13 +1066,13 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/container.md:381
+#: docs/master/container.md:400 docs/master/container.md:443
 #, no-wrap
 msgid "    use App\\Repositories\\UserRepository;\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/container.md:390
+#: docs/master/container.md:409
 #, no-wrap
 msgid ""
 "    class UserController extends Controller\n"
@@ -1036,7 +1086,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/container.md:401
+#: docs/master/container.md:420
 #, no-wrap
 msgid ""
 "        /**\n"
@@ -1052,7 +1102,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/container.md:413
+#: docs/master/container.md:432
 #, no-wrap
 msgid ""
 "        /**\n"
@@ -1069,26 +1119,115 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/container.md:415
+#: docs/master/container.md:434
+#, no-wrap
+msgid "<a name=\"method-invocation-and-injection\"></a>\n"
+msgstr ""
+
+#. type: Title ##
+#: docs/master/container.md:434
+#, no-wrap
+msgid "Method Invocation & Injection"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/container.md:437
+msgid ""
+"Sometimes you may wish to invoke a method on an object instance while "
+"allowing the container to automatically inject that method's "
+"dependencies. For example, given the following class:"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/container.md:441
+#, no-wrap
+msgid "    namespace App;\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/container.md:457
+#, no-wrap
+msgid ""
+"    class UserReport\n"
+"    {\n"
+"        /**\n"
+"         * Generate a new user report.\n"
+"         *\n"
+"         * @param  \\App\\Repositories\\UserRepository  $repository\n"
+"         * @return array\n"
+"         */\n"
+"        public function generate(UserRepository $repository)\n"
+"        {\n"
+"            // ...\n"
+"        }\n"
+"    }\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/container.md:459
+msgid "You may invoke the `generate` method via the container like so:"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/container.md:462
+#, no-wrap
+msgid ""
+"    use App\\UserReport;\n"
+"    use Illuminate\\Support\\Facades\\App;\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/container.md:464
+#, no-wrap
+msgid "    $report = App::call([new UserReport, 'generate']);\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/container.md:466
+msgid ""
+"The `call` method accepts any PHP callable. The container's `call` method "
+"may even be used to invoke a closure while automatically injecting its "
+"dependencies:"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/container.md:469
+#, no-wrap
+msgid ""
+"    use App\\Repositories\\UserRepository;\n"
+"    use Illuminate\\Support\\Facades\\App;\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/container.md:473
+#, no-wrap
+msgid ""
+"    $result = App::call(function (UserRepository $repository) {\n"
+"        // ...\n"
+"    });\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/container.md:475
 #, no-wrap
 msgid "<a name=\"container-events\"></a>\n"
 msgstr ""
 
 #. type: Title ##
-#: docs/master/container.md:415
+#: docs/master/container.md:475
 #, no-wrap
 msgid "Container Events"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/container.md:418
+#: docs/master/container.md:478
 msgid ""
 "The service container fires an event each time it resolves an object. You "
 "may listen to this event using the `resolving` method:"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/container.md:424
+#: docs/master/container.md:484
 #, no-wrap
 msgid ""
 "    $this->app->resolving(Transistor::class, function ($transistor, $app) "
@@ -1099,7 +1238,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/container.md:428
+#: docs/master/container.md:488
 #, no-wrap
 msgid ""
 "    $this->app->resolving(function ($object, $app) {\n"
@@ -1108,7 +1247,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/container.md:430
+#: docs/master/container.md:490
 msgid ""
 "As you can see, the object being resolved will be passed to the callback, "
 "allowing you to set any additional properties on the object before it is "
@@ -1116,19 +1255,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/container.md:432
+#: docs/master/container.md:492
 #, no-wrap
 msgid "<a name=\"psr-11\"></a>\n"
 msgstr ""
 
 #. type: Title ##
-#: docs/master/container.md:432
+#: docs/master/container.md:492
 #, no-wrap
 msgid "PSR-11"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/container.md:435
+#: docs/master/container.md:495
 msgid ""
 "Laravel's service container implements the "
 "[PSR-11](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-11-container.md) "
@@ -1137,7 +1276,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/container.md:438
+#: docs/master/container.md:498
 #, no-wrap
 msgid ""
 "    use App\\Services\\Transistor;\n"
@@ -1145,7 +1284,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/container.md:441
+#: docs/master/container.md:501
 #, no-wrap
 msgid ""
 "    Route::get('/', function (ContainerInterface $container) {\n"
@@ -1153,7 +1292,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/container.md:444
+#: docs/master/container.md:504
 #, no-wrap
 msgid ""
 "        //\n"
@@ -1161,7 +1300,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/container.md:445
+#: docs/master/container.md:505
 msgid ""
 "An exception is thrown if the given identifier can't be resolved. The "
 "exception will be an instance of "

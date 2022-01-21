@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Laravel Documentation VERSION\n"
-"POT-Creation-Date: 2021-09-13 05:07+0000\n"
+"POT-Creation-Date: 2022-01-21 20:16+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -64,11 +64,12 @@ msgstr ""
 #. type: Plain text
 #: docs/8.x/sanctum.md:28
 msgid ""
-"Laravel Sanctum provides a featherweight authentication system for SPAs "
-"(single page applications), mobile applications, and simple, token based "
-"APIs. Sanctum allows each user of your application to generate multiple API "
-"tokens for their account. These tokens may be granted abilities / scopes "
-"which specify which actions the tokens are allowed to perform."
+"[Laravel Sanctum](https://github.com/laravel/sanctum) provides a "
+"featherweight authentication system for SPAs (single page applications), "
+"mobile applications, and simple, token based APIs. Sanctum allows each user "
+"of your application to generate multiple API tokens for their account. These "
+"tokens may be granted abilities / scopes which specify which actions the "
+"tokens are allowed to perform."
 msgstr ""
 
 #. type: Plain text
@@ -129,7 +130,7 @@ msgid "<a name=\"how-it-works-spa-authentication\"></a>\n"
 msgstr ""
 
 #. type: Title ##
-#: docs/8.x/sanctum.md:42 docs/8.x/sanctum.md:204
+#: docs/8.x/sanctum.md:42 docs/8.x/sanctum.md:224
 #, no-wrap
 msgid "SPA Authentication"
 msgstr ""
@@ -245,7 +246,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/sanctum.md:76 docs/8.x/sanctum.md:233
+#: docs/8.x/sanctum.md:76 docs/8.x/sanctum.md:253
 #, no-wrap
 msgid ""
 "    'api' => [\n"
@@ -285,7 +286,7 @@ msgid "<a name=\"configuration\"></a>\n"
 msgstr ""
 
 #. type: Title ###
-#: docs/8.x/sanctum.md:83 docs/8.x/sanctum.md:214
+#: docs/8.x/sanctum.md:83 docs/8.x/sanctum.md:234
 #, no-wrap
 msgid "Configuration"
 msgstr ""
@@ -387,7 +388,7 @@ msgid "<a name=\"issuing-api-tokens\"></a>\n"
 msgstr ""
 
 #. type: Title ###
-#: docs/8.x/sanctum.md:118 docs/8.x/sanctum.md:323
+#: docs/8.x/sanctum.md:118 docs/8.x/sanctum.md:343
 #, no-wrap
 msgid "Issuing API Tokens"
 msgstr ""
@@ -436,7 +437,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/sanctum.md:134 docs/8.x/sanctum.md:184 docs/8.x/sanctum.md:280
+#: docs/8.x/sanctum.md:134 docs/8.x/sanctum.md:204 docs/8.x/sanctum.md:300
 #, no-wrap
 msgid "    use Illuminate\\Http\\Request;\n"
 msgstr ""
@@ -520,17 +521,83 @@ msgstr ""
 #. type: Plain text
 #: docs/8.x/sanctum.md:161
 #, no-wrap
-msgid "<a name=\"first-party-ui-initiated-requests\"></a>\n"
+msgid "<a name=\"token-ability-middleware\"></a>\n"
 msgstr ""
 
 #. type: Title ####
 #: docs/8.x/sanctum.md:161
 #, no-wrap
-msgid "First-Party UI Initiated Requests"
+msgid "Token Ability Middleware"
 msgstr ""
 
 #. type: Plain text
 #: docs/8.x/sanctum.md:164
+msgid ""
+"Sanctum also includes two middleware that may be used to verify that an "
+"incoming request is authenticated with a token that has been granted a given "
+"ability. To get started, add the following middleware to the "
+"`$routeMiddleware` property of your application's `app/Http/Kernel.php` "
+"file:"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/sanctum.md:167
+#, no-wrap
+msgid ""
+"    'abilities' => "
+"\\Laravel\\Sanctum\\Http\\Middleware\\CheckAbilities::class,\n"
+"    'ability' => "
+"\\Laravel\\Sanctum\\Http\\Middleware\\CheckForAnyAbility::class,\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/sanctum.md:169
+msgid ""
+"The `abilities` middleware may be assigned to a route to verify that the "
+"incoming request's token has all of the listed abilities:"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/sanctum.md:173
+#, no-wrap
+msgid ""
+"    Route::get('/orders', function () {\n"
+"        // Token has both \"check-status\" and \"place-orders\" "
+"abilities...\n"
+"    })->middleware(['auth:sanctum', "
+"'abilities:check-status,place-orders']);\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/sanctum.md:175
+msgid ""
+"The `ability` middleware may be assigned to a route to verify that the "
+"incoming request's token has *at least one* of the listed abilities:"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/sanctum.md:179
+#, no-wrap
+msgid ""
+"    Route::get('/orders', function () {\n"
+"        // Token has the \"check-status\" or \"place-orders\" ability...\n"
+"    })->middleware(['auth:sanctum', 'ability:check-status,place-orders']);\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/sanctum.md:181
+#, no-wrap
+msgid "<a name=\"first-party-ui-initiated-requests\"></a>\n"
+msgstr ""
+
+#. type: Title ####
+#: docs/8.x/sanctum.md:181
+#, no-wrap
+msgid "First-Party UI Initiated Requests"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/sanctum.md:184
 msgid ""
 "For convenience, the `tokenCan` method will always return `true` if the "
 "incoming authenticated request was from your first-party SPA and you are "
@@ -538,7 +605,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/sanctum.md:166
+#: docs/8.x/sanctum.md:186
 msgid ""
 "However, this does not necessarily mean that your application has to allow "
 "the user to perform the action. Typically, your application's [authorization "
@@ -549,7 +616,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/sanctum.md:168
+#: docs/8.x/sanctum.md:188
 msgid ""
 "For example, if we imagine an application that manages servers, this might "
 "mean checking that token is authorized to update servers **and** that the "
@@ -557,13 +624,13 @@ msgid ""
 msgstr ""
 
 #. type: Code fence info string
-#: docs/8.x/sanctum.md:169
+#: docs/8.x/sanctum.md:189
 #, no-wrap
 msgid "php"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/sanctum.md:169
+#: docs/8.x/sanctum.md:189
 #, no-wrap
 msgid ""
 "return $request->user()->id === $server->user_id &&\n"
@@ -571,7 +638,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/sanctum.md:175
+#: docs/8.x/sanctum.md:195
 msgid ""
 "At first, allowing the `tokenCan` method to be called and always return "
 "`true` for first-party UI initiated requests may seem strange; however, it "
@@ -584,19 +651,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/sanctum.md:177
+#: docs/8.x/sanctum.md:197
 #, no-wrap
 msgid "<a name=\"protecting-routes\"></a>\n"
 msgstr ""
 
 #. type: Title ###
-#: docs/8.x/sanctum.md:177 docs/8.x/sanctum.md:275 docs/8.x/sanctum.md:357
+#: docs/8.x/sanctum.md:197 docs/8.x/sanctum.md:295 docs/8.x/sanctum.md:377
 #, no-wrap
 msgid "Protecting Routes"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/sanctum.md:180
+#: docs/8.x/sanctum.md:200
 msgid ""
 "To protect routes so that all incoming requests must be authenticated, you "
 "should attach the `sanctum` authentication guard to your protected routes "
@@ -607,7 +674,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/sanctum.md:182
+#: docs/8.x/sanctum.md:202
 msgid ""
 "You may be wondering why we suggest that you authenticate the routes within "
 "your application's `routes/web.php` file using the `sanctum` "
@@ -620,7 +687,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/sanctum.md:188 docs/8.x/sanctum.md:284 docs/8.x/sanctum.md:364
+#: docs/8.x/sanctum.md:208 docs/8.x/sanctum.md:304 docs/8.x/sanctum.md:384
 #, no-wrap
 msgid ""
 "    Route::middleware('auth:sanctum')->get('/user', function (Request "
@@ -630,19 +697,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/sanctum.md:190
+#: docs/8.x/sanctum.md:210
 #, no-wrap
 msgid "<a name=\"revoking-tokens\"></a>\n"
 msgstr ""
 
 #. type: Title ###
-#: docs/8.x/sanctum.md:190 docs/8.x/sanctum.md:366
+#: docs/8.x/sanctum.md:210 docs/8.x/sanctum.md:386
 #, no-wrap
 msgid "Revoking Tokens"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/sanctum.md:193
+#: docs/8.x/sanctum.md:213
 msgid ""
 "You may \"revoke\" tokens by deleting them from your database using the "
 "`tokens` relationship that is provided by the "
@@ -650,7 +717,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/sanctum.md:196 docs/8.x/sanctum.md:372
+#: docs/8.x/sanctum.md:216 docs/8.x/sanctum.md:392
 #, no-wrap
 msgid ""
 "    // Revoke all tokens...\n"
@@ -658,7 +725,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/sanctum.md:199
+#: docs/8.x/sanctum.md:219
 #, no-wrap
 msgid ""
 "    // Revoke the token that was used to authenticate the current "
@@ -667,7 +734,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/sanctum.md:202 docs/8.x/sanctum.md:375
+#: docs/8.x/sanctum.md:222 docs/8.x/sanctum.md:395
 #, no-wrap
 msgid ""
 "    // Revoke a specific token...\n"
@@ -675,13 +742,13 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/sanctum.md:204
+#: docs/8.x/sanctum.md:224
 #, no-wrap
 msgid "<a name=\"spa-authentication\"></a>\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/sanctum.md:207
+#: docs/8.x/sanctum.md:227
 msgid ""
 "Sanctum also exists to provide a simple method of authenticating single page "
 "applications (SPAs) that need to communicate with a Laravel powered "
@@ -690,7 +757,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/sanctum.md:209
+#: docs/8.x/sanctum.md:229
 msgid ""
 "For this feature, Sanctum does not use tokens of any kind. Instead, Sanctum "
 "uses Laravel's built-in cookie based session authentication services. This "
@@ -700,7 +767,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/sanctum.md:211
+#: docs/8.x/sanctum.md:231
 #, no-wrap
 msgid ""
 "> {note} In order to authenticate, your SPA and API must share the same "
@@ -710,25 +777,25 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/sanctum.md:214
+#: docs/8.x/sanctum.md:234
 #, no-wrap
 msgid "<a name=\"spa-configuration\"></a>\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/sanctum.md:217
+#: docs/8.x/sanctum.md:237
 #, no-wrap
 msgid "<a name=\"configuring-your-first-party-domains\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/8.x/sanctum.md:217
+#: docs/8.x/sanctum.md:237
 #, no-wrap
 msgid "Configuring Your First-Party Domains"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/sanctum.md:220
+#: docs/8.x/sanctum.md:240
 msgid ""
 "First, you should configure which domains your SPA will be making requests "
 "from. You may configure these domains using the `stateful` configuration "
@@ -738,7 +805,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/sanctum.md:222
+#: docs/8.x/sanctum.md:242
 #, no-wrap
 msgid ""
 "> {note} If you are accessing your application via a URL that includes a "
@@ -747,19 +814,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/sanctum.md:224
+#: docs/8.x/sanctum.md:244
 #, no-wrap
 msgid "<a name=\"sanctum-middleware\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/8.x/sanctum.md:224
+#: docs/8.x/sanctum.md:244
 #, no-wrap
 msgid "Sanctum Middleware"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/sanctum.md:227
+#: docs/8.x/sanctum.md:247
 msgid ""
 "Next, you should add Sanctum's middleware to your `api` middleware group "
 "within your `app/Http/Kernel.php` file. This middleware is responsible for "
@@ -769,19 +836,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/sanctum.md:235
+#: docs/8.x/sanctum.md:255
 #, no-wrap
 msgid "<a name=\"cors-and-cookies\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/8.x/sanctum.md:235
+#: docs/8.x/sanctum.md:255
 #, no-wrap
 msgid "CORS & Cookies"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/sanctum.md:238
+#: docs/8.x/sanctum.md:258
 msgid ""
 "If you are having trouble authenticating with your application from a SPA "
 "that executes on a separate subdomain, you have likely misconfigured your "
@@ -789,7 +856,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/sanctum.md:240
+#: docs/8.x/sanctum.md:260
 msgid ""
 "You should ensure that your application's CORS configuration is returning "
 "the `Access-Control-Allow-Credentials` header with a value of `True`. This "
@@ -798,7 +865,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/sanctum.md:242
+#: docs/8.x/sanctum.md:262
 msgid ""
 "In addition, you should enable the `withCredentials` option on your "
 "application's global `axios` instance. Typically, this should be performed "
@@ -808,13 +875,13 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/sanctum.md:244
+#: docs/8.x/sanctum.md:264
 #, no-wrap
 msgid "    axios.defaults.withCredentials = true;\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/sanctum.md:246
+#: docs/8.x/sanctum.md:266
 msgid ""
 "Finally, you should ensure your application's session cookie domain "
 "configuration supports any subdomain of your root domain. You may accomplish "
@@ -823,37 +890,37 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/sanctum.md:248
+#: docs/8.x/sanctum.md:268
 #, no-wrap
 msgid "    'domain' => '.domain.com',\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/sanctum.md:250
+#: docs/8.x/sanctum.md:270
 #, no-wrap
 msgid "<a name=\"spa-authenticating\"></a>\n"
 msgstr ""
 
 #. type: Title ###
-#: docs/8.x/sanctum.md:250
+#: docs/8.x/sanctum.md:270
 #, no-wrap
 msgid "Authenticating"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/sanctum.md:253
+#: docs/8.x/sanctum.md:273
 #, no-wrap
 msgid "<a name=\"csrf-protection\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/8.x/sanctum.md:253
+#: docs/8.x/sanctum.md:273
 #, no-wrap
 msgid "CSRF Protection"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/sanctum.md:256
+#: docs/8.x/sanctum.md:276
 msgid ""
 "To authenticate your SPA, your SPA's \"login\" page should first make a "
 "request to the `/sanctum/csrf-cookie` endpoint to initialize CSRF protection "
@@ -861,7 +928,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/sanctum.md:260
+#: docs/8.x/sanctum.md:280
 #, no-wrap
 msgid ""
 "    axios.get('/sanctum/csrf-cookie').then(response => {\n"
@@ -870,7 +937,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/sanctum.md:262
+#: docs/8.x/sanctum.md:282
 msgid ""
 "During this request, Laravel will set an `XSRF-TOKEN` cookie containing the "
 "current CSRF token. This token should then be passed in an `X-XSRF-TOKEN` "
@@ -882,19 +949,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/sanctum.md:264
+#: docs/8.x/sanctum.md:284
 #, no-wrap
 msgid "<a name=\"logging-in\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/8.x/sanctum.md:264
+#: docs/8.x/sanctum.md:284
 #, no-wrap
 msgid "Logging In"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/sanctum.md:267
+#: docs/8.x/sanctum.md:287
 msgid ""
 "Once CSRF protection has been initialized, you should make a `POST` request "
 "to your Laravel application's `/login` route. This `/login` route may be "
@@ -905,7 +972,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/sanctum.md:269
+#: docs/8.x/sanctum.md:289
 msgid ""
 "If the login request is successful, you will be authenticated and subsequent "
 "requests to your application's routes will automatically be authenticated "
@@ -917,7 +984,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/sanctum.md:271
+#: docs/8.x/sanctum.md:291
 msgid ""
 "Of course, if your user's session expires due to lack of activity, "
 "subsequent requests to the Laravel application may receive 401 or 419 HTTP "
@@ -926,7 +993,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/sanctum.md:273
+#: docs/8.x/sanctum.md:293
 #, no-wrap
 msgid ""
 "> {note} You are free to write your own `/login` endpoint; however, you "
@@ -937,13 +1004,13 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/sanctum.md:275
+#: docs/8.x/sanctum.md:295
 #, no-wrap
 msgid "<a name=\"protecting-spa-routes\"></a>\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/sanctum.md:278
+#: docs/8.x/sanctum.md:298
 msgid ""
 "To protect routes so that all incoming requests must be authenticated, you "
 "should attach the `sanctum` authentication guard to your API routes within "
@@ -953,19 +1020,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/sanctum.md:286
+#: docs/8.x/sanctum.md:306
 #, no-wrap
 msgid "<a name=\"authorizing-private-broadcast-channels\"></a>\n"
 msgstr ""
 
 #. type: Title ###
-#: docs/8.x/sanctum.md:286
+#: docs/8.x/sanctum.md:306
 #, no-wrap
 msgid "Authorizing Private Broadcast Channels"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/sanctum.md:289
+#: docs/8.x/sanctum.md:309
 msgid ""
 "If your SPA needs to authenticate with [private / presence broadcast "
 "channels](/docs/{{version}}/broadcasting#authorizing-channels), you should "
@@ -973,23 +1040,23 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/sanctum.md:291
+#: docs/8.x/sanctum.md:311
 #, no-wrap
 msgid "    Broadcast::routes(['middleware' => ['auth:sanctum']]);\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/sanctum.md:293
+#: docs/8.x/sanctum.md:313
 msgid ""
 "Next, in order for Pusher's authorization requests to succeed, you will need "
 "to provide a custom Pusher `authorizer` when initializing [Laravel "
-"Echo](/docs/{{version}}/broadcasting#installing-laravel-echo). This allows "
+"Echo](/docs/{{version}}/broadcasting#client-side-installation). This allows "
 "your application to configure Pusher to use the `axios` instance that is "
 "[properly configured for cross-domain requests](#cors-and-cookies):"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/sanctum.md:316
+#: docs/8.x/sanctum.md:336
 #, no-wrap
 msgid ""
 "    window.Echo = new Echo({\n"
@@ -1017,19 +1084,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/sanctum.md:318
+#: docs/8.x/sanctum.md:338
 #, no-wrap
 msgid "<a name=\"mobile-application-authentication\"></a>\n"
 msgstr ""
 
 #. type: Title ##
-#: docs/8.x/sanctum.md:318
+#: docs/8.x/sanctum.md:338
 #, no-wrap
 msgid "Mobile Application Authentication"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/sanctum.md:321
+#: docs/8.x/sanctum.md:341
 msgid ""
 "You may also use Sanctum tokens to authenticate your mobile application's "
 "requests to your API. The process for authenticating mobile application "
@@ -1038,13 +1105,13 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/sanctum.md:323
+#: docs/8.x/sanctum.md:343
 #, no-wrap
 msgid "<a name=\"issuing-mobile-api-tokens\"></a>\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/sanctum.md:326
+#: docs/8.x/sanctum.md:346
 msgid ""
 "To get started, create a route that accepts the user's email / username, "
 "password, and device name, then exchanges those credentials for a new "
@@ -1055,7 +1122,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/sanctum.md:328
+#: docs/8.x/sanctum.md:348
 msgid ""
 "Typically, you will make a request to the token endpoint from your mobile "
 "application's \"login\" screen. The endpoint will return the plain-text API "
@@ -1064,7 +1131,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/sanctum.md:333
+#: docs/8.x/sanctum.md:353
 #, no-wrap
 msgid ""
 "    use App\\Models\\User;\n"
@@ -1074,7 +1141,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/sanctum.md:340
+#: docs/8.x/sanctum.md:360
 #, no-wrap
 msgid ""
 "    Route::post('/sanctum/token', function (Request $request) {\n"
@@ -1086,13 +1153,13 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/sanctum.md:342
+#: docs/8.x/sanctum.md:362
 #, no-wrap
 msgid "        $user = User::where('email', $request->email)->first();\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/sanctum.md:348
+#: docs/8.x/sanctum.md:368
 #, no-wrap
 msgid ""
 "        if (! $user || ! Hash::check($request->password, $user->password)) "
@@ -1104,7 +1171,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/sanctum.md:351
+#: docs/8.x/sanctum.md:371
 #, no-wrap
 msgid ""
 "        return $user->createToken($request->device_name)->plainTextToken;\n"
@@ -1112,7 +1179,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/sanctum.md:353
+#: docs/8.x/sanctum.md:373
 msgid ""
 "When the mobile application uses the token to make an API request to your "
 "application, it should pass the token in the `Authorization` header as a "
@@ -1120,7 +1187,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/sanctum.md:355
+#: docs/8.x/sanctum.md:375
 #, no-wrap
 msgid ""
 "> {tip} When issuing tokens for a mobile application, you are also free to "
@@ -1128,13 +1195,13 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/sanctum.md:357
+#: docs/8.x/sanctum.md:377
 #, no-wrap
 msgid "<a name=\"protecting-mobile-api-routes\"></a>\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/sanctum.md:360
+#: docs/8.x/sanctum.md:380
 msgid ""
 "As previously documented, you may protect routes so that all incoming "
 "requests must be authenticated by attaching the `sanctum` authentication "
@@ -1142,13 +1209,13 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/sanctum.md:366
+#: docs/8.x/sanctum.md:386
 #, no-wrap
 msgid "<a name=\"revoking-mobile-api-tokens\"></a>\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/sanctum.md:369
+#: docs/8.x/sanctum.md:389
 msgid ""
 "To allow users to revoke API tokens issued to mobile devices, you may list "
 "them by name, along with a \"Revoke\" button, within an \"account settings\" "
@@ -1159,26 +1226,26 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/sanctum.md:377
+#: docs/8.x/sanctum.md:397
 #, no-wrap
 msgid "<a name=\"testing\"></a>\n"
 msgstr ""
 
 #. type: Title ##
-#: docs/8.x/sanctum.md:377
+#: docs/8.x/sanctum.md:397
 #, no-wrap
 msgid "Testing"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/sanctum.md:380
+#: docs/8.x/sanctum.md:400
 msgid ""
 "While testing, the `Sanctum::actingAs` method may be used to authenticate a "
 "user and specify which abilities should be granted to their token:"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/sanctum.md:383
+#: docs/8.x/sanctum.md:403
 #, no-wrap
 msgid ""
 "    use App\\Models\\User;\n"
@@ -1186,7 +1253,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/sanctum.md:390
+#: docs/8.x/sanctum.md:410
 #, no-wrap
 msgid ""
 "    public function test_task_list_can_be_retrieved()\n"
@@ -1198,13 +1265,13 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/sanctum.md:392
+#: docs/8.x/sanctum.md:412
 #, no-wrap
 msgid "        $response = $this->get('/api/task');\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/sanctum.md:395
+#: docs/8.x/sanctum.md:415
 #, no-wrap
 msgid ""
 "        $response->assertOk();\n"
@@ -1212,14 +1279,14 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/sanctum.md:397
+#: docs/8.x/sanctum.md:417
 msgid ""
 "If you would like to grant all abilities to the token, you should include "
 "`*` in the ability list provided to the `actingAs` method:"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/sanctum.md:401
+#: docs/8.x/sanctum.md:421
 #, no-wrap
 msgid ""
 "    Sanctum::actingAs(\n"

@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Laravel Documentation VERSION\n"
-"POT-Creation-Date: 2021-09-13 05:07+0000\n"
+"POT-Creation-Date: 2022-01-21 20:16+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -23,17 +23,17 @@ msgid "Eloquent: Getting Started"
 msgstr ""
 
 #. type: Bullet: '- '
-#: docs/master/eloquent.md:36
+#: docs/master/eloquent.md:38
 msgid "[Introduction](#introduction)"
 msgstr ""
 
 #. type: Bullet: '- '
-#: docs/master/eloquent.md:36
+#: docs/master/eloquent.md:38
 msgid "[Generating Model Classes](#generating-model-classes)"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:36
+#: docs/master/eloquent.md:38
 #, no-wrap
 msgid ""
 "- [Eloquent Model Conventions](#eloquent-model-conventions)\n"
@@ -45,6 +45,7 @@ msgid ""
 "- [Retrieving Models](#retrieving-models)\n"
 "    - [Collections](#collections)\n"
 "    - [Chunking Results](#chunking-results)\n"
+"    - [Chunk Using Lazy Collections](#chunking-using-lazy-collections)\n"
 "    - [Cursors](#cursors)\n"
 "    - [Advanced Subqueries](#advanced-subqueries)\n"
 "- [Retrieving Single Models / Aggregates](#retrieving-single-models)\n"
@@ -58,6 +59,7 @@ msgid ""
 "- [Deleting Models](#deleting-models)\n"
 "    - [Soft Deleting](#soft-deleting)\n"
 "    - [Querying Soft Deleted Models](#querying-soft-deleted-models)\n"
+"- [Pruning Models](#pruning-models)\n"
 "- [Replicating Models](#replicating-models)\n"
 "- [Query Scopes](#query-scopes)\n"
 "    - [Global Scopes](#global-scopes)\n"
@@ -70,19 +72,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:38
+#: docs/master/eloquent.md:40
 #, no-wrap
 msgid "<a name=\"introduction\"></a>\n"
 msgstr ""
 
 #. type: Title ##
-#: docs/master/eloquent.md:38
+#: docs/master/eloquent.md:40
 #, no-wrap
 msgid "Introduction"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:41
+#: docs/master/eloquent.md:43
 msgid ""
 "Laravel includes Eloquent, an object-relational mapper (ORM) that makes it "
 "enjoyable to interact with your database. When using Eloquent, each database "
@@ -93,7 +95,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:43
+#: docs/master/eloquent.md:45
 #, no-wrap
 msgid ""
 "> {tip} Before getting started, be sure to configure a database connection "
@@ -103,19 +105,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:45
+#: docs/master/eloquent.md:47
 #, no-wrap
 msgid "<a name=\"generating-model-classes\"></a>\n"
 msgstr ""
 
 #. type: Title ##
-#: docs/master/eloquent.md:45
+#: docs/master/eloquent.md:47
 #, no-wrap
 msgid "Generating Model Classes"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:48
+#: docs/master/eloquent.md:50
 msgid ""
 "To get started, let's create an Eloquent model. Models typically live in the "
 "`app\\Models` directory and extend the "
@@ -124,13 +126,13 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:50
+#: docs/master/eloquent.md:52
 #, no-wrap
 msgid "    php artisan make:model Flight\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:52
+#: docs/master/eloquent.md:54
 msgid ""
 "If you would like to generate a [database "
 "migration](/docs/{{version}}/migrations) when you generate the model, you "
@@ -138,27 +140,27 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:54
+#: docs/master/eloquent.md:56
 #, no-wrap
 msgid "    php artisan make:model Flight --migration\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:56
+#: docs/master/eloquent.md:58
 msgid ""
 "You may generate various other types of classes when generating a model, "
-"such as factories, seeders, and controllers. In addition, these options may "
-"be combined to create multiple classes at once:"
+"such as factories, seeders, policies, controllers, and form requests. In "
+"addition, these options may be combined to create multiple classes at once:"
 msgstr ""
 
 #. type: Code fence info string
-#: docs/master/eloquent.md:57
+#: docs/master/eloquent.md:59
 #, no-wrap
 msgid "bash"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:57
+#: docs/master/eloquent.md:59
 #, no-wrap
 msgid ""
 "# Generate a model and a FlightFactory class...\n"
@@ -173,24 +175,39 @@ msgid ""
 "php artisan make:model Flight --controller\n"
 "php artisan make:model Flight -c\n"
 "\n"
+"# Generate a model, FlightController resource class, and form request "
+"classes...\n"
+"php artisan make:model Flight --controller --resource --requests\n"
+"php artisan make:model Flight -crR\n"
+"\n"
+"# Generate a model and a FlightPolicy class...\n"
+"php artisan make:model Flight --policy\n"
+"\n"
 "# Generate a model and a migration, factory, seeder, and controller...\n"
 "php artisan make:model Flight -mfsc\n"
+"\n"
+"# Shortcut to generate a model, migration, factory, seeder, policy, "
+"controller, and form requests...\n"
+"php artisan make:model Flight --all\n"
+"\n"
+"# Generate a pivot model...\n"
+"php artisan make:model Member --pivot\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:75
+#: docs/master/eloquent.md:90
 #, no-wrap
 msgid "<a name=\"eloquent-model-conventions\"></a>\n"
 msgstr ""
 
 #. type: Title ##
-#: docs/master/eloquent.md:75
+#: docs/master/eloquent.md:90
 #, no-wrap
 msgid "Eloquent Model Conventions"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:78
+#: docs/master/eloquent.md:93
 msgid ""
 "Models generated by the `make:model` command will be placed in the "
 "`app/Models` directory. Let's examine a basic model class and discuss some "
@@ -198,25 +215,25 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:80 docs/master/eloquent.md:98 docs/master/eloquent.md:119 docs/master/eloquent.md:137 docs/master/eloquent.md:151 docs/master/eloquent.md:173 docs/master/eloquent.md:191 docs/master/eloquent.md:209 docs/master/eloquent.md:222 docs/master/eloquent.md:243 docs/master/eloquent.md:493 docs/master/eloquent.md:635 docs/master/eloquent.md:746 docs/master/eloquent.md:872 docs/master/eloquent.md:902 docs/master/eloquent.md:933 docs/master/eloquent.md:983 docs/master/eloquent.md:1038 docs/master/eloquent.md:1087 docs/master/eloquent.md:1119 docs/master/eloquent.md:1160
+#: docs/master/eloquent.md:95 docs/master/eloquent.md:113 docs/master/eloquent.md:134 docs/master/eloquent.md:152 docs/master/eloquent.md:166 docs/master/eloquent.md:188 docs/master/eloquent.md:206 docs/master/eloquent.md:224 docs/master/eloquent.md:237 docs/master/eloquent.md:258 docs/master/eloquent.md:547 docs/master/eloquent.md:689 docs/master/eloquent.md:802 docs/master/eloquent.md:897 docs/master/eloquent.md:967 docs/master/eloquent.md:1039 docs/master/eloquent.md:1069 docs/master/eloquent.md:1100 docs/master/eloquent.md:1150 docs/master/eloquent.md:1205 docs/master/eloquent.md:1260 docs/master/eloquent.md:1292 docs/master/eloquent.md:1333 docs/master/eloquent.md:1422
 #, no-wrap
 msgid "    <?php\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:82 docs/master/eloquent.md:100 docs/master/eloquent.md:121 docs/master/eloquent.md:175 docs/master/eloquent.md:193 docs/master/eloquent.md:224 docs/master/eloquent.md:245 docs/master/eloquent.md:637 docs/master/eloquent.md:748 docs/master/eloquent.md:904 docs/master/eloquent.md:935 docs/master/eloquent.md:985 docs/master/eloquent.md:1040 docs/master/eloquent.md:1089 docs/master/eloquent.md:1121
+#: docs/master/eloquent.md:97 docs/master/eloquent.md:115 docs/master/eloquent.md:136 docs/master/eloquent.md:190 docs/master/eloquent.md:208 docs/master/eloquent.md:239 docs/master/eloquent.md:260 docs/master/eloquent.md:691 docs/master/eloquent.md:804 docs/master/eloquent.md:899 docs/master/eloquent.md:969 docs/master/eloquent.md:1071 docs/master/eloquent.md:1102 docs/master/eloquent.md:1152 docs/master/eloquent.md:1207 docs/master/eloquent.md:1262 docs/master/eloquent.md:1294
 #, no-wrap
 msgid "    namespace App\\Models;\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:84 docs/master/eloquent.md:102 docs/master/eloquent.md:123 docs/master/eloquent.md:177 docs/master/eloquent.md:195 docs/master/eloquent.md:226 docs/master/eloquent.md:247 docs/master/eloquent.md:639 docs/master/eloquent.md:987 docs/master/eloquent.md:1042 docs/master/eloquent.md:1123
+#: docs/master/eloquent.md:99 docs/master/eloquent.md:117 docs/master/eloquent.md:138 docs/master/eloquent.md:192 docs/master/eloquent.md:210 docs/master/eloquent.md:241 docs/master/eloquent.md:262 docs/master/eloquent.md:693 docs/master/eloquent.md:1154 docs/master/eloquent.md:1209 docs/master/eloquent.md:1296
 #, no-wrap
 msgid "    use Illuminate\\Database\\Eloquent\\Model;\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:89
+#: docs/master/eloquent.md:104
 #, no-wrap
 msgid ""
 "    class Flight extends Model\n"
@@ -226,19 +243,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:91
+#: docs/master/eloquent.md:106
 #, no-wrap
 msgid "<a name=\"table-names\"></a>\n"
 msgstr ""
 
 #. type: Title ###
-#: docs/master/eloquent.md:91
+#: docs/master/eloquent.md:106
 #, no-wrap
 msgid "Table Names"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:94
+#: docs/master/eloquent.md:109
 msgid ""
 "After glancing at the example above, you may have noticed that we did not "
 "tell Eloquent which database table corresponds to our `Flight` model. By "
@@ -250,7 +267,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:96
+#: docs/master/eloquent.md:111
 msgid ""
 "If your model's corresponding database table does not fit this convention, "
 "you may manually specify the model's table name by defining a `table` "
@@ -258,7 +275,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:112
+#: docs/master/eloquent.md:127
 #, no-wrap
 msgid ""
 "    class Flight extends Model\n"
@@ -273,19 +290,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:114
+#: docs/master/eloquent.md:129
 #, no-wrap
 msgid "<a name=\"primary-keys\"></a>\n"
 msgstr ""
 
 #. type: Title ###
-#: docs/master/eloquent.md:114
+#: docs/master/eloquent.md:129
 #, no-wrap
 msgid "Primary Keys"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:117
+#: docs/master/eloquent.md:132
 msgid ""
 "Eloquent will also assume that each model's corresponding database table has "
 "a primary key column named `id`. If necessary, you may define a protected "
@@ -294,7 +311,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:133
+#: docs/master/eloquent.md:148
 #, no-wrap
 msgid ""
 "    class Flight extends Model\n"
@@ -309,7 +326,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:135
+#: docs/master/eloquent.md:150
 msgid ""
 "In addition, Eloquent assumes that the primary key is an incrementing "
 "integer value, which means that Eloquent will automatically cast the primary "
@@ -319,7 +336,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:147
+#: docs/master/eloquent.md:162
 #, no-wrap
 msgid ""
 "    class Flight extends Model\n"
@@ -334,7 +351,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:149
+#: docs/master/eloquent.md:164
 msgid ""
 "If your model's primary key is not an integer, you should define a protected "
 "`$keyType` property on your model. This property should have a value of "
@@ -342,7 +359,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:161
+#: docs/master/eloquent.md:176
 #, no-wrap
 msgid ""
 "    class Flight extends Model\n"
@@ -357,19 +374,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:163
+#: docs/master/eloquent.md:178
 #, no-wrap
 msgid "<a name=\"composite-primary-keys\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/master/eloquent.md:163
+#: docs/master/eloquent.md:178
 #, no-wrap
 msgid "\"Composite\" Primary Keys"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:166
+#: docs/master/eloquent.md:181
 msgid ""
 "Eloquent requires each model to have at least one uniquely identifying "
 "\"ID\" that can serve as its primary key. \"Composite\" primary keys are not "
@@ -379,19 +396,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:168
+#: docs/master/eloquent.md:183
 #, no-wrap
 msgid "<a name=\"timestamps\"></a>\n"
 msgstr ""
 
 #. type: Title ###
-#: docs/master/eloquent.md:168
+#: docs/master/eloquent.md:183
 #, no-wrap
 msgid "Timestamps"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:171
+#: docs/master/eloquent.md:186
 msgid ""
 "By default, Eloquent expects `created_at` and `updated_at` columns to exist "
 "on your model's corresponding database table.  Eloquent will automatically "
@@ -401,7 +418,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:187
+#: docs/master/eloquent.md:202
 #, no-wrap
 msgid ""
 "    class Flight extends Model\n"
@@ -416,7 +433,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:189
+#: docs/master/eloquent.md:204
 msgid ""
 "If you need to customize the format of your model's timestamps, set the "
 "`$dateFormat` property on your model. This property determines how date "
@@ -425,7 +442,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:205
+#: docs/master/eloquent.md:220
 #, no-wrap
 msgid ""
 "    class Flight extends Model\n"
@@ -440,7 +457,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:207
+#: docs/master/eloquent.md:222
 msgid ""
 "If you need to customize the names of the columns used to store the "
 "timestamps, you may define `CREATED_AT` and `UPDATED_AT` constants on your "
@@ -448,7 +465,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:215
+#: docs/master/eloquent.md:230
 #, no-wrap
 msgid ""
 "    class Flight extends Model\n"
@@ -459,19 +476,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:217
+#: docs/master/eloquent.md:232
 #, no-wrap
 msgid "<a name=\"database-connections\"></a>\n"
 msgstr ""
 
 #. type: Title ###
-#: docs/master/eloquent.md:217
+#: docs/master/eloquent.md:232
 #, no-wrap
 msgid "Database Connections"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:220
+#: docs/master/eloquent.md:235
 msgid ""
 "By default, all Eloquent models will use the default database connection "
 "that is configured for your application. If you would like to specify a "
@@ -480,7 +497,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:236
+#: docs/master/eloquent.md:251
 #, no-wrap
 msgid ""
 "    class Flight extends Model\n"
@@ -495,19 +512,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:238
+#: docs/master/eloquent.md:253
 #, no-wrap
 msgid "<a name=\"default-attribute-values\"></a>\n"
 msgstr ""
 
 #. type: Title ###
-#: docs/master/eloquent.md:238
+#: docs/master/eloquent.md:253
 #, no-wrap
 msgid "Default Attribute Values"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:241
+#: docs/master/eloquent.md:256
 msgid ""
 "By default, a newly instantiated model instance will not contain any "
 "attribute values. If you would like to define the default values for some of "
@@ -516,7 +533,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:259
+#: docs/master/eloquent.md:274
 #, no-wrap
 msgid ""
 "    class Flight extends Model\n"
@@ -533,19 +550,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:261
+#: docs/master/eloquent.md:276
 #, no-wrap
 msgid "<a name=\"retrieving-models\"></a>\n"
 msgstr ""
 
 #. type: Title ##
-#: docs/master/eloquent.md:261
+#: docs/master/eloquent.md:276
 #, no-wrap
 msgid "Retrieving Models"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:264
+#: docs/master/eloquent.md:279
 msgid ""
 "Once you have created a model and [its associated database "
 "table](/docs/{{version}}/migrations#writing-migrations), you are ready to "
@@ -557,13 +574,13 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:266 docs/master/eloquent.md:333 docs/master/eloquent.md:357 docs/master/eloquent.md:411 docs/master/eloquent.md:439 docs/master/eloquent.md:452 docs/master/eloquent.md:525 docs/master/eloquent.md:538 docs/master/eloquent.md:623 docs/master/eloquent.md:711 docs/master/eloquent.md:817
+#: docs/master/eloquent.md:281 docs/master/eloquent.md:465 docs/master/eloquent.md:493 docs/master/eloquent.md:506 docs/master/eloquent.md:579 docs/master/eloquent.md:592 docs/master/eloquent.md:677 docs/master/eloquent.md:763 docs/master/eloquent.md:873
 #, no-wrap
 msgid "    use App\\Models\\Flight;\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:270
+#: docs/master/eloquent.md:285
 #, no-wrap
 msgid ""
 "    foreach (Flight::all() as $flight) {\n"
@@ -572,19 +589,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:272
+#: docs/master/eloquent.md:287
 #, no-wrap
 msgid "<a name=\"building-queries\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/master/eloquent.md:272
+#: docs/master/eloquent.md:287
 #, no-wrap
 msgid "Building Queries"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:275
+#: docs/master/eloquent.md:290
 msgid ""
 "The Eloquent `all` method will return all of the results in the model's "
 "table. However, since each Eloquent model serves as a [query "
@@ -593,7 +610,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:280
+#: docs/master/eloquent.md:295
 #, no-wrap
 msgid ""
 "    $flights = Flight::where('active', 1)\n"
@@ -603,7 +620,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:282
+#: docs/master/eloquent.md:297
 #, no-wrap
 msgid ""
 "> {tip} Since Eloquent models are query builders, you should review all of "
@@ -613,19 +630,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:284
+#: docs/master/eloquent.md:299
 #, no-wrap
 msgid "<a name=\"refreshing-models\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/master/eloquent.md:284
+#: docs/master/eloquent.md:299
 #, no-wrap
 msgid "Refreshing Models"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:287
+#: docs/master/eloquent.md:302
 msgid ""
 "If you already have an instance of an Eloquent model that was retrieved from "
 "the database, you can \"refresh\" the model using the `fresh` and `refresh` "
@@ -634,19 +651,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:289 docs/master/eloquent.md:295
+#: docs/master/eloquent.md:304 docs/master/eloquent.md:310
 #, no-wrap
 msgid "    $flight = Flight::where('number', 'FR 900')->first();\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:291
+#: docs/master/eloquent.md:306
 #, no-wrap
 msgid "    $freshFlight = $flight->fresh();\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:293
+#: docs/master/eloquent.md:308
 msgid ""
 "The `refresh` method will re-hydrate the existing model using fresh data "
 "from the database. In addition, all of its loaded relationships will be "
@@ -654,37 +671,37 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:297
+#: docs/master/eloquent.md:312
 #, no-wrap
 msgid "    $flight->number = 'FR 456';\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:299
+#: docs/master/eloquent.md:314
 #, no-wrap
 msgid "    $flight->refresh();\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:301
+#: docs/master/eloquent.md:316
 #, no-wrap
 msgid "    $flight->number; // \"FR 900\"\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:303
+#: docs/master/eloquent.md:318
 #, no-wrap
 msgid "<a name=\"collections\"></a>\n"
 msgstr ""
 
 #. type: Title ###
-#: docs/master/eloquent.md:303
+#: docs/master/eloquent.md:318
 #, no-wrap
 msgid "Collections"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:306
+#: docs/master/eloquent.md:321
 msgid ""
 "As we have seen, Eloquent methods like `all` and `get` retrieve multiple "
 "records from the database. However, these methods don't return a plain PHP "
@@ -693,7 +710,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:308
+#: docs/master/eloquent.md:323
 msgid ""
 "The Eloquent `Collection` class extends Laravel's base "
 "`Illuminate\\Support\\Collection` class, which provides a [variety of "
@@ -704,13 +721,13 @@ msgid ""
 msgstr ""
 
 #. type: Code fence info string
-#: docs/master/eloquent.md:309
+#: docs/master/eloquent.md:324 docs/master/eloquent.md:336 docs/master/eloquent.md:349 docs/master/eloquent.md:363 docs/master/eloquent.md:375 docs/master/eloquent.md:385 docs/master/eloquent.md:404 docs/master/eloquent.md:414
 #, no-wrap
 msgid "php"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:309
+#: docs/master/eloquent.md:324
 #, no-wrap
 msgid ""
 "$flights = Flight::where('destination', 'Paris')->get();\n"
@@ -721,7 +738,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:318
+#: docs/master/eloquent.md:333
 msgid ""
 "In addition to the methods provided by Laravel's base collection class, the "
 "Eloquent collection class provides [a few extra "
@@ -730,35 +747,35 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:320
+#: docs/master/eloquent.md:335
 msgid ""
 "Since all of Laravel's collections implement PHP's iterable interfaces, you "
 "may loop over collections as if they were an array:"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:324
+#: docs/master/eloquent.md:336
 #, no-wrap
 msgid ""
-"    foreach ($flights as $flight) {\n"
-"        echo $flight->name;\n"
-"    }\n"
+"foreach ($flights as $flight) {\n"
+"    echo $flight->name;\n"
+"}\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:326
+#: docs/master/eloquent.md:343
 #, no-wrap
 msgid "<a name=\"chunking-results\"></a>\n"
 msgstr ""
 
 #. type: Title ###
-#: docs/master/eloquent.md:326
+#: docs/master/eloquent.md:343
 #, no-wrap
 msgid "Chunking Results"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:329
+#: docs/master/eloquent.md:346
 msgid ""
 "Your application may run out of memory if you attempt to load tens of "
 "thousands of Eloquent records via the `all` or `get` methods. Instead of "
@@ -767,7 +784,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:331
+#: docs/master/eloquent.md:348
 msgid ""
 "The `chunk` method will retrieve a subset of Eloquent models, passing them "
 "to a closure for processing. Since only the current chunk of Eloquent models "
@@ -776,18 +793,20 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:339
+#: docs/master/eloquent.md:349
 #, no-wrap
 msgid ""
-"    Flight::chunk(200, function ($flights) {\n"
-"        foreach ($flights as $flight) {\n"
-"            //\n"
-"        }\n"
-"    });\n"
+"use App\\Models\\Flight;\n"
+"\n"
+"Flight::chunk(200, function ($flights) {\n"
+"    foreach ($flights as $flight) {\n"
+"        //\n"
+"    }\n"
+"});\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:341
+#: docs/master/eloquent.md:360
 msgid ""
 "The first argument passed to the `chunk` method is the number of records you "
 "wish to receive per \"chunk\". The closure passed as the second argument "
@@ -797,7 +816,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:343
+#: docs/master/eloquent.md:362
 msgid ""
 "If you are filtering the results of the `chunk` method based on a column "
 "that you will also be updating while iterating over the results, you should "
@@ -808,59 +827,136 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:348
+#: docs/master/eloquent.md:363
 #, no-wrap
 msgid ""
-"    Flight::where('departed', true)\n"
-"            ->chunkById(200, function ($flights) {\n"
-"                $flights->each->update(['departed' => false]);\n"
-"            }, $column = 'id');\n"
+"Flight::where('departed', true)\n"
+"    ->chunkById(200, function ($flights) {\n"
+"        $flights->each->update(['departed' => false]);\n"
+"    }, $column = 'id');\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:350
+#: docs/master/eloquent.md:371
+#, no-wrap
+msgid "<a name=\"chunking-using-lazy-collections\"></a>\n"
+msgstr ""
+
+#. type: Title ###
+#: docs/master/eloquent.md:371
+#, no-wrap
+msgid "Chunking Using Lazy Collections"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/eloquent.md:374
+msgid ""
+"The `lazy` method works similarly to [the `chunk` method](#chunking-results) "
+"in the sense that, behind the scenes, it executes the query in "
+"chunks. However, instead of passing each chunk directly into a callback as "
+"is, the `lazy` method returns a flattened "
+"[`LazyCollection`](/docs/{{version}}/collections#lazy-collections) of "
+"Eloquent models, which lets you interact with the results as a single "
+"stream:"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/eloquent.md:375
+#, no-wrap
+msgid ""
+"use App\\Models\\Flight;\n"
+"\n"
+"foreach (Flight::lazy() as $flight) {\n"
+"    //\n"
+"}\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/eloquent.md:384
+msgid ""
+"If you are filtering the results of the `lazy` method based on a column that "
+"you will also be updating while iterating over the results, you should use "
+"the `lazyById` method. Internally, the `lazyById` method will always "
+"retrieve models with an `id` column greater than the last model in the "
+"previous chunk:"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/eloquent.md:385
+#, no-wrap
+msgid ""
+"Flight::where('departed', true)\n"
+"    ->lazyById(200, $column = 'id')\n"
+"    ->each->update(['departed' => false]);\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/eloquent.md:392
+msgid ""
+"You may filter the results based on the descending order of the `id` using "
+"the `lazyByIdDesc` method."
+msgstr ""
+
+#. type: Plain text
+#: docs/master/eloquent.md:394
 #, no-wrap
 msgid "<a name=\"cursors\"></a>\n"
 msgstr ""
 
 #. type: Title ###
-#: docs/master/eloquent.md:350
+#: docs/master/eloquent.md:394
 #, no-wrap
 msgid "Cursors"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:353
+#: docs/master/eloquent.md:397
 msgid ""
-"Similar to the `chunk` method, the `cursor` method may be used to "
+"Similar to the `lazy` method, the `cursor` method may be used to "
 "significantly reduce your application's memory consumption when iterating "
 "through tens of thousands of Eloquent model records."
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:355
+#: docs/master/eloquent.md:399
 msgid ""
 "The `cursor` method will only execute a single database query; however, the "
 "individual Eloquent models will not be hydrated until they are actually "
 "iterated over. Therefore, only one Eloquent model is kept in memory at any "
-"given time while iterating over the cursor. Internally, the `cursor` method "
-"uses PHP "
+"given time while iterating over the cursor."
+msgstr ""
+
+#. type: Plain text
+#: docs/master/eloquent.md:401
+#, no-wrap
+msgid ""
+"> {note} Since the `cursor` method only ever holds a single Eloquent model "
+"in memory at a time, it cannot eager load relationships. If you need to "
+"eager load relationships, consider using [the `lazy` "
+"method](#streaming-results-lazily) instead.\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/eloquent.md:403
+msgid ""
+"Internally, the `cursor` method uses PHP "
 "[generators](https://www.php.net/manual/en/language.generators.overview.php) "
 "to implement this functionality:"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:361
+#: docs/master/eloquent.md:404
 #, no-wrap
 msgid ""
-"    foreach (Flight::where('destination', 'Zurich')->cursor() as $flight) "
-"{\n"
-"        //\n"
-"    }\n"
+"use App\\Models\\Flight;\n"
+"\n"
+"foreach (Flight::where('destination', 'Zurich')->cursor() as $flight) {\n"
+"    //\n"
+"}\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:363
+#: docs/master/eloquent.md:413
 msgid ""
 "The `cursor` returns an `Illuminate\\Support\\LazyCollection` "
 "instance. [Lazy collections](/docs/{{version}}/collections#lazy-collections) "
@@ -869,55 +965,58 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:365 docs/master/eloquent.md:566 docs/master/eloquent.md:1019 docs/master/eloquent.md:1164 docs/master/eloquent.md:1233
-#, no-wrap
-msgid "    use App\\Models\\User;\n"
-msgstr ""
-
-#. type: Plain text
-#: docs/master/eloquent.md:369
+#: docs/master/eloquent.md:414
 #, no-wrap
 msgid ""
-"    $users = User::cursor()->filter(function ($user) {\n"
-"        return $user->id > 500;\n"
-"    });\n"
+"use App\\Models\\User;\n"
+"\n"
+"$users = User::cursor()->filter(function ($user) {\n"
+"    return $user->id > 500;\n"
+"});\n"
+"\n"
+"foreach ($users as $user) {\n"
+"    echo $user->id;\n"
+"}\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:373
-#, no-wrap
+#: docs/master/eloquent.md:427
 msgid ""
-"    foreach ($users as $user) {\n"
-"        echo $user->id;\n"
-"    }\n"
+"Although the `cursor` method uses far less memory than a regular query (by "
+"only holding a single Eloquent model in memory at a time), it will still "
+"eventually run out of memory. This is [due to PHP's PDO driver internally "
+"caching all raw query results in its "
+"buffer](https://www.php.net/manual/en/mysqlinfo.concepts.buffering.php). If "
+"you're dealing with a very large number of Eloquent records, consider using "
+"[the `lazy` method](#streaming-results-lazily) instead."
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:375
+#: docs/master/eloquent.md:429
 #, no-wrap
 msgid "<a name=\"advanced-subqueries\"></a>\n"
 msgstr ""
 
 #. type: Title ###
-#: docs/master/eloquent.md:375
+#: docs/master/eloquent.md:429
 #, no-wrap
 msgid "Advanced Subqueries"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:378
+#: docs/master/eloquent.md:432
 #, no-wrap
 msgid "<a name=\"subquery-selects\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/master/eloquent.md:378
+#: docs/master/eloquent.md:432
 #, no-wrap
 msgid "Subquery Selects"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:381
+#: docs/master/eloquent.md:435
 msgid ""
 "Eloquent also offers advanced subquery support, which allows you to pull "
 "information from related tables in a single query. For example, let's "
@@ -927,7 +1026,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:383
+#: docs/master/eloquent.md:437
 msgid ""
 "Using the subquery functionality available to the query builder's `select` "
 "and `addSelect` methods, we can select all of the `destinations` and the "
@@ -936,7 +1035,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:386
+#: docs/master/eloquent.md:440
 #, no-wrap
 msgid ""
 "    use App\\Models\\Destination;\n"
@@ -944,7 +1043,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:392
+#: docs/master/eloquent.md:446
 #, no-wrap
 msgid ""
 "    return Destination::addSelect(['last_flight' => Flight::select('name')\n"
@@ -955,19 +1054,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:394
+#: docs/master/eloquent.md:448
 #, no-wrap
 msgid "<a name=\"subquery-ordering\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/master/eloquent.md:394
+#: docs/master/eloquent.md:448
 #, no-wrap
 msgid "Subquery Ordering"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:397
+#: docs/master/eloquent.md:451
 msgid ""
 "In addition, the query builder's `orderBy` function supports "
 "subqueries. Continuing to use our flight example, we may use this "
@@ -977,7 +1076,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:404
+#: docs/master/eloquent.md:458
 #, no-wrap
 msgid ""
 "    return Destination::orderByDesc(\n"
@@ -989,19 +1088,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:406
+#: docs/master/eloquent.md:460
 #, no-wrap
 msgid "<a name=\"retrieving-single-models\"></a>\n"
 msgstr ""
 
 #. type: Title ##
-#: docs/master/eloquent.md:406
+#: docs/master/eloquent.md:460
 #, no-wrap
 msgid "Retrieving Single Models / Aggregates"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:409
+#: docs/master/eloquent.md:463
 msgid ""
 "In addition to retrieving all of the records matching a given query, you may "
 "also retrieve single records using the `find`, `first`, or `firstWhere` "
@@ -1010,7 +1109,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:414
+#: docs/master/eloquent.md:468
 #, no-wrap
 msgid ""
 "    // Retrieve a model by its primary key...\n"
@@ -1018,7 +1117,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:417
+#: docs/master/eloquent.md:471
 #, no-wrap
 msgid ""
 "    // Retrieve the first model matching the query constraints...\n"
@@ -1026,7 +1125,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:420
+#: docs/master/eloquent.md:474
 #, no-wrap
 msgid ""
 "    // Alternative to retrieving the first model matching the query "
@@ -1035,7 +1134,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:422
+#: docs/master/eloquent.md:476
 msgid ""
 "Sometimes you may wish to retrieve the first result of a query or perform "
 "some other action if no results are found. The `firstOr` method will return "
@@ -1045,7 +1144,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:426
+#: docs/master/eloquent.md:480
 #, no-wrap
 msgid ""
 "    $model = Flight::where('legs', '>', 3)->firstOr(function () {\n"
@@ -1054,19 +1153,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:428
+#: docs/master/eloquent.md:482
 #, no-wrap
 msgid "<a name=\"not-found-exceptions\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/master/eloquent.md:428
+#: docs/master/eloquent.md:482
 #, no-wrap
 msgid "Not Found Exceptions"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:431
+#: docs/master/eloquent.md:485
 msgid ""
 "Sometimes you may wish to throw an exception if a model is not found. This "
 "is particularly useful in routes or controllers. The `findOrFail` and "
@@ -1076,26 +1175,26 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:433
+#: docs/master/eloquent.md:487
 #, no-wrap
 msgid "    $flight = Flight::findOrFail(1);\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:435
+#: docs/master/eloquent.md:489
 #, no-wrap
 msgid "    $flight = Flight::where('legs', '>', 3)->firstOrFail();\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:437
+#: docs/master/eloquent.md:491
 msgid ""
 "If the `ModelNotFoundException` is not caught, a 404 HTTP response is "
 "automatically sent back to the client:"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:443
+#: docs/master/eloquent.md:497
 #, no-wrap
 msgid ""
 "    Route::get('/api/flights/{id}', function ($id) {\n"
@@ -1104,19 +1203,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:445
+#: docs/master/eloquent.md:499
 #, no-wrap
 msgid "<a name=\"retrieving-or-creating-models\"></a>\n"
 msgstr ""
 
 #. type: Title ###
-#: docs/master/eloquent.md:445
+#: docs/master/eloquent.md:499
 #, no-wrap
 msgid "Retrieving Or Creating Models"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:448
+#: docs/master/eloquent.md:502
 msgid ""
 "The `firstOrCreate` method will attempt to locate a database record using "
 "the given column / value pairs. If the model can not be found in the "
@@ -1125,7 +1224,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:450
+#: docs/master/eloquent.md:504
 msgid ""
 "The `firstOrNew` method, like `firstOrCreate`, will attempt to locate a "
 "record in the database matching the given attributes. However, if a model is "
@@ -1135,7 +1234,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:457
+#: docs/master/eloquent.md:511
 #, no-wrap
 msgid ""
 "    // Retrieve flight by name or create it if it doesn't exist...\n"
@@ -1145,7 +1244,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:463
+#: docs/master/eloquent.md:517
 #, no-wrap
 msgid ""
 "    // Retrieve flight by name or create it with the name, delayed, and "
@@ -1157,7 +1256,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:468
+#: docs/master/eloquent.md:522
 #, no-wrap
 msgid ""
 "    // Retrieve flight by name or instantiate a new Flight instance...\n"
@@ -1167,7 +1266,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:474
+#: docs/master/eloquent.md:528
 #, no-wrap
 msgid ""
 "    // Retrieve flight by name or instantiate with the name, delayed, and "
@@ -1179,19 +1278,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:476
+#: docs/master/eloquent.md:530
 #, no-wrap
 msgid "<a name=\"retrieving-aggregates\"></a>\n"
 msgstr ""
 
 #. type: Title ###
-#: docs/master/eloquent.md:476
+#: docs/master/eloquent.md:530
 #, no-wrap
 msgid "Retrieving Aggregates"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:479
+#: docs/master/eloquent.md:533
 msgid ""
 "When interacting with Eloquent models, you may also use the `count`, `sum`, "
 "`max`, and other [aggregate methods](/docs/{{version}}/queries#aggregates) "
@@ -1201,43 +1300,43 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:481
+#: docs/master/eloquent.md:535
 #, no-wrap
 msgid "    $count = Flight::where('active', 1)->count();\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:483
+#: docs/master/eloquent.md:537
 #, no-wrap
 msgid "    $max = Flight::where('active', 1)->max('price');\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:485
+#: docs/master/eloquent.md:539
 #, no-wrap
 msgid "<a name=\"inserting-and-updating-models\"></a>\n"
 msgstr ""
 
 #. type: Title ##
-#: docs/master/eloquent.md:485
+#: docs/master/eloquent.md:539
 #, no-wrap
 msgid "Inserting & Updating Models"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:488
+#: docs/master/eloquent.md:542
 #, no-wrap
 msgid "<a name=\"inserts\"></a>\n"
 msgstr ""
 
 #. type: Title ###
-#: docs/master/eloquent.md:488
+#: docs/master/eloquent.md:542
 #, no-wrap
 msgid "Inserts"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:491
+#: docs/master/eloquent.md:545
 msgid ""
 "Of course, when using Eloquent, we don't only need to retrieve models from "
 "the database. We also need to insert new records. Thankfully, Eloquent makes "
@@ -1247,13 +1346,13 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:495
+#: docs/master/eloquent.md:549
 #, no-wrap
 msgid "    namespace App\\Http\\Controllers;\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:499
+#: docs/master/eloquent.md:553
 #, no-wrap
 msgid ""
 "    use App\\Http\\Controllers\\Controller;\n"
@@ -1262,7 +1361,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:511
+#: docs/master/eloquent.md:565
 #, no-wrap
 msgid ""
 "    class FlightController extends Controller\n"
@@ -1279,19 +1378,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:513
+#: docs/master/eloquent.md:567
 #, no-wrap
 msgid "            $flight = new Flight;\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:515
+#: docs/master/eloquent.md:569
 #, no-wrap
 msgid "            $flight->name = $request->name;\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:519
+#: docs/master/eloquent.md:573
 #, no-wrap
 msgid ""
 "            $flight->save();\n"
@@ -1300,7 +1399,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:521
+#: docs/master/eloquent.md:575
 msgid ""
 "In this example, we assign the `name` field from the incoming HTTP request "
 "to the `name` attribute of the `App\\Models\\Flight` model instance. When we "
@@ -1310,7 +1409,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:523
+#: docs/master/eloquent.md:577
 msgid ""
 "Alternatively, you may use the `create` method to \"save\" a new model using "
 "a single PHP statement. The inserted model instance will be returned to you "
@@ -1318,7 +1417,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:529 docs/master/eloquent.md:627
+#: docs/master/eloquent.md:583 docs/master/eloquent.md:681
 #, no-wrap
 msgid ""
 "    $flight = Flight::create([\n"
@@ -1327,7 +1426,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:531
+#: docs/master/eloquent.md:585
 msgid ""
 "However, before using the `create` method, you will need to specify either a "
 "`fillable` or `guarded` property on your model class. These properties are "
@@ -1337,19 +1436,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:533
+#: docs/master/eloquent.md:587
 #, no-wrap
 msgid "<a name=\"updates\"></a>\n"
 msgstr ""
 
 #. type: Title ###
-#: docs/master/eloquent.md:533
+#: docs/master/eloquent.md:587
 #, no-wrap
 msgid "Updates"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:536
+#: docs/master/eloquent.md:590
 msgid ""
 "The `save` method may also be used to update models that already exist in "
 "the database. To update a model, you should retrieve it and set any "
@@ -1359,37 +1458,37 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:540 docs/master/eloquent.md:713
+#: docs/master/eloquent.md:594 docs/master/eloquent.md:765
 #, no-wrap
 msgid "    $flight = Flight::find(1);\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:542
+#: docs/master/eloquent.md:596
 #, no-wrap
 msgid "    $flight->name = 'Paris to London';\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:544
+#: docs/master/eloquent.md:598
 #, no-wrap
 msgid "    $flight->save();\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:546
+#: docs/master/eloquent.md:600
 #, no-wrap
 msgid "<a name=\"mass-updates\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/master/eloquent.md:546
+#: docs/master/eloquent.md:600
 #, no-wrap
 msgid "Mass Updates"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:549
+#: docs/master/eloquent.md:603
 msgid ""
 "Updates can also be performed against models that match a given query. In "
 "this example, all flights that are `active` and have a `destination` of `San "
@@ -1397,7 +1496,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:553
+#: docs/master/eloquent.md:607
 #, no-wrap
 msgid ""
 "    Flight::where('active', 1)\n"
@@ -1406,14 +1505,15 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:555
+#: docs/master/eloquent.md:609
 msgid ""
 "The `update` method expects an array of column and value pairs representing "
-"the columns that should be updated."
+"the columns that should be updated. The `update` method returns the number "
+"of affected rows."
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:557
+#: docs/master/eloquent.md:611
 #, no-wrap
 msgid ""
 "> {note} When issuing a mass update via Eloquent, the `saving`, `saved`, "
@@ -1423,19 +1523,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:559
+#: docs/master/eloquent.md:613
 #, no-wrap
 msgid "<a name=\"examining-attribute-changes\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/master/eloquent.md:559
+#: docs/master/eloquent.md:613
 #, no-wrap
 msgid "Examining Attribute Changes"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:562
+#: docs/master/eloquent.md:616
 msgid ""
 "Eloquent provides the `isDirty`, `isClean`, and `wasChanged` methods to "
 "examine the internal state of your model and determine how its attributes "
@@ -1443,7 +1543,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:564
+#: docs/master/eloquent.md:618
 msgid ""
 "The `isDirty` method determines if any of the model's attributes have been "
 "changed since the model was retrieved. You may pass a specific attribute "
@@ -1454,7 +1554,13 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:572 docs/master/eloquent.md:595
+#: docs/master/eloquent.md:620 docs/master/eloquent.md:1186 docs/master/eloquent.md:1337 docs/master/eloquent.md:1426 docs/master/eloquent.md:1454
+#, no-wrap
+msgid "    use App\\Models\\User;\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/eloquent.md:626 docs/master/eloquent.md:649
 #, no-wrap
 msgid ""
 "    $user = User::create([\n"
@@ -1465,13 +1571,13 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:574 docs/master/eloquent.md:597
+#: docs/master/eloquent.md:628 docs/master/eloquent.md:651
 #, no-wrap
 msgid "    $user->title = 'Painter';\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:578
+#: docs/master/eloquent.md:632
 #, no-wrap
 msgid ""
 "    $user->isDirty(); // true\n"
@@ -1480,7 +1586,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:582
+#: docs/master/eloquent.md:636
 #, no-wrap
 msgid ""
 "    $user->isClean(); // false\n"
@@ -1489,13 +1595,13 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:584 docs/master/eloquent.md:599
+#: docs/master/eloquent.md:638 docs/master/eloquent.md:653
 #, no-wrap
 msgid "    $user->save();\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:587
+#: docs/master/eloquent.md:641
 #, no-wrap
 msgid ""
 "    $user->isDirty(); // false\n"
@@ -1503,7 +1609,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:589
+#: docs/master/eloquent.md:643
 msgid ""
 "The `wasChanged` method determines if any attributes were changed when the "
 "model was last saved within the current request cycle. If needed, you may "
@@ -1511,7 +1617,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:603
+#: docs/master/eloquent.md:657
 #, no-wrap
 msgid ""
 "    $user->wasChanged(); // true\n"
@@ -1520,7 +1626,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:605
+#: docs/master/eloquent.md:659
 msgid ""
 "The `getOriginal` method returns an array containing the original attributes "
 "of the model regardless of any changes to the model since it was "
@@ -1529,13 +1635,13 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:607
+#: docs/master/eloquent.md:661
 #, no-wrap
 msgid "    $user = User::find(1);\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:610
+#: docs/master/eloquent.md:664
 #, no-wrap
 msgid ""
 "    $user->name; // John\n"
@@ -1543,7 +1649,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:613
+#: docs/master/eloquent.md:667
 #, no-wrap
 msgid ""
 "    $user->name = \"Jack\";\n"
@@ -1551,7 +1657,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:616
+#: docs/master/eloquent.md:670
 #, no-wrap
 msgid ""
 "    $user->getOriginal('name'); // John\n"
@@ -1559,19 +1665,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:618
+#: docs/master/eloquent.md:672
 #, no-wrap
 msgid "<a name=\"mass-assignment\"></a>\n"
 msgstr ""
 
 #. type: Title ###
-#: docs/master/eloquent.md:618
+#: docs/master/eloquent.md:672
 #, no-wrap
 msgid "Mass Assignment"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:621
+#: docs/master/eloquent.md:675
 msgid ""
 "You may use the `create` method to \"save\" a new model using a single PHP "
 "statement. The inserted model instance will be returned to you by the "
@@ -1579,7 +1685,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:629
+#: docs/master/eloquent.md:683
 msgid ""
 "However, before using the `create` method, you will need to specify either a "
 "`fillable` or `guarded` property on your model class. These properties are "
@@ -1588,7 +1694,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:631
+#: docs/master/eloquent.md:685
 msgid ""
 "A mass assignment vulnerability occurs when a user passes an unexpected HTTP "
 "request field and that field changes a column in your database that you did "
@@ -1598,7 +1704,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:633
+#: docs/master/eloquent.md:687
 msgid ""
 "So, to get started, you should define which model attributes you want to "
 "make mass assignable. You may do this using the `$fillable` property on the "
@@ -1607,7 +1713,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:649
+#: docs/master/eloquent.md:703
 #, no-wrap
 msgid ""
 "    class Flight extends Model\n"
@@ -1622,7 +1728,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:651
+#: docs/master/eloquent.md:705
 msgid ""
 "Once you have specified which attributes are mass assignable, you may use "
 "the `create` method to insert a new record in the database. The `create` "
@@ -1630,38 +1736,38 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:653
+#: docs/master/eloquent.md:707
 #, no-wrap
 msgid "    $flight = Flight::create(['name' => 'London to Paris']);\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:655
+#: docs/master/eloquent.md:709
 msgid ""
 "If you already have a model instance, you may use the `fill` method to "
 "populate it with an array of attributes:"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:657
+#: docs/master/eloquent.md:711
 #, no-wrap
 msgid "    $flight->fill(['name' => 'Amsterdam to Frankfurt']);\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:659
+#: docs/master/eloquent.md:713
 #, no-wrap
 msgid "<a name=\"mass-assignment-json-columns\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/master/eloquent.md:659
+#: docs/master/eloquent.md:713
 #, no-wrap
 msgid "Mass Assignment & JSON Columns"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:662
+#: docs/master/eloquent.md:716
 msgid ""
 "When assigning JSON columns, each column's mass assignable key must be "
 "specified in your model's `$fillable` array. For security, Laravel does not "
@@ -1669,7 +1775,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:671
+#: docs/master/eloquent.md:725
 #, no-wrap
 msgid ""
 "    /**\n"
@@ -1683,19 +1789,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:673
+#: docs/master/eloquent.md:727
 #, no-wrap
 msgid "<a name=\"allowing-mass-assignment\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/master/eloquent.md:673
+#: docs/master/eloquent.md:727
 #, no-wrap
 msgid "Allowing Mass Assignment"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:676
+#: docs/master/eloquent.md:730
 msgid ""
 "If you would like to make all of your attributes mass assignable, you may "
 "define your model's `$guarded` property as an empty array. If you choose to "
@@ -1704,7 +1810,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:683
+#: docs/master/eloquent.md:737
 #, no-wrap
 msgid ""
 "    /**\n"
@@ -1716,19 +1822,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:685
+#: docs/master/eloquent.md:739
 #, no-wrap
 msgid "<a name=\"upserts\"></a>\n"
 msgstr ""
 
 #. type: Title ###
-#: docs/master/eloquent.md:685
+#: docs/master/eloquent.md:739
 #, no-wrap
 msgid "Upserts"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:688
+#: docs/master/eloquent.md:742
 msgid ""
 "Occasionally, you may need to update an existing model or create a new model "
 "if no matching model exists. Like the `firstOrCreate` method, the "
@@ -1737,7 +1843,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:690
+#: docs/master/eloquent.md:744
 msgid ""
 "In the example below, if a flight exists with a `departure` location of "
 "`Oakland` and a `destination` location of `San Diego`, its `price` and "
@@ -1747,7 +1853,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:695
+#: docs/master/eloquent.md:749
 #, no-wrap
 msgid ""
 "    $flight = Flight::updateOrCreate(\n"
@@ -1757,7 +1863,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:697
+#: docs/master/eloquent.md:751
 msgid ""
 "If you would like to perform multiple \"upserts\" in a single query, then "
 "you should use the `upsert` method instead. The method's first argument "
@@ -1770,7 +1876,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:702
+#: docs/master/eloquent.md:756
 #, no-wrap
 msgid ""
 "    Flight::upsert([\n"
@@ -1782,51 +1888,56 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:704
-#, no-wrap
-msgid ""
-"> {note} All databases systems except SQL Server require the columns in the "
-"second argument provided to the `upsert` method to have a \"primary\" or "
-"\"unique\" index.\n"
-msgstr ""
-
-#. type: Plain text
-#: docs/master/eloquent.md:706
+#: docs/master/eloquent.md:758
 #, no-wrap
 msgid "<a name=\"deleting-models\"></a>\n"
 msgstr ""
 
 #. type: Title ##
-#: docs/master/eloquent.md:706
+#: docs/master/eloquent.md:758
 #, no-wrap
 msgid "Deleting Models"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:709
+#: docs/master/eloquent.md:761
 msgid "To delete a model, you may call the `delete` method on the model instance:"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:715
+#: docs/master/eloquent.md:767
 #, no-wrap
 msgid "    $flight->delete();\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:717
+#: docs/master/eloquent.md:769
+msgid ""
+"You may call the `truncate` method to delete all of the model's associated "
+"database records. The `truncate` operation will also reset any "
+"auto-incrementing IDs on the model's associated table:"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/eloquent.md:771
+#, no-wrap
+msgid "    Flight::truncate();\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/eloquent.md:773
 #, no-wrap
 msgid "<a name=\"deleting-an-existing-model-by-its-primary-key\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/master/eloquent.md:717
+#: docs/master/eloquent.md:773
 #, no-wrap
 msgid "Deleting An Existing Model By Its Primary Key"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:720
+#: docs/master/eloquent.md:776
 msgid ""
 "In the example above, we are retrieving the model from the database before "
 "calling the `delete` method. However, if you know the primary key of the "
@@ -1837,31 +1948,31 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:722
+#: docs/master/eloquent.md:778
 #, no-wrap
 msgid "    Flight::destroy(1);\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:724
+#: docs/master/eloquent.md:780
 #, no-wrap
 msgid "    Flight::destroy(1, 2, 3);\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:726
+#: docs/master/eloquent.md:782
 #, no-wrap
 msgid "    Flight::destroy([1, 2, 3]);\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:728
+#: docs/master/eloquent.md:784
 #, no-wrap
 msgid "    Flight::destroy(collect([1, 2, 3]));\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:730
+#: docs/master/eloquent.md:786
 #, no-wrap
 msgid ""
 "> {note} The `destroy` method loads each model individually and calls the "
@@ -1870,19 +1981,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:732
+#: docs/master/eloquent.md:788
 #, no-wrap
 msgid "<a name=\"deleting-models-using-queries\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/master/eloquent.md:732
+#: docs/master/eloquent.md:788
 #, no-wrap
 msgid "Deleting Models Using Queries"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:735
+#: docs/master/eloquent.md:791
 msgid ""
 "Of course, you may build an Eloquent query to delete all models matching "
 "your query's criteria. In this example, we will delete all flights that are "
@@ -1891,13 +2002,13 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:737
+#: docs/master/eloquent.md:793
 #, no-wrap
-msgid "    $deletedRows = Flight::where('active', 0)->delete();\n"
+msgid "    $deleted = Flight::where('active', 0)->delete();\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:739
+#: docs/master/eloquent.md:795
 #, no-wrap
 msgid ""
 "> {note} When executing a mass delete statement via Eloquent, the `deleting` "
@@ -1907,19 +2018,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:741
+#: docs/master/eloquent.md:797
 #, no-wrap
 msgid "<a name=\"soft-deleting\"></a>\n"
 msgstr ""
 
 #. type: Title ###
-#: docs/master/eloquent.md:741
+#: docs/master/eloquent.md:797
 #, no-wrap
 msgid "Soft Deleting"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:744
+#: docs/master/eloquent.md:800
 msgid ""
 "In addition to actually removing records from your database, Eloquent can "
 "also \"soft delete\" models. When models are soft deleted, they are not "
@@ -1930,7 +2041,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:751
+#: docs/master/eloquent.md:807
 #, no-wrap
 msgid ""
 "    use Illuminate\\Database\\Eloquent\\Model;\n"
@@ -1938,7 +2049,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:756
+#: docs/master/eloquent.md:812
 #, no-wrap
 msgid ""
 "    class Flight extends Model\n"
@@ -1948,7 +2059,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:758
+#: docs/master/eloquent.md:814
 #, no-wrap
 msgid ""
 "> {tip} The `SoftDeletes` trait will automatically cast the `deleted_at` "
@@ -1956,7 +2067,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:760
+#: docs/master/eloquent.md:816
 msgid ""
 "You should also add the `deleted_at` column to your database table. The "
 "Laravel [schema builder](/docs/{{version}}/migrations) contains a helper "
@@ -1964,15 +2075,15 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:763
+#: docs/master/eloquent.md:819
 #, no-wrap
 msgid ""
 "    use Illuminate\\Database\\Schema\\Blueprint;\n"
-"    use Illuminate\\Facades\\Schema;\n"
+"    use Illuminate\\Support\\Facades\\Schema;\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:767
+#: docs/master/eloquent.md:823
 #, no-wrap
 msgid ""
 "    Schema::table('flights', function (Blueprint $table) {\n"
@@ -1981,7 +2092,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:771
+#: docs/master/eloquent.md:827
 #, no-wrap
 msgid ""
 "    Schema::table('flights', function (Blueprint $table) {\n"
@@ -1990,7 +2101,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:773
+#: docs/master/eloquent.md:829
 msgid ""
 "Now, when you call the `delete` method on the model, the `deleted_at` column "
 "will be set to the current date and time. However, the model's database "
@@ -2000,14 +2111,14 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:775
+#: docs/master/eloquent.md:831
 msgid ""
 "To determine if a given model instance has been soft deleted, you may use "
 "the `trashed` method:"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:779
+#: docs/master/eloquent.md:835
 #, no-wrap
 msgid ""
 "    if ($flight->trashed()) {\n"
@@ -2016,19 +2127,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:781
+#: docs/master/eloquent.md:837
 #, no-wrap
 msgid "<a name=\"restoring-soft-deleted-models\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/master/eloquent.md:781
+#: docs/master/eloquent.md:837
 #, no-wrap
 msgid "Restoring Soft Deleted Models"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:784
+#: docs/master/eloquent.md:840
 msgid ""
 "Sometimes you may wish to \"un-delete\" a soft deleted model. To restore a "
 "soft deleted model, you may call the `restore` method on a model "
@@ -2037,13 +2148,13 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:786
+#: docs/master/eloquent.md:842
 #, no-wrap
 msgid "    $flight->restore();\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:788
+#: docs/master/eloquent.md:844
 msgid ""
 "You may also use the `restore` method in a query to restore multiple "
 "models. Again, like other \"mass\" operations, this will not dispatch any "
@@ -2051,7 +2162,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:792
+#: docs/master/eloquent.md:848
 #, no-wrap
 msgid ""
 "    Flight::withTrashed()\n"
@@ -2060,32 +2171,32 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:794
+#: docs/master/eloquent.md:850
 msgid ""
 "The `restore` method may also be used when building "
 "[relationship](/docs/{{version}}/eloquent-relationships) queries:"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:796
+#: docs/master/eloquent.md:852
 #, no-wrap
 msgid "    $flight->history()->restore();\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:798
+#: docs/master/eloquent.md:854
 #, no-wrap
 msgid "<a name=\"permanently-deleting-models\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/master/eloquent.md:798
+#: docs/master/eloquent.md:854
 #, no-wrap
 msgid "Permanently Deleting Models"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:801
+#: docs/master/eloquent.md:857
 msgid ""
 "Sometimes you may need to truly remove a model from your database. You may "
 "use the `forceDelete` method to permanently remove a soft deleted model from "
@@ -2093,50 +2204,50 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:803
+#: docs/master/eloquent.md:859
 #, no-wrap
 msgid "    $flight->forceDelete();\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:805
+#: docs/master/eloquent.md:861
 msgid ""
 "You may also use the `forceDelete` method when building Eloquent "
 "relationship queries:"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:807
+#: docs/master/eloquent.md:863
 #, no-wrap
 msgid "    $flight->history()->forceDelete();\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:809
+#: docs/master/eloquent.md:865
 #, no-wrap
 msgid "<a name=\"querying-soft-deleted-models\"></a>\n"
 msgstr ""
 
 #. type: Title ###
-#: docs/master/eloquent.md:809
+#: docs/master/eloquent.md:865
 #, no-wrap
 msgid "Querying Soft Deleted Models"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:812
+#: docs/master/eloquent.md:868
 #, no-wrap
 msgid "<a name=\"including-soft-deleted-models\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/master/eloquent.md:812
+#: docs/master/eloquent.md:868
 #, no-wrap
 msgid "Including Soft Deleted Models"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:815
+#: docs/master/eloquent.md:871
 msgid ""
 "As noted above, soft deleted models will automatically be excluded from "
 "query results. However, you may force soft deleted models to be included in "
@@ -2144,7 +2255,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:821
+#: docs/master/eloquent.md:877
 #, no-wrap
 msgid ""
 "    $flights = Flight::withTrashed()\n"
@@ -2153,37 +2264,37 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:823
+#: docs/master/eloquent.md:879
 msgid ""
 "The `withTrashed` method may also be called when building a "
 "[relationship](/docs/{{version}}/eloquent-relationships) query:"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:825
+#: docs/master/eloquent.md:881
 #, no-wrap
 msgid "    $flight->history()->withTrashed()->get();\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:827
+#: docs/master/eloquent.md:883
 #, no-wrap
 msgid "<a name=\"retrieving-only-soft-deleted-models\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/master/eloquent.md:827
+#: docs/master/eloquent.md:883
 #, no-wrap
 msgid "Retrieving Only Soft Deleted Models"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:830
+#: docs/master/eloquent.md:886
 msgid "The `onlyTrashed` method will retrieve **only** soft deleted models:"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:834
+#: docs/master/eloquent.md:890
 #, no-wrap
 msgid ""
 "    $flights = Flight::onlyTrashed()\n"
@@ -2192,19 +2303,223 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:836
+#: docs/master/eloquent.md:892
+#, no-wrap
+msgid "<a name=\"pruning-models\"></a>\n"
+msgstr ""
+
+#. type: Title ##
+#: docs/master/eloquent.md:892
+#, no-wrap
+msgid "Pruning Models"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/eloquent.md:895
+msgid ""
+"Sometimes you may want to periodically delete models that are no longer "
+"needed. To accomplish this, you may add the "
+"`Illuminate\\Database\\Eloquent\\Prunable` or "
+"`Illuminate\\Database\\Eloquent\\MassPrunable` trait to the models you would "
+"like to periodically prune. After adding one of the traits to the model, "
+"implement a `prunable` method which returns an Eloquent query builder that "
+"resolves the models that are no longer needed:"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/eloquent.md:902
+#, no-wrap
+msgid ""
+"    use Illuminate\\Database\\Eloquent\\Model;\n"
+"    use Illuminate\\Database\\Eloquent\\Prunable;\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/eloquent.md:906
+#, no-wrap
+msgid ""
+"    class Flight extends Model\n"
+"    {\n"
+"        use Prunable;\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/eloquent.md:917 docs/master/eloquent.md:987
+#, no-wrap
+msgid ""
+"        /**\n"
+"         * Get the prunable model query.\n"
+"         *\n"
+"         * @return \\Illuminate\\Database\\Eloquent\\Builder\n"
+"         */\n"
+"        public function prunable()\n"
+"        {\n"
+"            return static::where('created_at', '<=', now()->subMonth());\n"
+"        }\n"
+"    }\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/eloquent.md:919
+msgid ""
+"When marking models as `Prunable`, you may also define a `pruning` method on "
+"the model. This method will be called before the model is deleted. This "
+"method can be useful for deleting any additional resources associated with "
+"the model, such as stored files, before the model is permanently removed "
+"from the database:"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/eloquent.md:929
+#, no-wrap
+msgid ""
+"    /**\n"
+"     * Prepare the model for pruning.\n"
+"     *\n"
+"     * @return void\n"
+"     */\n"
+"    protected function pruning()\n"
+"    {\n"
+"        //\n"
+"    }\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/eloquent.md:931
+msgid ""
+"After configuring your prunable model, you should schedule the `model:prune` "
+"Artisan command in your application's `App\\Console\\Kernel` class. You are "
+"free to choose the appropriate interval at which this command should be run:"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/eloquent.md:942
+#, no-wrap
+msgid ""
+"    /**\n"
+"     * Define the application's command schedule.\n"
+"     *\n"
+"     * @param  \\Illuminate\\Console\\Scheduling\\Schedule  $schedule\n"
+"     * @return void\n"
+"     */\n"
+"    protected function schedule(Schedule $schedule)\n"
+"    {\n"
+"        $schedule->command('model:prune')->daily();\n"
+"    }\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/eloquent.md:944
+msgid ""
+"Behind the scenes, the `model:prune` command will automatically detect "
+"\"Prunable\" models within your application's `app/Models` directory. If "
+"your models are in a different location, you may use the `--model` option to "
+"specify the model class names:"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/eloquent.md:948
+#, no-wrap
+msgid ""
+"    $schedule->command('model:prune', [\n"
+"        '--model' => [Address::class, Flight::class],\n"
+"    ])->daily();\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/eloquent.md:950
+msgid ""
+"If you wish to exclude certain models from being pruned while pruning all "
+"other detected models, you may use the `--except` option:"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/eloquent.md:954
+#, no-wrap
+msgid ""
+"    $schedule->command('model:prune', [\n"
+"        '--except' => [Address::class, Flight::class],\n"
+"    ])->daily();\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/eloquent.md:956
+msgid ""
+"You may test your `prunable` query by executing the `model:prune` command "
+"with the `--pretend` option. When pretending, the `model:prune` command will "
+"simply report how many records would be pruned if the command were to "
+"actually run:"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/eloquent.md:958
+#, no-wrap
+msgid "    php artisan model:prune --pretend\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/eloquent.md:960
+#, no-wrap
+msgid ""
+"> {note} Soft deleting models will be permanently deleted (`forceDelete`) if "
+"they match the prunable query.\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/eloquent.md:962
+#, no-wrap
+msgid "<a name=\"mass-pruning\"></a>\n"
+msgstr ""
+
+#. type: Title ####
+#: docs/master/eloquent.md:962
+#, no-wrap
+msgid "Mass Pruning"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/eloquent.md:965
+msgid ""
+"When models are marked with the "
+"`Illuminate\\Database\\Eloquent\\MassPrunable` trait, models are deleted "
+"from the database using mass-deletion queries. Therefore, the `pruning` "
+"method will not be invoked, nor will the `deleting` and `deleted` model "
+"events be dispatched. This is because the models are never actually "
+"retrieved before deletion, thus making the pruning process much more "
+"efficient:"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/eloquent.md:972
+#, no-wrap
+msgid ""
+"    use Illuminate\\Database\\Eloquent\\Model;\n"
+"    use Illuminate\\Database\\Eloquent\\MassPrunable;\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/eloquent.md:976
+#, no-wrap
+msgid ""
+"    class Flight extends Model\n"
+"    {\n"
+"        use MassPrunable;\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/eloquent.md:989
 #, no-wrap
 msgid "<a name=\"replicating-models\"></a>\n"
 msgstr ""
 
 #. type: Title ##
-#: docs/master/eloquent.md:836
+#: docs/master/eloquent.md:989
 #, no-wrap
 msgid "Replicating Models"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:839
+#: docs/master/eloquent.md:992
 msgid ""
 "You may create an unsaved copy of an existing model instance using the "
 "`replicate` method. This method is particularly useful when you have model "
@@ -2212,13 +2527,13 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:841
+#: docs/master/eloquent.md:994
 #, no-wrap
 msgid "    use App\\Models\\Address;\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:849
+#: docs/master/eloquent.md:1002
 #, no-wrap
 msgid ""
 "    $shipping = Address::create([\n"
@@ -2231,7 +2546,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:853
+#: docs/master/eloquent.md:1006
 #, no-wrap
 msgid ""
 "    $billing = $shipping->replicate()->fill([\n"
@@ -2240,37 +2555,66 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:855
+#: docs/master/eloquent.md:1008
 #, no-wrap
 msgid "    $billing->save();\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:857
+#: docs/master/eloquent.md:1010
+msgid ""
+"To exclude one or more attributes from being replicated to the new model, "
+"you may pass an array to the `replicate` method:"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/eloquent.md:1017
+#, no-wrap
+msgid ""
+"    $flight = Flight::create([\n"
+"        'destination' => 'LAX',\n"
+"        'origin' => 'LHR',\n"
+"        'last_flown' => '2020-03-04 11:00:00',\n"
+"        'last_pilot_id' => 747,\n"
+"    ]);\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/eloquent.md:1022
+#, no-wrap
+msgid ""
+"    $flight = $flight->replicate([\n"
+"        'last_flown',\n"
+"        'last_pilot_id'\n"
+"    ]);\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/eloquent.md:1024
 #, no-wrap
 msgid "<a name=\"query-scopes\"></a>\n"
 msgstr ""
 
 #. type: Title ##
-#: docs/master/eloquent.md:857
+#: docs/master/eloquent.md:1024
 #, no-wrap
 msgid "Query Scopes"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:860
+#: docs/master/eloquent.md:1027
 #, no-wrap
 msgid "<a name=\"global-scopes\"></a>\n"
 msgstr ""
 
 #. type: Title ###
-#: docs/master/eloquent.md:860
+#: docs/master/eloquent.md:1027
 #, no-wrap
 msgid "Global Scopes"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:863
+#: docs/master/eloquent.md:1030
 msgid ""
 "Global scopes allow you to add constraints to all queries for a given "
 "model. Laravel's own [soft delete](#soft-deleting) functionality utilizes "
@@ -2280,19 +2624,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:865
+#: docs/master/eloquent.md:1032
 #, no-wrap
 msgid "<a name=\"writing-global-scopes\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/master/eloquent.md:865
+#: docs/master/eloquent.md:1032
 #, no-wrap
 msgid "Writing Global Scopes"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:868
+#: docs/master/eloquent.md:1035
 msgid ""
 "Writing a global scope is simple. First, define a class that implements the "
 "`Illuminate\\Database\\Eloquent\\Scope` interface. Laravel does not have a "
@@ -2301,7 +2645,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:870
+#: docs/master/eloquent.md:1037
 msgid ""
 "The `Scope` interface requires you to implement one method: `apply`. The "
 "`apply` method may add `where` constraints or other types of clauses to the "
@@ -2309,13 +2653,13 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:874
+#: docs/master/eloquent.md:1041
 #, no-wrap
 msgid "    namespace App\\Scopes;\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:878
+#: docs/master/eloquent.md:1045
 #, no-wrap
 msgid ""
 "    use Illuminate\\Database\\Eloquent\\Builder;\n"
@@ -2324,7 +2668,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:893
+#: docs/master/eloquent.md:1060
 #, no-wrap
 msgid ""
 "    class AncientScope implements Scope\n"
@@ -2344,7 +2688,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:895
+#: docs/master/eloquent.md:1062
 #, no-wrap
 msgid ""
 "> {tip} If your global scope is adding columns to the select clause of the "
@@ -2354,19 +2698,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:897
+#: docs/master/eloquent.md:1064
 #, no-wrap
 msgid "<a name=\"applying-global-scopes\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/master/eloquent.md:897
+#: docs/master/eloquent.md:1064
 #, no-wrap
 msgid "Applying Global Scopes"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:900
+#: docs/master/eloquent.md:1067
 msgid ""
 "To assign a global scope to a model, you should override the model's "
 "`booted` method and invoke the model's `addGlobalScope` method. The "
@@ -2375,7 +2719,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:907
+#: docs/master/eloquent.md:1074
 #, no-wrap
 msgid ""
 "    use App\\Scopes\\AncientScope;\n"
@@ -2383,7 +2727,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:920
+#: docs/master/eloquent.md:1087
 #, no-wrap
 msgid ""
 "    class User extends Model\n"
@@ -2401,7 +2745,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:922
+#: docs/master/eloquent.md:1089
 msgid ""
 "After adding the scope in the example above to the `App\\Models\\User` "
 "model, a call to the `User::all()` method will execute the following SQL "
@@ -2409,31 +2753,31 @@ msgid ""
 msgstr ""
 
 #. type: Code fence info string
-#: docs/master/eloquent.md:923
+#: docs/master/eloquent.md:1090
 #, no-wrap
 msgid "sql"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:923
+#: docs/master/eloquent.md:1090
 #, no-wrap
-msgid "select * from `users` where `age` > 200\n"
+msgid "select * from `users` where `created_at` < 0021-02-18 00:00:00\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:928
+#: docs/master/eloquent.md:1095
 #, no-wrap
 msgid "<a name=\"anonymous-global-scopes\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/master/eloquent.md:928
+#: docs/master/eloquent.md:1095
 #, no-wrap
 msgid "Anonymous Global Scopes"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:931
+#: docs/master/eloquent.md:1098
 msgid ""
 "Eloquent also allows you to define global scopes using closures, which is "
 "particularly useful for simple scopes that do not warrant a separate class "
@@ -2443,7 +2787,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:938
+#: docs/master/eloquent.md:1105
 #, no-wrap
 msgid ""
 "    use Illuminate\\Database\\Eloquent\\Builder;\n"
@@ -2451,7 +2795,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:953
+#: docs/master/eloquent.md:1120
 #, no-wrap
 msgid ""
 "    class User extends Model\n"
@@ -2472,19 +2816,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:955
+#: docs/master/eloquent.md:1122
 #, no-wrap
 msgid "<a name=\"removing-global-scopes\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/master/eloquent.md:955
+#: docs/master/eloquent.md:1122
 #, no-wrap
 msgid "Removing Global Scopes"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:958
+#: docs/master/eloquent.md:1125
 msgid ""
 "If you would like to remove a global scope for a given query, you may use "
 "the `withoutGlobalScope` method. This method accepts the class name of the "
@@ -2492,33 +2836,33 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:960
+#: docs/master/eloquent.md:1127
 #, no-wrap
 msgid "    User::withoutGlobalScope(AncientScope::class)->get();\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:962
+#: docs/master/eloquent.md:1129
 msgid ""
 "Or, if you defined the global scope using a closure, you should pass the "
 "string name that you assigned to the global scope:"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:964
+#: docs/master/eloquent.md:1131
 #, no-wrap
 msgid "    User::withoutGlobalScope('ancient')->get();\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:966
+#: docs/master/eloquent.md:1133
 msgid ""
 "If you would like to remove several or even all of the query's global "
 "scopes, you may use the `withoutGlobalScopes` method:"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:969
+#: docs/master/eloquent.md:1136
 #, no-wrap
 msgid ""
 "    // Remove all of the global scopes...\n"
@@ -2526,7 +2870,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:974
+#: docs/master/eloquent.md:1141
 #, no-wrap
 msgid ""
 "    // Remove some of the global scopes...\n"
@@ -2536,19 +2880,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:976
+#: docs/master/eloquent.md:1143
 #, no-wrap
 msgid "<a name=\"local-scopes\"></a>\n"
 msgstr ""
 
 #. type: Title ###
-#: docs/master/eloquent.md:976
+#: docs/master/eloquent.md:1143
 #, no-wrap
 msgid "Local Scopes"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:979
+#: docs/master/eloquent.md:1146
 msgid ""
 "Local scopes allow you to define common sets of query constraints that you "
 "may easily re-use throughout your application. For example, you may need to "
@@ -2557,12 +2901,12 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:981
-msgid "Scopes should always return a query builder instance:"
+#: docs/master/eloquent.md:1148
+msgid "Scopes should always return the same query builder instance or `void`:"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:1000
+#: docs/master/eloquent.md:1167
 #, no-wrap
 msgid ""
 "    class User extends Model\n"
@@ -2580,36 +2924,36 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:1012
+#: docs/master/eloquent.md:1179
 #, no-wrap
 msgid ""
 "        /**\n"
 "         * Scope a query to only include active users.\n"
 "         *\n"
 "         * @param  \\Illuminate\\Database\\Eloquent\\Builder  $query\n"
-"         * @return \\Illuminate\\Database\\Eloquent\\Builder\n"
+"         * @return void\n"
 "         */\n"
 "        public function scopeActive($query)\n"
 "        {\n"
-"            return $query->where('active', 1);\n"
+"            $query->where('active', 1);\n"
 "        }\n"
 "    }\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:1014
+#: docs/master/eloquent.md:1181
 #, no-wrap
 msgid "<a name=\"utilizing-a-local-scope\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/master/eloquent.md:1014
+#: docs/master/eloquent.md:1181
 #, no-wrap
 msgid "Utilizing A Local Scope"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:1017
+#: docs/master/eloquent.md:1184
 msgid ""
 "Once the scope has been defined, you may call the scope methods when "
 "querying the model. However, you should not include the `scope` prefix when "
@@ -2617,13 +2961,13 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:1021
+#: docs/master/eloquent.md:1188
 #, no-wrap
 msgid "    $users = User::popular()->active()->orderBy('created_at')->get();\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:1023
+#: docs/master/eloquent.md:1190
 msgid ""
 "Combining multiple Eloquent model scopes via an `or` query operator may "
 "require the use of closures to achieve the correct [logical "
@@ -2631,7 +2975,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:1027
+#: docs/master/eloquent.md:1194
 #, no-wrap
 msgid ""
 "    $users = User::popular()->orWhere(function (Builder $query) {\n"
@@ -2640,7 +2984,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:1029
+#: docs/master/eloquent.md:1196
 msgid ""
 "However, since this can be cumbersome, Laravel provides a \"higher order\" "
 "`orWhere` method that allows you to fluently chain scopes together without "
@@ -2648,25 +2992,25 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:1031
+#: docs/master/eloquent.md:1198
 #, no-wrap
 msgid "    $users = App\\Models\\User::popular()->orWhere->active()->get();\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:1033
+#: docs/master/eloquent.md:1200
 #, no-wrap
 msgid "<a name=\"dynamic-scopes\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/master/eloquent.md:1033
+#: docs/master/eloquent.md:1200
 #, no-wrap
 msgid "Dynamic Scopes"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:1036
+#: docs/master/eloquent.md:1203
 msgid ""
 "Sometimes you may wish to define a scope that accepts parameters. To get "
 "started, just add your additional parameters to your scope method's "
@@ -2674,7 +3018,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:1057
+#: docs/master/eloquent.md:1224
 #, no-wrap
 msgid ""
 "    class User extends Model\n"
@@ -2694,40 +3038,40 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:1059
+#: docs/master/eloquent.md:1226
 msgid ""
 "Once the expected arguments have been added to your scope method's "
 "signature, you may pass the arguments when calling the scope:"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:1061
+#: docs/master/eloquent.md:1228
 #, no-wrap
 msgid "    $users = User::ofType('admin')->get();\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:1063
+#: docs/master/eloquent.md:1230
 #, no-wrap
 msgid "<a name=\"comparing-models\"></a>\n"
 msgstr ""
 
 #. type: Title ##
-#: docs/master/eloquent.md:1063
+#: docs/master/eloquent.md:1230
 #, no-wrap
 msgid "Comparing Models"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:1066
+#: docs/master/eloquent.md:1233
 msgid ""
-"Sometimes you may need to determine if two models are the \"same\". The `is` "
-"method may be used to quickly verify two models have the same primary key, "
-"table, and database connection:"
+"Sometimes you may need to determine if two models are the \"same\" or "
+"not. The `is` and `isNot` methods may be used to quickly verify two models "
+"have the same primary key, table, and database connection or not:"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:1070
+#: docs/master/eloquent.md:1237
 #, no-wrap
 msgid ""
 "    if ($post->is($anotherPost)) {\n"
@@ -2736,17 +3080,26 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:1072
+#: docs/master/eloquent.md:1241
+#, no-wrap
 msgid ""
-"The `is` method is also available when using the `belongsTo`, `hasOne`, "
-"`morphTo`, and `morphOne` "
+"    if ($post->isNot($anotherPost)) {\n"
+"        //\n"
+"    }\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/eloquent.md:1243
+msgid ""
+"The `is` and `isNot` methods are also available when using the `belongsTo`, "
+"`hasOne`, `morphTo`, and `morphOne` "
 "[relationships](/docs/{{version}}/eloquent-relationships). This method is "
 "particularly helpful when you would like to compare a related model without "
 "issuing a query to retrieve that model:"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:1076
+#: docs/master/eloquent.md:1247
 #, no-wrap
 msgid ""
 "    if ($post->author()->is($user)) {\n"
@@ -2755,19 +3108,28 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:1078
+#: docs/master/eloquent.md:1249
 #, no-wrap
 msgid "<a name=\"events\"></a>\n"
 msgstr ""
 
 #. type: Title ##
-#: docs/master/eloquent.md:1078
+#: docs/master/eloquent.md:1249
 #, no-wrap
 msgid "Events"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:1081
+#: docs/master/eloquent.md:1252
+#, no-wrap
+msgid ""
+"> {tip} Want to broadcast your Eloquent events directly to your client-side "
+"application? Check out Laravel's [model event "
+"broadcasting](/docs/{{version}}/broadcasting#model-broadcasting).\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/eloquent.md:1254
 msgid ""
 "Eloquent models dispatch several events, allowing you to hook into the "
 "following moments in a model's lifecycle: `retrieved`, `creating`, "
@@ -2776,18 +3138,21 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:1083
+#: docs/master/eloquent.md:1256
 msgid ""
 "The `retrieved` event will dispatch when an existing model is retrieved from "
 "the database. When a new model is saved for the first time, the `creating` "
 "and `created` events will dispatch. The `updating` / `updated` events will "
 "dispatch when an existing model is modified and the `save` method is "
 "called. The `saving` / `saved` events will dispatch when a model is created "
-"or updated - even if the model's attributes have not been changed."
+"or updated - even if the model's attributes have not been changed. Event "
+"names ending with `-ing` are dispatched before any changes to the model are "
+"persisted, while events ending with `-ed` are dispatched after the changes "
+"to the model are persisted."
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:1085
+#: docs/master/eloquent.md:1258
 msgid ""
 "To start listening to model events, define a `$dispatchesEvents` property on "
 "your Eloquent model. This property maps various points of the Eloquent "
@@ -2797,7 +3162,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:1093
+#: docs/master/eloquent.md:1266
 #, no-wrap
 msgid ""
 "    use App\\Events\\UserDeleted;\n"
@@ -2806,7 +3171,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:1097
+#: docs/master/eloquent.md:1270
 #, no-wrap
 msgid ""
 "    class User extends Authenticatable\n"
@@ -2815,7 +3180,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:1108
+#: docs/master/eloquent.md:1281
 #, no-wrap
 msgid ""
 "        /**\n"
@@ -2831,15 +3196,15 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:1110
+#: docs/master/eloquent.md:1283
 msgid ""
 "After defining and mapping your Eloquent events, you may use [event "
-"listeners](https://laravel.com/docs/{{version}}/events#defining-listeners) "
-"to handle the events."
+"listeners](/docs/{{version}}/events#defining-listeners) to handle the "
+"events."
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:1112
+#: docs/master/eloquent.md:1285
 #, no-wrap
 msgid ""
 "> {note} When issuing a mass update or delete query via Eloquent, the "
@@ -2849,19 +3214,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:1114
+#: docs/master/eloquent.md:1287
 #, no-wrap
 msgid "<a name=\"events-using-closures\"></a>\n"
 msgstr ""
 
 #. type: Title ###
-#: docs/master/eloquent.md:1114
+#: docs/master/eloquent.md:1287
 #, no-wrap
 msgid "Using Closures"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:1117
+#: docs/master/eloquent.md:1290
 msgid ""
 "Instead of using custom event classes, you may register closures that "
 "execute when various model events are dispatched. Typically, you should "
@@ -2869,7 +3234,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:1138
+#: docs/master/eloquent.md:1311
 #, no-wrap
 msgid ""
 "    class User extends Model\n"
@@ -2889,7 +3254,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:1140
+#: docs/master/eloquent.md:1313
 msgid ""
 "If needed, you may utilize [queueable anonymous event "
 "listeners](/docs/{{version}}/events#queuable-anonymous-event-listeners) when "
@@ -2899,13 +3264,13 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:1142
+#: docs/master/eloquent.md:1315
 #, no-wrap
 msgid "    use function Illuminate\\Events\\queueable;\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:1146
+#: docs/master/eloquent.md:1319
 #, no-wrap
 msgid ""
 "    static::created(queueable(function ($user) {\n"
@@ -2914,31 +3279,31 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:1148
+#: docs/master/eloquent.md:1321
 #, no-wrap
 msgid "<a name=\"observers\"></a>\n"
 msgstr ""
 
 #. type: Title ###
-#: docs/master/eloquent.md:1148
+#: docs/master/eloquent.md:1321
 #, no-wrap
 msgid "Observers"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:1151
+#: docs/master/eloquent.md:1324
 #, no-wrap
 msgid "<a name=\"defining-observers\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/master/eloquent.md:1151
+#: docs/master/eloquent.md:1324
 #, no-wrap
 msgid "Defining Observers"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:1154
+#: docs/master/eloquent.md:1327
 msgid ""
 "If you are listening for many events on a given model, you may use observers "
 "to group all of your listeners into a single class. Observer classes have "
@@ -2949,13 +3314,13 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:1156
+#: docs/master/eloquent.md:1329
 #, no-wrap
 msgid "    php artisan make:observer UserObserver --model=User\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:1158
+#: docs/master/eloquent.md:1331
 msgid ""
 "This command will place the new observer in your `App/Observers` "
 "directory. If this directory does not exist, Artisan will create it for "
@@ -2963,13 +3328,13 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:1162
+#: docs/master/eloquent.md:1335 docs/master/eloquent.md:1424
 #, no-wrap
 msgid "    namespace App\\Observers;\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:1177
+#: docs/master/eloquent.md:1350
 #, no-wrap
 msgid ""
 "    class UserObserver\n"
@@ -2987,7 +3352,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:1188
+#: docs/master/eloquent.md:1361
 #, no-wrap
 msgid ""
 "        /**\n"
@@ -3003,7 +3368,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:1199
+#: docs/master/eloquent.md:1372
 #, no-wrap
 msgid ""
 "        /**\n"
@@ -3019,7 +3384,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:1211
+#: docs/master/eloquent.md:1384
 #, no-wrap
 msgid ""
 "        /**\n"
@@ -3036,7 +3401,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:1213
+#: docs/master/eloquent.md:1386
 msgid ""
 "To register an observer, you need to call the `observe` method on the model "
 "you wish to observe. You may register observers in the `boot` method of your "
@@ -3044,7 +3409,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:1216
+#: docs/master/eloquent.md:1389 docs/master/eloquent.md:1404
 #, no-wrap
 msgid ""
 "    use App\\Models\\User;\n"
@@ -3052,7 +3417,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:1226
+#: docs/master/eloquent.md:1399
 #, no-wrap
 msgid ""
 "    /**\n"
@@ -3067,31 +3432,112 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:1228
+#: docs/master/eloquent.md:1401
+msgid ""
+"Alternatively, you may list your observers within an `$observers` property "
+"of your applications' `App\\Providers\\EventServiceProvider` class:"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/eloquent.md:1413
+#, no-wrap
+msgid ""
+"    /**\n"
+"     * The model observers for your application.\n"
+"     *\n"
+"     * @var array\n"
+"     */\n"
+"    protected $observers = [\n"
+"        User::class => [UserObserver::class],\n"
+"    ];\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/eloquent.md:1415
+#, no-wrap
+msgid ""
+"> {tip} There are additional events an observer can listen to, such as "
+"`saving` and `retrieved`. These events are described within the "
+"[events](#events) documentation.\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/eloquent.md:1417
+#, no-wrap
+msgid "<a name=\"observers-and-database-transactions\"></a>\n"
+msgstr ""
+
+#. type: Title ####
+#: docs/master/eloquent.md:1417
+#, no-wrap
+msgid "Observers & Database Transactions"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/eloquent.md:1420
+msgid ""
+"When models are being created within a database transaction, you may want to "
+"instruct an observer to only execute its event handlers after the database "
+"transaction is committed. You may accomplish this by defining an "
+"`$afterCommit` property on the observer. If a database transaction is not in "
+"progress, the event handlers will execute immediately:"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/eloquent.md:1435
+#, no-wrap
+msgid ""
+"    class UserObserver\n"
+"    {\n"
+"        /**\n"
+"         * Handle events after all transactions are committed.\n"
+"         *\n"
+"         * @var bool\n"
+"         */\n"
+"        public $afterCommit = true;\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/eloquent.md:1447
+#, no-wrap
+msgid ""
+"        /**\n"
+"         * Handle the User \"created\" event.\n"
+"         *\n"
+"         * @param  \\App\\Models\\User  $user\n"
+"         * @return void\n"
+"         */\n"
+"        public function created(User $user)\n"
+"        {\n"
+"            //\n"
+"        }\n"
+"    }\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/eloquent.md:1449
 #, no-wrap
 msgid "<a name=\"muting-events\"></a>\n"
 msgstr ""
 
 #. type: Title ###
-#: docs/master/eloquent.md:1228
+#: docs/master/eloquent.md:1449
 #, no-wrap
 msgid "Muting Events"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:1231
+#: docs/master/eloquent.md:1452
 msgid ""
 "You may occasionally need to temporarily \"mute\" all events fired by a "
 "model. You may achieve this using the `withoutEvents` method. The "
 "`withoutEvents` method accepts a closure as its only argument. Any code "
-"executed within this closure will not dispatch model events. For example, "
-"the following example will fetch and delete an `App\\Models\\User` instance "
-"without dispatching any model events. Any value returned by the closure will "
-"be returned by the `withoutEvents` method:"
+"executed within this closure will not dispatch model events, and any value "
+"returned by the closure will be returned by the `withoutEvents` method:"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:1236
+#: docs/master/eloquent.md:1457
 #, no-wrap
 msgid ""
 "    $user = User::withoutEvents(function () use () {\n"
@@ -3099,7 +3545,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:1239
+#: docs/master/eloquent.md:1460
 #, no-wrap
 msgid ""
 "        return User::find(2);\n"
@@ -3107,38 +3553,38 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:1241
+#: docs/master/eloquent.md:1462
 #, no-wrap
 msgid "<a name=\"saving-a-single-model-without-events\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/master/eloquent.md:1241
+#: docs/master/eloquent.md:1462
 #, no-wrap
 msgid "Saving A Single Model Without Events"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:1244
+#: docs/master/eloquent.md:1465
 msgid ""
 "Sometimes you may wish to \"save\" a given model without dispatching any "
 "events. You may accomplish this using the `saveQuietly` method:"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:1246
+#: docs/master/eloquent.md:1467
 #, no-wrap
 msgid "    $user = User::findOrFail(1);\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:1248
+#: docs/master/eloquent.md:1469
 #, no-wrap
 msgid "    $user->name = 'Victoria Faith';\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/eloquent.md:1249
+#: docs/master/eloquent.md:1470
 #, no-wrap
 msgid "    $user->saveQuietly();\n"
 msgstr ""

@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Laravel Documentation VERSION\n"
-"POT-Creation-Date: 2021-09-13 05:07+0000\n"
+"POT-Creation-Date: 2022-01-21 20:16+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -72,7 +72,7 @@ msgid ""
 "    - [Metered Billing](#metered-billing)\n"
 "    - [Subscription Taxes](#subscription-taxes)\n"
 "    - [Subscription Anchor Date](#subscription-anchor-date)\n"
-"    - [Cancelling Subscriptions](#cancelling-subscriptions)\n"
+"    - [Canceling Subscriptions](#cancelling-subscriptions)\n"
 "    - [Resuming Subscriptions](#resuming-subscriptions)\n"
 "- [Subscription Trials](#subscription-trials)\n"
 "    - [With Payment Method Up Front](#with-payment-method-up-front)\n"
@@ -121,12 +121,13 @@ msgstr ""
 #. type: Plain text
 #: docs/8.x/billing.md:72
 msgid ""
-"Laravel Cashier provides an expressive, fluent interface to "
-"[Stripe's](https://stripe.com) subscription billing services. It handles "
-"almost all of the boilerplate subscription billing code you are dreading "
-"writing. In addition to basic subscription management, Cashier can handle "
-"coupons, swapping subscription, subscription \"quantities\", cancellation "
-"grace periods, and even generate invoice PDFs."
+"[Laravel Cashier Stripe](https://github.com/laravel/cashier-stripe) provides "
+"an expressive, fluent interface to [Stripe's](https://stripe.com) "
+"subscription billing services. It handles almost all of the boilerplate "
+"subscription billing code you are dreading writing. In addition to basic "
+"subscription management, Cashier can handle coupons, swapping subscription, "
+"subscription \"quantities\", cancellation grace periods, and even generate "
+"invoice PDFs."
 msgstr ""
 
 #. type: Plain text
@@ -243,7 +244,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:103 docs/8.x/billing.md:175 docs/8.x/billing.md:238 docs/8.x/billing.md:780
+#: docs/8.x/billing.md:103 docs/8.x/billing.md:175 docs/8.x/billing.md:238 docs/8.x/billing.md:791 docs/8.x/billing.md:1853
 #, no-wrap
 msgid "    use Laravel\\Cashier\\Cashier;\n"
 msgstr ""
@@ -857,7 +858,7 @@ msgstr ""
 #. type: Plain text
 #: docs/8.x/billing.md:301
 #, no-wrap
-msgid "    $taxIds = $user->taxIds(); \n"
+msgid "    $taxIds = $user->taxIds();\n"
 msgstr ""
 
 #. type: Plain text
@@ -947,7 +948,7 @@ msgid "    use function Illuminate\\Events\\queueable;\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:336
+#: docs/8.x/billing.md:338
 #, no-wrap
 msgid ""
 "    /**\n"
@@ -958,13 +959,15 @@ msgid ""
 "    protected static function booted()\n"
 "    {\n"
 "        static::updated(queueable(function ($customer) {\n"
-"            $customer->syncStripeCustomerDetails();\n"
+"            if ($customer->hasStripeId()) {\n"
+"                $customer->syncStripeCustomerDetails();\n"
+"            }\n"
 "        }));\n"
 "    }\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:338
+#: docs/8.x/billing.md:340
 msgid ""
 "Now, every time your customer model is updated, its information will be "
 "synced with Stripe. For convenience, Cashier will automatically sync your "
@@ -972,7 +975,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:340
+#: docs/8.x/billing.md:342
 msgid ""
 "You may customize the columns used for syncing customer information to "
 "Stripe by overriding a variety of methods provided by Cashier. For example, "
@@ -982,7 +985,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:350
+#: docs/8.x/billing.md:352
 #, no-wrap
 msgid ""
 "    /**\n"
@@ -997,7 +1000,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:352
+#: docs/8.x/billing.md:354
 msgid ""
 "Similarly, you may override the `stripeEmail`, `stripePhone`, and "
 "`stripeAddress` methods. These methods will sync information to their "
@@ -1008,19 +1011,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:354
+#: docs/8.x/billing.md:356
 #, no-wrap
 msgid "<a name=\"billing-portal\"></a>\n"
 msgstr ""
 
 #. type: Title ###
-#: docs/8.x/billing.md:354
+#: docs/8.x/billing.md:356
 #, no-wrap
 msgid "Billing Portal"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:357
+#: docs/8.x/billing.md:359
 msgid ""
 "Stripe offers [an easy way to set up a billing "
 "portal](https://stripe.com/docs/billing/subscriptions/customer-portal) so "
@@ -1031,13 +1034,13 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:359 docs/8.x/billing.md:367 docs/8.x/billing.md:594 docs/8.x/billing.md:898 docs/8.x/billing.md:1019 docs/8.x/billing.md:1156 docs/8.x/billing.md:1218 docs/8.x/billing.md:1429 docs/8.x/billing.md:1553 docs/8.x/billing.md:1591 docs/8.x/billing.md:1599 docs/8.x/billing.md:1607 docs/8.x/billing.md:1641 docs/8.x/billing.md:1654 docs/8.x/billing.md:1669 docs/8.x/billing.md:1679 docs/8.x/billing.md:1692
+#: docs/8.x/billing.md:361 docs/8.x/billing.md:369 docs/8.x/billing.md:596 docs/8.x/billing.md:909 docs/8.x/billing.md:1030 docs/8.x/billing.md:1167 docs/8.x/billing.md:1229 docs/8.x/billing.md:1440 docs/8.x/billing.md:1564 docs/8.x/billing.md:1602 docs/8.x/billing.md:1610 docs/8.x/billing.md:1618 docs/8.x/billing.md:1651 docs/8.x/billing.md:1664 docs/8.x/billing.md:1679 docs/8.x/billing.md:1689 docs/8.x/billing.md:1702
 #, no-wrap
 msgid "    use Illuminate\\Http\\Request;\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:363
+#: docs/8.x/billing.md:365
 #, no-wrap
 msgid ""
 "    Route::get('/billing-portal', function (Request $request) {\n"
@@ -1046,7 +1049,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:365
+#: docs/8.x/billing.md:367
 msgid ""
 "By default, when the user is finished managing their subscription, they will "
 "be able to return to the `home` route of your application via a link within "
@@ -1056,7 +1059,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:371
+#: docs/8.x/billing.md:373
 #, no-wrap
 msgid ""
 "    Route::get('/billing-portal', function (Request $request) {\n"
@@ -1066,7 +1069,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:373
+#: docs/8.x/billing.md:375
 msgid ""
 "If you would like to generate the URL to the billing portal without "
 "generating an HTTP redirect response, you may invoke the `billingPortalUrl` "
@@ -1074,37 +1077,37 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:375
+#: docs/8.x/billing.md:377
 #, no-wrap
 msgid "    $url = $request->user()->billingPortalUrl(route('billing'));\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:377
+#: docs/8.x/billing.md:379
 #, no-wrap
 msgid "<a name=\"payment-methods\"></a>\n"
 msgstr ""
 
 #. type: Title ##
-#: docs/8.x/billing.md:377
+#: docs/8.x/billing.md:379
 #, no-wrap
 msgid "Payment Methods"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:380
+#: docs/8.x/billing.md:382
 #, no-wrap
 msgid "<a name=\"storing-payment-methods\"></a>\n"
 msgstr ""
 
 #. type: Title ###
-#: docs/8.x/billing.md:380
+#: docs/8.x/billing.md:382
 #, no-wrap
 msgid "Storing Payment Methods"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:383
+#: docs/8.x/billing.md:385
 msgid ""
 "In order to create subscriptions or perform \"one off\" charges with Stripe, "
 "you will need to store a payment method and retrieve its identifier from "
@@ -1114,19 +1117,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:385
+#: docs/8.x/billing.md:387
 #, no-wrap
 msgid "<a name=\"payment-methods-for-subscriptions\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/8.x/billing.md:385
+#: docs/8.x/billing.md:387
 #, no-wrap
 msgid "Payment Methods For Subscriptions"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:388
+#: docs/8.x/billing.md:390
 msgid ""
 "When storing a customer's credit card information for future use by a "
 "subscription, the Stripe \"Setup Intents\" API must be used to securely "
@@ -1139,7 +1142,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:392
+#: docs/8.x/billing.md:394
 #, no-wrap
 msgid ""
 "    return view('update-payment-method', [\n"
@@ -1148,7 +1151,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:394
+#: docs/8.x/billing.md:396
 msgid ""
 "After you have created the Setup Intent and passed it to the view, you "
 "should attach its secret to the element that will gather the payment "
@@ -1156,13 +1159,13 @@ msgid ""
 msgstr ""
 
 #. type: Code fence info string
-#: docs/8.x/billing.md:395 docs/8.x/billing.md:408 docs/8.x/billing.md:455 docs/8.x/billing.md:468 docs/8.x/billing.md:771
+#: docs/8.x/billing.md:397 docs/8.x/billing.md:410 docs/8.x/billing.md:457 docs/8.x/billing.md:470 docs/8.x/billing.md:782
 #, no-wrap
 msgid "html"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:395
+#: docs/8.x/billing.md:397
 #, no-wrap
 msgid ""
 "<input id=\"card-holder-name\" type=\"text\">\n"
@@ -1176,7 +1179,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:407
+#: docs/8.x/billing.md:409
 msgid ""
 "Next, the Stripe.js library may be used to attach a [Stripe "
 "Element](https://stripe.com/docs/stripe-js) to the form and securely gather "
@@ -1184,7 +1187,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:408 docs/8.x/billing.md:468
+#: docs/8.x/billing.md:410 docs/8.x/billing.md:470
 #, no-wrap
 msgid ""
 "<script src=\"https://js.stripe.com/v3/\"></script>\n"
@@ -1200,7 +1203,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:422
+#: docs/8.x/billing.md:424
 msgid ""
 "Next, the card can be verified and a secure \"payment method identifier\" "
 "can be retrieved from Stripe using [Stripe's `confirmCardSetup` "
@@ -1208,13 +1211,13 @@ msgid ""
 msgstr ""
 
 #. type: Code fence info string
-#: docs/8.x/billing.md:423 docs/8.x/billing.md:483
+#: docs/8.x/billing.md:425 docs/8.x/billing.md:485
 #, no-wrap
 msgid "js"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:423
+#: docs/8.x/billing.md:425
 #, no-wrap
 msgid ""
 "const cardHolderName = document.getElementById('card-holder-name');\n"
@@ -1240,7 +1243,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:447
+#: docs/8.x/billing.md:449
 msgid ""
 "After the card has been verified by Stripe, you may pass the resulting "
 "`setupIntent.payment_method` identifier to your Laravel application, where "
@@ -1252,7 +1255,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:449
+#: docs/8.x/billing.md:451
 #, no-wrap
 msgid ""
 "> {tip} If you would like more information about Setup Intents and gathering "
@@ -1261,19 +1264,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:451
+#: docs/8.x/billing.md:453
 #, no-wrap
 msgid "<a name=\"payment-methods-for-single-charges\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/8.x/billing.md:451
+#: docs/8.x/billing.md:453
 #, no-wrap
 msgid "Payment Methods For Single Charges"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:454
+#: docs/8.x/billing.md:456
 msgid ""
 "Of course, when making a single charge against a customer's payment method, "
 "we will only need to use a payment method identifier once. Due to Stripe "
@@ -1284,7 +1287,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:455
+#: docs/8.x/billing.md:457
 #, no-wrap
 msgid ""
 "<input id=\"card-holder-name\" type=\"text\">\n"
@@ -1298,7 +1301,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:467
+#: docs/8.x/billing.md:469
 msgid ""
 "After defining such a form, the Stripe.js library may be used to attach a "
 "[Stripe Element](https://stripe.com/docs/stripe-js) to the form and securely "
@@ -1306,7 +1309,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:482
+#: docs/8.x/billing.md:484
 msgid ""
 "Next, the card can be verified and a secure \"payment method identifier\" "
 "can be retrieved from Stripe using [Stripe's `createPaymentMethod` "
@@ -1314,7 +1317,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:483
+#: docs/8.x/billing.md:485
 #, no-wrap
 msgid ""
 "const cardHolderName = document.getElementById('card-holder-name');\n"
@@ -1336,39 +1339,39 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:503
+#: docs/8.x/billing.md:505
 msgid ""
 "If the card is verified successfully, you may pass the `paymentMethod.id` to "
 "your Laravel application and process a [single charge](#simple-charge)."
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:505
+#: docs/8.x/billing.md:507
 #, no-wrap
 msgid "<a name=\"retrieving-payment-methods\"></a>\n"
 msgstr ""
 
 #. type: Title ###
-#: docs/8.x/billing.md:505
+#: docs/8.x/billing.md:507
 #, no-wrap
 msgid "Retrieving Payment Methods"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:508
+#: docs/8.x/billing.md:510
 msgid ""
 "The `paymentMethods` method on the billable model instance returns a "
 "collection of `Laravel\\Cashier\\PaymentMethod` instances:"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:510
+#: docs/8.x/billing.md:512
 #, no-wrap
 msgid "    $paymentMethods = $user->paymentMethods();\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:512
+#: docs/8.x/billing.md:514
 msgid ""
 "By default, this method will return payment methods of the `card` type. To "
 "retrieve payment methods of a different type, you may pass the `type` as an "
@@ -1376,58 +1379,58 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:514
+#: docs/8.x/billing.md:516
 #, no-wrap
 msgid "    $paymentMethods = $user->paymentMethods('sepa_debit');\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:516
+#: docs/8.x/billing.md:518
 msgid ""
 "To retrieve the customer's default payment method, the "
 "`defaultPaymentMethod` method may be used:"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:518
+#: docs/8.x/billing.md:520
 #, no-wrap
 msgid "    $paymentMethod = $user->defaultPaymentMethod();\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:520
+#: docs/8.x/billing.md:522
 msgid ""
 "You can retrieve a specific payment method that is attached to the billable "
 "model using the `findPaymentMethod` method:"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:522
+#: docs/8.x/billing.md:524
 #, no-wrap
 msgid "    $paymentMethod = $user->findPaymentMethod($paymentMethodId);\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:524
+#: docs/8.x/billing.md:526
 #, no-wrap
 msgid "<a name=\"check-for-a-payment-method\"></a>\n"
 msgstr ""
 
 #. type: Title ###
-#: docs/8.x/billing.md:524
+#: docs/8.x/billing.md:526
 #, no-wrap
 msgid "Determining If A User Has A Payment Method"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:527
+#: docs/8.x/billing.md:529
 msgid ""
 "To determine if a billable model has a default payment method attached to "
 "their account, invoke the `hasDefaultPaymentMethod` method:"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:531
+#: docs/8.x/billing.md:533
 #, no-wrap
 msgid ""
 "    if ($user->hasDefaultPaymentMethod()) {\n"
@@ -1436,14 +1439,14 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:533
+#: docs/8.x/billing.md:535
 msgid ""
 "You may use the `hasPaymentMethod` method to determine if a billable model "
 "has at least one payment method attached to their account:"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:537
+#: docs/8.x/billing.md:539
 #, no-wrap
 msgid ""
 "    if ($user->hasPaymentMethod()) {\n"
@@ -1452,7 +1455,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:539
+#: docs/8.x/billing.md:541
 msgid ""
 "This method will determine if the billable model has payment methods of the "
 "`card` type. To determine if a payment method of another type exists for the "
@@ -1460,7 +1463,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:543
+#: docs/8.x/billing.md:545
 #, no-wrap
 msgid ""
 "    if ($user->hasPaymentMethod('sepa_debit')) {\n"
@@ -1469,19 +1472,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:545
+#: docs/8.x/billing.md:547
 #, no-wrap
 msgid "<a name=\"updating-the-default-payment-method\"></a>\n"
 msgstr ""
 
 #. type: Title ###
-#: docs/8.x/billing.md:545
+#: docs/8.x/billing.md:547
 #, no-wrap
 msgid "Updating The Default Payment Method"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:548
+#: docs/8.x/billing.md:550
 msgid ""
 "The `updateDefaultPaymentMethod` method may be used to update a customer's "
 "default payment method information. This method accepts a Stripe payment "
@@ -1490,13 +1493,13 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:550
+#: docs/8.x/billing.md:552
 #, no-wrap
 msgid "    $user->updateDefaultPaymentMethod($paymentMethod);\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:552
+#: docs/8.x/billing.md:554
 msgid ""
 "To sync your default payment method information with the customer's default "
 "payment method information in Stripe, you may use the "
@@ -1504,13 +1507,13 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:554
+#: docs/8.x/billing.md:556
 #, no-wrap
 msgid "    $user->updateDefaultPaymentMethodFromStripe();\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:556
+#: docs/8.x/billing.md:558
 #, no-wrap
 msgid ""
 "> {note} The default payment method on a customer can only be used for "
@@ -1519,32 +1522,32 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:558
+#: docs/8.x/billing.md:560
 #, no-wrap
 msgid "<a name=\"adding-payment-methods\"></a>\n"
 msgstr ""
 
 #. type: Title ###
-#: docs/8.x/billing.md:558
+#: docs/8.x/billing.md:560
 #, no-wrap
 msgid "Adding Payment Methods"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:561
+#: docs/8.x/billing.md:563
 msgid ""
 "To add a new payment method, you may call the `addPaymentMethod` method on "
 "the billable model, passing the payment method identifier:"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:563
+#: docs/8.x/billing.md:565
 #, no-wrap
 msgid "    $user->addPaymentMethod($paymentMethod);\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:565
+#: docs/8.x/billing.md:567
 #, no-wrap
 msgid ""
 "> {tip} To learn how to retrieve payment method identifiers please review "
@@ -1552,45 +1555,45 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:567
+#: docs/8.x/billing.md:569
 #, no-wrap
 msgid "<a name=\"deleting-payment-methods\"></a>\n"
 msgstr ""
 
 #. type: Title ###
-#: docs/8.x/billing.md:567
+#: docs/8.x/billing.md:569
 #, no-wrap
 msgid "Deleting Payment Methods"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:570
+#: docs/8.x/billing.md:572
 msgid ""
 "To delete a payment method, you may call the `delete` method on the "
 "`Laravel\\Cashier\\PaymentMethod` instance you wish to delete:"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:572
+#: docs/8.x/billing.md:574
 #, no-wrap
 msgid "    $paymentMethod->delete();\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:574
+#: docs/8.x/billing.md:576
 msgid ""
 "The `deletePaymentMethods` method will delete all of the payment method "
 "information for the billable model:"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:576
+#: docs/8.x/billing.md:578
 #, no-wrap
 msgid "    $user->deletePaymentMethods();\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:578
+#: docs/8.x/billing.md:580
 msgid ""
 "By default, this method will delete payment methods of the `card` type. To "
 "delete payment methods of a different type you can pass the `type` as an "
@@ -1598,13 +1601,13 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:580
+#: docs/8.x/billing.md:582
 #, no-wrap
 msgid "    $user->deletePaymentMethods('sepa_debit');\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:582
+#: docs/8.x/billing.md:584
 #, no-wrap
 msgid ""
 "> {note} If a user has an active subscription, your application should not "
@@ -1612,19 +1615,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:584
+#: docs/8.x/billing.md:586
 #, no-wrap
 msgid "<a name=\"subscriptions\"></a>\n"
 msgstr ""
 
 #. type: Title ##
-#: docs/8.x/billing.md:584
+#: docs/8.x/billing.md:586
 #, no-wrap
 msgid "Subscriptions"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:587
+#: docs/8.x/billing.md:589
 msgid ""
 "Subscriptions provide a way to set up recurring payments for your "
 "customers. Stripe subscriptions managed by Cashier provide support for "
@@ -1632,19 +1635,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:589
+#: docs/8.x/billing.md:591
 #, no-wrap
 msgid "<a name=\"creating-subscriptions\"></a>\n"
 msgstr ""
 
 #. type: Title ###
-#: docs/8.x/billing.md:589
+#: docs/8.x/billing.md:591
 #, no-wrap
 msgid "Creating Subscriptions"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:592
+#: docs/8.x/billing.md:594
 msgid ""
 "To create a subscription, first retrieve an instance of your billable model, "
 "which typically will be an instance of `App\\Models\\User`. Once you have "
@@ -1653,7 +1656,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:599
+#: docs/8.x/billing.md:601
 #, no-wrap
 msgid ""
 "    Route::post('/user/subscribe', function (Request $request) {\n"
@@ -1663,7 +1666,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:602 docs/8.x/billing.md:907 docs/8.x/billing.md:1027 docs/8.x/billing.md:1166 docs/8.x/billing.md:1226 docs/8.x/billing.md:1437
+#: docs/8.x/billing.md:604 docs/8.x/billing.md:918 docs/8.x/billing.md:1038 docs/8.x/billing.md:1177 docs/8.x/billing.md:1237 docs/8.x/billing.md:1448
 #, no-wrap
 msgid ""
 "        // ...\n"
@@ -1671,17 +1674,20 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:604
+#: docs/8.x/billing.md:606
 msgid ""
-"The first argument passed to the `newSubscription` method should be the name "
-"of the subscription. If your application only offers a single subscription, "
-"you might call this `default` or `primary`. The second argument is the "
-"specific price the user is subscribing to. This value should correspond to "
-"the price's identifier in Stripe."
+"The first argument passed to the `newSubscription` method should be the "
+"internal name of the subscription. If your application only offers a single "
+"subscription, you might call this `default` or `primary`. This subscription "
+"name is only for internal application usage and is not meant to be shown to "
+"users. In addition, it should not contain spaces and it should never be "
+"changed after creating the subscription. The second argument is the specific "
+"price the user is subscribing to. This value should correspond to the "
+"price's identifier in Stripe."
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:606
+#: docs/8.x/billing.md:608
 msgid ""
 "The `create` method, which accepts [a Stripe payment method "
 "identifier](#storing-payment-methods) or Stripe `PaymentMethod` object, will "
@@ -1690,7 +1696,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:608
+#: docs/8.x/billing.md:610
 #, no-wrap
 msgid ""
 "> {note} Passing a payment method identifier directly to the `create` "
@@ -1699,19 +1705,58 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:610
+#: docs/8.x/billing.md:612
+#, no-wrap
+msgid "<a name=\"collecting-recurring-payments-via-invoice-emails\"></a>\n"
+msgstr ""
+
+#. type: Title ####
+#: docs/8.x/billing.md:612
+#, no-wrap
+msgid "Collecting Recurring Payments Via Invoice Emails"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/billing.md:615
+msgid ""
+"Instead of collecting a customer's recurring payments automatically, you may "
+"instruct Stripe to email an invoice to the customer each time their "
+"recurring payment is due. Then, the customer may manually pay the invoice "
+"once they receive it. The customer does not need to provide a payment method "
+"up front when collecting recurring payments via invoices:"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/billing.md:617
+#, no-wrap
+msgid ""
+"    $user->newSubscription('default', "
+"'price_monthly')->createAndSendInvoice();\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/billing.md:619
+msgid ""
+"The amount of time a customer has to pay their invoice before their "
+"subscription is canceled is determined by your subscription and invoice "
+"settings within the [Stripe "
+"dashboard](https://dashboard.stripe.com/settings/billing/automatic)."
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/billing.md:621
 #, no-wrap
 msgid "<a name=\"subscription-quantities\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/8.x/billing.md:610 docs/8.x/billing.md:976
+#: docs/8.x/billing.md:621 docs/8.x/billing.md:987
 #, no-wrap
 msgid "Quantities"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:613
+#: docs/8.x/billing.md:624
 msgid ""
 "If you would like to set a specific "
 "[quantity](https://stripe.com/docs/billing/subscriptions/quantities) for the "
@@ -1720,7 +1765,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:617
+#: docs/8.x/billing.md:628
 #, no-wrap
 msgid ""
 "    $user->newSubscription('default', 'price_monthly')\n"
@@ -1729,19 +1774,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:619
+#: docs/8.x/billing.md:630
 #, no-wrap
 msgid "<a name=\"additional-details\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/8.x/billing.md:619
+#: docs/8.x/billing.md:630
 #, no-wrap
 msgid "Additional Details"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:622
+#: docs/8.x/billing.md:633
 msgid ""
 "If you would like to specify additional "
 "[customer](https://stripe.com/docs/api/customers/create) or "
@@ -1751,7 +1796,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:628
+#: docs/8.x/billing.md:639
 #, no-wrap
 msgid ""
 "    $user->newSubscription('default', "
@@ -1763,26 +1808,26 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:630
+#: docs/8.x/billing.md:641
 #, no-wrap
 msgid "<a name=\"coupons\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/8.x/billing.md:630
+#: docs/8.x/billing.md:641
 #, no-wrap
 msgid "Coupons"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:633
+#: docs/8.x/billing.md:644
 msgid ""
 "If you would like to apply a coupon when creating the subscription, you may "
 "use the `withCoupon` method:"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:637
+#: docs/8.x/billing.md:648
 #, no-wrap
 msgid ""
 "    $user->newSubscription('default', 'price_monthly')\n"
@@ -1791,15 +1836,17 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:639
+#: docs/8.x/billing.md:650
 msgid ""
 "Or, if you would like to apply a [Stripe promotion "
 "code](https://stripe.com/docs/billing/subscriptions/discounts/codes), you "
-"may use the `withPromotionCode` method:"
+"may use the `withPromotionCode` method. The given promotion code ID should "
+"be the Stripe API ID assigned to the promotion code and not the customer "
+"facing promotion code:"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:643
+#: docs/8.x/billing.md:654
 #, no-wrap
 msgid ""
 "    $user->newSubscription('default', 'price_monthly')\n"
@@ -1808,19 +1855,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:645
+#: docs/8.x/billing.md:656
 #, no-wrap
 msgid "<a name=\"adding-subscriptions\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/8.x/billing.md:645
+#: docs/8.x/billing.md:656
 #, no-wrap
 msgid "Adding Subscriptions"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:648
+#: docs/8.x/billing.md:659
 msgid ""
 "If you would like to add a subscription to a customer who already has a "
 "default payment method you may invoke the `add` method on the subscription "
@@ -1828,37 +1875,37 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:650 docs/8.x/billing.md:824 docs/8.x/billing.md:860 docs/8.x/billing.md:944 docs/8.x/billing.md:996 docs/8.x/billing.md:1141 docs/8.x/billing.md:1264 docs/8.x/billing.md:1302 docs/8.x/billing.md:1447
+#: docs/8.x/billing.md:661 docs/8.x/billing.md:835 docs/8.x/billing.md:871 docs/8.x/billing.md:955 docs/8.x/billing.md:1007 docs/8.x/billing.md:1152 docs/8.x/billing.md:1275 docs/8.x/billing.md:1313 docs/8.x/billing.md:1458
 #, no-wrap
 msgid "    use App\\Models\\User;\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:652 docs/8.x/billing.md:840 docs/8.x/billing.md:862 docs/8.x/billing.md:911 docs/8.x/billing.md:919 docs/8.x/billing.md:929 docs/8.x/billing.md:946 docs/8.x/billing.md:954 docs/8.x/billing.md:963 docs/8.x/billing.md:981 docs/8.x/billing.md:998 docs/8.x/billing.md:1008 docs/8.x/billing.md:1045 docs/8.x/billing.md:1051 docs/8.x/billing.md:1057 docs/8.x/billing.md:1063 docs/8.x/billing.md:1072 docs/8.x/billing.md:1078 docs/8.x/billing.md:1143 docs/8.x/billing.md:1281
+#: docs/8.x/billing.md:663 docs/8.x/billing.md:851 docs/8.x/billing.md:873 docs/8.x/billing.md:922 docs/8.x/billing.md:930 docs/8.x/billing.md:940 docs/8.x/billing.md:957 docs/8.x/billing.md:965 docs/8.x/billing.md:974 docs/8.x/billing.md:992 docs/8.x/billing.md:1009 docs/8.x/billing.md:1019 docs/8.x/billing.md:1056 docs/8.x/billing.md:1062 docs/8.x/billing.md:1068 docs/8.x/billing.md:1074 docs/8.x/billing.md:1083 docs/8.x/billing.md:1089 docs/8.x/billing.md:1154 docs/8.x/billing.md:1292
 #, no-wrap
 msgid "    $user = User::find(1);\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:654
+#: docs/8.x/billing.md:665
 #, no-wrap
 msgid "    $user->newSubscription('default', 'price_monthly')->add();\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:656
+#: docs/8.x/billing.md:667
 #, no-wrap
 msgid "<a name=\"creating-subscriptions-from-the-stripe-dashboard\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/8.x/billing.md:656
+#: docs/8.x/billing.md:667
 #, no-wrap
 msgid "Creating Subscriptions From The Stripe Dashboard"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:659
+#: docs/8.x/billing.md:670
 msgid ""
 "You may also create subscriptions from the Stripe dashboard itself. When "
 "doing so, Cashier will sync newly added subscriptions and assign them a name "
@@ -1869,7 +1916,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:661
+#: docs/8.x/billing.md:672
 msgid ""
 "In addition, you may only create one type of subscription via the Stripe "
 "dashboard. If your application offers multiple subscriptions that use "
@@ -1878,7 +1925,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:663
+#: docs/8.x/billing.md:674
 msgid ""
 "Finally, you should always make sure to only add one active subscription per "
 "type of subscription offered by your application. If customer has two "
@@ -1888,19 +1935,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:665
+#: docs/8.x/billing.md:676
 #, no-wrap
 msgid "<a name=\"checking-subscription-status\"></a>\n"
 msgstr ""
 
 #. type: Title ###
-#: docs/8.x/billing.md:665
+#: docs/8.x/billing.md:676
 #, no-wrap
 msgid "Checking Subscription Status"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:668
+#: docs/8.x/billing.md:679
 msgid ""
 "Once a customer is subscribed to your application, you may easily check "
 "their subscription status using a variety of convenient methods. First, the "
@@ -1911,7 +1958,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:672
+#: docs/8.x/billing.md:683
 #, no-wrap
 msgid ""
 "    if ($user->subscribed('default')) {\n"
@@ -1920,7 +1967,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:674
+#: docs/8.x/billing.md:685
 msgid ""
 "The `subscribed` method also makes a great candidate for a [route "
 "middleware](/docs/{{version}}/middleware), allowing you to filter access to "
@@ -1928,25 +1975,25 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:676 docs/8.x/billing.md:1371 docs/8.x/billing.md:1395
+#: docs/8.x/billing.md:687 docs/8.x/billing.md:1382 docs/8.x/billing.md:1406
 #, no-wrap
 msgid "    <?php\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:678
+#: docs/8.x/billing.md:689
 #, no-wrap
 msgid "    namespace App\\Http\\Middleware;\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:680
+#: docs/8.x/billing.md:691
 #, no-wrap
 msgid "    use Closure;\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:696
+#: docs/8.x/billing.md:707
 #, no-wrap
 msgid ""
 "    class EnsureUserIsSubscribed\n"
@@ -1968,7 +2015,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:700
+#: docs/8.x/billing.md:711
 #, no-wrap
 msgid ""
 "            return $next($request);\n"
@@ -1977,7 +2024,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:702
+#: docs/8.x/billing.md:713
 msgid ""
 "If you would like to determine if a user is still within their trial period, "
 "you may use the `onTrial` method. This method can be useful for determining "
@@ -1986,7 +2033,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:706 docs/8.x/billing.md:1248
+#: docs/8.x/billing.md:717 docs/8.x/billing.md:1259
 #, no-wrap
 msgid ""
 "    if ($user->subscription('default')->onTrial()) {\n"
@@ -1995,7 +2042,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:708
+#: docs/8.x/billing.md:719
 msgid ""
 "The `subscribedToProduct` method may be used to determine if the user is "
 "subscribed to a given product based on a given Stripe product's "
@@ -2007,7 +2054,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:712
+#: docs/8.x/billing.md:723
 #, no-wrap
 msgid ""
 "    if ($user->subscribedToProduct('prod_premium', 'default')) {\n"
@@ -2016,7 +2063,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:714
+#: docs/8.x/billing.md:725
 msgid ""
 "By passing an array to the `subscribedToProduct` method, you may determine "
 "if the user's `default` subscription is actively subscribed to the "
@@ -2024,7 +2071,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:718
+#: docs/8.x/billing.md:729
 #, no-wrap
 msgid ""
 "    if ($user->subscribedToProduct(['prod_basic', 'prod_premium'], "
@@ -2034,14 +2081,14 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:720
+#: docs/8.x/billing.md:731
 msgid ""
 "The `subscribedToPrice` method may be used to determine if a customer's "
 "subscription corresponds to a given price ID:"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:724
+#: docs/8.x/billing.md:735
 #, no-wrap
 msgid ""
 "    if ($user->subscribedToPrice('price_basic_monthly', 'default')) {\n"
@@ -2050,14 +2097,14 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:726
+#: docs/8.x/billing.md:737
 msgid ""
 "The `recurring` method may be used to determine if the user is currently "
 "subscribed and is no longer within their trial period:"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:730
+#: docs/8.x/billing.md:741
 #, no-wrap
 msgid ""
 "    if ($user->subscription('default')->recurring()) {\n"
@@ -2066,7 +2113,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:732
+#: docs/8.x/billing.md:743
 #, no-wrap
 msgid ""
 "> {note} If a user has two subscriptions with the same name, the most recent "
@@ -2079,37 +2126,37 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:734
+#: docs/8.x/billing.md:745
 #, no-wrap
 msgid "<a name=\"cancelled-subscription-status\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/8.x/billing.md:734
+#: docs/8.x/billing.md:745
 #, no-wrap
-msgid "Cancelled Subscription Status"
+msgid "Canceled Subscription Status"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:737
+#: docs/8.x/billing.md:748
 msgid ""
-"To determine if the user was once an active subscriber but has cancelled "
-"their subscription, you may use the `cancelled` method:"
+"To determine if the user was once an active subscriber but has canceled "
+"their subscription, you may use the `canceled` method:"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:741
+#: docs/8.x/billing.md:752
 #, no-wrap
 msgid ""
-"    if ($user->subscription('default')->cancelled()) {\n"
+"    if ($user->subscription('default')->canceled()) {\n"
 "        //\n"
 "    }\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:743
+#: docs/8.x/billing.md:754
 msgid ""
-"You may also determine if a user has cancelled their subscription but are "
+"You may also determine if a user has canceled their subscription but are "
 "still on their \"grace period\" until the subscription fully expires. For "
 "example, if a user cancels a subscription on March 5th that was originally "
 "scheduled to expire on March 10th, the user is on their \"grace period\" "
@@ -2118,7 +2165,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:747 docs/8.x/billing.md:1185
+#: docs/8.x/billing.md:758 docs/8.x/billing.md:1196
 #, no-wrap
 msgid ""
 "    if ($user->subscription('default')->onGracePeriod()) {\n"
@@ -2127,14 +2174,14 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:749
+#: docs/8.x/billing.md:760
 msgid ""
-"To determine if the user has cancelled their subscription and is no longer "
+"To determine if the user has canceled their subscription and is no longer "
 "within their \"grace period\", you may use the `ended` method:"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:753
+#: docs/8.x/billing.md:764
 #, no-wrap
 msgid ""
 "    if ($user->subscription('default')->ended()) {\n"
@@ -2143,19 +2190,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:755
+#: docs/8.x/billing.md:766
 #, no-wrap
 msgid "<a name=\"incomplete-and-past-due-status\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/8.x/billing.md:755
+#: docs/8.x/billing.md:766
 #, no-wrap
 msgid "Incomplete and Past Due Status"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:758
+#: docs/8.x/billing.md:769
 msgid ""
 "If a subscription requires a secondary payment action after creation the "
 "subscription will be marked as `incomplete`. Subscription statuses are "
@@ -2164,7 +2211,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:760
+#: docs/8.x/billing.md:771
 msgid ""
 "Similarly, if a secondary payment action is required when swapping prices "
 "the subscription will be marked as `past_due`. When your subscription is in "
@@ -2175,7 +2222,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:764 docs/8.x/billing.md:1768
+#: docs/8.x/billing.md:775 docs/8.x/billing.md:1780
 #, no-wrap
 msgid ""
 "    if ($user->hasIncompletePayment('default')) {\n"
@@ -2184,7 +2231,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:768 docs/8.x/billing.md:1772
+#: docs/8.x/billing.md:779 docs/8.x/billing.md:1784
 #, no-wrap
 msgid ""
 "    if ($user->subscription('default')->hasIncompletePayment()) {\n"
@@ -2193,7 +2240,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:770
+#: docs/8.x/billing.md:781
 msgid ""
 "When a subscription has an incomplete payment, you should direct the user to "
 "Cashier's payment confirmation page, passing the `latestPayment` "
@@ -2202,7 +2249,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:771
+#: docs/8.x/billing.md:782
 #, no-wrap
 msgid ""
 "<a href=\"{{ route('cashier.payment', $subscription->latestPayment()->id) "
@@ -2212,7 +2259,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:778
+#: docs/8.x/billing.md:789
 msgid ""
 "If you would like the subscription to still be considered active when it's "
 "in a `past_due` state, you may use the `keepPastDueSubscriptionsActive` "
@@ -2221,7 +2268,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:790
+#: docs/8.x/billing.md:801
 #, no-wrap
 msgid ""
 "    /**\n"
@@ -2236,7 +2283,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:792
+#: docs/8.x/billing.md:803
 #, no-wrap
 msgid ""
 "> {note} When a subscription is in an `incomplete` state it cannot be "
@@ -2246,26 +2293,26 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:794
+#: docs/8.x/billing.md:805
 #, no-wrap
 msgid "<a name=\"subscription-scopes\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/8.x/billing.md:794
+#: docs/8.x/billing.md:805
 #, no-wrap
 msgid "Subscription Scopes"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:797
+#: docs/8.x/billing.md:808
 msgid ""
 "Most subscription states are also available as query scopes so that you may "
 "easily query your database for subscriptions that are in a given state:"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:800
+#: docs/8.x/billing.md:811
 #, no-wrap
 msgid ""
 "    // Get all active subscriptions...\n"
@@ -2273,27 +2320,27 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:803
+#: docs/8.x/billing.md:814
 #, no-wrap
 msgid ""
-"    // Get all of the cancelled subscriptions for a user...\n"
-"    $subscriptions = $user->subscriptions()->cancelled()->get();\n"
+"    // Get all of the canceled subscriptions for a user...\n"
+"    $subscriptions = $user->subscriptions()->canceled()->get();\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:805
+#: docs/8.x/billing.md:816
 msgid "A complete list of available scopes is available below:"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:817
+#: docs/8.x/billing.md:828
 #, no-wrap
 msgid ""
 "    Subscription::query()->active();\n"
-"    Subscription::query()->cancelled();\n"
+"    Subscription::query()->canceled();\n"
 "    Subscription::query()->ended();\n"
 "    Subscription::query()->incomplete();\n"
-"    Subscription::query()->notCancelled();\n"
+"    Subscription::query()->notCanceled();\n"
 "    Subscription::query()->notOnGracePeriod();\n"
 "    Subscription::query()->notOnTrial();\n"
 "    Subscription::query()->onGracePeriod();\n"
@@ -2303,43 +2350,43 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:819
+#: docs/8.x/billing.md:830
 #, no-wrap
 msgid "<a name=\"changing-prices\"></a>\n"
 msgstr ""
 
 #. type: Title ###
-#: docs/8.x/billing.md:819
+#: docs/8.x/billing.md:830
 #, no-wrap
 msgid "Changing Prices"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:822
+#: docs/8.x/billing.md:833
 msgid ""
 "After a customer is subscribed to your application, they may occasionally "
 "want to change to a new subscription price. To swap a customer to a new "
 "price, pass the Stripe price's identifier to the `swap` method. When "
 "swapping prices, it is assumed that the user would like to re-activate their "
-"subscription if it was previously cancelled. The given price identifier "
+"subscription if it was previously canceled. The given price identifier "
 "should correspond to a Stripe price identifier available in the Stripe "
 "dashboard:"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:826
+#: docs/8.x/billing.md:837
 #, no-wrap
 msgid "    $user = App\\Models\\User::find(1);\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:828
+#: docs/8.x/billing.md:839
 #, no-wrap
 msgid "    $user->subscription('default')->swap('price_yearly');\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:830
+#: docs/8.x/billing.md:841
 msgid ""
 "If the customer is on trial, the trial period will be "
 "maintained. Additionally, if a \"quantity\" exists for the subscription, "
@@ -2347,14 +2394,14 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:832
+#: docs/8.x/billing.md:843
 msgid ""
 "If you would like to swap prices and cancel any trial period the customer is "
 "currently on, you may invoke the `skipTrial` method:"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:836
+#: docs/8.x/billing.md:847
 #, no-wrap
 msgid ""
 "    $user->subscription('default')\n"
@@ -2363,7 +2410,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:838
+#: docs/8.x/billing.md:849
 msgid ""
 "If you would like to swap prices and immediately invoice the customer "
 "instead of waiting for their next billing cycle, you may use the "
@@ -2371,25 +2418,25 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:842
+#: docs/8.x/billing.md:853
 #, no-wrap
 msgid "    $user->subscription('default')->swapAndInvoice('price_yearly');\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:844
+#: docs/8.x/billing.md:855
 #, no-wrap
 msgid "<a name=\"prorations\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/8.x/billing.md:844
+#: docs/8.x/billing.md:855
 #, no-wrap
 msgid "Prorations"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:847
+#: docs/8.x/billing.md:858
 msgid ""
 "By default, Stripe prorates charges when swapping between prices. The "
 "`noProrate` method may be used to update the subscription's price without "
@@ -2397,20 +2444,20 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:849
+#: docs/8.x/billing.md:860
 #, no-wrap
 msgid "    $user->subscription('default')->noProrate()->swap('price_yearly');\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:851
+#: docs/8.x/billing.md:862
 msgid ""
 "For more information on subscription proration, consult the [Stripe "
 "documentation](https://stripe.com/docs/billing/subscriptions/prorations)."
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:853
+#: docs/8.x/billing.md:864
 #, no-wrap
 msgid ""
 "> {note} Executing the `noProrate` method before the `swapAndInvoice` method "
@@ -2418,19 +2465,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:855
+#: docs/8.x/billing.md:866
 #, no-wrap
 msgid "<a name=\"subscription-quantity\"></a>\n"
 msgstr ""
 
 #. type: Title ###
-#: docs/8.x/billing.md:855
+#: docs/8.x/billing.md:866
 #, no-wrap
 msgid "Subscription Quantity"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:858
+#: docs/8.x/billing.md:869
 msgid ""
 "Sometimes subscriptions are affected by \"quantity\". For example, a project "
 "management application might charge $10 per month per project. You may use "
@@ -2439,13 +2486,13 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:864
+#: docs/8.x/billing.md:875
 #, no-wrap
 msgid "    $user->subscription('default')->incrementQuantity();\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:867
+#: docs/8.x/billing.md:878
 #, no-wrap
 msgid ""
 "    // Add five to the subscription's current quantity...\n"
@@ -2453,13 +2500,13 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:869
+#: docs/8.x/billing.md:880
 #, no-wrap
 msgid "    $user->subscription('default')->decrementQuantity();\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:872
+#: docs/8.x/billing.md:883
 #, no-wrap
 msgid ""
 "    // Subtract five from the subscription's current quantity...\n"
@@ -2467,52 +2514,52 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:874
+#: docs/8.x/billing.md:885
 msgid ""
 "Alternatively, you may set a specific quantity using the `updateQuantity` "
 "method:"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:876
+#: docs/8.x/billing.md:887
 #, no-wrap
 msgid "    $user->subscription('default')->updateQuantity(10);\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:878
+#: docs/8.x/billing.md:889
 msgid ""
 "The `noProrate` method may be used to update the subscription's quantity "
 "without prorating the charges:"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:880
+#: docs/8.x/billing.md:891
 #, no-wrap
 msgid "    $user->subscription('default')->noProrate()->updateQuantity(10);\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:882
+#: docs/8.x/billing.md:893
 msgid ""
 "For more information on subscription quantities, consult the [Stripe "
 "documentation](https://stripe.com/docs/subscriptions/quantities)."
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:884
+#: docs/8.x/billing.md:895
 #, no-wrap
 msgid "<a name=\"multiprice-subscription-quantities\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/8.x/billing.md:884
+#: docs/8.x/billing.md:895
 #, no-wrap
 msgid "Multiprice Subscription Quantities"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:887
+#: docs/8.x/billing.md:898
 msgid ""
 "If your subscription is a [multiprice "
 "subscription](#multiprice-subscriptions), you should pass the name of the "
@@ -2521,25 +2568,25 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:889
+#: docs/8.x/billing.md:900
 #, no-wrap
 msgid "    $user->subscription('default')->incrementQuantity(1, 'price_chat');\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:891
+#: docs/8.x/billing.md:902
 #, no-wrap
 msgid "<a name=\"multiprice-subscriptions\"></a>\n"
 msgstr ""
 
 #. type: Title ###
-#: docs/8.x/billing.md:891
+#: docs/8.x/billing.md:902
 #, no-wrap
 msgid "Multiprice Subscriptions"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:894
+#: docs/8.x/billing.md:905
 msgid ""
 "[Multiprice "
 "subscriptions](https://stripe.com/docs/billing/subscriptions/multiple-products) "
@@ -2552,14 +2599,14 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:896
+#: docs/8.x/billing.md:907
 msgid ""
 "You may specify multiple prices for a given subscription by passing an array "
 "of prices as the second argument to the `newSubscription` method:"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:904
+#: docs/8.x/billing.md:915
 #, no-wrap
 msgid ""
 "    Route::post('/user/subscribe', function (Request $request) {\n"
@@ -2570,7 +2617,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:909
+#: docs/8.x/billing.md:920
 msgid ""
 "In the example above, the customer will have two prices attached to their "
 "`default` subscription. Both prices will be charged on their respective "
@@ -2579,7 +2626,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:915
+#: docs/8.x/billing.md:926
 #, no-wrap
 msgid ""
 "    $user->newSubscription('default', ['price_monthly', 'price_chat'])\n"
@@ -2588,20 +2635,20 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:917
+#: docs/8.x/billing.md:928
 msgid ""
 "If you would like to add another price to an existing subscription, you may "
 "invoke the subscription's `addPrice` method:"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:921
+#: docs/8.x/billing.md:932
 #, no-wrap
 msgid "    $user->subscription('default')->addPrice('price_chat');\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:923
+#: docs/8.x/billing.md:934
 msgid ""
 "The example above will add the new price and the customer will be billed for "
 "it on their next billing cycle. If you would like to bill the customer "
@@ -2609,13 +2656,13 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:925
+#: docs/8.x/billing.md:936
 #, no-wrap
 msgid "    $user->subscription('default')->addPriceAndInvoice('price_chat');\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:927
+#: docs/8.x/billing.md:938
 msgid ""
 "If you would like to add a price with a specific quantity, you can pass the "
 "quantity as the second argument of the `addPrice` or `addPriceAndInvoice` "
@@ -2623,24 +2670,24 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:931
+#: docs/8.x/billing.md:942
 #, no-wrap
 msgid "    $user->subscription('default')->addPrice('price_chat', 5);\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:933
+#: docs/8.x/billing.md:944
 msgid "You may remove prices from subscriptions using the `removePrice` method:"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:935
+#: docs/8.x/billing.md:946
 #, no-wrap
 msgid "    $user->subscription('default')->removePrice('price_chat');\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:937
+#: docs/8.x/billing.md:948
 #, no-wrap
 msgid ""
 "> {note} You may not remove the last price on a subscription. Instead, you "
@@ -2648,19 +2695,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:939
+#: docs/8.x/billing.md:950
 #, no-wrap
 msgid "<a name=\"swapping-prices\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/8.x/billing.md:939
+#: docs/8.x/billing.md:950
 #, no-wrap
 msgid "Swapping Prices"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:942
+#: docs/8.x/billing.md:953
 msgid ""
 "You may also change the prices attached to a multiprice subscription. For "
 "example, imagine a customer has a `price_basic` subscription with a "
@@ -2669,13 +2716,13 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:948
+#: docs/8.x/billing.md:959
 #, no-wrap
 msgid "    $user->subscription('default')->swap(['price_pro', 'price_chat']);\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:950
+#: docs/8.x/billing.md:961
 msgid ""
 "When executing the example above, the underlying subscription item with the "
 "`price_basic` is deleted and the one with the `price_chat` is "
@@ -2684,7 +2731,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:952
+#: docs/8.x/billing.md:963
 msgid ""
 "You can also specify subscription item options by passing an array of key / "
 "value pairs to the `swap` method. For example, you may need to specify the "
@@ -2692,7 +2739,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:959
+#: docs/8.x/billing.md:970
 #, no-wrap
 msgid ""
 "    $user->subscription('default')->swap([\n"
@@ -2702,7 +2749,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:961
+#: docs/8.x/billing.md:972
 msgid ""
 "If you want to swap a single price on a subscription, you may do so using "
 "the `swap` method on the subscription item itself. This approach is "
@@ -2711,7 +2758,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:967
+#: docs/8.x/billing.md:978
 #, no-wrap
 msgid ""
 "    $user->subscription('default')\n"
@@ -2720,19 +2767,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:969
+#: docs/8.x/billing.md:980
 #, no-wrap
 msgid "<a name=\"proration\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/8.x/billing.md:969
+#: docs/8.x/billing.md:980
 #, no-wrap
 msgid "Proration"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:972
+#: docs/8.x/billing.md:983
 msgid ""
 "By default, Stripe will prorate charges when adding or removing prices from "
 "a multiprice subscription. If you would like to make a price adjustment "
@@ -2741,7 +2788,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:974
+#: docs/8.x/billing.md:985
 #, no-wrap
 msgid ""
 "    "
@@ -2749,13 +2796,13 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:976
+#: docs/8.x/billing.md:987
 #, no-wrap
 msgid "<a name=\"swapping-quantities\"></a>\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:979
+#: docs/8.x/billing.md:990
 msgid ""
 "If you would like to update quantities on individual subscription prices, "
 "you may do so using the [existing quantity methods](#subscription-quantity) "
@@ -2763,25 +2810,25 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:983
+#: docs/8.x/billing.md:994
 #, no-wrap
 msgid "    $user->subscription('default')->incrementQuantity(5, 'price_chat');\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:985
+#: docs/8.x/billing.md:996
 #, no-wrap
 msgid "    $user->subscription('default')->decrementQuantity(3, 'price_chat');\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:987
+#: docs/8.x/billing.md:998
 #, no-wrap
 msgid "    $user->subscription('default')->updateQuantity(10, 'price_chat');\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:989
+#: docs/8.x/billing.md:1000
 #, no-wrap
 msgid ""
 "> {note} When a subscription has multiple prices the `stripe_price` and "
@@ -2791,19 +2838,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:991
+#: docs/8.x/billing.md:1002
 #, no-wrap
 msgid "<a name=\"subscription-items\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/8.x/billing.md:991
+#: docs/8.x/billing.md:1002
 #, no-wrap
 msgid "Subscription Items"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:994
+#: docs/8.x/billing.md:1005
 msgid ""
 "When a subscription has multiple prices, it will have multiple subscription "
 "\"items\" stored in your database's `subscription_items` table. You may "
@@ -2811,13 +2858,13 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1000
+#: docs/8.x/billing.md:1011
 #, no-wrap
 msgid "    $subscriptionItem = $user->subscription('default')->items->first();\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1004
+#: docs/8.x/billing.md:1015
 #, no-wrap
 msgid ""
 "    // Retrieve the Stripe price and quantity for a specific item...\n"
@@ -2826,12 +2873,12 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1006
+#: docs/8.x/billing.md:1017
 msgid "You can also retrieve a specific price using the `findItemOrFail` method:"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1010
+#: docs/8.x/billing.md:1021
 #, no-wrap
 msgid ""
 "    $subscriptionItem = "
@@ -2839,19 +2886,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1012
+#: docs/8.x/billing.md:1023
 #, no-wrap
 msgid "<a name=\"metered-billing\"></a>\n"
 msgstr ""
 
 #. type: Title ###
-#: docs/8.x/billing.md:1012
+#: docs/8.x/billing.md:1023
 #, no-wrap
 msgid "Metered Billing"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1015
+#: docs/8.x/billing.md:1026
 msgid ""
 "[Metered "
 "billing](https://stripe.com/docs/billing/subscriptions/metered-billing) "
@@ -2861,7 +2908,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1017
+#: docs/8.x/billing.md:1028
 msgid ""
 "To start using metered billing, you will first need to create a new product "
 "in your Stripe dashboard with a metered price. Then, use the `meteredPrice` "
@@ -2869,7 +2916,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1024
+#: docs/8.x/billing.md:1035
 #, no-wrap
 msgid ""
 "    Route::post('/user/subscribe', function (Request $request) {\n"
@@ -2879,12 +2926,12 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1029
+#: docs/8.x/billing.md:1040
 msgid "You may also start a metered subscription via [Stripe Checkout](#checkout):"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1034
+#: docs/8.x/billing.md:1045
 #, no-wrap
 msgid ""
 "    $checkout = Auth::user()\n"
@@ -2894,7 +2941,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1038
+#: docs/8.x/billing.md:1049
 #, no-wrap
 msgid ""
 "    return view('your-checkout-view', [\n"
@@ -2903,19 +2950,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1040
+#: docs/8.x/billing.md:1051
 #, no-wrap
 msgid "<a name=\"reporting-usage\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/8.x/billing.md:1040
+#: docs/8.x/billing.md:1051
 #, no-wrap
 msgid "Reporting Usage"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1043
+#: docs/8.x/billing.md:1054
 msgid ""
 "As your customer uses your application, you will report their usage to "
 "Stripe so that they can be billed accurately. To increment the usage of a "
@@ -2923,13 +2970,13 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1047
+#: docs/8.x/billing.md:1058
 #, no-wrap
 msgid "    $user->subscription('default')->reportUsage();\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1049
+#: docs/8.x/billing.md:1060
 msgid ""
 "By default, a \"usage quantity\" of 1 is added to the billing "
 "period. Alternatively, you may pass a specific amount of \"usage\" to add to "
@@ -2937,13 +2984,13 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1053
+#: docs/8.x/billing.md:1064
 #, no-wrap
 msgid "    $user->subscription('default')->reportUsage(15);\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1055
+#: docs/8.x/billing.md:1066
 msgid ""
 "If your application offers multiple prices on a single subscription, you "
 "will need to use the `reportUsageFor` method to specify the metered price "
@@ -2951,13 +2998,13 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1059
+#: docs/8.x/billing.md:1070
 #, no-wrap
 msgid "    $user->subscription('default')->reportUsageFor('price_metered', 15);\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1061
+#: docs/8.x/billing.md:1072
 msgid ""
 "Sometimes, you may need to update usage which you have previously "
 "reported. To accomplish this, you may pass a timestamp or a "
@@ -2968,38 +3015,38 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1065
+#: docs/8.x/billing.md:1076
 #, no-wrap
 msgid "    $user->subscription('default')->reportUsage(5, $timestamp);\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1067
+#: docs/8.x/billing.md:1078
 #, no-wrap
 msgid "<a name=\"retrieving-usage-records\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/8.x/billing.md:1067
+#: docs/8.x/billing.md:1078
 #, no-wrap
 msgid "Retrieving Usage Records"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1070
+#: docs/8.x/billing.md:1081
 msgid ""
 "To retrieve a customer's past usage, you may use a subscription instance's "
 "`usageRecords` method:"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1074
+#: docs/8.x/billing.md:1085
 #, no-wrap
 msgid "    $usageRecords = $user->subscription('default')->usageRecords();\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1076
+#: docs/8.x/billing.md:1087
 msgid ""
 "If your application offers multiple prices on a single subscription, you may "
 "use the `usageRecordsFor` method to specify the metered price that you wish "
@@ -3007,7 +3054,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1080
+#: docs/8.x/billing.md:1091
 #, no-wrap
 msgid ""
 "    $usageRecords = "
@@ -3015,7 +3062,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1082
+#: docs/8.x/billing.md:1093
 msgid ""
 "The `usageRecords` and `usageRecordsFor` methods return a Collection "
 "instance containing an associative array of usage records. You may iterate "
@@ -3023,7 +3070,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1088
+#: docs/8.x/billing.md:1099
 #, no-wrap
 msgid ""
 "    @foreach ($usageRecords as $usageRecord)\n"
@@ -3034,7 +3081,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1090
+#: docs/8.x/billing.md:1101
 msgid ""
 "For a full reference of all usage data returned and how to use Stripe's "
 "cursor based pagination, please consult [the official Stripe API "
@@ -3042,19 +3089,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1092
+#: docs/8.x/billing.md:1103
 #, no-wrap
 msgid "<a name=\"subscription-taxes\"></a>\n"
 msgstr ""
 
 #. type: Title ###
-#: docs/8.x/billing.md:1092
+#: docs/8.x/billing.md:1103
 #, no-wrap
 msgid "Subscription Taxes"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1095
+#: docs/8.x/billing.md:1106
 #, no-wrap
 msgid ""
 "> {note} Instead of calculating Tax Rates manually, you can [automatically "
@@ -3062,7 +3109,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1097
+#: docs/8.x/billing.md:1108
 msgid ""
 "To specify the tax rates a user pays on a subscription, you should implement "
 "the `taxRates` method on your billable model and return an array containing "
@@ -3071,7 +3118,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1107
+#: docs/8.x/billing.md:1118
 #, no-wrap
 msgid ""
 "    /**\n"
@@ -3086,7 +3133,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1109
+#: docs/8.x/billing.md:1120
 msgid ""
 "The `taxRates` method enables you to apply a tax rate on a "
 "customer-by-customer basis, which may be helpful for a user base that spans "
@@ -3094,7 +3141,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1111
+#: docs/8.x/billing.md:1122
 msgid ""
 "If you're offering multiprice subscriptions, you may define different tax "
 "rates for each price by implementing a `priceTaxRates` method on your "
@@ -3102,7 +3149,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1123
+#: docs/8.x/billing.md:1134
 #, no-wrap
 msgid ""
 "    /**\n"
@@ -3119,7 +3166,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1125
+#: docs/8.x/billing.md:1136
 #, no-wrap
 msgid ""
 "> {note} The `taxRates` method only applies to subscription charges. If you "
@@ -3128,19 +3175,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1127
+#: docs/8.x/billing.md:1138
 #, no-wrap
 msgid "<a name=\"syncing-tax-rates\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/8.x/billing.md:1127
+#: docs/8.x/billing.md:1138
 #, no-wrap
 msgid "Syncing Tax Rates"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1130
+#: docs/8.x/billing.md:1141
 msgid ""
 "When changing the hard-coded tax rate IDs returned by the `taxRates` method, "
 "the tax settings on any existing subscriptions for the user will remain the "
@@ -3150,13 +3197,13 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1132
+#: docs/8.x/billing.md:1143
 #, no-wrap
 msgid "    $user->subscription('default')->syncTaxRates();\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1134
+#: docs/8.x/billing.md:1145
 msgid ""
 "This will also sync any multiprice subscription item tax rates. If your "
 "application is offering multiprice subscriptions, you should ensure that "
@@ -3165,19 +3212,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1136
+#: docs/8.x/billing.md:1147
 #, no-wrap
 msgid "<a name=\"tax-exemption\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/8.x/billing.md:1136
+#: docs/8.x/billing.md:1147
 #, no-wrap
 msgid "Tax Exemption"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1139
+#: docs/8.x/billing.md:1150
 msgid ""
 "Cashier also offers the `isNotTaxExempt`, `isTaxExempt`, and "
 "`reverseChargeApplies` methods to determine if the customer is tax "
@@ -3186,7 +3233,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1147
+#: docs/8.x/billing.md:1158
 #, no-wrap
 msgid ""
 "    $user->isTaxExempt();\n"
@@ -3195,7 +3242,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1149
+#: docs/8.x/billing.md:1160
 #, no-wrap
 msgid ""
 "> {note} These methods are also available on any `Laravel\\Cashier\\Invoice` "
@@ -3204,19 +3251,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1151
+#: docs/8.x/billing.md:1162
 #, no-wrap
 msgid "<a name=\"subscription-anchor-date\"></a>\n"
 msgstr ""
 
 #. type: Title ###
-#: docs/8.x/billing.md:1151
+#: docs/8.x/billing.md:1162
 #, no-wrap
 msgid "Subscription Anchor Date"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1154
+#: docs/8.x/billing.md:1165
 msgid ""
 "By default, the billing cycle anchor is the date the subscription was "
 "created or, if a trial period is used, the date that the trial ends. If you "
@@ -3225,7 +3272,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1159
+#: docs/8.x/billing.md:1170
 #, no-wrap
 msgid ""
 "    Route::post('/user/subscribe', function (Request $request) {\n"
@@ -3233,7 +3280,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1163
+#: docs/8.x/billing.md:1174
 #, no-wrap
 msgid ""
 "        $request->user()->newSubscription('default', 'price_monthly')\n"
@@ -3242,7 +3289,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1168
+#: docs/8.x/billing.md:1179
 msgid ""
 "For more information on managing subscription billing cycles, consult the "
 "[Stripe billing cycle "
@@ -3250,40 +3297,40 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1170
+#: docs/8.x/billing.md:1181
 #, no-wrap
 msgid "<a name=\"cancelling-subscriptions\"></a>\n"
 msgstr ""
 
 #. type: Title ###
-#: docs/8.x/billing.md:1170
+#: docs/8.x/billing.md:1181
 #, no-wrap
 msgid "Cancelling Subscriptions"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1173
+#: docs/8.x/billing.md:1184
 msgid ""
 "To cancel a subscription, call the `cancel` method on the user's "
 "subscription:"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1175
+#: docs/8.x/billing.md:1186
 #, no-wrap
 msgid "    $user->subscription('default')->cancel();\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1177
+#: docs/8.x/billing.md:1188
 msgid ""
-"When a subscription is cancelled, Cashier will automatically set the "
+"When a subscription is canceled, Cashier will automatically set the "
 "`ends_at` column in your `subscriptions` database table. This column is used "
 "to know when the `subscribed` method should begin returning `false`."
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1179
+#: docs/8.x/billing.md:1190
 msgid ""
 "For example, if a customer cancels a subscription on March 1st, but the "
 "subscription was not scheduled to end until March 5th, the `subscribed` "
@@ -3293,27 +3340,27 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1181
+#: docs/8.x/billing.md:1192
 msgid ""
-"You may determine if a user has cancelled their subscription but are still "
-"on their \"grace period\" using the `onGracePeriod` method:"
+"You may determine if a user has canceled their subscription but are still on "
+"their \"grace period\" using the `onGracePeriod` method:"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1187
+#: docs/8.x/billing.md:1198
 msgid ""
 "If you wish to cancel a subscription immediately, call the `cancelNow` "
 "method on the user's subscription:"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1189
+#: docs/8.x/billing.md:1200
 #, no-wrap
 msgid "    $user->subscription('default')->cancelNow();\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1191
+#: docs/8.x/billing.md:1202
 msgid ""
 "If you wish to cancel a subscription immediately and invoice any remaining "
 "un-invoiced metered usage or new / pending proration invoice items, call the "
@@ -3321,18 +3368,18 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1193
+#: docs/8.x/billing.md:1204
 #, no-wrap
 msgid "    $user->subscription('default')->cancelNowAndInvoice();\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1195
+#: docs/8.x/billing.md:1206
 msgid "You may also choose to cancel the subscription at a specific moment in time:"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1199
+#: docs/8.x/billing.md:1210
 #, no-wrap
 msgid ""
 "    $user->subscription('default')->cancelAt(\n"
@@ -3341,33 +3388,33 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1201
+#: docs/8.x/billing.md:1212
 #, no-wrap
 msgid "<a name=\"resuming-subscriptions\"></a>\n"
 msgstr ""
 
 #. type: Title ###
-#: docs/8.x/billing.md:1201
+#: docs/8.x/billing.md:1212
 #, no-wrap
 msgid "Resuming Subscriptions"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1204
+#: docs/8.x/billing.md:1215
 msgid ""
-"If a customer has cancelled their subscription and you wish to resume it, "
-"you may invoke the `resume` method on the subscription. The customer must "
-"still be within their \"grace period\" in order to resume a subscription:"
+"If a customer has canceled their subscription and you wish to resume it, you "
+"may invoke the `resume` method on the subscription. The customer must still "
+"be within their \"grace period\" in order to resume a subscription:"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1206
+#: docs/8.x/billing.md:1217
 #, no-wrap
 msgid "    $user->subscription('default')->resume();\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1208
+#: docs/8.x/billing.md:1219
 msgid ""
 "If the customer cancels a subscription and then resumes that subscription "
 "before the subscription has fully expired the customer will not be billed "
@@ -3376,31 +3423,31 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1210
+#: docs/8.x/billing.md:1221
 #, no-wrap
 msgid "<a name=\"subscription-trials\"></a>\n"
 msgstr ""
 
 #. type: Title ##
-#: docs/8.x/billing.md:1210
+#: docs/8.x/billing.md:1221
 #, no-wrap
 msgid "Subscription Trials"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1213
+#: docs/8.x/billing.md:1224
 #, no-wrap
 msgid "<a name=\"with-payment-method-up-front\"></a>\n"
 msgstr ""
 
 #. type: Title ###
-#: docs/8.x/billing.md:1213
+#: docs/8.x/billing.md:1224
 #, no-wrap
 msgid "With Payment Method Up Front"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1216
+#: docs/8.x/billing.md:1227
 msgid ""
 "If you would like to offer trial periods to your customers while still "
 "collecting payment method information up front, you should use the "
@@ -3408,7 +3455,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1223
+#: docs/8.x/billing.md:1234
 #, no-wrap
 msgid ""
 "    Route::post('/user/subscribe', function (Request $request) {\n"
@@ -3418,7 +3465,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1228
+#: docs/8.x/billing.md:1239
 msgid ""
 "This method will set the trial period ending date on the subscription record "
 "within the database and instruct Stripe to not begin billing the customer "
@@ -3427,29 +3474,29 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1230
+#: docs/8.x/billing.md:1241
 #, no-wrap
 msgid ""
-"> {note} If the customer's subscription is not cancelled before the trial "
+"> {note} If the customer's subscription is not canceled before the trial "
 "ending date they will be charged as soon as the trial expires, so you should "
 "be sure to notify your users of their trial ending date.\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1232
+#: docs/8.x/billing.md:1243
 msgid ""
 "The `trialUntil` method allows you to provide a `DateTime` instance that "
 "specifies when the trial period should end:"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1234
+#: docs/8.x/billing.md:1245
 #, no-wrap
 msgid "    use Carbon\\Carbon;\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1238
+#: docs/8.x/billing.md:1249
 #, no-wrap
 msgid ""
 "    $user->newSubscription('default', 'price_monthly')\n"
@@ -3458,7 +3505,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1240
+#: docs/8.x/billing.md:1251
 msgid ""
 "You may determine if a user is within their trial period using either the "
 "`onTrial` method of the user instance or the `onTrial` method of the "
@@ -3466,7 +3513,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1244
+#: docs/8.x/billing.md:1255
 #, no-wrap
 msgid ""
 "    if ($user->onTrial('default')) {\n"
@@ -3475,30 +3522,30 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1250
+#: docs/8.x/billing.md:1261
 msgid "You may use the `endTrial` method to immediately end a subscription trial:"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1252
+#: docs/8.x/billing.md:1263
 #, no-wrap
 msgid "    $user->subscription('default')->endTrial();\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1254
+#: docs/8.x/billing.md:1265
 #, no-wrap
 msgid "<a name=\"defining-trial-days-in-stripe-cashier\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/8.x/billing.md:1254
+#: docs/8.x/billing.md:1265
 #, no-wrap
 msgid "Defining Trial Days In Stripe / Cashier"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1257
+#: docs/8.x/billing.md:1268
 msgid ""
 "You may choose to define how many trial days your price's receive in the "
 "Stripe dashboard or always pass them explicitly using Cashier. If you choose "
@@ -3509,19 +3556,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1259
+#: docs/8.x/billing.md:1270
 #, no-wrap
 msgid "<a name=\"without-payment-method-up-front\"></a>\n"
 msgstr ""
 
 #. type: Title ###
-#: docs/8.x/billing.md:1259
+#: docs/8.x/billing.md:1270
 #, no-wrap
 msgid "Without Payment Method Up Front"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1262
+#: docs/8.x/billing.md:1273
 msgid ""
 "If you would like to offer trial periods without collecting the user's "
 "payment method information up front, you may set the `trial_ends_at` column "
@@ -3530,7 +3577,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1269
+#: docs/8.x/billing.md:1280
 #, no-wrap
 msgid ""
 "    $user = User::create([\n"
@@ -3540,7 +3587,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1271
+#: docs/8.x/billing.md:1282
 #, no-wrap
 msgid ""
 "> {note} Be sure to add a [date "
@@ -3549,7 +3596,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1273
+#: docs/8.x/billing.md:1284
 msgid ""
 "Cashier refers to this type of trial as a \"generic trial\", since it is not "
 "attached to any existing subscription. The `onTrial` method on the billable "
@@ -3558,7 +3605,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1277
+#: docs/8.x/billing.md:1288
 #, no-wrap
 msgid ""
 "    if ($user->onTrial()) {\n"
@@ -3567,14 +3614,14 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1279
+#: docs/8.x/billing.md:1290
 msgid ""
 "Once you are ready to create an actual subscription for the user, you may "
 "use the `newSubscription` method as usual:"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1283
+#: docs/8.x/billing.md:1294
 #, no-wrap
 msgid ""
 "    $user->newSubscription('default', "
@@ -3582,7 +3629,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1285
+#: docs/8.x/billing.md:1296
 msgid ""
 "To retrieve the user's trial ending date, you may use the `trialEndsAt` "
 "method. This method will return a Carbon date instance if a user is on a "
@@ -3592,7 +3639,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1289
+#: docs/8.x/billing.md:1300
 #, no-wrap
 msgid ""
 "    if ($user->onTrial()) {\n"
@@ -3601,7 +3648,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1291
+#: docs/8.x/billing.md:1302
 msgid ""
 "You may also use the `onGenericTrial` method if you wish to know "
 "specifically that the user is within their \"generic\" trial period and has "
@@ -3609,7 +3656,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1295
+#: docs/8.x/billing.md:1306
 #, no-wrap
 msgid ""
 "    if ($user->onGenericTrial()) {\n"
@@ -3618,19 +3665,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1297
+#: docs/8.x/billing.md:1308
 #, no-wrap
 msgid "<a name=\"extending-trials\"></a>\n"
 msgstr ""
 
 #. type: Title ###
-#: docs/8.x/billing.md:1297
+#: docs/8.x/billing.md:1308
 #, no-wrap
 msgid "Extending Trials"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1300
+#: docs/8.x/billing.md:1311
 msgid ""
 "The `extendTrial` method allows you to extend the trial period of a "
 "subscription after the subscription has been created. If the trial has "
@@ -3640,13 +3687,13 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1304
+#: docs/8.x/billing.md:1315
 #, no-wrap
 msgid "    $subscription = User::find(1)->subscription('default');\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1309
+#: docs/8.x/billing.md:1320
 #, no-wrap
 msgid ""
 "    // End the trial 7 days from now...\n"
@@ -3656,7 +3703,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1314
+#: docs/8.x/billing.md:1325
 #, no-wrap
 msgid ""
 "    // Add an additional 5 days to the trial...\n"
@@ -3666,19 +3713,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1316
+#: docs/8.x/billing.md:1327
 #, no-wrap
 msgid "<a name=\"handling-stripe-webhooks\"></a>\n"
 msgstr ""
 
 #. type: Title ##
-#: docs/8.x/billing.md:1316
+#: docs/8.x/billing.md:1327
 #, no-wrap
 msgid "Handling Stripe Webhooks"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1319
+#: docs/8.x/billing.md:1330
 #, no-wrap
 msgid ""
 "> {tip} You may use [the Stripe CLI](https://stripe.com/docs/stripe-cli) to "
@@ -3686,7 +3733,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1321
+#: docs/8.x/billing.md:1332
 msgid ""
 "Stripe can notify your application of a variety of events via webhooks. By "
 "default, a route that points to Cashier's webhook controller is "
@@ -3695,7 +3742,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1323
+#: docs/8.x/billing.md:1334
 msgid ""
 "By default, the Cashier webhook controller will automatically handle "
 "cancelling subscriptions that have too many failed charges (as defined by "
@@ -3705,7 +3752,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1325
+#: docs/8.x/billing.md:1336
 msgid ""
 "To ensure your application can handle Stripe webhooks, be sure to configure "
 "the webhook URL in the Stripe control panel. By default, Cashier's webhook "
@@ -3714,7 +3761,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1332
+#: docs/8.x/billing.md:1343
 msgid ""
 "- `customer.subscription.created` - `customer.subscription.updated` - "
 "`customer.subscription.deleted` - `customer.updated` - `customer.deleted` - "
@@ -3722,7 +3769,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1334
+#: docs/8.x/billing.md:1345
 msgid ""
 "For convenience, Cashier includes a `cashier:webhook` Artisan command. This "
 "command will create a webhook in Stripe that listens to all of the events "
@@ -3730,13 +3777,13 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1336
+#: docs/8.x/billing.md:1347
 #, no-wrap
 msgid "    php artisan cashier:webhook\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1338
+#: docs/8.x/billing.md:1349
 msgid ""
 "By default, the created webhook will point to the URL defined by the "
 "`APP_URL` environment variable and the `cashier.webhook` route that is "
@@ -3745,7 +3792,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1340
+#: docs/8.x/billing.md:1351
 #, no-wrap
 msgid ""
 "    php artisan cashier:webhook --url "
@@ -3753,7 +3800,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1342
+#: docs/8.x/billing.md:1353
 msgid ""
 "The webhook that is created will use the Stripe API version that your "
 "version of Cashier is compatible with. If you would like to use a different "
@@ -3761,13 +3808,13 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1344
+#: docs/8.x/billing.md:1355
 #, no-wrap
-msgid "    php artisan cashier:webhook --app-version=\"2019-12-03\"\n"
+msgid "    php artisan cashier:webhook --api-version=\"2019-12-03\"\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1346
+#: docs/8.x/billing.md:1357
 msgid ""
 "After creation, the webhook will be immediately active. If you wish to "
 "create the webhook but have it disabled until you're ready, you may provide "
@@ -3775,13 +3822,13 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1348
+#: docs/8.x/billing.md:1359
 #, no-wrap
 msgid "    php artisan cashier:webhook --disabled\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1350
+#: docs/8.x/billing.md:1361
 #, no-wrap
 msgid ""
 "> {note} Make sure you protect incoming Stripe webhook requests with "
@@ -3790,19 +3837,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1352
+#: docs/8.x/billing.md:1363
 #, no-wrap
 msgid "<a name=\"webhooks-csrf-protection\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/8.x/billing.md:1352
+#: docs/8.x/billing.md:1363
 #, no-wrap
 msgid "Webhooks & CSRF Protection"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1355
+#: docs/8.x/billing.md:1366
 msgid ""
 "Since Stripe webhooks need to bypass Laravel's [CSRF "
 "protection](/docs/{{version}}/csrf), be sure to list the URI as an exception "
@@ -3811,7 +3858,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1359
+#: docs/8.x/billing.md:1370
 #, no-wrap
 msgid ""
 "    protected $except = [\n"
@@ -3820,19 +3867,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1361
+#: docs/8.x/billing.md:1372
 #, no-wrap
 msgid "<a name=\"defining-webhook-event-handlers\"></a>\n"
 msgstr ""
 
 #. type: Title ###
-#: docs/8.x/billing.md:1361
+#: docs/8.x/billing.md:1372
 #, no-wrap
 msgid "Defining Webhook Event Handlers"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1364
+#: docs/8.x/billing.md:1375
 msgid ""
 "Cashier automatically handles subscription cancellations for failed charges "
 "and other common Stripe webhook events. However, if you have additional "
@@ -3841,14 +3888,14 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1367
+#: docs/8.x/billing.md:1378
 msgid ""
 "- `Laravel\\Cashier\\Events\\WebhookReceived` - "
 "`Laravel\\Cashier\\Events\\WebhookHandled`"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1369
+#: docs/8.x/billing.md:1380
 msgid ""
 "Both events contain the full payload of the Stripe webhook. For example, if "
 "you wish to handle the `invoice.payment_succeeded` webhook, you may register "
@@ -3857,19 +3904,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1373
+#: docs/8.x/billing.md:1384
 #, no-wrap
 msgid "    namespace App\\Listeners;\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1375
+#: docs/8.x/billing.md:1386
 #, no-wrap
 msgid "    use Laravel\\Cashier\\Events\\WebhookReceived;\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1391
+#: docs/8.x/billing.md:1402
 #, no-wrap
 msgid ""
 "    class StripeEventListener\n"
@@ -3890,20 +3937,20 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1393
+#: docs/8.x/billing.md:1404
 msgid ""
 "Once your listener has been defined, you may register it within your "
 "application's `EventServiceProvider`:"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1397
+#: docs/8.x/billing.md:1408
 #, no-wrap
 msgid "    namespace App\\Providers;\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1401
+#: docs/8.x/billing.md:1412
 #, no-wrap
 msgid ""
 "    use App\\Listeners\\StripeEventListener;\n"
@@ -3913,7 +3960,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1410
+#: docs/8.x/billing.md:1421
 #, no-wrap
 msgid ""
 "    class EventServiceProvider extends ServiceProvider\n"
@@ -3927,19 +3974,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1412
+#: docs/8.x/billing.md:1423
 #, no-wrap
 msgid "<a name=\"verifying-webhook-signatures\"></a>\n"
 msgstr ""
 
 #. type: Title ###
-#: docs/8.x/billing.md:1412
+#: docs/8.x/billing.md:1423
 #, no-wrap
 msgid "Verifying Webhook Signatures"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1415
+#: docs/8.x/billing.md:1426
 msgid ""
 "To secure your webhooks, you may use [Stripe's webhook "
 "signatures](https://stripe.com/docs/webhooks/signatures). For convenience, "
@@ -3948,7 +3995,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1417
+#: docs/8.x/billing.md:1428
 msgid ""
 "To enable webhook verification, ensure that the `STRIPE_WEBHOOK_SECRET` "
 "environment variable is set in your application's `.env` file. The webhook "
@@ -3956,31 +4003,31 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1419
+#: docs/8.x/billing.md:1430
 #, no-wrap
 msgid "<a name=\"single-charges\"></a>\n"
 msgstr ""
 
 #. type: Title ##
-#: docs/8.x/billing.md:1419
+#: docs/8.x/billing.md:1430
 #, no-wrap
 msgid "Single Charges"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1422
+#: docs/8.x/billing.md:1433
 #, no-wrap
 msgid "<a name=\"simple-charge\"></a>\n"
 msgstr ""
 
 #. type: Title ###
-#: docs/8.x/billing.md:1422
+#: docs/8.x/billing.md:1433
 #, no-wrap
 msgid "Simple Charge"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1425
+#: docs/8.x/billing.md:1436
 #, no-wrap
 msgid ""
 "> {note} The `charge` method accepts the amount you would like to charge in "
@@ -3990,7 +4037,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1427
+#: docs/8.x/billing.md:1438
 msgid ""
 "If you would like to make a one-time charge against a customer, you may use "
 "the `charge` method on a billable model instance. You will need to [provide "
@@ -3999,7 +4046,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1434
+#: docs/8.x/billing.md:1445
 #, no-wrap
 msgid ""
 "    Route::post('/purchase', function (Request $request) {\n"
@@ -4009,7 +4056,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1439
+#: docs/8.x/billing.md:1450
 msgid ""
 "The `charge` method accepts an array as its third argument, allowing you to "
 "pass any options you wish to the underlying Stripe charge creation. More "
@@ -4019,7 +4066,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1443
+#: docs/8.x/billing.md:1454
 #, no-wrap
 msgid ""
 "    $user->charge(100, $paymentMethod, [\n"
@@ -4028,7 +4075,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1445
+#: docs/8.x/billing.md:1456
 msgid ""
 "You may also use the `charge` method without an underlying customer or "
 "user. To accomplish this, invoke the `charge` method on a new instance of "
@@ -4036,13 +4083,13 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1449
+#: docs/8.x/billing.md:1460
 #, no-wrap
 msgid "    $stripeCharge = (new User)->charge(100, $paymentMethod);\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1451
+#: docs/8.x/billing.md:1462
 msgid ""
 "The `charge` method will throw an exception if the charge fails. If the "
 "charge is successful, an instance of `Laravel\\Cashier\\Payment` will be "
@@ -4050,7 +4097,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1457
+#: docs/8.x/billing.md:1468
 #, no-wrap
 msgid ""
 "    try {\n"
@@ -4061,19 +4108,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1459
+#: docs/8.x/billing.md:1470
 #, no-wrap
 msgid "<a name=\"charge-with-invoice\"></a>\n"
 msgstr ""
 
 #. type: Title ###
-#: docs/8.x/billing.md:1459
+#: docs/8.x/billing.md:1470
 #, no-wrap
 msgid "Charge With Invoice"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1462
+#: docs/8.x/billing.md:1473
 msgid ""
 "Sometimes you may need to make a one-time charge and offer a PDF receipt to "
 "your customer. The `invoicePrice` method lets you do just that. For example, "
@@ -4081,13 +4128,13 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1464
+#: docs/8.x/billing.md:1475
 #, no-wrap
 msgid "    $user->invoicePrice('price_tshirt', 5);\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1466
+#: docs/8.x/billing.md:1477
 msgid ""
 "The invoice will be immediately charged against the user's default payment "
 "method. The `invoicePrice` method also accepts an array as its third "
@@ -4097,7 +4144,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1474
+#: docs/8.x/billing.md:1485
 #, no-wrap
 msgid ""
 "    $user->invoicePrice('price_tshirt', 5, [\n"
@@ -4110,20 +4157,20 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1476
+#: docs/8.x/billing.md:1487
 msgid ""
 "Alternatively, you may use the `invoiceFor` method to make a \"one-off\" "
 "charge against the customer's default payment method:"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1478
+#: docs/8.x/billing.md:1489
 #, no-wrap
 msgid "    $user->invoiceFor('One Time Fee', 500);\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1480
+#: docs/8.x/billing.md:1491
 msgid ""
 "Although the `invoiceFor` method is available for you to use, it is "
 "recommendeded that you use the `invoicePrice` method with pre-defined "
@@ -4132,7 +4179,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1482
+#: docs/8.x/billing.md:1493
 #, no-wrap
 msgid ""
 "> {note} The `invoicePrice` and `invoiceFor` methods will create a Stripe "
@@ -4142,19 +4189,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1484
+#: docs/8.x/billing.md:1495
 #, no-wrap
 msgid "<a name=\"refunding-charges\"></a>\n"
 msgstr ""
 
 #. type: Title ###
-#: docs/8.x/billing.md:1484
+#: docs/8.x/billing.md:1495
 #, no-wrap
 msgid "Refunding Charges"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1487
+#: docs/8.x/billing.md:1498
 msgid ""
 "If you need to refund a Stripe charge, you may use the `refund` method. This "
 "method accepts the Stripe [payment intent "
@@ -4162,43 +4209,43 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1489
+#: docs/8.x/billing.md:1500
 #, no-wrap
 msgid "    $payment = $user->charge(100, $paymentMethodId);\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1491
+#: docs/8.x/billing.md:1502
 #, no-wrap
 msgid "    $user->refund($payment->id);\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1493
+#: docs/8.x/billing.md:1504
 #, no-wrap
 msgid "<a name=\"invoices\"></a>\n"
 msgstr ""
 
 #. type: Title ##
-#: docs/8.x/billing.md:1493
+#: docs/8.x/billing.md:1504
 #, no-wrap
 msgid "Invoices"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1496
+#: docs/8.x/billing.md:1507
 #, no-wrap
 msgid "<a name=\"retrieving-invoices\"></a>\n"
 msgstr ""
 
 #. type: Title ###
-#: docs/8.x/billing.md:1496
+#: docs/8.x/billing.md:1507
 #, no-wrap
 msgid "Retrieving Invoices"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1499
+#: docs/8.x/billing.md:1510
 msgid ""
 "You may easily retrieve an array of a billable model's invoices using the "
 "`invoices` method. The `invoices` method returns a collection of "
@@ -4206,51 +4253,51 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1501
+#: docs/8.x/billing.md:1512
 #, no-wrap
 msgid "    $invoices = $user->invoices();\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1503
+#: docs/8.x/billing.md:1514
 msgid ""
 "If you would like to include pending invoices in the results, you may use "
 "the `invoicesIncludingPending` method:"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1505
+#: docs/8.x/billing.md:1516
 #, no-wrap
 msgid "    $invoices = $user->invoicesIncludingPending();\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1507
+#: docs/8.x/billing.md:1518
 msgid ""
 "You may use the `findInvoice` method to retrieve a specific invoice by its "
 "ID:"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1509
+#: docs/8.x/billing.md:1520
 #, no-wrap
 msgid "    $invoice = $user->findInvoice($invoiceId);\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1511
+#: docs/8.x/billing.md:1522
 #, no-wrap
 msgid "<a name=\"displaying-invoice-information\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/8.x/billing.md:1511
+#: docs/8.x/billing.md:1522
 #, no-wrap
 msgid "Displaying Invoice Information"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1514
+#: docs/8.x/billing.md:1525
 msgid ""
 "When listing the invoices for the customer, you may use the invoice's "
 "methods to display the relevant invoice information. For example, you may "
@@ -4259,7 +4306,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1524
+#: docs/8.x/billing.md:1535
 #, no-wrap
 msgid ""
 "    <table>\n"
@@ -4275,57 +4322,57 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1526
+#: docs/8.x/billing.md:1537
 #, no-wrap
 msgid "<a name=\"upcoming-invoices\"></a>\n"
 msgstr ""
 
 #. type: Title ###
-#: docs/8.x/billing.md:1526
+#: docs/8.x/billing.md:1537
 #, no-wrap
 msgid "Upcoming Invoices"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1529
+#: docs/8.x/billing.md:1540
 msgid ""
 "To retrieve the upcoming invoice for a customer, you may use the "
 "`upcomingInvoice` method:"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1531
+#: docs/8.x/billing.md:1542
 #, no-wrap
 msgid "    $invoice = $user->upcomingInvoice();\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1533
+#: docs/8.x/billing.md:1544
 msgid ""
 "Similary, if the customer has multiple subscriptions, you can also retrieve "
 "the upcoming invoice for a specific subscription:"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1535
+#: docs/8.x/billing.md:1546
 #, no-wrap
 msgid "    $invoice = $user->subscription('default')->upcomingInvoice();\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1537
+#: docs/8.x/billing.md:1548
 #, no-wrap
 msgid "<a name=\"previewing-subscription-invoices\"></a>\n"
 msgstr ""
 
 #. type: Title ###
-#: docs/8.x/billing.md:1537
+#: docs/8.x/billing.md:1548
 #, no-wrap
 msgid "Previewing Subscription Invoice"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1540
+#: docs/8.x/billing.md:1551
 msgid ""
 "Using the `previewInvoice` method, you can preview an invoice before making "
 "price changes. This will allow you to determine what your customer's invoice "
@@ -4333,7 +4380,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1542
+#: docs/8.x/billing.md:1553
 #, no-wrap
 msgid ""
 "    $invoice = "
@@ -4341,14 +4388,14 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1544
+#: docs/8.x/billing.md:1555
 msgid ""
 "You may pass an array of prices to the `previewInvoice` method in order to "
 "preview invoices with multiple new prices:"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1546
+#: docs/8.x/billing.md:1557
 #, no-wrap
 msgid ""
 "    $invoice = "
@@ -4357,19 +4404,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1548
+#: docs/8.x/billing.md:1559
 #, no-wrap
 msgid "<a name=\"generating-invoice-pdfs\"></a>\n"
 msgstr ""
 
 #. type: Title ###
-#: docs/8.x/billing.md:1548
+#: docs/8.x/billing.md:1559
 #, no-wrap
 msgid "Generating Invoice PDFs"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1551
+#: docs/8.x/billing.md:1562
 msgid ""
 "From within a route or controller, you may use the `downloadInvoice` method "
 "to generate a PDF download of a given invoice. This method will "
@@ -4378,7 +4425,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1560
+#: docs/8.x/billing.md:1571
 #, no-wrap
 msgid ""
 "    Route::get('/user/invoice/{invoice}', function (Request $request, "
@@ -4391,7 +4438,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1562
+#: docs/8.x/billing.md:1573
 msgid ""
 "By default, all data on the invoice is derived from the customer and invoice "
 "data stored in Stripe. However, you can customize some of this data by "
@@ -4401,7 +4448,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1573
+#: docs/8.x/billing.md:1584
 #, no-wrap
 msgid ""
 "    return $request->user()->downloadInvoice($invoiceId, [\n"
@@ -4417,14 +4464,14 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1575
+#: docs/8.x/billing.md:1586
 msgid ""
 "The `downloadInvoice` method also allows for a custom filename via its third "
 "argument. This filename will automatically be suffixed with `.pdf`:"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1577
+#: docs/8.x/billing.md:1588
 #, no-wrap
 msgid ""
 "    return $request->user()->downloadInvoice($invoiceId, [], "
@@ -4432,19 +4479,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1579
+#: docs/8.x/billing.md:1590
 #, no-wrap
 msgid "<a name=\"checkout\"></a>\n"
 msgstr ""
 
 #. type: Title ##
-#: docs/8.x/billing.md:1579
+#: docs/8.x/billing.md:1590
 #, no-wrap
 msgid "Checkout"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1582
+#: docs/8.x/billing.md:1593
 msgid ""
 "Cashier Stripe also provides support for [Stripe "
 "Checkout](https://stripe.com/payments/checkout). Stripe Checkout takes the "
@@ -4453,7 +4500,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1584
+#: docs/8.x/billing.md:1595
 msgid ""
 "The following documentation contains information on how to get started using "
 "Stripe Checkout with Cashier. To learn more about Stripe Checkout, you "
@@ -4462,19 +4509,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1586
+#: docs/8.x/billing.md:1597
 #, no-wrap
 msgid "<a name=\"product-checkouts\"></a>\n"
 msgstr ""
 
 #. type: Title ###
-#: docs/8.x/billing.md:1586
+#: docs/8.x/billing.md:1597
 #, no-wrap
 msgid "Product Checkouts"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1589
+#: docs/8.x/billing.md:1600
 msgid ""
 "You may perform a checkout for an existing product that has been created "
 "within your Stripe dashboard using the `checkout` method on a billable "
@@ -4483,7 +4530,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1595
+#: docs/8.x/billing.md:1606
 #, no-wrap
 msgid ""
 "    Route::get('/product-checkout', function (Request $request) {\n"
@@ -4492,12 +4539,12 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1597
+#: docs/8.x/billing.md:1608
 msgid "If needed, you may also specify a product quantity:"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1603
+#: docs/8.x/billing.md:1614
 #, no-wrap
 msgid ""
 "    Route::get('/product-checkout', function (Request $request) {\n"
@@ -4506,7 +4553,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1605
+#: docs/8.x/billing.md:1616
 msgid ""
 "When a customer visits this route they will be redirected to Stripe's "
 "Checkout page. By default, when a user successfully completes or cancels a "
@@ -4516,7 +4563,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1614
+#: docs/8.x/billing.md:1625
 #, no-wrap
 msgid ""
 "    Route::get('/product-checkout', function (Request $request) {\n"
@@ -4528,7 +4575,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1616
+#: docs/8.x/billing.md:1627
 msgid ""
 "When defining your `success_url` checkout option, you may instruct Stripe to "
 "add the checkout session ID as a query string parameter when invoking your "
@@ -4538,7 +4585,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1620
+#: docs/8.x/billing.md:1631
 #, no-wrap
 msgid ""
 "    use Illuminate\\Http\\Request;\n"
@@ -4547,7 +4594,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1627
+#: docs/8.x/billing.md:1638
 #, no-wrap
 msgid ""
 "    Route::get('/product-checkout', function (Request $request) {\n"
@@ -4560,37 +4607,37 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1631
+#: docs/8.x/billing.md:1641
 #, no-wrap
 msgid ""
 "    Route::get('/checkout-success', function (Request $request) {\n"
-"        $session = Session::retrieve($request->get('session_id'));\n"
-"        $customer = Customer::retrieve($session->customer);\n"
+"        $checkoutSession = "
+"$request->user()->stripe()->checkout->sessions->retrieve($request->get('session_id'));\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1634
+#: docs/8.x/billing.md:1644
 #, no-wrap
 msgid ""
-"        return view('checkout.success', ['customerName' => "
-"$customer->name]);\n"
+"        return view('checkout.success', ['checkoutSession' => "
+"$checkoutSession]);\n"
 "    })->name('checkout-success');\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1636
+#: docs/8.x/billing.md:1646
 #, no-wrap
 msgid "<a name=\"checkout-promotion-codes\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/8.x/billing.md:1636
+#: docs/8.x/billing.md:1646
 #, no-wrap
 msgid "Promotion Codes"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1639
+#: docs/8.x/billing.md:1649
 msgid ""
 "By default, Stripe Checkout does not allow [user redeemable promotion "
 "codes](https://stripe.com/docs/billing/subscriptions/discounts/codes). "
@@ -4599,7 +4646,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1647
+#: docs/8.x/billing.md:1657
 #, no-wrap
 msgid ""
 "    Route::get('/product-checkout', function (Request $request) {\n"
@@ -4610,19 +4657,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1649
+#: docs/8.x/billing.md:1659
 #, no-wrap
 msgid "<a name=\"single-charge-checkouts\"></a>\n"
 msgstr ""
 
 #. type: Title ###
-#: docs/8.x/billing.md:1649
+#: docs/8.x/billing.md:1659
 #, no-wrap
 msgid "Single Charge Checkouts"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1652
+#: docs/8.x/billing.md:1662
 msgid ""
 "You can also perform a simple charge for an ad-hoc product that has not been "
 "created in your Stripe dashboard. To do so you may use the `checkoutCharge` "
@@ -4632,7 +4679,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1658
+#: docs/8.x/billing.md:1668
 #, no-wrap
 msgid ""
 "    Route::get('/charge-checkout', function (Request $request) {\n"
@@ -4641,29 +4688,29 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1660
+#: docs/8.x/billing.md:1670
 #, no-wrap
 msgid ""
 "> {note} When using the `checkoutCharge` method, Stripe will always create a "
 "new product and price in your Stripe dashboard. Therefore, we recommend that "
-"you create the products up front in your Stripe dashboard and use of the "
+"you create the products up front in your Stripe dashboard and use the "
 "`checkout` method instead.\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1662
+#: docs/8.x/billing.md:1672
 #, no-wrap
 msgid "<a name=\"subscription-checkouts\"></a>\n"
 msgstr ""
 
 #. type: Title ###
-#: docs/8.x/billing.md:1662
+#: docs/8.x/billing.md:1672
 #, no-wrap
 msgid "Subscription Checkouts"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1665
+#: docs/8.x/billing.md:1675
 #, no-wrap
 msgid ""
 "> {note} Using Stripe Checkout for subscriptions requires you to enable the "
@@ -4673,7 +4720,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1667
+#: docs/8.x/billing.md:1677
 msgid ""
 "You may also use Stripe Checkout to initiate subscriptions. After defining "
 "your subscription with Cashier's subscription builder methods, you may call "
@@ -4682,7 +4729,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1675
+#: docs/8.x/billing.md:1685
 #, no-wrap
 msgid ""
 "    Route::get('/subscription-checkout', function (Request $request) {\n"
@@ -4693,14 +4740,14 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1677
+#: docs/8.x/billing.md:1687
 msgid ""
 "Just as with product checkouts, you may customize the success and "
 "cancellation URLs:"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1688
+#: docs/8.x/billing.md:1698
 #, no-wrap
 msgid ""
 "    Route::get('/subscription-checkout', function (Request $request) {\n"
@@ -4714,12 +4761,12 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1690
+#: docs/8.x/billing.md:1700
 msgid "Of course, you can also enable promotion codes for subscription checkouts:"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1699
+#: docs/8.x/billing.md:1709
 #, no-wrap
 msgid ""
 "    Route::get('/subscription-checkout', function (Request $request) {\n"
@@ -4731,7 +4778,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1701
+#: docs/8.x/billing.md:1711
 #, no-wrap
 msgid ""
 "> {note} Unfortunately Stripe Checkout does not support all subscription "
@@ -4744,26 +4791,26 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1703
+#: docs/8.x/billing.md:1713
 #, no-wrap
 msgid "<a name=\"stripe-checkout-trial-periods\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/8.x/billing.md:1703
+#: docs/8.x/billing.md:1713
 #, no-wrap
 msgid "Stripe Checkout & Trial Periods"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1706
+#: docs/8.x/billing.md:1716
 msgid ""
 "Of course, you can define a trial period when building a subscription that "
 "will be completed using Stripe Checkout:"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1710
+#: docs/8.x/billing.md:1720
 #, no-wrap
 msgid ""
 "    $checkout = Auth::user()->newSubscription('default', 'price_monthly')\n"
@@ -4772,26 +4819,26 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1712
+#: docs/8.x/billing.md:1722
 msgid ""
 "However, the trial period must be at least 48 hours, which is the minimum "
 "amount of trial time supported by Stripe Checkout."
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1714
+#: docs/8.x/billing.md:1724
 #, no-wrap
 msgid "<a name=\"stripe-checkout-subscriptions-and-webhooks\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/8.x/billing.md:1714
+#: docs/8.x/billing.md:1724
 #, no-wrap
 msgid "Subscriptions & Webhooks"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1717
+#: docs/8.x/billing.md:1727
 msgid ""
 "Remember, Stripe and Cashier update subscription statuses via webhooks, so "
 "there's a possibility a subscription might not yet be active when the "
@@ -4801,19 +4848,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1719
+#: docs/8.x/billing.md:1729
 #, no-wrap
 msgid "<a name=\"collecting-tax-ids\"></a>\n"
 msgstr ""
 
 #. type: Title ###
-#: docs/8.x/billing.md:1719
+#: docs/8.x/billing.md:1729
 #, no-wrap
 msgid "Collecting Tax IDs"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1722
+#: docs/8.x/billing.md:1732
 msgid ""
 "Checkout also supports collecting a customer's Tax ID. To enable this on a "
 "checkout session, invoke the `collectTaxIds` method when creating the "
@@ -4821,13 +4868,13 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1724
+#: docs/8.x/billing.md:1734
 #, no-wrap
 msgid "    $checkout = $user->collectTaxIds()->checkout('price_tshirt');\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1726
+#: docs/8.x/billing.md:1736
 msgid ""
 "When this method is invoked, a new checkbox will be available to the "
 "customer that allows them to indicate if they're purchasing as a company. If "
@@ -4835,19 +4882,29 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1728
+#: docs/8.x/billing.md:1738
+#, no-wrap
+msgid ""
+"> {note} If you have already configured [automatic tax "
+"collection](#tax-configuration) in your application's service provider then "
+"this feature will be enabled automatically and there is no need to invoke "
+"the `collectTaxIds` method.\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/billing.md:1740
 #, no-wrap
 msgid "<a name=\"handling-failed-payments\"></a>\n"
 msgstr ""
 
 #. type: Title ##
-#: docs/8.x/billing.md:1728
+#: docs/8.x/billing.md:1740
 #, no-wrap
 msgid "Handling Failed Payments"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1731
+#: docs/8.x/billing.md:1743
 msgid ""
 "Sometimes, payments for subscriptions or single charges can fail. When this "
 "happens, Cashier will throw an "
@@ -4857,7 +4914,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1733
+#: docs/8.x/billing.md:1745
 msgid ""
 "First, you could redirect your customer to the dedicated payment "
 "confirmation page which is included with Cashier. This page already has an "
@@ -4867,13 +4924,13 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1735 docs/8.x/billing.md:1776
+#: docs/8.x/billing.md:1747 docs/8.x/billing.md:1788
 #, no-wrap
 msgid "    use Laravel\\Cashier\\Exceptions\\IncompletePayment;\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1745
+#: docs/8.x/billing.md:1757
 #, no-wrap
 msgid ""
 "    try {\n"
@@ -4888,7 +4945,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1747
+#: docs/8.x/billing.md:1759
 msgid ""
 "On the payment confirmation page, the customer will be prompted to enter "
 "their credit card information again and perform any additional actions "
@@ -4900,7 +4957,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1758
+#: docs/8.x/billing.md:1770
 #, no-wrap
 msgid ""
 "<div class=\"content-list\" markdown=\"1\">\n"
@@ -4916,7 +4973,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1760
+#: docs/8.x/billing.md:1772
 msgid ""
 "Alternatively, you could allow Stripe to handle the payment confirmation for "
 "you. In this case, instead of redirecting to the payment confirmation page, "
@@ -4928,7 +4985,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1762
+#: docs/8.x/billing.md:1774
 msgid ""
 "Payment exceptions may be thrown for the following methods: `charge`, "
 "`invoiceFor`, and `invoice` on models using the `Billable` trait. When "
@@ -4939,7 +4996,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1764
+#: docs/8.x/billing.md:1776
 msgid ""
 "Determining if an existing subscription has an incomplete payment may be "
 "accomplished using the `hasIncompletePayment` method on the billable model "
@@ -4947,14 +5004,14 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1774
+#: docs/8.x/billing.md:1786
 msgid ""
 "You can derive the specific status of an incomplete payment by inspecting "
 "the `payment` property on the exception instance:"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1782
+#: docs/8.x/billing.md:1794
 #, no-wrap
 msgid ""
 "    try {\n"
@@ -4965,7 +5022,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1790
+#: docs/8.x/billing.md:1802
 #, no-wrap
 msgid ""
 "        // Check specific conditions...\n"
@@ -4978,19 +5035,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1792
+#: docs/8.x/billing.md:1804
 #, no-wrap
 msgid "<a name=\"strong-customer-authentication\"></a>\n"
 msgstr ""
 
 #. type: Title ##
-#: docs/8.x/billing.md:1792
+#: docs/8.x/billing.md:1804
 #, no-wrap
 msgid "Strong Customer Authentication"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1795
+#: docs/8.x/billing.md:1807
 msgid ""
 "If your business or one of your customers is based in Europe you will need "
 "to abide by the EU's Strong Customer Authentication (SCA) regulations. These "
@@ -5000,7 +5057,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1797
+#: docs/8.x/billing.md:1809
 #, no-wrap
 msgid ""
 "> {note} Before getting started, review [Stripe's guide on PSD2 and "
@@ -5010,19 +5067,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1799
+#: docs/8.x/billing.md:1811
 #, no-wrap
 msgid "<a name=\"payments-requiring-additional-confirmation\"></a>\n"
 msgstr ""
 
 #. type: Title ###
-#: docs/8.x/billing.md:1799
+#: docs/8.x/billing.md:1811
 #, no-wrap
 msgid "Payments Requiring Additional Confirmation"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1802
+#: docs/8.x/billing.md:1814
 msgid ""
 "SCA regulations often require extra verification in order to confirm and "
 "process a payment. When this happens, Cashier will throw a "
@@ -5033,7 +5090,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1804
+#: docs/8.x/billing.md:1816
 msgid ""
 "Payment confirmation screens presented by Stripe or Cashier may be tailored "
 "to a specific bank or card issuer's payment flow and can include additional "
@@ -5042,19 +5099,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1806
+#: docs/8.x/billing.md:1818
 #, no-wrap
 msgid "<a name=\"incomplete-and-past-due-state\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/8.x/billing.md:1806
+#: docs/8.x/billing.md:1818
 #, no-wrap
 msgid "Incomplete and Past Due State"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1809
+#: docs/8.x/billing.md:1821
 msgid ""
 "When a payment needs additional confirmation, the subscription will remain "
 "in an `incomplete` or `past_due` state as indicated by its `stripe_status` "
@@ -5064,7 +5121,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1811
+#: docs/8.x/billing.md:1823
 msgid ""
 "For more information on `incomplete` and `past_due` states, please refer to "
 "[our additional documentation on these "
@@ -5072,19 +5129,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1813
+#: docs/8.x/billing.md:1825
 #, no-wrap
 msgid "<a name=\"off-session-payment-notifications\"></a>\n"
 msgstr ""
 
 #. type: Title ###
-#: docs/8.x/billing.md:1813
+#: docs/8.x/billing.md:1825
 #, no-wrap
 msgid "Off-Session Payment Notifications"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1816
+#: docs/8.x/billing.md:1828
 msgid ""
 "Since SCA regulations require customers to occasionally verify their payment "
 "details even while their subscription is active, Cashier can send a "
@@ -5098,7 +5155,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1818
+#: docs/8.x/billing.md:1830
 #, no-wrap
 msgid ""
 "    "
@@ -5106,7 +5163,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1820
+#: docs/8.x/billing.md:1832
 msgid ""
 "To ensure that off-session payment confirmation notifications are delivered, "
 "verify that [Stripe webhooks are configured](#handling-stripe-webhooks) for "
@@ -5116,7 +5173,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1822
+#: docs/8.x/billing.md:1834
 #, no-wrap
 msgid ""
 "> {note} Notifications will be sent even when customers are manually making "
@@ -5129,19 +5186,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1824
+#: docs/8.x/billing.md:1836
 #, no-wrap
 msgid "<a name=\"stripe-sdk\"></a>\n"
 msgstr ""
 
 #. type: Title ##
-#: docs/8.x/billing.md:1824
+#: docs/8.x/billing.md:1836
 #, no-wrap
 msgid "Stripe SDK"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1827
+#: docs/8.x/billing.md:1839
 msgid ""
 "Many of Cashier's objects are wrappers around Stripe SDK objects. If you "
 "would like to interact with the Stripe objects directly, you may "
@@ -5149,32 +5206,32 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1829
+#: docs/8.x/billing.md:1841
 #, no-wrap
 msgid "    $stripeSubscription = $subscription->asStripeSubscription();\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1831
+#: docs/8.x/billing.md:1843
 #, no-wrap
 msgid "    $stripeSubscription->application_fee_percent = 5;\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1833
+#: docs/8.x/billing.md:1845
 #, no-wrap
 msgid "    $stripeSubscription->save();\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1835
+#: docs/8.x/billing.md:1847
 msgid ""
 "You may also use the `updateStripeSubscription` method to update a Stripe "
 "subscription directly:"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1837
+#: docs/8.x/billing.md:1849
 #, no-wrap
 msgid ""
 "    $subscription->updateStripeSubscription(['application_fee_percent' => "
@@ -5182,19 +5239,34 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1839
+#: docs/8.x/billing.md:1851
+msgid ""
+"You may invoke the `stripe` method on the `Cashier` class if you would like "
+"to use the `Stripe\\StripeClient` client directly. For example, you could "
+"use this method to access the `StripeClient` instance and retrieve a list of "
+"prices from your Stripe account:"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/billing.md:1855
+#, no-wrap
+msgid "    $prices = Cashier::stripe()->prices->all();\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/8.x/billing.md:1857
 #, no-wrap
 msgid "<a name=\"testing\"></a>\n"
 msgstr ""
 
 #. type: Title ##
-#: docs/8.x/billing.md:1839
+#: docs/8.x/billing.md:1857
 #, no-wrap
 msgid "Testing"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1842
+#: docs/8.x/billing.md:1860
 msgid ""
 "When testing an application that uses Cashier, you may mock the actual HTTP "
 "requests to the Stripe API; however, this requires you to partially "
@@ -5205,7 +5277,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1844
+#: docs/8.x/billing.md:1862
 msgid ""
 "When testing, remember that Cashier itself already has a great test suite, "
 "so you should only focus on testing the subscription and payment flow of "
@@ -5213,20 +5285,20 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1846
+#: docs/8.x/billing.md:1864
 msgid ""
 "To get started, add the **testing** version of your Stripe secret to your "
 "`phpunit.xml` file:"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1848
+#: docs/8.x/billing.md:1866
 #, no-wrap
 msgid "    <env name=\"STRIPE_SECRET\" value=\"sk_test_<your-key>\"/>\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1850
+#: docs/8.x/billing.md:1868
 msgid ""
 "Now, whenever you interact with Cashier while testing, it will send actual "
 "API requests to your Stripe testing environment. For convenience, you should "
@@ -5235,7 +5307,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/8.x/billing.md:1851
+#: docs/8.x/billing.md:1869
 #, no-wrap
 msgid ""
 "> {tip} In order to test a variety of billing scenarios, such as credit card "

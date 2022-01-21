@@ -7,13 +7,13 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Laravel Documentation VERSION\n"
-"POT-Creation-Date: 2021-09-13 05:07+0000\n"
+"POT-Creation-Date: 2022-01-21 20:16+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
 #. type: Title #
@@ -23,12 +23,12 @@ msgid "Broadcasting"
 msgstr ""
 
 #. type: Bullet: '- '
-#: docs/master/broadcasting.md:36
+#: docs/master/broadcasting.md:40
 msgid "[Introduction](#introduction)"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/broadcasting.md:36
+#: docs/master/broadcasting.md:40
 #, no-wrap
 msgid ""
 "- [Server Side Installation](#server-side-installation)\n"
@@ -55,6 +55,7 @@ msgid ""
 "    - [Defining Channel Classes](#defining-channel-classes)\n"
 "- [Broadcasting Events](#broadcasting-events)\n"
 "    - [Only To Others](#only-to-others)\n"
+"    - [Customizing The Connection](#customizing-the-connection)\n"
 "- [Receiving Broadcasts](#receiving-broadcasts)\n"
 "    - [Listening For Events](#listening-for-events)\n"
 "    - [Leaving A Channel](#leaving-a-channel)\n"
@@ -64,24 +65,27 @@ msgid ""
 "    - [Joining Presence Channels](#joining-presence-channels)\n"
 "    - [Broadcasting To Presence "
 "Channels](#broadcasting-to-presence-channels)\n"
+"- [Model Broadcasting](#model-broadcasting)\n"
+"    - [Model Broadcasting Conventions](#model-broadcasting-conventions)\n"
+"    - [Listening For Model Broadcasts](#listening-for-model-broadcasts)\n"
 "- [Client Events](#client-events)\n"
 "- [Notifications](#notifications)\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/broadcasting.md:38
+#: docs/master/broadcasting.md:42
 #, no-wrap
 msgid "<a name=\"introduction\"></a>\n"
 msgstr ""
 
 #. type: Title ##
-#: docs/master/broadcasting.md:38
+#: docs/master/broadcasting.md:42
 #, no-wrap
 msgid "Introduction"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/broadcasting.md:41
+#: docs/master/broadcasting.md:45
 msgid ""
 "In many modern web applications, WebSockets are used to implement realtime, "
 "live-updating user interfaces. When some data is updated on the server, a "
@@ -92,7 +96,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/broadcasting.md:43
+#: docs/master/broadcasting.md:47
 msgid ""
 "For example, imagine your application is able to export a user's data to a "
 "CSV file and email it to them. However, creating this CSV file takes several "
@@ -106,7 +110,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/broadcasting.md:45
+#: docs/master/broadcasting.md:49
 msgid ""
 "To assist you in building these types of features, Laravel makes it easy to "
 "\"broadcast\" your server-side Laravel [events](/docs/{{version}}/events) "
@@ -116,30 +120,39 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/broadcasting.md:47
+#: docs/master/broadcasting.md:51
+msgid ""
+"The core concepts behind broadcasting are simple: clients connect to named "
+"channels on the frontend, while your Laravel application broadcasts events "
+"to these channels on the backend. These events can contain any additional "
+"data you wish to make available to the frontend."
+msgstr ""
+
+#. type: Plain text
+#: docs/master/broadcasting.md:53
 #, no-wrap
 msgid "<a name=\"supported-drivers\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/master/broadcasting.md:47
+#: docs/master/broadcasting.md:53
 #, no-wrap
 msgid "Supported Drivers"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/broadcasting.md:50
+#: docs/master/broadcasting.md:56
 msgid ""
 "By default, Laravel includes two server-side broadcasting drivers for you to "
 "choose from: [Pusher Channels](https://pusher.com/channels) and "
 "[Ably](https://ably.io). However, community driven packages such as "
 "[laravel-websockets](https://beyondco.de/docs/laravel-websockets/getting-started/introduction) "
-"provide additional broadcasting drivers that do not require commercial "
-"broadcasting providers."
+"and [soketi](https://docs.soketi.app/) provide additional broadcasting "
+"drivers that do not require commercial broadcasting providers."
 msgstr ""
 
 #. type: Plain text
-#: docs/master/broadcasting.md:52
+#: docs/master/broadcasting.md:58
 #, no-wrap
 msgid ""
 "> {tip} Before diving into event broadcasting, make sure you have read "
@@ -148,19 +161,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/broadcasting.md:54
+#: docs/master/broadcasting.md:60
 #, no-wrap
 msgid "<a name=\"server-side-installation\"></a>\n"
 msgstr ""
 
 #. type: Title ##
-#: docs/master/broadcasting.md:54
+#: docs/master/broadcasting.md:60
 #, no-wrap
 msgid "Server Side Installation"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/broadcasting.md:57
+#: docs/master/broadcasting.md:63
 msgid ""
 "To get started using Laravel's event broadcasting, we need to do some "
 "configuration within the Laravel application as well as install a few "
@@ -168,7 +181,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/broadcasting.md:59
+#: docs/master/broadcasting.md:65
 msgid ""
 "Event broadcasting is accomplished by a server-side broadcasting driver that "
 "broadcasts your Laravel events so that Laravel Echo (a JavaScript library) "
@@ -177,19 +190,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/broadcasting.md:61
+#: docs/master/broadcasting.md:67
 #, no-wrap
 msgid "<a name=\"configuration\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/master/broadcasting.md:61 docs/master/broadcasting.md:607
+#: docs/master/broadcasting.md:67 docs/master/broadcasting.md:658
 #, no-wrap
 msgid "Configuration"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/broadcasting.md:64
+#: docs/master/broadcasting.md:70
 msgid ""
 "All of your application's event broadcasting configuration is stored in the "
 "`config/broadcasting.php` configuration file. Laravel supports several "
@@ -202,19 +215,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/broadcasting.md:66
+#: docs/master/broadcasting.md:72
 #, no-wrap
 msgid "<a name=\"broadcast-service-provider\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/master/broadcasting.md:66
+#: docs/master/broadcasting.md:72
 #, no-wrap
 msgid "Broadcast Service Provider"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/broadcasting.md:69
+#: docs/master/broadcasting.md:75
 msgid ""
 "Before broadcasting any events, you will first need to register the "
 "`App\\Providers\\BroadcastServiceProvider`. In new Laravel applications, you "
@@ -225,19 +238,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/broadcasting.md:71
+#: docs/master/broadcasting.md:77
 #, no-wrap
 msgid "<a name=\"queue-configuration\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/master/broadcasting.md:71
+#: docs/master/broadcasting.md:77
 #, no-wrap
 msgid "Queue Configuration"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/broadcasting.md:74
+#: docs/master/broadcasting.md:80
 msgid ""
 "You will also need to configure and run a [queue "
 "worker](/docs/{{version}}/queues). All event broadcasting is done via queued "
@@ -246,19 +259,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/broadcasting.md:76
+#: docs/master/broadcasting.md:82
 #, no-wrap
 msgid "<a name=\"pusher-channels\"></a>\n"
 msgstr ""
 
 #. type: Title ###
-#: docs/master/broadcasting.md:76 docs/master/broadcasting.md:128
+#: docs/master/broadcasting.md:82 docs/master/broadcasting.md:142
 #, no-wrap
 msgid "Pusher Channels"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/broadcasting.md:79
+#: docs/master/broadcasting.md:85
 msgid ""
 "If you plan to broadcast your events using [Pusher "
 "Channels](https://pusher.com/channels), you should install the Pusher "
@@ -266,13 +279,13 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/broadcasting.md:81
+#: docs/master/broadcasting.md:87
 #, no-wrap
-msgid "    composer require pusher/pusher-php-server \"~4.0\"\n"
+msgid "    composer require pusher/pusher-php-server\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/broadcasting.md:83
+#: docs/master/broadcasting.md:89
 msgid ""
 "Next, you should configure your Pusher Channels credentials in the "
 "`config/broadcasting.php` configuration file. An example Pusher Channels "
@@ -284,7 +297,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/broadcasting.md:88
+#: docs/master/broadcasting.md:94
 #, no-wrap
 msgid ""
 "    PUSHER_APP_ID=your-pusher-app-id\n"
@@ -294,7 +307,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/broadcasting.md:90
+#: docs/master/broadcasting.md:96
 msgid ""
 "The `config/broadcasting.php` file's `pusher` configuration also allows you "
 "to specify additional `options` that are supported by Channels, such as the "
@@ -302,20 +315,20 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/broadcasting.md:92
+#: docs/master/broadcasting.md:98
 msgid ""
 "Next, you will need to change your broadcast driver to `pusher` in your "
 "`.env` file:"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/broadcasting.md:94
+#: docs/master/broadcasting.md:100
 #, no-wrap
 msgid "    BROADCAST_DRIVER=pusher\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/broadcasting.md:96 docs/master/broadcasting.md:118
+#: docs/master/broadcasting.md:102 docs/master/broadcasting.md:124
 msgid ""
 "Finally, you are ready to install and configure [Laravel "
 "Echo](#client-side-installation), which will receive the broadcast events on "
@@ -323,19 +336,108 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/broadcasting.md:98
+#: docs/master/broadcasting.md:104
 #, no-wrap
-msgid "<a name=\"pusher-compatible-laravel-websockets\"></a>\n"
+msgid "<a name=\"pusher-compatible-open-source-alternatives\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/master/broadcasting.md:98
+#: docs/master/broadcasting.md:104
 #, no-wrap
-msgid "Pusher Compatible Laravel Websockets"
+msgid "Open Source Pusher Alternatives"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/broadcasting.md:101 docs/master/broadcasting.md:123
+#: docs/master/broadcasting.md:107
+msgid ""
+"The [laravel-websockets](https://github.com/beyondcode/laravel-websockets) "
+"and [soketi](https://docs.soketi.app/) packages provide Pusher compatible "
+"WebSocket servers for Laravel. These packages allow you to leverage the full "
+"power of Laravel broadcasting without a commercial WebSocket provider. For "
+"more information on installing and using these packages, please consult our "
+"documentation on [open source alternatives](#open-source-alternatives)."
+msgstr ""
+
+#. type: Plain text
+#: docs/master/broadcasting.md:109
+#, no-wrap
+msgid "<a name=\"ably\"></a>\n"
+msgstr ""
+
+#. type: Title ###
+#: docs/master/broadcasting.md:109 docs/master/broadcasting.md:189
+#, no-wrap
+msgid "Ably"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/broadcasting.md:112
+msgid ""
+"If you plan to broadcast your events using [Ably](https://ably.io), you "
+"should install the Ably PHP SDK using the Composer package manager:"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/broadcasting.md:114
+#, no-wrap
+msgid "    composer require ably/ably-php\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/broadcasting.md:116
+msgid ""
+"Next, you should configure your Ably credentials in the "
+"`config/broadcasting.php` configuration file. An example Ably configuration "
+"is already included in this file, allowing you to quickly specify your "
+"key. Typically, this value should be set via the `ABLY_KEY` [environment "
+"variable](/docs/{{version}}/configuration#environment-configuration):"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/broadcasting.md:118
+#, no-wrap
+msgid "    ABLY_KEY=your-ably-key\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/broadcasting.md:120
+msgid ""
+"Next, you will need to change your broadcast driver to `ably` in your `.env` "
+"file:"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/broadcasting.md:122
+#, no-wrap
+msgid "    BROADCAST_DRIVER=ably\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/broadcasting.md:126
+#, no-wrap
+msgid "<a name=\"open-source-alternatives\"></a>\n"
+msgstr ""
+
+#. type: Title ###
+#: docs/master/broadcasting.md:126
+#, no-wrap
+msgid "Open Source Alternatives"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/broadcasting.md:129
+#, no-wrap
+msgid "<a name=\"open-source-alternatives-php\"></a>\n"
+msgstr ""
+
+#. type: Title ####
+#: docs/master/broadcasting.md:129
+#, no-wrap
+msgid "PHP"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/broadcasting.md:132
 msgid ""
 "The [laravel-websockets](https://github.com/beyondcode/laravel-websockets) "
 "package is a pure PHP, Pusher compatible WebSocket package for Laravel. This "
@@ -346,113 +448,71 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/broadcasting.md:103
+#: docs/master/broadcasting.md:134
 #, no-wrap
-msgid "<a name=\"ably\"></a>\n"
+msgid "<a name=\"open-source-alternatives-node\"></a>\n"
 msgstr ""
 
-#. type: Title ###
-#: docs/master/broadcasting.md:103 docs/master/broadcasting.md:175
+#. type: Title ####
+#: docs/master/broadcasting.md:134
 #, no-wrap
-msgid "Ably"
+msgid "Node"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/broadcasting.md:106
+#: docs/master/broadcasting.md:137
 msgid ""
-"If you plan to broadcast your events using [Ably](https://ably.io), you "
-"should install the Ably PHP SDK using the Composer package manager:"
+"[Soketi](https://github.com/soketi/soketi) is a Node based, Pusher "
+"compatible WebSocket server for Laravel. Under the hood, Soketi utilizes "
+"µWebSockets.js for extreme scalability and speed. This package allows you to "
+"leverage the full power of Laravel broadcasting without a commercial "
+"WebSocket provider. For more information on installing and using this "
+"package, please consult its [official "
+"documentation](https://docs.soketi.app/)."
 msgstr ""
 
 #. type: Plain text
-#: docs/master/broadcasting.md:108
-#, no-wrap
-msgid "    composer require ably/ably-php\n"
-msgstr ""
-
-#. type: Plain text
-#: docs/master/broadcasting.md:110
-msgid ""
-"Next, you should configure your Ably credentials in the "
-"`config/broadcasting.php` configuration file. An example Ably configuration "
-"is already included in this file, allowing you to quickly specify your "
-"key. Typically, this value should be set via the `ABLY_KEY` [environment "
-"variable](/docs/{{version}}/configuration#environment-configuration):"
-msgstr ""
-
-#. type: Plain text
-#: docs/master/broadcasting.md:112
-#, no-wrap
-msgid "    ABLY_KEY=your-ably-key\n"
-msgstr ""
-
-#. type: Plain text
-#: docs/master/broadcasting.md:114
-msgid ""
-"Next, you will need to change your broadcast driver to `ably` in your `.env` "
-"file:"
-msgstr ""
-
-#. type: Plain text
-#: docs/master/broadcasting.md:116
-#, no-wrap
-msgid "    BROADCAST_DRIVER=ably\n"
-msgstr ""
-
-#. type: Plain text
-#: docs/master/broadcasting.md:120
-#, no-wrap
-msgid "<a name=\"open-source-alternatives\"></a>\n"
-msgstr ""
-
-#. type: Title ###
-#: docs/master/broadcasting.md:120
-#, no-wrap
-msgid "Open Source Alternatives"
-msgstr ""
-
-#. type: Plain text
-#: docs/master/broadcasting.md:125
+#: docs/master/broadcasting.md:139
 #, no-wrap
 msgid "<a name=\"client-side-installation\"></a>\n"
 msgstr ""
 
 #. type: Title ##
-#: docs/master/broadcasting.md:125
+#: docs/master/broadcasting.md:139
 #, no-wrap
 msgid "Client Side Installation"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/broadcasting.md:128
+#: docs/master/broadcasting.md:142
 #, no-wrap
 msgid "<a name=\"client-pusher-channels\"></a>\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/broadcasting.md:131
+#: docs/master/broadcasting.md:145
 msgid ""
-"Laravel Echo is a JavaScript library that makes it painless to subscribe to "
-"channels and listen for events broadcast by your server-side broadcasting "
-"driver. You may install Echo via the NPM package manager. In this example, "
-"we will also install the `pusher-js` package since we will be using the "
-"Pusher Channels broadcaster:"
+"[Laravel Echo](https://github.com/laravel/echo) is a JavaScript library that "
+"makes it painless to subscribe to channels and listen for events broadcast "
+"by your server-side broadcasting driver. You may install Echo via the NPM "
+"package manager. In this example, we will also install the `pusher-js` "
+"package since we will be using the Pusher Channels broadcaster:"
 msgstr ""
 
 #. type: Code fence info string
-#: docs/master/broadcasting.md:132 docs/master/broadcasting.md:181
+#: docs/master/broadcasting.md:146 docs/master/broadcasting.md:195
 #, no-wrap
 msgid "bash"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/broadcasting.md:132 docs/master/broadcasting.md:181
+#: docs/master/broadcasting.md:146 docs/master/broadcasting.md:195
 #, no-wrap
 msgid "npm install --save-dev laravel-echo pusher-js\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/broadcasting.md:137
+#: docs/master/broadcasting.md:151
 msgid ""
 "Once Echo is installed, you are ready to create a fresh Echo instance in "
 "your application's JavaScript. A great place to do this is at the bottom of "
@@ -462,13 +522,13 @@ msgid ""
 msgstr ""
 
 #. type: Code fence info string
-#: docs/master/broadcasting.md:138 docs/master/broadcasting.md:162 docs/master/broadcasting.md:189 docs/master/broadcasting.md:291 docs/master/broadcasting.md:623 docs/master/broadcasting.md:632 docs/master/broadcasting.md:644 docs/master/broadcasting.md:650 docs/master/broadcasting.md:658 docs/master/broadcasting.md:668
+#: docs/master/broadcasting.md:152 docs/master/broadcasting.md:176 docs/master/broadcasting.md:203 docs/master/broadcasting.md:305 docs/master/broadcasting.md:712 docs/master/broadcasting.md:721 docs/master/broadcasting.md:733 docs/master/broadcasting.md:743 docs/master/broadcasting.md:749 docs/master/broadcasting.md:757 docs/master/broadcasting.md:767 docs/master/broadcasting.md:1029
 #, no-wrap
 msgid "js"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/broadcasting.md:138
+#: docs/master/broadcasting.md:152
 #, no-wrap
 msgid ""
 "import Echo from 'laravel-echo';\n"
@@ -484,20 +544,20 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/broadcasting.md:152 docs/master/broadcasting.md:207
+#: docs/master/broadcasting.md:166 docs/master/broadcasting.md:221
 msgid ""
 "Once you have uncommented and adjusted the Echo configuration according to "
 "your needs, you may compile your application's assets:"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/broadcasting.md:154 docs/master/broadcasting.md:209
+#: docs/master/broadcasting.md:168 docs/master/broadcasting.md:223
 #, no-wrap
 msgid "    npm run dev\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/broadcasting.md:156 docs/master/broadcasting.md:211
+#: docs/master/broadcasting.md:170 docs/master/broadcasting.md:225
 #, no-wrap
 msgid ""
 "> {tip} To learn more about compiling your application's JavaScript assets, "
@@ -505,19 +565,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/broadcasting.md:158
+#: docs/master/broadcasting.md:172
 #, no-wrap
 msgid "<a name=\"using-an-existing-client-instance\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/master/broadcasting.md:158
+#: docs/master/broadcasting.md:172
 #, no-wrap
 msgid "Using An Existing Client Instance"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/broadcasting.md:161
+#: docs/master/broadcasting.md:175
 msgid ""
 "If you already have a pre-configured Pusher Channels client instance that "
 "you would like Echo to utilize, you may pass it to Echo via the `client` "
@@ -525,7 +585,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/broadcasting.md:162
+#: docs/master/broadcasting.md:176
 #, no-wrap
 msgid ""
 "import Echo from 'laravel-echo';\n"
@@ -540,22 +600,23 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/broadcasting.md:175
+#: docs/master/broadcasting.md:189
 #, no-wrap
 msgid "<a name=\"client-ably\"></a>\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/broadcasting.md:178
+#: docs/master/broadcasting.md:192
 msgid ""
-"Laravel Echo is a JavaScript library that makes it painless to subscribe to "
-"channels and listen for events broadcast by your server-side broadcasting "
-"driver. You may install Echo via the NPM package manager. In this example, "
-"we will also install the `pusher-js` package."
+"[Laravel Echo](https://github.com/laravel/echo) is a JavaScript library that "
+"makes it painless to subscribe to channels and listen for events broadcast "
+"by your server-side broadcasting driver. You may install Echo via the NPM "
+"package manager. In this example, we will also install the `pusher-js` "
+"package."
 msgstr ""
 
 #. type: Plain text
-#: docs/master/broadcasting.md:180
+#: docs/master/broadcasting.md:194
 msgid ""
 "You may wonder why we would install the `pusher-js` JavaScript library even "
 "though we are using Ably to broadcast our events. Thankfully, Ably includes "
@@ -564,7 +625,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/broadcasting.md:186
+#: docs/master/broadcasting.md:200
 #, no-wrap
 msgid ""
 "**Before continuing, you should enable Pusher protocol support in your Ably "
@@ -574,7 +635,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/broadcasting.md:188
+#: docs/master/broadcasting.md:202
 msgid ""
 "Once Echo is installed, you are ready to create a fresh Echo instance in "
 "your application's JavaScript. A great place to do this is at the bottom of "
@@ -586,7 +647,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/broadcasting.md:189
+#: docs/master/broadcasting.md:203
 #, no-wrap
 msgid ""
 "import Echo from 'laravel-echo';\n"
@@ -604,7 +665,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/broadcasting.md:205
+#: docs/master/broadcasting.md:219
 msgid ""
 "Note that our Ably Echo configuration references a `MIX_ABLY_PUBLIC_KEY` "
 "environment variable. This variable's value should be your Ably public "
@@ -613,19 +674,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/broadcasting.md:213
+#: docs/master/broadcasting.md:227
 #, no-wrap
 msgid "<a name=\"concept-overview\"></a>\n"
 msgstr ""
 
 #. type: Title ##
-#: docs/master/broadcasting.md:213
+#: docs/master/broadcasting.md:227
 #, no-wrap
 msgid "Concept Overview"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/broadcasting.md:216
+#: docs/master/broadcasting.md:230
 msgid ""
 "Laravel's event broadcasting allows you to broadcast your server-side "
 "Laravel events to your client-side JavaScript application using a "
@@ -636,7 +697,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/broadcasting.md:218
+#: docs/master/broadcasting.md:232
 msgid ""
 "Events are broadcast over \"channels\", which may be specified as public or "
 "private. Any visitor to your application may subscribe to a public channel "
@@ -646,36 +707,34 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/broadcasting.md:220
+#: docs/master/broadcasting.md:234
 #, no-wrap
 msgid ""
-"> {tip} If you would like to use an open source, PHP driven alternative to "
-"Pusher, check out the "
-"[laravel-websockets](https://github.com/beyondcode/laravel-websockets) "
-"package.\n"
+"> {tip} If you would like to explore open source alternatives to Pusher, "
+"check out the [open source alternatives](#open-source-alternatives).\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/broadcasting.md:222
+#: docs/master/broadcasting.md:236
 #, no-wrap
 msgid "<a name=\"using-example-application\"></a>\n"
 msgstr ""
 
 #. type: Title ###
-#: docs/master/broadcasting.md:222
+#: docs/master/broadcasting.md:236
 #, no-wrap
 msgid "Using An Example Application"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/broadcasting.md:225
+#: docs/master/broadcasting.md:239
 msgid ""
 "Before diving into each component of event broadcasting, let's take a high "
 "level overview using an e-commerce store as an example."
 msgstr ""
 
 #. type: Plain text
-#: docs/master/broadcasting.md:227
+#: docs/master/broadcasting.md:241
 msgid ""
 "In our application, let's assume we have a page that allows users to view "
 "the shipping status for their orders. Let's also assume that a "
@@ -684,31 +743,31 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/broadcasting.md:229 docs/master/broadcasting.md:583 docs/master/broadcasting.md:592
+#: docs/master/broadcasting.md:243 docs/master/broadcasting.md:634 docs/master/broadcasting.md:643 docs/master/broadcasting.md:672
 #, no-wrap
 msgid "    use App\\Events\\OrderShipmentStatusUpdated;\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/broadcasting.md:231
+#: docs/master/broadcasting.md:245 docs/master/broadcasting.md:636
 #, no-wrap
 msgid "    OrderShipmentStatusUpdated::dispatch($order);\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/broadcasting.md:233
+#: docs/master/broadcasting.md:247
 #, no-wrap
 msgid "<a name=\"the-shouldbroadcast-interface\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/master/broadcasting.md:233
+#: docs/master/broadcasting.md:247
 #, no-wrap
 msgid "The `ShouldBroadcast` Interface"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/broadcasting.md:236
+#: docs/master/broadcasting.md:250
 msgid ""
 "When a user is viewing one of their orders, we don't want them to have to "
 "refresh the page to view status updates. Instead, we want to broadcast the "
@@ -719,19 +778,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/broadcasting.md:238 docs/master/broadcasting.md:306 docs/master/broadcasting.md:420 docs/master/broadcasting.md:451 docs/master/broadcasting.md:544
+#: docs/master/broadcasting.md:252 docs/master/broadcasting.md:320 docs/master/broadcasting.md:446 docs/master/broadcasting.md:477 docs/master/broadcasting.md:595 docs/master/broadcasting.md:678
 #, no-wrap
 msgid "    <?php\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/broadcasting.md:240 docs/master/broadcasting.md:308 docs/master/broadcasting.md:453
+#: docs/master/broadcasting.md:254 docs/master/broadcasting.md:322 docs/master/broadcasting.md:479 docs/master/broadcasting.md:680
 #, no-wrap
 msgid "    namespace App\\Events;\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/broadcasting.md:248
+#: docs/master/broadcasting.md:262
 #, no-wrap
 msgid ""
 "    use App\\Order;\n"
@@ -744,7 +803,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/broadcasting.md:258
+#: docs/master/broadcasting.md:272
 #, no-wrap
 msgid ""
 "    class OrderShipmentStatusUpdated implements ShouldBroadcast\n"
@@ -759,7 +818,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/broadcasting.md:260
+#: docs/master/broadcasting.md:274
 msgid ""
 "The `ShouldBroadcast` interface requires our event to define a `broadcastOn` "
 "method. This method is responsible for returning the channels that the event "
@@ -770,7 +829,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/broadcasting.md:270
+#: docs/master/broadcasting.md:284
 #, no-wrap
 msgid ""
 "    /**\n"
@@ -785,19 +844,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/broadcasting.md:272
+#: docs/master/broadcasting.md:286
 #, no-wrap
 msgid "<a name=\"example-application-authorizing-channels\"></a>\n"
 msgstr ""
 
 #. type: Title ##
-#: docs/master/broadcasting.md:272 docs/master/broadcasting.md:467
+#: docs/master/broadcasting.md:286 docs/master/broadcasting.md:493
 #, no-wrap
 msgid "Authorizing Channels"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/broadcasting.md:275
+#: docs/master/broadcasting.md:289
 msgid ""
 "Remember, users must be authorized to listen on private channels. We may "
 "define our channel authorization rules in our application's "
@@ -807,13 +866,13 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/broadcasting.md:277 docs/master/broadcasting.md:512
+#: docs/master/broadcasting.md:291 docs/master/broadcasting.md:563
 #, no-wrap
 msgid "    use App\\Models\\Order;\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/broadcasting.md:281 docs/master/broadcasting.md:501
+#: docs/master/broadcasting.md:295 docs/master/broadcasting.md:552
 #, no-wrap
 msgid ""
 "    Broadcast::channel('orders.{orderId}', function ($user, $orderId) {\n"
@@ -822,7 +881,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/broadcasting.md:283 docs/master/broadcasting.md:503
+#: docs/master/broadcasting.md:297 docs/master/broadcasting.md:554
 msgid ""
 "The `channel` method accepts two arguments: the name of the channel and a "
 "callback which returns `true` or `false` indicating whether the user is "
@@ -830,7 +889,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/broadcasting.md:285 docs/master/broadcasting.md:505
+#: docs/master/broadcasting.md:299 docs/master/broadcasting.md:556
 msgid ""
 "All authorization callbacks receive the currently authenticated user as "
 "their first argument and any additional wildcard parameters as their "
@@ -840,30 +899,30 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/broadcasting.md:287
+#: docs/master/broadcasting.md:301
 #, no-wrap
 msgid "<a name=\"listening-for-event-broadcasts\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/master/broadcasting.md:287
+#: docs/master/broadcasting.md:301
 #, no-wrap
 msgid "Listening For Event Broadcasts"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/broadcasting.md:290
+#: docs/master/broadcasting.md:304
 msgid ""
 "Next, all that remains is to listen for the event in our JavaScript "
-"application. We can do this using Laravel Echo. First, we'll use the "
-"`private` method to subscribe to the private channel. Then, we may use the "
-"`listen` method to listen for the `OrderShipmentStatusUpdated` event. By "
-"default, all of the event's public properties will be included on the "
-"broadcast event:"
+"application. We can do this using [Laravel "
+"Echo](#client-side-installation). First, we'll use the `private` method to "
+"subscribe to the private channel. Then, we may use the `listen` method to "
+"listen for the `OrderShipmentStatusUpdated` event. By default, all of the "
+"event's public properties will be included on the broadcast event:"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/broadcasting.md:291
+#: docs/master/broadcasting.md:305
 #, no-wrap
 msgid ""
 "Echo.private(`orders.${orderId}`)\n"
@@ -873,19 +932,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/broadcasting.md:299
+#: docs/master/broadcasting.md:313
 #, no-wrap
 msgid "<a name=\"defining-broadcast-events\"></a>\n"
 msgstr ""
 
 #. type: Title ##
-#: docs/master/broadcasting.md:299
+#: docs/master/broadcasting.md:313
 #, no-wrap
 msgid "Defining Broadcast Events"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/broadcasting.md:302
+#: docs/master/broadcasting.md:316
 msgid ""
 "To inform Laravel that a given event should be broadcast, you must implement "
 "the `Illuminate\\Contracts\\Broadcasting\\ShouldBroadcast` interface on the "
@@ -894,7 +953,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/broadcasting.md:304
+#: docs/master/broadcasting.md:318
 msgid ""
 "The `ShouldBroadcast` interface requires you to implement a single method: "
 "`broadcastOn`. The `broadcastOn` method should return a channel or array of "
@@ -906,7 +965,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/broadcasting.md:316
+#: docs/master/broadcasting.md:330
 #, no-wrap
 msgid ""
 "    use App\\Models\\User;\n"
@@ -919,7 +978,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/broadcasting.md:320 docs/master/broadcasting.md:460
+#: docs/master/broadcasting.md:334 docs/master/broadcasting.md:486
 #, no-wrap
 msgid ""
 "    class ServerCreated implements ShouldBroadcast\n"
@@ -928,7 +987,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/broadcasting.md:327
+#: docs/master/broadcasting.md:341
 #, no-wrap
 msgid ""
 "        /**\n"
@@ -940,7 +999,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/broadcasting.md:338
+#: docs/master/broadcasting.md:352
 #, no-wrap
 msgid ""
 "        /**\n"
@@ -956,7 +1015,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/broadcasting.md:349
+#: docs/master/broadcasting.md:363
 #, no-wrap
 msgid ""
 "        /**\n"
@@ -972,7 +1031,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/broadcasting.md:351
+#: docs/master/broadcasting.md:365
 msgid ""
 "After implementing the `ShouldBroadcast` interface, you only need to [fire "
 "the event](/docs/{{version}}/events) as you normally would. Once the event "
@@ -981,19 +1040,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/broadcasting.md:353
+#: docs/master/broadcasting.md:367
 #, no-wrap
 msgid "<a name=\"broadcast-name\"></a>\n"
 msgstr ""
 
 #. type: Title ###
-#: docs/master/broadcasting.md:353
+#: docs/master/broadcasting.md:367
 #, no-wrap
 msgid "Broadcast Name"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/broadcasting.md:356
+#: docs/master/broadcasting.md:370
 msgid ""
 "By default, Laravel will broadcast the event using the event's class "
 "name. However, you may customize the broadcast name by defining a "
@@ -1001,7 +1060,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/broadcasting.md:366
+#: docs/master/broadcasting.md:380
 #, no-wrap
 msgid ""
 "    /**\n"
@@ -1016,7 +1075,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/broadcasting.md:368
+#: docs/master/broadcasting.md:382
 msgid ""
 "If you customize the broadcast name using the `broadcastAs` method, you "
 "should make sure to register your listener with a leading `.` "
@@ -1025,7 +1084,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/broadcasting.md:372
+#: docs/master/broadcasting.md:386
 #, no-wrap
 msgid ""
 "    .listen('.server.created', function (e) {\n"
@@ -1034,19 +1093,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/broadcasting.md:374
+#: docs/master/broadcasting.md:388
 #, no-wrap
 msgid "<a name=\"broadcast-data\"></a>\n"
 msgstr ""
 
 #. type: Title ###
-#: docs/master/broadcasting.md:374
+#: docs/master/broadcasting.md:388
 #, no-wrap
 msgid "Broadcast Data"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/broadcasting.md:377
+#: docs/master/broadcasting.md:391
 msgid ""
 "When an event is broadcast, all of its `public` properties are automatically "
 "serialized and broadcast as the event's payload, allowing you to access any "
@@ -1056,7 +1115,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/broadcasting.md:385
+#: docs/master/broadcasting.md:399
 #, no-wrap
 msgid ""
 "    {\n"
@@ -1069,7 +1128,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/broadcasting.md:387
+#: docs/master/broadcasting.md:401
 msgid ""
 "However, if you wish to have more fine-grained control over your broadcast "
 "payload, you may add a `broadcastWith` method to your event. This method "
@@ -1078,7 +1137,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/broadcasting.md:397
+#: docs/master/broadcasting.md:411
 #, no-wrap
 msgid ""
 "    /**\n"
@@ -1093,19 +1152,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/broadcasting.md:399
+#: docs/master/broadcasting.md:413
 #, no-wrap
 msgid "<a name=\"broadcast-queue\"></a>\n"
 msgstr ""
 
 #. type: Title ###
-#: docs/master/broadcasting.md:399
+#: docs/master/broadcasting.md:413
 #, no-wrap
 msgid "Broadcast Queue"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/broadcasting.md:402
+#: docs/master/broadcasting.md:416
 msgid ""
 "By default, each broadcast event is placed on the default queue for the "
 "default queue connection specified in your `queue.php` configuration "
@@ -1115,7 +1174,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/broadcasting.md:409
+#: docs/master/broadcasting.md:423
 #, no-wrap
 msgid ""
 "    /**\n"
@@ -1128,7 +1187,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/broadcasting.md:416
+#: docs/master/broadcasting.md:430
 #, no-wrap
 msgid ""
 "    /**\n"
@@ -1140,21 +1199,43 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/broadcasting.md:418
+#: docs/master/broadcasting.md:432
 msgid ""
-"If you want to broadcast your event using the `sync` queue instead of the "
-"default queue driver, you can implement the `ShouldBroadcastNow` interface "
-"instead of `ShouldBroadcast`:"
+"Alternatively, you may customize the queue name by defining a "
+"`broadcastQueue` method on your event:"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/broadcasting.md:422
+#: docs/master/broadcasting.md:442
+#, no-wrap
+msgid ""
+"    /**\n"
+"     * The name of the queue on which to place the broadcasting job.\n"
+"     *\n"
+"     * @return string\n"
+"     */\n"
+"    public function broadcastQueue()\n"
+"    {\n"
+"        return 'default';\n"
+"    }\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/broadcasting.md:444
+msgid ""
+"If you would like to broadcast your event using the `sync` queue instead of "
+"the default queue driver, you can implement the `ShouldBroadcastNow` "
+"interface instead of `ShouldBroadcast`:"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/broadcasting.md:448
 #, no-wrap
 msgid "    use Illuminate\\Contracts\\Broadcasting\\ShouldBroadcastNow;\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/broadcasting.md:427
+#: docs/master/broadcasting.md:453
 #, no-wrap
 msgid ""
 "    class OrderShipmentStatusUpdated implements ShouldBroadcastNow\n"
@@ -1164,19 +1245,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/broadcasting.md:429
+#: docs/master/broadcasting.md:455
 #, no-wrap
 msgid "<a name=\"broadcast-conditions\"></a>\n"
 msgstr ""
 
 #. type: Title ###
-#: docs/master/broadcasting.md:429
+#: docs/master/broadcasting.md:455
 #, no-wrap
 msgid "Broadcast Conditions"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/broadcasting.md:432
+#: docs/master/broadcasting.md:458
 msgid ""
 "Sometimes you want to broadcast your event only if a given condition is "
 "true. You may define these conditions by adding a `broadcastWhen` method to "
@@ -1184,7 +1265,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/broadcasting.md:442
+#: docs/master/broadcasting.md:468
 #, no-wrap
 msgid ""
 "    /**\n"
@@ -1199,19 +1280,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/broadcasting.md:444
+#: docs/master/broadcasting.md:470
 #, no-wrap
 msgid "<a name=\"broadcasting-and-database-transactions\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/master/broadcasting.md:444
+#: docs/master/broadcasting.md:470
 #, no-wrap
 msgid "Broadcasting & Database Transactions"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/broadcasting.md:447
+#: docs/master/broadcasting.md:473
 msgid ""
 "When broadcast events are dispatched within database transactions, they may "
 "be processed by the queue before the database transaction has "
@@ -1224,7 +1305,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/broadcasting.md:449
+#: docs/master/broadcasting.md:475
 msgid ""
 "If your queue connection's `after_commit` configuration option is set to "
 "`false`, you may still indicate that a particular broadcast event should be "
@@ -1233,7 +1314,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/broadcasting.md:456
+#: docs/master/broadcasting.md:482
 #, no-wrap
 msgid ""
 "    use Illuminate\\Contracts\\Broadcasting\\ShouldBroadcast;\n"
@@ -1241,7 +1322,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/broadcasting.md:463
+#: docs/master/broadcasting.md:489
 #, no-wrap
 msgid ""
 "        public $afterCommit = true;\n"
@@ -1249,7 +1330,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/broadcasting.md:465
+#: docs/master/broadcasting.md:491
 #, no-wrap
 msgid ""
 "> {tip} To learn more about working around these issues, please review the "
@@ -1258,13 +1339,13 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/broadcasting.md:467
+#: docs/master/broadcasting.md:493
 #, no-wrap
 msgid "<a name=\"authorizing-channels\"></a>\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/broadcasting.md:470
+#: docs/master/broadcasting.md:496
 msgid ""
 "Private channels require you to authorize that the currently authenticated "
 "user can actually listen on the channel. This is accomplished by making an "
@@ -1277,19 +1358,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/broadcasting.md:472
+#: docs/master/broadcasting.md:498
 #, no-wrap
 msgid "<a name=\"defining-authorization-routes\"></a>\n"
 msgstr ""
 
 #. type: Title ###
-#: docs/master/broadcasting.md:472
+#: docs/master/broadcasting.md:498
 #, no-wrap
 msgid "Defining Authorization Routes"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/broadcasting.md:475
+#: docs/master/broadcasting.md:501
 msgid ""
 "Thankfully, Laravel makes it easy to define the routes to respond to channel "
 "authorization requests. In the `App\\Providers\\BroadcastServiceProvider` "
@@ -1299,13 +1380,13 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/broadcasting.md:477
+#: docs/master/broadcasting.md:503
 #, no-wrap
 msgid "    Broadcast::routes();\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/broadcasting.md:479
+#: docs/master/broadcasting.md:505
 msgid ""
 "The `Broadcast::routes` method will automatically place its routes within "
 "the `web` middleware group; however, you may pass an array of route "
@@ -1314,25 +1395,25 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/broadcasting.md:481
+#: docs/master/broadcasting.md:507
 #, no-wrap
 msgid "    Broadcast::routes($attributes);\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/broadcasting.md:483
+#: docs/master/broadcasting.md:509
 #, no-wrap
 msgid "<a name=\"customizing-the-authorization-endpoint\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/master/broadcasting.md:483
+#: docs/master/broadcasting.md:509
 #, no-wrap
 msgid "Customizing The Authorization Endpoint"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/broadcasting.md:486
+#: docs/master/broadcasting.md:512
 msgid ""
 "By default, Echo will use the `/broadcasting/auth` endpoint to authorize "
 "channel access. However, you may specify your own authorization endpoint by "
@@ -1340,7 +1421,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/broadcasting.md:492
+#: docs/master/broadcasting.md:518
 #, no-wrap
 msgid ""
 "    window.Echo = new Echo({\n"
@@ -1351,19 +1432,63 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/broadcasting.md:494
+#: docs/master/broadcasting.md:520
+#, no-wrap
+msgid "<a name=\"customizing-the-authorization-request\"></a>\n"
+msgstr ""
+
+#. type: Title ####
+#: docs/master/broadcasting.md:520
+#, no-wrap
+msgid "Customizing The Authorization Request"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/broadcasting.md:523
+msgid ""
+"You can customize how Laravel Echo performs authorization requests by "
+"providing a custom authorizer when initializing Echo:"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/broadcasting.md:543
+#, no-wrap
+msgid ""
+"    window.Echo = new Echo({\n"
+"        // ...\n"
+"        authorizer: (channel, options) => {\n"
+"            return {\n"
+"                authorize: (socketId, callback) => {\n"
+"                    axios.post('/api/broadcasting/auth', {\n"
+"                        socket_id: socketId,\n"
+"                        channel_name: channel.name\n"
+"                    })\n"
+"                    .then(response => {\n"
+"                        callback(false, response.data);\n"
+"                    })\n"
+"                    .catch(error => {\n"
+"                        callback(true, error);\n"
+"                    });\n"
+"                }\n"
+"            };\n"
+"        },\n"
+"    })\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/broadcasting.md:545
 #, no-wrap
 msgid "<a name=\"defining-authorization-callbacks\"></a>\n"
 msgstr ""
 
 #. type: Title ###
-#: docs/master/broadcasting.md:494
+#: docs/master/broadcasting.md:545
 #, no-wrap
 msgid "Defining Authorization Callbacks"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/broadcasting.md:497
+#: docs/master/broadcasting.md:548
 msgid ""
 "Next, we need to define the logic that will actually determine if the "
 "currently authenticated user can listen to a given channel. This is done in "
@@ -1373,19 +1498,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/broadcasting.md:507
+#: docs/master/broadcasting.md:558
 #, no-wrap
 msgid "<a name=\"authorization-callback-model-binding\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/master/broadcasting.md:507
+#: docs/master/broadcasting.md:558
 #, no-wrap
 msgid "Authorization Callback Model Binding"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/broadcasting.md:510
+#: docs/master/broadcasting.md:561
 msgid ""
 "Just like HTTP routes, channel routes may also take advantage of implicit "
 "and explicit [route model "
@@ -1395,7 +1520,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/broadcasting.md:516
+#: docs/master/broadcasting.md:567
 #, no-wrap
 msgid ""
 "    Broadcast::channel('orders.{order}', function ($user, Order $order) {\n"
@@ -1404,7 +1529,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/broadcasting.md:518
+#: docs/master/broadcasting.md:569
 #, no-wrap
 msgid ""
 "> {note} Unlike HTTP route model binding, channel model binding does not "
@@ -1415,19 +1540,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/broadcasting.md:520
+#: docs/master/broadcasting.md:571
 #, no-wrap
 msgid "<a name=\"authorization-callback-authentication\"></a>\n"
 msgstr ""
 
 #. type: Title ####
-#: docs/master/broadcasting.md:520
+#: docs/master/broadcasting.md:571
 #, no-wrap
 msgid "Authorization Callback Authentication"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/broadcasting.md:523
+#: docs/master/broadcasting.md:574
 msgid ""
 "Private and presence broadcast channels authenticate the current user via "
 "your application's default authentication guard. If the user is not "
@@ -1437,7 +1562,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/broadcasting.md:527
+#: docs/master/broadcasting.md:578
 #, no-wrap
 msgid ""
 "    Broadcast::channel('channel', function () {\n"
@@ -1446,19 +1571,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/broadcasting.md:529
+#: docs/master/broadcasting.md:580
 #, no-wrap
 msgid "<a name=\"defining-channel-classes\"></a>\n"
 msgstr ""
 
 #. type: Title ###
-#: docs/master/broadcasting.md:529
+#: docs/master/broadcasting.md:580
 #, no-wrap
 msgid "Defining Channel Classes"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/broadcasting.md:532
+#: docs/master/broadcasting.md:583
 msgid ""
 "If your application is consuming many different channels, your "
 "`routes/channels.php` file could become bulky. So, instead of using closures "
@@ -1468,30 +1593,30 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/broadcasting.md:534
+#: docs/master/broadcasting.md:585
 #, no-wrap
 msgid "    php artisan make:channel OrderChannel\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/broadcasting.md:536
+#: docs/master/broadcasting.md:587
 msgid "Next, register your channel in your `routes/channels.php` file:"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/broadcasting.md:538
+#: docs/master/broadcasting.md:589
 #, no-wrap
 msgid "    use App\\Broadcasting\\OrderChannel;\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/broadcasting.md:540
+#: docs/master/broadcasting.md:591
 #, no-wrap
 msgid "    Broadcast::channel('orders.{order}', OrderChannel::class);\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/broadcasting.md:542
+#: docs/master/broadcasting.md:593
 msgid ""
 "Finally, you may place the authorization logic for your channel in the "
 "channel class' `join` method. This `join` method will house the same logic "
@@ -1500,13 +1625,13 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/broadcasting.md:546
+#: docs/master/broadcasting.md:597
 #, no-wrap
 msgid "    namespace App\\Broadcasting;\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/broadcasting.md:549
+#: docs/master/broadcasting.md:600
 #, no-wrap
 msgid ""
 "    use App\\Models\\Order;\n"
@@ -1514,7 +1639,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/broadcasting.md:561
+#: docs/master/broadcasting.md:612
 #, no-wrap
 msgid ""
 "    class OrderChannel\n"
@@ -1531,7 +1656,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/broadcasting.md:574
+#: docs/master/broadcasting.md:625
 #, no-wrap
 msgid ""
 "        /**\n"
@@ -1549,7 +1674,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/broadcasting.md:576
+#: docs/master/broadcasting.md:627
 #, no-wrap
 msgid ""
 "> {tip} Like many other classes in Laravel, channel classes will "
@@ -1559,19 +1684,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/broadcasting.md:578
+#: docs/master/broadcasting.md:629
 #, no-wrap
 msgid "<a name=\"broadcasting-events\"></a>\n"
 msgstr ""
 
 #. type: Title ##
-#: docs/master/broadcasting.md:578
+#: docs/master/broadcasting.md:629
 #, no-wrap
 msgid "Broadcasting Events"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/broadcasting.md:581
+#: docs/master/broadcasting.md:632
 msgid ""
 "Once you have defined an event and marked it with the `ShouldBroadcast` "
 "interface, you only need to fire the event using the event's dispatch "
@@ -1580,25 +1705,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/broadcasting.md:585
-#, no-wrap
-msgid "    OrderShipmentStatusUpdated::dispatch($order));\n"
-msgstr ""
-
-#. type: Plain text
-#: docs/master/broadcasting.md:587
+#: docs/master/broadcasting.md:638
 #, no-wrap
 msgid "<a name=\"only-to-others\"></a>\n"
 msgstr ""
 
 #. type: Title ###
-#: docs/master/broadcasting.md:587
+#: docs/master/broadcasting.md:638
 #, no-wrap
 msgid "Only To Others"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/broadcasting.md:590
+#: docs/master/broadcasting.md:641
 msgid ""
 "When building an application that utilizes event broadcasting, you may "
 "occasionally need to broadcast an event to all subscribers to a given "
@@ -1607,13 +1726,13 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/broadcasting.md:594
+#: docs/master/broadcasting.md:645
 #, no-wrap
 msgid "    broadcast(new OrderShipmentStatusUpdated($update))->toOthers();\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/broadcasting.md:596
+#: docs/master/broadcasting.md:647
 msgid ""
 "To better understand when you may want to use the `toOthers` method, let's "
 "imagine a task list application where a user may create a new task by "
@@ -1625,7 +1744,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/broadcasting.md:601
+#: docs/master/broadcasting.md:652
 #, no-wrap
 msgid ""
 "    axios.post('/task', task)\n"
@@ -1635,7 +1754,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/broadcasting.md:603
+#: docs/master/broadcasting.md:654
 msgid ""
 "However, remember that we also broadcast the task's creation. If your "
 "JavaScript application is also listening for this event in order to add "
@@ -1646,7 +1765,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/broadcasting.md:605
+#: docs/master/broadcasting.md:656
 #, no-wrap
 msgid ""
 "> {note} Your event must use the "
@@ -1655,13 +1774,13 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/broadcasting.md:607
+#: docs/master/broadcasting.md:658
 #, no-wrap
 msgid "<a name=\"only-to-others-configuration\"></a>\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/broadcasting.md:610
+#: docs/master/broadcasting.md:661
 msgid ""
 "When you initialize a Laravel Echo instance, a socket ID is assigned to the "
 "connection. If you are using a global "
@@ -1674,7 +1793,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/broadcasting.md:612
+#: docs/master/broadcasting.md:663
 msgid ""
 "If you are not using a global Axios instance, you will need to manually "
 "configure your JavaScript application to send the `X-Socket-ID` header with "
@@ -1683,37 +1802,110 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/broadcasting.md:614
+#: docs/master/broadcasting.md:665
 #, no-wrap
 msgid "    var socketId = Echo.socketId();\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/broadcasting.md:616
+#: docs/master/broadcasting.md:667
+#, no-wrap
+msgid "<a name=\"customizing-the-connection\"></a>\n"
+msgstr ""
+
+#. type: Title ###
+#: docs/master/broadcasting.md:667
+#, no-wrap
+msgid "Customizing The Connection"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/broadcasting.md:670
+msgid ""
+"If your application interacts with multiple broadcast connections and you "
+"want to broadcast an event using a broadcaster other than your default, you "
+"may specify which connection to push an event to using the `via` method:"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/broadcasting.md:674
+#, no-wrap
+msgid "    broadcast(new OrderShipmentStatusUpdated($update))->via('pusher');\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/broadcasting.md:676
+msgid ""
+"Alternatively, you may specify the event's broadcast connection by calling "
+"the `broadcastVia` method within the event's constructor. However, before "
+"doing so, you should ensure that the event class uses the "
+"`InteractsWithBroadcasting` trait:"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/broadcasting.md:688
+#, no-wrap
+msgid ""
+"    use Illuminate\\Broadcasting\\Channel;\n"
+"    use Illuminate\\Broadcasting\\InteractsWithBroadcasting;\n"
+"    use Illuminate\\Broadcasting\\InteractsWithSockets;\n"
+"    use Illuminate\\Broadcasting\\PresenceChannel;\n"
+"    use Illuminate\\Broadcasting\\PrivateChannel;\n"
+"    use Illuminate\\Contracts\\Broadcasting\\ShouldBroadcast;\n"
+"    use Illuminate\\Queue\\SerializesModels;\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/broadcasting.md:692
+#, no-wrap
+msgid ""
+"    class OrderShipmentStatusUpdated implements ShouldBroadcast\n"
+"    {\n"
+"        use InteractsWithBroadcasting;\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/broadcasting.md:703
+#, no-wrap
+msgid ""
+"        /**\n"
+"         * Create a new event instance.\n"
+"         *\n"
+"         * @return void\n"
+"         */\n"
+"        public function __construct()\n"
+"        {\n"
+"            $this->broadcastVia('pusher');\n"
+"        }\n"
+"    }\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/broadcasting.md:705
 #, no-wrap
 msgid "<a name=\"receiving-broadcasts\"></a>\n"
 msgstr ""
 
 #. type: Title ##
-#: docs/master/broadcasting.md:616
+#: docs/master/broadcasting.md:705
 #, no-wrap
 msgid "Receiving Broadcasts"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/broadcasting.md:619
+#: docs/master/broadcasting.md:708
 #, no-wrap
 msgid "<a name=\"listening-for-events\"></a>\n"
 msgstr ""
 
 #. type: Title ###
-#: docs/master/broadcasting.md:619
+#: docs/master/broadcasting.md:708
 #, no-wrap
 msgid "Listening For Events"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/broadcasting.md:622
+#: docs/master/broadcasting.md:711
 msgid ""
 "Once you have [installed and instantiated Laravel "
 "Echo](#client-side-installation), you are ready to start listening for "
@@ -1723,7 +1915,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/broadcasting.md:623
+#: docs/master/broadcasting.md:712
 #, no-wrap
 msgid ""
 "Echo.channel(`orders.${this.order.id}`)\n"
@@ -1733,7 +1925,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/broadcasting.md:631
+#: docs/master/broadcasting.md:720
 msgid ""
 "If you would like to listen for events on a private channel, use the "
 "`private` method instead. You may continue to chain calls to the `listen` "
@@ -1741,7 +1933,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/broadcasting.md:632
+#: docs/master/broadcasting.md:721
 #, no-wrap
 msgid ""
 "Echo.private(`orders.${this.order.id}`)\n"
@@ -1751,57 +1943,84 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/broadcasting.md:640
+#: docs/master/broadcasting.md:729
+#, no-wrap
+msgid "<a name=\"stop-listening-for-events\"></a>\n"
+msgstr ""
+
+#. type: Title ####
+#: docs/master/broadcasting.md:729
+#, no-wrap
+msgid "Stop Listening For Events"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/broadcasting.md:732
+msgid ""
+"If you would like to stop listening to a given event without [leaving the "
+"channel](#leaving-a-channel), you may use the `stopListening` method:"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/broadcasting.md:733
+#, no-wrap
+msgid ""
+"Echo.private(`orders.${this.order.id}`)\n"
+"    .stopListening('OrderShipmentStatusUpdated')\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/broadcasting.md:739
 #, no-wrap
 msgid "<a name=\"leaving-a-channel\"></a>\n"
 msgstr ""
 
 #. type: Title ###
-#: docs/master/broadcasting.md:640
+#: docs/master/broadcasting.md:739
 #, no-wrap
 msgid "Leaving A Channel"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/broadcasting.md:643
+#: docs/master/broadcasting.md:742
 msgid ""
 "To leave a channel, you may call the `leaveChannel` method on your Echo "
 "instance:"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/broadcasting.md:644
+#: docs/master/broadcasting.md:743
 #, no-wrap
 msgid "Echo.leaveChannel(`orders.${this.order.id}`);\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/broadcasting.md:649
+#: docs/master/broadcasting.md:748
 msgid ""
 "If you would like to leave a channel and also its associated private and "
 "presence channels, you may call the `leave` method:"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/broadcasting.md:650
+#: docs/master/broadcasting.md:749
 #, no-wrap
 msgid "Echo.leave(`orders.${this.order.id}`);\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/broadcasting.md:654
+#: docs/master/broadcasting.md:753
 #, no-wrap
 msgid "<a name=\"namespaces\"></a>\n"
 msgstr ""
 
 #. type: Title ###
-#: docs/master/broadcasting.md:654
+#: docs/master/broadcasting.md:753
 #, no-wrap
 msgid "Namespaces"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/broadcasting.md:657
+#: docs/master/broadcasting.md:756
 msgid ""
 "You may have noticed in the examples above that we did not specify the full "
 "`App\\Events` namespace for the event classes. This is because Echo will "
@@ -1811,7 +2030,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/broadcasting.md:658
+#: docs/master/broadcasting.md:757
 #, no-wrap
 msgid ""
 "window.Echo = new Echo({\n"
@@ -1822,7 +2041,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/broadcasting.md:667
+#: docs/master/broadcasting.md:766
 msgid ""
 "Alternatively, you may prefix event classes with a `.` when subscribing to "
 "them using Echo. This will allow you to always specify the fully-qualified "
@@ -1830,7 +2049,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/broadcasting.md:668
+#: docs/master/broadcasting.md:767
 #, no-wrap
 msgid ""
 "Echo.channel('orders')\n"
@@ -1840,19 +2059,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/broadcasting.md:676
+#: docs/master/broadcasting.md:775
 #, no-wrap
 msgid "<a name=\"presence-channels\"></a>\n"
 msgstr ""
 
 #. type: Title ##
-#: docs/master/broadcasting.md:676
+#: docs/master/broadcasting.md:775
 #, no-wrap
 msgid "Presence Channels"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/broadcasting.md:679
+#: docs/master/broadcasting.md:778
 msgid ""
 "Presence channels build on the security of private channels while exposing "
 "the additional feature of awareness of who is subscribed to the "
@@ -1862,19 +2081,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/broadcasting.md:681
+#: docs/master/broadcasting.md:780
 #, no-wrap
 msgid "<a name=\"authorizing-presence-channels\"></a>\n"
 msgstr ""
 
 #. type: Title ###
-#: docs/master/broadcasting.md:681
+#: docs/master/broadcasting.md:780
 #, no-wrap
 msgid "Authorizing Presence Channels"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/broadcasting.md:684
+#: docs/master/broadcasting.md:783
 msgid ""
 "All presence channels are also private channels; therefore, users must be "
 "[authorized to access them](#authorizing-channels). However, when defining "
@@ -1884,7 +2103,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/broadcasting.md:686
+#: docs/master/broadcasting.md:785
 msgid ""
 "The data returned by the authorization callback will be made available to "
 "the presence channel event listeners in your JavaScript application. If the "
@@ -1893,7 +2112,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/broadcasting.md:692
+#: docs/master/broadcasting.md:791
 #, no-wrap
 msgid ""
 "    Broadcast::channel('chat.{roomId}', function ($user, $roomId) {\n"
@@ -1904,19 +2123,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/broadcasting.md:694
+#: docs/master/broadcasting.md:793
 #, no-wrap
 msgid "<a name=\"joining-presence-channels\"></a>\n"
 msgstr ""
 
 #. type: Title ###
-#: docs/master/broadcasting.md:694
+#: docs/master/broadcasting.md:793
 #, no-wrap
 msgid "Joining Presence Channels"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/broadcasting.md:697
+#: docs/master/broadcasting.md:796
 msgid ""
 "To join a presence channel, you may use Echo's `join` method. The `join` "
 "method will return a `PresenceChannel` implementation which, along with "
@@ -1925,7 +2144,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/broadcasting.md:708
+#: docs/master/broadcasting.md:810
 #, no-wrap
 msgid ""
 "    Echo.join(`chat.${roomId}`)\n"
@@ -1937,33 +2156,38 @@ msgid ""
 "        })\n"
 "        .leaving((user) => {\n"
 "            console.log(user.name);\n"
+"        })\n"
+"        .error((error) => {\n"
+"            console.error(error);\n"
 "        });\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/broadcasting.md:710
+#: docs/master/broadcasting.md:812
 msgid ""
 "The `here` callback will be executed immediately once the channel is joined "
 "successfully, and will receive an array containing the user information for "
 "all of the other users currently subscribed to the channel. The `joining` "
 "method will be executed when a new user joins a channel, while the `leaving` "
-"method will be executed when a user leaves the channel."
+"method will be executed when a user leaves the channel. The `error` method "
+"will be executed when the authentication endpoint returns a HTTP status code "
+"other than 200 or if there is a problem parsing the returned JSON."
 msgstr ""
 
 #. type: Plain text
-#: docs/master/broadcasting.md:712
+#: docs/master/broadcasting.md:814
 #, no-wrap
 msgid "<a name=\"broadcasting-to-presence-channels\"></a>\n"
 msgstr ""
 
 #. type: Title ###
-#: docs/master/broadcasting.md:712
+#: docs/master/broadcasting.md:814
 #, no-wrap
 msgid "Broadcasting To Presence Channels"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/broadcasting.md:715
+#: docs/master/broadcasting.md:817
 msgid ""
 "Presence channels may receive events just like public or private "
 "channels. Using the example of a chatroom, we may want to broadcast "
@@ -1972,7 +2196,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/broadcasting.md:725
+#: docs/master/broadcasting.md:827
 #, no-wrap
 msgid ""
 "    /**\n"
@@ -1987,33 +2211,33 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/broadcasting.md:727
+#: docs/master/broadcasting.md:829
 msgid ""
 "As with other events, you may use the `broadcast` helper and the `toOthers` "
 "method to exclude the current user from receiving the broadcast:"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/broadcasting.md:729
+#: docs/master/broadcasting.md:831
 #, no-wrap
 msgid "    broadcast(new NewMessage($message));\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/broadcasting.md:731
+#: docs/master/broadcasting.md:833
 #, no-wrap
 msgid "    broadcast(new NewMessage($message))->toOthers();\n"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/broadcasting.md:733
+#: docs/master/broadcasting.md:835
 msgid ""
 "As typical of other types of events, you may listen for events sent to "
 "presence channels using Echo's `listen` method:"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/broadcasting.md:741
+#: docs/master/broadcasting.md:843
 #, no-wrap
 msgid ""
 "    Echo.join(`chat.${roomId}`)\n"
@@ -2026,19 +2250,440 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/broadcasting.md:743
+#: docs/master/broadcasting.md:845
+#, no-wrap
+msgid "<a name=\"model-broadcasting\"></a>\n"
+msgstr ""
+
+#. type: Title ##
+#: docs/master/broadcasting.md:845
+#, no-wrap
+msgid "Model Broadcasting"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/broadcasting.md:848
+#, no-wrap
+msgid ""
+"> {note} Before reading the following documentation about model "
+"broadcasting, we recommend you become familiar with the general concepts of "
+"Laravel's model broadcasting services as well as how to manually create and "
+"listen to broadcast events.\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/broadcasting.md:850
+msgid ""
+"It is common to broadcast events when your application's [Eloquent "
+"models](/docs/{{version}}/eloquent) are created, updated, or deleted. Of "
+"course, this can easily be accomplished by manually [defining custom events "
+"for Eloquent model state changes](/docs/{{version}}/eloquent#events) and "
+"marking those events with the `ShouldBroadcast` interface."
+msgstr ""
+
+#. type: Plain text
+#: docs/master/broadcasting.md:852
+msgid ""
+"However, if you are not using these events for any other purposes in your "
+"application, it can be cumbersome to create event classes for the sole "
+"purpose of broadcasting them. To remedy this, Laravel allows you to indicate "
+"that an Eloquent model should automatically broadcast its state changes."
+msgstr ""
+
+#. type: Plain text
+#: docs/master/broadcasting.md:854
+msgid ""
+"To get started, your Eloquent model should use the "
+"`Illuminate\\Database\\Eloquent\\BroadcastsEvents` trait. In addition, the "
+"model should define a `broadcastsOn` method, which will return an array of "
+"channels that the model's events should broadcast on:"
+msgstr ""
+
+#. type: Code fence info string
+#: docs/master/broadcasting.md:855 docs/master/broadcasting.md:894 docs/master/broadcasting.md:915 docs/master/broadcasting.md:942 docs/master/broadcasting.md:959 docs/master/broadcasting.md:965 docs/master/broadcasting.md:990
+#, no-wrap
+msgid "php"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/broadcasting.md:855
+#, no-wrap
+msgid ""
+"<?php\n"
+"\n"
+"namespace App\\Models;\n"
+"\n"
+"use Illuminate\\Broadcasting\\PrivateChannel;\n"
+"use Illuminate\\Database\\Eloquent\\BroadcastsEvents;\n"
+"use Illuminate\\Database\\Eloquent\\Factories\\HasFactory;\n"
+"use Illuminate\\Database\\Eloquent\\Model;\n"
+"\n"
+"class Post extends Model\n"
+"{\n"
+"    use BroadcastsEvents, HasFactory;\n"
+"\n"
+"    /**\n"
+"     * Get the user that the post belongs to.\n"
+"     */\n"
+"    public function user()\n"
+"    {\n"
+"        return $this->belongsTo(User::class);\n"
+"    }\n"
+"\n"
+"    /**\n"
+"     * Get the channels that model events should broadcast on.\n"
+"     *\n"
+"     * @param  string  $event\n"
+"     * @return \\Illuminate\\Broadcasting\\Channel|array\n"
+"     */\n"
+"    public function broadcastOn($event)\n"
+"    {\n"
+"        return [$this, $this->user];\n"
+"    }\n"
+"}\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/broadcasting.md:891
+msgid ""
+"Once your model includes this trait and defines its broadcast channels, it "
+"will begin automatically broadcasting events when a model instance is "
+"created, updated, deleted, trashed, or restored."
+msgstr ""
+
+#. type: Plain text
+#: docs/master/broadcasting.md:893
+msgid ""
+"In addition, you may have noticed that the `broadcastOn` method receives a "
+"string `$event` argument. This argument contains the type of event that has "
+"occurred on the model and will have a value of `created`, `updated`, "
+"`deleted`, `trashed`, or `restored`. By inspecting the value of this "
+"variable, you may determine which channels (if any) the model should "
+"broadcast to for a particular event:"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/broadcasting.md:894
+#, no-wrap
+msgid ""
+"/**\n"
+" * Get the channels that model events should broadcast on.\n"
+" *\n"
+" * @param  string  $event\n"
+" * @return \\Illuminate\\Broadcasting\\Channel|array\n"
+" */\n"
+"public function broadcastOn($event)\n"
+"{\n"
+"    return match ($event) {\n"
+"        'deleted' => [],\n"
+"        default => [$this, $this->user],\n"
+"    };\n"
+"}\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/broadcasting.md:911
+#, no-wrap
+msgid "<a name=\"customizing-model-broadcasting-event-creation\"></a>\n"
+msgstr ""
+
+#. type: Title ####
+#: docs/master/broadcasting.md:911
+#, no-wrap
+msgid "Customizing Model Broadcasting Event Creation"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/broadcasting.md:914
+msgid ""
+"Occasionally, you may wish to customize how Laravel creates the underlying "
+"model broadcasting event. You may accomplish this by defining a "
+"`newBroadcastableEvent` method on your Eloquent model. This method should "
+"return an `Illuminate\\Database\\Eloquent\\BroadcastableModelEventOccurred` "
+"instance:"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/broadcasting.md:915
+#, no-wrap
+msgid ""
+"use Illuminate\\Database\\Eloquent\\BroadcastableModelEventOccurred\n"
+"\n"
+"/**\n"
+" * Create a new broadcastable model event for the model.\n"
+" *\n"
+" * @param  string  $event\n"
+" * @return "
+"\\Illuminate\\Database\\Eloquent\\BroadcastableModelEventOccurred\n"
+" */\n"
+"protected function newBroadcastableEvent($event)\n"
+"{\n"
+"    return (new BroadcastableModelEventOccurred(\n"
+"        $this, $event\n"
+"    ))->dontBroadcastToCurrentUser();\n"
+"}\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/broadcasting.md:933
+#, no-wrap
+msgid "<a name=\"model-broadcasting-conventions\"></a>\n"
+msgstr ""
+
+#. type: Title ###
+#: docs/master/broadcasting.md:933
+#, no-wrap
+msgid "Model Broadcasting Conventions"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/broadcasting.md:936
+#, no-wrap
+msgid "<a name=\"model-broadcasting-channel-conventions\"></a>\n"
+msgstr ""
+
+#. type: Title ####
+#: docs/master/broadcasting.md:936
+#, no-wrap
+msgid "Channel Conventions"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/broadcasting.md:939
+msgid ""
+"As you may have noticed, the `broadcastOn` method in the model example above "
+"did not return `Channel` instances. Instead, Eloquent models were returned "
+"directly. If an Eloquent model instance is returned by your model's "
+"`broadcastOn` method (or is contained in an array returned by the method), "
+"Laravel will automatically instantiate a private channel instance for the "
+"model using the model's class name and primary key identifier as the channel "
+"name."
+msgstr ""
+
+#. type: Plain text
+#: docs/master/broadcasting.md:941
+msgid ""
+"So, an `App\\Models\\User` model with an `id` of `1` would be converted into "
+"a `Illuminate\\Broadcasting\\PrivateChannel` instance with a name of "
+"`App.Models.User.1`. Of course, in addition to returning Eloquent model "
+"instances from your model's `broadcastOn` method, you may return complete "
+"`Channel` instances in order to have full control over the model's channel "
+"names:"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/broadcasting.md:942
+#, no-wrap
+msgid ""
+"use Illuminate\\Broadcasting\\PrivateChannel;\n"
+"\n"
+"/**\n"
+" * Get the channels that model events should broadcast on.\n"
+" *\n"
+" * @param  string  $event\n"
+" * @return \\Illuminate\\Broadcasting\\Channel|array\n"
+" */\n"
+"public function broadcastOn($event)\n"
+"{\n"
+"    return [new PrivateChannel('user.'.$this->id)];\n"
+"}\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/broadcasting.md:958
+msgid ""
+"If you plan to explicitly return a channel instance from your model's "
+"`broadcastOn` method, you may pass an Eloquent model instance to the "
+"channel's constructor. When doing so, Laravel will use the model channel "
+"conventions discussed above to convert the Eloquent model into a channel "
+"name string:"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/broadcasting.md:959
+#, no-wrap
+msgid "return [new Channel($this->user)];\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/broadcasting.md:964
+msgid ""
+"If you need to determine the channel name of a model, you may call the "
+"`broadcastChannel` method on any model instance. For example, this method "
+"returns the string `App.Models.User.1` for a `App\\Models\\User` model with "
+"an `id` of `1`:"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/broadcasting.md:965
+#, no-wrap
+msgid "$user->broadcastChannel()\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/broadcasting.md:970
+#, no-wrap
+msgid "<a name=\"model-broadcasting-event-conventions\"></a>\n"
+msgstr ""
+
+#. type: Title ####
+#: docs/master/broadcasting.md:970
+#, no-wrap
+msgid "Event Conventions"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/broadcasting.md:973
+msgid ""
+"Since model broadcast events are not associated with an \"actual\" event "
+"within your application's `App\\Events` directory, they are assigned a name "
+"and a payload based on conventions. Laravel's convention is to broadcast the "
+"event using the class name of the model (not including the namespace) and "
+"the name of the model event that triggered the broadcast."
+msgstr ""
+
+#. type: Plain text
+#: docs/master/broadcasting.md:975
+msgid ""
+"So, for example, an update to the `App\\Models\\Post` model would broadcast "
+"an event to your client-side application as `PostUpdated` with the following "
+"payload:"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/broadcasting.md:985
+#, no-wrap
+msgid ""
+"    {\n"
+"        \"model\": {\n"
+"            \"id\": 1,\n"
+"            \"title\": \"My first post\"\n"
+"            ...\n"
+"        },\n"
+"        ...\n"
+"        \"socket\": \"someSocketId\",\n"
+"    }\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/broadcasting.md:987
+msgid ""
+"The deletion of the `App\\Models\\User` model would broadcast an event named "
+"`UserDeleted`."
+msgstr ""
+
+#. type: Plain text
+#: docs/master/broadcasting.md:989
+msgid ""
+"If you would like, you may define a custom broadcast name and payload by "
+"adding a `broadcastAs` and `broadcastWith` method to your model. These "
+"methods receive the name of the model event / operation that is occurring, "
+"allowing you to customize the event's name and payload for each model "
+"operation. If `null` is returned from the `broadcastAs` method, Laravel will "
+"use the model broadcasting event name conventions discussed above when "
+"broadcasting the event:"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/broadcasting.md:990
+#, no-wrap
+msgid ""
+"/**\n"
+" * The model event's broadcast name.\n"
+" *\n"
+" * @param  string  $event\n"
+" * @return string|null\n"
+" */\n"
+"public function broadcastAs($event)\n"
+"{\n"
+"    return match ($event) {\n"
+"        'created' => 'post.created',\n"
+"        default => null,\n"
+"    };\n"
+"}\n"
+"\n"
+"/**\n"
+" * Get the data to broadcast for the model.\n"
+" *\n"
+" * @param  string  $event\n"
+" * @return array\n"
+" */\n"
+"public function broadcastWith($event)\n"
+"{\n"
+"    return match ($event) {\n"
+"        'created' => ['title' => $this->title],\n"
+"        default => ['model' => $this],\n"
+"    };\n"
+"}\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/broadcasting.md:1021
+#, no-wrap
+msgid "<a name=\"listening-for-model-broadcasts\"></a>\n"
+msgstr ""
+
+#. type: Title ###
+#: docs/master/broadcasting.md:1021
+#, no-wrap
+msgid "Listening For Model Broadcasts"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/broadcasting.md:1024
+msgid ""
+"Once you have added the `BroadcastsEvents` trait to your model and defined "
+"your model's `broadcastOn` method, you are ready to start listening for "
+"broadcasted model events within your client-side application. Before getting "
+"started, you may wish to consult the complete documentation on [listening "
+"for events](#listening-for-events)."
+msgstr ""
+
+#. type: Plain text
+#: docs/master/broadcasting.md:1026
+msgid ""
+"First, use the `private` method to retrieve an instance of a channel, then "
+"call the `listen` method to listen for a specified event. Typically, the "
+"channel name given to the `private` method should correspond to Laravel's "
+"[model broadcasting conventions](#model-broadcasting-conventions)."
+msgstr ""
+
+#. type: Plain text
+#: docs/master/broadcasting.md:1028
+msgid ""
+"Once you have obtained a channel instance, you may use the `listen` method "
+"to listen for a particular event. Since model broadcast events are not "
+"associated with an \"actual\" event within your application's `App\\Events` "
+"directory, the [event name](#model-broadcasting-event-conventions) must be "
+"prefixed with a `.` to indicate it does not belong to a particular "
+"namespace. Each model broadcast event has a `model` property which contains "
+"all of the broadcastable properties of the model:"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/broadcasting.md:1029
+#, no-wrap
+msgid ""
+"Echo.private(`App.Models.User.${this.user.id}`)\n"
+"    .listen('.PostUpdated', (e) => {\n"
+"        console.log(e.model);\n"
+"    });\n"
+msgstr ""
+
+#. type: Plain text
+#: docs/master/broadcasting.md:1037
 #, no-wrap
 msgid "<a name=\"client-events\"></a>\n"
 msgstr ""
 
 #. type: Title ##
-#: docs/master/broadcasting.md:743
+#: docs/master/broadcasting.md:1037
 #, no-wrap
 msgid "Client Events"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/broadcasting.md:746
+#: docs/master/broadcasting.md:1040
 #, no-wrap
 msgid ""
 "> {tip} When using [Pusher Channels](https://pusher.com/channels), you must "
@@ -2048,7 +2693,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/broadcasting.md:748
+#: docs/master/broadcasting.md:1042
 msgid ""
 "Sometimes you may wish to broadcast an event to other connected clients "
 "without hitting your Laravel application at all. This can be particularly "
@@ -2058,12 +2703,12 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/broadcasting.md:750
+#: docs/master/broadcasting.md:1044
 msgid "To broadcast client events, you may use Echo's `whisper` method:"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/broadcasting.md:755
+#: docs/master/broadcasting.md:1049
 #, no-wrap
 msgid ""
 "    Echo.private(`chat.${roomId}`)\n"
@@ -2073,12 +2718,12 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/broadcasting.md:757
+#: docs/master/broadcasting.md:1051
 msgid "To listen for client events, you may use the `listenForWhisper` method:"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/broadcasting.md:762
+#: docs/master/broadcasting.md:1056
 #, no-wrap
 msgid ""
 "    Echo.private(`chat.${roomId}`)\n"
@@ -2088,19 +2733,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/broadcasting.md:764
+#: docs/master/broadcasting.md:1058
 #, no-wrap
 msgid "<a name=\"notifications\"></a>\n"
 msgstr ""
 
 #. type: Title ##
-#: docs/master/broadcasting.md:764
+#: docs/master/broadcasting.md:1058
 #, no-wrap
 msgid "Notifications"
 msgstr ""
 
 #. type: Plain text
-#: docs/master/broadcasting.md:767
+#: docs/master/broadcasting.md:1061
 msgid ""
 "By pairing event broadcasting with "
 "[notifications](/docs/{{version}}/notifications), your JavaScript "
@@ -2111,7 +2756,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/broadcasting.md:769
+#: docs/master/broadcasting.md:1063
 msgid ""
 "Once you have configured a notification to use the broadcast channel, you "
 "may listen for the broadcast events using Echo's `notification` "
@@ -2120,7 +2765,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/broadcasting.md:774
+#: docs/master/broadcasting.md:1068
 #, no-wrap
 msgid ""
 "    Echo.private(`App.Models.User.${userId}`)\n"
@@ -2130,7 +2775,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: docs/master/broadcasting.md:775
+#: docs/master/broadcasting.md:1069
 msgid ""
 "In this example, all notifications sent to `App\\Models\\User` instances via "
 "the `broadcast` channel would be received by the callback. A channel "

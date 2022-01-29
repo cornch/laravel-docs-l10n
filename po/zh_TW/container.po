@@ -1,0 +1,1260 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: laravel-docs\n"
+"POT-Creation-Date: 2022-01-29 05:35+0000\n"
+"PO-Revision-Date: 2022-01-29 05:46\n"
+"Last-Translator: \n"
+"Language-Team: Chinese Traditional\n"
+"Language: zh_TW\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Crowdin-Project: laravel-docs\n"
+"X-Crowdin-Project-ID: 447952\n"
+"X-Crowdin-Language: zh-TW\n"
+"X-Crowdin-File: /main/templates/container.pot\n"
+"X-Crowdin-File-ID: 31\n"
+
+# File: docs/8.x/container.md, line: 1
+# File: docs/master/container.md, line: 1
+#. type: Title #
+#, no-wrap
+msgid "Service Container"
+msgstr ""
+
+# File: docs/8.x/container.md, line: 20
+# File: docs/master/container.md, line: 20
+#. type: Plain text
+#, no-wrap
+msgid "- [Introduction](#introduction)\n"
+"    - [Zero Configuration Resolution](#zero-configuration-resolution)\n"
+"    - [When To Use The Container](#when-to-use-the-container)\n"
+"- [Binding](#binding)\n"
+"    - [Binding Basics](#binding-basics)\n"
+"    - [Binding Interfaces To Implementations](#binding-interfaces-to-implementations)\n"
+"    - [Contextual Binding](#contextual-binding)\n"
+"    - [Binding Primitives](#binding-primitives)\n"
+"    - [Binding Typed Variadics](#binding-typed-variadics)\n"
+"    - [Tagging](#tagging)\n"
+"    - [Extending Bindings](#extending-bindings)\n"
+"- [Resolving](#resolving)\n"
+"    - [The Make Method](#the-make-method)\n"
+"    - [Automatic Injection](#automatic-injection)\n"
+"- [Method Invocation & Injection](#method-invocation-and-injection)\n"
+"- [Container Events](#container-events)\n"
+"- [PSR-11](#psr-11)\n"
+msgstr ""
+
+# File: docs/8.x/container.md, line: 22
+# File: docs/master/container.md, line: 22
+#. type: Plain text
+#, no-wrap
+msgid "<a name=\"introduction\"></a>\n"
+msgstr ""
+
+# File: docs/8.x/container.md, line: 22
+# File: docs/master/container.md, line: 22
+#. type: Title ##
+#, no-wrap
+msgid "Introduction"
+msgstr ""
+
+# File: docs/8.x/container.md, line: 25
+# File: docs/master/container.md, line: 25
+#. type: Plain text
+msgid "The Laravel service container is a powerful tool for managing class dependencies and performing dependency injection. Dependency injection is a fancy phrase that essentially means this: class dependencies are \"injected\" into the class via the constructor or, in some cases, \"setter\" methods."
+msgstr ""
+
+# File: docs/8.x/container.md, line: 27
+# File: docs/master/container.md, line: 27
+#. type: Plain text
+msgid "Let's look at a simple example:"
+msgstr ""
+
+# File: docs/8.x/container.md, line: 29
+# File: docs/8.x/container.md, line: 80
+# File: docs/8.x/container.md, line: 253
+# File: docs/8.x/container.md, line: 396
+# File: docs/8.x/container.md, line: 439
+# File: docs/master/container.md, line: 29
+# File: docs/master/container.md, line: 80
+# File: docs/master/container.md, line: 253
+# File: docs/master/container.md, line: 396
+# File: docs/master/container.md, line: 439
+#. type: Plain text
+#, no-wrap
+msgid "    <?php\n"
+msgstr ""
+
+# File: docs/8.x/container.md, line: 31
+# File: docs/8.x/container.md, line: 398
+# File: docs/master/container.md, line: 31
+# File: docs/master/container.md, line: 398
+#. type: Plain text
+#, no-wrap
+msgid "    namespace App\\Http\\Controllers;\n"
+msgstr ""
+
+# File: docs/8.x/container.md, line: 35
+# File: docs/master/container.md, line: 35
+#. type: Plain text
+#, no-wrap
+msgid "    use App\\Http\\Controllers\\Controller;\n"
+"    use App\\Repositories\\UserRepository;\n"
+"    use App\\Models\\User;\n"
+msgstr ""
+
+# File: docs/8.x/container.md, line: 44
+# File: docs/master/container.md, line: 44
+#. type: Plain text
+#, no-wrap
+msgid "    class UserController extends Controller\n"
+"    {\n"
+"        /**\n"
+"         * The user repository implementation.\n"
+"         *\n"
+"         * @var UserRepository\n"
+"         */\n"
+"        protected $users;\n"
+msgstr ""
+
+# File: docs/8.x/container.md, line: 55
+# File: docs/master/container.md, line: 55
+#. type: Plain text
+#, no-wrap
+msgid "        /**\n"
+"         * Create a new controller instance.\n"
+"         *\n"
+"         * @param  UserRepository  $users\n"
+"         * @return void\n"
+"         */\n"
+"        public function __construct(UserRepository $users)\n"
+"        {\n"
+"            $this->users = $users;\n"
+"        }\n"
+msgstr ""
+
+# File: docs/8.x/container.md, line: 65
+# File: docs/master/container.md, line: 65
+#. type: Plain text
+#, no-wrap
+msgid "        /**\n"
+"         * Show the profile for the given user.\n"
+"         *\n"
+"         * @param  int  $id\n"
+"         * @return Response\n"
+"         */\n"
+"        public function show($id)\n"
+"        {\n"
+"            $user = $this->users->find($id);\n"
+msgstr ""
+
+# File: docs/8.x/container.md, line: 69
+# File: docs/master/container.md, line: 69
+#. type: Plain text
+#, no-wrap
+msgid "            return view('user.profile', ['user' => $user]);\n"
+"        }\n"
+"    }\n"
+msgstr ""
+
+# File: docs/8.x/container.md, line: 71
+# File: docs/master/container.md, line: 71
+#. type: Plain text
+msgid "In this example, the `UserController` needs to retrieve users from a data source. So, we will **inject** a service that is able to retrieve users. In this context, our `UserRepository` most likely uses [Eloquent](/docs/{{version}}/eloquent) to retrieve user information from the database. However, since the repository is injected, we are able to easily swap it out with another implementation. We are also able to easily \"mock\", or create a dummy implementation of the `UserRepository` when testing our application."
+msgstr ""
+
+# File: docs/8.x/container.md, line: 73
+# File: docs/master/container.md, line: 73
+#. type: Plain text
+msgid "A deep understanding of the Laravel service container is essential to building a powerful, large application, as well as for contributing to the Laravel core itself."
+msgstr ""
+
+# File: docs/8.x/container.md, line: 75
+# File: docs/master/container.md, line: 75
+#. type: Plain text
+#, no-wrap
+msgid "<a name=\"zero-configuration-resolution\"></a>\n"
+msgstr ""
+
+# File: docs/8.x/container.md, line: 75
+# File: docs/master/container.md, line: 75
+#. type: Title ###
+#, no-wrap
+msgid "Zero Configuration Resolution"
+msgstr ""
+
+# File: docs/8.x/container.md, line: 78
+# File: docs/master/container.md, line: 78
+#. type: Plain text
+msgid "If a class has no dependencies or only depends on other concrete classes (not interfaces), the container does not need to be instructed on how to resolve that class. For example, you may place the following code in your `routes/web.php` file:"
+msgstr ""
+
+# File: docs/8.x/container.md, line: 85
+# File: docs/master/container.md, line: 85
+#. type: Plain text
+#, no-wrap
+msgid "    class Service\n"
+"    {\n"
+"        //\n"
+"    }\n"
+msgstr ""
+
+# File: docs/8.x/container.md, line: 89
+# File: docs/master/container.md, line: 89
+#. type: Plain text
+#, no-wrap
+msgid "    Route::get('/', function (Service $service) {\n"
+"        die(get_class($service));\n"
+"    });\n"
+msgstr ""
+
+# File: docs/8.x/container.md, line: 91
+# File: docs/master/container.md, line: 91
+#. type: Plain text
+msgid "In this example, hitting your application's `/` route will automatically resolve the `Service` class and inject it into your route's handler. This is game changing. It means you can develop your application and take advantage of dependency injection without worrying about bloated configuration files."
+msgstr ""
+
+# File: docs/8.x/container.md, line: 93
+# File: docs/master/container.md, line: 93
+#. type: Plain text
+msgid "Thankfully, many of the classes you will be writing when building a Laravel application automatically receive their dependencies via the container, including [controllers](/docs/{{version}}/controllers), [event listeners](/docs/{{version}}/events), [middleware](/docs/{{version}}/middleware), and more. Additionally, you may type-hint dependencies in the `handle` method of [queued jobs](/docs/{{version}}/queues). Once you taste the power of automatic and zero configuration dependency injection it feels impossible to develop without it."
+msgstr ""
+
+# File: docs/8.x/container.md, line: 95
+# File: docs/master/container.md, line: 95
+#. type: Plain text
+#, no-wrap
+msgid "<a name=\"when-to-use-the-container\"></a>\n"
+msgstr ""
+
+# File: docs/8.x/container.md, line: 95
+# File: docs/master/container.md, line: 95
+#. type: Title ###
+#, no-wrap
+msgid "When To Use The Container"
+msgstr ""
+
+# File: docs/8.x/container.md, line: 98
+# File: docs/master/container.md, line: 98
+#. type: Plain text
+msgid "Thanks to zero configuration resolution, you will often type-hint dependencies on routes, controllers, event listeners, and elsewhere without ever manually interacting with the container. For example, you might type-hint the `Illuminate\\Http\\Request` object on your route definition so that you can easily access the current request. Even though we never have to interact with the container to write this code, it is managing the injection of these dependencies behind the scenes:"
+msgstr ""
+
+# File: docs/8.x/container.md, line: 100
+# File: docs/master/container.md, line: 100
+#. type: Plain text
+#, no-wrap
+msgid "    use Illuminate\\Http\\Request;\n"
+msgstr ""
+
+# File: docs/8.x/container.md, line: 104
+# File: docs/master/container.md, line: 104
+#. type: Plain text
+#, no-wrap
+msgid "    Route::get('/', function (Request $request) {\n"
+"        // ...\n"
+"    });\n"
+msgstr ""
+
+# File: docs/8.x/container.md, line: 106
+# File: docs/master/container.md, line: 106
+#. type: Plain text
+msgid "In many cases, thanks to automatic dependency injection and [facades](/docs/{{version}}/facades), you can build Laravel applications without **ever** manually binding or resolving anything from the container. **So, when would you ever manually interact with the container?** Let's examine two situations."
+msgstr ""
+
+# File: docs/8.x/container.md, line: 108
+# File: docs/master/container.md, line: 108
+#. type: Plain text
+msgid "First, if you write a class that implements an interface and you wish to type-hint that interface on a route or class constructor, you must [tell the container how to resolve that interface](#binding-interfaces-to-implementations). Secondly, if you are [writing a Laravel package](/docs/{{version}}/packages) that you plan to share with other Laravel developers, you may need to bind your package's services into the container."
+msgstr ""
+
+# File: docs/8.x/container.md, line: 110
+# File: docs/master/container.md, line: 110
+#. type: Plain text
+#, no-wrap
+msgid "<a name=\"binding\"></a>\n"
+msgstr ""
+
+# File: docs/8.x/container.md, line: 110
+# File: docs/master/container.md, line: 110
+#. type: Title ##
+#, no-wrap
+msgid "Binding"
+msgstr ""
+
+# File: docs/8.x/container.md, line: 113
+# File: docs/master/container.md, line: 113
+#. type: Plain text
+#, no-wrap
+msgid "<a name=\"binding-basics\"></a>\n"
+msgstr ""
+
+# File: docs/8.x/container.md, line: 113
+# File: docs/master/container.md, line: 113
+#. type: Title ###
+#, no-wrap
+msgid "Binding Basics"
+msgstr ""
+
+# File: docs/8.x/container.md, line: 116
+# File: docs/master/container.md, line: 116
+#. type: Plain text
+#, no-wrap
+msgid "<a name=\"simple-bindings\"></a>\n"
+msgstr ""
+
+# File: docs/8.x/container.md, line: 116
+# File: docs/master/container.md, line: 116
+#. type: Title ####
+#, no-wrap
+msgid "Simple Bindings"
+msgstr ""
+
+# File: docs/8.x/container.md, line: 119
+# File: docs/master/container.md, line: 119
+#. type: Plain text
+msgid "Almost all of your service container bindings will be registered within [service providers](/docs/{{version}}/providers), so most of these examples will demonstrate using the container in that context."
+msgstr ""
+
+# File: docs/8.x/container.md, line: 121
+# File: docs/master/container.md, line: 121
+#. type: Plain text
+#, no-wrap
+msgid "Within a service provider, you always have access to the container via the `$this->app` property. We can register a binding using the `bind` method, passing the class or interface name that we wish to register along with a closure that returns an instance of the class:\n"
+msgstr ""
+
+# File: docs/8.x/container.md, line: 124
+# File: docs/8.x/container.md, line: 149
+# File: docs/8.x/container.md, line: 161
+# File: docs/8.x/container.md, line: 173
+# File: docs/master/container.md, line: 124
+# File: docs/master/container.md, line: 149
+# File: docs/master/container.md, line: 161
+# File: docs/master/container.md, line: 173
+#. type: Plain text
+#, no-wrap
+msgid "    use App\\Services\\Transistor;\n"
+"    use App\\Services\\PodcastParser;\n"
+msgstr ""
+
+# File: docs/8.x/container.md, line: 128
+# File: docs/master/container.md, line: 128
+#. type: Plain text
+#, no-wrap
+msgid "    $this->app->bind(Transistor::class, function ($app) {\n"
+"        return new Transistor($app->make(PodcastParser::class));\n"
+"    });\n"
+msgstr ""
+
+# File: docs/8.x/container.md, line: 130
+# File: docs/master/container.md, line: 130
+#. type: Plain text
+msgid "Note that we receive the container itself as an argument to the resolver. We can then use the container to resolve sub-dependencies of the object we are building."
+msgstr ""
+
+# File: docs/8.x/container.md, line: 132
+# File: docs/master/container.md, line: 132
+#. type: Plain text
+msgid "As mentioned, you will typically be interacting with the container within service providers; however, if you would like to interact with the container outside of a service provider, you may do so via the `App` [facade](/docs/{{version}}/facades):"
+msgstr ""
+
+# File: docs/8.x/container.md, line: 135
+# File: docs/8.x/container.md, line: 370
+# File: docs/master/container.md, line: 135
+# File: docs/master/container.md, line: 370
+#. type: Plain text
+#, no-wrap
+msgid "    use App\\Services\\Transistor;\n"
+"    use Illuminate\\Support\\Facades\\App;\n"
+msgstr ""
+
+# File: docs/8.x/container.md, line: 139
+# File: docs/master/container.md, line: 139
+#. type: Plain text
+#, no-wrap
+msgid "    App::bind(Transistor::class, function ($app) {\n"
+"        // ...\n"
+"    });\n"
+msgstr ""
+
+# File: docs/8.x/container.md, line: 141
+# File: docs/master/container.md, line: 141
+#. type: Plain text
+#, no-wrap
+msgid "> {tip} There is no need to bind classes into the container if they do not depend on any interfaces. The container does not need to be instructed on how to build these objects, since it can automatically resolve these objects using reflection.\n"
+msgstr ""
+
+# File: docs/8.x/container.md, line: 143
+# File: docs/master/container.md, line: 143
+#. type: Plain text
+#, no-wrap
+msgid "<a name=\"binding-a-singleton\"></a>\n"
+msgstr ""
+
+# File: docs/8.x/container.md, line: 143
+# File: docs/master/container.md, line: 143
+#. type: Title ####
+#, no-wrap
+msgid "Binding A Singleton"
+msgstr ""
+
+# File: docs/8.x/container.md, line: 146
+# File: docs/master/container.md, line: 146
+#. type: Plain text
+msgid "The `singleton` method binds a class or interface into the container that should only be resolved one time. Once a singleton binding is resolved, the same object instance will be returned on subsequent calls into the container:"
+msgstr ""
+
+# File: docs/8.x/container.md, line: 153
+# File: docs/master/container.md, line: 153
+#. type: Plain text
+#, no-wrap
+msgid "    $this->app->singleton(Transistor::class, function ($app) {\n"
+"        return new Transistor($app->make(PodcastParser::class));\n"
+"    });\n"
+msgstr ""
+
+# File: docs/8.x/container.md, line: 155
+# File: docs/master/container.md, line: 155
+#. type: Plain text
+#, no-wrap
+msgid "<a name=\"binding-scoped\"></a>\n"
+msgstr ""
+
+# File: docs/8.x/container.md, line: 155
+# File: docs/master/container.md, line: 155
+#. type: Title ####
+#, no-wrap
+msgid "Binding Scoped Singletons"
+msgstr ""
+
+# File: docs/8.x/container.md, line: 158
+# File: docs/master/container.md, line: 158
+#. type: Plain text
+msgid "The `scoped` method binds a class or interface into the container that should only be resolved one time within a given Laravel request / job lifecycle. While this method is similar to the `singleton` method, instances registered using the `scoped` method will be flushed whenever the Laravel application starts a new \"lifecycle\", such as when a [Laravel Octane](/docs/{{version}}/octane) worker processes a new request or when a Laravel [queue worker](/docs/{{version}}/queues) processes a new job:"
+msgstr ""
+
+# File: docs/8.x/container.md, line: 165
+# File: docs/master/container.md, line: 165
+#. type: Plain text
+#, no-wrap
+msgid "    $this->app->scoped(Transistor::class, function ($app) {\n"
+"        return new Transistor($app->make(PodcastParser::class));\n"
+"    });\n"
+msgstr ""
+
+# File: docs/8.x/container.md, line: 167
+# File: docs/master/container.md, line: 167
+#. type: Plain text
+#, no-wrap
+msgid "<a name=\"binding-instances\"></a>\n"
+msgstr ""
+
+# File: docs/8.x/container.md, line: 167
+# File: docs/master/container.md, line: 167
+#. type: Title ####
+#, no-wrap
+msgid "Binding Instances"
+msgstr ""
+
+# File: docs/8.x/container.md, line: 170
+# File: docs/master/container.md, line: 170
+#. type: Plain text
+msgid "You may also bind an existing object instance into the container using the `instance` method. The given instance will always be returned on subsequent calls into the container:"
+msgstr ""
+
+# File: docs/8.x/container.md, line: 175
+# File: docs/master/container.md, line: 175
+#. type: Plain text
+#, no-wrap
+msgid "    $service = new Transistor(new PodcastParser);\n"
+msgstr ""
+
+# File: docs/8.x/container.md, line: 177
+# File: docs/master/container.md, line: 177
+#. type: Plain text
+#, no-wrap
+msgid "    $this->app->instance(Transistor::class, $service);\n"
+msgstr ""
+
+# File: docs/8.x/container.md, line: 179
+# File: docs/master/container.md, line: 179
+#. type: Plain text
+#, no-wrap
+msgid "<a name=\"binding-interfaces-to-implementations\"></a>\n"
+msgstr ""
+
+# File: docs/8.x/container.md, line: 179
+# File: docs/master/container.md, line: 179
+#. type: Title ###
+#, no-wrap
+msgid "Binding Interfaces To Implementations"
+msgstr ""
+
+# File: docs/8.x/container.md, line: 182
+# File: docs/master/container.md, line: 182
+#. type: Plain text
+msgid "A very powerful feature of the service container is its ability to bind an interface to a given implementation. For example, let's assume we have an `EventPusher` interface and a `RedisEventPusher` implementation. Once we have coded our `RedisEventPusher` implementation of this interface, we can register it with the service container like so:"
+msgstr ""
+
+# File: docs/8.x/container.md, line: 185
+# File: docs/master/container.md, line: 185
+#. type: Plain text
+#, no-wrap
+msgid "    use App\\Contracts\\EventPusher;\n"
+"    use App\\Services\\RedisEventPusher;\n"
+msgstr ""
+
+# File: docs/8.x/container.md, line: 187
+# File: docs/master/container.md, line: 187
+#. type: Plain text
+#, no-wrap
+msgid "    $this->app->bind(EventPusher::class, RedisEventPusher::class);\n"
+msgstr ""
+
+# File: docs/8.x/container.md, line: 189
+# File: docs/master/container.md, line: 189
+#. type: Plain text
+msgid "This statement tells the container that it should inject the `RedisEventPusher` when a class needs an implementation of `EventPusher`. Now we can type-hint the `EventPusher` interface in the constructor of a class that is resolved by the container. Remember, controllers, event listeners, middleware, and various other types of classes within Laravel applications are always resolved using the container:"
+msgstr ""
+
+# File: docs/8.x/container.md, line: 191
+# File: docs/master/container.md, line: 191
+#. type: Plain text
+#, no-wrap
+msgid "    use App\\Contracts\\EventPusher;\n"
+msgstr ""
+
+# File: docs/8.x/container.md, line: 202
+# File: docs/master/container.md, line: 202
+#. type: Plain text
+#, no-wrap
+msgid "    /**\n"
+"     * Create a new class instance.\n"
+"     *\n"
+"     * @param  \\App\\Contracts\\EventPusher  $pusher\n"
+"     * @return void\n"
+"     */\n"
+"    public function __construct(EventPusher $pusher)\n"
+"    {\n"
+"        $this->pusher = $pusher;\n"
+"    }\n"
+msgstr ""
+
+# File: docs/8.x/container.md, line: 204
+# File: docs/master/container.md, line: 204
+#. type: Plain text
+#, no-wrap
+msgid "<a name=\"contextual-binding\"></a>\n"
+msgstr ""
+
+# File: docs/8.x/container.md, line: 204
+# File: docs/master/container.md, line: 204
+#. type: Title ###
+#, no-wrap
+msgid "Contextual Binding"
+msgstr ""
+
+# File: docs/8.x/container.md, line: 207
+# File: docs/master/container.md, line: 207
+#. type: Plain text
+msgid "Sometimes you may have two classes that utilize the same interface, but you wish to inject different implementations into each class. For example, two controllers may depend on different implementations of the `Illuminate\\Contracts\\Filesystem\\Filesystem` [contract](/docs/{{version}}/contracts). Laravel provides a simple, fluent interface for defining this behavior:"
+msgstr ""
+
+# File: docs/8.x/container.md, line: 213
+# File: docs/master/container.md, line: 213
+#. type: Plain text
+#, no-wrap
+msgid "    use App\\Http\\Controllers\\PhotoController;\n"
+"    use App\\Http\\Controllers\\UploadController;\n"
+"    use App\\Http\\Controllers\\VideoController;\n"
+"    use Illuminate\\Contracts\\Filesystem\\Filesystem;\n"
+"    use Illuminate\\Support\\Facades\\Storage;\n"
+msgstr ""
+
+# File: docs/8.x/container.md, line: 219
+# File: docs/master/container.md, line: 219
+#. type: Plain text
+#, no-wrap
+msgid "    $this->app->when(PhotoController::class)\n"
+"              ->needs(Filesystem::class)\n"
+"              ->give(function () {\n"
+"                  return Storage::disk('local');\n"
+"              });\n"
+msgstr ""
+
+# File: docs/8.x/container.md, line: 225
+# File: docs/master/container.md, line: 225
+#. type: Plain text
+#, no-wrap
+msgid "    $this->app->when([VideoController::class, UploadController::class])\n"
+"              ->needs(Filesystem::class)\n"
+"              ->give(function () {\n"
+"                  return Storage::disk('s3');\n"
+"              });\n"
+msgstr ""
+
+# File: docs/8.x/container.md, line: 227
+# File: docs/master/container.md, line: 227
+#. type: Plain text
+#, no-wrap
+msgid "<a name=\"binding-primitives\"></a>\n"
+msgstr ""
+
+# File: docs/8.x/container.md, line: 227
+# File: docs/master/container.md, line: 227
+#. type: Title ###
+#, no-wrap
+msgid "Binding Primitives"
+msgstr ""
+
+# File: docs/8.x/container.md, line: 230
+# File: docs/master/container.md, line: 230
+#. type: Plain text
+msgid "Sometimes you may have a class that receives some injected classes, but also needs an injected primitive value such as an integer. You may easily use contextual binding to inject any value your class may need:"
+msgstr ""
+
+# File: docs/8.x/container.md, line: 234
+# File: docs/master/container.md, line: 234
+#. type: Plain text
+#, no-wrap
+msgid "    $this->app->when('App\\Http\\Controllers\\UserController')\n"
+"              ->needs('$variableName')\n"
+"              ->give($value);\n"
+msgstr ""
+
+# File: docs/8.x/container.md, line: 236
+# File: docs/master/container.md, line: 236
+#. type: Plain text
+msgid "Sometimes a class may depend on an array of [tagged](#tagging) instances. Using the `giveTagged` method, you may easily inject all of the container bindings with that tag:"
+msgstr ""
+
+# File: docs/8.x/container.md, line: 240
+# File: docs/master/container.md, line: 240
+#. type: Plain text
+#, no-wrap
+msgid "    $this->app->when(ReportAggregator::class)\n"
+"        ->needs('$reports')\n"
+"        ->giveTagged('reports');\n"
+msgstr ""
+
+# File: docs/8.x/container.md, line: 242
+# File: docs/master/container.md, line: 242
+#. type: Plain text
+msgid "If you need to inject a value from one of your application's configuration files, you may use the `giveConfig` method:"
+msgstr ""
+
+# File: docs/8.x/container.md, line: 246
+# File: docs/master/container.md, line: 246
+#. type: Plain text
+#, no-wrap
+msgid "    $this->app->when(ReportAggregator::class)\n"
+"        ->needs('$timezone')\n"
+"        ->giveConfig('app.timezone');\n"
+msgstr ""
+
+# File: docs/8.x/container.md, line: 248
+# File: docs/master/container.md, line: 248
+#. type: Plain text
+#, no-wrap
+msgid "<a name=\"binding-typed-variadics\"></a>\n"
+msgstr ""
+
+# File: docs/8.x/container.md, line: 248
+# File: docs/master/container.md, line: 248
+#. type: Title ###
+#, no-wrap
+msgid "Binding Typed Variadics"
+msgstr ""
+
+# File: docs/8.x/container.md, line: 251
+# File: docs/master/container.md, line: 251
+#. type: Plain text
+msgid "Occasionally, you may have a class that receives an array of typed objects using a variadic constructor argument:"
+msgstr ""
+
+# File: docs/8.x/container.md, line: 256
+# File: docs/master/container.md, line: 256
+#. type: Plain text
+#, no-wrap
+msgid "    use App\\Models\\Filter;\n"
+"    use App\\Services\\Logger;\n"
+msgstr ""
+
+# File: docs/8.x/container.md, line: 265
+# File: docs/master/container.md, line: 265
+#. type: Plain text
+#, no-wrap
+msgid "    class Firewall\n"
+"    {\n"
+"        /**\n"
+"         * The logger instance.\n"
+"         *\n"
+"         * @var \\App\\Services\\Logger\n"
+"         */\n"
+"        protected $logger;\n"
+msgstr ""
+
+# File: docs/8.x/container.md, line: 272
+# File: docs/master/container.md, line: 272
+#. type: Plain text
+#, no-wrap
+msgid "        /**\n"
+"         * The filter instances.\n"
+"         *\n"
+"         * @var array\n"
+"         */\n"
+"        protected $filters;\n"
+msgstr ""
+
+# File: docs/8.x/container.md, line: 286
+# File: docs/master/container.md, line: 286
+#. type: Plain text
+#, no-wrap
+msgid "        /**\n"
+"         * Create a new class instance.\n"
+"         *\n"
+"         * @param  \\App\\Services\\Logger  $logger\n"
+"         * @param  array  $filters\n"
+"         * @return void\n"
+"         */\n"
+"        public function __construct(Logger $logger, Filter ...$filters)\n"
+"        {\n"
+"            $this->logger = $logger;\n"
+"            $this->filters = $filters;\n"
+"        }\n"
+"    }\n"
+msgstr ""
+
+# File: docs/8.x/container.md, line: 288
+# File: docs/master/container.md, line: 288
+#. type: Plain text
+msgid "Using contextual binding, you may resolve this dependency by providing the `give` method with a closure that returns an array of resolved `Filter` instances:"
+msgstr ""
+
+# File: docs/8.x/container.md, line: 298
+# File: docs/master/container.md, line: 298
+#. type: Plain text
+#, no-wrap
+msgid "    $this->app->when(Firewall::class)\n"
+"              ->needs(Filter::class)\n"
+"              ->give(function ($app) {\n"
+"                    return [\n"
+"                        $app->make(NullFilter::class),\n"
+"                        $app->make(ProfanityFilter::class),\n"
+"                        $app->make(TooLongFilter::class),\n"
+"                    ];\n"
+"              });\n"
+msgstr ""
+
+# File: docs/8.x/container.md, line: 300
+# File: docs/master/container.md, line: 300
+#. type: Plain text
+msgid "For convenience, you may also just provide an array of class names to be resolved by the container whenever `Firewall` needs `Filter` instances:"
+msgstr ""
+
+# File: docs/8.x/container.md, line: 308
+# File: docs/master/container.md, line: 308
+#. type: Plain text
+#, no-wrap
+msgid "    $this->app->when(Firewall::class)\n"
+"              ->needs(Filter::class)\n"
+"              ->give([\n"
+"                  NullFilter::class,\n"
+"                  ProfanityFilter::class,\n"
+"                  TooLongFilter::class,\n"
+"              ]);\n"
+msgstr ""
+
+# File: docs/8.x/container.md, line: 310
+# File: docs/master/container.md, line: 310
+#. type: Plain text
+#, no-wrap
+msgid "<a name=\"variadic-tag-dependencies\"></a>\n"
+msgstr ""
+
+# File: docs/8.x/container.md, line: 310
+# File: docs/master/container.md, line: 310
+#. type: Title ####
+#, no-wrap
+msgid "Variadic Tag Dependencies"
+msgstr ""
+
+# File: docs/8.x/container.md, line: 313
+# File: docs/master/container.md, line: 313
+#. type: Plain text
+msgid "Sometimes a class may have a variadic dependency that is type-hinted as a given class (`Report ...$reports`). Using the `needs` and `giveTagged` methods, you may easily inject all of the container bindings with that [tag](#tagging) for the given dependency:"
+msgstr ""
+
+# File: docs/8.x/container.md, line: 317
+# File: docs/master/container.md, line: 317
+#. type: Plain text
+#, no-wrap
+msgid "    $this->app->when(ReportAggregator::class)\n"
+"        ->needs(Report::class)\n"
+"        ->giveTagged('reports');\n"
+msgstr ""
+
+# File: docs/8.x/container.md, line: 319
+# File: docs/master/container.md, line: 319
+#. type: Plain text
+#, no-wrap
+msgid "<a name=\"tagging\"></a>\n"
+msgstr ""
+
+# File: docs/8.x/container.md, line: 319
+# File: docs/master/container.md, line: 319
+#. type: Title ###
+#, no-wrap
+msgid "Tagging"
+msgstr ""
+
+# File: docs/8.x/container.md, line: 322
+# File: docs/master/container.md, line: 322
+#. type: Plain text
+msgid "Occasionally, you may need to resolve all of a certain \"category\" of binding. For example, perhaps you are building a report analyzer that receives an array of many different `Report` interface implementations. After registering the `Report` implementations, you can assign them a tag using the `tag` method:"
+msgstr ""
+
+# File: docs/8.x/container.md, line: 326
+# File: docs/master/container.md, line: 326
+#. type: Plain text
+#, no-wrap
+msgid "    $this->app->bind(CpuReport::class, function () {\n"
+"        //\n"
+"    });\n"
+msgstr ""
+
+# File: docs/8.x/container.md, line: 330
+# File: docs/master/container.md, line: 330
+#. type: Plain text
+#, no-wrap
+msgid "    $this->app->bind(MemoryReport::class, function () {\n"
+"        //\n"
+"    });\n"
+msgstr ""
+
+# File: docs/8.x/container.md, line: 332
+# File: docs/master/container.md, line: 332
+#. type: Plain text
+#, no-wrap
+msgid "    $this->app->tag([CpuReport::class, MemoryReport::class], 'reports');\n"
+msgstr ""
+
+# File: docs/8.x/container.md, line: 334
+# File: docs/master/container.md, line: 334
+#. type: Plain text
+msgid "Once the services have been tagged, you may easily resolve them all via the container's `tagged` method:"
+msgstr ""
+
+# File: docs/8.x/container.md, line: 338
+# File: docs/master/container.md, line: 338
+#. type: Plain text
+#, no-wrap
+msgid "    $this->app->bind(ReportAnalyzer::class, function ($app) {\n"
+"        return new ReportAnalyzer($app->tagged('reports'));\n"
+"    });\n"
+msgstr ""
+
+# File: docs/8.x/container.md, line: 340
+# File: docs/master/container.md, line: 340
+#. type: Plain text
+#, no-wrap
+msgid "<a name=\"extending-bindings\"></a>\n"
+msgstr ""
+
+# File: docs/8.x/container.md, line: 340
+# File: docs/master/container.md, line: 340
+#. type: Title ###
+#, no-wrap
+msgid "Extending Bindings"
+msgstr ""
+
+# File: docs/8.x/container.md, line: 343
+# File: docs/master/container.md, line: 343
+#. type: Plain text
+msgid "The `extend` method allows the modification of resolved services. For example, when a service is resolved, you may run additional code to decorate or configure the service. The `extend` method accepts a closure, which should return the modified service, as its only argument. The closure receives the service being resolved and the container instance:"
+msgstr ""
+
+# File: docs/8.x/container.md, line: 347
+# File: docs/master/container.md, line: 347
+#. type: Plain text
+#, no-wrap
+msgid "    $this->app->extend(Service::class, function ($service, $app) {\n"
+"        return new DecoratedService($service);\n"
+"    });\n"
+msgstr ""
+
+# File: docs/8.x/container.md, line: 349
+# File: docs/master/container.md, line: 349
+#. type: Plain text
+#, no-wrap
+msgid "<a name=\"resolving\"></a>\n"
+msgstr ""
+
+# File: docs/8.x/container.md, line: 349
+# File: docs/master/container.md, line: 349
+#. type: Title ##
+#, no-wrap
+msgid "Resolving"
+msgstr ""
+
+# File: docs/8.x/container.md, line: 352
+# File: docs/master/container.md, line: 352
+#. type: Plain text
+#, no-wrap
+msgid "<a name=\"the-make-method\"></a>\n"
+msgstr ""
+
+# File: docs/8.x/container.md, line: 352
+# File: docs/master/container.md, line: 352
+#. type: Title ###
+#, no-wrap
+msgid "The `make` Method"
+msgstr ""
+
+# File: docs/8.x/container.md, line: 355
+# File: docs/master/container.md, line: 355
+#. type: Plain text
+msgid "You may use the `make` method to resolve a class instance from the container. The `make` method accepts the name of the class or interface you wish to resolve:"
+msgstr ""
+
+# File: docs/8.x/container.md, line: 357
+# File: docs/8.x/container.md, line: 363
+# File: docs/8.x/container.md, line: 480
+# File: docs/master/container.md, line: 357
+# File: docs/master/container.md, line: 363
+# File: docs/master/container.md, line: 480
+#. type: Plain text
+#, no-wrap
+msgid "    use App\\Services\\Transistor;\n"
+msgstr ""
+
+# File: docs/8.x/container.md, line: 359
+# File: docs/master/container.md, line: 359
+#. type: Plain text
+#, no-wrap
+msgid "    $transistor = $this->app->make(Transistor::class);\n"
+msgstr ""
+
+# File: docs/8.x/container.md, line: 361
+# File: docs/master/container.md, line: 361
+#. type: Plain text
+msgid "If some of your class' dependencies are not resolvable via the container, you may inject them by passing them as an associative array into the `makeWith` method. For example, we may manually pass the `$id` constructor argument required by the `Transistor` service:"
+msgstr ""
+
+# File: docs/8.x/container.md, line: 365
+# File: docs/master/container.md, line: 365
+#. type: Plain text
+#, no-wrap
+msgid "    $transistor = $this->app->makeWith(Transistor::class, ['id' => 1]);\n"
+msgstr ""
+
+# File: docs/8.x/container.md, line: 367
+# File: docs/master/container.md, line: 367
+#. type: Plain text
+msgid "If you are outside of a service provider in a location of your code that does not have access to the `$app` variable, you may use the `App` [facade](/docs/{{version}}/facades) to resolve a class instance from the container:"
+msgstr ""
+
+# File: docs/8.x/container.md, line: 372
+# File: docs/master/container.md, line: 372
+#. type: Plain text
+#, no-wrap
+msgid "    $transistor = App::make(Transistor::class);\n"
+msgstr ""
+
+# File: docs/8.x/container.md, line: 374
+# File: docs/master/container.md, line: 374
+#. type: Plain text
+msgid "If you would like to have the Laravel container instance itself injected into a class that is being resolved by the container, you may type-hint the `Illuminate\\Container\\Container` class on your class' constructor:"
+msgstr ""
+
+# File: docs/8.x/container.md, line: 376
+# File: docs/master/container.md, line: 376
+#. type: Plain text
+#, no-wrap
+msgid "    use Illuminate\\Container\\Container;\n"
+msgstr ""
+
+# File: docs/8.x/container.md, line: 387
+# File: docs/master/container.md, line: 387
+#. type: Plain text
+#, no-wrap
+msgid "    /**\n"
+"     * Create a new class instance.\n"
+"     *\n"
+"     * @param  \\Illuminate\\Container\\Container  $container\n"
+"     * @return void\n"
+"     */\n"
+"    public function __construct(Container $container)\n"
+"    {\n"
+"        $this->container = $container;\n"
+"    }\n"
+msgstr ""
+
+# File: docs/8.x/container.md, line: 389
+# File: docs/master/container.md, line: 389
+#. type: Plain text
+#, no-wrap
+msgid "<a name=\"automatic-injection\"></a>\n"
+msgstr ""
+
+# File: docs/8.x/container.md, line: 389
+# File: docs/master/container.md, line: 389
+#. type: Title ###
+#, no-wrap
+msgid "Automatic Injection"
+msgstr ""
+
+# File: docs/8.x/container.md, line: 392
+# File: docs/master/container.md, line: 392
+#. type: Plain text
+msgid "Alternatively, and importantly, you may type-hint the dependency in the constructor of a class that is resolved by the container, including [controllers](/docs/{{version}}/controllers), [event listeners](/docs/{{version}}/events), [middleware](/docs/{{version}}/middleware), and more. Additionally, you may type-hint dependencies in the `handle` method of [queued jobs](/docs/{{version}}/queues). In practice, this is how most of your objects should be resolved by the container."
+msgstr ""
+
+# File: docs/8.x/container.md, line: 394
+# File: docs/master/container.md, line: 394
+#. type: Plain text
+msgid "For example, you may type-hint a repository defined by your application in a controller's constructor. The repository will automatically be resolved and injected into the class:"
+msgstr ""
+
+# File: docs/8.x/container.md, line: 400
+# File: docs/8.x/container.md, line: 443
+# File: docs/master/container.md, line: 400
+# File: docs/master/container.md, line: 443
+#. type: Plain text
+#, no-wrap
+msgid "    use App\\Repositories\\UserRepository;\n"
+msgstr ""
+
+# File: docs/8.x/container.md, line: 409
+# File: docs/master/container.md, line: 409
+#. type: Plain text
+#, no-wrap
+msgid "    class UserController extends Controller\n"
+"    {\n"
+"        /**\n"
+"         * The user repository instance.\n"
+"         *\n"
+"         * @var \\App\\Repositories\\UserRepository\n"
+"         */\n"
+"        protected $users;\n"
+msgstr ""
+
+# File: docs/8.x/container.md, line: 420
+# File: docs/master/container.md, line: 420
+#. type: Plain text
+#, no-wrap
+msgid "        /**\n"
+"         * Create a new controller instance.\n"
+"         *\n"
+"         * @param  \\App\\Repositories\\UserRepository  $users\n"
+"         * @return void\n"
+"         */\n"
+"        public function __construct(UserRepository $users)\n"
+"        {\n"
+"            $this->users = $users;\n"
+"        }\n"
+msgstr ""
+
+# File: docs/8.x/container.md, line: 432
+# File: docs/master/container.md, line: 432
+#. type: Plain text
+#, no-wrap
+msgid "        /**\n"
+"         * Show the user with the given ID.\n"
+"         *\n"
+"         * @param  int  $id\n"
+"         * @return \\Illuminate\\Http\\Response\n"
+"         */\n"
+"        public function show($id)\n"
+"        {\n"
+"            //\n"
+"        }\n"
+"    }\n"
+msgstr ""
+
+# File: docs/8.x/container.md, line: 434
+# File: docs/master/container.md, line: 434
+#. type: Plain text
+#, no-wrap
+msgid "<a name=\"method-invocation-and-injection\"></a>\n"
+msgstr ""
+
+# File: docs/8.x/container.md, line: 434
+# File: docs/master/container.md, line: 434
+#. type: Title ##
+#, no-wrap
+msgid "Method Invocation & Injection"
+msgstr ""
+
+# File: docs/8.x/container.md, line: 437
+# File: docs/master/container.md, line: 437
+#. type: Plain text
+msgid "Sometimes you may wish to invoke a method on an object instance while allowing the container to automatically inject that method's dependencies. For example, given the following class:"
+msgstr ""
+
+# File: docs/8.x/container.md, line: 441
+# File: docs/master/container.md, line: 441
+#. type: Plain text
+#, no-wrap
+msgid "    namespace App;\n"
+msgstr ""
+
+# File: docs/8.x/container.md, line: 457
+# File: docs/master/container.md, line: 457
+#. type: Plain text
+#, no-wrap
+msgid "    class UserReport\n"
+"    {\n"
+"        /**\n"
+"         * Generate a new user report.\n"
+"         *\n"
+"         * @param  \\App\\Repositories\\UserRepository  $repository\n"
+"         * @return array\n"
+"         */\n"
+"        public function generate(UserRepository $repository)\n"
+"        {\n"
+"            // ...\n"
+"        }\n"
+"    }\n"
+msgstr ""
+
+# File: docs/8.x/container.md, line: 459
+# File: docs/master/container.md, line: 459
+#. type: Plain text
+msgid "You may invoke the `generate` method via the container like so:"
+msgstr ""
+
+# File: docs/8.x/container.md, line: 462
+# File: docs/master/container.md, line: 462
+#. type: Plain text
+#, no-wrap
+msgid "    use App\\UserReport;\n"
+"    use Illuminate\\Support\\Facades\\App;\n"
+msgstr ""
+
+# File: docs/8.x/container.md, line: 464
+# File: docs/master/container.md, line: 464
+#. type: Plain text
+#, no-wrap
+msgid "    $report = App::call([new UserReport, 'generate']);\n"
+msgstr ""
+
+# File: docs/8.x/container.md, line: 466
+# File: docs/master/container.md, line: 466
+#. type: Plain text
+msgid "The `call` method accepts any PHP callable. The container's `call` method may even be used to invoke a closure while automatically injecting its dependencies:"
+msgstr ""
+
+# File: docs/8.x/container.md, line: 469
+# File: docs/master/container.md, line: 469
+#. type: Plain text
+#, no-wrap
+msgid "    use App\\Repositories\\UserRepository;\n"
+"    use Illuminate\\Support\\Facades\\App;\n"
+msgstr ""
+
+# File: docs/8.x/container.md, line: 473
+# File: docs/master/container.md, line: 473
+#. type: Plain text
+#, no-wrap
+msgid "    $result = App::call(function (UserRepository $repository) {\n"
+"        // ...\n"
+"    });\n"
+msgstr ""
+
+# File: docs/8.x/container.md, line: 475
+# File: docs/master/container.md, line: 475
+#. type: Plain text
+#, no-wrap
+msgid "<a name=\"container-events\"></a>\n"
+msgstr ""
+
+# File: docs/8.x/container.md, line: 475
+# File: docs/master/container.md, line: 475
+#. type: Title ##
+#, no-wrap
+msgid "Container Events"
+msgstr ""
+
+# File: docs/8.x/container.md, line: 478
+# File: docs/master/container.md, line: 478
+#. type: Plain text
+msgid "The service container fires an event each time it resolves an object. You may listen to this event using the `resolving` method:"
+msgstr ""
+
+# File: docs/8.x/container.md, line: 484
+# File: docs/master/container.md, line: 484
+#. type: Plain text
+#, no-wrap
+msgid "    $this->app->resolving(Transistor::class, function ($transistor, $app) {\n"
+"        // Called when container resolves objects of type \"Transistor\"...\n"
+"    });\n"
+msgstr ""
+
+# File: docs/8.x/container.md, line: 488
+# File: docs/master/container.md, line: 488
+#. type: Plain text
+#, no-wrap
+msgid "    $this->app->resolving(function ($object, $app) {\n"
+"        // Called when container resolves object of any type...\n"
+"    });\n"
+msgstr ""
+
+# File: docs/8.x/container.md, line: 490
+# File: docs/master/container.md, line: 490
+#. type: Plain text
+msgid "As you can see, the object being resolved will be passed to the callback, allowing you to set any additional properties on the object before it is given to its consumer."
+msgstr ""
+
+# File: docs/8.x/container.md, line: 492
+# File: docs/master/container.md, line: 492
+#. type: Plain text
+#, no-wrap
+msgid "<a name=\"psr-11\"></a>\n"
+msgstr ""
+
+# File: docs/8.x/container.md, line: 492
+# File: docs/master/container.md, line: 492
+#. type: Title ##
+#, no-wrap
+msgid "PSR-11"
+msgstr ""
+
+# File: docs/8.x/container.md, line: 495
+# File: docs/master/container.md, line: 495
+#. type: Plain text
+msgid "Laravel's service container implements the [PSR-11](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-11-container.md) interface. Therefore, you may type-hint the PSR-11 container interface to obtain an instance of the Laravel container:"
+msgstr ""
+
+# File: docs/8.x/container.md, line: 498
+# File: docs/master/container.md, line: 498
+#. type: Plain text
+#, no-wrap
+msgid "    use App\\Services\\Transistor;\n"
+"    use Psr\\Container\\ContainerInterface;\n"
+msgstr ""
+
+# File: docs/8.x/container.md, line: 501
+# File: docs/master/container.md, line: 501
+#. type: Plain text
+#, no-wrap
+msgid "    Route::get('/', function (ContainerInterface $container) {\n"
+"        $service = $container->get(Transistor::class);\n"
+msgstr ""
+
+# File: docs/8.x/container.md, line: 504
+# File: docs/master/container.md, line: 504
+#. type: Plain text
+#, no-wrap
+msgid "        //\n"
+"    });\n"
+msgstr ""
+
+# File: docs/8.x/container.md, line: 505
+# File: docs/master/container.md, line: 505
+#. type: Plain text
+msgid "An exception is thrown if the given identifier can't be resolved. The exception will be an instance of `Psr\\Container\\NotFoundExceptionInterface` if the identifier was never bound. If the identifier was bound but was unable to be resolved, an instance of `Psr\\Container\\ContainerExceptionInterface` will be thrown."
+msgstr ""
+

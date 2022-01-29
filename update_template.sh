@@ -3,7 +3,7 @@
 for file in docs/**/*.md; do
   echo "Processing $file"
 
-  pot_path=`echo $file | sed -E 's#docs/(.+)\.md#translations/template/\1.pot#g'`
+  pot_path=`echo $file | sed -E 's#docs/(.+)\.md#_tmp/\1.pot#g'`
 
   mkdir -p `dirname $pot_path`
 
@@ -16,5 +16,13 @@ for file in docs/**/*.md; do
           --po $pot_path
 done
 
-msgcat --strict -o po/docs.pot translations/**/*.pot
+echo "Merging different versions..."
 
+for file in `ls _tmp/**/*.pot | sed -E 's#_tmp/.+/(.+)\.pot#\1#g' | uniq`; do
+  echo "Merging $file..."
+  mkdir -p `dirname "templates/$file"`
+  msgcat --strict --no-wrap -o templates/$file.pot _tmp/*/$file.pot
+done
+
+echo "Cleaning up..."
+rm -Rf _tmp

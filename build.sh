@@ -2,15 +2,20 @@
 
 locale=$1
 
-if [[ -z "$locale" || ! -d "translations/$locale" ]]; then
+if [[ -z "$locale" ]]; then
   echo "Usage: zsh build.sh <locale>"
+  exit
+fi
+
+if [[ ! -d "po/$locale" ]]; then
+  echo "Error: po/$locale does not exist"
   exit
 fi
 
 for source_dir in docs/*; do
   version=`basename "$source_dir"`
   target_dir="build/$locale/$version"
-  po_dir="translations/$locale/$version"
+  po_dir="po/$locale"
 
   mkdir -p "build/$locale/$version"
 

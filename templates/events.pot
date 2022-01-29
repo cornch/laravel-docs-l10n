@@ -1,0 +1,1516 @@
+# SOME DESCRIPTIVE TITLE
+# Copyright (C) YEAR Taylor Otwell
+# This file is distributed under the same license as the Laravel Documentation package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: Laravel Documentation VERSION\n"
+"POT-Creation-Date: 2022-01-29 13:31+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+#
+#. type: Title #
+# File: docs/8.x/events.md, line: 1
+# File: docs/master/events.md, line: 1
+#, no-wrap
+msgid "Events"
+msgstr ""
+#
+#. type: Bullet: '- '
+# File: docs/8.x/events.md, line: 18
+# File: docs/master/events.md, line: 18
+msgid "[Introduction](#introduction)"
+msgstr ""
+#
+#. type: Bullet: '- '
+# File: docs/8.x/events.md, line: 18
+# File: docs/master/events.md, line: 18
+msgid "[Registering Events & Listeners](#registering-events-and-listeners)"
+msgstr ""
+#
+#. type: Bullet: '    - '
+# File: docs/8.x/events.md, line: 18
+# File: docs/master/events.md, line: 18
+msgid "[Generating Events & Listeners](#generating-events-and-listeners)"
+msgstr ""
+#
+#. type: Bullet: '    - '
+# File: docs/8.x/events.md, line: 18
+# File: docs/master/events.md, line: 18
+msgid "[Manually Registering Events](#manually-registering-events)"
+msgstr ""
+#
+#. type: Bullet: '    - '
+# File: docs/8.x/events.md, line: 18
+# File: docs/master/events.md, line: 18
+msgid "[Event Discovery](#event-discovery)"
+msgstr ""
+#
+#. type: Bullet: '- '
+# File: docs/8.x/events.md, line: 18
+# File: docs/master/events.md, line: 18
+msgid "[Defining Events](#defining-events)"
+msgstr ""
+#
+#. type: Bullet: '- '
+# File: docs/8.x/events.md, line: 18
+# File: docs/master/events.md, line: 18
+msgid "[Defining Listeners](#defining-listeners)"
+msgstr ""
+#
+#. type: Bullet: '- '
+# File: docs/8.x/events.md, line: 18
+# File: docs/master/events.md, line: 18
+msgid "[Queued Event Listeners](#queued-event-listeners)"
+msgstr ""
+#
+#. type: Bullet: '    - '
+# File: docs/8.x/events.md, line: 18
+# File: docs/master/events.md, line: 18
+msgid "[Manually Interacting With The Queue](#manually-interacting-with-the-queue)"
+msgstr ""
+#
+#. type: Bullet: '    - '
+# File: docs/8.x/events.md, line: 18
+# File: docs/master/events.md, line: 18
+msgid "[Queued Event Listeners & Database Transactions](#queued-event-listeners-and-database-transactions)"
+msgstr ""
+#
+#. type: Bullet: '    - '
+# File: docs/8.x/events.md, line: 18
+# File: docs/master/events.md, line: 18
+msgid "[Handling Failed Jobs](#handling-failed-jobs)"
+msgstr ""
+#
+#. type: Bullet: '- '
+# File: docs/8.x/events.md, line: 18
+# File: docs/master/events.md, line: 18
+msgid "[Dispatching Events](#dispatching-events)"
+msgstr ""
+#
+#. type: Bullet: '- '
+# File: docs/8.x/events.md, line: 18
+# File: docs/master/events.md, line: 18
+msgid "[Event Subscribers](#event-subscribers)"
+msgstr ""
+#
+#. type: Bullet: '    - '
+# File: docs/8.x/events.md, line: 18
+# File: docs/master/events.md, line: 18
+msgid "[Writing Event Subscribers](#writing-event-subscribers)"
+msgstr ""
+#
+#. type: Bullet: '    - '
+# File: docs/8.x/events.md, line: 18
+# File: docs/master/events.md, line: 18
+msgid "[Registering Event Subscribers](#registering-event-subscribers)"
+msgstr ""
+#
+#. type: Plain text
+# File: docs/8.x/events.md, line: 20
+# File: docs/master/events.md, line: 20
+#, no-wrap
+msgid "<a name=\"introduction\"></a>\n"
+msgstr ""
+#
+#. type: Title ##
+# File: docs/8.x/events.md, line: 20
+# File: docs/master/events.md, line: 20
+#, no-wrap
+msgid "Introduction"
+msgstr ""
+#
+#. type: Plain text
+# File: docs/8.x/events.md, line: 23
+# File: docs/master/events.md, line: 23
+msgid "Laravel's events provide a simple observer pattern implementation, allowing you to subscribe and listen for various events that occur within your application. Event classes are typically stored in the `app/Events` directory, while their listeners are stored in `app/Listeners`. Don't worry if you don't see these directories in your application as they will be created for you as you generate events and listeners using Artisan console commands."
+msgstr ""
+#
+#. type: Plain text
+# File: docs/8.x/events.md, line: 25
+# File: docs/master/events.md, line: 25
+msgid "Events serve as a great way to decouple various aspects of your application, since a single event can have multiple listeners that do not depend on each other. For example, you may wish to send a Slack notification to your user each time an order has shipped. Instead of coupling your order processing code to your Slack notification code, you can raise an `App\\Events\\OrderShipped` event which a listener can receive and use to dispatch a Slack notification."
+msgstr ""
+#
+#. type: Plain text
+# File: docs/8.x/events.md, line: 27
+# File: docs/master/events.md, line: 27
+#, no-wrap
+msgid "<a name=\"registering-events-and-listeners\"></a>\n"
+msgstr ""
+#
+#. type: Title ##
+# File: docs/8.x/events.md, line: 27
+# File: docs/master/events.md, line: 27
+#, no-wrap
+msgid "Registering Events & Listeners"
+msgstr ""
+#
+#. type: Plain text
+# File: docs/8.x/events.md, line: 30
+# File: docs/master/events.md, line: 30
+msgid "The `App\\Providers\\EventServiceProvider` included with your Laravel application provides a convenient place to register all of your application's event listeners. The `listen` property contains an array of all events (keys) and their listeners (values). You may add as many events to this array as your application requires. For example, let's add an `OrderShipped` event:"
+msgstr ""
+#
+#. type: Plain text
+# File: docs/8.x/events.md, line: 33
+# File: docs/master/events.md, line: 33
+#, no-wrap
+msgid ""
+"    use App\\Events\\OrderShipped;\n"
+"    use App\\Listeners\\SendShipmentNotification;\n"
+msgstr ""
+#
+#. type: Plain text
+# File: docs/8.x/events.md, line: 44
+# File: docs/master/events.md, line: 44
+#, no-wrap
+msgid ""
+"    /**\n"
+"     * The event listener mappings for the application.\n"
+"     *\n"
+"     * @var array\n"
+"     */\n"
+"    protected $listen = [\n"
+"        OrderShipped::class => [\n"
+"            SendShipmentNotification::class,\n"
+"        ],\n"
+"    ];\n"
+msgstr ""
+#
+#. type: Plain text
+# File: docs/8.x/events.md, line: 46
+# File: docs/master/events.md, line: 46
+#, no-wrap
+msgid "> {tip} The `event:list` command may be used to display a list of all events and listeners registered by your application.\n"
+msgstr ""
+#
+#. type: Plain text
+# File: docs/8.x/events.md, line: 48
+# File: docs/master/events.md, line: 48
+#, no-wrap
+msgid "<a name=\"generating-events-and-listeners\"></a>\n"
+msgstr ""
+#
+#. type: Title ###
+# File: docs/8.x/events.md, line: 48
+# File: docs/master/events.md, line: 48
+#, no-wrap
+msgid "Generating Events & Listeners"
+msgstr ""
+#
+#. type: Plain text
+# File: docs/8.x/events.md, line: 51
+# File: docs/master/events.md, line: 51
+msgid "Of course, manually creating the files for each event and listener is cumbersome. Instead, add listeners and events to your `EventServiceProvider` and use the `event:generate` Artisan command. This command will generate any events or listeners that are listed in your `EventServiceProvider` that do not already exist:"
+msgstr ""
+#
+#. type: Plain text
+# File: docs/8.x/events.md, line: 53
+# File: docs/master/events.md, line: 53
+#, no-wrap
+msgid "    php artisan event:generate\n"
+msgstr ""
+#
+#. type: Plain text
+# File: docs/8.x/events.md, line: 55
+# File: docs/master/events.md, line: 55
+msgid "Alternatively, you may use the `make:event` and `make:listener` Artisan commands to generate individual events and listeners:"
+msgstr ""
+#
+#. type: Plain text
+# File: docs/8.x/events.md, line: 57
+# File: docs/master/events.md, line: 57
+#, no-wrap
+msgid "    php artisan make:event PodcastProcessed\n"
+msgstr ""
+#
+#. type: Plain text
+# File: docs/8.x/events.md, line: 59
+# File: docs/master/events.md, line: 59
+#, no-wrap
+msgid "    php artisan make:listener SendPodcastNotification --event=PodcastProcessed\n"
+msgstr ""
+#
+#. type: Plain text
+# File: docs/8.x/events.md, line: 61
+# File: docs/master/events.md, line: 61
+#, no-wrap
+msgid "<a name=\"manually-registering-events\"></a>\n"
+msgstr ""
+#
+#. type: Title ###
+# File: docs/8.x/events.md, line: 61
+# File: docs/master/events.md, line: 61
+#, no-wrap
+msgid "Manually Registering Events"
+msgstr ""
+#
+#. type: Plain text
+# File: docs/8.x/events.md, line: 64
+# File: docs/master/events.md, line: 64
+msgid "Typically, events should be registered via the `EventServiceProvider` `$listen` array; however, you may also register class or closure based event listeners manually in the `boot` method of your `EventServiceProvider`:"
+msgstr ""
+#
+#. type: Plain text
+# File: docs/8.x/events.md, line: 68
+# File: docs/master/events.md, line: 68
+#, no-wrap
+msgid ""
+"    use App\\Events\\PodcastProcessed;\n"
+"    use App\\Listeners\\SendPodcastNotification;\n"
+"    use Illuminate\\Support\\Facades\\Event;\n"
+msgstr ""
+#
+#. type: Plain text
+# File: docs/8.x/events.md, line: 80
+# File: docs/master/events.md, line: 80
+#, no-wrap
+msgid ""
+"    /**\n"
+"     * Register any other events for your application.\n"
+"     *\n"
+"     * @return void\n"
+"     */\n"
+"    public function boot()\n"
+"    {\n"
+"        Event::listen(\n"
+"            PodcastProcessed::class,\n"
+"            [SendPodcastNotification::class, 'handle']\n"
+"        );\n"
+msgstr ""
+#
+#. type: Plain text
+# File: docs/8.x/events.md, line: 85
+# File: docs/master/events.md, line: 85
+#, no-wrap
+msgid ""
+"        Event::listen(function (PodcastProcessed $event) {\n"
+"            //\n"
+"        });\n"
+"    }\n"
+msgstr ""
+#
+#. type: Plain text
+# File: docs/8.x/events.md, line: 87
+# File: docs/master/events.md, line: 87
+#, no-wrap
+msgid "<a name=\"queuable-anonymous-event-listeners\"></a>\n"
+msgstr ""
+#
+#. type: Title ####
+# File: docs/8.x/events.md, line: 87
+# File: docs/master/events.md, line: 87
+#, no-wrap
+msgid "Queueable Anonymous Event Listeners"
+msgstr ""
+#
+#. type: Plain text
+# File: docs/8.x/events.md, line: 90
+# File: docs/master/events.md, line: 90
+msgid "When registering closure based event listeners manually, you may wrap the listener closure within the `Illuminate\\Events\\queueable` function to instruct Laravel to execute the listener using the [queue](/docs/{{version}}/queues):"
+msgstr ""
+#
+#. type: Plain text
+# File: docs/8.x/events.md, line: 94
+# File: docs/master/events.md, line: 94
+#, no-wrap
+msgid ""
+"    use App\\Events\\PodcastProcessed;\n"
+"    use function Illuminate\\Events\\queueable;\n"
+"    use Illuminate\\Support\\Facades\\Event;\n"
+msgstr ""
+#
+#. type: Plain text
+# File: docs/8.x/events.md, line: 106
+# File: docs/master/events.md, line: 106
+#, no-wrap
+msgid ""
+"    /**\n"
+"     * Register any other events for your application.\n"
+"     *\n"
+"     * @return void\n"
+"     */\n"
+"    public function boot()\n"
+"    {\n"
+"        Event::listen(queueable(function (PodcastProcessed $event) {\n"
+"            //\n"
+"        }));\n"
+"    }\n"
+msgstr ""
+#
+#. type: Plain text
+# File: docs/8.x/events.md, line: 108
+# File: docs/master/events.md, line: 108
+msgid "Like queued jobs, you may use the `onConnection`, `onQueue`, and `delay` methods to customize the execution of the queued listener:"
+msgstr ""
+#
+#. type: Plain text
+# File: docs/8.x/events.md, line: 112
+# File: docs/master/events.md, line: 112
+#, no-wrap
+msgid ""
+"    Event::listen(queueable(function (PodcastProcessed $event) {\n"
+"        //\n"
+"    })->onConnection('redis')->onQueue('podcasts')->delay(now()->addSeconds(10)));\n"
+msgstr ""
+#
+#. type: Plain text
+# File: docs/8.x/events.md, line: 114
+# File: docs/master/events.md, line: 114
+msgid "If you would like to handle anonymous queued listener failures, you may provide a closure to the `catch` method while defining the `queueable` listener. This closure will receive the event instance and the `Throwable` instance that caused the listener's failure:"
+msgstr ""
+#
+#. type: Plain text
+# File: docs/8.x/events.md, line: 119
+# File: docs/master/events.md, line: 119
+#, no-wrap
+msgid ""
+"    use App\\Events\\PodcastProcessed;\n"
+"    use function Illuminate\\Events\\queueable;\n"
+"    use Illuminate\\Support\\Facades\\Event;\n"
+"    use Throwable;\n"
+msgstr ""
+#
+#. type: Plain text
+# File: docs/8.x/events.md, line: 125
+# File: docs/master/events.md, line: 125
+#, no-wrap
+msgid ""
+"    Event::listen(queueable(function (PodcastProcessed $event) {\n"
+"        //\n"
+"    })->catch(function (PodcastProcessed $event, Throwable $e) {\n"
+"        // The queued listener failed...\n"
+"    }));\n"
+msgstr ""
+#
+#. type: Plain text
+# File: docs/8.x/events.md, line: 127
+# File: docs/master/events.md, line: 127
+#, no-wrap
+msgid "<a name=\"wildcard-event-listeners\"></a>\n"
+msgstr ""
+#
+#. type: Title ####
+# File: docs/8.x/events.md, line: 127
+# File: docs/master/events.md, line: 127
+#, no-wrap
+msgid "Wildcard Event Listeners"
+msgstr ""
+#
+#. type: Plain text
+# File: docs/8.x/events.md, line: 130
+# File: docs/master/events.md, line: 130
+msgid "You may even register listeners using the `*` as a wildcard parameter, allowing you to catch multiple events on the same listener. Wildcard listeners receive the event name as their first argument and the entire event data array as their second argument:"
+msgstr ""
+#
+#. type: Plain text
+# File: docs/8.x/events.md, line: 134
+# File: docs/master/events.md, line: 134
+#, no-wrap
+msgid ""
+"    Event::listen('event.*', function ($eventName, array $data) {\n"
+"        //\n"
+"    });\n"
+msgstr ""
+#
+#. type: Plain text
+# File: docs/8.x/events.md, line: 136
+# File: docs/master/events.md, line: 136
+#, no-wrap
+msgid "<a name=\"event-discovery\"></a>\n"
+msgstr ""
+#
+#. type: Title ###
+# File: docs/8.x/events.md, line: 136
+# File: docs/master/events.md, line: 136
+#, no-wrap
+msgid "Event Discovery"
+msgstr ""
+#
+#. type: Plain text
+# File: docs/8.x/events.md, line: 139
+# File: docs/master/events.md, line: 139
+msgid "Instead of registering events and listeners manually in the `$listen` array of the `EventServiceProvider`, you can enable automatic event discovery. When event discovery is enabled, Laravel will automatically find and register your events and listeners by scanning your application's `Listeners` directory. In addition, any explicitly defined events listed in the `EventServiceProvider` will still be registered."
+msgstr ""
+#
+#. type: Plain text
+# File: docs/8.x/events.md, line: 141
+msgid "Laravel finds event listeners by scanning the listener classes using PHP's reflection services. When Laravel finds any listener class method that begins with `handle`, Laravel will register those methods as event listeners for the event that is type-hinted in the method's signature:"
+msgstr ""
+#
+#. type: Plain text
+# File: docs/8.x/events.md, line: 143
+# File: docs/master/events.md, line: 143
+#, no-wrap
+msgid "    use App\\Events\\PodcastProcessed;\n"
+msgstr ""
+#
+#. type: Plain text
+# File: docs/8.x/events.md, line: 157
+# File: docs/master/events.md, line: 157
+#, no-wrap
+msgid ""
+"    class SendPodcastNotification\n"
+"    {\n"
+"        /**\n"
+"         * Handle the given event.\n"
+"         *\n"
+"         * @param  \\App\\Events\\PodcastProcessed  $event\n"
+"         * @return void\n"
+"         */\n"
+"        public function handle(PodcastProcessed $event)\n"
+"        {\n"
+"            //\n"
+"        }\n"
+"    }\n"
+msgstr ""
+#
+#. type: Plain text
+# File: docs/8.x/events.md, line: 159
+# File: docs/master/events.md, line: 159
+msgid "Event discovery is disabled by default, but you can enable it by overriding the `shouldDiscoverEvents` method of your application's `EventServiceProvider`:"
+msgstr ""
+#
+#. type: Plain text
+# File: docs/8.x/events.md, line: 169
+# File: docs/master/events.md, line: 169
+#, no-wrap
+msgid ""
+"    /**\n"
+"     * Determine if events and listeners should be automatically discovered.\n"
+"     *\n"
+"     * @return bool\n"
+"     */\n"
+"    public function shouldDiscoverEvents()\n"
+"    {\n"
+"        return true;\n"
+"    }\n"
+msgstr ""
+#
+#. type: Plain text
+# File: docs/8.x/events.md, line: 171
+# File: docs/master/events.md, line: 171
+msgid "By default, all listeners within your application's `app/Listeners` directory will be scanned. If you would like to define additional directories to scan, you may override the `discoverEventsWithin` method in your `EventServiceProvider`:"
+msgstr ""
+#
+#. type: Plain text
+# File: docs/8.x/events.md, line: 183
+# File: docs/master/events.md, line: 183
+#, no-wrap
+msgid ""
+"    /**\n"
+"     * Get the listener directories that should be used to discover events.\n"
+"     *\n"
+"     * @return array\n"
+"     */\n"
+"    protected function discoverEventsWithin()\n"
+"    {\n"
+"        return [\n"
+"            $this->app->path('Listeners'),\n"
+"        ];\n"
+"    }\n"
+msgstr ""
+#
+#. type: Plain text
+# File: docs/8.x/events.md, line: 185
+# File: docs/master/events.md, line: 185
+#, no-wrap
+msgid "<a name=\"event-discovery-in-production\"></a>\n"
+msgstr ""
+#
+#. type: Title ####
+# File: docs/8.x/events.md, line: 185
+# File: docs/master/events.md, line: 185
+#, no-wrap
+msgid "Event Discovery In Production"
+msgstr ""
+#
+#. type: Plain text
+# File: docs/8.x/events.md, line: 188
+# File: docs/master/events.md, line: 188
+msgid "In production, it is not efficient for the framework to scan all of your listeners on every request. Therefore, during your deployment process, you should run the `event:cache` Artisan command to cache a manifest of all of your application's events and listeners. This manifest will be used by the framework to speed up the event registration process. The `event:clear` command may be used to destroy the cache."
+msgstr ""
+#
+#. type: Plain text
+# File: docs/8.x/events.md, line: 190
+# File: docs/master/events.md, line: 190
+#, no-wrap
+msgid "<a name=\"defining-events\"></a>\n"
+msgstr ""
+#
+#. type: Title ##
+# File: docs/8.x/events.md, line: 190
+# File: docs/master/events.md, line: 190
+#, no-wrap
+msgid "Defining Events"
+msgstr ""
+#
+#. type: Plain text
+# File: docs/8.x/events.md, line: 193
+# File: docs/master/events.md, line: 193
+msgid "An event class is essentially a data container which holds the information related to the event. For example, let's assume an `App\\Events\\OrderShipped` event receives an [Eloquent ORM](/docs/{{version}}/eloquent) object:"
+msgstr ""
+#
+#. type: Plain text
+# File: docs/8.x/events.md, line: 195
+# File: docs/8.x/events.md, line: 234
+# File: docs/8.x/events.md, line: 278
+# File: docs/8.x/events.md, line: 297
+# File: docs/8.x/events.md, line: 355
+# File: docs/8.x/events.md, line: 392
+# File: docs/8.x/events.md, line: 425
+# File: docs/8.x/events.md, line: 446
+# File: docs/8.x/events.md, line: 489
+# File: docs/8.x/events.md, line: 526
+# File: docs/8.x/events.md, line: 563
+# File: docs/8.x/events.md, line: 604
+# File: docs/8.x/events.md, line: 643
+# File: docs/master/events.md, line: 195
+# File: docs/master/events.md, line: 234
+# File: docs/master/events.md, line: 278
+# File: docs/master/events.md, line: 297
+# File: docs/master/events.md, line: 355
+# File: docs/master/events.md, line: 392
+# File: docs/master/events.md, line: 425
+# File: docs/master/events.md, line: 446
+# File: docs/master/events.md, line: 489
+# File: docs/master/events.md, line: 526
+# File: docs/master/events.md, line: 563
+# File: docs/master/events.md, line: 604
+# File: docs/master/events.md, line: 643
+#, no-wrap
+msgid "    <?php\n"
+msgstr ""
+#
+#. type: Plain text
+# File: docs/8.x/events.md, line: 197
+# File: docs/master/events.md, line: 197
+#, no-wrap
+msgid "    namespace App\\Events;\n"
+msgstr ""
+#
+#. type: Plain text
+# File: docs/8.x/events.md, line: 202
+# File: docs/master/events.md, line: 202
+#, no-wrap
+msgid ""
+"    use App\\Models\\Order;\n"
+"    use Illuminate\\Broadcasting\\InteractsWithSockets;\n"
+"    use Illuminate\\Foundation\\Events\\Dispatchable;\n"
+"    use Illuminate\\Queue\\SerializesModels;\n"
+msgstr ""
+#
+#. type: Plain text
+# File: docs/8.x/events.md, line: 206
+# File: docs/master/events.md, line: 206
+#, no-wrap
+msgid ""
+"    class OrderShipped\n"
+"    {\n"
+"        use Dispatchable, InteractsWithSockets, SerializesModels;\n"
+msgstr ""
+#
+#. type: Plain text
+# File: docs/8.x/events.md, line: 213
+# File: docs/master/events.md, line: 213
+#, no-wrap
+msgid ""
+"        /**\n"
+"         * The order instance.\n"
+"         *\n"
+"         * @var \\App\\Models\\Order\n"
+"         */\n"
+"        public $order;\n"
+msgstr ""
+#
+#. type: Plain text
+# File: docs/8.x/events.md, line: 225
+# File: docs/master/events.md, line: 225
+#, no-wrap
+msgid ""
+"        /**\n"
+"         * Create a new event instance.\n"
+"         *\n"
+"         * @param  \\App\\Models\\Order  $order\n"
+"         * @return void\n"
+"         */\n"
+"        public function __construct(Order $order)\n"
+"        {\n"
+"            $this->order = $order;\n"
+"        }\n"
+"    }\n"
+msgstr ""
+#
+#. type: Plain text
+# File: docs/8.x/events.md, line: 227
+# File: docs/master/events.md, line: 227
+msgid "As you can see, this event class contains no logic. It is a container for the `App\\Models\\Order` instance that was purchased. The `SerializesModels` trait used by the event will gracefully serialize any Eloquent models if the event object is serialized using PHP's `serialize` function, such as when utilizing [queued listeners](#queued-event-listeners)."
+msgstr ""
+#
+#. type: Plain text
+# File: docs/8.x/events.md, line: 229
+# File: docs/master/events.md, line: 229
+#, no-wrap
+msgid "<a name=\"defining-listeners\"></a>\n"
+msgstr ""
+#
+#. type: Title ##
+# File: docs/8.x/events.md, line: 229
+# File: docs/master/events.md, line: 229
+#, no-wrap
+msgid "Defining Listeners"
+msgstr ""
+#
+#. type: Plain text
+# File: docs/8.x/events.md, line: 232
+# File: docs/master/events.md, line: 232
+msgid "Next, let's take a look at the listener for our example event. Event listeners receive event instances in their `handle` method. The `event:generate` and `make:listener` Artisan commands will automatically import the proper event class and type-hint the event on the `handle` method. Within the `handle` method, you may perform any actions necessary to respond to the event:"
+msgstr ""
+#
+#. type: Plain text
+# File: docs/8.x/events.md, line: 236
+# File: docs/8.x/events.md, line: 280
+# File: docs/8.x/events.md, line: 299
+# File: docs/8.x/events.md, line: 357
+# File: docs/8.x/events.md, line: 394
+# File: docs/8.x/events.md, line: 427
+# File: docs/8.x/events.md, line: 448
+# File: docs/8.x/events.md, line: 491
+# File: docs/8.x/events.md, line: 565
+# File: docs/8.x/events.md, line: 606
+# File: docs/master/events.md, line: 236
+# File: docs/master/events.md, line: 280
+# File: docs/master/events.md, line: 299
+# File: docs/master/events.md, line: 357
+# File: docs/master/events.md, line: 394
+# File: docs/master/events.md, line: 427
+# File: docs/master/events.md, line: 448
+# File: docs/master/events.md, line: 491
+# File: docs/master/events.md, line: 565
+# File: docs/master/events.md, line: 606
+#, no-wrap
+msgid "    namespace App\\Listeners;\n"
+msgstr ""
+#
+#. type: Plain text
+# File: docs/8.x/events.md, line: 238
+# File: docs/master/events.md, line: 238
+#, no-wrap
+msgid "    use App\\Events\\OrderShipped;\n"
+msgstr ""
+#
+#. type: Plain text
+# File: docs/8.x/events.md, line: 250
+# File: docs/master/events.md, line: 250
+#, no-wrap
+msgid ""
+"    class SendShipmentNotification\n"
+"    {\n"
+"        /**\n"
+"         * Create the event listener.\n"
+"         *\n"
+"         * @return void\n"
+"         */\n"
+"        public function __construct()\n"
+"        {\n"
+"            //\n"
+"        }\n"
+msgstr ""
+#
+#. type: Plain text
+# File: docs/8.x/events.md, line: 262
+# File: docs/master/events.md, line: 262
+#, no-wrap
+msgid ""
+"        /**\n"
+"         * Handle the event.\n"
+"         *\n"
+"         * @param  \\App\\Events\\OrderShipped  $event\n"
+"         * @return void\n"
+"         */\n"
+"        public function handle(OrderShipped $event)\n"
+"        {\n"
+"            // Access the order using $event->order...\n"
+"        }\n"
+"    }\n"
+msgstr ""
+#
+#. type: Plain text
+# File: docs/8.x/events.md, line: 264
+# File: docs/master/events.md, line: 264
+#, no-wrap
+msgid "> {tip} Your event listeners may also type-hint any dependencies they need on their constructors. All event listeners are resolved via the Laravel [service container](/docs/{{version}}/container), so dependencies will be injected automatically.\n"
+msgstr ""
+#
+#. type: Plain text
+# File: docs/8.x/events.md, line: 266
+# File: docs/master/events.md, line: 266
+#, no-wrap
+msgid "<a name=\"stopping-the-propagation-of-an-event\"></a>\n"
+msgstr ""
+#
+#. type: Title ####
+# File: docs/8.x/events.md, line: 266
+# File: docs/master/events.md, line: 266
+#, no-wrap
+msgid "Stopping The Propagation Of An Event"
+msgstr ""
+#
+#. type: Plain text
+# File: docs/8.x/events.md, line: 269
+# File: docs/master/events.md, line: 269
+msgid "Sometimes, you may wish to stop the propagation of an event to other listeners. You may do so by returning `false` from your listener's `handle` method."
+msgstr ""
+#
+#. type: Plain text
+# File: docs/8.x/events.md, line: 271
+# File: docs/master/events.md, line: 271
+#, no-wrap
+msgid "<a name=\"queued-event-listeners\"></a>\n"
+msgstr ""
+#
+#. type: Title ##
+# File: docs/8.x/events.md, line: 271
+# File: docs/master/events.md, line: 271
+#, no-wrap
+msgid "Queued Event Listeners"
+msgstr ""
+#
+#. type: Plain text
+# File: docs/8.x/events.md, line: 274
+# File: docs/master/events.md, line: 274
+msgid "Queueing listeners can be beneficial if your listener is going to perform a slow task such as sending an email or making an HTTP request. Before using queued listeners, make sure to [configure your queue](/docs/{{version}}/queues) and start a queue worker on your server or local development environment."
+msgstr ""
+#
+#. type: Plain text
+# File: docs/8.x/events.md, line: 276
+# File: docs/master/events.md, line: 276
+msgid "To specify that a listener should be queued, add the `ShouldQueue` interface to the listener class. Listeners generated by the `event:generate` and `make:listener` Artisan commands already have this interface imported into the current namespace so you can use it immediately:"
+msgstr ""
+#
+#. type: Plain text
+# File: docs/8.x/events.md, line: 283
+# File: docs/8.x/events.md, line: 302
+# File: docs/master/events.md, line: 283
+# File: docs/master/events.md, line: 302
+#, no-wrap
+msgid ""
+"    use App\\Events\\OrderShipped;\n"
+"    use Illuminate\\Contracts\\Queue\\ShouldQueue;\n"
+msgstr ""
+#
+#. type: Plain text
+# File: docs/8.x/events.md, line: 288
+# File: docs/master/events.md, line: 288
+#, no-wrap
+msgid ""
+"    class SendShipmentNotification implements ShouldQueue\n"
+"    {\n"
+"        //\n"
+"    }\n"
+msgstr ""
+#
+#. type: Plain text
+# File: docs/8.x/events.md, line: 290
+# File: docs/master/events.md, line: 290
+msgid "That's it! Now, when an event handled by this listener is dispatched, the listener will automatically be queued by the event dispatcher using Laravel's [queue system](/docs/{{version}}/queues). If no exceptions are thrown when the listener is executed by the queue, the queued job will automatically be deleted after it has finished processing."
+msgstr ""
+#
+#. type: Plain text
+# File: docs/8.x/events.md, line: 292
+# File: docs/master/events.md, line: 292
+#, no-wrap
+msgid "<a name=\"customizing-the-queue-connection-queue-name\"></a>\n"
+msgstr ""
+#
+#. type: Title ####
+# File: docs/8.x/events.md, line: 292
+# File: docs/master/events.md, line: 292
+#, no-wrap
+msgid "Customizing The Queue Connection & Queue Name"
+msgstr ""
+#
+#. type: Plain text
+# File: docs/8.x/events.md, line: 295
+# File: docs/master/events.md, line: 295
+msgid "If you would like to customize the queue connection, queue name, or queue delay time of an event listener, you may define the `$connection`, `$queue`, or `$delay` properties on your listener class:"
+msgstr ""
+#
+#. type: Plain text
+# File: docs/8.x/events.md, line: 311
+# File: docs/master/events.md, line: 311
+#, no-wrap
+msgid ""
+"    class SendShipmentNotification implements ShouldQueue\n"
+"    {\n"
+"        /**\n"
+"         * The name of the connection the job should be sent to.\n"
+"         *\n"
+"         * @var string|null\n"
+"         */\n"
+"        public $connection = 'sqs';\n"
+msgstr ""
+#
+#. type: Plain text
+# File: docs/8.x/events.md, line: 318
+# File: docs/master/events.md, line: 318
+#, no-wrap
+msgid ""
+"        /**\n"
+"         * The name of the queue the job should be sent to.\n"
+"         *\n"
+"         * @var string|null\n"
+"         */\n"
+"        public $queue = 'listeners';\n"
+msgstr ""
+#
+#. type: Plain text
+# File: docs/8.x/events.md, line: 326
+# File: docs/master/events.md, line: 326
+#, no-wrap
+msgid ""
+"        /**\n"
+"         * The time (seconds) before the job should be processed.\n"
+"         *\n"
+"         * @var int\n"
+"         */\n"
+"        public $delay = 60;\n"
+"    }\n"
+msgstr ""
+#
+#. type: Plain text
+# File: docs/8.x/events.md, line: 328
+# File: docs/master/events.md, line: 328
+msgid "If you would like to define the listener's queue connection or queue name at runtime, you may define `viaConnection` or `viaQueue` methods on the listener:"
+msgstr ""
+#
+#. type: Plain text
+# File: docs/8.x/events.md, line: 338
+# File: docs/master/events.md, line: 338
+#, no-wrap
+msgid ""
+"    /**\n"
+"     * Get the name of the listener's queue connection.\n"
+"     *\n"
+"     * @return string\n"
+"     */\n"
+"    public function viaConnection()\n"
+"    {\n"
+"        return 'sqs';\n"
+"    }\n"
+msgstr ""
+#
+#. type: Plain text
+# File: docs/8.x/events.md, line: 348
+# File: docs/master/events.md, line: 348
+#, no-wrap
+msgid ""
+"    /**\n"
+"     * Get the name of the listener's queue.\n"
+"     *\n"
+"     * @return string\n"
+"     */\n"
+"    public function viaQueue()\n"
+"    {\n"
+"        return 'listeners';\n"
+"    }\n"
+msgstr ""
+#
+#. type: Plain text
+# File: docs/8.x/events.md, line: 350
+# File: docs/master/events.md, line: 350
+#, no-wrap
+msgid "<a name=\"conditionally-queueing-listeners\"></a>\n"
+msgstr ""
+#
+#. type: Title ####
+# File: docs/8.x/events.md, line: 350
+# File: docs/master/events.md, line: 350
+#, no-wrap
+msgid "Conditionally Queueing Listeners"
+msgstr ""
+#
+#. type: Plain text
+# File: docs/8.x/events.md, line: 353
+# File: docs/master/events.md, line: 353
+msgid "Sometimes, you may need to determine whether a listener should be queued based on some data that are only available at runtime. To accomplish this, a `shouldQueue` method may be added to a listener to determine whether the listener should be queued. If the `shouldQueue` method returns `false`, the listener will not be executed:"
+msgstr ""
+#
+#. type: Plain text
+# File: docs/8.x/events.md, line: 360
+# File: docs/master/events.md, line: 360
+#, no-wrap
+msgid ""
+"    use App\\Events\\OrderCreated;\n"
+"    use Illuminate\\Contracts\\Queue\\ShouldQueue;\n"
+msgstr ""
+#
+#. type: Plain text
+# File: docs/8.x/events.md, line: 373
+# File: docs/master/events.md, line: 373
+#, no-wrap
+msgid ""
+"    class RewardGiftCard implements ShouldQueue\n"
+"    {\n"
+"        /**\n"
+"         * Reward a gift card to the customer.\n"
+"         *\n"
+"         * @param  \\App\\Events\\OrderCreated  $event\n"
+"         * @return void\n"
+"         */\n"
+"        public function handle(OrderCreated $event)\n"
+"        {\n"
+"            //\n"
+"        }\n"
+msgstr ""
+#
+#. type: Plain text
+# File: docs/8.x/events.md, line: 385
+# File: docs/master/events.md, line: 385
+#, no-wrap
+msgid ""
+"        /**\n"
+"         * Determine whether the listener should be queued.\n"
+"         *\n"
+"         * @param  \\App\\Events\\OrderCreated  $event\n"
+"         * @return bool\n"
+"         */\n"
+"        public function shouldQueue(OrderCreated $event)\n"
+"        {\n"
+"            return $event->order->subtotal >= 5000;\n"
+"        }\n"
+"    }\n"
+msgstr ""
+#
+#. type: Plain text
+# File: docs/8.x/events.md, line: 387
+# File: docs/master/events.md, line: 387
+#, no-wrap
+msgid "<a name=\"manually-interacting-with-the-queue\"></a>\n"
+msgstr ""
+#
+#. type: Title ###
+# File: docs/8.x/events.md, line: 387
+# File: docs/master/events.md, line: 387
+#, no-wrap
+msgid "Manually Interacting With The Queue"
+msgstr ""
+#
+#. type: Plain text
+# File: docs/8.x/events.md, line: 390
+# File: docs/master/events.md, line: 390
+msgid "If you need to manually access the listener's underlying queue job's `delete` and `release` methods, you may do so using the `Illuminate\\Queue\\InteractsWithQueue` trait. This trait is imported by default on generated listeners and provides access to these methods:"
+msgstr ""
+#
+#. type: Plain text
+# File: docs/8.x/events.md, line: 398
+# File: docs/8.x/events.md, line: 452
+# File: docs/8.x/events.md, line: 495
+# File: docs/master/events.md, line: 398
+# File: docs/master/events.md, line: 452
+# File: docs/master/events.md, line: 495
+#, no-wrap
+msgid ""
+"    use App\\Events\\OrderShipped;\n"
+"    use Illuminate\\Contracts\\Queue\\ShouldQueue;\n"
+"    use Illuminate\\Queue\\InteractsWithQueue;\n"
+msgstr ""
+#
+#. type: Plain text
+# File: docs/8.x/events.md, line: 402
+# File: docs/8.x/events.md, line: 434
+# File: docs/8.x/events.md, line: 456
+# File: docs/8.x/events.md, line: 499
+# File: docs/master/events.md, line: 402
+# File: docs/master/events.md, line: 434
+# File: docs/master/events.md, line: 456
+# File: docs/master/events.md, line: 499
+#, no-wrap
+msgid ""
+"    class SendShipmentNotification implements ShouldQueue\n"
+"    {\n"
+"        use InteractsWithQueue;\n"
+msgstr ""
+#
+#. type: Plain text
+# File: docs/8.x/events.md, line: 416
+# File: docs/master/events.md, line: 416
+#, no-wrap
+msgid ""
+"        /**\n"
+"         * Handle the event.\n"
+"         *\n"
+"         * @param  \\App\\Events\\OrderShipped  $event\n"
+"         * @return void\n"
+"         */\n"
+"        public function handle(OrderShipped $event)\n"
+"        {\n"
+"            if (true) {\n"
+"                $this->release(30);\n"
+"            }\n"
+"        }\n"
+"    }\n"
+msgstr ""
+#
+#. type: Plain text
+# File: docs/8.x/events.md, line: 418
+# File: docs/master/events.md, line: 418
+#, no-wrap
+msgid "<a name=\"queued-event-listeners-and-database-transactions\"></a>\n"
+msgstr ""
+#
+#. type: Title ###
+# File: docs/8.x/events.md, line: 418
+# File: docs/master/events.md, line: 418
+#, no-wrap
+msgid "Queued Event Listeners & Database Transactions"
+msgstr ""
+#
+#. type: Plain text
+# File: docs/8.x/events.md, line: 421
+# File: docs/master/events.md, line: 421
+msgid "When queued listeners are dispatched within database transactions, they may be processed by the queue before the database transaction has committed. When this happens, any updates you have made to models or database records during the database transaction may not yet be reflected in the database. In addition, any models or database records created within the transaction may not exist in the database. If your listener depends on these models, unexpected errors can occur when the job that dispatches the queued listener is processed."
+msgstr ""
+#
+#. type: Plain text
+# File: docs/8.x/events.md, line: 423
+# File: docs/master/events.md, line: 423
+msgid "If your queue connection's `after_commit` configuration option is set to `false`, you may still indicate that a particular queued listener should be dispatched after all open database transactions have been committed by defining an `$afterCommit` property on the listener class:"
+msgstr ""
+#
+#. type: Plain text
+# File: docs/8.x/events.md, line: 430
+# File: docs/master/events.md, line: 430
+#, no-wrap
+msgid ""
+"    use Illuminate\\Contracts\\Queue\\ShouldQueue;\n"
+"    use Illuminate\\Queue\\InteractsWithQueue;\n"
+msgstr ""
+#
+#. type: Plain text
+# File: docs/8.x/events.md, line: 437
+# File: docs/master/events.md, line: 437
+#, no-wrap
+msgid ""
+"        public $afterCommit = true;\n"
+"    }\n"
+msgstr ""
+#
+#. type: Plain text
+# File: docs/8.x/events.md, line: 439
+# File: docs/master/events.md, line: 439
+#, no-wrap
+msgid "> {tip} To learn more about working around these issues, please review the documentation regarding [queued jobs and database transactions](/docs/{{version}}/queues#jobs-and-database-transactions).\n"
+msgstr ""
+#
+#. type: Plain text
+# File: docs/8.x/events.md, line: 441
+# File: docs/master/events.md, line: 441
+#, no-wrap
+msgid "<a name=\"handling-failed-jobs\"></a>\n"
+msgstr ""
+#
+#. type: Title ###
+# File: docs/8.x/events.md, line: 441
+# File: docs/master/events.md, line: 441
+#, no-wrap
+msgid "Handling Failed Jobs"
+msgstr ""
+#
+#. type: Plain text
+# File: docs/8.x/events.md, line: 444
+# File: docs/master/events.md, line: 444
+msgid "Sometimes your queued event listeners may fail. If queued listener exceeds the maximum number of attempts as defined by your queue worker, the `failed` method will be called on your listener. The `failed` method receives the event instance and the `Throwable` that caused the failure:"
+msgstr ""
+#
+#. type: Plain text
+# File: docs/8.x/events.md, line: 467
+# File: docs/master/events.md, line: 467
+#, no-wrap
+msgid ""
+"        /**\n"
+"         * Handle the event.\n"
+"         *\n"
+"         * @param  \\App\\Events\\OrderShipped  $event\n"
+"         * @return void\n"
+"         */\n"
+"        public function handle(OrderShipped $event)\n"
+"        {\n"
+"            //\n"
+"        }\n"
+msgstr ""
+#
+#. type: Plain text
+# File: docs/8.x/events.md, line: 480
+# File: docs/master/events.md, line: 480
+#, no-wrap
+msgid ""
+"        /**\n"
+"         * Handle a job failure.\n"
+"         *\n"
+"         * @param  \\App\\Events\\OrderShipped  $event\n"
+"         * @param  \\Throwable  $exception\n"
+"         * @return void\n"
+"         */\n"
+"        public function failed(OrderShipped $event, $exception)\n"
+"        {\n"
+"            //\n"
+"        }\n"
+"    }\n"
+msgstr ""
+#
+#. type: Plain text
+# File: docs/8.x/events.md, line: 482
+# File: docs/master/events.md, line: 482
+#, no-wrap
+msgid "<a name=\"specifying-queued-listener-maximum-attempts\"></a>\n"
+msgstr ""
+#
+#. type: Title ####
+# File: docs/8.x/events.md, line: 482
+# File: docs/master/events.md, line: 482
+#, no-wrap
+msgid "Specifying Queued Listener Maximum Attempts"
+msgstr ""
+#
+#. type: Plain text
+# File: docs/8.x/events.md, line: 485
+# File: docs/master/events.md, line: 485
+msgid "If one of your queued listeners is encountering an error, you likely do not want it to keep retrying indefinitely. Therefore, Laravel provides various ways to specify how many times or for how long a listener may be attempted."
+msgstr ""
+#
+#. type: Plain text
+# File: docs/8.x/events.md, line: 487
+# File: docs/master/events.md, line: 487
+msgid "You may define `$tries` property on your listener class to specify how many times the listener may be attempted before it is considered to have failed:"
+msgstr ""
+#
+#. type: Plain text
+# File: docs/8.x/events.md, line: 507
+# File: docs/master/events.md, line: 507
+#, no-wrap
+msgid ""
+"        /**\n"
+"         * The number of times the queued listener may be attempted.\n"
+"         *\n"
+"         * @var int\n"
+"         */\n"
+"        public $tries = 5;\n"
+"    }\n"
+msgstr ""
+#
+#. type: Plain text
+# File: docs/8.x/events.md, line: 509
+# File: docs/master/events.md, line: 509
+msgid "As an alternative to defining how many times a listener may be attempted before it fails, you may define a time at which the listener should no longer be attempted. This allows a listener to be attempted any number of times within a given time frame. To define the time at which a listener should no longer be attempted, add a `retryUntil` method to your listener class. This method should return a `DateTime` instance:"
+msgstr ""
+#
+#. type: Plain text
+# File: docs/8.x/events.md, line: 519
+# File: docs/master/events.md, line: 519
+#, no-wrap
+msgid ""
+"    /**\n"
+"     * Determine the time at which the listener should timeout.\n"
+"     *\n"
+"     * @return \\DateTime\n"
+"     */\n"
+"    public function retryUntil()\n"
+"    {\n"
+"        return now()->addMinutes(5);\n"
+"    }\n"
+msgstr ""
+#
+#. type: Plain text
+# File: docs/8.x/events.md, line: 521
+# File: docs/master/events.md, line: 521
+#, no-wrap
+msgid "<a name=\"dispatching-events\"></a>\n"
+msgstr ""
+#
+#. type: Title ##
+# File: docs/8.x/events.md, line: 521
+# File: docs/master/events.md, line: 521
+#, no-wrap
+msgid "Dispatching Events"
+msgstr ""
+#
+#. type: Plain text
+# File: docs/8.x/events.md, line: 524
+# File: docs/master/events.md, line: 524
+msgid "To dispatch an event, you may call the static `dispatch` method on the event. This method is made available on the event by the `Illuminate\\Foundation\\Events\\Dispatchable` trait. Any arguments passed to the `dispatch` method will be passed to the event's constructor:"
+msgstr ""
+#
+#. type: Plain text
+# File: docs/8.x/events.md, line: 528
+# File: docs/master/events.md, line: 528
+#, no-wrap
+msgid "    namespace App\\Http\\Controllers;\n"
+msgstr ""
+#
+#. type: Plain text
+# File: docs/8.x/events.md, line: 533
+# File: docs/master/events.md, line: 533
+#, no-wrap
+msgid ""
+"    use App\\Events\\OrderShipped;\n"
+"    use App\\Http\\Controllers\\Controller;\n"
+"    use App\\Models\\Order;\n"
+"    use Illuminate\\Http\\Request;\n"
+msgstr ""
+#
+#. type: Plain text
+# File: docs/8.x/events.md, line: 545
+# File: docs/master/events.md, line: 545
+#, no-wrap
+msgid ""
+"    class OrderShipmentController extends Controller\n"
+"    {\n"
+"        /**\n"
+"         * Ship the given order.\n"
+"         *\n"
+"         * @param  \\Illuminate\\Http\\Request  $request\n"
+"         * @return \\Illuminate\\Http\\Response\n"
+"         */\n"
+"        public function store(Request $request)\n"
+"        {\n"
+"            $order = Order::findOrFail($request->order_id);\n"
+msgstr ""
+#
+#. type: Plain text
+# File: docs/8.x/events.md, line: 547
+# File: docs/master/events.md, line: 547
+#, no-wrap
+msgid "            // Order shipment logic...\n"
+msgstr ""
+#
+#. type: Plain text
+# File: docs/8.x/events.md, line: 551
+# File: docs/master/events.md, line: 551
+#, no-wrap
+msgid ""
+"            OrderShipped::dispatch($order);\n"
+"        }\n"
+"    }\n"
+msgstr ""
+#
+#. type: Plain text
+# File: docs/8.x/events.md, line: 553
+# File: docs/master/events.md, line: 553
+#, no-wrap
+msgid "> {tip} When testing, it can be helpful to assert that certain events were dispatched without actually triggering their listeners. Laravel's [built-in testing helpers](/docs/{{version}}/mocking#event-fake) makes it a cinch.\n"
+msgstr ""
+#
+#. type: Plain text
+# File: docs/8.x/events.md, line: 555
+# File: docs/master/events.md, line: 555
+#, no-wrap
+msgid "<a name=\"event-subscribers\"></a>\n"
+msgstr ""
+#
+#. type: Title ##
+# File: docs/8.x/events.md, line: 555
+# File: docs/master/events.md, line: 555
+#, no-wrap
+msgid "Event Subscribers"
+msgstr ""
+#
+#. type: Plain text
+# File: docs/8.x/events.md, line: 558
+# File: docs/master/events.md, line: 558
+#, no-wrap
+msgid "<a name=\"writing-event-subscribers\"></a>\n"
+msgstr ""
+#
+#. type: Title ###
+# File: docs/8.x/events.md, line: 558
+# File: docs/master/events.md, line: 558
+#, no-wrap
+msgid "Writing Event Subscribers"
+msgstr ""
+#
+#. type: Plain text
+# File: docs/8.x/events.md, line: 561
+# File: docs/master/events.md, line: 561
+msgid "Event subscribers are classes that may subscribe to multiple events from within the subscriber class itself, allowing you to define several event handlers within a single class. Subscribers should define a `subscribe` method, which will be passed an event dispatcher instance. You may call the `listen` method on the given dispatcher to register event listeners:"
+msgstr ""
+#
+#. type: Plain text
+# File: docs/8.x/events.md, line: 568
+# File: docs/8.x/events.md, line: 609
+# File: docs/master/events.md, line: 568
+# File: docs/master/events.md, line: 609
+#, no-wrap
+msgid ""
+"    use Illuminate\\Auth\\Events\\Login;\n"
+"    use Illuminate\\Auth\\Events\\Logout;\n"
+msgstr ""
+#
+#. type: Plain text
+# File: docs/8.x/events.md, line: 575
+# File: docs/8.x/events.md, line: 616
+# File: docs/master/events.md, line: 575
+# File: docs/master/events.md, line: 616
+#, no-wrap
+msgid ""
+"    class UserEventSubscriber\n"
+"    {\n"
+"        /**\n"
+"         * Handle user login events.\n"
+"         */\n"
+"        public function handleUserLogin($event) {}\n"
+msgstr ""
+#
+#. type: Plain text
+# File: docs/8.x/events.md, line: 580
+# File: docs/8.x/events.md, line: 621
+# File: docs/master/events.md, line: 580
+# File: docs/master/events.md, line: 621
+#, no-wrap
+msgid ""
+"        /**\n"
+"         * Handle user logout events.\n"
+"         */\n"
+"        public function handleUserLogout($event) {}\n"
+msgstr ""
+#
+#. type: Plain text
+# File: docs/8.x/events.md, line: 593
+# File: docs/master/events.md, line: 593
+#, no-wrap
+msgid ""
+"        /**\n"
+"         * Register the listeners for the subscriber.\n"
+"         *\n"
+"         * @param  \\Illuminate\\Events\\Dispatcher  $events\n"
+"         * @return void\n"
+"         */\n"
+"        public function subscribe($events)\n"
+"        {\n"
+"            $events->listen(\n"
+"                Login::class,\n"
+"                [UserEventSubscriber::class, 'handleUserLogin']\n"
+"            );\n"
+msgstr ""
+#
+#. type: Plain text
+# File: docs/8.x/events.md, line: 600
+# File: docs/master/events.md, line: 600
+#, no-wrap
+msgid ""
+"            $events->listen(\n"
+"                Logout::class,\n"
+"                [UserEventSubscriber::class, 'handleUserLogout']\n"
+"            );\n"
+"        }\n"
+"    }\n"
+msgstr ""
+#
+#. type: Plain text
+# File: docs/8.x/events.md, line: 602
+# File: docs/master/events.md, line: 602
+msgid "If your event listener methods are defined within the subscriber itself, you may find it more convenient to return an array of events and method names from the subscriber's `subscribe` method. Laravel will automatically determine the subscriber's class name when registering the event listeners:"
+msgstr ""
+#
+#. type: Plain text
+# File: docs/8.x/events.md, line: 636
+# File: docs/master/events.md, line: 636
+#, no-wrap
+msgid ""
+"        /**\n"
+"         * Register the listeners for the subscriber.\n"
+"         *\n"
+"         * @param  \\Illuminate\\Events\\Dispatcher  $events\n"
+"         * @return array\n"
+"         */\n"
+"        public function subscribe($events)\n"
+"        {\n"
+"            return [\n"
+"                Login::class => 'handleUserLogin',\n"
+"                Logout::class => 'handleUserLogout',\n"
+"            ];\n"
+"        }\n"
+"    }\n"
+msgstr ""
+#
+#. type: Plain text
+# File: docs/8.x/events.md, line: 638
+# File: docs/master/events.md, line: 638
+#, no-wrap
+msgid "<a name=\"registering-event-subscribers\"></a>\n"
+msgstr ""
+#
+#. type: Title ###
+# File: docs/8.x/events.md, line: 638
+# File: docs/master/events.md, line: 638
+#, no-wrap
+msgid "Registering Event Subscribers"
+msgstr ""
+#
+#. type: Plain text
+# File: docs/8.x/events.md, line: 641
+# File: docs/master/events.md, line: 641
+msgid "After writing the subscriber, you are ready to register it with the event dispatcher. You may register subscribers using the `$subscribe` property on the `EventServiceProvider`. For example, let's add the `UserEventSubscriber` to the list:"
+msgstr ""
+#
+#. type: Plain text
+# File: docs/8.x/events.md, line: 645
+# File: docs/master/events.md, line: 645
+#, no-wrap
+msgid "    namespace App\\Providers;\n"
+msgstr ""
+#
+#. type: Plain text
+# File: docs/8.x/events.md, line: 648
+# File: docs/master/events.md, line: 648
+#, no-wrap
+msgid ""
+"    use App\\Listeners\\UserEventSubscriber;\n"
+"    use Illuminate\\Foundation\\Support\\Providers\\EventServiceProvider as ServiceProvider;\n"
+msgstr ""
+#
+#. type: Plain text
+# File: docs/8.x/events.md, line: 659
+# File: docs/master/events.md, line: 659
+#, no-wrap
+msgid ""
+"    class EventServiceProvider extends ServiceProvider\n"
+"    {\n"
+"        /**\n"
+"         * The event listener mappings for the application.\n"
+"         *\n"
+"         * @var array\n"
+"         */\n"
+"        protected $listen = [\n"
+"            //\n"
+"        ];\n"
+msgstr ""
+#
+#. type: Plain text
+# File: docs/8.x/events.md, line: 668
+# File: docs/master/events.md, line: 668
+#, no-wrap
+msgid ""
+"        /**\n"
+"         * The subscriber classes to register.\n"
+"         *\n"
+"         * @var array\n"
+"         */\n"
+"        protected $subscribe = [\n"
+"            UserEventSubscriber::class,\n"
+"        ];\n"
+"    }\n"
+msgstr ""
+#
+#. type: Plain text
+# File: docs/master/events.md, line: 141
+msgid "Laravel finds event listeners by scanning the listener classes using PHP's reflection services. When Laravel finds any listener class method that begins with `handle` or `__invoke`, Laravel will register those methods as event listeners for the event that is type-hinted in the method's signature:"
+msgstr ""

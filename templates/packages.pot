@@ -1,0 +1,966 @@
+# SOME DESCRIPTIVE TITLE
+# Copyright (C) YEAR Taylor Otwell
+# This file is distributed under the same license as the Laravel Documentation package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: Laravel Documentation VERSION\n"
+"POT-Creation-Date: 2022-01-29 13:31+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+#
+#. type: Title #
+# File: docs/8.x/packages.md, line: 1
+# File: docs/master/packages.md, line: 1
+#, no-wrap
+msgid "Package Development"
+msgstr ""
+#
+#. type: Bullet: '- '
+# File: docs/8.x/packages.md, line: 17
+# File: docs/master/packages.md, line: 17
+msgid "[Introduction](#introduction)"
+msgstr ""
+#
+#. type: Bullet: '    - '
+# File: docs/8.x/packages.md, line: 17
+# File: docs/master/packages.md, line: 17
+msgid "[A Note On Facades](#a-note-on-facades)"
+msgstr ""
+#
+#. type: Bullet: '- '
+# File: docs/8.x/packages.md, line: 17
+# File: docs/master/packages.md, line: 17
+msgid "[Package Discovery](#package-discovery)"
+msgstr ""
+#
+#. type: Bullet: '- '
+# File: docs/8.x/packages.md, line: 17
+# File: docs/master/packages.md, line: 17
+msgid "[Service Providers](#service-providers)"
+msgstr ""
+#
+#. type: Bullet: '- '
+# File: docs/8.x/packages.md, line: 17
+# File: docs/master/packages.md, line: 17
+msgid "[Resources](#resources)"
+msgstr ""
+#
+#. type: Bullet: '    - '
+# File: docs/8.x/packages.md, line: 17
+# File: docs/master/packages.md, line: 17
+msgid "[Configuration](#configuration)"
+msgstr ""
+#
+#. type: Bullet: '    - '
+# File: docs/8.x/packages.md, line: 17
+# File: docs/master/packages.md, line: 17
+msgid "[Migrations](#migrations)"
+msgstr ""
+#
+#. type: Bullet: '    - '
+# File: docs/8.x/packages.md, line: 17
+# File: docs/master/packages.md, line: 17
+msgid "[Routes](#routes)"
+msgstr ""
+#
+#. type: Bullet: '    - '
+# File: docs/8.x/packages.md, line: 17
+# File: docs/master/packages.md, line: 17
+msgid "[Translations](#translations)"
+msgstr ""
+#
+#. type: Bullet: '    - '
+# File: docs/8.x/packages.md, line: 17
+# File: docs/master/packages.md, line: 17
+msgid "[Views](#views)"
+msgstr ""
+#
+#. type: Bullet: '    - '
+# File: docs/8.x/packages.md, line: 17
+# File: docs/master/packages.md, line: 17
+msgid "[View Components](#view-components)"
+msgstr ""
+#
+#. type: Bullet: '- '
+# File: docs/8.x/packages.md, line: 17
+# File: docs/master/packages.md, line: 17
+msgid "[Commands](#commands)"
+msgstr ""
+#
+#. type: Bullet: '- '
+# File: docs/8.x/packages.md, line: 17
+# File: docs/master/packages.md, line: 17
+msgid "[Public Assets](#public-assets)"
+msgstr ""
+#
+#. type: Bullet: '- '
+# File: docs/8.x/packages.md, line: 17
+# File: docs/master/packages.md, line: 17
+msgid "[Publishing File Groups](#publishing-file-groups)"
+msgstr ""
+#
+#. type: Plain text
+# File: docs/8.x/packages.md, line: 19
+# File: docs/master/packages.md, line: 19
+#, no-wrap
+msgid "<a name=\"introduction\"></a>\n"
+msgstr ""
+#
+#. type: Title ##
+# File: docs/8.x/packages.md, line: 19
+# File: docs/master/packages.md, line: 19
+#, no-wrap
+msgid "Introduction"
+msgstr ""
+#
+#. type: Plain text
+# File: docs/8.x/packages.md, line: 22
+# File: docs/master/packages.md, line: 22
+msgid "Packages are the primary way of adding functionality to Laravel. Packages might be anything from a great way to work with dates like [Carbon](https://github.com/briannesbitt/Carbon) or a package that allows you to associate files with Eloquent models like Spatie's [Laravel Media Library](https://github.com/spatie/laravel-medialibrary)."
+msgstr ""
+#
+#. type: Plain text
+# File: docs/8.x/packages.md, line: 24
+# File: docs/master/packages.md, line: 24
+msgid "There are different types of packages. Some packages are stand-alone, meaning they work with any PHP framework. Carbon and PHPUnit are examples of stand-alone packages. Any of these packages may be used with Laravel by requiring them in your `composer.json` file."
+msgstr ""
+#
+#. type: Plain text
+# File: docs/8.x/packages.md, line: 26
+# File: docs/master/packages.md, line: 26
+msgid "On the other hand, other packages are specifically intended for use with Laravel. These packages may have routes, controllers, views, and configuration specifically intended to enhance a Laravel application. This guide primarily covers the development of those packages that are Laravel specific."
+msgstr ""
+#
+#. type: Plain text
+# File: docs/8.x/packages.md, line: 28
+# File: docs/master/packages.md, line: 28
+#, no-wrap
+msgid "<a name=\"a-note-on-facades\"></a>\n"
+msgstr ""
+#
+#. type: Title ###
+# File: docs/8.x/packages.md, line: 28
+# File: docs/master/packages.md, line: 28
+#, no-wrap
+msgid "A Note On Facades"
+msgstr ""
+#
+#. type: Plain text
+# File: docs/8.x/packages.md, line: 31
+# File: docs/master/packages.md, line: 31
+msgid "When writing a Laravel application, it generally does not matter if you use contracts or facades since both provide essentially equal levels of testability. However, when writing packages, your package will not typically have access to all of Laravel's testing helpers. If you would like to be able to write your package tests as if the package were installed inside a typical Laravel application, you may use the [Orchestral Testbench](https://github.com/orchestral/testbench) package."
+msgstr ""
+#
+#. type: Plain text
+# File: docs/8.x/packages.md, line: 33
+# File: docs/master/packages.md, line: 33
+#, no-wrap
+msgid "<a name=\"package-discovery\"></a>\n"
+msgstr ""
+#
+#. type: Title ##
+# File: docs/8.x/packages.md, line: 33
+# File: docs/master/packages.md, line: 33
+#, no-wrap
+msgid "Package Discovery"
+msgstr ""
+#
+#. type: Plain text
+# File: docs/8.x/packages.md, line: 36
+# File: docs/master/packages.md, line: 36
+msgid "In a Laravel application's `config/app.php` configuration file, the `providers` option defines a list of service providers that should be loaded by Laravel. When someone installs your package, you will typically want your service provider to be included in this list. Instead of requiring users to manually add your service provider to the list, you may define the provider in the `extra` section of your package's `composer.json` file. In addition to service providers, you may also list any [facades](/docs/{{version}}/facades) you would like to be registered:"
+msgstr ""
+#
+#. type: Plain text
+# File: docs/8.x/packages.md, line: 47
+# File: docs/master/packages.md, line: 47
+#, no-wrap
+msgid ""
+"    \"extra\": {\n"
+"        \"laravel\": {\n"
+"            \"providers\": [\n"
+"                \"Barryvdh\\\\Debugbar\\\\ServiceProvider\"\n"
+"            ],\n"
+"            \"aliases\": {\n"
+"                \"Debugbar\": \"Barryvdh\\\\Debugbar\\\\Facade\"\n"
+"            }\n"
+"        }\n"
+"    },\n"
+msgstr ""
+#
+#. type: Plain text
+# File: docs/8.x/packages.md, line: 49
+# File: docs/master/packages.md, line: 49
+msgid "Once your package has been configured for discovery, Laravel will automatically register its service providers and facades when it is installed, creating a convenient installation experience for your package's users."
+msgstr ""
+#
+#. type: Plain text
+# File: docs/8.x/packages.md, line: 51
+# File: docs/master/packages.md, line: 51
+#, no-wrap
+msgid "<a name=\"opting-out-of-package-discovery\"></a>\n"
+msgstr ""
+#
+#. type: Title ###
+# File: docs/8.x/packages.md, line: 51
+# File: docs/master/packages.md, line: 51
+#, no-wrap
+msgid "Opting Out Of Package Discovery"
+msgstr ""
+#
+#. type: Plain text
+# File: docs/8.x/packages.md, line: 54
+# File: docs/master/packages.md, line: 54
+msgid "If you are the consumer of a package and would like to disable package discovery for a package, you may list the package name in the `extra` section of your application's `composer.json` file:"
+msgstr ""
+#
+#. type: Plain text
+# File: docs/8.x/packages.md, line: 62
+# File: docs/master/packages.md, line: 62
+#, no-wrap
+msgid ""
+"    \"extra\": {\n"
+"        \"laravel\": {\n"
+"            \"dont-discover\": [\n"
+"                \"barryvdh/laravel-debugbar\"\n"
+"            ]\n"
+"        }\n"
+"    },\n"
+msgstr ""
+#
+#. type: Plain text
+# File: docs/8.x/packages.md, line: 64
+# File: docs/master/packages.md, line: 64
+msgid "You may disable package discovery for all packages using the `*` character inside of your application's `dont-discover` directive:"
+msgstr ""
+#
+#. type: Plain text
+# File: docs/8.x/packages.md, line: 72
+# File: docs/master/packages.md, line: 72
+#, no-wrap
+msgid ""
+"    \"extra\": {\n"
+"        \"laravel\": {\n"
+"            \"dont-discover\": [\n"
+"                \"*\"\n"
+"            ]\n"
+"        }\n"
+"    },\n"
+msgstr ""
+#
+#. type: Plain text
+# File: docs/8.x/packages.md, line: 74
+# File: docs/master/packages.md, line: 74
+#, no-wrap
+msgid "<a name=\"service-providers\"></a>\n"
+msgstr ""
+#
+#. type: Title ##
+# File: docs/8.x/packages.md, line: 74
+# File: docs/master/packages.md, line: 74
+#, no-wrap
+msgid "Service Providers"
+msgstr ""
+#
+#. type: Plain text
+# File: docs/8.x/packages.md, line: 77
+# File: docs/master/packages.md, line: 77
+msgid "[Service providers](/docs/{{version}}/providers) are the connection point between your package and Laravel. A service provider is responsible for binding things into Laravel's [service container](/docs/{{version}}/container) and informing Laravel where to load package resources such as views, configuration, and localization files."
+msgstr ""
+#
+#. type: Plain text
+# File: docs/8.x/packages.md, line: 79
+# File: docs/master/packages.md, line: 79
+msgid "A service provider extends the `Illuminate\\Support\\ServiceProvider` class and contains two methods: `register` and `boot`. The base `ServiceProvider` class is located in the `illuminate/support` Composer package, which you should add to your own package's dependencies. To learn more about the structure and purpose of service providers, check out [their documentation](/docs/{{version}}/providers)."
+msgstr ""
+#
+#. type: Plain text
+# File: docs/8.x/packages.md, line: 81
+# File: docs/master/packages.md, line: 81
+#, no-wrap
+msgid "<a name=\"resources\"></a>\n"
+msgstr ""
+#
+#. type: Title ##
+# File: docs/8.x/packages.md, line: 81
+# File: docs/master/packages.md, line: 81
+#, no-wrap
+msgid "Resources"
+msgstr ""
+#
+#. type: Plain text
+# File: docs/8.x/packages.md, line: 84
+# File: docs/master/packages.md, line: 84
+#, no-wrap
+msgid "<a name=\"configuration\"></a>\n"
+msgstr ""
+#
+#. type: Title ###
+# File: docs/8.x/packages.md, line: 84
+# File: docs/master/packages.md, line: 84
+#, no-wrap
+msgid "Configuration"
+msgstr ""
+#
+#. type: Plain text
+# File: docs/8.x/packages.md, line: 87
+# File: docs/master/packages.md, line: 87
+msgid "Typically, you will need to publish your package's configuration file to the application's `config` directory. This will allow users of your package to easily override your default configuration options. To allow your configuration files to be published, call the `publishes` method from the `boot` method of your service provider:"
+msgstr ""
+#
+#. type: Plain text
+# File: docs/8.x/packages.md, line: 99
+# File: docs/master/packages.md, line: 99
+#, no-wrap
+msgid ""
+"    /**\n"
+"     * Bootstrap any package services.\n"
+"     *\n"
+"     * @return void\n"
+"     */\n"
+"    public function boot()\n"
+"    {\n"
+"        $this->publishes([\n"
+"            __DIR__.'/../config/courier.php' => config_path('courier.php'),\n"
+"        ]);\n"
+"    }\n"
+msgstr ""
+#
+#. type: Plain text
+# File: docs/8.x/packages.md, line: 101
+# File: docs/master/packages.md, line: 101
+msgid "Now, when users of your package execute Laravel's `vendor:publish` command, your file will be copied to the specified publish location. Once your configuration has been published, its values may be accessed like any other configuration file:"
+msgstr ""
+#
+#. type: Plain text
+# File: docs/8.x/packages.md, line: 103
+# File: docs/master/packages.md, line: 103
+#, no-wrap
+msgid "    $value = config('courier.option');\n"
+msgstr ""
+#
+#. type: Plain text
+# File: docs/8.x/packages.md, line: 105
+# File: docs/master/packages.md, line: 105
+#, no-wrap
+msgid "> {note} You should not define closures in your configuration files. They can not be serialized correctly when users execute the `config:cache` Artisan command.\n"
+msgstr ""
+#
+#. type: Plain text
+# File: docs/8.x/packages.md, line: 107
+# File: docs/master/packages.md, line: 107
+#, no-wrap
+msgid "<a name=\"default-package-configuration\"></a>\n"
+msgstr ""
+#
+#. type: Title ####
+# File: docs/8.x/packages.md, line: 107
+# File: docs/master/packages.md, line: 107
+#, no-wrap
+msgid "Default Package Configuration"
+msgstr ""
+#
+#. type: Plain text
+# File: docs/8.x/packages.md, line: 110
+# File: docs/master/packages.md, line: 110
+msgid "You may also merge your own package configuration file with the application's published copy. This will allow your users to define only the options they actually want to override in the published copy of the configuration file. To merge the configuration file values, use the `mergeConfigFrom` method within your service provider's `register` method."
+msgstr ""
+#
+#. type: Plain text
+# File: docs/8.x/packages.md, line: 112
+# File: docs/master/packages.md, line: 112
+msgid "The `mergeConfigFrom` method accepts the path to your package's configuration file as its first argument and the name of the application's copy of the configuration file as its second argument:"
+msgstr ""
+#
+#. type: Plain text
+# File: docs/8.x/packages.md, line: 124
+# File: docs/master/packages.md, line: 124
+#, no-wrap
+msgid ""
+"    /**\n"
+"     * Register any application services.\n"
+"     *\n"
+"     * @return void\n"
+"     */\n"
+"    public function register()\n"
+"    {\n"
+"        $this->mergeConfigFrom(\n"
+"            __DIR__.'/../config/courier.php', 'courier'\n"
+"        );\n"
+"    }\n"
+msgstr ""
+#
+#. type: Plain text
+# File: docs/8.x/packages.md, line: 126
+# File: docs/master/packages.md, line: 126
+#, no-wrap
+msgid "> {note} This method only merges the first level of the configuration array. If your users partially define a multi-dimensional configuration array, the missing options will not be merged.\n"
+msgstr ""
+#
+#. type: Plain text
+# File: docs/8.x/packages.md, line: 128
+# File: docs/master/packages.md, line: 128
+#, no-wrap
+msgid "<a name=\"routes\"></a>\n"
+msgstr ""
+#
+#. type: Title ###
+# File: docs/8.x/packages.md, line: 128
+# File: docs/master/packages.md, line: 128
+#, no-wrap
+msgid "Routes"
+msgstr ""
+#
+#. type: Plain text
+# File: docs/8.x/packages.md, line: 131
+# File: docs/master/packages.md, line: 131
+msgid "If your package contains routes, you may load them using the `loadRoutesFrom` method. This method will automatically determine if the application's routes are cached and will not load your routes file if the routes have already been cached:"
+msgstr ""
+#
+#. type: Plain text
+# File: docs/8.x/packages.md, line: 141
+# File: docs/master/packages.md, line: 141
+#, no-wrap
+msgid ""
+"    /**\n"
+"     * Bootstrap any package services.\n"
+"     *\n"
+"     * @return void\n"
+"     */\n"
+"    public function boot()\n"
+"    {\n"
+"        $this->loadRoutesFrom(__DIR__.'/../routes/web.php');\n"
+"    }\n"
+msgstr ""
+#
+#. type: Plain text
+# File: docs/8.x/packages.md, line: 143
+# File: docs/master/packages.md, line: 143
+#, no-wrap
+msgid "<a name=\"migrations\"></a>\n"
+msgstr ""
+#
+#. type: Title ###
+# File: docs/8.x/packages.md, line: 143
+# File: docs/master/packages.md, line: 143
+#, no-wrap
+msgid "Migrations"
+msgstr ""
+#
+#. type: Plain text
+# File: docs/8.x/packages.md, line: 146
+# File: docs/master/packages.md, line: 146
+msgid "If your package contains [database migrations](/docs/{{version}}/migrations), you may use the `loadMigrationsFrom` method to inform Laravel how to load them. The `loadMigrationsFrom` method accepts the path to your package's migrations as its only argument:"
+msgstr ""
+#
+#. type: Plain text
+# File: docs/8.x/packages.md, line: 156
+# File: docs/master/packages.md, line: 156
+#, no-wrap
+msgid ""
+"    /**\n"
+"     * Bootstrap any package services.\n"
+"     *\n"
+"     * @return void\n"
+"     */\n"
+"    public function boot()\n"
+"    {\n"
+"        $this->loadMigrationsFrom(__DIR__.'/../database/migrations');\n"
+"    }\n"
+msgstr ""
+#
+#. type: Plain text
+# File: docs/8.x/packages.md, line: 158
+# File: docs/master/packages.md, line: 158
+msgid "Once your package's migrations have been registered, they will automatically be run when the `php artisan migrate` command is executed. You do not need to export them to the application's `database/migrations` directory."
+msgstr ""
+#
+#. type: Plain text
+# File: docs/8.x/packages.md, line: 160
+# File: docs/master/packages.md, line: 160
+#, no-wrap
+msgid "<a name=\"translations\"></a>\n"
+msgstr ""
+#
+#. type: Title ###
+# File: docs/8.x/packages.md, line: 160
+# File: docs/master/packages.md, line: 160
+#, no-wrap
+msgid "Translations"
+msgstr ""
+#
+#. type: Plain text
+# File: docs/8.x/packages.md, line: 163
+# File: docs/master/packages.md, line: 163
+msgid "If your package contains [translation files](/docs/{{version}}/localization), you may use the `loadTranslationsFrom` method to inform Laravel how to load them. For example, if your package is named `courier`, you should add the following to your service provider's `boot` method:"
+msgstr ""
+#
+#. type: Plain text
+# File: docs/8.x/packages.md, line: 173
+# File: docs/master/packages.md, line: 173
+#, no-wrap
+msgid ""
+"    /**\n"
+"     * Bootstrap any package services.\n"
+"     *\n"
+"     * @return void\n"
+"     */\n"
+"    public function boot()\n"
+"    {\n"
+"        $this->loadTranslationsFrom(__DIR__.'/../resources/lang', 'courier');\n"
+"    }\n"
+msgstr ""
+#
+#. type: Plain text
+# File: docs/8.x/packages.md, line: 175
+# File: docs/master/packages.md, line: 175
+msgid "Package translations are referenced using the `package::file.line` syntax convention. So, you may load the `courier` package's `welcome` line from the `messages` file like so:"
+msgstr ""
+#
+#. type: Plain text
+# File: docs/8.x/packages.md, line: 177
+# File: docs/master/packages.md, line: 177
+#, no-wrap
+msgid "    echo trans('courier::messages.welcome');\n"
+msgstr ""
+#
+#. type: Plain text
+# File: docs/8.x/packages.md, line: 179
+# File: docs/master/packages.md, line: 179
+#, no-wrap
+msgid "<a name=\"publishing-translations\"></a>\n"
+msgstr ""
+#
+#. type: Title ####
+# File: docs/8.x/packages.md, line: 179
+# File: docs/master/packages.md, line: 179
+#, no-wrap
+msgid "Publishing Translations"
+msgstr ""
+#
+#. type: Plain text
+# File: docs/8.x/packages.md, line: 182
+# File: docs/master/packages.md, line: 182
+msgid "If you would like to publish your package's translations to the application's `resources/lang/vendor` directory, you may use the service provider's `publishes` method. The `publishes` method accepts an array of package paths and their desired publish locations. For example, to publish the translation files for the `courier` package, you may do the following:"
+msgstr ""
+#
+#. type: Plain text
+# File: docs/8.x/packages.md, line: 191
+# File: docs/master/packages.md, line: 191
+#, no-wrap
+msgid ""
+"    /**\n"
+"     * Bootstrap any package services.\n"
+"     *\n"
+"     * @return void\n"
+"     */\n"
+"    public function boot()\n"
+"    {\n"
+"        $this->loadTranslationsFrom(__DIR__.'/../resources/lang', 'courier');\n"
+msgstr ""
+#
+#. type: Plain text
+# File: docs/8.x/packages.md, line: 196
+# File: docs/master/packages.md, line: 196
+#, no-wrap
+msgid ""
+"        $this->publishes([\n"
+"            __DIR__.'/../resources/lang' => resource_path('lang/vendor/courier'),\n"
+"        ]);\n"
+"    }\n"
+msgstr ""
+#
+#. type: Plain text
+# File: docs/8.x/packages.md, line: 198
+# File: docs/master/packages.md, line: 198
+msgid "Now, when users of your package execute Laravel's `vendor:publish` Artisan command, your package's translations will be published to the specified publish location."
+msgstr ""
+#
+#. type: Plain text
+# File: docs/8.x/packages.md, line: 200
+# File: docs/master/packages.md, line: 200
+#, no-wrap
+msgid "<a name=\"views\"></a>\n"
+msgstr ""
+#
+#. type: Title ###
+# File: docs/8.x/packages.md, line: 200
+# File: docs/master/packages.md, line: 200
+#, no-wrap
+msgid "Views"
+msgstr ""
+#
+#. type: Plain text
+# File: docs/8.x/packages.md, line: 203
+# File: docs/master/packages.md, line: 203
+msgid "To register your package's [views](/docs/{{version}}/views) with Laravel, you need to tell Laravel where the views are located. You may do this using the service provider's `loadViewsFrom` method. The `loadViewsFrom` method accepts two arguments: the path to your view templates and your package's name. For example, if your package's name is `courier`, you would add the following to your service provider's `boot` method:"
+msgstr ""
+#
+#. type: Plain text
+# File: docs/8.x/packages.md, line: 213
+# File: docs/master/packages.md, line: 213
+#, no-wrap
+msgid ""
+"    /**\n"
+"     * Bootstrap any package services.\n"
+"     *\n"
+"     * @return void\n"
+"     */\n"
+"    public function boot()\n"
+"    {\n"
+"        $this->loadViewsFrom(__DIR__.'/../resources/views', 'courier');\n"
+"    }\n"
+msgstr ""
+#
+#. type: Plain text
+# File: docs/8.x/packages.md, line: 215
+# File: docs/master/packages.md, line: 215
+msgid "Package views are referenced using the `package::view` syntax convention. So, once your view path is registered in a service provider, you may load the `dashboard` view from the `courier` package like so:"
+msgstr ""
+#
+#. type: Plain text
+# File: docs/8.x/packages.md, line: 219
+# File: docs/master/packages.md, line: 219
+#, no-wrap
+msgid ""
+"    Route::get('/dashboard', function () {\n"
+"        return view('courier::dashboard');\n"
+"    });\n"
+msgstr ""
+#
+#. type: Plain text
+# File: docs/8.x/packages.md, line: 221
+# File: docs/master/packages.md, line: 221
+#, no-wrap
+msgid "<a name=\"overriding-package-views\"></a>\n"
+msgstr ""
+#
+#. type: Title ####
+# File: docs/8.x/packages.md, line: 221
+# File: docs/master/packages.md, line: 221
+#, no-wrap
+msgid "Overriding Package Views"
+msgstr ""
+#
+#. type: Plain text
+# File: docs/8.x/packages.md, line: 224
+# File: docs/master/packages.md, line: 224
+msgid "When you use the `loadViewsFrom` method, Laravel actually registers two locations for your views: the application's `resources/views/vendor` directory and the directory you specify. So, using the `courier` package as an example, Laravel will first check if a custom version of the view has been placed in the `resources/views/vendor/courier` directory by the developer. Then, if the view has not been customized, Laravel will search the package view directory you specified in your call to `loadViewsFrom`. This makes it easy for package users to customize / override your package's views."
+msgstr ""
+#
+#. type: Plain text
+# File: docs/8.x/packages.md, line: 226
+# File: docs/master/packages.md, line: 226
+#, no-wrap
+msgid "<a name=\"publishing-views\"></a>\n"
+msgstr ""
+#
+#. type: Title ####
+# File: docs/8.x/packages.md, line: 226
+# File: docs/master/packages.md, line: 226
+#, no-wrap
+msgid "Publishing Views"
+msgstr ""
+#
+#. type: Plain text
+# File: docs/8.x/packages.md, line: 229
+# File: docs/master/packages.md, line: 229
+msgid "If you would like to make your views available for publishing to the application's `resources/views/vendor` directory, you may use the service provider's `publishes` method. The `publishes` method accepts an array of package view paths and their desired publish locations:"
+msgstr ""
+#
+#. type: Plain text
+# File: docs/8.x/packages.md, line: 238
+# File: docs/master/packages.md, line: 238
+#, no-wrap
+msgid ""
+"    /**\n"
+"     * Bootstrap the package services.\n"
+"     *\n"
+"     * @return void\n"
+"     */\n"
+"    public function boot()\n"
+"    {\n"
+"        $this->loadViewsFrom(__DIR__.'/../resources/views', 'courier');\n"
+msgstr ""
+#
+#. type: Plain text
+# File: docs/8.x/packages.md, line: 243
+# File: docs/master/packages.md, line: 243
+#, no-wrap
+msgid ""
+"        $this->publishes([\n"
+"            __DIR__.'/../resources/views' => resource_path('views/vendor/courier'),\n"
+"        ]);\n"
+"    }\n"
+msgstr ""
+#
+#. type: Plain text
+# File: docs/8.x/packages.md, line: 245
+# File: docs/master/packages.md, line: 245
+msgid "Now, when users of your package execute Laravel's `vendor:publish` Artisan command, your package's views will be copied to the specified publish location."
+msgstr ""
+#
+#. type: Plain text
+# File: docs/8.x/packages.md, line: 247
+# File: docs/master/packages.md, line: 247
+#, no-wrap
+msgid "<a name=\"view-components\"></a>\n"
+msgstr ""
+#
+#. type: Title ###
+# File: docs/8.x/packages.md, line: 247
+# File: docs/master/packages.md, line: 247
+#, no-wrap
+msgid "View Components"
+msgstr ""
+#
+#. type: Plain text
+# File: docs/8.x/packages.md, line: 250
+# File: docs/master/packages.md, line: 250
+msgid "If your package contains [view components](/docs/{{version}}/blade#components), you may use the `loadViewComponentsAs` method to inform Laravel how to load them. The `loadViewComponentsAs` method accepts two arguments: the tag prefix for your view components and an array of your view component class names. For example, if your package's prefix is `courier` and you have `Alert` and `Button` view components, you would add the following to your service provider's `boot` method:"
+msgstr ""
+#
+#. type: Plain text
+# File: docs/8.x/packages.md, line: 253
+# File: docs/master/packages.md, line: 253
+#, no-wrap
+msgid ""
+"    use Courier\\Components\\Alert;\n"
+"    use Courier\\Components\\Button;\n"
+msgstr ""
+#
+#. type: Plain text
+# File: docs/8.x/packages.md, line: 266
+# File: docs/master/packages.md, line: 266
+#, no-wrap
+msgid ""
+"    /**\n"
+"     * Bootstrap any package services.\n"
+"     *\n"
+"     * @return void\n"
+"     */\n"
+"    public function boot()\n"
+"    {\n"
+"        $this->loadViewComponentsAs('courier', [\n"
+"            Alert::class,\n"
+"            Button::class,\n"
+"        ]);\n"
+"    }\n"
+msgstr ""
+#
+#. type: Plain text
+# File: docs/8.x/packages.md, line: 268
+# File: docs/master/packages.md, line: 268
+msgid "Once your view components are registered in a service provider, you may reference them in your view like so:"
+msgstr ""
+#
+#. type: Plain text
+# File: docs/8.x/packages.md, line: 270
+# File: docs/master/packages.md, line: 270
+#, no-wrap
+msgid "    <x-courier-alert />\n"
+msgstr ""
+#
+#. type: Plain text
+# File: docs/8.x/packages.md, line: 272
+# File: docs/master/packages.md, line: 272
+#, no-wrap
+msgid "    <x-courier-button />\n"
+msgstr ""
+#
+#. type: Plain text
+# File: docs/8.x/packages.md, line: 274
+# File: docs/master/packages.md, line: 274
+#, no-wrap
+msgid "<a name=\"anonymous-components\"></a>\n"
+msgstr ""
+#
+#. type: Title ####
+# File: docs/8.x/packages.md, line: 274
+# File: docs/master/packages.md, line: 274
+#, no-wrap
+msgid "Anonymous Components"
+msgstr ""
+#
+#. type: Plain text
+# File: docs/8.x/packages.md, line: 277
+# File: docs/master/packages.md, line: 277
+msgid "If your package contains anonymous components, they must be placed within a `components` directory of your package's \"views\" directory (as specified by `loadViewsFrom`). Then, you may render them by prefixing the component name with the package's view namespace:"
+msgstr ""
+#
+#. type: Plain text
+# File: docs/8.x/packages.md, line: 279
+# File: docs/master/packages.md, line: 279
+#, no-wrap
+msgid "    <x-courier::alert />\n"
+msgstr ""
+#
+#. type: Plain text
+# File: docs/8.x/packages.md, line: 281
+# File: docs/master/packages.md, line: 281
+#, no-wrap
+msgid "<a name=\"commands\"></a>\n"
+msgstr ""
+#
+#. type: Title ##
+# File: docs/8.x/packages.md, line: 281
+# File: docs/master/packages.md, line: 281
+#, no-wrap
+msgid "Commands"
+msgstr ""
+#
+#. type: Plain text
+# File: docs/8.x/packages.md, line: 284
+# File: docs/master/packages.md, line: 284
+msgid "To register your package's Artisan commands with Laravel, you may use the `commands` method. This method expects an array of command class names. Once the commands have been registered, you may execute them using the [Artisan CLI](/docs/{{version}}/artisan):"
+msgstr ""
+#
+#. type: Plain text
+# File: docs/8.x/packages.md, line: 287
+# File: docs/master/packages.md, line: 287
+#, no-wrap
+msgid ""
+"    use Courier\\Console\\Commands\\InstallCommand;\n"
+"    use Courier\\Console\\Commands\\NetworkCommand;\n"
+msgstr ""
+#
+#. type: Plain text
+# File: docs/8.x/packages.md, line: 302
+# File: docs/master/packages.md, line: 302
+#, no-wrap
+msgid ""
+"    /**\n"
+"     * Bootstrap any package services.\n"
+"     *\n"
+"     * @return void\n"
+"     */\n"
+"    public function boot()\n"
+"    {\n"
+"        if ($this->app->runningInConsole()) {\n"
+"            $this->commands([\n"
+"                InstallCommand::class,\n"
+"                NetworkCommand::class,\n"
+"            ]);\n"
+"        }\n"
+"    }\n"
+msgstr ""
+#
+#. type: Plain text
+# File: docs/8.x/packages.md, line: 304
+# File: docs/master/packages.md, line: 304
+#, no-wrap
+msgid "<a name=\"public-assets\"></a>\n"
+msgstr ""
+#
+#. type: Title ##
+# File: docs/8.x/packages.md, line: 304
+# File: docs/master/packages.md, line: 304
+#, no-wrap
+msgid "Public Assets"
+msgstr ""
+#
+#. type: Plain text
+# File: docs/8.x/packages.md, line: 307
+# File: docs/master/packages.md, line: 307
+msgid "Your package may have assets such as JavaScript, CSS, and images. To publish these assets to the application's `public` directory, use the service provider's `publishes` method. In this example, we will also add a `public` asset group tag, which may be used to easily publish groups of related assets:"
+msgstr ""
+#
+#. type: Plain text
+# File: docs/8.x/packages.md, line: 319
+# File: docs/master/packages.md, line: 319
+#, no-wrap
+msgid ""
+"    /**\n"
+"     * Bootstrap any package services.\n"
+"     *\n"
+"     * @return void\n"
+"     */\n"
+"    public function boot()\n"
+"    {\n"
+"        $this->publishes([\n"
+"            __DIR__.'/../public' => public_path('vendor/courier'),\n"
+"        ], 'public');\n"
+"    }\n"
+msgstr ""
+#
+#. type: Plain text
+# File: docs/8.x/packages.md, line: 321
+# File: docs/master/packages.md, line: 321
+msgid "Now, when your package's users execute the `vendor:publish` command, your assets will be copied to the specified publish location. Since users will typically need to overwrite the assets every time the package is updated, you may use the `--force` flag:"
+msgstr ""
+#
+#. type: Plain text
+# File: docs/8.x/packages.md, line: 323
+# File: docs/master/packages.md, line: 323
+#, no-wrap
+msgid "    php artisan vendor:publish --tag=public --force\n"
+msgstr ""
+#
+#. type: Plain text
+# File: docs/8.x/packages.md, line: 325
+# File: docs/master/packages.md, line: 325
+#, no-wrap
+msgid "<a name=\"publishing-file-groups\"></a>\n"
+msgstr ""
+#
+#. type: Title ##
+# File: docs/8.x/packages.md, line: 325
+# File: docs/master/packages.md, line: 325
+#, no-wrap
+msgid "Publishing File Groups"
+msgstr ""
+#
+#. type: Plain text
+# File: docs/8.x/packages.md, line: 328
+# File: docs/master/packages.md, line: 328
+msgid "You may want to publish groups of package assets and resources separately. For instance, you might want to allow your users to publish your package's configuration files without being forced to publish your package's assets. You may do this by \"tagging\" them when calling the `publishes` method from a package's service provider. For example, let's use tags to define two publish groups for the `courier` package (`courier-config` and `courier-migrations`) in the `boot` method of the package's service provider:"
+msgstr ""
+#
+#. type: Plain text
+# File: docs/8.x/packages.md, line: 339
+# File: docs/master/packages.md, line: 339
+#, no-wrap
+msgid ""
+"    /**\n"
+"     * Bootstrap any package services.\n"
+"     *\n"
+"     * @return void\n"
+"     */\n"
+"    public function boot()\n"
+"    {\n"
+"        $this->publishes([\n"
+"            __DIR__.'/../config/package.php' => config_path('package.php')\n"
+"        ], 'courier-config');\n"
+msgstr ""
+#
+#. type: Plain text
+# File: docs/8.x/packages.md, line: 344
+# File: docs/master/packages.md, line: 344
+#, no-wrap
+msgid ""
+"        $this->publishes([\n"
+"            __DIR__.'/../database/migrations/' => database_path('migrations')\n"
+"        ], 'courier-migrations');\n"
+"    }\n"
+msgstr ""
+#
+#. type: Plain text
+# File: docs/8.x/packages.md, line: 346
+# File: docs/master/packages.md, line: 346
+msgid "Now your users may publish these groups separately by referencing their tag when executing the `vendor:publish` command:"
+msgstr ""
+#
+#. type: Plain text
+# File: docs/8.x/packages.md, line: 347
+# File: docs/master/packages.md, line: 347
+#, no-wrap
+msgid "    php artisan vendor:publish --tag=courier-config\n"
+msgstr ""

@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: laravel-docs\n"
 "POT-Creation-Date: 2022-01-29 05:35+0000\n"
-"PO-Revision-Date: 2022-01-29 05:46\n"
+"PO-Revision-Date: 2022-01-29 16:12\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
@@ -21,7 +21,7 @@ msgstr ""
 #. type: Title #
 #, no-wrap
 msgid "Database Testing"
-msgstr ""
+msgstr "資料庫測試"
 
 # File: docs/8.x/database-testing.md, line: 22
 # File: docs/master/database-testing.md, line: 22
@@ -46,47 +46,65 @@ msgid "- [Introduction](#introduction)\n"
 "    - [Defining Relationships Within Factories](#defining-relationships-within-factories)\n"
 "- [Running Seeders](#running-seeders)\n"
 "- [Available Assertions](#available-assertions)\n"
-msgstr ""
+msgstr "- [簡介](#introduction)\n"
+"    - [為每個測試重設資料庫](#resetting-the-database-after-each-test)\n"
+"- [定義 Model Factory](#defining-model-factories)\n"
+"    - [概念概覽](#concept-overview)\n"
+"    - [產生 Factory](#generating-factories)\n"
+"    - [Factory State](#factory-states)\n"
+"    - [Factory 回呼](#factory-callbacks)\n"
+"- [使用 Factory 來建立 Model](#creating-models-using-factories)\n"
+"    - [建立 Model](#instantiating-models)\n"
+"    - [維持 Model](#persisting-models)\n"
+"    - [序列](#sequences)\n"
+"- [Factory 關聯](#factory-relationships)\n"
+"    - [Has Many 關聯](#has-many-relationships)\n"
+"    - [Belongs To 關聯](#belongs-to-relationships)\n"
+"    - [Many To Many 關聯](#many-to-many-relationships)\n"
+"    - [Polymorphic 關聯](#polymorphic-relationships)\n"
+"    - [使用 Factory 定義關聯](#defining-relationships-within-factories)\n"
+"- [執行 Seeder](#running-seeders)\n"
+"- [可用的 Assertion](#available-assertions)\n"
 
 # File: docs/8.x/database-testing.md, line: 24
 # File: docs/master/database-testing.md, line: 24
 #. type: Plain text
 #, no-wrap
 msgid "<a name=\"introduction\"></a>\n"
-msgstr ""
+msgstr "<a name=\"introduction\"></a>\n"
 
 # File: docs/8.x/database-testing.md, line: 24
 # File: docs/master/database-testing.md, line: 24
 #. type: Title ##
 #, no-wrap
 msgid "Introduction"
-msgstr ""
+msgstr "簡介"
 
 # File: docs/8.x/database-testing.md, line: 27
 # File: docs/master/database-testing.md, line: 27
 #. type: Plain text
 msgid "Laravel provides a variety of helpful tools and assertions to make it easier to test your database driven applications. In addition, Laravel model factories and seeders make it painless to create test database records using your application's Eloquent models and relationships. We'll discuss all of these powerful features in the following documentation."
-msgstr ""
+msgstr "Laravel 提供了數種實用工具與 Assertion (判斷提示) 讓你能更輕鬆地測試由資料庫驅動的網站。此外，通過 Laravel 的 Model Factory 與 Seeder，也能輕鬆地使用專案的 Eloquent Model 與 Eloquent 關聯來測試資料庫。我們會在接下來的說明文件內討論這些強大的工具。"
 
 # File: docs/8.x/database-testing.md, line: 29
 # File: docs/master/database-testing.md, line: 29
 #. type: Plain text
 #, no-wrap
 msgid "<a name=\"resetting-the-database-after-each-test\"></a>\n"
-msgstr ""
+msgstr "<a name=\"resetting-the-database-after-each-test\"></a>\n"
 
 # File: docs/8.x/database-testing.md, line: 29
 # File: docs/master/database-testing.md, line: 29
 #. type: Title ###
 #, no-wrap
 msgid "Resetting The Database After Each Test"
-msgstr ""
+msgstr "在每個測試後重設資料庫"
 
 # File: docs/8.x/database-testing.md, line: 32
 # File: docs/master/database-testing.md, line: 32
 #. type: Plain text
 msgid "Before proceeding much further, let's discuss how to reset your database after each of your tests so that data from a previous test does not interfere with subsequent tests. Laravel's included `Illuminate\\Foundation\\Testing\\RefreshDatabase` trait will take care of this for you. Simply use the trait on your test class:"
-msgstr ""
+msgstr "在進一步繼續之前，我們先來討論如何在每個測試前重設資料庫，這樣一來前一個測試的資料就不會影響到接下來的測試。Laravel 內含了 `Illuminate\\Foundation\\Testing\\RefreshDatabase` Trait，會處理這樣的重設。只需要在測試類別內 use 這個 Trait 即可："
 
 # File: docs/8.x/database-testing.md, line: 34
 # File: docs/8.x/database-testing.md, line: 534
@@ -97,7 +115,7 @@ msgstr ""
 #. type: Plain text
 #, no-wrap
 msgid "    <?php\n"
-msgstr ""
+msgstr "    <?php\n"
 
 # File: docs/8.x/database-testing.md, line: 36
 # File: docs/8.x/database-testing.md, line: 536
@@ -106,7 +124,7 @@ msgstr ""
 #. type: Plain text
 #, no-wrap
 msgid "    namespace Tests\\Feature;\n"
-msgstr ""
+msgstr "    namespace Tests\\Feature;\n"
 
 # File: docs/8.x/database-testing.md, line: 40
 # File: docs/master/database-testing.md, line: 40
@@ -115,7 +133,9 @@ msgstr ""
 msgid "    use Illuminate\\Foundation\\Testing\\RefreshDatabase;\n"
 "    use Illuminate\\Foundation\\Testing\\WithoutMiddleware;\n"
 "    use Tests\\TestCase;\n"
-msgstr ""
+msgstr "    use Illuminate\\Foundation\\Testing\\RefreshDatabase;\n"
+"    use Illuminate\\Foundation\\Testing\\WithoutMiddleware;\n"
+"    use Tests\\TestCase;\n"
 
 # File: docs/8.x/database-testing.md, line: 44
 # File: docs/8.x/database-testing.md, line: 546
@@ -126,7 +146,9 @@ msgstr ""
 msgid "    class ExampleTest extends TestCase\n"
 "    {\n"
 "        use RefreshDatabase;\n"
-msgstr ""
+msgstr "    class ExampleTest extends TestCase\n"
+"    {\n"
+"        use RefreshDatabase;\n"
 
 # File: docs/8.x/database-testing.md, line: 53
 # File: docs/master/database-testing.md, line: 53
@@ -140,7 +162,14 @@ msgid "        /**\n"
 "        public function test_basic_example()\n"
 "        {\n"
 "            $response = $this->get('/');\n"
-msgstr ""
+msgstr "        /**\n"
+"         * A basic functional test example.\n"
+"         *\n"
+"         * @return void\n"
+"         */\n"
+"        public function test_basic_example()\n"
+"        {\n"
+"            $response = $this->get('/');\n"
 
 # File: docs/8.x/database-testing.md, line: 57
 # File: docs/master/database-testing.md, line: 57
@@ -149,14 +178,16 @@ msgstr ""
 msgid "            // ...\n"
 "        }\n"
 "    }\n"
-msgstr ""
+msgstr "            // ...\n"
+"        }\n"
+"    }\n"
 
 # File: docs/8.x/database-testing.md, line: 59
 # File: docs/master/database-testing.md, line: 63
 #. type: Plain text
 #, no-wrap
 msgid "<a name=\"defining-model-factories\"></a>\n"
-msgstr ""
+msgstr "<a name=\"defining-model-factories\"></a>\n"
 
 # File: docs/8.x/database-testing.md, line: 59
 # File: docs/master/database-testing.md, line: 63

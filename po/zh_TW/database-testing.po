@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: laravel-docs\n"
 "POT-Creation-Date: 2022-01-29 05:35+0000\n"
-"PO-Revision-Date: 2022-01-29 16:12\n"
+"PO-Revision-Date: 2022-01-29 17:08\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
@@ -194,33 +194,33 @@ msgstr "<a name=\"defining-model-factories\"></a>\n"
 #. type: Title ##
 #, no-wrap
 msgid "Defining Model Factories"
-msgstr ""
+msgstr "定義 Model Factory"
 
 # File: docs/8.x/database-testing.md, line: 62
 # File: docs/master/database-testing.md, line: 66
 #. type: Plain text
 #, no-wrap
 msgid "<a name=\"concept-overview\"></a>\n"
-msgstr ""
+msgstr "<a name=\"concept-overview\"></a>\n"
 
 # File: docs/8.x/database-testing.md, line: 62
 # File: docs/master/database-testing.md, line: 66
 #. type: Title ###
 #, no-wrap
 msgid "Concept Overview"
-msgstr ""
+msgstr "概念概覽"
 
 # File: docs/8.x/database-testing.md, line: 65
 # File: docs/master/database-testing.md, line: 69
 #. type: Plain text
 msgid "First, let's talk about Eloquent model factories. When testing, you may need to insert a few records into your database before executing your test. Instead of manually specifying the value of each column when you create this test data, Laravel allows you to define a set of default attributes for each of your [Eloquent models](/docs/{{version}}/eloquent) using model factories."
-msgstr ""
+msgstr "首先，來討論有關 Eloquent Model Factory。在測試時，我們可能會需要在執行測試前先插入一些資料到資料庫內。比起在建立這個測試資料時手動指定各個欄位的值，Laravel 中可以使用 Model Factory 來為各個 [Eloquent Model](/docs/{{version}}/eloquent) 定義一系列的預設屬性。"
 
 # File: docs/8.x/database-testing.md, line: 67
 # File: docs/master/database-testing.md, line: 71
 #. type: Plain text
 msgid "To see an example of how to write a factory, take a look at the `database/factories/UserFactory.php` file in your application. This factory is included with all new Laravel applications and contains the following factory definition:"
-msgstr ""
+msgstr "若要看看如何撰寫 Factory 的範例，請參考專案中的 `database/factories/UserFactory.php`。該 Factory 包含在所有的 Laravel 新專案內，裡面有下列 Factory 定義："
 
 # File: docs/8.x/database-testing.md, line: 69
 # File: docs/8.x/database-testing.md, line: 168
@@ -229,7 +229,7 @@ msgstr ""
 #. type: Plain text
 #, no-wrap
 msgid "    namespace Database\\Factories;\n"
-msgstr ""
+msgstr "    namespace Database\\Factories;\n"
 
 # File: docs/8.x/database-testing.md, line: 72
 # File: docs/master/database-testing.md, line: 76
@@ -237,7 +237,8 @@ msgstr ""
 #, no-wrap
 msgid "    use Illuminate\\Database\\Eloquent\\Factories\\Factory;\n"
 "    use Illuminate\\Support\\Str;\n"
-msgstr ""
+msgstr "    use Illuminate\\Database\\Eloquent\\Factories\\Factory;\n"
+"    use Illuminate\\Support\\Str;\n"
 
 # File: docs/8.x/database-testing.md, line: 91
 # File: docs/master/database-testing.md, line: 95
@@ -261,92 +262,109 @@ msgid "    class UserFactory extends Factory\n"
 "            ];\n"
 "        }\n"
 "    }\n"
-msgstr ""
+msgstr "    class UserFactory extends Factory\n"
+"    {\n"
+"        /**\n"
+"         * Define the model's default state.\n"
+"         *\n"
+"         * @return array\n"
+"         */\n"
+"        public function definition()\n"
+"        {\n"
+"            return [\n"
+"                'name' => $this->faker->name(),\n"
+"                'email' => $this->faker->unique()->safeEmail(),\n"
+"                'email_verified_at' => now(),\n"
+"                'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password\n"
+"                'remember_token' => Str::random(10),\n"
+"            ];\n"
+"        }\n"
+"    }\n"
 
 # File: docs/8.x/database-testing.md, line: 93
 # File: docs/master/database-testing.md, line: 97
 #. type: Plain text
 msgid "As you can see, in their most basic form, factories are classes that extend Laravel's base factory class and define `definition` method. The `definition` method returns the default set of attribute values that should be applied when creating a model using the factory."
-msgstr ""
+msgstr "如上所示，最基礎的 Factory 格式就像這樣，只需繼承 Laravel 的基礎 Factory 類別並定義一個 `definition` 方法。`definition` 方法應回傳一組預設的屬性值，會在使用 Factory 建立 Model 時被套用到該 Model 上。"
 
 # File: docs/8.x/database-testing.md, line: 95
 # File: docs/master/database-testing.md, line: 99
 #. type: Plain text
 msgid "Via the `faker` property, factories have access to the [Faker](https://github.com/FakerPHP/Faker) PHP library, which allows you to conveniently generate various kinds of random data for testing."
-msgstr ""
+msgstr "通過 `faker` 屬性，Factory 就可以存取 [Faker](https://github.com/FakerPHP/Faker) PHP 函式庫。該函式庫可用來方便地產生各種類型的隨機資料以進行測試。"
 
 # File: docs/8.x/database-testing.md, line: 97
 # File: docs/master/database-testing.md, line: 101
 #. type: Plain text
 #, no-wrap
 msgid "> {tip} You can set your application's Faker locale by adding a `faker_locale` option to your `config/app.php` configuration file.\n"
-msgstr ""
+msgstr "> {tip} 可以通過在 `config/app.php` 組態設定檔中加上 `faker_locale` 選項來設定專案的 Faker 語系設定。\n"
 
 # File: docs/8.x/database-testing.md, line: 99
 # File: docs/master/database-testing.md, line: 103
 #. type: Plain text
 #, no-wrap
 msgid "<a name=\"generating-factories\"></a>\n"
-msgstr ""
+msgstr "<a name=\"generating-factories\"></a>\n"
 
 # File: docs/8.x/database-testing.md, line: 99
 # File: docs/master/database-testing.md, line: 103
 #. type: Title ###
 #, no-wrap
 msgid "Generating Factories"
-msgstr ""
+msgstr "產生 Factory"
 
 # File: docs/8.x/database-testing.md, line: 102
 # File: docs/master/database-testing.md, line: 106
 #. type: Plain text
 msgid "To create a factory, execute the `make:factory` [Artisan command](/docs/{{version}}/artisan):"
-msgstr ""
+msgstr "若要建立 Factory，請執行 `make:factory` [Artisan 指令](/docs/{{version}}/artisan)："
 
 # File: docs/8.x/database-testing.md, line: 104
 # File: docs/master/database-testing.md, line: 108
 #. type: Plain text
 #, no-wrap
 msgid "    php artisan make:factory PostFactory\n"
-msgstr ""
+msgstr "    php artisan make:factory PostFactory\n"
 
 # File: docs/8.x/database-testing.md, line: 106
 # File: docs/master/database-testing.md, line: 110
 #. type: Plain text
 msgid "The new factory class will be placed in your `database/factories` directory."
-msgstr ""
+msgstr "新的 Factory 類別會被放在 `database/factories` 目錄內。"
 
 # File: docs/8.x/database-testing.md, line: 108
 # File: docs/master/database-testing.md, line: 112
 #. type: Plain text
 #, no-wrap
 msgid "<a name=\"factory-and-model-discovery-conventions\"></a>\n"
-msgstr ""
+msgstr "<a name=\"factory-and-model-discovery-conventions\"></a>\n"
 
 # File: docs/8.x/database-testing.md, line: 108
 # File: docs/master/database-testing.md, line: 112
 #. type: Title ####
 #, no-wrap
 msgid "Model & Factory Discovery Conventions"
-msgstr ""
+msgstr "Model 於 Factory 的自動偵測慣例"
 
 # File: docs/8.x/database-testing.md, line: 111
 # File: docs/master/database-testing.md, line: 115
 #. type: Plain text
 msgid "Once you have defined your factories, you may use the static `factory` method provided to your models by the `Illuminate\\Database\\Eloquent\\Factories\\HasFactory` trait in order to instantiate a factory instance for that model."
-msgstr ""
+msgstr "定義好 Factory 後，就可以使用 `Illuminate\\Database\\Eloquent\\Factories\\HasFactory` Trait 提供給 Model 的靜態 `factory` 方法來為該 Model 初始化一個 Factory 實體。"
 
 # File: docs/8.x/database-testing.md, line: 113
 # File: docs/master/database-testing.md, line: 117
 #. type: Plain text
 msgid "The `HasFactory` trait's `factory` method will use conventions to determine the proper factory for the model the trait is assigned to. Specifically, the method will look for a factory in the `Database\\Factories` namespace that has a class name matching the model name and is suffixed with `Factory`. If these conventions do not apply to your particular application or factory, you may overwrite the `newFactory` method on your model to return an instance of the model's corresponding factory directly:"
-msgstr ""
+msgstr "`HasFactory` Trait 的 `factory` 方法會使用慣例來判斷適合用於該 Model 的 Factory。更準確來講，該方法會在 `Database\\Factories` 命名空間下尋找符合該 Model 名稱並以 `Factory` 結尾的類別。若這些慣例不適合用在你正在寫的專案或 Factory，則可以在 Model 上複寫 `newFactory` 方法來直接回傳與該 Model 對應的 Factory 實體："
 
 # File: docs/8.x/database-testing.md, line: 115
 # File: docs/master/database-testing.md, line: 119
 #. type: Plain text
 #, no-wrap
 msgid "    use Database\\Factories\\Administration\\FlightFactory;\n"
-msgstr ""
+msgstr "    use Database\\Factories\\Administration\\FlightFactory;\n"
 
 # File: docs/8.x/database-testing.md, line: 125
 # File: docs/master/database-testing.md, line: 129
@@ -361,13 +379,21 @@ msgid "    /**\n"
 "    {\n"
 "        return FlightFactory::new();\n"
 "    }\n"
-msgstr ""
+msgstr "    /**\n"
+"     * Create a new factory instance for the model.\n"
+"     *\n"
+"     * @return \\Illuminate\\Database\\Eloquent\\Factories\\Factory\n"
+"     */\n"
+"    protected static function newFactory()\n"
+"    {\n"
+"        return FlightFactory::new();\n"
+"    }\n"
 
 # File: docs/8.x/database-testing.md, line: 127
 # File: docs/master/database-testing.md, line: 131
 #. type: Plain text
 msgid "Next, define a `model` property on the corresponding factory:"
-msgstr ""
+msgstr "接著，在對應的 Factory 上定義一個 `model` 屬性："
 
 # File: docs/8.x/database-testing.md, line: 130
 # File: docs/master/database-testing.md, line: 134
@@ -375,7 +401,8 @@ msgstr ""
 #, no-wrap
 msgid "    use App\\Administration\\Flight;\n"
 "    use Illuminate\\Database\\Eloquent\\Factories\\Factory;\n"
-msgstr ""
+msgstr "    use App\\Administration\\Flight;\n"
+"    use Illuminate\\Database\\Eloquent\\Factories\\Factory;\n"
 
 # File: docs/8.x/database-testing.md, line: 140
 # File: docs/master/database-testing.md, line: 144
@@ -390,33 +417,41 @@ msgid "    class FlightFactory extends Factory\n"
 "         */\n"
 "        protected $model = Flight::class;\n"
 "    }\n"
-msgstr ""
+msgstr "    class FlightFactory extends Factory\n"
+"    {\n"
+"        /**\n"
+"         * The name of the factory's corresponding model.\n"
+"         *\n"
+"         * @var string\n"
+"         */\n"
+"        protected $model = Flight::class;\n"
+"    }\n"
 
 # File: docs/8.x/database-testing.md, line: 142
 # File: docs/master/database-testing.md, line: 146
 #. type: Plain text
 #, no-wrap
 msgid "<a name=\"factory-states\"></a>\n"
-msgstr ""
+msgstr "<a name=\"factory-states\"></a>\n"
 
 # File: docs/8.x/database-testing.md, line: 142
 # File: docs/master/database-testing.md, line: 146
 #. type: Title ###
 #, no-wrap
 msgid "Factory States"
-msgstr ""
+msgstr "Factory State"
 
 # File: docs/8.x/database-testing.md, line: 145
 # File: docs/master/database-testing.md, line: 149
 #. type: Plain text
 msgid "State manipulation methods allow you to define discrete modifications that can be applied to your model factories in any combination. For example, your `Database\\Factories\\UserFactory` factory might contain a `suspended` state method that modifies one of its default attribute values."
-msgstr ""
+msgstr "State 操作方法可定義一些個別的修改，並可任意組合套用到 Model Factory 上。舉例來說，`Database\\Factories\\UserFactory` Factory 可包含一個 `suspended` (已停用) State 方法，用來修改該 Model Factory 的預設屬性值。"
 
 # File: docs/8.x/database-testing.md, line: 147
 # File: docs/master/database-testing.md, line: 151
 #. type: Plain text
 msgid "State transformation methods typically call the `state` method provided by Laravel's base factory class. The `state` method accepts a closure which will receive the array of raw attributes defined for the factory and should return an array of attributes to modify:"
-msgstr ""
+msgstr "State 變換方法通常是呼叫 Laravel 基礎 Factory 類別所提供的 `state` 方法。這個 `state` 方法接受一個閉包，該閉包會收到一組陣列，陣列內包含了由這個 Factory 所定義的原始屬性。該閉包應回傳一組陣列，期中包含要修改的屬性："
 
 # File: docs/8.x/database-testing.md, line: 161
 # File: docs/master/database-testing.md, line: 165
@@ -435,27 +470,39 @@ msgid "    /**\n"
 "            ];\n"
 "        });\n"
 "    }\n"
-msgstr ""
+msgstr "    /**\n"
+"     * Indicate that the user is suspended.\n"
+"     *\n"
+"     * @return \\Illuminate\\Database\\Eloquent\\Factories\\Factory\n"
+"     */\n"
+"    public function suspended()\n"
+"    {\n"
+"        return $this->state(function (array $attributes) {\n"
+"            return [\n"
+"                'account_status' => 'suspended',\n"
+"            ];\n"
+"        });\n"
+"    }\n"
 
 # File: docs/8.x/database-testing.md, line: 163
 # File: docs/master/database-testing.md, line: 167
 #. type: Plain text
 #, no-wrap
 msgid "<a name=\"factory-callbacks\"></a>\n"
-msgstr ""
+msgstr "<a name=\"factory-callbacks\"></a>\n"
 
 # File: docs/8.x/database-testing.md, line: 163
 # File: docs/master/database-testing.md, line: 167
 #. type: Title ###
 #, no-wrap
 msgid "Factory Callbacks"
-msgstr ""
+msgstr "Factory 回呼"
 
 # File: docs/8.x/database-testing.md, line: 166
 # File: docs/master/database-testing.md, line: 170
 #. type: Plain text
 msgid "Factory callbacks are registered using the `afterMaking` and `afterCreating` methods and allow you to perform additional tasks after making or creating a model. You should register these callbacks by defining a `configure` method on your factory class. This method will be automatically called by Laravel when the factory is instantiated:"
-msgstr ""
+msgstr "Factory 回呼使用 `afterMaking` 與 `afterCreating` 方法來註冊，能讓你在產生或建立 Model 時執行額外的任務。要註冊這些回呼，應在 Factory 類別上定義一個 `configure` 方法。Laravel 會在 Factory 初始化後自動呼叫這個方法："
 
 # File: docs/8.x/database-testing.md, line: 172
 # File: docs/master/database-testing.md, line: 176
@@ -464,7 +511,9 @@ msgstr ""
 msgid "    use App\\Models\\User;\n"
 "    use Illuminate\\Database\\Eloquent\\Factories\\Factory;\n"
 "    use Illuminate\\Support\\Str;\n"
-msgstr ""
+msgstr "    use App\\Models\\User;\n"
+"    use Illuminate\\Database\\Eloquent\\Factories\\Factory;\n"
+"    use Illuminate\\Support\\Str;\n"
 
 # File: docs/8.x/database-testing.md, line: 188
 # File: docs/master/database-testing.md, line: 192
@@ -485,7 +534,21 @@ msgid "    class UserFactory extends Factory\n"
 "                //\n"
 "            });\n"
 "        }\n"
-msgstr ""
+msgstr "    class UserFactory extends Factory\n"
+"    {\n"
+"        /**\n"
+"         * Configure the model factory.\n"
+"         *\n"
+"         * @return $this\n"
+"         */\n"
+"        public function configure()\n"
+"        {\n"
+"            return $this->afterMaking(function (User $user) {\n"
+"                //\n"
+"            })->afterCreating(function (User $user) {\n"
+"                //\n"
+"            });\n"
+"        }\n"
 
 # File: docs/8.x/database-testing.md, line: 191
 # File: docs/master/database-testing.md, line: 195
@@ -493,41 +556,42 @@ msgstr ""
 #, no-wrap
 msgid "        // ...\n"
 "    }\n"
-msgstr ""
+msgstr "        // ...\n"
+"    }\n"
 
 # File: docs/8.x/database-testing.md, line: 193
 # File: docs/master/database-testing.md, line: 197
 #. type: Plain text
 #, no-wrap
 msgid "<a name=\"creating-models-using-factories\"></a>\n"
-msgstr ""
+msgstr "<a name=\"creating-models-using-factories\"></a>\n"
 
 # File: docs/8.x/database-testing.md, line: 193
 # File: docs/master/database-testing.md, line: 197
 #. type: Title ##
 #, no-wrap
 msgid "Creating Models Using Factories"
-msgstr ""
+msgstr "使用 Factory 來建立 Model"
 
 # File: docs/8.x/database-testing.md, line: 196
 # File: docs/master/database-testing.md, line: 200
 #. type: Plain text
 #, no-wrap
 msgid "<a name=\"instantiating-models\"></a>\n"
-msgstr ""
+msgstr "<a name=\"instantiating-models\"></a>\n"
 
 # File: docs/8.x/database-testing.md, line: 196
 # File: docs/master/database-testing.md, line: 200
 #. type: Title ###
 #, no-wrap
 msgid "Instantiating Models"
-msgstr ""
+msgstr "產生 Model"
 
 # File: docs/8.x/database-testing.md, line: 199
 # File: docs/master/database-testing.md, line: 203
 #. type: Plain text
 msgid "Once you have defined your factories, you may use the static `factory` method provided to your models by the `Illuminate\\Database\\Eloquent\\Factories\\HasFactory` trait in order to instantiate a factory instance for that model. Let's take a look at a few examples of creating models. First, we'll use the `make` method to create models without persisting them to the database:"
-msgstr ""
+msgstr "定義好 Factory 後，就可以使用 `Illuminate\\Database\\Eloquent\\Factories\\HasFactory` trait 提供給 Model 的 `factory` 靜態方法來產生用於該 Model 的 Factory 實體。來看看一些建立 Model 的範例。首先，我們先使用 `make` 方法來在不儲存進資料庫的情況下建立 Model："
 
 # File: docs/8.x/database-testing.md, line: 201
 # File: docs/8.x/database-testing.md, line: 243
@@ -544,7 +608,7 @@ msgstr ""
 #. type: Plain text
 #, no-wrap
 msgid "    use App\\Models\\User;\n"
-msgstr ""
+msgstr "    use App\\Models\\User;\n"
 
 # File: docs/8.x/database-testing.md, line: 205
 # File: docs/master/database-testing.md, line: 209
@@ -553,7 +617,9 @@ msgstr ""
 msgid "    public function test_models_can_be_instantiated()\n"
 "    {\n"
 "        $user = User::factory()->make();\n"
-msgstr ""
+msgstr "    public function test_models_can_be_instantiated()\n"
+"    {\n"
+"        $user = User::factory()->make();\n"
 
 # File: docs/8.x/database-testing.md, line: 208
 # File: docs/8.x/database-testing.md, line: 254
@@ -563,67 +629,68 @@ msgstr ""
 #, no-wrap
 msgid "        // Use model in tests...\n"
 "    }\n"
-msgstr ""
+msgstr "        // 在測試中使用 Model…\n"
+"    }\n"
 
 # File: docs/8.x/database-testing.md, line: 210
 # File: docs/master/database-testing.md, line: 214
 #. type: Plain text
 msgid "You may create a collection of many models using the `count` method:"
-msgstr ""
+msgstr "可以使用 `count` 方法來建立包含多個 Model 的 Collection："
 
 # File: docs/8.x/database-testing.md, line: 212
 # File: docs/master/database-testing.md, line: 216
 #. type: Plain text
 #, no-wrap
 msgid "    $users = User::factory()->count(3)->make();\n"
-msgstr ""
+msgstr "    $users = User::factory()->count(3)->make();\n"
 
 # File: docs/8.x/database-testing.md, line: 214
 # File: docs/master/database-testing.md, line: 218
 #. type: Plain text
 #, no-wrap
 msgid "<a name=\"applying-states\"></a>\n"
-msgstr ""
+msgstr "<a name=\"applying-states\"></a>\n"
 
 # File: docs/8.x/database-testing.md, line: 214
 # File: docs/master/database-testing.md, line: 218
 #. type: Title ####
 #, no-wrap
 msgid "Applying States"
-msgstr ""
+msgstr "套用 State"
 
 # File: docs/8.x/database-testing.md, line: 217
 # File: docs/master/database-testing.md, line: 221
 #. type: Plain text
 msgid "You may also apply any of your [states](#factory-states) to the models. If you would like to apply multiple state transformations to the models, you may simply call the state transformation methods directly:"
-msgstr ""
+msgstr "也可以將 [State](#factory-states) 套用至 Model 上。若想套用多個 State 變換到 Model 上，只需要直接呼叫 State 變換方法即可："
 
 # File: docs/8.x/database-testing.md, line: 219
 # File: docs/master/database-testing.md, line: 223
 #. type: Plain text
 #, no-wrap
 msgid "    $users = User::factory()->count(5)->suspended()->make();\n"
-msgstr ""
+msgstr "    $users = User::factory()->count(5)->suspended()->make();\n"
 
 # File: docs/8.x/database-testing.md, line: 221
 # File: docs/master/database-testing.md, line: 225
 #. type: Plain text
 #, no-wrap
 msgid "<a name=\"overriding-attributes\"></a>\n"
-msgstr ""
+msgstr "<a name=\"overriding-attributes\"></a>\n"
 
 # File: docs/8.x/database-testing.md, line: 221
 # File: docs/master/database-testing.md, line: 225
 #. type: Title ####
 #, no-wrap
 msgid "Overriding Attributes"
-msgstr ""
+msgstr "複寫屬性"
 
 # File: docs/8.x/database-testing.md, line: 224
 # File: docs/master/database-testing.md, line: 228
 #. type: Plain text
 msgid "If you would like to override some of the default values of your models, you may pass an array of values to the `make` method. Only the specified attributes will be replaced while the rest of the attributes remain set to their default values as specified by the factory:"
-msgstr ""
+msgstr "若想複寫 Model 上的一些預設值，可以傳入陣列到 `make` 方法上。只要指定要取代的屬性即可，剩下的屬性會保持 Factory 所指定的預設值："
 
 # File: docs/8.x/database-testing.md, line: 228
 # File: docs/master/database-testing.md, line: 232
@@ -632,13 +699,15 @@ msgstr ""
 msgid "    $user = User::factory()->make([\n"
 "        'name' => 'Abigail Otwell',\n"
 "    ]);\n"
-msgstr ""
+msgstr "    $user = User::factory()->make([\n"
+"        'name' => 'Abigail Otwell',\n"
+"    ]);\n"
 
 # File: docs/8.x/database-testing.md, line: 230
 # File: docs/master/database-testing.md, line: 234
 #. type: Plain text
 msgid "Alternatively, the `state` method may be called directly on the factory instance to perform an inline state transformation:"
-msgstr ""
+msgstr "或者，也可以直接在 Factory 實體上呼叫 `state` 方法來內嵌 State 變換："
 
 # File: docs/8.x/database-testing.md, line: 234
 # File: docs/master/database-testing.md, line: 238
@@ -647,34 +716,36 @@ msgstr ""
 msgid "    $user = User::factory()->state([\n"
 "        'name' => 'Abigail Otwell',\n"
 "    ])->make();\n"
-msgstr ""
+msgstr "    $user = User::factory()->state([\n"
+"        'name' => 'Abigail Otwell',\n"
+"    ])->make();\n"
 
 # File: docs/8.x/database-testing.md, line: 236
 # File: docs/master/database-testing.md, line: 240
 #. type: Plain text
 #, no-wrap
 msgid "> {tip} [Mass assignment protection](/docs/{{version}}/eloquent#mass-assignment) is automatically disabled when creating models using factories.\n"
-msgstr ""
+msgstr "> {tip} [大量賦值保護](/docs/{{version}}/eloquent#mass-assignment) 會在使用 Factory 建立 Model 時自動禁用。\n"
 
 # File: docs/8.x/database-testing.md, line: 238
 # File: docs/master/database-testing.md, line: 242
 #. type: Plain text
 #, no-wrap
 msgid "<a name=\"persisting-models\"></a>\n"
-msgstr ""
+msgstr "<a name=\"persisting-models\"></a>\n"
 
 # File: docs/8.x/database-testing.md, line: 238
 # File: docs/master/database-testing.md, line: 242
 #. type: Title ###
 #, no-wrap
 msgid "Persisting Models"
-msgstr ""
+msgstr "持續性 Model"
 
 # File: docs/8.x/database-testing.md, line: 241
 # File: docs/master/database-testing.md, line: 245
 #. type: Plain text
 msgid "The `create` method instantiates model instances and persists them to the database using Eloquent's `save` method:"
-msgstr ""
+msgstr "`create` 方法會產生 Model 實體並使用 Eloquent 的 `save` 方法來將其永久保存於資料庫內："
 
 # File: docs/8.x/database-testing.md, line: 248
 # File: docs/master/database-testing.md, line: 252
@@ -684,7 +755,10 @@ msgid "    public function test_models_can_be_persisted()\n"
 "    {\n"
 "        // Create a single App\\Models\\User instance...\n"
 "        $user = User::factory()->create();\n"
-msgstr ""
+msgstr "    public function test_models_can_be_persisted()\n"
+"    {\n"
+"        // 建立單一 App\\Models\\User 實體…\n"
+"        $user = User::factory()->create();\n"
 
 # File: docs/8.x/database-testing.md, line: 251
 # File: docs/master/database-testing.md, line: 255
@@ -692,13 +766,14 @@ msgstr ""
 #, no-wrap
 msgid "        // Create three App\\Models\\User instances...\n"
 "        $users = User::factory()->count(3)->create();\n"
-msgstr ""
+msgstr "        // 建立三個 App\\Models\\User 實體…\n"
+"        $users = User::factory()->count(3)->create();\n"
 
 # File: docs/8.x/database-testing.md, line: 256
 # File: docs/master/database-testing.md, line: 260
 #. type: Plain text
 msgid "You may override the factory's default model attributes by passing an array of attributes to the `create` method:"
-msgstr ""
+msgstr "可以通過將一組屬性陣列傳入 `create` 方法來複寫該 Factory 的預設 Model 屬性："
 
 # File: docs/8.x/database-testing.md, line: 260
 # File: docs/master/database-testing.md, line: 264
@@ -707,27 +782,29 @@ msgstr ""
 msgid "    $user = User::factory()->create([\n"
 "        'name' => 'Abigail',\n"
 "    ]);\n"
-msgstr ""
+msgstr "    $user = User::factory()->create([\n"
+"        'name' => 'Abigail',\n"
+"    ]);\n"
 
 # File: docs/8.x/database-testing.md, line: 262
 # File: docs/master/database-testing.md, line: 266
 #. type: Plain text
 #, no-wrap
 msgid "<a name=\"sequences\"></a>\n"
-msgstr ""
+msgstr "<a name=\"sequences\"></a>\n"
 
 # File: docs/8.x/database-testing.md, line: 262
 # File: docs/master/database-testing.md, line: 266
 #. type: Title ###
 #, no-wrap
 msgid "Sequences"
-msgstr ""
+msgstr "Sequence (序列)"
 
 # File: docs/8.x/database-testing.md, line: 265
 # File: docs/master/database-testing.md, line: 269
 #. type: Plain text
 msgid "Sometimes you may wish to alternate the value of a given model attribute for each created model. You may accomplish this by defining a state transformation as a sequence. For example, you may wish to alternate the value of an `admin` column between `Y` and `N` for each created user:"
-msgstr ""
+msgstr "有時候，我們可能會需要為每個建立的 Model 更改某個特定的屬性。可以通過將 State 變換定義為序列來達成。舉例來說，我們可能會想為每個建立的使用者設定 `admin` 欄位的值為 `Y` 或 `N`："
 
 # File: docs/8.x/database-testing.md, line: 268
 # File: docs/master/database-testing.md, line: 272
@@ -735,7 +812,8 @@ msgstr ""
 #, no-wrap
 msgid "    use App\\Models\\User;\n"
 "    use Illuminate\\Database\\Eloquent\\Factories\\Sequence;\n"
-msgstr ""
+msgstr "    use App\\Models\\User;\n"
+"    use Illuminate\\Database\\Eloquent\\Factories\\Sequence;\n"
 
 # File: docs/8.x/database-testing.md, line: 276
 # File: docs/master/database-testing.md, line: 280
@@ -748,19 +826,25 @@ msgid "    $users = User::factory()\n"
 "                        ['admin' => 'N'],\n"
 "                    ))\n"
 "                    ->create();\n"
-msgstr ""
+msgstr "    $users = User::factory()\n"
+"                    ->count(10)\n"
+"                    ->state(new Sequence(\n"
+"                        ['admin' => 'Y'],\n"
+"                        ['admin' => 'N'],\n"
+"                    ))\n"
+"                    ->create();\n"
 
 # File: docs/8.x/database-testing.md, line: 278
 # File: docs/master/database-testing.md, line: 282
 #. type: Plain text
 msgid "In this example, five users will be created with an `admin` value of `Y` and five users will be created with an `admin` value of `N`."
-msgstr ""
+msgstr "在上面的範例中，有五個使用者會以 `admin` 值 `Y` 建立，另外五個使用者將以 `admin` 值 `N` 建立。"
 
 # File: docs/8.x/database-testing.md, line: 280
 # File: docs/master/database-testing.md, line: 284
 #. type: Plain text
 msgid "If necessary, you may include a closure as a sequence value. The closure will be invoked each time the sequence needs a new value:"
-msgstr ""
+msgstr "若有需要，也可以提供閉包作為序列的值。該閉包會在每次序列需要新值是被叫用："
 
 # File: docs/8.x/database-testing.md, line: 287
 # File: docs/master/database-testing.md, line: 291
@@ -772,13 +856,18 @@ msgid "    $users = User::factory()\n"
 "                        fn ($sequence) => ['role' => UserRoles::all()->random()],\n"
 "                    ))\n"
 "                    ->create();\n"
-msgstr ""
+msgstr "    $users = User::factory()\n"
+"                    ->count(10)\n"
+"                    ->state(new Sequence(\n"
+"                        fn ($sequence) => ['role' => UserRoles::all()->random()],\n"
+"                    ))\n"
+"                    ->create();\n"
 
 # File: docs/8.x/database-testing.md, line: 289
 # File: docs/master/database-testing.md, line: 293
 #. type: Plain text
 msgid "Within a sequence closure, you may access the `$index` or `$count` properties on the sequence instance that is injected into the closure. The `$index` property contains the number of iterations through the sequence that have occurred thus far, while the `$count` property contains the total number of times the sequence will be invoked:"
-msgstr ""
+msgstr "在 Sequence 閉包中，可以在注入到閉包中的 Sequence 實體上存取 `$index` 與 `$count` 屬性。`$index` 屬性包含了該 Sequence 到目前為止所進行的迭代數，而 `$count` 屬性則代表了該 Sequence 總過將被叫用幾次："
 
 # File: docs/8.x/database-testing.md, line: 294
 # File: docs/master/database-testing.md, line: 298
@@ -788,41 +877,44 @@ msgid "    $users = User::factory()\n"
 "                    ->count(10)\n"
 "                    ->sequence(fn ($sequence) => ['name' => 'Name '.$sequence->index])\n"
 "                    ->create();\n"
-msgstr ""
+msgstr "    $users = User::factory()\n"
+"                    ->count(10)\n"
+"                    ->sequence(fn ($sequence) => ['name' => 'Name '.$sequence->index])\n"
+"                    ->create();\n"
 
 # File: docs/8.x/database-testing.md, line: 296
 # File: docs/master/database-testing.md, line: 300
 #. type: Plain text
 #, no-wrap
 msgid "<a name=\"factory-relationships\"></a>\n"
-msgstr ""
+msgstr "<a name=\"factory-relationships\"></a>\n"
 
 # File: docs/8.x/database-testing.md, line: 296
 # File: docs/master/database-testing.md, line: 300
 #. type: Title ##
 #, no-wrap
 msgid "Factory Relationships"
-msgstr ""
+msgstr "Factory 關聯"
 
 # File: docs/8.x/database-testing.md, line: 299
 # File: docs/master/database-testing.md, line: 303
 #. type: Plain text
 #, no-wrap
 msgid "<a name=\"has-many-relationships\"></a>\n"
-msgstr ""
+msgstr "<a name=\"has-many-relationships\"></a>\n"
 
 # File: docs/8.x/database-testing.md, line: 299
 # File: docs/master/database-testing.md, line: 303
 #. type: Title ###
 #, no-wrap
 msgid "Has Many Relationships"
-msgstr ""
+msgstr "Has Many 關聯"
 
 # File: docs/8.x/database-testing.md, line: 302
 # File: docs/master/database-testing.md, line: 306
 #. type: Plain text
 msgid "Next, let's explore building Eloquent model relationships using Laravel's fluent factory methods. First, let's assume our application has an `App\\Models\\User` model and an `App\\Models\\Post` model. Also, let's assume that the `User` model defines a `hasMany` relationship with `Post`. We can create a user that has three posts using the `has` method provided by the Laravel's factories. The `has` method accepts a factory instance:"
-msgstr ""
+msgstr "接著，來看看如何使用 Laravel 中流利的 Factory 方法建立 Eloquent Model 關聯。首先，假設專案中有個 `App\\Models\\User` Model 以及 `App\\Models\\Post` Model。然後，假設 `User` Model 中定義了對 `Post` 的 `hasMany` 關聯。我們可以使用 Laravel Factory 提供的 `has` 方法來建立一個有三篇貼文的使用者。這個 `has` 方法接受一個 Factory 實體："
 
 # File: docs/8.x/database-testing.md, line: 305
 # File: docs/8.x/database-testing.md, line: 360
@@ -832,7 +924,8 @@ msgstr ""
 #, no-wrap
 msgid "    use App\\Models\\Post;\n"
 "    use App\\Models\\User;\n"
-msgstr ""
+msgstr "    use App\\Models\\Post;\n"
+"    use App\\Models\\User;\n"
 
 # File: docs/8.x/database-testing.md, line: 309
 # File: docs/master/database-testing.md, line: 313
@@ -841,13 +934,15 @@ msgstr ""
 msgid "    $user = User::factory()\n"
 "                ->has(Post::factory()->count(3))\n"
 "                ->create();\n"
-msgstr ""
+msgstr "    $user = User::factory()\n"
+"                ->has(Post::factory()->count(3))\n"
+"                ->create();\n"
 
 # File: docs/8.x/database-testing.md, line: 311
 # File: docs/master/database-testing.md, line: 315
 #. type: Plain text
 msgid "By convention, when passing a `Post` model to the `has` method, Laravel will assume that the `User` model must have a `posts` method that defines the relationship. If necessary, you may explicitly specify the name of the relationship that you would like to manipulate:"
-msgstr ""
+msgstr "依照慣例，當傳入 `Post` Model 給 `has` 方法時，Laravel 會假設 `User` Model 中有定義這個關聯的 `posts` 方法。若有需要，可以明顯指定要操作的關聯名稱："
 
 # File: docs/8.x/database-testing.md, line: 315
 # File: docs/master/database-testing.md, line: 319
@@ -856,13 +951,15 @@ msgstr ""
 msgid "    $user = User::factory()\n"
 "                ->has(Post::factory()->count(3), 'posts')\n"
 "                ->create();\n"
-msgstr ""
+msgstr "    $user = User::factory()\n"
+"                ->has(Post::factory()->count(3), 'posts')\n"
+"                ->create();\n"
 
 # File: docs/8.x/database-testing.md, line: 317
 # File: docs/master/database-testing.md, line: 321
 #. type: Plain text
 msgid "Of course, you may perform state manipulations on the related models. In addition, you may pass a closure based state transformation if your state change requires access to the parent model:"
-msgstr ""
+msgstr "當然，也可以在關聯 Model 上進行 State 操作。此外，若 State 更改需要存取上層 Model，也可以傳入基於閉包的 State 變換："
 
 # File: docs/8.x/database-testing.md, line: 327
 # File: docs/master/database-testing.md, line: 331
@@ -877,14 +974,22 @@ msgid "    $user = User::factory()\n"
 "                            })\n"
 "                )\n"
 "                ->create();\n"
-msgstr ""
+msgstr "    $user = User::factory()\n"
+"                ->has(\n"
+"                    Post::factory()\n"
+"                            ->count(3)\n"
+"                            ->state(function (array $attributes, User $user) {\n"
+"                                return ['user_type' => $user->type];\n"
+"                            })\n"
+"                )\n"
+"                ->create();\n"
 
 # File: docs/8.x/database-testing.md, line: 329
 # File: docs/master/database-testing.md, line: 333
 #. type: Plain text
 #, no-wrap
 msgid "<a name=\"has-many-relationships-using-magic-methods\"></a>\n"
-msgstr ""
+msgstr "<a name=\"has-many-relationships-using-magic-methods\"></a>\n"
 
 # File: docs/8.x/database-testing.md, line: 329
 # File: docs/8.x/database-testing.md, line: 378
@@ -895,13 +1000,13 @@ msgstr ""
 #. type: Title ####
 #, no-wrap
 msgid "Using Magic Methods"
-msgstr ""
+msgstr "使用魔術方法"
 
 # File: docs/8.x/database-testing.md, line: 332
 # File: docs/master/database-testing.md, line: 336
 #. type: Plain text
 msgid "For convenience, you may use Laravel's magic factory relationship methods to build relationships. For example, the following example will use convention to determine that the related models should be created via a `posts` relationship method on the `User` model:"
-msgstr ""
+msgstr "為了方便起見，可以使用 Laravel 的魔術 Factory 關聯方法來建立關聯。舉例來說，下列範例會使用慣例來判斷應通過 `User` Model 上的 `posts` 關聯方法來建立關聯 Model："
 
 # File: docs/8.x/database-testing.md, line: 336
 # File: docs/master/database-testing.md, line: 340
@@ -910,13 +1015,15 @@ msgstr ""
 msgid "    $user = User::factory()\n"
 "                ->hasPosts(3)\n"
 "                ->create();\n"
-msgstr ""
+msgstr "    $user = User::factory()\n"
+"                ->hasPosts(3)\n"
+"                ->create();\n"
 
 # File: docs/8.x/database-testing.md, line: 338
 # File: docs/master/database-testing.md, line: 342
 #. type: Plain text
 msgid "When using magic methods to create factory relationships, you may pass an array of attributes to override on the related models:"
-msgstr ""
+msgstr "在使用魔術方法建立 Factory 關聯時，可以傳入包含屬性的陣列來在關聯 Model 上複寫："
 
 # File: docs/8.x/database-testing.md, line: 344
 # File: docs/master/database-testing.md, line: 348
@@ -927,13 +1034,17 @@ msgid "    $user = User::factory()\n"
 "                    'published' => false,\n"
 "                ])\n"
 "                ->create();\n"
-msgstr ""
+msgstr "    $user = User::factory()\n"
+"                ->hasPosts(3, [\n"
+"                    'published' => false,\n"
+"                ])\n"
+"                ->create();\n"
 
 # File: docs/8.x/database-testing.md, line: 346
 # File: docs/master/database-testing.md, line: 350
 #. type: Plain text
 msgid "You may provide a closure based state transformation if your state change requires access to the parent model:"
-msgstr ""
+msgstr "若 State 更改需要存取上層 Model，可以提供一個基於閉包的 State 變換："
 
 # File: docs/8.x/database-testing.md, line: 352
 # File: docs/master/database-testing.md, line: 356
@@ -944,27 +1055,31 @@ msgid "    $user = User::factory()\n"
 "                    return ['user_type' => $user->type];\n"
 "                })\n"
 "                ->create();\n"
-msgstr ""
+msgstr "    $user = User::factory()\n"
+"                ->hasPosts(3, function (array $attributes, User $user) {\n"
+"                    return ['user_type' => $user->type];\n"
+"                })\n"
+"                ->create();\n"
 
 # File: docs/8.x/database-testing.md, line: 354
 # File: docs/master/database-testing.md, line: 358
 #. type: Plain text
 #, no-wrap
 msgid "<a name=\"belongs-to-relationships\"></a>\n"
-msgstr ""
+msgstr "<a name=\"belongs-to-relationships\"></a>\n"
 
 # File: docs/8.x/database-testing.md, line: 354
 # File: docs/master/database-testing.md, line: 358
 #. type: Title ###
 #, no-wrap
 msgid "Belongs To Relationships"
-msgstr ""
+msgstr "Belongs To 關聯"
 
 # File: docs/8.x/database-testing.md, line: 357
 # File: docs/master/database-testing.md, line: 361
 #. type: Plain text
 msgid "Now that we have explored how to build \"has many\" relationships using factories, let's explore the inverse of the relationship. The `for` method may be used to define the parent model that factory created models belong to. For example, we can create three `App\\Models\\Post` model instances that belong to a single user:"
-msgstr ""
+msgstr "我們已經瞭解如何使用 Factory 來建立「Has Many」關聯了，接著來看看這種關聯的想法。使用 `for` 方法可以用來定義使用 Factory 建立的 Model 所隸屬 (Belong To) 的上層 Model。舉例來說，我們可以建立三個隸屬於單一使用者的 `App\\Models\\Post` Model 實體："
 
 # File: docs/8.x/database-testing.md, line: 367
 # File: docs/master/database-testing.md, line: 371
@@ -976,13 +1091,18 @@ msgid "    $posts = Post::factory()\n"
 "                    'name' => 'Jessica Archer',\n"
 "                ]))\n"
 "                ->create();\n"
-msgstr ""
+msgstr "    $posts = Post::factory()\n"
+"                ->count(3)\n"
+"                ->for(User::factory()->state([\n"
+"                    'name' => 'Jessica Archer',\n"
+"                ]))\n"
+"                ->create();\n"
 
 # File: docs/8.x/database-testing.md, line: 369
 # File: docs/master/database-testing.md, line: 373
 #. type: Plain text
 msgid "If you already have a parent model instance that should be associated with the models you are creating, you may pass the model instance to the `for` method:"
-msgstr ""
+msgstr "若已經有應與這些正在建立的 Model 關聯的上層 Model 實體，可以將該 Model 實體傳入 `for` 方法："
 
 # File: docs/8.x/database-testing.md, line: 371
 # File: docs/8.x/database-testing.md, line: 657
@@ -993,7 +1113,7 @@ msgstr ""
 #. type: Plain text
 #, no-wrap
 msgid "    $user = User::factory()->create();\n"
-msgstr ""
+msgstr "    $user = User::factory()->create();\n"
 
 # File: docs/8.x/database-testing.md, line: 376
 # File: docs/master/database-testing.md, line: 380
@@ -1003,20 +1123,23 @@ msgid "    $posts = Post::factory()\n"
 "                ->count(3)\n"
 "                ->for($user)\n"
 "                ->create();\n"
-msgstr ""
+msgstr "    $posts = Post::factory()\n"
+"                ->count(3)\n"
+"                ->for($user)\n"
+"                ->create();\n"
 
 # File: docs/8.x/database-testing.md, line: 378
 # File: docs/master/database-testing.md, line: 382
 #. type: Plain text
 #, no-wrap
 msgid "<a name=\"belongs-to-relationships-using-magic-methods\"></a>\n"
-msgstr ""
+msgstr "<a name=\"belongs-to-relationships-using-magic-methods\"></a>\n"
 
 # File: docs/8.x/database-testing.md, line: 381
 # File: docs/master/database-testing.md, line: 385
 #. type: Plain text
 msgid "For convenience, you may use Laravel's magic factory relationship methods to define \"belongs to\" relationships. For example, the following example will use convention to determine that the three posts should belong to the `user` relationship on the `Post` model:"
-msgstr ""
+msgstr "為了方便起見，可以使用 Laravel 的魔術 Factory 關聯方法來定義「Belongs To」關聯。舉例來說，下列範例會使用慣例來判斷應使用 `Post` Model 上的 `user` 關聯方法來設定這三個貼文應隸屬於哪裡："
 
 # File: docs/8.x/database-testing.md, line: 388
 # File: docs/master/database-testing.md, line: 392
@@ -1028,27 +1151,32 @@ msgid "    $posts = Post::factory()\n"
 "                    'name' => 'Jessica Archer',\n"
 "                ])\n"
 "                ->create();\n"
-msgstr ""
+msgstr "    $posts = Post::factory()\n"
+"                ->count(3)\n"
+"                ->forUser([\n"
+"                    'name' => 'Jessica Archer',\n"
+"                ])\n"
+"                ->create();\n"
 
 # File: docs/8.x/database-testing.md, line: 390
 # File: docs/master/database-testing.md, line: 394
 #. type: Plain text
 #, no-wrap
 msgid "<a name=\"many-to-many-relationships\"></a>\n"
-msgstr ""
+msgstr "<a name=\"many-to-many-relationships\"></a>\n"
 
 # File: docs/8.x/database-testing.md, line: 390
 # File: docs/master/database-testing.md, line: 394
 #. type: Title ###
 #, no-wrap
 msgid "Many To Many Relationships"
-msgstr ""
+msgstr "Many To Many 關聯"
 
 # File: docs/8.x/database-testing.md, line: 393
 # File: docs/master/database-testing.md, line: 397
 #. type: Plain text
 msgid "Like [has many relationships](#has-many-relationships), \"many to many\" relationships may be created using the `has` method:"
-msgstr ""
+msgstr "與 [Has Many 關聯](#has-many-relationships)，「Many to Many」關聯也可以通過 `has` 方法建立："
 
 # File: docs/8.x/database-testing.md, line: 396
 # File: docs/8.x/database-testing.md, line: 408
@@ -1058,7 +1186,8 @@ msgstr ""
 #, no-wrap
 msgid "    use App\\Models\\Role;\n"
 "    use App\\Models\\User;\n"
-msgstr ""
+msgstr "    use App\\Models\\Role;\n"
+"    use App\\Models\\User;\n"
 
 # File: docs/8.x/database-testing.md, line: 400
 # File: docs/master/database-testing.md, line: 404
@@ -1067,27 +1196,29 @@ msgstr ""
 msgid "    $user = User::factory()\n"
 "                ->has(Role::factory()->count(3))\n"
 "                ->create();\n"
-msgstr ""
+msgstr "    $user = User::factory()\n"
+"                ->has(Role::factory()->count(3))\n"
+"                ->create();\n"
 
 # File: docs/8.x/database-testing.md, line: 402
 # File: docs/master/database-testing.md, line: 406
 #. type: Plain text
 #, no-wrap
 msgid "<a name=\"pivot-table-attributes\"></a>\n"
-msgstr ""
+msgstr "<a name=\"pivot-table-attributes\"></a>\n"
 
 # File: docs/8.x/database-testing.md, line: 402
 # File: docs/master/database-testing.md, line: 406
 #. type: Title ####
 #, no-wrap
 msgid "Pivot Table Attributes"
-msgstr ""
+msgstr "Pivot 表屬性"
 
 # File: docs/8.x/database-testing.md, line: 405
 # File: docs/master/database-testing.md, line: 409
 #. type: Plain text
 msgid "If you need to define attributes that should be set on the pivot / intermediate table linking the models, you may use the `hasAttached` method. This method accepts an array of pivot table attribute names and values as its second argument:"
-msgstr ""
+msgstr "若有需要為這些 Model 定義關聯 Pivot／中介資料表上的屬性，則可使用 `hasAttached` 方法。這個方法接受一個陣列，其中包含 Pivot 資料表上的屬性名稱，第二個引數則為其值："
 
 # File: docs/8.x/database-testing.md, line: 415
 # File: docs/master/database-testing.md, line: 419
@@ -1099,13 +1230,18 @@ msgid "    $user = User::factory()\n"
 "                    ['active' => true]\n"
 "                )\n"
 "                ->create();\n"
-msgstr ""
+msgstr "    $user = User::factory()\n"
+"                ->hasAttached(\n"
+"                    Role::factory()->count(3),\n"
+"                    ['active' => true]\n"
+"                )\n"
+"                ->create();\n"
 
 # File: docs/8.x/database-testing.md, line: 417
 # File: docs/master/database-testing.md, line: 421
 #. type: Plain text
 msgid "You may provide a closure based state transformation if your state change requires access to the related model:"
-msgstr ""
+msgstr "若 State 更改需要存取關聯 Model，可以提供一個基於閉包的 State 變換："
 
 # File: docs/8.x/database-testing.md, line: 428
 # File: docs/master/database-testing.md, line: 432
@@ -1121,20 +1257,29 @@ msgid "    $user = User::factory()\n"
 "                    ['active' => true]\n"
 "                )\n"
 "                ->create();\n"
-msgstr ""
+msgstr "    $user = User::factory()\n"
+"                ->hasAttached(\n"
+"                    Role::factory()\n"
+"                        ->count(3)\n"
+"                        ->state(function (array $attributes, User $user) {\n"
+"                            return ['name' => $user->name.' Role'];\n"
+"                        }),\n"
+"                    ['active' => true]\n"
+"                )\n"
+"                ->create();\n"
 
 # File: docs/8.x/database-testing.md, line: 430
 # File: docs/master/database-testing.md, line: 434
 #. type: Plain text
 msgid "If you already have model instances that you would like to be attached to the models you are creating, you may pass the model instances to the `hasAttached` method. In this example, the same three roles will be attached to all three users:"
-msgstr ""
+msgstr "若已有 Model 實體想讓正在建立的 Model 附加，可以將該 Model 實體傳入 `hasAttached` 方法。在此範例中，會將三個相同的角色附加給三個使用者："
 
 # File: docs/8.x/database-testing.md, line: 432
 # File: docs/master/database-testing.md, line: 436
 #. type: Plain text
 #, no-wrap
 msgid "    $roles = Role::factory()->count(3)->create();\n"
-msgstr ""
+msgstr "    $roles = Role::factory()->count(3)->create();\n"
 
 # File: docs/8.x/database-testing.md, line: 437
 # File: docs/master/database-testing.md, line: 441
@@ -1144,20 +1289,23 @@ msgid "    $user = User::factory()\n"
 "                ->count(3)\n"
 "                ->hasAttached($roles, ['active' => true])\n"
 "                ->create();\n"
-msgstr ""
+msgstr "    $user = User::factory()\n"
+"                ->count(3)\n"
+"                ->hasAttached($roles, ['active' => true])\n"
+"                ->create();\n"
 
 # File: docs/8.x/database-testing.md, line: 439
 # File: docs/master/database-testing.md, line: 443
 #. type: Plain text
 #, no-wrap
 msgid "<a name=\"many-to-many-relationships-using-magic-methods\"></a>\n"
-msgstr ""
+msgstr "<a name=\"many-to-many-relationships-using-magic-methods\"></a>\n"
 
 # File: docs/8.x/database-testing.md, line: 442
 # File: docs/master/database-testing.md, line: 446
 #. type: Plain text
 msgid "For convenience, you may use Laravel's magic factory relationship methods to define many to many relationships. For example, the following example will use convention to determine that the related models should be created via a `roles` relationship method on the `User` model:"
-msgstr ""
+msgstr "為了方便起見，可以使用 Laravel 的魔術 Factory 關聯方法來定義 Many to Many 關聯。舉例來說，下列範例會使用慣例來判斷應通過 `User` Model 上的 `roles` 關聯方法來建立關聯 Model："
 
 # File: docs/8.x/database-testing.md, line: 448
 # File: docs/master/database-testing.md, line: 452
@@ -1168,61 +1316,65 @@ msgid "    $user = User::factory()\n"
 "                    'name' => 'Editor'\n"
 "                ])\n"
 "                ->create();\n"
-msgstr ""
+msgstr "    $user = User::factory()\n"
+"                ->hasRoles(1, [\n"
+"                    'name' => 'Editor'\n"
+"                ])\n"
+"                ->create();\n"
 
 # File: docs/8.x/database-testing.md, line: 450
 # File: docs/master/database-testing.md, line: 454
 #. type: Plain text
 #, no-wrap
 msgid "<a name=\"polymorphic-relationships\"></a>\n"
-msgstr ""
+msgstr "<a name=\"polymorphic-relationships\"></a>\n"
 
 # File: docs/8.x/database-testing.md, line: 450
 # File: docs/master/database-testing.md, line: 454
 #. type: Title ###
 #, no-wrap
 msgid "Polymorphic Relationships"
-msgstr ""
+msgstr "Polymorphic (多型) 關聯"
 
 # File: docs/8.x/database-testing.md, line: 453
 # File: docs/master/database-testing.md, line: 457
 #. type: Plain text
 msgid "[Polymorphic relationships](/docs/{{version}}/eloquent-relationships#polymorphic-relationships) may also be created using factories. Polymorphic \"morph many\" relationships are created in the same way as typical \"has many\" relationships. For example, if a `App\\Models\\Post` model has a `morphMany` relationship with a `App\\Models\\Comment` model:"
-msgstr ""
+msgstr "[Polymorphic (多型) 關聯](/docs/{{version}}/eloquent-relationships#polymorphic-relationships) 也可以使用 Factory 來建立。Polymorphic 的「Morph Many」關聯使用與一般的「Has Many」關聯相同的方法來建立。舉例來說，若 `App\\Models\\Post` Model 有與 `App\\Models\\Comment` Model 的 `morphMany` 關聯："
 
 # File: docs/8.x/database-testing.md, line: 455
 # File: docs/master/database-testing.md, line: 459
 #. type: Plain text
 #, no-wrap
 msgid "    use App\\Models\\Post;\n"
-msgstr ""
+msgstr "    use App\\Models\\Post;\n"
 
 # File: docs/8.x/database-testing.md, line: 457
 # File: docs/master/database-testing.md, line: 461
 #. type: Plain text
 #, no-wrap
 msgid "    $post = Post::factory()->hasComments(3)->create();\n"
-msgstr ""
+msgstr "    $post = Post::factory()->hasComments(3)->create();\n"
 
 # File: docs/8.x/database-testing.md, line: 459
 # File: docs/master/database-testing.md, line: 463
 #. type: Plain text
 #, no-wrap
 msgid "<a name=\"morph-to-relationships\"></a>\n"
-msgstr ""
+msgstr "<a name=\"morph-to-relationships\"></a>\n"
 
 # File: docs/8.x/database-testing.md, line: 459
 # File: docs/master/database-testing.md, line: 463
 #. type: Title ####
 #, no-wrap
 msgid "Morph To Relationships"
-msgstr ""
+msgstr "Morph To 關聯"
 
 # File: docs/8.x/database-testing.md, line: 462
 # File: docs/master/database-testing.md, line: 466
 #. type: Plain text
 msgid "Magic methods may not be used to create `morphTo` relationships. Instead, the `for` method must be used directly and the name of the relationship must be explicitly provided. For example, imagine that the `Comment` model has a `commentable` method that defines a `morphTo` relationship. In this situation, we may create three comments that belong to a single post by using the `for` method directly:"
-msgstr ""
+msgstr "在建立 `morphTo` 關聯時無法使用魔法方法。必須直接使用 `for` 方法，並明顯提供該關聯的名稱。舉例來說，假設 `Comment` Model 有個 `commantable` 方法，該方法定義了 `morphTo` 關聯。在這種情況下，我們可以直接使用 `for` 方法來建立三個隸屬於單一貼文的留言："
 
 # File: docs/8.x/database-testing.md, line: 466
 # File: docs/master/database-testing.md, line: 470
@@ -1231,27 +1383,29 @@ msgstr ""
 msgid "    $comments = Comment::factory()->count(3)->for(\n"
 "        Post::factory(), 'commentable'\n"
 "    )->create();\n"
-msgstr ""
+msgstr "    $comments = Comment::factory()->count(3)->for(\n"
+"        Post::factory(), 'commentable'\n"
+"    )->create();\n"
 
 # File: docs/8.x/database-testing.md, line: 468
 # File: docs/master/database-testing.md, line: 472
 #. type: Plain text
 #, no-wrap
 msgid "<a name=\"polymorphic-many-to-many-relationships\"></a>\n"
-msgstr ""
+msgstr "<a name=\"polymorphic-many-to-many-relationships\"></a>\n"
 
 # File: docs/8.x/database-testing.md, line: 468
 # File: docs/master/database-testing.md, line: 472
 #. type: Title ####
 #, no-wrap
 msgid "Polymorphic Many To Many Relationships"
-msgstr ""
+msgstr "Polymorphic (多型) Many to Many 關聯"
 
 # File: docs/8.x/database-testing.md, line: 471
 # File: docs/master/database-testing.md, line: 475
 #. type: Plain text
 msgid "Polymorphic \"many to many\" (`morphToMany` / `morphedByMany`) relationships may be created just like non-polymorphic \"many to many\" relationships:"
-msgstr ""
+msgstr "Polymorphic (多型)「Many to Many」(`morphyToMany` / `morphedByMany`) 關聯可以像非 Polymorphic「Many to Many」關聯一樣建立："
 
 # File: docs/8.x/database-testing.md, line: 474
 # File: docs/master/database-testing.md, line: 478
@@ -1259,7 +1413,8 @@ msgstr ""
 #, no-wrap
 msgid "    use App\\Models\\Tag;\n"
 "    use App\\Models\\Video;\n"
-msgstr ""
+msgstr "    use App\\Models\\Tag;\n"
+"    use App\\Models\\Video;\n"
 
 # File: docs/8.x/database-testing.md, line: 481
 # File: docs/master/database-testing.md, line: 485
@@ -1271,13 +1426,18 @@ msgid "    $videos = Video::factory()\n"
 "                    ['public' => true]\n"
 "                )\n"
 "                ->create();\n"
-msgstr ""
+msgstr "    $videos = Video::factory()\n"
+"                ->hasAttached(\n"
+"                    Tag::factory()->count(3),\n"
+"                    ['public' => true]\n"
+"                )\n"
+"                ->create();\n"
 
 # File: docs/8.x/database-testing.md, line: 483
 # File: docs/master/database-testing.md, line: 487
 #. type: Plain text
 msgid "Of course, the magic `has` method may also be used to create polymorphic \"many to many\" relationships:"
-msgstr ""
+msgstr "當然，也可以使用 `has` 魔法方法來建立 Polymorphic「Many to Many」關聯："
 
 # File: docs/8.x/database-testing.md, line: 487
 # File: docs/master/database-testing.md, line: 491
@@ -1286,27 +1446,29 @@ msgstr ""
 msgid "    $videos = Video::factory()\n"
 "                ->hasTags(3, ['public' => true])\n"
 "                ->create();\n"
-msgstr ""
+msgstr "    $videos = Video::factory()\n"
+"                ->hasTags(3, ['public' => true])\n"
+"                ->create();\n"
 
 # File: docs/8.x/database-testing.md, line: 489
 # File: docs/master/database-testing.md, line: 493
 #. type: Plain text
 #, no-wrap
 msgid "<a name=\"defining-relationships-within-factories\"></a>\n"
-msgstr ""
+msgstr "<a name=\"defining-relationships-within-factories\"></a>\n"
 
 # File: docs/8.x/database-testing.md, line: 489
 # File: docs/master/database-testing.md, line: 493
 #. type: Title ###
 #, no-wrap
 msgid "Defining Relationships Within Factories"
-msgstr ""
+msgstr "在 Factory 中定義關聯"
 
 # File: docs/8.x/database-testing.md, line: 492
 # File: docs/master/database-testing.md, line: 496
 #. type: Plain text
 msgid "To define a relationship within your model factory, you will typically assign a new factory instance to the foreign key of the relationship. This is normally done for the \"inverse\" relationships such as `belongsTo` and `morphTo` relationships. For example, if you would like to create a new user when creating a post, you may do the following:"
-msgstr ""
+msgstr "若要在 Model Factory 中定義關聯，則通常需要為該關聯的外部索引鍵 (Foreign Key) 指定新的 Factory 實體。一般是使用「相反」的關聯來處理，如 `belongsTo` 與 `morphTo` 關聯。舉例來說，若想在建立貼文時建立新使用者，可以像這樣："
 
 # File: docs/8.x/database-testing.md, line: 508
 # File: docs/master/database-testing.md, line: 512
@@ -1325,13 +1487,25 @@ msgid "    /**\n"
 "            'content' => $this->faker->paragraph(),\n"
 "        ];\n"
 "    }\n"
-msgstr ""
+msgstr "    /**\n"
+"     * Define the model's default state.\n"
+"     *\n"
+"     * @return array\n"
+"     */\n"
+"    public function definition()\n"
+"    {\n"
+"        return [\n"
+"            'user_id' => User::factory(),\n"
+"            'title' => $this->faker->title(),\n"
+"            'content' => $this->faker->paragraph(),\n"
+"        ];\n"
+"    }\n"
 
 # File: docs/8.x/database-testing.md, line: 510
 # File: docs/master/database-testing.md, line: 514
 #. type: Plain text
 msgid "If the relationship's columns depend on the factory that defines it you may assign a closure to an attribute. The closure will receive the factory's evaluated attribute array:"
-msgstr ""
+msgstr "若該關聯的欄位仰賴定義其的 Factory，則可以在屬性中放入閉包。該閉包會收到該 Factory 取值結果的屬性陣列："
 
 # File: docs/8.x/database-testing.md, line: 527
 # File: docs/master/database-testing.md, line: 531
@@ -1353,27 +1527,42 @@ msgid "    /**\n"
 "            'content' => $this->faker->paragraph(),\n"
 "        ];\n"
 "    }\n"
-msgstr ""
+msgstr "    /**\n"
+"     * Define the model's default state.\n"
+"     *\n"
+"     * @return array\n"
+"     */\n"
+"    public function definition()\n"
+"    {\n"
+"        return [\n"
+"            'user_id' => User::factory(),\n"
+"            'user_type' => function (array $attributes) {\n"
+"                return User::find($attributes['user_id'])->type;\n"
+"            },\n"
+"            'title' => $this->faker->title(),\n"
+"            'content' => $this->faker->paragraph(),\n"
+"        ];\n"
+"    }\n"
 
 # File: docs/8.x/database-testing.md, line: 529
 # File: docs/master/database-testing.md, line: 533
 #. type: Plain text
 #, no-wrap
 msgid "<a name=\"running-seeders\"></a>\n"
-msgstr ""
+msgstr "<a name=\"running-seeders\"></a>\n"
 
 # File: docs/8.x/database-testing.md, line: 529
 # File: docs/master/database-testing.md, line: 533
 #. type: Title ##
 #, no-wrap
 msgid "Running Seeders"
-msgstr ""
+msgstr "執行 Seeder"
 
 # File: docs/8.x/database-testing.md, line: 532
 # File: docs/master/database-testing.md, line: 536
 #. type: Plain text
 msgid "If you would like to use [database seeders](/docs/{{version}}/seeding) to populate your database during a feature test, you may invoke the `seed` method. By default, the `seed` method will execute the `DatabaseSeeder`, which should execute all of your other seeders. Alternatively, you pass a specific seeder class name to the `seed` method:"
-msgstr ""
+msgstr "若想使用[資料庫 Seeder](/docs/{{version}}/seeding) 來在功能測試時修改資料庫，則可以叫用 `seed` 方法。預設情況下，`seed` 方法會執行 `DatabaseSeeder`，該 Seeder 應用來執行所有其他的 Seeder。或者，也可以傳入指定的 Seeder 類別名稱給 `seed` 方法："
 
 # File: docs/8.x/database-testing.md, line: 542
 # File: docs/master/database-testing.md, line: 546
@@ -1384,7 +1573,11 @@ msgid "    use Database\\Seeders\\OrderStatusSeeder;\n"
 "    use Illuminate\\Foundation\\Testing\\RefreshDatabase;\n"
 "    use Illuminate\\Foundation\\Testing\\WithoutMiddleware;\n"
 "    use Tests\\TestCase;\n"
-msgstr ""
+msgstr "    use Database\\Seeders\\OrderStatusSeeder;\n"
+"    use Database\\Seeders\\TransactionStatusSeeder;\n"
+"    use Illuminate\\Foundation\\Testing\\RefreshDatabase;\n"
+"    use Illuminate\\Foundation\\Testing\\WithoutMiddleware;\n"
+"    use Tests\\TestCase;\n"
 
 # File: docs/8.x/database-testing.md, line: 556
 # File: docs/master/database-testing.md, line: 560
@@ -1399,7 +1592,15 @@ msgid "        /**\n"
 "        {\n"
 "            // Run the DatabaseSeeder...\n"
 "            $this->seed();\n"
-msgstr ""
+msgstr "        /**\n"
+"         * Test creating a new order.\n"
+"         *\n"
+"         * @return void\n"
+"         */\n"
+"        public function test_orders_can_be_created()\n"
+"        {\n"
+"            // 執行 DatabaseSeeder…\n"
+"            $this->seed();\n"
 
 # File: docs/8.x/database-testing.md, line: 559
 # File: docs/master/database-testing.md, line: 563
@@ -1407,14 +1608,15 @@ msgstr ""
 #, no-wrap
 msgid "            // Run a specific seeder...\n"
 "            $this->seed(OrderStatusSeeder::class);\n"
-msgstr ""
+msgstr "            // 執行特定的 Seeder…\n"
+"            $this->seed(OrderStatusSeeder::class);\n"
 
 # File: docs/8.x/database-testing.md, line: 561
 # File: docs/master/database-testing.md, line: 565
 #. type: Plain text
 #, no-wrap
 msgid "            // ...\n"
-msgstr ""
+msgstr "            // ...\n"
 
 # File: docs/8.x/database-testing.md, line: 570
 # File: docs/master/database-testing.md, line: 574
@@ -1428,27 +1630,34 @@ msgid "            // Run an array of specific seeders...\n"
 "            ]);\n"
 "        }\n"
 "    }\n"
-msgstr ""
+msgstr "            // 執行一組包含指定 Seeder 的陣列...\n"
+"            $this->seed([\n"
+"                OrderStatusSeeder::class,\n"
+"                TransactionStatusSeeder::class,\n"
+"                // ...\n"
+"            ]);\n"
+"        }\n"
+"    }\n"
 
 # File: docs/8.x/database-testing.md, line: 572
 # File: docs/master/database-testing.md, line: 576
 #. type: Plain text
 msgid "Alternatively, you may instruct Laravel to automatically seed the database before each test that uses the `RefreshDatabase` trait. You may accomplish this by defining a `$seed` property on your base test class:"
-msgstr ""
+msgstr "或者，也可以使用 `RefreshDatabase` Trait 來讓 Laravel 在每次測試前都自動執行資料庫 Seed。可以通過在基礎測試類別上定義 `$seed` 屬性來完成："
 
 # File: docs/8.x/database-testing.md, line: 576
 # File: docs/master/database-testing.md, line: 580
 #. type: Plain text
 #, no-wrap
 msgid "    namespace Tests;\n"
-msgstr ""
+msgstr "    namespace Tests;\n"
 
 # File: docs/8.x/database-testing.md, line: 578
 # File: docs/master/database-testing.md, line: 582
 #. type: Plain text
 #, no-wrap
 msgid "    use Illuminate\\Foundation\\Testing\\TestCase as BaseTestCase;\n"
-msgstr ""
+msgstr "    use Illuminate\\Foundation\\Testing\\TestCase as BaseTestCase;\n"
 
 # File: docs/8.x/database-testing.md, line: 582
 # File: docs/master/database-testing.md, line: 586
@@ -1457,7 +1666,9 @@ msgstr ""
 msgid "    abstract class TestCase extends BaseTestCase\n"
 "    {\n"
 "        use CreatesApplication;\n"
-msgstr ""
+msgstr "    abstract class TestCase extends BaseTestCase\n"
+"    {\n"
+"        use CreatesApplication;\n"
 
 # File: docs/8.x/database-testing.md, line: 590
 # File: docs/master/database-testing.md, line: 594
@@ -1470,20 +1681,26 @@ msgid "        /**\n"
 "         */\n"
 "        protected $seed = true;\n"
 "    }\n"
-msgstr ""
+msgstr "        /**\n"
+"         * Indicates whether the default seeder should run before each test.\n"
+"         *\n"
+"         * @var bool\n"
+"         */\n"
+"        protected $seed = true;\n"
+"    }\n"
 
 # File: docs/8.x/database-testing.md, line: 592
 # File: docs/master/database-testing.md, line: 596
 #. type: Plain text
 msgid "When the `$seed` property is `true`, the test will run the `Database\\Seeders\\DatabaseSeeder` class before each test that uses the `RefreshDatabase` trait. However, you may specify a specific seeder that should be executed by defining a `$seeder` property on your test class:"
-msgstr ""
+msgstr "當 `$seed` 屬性為 `true` 時，各個使用了 `RefreshDatabase` Trait 的測試都會在開始前先執行 `Database\\Seeders\\DatabaseSeeder` 類別。不過，也可以通過在測試類別內定義 `$seeder` 屬性來指定要執行的 Seeder。"
 
 # File: docs/8.x/database-testing.md, line: 594
 # File: docs/master/database-testing.md, line: 598
 #. type: Plain text
 #, no-wrap
 msgid "    use Database\\Seeders\\OrderStatusSeeder;\n"
-msgstr ""
+msgstr "    use Database\\Seeders\\OrderStatusSeeder;\n"
 
 # File: docs/8.x/database-testing.md, line: 601
 # File: docs/master/database-testing.md, line: 605
@@ -1495,74 +1712,79 @@ msgid "    /**\n"
 "     * @var string\n"
 "     */\n"
 "    protected $seeder = OrderStatusSeeder::class;\n"
-msgstr ""
+msgstr "    /**\n"
+"     * Run a specific seeder before each test.\n"
+"     *\n"
+"     * @var string\n"
+"     */\n"
+"    protected $seeder = OrderStatusSeeder::class;\n"
 
 # File: docs/8.x/database-testing.md, line: 603
 # File: docs/master/database-testing.md, line: 607
 #. type: Plain text
 #, no-wrap
 msgid "<a name=\"available-assertions\"></a>\n"
-msgstr ""
+msgstr "<a name=\"available-assertions\"></a>\n"
 
 # File: docs/8.x/database-testing.md, line: 603
 # File: docs/master/database-testing.md, line: 607
 #. type: Title ##
 #, no-wrap
 msgid "Available Assertions"
-msgstr ""
+msgstr "可用的 Assertion"
 
 # File: docs/8.x/database-testing.md, line: 606
 # File: docs/master/database-testing.md, line: 610
 #. type: Plain text
 msgid "Laravel provides several database assertions for your [PHPUnit](https://phpunit.de/) feature tests. We'll discuss each of these assertions below."
-msgstr ""
+msgstr "Laravel 為 [PHPUnit] 功能測試提供了多個資料庫 Assertion。我們會在下方討論逐個討論這些 Assertion。"
 
 # File: docs/8.x/database-testing.md, line: 608
 # File: docs/master/database-testing.md, line: 612
 #. type: Plain text
 #, no-wrap
 msgid "<a name=\"assert-database-count\"></a>\n"
-msgstr ""
+msgstr "<a name=\"assert-database-count\"></a>\n"
 
 # File: docs/8.x/database-testing.md, line: 608
 # File: docs/master/database-testing.md, line: 612
 #. type: Title ####
 #, no-wrap
 msgid "assertDatabaseCount"
-msgstr ""
+msgstr "assertDatabaseCount"
 
 # File: docs/8.x/database-testing.md, line: 611
 # File: docs/master/database-testing.md, line: 615
 #. type: Plain text
 msgid "Assert that a table in the database contains the given number of records:"
-msgstr ""
+msgstr "判斷資料庫中的某個資料表是否包含給定數量的記錄："
 
 # File: docs/8.x/database-testing.md, line: 613
 # File: docs/master/database-testing.md, line: 617
 #. type: Plain text
 #, no-wrap
 msgid "    $this->assertDatabaseCount('users', 5);\n"
-msgstr ""
+msgstr "    $this->assertDatabaseCount('users', 5);\n"
 
 # File: docs/8.x/database-testing.md, line: 615
 # File: docs/master/database-testing.md, line: 619
 #. type: Plain text
 #, no-wrap
 msgid "<a name=\"assert-database-has\"></a>\n"
-msgstr ""
+msgstr "<a name=\"assert-database-has\"></a>\n"
 
 # File: docs/8.x/database-testing.md, line: 615
 # File: docs/master/database-testing.md, line: 619
 #. type: Title ####
 #, no-wrap
 msgid "assertDatabaseHas"
-msgstr ""
+msgstr "assertDatabaseHas"
 
 # File: docs/8.x/database-testing.md, line: 618
 # File: docs/master/database-testing.md, line: 622
 #. type: Plain text
 msgid "Assert that a table in the database contains records matching the given key / value query constraints:"
-msgstr ""
+msgstr "判斷資料庫中的某個資料表包含符合給定索引鍵／值查詢條件的記錄："
 
 # File: docs/8.x/database-testing.md, line: 622
 # File: docs/master/database-testing.md, line: 626
@@ -1571,27 +1793,29 @@ msgstr ""
 msgid "    $this->assertDatabaseHas('users', [\n"
 "        'email' => 'sally@example.com',\n"
 "    ]);\n"
-msgstr ""
+msgstr "    $this->assertDatabaseHas('users', [\n"
+"        'email' => 'sally@example.com',\n"
+"    ]);\n"
 
 # File: docs/8.x/database-testing.md, line: 624
 # File: docs/master/database-testing.md, line: 628
 #. type: Plain text
 #, no-wrap
 msgid "<a name=\"assert-database-missing\"></a>\n"
-msgstr ""
+msgstr "<a name=\"assert-database-missing\"></a>\n"
 
 # File: docs/8.x/database-testing.md, line: 624
 # File: docs/master/database-testing.md, line: 628
 #. type: Title ####
 #, no-wrap
 msgid "assertDatabaseMissing"
-msgstr ""
+msgstr "assertDatabaseMissing"
 
 # File: docs/8.x/database-testing.md, line: 627
 # File: docs/master/database-testing.md, line: 631
 #. type: Plain text
 msgid "Assert that a table in the database does not contain records matching the given key / value query constraints:"
-msgstr ""
+msgstr "判斷資料庫中的某個資料表是否不包含符合給定索引鍵／值查詢條件的記錄："
 
 # File: docs/8.x/database-testing.md, line: 631
 # File: docs/master/database-testing.md, line: 635
@@ -1600,34 +1824,36 @@ msgstr ""
 msgid "    $this->assertDatabaseMissing('users', [\n"
 "        'email' => 'sally@example.com',\n"
 "    ]);\n"
-msgstr ""
+msgstr "    $this->assertDatabaseMissing('users', [\n"
+"        'email' => 'sally@example.com',\n"
+"    ]);\n"
 
 # File: docs/8.x/database-testing.md, line: 633
 # File: docs/master/database-testing.md, line: 637
 #. type: Plain text
 #, no-wrap
 msgid "<a name=\"assert-deleted\"></a>\n"
-msgstr ""
+msgstr "<a name=\"assert-deleted\"></a>\n"
 
 # File: docs/8.x/database-testing.md, line: 633
 # File: docs/master/database-testing.md, line: 637
 #. type: Title ####
 #, no-wrap
 msgid "assertDeleted"
-msgstr ""
+msgstr "assertDeleted"
 
 # File: docs/8.x/database-testing.md, line: 636
 # File: docs/master/database-testing.md, line: 640
 #. type: Plain text
 msgid "The `assertDeleted` asserts that a given Eloquent model has been deleted from the database:"
-msgstr ""
+msgstr "`assertDeleted` 判斷給定的 Eloquent Model 是否已從資料庫內刪除："
 
 # File: docs/8.x/database-testing.md, line: 640
 # File: docs/master/database-testing.md, line: 644
 #. type: Plain text
 #, no-wrap
 msgid "    $user = User::find(1);\n"
-msgstr ""
+msgstr "    $user = User::find(1);\n"
 
 # File: docs/8.x/database-testing.md, line: 642
 # File: docs/8.x/database-testing.md, line: 670
@@ -1636,89 +1862,89 @@ msgstr ""
 #. type: Plain text
 #, no-wrap
 msgid "    $user->delete();\n"
-msgstr ""
+msgstr "    $user->delete();\n"
 
 # File: docs/8.x/database-testing.md, line: 644
 # File: docs/master/database-testing.md, line: 648
 #. type: Plain text
 #, no-wrap
 msgid "    $this->assertDeleted($user);\n"
-msgstr ""
+msgstr "    $this->assertDeleted($user);\n"
 
 # File: docs/8.x/database-testing.md, line: 646
 # File: docs/master/database-testing.md, line: 650
 #. type: Plain text
 msgid "The `assertSoftDeleted` method may be used to assert a given Eloquent model has been \"soft deleted\":"
-msgstr ""
+msgstr "`assertSoftDeleted` 方法可用來判斷給定 Eloquent Model 是否已「軟刪除 (Soft Delete)」："
 
 # File: docs/8.x/database-testing.md, line: 648
 # File: docs/master/database-testing.md, line: 652
 #. type: Plain text
 #, no-wrap
 msgid "    $this->assertSoftDeleted($user);\n"
-msgstr ""
+msgstr "    $this->assertSoftDeleted($user);\n"
 
 # File: docs/8.x/database-testing.md, line: 650
 # File: docs/master/database-testing.md, line: 654
 #. type: Plain text
 #, no-wrap
 msgid "<a name=\"assert-model-exists\"></a>\n"
-msgstr ""
+msgstr "<a name=\"assert-model-exists\"></a>\n"
 
 # File: docs/8.x/database-testing.md, line: 650
 # File: docs/master/database-testing.md, line: 654
 #. type: Title ####
 #, no-wrap
 msgid "assertModelExists"
-msgstr ""
+msgstr "assertModelExists"
 
 # File: docs/8.x/database-testing.md, line: 653
 # File: docs/master/database-testing.md, line: 657
 #. type: Plain text
 msgid "Assert that a given model exists in the database:"
-msgstr ""
+msgstr "判斷給定 Model 存在資料庫中："
 
 # File: docs/8.x/database-testing.md, line: 659
 # File: docs/master/database-testing.md, line: 663
 #. type: Plain text
 #, no-wrap
 msgid "    $this->assertModelExists($user);\n"
-msgstr ""
+msgstr "    $this->assertModelExists($user);\n"
 
 # File: docs/8.x/database-testing.md, line: 661
 # File: docs/master/database-testing.md, line: 665
 #. type: Plain text
 #, no-wrap
 msgid "<a name=\"assert-model-missing\"></a>\n"
-msgstr ""
+msgstr "<a name=\"assert-model-missing\"></a>\n"
 
 # File: docs/8.x/database-testing.md, line: 661
 # File: docs/master/database-testing.md, line: 665
 #. type: Title ####
 #, no-wrap
 msgid "assertModelMissing"
-msgstr ""
+msgstr "assertModelMissing"
 
 # File: docs/8.x/database-testing.md, line: 664
 # File: docs/master/database-testing.md, line: 668
 #. type: Plain text
 msgid "Assert that a given model does not exist in the database:"
-msgstr ""
+msgstr "判斷給定 Model 不存在資料庫中："
 
 # File: docs/8.x/database-testing.md, line: 671
 # File: docs/master/database-testing.md, line: 675
 #. type: Plain text
 #, no-wrap
 msgid "    $this->assertModelMissing($user);\n"
-msgstr ""
+msgstr "    $this->assertModelMissing($user);\n"
 
 # File: docs/master/database-testing.md, line: 59
 #. type: Plain text
 msgid "The `Illuminate\\Foundation\\Testing\\RefreshDatabase` trait does not migrate your database if your schema is up to date. Instead, it will only execute the test within a database transaction. Therefore, any records added to the database by test cases that do not use this trait may still exist in the database."
-msgstr ""
+msgstr "當資料庫架構 (Schema) 已是最新的時候， `Illuminate\\Foundation\\Testing\\RefreshDatabase` Trait 將不會執行資料庫遷移 (Migration)，只會在資料庫 Transaction 中執行測試。因此，在未使用該 Trait 中的測試例中，若有新增紀錄，將會保留在資料庫中。"
 
 # File: docs/master/database-testing.md, line: 61
 #. type: Plain text
 msgid "If you would like to totally reset the database using migrations, you may use the `Illuminate\\Foundation\\Testing\\DatabaseMigrations` trait instead. However, the `DatabaseMigrations` trait is significantly slower than the `RefreshDatabase` trait."
-msgstr ""
+msgstr "若想使用 Migration 來完整重設資料庫，請使用 `Illuminate\\Foundation\\Testing\\DatabaseMigrations`。不過，`DatabaseMigrations` Trait 比起 `RefreshDatabase` Trait 來說會慢很多。"
 

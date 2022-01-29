@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: laravel-docs\n"
 "POT-Creation-Date: 2022-01-29 05:35+0000\n"
-"PO-Revision-Date: 2022-01-29 05:45\n"
+"PO-Revision-Date: 2022-01-29 06:43\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
@@ -21,13 +21,13 @@ msgstr ""
 #. type: Title #
 #, no-wrap
 msgid "Blade Templates"
-msgstr ""
+msgstr "Blade 樣板"
 
 # File: docs/8.x/blade.md, line: 39
 # File: docs/master/blade.md, line: 40
 #. type: Bullet: '- '
 msgid "[Introduction](#introduction)"
-msgstr ""
+msgstr "[簡介](#introduction)"
 
 # File: docs/8.x/blade.md, line: 39
 #. type: Plain text
@@ -67,33 +67,67 @@ msgid "- [Displaying Data](#displaying-data)\n"
 "- [Extending Blade](#extending-blade)\n"
 "    - [Custom Echo Handlers](#custom-echo-handlers)\n"
 "    - [Custom If Statements](#custom-if-statements)\n"
-msgstr ""
+msgstr "- [顯示資料](#displaying-data)\n"
+"    - [HTML 實體編碼](#html-entity-encoding)\n"
+"    - [Blade 與 JavaScript 框架](#blade-and-javascript-frameworks)\n"
+"- [Blade 指示詞](#blade-directives)\n"
+"    - [If 陳述式](#if-statements)\n"
+"    - [Switch 陳述式](#switch-statements)\n"
+"    - [迴圈](#loops)\n"
+"    - [迴圈變數](#the-loop-variable)\n"
+"    - [條件式 Class](#conditional-classes)\n"
+"    - [Include 子 View](#including-subviews)\n"
+"    - [`@once` 指示詞](#the-once-directive)\n"
+"    - [原始 PHP](#raw-php)\n"
+"    - [註解](#comments)\n"
+"- [元件](#components)\n"
+"    - [轉譯元件](#rendering-components)\n"
+"    - [將資料傳給元件](#passing-data-to-components)\n"
+"    - [元件屬性](#component-attributes)\n"
+"    - [保留字](#reserved-keywords)\n"
+"    - [Slot](#slots)\n"
+"    - [內嵌元件 View](#inline-component-views)\n"
+"    - [匿名元件](#anonymous-components)\n"
+"    - [動態元件](#dynamic-components)\n"
+"    - [手動註冊元件](#manually-registering-components)\n"
+"- [製作 Layout](#building-layouts)\n"
+"    - [使用元件的版面配置](#layouts-using-components)\n"
+"    - [使用樣板繼承的版面配置](#layouts-using-template-inheritance)\n"
+"- [表單](#forms)\n"
+"    - [CSRF 欄位](#csrf-field)\n"
+"    - [方法欄位](#method-field)\n"
+"    - [驗證錯誤](#validation-errors)\n"
+"- [堆疊](#stacks)\n"
+"- [Service Injection](#service-injection)\n"
+"- [擴充 Blade](#extending-blade)\n"
+"    - [自訂 Echo 處理程式](#custom-echo-handlers)\n"
+"    - [自訂 If 陳述式](#custom-if-statements)\n"
 
 # File: docs/8.x/blade.md, line: 41
 # File: docs/master/blade.md, line: 42
 #. type: Plain text
 #, no-wrap
 msgid "<a name=\"introduction\"></a>\n"
-msgstr ""
+msgstr "<a name=\"introduction\"></a>\n"
 
 # File: docs/8.x/blade.md, line: 41
 # File: docs/master/blade.md, line: 42
 #. type: Title ##
 #, no-wrap
 msgid "Introduction"
-msgstr ""
+msgstr "簡介"
 
 # File: docs/8.x/blade.md, line: 44
 # File: docs/master/blade.md, line: 45
 #. type: Plain text
 msgid "Blade is the simple, yet powerful templating engine that is included with Laravel. Unlike some PHP templating engines, Blade does not restrict you from using plain PHP code in your templates. In fact, all Blade templates are compiled into plain PHP code and cached until they are modified, meaning Blade adds essentially zero overhead to your application. Blade template files use the `.blade.php` file extension and are typically stored in the `resources/views` directory."
-msgstr ""
+msgstr "Blade 是 Laravel 內建的一個簡單但強大的樣板引擎。與其他 PHP 樣板引擎不同，Blade 不會在樣板中限制你不能使用純 PHP 程式碼。事實上，Blade 樣板會被編譯為純 PHP 程式碼，且在被修改前都會被快取起來。這代表，使用 Blade 並不會給你的網站帶來任何額外的開銷。Blade 樣板檔使用 `.blade.php` 副檔名，且通常放在 `resources/views` 目錄內。"
 
 # File: docs/8.x/blade.md, line: 46
 # File: docs/master/blade.md, line: 47
 #. type: Plain text
 msgid "Blade views may be returned from routes or controller using the global `view` helper. Of course, as mentioned in the documentation on [views](/docs/{{version}}/views), data may be passed to the Blade view using the `view` helper's second argument:"
-msgstr ""
+msgstr "Blade 樣板可以在路由或 Controller 內通過 `view` 全域輔助函式來回傳。當然，就像在 [View](/docs/{{version}}/views) 說明文件內講的一樣，可以使用 `view` 輔助函式的第二個引數來將資料傳給 Blade View："
 
 # File: docs/8.x/blade.md, line: 50
 # File: docs/master/blade.md, line: 51
@@ -102,34 +136,36 @@ msgstr ""
 msgid "    Route::get('/', function () {\n"
 "        return view('greeting', ['name' => 'Finn']);\n"
 "    });\n"
-msgstr ""
+msgstr "    Route::get('/', function () {\n"
+"        return view('greeting', ['name' => 'Finn']);\n"
+"    });\n"
 
 # File: docs/8.x/blade.md, line: 52
 # File: docs/master/blade.md, line: 53
 #. type: Plain text
 #, no-wrap
 msgid "> {tip} Want to take your Blade templates to the next level and build dynamic interfaces with ease? Check out [Laravel Livewire](https://laravel-livewire.com).\n"
-msgstr ""
+msgstr "> {tip} 想要將 Blade 樣板的功能提升到新的境界並輕鬆製作動態使用者界面嗎？請參考看看 [Laravel Livewire](https://laravel-livewire.com)。\n"
 
 # File: docs/8.x/blade.md, line: 54
 # File: docs/master/blade.md, line: 55
 #. type: Plain text
 #, no-wrap
 msgid "<a name=\"displaying-data\"></a>\n"
-msgstr ""
+msgstr "<a name=\"displaying-data\"></a>\n"
 
 # File: docs/8.x/blade.md, line: 54
 # File: docs/master/blade.md, line: 55
 #. type: Title ##
 #, no-wrap
 msgid "Displaying Data"
-msgstr ""
+msgstr "顯示資料"
 
 # File: docs/8.x/blade.md, line: 57
 # File: docs/master/blade.md, line: 58
 #. type: Plain text
 msgid "You may display data that is passed to your Blade views by wrapping the variable in curly braces. For example, given the following route:"
-msgstr ""
+msgstr "可以通過將變數以大括號包裝起來來顯示傳給 Blade View 的資料。舉例來說，假設有下列路由："
 
 # File: docs/8.x/blade.md, line: 61
 # File: docs/master/blade.md, line: 62
@@ -138,60 +174,62 @@ msgstr ""
 msgid "    Route::get('/', function () {\n"
 "        return view('welcome', ['name' => 'Samantha']);\n"
 "    });\n"
-msgstr ""
+msgstr "    Route::get('/', function () {\n"
+"        return view('welcome', ['name' => 'Samantha']);\n"
+"    });\n"
 
 # File: docs/8.x/blade.md, line: 63
 # File: docs/master/blade.md, line: 64
 #. type: Plain text
 msgid "You may display the contents of the `name` variable like so:"
-msgstr ""
+msgstr "可以像這樣顯示 `name` 變數的內容："
 
 # File: docs/8.x/blade.md, line: 65
 # File: docs/master/blade.md, line: 66
 #. type: Plain text
 #, no-wrap
 msgid "    Hello, {{ $name }}.\n"
-msgstr ""
+msgstr "    Hello, {{ $name }}.\n"
 
 # File: docs/8.x/blade.md, line: 67
 # File: docs/master/blade.md, line: 68
 #. type: Plain text
 #, no-wrap
 msgid "> {tip} Blade's `{{ }}` echo statements are automatically sent through PHP's `htmlspecialchars` function to prevent XSS attacks.\n"
-msgstr ""
+msgstr "> {tip} Blade 的 `{{ }}` echo 陳述式會自動通過 PHP 的 `htmlspecialchars` 函式來防止 XSS 攻擊。\n"
 
 # File: docs/8.x/blade.md, line: 69
 # File: docs/master/blade.md, line: 70
 #. type: Plain text
 msgid "You are not limited to displaying the contents of the variables passed to the view. You may also echo the results of any PHP function. In fact, you can put any PHP code you wish inside of a Blade echo statement:"
-msgstr ""
+msgstr "在 Blade 中不只可以顯示傳進來的變數，還可以 echo 任何 PHP 函式的回傳值。事實上，可以在 Blade 的 echo 陳述式中放入任何的 PHP 程式碼："
 
 # File: docs/8.x/blade.md, line: 71
 # File: docs/master/blade.md, line: 72
 #. type: Plain text
 #, no-wrap
 msgid "    The current UNIX timestamp is {{ time() }}.\n"
-msgstr ""
+msgstr "    現在的 Unix 時戳是 {{ time() }}。\n"
 
 # File: docs/8.x/blade.md, line: 73
 # File: docs/master/blade.md, line: 74
 #. type: Plain text
 #, no-wrap
 msgid "<a name=\"html-entity-encoding\"></a>\n"
-msgstr ""
+msgstr "<a name=\"html-entity-encoding\"></a>\n"
 
 # File: docs/8.x/blade.md, line: 73
 # File: docs/master/blade.md, line: 74
 #. type: Title ###
 #, no-wrap
 msgid "HTML Entity Encoding"
-msgstr ""
+msgstr "HTML 實體編碼"
 
 # File: docs/8.x/blade.md, line: 76
 # File: docs/master/blade.md, line: 77
 #. type: Plain text
 msgid "By default, Blade (and the Laravel `e` helper) will double encode HTML entities. If you would like to disable double encoding, call the `Blade::withoutDoubleEncoding` method from the `boot` method of your `AppServiceProvider`:"
-msgstr ""
+msgstr "預設情況下，Blade (以及 Laravel 的 `e` 輔助函式) 會重複轉譯 HTML 實體 (Double Encode)。若不像被重複轉譯，請在 `AppServiceProvider` 內的 `boot` 方法中呼叫 `Blade::withoutDoubleEncoding` 方法："
 
 # File: docs/8.x/blade.md, line: 78
 # File: docs/8.x/blade.md, line: 551
@@ -204,7 +242,7 @@ msgstr ""
 #. type: Plain text
 #, no-wrap
 msgid "    <?php\n"
-msgstr ""
+msgstr "    <?php\n"
 
 # File: docs/8.x/blade.md, line: 80
 # File: docs/8.x/blade.md, line: 1390
@@ -213,7 +251,7 @@ msgstr ""
 #. type: Plain text
 #, no-wrap
 msgid "    namespace App\\Providers;\n"
-msgstr ""
+msgstr "    namespace App\\Providers;\n"
 
 # File: docs/8.x/blade.md, line: 83
 # File: docs/8.x/blade.md, line: 1393
@@ -223,7 +261,8 @@ msgstr ""
 #, no-wrap
 msgid "    use Illuminate\\Support\\Facades\\Blade;\n"
 "    use Illuminate\\Support\\ServiceProvider;\n"
-msgstr ""
+msgstr "    use Illuminate\\Support\\Facades\\Blade;\n"
+"    use Illuminate\\Support\\ServiceProvider;\n"
 
 # File: docs/8.x/blade.md, line: 96
 # File: docs/master/blade.md, line: 97
@@ -241,87 +280,98 @@ msgid "    class AppServiceProvider extends ServiceProvider\n"
 "            Blade::withoutDoubleEncoding();\n"
 "        }\n"
 "    }\n"
-msgstr ""
+msgstr "    class AppServiceProvider extends ServiceProvider\n"
+"    {\n"
+"        /**\n"
+"         * Bootstrap any application services.\n"
+"         *\n"
+"         * @return void\n"
+"         */\n"
+"        public function boot()\n"
+"        {\n"
+"            Blade::withoutDoubleEncoding();\n"
+"        }\n"
+"    }\n"
 
 # File: docs/8.x/blade.md, line: 98
 # File: docs/master/blade.md, line: 99
 #. type: Plain text
 #, no-wrap
 msgid "<a name=\"displaying-unescaped-data\"></a>\n"
-msgstr ""
+msgstr "<a name=\"displaying-unescaped-data\"></a>\n"
 
 # File: docs/8.x/blade.md, line: 98
 # File: docs/master/blade.md, line: 99
 #. type: Title ####
 #, no-wrap
 msgid "Displaying Unescaped Data"
-msgstr ""
+msgstr "顯示未逸出的資料"
 
 # File: docs/8.x/blade.md, line: 101
 # File: docs/master/blade.md, line: 102
 #. type: Plain text
 msgid "By default, Blade `{{ }}` statements are automatically sent through PHP's `htmlspecialchars` function to prevent XSS attacks. If you do not want your data to be escaped, you may use the following syntax:"
-msgstr ""
+msgstr "預設情況下，Blade 的 `{{ }}` 陳述式會自動通過 PHP 的 `htmlspecialchars` 函式來防止 XSS 攻擊。若不想要逸出資料，可以使用下列語法："
 
 # File: docs/8.x/blade.md, line: 103
 # File: docs/master/blade.md, line: 104
 #. type: Plain text
 #, no-wrap
 msgid "    Hello, {!! $name !!}.\n"
-msgstr ""
+msgstr "    Hello, {!! $name !!}.\n"
 
 # File: docs/8.x/blade.md, line: 105
 # File: docs/master/blade.md, line: 106
 #. type: Plain text
 #, no-wrap
 msgid "> {note} Be very careful when echoing content that is supplied by users of your application. You should typically use the escaped, double curly brace syntax to prevent XSS attacks when displaying user supplied data.\n"
-msgstr ""
+msgstr "> {note} 在輸出使用者提供的資料時，請格外小心。平常在顯示使用者提供的資料時應該要使用經過逸出的雙大括號語法來防止 XSS 攻擊。\n"
 
 # File: docs/8.x/blade.md, line: 107
 # File: docs/master/blade.md, line: 108
 #. type: Plain text
 #, no-wrap
 msgid "<a name=\"blade-and-javascript-frameworks\"></a>\n"
-msgstr ""
+msgstr "<a name=\"blade-and-javascript-frameworks\"></a>\n"
 
 # File: docs/8.x/blade.md, line: 107
 # File: docs/master/blade.md, line: 108
 #. type: Title ###
 #, no-wrap
 msgid "Blade & JavaScript Frameworks"
-msgstr ""
+msgstr "Blade 與 JavaScript 框架"
 
 # File: docs/8.x/blade.md, line: 110
 # File: docs/master/blade.md, line: 111
 #. type: Plain text
 msgid "Since many JavaScript frameworks also use \"curly\" braces to indicate a given expression should be displayed in the browser, you may use the `@` symbol to inform the Blade rendering engine an expression should remain untouched. For example:"
-msgstr ""
+msgstr "由於許多 JavaScript 框架都使用「大括號」來判斷給定的運算式應顯示在瀏覽器上，因此可以使用 `@` 符號來告訴 Blade 轉譯引擎不應修改該運算式。如："
 
 # File: docs/8.x/blade.md, line: 112
 # File: docs/master/blade.md, line: 113
 #. type: Plain text
 #, no-wrap
 msgid "    <h1>Laravel</h1>\n"
-msgstr ""
+msgstr "    <h1>Laravel</h1>\n"
 
 # File: docs/8.x/blade.md, line: 114
 # File: docs/master/blade.md, line: 115
 #. type: Plain text
 #, no-wrap
 msgid "    Hello, @{{ name }}.\n"
-msgstr ""
+msgstr "    Hello, @{{ name }}.\n"
 
 # File: docs/8.x/blade.md, line: 116
 # File: docs/master/blade.md, line: 117
 #. type: Plain text
 msgid "In this example, the `@` symbol will be removed by Blade; however, `{{ name }}` expression will remain untouched by the Blade engine, allowing it to be rendered by your JavaScript framework."
-msgstr ""
+msgstr "在這個例子中，Blade 會將 `@` 符號逸出。而 `{{ name }}` 運算式則不會被 Blade 引擎處理，這樣一來便可讓 JavaScript 框架進行轉譯。"
 
 # File: docs/8.x/blade.md, line: 118
 # File: docs/master/blade.md, line: 119
 #. type: Plain text
 msgid "The `@` symbol may also be used to escape Blade directives:"
-msgstr ""
+msgstr "`@` 符號也可用來逸出 Blade 指示詞："
 
 # File: docs/8.x/blade.md, line: 121
 # File: docs/master/blade.md, line: 122
@@ -329,7 +379,8 @@ msgstr ""
 #, no-wrap
 msgid "    {{-- Blade template --}}\n"
 "    @@if()\n"
-msgstr ""
+msgstr "    {{-- Blade 樣板 --}}\n"
+"    @@if()\n"
 
 # File: docs/8.x/blade.md, line: 124
 # File: docs/master/blade.md, line: 125
@@ -337,27 +388,28 @@ msgstr ""
 #, no-wrap
 msgid "    <!-- HTML output -->\n"
 "    @if()\n"
-msgstr ""
+msgstr "    <!-- HTML 輸出 -->\n"
+"    @if()\n"
 
 # File: docs/8.x/blade.md, line: 126
 # File: docs/master/blade.md, line: 127
 #. type: Plain text
 #, no-wrap
 msgid "<a name=\"rendering-json\"></a>\n"
-msgstr ""
+msgstr "<a name=\"rendering-json\"></a>\n"
 
 # File: docs/8.x/blade.md, line: 126
 # File: docs/master/blade.md, line: 127
 #. type: Title ####
 #, no-wrap
 msgid "Rendering JSON"
-msgstr ""
+msgstr "轉譯 JSON"
 
 # File: docs/8.x/blade.md, line: 129
 # File: docs/master/blade.md, line: 130
 #. type: Plain text
 msgid "Sometimes you may pass an array to your view with the intention of rendering it as JSON in order to initialize a JavaScript variable. For example:"
-msgstr ""
+msgstr "有時候將陣列傳進 View 是為了將其轉譯為 JSON 來初始化 JavaScript 變數。如："
 
 # File: docs/8.x/blade.md, line: 133
 # File: docs/master/blade.md, line: 134
@@ -366,13 +418,15 @@ msgstr ""
 msgid "    <script>\n"
 "        var app = <?php echo json_encode($array); ?>;\n"
 "    </script>\n"
-msgstr ""
+msgstr "    <script>\n"
+"        var app = <?php echo json_encode($array); ?>;\n"
+"    </script>\n"
 
 # File: docs/8.x/blade.md, line: 135
 # File: docs/master/blade.md, line: 136
 #. type: Plain text
 msgid "However, instead of manually calling `json_encode`, you may use the `Illuminate\\Support\\Js::from` method directive. The `from` method accepts the same arguments as PHP's `json_encode` function; however, it will ensure that the resulting JSON is properly escaped for inclusion within HTML quotes. The `from` method will return a string `JSON.parse` JavaScript statement that will convert the given object or array into a valid JavaScript object:"
-msgstr ""
+msgstr "不過，比起手動呼叫 `json_encode`，我們應使用 `Illuminate\\Support\\Js::from` 方法指示詞。`from` 方法接受的引數與 PHP 的 `json_encode` 函式相同；不過，`from` 方法會確保即使時在 HTML 引號內，也能正確逸出 JSON。`from` 方法會回傳一個 `JSON.parse` JavaScript 陳述式字串，該陳述式會將給定的物件或陣列轉換為有效的 JavaScript 物件："
 
 # File: docs/8.x/blade.md, line: 139
 # File: docs/master/blade.md, line: 140
@@ -381,13 +435,15 @@ msgstr ""
 msgid "    <script>\n"
 "        var app = {{ Illuminate\\Support\\Js::from($array) }};\n"
 "    </script>\n"
-msgstr ""
+msgstr "    <script>\n"
+"        var app = {{ Illuminate\\Support\\Js::from($array) }};\n"
+"    </script>\n"
 
 # File: docs/8.x/blade.md, line: 141
 # File: docs/master/blade.md, line: 142
 #. type: Plain text
 msgid "The latest versions of the Laravel application skeleton include a `Js` facade, which provides convenient access to this functionality within your Blade templates:"
-msgstr ""
+msgstr "最新版本的 Laravel 專案 Skeleton 包含了一個 `Js` Facade。使用這個 Facade 就能方便地在 Blade 樣板中存取這個功能："
 
 # File: docs/8.x/blade.md, line: 145
 # File: docs/master/blade.md, line: 146
@@ -396,34 +452,36 @@ msgstr ""
 msgid "    <script>\n"
 "        var app = {{ Js::from($array) }};\n"
 "    </script>\n"
-msgstr ""
+msgstr "    <script>\n"
+"        var app = {{ Js::from($array) }};\n"
+"    </script>\n"
 
 # File: docs/8.x/blade.md, line: 147
 # File: docs/master/blade.md, line: 148
 #. type: Plain text
 #, no-wrap
 msgid "> {note} You should only use the `Js::from` method to render existing variables as JSON. The Blade templating is based on regular expressions and attempts to pass a complex expression to the directive may cause unexpected failures.\n"
-msgstr ""
+msgstr "> {note} 請只在轉譯現有變數為 JSON 時使用 `Js::from` 方法。Blade 樣板引擎是是基於正規標示式實作的，若將複雜的陳述式傳給指示詞可能會導致未預期的錯誤。\n"
 
 # File: docs/8.x/blade.md, line: 149
 # File: docs/master/blade.md, line: 150
 #. type: Plain text
 #, no-wrap
 msgid "<a name=\"the-at-verbatim-directive\"></a>\n"
-msgstr ""
+msgstr "<a name=\"the-at-verbatim-directive\"></a>\n"
 
 # File: docs/8.x/blade.md, line: 149
 # File: docs/master/blade.md, line: 150
 #. type: Title ####
 #, no-wrap
 msgid "The `@verbatim` Directive"
-msgstr ""
+msgstr "`@verbatim` 指示詞"
 
 # File: docs/8.x/blade.md, line: 152
 # File: docs/master/blade.md, line: 153
 #. type: Plain text
 msgid "If you are displaying JavaScript variables in a large portion of your template, you may wrap the HTML in the `@verbatim` directive so that you do not have to prefix each Blade echo statement with an `@` symbol:"
-msgstr ""
+msgstr "若在樣板中顯示了很多的 JavaScript 變數，則可以將 HTML 包裝在 `@verbatim` 指示詞內。這樣一來就不需要在每個 Blade 的 echo 陳述式前面加上前置 `@` 符號："
 
 # File: docs/8.x/blade.md, line: 158
 # File: docs/master/blade.md, line: 159
@@ -434,47 +492,51 @@ msgid "    @verbatim\n"
 "            Hello, {{ name }}.\n"
 "        </div>\n"
 "    @endverbatim\n"
-msgstr ""
+msgstr "    @verbatim\n"
+"        <div class=\"container\">\n"
+"            Hello, {{ name }}.\n"
+"        </div>\n"
+"    @endverbatim\n"
 
 # File: docs/8.x/blade.md, line: 160
 # File: docs/master/blade.md, line: 161
 #. type: Plain text
 #, no-wrap
 msgid "<a name=\"blade-directives\"></a>\n"
-msgstr ""
+msgstr "<a name=\"blade-directives\"></a>\n"
 
 # File: docs/8.x/blade.md, line: 160
 # File: docs/master/blade.md, line: 161
 #. type: Title ##
 #, no-wrap
 msgid "Blade Directives"
-msgstr ""
+msgstr "Blade 指示詞"
 
 # File: docs/8.x/blade.md, line: 163
 # File: docs/master/blade.md, line: 164
 #. type: Plain text
 msgid "In addition to template inheritance and displaying data, Blade also provides convenient shortcuts for common PHP control structures, such as conditional statements and loops. These shortcuts provide a very clean, terse way of working with PHP control structures while also remaining familiar to their PHP counterparts."
-msgstr ""
+msgstr "除了繼承樣板與顯示資料外，Blade 也提供了常見 PHP 流程控制結構的方便捷徑，如條件陳述式以及迴圈。這些捷徑提供了一種非常乾淨簡介的方式來處理 PHP 流程控制，同時也保持了與 PHP 的相似性。"
 
 # File: docs/8.x/blade.md, line: 165
 # File: docs/master/blade.md, line: 166
 #. type: Plain text
 #, no-wrap
 msgid "<a name=\"if-statements\"></a>\n"
-msgstr ""
+msgstr "<a name=\"if-statements\"></a>\n"
 
 # File: docs/8.x/blade.md, line: 165
 # File: docs/master/blade.md, line: 166
 #. type: Title ###
 #, no-wrap
 msgid "If Statements"
-msgstr ""
+msgstr "If 陳述式"
 
 # File: docs/8.x/blade.md, line: 168
 # File: docs/master/blade.md, line: 169
 #. type: Plain text
 msgid "You may construct `if` statements using the `@if`, `@elseif`, `@else`, and `@endif` directives. These directives function identically to their PHP counterparts:"
-msgstr ""
+msgstr "可以通過 `@if`, `@elseif`, `@else` 與 `@endif` 指示詞來架構 `if` 陳述式。這些指示詞的功能與其 PHP 對應的部分相同："
 
 # File: docs/8.x/blade.md, line: 176
 # File: docs/master/blade.md, line: 177
@@ -487,13 +549,19 @@ msgid "    @if (count($records) === 1)\n"
 "    @else\n"
 "        I don't have any records!\n"
 "    @endif\n"
-msgstr ""
+msgstr "    @if (count($records) === 1)\n"
+"        這裡有 1 筆記錄！\n"
+"    @elseif (count($records) > 1)\n"
+"        這裡有多筆記錄！\n"
+"    @else\n"
+"        這裡沒有任何記錄！\n"
+"    @endif\n"
 
 # File: docs/8.x/blade.md, line: 178
 # File: docs/master/blade.md, line: 179
 #. type: Plain text
 msgid "For convenience, Blade also provides an `@unless` directive:"
-msgstr ""
+msgstr "為了方便起見，Blade 也提供了一個 `@unless` 指示詞："
 
 # File: docs/8.x/blade.md, line: 182
 # File: docs/master/blade.md, line: 183
@@ -502,13 +570,15 @@ msgstr ""
 msgid "    @unless (Auth::check())\n"
 "        You are not signed in.\n"
 "    @endunless\n"
-msgstr ""
+msgstr "    @unless (Auth::check())\n"
+"        你還沒有登入。\n"
+"    @endunless\n"
 
 # File: docs/8.x/blade.md, line: 184
 # File: docs/master/blade.md, line: 185
 #. type: Plain text
 msgid "In addition to the conditional directives already discussed, the `@isset` and `@empty` directives may be used as convenient shortcuts for their respective PHP functions:"
-msgstr ""
+msgstr "除了已經討論過的條件指示詞外，也可以通過 `@isset` 與 `@empty` 指示詞來作為其對應 PHP 函式的方便捷徑："
 
 # File: docs/8.x/blade.md, line: 188
 # File: docs/master/blade.md, line: 189
@@ -517,7 +587,9 @@ msgstr ""
 msgid "    @isset($records)\n"
 "        // $records is defined and is not null...\n"
 "    @endisset\n"
-msgstr ""
+msgstr "    @isset($records)\n"
+"        // $records 已定義且不是 null…\n"
+"    @endisset\n"
 
 # File: docs/8.x/blade.md, line: 192
 # File: docs/master/blade.md, line: 193
@@ -526,14 +598,16 @@ msgstr ""
 msgid "    @empty($records)\n"
 "        // $records is \"empty\"...\n"
 "    @endempty\n"
-msgstr ""
+msgstr "    @empty($records)\n"
+"        // $records 為空 (empty)…\n"
+"    @endempty\n"
 
 # File: docs/8.x/blade.md, line: 194
 # File: docs/master/blade.md, line: 195
 #. type: Plain text
 #, no-wrap
 msgid "<a name=\"authentication-directives\"></a>\n"
-msgstr ""
+msgstr "<a name=\"authentication-directives\"></a>\n"
 
 # File: docs/8.x/blade.md, line: 194
 # File: docs/master/blade.md, line: 195

@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: laravel-docs\n"
 "POT-Creation-Date: 2022-01-29 05:35+0000\n"
-"PO-Revision-Date: 2022-01-30 06:58\n"
+"PO-Revision-Date: 2022-01-30 07:57\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
@@ -80,7 +80,7 @@ msgstr "- [Eloquent Model 慣例](#eloquent-model-conventions)\n"
 "- [取得 Model](#retrieving-models)\n"
 "    - [Collection](#collections)\n"
 "    - [將查詢結果分段](#chunking-results)\n"
-"    - [延遲串流查詢結果](#streaming-results-lazily)\n"
+"    - [延遲的查詢結果資料流](#streaming-results-lazily)\n"
 "    - [指標 - Cursor](#cursors)\n"
 "    - [進階子查詢](#advanced-subqueries)\n"
 "- [取得單一 Model 或進行彙總](#retrieving-single-models)\n"
@@ -963,7 +963,7 @@ msgstr "除了 Laravel 的基礎 Collection 類別中提供的方法外，為了
 # File: docs/master/eloquent.md, line: 335
 #. type: Plain text
 msgid "Since all of Laravel's collections implement PHP's iterable interfaces, you may loop over collections as if they were an array:"
-msgstr ""
+msgstr "由於所有的 Laravel Collection 都實作了 PHP 的 Iterable 介面，因此我們可以把 Collection 當作陣列一樣迭代："
 
 # File: docs/8.x/eloquent.md, line: 336
 # File: docs/master/eloquent.md, line: 336
@@ -972,33 +972,35 @@ msgstr ""
 msgid "foreach ($flights as $flight) {\n"
 "    echo $flight->name;\n"
 "}\n"
-msgstr ""
+msgstr "foreach ($flights as $flight) {\n"
+"    echo $flight->name;\n"
+"}\n"
 
 # File: docs/8.x/eloquent.md, line: 343
 # File: docs/master/eloquent.md, line: 343
 #. type: Plain text
 #, no-wrap
 msgid "<a name=\"chunking-results\"></a>\n"
-msgstr ""
+msgstr "<a name=\"chunking-results\"></a>\n"
 
 # File: docs/8.x/eloquent.md, line: 343
 # File: docs/master/eloquent.md, line: 343
 #. type: Title ###
 #, no-wrap
 msgid "Chunking Results"
-msgstr ""
+msgstr "將查詢結果分段"
 
 # File: docs/8.x/eloquent.md, line: 346
 # File: docs/master/eloquent.md, line: 346
 #. type: Plain text
 msgid "Your application may run out of memory if you attempt to load tens of thousands of Eloquent records via the `all` or `get` methods. Instead of using these methods, the `chunk` method may be used to process large numbers of models more efficiently."
-msgstr ""
+msgstr "如果嘗試使用 `all` 或 `get` 方法來取得幾萬筆 Eloquent 紀錄，那麼你的程式可能會記憶體不足。除了使用這些方法外，可以使用 `chunk` 方法來更有效率地處理大量的 Model："
 
 # File: docs/8.x/eloquent.md, line: 348
 # File: docs/master/eloquent.md, line: 348
 #. type: Plain text
 msgid "The `chunk` method will retrieve a subset of Eloquent models, passing them to a closure for processing. Since only the current chunk of Eloquent models is retrieved at a time, the `chunk` method will provide significantly reduced memory usage when working with a large number of models:"
-msgstr ""
+msgstr "`chunk` 方法會取得一部分的 Eloquent Model，然後將這些 Model 傳入用於處理的閉包中。由於一次只會取得目前這個部分的 Eloquent Model，因此在處理大量 Model 時，`chunk` 方法會顯著地降低記憶體的使用："
 
 # File: docs/8.x/eloquent.md, line: 349
 # File: docs/master/eloquent.md, line: 349
@@ -1010,19 +1012,24 @@ msgid "use App\\Models\\Flight;\n\n"
 "        //\n"
 "    }\n"
 "});\n"
-msgstr ""
+msgstr "use App\\Models\\Flight;\n\n"
+"Flight::chunk(200, function ($flights) {\n"
+"    foreach ($flights as $flight) {\n"
+"        //\n"
+"    }\n"
+"});\n"
 
 # File: docs/8.x/eloquent.md, line: 360
 # File: docs/master/eloquent.md, line: 360
 #. type: Plain text
 msgid "The first argument passed to the `chunk` method is the number of records you wish to receive per \"chunk\". The closure passed as the second argument will be invoked for each chunk that is retrieved from the database. A database query will be executed to retrieve each chunk of records passed to the closure."
-msgstr ""
+msgstr "傳給 `chunk` 方法的第一個引數代表每個「Chunk (分段)」要取得的紀錄。每次從資料庫中取得一組片段後，就會叫用作為第二個引數傳入的閉包。每取得一組傳入閉包的片段，就會執行一次資料庫查詢。"
 
 # File: docs/8.x/eloquent.md, line: 362
 # File: docs/master/eloquent.md, line: 362
 #. type: Plain text
 msgid "If you are filtering the results of the `chunk` method based on a column that you will also be updating while iterating over the results, you should use the `chunkById` method. Using the `chunk` method in these scenarios could lead to unexpected and inconsistent results. Internally, the `chunkById` method will always retrieve models with an `id` column greater than the last model in the previous chunk:"
-msgstr ""
+msgstr "若使用 `chunk` 方法時有過濾資料，在迭代結果的時候會更新這個欄位，則應使用 `chunkById` 方法。若在這種情況下使用 `chunk` 可能會取得未預期的結果或是不一致的結果。在 `chunkById` 方法內部，會取得 `id` 欄位值大於前一個分段中最後一個 Model 的 Model："
 
 # File: docs/8.x/eloquent.md, line: 363
 # File: docs/master/eloquent.md, line: 363
@@ -1032,25 +1039,28 @@ msgid "Flight::where('departed', true)\n"
 "    ->chunkById(200, function ($flights) {\n"
 "        $flights->each->update(['departed' => false]);\n"
 "    }, $column = 'id');\n"
-msgstr ""
+msgstr "Flight::where('departed', true)\n"
+"    ->chunkById(200, function ($flights) {\n"
+"        $flights->each->update(['departed' => false]);\n"
+"    }, $column = 'id');\n"
 
 # File: docs/8.x/eloquent.md, line: 371
 #. type: Plain text
 #, no-wrap
 msgid "<a name=\"streaming-results-lazily\"></a>\n"
-msgstr ""
+msgstr "<a name=\"streaming-results-lazily\"></a>\n"
 
 # File: docs/8.x/eloquent.md, line: 371
 #. type: Title ###
 #, no-wrap
 msgid "Streaming Results Lazily"
-msgstr ""
+msgstr "延遲的查詢結果資料流"
 
 # File: docs/8.x/eloquent.md, line: 374
 # File: docs/master/eloquent.md, line: 374
 #. type: Plain text
 msgid "The `lazy` method works similarly to [the `chunk` method](#chunking-results) in the sense that, behind the scenes, it executes the query in chunks. However, instead of passing each chunk directly into a callback as is, the `lazy` method returns a flattened [`LazyCollection`](/docs/{{version}}/collections#lazy-collections) of Eloquent models, which lets you interact with the results as a single stream:"
-msgstr ""
+msgstr "`lazy` 方法與 [`chunk` 方法](#chunking-results) 的原理類似，都是以分段的方式執行查詢。不過，`lazy` 方法不是直接把每個分段傳入回呼中，而是回傳一個包含 Eloquent Model 的扁平 (Flattened) [`LazyCollection`](/docs/{{version}}/collections#lazy-collections)，使用這個 LazyCollection，就可以以單一資料流的方式與查詢結果互動："
 
 # File: docs/8.x/eloquent.md, line: 375
 # File: docs/master/eloquent.md, line: 375
@@ -1060,13 +1070,16 @@ msgid "use App\\Models\\Flight;\n\n"
 "foreach (Flight::lazy() as $flight) {\n"
 "    //\n"
 "}\n"
-msgstr ""
+msgstr "use App\\Models\\Flight;\n\n"
+"foreach (Flight::lazy() as $flight) {\n"
+"    //\n"
+"}\n"
 
 # File: docs/8.x/eloquent.md, line: 384
 # File: docs/master/eloquent.md, line: 384
 #. type: Plain text
 msgid "If you are filtering the results of the `lazy` method based on a column that you will also be updating while iterating over the results, you should use the `lazyById` method. Internally, the `lazyById` method will always retrieve models with an `id` column greater than the last model in the previous chunk:"
-msgstr ""
+msgstr "若使用 `lazy` 方法時有過濾資料，在迭代結果的時候會更新這個欄位，則應使用 `lazyById` 方法。在 `lazyById` 方法內部，會取得 `id` 欄位值大於前一個分段中最後一個 Model 的 Model："
 
 # File: docs/8.x/eloquent.md, line: 385
 # File: docs/master/eloquent.md, line: 385
@@ -1075,52 +1088,54 @@ msgstr ""
 msgid "Flight::where('departed', true)\n"
 "    ->lazyById(200, $column = 'id')\n"
 "    ->each->update(['departed' => false]);\n"
-msgstr ""
+msgstr "Flight::where('departed', true)\n"
+"    ->lazyById(200, $column = 'id')\n"
+"    ->each->update(['departed' => false]);\n"
 
 # File: docs/8.x/eloquent.md, line: 392
 # File: docs/master/eloquent.md, line: 392
 #. type: Plain text
 msgid "You may filter the results based on the descending order of the `id` using the `lazyByIdDesc` method."
-msgstr ""
+msgstr "可以使用 `lazyByIdDesc` 以依據 `id` 的降冪排序來過濾查詢結果。"
 
 # File: docs/8.x/eloquent.md, line: 394
 # File: docs/master/eloquent.md, line: 394
 #. type: Plain text
 #, no-wrap
 msgid "<a name=\"cursors\"></a>\n"
-msgstr ""
+msgstr "<a name=\"cursors\"></a>\n"
 
 # File: docs/8.x/eloquent.md, line: 394
 # File: docs/master/eloquent.md, line: 394
 #. type: Title ###
 #, no-wrap
 msgid "Cursors"
-msgstr ""
+msgstr "指標 - Cursor"
 
 # File: docs/8.x/eloquent.md, line: 397
 # File: docs/master/eloquent.md, line: 397
 #. type: Plain text
 msgid "Similar to the `lazy` method, the `cursor` method may be used to significantly reduce your application's memory consumption when iterating through tens of thousands of Eloquent model records."
-msgstr ""
+msgstr "與 `lazy` 方法類似，`cursor` 方法也可用來在疊檯數千筆 Eloquent Model 時顯著降低程式的記憶體使用量。"
 
 # File: docs/8.x/eloquent.md, line: 399
 # File: docs/master/eloquent.md, line: 399
 #. type: Plain text
 msgid "The `cursor` method will only execute a single database query; however, the individual Eloquent models will not be hydrated until they are actually iterated over. Therefore, only one Eloquent model is kept in memory at any given time while iterating over the cursor."
-msgstr ""
+msgstr "`cursor` 方法只會執行一筆資料庫查詢。不過，直到個別 Eloquent Model 被迭代到以前，這些 Model 都不會被解凍 (Hydrated)。因此，Cursor 的每次迭代時，記憶體內一次都只會有一個 Eloquent Model。"
 
 # File: docs/8.x/eloquent.md, line: 401
 # File: docs/master/eloquent.md, line: 401
 #. type: Plain text
 #, no-wrap
 msgid "> {note} Since the `cursor` method only ever holds a single Eloquent model in memory at a time, it cannot eager load relationships. If you need to eager load relationships, consider using [the `lazy` method](#streaming-results-lazily) instead.\n"
-msgstr ""
+msgstr "> {note} 由於 `cursor` 方法一次只會將一個 Eloquent Model 放在記憶體內，因此我們沒有辦法對關聯做積極式載入。若想積極式載入關聯，請考慮使用 [`lazy` 方法](#streaming-results-lazily) 代替。\n"
 
 # File: docs/8.x/eloquent.md, line: 403
 # File: docs/master/eloquent.md, line: 403
 #. type: Plain text
 msgid "Internally, the `cursor` method uses PHP [generators](https://www.php.net/manual/en/language.generators.overview.php) to implement this functionality:"
-msgstr ""
+msgstr "`cursor` 方法在其內部使用了 PHP 的 [Generator](https://www.php.net/manual/en/language.generators.overview.php) 來實作此功能："
 
 # File: docs/8.x/eloquent.md, line: 404
 # File: docs/master/eloquent.md, line: 404
@@ -1130,13 +1145,16 @@ msgid "use App\\Models\\Flight;\n\n"
 "foreach (Flight::where('destination', 'Zurich')->cursor() as $flight) {\n"
 "    //\n"
 "}\n"
-msgstr ""
+msgstr "use App\\Models\\Flight;\n\n"
+"foreach (Flight::where('destination', 'Zurich')->cursor() as $flight) {\n"
+"    //\n"
+"}\n"
 
 # File: docs/8.x/eloquent.md, line: 413
 # File: docs/master/eloquent.md, line: 413
 #. type: Plain text
 msgid "The `cursor` returns an `Illuminate\\Support\\LazyCollection` instance. [Lazy collections](/docs/{{version}}/collections#lazy-collections) allow you to use many of the collection methods available on typical Laravel collections while only loading a single model into memory at a time:"
-msgstr ""
+msgstr "`cursor` 會回傳一個 `Illuminate\\Support\\LazyCollection` 實體。使用 [Lazy collection](/docs/{{version}}/collections#lazy-collections)，能讓我們使用許多一般 Laravel Collection 中的方法，但一次只需要將一筆 Model 載入記憶體即可："
 
 # File: docs/8.x/eloquent.md, line: 414
 # File: docs/master/eloquent.md, line: 414
@@ -1149,53 +1167,59 @@ msgid "use App\\Models\\User;\n\n"
 "foreach ($users as $user) {\n"
 "    echo $user->id;\n"
 "}\n"
-msgstr ""
+msgstr "use App\\Models\\User;\n\n"
+"$users = User::cursor()->filter(function ($user) {\n"
+"    return $user->id > 500;\n"
+"});\n\n"
+"foreach ($users as $user) {\n"
+"    echo $user->id;\n"
+"}\n"
 
 # File: docs/8.x/eloquent.md, line: 427
 # File: docs/master/eloquent.md, line: 427
 #. type: Plain text
 msgid "Although the `cursor` method uses far less memory than a regular query (by only holding a single Eloquent model in memory at a time), it will still eventually run out of memory. This is [due to PHP's PDO driver internally caching all raw query results in its buffer](https://www.php.net/manual/en/mysqlinfo.concepts.buffering.php). If you're dealing with a very large number of Eloquent records, consider using [the `lazy` method](#streaming-results-lazily) instead."
-msgstr ""
+msgstr "雖然 `cursor` 方法比起一般查詢使用較少記憶體 (因為記憶體內一次只會有一筆 Eloquent Model)，但最終還是由可能會記憶體不足。這是[因為 PHP 的 PDO Driver 會自動在內部將所有的查詢結果都快取在其緩衝區 (Buffer) 上](https://www.php.net/manual/en/mysqlinfo.concepts.buffering.php)。所以，若要處理非常大量的 Eloquent 紀錄，請考慮使用 [`lazy` 方法](#streaming-results-lazily)替代。"
 
 # File: docs/8.x/eloquent.md, line: 429
 # File: docs/master/eloquent.md, line: 429
 #. type: Plain text
 #, no-wrap
 msgid "<a name=\"advanced-subqueries\"></a>\n"
-msgstr ""
+msgstr "<a name=\"advanced-subqueries\"></a>\n"
 
 # File: docs/8.x/eloquent.md, line: 429
 # File: docs/master/eloquent.md, line: 429
 #. type: Title ###
 #, no-wrap
 msgid "Advanced Subqueries"
-msgstr ""
+msgstr "進階子查詢"
 
 # File: docs/8.x/eloquent.md, line: 432
 # File: docs/master/eloquent.md, line: 432
 #. type: Plain text
 #, no-wrap
 msgid "<a name=\"subquery-selects\"></a>\n"
-msgstr ""
+msgstr "<a name=\"subquery-selects\"></a>\n"
 
 # File: docs/8.x/eloquent.md, line: 432
 # File: docs/master/eloquent.md, line: 432
 #. type: Title ####
 #, no-wrap
 msgid "Subquery Selects"
-msgstr ""
+msgstr "子查詢 Select"
 
 # File: docs/8.x/eloquent.md, line: 435
 # File: docs/master/eloquent.md, line: 435
 #. type: Plain text
 msgid "Eloquent also offers advanced subquery support, which allows you to pull information from related tables in a single query. For example, let's imagine that we have a table of flight `destinations` and a table of `flights` to destinations. The `flights` table contains an `arrived_at` column which indicates when the flight arrived at the destination."
-msgstr ""
+msgstr "Eloquent 也提供了進階子查詢的支援，能讓你在單一查詢內從其他相關的資料表中取得資料。舉例來說，假設我們有張班機目的地的 `destinations` 資料表，以及一張由前往該目的地班機的 `flights` 資料表。`flights` 資料表中包含了顯示班機抵達目的地時間的 `arrived_at` 欄位。"
 
 # File: docs/8.x/eloquent.md, line: 437
 # File: docs/master/eloquent.md, line: 437
 #. type: Plain text
 msgid "Using the subquery functionality available to the query builder's `select` and `addSelect` methods, we can select all of the `destinations` and the name of the flight that most recently arrived at that destination using a single query:"
-msgstr ""
+msgstr "使用 Query Builder 的 `select` 與 `addSelect` 方法中的子查詢功能，我們就能使用單一查詢來選擇所有目的地 `destinations` 以及最近抵達該目的地的航班名稱："
 
 # File: docs/8.x/eloquent.md, line: 440
 # File: docs/master/eloquent.md, line: 440
@@ -1203,7 +1227,8 @@ msgstr ""
 #, no-wrap
 msgid "    use App\\Models\\Destination;\n"
 "    use App\\Models\\Flight;\n"
-msgstr ""
+msgstr "    use App\\Models\\Destination;\n"
+"    use App\\Models\\Flight;\n"
 
 # File: docs/8.x/eloquent.md, line: 446
 # File: docs/master/eloquent.md, line: 446
@@ -1214,27 +1239,31 @@ msgid "    return Destination::addSelect(['last_flight' => Flight::select('name'
 "        ->orderByDesc('arrived_at')\n"
 "        ->limit(1)\n"
 "    ])->get();\n"
-msgstr ""
+msgstr "    return Destination::addSelect(['last_flight' => Flight::select('name')\n"
+"        ->whereColumn('destination_id', 'destinations.id')\n"
+"        ->orderByDesc('arrived_at')\n"
+"        ->limit(1)\n"
+"    ])->get();\n"
 
 # File: docs/8.x/eloquent.md, line: 448
 # File: docs/master/eloquent.md, line: 448
 #. type: Plain text
 #, no-wrap
 msgid "<a name=\"subquery-ordering\"></a>\n"
-msgstr ""
+msgstr "<a name=\"subquery-ordering\"></a>\n"
 
 # File: docs/8.x/eloquent.md, line: 448
 # File: docs/master/eloquent.md, line: 448
 #. type: Title ####
 #, no-wrap
 msgid "Subquery Ordering"
-msgstr ""
+msgstr "子查詢排序"
 
 # File: docs/8.x/eloquent.md, line: 451
 # File: docs/master/eloquent.md, line: 451
 #. type: Plain text
 msgid "In addition, the query builder's `orderBy` function supports subqueries. Continuing to use our flight example, we may use this functionality to sort all destinations based on when the last flight arrived at that destination. Again, this may be done while executing a single database query:"
-msgstr ""
+msgstr "此外，Query Builder 的 `orderBy` 功能也支援子查詢。繼續使用剛才的航班範例，我們可以使用這個功能來按照最後班機抵達目的地的時間來為所有目的地進行排序。同樣，我們只需要單一資料庫查詢就可以完成："
 
 # File: docs/8.x/eloquent.md, line: 458
 # File: docs/master/eloquent.md, line: 458
@@ -1246,27 +1275,32 @@ msgid "    return Destination::orderByDesc(\n"
 "            ->orderByDesc('arrived_at')\n"
 "            ->limit(1)\n"
 "    )->get();\n"
-msgstr ""
+msgstr "    return Destination::orderByDesc(\n"
+"        Flight::select('arrived_at')\n"
+"            ->whereColumn('destination_id', 'destinations.id')\n"
+"            ->orderByDesc('arrived_at')\n"
+"            ->limit(1)\n"
+"    )->get();\n"
 
 # File: docs/8.x/eloquent.md, line: 460
 # File: docs/master/eloquent.md, line: 460
 #. type: Plain text
 #, no-wrap
 msgid "<a name=\"retrieving-single-models\"></a>\n"
-msgstr ""
+msgstr "<a name=\"retrieving-single-models\"></a>\n"
 
 # File: docs/8.x/eloquent.md, line: 460
 # File: docs/master/eloquent.md, line: 460
 #. type: Title ##
 #, no-wrap
 msgid "Retrieving Single Models / Aggregates"
-msgstr ""
+msgstr "取得單一 Model 或彙總"
 
 # File: docs/8.x/eloquent.md, line: 463
 # File: docs/master/eloquent.md, line: 463
 #. type: Plain text
 msgid "In addition to retrieving all of the records matching a given query, you may also retrieve single records using the `find`, `first`, or `firstWhere` methods. Instead of returning a collection of models, these methods return a single model instance:"
-msgstr ""
+msgstr "除了取得所有符合給定查詢的紀錄外，我們也可以使用 `find`, `first`, 或 `firstWhere` 方法來取得單一紀錄。這些方法不會回傳一組包含 Model 的 Collection，而只會回傳單一 Model："
 
 # File: docs/8.x/eloquent.md, line: 468
 # File: docs/master/eloquent.md, line: 468
@@ -1274,7 +1308,8 @@ msgstr ""
 #, no-wrap
 msgid "    // Retrieve a model by its primary key...\n"
 "    $flight = Flight::find(1);\n"
-msgstr ""
+msgstr "    // 使用主索引鍵來取得 Model...\n"
+"    $flight = Flight::find(1);\n"
 
 # File: docs/8.x/eloquent.md, line: 471
 # File: docs/master/eloquent.md, line: 471
@@ -1282,7 +1317,8 @@ msgstr ""
 #, no-wrap
 msgid "    // Retrieve the first model matching the query constraints...\n"
 "    $flight = Flight::where('active', 1)->first();\n"
-msgstr ""
+msgstr "    // 取得符合查詢條件的第一個 Model...\n"
+"    $flight = Flight::where('active', 1)->first();\n"
 
 # File: docs/8.x/eloquent.md, line: 474
 # File: docs/master/eloquent.md, line: 474
@@ -1290,13 +1326,14 @@ msgstr ""
 #, no-wrap
 msgid "    // Alternative to retrieving the first model matching the query constraints...\n"
 "    $flight = Flight::firstWhere('active', 1);\n"
-msgstr ""
+msgstr "    // 取得符合查詢條件的第一筆 Model 之替代寫法...\n"
+"    $flight = Flight::firstWhere('active', 1);\n"
 
 # File: docs/8.x/eloquent.md, line: 476
 # File: docs/master/eloquent.md, line: 476
 #. type: Plain text
 msgid "Sometimes you may wish to retrieve the first result of a query or perform some other action if no results are found. The `firstOr` method will return the first result matching the query or, if no results are found, execute the given closure. The value returned by the closure will be considered the result of the `firstOr` method:"
-msgstr ""
+msgstr "有時候，我們可能會想取得查詢的第一筆結果，並在沒有符合的查詢結果時執行一些其他的操作。`firstOr` 方法會回傳第一筆符合該查詢的結果，並在沒有找到相符結果時執行給定的閉包。該閉包的回傳值會被當作 `firstOr` 方法的結果："
 
 # File: docs/8.x/eloquent.md, line: 480
 # File: docs/master/eloquent.md, line: 480
@@ -1305,47 +1342,49 @@ msgstr ""
 msgid "    $model = Flight::where('legs', '>', 3)->firstOr(function () {\n"
 "        // ...\n"
 "    });\n"
-msgstr ""
+msgstr "    $model = Flight::where('legs', '>', 3)->firstOr(function () {\n"
+"        // ...\n"
+"    });\n"
 
 # File: docs/8.x/eloquent.md, line: 482
 # File: docs/master/eloquent.md, line: 482
 #. type: Plain text
 #, no-wrap
 msgid "<a name=\"not-found-exceptions\"></a>\n"
-msgstr ""
+msgstr "<a name=\"not-found-exceptions\"></a>\n"
 
 # File: docs/8.x/eloquent.md, line: 482
 # File: docs/master/eloquent.md, line: 482
 #. type: Title ####
 #, no-wrap
 msgid "Not Found Exceptions"
-msgstr ""
+msgstr "找不到的例外"
 
 # File: docs/8.x/eloquent.md, line: 485
 # File: docs/master/eloquent.md, line: 485
 #. type: Plain text
 msgid "Sometimes you may wish to throw an exception if a model is not found. This is particularly useful in routes or controllers. The `findOrFail` and `firstOrFail` methods will retrieve the first result of the query; however, if no result is found, an `Illuminate\\Database\\Eloquent\\ModelNotFoundException` will be thrown:"
-msgstr ""
+msgstr "有時候，我們可能會想在找不到 Model 時擲回一個例外。這種行為特別適用於路由或 Controller 中。`findOrFail` 或 `firstOrFail` 方法會取得查詢的第一筆結果。不過，若找不到結果，會擲回 `Illuminate\\Database\\Eloquent\\ModelNotFoundException`："
 
 # File: docs/8.x/eloquent.md, line: 487
 # File: docs/master/eloquent.md, line: 487
 #. type: Plain text
 #, no-wrap
 msgid "    $flight = Flight::findOrFail(1);\n"
-msgstr ""
+msgstr "    $flight = Flight::findOrFail(1);\n"
 
 # File: docs/8.x/eloquent.md, line: 489
 # File: docs/master/eloquent.md, line: 489
 #. type: Plain text
 #, no-wrap
 msgid "    $flight = Flight::where('legs', '>', 3)->firstOrFail();\n"
-msgstr ""
+msgstr "    $flight = Flight::where('legs', '>', 3)->firstOrFail();\n"
 
 # File: docs/8.x/eloquent.md, line: 491
 # File: docs/master/eloquent.md, line: 491
 #. type: Plain text
 msgid "If the `ModelNotFoundException` is not caught, a 404 HTTP response is automatically sent back to the client:"
-msgstr ""
+msgstr "若未攔截 (Catch) `ModelNotFoundException`，則會自動回傳 404 HTTP 回應給用戶端："
 
 # File: docs/8.x/eloquent.md, line: 497
 # File: docs/master/eloquent.md, line: 497
@@ -1354,33 +1393,35 @@ msgstr ""
 msgid "    Route::get('/api/flights/{id}', function ($id) {\n"
 "        return Flight::findOrFail($id);\n"
 "    });\n"
-msgstr ""
+msgstr "    Route::get('/api/flights/{id}', function ($id) {\n"
+"        return Flight::findOrFail($id);\n"
+"    });\n"
 
 # File: docs/8.x/eloquent.md, line: 499
 # File: docs/master/eloquent.md, line: 499
 #. type: Plain text
 #, no-wrap
 msgid "<a name=\"retrieving-or-creating-models\"></a>\n"
-msgstr ""
+msgstr "<a name=\"retrieving-or-creating-models\"></a>\n"
 
 # File: docs/8.x/eloquent.md, line: 499
 # File: docs/master/eloquent.md, line: 499
 #. type: Title ###
 #, no-wrap
 msgid "Retrieving Or Creating Models"
-msgstr ""
+msgstr "取得或建立 Model"
 
 # File: docs/8.x/eloquent.md, line: 502
 # File: docs/master/eloquent.md, line: 502
 #. type: Plain text
 msgid "The `firstOrCreate` method will attempt to locate a database record using the given column / value pairs. If the model can not be found in the database, a record will be inserted with the attributes resulting from merging the first array argument with the optional second array argument:"
-msgstr ""
+msgstr "`firstOrCreate` 方法會嘗試使用給定的欄位 / 值配對組來取得資料庫紀錄。若資料庫中找不到該 Model，則會將第一個第一個陣列引述與第二個可選的陣列引數合併後插入資料庫："
 
 # File: docs/8.x/eloquent.md, line: 504
 # File: docs/master/eloquent.md, line: 504
 #. type: Plain text
 msgid "The `firstOrNew` method, like `firstOrCreate`, will attempt to locate a record in the database matching the given attributes. However, if a model is not found, a new model instance will be returned. Note that the model returned by `firstOrNew` has not yet been persisted to the database. You will need to manually call the `save` method to persist it:"
-msgstr ""
+msgstr "`firstOrNew` 方法與 `firstOrCreate` 方法類似，會嘗試在資料庫中尋找符合給定屬性的紀錄。不過，若找不到 Model，則會回傳新的 Model 實體。請注意，`firstOrNew` 回傳的 Model 還未被儲存在資料庫中，應手動呼叫 `save` 方法來保存："
 
 # File: docs/8.x/eloquent.md, line: 511
 # File: docs/master/eloquent.md, line: 511
@@ -1390,7 +1431,10 @@ msgid "    // Retrieve flight by name or create it if it doesn't exist...\n"
 "    $flight = Flight::firstOrCreate([\n"
 "        'name' => 'London to Paris'\n"
 "    ]);\n"
-msgstr ""
+msgstr "    // 依據名稱來取得航班，若不存在則建立...\n"
+"    $flight = Flight::firstOrCreate([\n"
+"        'name' => 'London to Paris'\n"
+"    ]);\n"
 
 # File: docs/8.x/eloquent.md, line: 517
 # File: docs/master/eloquent.md, line: 517
@@ -1401,7 +1445,11 @@ msgid "    // Retrieve flight by name or create it with the name, delayed, and a
 "        ['name' => 'London to Paris'],\n"
 "        ['delayed' => 1, 'arrival_time' => '11:30']\n"
 "    );\n"
-msgstr ""
+msgstr "    // 依據名稱取得航班，若不存在則使用 name, delayed, 與 arrival_time 屬性建立一筆...\n"
+"    $flight = Flight::firstOrCreate(\n"
+"        ['name' => 'London to Paris'],\n"
+"        ['delayed' => 1, 'arrival_time' => '11:30']\n"
+"    );\n"
 
 # File: docs/8.x/eloquent.md, line: 522
 # File: docs/master/eloquent.md, line: 522
@@ -1411,7 +1459,10 @@ msgid "    // Retrieve flight by name or instantiate a new Flight instance...\n"
 "    $flight = Flight::firstOrNew([\n"
 "        'name' => 'London to Paris'\n"
 "    ]);\n"
-msgstr ""
+msgstr "    // 依據名稱取的航班，若不存在則初始化一個新的 Flight 實體...\n"
+"    $flight = Flight::firstOrNew([\n"
+"        'name' => 'London to Paris'\n"
+"    ]);\n"
 
 # File: docs/8.x/eloquent.md, line: 528
 # File: docs/master/eloquent.md, line: 528
@@ -1422,82 +1473,86 @@ msgid "    // Retrieve flight by name or instantiate with the name, delayed, and
 "        ['name' => 'Tokyo to Sydney'],\n"
 "        ['delayed' => 1, 'arrival_time' => '11:30']\n"
 "    );\n"
-msgstr ""
+msgstr "    // 依據名稱取得航班，若不存在則使用 name, delayed, 與 arrival_time 屬性初始化一個航班實體...\n"
+"    $flight = Flight::firstOrNew(\n"
+"        ['name' => 'Tokyo to Sydney'],\n"
+"        ['delayed' => 1, 'arrival_time' => '11:30']\n"
+"    );\n"
 
 # File: docs/8.x/eloquent.md, line: 530
 # File: docs/master/eloquent.md, line: 530
 #. type: Plain text
 #, no-wrap
 msgid "<a name=\"retrieving-aggregates\"></a>\n"
-msgstr ""
+msgstr "<a name=\"retrieving-aggregates\"></a>\n"
 
 # File: docs/8.x/eloquent.md, line: 530
 # File: docs/master/eloquent.md, line: 530
 #. type: Title ###
 #, no-wrap
 msgid "Retrieving Aggregates"
-msgstr ""
+msgstr "取得彙總值 (Aggregate)"
 
 # File: docs/8.x/eloquent.md, line: 533
 # File: docs/master/eloquent.md, line: 533
 #. type: Plain text
 msgid "When interacting with Eloquent models, you may also use the `count`, `sum`, `max`, and other [aggregate methods](/docs/{{version}}/queries#aggregates) provided by the Laravel [query builder](/docs/{{version}}/queries). As you might expect, these methods return a scalar value instead of an Eloquent model instance:"
-msgstr ""
+msgstr "在與 Eloquent Model 互動時，我們也可以使用 `count`、`sum`、`max`⋯等其他由 Laravel [Query Builder](/docs/{{version}}/queries) 提供的[彙總方法](/docs/{{version}}/queries#aggregates)。如同讀者預期的一樣，這些方法會回傳純量值 (Scalar Value)，而非 Eloquent Model 實體："
 
 # File: docs/8.x/eloquent.md, line: 535
 # File: docs/master/eloquent.md, line: 535
 #. type: Plain text
 #, no-wrap
 msgid "    $count = Flight::where('active', 1)->count();\n"
-msgstr ""
+msgstr "    $count = Flight::where('active', 1)->count();\n"
 
 # File: docs/8.x/eloquent.md, line: 537
 # File: docs/master/eloquent.md, line: 537
 #. type: Plain text
 #, no-wrap
 msgid "    $max = Flight::where('active', 1)->max('price');\n"
-msgstr ""
+msgstr "    $max = Flight::where('active', 1)->max('price');\n"
 
 # File: docs/8.x/eloquent.md, line: 539
 # File: docs/master/eloquent.md, line: 539
 #. type: Plain text
 #, no-wrap
 msgid "<a name=\"inserting-and-updating-models\"></a>\n"
-msgstr ""
+msgstr "<a name=\"inserting-and-updating-models\"></a>\n"
 
 # File: docs/8.x/eloquent.md, line: 539
 # File: docs/master/eloquent.md, line: 539
 #. type: Title ##
 #, no-wrap
 msgid "Inserting & Updating Models"
-msgstr ""
+msgstr "插入與更新 Model"
 
 # File: docs/8.x/eloquent.md, line: 542
 # File: docs/master/eloquent.md, line: 542
 #. type: Plain text
 #, no-wrap
 msgid "<a name=\"inserts\"></a>\n"
-msgstr ""
+msgstr "<a name=\"inserts\"></a>\n"
 
 # File: docs/8.x/eloquent.md, line: 542
 # File: docs/master/eloquent.md, line: 542
 #. type: Title ###
 #, no-wrap
 msgid "Inserts"
-msgstr ""
+msgstr "插入 - Insert"
 
 # File: docs/8.x/eloquent.md, line: 545
 # File: docs/master/eloquent.md, line: 545
 #. type: Plain text
 msgid "Of course, when using Eloquent, we don't only need to retrieve models from the database. We also need to insert new records. Thankfully, Eloquent makes it simple. To insert a new record into the database, you should instantiate a new model instance and set attributes on the model. Then, call the `save` method on the model instance:"
-msgstr ""
+msgstr "當然，在使用 Eloquent 時，我們的需求不只有從資料庫中取得資料，我們也需要能插入新紀錄。所幸，在 Eloquent 中要插入資料非常簡單。要將新紀錄插入資料庫，請初始化一個新的 Model 實體，並在 Model 上設定屬性。然後，在 Model 實體上呼叫 `save` 方法："
 
 # File: docs/8.x/eloquent.md, line: 549
 # File: docs/master/eloquent.md, line: 549
 #. type: Plain text
 #, no-wrap
 msgid "    namespace App\\Http\\Controllers;\n"
-msgstr ""
+msgstr "    namespace App\\Http\\Controllers;\n"
 
 # File: docs/8.x/eloquent.md, line: 553
 # File: docs/master/eloquent.md, line: 553
@@ -1506,7 +1561,9 @@ msgstr ""
 msgid "    use App\\Http\\Controllers\\Controller;\n"
 "    use App\\Models\\Flight;\n"
 "    use Illuminate\\Http\\Request;\n"
-msgstr ""
+msgstr "    use App\\Http\\Controllers\\Controller;\n"
+"    use App\\Models\\Flight;\n"
+"    use Illuminate\\Http\\Request;\n"
 
 # File: docs/8.x/eloquent.md, line: 565
 # File: docs/master/eloquent.md, line: 565
@@ -1523,21 +1580,31 @@ msgid "    class FlightController extends Controller\n"
 "        public function store(Request $request)\n"
 "        {\n"
 "            // Validate the request...\n"
-msgstr ""
+msgstr "    class FlightController extends Controller\n"
+"    {\n"
+"        /**\n"
+"         * Store a new flight in the database.\n"
+"         *\n"
+"         * @param  \\Illuminate\\Http\\Request  $request\n"
+"         * @return \\Illuminate\\Http\\Response\n"
+"         */\n"
+"        public function store(Request $request)\n"
+"        {\n"
+"            // Validate the request...\n"
 
 # File: docs/8.x/eloquent.md, line: 567
 # File: docs/master/eloquent.md, line: 567
 #. type: Plain text
 #, no-wrap
 msgid "            $flight = new Flight;\n"
-msgstr ""
+msgstr "            $flight = new Flight;\n"
 
 # File: docs/8.x/eloquent.md, line: 569
 # File: docs/master/eloquent.md, line: 569
 #. type: Plain text
 #, no-wrap
 msgid "            $flight->name = $request->name;\n"
-msgstr ""
+msgstr "            $flight->name = $request->name;\n"
 
 # File: docs/8.x/eloquent.md, line: 573
 # File: docs/master/eloquent.md, line: 573
@@ -1546,19 +1613,21 @@ msgstr ""
 msgid "            $flight->save();\n"
 "        }\n"
 "    }\n"
-msgstr ""
+msgstr "            $flight->save();\n"
+"        }\n"
+"    }\n"
 
 # File: docs/8.x/eloquent.md, line: 575
 # File: docs/master/eloquent.md, line: 575
 #. type: Plain text
 msgid "In this example, we assign the `name` field from the incoming HTTP request to the `name` attribute of the `App\\Models\\Flight` model instance. When we call the `save` method, a record will be inserted into the database. The model's `created_at` and `updated_at` timestamps will automatically be set when the `save` method is called, so there is no need to set them manually."
-msgstr ""
+msgstr "在這個範例中，我們將來自連入 HTTP 請求的 `name` 欄位賦值給 `App\\Models\\Flight` Model 實體的 `name` 屬性。呼叫 `save` 方法後，就會將一筆紀錄插入到資料庫中。在呼叫 `save` 方法時，會自動設定 `created_at` 與 `updated_at` 時戳，因此我們不需要手動設定這些欄位。"
 
 # File: docs/8.x/eloquent.md, line: 577
 # File: docs/master/eloquent.md, line: 577
 #. type: Plain text
 msgid "Alternatively, you may use the `create` method to \"save\" a new model using a single PHP statement. The inserted model instance will be returned to you by the `create` method:"
-msgstr ""
+msgstr "或者，我們也可以使用 `create` 來通過單一 PHP 陳述式「保存」新 Model。`create` 方法會回傳插入的 Model 實體："
 
 # File: docs/8.x/eloquent.md, line: 583
 # File: docs/8.x/eloquent.md, line: 681
@@ -1569,33 +1638,35 @@ msgstr ""
 msgid "    $flight = Flight::create([\n"
 "        'name' => 'London to Paris',\n"
 "    ]);\n"
-msgstr ""
+msgstr "    $flight = Flight::create([\n"
+"        'name' => 'London to Paris',\n"
+"    ]);\n"
 
 # File: docs/8.x/eloquent.md, line: 585
 # File: docs/master/eloquent.md, line: 585
 #. type: Plain text
 msgid "However, before using the `create` method, you will need to specify either a `fillable` or `guarded` property on your model class. These properties are required because all Eloquent models are protected against mass assignment vulnerabilities by default. To learn more about mass assignment, please consult the [mass assignment documentation](#mass-assignment)."
-msgstr ""
+msgstr "不過，在使用 `create` 方法時，應在 Model 類別上設定好 `fillable` 或 `guarded` 屬性。由於所有的 Eloquent Model 預設都有針對大量賦值弱點 (Mass Assignment Vulnerability) 進行保護，因此必須設定這些屬性。要瞭解更多有關大量賦值的資訊，請參考[大量賦值說明文件](#mass-assignment)。"
 
 # File: docs/8.x/eloquent.md, line: 587
 # File: docs/master/eloquent.md, line: 587
 #. type: Plain text
 #, no-wrap
 msgid "<a name=\"updates\"></a>\n"
-msgstr ""
+msgstr "<a name=\"updates\"></a>\n"
 
 # File: docs/8.x/eloquent.md, line: 587
 # File: docs/master/eloquent.md, line: 587
 #. type: Title ###
 #, no-wrap
 msgid "Updates"
-msgstr ""
+msgstr "更新 - Update"
 
 # File: docs/8.x/eloquent.md, line: 590
 # File: docs/master/eloquent.md, line: 590
 #. type: Plain text
 msgid "The `save` method may also be used to update models that already exist in the database. To update a model, you should retrieve it and set any attributes you wish to update. Then, you should call the model's `save` method. Again, the `updated_at` timestamp will automatically be updated, so there is no need to manually set its value:"
-msgstr ""
+msgstr "`save` 方法也可用來更新已存在於資料庫的 Model。要更新 Model，應先取得這個 Model，然後設定要更新的屬性。接著，呼叫 Model 的 `save` 方法。同樣，`updated_at` 時戳會自動更新，無須手動設定："
 
 # File: docs/8.x/eloquent.md, line: 594
 # File: docs/8.x/eloquent.md, line: 765
@@ -1604,41 +1675,41 @@ msgstr ""
 #. type: Plain text
 #, no-wrap
 msgid "    $flight = Flight::find(1);\n"
-msgstr ""
+msgstr "    $flight = Flight::find(1);\n"
 
 # File: docs/8.x/eloquent.md, line: 596
 # File: docs/master/eloquent.md, line: 596
 #. type: Plain text
 #, no-wrap
 msgid "    $flight->name = 'Paris to London';\n"
-msgstr ""
+msgstr "    $flight->name = 'Paris to London';\n"
 
 # File: docs/8.x/eloquent.md, line: 598
 # File: docs/master/eloquent.md, line: 598
 #. type: Plain text
 #, no-wrap
 msgid "    $flight->save();\n"
-msgstr ""
+msgstr "    $flight->save();\n"
 
 # File: docs/8.x/eloquent.md, line: 600
 # File: docs/master/eloquent.md, line: 600
 #. type: Plain text
 #, no-wrap
 msgid "<a name=\"mass-updates\"></a>\n"
-msgstr ""
+msgstr "<a name=\"mass-updates\"></a>\n"
 
 # File: docs/8.x/eloquent.md, line: 600
 # File: docs/master/eloquent.md, line: 600
 #. type: Title ####
 #, no-wrap
 msgid "Mass Updates"
-msgstr ""
+msgstr "批次更新"
 
 # File: docs/8.x/eloquent.md, line: 603
 # File: docs/master/eloquent.md, line: 603
 #. type: Plain text
 msgid "Updates can also be performed against models that match a given query. In this example, all flights that are `active` and have a `destination` of `San Diego` will be marked as delayed:"
-msgstr ""
+msgstr "也可以更新符合給定查詢的 Model。在這個範例中，設為 `active` 且 `destination` 為 `San Diego` 的航班會被標記為誤點 (Delayed)："
 
 # File: docs/8.x/eloquent.md, line: 607
 # File: docs/master/eloquent.md, line: 607
@@ -1647,34 +1718,36 @@ msgstr ""
 msgid "    Flight::where('active', 1)\n"
 "          ->where('destination', 'San Diego')\n"
 "          ->update(['delayed' => 1]);\n"
-msgstr ""
+msgstr "    Flight::where('active', 1)\n"
+"          ->where('destination', 'San Diego')\n"
+"          ->update(['delayed' => 1]);\n"
 
 # File: docs/8.x/eloquent.md, line: 609
 # File: docs/master/eloquent.md, line: 609
 #. type: Plain text
 msgid "The `update` method expects an array of column and value pairs representing the columns that should be updated. The `update` method returns the number of affected rows."
-msgstr ""
+msgstr "`update` 方法預期一組包含欄位與值的陣列，用來代表要更新的欄位。`update` 方法會回傳受影響的行數。"
 
 # File: docs/8.x/eloquent.md, line: 611
 # File: docs/master/eloquent.md, line: 611
 #. type: Plain text
 #, no-wrap
 msgid "> {note} When issuing a mass update via Eloquent, the `saving`, `saved`, `updating`, and `updated` model events will not be fired for the updated models. This is because the models are never actually retrieved when issuing a mass update.\n"
-msgstr ""
+msgstr "> {note} 在使用 Eloquent 進行批次更新時，將不會引發 `saving`、`saved`、`updating`、`updated` 等 Model 事件。這是因為，在批次更新時並不會實際取得這些 Model。\n"
 
 # File: docs/8.x/eloquent.md, line: 613
 # File: docs/master/eloquent.md, line: 613
 #. type: Plain text
 #, no-wrap
 msgid "<a name=\"examining-attribute-changes\"></a>\n"
-msgstr ""
+msgstr "<a name=\"examining-attribute-changes\"></a>\n"
 
 # File: docs/8.x/eloquent.md, line: 613
 # File: docs/master/eloquent.md, line: 613
 #. type: Title ####
 #, no-wrap
 msgid "Examining Attribute Changes"
-msgstr ""
+msgstr "檢驗屬性的更改"
 
 # File: docs/8.x/eloquent.md, line: 616
 # File: docs/master/eloquent.md, line: 616

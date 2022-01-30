@@ -1,0 +1,2359 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: laravel-docs\n"
+"POT-Creation-Date: 2022-01-30 12:42+0000\n"
+"PO-Revision-Date: 2022-01-30 12:44\n"
+"Last-Translator: \n"
+"Language-Team: Chinese Traditional\n"
+"Language: zh_TW\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Crowdin-Project: laravel-docs\n"
+"X-Crowdin-Project-ID: 447952\n"
+"X-Crowdin-Language: zh-TW\n"
+"X-Crowdin-File: /main/templates/mail.pot\n"
+"X-Crowdin-File-ID: 99\n"
+
+# File: docs/8.x/mail.md, line: 1
+# File: docs/master/mail.md, line: 1
+#. type: Title #
+#, no-wrap
+msgid "Mail"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 27
+#. type: Plain text
+#, no-wrap
+msgid "- [Introduction](#introduction)\n"
+"    - [Configuration](#configuration)\n"
+"    - [Driver Prerequisites](#driver-prerequisites)\n"
+"    - [Failover Configuration](#failover-configuration)\n"
+"- [Generating Mailables](#generating-mailables)\n"
+"- [Writing Mailables](#writing-mailables)\n"
+"    - [Configuring The Sender](#configuring-the-sender)\n"
+"    - [Configuring The View](#configuring-the-view)\n"
+"    - [View Data](#view-data)\n"
+"    - [Attachments](#attachments)\n"
+"    - [Inline Attachments](#inline-attachments)\n"
+"    - [Customizing The SwiftMailer Message](#customizing-the-swiftmailer-message)\n"
+"- [Markdown Mailables](#markdown-mailables)\n"
+"    - [Generating Markdown Mailables](#generating-markdown-mailables)\n"
+"    - [Writing Markdown Messages](#writing-markdown-messages)\n"
+"    - [Customizing The Components](#customizing-the-components)\n"
+"- [Sending Mail](#sending-mail)\n"
+"    - [Queueing Mail](#queueing-mail)\n"
+"- [Rendering Mailables](#rendering-mailables)\n"
+"    - [Previewing Mailables In The Browser](#previewing-mailables-in-the-browser)\n"
+"- [Localizing Mailables](#localizing-mailables)\n"
+"- [Testing Mailables](#testing-mailables)\n"
+"- [Mail & Local Development](#mail-and-local-development)\n"
+"- [Events](#events)\n"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 29
+# File: docs/master/mail.md, line: 29
+#. type: Plain text
+#, no-wrap
+msgid "<a name=\"introduction\"></a>\n"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 29
+# File: docs/master/mail.md, line: 29
+#. type: Title ##
+#, no-wrap
+msgid "Introduction"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 32
+#. type: Plain text
+msgid "Sending email doesn't have to be complicated. Laravel provides a clean, simple email API powered by the popular [SwiftMailer](https://swiftmailer.symfony.com/) library. Laravel and SwiftMailer provide drivers for sending email via SMTP, Mailgun, Postmark, Amazon SES, and `sendmail`, allowing you to quickly get started sending mail through a local or cloud based service of your choice."
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 34
+# File: docs/master/mail.md, line: 34
+#. type: Plain text
+#, no-wrap
+msgid "<a name=\"configuration\"></a>\n"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 34
+# File: docs/master/mail.md, line: 34
+#. type: Title ###
+#, no-wrap
+msgid "Configuration"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 37
+# File: docs/master/mail.md, line: 37
+#. type: Plain text
+msgid "Laravel's email services may be configured via your application's `config/mail.php` configuration file. Each mailer configured within this file may have its own unique configuration and even its own unique \"transport\", allowing your application to use different email services to send certain email messages. For example, your application might use Postmark to send transactional emails while using Amazon SES to send bulk emails."
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 39
+# File: docs/master/mail.md, line: 39
+#. type: Plain text
+msgid "Within your `mail` configuration file, you will find a `mailers` configuration array. This array contains a sample configuration entry for each of the major mail drivers / transports supported by Laravel, while the `default` configuration value determines which mailer will be used by default when your application needs to send an email message."
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 41
+# File: docs/master/mail.md, line: 41
+#. type: Plain text
+#, no-wrap
+msgid "<a name=\"driver-prerequisites\"></a>\n"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 41
+# File: docs/master/mail.md, line: 41
+#. type: Title ###
+#, no-wrap
+msgid "Driver / Transport Prerequisites"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 44
+#. type: Plain text
+msgid "The API based drivers such as Mailgun and Postmark are often simpler and faster than sending mail via SMTP servers. Whenever possible, we recommend that you use one of these drivers. All of the API based drivers require the Guzzle HTTP library, which may be installed via the Composer package manager:"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 46
+#. type: Plain text
+#, no-wrap
+msgid "    composer require guzzlehttp/guzzle\n"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 48
+# File: docs/master/mail.md, line: 46
+#. type: Plain text
+#, no-wrap
+msgid "<a name=\"mailgun-driver\"></a>\n"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 48
+# File: docs/master/mail.md, line: 46
+#. type: Title ####
+#, no-wrap
+msgid "Mailgun Driver"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 51
+#. type: Plain text
+msgid "To use the Mailgun driver, first install the Guzzle HTTP library. Then, set the `default` option in your `config/mail.php` configuration file to `mailgun`. Next, verify that your `config/services.php` configuration file contains the following options:"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 56
+# File: docs/master/mail.md, line: 58
+#. type: Plain text
+#, no-wrap
+msgid "    'mailgun' => [\n"
+"        'domain' => env('MAILGUN_DOMAIN'),\n"
+"        'secret' => env('MAILGUN_SECRET'),\n"
+"    ],\n"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 58
+# File: docs/master/mail.md, line: 60
+#. type: Plain text
+msgid "If you are not using the United States [Mailgun region](https://documentation.mailgun.com/en/latest/api-intro.html#mailgun-regions), you may define your region's endpoint in the `services` configuration file:"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 64
+# File: docs/master/mail.md, line: 66
+#. type: Plain text
+#, no-wrap
+msgid "    'mailgun' => [\n"
+"        'domain' => env('MAILGUN_DOMAIN'),\n"
+"        'secret' => env('MAILGUN_SECRET'),\n"
+"        'endpoint' => env('MAILGUN_ENDPOINT', 'api.eu.mailgun.net'),\n"
+"    ],\n"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 66
+# File: docs/master/mail.md, line: 68
+#. type: Plain text
+#, no-wrap
+msgid "<a name=\"postmark-driver\"></a>\n"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 66
+# File: docs/master/mail.md, line: 68
+#. type: Title ####
+#, no-wrap
+msgid "Postmark Driver"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 69
+#. type: Plain text
+msgid "To use the Postmark driver, install Postmark's SwiftMailer transport via Composer:"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 71
+#. type: Plain text
+#, no-wrap
+msgid "    composer require wildbit/swiftmailer-postmark\n"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 73
+#. type: Plain text
+msgid "Next, install the Guzzle HTTP library and set the `default` option in your `config/mail.php` configuration file to `postmark`. Finally, verify that your `config/services.php` configuration file contains the following options:"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 77
+# File: docs/master/mail.md, line: 79
+#. type: Plain text
+#, no-wrap
+msgid "    'postmark' => [\n"
+"        'token' => env('POSTMARK_TOKEN'),\n"
+"    ],\n"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 79
+# File: docs/master/mail.md, line: 81
+#. type: Plain text
+msgid "If you would like to specify the Postmark message stream that should be used by a given mailer, you may add the `message_stream_id` configuration option to the mailer's configuration array. This configuration array can be found in your application's `config/mail.php` configuration file:"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 84
+# File: docs/master/mail.md, line: 86
+#. type: Plain text
+#, no-wrap
+msgid "    'postmark' => [\n"
+"        'transport' => 'postmark',\n"
+"        'message_stream_id' => env('POSTMARK_MESSAGE_STREAM_ID'),\n"
+"    ],\n"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 86
+# File: docs/master/mail.md, line: 88
+#. type: Plain text
+msgid "This way you are also able to set up multiple Postmark mailers with different message streams."
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 88
+# File: docs/master/mail.md, line: 90
+#. type: Plain text
+#, no-wrap
+msgid "<a name=\"ses-driver\"></a>\n"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 88
+# File: docs/master/mail.md, line: 90
+#. type: Title ####
+#, no-wrap
+msgid "SES Driver"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 91
+#. type: Plain text
+msgid "To use the Amazon SES driver you must first install the Amazon AWS SDK for PHP. You may install this library via the Composer package manager:"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 92
+# File: docs/master/mail.md, line: 94
+#. type: Code fence info string
+#, no-wrap
+msgid "bash"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 92
+#. type: Plain text
+#, no-wrap
+msgid "composer require aws/aws-sdk-php\n"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 97
+# File: docs/master/mail.md, line: 99
+#. type: Plain text
+msgid "Next, set the `default` option in your `config/mail.php` configuration file to `ses` and verify that your `config/services.php` configuration file contains the following options:"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 103
+# File: docs/master/mail.md, line: 105
+#. type: Plain text
+#, no-wrap
+msgid "    'ses' => [\n"
+"        'key' => env('AWS_ACCESS_KEY_ID'),\n"
+"        'secret' => env('AWS_SECRET_ACCESS_KEY'),\n"
+"        'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),\n"
+"    ],\n"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 105
+# File: docs/master/mail.md, line: 107
+#. type: Plain text
+msgid "To utilize AWS [temporary credentials](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_temp_use-resources.html) via a session token, you may add a `token` key to your application's SES configuration:"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 112
+# File: docs/master/mail.md, line: 114
+#. type: Plain text
+#, no-wrap
+msgid "    'ses' => [\n"
+"        'key' => env('AWS_ACCESS_KEY_ID'),\n"
+"        'secret' => env('AWS_SECRET_ACCESS_KEY'),\n"
+"        'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),\n"
+"        'token' => env('AWS_SESSION_TOKEN'),\n"
+"    ],\n"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 114
+#. type: Plain text
+msgid "If you would like to define [additional options](https://docs.aws.amazon.com/aws-sdk-php/v3/api/api-email-2010-12-01.html#sendrawemail) that Laravel should pass to the AWS SDK's `SendRawEmail` method when sending an email, you may define an `options` array within your `ses` configuration:"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 126
+#. type: Plain text
+#, no-wrap
+msgid "    'ses' => [\n"
+"        'key' => env('AWS_ACCESS_KEY_ID'),\n"
+"        'secret' => env('AWS_SECRET_ACCESS_KEY'),\n"
+"        'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),\n"
+"        'options' => [\n"
+"            'ConfigurationSetName' => 'MyConfigurationSet',\n"
+"            'Tags' => [\n"
+"                ['Name' => 'foo', 'Value' => 'bar'],\n"
+"            ],\n"
+"        ],\n"
+"    ],\n"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 128
+# File: docs/master/mail.md, line: 130
+#. type: Plain text
+#, no-wrap
+msgid "<a name=\"failover-configuration\"></a>\n"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 128
+# File: docs/master/mail.md, line: 130
+#. type: Title ###
+#, no-wrap
+msgid "Failover Configuration"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 131
+# File: docs/master/mail.md, line: 133
+#. type: Plain text
+msgid "Sometimes, an external service you have configured to send your application's mail may be down. In these cases, it can be useful to define one or more backup mail delivery configurations that will be used in case your primary delivery driver is down."
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 133
+# File: docs/master/mail.md, line: 135
+#. type: Plain text
+msgid "To accomplish this, you should define a mailer within your application's `mail` configuration file that uses the `failover` transport. The configuration array for your application's `failover` mailer should contain an array of `mailers` that reference the order in which mail drivers should be chosen for delivery:"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 143
+# File: docs/master/mail.md, line: 145
+#. type: Plain text
+#, no-wrap
+msgid "    'mailers' => [\n"
+"        'failover' => [\n"
+"            'transport' => 'failover',\n"
+"            'mailers' => [\n"
+"                'postmark',\n"
+"                'mailgun',\n"
+"                'sendmail',\n"
+"            ],\n"
+"        ],\n"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 146
+# File: docs/master/mail.md, line: 148
+#. type: Plain text
+#, no-wrap
+msgid "        // ...\n"
+"    ],\n"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 148
+# File: docs/master/mail.md, line: 150
+#. type: Plain text
+msgid "Once your failover mailer has been defined, you should set this mailer as the default mailer used by your application by specifying its name as the value of the `default` configuration key within your application's `mail` configuration file:"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 150
+# File: docs/master/mail.md, line: 152
+#. type: Plain text
+#, no-wrap
+msgid "    'default' => env('MAIL_MAILER', 'failover'),\n"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 152
+# File: docs/master/mail.md, line: 154
+#. type: Plain text
+#, no-wrap
+msgid "<a name=\"generating-mailables\"></a>\n"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 152
+# File: docs/master/mail.md, line: 154
+#. type: Title ##
+#, no-wrap
+msgid "Generating Mailables"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 155
+# File: docs/master/mail.md, line: 157
+#. type: Plain text
+msgid "When building Laravel applications, each type of email sent by your application is represented as a \"mailable\" class. These classes are stored in the `app/Mail` directory. Don't worry if you don't see this directory in your application, since it will be generated for you when you create your first mailable class using the `make:mail` Artisan command:"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 157
+# File: docs/master/mail.md, line: 159
+#. type: Plain text
+#, no-wrap
+msgid "    php artisan make:mail OrderShipped\n"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 159
+# File: docs/master/mail.md, line: 161
+#. type: Plain text
+#, no-wrap
+msgid "<a name=\"writing-mailables\"></a>\n"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 159
+# File: docs/master/mail.md, line: 161
+#. type: Title ##
+#, no-wrap
+msgid "Writing Mailables"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 162
+# File: docs/master/mail.md, line: 164
+#. type: Plain text
+msgid "Once you have generated a mailable class, open it up so we can explore its contents. First, note that all of a mailable class' configuration is done in the `build` method. Within this method, you may call various methods such as `from`, `subject`, `view`, and `attach` to configure the email's presentation and delivery."
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 164
+# File: docs/master/mail.md, line: 166
+#. type: Plain text
+#, no-wrap
+msgid "> {tip} You may type-hint dependencies on the mailable's `build` method. The Laravel [service container](/docs/{{version}}/container) automatically injects these dependencies.\n"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 166
+# File: docs/master/mail.md, line: 168
+#. type: Plain text
+#, no-wrap
+msgid "<a name=\"configuring-the-sender\"></a>\n"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 166
+# File: docs/master/mail.md, line: 168
+#. type: Title ###
+#, no-wrap
+msgid "Configuring The Sender"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 169
+# File: docs/master/mail.md, line: 171
+#. type: Plain text
+#, no-wrap
+msgid "<a name=\"using-the-from-method\"></a>\n"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 169
+# File: docs/master/mail.md, line: 171
+#. type: Title ####
+#, no-wrap
+msgid "Using The `from` Method"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 172
+# File: docs/master/mail.md, line: 174
+#. type: Plain text
+msgid "First, let's explore configuring the sender of the email. Or, in other words, who the email is going to be \"from\". There are two ways to configure the sender. First, you may use the `from` method within your mailable class' `build` method:"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 183
+# File: docs/master/mail.md, line: 185
+#. type: Plain text
+#, no-wrap
+msgid "    /**\n"
+"     * Build the message.\n"
+"     *\n"
+"     * @return $this\n"
+"     */\n"
+"    public function build()\n"
+"    {\n"
+"        return $this->from('example@example.com', 'Example')\n"
+"                    ->view('emails.orders.shipped');\n"
+"    }\n"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 185
+# File: docs/master/mail.md, line: 187
+#. type: Plain text
+#, no-wrap
+msgid "<a name=\"using-a-global-from-address\"></a>\n"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 185
+# File: docs/master/mail.md, line: 187
+#. type: Title ####
+#, no-wrap
+msgid "Using A Global `from` Address"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 188
+# File: docs/master/mail.md, line: 190
+#. type: Plain text
+msgid "However, if your application uses the same \"from\" address for all of its emails, it can become cumbersome to call the `from` method in each mailable class you generate. Instead, you may specify a global \"from\" address in your `config/mail.php` configuration file. This address will be used if no other \"from\" address is specified within the mailable class:"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 190
+# File: docs/master/mail.md, line: 192
+#. type: Plain text
+#, no-wrap
+msgid "    'from' => ['address' => 'example@example.com', 'name' => 'App Name'],\n"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 192
+# File: docs/master/mail.md, line: 194
+#. type: Plain text
+msgid "In addition, you may define a global \"reply_to\" address within your `config/mail.php` configuration file:"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 194
+# File: docs/master/mail.md, line: 196
+#. type: Plain text
+#, no-wrap
+msgid "    'reply_to' => ['address' => 'example@example.com', 'name' => 'App Name'],\n"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 196
+# File: docs/master/mail.md, line: 198
+#. type: Plain text
+#, no-wrap
+msgid "<a name=\"configuring-the-view\"></a>\n"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 196
+# File: docs/master/mail.md, line: 198
+#. type: Title ###
+#, no-wrap
+msgid "Configuring The View"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 199
+# File: docs/master/mail.md, line: 201
+#. type: Plain text
+msgid "Within a mailable class' `build` method, you may use the `view` method to specify which template should be used when rendering the email's contents. Since each email typically uses a [Blade template](/docs/{{version}}/blade) to render its contents, you have the full power and convenience of the Blade templating engine when building your email's HTML:"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 209
+# File: docs/master/mail.md, line: 211
+#. type: Plain text
+#, no-wrap
+msgid "    /**\n"
+"     * Build the message.\n"
+"     *\n"
+"     * @return $this\n"
+"     */\n"
+"    public function build()\n"
+"    {\n"
+"        return $this->view('emails.orders.shipped');\n"
+"    }\n"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 211
+# File: docs/master/mail.md, line: 213
+#. type: Plain text
+#, no-wrap
+msgid "> {tip} You may wish to create a `resources/views/emails` directory to house all of your email templates; however, you are free to place them wherever you wish within your `resources/views` directory.\n"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 213
+# File: docs/master/mail.md, line: 215
+#. type: Plain text
+#, no-wrap
+msgid "<a name=\"plain-text-emails\"></a>\n"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 213
+# File: docs/master/mail.md, line: 215
+#. type: Title ####
+#, no-wrap
+msgid "Plain Text Emails"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 216
+# File: docs/master/mail.md, line: 218
+#. type: Plain text
+msgid "If you would like to define a plain-text version of your email, you may use the `text` method. Like the `view` method, the `text` method accepts a template name which will be used to render the contents of the email. You are free to define both an HTML and plain-text version of your message:"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 227
+# File: docs/master/mail.md, line: 229
+#. type: Plain text
+#, no-wrap
+msgid "    /**\n"
+"     * Build the message.\n"
+"     *\n"
+"     * @return $this\n"
+"     */\n"
+"    public function build()\n"
+"    {\n"
+"        return $this->view('emails.orders.shipped')\n"
+"                    ->text('emails.orders.shipped_plain');\n"
+"    }\n"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 229
+# File: docs/master/mail.md, line: 231
+#. type: Plain text
+#, no-wrap
+msgid "<a name=\"view-data\"></a>\n"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 229
+# File: docs/master/mail.md, line: 231
+#. type: Title ###
+#, no-wrap
+msgid "View Data"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 232
+# File: docs/master/mail.md, line: 234
+#. type: Plain text
+#, no-wrap
+msgid "<a name=\"via-public-properties\"></a>\n"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 232
+# File: docs/master/mail.md, line: 234
+#. type: Title ####
+#, no-wrap
+msgid "Via Public Properties"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 235
+# File: docs/master/mail.md, line: 237
+#. type: Plain text
+msgid "Typically, you will want to pass some data to your view that you can utilize when rendering the email's HTML. There are two ways you may make data available to your view. First, any public property defined on your mailable class will automatically be made available to the view. So, for example, you may pass data into your mailable class' constructor and set that data to public properties defined on the class:"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 237
+# File: docs/8.x/mail.md, line: 290
+# File: docs/8.x/mail.md, line: 583
+# File: docs/8.x/mail.md, line: 700
+# File: docs/master/mail.md, line: 239
+# File: docs/master/mail.md, line: 292
+# File: docs/master/mail.md, line: 587
+# File: docs/master/mail.md, line: 704
+#. type: Plain text
+#, no-wrap
+msgid "    <?php\n"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 239
+# File: docs/8.x/mail.md, line: 292
+# File: docs/8.x/mail.md, line: 702
+# File: docs/master/mail.md, line: 241
+# File: docs/master/mail.md, line: 294
+# File: docs/master/mail.md, line: 706
+#. type: Plain text
+#, no-wrap
+msgid "    namespace App\\Mail;\n"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 244
+# File: docs/8.x/mail.md, line: 297
+# File: docs/master/mail.md, line: 246
+# File: docs/master/mail.md, line: 299
+#. type: Plain text
+#, no-wrap
+msgid "    use App\\Models\\Order;\n"
+"    use Illuminate\\Bus\\Queueable;\n"
+"    use Illuminate\\Mail\\Mailable;\n"
+"    use Illuminate\\Queue\\SerializesModels;\n"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 248
+# File: docs/8.x/mail.md, line: 301
+# File: docs/master/mail.md, line: 250
+# File: docs/master/mail.md, line: 303
+#. type: Plain text
+#, no-wrap
+msgid "    class OrderShipped extends Mailable\n"
+"    {\n"
+"        use Queueable, SerializesModels;\n"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 255
+# File: docs/master/mail.md, line: 257
+#. type: Plain text
+#, no-wrap
+msgid "        /**\n"
+"         * The order instance.\n"
+"         *\n"
+"         * @var \\App\\Models\\Order\n"
+"         */\n"
+"        public $order;\n"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 266
+# File: docs/8.x/mail.md, line: 319
+# File: docs/master/mail.md, line: 268
+# File: docs/master/mail.md, line: 321
+#. type: Plain text
+#, no-wrap
+msgid "        /**\n"
+"         * Create a new message instance.\n"
+"         *\n"
+"         * @param  \\App\\Models\\Order  $order\n"
+"         * @return void\n"
+"         */\n"
+"        public function __construct(Order $order)\n"
+"        {\n"
+"            $this->order = $order;\n"
+"        }\n"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 277
+# File: docs/master/mail.md, line: 279
+#. type: Plain text
+#, no-wrap
+msgid "        /**\n"
+"         * Build the message.\n"
+"         *\n"
+"         * @return $this\n"
+"         */\n"
+"        public function build()\n"
+"        {\n"
+"            return $this->view('emails.orders.shipped');\n"
+"        }\n"
+"    }\n"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 279
+# File: docs/master/mail.md, line: 281
+#. type: Plain text
+msgid "Once the data has been set to a public property, it will automatically be available in your view, so you may access it like you would access any other data in your Blade templates:"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 283
+# File: docs/master/mail.md, line: 285
+#. type: Plain text
+#, no-wrap
+msgid "    <div>\n"
+"        Price: {{ $order->price }}\n"
+"    </div>\n"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 285
+# File: docs/master/mail.md, line: 287
+#. type: Plain text
+#, no-wrap
+msgid "<a name=\"via-the-with-method\"></a>\n"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 285
+# File: docs/master/mail.md, line: 287
+#. type: Title ####
+#, no-wrap
+msgid "Via The `with` Method:"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 288
+# File: docs/master/mail.md, line: 290
+#. type: Plain text
+msgid "If you would like to customize the format of your email's data before it is sent to the template, you may manually pass your data to the view via the `with` method. Typically, you will still pass data via the mailable class' constructor; however, you should set this data to `protected` or `private` properties so the data is not automatically made available to the template. Then, when calling the `with` method, pass an array of data that you wish to make available to the template:"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 308
+# File: docs/master/mail.md, line: 310
+#. type: Plain text
+#, no-wrap
+msgid "        /**\n"
+"         * The order instance.\n"
+"         *\n"
+"         * @var \\App\\Models\\Order\n"
+"         */\n"
+"        protected $order;\n"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 334
+# File: docs/master/mail.md, line: 336
+#. type: Plain text
+#, no-wrap
+msgid "        /**\n"
+"         * Build the message.\n"
+"         *\n"
+"         * @return $this\n"
+"         */\n"
+"        public function build()\n"
+"        {\n"
+"            return $this->view('emails.orders.shipped')\n"
+"                        ->with([\n"
+"                            'orderName' => $this->order->name,\n"
+"                            'orderPrice' => $this->order->price,\n"
+"                        ]);\n"
+"        }\n"
+"    }\n"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 336
+# File: docs/master/mail.md, line: 338
+#. type: Plain text
+msgid "Once the data has been passed to the `with` method, it will automatically be available in your view, so you may access it like you would access any other data in your Blade templates:"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 340
+# File: docs/master/mail.md, line: 342
+#. type: Plain text
+#, no-wrap
+msgid "    <div>\n"
+"        Price: {{ $orderPrice }}\n"
+"    </div>\n"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 342
+# File: docs/master/mail.md, line: 344
+#. type: Plain text
+#, no-wrap
+msgid "<a name=\"attachments\"></a>\n"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 342
+# File: docs/master/mail.md, line: 344
+#. type: Title ###
+#, no-wrap
+msgid "Attachments"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 345
+# File: docs/master/mail.md, line: 347
+#. type: Plain text
+msgid "To add attachments to an email, use the `attach` method within the mailable class' `build` method. The `attach` method accepts the full path to the file as its first argument:"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 356
+# File: docs/master/mail.md, line: 358
+#. type: Plain text
+#, no-wrap
+msgid "    /**\n"
+"     * Build the message.\n"
+"     *\n"
+"     * @return $this\n"
+"     */\n"
+"    public function build()\n"
+"    {\n"
+"        return $this->view('emails.orders.shipped')\n"
+"                    ->attach('/path/to/file');\n"
+"    }\n"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 358
+# File: docs/master/mail.md, line: 360
+#. type: Plain text
+msgid "When attaching files to a message, you may also specify the display name and / or MIME type by passing an `array` as the second argument to the `attach` method:"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 372
+# File: docs/master/mail.md, line: 374
+#. type: Plain text
+#, no-wrap
+msgid "    /**\n"
+"     * Build the message.\n"
+"     *\n"
+"     * @return $this\n"
+"     */\n"
+"    public function build()\n"
+"    {\n"
+"        return $this->view('emails.orders.shipped')\n"
+"                    ->attach('/path/to/file', [\n"
+"                        'as' => 'name.pdf',\n"
+"                        'mime' => 'application/pdf',\n"
+"                    ]);\n"
+"    }\n"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 374
+# File: docs/master/mail.md, line: 376
+#. type: Plain text
+#, no-wrap
+msgid "<a name=\"attaching-files-from-disk\"></a>\n"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 374
+# File: docs/master/mail.md, line: 376
+#. type: Title ####
+#, no-wrap
+msgid "Attaching Files From Disk"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 377
+# File: docs/master/mail.md, line: 379
+#. type: Plain text
+msgid "If you have stored a file on one of your [filesystem disks](/docs/{{version}}/filesystem), you may attach it to the email using the `attachFromStorage` method:"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 388
+# File: docs/master/mail.md, line: 390
+#. type: Plain text
+#, no-wrap
+msgid "    /**\n"
+"     * Build the message.\n"
+"     *\n"
+"     * @return $this\n"
+"     */\n"
+"    public function build()\n"
+"    {\n"
+"       return $this->view('emails.orders.shipped')\n"
+"                   ->attachFromStorage('/path/to/file');\n"
+"    }\n"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 390
+# File: docs/master/mail.md, line: 392
+#. type: Plain text
+msgid "If necessary, you may specify the file's attachment name and additional options using the second and third arguments to the `attachFromStorage` method:"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 403
+# File: docs/master/mail.md, line: 405
+#. type: Plain text
+#, no-wrap
+msgid "    /**\n"
+"     * Build the message.\n"
+"     *\n"
+"     * @return $this\n"
+"     */\n"
+"    public function build()\n"
+"    {\n"
+"       return $this->view('emails.orders.shipped')\n"
+"                   ->attachFromStorage('/path/to/file', 'name.pdf', [\n"
+"                       'mime' => 'application/pdf'\n"
+"                   ]);\n"
+"    }\n"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 405
+# File: docs/master/mail.md, line: 407
+#. type: Plain text
+msgid "The `attachFromStorageDisk` method may be used if you need to specify a storage disk other than your default disk:"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 416
+# File: docs/master/mail.md, line: 418
+#. type: Plain text
+#, no-wrap
+msgid "    /**\n"
+"     * Build the message.\n"
+"     *\n"
+"     * @return $this\n"
+"     */\n"
+"    public function build()\n"
+"    {\n"
+"       return $this->view('emails.orders.shipped')\n"
+"                   ->attachFromStorageDisk('s3', '/path/to/file');\n"
+"    }\n"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 418
+# File: docs/master/mail.md, line: 420
+#. type: Plain text
+#, no-wrap
+msgid "<a name=\"raw-data-attachments\"></a>\n"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 418
+# File: docs/master/mail.md, line: 420
+#. type: Title ####
+#, no-wrap
+msgid "Raw Data Attachments"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 421
+# File: docs/master/mail.md, line: 423
+#. type: Plain text
+msgid "The `attachData` method may be used to attach a raw string of bytes as an attachment. For example, you might use this method if you have generated a PDF in memory and want to attach it to the email without writing it to disk. The `attachData` method accepts the raw data bytes as its first argument, the name of the file as its second argument, and an array of options as its third argument:"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 434
+# File: docs/master/mail.md, line: 436
+#. type: Plain text
+#, no-wrap
+msgid "    /**\n"
+"     * Build the message.\n"
+"     *\n"
+"     * @return $this\n"
+"     */\n"
+"    public function build()\n"
+"    {\n"
+"        return $this->view('emails.orders.shipped')\n"
+"                    ->attachData($this->pdf, 'name.pdf', [\n"
+"                        'mime' => 'application/pdf',\n"
+"                    ]);\n"
+"    }\n"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 436
+# File: docs/master/mail.md, line: 438
+#. type: Plain text
+#, no-wrap
+msgid "<a name=\"inline-attachments\"></a>\n"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 436
+# File: docs/master/mail.md, line: 438
+#. type: Title ###
+#, no-wrap
+msgid "Inline Attachments"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 439
+# File: docs/master/mail.md, line: 441
+#. type: Plain text
+msgid "Embedding inline images into your emails is typically cumbersome; however, Laravel provides a convenient way to attach images to your emails. To embed an inline image, use the `embed` method on the `$message` variable within your email template. Laravel automatically makes the `$message` variable available to all of your email templates, so you don't need to worry about passing it in manually:"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 442
+# File: docs/master/mail.md, line: 444
+#. type: Plain text
+#, no-wrap
+msgid "    <body>\n"
+"        Here is an image:\n"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 445
+# File: docs/master/mail.md, line: 447
+#. type: Plain text
+#, no-wrap
+msgid "        <img src=\"{{ $message->embed($pathToImage) }}\">\n"
+"    </body>\n"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 447
+# File: docs/master/mail.md, line: 449
+#. type: Plain text
+#, no-wrap
+msgid "> {note} The `$message` variable is not available in plain-text message templates since plain-text messages do not utilize inline attachments.\n"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 449
+# File: docs/master/mail.md, line: 451
+#. type: Plain text
+#, no-wrap
+msgid "<a name=\"embedding-raw-data-attachments\"></a>\n"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 449
+# File: docs/master/mail.md, line: 451
+#. type: Title ####
+#, no-wrap
+msgid "Embedding Raw Data Attachments"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 452
+# File: docs/master/mail.md, line: 454
+#. type: Plain text
+msgid "If you already have a raw image data string you wish to embed into an email template, you may call the `embedData` method on the `$message` variable. When calling the `embedData` method, you will need to provide a filename that should be assigned to the embedded image:"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 455
+# File: docs/master/mail.md, line: 457
+#. type: Plain text
+#, no-wrap
+msgid "    <body>\n"
+"        Here is an image from raw data:\n"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 458
+# File: docs/master/mail.md, line: 460
+#. type: Plain text
+#, no-wrap
+msgid "        <img src=\"{{ $message->embedData($data, 'example-image.jpg') }}\">\n"
+"    </body>\n"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 460
+#. type: Plain text
+#, no-wrap
+msgid "<a name=\"customizing-the-swiftmailer-message\"></a>\n"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 460
+#. type: Title ###
+#, no-wrap
+msgid "Customizing The SwiftMailer Message"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 463
+#. type: Plain text
+msgid "The `withSwiftMessage` method of the `Mailable` base class allows you to register a closure which will be invoked with the SwiftMailer message instance before sending the message. This gives you an opportunity to deeply customize the message before it is delivered:"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 472
+# File: docs/master/mail.md, line: 476
+#. type: Plain text
+#, no-wrap
+msgid "    /**\n"
+"     * Build the message.\n"
+"     *\n"
+"     * @return $this\n"
+"     */\n"
+"    public function build()\n"
+"    {\n"
+"        $this->view('emails.orders.shipped');\n"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 478
+#. type: Plain text
+#, no-wrap
+msgid "        $this->withSwiftMessage(function ($message) {\n"
+"            $message->getHeaders()->addTextHeader(\n"
+"                'Custom-Header', 'Header Value'\n"
+"            );\n"
+"        });\n"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 481
+# File: docs/master/mail.md, line: 485
+#. type: Plain text
+#, no-wrap
+msgid "        return $this;\n"
+"    }\n"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 483
+# File: docs/master/mail.md, line: 487
+#. type: Plain text
+#, no-wrap
+msgid "<a name=\"markdown-mailables\"></a>\n"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 483
+# File: docs/master/mail.md, line: 487
+#. type: Title ##
+#, no-wrap
+msgid "Markdown Mailables"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 486
+# File: docs/master/mail.md, line: 490
+#. type: Plain text
+msgid "Markdown mailable messages allow you to take advantage of the pre-built templates and components of [mail notifications](/docs/{{version}}/notifications#mail-notifications) in your mailables. Since the messages are written in Markdown, Laravel is able to render beautiful, responsive HTML templates for the messages while also automatically generating a plain-text counterpart."
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 488
+# File: docs/master/mail.md, line: 492
+#. type: Plain text
+#, no-wrap
+msgid "<a name=\"generating-markdown-mailables\"></a>\n"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 488
+# File: docs/master/mail.md, line: 492
+#. type: Title ###
+#, no-wrap
+msgid "Generating Markdown Mailables"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 491
+# File: docs/master/mail.md, line: 495
+#. type: Plain text
+msgid "To generate a mailable with a corresponding Markdown template, you may use the `--markdown` option of the `make:mail` Artisan command:"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 493
+# File: docs/master/mail.md, line: 497
+#. type: Plain text
+#, no-wrap
+msgid "    php artisan make:mail OrderShipped --markdown=emails.orders.shipped\n"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 495
+# File: docs/master/mail.md, line: 499
+#. type: Plain text
+msgid "Then, when configuring the mailable within its `build` method, call the `markdown` method instead of the `view` method. The `markdown` method accepts the name of the Markdown template and an optional array of data to make available to the template:"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 508
+# File: docs/master/mail.md, line: 512
+#. type: Plain text
+#, no-wrap
+msgid "    /**\n"
+"     * Build the message.\n"
+"     *\n"
+"     * @return $this\n"
+"     */\n"
+"    public function build()\n"
+"    {\n"
+"        return $this->from('example@example.com')\n"
+"                    ->markdown('emails.orders.shipped', [\n"
+"                        'url' => $this->orderUrl,\n"
+"                    ]);\n"
+"    }\n"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 510
+# File: docs/master/mail.md, line: 514
+#. type: Plain text
+#, no-wrap
+msgid "<a name=\"writing-markdown-messages\"></a>\n"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 510
+# File: docs/master/mail.md, line: 514
+#. type: Title ###
+#, no-wrap
+msgid "Writing Markdown Messages"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 513
+# File: docs/master/mail.md, line: 517
+#. type: Plain text
+msgid "Markdown mailables use a combination of Blade components and Markdown syntax which allow you to easily construct mail messages while leveraging Laravel's pre-built email UI components:"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 516
+# File: docs/master/mail.md, line: 520
+#. type: Plain text
+#, no-wrap
+msgid "    @component('mail::message')\n"
+"    # Order Shipped\n"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 518
+# File: docs/master/mail.md, line: 522
+#. type: Plain text
+#, no-wrap
+msgid "    Your order has been shipped!\n"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 522
+# File: docs/master/mail.md, line: 526
+#. type: Plain text
+#, no-wrap
+msgid "    @component('mail::button', ['url' => $url])\n"
+"    View Order\n"
+"    @endcomponent\n"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 526
+# File: docs/master/mail.md, line: 530
+#. type: Plain text
+#, no-wrap
+msgid "    Thanks,<br>\n"
+"    {{ config('app.name') }}\n"
+"    @endcomponent\n"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 528
+# File: docs/master/mail.md, line: 532
+#. type: Plain text
+#, no-wrap
+msgid "> {tip} Do not use excess indentation when writing Markdown emails. Per Markdown standards, Markdown parsers will render indented content as code blocks.\n"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 530
+# File: docs/master/mail.md, line: 534
+#. type: Plain text
+#, no-wrap
+msgid "<a name=\"button-component\"></a>\n"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 530
+# File: docs/master/mail.md, line: 534
+#. type: Title ####
+#, no-wrap
+msgid "Button Component"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 533
+# File: docs/master/mail.md, line: 537
+#. type: Plain text
+msgid "The button component renders a centered button link. The component accepts two arguments, a `url` and an optional `color`. Supported colors are `primary`, `success`, and `error`. You may add as many button components to a message as you wish:"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 537
+# File: docs/master/mail.md, line: 541
+#. type: Plain text
+#, no-wrap
+msgid "    @component('mail::button', ['url' => $url, 'color' => 'success'])\n"
+"    View Order\n"
+"    @endcomponent\n"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 539
+# File: docs/master/mail.md, line: 543
+#. type: Plain text
+#, no-wrap
+msgid "<a name=\"panel-component\"></a>\n"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 539
+# File: docs/master/mail.md, line: 543
+#. type: Title ####
+#, no-wrap
+msgid "Panel Component"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 542
+# File: docs/master/mail.md, line: 546
+#. type: Plain text
+msgid "The panel component renders the given block of text in a panel that has a slightly different background color than the rest of the message. This allows you to draw attention to a given block of text:"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 546
+# File: docs/master/mail.md, line: 550
+#. type: Plain text
+#, no-wrap
+msgid "    @component('mail::panel')\n"
+"    This is the panel content.\n"
+"    @endcomponent\n"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 548
+# File: docs/master/mail.md, line: 552
+#. type: Plain text
+#, no-wrap
+msgid "<a name=\"table-component\"></a>\n"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 548
+# File: docs/master/mail.md, line: 552
+#. type: Title ####
+#, no-wrap
+msgid "Table Component"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 551
+# File: docs/master/mail.md, line: 555
+#. type: Plain text
+msgid "The table component allows you to transform a Markdown table into an HTML table. The component accepts the Markdown table as its content. Table column alignment is supported using the default Markdown table alignment syntax:"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 558
+# File: docs/master/mail.md, line: 562
+#. type: Plain text
+#, no-wrap
+msgid "    @component('mail::table')\n"
+"    | Laravel       | Table         | Example  |\n"
+"    | ------------- |:-------------:| --------:|\n"
+"    | Col 2 is      | Centered      | $10      |\n"
+"    | Col 3 is      | Right-Aligned | $20      |\n"
+"    @endcomponent\n"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 560
+# File: docs/master/mail.md, line: 564
+#. type: Plain text
+#, no-wrap
+msgid "<a name=\"customizing-the-components\"></a>\n"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 560
+# File: docs/master/mail.md, line: 564
+#. type: Title ###
+#, no-wrap
+msgid "Customizing The Components"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 563
+# File: docs/master/mail.md, line: 567
+#. type: Plain text
+msgid "You may export all of the Markdown mail components to your own application for customization. To export the components, use the `vendor:publish` Artisan command to publish the `laravel-mail` asset tag:"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 565
+# File: docs/master/mail.md, line: 569
+#. type: Plain text
+#, no-wrap
+msgid "    php artisan vendor:publish --tag=laravel-mail\n"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 567
+# File: docs/master/mail.md, line: 571
+#. type: Plain text
+msgid "This command will publish the Markdown mail components to the `resources/views/vendor/mail` directory. The `mail` directory will contain an `html` and a `text` directory, each containing their respective representations of every available component. You are free to customize these components however you like."
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 569
+# File: docs/master/mail.md, line: 573
+#. type: Plain text
+#, no-wrap
+msgid "<a name=\"customizing-the-css\"></a>\n"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 569
+# File: docs/master/mail.md, line: 573
+#. type: Title ####
+#, no-wrap
+msgid "Customizing The CSS"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 572
+# File: docs/master/mail.md, line: 576
+#. type: Plain text
+msgid "After exporting the components, the `resources/views/vendor/mail/html/themes` directory will contain a `default.css` file. You may customize the CSS in this file and your styles will automatically be converted to inline CSS styles within the HTML representations of your Markdown mail messages."
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 574
+# File: docs/master/mail.md, line: 578
+#. type: Plain text
+msgid "If you would like to build an entirely new theme for Laravel's Markdown components, you may place a CSS file within the `html/themes` directory. After naming and saving your CSS file, update the `theme` option of your application's `config/mail.php` configuration file to match the name of your new theme."
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 576
+# File: docs/master/mail.md, line: 580
+#. type: Plain text
+msgid "To customize the theme for an individual mailable, you may set the `$theme` property of the mailable class to the name of the theme that should be used when sending that mailable."
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 578
+# File: docs/master/mail.md, line: 582
+#. type: Plain text
+#, no-wrap
+msgid "<a name=\"sending-mail\"></a>\n"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 578
+# File: docs/master/mail.md, line: 582
+#. type: Title ##
+#, no-wrap
+msgid "Sending Mail"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 581
+# File: docs/master/mail.md, line: 585
+#. type: Plain text
+msgid "To send a message, use the `to` method on the `Mail` [facade](/docs/{{version}}/facades). The `to` method accepts an email address, a user instance, or a collection of users. If you pass an object or collection of objects, the mailer will automatically use their `email` and `name` properties when determining the email's recipients, so make sure these attributes are available on your objects. Once you have specified your recipients, you may pass an instance of your mailable class to the `send` method:"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 585
+# File: docs/master/mail.md, line: 589
+#. type: Plain text
+#, no-wrap
+msgid "    namespace App\\Http\\Controllers;\n"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 591
+# File: docs/master/mail.md, line: 595
+#. type: Plain text
+#, no-wrap
+msgid "    use App\\Http\\Controllers\\Controller;\n"
+"    use App\\Mail\\OrderShipped;\n"
+"    use App\\Models\\Order;\n"
+"    use Illuminate\\Http\\Request;\n"
+"    use Illuminate\\Support\\Facades\\Mail;\n"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 603
+# File: docs/master/mail.md, line: 607
+#. type: Plain text
+#, no-wrap
+msgid "    class OrderShipmentController extends Controller\n"
+"    {\n"
+"        /**\n"
+"         * Ship the given order.\n"
+"         *\n"
+"         * @param  \\Illuminate\\Http\\Request  $request\n"
+"         * @return \\Illuminate\\Http\\Response\n"
+"         */\n"
+"        public function store(Request $request)\n"
+"        {\n"
+"            $order = Order::findOrFail($request->order_id);\n"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 605
+# File: docs/master/mail.md, line: 609
+#. type: Plain text
+#, no-wrap
+msgid "            // Ship the order...\n"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 609
+# File: docs/master/mail.md, line: 613
+#. type: Plain text
+#, no-wrap
+msgid "            Mail::to($request->user())->send(new OrderShipped($order));\n"
+"        }\n"
+"    }\n"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 611
+# File: docs/master/mail.md, line: 615
+#. type: Plain text
+msgid "You are not limited to just specifying the \"to\" recipients when sending a message. You are free to set \"to\", \"cc\", and \"bcc\" recipients by chaining their respective methods together:"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 616
+# File: docs/master/mail.md, line: 620
+#. type: Plain text
+#, no-wrap
+msgid "    Mail::to($request->user())\n"
+"        ->cc($moreUsers)\n"
+"        ->bcc($evenMoreUsers)\n"
+"        ->send(new OrderShipped($order));\n"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 618
+# File: docs/master/mail.md, line: 622
+#. type: Plain text
+#, no-wrap
+msgid "<a name=\"looping-over-recipients\"></a>\n"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 618
+# File: docs/master/mail.md, line: 622
+#. type: Title ####
+#, no-wrap
+msgid "Looping Over Recipients"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 621
+# File: docs/master/mail.md, line: 625
+#. type: Plain text
+msgid "Occasionally, you may need to send a mailable to a list of recipients by iterating over an array of recipients / email addresses. However, since the `to` method appends email addresses to the mailable's list of recipients, each iteration through the loop will send another email to every previous recipient. Therefore, you should always re-create the mailable instance for each recipient:"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 625
+# File: docs/master/mail.md, line: 629
+#. type: Plain text
+#, no-wrap
+msgid "    foreach (['taylor@example.com', 'dries@example.com'] as $recipient) {\n"
+"        Mail::to($recipient)->send(new OrderShipped($order));\n"
+"    }\n"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 627
+# File: docs/master/mail.md, line: 631
+#. type: Plain text
+#, no-wrap
+msgid "<a name=\"sending-mail-via-a-specific-mailer\"></a>\n"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 627
+# File: docs/master/mail.md, line: 631
+#. type: Title ####
+#, no-wrap
+msgid "Sending Mail Via A Specific Mailer"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 630
+# File: docs/master/mail.md, line: 634
+#. type: Plain text
+msgid "By default, Laravel will send email using the mailer configured as the `default` mailer in your application's `mail` configuration file. However, you may use the `mailer` method to send a message using a specific mailer configuration:"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 634
+# File: docs/master/mail.md, line: 638
+#. type: Plain text
+#, no-wrap
+msgid "    Mail::mailer('postmark')\n"
+"            ->to($request->user())\n"
+"            ->send(new OrderShipped($order));\n"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 636
+# File: docs/master/mail.md, line: 640
+#. type: Plain text
+#, no-wrap
+msgid "<a name=\"queueing-mail\"></a>\n"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 636
+# File: docs/master/mail.md, line: 640
+#. type: Title ###
+#, no-wrap
+msgid "Queueing Mail"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 639
+# File: docs/master/mail.md, line: 643
+#. type: Plain text
+#, no-wrap
+msgid "<a name=\"queueing-a-mail-message\"></a>\n"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 639
+# File: docs/master/mail.md, line: 643
+#. type: Title ####
+#, no-wrap
+msgid "Queueing A Mail Message"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 642
+# File: docs/master/mail.md, line: 646
+#. type: Plain text
+msgid "Since sending email messages can negatively impact the response time of your application, many developers choose to queue email messages for background sending. Laravel makes this easy using its built-in [unified queue API](/docs/{{version}}/queues). To queue a mail message, use the `queue` method on the `Mail` facade after specifying the message's recipients:"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 647
+# File: docs/master/mail.md, line: 651
+#. type: Plain text
+#, no-wrap
+msgid "    Mail::to($request->user())\n"
+"        ->cc($moreUsers)\n"
+"        ->bcc($evenMoreUsers)\n"
+"        ->queue(new OrderShipped($order));\n"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 649
+# File: docs/master/mail.md, line: 653
+#. type: Plain text
+msgid "This method will automatically take care of pushing a job onto the queue so the message is sent in the background. You will need to [configure your queues](/docs/{{version}}/queues) before using this feature."
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 651
+# File: docs/master/mail.md, line: 655
+#. type: Plain text
+#, no-wrap
+msgid "<a name=\"delayed-message-queueing\"></a>\n"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 651
+# File: docs/master/mail.md, line: 655
+#. type: Title ####
+#, no-wrap
+msgid "Delayed Message Queueing"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 654
+# File: docs/master/mail.md, line: 658
+#. type: Plain text
+msgid "If you wish to delay the delivery of a queued email message, you may use the `later` method. As its first argument, the `later` method accepts a `DateTime` instance indicating when the message should be sent:"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 659
+# File: docs/master/mail.md, line: 663
+#. type: Plain text
+#, no-wrap
+msgid "    Mail::to($request->user())\n"
+"        ->cc($moreUsers)\n"
+"        ->bcc($evenMoreUsers)\n"
+"        ->later(now()->addMinutes(10), new OrderShipped($order));\n"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 661
+# File: docs/master/mail.md, line: 665
+#. type: Plain text
+#, no-wrap
+msgid "<a name=\"pushing-to-specific-queues\"></a>\n"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 661
+# File: docs/master/mail.md, line: 665
+#. type: Title ####
+#, no-wrap
+msgid "Pushing To Specific Queues"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 664
+# File: docs/master/mail.md, line: 668
+#. type: Plain text
+msgid "Since all mailable classes generated using the `make:mail` command make use of the `Illuminate\\Bus\\Queueable` trait, you may call the `onQueue` and `onConnection` methods on any mailable class instance, allowing you to specify the connection and queue name for the message:"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 668
+# File: docs/master/mail.md, line: 672
+#. type: Plain text
+#, no-wrap
+msgid "    $message = (new OrderShipped($order))\n"
+"                    ->onConnection('sqs')\n"
+"                    ->onQueue('emails');\n"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 673
+# File: docs/master/mail.md, line: 677
+#. type: Plain text
+#, no-wrap
+msgid "    Mail::to($request->user())\n"
+"        ->cc($moreUsers)\n"
+"        ->bcc($evenMoreUsers)\n"
+"        ->queue($message);\n"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 675
+# File: docs/master/mail.md, line: 679
+#. type: Plain text
+#, no-wrap
+msgid "<a name=\"queueing-by-default\"></a>\n"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 675
+# File: docs/master/mail.md, line: 679
+#. type: Title ####
+#, no-wrap
+msgid "Queueing By Default"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 678
+# File: docs/master/mail.md, line: 682
+#. type: Plain text
+msgid "If you have mailable classes that you want to always be queued, you may implement the `ShouldQueue` contract on the class. Now, even if you call the `send` method when mailing, the mailable will still be queued since it implements the contract:"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 680
+# File: docs/master/mail.md, line: 684
+#. type: Plain text
+#, no-wrap
+msgid "    use Illuminate\\Contracts\\Queue\\ShouldQueue;\n"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 685
+# File: docs/master/mail.md, line: 689
+#. type: Plain text
+#, no-wrap
+msgid "    class OrderShipped extends Mailable implements ShouldQueue\n"
+"    {\n"
+"        //\n"
+"    }\n"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 687
+# File: docs/master/mail.md, line: 691
+#. type: Plain text
+#, no-wrap
+msgid "<a name=\"queued-mailables-and-database-transactions\"></a>\n"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 687
+# File: docs/master/mail.md, line: 691
+#. type: Title ####
+#, no-wrap
+msgid "Queued Mailables & Database Transactions"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 690
+# File: docs/master/mail.md, line: 694
+#. type: Plain text
+msgid "When queued mailables are dispatched within database transactions, they may be processed by the queue before the database transaction has committed. When this happens, any updates you have made to models or database records during the database transaction may not yet be reflected in the database. In addition, any models or database records created within the transaction may not exist in the database. If your mailable depends on these models, unexpected errors can occur when the job that sends the queued mailable is processed."
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 692
+# File: docs/master/mail.md, line: 696
+#. type: Plain text
+msgid "If your queue connection's `after_commit` configuration option is set to `false`, you may still indicate that a particular queued mailable should be dispatched after all open database transactions have been committed by calling the `afterCommit` method when sending the mail message:"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 696
+# File: docs/master/mail.md, line: 700
+#. type: Plain text
+#, no-wrap
+msgid "    Mail::to($request->user())->send(\n"
+"        (new OrderShipped($order))->afterCommit()\n"
+"    );\n"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 698
+# File: docs/master/mail.md, line: 702
+#. type: Plain text
+msgid "Alternatively, you may call the `afterCommit` method from your mailable's constructor:"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 707
+# File: docs/master/mail.md, line: 711
+#. type: Plain text
+#, no-wrap
+msgid "    use Illuminate\\Bus\\Queueable;\n"
+"    use Illuminate\\Contracts\\Queue\\ShouldQueue;\n"
+"    use Illuminate\\Mail\\Mailable;\n"
+"    use Illuminate\\Queue\\SerializesModels;\n"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 711
+# File: docs/master/mail.md, line: 715
+#. type: Plain text
+#, no-wrap
+msgid "    class OrderShipped extends Mailable implements ShouldQueue\n"
+"    {\n"
+"        use Queueable, SerializesModels;\n"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 722
+# File: docs/master/mail.md, line: 726
+#. type: Plain text
+#, no-wrap
+msgid "        /**\n"
+"         * Create a new message instance.\n"
+"         *\n"
+"         * @return void\n"
+"         */\n"
+"        public function __construct()\n"
+"        {\n"
+"            $this->afterCommit();\n"
+"        }\n"
+"    }\n"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 724
+# File: docs/master/mail.md, line: 728
+#. type: Plain text
+#, no-wrap
+msgid "> {tip} To learn more about working around these issues, please review the documentation regarding [queued jobs and database transactions](/docs/{{version}}/queues#jobs-and-database-transactions).\n"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 726
+# File: docs/master/mail.md, line: 730
+#. type: Plain text
+#, no-wrap
+msgid "<a name=\"rendering-mailables\"></a>\n"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 726
+# File: docs/master/mail.md, line: 730
+#. type: Title ##
+#, no-wrap
+msgid "Rendering Mailables"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 729
+# File: docs/master/mail.md, line: 733
+#. type: Plain text
+msgid "Sometimes you may wish to capture the HTML content of a mailable without sending it. To accomplish this, you may call the `render` method of the mailable. This method will return the evaluated HTML content of the mailable as a string:"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 732
+# File: docs/master/mail.md, line: 736
+#. type: Plain text
+#, no-wrap
+msgid "    use App\\Mail\\InvoicePaid;\n"
+"    use App\\Models\\Invoice;\n"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 734
+# File: docs/master/mail.md, line: 738
+#. type: Plain text
+#, no-wrap
+msgid "    $invoice = Invoice::find(1);\n"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 736
+# File: docs/master/mail.md, line: 740
+#. type: Plain text
+#, no-wrap
+msgid "    return (new InvoicePaid($invoice))->render();\n"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 738
+# File: docs/master/mail.md, line: 742
+#. type: Plain text
+#, no-wrap
+msgid "<a name=\"previewing-mailables-in-the-browser\"></a>\n"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 738
+# File: docs/master/mail.md, line: 742
+#. type: Title ###
+#, no-wrap
+msgid "Previewing Mailables In The Browser"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 741
+# File: docs/master/mail.md, line: 745
+#. type: Plain text
+msgid "When designing a mailable's template, it is convenient to quickly preview the rendered mailable in your browser like a typical Blade template. For this reason, Laravel allows you to return any mailable directly from a route closure or controller. When a mailable is returned, it will be rendered and displayed in the browser, allowing you to quickly preview its design without needing to send it to an actual email address:"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 744
+# File: docs/master/mail.md, line: 748
+#. type: Plain text
+#, no-wrap
+msgid "    Route::get('/mailable', function () {\n"
+"        $invoice = App\\Models\\Invoice::find(1);\n"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 747
+# File: docs/master/mail.md, line: 751
+#. type: Plain text
+#, no-wrap
+msgid "        return new App\\Mail\\InvoicePaid($invoice);\n"
+"    });\n"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 749
+# File: docs/master/mail.md, line: 753
+#. type: Plain text
+#, no-wrap
+msgid "> {note} [Inline attachments](#inline-attachments) will not be rendered when a mailable is previewed in your browser. To preview these mailables, you should send them to an email testing application such as [MailHog](https://github.com/mailhog/MailHog) or [HELO](https://usehelo.com).\n"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 751
+# File: docs/master/mail.md, line: 755
+#. type: Plain text
+#, no-wrap
+msgid "<a name=\"localizing-mailables\"></a>\n"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 751
+# File: docs/master/mail.md, line: 755
+#. type: Title ##
+#, no-wrap
+msgid "Localizing Mailables"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 754
+# File: docs/master/mail.md, line: 758
+#. type: Plain text
+msgid "Laravel allows you to send mailables in a locale other than the request's current locale, and will even remember this locale if the mail is queued."
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 756
+# File: docs/master/mail.md, line: 760
+#. type: Plain text
+msgid "To accomplish this, the `Mail` facade offers a `locale` method to set the desired language. The application will change into this locale when the mailable's template is being evaluated and then revert back to the previous locale when evaluation is complete:"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 760
+# File: docs/master/mail.md, line: 764
+#. type: Plain text
+#, no-wrap
+msgid "    Mail::to($request->user())->locale('es')->send(\n"
+"        new OrderShipped($order)\n"
+"    );\n"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 762
+# File: docs/master/mail.md, line: 766
+#. type: Plain text
+#, no-wrap
+msgid "<a name=\"user-preferred-locales\"></a>\n"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 762
+# File: docs/master/mail.md, line: 766
+#. type: Title ###
+#, no-wrap
+msgid "User Preferred Locales"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 765
+# File: docs/master/mail.md, line: 769
+#. type: Plain text
+msgid "Sometimes, applications store each user's preferred locale. By implementing the `HasLocalePreference` contract on one or more of your models, you may instruct Laravel to use this stored locale when sending mail:"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 767
+# File: docs/master/mail.md, line: 771
+#. type: Plain text
+#, no-wrap
+msgid "    use Illuminate\\Contracts\\Translation\\HasLocalePreference;\n"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 780
+# File: docs/master/mail.md, line: 784
+#. type: Plain text
+#, no-wrap
+msgid "    class User extends Model implements HasLocalePreference\n"
+"    {\n"
+"        /**\n"
+"         * Get the user's preferred locale.\n"
+"         *\n"
+"         * @return string\n"
+"         */\n"
+"        public function preferredLocale()\n"
+"        {\n"
+"            return $this->locale;\n"
+"        }\n"
+"    }\n"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 782
+# File: docs/master/mail.md, line: 786
+#. type: Plain text
+msgid "Once you have implemented the interface, Laravel will automatically use the preferred locale when sending mailables and notifications to the model. Therefore, there is no need to call the `locale` method when using this interface:"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 784
+# File: docs/master/mail.md, line: 788
+#. type: Plain text
+#, no-wrap
+msgid "    Mail::to($request->user())->send(new OrderShipped($order));\n"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 786
+# File: docs/master/mail.md, line: 790
+#. type: Plain text
+#, no-wrap
+msgid "<a name=\"testing-mailables\"></a>\n"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 786
+# File: docs/master/mail.md, line: 790
+#. type: Title ##
+#, no-wrap
+msgid "Testing Mailables"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 789
+#. type: Plain text
+msgid "Laravel provides several convenient methods for testing that your mailables contain the content that you expect. These methods are: `assertSeeInHtml`, `assertDontSeeInHtml`, `assertSeeInText`, and `assertDontSeeInText`."
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 791
+# File: docs/master/mail.md, line: 795
+#. type: Plain text
+msgid "As you might expect, the \"HTML\" assertions assert that the HTML version of your mailable contains a given string, while the \"text\" assertions assert that the plain-text version of your mailable contains a given string:"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 794
+# File: docs/master/mail.md, line: 798
+#. type: Plain text
+#, no-wrap
+msgid "    use App\\Mail\\InvoicePaid;\n"
+"    use App\\Models\\User;\n"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 798
+# File: docs/master/mail.md, line: 802
+#. type: Plain text
+#, no-wrap
+msgid "    public function test_mailable_content()\n"
+"    {\n"
+"        $user = User::factory()->create();\n"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 800
+# File: docs/master/mail.md, line: 804
+#. type: Plain text
+#, no-wrap
+msgid "        $mailable = new InvoicePaid($user);\n"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 803
+#. type: Plain text
+#, no-wrap
+msgid "        $mailable->assertSeeInHtml($user->email);\n"
+"        $mailable->assertSeeInHtml('Invoice Paid');\n"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 807
+#. type: Plain text
+#, no-wrap
+msgid "        $mailable->assertSeeInText($user->email);\n"
+"        $mailable->assertSeeInText('Invoice Paid');\n"
+"    }\n"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 809
+# File: docs/master/mail.md, line: 814
+#. type: Plain text
+#, no-wrap
+msgid "<a name=\"testing-mailable-sending\"></a>\n"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 809
+# File: docs/master/mail.md, line: 814
+#. type: Title ####
+#, no-wrap
+msgid "Testing Mailable Sending"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 812
+# File: docs/master/mail.md, line: 817
+#. type: Plain text
+msgid "We suggest testing the content of your mailables separately from your tests that assert that a given mailable was \"sent\" to a specific user. To learn how to test that mailables were sent, check out our documentation on the [Mail fake](/docs/{{version}}/mocking#mail-fake)."
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 814
+# File: docs/master/mail.md, line: 819
+#. type: Plain text
+#, no-wrap
+msgid "<a name=\"mail-and-local-development\"></a>\n"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 814
+# File: docs/master/mail.md, line: 819
+#. type: Title ##
+#, no-wrap
+msgid "Mail & Local Development"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 817
+# File: docs/master/mail.md, line: 822
+#. type: Plain text
+msgid "When developing an application that sends email, you probably don't want to actually send emails to live email addresses. Laravel provides several ways to \"disable\" the actual sending of emails during local development."
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 819
+# File: docs/master/mail.md, line: 824
+#. type: Plain text
+#, no-wrap
+msgid "<a name=\"log-driver\"></a>\n"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 819
+# File: docs/master/mail.md, line: 824
+#. type: Title ####
+#, no-wrap
+msgid "Log Driver"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 822
+# File: docs/master/mail.md, line: 827
+#. type: Plain text
+msgid "Instead of sending your emails, the `log` mail driver will write all email messages to your log files for inspection. Typically, this driver would only be used during local development. For more information on configuring your application per environment, check out the [configuration documentation](/docs/{{version}}/configuration#environment-configuration)."
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 824
+# File: docs/master/mail.md, line: 829
+#. type: Plain text
+#, no-wrap
+msgid "<a name=\"mailtrap\"></a>\n"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 824
+# File: docs/master/mail.md, line: 829
+#. type: Title ####
+#, no-wrap
+msgid "HELO / Mailtrap / MailHog"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 827
+# File: docs/master/mail.md, line: 832
+#. type: Plain text
+msgid "Alternatively, you may use a service like [HELO](https://usehelo.com) or [Mailtrap](https://mailtrap.io) and the `smtp` driver to send your email messages to a \"dummy\" mailbox where you may view them in a true email client. This approach has the benefit of allowing you to actually inspect the final emails in Mailtrap's message viewer."
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 829
+# File: docs/master/mail.md, line: 834
+#. type: Plain text
+msgid "If you are using [Laravel Sail](/docs/{{version}}/sail), you may preview your messages using [MailHog](https://github.com/mailhog/MailHog). When Sail is running, you may access the MailHog interface at: `http://localhost:8025`."
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 831
+# File: docs/master/mail.md, line: 836
+#. type: Plain text
+#, no-wrap
+msgid "<a name=\"using-a-global-to-address\"></a>\n"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 831
+# File: docs/master/mail.md, line: 836
+#. type: Title ####
+#, no-wrap
+msgid "Using A Global `to` Address"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 834
+# File: docs/master/mail.md, line: 839
+#. type: Plain text
+msgid "Finally, you may specify a global \"to\" address by invoking the `alwaysTo` method offered by the `Mail` facade. Typically, this method should be called from the `boot` method of one of your application's service providers:"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 836
+# File: docs/master/mail.md, line: 841
+#. type: Plain text
+#, no-wrap
+msgid "    use Illuminate\\Support\\Facades\\Mail;\n"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 848
+# File: docs/master/mail.md, line: 853
+#. type: Plain text
+#, no-wrap
+msgid "    /**\n"
+"     * Bootstrap any application services.\n"
+"     *\n"
+"     * @return void\n"
+"     */\n"
+"    public function boot()\n"
+"    {\n"
+"        if ($this->app->environment('local')) {\n"
+"            Mail::alwaysTo('taylor@example.com');\n"
+"        }\n"
+"    }\n"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 850
+# File: docs/master/mail.md, line: 855
+#. type: Plain text
+#, no-wrap
+msgid "<a name=\"events\"></a>\n"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 850
+# File: docs/master/mail.md, line: 855
+#. type: Title ##
+#, no-wrap
+msgid "Events"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 853
+# File: docs/master/mail.md, line: 858
+#. type: Plain text
+msgid "Laravel fires two events during the process of sending mail messages. The `MessageSending` event is fired prior to a message being sent, while the `MessageSent` event is fired after a message has been sent. Remember, these events are fired when the mail is being *sent*, not when it is queued. You may register event listeners for this event in your `App\\Providers\\EventServiceProvider` service provider:"
+msgstr ""
+
+# File: docs/8.x/mail.md, line: 866
+# File: docs/master/mail.md, line: 871
+#. type: Plain text
+#, no-wrap
+msgid "    /**\n"
+"     * The event listener mappings for the application.\n"
+"     *\n"
+"     * @var array\n"
+"     */\n"
+"    protected $listen = [\n"
+"        'Illuminate\\Mail\\Events\\MessageSending' => [\n"
+"            'App\\Listeners\\LogSendingMessage',\n"
+"        ],\n"
+"        'Illuminate\\Mail\\Events\\MessageSent' => [\n"
+"            'App\\Listeners\\LogSentMessage',\n"
+"        ],\n"
+"    ];\n"
+msgstr ""
+
+# File: docs/master/mail.md, line: 27
+#. type: Plain text
+#, no-wrap
+msgid "- [Introduction](#introduction)\n"
+"    - [Configuration](#configuration)\n"
+"    - [Driver Prerequisites](#driver-prerequisites)\n"
+"    - [Failover Configuration](#failover-configuration)\n"
+"- [Generating Mailables](#generating-mailables)\n"
+"- [Writing Mailables](#writing-mailables)\n"
+"    - [Configuring The Sender](#configuring-the-sender)\n"
+"    - [Configuring The View](#configuring-the-view)\n"
+"    - [View Data](#view-data)\n"
+"    - [Attachments](#attachments)\n"
+"    - [Inline Attachments](#inline-attachments)\n"
+"    - [Customizing The Symfony Message](#customizing-the-symfony-message)\n"
+"- [Markdown Mailables](#markdown-mailables)\n"
+"    - [Generating Markdown Mailables](#generating-markdown-mailables)\n"
+"    - [Writing Markdown Messages](#writing-markdown-messages)\n"
+"    - [Customizing The Components](#customizing-the-components)\n"
+"- [Sending Mail](#sending-mail)\n"
+"    - [Queueing Mail](#queueing-mail)\n"
+"- [Rendering Mailables](#rendering-mailables)\n"
+"    - [Previewing Mailables In The Browser](#previewing-mailables-in-the-browser)\n"
+"- [Localizing Mailables](#localizing-mailables)\n"
+"- [Testing Mailables](#testing-mailables)\n"
+"- [Mail & Local Development](#mail-and-local-development)\n"
+"- [Events](#events)\n"
+msgstr ""
+
+# File: docs/master/mail.md, line: 32
+#. type: Plain text
+msgid "Sending email doesn't have to be complicated. Laravel provides a clean, simple email API powered by the popular [Symfony Mailer](https://symfony.com/doc/6.0/mailer.html) component. Laravel and Symfony Mailer provide drivers for sending email via SMTP, Mailgun, Postmark, Amazon SES, and `sendmail`, allowing you to quickly get started sending mail through a local or cloud based service of your choice."
+msgstr ""
+
+# File: docs/master/mail.md, line: 44
+#. type: Plain text
+msgid "The API based drivers such as Mailgun and Postmark are often simpler and faster than sending mail via SMTP servers. Whenever possible, we recommend that you use one of these drivers."
+msgstr ""
+
+# File: docs/master/mail.md, line: 49
+#. type: Plain text
+msgid "To use the Mailgun driver, install Symfony's Mailgun Mailer transport via Composer:"
+msgstr ""
+
+# File: docs/master/mail.md, line: 51
+#. type: Plain text
+#, no-wrap
+msgid "    composer require symfony/mailgun-mailer\n"
+msgstr ""
+
+# File: docs/master/mail.md, line: 53
+#. type: Plain text
+msgid "Next, set the `default` option in your application's `config/mail.php` configuration file to `mailgun`. After configuring your application's default mailer, verify that your `config/services.php` configuration file contains the following options:"
+msgstr ""
+
+# File: docs/master/mail.md, line: 71
+#. type: Plain text
+msgid "To use the Postmark driver, install Symfony's Postmark Mailer transport via Composer:"
+msgstr ""
+
+# File: docs/master/mail.md, line: 73
+#. type: Plain text
+#, no-wrap
+msgid "    composer require symfony/postmark-mailer\n"
+msgstr ""
+
+# File: docs/master/mail.md, line: 75
+#. type: Plain text
+msgid "Next, set the `default` option in your application's `config/mail.php` configuration file to `postmark`. After configuring your application's default mailer, verify that your `config/services.php` configuration file contains the following options:"
+msgstr ""
+
+# File: docs/master/mail.md, line: 93
+#. type: Plain text
+msgid "To use the SES driver, install Symfony's Amazon Mailer transport via Composer:"
+msgstr ""
+
+# File: docs/master/mail.md, line: 94
+#. type: Plain text
+#, no-wrap
+msgid "composer require symfony/amazon-mailer\n"
+msgstr ""
+
+# File: docs/master/mail.md, line: 116
+#. type: Plain text
+msgid "If you would like to define [additional options](https://docs.aws.amazon.com/aws-sdk-php/v3/api/api-sesv2-2019-09-27.html#sendemail) that Laravel should pass to the AWS SDK's `SendEmail` method when sending an email, you may define an `options` array within your `ses` configuration:"
+msgstr ""
+
+# File: docs/master/mail.md, line: 128
+#. type: Plain text
+#, no-wrap
+msgid "    'ses' => [\n"
+"        'key' => env('AWS_ACCESS_KEY_ID'),\n"
+"        'secret' => env('AWS_SECRET_ACCESS_KEY'),\n"
+"        'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),\n"
+"        'options' => [\n"
+"            'ConfigurationSetName' => 'MyConfigurationSet',\n"
+"            'EmailTags' => [\n"
+"                ['Name' => 'foo', 'Value' => 'bar'],\n"
+"            ],\n"
+"        ],\n"
+"    ],\n"
+msgstr ""
+
+# File: docs/master/mail.md, line: 462
+#. type: Plain text
+#, no-wrap
+msgid "<a name=\"customizing-the-symfony-message\"></a>\n"
+msgstr ""
+
+# File: docs/master/mail.md, line: 462
+#. type: Title ###
+#, no-wrap
+msgid "Customizing The Symfony Message"
+msgstr ""
+
+# File: docs/master/mail.md, line: 465
+#. type: Plain text
+msgid "The `withSymfonyMessage` method of the `Mailable` base class allows you to register a closure which will be invoked with the Symfony Message instance before sending the message. This gives you an opportunity to deeply customize the message before it is delivered:"
+msgstr ""
+
+# File: docs/master/mail.md, line: 467
+#. type: Plain text
+#, no-wrap
+msgid "    use Symfony\\Component\\Mime\\Email;\n"
+msgstr ""
+
+# File: docs/master/mail.md, line: 482
+#. type: Plain text
+#, no-wrap
+msgid "        $this->withSymfonyMessage(function (Email $message) {\n"
+"            $message->getHeaders()->addTextHeader(\n"
+"                'Custom-Header', 'Header Value'\n"
+"            );\n"
+"        });\n"
+msgstr ""
+
+# File: docs/master/mail.md, line: 793
+#. type: Plain text
+msgid "Laravel provides several convenient methods for testing that your mailables contain the content that you expect. These methods are: `assertSeeInHtml`, `assertDontSeeInHtml`, `assertSeeInOrderInHtml`, `assertSeeInText`, `assertDontSeeInText`, and `assertSeeInOrderInText`."
+msgstr ""
+
+# File: docs/master/mail.md, line: 808
+#. type: Plain text
+#, no-wrap
+msgid "        $mailable->assertSeeInHtml($user->email);\n"
+"        $mailable->assertSeeInHtml('Invoice Paid');\n"
+"        $mailable->assertSeeInOrderInHtml(['Invoice Paid', 'Thanks']);\n"
+msgstr ""
+
+# File: docs/master/mail.md, line: 812
+#. type: Plain text
+#, no-wrap
+msgid "        $mailable->assertSeeInText($user->email);\n"
+"        $mailable->assertSeeInOrderInText(['Invoice Paid', 'Thanks']);\n"
+"    }\n"
+msgstr ""
+

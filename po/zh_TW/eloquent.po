@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: laravel-docs\n"
 "POT-Creation-Date: 2022-01-29 05:35+0000\n"
-"PO-Revision-Date: 2022-01-30 09:03\n"
+"PO-Revision-Date: 2022-01-30 10:03\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
@@ -87,10 +87,10 @@ msgstr "- [Eloquent Model 慣例](#eloquent-model-conventions)\n"
 "    - [取得或建立 Model](#retrieving-or-creating-models)\n"
 "    - [取得匯總值](#retrieving-aggregates)\n"
 "- [插入或更新 Model](#inserting-and-updating-models)\n"
-"    - [插入](#inserts)\n"
-"    - [更新](#updates)\n"
+"    - [插入 - Insert](#inserts)\n"
+"    - [更新 - Update](#updates)\n"
 "    - [大量賦值](#mass-assignment)\n"
-"    - [更新插入 (Upsert)](#upserts)\n"
+"    - [更新插入 - Upsert](#upserts)\n"
 "- [刪除 Model](#deleting-models)\n"
 "    - [軟刪除](#soft-deleting)\n"
 "    - [查詢軟刪除的 Model](#querying-soft-deleted-models)\n"
@@ -98,7 +98,7 @@ msgstr "- [Eloquent Model 慣例](#eloquent-model-conventions)\n"
 "- [複製 (Replicate) Model](#replicating-models)\n"
 "- [查詢 Scope](#query-scopes)\n"
 "    - [全域 Scope](#global-scopes)\n"
-"    - [本域 Scope](#local-scopes)\n"
+"    - [區域 Scope](#local-scopes)\n"
 "- [比較 Model](#comparing-models)\n"
 "- [事件](#events)\n"
 "    - [使用閉包](#events-using-closures)\n"
@@ -2076,7 +2076,7 @@ msgstr "<a name=\"upserts\"></a>\n"
 #. type: Title ###
 #, no-wrap
 msgid "Upserts"
-msgstr "Upsert"
+msgstr "更新插入 - Upsert"
 
 # File: docs/8.x/eloquent.md, line: 742
 # File: docs/master/eloquent.md, line: 742
@@ -2900,40 +2900,40 @@ msgstr "全域 Scope"
 # File: docs/master/eloquent.md, line: 1030
 #. type: Plain text
 msgid "Global scopes allow you to add constraints to all queries for a given model. Laravel's own [soft delete](#soft-deleting) functionality utilizes global scopes to only retrieve \"non-deleted\" models from the database. Writing your own global scopes can provide a convenient, easy way to make sure every query for a given model receives certain constraints."
-msgstr ""
+msgstr "使用全域 Scope，就可以將某個查詢條件套用到給定 Model 的所有查詢上。Laravel 本身的[軟刪除](#soft-deleting)功能就使用了全域 Scope 來只從資料庫中取得「非刪除」的 Model。撰寫你自己的全域 Scope，就可以方便、簡單地確保給定 Model 中的所有查詢都有相同的查詢條件。"
 
 # File: docs/8.x/eloquent.md, line: 1032
 # File: docs/master/eloquent.md, line: 1032
 #. type: Plain text
 #, no-wrap
 msgid "<a name=\"writing-global-scopes\"></a>\n"
-msgstr ""
+msgstr "<a name=\"writing-global-scopes\"></a>\n"
 
 # File: docs/8.x/eloquent.md, line: 1032
 # File: docs/master/eloquent.md, line: 1032
 #. type: Title ####
 #, no-wrap
 msgid "Writing Global Scopes"
-msgstr ""
+msgstr "撰寫全域 Scope"
 
 # File: docs/8.x/eloquent.md, line: 1035
 # File: docs/master/eloquent.md, line: 1035
 #. type: Plain text
 msgid "Writing a global scope is simple. First, define a class that implements the `Illuminate\\Database\\Eloquent\\Scope` interface. Laravel does not have a conventional location that you should place scope classes, so you are free to place this class in any directory that you wish."
-msgstr ""
+msgstr "撰寫全域 Scope 很簡單。首先，定義一個實作 `Illuminate\\Database\\Eloquent\\Scope` 介面的類別。Laravel 並沒有指定 Scope 類別放置位置的慣例，因此可以隨意將這個類別放在任意目錄內。"
 
 # File: docs/8.x/eloquent.md, line: 1037
 # File: docs/master/eloquent.md, line: 1037
 #. type: Plain text
 msgid "The `Scope` interface requires you to implement one method: `apply`. The `apply` method may add `where` constraints or other types of clauses to the query as needed:"
-msgstr ""
+msgstr "`Scope` 介面要求我們實作一個方法：`apply`。`apply` 方法可以按照需求在查詢上加入 `where` 條件或其他類型的子句："
 
 # File: docs/8.x/eloquent.md, line: 1041
 # File: docs/master/eloquent.md, line: 1041
 #. type: Plain text
 #, no-wrap
 msgid "    namespace App\\Scopes;\n"
-msgstr ""
+msgstr "    namespace App\\Scopes;\n"
 
 # File: docs/8.x/eloquent.md, line: 1045
 # File: docs/master/eloquent.md, line: 1045
@@ -2942,7 +2942,9 @@ msgstr ""
 msgid "    use Illuminate\\Database\\Eloquent\\Builder;\n"
 "    use Illuminate\\Database\\Eloquent\\Model;\n"
 "    use Illuminate\\Database\\Eloquent\\Scope;\n"
-msgstr ""
+msgstr "    use Illuminate\\Database\\Eloquent\\Builder;\n"
+"    use Illuminate\\Database\\Eloquent\\Model;\n"
+"    use Illuminate\\Database\\Eloquent\\Scope;\n"
 
 # File: docs/8.x/eloquent.md, line: 1060
 # File: docs/master/eloquent.md, line: 1060
@@ -2962,34 +2964,47 @@ msgid "    class AncientScope implements Scope\n"
 "            $builder->where('created_at', '<', now()->subYears(2000));\n"
 "        }\n"
 "    }\n"
-msgstr ""
+msgstr "    class AncientScope implements Scope\n"
+"    {\n"
+"        /**\n"
+"         * Apply the scope to a given Eloquent query builder.\n"
+"         *\n"
+"         * @param  \\Illuminate\\Database\\Eloquent\\Builder  $builder\n"
+"         * @param  \\Illuminate\\Database\\Eloquent\\Model  $model\n"
+"         * @return void\n"
+"         */\n"
+"        public function apply(Builder $builder, Model $model)\n"
+"        {\n"
+"            $builder->where('created_at', '<', now()->subYears(2000));\n"
+"        }\n"
+"    }\n"
 
 # File: docs/8.x/eloquent.md, line: 1062
 # File: docs/master/eloquent.md, line: 1062
 #. type: Plain text
 #, no-wrap
 msgid "> {tip} If your global scope is adding columns to the select clause of the query, you should use the `addSelect` method instead of `select`. This will prevent the unintentional replacement of the query's existing select clause.\n"
-msgstr ""
+msgstr "> {tip} 若你的全域 Scope 由將欄位加到查詢的 Select 子句中，請使用 `addSelect` 而不是 `select`。這樣可以避免我們不小心把查詢上原本就有的 Select 子句覆蓋掉。\n"
 
 # File: docs/8.x/eloquent.md, line: 1064
 # File: docs/master/eloquent.md, line: 1064
 #. type: Plain text
 #, no-wrap
 msgid "<a name=\"applying-global-scopes\"></a>\n"
-msgstr ""
+msgstr "<a name=\"applying-global-scopes\"></a>\n"
 
 # File: docs/8.x/eloquent.md, line: 1064
 # File: docs/master/eloquent.md, line: 1064
 #. type: Title ####
 #, no-wrap
 msgid "Applying Global Scopes"
-msgstr ""
+msgstr "套用全域 Scope"
 
 # File: docs/8.x/eloquent.md, line: 1067
 # File: docs/master/eloquent.md, line: 1067
 #. type: Plain text
 msgid "To assign a global scope to a model, you should override the model's `booted` method and invoke the model's `addGlobalScope` method. The `addGlobalScope` method accepts an instance of your scope as its only argument:"
-msgstr ""
+msgstr "若要將全域 Scope 指派給 Model，應先複寫該 Model 的 `booted` 方法，並呼叫 Model 的 `addGlobalScope` 方法。`addGlobalScope` 方法接受一個 Scope 實體作為其唯一的引數："
 
 # File: docs/8.x/eloquent.md, line: 1074
 # File: docs/master/eloquent.md, line: 1074
@@ -2997,7 +3012,8 @@ msgstr ""
 #, no-wrap
 msgid "    use App\\Scopes\\AncientScope;\n"
 "    use Illuminate\\Database\\Eloquent\\Model;\n"
-msgstr ""
+msgstr "    use App\\Scopes\\AncientScope;\n"
+"    use Illuminate\\Database\\Eloquent\\Model;\n"
 
 # File: docs/8.x/eloquent.md, line: 1087
 # File: docs/master/eloquent.md, line: 1087
@@ -3015,47 +3031,58 @@ msgid "    class User extends Model\n"
 "            static::addGlobalScope(new AncientScope);\n"
 "        }\n"
 "    }\n"
-msgstr ""
+msgstr "    class User extends Model\n"
+"    {\n"
+"        /**\n"
+"         * The \"booted\" method of the model.\n"
+"         *\n"
+"         * @return void\n"
+"         */\n"
+"        protected static function booted()\n"
+"        {\n"
+"            static::addGlobalScope(new AncientScope);\n"
+"        }\n"
+"    }\n"
 
 # File: docs/8.x/eloquent.md, line: 1089
 # File: docs/master/eloquent.md, line: 1089
 #. type: Plain text
 msgid "After adding the scope in the example above to the `App\\Models\\User` model, a call to the `User::all()` method will execute the following SQL query:"
-msgstr ""
+msgstr "將上述範例中的 Scope 加到 `App\\Models\\User` Model 後，呼叫 `User::all()` 方法會執行下列 SQL 查詢："
 
 # File: docs/8.x/eloquent.md, line: 1090
 # File: docs/master/eloquent.md, line: 1090
 #. type: Code fence info string
 #, no-wrap
 msgid "sql"
-msgstr ""
+msgstr "sql"
 
 # File: docs/8.x/eloquent.md, line: 1090
 # File: docs/master/eloquent.md, line: 1090
 #. type: Plain text
 #, no-wrap
 msgid "select * from `users` where `created_at` < 0021-02-18 00:00:00\n"
-msgstr ""
+msgstr "select * from `users` where `created_at` < 0021-02-18 00:00:00\n"
 
 # File: docs/8.x/eloquent.md, line: 1095
 # File: docs/master/eloquent.md, line: 1095
 #. type: Plain text
 #, no-wrap
 msgid "<a name=\"anonymous-global-scopes\"></a>\n"
-msgstr ""
+msgstr "<a name=\"anonymous-global-scopes\"></a>\n"
 
 # File: docs/8.x/eloquent.md, line: 1095
 # File: docs/master/eloquent.md, line: 1095
 #. type: Title ####
 #, no-wrap
 msgid "Anonymous Global Scopes"
-msgstr ""
+msgstr "匿名全域 Scope"
 
 # File: docs/8.x/eloquent.md, line: 1098
 # File: docs/master/eloquent.md, line: 1098
 #. type: Plain text
 msgid "Eloquent also allows you to define global scopes using closures, which is particularly useful for simple scopes that do not warrant a separate class of their own. When defining a global scope using a closure, you should provide a scope name of your own choosing as the first argument to the `addGlobalScope` method:"
-msgstr ""
+msgstr "在 Eloquent 中，我們也可以使用閉包來定義全域 Scope。使用閉包來定義特別適用於一些簡單而不需要獨立拆分成 Class 的 Scope。使用閉包定義全域 Scope 時，應先設定一個自訂的 Scope 名稱作為第一個引數傳給 `addGlobalScope` 方法："
 
 # File: docs/8.x/eloquent.md, line: 1105
 # File: docs/master/eloquent.md, line: 1105
@@ -3063,7 +3090,8 @@ msgstr ""
 #, no-wrap
 msgid "    use Illuminate\\Database\\Eloquent\\Builder;\n"
 "    use Illuminate\\Database\\Eloquent\\Model;\n"
-msgstr ""
+msgstr "    use Illuminate\\Database\\Eloquent\\Builder;\n"
+"    use Illuminate\\Database\\Eloquent\\Model;\n"
 
 # File: docs/8.x/eloquent.md, line: 1120
 # File: docs/master/eloquent.md, line: 1120
@@ -3083,53 +3111,66 @@ msgid "    class User extends Model\n"
 "            });\n"
 "        }\n"
 "    }\n"
-msgstr ""
+msgstr "    class User extends Model\n"
+"    {\n"
+"        /**\n"
+"         * The \"booted\" method of the model.\n"
+"         *\n"
+"         * @return void\n"
+"         */\n"
+"        protected static function booted()\n"
+"        {\n"
+"            static::addGlobalScope('ancient', function (Builder $builder) {\n"
+"                $builder->where('created_at', '<', now()->subYears(2000));\n"
+"            });\n"
+"        }\n"
+"    }\n"
 
 # File: docs/8.x/eloquent.md, line: 1122
 # File: docs/master/eloquent.md, line: 1122
 #. type: Plain text
 #, no-wrap
 msgid "<a name=\"removing-global-scopes\"></a>\n"
-msgstr ""
+msgstr "<a name=\"removing-global-scopes\"></a>\n"
 
 # File: docs/8.x/eloquent.md, line: 1122
 # File: docs/master/eloquent.md, line: 1122
 #. type: Title ####
 #, no-wrap
 msgid "Removing Global Scopes"
-msgstr ""
+msgstr "移除全域 Scope"
 
 # File: docs/8.x/eloquent.md, line: 1125
 # File: docs/master/eloquent.md, line: 1125
 #. type: Plain text
 msgid "If you would like to remove a global scope for a given query, you may use the `withoutGlobalScope` method. This method accepts the class name of the global scope as its only argument:"
-msgstr ""
+msgstr "若想在給定查詢內移除全域 Scope，可以使用 `withoutGlobalScope` 方法。這個方法接受全域 Scope 的類別名稱作為其唯一的引數："
 
 # File: docs/8.x/eloquent.md, line: 1127
 # File: docs/master/eloquent.md, line: 1127
 #. type: Plain text
 #, no-wrap
 msgid "    User::withoutGlobalScope(AncientScope::class)->get();\n"
-msgstr ""
+msgstr "    User::withoutGlobalScope(AncientScope::class)->get();\n"
 
 # File: docs/8.x/eloquent.md, line: 1129
 # File: docs/master/eloquent.md, line: 1129
 #. type: Plain text
 msgid "Or, if you defined the global scope using a closure, you should pass the string name that you assigned to the global scope:"
-msgstr ""
+msgstr "或者，若使用閉包定義全域 Scope，則可傳入自訂的字串名稱："
 
 # File: docs/8.x/eloquent.md, line: 1131
 # File: docs/master/eloquent.md, line: 1131
 #. type: Plain text
 #, no-wrap
 msgid "    User::withoutGlobalScope('ancient')->get();\n"
-msgstr ""
+msgstr "    User::withoutGlobalScope('ancient')->get();\n"
 
 # File: docs/8.x/eloquent.md, line: 1133
 # File: docs/master/eloquent.md, line: 1133
 #. type: Plain text
 msgid "If you would like to remove several or even all of the query's global scopes, you may use the `withoutGlobalScopes` method:"
-msgstr ""
+msgstr "若想移除多個或全部的查詢全域 Scope，可以使用 `withoutGlobalScopes` 方法："
 
 # File: docs/8.x/eloquent.md, line: 1136
 # File: docs/master/eloquent.md, line: 1136
@@ -3137,7 +3178,8 @@ msgstr ""
 #, no-wrap
 msgid "    // Remove all of the global scopes...\n"
 "    User::withoutGlobalScopes()->get();\n"
-msgstr ""
+msgstr "    // 移除所有全域 Scope...\n"
+"    User::withoutGlobalScopes()->get();\n"
 
 # File: docs/8.x/eloquent.md, line: 1141
 # File: docs/master/eloquent.md, line: 1141
@@ -3147,33 +3189,36 @@ msgid "    // Remove some of the global scopes...\n"
 "    User::withoutGlobalScopes([\n"
 "        FirstScope::class, SecondScope::class\n"
 "    ])->get();\n"
-msgstr ""
+msgstr "    // 移除部分全域 Scope...\n"
+"    User::withoutGlobalScopes([\n"
+"        FirstScope::class, SecondScope::class\n"
+"    ])->get();\n"
 
 # File: docs/8.x/eloquent.md, line: 1143
 # File: docs/master/eloquent.md, line: 1143
 #. type: Plain text
 #, no-wrap
 msgid "<a name=\"local-scopes\"></a>\n"
-msgstr ""
+msgstr "<a name=\"local-scopes\"></a>\n"
 
 # File: docs/8.x/eloquent.md, line: 1143
 # File: docs/master/eloquent.md, line: 1143
 #. type: Title ###
 #, no-wrap
 msgid "Local Scopes"
-msgstr ""
+msgstr "區域 Scope"
 
 # File: docs/8.x/eloquent.md, line: 1146
 # File: docs/master/eloquent.md, line: 1146
 #. type: Plain text
 msgid "Local scopes allow you to define common sets of query constraints that you may easily re-use throughout your application. For example, you may need to frequently retrieve all users that are considered \"popular\". To define a scope, prefix an Eloquent model method with `scope`."
-msgstr ""
+msgstr "使用區域 Scope，我們就可以定義一組通用的查詢條件，並可在專案內簡單地重複使用。舉例來說，我們可能會需要頻繁的找出所有「熱門」的使用者。若要定義 Scope，只需要定義一個有 `scope` 前置詞的 Eloquent Model 方法即可。"
 
 # File: docs/8.x/eloquent.md, line: 1148
 # File: docs/master/eloquent.md, line: 1148
 #. type: Plain text
 msgid "Scopes should always return the same query builder instance or `void`:"
-msgstr ""
+msgstr "Scope 應回傳相同的 Query Builder 實體或 `void`："
 
 # File: docs/8.x/eloquent.md, line: 1167
 # File: docs/master/eloquent.md, line: 1167
@@ -3191,7 +3236,18 @@ msgid "    class User extends Model\n"
 "        {\n"
 "            return $query->where('votes', '>', 100);\n"
 "        }\n"
-msgstr ""
+msgstr "    class User extends Model\n"
+"    {\n"
+"        /**\n"
+"         * Scope a query to only include popular users.\n"
+"         *\n"
+"         * @param  \\Illuminate\\Database\\Eloquent\\Builder  $query\n"
+"         * @return \\Illuminate\\Database\\Eloquent\\Builder\n"
+"         */\n"
+"        public function scopePopular($query)\n"
+"        {\n"
+"            return $query->where('votes', '>', 100);\n"
+"        }\n"
 
 # File: docs/8.x/eloquent.md, line: 1179
 # File: docs/master/eloquent.md, line: 1179
@@ -3208,40 +3264,50 @@ msgid "        /**\n"
 "            $query->where('active', 1);\n"
 "        }\n"
 "    }\n"
-msgstr ""
+msgstr "        /**\n"
+"         * Scope a query to only include active users.\n"
+"         *\n"
+"         * @param  \\Illuminate\\Database\\Eloquent\\Builder  $query\n"
+"         * @return void\n"
+"         */\n"
+"        public function scopeActive($query)\n"
+"        {\n"
+"            $query->where('active', 1);\n"
+"        }\n"
+"    }\n"
 
 # File: docs/8.x/eloquent.md, line: 1181
 # File: docs/master/eloquent.md, line: 1181
 #. type: Plain text
 #, no-wrap
 msgid "<a name=\"utilizing-a-local-scope\"></a>\n"
-msgstr ""
+msgstr "<a name=\"utilizing-a-local-scope\"></a>\n"
 
 # File: docs/8.x/eloquent.md, line: 1181
 # File: docs/master/eloquent.md, line: 1181
 #. type: Title ####
 #, no-wrap
 msgid "Utilizing A Local Scope"
-msgstr ""
+msgstr "使用區域 Scope"
 
 # File: docs/8.x/eloquent.md, line: 1184
 # File: docs/master/eloquent.md, line: 1184
 #. type: Plain text
 msgid "Once the scope has been defined, you may call the scope methods when querying the model. However, you should not include the `scope` prefix when calling the method. You can even chain calls to various scopes:"
-msgstr ""
+msgstr "定義好 Scope 後，就可以在查詢 Model 時呼叫這個 Scope 方法。不過，在呼叫時不應包含 `scope` 前置詞。我們甚至還能串連呼叫多個 Scope："
 
 # File: docs/8.x/eloquent.md, line: 1188
 # File: docs/master/eloquent.md, line: 1188
 #. type: Plain text
 #, no-wrap
 msgid "    $users = User::popular()->active()->orderBy('created_at')->get();\n"
-msgstr ""
+msgstr "    $users = User::popular()->active()->orderBy('created_at')->get();\n"
 
 # File: docs/8.x/eloquent.md, line: 1190
 # File: docs/master/eloquent.md, line: 1190
 #. type: Plain text
 msgid "Combining multiple Eloquent model scopes via an `or` query operator may require the use of closures to achieve the correct [logical grouping](/docs/{{version}}/queries#logical-grouping):"
-msgstr ""
+msgstr "在使用 `or` 查詢運算子來組合多個 Eloquent Model Scope 時，可能會需要使用閉包來取得正確的[邏輯性分組](/docs/{{version}}/queries#logical-grouping)："
 
 # File: docs/8.x/eloquent.md, line: 1194
 # File: docs/master/eloquent.md, line: 1194
@@ -3250,40 +3316,42 @@ msgstr ""
 msgid "    $users = User::popular()->orWhere(function (Builder $query) {\n"
 "        $query->active();\n"
 "    })->get();\n"
-msgstr ""
+msgstr "    $users = User::popular()->orWhere(function (Builder $query) {\n"
+"        $query->active();\n"
+"    })->get();\n"
 
 # File: docs/8.x/eloquent.md, line: 1196
 # File: docs/master/eloquent.md, line: 1196
 #. type: Plain text
 msgid "However, since this can be cumbersome, Laravel provides a \"higher order\" `orWhere` method that allows you to fluently chain scopes together without the use of closures:"
-msgstr ""
+msgstr "不過，因為這麼做可能會很麻煩，因此 Laravel 提供了一個「高階的 (Higher Order)」`orWhere` 方法來讓我們能流暢地將各個 Scope 串連在一起，毋需使用閉包："
 
 # File: docs/8.x/eloquent.md, line: 1198
 # File: docs/master/eloquent.md, line: 1198
 #. type: Plain text
 #, no-wrap
 msgid "    $users = App\\Models\\User::popular()->orWhere->active()->get();\n"
-msgstr ""
+msgstr "    $users = App\\Models\\User::popular()->orWhere->active()->get();\n"
 
 # File: docs/8.x/eloquent.md, line: 1200
 # File: docs/master/eloquent.md, line: 1200
 #. type: Plain text
 #, no-wrap
 msgid "<a name=\"dynamic-scopes\"></a>\n"
-msgstr ""
+msgstr "<a name=\"dynamic-scopes\"></a>\n"
 
 # File: docs/8.x/eloquent.md, line: 1200
 # File: docs/master/eloquent.md, line: 1200
 #. type: Title ####
 #, no-wrap
 msgid "Dynamic Scopes"
-msgstr ""
+msgstr "動態 Scope"
 
 # File: docs/8.x/eloquent.md, line: 1203
 # File: docs/master/eloquent.md, line: 1203
 #. type: Plain text
 msgid "Sometimes you may wish to define a scope that accepts parameters. To get started, just add your additional parameters to your scope method's signature. Scope parameters should be defined after the `$query` parameter:"
-msgstr ""
+msgstr "有時候，我們可能會想定義一些接受參數的 Scope。要定義接受參數的 Scope，只需要在 Scope 方法的簽章上加上額外的參數即可。所有 Scope 地參數的應定義在 `$query` 引數後："
 
 # File: docs/8.x/eloquent.md, line: 1224
 # File: docs/master/eloquent.md, line: 1224
@@ -3303,40 +3371,53 @@ msgid "    class User extends Model\n"
 "            return $query->where('type', $type);\n"
 "        }\n"
 "    }\n"
-msgstr ""
+msgstr "    class User extends Model\n"
+"    {\n"
+"        /**\n"
+"         * Scope a query to only include users of a given type.\n"
+"         *\n"
+"         * @param  \\Illuminate\\Database\\Eloquent\\Builder  $query\n"
+"         * @param  mixed  $type\n"
+"         * @return \\Illuminate\\Database\\Eloquent\\Builder\n"
+"         */\n"
+"        public function scopeOfType($query, $type)\n"
+"        {\n"
+"            return $query->where('type', $type);\n"
+"        }\n"
+"    }\n"
 
 # File: docs/8.x/eloquent.md, line: 1226
 # File: docs/master/eloquent.md, line: 1226
 #. type: Plain text
 msgid "Once the expected arguments have been added to your scope method's signature, you may pass the arguments when calling the scope:"
-msgstr ""
+msgstr "將預期的引數加到 Scope 方法的簽章後，就可以在呼叫該 Scope 時傳入這些引數："
 
 # File: docs/8.x/eloquent.md, line: 1228
 # File: docs/master/eloquent.md, line: 1228
 #. type: Plain text
 #, no-wrap
 msgid "    $users = User::ofType('admin')->get();\n"
-msgstr ""
+msgstr "    $users = User::ofType('admin')->get();\n"
 
 # File: docs/8.x/eloquent.md, line: 1230
 # File: docs/master/eloquent.md, line: 1230
 #. type: Plain text
 #, no-wrap
 msgid "<a name=\"comparing-models\"></a>\n"
-msgstr ""
+msgstr "<a name=\"comparing-models\"></a>\n"
 
 # File: docs/8.x/eloquent.md, line: 1230
 # File: docs/master/eloquent.md, line: 1230
 #. type: Title ##
 #, no-wrap
 msgid "Comparing Models"
-msgstr ""
+msgstr "比較 Model"
 
 # File: docs/8.x/eloquent.md, line: 1233
 # File: docs/master/eloquent.md, line: 1233
 #. type: Plain text
 msgid "Sometimes you may need to determine if two models are the \"same\" or not. The `is` and `isNot` methods may be used to quickly verify two models have the same primary key, table, and database connection or not:"
-msgstr ""
+msgstr "有時候，我們可能需要判斷某兩個 Model 是否是「相同」的。`is` 與 `isNot` 方法可用來快速檢驗兩個 Model 是否有相同的主索引鍵、相同的資料表、以及相同的資料庫連線："
 
 # File: docs/8.x/eloquent.md, line: 1237
 # File: docs/master/eloquent.md, line: 1237
@@ -3345,7 +3426,9 @@ msgstr ""
 msgid "    if ($post->is($anotherPost)) {\n"
 "        //\n"
 "    }\n"
-msgstr ""
+msgstr "    if ($post->is($anotherPost)) {\n"
+"        //\n"
+"    }\n"
 
 # File: docs/8.x/eloquent.md, line: 1241
 # File: docs/master/eloquent.md, line: 1241
@@ -3354,13 +3437,15 @@ msgstr ""
 msgid "    if ($post->isNot($anotherPost)) {\n"
 "        //\n"
 "    }\n"
-msgstr ""
+msgstr "    if ($post->isNot($anotherPost)) {\n"
+"        //\n"
+"    }\n"
 
 # File: docs/8.x/eloquent.md, line: 1243
 # File: docs/master/eloquent.md, line: 1243
 #. type: Plain text
 msgid "The `is` and `isNot` methods are also available when using the `belongsTo`, `hasOne`, `morphTo`, and `morphOne` [relationships](/docs/{{version}}/eloquent-relationships). This method is particularly helpful when you would like to compare a related model without issuing a query to retrieve that model:"
-msgstr ""
+msgstr "使用 `belongsTo`、`hasOne`、`morphTo`、`morphOne` 等[關聯](/docs/{{version}}/eloquent-relationships)時，也可使用 `is` 與 `isNot` 方法。這個方法特別適用於想在不實際執行查詢來取得 Model 的情況下比較關聯的 Model 時："
 
 # File: docs/8.x/eloquent.md, line: 1247
 # File: docs/master/eloquent.md, line: 1247
@@ -3369,46 +3454,48 @@ msgstr ""
 msgid "    if ($post->author()->is($user)) {\n"
 "        //\n"
 "    }\n"
-msgstr ""
+msgstr "    if ($post->author()->is($user)) {\n"
+"        //\n"
+"    }\n"
 
 # File: docs/8.x/eloquent.md, line: 1249
 # File: docs/master/eloquent.md, line: 1249
 #. type: Plain text
 #, no-wrap
 msgid "<a name=\"events\"></a>\n"
-msgstr ""
+msgstr "<a name=\"events\"></a>\n"
 
 # File: docs/8.x/eloquent.md, line: 1249
 # File: docs/master/eloquent.md, line: 1249
 #. type: Title ##
 #, no-wrap
 msgid "Events"
-msgstr ""
+msgstr "事件"
 
 # File: docs/8.x/eloquent.md, line: 1252
 # File: docs/master/eloquent.md, line: 1252
 #. type: Plain text
 #, no-wrap
 msgid "> {tip} Want to broadcast your Eloquent events directly to your client-side application? Check out Laravel's [model event broadcasting](/docs/{{version}}/broadcasting#model-broadcasting).\n"
-msgstr ""
+msgstr "> {tip} 想要直接將 Eloquent 事件廣播給前端嗎？請參考一下 Laravel 的 [Model 事件廣播](/docs/{{version}}/broadcasting#model-broadcasting)。\n"
 
 # File: docs/8.x/eloquent.md, line: 1254
 # File: docs/master/eloquent.md, line: 1254
 #. type: Plain text
 msgid "Eloquent models dispatch several events, allowing you to hook into the following moments in a model's lifecycle: `retrieved`, `creating`, `created`, `updating`, `updated`, `saving`, `saved`, `deleting`, `deleted`, `restoring`, `restored`, and `replicating`."
-msgstr ""
+msgstr "Eloquent Model 會分派數種事件，能讓我們在 Model 生命週期中的下列時刻進行攔截 (Hook)：`retrieved`, `creating`, `created`, `updating`, `updated`, `saving`, `saved`, `deleting`, `deleted`, `restoring`, `restored`, 與 `replicating`。"
 
 # File: docs/8.x/eloquent.md, line: 1256
 # File: docs/master/eloquent.md, line: 1256
 #. type: Plain text
 msgid "The `retrieved` event will dispatch when an existing model is retrieved from the database. When a new model is saved for the first time, the `creating` and `created` events will dispatch. The `updating` / `updated` events will dispatch when an existing model is modified and the `save` method is called. The `saving` / `saved` events will dispatch when a model is created or updated - even if the model's attributes have not been changed. Event names ending with `-ing` are dispatched before any changes to the model are persisted, while events ending with `-ed` are dispatched after the changes to the model are persisted."
-msgstr ""
+msgstr "`retrieved` 事件會在現有 Model 從資料庫內取得後被分派。當新 Model 首次保存後，會分派 `creating` 與 `created` 事件。`updating` 與 `updated` 事件會在現有 Model 被修改並呼叫了 `save` 方法時被分派。`saving` 與 `saved` 事件會在 Model 被建立或更新後分派 —— 即使未對 Model 的屬性做任何更改。以 `-ing` 結尾的事件會在保存任何 Model 改動前被分派，而以 `-id` 結尾的事件則會在 Model 保存後被分派。"
 
 # File: docs/8.x/eloquent.md, line: 1258
 # File: docs/master/eloquent.md, line: 1258
 #. type: Plain text
 msgid "To start listening to model events, define a `$dispatchesEvents` property on your Eloquent model. This property maps various points of the Eloquent model's lifecycle to your own [event classes](/docs/{{version}}/events). Each model event class should expect to receive an instance of the affected model via its constructor:"
-msgstr ""
+msgstr "若要開始監聽 Model 事件，請在 Eloquent Model 中定義一個 `$dispatchesEvents` 屬性。該屬性會將 Eloquent Model 生命週期中的數個時間點影射到你自己的[事件類別](/docs/{{version}}/events)上。每個 Model 事件類別應預期會在其建構函式 (Constructor) 中收到一個受影響 Model 的實體："
 
 # File: docs/8.x/eloquent.md, line: 1266
 # File: docs/master/eloquent.md, line: 1266
@@ -3417,7 +3504,9 @@ msgstr ""
 msgid "    use App\\Events\\UserDeleted;\n"
 "    use App\\Events\\UserSaved;\n"
 "    use Illuminate\\Foundation\\Auth\\User as Authenticatable;\n"
-msgstr ""
+msgstr "    use App\\Events\\UserDeleted;\n"
+"    use App\\Events\\UserSaved;\n"
+"    use Illuminate\\Foundation\\Auth\\User as Authenticatable;\n"
 
 # File: docs/8.x/eloquent.md, line: 1270
 # File: docs/master/eloquent.md, line: 1270
@@ -3426,7 +3515,9 @@ msgstr ""
 msgid "    class User extends Authenticatable\n"
 "    {\n"
 "        use Notifiable;\n"
-msgstr ""
+msgstr "    class User extends Authenticatable\n"
+"    {\n"
+"        use Notifiable;\n"
 
 # File: docs/8.x/eloquent.md, line: 1281
 # File: docs/master/eloquent.md, line: 1281
@@ -3442,40 +3533,49 @@ msgid "        /**\n"
 "            'deleted' => UserDeleted::class,\n"
 "        ];\n"
 "    }\n"
-msgstr ""
+msgstr "        /**\n"
+"         * The event map for the model.\n"
+"         *\n"
+"         * @var array\n"
+"         */\n"
+"        protected $dispatchesEvents = [\n"
+"            'saved' => UserSaved::class,\n"
+"            'deleted' => UserDeleted::class,\n"
+"        ];\n"
+"    }\n"
 
 # File: docs/8.x/eloquent.md, line: 1283
 # File: docs/master/eloquent.md, line: 1283
 #. type: Plain text
 msgid "After defining and mapping your Eloquent events, you may use [event listeners](/docs/{{version}}/events#defining-listeners) to handle the events."
-msgstr ""
+msgstr "定義好 Eloquent 事件並設定好影射後，就可以使用[事件監聽程式](/docs/{{version}}/events#defining-listeners)來監聽事件。"
 
 # File: docs/8.x/eloquent.md, line: 1285
 # File: docs/master/eloquent.md, line: 1285
 #. type: Plain text
 #, no-wrap
 msgid "> {note} When issuing a mass update or delete query via Eloquent, the `saved`, `updated`, `deleting`, and `deleted` model events will not be dispatched for the affected models. This is because the models are never actually retrieved when performing mass updates or deletes.\n"
-msgstr ""
+msgstr "> {note} 在使用 Eloquent 進行批次更新或批次刪除查詢時，將不會引發 `saving`、`saved`、`updating`、`updated` 等 Model 事件。這是因為，在批次更新或批次刪除時並不會實際取得這些 Model。\n"
 
 # File: docs/8.x/eloquent.md, line: 1287
 # File: docs/master/eloquent.md, line: 1287
 #. type: Plain text
 #, no-wrap
 msgid "<a name=\"events-using-closures\"></a>\n"
-msgstr ""
+msgstr "<a name=\"events-using-closures\"></a>\n"
 
 # File: docs/8.x/eloquent.md, line: 1287
 # File: docs/master/eloquent.md, line: 1287
 #. type: Title ###
 #, no-wrap
 msgid "Using Closures"
-msgstr ""
+msgstr "使用閉包"
 
 # File: docs/8.x/eloquent.md, line: 1290
 # File: docs/master/eloquent.md, line: 1290
 #. type: Plain text
 msgid "Instead of using custom event classes, you may register closures that execute when various model events are dispatched. Typically, you should register these closures in the `booted` method of your model:"
-msgstr ""
+msgstr "比起使用自訂的事件類別，我們也可以註冊一些會在 Model 事件分派時被執行的閉包。一般來說，應在 Model 的 `booted` 方法內定義這些閉包："
 
 # File: docs/8.x/eloquent.md, line: 1311
 # File: docs/master/eloquent.md, line: 1311
@@ -3495,20 +3595,33 @@ msgid "    class User extends Model\n"
 "            });\n"
 "        }\n"
 "    }\n"
-msgstr ""
+msgstr "    class User extends Model\n"
+"    {\n"
+"        /**\n"
+"         * The \"booted\" method of the model.\n"
+"         *\n"
+"         * @return void\n"
+"         */\n"
+"        protected static function booted()\n"
+"        {\n"
+"            static::created(function ($user) {\n"
+"                //\n"
+"            });\n"
+"        }\n"
+"    }\n"
 
 # File: docs/8.x/eloquent.md, line: 1313
 # File: docs/master/eloquent.md, line: 1313
 #. type: Plain text
 msgid "If needed, you may utilize [queueable anonymous event listeners](/docs/{{version}}/events#queuable-anonymous-event-listeners) when registering model events. This will instruct Laravel to execute the model event listener in the background using your application's [queue](/docs/{{version}}/queues):"
-msgstr ""
+msgstr "若有需要，也可以在註冊 Model 事件時使用[可佇列的匿名事件監聽程式](/docs/{{version}}/events#queuable-anonymous-event-listeners)。這樣可以讓 Laravel 使用專案的[佇列](/docs/{{version}}/queues)來在背景執行 Model 事件監聽程式："
 
 # File: docs/8.x/eloquent.md, line: 1315
 # File: docs/master/eloquent.md, line: 1315
 #. type: Plain text
 #, no-wrap
 msgid "    use function Illuminate\\Events\\queueable;\n"
-msgstr ""
+msgstr "    use function Illuminate\\Events\\queueable;\n"
 
 # File: docs/8.x/eloquent.md, line: 1319
 # File: docs/master/eloquent.md, line: 1319
@@ -3517,54 +3630,56 @@ msgstr ""
 msgid "    static::created(queueable(function ($user) {\n"
 "        //\n"
 "    }));\n"
-msgstr ""
+msgstr "    static::created(queueable(function ($user) {\n"
+"        //\n"
+"    }));\n"
 
 # File: docs/8.x/eloquent.md, line: 1321
 # File: docs/master/eloquent.md, line: 1321
 #. type: Plain text
 #, no-wrap
 msgid "<a name=\"observers\"></a>\n"
-msgstr ""
+msgstr "<a name=\"observers\"></a>\n"
 
 # File: docs/8.x/eloquent.md, line: 1321
 # File: docs/master/eloquent.md, line: 1321
 #. type: Title ###
 #, no-wrap
 msgid "Observers"
-msgstr ""
+msgstr "觀察程式 - Observer"
 
 # File: docs/8.x/eloquent.md, line: 1324
 # File: docs/master/eloquent.md, line: 1324
 #. type: Plain text
 #, no-wrap
 msgid "<a name=\"defining-observers\"></a>\n"
-msgstr ""
+msgstr "<a name=\"defining-observers\"></a>\n"
 
 # File: docs/8.x/eloquent.md, line: 1324
 # File: docs/master/eloquent.md, line: 1324
 #. type: Title ####
 #, no-wrap
 msgid "Defining Observers"
-msgstr ""
+msgstr "定義 Observer"
 
 # File: docs/8.x/eloquent.md, line: 1327
 # File: docs/master/eloquent.md, line: 1327
 #. type: Plain text
 msgid "If you are listening for many events on a given model, you may use observers to group all of your listeners into a single class. Observer classes have method names which reflect the Eloquent events you wish to listen for. Each of these methods receives the affected model as their only argument. The `make:observer` Artisan command is the easiest way to create a new observer class:"
-msgstr ""
+msgstr "若想在某個 Model 上監聽許多的事件，則可以使用 Observer 來把所有的監聽程式都放到單一類別內。Observer 類別內的方法名稱應對應欲監聽的 Eloquent 事件。這些方法都會收到受影響的 Model 作為其唯一引數。要建立新 Observer 最簡單的方法就是使用 `make:observer` Artisan 指令："
 
 # File: docs/8.x/eloquent.md, line: 1329
 # File: docs/master/eloquent.md, line: 1329
 #. type: Plain text
 #, no-wrap
 msgid "    php artisan make:observer UserObserver --model=User\n"
-msgstr ""
+msgstr "    php artisan make:observer UserObserver --model=User\n"
 
 # File: docs/8.x/eloquent.md, line: 1331
 # File: docs/master/eloquent.md, line: 1331
 #. type: Plain text
 msgid "This command will place the new observer in your `App/Observers` directory. If this directory does not exist, Artisan will create it for you. Your fresh observer will look like the following:"
-msgstr ""
+msgstr "這個指令會將新的 Observer 放在 `App/Observers` 目錄中。若這個目錄不存在，則 Artisan 會自動建立。剛建立好的 Observer 會長這樣："
 
 # File: docs/8.x/eloquent.md, line: 1335
 # File: docs/8.x/eloquent.md, line: 1410
@@ -3573,7 +3688,7 @@ msgstr ""
 #. type: Plain text
 #, no-wrap
 msgid "    namespace App\\Observers;\n"
-msgstr ""
+msgstr "    namespace App\\Observers;\n"
 
 # File: docs/8.x/eloquent.md, line: 1350
 # File: docs/master/eloquent.md, line: 1350
@@ -3591,7 +3706,18 @@ msgid "    class UserObserver\n"
 "        {\n"
 "            //\n"
 "        }\n"
-msgstr ""
+msgstr "    class UserObserver\n"
+"    {\n"
+"        /**\n"
+"         * Handle the User \"created\" event.\n"
+"         *\n"
+"         * @param  \\App\\Models\\User  $user\n"
+"         * @return void\n"
+"         */\n"
+"        public function created(User $user)\n"
+"        {\n"
+"            //\n"
+"        }\n"
 
 # File: docs/8.x/eloquent.md, line: 1361
 # File: docs/master/eloquent.md, line: 1361
@@ -3607,7 +3733,16 @@ msgid "        /**\n"
 "        {\n"
 "            //\n"
 "        }\n"
-msgstr ""
+msgstr "        /**\n"
+"         * Handle the User \"updated\" event.\n"
+"         *\n"
+"         * @param  \\App\\Models\\User  $user\n"
+"         * @return void\n"
+"         */\n"
+"        public function updated(User $user)\n"
+"        {\n"
+"            //\n"
+"        }\n"
 
 # File: docs/8.x/eloquent.md, line: 1372
 # File: docs/master/eloquent.md, line: 1372
@@ -3623,7 +3758,16 @@ msgid "        /**\n"
 "        {\n"
 "            //\n"
 "        }\n"
-msgstr ""
+msgstr "        /**\n"
+"         * Handle the User \"deleted\" event.\n"
+"         *\n"
+"         * @param  \\App\\Models\\User  $user\n"
+"         * @return void\n"
+"         */\n"
+"        public function deleted(User $user)\n"
+"        {\n"
+"            //\n"
+"        }\n"
 
 # File: docs/8.x/eloquent.md, line: 1384
 # File: docs/master/eloquent.md, line: 1384
@@ -3640,13 +3784,23 @@ msgid "        /**\n"
 "            //\n"
 "        }\n"
 "    }\n"
-msgstr ""
+msgstr "        /**\n"
+"         * Handle the User \"forceDeleted\" event.\n"
+"         *\n"
+"         * @param  \\App\\Models\\User  $user\n"
+"         * @return void\n"
+"         */\n"
+"        public function forceDeleted(User $user)\n"
+"        {\n"
+"            //\n"
+"        }\n"
+"    }\n"
 
 # File: docs/8.x/eloquent.md, line: 1386
 # File: docs/master/eloquent.md, line: 1386
 #. type: Plain text
 msgid "To register an observer, you need to call the `observe` method on the model you wish to observe. You may register observers in the `boot` method of your application's `App\\Providers\\EventServiceProvider` service provider:"
-msgstr ""
+msgstr "若要註冊 Observer，則需要在要觀察 (Observe) 的 Model 上呼叫 `observe` 方法。可以在專案的 `App\\Providers\\EventServiceProvider` Service Provider 中的 `boot` 方法內註冊這些 Observer。"
 
 # File: docs/8.x/eloquent.md, line: 1389
 # File: docs/master/eloquent.md, line: 1389
@@ -3655,7 +3809,8 @@ msgstr ""
 #, no-wrap
 msgid "    use App\\Models\\User;\n"
 "    use App\\Observers\\UserObserver;\n"
-msgstr ""
+msgstr "    use App\\Models\\User;\n"
+"    use App\\Observers\\UserObserver;\n"
 
 # File: docs/8.x/eloquent.md, line: 1399
 # File: docs/master/eloquent.md, line: 1399
@@ -3670,34 +3825,42 @@ msgid "    /**\n"
 "    {\n"
 "        User::observe(UserObserver::class);\n"
 "    }\n"
-msgstr ""
+msgstr "    /**\n"
+"     * Register any events for your application.\n"
+"     *\n"
+"     * @return void\n"
+"     */\n"
+"    public function boot()\n"
+"    {\n"
+"        User::observe(UserObserver::class);\n"
+"    }\n"
 
 # File: docs/8.x/eloquent.md, line: 1401
 # File: docs/master/eloquent.md, line: 1415
 #. type: Plain text
 #, no-wrap
 msgid "> {tip} There are additional events an observer can listen to, such as `saving` and `retrieved`. These events are described within the [events](#events) documentation.\n"
-msgstr ""
+msgstr "> {tip} Observer 還能監聽一些額外的事件，如 `saving` 與 `retrieved`。這些事件都在[事件](#events)一節內討論過。\n"
 
 # File: docs/8.x/eloquent.md, line: 1403
 # File: docs/master/eloquent.md, line: 1417
 #. type: Plain text
 #, no-wrap
 msgid "<a name=\"observers-and-database-transactions\"></a>\n"
-msgstr ""
+msgstr "<a name=\"observers-and-database-transactions\"></a>\n"
 
 # File: docs/8.x/eloquent.md, line: 1403
 # File: docs/master/eloquent.md, line: 1417
 #. type: Title ####
 #, no-wrap
 msgid "Observers & Database Transactions"
-msgstr ""
+msgstr "Observer 與資料庫 Transaction"
 
 # File: docs/8.x/eloquent.md, line: 1406
 # File: docs/master/eloquent.md, line: 1420
 #. type: Plain text
 msgid "When models are being created within a database transaction, you may want to instruct an observer to only execute its event handlers after the database transaction is committed. You may accomplish this by defining an `$afterCommit` property on the observer. If a database transaction is not in progress, the event handlers will execute immediately:"
-msgstr ""
+msgstr "若 Model 是在資料庫 Transaction 內建立的，則我們可能會想讓 Observer 只在資料庫 Transaction 被 Commit 後才執行其事件處理常式。為此，可以在 Observer 上定義一個 `$afterCommit` 屬性。若沒有在執行資料庫 Transaction，則事件監聽常式會立即執行："
 
 # File: docs/8.x/eloquent.md, line: 1421
 # File: docs/master/eloquent.md, line: 1435
@@ -3711,7 +3874,14 @@ msgid "    class UserObserver\n"
 "         * @var bool\n"
 "         */\n"
 "        public $afterCommit = true;\n"
-msgstr ""
+msgstr "    class UserObserver\n"
+"    {\n"
+"        /**\n"
+"         * Handle events after all transactions are committed.\n"
+"         *\n"
+"         * @var bool\n"
+"         */\n"
+"        public $afterCommit = true;\n"
 
 # File: docs/8.x/eloquent.md, line: 1433
 # File: docs/master/eloquent.md, line: 1447
@@ -3728,27 +3898,37 @@ msgid "        /**\n"
 "            //\n"
 "        }\n"
 "    }\n"
-msgstr ""
+msgstr "        /**\n"
+"         * Handle the User \"created\" event.\n"
+"         *\n"
+"         * @param  \\App\\Models\\User  $user\n"
+"         * @return void\n"
+"         */\n"
+"        public function created(User $user)\n"
+"        {\n"
+"            //\n"
+"        }\n"
+"    }\n"
 
 # File: docs/8.x/eloquent.md, line: 1435
 # File: docs/master/eloquent.md, line: 1449
 #. type: Plain text
 #, no-wrap
 msgid "<a name=\"muting-events\"></a>\n"
-msgstr ""
+msgstr "<a name=\"muting-events\"></a>\n"
 
 # File: docs/8.x/eloquent.md, line: 1435
 # File: docs/master/eloquent.md, line: 1449
 #. type: Title ###
 #, no-wrap
 msgid "Muting Events"
-msgstr ""
+msgstr "靜音事件"
 
 # File: docs/8.x/eloquent.md, line: 1438
 # File: docs/master/eloquent.md, line: 1452
 #. type: Plain text
 msgid "You may occasionally need to temporarily \"mute\" all events fired by a model. You may achieve this using the `withoutEvents` method. The `withoutEvents` method accepts a closure as its only argument. Any code executed within this closure will not dispatch model events, and any value returned by the closure will be returned by the `withoutEvents` method:"
-msgstr ""
+msgstr "有時候，我們可能會想暫時「靜音」某個 Model 所觸發的所有事件。我們可以使用 `withoutEvents` 方法來達成。`withoutEvents` 方法接受一個閉包作為其單一引數。在這個閉包內執行的任何程式碼都不會派發出 Model 事件，而任何由該閉包回傳的值都會被 `withoutEvents` 方法回傳："
 
 # File: docs/8.x/eloquent.md, line: 1443
 # File: docs/master/eloquent.md, line: 1457
@@ -3756,7 +3936,8 @@ msgstr ""
 #, no-wrap
 msgid "    $user = User::withoutEvents(function () use () {\n"
 "        User::findOrFail(1)->delete();\n"
-msgstr ""
+msgstr "    $user = User::withoutEvents(function () use () {\n"
+"        User::findOrFail(1)->delete();\n"
 
 # File: docs/8.x/eloquent.md, line: 1446
 # File: docs/master/eloquent.md, line: 1460
@@ -3764,48 +3945,49 @@ msgstr ""
 #, no-wrap
 msgid "        return User::find(2);\n"
 "    });\n"
-msgstr ""
+msgstr "        return User::find(2);\n"
+"    });\n"
 
 # File: docs/8.x/eloquent.md, line: 1448
 # File: docs/master/eloquent.md, line: 1462
 #. type: Plain text
 #, no-wrap
 msgid "<a name=\"saving-a-single-model-without-events\"></a>\n"
-msgstr ""
+msgstr "<a name=\"saving-a-single-model-without-events\"></a>\n"
 
 # File: docs/8.x/eloquent.md, line: 1448
 # File: docs/master/eloquent.md, line: 1462
 #. type: Title ####
 #, no-wrap
 msgid "Saving A Single Model Without Events"
-msgstr ""
+msgstr "在不觸發事件的情況下保存單一 Model"
 
 # File: docs/8.x/eloquent.md, line: 1451
 # File: docs/master/eloquent.md, line: 1465
 #. type: Plain text
 msgid "Sometimes you may wish to \"save\" a given model without dispatching any events. You may accomplish this using the `saveQuietly` method:"
-msgstr ""
+msgstr "有時候，我們可能會想在不分派任何事件的情況下「保存」某個 Model。我們可以使用 `saveQuietly` 方法來達成："
 
 # File: docs/8.x/eloquent.md, line: 1453
 # File: docs/master/eloquent.md, line: 1467
 #. type: Plain text
 #, no-wrap
 msgid "    $user = User::findOrFail(1);\n"
-msgstr ""
+msgstr "    $user = User::findOrFail(1);\n"
 
 # File: docs/8.x/eloquent.md, line: 1455
 # File: docs/master/eloquent.md, line: 1469
 #. type: Plain text
 #, no-wrap
 msgid "    $user->name = 'Victoria Faith';\n"
-msgstr ""
+msgstr "    $user->name = 'Victoria Faith';\n"
 
 # File: docs/8.x/eloquent.md, line: 1456
 # File: docs/master/eloquent.md, line: 1470
 #. type: Plain text
 #, no-wrap
 msgid "    $user->saveQuietly();\n"
-msgstr ""
+msgstr "    $user->saveQuietly();\n"
 
 # File: docs/master/eloquent.md, line: 38
 #. type: Plain text
@@ -3843,24 +4025,56 @@ msgid "- [Eloquent Model Conventions](#eloquent-model-conventions)\n"
 "    - [Using Closures](#events-using-closures)\n"
 "    - [Observers](#observers)\n"
 "    - [Muting Events](#muting-events)\n"
-msgstr ""
+msgstr "- [Eloquent Model 慣例](#eloquent-model-conventions)\n"
+"    - [資料表名稱](#table-names)\n"
+"    - [主索引鍵 - Primary Key](#primary-keys)\n"
+"    - [時戳 - Timestamps](#timestamps)\n"
+"    - [資料庫連線](#database-connections)\n"
+"    - [預設屬性值](#default-attribute-values)\n"
+"- [取得 Model](#retrieving-models)\n"
+"    - [Collection](#collections)\n"
+"    - [將查詢結果分段](#chunking-results)\n"
+"    - [使用 Lazy Collection 來將查詢結果分段](#chunking-using-lazy-collections)\n"
+"    - [指標 - Cursor](#cursors)\n"
+"    - [進階子查詢](#advanced-subqueries)\n"
+"- [取得單一 Model 或進行彙總](#retrieving-single-models)\n"
+"    - [取得或建立 Model](#retrieving-or-creating-models)\n"
+"    - [取得匯總值](#retrieving-aggregates)\n"
+"- [插入或更新 Model](#inserting-and-updating-models)\n"
+"    - [插入 - Insert](#inserts)\n"
+"    - [更新 - Update](#updates)\n"
+"    - [大量賦值](#mass-assignment)\n"
+"    - [更新插入 - Upsert](#upserts)\n"
+"- [刪除 Model](#deleting-models)\n"
+"    - [軟刪除](#soft-deleting)\n"
+"    - [查詢軟刪除的 Model](#querying-soft-deleted-models)\n"
+"- [剪除 (Prune) Model](#pruning-models)\n"
+"- [複製 (Replicate) Model](#replicating-models)\n"
+"- [查詢 Scope](#query-scopes)\n"
+"    - [全域 Scope](#global-scopes)\n"
+"    - [區域 Scope](#local-scopes)\n"
+"- [比較 Model](#comparing-models)\n"
+"- [事件](#events)\n"
+"    - [使用閉包](#events-using-closures)\n"
+"    - [觀察程式 - Observer](#observers)\n"
+"    - [靜音事件](#muting-events)\n"
 
 # File: docs/master/eloquent.md, line: 371
 #. type: Plain text
 #, no-wrap
 msgid "<a name=\"chunking-using-lazy-collections\"></a>\n"
-msgstr ""
+msgstr "<a name=\"chunking-using-lazy-collections\"></a>\n"
 
 # File: docs/master/eloquent.md, line: 371
 #. type: Title ###
 #, no-wrap
 msgid "Chunking Using Lazy Collections"
-msgstr ""
+msgstr "使用 Lazy Collection 來將查詢結果分段"
 
 # File: docs/master/eloquent.md, line: 1401
 #. type: Plain text
 msgid "Alternatively, you may list your observers within an `$observers` property of your applications' `App\\Providers\\EventServiceProvider` class:"
-msgstr ""
+msgstr "或者，我們也可以在專案的 `App\\Providers\\EventServiceProvider` 類別內的 `$observers` 屬性內列出所有 Observer："
 
 # File: docs/master/eloquent.md, line: 1413
 #. type: Plain text
@@ -3873,5 +4087,12 @@ msgid "    /**\n"
 "    protected $observers = [\n"
 "        User::class => [UserObserver::class],\n"
 "    ];\n"
-msgstr ""
+msgstr "    /**\n"
+"     * The model observers for your application.\n"
+"     *\n"
+"     * @var array\n"
+"     */\n"
+"    protected $observers = [\n"
+"        User::class => [UserObserver::class],\n"
+"    ];\n"
 

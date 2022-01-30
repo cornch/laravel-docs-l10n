@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: laravel-docs\n"
 "POT-Creation-Date: 2022-01-29 05:35+0000\n"
-"PO-Revision-Date: 2022-01-30 10:03\n"
+"PO-Revision-Date: 2022-01-30 11:11\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
@@ -985,46 +985,46 @@ msgstr "        $server->save();\n"
 #. type: Plain text
 #, no-wrap
 msgid "<a name=\"encrypted-casting\"></a>\n"
-msgstr ""
+msgstr "<a name=\"encrypted-casting\"></a>\n"
 
 # File: docs/8.x/eloquent-mutators.md, line: 357
 # File: docs/master/eloquent-mutators.md, line: 435
 #. type: Title ###
 #, no-wrap
 msgid "Encrypted Casting"
-msgstr ""
+msgstr "加密的型別轉換"
 
 # File: docs/8.x/eloquent-mutators.md, line: 360
 # File: docs/master/eloquent-mutators.md, line: 438
 #. type: Plain text
 msgid "The `encrypted` cast will encrypt a model's attribute value using Laravel's built-in [encryption](/docs/{{version}}/encryption) features. In addition, the `encrypted:array`, `encrypted:collection`, `encrypted:object`, `AsEncryptedArrayObject`, and `AsEncryptedCollection` casts work like their unencrypted counterparts; however, as you might expect, the underlying value is encrypted when stored in your database."
-msgstr ""
+msgstr "`encrypted` 型別轉換會通過 Laravel 的內建[加密](/docs/{{version}}/encryption)功能來加密 Model 的屬性值。此外，還有 `encrypted:array`, `encrypted:collection`, `encrypted:object`, `AsEncryptedArrayObject`, 與 `AsEncryptedCollection` 等型別轉換，這些型別轉換都與其未加密的版本一樣以相同方式運作。不過，可想而知，底層的值會先加密才保存進資料庫。"
 
 # File: docs/8.x/eloquent-mutators.md, line: 362
 # File: docs/master/eloquent-mutators.md, line: 440
 #. type: Plain text
 msgid "As the final length of the encrypted text is not predictable and is longer than its plain text counterpart, make sure the associated database column is of `TEXT` type or larger. In addition, since the values are encrypted in the database, you will not be able to query or search encrypted attribute values."
-msgstr ""
+msgstr "由於加密後的文字長度時無法預測的，且通常比明文的版本還要長，因此請確保其資料庫欄位為 `TEXT` 型別或更大的型別。此外，由於在資料庫中值都是經過加密的，因此你也沒辦法查詢或搜尋加密過的屬性質。"
 
 # File: docs/8.x/eloquent-mutators.md, line: 364
 # File: docs/master/eloquent-mutators.md, line: 442
 #. type: Plain text
 #, no-wrap
 msgid "<a name=\"query-time-casting\"></a>\n"
-msgstr ""
+msgstr "<a name=\"query-time-casting\"></a>\n"
 
 # File: docs/8.x/eloquent-mutators.md, line: 364
 # File: docs/master/eloquent-mutators.md, line: 442
 #. type: Title ###
 #, no-wrap
 msgid "Query Time Casting"
-msgstr ""
+msgstr "查詢時的型別轉換"
 
 # File: docs/8.x/eloquent-mutators.md, line: 367
 # File: docs/master/eloquent-mutators.md, line: 445
 #. type: Plain text
 msgid "Sometimes you may need to apply casts while executing a query, such as when selecting a raw value from a table. For example, consider the following query:"
-msgstr ""
+msgstr "有時候我們可能會需要在執行查詢時套用型別轉換，例如從資料表中選擇原始資料時。舉例來說，假設有下列查詢："
 
 # File: docs/8.x/eloquent-mutators.md, line: 370
 # File: docs/master/eloquent-mutators.md, line: 448
@@ -1032,7 +1032,8 @@ msgstr ""
 #, no-wrap
 msgid "    use App\\Models\\Post;\n"
 "    use App\\Models\\User;\n"
-msgstr ""
+msgstr "    use App\\Models\\Post;\n"
+"    use App\\Models\\User;\n"
 
 # File: docs/8.x/eloquent-mutators.md, line: 376
 # File: docs/master/eloquent-mutators.md, line: 454
@@ -1043,13 +1044,17 @@ msgid "    $users = User::select([\n"
 "        'last_posted_at' => Post::selectRaw('MAX(created_at)')\n"
 "                ->whereColumn('user_id', 'users.id')\n"
 "    ])->get();\n"
-msgstr ""
+msgstr "    $users = User::select([\n"
+"        'users.*',\n"
+"        'last_posted_at' => Post::selectRaw('MAX(created_at)')\n"
+"                ->whereColumn('user_id', 'users.id')\n"
+"    ])->get();\n"
 
 # File: docs/8.x/eloquent-mutators.md, line: 378
 # File: docs/master/eloquent-mutators.md, line: 456
 #. type: Plain text
 msgid "The `last_posted_at` attribute on the results of this query will be a simple string. It would be wonderful if we could apply a `datetime` cast to this attribute when executing the query. Thankfully, we may accomplish this using the `withCasts` method:"
-msgstr ""
+msgstr "查詢結果中的 `last_posted_at` 屬性會是字串。如果我們可以將 `datetime` 型別轉換在執行查詢時套用到這個屬性上就好了。好佳在，我們可以通過使用 `withCasts` 方法來達成："
 
 # File: docs/8.x/eloquent-mutators.md, line: 386
 # File: docs/master/eloquent-mutators.md, line: 464
@@ -1062,33 +1067,39 @@ msgid "    $users = User::select([\n"
 "    ])->withCasts([\n"
 "        'last_posted_at' => 'datetime'\n"
 "    ])->get();\n"
-msgstr ""
+msgstr "    $users = User::select([\n"
+"        'users.*',\n"
+"        'last_posted_at' => Post::selectRaw('MAX(created_at)')\n"
+"                ->whereColumn('user_id', 'users.id')\n"
+"    ])->withCasts([\n"
+"        'last_posted_at' => 'datetime'\n"
+"    ])->get();\n"
 
 # File: docs/8.x/eloquent-mutators.md, line: 388
 # File: docs/master/eloquent-mutators.md, line: 466
 #. type: Plain text
 #, no-wrap
 msgid "<a name=\"custom-casts\"></a>\n"
-msgstr ""
+msgstr "<a name=\"custom-casts\"></a>\n"
 
 # File: docs/8.x/eloquent-mutators.md, line: 388
 # File: docs/master/eloquent-mutators.md, line: 466
 #. type: Title ##
 #, no-wrap
 msgid "Custom Casts"
-msgstr ""
+msgstr "自定型別轉換"
 
 # File: docs/8.x/eloquent-mutators.md, line: 391
 # File: docs/master/eloquent-mutators.md, line: 469
 #. type: Plain text
 msgid "Laravel has a variety of built-in, helpful cast types; however, you may occasionally need to define your own cast types. You may accomplish this by defining a class that implements the `CastsAttributes` interface."
-msgstr ""
+msgstr "Laravel 中有各式內建的實用型別轉換類型。不過，有時候我們也會需要定義自己的型別轉換類型。我們可以通過實作 `CastsAttributes` 介面來自定型別轉換類型。"
 
 # File: docs/8.x/eloquent-mutators.md, line: 393
 # File: docs/master/eloquent-mutators.md, line: 471
 #. type: Plain text
 msgid "Classes that implement this interface must define a `get` and `set` method. The `get` method is responsible for transforming a raw value from the database into a cast value, while the `set` method should transform a cast value into a raw value that can be stored in the database. As an example, we will re-implement the built-in `json` cast type as a custom cast type:"
-msgstr ""
+msgstr "實作了這個介面的類別必須定義一組 `get` 與 `set` 方法。`get` 方法用於將儲存在資料庫內的原始值轉換為型別值；`set` 方法則負責將型別值轉換為可儲存在資料庫內的原始值。在這裡，我們將重新實作一個內建的 `json` 型別轉換類型為例："
 
 # File: docs/8.x/eloquent-mutators.md, line: 397
 # File: docs/8.x/eloquent-mutators.md, line: 462
@@ -1099,14 +1110,14 @@ msgstr ""
 #. type: Plain text
 #, no-wrap
 msgid "    namespace App\\Casts;\n"
-msgstr ""
+msgstr "    namespace App\\Casts;\n"
 
 # File: docs/8.x/eloquent-mutators.md, line: 399
 # File: docs/master/eloquent-mutators.md, line: 477
 #. type: Plain text
 #, no-wrap
 msgid "    use Illuminate\\Contracts\\Database\\Eloquent\\CastsAttributes;\n"
-msgstr ""
+msgstr "    use Illuminate\\Contracts\\Database\\Eloquent\\CastsAttributes;\n"
 
 # File: docs/8.x/eloquent-mutators.md, line: 415
 # File: docs/master/eloquent-mutators.md, line: 493
@@ -1127,7 +1138,21 @@ msgid "    class Json implements CastsAttributes\n"
 "        {\n"
 "            return json_decode($value, true);\n"
 "        }\n"
-msgstr ""
+msgstr "    class Json implements CastsAttributes\n"
+"    {\n"
+"        /**\n"
+"         * Cast the given value.\n"
+"         *\n"
+"         * @param  \\Illuminate\\Database\\Eloquent\\Model  $model\n"
+"         * @param  string  $key\n"
+"         * @param  mixed  $value\n"
+"         * @param  array  $attributes\n"
+"         * @return array\n"
+"         */\n"
+"        public function get($model, $key, $value, $attributes)\n"
+"        {\n"
+"            return json_decode($value, true);\n"
+"        }\n"
 
 # File: docs/8.x/eloquent-mutators.md, line: 430
 # File: docs/master/eloquent-mutators.md, line: 508
@@ -1147,13 +1172,26 @@ msgid "        /**\n"
 "            return json_encode($value);\n"
 "        }\n"
 "    }\n"
-msgstr ""
+msgstr "        /**\n"
+"         * Prepare the given value for storage.\n"
+"         *\n"
+"         * @param  \\Illuminate\\Database\\Eloquent\\Model  $model\n"
+"         * @param  string  $key\n"
+"         * @param  array  $value\n"
+"         * @param  array  $attributes\n"
+"         * @return string\n"
+"         */\n"
+"        public function set($model, $key, $value, $attributes)\n"
+"        {\n"
+"            return json_encode($value);\n"
+"        }\n"
+"    }\n"
 
 # File: docs/8.x/eloquent-mutators.md, line: 432
 # File: docs/master/eloquent-mutators.md, line: 510
 #. type: Plain text
 msgid "Once you have defined a custom cast type, you may attach it to a model attribute using its class name:"
-msgstr ""
+msgstr "定義好自訂的型別轉換類型後，就可以使用類別名稱將其附加到 Model 屬性內："
 
 # File: docs/8.x/eloquent-mutators.md, line: 439
 # File: docs/master/eloquent-mutators.md, line: 517
@@ -1161,7 +1199,8 @@ msgstr ""
 #, no-wrap
 msgid "    use App\\Casts\\Json;\n"
 "    use Illuminate\\Database\\Eloquent\\Model;\n"
-msgstr ""
+msgstr "    use App\\Casts\\Json;\n"
+"    use Illuminate\\Database\\Eloquent\\Model;\n"
 
 # File: docs/8.x/eloquent-mutators.md, line: 451
 # File: docs/master/eloquent-mutators.md, line: 529
@@ -1178,33 +1217,43 @@ msgid "    class User extends Model\n"
 "            'options' => Json::class,\n"
 "        ];\n"
 "    }\n"
-msgstr ""
+msgstr "    class User extends Model\n"
+"    {\n"
+"        /**\n"
+"         * The attributes that should be cast.\n"
+"         *\n"
+"         * @var array\n"
+"         */\n"
+"        protected $casts = [\n"
+"            'options' => Json::class,\n"
+"        ];\n"
+"    }\n"
 
 # File: docs/8.x/eloquent-mutators.md, line: 453
 # File: docs/master/eloquent-mutators.md, line: 531
 #. type: Plain text
 #, no-wrap
 msgid "<a name=\"value-object-casting\"></a>\n"
-msgstr ""
+msgstr "<a name=\"value-object-casting\"></a>\n"
 
 # File: docs/8.x/eloquent-mutators.md, line: 453
 # File: docs/master/eloquent-mutators.md, line: 531
 #. type: Title ###
 #, no-wrap
 msgid "Value Object Casting"
-msgstr ""
+msgstr "數值物件的型別轉換"
 
 # File: docs/8.x/eloquent-mutators.md, line: 456
 # File: docs/master/eloquent-mutators.md, line: 534
 #. type: Plain text
 msgid "You are not limited to casting values to primitive types. You may also cast values to objects. Defining custom casts that cast values to objects is very similar to casting to primitive types; however, the `set` method should return an array of key / value pairs that will be used to set raw, storable values on the model."
-msgstr ""
+msgstr "進行型別轉換時，我們不只可以將值轉換為 PHP 的原生型別，我們還可以將值轉換為物件。定義這種將值轉換為物件的自訂型別轉換就跟轉換成原生型別類似。不過，在這種型別轉換類別中的 `set` 方法應回傳一組在 Model 上用於設定原始、可儲存值的索引鍵/值配對。"
 
 # File: docs/8.x/eloquent-mutators.md, line: 458
 # File: docs/master/eloquent-mutators.md, line: 536
 #. type: Plain text
 msgid "As an example, we will define a custom cast class that casts multiple model values into a single `Address` value object. We will assume the `Address` value has two public properties: `lineOne` and `lineTwo`:"
-msgstr ""
+msgstr "在這裡，我們以將多個 Model 值轉換到單一 `Address` 數值物件的自訂型別轉換類別為例。我們假設 `Address` 值有兩個公用屬性：`lineOne` 與 `lineTwo`："
 
 # File: docs/8.x/eloquent-mutators.md, line: 466
 # File: docs/master/eloquent-mutators.md, line: 544
@@ -1213,7 +1262,9 @@ msgstr ""
 msgid "    use App\\Models\\Address as AddressModel;\n"
 "    use Illuminate\\Contracts\\Database\\Eloquent\\CastsAttributes;\n"
 "    use InvalidArgumentException;\n"
-msgstr ""
+msgstr "    use App\\Models\\Address as AddressModel;\n"
+"    use Illuminate\\Contracts\\Database\\Eloquent\\CastsAttributes;\n"
+"    use InvalidArgumentException;\n"
 
 # File: docs/8.x/eloquent-mutators.md, line: 485
 # File: docs/master/eloquent-mutators.md, line: 563
@@ -1237,7 +1288,24 @@ msgid "    class Address implements CastsAttributes\n"
 "                $attributes['address_line_two']\n"
 "            );\n"
 "        }\n"
-msgstr ""
+msgstr "    class Address implements CastsAttributes\n"
+"    {\n"
+"        /**\n"
+"         * Cast the given value.\n"
+"         *\n"
+"         * @param  \\Illuminate\\Database\\Eloquent\\Model  $model\n"
+"         * @param  string  $key\n"
+"         * @param  mixed  $value\n"
+"         * @param  array  $attributes\n"
+"         * @return \\App\\Models\\Address\n"
+"         */\n"
+"        public function get($model, $key, $value, $attributes)\n"
+"        {\n"
+"            return new AddressModel(\n"
+"                $attributes['address_line_one'],\n"
+"                $attributes['address_line_two']\n"
+"            );\n"
+"        }\n"
 
 # File: docs/8.x/eloquent-mutators.md, line: 500
 # File: docs/master/eloquent-mutators.md, line: 578
@@ -1257,7 +1325,20 @@ msgid "        /**\n"
 "            if (! $value instanceof AddressModel) {\n"
 "                throw new InvalidArgumentException('The given value is not an Address instance.');\n"
 "            }\n"
-msgstr ""
+msgstr "        /**\n"
+"         * Prepare the given value for storage.\n"
+"         *\n"
+"         * @param  \\Illuminate\\Database\\Eloquent\\Model  $model\n"
+"         * @param  string  $key\n"
+"         * @param  \\App\\Models\\Address  $value\n"
+"         * @param  array  $attributes\n"
+"         * @return array\n"
+"         */\n"
+"        public function set($model, $key, $value, $attributes)\n"
+"        {\n"
+"            if (! $value instanceof AddressModel) {\n"
+"                throw new InvalidArgumentException('The given value is not an Address instance.');\n"
+"            }\n"
 
 # File: docs/8.x/eloquent-mutators.md, line: 507
 # File: docs/master/eloquent-mutators.md, line: 585
@@ -1269,53 +1350,58 @@ msgid "            return [\n"
 "            ];\n"
 "        }\n"
 "    }\n"
-msgstr ""
+msgstr "            return [\n"
+"                'address_line_one' => $value->lineOne,\n"
+"                'address_line_two' => $value->lineTwo,\n"
+"            ];\n"
+"        }\n"
+"    }\n"
 
 # File: docs/8.x/eloquent-mutators.md, line: 509
 # File: docs/master/eloquent-mutators.md, line: 587
 #. type: Plain text
 msgid "When casting to value objects, any changes made to the value object will automatically be synced back to the model before the model is saved:"
-msgstr ""
+msgstr "對數值物件進行型別轉換時，對數值物件進行的所有更改都會在 Model 儲存前同步回 Model 上："
 
 # File: docs/8.x/eloquent-mutators.md, line: 515
 # File: docs/master/eloquent-mutators.md, line: 593
 #. type: Plain text
 #, no-wrap
 msgid "    $user->address->lineOne = 'Updated Address Value';\n"
-msgstr ""
+msgstr "    $user->address->lineOne = 'Updated Address Value';\n"
 
 # File: docs/8.x/eloquent-mutators.md, line: 519
 # File: docs/master/eloquent-mutators.md, line: 597
 #. type: Plain text
 #, no-wrap
 msgid "> {tip} If you plan to serialize your Eloquent models containing value objects to JSON or arrays, you should implement the `Illuminate\\Contracts\\Support\\Arrayable` and `JsonSerializable` interfaces on the value object.\n"
-msgstr ""
+msgstr "> {tip} 若有打算要將包含數值物件的 Eloquent Model 序列化為 JSON 或陣列，則該數值物件應實作 `Illuminate\\Contracts\\Support\\Arrayable` 與 `JsonSerializable` 介面。\n"
 
 # File: docs/8.x/eloquent-mutators.md, line: 521
 # File: docs/master/eloquent-mutators.md, line: 599
 #. type: Plain text
 #, no-wrap
 msgid "<a name=\"array-json-serialization\"></a>\n"
-msgstr ""
+msgstr "<a name=\"array-json-serialization\"></a>\n"
 
 # File: docs/8.x/eloquent-mutators.md, line: 521
 # File: docs/master/eloquent-mutators.md, line: 599
 #. type: Title ###
 #, no-wrap
 msgid "Array / JSON Serialization"
-msgstr ""
+msgstr "Array / JSON 的序列化"
 
 # File: docs/8.x/eloquent-mutators.md, line: 524
 # File: docs/master/eloquent-mutators.md, line: 602
 #. type: Plain text
 msgid "When an Eloquent model is converted to an array or JSON using the `toArray` and `toJson` methods, your custom cast value objects will typically be serialized as well as long as they implement the `Illuminate\\Contracts\\Support\\Arrayable` and `JsonSerializable` interfaces. However, when using value objects provided by third-party libraries, you may not have the ability to add these interfaces to the object."
-msgstr ""
+msgstr "當 Eloquent Model 通過 `toArray` 與 `toJson` 轉換為陣列或 JSON 時，只要自訂的型別轉換數值物件有實作  `Illuminate\\Contracts\\Support\\Arrayable` 與 `JsonSerializable` 介面，該數值物件也會一併被序列化。不過，若我們使用的數值物件是來自第三方套件的，那我們可能就沒辦法提供這些負責序列化介面。"
 
 # File: docs/8.x/eloquent-mutators.md, line: 526
 # File: docs/master/eloquent-mutators.md, line: 604
 #. type: Plain text
 msgid "Therefore, you may specify that your custom cast class will be responsible for serializing the value object. To do so, your custom cast class should implement the `Illuminate\\Contracts\\Database\\Eloquent\\SerializesCastableAttributes` interface. This interface states that your class should contain a `serialize` method which should return the serialized form of your value object:"
-msgstr ""
+msgstr "因此，我們可以指定讓自訂型別轉換類別來負責處理數值物件的序列化。為此，自訂型別轉換類別應實作 `Illuminate\\Contracts\\Database\\Eloquent\\SerializesCastableAttributes` 介面。實作這個介面，就代表該類別中應包含一個 `serialize` 方法，該方法應回傳數值物件的序列化形式："
 
 # File: docs/8.x/eloquent-mutators.md, line: 540
 # File: docs/master/eloquent-mutators.md, line: 618
@@ -1334,34 +1420,46 @@ msgid "    /**\n"
 "    {\n"
 "        return (string) $value;\n"
 "    }\n"
-msgstr ""
+msgstr "    /**\n"
+"     * Get the serialized representation of the value.\n"
+"     *\n"
+"     * @param  \\Illuminate\\Database\\Eloquent\\Model  $model\n"
+"     * @param  string  $key\n"
+"     * @param  mixed  $value\n"
+"     * @param  array  $attributes\n"
+"     * @return mixed\n"
+"     */\n"
+"    public function serialize($model, string $key, $value, array $attributes)\n"
+"    {\n"
+"        return (string) $value;\n"
+"    }\n"
 
 # File: docs/8.x/eloquent-mutators.md, line: 542
 # File: docs/master/eloquent-mutators.md, line: 620
 #. type: Plain text
 #, no-wrap
 msgid "<a name=\"inbound-casting\"></a>\n"
-msgstr ""
+msgstr "<a name=\"inbound-casting\"></a>\n"
 
 # File: docs/8.x/eloquent-mutators.md, line: 542
 # File: docs/master/eloquent-mutators.md, line: 620
 #. type: Title ###
 #, no-wrap
 msgid "Inbound Casting"
-msgstr ""
+msgstr "輸入型別轉換"
 
 # File: docs/8.x/eloquent-mutators.md, line: 545
 # File: docs/master/eloquent-mutators.md, line: 623
 #. type: Plain text
 msgid "Occasionally, you may need to write a custom cast that only transforms values that are being set on the model and does not perform any operations when attributes are being retrieved from the model. A classic example of an inbound only cast is a \"hashing\" cast. Inbound only custom casts should implement the `CastsInboundAttributes` interface, which only requires a `set` method to be defined."
-msgstr ""
+msgstr "我們偶爾會需要一種型別轉換：只在對 Model 賦值時轉換值，存取時則不進行任何轉換。純輸入的型別轉換最常見的例子就是「雜湊」型別轉換。純輸入的型別轉換應實作 `CastsInboundAttributes` 介面，該介面只要求要定義 `set` 方法。"
 
 # File: docs/8.x/eloquent-mutators.md, line: 551
 # File: docs/master/eloquent-mutators.md, line: 629
 #. type: Plain text
 #, no-wrap
 msgid "    use Illuminate\\Contracts\\Database\\Eloquent\\CastsInboundAttributes;\n"
-msgstr ""
+msgstr "    use Illuminate\\Contracts\\Database\\Eloquent\\CastsInboundAttributes;\n"
 
 # File: docs/8.x/eloquent-mutators.md, line: 560
 # File: docs/master/eloquent-mutators.md, line: 638
@@ -1375,7 +1473,14 @@ msgid "    class Hash implements CastsInboundAttributes\n"
 "         * @var string\n"
 "         */\n"
 "        protected $algorithm;\n"
-msgstr ""
+msgstr "    class Hash implements CastsInboundAttributes\n"
+"    {\n"
+"        /**\n"
+"         * The hashing algorithm.\n"
+"         *\n"
+"         * @var string\n"
+"         */\n"
+"        protected $algorithm;\n"
 
 # File: docs/8.x/eloquent-mutators.md, line: 571
 # File: docs/master/eloquent-mutators.md, line: 649
@@ -1391,7 +1496,16 @@ msgid "        /**\n"
 "        {\n"
 "            $this->algorithm = $algorithm;\n"
 "        }\n"
-msgstr ""
+msgstr "        /**\n"
+"         * Create a new cast class instance.\n"
+"         *\n"
+"         * @param  string|null  $algorithm\n"
+"         * @return void\n"
+"         */\n"
+"        public function __construct($algorithm = null)\n"
+"        {\n"
+"            $this->algorithm = $algorithm;\n"
+"        }\n"
 
 # File: docs/8.x/eloquent-mutators.md, line: 588
 # File: docs/master/eloquent-mutators.md, line: 666
@@ -1413,27 +1527,42 @@ msgid "        /**\n"
 "                        : hash($this->algorithm, $value);\n"
 "        }\n"
 "    }\n"
-msgstr ""
+msgstr "        /**\n"
+"         * Prepare the given value for storage.\n"
+"         *\n"
+"         * @param  \\Illuminate\\Database\\Eloquent\\Model  $model\n"
+"         * @param  string  $key\n"
+"         * @param  array  $value\n"
+"         * @param  array  $attributes\n"
+"         * @return string\n"
+"         */\n"
+"        public function set($model, $key, $value, $attributes)\n"
+"        {\n"
+"            return is_null($this->algorithm)\n"
+"                        ? bcrypt($value)\n"
+"                        : hash($this->algorithm, $value);\n"
+"        }\n"
+"    }\n"
 
 # File: docs/8.x/eloquent-mutators.md, line: 590
 # File: docs/master/eloquent-mutators.md, line: 668
 #. type: Plain text
 #, no-wrap
 msgid "<a name=\"cast-parameters\"></a>\n"
-msgstr ""
+msgstr "<a name=\"cast-parameters\"></a>\n"
 
 # File: docs/8.x/eloquent-mutators.md, line: 590
 # File: docs/master/eloquent-mutators.md, line: 668
 #. type: Title ###
 #, no-wrap
 msgid "Cast Parameters"
-msgstr ""
+msgstr "型別轉換的參數"
 
 # File: docs/8.x/eloquent-mutators.md, line: 593
 # File: docs/master/eloquent-mutators.md, line: 671
 #. type: Plain text
 msgid "When attaching a custom cast to a model, cast parameters may be specified by separating them from the class name using a `:` character and comma-delimiting multiple parameters. The parameters will be passed to the constructor of the cast class:"
-msgstr ""
+msgstr "在 Model 上設定自訂型別轉換時，可以指定型別轉換的參數，請使用 `:` 字元來區分型別轉換類別名稱與參數，並使用逗號來區分多個參數。這些參數會傳給型別轉換類別的建構函式："
 
 # File: docs/8.x/eloquent-mutators.md, line: 602
 # File: docs/master/eloquent-mutators.md, line: 680
@@ -1447,27 +1576,34 @@ msgid "    /**\n"
 "    protected $casts = [\n"
 "        'secret' => Hash::class.':sha256',\n"
 "    ];\n"
-msgstr ""
+msgstr "    /**\n"
+"     * The attributes that should be cast.\n"
+"     *\n"
+"     * @var array\n"
+"     */\n"
+"    protected $casts = [\n"
+"        'secret' => Hash::class.':sha256',\n"
+"    ];\n"
 
 # File: docs/8.x/eloquent-mutators.md, line: 604
 # File: docs/master/eloquent-mutators.md, line: 682
 #. type: Plain text
 #, no-wrap
 msgid "<a name=\"castables\"></a>\n"
-msgstr ""
+msgstr "<a name=\"castables\"></a>\n"
 
 # File: docs/8.x/eloquent-mutators.md, line: 604
 # File: docs/master/eloquent-mutators.md, line: 682
 #. type: Title ###
 #, no-wrap
 msgid "Castables"
-msgstr ""
+msgstr "Castable"
 
 # File: docs/8.x/eloquent-mutators.md, line: 607
 # File: docs/master/eloquent-mutators.md, line: 685
 #. type: Plain text
 msgid "You may want to allow your application's value objects to define their own custom cast classes. Instead of attaching the custom cast class to your model, you may alternatively attach a value object class that implements the `Illuminate\\Contracts\\Database\\Eloquent\\Castable` interface:"
-msgstr ""
+msgstr "我們可以讓專案中的數值物件自己定義自己的自訂型別轉換類別。與在 Model 中設定自訂的型別轉換類別相比，我們可以設定實作了 `Illuminate\\Contracts\\Database\\Eloquent\\Castable` 介面的數值物件類別："
 
 # File: docs/8.x/eloquent-mutators.md, line: 609
 # File: docs/8.x/eloquent-mutators.md, line: 640
@@ -1476,7 +1612,7 @@ msgstr ""
 #. type: Plain text
 #, no-wrap
 msgid "    use App\\Models\\Address;\n"
-msgstr ""
+msgstr "    use App\\Models\\Address;\n"
 
 # File: docs/8.x/eloquent-mutators.md, line: 613
 # File: docs/master/eloquent-mutators.md, line: 691
@@ -1485,13 +1621,15 @@ msgstr ""
 msgid "    protected $casts = [\n"
 "        'address' => Address::class,\n"
 "    ];\n"
-msgstr ""
+msgstr "    protected $casts = [\n"
+"        'address' => Address::class,\n"
+"    ];\n"
 
 # File: docs/8.x/eloquent-mutators.md, line: 615
 # File: docs/master/eloquent-mutators.md, line: 693
 #. type: Plain text
 msgid "Objects that implement the `Castable` interface must define a `castUsing` method that returns the class name of the custom caster class that is responsible for casting to and from the `Castable` class:"
-msgstr ""
+msgstr "實作了 `Castable` 介面的物件必須定義 `castUsing` 方法。該方法則應回傳用於對  `Castable`  類別進行型別轉換的自訂型別轉換類別名稱："
 
 # File: docs/8.x/eloquent-mutators.md, line: 622
 # File: docs/master/eloquent-mutators.md, line: 700
@@ -1499,7 +1637,8 @@ msgstr ""
 #, no-wrap
 msgid "    use Illuminate\\Contracts\\Database\\Eloquent\\Castable;\n"
 "    use App\\Casts\\Address as AddressCast;\n"
-msgstr ""
+msgstr "    use Illuminate\\Contracts\\Database\\Eloquent\\Castable;\n"
+"    use App\\Casts\\Address as AddressCast;\n"
 
 # File: docs/8.x/eloquent-mutators.md, line: 636
 # File: docs/master/eloquent-mutators.md, line: 714
@@ -1518,13 +1657,25 @@ msgid "    class Address implements Castable\n"
 "            return AddressCast::class;\n"
 "        }\n"
 "    }\n"
-msgstr ""
+msgstr "    class Address implements Castable\n"
+"    {\n"
+"        /**\n"
+"         * Get the name of the caster class to use when casting from / to this cast target.\n"
+"         *\n"
+"         * @param  array  $arguments\n"
+"         * @return string\n"
+"         */\n"
+"        public static function castUsing(array $arguments)\n"
+"        {\n"
+"            return AddressCast::class;\n"
+"        }\n"
+"    }\n"
 
 # File: docs/8.x/eloquent-mutators.md, line: 638
 # File: docs/master/eloquent-mutators.md, line: 716
 #. type: Plain text
 msgid "When using `Castable` classes, you may still provide arguments in the `$casts` definition. The arguments will be passed to the `castUsing` method:"
-msgstr ""
+msgstr "即使是使用 `Castable` 類別，也可以在 `$casts` 定義中提供引數。這些引數會被傳給 `castUsing` 方法："
 
 # File: docs/8.x/eloquent-mutators.md, line: 644
 # File: docs/master/eloquent-mutators.md, line: 722
@@ -1533,27 +1684,29 @@ msgstr ""
 msgid "    protected $casts = [\n"
 "        'address' => Address::class.':argument',\n"
 "    ];\n"
-msgstr ""
+msgstr "    protected $casts = [\n"
+"        'address' => Address::class.':argument',\n"
+"    ];\n"
 
 # File: docs/8.x/eloquent-mutators.md, line: 646
 # File: docs/master/eloquent-mutators.md, line: 724
 #. type: Plain text
 #, no-wrap
 msgid "<a name=\"anonymous-cast-classes\"></a>\n"
-msgstr ""
+msgstr "<a name=\"anonymous-cast-classes\"></a>\n"
 
 # File: docs/8.x/eloquent-mutators.md, line: 646
 # File: docs/master/eloquent-mutators.md, line: 724
 #. type: Title ####
 #, no-wrap
 msgid "Castables & Anonymous Cast Classes"
-msgstr ""
+msgstr "Castable 與匿名型別轉換類別"
 
 # File: docs/8.x/eloquent-mutators.md, line: 649
 # File: docs/master/eloquent-mutators.md, line: 727
 #. type: Plain text
 msgid "By combining \"castables\" with PHP's [anonymous classes](https://www.php.net/manual/en/language.oop5.anonymous.php), you may define a value object and its casting logic as a single castable object. To accomplish this, return an anonymous class from your value object's `castUsing` method. The anonymous class should implement the `CastsAttributes` interface:"
-msgstr ""
+msgstr "通過將「Castable」與 PHP 的[匿名函式](https://www.php.net/manual/en/language.oop5.anonymous.php)搭配使用，我們就能在單一 Castable 物件內定義數值物件與其型別轉換邏輯。為此，請在數值物件的 `castUsing` 方法內回傳一個匿名類別。這個匿名類別應實作 `CastsAttributes` 介面："
 
 # File: docs/8.x/eloquent-mutators.md, line: 656
 # File: docs/master/eloquent-mutators.md, line: 734
@@ -1561,7 +1714,8 @@ msgstr ""
 #, no-wrap
 msgid "    use Illuminate\\Contracts\\Database\\Eloquent\\Castable;\n"
 "    use Illuminate\\Contracts\\Database\\Eloquent\\CastsAttributes;\n"
-msgstr ""
+msgstr "    use Illuminate\\Contracts\\Database\\Eloquent\\Castable;\n"
+"    use Illuminate\\Contracts\\Database\\Eloquent\\CastsAttributes;\n"
 
 # File: docs/8.x/eloquent-mutators.md, line: 660
 # File: docs/master/eloquent-mutators.md, line: 738
@@ -1570,7 +1724,9 @@ msgstr ""
 msgid "    class Address implements Castable\n"
 "    {\n"
 "        // ...\n"
-msgstr ""
+msgstr "    class Address implements Castable\n"
+"    {\n"
+"        // ...\n"
 
 # File: docs/8.x/eloquent-mutators.md, line: 678
 # File: docs/master/eloquent-mutators.md, line: 756
@@ -1593,7 +1749,23 @@ msgid "        /**\n"
 "                        $attributes['address_line_two']\n"
 "                    );\n"
 "                }\n"
-msgstr ""
+msgstr "        /**\n"
+"         * Get the caster class to use when casting from / to this cast target.\n"
+"         *\n"
+"         * @param  array  $arguments\n"
+"         * @return object|string\n"
+"         */\n"
+"        public static function castUsing(array $arguments)\n"
+"        {\n"
+"            return new class implements CastsAttributes\n"
+"            {\n"
+"                public function get($model, $key, $value, $attributes)\n"
+"                {\n"
+"                    return new Address(\n"
+"                        $attributes['address_line_one'],\n"
+"                        $attributes['address_line_two']\n"
+"                    );\n"
+"                }\n"
 
 # File: docs/8.x/eloquent-mutators.md, line: 688
 # File: docs/master/eloquent-mutators.md, line: 766
@@ -1609,17 +1781,26 @@ msgid "                public function set($model, $key, $value, $attributes)\n"
 "            };\n"
 "        }\n"
 "    }\n"
-msgstr ""
+msgstr "                public function set($model, $key, $value, $attributes)\n"
+"                {\n"
+"                    return [\n"
+"                        'address_line_one' => $value->lineOne,\n"
+"                        'address_line_two' => $value->lineTwo,\n"
+"                    ];\n"
+"                }\n"
+"            };\n"
+"        }\n"
+"    }\n"
 
 # File: docs/master/eloquent-mutators.md, line: 32
 #. type: Plain text
 msgid "An accessor transforms an Eloquent attribute value when it is accessed. To define an accessor, create a protected method on your model to represent the accessible attribute. This method name should correspond to the \"camel case\" representation of the true underlying model attribute / database column when applicable."
-msgstr ""
+msgstr "存取子會在存取 Eloquent 屬性時變換起值。若要定義存取子，請在 Model 上建立一個 protected 方法，用來代表可存取的屬性。當有對應的 Model 屬性或資料庫欄位時，該方法的名稱應為對應屬性或欄位的「駝峰命名法 (camelCase)」形式。"
 
 # File: docs/master/eloquent-mutators.md, line: 34
 #. type: Plain text
 msgid "In this example, we'll define an accessor for the `first_name` attribute. The accessor will automatically be called by Eloquent when attempting to retrieve the value of the `first_name` attribute. All attribute accessor / mutator methods must declare a return type-hint of `Illuminate\\Database\\Eloquent\\Casts\\Attribute`:"
-msgstr ""
+msgstr "在此番黎中，我們會為 `first_name` 屬性定義一個存取子。當嘗試取得 `first_name` 屬性時，Eloquent 會自動呼叫這個存取子。所有的存取子與更動子方法都必須為回傳值標示型別提示為 `Illuminate\\Database\\Eloquent\\Casts\\Attribute`："
 
 # File: docs/master/eloquent-mutators.md, line: 41
 # File: docs/master/eloquent-mutators.md, line: 135
@@ -1627,7 +1808,8 @@ msgstr ""
 #, no-wrap
 msgid "    use Illuminate\\Database\\Eloquent\\Casts\\Attribute;\n"
 "    use Illuminate\\Database\\Eloquent\\Model;\n"
-msgstr ""
+msgstr "    use Illuminate\\Database\\Eloquent\\Casts\\Attribute;\n"
+"    use Illuminate\\Database\\Eloquent\\Model;\n"
 
 # File: docs/master/eloquent-mutators.md, line: 56
 #. type: Plain text
@@ -1646,29 +1828,42 @@ msgid "    class User extends Model\n"
 "            );\n"
 "        }\n"
 "    }\n"
-msgstr ""
+msgstr "    class User extends Model\n"
+"    {\n"
+"        /**\n"
+"         * Get the user's first name.\n"
+"         *\n"
+"         * @return \\Illuminate\\Database\\Eloquent\\Casts\\Attribute\n"
+"         */\n"
+"        protected function firstName(): Attribute\n"
+"        {\n"
+"            return new Attribute(\n"
+"                get: fn ($value) => ucfirst($value),\n"
+"            );\n"
+"        }\n"
+"    }\n"
 
 # File: docs/master/eloquent-mutators.md, line: 58
 #. type: Plain text
 msgid "All accessor methods return an `Attribute` instance which defines how the attribute will be accessed and, optionally, mutated. In this example, we are only defining how the attribute will be accessed. To do so, we supply the `get` argument to the `Attribute` class constructor."
-msgstr ""
+msgstr "回傳 `Attribute` 實體的存取子方法可用來定義要如何存取該值，以及可選地定義要如何更動值。在此番黎中，我們只有定義該屬性要被如何存取。為此，我們給 `Attribute` 類別的建構函式提供一個 `get` 引數。"
 
 # File: docs/master/eloquent-mutators.md, line: 70
 #. type: Plain text
 #, no-wrap
 msgid "<a name=\"building-value-objects-from-multiple-attributes\"></a>\n"
-msgstr ""
+msgstr "<a name=\"building-value-objects-from-multiple-attributes\"></a>\n"
 
 # File: docs/master/eloquent-mutators.md, line: 70
 #. type: Title ####
 #, no-wrap
 msgid "Building Value Objects From Multiple Attributes"
-msgstr ""
+msgstr "從多個屬性建立數值物件"
 
 # File: docs/master/eloquent-mutators.md, line: 73
 #. type: Plain text
 msgid "Sometimes your accessor may need to transform multiple model attributes into a single \"value object\". To do so, your `get` closure may accept a second argument of `$attributes`, which will be automatically supplied to the closure and will contain an array of all of the model's current attributes:"
-msgstr ""
+msgstr "有時候，我們的存取子可能需要將多個物件屬性轉換為單一「數值物件 (Value Object)」。為此，我們的 `get` 閉包應接受第二個引數 `$attributes`，Laravel 會自動將該變數提供給閉包，而該變數為一組包含 Model 目前屬性的陣列："
 
 # File: docs/master/eloquent-mutators.md, line: 74
 # File: docs/master/eloquent-mutators.md, line: 107
@@ -1676,7 +1871,7 @@ msgstr ""
 #. type: Code fence info string
 #, no-wrap
 msgid "php"
-msgstr ""
+msgstr "php"
 
 # File: docs/master/eloquent-mutators.md, line: 74
 #. type: Plain text
@@ -1697,24 +1892,40 @@ msgid "use App\\Support\\Address;\n"
 "        ),\n"
 "    );\n"
 "}\n"
-msgstr ""
+msgstr "use App\\Support\\Address;\n"
+"use Illuminate\\Database\\Eloquent\\Casts\\Attribute;\n\n"
+"/**\n"
+" * Interact with the user's address.\n"
+" *\n"
+" * @return  \\Illuminate\\Database\\Eloquent\\Casts\\Attribute\n"
+" */\n"
+"public function address(): Attribute\n"
+"{\n"
+"    return new Attribute(\n"
+"        get: fn ($value, $attributes) => new Address(\n"
+"            $attributes['address_line_one'],\n"
+"            $attributes['address_line_two'],\n"
+"        ),\n"
+"    );\n"
+"}\n"
 
 # File: docs/master/eloquent-mutators.md, line: 95
 #. type: Plain text
 msgid "When returning value objects from accessors, any changes made to the value object will automatically be synced back to the model before the model is saved. This is possible because Eloquent retains instances returned by accessors so it can be return the same instance each time the accessor is invoked:"
-msgstr ""
+msgstr "從存取子內回傳數值物件時，任何對數值物件作出的更改也會在保存 Model 前自動同步回來。這是因為 Eloquent 會保留存取子回傳的實體，好讓 Eloquent 能在每次叫用存取子時都回傳相同的實體："
 
 # File: docs/master/eloquent-mutators.md, line: 102
 #. type: Plain text
 #, no-wrap
 msgid "    $user->address->lineOne = 'Updated Address Line 1 Value';\n"
 "    $user->address->lineTwo = 'Updated Address Line 2 Value';\n"
-msgstr ""
+msgstr "    $user->address->lineOne = 'Updated Address Line 1 Value';\n"
+"    $user->address->lineTwo = 'Updated Address Line 2 Value';\n"
 
 # File: docs/master/eloquent-mutators.md, line: 106
 #. type: Plain text
 msgid "If you would like to disable the object caching behavior of attributes, you may invoke the `withoutObjectCaching` method when defining the attribute:"
-msgstr ""
+msgstr "若想進用這個屬性的物件快取行為，可在定義屬性時叫用 `withoutObjectCaching` 方法："
 
 # File: docs/master/eloquent-mutators.md, line: 107
 #. type: Plain text
@@ -1733,12 +1944,25 @@ msgid "/**\n"
 "        ),\n"
 "    ))->withoutObjectCaching();\n"
 "}\n"
-msgstr ""
+msgstr "/**\n"
+" * Interact with the user's address.\n"
+" *\n"
+" * @return  \\Illuminate\\Database\\Eloquent\\Casts\\Attribute\n"
+" */\n"
+"public function address(): Attribute\n"
+"{\n"
+"    return (new Attribute(\n"
+"        get: fn ($value, $attributes) => new Address(\n"
+"            $attributes['address_line_one'],\n"
+"            $attributes['address_line_two'],\n"
+"        ),\n"
+"    ))->withoutObjectCaching();\n"
+"}\n"
 
 # File: docs/master/eloquent-mutators.md, line: 128
 #. type: Plain text
 msgid "A mutator transforms an Eloquent attribute value when it is set. To define a mutator, you may provide the `set` argument when defining your attribute. Let's define a mutator for the `first_name` attribute. This mutator will be automatically called when we attempt to set the value of the `first_name` attribute on the model:"
-msgstr ""
+msgstr "更動子會在保存 Eloquent 屬性值時更改其值。若要定義更動子，可在定義屬性時提供一個 `set` 引數。讓我們來為 `first_name` 屬性定義一個更動子。每次我們嘗試在該 Model 上設定 `first_name` 屬性值的時候都會自動呼叫這個更動子："
 
 # File: docs/master/eloquent-mutators.md, line: 152
 #. type: Plain text
@@ -1759,34 +1983,49 @@ msgid "    class User extends Model\n"
 "            );\n"
 "        }\n"
 "    }\n"
-msgstr ""
+msgstr "    class User extends Model\n"
+"    {\n"
+"        /**\n"
+"         * Interact with the user's first name.\n"
+"         *\n"
+"         * @param  string  $value\n"
+"         * @return \\Illuminate\\Database\\Eloquent\\Casts\\Attribute\n"
+"         */\n"
+"        protected function firstName(): Attribute\n"
+"        {\n"
+"            return new Attribute(\n"
+"                get: fn ($value) => ucfirst($value),\n"
+"                set: fn ($value) => strtolower($value),\n"
+"            );\n"
+"        }\n"
+"    }\n"
 
 # File: docs/master/eloquent-mutators.md, line: 154
 #. type: Plain text
 msgid "The mutator closure will receive the value that is being set on the attribute, allowing you to manipulate the value and return the manipulated value. To use our mutator, we only need to set the `first_name` attribute on an Eloquent model:"
-msgstr ""
+msgstr "該更動子閉包會接收目前正在設定的屬性的值，讓你可以更改其值並回傳更改過的值。若要使用這個更動子，只需要在 Eloquent Model 上設定 `first_name` 屬性即可："
 
 # File: docs/master/eloquent-mutators.md, line: 162
 #. type: Plain text
 msgid "In this example, the `set` callback will be called with the value `Sally`. The mutator will then apply the `strtolower` function to the name and set its resulting value in model's the internal `$attributes` array."
-msgstr ""
+msgstr "在此範例中，`set` 閉包會以 `Sally` 值呼叫。更動子接著會在名字上套用 `strtolower` 函式，並將其結果設定到 Model 內部的 `$attribuets` 陣列上。"
 
 # File: docs/master/eloquent-mutators.md, line: 164
 #. type: Plain text
 #, no-wrap
 msgid "<a name=\"mutating-multiple-attributes\"></a>\n"
-msgstr ""
+msgstr "<a name=\"mutating-multiple-attributes\"></a>\n"
 
 # File: docs/master/eloquent-mutators.md, line: 164
 #. type: Title ####
 #, no-wrap
 msgid "Mutating Multiple Attributes"
-msgstr ""
+msgstr "更動多個屬性"
 
 # File: docs/master/eloquent-mutators.md, line: 167
 #. type: Plain text
 msgid "Sometimes your mutator may need to set multiple attributes on the underlying model. To do so, you may return an array from the `set` closure. Each key in the array should correspond with an underlying attribute / database column associated with the model:"
-msgstr ""
+msgstr "有時候，我們的更動子可能需要在底層的 Model 上設定多個屬性。為此，我們可以在 `set` 閉包內回傳一個陣列。陣列中的索引鍵應對應與 Model 關聯之底層的屬性或資料庫欄位："
 
 # File: docs/master/eloquent-mutators.md, line: 168
 #. type: Plain text
@@ -1811,5 +2050,24 @@ msgid "use App\\Support\\Address;\n"
 "        ],\n"
 "    );\n"
 "}\n"
-msgstr ""
+msgstr "use App\\Support\\Address;\n"
+"use Illuminate\\Database\\Eloquent\\Casts\\Attribute;\n\n"
+"/**\n"
+" * Interact with the user's address.\n"
+" *\n"
+" * @return  \\Illuminate\\Database\\Eloquent\\Casts\\Attribute\n"
+" */\n"
+"public function address(): Attribute\n"
+"{\n"
+"    return new Attribute(\n"
+"        get: fn ($value, $attributes) => new Address(\n"
+"            $attributes['address_line_one'],\n"
+"            $attributes['address_line_two'],\n"
+"        ),\n"
+"        set: fn (Address $value) => [\n"
+"            'address_line_one' => $value->lineOne,\n"
+"            'address_line_two' => $value->lineTwo,\n"
+"        ],\n"
+"    );\n"
+"}\n"
 

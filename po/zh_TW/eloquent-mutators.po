@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: laravel-docs\n"
 "POT-Creation-Date: 2022-01-29 05:35+0000\n"
-"PO-Revision-Date: 2022-01-29 05:46\n"
+"PO-Revision-Date: 2022-01-30 10:03\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
@@ -21,13 +21,13 @@ msgstr ""
 #. type: Title #
 #, no-wrap
 msgid "Eloquent: Mutators & Casting"
-msgstr ""
+msgstr "Eloquent：更動子與型別轉換"
 
 # File: docs/8.x/eloquent-mutators.md, line: 19
 # File: docs/master/eloquent-mutators.md, line: 19
 #. type: Bullet: '- '
 msgid "[Introduction](#introduction)"
-msgstr ""
+msgstr "[簡介](#introduction)"
 
 # File: docs/8.x/eloquent-mutators.md, line: 19
 # File: docs/master/eloquent-mutators.md, line: 19
@@ -48,65 +48,79 @@ msgid "- [Accessors & Mutators](#accessors-and-mutators)\n"
 "    - [Inbound Casting](#inbound-casting)\n"
 "    - [Cast Parameters](#cast-parameters)\n"
 "    - [Castables](#castables)\n"
-msgstr ""
+msgstr "- [存取子 (Accessor) 與更動子 (Mutator)](#accessors-and-mutators)\n"
+"    - [定義存取子](#defining-an-accessor)\n"
+"    - [定義更動子](#defining-a-mutator)\n"
+"- [屬性的型別轉換](#attribute-casting)\n"
+"    - [陣列與 JSON 的型別轉換](#array-and-json-casting)\n"
+"    - [日期的型別轉換](#date-casting)\n"
+"    - [Enum 的型別轉換](#enum-casting)\n"
+"    - [加密的型別轉換](#encrypted-casting)\n"
+"    - [查詢階段的型別轉換](#query-time-casting)\n"
+"- [自訂型別轉換](#custom-casts)\n"
+"    - [數值物件的型別轉換](#value-object-casting)\n"
+"    - [Array / JSON 序列化](#array-json-serialization)\n"
+"    - [輸入型別轉換](#inbound-casting)\n"
+"    - [Cast 參數](#cast-parameters)\n"
+"    - [Castable](#castables)\n"
 
 # File: docs/8.x/eloquent-mutators.md, line: 21
 # File: docs/master/eloquent-mutators.md, line: 21
 #. type: Plain text
 #, no-wrap
 msgid "<a name=\"introduction\"></a>\n"
-msgstr ""
+msgstr "<a name=\"introduction\"></a>\n"
 
 # File: docs/8.x/eloquent-mutators.md, line: 21
 # File: docs/master/eloquent-mutators.md, line: 21
 #. type: Title ##
 #, no-wrap
 msgid "Introduction"
-msgstr ""
+msgstr "簡介"
 
 # File: docs/8.x/eloquent-mutators.md, line: 24
 # File: docs/master/eloquent-mutators.md, line: 24
 #. type: Plain text
 msgid "Accessors, mutators, and attribute casting allow you to transform Eloquent attribute values when you retrieve or set them on model instances. For example, you may want to use the [Laravel encrypter](/docs/{{version}}/encryption) to encrypt a value while it is stored in the database, and then automatically decrypt the attribute when you access it on an Eloquent model. Or, you may want to convert a JSON string that is stored in your database to an array when it is accessed via your Eloquent model."
-msgstr ""
+msgstr "通過存取子 (Accessor)、更動子 (Mutator)、與型別轉換，便可在從 Model 實體上存取 Eloquent 屬性時轉換其值。舉例來說，我們可能想用 [Laravel 的加密功能](/docs/{{version}}/encryption) 來在資料庫內加密某個值，並在從 Eloquent Model 上存取該屬性時自動解密。或者，我們可能會想將某個值轉換為 JSON 字串來儲存進資料庫，然後在 Eloquent Model 上以陣列來存取。"
 
 # File: docs/8.x/eloquent-mutators.md, line: 26
 # File: docs/master/eloquent-mutators.md, line: 26
 #. type: Plain text
 #, no-wrap
 msgid "<a name=\"accessors-and-mutators\"></a>\n"
-msgstr ""
+msgstr "<a name=\"accessors-and-mutators\"></a>\n"
 
 # File: docs/8.x/eloquent-mutators.md, line: 26
 # File: docs/master/eloquent-mutators.md, line: 26
 #. type: Title ##
 #, no-wrap
 msgid "Accessors & Mutators"
-msgstr ""
+msgstr "存取子 (Accessor) 與更動子 (Mutator)"
 
 # File: docs/8.x/eloquent-mutators.md, line: 29
 # File: docs/master/eloquent-mutators.md, line: 29
 #. type: Plain text
 #, no-wrap
 msgid "<a name=\"defining-an-accessor\"></a>\n"
-msgstr ""
+msgstr "<a name=\"defining-an-accessor\"></a>\n"
 
 # File: docs/8.x/eloquent-mutators.md, line: 29
 # File: docs/master/eloquent-mutators.md, line: 29
 #. type: Title ###
 #, no-wrap
 msgid "Defining An Accessor"
-msgstr ""
+msgstr "定義存取子"
 
 # File: docs/8.x/eloquent-mutators.md, line: 32
 #. type: Plain text
 msgid "An accessor transforms an Eloquent attribute value when it is accessed. To define an accessor, create a `get{Attribute}Attribute` method on your model where `{Attribute}` is the \"studly\" cased name of the column you wish to access."
-msgstr ""
+msgstr "存取子 (Accessor) 可在存取 Eloquent 屬性時轉換其值。若要定義存取子，可在 Model 中建立一個 `get{Attribute}Attribute` 方法。其中，`{Attribute}` 方法即為要存取的欄位之「Studly 命名法」大小寫的屬性名稱。"
 
 # File: docs/8.x/eloquent-mutators.md, line: 34
 #. type: Plain text
 msgid "In this example, we'll define an accessor for the `first_name` attribute. The accessor will automatically be called by Eloquent when attempting to retrieve the value of the `first_name` attribute:"
-msgstr ""
+msgstr "在這個例子中，我們會為 `first_name` 屬性定義存取子。在嘗試取得 `first_name` 屬性時，Eloquent 會自動呼叫該存取子："
 
 # File: docs/8.x/eloquent-mutators.md, line: 36
 # File: docs/8.x/eloquent-mutators.md, line: 85
@@ -133,7 +147,7 @@ msgstr ""
 #. type: Plain text
 #, no-wrap
 msgid "    <?php\n"
-msgstr ""
+msgstr "    <?php\n"
 
 # File: docs/8.x/eloquent-mutators.md, line: 38
 # File: docs/8.x/eloquent-mutators.md, line: 87
@@ -154,7 +168,7 @@ msgstr ""
 #. type: Plain text
 #, no-wrap
 msgid "    namespace App\\Models;\n"
-msgstr ""
+msgstr "    namespace App\\Models;\n"
 
 # File: docs/8.x/eloquent-mutators.md, line: 40
 # File: docs/8.x/eloquent-mutators.md, line: 89
@@ -165,7 +179,7 @@ msgstr ""
 #. type: Plain text
 #, no-wrap
 msgid "    use Illuminate\\Database\\Eloquent\\Model;\n"
-msgstr ""
+msgstr "    use Illuminate\\Database\\Eloquent\\Model;\n"
 
 # File: docs/8.x/eloquent-mutators.md, line: 54
 #. type: Plain text
@@ -183,13 +197,25 @@ msgid "    class User extends Model\n"
 "            return ucfirst($value);\n"
 "        }\n"
 "    }\n"
-msgstr ""
+msgstr "    class User extends Model\n"
+"    {\n"
+"        /**\n"
+"         * Get the user's first name.\n"
+"         *\n"
+"         * @param  string  $value\n"
+"         * @return string\n"
+"         */\n"
+"        public function getFirstNameAttribute($value)\n"
+"        {\n"
+"            return ucfirst($value);\n"
+"        }\n"
+"    }\n"
 
 # File: docs/8.x/eloquent-mutators.md, line: 56
 # File: docs/master/eloquent-mutators.md, line: 60
 #. type: Plain text
 msgid "As you can see, the original value of the column is passed to the accessor, allowing you to manipulate and return the value. To access the value of the accessor, you may simply access the `first_name` attribute on a model instance:"
-msgstr ""
+msgstr "如上所見，該欄位的原始值會傳給該存取子，讓你可以進行操作並回傳值。若要存取存取子的值，只需要在 Model 實體上存取 `first_name` 屬性即可："
 
 # File: docs/8.x/eloquent-mutators.md, line: 58
 # File: docs/8.x/eloquent-mutators.md, line: 107
@@ -203,7 +229,7 @@ msgstr ""
 #. type: Plain text
 #, no-wrap
 msgid "    use App\\Models\\User;\n"
-msgstr ""
+msgstr "    use App\\Models\\User;\n"
 
 # File: docs/8.x/eloquent-mutators.md, line: 60
 # File: docs/8.x/eloquent-mutators.md, line: 109
@@ -221,19 +247,19 @@ msgstr ""
 #. type: Plain text
 #, no-wrap
 msgid "    $user = User::find(1);\n"
-msgstr ""
+msgstr "    $user = User::find(1);\n"
 
 # File: docs/8.x/eloquent-mutators.md, line: 62
 # File: docs/master/eloquent-mutators.md, line: 66
 #. type: Plain text
 #, no-wrap
 msgid "    $firstName = $user->first_name;\n"
-msgstr ""
+msgstr "    $firstName = $user->first_name;\n"
 
 # File: docs/8.x/eloquent-mutators.md, line: 64
 #. type: Plain text
 msgid "You are not limited to interacting with a single attribute within your accessor. You may also use accessors to return new, computed values from existing attributes:"
-msgstr ""
+msgstr "存取子也不一定得要與單一屬性互動。你也可以使用存取子來回傳一個從現有屬性組合來的新的值："
 
 # File: docs/8.x/eloquent-mutators.md, line: 74
 #. type: Plain text
@@ -247,38 +273,46 @@ msgid "    /**\n"
 "    {\n"
 "        return \"{$this->first_name} {$this->last_name}\";\n"
 "    }\n"
-msgstr ""
+msgstr "    /**\n"
+"     * Get the user's full name.\n"
+"     *\n"
+"     * @return string\n"
+"     */\n"
+"    public function getFullNameAttribute()\n"
+"    {\n"
+"        return \"{$this->first_name} {$this->last_name}\";\n"
+"    }\n"
 
 # File: docs/8.x/eloquent-mutators.md, line: 76
 # File: docs/master/eloquent-mutators.md, line: 68
 #. type: Plain text
 #, no-wrap
 msgid "> {tip} If you would like these computed values to be added to the array / JSON representations of your model, [you will need to append them](/docs/{{version}}/eloquent-serialization#appending-values-to-json).\n"
-msgstr ""
+msgstr "> {tip} 若想讓過這些計算過的值包含在 Model 的陣列或 JSON 呈現上，則[需要將這些欄位附加上去](/docs/{{version}}/eloquent-serialization#appending-values-to-json)。\n"
 
 # File: docs/8.x/eloquent-mutators.md, line: 78
 # File: docs/master/eloquent-mutators.md, line: 125
 #. type: Plain text
 #, no-wrap
 msgid "<a name=\"defining-a-mutator\"></a>\n"
-msgstr ""
+msgstr "<a name=\"defining-a-mutator\"></a>\n"
 
 # File: docs/8.x/eloquent-mutators.md, line: 78
 # File: docs/master/eloquent-mutators.md, line: 125
 #. type: Title ###
 #, no-wrap
 msgid "Defining A Mutator"
-msgstr ""
+msgstr "定義更動子"
 
 # File: docs/8.x/eloquent-mutators.md, line: 81
 #. type: Plain text
 msgid "A mutator transforms an Eloquent attribute value when it is set. To define a mutator, define a `set{Attribute}Attribute` method on your model where `{Attribute}` is the \"studly\" cased name of the column you wish to access."
-msgstr ""
+msgstr "更動子 (Mutator) 可在寫入 Eloquent 屬性時轉換其值。若要定義更動子，可在 Model 中建立一個 `set{Attribute}Attribute` 方法。其中，`{Attribute}` 方法即為要存取的欄位之「Studly 命名法」大小寫的屬性名稱。"
 
 # File: docs/8.x/eloquent-mutators.md, line: 83
 #. type: Plain text
 msgid "Let's define a mutator for the `first_name` attribute. This mutator will be automatically called when we attempt to set the value of the `first_name` attribute on the model:"
-msgstr ""
+msgstr "我們來為 `first_name` 屬性定義更動子。該更動子會在嘗試於 Model 上設定 `first_name` 屬性值時被呼叫："
 
 # File: docs/8.x/eloquent-mutators.md, line: 103
 #. type: Plain text
@@ -296,50 +330,62 @@ msgid "    class User extends Model\n"
 "            $this->attributes['first_name'] = strtolower($value);\n"
 "        }\n"
 "    }\n"
-msgstr ""
+msgstr "    class User extends Model\n"
+"    {\n"
+"        /**\n"
+"         * Set the user's first name.\n"
+"         *\n"
+"         * @param  string  $value\n"
+"         * @return void\n"
+"         */\n"
+"        public function setFirstNameAttribute($value)\n"
+"        {\n"
+"            $this->attributes['first_name'] = strtolower($value);\n"
+"        }\n"
+"    }\n"
 
 # File: docs/8.x/eloquent-mutators.md, line: 105
 #. type: Plain text
 msgid "The mutator will receive the value that is being set on the attribute, allowing you to manipulate the value and set the manipulated value on the Eloquent model's internal `$attributes` property. To use our mutator, we only need to set the `first_name` attribute on an Eloquent model:"
-msgstr ""
+msgstr "該更動子會接收目前正在設定的屬性的值，讓你可以更改其值並將更改過的值設定在 Eloquent Model 內部的 `$attributes` 屬性上。若要使用這個更動子，只需要在 Eloquent Model 上設定 `first_name` 屬性即可："
 
 # File: docs/8.x/eloquent-mutators.md, line: 111
 # File: docs/master/eloquent-mutators.md, line: 160
 #. type: Plain text
 #, no-wrap
 msgid "    $user->first_name = 'Sally';\n"
-msgstr ""
+msgstr "    $user->first_name = 'Sally';\n"
 
 # File: docs/8.x/eloquent-mutators.md, line: 113
 #. type: Plain text
 msgid "In this example, the `setFirstNameAttribute` function will be called with the value `Sally`. The mutator will then apply the `strtolower` function to the name and set its resulting value in the internal `$attributes` array."
-msgstr ""
+msgstr "在此範例中，`setFirstNameAttribute` 函式會以 `Sally` 值呼叫。改更動子接著會在名字上套用 `strtolower` 韓式，並將其結果設定到內部的 `$attribuets` 陣列上。"
 
 # File: docs/8.x/eloquent-mutators.md, line: 115
 # File: docs/master/eloquent-mutators.md, line: 193
 #. type: Plain text
 #, no-wrap
 msgid "<a name=\"attribute-casting\"></a>\n"
-msgstr ""
+msgstr "<a name=\"attribute-casting\"></a>\n"
 
 # File: docs/8.x/eloquent-mutators.md, line: 115
 # File: docs/master/eloquent-mutators.md, line: 193
 #. type: Title ##
 #, no-wrap
 msgid "Attribute Casting"
-msgstr ""
+msgstr "屬性型別轉換"
 
 # File: docs/8.x/eloquent-mutators.md, line: 118
 # File: docs/master/eloquent-mutators.md, line: 196
 #. type: Plain text
 msgid "Attribute casting provides functionality similar to accessors and mutators without requiring you to define any additional methods on your model. Instead, your model's `$casts` property provides a convenient method of converting attributes to common data types."
-msgstr ""
+msgstr "屬性型別轉換提供了與存取子及更動子類似的方法。不過，你不需要手動在 Model 內定義任何額外的方法。通過 Model 上的 `$casts` 屬性，就可以方便地將屬性轉換為常見的資料型別。"
 
 # File: docs/8.x/eloquent-mutators.md, line: 120
 # File: docs/master/eloquent-mutators.md, line: 198
 #. type: Plain text
 msgid "The `$casts` property should be an array where the key is the name of the attribute being cast and the value is the type you wish to cast the column to. The supported cast types are:"
-msgstr ""
+msgstr "`$casts` 屬性應為一個陣列，其索引鍵為要進行型別轉換的屬性名稱，而值則為要將該欄位進行型別轉換的型別。支援的轉換型別如下："
 
 # File: docs/8.x/eloquent-mutators.md, line: 143
 # File: docs/master/eloquent-mutators.md, line: 221
@@ -367,13 +413,34 @@ msgid "<div class=\"content-list\" markdown=\"1\">\n"
 "- `string`\n"
 "- `timestamp`\n"
 "</div>\n"
-msgstr ""
+msgstr "<div class=\"content-list\" markdown=\"1\">\n"
+"- `array`\n"
+"- `AsStringable::class`\n"
+"- `boolean`\n"
+"- `collection`\n"
+"- `date`\n"
+"- `datetime`\n"
+"- `immutable_date`\n"
+"- `immutable_datetime`\n"
+"- `decimal:`<code>&lt;digits&gt;</code>\n"
+"- `double`\n"
+"- `encrypted`\n"
+"- `encrypted:array`\n"
+"- `encrypted:collection`\n"
+"- `encrypted:object`\n"
+"- `float`\n"
+"- `integer`\n"
+"- `object`\n"
+"- `real`\n"
+"- `string`\n"
+"- `timestamp`\n"
+"</div>\n"
 
 # File: docs/8.x/eloquent-mutators.md, line: 145
 # File: docs/master/eloquent-mutators.md, line: 223
 #. type: Plain text
 msgid "To demonstrate attribute casting, let's cast the `is_admin` attribute, which is stored in our database as an integer (`0` or `1`) to a boolean value:"
-msgstr ""
+msgstr "為了演示屬性型別轉換，我們來對 `is_admin` 屬性進行型別轉換。該欄位在資料庫中是以整數 (`0` 或 `1`) 來表示布林值的："
 
 # File: docs/8.x/eloquent-mutators.md, line: 163
 # File: docs/master/eloquent-mutators.md, line: 241
@@ -390,20 +457,30 @@ msgid "    class User extends Model\n"
 "            'is_admin' => 'boolean',\n"
 "        ];\n"
 "    }\n"
-msgstr ""
+msgstr "    class User extends Model\n"
+"    {\n"
+"        /**\n"
+"         * The attributes that should be cast.\n"
+"         *\n"
+"         * @var array\n"
+"         */\n"
+"        protected $casts = [\n"
+"            'is_admin' => 'boolean',\n"
+"        ];\n"
+"    }\n"
 
 # File: docs/8.x/eloquent-mutators.md, line: 165
 # File: docs/master/eloquent-mutators.md, line: 243
 #. type: Plain text
 msgid "After defining the cast, the `is_admin` attribute will always be cast to a boolean when you access it, even if the underlying value is stored in the database as an integer:"
-msgstr ""
+msgstr "定義好型別轉換後，只要存取 `is_admin` 屬性，即使該屬性在資料庫中以整數來儲存，該屬性值總是會被轉換為布林值："
 
 # File: docs/8.x/eloquent-mutators.md, line: 167
 # File: docs/master/eloquent-mutators.md, line: 245
 #. type: Plain text
 #, no-wrap
 msgid "    $user = App\\Models\\User::find(1);\n"
-msgstr ""
+msgstr "    $user = App\\Models\\User::all();\n"
 
 # File: docs/8.x/eloquent-mutators.md, line: 171
 # File: docs/master/eloquent-mutators.md, line: 249
@@ -412,13 +489,15 @@ msgstr ""
 msgid "    if ($user->is_admin) {\n"
 "        //\n"
 "    }\n"
-msgstr ""
+msgstr "    if ($user->is_admin) {\n"
+"        //\n"
+"    }\n"
 
 # File: docs/8.x/eloquent-mutators.md, line: 173
 # File: docs/master/eloquent-mutators.md, line: 251
 #. type: Plain text
 msgid "If you need to add a new, temporary cast at runtime, you may use the `mergeCasts` method. These cast definitions will be added to any of the casts already defined on the model:"
-msgstr ""
+msgstr "若有需要在執行階段加上新的、臨時的型別轉換，則可使用 `mergeCasts` 方法。這些型別轉換定義會被加到所有在 Model 中已定義的型別轉換上："
 
 # File: docs/8.x/eloquent-mutators.md, line: 178
 # File: docs/master/eloquent-mutators.md, line: 256
@@ -428,34 +507,37 @@ msgid "    $user->mergeCasts([\n"
 "        'is_admin' => 'integer',\n"
 "        'options' => 'object',\n"
 "    ]);\n"
-msgstr ""
+msgstr "    $user->mergeCasts([\n"
+"        'is_admin' => 'integer',\n"
+"        'options' => 'object',\n"
+"    ]);\n"
 
 # File: docs/8.x/eloquent-mutators.md, line: 180
 # File: docs/master/eloquent-mutators.md, line: 258
 #. type: Plain text
 #, no-wrap
 msgid "> {note} Attributes that are `null` will not be cast. In addition, you should never define a cast (or an attribute) that has the same name as a relationship.\n"
-msgstr ""
+msgstr "> {note} `null` 的屬性將不會進行型別轉換。此外，定義型別轉換 (或屬性) 時，也不應有相同名稱的關聯。\n"
 
 # File: docs/8.x/eloquent-mutators.md, line: 182
 # File: docs/master/eloquent-mutators.md, line: 260
 #. type: Plain text
 #, no-wrap
 msgid "<a name=\"stringable-casting\"></a>\n"
-msgstr ""
+msgstr "<a name=\"stringable-casting\"></a>\n"
 
 # File: docs/8.x/eloquent-mutators.md, line: 182
 # File: docs/master/eloquent-mutators.md, line: 260
 #. type: Title ####
 #, no-wrap
 msgid "Stringable Casting"
-msgstr ""
+msgstr "Stringable 的型別轉換"
 
 # File: docs/8.x/eloquent-mutators.md, line: 185
 # File: docs/master/eloquent-mutators.md, line: 263
 #. type: Plain text
 msgid "You may use the `Illuminate\\Database\\Eloquent\\Casts\\AsStringable` cast class to cast a model attribute to a [fluent `Illuminate\\Support\\Stringable` object](/docs/{{version}}/helpers#fluent-strings-method-list):"
-msgstr ""
+msgstr "可以使用 `Illuminate\\Database\\Eloquent\\Casts\\AsStringable` 型別轉換類別來講 Model 屬性轉換為 [Fluent `Illuminate\\Support\\Stringable` 物件] (/docs/{{version}}/helpers#fluent-strings-method-list):"
 
 # File: docs/8.x/eloquent-mutators.md, line: 192
 # File: docs/master/eloquent-mutators.md, line: 270
@@ -463,7 +545,8 @@ msgstr ""
 #, no-wrap
 msgid "    use Illuminate\\Database\\Eloquent\\Casts\\AsStringable;\n"
 "    use Illuminate\\Database\\Eloquent\\Model;\n"
-msgstr ""
+msgstr "    use Illuminate\\Database\\Eloquent\\Casts\\AsStringable;\n"
+"    use Illuminate\\Database\\Eloquent\\Model;\n"
 
 # File: docs/8.x/eloquent-mutators.md, line: 204
 # File: docs/master/eloquent-mutators.md, line: 282
@@ -480,27 +563,37 @@ msgid "    class User extends Model\n"
 "            'directory' => AsStringable::class,\n"
 "        ];\n"
 "    }\n"
-msgstr ""
+msgstr "    class User extends Model\n"
+"    {\n"
+"        /**\n"
+"         * The attributes that should be cast.\n"
+"         *\n"
+"         * @var array\n"
+"         */\n"
+"        protected $casts = [\n"
+"            'directory' => AsStringable::class,\n"
+"        ];\n"
+"    }\n"
 
 # File: docs/8.x/eloquent-mutators.md, line: 206
 # File: docs/master/eloquent-mutators.md, line: 284
 #. type: Plain text
 #, no-wrap
 msgid "<a name=\"array-and-json-casting\"></a>\n"
-msgstr ""
+msgstr "<a name=\"array-and-json-casting\"></a>\n"
 
 # File: docs/8.x/eloquent-mutators.md, line: 206
 # File: docs/master/eloquent-mutators.md, line: 284
 #. type: Title ###
 #, no-wrap
 msgid "Array & JSON Casting"
-msgstr ""
+msgstr "陣列與 JSON 的型別轉換"
 
 # File: docs/8.x/eloquent-mutators.md, line: 209
 # File: docs/master/eloquent-mutators.md, line: 287
 #. type: Plain text
 msgid "The `array` cast is particularly useful when working with columns that are stored as serialized JSON. For example, if your database has a `JSON` or `TEXT` field type that contains serialized JSON, adding the `array` cast to that attribute will automatically deserialize the attribute to a PHP array when you access it on your Eloquent model:"
-msgstr ""
+msgstr "`array` 型別轉換特別適合搭配宜 JSON 序列化保存的欄位。舉例來說，說資料庫內有個包含了序列化 JSON 的 `JSON` 或 `TEXT` 欄位型別，則加上 `array` 型別轉換，就可以在從 Eloquent Model 上存取該欄位時自動將屬性反串聯化為 PHP 陣列："
 
 # File: docs/8.x/eloquent-mutators.md, line: 227
 # File: docs/master/eloquent-mutators.md, line: 305
@@ -517,34 +610,44 @@ msgid "    class User extends Model\n"
 "            'options' => 'array',\n"
 "        ];\n"
 "    }\n"
-msgstr ""
+msgstr "    class User extends Model\n"
+"    {\n"
+"        /**\n"
+"         * The attributes that should be cast.\n"
+"         *\n"
+"         * @var array\n"
+"         */\n"
+"        protected $casts = [\n"
+"            'options' => 'array',\n"
+"        ];\n"
+"    }\n"
 
 # File: docs/8.x/eloquent-mutators.md, line: 229
 # File: docs/master/eloquent-mutators.md, line: 307
 #. type: Plain text
 msgid "Once the cast is defined, you may access the `options` attribute and it will automatically be deserialized from JSON into a PHP array. When you set the value of the `options` attribute, the given array will automatically be serialized back into JSON for storage:"
-msgstr ""
+msgstr "定義好型別轉換後，存取 `options` 屬性時就會自動從 JSON 反序列化為 PHP 陣列。為 `options` 賦值時，提供的陣列也會被序列化回 JSON 以進行儲存："
 
 # File: docs/8.x/eloquent-mutators.md, line: 235
 # File: docs/master/eloquent-mutators.md, line: 313
 #. type: Plain text
 #, no-wrap
 msgid "    $options = $user->options;\n"
-msgstr ""
+msgstr "    $options = $user->options;\n"
 
 # File: docs/8.x/eloquent-mutators.md, line: 237
 # File: docs/master/eloquent-mutators.md, line: 315
 #. type: Plain text
 #, no-wrap
 msgid "    $options['key'] = 'value';\n"
-msgstr ""
+msgstr "    $options['key'] = 'value';\n"
 
 # File: docs/8.x/eloquent-mutators.md, line: 239
 # File: docs/master/eloquent-mutators.md, line: 317
 #. type: Plain text
 #, no-wrap
 msgid "    $user->options = $options;\n"
-msgstr ""
+msgstr "    $user->options = $options;\n"
 
 # File: docs/8.x/eloquent-mutators.md, line: 241
 # File: docs/8.x/eloquent-mutators.md, line: 517
@@ -554,61 +657,61 @@ msgstr ""
 #. type: Plain text
 #, no-wrap
 msgid "    $user->save();\n"
-msgstr ""
+msgstr "    $user->save();\n"
 
 # File: docs/8.x/eloquent-mutators.md, line: 243
 # File: docs/master/eloquent-mutators.md, line: 321
 #. type: Plain text
 #, no-wrap
 msgid "To update a single field of a JSON attribute with a more terse syntax, you may use the `->` operator when calling the `update` method:\n"
-msgstr ""
+msgstr "若要使用更精簡的方法來更新 JSON 屬性中的單一欄位，可以在呼叫 `update` 方法時使用 `->` 運算子：\n"
 
 # File: docs/8.x/eloquent-mutators.md, line: 247
 # File: docs/master/eloquent-mutators.md, line: 325
 #. type: Plain text
 #, no-wrap
 msgid "    $user->update(['options->key' => 'value']);\n"
-msgstr ""
+msgstr "    $user->update(['options->key' => 'value']);\n"
 
 # File: docs/8.x/eloquent-mutators.md, line: 249
 # File: docs/master/eloquent-mutators.md, line: 327
 #. type: Plain text
 #, no-wrap
 msgid "<a name=\"array-object-and-collection-casting\"></a>\n"
-msgstr ""
+msgstr "<a name=\"array-object-and-collection-casting\"></a>\n"
 
 # File: docs/8.x/eloquent-mutators.md, line: 249
 # File: docs/master/eloquent-mutators.md, line: 327
 #. type: Title ####
 #, no-wrap
 msgid "Array Object & Collection Casting"
-msgstr ""
+msgstr "陣列物件與 Collection 的型別轉換"
 
 # File: docs/8.x/eloquent-mutators.md, line: 252
 # File: docs/master/eloquent-mutators.md, line: 330
 #. type: Plain text
 msgid "Although the standard `array` cast is sufficient for many applications, it does have some disadvantages. Since the `array` cast returns a primitive type, it is not possible to mutate an offset of the array directly. For example, the following code will trigger a PHP error:"
-msgstr ""
+msgstr "雖然使用標準的 `array` 型別轉換對於大多數專案就夠用了，但 `array` 也有一些缺點。由於 `array` 型別轉換回傳的是原生型別，因此我們無法直接更改陣列的元素。舉例來說，下列程式碼會觸發 PHP 錯誤："
 
 # File: docs/8.x/eloquent-mutators.md, line: 256
 # File: docs/master/eloquent-mutators.md, line: 334
 #. type: Plain text
 #, no-wrap
 msgid "    $user->options['key'] = $value;\n"
-msgstr ""
+msgstr "    $user->options['key'] = $value;\n"
 
 # File: docs/8.x/eloquent-mutators.md, line: 258
 # File: docs/master/eloquent-mutators.md, line: 336
 #. type: Plain text
 msgid "To solve this, Laravel offers an `AsArrayObject` cast that casts your JSON attribute to an [ArrayObject](https://www.php.net/manual/en/class.arrayobject.php) class. This feature is implemented using Laravel's [custom cast](#custom-casts) implementation, which allows Laravel to intelligently cache and transform the mutated object such that individual offsets may be modified without triggering a PHP error. To use the `AsArrayObject` cast, simply assign it to an attribute:"
-msgstr ""
+msgstr "為了解決這個問題，Laravel 提供了一個 `AsArrayObject` 型別轉換，可用來將 JSON 屬性轉換為 [ArrayObject](https://www.php.net/manual/en/class.arrayobject.php) 類別。改功能使用 Laravel 的[自訂型別轉換](#custom-casts)實作，可讓 Laravel 進行智慧快取並變換更改過的物件，也能讓個別元素在修改時不觸發 PHP 錯誤。若要使用 `AsArrayObject` 型別轉換，只需要將其指派給屬性即可："
 
 # File: docs/8.x/eloquent-mutators.md, line: 260
 # File: docs/master/eloquent-mutators.md, line: 338
 #. type: Plain text
 #, no-wrap
 msgid "    use Illuminate\\Database\\Eloquent\\Casts\\AsArrayObject;\n"
-msgstr ""
+msgstr "    use Illuminate\\Database\\Eloquent\\Casts\\AsArrayObject;\n"
 
 # File: docs/8.x/eloquent-mutators.md, line: 269
 # File: docs/master/eloquent-mutators.md, line: 347
@@ -622,20 +725,27 @@ msgid "    /**\n"
 "    protected $casts = [\n"
 "        'options' => AsArrayObject::class,\n"
 "    ];\n"
-msgstr ""
+msgstr "    /**\n"
+"     * The attributes that should be cast.\n"
+"     *\n"
+"     * @var array\n"
+"     */\n"
+"    protected $casts = [\n"
+"        'options' => AsArrayObject::class,\n"
+"    ];\n"
 
 # File: docs/8.x/eloquent-mutators.md, line: 271
 # File: docs/master/eloquent-mutators.md, line: 349
 #. type: Plain text
 msgid "Similarly, Laravel offers an `AsCollection` cast that casts your JSON attribute to a Laravel [Collection](/docs/{{version}}/collections) instance:"
-msgstr ""
+msgstr "Laravel 還提供了一個類似的 `AsCollection` 型別轉換，可將 JSON 屬性轉換為 Laravel 的 [Collection](/docs/{{version}}/collections) 實體："
 
 # File: docs/8.x/eloquent-mutators.md, line: 273
 # File: docs/master/eloquent-mutators.md, line: 351
 #. type: Plain text
 #, no-wrap
 msgid "    use Illuminate\\Database\\Eloquent\\Casts\\AsCollection;\n"
-msgstr ""
+msgstr "    use Illuminate\\Database\\Eloquent\\Casts\\AsCollection;\n"
 
 # File: docs/8.x/eloquent-mutators.md, line: 282
 # File: docs/master/eloquent-mutators.md, line: 360
@@ -649,33 +759,40 @@ msgid "    /**\n"
 "    protected $casts = [\n"
 "        'options' => AsCollection::class,\n"
 "    ];\n"
-msgstr ""
+msgstr "    /**\n"
+"     * The attributes that should be cast.\n"
+"     *\n"
+"     * @var array\n"
+"     */\n"
+"    protected $casts = [\n"
+"        'options' => AsCollection::class,\n"
+"    ];\n"
 
 # File: docs/8.x/eloquent-mutators.md, line: 284
 # File: docs/master/eloquent-mutators.md, line: 362
 #. type: Plain text
 #, no-wrap
 msgid "<a name=\"date-casting\"></a>\n"
-msgstr ""
+msgstr "<a name=\"date-casting\"></a>\n"
 
 # File: docs/8.x/eloquent-mutators.md, line: 284
 # File: docs/master/eloquent-mutators.md, line: 362
 #. type: Title ###
 #, no-wrap
 msgid "Date Casting"
-msgstr ""
+msgstr "日期的型別轉換"
 
 # File: docs/8.x/eloquent-mutators.md, line: 287
 # File: docs/master/eloquent-mutators.md, line: 365
 #. type: Plain text
 msgid "By default, Eloquent will cast the `created_at` and `updated_at` columns to instances of [Carbon](https://github.com/briannesbitt/Carbon), which extends the PHP `DateTime` class and provides an assortment of helpful methods. You may cast additional date attributes by defining additional date casts within your model's `$casts` property array. Typically, dates should be cast using the `datetime` or `immutable_datetime` cast types."
-msgstr ""
+msgstr "預設情況下，Eloquent 會將 `created_at` 與 `updated_at` 欄位轉換為 [Carbon](https://github.com/briannesbitt/Carbon) 實體。Carbon 繼承自 PHP 的 `DateTime` 類別，並提供了各種實用方法。可以通過往 Model 的 `$casts` 屬性陣列內定義額外的日期型別轉換來給其他日期屬性進行轉換。通常來說，日期應使用 `datetime` 或 `immutable_datetime` 型別轉換類型。"
 
 # File: docs/8.x/eloquent-mutators.md, line: 289
 # File: docs/master/eloquent-mutators.md, line: 367
 #. type: Plain text
 msgid "When defining a `date` or `datetime` cast, you may also specify the date's format. This format will be used when the [model is serialized to an array or JSON](/docs/{{version}}/eloquent-serialization):"
-msgstr ""
+msgstr "在定義 `date` 或 `datetime` 型別轉換時，也可以指定日期的格式。該格式會在 [Model 被序列化成陣列或 JSON](/docs/{{version}}/eloquent-serialization) 時使用："
 
 # File: docs/8.x/eloquent-mutators.md, line: 298
 # File: docs/master/eloquent-mutators.md, line: 376
@@ -689,19 +806,26 @@ msgid "    /**\n"
 "    protected $casts = [\n"
 "        'created_at' => 'datetime:Y-m-d',\n"
 "    ];\n"
-msgstr ""
+msgstr "    /**\n"
+"     * The attributes that should be cast.\n"
+"     *\n"
+"     * @var array\n"
+"     */\n"
+"    protected $casts = [\n"
+"        'created_at' => 'datetime:Y-m-d',\n"
+"    ];\n"
 
 # File: docs/8.x/eloquent-mutators.md, line: 300
 # File: docs/master/eloquent-mutators.md, line: 378
 #. type: Plain text
 msgid "When a column is cast as a date, you may set the corresponding model attribute value to a UNIX timestamp, date string (`Y-m-d`), date-time string, or a `DateTime` / `Carbon` instance. The date's value will be correctly converted and stored in your database."
-msgstr ""
+msgstr "在將欄位轉換為日期時，可以將相應的 Model 屬性值設為 UNIX 時戳、日期字串 (`Y-m-d`)、日期與時間字串、或是 `DateTime` / `Carbon` 實體。日期的值會被正確地轉換並保存在資料庫中。"
 
 # File: docs/8.x/eloquent-mutators.md, line: 302
 # File: docs/master/eloquent-mutators.md, line: 380
 #. type: Plain text
 msgid "You may customize the default serialization format for all of your model's dates by defining a `serializeDate` method on your model. This method does not affect how your dates are formatted for storage in the database:"
-msgstr ""
+msgstr "在 Model 中定義 `serializeDate` 方法，即可為 Model 中所有的日期定義預設的序列化方法。改方法並不會影響日期儲存到資料庫時的格式化方法："
 
 # File: docs/8.x/eloquent-mutators.md, line: 313
 # File: docs/master/eloquent-mutators.md, line: 391
@@ -717,13 +841,22 @@ msgid "    /**\n"
 "    {\n"
 "        return $date->format('Y-m-d');\n"
 "    }\n"
-msgstr ""
+msgstr "    /**\n"
+"     * Prepare a date for array / JSON serialization.\n"
+"     *\n"
+"     * @param  \\DateTimeInterface  $date\n"
+"     * @return string\n"
+"     */\n"
+"    protected function serializeDate(DateTimeInterface $date)\n"
+"    {\n"
+"        return $date->format('Y-m-d');\n"
+"    }\n"
 
 # File: docs/8.x/eloquent-mutators.md, line: 315
 # File: docs/master/eloquent-mutators.md, line: 393
 #. type: Plain text
 msgid "To specify the format that should be used when actually storing a model's dates within your database, you should define a `$dateFormat` property on your model:"
-msgstr ""
+msgstr "若要指定用來將 Model 日期保存在資料庫時使用的格式，可在 Model 中定義 `$dateFormat` 屬性："
 
 # File: docs/8.x/eloquent-mutators.md, line: 322
 # File: docs/master/eloquent-mutators.md, line: 400
@@ -735,67 +868,72 @@ msgid "    /**\n"
 "     * @var string\n"
 "     */\n"
 "    protected $dateFormat = 'U';\n"
-msgstr ""
+msgstr "    /**\n"
+"     * The storage format of the model's date columns.\n"
+"     *\n"
+"     * @var string\n"
+"     */\n"
+"    protected $dateFormat = 'U';\n"
 
 # File: docs/8.x/eloquent-mutators.md, line: 324
 # File: docs/master/eloquent-mutators.md, line: 402
 #. type: Plain text
 #, no-wrap
 msgid "<a name=\"date-casting-and-timezones\"></a>\n"
-msgstr ""
+msgstr "<a name=\"date-casting-and-timezones\"></a>\n"
 
 # File: docs/8.x/eloquent-mutators.md, line: 324
 # File: docs/master/eloquent-mutators.md, line: 402
 #. type: Title ####
 #, no-wrap
 msgid "Date Casting, Serialization, & Timezones"
-msgstr ""
+msgstr "日期型別轉換、序列化、與時區"
 
 # File: docs/8.x/eloquent-mutators.md, line: 327
 # File: docs/master/eloquent-mutators.md, line: 405
 #. type: Plain text
 msgid "By default, the `date` and `datetime` casts will serialize dates to a UTC ISO-8601 date string (`1986-05-28T21:05:54.000000Z`), regardless of the timezone specified in your application's `timezone` configuration option. You are strongly encouraged to always use this serialization format, as well as to store your application's dates in the UTC timezone by not changing your application's `timezone` configuration option from its default `UTC` value. Consistently using the UTC timezone throughout your application will provide the maximum level of interoperability with other date manipulation libraries written in PHP and JavaScript."
-msgstr ""
+msgstr "預設情況下，不論專案的 `timezone` 組態設定選項設為哪個時區，`date` 與 `datetime` 都會將日期序列化為 UTC 的 ISO-8601 日期字串 (`1986-05-28T21:05:54.000000Z`)。我們強烈建議你保持使用這個序列化格式，也建議你只將專案的 `timezone` 組態設定選項設為預設的 `UTC`，並讓專案中以 UTC 來儲存所有的日期時間。在專案中保持一致地使用 UTC 時區，可為其他 PHP 與 JavaScript 的日期操作函示庫提供最大的互用性。"
 
 # File: docs/8.x/eloquent-mutators.md, line: 329
 # File: docs/master/eloquent-mutators.md, line: 407
 #. type: Plain text
 msgid "If a custom format is applied to the `date` or `datetime` cast, such as `datetime:Y-m-d H:i:s`, the inner timezone of the Carbon instance will be used during date serialization. Typically, this will be the timezone specified in your application's `timezone` configuration option."
-msgstr ""
+msgstr "若有在 `date` 或 `datetime` 型別轉換內提供自訂格式，如 `datetime:Y-m-d H:i:s`，則在進行日期序列化時，會使用 Carbon 實體內部的時區。一般來說，這個時區就是專案的 `timezone` 組態設定選項。"
 
 # File: docs/8.x/eloquent-mutators.md, line: 331
 # File: docs/master/eloquent-mutators.md, line: 409
 #. type: Plain text
 #, no-wrap
 msgid "<a name=\"enum-casting\"></a>\n"
-msgstr ""
+msgstr "<a name=\"enum-casting\"></a>\n"
 
 # File: docs/8.x/eloquent-mutators.md, line: 331
 # File: docs/master/eloquent-mutators.md, line: 409
 #. type: Title ###
 #, no-wrap
 msgid "Enum Casting"
-msgstr ""
+msgstr "Enum 的型別轉換"
 
 # File: docs/8.x/eloquent-mutators.md, line: 334
 # File: docs/master/eloquent-mutators.md, line: 412
 #. type: Plain text
 #, no-wrap
 msgid "> {note} Enum casting is only available for PHP 8.1+.\n"
-msgstr ""
+msgstr "> {note} Enum 型別轉換只可在 PHP 8.1 以上使用。\n"
 
 # File: docs/8.x/eloquent-mutators.md, line: 336
 # File: docs/master/eloquent-mutators.md, line: 414
 #. type: Plain text
 msgid "Eloquent also allows you to cast your attribute values to PHP enums. To accomplish this, you may specify the attribute and enum you wish to cast in your model's `$casts` property array:"
-msgstr ""
+msgstr "Eloquent 也能讓我們將屬性值轉換為 PHP Enum。為此，可在 Model 中的 `$casts` 屬性陣列中指定要型別轉換的屬性與 Enum："
 
 # File: docs/8.x/eloquent-mutators.md, line: 338
 # File: docs/master/eloquent-mutators.md, line: 416
 #. type: Plain text
 #, no-wrap
 msgid "    use App\\Enums\\ServerStatus;\n"
-msgstr ""
+msgstr "    use App\\Enums\\ServerStatus;\n"
 
 # File: docs/8.x/eloquent-mutators.md, line: 347
 # File: docs/master/eloquent-mutators.md, line: 425
@@ -809,13 +947,20 @@ msgid "    /**\n"
 "    protected $casts = [\n"
 "        'status' => ServerStatus::class,\n"
 "    ];\n"
-msgstr ""
+msgstr "    /**\n"
+"     * The attributes that should be cast.\n"
+"     *\n"
+"     * @var array\n"
+"     */\n"
+"    protected $casts = [\n"
+"        'status' => ServerStatus::class,\n"
+"    ];\n"
 
 # File: docs/8.x/eloquent-mutators.md, line: 349
 # File: docs/master/eloquent-mutators.md, line: 427
 #. type: Plain text
 msgid "Once you have defined the cast on your model, the specified attribute will be automatically cast to and from an enum when you interact with the attribute:"
-msgstr ""
+msgstr "定義好 Model 的型別轉換後，每次存取該屬性時就會自動轉換對 Enum 進行轉換："
 
 # File: docs/8.x/eloquent-mutators.md, line: 352
 # File: docs/master/eloquent-mutators.md, line: 430
@@ -823,7 +968,8 @@ msgstr ""
 #, no-wrap
 msgid "    if ($server->status == ServerStatus::provisioned) {\n"
 "        $server->status = ServerStatus::ready;\n"
-msgstr ""
+msgstr "    if ($server->status == ServerStatus::provisioned) {\n"
+"        $server->status = ServerStatus::ready;\n"
 
 # File: docs/8.x/eloquent-mutators.md, line: 355
 # File: docs/master/eloquent-mutators.md, line: 433
@@ -831,7 +977,8 @@ msgstr ""
 #, no-wrap
 msgid "        $server->save();\n"
 "    }\n"
-msgstr ""
+msgstr "        $server->save();\n"
+"    }\n"
 
 # File: docs/8.x/eloquent-mutators.md, line: 357
 # File: docs/master/eloquent-mutators.md, line: 435

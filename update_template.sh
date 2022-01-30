@@ -1,6 +1,11 @@
 #!/bin/zsh
 
 for file in docs/**/*.md; do
+  base=${file##*/}
+  if [[ $base == "readme.md" || $base == "license.md" ]]; then
+    continue
+  fi
+
   echo "Processing $file"
 
   pot_path=`echo $file | sed -E 's#docs/(.+)\.md#_tmp/\1.pot#g'`
@@ -17,6 +22,8 @@ for file in docs/**/*.md; do
 done
 
 echo "Merging different versions..."
+
+rm -Rf templates
 
 for file in `ls _tmp/**/*.pot | sed -E 's#_tmp/.+/(.+)\.pot#\1#g' | uniq`; do
   echo "Merging $file..."

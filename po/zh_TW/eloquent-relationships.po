@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: laravel-docs\n"
 "POT-Creation-Date: 2022-01-29 05:35+0000\n"
-"PO-Revision-Date: 2022-01-31 04:24\n"
+"PO-Revision-Date: 2022-01-31 05:28\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
@@ -3867,13 +3867,13 @@ msgstr "若想積極式載入「Morph to」關聯、或是關聯 Model 計數等
 # File: docs/master/eloquent-relationships.md, line: 1418
 #. type: Plain text
 msgid "In this example, let's assume that `Photo` and `Post` models may create `ActivityFeed` models. We will assume the `ActivityFeed` model defines a \"morph to\" relationship named `parentable` that allows us to retrieve the parent `Photo` or `Post` model for a given `ActivityFeed` instance. Additionally, let's assume that `Photo` models \"have many\" `Tag` models and `Post` models \"have many\" `Comment` models."
-msgstr ""
+msgstr "在這個例子中，我們假設 `Photo` 與 `Post` Model 會建立 `ActivityFeed` Model。假設 `ActivityFeed` Model 定義一個名為  `parentable` 的「Morph to」關聯，可讓使用者在某一 `ActivityFeed` 實體上取得上層的 `Photo` 或 `Post` Model。此外，我們也假設 `Photo` Model「Have Many (有多個)」 `Tag` Model，而 `Post` Model「Have Many」`Comment` Model。"
 
 # File: docs/8.x/eloquent-relationships.md, line: 1420
 # File: docs/master/eloquent-relationships.md, line: 1420
 #. type: Plain text
 msgid "Now, let's imagine we want to retrieve `ActivityFeed` instances and eager load the `parentable` parent models for each `ActivityFeed` instance. In addition, we want to retrieve the number of tags that are associated with each parent photo and the number of comments that are associated with each parent post:"
-msgstr ""
+msgstr "接著，來假設我們現在要去的 `ActivityFeed` 實體，並為取得的每個 `ActivityFeed` 實體積極式載入 `parentable` 上層 Model。此外，我們也想知道上層的每張圖片各有多少個 Tag、還有上層的每篇貼文各有多少則留言："
 
 # File: docs/8.x/eloquent-relationships.md, line: 1422
 # File: docs/8.x/eloquent-relationships.md, line: 1532
@@ -3882,7 +3882,7 @@ msgstr ""
 #. type: Plain text
 #, no-wrap
 msgid "    use Illuminate\\Database\\Eloquent\\Relations\\MorphTo;\n"
-msgstr ""
+msgstr "    use Illuminate\\Database\\Eloquent\\Relations\\MorphTo;\n"
 
 # File: docs/8.x/eloquent-relationships.md, line: 1430
 # File: docs/master/eloquent-relationships.md, line: 1430
@@ -3895,14 +3895,20 @@ msgid "    $activities = ActivityFeed::with([\n"
 "                Post::class => ['comments'],\n"
 "            ]);\n"
 "        }])->get();\n"
-msgstr ""
+msgstr "    $activities = ActivityFeed::with([\n"
+"        'parentable' => function (MorphTo $morphTo) {\n"
+"            $morphTo->morphWithCount([\n"
+"                Photo::class => ['tags'],\n"
+"                Post::class => ['comments'],\n"
+"            ]);\n"
+"        }])->get();\n"
 
 # File: docs/8.x/eloquent-relationships.md, line: 1432
 # File: docs/master/eloquent-relationships.md, line: 1432
 #. type: Plain text
 #, no-wrap
 msgid "<a name=\"morph-to-deferred-count-loading\"></a>\n"
-msgstr ""
+msgstr "<a name=\"morph-to-deferred-count-loading\"></a>\n"
 
 # File: docs/8.x/eloquent-relationships.md, line: 1435
 # File: docs/master/eloquent-relationships.md, line: 1435

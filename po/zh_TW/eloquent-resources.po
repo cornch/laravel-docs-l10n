@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: laravel-docs\n"
 "POT-Creation-Date: 2022-01-29 05:35+0000\n"
-"PO-Revision-Date: 2022-01-31 12:12\n"
+"PO-Revision-Date: 2022-01-31 13:13\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
@@ -1248,7 +1248,7 @@ msgstr "除了有條件地載入屬性外，我們還能依據關聯是否已載
 # File: docs/master/eloquent-resources.md, line: 553
 #. type: Plain text
 msgid "The `whenLoaded` method may be used to conditionally load a relationship. In order to avoid unnecessarily loading relationships, this method accepts the name of the relationship instead of the relationship itself:"
-msgstr ""
+msgstr "可以使用 `whenLoaded` 方法來有條件地載入關聯。為了避免不必要地載入關聯，這個方法接受關聯的名稱，而非關聯物件本身："
 
 # File: docs/8.x/eloquent-resources.md, line: 573
 # File: docs/master/eloquent-resources.md, line: 573
@@ -1271,33 +1271,49 @@ msgid "    /**\n"
 "            'updated_at' => $this->updated_at,\n"
 "        ];\n"
 "    }\n"
-msgstr ""
+msgstr "    /**\n"
+"     * Transform the resource into an array.\n"
+"     *\n"
+"     * @param  \\Illuminate\\Http\\Request  $request\n"
+"     * @return array\n"
+"     */\n"
+"    public function toArray($request)\n"
+"    {\n"
+"        return [\n"
+"            'id' => $this->id,\n"
+"            'name' => $this->name,\n"
+"            'email' => $this->email,\n"
+"            'posts' => PostResource::collection($this->whenLoaded('posts')),\n"
+"            'created_at' => $this->created_at,\n"
+"            'updated_at' => $this->updated_at,\n"
+"        ];\n"
+"    }\n"
 
 # File: docs/8.x/eloquent-resources.md, line: 575
 # File: docs/master/eloquent-resources.md, line: 575
 #. type: Plain text
 msgid "In this example, if the relationship has not been loaded, the `posts` key will be removed from the resource response before it is sent to the client."
-msgstr ""
+msgstr "在這個例子中，若尚未載入關聯，則在回傳給用戶端前 `posts` 索引鍵就會被移除。"
 
 # File: docs/8.x/eloquent-resources.md, line: 577
 # File: docs/master/eloquent-resources.md, line: 577
 #. type: Plain text
 #, no-wrap
 msgid "<a name=\"conditional-pivot-information\"></a>\n"
-msgstr ""
+msgstr "<a name=\"conditional-pivot-information\"></a>\n"
 
 # File: docs/8.x/eloquent-resources.md, line: 577
 # File: docs/master/eloquent-resources.md, line: 577
 #. type: Title ####
 #, no-wrap
 msgid "Conditional Pivot Information"
-msgstr ""
+msgstr "有條件的樞紐 (Pivot) 資訊"
 
 # File: docs/8.x/eloquent-resources.md, line: 580
 # File: docs/master/eloquent-resources.md, line: 580
 #. type: Plain text
 msgid "In addition to conditionally including relationship information in your resource responses, you may conditionally include data from the intermediate tables of many-to-many relationships using the `whenPivotLoaded` method. The `whenPivotLoaded` method accepts the name of the pivot table as its first argument. The second argument should be a closure that returns the value to be returned if the pivot information is available on the model:"
-msgstr ""
+msgstr "除了有條件地將關聯資訊加到 Resource 回應內之外，我們還能使用 `whenPivotLoaded` 方法來有條件地包含 Many-to-many 關聯的中介資料表中的資料庫。`whenPivotLoaded` 方法的第一個引數為樞紐資料表的名稱，第二個引數則為一個閉包，該閉包應回傳當 Model 上有樞紐資訊時要回傳的值："
 
 # File: docs/8.x/eloquent-resources.md, line: 597
 # File: docs/master/eloquent-resources.md, line: 597
@@ -1319,13 +1335,28 @@ msgid "    /**\n"
 "            }),\n"
 "        ];\n"
 "    }\n"
-msgstr ""
+msgstr "    /**\n"
+"     * Transform the resource into an array.\n"
+"     *\n"
+"     * @param  \\Illuminate\\Http\\Request  $request\n"
+"     * @return array\n"
+"     */\n"
+"    public function toArray($request)\n"
+"    {\n"
+"        return [\n"
+"            'id' => $this->id,\n"
+"            'name' => $this->name,\n"
+"            'expires_at' => $this->whenPivotLoaded('role_user', function () {\n"
+"                return $this->pivot->expires_at;\n"
+"            }),\n"
+"        ];\n"
+"    }\n"
 
 # File: docs/8.x/eloquent-resources.md, line: 599
 # File: docs/master/eloquent-resources.md, line: 599
 #. type: Plain text
 msgid "If your relationship is using a [custom intermediate table model](/docs/{{version}}/eloquent-relationships#defining-custom-intermediate-table-models), you may pass an instance of the intermediate table model as the first argument to the `whenPivotLoaded` method:"
-msgstr ""
+msgstr "若關聯使用[自訂的中介資料表 Model](/docs/{{version}}/eloquent-relationships#defining-custom-intermediate-table-models)，則應講樞紐資料表的實體作為第一個引數傳給 `whenPivotLoaded` 方法："
 
 # File: docs/8.x/eloquent-resources.md, line: 603
 # File: docs/master/eloquent-resources.md, line: 603
@@ -1334,13 +1365,15 @@ msgstr ""
 msgid "    'expires_at' => $this->whenPivotLoaded(new Membership, function () {\n"
 "        return $this->pivot->expires_at;\n"
 "    }),\n"
-msgstr ""
+msgstr "    'expires_at' => $this->whenPivotLoaded(new Membership, function () {\n"
+"        return $this->pivot->expires_at;\n"
+"    }),\n"
 
 # File: docs/8.x/eloquent-resources.md, line: 605
 # File: docs/master/eloquent-resources.md, line: 605
 #. type: Plain text
 msgid "If your intermediate table is using an accessor other than `pivot`, you may use the `whenPivotLoadedAs` method:"
-msgstr ""
+msgstr "若中介資料表使用 `pivot` 以外的存取方法，則可以使用 `whenPivotLoadesAs` 方法："
 
 # File: docs/8.x/eloquent-resources.md, line: 622
 # File: docs/master/eloquent-resources.md, line: 622
@@ -1362,27 +1395,42 @@ msgid "    /**\n"
 "            }),\n"
 "        ];\n"
 "    }\n"
-msgstr ""
+msgstr "    /**\n"
+"     * Transform the resource into an array.\n"
+"     *\n"
+"     * @param  \\Illuminate\\Http\\Request  $request\n"
+"     * @return array\n"
+"     */\n"
+"    public function toArray($request)\n"
+"    {\n"
+"        return [\n"
+"            'id' => $this->id,\n"
+"            'name' => $this->name,\n"
+"            'expires_at' => $this->whenPivotLoadedAs('subscription', 'role_user', function () {\n"
+"                return $this->subscription->expires_at;\n"
+"            }),\n"
+"        ];\n"
+"    }\n"
 
 # File: docs/8.x/eloquent-resources.md, line: 624
 # File: docs/master/eloquent-resources.md, line: 624
 #. type: Plain text
 #, no-wrap
 msgid "<a name=\"adding-meta-data\"></a>\n"
-msgstr ""
+msgstr "<a name=\"adding-meta-data\"></a>\n"
 
 # File: docs/8.x/eloquent-resources.md, line: 624
 # File: docs/master/eloquent-resources.md, line: 624
 #. type: Title ###
 #, no-wrap
 msgid "Adding Meta Data"
-msgstr ""
+msgstr "新增詮釋資料"
 
 # File: docs/8.x/eloquent-resources.md, line: 627
 # File: docs/master/eloquent-resources.md, line: 627
 #. type: Plain text
 msgid "Some JSON API standards require the addition of meta data to your resource and resource collections responses. This often includes things like `links` to the resource or related resources, or meta data about the resource itself. If you need to return additional meta data about a resource, include it in your `toArray` method. For example, you might include `link` information when transforming a resource collection:"
-msgstr ""
+msgstr "有的 JSON API 標準中要求要有 Resource 與 Resource Collection 回應的詮釋資料 (Meta Data)。通常包含如 Resource 或關聯 Resource 的連結 (`links`)、或是有關 Resource 本身的詮釋資料等。若想回傳關於 Resource 的額外詮釋資料，請將這些資料包含在 `toArray` 方法內。舉例來說，我們可能會想在轉換 Resource Collection 時包含 `link` 資訊："
 
 # File: docs/8.x/eloquent-resources.md, line: 643
 # File: docs/master/eloquent-resources.md, line: 643
@@ -1403,33 +1451,47 @@ msgid "    /**\n"
 "            ],\n"
 "        ];\n"
 "    }\n"
-msgstr ""
+msgstr "    /**\n"
+"     * Transform the resource into an array.\n"
+"     *\n"
+"     * @param  \\Illuminate\\Http\\Request  $request\n"
+"     * @return array\n"
+"     */\n"
+"    public function toArray($request)\n"
+"    {\n"
+"        return [\n"
+"            'data' => $this->collection,\n"
+"            'links' => [\n"
+"                'self' => 'link-value',\n"
+"            ],\n"
+"        ];\n"
+"    }\n"
 
 # File: docs/8.x/eloquent-resources.md, line: 645
 # File: docs/master/eloquent-resources.md, line: 645
 #. type: Plain text
 msgid "When returning additional meta data from your resources, you never have to worry about accidentally overriding the `links` or `meta` keys that are automatically added by Laravel when returning paginated responses. Any additional `links` you define will be merged with the links provided by the paginator."
-msgstr ""
+msgstr "當從 Resource 內回傳額外的詮釋資料時，不需擔心是否會不小心複寫在回傳經過分頁的資料時 Laravel 自動新增的 `links` 或 `meta` 等資料。若有定義額外的 `links`，這些 `links` 會跟 Paginator 提供的連結合併在一起。"
 
 # File: docs/8.x/eloquent-resources.md, line: 647
 # File: docs/master/eloquent-resources.md, line: 647
 #. type: Plain text
 #, no-wrap
 msgid "<a name=\"top-level-meta-data\"></a>\n"
-msgstr ""
+msgstr "<a name=\"top-level-meta-data\"></a>\n"
 
 # File: docs/8.x/eloquent-resources.md, line: 647
 # File: docs/master/eloquent-resources.md, line: 647
 #. type: Title ####
 #, no-wrap
 msgid "Top Level Meta Data"
-msgstr ""
+msgstr "最上層的詮釋資料"
 
 # File: docs/8.x/eloquent-resources.md, line: 650
 # File: docs/master/eloquent-resources.md, line: 650
 #. type: Plain text
 msgid "Sometimes you may wish to only include certain meta data with a resource response if the resource is the outermost resource being returned. Typically, this includes meta information about the response as a whole. To define this meta data, add a `with` method to your resource class. This method should return an array of meta data to be included with the resource response only when the resource is the outermost resource being transformed:"
-msgstr ""
+msgstr "有時候，我們可能會想只在當目前 Resource 是回傳的最外層 Resource 時才包含某些詮釋資料。一般來說，這種情況的詮釋資料就是對於回應的詮釋資料。若要定義這種詮釋資料，可在 Resource 類別內加上一個 `with` 方法。這個方法應回傳一組包含詮釋資料的陣列，用以在目前 Resource 是最外層 Resource 時包含在 Resource 回應內："
 
 # File: docs/8.x/eloquent-resources.md, line: 669
 # File: docs/master/eloquent-resources.md, line: 669
@@ -1447,7 +1509,18 @@ msgid "    class UserCollection extends ResourceCollection\n"
 "        {\n"
 "            return parent::toArray($request);\n"
 "        }\n"
-msgstr ""
+msgstr "    class UserCollection extends ResourceCollection\n"
+"    {\n"
+"        /**\n"
+"         * Transform the resource collection into an array.\n"
+"         *\n"
+"         * @param  \\Illuminate\\Http\\Request  $request\n"
+"         * @return array\n"
+"         */\n"
+"        public function toArray($request)\n"
+"        {\n"
+"            return parent::toArray($request);\n"
+"        }\n"
 
 # File: docs/8.x/eloquent-resources.md, line: 685
 # File: docs/master/eloquent-resources.md, line: 685
@@ -1468,27 +1541,41 @@ msgid "        /**\n"
 "            ];\n"
 "        }\n"
 "    }\n"
-msgstr ""
+msgstr "        /**\n"
+"         * Get additional data that should be returned with the resource array.\n"
+"         *\n"
+"         * @param  \\Illuminate\\Http\\Request  $request\n"
+"         * @return array\n"
+"         */\n"
+"        public function with($request)\n"
+"        {\n"
+"            return [\n"
+"                'meta' => [\n"
+"                    'key' => 'value',\n"
+"                ],\n"
+"            ];\n"
+"        }\n"
+"    }\n"
 
 # File: docs/8.x/eloquent-resources.md, line: 687
 # File: docs/master/eloquent-resources.md, line: 687
 #. type: Plain text
 #, no-wrap
 msgid "<a name=\"adding-meta-data-when-constructing-resources\"></a>\n"
-msgstr ""
+msgstr "<a name=\"adding-meta-data-when-constructing-resources\"></a>\n"
 
 # File: docs/8.x/eloquent-resources.md, line: 687
 # File: docs/master/eloquent-resources.md, line: 687
 #. type: Title ####
 #, no-wrap
 msgid "Adding Meta Data When Constructing Resources"
-msgstr ""
+msgstr "在建立 Resource 時加上詮釋資料"
 
 # File: docs/8.x/eloquent-resources.md, line: 690
 # File: docs/master/eloquent-resources.md, line: 690
 #. type: Plain text
 msgid "You may also add top-level data when constructing resource instances in your route or controller. The `additional` method, which is available on all resources, accepts an array of data that should be added to the resource response:"
-msgstr ""
+msgstr "我們也可以在路由或 Controller 內建構 Resource 時加上最上層的資料。 所有 Resource 內都提供了一個 `additional` 方法，可將要加到 Resource 回應內的資料放在陣列中傳給該方法："
 
 # File: docs/8.x/eloquent-resources.md, line: 695
 # File: docs/master/eloquent-resources.md, line: 695
@@ -1498,33 +1585,36 @@ msgid "    return (new UserCollection(User::all()->load('roles')))\n"
 "                    ->additional(['meta' => [\n"
 "                        'key' => 'value',\n"
 "                    ]]);\n"
-msgstr ""
+msgstr "    return (new UserCollection(User::all()->load('roles')))\n"
+"                    ->additional(['meta' => [\n"
+"                        'key' => 'value',\n"
+"                    ]]);\n"
 
 # File: docs/8.x/eloquent-resources.md, line: 697
 # File: docs/master/eloquent-resources.md, line: 697
 #. type: Plain text
 #, no-wrap
 msgid "<a name=\"resource-responses\"></a>\n"
-msgstr ""
+msgstr "<a name=\"resource-responses\"></a>\n"
 
 # File: docs/8.x/eloquent-resources.md, line: 697
 # File: docs/master/eloquent-resources.md, line: 697
 #. type: Title ##
 #, no-wrap
 msgid "Resource Responses"
-msgstr ""
+msgstr "Resource 回應"
 
 # File: docs/8.x/eloquent-resources.md, line: 700
 # File: docs/master/eloquent-resources.md, line: 700
 #. type: Plain text
 msgid "As you have already read, resources may be returned directly from routes and controllers:"
-msgstr ""
+msgstr "剛才已經讀過，我們可以直接從路由或 Controller 內回傳 Resource："
 
 # File: docs/8.x/eloquent-resources.md, line: 709
 # File: docs/master/eloquent-resources.md, line: 709
 #. type: Plain text
 msgid "However, sometimes you may need to customize the outgoing HTTP response before it is sent to the client. There are two ways to accomplish this. First, you may chain the `response` method onto the resource. This method will return an `Illuminate\\Http\\JsonResponse` instance, giving you full control over the response's headers:"
-msgstr ""
+msgstr "不過，有的時候我們會需要在回應被傳回用戶端前自訂外連 HTTP 回應。有兩種方法可以自訂外連 HTTP 回應。第一種方法，我們可以將 `response` 方法串連到 Resource 後面。該方法會回傳一個 `Illuminate\\Http\\JsonResponse` 實體，讓我們能對回應的標頭有完整的控制權："
 
 # File: docs/8.x/eloquent-resources.md, line: 718
 # File: docs/master/eloquent-resources.md, line: 718
@@ -1535,13 +1625,17 @@ msgid "    Route::get('/user', function () {\n"
 "                    ->response()\n"
 "                    ->header('X-Value', 'True');\n"
 "    });\n"
-msgstr ""
+msgstr "    Route::get('/user', function () {\n"
+"        return (new UserResource(User::find(1)))\n"
+"                    ->response()\n"
+"                    ->header('X-Value', 'True');\n"
+"    });\n"
 
 # File: docs/8.x/eloquent-resources.md, line: 720
 # File: docs/master/eloquent-resources.md, line: 720
 #. type: Plain text
 msgid "Alternatively, you may define a `withResponse` method within the resource itself. This method will be called when the resource is returned as the outermost resource in a response:"
-msgstr ""
+msgstr "或者，也可以在 Resource 裡面定義一個 `withResponse`。這個方法會在該 Resource 是回應中最外層 Resource 時被呼叫："
 
 # File: docs/8.x/eloquent-resources.md, line: 741
 # File: docs/master/eloquent-resources.md, line: 741
@@ -1561,7 +1655,20 @@ msgid "    class UserResource extends JsonResource\n"
 "                'id' => $this->id,\n"
 "            ];\n"
 "        }\n"
-msgstr ""
+msgstr "    class UserResource extends JsonResource\n"
+"    {\n"
+"        /**\n"
+"         * Transform the resource into an array.\n"
+"         *\n"
+"         * @param  \\Illuminate\\Http\\Request  $request\n"
+"         * @return array\n"
+"         */\n"
+"        public function toArray($request)\n"
+"        {\n"
+"            return [\n"
+"                'id' => $this->id,\n"
+"            ];\n"
+"        }\n"
 
 # File: docs/8.x/eloquent-resources.md, line: 753
 # File: docs/master/eloquent-resources.md, line: 753
@@ -1579,5 +1686,16 @@ msgid "        /**\n"
 "            $response->header('X-Value', 'True');\n"
 "        }\n"
 "    }\n"
-msgstr ""
+msgstr "        /**\n"
+"         * Customize the outgoing response for the resource.\n"
+"         *\n"
+"         * @param  \\Illuminate\\Http\\Request  $request\n"
+"         * @param  \\Illuminate\\Http\\Response  $response\n"
+"         * @return void\n"
+"         */\n"
+"        public function withResponse($request, $response)\n"
+"        {\n"
+"            $response->header('X-Value', 'True');\n"
+"        }\n"
+"    }\n"
 

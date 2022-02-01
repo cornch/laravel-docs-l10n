@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: laravel-docs\n"
 "POT-Creation-Date: 2022-01-29 05:35+0000\n"
-"PO-Revision-Date: 2022-02-01 09:56\n"
+"PO-Revision-Date: 2022-02-01 11:09\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
@@ -1606,27 +1606,27 @@ msgstr "我們已經將所有 `{user}` 參數繫結到 `App\\Models\\User` Model
 # File: docs/master/routing.md, line: 547
 #. type: Plain text
 msgid "If a matching model instance is not found in the database, a 404 HTTP response will be automatically generated."
-msgstr ""
+msgstr "若資料庫中找不到相符合的 Model 實體，則會自動產生 404 HTTP Response。"
 
 # File: docs/8.x/routing.md, line: 520
 # File: docs/master/routing.md, line: 549
 #. type: Plain text
 #, no-wrap
 msgid "<a name=\"customizing-the-resolution-logic\"></a>\n"
-msgstr ""
+msgstr "<a name=\"customizing-the-resolution-logic\"></a>\n"
 
 # File: docs/8.x/routing.md, line: 520
 # File: docs/master/routing.md, line: 549
 #. type: Title ####
 #, no-wrap
 msgid "Customizing The Resolution Logic"
-msgstr ""
+msgstr "自訂解析邏輯"
 
 # File: docs/8.x/routing.md, line: 523
 # File: docs/master/routing.md, line: 552
 #. type: Plain text
 msgid "If you wish to define your own model binding resolution logic, you may use the `Route::bind` method. The closure you pass to the `bind` method will receive the value of the URI segment and should return the instance of the class that should be injected into the route. Again, this customization should take place in the `boot` method of your application's `RouteServiceProvider`:"
-msgstr ""
+msgstr "若想定義你自己的 Model 繫結解析邏輯，則可以使用 `Route::bind` 方法。我們可以傳入一個閉包給 `bind` 方法，用來接受 URI 片段中的值，並回應要插入到 Route 中的類別實體。同樣的，這個自訂邏輯應放在專案的 `RouteServiceProvider` 中 `boot` 方法內："
 
 # File: docs/8.x/routing.md, line: 537
 # File: docs/master/routing.md, line: 566
@@ -1642,13 +1642,22 @@ msgid "    /**\n"
 "        Route::bind('user', function ($value) {\n"
 "            return User::where('name', $value)->firstOrFail();\n"
 "        });\n"
-msgstr ""
+msgstr "    /**\n"
+"     * Define your route model bindings, pattern filters, etc.\n"
+"     *\n"
+"     * @return void\n"
+"     */\n"
+"    public function boot()\n"
+"    {\n"
+"        Route::bind('user', function ($value) {\n"
+"            return User::where('name', $value)->firstOrFail();\n"
+"        });\n"
 
 # File: docs/8.x/routing.md, line: 542
 # File: docs/master/routing.md, line: 571
 #. type: Plain text
 msgid "Alternatively, you may override the `resolveRouteBinding` method on your Eloquent model. This method will receive the value of the URI segment and should return the instance of the class that should be injected into the route:"
-msgstr ""
+msgstr "或者，我們也可以在 Eloquent Model 上複寫 `resolveRouteBinding` 方法。這個方法會接收 URI 片段中的值，並應回傳要插入到 Route 中的類別實體："
 
 # File: docs/8.x/routing.md, line: 554
 # File: docs/master/routing.md, line: 583
@@ -1665,13 +1674,23 @@ msgid "    /**\n"
 "    {\n"
 "        return $this->where('name', $value)->firstOrFail();\n"
 "    }\n"
-msgstr ""
+msgstr "    /**\n"
+"     * Retrieve the model for a bound value.\n"
+"     *\n"
+"     * @param  mixed  $value\n"
+"     * @param  string|null  $field\n"
+"     * @return \\Illuminate\\Database\\Eloquent\\Model|null\n"
+"     */\n"
+"    public function resolveRouteBinding($value, $field = null)\n"
+"    {\n"
+"        return $this->where('name', $value)->firstOrFail();\n"
+"    }\n"
 
 # File: docs/8.x/routing.md, line: 556
 # File: docs/master/routing.md, line: 585
 #. type: Plain text
 msgid "If a route is utilizing [implicit binding scoping](#implicit-model-binding-scoping), the `resolveChildRouteBinding` method will be used to resolve the child binding of the parent model:"
-msgstr ""
+msgstr "如有 Route 是使用[限定範圍的隱式細節](#implicit-model-binding-scoping)，則在解析上層 Model 的子繫結時會使用 `resolveChildRouteBinding` 方法："
 
 # File: docs/8.x/routing.md, line: 569
 # File: docs/master/routing.md, line: 598
@@ -1689,27 +1708,38 @@ msgid "    /**\n"
 "    {\n"
 "        return parent::resolveChildRouteBinding($childType, $value, $field);\n"
 "    }\n"
-msgstr ""
+msgstr "    /**\n"
+"     * Retrieve the child model for a bound value.\n"
+"     *\n"
+"     * @param  string  $childType\n"
+"     * @param  mixed  $value\n"
+"     * @param  string|null  $field\n"
+"     * @return \\Illuminate\\Database\\Eloquent\\Model|null\n"
+"     */\n"
+"    public function resolveChildRouteBinding($childType, $value, $field)\n"
+"    {\n"
+"        return parent::resolveChildRouteBinding($childType, $value, $field);\n"
+"    }\n"
 
 # File: docs/8.x/routing.md, line: 571
 # File: docs/master/routing.md, line: 600
 #. type: Plain text
 #, no-wrap
 msgid "<a name=\"fallback-routes\"></a>\n"
-msgstr ""
+msgstr "<a name=\"fallback-routes\"></a>\n"
 
 # File: docs/8.x/routing.md, line: 571
 # File: docs/master/routing.md, line: 600
 #. type: Title ##
 #, no-wrap
 msgid "Fallback Routes"
-msgstr ""
+msgstr "遞補的 Route"
 
 # File: docs/8.x/routing.md, line: 574
 # File: docs/master/routing.md, line: 603
 #. type: Plain text
 msgid "Using the `Route::fallback` method, you may define a route that will be executed when no other route matches the incoming request. Typically, unhandled requests will automatically render a \"404\" page via your application's exception handler. However, since you would typically define the `fallback` route within your `routes/web.php` file, all middleware in the `web` middleware group will apply to the route. You are free to add additional middleware to this route as needed:"
-msgstr ""
+msgstr "使用 `Route::fallback` 方法，就可以定義當沒有其他 Route 符合連入 Request 時要執行的 Route。一般來說，專案中的例外處理常式會自動幫未處理的 Request 會轉譯出「404」頁面。不過，因為我們通常會在 `routes/web.php` 檔案中定義 `fallback` Route，因此在 `web` Middleware 群組中的所有 Middleware 也會被套用到該 Route 中。有需要的話也可以為這個 Route 定義額外的 Middleware："
 
 # File: docs/8.x/routing.md, line: 578
 # File: docs/master/routing.md, line: 607
@@ -1718,42 +1748,44 @@ msgstr ""
 msgid "    Route::fallback(function () {\n"
 "        //\n"
 "    });\n"
-msgstr ""
+msgstr "    Route::fallback(function () {\n"
+"        //\n"
+"    });\n"
 
 # File: docs/8.x/routing.md, line: 580
 # File: docs/master/routing.md, line: 609
 #. type: Plain text
 #, no-wrap
 msgid "> {note} The fallback route should always be the last route registered by your application.\n"
-msgstr ""
+msgstr "> {note} 遞補的 Route 應該要保持為專案中最後一個註冊的 Route。\n"
 
 # File: docs/8.x/routing.md, line: 582
 # File: docs/master/routing.md, line: 611
 #. type: Plain text
 #, no-wrap
 msgid "<a name=\"rate-limiting\"></a>\n"
-msgstr ""
+msgstr "<a name=\"rate-limiting\"></a>\n"
 
 # File: docs/8.x/routing.md, line: 582
 # File: docs/master/routing.md, line: 611
 #. type: Title ##
 #, no-wrap
 msgid "Rate Limiting"
-msgstr ""
+msgstr "頻率限制"
 
 # File: docs/8.x/routing.md, line: 585
 # File: docs/master/routing.md, line: 614
 #. type: Plain text
 #, no-wrap
 msgid "<a name=\"defining-rate-limiters\"></a>\n"
-msgstr ""
+msgstr "<a name=\"defining-rate-limiters\"></a>\n"
 
 # File: docs/8.x/routing.md, line: 585
 # File: docs/master/routing.md, line: 614
 #. type: Title ###
 #, no-wrap
 msgid "Defining Rate Limiters"
-msgstr ""
+msgstr "定義 Rate Limiter (頻率限制程式)"
 
 # File: docs/8.x/routing.md, line: 588
 # File: docs/master/routing.md, line: 617

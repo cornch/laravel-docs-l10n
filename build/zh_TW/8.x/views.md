@@ -1,28 +1,25 @@
-# Views
+# View
 
-- [Introduction](#introduction)
-- [Creating & Rendering Views](#creating-and-rendering-views)
-    - [Nested View Directories](#nested-view-directories)
-    - [Creating The First Available View](#creating-the-first-available-view)
-    - [Determining If A View Exists](#determining-if-a-view-exists)
-- [Passing Data To Views](#passing-data-to-views)
-    - [Sharing Data With All Views](#sharing-data-with-all-views)
-- [View Composers](#view-composers)
-    - [View Creators](#view-creators)
-- [Optimizing Views](#optimizing-views)
+- [簡介](#introduction)
+- [建立與轉譯 View](#creating-and-rendering-views)
+    - [巢狀的 View 目錄](#nested-view-directories)
+    - [建立第一個可用的 View](#creating-the-first-available-view)
+    - [判斷某個 View 是否存在](#determining-if-a-view-exists)
+- [將資料傳給 View](#passing-data-to-views)
+    - [在所有 View 間共用資料](#sharing-data-with-all-views)
+- [View Composer](#view-composers)
+    - [View Creator](#view-creators)
+- [最佳化 View](#optimizing-views)
 
 <a name="introduction"></a>
-## Introduction
+## 簡介
 
-Of course, it's not practical to return entire HTML documents strings
-directly from your routes and controllers. Thankfully, views provide a
-convenient way to place all of our HTML in separate files. Views separate
-your controller / application logic from your presentation logic and are
-stored in the `resources/views` directory. A simple view might look
-something like this:
+當然，從 Route 或 Controller 中回傳整個 HTML 文件的字串很不實際。幸好，View 這個功能提供了一個方便的方法，能將我們所有的
+HTML 放在與 Route 或 Controller 不同的檔案中。View 將呈現的邏輯從 Controller 或應用程式的邏輯拆分開來。View
+保存在 `resources/views` 目錄中。下列是個簡單的 View：
 
 ```html
-<!-- View stored in resources/views/greeting.blade.php -->
+<!-- View 保存於 resources/views/greeting.blade.php -->
 
 <html>
     <body>
@@ -31,73 +28,63 @@ something like this:
 </html>
 ```
 
-Since this view is stored at `resources/views/greeting.blade.php`, we may
-return it using the global `view` helper like so:
+這個 View 保存在 `resources/views/greeting.blade.php`，因此我們可以像這樣使用全域的 `view`
+輔助函式來回傳 View：
 
     Route::get('/', function () {
         return view('greeting', ['name' => 'James']);
     });
 
-> {tip} Looking for more information on how to write Blade templates? Check out the full [Blade documentation](/docs/{{version}}/blade) to get started.
+> {tip} 想瞭解更多有關如何撰寫 Blade 樣板的資訊嗎？請參考完整的 [Blade 說明文件](/docs/{{version}}/blade)來入門 Blade 樣板。
 
 <a name="creating-and-rendering-views"></a>
-## Creating & Rendering Views
+## 建立與轉譯 View
 
-You may create a view by placing a file with the `.blade.php` extension in
-your application's `resources/views` directory. The `.blade.php` extension
-informs the framework that the file contains a [Blade
-template](/docs/{{version}}/blade). Blade templates contain HTML as well as
-Blade directives that allow you to easily echo values, create "if"
-statements, iterate over data, and more.
+我們可以在專案的 `resources/views` 目錄下放置一個副檔名為 `.blade.php` 的檔案來建立 View。`.blade.php`
+副檔名告訴 Laravel 這個檔案時一個 [Blade 樣板](/docs/{{version}}/blade)。Blade 樣板中包含 HTML 與
+Blade 指示詞 (Directive)，Blade 指示詞可用來輕鬆地輸出 (Echo) 資料、建立「if」陳述式、迭代資料⋯⋯等。
 
-Once you have created a view, you may return it from one of your
-application's routes or controllers using the global `view` helper:
+建立好 View 之後，就可以在專案的 Route 或 Controller 中使用全域的 `view` 輔助函式來回傳 View：
 
     Route::get('/', function () {
         return view('greeting', ['name' => 'James']);
     });
 
-Views may also be returned using the `View` facade:
+也可以使用 `View` Facade 來回傳 `View`：
 
     use Illuminate\Support\Facades\View;
 
     return View::make('greeting', ['name' => 'James']);
 
-As you can see, the first argument passed to the `view` helper corresponds
-to the name of the view file in the `resources/views` directory. The second
-argument is an array of data that should be made available to the view. In
-this case, we are passing the `name` variable, which is displayed in the
-view using [Blade syntax](/docs/{{version}}/blade).
+就像我們可以看到的，傳給 `view` 輔助函式的第一個引數是 View 檔案在 `resources/view`
+目錄下對應的名稱。第二個引數是一組資料陣列，包含要提供給 View 的資料。在這個情況下，我們傳入了一個 `name` 變數，並在 View 裡面使用
+[Blade 語法](/docs/{{version}}/blade)來顯示。
 
 <a name="nested-view-directories"></a>
-### Nested View Directories
+### 巢狀的 View 目錄
 
-Views may also be nested within subdirectories of the `resources/views`
-directory. "Dot" notation may be used to reference nested views. For
-example, if your view is stored at
-`resources/views/admin/profile.blade.php`, you may return it from one of
-your application's routes / controllers like so:
+View 也可以巢狀放置在 `resources/views` 目錄中的子目錄。可使用「點 (.)」標記法來參照巢狀的 View。舉例來說，若有個
+View 保存在 `resources/views/admin/profile.blade.php`，則我們可以在我們程式的 Route 或
+Controller 中像這樣回傳這個 View：
 
     return view('admin.profile', $data);
 
-> {note} View directory names should not contain the `.` character.
+> {note} View 目錄的名稱不可包含 `.` 字元。
 
 <a name="creating-the-first-available-view"></a>
-### Creating The First Available View
+### 建立第一個可用的 View
 
-Using the `View` facade's `first` method, you may create the first view that
-exists in a given array of views. This may be useful if your application or
-package allows views to be customized or overwritten:
+使用 `View` Facade 的 `first` 方法，就可以建立給定 View 陣列中存在的第一個 View。這個方法適用於你的專案或套件能自訂
+View 或複寫 View 時：
 
     use Illuminate\Support\Facades\View;
 
     return View::first(['custom.admin', 'admin'], $data);
 
 <a name="determining-if-a-view-exists"></a>
-### Determining If A View Exists
+### 判斷某個 View 是否存在
 
-If you need to determine if a view exists, you may use the `View`
-facade. The `exists` method will return `true` if the view exists:
+若有需要判斷某個 View 是否存在，可使用 `View` Facade。`exists` 方法會在 View 存在時回傳 `true`：
 
     use Illuminate\Support\Facades\View;
 
@@ -106,33 +93,28 @@ facade. The `exists` method will return `true` if the view exists:
     }
 
 <a name="passing-data-to-views"></a>
-## Passing Data To Views
+## 將資料傳給 View
 
-As you saw in the previous examples, you may pass an array of data to views
-to make that data available to the view:
+就像我們在前一個範例中看到的一樣，我們可以傳入一組資料陣列給 View 來讓這些資料在 View 中可用：
 
     return view('greetings', ['name' => 'Victoria']);
 
-When passing information in this manner, the data should be an array with key / value pairs. After providing data to a view, you can then access each value within your view using the data's keys, such as `<?php echo $name; ?>`.
+用這種方式傳遞資料時，這些專遞的資料應該是有索引鍵 / 值配對的陣列。將資料提供給 View 後，就可以使用這些資料的索引鍵來在 View 中存取其值，如 `<?php echo $name; ?>`。
 
-As an alternative to passing a complete array of data to the `view` helper
-function, you may use the `with` method to add individual pieces of data to
-the view. The `with` method returns an instance of the view object so that
-you can continue chaining methods before returning the view:
+除了將完整的資料陣列傳給 `view` 輔助函式外，也可以使用 `with` 方法來將單一資料項目提供給 View。`with` 方法會回傳 View
+物件的實體，這樣一來我們就能在回傳 View 前繼續串上其他方法呼叫：
 
     return view('greeting')
                 ->with('name', 'Victoria')
                 ->with('occupation', 'Astronaut');
 
 <a name="sharing-data-with-all-views"></a>
-### Sharing Data With All Views
+### 在所有 View 間共用資料
 
-Occasionally, you may need to share data with all views that are rendered by
-your application. You may do so using the `View` facade's `share`
-method. Typically, you should place calls to the `share` method within a
-service provider's `boot` method. You are free to add them to the
-`App\Providers\AppServiceProvider` class or generate a separate service
-provider to house them:
+有時候，我們會需要在所有的 View 間共享某個資料。為此，可以使用 `View` Facade 的 `share` 方法。一般來說，我們應該在某個
+Service Provider 的 `boot` 方法中呼叫 `share` 方法。我們可以在
+`App\Providers\AppServiceProvider` 類別中呼叫，或者也可以建立一個獨立的 Service Provider
+來放置共享的資料：
 
     <?php
 
@@ -164,25 +146,18 @@ provider to house them:
     }
 
 <a name="view-composers"></a>
-## View Composers
+## View Composer
 
-View composers are callbacks or class methods that are called when a view is
-rendered. If you have data that you want to be bound to a view each time
-that view is rendered, a view composer can help you organize that logic into
-a single location. View composers may prove particularly useful if the same
-view is returned by multiple routes or controllers within your application
-and always needs a particular piece of data.
+View Composer 是 View 在轉譯時會呼叫的回呼或類別方法。若你有一筆想在每次轉譯 View 時要繫結到 View 上的資料時，可以使用
+View Composer 來協助我們將這類的邏輯拆分到一個地方。當你的程式中有許多的 Route 或 Controller 都回傳相同的
+View，且這些 View 都需要同樣的資料時，View Composer 就特別適合。
 
-Typically, view composers will be registered within one of your
-application's [service providers](/docs/{{version}}/providers). In this
-example, we'll assume that we have created a new
-`App\Providers\ViewServiceProvider` to house this logic.
+一般來說，我們可以在專案的某個 [Service Providers](/docs/{{version}}/providers) 中註冊 View
+Composer。在這個例子中，先假設我們建立了一個新的 `App\Providers\ViewServiceProvider` 來放置這個邏輯：
 
-We'll use the `View` facade's `composer` method to register the view
-composer. Laravel does not include a default directory for class based view
-composers, so you are free to organize them however you wish. For example,
-you could create an `app/View/Composers` directory to house all of your
-application's view composers:
+我們會使用 `View` Facade 的 `composer` 方法來註冊 View Composer。Laravel 並沒有提供放置基於類別的
+View Composer 用的預設目錄，因此我們可以隨意放置 View Composer。舉例來說，我們可以建立一個
+`app/View/Composers` 目錄來放置所有的 View Composer：
 
     <?php
 
@@ -214,19 +189,18 @@ application's view composers:
             // Using class based composers...
             View::composer('profile', ProfileComposer::class);
 
-            // Using closure based composers...
+            // 使用基於閉包的 Composer...
             View::composer('dashboard', function ($view) {
                 //
             });
         }
     }
 
-> {note} Remember, if you create a new service provider to contain your view composer registrations, you will need to add the service provider to the `providers` array in the `config/app.php` configuration file.
+> {note} 請記得，若要建立一個新的 Service Provider 來放置 View ‘Composer 的註冊，就需要將這個新建立的 Service Provider 新增到 `config/app.php` 設定檔的 `providers` 陣列。
 
-Now that we have registered the composer, the `compose` method of the
-`App\View\Composers\ProfileComposer` class will be executed each time the
-`profile` view is being rendered. Let's take a look at an example of the
-composer class:
+現在，我們已經註冊好 Composer 了。每當轉譯 `profile` View 時，就會執行
+`App\View\Composers\ProfileComposer` 類別的 `compose` 方法。我慢來看看這個 Composer
+類別的例子：
 
     <?php
 
@@ -268,15 +242,13 @@ composer class:
         }
     }
 
-As you can see, all view composers are resolved via the [service
-container](/docs/{{version}}/container), so you may type-hint any
-dependencies you need within a composer's constructor.
+就像我們可以看到的，所有的 View Composer 都會經過 [Service Container] 解析，因此我們可以在 Composer 的
+Constructor (建構函式) 上型別提示 (Type-Hint) 任何需要的相依性。
 
 <a name="attaching-a-composer-to-multiple-views"></a>
-#### Attaching A Composer To Multiple Views
+#### 將 Composer 附加到多個 View 上
 
-You may attach a view composer to multiple views at once by passing an array
-of views as the first argument to the `composer` method:
+只要將一組 View 陣列作為第一個引數傳給 `composer` 方法，我們就可以一次將一個 View Composer 附加到多個 View 上：
 
     use App\Views\Composers\MultiComposer;
 
@@ -285,20 +257,17 @@ of views as the first argument to the `composer` method:
         MultiComposer::class
     );
 
-The `composer` method also accepts the `*` character as a wildcard, allowing
-you to attach a composer to all views:
+`composer` 方法也接受使用 `*` 字元作為萬用字元。這樣我們就可以將某個 Composer 附加到所有 View 上：
 
     View::composer('*', function ($view) {
         //
     });
 
 <a name="view-creators"></a>
-### View Creators
+### View Creator
 
-View "creators" are very similar to view composers; however, they are
-executed immediately after the view is instantiated instead of waiting until
-the view is about to render. To register a view creator, use the `creator`
-method:
+View "Creator" 與 View Composer 非常類似。不過，View Creator 會在 View 被初始化後馬上執行，而不是在
+View 要轉譯前才執行。若要註冊 View Creator，請使用 `creator` 方法：
 
     use App\View\Creators\ProfileCreator;
     use Illuminate\Support\Facades\View;
@@ -306,23 +275,17 @@ method:
     View::creator('profile', ProfileCreator::class);
 
 <a name="optimizing-views"></a>
-## Optimizing Views
+## 最佳化 View
 
-By default, Blade template views are compiled on demand. When a request is
-executed that renders a view, Laravel will determine if a compiled version
-of the view exists. If the file exists, Laravel will then determine if the
-uncompiled view has been modified more recently than the compiled view. If
-the compiled view either does not exist, or the uncompiled view has been
-modified, Laravel will recompile the view.
+預設情況下，Blade 樣板的 View 會在被使用時候才編譯。當正在執行的 Request 要轉譯 View 時，Laravel 會判斷這個 View
+是否有已編譯的版本。若有已編譯版本，則 Laravel 會接著比較未編譯版本的 View 是否比已編譯版本新。若這個 View
+沒有已編譯好的版本，或是未編譯版本有修改過，則 Laravel 會重新編譯這個 View。
 
-Compiling views during the request may have a small negative impact on
-performance, so Laravel provides the `view:cache` Artisan command to
-precompile all of the views utilized by your application. For increased
-performance, you may wish to run this command as part of your deployment
-process:
+在 Request 中編譯 View 會對效能造成一點點的負面影響。因此，Laravel 提供了一個 `view:cache` Artisan
+指令，來讓我們預先編譯專案中使用的所有 View。為了提升效能，建議在部署流程中執行這個指令：
 
     php artisan view:cache
 
-You may use the `view:clear` command to clear the view cache:
+可以使用 `view:clear` 指令來清除 View 快取：
 
     php artisan view:clear

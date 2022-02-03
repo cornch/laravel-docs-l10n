@@ -1,34 +1,31 @@
 # HTTP Session
 
-- [Introduction](#introduction)
-    - [Configuration](#configuration)
-    - [Driver Prerequisites](#driver-prerequisites)
-- [Interacting With The Session](#interacting-with-the-session)
-    - [Retrieving Data](#retrieving-data)
-    - [Storing Data](#storing-data)
-    - [Flash Data](#flash-data)
-    - [Deleting Data](#deleting-data)
-    - [Regenerating The Session ID](#regenerating-the-session-id)
-- [Session Blocking](#session-blocking)
-- [Adding Custom Session Drivers](#adding-custom-session-drivers)
-    - [Implementing The Driver](#implementing-the-driver)
-    - [Registering The Driver](#registering-the-driver)
+- [簡介](#introduction)
+    - [設定](#configuration)
+    - [Driver 前置需求](#driver-prerequisites)
+- [使用 Session](#interacting-with-the-session)
+    - [取得資料](#retrieving-data)
+    - [保存資料](#storing-data)
+    - [快閃資料](#flash-data)
+    - [刪除資料](#deleting-data)
+    - [重新產生 Session ID](#regenerating-the-session-id)
+- [Session 封鎖](#session-blocking)
+- [新增自訂的 Session Drivers](#adding-custom-session-drivers)
+    - [實作 Driver](#implementing-the-driver)
+    - [註冊 Driver](#registering-the-driver)
 
 <a name="introduction"></a>
-## Introduction
+## 簡介
 
-Since HTTP driven applications are stateless, sessions provide a way to
-store information about the user across multiple requests. That user
-information is typically placed in a persistent store / backend that can be
-accessed from subsequent requests.
+由於使用 HTTP 的應用程式是無狀態的 (Stateless)，因此 Session 提供了能在多個 Request
+間儲存有關使用者資訊的方法。這個使用者資訊通常儲存於持續性存放空間 (Persistent Store) 或後端中，能讓我們在之後的 Request
+中存取。
 
-Laravel ships with a variety of session backends that are accessed through
-an expressive, unified API. Support for popular backends such as
-[Memcached](https://memcached.org), [Redis](https://redis.io), and databases
-is included.
+Laravel 隨附了多種 Session 後端，能讓我們使用直觀且同一的 API 來存取 Session。支援的後端包含常見的
+[Memcached](https://memcached.org)、[Redis](https://redis.io)、與資料庫。
 
 <a name="configuration"></a>
-### Configuration
+### 設定
 
 Your application's session configuration file is stored at
 `config/session.php`. Be sure to review the options available to you in this

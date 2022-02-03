@@ -1,57 +1,42 @@
-# Error Handling
+# 錯誤處理
 
-- [Introduction](#introduction)
-- [Configuration](#configuration)
-- [The Exception Handler](#the-exception-handler)
-    - [Reporting Exceptions](#reporting-exceptions)
-    - [Ignoring Exceptions By Type](#ignoring-exceptions-by-type)
-    - [Rendering Exceptions](#rendering-exceptions)
-    - [Reportable & Renderable Exceptions](#renderable-exceptions)
-- [HTTP Exceptions](#http-exceptions)
-    - [Custom HTTP Error Pages](#custom-http-error-pages)
+- [簡介](#introduction)
+- [組態設定](#configuration)
+- [例外處理常式](#the-exception-handler)
+    - [回報例外](#reporting-exceptions)
+    - [依據類型來忽略例外](#ignoring-exceptions-by-type)
+    - [轉譯例外](#rendering-exceptions)
+    - [Reportable 與 Renderable 的例外](#renderable-exceptions)
+- [HTTP 例外](#http-exceptions)
+    - [自訂 HTTP 錯誤頁面](#custom-http-error-pages)
 
 <a name="introduction"></a>
-## Introduction
+## 簡介
 
-When you start a new Laravel project, error and exception handling is
-already configured for you. The `App\Exceptions\Handler` class is where all
-exceptions thrown by your application are logged and then rendered to the
-user. We'll dive deeper into this class throughout this documentation.
+在開始新的 Laravel 專案時，Laravel 已經先幫你設定好錯誤與例外處理常式。在你的專案中擲回的所有例外都會由
+`App\Exceptions\Handler` 負責紀錄日誌並轉譯給使用者。我們會在這篇說明文件中深入瞭解這個類別。
 
 <a name="configuration"></a>
-## Configuration
+## 組態設定
 
-The `debug` option in your `config/app.php` configuration file determines
-how much information about an error is actually displayed to the user. By
-default, this option is set to respect the value of the `APP_DEBUG`
-environment variable, which is stored in your `.env` file.
+`config/app.php` 組態設定檔中的 `debug` 選項用來判斷錯誤在實際顯示給使用者時要包含多少資訊。預設情況下，這個選項被設為依照
+`APP_DEBUG` 環境變數值，該環境變數儲存於 `.env` 檔內。
 
-During local development, you should set the `APP_DEBUG` environment
-variable to `true`. **In your production environment, this value should
-always be `false`. If the value is set to `true` in production, you risk
-exposing sensitive configuration values to your application's end users.**
+在本機上開發時，應將 `APP_DEBUG` 環境變數設為 `true`。 **在正式環境上，這個值一定要是 `false`。若在正式環境上將該值設為
+`true`，則會有將機敏設定值暴露給應用程式終端使用者的風險。**
 
 <a name="the-exception-handler"></a>
-## The Exception Handler
+## 例外處理常式
 
 <a name="reporting-exceptions"></a>
-### Reporting Exceptions
+### 回報例外
 
-All exceptions are handled by the `App\Exceptions\Handler` class. This class
-contains a `register` method where you may register custom exception
-reporting and rendering callbacks. We'll examine each of these concepts in
-detail. Exception reporting is used to log exceptions or send them to an
-external service like [Flare](https://flareapp.io),
-[Bugsnag](https://bugsnag.com) or
-[Sentry](https://github.com/getsentry/sentry-laravel). By default,
-exceptions will be logged based on your [logging](/docs/{{version}}/logging)
-configuration. However, you are free to log exceptions however you wish.
+所有的例外都由 `App\Exceptions\Handler` 類別負責處理。該類別中包含了一個 `register`
+方法，可用來註冊所有自訂的例外回報與轉移回呼。我們來詳細看看其中各個概念。「例外回報」就是指將例外紀錄到日誌，或是傳送到如
+[Flare](https://flareapp.io)、[Bugsnag](https://bugsnag.com)、[Sentry](https://github.com/getsentry/sentry-laravel)⋯⋯等外部服務。預設情況下，例外會使用專案的[日誌](/docs/{{version}}/logging)組態設定來紀錄。不過，你可以隨意調整如何紀錄例外。
 
-For example, if you need to report different types of exceptions in
-different ways, you may use the `reportable` method to register a closure
-that should be executed when an exception of a given type needs to be
-reported. Laravel will deduce what type of exception the closure reports by
-examining the type-hint of the closure:
+舉例來說，如果想以不同的方式回報不同類型的例外，可以使用 `reportable`
+方法來註冊一個閉包。這個閉包會在給定類型的例外需要回報時被呼叫。Laravel 會自動使用該閉包的型別提示來推導該閉包接受什麼類型的例外：
 
     use App\Exceptions\InvalidOrderException;
 
@@ -67,12 +52,8 @@ examining the type-hint of the closure:
         });
     }
 
-When you register a custom exception reporting callback using the
-`reportable` method, Laravel will still log the exception using the default
-logging configuration for the application. If you wish to stop the
-propagation of the exception to the default logging stack, you may use the
-`stop` method when defining your reporting callback or return `false` from
-the callback:
+使用 `reportable` 方法定義自訂的例外回報回呼時，Laravel 還是會使用專案的預設日誌組態設定來紀錄例外。若想停止將例外傳播給預設的日誌
+Stack，請在定義回報回呼時使用 `stop` 方法，或是在該回呼內回傳 `false`：
 
     $this->reportable(function (InvalidOrderException $e) {
         //
@@ -82,16 +63,14 @@ the callback:
         return false;
     });
 
-> {tip} To customize the exception reporting for a given exception, you may also utilize [reportable exceptions](/docs/{{version}}/errors#renderable-exceptions).
+> {tip} 若要為給定的例外自訂例外回報，可使用 [Reportable 的例外](/docs/{{version}}/errors#renderable-exceptions)。
 
 <a name="global-log-context"></a>
-#### Global Log Context
+#### 全域日誌上下文
 
-If available, Laravel automatically adds the current user's ID to every
-exception's log message as contextual data. You may define your own global
-contextual data by overriding the `context` method of your application's
-`App\Exceptions\Handler` class. This information will be included in every
-exception's log message written by your application:
+當有目前使用者 ID 的時候，Laravel 會自動將使用者 ID 加到所有的例外日誌訊息，以作為上下文資料。可以複寫專案中
+`App\Exceptions\Handler` 類別的 `context`
+來定義你自己的全域上下文資料。這個資料會被包含在專案輸出的所有例外日誌訊息中：
 
     /**
      * Get the default context variables for logging.
@@ -106,7 +85,7 @@ exception's log message written by your application:
     }
 
 <a name="exception-log-context"></a>
-#### Exception Log Context
+#### 例外日誌上下文
 
 While adding context to every log message can be useful, sometimes a
 particular exception may have unique context that you would like to include

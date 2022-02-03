@@ -371,7 +371,7 @@ public function largestOrder()
 <a name="advanced-has-one-of-many-relationships"></a>
 #### 進階的一對多中之一關聯
 
-我們還可以進一步地做出進階的「一對多中之一」關聯。舉例來說，`Product` Model 可能會有許多相應的 `Price Model，這些
+我們還可以進一步地做出進階的「一對多中之一」關聯。舉例來說，`Product` Model 可能會有許多相應的 `Price` Model，這些
 `Price` Model 會在每次更新商品價格後保留在系統內。此外，我們也可以進一步地通過 `published_at`
 欄位來讓某個商品價格在未來的時間點生效。
 
@@ -1536,23 +1536,16 @@ Model 關聯時會被執行的 SQL 查詢。
 <a name="counting-related-models-on-morph-to-relationships"></a>
 ### 在 Morph To 關聯上計算關聯 Model 的數量
 
-If you would like to eager load a "morph to" relationship, as well as
-related model counts for the various entities that may be returned by that
-relationship, you may utilize the `with` method in combination with the
-`morphTo` relationship's `morphWithCount` method.
+若想積極式載入「Morph to」關聯、或是關聯 Model 計數等由關聯回傳的功能，可以使用 `morphTo` 關聯的
+`morphWithCount` 方法，並搭配 `with` 方法使用。
 
-In this example, let's assume that `Photo` and `Post` models may create
-`ActivityFeed` models. We will assume the `ActivityFeed` model defines a
-"morph to" relationship named `parentable` that allows us to retrieve the
-parent `Photo` or `Post` model for a given `ActivityFeed`
-instance. Additionally, let's assume that `Photo` models "have many" `Tag`
-models and `Post` models "have many" `Comment` models.
+在這個例子中，我們假設 `Photo` 與 `Post` Model 會建立 `ActivityFeed` Model。假設
+`ActivityFeed` Model 定義一個名為  `parentable` 的「Morph to」關聯，可讓使用者在某一
+`ActivityFeed` 實體上取得上層的 `Photo` 或 `Post` Model。此外，我們也假設 `Photo` Model「Have
+Many (有多個)」 `Tag` Model，而 `Post` Model「Have Many」`Comment` Model。
 
-Now, let's imagine we want to retrieve `ActivityFeed` instances and eager
-load the `parentable` parent models for each `ActivityFeed` instance. In
-addition, we want to retrieve the number of tags that are associated with
-each parent photo and the number of comments that are associated with each
-parent post:
+接著，來假設我們現在要去的 `ActivityFeed` 實體，並為取得的每個 `ActivityFeed` 實體積極式載入 `parentable`
+上層 Model。此外，我們也想知道上層的每張圖片各有多少個 Tag、還有上層的每篇貼文各有多少則留言：
 
     use Illuminate\Database\Eloquent\Relations\MorphTo;
 
@@ -1567,10 +1560,8 @@ parent post:
 <a name="morph-to-deferred-count-loading"></a>
 #### 延後 (Deferred) 數量計算的載入
 
-Let's assume we have already retrieved a set of `ActivityFeed` models and
-now we would like to load the nested relationship counts for the various
-`parentable` models associated with the activity feeds. You may use the
-`loadMorphCount` method to accomplish this:
+假設我們已經取得 `ActivityFeed` Model (活動摘要)，接著，我們想要載入與活動摘要關聯的各種 `parentable` Model
+的巢狀關聯數量。我們可以使用 `loadMorphCount` 方法來完成：
 
     $activities = ActivityFeed::with('parentable')->get();
 
@@ -1580,14 +1571,12 @@ now we would like to load the nested relationship counts for the various
     ]);
 
 <a name="eager-loading"></a>
-## Eager Loading
+## 積極式載入
 
-When accessing Eloquent relationships as properties, the related models are
-"lazy loaded". This means the relationship data is not actually loaded until
-you first access the property. However, Eloquent can "eager load"
-relationships at the time you query the parent model. Eager loading
-alleviates the "N + 1" query problem. To illustrate the N + 1 query problem,
-consider a `Book` model that "belongs to" to an `Author` model:
+以屬性方式存取 Eloquent 關聯時，關聯的 Model 會被「消極式載入 (Lazy
+Load)」。這表示，直到首次存取該屬性前，關聯資料都不會被載入。不過，Eloquent 也可以在查詢上層 Model 時就「積極式載入 (Eager
+Load)」關聯。積極式載入可以減少「N + 1」問題。為了示範什麼是 N + 1 問題，我們先假設有個「隸屬於 (Belongs
+to)」`Author` Model 的 `Book` Model：
 
     <?php
 
@@ -1606,7 +1595,7 @@ consider a `Book` model that "belongs to" to an `Author` model:
         }
     }
 
-Now, let's retrieve all books and their authors:
+現在，我們來取得所有書籍與其作者：
 
     use App\Models\Book;
 
@@ -1616,15 +1605,10 @@ Now, let's retrieve all books and their authors:
         echo $book->author->name;
     }
 
-This loop will execute one query to retrieve all of the books within the
-database table, then another query for each book in order to retrieve the
-book's author. So, if we have 25 books, the code above would run 26 queries:
-one for the original book, and 25 additional queries to retrieve the author
-of each book.
+這個迴圈會執行一個查詢來取得資料表中所有的書籍，然後每本書都會再執行一個查詢來取得書籍的作者。因此，若我們有 25 本書，上述程式碼就會執行 26
+筆資料庫查詢：1 個查詢來取得書籍，另外 25 個額外的查詢來取得每本書的作者。
 
-Thankfully, we can use eager loading to reduce this operation to just two
-queries. When building a query, you may specify which relationships should
-be eager loaded using the `with` method:
+幸好，我們可以使用積極式載入來把這一連串行動降低為只需要 2 個查詢。在建立查詢時，可以使用 `with` 方法來指定哪個關聯要被積極式載入：
 
     $books = Book::with('author')->get();
 
@@ -1632,9 +1616,7 @@ be eager loaded using the `with` method:
         echo $book->author->name;
     }
 
-For this operation, only two queries will be executed - one query to
-retrieve all of the books and one query to retrieve all of the authors for
-all of the books:
+這樣一來，就只會執行 2 個查詢 —— 一個查詢去的所有的書籍，另一個查詢則取得所有書籍的作者。
 
 ```sql
 select * from books
@@ -1643,30 +1625,24 @@ select * from authors where id in (1, 2, 3, 4, 5, ...)
 ```
 
 <a name="eager-loading-multiple-relationships"></a>
-#### Eager Loading Multiple Relationships
+#### 積極式載入多個關聯
 
-Sometimes you may need to eager load several different relationships. To do
-so, just pass an array of relationships to the `with` method:
+有時候，我們可能需要積極式載入多個不同的關聯。要載入多個不同的關聯，只需要傳入一組包含關聯的陣列給 `with` 方法即可：
 
     $books = Book::with(['author', 'publisher'])->get();
 
 <a name="nested-eager-loading"></a>
-#### Nested Eager Loading
+#### 巢狀積極式載入
 
-To eager load a relationship's relationships, you may use "dot" syntax. For
-example, let's eager load all of the book's authors and all of the author's
-personal contacts:
+若要積極載入關聯的關聯，可以使用「點 (.)」標記法。舉例來說，讓我們來積極載入所有書籍的作者，以及所有作者的聯絡方式 (Contact)：
 
     $books = Book::with('author.contacts')->get();
 
 <a name="nested-eager-loading-morphto-relationships"></a>
-#### Nested Eager Loading `morphTo` Relationships
+#### 積極載入巢狀的 `morphTo` 關聯
 
-If you would like to eager load a `morphTo` relationship, as well as nested
-relationships on the various entities that may be returned by that
-relationship, you may use the `with` method in combination with the
-`morphTo` relationship's `morphWith` method. To help illustrate this method,
-let's consider the following model:
+若想積極載入 `morphTo` 關聯、或是巢狀的關聯等由 morphTo 關聯回傳的功能，可以使用 `morphTo` 關聯的 `morphWith`
+方法，並搭配 `with` 方法使用。為了讓我們更瞭解這個功能，我們先來看看下列 Model：
 
     <?php
 
@@ -1683,14 +1659,12 @@ let's consider the following model:
         }
     }
 
-In this example, let's assume `Event`, `Photo`, and `Post` models may create
-`ActivityFeed` models. Additionally, let's assume that `Event` models belong
-to a `Calendar` model, `Photo` models are associated with `Tag` models, and
-`Post` models belong to an `Author` model.
+在這個例子中，先假設 `Event`, `Photo`, 與 `Post` 會建立 `ActivityFeed` Model。另外，也來假設
+`Event` Model 隸屬於 `Calendar` Model，而 `Photo` Model 則與 `Tag` Model 相關聯，然後
+`Post` Model 隸屬於 `Author` Model。
 
-Using these model definitions and relationships, we may retrieve
-`ActivityFeed` model instances and eager load all `parentable` models and
-their respective nested relationships:
+有了這些 Model 定義與關聯，我們就可以取得 `ActivityFeed` Model 實體，然後積極載入所有 `parentable` Model
+與這些 `parentable` Model 的巢狀關聯：
 
     use Illuminate\Database\Eloquent\Relations\MorphTo;
 
@@ -1704,21 +1678,18 @@ their respective nested relationships:
         }])->get();
 
 <a name="eager-loading-specific-columns"></a>
-#### Eager Loading Specific Columns
+#### 積極載入特定欄位
 
-You may not always need every column from the relationships you are
-retrieving. For this reason, Eloquent allows you to specify which columns of
-the relationship you would like to retrieve:
+有時候，我們可能並不像取得關聯的所有欄位。為此，Eloquent 能讓我們指定要取得關聯的哪些欄位：
 
     $books = Book::with('author:id,name,book_id')->get();
 
-> {note} When using this feature, you should always include the `id` column and any relevant foreign key columns in the list of columns you wish to retrieve.
+> {note} 使用這個功能時，請務必在欄位列表中包含 `id` 欄位以及其他相關的外部索引鍵欄位。
 
 <a name="eager-loading-by-default"></a>
-#### Eager Loading By Default
+#### 預設積極載入
 
-Sometimes you might want to always load some relationships when retrieving a
-model. To accomplish this, you may define a `$with` property on the model:
+對於某些 Model，我們可能會希望這個 Model 總是能載入一些關聯。為此，我們可以在這種 Model 上定義一個 `$with` 屬性：
 
     <?php
 
@@ -1752,24 +1723,19 @@ model. To accomplish this, you may define a `$with` property on the model:
         }
     }
 
-If you would like to remove an item from the `$with` property for a single
-query, you may use the `without` method:
+若想為單一查詢移除 `$with` 屬性中的某個項目，可以使用 `without` 方法：
 
     $books = Book::without('author')->get();
 
-If you would like to override all items within the `$with` property for a
-single query, you may use the `withOnly` method:
+若想為單一查詢複寫 `$with` 屬性中的所有項目，可以使用 `withOnly` 方法：
 
     $books = Book::withOnly('genre')->get();
 
 <a name="constraining-eager-loads"></a>
-### Constraining Eager Loads
+### 包含查詢條件的積極載入
 
-Sometimes you may wish to eager load a relationship but also specify
-additional query conditions for the eager loading query. You can accomplish
-this by passing an array of relationships to the `with` method where the
-array key is a relationship name and the array value is a closure that adds
-additional constraints to the eager loading query:
+在積極載入關聯時，我們有時候可能會希望能給積極載入查詢指定額外的查詢條件。可以通過傳入一組包含關聯的陣列給 `with`
+方法來達成。這個陣列的索引鍵應為關聯的名稱，而陣列值則為要給積極載入查詢加上額外查詢條件的閉包：
 
     use App\Models\User;
 
@@ -1777,24 +1743,20 @@ additional constraints to the eager loading query:
         $query->where('title', 'like', '%code%');
     }])->get();
 
-In this example, Eloquent will only eager load posts where the post's
-`title` column contains the word `code`. You may call other [query
-builder](/docs/{{version}}/queries) methods to further customize the eager
-loading operation:
+在這個例子中，Eloquent 只會積極載入 `title` 欄位含有關鍵字 `code` 的文章。你還可以呼叫其他的 [Query
+Builder](/docs/{{version}}/queries) 方法來進一步自訂積極式載入：
 
     $users = User::with(['posts' => function ($query) {
         $query->orderBy('created_at', 'desc');
     }])->get();
 
-> {note} The `limit` and `take` query builder methods may not be used when constraining eager loads.
+> {note} 積極式載入不能使用 `limit` 與 `take` Query Builder 方法來作條件限制。
 
 <a name="constraining-eager-loading-of-morph-to-relationships"></a>
-#### Constraining Eager Loading Of `morphTo` Relationships
+#### 包含查詢條件的 `morphTo` 關聯積極載入
 
-If you are eager loading a `morphTo` relationship, Eloquent will run
-multiple queries to fetch each type of related model. You may add additional
-constraints to each of these queries using the `MorphTo` relation's
-`constrain` method:
+在積極載入 `morphTo` 關聯時，Eloquent 會為關聯 Model 的每個類型都執行多筆查詢。我們可以使用 `MorphTo` 關聯的
+`constrain` 方法來對這些查詢分別加上額外的查詢條件：
 
     use Illuminate\Database\Eloquent\Builder;
     use Illuminate\Database\Eloquent\Relations\MorphTo;
@@ -1810,15 +1772,12 @@ constraints to each of these queries using the `MorphTo` relation's
         ]);
     }])->get();
 
-In this example, Eloquent will only eager load posts that have not been
-hidden and videos have a `type` value of "educational".
+在這個範例中，Eloquent 只會積極載入非隱藏的貼文，以及 `type` 值不是「educational」的影片。
 
 <a name="lazy-eager-loading"></a>
-### Lazy Eager Loading
+### 消極的積極式載入
 
-Sometimes you may need to eager load a relationship after the parent model
-has already been retrieved. For example, this may be useful if you need to
-dynamically decide whether to load related models:
+有時候，我們可能需要在已取得上層 Model 後才積極載入某個關聯。舉例來說，當想動態決定是否要載入關聯 Model 時，這種功能特別適合：
 
     use App\Models\Book;
 
@@ -1828,30 +1787,24 @@ dynamically decide whether to load related models:
         $books->load('author', 'publisher');
     }
 
-If you need to set additional query constraints on the eager loading query,
-you may pass an array keyed by the relationships you wish to load. The array
-values should be closure instances which receive the query instance:
+若想在積極載入查詢上設定額外的查詢條件，可以傳入一組陣列，其索引鍵應為要載入的關聯。陣列的值則為一個閉包，用來接收 Query Builder 實體：
 
     $author->load(['books' => function ($query) {
         $query->orderBy('published_date', 'asc');
     }]);
 
-To load a relationship only when it has not already been loaded, use the
-`loadMissing` method:
+若想只在某個關聯未被載入時才載入該關聯，可使用 `loadMissing` 方法：
 
     $book->loadMissing('author');
 
 <a name="nested-lazy-eager-loading-morphto"></a>
-#### Nested Lazy Eager Loading & `morphTo`
+#### 巢狀之消極的積極載入與 `morphTo`
 
-If you would like to eager load a `morphTo` relationship, as well as nested
-relationships on the various entities that may be returned by that
-relationship, you may use the `loadMorph` method.
+若想積極式載入 `morphTo` 關聯、或是關聯 Model 的巢狀關聯等由 morphTo 關聯所回傳的功能，可以使用 `loadMorph`
+方法：
 
-This method accepts the name of the `morphTo` relationship as its first
-argument, and an array of model / relationship pairs as its second
-argument. To help illustrate this method, let's consider the following
-model:
+這個方法的第一個引數是 `morphTo` 關聯的名稱，第二個引數則是一組包含 Model / 關聯配對的陣列。為了說明這個功能，先來看看下列
+Model：
 
     <?php
 
@@ -1868,14 +1821,12 @@ model:
         }
     }
 
-In this example, let's assume `Event`, `Photo`, and `Post` models may create
-`ActivityFeed` models. Additionally, let's assume that `Event` models belong
-to a `Calendar` model, `Photo` models are associated with `Tag` models, and
-`Post` models belong to an `Author` model.
+在這個例子中，先假設 `Event`, `Photo`, 與 `Post` 會建立 `ActivityFeed` Model。另外，也來假設
+`Event` Model 隸屬於 `Calendar` Model，而 `Photo` Model 則與 `Tag` Model 相關聯，然後
+`Post` Model 隸屬於 `Author` Model。
 
-Using these model definitions and relationships, we may retrieve
-`ActivityFeed` model instances and eager load all `parentable` models and
-their respective nested relationships:
+有了這些 Model 定義與關聯，我們就可以取得 `ActivityFeed` Model 實體，然後積極載入所有 `parentable` Model
+與這些 `parentable` Model 的巢狀關聯：
 
     $activities = ActivityFeed::with('parentable')
         ->get()
@@ -1886,21 +1837,14 @@ their respective nested relationships:
         ]);
 
 <a name="preventing-lazy-loading"></a>
-### Preventing Lazy Loading
+### 預防消極載入
 
-As previously discussed, eager loading relationships can often provide
-significant performance benefits to your application. Therefore, if you
-would like, you may instruct Laravel to always prevent the lazy loading of
-relationships. To accomplish this, you may invoke the `preventLazyLoading`
-method offered by the base Eloquent model class. Typically, you should call
-this method within the `boot` method of your application's
-`AppServiceProvider` class.
+前面也說明過，對你的專案來說，積極載入關聯通常可以顯著提升效能。因此，我們可能會希望讓 Laravel 總是避免消極式載入關聯。為此，我們可以呼叫基礎
+Eloquent Model 上的 `preventLazyLoading` 方法。一般來說，應該在你的專案中 `AppServiceProvider`
+類別的 `boot` 方法內呼叫這個方法。
 
-The `preventLazyLoading` method accepts an optional boolean argument that
-indicates if lazy loading should be prevented. For example, you may wish to
-only disable lazy loading in non-production environments so that your
-production environment will continue to function normally even if a lazy
-loaded relationship is accidentally present in production code:
+`preventLazyLoading`
+方法接受一個可選的布林引數，用來判斷是否應防止消極式載入。舉例來說，我們肯跟會希望只在非正式環境下才進用消極式載入，這樣一來，就算正式環境上的程式碼內不小心有個消極式載入的關聯，正式環境也可以正常運作：
 
 ```php
 use Illuminate\Database\Eloquent\Model;
@@ -1916,14 +1860,11 @@ public function boot()
 }
 ```
 
-After preventing lazy loading, Eloquent will throw a
-`Illuminate\Database\LazyLoadingViolationException` exception when your
-application attempts to lazy load any Eloquent relationship.
+阻止消極式載入後，當程式嘗試要消極載入任何 Eloquent 關聯時，Eloquent 會擲回一個
+`Illuminate\Database\LazyLoadingViolationException` 例外。
 
-You may customize the behavior of lazy loading violations using the
-`handleLazyLoadingViolationsUsing` method. For example, using this method,
-you may instruct lazy loading violations to only be logged instead of
-interrupting the application's execution with exceptions:
+可以使用 `handleLazyLoadingViolationsUsing` 方法來自訂當發生消極載入時要如何處置。舉例來說，我們可以使用這個方法來讓
+Laravel 在遇到消極載入的時候紀錄到日誌，而不是使用例外在終止程式的執行：
 
 ```php
 Model::handleLazyLoadingViolationUsing(function ($model, $relation) {
@@ -1934,15 +1875,13 @@ Model::handleLazyLoadingViolationUsing(function ($model, $relation) {
 ```
 
 <a name="inserting-and-updating-related-models"></a>
-## Inserting & Updating Related Models
+## 插入與更新關聯的 Model
 
 <a name="the-save-method"></a>
-### The `save` Method
+### `save` 方法
 
-Eloquent provides convenient methods for adding new models to
-relationships. For example, perhaps you need to add a new comment to a
-post. Instead of manually setting the `post_id` attribute on the `Comment`
-model you may insert the comment using the relationship's `save` method:
+Eloquent 提供了一些方便的方法來給關聯新增新 Model。舉例來說，我們可能會需要給貼文新增新留言。比起手動在 `Comment` Model
+上設定 `post_id`，我們可以使用關聯的 `save` Model 來插入留言：
 
     use App\Models\Comment;
     use App\Models\Post;
@@ -1953,13 +1892,10 @@ model you may insert the comment using the relationship's `save` method:
 
     $post->comments()->save($comment);
 
-Note that we did not access the `comments` relationship as a dynamic
-property. Instead, we called the `comments` method to obtain an instance of
-the relationship. The `save` method will automatically add the appropriate
-`post_id` value to the new `Comment` model.
+請注意，我們不是以動態屬性的方式來存取 `comment` 關聯，而是呼叫 `comments` 方法來取得關聯的實體。`save`
+方法會自動為新建立的 `Comment` Model 加上適當的 `post_id` 值。
 
-If you need to save multiple related models, you may use the `saveMany`
-method:
+若有需要保存多個關聯 Model，可以使用 `saveMany` 方法：
 
     $post = Post::find(1);
 
@@ -1968,25 +1904,22 @@ method:
         new Comment(['message' => 'Another new comment.']),
     ]);
 
-The `save` and `saveMany` methods will persist the given model instances,
-but will not add the newly persisted models to any in-memory relationships
-that are already loaded onto the parent model. If you plan on accessing the
-relationship after using the `save` or `saveMany` methods, you may wish to
-use the `refresh` method to reload the model and its relationships:
+`save` 與 `saveMany` 會將 Model 實體保存起來。不過，保存好的 Model 並不會被加到上層 Model
+中已經載入到記憶體的關聯。在使用 `save` 或 `saveMany` 方法後，若有打算要存取這些關聯，可使用 `refresh` 方法來重新載入
+Model 與其關聯：
 
     $post->comments()->save($comment);
 
     $post->refresh();
 
-    // All comments, including the newly saved comment...
+    // 所有留言，包含新保存的留言...
     $post->comments;
 
 <a name="the-push-method"></a>
-#### Recursively Saving Models & Relationships
+#### 遞歸保存 Model 與關聯
 
-If you would like to `save` your model and all of its associated
-relationships, you may use the `push` method. In this example, the `Post`
-model will be saved as well as its comments and the comment's authors:
+若想讓 `save` 方法保存 Model 與其所有相關的關聯 Model，可以使用 `push` 方法。在這個例子中，`Post`
+Model、`Post` Model 的留言、留言的作者等都會一起被保存：
 
     $post = Post::find(1);
 
@@ -1996,14 +1929,11 @@ model will be saved as well as its comments and the comment's authors:
     $post->push();
 
 <a name="the-create-method"></a>
-### The `create` Method
+### `create` 方法
 
-In addition to the `save` and `saveMany` methods, you may also use the
-`create` method, which accepts an array of attributes, creates a model, and
-inserts it into the database. The difference between `save` and `create` is
-that `save` accepts a full Eloquent model instance while `create` accepts a
-plain PHP `array`. The newly created model will be returned by the `create`
-method:
+除了 `save` 跟 `saveMany` 方法外，也可以使用 `create` 方法來建立 Model 並插入資料庫。`create`
+方法接受一組包含屬性的陣列。`save` 與 `create` 間不同的地方在於：`save` 接收完整的 Eloquent Model 實體，而
+`create` 接收的是純 PHP 的 `array`。`create` 方法會回傳新建立的 Model：
 
     use App\Models\Post;
 
@@ -2013,7 +1943,7 @@ method:
         'message' => 'A new comment.',
     ]);
 
-You may use the `createMany` method to create multiple related models:
+可以使用 `createMany` 方法來建立多個關聯的 Model：
 
     $post = Post::find(1);
 
@@ -2022,19 +1952,16 @@ You may use the `createMany` method to create multiple related models:
         ['message' => 'Another new comment.'],
     ]);
 
-You may also use the `findOrNew`, `firstOrNew`, `firstOrCreate`, and
-`updateOrCreate` methods to [create and update models on
-relationships](/docs/{{version}}/eloquent#upserts).
+也可以使用 `findOrNew`, `firstOrNew`, `firstOrCreate`, 與 `updateOrCreate`
+等方法來[在關聯上建立並更新 Model](/docs/{{version}}/eloquent#upserts)。
 
-> {tip} Before using the `create` method, be sure to review the [mass assignment](/docs/{{version}}/eloquent#mass-assignment) documentation.
+> {tip} 在使用 `create` 方法前，請先閱讀[大量賦值](/docs/{{version}}/eloquent#mass-assignment)的說明文件。
 
 <a name="updating-belongs-to-relationships"></a>
-### Belongs To Relationships
+### Belongs To 關聯
 
-If you would like to assign a child model to a new parent model, you may use
-the `associate` method. In this example, the `User` model defines a
-`belongsTo` relationship to the `Account` model. This `associate` method
-will set the foreign key on the child model:
+若想將子 Model 指派給新的上層 Model，可以使用 `associate` 方法。在這個例子中，`User` Model 定義了一個連到
+`Account` Model 的 `belongsTo` 關聯。`associate` 方法會在子 Model 上設定外部索引鍵：
 
     use App\Models\Account;
 
@@ -2044,8 +1971,7 @@ will set the foreign key on the child model:
 
     $user->save();
 
-To remove a parent model from a child model, you may use the `dissociate`
-method. This method will set the relationship's foreign key to `null`:
+若要從子 Model 上移除上層 Model，可以使用 `dissociate` 方法。這個方法會將關聯的外部索引鍵設為 `null`：
 
     $user->account()->dissociate();
 
@@ -2055,13 +1981,11 @@ method. This method will set the relationship's foreign key to `null`:
 ### Many To Many 關聯
 
 <a name="attaching-detaching"></a>
-#### Attaching / Detaching
+#### 附加 / 解除附加
 
-Eloquent also provides methods to make working with many-to-many
-relationships more convenient. For example, let's imagine a user can have
-many roles and a role can have many users. You may use the `attach` method
-to attach a role to a user by inserting a record in the relationship's
-intermediate table:
+Eloquent 還提供一些能讓處理多對多關聯更方便的方法。舉例來說，先假設一個使用者 (User) 可以有多個職位
+(Role)，而一個職位可以有多個使用者。可以使用 `attach` 方法來將某個職位附加到使用者身上，`attach`
+會在關聯的中介資料表上插入一筆紀錄來完成：
 
     use App\Models\User;
 
@@ -2069,23 +1993,20 @@ intermediate table:
 
     $user->roles()->attach($roleId);
 
-When attaching a relationship to a model, you may also pass an array of
-additional data to be inserted into the intermediate table:
+在把關聯附加到 Model 上時，可以傳入一組陣列，包含額外要被插入到中介資料表上的資料：
 
     $user->roles()->attach($roleId, ['expires' => $expires]);
 
-Sometimes it may be necessary to remove a role from a user. To remove a
-many-to-many relationship record, use the `detach` method. The `detach`
-method will delete the appropriate record out of the intermediate table;
-however, both models will remain in the database:
+有時候，我們還會需要從使用者身上移除某個職位。若要移除 Many-to-Many 關聯的紀錄，請使用 `detach` 方法。`detach`
+方法會從中介資料表上移除相應的紀錄。不過，使用者跟職位兩個 Model 都還會保留在資料庫中：
 
-    // Detach a single role from the user...
+    // 從使用者上移除單一職位...
     $user->roles()->detach($roleId);
 
-    // Detach all roles from the user...
+    // 從使用者上移除所有職位...
     $user->roles()->detach();
 
-For convenience, `attach` and `detach` also accept arrays of IDs as input:
+為了更方便使用，`attach` 與 `detach` 也能接受一組包含 ID 的陣列作為輸入：
 
     $user = User::find(1);
 
@@ -2097,46 +2018,38 @@ For convenience, `attach` and `detach` also accept arrays of IDs as input:
     ]);
 
 <a name="syncing-associations"></a>
-#### Syncing Associations
+#### 同步關聯
 
-You may also use the `sync` method to construct many-to-many
-associations. The `sync` method accepts an array of IDs to place on the
-intermediate table. Any IDs that are not in the given array will be removed
-from the intermediate table. So, after this operation is complete, only the
-IDs in the given array will exist in the intermediate table:
+可以使用 `sync` 方法來設定 Many-to-Many 關聯。`sync` 方法接受一組包含 ID
+的陣列，用以插入中介資料表。中介資料表中若有不在此陣列中的 ID 則會被移除。因此，完成這個操作後，中介資料表中就只會有給定陣列中的 ID：
 
     $user->roles()->sync([1, 2, 3]);
 
-You may also pass additional intermediate table values with the IDs:
+也可以使用 ID 來傳入額外的中介資料表值：
 
     $user->roles()->sync([1 => ['expires' => true], 2, 3]);
 
-If you would like to insert the same intermediate table values with each of
-the synced model IDs, you may use the `syncWithPivotValues` method:
+如喔想為每個同步的 Model ID 都插入相同的中介資料表值，則可以使用 `syncWithPivotValue` 方法：
 
     $user->roles()->syncWithPivotValues([1, 2, 3], ['active' => true]);
 
-If you do not want to detach existing IDs that are missing from the given
-array, you may use the `syncWithoutDetaching` method:
+若想從給定陣列中移除現有的 ID，則可以使用 `syncWithoutDetaching` 方法：
 
     $user->roles()->syncWithoutDetaching([1, 2, 3]);
 
 <a name="toggling-associations"></a>
-#### Toggling Associations
+#### 切換關聯
 
-The many-to-many relationship also provides a `toggle` method which
-"toggles" the attachment status of the given related model IDs. If the given
-ID is currently attached, it will be detached. Likewise, if it is currently
-detached, it will be attached:
+Many-to-Many 關聯還提供了一個 `toggle` 方法，可以用來「切換 (Toggle)」給定關聯 Model ID 的附加狀態。若給定的
+ID 目前是已附加的狀態，則該 ID 會被解除附加。反之，若目前未附加，則會被附加上去：
 
     $user->roles()->toggle([1, 2, 3]);
 
 <a name="updating-a-record-on-the-intermediate-table"></a>
-#### Updating A Record On The Intermediate Table
+#### 更新中介資料表上的紀錄
 
-If you need to update an existing row in your relationship's intermediate
-table, you may use the `updateExistingPivot` method. This method accepts the
-intermediate record foreign key and an array of attributes to update:
+若想更新關聯的中介資料表上現有的紀錄，可以使用 `updateExistingPivot`
+方法。這個方法接受中介資料表的外部索引鍵以及一組包含要更新屬性的陣列：
 
     $user = User::find(1);
 
@@ -2145,19 +2058,14 @@ intermediate record foreign key and an array of attributes to update:
     ]);
 
 <a name="touching-parent-timestamps"></a>
-## Touching Parent Timestamps
+## 更新上層的時戳
 
-When a model defines a `belongsTo` or `belongsToMany` relationship to
-another model, such as a `Comment` which belongs to a `Post`, it is
-sometimes helpful to update the parent's timestamp when the child model is
-updated.
+若某 Model 有定義對另一個 Model 的 `belongsTo` 或 `belongsToMany` 關聯 —— 如 `Comment`
+Model 隸屬於 `Post` Model 等 —— 有時候，若能在子 Model 更新時也一併更新上層 Model 的時戳會很實用。
 
-For example, when a `Comment` model is updated, you may want to
-automatically "touch" the `updated_at` timestamp of the owning `Post` so
-that it is set to the current date and time. To accomplish this, you may add
-a `touches` property to your child model containing the names of the
-relationships that should have their `updated_at` timestamps updated when
-the child model is updated:
+舉例來說，當 `Comment` Model 更新後，我們可能會想自動「更新 (Touch)」擁有該 `Comment` 的 `Post` Model
+上的 `updated_at` 時戳，將該時戳設為目前的日期與時間。為此，我們可以在子 Model 內新增一個 `touches`
+屬性，其中包含關聯的名稱。當子 Model 更新後，這些關聯的 `updated_at` 時戳也會一起更新：
 
     <?php
 
@@ -2183,4 +2091,4 @@ the child model is updated:
         }
     }
 
-> {note} Parent model timestamps will only be updated if the child model is updated using Eloquent's `save` method.
+> {note} 只有在使用 Eloquent 的 `save` 方法來更新子 Model 時，才會更新上傳 Model 的時戳。

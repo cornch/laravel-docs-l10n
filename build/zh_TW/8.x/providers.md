@@ -1,64 +1,51 @@
-# Service Providers
+# Service Provider
 
-- [Introduction](#introduction)
-- [Writing Service Providers](#writing-service-providers)
-    - [The Register Method](#the-register-method)
-    - [The Boot Method](#the-boot-method)
-- [Registering Providers](#registering-providers)
-- [Deferred Providers](#deferred-providers)
+- [簡介](#introduction)
+- [撰寫 Service Provider](#writing-service-providers)
+    - [Register 方法](#the-register-method)
+    - [Boot 方法](#the-boot-method)
+- [註冊 Provider](#registering-providers)
+- [延遲的 Provider](#deferred-providers)
 
 <a name="introduction"></a>
-## Introduction
+## 簡介
 
-Service providers are the central place of all Laravel application
-bootstrapping. Your own application, as well as all of Laravel's core
-services, are bootstrapped via service providers.
+Service Provider 是 Laravel 中負責啟動應用程式的中心點。不過是你自己開發的應用程式，還是 Laravel 的核心服務，都是使用
+Service Provider 啟動的。
 
-But, what do we mean by "bootstrapped"? In general, we mean **registering**
-things, including registering service container bindings, event listeners,
-middleware, and even routes. Service providers are the central place to
-configure your application.
+不過，「啟動」是什麼意思呢？一般來說，我們指的是 **註冊** 一些東西，包含註冊 Service Container
+的繫結、事件監聽常式、Middleware、甚至是 Route。Service Provider 是用來設定應用程式的中心點。
 
-If you open the `config/app.php` file included with Laravel, you will see a
-`providers` array. These are all of the service provider classes that will
-be loaded for your application. By default, a set of Laravel core service
-providers are listed in this array. These providers bootstrap the core
-Laravel components, such as the mailer, queue, cache, and others. Many of
-these providers are "deferred" providers, meaning they will not be loaded on
-every request, but only when the services they provide are actually needed.
+若打開 Laravel 中的 `config/app.php`，可以看到一個 `providers` 陣列。這個陣列中的就是你的程式會載入的所有
+Service Provider。預設情況下，這個陣列中列出了一組 Laravel 的核心 Service Provider。這些 Provider
+會啟動 Laravel 的核心元件，如：Mailer、佇列 (Queue)⋯⋯等。其中的許多 Provider 是屬於「延遲的」Provider，延遲的
+Provider 是指：不是所有 Request 中都會載入這些 Provider，只有在我們有需要這些 Provider 提供的服務時才會載入。
 
-In this overview, you will learn how to write your own service providers and
-register them with your Laravel application.
+在本篇概覽中，讀者將可以學習到如何撰寫你自己的 Service Provider，並將這些 Provider 註冊到 Laravel 專案上。
 
-> {tip} If you would like to learn more about how Laravel handles requests and works internally, check out our documentation on the Laravel [request lifecycle](/docs/{{version}}/lifecycle).
+> {tip} 若想瞭解 Laravel 如何處理 Request 以及其內部如何運作，請參考我們有關 Laravel [Request 的生命週期](/docs/{{version}}/lifecycle)說明文件。
 
 <a name="writing-service-providers"></a>
-## Writing Service Providers
+## 撰寫 Service Provider
 
-All service providers extend the `Illuminate\Support\ServiceProvider`
-class. Most service providers contain a `register` and a `boot`
-method. Within the `register` method, you should **only bind things into the
-[service container](/docs/{{version}}/container)**. You should never attempt
-to register any event listeners, routes, or any other piece of functionality
-within the `register` method.
+所有的 Service Provider 都繼承自 `Illuminate\Support\ServiceProvider`。大多數的 Service
+Provider 都包含了 `registe` 與 `boot` 方法。`register` 方法 **只負責將事物繫結到 [Service
+Container](/docs/{{version}}/container)** 上。請絕對不要在 `register`
+方法中註冊任何事件監聽常式、Route、或是任何其他的功能。
 
-The Artisan CLI can generate a new provider via the `make:provider` command:
+Artisan CLI 提供了一個 `make:provider` 指令來新增新 Provider：
 
     php artisan make:provider RiakServiceProvider
 
 <a name="the-register-method"></a>
-### The Register Method
+### Register 方法
 
-As mentioned previously, within the `register` method, you should only bind
-things into the [service container](/docs/{{version}}/container). You should
-never attempt to register any event listeners, routes, or any other piece of
-functionality within the `register` method. Otherwise, you may accidentally
-use a service that is provided by a service provider which has not loaded
-yet.
+剛才也提到過，在 `register` 方法中應只能將東西註冊到 [Service
+Provider](/docs/{{version}}/container) 內。絕對不要嘗試在 `register`
+方法內註冊事件監聽常式、Route、或其他任何功能。否則，我們可能會不小心使用到還沒載入的 Service Provider 提供的服務。
 
-Let's take a look at a basic service provider. Within any of your service
-provider methods, you always have access to the `$app` property which
-provides access to the service container:
+來看看一個基礎的 Service Provider。在 Service Provider 中的任何方法都可以存取一個 `$app`
+屬性，該屬性可用來存取 Service Container：
 
     <?php
 
@@ -82,19 +69,15 @@ provides access to the service container:
         }
     }
 
-This service provider only defines a `register` method, and uses that method
-to define an implementation of `App\Services\Riak\Connection` in the service
-container. If you're not yet familiar with Laravel's service container,
-check out [its documentation](/docs/{{version}}/container).
+這個 Service Provider 只註冊了一個 `register` 方法，我們使用這個方法來向 Service Container 定義
+`App\Services\Riak\Connection` 的實作。若你不熟悉 Laravel 的 Service Container，請參考
+[Service Container 的說明文件](/docs/{{version}}/container)。
 
 <a name="the-bindings-and-singletons-properties"></a>
-#### The `bindings` And `singletons` Properties
+#### `bindings` 與 `singletons` 屬性
 
-If your service provider registers many simple bindings, you may wish to use
-the `bindings` and `singletons` properties instead of manually registering
-each container binding. When the service provider is loaded by the
-framework, it will automatically check for these properties and register
-their bindings:
+若你的 Service Provider 會註冊很多的繫結，則可以使用 `bindings` 或 `singletons` 屬性，而不用手動註冊個別的
+Container 繫結。Laravel 載入這個 Service Provider 後，會自動檢查這些屬性並註冊這些繫結：
 
     <?php
 
@@ -130,14 +113,11 @@ their bindings:
     }
 
 <a name="the-boot-method"></a>
-### The Boot Method
+### Boot 方法
 
-So, what if we need to register a [view
-composer](/docs/{{version}}/views#view-composers) within our service
-provider? This should be done within the `boot` method. **This method is
-called after all other service providers have been registered**, meaning you
-have access to all other services that have been registered by the
-framework:
+那麼，若我們想在 Service Provider 內註冊 [View Composer] 該怎麼辦呢？我們可以在 `boot`
+方法中註冊。**這個方法會在所有 Service Provider 都註冊好後才被呼叫**，這表示，我們就可以存取所有 Laravel
+中已註冊好的服務：
 
     <?php
 
@@ -162,11 +142,11 @@ framework:
     }
 
 <a name="boot-method-dependency-injection"></a>
-#### Boot Method Dependency Injection
+#### Boot 方法的相依性插入
 
-You may type-hint dependencies for your service provider's `boot`
-method. The [service container](/docs/{{version}}/container) will
-automatically inject any dependencies you need:
+在 Service Provider 中，若 `boot` 方法有相依性 (Dependency)，我們可以在該方法上做型別提示
+(Type-Hint)。[Service Container](/docs/{{version}}/container)
+會自動為你插入所有所需的相依性：
 
     use Illuminate\Contracts\Routing\ResponseFactory;
 
@@ -184,15 +164,13 @@ automatically inject any dependencies you need:
     }
 
 <a name="registering-providers"></a>
-## Registering Providers
+## 註冊 Provider
 
-All service providers are registered in the `config/app.php` configuration
-file. This file contains a `providers` array where you can list the class
-names of your service providers. By default, a set of Laravel core service
-providers are listed in this array. These providers bootstrap the core
-Laravel components, such as the mailer, queue, cache, and others.
+`config/app.php` 中註冊了所有的 Provider。這個檔案中包含了一個 `providers` 陣列，我們可以在其中列出所有
+Service Provider 的類別名稱。預設情況下，這個陣列中已經有一組 Laravel 的核心 Service Provider。這些
+Provider 負責啟動 Laravel 的核心元件，如：Mailer、佇列、快取⋯⋯等。
 
-To register your provider, add it to the array:
+若要註冊 Provider，請將其加到該陣列中：
 
     'providers' => [
         // Other Service Providers
@@ -201,24 +179,17 @@ To register your provider, add it to the array:
     ],
 
 <a name="deferred-providers"></a>
-## Deferred Providers
+## 延遲的 Provider
 
-If your provider is **only** registering bindings in the [service
-container](/docs/{{version}}/container), you may choose to defer its
-registration until one of the registered bindings is actually
-needed. Deferring the loading of such a provider will improve the
-performance of your application, since it is not loaded from the filesystem
-on every request.
+若 Provider **只有** 向 [Service Container](/docs/{{version}}/container)
+註冊繫結，則可以選擇將其註冊過程延遲到真正有需要這些繫結時才註冊。由於我們就不需要每個 Request 都從檔案系統中載入這些
+Provider，因此延遲載入這類 Provider 可以提升你程式的效能。
 
-Laravel compiles and stores a list of all of the services supplied by
-deferred service providers, along with the name of its service provider
-class. Then, only when you attempt to resolve one of these services does
-Laravel load the service provider.
+Laravel 會編譯並保存延遲的 Service Provider 名稱、以及其所提供的 Service 列表。接著，當有需要解析其中一個
+Service 時，Laravel 就會載入這個 Service Provider：
 
-To defer the loading of a provider, implement the
-`\Illuminate\Contracts\Support\DeferrableProvider` interface and define a
-`provides` method. The `provides` method should return the service container
-bindings registered by the provider:
+若要延遲載入 Provider，請實作 `\Illuminate\Contracts\Support\DeferrableProvider`
+介面，並定義 `provides` 方法。`provides` 方法應回傳該 Provider 中註冊的 Service Container 繫結：
 
     <?php
 

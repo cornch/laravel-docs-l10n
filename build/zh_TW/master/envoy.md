@@ -1,7 +1,7 @@
 # Laravel Envoy
 
-- [Introduction](#introduction)
-- [Installation](#installation)
+- [簡介](#introduction)
+- [安裝](#installation)
 - [Writing Tasks](#writing-tasks)
     - [Defining Tasks](#defining-tasks)
     - [Multiple Servers](#multiple-servers)

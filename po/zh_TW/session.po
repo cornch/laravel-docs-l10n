@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: laravel-docs\n"
 "POT-Creation-Date: 2022-01-29 05:35+0000\n"
-"PO-Revision-Date: 2022-02-03 06:03\n"
+"PO-Revision-Date: 2022-02-03 08:16\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
@@ -98,13 +98,13 @@ msgstr "設定"
 # File: docs/master/session.md, line: 28
 #. type: Plain text
 msgid "Your application's session configuration file is stored at `config/session.php`. Be sure to review the options available to you in this file. By default, Laravel is configured to use the `file` session driver, which will work well for many applications. If your application will be load balanced across multiple web servers, you should choose a centralized store that all servers can access, such as Redis or a database."
-msgstr ""
+msgstr "專案的 Session 組態設定檔存在 `config/session.php` 中。建議先閱讀該檔案了解一下有哪些可用的選項。預設情況下，Laravel 設定使用 `file` Session Driver，對於大多數的專案來說，都可以使用這個 Driver。若你的網站會在多個 Web Server (網頁伺服器) 間做 Load Balance (負載平衡)，那我們就會需要選擇一種集中式的存放方案，如 Redis 或資料庫。"
 
 # File: docs/8.x/session.md, line: 30
 # File: docs/master/session.md, line: 30
 #. type: Plain text
 msgid "The session `driver` configuration option defines where session data will be stored for each request. Laravel ships with several great drivers out of the box:"
-msgstr ""
+msgstr "Session 的 `driver` 設定定義了每個 Request 的 Session 資料要存在哪裡。Laravel 隨附了多個不錯的 Driver："
 
 # File: docs/8.x/session.md, line: 39
 # File: docs/master/session.md, line: 39
@@ -118,48 +118,55 @@ msgid "<div class=\"content-list\" markdown=\"1\">\n"
 "- `dynamodb` - sessions are stored in AWS DynamoDB.\n"
 "- `array` - sessions are stored in a PHP array and will not be persisted.\n"
 "</div>\n"
-msgstr ""
+msgstr "<div class=\"content-list\" markdown=\"1\">\n"
+"- `file` - 將 Session 保存在 `storage/framework/sessions` 中。\n"
+"- `cookie` - 將 Session 保存在安全加密的 Cookie 中。\n"
+"- `database` - 將 Session 保存在關聯式資料庫中。\n"
+"- `memcached` / `redis` - 將 Session 保存在 Memcached 或 Redis 其中一種快速、基於快取的儲存方案中。\n"
+"- `dynamodb` - 將 Session 保存在 AWS DynamoDB 中。\n"
+"- `array` - 將 Session 保存在 PHP 陣列中，不會被持續保存 (Persisted)。\n"
+"</div>\n"
 
 # File: docs/8.x/session.md, line: 41
 # File: docs/master/session.md, line: 41
 #. type: Plain text
 #, no-wrap
 msgid "> {tip} The array driver is primarily used during [testing](/docs/{{version}}/testing) and prevents the data stored in the session from being persisted.\n"
-msgstr ""
+msgstr "> {tip} Array Driver 主要是用在[測試](/docs/{{version}}/testing)上的，會讓保存在 Session 裡的資料不被持續保存。\n"
 
 # File: docs/8.x/session.md, line: 43
 # File: docs/master/session.md, line: 43
 #. type: Plain text
 #, no-wrap
 msgid "<a name=\"driver-prerequisites\"></a>\n"
-msgstr ""
+msgstr "<a name=\"driver-prerequisites\"></a>\n"
 
 # File: docs/8.x/session.md, line: 43
 # File: docs/master/session.md, line: 43
 #. type: Title ###
 #, no-wrap
 msgid "Driver Prerequisites"
-msgstr ""
+msgstr "Driver 前置需求"
 
 # File: docs/8.x/session.md, line: 46
 # File: docs/master/session.md, line: 46
 #. type: Plain text
 #, no-wrap
 msgid "<a name=\"database\"></a>\n"
-msgstr ""
+msgstr "<a name=\"database\"></a>\n"
 
 # File: docs/8.x/session.md, line: 46
 # File: docs/master/session.md, line: 46
 #. type: Title ####
 #, no-wrap
 msgid "Database"
-msgstr ""
+msgstr "Database"
 
 # File: docs/8.x/session.md, line: 49
 # File: docs/master/session.md, line: 49
 #. type: Plain text
 msgid "When using the `database` session driver, you will need to create a table to contain the session records. An example `Schema` declaration for the table may be found below:"
-msgstr ""
+msgstr "使用 `database` Session Driver 時，需要先建立用來保存 Session 紀錄的資料表。下列是一個 Session 紀錄資料表的 `Schema` 定義範例："
 
 # File: docs/8.x/session.md, line: 58
 # File: docs/master/session.md, line: 58
@@ -173,88 +180,95 @@ msgid "    Schema::create('sessions', function ($table) {\n"
 "        $table->text('payload');\n"
 "        $table->integer('last_activity')->index();\n"
 "    });\n"
-msgstr ""
+msgstr "    Schema::create('sessions', function ($table) {\n"
+"        $table->string('id')->primary();\n"
+"        $table->foreignId('user_id')->nullable()->index();\n"
+"        $table->string('ip_address', 45)->nullable();\n"
+"        $table->text('user_agent')->nullable();\n"
+"        $table->text('payload');\n"
+"        $table->integer('last_activity')->index();\n"
+"    });\n"
 
 # File: docs/8.x/session.md, line: 60
 # File: docs/master/session.md, line: 60
 #. type: Plain text
 msgid "You may use the `session:table` Artisan command to generate this migration. To learn more about database migrations, you may consult the complete [migration documentation](/docs/{{version}}/migrations):"
-msgstr ""
+msgstr "可以使用 `session:table` Artisan 指令來產生這個 Migration。若要瞭解更多資料庫 Migration 的資訊，請參考完整的 [Migration 說明文件](/docs/{{version}}/migrations)："
 
 # File: docs/8.x/session.md, line: 62
 # File: docs/master/session.md, line: 62
 #. type: Plain text
 #, no-wrap
 msgid "    php artisan session:table\n"
-msgstr ""
+msgstr "    php artisan session:table\n"
 
 # File: docs/8.x/session.md, line: 64
 # File: docs/master/session.md, line: 64
 #. type: Plain text
 #, no-wrap
 msgid "    php artisan migrate\n"
-msgstr ""
+msgstr "    php artisan migrate\n"
 
 # File: docs/8.x/session.md, line: 66
 # File: docs/master/session.md, line: 66
 #. type: Plain text
 #, no-wrap
 msgid "<a name=\"redis\"></a>\n"
-msgstr ""
+msgstr "<a name=\"redis\"></a>\n"
 
 # File: docs/8.x/session.md, line: 66
 # File: docs/master/session.md, line: 66
 #. type: Title ####
 #, no-wrap
 msgid "Redis"
-msgstr ""
+msgstr "Redis"
 
 # File: docs/8.x/session.md, line: 69
 # File: docs/master/session.md, line: 69
 #. type: Plain text
 msgid "Before using Redis sessions with Laravel, you will need to either install the PhpRedis PHP extension via PECL or install the `predis/predis` package (~1.0) via Composer. For more information on configuring Redis, consult Laravel's [Redis documentation](/docs/{{version}}/redis#configuration)."
-msgstr ""
+msgstr "在 Laravel 上使用 Redis Session 前，必須先使用 PECL 安裝 PhpRedis PHP 擴充程式，或是使用 Composer 安裝 `predis/predis` 套件 (~1.0)。更多有關設定 Redis 的資訊，請參考 Laravel 的 [Redis 說明文件](/docs/{{version}}/redis#configuration)。"
 
 # File: docs/8.x/session.md, line: 71
 # File: docs/master/session.md, line: 71
 #. type: Plain text
 #, no-wrap
 msgid "> {tip} In the `session` configuration file, the `connection` option may be used to specify which Redis connection is used by the session.\n"
-msgstr ""
+msgstr "> {tip} 在 `session` 設定檔中，可使用 `connection` 選項來指定 Session 要使用哪個 Redis 連線。\n"
 
 # File: docs/8.x/session.md, line: 73
 # File: docs/master/session.md, line: 73
 #. type: Plain text
 #, no-wrap
 msgid "<a name=\"interacting-with-the-session\"></a>\n"
-msgstr ""
+msgstr "<a name=\"interacting-with-the-session\"></a>\n"
 
 # File: docs/8.x/session.md, line: 73
 # File: docs/master/session.md, line: 73
 #. type: Title ##
 #, no-wrap
 msgid "Interacting With The Session"
-msgstr ""
+msgstr "使用 Session"
 
 # File: docs/8.x/session.md, line: 76
 # File: docs/master/session.md, line: 76
 #. type: Plain text
 #, no-wrap
 msgid "<a name=\"retrieving-data\"></a>\n"
-msgstr ""
+msgstr "<a name=\"retrieving-data\"></a>\n"
 
 # File: docs/8.x/session.md, line: 76
 # File: docs/master/session.md, line: 76
 #. type: Title ###
 #, no-wrap
 msgid "Retrieving Data"
-msgstr ""
+msgstr "取得資料"
 
 # File: docs/8.x/session.md, line: 79
 # File: docs/master/session.md, line: 79
 #. type: Plain text
 msgid "There are two primary ways of working with session data in Laravel: the global `session` helper and via a `Request` instance. First, let's look at accessing the session via a `Request` instance, which can be type-hinted on a route closure or controller method. Remember, controller method dependencies are automatically injected via the Laravel [service container](/docs/{{version}}/container):"
-msgstr ""
+msgstr "在 Laravel 中有兩種使用 Session 的方式：全域 `session` 輔助函式，或是 `Request` 實體。首先，我們先來看看如何使用 `Request` 實體來存取 Session。可以在 Route 閉包或 Controller 方法上型別提示 (Type-Hint) Request。請記住，Controller 方法的相依性會自動由 Laravel 的 [Service Container](/docs/{{version}}/container) 插入："
 
 # File: docs/8.x/session.md, line: 81
 # File: docs/8.x/session.md, line: 275
@@ -265,14 +279,14 @@ msgstr ""
 #. type: Plain text
 #, no-wrap
 msgid "    <?php\n"
-msgstr ""
+msgstr "    <?php\n"
 
 # File: docs/8.x/session.md, line: 83
 # File: docs/master/session.md, line: 83
 #. type: Plain text
 #, no-wrap
 msgid "    namespace App\\Http\\Controllers;\n"
-msgstr ""
+msgstr "    namespace App\\Http\\Controllers;\n"
 
 # File: docs/8.x/session.md, line: 86
 # File: docs/master/session.md, line: 86
@@ -280,7 +294,8 @@ msgstr ""
 #, no-wrap
 msgid "    use App\\Http\\Controllers\\Controller;\n"
 "    use Illuminate\\Http\\Request;\n"
-msgstr ""
+msgstr "    use App\\Http\\Controllers\\Controller;\n"
+"    use Illuminate\\Http\\Request;\n"
 
 # File: docs/8.x/session.md, line: 99
 # File: docs/master/session.md, line: 99
@@ -298,7 +313,18 @@ msgid "    class UserController extends Controller\n"
 "        public function show(Request $request, $id)\n"
 "        {\n"
 "            $value = $request->session()->get('key');\n"
-msgstr ""
+msgstr "    class UserController extends Controller\n"
+"    {\n"
+"        /**\n"
+"         * Show the profile for the given user.\n"
+"         *\n"
+"         * @param  Request  $request\n"
+"         * @param  int  $id\n"
+"         * @return Response\n"
+"         */\n"
+"        public function show(Request $request, $id)\n"
+"        {\n"
+"            $value = $request->session()->get('key');\n"
 
 # File: docs/8.x/session.md, line: 103
 # File: docs/master/session.md, line: 103
@@ -307,20 +333,22 @@ msgstr ""
 msgid "            //\n"
 "        }\n"
 "    }\n"
-msgstr ""
+msgstr "            //\n"
+"        }\n"
+"    }\n"
 
 # File: docs/8.x/session.md, line: 105
 # File: docs/master/session.md, line: 105
 #. type: Plain text
 msgid "When you retrieve an item from the session, you may also pass a default value as the second argument to the `get` method. This default value will be returned if the specified key does not exist in the session. If you pass a closure as the default value to the `get` method and the requested key does not exist, the closure will be executed and its result returned:"
-msgstr ""
+msgstr "從 Session 中取得資料時，也可以傳入一個預設值作為第二個引數給 `get` 方法。當 Session 中沒有指定的索引鍵時，就會回傳該索引值。若將閉包傳入作為預設值給 `get`，且要求的索引鍵不存在時，就會執行該閉包並回傳執行的結果："
 
 # File: docs/8.x/session.md, line: 107
 # File: docs/master/session.md, line: 107
 #. type: Plain text
 #, no-wrap
 msgid "    $value = $request->session()->get('key', 'default');\n"
-msgstr ""
+msgstr "    $value = $request->session()->get('key', 'default');\n"
 
 # File: docs/8.x/session.md, line: 111
 # File: docs/master/session.md, line: 111
@@ -329,27 +357,29 @@ msgstr ""
 msgid "    $value = $request->session()->get('key', function () {\n"
 "        return 'default';\n"
 "    });\n"
-msgstr ""
+msgstr "    $value = $request->session()->get('key', function () {\n"
+"        return 'default';\n"
+"    });\n"
 
 # File: docs/8.x/session.md, line: 113
 # File: docs/master/session.md, line: 113
 #. type: Plain text
 #, no-wrap
 msgid "<a name=\"the-global-session-helper\"></a>\n"
-msgstr ""
+msgstr "<a name=\"the-global-session-helper\"></a>\n"
 
 # File: docs/8.x/session.md, line: 113
 # File: docs/master/session.md, line: 113
 #. type: Title ####
 #, no-wrap
 msgid "The Global Session Helper"
-msgstr ""
+msgstr "全域 Session 輔助函式"
 
 # File: docs/8.x/session.md, line: 116
 # File: docs/master/session.md, line: 116
 #. type: Plain text
 msgid "You may also use the global `session` PHP function to retrieve and store data in the session. When the `session` helper is called with a single, string argument, it will return the value of that session key. When the helper is called with an array of key / value pairs, those values will be stored in the session:"
-msgstr ""
+msgstr "也可以使用全域的 `session` PHP 函式來從 Session 中取得或儲存資料。呼叫 `session` 輔助函式時若只提供一個字串參數，則會回傳該 Session 索引鍵的值。呼叫 `session` 輔助函式時若提供一組索引鍵 / 值配對的陣列，則會將該陣列的值儲存在 Session 中："
 
 # File: docs/8.x/session.md, line: 120
 # File: docs/master/session.md, line: 120
@@ -358,7 +388,9 @@ msgstr ""
 msgid "    Route::get('/home', function () {\n"
 "        // Retrieve a piece of data from the session...\n"
 "        $value = session('key');\n"
-msgstr ""
+msgstr "    Route::get('/home', function () {\n"
+"        // 從 Session 中取得資料...\n"
+"        $value = session('key');\n"
 
 # File: docs/8.x/session.md, line: 123
 # File: docs/master/session.md, line: 123
@@ -366,7 +398,8 @@ msgstr ""
 #, no-wrap
 msgid "        // Specifying a default value...\n"
 "        $value = session('key', 'default');\n"
-msgstr ""
+msgstr "        // 指定預設值...\n"
+"        $value = session('key', 'default');\n"
 
 # File: docs/8.x/session.md, line: 127
 # File: docs/master/session.md, line: 127
@@ -375,61 +408,63 @@ msgstr ""
 msgid "        // Store a piece of data in the session...\n"
 "        session(['key' => 'value']);\n"
 "    });\n"
-msgstr ""
+msgstr "        // 儲存一筆資料到 Session...\n"
+"        session(['key' => 'value']);\n"
+"    });\n"
 
 # File: docs/8.x/session.md, line: 129
 # File: docs/master/session.md, line: 129
 #. type: Plain text
 #, no-wrap
 msgid "> {tip} There is little practical difference between using the session via an HTTP request instance versus using the global `session` helper. Both methods are [testable](/docs/{{version}}/testing) via the `assertSessionHas` method which is available in all of your test cases.\n"
-msgstr ""
+msgstr "> {tip} 使用 HTTP Request 實體跟全域 `session` 輔助函式在實務上沒有太大的不同。不管是哪種方式都是[可測試的](/docs/{{version}}/testing)，測試時可以使用測試例中的 `assertSessionHas` 方法來測試。\n"
 
 # File: docs/8.x/session.md, line: 131
 # File: docs/master/session.md, line: 131
 #. type: Plain text
 #, no-wrap
 msgid "<a name=\"retrieving-all-session-data\"></a>\n"
-msgstr ""
+msgstr "<a name=\"retrieving-all-session-data\"></a>\n"
 
 # File: docs/8.x/session.md, line: 131
 # File: docs/master/session.md, line: 131
 #. type: Title ####
 #, no-wrap
 msgid "Retrieving All Session Data"
-msgstr ""
+msgstr "取得所有 Session 資料"
 
 # File: docs/8.x/session.md, line: 134
 # File: docs/master/session.md, line: 134
 #. type: Plain text
 msgid "If you would like to retrieve all the data in the session, you may use the `all` method:"
-msgstr ""
+msgstr "若想從 Session 中取得所有資料，可以使用 `all` 方法："
 
 # File: docs/8.x/session.md, line: 136
 # File: docs/master/session.md, line: 136
 #. type: Plain text
 #, no-wrap
 msgid "    $data = $request->session()->all();\n"
-msgstr ""
+msgstr "    $data = $request->session()->all();\n"
 
 # File: docs/8.x/session.md, line: 138
 # File: docs/master/session.md, line: 138
 #. type: Plain text
 #, no-wrap
 msgid "<a name=\"determining-if-an-item-exists-in-the-session\"></a>\n"
-msgstr ""
+msgstr "<a name=\"determining-if-an-item-exists-in-the-session\"></a>\n"
 
 # File: docs/8.x/session.md, line: 138
 # File: docs/master/session.md, line: 138
 #. type: Title ####
 #, no-wrap
 msgid "Determining If An Item Exists In The Session"
-msgstr ""
+msgstr "判斷 Session 中某個項目是否存在"
 
 # File: docs/8.x/session.md, line: 141
 # File: docs/master/session.md, line: 141
 #. type: Plain text
 msgid "To determine if an item is present in the session, you may use the `has` method. The `has` method returns `true` if the item is present and is not `null`:"
-msgstr ""
+msgstr "若要判斷 Session 中是否有某個項目，可使用 `has` 方法。`has` 方法會在該項目存在且不為 `null` 時回傳 `true`："
 
 # File: docs/8.x/session.md, line: 145
 # File: docs/master/session.md, line: 145
@@ -438,13 +473,15 @@ msgstr ""
 msgid "    if ($request->session()->has('users')) {\n"
 "        //\n"
 "    }\n"
-msgstr ""
+msgstr "    if ($request->session()->has('users')) {\n"
+"        //\n"
+"    }\n"
 
 # File: docs/8.x/session.md, line: 147
 # File: docs/master/session.md, line: 147
 #. type: Plain text
 msgid "To determine if an item is present in the session, even if its value is `null`, you may use the `exists` method:"
-msgstr ""
+msgstr "若想判斷某個項目是否存在 Session，且不論其值是否為 `null`，可使用 `exists` 方法："
 
 # File: docs/8.x/session.md, line: 151
 # File: docs/master/session.md, line: 151
@@ -453,13 +490,15 @@ msgstr ""
 msgid "    if ($request->session()->exists('users')) {\n"
 "        //\n"
 "    }\n"
-msgstr ""
+msgstr "    if ($request->session()->exists('users')) {\n"
+"        //\n"
+"    }\n"
 
 # File: docs/8.x/session.md, line: 153
 # File: docs/master/session.md, line: 153
 #. type: Plain text
 msgid "To determine if an item is not present in the session, you may use the `missing` method. The `missing` method returns `true` if the item is `null` or if the item is not present:"
-msgstr ""
+msgstr "若要判斷 Session 中是否沒有某個項目，可使用 `missing` 方法。`missing` 方法會在該項目為 `null` 或不存在時回傳 `true`："
 
 # File: docs/8.x/session.md, line: 157
 # File: docs/master/session.md, line: 157
@@ -468,27 +507,29 @@ msgstr ""
 msgid "    if ($request->session()->missing('users')) {\n"
 "        //\n"
 "    }\n"
-msgstr ""
+msgstr "    if ($request->session()->missing('users')) {\n"
+"        //\n"
+"    }\n"
 
 # File: docs/8.x/session.md, line: 159
 # File: docs/master/session.md, line: 159
 #. type: Plain text
 #, no-wrap
 msgid "<a name=\"storing-data\"></a>\n"
-msgstr ""
+msgstr "<a name=\"storing-data\"></a>\n"
 
 # File: docs/8.x/session.md, line: 159
 # File: docs/master/session.md, line: 159
 #. type: Title ###
 #, no-wrap
 msgid "Storing Data"
-msgstr ""
+msgstr "保存資料"
 
 # File: docs/8.x/session.md, line: 162
 # File: docs/master/session.md, line: 162
 #. type: Plain text
 msgid "To store data in the session, you will typically use the request instance's `put` method or the global `session` helper:"
-msgstr ""
+msgstr "若要將資料保存到 Session，我們通常會使用 Request 實體的 `put` 方法或全域的 `session` 輔助函式："
 
 # File: docs/8.x/session.md, line: 165
 # File: docs/master/session.md, line: 165
@@ -496,7 +537,8 @@ msgstr ""
 #, no-wrap
 msgid "    // Via a request instance...\n"
 "    $request->session()->put('key', 'value');\n"
-msgstr ""
+msgstr "    // 使用 Request 實體...\n"
+"    $request->session()->put('key', 'value');\n"
 
 # File: docs/8.x/session.md, line: 168
 # File: docs/master/session.md, line: 168
@@ -504,123 +546,124 @@ msgstr ""
 #, no-wrap
 msgid "    // Via the global \"session\" helper...\n"
 "    session(['key' => 'value']);\n"
-msgstr ""
+msgstr "    // 使用全域「session」輔助函式...\n"
+"    session(['key' => 'value']);\n"
 
 # File: docs/8.x/session.md, line: 170
 # File: docs/master/session.md, line: 170
 #. type: Plain text
 #, no-wrap
 msgid "<a name=\"pushing-to-array-session-values\"></a>\n"
-msgstr ""
+msgstr "<a name=\"pushing-to-array-session-values\"></a>\n"
 
 # File: docs/8.x/session.md, line: 170
 # File: docs/master/session.md, line: 170
 #. type: Title ####
 #, no-wrap
 msgid "Pushing To Array Session Values"
-msgstr ""
+msgstr "在 Session 值中推入陣列資料"
 
 # File: docs/8.x/session.md, line: 173
 # File: docs/master/session.md, line: 173
 #. type: Plain text
 msgid "The `push` method may be used to push a new value onto a session value that is an array. For example, if the `user.teams` key contains an array of team names, you may push a new value onto the array like so:"
-msgstr ""
+msgstr "可以使用 `push` 方法來將值推入 (Push) 到陣列的 Session 值中。舉例來說，若 `user.teams` 索引鍵中包含了一組團隊名稱陣列，我們可以像這樣將一個新的值推入陣列中："
 
 # File: docs/8.x/session.md, line: 175
 # File: docs/master/session.md, line: 175
 #. type: Plain text
 #, no-wrap
 msgid "    $request->session()->push('user.teams', 'developers');\n"
-msgstr ""
+msgstr "    $request->session()->push('user.teams', 'developers');\n"
 
 # File: docs/8.x/session.md, line: 177
 # File: docs/master/session.md, line: 177
 #. type: Plain text
 #, no-wrap
 msgid "<a name=\"retrieving-deleting-an-item\"></a>\n"
-msgstr ""
+msgstr "<a name=\"retrieving-deleting-an-item\"></a>\n"
 
 # File: docs/8.x/session.md, line: 177
 # File: docs/master/session.md, line: 177
 #. type: Title ####
 #, no-wrap
 msgid "Retrieving & Deleting An Item"
-msgstr ""
+msgstr "取得與刪除項目"
 
 # File: docs/8.x/session.md, line: 180
 # File: docs/master/session.md, line: 180
 #. type: Plain text
 msgid "The `pull` method will retrieve and delete an item from the session in a single statement:"
-msgstr ""
+msgstr "使用 `pull` 方法即可以單一陳述式從 Session 內取得並刪除某個項目："
 
 # File: docs/8.x/session.md, line: 182
 # File: docs/master/session.md, line: 182
 #. type: Plain text
 #, no-wrap
 msgid "    $value = $request->session()->pull('key', 'default');\n"
-msgstr ""
+msgstr "    $value = $request->session()->pull('key', 'default');\n"
 
 # File: docs/8.x/session.md, line: 184
 # File: docs/master/session.md, line: 184
 #. type: Plain text
 #, no-wrap
 msgid "<a name=\"#incrementing-and-decrementing-session-values\"></a>\n"
-msgstr ""
+msgstr "<a name=\"#incrementing-and-decrementing-session-values\"></a>\n"
 
 # File: docs/8.x/session.md, line: 184
 # File: docs/master/session.md, line: 184
 #. type: Title ####
 #, no-wrap
 msgid "Incrementing & Decrementing Session Values"
-msgstr ""
+msgstr "遞增或遞減 Session 值"
 
 # File: docs/8.x/session.md, line: 187
 # File: docs/master/session.md, line: 187
 #. type: Plain text
 msgid "If your session data contains an integer you wish to increment or decrement, you may use the `increment` and `decrement` methods:"
-msgstr ""
+msgstr "若 Session 資料中包含要遞增或遞減的整數，可以使用 `increment` (遞增) 與 `decrement` (遞減) 方法："
 
 # File: docs/8.x/session.md, line: 189
 # File: docs/master/session.md, line: 189
 #. type: Plain text
 #, no-wrap
 msgid "    $request->session()->increment('count');\n"
-msgstr ""
+msgstr "    $request->session()->increment('count');\n"
 
 # File: docs/8.x/session.md, line: 191
 # File: docs/master/session.md, line: 191
 #. type: Plain text
 #, no-wrap
 msgid "    $request->session()->increment('count', $incrementBy = 2);\n"
-msgstr ""
+msgstr "    $request->session()->increment('count', $incrementBy = 2);\n"
 
 # File: docs/8.x/session.md, line: 193
 # File: docs/master/session.md, line: 193
 #. type: Plain text
 #, no-wrap
 msgid "    $request->session()->decrement('count');\n"
-msgstr ""
+msgstr "    $request->session()->decrement('count');\n"
 
 # File: docs/8.x/session.md, line: 195
 # File: docs/master/session.md, line: 195
 #. type: Plain text
 #, no-wrap
 msgid "    $request->session()->decrement('count', $decrementBy = 2);\n"
-msgstr ""
+msgstr "    $request->session()->decrement('count', $decrementBy = 2);\n"
 
 # File: docs/8.x/session.md, line: 197
 # File: docs/master/session.md, line: 197
 #. type: Plain text
 #, no-wrap
 msgid "<a name=\"flash-data\"></a>\n"
-msgstr ""
+msgstr "<a name=\"flash-data\"></a>\n"
 
 # File: docs/8.x/session.md, line: 197
 # File: docs/master/session.md, line: 197
 #. type: Title ###
 #, no-wrap
 msgid "Flash Data"
-msgstr ""
+msgstr "快閃資料"
 
 # File: docs/8.x/session.md, line: 200
 # File: docs/master/session.md, line: 200

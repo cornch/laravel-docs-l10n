@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: laravel-docs\n"
 "POT-Creation-Date: 2022-01-30 12:42+0000\n"
-"PO-Revision-Date: 2022-01-30 12:45\n"
+"PO-Revision-Date: 2022-02-03 09:14\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
@@ -21,13 +21,13 @@ msgstr ""
 #. type: Title #
 #, no-wrap
 msgid "Validation"
-msgstr ""
+msgstr "表單驗證 - Validation"
 
 # File: docs/8.x/validation.md, line: 36
 # File: docs/master/validation.md, line: 35
 #. type: Bullet: '- '
 msgid "[Introduction](#introduction)"
-msgstr ""
+msgstr "[簡介](#introduction)"
 
 # File: docs/8.x/validation.md, line: 36
 #. type: Plain text
@@ -64,80 +64,111 @@ msgid "- [Validation Quickstart](#validation-quickstart)\n"
 "    - [Using Rule Objects](#using-rule-objects)\n"
 "    - [Using Closures](#using-closures)\n"
 "    - [Implicit Rules](#implicit-rules)\n"
-msgstr ""
+msgstr "- [「驗證」快速入門](#validation-quickstart)\n"
+"    - [定義 Route](#quick-defining-the-routes)\n"
+"    - [建立 Controller](#quick-creating-the-controller)\n"
+"    - [撰寫驗證邏輯](#quick-writing-the-validation-logic)\n"
+"    - [顯示驗證錯誤訊息](#quick-displaying-the-validation-errors)\n"
+"    - [重新回填表單](#repopulating-forms)\n"
+"    - [有關可選欄位的說明](#a-note-on-optional-fields)\n"
+"- [Form Request 的驗證](#form-request-validation)\n"
+"    - [建立 Form Request](#creating-form-requests)\n"
+"    - [授權 Form Request](#authorizing-form-requests)\n"
+"    - [自訂錯誤訊息](#customizing-the-error-messages)\n"
+"    - [為驗證預先準備輸入](#preparing-input-for-validation)\n"
+"- [手動建立 Validator](#manually-creating-validators)\n"
+"    - [自動重新導向](#automatic-redirection)\n"
+"    - [命名的 Error Bag](#named-error-bags)\n"
+"    - [自訂錯誤訊息](#manual-customizing-the-error-messages)\n"
+"    - [After Validation 的 Hook](#after-validation-hook)\n"
+"- [處理驗證通過的輸入](#working-with-validated-input)\n"
+"- [處理錯誤訊息](#working-with-error-messages)\n"
+"    - [在語系檔中指定自訂訊息](#specifying-custom-messages-in-language-files)\n"
+"    - [在語系檔中指定屬性](#specifying-attribute-in-language-files)\n"
+"    - [在語系檔中指定值](#specifying-values-in-language-files)\n"
+"- [可用的驗證規則](#available-validation-rules)\n"
+"- [有條件地追加規則](#conditionally-adding-rules)\n"
+"- [驗證陣列](#validating-arrays)\n"
+"    - [排除未驗證的陣列索引鍵](#excluding-unvalidated-array-keys)\n"
+"    - [驗證巢狀陣列輸入](#validating-nested-array-input)\n"
+"- [驗證密碼](#validating-passwords)\n"
+"- [自訂驗證規則](#custom-validation-rules)\n"
+"    - [使用 Rule 物件](#using-rule-objects)\n"
+"    - [使用閉包](#using-closures)\n"
+"    - [隱式規則](#implicit-rules)\n"
 
 # File: docs/8.x/validation.md, line: 38
 # File: docs/master/validation.md, line: 37
 #. type: Plain text
 #, no-wrap
 msgid "<a name=\"introduction\"></a>\n"
-msgstr ""
+msgstr "<a name=\"introduction\"></a>\n"
 
 # File: docs/8.x/validation.md, line: 38
 # File: docs/master/validation.md, line: 37
 #. type: Title ##
 #, no-wrap
 msgid "Introduction"
-msgstr ""
+msgstr "簡介"
 
 # File: docs/8.x/validation.md, line: 41
 # File: docs/master/validation.md, line: 40
 #. type: Plain text
 msgid "Laravel provides several different approaches to validate your application's incoming data. It is most common to use the `validate` method available on all incoming HTTP requests. However, we will discuss other approaches to validation as well."
-msgstr ""
+msgstr "Laravel 中提供了多種不同方式能讓我們對連入資料做驗證 (Validate)。最常見的方法就是使用所有連入 HTTP Request 上都有的 `validata` 方法來驗證。不過，我們稍後也會討論其他驗證方法。"
 
 # File: docs/8.x/validation.md, line: 43
 # File: docs/master/validation.md, line: 42
 #. type: Plain text
 msgid "Laravel includes a wide variety of convenient validation rules that you may apply to data, even providing the ability to validate if values are unique in a given database table. We'll cover each of these validation rules in detail so that you are familiar with all of Laravel's validation features."
-msgstr ""
+msgstr "Laravel 中包含了多種方便的驗證規則可讓你套用到資料上，甚至，Laravel 中也有辦法驗證某個值在給定資料表上是否是不重複的。稍後我們會詳細說明各個驗證規則，讓你熟悉 Laravel 中所有的驗證功能。"
 
 # File: docs/8.x/validation.md, line: 45
 # File: docs/master/validation.md, line: 44
 #. type: Plain text
 #, no-wrap
 msgid "<a name=\"validation-quickstart\"></a>\n"
-msgstr ""
+msgstr "<a name=\"validation-quickstart\"></a>\n"
 
 # File: docs/8.x/validation.md, line: 45
 # File: docs/master/validation.md, line: 44
 #. type: Title ##
 #, no-wrap
 msgid "Validation Quickstart"
-msgstr ""
+msgstr "「Validation」快速開始"
 
 # File: docs/8.x/validation.md, line: 48
 # File: docs/master/validation.md, line: 47
 #. type: Plain text
 msgid "To learn about Laravel's powerful validation features, let's look at a complete example of validating a form and displaying the error messages back to the user. By reading this high-level overview, you'll be able to gain a good general understanding of how to validate incoming request data using Laravel:"
-msgstr ""
+msgstr "要瞭解有關 Laravel 中強大的驗證功能，我們先來看看一個驗證表單並將錯誤訊息顯示給使用者看的完整範例。閱讀這個高階的範例，讀者將能對如何使用 Laravel 驗證連入的 Request 資料有個基本的理解："
 
 # File: docs/8.x/validation.md, line: 50
 # File: docs/master/validation.md, line: 49
 #. type: Plain text
 #, no-wrap
 msgid "<a name=\"quick-defining-the-routes\"></a>\n"
-msgstr ""
+msgstr "<a name=\"quick-defining-the-routes\"></a>\n"
 
 # File: docs/8.x/validation.md, line: 50
 # File: docs/master/validation.md, line: 49
 #. type: Title ###
 #, no-wrap
 msgid "Defining The Routes"
-msgstr ""
+msgstr "定義 Route"
 
 # File: docs/8.x/validation.md, line: 53
 # File: docs/master/validation.md, line: 52
 #. type: Plain text
 msgid "First, let's assume we have the following routes defined in our `routes/web.php` file:"
-msgstr ""
+msgstr "首先，我們假設 `routes/web.php` 檔案中有下列 Route 定義："
 
 # File: docs/8.x/validation.md, line: 55
 # File: docs/master/validation.md, line: 54
 #. type: Plain text
 #, no-wrap
 msgid "    use App\\Http\\Controllers\\PostController;\n"
-msgstr ""
+msgstr "    use App\\Http\\Controllers\\PostController;\n"
 
 # File: docs/8.x/validation.md, line: 58
 # File: docs/master/validation.md, line: 57
@@ -145,33 +176,34 @@ msgstr ""
 #, no-wrap
 msgid "    Route::get('/post/create', [PostController::class, 'create']);\n"
 "    Route::post('/post', [PostController::class, 'store']);\n"
-msgstr ""
+msgstr "    Route::get('/post/create', [PostController::class, 'create']);\n"
+"    Route::post('/post', [PostController::class, 'store']);\n"
 
 # File: docs/8.x/validation.md, line: 60
 # File: docs/master/validation.md, line: 59
 #. type: Plain text
 msgid "The `GET` route will display a form for the user to create a new blog post, while the `POST` route will store the new blog post in the database."
-msgstr ""
+msgstr "這個 `GET` Route 會向使用者顯示一個用來建立新部落格貼文的表單，而 `POST` Route 則用來將新部落格貼文儲存到資料庫中。"
 
 # File: docs/8.x/validation.md, line: 62
 # File: docs/master/validation.md, line: 61
 #. type: Plain text
 #, no-wrap
 msgid "<a name=\"quick-creating-the-controller\"></a>\n"
-msgstr ""
+msgstr "<a name=\"quick-creating-the-controller\"></a>\n"
 
 # File: docs/8.x/validation.md, line: 62
 # File: docs/master/validation.md, line: 61
 #. type: Title ###
 #, no-wrap
 msgid "Creating The Controller"
-msgstr ""
+msgstr "建立 Controller"
 
 # File: docs/8.x/validation.md, line: 65
 # File: docs/master/validation.md, line: 64
 #. type: Plain text
 msgid "Next, let's take a look at a simple controller that handles incoming requests to these routes. We'll leave the `store` method empty for now:"
-msgstr ""
+msgstr "接著，我們來看看一個簡單的 Controller，這個 Controller 用來處理這些 Route 的連入 Request。我們現在先把 `store` 方法留空："
 
 # File: docs/8.x/validation.md, line: 67
 # File: docs/8.x/validation.md, line: 464
@@ -186,7 +218,7 @@ msgstr ""
 #. type: Plain text
 #, no-wrap
 msgid "    <?php\n"
-msgstr ""
+msgstr "    <?php\n"
 
 # File: docs/8.x/validation.md, line: 69
 # File: docs/8.x/validation.md, line: 466
@@ -195,7 +227,7 @@ msgstr ""
 #. type: Plain text
 #, no-wrap
 msgid "    namespace App\\Http\\Controllers;\n"
-msgstr ""
+msgstr "    namespace App\\Http\\Controllers;\n"
 
 # File: docs/8.x/validation.md, line: 72
 # File: docs/master/validation.md, line: 71
@@ -203,7 +235,8 @@ msgstr ""
 #, no-wrap
 msgid "    use App\\Http\\Controllers\\Controller;\n"
 "    use Illuminate\\Http\\Request;\n"
-msgstr ""
+msgstr "    use App\\Http\\Controllers\\Controller;\n"
+"    use Illuminate\\Http\\Request;\n"
 
 # File: docs/8.x/validation.md, line: 84
 # File: docs/master/validation.md, line: 83
@@ -220,7 +253,17 @@ msgid "    class PostController extends Controller\n"
 "        {\n"
 "            return view('post.create');\n"
 "        }\n"
-msgstr ""
+msgstr "    class PostController extends Controller\n"
+"    {\n"
+"        /**\n"
+"         * Show the form to create a new blog post.\n"
+"         *\n"
+"         * @return \\Illuminate\\View\\View\n"
+"         */\n"
+"        public function create()\n"
+"        {\n"
+"            return view('post.create');\n"
+"        }\n"
 
 # File: docs/8.x/validation.md, line: 96
 # File: docs/master/validation.md, line: 95
@@ -237,39 +280,49 @@ msgid "        /**\n"
 "            // Validate and store the blog post...\n"
 "        }\n"
 "    }\n"
-msgstr ""
+msgstr "        /**\n"
+"         * Store a new blog post.\n"
+"         *\n"
+"         * @param  \\Illuminate\\Http\\Request  $request\n"
+"         * @return \\Illuminate\\Http\\Response\n"
+"         */\n"
+"        public function store(Request $request)\n"
+"        {\n"
+"            // Validate and store the blog post...\n"
+"        }\n"
+"    }\n"
 
 # File: docs/8.x/validation.md, line: 98
 # File: docs/master/validation.md, line: 97
 #. type: Plain text
 #, no-wrap
 msgid "<a name=\"quick-writing-the-validation-logic\"></a>\n"
-msgstr ""
+msgstr "<a name=\"quick-writing-the-validation-logic\"></a>\n"
 
 # File: docs/8.x/validation.md, line: 98
 # File: docs/master/validation.md, line: 97
 #. type: Title ###
 #, no-wrap
 msgid "Writing The Validation Logic"
-msgstr ""
+msgstr "撰寫驗證邏輯"
 
 # File: docs/8.x/validation.md, line: 101
 # File: docs/master/validation.md, line: 100
 #. type: Plain text
 msgid "Now we are ready to fill in our `store` method with the logic to validate the new blog post. To do this, we will use the `validate` method provided by the `Illuminate\\Http\\Request` object. If the validation rules pass, your code will keep executing normally; however, if validation fails, an `Illuminate\\Validation\\ValidationException` exception will be thrown and the proper error response will automatically be sent back to the user."
-msgstr ""
+msgstr "現在，我們已經準備好可以在 `store` 方法內撰寫驗證新部落格貼文的驗證邏輯了。要撰寫驗證邏輯，我們會使用 `Illuminate\\Http\\Request` 物件所提供的 `validate` 方法。若驗證規則通過，則程式碼就可以繼續正常執行。不過，若驗證失敗，則會擲回 `Illuminate\\Validation\\ValidationException` 例外，然後 Laravel 會自動回傳適當的錯誤 Response 給使用者。"
 
 # File: docs/8.x/validation.md, line: 103
 # File: docs/master/validation.md, line: 102
 #. type: Plain text
 msgid "If validation fails during a traditional HTTP request, a redirect response to the previous URL will be generated. If the incoming request is an XHR request, a JSON response containing the validation error messages will be returned."
-msgstr ""
+msgstr "若驗證失敗時使用的是傳統 HTTP Request，則會產生一個回到上一頁網址的 Redirect Response。若連入的 Request 是 XHR Request，則會回傳一個包含驗證錯誤訊息的 JSON Response。"
 
 # File: docs/8.x/validation.md, line: 105
 # File: docs/master/validation.md, line: 104
 #. type: Plain text
 msgid "To get a better understanding of the `validate` method, let's jump back into the `store` method:"
-msgstr ""
+msgstr "為了更好瞭解 `validate`，我們先回來看看 `store` 方法："
 
 # File: docs/8.x/validation.md, line: 118
 # File: docs/master/validation.md, line: 117
@@ -287,7 +340,18 @@ msgid "    /**\n"
 "            'title' => 'required|unique:posts|max:255',\n"
 "            'body' => 'required',\n"
 "        ]);\n"
-msgstr ""
+msgstr "    /**\n"
+"     * Store a new blog post.\n"
+"     *\n"
+"     * @param  \\Illuminate\\Http\\Request  $request\n"
+"     * @return \\Illuminate\\Http\\Response\n"
+"     */\n"
+"    public function store(Request $request)\n"
+"    {\n"
+"        $validated = $request->validate([\n"
+"            'title' => 'required|unique:posts|max:255',\n"
+"            'body' => 'required',\n"
+"        ]);\n"
 
 # File: docs/8.x/validation.md, line: 121
 # File: docs/master/validation.md, line: 120
@@ -295,19 +359,20 @@ msgstr ""
 #, no-wrap
 msgid "        // The blog post is valid...\n"
 "    }\n"
-msgstr ""
+msgstr "        // 部落格貼文輸入正確...\n"
+"    }\n"
 
 # File: docs/8.x/validation.md, line: 123
 # File: docs/master/validation.md, line: 122
 #. type: Plain text
 msgid "As you can see, the validation rules are passed into the `validate` method. Don't worry - all available validation rules are [documented](#available-validation-rules). Again, if the validation fails, the proper response will automatically be generated. If the validation passes, our controller will continue executing normally."
-msgstr ""
+msgstr "就像我們可以看到的一樣，我們將驗證規則傳入 `validate` 方法。別擔心 —— 所有可用的規則都有[說明文件](#available-validation-rules)。一樣，若驗證失敗，會自動產生適當的 Response。若驗證成功，我們的 Controller 就會繼續正常執行。"
 
 # File: docs/8.x/validation.md, line: 125
 # File: docs/master/validation.md, line: 124
 #. type: Plain text
 msgid "Alternatively, validation rules may be specified as arrays of rules instead of a single `|` delimited string:"
-msgstr ""
+msgstr "或者，我們也可以不使用以 `|` 分隔的單一字串來指定驗證規則，而是使用一組規則陣列："
 
 # File: docs/8.x/validation.md, line: 130
 # File: docs/master/validation.md, line: 129
@@ -317,13 +382,16 @@ msgid "    $validatedData = $request->validate([\n"
 "        'title' => ['required', 'unique:posts', 'max:255'],\n"
 "        'body' => ['required'],\n"
 "    ]);\n"
-msgstr ""
+msgstr "    $validatedData = $request->validate([\n"
+"        'title' => ['required', 'unique:posts', 'max:255'],\n"
+"        'body' => ['required'],\n"
+"    ]);\n"
 
 # File: docs/8.x/validation.md, line: 132
 # File: docs/master/validation.md, line: 131
 #. type: Plain text
 msgid "In addition, you may use the `validateWithBag` method to validate a request and store any error messages within a [named error bag](#named-error-bags):"
-msgstr ""
+msgstr "此外，也可以使用 `validateWithBag` 方法來驗證 Request 並將錯誤訊息保存在一個[命名的 Error Bag](#named-error-bags)："
 
 # File: docs/8.x/validation.md, line: 137
 # File: docs/master/validation.md, line: 136
@@ -333,14 +401,17 @@ msgid "    $validatedData = $request->validateWithBag('post', [\n"
 "        'title' => ['required', 'unique:posts', 'max:255'],\n"
 "        'body' => ['required'],\n"
 "    ]);\n"
-msgstr ""
+msgstr "    $validatedData = $request->validateWithBag('post', [\n"
+"        'title' => ['required', 'unique:posts', 'max:255'],\n"
+"        'body' => ['required'],\n"
+"    ]);\n"
 
 # File: docs/8.x/validation.md, line: 139
 # File: docs/master/validation.md, line: 138
 #. type: Plain text
 #, no-wrap
 msgid "<a name=\"stopping-on-first-validation-failure\"></a>\n"
-msgstr ""
+msgstr "<a name=\"stopping-on-first-validation-failure\"></a>\n"
 
 # File: docs/8.x/validation.md, line: 139
 # File: docs/8.x/validation.md, line: 507
@@ -349,13 +420,13 @@ msgstr ""
 #. type: Title ####
 #, no-wrap
 msgid "Stopping On First Validation Failure"
-msgstr ""
+msgstr "在第一個驗證失敗後就停止"
 
 # File: docs/8.x/validation.md, line: 142
 # File: docs/master/validation.md, line: 141
 #. type: Plain text
 msgid "Sometimes you may wish to stop running validation rules on an attribute after the first validation failure. To do so, assign the `bail` rule to the attribute:"
-msgstr ""
+msgstr "有時候，我們會想在驗證某個屬性時，當遇到第一個驗證失敗就停止執行接下來的驗證規則。為此，可以在該屬性上加上 `bail` 規則："
 
 # File: docs/8.x/validation.md, line: 147
 # File: docs/master/validation.md, line: 146
@@ -365,7 +436,10 @@ msgid "    $request->validate([\n"
 "        'title' => 'bail|required|unique:posts|max:255',\n"
 "        'body' => 'required',\n"
 "    ]);\n"
-msgstr ""
+msgstr "    $request->validate([\n"
+"        'title' => 'bail|required|unique:posts|max:255',\n"
+"        'body' => 'required',\n"
+"    ]);\n"
 
 # File: docs/8.x/validation.md, line: 149
 # File: docs/master/validation.md, line: 148

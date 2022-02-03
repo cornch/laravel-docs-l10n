@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: laravel-docs\n"
 "POT-Creation-Date: 2022-01-30 12:42+0000\n"
-"PO-Revision-Date: 2022-02-03 09:14\n"
+"PO-Revision-Date: 2022-02-03 10:42\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
@@ -70,7 +70,7 @@ msgstr "- [「驗證」快速入門](#validation-quickstart)\n"
 "    - [撰寫驗證邏輯](#quick-writing-the-validation-logic)\n"
 "    - [顯示驗證錯誤訊息](#quick-displaying-the-validation-errors)\n"
 "    - [重新回填表單](#repopulating-forms)\n"
-"    - [有關可選欄位的說明](#a-note-on-optional-fields)\n"
+"    - [有關可選欄位的注意事項](#a-note-on-optional-fields)\n"
 "- [Form Request 的驗證](#form-request-validation)\n"
 "    - [建立 Form Request](#creating-form-requests)\n"
 "    - [授權 Form Request](#authorizing-form-requests)\n"
@@ -80,7 +80,7 @@ msgstr "- [「驗證」快速入門](#validation-quickstart)\n"
 "    - [自動重新導向](#automatic-redirection)\n"
 "    - [命名的 Error Bag](#named-error-bags)\n"
 "    - [自訂錯誤訊息](#manual-customizing-the-error-messages)\n"
-"    - [After Validation 的 Hook](#after-validation-hook)\n"
+"    - [驗證的「After」Hook](#after-validation-hook)\n"
 "- [處理驗證通過的輸入](#working-with-validated-input)\n"
 "- [處理錯誤訊息](#working-with-error-messages)\n"
 "    - [在語系檔中指定自訂訊息](#specifying-custom-messages-in-language-files)\n"
@@ -445,27 +445,27 @@ msgstr "    $request->validate([\n"
 # File: docs/master/validation.md, line: 148
 #. type: Plain text
 msgid "In this example, if the `unique` rule on the `title` attribute fails, the `max` rule will not be checked. Rules will be validated in the order they are assigned."
-msgstr ""
+msgstr "在這個例子中，若 `title` 屬性上的 `unique` 規則執行失敗，將不會檢查 `max` 規則。會依照所指派的順序來執行驗證規則。"
 
 # File: docs/8.x/validation.md, line: 151
 # File: docs/master/validation.md, line: 150
 #. type: Plain text
 #, no-wrap
 msgid "<a name=\"a-note-on-nested-attributes\"></a>\n"
-msgstr ""
+msgstr "<a name=\"a-note-on-nested-attributes\"></a>\n"
 
 # File: docs/8.x/validation.md, line: 151
 # File: docs/master/validation.md, line: 150
 #. type: Title ####
 #, no-wrap
 msgid "A Note On Nested Attributes"
-msgstr ""
+msgstr "有關巢狀屬性的注意事項"
 
 # File: docs/8.x/validation.md, line: 154
 # File: docs/master/validation.md, line: 153
 #. type: Plain text
 msgid "If the incoming HTTP request contains \"nested\" field data, you may specify these fields in your validation rules using \"dot\" syntax:"
-msgstr ""
+msgstr "若連入的 HTTP Request 中包含「巢狀」的欄位資料，請使用「點 (.)」語法來在驗證規則中指定這些欄位："
 
 # File: docs/8.x/validation.md, line: 160
 # File: docs/master/validation.md, line: 159
@@ -476,13 +476,17 @@ msgid "    $request->validate([\n"
 "        'author.name' => 'required',\n"
 "        'author.description' => 'required',\n"
 "    ]);\n"
-msgstr ""
+msgstr "    $request->validate([\n"
+"        'title' => 'required|unique:posts|max:255',\n"
+"        'author.name' => 'required',\n"
+"        'author.description' => 'required',\n"
+"    ]);\n"
 
 # File: docs/8.x/validation.md, line: 162
 # File: docs/master/validation.md, line: 161
 #. type: Plain text
 msgid "On the other hand, if your field name contains a literal period, you can explicitly prevent this from being interpreted as \"dot\" syntax by escaping the period with a backslash:"
-msgstr ""
+msgstr "另一方面，若欄位名稱包含 `.` 字元，則我們可以使用反斜線來逸出句點，以顯式避免被解析成「點 (.)」語法："
 
 # File: docs/8.x/validation.md, line: 167
 # File: docs/master/validation.md, line: 166
@@ -492,39 +496,42 @@ msgid "    $request->validate([\n"
 "        'title' => 'required|unique:posts|max:255',\n"
 "        'v1\\.0' => 'required',\n"
 "    ]);\n"
-msgstr ""
+msgstr "    $request->validate([\n"
+"        'title' => 'required|unique:posts|max:255',\n"
+"        'v1\\.0' => 'required',\n"
+"    ]);\n"
 
 # File: docs/8.x/validation.md, line: 169
 # File: docs/master/validation.md, line: 168
 #. type: Plain text
 #, no-wrap
 msgid "<a name=\"quick-displaying-the-validation-errors\"></a>\n"
-msgstr ""
+msgstr "<a name=\"quick-displaying-the-validation-errors\"></a>\n"
 
 # File: docs/8.x/validation.md, line: 169
 # File: docs/master/validation.md, line: 168
 #. type: Title ###
 #, no-wrap
 msgid "Displaying The Validation Errors"
-msgstr ""
+msgstr "顯示驗證錯誤"
 
 # File: docs/8.x/validation.md, line: 172
 # File: docs/master/validation.md, line: 171
 #. type: Plain text
 msgid "So, what if the incoming request fields do not pass the given validation rules? As mentioned previously, Laravel will automatically redirect the user back to their previous location. In addition, all of the validation errors and [request input](/docs/{{version}}/requests#retrieving-old-input) will automatically be [flashed to the session](/docs/{{version}}/session#flash-data)."
-msgstr ""
+msgstr "那麼，如果連入 Request 的欄位沒通過給定的驗證規則呢？就像剛才提到過的，Laravel 會自動將使用者重新導向回到上一個位置。此外，所有的驗證規則與 [Request 輸入](/docs/{{version}}/requests#retrieving-old-input)都會自動被[快閃存入 Session](/docs/{{version}}/session#flash-data)。"
 
 # File: docs/8.x/validation.md, line: 174
 # File: docs/master/validation.md, line: 173
 #. type: Plain text
 msgid "An `$errors` variable is shared with all of your application's views by the `Illuminate\\View\\Middleware\\ShareErrorsFromSession` middleware, which is provided by the `web` middleware group. When this middleware is applied an `$errors` variable will always be available in your views, allowing you to conveniently assume the `$errors` variable is always defined and can be safely used. The `$errors` variable will be an instance of `Illuminate\\Support\\MessageBag`. For more information on working with this object, [check out its documentation](#working-with-error-messages)."
-msgstr ""
+msgstr "`Illuminate\\View\\Middleware\\ShareErrorsFromSession` Middleware 幫我們在專案中所有的 View 間共享了一個 `$errors` 變數。這個 Middleware 在 `web` Middleware 群組中提供。當有套用這個 Middleware 時，所有的 View 中都會有 `$errors` 變數，因此我們能方便地假設 `$errors` 變數擁有都已定義好且可安全地使用。`$errors` 變數是 `Illuminate\\Support\\MessageBag` 的實體。更多有關該物件的資訊，[請參考 Message Bag 的說明文件](#working-with-error-messages)。"
 
 # File: docs/8.x/validation.md, line: 176
 # File: docs/master/validation.md, line: 175
 #. type: Plain text
 msgid "So, in our example, the user will be redirected to our controller's `create` method when validation fails, allowing us to display the error messages in the view:"
-msgstr ""
+msgstr "所有，在我們的範例中，當驗證失敗時，使用者會被重新導向到 Controller 的 `create` 方法，讓我們能在 View 中顯示錯誤訊息："
 
 # File: docs/8.x/validation.md, line: 177
 # File: docs/8.x/validation.md, line: 212
@@ -535,7 +542,7 @@ msgstr ""
 #. type: Code fence info string
 #, no-wrap
 msgid "html"
-msgstr ""
+msgstr "html"
 
 # File: docs/8.x/validation.md, line: 177
 # File: docs/master/validation.md, line: 176
@@ -553,14 +560,25 @@ msgid "<!-- /resources/views/post/create.blade.php -->\n\n"
 "    </div>\n"
 "@endif\n\n"
 "<!-- Create Post Form -->\n"
-msgstr ""
+msgstr "<!-- /resources/views/post/create.blade.php -->\n\n"
+"<h1>Create Post</h1>\n\n"
+"@if ($errors->any())\n"
+"    <div class=\"alert alert-danger\">\n"
+"        <ul>\n"
+"            @foreach ($errors->all() as $error)\n"
+"                <li>{{ $error }}</li>\n"
+"            @endforeach\n"
+"        </ul>\n"
+"    </div>\n"
+"@endif\n\n"
+"<!-- Create Post Form -->\n"
 
 # File: docs/8.x/validation.md, line: 196
 # File: docs/master/validation.md, line: 195
 #. type: Plain text
 #, no-wrap
 msgid "<a name=\"quick-customizing-the-error-messages\"></a>\n"
-msgstr ""
+msgstr "<a name=\"quick-customizing-the-error-messages\"></a>\n"
 
 # File: docs/8.x/validation.md, line: 196
 # File: docs/8.x/validation.md, line: 405
@@ -571,7 +589,7 @@ msgstr ""
 #. type: Title ###
 #, no-wrap
 msgid "Customizing The Error Messages"
-msgstr ""
+msgstr "自訂錯誤訊息"
 
 # File: docs/8.x/validation.md, line: 199
 # File: docs/8.x/validation.md, line: 686
@@ -579,7 +597,7 @@ msgstr ""
 # File: docs/master/validation.md, line: 685
 #. type: Plain text
 msgid "Laravel's built-in validation rules each has an error message that is located in your application's `resources/lang/en/validation.php` file. Within this file, you will find a translation entry for each validation rule. You are free to change or modify these messages based on the needs of your application."
-msgstr ""
+msgstr "在專案的 `resources/lang/en/validation.php` 檔案中，有所有 Laravel 內建驗證規則的錯誤訊息。在這個檔案中，我們可以看到每個驗證規則的翻譯欄位。可以依照需求修改這些訊息。"
 
 # File: docs/8.x/validation.md, line: 201
 # File: docs/8.x/validation.md, line: 688
@@ -587,47 +605,47 @@ msgstr ""
 # File: docs/master/validation.md, line: 687
 #. type: Plain text
 msgid "In addition, you may copy this file to another translation language directory to translate the messages for your application's language. To learn more about Laravel localization, check out the complete [localization documentation](/docs/{{version}}/localization)."
-msgstr ""
+msgstr "此外，也可以把這個檔案複製到另一個翻譯語系目錄中，以將其翻成你專案的語言。要瞭解 Laravel 中有關本地化 (Localization) 的更多資訊，請參考完整的[本地化說明文件](/docs/{{version}}/localization)。"
 
 # File: docs/8.x/validation.md, line: 203
 # File: docs/master/validation.md, line: 202
 #. type: Plain text
 #, no-wrap
 msgid "<a name=\"quick-xhr-requests-and-validation\"></a>\n"
-msgstr ""
+msgstr "<a name=\"quick-xhr-requests-and-validation\"></a>\n"
 
 # File: docs/8.x/validation.md, line: 203
 # File: docs/master/validation.md, line: 202
 #. type: Title ####
 #, no-wrap
 msgid "XHR Requests & Validation"
-msgstr ""
+msgstr "XHR Request 與驗證"
 
 # File: docs/8.x/validation.md, line: 206
 # File: docs/master/validation.md, line: 205
 #. type: Plain text
 msgid "In this example, we used a traditional form to send data to the application. However, many applications receive XHR requests from a JavaScript powered frontend. When using the `validate` method during an XHR request, Laravel will not generate a redirect response. Instead, Laravel generates a JSON response containing all of the validation errors. This JSON response will be sent with a 422 HTTP status code."
-msgstr ""
+msgstr "在這個例子中，我們使用傳統的表單來將資料傳給程式。不過，有許多程式是接受來自 JavaScript 前端的 XHR Request。在 XHR Request 中使用 `validate` 方法時，Laravel 不會產生 Redirect Response，而是產生一個包含所有驗證錯誤的 JSON Response。JSON Response 會以 422 HTTP 狀態碼傳送。"
 
 # File: docs/8.x/validation.md, line: 208
 # File: docs/master/validation.md, line: 207
 #. type: Plain text
 #, no-wrap
 msgid "<a name=\"the-at-error-directive\"></a>\n"
-msgstr ""
+msgstr "<a name=\"the-at-error-directive\"></a>\n"
 
 # File: docs/8.x/validation.md, line: 208
 # File: docs/master/validation.md, line: 207
 #. type: Title ####
 #, no-wrap
 msgid "The `@error` Directive"
-msgstr ""
+msgstr "`@error` 指示詞"
 
 # File: docs/8.x/validation.md, line: 211
 # File: docs/master/validation.md, line: 210
 #. type: Plain text
 msgid "You may use the `@error` [Blade](/docs/{{version}}/blade) directive to quickly determine if validation error messages exist for a given attribute. Within an `@error` directive, you may echo the `$message` variable to display the error message:"
-msgstr ""
+msgstr "可以使用 `@error` Blade 指示詞來快速判斷給定的屬性是否有驗證錯誤訊息。在 `@error` 指示詞內，可以輸出 `$message` 變數來顯示錯誤訊息："
 
 # File: docs/8.x/validation.md, line: 212
 # File: docs/master/validation.md, line: 211
@@ -639,86 +657,91 @@ msgid "<!-- /resources/views/post/create.blade.php -->\n\n"
 "@error('title')\n"
 "    <div class=\"alert alert-danger\">{{ $message }}</div>\n"
 "@enderror\n"
-msgstr ""
+msgstr "<!-- /resources/views/post/create.blade.php -->\n\n"
+"<label for=\"title\">Post Title</label>\n\n"
+"<input id=\"title\" type=\"text\" name=\"title\" class=\"@error('title') is-invalid @enderror\">\n\n"
+"@error('title')\n"
+"    <div class=\"alert alert-danger\">{{ $message }}</div>\n"
+"@enderror\n"
 
 # File: docs/8.x/validation.md, line: 225
 # File: docs/master/validation.md, line: 224
 #. type: Plain text
 msgid "If you are using [named error bags](#named-error-bags), you may pass the name of the error bag as the second argument to the `@error` directive:"
-msgstr ""
+msgstr "若使用[命名的 Error Bag](#named-error-bags)，則可將 Error Bag 的名稱作為第二個引數傳給 `@error` 指示詞："
 
 # File: docs/8.x/validation.md, line: 226
 # File: docs/master/validation.md, line: 225
 #. type: Plain text
 #, no-wrap
 msgid "<input ... class=\"@error('title', 'post') is-invalid @enderror\">\n"
-msgstr ""
+msgstr "<input ... class=\"@error('title', 'post') is-invalid @enderror\">\n"
 
 # File: docs/8.x/validation.md, line: 231
 # File: docs/master/validation.md, line: 230
 #. type: Plain text
 #, no-wrap
 msgid "<a name=\"repopulating-forms\"></a>\n"
-msgstr ""
+msgstr "<a name=\"repopulating-forms\"></a>\n"
 
 # File: docs/8.x/validation.md, line: 231
 # File: docs/master/validation.md, line: 230
 #. type: Title ###
 #, no-wrap
 msgid "Repopulating Forms"
-msgstr ""
+msgstr "重新回填表單"
 
 # File: docs/8.x/validation.md, line: 234
 # File: docs/master/validation.md, line: 233
 #. type: Plain text
 msgid "When Laravel generates a redirect response due to a validation error, the framework will automatically [flash all of the request's input to the session](/docs/{{version}}/session#flash-data). This is done so that you may conveniently access the input during the next request and repopulate the form that the user attempted to submit."
-msgstr ""
+msgstr "當 Laravel 因為驗證錯誤而產生 Redirect Response 時，Laravel 會自動[將目前的 Request 輸入快閃存入 Session](/docs/{{version}}/session#flash-data)。這樣一來我們就能在下一個 Request 中方便地存取這些輸入，並將資料重新回填到使用者嘗試送出的表單上。"
 
 # File: docs/8.x/validation.md, line: 236
 # File: docs/master/validation.md, line: 235
 #. type: Plain text
 msgid "To retrieve flashed input from the previous request, invoke the `old` method on an instance of `Illuminate\\Http\\Request`. The `old` method will pull the previously flashed input data from the [session](/docs/{{version}}/session):"
-msgstr ""
+msgstr "若要取得前一個 Request 中的快閃輸入，可叫用 `Illuminate\\Http\\Request` 上的 `old` 方法。`old` 方法從 [Session](/docs/{{version}}/session) 中拉取前次快閃存入輸入資料："
 
 # File: docs/8.x/validation.md, line: 238
 # File: docs/master/validation.md, line: 237
 #. type: Plain text
 #, no-wrap
 msgid "    $title = $request->old('title');\n"
-msgstr ""
+msgstr "    $title = $request->old('title');\n"
 
 # File: docs/8.x/validation.md, line: 240
 # File: docs/master/validation.md, line: 239
 #. type: Plain text
 msgid "Laravel also provides a global `old` helper. If you are displaying old input within a [Blade template](/docs/{{version}}/blade), it is more convenient to use the `old` helper to repopulate the form. If no old input exists for the given field, `null` will be returned:"
-msgstr ""
+msgstr "Laravel 也提供了一個全域 `old` 輔助函式。若想在 [Blade 樣板](/docs/{{version}}/blade)中顯示舊輸入，那麼使用 `old` 輔助函式來將其填回表單回比較方便。若給定欄位沒有舊輸入的話，會回傳 `null`："
 
 # File: docs/8.x/validation.md, line: 242
 # File: docs/master/validation.md, line: 241
 #. type: Plain text
 #, no-wrap
 msgid "    <input type=\"text\" name=\"title\" value=\"{{ old('title') }}\">\n"
-msgstr ""
+msgstr "    <input type=\"text\" name=\"title\" value=\"{{ old('title') }}\">\n"
 
 # File: docs/8.x/validation.md, line: 244
 # File: docs/master/validation.md, line: 243
 #. type: Plain text
 #, no-wrap
 msgid "<a name=\"a-note-on-optional-fields\"></a>\n"
-msgstr ""
+msgstr "<a name=\"a-note-on-optional-fields\"></a>\n"
 
 # File: docs/8.x/validation.md, line: 244
 # File: docs/master/validation.md, line: 243
 #. type: Title ###
 #, no-wrap
 msgid "A Note On Optional Fields"
-msgstr ""
+msgstr "有關可選欄位的注意事項"
 
 # File: docs/8.x/validation.md, line: 247
 # File: docs/master/validation.md, line: 246
 #. type: Plain text
 msgid "By default, Laravel includes the `TrimStrings` and `ConvertEmptyStringsToNull` middleware in your application's global middleware stack. These middleware are listed in the stack by the `App\\Http\\Kernel` class. Because of this, you will often need to mark your \"optional\" request fields as `nullable` if you do not want the validator to consider `null` values as invalid. For example:"
-msgstr ""
+msgstr "預設情況下，Laravel 的全域 Middleware Stack 中包含了 `TrimStrings` 與 `ConvertEmptyStringsToNull` Middleware。這兩個 Middleware 由 `App\\Http\\Kernel` 類別列在一個 Stack 中。因此，如果不希望 Validator (驗證程式) 把 `null` 值當作無效資料的話，我們常常需要將「可選填」的 Request 欄位標為 `nullable`。舉例來說："
 
 # File: docs/8.x/validation.md, line: 253
 # File: docs/master/validation.md, line: 252
@@ -729,66 +752,70 @@ msgid "    $request->validate([\n"
 "        'body' => 'required',\n"
 "        'publish_at' => 'nullable|date',\n"
 "    ]);\n"
-msgstr ""
+msgstr "    $request->validate([\n"
+"        'title' => 'required|unique:posts|max:255',\n"
+"        'body' => 'required',\n"
+"        'publish_at' => 'nullable|date',\n"
+"    ]);\n"
 
 # File: docs/8.x/validation.md, line: 255
 # File: docs/master/validation.md, line: 254
 #. type: Plain text
 msgid "In this example, we are specifying that the `publish_at` field may be either `null` or a valid date representation. If the `nullable` modifier is not added to the rule definition, the validator would consider `null` an invalid date."
-msgstr ""
+msgstr "在這個範例中，我們指定讓 `publish_at` 欄位可以是 `null` 或是有效的日期呈現。若沒有在規則定義中加上 `nullabale` 修飾詞 (Modifier)，則 Validator 會把 `null` 當作無效的日期。"
 
 # File: docs/8.x/validation.md, line: 257
 # File: docs/master/validation.md, line: 256
 #. type: Plain text
 #, no-wrap
 msgid "<a name=\"form-request-validation\"></a>\n"
-msgstr ""
+msgstr "<a name=\"form-request-validation\"></a>\n"
 
 # File: docs/8.x/validation.md, line: 257
 # File: docs/master/validation.md, line: 256
 #. type: Title ##
 #, no-wrap
 msgid "Form Request Validation"
-msgstr ""
+msgstr "Form Request 的驗證"
 
 # File: docs/8.x/validation.md, line: 260
 # File: docs/master/validation.md, line: 259
 #. type: Plain text
 #, no-wrap
 msgid "<a name=\"creating-form-requests\"></a>\n"
-msgstr ""
+msgstr "<a name=\"creating-form-requests\"></a>\n"
 
 # File: docs/8.x/validation.md, line: 260
 # File: docs/master/validation.md, line: 259
 #. type: Title ###
 #, no-wrap
 msgid "Creating Form Requests"
-msgstr ""
+msgstr "建立 Form Request"
 
 # File: docs/8.x/validation.md, line: 263
 # File: docs/master/validation.md, line: 262
 #. type: Plain text
 msgid "For more complex validation scenarios, you may wish to create a \"form request\". Form requests are custom request classes that encapsulate their own validation and authorization logic. To create a form request class, you may use the `make:request` Artisan CLI command:"
-msgstr ""
+msgstr "在更複雜的驗證情境中，我們可能會想建立一個「Form Request (表單請求)」。Form Request 就是自訂的 Request 類別，其中封裝了該 Request 自己的驗證與認證邏輯。若要建立 Form Request 類別，可使用 `make:request` Artisan CLI 指令："
 
 # File: docs/8.x/validation.md, line: 265
 # File: docs/master/validation.md, line: 264
 #. type: Plain text
 #, no-wrap
 msgid "    php artisan make:request StorePostRequest\n"
-msgstr ""
+msgstr "    php artisan make:request StorePostRequest\n"
 
 # File: docs/8.x/validation.md, line: 267
 # File: docs/master/validation.md, line: 266
 #. type: Plain text
 msgid "The generated form request class will be placed in the `app/Http/Requests` directory. If this directory does not exist, it will be created when you run the `make:request` command. Each form request generated by Laravel has two methods: `authorize` and `rules`."
-msgstr ""
+msgstr "產生的 Form Request 會被放在 `app/Http/Requests` 目錄中。若該目錄不存在，則執行 `make:request` 指令是會自動建立。Laravel 產生的每個 Form Request 都有兩個方法：`authorize` 與 `rules`。"
 
 # File: docs/8.x/validation.md, line: 269
 # File: docs/master/validation.md, line: 268
 #. type: Plain text
 msgid "As you might have guessed, the `authorize` method is responsible for determining if the currently authenticated user can perform the action represented by the request, while the `rules` method returns the validation rules that should apply to the request's data:"
-msgstr ""
+msgstr "讀者可能已經猜到，`authorize` 方法是用來判斷目前已登入使用者是否能進行該 Request 所代表的動作。`rules` 方法則回傳要套用到 Request 資料的驗證規則："
 
 # File: docs/8.x/validation.md, line: 282
 # File: docs/master/validation.md, line: 281
@@ -806,20 +833,31 @@ msgid "    /**\n"
 "            'body' => 'required',\n"
 "        ];\n"
 "    }\n"
-msgstr ""
+msgstr "    /**\n"
+"     * Get the validation rules that apply to the request.\n"
+"     *\n"
+"     * @return array\n"
+"     */\n"
+"    public function rules()\n"
+"    {\n"
+"        return [\n"
+"            'title' => 'required|unique:posts|max:255',\n"
+"            'body' => 'required',\n"
+"        ];\n"
+"    }\n"
 
 # File: docs/8.x/validation.md, line: 284
 # File: docs/master/validation.md, line: 283
 #. type: Plain text
 #, no-wrap
 msgid "> {tip} You may type-hint any dependencies you require within the `rules` method's signature. They will automatically be resolved via the Laravel [service container](/docs/{{version}}/container).\n"
-msgstr ""
+msgstr "> {tip} 在 `rules` 方法的簽章 (Signature) 中可以對任何需要的相依性進行型別提示 (Type-Hint)。型別提示的相依性會由 Laravel 的 [Service Container](/docs/{{version}}/container) 自動解析。\n"
 
 # File: docs/8.x/validation.md, line: 286
 # File: docs/master/validation.md, line: 285
 #. type: Plain text
 msgid "So, how are the validation rules evaluated? All you need to do is type-hint the request on your controller method. The incoming form request is validated before the controller method is called, meaning you do not need to clutter your controller with any validation logic:"
-msgstr ""
+msgstr "那麼，要怎麼執行驗證規則呢？我們只需要在 Controller 方法中型別提示這個 Request 即可。連入的 Form Request 會在呼叫 Controller 方法前驗證。這表示，我們就不需要在 Controller 中放一些凌亂的驗證邏輯："
 
 # File: docs/8.x/validation.md, line: 296
 # File: docs/master/validation.md, line: 295
@@ -834,7 +872,15 @@ msgid "    /**\n"
 "    public function store(StorePostRequest $request)\n"
 "    {\n"
 "        // The incoming request is valid...\n"
-msgstr ""
+msgstr "    /**\n"
+"     * Store a new blog post.\n"
+"     *\n"
+"     * @param  \\App\\Http\\Requests\\StorePostRequest  $request\n"
+"     * @return Illuminate\\Http\\Response\n"
+"     */\n"
+"    public function store(StorePostRequest $request)\n"
+"    {\n"
+"        // The incoming request is valid...\n"
 
 # File: docs/8.x/validation.md, line: 299
 # File: docs/master/validation.md, line: 298
@@ -842,7 +888,8 @@ msgstr ""
 #, no-wrap
 msgid "        // Retrieve the validated input data...\n"
 "        $validated = $request->validated();\n"
-msgstr ""
+msgstr "        // 取得已驗證的輸入資料...\n"
+"        $validated = $request->validated();\n"
 
 # File: docs/8.x/validation.md, line: 304
 # File: docs/master/validation.md, line: 303
@@ -852,33 +899,36 @@ msgid "        // Retrieve a portion of the validated input data...\n"
 "        $validated = $request->safe()->only(['name', 'email']);\n"
 "        $validated = $request->safe()->except(['name', 'email']);\n"
 "    }\n"
-msgstr ""
+msgstr "        // 取得一部分的已驗證輸入資料...\n"
+"        $validated = $request->safe()->only(['name', 'email']);\n"
+"        $validated = $request->safe()->except(['name', 'email']);\n"
+"    }\n"
 
 # File: docs/8.x/validation.md, line: 306
 # File: docs/master/validation.md, line: 305
 #. type: Plain text
 msgid "If validation fails, a redirect response will be generated to send the user back to their previous location. The errors will also be flashed to the session so they are available for display. If the request was an XHR request, an HTTP response with a 422 status code will be returned to the user including a JSON representation of the validation errors."
-msgstr ""
+msgstr "若驗證失敗，會產生一個 Redirect Response，並將使用者傳送回前一個位置。錯誤訊息也會被快閃存入 Session 中以便顯示。若目前的 Request 是 XHR Request，則會回傳一個 422 狀態碼的 HTTP Response 給使用者，其中包含了以 JSON 呈現的驗證錯誤訊息："
 
 # File: docs/8.x/validation.md, line: 308
 # File: docs/master/validation.md, line: 307
 #. type: Plain text
 #, no-wrap
 msgid "<a name=\"adding-after-hooks-to-form-requests\"></a>\n"
-msgstr ""
+msgstr "<a name=\"adding-after-hooks-to-form-requests\"></a>\n"
 
 # File: docs/8.x/validation.md, line: 308
 # File: docs/master/validation.md, line: 307
 #. type: Title ####
 #, no-wrap
 msgid "Adding After Hooks To Form Requests"
-msgstr ""
+msgstr "新增 After Hook 到 Form Request"
 
 # File: docs/8.x/validation.md, line: 311
 # File: docs/master/validation.md, line: 310
 #. type: Plain text
 msgid "If you would like to add an \"after\" validation hook to a form request, you may use the `withValidator` method. This method receives the fully constructed validator, allowing you to call any of its methods before the validation rules are actually evaluated:"
-msgstr ""
+msgstr "若想將「After」驗證 Hook 加到 Form Request 上，則需要使用 `withValidator` 方法。該方法接收完整建構好的 Validator，能讓你在實際執行驗證規則前呼叫 Validator 上的任何方法："
 
 # File: docs/8.x/validation.md, line: 326
 # File: docs/master/validation.md, line: 325
@@ -898,27 +948,40 @@ msgid "    /**\n"
 "            }\n"
 "        });\n"
 "    }\n"
-msgstr ""
+msgstr "    /**\n"
+"     * Configure the validator instance.\n"
+"     *\n"
+"     * @param  \\Illuminate\\Validation\\Validator  $validator\n"
+"     * @return void\n"
+"     */\n"
+"    public function withValidator($validator)\n"
+"    {\n"
+"        $validator->after(function ($validator) {\n"
+"            if ($this->somethingElseIsInvalid()) {\n"
+"                $validator->errors()->add('field', 'Something is wrong with this field!');\n"
+"            }\n"
+"        });\n"
+"    }\n"
 
 # File: docs/8.x/validation.md, line: 329
 # File: docs/master/validation.md, line: 328
 #. type: Plain text
 #, no-wrap
 msgid "<a name=\"request-stopping-on-first-validation-rule-failure\"></a>\n"
-msgstr ""
+msgstr "<a name=\"request-stopping-on-first-validation-rule-failure\"></a>\n"
 
 # File: docs/8.x/validation.md, line: 329
 # File: docs/master/validation.md, line: 328
 #. type: Title ####
 #, no-wrap
 msgid "Stopping On First Validation Failure Attribute"
-msgstr ""
+msgstr "在第一個屬性驗證失敗後就停止"
 
 # File: docs/8.x/validation.md, line: 332
 # File: docs/master/validation.md, line: 331
 #. type: Plain text
 msgid "By adding a `stopOnFirstFailure` property to your request class, you may inform the validator that it should stop validating all attributes once a single validation failure has occurred:"
-msgstr ""
+msgstr "在 Request 類別上新增 `stopOnFirstFailure` 屬性後，就可以讓 Validator 在發生一個驗證失敗後就停止驗證所有的屬性："
 
 # File: docs/8.x/validation.md, line: 339
 # File: docs/master/validation.md, line: 338
@@ -930,27 +993,32 @@ msgid "    /**\n"
 "     * @var bool\n"
 "     */\n"
 "    protected $stopOnFirstFailure = true;\n"
-msgstr ""
+msgstr "    /**\n"
+"     * Indicates if the validator should stop on the first rule failure.\n"
+"     *\n"
+"     * @var bool\n"
+"     */\n"
+"    protected $stopOnFirstFailure = true;\n"
 
 # File: docs/8.x/validation.md, line: 341
 # File: docs/master/validation.md, line: 340
 #. type: Plain text
 #, no-wrap
 msgid "<a name=\"customizing-the-redirect-location\"></a>\n"
-msgstr ""
+msgstr "<a name=\"customizing-the-redirect-location\"></a>\n"
 
 # File: docs/8.x/validation.md, line: 341
 # File: docs/master/validation.md, line: 340
 #. type: Title ####
 #, no-wrap
 msgid "Customizing The Redirect Location"
-msgstr ""
+msgstr "自訂重新導向位置"
 
 # File: docs/8.x/validation.md, line: 344
 # File: docs/master/validation.md, line: 343
 #. type: Plain text
 msgid "As previously discussed, a redirect response will be generated to send the user back to their previous location when form request validation fails. However, you are free to customize this behavior. To do so, define a `$redirect` property on your form request:"
-msgstr ""
+msgstr "前面也提到過，Form Request 驗證失敗時會產生一個 Redirect Response 來將使用者傳送到前一個位置。不過，我們可以自訂這個行為。為此，請在 Form Request 中定義一個 `$redirect` 屬性："
 
 # File: docs/8.x/validation.md, line: 351
 # File: docs/master/validation.md, line: 350
@@ -962,13 +1030,18 @@ msgid "    /**\n"
 "     * @var string\n"
 "     */\n"
 "    protected $redirect = '/dashboard';\n"
-msgstr ""
+msgstr "    /**\n"
+"     * The URI that users should be redirected to if validation fails.\n"
+"     *\n"
+"     * @var string\n"
+"     */\n"
+"    protected $redirect = '/dashboard';\n"
 
 # File: docs/8.x/validation.md, line: 353
 # File: docs/master/validation.md, line: 352
 #. type: Plain text
 msgid "Or, if you would like to redirect users to a named route, you may define a `$redirectRoute` property instead:"
-msgstr ""
+msgstr "或者，若想將使用者重新導向到命名 Route，請改定義 `$redirectRoute` 屬性："
 
 # File: docs/8.x/validation.md, line: 360
 # File: docs/master/validation.md, line: 359
@@ -980,34 +1053,39 @@ msgid "    /**\n"
 "     * @var string\n"
 "     */\n"
 "    protected $redirectRoute = 'dashboard';\n"
-msgstr ""
+msgstr "    /**\n"
+"     * The route that users should be redirected to if validation fails.\n"
+"     *\n"
+"     * @var string\n"
+"     */\n"
+"    protected $redirectRoute = 'dashboard';\n"
 
 # File: docs/8.x/validation.md, line: 362
 # File: docs/master/validation.md, line: 361
 #. type: Plain text
 #, no-wrap
 msgid "<a name=\"authorizing-form-requests\"></a>\n"
-msgstr ""
+msgstr "<a name=\"authorizing-form-requests\"></a>\n"
 
 # File: docs/8.x/validation.md, line: 362
 # File: docs/master/validation.md, line: 361
 #. type: Title ###
 #, no-wrap
 msgid "Authorizing Form Requests"
-msgstr ""
+msgstr "授權 Form Request"
 
 # File: docs/8.x/validation.md, line: 365
 # File: docs/master/validation.md, line: 364
 #. type: Plain text
 msgid "The form request class also contains an `authorize` method. Within this method, you may determine if the authenticated user actually has the authority to update a given resource. For example, you may determine if a user actually owns a blog comment they are attempting to update. Most likely, you will interact with your [authorization gates and policies](/docs/{{version}}/authorization) within this method:"
-msgstr ""
+msgstr "Form Request 類別中也包含了一個 `authorize` 方法。在這個方法中，我們可以判斷已登入使用者是否有授權能更新給定資源。舉例來說，我們可以判斷使用者是否真的擁有正在編輯的部落格留言。大多數情況下，在這個方法中我們應該都是使用[授權的 Gate 與 Policy](/docs/{{version}}/authorization)："
 
 # File: docs/8.x/validation.md, line: 367
 # File: docs/master/validation.md, line: 366
 #. type: Plain text
 #, no-wrap
 msgid "    use App\\Models\\Comment;\n"
-msgstr ""
+msgstr "    use App\\Models\\Comment;\n"
 
 # File: docs/8.x/validation.md, line: 376
 # File: docs/master/validation.md, line: 375
@@ -1021,7 +1099,14 @@ msgid "    /**\n"
 "    public function authorize()\n"
 "    {\n"
 "        $comment = Comment::find($this->route('comment'));\n"
-msgstr ""
+msgstr "    /**\n"
+"     * Determine if the user is authorized to make this request.\n"
+"     *\n"
+"     * @return bool\n"
+"     */\n"
+"    public function authorize()\n"
+"    {\n"
+"        $comment = Comment::find($this->route('comment'));\n"
 
 # File: docs/8.x/validation.md, line: 379
 # File: docs/master/validation.md, line: 378
@@ -1029,45 +1114,46 @@ msgstr ""
 #, no-wrap
 msgid "        return $comment && $this->user()->can('update', $comment);\n"
 "    }\n"
-msgstr ""
+msgstr "        return $comment && $this->user()->can('update', $comment);\n"
+"    }\n"
 
 # File: docs/8.x/validation.md, line: 381
 # File: docs/master/validation.md, line: 380
 #. type: Plain text
 msgid "Since all form requests extend the base Laravel request class, we may use the `user` method to access the currently authenticated user. Also, note the call to the `route` method in the example above. This method grants you access to the URI parameters defined on the route being called, such as the `{comment}` parameter in the example below:"
-msgstr ""
+msgstr "由於所有 Form Request 都繼承自 Laravel 的基礎 Request 類別，因此我們可以使用 `user` 方法來存取目前已登入的使用者。此外，也請注意上方範例中呼叫的 `route` 方法。這個方法能讓我們存取目前呼叫的 Route 上的 URI 參數，如上述例子中為 `{comment}` 參數："
 
 # File: docs/8.x/validation.md, line: 383
 # File: docs/master/validation.md, line: 382
 #. type: Plain text
 #, no-wrap
 msgid "    Route::post('/comment/{comment}');\n"
-msgstr ""
+msgstr "    Route::post('/comment/{comment}');\n"
 
 # File: docs/8.x/validation.md, line: 385
 # File: docs/master/validation.md, line: 384
 #. type: Plain text
 msgid "Therefore, if your application is taking advantage of [route model binding](/docs/{{version}}/routing#route-model-binding), your code may be made even more succinct by accessing the resolved model as a property of the request:"
-msgstr ""
+msgstr "因此，若我們的專案有使用 [Route Model 繫結](/docs/{{version}}/routing#route-model-binding)，則這裡的程式碼還能存取 Request 上已解析的 Model 屬性來進一步簡化："
 
 # File: docs/8.x/validation.md, line: 387
 # File: docs/master/validation.md, line: 386
 #. type: Plain text
 #, no-wrap
 msgid "    return $this->user()->can('update', $this->comment);\n"
-msgstr ""
+msgstr "    return $this->user()->can('update', $this->comment);\n"
 
 # File: docs/8.x/validation.md, line: 389
 # File: docs/master/validation.md, line: 388
 #. type: Plain text
 msgid "If the `authorize` method returns `false`, an HTTP response with a 403 status code will automatically be returned and your controller method will not execute."
-msgstr ""
+msgstr "若 `authorize` 方法回傳 `false`，則會自動回傳一個 403 狀態碼的 HTTP Respnose，而 Controller 則不會被執行。"
 
 # File: docs/8.x/validation.md, line: 391
 # File: docs/master/validation.md, line: 390
 #. type: Plain text
 msgid "If you plan to handle authorization logic for the request in another part of your application, you may simply return `true` from the `authorize` method:"
-msgstr ""
+msgstr "若想在程式中的其他部分處理授權邏輯，只要在 `authorize` 方法中回傳 `true` 即可："
 
 # File: docs/8.x/validation.md, line: 401
 # File: docs/master/validation.md, line: 400
@@ -1082,27 +1168,35 @@ msgid "    /**\n"
 "    {\n"
 "        return true;\n"
 "    }\n"
-msgstr ""
+msgstr "    /**\n"
+"     * Determine if the user is authorized to make this request.\n"
+"     *\n"
+"     * @return bool\n"
+"     */\n"
+"    public function authorize()\n"
+"    {\n"
+"        return true;\n"
+"    }\n"
 
 # File: docs/8.x/validation.md, line: 403
 # File: docs/master/validation.md, line: 402
 #. type: Plain text
 #, no-wrap
 msgid "> {tip} You may type-hint any dependencies you need within the `authorize` method's signature. They will automatically be resolved via the Laravel [service container](/docs/{{version}}/container).\n"
-msgstr ""
+msgstr "> {tip} 在 `authorize` 方法的簽章 (Signature) 中可以對任何需要的相依性進行型別提示 (Type-Hint)。型別提示的相依性會由 Laravel 的 [Service Container](/docs/{{version}}/container) 自動解析。\n"
 
 # File: docs/8.x/validation.md, line: 405
 # File: docs/master/validation.md, line: 404
 #. type: Plain text
 #, no-wrap
 msgid "<a name=\"customizing-the-error-messages\"></a>\n"
-msgstr ""
+msgstr "<a name=\"customizing-the-error-messages\"></a>\n"
 
 # File: docs/8.x/validation.md, line: 408
 # File: docs/master/validation.md, line: 407
 #. type: Plain text
 msgid "You may customize the error messages used by the form request by overriding the `messages` method. This method should return an array of attribute / rule pairs and their corresponding error messages:"
-msgstr ""
+msgstr "可以複寫 `messages` 方法來自訂 Form Request 使用的錯誤訊息。這個方法應回傳一組包含屬性/ 規則配對的陣列與其對應的錯誤訊息："
 
 # File: docs/8.x/validation.md, line: 421
 # File: docs/master/validation.md, line: 420
@@ -1120,27 +1214,38 @@ msgid "    /**\n"
 "            'body.required' => 'A message is required',\n"
 "        ];\n"
 "    }\n"
-msgstr ""
+msgstr "    /**\n"
+"     * Get the error messages for the defined validation rules.\n"
+"     *\n"
+"     * @return array\n"
+"     */\n"
+"    public function messages()\n"
+"    {\n"
+"        return [\n"
+"            'title.required' => 'A title is required',\n"
+"            'body.required' => 'A message is required',\n"
+"        ];\n"
+"    }\n"
 
 # File: docs/8.x/validation.md, line: 423
 # File: docs/master/validation.md, line: 422
 #. type: Plain text
 #, no-wrap
 msgid "<a name=\"customizing-the-validation-attributes\"></a>\n"
-msgstr ""
+msgstr "<a name=\"customizing-the-validation-attributes\"></a>\n"
 
 # File: docs/8.x/validation.md, line: 423
 # File: docs/master/validation.md, line: 422
 #. type: Title ####
 #, no-wrap
 msgid "Customizing The Validation Attributes"
-msgstr ""
+msgstr "自訂驗證屬性"
 
 # File: docs/8.x/validation.md, line: 426
 # File: docs/master/validation.md, line: 425
 #. type: Plain text
 msgid "Many of Laravel's built-in validation rule error messages contain an `:attribute` placeholder. If you would like the `:attribute` placeholder of your validation message to be replaced with a custom attribute name, you may specify the custom names by overriding the `attributes` method. This method should return an array of attribute / name pairs:"
-msgstr ""
+msgstr "Laravel 中許多的內建驗證規則錯誤訊息都包含了一個 `:attribute` 預留位置 (Placeholder)。若想將驗證訊息中 `:attribute` 預留位置該為自訂屬性名稱，可以複寫 `attributes` 方法來指定自訂的名稱。這個方法應回傳一組包含屬性 / 名稱配對的陣列："
 
 # File: docs/8.x/validation.md, line: 438
 # File: docs/master/validation.md, line: 437
@@ -1157,34 +1262,44 @@ msgid "    /**\n"
 "            'email' => 'email address',\n"
 "        ];\n"
 "    }\n"
-msgstr ""
+msgstr "    /**\n"
+"     * Get custom attributes for validator errors.\n"
+"     *\n"
+"     * @return array\n"
+"     */\n"
+"    public function attributes()\n"
+"    {\n"
+"        return [\n"
+"            'email' => 'email address',\n"
+"        ];\n"
+"    }\n"
 
 # File: docs/8.x/validation.md, line: 440
 # File: docs/master/validation.md, line: 439
 #. type: Plain text
 #, no-wrap
 msgid "<a name=\"preparing-input-for-validation\"></a>\n"
-msgstr ""
+msgstr "<a name=\"preparing-input-for-validation\"></a>\n"
 
 # File: docs/8.x/validation.md, line: 440
 # File: docs/master/validation.md, line: 439
 #. type: Title ###
 #, no-wrap
 msgid "Preparing Input For Validation"
-msgstr ""
+msgstr "為驗證準備輸入"
 
 # File: docs/8.x/validation.md, line: 443
 # File: docs/master/validation.md, line: 442
 #. type: Plain text
 msgid "If you need to prepare or sanitize any data from the request before you apply your validation rules, you may use the `prepareForValidation` method:"
-msgstr ""
+msgstr "若有需要在套用驗證規則前準備或消毒 (Sanitize) 任何 Request 中的資料，可使用 `prepareForValidation` 方法："
 
 # File: docs/8.x/validation.md, line: 445
 # File: docs/master/validation.md, line: 444
 #. type: Plain text
 #, no-wrap
 msgid "    use Illuminate\\Support\\Str;\n"
-msgstr ""
+msgstr "    use Illuminate\\Support\\Str;\n"
 
 # File: docs/8.x/validation.md, line: 457
 # File: docs/master/validation.md, line: 456
@@ -1201,27 +1316,37 @@ msgid "    /**\n"
 "            'slug' => Str::slug($this->slug),\n"
 "        ]);\n"
 "    }\n"
-msgstr ""
+msgstr "    /**\n"
+"     * Prepare the data for validation.\n"
+"     *\n"
+"     * @return void\n"
+"     */\n"
+"    protected function prepareForValidation()\n"
+"    {\n"
+"        $this->merge([\n"
+"            'slug' => Str::slug($this->slug),\n"
+"        ]);\n"
+"    }\n"
 
 # File: docs/8.x/validation.md, line: 459
 # File: docs/master/validation.md, line: 458
 #. type: Plain text
 #, no-wrap
 msgid "<a name=\"manually-creating-validators\"></a>\n"
-msgstr ""
+msgstr "<a name=\"manually-creating-validators\"></a>\n"
 
 # File: docs/8.x/validation.md, line: 459
 # File: docs/master/validation.md, line: 458
 #. type: Title ##
 #, no-wrap
 msgid "Manually Creating Validators"
-msgstr ""
+msgstr "手動建立 Validator"
 
 # File: docs/8.x/validation.md, line: 462
 # File: docs/master/validation.md, line: 461
 #. type: Plain text
 msgid "If you do not want to use the `validate` method on the request, you may create a validator instance manually using the `Validator` [facade](/docs/{{version}}/facades). The `make` method on the facade generates a new validator instance:"
-msgstr ""
+msgstr "若不想使用 Request 上的 `validate` 方法，也可以使用 `Validator` [Facade](/docs/{{version}}/facades) 來手動建立 Validator 實體。Facade 方法上的 `make` 方法會產生新的 Validator 實體："
 
 # File: docs/8.x/validation.md, line: 470
 # File: docs/master/validation.md, line: 469
@@ -1230,7 +1355,9 @@ msgstr ""
 msgid "    use App\\Http\\Controllers\\Controller;\n"
 "    use Illuminate\\Http\\Request;\n"
 "    use Illuminate\\Support\\Facades\\Validator;\n"
-msgstr ""
+msgstr "    use App\\Http\\Controllers\\Controller;\n"
+"    use Illuminate\\Http\\Request;\n"
+"    use Illuminate\\Support\\Facades\\Validator;\n"
 
 # File: docs/8.x/validation.md, line: 485
 # File: docs/master/validation.md, line: 484
@@ -1250,7 +1377,20 @@ msgid "    class PostController extends Controller\n"
 "                'title' => 'required|unique:posts|max:255',\n"
 "                'body' => 'required',\n"
 "            ]);\n"
-msgstr ""
+msgstr "    class PostController extends Controller\n"
+"    {\n"
+"        /**\n"
+"         * Store a new blog post.\n"
+"         *\n"
+"         * @param  Request  $request\n"
+"         * @return Response\n"
+"         */\n"
+"        public function store(Request $request)\n"
+"        {\n"
+"            $validator = Validator::make($request->all(), [\n"
+"                'title' => 'required|unique:posts|max:255',\n"
+"                'body' => 'required',\n"
+"            ]);\n"
 
 # File: docs/8.x/validation.md, line: 491
 # File: docs/master/validation.md, line: 490
@@ -1261,7 +1401,11 @@ msgid "            if ($validator->fails()) {\n"
 "                            ->withErrors($validator)\n"
 "                            ->withInput();\n"
 "            }\n"
-msgstr ""
+msgstr "            if ($validator->fails()) {\n"
+"                return redirect('post/create')\n"
+"                            ->withErrors($validator)\n"
+"                            ->withInput();\n"
+"            }\n"
 
 # File: docs/8.x/validation.md, line: 494
 # File: docs/master/validation.md, line: 493
@@ -1269,7 +1413,8 @@ msgstr ""
 #, no-wrap
 msgid "            // Retrieve the validated input...\n"
 "            $validated = $validator->validated();\n"
-msgstr ""
+msgstr "            // 取得已驗證的輸入...\n"
+"            $validated = $validator->validated();\n"
 
 # File: docs/8.x/validation.md, line: 498
 # File: docs/master/validation.md, line: 497
@@ -1278,7 +1423,9 @@ msgstr ""
 msgid "            // Retrieve a portion of the validated input...\n"
 "            $validated = $validator->safe()->only(['name', 'email']);\n"
 "            $validated = $validator->safe()->except(['name', 'email']);\n"
-msgstr ""
+msgstr "            // 取得一部分已驗證的輸入...\n"
+"            $validated = $validator->safe()->only(['name', 'email']);\n"
+"            $validated = $validator->safe()->except(['name', 'email']);\n"
 
 # File: docs/8.x/validation.md, line: 502
 # File: docs/master/validation.md, line: 501
@@ -1287,25 +1434,27 @@ msgstr ""
 msgid "            // Store the blog post...\n"
 "        }\n"
 "    }\n"
-msgstr ""
+msgstr "            // 保存部落格貼文...\n"
+"        }\n"
+"    }\n"
 
 # File: docs/8.x/validation.md, line: 504
 # File: docs/master/validation.md, line: 503
 #. type: Plain text
 msgid "The first argument passed to the `make` method is the data under validation. The second argument is an array of the validation rules that should be applied to the data."
-msgstr ""
+msgstr "傳入 `make` 方法的第一個屬性是要驗證的資料。第二個引述則是一組要套用到給定資料上的驗證規則陣列。"
 
 # File: docs/8.x/validation.md, line: 506
 # File: docs/master/validation.md, line: 505
 #. type: Plain text
 msgid "After determining whether the request validation failed, you may use the `withErrors` method to flash the error messages to the session. When using this method, the `$errors` variable will automatically be shared with your views after redirection, allowing you to easily display them back to the user. The `withErrors` method accepts a validator, a `MessageBag`, or a PHP `array`."
-msgstr ""
+msgstr "在判斷 Request 是否驗證失敗後，可以使用 `withErrors` 方法來將錯誤訊息快閃存入 Session 中。使用這個方法時，重新導向後會自動共享 `$errors` 變數，讓我們能輕鬆將其顯示給使用者。`withErrors` 方法接受一個 Validator、`MessageBag`、或 PHP `array`。"
 
 # File: docs/8.x/validation.md, line: 510
 # File: docs/master/validation.md, line: 509
 #. type: Plain text
 msgid "The `stopOnFirstFailure` method will inform the validator that it should stop validating all attributes once a single validation failure has occurred:"
-msgstr ""
+msgstr "`stopOnFirstFailure` 方法可以讓 Validator 在發生一個驗證失敗後就停止驗證所有的屬性："
 
 # File: docs/8.x/validation.md, line: 514
 # File: docs/8.x/validation.md, line: 930
@@ -1316,27 +1465,29 @@ msgstr ""
 msgid "    if ($validator->stopOnFirstFailure()->fails()) {\n"
 "        // ...\n"
 "    }\n"
-msgstr ""
+msgstr "    if ($validator->stopOnFirstFailure()->fails()) {\n"
+"        // ...\n"
+"    }\n"
 
 # File: docs/8.x/validation.md, line: 516
 # File: docs/master/validation.md, line: 515
 #. type: Plain text
 #, no-wrap
 msgid "<a name=\"automatic-redirection\"></a>\n"
-msgstr ""
+msgstr "<a name=\"automatic-redirection\"></a>\n"
 
 # File: docs/8.x/validation.md, line: 516
 # File: docs/master/validation.md, line: 515
 #. type: Title ###
 #, no-wrap
 msgid "Automatic Redirection"
-msgstr ""
+msgstr "自動重新導向"
 
 # File: docs/8.x/validation.md, line: 519
 # File: docs/master/validation.md, line: 518
 #. type: Plain text
 msgid "If you would like to create a validator instance manually but still take advantage of the automatic redirection offered by the HTTP request's `validate` method, you may call the `validate` method on an existing validator instance. If validation fails, the user will automatically be redirected or, in the case of an XHR request, a JSON response will be returned:"
-msgstr ""
+msgstr "若想手動建立 Validator 實體，但也想要使用 HTTP Request 的 `validate` 方法提供的自動重新導向功能，可以在現有 Validator 實體上呼叫 `validate` 方法。若驗證失敗，使用者會被重新導向。XHR Request 的情況下，則會回傳 JSON Response："
 
 # File: docs/8.x/validation.md, line: 524
 # File: docs/master/validation.md, line: 523
@@ -1346,13 +1497,16 @@ msgid "    Validator::make($request->all(), [\n"
 "        'title' => 'required|unique:posts|max:255',\n"
 "        'body' => 'required',\n"
 "    ])->validate();\n"
-msgstr ""
+msgstr "    Validator::make($request->all(), [\n"
+"        'title' => 'required|unique:posts|max:255',\n"
+"        'body' => 'required',\n"
+"    ])->validate();\n"
 
 # File: docs/8.x/validation.md, line: 526
 # File: docs/master/validation.md, line: 525
 #. type: Plain text
 msgid "You may use the `validateWithBag` method to store the error messages in a [named error bag](#named-error-bags) if validation fails:"
-msgstr ""
+msgstr "可以使用 `validateWithBag` 方法來在驗證失敗時將錯誤訊息保存在[命名的 Error Bag](#named-error-bags) 中："
 
 # File: docs/8.x/validation.md, line: 531
 # File: docs/master/validation.md, line: 530
@@ -1362,60 +1516,63 @@ msgid "    Validator::make($request->all(), [\n"
 "        'title' => 'required|unique:posts|max:255',\n"
 "        'body' => 'required',\n"
 "    ])->validateWithBag('post');\n"
-msgstr ""
+msgstr "    Validator::make($request->all(), [\n"
+"        'title' => 'required|unique:posts|max:255',\n"
+"        'body' => 'required',\n"
+"    ])->validateWithBag('post');\n"
 
 # File: docs/8.x/validation.md, line: 533
 # File: docs/master/validation.md, line: 532
 #. type: Plain text
 #, no-wrap
 msgid "<a name=\"named-error-bags\"></a>\n"
-msgstr ""
+msgstr "<a name=\"named-error-bags\"></a>\n"
 
 # File: docs/8.x/validation.md, line: 533
 # File: docs/master/validation.md, line: 532
 #. type: Title ###
 #, no-wrap
 msgid "Named Error Bags"
-msgstr ""
+msgstr "命名的 Error Bag"
 
 # File: docs/8.x/validation.md, line: 536
 # File: docs/master/validation.md, line: 535
 #. type: Plain text
 msgid "If you have multiple forms on a single page, you may wish to name the `MessageBag` containing the validation errors, allowing you to retrieve the error messages for a specific form. To achieve this, pass a name as the second argument to `withErrors`:"
-msgstr ""
+msgstr "若單一頁面中有多個表單，則我們可能會想為保存錯誤訊息的 `MessageBag` 命名。這樣一來，我們就可以為特定的表單取得錯誤訊息。為此，請傳入名稱作為第二個引數給 `withErrors`："
 
 # File: docs/8.x/validation.md, line: 538
 # File: docs/master/validation.md, line: 537
 #. type: Plain text
 #, no-wrap
 msgid "    return redirect('register')->withErrors($validator, 'login');\n"
-msgstr ""
+msgstr "    return redirect('register')->withErrors($validator, 'login');\n"
 
 # File: docs/8.x/validation.md, line: 540
 # File: docs/master/validation.md, line: 539
 #. type: Plain text
 msgid "You may then access the named `MessageBag` instance from the `$errors` variable:"
-msgstr ""
+msgstr "接著我們就可以在 `$errors` 變數中存取命名的 `MessageBag` 實體："
 
 # File: docs/8.x/validation.md, line: 542
 # File: docs/master/validation.md, line: 541
 #. type: Plain text
 #, no-wrap
 msgid "    {{ $errors->login->first('email') }}\n"
-msgstr ""
+msgstr "    {{ $errors->login->first('email') }}\n"
 
 # File: docs/8.x/validation.md, line: 544
 # File: docs/master/validation.md, line: 543
 #. type: Plain text
 #, no-wrap
 msgid "<a name=\"manual-customizing-the-error-messages\"></a>\n"
-msgstr ""
+msgstr "<a name=\"manual-customizing-the-error-messages\"></a>\n"
 
 # File: docs/8.x/validation.md, line: 547
 # File: docs/master/validation.md, line: 546
 #. type: Plain text
 msgid "If needed, you may provide custom error messages that a validator instance should use instead of the default error messages provided by Laravel. There are several ways to specify custom messages. First, you may pass the custom messages as the third argument to the `Validator::make` method:"
-msgstr ""
+msgstr "當然，除了 Laravel 提供的預設錯誤訊息外，我們還可以提供自訂的錯誤訊息給 Validator 實體使用。有許多方法可以指定自訂訊息。第一個方法是，將自訂訊息作為第三個引數傳給 `Validator::make` 方法："
 
 # File: docs/8.x/validation.md, line: 551
 # File: docs/master/validation.md, line: 550
@@ -1424,13 +1581,15 @@ msgstr ""
 msgid "    $validator = Validator::make($input, $rules, $messages = [\n"
 "        'required' => 'The :attribute field is required.',\n"
 "    ]);\n"
-msgstr ""
+msgstr "    $validator = Validator::make($input, $rules, $messages = [\n"
+"        'required' => 'The :attribute field is required.',\n"
+"    ]);\n"
 
 # File: docs/8.x/validation.md, line: 553
 # File: docs/master/validation.md, line: 552
 #. type: Plain text
 msgid "In this example, the `:attribute` placeholder will be replaced by the actual name of the field under validation. You may also utilize other placeholders in validation messages. For example:"
-msgstr ""
+msgstr "在這個例子中，`:attribute` 預留位置 (Placeholder) 會被替換成驗證中的實際欄位名稱。我們也可以在驗證訊息中使用其他的預留位置，如："
 
 # File: docs/8.x/validation.md, line: 560
 # File: docs/master/validation.md, line: 559
@@ -1442,27 +1601,32 @@ msgid "    $messages = [\n"
 "        'between' => 'The :attribute value :input is not between :min - :max.',\n"
 "        'in' => 'The :attribute must be one of the following types: :values',\n"
 "    ];\n"
-msgstr ""
+msgstr "    $messages = [\n"
+"        'same' => 'The :attribute and :other must match.',\n"
+"        'size' => 'The :attribute must be exactly :size.',\n"
+"        'between' => 'The :attribute value :input is not between :min - :max.',\n"
+"        'in' => 'The :attribute must be one of the following types: :values',\n"
+"    ];\n"
 
 # File: docs/8.x/validation.md, line: 562
 # File: docs/master/validation.md, line: 561
 #. type: Plain text
 #, no-wrap
 msgid "<a name=\"specifying-a-custom-message-for-a-given-attribute\"></a>\n"
-msgstr ""
+msgstr "<a name=\"specifying-a-custom-message-for-a-given-attribute\"></a>\n"
 
 # File: docs/8.x/validation.md, line: 562
 # File: docs/master/validation.md, line: 561
 #. type: Title ####
 #, no-wrap
 msgid "Specifying A Custom Message For A Given Attribute"
-msgstr ""
+msgstr "為給定屬性指定自訂訊息"
 
 # File: docs/8.x/validation.md, line: 565
 # File: docs/master/validation.md, line: 564
 #. type: Plain text
 msgid "Sometimes you may wish to specify a custom error message only for a specific attribute. You may do so using \"dot\" notation. Specify the attribute's name first, followed by the rule:"
-msgstr ""
+msgstr "有時候我們可能會想指為特定的屬性指定錯誤訊息。為此，我們可以使用「點 (.)」標記法。先指定屬性的名稱，然後再加上規則名稱："
 
 # File: docs/8.x/validation.md, line: 569
 # File: docs/master/validation.md, line: 568
@@ -1471,27 +1635,29 @@ msgstr ""
 msgid "    $messages = [\n"
 "        'email.required' => 'We need to know your email address!',\n"
 "    ];\n"
-msgstr ""
+msgstr "    $messages = [\n"
+"        'email.required' => 'We need to know your email address!',\n"
+"    ];\n"
 
 # File: docs/8.x/validation.md, line: 571
 # File: docs/master/validation.md, line: 570
 #. type: Plain text
 #, no-wrap
 msgid "<a name=\"specifying-custom-attribute-values\"></a>\n"
-msgstr ""
+msgstr "<a name=\"specifying-custom-attribute-values\"></a>\n"
 
 # File: docs/8.x/validation.md, line: 571
 # File: docs/master/validation.md, line: 570
 #. type: Title ####
 #, no-wrap
 msgid "Specifying Custom Attribute Values"
-msgstr ""
+msgstr "指定自訂屬性值"
 
 # File: docs/8.x/validation.md, line: 574
 # File: docs/master/validation.md, line: 573
 #. type: Plain text
 msgid "Many of Laravel's built-in error messages include an `:attribute` placeholder that is replaced with the name of the field or attribute under validation. To customize the values used to replace these placeholders for specific fields, you may pass an array of custom attributes as the fourth argument to the `Validator::make` method:"
-msgstr ""
+msgstr "Laravel 中許多內建的錯誤訊息都包含了一個 `:attribute` 預留位置，會被取代成正在驗證的欄位名稱或屬性名稱。若想在指定的欄位上自使用自訂值來取代這些預留位置，可將一組自訂屬性的陣列作為第四個引數傳給 `Validator::make` 方法："
 
 # File: docs/8.x/validation.md, line: 578
 # File: docs/master/validation.md, line: 577
@@ -1500,34 +1666,36 @@ msgstr ""
 msgid "    $validator = Validator::make($input, $rules, $messages, [\n"
 "        'email' => 'email address',\n"
 "    ]);\n"
-msgstr ""
+msgstr "    $validator = Validator::make($input, $rules, $messages, [\n"
+"        'email' => 'email address',\n"
+"    ]);\n"
 
 # File: docs/8.x/validation.md, line: 580
 # File: docs/master/validation.md, line: 579
 #. type: Plain text
 #, no-wrap
 msgid "<a name=\"after-validation-hook\"></a>\n"
-msgstr ""
+msgstr "<a name=\"after-validation-hook\"></a>\n"
 
 # File: docs/8.x/validation.md, line: 580
 # File: docs/master/validation.md, line: 579
 #. type: Title ###
 #, no-wrap
 msgid "After Validation Hook"
-msgstr ""
+msgstr "驗證的「After」Hook"
 
 # File: docs/8.x/validation.md, line: 583
 # File: docs/master/validation.md, line: 582
 #. type: Plain text
 msgid "You may also attach callbacks to be run after validation is completed. This allows you to easily perform further validation and even add more error messages to the message collection. To get started, call the `after` method on a validator instance:"
-msgstr ""
+msgstr "我們可以附加一個要在驗證完成後才執行的回呼。這樣一來，我們就可以輕鬆地做進一步的驗證、甚至是將更多的錯誤訊息加到 Message Collection 上。要開始加上 After Hook，請在 Validator 實體上呼叫 `after` 方法："
 
 # File: docs/8.x/validation.md, line: 585
 # File: docs/master/validation.md, line: 584
 #. type: Plain text
 #, no-wrap
 msgid "    $validator = Validator::make(...);\n"
-msgstr ""
+msgstr "    $validator = Validator::make(...);\n"
 
 # File: docs/8.x/validation.md, line: 593
 # File: docs/master/validation.md, line: 592
@@ -1540,7 +1708,13 @@ msgid "    $validator->after(function ($validator) {\n"
 "            );\n"
 "        }\n"
 "    });\n"
-msgstr ""
+msgstr "    $validator->after(function ($validator) {\n"
+"        if ($this->somethingElseIsInvalid()) {\n"
+"            $validator->errors()->add(\n"
+"                'field', 'Something is wrong with this field!'\n"
+"            );\n"
+"        }\n"
+"    });\n"
 
 # File: docs/8.x/validation.md, line: 597
 # File: docs/master/validation.md, line: 596
@@ -1549,74 +1723,76 @@ msgstr ""
 msgid "    if ($validator->fails()) {\n"
 "        //\n"
 "    }\n"
-msgstr ""
+msgstr "    if ($validator->fails()) {\n"
+"        //\n"
+"    }\n"
 
 # File: docs/8.x/validation.md, line: 599
 # File: docs/master/validation.md, line: 598
 #. type: Plain text
 #, no-wrap
 msgid "<a name=\"working-with-validated-input\"></a>\n"
-msgstr ""
+msgstr "<a name=\"working-with-validated-input\"></a>\n"
 
 # File: docs/8.x/validation.md, line: 599
 # File: docs/master/validation.md, line: 598
 #. type: Title ##
 #, no-wrap
 msgid "Working With Validated Input"
-msgstr ""
+msgstr "處理已驗證的輸入"
 
 # File: docs/8.x/validation.md, line: 602
 # File: docs/master/validation.md, line: 601
 #. type: Plain text
 msgid "After validating incoming request data using a form request or a manually created validator instance, you may wish to retrieve the incoming request data that actually underwent validation. This can be accomplished in several ways. First, you may call the `validated` method on a form request or validator instance. This method returns an array of the data that was validated:"
-msgstr ""
+msgstr "使用 Form Request 或手動建立的 Validator 實體驗證好連入的 Request 資料後，我們可能會想取得連入 Request 中實際被驗證過的資料。有許多種方法可以取得這些資料。第一種方法是在 Form Request 或 Validator 實體上呼叫 `validated` 方法。這個方法會回傳一組驗證過的資料陣列："
 
 # File: docs/8.x/validation.md, line: 604
 # File: docs/master/validation.md, line: 603
 #. type: Plain text
 #, no-wrap
 msgid "    $validated = $request->validated();\n"
-msgstr ""
+msgstr "    $validated = $request->validated();\n"
 
 # File: docs/8.x/validation.md, line: 606
 # File: docs/master/validation.md, line: 605
 #. type: Plain text
 #, no-wrap
 msgid "    $validated = $validator->validated();\n"
-msgstr ""
+msgstr "    $validated = $validator->validated();\n"
 
 # File: docs/8.x/validation.md, line: 608
 # File: docs/master/validation.md, line: 607
 #. type: Plain text
 msgid "Alternatively, you may call the `safe` method on a form request or validator instance. This method returns an instance of `Illuminate\\Support\\ValidatedInput`. This object exposes `only`, `except`, and `all` methods to retrieve a subset of the validated data or the entire array of validated data:"
-msgstr ""
+msgstr "或者，也可以在 Form Request 或 Validator 實體上呼叫 `safe` 方法。這個方法會回傳一個 `Illuminate\\Support\\ValidatedInput` 實體。該物件提供了 `only`、`except`、`all` 等方法，可用來取得一部分已驗證的資料或是整個已驗證資料的陣列："
 
 # File: docs/8.x/validation.md, line: 610
 # File: docs/master/validation.md, line: 609
 #. type: Plain text
 #, no-wrap
 msgid "    $validated = $request->safe()->only(['name', 'email']);\n"
-msgstr ""
+msgstr "    $validated = $request->safe()->only(['name', 'email']);\n"
 
 # File: docs/8.x/validation.md, line: 612
 # File: docs/master/validation.md, line: 611
 #. type: Plain text
 #, no-wrap
 msgid "    $validated = $request->safe()->except(['name', 'email']);\n"
-msgstr ""
+msgstr "    $validated = $request->safe()->except(['name', 'email']);\n"
 
 # File: docs/8.x/validation.md, line: 614
 # File: docs/master/validation.md, line: 613
 #. type: Plain text
 #, no-wrap
 msgid "    $validated = $request->safe()->all();\n"
-msgstr ""
+msgstr "    $validated = $request->safe()->all();\n"
 
 # File: docs/8.x/validation.md, line: 616
 # File: docs/master/validation.md, line: 615
 #. type: Plain text
 msgid "In addition, the `Illuminate\\Support\\ValidatedInput` instance may be iterated over and accessed like an array:"
-msgstr ""
+msgstr "此外，也可迭代 `Illuminate\\Support\\ValidatedInput` 或像陣列一樣存取："
 
 # File: docs/8.x/validation.md, line: 621
 # File: docs/master/validation.md, line: 620
@@ -1626,7 +1802,10 @@ msgid "    // Validated data may be iterated...\n"
 "    foreach ($request->safe() as $key => $value) {\n"
 "        //\n"
 "    }\n"
-msgstr ""
+msgstr "    // 可迭代已驗證的資料...\n"
+"    foreach ($request->safe() as $key => $value) {\n"
+"        //\n"
+"    }\n"
 
 # File: docs/8.x/validation.md, line: 624
 # File: docs/master/validation.md, line: 623
@@ -1634,114 +1813,115 @@ msgstr ""
 #, no-wrap
 msgid "    // Validated data may be accessed as an array...\n"
 "    $validated = $request->safe();\n"
-msgstr ""
+msgstr "    // 可作為陣列存取已驗證的資料..\n"
+"    $validated = $request->safe();\n"
 
 # File: docs/8.x/validation.md, line: 626
 # File: docs/master/validation.md, line: 625
 #. type: Plain text
 #, no-wrap
 msgid "    $email = $validated['email'];\n"
-msgstr ""
+msgstr "    $email = $validated['email'];\n"
 
 # File: docs/8.x/validation.md, line: 628
 # File: docs/master/validation.md, line: 627
 #. type: Plain text
 msgid "If you would like to add additional fields to the validated data, you may call the `merge` method:"
-msgstr ""
+msgstr "若想在已驗證資料上加上額外的欄位，可呼叫 `merge` 方法："
 
 # File: docs/8.x/validation.md, line: 630
 # File: docs/master/validation.md, line: 629
 #. type: Plain text
 #, no-wrap
 msgid "    $validated = $request->safe()->merge(['name' => 'Taylor Otwell']);\n"
-msgstr ""
+msgstr "    $validated = $request->safe()->merge(['name' => 'Taylor Otwell']);\n"
 
 # File: docs/8.x/validation.md, line: 632
 # File: docs/master/validation.md, line: 631
 #. type: Plain text
 msgid "If you would like to retrieve the validated data as a [collection](/docs/{{version}}/collections) instance, you may call the `collect` method:"
-msgstr ""
+msgstr "若想將已驗證資料作為 [Collection](/docs/{{version}}/collections) 實體取得，可呼叫 `collect` 方法："
 
 # File: docs/8.x/validation.md, line: 634
 # File: docs/master/validation.md, line: 633
 #. type: Plain text
 #, no-wrap
 msgid "    $collection = $request->safe()->collect();\n"
-msgstr ""
+msgstr "    $collection = $request->safe()->collect();\n"
 
 # File: docs/8.x/validation.md, line: 636
 # File: docs/master/validation.md, line: 635
 #. type: Plain text
 #, no-wrap
 msgid "<a name=\"working-with-error-messages\"></a>\n"
-msgstr ""
+msgstr "<a name=\"working-with-error-messages\"></a>\n"
 
 # File: docs/8.x/validation.md, line: 636
 # File: docs/master/validation.md, line: 635
 #. type: Title ##
 #, no-wrap
 msgid "Working With Error Messages"
-msgstr ""
+msgstr "處理錯誤訊息"
 
 # File: docs/8.x/validation.md, line: 639
 # File: docs/master/validation.md, line: 638
 #. type: Plain text
 msgid "After calling the `errors` method on a `Validator` instance, you will receive an `Illuminate\\Support\\MessageBag` instance, which has a variety of convenient methods for working with error messages. The `$errors` variable that is automatically made available to all views is also an instance of the `MessageBag` class."
-msgstr ""
+msgstr "在 `Validator` 實體上呼叫 `errors` 方法後，會收到 `Illuminate\\Support\\MessageBag` 實體。該實體提供了多種方便的方法能讓我們處理錯誤訊息。自動提供給所有 View 的 `$errors` 變數也是一個 `MessageBag` 類別的實體。"
 
 # File: docs/8.x/validation.md, line: 641
 # File: docs/master/validation.md, line: 640
 #. type: Plain text
 #, no-wrap
 msgid "<a name=\"retrieving-the-first-error-message-for-a-field\"></a>\n"
-msgstr ""
+msgstr "<a name=\"retrieving-the-first-error-message-for-a-field\"></a>\n"
 
 # File: docs/8.x/validation.md, line: 641
 # File: docs/master/validation.md, line: 640
 #. type: Title ####
 #, no-wrap
 msgid "Retrieving The First Error Message For A Field"
-msgstr ""
+msgstr "取得某個欄位的第一筆錯誤訊息"
 
 # File: docs/8.x/validation.md, line: 644
 # File: docs/master/validation.md, line: 643
 #. type: Plain text
 msgid "To retrieve the first error message for a given field, use the `first` method:"
-msgstr ""
+msgstr "若要取得給定欄位的第一筆錯誤訊息，請使用 `first` 方法："
 
 # File: docs/8.x/validation.md, line: 646
 # File: docs/master/validation.md, line: 645
 #. type: Plain text
 #, no-wrap
 msgid "    $errors = $validator->errors();\n"
-msgstr ""
+msgstr "    $errors = $validator->errors();\n"
 
 # File: docs/8.x/validation.md, line: 648
 # File: docs/master/validation.md, line: 647
 #. type: Plain text
 #, no-wrap
 msgid "    echo $errors->first('email');\n"
-msgstr ""
+msgstr "    echo $errors->first('email');\n"
 
 # File: docs/8.x/validation.md, line: 650
 # File: docs/master/validation.md, line: 649
 #. type: Plain text
 #, no-wrap
 msgid "<a name=\"retrieving-all-error-messages-for-a-field\"></a>\n"
-msgstr ""
+msgstr "<a name=\"retrieving-all-error-messages-for-a-field\"></a>\n"
 
 # File: docs/8.x/validation.md, line: 650
 # File: docs/master/validation.md, line: 649
 #. type: Title ####
 #, no-wrap
 msgid "Retrieving All Error Messages For A Field"
-msgstr ""
+msgstr "取得某個欄位的所有錯誤訊息"
 
 # File: docs/8.x/validation.md, line: 653
 # File: docs/master/validation.md, line: 652
 #. type: Plain text
 msgid "If you need to retrieve an array of all the messages for a given field, use the `get` method:"
-msgstr ""
+msgstr "若需要取得給定欄位的所有訊息陣列，請使用 `get` 方法："
 
 # File: docs/8.x/validation.md, line: 657
 # File: docs/master/validation.md, line: 656
@@ -1750,13 +1930,15 @@ msgstr ""
 msgid "    foreach ($errors->get('email') as $message) {\n"
 "        //\n"
 "    }\n"
-msgstr ""
+msgstr "    foreach ($errors->get('email') as $message) {\n"
+"        //\n"
+"    }\n"
 
 # File: docs/8.x/validation.md, line: 659
 # File: docs/master/validation.md, line: 658
 #. type: Plain text
 msgid "If you are validating an array form field, you may retrieve all of the messages for each of the array elements using the `*` character:"
-msgstr ""
+msgstr "在驗證某個陣列格式的表單欄位時，可使用 `*` 字元來取得各個陣列元素的所有錯誤訊息："
 
 # File: docs/8.x/validation.md, line: 663
 # File: docs/master/validation.md, line: 662
@@ -1765,27 +1947,29 @@ msgstr ""
 msgid "    foreach ($errors->get('attachments.*') as $message) {\n"
 "        //\n"
 "    }\n"
-msgstr ""
+msgstr "    foreach ($errors->get('attachments.*') as $message) {\n"
+"        //\n"
+"    }\n"
 
 # File: docs/8.x/validation.md, line: 665
 # File: docs/master/validation.md, line: 664
 #. type: Plain text
 #, no-wrap
 msgid "<a name=\"retrieving-all-error-messages-for-all-fields\"></a>\n"
-msgstr ""
+msgstr "<a name=\"retrieving-all-error-messages-for-all-fields\"></a>\n"
 
 # File: docs/8.x/validation.md, line: 665
 # File: docs/master/validation.md, line: 664
 #. type: Title ####
 #, no-wrap
 msgid "Retrieving All Error Messages For All Fields"
-msgstr ""
+msgstr "取得全部欄位的所有訊息"
 
 # File: docs/8.x/validation.md, line: 668
 # File: docs/master/validation.md, line: 667
 #. type: Plain text
 msgid "To retrieve an array of all messages for all fields, use the `all` method:"
-msgstr ""
+msgstr "若要取得所有欄位的所有訊息陣列，請使用 `all` 方法："
 
 # File: docs/8.x/validation.md, line: 672
 # File: docs/master/validation.md, line: 671
@@ -1794,27 +1978,29 @@ msgstr ""
 msgid "    foreach ($errors->all() as $message) {\n"
 "        //\n"
 "    }\n"
-msgstr ""
+msgstr "    foreach ($errors->all() as $message) {\n"
+"        //\n"
+"    }\n"
 
 # File: docs/8.x/validation.md, line: 674
 # File: docs/master/validation.md, line: 673
 #. type: Plain text
 #, no-wrap
 msgid "<a name=\"determining-if-messages-exist-for-a-field\"></a>\n"
-msgstr ""
+msgstr "<a name=\"determining-if-messages-exist-for-a-field\"></a>\n"
 
 # File: docs/8.x/validation.md, line: 674
 # File: docs/master/validation.md, line: 673
 #. type: Title ####
 #, no-wrap
 msgid "Determining If Messages Exist For A Field"
-msgstr ""
+msgstr "判斷某個欄位是否有錯誤訊息"
 
 # File: docs/8.x/validation.md, line: 677
 # File: docs/master/validation.md, line: 676
 #. type: Plain text
 msgid "The `has` method may be used to determine if any error messages exist for a given field:"
-msgstr ""
+msgstr "`has` 方法可用來判斷給定的欄位是否有錯誤訊息："
 
 # File: docs/8.x/validation.md, line: 681
 # File: docs/master/validation.md, line: 680
@@ -1823,41 +2009,43 @@ msgstr ""
 msgid "    if ($errors->has('email')) {\n"
 "        //\n"
 "    }\n"
-msgstr ""
+msgstr "    if ($errors->has('email')) {\n"
+"        //\n"
+"    }\n"
 
 # File: docs/8.x/validation.md, line: 683
 # File: docs/master/validation.md, line: 682
 #. type: Plain text
 #, no-wrap
 msgid "<a name=\"specifying-custom-messages-in-language-files\"></a>\n"
-msgstr ""
+msgstr "<a name=\"specifying-custom-messages-in-language-files\"></a>\n"
 
 # File: docs/8.x/validation.md, line: 683
 # File: docs/master/validation.md, line: 682
 #. type: Title ###
 #, no-wrap
 msgid "Specifying Custom Messages In Language Files"
-msgstr ""
+msgstr "在語系檔中指定自訂訊息"
 
 # File: docs/8.x/validation.md, line: 690
 # File: docs/master/validation.md, line: 689
 #. type: Plain text
 #, no-wrap
 msgid "<a name=\"custom-messages-for-specific-attributes\"></a>\n"
-msgstr ""
+msgstr "<a name=\"custom-messages-for-specific-attributes\"></a>\n"
 
 # File: docs/8.x/validation.md, line: 690
 # File: docs/master/validation.md, line: 689
 #. type: Title ####
 #, no-wrap
 msgid "Custom Messages For Specific Attributes"
-msgstr ""
+msgstr "為特定屬性指定自訂訊息"
 
 # File: docs/8.x/validation.md, line: 693
 # File: docs/master/validation.md, line: 692
 #. type: Plain text
 msgid "You may customize the error messages used for specified attribute and rule combinations within your application's validation language files. To do so, add your message customizations to the `custom` array of your application's `resources/lang/xx/validation.php` language file:"
-msgstr ""
+msgstr "我們可能會想在程式的驗證語系檔中為特定的屬性與規則組合自訂錯誤訊息。為此，請在專案的 `resources/lang/xx/validation.php` 語系檔中 `custom` 陣列內新增你的自訂訊息："
 
 # File: docs/8.x/validation.md, line: 700
 # File: docs/master/validation.md, line: 699
@@ -1869,27 +2057,32 @@ msgid "    'custom' => [\n"
 "            'max' => 'Your email address is too long!'\n"
 "        ],\n"
 "    ],\n"
-msgstr ""
+msgstr "    'custom' => [\n"
+"        'email' => [\n"
+"            'required' => 'We need to know your email address!',\n"
+"            'max' => 'Your email address is too long!'\n"
+"        ],\n"
+"    ],\n"
 
 # File: docs/8.x/validation.md, line: 702
 # File: docs/master/validation.md, line: 701
 #. type: Plain text
 #, no-wrap
 msgid "<a name=\"specifying-attribute-in-language-files\"></a>\n"
-msgstr ""
+msgstr "<a name=\"specifying-attribute-in-language-files\"></a>\n"
 
 # File: docs/8.x/validation.md, line: 702
 # File: docs/master/validation.md, line: 701
 #. type: Title ###
 #, no-wrap
 msgid "Specifying Attributes In Language Files"
-msgstr ""
+msgstr "在語系檔中指定屬性"
 
 # File: docs/8.x/validation.md, line: 705
 # File: docs/master/validation.md, line: 704
 #. type: Plain text
 msgid "Many of Laravel's built-in error messages include an `:attribute` placeholder that is replaced with the name of the field or attribute under validation. If you would like the `:attribute` portion of your validation message to be replaced with a custom value, you may specify the custom attribute name in the `attributes` array of your `resources/lang/xx/validation.php` language file:"
-msgstr ""
+msgstr "Laravel 中內建的許多錯誤訊息都包含了一個 `:attribute` 預留位置 (Placeholder)，該預留位置會被取代為被驗證的欄位名稱或屬性名稱。若想讓驗證訊息的 `:attribute` 部分被取代為自訂的值，可在 `resources/lang/xx/validation.php` 語系檔中 `attributes` 陣列內指定自訂的屬性名稱："
 
 # File: docs/8.x/validation.md, line: 709
 # File: docs/master/validation.md, line: 708
@@ -1898,27 +2091,29 @@ msgstr ""
 msgid "    'attributes' => [\n"
 "        'email' => 'email address',\n"
 "    ],\n"
-msgstr ""
+msgstr "    'attributes' => [\n"
+"        'email' => 'email address',\n"
+"    ],\n"
 
 # File: docs/8.x/validation.md, line: 711
 # File: docs/master/validation.md, line: 710
 #. type: Plain text
 #, no-wrap
 msgid "<a name=\"specifying-values-in-language-files\"></a>\n"
-msgstr ""
+msgstr "<a name=\"specifying-values-in-language-files\"></a>\n"
 
 # File: docs/8.x/validation.md, line: 711
 # File: docs/master/validation.md, line: 710
 #. type: Title ###
 #, no-wrap
 msgid "Specifying Values In Language Files"
-msgstr ""
+msgstr "在語系檔中指定值"
 
 # File: docs/8.x/validation.md, line: 714
 # File: docs/master/validation.md, line: 713
 #. type: Plain text
 msgid "Some of Laravel's built-in validation rule error messages contain a `:value` placeholder that is replaced with the current value of the request attribute. However, you may occasionally need the `:value` portion of your validation message to be replaced with a custom representation of the value. For example, consider the following rule that specifies that a credit card number is required if the `payment_type` has a value of `cc`:"
-msgstr ""
+msgstr "Laravel 中有些內建的驗證規則錯誤訊息中包含了一個 `:value` 預留位置 (Placeholder)，這個預留位置會被取代為目前 Request 中的屬性值。不過，有時候我們會像讓驗證訊息中的 `:value` 部分被取代為用於該值的自訂呈現方式。舉例來說，假設我們套用了下列規則來讓 `payment_type` 值為 `cc` 時，信用卡卡號為必填："
 
 # File: docs/8.x/validation.md, line: 718
 # File: docs/master/validation.md, line: 717
@@ -1927,20 +2122,22 @@ msgstr ""
 msgid "    Validator::make($request->all(), [\n"
 "        'credit_card_number' => 'required_if:payment_type,cc'\n"
 "    ]);\n"
-msgstr ""
+msgstr "    Validator::make($request->all(), [\n"
+"        'credit_card_number' => 'required_if:payment_type,cc'\n"
+"    ]);\n"
 
 # File: docs/8.x/validation.md, line: 720
 # File: docs/master/validation.md, line: 719
 #. type: Plain text
 msgid "If this validation rule fails, it will produce the following error message:"
-msgstr ""
+msgstr "若驗證規則執行失敗，會產生下列錯誤訊息："
 
 # File: docs/8.x/validation.md, line: 722
 # File: docs/master/validation.md, line: 721
 #. type: Plain text
 #, no-wrap
 msgid "    The credit card number field is required when payment type is cc.\n"
-msgstr ""
+msgstr "    The credit card number field is required when payment type is cc.\n"
 
 # File: docs/8.x/validation.md, line: 724
 # File: docs/master/validation.md, line: 723

@@ -1,31 +1,28 @@
-# Logging
+# 日誌 - Log
 
-- [Introduction](#introduction)
-- [Configuration](#configuration)
-    - [Available Channel Drivers](#available-channel-drivers)
-    - [Channel Prerequisites](#channel-prerequisites)
-    - [Logging Deprecation Warnings](#logging-deprecation-warnings)
-- [Building Log Stacks](#building-log-stacks)
-- [Writing Log Messages](#writing-log-messages)
-    - [Contextual Information](#contextual-information)
-    - [Writing To Specific Channels](#writing-to-specific-channels)
-- [Monolog Channel Customization](#monolog-channel-customization)
-    - [Customizing Monolog For Channels](#customizing-monolog-for-channels)
-    - [Creating Monolog Handler Channels](#creating-monolog-handler-channels)
-    - [Creating Custom Channels Via Factories](#creating-custom-channels-via-factories)
+- [簡介](#introduction)
+- [組態設定](#configuration)
+    - [可用的 Channel Driver](#available-channel-drivers)
+    - [Channel 的前置需求](#channel-prerequisites)
+    - [Log Deprecation Warning](#logging-deprecation-warnings)
+- [建立 Log Stacks](#building-log-stacks)
+- [撰寫 Log 訊息](#writing-log-messages)
+    - [上下文相關的資訊](#contextual-information)
+    - [寫到特定 Channel](#writing-to-specific-channels)
+- [自訂 Monolog Channel](#monolog-channel-customization)
+    - [為 Channel 自訂 Monolog](#customizing-monolog-for-channels)
+    - [建立 Monolog 的 Handler Channel](#creating-monolog-handler-channels)
+    - [使用 Factory 來建立自訂的 Channel](#creating-custom-channels-via-factories)
 
 <a name="introduction"></a>
-## Introduction
+## 簡介
 
-To help you learn more about what's happening within your application,
-Laravel provides robust logging services that allow you to log messages to
-files, the system error log, and even to Slack to notify your entire team.
+為了協助你瞭解程式中發生的大小事，Laravel 提供了強健的 Log 服務，能讓你將訊息紀錄到檔案、系統^[錯誤日誌](Error
+Log)、甚至是紀錄到 Slack 中來通知整個團隊。
 
-Laravel logging is based on "channels". Each channel represents a specific
-way of writing log information. For example, the `single` channel writes log
-files to a single log file, while the `slack` channel sends log messages to
-Slack. Log messages may be written to multiple channels based on their
-severity.
+Laravel 的 Log 紀錄是基於「^[Channel](頻道)」的。每個 Channel 都代表了一種特定的 Log
+資訊寫入方法。舉例來說，`single` Channel 將 Log 檔寫道單一 Log 檔上，而 `slack` Channel 則將 Log
+訊息傳送到 Slack。也可以依據 Log 的嚴重性來將 Log 訊息寫到多個 Channel。
 
 Under the hood, Laravel utilizes the
 [Monolog](https://github.com/Seldaek/monolog) library, which provides

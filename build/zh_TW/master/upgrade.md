@@ -18,7 +18,6 @@
 
 <div class="content-list" markdown="1">
 
-<div class="content-list" markdown="1">
 - [多對多關聯的 `firstOrNew`, `firstOrCreate`, 與 `updateOrCreate`
 方法](#belongs-to-many-first-or-new)
 - [自訂型別轉換與 `null`](#custom-casts-and-null)
@@ -30,7 +29,6 @@
 - [`password` 規則](#the-password-rule)
 - [`when` 與 `unless` 方法](#when-and-unless-methods)
 - [未認證的陣列索引鍵](#unvalidated-array-keys)
-</div>
 
 </div>
 

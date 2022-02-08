@@ -1104,11 +1104,11 @@ E-Mail位址。預設情況下，使用 `RFCValidation` Validator，不過，也
 上方的例子會套用 `RFCValidation` 與 `DNSCheckValidation` 驗證。此處列出了所有可套用的驗證風格：
 
 <div class="content-list" markdown="1">
-- `rfc`: `RFCValidation`
-- `strict`: `NoRFCWarningsValidation`
-- `dns`: `DNSCheckValidation`
-- `spoof`: `SpoofCheckValidation`
-- `filter`: `FilterEmailValidation`
+
+- `rfc`: `RFCValidation` - `strict`: `NoRFCWarningsValidation` - `dns`:
+`DNSCheckValidation` - `spoof`: `SpoofCheckValidation` - `filter`:
+`FilterEmailValidation`
+
 </div>
 
 `filter` Validator 使用 PHP 的 `filter_var` 函式，是隨 Laravel 提供的 Validator。在

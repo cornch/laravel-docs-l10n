@@ -46,6 +46,7 @@
 中，要管理並處理這些關聯非常簡單，並支援多種常見的關聯：
 
 <div class="content-list" markdown="1">
+
 - [一對一](#one-to-one)
 - [一對多](#one-to-many)
 - [多對一](#many-to-many)
@@ -54,6 +55,7 @@
 - [一對一 (多型)](#one-to-one-polymorphic-relations)
 - [一對多 (多型)](#one-to-many-polymorphic-relations)
 - [多對多 (多型)](#many-to-many-polymorphic-relations)
+
 </div>
 
 <a name="defining-relationships"></a>

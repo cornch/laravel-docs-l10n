@@ -26,7 +26,7 @@
 <a name="introduction"></a>
 ## 簡介
 
-除了提供內建的[驗證](/docs/{{version}}/authentication)服務，Laravel
+除了提供內建的[認證](/docs/{{version}}/authentication)服務，Laravel
 也提供了一種能依給定資源來授權使用者的簡單功能。舉例來說，雖然使用者已登入，但這個使用者可能未被授權可更新或刪除網站所管理的特定的 Eloquent
 Model 或資料庫記錄。Laravel 的授權功能提供了一種簡單且有條理的方法來管理這些種類的授權。
 
@@ -160,7 +160,7 @@ Gate 是簡單的閉包，用來判斷使用者是否已被授權執行特定的
 
 用於授權權限的 Gate 方法 (`allows`, `denies`, `check`, `any`, `none`, `authorize`,
 `can`, `cannot`) 與授權的 [Blade 指示詞](#via-blade-templates) (`@can`, `@cannot`,
-`@canany`) 都接受一個陣列作為其第二引數。這些陣列的元素會被作為引數傳給 Gate 閉包，並且可在進行權限驗證時提供額外的上下文：
+`@canany`) 都接受一個陣列作為其第二引數。這些陣列的元素會被作為引數傳給 Gate 閉包，並且可在進行權限認證時提供額外的上下文：
 
     use App\Models\Category;
     use App\Models\User;
@@ -350,7 +350,7 @@ Policy Discovery 閉包。通常來說，這個方法應該在專案的 `AuthSer
 方法，用來判斷給定的 `App\Models\User` 可否更新給定的 `App\Models\Post` 實體。
 
 `update` 方法會在其引數內收到 `User` 與 `Post` 實體，並且應回傳 `true` 或 `false`
-來判斷該使用者是否有權限更新給定的 `Post`。因此，在這個例子中，我們會驗證使用者的 `id` 是否與貼文的 `user_id` 相符：
+來判斷該使用者是否有權限更新給定的 `Post`。因此，在這個例子中，我們會認證使用者的 `id` 是否與貼文的 `user_id` 相符：
 
     <?php
 

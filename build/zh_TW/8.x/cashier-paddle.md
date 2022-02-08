@@ -1287,11 +1287,13 @@ models that were used to process the webhook such as the billable model, the
 subscription, or the receipt:
 
 <div class="content-list" markdown="1">
-- `Laravel\Paddle\Events\PaymentSucceeded`
-- `Laravel\Paddle\Events\SubscriptionPaymentSucceeded`
-- `Laravel\Paddle\Events\SubscriptionCreated`
-- `Laravel\Paddle\Events\SubscriptionUpdated`
-- `Laravel\Paddle\Events\SubscriptionCancelled`
+
+- `Laravel\Paddle\Events\PaymentSucceeded` -
+`Laravel\Paddle\Events\SubscriptionPaymentSucceeded` -
+`Laravel\Paddle\Events\SubscriptionCreated` -
+`Laravel\Paddle\Events\SubscriptionUpdated` -
+`Laravel\Paddle\Events\SubscriptionCancelled`
+
 </div>
 
 You can also override the default, built-in webhook route by defining the

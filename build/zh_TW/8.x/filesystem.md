@@ -619,11 +619,11 @@ files. You can modify the permissions mappings in your application's
         'root' => storage_path('app'),
         'permissions' => [
             'file' => [
-                'public' => 0664,
+                'public' => 0644,
                 'private' => 0600,
             ],
             'dir' => [
-                'public' => 0775,
+                'public' => 0755,
                 'private' => 0700,
             ],
         ],

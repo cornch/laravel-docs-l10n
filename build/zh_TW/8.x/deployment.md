@@ -23,16 +23,18 @@
 Laravel Framework 有一些系統需求。請確保網頁伺服器有達到下列最小 PHP 版本需求與擴充套件需求：
 
 <div class="content-list" markdown="1">
+
 - PHP >= 7.3
-- BCMath PHP Extension
-- Ctype PHP Extension
-- Fileinfo PHP Extension
-- JSON PHP Extension
-- Mbstring PHP Extension
-- OpenSSL PHP Extension
-- PDO PHP Extension
-- Tokenizer PHP Extension
-- XML PHP Extension
+- BCMath PHP 擴充套件
+- Ctype PHP 擴充套件
+- Fileinfo PHP 擴充套件
+- JSON PHP 擴充套件
+- Mbstring PHP 擴充套件
+- OpenSSL PHP 擴充套件
+- PDO PHP 擴充套件
+- Tokenizer PHP 擴充套件
+- XML PHP 擴充套件
+
 </div>
 
 <a name="server-configuration"></a>

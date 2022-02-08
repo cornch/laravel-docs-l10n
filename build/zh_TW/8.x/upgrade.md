@@ -6,23 +6,27 @@
 ## 高度影響的更改
 
 <div class="content-list" markdown="1">
-- [Model Factory](#model-factories)
-- [佇列的 `retryAfter` 方法](#queue-retry-after-method)
-- [佇列的 `timeoutAt` 書行](#queue-timeout-at-property)
-- [佇列的 `allOnQueue` 與 `allOnConnection`](#queue-allOnQueue-allOnConnection)
-- [分頁預設](#pagination-defaults)
-- [Seeder 與 Factory 的 Namespace](#seeder-factory-namespaces)
+
+- [Model Factories](#model-factories)  - [Queue `retryAfter`
+Method](#queue-retry-after-method)  - [Queue `timeoutAt`
+Property](#queue-timeout-at-property)  - [Queue `allOnQueue` and
+`allOnConnection`](#queue-allOnQueue-allOnConnection)  - [Pagination
+Defaults](#pagination-defaults)  - [Seeder & Factory
+Namespaces](#seeder-factory-namespaces)
+
 </div>
 
 <a name="medium-impact-changes"></a>
 ## 中度影響的更改
 
 <div class="content-list" markdown="1">
-- [最低需求為 PHP 7.3.0](#php-7.3.0-required)
-- [在失敗任務的資料表上支援批次](#failed-jobs-table-batch-support)
-- [維護模式更新](#maintenance-mode-updates)
-- [`php artisan down --message` 選項](#artisan-down-message)
-- [`assertExactJson` 方法](#assert-exact-json-method)
+
+- [PHP 7.3.0 Required](#php-7.3.0-required)  - [Failed Jobs Table Batch
+Support](#failed-jobs-table-batch-support)  - [Maintenance Mode
+Updates](#maintenance-mode-updates)  - [The `php artisan down --message`
+Option](#artisan-down-message)  - [The `assertExactJson`
+Method](#assert-exact-json-method)
+
 </div>
 
 <a name="upgrade-8.0"></a>
@@ -46,12 +50,11 @@
 Update the following dependencies in your `composer.json` file:
 
 <div class="content-list" markdown="1">
-- `guzzlehttp/guzzle` to `^7.0.1`
-- `facade/ignition` to `^2.3.6`
-- `laravel/framework` to `^8.0`
-- `laravel/ui` to `^3.0`
-- `nunomaduro/collision` to `^5.0`
-- `phpunit/phpunit` to `^9.0`
+
+- `guzzlehttp/guzzle` to `^7.0.1` - `facade/ignition` to `^2.3.6` -
+`laravel/framework` to `^8.0` - `laravel/ui` to `^3.0` -
+`nunomaduro/collision` to `^5.0` - `phpunit/phpunit` to `^9.0`
+
 </div>
 
 The following first-party packages have new major releases to support
@@ -59,10 +62,15 @@ Laravel 8. If applicable, you should read their individual upgrade guides
 before upgrading:
 
 <div class="content-list" markdown="1">
+
 - [Horizon v5.0](https://github.com/laravel/horizon/blob/master/UPGRADE.md)
-- [Passport v10.0](https://github.com/laravel/passport/blob/master/UPGRADE.md)
-- [Socialite v5.0](https://github.com/laravel/socialite/blob/master/UPGRADE.md)
-- [Telescope v4.0](https://github.com/laravel/telescope/blob/master/UPGRADE.md)
+- [Passport
+v10.0](https://github.com/laravel/passport/blob/master/UPGRADE.md)  -
+[Socialite
+v5.0](https://github.com/laravel/socialite/blob/master/UPGRADE.md)  -
+[Telescope
+v4.0](https://github.com/laravel/telescope/blob/master/UPGRADE.md)
+
 </div>
 
 In addition, the Laravel installer has been updated to support `composer
@@ -95,7 +103,7 @@ collection items that have a value of `null`:
     isset($collection[0]);
 
 <a name="database"></a>
-### Database
+### 資料庫
 
 <a name="seeder-factory-namespaces"></a>
 #### Seeder & Factory Namespaces
@@ -296,7 +304,7 @@ the following method call to the `boot` method of your application's
     Paginator::useBootstrap();
 
 <a name="queue"></a>
-### Queue
+### 佇列
 
 <a name="queue-retry-after-method"></a>
 #### The `retryAfter` Method
@@ -491,7 +499,7 @@ update your implementation accordingly:
     public function pull($key, $default = null);
 
 <a name="testing"></a>
-### Testing
+### 測試
 
 <a name="decode-response-json-method"></a>
 #### The `decodeResponseJson` Method
@@ -513,7 +521,7 @@ array without requiring numerically keyed arrays to have the same order, you
 may use the `assertSimilarJson` method instead.
 
 <a name="validation"></a>
-### Validation
+### 表單驗證
 
 <a name="database-rule-connections"></a>
 ### Database Rule Connections

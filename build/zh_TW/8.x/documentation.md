@@ -24,7 +24,7 @@
     - [Blade 樣板](/docs/{{version}}/blade)
     - [URL 的產生](/docs/{{version}}/urls)
     - [工作階段 - Session](/docs/{{version}}/session)
-    - [資料驗證 - Validation](/docs/{{version}}/validation)
+    - [資料認證 - Validation](/docs/{{version}}/validation)
     - [錯誤處理](/docs/{{version}}/errors)
     - [日誌](/docs/{{version}}/logging)
 - ## 深入瞭解
@@ -46,9 +46,9 @@
     - [頻率限制](/docs/{{version}}/rate-limiting)
     - [任務排程](/docs/{{version}}/scheduling)
 - ## 安全性
-    - [驗證](/docs/{{version}}/authentication)
+    - [認證](/docs/{{version}}/authentication)
     - [授權](/docs/{{version}}/authorization)
-    - [Email 驗證](/docs/{{version}}/verification)
+    - [Email 認證](/docs/{{version}}/verification)
     - [加密](/docs/{{version}}/encryption)
     - [雜湊](/docs/{{version}}/hashing)
     - [密碼重設](/docs/{{version}}/passwords)

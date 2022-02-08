@@ -501,8 +501,8 @@ URI configured via the `home` configuration option within your application's
 HTTP response will be returned.
 
 If the request was not successful, the user will be redirected back to the
-login screen and the validation errors will be available to you via the
-shared `$errors` [Blade template
+two factor challenge screen and the validation errors will be available to
+you via the shared `$errors` [Blade template
 variable](/docs/{{version}}/validation#quick-displaying-the-validation-errors).
 Or, in the case of an XHR request, the validation errors will be returned
 with a 422 HTTP response.

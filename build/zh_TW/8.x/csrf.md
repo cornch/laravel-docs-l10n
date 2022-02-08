@@ -38,7 +38,7 @@ CSRF (跨網站要求偽造，Cross-site Request Forgery)
 ## 防止 CSRF 請求
 
 Laravel 會自動為每個有效的[使用者 Session](/docs/{{version}}/session) 產生一個由網站管理的 CSRF「權杖
-(Token)」。該權杖會用來驗證正在登入的使用者是否真的是實際發起該請求的使用者。由於該權杖儲存於使用者 Session 內，且會在每次
+(Token)」。該權杖會用來認證正在登入的使用者是否真的是實際發起該請求的使用者。由於該權杖儲存於使用者 Session 內，且會在每次
 Session 重新產生的時候更改，因此惡意網站無法存取該權杖。
 
 可以通過請求的 Session 或是 `csrf_token` 輔助函式存取目前 Session 的 CSRF 權杖：
@@ -54,7 +54,7 @@ Session 重新產生的時候更改，因此惡意網站無法存取該權杖。
     });
 
 定義 "POST", "PUT", "PATCH", 或是 "DELETE" 的 HTML 表單時，應在表單內包含一個隱藏的 CSRF `_token`
-欄位以讓 CSRF 保護 Middleware 驗證該請求。為了方便起見，可以使用 `@csrf` Blade 指示詞來產生這個隱藏的權杖輸入欄位：
+欄位以讓 CSRF 保護 Middleware 認證該請求。為了方便起見，可以使用 `@csrf` Blade 指示詞來產生這個隱藏的權杖輸入欄位：
 
     <form method="POST" action="/profile">
         @csrf
@@ -64,14 +64,14 @@ Session 重新產生的時候更改，因此惡意網站無法存取該權杖。
     </form>
 
 預設包含在 `web` Middleware 群組內的 `App\Http\Middleware\VerifyCsrfToken`
-[Middleware](/docs/{{version}}/middleware) 會自動驗證請求內的這個權杖是否符合儲存在 Session
+[Middleware](/docs/{{version}}/middleware) 會自動認證請求內的這個權杖是否符合儲存在 Session
 內的權杖。若這兩個權杖相符，則我們就知道是登入使用者執行該請求的。
 
 <a name="csrf-tokens-and-spas"></a>
 ### CSRF 權杖與 SPA
 
 若正在建立使用 Laravel 作為 API 後端的 SPA，則可以考慮參考 [Laravel Sanctum
-說明文件](/docs/{{version}}/sanctum)瞭解有關使用 API 驗證與保護 CSRF 弱點的資訊。
+說明文件](/docs/{{version}}/sanctum)瞭解有關使用 API 認證與保護 CSRF 弱點的資訊。
 
 <a name="csrf-excluding-uris"></a>
 ### 自 CSRF 保護內排除 URI

@@ -14,8 +14,8 @@
 ## 簡介
 
 在開始新的 Laravel 專案時，Laravel 已經先幫你設定好錯誤與 ^[Exception
-Handler(例外處理常式)。在你的專案中^[擲回](Throw)的所有 Exception 都會由 `App\Exceptions\Handler`
-負責紀錄 ^[Log](日誌) 並轉譯給使用者。我們會在這篇說明文件中深入瞭解這個類別。
+Handler](例外處理常式)。在你的專案中^[擲回](Throw)的所有 Exception 都會由
+`App\Exceptions\Handler` 負責紀錄 ^[Log](日誌) 並轉譯給使用者。我們會在這篇說明文件中深入瞭解這個類別。
 
 <a name="configuration"></a>
 ## 組態設定

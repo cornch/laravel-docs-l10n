@@ -14,14 +14,18 @@
 
 幾乎所有的現代網站都會與資料庫互動。比起直接使用原始 SQL，Laravel 通過[流暢的 Query
 Builder](/docs/{{version}}/queries)、[Eloquent
-ORM](/docs/{{version}}/eloquent) 等功能大大簡化了與多種支援資料庫互動的過程。目前，Laravel
-對四種資料庫提供了第一方支援：
+ORM](/docs/{{version}}/eloquent) 等功能大大簡化了與多種支援資料庫互動的過程。目前，Laravel 對 5
+種資料庫提供了第一方支援：
 
 <div class="content-list" markdown="1">
+
+- MariaDB 10.2+ ([版本策略](https://mariadb.org/about/#maintenance-policy))
 - MySQL 5.7+ ([版本策略](https://en.wikipedia.org/wiki/MySQL#Release_history))
 - PostgreSQL 9.6+ ([版本策略](https://www.postgresql.org/support/versioning/))
 - SQLite 3.8.8+
-- SQL Server 2017+ ([版本策略](https://docs.microsoft.com/en-us/lifecycle/products/?products=sql-server))
+- SQL Server 2017+
+([版本策略](https://docs.microsoft.com/en-us/lifecycle/products/?products=sql-server))
+
 </div>
 
 <a name="configuration"></a>

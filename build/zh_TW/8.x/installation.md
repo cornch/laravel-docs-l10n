@@ -152,7 +152,8 @@ Code](https://code.visualstudio.com)
 <a name="getting-started-on-linux"></a>
 ### 使用 Linux 入門
 
-若要 Linux 上進行開發，且已安裝了 [Docker](https://www.docker.com)，則可以使用一個簡單的終端機指令來建立新的
+若要 Linux 上進行開發，且已安裝了[Docker
+Compose](https://docs.docker.com/compose/install)，則可以使用一個簡單的終端機指令來建立新的
 Laravel 專案。舉例來說，要在一個名為「example-app」的目錄內建立新的 Laravel 專案，可以在終端機內執行下列指令：
 
 ```nothing
@@ -221,9 +222,12 @@ php artisan serve
 可執行檔。這個資料夾在不同作業系統上會在不同位置。不過，常見的位置如下：
 
 <div class="content-list" markdown="1">
+
 - macOS: `$HOME/.composer/vendor/bin`
 - Windows: `%USERPROFILE%\AppData\Roaming\Composer\vendor\bin`
-- GNU / Linux 發行版: `$HOME/.config/composer/vendor/bin` 或 `$HOME/.composer/vendor/bin`
+- GNU / Linux 發行版: `$HOME/.config/composer/vendor/bin` 或
+`$HOME/.composer/vendor/bin`
+
 </div>
 
 為了方便起見，Laravel 安裝程式也可以幫你的新專案建立 Git 存放庫。要指定 Laravel 安裝程式建立 Git 存放庫，請在建立新專案時傳入
@@ -291,11 +295,13 @@ Laravel 只能架設在「網頁目錄」的根目錄下。請不要嘗試將 La
 是怎麼運作的：
 
 <div class="content-list" markdown="1">
-- [請求的生命週期](/docs/{{version}}/lifecycle)
+
+- [Request 的生命週期](/docs/{{version}}/lifecycle)
 - [組態設定](/docs/{{version}}/configuration)
 - [資料夾架構](/docs/{{version}}/structure)
 - [Service Container](/docs/{{version}}/container)
 - [Facade](/docs/{{version}}/facades)
+
 </div>
 
 你想要如何使用 Laravel 也會影響學習的下一步。使用 Laravel 的方法不只一種，我們稍後也會來探索一下幾種使用 Laravel 的主要方法。
@@ -325,7 +331,7 @@ Application) 混合技術。這種使用 Laravel 的方法是最常見的。
 
 也可以將 Laravel 作為 API 後端來提供給 JavaScript SPA 或手機 App 使用。舉例來說，你可以使用 Laravel 作為
 [Next.js](https://nextjs.org) App 的 API 後端來使用。在這種情況下，你可以使用 Laravel
-來提供[登入驗證](/docs/{{version}}/sanctum)，並為 App 提供資料的儲存、取得功能，同時也能使用到 Laravel
+來提供[登入認證](/docs/{{version}}/sanctum)，並為 App 提供資料的儲存、取得功能，同時也能使用到 Laravel
 的一些如佇列、E-Mail、通知⋯⋯等強大的功能。
 
 若你打算這樣使用 Laravel，則可以看看有關[路由](/docs/{{version}}/routing)、[Laravel

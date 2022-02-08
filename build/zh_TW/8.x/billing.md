@@ -732,6 +732,11 @@ To delete a payment method, you may call the `delete` method on the
 
     $paymentMethod->delete();
 
+The `deletePaymentMethod` method will delete a specific payment method from
+the billable model:
+
+    $user->deletePaymentMethod('pm_visa');
+
 The `deletePaymentMethods` method will delete all of the payment method
 information for the billable model:
 
@@ -2061,6 +2066,44 @@ argument. This filename will automatically be suffixed with `.pdf`:
 
     return $request->user()->downloadInvoice($invoiceId, [], 'my-invoice');
 
+<a name="custom-invoice-render"></a>
+#### Custom Invoice Renderer
+
+Cashier also makes it possible to use a custom invoice renderer. By default,
+Cashier uses the `DompdfInvoiceRenderer` implementation, which utilizes the
+[dompdf](https://github.com/dompdf/dompdf) PHP library to generate Cashier's
+invoices. However, you may use any renderer you wish by implementing the
+`Laravel\Cashier\Contracts\InvoiceRenderer` interface. For example, you may
+wish to render an invoice PDF using an API call to a third-party PDF
+rendering service:
+
+    use Illuminate\Support\Facades\Http;
+    use Laravel\Cashier\Contracts\InvoiceRenderer;
+    use Laravel\Cashier\Invoice;
+
+    class ApiInvoiceRenderer implements InvoiceRenderer
+    {
+        /**
+         * Render the given invoice and return the raw PDF bytes.
+         *
+         * @param  \Laravel\Cashier\Invoice. $invoice
+         * @param  array  $data
+         * @param  array  $options
+         * @return string
+         */
+        public function render(Invoice $invoice, array $data = [], array $options = []): string
+        {
+            $html = $invoice->view($data)->render();
+
+            return Http::get('https://example.com/html-to-pdf', ['html' => $html])->get()->body();
+        }
+    }
+
+Once you have implemented the invoice renderer contract, you should update
+the `cashier.invoices.renderer` configuration value in your application's
+`config/cashier.php` configuration file. This configuration value should be
+set to the class name of your custom renderer implementation.
+
 <a name="checkout"></a>
 ## Checkout
 
@@ -2285,14 +2328,10 @@ parameter specified above. Upon redirection, `message` (string) and
 payment page currently supports the following payment method types:
 
 <div class="content-list" markdown="1">
-- Credit Cards
-- Alipay
-- Bancontact
-- BECS Direct Debit
-- EPS
-- Giropay
-- iDEAL
-- SEPA Direct Debit
+
+- Credit Cards - Alipay - Bancontact - BECS Direct Debit - EPS - Giropay -
+iDEAL - SEPA Direct Debit
+
 </div>
 
 Alternatively, you could allow Stripe to handle the payment confirmation for

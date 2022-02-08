@@ -664,7 +664,7 @@ Collection 中有出現，但給定的 Collection 中未出現的值：
 <a name="method-every"></a>
 #### `every()` {.collection-method}
 
-`every` 方法可以用來驗證某個 Collection 中的所有元素是否都通過了給定的布林測試：
+`every` 方法可以用來認證某個 Collection 中的所有元素是否都通過了給定的布林測試：
 
     collect([1, 2, 3, 4])->every(function ($value, $key) {
         return $value > 2;

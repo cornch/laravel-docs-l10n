@@ -21,7 +21,7 @@ View，會幫你自動進行 Scaffold。
 ## Laravel Breeze
 
 [Laravel Breeze](https://github.com/laravel/breeze) 是一個簡單且最小化實作出所有 Laravel
-[驗證功能](/docs/{{version}}/authentication)的套件，包含登入、註冊、密碼重設、電子郵件驗證、以及密碼確認。Laravel
+[認證功能](/docs/{{version}}/authentication)的套件，包含登入、註冊、密碼重設、電子郵件認證、以及密碼確認。Laravel
 Breeze 預設的 View 層是通過簡單的 [Blade 樣板](/docs/{{version}}/blade) 搭配 [Tailwind
 CSS](https://tailwindcss.com) 提供樣式組合而成的。
 
@@ -89,7 +89,7 @@ php artisan migrate
 
 Breeze 也可以用來 Scaffold 登入 API，以用於讓如
 [Next](https://nextjs.org)、[Nuxt](https://nuxtjs.org)、或其他框架驅動的現代 JavaScript
-網站進行登入驗證。若要開始使用登入 API，請在執行 `breeze:install` Artisan 指令時指定 `api` 作為你想要的
+網站進行登入認證。若要開始使用登入 API，請在執行 `breeze:install` Artisan 指令時指定 `api` 作為你想要的
 Stack：
 
 ```nothing
@@ -116,7 +116,7 @@ php artisan migrate
 Breeze 的使用方式，再來學習 Laravel Jetstream。**
 
 Jetstream 為 Laravel 提供了一個設計的很好看的網站 Scaffolding，並包含了登入、註冊、E-Mail
-驗證、二步驟驗證、工作階段管理、通過 Laravel Sanctum 提供的 API 支援、以及一個可選的團隊管理功能。Jetstream 使用
+認證、二步驟認證、工作階段管理、通過 Laravel Sanctum 提供的 API 支援、以及一個可選的團隊管理功能。Jetstream 使用
 [Tailwind CSS](https://tailwindcss.com) 設計，並提供了
 [Livewire](https://laravel-livewire.com) 與
 [Inertia.js](https://inertiajs.com) 作為前端 Scaffolding 的選項。

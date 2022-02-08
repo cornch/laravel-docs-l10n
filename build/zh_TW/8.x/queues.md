@@ -178,9 +178,10 @@ The following dependencies are needed for the listed queue drivers. These
 dependencies may be installed via the Composer package manager:
 
 <div class="content-list" markdown="1">
-- Amazon SQS: `aws/aws-sdk-php ~3.0`
-- Beanstalkd: `pda/pheanstalk ~4.0`
-- Redis: `predis/predis ~1.0` or phpredis PHP extension
+
+- Amazon SQS: `aws/aws-sdk-php ~3.0` - Beanstalkd: `pda/pheanstalk ~4.0` -
+Redis: `predis/predis ~1.0` or phpredis PHP extension
+
 </div>
 
 <a name="creating-jobs"></a>
@@ -295,7 +296,7 @@ method from the `boot` method of your `App\Providers\AppServiceProvider`
 > {note} Binary data, such as raw image contents, should be passed through the `base64_encode` function before being passed to a queued job. Otherwise, the job may not properly serialize to JSON when being placed on the queue.
 
 <a name="handling-relationships"></a>
-#### Handling Relationships
+#### Queued Relationships
 
 Because loaded relationships also get serialized, the serialized job string
 can sometimes become quite large. To prevent relations from being
@@ -313,6 +314,14 @@ without its loaded relationships:
     {
         $this->podcast = $podcast->withoutRelations();
     }
+
+Furthermore, when a job is deserialized and model relationships are
+re-retrieved from the database, they will be retrieved in their
+entirety. Any previous relationship constraints that were applied before the
+model was serialized during the job queueing process will not be applied
+when the job is deserialized. Therefore, if you wish to work with a subset
+of a given relationship, you should re-constrain that relationship within
+your queued job.
 
 <a name="unique-jobs"></a>
 ### Unique Jobs

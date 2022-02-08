@@ -45,28 +45,20 @@ Out of the box, Valet support includes, but is not limited to:
 </style>
 
 <div id="valet-support" markdown="1">
-- [Laravel](https://laravel.com)
-- [Lumen](https://lumen.laravel.com)
-- [Bedrock](https://roots.io/bedrock/)
-- [CakePHP 3](https://cakephp.org)
-- [Concrete5](https://www.concrete5.org/)
-- [Contao](https://contao.org/en/)
-- [Craft](https://craftcms.com)
-- [Drupal](https://www.drupal.org/)
-- [ExpressionEngine](https://www.expressionengine.com/)
-- [Jigsaw](https://jigsaw.tighten.co)
-- [Joomla](https://www.joomla.org/)
-- [Katana](https://github.com/themsaid/katana)
-- [Kirby](https://getkirby.com/)
-- [Magento](https://magento.com/)
-- [OctoberCMS](https://octobercms.com/)
-- [Sculpin](https://sculpin.io/)
-- [Slim](https://www.slimframework.com)
-- [Statamic](https://statamic.com)
-- Static HTML
-- [Symfony](https://symfony.com)
-- [WordPress](https://wordpress.org)
-- [Zend](https://framework.zend.com)
+
+- [Laravel](https://laravel.com)  - [Lumen](https://lumen.laravel.com)  -
+[Bedrock](https://roots.io/bedrock/)  - [CakePHP 3](https://cakephp.org)  -
+[Concrete5](https://www.concrete5.org/)  - [Contao](https://contao.org/en/)
+- [Craft](https://craftcms.com)  - [Drupal](https://www.drupal.org/)  -
+[ExpressionEngine](https://www.expressionengine.com/)  -
+[Jigsaw](https://jigsaw.tighten.co)  - [Joomla](https://www.joomla.org/)  -
+[Katana](https://github.com/themsaid/katana)  -
+[Kirby](https://getkirby.com/)  - [Magento](https://magento.com/)  -
+[OctoberCMS](https://octobercms.com/)  - [Sculpin](https://sculpin.io/)  -
+[Slim](https://www.slimframework.com)  - [Statamic](https://statamic.com)  -
+Static HTML - [Symfony](https://symfony.com)  -
+[WordPress](https://wordpress.org)  - [Zend](https://framework.zend.com)
+
 </div>
 
 However, you may extend Valet with your own [custom
@@ -256,7 +248,10 @@ with your team:
 
     valet share
 
-To stop sharing your site, you may press `Control + C`.
+To stop sharing your site, you may press `Control + C`. Sharing your site
+using Ngrok requires you to [create an Ngrok
+account](https://dashboard.ngrok.com/signup) and [setup an authentication
+token](https://dashboard.ngrok.com/get-started/your-authtoken).
 
 > {tip} You may pass additional Ngrok parameters to the share command, such as `valet share --region=eu`. For more information, consult the [ngrok documentation](https://ngrok.com/docs).
 

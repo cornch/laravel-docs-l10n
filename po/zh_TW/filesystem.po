@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: laravel-docs\n"
 "POT-Creation-Date: 2022-02-08 06:32+0000\n"
-"PO-Revision-Date: 2022-02-08 06:38\n"
+"PO-Revision-Date: 2022-02-08 10:47\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
@@ -40,14 +40,14 @@ msgstr ""
 #. type: Title #
 #, no-wrap
 msgid "File Storage"
-msgstr ""
+msgstr "檔案存放空間"
 
 # File: docs/8.x/filesystem.md, line: 22
 # File: docs/9.x/filesystem.md, line: 21
 # File: docs/master/filesystem.md, line: 21
 #. type: Bullet: '- '
 msgid "[Introduction](#introduction)"
-msgstr ""
+msgstr "[簡介](#introduction)"
 
 # File: docs/8.x/filesystem.md, line: 22
 #. type: Plain text
@@ -70,7 +70,24 @@ msgid "- [Configuration](#configuration)\n"
 "- [Deleting Files](#deleting-files)\n"
 "- [Directories](#directories)\n"
 "- [Custom Filesystems](#custom-filesystems)\n"
-msgstr ""
+msgstr "- [設定](#configuration)\n"
+"    - [「Local」Driver](#the-local-driver)\n"
+"    - [「Public」Disk](#the-public-disk)\n"
+"    - [Driver 的前置要求](#driver-prerequisites)\n"
+"    - [相容於 Amazon S3 的檔案系統](#amazon-s3-compatible-filesystems)\n"
+"    - [快取](#caching)\n"
+"- [取得 Disk 實體](#obtaining-disk-instances)\n"
+"    - [隨需提供的 Disks](#on-demand-disks)\n"
+"- [取得檔案](#retrieving-files)\n"
+"    - [下載檔案](#downloading-files)\n"
+"    - [檔案 URL](#file-urls)\n"
+"    - [檔案的詮釋資料](#file-metadata)\n"
+"- [保存檔案](#storing-files)\n"
+"    - [檔案上傳](#file-uploads)\n"
+"    - [檔案的可見度](#file-visibility)\n"
+"- [刪除檔案](#deleting-files)\n"
+"- [目錄](#directories)\n"
+"- [自訂檔案系統](#custom-filesystems)\n"
 
 # File: docs/8.x/filesystem.md, line: 24
 # File: docs/9.x/filesystem.md, line: 23
@@ -78,7 +95,7 @@ msgstr ""
 #. type: Plain text
 #, no-wrap
 msgid "<a name=\"introduction\"></a>\n"
-msgstr ""
+msgstr "<a name=\"introduction\"></a>\n"
 
 # File: docs/8.x/filesystem.md, line: 24
 # File: docs/9.x/filesystem.md, line: 23
@@ -86,14 +103,14 @@ msgstr ""
 #. type: Title ##
 #, no-wrap
 msgid "Introduction"
-msgstr ""
+msgstr "簡介"
 
 # File: docs/8.x/filesystem.md, line: 27
 # File: docs/9.x/filesystem.md, line: 26
 # File: docs/master/filesystem.md, line: 26
 #. type: Plain text
 msgid "Laravel provides a powerful filesystem abstraction thanks to the wonderful [Flysystem](https://github.com/thephpleague/flysystem) PHP package by Frank de Jonge. The Laravel Flysystem integration provides simple drivers for working with local filesystems, SFTP, and Amazon S3. Even better, it's amazingly simple to switch between these storage options between your local development machine and production server as the API remains the same for each system."
-msgstr ""
+msgstr "多虧了 [Flysystem](https://github.com/thephpleague/flysystem)，Laravel 提供了強大的檔案系統抽象介面。Flysystem 是 Frank de Jonge 提供的一個 PHP 套件。Laravel 整合 Flysystem 來提供多個簡單的 Driver，可處理本機檔案系統、SFTP、Amazon S3 等。甚至，在本機開發環境與正式伺服器間交換使用各個不同的儲存空間非常地簡單，且每個儲存系統都有相同的 API。"
 
 # File: docs/8.x/filesystem.md, line: 29
 # File: docs/9.x/filesystem.md, line: 28
@@ -101,7 +118,7 @@ msgstr ""
 #. type: Plain text
 #, no-wrap
 msgid "<a name=\"configuration\"></a>\n"
-msgstr ""
+msgstr "<a name=\"configuration\"></a>\n"
 
 # File: docs/8.x/filesystem.md, line: 29
 # File: docs/9.x/filesystem.md, line: 28
@@ -109,21 +126,21 @@ msgstr ""
 #. type: Title ##
 #, no-wrap
 msgid "Configuration"
-msgstr ""
+msgstr "設定"
 
 # File: docs/8.x/filesystem.md, line: 32
 # File: docs/9.x/filesystem.md, line: 31
 # File: docs/master/filesystem.md, line: 31
 #. type: Plain text
 msgid "Laravel's filesystem configuration file is located at `config/filesystems.php`. Within this file, you may configure all of your filesystem \"disks\". Each disk represents a particular storage driver and storage location. Example configurations for each supported driver are included in the configuration file so you can modify the configuration to reflect your storage preferences and credentials."
-msgstr ""
+msgstr "Laravel 的檔案系統設定檔位在 `config/filesystems.php`。在這個檔案中，我們可以設定所有的檔案系統「^[Disk](磁碟)」。各個 Disk 都代表了一個特定的儲存空間 Driver 與儲存位置。該設定檔內已包含了各個支援 Driver 的範例設定，讓你能修改這些設定來反映出儲存空間偏好與認證方式。"
 
 # File: docs/8.x/filesystem.md, line: 34
 # File: docs/9.x/filesystem.md, line: 33
 # File: docs/master/filesystem.md, line: 33
 #. type: Plain text
 msgid "The `local` driver interacts with files stored locally on the server running the Laravel application while the `s3` driver is used to write to Amazon's S3 cloud storage service."
-msgstr ""
+msgstr "`local` Driver 負責處理保存在執行該 Laravel 專案之本機伺服器上的檔案。而 `s3` Driver 則用來將檔案寫入 Amazon 的 S3 雲端儲存服務。"
 
 # File: docs/8.x/filesystem.md, line: 36
 # File: docs/9.x/filesystem.md, line: 35
@@ -131,7 +148,7 @@ msgstr ""
 #. type: Plain text
 #, no-wrap
 msgid "> {tip} You may configure as many disks as you like and may even have multiple disks that use the same driver.\n"
-msgstr ""
+msgstr "> {tip} 可以隨意設定多個 Disk，甚至也可以設定多個使用相同 Driver 的 Disk。\n"
 
 # File: docs/8.x/filesystem.md, line: 38
 # File: docs/9.x/filesystem.md, line: 37
@@ -139,7 +156,7 @@ msgstr ""
 #. type: Plain text
 #, no-wrap
 msgid "<a name=\"the-local-driver\"></a>\n"
-msgstr ""
+msgstr "<a name=\"the-local-driver\"></a>\n"
 
 # File: docs/8.x/filesystem.md, line: 38
 # File: docs/9.x/filesystem.md, line: 37
@@ -147,14 +164,14 @@ msgstr ""
 #. type: Title ###
 #, no-wrap
 msgid "The Local Driver"
-msgstr ""
+msgstr "「Local」Driver"
 
 # File: docs/8.x/filesystem.md, line: 41
 # File: docs/9.x/filesystem.md, line: 40
 # File: docs/master/filesystem.md, line: 40
 #. type: Plain text
 msgid "When using the `local` driver, all file operations are relative to the `root` directory defined in your `filesystems` configuration file. By default, this value is set to the `storage/app` directory. Therefore, the following method would write to `storage/app/example.txt`:"
-msgstr ""
+msgstr "使用 `local` Driver 時，所有的檔案操作都相對於 `filesystems` 設定檔中定義的 `root` 根目錄。預設情況下，這個值設為 `storage/app` 目錄。因此，下列方法會寫入 `storage/app/example.txt`："
 
 # File: docs/8.x/filesystem.md, line: 43
 # File: docs/8.x/filesystem.md, line: 162
@@ -192,7 +209,7 @@ msgstr ""
 #. type: Plain text
 #, no-wrap
 msgid "    use Illuminate\\Support\\Facades\\Storage;\n"
-msgstr ""
+msgstr "    use Illuminate\\Support\\Facades\\Storage;\n"
 
 # File: docs/8.x/filesystem.md, line: 45
 # File: docs/9.x/filesystem.md, line: 44
@@ -200,7 +217,7 @@ msgstr ""
 #. type: Plain text
 #, no-wrap
 msgid "    Storage::disk('local')->put('example.txt', 'Contents');\n"
-msgstr ""
+msgstr "    Storage::disk('local')->put('example.txt', 'Contents');\n"
 
 # File: docs/8.x/filesystem.md, line: 47
 # File: docs/9.x/filesystem.md, line: 46
@@ -208,7 +225,7 @@ msgstr ""
 #. type: Plain text
 #, no-wrap
 msgid "<a name=\"the-public-disk\"></a>\n"
-msgstr ""
+msgstr "<a name=\"the-public-disk\"></a>\n"
 
 # File: docs/8.x/filesystem.md, line: 47
 # File: docs/9.x/filesystem.md, line: 46
@@ -216,7 +233,7 @@ msgstr ""
 #. type: Title ###
 #, no-wrap
 msgid "The Public Disk"
-msgstr ""
+msgstr "「Public」Disk"
 
 # File: docs/8.x/filesystem.md, line: 50
 # File: docs/9.x/filesystem.md, line: 49

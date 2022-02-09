@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: laravel-docs\n"
 "POT-Creation-Date: 2022-02-08 06:32+0000\n"
-"PO-Revision-Date: 2022-02-08 06:38\n"
+"PO-Revision-Date: 2022-02-09 08:35\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
@@ -40,14 +40,14 @@ msgstr ""
 #. type: Title #
 #, no-wrap
 msgid "HTTP Client"
-msgstr ""
+msgstr "HTTP 用戶端"
 
 # File: docs/8.x/http-client.md, line: 18
 # File: docs/9.x/http-client.md, line: 18
 # File: docs/master/http-client.md, line: 18
 #. type: Bullet: '- '
 msgid "[Introduction](#introduction)"
-msgstr ""
+msgstr "[簡介](#introduction)"
 
 # File: docs/8.x/http-client.md, line: 18
 # File: docs/9.x/http-client.md, line: 18
@@ -68,7 +68,20 @@ msgid "- [Making Requests](#making-requests)\n"
 "    - [Faking Responses](#faking-responses)\n"
 "    - [Inspecting Requests](#inspecting-requests)\n"
 "- [Events](#events)\n"
-msgstr ""
+msgstr "- [建立 Request](#making-requests)\n"
+"    - [Request 資料](#request-data)\n"
+"    - [標頭](#headers)\n"
+"    - [認證](#authentication)\n"
+"    - [逾時](#timeout)\n"
+"    - [重試](#retries)\n"
+"    - [錯誤處理](#error-handling)\n"
+"    - [Guzzle 選項](#guzzle-options)\n"
+"- [同步 Request](#concurrent-requests)\n"
+"- [Macro](#macros)\n"
+"- [測試](#testing)\n"
+"    - [模擬 Response](#faking-responses)\n"
+"    - [檢查 Request](#inspecting-requests)\n"
+"- [事件](#events)\n"
 
 # File: docs/8.x/http-client.md, line: 20
 # File: docs/9.x/http-client.md, line: 20
@@ -76,7 +89,7 @@ msgstr ""
 #. type: Plain text
 #, no-wrap
 msgid "<a name=\"introduction\"></a>\n"
-msgstr ""
+msgstr "<a name=\"introduction\"></a>\n"
 
 # File: docs/8.x/http-client.md, line: 20
 # File: docs/9.x/http-client.md, line: 20
@@ -84,27 +97,27 @@ msgstr ""
 #. type: Title ##
 #, no-wrap
 msgid "Introduction"
-msgstr ""
+msgstr "簡介"
 
 # File: docs/8.x/http-client.md, line: 23
 # File: docs/9.x/http-client.md, line: 23
 # File: docs/master/http-client.md, line: 23
 #. type: Plain text
 msgid "Laravel provides an expressive, minimal API around the [Guzzle HTTP client](http://docs.guzzlephp.org/en/stable/), allowing you to quickly make outgoing HTTP requests to communicate with other web applications. Laravel's wrapper around Guzzle is focused on its most common use cases and a wonderful developer experience."
-msgstr ""
+msgstr "Laravel 為 [Guzzle HTTP 用戶端](http://docs.guzzlephp.org/en/stable/)提供了一個語系化的極簡 API，能讓我們快速建立外連 HTTP Request 來與其他 Web App 通訊。Laravel 的 Guzzle 包裝著重於各個常見的使用情境，並提供優秀的^[開發人員經驗](Developer Experience)。"
 
 # File: docs/8.x/http-client.md, line: 25
 # File: docs/9.x/http-client.md, line: 25
 # File: docs/master/http-client.md, line: 25
 #. type: Plain text
 msgid "Before getting started, you should ensure that you have installed the Guzzle package as a dependency of your application. By default, Laravel automatically includes this dependency. However, if you have previously removed the package, you may install it again via Composer:"
-msgstr ""
+msgstr "在開始前，先確保有將 Guzzle 套件安裝為專案的相依性套件。預設情況下，Laravel 已自動包含了這個相依性套件，但若你之前有將其移除，請使用 Composer 再安裝一次："
 
 # File: docs/8.x/http-client.md, line: 27
 #. type: Plain text
 #, no-wrap
 msgid "    composer require guzzlehttp/guzzle\n"
-msgstr ""
+msgstr "    composer require guzzlehttp/guzzle\n"
 
 # File: docs/8.x/http-client.md, line: 29
 # File: docs/9.x/http-client.md, line: 31
@@ -112,7 +125,7 @@ msgstr ""
 #. type: Plain text
 #, no-wrap
 msgid "<a name=\"making-requests\"></a>\n"
-msgstr ""
+msgstr "<a name=\"making-requests\"></a>\n"
 
 # File: docs/8.x/http-client.md, line: 29
 # File: docs/9.x/http-client.md, line: 31
@@ -120,14 +133,14 @@ msgstr ""
 #. type: Title ##
 #, no-wrap
 msgid "Making Requests"
-msgstr ""
+msgstr "建立 Request"
 
 # File: docs/8.x/http-client.md, line: 32
 # File: docs/9.x/http-client.md, line: 34
 # File: docs/master/http-client.md, line: 34
 #. type: Plain text
 msgid "To make requests, you may use the `head`, `get`, `post`, `put`, `patch`, and `delete` methods provided by the `Http` facade. First, let's examine how to make a basic `GET` request to another URL:"
-msgstr ""
+msgstr "若要建立 Request，可以使用 `Http` Facade 提供的 `head`、`get`、`post`、`put`、`patch`、`delete` 等方法。首先，我們先看看要查詢另一個 URL 的基礎 `GET` Request 怎麼建立："
 
 # File: docs/8.x/http-client.md, line: 34
 # File: docs/8.x/http-client.md, line: 70
@@ -141,7 +154,7 @@ msgstr ""
 #. type: Plain text
 #, no-wrap
 msgid "    use Illuminate\\Support\\Facades\\Http;\n"
-msgstr ""
+msgstr "    use Illuminate\\Support\\Facades\\Http;\n"
 
 # File: docs/8.x/http-client.md, line: 36
 # File: docs/9.x/http-client.md, line: 38
@@ -149,14 +162,14 @@ msgstr ""
 #. type: Plain text
 #, no-wrap
 msgid "    $response = Http::get('http://example.com');\n"
-msgstr ""
+msgstr "    $response = Http::get('http://example.com');\n"
 
 # File: docs/8.x/http-client.md, line: 38
 # File: docs/9.x/http-client.md, line: 40
 # File: docs/master/http-client.md, line: 40
 #. type: Plain text
 msgid "The `get` method returns an instance of `Illuminate\\Http\\Client\\Response`, which provides a variety of methods that may be used to inspect the response:"
-msgstr ""
+msgstr "`get` 方法會回傳 `Illuminate\\Http\\Client\\Response` 的實體，該實體提供了許多用來取得 Response 資訊的方法："
 
 # File: docs/8.x/http-client.md, line: 52
 # File: docs/9.x/http-client.md, line: 54
@@ -176,7 +189,19 @@ msgid "    $response->body() : string;\n"
 "    $response->clientError() : bool;\n"
 "    $response->header($header) : string;\n"
 "    $response->headers() : array;\n"
-msgstr ""
+msgstr "    $response->body() : string;\n"
+"    $response->json($key = null) : array|mixed;\n"
+"    $response->object() : object;\n"
+"    $response->collect($key = null) : Illuminate\\Support\\Collection;\n"
+"    $response->status() : int;\n"
+"    $response->ok() : bool;\n"
+"    $response->successful() : bool;\n"
+"    $response->redirect(): bool;\n"
+"    $response->failed() : bool;\n"
+"    $response->serverError() : bool;\n"
+"    $response->clientError() : bool;\n"
+"    $response->header($header) : string;\n"
+"    $response->headers() : array;\n"
 
 # File: docs/8.x/http-client.md, line: 54
 # File: docs/9.x/http-client.md, line: 56

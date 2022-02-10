@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: laravel-docs\n"
 "POT-Creation-Date: 2022-02-08 06:32+0000\n"
-"PO-Revision-Date: 2022-02-08 06:38\n"
+"PO-Revision-Date: 2022-02-10 07:05\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
@@ -40,7 +40,7 @@ msgstr ""
 #. type: Title #
 #, no-wrap
 msgid "Localization"
-msgstr ""
+msgstr "本地化"
 
 # File: docs/8.x/localization.md, line: 12
 # File: docs/9.x/localization.md, line: 12
@@ -56,7 +56,15 @@ msgid "- [Introduction](#introduction)\n"
 "    - [Replacing Parameters In Translation Strings](#replacing-parameters-in-translation-strings)\n"
 "    - [Pluralization](#pluralization)\n"
 "- [Overriding Package Language Files](#overriding-package-language-files)\n"
-msgstr ""
+msgstr "- [簡介](#introduction)\n"
+"    - [設定語系](#configuring-the-locale)\n"
+"- [定義翻譯字串](#defining-translation-strings)\n"
+"    - [使用短索引鍵](#using-short-keys)\n"
+"    - [使用翻譯字串作為索引鍵](#using-translation-strings-as-keys)\n"
+"- [取得翻譯字串](#retrieving-translation-strings)\n"
+"    - [在翻譯字串中取代參數](#replacing-parameters-in-translation-strings)\n"
+"    - [複數化](#pluralization)\n"
+"- [覆寫套件的語系檔](#overriding-package-language-files)\n"
 
 # File: docs/8.x/localization.md, line: 14
 # File: docs/9.x/localization.md, line: 14
@@ -64,7 +72,7 @@ msgstr ""
 #. type: Plain text
 #, no-wrap
 msgid "<a name=\"introduction\"></a>\n"
-msgstr ""
+msgstr "<a name=\"introduction\"></a>\n"
 
 # File: docs/8.x/localization.md, line: 14
 # File: docs/9.x/localization.md, line: 14
@@ -72,21 +80,21 @@ msgstr ""
 #. type: Title ##
 #, no-wrap
 msgid "Introduction"
-msgstr ""
+msgstr "簡介"
 
 # File: docs/8.x/localization.md, line: 17
 # File: docs/9.x/localization.md, line: 17
 # File: docs/master/localization.md, line: 17
 #. type: Plain text
 msgid "Laravel's localization features provide a convenient way to retrieve strings in various languages, allowing you to easily support multiple languages within your application."
-msgstr ""
+msgstr "Laravel 的本地化 (Localization, L10N) 功能可讓我們方便地在多個語系中取得字串，讓我們的程式能更簡單地支援多種語言。"
 
 # File: docs/8.x/localization.md, line: 19
 # File: docs/9.x/localization.md, line: 19
 # File: docs/master/localization.md, line: 19
 #. type: Plain text
 msgid "Laravel provides two ways to manage translation strings. First, language strings may be stored in files within the `resources/lang` directory. Within this directory, there may be subdirectories for each language supported by the application. This is the approach Laravel uses to manage translation strings for built-in Laravel features such as validation error messages:"
-msgstr ""
+msgstr "Laravel 提供了兩種管理翻譯字串的方法。第一種方式，就是將翻譯字串保存在 `lang` 目錄內。在這個目錄中，可以為程式要支援的每一個語言都建立一個子目錄。這也是 Laravel 管理如表單驗證錯誤訊息等內建功能翻譯字串的方式："
 
 # File: docs/8.x/localization.md, line: 26
 # File: docs/8.x/localization.md, line: 86
@@ -102,14 +110,19 @@ msgid "    /resources\n"
 "                messages.php\n"
 "            /es\n"
 "                messages.php\n"
-msgstr ""
+msgstr "    /resources\n"
+"        /lang\n"
+"            /en\n"
+"                messages.php\n"
+"            /es\n"
+"                messages.php\n"
 
 # File: docs/8.x/localization.md, line: 28
 # File: docs/9.x/localization.md, line: 28
 # File: docs/master/localization.md, line: 28
 #. type: Plain text
 msgid "Or, translation strings may be defined within JSON files that are placed within the `resources/lang` directory. When taking this approach, each language supported by your application would have a corresponding JSON file within this directory. This approach is recommended for application's that have a large number of translatable strings:"
-msgstr ""
+msgstr "第二種方式，是將翻譯字串定義在 `resources/lang` 目錄下的 JSON 檔中。用這種方式時，要支援的每個語言在該目錄中都有一個對應的 JSON 檔。若專案沒有太多要翻譯的字串的話，建議使用這種做法："
 
 # File: docs/8.x/localization.md, line: 33
 # File: docs/9.x/localization.md, line: 33
@@ -120,14 +133,17 @@ msgid "    /resources\n"
 "        /lang\n"
 "            en.json\n"
 "            es.json\n"
-msgstr ""
+msgstr "    /resources\n"
+"        /lang\n"
+"            en.json\n"
+"            es.json\n"
 
 # File: docs/8.x/localization.md, line: 35
 # File: docs/9.x/localization.md, line: 35
 # File: docs/master/localization.md, line: 35
 #. type: Plain text
 msgid "We'll discuss each approach to managing translation strings within this documentation."
-msgstr ""
+msgstr "在本文件中，我們稍候會討論各種管理翻譯字串的方法。"
 
 # File: docs/8.x/localization.md, line: 37
 # File: docs/9.x/localization.md, line: 37
@@ -135,7 +151,7 @@ msgstr ""
 #. type: Plain text
 #, no-wrap
 msgid "<a name=\"configuring-the-locale\"></a>\n"
-msgstr ""
+msgstr "<a name=\"configuring-the-locale\"></a>\n"
 
 # File: docs/8.x/localization.md, line: 37
 # File: docs/9.x/localization.md, line: 37
@@ -143,21 +159,21 @@ msgstr ""
 #. type: Title ###
 #, no-wrap
 msgid "Configuring The Locale"
-msgstr ""
+msgstr "設定語系"
 
 # File: docs/8.x/localization.md, line: 40
 # File: docs/9.x/localization.md, line: 40
 # File: docs/master/localization.md, line: 40
 #. type: Plain text
 msgid "The default language for your application is stored in the `config/app.php` configuration file's `locale` configuration option. You are free to modify this value to suit the needs of your application."
-msgstr ""
+msgstr "專案的預設語系設定在 `config/app.php` 設定檔的 `locale` 設定選項中。可以自由修改這個值為合適的設定。"
 
 # File: docs/8.x/localization.md, line: 42
 # File: docs/9.x/localization.md, line: 42
 # File: docs/master/localization.md, line: 42
 #. type: Plain text
 msgid "You may modify the default language for a single HTTP request at runtime using the `setLocale` method provided by the `App` facade:"
-msgstr ""
+msgstr "也可以在執行階段使用 `App` Facade 提供的 `setLocale` 方法來為單一 HTTP Request 設定預設語系："
 
 # File: docs/8.x/localization.md, line: 44
 # File: docs/8.x/localization.md, line: 65
@@ -168,7 +184,7 @@ msgstr ""
 #. type: Plain text
 #, no-wrap
 msgid "    use Illuminate\\Support\\Facades\\App;\n"
-msgstr ""
+msgstr "    use Illuminate\\Support\\Facades\\App;\n"
 
 # File: docs/8.x/localization.md, line: 49
 # File: docs/9.x/localization.md, line: 49
@@ -179,7 +195,10 @@ msgid "    Route::get('/greeting/{locale}', function ($locale) {\n"
 "        if (! in_array($locale, ['en', 'es', 'fr'])) {\n"
 "            abort(400);\n"
 "        }\n"
-msgstr ""
+msgstr "    Route::get('/greeting/{locale}', function ($locale) {\n"
+"        if (! in_array($locale, ['en', 'es', 'fr'])) {\n"
+"            abort(400);\n"
+"        }\n"
 
 # File: docs/8.x/localization.md, line: 51
 # File: docs/9.x/localization.md, line: 51
@@ -187,7 +206,7 @@ msgstr ""
 #. type: Plain text
 #, no-wrap
 msgid "        App::setLocale($locale);\n"
-msgstr ""
+msgstr "        App::setLocale($locale);\n"
 
 # File: docs/8.x/localization.md, line: 54
 # File: docs/9.x/localization.md, line: 54
@@ -196,14 +215,15 @@ msgstr ""
 #, no-wrap
 msgid "        //\n"
 "    });\n"
-msgstr ""
+msgstr "        //\n"
+"    });\n"
 
 # File: docs/8.x/localization.md, line: 56
 # File: docs/9.x/localization.md, line: 56
 # File: docs/master/localization.md, line: 56
 #. type: Plain text
 msgid "You may configure a \"fallback language\", which will be used when the active language does not contain a given translation string. Like the default language, the fallback language is also configured in the `config/app.php` configuration file:"
-msgstr ""
+msgstr "也可以設定一個「遞補語系」，當目前語系中找不到給定的翻譯字串時，就會使用遞補語系。遞補語系跟預設語系一樣，在 `config/app.php` 設定檔中設定："
 
 # File: docs/8.x/localization.md, line: 58
 # File: docs/9.x/localization.md, line: 58

@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: laravel-docs\n"
 "POT-Creation-Date: 2022-02-08 06:32+0000\n"
-"PO-Revision-Date: 2022-02-09 11:35\n"
+"PO-Revision-Date: 2022-02-10 06:09\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
@@ -76,7 +76,7 @@ msgstr "- [建立 Request](#making-requests)\n"
 "    - [重試](#retries)\n"
 "    - [錯誤處理](#error-handling)\n"
 "    - [Guzzle 選項](#guzzle-options)\n"
-"- [同步 Request](#concurrent-requests)\n"
+"- [同時進行的 Request](#concurrent-requests)\n"
 "- [Macro](#macros)\n"
 "- [測試](#testing)\n"
 "    - [模擬 Response](#faking-responses)\n"
@@ -542,7 +542,7 @@ msgstr "<a name=\"authentication\"></a>\n"
 #. type: Title ###
 #, no-wrap
 msgid "Authentication"
-msgstr ""
+msgstr "身分驗證"
 
 # File: docs/8.x/http-client.md, line: 146
 # File: docs/9.x/http-client.md, line: 148
@@ -623,7 +623,7 @@ msgstr "逾時"
 # File: docs/master/http-client.md, line: 166
 #. type: Plain text
 msgid "The `timeout` method may be used to specify the maximum number of seconds to wait for a response:"
-msgstr ""
+msgstr "可使用 `timeout` 方法來為 Response 指定最多要等待的秒數："
 
 # File: docs/8.x/http-client.md, line: 166
 # File: docs/9.x/http-client.md, line: 168
@@ -631,14 +631,14 @@ msgstr ""
 #. type: Plain text
 #, no-wrap
 msgid "    $response = Http::timeout(3)->get(...);\n"
-msgstr ""
+msgstr "    $response = Http::timeout(3)->get(...);\n"
 
 # File: docs/8.x/http-client.md, line: 168
 # File: docs/9.x/http-client.md, line: 170
 # File: docs/master/http-client.md, line: 170
 #. type: Plain text
 msgid "If the given timeout is exceeded, an instance of `Illuminate\\Http\\Client\\ConnectionException` will be thrown."
-msgstr ""
+msgstr "當達到給定的逾時秒數後，會擲回 `Illuminate\\Http\\Client\\ConnectionException` 實體。"
 
 # File: docs/8.x/http-client.md, line: 170
 # File: docs/9.x/http-client.md, line: 176
@@ -646,7 +646,7 @@ msgstr ""
 #. type: Plain text
 #, no-wrap
 msgid "<a name=\"retries\"></a>\n"
-msgstr ""
+msgstr "<a name=\"retries\"></a>\n"
 
 # File: docs/8.x/http-client.md, line: 170
 # File: docs/9.x/http-client.md, line: 176
@@ -654,14 +654,14 @@ msgstr ""
 #. type: Title ###
 #, no-wrap
 msgid "Retries"
-msgstr ""
+msgstr "重試"
 
 # File: docs/8.x/http-client.md, line: 173
 # File: docs/9.x/http-client.md, line: 179
 # File: docs/master/http-client.md, line: 179
 #. type: Plain text
 msgid "If you would like HTTP client to automatically retry the request if a client or server error occurs, you may use the `retry` method. The `retry` method accepts the maximum number of times the request should be attempted and the number of milliseconds that Laravel should wait in between attempts:"
-msgstr ""
+msgstr "若想讓 HTTP 用戶端在發生用戶端錯誤或伺服器端錯誤時自動重試，可以使用 `retry` 方法。`retry` 方法接受該 Request 要重試的最大次數，以及每次重試間要等待多少毫秒："
 
 # File: docs/8.x/http-client.md, line: 175
 # File: docs/9.x/http-client.md, line: 181
@@ -669,14 +669,14 @@ msgstr ""
 #. type: Plain text
 #, no-wrap
 msgid "    $response = Http::retry(3, 100)->post(...);\n"
-msgstr ""
+msgstr "    $response = Http::retry(3, 100)->post(...);\n"
 
 # File: docs/8.x/http-client.md, line: 177
 # File: docs/9.x/http-client.md, line: 183
 # File: docs/master/http-client.md, line: 183
 #. type: Plain text
 msgid "If needed, you may pass a third argument to the `retry` method. The third argument should be a callable that determines if the retries should actually be attempted. For example, you may wish to only retry the request if the initial request encounters an `ConnectionException`:"
-msgstr ""
+msgstr "若有需要，可以傳入第三個引數給 `retry` 方法。第三個引數應為一個 Callable，用來判斷是否要重試。舉例來說，我們可以判斷只在 Request 遇到 `ConnectionException` 時才重試："
 
 # File: docs/8.x/http-client.md, line: 181
 # File: docs/9.x/http-client.md, line: 187
@@ -686,12 +686,14 @@ msgstr ""
 msgid "    $response = Http::retry(3, 100, function ($exception) {\n"
 "        return $exception instanceof ConnectionException;\n"
 "    })->post(...);\n"
-msgstr ""
+msgstr "    $response = Http::retry(3, 100, function ($exception) {\n"
+"        return $exception instanceof ConnectionException;\n"
+"    })->post(...);\n"
 
 # File: docs/8.x/http-client.md, line: 183
 #. type: Plain text
 msgid "If all of the requests fail, an instance of `Illuminate\\Http\\Client\\RequestException` will be thrown."
-msgstr ""
+msgstr "若所有的 Request 都執行失敗，會擲回 `Illuminate\\Http\\Client\\RequestException` 實體。"
 
 # File: docs/8.x/http-client.md, line: 185
 # File: docs/9.x/http-client.md, line: 193
@@ -699,7 +701,7 @@ msgstr ""
 #. type: Plain text
 #, no-wrap
 msgid "<a name=\"error-handling\"></a>\n"
-msgstr ""
+msgstr "<a name=\"error-handling\"></a>\n"
 
 # File: docs/8.x/http-client.md, line: 185
 # File: docs/9.x/http-client.md, line: 193
@@ -707,14 +709,14 @@ msgstr ""
 #. type: Title ###
 #, no-wrap
 msgid "Error Handling"
-msgstr ""
+msgstr "錯誤處理"
 
 # File: docs/8.x/http-client.md, line: 188
 # File: docs/9.x/http-client.md, line: 196
 # File: docs/master/http-client.md, line: 196
 #. type: Plain text
 msgid "Unlike Guzzle's default behavior, Laravel's HTTP client wrapper does not throw exceptions on client or server errors (`400` and `500` level responses from servers). You may determine if one of these errors was returned using the `successful`, `clientError`, or `serverError` methods:"
-msgstr ""
+msgstr "與 Guzzle 預設的行為不同，Laravel 的 HTTP 用戶端在遇到用戶端錯誤或伺服器端錯誤時 (即，伺服器回傳 `4XX` 與 `5XX` 等級的錯誤)，不會擲回 Exception。我們可以使用 `successful`、`clientError`、`serverError` 等方法來判斷是否遇到這類錯誤："
 
 # File: docs/8.x/http-client.md, line: 191
 # File: docs/9.x/http-client.md, line: 199
@@ -723,7 +725,8 @@ msgstr ""
 #, no-wrap
 msgid "    // Determine if the status code is >= 200 and < 300...\n"
 "    $response->successful();\n"
-msgstr ""
+msgstr "    // 判斷狀態碼 >= 200 且 < 300...\n"
+"    $response->successful();\n"
 
 # File: docs/8.x/http-client.md, line: 194
 # File: docs/9.x/http-client.md, line: 202
@@ -732,7 +735,8 @@ msgstr ""
 #, no-wrap
 msgid "    // Determine if the status code is >= 400...\n"
 "    $response->failed();\n"
-msgstr ""
+msgstr "    // 判斷狀態碼 >= 400...\n"
+"    $response->failed();\n"
 
 # File: docs/8.x/http-client.md, line: 197
 # File: docs/9.x/http-client.md, line: 205
@@ -741,7 +745,8 @@ msgstr ""
 #, no-wrap
 msgid "    // Determine if the response has a 400 level status code...\n"
 "    $response->clientError();\n"
-msgstr ""
+msgstr "    // 判斷 Response 的狀態碼是否為 4XX 等級...\n"
+"    $response->clientError();\n"
 
 # File: docs/8.x/http-client.md, line: 200
 # File: docs/9.x/http-client.md, line: 208
@@ -750,7 +755,8 @@ msgstr ""
 #, no-wrap
 msgid "    // Determine if the response has a 500 level status code...\n"
 "    $response->serverError();\n"
-msgstr ""
+msgstr "    // 判斷 Response 的狀態碼是否為 5XX 等級...\n"
+"    $response->serverError();\n"
 
 # File: docs/8.x/http-client.md, line: 203
 # File: docs/9.x/http-client.md, line: 211
@@ -759,7 +765,8 @@ msgstr ""
 #, no-wrap
 msgid "    // Immediately execute the given callback if there was a client or server error...\n"
 "    $response->onError(callable $callback);\n"
-msgstr ""
+msgstr "    // 若有用戶端錯誤或伺服器端錯誤，馬上執行該給定的回呼...\n"
+"    $response->onError(callable $callback);\n"
 
 # File: docs/8.x/http-client.md, line: 205
 # File: docs/9.x/http-client.md, line: 213
@@ -767,7 +774,7 @@ msgstr ""
 #. type: Plain text
 #, no-wrap
 msgid "<a name=\"throwing-exceptions\"></a>\n"
-msgstr ""
+msgstr "<a name=\"throwing-exceptions\"></a>\n"
 
 # File: docs/8.x/http-client.md, line: 205
 # File: docs/9.x/http-client.md, line: 213
@@ -775,14 +782,14 @@ msgstr ""
 #. type: Title ####
 #, no-wrap
 msgid "Throwing Exceptions"
-msgstr ""
+msgstr "擲回 Exception"
 
 # File: docs/8.x/http-client.md, line: 208
 # File: docs/9.x/http-client.md, line: 216
 # File: docs/master/http-client.md, line: 216
 #. type: Plain text
 msgid "If you have a response instance and would like to throw an instance of `Illuminate\\Http\\Client\\RequestException` if the response status code indicates a client or server error, you may use the `throw` or `throwIf` methods:"
-msgstr ""
+msgstr "假設有個 Response 實體，而我們想在該 Response 的狀態碼為伺服器端或用戶端錯誤時擲回 `Illuminate\\Http\\Client\\RequestException`，則可以使用 `throw` 或 `throwIf` 方法："
 
 # File: docs/8.x/http-client.md, line: 210
 # File: docs/8.x/http-client.md, line: 317
@@ -793,7 +800,7 @@ msgstr ""
 #. type: Plain text
 #, no-wrap
 msgid "    $response = Http::post(...);\n"
-msgstr ""
+msgstr "    $response = Http::post(...);\n"
 
 # File: docs/8.x/http-client.md, line: 213
 # File: docs/9.x/http-client.md, line: 221
@@ -802,7 +809,8 @@ msgstr ""
 #, no-wrap
 msgid "    // Throw an exception if a client or server error occurred...\n"
 "    $response->throw();\n"
-msgstr ""
+msgstr "    // 若遇到用戶端或伺服器端錯誤，擲回 Exception...\n"
+"    $response->throw();\n"
 
 # File: docs/8.x/http-client.md, line: 216
 # File: docs/9.x/http-client.md, line: 224
@@ -811,7 +819,8 @@ msgstr ""
 #, no-wrap
 msgid "    // Throw an exception if an error occurred and the given condition is true...\n"
 "    $response->throwIf($condition);\n"
-msgstr ""
+msgstr "    // 若有發生錯誤，且給定的條件為 true，則擲回 Exception...\n"
+"    $response->throwIf($condition);\n"
 
 # File: docs/8.x/http-client.md, line: 218
 # File: docs/9.x/http-client.md, line: 226
@@ -819,21 +828,21 @@ msgstr ""
 #. type: Plain text
 #, no-wrap
 msgid "    return $response['user']['id'];\n"
-msgstr ""
+msgstr "    return $response['user']['id'];\n"
 
 # File: docs/8.x/http-client.md, line: 220
 # File: docs/9.x/http-client.md, line: 228
 # File: docs/master/http-client.md, line: 228
 #. type: Plain text
 msgid "The `Illuminate\\Http\\Client\\RequestException` instance has a public `$response` property which will allow you to inspect the returned response."
-msgstr ""
+msgstr "`Illuminate\\Http\\Client\\RequestException` 實體有個 `$response` 公用屬性，我們可以使用該屬性來取得回傳的 Response。"
 
 # File: docs/8.x/http-client.md, line: 222
 # File: docs/9.x/http-client.md, line: 230
 # File: docs/master/http-client.md, line: 230
 #. type: Plain text
 msgid "The `throw` method returns the response instance if no error occurred, allowing you to chain other operations onto the `throw` method:"
-msgstr ""
+msgstr "如果沒有發生錯誤，`throw` 方法會回傳 Response 實體，能讓我們在 `throw` 方法後繼續串上其他操作："
 
 # File: docs/8.x/http-client.md, line: 224
 # File: docs/9.x/http-client.md, line: 232
@@ -841,14 +850,14 @@ msgstr ""
 #. type: Plain text
 #, no-wrap
 msgid "    return Http::post(...)->throw()->json();\n"
-msgstr ""
+msgstr "    return Http::post(...)->throw()->json();\n"
 
 # File: docs/8.x/http-client.md, line: 226
 # File: docs/9.x/http-client.md, line: 234
 # File: docs/master/http-client.md, line: 234
 #. type: Plain text
 msgid "If you would like to perform some additional logic before the exception is thrown, you may pass a closure to the `throw` method. The exception will be thrown automatically after the closure is invoked, so you do not need to re-throw the exception from within the closure:"
-msgstr ""
+msgstr "若想在 Exception 被擲回前加上其他額外的邏輯，可傳入一個閉包給 `throw` 方法。叫用閉包後，就會自動擲回 Exception，因此我們不需要在閉包內重新擲回 Exception："
 
 # File: docs/8.x/http-client.md, line: 230
 # File: docs/9.x/http-client.md, line: 238
@@ -858,7 +867,9 @@ msgstr ""
 msgid "    return Http::post(...)->throw(function ($response, $e) {\n"
 "        //\n"
 "    })->json();\n"
-msgstr ""
+msgstr "    return Http::post(...)->throw(function ($response, $e) {\n"
+"        //\n"
+"    })->json();\n"
 
 # File: docs/8.x/http-client.md, line: 232
 # File: docs/9.x/http-client.md, line: 240
@@ -866,7 +877,7 @@ msgstr ""
 #. type: Plain text
 #, no-wrap
 msgid "<a name=\"guzzle-options\"></a>\n"
-msgstr ""
+msgstr "<a name=\"guzzle-options\"></a>\n"
 
 # File: docs/8.x/http-client.md, line: 232
 # File: docs/9.x/http-client.md, line: 240
@@ -874,14 +885,14 @@ msgstr ""
 #. type: Title ###
 #, no-wrap
 msgid "Guzzle Options"
-msgstr ""
+msgstr "Guzzle 選項"
 
 # File: docs/8.x/http-client.md, line: 235
 # File: docs/9.x/http-client.md, line: 243
 # File: docs/master/http-client.md, line: 243
 #. type: Plain text
 msgid "You may specify additional [Guzzle request options](http://docs.guzzlephp.org/en/stable/request-options.html) using the `withOptions` method. The `withOptions` method accepts an array of key / value pairs:"
-msgstr ""
+msgstr "我們可以使用 `withOptions` 方法來指定額外的 [Guzzle Request 選項](http://docs.guzzlephp.org/en/stable/request-options.html)。`withOptions` 方法接受一組索引鍵 / 值配對的陣列："
 
 # File: docs/8.x/http-client.md, line: 239
 # File: docs/9.x/http-client.md, line: 247
@@ -891,7 +902,9 @@ msgstr ""
 msgid "    $response = Http::withOptions([\n"
 "        'debug' => true,\n"
 "    ])->get('http://example.com/users');\n"
-msgstr ""
+msgstr "    $response = Http::withOptions([\n"
+"        'debug' => true,\n"
+"    ])->get('http://example.com/users');\n"
 
 # File: docs/8.x/http-client.md, line: 241
 # File: docs/9.x/http-client.md, line: 249
@@ -899,7 +912,7 @@ msgstr ""
 #. type: Plain text
 #, no-wrap
 msgid "<a name=\"concurrent-requests\"></a>\n"
-msgstr ""
+msgstr "<a name=\"concurrent-requests\"></a>\n"
 
 # File: docs/8.x/http-client.md, line: 241
 # File: docs/9.x/http-client.md, line: 249
@@ -907,21 +920,21 @@ msgstr ""
 #. type: Title ##
 #, no-wrap
 msgid "Concurrent Requests"
-msgstr ""
+msgstr "同時進行的 Request"
 
 # File: docs/8.x/http-client.md, line: 244
 # File: docs/9.x/http-client.md, line: 252
 # File: docs/master/http-client.md, line: 252
 #. type: Plain text
 msgid "Sometimes, you may wish to make multiple HTTP requests concurrently. In other words, you want several requests to be dispatched at the same time instead of issuing the requests sequentially. This can lead to substantial performance improvements when interacting with slow HTTP APIs."
-msgstr ""
+msgstr "有時候，我們可能會想同時進行多個 HTTP Request。換句話說，不是依序執行 Request，而是同時分派多個 Request。同時執行多個 Request 的話，在處理速度慢的 HTTP API 時就可以大幅提升效能。"
 
 # File: docs/8.x/http-client.md, line: 246
 # File: docs/9.x/http-client.md, line: 254
 # File: docs/master/http-client.md, line: 254
 #. type: Plain text
 msgid "Thankfully, you may accomplish this using the `pool` method. The `pool` method accepts a closure which receives an `Illuminate\\Http\\Client\\Pool` instance, allowing you to easily add requests to the request pool for dispatching:"
-msgstr ""
+msgstr "所幸，我們只要使用 `pool` 方法就能達成。`pool` 方法接受一個閉包，該閉包會收到 `Illuminate\\Http\\Client\\Pool` 實體，能讓我們輕鬆地將 Request 加到 ^[Request Pool](請求集區) 以作分派："
 
 # File: docs/8.x/http-client.md, line: 249
 # File: docs/8.x/http-client.md, line: 264
@@ -933,7 +946,8 @@ msgstr ""
 #, no-wrap
 msgid "    use Illuminate\\Http\\Client\\Pool;\n"
 "    use Illuminate\\Support\\Facades\\Http;\n"
-msgstr ""
+msgstr "    use Illuminate\\Http\\Client\\Pool;\n"
+"    use Illuminate\\Support\\Facades\\Http;\n"
 
 # File: docs/8.x/http-client.md, line: 255
 # File: docs/9.x/http-client.md, line: 263
@@ -945,7 +959,11 @@ msgid "    $responses = Http::pool(fn (Pool $pool) => [\n"
 "        $pool->get('http://localhost/second'),\n"
 "        $pool->get('http://localhost/third'),\n"
 "    ]);\n"
-msgstr ""
+msgstr "    $responses = Http::pool(fn (Pool $pool) => [\n"
+"        $pool->get('http://localhost/first'),\n"
+"        $pool->get('http://localhost/second'),\n"
+"        $pool->get('http://localhost/third'),\n"
+"    ]);\n"
 
 # File: docs/8.x/http-client.md, line: 259
 # File: docs/9.x/http-client.md, line: 267
@@ -955,14 +973,16 @@ msgstr ""
 msgid "    return $responses[0]->ok() &&\n"
 "           $responses[1]->ok() &&\n"
 "           $responses[2]->ok();\n"
-msgstr ""
+msgstr "    return $responses[0]->ok() &&\n"
+"           $responses[1]->ok() &&\n"
+"           $responses[2]->ok();\n"
 
 # File: docs/8.x/http-client.md, line: 261
 # File: docs/9.x/http-client.md, line: 269
 # File: docs/master/http-client.md, line: 269
 #. type: Plain text
 msgid "As you can see, each response instance can be accessed based on the order it was added to the pool. If you wish, you can name the requests using the `as` method, which allows you to access the corresponding responses by name:"
-msgstr ""
+msgstr "就像這樣，我們可以依據加入 Pool 的順序來存取每個 Response 實體。若有需要的話，也可以使用 `as` 方法來為 Request 命名，好讓我們能使用名稱來存取對應的 Response："
 
 # File: docs/8.x/http-client.md, line: 270
 # File: docs/9.x/http-client.md, line: 278
@@ -974,7 +994,11 @@ msgid "    $responses = Http::pool(fn (Pool $pool) => [\n"
 "        $pool->as('second')->get('http://localhost/second'),\n"
 "        $pool->as('third')->get('http://localhost/third'),\n"
 "    ]);\n"
-msgstr ""
+msgstr "    $responses = Http::pool(fn (Pool $pool) => [\n"
+"        $pool->as('first')->get('http://localhost/first'),\n"
+"        $pool->as('second')->get('http://localhost/second'),\n"
+"        $pool->as('third')->get('http://localhost/third'),\n"
+"    ]);\n"
 
 # File: docs/8.x/http-client.md, line: 272
 # File: docs/9.x/http-client.md, line: 280
@@ -982,7 +1006,7 @@ msgstr ""
 #. type: Plain text
 #, no-wrap
 msgid "    return $responses['first']->ok();\n"
-msgstr ""
+msgstr "    return $responses['first']->ok();\n"
 
 # File: docs/8.x/http-client.md, line: 274
 # File: docs/9.x/http-client.md, line: 282
@@ -990,7 +1014,7 @@ msgstr ""
 #. type: Plain text
 #, no-wrap
 msgid "<a name=\"macros\"></a>\n"
-msgstr ""
+msgstr "<a name=\"macros\"></a>\n"
 
 # File: docs/8.x/http-client.md, line: 274
 # File: docs/9.x/http-client.md, line: 282
@@ -998,14 +1022,14 @@ msgstr ""
 #. type: Title ##
 #, no-wrap
 msgid "Macros"
-msgstr ""
+msgstr "Macro"
 
 # File: docs/8.x/http-client.md, line: 277
 # File: docs/9.x/http-client.md, line: 285
 # File: docs/master/http-client.md, line: 285
 #. type: Plain text
 msgid "The Laravel HTTP client allows you to define \"macros\", which can serve as a fluent, expressive mechanism to configure common request paths and headers when interacting with services throughout your application. To get started, you may define the macro within the `boot` method of your application's `App\\Providers\\AppServiceProvider` class:"
-msgstr ""
+msgstr "Laravel HTTP 用戶端支援定義「^[Macro](巨集)」。通過 Macro，我們就能通過一些流暢且語義化的機制來在專案中為一些服務設定常用的 Request 路徑與標頭。若要開始使用 Macro，我們可以在專案的 `App\\Providers\\AppServiceProvider` 內 `boot` 方法中定義 Macro："
 
 # File: docs/8.x/http-client.md, line: 278
 # File: docs/8.x/http-client.md, line: 298
@@ -1016,7 +1040,7 @@ msgstr ""
 #. type: Code fence info string
 #, no-wrap
 msgid "php"
-msgstr ""
+msgstr "php"
 
 # File: docs/8.x/http-client.md, line: 278
 # File: docs/9.x/http-client.md, line: 286
@@ -1037,14 +1061,27 @@ msgid "use Illuminate\\Support\\Facades\\Http;\n\n"
 "        ])->baseUrl('https://github.com');\n"
 "    });\n"
 "}\n"
-msgstr ""
+msgstr "use Illuminate\\Support\\Facades\\Http;\n\n"
+"/**\n"
+" * Bootstrap any application services.\n"
+" *\n"
+" * @return void\n"
+" */\n"
+"public function boot()\n"
+"{\n"
+"    Http::macro('github', function () {\n"
+"        return Http::withHeaders([\n"
+"            'X-Example' => 'example',\n"
+"        ])->baseUrl('https://github.com');\n"
+"    });\n"
+"}\n"
 
 # File: docs/8.x/http-client.md, line: 297
 # File: docs/9.x/http-client.md, line: 305
 # File: docs/master/http-client.md, line: 305
 #. type: Plain text
 msgid "Once your macro has been configured, you may invoke it from anywhere in your application to create a pending request with the specified configuration:"
-msgstr ""
+msgstr "設定好 Macro 後，就可以在任何地方叫用這個 Macro，以使用指定的設定來建立 Request："
 
 # File: docs/8.x/http-client.md, line: 298
 # File: docs/9.x/http-client.md, line: 306
@@ -1052,7 +1089,7 @@ msgstr ""
 #. type: Plain text
 #, no-wrap
 msgid "$response = Http::github()->get('/');\n"
-msgstr ""
+msgstr "$response = Http::github()->get('/');\n"
 
 # File: docs/8.x/http-client.md, line: 303
 # File: docs/9.x/http-client.md, line: 311
@@ -1060,7 +1097,7 @@ msgstr ""
 #. type: Plain text
 #, no-wrap
 msgid "<a name=\"testing\"></a>\n"
-msgstr ""
+msgstr "<a name=\"testing\"></a>\n"
 
 # File: docs/8.x/http-client.md, line: 303
 # File: docs/9.x/http-client.md, line: 311
@@ -1068,14 +1105,14 @@ msgstr ""
 #. type: Title ##
 #, no-wrap
 msgid "Testing"
-msgstr ""
+msgstr "測試"
 
 # File: docs/8.x/http-client.md, line: 306
 # File: docs/9.x/http-client.md, line: 314
 # File: docs/master/http-client.md, line: 314
 #. type: Plain text
 msgid "Many Laravel services provide functionality to help you easily and expressively write tests, and Laravel's HTTP wrapper is no exception. The `Http` facade's `fake` method allows you to instruct the HTTP client to return stubbed / dummy responses when requests are made."
-msgstr ""
+msgstr "許多 Laravel 的服務都提供了能讓我們輕鬆撰寫測試的功能，而 Laravel 的 HTTP 包裝也不例外。`Http` Facade 的 `fake` 方法能讓我們指定 HTTP 用戶端在建立 Request 後回傳一組虛擬的 Response。"
 
 # File: docs/8.x/http-client.md, line: 308
 # File: docs/9.x/http-client.md, line: 316
@@ -1083,7 +1120,7 @@ msgstr ""
 #. type: Plain text
 #, no-wrap
 msgid "<a name=\"faking-responses\"></a>\n"
-msgstr ""
+msgstr "<a name=\"faking-responses\"></a>\n"
 
 # File: docs/8.x/http-client.md, line: 308
 # File: docs/9.x/http-client.md, line: 316
@@ -1091,14 +1128,14 @@ msgstr ""
 #. type: Title ###
 #, no-wrap
 msgid "Faking Responses"
-msgstr ""
+msgstr "^[模擬](Fake) Response"
 
 # File: docs/8.x/http-client.md, line: 311
 # File: docs/9.x/http-client.md, line: 319
 # File: docs/master/http-client.md, line: 319
 #. type: Plain text
 msgid "For example, to instruct the HTTP client to return empty, `200` status code responses for every request, you may call the `fake` method with no arguments:"
-msgstr ""
+msgstr "舉例來說，若要讓 HTTP 用戶端為每個 Request 回傳 `200` 狀態碼的空 Response，可呼叫 `fake` 方法，然後不傳入任何引數："
 
 # File: docs/8.x/http-client.md, line: 315
 # File: docs/8.x/http-client.md, line: 392
@@ -1118,13 +1155,13 @@ msgstr ""
 #. type: Plain text
 #, no-wrap
 msgid "    Http::fake();\n"
-msgstr ""
+msgstr "    Http::fake();\n"
 
 # File: docs/8.x/http-client.md, line: 319
 #. type: Plain text
 #, no-wrap
 msgid "> {note} When faking requests, HTTP client middleware are not executed. You should define expectations for faked responses as if these middleware have run correctly.\n"
-msgstr ""
+msgstr "> {note} 在建立模擬 Request 時，不會執行 HTTP 用戶端 Middleware。在為模擬 Request 定義 Expectation 時，請定義為這些 Middleware 都已正確執行的情況。\n"
 
 # File: docs/8.x/http-client.md, line: 321
 # File: docs/9.x/http-client.md, line: 327
@@ -1132,7 +1169,7 @@ msgstr ""
 #. type: Plain text
 #, no-wrap
 msgid "<a name=\"faking-specific-urls\"></a>\n"
-msgstr ""
+msgstr "<a name=\"faking-specific-urls\"></a>\n"
 
 # File: docs/8.x/http-client.md, line: 321
 # File: docs/9.x/http-client.md, line: 327
@@ -1140,14 +1177,14 @@ msgstr ""
 #. type: Title ####
 #, no-wrap
 msgid "Faking Specific URLs"
-msgstr ""
+msgstr "模擬執行 URL"
 
 # File: docs/8.x/http-client.md, line: 324
 # File: docs/9.x/http-client.md, line: 330
 # File: docs/master/http-client.md, line: 330
 #. type: Plain text
 msgid "Alternatively, you may pass an array to the `fake` method. The array's keys should represent URL patterns that you wish to fake and their associated responses. The `*` character may be used as a wildcard character. Any requests made to URLs that have not been faked will actually be executed. You may use the `Http` facade's `response` method to construct stub / fake responses for these endpoints:"
-msgstr ""
+msgstr "或者，我們也可以傳入一組陣列給 `fake` 方法。該陣列的索引鍵代表要模擬的 URL，對應的值則為 Response。可使用 `*` 字元來當作萬用字元。當 Request 的 URL 不在模擬列表內時，就會被實際執行。可以使用 `Http` Facade 的 `response` 方法來為這些^[Endpoint](端點)建立虛擬的 Response："
 
 # File: docs/8.x/http-client.md, line: 328
 # File: docs/9.x/http-client.md, line: 334
@@ -1157,7 +1194,9 @@ msgstr ""
 msgid "    Http::fake([\n"
 "        // Stub a JSON response for GitHub endpoints...\n"
 "        'github.com/*' => Http::response(['foo' => 'bar'], 200, $headers),\n"
-msgstr ""
+msgstr "    Http::fake([\n"
+"        // 為 GitHub Endpoint 建立虛擬的 JSON Response...\n"
+"        'github.com/*' => Http::response(['foo' => 'bar'], 200, $headers),\n"
 
 # File: docs/8.x/http-client.md, line: 332
 # File: docs/9.x/http-client.md, line: 338
@@ -1167,14 +1206,16 @@ msgstr ""
 msgid "        // Stub a string response for Google endpoints...\n"
 "        'google.com/*' => Http::response('Hello World', 200, $headers),\n"
 "    ]);\n"
-msgstr ""
+msgstr "        // 為 Google Endpoint 建立虛擬的字串 Response...\n"
+"        'google.com/*' => Http::response('Hello World', 200, $headers),\n"
+"    ]);\n"
 
 # File: docs/8.x/http-client.md, line: 334
 # File: docs/9.x/http-client.md, line: 340
 # File: docs/master/http-client.md, line: 340
 #. type: Plain text
 msgid "If you would like to specify a fallback URL pattern that will stub all unmatched URLs, you may use a single `*` character:"
-msgstr ""
+msgstr "若想為所有不符合的 URL 建立一個遞補用 URL 規則，只要使用單一 `*` 字元即可："
 
 # File: docs/8.x/http-client.md, line: 338
 # File: docs/9.x/http-client.md, line: 344

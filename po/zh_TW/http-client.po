@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: laravel-docs\n"
 "POT-Creation-Date: 2022-02-08 06:32+0000\n"
-"PO-Revision-Date: 2022-02-10 06:09\n"
+"PO-Revision-Date: 2022-02-10 07:05\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
@@ -1225,7 +1225,9 @@ msgstr "若想為所有不符合的 URL 建立一個遞補用 URL 規則，只�
 msgid "    Http::fake([\n"
 "        // Stub a JSON response for GitHub endpoints...\n"
 "        'github.com/*' => Http::response(['foo' => 'bar'], 200, ['Headers']),\n"
-msgstr ""
+msgstr "    Http::fake([\n"
+"        // 為 GitHub Endpoint 模擬 JSON Response...\n"
+"        'github.com/*' => Http::response(['foo' => 'bar'], 200, ['Headers']),\n"
 
 # File: docs/8.x/http-client.md, line: 342
 # File: docs/9.x/http-client.md, line: 348
@@ -1235,7 +1237,9 @@ msgstr ""
 msgid "        // Stub a string response for all other endpoints...\n"
 "        '*' => Http::response('Hello World', 200, ['Headers']),\n"
 "    ]);\n"
-msgstr ""
+msgstr "        // 為其他所有 Endpoint 模擬字串 Response...\n"
+"        '*' => Http::response('Hello World', 200, ['Headers']),\n"
+"    ]);\n"
 
 # File: docs/8.x/http-client.md, line: 344
 # File: docs/9.x/http-client.md, line: 350
@@ -1243,7 +1247,7 @@ msgstr ""
 #. type: Plain text
 #, no-wrap
 msgid "<a name=\"faking-response-sequences\"></a>\n"
-msgstr ""
+msgstr "<a name=\"faking-response-sequences\"></a>\n"
 
 # File: docs/8.x/http-client.md, line: 344
 # File: docs/9.x/http-client.md, line: 350
@@ -1251,14 +1255,14 @@ msgstr ""
 #. type: Title ####
 #, no-wrap
 msgid "Faking Response Sequences"
-msgstr ""
+msgstr "模擬 Response 序列"
 
 # File: docs/8.x/http-client.md, line: 347
 # File: docs/9.x/http-client.md, line: 353
 # File: docs/master/http-client.md, line: 353
 #. type: Plain text
 msgid "Sometimes you may need to specify that a single URL should return a series of fake responses in a specific order. You may accomplish this using the `Http::sequence` method to build the responses:"
-msgstr ""
+msgstr "有時候我們需要讓單一 URL 以固定的順序回傳一系列模擬的 Response。我們可以使用 `Http::sequence`  方法來建立 Request："
 
 # File: docs/8.x/http-client.md, line: 355
 # File: docs/9.x/http-client.md, line: 361
@@ -1272,14 +1276,20 @@ msgid "    Http::fake([\n"
 "                                ->push(['foo' => 'bar'], 200)\n"
 "                                ->pushStatus(404),\n"
 "    ]);\n"
-msgstr ""
+msgstr "    Http::fake([\n"
+"        // 為 GitHub Endpoint 模擬一系列的 Responses...\n"
+"        'github.com/*' => Http::sequence()\n"
+"                                ->push('Hello World', 200)\n"
+"                                ->push(['foo' => 'bar'], 200)\n"
+"                                ->pushStatus(404),\n"
+"    ]);\n"
 
 # File: docs/8.x/http-client.md, line: 357
 # File: docs/9.x/http-client.md, line: 363
 # File: docs/master/http-client.md, line: 363
 #. type: Plain text
 msgid "When all of the responses in a response sequence have been consumed, any further requests will cause the response sequence to throw an exception. If you would like to specify a default response that should be returned when a sequence is empty, you may use the `whenEmpty` method:"
-msgstr ""
+msgstr "用完 Response 序列內的所有 Response 後，接下來再建立 Request 就會導致 Response 系列擲回一個 Exception。若想指定當序列為空時要回傳的預設 Response，可使用 `whenEmpty` 方法："
 
 # File: docs/8.x/http-client.md, line: 365
 # File: docs/9.x/http-client.md, line: 371
@@ -1293,14 +1303,20 @@ msgid "    Http::fake([\n"
 "                                ->push(['foo' => 'bar'], 200)\n"
 "                                ->whenEmpty(Http::response()),\n"
 "    ]);\n"
-msgstr ""
+msgstr "    Http::fake([\n"
+"        // 為 GitHub Endpoint 模擬一系列的 Response...\n"
+"        'github.com/*' => Http::sequence()\n"
+"                                ->push('Hello World', 200)\n"
+"                                ->push(['foo' => 'bar'], 200)\n"
+"                                ->whenEmpty(Http::response()),\n"
+"    ]);\n"
 
 # File: docs/8.x/http-client.md, line: 367
 # File: docs/9.x/http-client.md, line: 373
 # File: docs/master/http-client.md, line: 373
 #. type: Plain text
 msgid "If you would like to fake a sequence of responses but do not need to specify a specific URL pattern that should be faked, you may use the `Http::fakeSequence` method:"
-msgstr ""
+msgstr "若想模擬一系列的 Response，但又不想指定要模擬的特定 URL 格式，可使用 `Http::fakeSequence`  方法："
 
 # File: docs/8.x/http-client.md, line: 371
 # File: docs/9.x/http-client.md, line: 377
@@ -1310,7 +1326,9 @@ msgstr ""
 msgid "    Http::fakeSequence()\n"
 "            ->push('Hello World', 200)\n"
 "            ->whenEmpty(Http::response());\n"
-msgstr ""
+msgstr "    Http::fakeSequence()\n"
+"            ->push('Hello World', 200)\n"
+"            ->whenEmpty(Http::response());\n"
 
 # File: docs/8.x/http-client.md, line: 373
 # File: docs/9.x/http-client.md, line: 379
@@ -1318,7 +1336,7 @@ msgstr ""
 #. type: Plain text
 #, no-wrap
 msgid "<a name=\"fake-callback\"></a>\n"
-msgstr ""
+msgstr "<a name=\"fake-callback\"></a>\n"
 
 # File: docs/8.x/http-client.md, line: 373
 # File: docs/9.x/http-client.md, line: 379
@@ -1326,14 +1344,14 @@ msgstr ""
 #. type: Title ####
 #, no-wrap
 msgid "Fake Callback"
-msgstr ""
+msgstr "模擬回呼"
 
 # File: docs/8.x/http-client.md, line: 376
 # File: docs/9.x/http-client.md, line: 382
 # File: docs/master/http-client.md, line: 382
 #. type: Plain text
 msgid "If you require more complicated logic to determine what responses to return for certain endpoints, you may pass a closure to the `fake` method. This closure will receive an instance of `Illuminate\\Http\\Client\\Request` and should return a response instance. Within your closure, you may perform whatever logic is necessary to determine what type of response to return:"
-msgstr ""
+msgstr "若某些 Endpoint 需要使用比較複雜的邏輯來判斷要回傳什麼 Response 的話，可傳入一個閉包給 `fake` 方法。該閉包會收到一組 `Illuminate\\Http\\Client\\Request` 的實體，而該閉包必須回傳 Response 實體。在這個閉包內，我們就可以任意加上邏輯來判斷要回傳什麼類型的 Response："
 
 # File: docs/8.x/http-client.md, line: 380
 # File: docs/9.x/http-client.md, line: 386
@@ -1343,7 +1361,9 @@ msgstr ""
 msgid "    Http::fake(function ($request) {\n"
 "        return Http::response('Hello World', 200);\n"
 "    });\n"
-msgstr ""
+msgstr "    Http::fake(function ($request) {\n"
+"        return Http::response('Hello World', 200);\n"
+"    });\n"
 
 # File: docs/8.x/http-client.md, line: 382
 # File: docs/9.x/http-client.md, line: 388
@@ -1351,7 +1371,7 @@ msgstr ""
 #. type: Plain text
 #, no-wrap
 msgid "<a name=\"inspecting-requests\"></a>\n"
-msgstr ""
+msgstr "<a name=\"inspecting-requests\"></a>\n"
 
 # File: docs/8.x/http-client.md, line: 382
 # File: docs/9.x/http-client.md, line: 388
@@ -1359,21 +1379,21 @@ msgstr ""
 #. type: Title ###
 #, no-wrap
 msgid "Inspecting Requests"
-msgstr ""
+msgstr "檢查 Request"
 
 # File: docs/8.x/http-client.md, line: 385
 # File: docs/9.x/http-client.md, line: 391
 # File: docs/master/http-client.md, line: 391
 #. type: Plain text
 msgid "When faking responses, you may occasionally wish to inspect the requests the client receives in order to make sure your application is sending the correct data or headers. You may accomplish this by calling the `Http::assertSent` method after calling `Http::fake`."
-msgstr ""
+msgstr "在模擬 Response 時，有時候我們會需要檢查用戶端收到的 Request，以確保程式有傳送正確的資料。可以在呼叫 `Http::fake` 之前先呼叫 `Http::assertSent` 方法來檢查。"
 
 # File: docs/8.x/http-client.md, line: 387
 # File: docs/9.x/http-client.md, line: 393
 # File: docs/master/http-client.md, line: 393
 #. type: Plain text
 msgid "The `assertSent` method accepts a closure which will receive an `Illuminate\\Http\\Client\\Request` instance and should return a boolean value indicating if the request matches your expectations. In order for the test to pass, at least one request must have been issued matching the given expectations:"
-msgstr ""
+msgstr "`assertSent` 方法接受一組閉包，該閉包會收到 `Illuminate\\Http\\Client\\Request` 的實體，而該閉包應回傳用來表示 Request 是否符合預期的布林值。若要讓測試通過，提供的 Request 中就必須至少有一個是符合給定預期條件的："
 
 # File: docs/8.x/http-client.md, line: 390
 # File: docs/8.x/http-client.md, line: 411
@@ -1385,7 +1405,8 @@ msgstr ""
 #, no-wrap
 msgid "    use Illuminate\\Http\\Client\\Request;\n"
 "    use Illuminate\\Support\\Facades\\Http;\n"
-msgstr ""
+msgstr "    use Illuminate\\Http\\Client\\Request;\n"
+"    use Illuminate\\Support\\Facades\\Http;\n"
 
 # File: docs/8.x/http-client.md, line: 399
 # File: docs/9.x/http-client.md, line: 405
@@ -1398,7 +1419,12 @@ msgid "    Http::withHeaders([\n"
 "        'name' => 'Taylor',\n"
 "        'role' => 'Developer',\n"
 "    ]);\n"
-msgstr ""
+msgstr "    Http::withHeaders([\n"
+"        'X-First' => 'foo',\n"
+"    ])->post('http://example.com/users', [\n"
+"        'name' => 'Taylor',\n"
+"        'role' => 'Developer',\n"
+"    ]);\n"
 
 # File: docs/8.x/http-client.md, line: 406
 # File: docs/9.x/http-client.md, line: 412
@@ -1411,14 +1437,19 @@ msgid "    Http::assertSent(function (Request $request) {\n"
 "               $request['name'] == 'Taylor' &&\n"
 "               $request['role'] == 'Developer';\n"
 "    });\n"
-msgstr ""
+msgstr "    Http::assertSent(function (Request $request) {\n"
+"        return $request->hasHeader('X-First', 'foo') &&\n"
+"               $request->url() == 'http://example.com/users' &&\n"
+"               $request['name'] == 'Taylor' &&\n"
+"               $request['role'] == 'Developer';\n"
+"    });\n"
 
 # File: docs/8.x/http-client.md, line: 408
 # File: docs/9.x/http-client.md, line: 414
 # File: docs/master/http-client.md, line: 414
 #. type: Plain text
 msgid "If needed, you may assert that a specific request was not sent using the `assertNotSent` method:"
-msgstr ""
+msgstr "若有需要，可以使用 `assertNotSent` 方法來判斷特定 Request 是否未被送出："
 
 # File: docs/8.x/http-client.md, line: 418
 # File: docs/9.x/http-client.md, line: 424
@@ -1429,7 +1460,10 @@ msgid "    Http::post('http://example.com/users', [\n"
 "        'name' => 'Taylor',\n"
 "        'role' => 'Developer',\n"
 "    ]);\n"
-msgstr ""
+msgstr "    Http::post('http://example.com/users', [\n"
+"        'name' => 'Taylor',\n"
+"        'role' => 'Developer',\n"
+"    ]);\n"
 
 # File: docs/8.x/http-client.md, line: 422
 # File: docs/9.x/http-client.md, line: 428
@@ -1439,14 +1473,16 @@ msgstr ""
 msgid "    Http::assertNotSent(function (Request $request) {\n"
 "        return $request->url() === 'http://example.com/posts';\n"
 "    });\n"
-msgstr ""
+msgstr "    Http::assertNotSent(function (Request $request) {\n"
+"        return $request->url() === 'http://example.com/posts';\n"
+"    });\n"
 
 # File: docs/8.x/http-client.md, line: 424
 # File: docs/9.x/http-client.md, line: 430
 # File: docs/master/http-client.md, line: 430
 #. type: Plain text
 msgid "You may use the `assertSentCount` method to assert how many requests were \"sent\" during the test:"
-msgstr ""
+msgstr "可以使用 `assertSentCount` 方法來判斷在測試時「送出」了多少個 Request："
 
 # File: docs/8.x/http-client.md, line: 428
 # File: docs/9.x/http-client.md, line: 434
@@ -1454,14 +1490,14 @@ msgstr ""
 #. type: Plain text
 #, no-wrap
 msgid "    Http::assertSentCount(5);\n"
-msgstr ""
+msgstr "    Http::assertSentCount(5);\n"
 
 # File: docs/8.x/http-client.md, line: 430
 # File: docs/9.x/http-client.md, line: 436
 # File: docs/master/http-client.md, line: 436
 #. type: Plain text
 msgid "Or, you may use the `assertNothingSent` method to assert that no requests were sent during the test:"
-msgstr ""
+msgstr "或者，也可以使用 `assertNothingSent` 方法來判斷在測試時是否未送出任何 Request："
 
 # File: docs/8.x/http-client.md, line: 434
 # File: docs/9.x/http-client.md, line: 440
@@ -1469,7 +1505,7 @@ msgstr ""
 #. type: Plain text
 #, no-wrap
 msgid "    Http::assertNothingSent();\n"
-msgstr ""
+msgstr "    Http::assertNothingSent();\n"
 
 # File: docs/8.x/http-client.md, line: 436
 # File: docs/9.x/http-client.md, line: 442
@@ -1477,7 +1513,7 @@ msgstr ""
 #. type: Plain text
 #, no-wrap
 msgid "<a name=\"events\"></a>\n"
-msgstr ""
+msgstr "<a name=\"events\"></a>\n"
 
 # File: docs/8.x/http-client.md, line: 436
 # File: docs/9.x/http-client.md, line: 442
@@ -1485,21 +1521,21 @@ msgstr ""
 #. type: Title ##
 #, no-wrap
 msgid "Events"
-msgstr ""
+msgstr "事件"
 
 # File: docs/8.x/http-client.md, line: 439
 # File: docs/9.x/http-client.md, line: 445
 # File: docs/master/http-client.md, line: 445
 #. type: Plain text
 msgid "Laravel fires three events during the process of sending HTTP requests. The `RequestSending` event is fired prior to a request being sent, while the `ResponseReceived` event is fired after a response is received for a given request. The `ConnectionFailed` event is fired if no response is received for a given request."
-msgstr ""
+msgstr "在傳送 HTTP Request 的過程中，Laravel 會觸發三個事件。在送出 Request 前會觸發 `RequestSending` 事件，而給定 Request 收到 Response 後會觸發 `ResponseReceived` 事件。若給定的 Request 未收到 Response，會觸發 `ConnectionFailed` 事件。"
 
 # File: docs/8.x/http-client.md, line: 441
 # File: docs/9.x/http-client.md, line: 447
 # File: docs/master/http-client.md, line: 447
 #. type: Plain text
 msgid "The `RequestSending` and `ConnectionFailed` events both contain a public `$request` property that you may use to inspect the `Illuminate\\Http\\Client\\Request` instance. Likewise, the `ResponseReceived` event contains a `$request` property as well as a `$response` property which may be used to inspect the `Illuminate\\Http\\Client\\Response` instance. You may register event listeners for this event in your `App\\Providers\\EventServiceProvider` service provider:"
-msgstr ""
+msgstr "`RequestSending` 與 `ConnectionFailed` 事件都有一個 `$request` 共用屬性，可以通過這個屬性來取得 `Illuminate\\Http\\Client\\Request` 實體。而 `ResponseReceived` 事件中也有一個 `$request` 公開屬性，以及一個可用來取得  `Illuminate\\Http\\Client\\Response` 實體的 `$response` 公開屬性。可以在 `App\\Providers\\EventServiceProvider` Service Provider 中為這些 Event 註冊 Listener："
 
 # File: docs/8.x/http-client.md, line: 457
 # File: docs/9.x/http-client.md, line: 463
@@ -1522,45 +1558,60 @@ msgid "    /**\n"
 "            'App\\Listeners\\LogConnectionFailed',\n"
 "        ],\n"
 "    ];\n"
-msgstr ""
+msgstr "    /**\n"
+"     * The event listener mappings for the application.\n"
+"     *\n"
+"     * @var array\n"
+"     */\n"
+"    protected $listen = [\n"
+"        'Illuminate\\Http\\Client\\Events\\RequestSending' => [\n"
+"            'App\\Listeners\\LogRequestSending',\n"
+"        ],\n"
+"        'Illuminate\\Http\\Client\\Events\\ResponseReceived' => [\n"
+"            'App\\Listeners\\LogResponseReceived',\n"
+"        ],\n"
+"        'Illuminate\\Http\\Client\\Events\\ConnectionFailed' => [\n"
+"            'App\\Listeners\\LogConnectionFailed',\n"
+"        ],\n"
+"    ];\n"
 
 # File: docs/9.x/http-client.md, line: 26
 # File: docs/master/http-client.md, line: 26
 #. type: Code fence info string
 #, no-wrap
 msgid "shell"
-msgstr ""
+msgstr "shell"
 
 # File: docs/9.x/http-client.md, line: 26
 # File: docs/master/http-client.md, line: 26
 #. type: Plain text
 #, no-wrap
 msgid "composer require guzzlehttp/guzzle\n"
-msgstr ""
+msgstr "composer require guzzlehttp/guzzle\n"
 
 # File: docs/9.x/http-client.md, line: 172
 # File: docs/master/http-client.md, line: 172
 #. type: Plain text
 msgid "You may specify the maximum number of seconds to wait while trying to connect to a server using the `connectTimeout` method:"
-msgstr ""
+msgstr "可以使用 `connectTimeout` 方法來指定嘗試連線到伺服器時要等待的最大秒數："
 
 # File: docs/9.x/http-client.md, line: 174
 # File: docs/master/http-client.md, line: 174
 #. type: Plain text
 #, no-wrap
 msgid "    $response = Http::connectTimeout(3)->get(...);\n"
-msgstr ""
+msgstr "    $response = Http::connectTimeout(3)->get(...);\n"
 
 # File: docs/9.x/http-client.md, line: 189
 # File: docs/master/http-client.md, line: 189
 #. type: Plain text
 msgid "If all of the requests fail, an instance of `Illuminate\\Http\\Client\\RequestException` will be thrown. If you would like to disable this behavior, you may provide a `throw` argument with a value of `false`. When disabled, the last response received by the client will be returned after all retries have been attempted:"
-msgstr ""
+msgstr "若 Request 執行失敗，會擲回一個 `Illuminate\\Http\\Client\\RequestException` 實體。若想禁用這個行為，可傳入 `false` 給 `throw` 引數。當禁用擲回 Exception 時，會回傳所有重試中用戶端收到的最後一個 Response："
 
 # File: docs/9.x/http-client.md, line: 191
 # File: docs/master/http-client.md, line: 191
 #. type: Plain text
 #, no-wrap
 msgid "    $response = Http::retry(3, 100, throw: false)->post(...);\n"
-msgstr ""
+msgstr "    $response = Http::retry(3, 100, throw: false)->post(...);\n"
 

@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: laravel-docs\n"
 "POT-Creation-Date: 2022-02-08 06:32+0000\n"
-"PO-Revision-Date: 2022-02-08 06:38\n"
+"PO-Revision-Date: 2022-02-10 08:02\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
@@ -40,7 +40,7 @@ msgstr ""
 #. type: Title #
 #, no-wrap
 msgid "Mail"
-msgstr ""
+msgstr "郵件"
 
 # File: docs/8.x/mail.md, line: 27
 #. type: Plain text
@@ -69,7 +69,30 @@ msgid "- [Introduction](#introduction)\n"
 "- [Testing Mailables](#testing-mailables)\n"
 "- [Mail & Local Development](#mail-and-local-development)\n"
 "- [Events](#events)\n"
-msgstr ""
+msgstr "- [簡介](#introduction)\n"
+"    - [設定](#configuration)\n"
+"    - [Driver 的前置需求](#driver-prerequisites)\n"
+"    - [Failover 設定](#failover-configuration)\n"
+"- [產生 Mailable](#generating-mailables)\n"
+"- [撰寫 Mailable](#writing-mailables)\n"
+"    - [設定寄件人](#configuring-the-sender)\n"
+"    - [設定 View](#configuring-the-view)\n"
+"    - [View 資料](#view-data)\n"
+"    - [附加檔案](#attachments)\n"
+"    - [內嵌附加檔案](#inline-attachments)\n"
+"    - [自定 SwiftMailer 訊息](#customizing-the-swiftmailer-message)\n"
+"- [Markdown 的 Mailable](#markdown-mailables)\n"
+"    - [產生 Markdown 的 Mailable](#generating-markdown-mailables)\n"
+"    - [撰寫 Markdown 訊息](#writing-markdown-messages)\n"
+"    - [自定元件](#customizing-the-components)\n"
+"- [傳送郵件](#sending-mail)\n"
+"    - [將郵件放入佇列](#queueing-mail)\n"
+"- [轉譯 Mailable](#rendering-mailables)\n"
+"    - [在瀏覽器中預覽 Mailables](#previewing-mailables-in-the-browser)\n"
+"- [本土化 Mailable](#localizing-mailables)\n"
+"- [測試 Mailables](#testing-mailables)\n"
+"- [郵件與本機開發](#mail-and-local-development)\n"
+"- [事件](#events)\n"
 
 # File: docs/8.x/mail.md, line: 29
 # File: docs/9.x/mail.md, line: 31
@@ -77,7 +100,7 @@ msgstr ""
 #. type: Plain text
 #, no-wrap
 msgid "<a name=\"introduction\"></a>\n"
-msgstr ""
+msgstr "<a name=\"introduction\"></a>\n"
 
 # File: docs/8.x/mail.md, line: 29
 # File: docs/9.x/mail.md, line: 31
@@ -85,12 +108,12 @@ msgstr ""
 #. type: Title ##
 #, no-wrap
 msgid "Introduction"
-msgstr ""
+msgstr "簡介"
 
 # File: docs/8.x/mail.md, line: 32
 #. type: Plain text
 msgid "Sending email doesn't have to be complicated. Laravel provides a clean, simple email API powered by the popular [SwiftMailer](https://swiftmailer.symfony.com/) library. Laravel and SwiftMailer provide drivers for sending email via SMTP, Mailgun, Postmark, Amazon SES, and `sendmail`, allowing you to quickly get started sending mail through a local or cloud based service of your choice."
-msgstr ""
+msgstr "傳送郵件不會很複雜。Laravel 提供簡潔的 API，並由熱門的 [SwiftMailer](https://swiftmailer.symfony.com/) 函式庫驅動。Laravel 與 SwiftMailer 提供使用 SMTP、Mailgun、Postmark、Amazon SES、`sendmail` 等方式寄信的 Driver，可讓我們使用偏好的本機或雲端服務來快速開始傳送郵件。"
 
 # File: docs/8.x/mail.md, line: 34
 # File: docs/9.x/mail.md, line: 36
@@ -98,7 +121,7 @@ msgstr ""
 #. type: Plain text
 #, no-wrap
 msgid "<a name=\"configuration\"></a>\n"
-msgstr ""
+msgstr "<a name=\"configuration\"></a>\n"
 
 # File: docs/8.x/mail.md, line: 34
 # File: docs/9.x/mail.md, line: 36
@@ -106,21 +129,21 @@ msgstr ""
 #. type: Title ###
 #, no-wrap
 msgid "Configuration"
-msgstr ""
+msgstr "設定"
 
 # File: docs/8.x/mail.md, line: 37
 # File: docs/9.x/mail.md, line: 39
 # File: docs/master/mail.md, line: 39
 #. type: Plain text
 msgid "Laravel's email services may be configured via your application's `config/mail.php` configuration file. Each mailer configured within this file may have its own unique configuration and even its own unique \"transport\", allowing your application to use different email services to send certain email messages. For example, your application might use Postmark to send transactional emails while using Amazon SES to send bulk emails."
-msgstr ""
+msgstr "可以使用專案的 `config/mail.php` 設定檔來設定 Laravel 的郵件服務。在這個檔案中，每個 ^[Mailer](郵件傳送程式) 都可以有不同的設定，甚至還可以設定不同的「Transport」設定，這樣我們就可以在程式中使用不同的電子郵件服務來寄送不同的訊息。舉例來說，我們可以使用 Postmark 來寄送交易電子郵件，並使用 Amazon SES 來傳送大量寄送的電子郵件。"
 
 # File: docs/8.x/mail.md, line: 39
 # File: docs/9.x/mail.md, line: 41
 # File: docs/master/mail.md, line: 41
 #. type: Plain text
 msgid "Within your `mail` configuration file, you will find a `mailers` configuration array. This array contains a sample configuration entry for each of the major mail drivers / transports supported by Laravel, while the `default` configuration value determines which mailer will be used by default when your application needs to send an email message."
-msgstr ""
+msgstr "在 `mail` 設定檔中，可以看到一個 `mailers` 設定陣列。這個陣列中包含了 Laravel 支援的各個主要郵件 Driver / Transport 範例設定，而其中 `default` 設定值用來判斷專案預設要使用哪個 Mailer 來傳送電子郵件訊息。"
 
 # File: docs/8.x/mail.md, line: 41
 # File: docs/9.x/mail.md, line: 43
@@ -128,7 +151,7 @@ msgstr ""
 #. type: Plain text
 #, no-wrap
 msgid "<a name=\"driver-prerequisites\"></a>\n"
-msgstr ""
+msgstr "<a name=\"driver-prerequisites\"></a>\n"
 
 # File: docs/8.x/mail.md, line: 41
 # File: docs/9.x/mail.md, line: 43
@@ -136,18 +159,18 @@ msgstr ""
 #. type: Title ###
 #, no-wrap
 msgid "Driver / Transport Prerequisites"
-msgstr ""
+msgstr "Driver / Transport 的前置要求"
 
 # File: docs/8.x/mail.md, line: 44
 #. type: Plain text
 msgid "The API based drivers such as Mailgun and Postmark are often simpler and faster than sending mail via SMTP servers. Whenever possible, we recommend that you use one of these drivers. All of the API based drivers require the Guzzle HTTP library, which may be installed via the Composer package manager:"
-msgstr ""
+msgstr "如 Mailgun 與 Postmark 等基於 API 的 Driver 在寄送郵件時通常會比 SMTP 伺服器來得簡單快速。若可能的話，我們建議你從這幾個 Driver 中選一個使用。這些基於 API 的 Driver 都要求要有 Guzzle HTTP 函式庫，可以通過 Composer 套件管理員來安裝 Guzzle HTTP 函式庫："
 
 # File: docs/8.x/mail.md, line: 46
 #. type: Plain text
 #, no-wrap
 msgid "    composer require guzzlehttp/guzzle\n"
-msgstr ""
+msgstr "    composer require guzzlehttp/guzzle\n"
 
 # File: docs/8.x/mail.md, line: 48
 # File: docs/9.x/mail.md, line: 48
@@ -155,7 +178,7 @@ msgstr ""
 #. type: Plain text
 #, no-wrap
 msgid "<a name=\"mailgun-driver\"></a>\n"
-msgstr ""
+msgstr "<a name=\"mailgun-driver\"></a>\n"
 
 # File: docs/8.x/mail.md, line: 48
 # File: docs/9.x/mail.md, line: 48
@@ -163,7 +186,7 @@ msgstr ""
 #. type: Title ####
 #, no-wrap
 msgid "Mailgun Driver"
-msgstr ""
+msgstr "Mailgun Driver"
 
 # File: docs/8.x/mail.md, line: 51
 #. type: Plain text

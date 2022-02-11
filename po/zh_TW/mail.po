@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: laravel-docs\n"
 "POT-Creation-Date: 2022-02-08 06:32+0000\n"
-"PO-Revision-Date: 2022-02-11 11:22\n"
+"PO-Revision-Date: 2022-02-11 12:29\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
@@ -3295,7 +3295,7 @@ msgstr "        /**\n"
 # File: docs/master/mail.md, line: 956
 #. type: Plain text
 msgid "Once you've defined your custom transport, you may register it via the `extend` method provided by the `Mail` facade. Typically, this should be done within the `boot` method of your application's `AppServiceProvider` service provider. A `$config` argument will be passed to the closure provided to the `extend` method. This argument will contain the configuration array defined for the mailer in the application's `config/mail.php` configuration file:"
-msgstr ""
+msgstr "定義好自訂 Transport 後，就可以使用 `Mail` Facade 的 `extend` 方法來註冊這個 Transport。一般來說，應在 `AppServiceProvider` Service Provider 中 `boot` 方法內註冊這個 Transport。傳給 `extend` 方法的閉包會收到一個 `$config` 引數。這個引數中會包含在專案 `config/mail.php` 內定義給該方法的設定陣列："
 
 # File: docs/9.x/mail.md, line: 959
 # File: docs/master/mail.md, line: 959
@@ -3303,7 +3303,8 @@ msgstr ""
 #, no-wrap
 msgid "    use App\\Mail\\MailchimpTransport;\n"
 "    use Illuminate\\Support\\Facades\\Mail;\n"
-msgstr ""
+msgstr "    use App\\Mail\\MailchimpTransport;\n"
+"    use Illuminate\\Support\\Facades\\Mail;\n"
 
 # File: docs/9.x/mail.md, line: 971
 # File: docs/master/mail.md, line: 971
@@ -3320,13 +3321,23 @@ msgid "    /**\n"
 "            return new MailchimpTransport(...);\n"
 "        })\n"
 "    }\n"
-msgstr ""
+msgstr "    /**\n"
+"     * Bootstrap any application services.\n"
+"     *\n"
+"     * @return void\n"
+"     */\n"
+"    public function boot()\n"
+"    {\n"
+"        Mail::extend('mailchimp', function (array $config = []) {\n"
+"            return new MailchimpTransport(...);\n"
+"        })\n"
+"    }\n"
 
 # File: docs/9.x/mail.md, line: 973
 # File: docs/master/mail.md, line: 973
 #. type: Plain text
 msgid "Once your custom transport has been defined and registered, you may create a mailer definition within your application's `config/mail.php` configuration file that utilizes the new transport:"
-msgstr ""
+msgstr "定義並註冊好自訂 Transport 後，就可以在專案 `config/mail.php` 設定檔內建立一個使用這個新 Transport 的 Mailer 定義："
 
 # File: docs/9.x/mail.md, line: 978
 # File: docs/master/mail.md, line: 978
@@ -3336,47 +3347,50 @@ msgid "    'mailchimp' => [\n"
 "        'transport' => 'mailchimp',\n"
 "        // ...\n"
 "    ],\n"
-msgstr ""
+msgstr "    'mailchimp' => [\n"
+"        'transport' => 'mailchimp',\n"
+"        // ...\n"
+"    ],\n"
 
 # File: docs/9.x/mail.md, line: 980
 # File: docs/master/mail.md, line: 980
 #. type: Plain text
 #, no-wrap
 msgid "<a name=\"additional-symfony-transports\"></a>\n"
-msgstr ""
+msgstr "<a name=\"additional-symfony-transports\"></a>\n"
 
 # File: docs/9.x/mail.md, line: 980
 # File: docs/master/mail.md, line: 980
 #. type: Title ###
 #, no-wrap
 msgid "Additional Symfony Transports"
-msgstr ""
+msgstr "額外的 Symfony Transport"
 
 # File: docs/9.x/mail.md, line: 983
 # File: docs/master/mail.md, line: 983
 #. type: Plain text
 msgid "Laravel includes support for some existing Symfony maintained mail transports like Mailgun and Postmark. However, you may wish to extend Laravel with support for additional Symfony maintained transports. You can do so by requiring the necessary Symfony mailer via Composer and registering the transport with Laravel. For example, you may install and register the \"Sendinblue\" Symfony mailer:"
-msgstr ""
+msgstr "Laravel 支援一些像是 Mailgun 與 Postmark 等現有 Symfony 維護的 Mail Transport。不過，有時候我們可能會需要讓 Laravel 也支援其他由 Symfony 維護的 Transport。若要讓 Laravel 支援這些 Transport，只要使用 Composer 安裝這些 Symfony Mailer，然後再向 Laravel 註冊這個 Transport。舉例來說，我們可以安裝並註冊「Sendinblue」Symfony Mailer："
 
 # File: docs/9.x/mail.md, line: 984
 # File: docs/master/mail.md, line: 984
 #. type: Code fence info string
 #, no-wrap
 msgid "none"
-msgstr ""
+msgstr "none"
 
 # File: docs/9.x/mail.md, line: 984
 # File: docs/master/mail.md, line: 984
 #. type: Plain text
 #, no-wrap
 msgid "composer require symfony/sendinblue-mailer\n"
-msgstr ""
+msgstr "composer require symfony/sendinblue-mailer\n"
 
 # File: docs/9.x/mail.md, line: 989
 # File: docs/master/mail.md, line: 989
 #. type: Plain text
 msgid "Once the Sendinblue mailer package has been installed, you may add an entry for your Sendinblue API credentials to your application's `services` configuration file:"
-msgstr ""
+msgstr "安裝好 Sendinblue Mailer 套件後，就可以在專案的 `services` 設定檔中加上 Sendinblue 的 API 認證："
 
 # File: docs/9.x/mail.md, line: 993
 # File: docs/master/mail.md, line: 993
@@ -3385,13 +3399,15 @@ msgstr ""
 msgid "    'sendinblue' => [\n"
 "        'key' => 'your-api-key',\n"
 "    ],\n"
-msgstr ""
+msgstr "    'sendinblue' => [\n"
+"        'key' => 'your-api-key',\n"
+"    ],\n"
 
 # File: docs/9.x/mail.md, line: 995
 # File: docs/master/mail.md, line: 995
 #. type: Plain text
 msgid "Finally, you may use the `Mail` facade's `extend` method to register the transport with Laravel. Typically, this should be done within the `boot` method of a service provider:"
-msgstr ""
+msgstr "最後，使用 `Mail` Facade 的 `extend` 方法來向 Laravel 註冊這個 Transport。一般來說，應在某個 Service Provider 內註冊一個 `boot` 方法："
 
 # File: docs/9.x/mail.md, line: 999
 # File: docs/master/mail.md, line: 999
@@ -3400,7 +3416,9 @@ msgstr ""
 msgid "    use Illuminate\\Support\\Facades\\Mail;\n"
 "    use Symfony\\Component\\Mailer\\Bridge\\Sendinblue\\Transport\\SendinblueTransportFactory;\n"
 "    use Symfony\\Component\\Mailer\\Transport\\Dsn;\n"
-msgstr ""
+msgstr "    use Illuminate\\Support\\Facades\\Mail;\n"
+"    use Symfony\\Component\\Mailer\\Bridge\\Sendinblue\\Transport\\SendinblueTransportFactory;\n"
+"    use Symfony\\Component\\Mailer\\Transport\\Dsn;\n"
 
 # File: docs/9.x/mail.md, line: 1016
 # File: docs/master/mail.md, line: 1016
@@ -3423,5 +3441,21 @@ msgid "    /**\n"
 "            );\n"
 "        });\n"
 "    }\n"
-msgstr ""
+msgstr "    /**\n"
+"     * Bootstrap any application services.\n"
+"     *\n"
+"     * @return void\n"
+"     */\n"
+"    public function boot()\n"
+"    {\n"
+"        Mail::extend('sendinblue', function () {\n"
+"            return (new SendinblueTransportFactory)->create(\n"
+"                new Dsn(\n"
+"                    'sendinblue+api',\n"
+"                    'default',\n"
+"                    config('services.sendinblue.key')\n"
+"                )\n"
+"            );\n"
+"        });\n"
+"    }\n"
 

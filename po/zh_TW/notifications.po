@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: laravel-docs\n"
 "POT-Creation-Date: 2022-02-08 06:32+0000\n"
-"PO-Revision-Date: 2022-02-12 10:12\n"
+"PO-Revision-Date: 2022-02-12 11:13\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
@@ -621,7 +621,7 @@ msgstr "    $user->notify((new InvoicePaid($invoice))->delay($delay));\n"
 # File: docs/master/notifications.md, line: 162
 #. type: Plain text
 msgid "You may pass an array to the `delay` method to specify the delay amount for specific channels:"
-msgstr ""
+msgstr "可傳入陣列給 `delay` 方法來指定特定通道要延遲的時間："
 
 # File: docs/8.x/notifications.md, line: 165
 # File: docs/9.x/notifications.md, line: 167
@@ -632,14 +632,17 @@ msgid "    $user->notify((new InvoicePaid($invoice))->delay([\n"
 "        'mail' => now()->addMinutes(5),\n"
 "        'sms' => now()->addMinutes(10),\n"
 "    ]));\n"
-msgstr ""
+msgstr "    $user->notify((new InvoicePaid($invoice))->delay([\n"
+"        'mail' => now()->addMinutes(5),\n"
+"        'sms' => now()->addMinutes(10),\n"
+"    ]));\n"
 
 # File: docs/8.x/notifications.md, line: 167
 # File: docs/9.x/notifications.md, line: 169
 # File: docs/master/notifications.md, line: 169
 #. type: Plain text
 msgid "When queueing notifications, a queued job will be created for each recipient and channel combination. For example, six jobs will be dispatched to the queue if your notification has three recipients and two channels."
-msgstr ""
+msgstr "在將通知放入佇列時，Laravel 會為每個收件人與每個通道的組合建立佇列^[任務](Job)。舉例來說，若通知有三個收件人與兩個通道，則會^[派發](Dispatch)六個任務。"
 
 # File: docs/8.x/notifications.md, line: 169
 # File: docs/9.x/notifications.md, line: 171
@@ -647,7 +650,7 @@ msgstr ""
 #. type: Plain text
 #, no-wrap
 msgid "<a name=\"customizing-the-notification-queue-connection\"></a>\n"
-msgstr ""
+msgstr "<a name=\"customizing-the-notification-queue-connection\"></a>\n"
 
 # File: docs/8.x/notifications.md, line: 169
 # File: docs/9.x/notifications.md, line: 171
@@ -655,14 +658,14 @@ msgstr ""
 #. type: Title ####
 #, no-wrap
 msgid "Customizing The Notification Queue Connection"
-msgstr ""
+msgstr "自訂通知的佇列連線"
 
 # File: docs/8.x/notifications.md, line: 172
 # File: docs/9.x/notifications.md, line: 174
 # File: docs/master/notifications.md, line: 174
 #. type: Plain text
 msgid "By default, queued notifications will be queued using your application's default queue connection. If you would like to specify a different connection that should be used for a particular notification, you may define a `$connection` property on the notification class:"
-msgstr ""
+msgstr "預設情況下，佇列通知會使用專案的預設佇列連線。若想為特定通知指定不同的連線，可在 Notification 類別上定義一個 `$connection` 屬性："
 
 # File: docs/8.x/notifications.md, line: 179
 # File: docs/9.x/notifications.md, line: 181
@@ -675,7 +678,12 @@ msgid "    /**\n"
 "     * @var string\n"
 "     */\n"
 "    public $connection = 'redis';\n"
-msgstr ""
+msgstr "    /**\n"
+"     * The name of the queue connection to use when queueing the notification.\n"
+"     *\n"
+"     * @var string\n"
+"     */\n"
+"    public $connection = 'redis';\n"
 
 # File: docs/8.x/notifications.md, line: 181
 # File: docs/9.x/notifications.md, line: 183
@@ -683,7 +691,7 @@ msgstr ""
 #. type: Plain text
 #, no-wrap
 msgid "<a name=\"customizing-notification-channel-queues\"></a>\n"
-msgstr ""
+msgstr "<a name=\"customizing-notification-channel-queues\"></a>\n"
 
 # File: docs/8.x/notifications.md, line: 181
 # File: docs/9.x/notifications.md, line: 183
@@ -691,14 +699,14 @@ msgstr ""
 #. type: Title ####
 #, no-wrap
 msgid "Customizing Notification Channel Queues"
-msgstr ""
+msgstr "自訂通知通道佇列"
 
 # File: docs/8.x/notifications.md, line: 184
 # File: docs/9.x/notifications.md, line: 186
 # File: docs/master/notifications.md, line: 186
 #. type: Plain text
 msgid "If you would like to specify a specific queue that should be used for each notification channel supported by the notification, you may define a `viaQueues` method on your notification. This method should return an array of channel name / queue name pairs:"
-msgstr ""
+msgstr "若想為某個通知所支援的各個通知通道指定特定的佇列，可在通知上定義一個 `viaQueues` 方法。這個方法應會傳一組通知名稱 / 佇列名稱配對的陣列："
 
 # File: docs/8.x/notifications.md, line: 197
 # File: docs/9.x/notifications.md, line: 199
@@ -717,7 +725,18 @@ msgid "    /**\n"
 "            'slack' => 'slack-queue',\n"
 "        ];\n"
 "    }\n"
-msgstr ""
+msgstr "    /**\n"
+"     * Determine which queues should be used for each notification channel.\n"
+"     *\n"
+"     * @return array\n"
+"     */\n"
+"    public function viaQueues()\n"
+"    {\n"
+"        return [\n"
+"            'mail' => 'mail-queue',\n"
+"            'slack' => 'slack-queue',\n"
+"        ];\n"
+"    }\n"
 
 # File: docs/8.x/notifications.md, line: 199
 # File: docs/9.x/notifications.md, line: 201
@@ -725,7 +744,7 @@ msgstr ""
 #. type: Plain text
 #, no-wrap
 msgid "<a name=\"queued-notifications-and-database-transactions\"></a>\n"
-msgstr ""
+msgstr "<a name=\"queued-notifications-and-database-transactions\"></a>\n"
 
 # File: docs/8.x/notifications.md, line: 199
 # File: docs/9.x/notifications.md, line: 201
@@ -733,21 +752,21 @@ msgstr ""
 #. type: Title ####
 #, no-wrap
 msgid "Queued Notifications & Database Transactions"
-msgstr ""
+msgstr "佇列的通知與資料庫 Transaction"
 
 # File: docs/8.x/notifications.md, line: 202
 # File: docs/9.x/notifications.md, line: 204
 # File: docs/master/notifications.md, line: 204
 #. type: Plain text
 msgid "When queued notifications are dispatched within database transactions, they may be processed by the queue before the database transaction has committed. When this happens, any updates you have made to models or database records during the database transaction may not yet be reflected in the database. In addition, any models or database records created within the transaction may not exist in the database. If your notification depends on these models, unexpected errors can occur when the job that sends the queued notification is processed."
-msgstr ""
+msgstr "當佇列通知是在資料庫 Transaction 內^[分派](Dispatch)的時候，這個通知可能會在資料庫 Transaction 被 Commit 前就被佇列進行處理了。發生這種情況時，在資料庫 Transaction 期間對 Model 或資料庫記錄所做出的更新可能都還未反應到資料庫內。另外，所有在 Transaction 期間新增的 Model 或資料庫記錄也可能還未出現在資料庫內。若該通知有使用這些 Model 的話，處理該通知的佇列任務時可能會出現未預期的錯誤。"
 
 # File: docs/8.x/notifications.md, line: 204
 # File: docs/9.x/notifications.md, line: 206
 # File: docs/master/notifications.md, line: 206
 #. type: Plain text
 msgid "If your queue connection's `after_commit` configuration option is set to `false`, you may still indicate that a particular queued notification should be dispatched after all open database transactions have been committed by calling the `afterCommit` method when sending the notification:"
-msgstr ""
+msgstr "若佇列的 `after_commit` 選項設為 `false`，則我們還是可以通過在傳送通知前呼叫 `afterCommit` 方法來標示出該 Mailable 應在所有資料庫 Transaction 都被 Commit 後才分派："
 
 # File: docs/8.x/notifications.md, line: 208
 # File: docs/9.x/notifications.md, line: 210
@@ -755,14 +774,14 @@ msgstr ""
 #. type: Plain text
 #, no-wrap
 msgid "    $user->notify((new InvoicePaid($invoice))->afterCommit());\n"
-msgstr ""
+msgstr "    $user->notify((new InvoicePaid($invoice))->afterCommit());\n"
 
 # File: docs/8.x/notifications.md, line: 210
 # File: docs/9.x/notifications.md, line: 212
 # File: docs/master/notifications.md, line: 212
 #. type: Plain text
 msgid "Alternatively, you may call the `afterCommit` method from your notification's constructor:"
-msgstr ""
+msgstr "或者，也可以在 Notification 的 Constructor 上呼叫 `afterCommit` 方法："
 
 # File: docs/8.x/notifications.md, line: 233
 # File: docs/9.x/notifications.md, line: 235
@@ -779,7 +798,16 @@ msgid "        /**\n"
 "            $this->afterCommit();\n"
 "        }\n"
 "    }\n"
-msgstr ""
+msgstr "        /**\n"
+"         * Create a new notification instance.\n"
+"         *\n"
+"         * @return void\n"
+"         */\n"
+"        public function __construct()\n"
+"        {\n"
+"            $this->afterCommit();\n"
+"        }\n"
+"    }\n"
 
 # File: docs/8.x/notifications.md, line: 235
 # File: docs/9.x/notifications.md, line: 237
@@ -787,7 +815,7 @@ msgstr ""
 #. type: Plain text
 #, no-wrap
 msgid "> {tip} To learn more about working around these issues, please review the documentation regarding [queued jobs and database transactions](/docs/{{version}}/queues#jobs-and-database-transactions).\n"
-msgstr ""
+msgstr "> {tip} 要瞭解更多有關這類問題的解決方法，請參考有關[佇列任務與資料庫 Transaction](/docs/{{version}}/queues#jobs-and-database-transactions) 有關的說明文件。\n"
 
 # File: docs/8.x/notifications.md, line: 237
 # File: docs/9.x/notifications.md, line: 239
@@ -795,7 +823,7 @@ msgstr ""
 #. type: Plain text
 #, no-wrap
 msgid "<a name=\"determining-if-the-queued-notification-should-be-sent\"></a>\n"
-msgstr ""
+msgstr "<a name=\"determining-if-the-queued-notification-should-be-sent\"></a>\n"
 
 # File: docs/8.x/notifications.md, line: 237
 # File: docs/9.x/notifications.md, line: 239
@@ -803,21 +831,21 @@ msgstr ""
 #. type: Title ####
 #, no-wrap
 msgid "Determining If A Queued Notification Should Be Sent"
-msgstr ""
+msgstr "判斷是否應送出某個佇列的通知"
 
 # File: docs/8.x/notifications.md, line: 240
 # File: docs/9.x/notifications.md, line: 242
 # File: docs/master/notifications.md, line: 242
 #. type: Plain text
 msgid "After a queued notification has been dispatched for the queue for background processing, it will typically be accepted by a queue worker and sent to its intended recipient."
-msgstr ""
+msgstr "當佇列通知被派發出去給背景執行後，通常會被傳給佇列 Worker 並進一步傳送給指定的收件人。"
 
 # File: docs/8.x/notifications.md, line: 242
 # File: docs/9.x/notifications.md, line: 244
 # File: docs/master/notifications.md, line: 244
 #. type: Plain text
 msgid "However, if you would like to make the final determination on whether the queued notification should be sent after it is being processed by a queue worker, you may define a `shouldSend` method on the notification class. If this method returns `false`, the notification will not be sent:"
-msgstr ""
+msgstr "不過，在通知要被佇列 Worker 處理時，若我們還想就是否應傳送該佇列通知作最後的決定，可在該 Notification 類別上定義一個 `shouldSend` 方法。若該方法回傳 `false`，就不會傳送這個通知："
 
 # File: docs/8.x/notifications.md, line: 254
 # File: docs/9.x/notifications.md, line: 256
@@ -835,7 +863,17 @@ msgid "    /**\n"
 "    {\n"
 "        return $this->invoice->isPaid();\n"
 "    }\n"
-msgstr ""
+msgstr "    /**\n"
+"     * Determine if the notification should be sent.\n"
+"     *\n"
+"     * @param  mixed  $notifiable\n"
+"     * @param  string  $channel\n"
+"     * @return bool\n"
+"     */\n"
+"    public function shouldSend($notifiable, $channel)\n"
+"    {\n"
+"        return $this->invoice->isPaid();\n"
+"    }\n"
 
 # File: docs/8.x/notifications.md, line: 256
 # File: docs/9.x/notifications.md, line: 258
@@ -843,7 +881,7 @@ msgstr ""
 #. type: Plain text
 #, no-wrap
 msgid "<a name=\"on-demand-notifications\"></a>\n"
-msgstr ""
+msgstr "<a name=\"on-demand-notifications\"></a>\n"
 
 # File: docs/8.x/notifications.md, line: 256
 # File: docs/9.x/notifications.md, line: 258
@@ -851,14 +889,14 @@ msgstr ""
 #. type: Title ###
 #, no-wrap
 msgid "On-Demand Notifications"
-msgstr ""
+msgstr "隨需通知"
 
 # File: docs/8.x/notifications.md, line: 259
 # File: docs/9.x/notifications.md, line: 261
 # File: docs/master/notifications.md, line: 261
 #. type: Plain text
 msgid "Sometimes you may need to send a notification to someone who is not stored as a \"user\" of your application. Using the `Notification` facade's `route` method, you may specify ad-hoc notification routing information before sending the notification:"
-msgstr ""
+msgstr "有時候，我們會需要將通知傳給不是我們網站使用者的人。只要使用 `Notification` Facade 上的 `route` 方法，就可以在送出通知前指定特別的通知 Route 資訊："
 
 # File: docs/8.x/notifications.md, line: 264
 # File: docs/9.x/notifications.md, line: 266
@@ -869,14 +907,17 @@ msgid "    Notification::route('mail', 'taylor@example.com')\n"
 "                ->route('nexmo', '5555555555')\n"
 "                ->route('slack', 'https://hooks.slack.com/services/...')\n"
 "                ->notify(new InvoicePaid($invoice));\n"
-msgstr ""
+msgstr "    Notification::route('mail', 'taylor@example.com')\n"
+"                ->route('nexmo', '5555555555')\n"
+"                ->route('slack', 'https://hooks.slack.com/services/...')\n"
+"                ->notify(new InvoicePaid($invoice));\n"
 
 # File: docs/8.x/notifications.md, line: 266
 # File: docs/9.x/notifications.md, line: 268
 # File: docs/master/notifications.md, line: 268
 #. type: Plain text
 msgid "If you would like to provide the recipient's name when sending an on-demand notification to the `mail` route, you may provide an array that contains the email address as the key and the name as the value of the first element in the array:"
-msgstr ""
+msgstr "若想在傳送隨需通知時為 `mail` Route 提供收件人名稱，可提供一個索引鍵為郵件位址而值為姓名的陣列："
 
 # File: docs/8.x/notifications.md, line: 270
 # File: docs/9.x/notifications.md, line: 272
@@ -886,7 +927,9 @@ msgstr ""
 msgid "    Notification::route('mail', [\n"
 "        'barrett@example.com' => 'Barrett Blair',\n"
 "    ])->notify(new InvoicePaid($invoice));\n"
-msgstr ""
+msgstr "    Notification::route('mail', [\n"
+"        'barrett@example.com' => 'Barrett Blair',\n"
+"    ])->notify(new InvoicePaid($invoice));\n"
 
 # File: docs/8.x/notifications.md, line: 272
 # File: docs/9.x/notifications.md, line: 274
@@ -894,7 +937,7 @@ msgstr ""
 #. type: Plain text
 #, no-wrap
 msgid "<a name=\"mail-notifications\"></a>\n"
-msgstr ""
+msgstr "<a name=\"mail-notifications\"></a>\n"
 
 # File: docs/8.x/notifications.md, line: 272
 # File: docs/9.x/notifications.md, line: 274
@@ -902,7 +945,7 @@ msgstr ""
 #. type: Title ##
 #, no-wrap
 msgid "Mail Notifications"
-msgstr ""
+msgstr "郵件通知"
 
 # File: docs/8.x/notifications.md, line: 275
 # File: docs/9.x/notifications.md, line: 277
@@ -910,7 +953,7 @@ msgstr ""
 #. type: Plain text
 #, no-wrap
 msgid "<a name=\"formatting-mail-messages\"></a>\n"
-msgstr ""
+msgstr "<a name=\"formatting-mail-messages\"></a>\n"
 
 # File: docs/8.x/notifications.md, line: 275
 # File: docs/9.x/notifications.md, line: 277
@@ -918,21 +961,21 @@ msgstr ""
 #. type: Title ###
 #, no-wrap
 msgid "Formatting Mail Messages"
-msgstr ""
+msgstr "格式化郵件通知"
 
 # File: docs/8.x/notifications.md, line: 278
 # File: docs/9.x/notifications.md, line: 280
 # File: docs/master/notifications.md, line: 280
 #. type: Plain text
 msgid "If a notification supports being sent as an email, you should define a `toMail` method on the notification class. This method will receive a `$notifiable` entity and should return an `Illuminate\\Notifications\\Messages\\MailMessage` instance."
-msgstr ""
+msgstr "若要支援以電子郵件傳送通知，請在該通知類別上定義一個 `toMail` 方法。這個方法會收到一個 `$notifiable` 實體，而回傳值應為 `Illuminate\\Notifications\\Messages\\MailMessage` 實體。"
 
 # File: docs/8.x/notifications.md, line: 280
 # File: docs/9.x/notifications.md, line: 282
 # File: docs/master/notifications.md, line: 282
 #. type: Plain text
 msgid "The `MailMessage` class contains a few simple methods to help you build transactional email messages. Mail messages may contain lines of text as well as a \"call to action\". Let's take a look at an example `toMail` method:"
-msgstr ""
+msgstr "`MailMessage` 類別包含一些簡單的方法，可以讓我們快速建立^[交易](Transactional)電子郵件訊息。郵件訊息可包含數行的文字，以及「執行動作」。來看看一個範例的 `toMail` 方法："
 
 # File: docs/8.x/notifications.md, line: 290
 # File: docs/8.x/notifications.md, line: 606
@@ -951,7 +994,15 @@ msgid "    /**\n"
 "    public function toMail($notifiable)\n"
 "    {\n"
 "        $url = url('/invoice/'.$this->invoice->id);\n"
-msgstr ""
+msgstr "    /**\n"
+"     * Get the mail representation of the notification.\n"
+"     *\n"
+"     * @param  mixed  $notifiable\n"
+"     * @return \\Illuminate\\Notifications\\Messages\\MailMessage\n"
+"     */\n"
+"    public function toMail($notifiable)\n"
+"    {\n"
+"        $url = url('/invoice/'.$this->invoice->id);\n"
 
 # File: docs/8.x/notifications.md, line: 297
 # File: docs/9.x/notifications.md, line: 299
@@ -964,7 +1015,12 @@ msgid "        return (new MailMessage)\n"
 "                    ->action('View Invoice', $url)\n"
 "                    ->line('Thank you for using our application!');\n"
 "    }\n"
-msgstr ""
+msgstr "        return (new MailMessage)\n"
+"                    ->greeting('Hello!')\n"
+"                    ->line('One of your invoices has been paid!')\n"
+"                    ->action('View Invoice', $url)\n"
+"                    ->line('Thank you for using our application!');\n"
+"    }\n"
 
 # File: docs/8.x/notifications.md, line: 299
 # File: docs/9.x/notifications.md, line: 301
@@ -972,14 +1028,14 @@ msgstr ""
 #. type: Plain text
 #, no-wrap
 msgid "> {tip} Note we are using `$this->invoice->id` in our `toMail` method. You may pass any data your notification needs to generate its message into the notification's constructor.\n"
-msgstr ""
+msgstr "> {tip} 請注意，在 `toMail` 中，我們使用了 `$this->invoice->id`。我們可以將通知訊息所需要的任何資料傳入該通知的 ^[Constructor](建構函式) 中。\n"
 
 # File: docs/8.x/notifications.md, line: 301
 # File: docs/9.x/notifications.md, line: 303
 # File: docs/master/notifications.md, line: 303
 #. type: Plain text
 msgid "In this example, we register a greeting, a line of text, a call to action, and then another line of text. These methods provided by the `MailMessage` object make it simple and fast to format small transactional emails. The mail channel will then translate the message components into a beautiful, responsive HTML email template with a plain-text counterpart. Here is an example of an email generated by the `mail` channel:"
-msgstr ""
+msgstr "在這個範例中，我們註冊了一個^[招呼語](Greeting)，^[一行文字](Line)，一個^[動作](Action)，然後是又^[一行的文字](Line)。`MailMessage` 物件提供的這些方法讓我們可以簡單快速地格式化簡短的交易電子郵件。Mail 通道會將該這些訊息元件翻譯為漂亮的回應式 HTML 電子郵件樣板與一個回應的純文字版本。下列是 `mail` 通道產生的電子郵件範例："
 
 # File: docs/8.x/notifications.md, line: 303
 # File: docs/9.x/notifications.md, line: 305
@@ -987,7 +1043,7 @@ msgstr ""
 #. type: Plain text
 #, no-wrap
 msgid "<img src=\"https://laravel.com/img/docs/notification-example-2.png\">\n"
-msgstr ""
+msgstr "<img src=\"https://laravel.com/img/docs/notification-example-2.png\">\n"
 
 # File: docs/8.x/notifications.md, line: 305
 # File: docs/9.x/notifications.md, line: 307
@@ -995,7 +1051,7 @@ msgstr ""
 #. type: Plain text
 #, no-wrap
 msgid "> {tip} When sending mail notifications, be sure to set the `name` configuration option in your `config/app.php` configuration file. This value will be used in the header and footer of your mail notification messages.\n"
-msgstr ""
+msgstr "> {tip} 在傳送郵件通知時，請確保有在 `config/app.php` 設定檔中設定 `name` 設定選項。在郵件通知訊息的頁頭與頁尾中會使用到這個值。\n"
 
 # File: docs/8.x/notifications.md, line: 307
 # File: docs/9.x/notifications.md, line: 309
@@ -1003,7 +1059,7 @@ msgstr ""
 #. type: Plain text
 #, no-wrap
 msgid "<a name=\"other-mail-notification-formatting-options\"></a>\n"
-msgstr ""
+msgstr "<a name=\"other-mail-notification-formatting-options\"></a>\n"
 
 # File: docs/8.x/notifications.md, line: 307
 # File: docs/9.x/notifications.md, line: 309
@@ -1011,14 +1067,14 @@ msgstr ""
 #. type: Title ####
 #, no-wrap
 msgid "Other Mail Notification Formatting Options"
-msgstr ""
+msgstr "其他郵件通知的格式化選項"
 
 # File: docs/8.x/notifications.md, line: 310
 # File: docs/9.x/notifications.md, line: 312
 # File: docs/master/notifications.md, line: 312
 #. type: Plain text
 msgid "Instead of defining the \"lines\" of text in the notification class, you may use the `view` method to specify a custom template that should be used to render the notification email:"
-msgstr ""
+msgstr "除了在 Notification 類別中定義「line」以外，也可以使用 `view` 方法來指定用來轉譯通知郵件的自訂樣板："
 
 # File: docs/8.x/notifications.md, line: 323
 # File: docs/9.x/notifications.md, line: 325
@@ -1037,14 +1093,25 @@ msgid "    /**\n"
 "            'emails.name', ['invoice' => $this->invoice]\n"
 "        );\n"
 "    }\n"
-msgstr ""
+msgstr "    /**\n"
+"     * Get the mail representation of the notification.\n"
+"     *\n"
+"     * @param  mixed  $notifiable\n"
+"     * @return \\Illuminate\\Notifications\\Messages\\MailMessage\n"
+"     */\n"
+"    public function toMail($notifiable)\n"
+"    {\n"
+"        return (new MailMessage)->view(\n"
+"            'emails.name', ['invoice' => $this->invoice]\n"
+"        );\n"
+"    }\n"
 
 # File: docs/8.x/notifications.md, line: 325
 # File: docs/9.x/notifications.md, line: 327
 # File: docs/master/notifications.md, line: 327
 #. type: Plain text
 msgid "You may specify a plain-text view for the mail message by passing the view name as the second element of an array that is given to the `view` method:"
-msgstr ""
+msgstr "可以傳入一個陣列給 `view` 方法，並在該陣列的第二個元素上指定純文字版本的 View 名稱，以為郵件訊息指定純文字版本："
 
 # File: docs/8.x/notifications.md, line: 339
 # File: docs/9.x/notifications.md, line: 341
@@ -1064,7 +1131,19 @@ msgid "    /**\n"
 "            ['invoice' => $this->invoice]\n"
 "        );\n"
 "    }\n"
-msgstr ""
+msgstr "    /**\n"
+"     * Get the mail representation of the notification.\n"
+"     *\n"
+"     * @param  mixed  $notifiable\n"
+"     * @return \\Illuminate\\Notifications\\Messages\\MailMessage\n"
+"     */\n"
+"    public function toMail($notifiable)\n"
+"    {\n"
+"        return (new MailMessage)->view(\n"
+"            ['emails.name.html', 'emails.name.plain'],\n"
+"            ['invoice' => $this->invoice]\n"
+"        );\n"
+"    }\n"
 
 # File: docs/8.x/notifications.md, line: 341
 # File: docs/9.x/notifications.md, line: 343
@@ -1072,7 +1151,7 @@ msgstr ""
 #. type: Plain text
 #, no-wrap
 msgid "<a name=\"error-messages\"></a>\n"
-msgstr ""
+msgstr "<a name=\"error-messages\"></a>\n"
 
 # File: docs/8.x/notifications.md, line: 341
 # File: docs/9.x/notifications.md, line: 343
@@ -1080,14 +1159,14 @@ msgstr ""
 #. type: Title ####
 #, no-wrap
 msgid "Error Messages"
-msgstr ""
+msgstr "錯誤訊息"
 
 # File: docs/8.x/notifications.md, line: 344
 # File: docs/9.x/notifications.md, line: 346
 # File: docs/master/notifications.md, line: 346
 #. type: Plain text
 msgid "Some notifications inform users of errors, such as a failed invoice payment. You may indicate that a mail message is regarding an error by calling the `error` method when building your message. When using the `error` method on a mail message, the call to action button will be red instead of black:"
-msgstr ""
+msgstr "有些通知是用來通知使用者錯誤的，如付款失敗等。可在建立訊息時呼叫 `error` 方法來標示該郵件訊息是錯誤通知。在郵件訊息上使用 `error` 方法時，動作按鈕會從黑色變成紅色的："
 
 # File: docs/8.x/notifications.md, line: 358
 # File: docs/9.x/notifications.md, line: 360
@@ -1107,7 +1186,19 @@ msgid "    /**\n"
 "                    ->subject('Notification Subject')\n"
 "                    ->line('...');\n"
 "    }\n"
-msgstr ""
+msgstr "    /**\n"
+"     * Get the mail representation of the notification.\n"
+"     *\n"
+"     * @param  mixed  $notifiable\n"
+"     * @return \\Illuminate\\Notifications\\Message\n"
+"     */\n"
+"    public function toMail($notifiable)\n"
+"    {\n"
+"        return (new MailMessage)\n"
+"                    ->error()\n"
+"                    ->subject('Notification Subject')\n"
+"                    ->line('...');\n"
+"    }\n"
 
 # File: docs/8.x/notifications.md, line: 360
 # File: docs/9.x/notifications.md, line: 362
@@ -1115,7 +1206,7 @@ msgstr ""
 #. type: Plain text
 #, no-wrap
 msgid "<a name=\"customizing-the-sender\"></a>\n"
-msgstr ""
+msgstr "<a name=\"customizing-the-sender\"></a>\n"
 
 # File: docs/8.x/notifications.md, line: 360
 # File: docs/9.x/notifications.md, line: 362
@@ -1123,14 +1214,14 @@ msgstr ""
 #. type: Title ###
 #, no-wrap
 msgid "Customizing The Sender"
-msgstr ""
+msgstr "自訂寄件人"
 
 # File: docs/8.x/notifications.md, line: 363
 # File: docs/9.x/notifications.md, line: 365
 # File: docs/master/notifications.md, line: 365
 #. type: Plain text
 msgid "By default, the email's sender / from address is defined in the `config/mail.php` configuration file. However, you may specify the from address for a specific notification using the `from` method:"
-msgstr ""
+msgstr "預設情況下，郵件的寄送人 / 寄件位址是在 `config/mail.php` 設定檔中定義的。不過，我們也可以使用 `from` 方法來為特定的通知指定寄件位址："
 
 # File: docs/8.x/notifications.md, line: 376
 # File: docs/9.x/notifications.md, line: 378
@@ -1149,7 +1240,18 @@ msgid "    /**\n"
 "                    ->from('barrett@example.com', 'Barrett Blair')\n"
 "                    ->line('...');\n"
 "    }\n"
-msgstr ""
+msgstr "    /**\n"
+"     * Get the mail representation of the notification.\n"
+"     *\n"
+"     * @param  mixed  $notifiable\n"
+"     * @return \\Illuminate\\Notifications\\Messages\\MailMessage\n"
+"     */\n"
+"    public function toMail($notifiable)\n"
+"    {\n"
+"        return (new MailMessage)\n"
+"                    ->from('barrett@example.com', 'Barrett Blair')\n"
+"                    ->line('...');\n"
+"    }\n"
 
 # File: docs/8.x/notifications.md, line: 378
 # File: docs/9.x/notifications.md, line: 380
@@ -1157,7 +1259,7 @@ msgstr ""
 #. type: Plain text
 #, no-wrap
 msgid "<a name=\"customizing-the-recipient\"></a>\n"
-msgstr ""
+msgstr "<a name=\"customizing-the-recipient\"></a>\n"
 
 # File: docs/8.x/notifications.md, line: 378
 # File: docs/9.x/notifications.md, line: 380

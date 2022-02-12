@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: laravel-docs\n"
 "POT-Creation-Date: 2022-02-08 06:32+0000\n"
-"PO-Revision-Date: 2022-02-12 11:13\n"
+"PO-Revision-Date: 2022-02-12 12:12\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
@@ -1267,14 +1267,14 @@ msgstr "<a name=\"customizing-the-recipient\"></a>\n"
 #. type: Title ###
 #, no-wrap
 msgid "Customizing The Recipient"
-msgstr ""
+msgstr "自訂收件人"
 
 # File: docs/8.x/notifications.md, line: 381
 # File: docs/9.x/notifications.md, line: 383
 # File: docs/master/notifications.md, line: 383
 #. type: Plain text
 msgid "When sending notifications via the `mail` channel, the notification system will automatically look for an `email` property on your notifiable entity. You may customize which email address is used to deliver the notification by defining a `routeNotificationForMail` method on the notifiable entity:"
-msgstr ""
+msgstr "使用 `mail` 通道傳送通知時，通知系統會自動在 Notifiable 實體上尋找 `email` 屬性。可在該 Notifiable 實體上定義一個 `routeNotificationForMail` 方法來自訂通知要傳送給哪個電子郵件位址："
 
 # File: docs/8.x/notifications.md, line: 392
 # File: docs/8.x/notifications.md, line: 857
@@ -1293,7 +1293,9 @@ msgstr ""
 msgid "    class User extends Authenticatable\n"
 "    {\n"
 "        use Notifiable;\n"
-msgstr ""
+msgstr "    class User extends Authenticatable\n"
+"    {\n"
+"        use Notifiable;\n"
 
 # File: docs/8.x/notifications.md, line: 403
 # File: docs/9.x/notifications.md, line: 405
@@ -1310,7 +1312,16 @@ msgid "        /**\n"
 "        {\n"
 "            // Return email address only...\n"
 "            return $this->email_address;\n"
-msgstr ""
+msgstr "        /**\n"
+"         * Route notifications for the mail channel.\n"
+"         *\n"
+"         * @param  \\Illuminate\\Notifications\\Notification  $notification\n"
+"         * @return array|string\n"
+"         */\n"
+"        public function routeNotificationForMail($notification)\n"
+"        {\n"
+"            // Return email address only...\n"
+"            return $this->email_address;\n"
 
 # File: docs/8.x/notifications.md, line: 408
 # File: docs/9.x/notifications.md, line: 410
@@ -1321,7 +1332,10 @@ msgid "            // Return email address and name...\n"
 "            return [$this->email_address => $this->name];\n"
 "        }\n"
 "    }\n"
-msgstr ""
+msgstr "            // 回傳電子郵件位址與姓名...\n"
+"            return [$this->email_address => $this->name];\n"
+"        }\n"
+"    }\n"
 
 # File: docs/8.x/notifications.md, line: 410
 # File: docs/9.x/notifications.md, line: 412
@@ -1329,7 +1343,7 @@ msgstr ""
 #. type: Plain text
 #, no-wrap
 msgid "<a name=\"customizing-the-subject\"></a>\n"
-msgstr ""
+msgstr "<a name=\"customizing-the-subject\"></a>\n"
 
 # File: docs/8.x/notifications.md, line: 410
 # File: docs/9.x/notifications.md, line: 412
@@ -1337,14 +1351,14 @@ msgstr ""
 #. type: Title ###
 #, no-wrap
 msgid "Customizing The Subject"
-msgstr ""
+msgstr "自訂主旨"
 
 # File: docs/8.x/notifications.md, line: 413
 # File: docs/9.x/notifications.md, line: 415
 # File: docs/master/notifications.md, line: 415
 #. type: Plain text
 msgid "By default, the email's subject is the class name of the notification formatted to \"Title Case\". So, if your notification class is named `InvoicePaid`, the email's subject will be `Invoice Paid`. If you would like to specify a different subject for the message, you may call the `subject` method when building your message:"
-msgstr ""
+msgstr "預設情況下，電子郵件的主旨就是 Notification 類別名稱的「Title Case」格式版本。所以，若 Notification 類別的名稱是 `InvoicePaid`，則郵件的主旨就會是 `Invoide Paid`。若想為訊息指定不同的主旨，可在建立郵件時呼叫 `subject` 方法："
 
 # File: docs/8.x/notifications.md, line: 426
 # File: docs/9.x/notifications.md, line: 428
@@ -1363,7 +1377,18 @@ msgid "    /**\n"
 "                    ->subject('Notification Subject')\n"
 "                    ->line('...');\n"
 "    }\n"
-msgstr ""
+msgstr "    /**\n"
+"     * Get the mail representation of the notification.\n"
+"     *\n"
+"     * @param  mixed  $notifiable\n"
+"     * @return \\Illuminate\\Notifications\\Messages\\MailMessage\n"
+"     */\n"
+"    public function toMail($notifiable)\n"
+"    {\n"
+"        return (new MailMessage)\n"
+"                    ->subject('Notification Subject')\n"
+"                    ->line('...');\n"
+"    }\n"
 
 # File: docs/8.x/notifications.md, line: 428
 # File: docs/9.x/notifications.md, line: 430
@@ -1371,7 +1396,7 @@ msgstr ""
 #. type: Plain text
 #, no-wrap
 msgid "<a name=\"customizing-the-mailer\"></a>\n"
-msgstr ""
+msgstr "<a name=\"customizing-the-mailer\"></a>\n"
 
 # File: docs/8.x/notifications.md, line: 428
 # File: docs/9.x/notifications.md, line: 430
@@ -1379,14 +1404,14 @@ msgstr ""
 #. type: Title ###
 #, no-wrap
 msgid "Customizing The Mailer"
-msgstr ""
+msgstr "自訂 Mailer"
 
 # File: docs/8.x/notifications.md, line: 431
 # File: docs/9.x/notifications.md, line: 433
 # File: docs/master/notifications.md, line: 433
 #. type: Plain text
 msgid "By default, the email notification will be sent using the default mailer defined in the `config/mail.php` configuration file. However, you may specify a different mailer at runtime by calling the `mailer` method when building your message:"
-msgstr ""
+msgstr "預設情況下，電子郵件通知會使用 `config/mail.php` 設定檔中定義的預設 Mailer。不過，也可以建立郵件時呼叫 `mailer` 來在執行階段使用不同的 Mailer："
 
 # File: docs/8.x/notifications.md, line: 444
 # File: docs/9.x/notifications.md, line: 446
@@ -1405,7 +1430,18 @@ msgid "    /**\n"
 "                    ->mailer('postmark')\n"
 "                    ->line('...');\n"
 "    }\n"
-msgstr ""
+msgstr "    /**\n"
+"     * Get the mail representation of the notification.\n"
+"     *\n"
+"     * @param  mixed  $notifiable\n"
+"     * @return \\Illuminate\\Notifications\\Messages\\MailMessage\n"
+"     */\n"
+"    public function toMail($notifiable)\n"
+"    {\n"
+"        return (new MailMessage)\n"
+"                    ->mailer('postmark')\n"
+"                    ->line('...');\n"
+"    }\n"
 
 # File: docs/8.x/notifications.md, line: 446
 # File: docs/9.x/notifications.md, line: 448
@@ -1413,7 +1449,7 @@ msgstr ""
 #. type: Plain text
 #, no-wrap
 msgid "<a name=\"customizing-the-templates\"></a>\n"
-msgstr ""
+msgstr "<a name=\"customizing-the-templates\"></a>\n"
 
 # File: docs/8.x/notifications.md, line: 446
 # File: docs/9.x/notifications.md, line: 448
@@ -1421,20 +1457,20 @@ msgstr ""
 #. type: Title ###
 #, no-wrap
 msgid "Customizing The Templates"
-msgstr ""
+msgstr "自訂樣板"
 
 # File: docs/8.x/notifications.md, line: 449
 # File: docs/9.x/notifications.md, line: 451
 # File: docs/master/notifications.md, line: 451
 #. type: Plain text
 msgid "You can modify the HTML and plain-text template used by mail notifications by publishing the notification package's resources. After running this command, the mail notification templates will be located in the `resources/views/vendor/notifications` directory:"
-msgstr ""
+msgstr "可以將^[安裝](Publish) Notification 套件的資源來修改郵件通知所使用的 HTML 樣板與純文字樣板。執行該指令後，郵件通知樣板會被放在 `resources/views/vendor/notifications` 目錄中："
 
 # File: docs/8.x/notifications.md, line: 451
 #. type: Plain text
 #, no-wrap
 msgid "    php artisan vendor:publish --tag=laravel-notifications\n"
-msgstr ""
+msgstr "    php artisan vendor:publish --tag=laravel-notifications\n"
 
 # File: docs/8.x/notifications.md, line: 453
 # File: docs/9.x/notifications.md, line: 457
@@ -1442,7 +1478,7 @@ msgstr ""
 #. type: Plain text
 #, no-wrap
 msgid "<a name=\"mail-attachments\"></a>\n"
-msgstr ""
+msgstr "<a name=\"mail-attachments\"></a>\n"
 
 # File: docs/8.x/notifications.md, line: 453
 # File: docs/9.x/notifications.md, line: 457
@@ -1450,14 +1486,14 @@ msgstr ""
 #. type: Title ###
 #, no-wrap
 msgid "Attachments"
-msgstr ""
+msgstr "附加檔案"
 
 # File: docs/8.x/notifications.md, line: 456
 # File: docs/9.x/notifications.md, line: 460
 # File: docs/master/notifications.md, line: 460
 #. type: Plain text
 msgid "To add attachments to an email notification, use the `attach` method while building your message. The `attach` method accepts the absolute path to the file as its first argument:"
-msgstr ""
+msgstr "若要將檔案附加至 E-Mail，請在建立訊息時使用 `attach` 方法。`attach` 方法接受檔案的完整路徑作為其第一個引數："
 
 # File: docs/8.x/notifications.md, line: 469
 # File: docs/9.x/notifications.md, line: 473
@@ -1476,14 +1512,25 @@ msgid "    /**\n"
 "                    ->greeting('Hello!')\n"
 "                    ->attach('/path/to/file');\n"
 "    }\n"
-msgstr ""
+msgstr "    /**\n"
+"     * Get the mail representation of the notification.\n"
+"     *\n"
+"     * @param  mixed  $notifiable\n"
+"     * @return \\Illuminate\\Notifications\\Messages\\MailMessage\n"
+"     */\n"
+"    public function toMail($notifiable)\n"
+"    {\n"
+"        return (new MailMessage)\n"
+"                    ->greeting('Hello!')\n"
+"                    ->attach('/path/to/file');\n"
+"    }\n"
 
 # File: docs/8.x/notifications.md, line: 471
 # File: docs/9.x/notifications.md, line: 475
 # File: docs/master/notifications.md, line: 475
 #. type: Plain text
 msgid "When attaching files to a message, you may also specify the display name and / or MIME type by passing an `array` as the second argument to the `attach` method:"
-msgstr ""
+msgstr "將檔案附加至訊息時，也可傳入一個陣列給 `attach` 方法來指定要顯示的檔案名稱與 / 或 MIME 類型："
 
 # File: docs/8.x/notifications.md, line: 487
 # File: docs/9.x/notifications.md, line: 491
@@ -1505,14 +1552,28 @@ msgid "    /**\n"
 "                        'mime' => 'application/pdf',\n"
 "                    ]);\n"
 "    }\n"
-msgstr ""
+msgstr "    /**\n"
+"     * Get the mail representation of the notification.\n"
+"     *\n"
+"     * @param  mixed  $notifiable\n"
+"     * @return \\Illuminate\\Notifications\\Messages\\MailMessage\n"
+"     */\n"
+"    public function toMail($notifiable)\n"
+"    {\n"
+"        return (new MailMessage)\n"
+"                    ->greeting('Hello!')\n"
+"                    ->attach('/path/to/file', [\n"
+"                        'as' => 'name.pdf',\n"
+"                        'mime' => 'application/pdf',\n"
+"                    ]);\n"
+"    }\n"
 
 # File: docs/8.x/notifications.md, line: 489
 # File: docs/9.x/notifications.md, line: 493
 # File: docs/master/notifications.md, line: 493
 #. type: Plain text
 msgid "Unlike attaching files in mailable objects, you may not attach a file directly from a storage disk using `attachFromStorage`. You should rather use the `attach` method with an absolute path to the file on the storage disk. Alternatively, you could return a [mailable](/docs/{{version}}/mail#generating-mailables) from the `toMail` method:"
-msgstr ""
+msgstr "跟將檔案附加到 Mailable 物件不同，在 Notification 上無法使用 `attachFromStorage` 方法直接將存放 Disk 內的檔案附加到通知上。請使用 `attach` 方法，並提供該存放 Disk 中檔案的絕對路徑。或者，也可以在 `toMail` 方法內回傳一個 [Mailable](/docs/{{version}}/mail#generating-mailables)："
 
 # File: docs/8.x/notifications.md, line: 491
 # File: docs/8.x/notifications.md, line: 531
@@ -1523,7 +1584,7 @@ msgstr ""
 #. type: Plain text
 #, no-wrap
 msgid "    use App\\Mail\\InvoicePaid as InvoicePaidMailable;\n"
-msgstr ""
+msgstr "    use App\\Mail\\InvoicePaid as InvoicePaidMailable;\n"
 
 # File: docs/8.x/notifications.md, line: 504
 # File: docs/9.x/notifications.md, line: 508
@@ -1542,7 +1603,18 @@ msgid "    /**\n"
 "                    ->to($notifiable->email)\n"
 "                    ->attachFromStorage('/path/to/file');\n"
 "    }\n"
-msgstr ""
+msgstr "    /**\n"
+"     * Get the mail representation of the notification.\n"
+"     *\n"
+"     * @param  mixed  $notifiable\n"
+"     * @return Mailable\n"
+"     */\n"
+"    public function toMail($notifiable)\n"
+"    {\n"
+"        return (new InvoicePaidMailable($this->invoice))\n"
+"                    ->to($notifiable->email)\n"
+"                    ->attachFromStorage('/path/to/file');\n"
+"    }\n"
 
 # File: docs/8.x/notifications.md, line: 506
 # File: docs/9.x/notifications.md, line: 510
@@ -1550,7 +1622,7 @@ msgstr ""
 #. type: Plain text
 #, no-wrap
 msgid "<a name=\"raw-data-attachments\"></a>\n"
-msgstr ""
+msgstr "<a name=\"raw-data-attachments\"></a>\n"
 
 # File: docs/8.x/notifications.md, line: 506
 # File: docs/9.x/notifications.md, line: 510
@@ -1558,14 +1630,14 @@ msgstr ""
 #. type: Title ####
 #, no-wrap
 msgid "Raw Data Attachments"
-msgstr ""
+msgstr "原始資料附加檔案"
 
 # File: docs/8.x/notifications.md, line: 509
 # File: docs/9.x/notifications.md, line: 513
 # File: docs/master/notifications.md, line: 513
 #. type: Plain text
 msgid "The `attachData` method may be used to attach a raw string of bytes as an attachment. When calling the `attachData` method, you should provide the filename that should be assigned to the attachment:"
-msgstr ""
+msgstr "可以使用 `attachData` 方法來將原始的位元組字串作為附加檔案附加到郵件上。呼叫 `attachData` 方法時，請提供要指派給附件的檔案名稱："
 
 # File: docs/8.x/notifications.md, line: 524
 # File: docs/9.x/notifications.md, line: 528
@@ -1586,7 +1658,20 @@ msgid "    /**\n"
 "                        'mime' => 'application/pdf',\n"
 "                    ]);\n"
 "    }\n"
-msgstr ""
+msgstr "    /**\n"
+"     * Get the mail representation of the notification.\n"
+"     *\n"
+"     * @param  mixed  $notifiable\n"
+"     * @return \\Illuminate\\Notifications\\Messages\\MailMessage\n"
+"     */\n"
+"    public function toMail($notifiable)\n"
+"    {\n"
+"        return (new MailMessage)\n"
+"                    ->greeting('Hello!')\n"
+"                    ->attachData($this->pdf, 'name.pdf', [\n"
+"                        'mime' => 'application/pdf',\n"
+"                    ]);\n"
+"    }\n"
 
 # File: docs/8.x/notifications.md, line: 526
 # File: docs/9.x/notifications.md, line: 530
@@ -1594,7 +1679,7 @@ msgstr ""
 #. type: Plain text
 #, no-wrap
 msgid "<a name=\"using-mailables\"></a>\n"
-msgstr ""
+msgstr "<a name=\"using-mailables\"></a>\n"
 
 # File: docs/8.x/notifications.md, line: 526
 # File: docs/9.x/notifications.md, line: 530
@@ -1602,14 +1687,14 @@ msgstr ""
 #. type: Title ###
 #, no-wrap
 msgid "Using Mailables"
-msgstr ""
+msgstr "使用 Mailable"
 
 # File: docs/8.x/notifications.md, line: 529
 # File: docs/9.x/notifications.md, line: 533
 # File: docs/master/notifications.md, line: 533
 #. type: Plain text
 msgid "If needed, you may return a full [mailable object](/docs/{{version}}/mail) from your notification's `toMail` method. When returning a `Mailable` instead of a `MailMessage`, you will need to specify the message recipient using the mailable object's `to` method:"
-msgstr ""
+msgstr "或者，也可以在 Notification 的 `toMail` 方法中回傳一個完整的 [Mailable 物件](/docs/{{version}}/mail)。若回傳的不是 `MailMessage` 而是 `Mailable` 時，就需要使用 Mailable 物件的 `to` 方法來指定該訊息的收件人："
 
 # File: docs/8.x/notifications.md, line: 543
 # File: docs/9.x/notifications.md, line: 547
@@ -1627,7 +1712,17 @@ msgid "    /**\n"
 "        return (new InvoicePaidMailable($this->invoice))\n"
 "                    ->to($notifiable->email);\n"
 "    }\n"
-msgstr ""
+msgstr "    /**\n"
+"     * Get the mail representation of the notification.\n"
+"     *\n"
+"     * @param  mixed  $notifiable\n"
+"     * @return Mailable\n"
+"     */\n"
+"    public function toMail($notifiable)\n"
+"    {\n"
+"        return (new InvoicePaidMailable($this->invoice))\n"
+"                    ->to($notifiable->email);\n"
+"    }\n"
 
 # File: docs/8.x/notifications.md, line: 545
 # File: docs/9.x/notifications.md, line: 549
@@ -1635,7 +1730,7 @@ msgstr ""
 #. type: Plain text
 #, no-wrap
 msgid "<a name=\"mailables-and-on-demand-notifications\"></a>\n"
-msgstr ""
+msgstr "<a name=\"mailables-and-on-demand-notifications\"></a>\n"
 
 # File: docs/8.x/notifications.md, line: 545
 # File: docs/9.x/notifications.md, line: 549
@@ -1643,14 +1738,14 @@ msgstr ""
 #. type: Title ####
 #, no-wrap
 msgid "Mailables & On-Demand Notifications"
-msgstr ""
+msgstr "Mailable 與隨需通知"
 
 # File: docs/8.x/notifications.md, line: 548
 # File: docs/9.x/notifications.md, line: 552
 # File: docs/master/notifications.md, line: 552
 #. type: Plain text
 msgid "If you are sending an [on-demand notification](#on-demand-notifications), the `$notifiable` instance given to the `toMail` method will be an instance of `Illuminate\\Notifications\\AnonymousNotifiable`, which offers a `routeNotificationFor` method that may be used to retrieve the email address the on-demand notification should be sent to:"
-msgstr ""
+msgstr "傳送[隨需通知]時，傳給 `toMail` 方法的 `$notifiable` 實體會是 `Illuminate\\Notifications\\AnonymousNotifiable` 的實體。該實體提供了一個 `routeNotificationFor` 方法，可讓我們取得隨需通知要寄送的電子郵件位址："
 
 # File: docs/8.x/notifications.md, line: 551
 # File: docs/9.x/notifications.md, line: 555
@@ -1659,7 +1754,8 @@ msgstr ""
 #, no-wrap
 msgid "    use App\\Mail\\InvoicePaid as InvoicePaidMailable;\n"
 "    use Illuminate\\Notifications\\AnonymousNotifiable;\n"
-msgstr ""
+msgstr "    use App\\Mail\\InvoicePaid as InvoicePaidMailable;\n"
+"    use Illuminate\\Notifications\\AnonymousNotifiable;\n"
 
 # File: docs/8.x/notifications.md, line: 563
 # File: docs/9.x/notifications.md, line: 567
@@ -1677,7 +1773,17 @@ msgid "    /**\n"
 "        $address = $notifiable instanceof AnonymousNotifiable\n"
 "                ? $notifiable->routeNotificationFor('mail')\n"
 "                : $notifiable->email;\n"
-msgstr ""
+msgstr "    /**\n"
+"     * Get the mail representation of the notification.\n"
+"     *\n"
+"     * @param  mixed  $notifiable\n"
+"     * @return Mailable\n"
+"     */\n"
+"    public function toMail($notifiable)\n"
+"    {\n"
+"        $address = $notifiable instanceof AnonymousNotifiable\n"
+"                ? $notifiable->routeNotificationFor('mail')\n"
+"                : $notifiable->email;\n"
 
 # File: docs/8.x/notifications.md, line: 567
 # File: docs/9.x/notifications.md, line: 571
@@ -1687,7 +1793,9 @@ msgstr ""
 msgid "        return (new InvoicePaidMailable($this->invoice))\n"
 "                    ->to($address);\n"
 "    }\n"
-msgstr ""
+msgstr "        return (new InvoicePaidMailable($this->invoice))\n"
+"                    ->to($address);\n"
+"    }\n"
 
 # File: docs/8.x/notifications.md, line: 569
 # File: docs/9.x/notifications.md, line: 573
@@ -1695,7 +1803,7 @@ msgstr ""
 #. type: Plain text
 #, no-wrap
 msgid "<a name=\"previewing-mail-notifications\"></a>\n"
-msgstr ""
+msgstr "<a name=\"previewing-mail-notifications\"></a>\n"
 
 # File: docs/8.x/notifications.md, line: 569
 # File: docs/9.x/notifications.md, line: 573
@@ -1703,14 +1811,14 @@ msgstr ""
 #. type: Title ###
 #, no-wrap
 msgid "Previewing Mail Notifications"
-msgstr ""
+msgstr "預覽郵件通知"
 
 # File: docs/8.x/notifications.md, line: 572
 # File: docs/9.x/notifications.md, line: 576
 # File: docs/master/notifications.md, line: 576
 #. type: Plain text
 msgid "When designing a mail notification template, it is convenient to quickly preview the rendered mail message in your browser like a typical Blade template. For this reason, Laravel allows you to return any mail message generated by a mail notification directly from a route closure or controller. When a `MailMessage` is returned, it will be rendered and displayed in the browser, allowing you to quickly preview its design without needing to send it to an actual email address:"
-msgstr ""
+msgstr "在設計郵件通知樣板時，若能像普通的 Blade 樣板一樣在瀏覽器中預覽轉譯後的郵件通知該有多方便。所以，在 Laravel 中，可以直接在 Route 閉包或 Controller 中回傳任何的郵件通知。若回傳郵件通知，Laravel 會轉譯該郵件通知並顯示在瀏覽器上，讓我們不需將其寄到真實的電子郵件上也能快速檢視其設計："
 
 # File: docs/8.x/notifications.md, line: 575
 # File: docs/9.x/notifications.md, line: 579
@@ -1719,7 +1827,8 @@ msgstr ""
 #, no-wrap
 msgid "    use App\\Models\\Invoice;\n"
 "    use App\\Notifications\\InvoicePaid;\n"
-msgstr ""
+msgstr "    use App\\Models\\Invoice;\n"
+"    use App\\Notifications\\InvoicePaid;\n"
 
 # File: docs/8.x/notifications.md, line: 578
 # File: docs/9.x/notifications.md, line: 582
@@ -1728,7 +1837,8 @@ msgstr ""
 #, no-wrap
 msgid "    Route::get('/notification', function () {\n"
 "        $invoice = Invoice::find(1);\n"
-msgstr ""
+msgstr "    Route::get('/notification', function () {\n"
+"        $invoice = Invoice::find(1);\n"
 
 # File: docs/8.x/notifications.md, line: 582
 # File: docs/9.x/notifications.md, line: 586
@@ -1738,7 +1848,9 @@ msgstr ""
 msgid "        return (new InvoicePaid($invoice))\n"
 "                    ->toMail($invoice->user);\n"
 "    });\n"
-msgstr ""
+msgstr "        return (new InvoicePaid($invoice))\n"
+"                    ->toMail($invoice->user);\n"
+"    });\n"
 
 # File: docs/8.x/notifications.md, line: 584
 # File: docs/9.x/notifications.md, line: 588
@@ -1746,7 +1858,7 @@ msgstr ""
 #. type: Plain text
 #, no-wrap
 msgid "<a name=\"markdown-mail-notifications\"></a>\n"
-msgstr ""
+msgstr "<a name=\"markdown-mail-notifications\"></a>\n"
 
 # File: docs/8.x/notifications.md, line: 584
 # File: docs/9.x/notifications.md, line: 588
@@ -1754,14 +1866,14 @@ msgstr ""
 #. type: Title ##
 #, no-wrap
 msgid "Markdown Mail Notifications"
-msgstr ""
+msgstr "Markdown 的郵件通知"
 
 # File: docs/8.x/notifications.md, line: 587
 # File: docs/9.x/notifications.md, line: 591
 # File: docs/master/notifications.md, line: 591
 #. type: Plain text
 msgid "Markdown mail notifications allow you to take advantage of the pre-built templates of mail notifications, while giving you more freedom to write longer, customized messages. Since the messages are written in Markdown, Laravel is able to render beautiful, responsive HTML templates for the messages while also automatically generating a plain-text counterpart."
-msgstr ""
+msgstr "Markdown 的郵件通知訊息可讓我們使用郵件通知預先建立好的樣板，可讓我們自由地撰寫更長、客製化程度更高的訊息。由於使用 Markdown 來撰寫訊息，因此 Laravel 就可為這些郵件轉譯出漂亮的回應式 HTML 樣板，並自動轉譯出純文字版本的郵件。"
 
 # File: docs/8.x/notifications.md, line: 589
 # File: docs/9.x/notifications.md, line: 593
@@ -1769,7 +1881,7 @@ msgstr ""
 #. type: Plain text
 #, no-wrap
 msgid "<a name=\"generating-the-message\"></a>\n"
-msgstr ""
+msgstr "<a name=\"generating-the-message\"></a>\n"
 
 # File: docs/8.x/notifications.md, line: 589
 # File: docs/9.x/notifications.md, line: 593
@@ -1777,27 +1889,27 @@ msgstr ""
 #. type: Title ###
 #, no-wrap
 msgid "Generating The Message"
-msgstr ""
+msgstr "產生訊息"
 
 # File: docs/8.x/notifications.md, line: 592
 # File: docs/9.x/notifications.md, line: 596
 # File: docs/master/notifications.md, line: 596
 #. type: Plain text
 msgid "To generate a notification with a corresponding Markdown template, you may use the `--markdown` option of the `make:notification` Artisan command:"
-msgstr ""
+msgstr "若要產生有對應 Markdown 樣板的郵件通知，請使用 `make:notification` Artisan 指令的 `--markdown` 選項："
 
 # File: docs/8.x/notifications.md, line: 594
 #. type: Plain text
 #, no-wrap
 msgid "    php artisan make:notification InvoicePaid --markdown=mail.invoice.paid\n"
-msgstr ""
+msgstr "    php artisan make:notification InvoicePaid --markdown=mail.invoice.paid\n"
 
 # File: docs/8.x/notifications.md, line: 596
 # File: docs/9.x/notifications.md, line: 602
 # File: docs/master/notifications.md, line: 602
 #. type: Plain text
 msgid "Like all other mail notifications, notifications that use Markdown templates should define a `toMail` method on their notification class. However, instead of using the `line` and `action` methods to construct the notification, use the `markdown` method to specify the name of the Markdown template that should be used. An array of data you wish to make available to the template may be passed as the method's second argument:"
-msgstr ""
+msgstr "與其他郵件通知一樣，使用 Markdown 樣板的通知也應在 Notification 類別定義一個 `toMail` 方法。不過，在 Markdown 郵件通知上，我們不是使用 `line` 與 `action` 方法來建立通知，而是使用 `markdown` 方法來指定要使用的 Markdown 樣板名稱。可傳入一組資料陣列給該方法的第二個引數來將資料提供給該樣板使用："
 
 # File: docs/8.x/notifications.md, line: 611
 # File: docs/9.x/notifications.md, line: 617
@@ -1808,7 +1920,10 @@ msgid "        return (new MailMessage)\n"
 "                    ->subject('Invoice Paid')\n"
 "                    ->markdown('mail.invoice.paid', ['url' => $url]);\n"
 "    }\n"
-msgstr ""
+msgstr "        return (new MailMessage)\n"
+"                    ->subject('Invoice Paid')\n"
+"                    ->markdown('mail.invoice.paid', ['url' => $url]);\n"
+"    }\n"
 
 # File: docs/8.x/notifications.md, line: 613
 # File: docs/9.x/notifications.md, line: 619
@@ -1816,7 +1931,7 @@ msgstr ""
 #. type: Plain text
 #, no-wrap
 msgid "<a name=\"writing-the-message\"></a>\n"
-msgstr ""
+msgstr "<a name=\"writing-the-message\"></a>\n"
 
 # File: docs/8.x/notifications.md, line: 613
 # File: docs/9.x/notifications.md, line: 619
@@ -1824,27 +1939,28 @@ msgstr ""
 #. type: Title ###
 #, no-wrap
 msgid "Writing The Message"
-msgstr ""
+msgstr "撰寫訊息"
 
 # File: docs/8.x/notifications.md, line: 616
 # File: docs/9.x/notifications.md, line: 622
 # File: docs/master/notifications.md, line: 622
 #. type: Plain text
 msgid "Markdown mail notifications use a combination of Blade components and Markdown syntax which allow you to easily construct notifications while leveraging Laravel's pre-crafted notification components:"
-msgstr ""
+msgstr "Markdown 的郵件通知混合使用了 Blade 元件與 Markdown 語法，讓我們能輕鬆地使用 Laravel 內建的通知元件來建立通知："
 
 # File: docs/8.x/notifications.md, line: 619
 #. type: Plain text
 #, no-wrap
 msgid "    @component('mail::message')\n"
 "    # Invoice Paid\n"
-msgstr ""
+msgstr "    @component('mail::message')\n"
+"    # Invoice Paid\n"
 
 # File: docs/8.x/notifications.md, line: 621
 #. type: Plain text
 #, no-wrap
 msgid "    Your invoice has been paid!\n"
-msgstr ""
+msgstr "    Your invoice has been paid!\n"
 
 # File: docs/8.x/notifications.md, line: 625
 #. type: Plain text
@@ -1852,7 +1968,9 @@ msgstr ""
 msgid "    @component('mail::button', ['url' => $url])\n"
 "    View Invoice\n"
 "    @endcomponent\n"
-msgstr ""
+msgstr "    @component('mail::button', ['url' => $url])\n"
+"    View Invoice\n"
+"    @endcomponent\n"
 
 # File: docs/8.x/notifications.md, line: 629
 #. type: Plain text
@@ -1860,7 +1978,9 @@ msgstr ""
 msgid "    Thanks,<br>\n"
 "    {{ config('app.name') }}\n"
 "    @endcomponent\n"
-msgstr ""
+msgstr "    Thanks,<br>\n"
+"    {{ config('app.name') }}\n"
+"    @endcomponent\n"
 
 # File: docs/8.x/notifications.md, line: 631
 # File: docs/9.x/notifications.md, line: 639
@@ -1868,7 +1988,7 @@ msgstr ""
 #. type: Plain text
 #, no-wrap
 msgid "<a name=\"button-component\"></a>\n"
-msgstr ""
+msgstr "<a name=\"button-component\"></a>\n"
 
 # File: docs/8.x/notifications.md, line: 631
 # File: docs/9.x/notifications.md, line: 639
@@ -1876,14 +1996,14 @@ msgstr ""
 #. type: Title ####
 #, no-wrap
 msgid "Button Component"
-msgstr ""
+msgstr "Button 元件"
 
 # File: docs/8.x/notifications.md, line: 634
 # File: docs/9.x/notifications.md, line: 642
 # File: docs/master/notifications.md, line: 642
 #. type: Plain text
 msgid "The button component renders a centered button link. The component accepts two arguments, a `url` and an optional `color`. Supported colors are `primary`, `green`, and `red`. You may add as many button components to a notification as you wish:"
-msgstr ""
+msgstr "Button 元件用來轉譯一個置中的按鈕連結。這個元件接受兩個引數，一個是 `url` 網址，另一個則是可選的 `color` 顏色。支援的顏色有 `primary`、`green`、`red`。在通知中可以加上不限數量的 Button 元件："
 
 # File: docs/8.x/notifications.md, line: 638
 #. type: Plain text
@@ -1891,7 +2011,9 @@ msgstr ""
 msgid "    @component('mail::button', ['url' => $url, 'color' => 'green'])\n"
 "    View Invoice\n"
 "    @endcomponent\n"
-msgstr ""
+msgstr "    @component('mail::button', ['url' => $url, 'color' => 'green'])\n"
+"    View Invoice\n"
+"    @endcomponent\n"
 
 # File: docs/8.x/notifications.md, line: 640
 # File: docs/9.x/notifications.md, line: 650
@@ -1899,7 +2021,7 @@ msgstr ""
 #. type: Plain text
 #, no-wrap
 msgid "<a name=\"panel-component\"></a>\n"
-msgstr ""
+msgstr "<a name=\"panel-component\"></a>\n"
 
 # File: docs/8.x/notifications.md, line: 640
 # File: docs/9.x/notifications.md, line: 650
@@ -1907,14 +2029,14 @@ msgstr ""
 #. type: Title ####
 #, no-wrap
 msgid "Panel Component"
-msgstr ""
+msgstr "Panel 元件"
 
 # File: docs/8.x/notifications.md, line: 643
 # File: docs/9.x/notifications.md, line: 653
 # File: docs/master/notifications.md, line: 653
 #. type: Plain text
 msgid "The panel component renders the given block of text in a panel that has a slightly different background color than the rest of the notification. This allows you to draw attention to a given block of text:"
-msgstr ""
+msgstr "Panel 元件將給定的文字區塊轉譯在一個面板中，面板的底色與通知中其他部分的背景色稍有不同。我們可以使用 Panel 元件來讓給定區塊的文字較為醒目："
 
 # File: docs/8.x/notifications.md, line: 647
 #. type: Plain text
@@ -1922,7 +2044,9 @@ msgstr ""
 msgid "    @component('mail::panel')\n"
 "    This is the panel content.\n"
 "    @endcomponent\n"
-msgstr ""
+msgstr "    @component('mail::panel')\n"
+"    This is the panel content.\n"
+"    @endcomponent\n"
 
 # File: docs/8.x/notifications.md, line: 649
 # File: docs/9.x/notifications.md, line: 661
@@ -1930,7 +2054,7 @@ msgstr ""
 #. type: Plain text
 #, no-wrap
 msgid "<a name=\"table-component\"></a>\n"
-msgstr ""
+msgstr "<a name=\"table-component\"></a>\n"
 
 # File: docs/8.x/notifications.md, line: 649
 # File: docs/9.x/notifications.md, line: 661
@@ -1938,14 +2062,14 @@ msgstr ""
 #. type: Title ####
 #, no-wrap
 msgid "Table Component"
-msgstr ""
+msgstr "Table 元件"
 
 # File: docs/8.x/notifications.md, line: 652
 # File: docs/9.x/notifications.md, line: 664
 # File: docs/master/notifications.md, line: 664
 #. type: Plain text
 msgid "The table component allows you to transform a Markdown table into an HTML table. The component accepts the Markdown table as its content. Table column alignment is supported using the default Markdown table alignment syntax:"
-msgstr ""
+msgstr "Table 元件可讓我們將 Markdown 表格轉為 HTML 表格。該元件接受一個 Markdown 表格作為其內容。支援使用預設的 Markdown 表格對其格式來對其表格欄位："
 
 # File: docs/8.x/notifications.md, line: 659
 #. type: Plain text
@@ -1956,7 +2080,12 @@ msgid "    @component('mail::table')\n"
 "    | Col 2 is      | Centered      | $10      |\n"
 "    | Col 3 is      | Right-Aligned | $20      |\n"
 "    @endcomponent\n"
-msgstr ""
+msgstr "    @component('mail::table')\n"
+"    | Laravel       | Table         | Example  |\n"
+"    | ------------- |:-------------:| --------:|\n"
+"    | Col 2 is      | Centered      | $10      |\n"
+"    | Col 3 is      | Right-Aligned | $20      |\n"
+"    @endcomponent\n"
 
 # File: docs/8.x/notifications.md, line: 661
 # File: docs/9.x/notifications.md, line: 675
@@ -1964,7 +2093,7 @@ msgstr ""
 #. type: Plain text
 #, no-wrap
 msgid "<a name=\"customizing-the-components\"></a>\n"
-msgstr ""
+msgstr "<a name=\"customizing-the-components\"></a>\n"
 
 # File: docs/8.x/notifications.md, line: 661
 # File: docs/9.x/notifications.md, line: 675
@@ -1972,27 +2101,27 @@ msgstr ""
 #. type: Title ###
 #, no-wrap
 msgid "Customizing The Components"
-msgstr ""
+msgstr "自訂元件"
 
 # File: docs/8.x/notifications.md, line: 664
 # File: docs/9.x/notifications.md, line: 678
 # File: docs/master/notifications.md, line: 678
 #. type: Plain text
 msgid "You may export all of the Markdown notification components to your own application for customization. To export the components, use the `vendor:publish` Artisan command to publish the `laravel-mail` asset tag:"
-msgstr ""
+msgstr "可以將所有的 Markdown 通知元件匯出到專案內來自定這些元件。若要匯出元件，請使用 `vendor:publish` Artisan  指令來^[安裝](Publish) `laravel-mail` 素材標籤："
 
 # File: docs/8.x/notifications.md, line: 666
 #. type: Plain text
 #, no-wrap
 msgid "    php artisan vendor:publish --tag=laravel-mail\n"
-msgstr ""
+msgstr "    php artisan vendor:publish --tag=laravel-mail\n"
 
 # File: docs/8.x/notifications.md, line: 668
 # File: docs/9.x/notifications.md, line: 684
 # File: docs/master/notifications.md, line: 684
 #. type: Plain text
 msgid "This command will publish the Markdown mail components to the `resources/views/vendor/mail` directory. The `mail` directory will contain an `html` and a `text` directory, each containing their respective representations of every available component. You are free to customize these components however you like."
-msgstr ""
+msgstr "這個指令會將 Markdown 郵件元件安裝到 `resources/views/vendor/mail` 目錄下。`mail` 目錄會包含 `html` 與 `text` 目錄，這些目錄中包含了所有可用元件對應的呈現方式。可以隨意自訂這些元件。"
 
 # File: docs/8.x/notifications.md, line: 670
 # File: docs/9.x/notifications.md, line: 686
@@ -2000,7 +2129,7 @@ msgstr ""
 #. type: Plain text
 #, no-wrap
 msgid "<a name=\"customizing-the-css\"></a>\n"
-msgstr ""
+msgstr "<a name=\"customizing-the-css\"></a>\n"
 
 # File: docs/8.x/notifications.md, line: 670
 # File: docs/9.x/notifications.md, line: 686
@@ -2008,28 +2137,28 @@ msgstr ""
 #. type: Title ####
 #, no-wrap
 msgid "Customizing The CSS"
-msgstr ""
+msgstr "自訂 CSS"
 
 # File: docs/8.x/notifications.md, line: 673
 # File: docs/9.x/notifications.md, line: 689
 # File: docs/master/notifications.md, line: 689
 #. type: Plain text
 msgid "After exporting the components, the `resources/views/vendor/mail/html/themes` directory will contain a `default.css` file. You may customize the CSS in this file and your styles will automatically be in-lined within the HTML representations of your Markdown notifications."
-msgstr ""
+msgstr "匯出元件後，`resources/views/vendor/mail/html/themes` 目錄下會包含一個 `default.css` 檔案。可以自訂這個檔案內的 CSS。這些樣式在 Markdown 通知的 HTML 呈現上會自動被轉換為內嵌的 CSS 樣式："
 
 # File: docs/8.x/notifications.md, line: 675
 # File: docs/9.x/notifications.md, line: 691
 # File: docs/master/notifications.md, line: 691
 #. type: Plain text
 msgid "If you would like to build an entirely new theme for Laravel's Markdown components, you may place a CSS file within the `html/themes` directory. After naming and saving your CSS file, update the `theme` option of the `mail` configuration file to match the name of your new theme."
-msgstr ""
+msgstr "若想為 Laravel Markdown 元件製作一個全新的主題，可在 `html/themes` 目錄下放置一個 CSS 檔。命名好 CSS 檔並保存後，請修改專案 `mail` 設定檔中的 `theme` 選項為該新主題的名稱： "
 
 # File: docs/8.x/notifications.md, line: 677
 # File: docs/9.x/notifications.md, line: 693
 # File: docs/master/notifications.md, line: 693
 #. type: Plain text
 msgid "To customize the theme for an individual notification, you may call the `theme` method while building the notification's mail message. The `theme` method accepts the name of the theme that should be used when sending the notification:"
-msgstr ""
+msgstr "若要為個別通知自訂主題，可在建立通知的郵件訊息時呼叫 `theme` 方法。`theme` 方法的引數為傳送通知時要使用的主題名稱："
 
 # File: docs/8.x/notifications.md, line: 691
 # File: docs/9.x/notifications.md, line: 707
@@ -2049,7 +2178,19 @@ msgid "    /**\n"
 "                    ->subject('Invoice Paid')\n"
 "                    ->markdown('mail.invoice.paid', ['url' => $url]);\n"
 "    }\n"
-msgstr ""
+msgstr "    /**\n"
+"     * Get the mail representation of the notification.\n"
+"     *\n"
+"     * @param  mixed  $notifiable\n"
+"     * @return \\Illuminate\\Notifications\\Messages\\MailMessage\n"
+"     */\n"
+"    public function toMail($notifiable)\n"
+"    {\n"
+"        return (new MailMessage)\n"
+"                    ->theme('invoice')\n"
+"                    ->subject('Invoice Paid')\n"
+"                    ->markdown('mail.invoice.paid', ['url' => $url]);\n"
+"    }\n"
 
 # File: docs/8.x/notifications.md, line: 693
 # File: docs/9.x/notifications.md, line: 709
@@ -2057,7 +2198,7 @@ msgstr ""
 #. type: Plain text
 #, no-wrap
 msgid "<a name=\"database-notifications\"></a>\n"
-msgstr ""
+msgstr "<a name=\"database-notifications\"></a>\n"
 
 # File: docs/8.x/notifications.md, line: 693
 # File: docs/9.x/notifications.md, line: 709
@@ -2065,7 +2206,7 @@ msgstr ""
 #. type: Title ##
 #, no-wrap
 msgid "Database Notifications"
-msgstr ""
+msgstr "資料庫通知"
 
 # File: docs/8.x/notifications.md, line: 696
 # File: docs/9.x/notifications.md, line: 712
@@ -2073,7 +2214,7 @@ msgstr ""
 #. type: Plain text
 #, no-wrap
 msgid "<a name=\"database-prerequisites\"></a>\n"
-msgstr ""
+msgstr "<a name=\"database-prerequisites\"></a>\n"
 
 # File: docs/8.x/notifications.md, line: 696
 # File: docs/8.x/notifications.md, line: 780
@@ -2090,33 +2231,33 @@ msgstr ""
 #. type: Title ###
 #, no-wrap
 msgid "Prerequisites"
-msgstr ""
+msgstr "前置要求"
 
 # File: docs/8.x/notifications.md, line: 699
 # File: docs/9.x/notifications.md, line: 715
 # File: docs/master/notifications.md, line: 715
 #. type: Plain text
 msgid "The `database` notification channel stores the notification information in a database table. This table will contain information such as the notification type as well as a JSON data structure that describes the notification."
-msgstr ""
+msgstr "`database` 通知通道將通知資訊保存在資料庫資料表中。這個資料表會包含一些資訊，如通知類型，以及描述該通知的 JSON 資料結構。"
 
 # File: docs/8.x/notifications.md, line: 701
 # File: docs/9.x/notifications.md, line: 717
 # File: docs/master/notifications.md, line: 717
 #. type: Plain text
 msgid "You can query the table to display the notifications in your application's user interface. But, before you can do that, you will need to create a database table to hold your notifications. You may use the `notifications:table` command to generate a [migration](/docs/{{version}}/migrations) with the proper table schema:"
-msgstr ""
+msgstr "可以查詢該資料表來將通知顯示在專案的 UI 上。不過，在這麼做之前，我們需要先建立一個用來保存通知的資料表。可以使用 `notifications:table` 指令來產生一個包含適當資料表結構的 [Migration](/docs/{{version}}/migrations) ："
 
 # File: docs/8.x/notifications.md, line: 703
 #. type: Plain text
 #, no-wrap
 msgid "    php artisan notifications:table\n"
-msgstr ""
+msgstr "    php artisan notifications:table\n"
 
 # File: docs/8.x/notifications.md, line: 705
 #. type: Plain text
 #, no-wrap
 msgid "    php artisan migrate\n"
-msgstr ""
+msgstr "    php artisan migrate\n"
 
 # File: docs/8.x/notifications.md, line: 707
 # File: docs/9.x/notifications.md, line: 725
@@ -2124,7 +2265,7 @@ msgstr ""
 #. type: Plain text
 #, no-wrap
 msgid "<a name=\"formatting-database-notifications\"></a>\n"
-msgstr ""
+msgstr "<a name=\"formatting-database-notifications\"></a>\n"
 
 # File: docs/8.x/notifications.md, line: 707
 # File: docs/9.x/notifications.md, line: 725
@@ -2132,14 +2273,14 @@ msgstr ""
 #. type: Title ###
 #, no-wrap
 msgid "Formatting Database Notifications"
-msgstr ""
+msgstr "格式化資料庫通知"
 
 # File: docs/8.x/notifications.md, line: 710
 # File: docs/9.x/notifications.md, line: 728
 # File: docs/master/notifications.md, line: 728
 #. type: Plain text
 msgid "If a notification supports being stored in a database table, you should define a `toDatabase` or `toArray` method on the notification class. This method will receive a `$notifiable` entity and should return a plain PHP array. The returned array will be encoded as JSON and stored in the `data` column of your `notifications` table. Let's take a look at an example `toArray` method:"
-msgstr ""
+msgstr "若要讓某個通知支援保存在資料表中，請在該 Notification 類別上定義一個 `toDatabase` 或 `toArray` 方法。這個方法會收到一個 `$notifiable` 實體，而該方法應回傳一個純 PHP 陣列。回傳的這個陣列會被編碼為 JSON，然後保存在 `notifications` 資料表中的 `data` 欄位。來看看 `toArray` 方法的範例："
 
 # File: docs/8.x/notifications.md, line: 724
 # File: docs/9.x/notifications.md, line: 742
@@ -2159,7 +2300,19 @@ msgid "    /**\n"
 "            'amount' => $this->invoice->amount,\n"
 "        ];\n"
 "    }\n"
-msgstr ""
+msgstr "    /**\n"
+"     * Get the array representation of the notification.\n"
+"     *\n"
+"     * @param  mixed  $notifiable\n"
+"     * @return array\n"
+"     */\n"
+"    public function toArray($notifiable)\n"
+"    {\n"
+"        return [\n"
+"            'invoice_id' => $this->invoice->id,\n"
+"            'amount' => $this->invoice->amount,\n"
+"        ];\n"
+"    }\n"
 
 # File: docs/8.x/notifications.md, line: 726
 # File: docs/9.x/notifications.md, line: 744
@@ -2167,7 +2320,7 @@ msgstr ""
 #. type: Plain text
 #, no-wrap
 msgid "<a name=\"todatabase-vs-toarray\"></a>\n"
-msgstr ""
+msgstr "<a name=\"todatabase-vs-toarray\"></a>\n"
 
 # File: docs/8.x/notifications.md, line: 726
 # File: docs/9.x/notifications.md, line: 744
@@ -2175,14 +2328,14 @@ msgstr ""
 #. type: Title ####
 #, no-wrap
 msgid "`toDatabase` Vs. `toArray`"
-msgstr ""
+msgstr "`toDatabase` Vs. `toArray`"
 
 # File: docs/8.x/notifications.md, line: 729
 # File: docs/9.x/notifications.md, line: 747
 # File: docs/master/notifications.md, line: 747
 #. type: Plain text
 msgid "The `toArray` method is also used by the `broadcast` channel to determine which data to broadcast to your JavaScript powered frontend. If you would like to have two different array representations for the `database` and `broadcast` channels, you should define a `toDatabase` method instead of a `toArray` method."
-msgstr ""
+msgstr "`broadcast` 通道也會使用 `toArray` 方法來判斷要將哪些資料廣播到 JavaScript 驅動的前端上。若想讓 `database` 與 `broadcast` 通道有不同的陣列呈現，請不要定義 `toArray` 方法，而是定義 `toDatabase` 方法。"
 
 # File: docs/8.x/notifications.md, line: 731
 # File: docs/9.x/notifications.md, line: 749
@@ -2190,7 +2343,7 @@ msgstr ""
 #. type: Plain text
 #, no-wrap
 msgid "<a name=\"accessing-the-notifications\"></a>\n"
-msgstr ""
+msgstr "<a name=\"accessing-the-notifications\"></a>\n"
 
 # File: docs/8.x/notifications.md, line: 731
 # File: docs/9.x/notifications.md, line: 749
@@ -2198,14 +2351,14 @@ msgstr ""
 #. type: Title ###
 #, no-wrap
 msgid "Accessing The Notifications"
-msgstr ""
+msgstr "存取通知"
 
 # File: docs/8.x/notifications.md, line: 734
 # File: docs/9.x/notifications.md, line: 752
 # File: docs/master/notifications.md, line: 752
 #. type: Plain text
 msgid "Once notifications are stored in the database, you need a convenient way to access them from your notifiable entities. The `Illuminate\\Notifications\\Notifiable` trait, which is included on Laravel's default `App\\Models\\User` model, includes a `notifications` [Eloquent relationship](/docs/{{version}}/eloquent-relationships) that returns the notifications for the entity. To fetch notifications, you may access this method like any other Eloquent relationship. By default, notifications will be sorted by the `created_at` timestamp with the most recent notifications at the beginning of the collection:"
-msgstr ""
+msgstr "將通知保存在資料庫後，我們還需要一種方便的方法來在 Notifiable 實體上存取這些通知。`Illuminate\\Notifications\\Notifiable` Trait —— 也就是 Laravel 預設的 `App\\Models\\User` Model 中所包含的一個 Trait —— 包含了一個 `notifications` [Eloquent 關聯]，該關聯會回傳該實體的所有通知。若要取得通知，可像其他 Eloquent 關聯一樣存取該方法。預設情況下，會使用 `created_at` 時戳來排序通知，最新的通知會排在 Collection 的最前面："
 
 # File: docs/8.x/notifications.md, line: 736
 # File: docs/8.x/notifications.md, line: 744
@@ -2222,7 +2375,7 @@ msgstr ""
 #. type: Plain text
 #, no-wrap
 msgid "    $user = App\\Models\\User::find(1);\n"
-msgstr ""
+msgstr "    $user = App\\Models\\User::find(1);\n"
 
 # File: docs/8.x/notifications.md, line: 740
 # File: docs/9.x/notifications.md, line: 758
@@ -2232,14 +2385,16 @@ msgstr ""
 msgid "    foreach ($user->notifications as $notification) {\n"
 "        echo $notification->type;\n"
 "    }\n"
-msgstr ""
+msgstr "    foreach ($user->notifications as $notification) {\n"
+"        echo $notification->type;\n"
+"    }\n"
 
 # File: docs/8.x/notifications.md, line: 742
 # File: docs/9.x/notifications.md, line: 760
 # File: docs/master/notifications.md, line: 760
 #. type: Plain text
 msgid "If you want to retrieve only the \"unread\" notifications, you may use the `unreadNotifications` relationship. Again, these notifications will be sorted by the `created_at` timestamp with the most recent notifications at the beginning of the collection:"
-msgstr ""
+msgstr "若只想取得「未讀」的通知，可使用 `unreadNotifications` 關聯。一樣，這些通知都會使用 `created_at` 來排序，最新的通知會在 Collection 的最前面："
 
 # File: docs/8.x/notifications.md, line: 748
 # File: docs/9.x/notifications.md, line: 766
@@ -2249,7 +2404,9 @@ msgstr ""
 msgid "    foreach ($user->unreadNotifications as $notification) {\n"
 "        echo $notification->type;\n"
 "    }\n"
-msgstr ""
+msgstr "    foreach ($user->unreadNotifications as $notification) {\n"
+"        echo $notification->type;\n"
+"    }\n"
 
 # File: docs/8.x/notifications.md, line: 750
 # File: docs/9.x/notifications.md, line: 768
@@ -2257,7 +2414,7 @@ msgstr ""
 #. type: Plain text
 #, no-wrap
 msgid "> {tip} To access your notifications from your JavaScript client, you should define a notification controller for your application which returns the notifications for a notifiable entity, such as the current user. You may then make an HTTP request to that controller's URL from your JavaScript client.\n"
-msgstr ""
+msgstr "> {tip} 若要在 JavaScript 用戶端中存取通知，請定義一個用來為 Notifiable 實體 (如：目前使用者) 回傳通知的 Notification Controller。接著就可以從 JavaScript 用戶端上建立一個 HTTP Request 來連線到該 Controller 的網址。\n"
 
 # File: docs/8.x/notifications.md, line: 752
 # File: docs/9.x/notifications.md, line: 770
@@ -2265,7 +2422,7 @@ msgstr ""
 #. type: Plain text
 #, no-wrap
 msgid "<a name=\"marking-notifications-as-read\"></a>\n"
-msgstr ""
+msgstr "<a name=\"marking-notifications-as-read\"></a>\n"
 
 # File: docs/8.x/notifications.md, line: 752
 # File: docs/9.x/notifications.md, line: 770
@@ -2273,7 +2430,7 @@ msgstr ""
 #. type: Title ###
 #, no-wrap
 msgid "Marking Notifications As Read"
-msgstr ""
+msgstr "將通知標記為已讀"
 
 # File: docs/8.x/notifications.md, line: 755
 # File: docs/9.x/notifications.md, line: 773

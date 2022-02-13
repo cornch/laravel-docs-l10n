@@ -10,7 +10,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
-"PO-Revision-Date: 2022-02-13 09:29\n"
+"PO-Revision-Date: 2022-02-13 10:32\n"
 
 #: docs/8.x/controllers.md:block 1 (header)
 msgid "Controllers"
@@ -22,55 +22,55 @@ msgstr "[簡介](#introduction)"
 
 #: docs/8.x/controllers.md:block 2 (unordered list)
 msgid "[Writing Controllers](#writing-controllers)"
-msgstr ""
+msgstr "[撰寫 Controller](#writing-controllers)"
 
 #: docs/8.x/controllers.md:block 2 (unordered list)
 msgid "[Basic Controllers](#basic-controllers)"
-msgstr ""
+msgstr "[「Controller」基礎](#basic-controllers)"
 
 #: docs/8.x/controllers.md:block 2 (unordered list)
 msgid "[Single Action Controllers](#single-action-controllers)"
-msgstr ""
+msgstr "[單一動作的 Controller](#single-action-controllers)"
 
 #: docs/8.x/controllers.md:block 2 (unordered list)
 msgid "[Controller Middleware](#controller-middleware)"
-msgstr ""
+msgstr "[Controller Middleware](#controller-middleware)"
 
 #: docs/8.x/controllers.md:block 2 (unordered list)
 msgid "[Resource Controllers](#resource-controllers)"
-msgstr ""
+msgstr "[Resource Controller](#resource-controllers)"
 
 #: docs/8.x/controllers.md:block 2 (unordered list)
 msgid "[Partial Resource Routes](#restful-partial-resource-routes)"
-msgstr ""
+msgstr "[部分的 Resource Route](#restful-partial-resource-routes)"
 
 #: docs/8.x/controllers.md:block 2 (unordered list)
 msgid "[Nested Resources](#restful-nested-resources)"
-msgstr ""
+msgstr "[巢狀 Resource](#restful-nested-resources)"
 
 #: docs/8.x/controllers.md:block 2 (unordered list)
 msgid "[Naming Resource Routes](#restful-naming-resource-routes)"
-msgstr ""
+msgstr "[命名 Resource Route](#restful-naming-resource-routes)"
 
 #: docs/8.x/controllers.md:block 2 (unordered list)
 msgid "[Naming Resource Route Parameters](#restful-naming-resource-route-parameters)"
-msgstr ""
+msgstr "[命名 Resource Route 的參數](#restful-naming-resource-route-parameters)"
 
 #: docs/8.x/controllers.md:block 2 (unordered list)
 msgid "[Scoping Resource Routes](#restful-scoping-resource-routes)"
-msgstr ""
+msgstr "[限制範圍的 Resource Route](#restful-scoping-resource-routes)"
 
 #: docs/8.x/controllers.md:block 2 (unordered list)
 msgid "[Localizing Resource URIs](#restful-localizing-resource-uris)"
-msgstr ""
+msgstr "[本土化 Resource URI](#restful-localizing-resource-uris)"
 
 #: docs/8.x/controllers.md:block 2 (unordered list)
 msgid "[Supplementing Resource Controllers](#restful-supplementing-resource-controllers)"
-msgstr ""
+msgstr "[補充 Resource Controller](#restful-supplementing-resource-controllers)"
 
 #: docs/8.x/controllers.md:block 2 (unordered list)
 msgid "[Dependency Injection & Controllers](#dependency-injection-and-controllers)"
-msgstr ""
+msgstr "[相依性插入與 Controller](#dependency-injection-and-controllers)"
 
 #: docs/8.x/controllers.md:block 4 (header)
 msgid "Introduction"
@@ -112,7 +112,25 @@ msgid "<?php\n\n"
 "        ]);\n"
 "    }\n"
 "}\n"
-msgstr ""
+msgstr "<?php\n\n"
+"namespace App\\Http\\Controllers;\n\n"
+"use App\\Http\\Controllers\\Controller;\n"
+"use App\\Models\\User;\n\n"
+"class UserController extends Controller\n"
+"{\n"
+"    /**\n"
+"     * Show the profile for a given user.\n"
+"     *\n"
+"     * @param  int  $id\n"
+"     * @return \\Illuminate\\View\\View\n"
+"     */\n"
+"    public function show($id)\n"
+"    {\n"
+"        return view('user.profile', [\n"
+"            'user' => User::findOrFail($id)\n"
+"        ]);\n"
+"    }\n"
+"}\n"
 
 #: docs/8.x/controllers.md:block 12 (paragraph)
 msgid "You can define a route to this controller method like so:"
@@ -121,7 +139,8 @@ msgstr "可以像這樣定義連結到這個 Controller 的路由："
 #: docs/8.x/controllers.md:block 13 (code)
 msgid "use App\\Http\\Controllers\\UserController;\n\n"
 "Route::get('/user/{id}', [UserController::class, 'show']);\n"
-msgstr ""
+msgstr "use App\\Http\\Controllers\\UserController;\n\n"
+"Route::get('/user/{id}', [UserController::class, 'show']);\n"
 
 #: docs/8.x/controllers.md:block 14 (paragraph)
 msgid "When an incoming request matches the specified route URI, the `show` method on the `App\\Http\\Controllers\\UserController` class will be invoked and the route parameters will be passed to the method."
@@ -129,7 +148,7 @@ msgstr "當有連入請求符合這個路由 URI 時，將叫用 `App\\Http\\Con
 
 #: docs/8.x/controllers.md:block 15 (quote)
 msgid "{tip} Controllers are not **required** to extend a base class. However, you will not have access to convenient features such as the `middleware` and `authorize` methods."
-msgstr ""
+msgstr "{tip} Controller 並**不一定**要有繼承基礎類別。不過，若不繼承基礎 Controller 的話將無法使用一些如 `middleware` 或 `authorize` 方法等方便的功能。"
 
 #: docs/8.x/controllers.md:block 17 (header)
 msgid "Single Action Controllers"
@@ -156,7 +175,22 @@ msgid "<?php\n\n"
 "        // ...\n"
 "    }\n"
 "}\n"
-msgstr ""
+msgstr "<?php\n\n"
+"namespace App\\Http\\Controllers;\n\n"
+"use App\\Http\\Controllers\\Controller;\n"
+"use App\\Models\\User;\n\n"
+"class ProvisionServer extends Controller\n"
+"{\n"
+"    /**\n"
+"     * Provision a new web server.\n"
+"     *\n"
+"     * @return \\Illuminate\\Http\\Response\n"
+"     */\n"
+"    public function __invoke()\n"
+"    {\n"
+"        // ...\n"
+"    }\n"
+"}\n"
 
 #: docs/8.x/controllers.md:block 20 (paragraph)
 msgid "When registering routes for single action controllers, you do not need to specify a controller method. Instead, you may simply pass the name of the controller to the router:"
@@ -165,7 +199,8 @@ msgstr "當為單一動作的 Controller 註冊路由時，不需要指定 Contr
 #: docs/8.x/controllers.md:block 21 (code)
 msgid "use App\\Http\\Controllers\\ProvisionServer;\n\n"
 "Route::post('/server', ProvisionServer::class);\n"
-msgstr ""
+msgstr "use App\\Http\\Controllers\\ProvisionServer;\n\n"
+"Route::post('/server', ProvisionServer::class);\n"
 
 #: docs/8.x/controllers.md:block 22 (paragraph)
 msgid "You may generate an invokable controller by using the `--invokable` option of the `make:controller` Artisan command:"
@@ -177,7 +212,7 @@ msgstr "php artisan make:controller ProvisionServer --invokable\n"
 
 #: docs/8.x/controllers.md:block 24 (quote)
 msgid "{tip} Controller stubs may be customized using [stub publishing](/docs/{{version}}/artisan#stub-customization)."
-msgstr ""
+msgstr "{tip} Controller 的 Stub 可通過[發佈 Stub](/docs/{{version}}/artisan#stub-customization) 來自定。"
 
 #: docs/8.x/controllers.md:block 26 (header)
 msgid "Controller Middleware"
@@ -189,7 +224,7 @@ msgstr "可在路由檔案中指派 [Middleware](/docs/{{version}}/middleware) �
 
 #: docs/8.x/controllers.md:block 28 (code)
 msgid "Route::get('profile', [UserController::class, 'show'])->middleware('auth');\n"
-msgstr ""
+msgstr "Route::get('profile', [UserController::class, 'show'])->middleware('auth');\n"
 
 #: docs/8.x/controllers.md:block 29 (paragraph)
 msgid "Or, you may find it convenient to specify middleware within your controller's constructor. Using the `middleware` method within your controller's constructor, you can assign middleware to the controller's actions:"
@@ -210,7 +245,20 @@ msgid "class UserController extends Controller\n"
 "        $this->middleware('subscribed')->except('store');\n"
 "    }\n"
 "}\n"
-msgstr ""
+msgstr "class UserController extends Controller\n"
+"{\n"
+"    /**\n"
+"     * Instantiate a new controller instance.\n"
+"     *\n"
+"     * @return void\n"
+"     */\n"
+"    public function __construct()\n"
+"    {\n"
+"        $this->middleware('auth');\n"
+"        $this->middleware('log')->only('index');\n"
+"        $this->middleware('subscribed')->except('store');\n"
+"    }\n"
+"}\n"
 
 #: docs/8.x/controllers.md:block 31 (paragraph)
 msgid "Controllers also allow you to register middleware using a closure. This provides a convenient way to define an inline middleware for a single controller without defining an entire middleware class:"
@@ -220,7 +268,9 @@ msgstr "Controller 也能讓你使用閉包來註冊 Middleware。這樣便提�
 msgid "$this->middleware(function ($request, $next) {\n"
 "    return $next($request);\n"
 "});\n"
-msgstr ""
+msgstr "$this->middleware(function ($request, $next) {\n"
+"    return $next($request);\n"
+"});\n"
 
 #: docs/8.x/controllers.md:block 34 (header)
 msgid "Resource Controllers"
@@ -245,7 +295,8 @@ msgstr "這個指令會在 `app/Http/Controllers/PhotoController.php` 下產生�
 #: docs/8.x/controllers.md:block 39 (code)
 msgid "use App\\Http\\Controllers\\PhotoController;\n\n"
 "Route::resource('photos', PhotoController::class);\n"
-msgstr ""
+msgstr "use App\\Http\\Controllers\\PhotoController;\n\n"
+"Route::resource('photos', PhotoController::class);\n"
 
 #: docs/8.x/controllers.md:block 40 (paragraph)
 msgid "This single route declaration creates multiple routes to handle a variety of actions on the resource. The generated controller will already have methods stubbed for each of these actions. Remember, you can always get a quick overview of your application's routes by running the `route:list` Artisan command."
@@ -260,7 +311,10 @@ msgid "Route::resources([\n"
 "    'photos' => PhotoController::class,\n"
 "    'posts' => PostController::class,\n"
 "]);\n"
-msgstr ""
+msgstr "Route::resources([\n"
+"    'photos' => PhotoController::class,\n"
+"    'posts' => PostController::class,\n"
+"]);\n"
 
 #: docs/8.x/controllers.md:block 44 (header)
 msgid "Actions Handled By Resource Controller"
@@ -268,107 +322,107 @@ msgstr "由資源 Controller 處理的動作"
 
 #: docs/8.x/controllers.md:block 45 (table)
 msgid "Verb"
-msgstr ""
+msgstr "動詞"
 
 #: docs/8.x/controllers.md:block 45 (table)
 msgid "URI"
-msgstr ""
+msgstr "URI"
 
 #: docs/8.x/controllers.md:block 45 (table)
 msgid "Action"
-msgstr ""
+msgstr "動作"
 
 #: docs/8.x/controllers.md:block 45 (table)
 msgid "Route Name"
-msgstr ""
+msgstr "Route 名稱"
 
 #: docs/8.x/controllers.md:block 45 (table)
 msgid "GET"
-msgstr ""
+msgstr "GET"
 
 #: docs/8.x/controllers.md:block 45 (table)
 msgid "`/photos`"
-msgstr ""
+msgstr "`/photos`"
 
 #: docs/8.x/controllers.md:block 45 (table)
 msgid "index"
-msgstr ""
+msgstr "index"
 
 #: docs/8.x/controllers.md:block 45 (table)
 msgid "photos.index"
-msgstr ""
+msgstr "photos.index"
 
 #: docs/8.x/controllers.md:block 45 (table)
 msgid "`/photos/create`"
-msgstr ""
+msgstr "`/photos/create`"
 
 #: docs/8.x/controllers.md:block 45 (table)
 msgid "create"
-msgstr ""
+msgstr "create"
 
 #: docs/8.x/controllers.md:block 45 (table)
 msgid "photos.create"
-msgstr ""
+msgstr "photos.create"
 
 #: docs/8.x/controllers.md:block 45 (table)
 msgid "POST"
-msgstr ""
+msgstr "POST"
 
 #: docs/8.x/controllers.md:block 45 (table)
 msgid "store"
-msgstr ""
+msgstr "store"
 
 #: docs/8.x/controllers.md:block 45 (table)
 msgid "photos.store"
-msgstr ""
+msgstr "photos.store"
 
 #: docs/8.x/controllers.md:block 45 (table)
 msgid "`/photos/{photo}`"
-msgstr ""
+msgstr "`/photos/{photo}`"
 
 #: docs/8.x/controllers.md:block 45 (table)
 msgid "show"
-msgstr ""
+msgstr "show"
 
 #: docs/8.x/controllers.md:block 45 (table)
 msgid "photos.show"
-msgstr ""
+msgstr "photos.show"
 
 #: docs/8.x/controllers.md:block 45 (table)
 msgid "`/photos/{photo}/edit`"
-msgstr ""
+msgstr "`/photos/{photo}/edit`"
 
 #: docs/8.x/controllers.md:block 45 (table)
 msgid "edit"
-msgstr ""
+msgstr "edit"
 
 #: docs/8.x/controllers.md:block 45 (table)
 msgid "photos.edit"
-msgstr ""
+msgstr "photos.edit"
 
 #: docs/8.x/controllers.md:block 45 (table)
 msgid "PUT/PATCH"
-msgstr ""
+msgstr "PUT/PATCH"
 
 #: docs/8.x/controllers.md:block 45 (table)
 msgid "update"
-msgstr ""
+msgstr "update"
 
 #: docs/8.x/controllers.md:block 45 (table)
 msgid "photos.update"
-msgstr ""
+msgstr "photos.update"
 
 #: docs/8.x/controllers.md:block 45 (table)
 msgid "DELETE"
-msgstr ""
+msgstr "DELETE"
 
 #: docs/8.x/controllers.md:block 45 (table)
 msgid "destroy"
-msgstr ""
+msgstr "destroy"
 
 #: docs/8.x/controllers.md:block 45 (table)
 msgid "photos.destroy"
-msgstr ""
+msgstr "photos.destroy"
 
 #: docs/8.x/controllers.md:block 47 (header)
 msgid "Customizing Missing Model Behavior"
@@ -386,7 +440,13 @@ msgid "use App\\Http\\Controllers\\PhotoController;\n"
 "        ->missing(function (Request $request) {\n"
 "            return Redirect::route('photos.index');\n"
 "        });\n"
-msgstr ""
+msgstr "use App\\Http\\Controllers\\PhotoController;\n"
+"use Illuminate\\Http\\Request;\n"
+"use Illuminate\\Support\\Facades\\Redirect;\n\n"
+"Route::resource('photos', PhotoController::class)\n"
+"        ->missing(function (Request $request) {\n"
+"            return Redirect::route('photos.index');\n"
+"        });\n"
 
 #: docs/8.x/controllers.md:block 51 (header)
 msgid "Specifying The Resource Model"
@@ -428,7 +488,13 @@ msgid "use App\\Http\\Controllers\\PhotoController;\n\n"
 "Route::resource('photos', PhotoController::class)->except([\n"
 "    'create', 'store', 'update', 'destroy'\n"
 "]);\n"
-msgstr ""
+msgstr "use App\\Http\\Controllers\\PhotoController;\n\n"
+"Route::resource('photos', PhotoController::class)->only([\n"
+"    'index', 'show'\n"
+"]);\n\n"
+"Route::resource('photos', PhotoController::class)->except([\n"
+"    'create', 'store', 'update', 'destroy'\n"
+"]);\n"
 
 #: docs/8.x/controllers.md:block 63 (header)
 msgid "API Resource Routes"
@@ -441,7 +507,8 @@ msgstr "在會被 API 使用的資源路由時，我們通常會想排除用來�
 #: docs/8.x/controllers.md:block 65 (code)
 msgid "use App\\Http\\Controllers\\PhotoController;\n\n"
 "Route::apiResource('photos', PhotoController::class);\n"
-msgstr ""
+msgstr "use App\\Http\\Controllers\\PhotoController;\n\n"
+"Route::apiResource('photos', PhotoController::class);\n"
 
 #: docs/8.x/controllers.md:block 66 (paragraph)
 msgid "You may register many API resource controllers at once by passing an array to the `apiResources` method:"
@@ -454,7 +521,12 @@ msgid "use App\\Http\\Controllers\\PhotoController;\n"
 "    'photos' => PhotoController::class,\n"
 "    'posts' => PostController::class,\n"
 "]);\n"
-msgstr ""
+msgstr "use App\\Http\\Controllers\\PhotoController;\n"
+"use App\\Http\\Controllers\\PostController;\n\n"
+"Route::apiResources([\n"
+"    'photos' => PhotoController::class,\n"
+"    'posts' => PostController::class,\n"
+"]);\n"
 
 #: docs/8.x/controllers.md:block 68 (paragraph)
 msgid "To quickly generate an API resource controller that does not include the `create` or `edit` methods, use the `--api` switch when executing the `make:controller` command:"
@@ -475,7 +547,8 @@ msgstr "有時候我們會需要為巢狀資源定義路由。舉例來說，某
 #: docs/8.x/controllers.md:block 73 (code)
 msgid "use App\\Http\\Controllers\\PhotoCommentController;\n\n"
 "Route::resource('photos.comments', PhotoCommentController::class);\n"
-msgstr ""
+msgstr "use App\\Http\\Controllers\\PhotoCommentController;\n\n"
+"Route::resource('photos.comments', PhotoCommentController::class);\n"
 
 #: docs/8.x/controllers.md:block 74 (paragraph)
 msgid "This route will register a nested resource that may be accessed with URIs like the following:"
@@ -483,7 +556,7 @@ msgstr "該路由會註冊一個巢狀資源，可使用像這樣的 URI 來存�
 
 #: docs/8.x/controllers.md:block 75 (code)
 msgid "/photos/{photo}/comments/{comment}\n"
-msgstr ""
+msgstr "/photos/{photo}/comments/{comment}\n"
 
 #: docs/8.x/controllers.md:block 77 (header)
 msgid "Scoping Nested Resources"
@@ -504,7 +577,8 @@ msgstr "通常，在 URI 中並不需要同時擁有上層 Model 與子 Model �
 #: docs/8.x/controllers.md:block 82 (code)
 msgid "use App\\Http\\Controllers\\CommentController;\n\n"
 "Route::resource('photos.comments', CommentController::class)->shallow();\n"
-msgstr ""
+msgstr "use App\\Http\\Controllers\\CommentController;\n\n"
+"Route::resource('photos.comments', CommentController::class)->shallow();\n"
 
 #: docs/8.x/controllers.md:block 83 (paragraph)
 msgid "This route definition will define the following routes:"
@@ -512,47 +586,47 @@ msgstr "這個路由定義會定義下列路由："
 
 #: docs/8.x/controllers.md:block 84 (table)
 msgid "`/photos/{photo}/comments`"
-msgstr ""
+msgstr "`/photos/{photo}/comments`"
 
 #: docs/8.x/controllers.md:block 84 (table)
 msgid "photos.comments.index"
-msgstr ""
+msgstr "photos.comments.index"
 
 #: docs/8.x/controllers.md:block 84 (table)
 msgid "`/photos/{photo}/comments/create`"
-msgstr ""
+msgstr "`/photos/{photo}/comments/create`"
 
 #: docs/8.x/controllers.md:block 84 (table)
 msgid "photos.comments.create"
-msgstr ""
+msgstr "photos.comments.create"
 
 #: docs/8.x/controllers.md:block 84 (table)
 msgid "photos.comments.store"
-msgstr ""
+msgstr "photos.comments.store"
 
 #: docs/8.x/controllers.md:block 84 (table)
 msgid "`/comments/{comment}`"
-msgstr ""
+msgstr "`/comments/{comment}`"
 
 #: docs/8.x/controllers.md:block 84 (table)
 msgid "comments.show"
-msgstr ""
+msgstr "comments.show"
 
 #: docs/8.x/controllers.md:block 84 (table)
 msgid "`/comments/{comment}/edit`"
-msgstr ""
+msgstr "`/comments/{comment}/edit`"
 
 #: docs/8.x/controllers.md:block 84 (table)
 msgid "comments.edit"
-msgstr ""
+msgstr "comments.edit"
 
 #: docs/8.x/controllers.md:block 84 (table)
 msgid "comments.update"
-msgstr ""
+msgstr "comments.update"
 
 #: docs/8.x/controllers.md:block 84 (table)
 msgid "comments.destroy"
-msgstr ""
+msgstr "comments.destroy"
 
 #: docs/8.x/controllers.md:block 86 (header)
 msgid "Naming Resource Routes"
@@ -567,7 +641,10 @@ msgid "use App\\Http\\Controllers\\PhotoController;\n\n"
 "Route::resource('photos', PhotoController::class)->names([\n"
 "    'create' => 'photos.build'\n"
 "]);\n"
-msgstr ""
+msgstr "use App\\Http\\Controllers\\PhotoController;\n\n"
+"Route::resource('photos', PhotoController::class)->names([\n"
+"    'create' => 'photos.build'\n"
+"]);\n"
 
 #: docs/8.x/controllers.md:block 90 (header)
 msgid "Naming Resource Route Parameters"
@@ -582,15 +659,18 @@ msgid "use App\\Http\\Controllers\\AdminUserController;\n\n"
 "Route::resource('users', AdminUserController::class)->parameters([\n"
 "    'users' => 'admin_user'\n"
 "]);\n"
-msgstr ""
+msgstr "use App\\Http\\Controllers\\AdminUserController;\n\n"
+"Route::resource('users', AdminUserController::class)->parameters([\n"
+"    'users' => 'admin_user'\n"
+"]);\n"
 
 #: docs/8.x/controllers.md:block 93 (paragraph)
 msgid "The example above generates the following URI for the resource's `show` route:"
-msgstr ""
+msgstr " 上述範例會為資源的 `show` 路由產生下列 URI："
 
 #: docs/8.x/controllers.md:block 94 (code)
 msgid "/users/{admin_user}\n"
-msgstr ""
+msgstr "/users/{admin_user}\n"
 
 #: docs/8.x/controllers.md:block 96 (header)
 msgid "Scoping Resource Routes"
@@ -605,7 +685,10 @@ msgid "use App\\Http\\Controllers\\PhotoCommentController;\n\n"
 "Route::resource('photos.comments', PhotoCommentController::class)->scoped([\n"
 "    'comment' => 'slug',\n"
 "]);\n"
-msgstr ""
+msgstr "use App\\Http\\Controllers\\PhotoCommentController;\n\n"
+"Route::resource('photos.comments', PhotoCommentController::class)->scoped([\n"
+"    'comment' => 'slug',\n"
+"]);\n"
 
 #: docs/8.x/controllers.md:block 99 (paragraph)
 msgid "This route will register a scoped nested resource that may be accessed with URIs like the following:"
@@ -613,7 +696,7 @@ msgstr "該路由會註冊一個限定範圍的巢狀資源，可使用像這樣
 
 #: docs/8.x/controllers.md:block 100 (code)
 msgid "/photos/{photo}/comments/{comment:slug}\n"
-msgstr ""
+msgstr "/photos/{photo}/comments/{comment:slug}\n"
 
 #: docs/8.x/controllers.md:block 101 (paragraph)
 msgid "When using a custom keyed implicit binding as a nested route parameter, Laravel will automatically scope the query to retrieve the nested model by its parent using conventions to guess the relationship name on the parent. In this case, it will be assumed that the `Photo` model has a relationship named `comments` (the plural of the route parameter name) which can be used to retrieve the `Comment` model."
@@ -641,7 +724,19 @@ msgid "/**\n"
 "    ]);\n\n"
 "    // ...\n"
 "}\n"
-msgstr ""
+msgstr "/**\n"
+" * Define your route model bindings, pattern filters, etc.\n"
+" *\n"
+" * @return void\n"
+" */\n"
+"public function boot()\n"
+"{\n"
+"    Route::resourceVerbs([\n"
+"        'create' => 'crear',\n"
+"        'edit' => 'editar',\n"
+"    ]);\n\n"
+"    // ...\n"
+"}\n"
 
 #: docs/8.x/controllers.md:block 106 (paragraph)
 msgid "Once the verbs have been customized, a resource route registration such as `Route::resource('fotos', PhotoController::class)` will produce the following URIs:"
@@ -650,7 +745,8 @@ msgstr "自訂完動詞後，使用如 `Route::resource('fotos', PhotoController
 #: docs/8.x/controllers.md:block 107 (code)
 msgid "/fotos/crear\n\n"
 "/fotos/{foto}/editar\n"
-msgstr ""
+msgstr "/fotos/crear\n\n"
+"/fotos/{foto}/editar\n"
 
 #: docs/8.x/controllers.md:block 109 (header)
 msgid "Supplementing Resource Controllers"
@@ -664,11 +760,13 @@ msgstr "若有需要為某個資源 Controller 增加除了預設資源路由以
 msgid "use App\\Http\\Controller\\PhotoController;\n\n"
 "Route::get('/photos/popular', [PhotoController::class, 'popular']);\n"
 "Route::resource('photos', PhotoController::class);\n"
-msgstr ""
+msgstr "use App\\Http\\Controller\\PhotoController;\n\n"
+"Route::get('/photos/popular', [PhotoController::class, 'popular']);\n"
+"Route::resource('photos', PhotoController::class);\n"
 
 #: docs/8.x/controllers.md:block 112 (quote)
 msgid "{tip} Remember to keep your controllers focused. If you find yourself routinely needing methods outside of the typical set of resource actions, consider splitting your controller into two, smaller controllers."
-msgstr ""
+msgstr "{tip} 請記得要保持 Controller 的功能專一。若發現常常需要使用除了一般資源動作以外的方法，請考慮將 Controller 拆分成兩個、更小的 Controller。"
 
 #: docs/8.x/controllers.md:block 114 (header)
 msgid "Dependency Injection & Controllers"
@@ -703,7 +801,26 @@ msgid "<?php\n\n"
 "        $this->users = $users;\n"
 "    }\n"
 "}\n"
-msgstr ""
+msgstr "<?php\n\n"
+"namespace App\\Http\\Controllers;\n\n"
+"use App\\Repositories\\UserRepository;\n\n"
+"class UserController extends Controller\n"
+"{\n"
+"    /**\n"
+"     * The user repository instance.\n"
+"     */\n"
+"    protected $users;\n\n"
+"    /**\n"
+"     * Create a new controller instance.\n"
+"     *\n"
+"     * @param  \\App\\Repositories\\UserRepository  $users\n"
+"     * @return void\n"
+"     */\n"
+"    public function __construct(UserRepository $users)\n"
+"    {\n"
+"        $this->users = $users;\n"
+"    }\n"
+"}\n"
 
 #: docs/8.x/controllers.md:block 120 (header)
 msgid "Method Injection"
@@ -731,7 +848,23 @@ msgid "<?php\n\n"
 "        //\n"
 "    }\n"
 "}\n"
-msgstr ""
+msgstr "<?php\n\n"
+"namespace App\\Http\\Controllers;\n\n"
+"use Illuminate\\Http\\Request;\n\n"
+"class UserController extends Controller\n"
+"{\n"
+"    /**\n"
+"     * Store a new user.\n"
+"     *\n"
+"     * @param  \\Illuminate\\Http\\Request  $request\n"
+"     * @return \\Illuminate\\Http\\Response\n"
+"     */\n"
+"    public function store(Request $request)\n"
+"    {\n"
+"        $name = $request->name;\n\n"
+"        //\n"
+"    }\n"
+"}\n"
 
 #: docs/8.x/controllers.md:block 123 (paragraph)
 msgid "If your controller method is also expecting input from a route parameter, list your route arguments after your other dependencies. For example, if your route is defined like so:"
@@ -740,7 +873,8 @@ msgstr "若 Controller 方法也預期會從路由參數取得輸入，則請將
 #: docs/8.x/controllers.md:block 124 (code)
 msgid "use App\\Http\\Controllers\\UserController;\n\n"
 "Route::put('/user/{id}', [UserController::class, 'update']);\n"
-msgstr ""
+msgstr "use App\\Http\\Controllers\\UserController;\n\n"
+"Route::put('/user/{id}', [UserController::class, 'update']);\n"
 
 #: docs/8.x/controllers.md:block 125 (paragraph)
 msgid "You may still type-hint the `Illuminate\\Http\\Request` and access your `id` parameter by defining your controller method as follows:"
@@ -764,5 +898,21 @@ msgid "<?php\n\n"
 "        //\n"
 "    }\n"
 "}\n"
-msgstr ""
+msgstr "<?php\n\n"
+"namespace App\\Http\\Controllers;\n\n"
+"use Illuminate\\Http\\Request;\n\n"
+"class UserController extends Controller\n"
+"{\n"
+"    /**\n"
+"     * Update the given user.\n"
+"     *\n"
+"     * @param  \\Illuminate\\Http\\Request  $request\n"
+"     * @param  string  $id\n"
+"     * @return \\Illuminate\\Http\\Response\n"
+"     */\n"
+"    public function update(Request $request, $id)\n"
+"    {\n"
+"        //\n"
+"    }\n"
+"}\n"
 

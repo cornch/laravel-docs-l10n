@@ -10,7 +10,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
-"PO-Revision-Date: 2022-02-13 09:29\n"
+"PO-Revision-Date: 2022-02-13 13:40\n"
 
 #: docs/8.x/localization.md:block 1 (header)
 msgid "Localization"
@@ -18,39 +18,39 @@ msgstr "本土化"
 
 #: docs/8.x/localization.md:block 2 (unordered list)
 msgid "[Introduction](#introduction)"
-msgstr ""
+msgstr "[簡介](#introduction)"
 
 #: docs/8.x/localization.md:block 2 (unordered list)
 msgid "[Configuring The Locale](#configuring-the-locale)"
-msgstr ""
+msgstr "[設定語系](#configuring-the-locale)"
 
 #: docs/8.x/localization.md:block 2 (unordered list)
 msgid "[Defining Translation Strings](#defining-translation-strings)"
-msgstr ""
+msgstr "[定義翻譯字串](#defining-translation-strings)"
 
 #: docs/8.x/localization.md:block 2 (unordered list)
 msgid "[Using Short Keys](#using-short-keys)"
-msgstr ""
+msgstr "[使用短的索引鍵](#using-short-keys)"
 
 #: docs/8.x/localization.md:block 2 (unordered list)
 msgid "[Using Translation Strings As Keys](#using-translation-strings-as-keys)"
-msgstr ""
+msgstr "[使用翻譯字串作為索引鍵](#using-translation-strings-as-keys)"
 
 #: docs/8.x/localization.md:block 2 (unordered list)
 msgid "[Retrieving Translation Strings](#retrieving-translation-strings)"
-msgstr ""
+msgstr "[取得翻譯字串](#retrieving-translation-strings)"
 
 #: docs/8.x/localization.md:block 2 (unordered list)
 msgid "[Replacing Parameters In Translation Strings](#replacing-parameters-in-translation-strings)"
-msgstr ""
+msgstr "[在翻譯字串中取代參數](#replacing-parameters-in-translation-strings)"
 
 #: docs/8.x/localization.md:block 2 (unordered list)
 msgid "[Pluralization](#pluralization)"
-msgstr ""
+msgstr "[單複數的處理](#pluralization)"
 
 #: docs/8.x/localization.md:block 2 (unordered list)
 msgid "[Overriding Package Language Files](#overriding-package-language-files)"
-msgstr ""
+msgstr "[覆寫套件的語系檔](#overriding-package-language-files)"
 
 #: docs/8.x/localization.md:block 4 (header)
 msgid "Introduction"
@@ -71,7 +71,12 @@ msgid "/resources\n"
 "            messages.php\n"
 "        /es\n"
 "            messages.php\n"
-msgstr ""
+msgstr "/resources\n"
+"    /lang\n"
+"        /en\n"
+"            messages.php\n"
+"        /es\n"
+"            messages.php\n"
 
 #: docs/8.x/localization.md:block 8 (paragraph)
 msgid "Or, translation strings may be defined within JSON files that are placed within the `resources/lang` directory. When taking this approach, each language supported by your application would have a corresponding JSON file within this directory. This approach is recommended for application's that have a large number of translatable strings:"
@@ -82,7 +87,10 @@ msgid "/resources\n"
 "    /lang\n"
 "        en.json\n"
 "        es.json\n"
-msgstr ""
+msgstr "/resources\n"
+"    /lang\n"
+"        en.json\n"
+"        es.json\n"
 
 #: docs/8.x/localization.md:block 10 (paragraph)
 msgid "We'll discuss each approach to managing translation strings within this documentation."
@@ -109,7 +117,14 @@ msgid "use Illuminate\\Support\\Facades\\App;\n\n"
 "    App::setLocale($locale);\n\n"
 "    //\n"
 "});\n"
-msgstr ""
+msgstr "use Illuminate\\Support\\Facades\\App;\n\n"
+"Route::get('/greeting/{locale}', function ($locale) {\n"
+"    if (! in_array($locale, ['en', 'es', 'fr'])) {\n"
+"        abort(400);\n"
+"    }\n\n"
+"    App::setLocale($locale);\n\n"
+"    //\n"
+"});\n"
 
 #: docs/8.x/localization.md:block 16 (paragraph)
 msgid "You may configure a \"fallback language\", which will be used when the active language does not contain a given translation string. Like the default language, the fallback language is also configured in the `config/app.php` configuration file:"
@@ -117,7 +132,7 @@ msgstr "也可以設定一個「遞補語系」，當目前語系中找不到給
 
 #: docs/8.x/localization.md:block 17 (code)
 msgid "'fallback_locale' => 'en',\n"
-msgstr ""
+msgstr "'fallback_locale' => 'en',\n"
 
 #: docs/8.x/localization.md:block 19 (header)
 msgid "Determining The Current Locale"
@@ -133,7 +148,11 @@ msgid "use Illuminate\\Support\\Facades\\App;\n\n"
 "if (App::isLocale('en')) {\n"
 "    //\n"
 "}\n"
-msgstr ""
+msgstr "use Illuminate\\Support\\Facades\\App;\n\n"
+"$locale = App::currentLocale();\n\n"
+"if (App::isLocale('en')) {\n"
+"    //\n"
+"}\n"
 
 #: docs/8.x/localization.md:block 23 (header)
 msgid "Defining Translation Strings"
@@ -149,7 +168,7 @@ msgstr "一般來說，翻譯字串都保存在 `resources/lang` 目錄內。在
 
 #: docs/8.x/localization.md:block 28 (paragraph)
 msgid "All language files return an array of keyed strings. For example:"
-msgstr "所有的預習檔都回傳一個有字串索引鍵的陣列。如："
+msgstr "所有的語系檔都回傳一個有字串索引鍵的陣列。如："
 
 #: docs/8.x/localization.md:block 29 (code)
 msgid "<?php\n\n"
@@ -157,11 +176,15 @@ msgid "<?php\n\n"
 "return [\n"
 "    'welcome' => 'Welcome to our application!',\n"
 "];\n"
-msgstr ""
+msgstr "<?php\n\n"
+"// resources/lang/en/messages.php\n\n"
+"return [\n"
+"    'welcome' => 'Welcome to our application!',\n"
+"];\n"
 
 #: docs/8.x/localization.md:block 30 (quote)
 msgid "{note} For languages that differ by territory, you should name the language directories according to the ISO 15897. For example, \"en_GB\" should be used for British English rather than \"en-gb\"."
-msgstr ""
+msgstr "{note} 對於會因國家或地區而有所區別的語系，請依照 ISO 15897 命名語系檔目錄。舉例來說，英式英語應使用「en_GB」而非「en-gb」。"
 
 #: docs/8.x/localization.md:block 32 (header)
 msgid "Using Translation Strings As Keys"
@@ -173,7 +196,7 @@ msgstr "對於有大量可翻譯字串的專案，若將每個字串都定義為
 
 #: docs/8.x/localization.md:block 34 (paragraph)
 msgid "For this reason, Laravel also provides support for defining translation strings using the \"default\" translation of the string as the key. Translation files that use translation strings as keys are stored as JSON files in the `resources/lang` directory. For example, if your application has a Spanish translation, you should create a `resources/lang/es.json` file:"
-msgstr "因此，Laravel 提供了使用「預設」翻譯作為翻譯字串索引鍵的支援。使用翻譯字串作為索引鍵的預習檔保存在 `lang` 目錄下的 JSON 檔中。舉例來說，若我們的專案有西班牙語翻譯，就可建立一個像這樣的 `lang/es.json` 檔："
+msgstr "因此，Laravel 提供了使用「預設」翻譯作為翻譯字串索引鍵的支援。使用翻譯字串作為索引鍵的語系檔保存在 `lang` 目錄下的 JSON 檔中。舉例來說，若我們的專案有西班牙語翻譯，就可建立一個像這樣的 `lang/es.json` 檔："
 
 #: docs/8.x/localization.md:block 35 (code)
 msgid "{\n"
@@ -189,7 +212,7 @@ msgstr "索引鍵 / 檔案的衝突"
 
 #: docs/8.x/localization.md:block 37 (paragraph)
 msgid "You should not define translation string keys that conflict with other translation filenames. For example, translating `__('Action')` for the \"NL\" locale while a `nl/action.php` file exists but a `nl.json` file does not exist will result in the translator returning the contents of `nl/action.php`."
-msgstr "請不要定義與其他預習檔名衝突的翻譯字串。舉例來說，為荷蘭語「NL」翻譯 `__('Action')` 時，若有 `nl/action.php` 檔案但 `nl.json` 檔不存在時，翻譯程式就會回傳 `nl/action.php` 的內容。"
+msgstr "請不要定義與其他語系檔名衝突的翻譯字串。舉例來說，為荷蘭語「NL」翻譯 `__('Action')` 時，若有 `nl/action.php` 檔案但 `nl.json` 檔不存在時，翻譯程式就會回傳 `nl/action.php` 的內容。"
 
 #: docs/8.x/localization.md:block 39 (header)
 msgid "Retrieving Translation Strings"
@@ -201,7 +224,7 @@ msgstr "可以使用 `__` 輔助函式來從語系檔中取得翻譯字串。若
 
 #: docs/8.x/localization.md:block 41 (code)
 msgid "echo __('messages.welcome');\n"
-msgstr ""
+msgstr "echo __('messages.welcome');\n"
 
 #: docs/8.x/localization.md:block 42 (paragraph)
 msgid "If the specified translation string does not exist, the `__` function will return the translation string key. So, using the example above, the `__` function would return `messages.welcome` if the translation string does not exist."
@@ -209,11 +232,11 @@ msgstr "若指定的翻譯字串不存在時，`__` 函式會回傳給定的字�
 
 #: docs/8.x/localization.md:block 43 (paragraph)
 msgid "If you are using your [default translation strings as your translation keys](#using-translation-strings-as-keys), you should pass the default translation of your string to the `__` function;"
-msgstr ""
+msgstr "若使用[預設翻譯字串作為翻譯索引鍵](#using-translation-strings-as-keys)，則請傳入預設翻譯字串給 `__` 函式："
 
 #: docs/8.x/localization.md:block 44 (code)
 msgid "echo __('I love programming.');\n"
-msgstr ""
+msgstr "echo __('I love programming.');\n"
 
 #: docs/8.x/localization.md:block 45 (paragraph)
 msgid "Again, if the translation string does not exist, the `__` function will return the translation string key that it was given."
@@ -225,7 +248,7 @@ msgstr "若使用[Blade 樣板引擎](/docs/{{version}}/blade)，可使用 `{{ }
 
 #: docs/8.x/localization.md:block 47 (code)
 msgid "{{ __('messages.welcome') }}\n"
-msgstr ""
+msgstr "{{ __('messages.welcome') }}\n"
 
 #: docs/8.x/localization.md:block 49 (header)
 msgid "Replacing Parameters In Translation Strings"
@@ -237,7 +260,7 @@ msgstr "若有需要的話，也可以在翻譯字串中定義^[預留位置](Pl
 
 #: docs/8.x/localization.md:block 51 (code)
 msgid "'welcome' => 'Welcome, :name',\n"
-msgstr ""
+msgstr "'welcome' => 'Welcome, :name',\n"
 
 #: docs/8.x/localization.md:block 52 (paragraph)
 msgid "To replace the placeholders when retrieving a translation string, you may pass an array of replacements as the second argument to the `__` function:"
@@ -245,7 +268,7 @@ msgstr "取得翻譯字串時若要取代這個預留位置，可傳入一組取
 
 #: docs/8.x/localization.md:block 53 (code)
 msgid "echo __('messages.welcome', ['name' => 'dayle']);\n"
-msgstr ""
+msgstr "echo __('messages.welcome', ['name' => 'dayle']);\n"
 
 #: docs/8.x/localization.md:block 54 (paragraph)
 msgid "If your placeholder contains all capital letters, or only has its first letter capitalized, the translated value will be capitalized accordingly:"
@@ -254,7 +277,8 @@ msgstr "若預留位置只包含大寫字母，或是首字母大寫，則翻譯
 #: docs/8.x/localization.md:block 55 (code)
 msgid "'welcome' => 'Welcome, :NAME', // Welcome, DAYLE\n"
 "'goodbye' => 'Goodbye, :Name', // Goodbye, Dayle\n"
-msgstr ""
+msgstr "'welcome' => 'Welcome, :NAME', // Welcome, DAYLE\n"
+"'goodbye' => 'Goodbye, :Name', // Goodbye, Dayle\n"
 
 #: docs/8.x/localization.md:block 57 (header)
 msgid "Pluralization"
@@ -266,7 +290,7 @@ msgstr "複數是一個很複雜的問題，因為不同的語言有各種不同
 
 #: docs/8.x/localization.md:block 59 (code)
 msgid "'apples' => 'There is one apple|There are many apples',\n"
-msgstr ""
+msgstr "'apples' => 'There is one apple|There are many apples',\n"
 
 #: docs/8.x/localization.md:block 60 (paragraph)
 msgid "Of course, pluralization is also supported when using [translation strings as keys](#using-translation-strings-as-keys):"
@@ -286,7 +310,7 @@ msgstr "也可以為不同的值指定不同翻譯字串以建立更複雜的複
 
 #: docs/8.x/localization.md:block 63 (code)
 msgid "'apples' => '{0} There are none|[1,19] There are some|[20,*] There are many',\n"
-msgstr ""
+msgstr "'apples' => '{0} There are none|[1,19] There are some|[20,*] There are many',\n"
 
 #: docs/8.x/localization.md:block 64 (paragraph)
 msgid "After defining a translation string that has pluralization options, you may use the `trans_choice` function to retrieve the line for a given \"count\". In this example, since the count is greater than one, the plural form of the translation string is returned:"
@@ -294,7 +318,7 @@ msgstr "定義有複數化選項的翻譯字串後，可使用 `trans_choice` �
 
 #: docs/8.x/localization.md:block 65 (code)
 msgid "echo trans_choice('messages.apples', 10);\n"
-msgstr ""
+msgstr "echo trans_choice('messages.apples', 10);\n"
 
 #: docs/8.x/localization.md:block 66 (paragraph)
 msgid "You may also define placeholder attributes in pluralization strings. These placeholders may be replaced by passing an array as the third argument to the `trans_choice` function:"
@@ -303,7 +327,8 @@ msgstr "也可以在複數化字串中定義預留位置屬性。可以在 `tran
 #: docs/8.x/localization.md:block 67 (code)
 msgid "'minutes_ago' => '{1} :value minute ago|[2,*] :value minutes ago',\n\n"
 "echo trans_choice('time.minutes_ago', 5, ['value' => 5]);\n"
-msgstr ""
+msgstr "'minutes_ago' => '{1} :value minute ago|[2,*] :value minutes ago',\n\n"
+"echo trans_choice('time.minutes_ago', 5, ['value' => 5]);\n"
 
 #: docs/8.x/localization.md:block 68 (paragraph)
 msgid "If you would like to display the integer value that was passed to the `trans_choice` function, you may use the built-in `:count` placeholder:"
@@ -311,7 +336,7 @@ msgstr "若想顯示傳入 `trans_choice` 函式的整數值，可使用內建�
 
 #: docs/8.x/localization.md:block 69 (code)
 msgid "'apples' => '{0} There are none|{1} There is one|[2,*] There are :count',\n"
-msgstr ""
+msgstr "'apples' => '{0} There are none|{1} There is one|[2,*] There are :count',\n"
 
 #: docs/8.x/localization.md:block 71 (header)
 msgid "Overriding Package Language Files"
@@ -319,15 +344,15 @@ msgstr "覆寫套件的語系檔"
 
 #: docs/8.x/localization.md:block 72 (paragraph)
 msgid "Some packages may ship with their own language files. Instead of changing the package's core files to tweak these lines, you may override them by placing files in the `resources/lang/vendor/{package}/{locale}` directory."
-msgstr "有的套件中包含了套件自己的預習檔。除了直接修改套件的檔案來更改語系檔內容外，還可以在 `resources/lang/vendor/{package}/{locale}` 目錄內放置檔案來覆寫這些預習檔。"
+msgstr "有的套件中包含了套件自己的語系檔。除了直接修改套件的檔案來更改語系檔內容外，還可以在 `resources/lang/vendor/{package}/{locale}` 目錄內放置檔案來覆寫這些語系檔。"
 
 #: docs/8.x/localization.md:block 73 (paragraph)
 msgid "So, for example, if you need to override the English translation strings in `messages.php` for a package named `skyrim/hearthfire`, you should place a language file at: `resources/lang/vendor/hearthfire/en/messages.php`. Within this file, you should only define the translation strings you wish to override. Any translation strings you don't override will still be loaded from the package's original language files."
-msgstr "舉例來說，若想為 `skyrim/hearthfire` 套件覆寫的 `messages.php` 內的英文翻譯，我們可以在 `resources/lang/vendor/hearthfire/en/messages.php` 中放置一個語系檔。在這個的檔案內，我們只需要定義要覆寫的翻譯字串即可。未覆寫的翻譯字串會從該套件的原始預習檔中載入。"
+msgstr "舉例來說，若想為 `skyrim/hearthfire` 套件覆寫的 `messages.php` 內的英文翻譯，我們可以在 `resources/lang/vendor/hearthfire/en/messages.php` 中放置一個語系檔。在這個的檔案內，我們只需要定義要覆寫的翻譯字串即可。未覆寫的翻譯字串會從該套件的原始語系檔中載入。"
 
 #: docs/9.x/localization.md:block 6 (paragraph)
 msgid "Laravel provides two ways to manage translation strings. First, language strings may be stored in files within the `lang` directory. Within this directory, there may be subdirectories for each language supported by the application. This is the approach Laravel uses to manage translation strings for built-in Laravel features such as validation error messages:"
-msgstr ""
+msgstr "Laravel 提供了兩種管理翻譯字串的方法。第一種方式，就是將翻譯字串保存在 `lang` 目錄內。在這個目錄中，可以為程式要支援的每一個語言都建立一個子目錄。這也是 Laravel 管理如表單驗證錯誤訊息等內建功能翻譯字串的方式："
 
 #: docs/9.x/localization.md:block 7 (code)
 msgid "/lang\n"
@@ -335,21 +360,27 @@ msgid "/lang\n"
 "        messages.php\n"
 "    /es\n"
 "        messages.php\n"
-msgstr ""
+msgstr "/lang\n"
+"    /en\n"
+"        messages.php\n"
+"    /es\n"
+"        messages.php\n"
 
 #: docs/9.x/localization.md:block 8 (paragraph)
 msgid "Or, translation strings may be defined within JSON files that are placed within the `lang` directory. When taking this approach, each language supported by your application would have a corresponding JSON file within this directory. This approach is recommended for application's that have a large number of translatable strings:"
-msgstr ""
+msgstr "第二種方式，是將翻譯字串定義在 `lang` 目錄下的 JSON 檔中。用這種方式時，要支援的每個語言在該目錄中都有一個對應的 JSON 檔。若專案沒有太多要翻譯的字串的話，建議使用這種做法："
 
 #: docs/9.x/localization.md:block 9 (code)
 msgid "/lang\n"
 "    en.json\n"
 "    es.json\n"
-msgstr ""
+msgstr "/lang\n"
+"    en.json\n"
+"    es.json\n"
 
 #: docs/9.x/localization.md:block 26 (paragraph)
 msgid "Typically, translation strings are stored in files within the `lang` directory. Within this directory, there should be a subdirectory for each language supported by your application. This is the approach Laravel uses to manage translation strings for built-in Laravel features such as validation error messages:"
-msgstr ""
+msgstr "一般來說，翻譯字串都保存在 `lang` 目錄內。在這個目錄中，專案要支援的每一個語言都應有一個子目錄。這也是 Laravel 管理如表單驗證錯誤訊息等內建功能翻譯字串的方式："
 
 #: docs/9.x/localization.md:block 29 (code)
 msgid "<?php\n\n"
@@ -357,21 +388,25 @@ msgid "<?php\n\n"
 "return [\n"
 "    'welcome' => 'Welcome to our application!',\n"
 "];\n"
-msgstr ""
+msgstr "<?php\n\n"
+"// lang/en/messages.php\n\n"
+"return [\n"
+"    'welcome' => 'Welcome to our application!',\n"
+"];\n"
 
 #: docs/9.x/localization.md:block 34 (paragraph)
 msgid "For this reason, Laravel also provides support for defining translation strings using the \"default\" translation of the string as the key. Translation files that use translation strings as keys are stored as JSON files in the `lang` directory. For example, if your application has a Spanish translation, you should create a `lang/es.json` file:"
-msgstr ""
+msgstr "因此，Laravel 提供了使用「預設」翻譯作為翻譯字串索引鍵的支援。使用翻譯字串作為索引鍵的語系檔保存在 `lang` 目錄下的 JSON 檔中。舉例來說，若我們的專案有西班牙語翻譯，就可建立一個像這樣的 `lang/es.json` 檔："
 
 #: docs/9.x/localization.md:block 40 (paragraph)
 msgid "You may retrieve translation strings from your language files using the `__` helper function. If you are using \"short keys\" to define your translation strings, you should pass the file that contains the key and the key itself to the `__` function using \"dot\" syntax. For example, let's retrieve the `welcome` translation string from the `lang/en/messages.php` language file:"
-msgstr ""
+msgstr "可以使用 `__` 輔助函式來從語系檔中取得翻譯字串。若使用「短索引鍵」來定義翻譯字串的話，請使用「點 (.)」標記法來傳入包含該索引鍵的檔案、以及該索引鍵。舉例來說，我們來從 `lang/en/messages.php` 語系檔中取得 `welcome` 翻譯字串："
 
 #: docs/9.x/localization.md:block 72 (paragraph)
 msgid "Some packages may ship with their own language files. Instead of changing the package's core files to tweak these lines, you may override them by placing files in the `lang/vendor/{package}/{locale}` directory."
-msgstr ""
+msgstr "有的套件中包含了套件自己的語系檔。除了直接修改套件的檔案來更改語系檔內容外，還可以在 `lang/vendor/{package}/{locale}` 目錄內放置檔案來覆寫這些語系檔。"
 
 #: docs/9.x/localization.md:block 73 (paragraph)
 msgid "So, for example, if you need to override the English translation strings in `messages.php` for a package named `skyrim/hearthfire`, you should place a language file at: `lang/vendor/hearthfire/en/messages.php`. Within this file, you should only define the translation strings you wish to override. Any translation strings you don't override will still be loaded from the package's original language files."
-msgstr ""
+msgstr "舉例來說，若想為 `skyrim/hearthfire` 套件覆寫的 `messages.php` 內的英文翻譯，我們可以在 `lang/vendor/hearthfire/en/messages.php` 中放置一個語系檔。在這個的檔案內，我們只需要定義要覆寫的翻譯字串即可。未覆寫的翻譯字串會從該套件的原始語系檔中載入。"
 

@@ -10,7 +10,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
-"PO-Revision-Date: 2022-02-13 07:49\n"
+"PO-Revision-Date: 2022-02-13 08:51\n"
 
 #: docs/8.x/artisan.md:block 1 (header)
 msgid "Artisan Console"
@@ -94,7 +94,7 @@ msgstr "[處理訊號 (Signal)](#signal-handling)"
 
 #: docs/8.x/artisan.md:block 2 (unordered list)
 msgid "[Stub Customization](#stub-customization)"
-msgstr "[自定 Stub](#stub-customization)"
+msgstr "[自訂 Stub](#stub-customization)"
 
 #: docs/8.x/artisan.md:block 2 (unordered list)
 msgid "[Events](#events)"
@@ -170,11 +170,11 @@ msgstr "composer require laravel/tinker\n"
 
 #: docs/8.x/artisan.md:block 20 (quote)
 msgid "{tip} Looking for a graphical UI for interacting with your Laravel application? Check out [Tinkerwell](https://tinkerwell.app)!"
-msgstr ""
+msgstr "{tip} 想找個能與你的 Laravel 應用程式互動的圖形化 UI 嗎？試試 [Tinkerwell](https://tinkerwell.app) 吧！"
 
 #: docs/8.x/artisan.md:block 21 (paragraph)
 msgid "<a name=\"usage\"></a>"
-msgstr ""
+msgstr "<a name=\"usage\"></a>"
 
 #: docs/8.x/artisan.md:block 22 (header)
 msgid "Usage"
@@ -198,11 +198,11 @@ msgstr "php artisan vendor:publish --provider=\"Laravel\\Tinker\\TinkerServicePr
 
 #: docs/8.x/artisan.md:block 27 (quote)
 msgid "{note} The `dispatch` helper function and `dispatch` method on the `Dispatchable` class depends on garbage collection to place the job on the queue. Therefore, when using tinker, you should use `Bus::dispatch` or `Queue::push` to dispatch jobs."
-msgstr ""
+msgstr "{note} `dispatch` 輔助函式與 `Dispatchable` 類別上的 `dispatch` 方法需要仰賴垃圾回收機制來將任務放進佇列中。因此，在使用 Tinker 時，應使用 `Bus::dispatch` 或 `Queue::push` 來分派任務。"
 
 #: docs/8.x/artisan.md:block 28 (paragraph)
 msgid "<a name=\"command-allow-list\"></a>"
-msgstr ""
+msgstr "<a name=\"command-allow-list\"></a>"
 
 #: docs/8.x/artisan.md:block 29 (header)
 msgid "Command Allow List"
@@ -216,11 +216,13 @@ msgstr "Tinker 使用一個「allow」清單來判斷哪些 Artisan 指令可在
 msgid "'commands' => [\n"
 "    // App\\Console\\Commands\\ExampleCommand::class,\n"
 "],\n"
-msgstr ""
+msgstr "'commands' => [\n"
+"    // App\\Console\\Commands\\ExampleCommand::class,\n"
+"],\n"
 
 #: docs/8.x/artisan.md:block 32 (paragraph)
 msgid "<a name=\"classes-that-should-not-be-aliased\"></a>"
-msgstr ""
+msgstr "<a name=\"classes-that-should-not-be-aliased\"></a>"
 
 #: docs/8.x/artisan.md:block 33 (header)
 msgid "Classes That Should Not Be Aliased"
@@ -234,11 +236,13 @@ msgstr "一般來說，Tinker 會在使用過程中自動為類別加上別名�
 msgid "'dont_alias' => [\n"
 "    App\\Models\\User::class,\n"
 "],\n"
-msgstr ""
+msgstr "'dont_alias' => [\n"
+"    App\\Models\\User::class,\n"
+"],\n"
 
 #: docs/8.x/artisan.md:block 36 (paragraph)
 msgid "<a name=\"writing-commands\"></a>"
-msgstr ""
+msgstr "<a name=\"writing-commands\"></a>"
 
 #: docs/8.x/artisan.md:block 37 (header)
 msgid "Writing Commands"
@@ -246,11 +250,11 @@ msgstr "撰寫指令"
 
 #: docs/8.x/artisan.md:block 38 (paragraph)
 msgid "In addition to the commands provided with Artisan, you may build your own custom commands. Commands are typically stored in the `app/Console/Commands` directory; however, you are free to choose your own storage location as long as your commands can be loaded by Composer."
-msgstr "除了 Artisan 提供的指令外，也可以建制自己的自定指令。指令通常儲存於 `app/Console/Commands` 目錄內。但是，只要你的自定指令可以被 Composer 載入，也可以自行選擇儲存位置。"
+msgstr "除了 Artisan 提供的指令外，也可以建制自己的自訂指令。指令通常儲存於 `app/Console/Commands` 目錄內。但是，只要你的自訂指令可以被 Composer 載入，也可以自行選擇儲存位置。"
 
 #: docs/8.x/artisan.md:block 39 (paragraph)
 msgid "<a name=\"generating-commands\"></a>"
-msgstr ""
+msgstr "<a name=\"generating-commands\"></a>"
 
 #: docs/8.x/artisan.md:block 40 (header)
 msgid "Generating Commands"
@@ -266,7 +270,7 @@ msgstr "php artisan make:command SendEmails\n"
 
 #: docs/8.x/artisan.md:block 43 (paragraph)
 msgid "<a name=\"command-structure\"></a>"
-msgstr ""
+msgstr "<a name=\"command-structure\"></a>"
 
 #: docs/8.x/artisan.md:block 44 (header)
 msgid "Command Structure"
@@ -320,15 +324,53 @@ msgid "<?php\n\n"
 "        $drip->send(User::find($this->argument('user')));\n"
 "    }\n"
 "}\n"
-msgstr ""
+msgstr "<?php\n\n"
+"namespace App\\Console\\Commands;\n\n"
+"use App\\Models\\User;\n"
+"use App\\Support\\DripEmailer;\n"
+"use Illuminate\\Console\\Command;\n\n"
+"class SendEmails extends Command\n"
+"{\n"
+"    /**\n"
+"     * The name and signature of the console command.\n"
+"     *\n"
+"     * @var string\n"
+"     */\n"
+"    protected $signature = 'mail:send {user}';\n\n"
+"    /**\n"
+"     * The console command description.\n"
+"     *\n"
+"     * @var string\n"
+"     */\n"
+"    protected $description = 'Send a marketing email to a user';\n\n"
+"    /**\n"
+"     * Create a new command instance.\n"
+"     *\n"
+"     * @return void\n"
+"     */\n"
+"    public function __construct()\n"
+"    {\n"
+"        parent::__construct();\n"
+"    }\n\n"
+"    /**\n"
+"     * Execute the console command.\n"
+"     *\n"
+"     * @param  \\App\\Support\\DripEmailer  $drip\n"
+"     * @return mixed\n"
+"     */\n"
+"    public function handle(DripEmailer $drip)\n"
+"    {\n"
+"        $drip->send(User::find($this->argument('user')));\n"
+"    }\n"
+"}\n"
 
 #: docs/8.x/artisan.md:block 48 (quote)
 msgid "{tip} For greater code reuse, it is good practice to keep your console commands light and let them defer to application services to accomplish their tasks. In the example above, note that we inject a service class to do the \"heavy lifting\" of sending the e-mails."
-msgstr ""
+msgstr "{tip} 為了提升程式碼重複使用率，最好保持主控台指令精簡，並將指令的任務委託給應用程式服務來完成。在上方的例子中，可以注意到我們插入了一個服務類別來處理寄送 E-Mail 的這個「重責大任」。"
 
 #: docs/8.x/artisan.md:block 49 (paragraph)
 msgid "<a name=\"closure-commands\"></a>"
-msgstr ""
+msgstr "<a name=\"closure-commands\"></a>"
 
 #: docs/8.x/artisan.md:block 50 (header)
 msgid "Closure Commands"
@@ -348,7 +390,15 @@ msgid "/**\n"
 "{\n"
 "    require base_path('routes/console.php');\n"
 "}\n"
-msgstr ""
+msgstr "/**\n"
+" * Register the closure based commands for the application.\n"
+" *\n"
+" * @return void\n"
+" */\n"
+"protected function commands()\n"
+"{\n"
+"    require base_path('routes/console.php');\n"
+"}\n"
 
 #: docs/8.x/artisan.md:block 53 (paragraph)
 msgid "Even though this file does not define HTTP routes, it defines console based entry points (routes) into your application. Within this file, you may define all of your closure based console commands using the `Artisan::command` method. The `command` method accepts two arguments: the [command signature](#defining-input-expectations) and a closure which receives the command's arguments and options:"
@@ -358,7 +408,9 @@ msgstr "這個檔案並沒有定義 HTTP 路由，而是定義從主控台「路
 msgid "Artisan::command('mail:send {user}', function ($user) {\n"
 "    $this->info(\"Sending email to: {$user}!\");\n"
 "});\n"
-msgstr ""
+msgstr "Artisan::command('mail:send {user}', function ($user) {\n"
+"    $this->info(\"Sending email to: {$user}!\");\n"
+"});\n"
 
 #: docs/8.x/artisan.md:block 55 (paragraph)
 msgid "The closure is bound to the underlying command instance, so you have full access to all of the helper methods you would typically be able to access on a full command class."
@@ -366,7 +418,7 @@ msgstr "這裡的閉包有綁定到該指令的基礎類別執行個體，因此
 
 #: docs/8.x/artisan.md:block 56 (paragraph)
 msgid "<a name=\"type-hinting-dependencies\"></a>"
-msgstr ""
+msgstr "<a name=\"type-hinting-dependencies\"></a>"
 
 #: docs/8.x/artisan.md:block 57 (header)
 msgid "Type-Hinting Dependencies"
@@ -382,11 +434,15 @@ msgid "use App\\Models\\User;\n"
 "Artisan::command('mail:send {user}', function (DripEmailer $drip, $user) {\n"
 "    $drip->send(User::find($user));\n"
 "});\n"
-msgstr ""
+msgstr "use App\\Models\\User;\n"
+"use App\\Support\\DripEmailer;\n\n"
+"Artisan::command('mail:send {user}', function (DripEmailer $drip, $user) {\n"
+"    $drip->send(User::find($user));\n"
+"});\n"
 
 #: docs/8.x/artisan.md:block 60 (paragraph)
 msgid "<a name=\"closure-command-descriptions\"></a>"
-msgstr ""
+msgstr "<a name=\"closure-command-descriptions\"></a>"
 
 #: docs/8.x/artisan.md:block 61 (header)
 msgid "Closure Command Descriptions"
@@ -400,11 +456,13 @@ msgstr "在定義基於閉包的指令時，可以使用 `purpose` 方法來為�
 msgid "Artisan::command('mail:send {user}', function ($user) {\n"
 "    // ...\n"
 "})->purpose('Send a marketing email to a user');\n"
-msgstr ""
+msgstr "Artisan::command('mail:send {user}', function ($user) {\n"
+"    // ...\n"
+"})->purpose('Send a marketing email to a user');\n"
 
 #: docs/8.x/artisan.md:block 64 (paragraph)
 msgid "<a name=\"defining-input-expectations\"></a>"
-msgstr ""
+msgstr "<a name=\"defining-input-expectations\"></a>"
 
 #: docs/8.x/artisan.md:block 65 (header)
 msgid "Defining Input Expectations"
@@ -416,7 +474,7 @@ msgstr "在撰寫主控台指令時，常常會通過引數或選項來向使用
 
 #: docs/8.x/artisan.md:block 67 (paragraph)
 msgid "<a name=\"arguments\"></a>"
-msgstr ""
+msgstr "<a name=\"arguments\"></a>"
 
 #: docs/8.x/artisan.md:block 68 (header)
 msgid "Arguments"
@@ -433,7 +491,12 @@ msgid "/**\n"
 " * @var string\n"
 " */\n"
 "protected $signature = 'mail:send {user}';\n"
-msgstr ""
+msgstr "/**\n"
+" * The name and signature of the console command.\n"
+" *\n"
+" * @var string\n"
+" */\n"
+"protected $signature = 'mail:send {user}';\n"
 
 #: docs/8.x/artisan.md:block 71 (paragraph)
 msgid "You may also make arguments optional or define default values for arguments:"
@@ -444,11 +507,14 @@ msgid "// Optional argument...\n"
 "mail:send {user?}\n\n"
 "// Optional argument with default value...\n"
 "mail:send {user=foo}\n"
-msgstr ""
+msgstr "// 可選的引數...\n"
+"mail:send {user?}\n\n"
+"// 有預設值的可選引數...\n"
+"mail:send {user=foo}\n"
 
 #: docs/8.x/artisan.md:block 73 (paragraph)
 msgid "<a name=\"options\"></a>"
-msgstr ""
+msgstr "<a name=\"options\"></a>"
 
 #: docs/8.x/artisan.md:block 74 (header)
 msgid "Options"
@@ -465,7 +531,12 @@ msgid "/**\n"
 " * @var string\n"
 " */\n"
 "protected $signature = 'mail:send {user} {--queue}';\n"
-msgstr ""
+msgstr "/**\n"
+" * The name and signature of the console command.\n"
+" *\n"
+" * @var string\n"
+" */\n"
+"protected $signature = 'mail:send {user} {--queue}';\n"
 
 #: docs/8.x/artisan.md:block 77 (paragraph)
 msgid "In this example, the `--queue` switch may be specified when calling the Artisan command. If the `--queue` switch is passed, the value of the option will be `true`. Otherwise, the value will be `false`:"
@@ -477,7 +548,7 @@ msgstr "php artisan mail:send 1 --queue\n"
 
 #: docs/8.x/artisan.md:block 79 (paragraph)
 msgid "<a name=\"options-with-values\"></a>"
-msgstr ""
+msgstr "<a name=\"options-with-values\"></a>"
 
 #: docs/8.x/artisan.md:block 80 (header)
 msgid "Options With Values"
@@ -494,7 +565,12 @@ msgid "/**\n"
 " * @var string\n"
 " */\n"
 "protected $signature = 'mail:send {user} {--queue=}';\n"
-msgstr ""
+msgstr "/**\n"
+" * The name and signature of the console command.\n"
+" *\n"
+" * @var string\n"
+" */\n"
+"protected $signature = 'mail:send {user} {--queue=}';\n"
 
 #: docs/8.x/artisan.md:block 83 (paragraph)
 msgid "In this example, the user may pass a value for the option like so. If the option is not specified when invoking the command, its value will be `null`:"
@@ -510,11 +586,11 @@ msgstr "可以通過在選項名稱後方加上預設值來為選項指派一個
 
 #: docs/8.x/artisan.md:block 86 (code)
 msgid "mail:send {user} {--queue=default}\n"
-msgstr ""
+msgstr "mail:send {user} {--queue=default}\n"
 
 #: docs/8.x/artisan.md:block 87 (paragraph)
 msgid "<a name=\"option-shortcuts\"></a>"
-msgstr ""
+msgstr "<a name=\"option-shortcuts\"></a>"
 
 #: docs/8.x/artisan.md:block 88 (header)
 msgid "Option Shortcuts"
@@ -526,7 +602,7 @@ msgstr "若要在定義選項時指定捷徑，可以在選項名稱前加上其
 
 #: docs/8.x/artisan.md:block 90 (code)
 msgid "mail:send {user} {--Q|queue}\n"
-msgstr ""
+msgstr "mail:send {user} {--Q|queue}\n"
 
 #: docs/8.x/artisan.md:block 91 (paragraph)
 msgid "When invoking the command on your terminal, option shortcuts should be prefixed with a single hyphen:"
@@ -538,7 +614,7 @@ msgstr "php artisan mail:send 1 -Q\n"
 
 #: docs/8.x/artisan.md:block 93 (paragraph)
 msgid "<a name=\"input-arrays\"></a>"
-msgstr ""
+msgstr "<a name=\"input-arrays\"></a>"
 
 #: docs/8.x/artisan.md:block 94 (header)
 msgid "Input Arrays"
@@ -550,7 +626,7 @@ msgstr "若想要定義預期有多個輸入值的引數或選項，則可以使
 
 #: docs/8.x/artisan.md:block 96 (code)
 msgid "mail:send {user*}\n"
-msgstr ""
+msgstr "mail:send {user*}\n"
 
 #: docs/8.x/artisan.md:block 97 (paragraph)
 msgid "When calling this method, the `user` arguments may be passed in order to the command line. For example, the following command will set the value of `user` to an array with `foo` and `bar` as its values:"
@@ -566,11 +642,11 @@ msgstr "`*` 字元可以與可選引數組合使用來定義，這樣一來可�
 
 #: docs/8.x/artisan.md:block 100 (code)
 msgid "mail:send {user?*}\n"
-msgstr ""
+msgstr "mail:send {user?*}\n"
 
 #: docs/8.x/artisan.md:block 101 (paragraph)
 msgid "<a name=\"option-arrays\"></a>"
-msgstr ""
+msgstr "<a name=\"option-arrays\"></a>"
 
 #: docs/8.x/artisan.md:block 102 (header)
 msgid "Option Arrays"
@@ -583,11 +659,12 @@ msgstr "定義預期有多個輸入值的選項時，每個傳入指令的選項
 #: docs/8.x/artisan.md:block 104 (code)
 msgid "mail:send {user} {--id=*}\n\n"
 "php artisan mail:send --id=1 --id=2\n"
-msgstr ""
+msgstr "mail:send {user} {--id=*}\n\n"
+"php artisan mail:send --id=1 --id=2\n"
 
 #: docs/8.x/artisan.md:block 105 (paragraph)
 msgid "<a name=\"input-descriptions\"></a>"
-msgstr ""
+msgstr "<a name=\"input-descriptions\"></a>"
 
 #: docs/8.x/artisan.md:block 106 (header)
 msgid "Input Descriptions"
@@ -606,11 +683,18 @@ msgid "/**\n"
 "protected $signature = 'mail:send\n"
 "                        {user : The ID of the user}\n"
 "                        {--queue : Whether the job should be queued}';\n"
-msgstr ""
+msgstr "/**\n"
+" * The name and signature of the console command.\n"
+" *\n"
+" * @var string\n"
+" */\n"
+"protected $signature = 'mail:send\n"
+"                        {user : The ID of the user}\n"
+"                        {--queue : Whether the job should be queued}';\n"
 
 #: docs/8.x/artisan.md:block 109 (paragraph)
 msgid "<a name=\"command-io\"></a>"
-msgstr ""
+msgstr "<a name=\"command-io\"></a>"
 
 #: docs/8.x/artisan.md:block 110 (header)
 msgid "Command I/O"
@@ -618,7 +702,7 @@ msgstr "指令 I/O"
 
 #: docs/8.x/artisan.md:block 111 (paragraph)
 msgid "<a name=\"retrieving-input\"></a>"
-msgstr ""
+msgstr "<a name=\"retrieving-input\"></a>"
 
 #: docs/8.x/artisan.md:block 112 (header)
 msgid "Retrieving Input"
@@ -639,7 +723,16 @@ msgid "/**\n"
 "    $userId = $this->argument('user');\n\n"
 "    //\n"
 "}\n"
-msgstr ""
+msgstr "/**\n"
+" * Execute the console command.\n"
+" *\n"
+" * @return int\n"
+" */\n"
+"public function handle()\n"
+"{\n"
+"    $userId = $this->argument('user');\n\n"
+"    //\n"
+"}\n"
 
 #: docs/8.x/artisan.md:block 115 (paragraph)
 msgid "If you need to retrieve all of the arguments as an `array`, call the `arguments` method:"
@@ -647,7 +740,7 @@ msgstr "若要將所有引數截取為陣列，則可呼叫 `arguments` 方法�
 
 #: docs/8.x/artisan.md:block 116 (code)
 msgid "$arguments = $this->arguments();\n"
-msgstr ""
+msgstr "$arguments = $this->arguments();\n"
 
 #: docs/8.x/artisan.md:block 117 (paragraph)
 msgid "Options may be retrieved just as easily as arguments using the `option` method. To retrieve all of the options as an array, call the `options` method:"
@@ -658,11 +751,14 @@ msgid "// Retrieve a specific option...\n"
 "$queueName = $this->option('queue');\n\n"
 "// Retrieve all options as an array...\n"
 "$options = $this->options();\n"
-msgstr ""
+msgstr "// 取得特定選項...\n"
+"$queueName = $this->option('queue');\n\n"
+"// 將所有選項作為陣列取得...\n"
+"$options = $this->options();\n"
 
 #: docs/8.x/artisan.md:block 119 (paragraph)
 msgid "<a name=\"prompting-for-input\"></a>"
-msgstr ""
+msgstr "<a name=\"prompting-for-input\"></a>"
 
 #: docs/8.x/artisan.md:block 120 (header)
 msgid "Prompting For Input"
@@ -682,7 +778,15 @@ msgid "/**\n"
 "{\n"
 "    $name = $this->ask('What is your name?');\n"
 "}\n"
-msgstr ""
+msgstr "/**\n"
+" * Execute the console command.\n"
+" *\n"
+" * @return mixed\n"
+" */\n"
+"public function handle()\n"
+"{\n"
+"    $name = $this->ask('What is your name?');\n"
+"}\n"
 
 #: docs/8.x/artisan.md:block 123 (paragraph)
 msgid "The `secret` method is similar to `ask`, but the user's input will not be visible to them as they type in the console. This method is useful when asking for sensitive information such as passwords:"
@@ -690,11 +794,11 @@ msgstr "`secret` 方法與 `ask` 類似，但使用者在指令列輸入的過�
 
 #: docs/8.x/artisan.md:block 124 (code)
 msgid "$password = $this->secret('What is the password?');\n"
-msgstr ""
+msgstr "$password = $this->secret('What is the password?');\n"
 
 #: docs/8.x/artisan.md:block 125 (paragraph)
 msgid "<a name=\"asking-for-confirmation\"></a>"
-msgstr ""
+msgstr "<a name=\"asking-for-confirmation\"></a>"
 
 #: docs/8.x/artisan.md:block 126 (header)
 msgid "Asking For Confirmation"
@@ -708,7 +812,9 @@ msgstr "若需要使用者回答簡單的「yes / no」的確認問題，可以�
 msgid "if ($this->confirm('Do you wish to continue?')) {\n"
 "    //\n"
 "}\n"
-msgstr ""
+msgstr "if ($this->confirm('Do you wish to continue?')) {\n"
+"    //\n"
+"}\n"
 
 #: docs/8.x/artisan.md:block 129 (paragraph)
 msgid "If necessary, you may specify that the confirmation prompt should return `true` by default by passing `true` as the second argument to the `confirm` method:"
@@ -718,11 +824,13 @@ msgstr "若有必要，也可以通過將 `true` 傳入為 `confirm` 方法的�
 msgid "if ($this->confirm('Do you wish to continue?', true)) {\n"
 "    //\n"
 "}\n"
-msgstr ""
+msgstr "if ($this->confirm('Do you wish to continue?', true)) {\n"
+"    //\n"
+"}\n"
 
 #: docs/8.x/artisan.md:block 131 (paragraph)
 msgid "<a name=\"auto-completion\"></a>"
-msgstr ""
+msgstr "<a name=\"auto-completion\"></a>"
 
 #: docs/8.x/artisan.md:block 132 (header)
 msgid "Auto-Completion"
@@ -734,7 +842,7 @@ msgstr "`anticipate` 方法可以用來為可能的選項提供自動補全。�
 
 #: docs/8.x/artisan.md:block 134 (code)
 msgid "$name = $this->anticipate('What is your name?', ['Taylor', 'Dayle']);\n"
-msgstr ""
+msgstr "$name = $this->anticipate('What is your name?', ['Taylor', 'Dayle']);\n"
 
 #: docs/8.x/artisan.md:block 135 (paragraph)
 msgid "Alternatively, you may pass a closure as the second argument to the `anticipate` method. The closure will be called each time the user types an input character. The closure should accept a string parameter containing the user's input so far, and return an array of options for auto-completion:"
@@ -744,11 +852,13 @@ msgstr "另外，也可以將一個閉包傳給 `anticipate` 方法的第二個�
 msgid "$name = $this->anticipate('What is your address?', function ($input) {\n"
 "    // Return auto-completion options...\n"
 "});\n"
-msgstr ""
+msgstr "$name = $this->anticipate('What is your address?', function ($input) {\n"
+"    // 回傳自動補全的選項...\n"
+"});\n"
 
 #: docs/8.x/artisan.md:block 137 (paragraph)
 msgid "<a name=\"multiple-choice-questions\"></a>"
-msgstr ""
+msgstr "<a name=\"multiple-choice-questions\"></a>"
 
 #: docs/8.x/artisan.md:block 138 (header)
 msgid "Multiple Choice Questions"
@@ -764,7 +874,11 @@ msgid "$name = $this->choice(\n"
 "    ['Taylor', 'Dayle'],\n"
 "    $defaultIndex\n"
 ");\n"
-msgstr ""
+msgstr "$name = $this->choice(\n"
+"    'What is your name?',\n"
+"    ['Taylor', 'Dayle'],\n"
+"    $defaultIndex\n"
+");\n"
 
 #: docs/8.x/artisan.md:block 141 (paragraph)
 msgid "In addition, the `choice` method accepts optional fourth and fifth arguments for determining the maximum number of attempts to select a valid response and whether multiple selections are permitted:"
@@ -778,11 +892,17 @@ msgid "$name = $this->choice(\n"
 "    $maxAttempts = null,\n"
 "    $allowMultipleSelections = false\n"
 ");\n"
-msgstr ""
+msgstr "$name = $this->choice(\n"
+"    'What is your name?',\n"
+"    ['Taylor', 'Dayle'],\n"
+"    $defaultIndex,\n"
+"    $maxAttempts = null,\n"
+"    $allowMultipleSelections = false\n"
+");\n"
 
 #: docs/8.x/artisan.md:block 143 (paragraph)
 msgid "<a name=\"writing-output\"></a>"
-msgstr ""
+msgstr "<a name=\"writing-output\"></a>"
 
 #: docs/8.x/artisan.md:block 144 (header)
 msgid "Writing Output"
@@ -803,7 +923,16 @@ msgid "/**\n"
 "    // ...\n\n"
 "    $this->info('The command was successful!');\n"
 "}\n"
-msgstr ""
+msgstr "/**\n"
+" * Execute the console command.\n"
+" *\n"
+" * @return mixed\n"
+" */\n"
+"public function handle()\n"
+"{\n"
+"    // ...\n\n"
+"    $this->info('The command was successful!');\n"
+"}\n"
 
 #: docs/8.x/artisan.md:block 147 (paragraph)
 msgid "To display an error message, use the `error` method. Error message text is typically displayed in red:"
@@ -811,7 +940,7 @@ msgstr "若要顯示錯誤訊息，可以使用 `error` 方法。錯誤訊息文
 
 #: docs/8.x/artisan.md:block 148 (code)
 msgid "$this->error('Something went wrong!');\n"
-msgstr ""
+msgstr "$this->error('Something went wrong!');\n"
 
 #: docs/8.x/artisan.md:block 149 (paragraph)
 msgid "You may use the `line` method to display plain, uncolored text:"
@@ -819,7 +948,7 @@ msgstr "也可以使用 `line` 方法來顯示未標示色彩的純文字："
 
 #: docs/8.x/artisan.md:block 150 (code)
 msgid "$this->line('Display this on the screen');\n"
-msgstr ""
+msgstr "$this->line('Display this on the screen');\n"
 
 #: docs/8.x/artisan.md:block 151 (paragraph)
 msgid "You may use the `newLine` method to display a blank line:"
@@ -830,11 +959,14 @@ msgid "// Write a single blank line...\n"
 "$this->newLine();\n\n"
 "// Write three blank lines...\n"
 "$this->newLine(3);\n"
-msgstr ""
+msgstr "// 寫入一行空行...\n"
+"$this->newLine();\n\n"
+"// 寫入三行空行...\n"
+"$this->newLine(3);\n"
 
 #: docs/8.x/artisan.md:block 153 (paragraph)
 msgid "<a name=\"tables\"></a>"
-msgstr ""
+msgstr "<a name=\"tables\"></a>"
 
 #: docs/8.x/artisan.md:block 154 (header)
 msgid "Tables"
@@ -850,11 +982,15 @@ msgid "use App\\Models\\User;\n\n"
 "    ['Name', 'Email'],\n"
 "    User::all(['name', 'email'])->toArray()\n"
 ");\n"
-msgstr ""
+msgstr "use App\\Models\\User;\n\n"
+"$this->table(\n"
+"    ['Name', 'Email'],\n"
+"    User::all(['name', 'email'])->toArray()\n"
+");\n"
 
 #: docs/8.x/artisan.md:block 157 (paragraph)
 msgid "<a name=\"progress-bars\"></a>"
-msgstr ""
+msgstr "<a name=\"progress-bars\"></a>"
 
 #: docs/8.x/artisan.md:block 158 (header)
 msgid "Progress Bars"
@@ -869,7 +1005,10 @@ msgid "use App\\Models\\User;\n\n"
 "$users = $this->withProgressBar(User::all(), function ($user) {\n"
 "    $this->performTask($user);\n"
 "});\n"
-msgstr ""
+msgstr "use App\\Models\\User;\n\n"
+"$users = $this->withProgressBar(User::all(), function ($user) {\n"
+"    $this->performTask($user);\n"
+"});\n"
 
 #: docs/8.x/artisan.md:block 161 (paragraph)
 msgid "Sometimes, you may need more manual control over how a progress bar is advanced. First, define the total number of steps the process will iterate through. Then, advance the progress bar after processing each item:"
@@ -884,15 +1023,22 @@ msgid "$users = App\\Models\\User::all();\n\n"
 "    $bar->advance();\n"
 "}\n\n"
 "$bar->finish();\n"
-msgstr ""
+msgstr "$users = App\\Models\\User::all();\n\n"
+"$bar = $this->output->createProgressBar(count($users));\n\n"
+"$bar->start();\n\n"
+"foreach ($users as $user) {\n"
+"    $this->performTask($user);\n\n"
+"    $bar->advance();\n"
+"}\n\n"
+"$bar->finish();\n"
 
 #: docs/8.x/artisan.md:block 163 (quote)
 msgid "{tip} For more advanced options, check out the [Symfony Progress Bar component documentation](https://symfony.com/doc/current/components/console/helpers/progressbar.html)."
-msgstr ""
+msgstr "{tip} 有關更進階的選項，請參考 [Symfony Progress Bar 元件說明文件](https://symfony.com/doc/current/components/console/helpers/progressbar.html)。"
 
 #: docs/8.x/artisan.md:block 164 (paragraph)
 msgid "<a name=\"registering-commands\"></a>"
-msgstr ""
+msgstr "<a name=\"registering-commands\"></a>"
 
 #: docs/8.x/artisan.md:block 165 (header)
 msgid "Registering Commands"
@@ -914,7 +1060,17 @@ msgid "/**\n"
 "    $this->load(__DIR__.'/../Domain/Orders/Commands');\n\n"
 "    // ...\n"
 "}\n"
-msgstr ""
+msgstr "/**\n"
+" * Register the commands for the application.\n"
+" *\n"
+" * @return void\n"
+" */\n"
+"protected function commands()\n"
+"{\n"
+"    $this->load(__DIR__.'/Commands');\n"
+"    $this->load(__DIR__.'/../Domain/Orders/Commands');\n\n"
+"    // ...\n"
+"}\n"
 
 #: docs/8.x/artisan.md:block 168 (paragraph)
 msgid "If necessary, you may manually register commands by adding the command's class name to a `$commands` property within your `App\\Console\\Kernel` class. If this property is not already defined on your kernel, you should define it manually. When Artisan boots, all the commands listed in this property will be resolved by the [service container](/docs/{{version}}/container) and registered with Artisan:"
@@ -924,11 +1080,13 @@ msgstr "若有需要的話，也可以通過將指令的類別名稱加至 `App\
 msgid "protected $commands = [\n"
 "    Commands\\SendEmails::class\n"
 "];\n"
-msgstr ""
+msgstr "protected $commands = [\n"
+"    Commands\\SendEmails::class\n"
+"];\n"
 
 #: docs/8.x/artisan.md:block 170 (paragraph)
 msgid "<a name=\"programmatically-executing-commands\"></a>"
-msgstr ""
+msgstr "<a name=\"programmatically-executing-commands\"></a>"
 
 #: docs/8.x/artisan.md:block 171 (header)
 msgid "Programmatically Executing Commands"
@@ -946,7 +1104,13 @@ msgid "use Illuminate\\Support\\Facades\\Artisan;\n\n"
 "    ]);\n\n"
 "    //\n"
 "});\n"
-msgstr ""
+msgstr "use Illuminate\\Support\\Facades\\Artisan;\n\n"
+"Route::post('/user/{user}/mail', function ($user) {\n"
+"    $exitCode = Artisan::call('mail:send', [\n"
+"        'user' => $user, '--queue' => 'default'\n"
+"    ]);\n\n"
+"    //\n"
+"});\n"
 
 #: docs/8.x/artisan.md:block 174 (paragraph)
 msgid "Alternatively, you may pass the entire Artisan command to the `call` method as a string:"
@@ -954,11 +1118,11 @@ msgstr "或者，也可以將整個 Artisan 指令作為字串傳給 `call` 方�
 
 #: docs/8.x/artisan.md:block 175 (code)
 msgid "Artisan::call('mail:send 1 --queue=default');\n"
-msgstr ""
+msgstr "Artisan::call('mail:send 1 --queue=default');\n"
 
 #: docs/8.x/artisan.md:block 176 (paragraph)
 msgid "<a name=\"passing-array-values\"></a>"
-msgstr ""
+msgstr "<a name=\"passing-array-values\"></a>"
 
 #: docs/8.x/artisan.md:block 177 (header)
 msgid "Passing Array Values"
@@ -975,11 +1139,16 @@ msgid "use Illuminate\\Support\\Facades\\Artisan;\n\n"
 "        '--id' => [5, 13]\n"
 "    ]);\n"
 "});\n"
-msgstr ""
+msgstr "use Illuminate\\Support\\Facades\\Artisan;\n\n"
+"Route::post('/mail', function () {\n"
+"    $exitCode = Artisan::call('mail:send', [\n"
+"        '--id' => [5, 13]\n"
+"    ]);\n"
+"});\n"
 
 #: docs/8.x/artisan.md:block 180 (paragraph)
 msgid "<a name=\"passing-boolean-values\"></a>"
-msgstr ""
+msgstr "<a name=\"passing-boolean-values\"></a>"
 
 #: docs/8.x/artisan.md:block 181 (header)
 msgid "Passing Boolean Values"
@@ -993,11 +1162,13 @@ msgstr "若有需要為不接受字串值的選項指定值，如 `migrate:refre
 msgid "$exitCode = Artisan::call('migrate:refresh', [\n"
 "    '--force' => true,\n"
 "]);\n"
-msgstr ""
+msgstr "$exitCode = Artisan::call('migrate:refresh', [\n"
+"    '--force' => true,\n"
+"]);\n"
 
 #: docs/8.x/artisan.md:block 184 (paragraph)
 msgid "<a name=\"queueing-artisan-commands\"></a>"
-msgstr ""
+msgstr "<a name=\"queueing-artisan-commands\"></a>"
 
 #: docs/8.x/artisan.md:block 185 (header)
 msgid "Queueing Artisan Commands"
@@ -1015,7 +1186,13 @@ msgid "use Illuminate\\Support\\Facades\\Artisan;\n\n"
 "    ]);\n\n"
 "    //\n"
 "});\n"
-msgstr ""
+msgstr "use Illuminate\\Support\\Facades\\Artisan;\n\n"
+"Route::post('/user/{user}/mail', function ($user) {\n"
+"    Artisan::queue('mail:send', [\n"
+"        'user' => $user, '--queue' => 'default'\n"
+"    ]);\n\n"
+"    //\n"
+"});\n"
 
 #: docs/8.x/artisan.md:block 188 (paragraph)
 msgid "Using the `onConnection` and `onQueue` methods, you may specify the connection or queue the Artisan command should be dispatched to:"
@@ -1025,11 +1202,13 @@ msgstr "可以使用 `onConnection` 與 `onQueue` 方法來指定 Artisan 指令
 msgid "Artisan::queue('mail:send', [\n"
 "    'user' => 1, '--queue' => 'default'\n"
 "])->onConnection('redis')->onQueue('commands');\n"
-msgstr ""
+msgstr "Artisan::queue('mail:send', [\n"
+"    'user' => 1, '--queue' => 'default'\n"
+"])->onConnection('redis')->onQueue('commands');\n"
 
 #: docs/8.x/artisan.md:block 190 (paragraph)
 msgid "<a name=\"calling-commands-from-other-commands\"></a>"
-msgstr ""
+msgstr "<a name=\"calling-commands-from-other-commands\"></a>"
 
 #: docs/8.x/artisan.md:block 191 (header)
 msgid "Calling Commands From Other Commands"
@@ -1052,7 +1231,18 @@ msgid "/**\n"
 "    ]);\n\n"
 "    //\n"
 "}\n"
-msgstr ""
+msgstr "/**\n"
+" * Execute the console command.\n"
+" *\n"
+" * @return mixed\n"
+" */\n"
+"public function handle()\n"
+"{\n"
+"    $this->call('mail:send', [\n"
+"        'user' => 1, '--queue' => 'default'\n"
+"    ]);\n\n"
+"    //\n"
+"}\n"
 
 #: docs/8.x/artisan.md:block 194 (paragraph)
 msgid "If you would like to call another console command and suppress all of its output, you may use the `callSilently` method. The `callSilently` method has the same signature as the `call` method:"
@@ -1062,11 +1252,13 @@ msgstr "若有需要呼叫另一個主控台指令並忽略其所有輸出，則
 msgid "$this->callSilently('mail:send', [\n"
 "    'user' => 1, '--queue' => 'default'\n"
 "]);\n"
-msgstr ""
+msgstr "$this->callSilently('mail:send', [\n"
+"    'user' => 1, '--queue' => 'default'\n"
+"]);\n"
 
 #: docs/8.x/artisan.md:block 196 (paragraph)
 msgid "<a name=\"signal-handling\"></a>"
-msgstr ""
+msgstr "<a name=\"signal-handling\"></a>"
 
 #: docs/8.x/artisan.md:block 197 (header)
 msgid "Signal Handling"
@@ -1144,15 +1336,15 @@ msgstr "你可能已經看得出來，`getSubscribedSignals` 應回傳一個包�
 
 #: docs/8.x/artisan.md:block 202 (paragraph)
 msgid "<a name=\"stub-customization\"></a>"
-msgstr ""
+msgstr "<a name=\"stub-customization\"></a>"
 
 #: docs/8.x/artisan.md:block 203 (header)
 msgid "Stub Customization"
-msgstr "自定 Stub"
+msgstr "自訂 Stub"
 
 #: docs/8.x/artisan.md:block 204 (paragraph)
 msgid "The Artisan console's `make` commands are used to create a variety of classes, such as controllers, jobs, migrations, and tests. These classes are generated using \"stub\" files that are populated with values based on your input. However, you may want to make small changes to files generated by Artisan. To accomplish this, you may use the `stub:publish` command to publish the most common stubs to your application so that you can customize them:"
-msgstr "Artisan 主控台的 `make` 指令可以用來建立各種類別，如控制器、任務、資料庫遷移，以及測試。這些類別都是使用「Stub (虛設常式)」來產生的，Stub 會依據給定的輸入來填入不同的值。不過，你可能會想對這些 Artisan 產生的檔案做一些微調。要修改這些 Stub，可以通過 `stub:publish` 指令來將這些最常見的 Stub 安裝到專案中，如此一來就能自定這些 Stub："
+msgstr "Artisan 主控台的 `make` 指令可以用來建立各種類別，如控制器、任務、資料庫遷移，以及測試。這些類別都是使用「Stub (虛設常式)」來產生的，Stub 會依據給定的輸入來填入不同的值。不過，你可能會想對這些 Artisan 產生的檔案做一些微調。要修改這些 Stub，可以通過 `stub:publish` 指令來將這些最常見的 Stub 安裝到專案中，如此一來就能自訂這些 Stub："
 
 #: docs/8.x/artisan.md:block 205 (code)
 msgid "php artisan stub:publish\n"
@@ -1164,7 +1356,7 @@ msgstr "安裝的 Stub 會被放在專案根目錄的 `stubs` 目錄中。對這
 
 #: docs/8.x/artisan.md:block 207 (paragraph)
 msgid "<a name=\"events\"></a>"
-msgstr ""
+msgstr "<a name=\"events\"></a>"
 
 #: docs/8.x/artisan.md:block 208 (header)
 msgid "Events"
@@ -1179,27 +1371,30 @@ msgid "// Optional argument...\n"
 "'mail:send {user?}'\n\n"
 "// Optional argument with default value...\n"
 "'mail:send {user=foo}'\n"
-msgstr ""
+msgstr "// 可選引數...\n"
+"'mail:send {user?}'\n\n"
+"// 有預設值的可選引數...\n"
+"'mail:send {user=foo}'\n"
 
 #: docs/9.x/artisan.md:block 86 (code)
 msgid "'mail:send {user} {--queue=default}'\n"
-msgstr ""
+msgstr "'mail:send {user} {--queue=default}'\n"
 
 #: docs/9.x/artisan.md:block 90 (code)
 msgid "'mail:send {user} {--Q|queue}'\n"
-msgstr ""
+msgstr "'mail:send {user} {--Q|queue}'\n"
 
 #: docs/9.x/artisan.md:block 96 (code)
 msgid "'mail:send {user*}'\n"
-msgstr ""
+msgstr "'mail:send {user*}'\n"
 
 #: docs/9.x/artisan.md:block 100 (code)
 msgid "'mail:send {user?*}'\n"
-msgstr ""
+msgstr "'mail:send {user?*}'\n"
 
 #: docs/9.x/artisan.md:block 104 (code)
 msgid "'mail:send {user} {--id=*}'\n"
-msgstr ""
+msgstr "'mail:send {user} {--id=*}'\n"
 
 #: docs/9.x/artisan.md:block 105 (paragraph)
 msgid "Such a command may be invoked by passing multiple `--id` arguments:"

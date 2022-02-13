@@ -1,4 +1,4 @@
-# Queues
+# 佇列 - Queue
 
 - [Introduction](#introduction)
     - [Connections Vs. Queues](#connections-vs-queues)

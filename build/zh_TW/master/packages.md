@@ -1,42 +1,36 @@
-# Package Development
+# 套件開發
 
-- [Introduction](#introduction)
-    - [A Note On Facades](#a-note-on-facades)
-- [Package Discovery](#package-discovery)
-- [Service Providers](#service-providers)
-- [Resources](#resources)
-    - [Configuration](#configuration)
-    - [Migrations](#migrations)
-    - [Routes](#routes)
-    - [Translations](#translations)
-    - [Views](#views)
-    - [View Components](#view-components)
-- [Commands](#commands)
-- [Public Assets](#public-assets)
-- [Publishing File Groups](#publishing-file-groups)
+- [簡介](#introduction)
+    - [有關 Facade 的注意事項](#a-note-on-facades)
+- [Package 的 Discovery](#package-discovery)
+- [Service Provider](#service-providers)
+- [資源](#resources)
+    - [設定檔](#configuration)
+    - [Migration](#migrations)
+    - [Route](#routes)
+    - [翻譯](#translations)
+    - [View](#views)
+    - [View 元件](#view-components)
+- [指令](#commands)
+- [安裝素材](#public-assets)
+- [安裝檔案群組](#publishing-file-groups)
 
 <a name="introduction"></a>
-## Introduction
+## 簡介
 
-Packages are the primary way of adding functionality to Laravel. Packages
-might be anything from a great way to work with dates like
-[Carbon](https://github.com/briannesbitt/Carbon) or a package that allows
-you to associate files with Eloquent models like Spatie's [Laravel Media
-Library](https://github.com/spatie/laravel-medialibrary).
+套件是用來給 Laravel 新增功能的主要方法。套件可以是任何東西，有像
+[Carbon](https://github.com/briannesbitt/Carbon) 這樣可以方便處理日期的套件、或者是像 Spatie 的
+[Laravel Media Library](https://github.com/spatie/laravel-medialibrary)
+這樣用來處理與 Eloquent Model 關聯檔案的套件。
 
-There are different types of packages. Some packages are stand-alone,
-meaning they work with any PHP framework. Carbon and PHPUnit are examples of
-stand-alone packages. Any of these packages may be used with Laravel by
-requiring them in your `composer.json` file.
+套件也有一些不同的類型。有的套件是^[獨立](Stand-alone)套件，這些套件在任何的 PHP 框架上都可使用。舉例來說，Carbon 與
+PHPUnit 就是獨立套件。只要在 `composer.json` 檔案中加上這些套件，就可以在 Laravel 中使用。
 
-On the other hand, other packages are specifically intended for use with
-Laravel. These packages may have routes, controllers, views, and
-configuration specifically intended to enhance a Laravel application. This
-guide primarily covers the development of those packages that are Laravel
-specific.
+另一方面，有的套件是特別為了供 Laravel 使用而設計的。這些套件可能會有 Route、Controller、View、組態設定檔等等用來增強
+Laravel 程式的功能。本篇指南主要就是在討論有關開發這些專為 Laravel 設計的套件。
 
 <a name="a-note-on-facades"></a>
-### A Note On Facades
+### 有關 Facade 的注意事項
 
 When writing a Laravel application, it generally does not matter if you use
 contracts or facades since both provide essentially equal levels of

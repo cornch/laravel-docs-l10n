@@ -37,12 +37,12 @@ Driver：
 
 <div class="content-list" markdown="1">
 
-- `file` - sessions are stored in `storage/framework/sessions`.  - `cookie`
-- sessions are stored in secure, encrypted cookies.  - `database` - sessions
-are stored in a relational database.  - `memcached` / `redis` - sessions are
-stored in one of these fast, cache based stores.  - `dynamodb` - sessions
-are stored in AWS DynamoDB.  - `array` - sessions are stored in a PHP array
-and will not be persisted.
+- `file` - 將 Session 保存在 `storage/framework/sessions` 中。
+- `cookie` - 將 Session 保存在安全加密的 Cookie 中。- `database`
+- 將 Session 保存在關聯式資料庫中。- `memcached` / `redis`
+- 將 Session 保存在 Memcached 或 Redis 其中一種快速、基於快取的儲存方案中。
+- `dynamodb` - 將 Session 保存在 AWS DynamoDB 中。
+- `array` - 將 Session 保存在 PHP 陣列中，不會被持續保存 (Persisted)。
 
 </div>
 
@@ -329,23 +329,16 @@ Session Lock 的話，會擲回 `Illuminate\Contracts\Cache\LockTimeoutException
 
 <div class="content-list" markdown="1">
 
-- The `open` method would typically be used in file based session store
-systems. Since Laravel ships with a `file` session driver, you will rarely
-need to put anything in this method. You can simply leave this method
-empty.  - The `close` method, like the `open` method, can also usually be
-disregarded. For most drivers, it is not needed.  - The `read` method should
-return the string version of the session data associated with the given
-`$sessionId`. There is no need to do any serialization or other encoding
-when retrieving or storing session data in your driver, as Laravel will
-perform the serialization for you.  - The `write` method should write the
-given `$data` string associated with the `$sessionId` to some persistent
-storage system, such as MongoDB or another storage system of your choice.
-Again, you should not perform any serialization - Laravel will have already
-handled that for you.  - The `destroy` method should remove the data
-associated with the `$sessionId` from persistent storage.  - The `gc` method
-should destroy all session data that is older than the given `$lifetime`,
-which is a UNIX timestamp. For self-expiring systems like Memcached and
-Redis, this method may be left empty.
+- `open` 方法通暢用在基於檔案的 Session 存放系統。由於 Laravel 已經提供了 `file` Session
+Driver，因此通常來說我們不需要在這個方法裡做任何事。只需要把這個方法留空就好了。
+- `close` 方法，與 `open` 方法類似，通常可以忽略。對與大多數 Driver 來說並不需要。
+- `read` 方法應回傳與給定 `$sessionId` 關聯的字串版本 Session 資料。在從 Driver
+中取出資料時不需要進行任何的序列化 (Serialization) 或其他編碼，因為 Laravel 會幫你序列化。
+- `write` 方法應將給定的 `$data` 字串以 `$sessionId` 關聯並保存到儲存系統中，例如 MongoDB
+或其他你選擇的儲存系統。同樣的，不需要進行任何序列化 —— Laravel 已經幫你序列化好了。
+- `destroy` 方法從持續性儲存系統中移除任何與 `$sessionId` 關聯的資料。
+- `gc` 方法移除所有時間舊於 `$lifetime` 的 Session 資料。`$lifetime` 是 UNIX 時戳。對於自帶有效期限的系統
+(Self-Expiring) 如 Memcached 或 Redis，可以將這個方法留空。
 
 </div>
 

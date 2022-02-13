@@ -330,8 +330,8 @@ league/flysystem-aws-s3-v3 "^3.0"`
 
 #### 讀取不存在的檔案
 
-若嘗試讀取不存在的檔案，現在會回傳 `null`。在之前版本的 Laravel
-中，會^[擲回](Illuminate\Contracts\Filesystem\FileNotFoundException)。
+若嘗試讀取不存在的檔案，現在會回傳 `null`。在之前版本的 Laravel 中，會^[擲回](Throw)
+`Illuminate\Contracts\Filesystem\FileNotFoundException`。
 
 #### 刪除不存在的檔案
 

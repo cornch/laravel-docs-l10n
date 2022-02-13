@@ -1,16 +1,16 @@
-# Helpers
+# 輔助函式
 
-- [Introduction](#introduction)  - [Available Methods](#available-methods)
+- [簡介](#introduction)
+- [可用的方法](#available-methods)
 
 <a name="introduction"></a>
-## Introduction
+## 簡介
 
-Laravel includes a variety of global "helper" PHP functions. Many of these
-functions are used by the framework itself; however, you are free to use
-them in your own applications if you find them convenient.
+Laravel 提供了多種全域 PHP「輔助函式」。這些函式中，大部分都是 Laravel
+本身有在使用的。不過，若你覺得這些方法很方便的話，也可以在你自己的專案內使用。
 
 <a name="available-methods"></a>
-## Available Methods
+## 可用的方法
 
 <style>
     .collection-method-list > p {
@@ -24,7 +24,7 @@ them in your own applications if you find them convenient.
 </style>
 
 <a name="arrays-and-objects-method-list"></a>
-### Arrays & Objects
+### 陣列與物件
 
 <div class="collection-method-list" markdown="1">
 
@@ -67,7 +67,7 @@ them in your own applications if you find them convenient.
 </div>
 
 <a name="paths-method-list"></a>
-### Paths
+### 路徑
 
 <div class="collection-method-list" markdown="1">
 
@@ -79,7 +79,7 @@ them in your own applications if you find them convenient.
 </div>
 
 <a name="strings-method-list"></a>
-### Strings
+### 字串
 
 <div class="collection-method-list" markdown="1">
 
@@ -122,7 +122,7 @@ them in your own applications if you find them convenient.
 </div>
 
 <a name="fluent-strings-method-list"></a>
-### Fluent Strings
+### Fluent 字串
 
 <div class="collection-method-list" markdown="1">
 
@@ -182,7 +182,7 @@ them in your own applications if you find them convenient.
 </div>
 
 <a name="urls-method-list"></a>
-### URLs
+### URL
 
 <div class="collection-method-list" markdown="1">
 
@@ -193,7 +193,7 @@ them in your own applications if you find them convenient.
 </div>
 
 <a name="miscellaneous-method-list"></a>
-### Miscellaneous
+### 其他
 
 <div class="collection-method-list" markdown="1">
 
@@ -222,7 +222,7 @@ them in your own applications if you find them convenient.
 </div>
 
 <a name="method-listing"></a>
-## Method Listing
+## 方法清單
 
 <style>
     .collection-method code {
@@ -235,13 +235,12 @@ them in your own applications if you find them convenient.
 </style>
 
 <a name="arrays"></a>
-## Arrays & Objects
+## 陣列與物件
 
 <a name="method-array-accessible"></a>
 #### `Arr::accessible()` {.collection-method .first-collection-method}
 
-The `Arr::accessible` method determines if the given value is array
-accessible:
+`Arr::accessible` 方法判斷給定的值是否能以陣列方式存取：
 
     use Illuminate\Support\Arr;
     use Illuminate\Support\Collection;
@@ -265,8 +264,7 @@ accessible:
 <a name="method-array-add"></a>
 #### `Arr::add()` {.collection-method}
 
-The `Arr::add` method adds a given key / value pair to an array if the given
-key doesn't already exist in the array or is set to `null`:
+`Arr::add` 方法會在給定的索引鍵 / 值配對不存在於給定陣列、或是該索引鍵的值 `null` 時將該配對新增到陣列上：
 
     use Illuminate\Support\Arr;
 
@@ -282,7 +280,7 @@ key doesn't already exist in the array or is set to `null`:
 <a name="method-array-collapse"></a>
 #### `Arr::collapse()` {.collection-method}
 
-The `Arr::collapse` method collapses an array of arrays into a single array:
+`Arr::collapse` 方法將一組陣列的陣列^[坍縮](Collapse)成單一陣列：
 
     use Illuminate\Support\Arr;
 
@@ -293,8 +291,8 @@ The `Arr::collapse` method collapses an array of arrays into a single array:
 <a name="method-array-crossjoin"></a>
 #### `Arr::crossJoin()` {.collection-method}
 
-The `Arr::crossJoin` method cross joins the given arrays, returning a
-Cartesian product with all possible permutations:
+`Arr::crossJoin` 方法^[交叉合併](Cross
+Join)給定的陣列，產生一個包含所有可能^[排列](Permutation)的^[笛卡兒積](Cartesian Product)：
 
     use Illuminate\Support\Arr;
 
@@ -327,8 +325,7 @@ Cartesian product with all possible permutations:
 <a name="method-array-divide"></a>
 #### `Arr::divide()` {.collection-method}
 
-The `Arr::divide` method returns two arrays: one containing the keys and the
-other containing the values of the given array:
+`Arr::divide` 方法回傳兩個陣列：一個陣列包含給定陣列的索引鍵，而另一個陣列則包含給定陣列的值：
 
     use Illuminate\Support\Arr;
 
@@ -341,8 +338,7 @@ other containing the values of the given array:
 <a name="method-array-dot"></a>
 #### `Arr::dot()` {.collection-method}
 
-The `Arr::dot` method flattens a multi-dimensional array into a single level
-array that uses "dot" notation to indicate depth:
+`Arr::dot` 方法將多為陣列^[扁平化](Flatten)為一個使用「點 (.)」標記法來表示深度的一維陣列：
 
     use Illuminate\Support\Arr;
 
@@ -355,7 +351,7 @@ array that uses "dot" notation to indicate depth:
 <a name="method-array-except"></a>
 #### `Arr::except()` {.collection-method}
 
-The `Arr::except` method removes the given key / value pairs from an array:
+`Arr::except` 方法從陣列中移除給定的索引鍵 / 值配對：
 
     use Illuminate\Support\Arr;
 
@@ -368,8 +364,7 @@ The `Arr::except` method removes the given key / value pairs from an array:
 <a name="method-array-exists"></a>
 #### `Arr::exists()` {.collection-method}
 
-The `Arr::exists` method checks that the given key exists in the provided
-array:
+`Arr::exists` 方法會檢查給定的索引鍵是否存在於提供的陣列中：
 
     use Illuminate\Support\Arr;
 
@@ -386,8 +381,7 @@ array:
 <a name="method-array-first"></a>
 #### `Arr::first()` {.collection-method}
 
-The `Arr::first` method returns the first element of an array passing a
-given truth test:
+`Arr::first` 方法會回傳該陣列中通過給定布林測試的第一個元素：
 
     use Illuminate\Support\Arr;
 
@@ -399,8 +393,7 @@ given truth test:
 
     // 200
 
-A default value may also be passed as the third parameter to the
-method. This value will be returned if no value passes the truth test:
+也可以在第三個引數上提供一個預設值給該方法。若沒有任何值通過條件測試，就會回傳這個預設值：
 
     use Illuminate\Support\Arr;
 
@@ -409,8 +402,7 @@ method. This value will be returned if no value passes the truth test:
 <a name="method-array-flatten"></a>
 #### `Arr::flatten()` {.collection-method}
 
-The `Arr::flatten` method flattens a multi-dimensional array into a single
-level array:
+`Arr::flatten` 方法會將一個多維陣列^[扁平化](Flatten)為單一維度：
 
     use Illuminate\Support\Arr;
 
@@ -423,8 +415,7 @@ level array:
 <a name="method-array-forget"></a>
 #### `Arr::forget()` {.collection-method}
 
-The `Arr::forget` method removes a given key / value pair from a deeply
-nested array using "dot" notation:
+`Arr::forget` 方法使用「點 (.)」標記法來在多層巢狀陣列中移除給定的索引鍵 / 值配對：
 
     use Illuminate\Support\Arr;
 
@@ -437,8 +428,7 @@ nested array using "dot" notation:
 <a name="method-array-get"></a>
 #### `Arr::get()` {.collection-method}
 
-The `Arr::get` method retrieves a value from a deeply nested array using
-"dot" notation:
+`Arr::get` 方法使用「點 (.)」標記法來在多層巢狀陣列中取值：
 
     use Illuminate\Support\Arr;
 
@@ -448,8 +438,7 @@ The `Arr::get` method retrieves a value from a deeply nested array using
 
     // 100
 
-The `Arr::get` method also accepts a default value, which will be returned
-if the specified key is not present in the array:
+`Arr::get` 還接受一個預設值。若指定的索引鍵不存在時會回傳該預設值：
 
     use Illuminate\Support\Arr;
 
@@ -460,8 +449,7 @@ if the specified key is not present in the array:
 <a name="method-array-has"></a>
 #### `Arr::has()` {.collection-method}
 
-The `Arr::has` method checks whether a given item or items exists in an
-array using "dot" notation:
+`Arr::has` 方法使用「點 (.)」標記法來檢查給定的一個或多個項目是否存在：
 
     use Illuminate\Support\Arr;
 
@@ -478,8 +466,7 @@ array using "dot" notation:
 <a name="method-array-hasany"></a>
 #### `Arr::hasAny()` {.collection-method}
 
-The `Arr::hasAny` method checks whether any item in a given set exists in an
-array using "dot" notation:
+`Arr::hasAny` 方法使用「點 (.)」標記法來檢查給定的多個項目中是否只少有一個存在：
 
     use Illuminate\Support\Arr;
 
@@ -500,9 +487,8 @@ array using "dot" notation:
 <a name="method-array-isassoc"></a>
 #### `Arr::isAssoc()` {.collection-method}
 
-The `Arr::isAssoc` returns `true` if the given array is an associative
-array. An array is considered "associative" if it doesn't have sequential
-numerical keys beginning with zero:
+若給定的陣列為^[關聯式陣列](Associative Array)，`Arr::isAssoc` 回傳 `true`。當某個陣列的索引鍵不是以 0
+開始依序排列的數字時，就是「關聯式」的陣列：
 
     use Illuminate\Support\Arr;
 
@@ -517,8 +503,7 @@ numerical keys beginning with zero:
 <a name="method-array-last"></a>
 #### `Arr::last()` {.collection-method}
 
-The `Arr::last` method returns the last element of an array passing a given
-truth test:
+`Arr::last` 方法會回傳該陣列中通過給定布林測試的最後一個元素：
 
     use Illuminate\Support\Arr;
 
@@ -530,8 +515,7 @@ truth test:
 
     // 300
 
-A default value may be passed as the third argument to the method. This
-value will be returned if no value passes the truth test:
+可以在第三個引數上提供一個預設值給該方法。若沒有任何值通過條件測試，就會回傳這個預設值：
 
     use Illuminate\Support\Arr;
 
@@ -540,8 +524,7 @@ value will be returned if no value passes the truth test:
 <a name="method-array-only"></a>
 #### `Arr::only()` {.collection-method}
 
-The `Arr::only` method returns only the specified key / value pairs from the
-given array:
+`Arr::only` 方法回傳給定陣列中特定的索引鍵 / 值配對：
 
     use Illuminate\Support\Arr;
 
@@ -554,8 +537,7 @@ given array:
 <a name="method-array-pluck"></a>
 #### `Arr::pluck()` {.collection-method}
 
-The `Arr::pluck` method retrieves all of the values for a given key from an
-array:
+`Arr::pluck` 方法可從給定陣列中取得給定索引鍵內的所有值：
 
     use Illuminate\Support\Arr;
 
@@ -568,7 +550,7 @@ array:
 
     // ['Taylor', 'Abigail']
 
-You may also specify how you wish the resulting list to be keyed:
+也可以指定產生的清單要如何設定索引鍵：
 
     use Illuminate\Support\Arr;
 
@@ -579,7 +561,7 @@ You may also specify how you wish the resulting list to be keyed:
 <a name="method-array-prepend"></a>
 #### `Arr::prepend()` {.collection-method}
 
-The `Arr::prepend` method will push an item onto the beginning of an array:
+`Arr::prepend` 方法會將某個項目放到該陣列的最前面：
 
     use Illuminate\Support\Arr;
 
@@ -589,7 +571,7 @@ The `Arr::prepend` method will push an item onto the beginning of an array:
 
     // ['zero', 'one', 'two', 'three', 'four']
 
-If needed, you may specify the key that should be used for the value:
+若有需要，也可以指定該值要使用的索引鍵：
 
     use Illuminate\Support\Arr;
 
@@ -602,7 +584,7 @@ If needed, you may specify the key that should be used for the value:
 <a name="method-array-pull"></a>
 #### `Arr::pull()` {.collection-method}
 
-The `Arr::pull` method returns and removes a key / value pair from an array:
+`Arr::pull` 方法從陣列中移除一組索引鍵 / 值配對：
 
     use Illuminate\Support\Arr;
 
@@ -614,8 +596,7 @@ The `Arr::pull` method returns and removes a key / value pair from an array:
 
     // $array: ['price' => 100]
 
-A default value may be passed as the third argument to the method. This
-value will be returned if the key doesn't exist:
+可以在第三個引數上提供一個預設值給該方法。若指定的索引鍵不存在，就會回傳這個預設值：
 
     use Illuminate\Support\Arr;
 
@@ -624,7 +605,7 @@ value will be returned if the key doesn't exist:
 <a name="method-array-query"></a>
 #### `Arr::query()` {.collection-method}
 
-The `Arr::query` method converts the array into a query string:
+`Arr::query` 方法將該陣列轉換為^[查詢字串](Query String)：
 
     use Illuminate\Support\Arr;
 
@@ -643,7 +624,7 @@ The `Arr::query` method converts the array into a query string:
 <a name="method-array-random"></a>
 #### `Arr::random()` {.collection-method}
 
-The `Arr::random` method returns a random value from an array:
+`Arr::random` 方法從陣列中隨機回傳一個值：
 
     use Illuminate\Support\Arr;
 
@@ -651,23 +632,20 @@ The `Arr::random` method returns a random value from an array:
 
     $random = Arr::random($array);
 
-    // 4 - (retrieved randomly)
+    // 4 - (隨機取得)
 
-You may also specify the number of items to return as an optional second
-argument. Note that providing this argument will return an array even if
-only one item is desired:
+也可以在第二個引數上指定要回傳項目的數量。請注意，若有提供第二個引數，就算只要求一個項目，還是會回傳一組陣列：
 
     use Illuminate\Support\Arr;
 
     $items = Arr::random($array, 2);
 
-    // [2, 5] - (retrieved randomly)
+    // [2, 5] - (隨機取得)
 
 <a name="method-array-set"></a>
 #### `Arr::set()` {.collection-method}
 
-The `Arr::set` method sets a value within a deeply nested array using "dot"
-notation:
+`Arr::set` 方法可使用「點 (.)」標記法來在多層巢狀陣列中賦值：
 
     use Illuminate\Support\Arr;
 
@@ -680,18 +658,18 @@ notation:
 <a name="method-array-shuffle"></a>
 #### `Arr::shuffle()` {.collection-method}
 
-The `Arr::shuffle` method randomly shuffles the items in the array:
+`Arr::shuffle` 方法會隨機排序該陣列內的項目：
 
     use Illuminate\Support\Arr;
 
     $array = Arr::shuffle([1, 2, 3, 4, 5]);
 
-    // [3, 2, 5, 1, 4] - (generated randomly)
+    // [3, 2, 5, 1, 4] - (隨機產生)
 
 <a name="method-array-sort"></a>
 #### `Arr::sort()` {.collection-method}
 
-The `Arr::sort` method sorts an array by its values:
+`Arr::sort` 方法以陣列內的值來排列陣列：
 
     use Illuminate\Support\Arr;
 
@@ -701,7 +679,7 @@ The `Arr::sort` method sorts an array by its values:
 
     // ['Chair', 'Desk', 'Table']
 
-You may also sort the array by the results of a given closure:
+也可以使用給定閉包的執行結果來排序陣列：
 
     use Illuminate\Support\Arr;
 
@@ -726,9 +704,8 @@ You may also sort the array by the results of a given closure:
 <a name="method-array-sort-recursive"></a>
 #### `Arr::sortRecursive()` {.collection-method}
 
-The `Arr::sortRecursive` method recursively sorts an array using the `sort`
-function for numerically indexed sub-arrays and the `ksort` function for
-associative sub-arrays:
+`Arr::sortRecursive` 方法會遞迴排序陣列。當遇到數字索引鍵的子陣列時，會使用 `sort` 函式；若子陣列為關聯式陣列，則使用
+`ksort` 函式：
 
     use Illuminate\Support\Arr;
 
@@ -751,11 +728,9 @@ associative sub-arrays:
 <a name="method-array-to-css-classes"></a>
 #### `Arr::toCssClasses()` {.collection-method}
 
-The `Arr::toCssClasses` conditionally compiles a CSS class string. The
-method accepts an array of classes where the array key contains the class or
-classes you wish to add, while the value is a boolean expression. If the
-array element has a numeric key, it will always be included in the rendered
-class list:
+`Arr::toCssClasses` 可以有條件地編譯 CSS class 字串。該方法接受一組包含 class
+的陣列，其中，陣列的索引鍵代表欲新增的 class，陣列值則是一個布林運算式。若陣列的元素有數字索引鍵，則該元素一定會被加到轉譯後的 Class
+列表上：
 
     use Illuminate\Support\Arr;
 
@@ -770,16 +745,14 @@ class list:
         'p-4 bg-red'
     */
 
-This method powers Laravel's functionality allowing [merging classes with a
-Blade component's attribute
-bag](/docs/{{version}}/blade#conditionally-merge-classes) as well as the
-`@class` [Blade directive](/docs/{{version}}/blade#conditional-classes).
+該方法用於提供了 Laravel 的「[將 Class 於 Blade 元件的 Attribute Bag
+合併](/docs/{{version}}/blade#conditionally-merge-classes)」功能，以及 `@class`
+[Blade 指示詞](/docs/{{version}}/blade#conditional-classes)。
 
 <a name="method-array-undot"></a>
 #### `Arr::undot()` {.collection-method}
 
-The `Arr::undot` method expands a single-dimensional array that uses "dot"
-notation into a multi-dimensional array:
+`Arr::undot` 方法將一組使用「點 (.)」標記法的一維陣列展開為多維陣列：
 
     use Illuminate\Support\Arr;
 
@@ -795,7 +768,7 @@ notation into a multi-dimensional array:
 <a name="method-array-where"></a>
 #### `Arr::where()` {.collection-method}
 
-The `Arr::where` method filters an array using the given closure:
+`Arr::where` 方法使用給定的閉包來篩選陣列：
 
     use Illuminate\Support\Arr;
 
@@ -810,8 +783,7 @@ The `Arr::where` method filters an array using the given closure:
 <a name="method-array-where-not-null"></a>
 #### `Arr::whereNotNull()` {.collection-method}
 
-The `Arr::whereNotNull` method removes all `null` values from the given
-array:
+`Arr::whereNotNull` 方法從給定陣列中移除所有 `null` 的值：
 
     use Illuminate\Support\Arr;
 
@@ -824,8 +796,7 @@ array:
 <a name="method-array-wrap"></a>
 #### `Arr::wrap()` {.collection-method}
 
-The `Arr::wrap` method wraps the given value in an array. If the given value
-is already an array it will be returned without modification:
+`Arr::wrap` 將給定值^[包裝](Wrap)為陣列。若給定的值已為陣列，則該方法會直接回傳該陣列，不做其他修改：
 
     use Illuminate\Support\Arr;
 
@@ -835,7 +806,7 @@ is already an array it will be returned without modification:
 
     // ['Laravel']
 
-If the given value is `null`, an empty array will be returned:
+若給定值為 `null`，則會回傳空陣列：
 
     use Illuminate\Support\Arr;
 
@@ -846,8 +817,7 @@ If the given value is `null`, an empty array will be returned:
 <a name="method-data-fill"></a>
 #### `data_fill()` {.collection-method}
 
-The `data_fill` function sets a missing value within a nested array or
-object using "dot" notation:
+`data_fill` 方法使用「點 (.)」標記法來在巢狀陣列或物件中填上原本不存在的值：
 
     $data = ['products' => ['desk' => ['price' => 100]]];
 
@@ -859,8 +829,7 @@ object using "dot" notation:
 
     // ['products' => ['desk' => ['price' => 100, 'discount' => 10]]]
 
-This function also accepts asterisks as wildcards and will fill the target
-accordingly:
+該方法也支援使用星號作為萬用字元，會填上對應的目標：
 
     $data = [
         'products' => [
@@ -883,8 +852,7 @@ accordingly:
 <a name="method-data-get"></a>
 #### `data_get()` {.collection-method}
 
-The `data_get` function retrieves a value from a nested array or object
-using "dot" notation:
+`data_get` 方法使用「點 (.)」標記法來從巢狀陣列或物件中取值：
 
     $data = ['products' => ['desk' => ['price' => 100]]];
 
@@ -892,15 +860,13 @@ using "dot" notation:
 
     // 100
 
-The `data_get` function also accepts a default value, which will be returned
-if the specified key is not found:
+`data_get` 還接受一個預設值。若找不到指定的索引鍵時會回傳該預設值：
 
     $discount = data_get($data, 'products.desk.discount', 0);
 
     // 0
 
-The function also accepts wildcards using asterisks, which may target any
-key of the array or object:
+該方法也接受使用星號來作為萬用字元，可以套用到陣列或物件上的任何索引鍵：
 
     $data = [
         'product-one' => ['name' => 'Desk 1', 'price' => 100],
@@ -914,8 +880,7 @@ key of the array or object:
 <a name="method-data-set"></a>
 #### `data_set()` {.collection-method}
 
-The `data_set` function sets a value within a nested array or object using
-"dot" notation:
+`data_set` 函式使用「點 (.)」標記法來在巢狀陣列或物件上賦值：
 
     $data = ['products' => ['desk' => ['price' => 100]]];
 
@@ -923,8 +888,7 @@ The `data_set` function sets a value within a nested array or object using
 
     // ['products' => ['desk' => ['price' => 200]]]
 
-This function also accepts wildcards using asterisks and will set values on
-the target accordingly:
+該函式也接受使用星號作為萬用字元，會為設定相應的目標賦值：
 
     $data = [
         'products' => [
@@ -944,9 +908,7 @@ the target accordingly:
         ]
     */
 
-By default, any existing values are overwritten. If you wish to only set a
-value if it doesn't exist, you may pass `false` as the fourth argument to
-the function:
+預設情況下，會複寫現有的值。若只想為不存在的項目賦值，可傳入 `false` 作為第四個引數給該函式：
 
     $data = ['products' => ['desk' => ['price' => 100]]];
 
@@ -957,7 +919,7 @@ the function:
 <a name="method-head"></a>
 #### `head()` {.collection-method}
 
-The `head` function returns the first element in the given array:
+`head` 方法回傳給定陣列中的第一個元素：
 
     $array = [100, 200, 300];
 
@@ -968,7 +930,7 @@ The `head` function returns the first element in the given array:
 <a name="method-last"></a>
 #### `last()` {.collection-method}
 
-The `last` function returns the last element in the given array:
+`last` 方法回傳給定陣列中的最後一個元素：
 
     $array = [100, 200, 300];
 
@@ -977,15 +939,12 @@ The `last` function returns the last element in the given array:
     // 300
 
 <a name="paths"></a>
-## Paths
+## 路徑
 
 <a name="method-app-path"></a>
 #### `app_path()` {.collection-method}
 
-The `app_path` function returns the fully qualified path to your
-application's `app` directory. You may also use the `app_path` function to
-generate a fully qualified path to a file relative to the application
-directory:
+`app_path` 回傳專案 `app` 目錄的完整名稱路徑。也可以使用 `app_path` 函式來為 app 目錄下相對路徑的完整名稱路徑：
 
     $path = app_path();
 
@@ -994,10 +953,7 @@ directory:
 <a name="method-base-path"></a>
 #### `base_path()` {.collection-method}
 
-The `base_path` function returns the fully qualified path to your
-application's root directory. You may also use the `base_path` function to
-generate a fully qualified path to a given file relative to the project root
-directory:
+`base_path` 函式回傳專案根目錄的完整名稱路徑。也可以使用 `base_path` 來產生相對於根目錄下給定檔案的完整名稱路徑：
 
     $path = base_path();
 
@@ -1006,10 +962,8 @@ directory:
 <a name="method-config-path"></a>
 #### `config_path()` {.collection-method}
 
-The `config_path` function returns the fully qualified path to your
-application's `config` directory. You may also use the `config_path`
-function to generate a fully qualified path to a given file within the
-application's configuration directory:
+`config_path` 函式回傳專案 `config` 目錄的完整名稱路徑。也可以使用 `config_path` 函式來產生專案 `config`
+目錄內給定檔案的完整名稱路徑：
 
     $path = config_path();
 
@@ -1018,10 +972,8 @@ application's configuration directory:
 <a name="method-database-path"></a>
 #### `database_path()` {.collection-method}
 
-The `database_path` function returns the fully qualified path to your
-application's `database` directory. You may also use the `database_path`
-function to generate a fully qualified path to a given file within the
-database directory:
+`database_path` 函式回傳專案 `database` 目錄的完整名稱路徑。也可以使用 `database_path` 函式來產生
+`database` 目錄下給定檔案的完整名稱路徑：
 
     $path = database_path();
 
@@ -1030,18 +982,15 @@ database directory:
 <a name="method-mix"></a>
 #### `mix()` {.collection-method}
 
-The `mix` function returns the path to a [versioned Mix
-file](/docs/{{version}}/mix):
+`mix` 函式回傳[版本化的 Mix 檔案](/docs/{{version}}/mix)路徑：
 
     $path = mix('css/app.css');
 
 <a name="method-public-path"></a>
 #### `public_path()` {.collection-method}
 
-The `public_path` function returns the fully qualified path to your
-application's `public` directory. You may also use the `public_path`
-function to generate a fully qualified path to a given file within the
-public directory:
+`public_path` 函式回傳專案 `public` 目錄的完整名稱路徑。也可以使用 `public_path` 函式來產生 `public`
+目錄下給定檔案的完整名稱路徑：
 
     $path = public_path();
 
@@ -1050,10 +999,8 @@ public directory:
 <a name="method-resource-path"></a>
 #### `resource_path()` {.collection-method}
 
-The `resource_path` function returns the fully qualified path to your
-application's `resources` directory. You may also use the `resource_path`
-function to generate a fully qualified path to a given file within the
-resources directory:
+`resource_path` 函式回傳專案 `resources` 目錄的完整名稱路徑。也可以使用 `resource_path` 函式來產生
+`resources` 目錄下給定檔案的完整名稱路徑：
 
     $path = resource_path();
 
@@ -1062,37 +1009,32 @@ resources directory:
 <a name="method-storage-path"></a>
 #### `storage_path()` {.collection-method}
 
-The `storage_path` function returns the fully qualified path to your
-application's `storage` directory. You may also use the `storage_path`
-function to generate a fully qualified path to a given file within the
-storage directory:
+`storage_path` 函式回傳專案 `storage` 目錄的完整名稱路徑。也可以使用 `storage_path` 函式來產生
+`storage` 目錄下給定檔案的完整名稱路徑：
 
     $path = storage_path();
 
     $path = storage_path('app/file.txt');
 
 <a name="strings"></a>
-## Strings
+## 字串
 
 <a name="method-__"></a>
 #### `__()` {.collection-method}
 
-The `__` function translates the given translation string or translation key
-using your [localization files](/docs/{{version}}/localization):
+`__` 函式使用[語系檔](/docs/{{version}}/localization)來翻譯給定的翻譯字串或翻譯索引鍵：
 
     echo __('Welcome to our application');
 
     echo __('messages.welcome');
 
-If the specified translation string or key does not exist, the `__` function
-will return the given value. So, using the example above, the `__` function
-would return `messages.welcome` if that translation key does not exist.
+若指定的翻譯字串或翻譯索引鍵不存在時，`__` 函式會回傳給定的值。因此，在上述範例中，若 `messages.welcome` 索引鍵不存在，`__`
+函式會回傳 `messages.welcome`。
 
 <a name="method-class-basename"></a>
 #### `class_basename()` {.collection-method}
 
-The `class_basename` function returns the class name of the given class with
-the class's namespace removed:
+`class_basename` 函式回傳給定類別在移除類別 Namespace 後的類別名稱：
 
     $class = class_basename('Foo\Bar\Baz');
 
@@ -1101,8 +1043,7 @@ the class's namespace removed:
 <a name="method-e"></a>
 #### `e()` {.collection-method}
 
-The `e` function runs PHP's `htmlspecialchars` function with the
-`double_encode` option set to `true` by default:
+`e` 函式執行 PHP 的 `htmlspecialchars` 函式，其中 `double_encode` 選項預設為 `true`：
 
     echo e('<html>foo</html>');
 
@@ -1111,8 +1052,7 @@ The `e` function runs PHP's `htmlspecialchars` function with the
 <a name="method-preg-replace-array"></a>
 #### `preg_replace_array()` {.collection-method}
 
-The `preg_replace_array` function replaces a given pattern in the string
-sequentially using an array:
+`preg_replace_array` 函式使用陣列來依序在陣列中取代給定的格式：
 
     $string = 'The event will take place between :start and :end';
 
@@ -1123,9 +1063,7 @@ sequentially using an array:
 <a name="method-str-after"></a>
 #### `Str::after()` {.collection-method}
 
-The `Str::after` method returns everything after the given value in a
-string. The entire string will be returned if the value does not exist
-within the string:
+`Str::after` 方法回傳字串中給定值以後的所有內容。若該字串中找不到給定值，會回傳整個字串：
 
     use Illuminate\Support\Str;
 
@@ -1136,9 +1074,7 @@ within the string:
 <a name="method-str-after-last"></a>
 #### `Str::afterLast()` {.collection-method}
 
-The `Str::afterLast` method returns everything after the last occurrence of
-the given value in a string. The entire string will be returned if the value
-does not exist within the string:
+`Str::afterLast` 方法回傳給定字串後最後一個出現給定值之後的所有內容。若找不到該值，會回傳整個字串：
 
     use Illuminate\Support\Str;
 
@@ -1149,8 +1085,7 @@ does not exist within the string:
 <a name="method-str-ascii"></a>
 #### `Str::ascii()` {.collection-method}
 
-The `Str::ascii` method will attempt to transliterate the string into an
-ASCII value:
+`Str::ascii` 方法會嘗試將給定字串翻譯為 ASCII 值：
 
     use Illuminate\Support\Str;
 
@@ -1161,8 +1096,7 @@ ASCII value:
 <a name="method-str-before"></a>
 #### `Str::before()` {.collection-method}
 
-The `Str::before` method returns everything before the given value in a
-string:
+`Str::before` 回傳字串在遇到給定值前的所有內容：
 
     use Illuminate\Support\Str;
 
@@ -1173,8 +1107,7 @@ string:
 <a name="method-str-before-last"></a>
 #### `Str::beforeLast()` {.collection-method}
 
-The `Str::beforeLast` method returns everything before the last occurrence
-of the given value in a string:
+`Str::beforeLast` 方法回傳字串中最後一次出現給定值以前的所有內容：
 
     use Illuminate\Support\Str;
 
@@ -1185,8 +1118,7 @@ of the given value in a string:
 <a name="method-str-between"></a>
 #### `Str::between()` {.collection-method}
 
-The `Str::between` method returns the portion of a string between two
-values:
+`Str::between` 方法回傳介於兩個值之間的字串：
 
     use Illuminate\Support\Str;
 
@@ -1197,7 +1129,7 @@ values:
 <a name="method-camel-case"></a>
 #### `Str::camel()` {.collection-method}
 
-The `Str::camel` method converts the given string to `camelCase`:
+`Str::camel` 方法將給定字串轉為 `camelCase` —— 駝峰命名法的大小寫：
 
     use Illuminate\Support\Str;
 
@@ -1208,8 +1140,7 @@ The `Str::camel` method converts the given string to `camelCase`:
 <a name="method-str-contains"></a>
 #### `Str::contains()` {.collection-method}
 
-The `Str::contains` method determines if the given string contains the given
-value. This method is case sensitive:
+`Str::contains` 方法判斷給定字串是否包含給定值。該方法區分大小寫：
 
     use Illuminate\Support\Str;
 
@@ -1217,8 +1148,7 @@ value. This method is case sensitive:
 
     // true
 
-You may also pass an array of values to determine if the given string
-contains any of the values in the array:
+也可以傳入一組要判斷的陣列值，來判斷給定字串中是否有包含該陣列中任何一個值：
 
     use Illuminate\Support\Str;
 
@@ -1229,8 +1159,7 @@ contains any of the values in the array:
 <a name="method-str-contains-all"></a>
 #### `Str::containsAll()` {.collection-method}
 
-The `Str::containsAll` method determines if the given string contains all of
-the values in a given array:
+`Str::containsAll` 判斷給定字串是否有包含給定陣列中的所有值：
 
     use Illuminate\Support\Str;
 
@@ -1241,8 +1170,7 @@ the values in a given array:
 <a name="method-ends-with"></a>
 #### `Str::endsWith()` {.collection-method}
 
-The `Str::endsWith` method determines if the given string ends with the
-given value:
+Str::endsWith` 方法可判斷給定字串是否以給定值結尾：
 
     use Illuminate\Support\Str;
 
@@ -1251,8 +1179,7 @@ given value:
     // true
 
 
-You may also pass an array of values to determine if the given string ends
-with any of the values in the array:
+也可以傳入一組陣列值來判斷給定字串的結尾是否符合該陣列內的其中一項：
 
     use Illuminate\Support\Str;
 
@@ -1267,8 +1194,7 @@ with any of the values in the array:
 <a name="method-str-finish"></a>
 #### `Str::finish()` {.collection-method}
 
-The `Str::finish` method adds a single instance of the given value to a
-string if it does not already end with that value:
+`Str::finish` 方法會在給定字串不是以給定值結尾時，在該字串後方加上這個值：
 
     use Illuminate\Support\Str;
 
@@ -1283,9 +1209,7 @@ string if it does not already end with that value:
 <a name="method-str-headline"></a>
 #### `Str::headline()` {.collection-method}
 
-The `Str::headline` method will convert strings delimited by casing,
-hyphens, or underscores into a space delimited string with each word's first
-letter capitalized:
+`Str::headline` 方法將以大小寫、減號、底線等方式區隔的字串轉換為以空格區隔的字串，並將其中每個單詞的首字母都轉為大寫：
 
     use Illuminate\Support\Str;
 
@@ -1300,8 +1224,7 @@ letter capitalized:
 <a name="method-str-is"></a>
 #### `Str::is()` {.collection-method}
 
-The `Str::is` method determines if a given string matches a given
-pattern. Asterisks may be used as wildcard values:
+`Str::is` 判斷給定字串是否符合給定的格式。可使用星號作為萬用字元：
 
     use Illuminate\Support\Str;
 
@@ -1316,7 +1239,7 @@ pattern. Asterisks may be used as wildcard values:
 <a name="method-str-is-ascii"></a>
 #### `Str::isAscii()` {.collection-method}
 
-The `Str::isAscii` method determines if a given string is 7 bit ASCII:
+`Str::isAscii` 方法判斷給定字串是否為 7 位元 ASCII：
 
     use Illuminate\Support\Str;
 
@@ -1331,7 +1254,7 @@ The `Str::isAscii` method determines if a given string is 7 bit ASCII:
 <a name="method-str-is-uuid"></a>
 #### `Str::isUuid()` {.collection-method}
 
-The `Str::isUuid` method determines if the given string is a valid UUID:
+`Str::isUuid` 方法判斷給定字串是否為有效的 UUID：
 
     use Illuminate\Support\Str;
 
@@ -1346,7 +1269,7 @@ The `Str::isUuid` method determines if the given string is a valid UUID:
 <a name="method-kebab-case"></a>
 #### `Str::kebab()` {.collection-method}
 
-The `Str::kebab` method converts the given string to `kebab-case`:
+`Str::kebab` 方法將給定字串轉換為 `kebab-case`：
 
     use Illuminate\Support\Str;
 
@@ -1357,7 +1280,7 @@ The `Str::kebab` method converts the given string to `kebab-case`:
 <a name="method-str-length"></a>
 #### `Str::length()` {.collection-method}
 
-The `Str::length` method returns the length of the given string:
+`Str::length` 方法回傳給定字串的長度：
 
     use Illuminate\Support\Str;
 
@@ -1368,7 +1291,7 @@ The `Str::length` method returns the length of the given string:
 <a name="method-str-limit"></a>
 #### `Str::limit()` {.collection-method}
 
-The `Str::limit` method truncates the given string to the specified length:
+`Str::limit` 方法將給定字串截斷成指定長度：
 
     use Illuminate\Support\Str;
 
@@ -1376,8 +1299,7 @@ The `Str::limit` method truncates the given string to the specified length:
 
     // The quick brown fox...
 
-You may pass a third argument to the method to change the string that will
-be appended to the end of the truncated string:
+也可以傳入第三個引數給該方法，以更改當字串被截斷時要加在最後方的內容：
 
     use Illuminate\Support\Str;
 
@@ -1388,7 +1310,7 @@ be appended to the end of the truncated string:
 <a name="method-str-lower"></a>
 #### `Str::lower()` {.collection-method}
 
-The `Str::lower` method converts the given string to lowercase:
+`Str::lower` 方法將給定字串轉為小寫：
 
     use Illuminate\Support\Str;
 
@@ -1399,7 +1321,7 @@ The `Str::lower` method converts the given string to lowercase:
 <a name="method-str-markdown"></a>
 #### `Str::markdown()` {.collection-method}
 
-The `Str::markdown` method converts GitHub flavored Markdown into HTML:
+`Str::markdown` 方法可將 GitHub Flavored Markdown 轉位為 HTML：
 
     use Illuminate\Support\Str;
 
@@ -1416,9 +1338,7 @@ The `Str::markdown` method converts GitHub flavored Markdown into HTML:
 <a name="method-str-mask"></a>
 #### `Str::mask()` {.collection-method}
 
-The `Str::mask` method masks a portion of a string with a repeated
-character, and may be used to obfuscate segments of strings such as email
-addresses and phone numbers:
+`Str::mask` 方法將字串中的一部分轉為重複字元，可用來為 E-Mail 位址或電話號碼⋯⋯等字串^[打碼](Obfuscate)：
 
     use Illuminate\Support\Str;
 
@@ -1426,9 +1346,7 @@ addresses and phone numbers:
 
     // tay***************
 
-If needed, you provide a negative number as the third argument to the `mask`
-method, which will instruct the method to begin masking at the given
-distance from the end of the string:
+若有需要，`mask` 方法的第三個引數可提供負數，這樣 `mask` 就會從字串結尾起給定的長度開始打碼：
 
     $string = Str::mask('taylor@example.com', '*', -15, 3);
 
@@ -1437,10 +1355,8 @@ distance from the end of the string:
 <a name="method-str-ordered-uuid"></a>
 #### `Str::orderedUuid()` {.collection-method}
 
-The `Str::orderedUuid` method generates a "timestamp first" UUID that may be
-efficiently stored in an indexed database column. Each UUID that is
-generated using this method will be sorted after UUIDs previously generated
-using the method:
+`Str::orderedUuid` 方法會產生一個「^[時戳優先](Timestamp First)」的
+UUID，可用來儲存在有所引的資料庫欄位中。使用本方法產生的 UUID 在排序時會被排到之前使用本方法產生的 UUID 之後：
 
     use Illuminate\Support\Str;
 
@@ -1449,9 +1365,7 @@ using the method:
 <a name="method-str-padboth"></a>
 #### `Str::padBoth()` {.collection-method}
 
-The `Str::padBoth` method wraps PHP's `str_pad` function, padding both sides
-of a string with another string until the final string reaches a desired
-length:
+`Str::padBoth` 方法包裝了 PHP 的 `str_path` 方法，會填充字串的兩端，直到字串符合預期的長度：
 
     use Illuminate\Support\Str;
 
@@ -1466,9 +1380,7 @@ length:
 <a name="method-str-padleft"></a>
 #### `Str::padLeft()` {.collection-method}
 
-The `Str::padLeft` method wraps PHP's `str_pad` function, padding the left
-side of a string with another string until the final string reaches a
-desired length:
+`Str::padLeft` 包裝了 PHP 的 `str_pad` 方法，會使用另一個字串填充給定字串的左邊，直到符合預期的長度：
 
     use Illuminate\Support\Str;
 
@@ -1483,9 +1395,7 @@ desired length:
 <a name="method-str-padright"></a>
 #### `Str::padRight()` {.collection-method}
 
-The `Str::padRight` method wraps PHP's `str_pad` function, padding the right
-side of a string with another string until the final string reaches a
-desired length:
+`Str::padRight` 包裝了 PHP 的 `str_pad` 方法，會使用另一個字串填充給定字串的右邊，直到符合預期的長度：
 
     use Illuminate\Support\Str;
 
@@ -1500,8 +1410,7 @@ desired length:
 <a name="method-str-plural"></a>
 #### `Str::plural()` {.collection-method}
 
-The `Str::plural` method converts a singular word string to its plural
-form. This function currently only supports the English language:
+`Str::plural` 方法將單數單詞轉換為其複數型。該函式目前只支援英文：
 
     use Illuminate\Support\Str;
 
@@ -1513,8 +1422,7 @@ form. This function currently only supports the English language:
 
     // children
 
-You may provide an integer as a second argument to the function to retrieve
-the singular or plural form of the string:
+也可以提供一個整數作為該方法的第二個引數，用來判斷要取得該字串的單數或複數型：
 
     use Illuminate\Support\Str;
 
@@ -1529,9 +1437,7 @@ the singular or plural form of the string:
 <a name="method-str-plural-studly"></a>
 #### `Str::pluralStudly()` {.collection-method}
 
-The `Str::pluralStudly` method converts a singular word string formatted in
-studly caps case to its plural form. This function currently only supports
-the English language:
+`Str::pluralStudly` 方法將單數單詞轉換為 Studly 命名法的複數型。該方法目前只支援英文：
 
     use Illuminate\Support\Str;
 
@@ -1543,8 +1449,7 @@ the English language:
 
     // UserFeedback
 
-You may provide an integer as a second argument to the function to retrieve
-the singular or plural form of the string:
+也可以提供一個整數作為該方法的第二個引數，用來判斷要取得該字串的單數或複數型：
 
     use Illuminate\Support\Str;
 
@@ -1559,8 +1464,7 @@ the singular or plural form of the string:
 <a name="method-str-random"></a>
 #### `Str::random()` {.collection-method}
 
-The `Str::random` method generates a random string of the specified
-length. This function uses PHP's `random_bytes` function:
+`Str::random` 方法產生指定長度的隨機字串。該函式使用 PHP 的 `random_bytes` 函式：
 
     use Illuminate\Support\Str;
 
@@ -1569,8 +1473,7 @@ length. This function uses PHP's `random_bytes` function:
 <a name="method-str-remove"></a>
 #### `Str::remove()` {.collection-method}
 
-The `Str::remove` method removes the given value or array of values from the
-string:
+`Str::remove` 方法從字串中移除給定的一個或多個值：
 
     use Illuminate\Support\Str;
 
@@ -1580,13 +1483,12 @@ string:
 
     // Ptr Pipr pickd a pck of pickld ppprs.
 
-You may also pass `false` as a third argument to the `remove` method to
-ignore case when removing strings.
+也可以傳入 `false` 作為第三個引數給 `remove` 方法來在移除字串時忽略大小寫差異：
 
 <a name="method-str-replace"></a>
 #### `Str::replace()` {.collection-method}
 
-The `Str::replace` method replaces a given string within the string:
+`Str::replace` 方法在字串中取代給定字串：
 
     use Illuminate\Support\Str;
 
@@ -1599,8 +1501,7 @@ The `Str::replace` method replaces a given string within the string:
 <a name="method-str-replace-array"></a>
 #### `Str::replaceArray()` {.collection-method}
 
-The `Str::replaceArray` method replaces a given value in the string
-sequentially using an array:
+`Str::replaceArray` 函式使用陣列來依序在陣列中取代給定的值：
 
     use Illuminate\Support\Str;
 
@@ -1613,8 +1514,7 @@ sequentially using an array:
 <a name="method-str-replace-first"></a>
 #### `Str::replaceFirst()` {.collection-method}
 
-The `Str::replaceFirst` method replaces the first occurrence of a given
-value in a string:
+`Str::replaceFirst` 方法取代字串中第一次出現的給定值：
 
     use Illuminate\Support\Str;
 
@@ -1625,8 +1525,7 @@ value in a string:
 <a name="method-str-replace-last"></a>
 #### `Str::replaceLast()` {.collection-method}
 
-The `Str::replaceLast` method replaces the last occurrence of a given value
-in a string:
+`Str::replaceLast` 方法取代字串中最後一次出現的給定值：
 
     use Illuminate\Support\Str;
 
@@ -1638,7 +1537,7 @@ in a string:
 <a name="method-str-reverse"></a>
 #### `Str::reverse()` {.collection-method}
 
-The `Str::reverse` method reverses the given string:
+`Str::reverse` 方法反轉給定的字串：
 
     use Illuminate\Support\Str;
 
@@ -1649,8 +1548,7 @@ The `Str::reverse` method reverses the given string:
 <a name="method-str-singular"></a>
 #### `Str::singular()` {.collection-method}
 
-The `Str::singular` method converts a string to its singular form. This
-function currently only supports the English language:
+`Str::singular` 方法將複數單詞轉換為其單數型。該函式目前只支援英文：
 
     use Illuminate\Support\Str;
 
@@ -1665,8 +1563,7 @@ function currently only supports the English language:
 <a name="method-str-slug"></a>
 #### `Str::slug()` {.collection-method}
 
-The `Str::slug` method generates a URL friendly "slug" from the given
-string:
+`Str::slug` 方法以給定字串產生適合在 URL 中使用的「Slug」格式：
 
     use Illuminate\Support\Str;
 
@@ -1677,7 +1574,7 @@ string:
 <a name="method-snake-case"></a>
 #### `Str::snake()` {.collection-method}
 
-The `Str::snake` method converts the given string to `snake_case`:
+`Str::snake` 方法將給定字串轉為 `snake_case` —— 蛇型命名法的大小寫：
 
     use Illuminate\Support\Str;
 
@@ -1692,8 +1589,7 @@ The `Str::snake` method converts the given string to `snake_case`:
 <a name="method-str-start"></a>
 #### `Str::start()` {.collection-method}
 
-The `Str::start` method adds a single instance of the given value to a
-string if it does not already start with that value:
+`Str::start` 方法會在給定字串不是以給定值起始時，在該字串前方加上這個值：
 
     use Illuminate\Support\Str;
 
@@ -1708,8 +1604,7 @@ string if it does not already start with that value:
 <a name="method-starts-with"></a>
 #### `Str::startsWith()` {.collection-method}
 
-The `Str::startsWith` method determines if the given string begins with the
-given value:
+Str::startsWith` 方法可判斷給定字串是否以給定值起始：
 
     use Illuminate\Support\Str;
 
@@ -1717,8 +1612,7 @@ given value:
 
     // true
 
-If an array of possible values is passed, the `startsWith` method will
-return `true` if the string begins with any of the given values:
+若傳入一組陣列，當字串以給定值中任何一個值開頭時，`startsWith` 方法會回傳 `true`：
 
     $result = Str::startsWith('This is my name', ['This', 'That', 'There']);
 
@@ -1727,7 +1621,7 @@ return `true` if the string begins with any of the given values:
 <a name="method-studly-case"></a>
 #### `Str::studly()` {.collection-method}
 
-The `Str::studly` method converts the given string to `StudlyCase`:
+`Str::studly` 方法將給定字串轉為 `StudlyCase` —— Studly 命名法的大小寫：
 
     use Illuminate\Support\Str;
 
@@ -1738,8 +1632,7 @@ The `Str::studly` method converts the given string to `StudlyCase`:
 <a name="method-str-substr"></a>
 #### `Str::substr()` {.collection-method}
 
-The `Str::substr` method returns the portion of string specified by the
-start and length parameters:
+`Str::substr` 方法回傳字串中指定的起始位置開始指定長度的字串：
 
     use Illuminate\Support\Str;
 
@@ -1750,8 +1643,7 @@ start and length parameters:
 <a name="method-str-substrcount"></a>
 #### `Str::substrCount()` {.collection-method}
 
-The `Str::substrCount` method returns the number of occurrences of a given
-value in the given string:
+`Str::substrCount` 方法回傳給定值中給定值出現的次數：
 
     use Illuminate\Support\Str;
 
@@ -1762,11 +1654,8 @@ value in the given string:
 <a name="method-str-substrreplace"></a>
 #### `Str::substrReplace()` {.collection-method}
 
-The `Str::substrReplace` method replaces text within a portion of a string,
-starting at the position specified by the third argument and replacing the
-number of characters specified by the fourth argument. Passing `0` to the
-method's fourth argument will insert the string at the specified position
-without replacing any of the existing characters in the string:
+`Str::substrreplace` 方法在字串中取代其中一段文字，第三個引數指定起始位置，並以第四個引數來指定要取代的字元數。若第四個引數傳入
+`0`，則會在指定位置插入字串，而不取代字串中現有的字元：
 
     use Illuminate\Support\Str;
 
@@ -1779,8 +1668,7 @@ without replacing any of the existing characters in the string:
 <a name="method-str-swap"></a>
 #### `Str::swap()` {.collection-method}
 
-The `Str::swap` method replaces multiple values in the given string using
-PHP's `strtr` function:
+`Str::swap` 方法使用 PHP 的 `strtr` 函式來取代給定字串中的多個值：
 
     use Illuminate\Support\Str;
 
@@ -1794,7 +1682,7 @@ PHP's `strtr` function:
 <a name="method-title-case"></a>
 #### `Str::title()` {.collection-method}
 
-The `Str::title` method converts the given string to `Title Case`:
+`Str::title` 方法將給定字串轉為 `Title Case` —— 標題用的大小寫：
 
     use Illuminate\Support\Str;
 
@@ -1805,9 +1693,8 @@ The `Str::title` method converts the given string to `Title Case`:
 <a name="method-str-to-html-string"></a>
 #### `Str::toHtmlString()` {.collection-method}
 
-The `Str::toHtmlString` method converts the string instance to an instance
-of `Illuminate\Support\HtmlString`, which may be displayed in Blade
-templates:
+`Str::toHtmlString` 方法將字串實體轉換為 `Illuminate\Support\HtmlString`
+的實體。`HtmlString` 實體可以在 Blade 樣板中顯示：
 
     use Illuminate\Support\Str;
 
@@ -1816,8 +1703,7 @@ templates:
 <a name="method-str-ucfirst"></a>
 #### `Str::ucfirst()` {.collection-method}
 
-The `Str::ucfirst` method returns the given string with the first character
-capitalized:
+`Str::ucfirst` 方法回傳給定字串第一個字元轉為大寫後的字串：
 
     use Illuminate\Support\Str;
 
@@ -1828,7 +1714,7 @@ capitalized:
 <a name="method-str-upper"></a>
 #### `Str::upper()` {.collection-method}
 
-The `Str::upper` method converts the given string to uppercase:
+`Str::upper` 方法將給定字串轉換為大寫：
 
     use Illuminate\Support\Str;
 
@@ -1839,7 +1725,7 @@ The `Str::upper` method converts the given string to uppercase:
 <a name="method-str-uuid"></a>
 #### `Str::uuid()` {.collection-method}
 
-The `Str::uuid` method generates a UUID (version 4):
+`Str::uuid` 方法產生 UUID (第 4 版)：
 
     use Illuminate\Support\Str;
 
@@ -1848,8 +1734,7 @@ The `Str::uuid` method generates a UUID (version 4):
 <a name="method-str-word-count"></a>
 #### `Str::wordCount()` {.collection-method}
 
-The `Str::wordCount` method returns the number of words that a string
-contains:
+`Str::wordCount` 方法回傳該字串中所包含的單詞數：
 
 ```php
 use Illuminate\Support\Str;
@@ -1860,9 +1745,7 @@ Str::wordCount('Hello, world!'); // 2
 <a name="method-str-words"></a>
 #### `Str::words()` {.collection-method}
 
-The `Str::words` method limits the number of words in a string. An
-additional string may be passed to this method via its third argument to
-specify which string should be appended to the end of the truncated string:
+`Str::words` 方法將字串中的單詞數限制在指定數量內。也可以第三引數來傳入一個額外的字串，用來指定當字串被截斷時要加在最後方的內容：
 
     use Illuminate\Support\Str;
 
@@ -1873,15 +1756,13 @@ specify which string should be appended to the end of the truncated string:
 <a name="method-str"></a>
 #### `str()` {.collection-method}
 
-The `str` function returns a new `Illuminate\Support\Stringable` instance of
-the given string. This function is equivalent to the `Str::of` method:
+`str` 會回傳給定字串的 `Illuminate\Support\Stringable` 實體。這個函式與 `Str::of` 方法等價：
 
     $string = str('Taylor')->append(' Otwell');
 
     // 'Taylor Otwell'
 
-If no argument is provided to the `str` function, the function returns an
-instance of `Illuminate\Support\Str`:
+若沒有提供引數給 `str` 函式，則 `str` 會回傳一個 `Illuminate\Support\Str` 的實體：
 
     $snake = str()->snake('FooBar');
 
@@ -1890,42 +1771,32 @@ instance of `Illuminate\Support\Str`:
 <a name="method-trans"></a>
 #### `trans()` {.collection-method}
 
-The `trans` function translates the given translation key using your
-[localization files](/docs/{{version}}/localization):
+`trans` 函式使用[語系檔](/docs/{{version}}/localization)來翻譯給定的翻譯字串或翻譯索引鍵：
 
     echo trans('messages.welcome');
 
-If the specified translation key does not exist, the `trans` function will
-return the given key. So, using the example above, the `trans` function
-would return `messages.welcome` if the translation key does not exist.
+若指定的翻譯字串或翻譯索引鍵不存在時，`trans` 函式會回傳給定的值。因此，在上述範例中，若 `messages.welcome`
+索引鍵不存在，`trans` 函式會回傳 `messages.welcome`。
 
 <a name="method-trans-choice"></a>
 #### `trans_choice()` {.collection-method}
 
-The `trans_choice` function translates the given translation key with
-inflection:
+`trans_choice` 函式會翻譯有詞形變化的翻譯索引鍵：
 
     echo trans_choice('messages.notifications', $unreadCount);
 
-If the specified translation key does not exist, the `trans_choice` function
-will return the given key. So, using the example above, the `trans_choice`
-function would return `messages.notifications` if the translation key does
-not exist.
+若指定的翻譯字串或翻譯索引鍵不存在時，`trans_choice` 函式會回傳給定的值。因此，在上述範例中，若
+`messages.notifications` 索引鍵不存在，`trans_choice` 函式會回傳 `messages.welcome`。
 
 <a name="fluent-strings"></a>
-## Fluent Strings
+## Fluent 字串
 
-Fluent strings provide a more fluent, object-oriented interface for working
-with string values, allowing you to chain multiple string operations
-together using a more readable syntax compared to traditional string
-operations.
+Fluent 字串提供處理字串值一個更流暢、物件導向的介面。我們可以串接多個字串操作，得到比起傳統字串操作來說更好閱讀的語法：
 
 <a name="method-fluent-str-after"></a>
 #### `after` {.collection-method}
 
-The `after` method returns everything after the given value in a string. The
-entire string will be returned if the value does not exist within the
-string:
+`after` 方法回傳字串中給定值以後的所有內容。若該字串中找不到給定值，會回傳整個字串：
 
     use Illuminate\Support\Str;
 
@@ -1936,9 +1807,7 @@ string:
 <a name="method-fluent-str-after-last"></a>
 #### `afterLast` {.collection-method}
 
-The `afterLast` method returns everything after the last occurrence of the
-given value in a string. The entire string will be returned if the value
-does not exist within the string:
+`afterLast` 方法回傳給定字串後最後一個出現給定值之後的所有內容。若找不到該值，會回傳整個字串：
 
     use Illuminate\Support\Str;
 
@@ -1949,7 +1818,7 @@ does not exist within the string:
 <a name="method-fluent-str-append"></a>
 #### `append` {.collection-method}
 
-The `append` method appends the given values to the string:
+`append` 方法將給定的值加到字串最後面：
 
     use Illuminate\Support\Str;
 
@@ -1960,8 +1829,7 @@ The `append` method appends the given values to the string:
 <a name="method-fluent-str-ascii"></a>
 #### `ascii` {.collection-method}
 
-The `ascii` method will attempt to transliterate the string into an ASCII
-value:
+`ascii` 方法會嘗試將給定字串翻譯為 ASCII 值：
 
     use Illuminate\Support\Str;
 
@@ -1972,8 +1840,7 @@ value:
 <a name="method-fluent-str-basename"></a>
 #### `basename` {.collection-method}
 
-The `basename` method will return the trailing name component of the given
-string:
+`basename` 方法回傳給定字串中最後一個名稱部分：
 
     use Illuminate\Support\Str;
 
@@ -1981,8 +1848,7 @@ string:
 
     // 'baz'
 
-If needed, you may provide an "extension" that will be removed from the
-trailing component:
+若有需要，也可以提供要從最後一個元件中移除的「副檔名」：
 
     use Illuminate\Support\Str;
 
@@ -1993,7 +1859,7 @@ trailing component:
 <a name="method-fluent-str-before"></a>
 #### `before` {.collection-method}
 
-The `before` method returns everything before the given value in a string:
+`before` 回傳字串在遇到給定值前的所有內容：
 
     use Illuminate\Support\Str;
 
@@ -2004,8 +1870,7 @@ The `before` method returns everything before the given value in a string:
 <a name="method-fluent-str-before-last"></a>
 #### `beforeLast` {.collection-method}
 
-The `beforeLast` method returns everything before the last occurrence of the
-given value in a string:
+`beforeLast` 方法回傳字串中最後一次出現給定值以前的所有內容：
 
     use Illuminate\Support\Str;
 
@@ -2016,7 +1881,7 @@ given value in a string:
 <a name="method-fluent-str-between"></a>
 #### `between` {.collection-method}
 
-The `between` method returns the portion of a string between two values:
+`between` 方法回傳介於兩個值之間的字串：
 
     use Illuminate\Support\Str;
 
@@ -2027,7 +1892,7 @@ The `between` method returns the portion of a string between two values:
 <a name="method-fluent-str-camel"></a>
 #### `camel` {.collection-method}
 
-The `camel` method converts the given string to `camelCase`:
+`camel` 方法將給定字串轉為 `camelCase` —— 駝峰命名法的大小寫：
 
     use Illuminate\Support\Str;
 
@@ -2038,8 +1903,7 @@ The `camel` method converts the given string to `camelCase`:
 <a name="method-fluent-str-contains"></a>
 #### `contains` {.collection-method}
 
-The `contains` method determines if the given string contains the given
-value. This method is case sensitive:
+`contains` 方法判斷給定字串是否包含給定值。該方法區分大小寫：
 
     use Illuminate\Support\Str;
 
@@ -2047,8 +1911,7 @@ value. This method is case sensitive:
 
     // true
 
-You may also pass an array of values to determine if the given string
-contains any of the values in the array:
+也可以傳入一組要判斷的陣列值，來判斷給定字串中是否有包含該陣列中任何一個值：
 
     use Illuminate\Support\Str;
 
@@ -2059,8 +1922,7 @@ contains any of the values in the array:
 <a name="method-fluent-str-contains-all"></a>
 #### `containsAll` {.collection-method}
 
-The `containsAll` method determines if the given string contains all of the
-values in the given array:
+`containsAll` 判斷給定字串是否有包含給定陣列中的所有值：
 
     use Illuminate\Support\Str;
 
@@ -2071,8 +1933,7 @@ values in the given array:
 <a name="method-fluent-str-dirname"></a>
 #### `dirname` {.collection-method}
 
-The `dirname` method returns the parent directory portion of the given
-string:
+`dirname` 方法回傳給定字串中上層目錄的部分：
 
     use Illuminate\Support\Str;
 
@@ -2080,8 +1941,7 @@ string:
 
     // '/foo/bar'
 
-If necessary, you may specify how many directory levels you wish to trim
-from the string:
+若有需要，也可以指定要去的多少層以上的目錄：
 
     use Illuminate\Support\Str;
 
@@ -2092,8 +1952,7 @@ from the string:
 <a name="method-fluent-str-ends-with"></a>
 #### `endsWith` {.collection-method}
 
-The `endsWith` method determines if the given string ends with the given
-value:
+`endsWith` 方法可判斷給定字串是否以給定值結尾：
 
     use Illuminate\Support\Str;
 
@@ -2101,8 +1960,7 @@ value:
 
     // true
 
-You may also pass an array of values to determine if the given string ends
-with any of the values in the array:
+也可以傳入一組陣列值來判斷給定字串的結尾是否符合該陣列內的其中一項：
 
     use Illuminate\Support\Str;
 
@@ -2117,8 +1975,7 @@ with any of the values in the array:
 <a name="method-fluent-str-exactly"></a>
 #### `exactly` {.collection-method}
 
-The `exactly` method determines if the given string is an exact match with
-another string:
+`exactly` 方法判斷給定字串是否完全符合另一個字串：
 
     use Illuminate\Support\Str;
 
@@ -2129,8 +1986,7 @@ another string:
 <a name="method-fluent-str-explode"></a>
 #### `explode` {.collection-method}
 
-The `explode` method splits the string by the given delimiter and returns a
-collection containing each section of the split string:
+`explode` 方法以給定的分隔符號來拆分字串，並回傳一個包含分割後所有段落的 Collection：
 
     use Illuminate\Support\Str;
 
@@ -2141,8 +1997,7 @@ collection containing each section of the split string:
 <a name="method-fluent-str-finish"></a>
 #### `finish` {.collection-method}
 
-The `finish` method adds a single instance of the given value to a string if
-it does not already end with that value:
+`finish` 方法會在給定字串不是以給定值結尾時，在該字串後方加上這個值：
 
     use Illuminate\Support\Str;
 
@@ -2157,8 +2012,7 @@ it does not already end with that value:
 <a name="method-fluent-str-is"></a>
 #### `is` {.collection-method}
 
-The `is` method determines if a given string matches a given
-pattern. Asterisks may be used as wildcard values
+`is` 判斷給定字串是否符合給定的格式。可使用星號作為萬用字元：
 
     use Illuminate\Support\Str;
 
@@ -2173,7 +2027,7 @@ pattern. Asterisks may be used as wildcard values
 <a name="method-fluent-str-is-ascii"></a>
 #### `isAscii` {.collection-method}
 
-The `isAscii` method determines if a given string is an ASCII string:
+`isAscii` 方法判斷給定字串是否為 ASCII 字串：
 
     use Illuminate\Support\Str;
 
@@ -2188,7 +2042,7 @@ The `isAscii` method determines if a given string is an ASCII string:
 <a name="method-fluent-str-is-empty"></a>
 #### `isEmpty` {.collection-method}
 
-The `isEmpty` method determines if the given string is empty:
+`isEmpty` 方法判斷給定字串是否為空：
 
     use Illuminate\Support\Str;
 
@@ -2203,7 +2057,7 @@ The `isEmpty` method determines if the given string is empty:
 <a name="method-fluent-str-is-not-empty"></a>
 #### `isNotEmpty` {.collection-method}
 
-The `isNotEmpty` method determines if the given string is not empty:
+`isNotEmpty` 方法判斷給定字串是否不為空：
 
 
     use Illuminate\Support\Str;
@@ -2219,7 +2073,7 @@ The `isNotEmpty` method determines if the given string is not empty:
 <a name="method-fluent-str-is-uuid"></a>
 #### `isUuid` {.collection-method}
 
-The `isUuid` method determines if a given string is a UUID:
+`isUuid` 方法判斷給定字串是否為有效的 UUID：
 
     use Illuminate\Support\Str;
 
@@ -2234,7 +2088,7 @@ The `isUuid` method determines if a given string is a UUID:
 <a name="method-fluent-str-kebab"></a>
 #### `kebab` {.collection-method}
 
-The `kebab` method converts the given string to `kebab-case`:
+`kebab` 方法將給定字串轉換為 `kebab-case` —— Kebab 命名法的大小寫：
 
     use Illuminate\Support\Str;
 
@@ -2245,7 +2099,7 @@ The `kebab` method converts the given string to `kebab-case`:
 <a name="method-fluent-str-length"></a>
 #### `length` {.collection-method}
 
-The `length` method returns the length of the given string:
+`length` 方法回傳給定字串的長度：
 
     use Illuminate\Support\Str;
 
@@ -2256,7 +2110,7 @@ The `length` method returns the length of the given string:
 <a name="method-fluent-str-limit"></a>
 #### `limit` {.collection-method}
 
-The `limit` method truncates the given string to the specified length:
+`limit` 方法將給定字串截斷成指定長度：
 
     use Illuminate\Support\Str;
 
@@ -2264,8 +2118,7 @@ The `limit` method truncates the given string to the specified length:
 
     // The quick brown fox...
 
-You may also pass a second argument to change the string that will be
-appended to the end of the truncated string:
+也可以傳入第二個引數，以更改當字串被截斷時要加在最後方的內容：
 
     use Illuminate\Support\Str;
 
@@ -2276,7 +2129,7 @@ appended to the end of the truncated string:
 <a name="method-fluent-str-lower"></a>
 #### `lower` {.collection-method}
 
-The `lower` method converts the given string to lowercase:
+`lower` 方法將給定字串轉為小寫：
 
     use Illuminate\Support\Str;
 
@@ -2287,7 +2140,7 @@ The `lower` method converts the given string to lowercase:
 <a name="method-fluent-str-ltrim"></a>
 #### `ltrim` {.collection-method}
 
-The `ltrim` method trims the left side of the string:
+`ltrim` 方法修剪字串左邊的值：
 
     use Illuminate\Support\Str;
 
@@ -2302,7 +2155,7 @@ The `ltrim` method trims the left side of the string:
 <a name="method-fluent-str-markdown"></a>
 #### `markdown` {.collection-method}
 
-The `markdown` method converts GitHub flavored Markdown into HTML:
+`markdown` 方法可將 GitHub Flavored Markdown 轉位為 HTML：
 
     use Illuminate\Support\Str;
 
@@ -2319,9 +2172,7 @@ The `markdown` method converts GitHub flavored Markdown into HTML:
 <a name="method-fluent-str-mask"></a>
 #### `mask` {.collection-method}
 
-The `mask` method masks a portion of a string with a repeated character, and
-may be used to obfuscate segments of strings such as email addresses and
-phone numbers:
+`mask` 方法將字串中的一部分轉為重複字元，可用來為 E-Mail 位址或電話號碼⋯⋯等字串^[打碼](Obfuscate)：
 
     use Illuminate\Support\Str;
 
@@ -2329,9 +2180,7 @@ phone numbers:
 
     // tay***************
 
-If needed, you provide a negative number as the third argument to the `mask`
-method, which will instruct the method to begin masking at the given
-distance from the end of the string:
+若有需要，`mask` 方法的第三個引數可提供負數，這樣 `mask` 就會從字串結尾起給定的長度開始打碼：
 
     $string = Str::of('taylor@example.com')->mask('*', -15, 3);
 
@@ -2340,8 +2189,7 @@ distance from the end of the string:
 <a name="method-fluent-str-match"></a>
 #### `match` {.collection-method}
 
-The `match` method will return the portion of a string that matches a given
-regular expression pattern:
+`match` 方法回傳字串中符合給定正規表示式格式的部分：
 
     use Illuminate\Support\Str;
 
@@ -2356,8 +2204,7 @@ regular expression pattern:
 <a name="method-fluent-str-match-all"></a>
 #### `matchAll` {.collection-method}
 
-The `matchAll` method will return a collection containing the portions of a
-string that match a given regular expression pattern:
+`matchAll` 方法回傳一組 Collection，其中包含字串中所有符合給定正規表示式格式的部分：
 
     use Illuminate\Support\Str;
 
@@ -2365,8 +2212,7 @@ string that match a given regular expression pattern:
 
     // collect(['bar', 'bar'])
 
-If you specify a matching group within the expression, Laravel will return a
-collection of that group's matches:
+也可以在正規式中指定^[分組](Matching Group)，Laravel 會回傳一個包含這些分組的 Collection：
 
     use Illuminate\Support\Str;
 
@@ -2374,14 +2220,12 @@ collection of that group's matches:
 
     // collect(['un', 'ly']);
 
-If no matches are found, an empty collection will be returned.
+若未找到相符合的內容，會回傳空 Collection。
 
 <a name="method-fluent-str-padboth"></a>
 #### `padBoth` {.collection-method}
 
-The `padBoth` method wraps PHP's `str_pad` function, padding both sides of a
-string with another string until the final string reaches the desired
-length:
+`padBoth` 方法包裝了 PHP 的 `str_path` 方法，會填充字串的兩端，直到字串符合預期的長度：
 
     use Illuminate\Support\Str;
 
@@ -2396,9 +2240,7 @@ length:
 <a name="method-fluent-str-padleft"></a>
 #### `padLeft` {.collection-method}
 
-The `padLeft` method wraps PHP's `str_pad` function, padding the left side
-of a string with another string until the final string reaches the desired
-length:
+`padLeft` 包裝了 PHP 的 `str_pad` 方法，會使用另一個字串填充給定字串的左邊，直到符合預期的長度：
 
     use Illuminate\Support\Str;
 
@@ -2413,9 +2255,7 @@ length:
 <a name="method-fluent-str-padright"></a>
 #### `padRight` {.collection-method}
 
-The `padRight` method wraps PHP's `str_pad` function, padding the right side
-of a string with another string until the final string reaches the desired
-length:
+`padRight` 包裝了 PHP 的 `str_pad` 方法，會使用另一個字串填充給定字串的右邊，直到符合預期的長度：
 
     use Illuminate\Support\Str;
 
@@ -2430,8 +2270,7 @@ length:
 <a name="method-fluent-str-pipe"></a>
 #### `pipe` {.collection-method}
 
-The `pipe` method allows you to transform the string by passing its current
-value to the given callable:
+`pipe` 方法會講目前字串傳入給定的閉包內，來讓我們變換字串：
 
     use Illuminate\Support\Str;
 
@@ -2448,8 +2287,7 @@ value to the given callable:
 <a name="method-fluent-str-plural"></a>
 #### `plural` {.collection-method}
 
-The `plural` method converts a singular word string to its plural form. This
-function currently only supports the English language:
+`plural` 方法將單數單詞轉換為其複數型。該函式目前只支援英文：
 
     use Illuminate\Support\Str;
 
@@ -2461,8 +2299,7 @@ function currently only supports the English language:
 
     // children
 
-You may provide an integer as a second argument to the function to retrieve
-the singular or plural form of the string:
+也可以提供一個整數作為該方法的第二個引數，用來判斷要取得該字串的單數或複數型：
 
     use Illuminate\Support\Str;
 
@@ -2477,7 +2314,7 @@ the singular or plural form of the string:
 <a name="method-fluent-str-prepend"></a>
 #### `prepend` {.collection-method}
 
-The `prepend` method prepends the given values onto the string:
+`prepend` 方法將給定的值加到字串最後面：
 
     use Illuminate\Support\Str;
 
@@ -2488,8 +2325,7 @@ The `prepend` method prepends the given values onto the string:
 <a name="method-fluent-str-remove"></a>
 #### `remove` {.collection-method}
 
-The `remove` method removes the given value or array of values from the
-string:
+`remove` 方法從字串中移除給定的一個或多個值：
 
     use Illuminate\Support\Str;
 
@@ -2497,13 +2333,12 @@ string:
 
     // Arkansas is beautiful!
 
-You may also pass `false` as a second parameter to ignore case when removing
-strings.
+也可以傳入 `false` 作為第二個引數，來在移除字串時忽略大小寫差異：
 
 <a name="method-fluent-str-replace"></a>
 #### `replace` {.collection-method}
 
-The `replace` method replaces a given string within the string:
+`replace` 方法在字串中取代給定字串：
 
     use Illuminate\Support\Str;
 
@@ -2514,8 +2349,7 @@ The `replace` method replaces a given string within the string:
 <a name="method-fluent-str-replace-array"></a>
 #### `replaceArray` {.collection-method}
 
-The `replaceArray` method replaces a given value in the string sequentially
-using an array:
+`replaceArray` 函式使用陣列來依序在陣列中取代給定的值：
 
     use Illuminate\Support\Str;
 
@@ -2528,8 +2362,7 @@ using an array:
 <a name="method-fluent-str-replace-first"></a>
 #### `replaceFirst` {.collection-method}
 
-The `replaceFirst` method replaces the first occurrence of a given value in
-a string:
+`replaceFirst` 方法取代字串中第一次出現的給定值：
 
     use Illuminate\Support\Str;
 
@@ -2540,8 +2373,7 @@ a string:
 <a name="method-fluent-str-replace-last"></a>
 #### `replaceLast` {.collection-method}
 
-The `replaceLast` method replaces the last occurrence of a given value in a
-string:
+`replaceLast` 方法取代字串中最後一次出現的給定值：
 
     use Illuminate\Support\Str;
 
@@ -2552,8 +2384,7 @@ string:
 <a name="method-fluent-str-replace-matches"></a>
 #### `replaceMatches` {.collection-method}
 
-The `replaceMatches` method replaces all portions of a string matching a
-pattern with the given replacement string:
+`replaceMatches` 方法使用給定取代字串來取代字串中所有符合格式的部分：
 
     use Illuminate\Support\Str;
 
@@ -2561,10 +2392,8 @@ pattern with the given replacement string:
 
     // '15015551000'
 
-The `replaceMatches` method also accepts a closure that will be invoked with
-each portion of the string matching the given pattern, allowing you to
-perform the replacement logic within the closure and return the replaced
-value:
+`replaceMatches`
+也接受一個閉包，每當有符合格式的部分時，就會將符合的部分傳給該閉包，讓我們能在閉包內處理取代邏輯，並在閉包內回傳要取代的值：
 
     use Illuminate\Support\Str;
 
@@ -2577,7 +2406,7 @@ value:
 <a name="method-fluent-str-rtrim"></a>
 #### `rtrim` {.collection-method}
 
-The `rtrim` method trims the right side of the given string:
+`rtrim` 方法修剪字串右邊的值：
 
     use Illuminate\Support\Str;
 
@@ -2592,9 +2421,8 @@ The `rtrim` method trims the right side of the given string:
 <a name="method-fluent-str-scan"></a>
 #### `scan` {.collection-method}
 
-The `scan` method parses input from a string into a collection according to
-a format supported by the [`sscanf` PHP
-function](https://www.php.net/manual/en/function.sscanf.php):
+`scan` 方法依照給定的格式來講輸入字串解析為 Collection。給定的格式為 [`sscanf` PHP
+函式](https://www.php.net/manual/en/function.sscanf.php)所支援的：
 
     use Illuminate\Support\Str;
 
@@ -2605,8 +2433,7 @@ function](https://www.php.net/manual/en/function.sscanf.php):
 <a name="method-fluent-str-singular"></a>
 #### `singular` {.collection-method}
 
-The `singular` method converts a string to its singular form. This function
-currently only supports the English language:
+`singular` 方法將複數單詞轉換為其單數型。該函式目前只支援英文：
 
     use Illuminate\Support\Str;
 
@@ -2621,7 +2448,7 @@ currently only supports the English language:
 <a name="method-fluent-str-slug"></a>
 #### `slug` {.collection-method}
 
-The `slug` method generates a URL friendly "slug" from the given string:
+`slug` 方法以給定字串產生適合在 URL 中使用的「Slug」格式：
 
     use Illuminate\Support\Str;
 
@@ -2632,7 +2459,7 @@ The `slug` method generates a URL friendly "slug" from the given string:
 <a name="method-fluent-str-snake"></a>
 #### `snake` {.collection-method}
 
-The `snake` method converts the given string to `snake_case`:
+`snake` 方法將給定字串轉為 `snake_case` —— 蛇型命名法的大小寫：
 
     use Illuminate\Support\Str;
 
@@ -2643,8 +2470,7 @@ The `snake` method converts the given string to `snake_case`:
 <a name="method-fluent-str-split"></a>
 #### `split` {.collection-method}
 
-The `split` method splits a string into a collection using a regular
-expression:
+`split` 方法使用正規表示式來將字串拆分為 Collection：
 
     use Illuminate\Support\Str;
 
@@ -2655,8 +2481,7 @@ expression:
 <a name="method-fluent-str-start"></a>
 #### `start` {.collection-method}
 
-The `start` method adds a single instance of the given value to a string if
-it does not already start with that value:
+`start` 方法會在給定字串不是以給定值起始時，在該字串前方加上這個值：
 
     use Illuminate\Support\Str;
 
@@ -2671,8 +2496,7 @@ it does not already start with that value:
 <a name="method-fluent-str-starts-with"></a>
 #### `startsWith` {.collection-method}
 
-The `startsWith` method determines if the given string begins with the given
-value:
+startsWith` 方法可判斷給定字串是否以給定值起始：
 
     use Illuminate\Support\Str;
 
@@ -2683,7 +2507,7 @@ value:
 <a name="method-fluent-str-studly"></a>
 #### `studly` {.collection-method}
 
-The `studly` method converts the given string to `StudlyCase`:
+`studly` 方法將給定字串轉為 `StudlyCase` —— Studly 命名法的大小寫：
 
     use Illuminate\Support\Str;
 
@@ -2694,8 +2518,7 @@ The `studly` method converts the given string to `StudlyCase`:
 <a name="method-fluent-str-substr"></a>
 #### `substr` {.collection-method}
 
-The `substr` method returns the portion of the string specified by the given
-start and length parameters:
+`substr` 方法回傳字串中指定的起始位置開始指定長度的字串：
 
     use Illuminate\Support\Str;
 
@@ -2710,11 +2533,8 @@ start and length parameters:
 <a name="method-fluent-str-substrreplace"></a>
 #### `substrReplace` {.collection-method}
 
-The `substrReplace` method replaces text within a portion of a string,
-starting at the position specified by the third argument and replacing the
-number of characters specified by the fourth argument. Passing `0` to the
-method's fourth argument will insert the string at the specified position
-without replacing any of the existing characters in the string:
+`substrReplace` 方法在字串中取代其中一段文字，第二個引數指定起始位置，並以第三個引數來指定要取代的字元數。若第三個引數傳入
+`0`，則會在指定位置插入字串，而不取代字串中現有的字元：
 
     use Illuminate\Support\Str;
 
@@ -2729,8 +2549,7 @@ without replacing any of the existing characters in the string:
 <a name="method-fluent-str-swap"></a>
 #### `swap` {.collection-method}
 
-The `swap` method replaces multiple values in the string using PHP's `strtr`
-function:
+`swap` 方法使用 PHP 的 `strtr` 函式來取代給定字串中的多個值：
 
     use Illuminate\Support\Str;
 
@@ -2745,10 +2564,7 @@ function:
 <a name="method-fluent-str-tap"></a>
 #### `tap` {.collection-method}
 
-The `tap` method passes the string to the given closure, allowing you to
-examine and interact with the string while not affecting the string
-itself. The original string is returned by the `tap` method regardless of
-what is returned by the closure:
+`tap` 方法將目前字串傳入給定的閉包內，讓我們可以在不影響目前字串的情況下檢視與處理該字串。無論該閉包回傳什麼，`tap` 都會回傳原始字串：
 
     use Illuminate\Support\Str;
 
@@ -2764,8 +2580,7 @@ what is returned by the closure:
 <a name="method-fluent-str-test"></a>
 #### `test` {.collection-method}
 
-The `test` method determines if a string matches the given regular
-expression pattern:
+`test` 方法判斷目前字串是否符合給定的正規表示式：
 
     use Illuminate\Support\Str;
 
@@ -2776,7 +2591,7 @@ expression pattern:
 <a name="method-fluent-str-title"></a>
 #### `title` {.collection-method}
 
-The `title` method converts the given string to `Title Case`:
+`title` 方法將給定字串轉為 `Title Case` —— 標題用的大小寫：
 
     use Illuminate\Support\Str;
 
@@ -2787,7 +2602,7 @@ The `title` method converts the given string to `Title Case`:
 <a name="method-fluent-str-trim"></a>
 #### `trim` {.collection-method}
 
-The `trim` method trims the given string:
+`trim` 方法修剪字串值：
 
     use Illuminate\Support\Str;
 
@@ -2802,8 +2617,7 @@ The `trim` method trims the given string:
 <a name="method-fluent-str-ucfirst"></a>
 #### `ucfirst` {.collection-method}
 
-The `ucfirst` method returns the given string with the first character
-capitalized:
+`ucfirst` 方法回傳給定字串第一個字元轉為大寫後的字串：
 
     use Illuminate\Support\Str;
 
@@ -2814,7 +2628,7 @@ capitalized:
 <a name="method-fluent-str-upper"></a>
 #### `upper` {.collection-method}
 
-The `upper` method converts the given string to uppercase:
+`upper` 方法將給定字串轉換為大寫：
 
     use Illuminate\Support\Str;
 
@@ -2825,8 +2639,7 @@ The `upper` method converts the given string to uppercase:
 <a name="method-fluent-str-when"></a>
 #### `when` {.collection-method}
 
-The `when` method invokes the given closure if a given condition is
-`true`. The closure will receive the fluent string instance:
+`when` 方法會在給定條件為 `true` 時叫用給定閉包。該閉包會收到 Fluent 字串實體：
 
     use Illuminate\Support\Str;
 
@@ -2837,15 +2650,12 @@ The `when` method invokes the given closure if a given condition is
 
     // 'Taylor Otwell'
 
-If necessary, you may pass another closure as the third parameter to the
-`when` method. This closure will execute if the condition parameter
-evaluates to `false`.
+若有需要，也可以傳入另一個閉包作為第三個引數給 `when` 方法。第三個引數上的閉包會在條件參數為 `false` 時被執行。
 
 <a name="method-fluent-str-when-contains"></a>
 #### `whenContains` {.collection-method}
 
-The `whenContains` method invokes the given closure if the string contains
-the given value. The closure will receive the fluent string instance:
+`whenContains` 方法會在字串包含給定值時叫用給定的閉包。該閉包會收到 Fluent 字串實體：
 
     use Illuminate\Support\Str;
 
@@ -2856,12 +2666,9 @@ the given value. The closure will receive the fluent string instance:
 
     // 'Tony Stark'
 
-If necessary, you may pass another closure as the third parameter to the
-`when` method. This closure will execute if the string does not contain the
-given value.
+若有需要，也可以傳入另一個閉包作為第三個引數給 `whenContains` 方法。當字串內未包含給定值時會執行第三個引數上的閉包。
 
-You may also pass an array of values to determine if the given string
-contains any of the values in the array:
+也可以傳入一組要判斷的陣列值，來判斷給定字串中是否有包含該陣列中任何一個值：
 
     use Illuminate\Support\Str;
 
@@ -2875,9 +2682,7 @@ contains any of the values in the array:
 <a name="method-fluent-str-when-contains-all"></a>
 #### `whenContainsAll` {.collection-method}
 
-The `whenContainsAll` method invokes the given closure if the string
-contains all of the given sub-strings. The closure will receive the fluent
-string instance:
+`whenContainsAll` 方法會在字串包含所有給定的子字串時叫用給定的閉包。該閉包會收到 Fluent 字串實體：
 
     use Illuminate\Support\Str;
 
@@ -2888,17 +2693,13 @@ string instance:
 
     // 'Tony Stark'
 
-If necessary, you may pass another closure as the third parameter to the
-`when` method. This closure will execute if the condition parameter
-evaluates to `false`.
+若有需要，也可以傳入另一個閉包作為第三個引數給 `when` 方法。第三個引數上的閉包會在條件參數為 `false` 時被執行。
 
 <a name="method-fluent-str-when-empty"></a>
 #### `whenEmpty` {.collection-method}
 
-The `whenEmpty` method invokes the given closure if the string is empty. If
-the closure returns a value, that value will also be returned by the
-`whenEmpty` method. If the closure does not return a value, the fluent
-string instance will be returned:
+`whenEmpty` 方法會在目前字串為空時叫用給定的閉包。若該閉包有回傳值，則 `whenEmpty` 方法會回傳這個值。若該閉包無回傳值，則會回傳
+Fluent 字串實體：
 
     use Illuminate\Support\Str;
 
@@ -2911,10 +2712,8 @@ string instance will be returned:
 <a name="method-fluent-str-when-not-empty"></a>
 #### `whenNotEmpty` {.collection-method}
 
-The `whenNotEmpty` method invokes the given closure if the string is not
-empty. If the closure returns a value, that value will also be returned by
-the `whenNotEmpty` method. If the closure does not return a value, the
-fluent string instance will be returned:
+`whenNotEmpty` 方法會在目前字串不為空時叫用給定的閉包。若該閉包有回傳值，則 `whenNotEmpty`
+方法會回傳這個值。若該閉包無回傳值，則會回傳 Fluent 字串實體：
 
     use Illuminate\Support\Str;
 
@@ -2927,9 +2726,7 @@ fluent string instance will be returned:
 <a name="method-fluent-str-when-starts-with"></a>
 #### `whenStartsWith` {.collection-method}
 
-The `whenStartsWith` method invokes the given closure if the string starts
-with the given sub-string. The closure will receive the fluent string
-instance:
+`whenStartsWith` 方法會在字串以給定子字串開頭時叫用給定的閉包。該閉包會收到 Fluent 字串實體：
 
     use Illuminate\Support\Str;
 
@@ -2942,8 +2739,7 @@ instance:
 <a name="method-fluent-str-when-ends-with"></a>
 #### `whenEndsWith` {.collection-method}
 
-The `whenEndsWith` method invokes the given closure if the string ends with
-the given sub-string. The closure will receive the fluent string instance:
+`whenEndsWith` 方法會在字串以給定子字串結尾時叫用給定的閉包。該閉包會收到 Fluent 字串實體：
 
     use Illuminate\Support\Str;
 
@@ -2956,9 +2752,7 @@ the given sub-string. The closure will receive the fluent string instance:
 <a name="method-fluent-str-when-exactly"></a>
 #### `whenExactly` {.collection-method}
 
-The `whenExactly` method invokes the given closure if the string exactly
-matches the given string. The closure will receive the fluent string
-instance:
+`whenExactly` 方法會在目前字串符合給定字串時叫用給定的閉包。該閉包會收到 Fluent 字串實體：
 
     use Illuminate\Support\Str;
 
@@ -2971,9 +2765,7 @@ instance:
 <a name="method-fluent-str-when-is"></a>
 #### `whenIs` {.collection-method}
 
-The `whenIs` method invokes the given closure if the string matches a given
-pattern. Asterisks may be used as wildcard values. The closure will receive
-the fluent string instance:
+`whenIs` 方法會在目前字串符合給定格式時叫用給定的閉包。可使用星號作為萬用字元。該閉包會收到 Fluent 字串實體：
 
     use Illuminate\Support\Str;
 
@@ -2986,8 +2778,7 @@ the fluent string instance:
 <a name="method-fluent-str-when-is-ascii"></a>
 #### `whenIsAscii` {.collection-method}
 
-The `whenIsAscii` method invokes the given closure if the string is 7 bit
-ASCII. The closure will receive the fluent string instance:
+`whenIsAscii` 方法會在目前字串為 7 位元 ASCII 時叫用給定的閉包。該閉包會收到 Fluent 字串實體：
 
     use Illuminate\Support\Str;
 
@@ -3000,8 +2791,7 @@ ASCII. The closure will receive the fluent string instance:
 <a name="method-fluent-str-when-is-uuid"></a>
 #### `whenIsUuid` {.collection-method}
 
-The `whenIsUuid` method invokes the given closure if the string is a valid
-UUID. The closure will receive the fluent string instance:
+`whenIsUuis` 方法會在目前字串為有效 UUID 時叫用給定的閉包。該閉包會收到 Fluent 字串實體：
 
     use Illuminate\Support\Str;
 
@@ -3014,9 +2804,7 @@ UUID. The closure will receive the fluent string instance:
 <a name="method-fluent-str-when-test"></a>
 #### `whenTest` {.collection-method}
 
-The `whenTest` method invokes the given closure if the string matches the
-given regular expression. The closure will receive the fluent string
-instance:
+`whenTest` 方法會在字串符合給定的正規表示式時叫用給定的閉包。該閉包會收到 Fluent 字串實體：
 
     use Illuminate\Support\Str;
 
@@ -3029,7 +2817,7 @@ instance:
 <a name="method-fluent-str-word-count"></a>
 #### `wordCount` {.collection-method}
 
-The `wordCount` method returns the number of words that a string contains:
+`wordCount` 方法回傳該字串中所包含的單詞數：
 
 ```php
 use Illuminate\Support\Str;
@@ -3040,9 +2828,7 @@ Str::of('Hello, world!')->wordCount(); // 2
 <a name="method-fluent-str-words"></a>
 #### `words` {.collection-method}
 
-The `words` method limits the number of words in a string. If necessary, you
-may specify an additional string that will be appended to the truncated
-string:
+`words` 方法可限制字串中的單詞數。若有需要，可以指定一個額外的字串來附加到截斷的字串上：
 
     use Illuminate\Support\Str;
 
@@ -3051,33 +2837,30 @@ string:
     // Perfectly balanced, as >>>
 
 <a name="urls"></a>
-## URLs
+## URL
 
 <a name="method-action"></a>
 #### `action()` {.collection-method}
 
-The `action` function generates a URL for the given controller action:
+`action` 方法可為給定的 Controller 動作產生 URL：
 
     use App\Http\Controllers\HomeController;
 
     $url = action([HomeController::class, 'index']);
 
-If the method accepts route parameters, you may pass them as the second
-argument to the method:
+若該方法接受 Route 參數，請將這些 Route 參數作為第二個引數傳給該方法：
 
     $url = action([UserController::class, 'profile'], ['id' => 1]);
 
 <a name="method-asset"></a>
 #### `asset()` {.collection-method}
 
-The `asset` function generates a URL for an asset using the current scheme
-of the request (HTTP or HTTPS):
+`asset` 方法使用目前 Request 的 Scheme (HTTP 或 HTTPS) 來產生素材 URL：
 
     $url = asset('img/photo.jpg');
 
-You can configure the asset URL host by setting the `ASSET_URL` variable in
-your `.env` file. This can be useful if you host your assets on an external
-service like Amazon S3 or another CDN:
+可以在 `.env` 檔案中設定 `ASSET_URL` 變數來設定素材 URL 的主機名稱。若你將素材放在如 Amazon S3 或其他 CDN
+之類的外部服務上，就很適合這樣設定：
 
     // ASSET_URL=http://example.com/assets
 
@@ -3086,35 +2869,29 @@ service like Amazon S3 or another CDN:
 <a name="method-route"></a>
 #### `route()` {.collection-method}
 
-The `route` function generates a URL for a given [named
-route](/docs/{{version}}/routing#named-routes):
+`route` 函式產生給定[命名 Route](/docs/{{version}}/routing#named-routes) 的 URL：
 
     $url = route('route.name');
 
-If the route accepts parameters, you may pass them as the second argument to
-the function:
+若該 Route 接受參數，請將這些參數作為第二個引數傳給該方法：
 
     $url = route('route.name', ['id' => 1]);
 
-By default, the `route` function generates an absolute URL. If you wish to
-generate a relative URL, you may pass `false` as the third argument to the
-function:
+預設情況下，`route` 函式回傳絕對 URL。若想產生相對 URL，請傳入 `false` 作為第三個引數給該函式：
 
     $url = route('route.name', ['id' => 1], false);
 
 <a name="method-secure-asset"></a>
 #### `secure_asset()` {.collection-method}
 
-The `secure_asset` function generates a URL for an asset using HTTPS:
+`secure_asset` 函式使用 HTTPS 為素材產生 URL：
 
     $url = secure_asset('img/photo.jpg');
 
 <a name="method-secure-url"></a>
 #### `secure_url()` {.collection-method}
 
-The `secure_url` function generates a fully qualified HTTPS URL to the given
-path. Additional URL segments may be passed in the function's second
-argument:
+`secure_url` 函式產生給定路徑上的完整名稱 HTTPS URL。可以傳入額外的 URL 片段給該函式的第二個引數：
 
     $url = secure_url('user/profile');
 
@@ -3123,29 +2900,25 @@ argument:
 <a name="method-to-route"></a>
 #### `to_route()` {.collection-method}
 
-The `to_route` function generates a [redirect HTTP
-response](/docs/{{version}}/responses#redirects) for a given [named
-route](/docs/{{version}}/routing#named-routes):
+`to_route` 函式為給定的[命名 Route](/docs/{{version}}/routing#named-routes)
+產生一個[重新導向的 HTTP Response](/docs/{{version}}/responses#redirects)：
 
     return to_route('users.show', ['user' => 1]);
 
-If necessary, you may pass the HTTP status code that should be assigned to
-the redirect and any additional response headers as the third and fourth
-arguments to the `to_route` method:
+若有需要，也可以傳入一個用於跳轉的 HTTP 狀態碼以及一些額外的回應標頭作為 `to_route` 方法的第三與第四個引數：
 
     return to_route('users.show', ['user' => 1], 302, ['X-Framework' => 'Laravel']);
 
 <a name="method-url"></a>
 #### `url()` {.collection-method}
 
-The `url` function generates a fully qualified URL to the given path:
+`url` 函式可以產生給定路徑上的完整名稱 URL：
 
     $url = url('user/profile');
 
     $url = url('user/profile', [1]);
 
-If no path is provided, an `Illuminate\Routing\UrlGenerator` instance is
-returned:
+若未提供路徑，則會回傳 `Illuminate\Routing\UrlGenerator` 實體：
 
     $current = url()->current();
 
@@ -3154,77 +2927,69 @@ returned:
     $previous = url()->previous();
 
 <a name="miscellaneous"></a>
-## Miscellaneous
+## 其他
 
 <a name="method-abort"></a>
 #### `abort()` {.collection-method}
 
-The `abort` function throws [an HTTP
-exception](/docs/{{version}}/errors#http-exceptions) which will be rendered
-by the [exception handler](/docs/{{version}}/errors#the-exception-handler):
+`abort` 函式會擲回 [HTTP
+Exception](/docs/{{version}}/errors#http-exceptions)。HTTP Exception 會被
+[^[Exception
+Handler](例外處理常式)](/docs/{{version}}/errors#the-exception-handler) 轉譯：
 
     abort(403);
 
-You may also provide the exception's message and custom HTTP response
-headers that should be sent to the browser:
+也可以提供 Exception 訊息與要傳送給瀏覽器的自訂 HTTP Response 標頭：
 
     abort(403, 'Unauthorized.', $headers);
 
 <a name="method-abort-if"></a>
 #### `abort_if()` {.collection-method}
 
-The `abort_if` function throws an HTTP exception if a given boolean
-expression evaluates to `true`:
+`abort_if` 函式會在給定布林運算式取值為 `true` 時擲回一個 HTTP Exception：
 
     abort_if(! Auth::user()->isAdmin(), 403);
 
-Like the `abort` method, you may also provide the exception's response text
-as the third argument and an array of custom response headers as the fourth
-argument to the function.
+與 `abort` 方法類似，我們也可以在第三個引數上提供 Exception 的 Response 文字，並在第四個引數上提供一組自訂
+Response 標頭陣列。
 
 <a name="method-abort-unless"></a>
 #### `abort_unless()` {.collection-method}
 
-The `abort_unless` function throws an HTTP exception if a given boolean
-expression evaluates to `false`:
+`abort_unless` 函式會在給定布林運算式取值為 `false` 時擲回一個 HTTP Exception：
 
     abort_unless(Auth::user()->isAdmin(), 403);
 
-Like the `abort` method, you may also provide the exception's response text
-as the third argument and an array of custom response headers as the fourth
-argument to the function.
+與 `abort` 方法類似，我們也可以在第三個引數上提供 Exception 的 Response 文字，並在第四個引數上提供一組自訂
+Response 標頭陣列。
 
 <a name="method-app"></a>
 #### `app()` {.collection-method}
 
-The `app` function returns the [service
-container](/docs/{{version}}/container) instance:
+`app` 函式回傳 [Service Container](/docs/{{version}}/container) 實體：
 
     $container = app();
 
-You may pass a class or interface name to resolve it from the container:
+也可以傳入一個類別或介面名稱來用 Container 解析：
 
     $api = app('HelpSpot\API');
 
 <a name="method-auth"></a>
 #### `auth()` {.collection-method}
 
-The `auth` function returns an
-[authenticator](/docs/{{version}}/authentication) instance. You may use it
-as an alternative to the `Auth` facade:
+`auth` 函式回傳 [Authenticator](/docs/{{version}}/authentication) 的實體。可以使用
+`auth` 函式來作為 `Auth` Facade 的替代：
 
     $user = auth()->user();
 
-If needed, you may specify which guard instance you would like to access:
+若有需要，可以指定要存取的 Guard 實體：
 
     $user = auth('admin')->user();
 
 <a name="method-back"></a>
 #### `back()` {.collection-method}
 
-The `back` function generates a [redirect HTTP
-response](/docs/{{version}}/responses#redirects) to the user's previous
-location:
+`back` 函式產生一個指向使用者上一個瀏覽位置的[重新導向 HTTP Response]：
 
     return back($status = 302, $headers = [], $fallback = '/');
 
@@ -3233,16 +2998,15 @@ location:
 <a name="method-bcrypt"></a>
 #### `bcrypt()` {.collection-method}
 
-The `bcrypt` function [hashes](/docs/{{version}}/hashing) the given value
-using Bcrypt. You may use this function as an alternative to the `Hash`
-facade:
+`bcrypt` 方法使用 Bcrypt 來[雜湊](/docs/{{version}}/hashing)給定的值。也可以使用這個函式來作為
+`Hash` Facade 的替代：
 
     $password = bcrypt('my-secret-password');
 
 <a name="method-blank"></a>
 #### `blank()` {.collection-method}
 
-The `blank` function determines whether the given value is "blank":
+`blank` 函式判斷給定值是否為「^[空白](Blank)」：
 
     blank('');
     blank('   ');
@@ -3257,13 +3021,13 @@ The `blank` function determines whether the given value is "blank":
 
     // false
 
-For the inverse of `blank`, see the [`filled`](#method-filled) method.
+請參考 [`filled`](#method-filled) 方法以瞭解與 `blank` 相反的方法。
 
 <a name="method-broadcast"></a>
 #### `broadcast()` {.collection-method}
 
-The `broadcast` function [broadcasts](/docs/{{version}}/broadcasting) the
-given [event](/docs/{{version}}/events) to its listeners:
+`broadcast` 函式會[廣播](/docs/{{version}}/broadcasting)給定的
+[Event](/docs/{{version}}/events) 給其 Listener：
 
     broadcast(new UserRegistered($user));
 
@@ -3272,17 +3036,13 @@ given [event](/docs/{{version}}/events) to its listeners:
 <a name="method-cache"></a>
 #### `cache()` {.collection-method}
 
-The `cache` function may be used to get values from the
-[cache](/docs/{{version}}/cache). If the given key does not exist in the
-cache, an optional default value will be returned:
+`cache` 函式可用來從[快取](/docs/{{version}}/cache)中取值。若快取中沒有給定的索引鍵，則會回傳可選的預設值：
 
     $value = cache('key');
 
     $value = cache('key', 'default');
 
-You may add items to the cache by passing an array of key / value pairs to
-the function. You should also pass the number of seconds or duration the
-cached value should be considered valid:
+可以傳入一組索引鍵 / 值配對的陣列給該函式來將項目加入快取中。也請傳入單位為秒的快取值有效期間：
 
     cache(['key' => 'value'], 300);
 
@@ -3291,122 +3051,106 @@ cached value should be considered valid:
 <a name="method-class-uses-recursive"></a>
 #### `class_uses_recursive()` {.collection-method}
 
-The `class_uses_recursive` function returns all traits used by a class,
-including traits used by all of its parent classes:
+`class_uses_recursive` 函式回傳某個類別使用的所有 Trait，包含其所有^[上層](Parent)類別使用的 Trait：
 
     $traits = class_uses_recursive(App\Models\User::class);
 
 <a name="method-collect"></a>
 #### `collect()` {.collection-method}
 
-The `collect` function creates a [collection](/docs/{{version}}/collections)
-instance from the given value:
+`collect` 函式使用給定值來建立一個 [Collection](/docs/{{version}}/collections) 實體：
 
     $collection = collect(['taylor', 'abigail']);
 
 <a name="method-config"></a>
 #### `config()` {.collection-method}
 
-The `config` function gets the value of a
-[configuration](/docs/{{version}}/configuration) variable. The configuration
-values may be accessed using "dot" syntax, which includes the name of the
-file and the option you wish to access. A default value may be specified and
-is returned if the configuration option does not exist:
+`config` 函式可取得[組態設定](/docs/{{version}}/configuration)變數中的值。組態設定值可以通過「點
+(.)」語法來存取，即包含設定檔名稱與欲存取的選項名。也可以指定設定選項不存在時要回傳的預設值：
 
     $value = config('app.timezone');
 
     $value = config('app.timezone', $default);
 
-You may set configuration variables at runtime by passing an array of key /
-value pairs. However, note that this function only affects the configuration
-value for the current request and does not update your actual configuration
-values:
+也可以在執行階段傳入一組索引鍵 / 值配對的陣列來設定組態設定值。不過，請注意，該函式只會影響目前 Request 的設定值，並不會實際更新組態設定：
 
     config(['app.debug' => true]);
 
 <a name="method-cookie"></a>
 #### `cookie()` {.collection-method}
 
-The `cookie` function creates a new
-[cookie](/docs/{{version}}/requests#cookies) instance:
+`cookie` 函式建立一個新的 [Cookie](/docs/{{version}}/requests#cookies) 實體：
 
     $cookie = cookie('name', 'value', $minutes);
 
 <a name="method-csrf-field"></a>
 #### `csrf_field()` {.collection-method}
 
-The `csrf_field` function generates an HTML `hidden` input field containing
-the value of the CSRF token. For example, using [Blade
-syntax](/docs/{{version}}/blade):
+`csrf_field` 函式產生一個包含 CSRF Token 的 HTML `hidden` 輸入欄位。舉例來說，在 [Blade
+語法](/docs/{{version}}/blade)中可這樣使用：
 
     {{ csrf_field() }}
 
 <a name="method-csrf-token"></a>
 #### `csrf_token()` {.collection-method}
 
-The `csrf_token` function retrieves the value of the current CSRF token:
+`csrf_token` 函式可取得目前 CSRF Token 的值：
 
     $token = csrf_token();
 
 <a name="method-dd"></a>
 #### `dd()` {.collection-method}
 
-The `dd` function dumps the given variables and ends execution of the
-script:
+`dd` 函式可傾印給定變數，並結束目前的指令碼執行：
 
     dd($value);
 
     dd($value1, $value2, $value3, ...);
 
-If you do not want to halt the execution of your script, use the
-[`dump`](#method-dump) function instead.
+若不想結束目前的指令碼執行，請改為使用 [`dump`](#method-dump) 方法。
 
 <a name="method-dispatch"></a>
 #### `dispatch()` {.collection-method}
 
-The `dispatch` function pushes the given
-[job](/docs/{{version}}/queues#creating-jobs) onto the Laravel [job
-queue](/docs/{{version}}/queues):
+`dispatch` 方法將給定 [Job](/docs/{{version}}/queues#creating-jobs) 推入 Laravel 的
+[Job 佇列](/docs/{{version}}/queues) 中：
 
     dispatch(new App\Jobs\SendEmails);
 
 <a name="method-dump"></a>
 #### `dump()` {.collection-method}
 
-The `dump` function dumps the given variables:
+`dump` 函式傾印給定的變數：
 
     dump($value);
 
     dump($value1, $value2, $value3, ...);
 
-If you want to stop executing the script after dumping the variables, use
-the [`dd`](#method-dd) function instead.
+若想在傾印變數後停止執行指令碼，請使用 [`dd`](#method-dd) 函式來代替。
 
 <a name="method-env"></a>
 #### `env()` {.collection-method}
 
-The `env` function retrieves the value of an [environment
-variable](/docs/{{version}}/configuration#environment-configuration) or
-returns a default value:
+`env`
+函式可取得[環境變數](/docs/{{version}}/configuration#environment-configuration)的值，或是回傳預設值：
 
     $env = env('APP_ENV');
 
     $env = env('APP_ENV', 'production');
 
-> {note} If you execute the `config:cache` command during your deployment process, you should be sure that you are only calling the `env` function from within your configuration files. Once the configuration has been cached, the `.env` file will not be loaded and all calls to the `env` function will return `null`.
+> {note} 若在部署流程中執行了 `config:cache` 指令，應確保只有在組態設定檔中呼叫 `env` 函式。設定檔被快取後，就不會再載入 `.env` 檔了。所有 `env` 函式查詢 `.env` 變數的呼叫都會回傳 `null`。
 
 <a name="method-event"></a>
 #### `event()` {.collection-method}
 
-The `event` function dispatches the given [event](/docs/{{version}}/events)
-to its listeners:
+`event` 函式將給定 [Event](/docs/{{version}}/events) ^[分派](Dispatch)給其 Listener：
 
     event(new UserRegistered($user));
 
 <a name="method-filled"></a>
 #### `filled()` {.collection-method}
 
-The `filled` function determines whether the given value is not "blank":
+`filled` 函式判斷給定值是否不為「^[空白](Blank)」：
 
     filled(0);
     filled(true);
@@ -3421,43 +3165,39 @@ The `filled` function determines whether the given value is not "blank":
 
     // false
 
-For the inverse of `filled`, see the [`blank`](#method-blank) method.
+請參考 [blank](#method-blank) 方法以瞭解與 `filled` 相反的方法。
 
 <a name="method-info"></a>
 #### `info()` {.collection-method}
 
-The `info` function will write information to your application's
-[log](/docs/{{version}}/logging):
+`info` 函式寫入 info 等級的資訊至程式的 [日誌](/docs/{{version}}/logging) 中：
 
     info('Some helpful information!');
 
-An array of contextual data may also be passed to the function:
+也可以傳入一組包含上下文資料的陣列給該函式：
 
     info('User login attempt failed.', ['id' => $user->id]);
 
 <a name="method-logger"></a>
 #### `logger()` {.collection-method}
 
-The `logger` function can be used to write a `debug` level message to the
-[log](/docs/{{version}}/logging):
+`logger` 函式可用來寫入 `debug` 等級的訊息至[日誌](/docs/{{version}}/logging)中：
 
     logger('Debug message');
 
-An array of contextual data may also be passed to the function:
+也可以傳入一組包含上下文資料的陣列給該函式：
 
     logger('User has logged in.', ['id' => $user->id]);
 
-A [logger](/docs/{{version}}/errors#logging) instance will be returned if no
-value is passed to the function:
+若未傳入任何值給該方法，則會回傳 [Logger](/docs/{{version}}/errors#logging) 實體：
 
     logger()->error('You are not allowed here.');
 
 <a name="method-method-field"></a>
 #### `method_field()` {.collection-method}
 
-The `method_field` function generates an HTML `hidden` input field
-containing the spoofed value of the form's HTTP verb. For example, using
-[Blade syntax](/docs/{{version}}/blade):
+`method_field` 函式產生一個用於模擬表單 HTTP 動詞的 HTML `hidden` 輸入欄位。舉例來說，在 [Blade
+語法](/docs/{{version}}/blade)中可這樣使用：
 
     <form method="POST">
         {{ method_field('DELETE') }}
@@ -3466,17 +3206,15 @@ containing the spoofed value of the form's HTTP verb. For example, using
 <a name="method-now"></a>
 #### `now()` {.collection-method}
 
-The `now` function creates a new `Illuminate\Support\Carbon` instance for
-the current time:
+`now` 函式建立一個目前時間的新 `Illuminate\Support\Carbon` 實體：
 
     $now = now();
 
 <a name="method-old"></a>
 #### `old()` {.collection-method}
 
-The `old` function [retrieves](/docs/{{version}}/requests#retrieving-input)
-an [old input](/docs/{{version}}/requests#old-input) value flashed into the
-session:
+`old` 函式[取得](/docs/{{version}}/requests#retrieving-input)快閃存入 Session
+的[舊輸入](/docs/{{version}}/requests#old-input)值：
 
     $value = old('value');
 
@@ -3485,17 +3223,14 @@ session:
 <a name="method-optional"></a>
 #### `optional()` {.collection-method}
 
-The `optional` function accepts any argument and allows you to access
-properties or call methods on that object. If the given object is `null`,
-properties and methods will return `null` instead of causing an error:
+`optional` 函式接受任何的引數，並可讓你存取該物件上的屬性或呼叫該物件上的方法。若給定的物件為 `null`，存取屬性和方法時會回傳
+`null` 而不是發生錯誤：
 
     return optional($user->address)->street;
 
     {!! old('name', optional($user)->name) !!}
 
-The `optional` function also accepts a closure as its second argument. The
-closure will be invoked if the value provided as the first argument is not
-null:
+`optional` 函式也接受閉包作為其第二個引數。若第一個引數傳入的值不是 null 時會叫用該閉包：
 
     return optional(User::find($id), function ($user) {
         return $user->name;
@@ -3504,18 +3239,17 @@ null:
 <a name="method-policy"></a>
 #### `policy()` {.collection-method}
 
-The `policy` method retrieves a
-[policy](/docs/{{version}}/authorization#creating-policies) instance for a
-given class:
+`policy` 方法取得給定類別的
+[Policy](/docs/{{version}}/authorization#creating-policies) 實體：
 
     $policy = policy(App\Models\User::class);
 
 <a name="method-redirect"></a>
 #### `redirect()` {.collection-method}
 
-The `redirect` function returns a [redirect HTTP
-response](/docs/{{version}}/responses#redirects), or returns the redirector
-instance if called with no arguments:
+`redirect` 函式回傳一個[重新導向的 HTTP
+Response](/docs/{{version}}/responses#redirects)。若呼叫時未提供任何引數，則回傳 Redirector
+實體：
 
     return redirect($to = null, $status = 302, $headers = [], $https = null);
 
@@ -3526,23 +3260,20 @@ instance if called with no arguments:
 <a name="method-report"></a>
 #### `report()` {.collection-method}
 
-The `report` function will report an exception using your [exception
-handler](/docs/{{version}}/errors#the-exception-handler):
+`report` 函式會使用 [Exception
+Handler](/docs/{{version}}/errors#the-exception-handler) 來回報 Exception：
 
     report($e);
 
-The `report` function also accepts a string as an argument. When a string is
-given to the function, the function will create an exception with the given
-string as its message:
+`report` 函式也接受一個字串作為其引數。若傳入字串給該函式時，`report` 會使用給定的字串作為訊息來建立 Exception：
 
     report('Something went wrong.');
 
 <a name="method-request"></a>
 #### `request()` {.collection-method}
 
-The `request` function returns the current
-[request](/docs/{{version}}/requests) instance or obtains an input field's
-value from the current request:
+`request` 函式回傳目前的 [Request](/docs/{{version}}/requests) 實體，或是從目前 Request
+中取得輸入欄位的值：
 
     $request = request();
 
@@ -3551,18 +3282,15 @@ value from the current request:
 <a name="method-rescue"></a>
 #### `rescue()` {.collection-method}
 
-The `rescue` function executes the given closure and catches any exceptions
-that occur during its execution. All exceptions that are caught will be sent
-to your [exception handler](/docs/{{version}}/errors#the-exception-handler);
-however, the request will continue processing:
+`rescue` 函式會執行給定的閉包，並 Catch 在執行時發生的所有 Exception。被 Catch 到的 Exception 會被送到
+[Exception
+Handler](/docs/{{version}}/errors#the-exception-handler)，不過，Request 會繼續執行：
 
     return rescue(function () {
         return $this->method();
     });
 
-You may also pass a second argument to the `rescue` function. This argument
-will be the "default" value that should be returned if an exception occurs
-while executing the closure:
+也可以傳入第二個引數給 `rescue` 函式。執行閉包時若有發生 Exception，就會使用這個引數來當作回傳的「預設」值：
 
     return rescue(function () {
         return $this->method();
@@ -3577,16 +3305,16 @@ while executing the closure:
 <a name="method-resolve"></a>
 #### `resolve()` {.collection-method}
 
-The `resolve` function resolves a given class or interface name to an
-instance using the [service container](/docs/{{version}}/container):
+`resolve` 函式使用 [Service Container](/docs/{{version}}/container)
+來將給定的類別或介面名稱解析為實體：
 
     $api = resolve('HelpSpot\API');
 
 <a name="method-response"></a>
 #### `response()` {.collection-method}
 
-The `response` function creates a [response](/docs/{{version}}/responses)
-instance or obtains an instance of the response factory:
+`response` 函式建立一個 [Response](/docs/{{version}}/responses) 實體，或是取得 Response
+Factory 的實體：
 
     return response('Hello World', 200, $headers);
 
@@ -3595,19 +3323,14 @@ instance or obtains an instance of the response factory:
 <a name="method-retry"></a>
 #### `retry()` {.collection-method}
 
-The `retry` function attempts to execute the given callback until the given
-maximum attempt threshold is met. If the callback does not throw an
-exception, its return value will be returned. If the callback throws an
-exception, it will automatically be retried. If the maximum attempt count is
-exceeded, the exception will be thrown:
+`retry` 函式會嘗試執行給定的閉包，直到達到最大嘗試次數限制。若該回呼未^[擲回](Throw)
+Exception，則會回傳該回呼的回傳值。若回呼擲回 Exception，就會自動嘗試重新執行回呼。達到最大嘗試次數後，就會擲回 Exception：
 
     return retry(5, function () {
-        // Attempt 5 times while resting 100ms between attempts...
+        // 嘗試執行 5 次，每次嘗試間暫停 100ms...
     }, 100);
 
-If you would like to manually calculate the number of milliseconds to sleep
-between attempts, you may pass a closure as the third argument to the
-`retry` function:
+若想自動手動計算每次長時間要暫停的毫秒數，可傳入閉包作為第三個引數給 `retry` 函式：
 
     return retry(5, function () {
         // ...
@@ -3615,16 +3338,13 @@ between attempts, you may pass a closure as the third argument to the
         return $attempt * 100;
     });
 
-For convenience, you may provide an array as the first argument to the
-`retry` function. This array will be used to determine how many milliseconds
-to sleep between subsequent attempts:
+為了方便起見，也可以提供陣列作為 `retry` 函式的第一個引數。會使用這個真累來判斷每次嘗試間要暫停多久：
 
-    return retry([100, 200] function () {
-        // Sleep for 100ms on first retry, 200ms on second retry...
+    return retry([100, 200], function () {
+        // 第一次重試暫停 100ms，第二次重試暫停 200ms...
     });
 
-To only retry under specific conditions, you may pass a closure as the
-fourth argument to the `retry` function:
+若只想在特定條件下重試，可傳入一個閉包作為第四個引數給 `retry` 函式：
 
     return retry(5, function () {
         // ...
@@ -3635,16 +3355,15 @@ fourth argument to the `retry` function:
 <a name="method-session"></a>
 #### `session()` {.collection-method}
 
-The `session` function may be used to get or set
-[session](/docs/{{version}}/session) values:
+`session` 函式可用來取得或設定 [Session](/docs/{{version}}/session) 值：
 
     $value = session('key');
 
-You may set values by passing an array of key / value pairs to the function:
+可以傳入一組索引鍵 / 值配對的陣列給該函式來賦值：
 
     session(['chairs' => 7, 'instruments' => 3]);
 
-The session store will be returned if no value is passed to the function:
+若未傳入任何值給該方法，則會回傳 Session Store 實體：
 
     $value = session()->get('key');
 
@@ -3653,9 +3372,8 @@ The session store will be returned if no value is passed to the function:
 <a name="method-tap"></a>
 #### `tap()` {.collection-method}
 
-The `tap` function accepts two arguments: an arbitrary `$value` and a
-closure. The `$value` will be passed to the closure and then be returned by
-the `tap` function. The return value of the closure is irrelevant:
+`tap` 方法接受兩個引數：任意值 `$value`、以及一個閉包。`$value` 會被傳入閉包中，然後 `tap` 方法會回傳 `$value`
+的值。閉包的回傳值沒有任何影響：
 
     $user = tap(User::first(), function ($user) {
         $user->name = 'taylor';
@@ -3663,23 +3381,17 @@ the `tap` function. The return value of the closure is irrelevant:
         $user->save();
     });
 
-If no closure is passed to the `tap` function, you may call any method on
-the given `$value`. The return value of the method you call will always be
-`$value`, regardless of what the method actually returns in its
-definition. For example, the Eloquent `update` method typically returns an
-integer. However, we can force the method to return the model itself by
-chaining the `update` method call through the `tap` function:
+若未傳入閉包給 `tap` 函式，則可呼叫任何給定 `$value` 上的方法。無論呼叫的方法回傳什麼值，在此處都會回傳
+`$value`。舉例來說，Eloquent `update` 方法一般會回傳整數。不過，若我們可以將 `update` 方法的呼叫串在 `tap`
+函式後方，來強制把該方法的回傳值改為 Model 實體：
 
     $user = tap($user)->update([
         'name' => $name,
         'email' => $email,
     ]);
 
-To add a `tap` method to a class, you may add the
-`Illuminate\Support\Traits\Tappable` trait to the class. The `tap` method of
-this trait accepts a Closure as its only argument. The object instance
-itself will be passed to the Closure and then be returned by the `tap`
-method:
+若要將 `tap` 方法加到類別上，可以將 `Illuminate\Support\Traits\Tappable` Trait 加到類別中。該
+Trait 的 `tap` 方法接受一個閉包作為其唯一的引數。物件實體本身會被傳入該閉包中，並由 `tap` 方法回傳：
 
     return $user->tap(function ($user) {
         //
@@ -3688,8 +3400,7 @@ method:
 <a name="method-throw-if"></a>
 #### `throw_if()` {.collection-method}
 
-The `throw_if` function throws the given exception if a given boolean
-expression evaluates to `true`:
+`throw_if` 函式會在給定布林運算式取值為 `true` 時擲回一個 Exception：
 
     throw_if(! Auth::user()->isAdmin(), AuthorizationException::class);
 
@@ -3702,8 +3413,7 @@ expression evaluates to `true`:
 <a name="method-throw-unless"></a>
 #### `throw_unless()` {.collection-method}
 
-The `throw_unless` function throws the given exception if a given boolean
-expression evaluates to `false`:
+`throw_unless` 函式會在給定布林運算式取值為 `false` 時擲回一個 Exception：
 
     throw_unless(Auth::user()->isAdmin(), AuthorizationException::class);
 
@@ -3716,23 +3426,21 @@ expression evaluates to `false`:
 <a name="method-today"></a>
 #### `today()` {.collection-method}
 
-The `today` function creates a new `Illuminate\Support\Carbon` instance for
-the current date:
+`today` 函式建立一個目前日期的新 `Illuminate\Support\Carbon` 實體：
 
     $today = today();
 
 <a name="method-trait-uses-recursive"></a>
 #### `trait_uses_recursive()` {.collection-method}
 
-The `trait_uses_recursive` function returns all traits used by a trait:
+`trait_uses_recursive` 函式回傳該 Trait 使用的所有 Trait：
 
     $traits = trait_uses_recursive(\Illuminate\Notifications\Notifiable::class);
 
 <a name="method-transform"></a>
 #### `transform()` {.collection-method}
 
-The `transform` function executes a closure on a given value if the value is
-not [blank](#method-blank) and then returns the return value of the closure:
+`transform` 函式會在給定值不為[^[空白](Blank)](#method-blank)時執行閉包，並回傳該閉包的回傳值：
 
     $callback = function ($value) {
         return $value * 2;
@@ -3742,8 +3450,7 @@ not [blank](#method-blank) and then returns the return value of the closure:
 
     // 10
 
-A default value or closure may be passed as the third argument to the
-function. This value will be returned if the given value is blank:
+可傳入預設值或閉包作為第三個引數給該函式。若給定值為空白時，會回傳這個值：
 
     $result = transform(null, $callback, 'The value is blank');
 
@@ -3752,18 +3459,15 @@ function. This value will be returned if the given value is blank:
 <a name="method-validator"></a>
 #### `validator()` {.collection-method}
 
-The `validator` function creates a new
-[validator](/docs/{{version}}/validation) instance with the given
-arguments. You may use it as an alternative to the `Validator` facade:
+`validator` 函式使用給定的引數來建立一個新的 [Validator](/docs/{{version}}/validation)
+實體。可以用來當作是 `Validator` Facade 的替代：
 
     $validator = validator($data, $rules, $messages);
 
 <a name="method-value"></a>
 #### `value()` {.collection-method}
 
-The `value` function returns the value it is given. However, if you pass a
-closure to the function, the closure will be executed and its returned value
-will be returned:
+`value` 函式會回傳給定的值。不過，若傳入閉包給該函式，會執行該閉包並回傳該閉包的值：
 
     $result = value(true);
 
@@ -3778,16 +3482,14 @@ will be returned:
 <a name="method-view"></a>
 #### `view()` {.collection-method}
 
-The `view` function retrieves a [view](/docs/{{version}}/views) instance:
+`view` 函式可取得一個 [View](/docs/{{version}}/views) 實體：
 
     return view('auth.login');
 
 <a name="method-with"></a>
 #### `with()` {.collection-method}
 
-The `with` function returns the value it is given. If a closure is passed as
-the second argument to the function, the closure will be executed and its
-returned value will be returned:
+`with` 函式會回傳給定的值。若有傳入閉包作為第二個引數該函式，會執行該閉包並回傳該閉包的回傳值：
 
     $callback = function ($value) {
         return is_numeric($value) ? $value * 2 : 0;

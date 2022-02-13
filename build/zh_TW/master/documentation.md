@@ -38,7 +38,7 @@
     - [檔案儲存](/docs/{{version}}/filesystem)
     - [輔助函式](/docs/{{version}}/helpers)
     - [HTTP 用戶端](/docs/{{version}}/http-client)
-    - [本地化](/docs/{{version}}/localization)
+    - [本土化](/docs/{{version}}/localization)
     - [信件 - Mail](/docs/{{version}}/mail)
     - [通知](/docs/{{version}}/notifications)
     - [套件開發](/docs/{{version}}/packages)

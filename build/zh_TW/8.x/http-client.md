@@ -1,51 +1,46 @@
-# HTTP Client
+# HTTP 用戶端
 
-- [Introduction](#introduction)
-- [Making Requests](#making-requests)
-    - [Request Data](#request-data)
-    - [Headers](#headers)
-    - [Authentication](#authentication)
-    - [Timeout](#timeout)
-    - [Retries](#retries)
-    - [Error Handling](#error-handling)
-    - [Guzzle Options](#guzzle-options)
-- [Concurrent Requests](#concurrent-requests)
-- [Macros](#macros)
-- [Testing](#testing)
-    - [Faking Responses](#faking-responses)
-    - [Inspecting Requests](#inspecting-requests)
-- [Events](#events)
+- [簡介](#introduction)
+- [建立 Request](#making-requests)
+    - [Request 資料](#request-data)
+    - [標頭](#headers)
+    - [認證](#authentication)
+    - [逾時](#timeout)
+    - [重試](#retries)
+    - [錯誤處理](#error-handling)
+    - [Guzzle 選項](#guzzle-options)
+- [同時進行的 Request](#concurrent-requests)
+- [Macro](#macros)
+- [測試](#testing)
+    - [模擬 Response](#faking-responses)
+    - [檢查 Request](#inspecting-requests)
+- [事件](#events)
 
 <a name="introduction"></a>
-## Introduction
+## 簡介
 
-Laravel provides an expressive, minimal API around the [Guzzle HTTP
-client](http://docs.guzzlephp.org/en/stable/), allowing you to quickly make
-outgoing HTTP requests to communicate with other web applications. Laravel's
-wrapper around Guzzle is focused on its most common use cases and a
-wonderful developer experience.
+Laravel 為 [Guzzle HTTP 用戶端](http://docs.guzzlephp.org/en/stable/)提供了一個語系化的極簡
+API，能讓我們快速建立外連 HTTP Request 來與其他 Web App 通訊。Laravel 的 Guzzle
+包裝著重於各個常見的使用情境，並提供優秀的^[開發人員經驗](Developer Experience)。
 
-Before getting started, you should ensure that you have installed the Guzzle
-package as a dependency of your application. By default, Laravel
-automatically includes this dependency. However, if you have previously
-removed the package, you may install it again via Composer:
+在開始前，先確保有將 Guzzle 套件安裝為專案的相依性套件。預設情況下，Laravel 已自動包含了這個相依性套件，但若你之前有將其移除，請使用
+Composer 再安裝一次：
 
     composer require guzzlehttp/guzzle
 
 <a name="making-requests"></a>
-## Making Requests
+## 建立 Request
 
-To make requests, you may use the `head`, `get`, `post`, `put`, `patch`, and
-`delete` methods provided by the `Http` facade. First, let's examine how to
-make a basic `GET` request to another URL:
+若要建立 Request，可以使用 `Http` Facade 提供的
+`head`、`get`、`post`、`put`、`patch`、`delete` 等方法。首先，我們先看看要查詢另一個 URL 的基礎 `GET`
+Request 怎麼建立：
 
     use Illuminate\Support\Facades\Http;
 
     $response = Http::get('http://example.com');
 
-The `get` method returns an instance of `Illuminate\Http\Client\Response`,
-which provides a variety of methods that may be used to inspect the
-response:
+`get` 方法會回傳 `Illuminate\Http\Client\Response` 的實體，該實體提供了許多用來取得 Response
+資訊的方法：
 
     $response->body() : string;
     $response->json($key = null) : array|mixed;
@@ -61,28 +56,24 @@ response:
     $response->header($header) : string;
     $response->headers() : array;
 
-The `Illuminate\Http\Client\Response` object also implements the PHP
-`ArrayAccess` interface, allowing you to access JSON response data directly
-on the response:
+`Illuminate\Http\Client\Response` 物件也實作了 PHP 的 `ArrayAccess` 實體，能讓我們直接在
+Response 上存取 JSON Response 資料：
 
     return Http::get('http://example.com/users/1')['name'];
 
 <a name="dumping-requests"></a>
-#### Dumping Requests
+#### 傾印 Request
 
-If you would like to dump the outgoing request instance before it is sent
-and terminate the script's execution, you may add the `dd` method to the
-beginning of your request definition:
+若想在送出 Request 前傾印連外 Request 並終止指令碼執行，可在 Request 定義的最前方加上 `dd` 方法：
 
     return Http::dd()->get('http://example.com');
 
 <a name="request-data"></a>
-### Request Data
+### Request 資料
 
-Of course, it is common when making `POST`, `PUT`, and `PATCH` requests to
-send additional data with your request, so these methods accept an array of
-data as their second argument. By default, data will be sent using the
-`application/json` content type:
+當然，我們也很常使用 `POST`、`PUT`、`PATCH` 等 Request 來在 Request
+上傳送額外資料，所以這些方法接受資料陣列作為第二個引數。預設情況下，資料會使用 `application/json` ^[Content
+Type](內容型別) 來傳送：
 
     use Illuminate\Support\Facades\Http;
 
@@ -92,11 +83,10 @@ data as their second argument. By default, data will be sent using the
     ]);
 
 <a name="get-request-query-parameters"></a>
-#### GET Request Query Parameters
+#### GET Request 查詢參數
 
-When making `GET` requests, you may either append a query string to the URL
-directly or pass an array of key / value pairs as the second argument to the
-`get` method:
+在產生 `GET` Request 時，可以直接將^[查詢字串](Query String)加到 URL 上，或是傳入一組索引鍵 / 值配對的陣列作為
+`get` 方法的第二個引數：
 
     $response = Http::get('http://example.com/users', [
         'name' => 'Taylor',
@@ -104,11 +94,10 @@ directly or pass an array of key / value pairs as the second argument to the
     ]);
 
 <a name="sending-form-url-encoded-requests"></a>
-#### Sending Form URL Encoded Requests
+#### 傳送 Form URL Encoded 的 Request
 
-If you would like to send data using the `application/x-www-form-urlencoded`
-content type, you should call the `asForm` method before making your
-request:
+若想使用 `application/x-www-form-urlencoded` Content Type 來傳送資料的話，請在建立 Request
+前呼叫 `asForm` 方法：
 
     $response = Http::asForm()->post('http://example.com/users', [
         'name' => 'Sara',
@@ -116,30 +105,26 @@ request:
     ]);
 
 <a name="sending-a-raw-request-body"></a>
-#### Sending A Raw Request Body
+#### 傳送原始 Request 內文
 
-You may use the `withBody` method if you would like to provide a raw request
-body when making a request. The content type may be provided via the
-method's second argument:
+在建立 Request 時，若想提供^[原始 Request 內文](Raw Request Body)，可使用 `withBody`
+方法。可以在該方法的第二個引數上提供 Content Type：
 
     $response = Http::withBody(
         base64_encode($photo), 'image/jpeg'
     )->post('http://example.com/photo');
 
 <a name="multi-part-requests"></a>
-#### Multi-Part Requests
+#### Multi-Part 的 Request
 
-If you would like to send files as multi-part requests, you should call the
-`attach` method before making your request. This method accepts the name of
-the file and its contents. If needed, you may provide a third argument which
-will be considered the file's filename:
+若想使用 Multi-Part 的 Request 來傳送檔案的話，請在建立 Request 前呼叫 `attach`
+方法。該方法接受檔案的欄位名稱、以及檔案的內容。若有需要，也可以提供第三個引數，該引數會被當作檔案名稱：
 
     $response = Http::attach(
         'attachment', file_get_contents('photo.jpg'), 'photo.jpg'
     )->post('http://example.com/attachments');
 
-Instead of passing the raw contents of a file, you may pass a stream
-resource:
+除了直接傳入檔案的原始內容外，也可以傳入一個 ^[Stream Resource](串流資源)：
 
     $photo = fopen('photo.jpg', 'r');
 
@@ -148,10 +133,10 @@ resource:
     )->post('http://example.com/attachments');
 
 <a name="headers"></a>
-### Headers
+### 標頭
 
-Headers may be added to requests using the `withHeaders` method. This
-`withHeaders` method accepts an array of key / value pairs:
+可以使用 `withHeaders` 方法來將^[標頭](Header)加到 Request 上。`withHeaders` 方法接受一組索引鍵 /
+值配對的陣列：
 
     $response = Http::withHeaders([
         'X-First' => 'foo',
@@ -160,152 +145,132 @@ Headers may be added to requests using the `withHeaders` method. This
         'name' => 'Taylor',
     ]);
 
-You may use the `accept` method to specify the content type that your
-application is expecting in response to your request:
+可以使用 `accept` 方法來指定你的程式預期所預期 Response 的 Content Type：
 
     $response = Http::accept('application/json')->get('http://example.com/users');
 
-For convenience, you may use the `acceptJson` method to quickly specify that
-your application expects the `application/json` content type in response to
-your request:
+為了方便起見，可以使用 `acceptJson` 方法來快速指定要預期 Response 的 Content Type 是
+`application/json`：
 
     $response = Http::acceptJson()->get('http://example.com/users');
 
 <a name="authentication"></a>
-### Authentication
+### 身分驗證
 
-You may specify basic and digest authentication credentials using the
-`withBasicAuth` and `withDigestAuth` methods, respectively:
+可以使用 `withBasicAuth` 方法來指定使用 Basic 身分驗證的^[認證](Credential)，或是使用
+`withDigestAuth` 方法來指定 Digest 身分驗證的認證：
 
-    // Basic authentication...
+    // Basic 身分驗證...
     $response = Http::withBasicAuth('taylor@laravel.com', 'secret')->post(...);
 
-    // Digest authentication...
+    // Digest 身分驗證...
     $response = Http::withDigestAuth('taylor@laravel.com', 'secret')->post(...);
 
 <a name="bearer-tokens"></a>
-#### Bearer Tokens
+#### Bearer 權杖
 
-If you would like to quickly add a bearer token to the request's
-`Authorization` header, you may use the `withToken` method:
+若想快速在 Request 的 `Authorization` 標頭中加上 Bearer ^[權杖](Token)，可使用 `withToken`
+方法：
 
     $response = Http::withToken('token')->post(...);
 
 <a name="timeout"></a>
-### Timeout
+### 逾時
 
-The `timeout` method may be used to specify the maximum number of seconds to
-wait for a response:
+可使用 `timeout` 方法來為 Response 指定最多要等待的秒數：
 
     $response = Http::timeout(3)->get(...);
 
-If the given timeout is exceeded, an instance of
-`Illuminate\Http\Client\ConnectionException` will be thrown.
+當達到給定的逾時秒數後，會擲回 `Illuminate\Http\Client\ConnectionException` 實體。
 
 <a name="retries"></a>
-### Retries
+### 重試
 
-If you would like HTTP client to automatically retry the request if a client
-or server error occurs, you may use the `retry` method. The `retry` method
-accepts the maximum number of times the request should be attempted and the
-number of milliseconds that Laravel should wait in between attempts:
+若想讓 HTTP 用戶端在發生用戶端錯誤或伺服器端錯誤時自動重試，可以使用 `retry` 方法。`retry` 方法接受該 Request
+要重試的最大次數，以及每次重試間要等待多少毫秒：
 
     $response = Http::retry(3, 100)->post(...);
 
-If needed, you may pass a third argument to the `retry` method. The third
-argument should be a callable that determines if the retries should actually
-be attempted. For example, you may wish to only retry the request if the
-initial request encounters an `ConnectionException`:
+若有需要，可以傳入第三個引數給 `retry` 方法。第三個引數應為一個 Callable，用來判斷是否要重試。舉例來說，我們可以判斷只在
+Request 遇到 `ConnectionException` 時才重試：
 
     $response = Http::retry(3, 100, function ($exception) {
         return $exception instanceof ConnectionException;
     })->post(...);
 
-If all of the requests fail, an instance of
-`Illuminate\Http\Client\RequestException` will be thrown.
+若所有的 Request 都執行失敗，會擲回 `Illuminate\Http\Client\RequestException` 實體。
 
 <a name="error-handling"></a>
-### Error Handling
+### 錯誤處理
 
-Unlike Guzzle's default behavior, Laravel's HTTP client wrapper does not
-throw exceptions on client or server errors (`400` and `500` level responses
-from servers). You may determine if one of these errors was returned using
-the `successful`, `clientError`, or `serverError` methods:
+與 Guzzle 預設的行為不同，Laravel 的 HTTP 用戶端在遇到用戶端錯誤或伺服器端錯誤時 (即，伺服器回傳 `4XX` 與 `5XX`
+等級的錯誤)，不會擲回 Exception。我們可以使用 `successful`、`clientError`、`serverError`
+等方法來判斷是否遇到這類錯誤：
 
-    // Determine if the status code is >= 200 and < 300...
+    // 判斷狀態碼 >= 200 且 < 300...
     $response->successful();
 
-    // Determine if the status code is >= 400...
+    // 判斷狀態碼 >= 400...
     $response->failed();
 
-    // Determine if the response has a 400 level status code...
+    // 判斷 Response 的狀態碼是否為 4XX 等級...
     $response->clientError();
 
-    // Determine if the response has a 500 level status code...
+    // 判斷 Response 的狀態碼是否為 5XX 等級...
     $response->serverError();
 
-    // Immediately execute the given callback if there was a client or server error...
+    // 若有用戶端錯誤或伺服器端錯誤，馬上執行該給定的回呼...
     $response->onError(callable $callback);
 
 <a name="throwing-exceptions"></a>
-#### Throwing Exceptions
+#### 擲回 Exception
 
-If you have a response instance and would like to throw an instance of
-`Illuminate\Http\Client\RequestException` if the response status code
-indicates a client or server error, you may use the `throw` or `throwIf`
-methods:
+假設有個 Response 實體，而我們想在該 Response 的狀態碼為伺服器端或用戶端錯誤時擲回
+`Illuminate\Http\Client\RequestException`，則可以使用 `throw` 或 `throwIf` 方法：
 
     $response = Http::post(...);
 
-    // Throw an exception if a client or server error occurred...
+    // 若遇到用戶端或伺服器端錯誤，擲回 Exception...
     $response->throw();
 
-    // Throw an exception if an error occurred and the given condition is true...
+    // 若有發生錯誤，且給定的條件為 true，則擲回 Exception...
     $response->throwIf($condition);
 
     return $response['user']['id'];
 
-The `Illuminate\Http\Client\RequestException` instance has a public
-`$response` property which will allow you to inspect the returned response.
+`Illuminate\Http\Client\RequestException` 實體有個 `$response`
+公用屬性，我們可以使用該屬性來取得回傳的 Response。
 
-The `throw` method returns the response instance if no error occurred,
-allowing you to chain other operations onto the `throw` method:
+如果沒有發生錯誤，`throw` 方法會回傳 Response 實體，能讓我們在 `throw` 方法後繼續串上其他操作：
 
     return Http::post(...)->throw()->json();
 
-If you would like to perform some additional logic before the exception is
-thrown, you may pass a closure to the `throw` method. The exception will be
-thrown automatically after the closure is invoked, so you do not need to
-re-throw the exception from within the closure:
+若想在 Exception 被擲回前加上其他額外的邏輯，可傳入一個閉包給 `throw` 方法。叫用閉包後，就會自動擲回
+Exception，因此我們不需要在閉包內重新擲回 Exception：
 
     return Http::post(...)->throw(function ($response, $e) {
         //
     })->json();
 
 <a name="guzzle-options"></a>
-### Guzzle Options
+### Guzzle 選項
 
-You may specify additional [Guzzle request
-options](http://docs.guzzlephp.org/en/stable/request-options.html) using the
-`withOptions` method. The `withOptions` method accepts an array of key /
-value pairs:
+我們可以使用 `withOptions` 方法來指定額外的 [Guzzle Request
+選項](http://docs.guzzlephp.org/en/stable/request-options.html)。`withOptions`
+方法接受一組索引鍵 / 值配對的陣列：
 
     $response = Http::withOptions([
         'debug' => true,
     ])->get('http://example.com/users');
 
 <a name="concurrent-requests"></a>
-## Concurrent Requests
+## 同時進行的 Request
 
-Sometimes, you may wish to make multiple HTTP requests concurrently. In
-other words, you want several requests to be dispatched at the same time
-instead of issuing the requests sequentially. This can lead to substantial
-performance improvements when interacting with slow HTTP APIs.
+有時候，我們可能會想同時進行多個 HTTP Request。換句話說，不是依序執行 Request，而是同時分派多個 Request。同時執行多個
+Request 的話，在處理速度慢的 HTTP API 時就可以大幅提升效能。
 
-Thankfully, you may accomplish this using the `pool` method. The `pool`
-method accepts a closure which receives an `Illuminate\Http\Client\Pool`
-instance, allowing you to easily add requests to the request pool for
-dispatching:
+所幸，我們只要使用 `pool` 方法就能達成。`pool` 方法接受一個閉包，該閉包會收到 `Illuminate\Http\Client\Pool`
+實體，能讓我們輕鬆地將 Request 加到 ^[Request Pool](請求集區) 以作分派：
 
     use Illuminate\Http\Client\Pool;
     use Illuminate\Support\Facades\Http;
@@ -320,9 +285,8 @@ dispatching:
            $responses[1]->ok() &&
            $responses[2]->ok();
 
-As you can see, each response instance can be accessed based on the order it
-was added to the pool. If you wish, you can name the requests using the `as`
-method, which allows you to access the corresponding responses by name:
+就像這樣，我們可以依據加入 Pool 的順序來存取每個 Response 實體。若有需要的話，也可以使用 `as` 方法來為 Request
+命名，好讓我們能使用名稱來存取對應的 Response：
 
     use Illuminate\Http\Client\Pool;
     use Illuminate\Support\Facades\Http;
@@ -336,13 +300,11 @@ method, which allows you to access the corresponding responses by name:
     return $responses['first']->ok();
 
 <a name="macros"></a>
-## Macros
+## Macro
 
-The Laravel HTTP client allows you to define "macros", which can serve as a
-fluent, expressive mechanism to configure common request paths and headers
-when interacting with services throughout your application. To get started,
-you may define the macro within the `boot` method of your application's
-`App\Providers\AppServiceProvider` class:
+Laravel HTTP 用戶端支援定義「^[Macro](巨集)」。通過 Macro，我們就能通過一些流暢且語義化的機制來在專案中為一些服務設定常用的
+Request 路徑與標頭。若要開始使用 Macro，我們可以在專案的 `App\Providers\AppServiceProvider` 內
+`boot` 方法中定義 Macro：
 
 ```php
 use Illuminate\Support\Facades\Http;
@@ -362,27 +324,23 @@ public function boot()
 }
 ```
 
-Once your macro has been configured, you may invoke it from anywhere in your
-application to create a pending request with the specified configuration:
+設定好 Macro 後，就可以在任何地方叫用這個 Macro，以使用指定的設定來建立 Request：
 
 ```php
 $response = Http::github()->get('/');
 ```
 
 <a name="testing"></a>
-## Testing
+## 測試
 
-Many Laravel services provide functionality to help you easily and
-expressively write tests, and Laravel's HTTP wrapper is no exception. The
-`Http` facade's `fake` method allows you to instruct the HTTP client to
-return stubbed / dummy responses when requests are made.
+許多 Laravel 的服務都提供了能讓我們輕鬆撰寫測試的功能，而 Laravel 的 HTTP 包裝也不例外。`Http` Facade 的
+`fake` 方法能讓我們指定 HTTP 用戶端在建立 Request 後回傳一組虛擬的 Response。
 
 <a name="faking-responses"></a>
-### Faking Responses
+### ^[模擬](Fake) Response
 
-For example, to instruct the HTTP client to return empty, `200` status code
-responses for every request, you may call the `fake` method with no
-arguments:
+舉例來說，若要讓 HTTP 用戶端為每個 Request 回傳 `200` 狀態碼的空 Response，可呼叫 `fake`
+方法，然後不傳入任何引數：
 
     use Illuminate\Support\Facades\Http;
 
@@ -390,99 +348,83 @@ arguments:
 
     $response = Http::post(...);
 
-> {note} When faking requests, HTTP client middleware are not executed. You should define expectations for faked responses as if these middleware have run correctly.
+> {note} 在建立模擬 Request 時，不會執行 HTTP 用戶端 Middleware。在為模擬 Request 定義 Expectation 時，請定義為這些 Middleware 都已正確執行的情況。
 
 <a name="faking-specific-urls"></a>
-#### Faking Specific URLs
+#### 模擬執行 URL
 
-Alternatively, you may pass an array to the `fake` method. The array's keys
-should represent URL patterns that you wish to fake and their associated
-responses. The `*` character may be used as a wildcard character. Any
-requests made to URLs that have not been faked will actually be
-executed. You may use the `Http` facade's `response` method to construct
-stub / fake responses for these endpoints:
+或者，我們也可以傳入一組陣列給 `fake` 方法。該陣列的索引鍵代表要模擬的 URL，對應的值則為 Response。可使用 `*`
+字元來當作萬用字元。當 Request 的 URL 不在模擬列表內時，就會被實際執行。可以使用 `Http` Facade 的 `response`
+方法來為這些^[Endpoint](端點)建立虛擬的 Response：
 
     Http::fake([
-        // Stub a JSON response for GitHub endpoints...
+        // 為 GitHub Endpoint 建立虛擬的 JSON Response...
         'github.com/*' => Http::response(['foo' => 'bar'], 200, $headers),
 
-        // Stub a string response for Google endpoints...
+        // 為 Google Endpoint 建立虛擬的字串 Response...
         'google.com/*' => Http::response('Hello World', 200, $headers),
     ]);
 
-If you would like to specify a fallback URL pattern that will stub all
-unmatched URLs, you may use a single `*` character:
+若想為所有不符合的 URL 建立一個遞補用 URL 規則，只要使用單一 `*` 字元即可：
 
     Http::fake([
-        // Stub a JSON response for GitHub endpoints...
+        // 為 GitHub Endpoint 模擬 JSON Response...
         'github.com/*' => Http::response(['foo' => 'bar'], 200, ['Headers']),
 
-        // Stub a string response for all other endpoints...
+        // 為其他所有 Endpoint 模擬字串 Response...
         '*' => Http::response('Hello World', 200, ['Headers']),
     ]);
 
 <a name="faking-response-sequences"></a>
-#### Faking Response Sequences
+#### 模擬 Response 序列
 
-Sometimes you may need to specify that a single URL should return a series
-of fake responses in a specific order. You may accomplish this using the
-`Http::sequence` method to build the responses:
+有時候我們需要讓單一 URL 以固定的順序回傳一系列模擬的 Response。我們可以使用 `Http::sequence`  方法來建立
+Request：
 
     Http::fake([
-        // Stub a series of responses for GitHub endpoints...
+        // 為 GitHub Endpoint 模擬一系列的 Responses...
         'github.com/*' => Http::sequence()
                                 ->push('Hello World', 200)
                                 ->push(['foo' => 'bar'], 200)
                                 ->pushStatus(404),
     ]);
 
-When all of the responses in a response sequence have been consumed, any
-further requests will cause the response sequence to throw an exception. If
-you would like to specify a default response that should be returned when a
-sequence is empty, you may use the `whenEmpty` method:
+用完 Response 序列內的所有 Response 後，接下來再建立 Request 就會導致 Response 系列擲回一個
+Exception。若想指定當序列為空時要回傳的預設 Response，可使用 `whenEmpty` 方法：
 
     Http::fake([
-        // Stub a series of responses for GitHub endpoints...
+        // 為 GitHub Endpoint 模擬一系列的 Response...
         'github.com/*' => Http::sequence()
                                 ->push('Hello World', 200)
                                 ->push(['foo' => 'bar'], 200)
                                 ->whenEmpty(Http::response()),
     ]);
 
-If you would like to fake a sequence of responses but do not need to specify
-a specific URL pattern that should be faked, you may use the
-`Http::fakeSequence` method:
+若想模擬一系列的 Response，但又不想指定要模擬的特定 URL 格式，可使用 `Http::fakeSequence`  方法：
 
     Http::fakeSequence()
             ->push('Hello World', 200)
             ->whenEmpty(Http::response());
 
 <a name="fake-callback"></a>
-#### Fake Callback
+#### 模擬回呼
 
-If you require more complicated logic to determine what responses to return
-for certain endpoints, you may pass a closure to the `fake` method. This
-closure will receive an instance of `Illuminate\Http\Client\Request` and
-should return a response instance. Within your closure, you may perform
-whatever logic is necessary to determine what type of response to return:
+若某些 Endpoint 需要使用比較複雜的邏輯來判斷要回傳什麼 Response 的話，可傳入一個閉包給 `fake` 方法。該閉包會收到一組
+`Illuminate\Http\Client\Request` 的實體，而該閉包必須回傳 Response
+實體。在這個閉包內，我們就可以任意加上邏輯來判斷要回傳什麼類型的 Response：
 
     Http::fake(function ($request) {
         return Http::response('Hello World', 200);
     });
 
 <a name="inspecting-requests"></a>
-### Inspecting Requests
+### 檢查 Request
 
-When faking responses, you may occasionally wish to inspect the requests the
-client receives in order to make sure your application is sending the
-correct data or headers. You may accomplish this by calling the
-`Http::assertSent` method after calling `Http::fake`.
+在模擬 Response 時，有時候我們會需要檢查用戶端收到的 Request，以確保程式有傳送正確的資料。可以在呼叫 `Http::fake`
+之前先呼叫 `Http::assertSent` 方法來檢查。
 
-The `assertSent` method accepts a closure which will receive an
-`Illuminate\Http\Client\Request` instance and should return a boolean value
-indicating if the request matches your expectations. In order for the test
-to pass, at least one request must have been issued matching the given
-expectations:
+`assertSent` 方法接受一組閉包，該閉包會收到 `Illuminate\Http\Client\Request`
+的實體，而該閉包應回傳用來表示 Request 是否符合預期的布林值。若要讓測試通過，提供的 Request 中就必須至少有一個是符合給定預期條件的：
 
     use Illuminate\Http\Client\Request;
     use Illuminate\Support\Facades\Http;
@@ -503,8 +445,7 @@ expectations:
                $request['role'] == 'Developer';
     });
 
-If needed, you may assert that a specific request was not sent using the
-`assertNotSent` method:
+若有需要，可以使用 `assertNotSent` 方法來判斷特定 Request 是否未被送出：
 
     use Illuminate\Http\Client\Request;
     use Illuminate\Support\Facades\Http;
@@ -520,36 +461,30 @@ If needed, you may assert that a specific request was not sent using the
         return $request->url() === 'http://example.com/posts';
     });
 
-You may use the `assertSentCount` method to assert how many requests were
-"sent" during the test:
+可以使用 `assertSentCount` 方法來判斷在測試時「送出」了多少個 Request：
 
     Http::fake();
 
     Http::assertSentCount(5);
 
-Or, you may use the `assertNothingSent` method to assert that no requests
-were sent during the test:
+或者，也可以使用 `assertNothingSent` 方法來判斷在測試時是否未送出任何 Request：
 
     Http::fake();
 
     Http::assertNothingSent();
 
 <a name="events"></a>
-## Events
+## 事件
 
-Laravel fires three events during the process of sending HTTP requests. The
-`RequestSending` event is fired prior to a request being sent, while the
-`ResponseReceived` event is fired after a response is received for a given
-request. The `ConnectionFailed` event is fired if no response is received
-for a given request.
+在傳送 HTTP Request 的過程中，Laravel 會觸發三個事件。在送出 Request 前會觸發 `RequestSending`
+事件，而給定 Request 收到 Response 後會觸發 `ResponseReceived` 事件。若給定的 Request 未收到
+Response，會觸發 `ConnectionFailed` 事件。
 
-The `RequestSending` and `ConnectionFailed` events both contain a public
-`$request` property that you may use to inspect the
-`Illuminate\Http\Client\Request` instance. Likewise, the `ResponseReceived`
-event contains a `$request` property as well as a `$response` property which
-may be used to inspect the `Illuminate\Http\Client\Response` instance. You
-may register event listeners for this event in your
-`App\Providers\EventServiceProvider` service provider:
+`RequestSending` 與 `ConnectionFailed` 事件都有一個 `$request` 共用屬性，可以通過這個屬性來取得
+`Illuminate\Http\Client\Request` 實體。而 `ResponseReceived` 事件中也有一個 `$request`
+公開屬性，以及一個可用來取得  `Illuminate\Http\Client\Response` 實體的 `$response` 公開屬性。可以在
+`App\Providers\EventServiceProvider` Service Provider 中為這些 Event 註冊
+Listener：
 
     /**
      * The event listener mappings for the application.

@@ -1,35 +1,24 @@
 #!/bin/zsh
 
-for file in docs/**/*.md; do
-  base=${file##*/}
-  if [[ $base == "readme.md" || $base == "license.md" ]]; then
+echo "Remove old pot files..."
+rm -Rf templates/*
+
+for file in `ls docs/**/*.md | sed -E 's#docs/[^/]+/(.+\.md)#\1#g' | sort | uniq`; do
+  if [[ $file == "readme.md" || $file == "license.md" ]]; then
     continue
   fi
 
   echo "Processing $file"
 
-  pot_path=`echo $file | sed -E 's#docs/(.+)\.md#_tmp/\1.pot#g'`
+  pot_path=templates/${file%.md}.pot
 
   mkdir -p `dirname $pot_path`
 
-  po4a-gettextize \
-          --package-name "Laravel Documentation" \
-          --copyright-holder "Taylor Otwell" \
-          --format text --option markdown \
-          --master-charset utf-8 --localized-charset utf-8 \
-          --master $file \
-          --po $pot_path
+  md2po \
+    --quiet \
+    --save \
+    --wrapwidth 0 \
+    --po-filepath $pot_path \
+    --include-codeblocks \
+    docs/**/$file
 done
-
-echo "Merging different versions..."
-
-rm -Rf templates
-
-for file in `ls _tmp/**/*.pot | sed -E 's#_tmp/.+/(.+)\.pot#\1#g' | uniq`; do
-  echo "Merging $file..."
-  mkdir -p `dirname "templates/$file"`
-  msgcat --strict --no-wrap -o templates/$file.pot _tmp/*/$file.pot
-done
-
-echo "Cleaning up..."
-rm -Rf _tmp

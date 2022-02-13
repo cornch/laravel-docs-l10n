@@ -10,7 +10,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
-"PO-Revision-Date: 2022-02-13 09:29\n"
+"PO-Revision-Date: 2022-02-13 12:32\n"
 
 #: docs/8.x/database.md:block 1 (header)
 msgid "Database: Getting Started"
@@ -18,35 +18,35 @@ msgstr "資料庫：入門"
 
 #: docs/8.x/database.md:block 2 (unordered list)
 msgid "[Introduction](#introduction)"
-msgstr ""
+msgstr "[簡介](#introduction)"
 
 #: docs/8.x/database.md:block 2 (unordered list)
 msgid "[Configuration](#configuration)"
-msgstr ""
+msgstr "[組態設定](#configuration)"
 
 #: docs/8.x/database.md:block 2 (unordered list)
 msgid "[Read & Write Connections](#read-and-write-connections)"
-msgstr ""
+msgstr "[讀寫連線](#read-and-write-connections)"
 
 #: docs/8.x/database.md:block 2 (unordered list)
 msgid "[Running SQL Queries](#running-queries)"
-msgstr ""
+msgstr "[執行 SQL 查詢](#running-queries)"
 
 #: docs/8.x/database.md:block 2 (unordered list)
 msgid "[Using Multiple Database Connections](#using-multiple-database-connections)"
-msgstr ""
+msgstr "[使用多個資料庫連線](#using-multiple-database-connections)"
 
 #: docs/8.x/database.md:block 2 (unordered list)
 msgid "[Listening For Query Events](#listening-for-query-events)"
-msgstr ""
+msgstr "[監聽查詢事件](#listening-for-query-events)"
 
 #: docs/8.x/database.md:block 2 (unordered list)
 msgid "[Database Transactions](#database-transactions)"
-msgstr ""
+msgstr "[資料庫 Transaction](#database-transactions)"
 
 #: docs/8.x/database.md:block 2 (unordered list)
 msgid "[Connecting To The Database CLI](#connecting-to-the-database-cli)"
-msgstr ""
+msgstr "[連線至資料庫 CLI](#connecting-to-the-database-cli)"
 
 #: docs/8.x/database.md:block 4 (header)
 msgid "Introduction"
@@ -58,23 +58,23 @@ msgstr "幾乎所有的現代網站都會與資料庫互動。比起直接使用
 
 #: docs/8.x/database.md:block 7 (unordered list)
 msgid "MariaDB 10.2+ ([Version Policy](https://mariadb.org/about/#maintenance-policy))"
-msgstr ""
+msgstr "MariaDB 10.2+ ([版本政策](https://mariadb.org/about/#maintenance-policy))"
 
 #: docs/8.x/database.md:block 7 (unordered list)
 msgid "MySQL 5.7+ ([Version Policy](https://en.wikipedia.org/wiki/MySQL#Release_history))"
-msgstr ""
+msgstr "MySQL 5.7+ ([版本政策](https://en.wikipedia.org/wiki/MySQL#Release_history))"
 
 #: docs/8.x/database.md:block 7 (unordered list)
 msgid "PostgreSQL 9.6+ ([Version Policy](https://www.postgresql.org/support/versioning/))"
-msgstr ""
+msgstr "PostgreSQL 9.6+ ([版本政策](https://www.postgresql.org/support/versioning/))"
 
 #: docs/8.x/database.md:block 7 (unordered list)
 msgid "SQLite 3.8.8+"
-msgstr ""
+msgstr "SQLite 3.8.8+"
 
 #: docs/8.x/database.md:block 7 (unordered list)
 msgid "SQL Server 2017+ ([Version Policy](https://docs.microsoft.com/en-us/lifecycle/products/?products=sql-server))"
-msgstr ""
+msgstr "SQL Server 2017+ ([版本政策](https://docs.microsoft.com/en-us/lifecycle/products/?products=sql-server))"
 
 #: docs/8.x/database.md:block 10 (header)
 msgid "Configuration"
@@ -181,7 +181,27 @@ msgid "'mysql' => [\n"
 "    'collation' => 'utf8mb4_unicode_ci',\n"
 "    'prefix' => '',\n"
 "],\n"
-msgstr ""
+msgstr "'mysql' => [\n"
+"    'read' => [\n"
+"        'host' => [\n"
+"            '192.168.1.1',\n"
+"            '196.168.1.2',\n"
+"        ],\n"
+"    ],\n"
+"    'write' => [\n"
+"        'host' => [\n"
+"            '196.168.1.3',\n"
+"        ],\n"
+"    ],\n"
+"    'sticky' => true,\n"
+"    'driver' => 'mysql',\n"
+"    'database' => 'database',\n"
+"    'username' => 'root',\n"
+"    'password' => '',\n"
+"    'charset' => 'utf8mb4',\n"
+"    'collation' => 'utf8mb4_unicode_ci',\n"
+"    'prefix' => '',\n"
+"],\n"
 
 #: docs/8.x/database.md:block 35 (paragraph)
 msgid "Note that three keys have been added to the configuration array: `read`, `write` and `sticky`. The `read` and `write` keys have array values containing a single key: `host`. The rest of the database options for the `read` and `write` connections will be merged from the main `mysql` configuration array."
@@ -233,7 +253,23 @@ msgid "<?php\n\n"
 "        return view('user.index', ['users' => $users]);\n"
 "    }\n"
 "}\n"
-msgstr ""
+msgstr "<?php\n\n"
+"namespace App\\Http\\Controllers;\n\n"
+"use App\\Http\\Controllers\\Controller;\n"
+"use Illuminate\\Support\\Facades\\DB;\n\n"
+"class UserController extends Controller\n"
+"{\n"
+"    /**\n"
+"     * Show a list of all of the application's users.\n"
+"     *\n"
+"     * @return \\Illuminate\\Http\\Response\n"
+"     */\n"
+"    public function index()\n"
+"    {\n"
+"        $users = DB::select('select * from users where active = ?', [1]);\n\n"
+"        return view('user.index', ['users' => $users]);\n"
+"    }\n"
+"}\n"
 
 #: docs/8.x/database.md:block 47 (paragraph)
 msgid "The first argument passed to the `select` method is the SQL query, while the second argument is any parameter bindings that need to be bound to the query. Typically, these are the values of the `where` clause constraints. Parameter binding provides protection against SQL injection."
@@ -249,7 +285,11 @@ msgid "use Illuminate\\Support\\Facades\\DB;\n\n"
 "foreach ($users as $user) {\n"
 "    echo $user->name;\n"
 "}\n"
-msgstr ""
+msgstr "use Illuminate\\Support\\Facades\\DB;\n\n"
+"$users = DB::select('select * from users');\n\n"
+"foreach ($users as $user) {\n"
+"    echo $user->name;\n"
+"}\n"
 
 #: docs/8.x/database.md:block 51 (header)
 msgid "Using Named Bindings"
@@ -261,7 +301,7 @@ msgstr "比起使用 `?` 來表示參數繫結，也可以使用命名繫結來�
 
 #: docs/8.x/database.md:block 53 (code)
 msgid "$results = DB::select('select * from users where id = :id', ['id' => 1]);\n"
-msgstr ""
+msgstr "$results = DB::select('select * from users where id = :id', ['id' => 1]);\n"
 
 #: docs/8.x/database.md:block 55 (header)
 msgid "Running An Insert Statement"
@@ -274,7 +314,8 @@ msgstr "若要執行 `insert` 陳述式，可以使用 `DB` Facade 上的 `inser
 #: docs/8.x/database.md:block 57 (code)
 msgid "use Illuminate\\Support\\Facades\\DB;\n\n"
 "DB::insert('insert into users (id, name) values (?, ?)', [1, 'Marc']);\n"
-msgstr ""
+msgstr "use Illuminate\\Support\\Facades\\DB;\n\n"
+"DB::insert('insert into users (id, name) values (?, ?)', [1, 'Marc']);\n"
 
 #: docs/8.x/database.md:block 59 (header)
 msgid "Running An Update Statement"
@@ -290,7 +331,11 @@ msgid "use Illuminate\\Support\\Facades\\DB;\n\n"
 "    'update users set votes = 100 where name = ?',\n"
 "    ['Anita']\n"
 ");\n"
-msgstr ""
+msgstr "use Illuminate\\Support\\Facades\\DB;\n\n"
+"$affected = DB::update(\n"
+"    'update users set votes = 100 where name = ?',\n"
+"    ['Anita']\n"
+");\n"
 
 #: docs/8.x/database.md:block 63 (header)
 msgid "Running A Delete Statement"
@@ -303,7 +348,8 @@ msgstr "`delete` 方法應用於從資料庫內刪除陣列。與 `update` 類�
 #: docs/8.x/database.md:block 65 (code)
 msgid "use Illuminate\\Support\\Facades\\DB;\n\n"
 "$deleted = DB::delete('delete from users');\n"
-msgstr ""
+msgstr "use Illuminate\\Support\\Facades\\DB;\n\n"
+"$deleted = DB::delete('delete from users');\n"
 
 #: docs/8.x/database.md:block 67 (header)
 msgid "Running A General Statement"
@@ -315,7 +361,7 @@ msgstr "有的資料庫陳述式並不會回傳任何值。對於這類操作，
 
 #: docs/8.x/database.md:block 69 (code)
 msgid "DB::statement('drop table users');\n"
-msgstr ""
+msgstr "DB::statement('drop table users');\n"
 
 #: docs/8.x/database.md:block 71 (header)
 msgid "Running An Unprepared Statement"
@@ -327,11 +373,11 @@ msgstr "有的時候，我們可能會想在不繫結任何值的情況下執行
 
 #: docs/8.x/database.md:block 73 (code)
 msgid "DB::unprepared('update users set votes = 100 where name = \"Dries\"');\n"
-msgstr ""
+msgstr "DB::unprepared('update users set votes = 100 where name = \"Dries\"');\n"
 
 #: docs/8.x/database.md:block 74 (quote)
 msgid "{note} Since unprepared statements do not bind parameters, they may be vulnerable to SQL injection. You should never allow user controlled values within an unprepared statement."
-msgstr ""
+msgstr "{note} 由於未預先準備的陳述式並不繫結參數，因此這些查詢可能容易遭受 SQL 注入攻擊。在未預先準備的陳述式中，不應包含使用者可控制的值。"
 
 #: docs/8.x/database.md:block 76 (header)
 msgid "Implicit Commits"
@@ -343,7 +389,7 @@ msgstr "在 Transaction 內使用 `DB` Facade 的 `statement` 與 `unprepared` �
 
 #: docs/8.x/database.md:block 78 (code)
 msgid "DB::unprepared('create table a (col varchar(1) null)');\n"
-msgstr ""
+msgstr "DB::unprepared('create table a (col varchar(1) null)');\n"
 
 #: docs/8.x/database.md:block 79 (paragraph)
 msgid "Please refer to the MySQL manual for [a list of all statements](https://dev.mysql.com/doc/refman/8.0/en/implicit-commit.html) that trigger implicit commits."
@@ -360,7 +406,8 @@ msgstr "若 `config/database.php` 組態設定檔中有有定義多個連線，�
 #: docs/8.x/database.md:block 83 (code)
 msgid "use Illuminate\\Support\\Facades\\DB;\n\n"
 "$users = DB::connection('sqlite')->select(...);\n"
-msgstr ""
+msgstr "use Illuminate\\Support\\Facades\\DB;\n\n"
+"$users = DB::connection('sqlite')->select(...);\n"
 
 #: docs/8.x/database.md:block 84 (paragraph)
 msgid "You may access the raw, underlying PDO instance of a connection using the `getPdo` method on a connection instance:"
@@ -368,7 +415,7 @@ msgstr "也可以通過連線實體上的 `getPdo` 方法來存取原始、底�
 
 #: docs/8.x/database.md:block 85 (code)
 msgid "$pdo = DB::connection()->getPdo();\n"
-msgstr ""
+msgstr "$pdo = DB::connection()->getPdo();\n"
 
 #: docs/8.x/database.md:block 87 (header)
 msgid "Listening For Query Events"
@@ -408,7 +455,35 @@ msgid "<?php\n\n"
 "        });\n"
 "    }\n"
 "}\n"
-msgstr ""
+msgstr "<?php\n\n"
+"namespace App\\Providers;\n\n"
+"use Illuminate\\Support\\Facades\\DB;\n"
+"use Illuminate\\Support\\ServiceProvider;\n\n"
+"class AppServiceProvider extends ServiceProvider\n"
+"{\n"
+"    /**\n"
+"     * Register any application services.\n"
+"     *\n"
+"     * @return void\n"
+"     */\n"
+"    public function register()\n"
+"    {\n"
+"        //\n"
+"    }\n\n"
+"    /**\n"
+"     * Bootstrap any application services.\n"
+"     *\n"
+"     * @return void\n"
+"     */\n"
+"    public function boot()\n"
+"    {\n"
+"        DB::listen(function ($query) {\n"
+"            // $query->sql;\n"
+"            // $query->bindings;\n"
+"            // $query->time;\n"
+"        });\n"
+"    }\n"
+"}\n"
 
 #: docs/8.x/database.md:block 91 (header)
 msgid "Database Transactions"
@@ -424,7 +499,11 @@ msgid "use Illuminate\\Support\\Facades\\DB;\n\n"
 "    DB::update('update users set votes = 1');\n\n"
 "    DB::delete('delete from posts');\n"
 "});\n"
-msgstr ""
+msgstr "use Illuminate\\Support\\Facades\\DB;\n\n"
+"DB::transaction(function () {\n"
+"    DB::update('update users set votes = 1');\n\n"
+"    DB::delete('delete from posts');\n"
+"});\n"
 
 #: docs/8.x/database.md:block 95 (header)
 msgid "Handling Deadlocks"
@@ -440,7 +519,11 @@ msgid "use Illuminate\\Support\\Facades\\DB;\n\n"
 "    DB::update('update users set votes = 1');\n\n"
 "    DB::delete('delete from posts');\n"
 "}, 5);\n"
-msgstr ""
+msgstr "use Illuminate\\Support\\Facades\\DB;\n\n"
+"DB::transaction(function () {\n"
+"    DB::update('update users set votes = 1');\n\n"
+"    DB::delete('delete from posts');\n"
+"}, 5);\n"
 
 #: docs/8.x/database.md:block 99 (header)
 msgid "Manually Using Transactions"
@@ -453,7 +536,8 @@ msgstr "若想手動開啟 Transaction，並完整控制回滾與 Commit，則�
 #: docs/8.x/database.md:block 101 (code)
 msgid "use Illuminate\\Support\\Facades\\DB;\n\n"
 "DB::beginTransaction();\n"
-msgstr ""
+msgstr "use Illuminate\\Support\\Facades\\DB;\n\n"
+"DB::beginTransaction();\n"
 
 #: docs/8.x/database.md:block 102 (paragraph)
 msgid "You can rollback the transaction via the `rollBack` method:"
@@ -461,7 +545,7 @@ msgstr "可以通過 `rollBack` 方法來回滾該 Transaction："
 
 #: docs/8.x/database.md:block 103 (code)
 msgid "DB::rollBack();\n"
-msgstr ""
+msgstr "DB::rollBack();\n"
 
 #: docs/8.x/database.md:block 104 (paragraph)
 msgid "Lastly, you can commit a transaction via the `commit` method:"
@@ -469,11 +553,11 @@ msgstr "最後，可以使用 `commit` 方法來 Commit Transaction："
 
 #: docs/8.x/database.md:block 105 (code)
 msgid "DB::commit();\n"
-msgstr ""
+msgstr "DB::commit();\n"
 
 #: docs/8.x/database.md:block 106 (quote)
 msgid "{tip} The `DB` facade's transaction methods control the transactions for both the [query builder](/docs/{{version}}/queries) and [Eloquent ORM](/docs/{{version}}/eloquent)."
-msgstr ""
+msgstr "{tip} `DB` Facade 的 Transaction 方法會同時控制到 [Query Builder](/docs/{{version}}/queries) 與 [Eloquent ORM](/docs/{{version}}/eloquent)。"
 
 #: docs/8.x/database.md:block 108 (header)
 msgid "Connecting To The Database CLI"

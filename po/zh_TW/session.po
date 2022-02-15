@@ -10,7 +10,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
-"PO-Revision-Date: 2022-02-15 10:31\n"
+"PO-Revision-Date: 2022-02-15 11:33\n"
 
 #: docs/8.x/session.md:block 1 (header)
 msgid "HTTP Session"
@@ -558,19 +558,19 @@ msgstr "`close` 方法跟 `open` 方法一樣，通常可以忽略。對大多�
 
 #: docs/8.x/session.md:block 106 (unordered list)
 msgid "The `read` method should return the string version of the session data associated with the given `$sessionId`. There is no need to do any serialization or other encoding when retrieving or storing session data in your driver, as Laravel will perform the serialization for you."
-msgstr ""
+msgstr "`read` 方法應回傳與給定 `$sessionId` 關聯的字串版本 Session 資料。在從 Driver 中取出資料時不需要進行任何的^[序列化](Serialization) 或其他編碼，因為 Laravel 會幫你序列化。"
 
 #: docs/8.x/session.md:block 106 (unordered list)
 msgid "The `write` method should write the given `$data` string associated with the `$sessionId` to some persistent storage system, such as MongoDB or another storage system of your choice. Again, you should not perform any serialization - Laravel will have already handled that for you."
-msgstr ""
+msgstr "`write` 方法應將給定的 `$data` 字串以 `$sessionId` 關聯並保存到儲存系統中，例如 MongoDB 或其他你選擇的儲存系統。同樣的，不需要進行任何序列化 —— Laravel 已經幫你序列化好了。"
 
 #: docs/8.x/session.md:block 106 (unordered list)
 msgid "The `destroy` method should remove the data associated with the `$sessionId` from persistent storage."
-msgstr ""
+msgstr "`destroy` 方法從持續性儲存系統中移除任何與 `$sessionId` 關聯的資料。"
 
 #: docs/8.x/session.md:block 106 (unordered list)
 msgid "The `gc` method should destroy all session data that is older than the given `$lifetime`, which is a UNIX timestamp. For self-expiring systems like Memcached and Redis, this method may be left empty."
-msgstr ""
+msgstr "`gc` 方法移除所有時間舊於 `$lifetime` 的 `Session` 資料。`$lifetime` 是 UNIX 時戳。對於^[自帶有效期限](Self-Expiring)的系統，如 Memcached 或 Redis，可以將這個方法留空。"
 
 #: docs/8.x/session.md:block 109 (header)
 msgid "Registering The Driver"
@@ -610,7 +610,35 @@ msgid "<?php\n\n"
 "        });\n"
 "    }\n"
 "}\n"
-msgstr ""
+msgstr "<?php\n\n"
+"namespace App\\Providers;\n\n"
+"use App\\Extensions\\MongoSessionHandler;\n"
+"use Illuminate\\Support\\Facades\\Session;\n"
+"use Illuminate\\Support\\ServiceProvider;\n\n"
+"class SessionServiceProvider extends ServiceProvider\n"
+"{\n"
+"    /**\n"
+"     * Register any application services.\n"
+"     *\n"
+"     * @return void\n"
+"     */\n"
+"    public function register()\n"
+"    {\n"
+"        //\n"
+"    }\n\n"
+"    /**\n"
+"     * Bootstrap any application services.\n"
+"     *\n"
+"     * @return void\n"
+"     */\n"
+"    public function boot()\n"
+"    {\n"
+"        Session::extend('mongo', function ($app) {\n"
+"            // Return an implementation of SessionHandlerInterface...\n"
+"            return new MongoSessionHandler;\n"
+"        });\n"
+"    }\n"
+"}\n"
 
 #: docs/8.x/session.md:block 112 (paragraph)
 msgid "Once the session driver has been registered, you may use the `mongo` driver in your `config/session.php` configuration file."

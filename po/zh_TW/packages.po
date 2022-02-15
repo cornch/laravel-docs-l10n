@@ -10,7 +10,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
-"PO-Revision-Date: 2022-02-13 09:30\n"
+"PO-Revision-Date: 2022-02-15 16:28\n"
 
 #: docs/8.x/packages.md:block 1 (header)
 msgid "Package Development"
@@ -18,59 +18,59 @@ msgstr "套件開發"
 
 #: docs/8.x/packages.md:block 2 (unordered list)
 msgid "[Introduction](#introduction)"
-msgstr ""
+msgstr "[簡介](#introduction)"
 
 #: docs/8.x/packages.md:block 2 (unordered list)
 msgid "[A Note On Facades](#a-note-on-facades)"
-msgstr ""
+msgstr "[有關 Facade 的注意事項](#a-note-on-facades)"
 
 #: docs/8.x/packages.md:block 2 (unordered list)
 msgid "[Package Discovery](#package-discovery)"
-msgstr ""
+msgstr "[Package Discovery](#package-discovery)"
 
 #: docs/8.x/packages.md:block 2 (unordered list)
 msgid "[Service Providers](#service-providers)"
-msgstr ""
+msgstr "[Service Provider](#service-providers)"
 
 #: docs/8.x/packages.md:block 2 (unordered list)
 msgid "[Resources](#resources)"
-msgstr ""
+msgstr "[資源](#resources)"
 
 #: docs/8.x/packages.md:block 2 (unordered list)
 msgid "[Configuration](#configuration)"
-msgstr ""
+msgstr "[組態設定](#configuration)"
 
 #: docs/8.x/packages.md:block 2 (unordered list)
 msgid "[Migrations](#migrations)"
-msgstr ""
+msgstr "[Migration](#migrations)"
 
 #: docs/8.x/packages.md:block 2 (unordered list)
 msgid "[Routes](#routes)"
-msgstr ""
+msgstr "[Route](#routes)"
 
 #: docs/8.x/packages.md:block 2 (unordered list)
 msgid "[Translations](#translations)"
-msgstr ""
+msgstr "[翻譯](#translations)"
 
 #: docs/8.x/packages.md:block 2 (unordered list)
 msgid "[Views](#views)"
-msgstr ""
+msgstr "[View](#views)"
 
 #: docs/8.x/packages.md:block 2 (unordered list)
 msgid "[View Components](#view-components)"
-msgstr ""
+msgstr "[View 元件](#view-components)"
 
 #: docs/8.x/packages.md:block 2 (unordered list)
 msgid "[Commands](#commands)"
-msgstr ""
+msgstr "[指令](#commands)"
 
 #: docs/8.x/packages.md:block 2 (unordered list)
 msgid "[Public Assets](#public-assets)"
-msgstr ""
+msgstr "[公用素材](#public-assets)"
 
 #: docs/8.x/packages.md:block 2 (unordered list)
 msgid "[Publishing File Groups](#publishing-file-groups)"
-msgstr ""
+msgstr "[安裝檔案群組](#publishing-file-groups)"
 
 #: docs/8.x/packages.md:block 4 (header)
 msgid "Introduction"
@@ -94,15 +94,15 @@ msgstr "有關 Facade 的注意事項"
 
 #: docs/8.x/packages.md:block 10 (paragraph)
 msgid "When writing a Laravel application, it generally does not matter if you use contracts or facades since both provide essentially equal levels of testability. However, when writing packages, your package will not typically have access to all of Laravel's testing helpers. If you would like to be able to write your package tests as if the package were installed inside a typical Laravel application, you may use the [Orchestral Testbench](https://github.com/orchestral/testbench) package."
-msgstr ""
+msgstr "在撰寫 Laravel 專案時，要使用 Contract 還是 Facade，一般來說沒什麼差別，因為兩者的可測試性都是相同的。不過，在開發套件的時候，我們要開發的套件可能無法存取所有的 Laravel 測試輔助函式。若想在測試套件是能像在一般的 Laravel 專案一樣測試，可使用 [Orchestral Testbench](https://github.com/orchestral/testbench) 套件。"
 
 #: docs/8.x/packages.md:block 12 (header)
 msgid "Package Discovery"
-msgstr ""
+msgstr "Package Discovery"
 
 #: docs/8.x/packages.md:block 13 (paragraph)
 msgid "In a Laravel application's `config/app.php` configuration file, the `providers` option defines a list of service providers that should be loaded by Laravel. When someone installs your package, you will typically want your service provider to be included in this list. Instead of requiring users to manually add your service provider to the list, you may define the provider in the `extra` section of your package's `composer.json` file. In addition to service providers, you may also list any [facades](/docs/{{version}}/facades) you would like to be registered:"
-msgstr ""
+msgstr "在 Laravel 專案的 `config/app.php` 設定中，`providers` 選項列出了 Laravel 要載入的 Service Provider。當有人安裝了我們的套件後，通常來說就需要將我們的 Service Provider 列在其中。不過，其實不需要讓使用者手動將 Service Provider 寫在列表中，我們可以在套件的 `composer.json` 檔中的 `extra` 欄位內定義 Provider。除了 Servce Provider 內，也可以列出要註冊的 [Facade](/docs/{{version}}/facades)："
 
 #: docs/8.x/packages.md:block 14 (code)
 msgid "\"extra\": {\n"
@@ -115,15 +115,24 @@ msgid "\"extra\": {\n"
 "        }\n"
 "    }\n"
 "},\n"
-msgstr ""
+msgstr "\"extra\": {\n"
+"    \"laravel\": {\n"
+"        \"providers\": [\n"
+"            \"Barryvdh\\\\Debugbar\\\\ServiceProvider\"\n"
+"        ],\n"
+"        \"aliases\": {\n"
+"            \"Debugbar\": \"Barryvdh\\\\Debugbar\\\\Facade\"\n"
+"        }\n"
+"    }\n"
+"},\n"
 
 #: docs/8.x/packages.md:block 15 (paragraph)
 msgid "Once your package has been configured for discovery, Laravel will automatically register its service providers and facades when it is installed, creating a convenient installation experience for your package's users."
-msgstr ""
+msgstr "設定好 Discovery 後，Larave 就會在套件安裝時自動註冊套件的 Service Provider 與 Facade，帶給套件使用者一個方便的體驗。"
 
 #: docs/8.x/packages.md:block 17 (header)
 msgid "Opting Out Of Package Discovery"
-msgstr ""
+msgstr "不使用 Package Discovery"
 
 #: docs/8.x/packages.md:block 18 (paragraph)
 msgid "If you are the consumer of a package and would like to disable package discovery for a package, you may list the package name in the `extra` section of your application's `composer.json` file:"

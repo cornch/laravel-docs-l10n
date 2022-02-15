@@ -10,7 +10,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
-"PO-Revision-Date: 2022-02-13 09:30\n"
+"PO-Revision-Date: 2022-02-15 10:31\n"
 
 #: docs/8.x/session.md:block 1 (header)
 msgid "HTTP Session"
@@ -18,55 +18,55 @@ msgstr "HTTP Session"
 
 #: docs/8.x/session.md:block 2 (unordered list)
 msgid "[Introduction](#introduction)"
-msgstr ""
+msgstr "[簡介](#introduction)"
 
 #: docs/8.x/session.md:block 2 (unordered list)
 msgid "[Configuration](#configuration)"
-msgstr ""
+msgstr "[組態設定](#configuration)"
 
 #: docs/8.x/session.md:block 2 (unordered list)
 msgid "[Driver Prerequisites](#driver-prerequisites)"
-msgstr ""
+msgstr "[Driver 前置需求](#driver-prerequisites)"
 
 #: docs/8.x/session.md:block 2 (unordered list)
 msgid "[Interacting With The Session](#interacting-with-the-session)"
-msgstr ""
+msgstr "[使用 Session](#interacting-with-the-session)"
 
 #: docs/8.x/session.md:block 2 (unordered list)
 msgid "[Retrieving Data](#retrieving-data)"
-msgstr ""
+msgstr "[取得資料](#retrieving-data)"
 
 #: docs/8.x/session.md:block 2 (unordered list)
 msgid "[Storing Data](#storing-data)"
-msgstr ""
+msgstr "[保存資料](#storing-data)"
 
 #: docs/8.x/session.md:block 2 (unordered list)
 msgid "[Flash Data](#flash-data)"
-msgstr ""
+msgstr "[快閃資料](#flash-data)"
 
 #: docs/8.x/session.md:block 2 (unordered list)
 msgid "[Deleting Data](#deleting-data)"
-msgstr ""
+msgstr "[刪除資料](#deleting-data)"
 
 #: docs/8.x/session.md:block 2 (unordered list)
 msgid "[Regenerating The Session ID](#regenerating-the-session-id)"
-msgstr ""
+msgstr "[重新產生 Session ID](#regenerating-the-session-id)"
 
 #: docs/8.x/session.md:block 2 (unordered list)
 msgid "[Session Blocking](#session-blocking)"
-msgstr ""
+msgstr "[Session 鎖定](#session-blocking)"
 
 #: docs/8.x/session.md:block 2 (unordered list)
 msgid "[Adding Custom Session Drivers](#adding-custom-session-drivers)"
-msgstr ""
+msgstr "[新增自訂的 Session Driver](#adding-custom-session-drivers)"
 
 #: docs/8.x/session.md:block 2 (unordered list)
 msgid "[Implementing The Driver](#implementing-the-driver)"
-msgstr ""
+msgstr "[實作 Driver](#implementing-the-driver)"
 
 #: docs/8.x/session.md:block 2 (unordered list)
 msgid "[Registering The Driver](#registering-the-driver)"
-msgstr ""
+msgstr "[註冊 Driver](#registering-the-driver)"
 
 #: docs/8.x/session.md:block 4 (header)
 msgid "Introduction"
@@ -94,31 +94,31 @@ msgstr "Session 的 `driver` 設定定義了每個 Request 的 Session 資料要
 
 #: docs/8.x/session.md:block 12 (unordered list)
 msgid "`file` - sessions are stored in `storage/framework/sessions`."
-msgstr ""
+msgstr "`file` - Session 儲存在 `storage/framework/sessions`。"
 
 #: docs/8.x/session.md:block 12 (unordered list)
 msgid "`cookie` - sessions are stored in secure, encrypted cookies."
-msgstr ""
+msgstr "`cookie` - Session 儲存在安全的加密 Cookie 中。"
 
 #: docs/8.x/session.md:block 12 (unordered list)
 msgid "`database` - sessions are stored in a relational database."
-msgstr ""
+msgstr "`database` - Session 儲存在關聯式資料庫中。"
 
 #: docs/8.x/session.md:block 12 (unordered list)
 msgid "`memcached` / `redis` - sessions are stored in one of these fast, cache based stores."
-msgstr ""
+msgstr "`memcached` / `redis` - Session 儲存在其中一個快速、基於快取的存放空間中。"
 
 #: docs/8.x/session.md:block 12 (unordered list)
 msgid "`dynamodb` - sessions are stored in AWS DynamoDB."
-msgstr ""
+msgstr "`dynamodb` - Session 儲存在 AWS DynamoDB。"
 
 #: docs/8.x/session.md:block 12 (unordered list)
 msgid "`array` - sessions are stored in a PHP array and will not be persisted."
-msgstr ""
+msgstr "`array` - Session 儲存在 PHP 陣列中，且不會被^[持續保存](Persist)。"
 
 #: docs/8.x/session.md:block 14 (quote)
 msgid "{tip} The array driver is primarily used during [testing](/docs/{{version}}/testing) and prevents the data stored in the session from being persisted."
-msgstr ""
+msgstr "{tip} Array Driver 主要是用在[測試](/docs/{{version}}/testing)上的，保存在 Session 裡的資料將不被持續保存。"
 
 #: docs/8.x/session.md:block 16 (header)
 msgid "Driver Prerequisites"
@@ -141,7 +141,14 @@ msgid "Schema::create('sessions', function ($table) {\n"
 "    $table->text('payload');\n"
 "    $table->integer('last_activity')->index();\n"
 "});\n"
-msgstr ""
+msgstr "Schema::create('sessions', function ($table) {\n"
+"    $table->string('id')->primary();\n"
+"    $table->foreignId('user_id')->nullable()->index();\n"
+"    $table->string('ip_address', 45)->nullable();\n"
+"    $table->text('user_agent')->nullable();\n"
+"    $table->text('payload');\n"
+"    $table->integer('last_activity')->index();\n"
+"});\n"
 
 #: docs/8.x/session.md:block 21 (paragraph)
 msgid "You may use the `session:table` Artisan command to generate this migration. To learn more about database migrations, you may consult the complete [migration documentation](/docs/{{version}}/migrations):"
@@ -163,7 +170,7 @@ msgstr "在 Laravel 上使用 Redis Session 前，必須先使用 PECL 安裝 Ph
 
 #: docs/8.x/session.md:block 26 (quote)
 msgid "{tip} In the `session` configuration file, the `connection` option may be used to specify which Redis connection is used by the session."
-msgstr ""
+msgstr "{tip} 在 `session` 設定檔中，可使用 `connection` 選項來指定 Session 要使用哪個 Redis 連線。"
 
 #: docs/8.x/session.md:block 28 (header)
 msgid "Interacting With The Session"
@@ -197,7 +204,25 @@ msgid "<?php\n\n"
 "        //\n"
 "    }\n"
 "}\n"
-msgstr ""
+msgstr "<?php\n\n"
+"namespace App\\Http\\Controllers;\n\n"
+"use App\\Http\\Controllers\\Controller;\n"
+"use Illuminate\\Http\\Request;\n\n"
+"class UserController extends Controller\n"
+"{\n"
+"    /**\n"
+"     * Show the profile for the given user.\n"
+"     *\n"
+"     * @param  Request  $request\n"
+"     * @param  int  $id\n"
+"     * @return Response\n"
+"     */\n"
+"    public function show(Request $request, $id)\n"
+"    {\n"
+"        $value = $request->session()->get('key');\n\n"
+"        //\n"
+"    }\n"
+"}\n"
 
 #: docs/8.x/session.md:block 33 (paragraph)
 msgid "When you retrieve an item from the session, you may also pass a default value as the second argument to the `get` method. This default value will be returned if the specified key does not exist in the session. If you pass a closure as the default value to the `get` method and the requested key does not exist, the closure will be executed and its result returned:"
@@ -208,7 +233,10 @@ msgid "$value = $request->session()->get('key', 'default');\n\n"
 "$value = $request->session()->get('key', function () {\n"
 "    return 'default';\n"
 "});\n"
-msgstr ""
+msgstr "$value = $request->session()->get('key', 'default');\n\n"
+"$value = $request->session()->get('key', function () {\n"
+"    return 'default';\n"
+"});\n"
 
 #: docs/8.x/session.md:block 36 (header)
 msgid "The Global Session Helper"
@@ -227,11 +255,18 @@ msgid "Route::get('/home', function () {\n"
 "    // Store a piece of data in the session...\n"
 "    session(['key' => 'value']);\n"
 "});\n"
-msgstr ""
+msgstr "Route::get('/home', function () {\n"
+"    // 從 Session 中取得資料...\n"
+"    $value = session('key');\n\n"
+"    // 指定預設值...\n"
+"    $value = session('key', 'default');\n\n"
+"    // 在 Session 中保存資料...\n"
+"    session(['key' => 'value']);\n"
+"});\n"
 
 #: docs/8.x/session.md:block 39 (quote)
 msgid "{tip} There is little practical difference between using the session via an HTTP request instance versus using the global `session` helper. Both methods are [testable](/docs/{{version}}/testing) via the `assertSessionHas` method which is available in all of your test cases."
-msgstr ""
+msgstr "{tip} 使用 HTTP Request 實體跟全域 `session` 輔助函式在實務上沒有太大的不同。不管是哪種方式都是[可測試的](/docs/{{version}}/testing)，測試時可以使用測試例中的 `assertSessionHas` 方法來測試。"
 
 #: docs/8.x/session.md:block 41 (header)
 msgid "Retrieving All Session Data"
@@ -243,7 +278,7 @@ msgstr "若想從 Session 中取得所有資料，可以使用 `all` 方法："
 
 #: docs/8.x/session.md:block 43 (code)
 msgid "$data = $request->session()->all();\n"
-msgstr ""
+msgstr "$data = $request->session()->all();\n"
 
 #: docs/8.x/session.md:block 45 (header)
 msgid "Determining If An Item Exists In The Session"
@@ -257,7 +292,9 @@ msgstr "若要判斷 Session 中是否有某個項目，可使用 `has` 方法�
 msgid "if ($request->session()->has('users')) {\n"
 "    //\n"
 "}\n"
-msgstr ""
+msgstr "if ($request->session()->has('users')) {\n"
+"    //\n"
+"}\n"
 
 #: docs/8.x/session.md:block 48 (paragraph)
 msgid "To determine if an item is present in the session, even if its value is `null`, you may use the `exists` method:"
@@ -267,7 +304,9 @@ msgstr "若想判斷某個項目是否存在 Session，且不論其值是否為 
 msgid "if ($request->session()->exists('users')) {\n"
 "    //\n"
 "}\n"
-msgstr ""
+msgstr "if ($request->session()->exists('users')) {\n"
+"    //\n"
+"}\n"
 
 #: docs/8.x/session.md:block 50 (paragraph)
 msgid "To determine if an item is not present in the session, you may use the `missing` method. The `missing` method returns `true` if the item is `null` or if the item is not present:"
@@ -277,7 +316,9 @@ msgstr "若要判斷 Session 中是否沒有某個項目，可使用 `missing` �
 msgid "if ($request->session()->missing('users')) {\n"
 "    //\n"
 "}\n"
-msgstr ""
+msgstr "if ($request->session()->missing('users')) {\n"
+"    //\n"
+"}\n"
 
 #: docs/8.x/session.md:block 53 (header)
 msgid "Storing Data"
@@ -292,7 +333,10 @@ msgid "// Via a request instance...\n"
 "$request->session()->put('key', 'value');\n\n"
 "// Via the global \"session\" helper...\n"
 "session(['key' => 'value']);\n"
-msgstr ""
+msgstr "// 使用 Request 實體...\n"
+"$request->session()->put('key', 'value');\n\n"
+"// 使用全域的「session」輔助函式...\n"
+"session(['key' => 'value']);\n"
 
 #: docs/8.x/session.md:block 57 (header)
 msgid "Pushing To Array Session Values"
@@ -304,7 +348,7 @@ msgstr "可以使用 `push` 方法來將值推入 (Push) 到陣列的 Session �
 
 #: docs/8.x/session.md:block 59 (code)
 msgid "$request->session()->push('user.teams', 'developers');\n"
-msgstr ""
+msgstr "$request->session()->push('user.teams', 'developers');\n"
 
 #: docs/8.x/session.md:block 61 (header)
 msgid "Retrieving & Deleting An Item"
@@ -316,7 +360,7 @@ msgstr "使用 `pull` 方法即可以單一陳述式從 Session 內取得並刪�
 
 #: docs/8.x/session.md:block 63 (code)
 msgid "$value = $request->session()->pull('key', 'default');\n"
-msgstr ""
+msgstr "$value = $request->session()->pull('key', 'default');\n"
 
 #: docs/8.x/session.md:block 65 (header)
 msgid "Incrementing & Decrementing Session Values"
@@ -331,7 +375,10 @@ msgid "$request->session()->increment('count');\n\n"
 "$request->session()->increment('count', $incrementBy = 2);\n\n"
 "$request->session()->decrement('count');\n\n"
 "$request->session()->decrement('count', $decrementBy = 2);\n"
-msgstr ""
+msgstr "$request->session()->increment('count');\n\n"
+"$request->session()->increment('count', $incrementBy = 2);\n\n"
+"$request->session()->decrement('count');\n\n"
+"$request->session()->decrement('count', $decrementBy = 2);\n"
 
 #: docs/8.x/session.md:block 69 (header)
 msgid "Flash Data"
@@ -343,7 +390,7 @@ msgstr "有時候，我們可能會想保存一些資料在 Session 中以供下
 
 #: docs/8.x/session.md:block 71 (code)
 msgid "$request->session()->flash('status', 'Task was successful!');\n"
-msgstr ""
+msgstr "$request->session()->flash('status', 'Task was successful!');\n"
 
 #: docs/8.x/session.md:block 72 (paragraph)
 msgid "If you need to persist your flash data for several requests, you may use the `reflash` method, which will keep all of the flash data for an additional request. If you only need to keep specific flash data, you may use the `keep` method:"
@@ -352,7 +399,8 @@ msgstr "若想將快閃資料維持在好幾個 Request 中，可使用 `reflash
 #: docs/8.x/session.md:block 73 (code)
 msgid "$request->session()->reflash();\n\n"
 "$request->session()->keep(['username', 'email']);\n"
-msgstr ""
+msgstr "$request->session()->reflash();\n\n"
+"$request->session()->keep(['username', 'email']);\n"
 
 #: docs/8.x/session.md:block 74 (paragraph)
 msgid "To persist your flash data only for the current request, you may use the `now` method:"
@@ -360,7 +408,7 @@ msgstr "若只想在目前 Request 中維持快閃資料，可使用 `now` 方�
 
 #: docs/8.x/session.md:block 75 (code)
 msgid "$request->session()->now('status', 'Task was successful!');\n"
-msgstr ""
+msgstr "$request->session()->now('status', 'Task was successful!');\n"
 
 #: docs/8.x/session.md:block 77 (header)
 msgid "Deleting Data"
@@ -376,7 +424,11 @@ msgid "// Forget a single key...\n"
 "// Forget multiple keys...\n"
 "$request->session()->forget(['name', 'status']);\n\n"
 "$request->session()->flush();\n"
-msgstr ""
+msgstr "// 刪除單一索引鍵...\n"
+"$request->session()->forget('name');\n\n"
+"// 刪除多個索引鍵...\n"
+"$request->session()->forget(['name', 'status']);\n\n"
+"$request->session()->flush();\n"
 
 #: docs/8.x/session.md:block 81 (header)
 msgid "Regenerating The Session ID"
@@ -392,7 +444,7 @@ msgstr "如果你使用其中一種 Laravel 的[專案入門套件](/docs/{{vers
 
 #: docs/8.x/session.md:block 84 (code)
 msgid "$request->session()->regenerate();\n"
-msgstr ""
+msgstr "$request->session()->regenerate();\n"
 
 #: docs/8.x/session.md:block 85 (paragraph)
 msgid "If you need to regenerate the session ID and remove all data from the session in a single statement, you may use the `invalidate` method:"
@@ -400,7 +452,7 @@ msgstr "若有需要以單一陳述式重新產生 Session ID 並從 Session 中
 
 #: docs/8.x/session.md:block 86 (code)
 msgid "$request->session()->invalidate();\n"
-msgstr ""
+msgstr "$request->session()->invalidate();\n"
 
 #: docs/8.x/session.md:block 88 (header)
 msgid "Session Blocking"
@@ -408,7 +460,7 @@ msgstr "Session 封鎖"
 
 #: docs/8.x/session.md:block 89 (quote)
 msgid "{note} To utilize session blocking, your application must be using a cache driver that supports [atomic locks](/docs/{{version}}/cache#atomic-locks). Currently, those cache drivers include the `memcached`, `dynamodb`, `redis`, and `database` drivers. In addition, you may not use the `cookie` session driver."
-msgstr ""
+msgstr "{note} 若要使用 Session 鎖定，必須要使用支援 [Atomic Lock](/docs/{{version}}/cache#atomic-locks) (不可部分完成鎖定) 的快取 Driver。目前，支援 Atomic Lock 的快取 Driver 有 `memcached`、`dynamodb`、`redis`、`database` 等 Driver。此外，也沒辦法使用 `cookie` Session Driver。"
 
 #: docs/8.x/session.md:block 90 (paragraph)
 msgid "By default, Laravel allows requests using the same session to execute concurrently. So, for example, if you use a JavaScript HTTP library to make two HTTP requests to your application, they will both execute at the same time. For many applications, this is not a problem; however, session data loss can occur in a small subset of applications that make concurrent requests to two different application endpoints which both write data to the session."
@@ -425,7 +477,12 @@ msgid "Route::post('/profile', function () {\n"
 "Route::post('/order', function () {\n"
 "    //\n"
 "})->block($lockSeconds = 10, $waitSeconds = 10)\n"
-msgstr ""
+msgstr "Route::post('/profile', function () {\n"
+"    //\n"
+"})->block($lockSeconds = 10, $waitSeconds = 10)\n\n"
+"Route::post('/order', function () {\n"
+"    //\n"
+"})->block($lockSeconds = 10, $waitSeconds = 10)\n"
 
 #: docs/8.x/session.md:block 93 (paragraph)
 msgid "The `block` method accepts two optional arguments. The first argument accepted by the `block` method is the maximum number of seconds the session lock should be held for before it is released. Of course, if the request finishes executing before this time the lock will be released earlier."
@@ -443,7 +500,9 @@ msgstr "若沒有提供這些引數，則 Lock 最長可取得 10 秒，而 Requ
 msgid "Route::post('/profile', function () {\n"
 "    //\n"
 "})->block()\n"
-msgstr ""
+msgstr "Route::post('/profile', function () {\n"
+"    //\n"
+"})->block()\n"
 
 #: docs/8.x/session.md:block 98 (header)
 msgid "Adding Custom Session Drivers"
@@ -469,11 +528,21 @@ msgid "<?php\n\n"
 "    public function destroy($sessionId) {}\n"
 "    public function gc($lifetime) {}\n"
 "}\n"
-msgstr ""
+msgstr "<?php\n\n"
+"namespace App\\Extensions;\n\n"
+"class MongoSessionHandler implements \\SessionHandlerInterface\n"
+"{\n"
+"    public function open($savePath, $sessionName) {}\n"
+"    public function close() {}\n"
+"    public function read($sessionId) {}\n"
+"    public function write($sessionId, $data) {}\n"
+"    public function destroy($sessionId) {}\n"
+"    public function gc($lifetime) {}\n"
+"}\n"
 
 #: docs/8.x/session.md:block 103 (quote)
 msgid "{tip} Laravel does not ship with a directory to contain your extensions. You are free to place them anywhere you like. In this example, we have created an `Extensions` directory to house the `MongoSessionHandler`."
-msgstr ""
+msgstr "{tip} Laravel 中沒有內建用來放置擴充程式的目錄。你可以自由放置這些擴充程式。在這個例子中，我們建立了一個 `Extensions` 目錄來放置 `MongoSessionHandler`。"
 
 #: docs/8.x/session.md:block 104 (paragraph)
 msgid "Since the purpose of these methods is not readily understandable, let's quickly cover what each of the methods do:"
@@ -481,11 +550,11 @@ msgstr "由於只看這些方法很難看出他們的功能，所以我們來快
 
 #: docs/8.x/session.md:block 106 (unordered list)
 msgid "The `open` method would typically be used in file based session store systems. Since Laravel ships with a `file` session driver, you will rarely need to put anything in this method. You can simply leave this method empty."
-msgstr ""
+msgstr "`open` 方法通常是給一些基於檔案的 Session 存放系統使用的。因為 Laravel 已經有附帶 `file` Session Driver 了，所以通常這個方法裡應該不需要寫什麼內容。留空即可。"
 
 #: docs/8.x/session.md:block 106 (unordered list)
 msgid "The `close` method, like the `open` method, can also usually be disregarded. For most drivers, it is not needed."
-msgstr ""
+msgstr "`close` 方法跟 `open` 方法一樣，通常可以忽略。對大多數的 Driver 來說並不需要。"
 
 #: docs/8.x/session.md:block 106 (unordered list)
 msgid "The `read` method should return the string version of the session data associated with the given `$sessionId`. There is no need to do any serialization or other encoding when retrieving or storing session data in your driver, as Laravel will perform the serialization for you."

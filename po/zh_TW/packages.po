@@ -10,7 +10,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
-"PO-Revision-Date: 2022-02-16 03:24\n"
+"PO-Revision-Date: 2022-02-16 04:20\n"
 
 #: docs/8.x/packages.md:block 1 (header)
 msgid "Package Development"
@@ -184,19 +184,19 @@ msgstr "[Service Provider](/docs/{{version}}/providers) 是套件與 Laravel 間
 
 #: docs/8.x/packages.md:block 25 (paragraph)
 msgid "A service provider extends the `Illuminate\\Support\\ServiceProvider` class and contains two methods: `register` and `boot`. The base `ServiceProvider` class is located in the `illuminate/support` Composer package, which you should add to your own package's dependencies. To learn more about the structure and purpose of service providers, check out [their documentation](/docs/{{version}}/providers)."
-msgstr ""
+msgstr "Service Provider 應繼承 `Illuminate\\Support\\ServiceProvider` 類別，並包含兩個方法：`register` 與 `boot`。`ServiceProvider` 基礎類別放在 `illuminate/support` Composer 套件中，請在你的套件中將其加為相依性套件。若要瞭解更多有關 Service Provider 的架構與功能，請參見 [Service Provider 的說明文件](/docs/{{version}}/providers)。"
 
 #: docs/8.x/packages.md:block 27 (header)
 msgid "Resources"
-msgstr ""
+msgstr "資源"
 
 #: docs/8.x/packages.md:block 29 (header)
 msgid "Configuration"
-msgstr ""
+msgstr "組態設定"
 
 #: docs/8.x/packages.md:block 30 (paragraph)
 msgid "Typically, you will need to publish your package's configuration file to the application's `config` directory. This will allow users of your package to easily override your default configuration options. To allow your configuration files to be published, call the `publishes` method from the `boot` method of your service provider:"
-msgstr ""
+msgstr "一般來說，在製作套件的時候我們會想將套件的組態設定檔安裝到專案的 `config` 目錄內。這樣一來套件使用者就能輕鬆地覆寫預設設定。若要讓組態設定檔能安裝到專案內，請在 Service Provider 的 `boot` 方法內呼叫 `publishes` 方法："
 
 #: docs/8.x/packages.md:block 31 (code)
 msgid "/**\n"
@@ -210,7 +210,17 @@ msgid "/**\n"
 "        __DIR__.'/../config/courier.php' => config_path('courier.php'),\n"
 "    ]);\n"
 "}\n"
-msgstr ""
+msgstr "/**\n"
+" * Bootstrap any package services.\n"
+" *\n"
+" * @return void\n"
+" */\n"
+"public function boot()\n"
+"{\n"
+"    $this->publishes([\n"
+"        __DIR__.'/../config/courier.php' => config_path('courier.php'),\n"
+"    ]);\n"
+"}\n"
 
 #: docs/8.x/packages.md:block 32 (paragraph)
 msgid "Now, when users of your package execute Laravel's `vendor:publish` command, your file will be copied to the specified publish location. Once your configuration has been published, its values may be accessed like any other configuration file:"

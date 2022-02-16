@@ -10,7 +10,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
-"PO-Revision-Date: 2022-02-16 15:23\n"
+"PO-Revision-Date: 2022-02-16 16:30\n"
 
 #: docs/8.x/queues.md:block 1 (header)
 msgid "Queues"
@@ -26,7 +26,7 @@ msgstr "[連線 Vs. 佇列](#connections-vs-queues)"
 
 #: docs/8.x/queues.md:block 2 (unordered list)
 msgid "[Driver Notes & Prerequisites](#driver-prerequisites)"
-msgstr "[Driver 說明與前置需求](#driver-prerequisites)"
+msgstr "[Driver 注意事項與前置需求](#driver-prerequisites)"
 
 #: docs/8.x/queues.md:block 2 (unordered list)
 msgid "[Creating Jobs](#creating-jobs)"
@@ -234,56 +234,61 @@ msgid "use App\\Jobs\\ProcessPodcast;\n\n"
 "ProcessPodcast::dispatch();\n\n"
 "// This job is sent to the default connection's \"emails\" queue...\n"
 "ProcessPodcast::dispatch()->onQueue('emails');\n"
-msgstr ""
+msgstr "use App\\Jobs\\ProcessPodcast;\n\n"
+"// 這個任務會被送到預設連線的預設佇列上...\n"
+"ProcessPodcast::dispatch();\n\n"
+"// 這個任務會被送到預設連線的「emails」佇列上...\n"
+"ProcessPodcast::dispatch()->onQueue('emails');\n"
 
 #: docs/8.x/queues.md:block 14 (paragraph)
 msgid "Some applications may not need to ever push jobs onto multiple queues, instead preferring to have one simple queue. However, pushing jobs to multiple queues can be especially useful for applications that wish to prioritize or segment how jobs are processed, since the Laravel queue worker allows you to specify which queues it should process by priority. For example, if you push jobs to a `high` queue, you may run a worker that gives them higher processing priority:"
-msgstr ""
+msgstr "有的程式沒有要將任務推送到不同佇列的需求，這些程式只需要有單一佇列就好了。不過，因為 Laravel 的 Queue Worker 可調整各個 Queue 的優先處理等級，因此如果想要調整不同任務的優先處理順序，把任務推送到不同佇列就很有用。就來來說，我們如果把任務推送到 `high` 佇列，我們就可以執行一個 Worker 來讓這個佇列以更高優先級處理："
 
 #: docs/8.x/queues.md:block 15 (code)
 msgid "php artisan queue:work --queue=high,default\n"
-msgstr ""
+msgstr "php artisan queue:work --queue=high,default\n"
 
 #: docs/8.x/queues.md:block 17 (header)
 msgid "Driver Notes & Prerequisites"
-msgstr ""
+msgstr "Driver 注意事項與前置需求"
 
 #: docs/8.x/queues.md:block 19 (header)
 msgid "Database"
-msgstr ""
+msgstr "Database"
 
 #: docs/8.x/queues.md:block 20 (paragraph)
 msgid "In order to use the `database` queue driver, you will need a database table to hold the jobs. To generate a migration that creates this table, run the `queue:table` Artisan command. Once the migration has been created, you may migrate your database using the `migrate` command:"
-msgstr ""
+msgstr "若要使用 `database` 佇列 Driver，我們需要先有一個用來存放任務的資料庫資料表。若要產生一個用於建立這個資料表的 Migration，請執行 `queue:table` Artisan 指令。建立好 Migration 後，就可以使用 `migrate` 指令來 Migrate 資料庫："
 
 #: docs/8.x/queues.md:block 21 (code)
 msgid "php artisan queue:table\n\n"
 "php artisan migrate\n"
-msgstr ""
+msgstr "php artisan queue:table\n\n"
+"php artisan migrate\n"
 
 #: docs/8.x/queues.md:block 22 (paragraph)
 msgid "Finally, don't forget to instruct your application to use the `database` driver by updating the `QUEUE_CONNECTION` variable in your application's `.env` file:"
-msgstr ""
+msgstr "最後，別忘了更新專案 `.env` 檔中的 `QUEUE_CONNECTION` 變數來讓專案使用 `database` Driver："
 
 #: docs/8.x/queues.md:block 23 (code)
 msgid "QUEUE_CONNECTION=database\n"
-msgstr ""
+msgstr "QUEUE_CONNECTION=database\n"
 
 #: docs/8.x/queues.md:block 25 (header)
 msgid "Redis"
-msgstr ""
+msgstr "Redis"
 
 #: docs/8.x/queues.md:block 26 (paragraph)
 msgid "In order to use the `redis` queue driver, you should configure a Redis database connection in your `config/database.php` configuration file."
-msgstr ""
+msgstr "若要使用 `redis` 佇列 Driver，請在 `config/database.php` 設定檔中設定 Redis 資料庫連線。"
 
 #: docs/8.x/queues.md:block 27 (paragraph)
 msgid "**Redis Cluster**"
-msgstr ""
+msgstr "**Redis Cluster**"
 
 #: docs/8.x/queues.md:block 28 (paragraph)
 msgid "If your Redis queue connection uses a Redis Cluster, your queue names must contain a [key hash tag](https://redis.io/topics/cluster-spec#keys-hash-tags). This is required in order to ensure all of the Redis keys for a given queue are placed into the same hash slot:"
-msgstr ""
+msgstr "若 Redis 佇列要使用 Redis Cluster，則設定的佇列名稱必須包含一個 [Key Hash Tag](https://redis.io/topics/cluster-spec#keys-hash-tags)。必須加上 Key Hash Tag，這樣才能確保給定佇列中所有的 Redis 索引鍵都有被放在相同的 Hash Slot 中："
 
 #: docs/8.x/queues.md:block 29 (code)
 msgid "'redis' => [\n"
@@ -292,19 +297,24 @@ msgid "'redis' => [\n"
 "    'queue' => '{default}',\n"
 "    'retry_after' => 90,\n"
 "],\n"
-msgstr ""
+msgstr "'redis' => [\n"
+"    'driver' => 'redis',\n"
+"    'connection' => 'default',\n"
+"    'queue' => '{default}',\n"
+"    'retry_after' => 90,\n"
+"],\n"
 
 #: docs/8.x/queues.md:block 30 (paragraph)
 msgid "**Blocking**"
-msgstr ""
+msgstr "**Blocking**"
 
 #: docs/8.x/queues.md:block 31 (paragraph)
 msgid "When using the Redis queue, you may use the `block_for` configuration option to specify how long the driver should wait for a job to become available before iterating through the worker loop and re-polling the Redis database."
-msgstr ""
+msgstr "在使用 Redis 佇列時，可使用 `block_for` 設定選項來指定 Redis Driver 在迭代 Worker 迴圈並重新讀取 Redis 資料庫來等新 Job 進來時要等待多久。"
 
 #: docs/8.x/queues.md:block 32 (paragraph)
 msgid "Adjusting this value based on your queue load can be more efficient than continually polling the Redis database for new jobs. For instance, you may set the value to `5` to indicate that the driver should block for five seconds while waiting for a job to become available:"
-msgstr ""
+msgstr "可依據佇列的負載來調整這個值，以避免不斷讀取 Redis 資料庫來尋找新任務，會比較有效率。舉例來說，我們可以將其設為 `5`，表示 Redis Driver 在等待新任務出現時應先等待 5 秒再查詢 Redis 資料庫："
 
 #: docs/8.x/queues.md:block 33 (code)
 msgid "'redis' => [\n"
@@ -314,7 +324,13 @@ msgid "'redis' => [\n"
 "    'retry_after' => 90,\n"
 "    'block_for' => 5,\n"
 "],\n"
-msgstr ""
+msgstr "'redis' => [\n"
+"    'driver' => 'redis',\n"
+"    'connection' => 'default',\n"
+"    'queue' => 'default',\n"
+"    'retry_after' => 90,\n"
+"    'block_for' => 5,\n"
+"],\n"
 
 #: docs/8.x/queues.md:block 34 (quote)
 msgid "{note} Setting `block_for` to `0` will cause queue workers to block indefinitely until a job is available. This will also prevent signals such as `SIGTERM` from being handled until the next job has been processed."

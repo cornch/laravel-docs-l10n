@@ -10,7 +10,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
-"PO-Revision-Date: 2022-02-16 05:17\n"
+"PO-Revision-Date: 2022-02-16 06:16\n"
 
 #: docs/8.x/packages.md:block 1 (header)
 msgid "Package Development"
@@ -364,19 +364,19 @@ msgstr "/**\n"
 
 #: docs/8.x/packages.md:block 54 (paragraph)
 msgid "Package translations are referenced using the `package::file.line` syntax convention. So, you may load the `courier` package's `welcome` line from the `messages` file like so:"
-msgstr ""
+msgstr "套件的語系檔使用 `package::file.line` (`套件::檔名.行`) 語法慣例來參照。所以，`courier` 套件的 `messages` 檔案中，`welcome` 行可以這樣載入："
 
 #: docs/8.x/packages.md:block 55 (code)
 msgid "echo trans('courier::messages.welcome');\n"
-msgstr ""
+msgstr "echo trans('courier::messages.welcome');\n"
 
 #: docs/8.x/packages.md:block 57 (header)
 msgid "Publishing Translations"
-msgstr ""
+msgstr "安裝翻譯"
 
 #: docs/8.x/packages.md:block 58 (paragraph)
 msgid "If you would like to publish your package's translations to the application's `resources/lang/vendor` directory, you may use the service provider's `publishes` method. The `publishes` method accepts an array of package paths and their desired publish locations. For example, to publish the translation files for the `courier` package, you may do the following:"
-msgstr ""
+msgstr "若想將套件的語系檔安裝到專案的 `resources/lang/vendor` 目錄下，可使用 Service Provider 的 `publishes` 方法。`publishes` 方法接受一組套件路徑與欲安裝位置的陣列。舉例來說，若要為 `courier` 套件安裝語系檔，可以這樣寫："
 
 #: docs/8.x/packages.md:block 59 (code)
 msgid "/**\n"
@@ -391,19 +391,30 @@ msgid "/**\n"
 "        __DIR__.'/../resources/lang' => resource_path('lang/vendor/courier'),\n"
 "    ]);\n"
 "}\n"
-msgstr ""
+msgstr "/**\n"
+" * Bootstrap any package services.\n"
+" *\n"
+" * @return void\n"
+" */\n"
+"public function boot()\n"
+"{\n"
+"    $this->loadTranslationsFrom(__DIR__.'/../resources/lang', 'courier');\n\n"
+"    $this->publishes([\n"
+"        __DIR__.'/../resources/lang' => resource_path('lang/vendor/courier'),\n"
+"    ]);\n"
+"}\n"
 
 #: docs/8.x/packages.md:block 60 (paragraph)
 msgid "Now, when users of your package execute Laravel's `vendor:publish` Artisan command, your package's translations will be published to the specified publish location."
-msgstr ""
+msgstr "接著，當套件使用者執行 Laravel 的 `vendor:publish` Artisan 指令後，套件的翻譯語系檔就會被安裝到指定的安裝位置內。"
 
 #: docs/8.x/packages.md:block 62 (header)
 msgid "Views"
-msgstr ""
+msgstr "View"
 
 #: docs/8.x/packages.md:block 63 (paragraph)
 msgid "To register your package's [views](/docs/{{version}}/views) with Laravel, you need to tell Laravel where the views are located. You may do this using the service provider's `loadViewsFrom` method. The `loadViewsFrom` method accepts two arguments: the path to your view templates and your package's name. For example, if your package's name is `courier`, you would add the following to your service provider's `boot` method:"
-msgstr ""
+msgstr "若要向 Laravel 註冊套件的 [View]，我們需要告訴 Laravel 這些 View 存在哪裡。可以使用 Service Provider 的 `loadViewsFrom` 方法。`loadViewsFrom` 方法接受兩個引數：View 樣板的路徑，以及套件的名稱。舉例來說，若套件名稱為 `courier`，則可在 Service Provider 的 `boot` 方法中加入下列程式："
 
 #: docs/8.x/packages.md:block 64 (code)
 msgid "/**\n"
@@ -415,33 +426,43 @@ msgid "/**\n"
 "{\n"
 "    $this->loadViewsFrom(__DIR__.'/../resources/views', 'courier');\n"
 "}\n"
-msgstr ""
+msgstr "/**\n"
+" * Bootstrap any package services.\n"
+" *\n"
+" * @return void\n"
+" */\n"
+"public function boot()\n"
+"{\n"
+"    $this->loadViewsFrom(__DIR__.'/../resources/views', 'courier');\n"
+"}\n"
 
 #: docs/8.x/packages.md:block 65 (paragraph)
 msgid "Package views are referenced using the `package::view` syntax convention. So, once your view path is registered in a service provider, you may load the `dashboard` view from the `courier` package like so:"
-msgstr ""
+msgstr "套件的 View 使用 `package::view` (`套件::View`) 語法慣例來參照。所以，在 Service Provider 內註冊好 View 的路徑後，就可以在 `courier` 套件中像這樣載入 `dashboard` View："
 
 #: docs/8.x/packages.md:block 66 (code)
 msgid "Route::get('/dashboard', function () {\n"
 "    return view('courier::dashboard');\n"
 "});\n"
-msgstr ""
+msgstr "Route::get('/dashboard', function () {\n"
+"    return view('courier::dashboard');\n"
+"});\n"
 
 #: docs/8.x/packages.md:block 68 (header)
 msgid "Overriding Package Views"
-msgstr ""
+msgstr "覆寫套件的 View"
 
 #: docs/8.x/packages.md:block 69 (paragraph)
 msgid "When you use the `loadViewsFrom` method, Laravel actually registers two locations for your views: the application's `resources/views/vendor` directory and the directory you specify. So, using the `courier` package as an example, Laravel will first check if a custom version of the view has been placed in the `resources/views/vendor/courier` directory by the developer. Then, if the view has not been customized, Laravel will search the package view directory you specified in your call to `loadViewsFrom`. This makes it easy for package users to customize / override your package's views."
-msgstr ""
+msgstr "使用 `loadViewsFrom` 方法時，Laravel 實際上在兩個地方上都註冊為這個套件的 View 存放位置：專案的 `resources/views/vendor` 目錄，以及你所指定的目錄。所以，若以 `courier` 套件為例，Laravel 會先檢查 `resources/views/vendor/courier` 目錄下是否有開發人員覆寫的自訂版本。若沒找到自訂版本，Laravel 接著才會在呼叫 `loadViewsFrom` 時提供的路徑下搜尋套件的 View。這樣一來，套件使用者就能輕鬆地客製化 / 覆寫套件的 View。"
 
 #: docs/8.x/packages.md:block 71 (header)
 msgid "Publishing Views"
-msgstr ""
+msgstr "安裝 View"
 
 #: docs/8.x/packages.md:block 72 (paragraph)
 msgid "If you would like to make your views available for publishing to the application's `resources/views/vendor` directory, you may use the service provider's `publishes` method. The `publishes` method accepts an array of package view paths and their desired publish locations:"
-msgstr ""
+msgstr "若想讓 View 可被安裝到專案的 `resources/views/vendor` 目錄下，可使用 Service Provider 的 `publishes` 方法。`publishes` 方法接受一組套件 View 路徑與欲安裝路徑的陣列："
 
 #: docs/8.x/packages.md:block 73 (code)
 msgid "/**\n"
@@ -456,15 +477,26 @@ msgid "/**\n"
 "        __DIR__.'/../resources/views' => resource_path('views/vendor/courier'),\n"
 "    ]);\n"
 "}\n"
-msgstr ""
+msgstr "/**\n"
+" * Bootstrap the package services.\n"
+" *\n"
+" * @return void\n"
+" */\n"
+"public function boot()\n"
+"{\n"
+"    $this->loadViewsFrom(__DIR__.'/../resources/views', 'courier');\n\n"
+"    $this->publishes([\n"
+"        __DIR__.'/../resources/views' => resource_path('views/vendor/courier'),\n"
+"    ]);\n"
+"}\n"
 
 #: docs/8.x/packages.md:block 74 (paragraph)
 msgid "Now, when users of your package execute Laravel's `vendor:publish` Artisan command, your package's views will be copied to the specified publish location."
-msgstr ""
+msgstr "接著，當套件使用者執行 Laravel 的 `vendor:publish` Artisan 指令後，套件的 View 就會被複製到指定的安裝位置內。"
 
 #: docs/8.x/packages.md:block 76 (header)
 msgid "View Components"
-msgstr ""
+msgstr "View 元件"
 
 #: docs/8.x/packages.md:block 77 (paragraph)
 msgid "If your package contains [view components](/docs/{{version}}/blade#components), you may use the `loadViewComponentsAs` method to inform Laravel how to load them. The `loadViewComponentsAs` method accepts two arguments: the tag prefix for your view components and an array of your view component class names. For example, if your package's prefix is `courier` and you have `Alert` and `Button` view components, you would add the following to your service provider's `boot` method:"

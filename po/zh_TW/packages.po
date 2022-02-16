@@ -10,7 +10,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
-"PO-Revision-Date: 2022-02-16 04:20\n"
+"PO-Revision-Date: 2022-02-16 05:17\n"
 
 #: docs/8.x/packages.md:block 1 (header)
 msgid "Package Development"
@@ -224,27 +224,27 @@ msgstr "/**\n"
 
 #: docs/8.x/packages.md:block 32 (paragraph)
 msgid "Now, when users of your package execute Laravel's `vendor:publish` command, your file will be copied to the specified publish location. Once your configuration has been published, its values may be accessed like any other configuration file:"
-msgstr ""
+msgstr "然後，當套件使用者執行 Laravel 的 `vendor:publish` 指令時，這些檔案就會被複製到指定的^[安裝](Publish)地點。安裝好設定檔後，就可以像其他設定檔樣存取這些設定值："
 
 #: docs/8.x/packages.md:block 33 (code)
 msgid "$value = config('courier.option');\n"
-msgstr ""
+msgstr "$value = config('courier.option');\n"
 
 #: docs/8.x/packages.md:block 34 (quote)
 msgid "{note} You should not define closures in your configuration files. They can not be serialized correctly when users execute the `config:cache` Artisan command."
-msgstr ""
+msgstr "{note} 請不要在設定檔中定義閉包。因為當使用者執行 `config:cache` Artisan 指令時，這些閉包沒有辦法被序列化。"
 
 #: docs/8.x/packages.md:block 36 (header)
 msgid "Default Package Configuration"
-msgstr ""
+msgstr "預設套件設定"
 
 #: docs/8.x/packages.md:block 37 (paragraph)
 msgid "You may also merge your own package configuration file with the application's published copy. This will allow your users to define only the options they actually want to override in the published copy of the configuration file. To merge the configuration file values, use the `mergeConfigFrom` method within your service provider's `register` method."
-msgstr ""
+msgstr "可以將套件自己的設定檔跟安裝到專案裡的設定檔合併。這樣一來，就能讓使用者在設定檔中只定義要覆寫的值。若要合併設定檔，請在 Service Provider 的 `register` 方法中使用 `mergeConfigFrom` 方法。"
 
 #: docs/8.x/packages.md:block 38 (paragraph)
 msgid "The `mergeConfigFrom` method accepts the path to your package's configuration file as its first argument and the name of the application's copy of the configuration file as its second argument:"
-msgstr ""
+msgstr "`mergeConfigFrom` 方法接受套件設定檔的路徑作為其第一個引數，而專案中的設定檔名稱則為其第二個引數："
 
 #: docs/8.x/packages.md:block 39 (code)
 msgid "/**\n"
@@ -258,19 +258,29 @@ msgid "/**\n"
 "        __DIR__.'/../config/courier.php', 'courier'\n"
 "    );\n"
 "}\n"
-msgstr ""
+msgstr "/**\n"
+" * Register any application services.\n"
+" *\n"
+" * @return void\n"
+" */\n"
+"public function register()\n"
+"{\n"
+"    $this->mergeConfigFrom(\n"
+"        __DIR__.'/../config/courier.php', 'courier'\n"
+"    );\n"
+"}\n"
 
 #: docs/8.x/packages.md:block 40 (quote)
 msgid "{note} This method only merges the first level of the configuration array. If your users partially define a multi-dimensional configuration array, the missing options will not be merged."
-msgstr ""
+msgstr "{note} 該方法只會合併設定陣列中的第一層。若套件使用者只定義了多為陣列中的一部分，則未定義的部分將不會被合併。"
 
 #: docs/8.x/packages.md:block 42 (header)
 msgid "Routes"
-msgstr ""
+msgstr "Route"
 
 #: docs/8.x/packages.md:block 43 (paragraph)
 msgid "If your package contains routes, you may load them using the `loadRoutesFrom` method. This method will automatically determine if the application's routes are cached and will not load your routes file if the routes have already been cached:"
-msgstr ""
+msgstr "若套件中包含 Route，可使用 `loadRoutesFrom` 方法。該方法會自動判斷專案的 Route 是否有被快取，當有快取時將不會載入這些 Route 檔："
 
 #: docs/8.x/packages.md:block 44 (code)
 msgid "/**\n"
@@ -282,15 +292,23 @@ msgid "/**\n"
 "{\n"
 "    $this->loadRoutesFrom(__DIR__.'/../routes/web.php');\n"
 "}\n"
-msgstr ""
+msgstr "/**\n"
+" * Bootstrap any package services.\n"
+" *\n"
+" * @return void\n"
+" */\n"
+"public function boot()\n"
+"{\n"
+"    $this->loadRoutesFrom(__DIR__.'/../routes/web.php');\n"
+"}\n"
 
 #: docs/8.x/packages.md:block 46 (header)
 msgid "Migrations"
-msgstr ""
+msgstr "Migration"
 
 #: docs/8.x/packages.md:block 47 (paragraph)
 msgid "If your package contains [database migrations](/docs/{{version}}/migrations), you may use the `loadMigrationsFrom` method to inform Laravel how to load them. The `loadMigrationsFrom` method accepts the path to your package's migrations as its only argument:"
-msgstr ""
+msgstr "若套件中有 [資料庫 Migration](/docs/{{version}}/migrations)，可使用 `loadMigrationsFrom` 方法來讓 Laravel 載入這些 Migration。`loadMigrationsFrom` 方法接受套件 Migartion 的路徑作為其唯一的引數："
 
 #: docs/8.x/packages.md:block 48 (code)
 msgid "/**\n"
@@ -302,19 +320,27 @@ msgid "/**\n"
 "{\n"
 "    $this->loadMigrationsFrom(__DIR__.'/../database/migrations');\n"
 "}\n"
-msgstr ""
+msgstr "/**\n"
+" * Bootstrap any package services.\n"
+" *\n"
+" * @return void\n"
+" */\n"
+"public function boot()\n"
+"{\n"
+"    $this->loadMigrationsFrom(__DIR__.'/../database/migrations');\n"
+"}\n"
 
 #: docs/8.x/packages.md:block 49 (paragraph)
 msgid "Once your package's migrations have been registered, they will automatically be run when the `php artisan migrate` command is executed. You do not need to export them to the application's `database/migrations` directory."
-msgstr ""
+msgstr "Migration 註冊好後，執行 `php artisan migrate` 指令時，就會自動執行這些 Migration。不需要將這些檔案匯出到 `database/migrations` 目錄中。"
 
 #: docs/8.x/packages.md:block 51 (header)
 msgid "Translations"
-msgstr ""
+msgstr "翻譯"
 
 #: docs/8.x/packages.md:block 52 (paragraph)
 msgid "If your package contains [translation files](/docs/{{version}}/localization), you may use the `loadTranslationsFrom` method to inform Laravel how to load them. For example, if your package is named `courier`, you should add the following to your service provider's `boot` method:"
-msgstr ""
+msgstr "若套件有包含[語系檔](/docs/{{version}}/localization)，可使用 `loadTranslationsFrom` 方法來讓 Laravel 載入這些檔案。舉例來說，若套件名稱為 `courier`，則可在 Service Provider 的 `boot` 方法中這樣寫："
 
 #: docs/8.x/packages.md:block 53 (code)
 msgid "/**\n"
@@ -326,7 +352,15 @@ msgid "/**\n"
 "{\n"
 "    $this->loadTranslationsFrom(__DIR__.'/../resources/lang', 'courier');\n"
 "}\n"
-msgstr ""
+msgstr "/**\n"
+" * Bootstrap any package services.\n"
+" *\n"
+" * @return void\n"
+" */\n"
+"public function boot()\n"
+"{\n"
+"    $this->loadTranslationsFrom(__DIR__.'/../resources/lang', 'courier');\n"
+"}\n"
 
 #: docs/8.x/packages.md:block 54 (paragraph)
 msgid "Package translations are referenced using the `package::file.line` syntax convention. So, you may load the `courier` package's `welcome` line from the `messages` file like so:"

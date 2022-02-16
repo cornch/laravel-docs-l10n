@@ -10,7 +10,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
-"PO-Revision-Date: 2022-02-16 06:16\n"
+"PO-Revision-Date: 2022-02-16 07:19\n"
 
 #: docs/8.x/packages.md:block 1 (header)
 msgid "Package Development"
@@ -500,7 +500,7 @@ msgstr "View 元件"
 
 #: docs/8.x/packages.md:block 77 (paragraph)
 msgid "If your package contains [view components](/docs/{{version}}/blade#components), you may use the `loadViewComponentsAs` method to inform Laravel how to load them. The `loadViewComponentsAs` method accepts two arguments: the tag prefix for your view components and an array of your view component class names. For example, if your package's prefix is `courier` and you have `Alert` and `Button` view components, you would add the following to your service provider's `boot` method:"
-msgstr ""
+msgstr "若套件中有包含 [View 元件](/docs/{{version}}/blade#components)，可以使用 `loadViewComponentsAs` 方法來讓 Laravel 載入這些元件。`loadViewComponentsAs` 方法接受兩個引數：用於 View 元件標籤的前置詞，以及一組 View 元件類別名稱的陣列。舉例來說，若套件的前置詞為 `courier`，且套件中有 `Alert` 與 `Button` 兩個 View 元件，就可以在 Service Provider 的 `boot` 方法中加上下列程式："
 
 #: docs/8.x/packages.md:block 78 (code)
 msgid "use Courier\\Components\\Alert;\n"
@@ -517,36 +517,50 @@ msgid "use Courier\\Components\\Alert;\n"
 "        Button::class,\n"
 "    ]);\n"
 "}\n"
-msgstr ""
+msgstr "use Courier\\Components\\Alert;\n"
+"use Courier\\Components\\Button;\n\n"
+"/**\n"
+" * Bootstrap any package services.\n"
+" *\n"
+" * @return void\n"
+" */\n"
+"public function boot()\n"
+"{\n"
+"    $this->loadViewComponentsAs('courier', [\n"
+"        Alert::class,\n"
+"        Button::class,\n"
+"    ]);\n"
+"}\n"
 
 #: docs/8.x/packages.md:block 79 (paragraph)
 msgid "Once your view components are registered in a service provider, you may reference them in your view like so:"
-msgstr ""
+msgstr "在 Service Provider 中註冊好 View 元件後，就可以像這樣在 View 中參照這些元件："
 
 #: docs/8.x/packages.md:block 80 (code)
 msgid "<x-courier-alert />\n\n"
 "<x-courier-button />\n"
-msgstr ""
+msgstr "<x-courier-alert />\n\n"
+"<x-courier-button />\n"
 
 #: docs/8.x/packages.md:block 82 (header)
 msgid "Anonymous Components"
-msgstr ""
+msgstr "匿名元件"
 
 #: docs/8.x/packages.md:block 83 (paragraph)
 msgid "If your package contains anonymous components, they must be placed within a `components` directory of your package's \"views\" directory (as specified by `loadViewsFrom`). Then, you may render them by prefixing the component name with the package's view namespace:"
-msgstr ""
+msgstr "若套件中有匿名元件，則這些套件必須放在套件「view」目錄 (即 `loadViewsFrom` 指定的目錄) 下的 `components` 目錄內。接著，就可以使用套件 View 命名空間作為前置詞來轉譯套件："
 
 #: docs/8.x/packages.md:block 84 (code)
 msgid "<x-courier::alert />\n"
-msgstr ""
+msgstr "<x-courier::alert />\n"
 
 #: docs/8.x/packages.md:block 86 (header)
 msgid "Commands"
-msgstr ""
+msgstr "指令"
 
 #: docs/8.x/packages.md:block 87 (paragraph)
 msgid "To register your package's Artisan commands with Laravel, you may use the `commands` method. This method expects an array of command class names. Once the commands have been registered, you may execute them using the [Artisan CLI](/docs/{{version}}/artisan):"
-msgstr ""
+msgstr "若要向 Laravel 註冊 Artisan 指令，可使用 `commands` 方法。這個方法接受一組指令類別名稱的陣列。註冊好指令後，就可以使用 [Artisan CLI](/docs/{{version}}/artisan) 來執行這些指令："
 
 #: docs/8.x/packages.md:block 88 (code)
 msgid "use Courier\\Console\\Commands\\InstallCommand;\n"
@@ -565,15 +579,30 @@ msgid "use Courier\\Console\\Commands\\InstallCommand;\n"
 "        ]);\n"
 "    }\n"
 "}\n"
-msgstr ""
+msgstr "use Courier\\Console\\Commands\\InstallCommand;\n"
+"use Courier\\Console\\Commands\\NetworkCommand;\n\n"
+"/**\n"
+" * Bootstrap any package services.\n"
+" *\n"
+" * @return void\n"
+" */\n"
+"public function boot()\n"
+"{\n"
+"    if ($this->app->runningInConsole()) {\n"
+"        $this->commands([\n"
+"            InstallCommand::class,\n"
+"            NetworkCommand::class,\n"
+"        ]);\n"
+"    }\n"
+"}\n"
 
 #: docs/8.x/packages.md:block 90 (header)
 msgid "Public Assets"
-msgstr ""
+msgstr "公用素材"
 
 #: docs/8.x/packages.md:block 91 (paragraph)
 msgid "Your package may have assets such as JavaScript, CSS, and images. To publish these assets to the application's `public` directory, use the service provider's `publishes` method. In this example, we will also add a `public` asset group tag, which may be used to easily publish groups of related assets:"
-msgstr ""
+msgstr "套件也可以有像 JavaScript、CSS、圖片等的素材。若要將這些素材安裝到 `public` 目錄內，可使用 Service Provider 的 `publishes` 方法。在這個範例中，我們也給這些素材嫁了一個 `public` 素材群組標籤，這樣我們就能使用該標籤來輕鬆將一組相關的素材安裝到專案內："
 
 #: docs/8.x/packages.md:block 92 (code)
 msgid "/**\n"
@@ -587,23 +616,33 @@ msgid "/**\n"
 "        __DIR__.'/../public' => public_path('vendor/courier'),\n"
 "    ], 'public');\n"
 "}\n"
-msgstr ""
+msgstr "/**\n"
+" * Bootstrap any package services.\n"
+" *\n"
+" * @return void\n"
+" */\n"
+"public function boot()\n"
+"{\n"
+"    $this->publishes([\n"
+"        __DIR__.'/../public' => public_path('vendor/courier'),\n"
+"    ], 'public');\n"
+"}\n"
 
 #: docs/8.x/packages.md:block 93 (paragraph)
 msgid "Now, when your package's users execute the `vendor:publish` command, your assets will be copied to the specified publish location. Since users will typically need to overwrite the assets every time the package is updated, you may use the `--force` flag:"
-msgstr ""
+msgstr "接著，當專案使用者執行 `vendor:publish` 指令後，素材就會被複製到指定的位置。由於使用者通常會需要在每次套件更新後都覆寫這些素材，因此可以使用 `--force` 旗標："
 
 #: docs/8.x/packages.md:block 94 (code)
 msgid "php artisan vendor:publish --tag=public --force\n"
-msgstr ""
+msgstr "php artisan vendor:publish --tag=public --force\n"
 
 #: docs/8.x/packages.md:block 96 (header)
 msgid "Publishing File Groups"
-msgstr ""
+msgstr "安裝檔案群組"
 
 #: docs/8.x/packages.md:block 97 (paragraph)
 msgid "You may want to publish groups of package assets and resources separately. For instance, you might want to allow your users to publish your package's configuration files without being forced to publish your package's assets. You may do this by \"tagging\" them when calling the `publishes` method from a package's service provider. For example, let's use tags to define two publish groups for the `courier` package (`courier-config` and `courier-migrations`) in the `boot` method of the package's service provider:"
-msgstr ""
+msgstr "有時候我們可能會想分別安裝套件素材與資源。舉例來說，我們可以讓使用者安裝套件的設定檔，但不強制使用者安裝套件素材。我們可以通過在 Service Provider 內呼叫 `publishes` 方法時為這些檔案指定「標籤」。舉例來說，我們來在 Service Provider 內 `boot` 方法中為 `courier` 套件定義兩個安裝群組 (`courier-config` 與 `courier-migrations`)："
 
 #: docs/8.x/packages.md:block 98 (code)
 msgid "/**\n"
@@ -620,15 +659,28 @@ msgid "/**\n"
 "        __DIR__.'/../database/migrations/' => database_path('migrations')\n"
 "    ], 'courier-migrations');\n"
 "}\n"
-msgstr ""
+msgstr "/**\n"
+" * Bootstrap any package services.\n"
+" *\n"
+" * @return void\n"
+" */\n"
+"public function boot()\n"
+"{\n"
+"    $this->publishes([\n"
+"        __DIR__.'/../config/package.php' => config_path('package.php')\n"
+"    ], 'courier-config');\n\n"
+"    $this->publishes([\n"
+"        __DIR__.'/../database/migrations/' => database_path('migrations')\n"
+"    ], 'courier-migrations');\n"
+"}\n"
 
 #: docs/8.x/packages.md:block 99 (paragraph)
 msgid "Now your users may publish these groups separately by referencing their tag when executing the `vendor:publish` command:"
-msgstr ""
+msgstr "接著，使用者在執行 `vendor:publish` 指令時就可以使用標籤來分別安裝這些群組："
 
 #: docs/8.x/packages.md:block 100 (code)
 msgid "php artisan vendor:publish --tag=courier-config\n"
-msgstr ""
+msgstr "php artisan vendor:publish --tag=courier-config\n"
 
 #: docs/9.x/packages.md:block 53 (code)
 msgid "/**\n"
@@ -640,11 +692,19 @@ msgid "/**\n"
 "{\n"
 "    $this->loadTranslationsFrom(__DIR__.'/../lang', 'courier');\n"
 "}\n"
-msgstr ""
+msgstr "/**\n"
+" * Bootstrap any package services.\n"
+" *\n"
+" * @return void\n"
+" */\n"
+"public function boot()\n"
+"{\n"
+"    $this->loadTranslationsFrom(__DIR__.'/../lang', 'courier');\n"
+"}\n"
 
 #: docs/9.x/packages.md:block 58 (paragraph)
 msgid "If you would like to publish your package's translations to the application's `lang/vendor` directory, you may use the service provider's `publishes` method. The `publishes` method accepts an array of package paths and their desired publish locations. For example, to publish the translation files for the `courier` package, you may do the following:"
-msgstr ""
+msgstr "若想將套件的語系檔安裝到專案的 `lang/vendor` 目錄下，可使用 Service Provider 的 `publishes` 方法。`publishes` 方法接受一組套件路徑與欲安裝位置的陣列。舉例來說，若要為 `courier` 套件安裝語系檔，可以這樣寫："
 
 #: docs/9.x/packages.md:block 59 (code)
 msgid "/**\n"
@@ -659,5 +719,16 @@ msgid "/**\n"
 "        __DIR__.'/../lang' => $this->app->langPath('vendor/courier'),\n"
 "    ]);\n"
 "}\n"
-msgstr ""
+msgstr "/**\n"
+" * Bootstrap any package services.\n"
+" *\n"
+" * @return void\n"
+" */\n"
+"public function boot()\n"
+"{\n"
+"    $this->loadTranslationsFrom(__DIR__.'/../lang', 'courier');\n\n"
+"    $this->publishes([\n"
+"        __DIR__.'/../lang' => $this->app->langPath('vendor/courier'),\n"
+"    ]);\n"
+"}\n"
 

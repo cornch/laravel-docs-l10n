@@ -10,7 +10,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
-"PO-Revision-Date: 2022-02-18 06:50\n"
+"PO-Revision-Date: 2022-02-18 08:05\n"
 
 #: docs/8.x/queues.md:block 1 (header)
 msgid "Queues"
@@ -342,51 +342,51 @@ msgstr "其他 Driver 的前置要求"
 
 #: docs/8.x/queues.md:block 37 (paragraph)
 msgid "The following dependencies are needed for the listed queue drivers. These dependencies may be installed via the Composer package manager:"
-msgstr ""
+msgstr "下列 Queue Driver 還需要一些相依性套件。可以使用 Composer 套件管理員來安裝這些相依性套件："
 
 #: docs/8.x/queues.md:block 39 (unordered list)
 msgid "Amazon SQS: `aws/aws-sdk-php ~3.0`"
-msgstr ""
+msgstr "Amazon SQS: `aws/aws-sdk-php ~3.0`"
 
 #: docs/8.x/queues.md:block 39 (unordered list)
 msgid "Beanstalkd: `pda/pheanstalk ~4.0`"
-msgstr ""
+msgstr "Beanstalkd: `pda/pheanstalk ~4.0`"
 
 #: docs/8.x/queues.md:block 39 (unordered list)
 msgid "Redis: `predis/predis ~1.0` or phpredis PHP extension"
-msgstr ""
+msgstr "Redis: `predis/predis ~1.0` 或 phpredis PHP 擴充套件"
 
 #: docs/8.x/queues.md:block 42 (header)
 msgid "Creating Jobs"
-msgstr ""
+msgstr "建立 Job"
 
 #: docs/8.x/queues.md:block 44 (header)
 msgid "Generating Job Classes"
-msgstr ""
+msgstr "產生 Job 類別"
 
 #: docs/8.x/queues.md:block 45 (paragraph)
 msgid "By default, all of the queueable jobs for your application are stored in the `app/Jobs` directory. If the `app/Jobs` directory doesn't exist, it will be created when you run the `make:job` Artisan command:"
-msgstr ""
+msgstr "預設情況下，專案中所有可放入佇列的任務都存放在 `app/Jobs` 目錄內。若 `app/Jobs` 目錄不存在，則執行 `make:jobs` Artisan 指令時會建立該目錄："
 
 #: docs/8.x/queues.md:block 46 (code)
 msgid "php artisan make:job ProcessPodcast\n"
-msgstr ""
+msgstr "php artisan make:job ProcessPodcast\n"
 
 #: docs/8.x/queues.md:block 47 (paragraph)
 msgid "The generated class will implement the `Illuminate\\Contracts\\Queue\\ShouldQueue` interface, indicating to Laravel that the job should be pushed onto the queue to run asynchronously."
-msgstr ""
+msgstr "產生的類別會實作 `Illuminate\\Contracts\\Queue\\ShouldQueue` 介面，這樣 Laravel 就知道該 Job 要被推入佇列並以非同步方式執行。"
 
 #: docs/8.x/queues.md:block 48 (quote)
 msgid "{tip} Job stubs may be customized using [stub publishing](/docs/{{version}}/artisan#stub-customization)."
-msgstr ""
+msgstr "{tip} 可以[安裝 Stub](/docs/{{version}}/artisan#stub-customization) 來自訂 Job 的 Stub。"
 
 #: docs/8.x/queues.md:block 50 (header)
 msgid "Class Structure"
-msgstr ""
+msgstr "類別架構"
 
 #: docs/8.x/queues.md:block 51 (paragraph)
 msgid "Job classes are very simple, normally containing only a `handle` method that is invoked when the job is processed by the queue. To get started, let's take a look at an example job class. In this example, we'll pretend we manage a podcast publishing service and need to process the uploaded podcast files before they are published:"
-msgstr ""
+msgstr "Job 類別非常簡單，通常只包含了一個 `handle` 方法，會在佇列處理 Job 時叫用。要開始使用 Job，我們先來看一個範例 Job 類別。在這個範例中，我們先假裝時我們在管理一個 Podcast 上架服務，我們需要在上架前處理上傳的 Podcast 檔案："
 
 #: docs/8.x/queues.md:block 52 (code)
 msgid "<?php\n\n"
@@ -428,7 +428,45 @@ msgid "<?php\n\n"
 "        // Process uploaded podcast...\n"
 "    }\n"
 "}\n"
-msgstr ""
+msgstr "<?php\n\n"
+"namespace App\\Jobs;\n\n"
+"use App\\Models\\Podcast;\n"
+"use App\\Services\\AudioProcessor;\n"
+"use Illuminate\\Bus\\Queueable;\n"
+"use Illuminate\\Contracts\\Queue\\ShouldQueue;\n"
+"use Illuminate\\Foundation\\Bus\\Dispatchable;\n"
+"use Illuminate\\Queue\\InteractsWithQueue;\n"
+"use Illuminate\\Queue\\SerializesModels;\n\n"
+"class ProcessPodcast implements ShouldQueue\n"
+"{\n"
+"    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;\n\n"
+"    /**\n"
+"     * The podcast instance.\n"
+"     *\n"
+"     * @var \\App\\Models\\Podcast\n"
+"     */\n"
+"    protected $podcast;\n\n"
+"    /**\n"
+"     * Create a new job instance.\n"
+"     *\n"
+"     * @param  App\\Models\\Podcast  $podcast\n"
+"     * @return void\n"
+"     */\n"
+"    public function __construct(Podcast $podcast)\n"
+"    {\n"
+"        $this->podcast = $podcast;\n"
+"    }\n\n"
+"    /**\n"
+"     * Execute the job.\n"
+"     *\n"
+"     * @param  App\\Services\\AudioProcessor  $processor\n"
+"     * @return void\n"
+"     */\n"
+"    public function handle(AudioProcessor $processor)\n"
+"    {\n"
+"        // Process uploaded podcast...\n"
+"    }\n"
+"}\n"
 
 #: docs/8.x/queues.md:block 53 (paragraph)
 msgid "In this example, note that we were able to pass an [Eloquent model](/docs/{{version}}/eloquent) directly into the queued job's constructor. Because of the `SerializesModels` trait that the job is using, Eloquent models and their loaded relationships will be gracefully serialized and unserialized when the job is processing."

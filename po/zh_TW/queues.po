@@ -10,7 +10,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
-"PO-Revision-Date: 2022-02-19 07:12\n"
+"PO-Revision-Date: 2022-02-19 15:51\n"
 
 #: docs/8.x/queues.md:block 1 (header)
 msgid "Queues"
@@ -482,11 +482,11 @@ msgstr "`handle` 方法的相依性插入"
 
 #: docs/8.x/queues.md:block 57 (paragraph)
 msgid "The `handle` method is invoked when the job is processed by the queue. Note that we are able to type-hint dependencies on the `handle` method of the job. The Laravel [service container](/docs/{{version}}/container) automatically injects these dependencies."
-msgstr ""
+msgstr "佇列在處理任務時會叫用該任務的 `handle` 方法。請注意，我們可以在任務的 `handle` 方法上^[型別提示](Type-Hint)任何相依性項目。Laravel [Service Container](/docs/{{version}}/container) 會自動插入這些相依性。"
 
 #: docs/8.x/queues.md:block 58 (paragraph)
 msgid "If you would like to take total control over how the container injects dependencies into the `handle` method, you may use the container's `bindMethod` method. The `bindMethod` method accepts a callback which receives the job and the container. Within the callback, you are free to invoke the `handle` method however you wish. Typically, you should call this method from the `boot` method of your `App\\Providers\\AppServiceProvider` [service provider](/docs/{{version}}/providers):"
-msgstr ""
+msgstr "若想完整控制 Container 要如何插入這些相依性到 `handle` 方法，可使用 Container 的 `bindMethod` 方法。`bindMethod` 方法接收一個回呼，該回呼則接收該任務與 Container。我們可以在這個回呼中自行叫用 `handle` 方法。一般來說，我們應該從 `App\\Providers\\AppServiceProvider` [Service Provider](/docs/{{version}}/providers) 的 `boot` 方法中叫用這個方法："
 
 #: docs/8.x/queues.md:block 59 (code)
 msgid "use App\\Jobs\\ProcessPodcast;\n"
@@ -494,19 +494,23 @@ msgid "use App\\Jobs\\ProcessPodcast;\n"
 "$this->app->bindMethod([ProcessPodcast::class, 'handle'], function ($job, $app) {\n"
 "    return $job->handle($app->make(AudioProcessor::class));\n"
 "});\n"
-msgstr ""
+msgstr "use App\\Jobs\\ProcessPodcast;\n"
+"use App\\Services\\AudioProcessor;\n\n"
+"$this->app->bindMethod([ProcessPodcast::class, 'handle'], function ($job, $app) {\n"
+"    return $job->handle($app->make(AudioProcessor::class));\n"
+"});\n"
 
 #: docs/8.x/queues.md:block 60 (quote)
 msgid "{note} Binary data, such as raw image contents, should be passed through the `base64_encode` function before being passed to a queued job. Otherwise, the job may not properly serialize to JSON when being placed on the queue."
-msgstr ""
+msgstr "{note} 二進位資料，如圖片等，應在傳入佇列任務前先使用 `base64_encode` 函式進行編碼。若未進行編碼，則這些資料在放入佇列時可能無法正確被序列化為 JSON。"
 
 #: docs/8.x/queues.md:block 62 (header)
 msgid "Queued Relationships"
-msgstr ""
+msgstr "佇列中的關聯"
 
 #: docs/8.x/queues.md:block 63 (paragraph)
 msgid "Because loaded relationships also get serialized, the serialized job string can sometimes become quite large. To prevent relations from being serialized, you can call the `withoutRelations` method on the model when setting a property value. This method will return an instance of the model without its loaded relationships:"
-msgstr ""
+msgstr "由於 Model 上已載入的關聯也會被序列化，因此序列化的任務字串有時候會變得很大。若要防止關聯被序列化，可在設定屬性值時在 Model 上呼叫 `withoutRelations` 方法。該方法會回傳該 Model 不含已載入關聯的實體："
 
 #: docs/8.x/queues.md:block 64 (code)
 msgid "/**\n"
@@ -519,15 +523,24 @@ msgid "/**\n"
 "{\n"
 "    $this->podcast = $podcast->withoutRelations();\n"
 "}\n"
-msgstr ""
+msgstr "/**\n"
+" * Create a new job instance.\n"
+" *\n"
+" * @param  \\App\\Models\\Podcast  $podcast\n"
+" * @return void\n"
+" */\n"
+"public function __construct(Podcast $podcast)\n"
+"{\n"
+"    $this->podcast = $podcast->withoutRelations();\n"
+"}\n"
 
 #: docs/8.x/queues.md:block 65 (paragraph)
 msgid "Furthermore, when a job is deserialized and model relationships are re-retrieved from the database, they will be retrieved in their entirety. Any previous relationship constraints that were applied before the model was serialized during the job queueing process will not be applied when the job is deserialized. Therefore, if you wish to work with a subset of a given relationship, you should re-constrain that relationship within your queued job."
-msgstr ""
+msgstr "此外，當任務被反序列化，然後 Model 關聯被從資料庫中重新取出時，這些關聯的資料會以完整的關聯取出。這表示，若在 Model 被任務佇列序列化前有對關聯套用任何查詢條件，在反序列化時，這些條件都不會被套用。因此，若只想處理給定關聯中的一部分，應在佇列任務中重新套用這些查詢條件。"
 
 #: docs/8.x/queues.md:block 67 (header)
 msgid "Unique Jobs"
-msgstr ""
+msgstr "不重複 Job"
 
 #: docs/8.x/queues.md:block 68 (quote)
 msgid "{note} Unique jobs require a cache driver that supports [locks](/docs/{{version}}/cache#atomic-locks). Currently, the `memcached`, `redis`, `dynamodb`, `database`, `file`, and `array` cache drivers support atomic locks. In addition, unique job constraints do not apply to jobs within batches."

@@ -1,94 +1,197 @@
-- ## 前言
-    - [版本資訊](/docs/{{version}}/releases)
-    - [升級指南](/docs/{{version}}/upgrade)
-    - [參與貢獻指南](/docs/{{version}}/contributions)
+- ## ​前言
+
+
+   - [版本資訊](/docs/{{version}}/release)
+
+   - [升級指南](/docs/{{version}}/upgrade)
+
+   - [參與貢獻指南](/docs/{{version}}/contributions)
+
 - ## 入門
-    - [安裝](/docs/{{version}}/installation)
-    - [組態設定](/docs/{{version}}/configuration)
-    - [目錄結構](/docs/{{version}}/structure)
-    - [入門套件](/docs/{{version}}/starter-kits)
-    - [部署](/docs/{{version}}/deployment)
+
+
+   - [安裝](/docs/{{version}}/installation)
+
+   - [組態設定](/docs/{{version}}/configuration)
+
+   - [目錄架構](/docs/{{version}}/structure)
+
+   - [入門套件](/docs/{{version}}/starter-kits)
+
+   - [部署](/docs/{{version}}/deployment)
+
 - ## 架構概念
-    - [請求的生命週期](/docs/{{version}}/lifecycle)
-    - [Service Container](/docs/{{version}}/container)
-    - [Service Provider](/docs/{{version}}/providers)
-    - [Facade](/docs/{{version}}/facades)
+
+
+   - [Request 的生命週期](/docs/{{version}}/lifecycle)
+
+   - [Service Container](/docs/{{version}}/container)
+
+   - [Service Provider](#service-providers)
+
+   - [Facade](/docs/{{version}}/facades)
+
 - ## 基礎
-    - [路由 - Route](/docs/{{version}}/routing)
-    - [中間層 - Middleware](/docs/{{version}}/middleware)
-    - [CSRF 保護](/docs/{{version}}/csrf)
-    - [控制器 - Controller](/docs/{{version}}/controllers)
-    - [請求 - Request](/docs/{{version}}/requests)
-    - [回應 - Response](/docs/{{version}}/responses)
-    - [檢視 - View](/docs/{{version}}/views)
-    - [Blade 樣板](/docs/{{version}}/blade)
-    - [URL 的產生](/docs/{{version}}/urls)
-    - [工作階段 - Session](/docs/{{version}}/session)
-    - [資料認證 - Validation](/docs/{{version}}/validation)
-    - [錯誤處理](/docs/{{version}}/errors)
-    - [日誌](/docs/{{version}}/logging)
-- ## 深入瞭解
-    - [Artisan 主控台](/docs/{{version}}/artisan)
-    - [廣播 - Broadcasting](/docs/{{version}}/broadcasting)
-    - [快取](/docs/{{version}}/cache)
-    - [Collection](/docs/{{version}}/collections)
-    - [編譯資源](/docs/{{version}}/mix)
-    - [Contract](/docs/{{version}}/contracts)
-    - [事件 - Event](/docs/{{version}}/events)
-    - [檔案儲存](/docs/{{version}}/filesystem)
-    - [輔助函式](/docs/{{version}}/helpers)
-    - [HTTP 用戶端](/docs/{{version}}/http-client)
-    - [本土化](/docs/{{version}}/localization)
-    - [信件 - Mail](/docs/{{version}}/mail)
-    - [通知](/docs/{{version}}/notifications)
-    - [套件開發](/docs/{{version}}/packages)
-    - [Queue](/docs/{{version}}/queues)
-    - [頻率限制](/docs/{{version}}/rate-limiting)
-    - [任務排程](/docs/{{version}}/scheduling)
+
+
+   - [路由](/docs/{{version}}/routing)
+
+   - [Middleware](/docs/{{version}}/middleware)
+
+   - [CSRF 保護](/docs/{{version}}/csrf)
+
+   - [Controller](/docs/{{version}}/controllers)
+
+   - [Request](/docs/{{version}}/requests)
+
+   - [Response](/docs/{{version}}/responses)
+
+   - [View](/docs/{{version}}/views)
+
+   - [Blade 樣板](/docs/{{version}}/blade)
+
+   - [產生 URL](/docs/{{version}}/urls)
+
+   - [Session](/docs/{{version}}/session)
+
+   - [表單驗證](/docs/{{version}}/validation)
+
+   - [錯誤處理](/docs/{{version}}/errors)
+
+   - [日誌](/docs/{{version}}/logging)
+
+- ## 深入探討
+
+
+   - [Artisan 主控台](/docs/{{version}}/artisan)
+
+   - [Broadcast](/docs/{{version}}/broadcasting)
+
+   - [快取](/docs/{{version}}/cache)
+
+   - [Collection](/docs/{{version}}/collections)
+
+   - [編譯資源](/docs/{{version}}/mix)
+
+   - [Contract](/docs/{{version}}/contracts)
+
+   - [Event](/docs/{{version}}/events)
+
+   - [檔案儲存](/docs/{{version}}/filesystem)
+
+   - [輔助函式](/docs/{{version}}/helpers)
+
+   - [HTTP 用戶端](/docs/{{version}}/http-client)
+
+   - [本土化](/docs/{{version}}/localization)
+
+   - [郵件](/docs/{{version}}/mail)
+
+   - [通知](/docs/{{version}}/notifications)
+
+   - [套件開發](/docs/{{version}}/packages)
+
+   - [佇列](/docs/{{version}}/queues)
+
+   - [頻率限制](/docs/{{version}}/rate-limiting)
+
+   - [任務排程](/docs/{{version}}/scheduling)
+
 - ## 安全性
-    - [認證](/docs/{{version}}/authentication)
-    - [授權](/docs/{{version}}/authorization)
-    - [Email 認證](/docs/{{version}}/verification)
-    - [加密](/docs/{{version}}/encryption)
-    - [雜湊](/docs/{{version}}/hashing)
-    - [密碼重設](/docs/{{version}}/passwords)
+
+
+   - [身份驗證](/docs/{{version}}/authentication)
+
+   - [授權](/docs/{{version}}/authorization)
+
+   - [E-Mail 驗證](/docs/{{version}}/verification)
+
+   - [加密](/docs/{{version}}/encryption)
+
+   - [雜湊](/docs/{{version}}/hashing)
+
+   - [重設密碼](/docs/{{version}}/passwords)
+
 - ## 資料庫
-    - [入門](/docs/{{version}}/database)
-    - [查詢產生器 - Query Builder](/docs/{{version}}/queries)
-    - [分頁 - Pagination](/docs/{{version}}/pagination)
-    - [遷移 - Migration](/docs/{{version}}/migrations)
-    - [資料填充 - Seeding](/docs/{{version}}/seeding)
-    - [Redis](/docs/{{version}}/redis)
+
+
+   - [入門](/docs/{{version}}/database)
+
+   - [Query Builder](/docs/{{version}}/queries)
+
+   - [分頁](/docs/{{version}}/pagination)
+
+   - [Migration](/docs/{{version}}/migrations)
+
+   - [Seed](/docs/{{version}}/seeding)
+
+   - [Redis](/docs/{{version}}/redis)
+
 - ## Eloquent ORM
-    - [入門](/docs/{{version}}/eloquent)
-    - [關聯](/docs/{{version}}/eloquent-relationships)
-    - [Collection](/docs/{{version}}/eloquent-collections)
-    - [更動子 (Mutator) 與型別轉換 (Cast)](/docs/{{version}}/eloquent-mutators)
-    - [API 資源](/docs/{{version}}/eloquent-resources)
-    - [序列化](/docs/{{version}}/eloquent-serialization)
+
+
+   - [入門](/docs/{{version}}/eloquent)
+
+   - [關聯](/docs/{{version}}/eloquent-relationships)
+
+   - [Collection](/docs/{{version}}/eloquent-collections)
+
+   - [Mutator 與 Cast](/docs/{{version}}/eloquent-mutators)
+
+   - [API Resource](/docs/{{version}}/eloquent-resources)
+
+   - [序列化](/docs/{{version}}/eloquent-serialization)
+
 - ## 測試
-    - [入門](/docs/{{version}}/testing)
-    - [HTTP 測試](/docs/{{version}}/http-tests)
-    - [主控台測試](/docs/{{version}}/console-tests)
-    - [瀏覽器測試](/docs/{{version}}/dusk)
-    - [資料庫](/docs/{{version}}/database-testing)
-    - [Mocking](/docs/{{version}}/mocking)
+
+
+   - [入門](/docs/{{version}}/testing)
+
+   - [HTTP 測試](/docs/{{version}}/http-tests)
+
+   - [主控台測試](/docs/{{version}}/console-tests)
+
+   - [瀏覽器測試](/docs/{{version}}/dusk)
+
+   - [資料庫](/docs/{{version}}/database-testing)
+
+   - [Mock](/docs/{{version}}/mocking)
+
 - ## 套件
-    - [Breeze](/docs/{{version}}/starter-kits#laravel-breeze)
-    - [Cashier (Stripe)](/docs/{{version}}/billing)
-    - [Cashier (Paddle)](/docs/{{version}}/cashier-paddle)
-    - [Dusk](/docs/{{version}}/dusk)
-    - [Envoy](/docs/{{version}}/envoy)
-    - [Fortify](/docs/{{version}}/fortify)
-    - [Homestead](/docs/{{version}}/homestead)
-    - [Horizon](/docs/{{version}}/horizon)
-    - [Jetstream](https://jetstream.laravel.com)
-    - [Octane](/docs/{{version}}/octane)
-    - [Passport](/docs/{{version}}/passport)
-    - [Sail](/docs/{{version}}/sail)
-    - [Sanctum](/docs/{{version}}/sanctum)
-    - [Scout](/docs/{{version}}/scout)
-    - [Socialite](/docs/{{version}}/socialite)
-    - [Telescope](/docs/{{version}}/telescope)
-    - [Valet](/docs/{{version}}/valet)
+
+
+   - [Breeze](/docs/{{version}}/starter-kits#laravel-breeze)
+
+   - [Cashier (Stripe)](/docs/{{version}}/billing)
+
+   - [Cashier (Paddle)](/docs/{{version}}/cashier-paddle)
+
+   - [Dusk](/docs/{{version}}/dusk)
+
+   - [Envoy](/docs/{{version}}/envoy)
+
+   - [Fortify](/docs/{{version}}/fortify)
+
+   - [Homestead](/docs/{{version}}/homestead)
+
+   - [Horizon](/docs/{{version}}/horizon)
+
+   - [Jetstream](https://jetstream.laravel.com)
+
+   - [Octane](/docs/{{version}}/mocking)
+
+   - [Passport](/docs/{{version}}/passport)
+
+   - [Sail](/docs/{{version}}/sail)
+
+   - [Sanctum](/docs/{{version}}/sanctum)
+
+   - [Scout](/docs/{{version}}/scout)
+
+   - [Socialite](/docs/{{version}}/socialite)
+
+   - [Telescope](/docs/{{version}}/telescope)
+
+   - [Valet](/docs/{{version}}/valet)
+
 - [API 說明文件](/api/8.x)

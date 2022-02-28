@@ -1,56 +1,54 @@
 # 套件開發
 
 - [簡介](#introduction)
-    - [有關 Facade 的注意事項](#a-note-on-facades)
-- [Package 的 Discovery](#package-discovery)
+
+   - [有關 Facade 的注意事項](#a-note-on-facades)
+
+- [Package Discovery](#package-discovery)
+
 - [Service Provider](#service-providers)
+
 - [資源](#resources)
-    - [設定檔](#configuration)
-    - [Migration](#migrations)
-    - [Route](#routes)
-    - [翻譯](#translations)
-    - [View](#views)
-    - [View 元件](#view-components)
+
+   - [組態設定](#configuration)
+
+   - [Migration](#migrations)
+
+   - [Route](#routes)
+
+   - [翻譯](#translations)
+
+   - [View](#views)
+
+   - [View 元件](#view-components)
+
 - [指令](#commands)
-- [安裝素材](#public-assets)
+
+- [公用素材](#public-assets)
+
 - [安裝檔案群組](#publishing-file-groups)
 
 <a name="introduction"></a>
+
 ## 簡介
 
-套件是用來給 Laravel 新增功能的主要方法。套件可以是任何東西，有像
-[Carbon](https://github.com/briannesbitt/Carbon) 這樣可以方便處理日期的套件、或者是像 Spatie 的
-[Laravel Media Library](https://github.com/spatie/laravel-medialibrary)
-這樣用來處理與 Eloquent Model 關聯檔案的套件。
+套件是用來給 Laravel 新增功能的主要方法。套件可以是任何東西，有像 [Carbon](https://github.com/briannesbitt/Carbon) 這樣可以方便處理日期的套件、或者是像 Spatie 的 [Laravel Media Library](https://github.com/spatie/laravel-medialibrary) 這樣用來處理與 Eloquent Model 關聯檔案的套件。
 
-套件也有一些不同的類型。有的套件是^[獨立](Stand-alone)套件，這些套件在任何的 PHP 框架上都可使用。舉例來說，Carbon 與
-PHPUnit 就是獨立套件。只要在 `composer.json` 檔案中加上這些套件，就可以在 Laravel 中使用。
+套件也有一些不同的類型。有的套件是^[獨立](Stand-alone)套件，這些套件在任何的 PHP 框架上都可使用。舉例來說，Carbon 與 PHPUnit 就是獨立套件。只要在 `composer.json` 檔案中加上這些套件，就可以在 Laravel 中使用。
 
-另一方面，有的套件是特別為了供 Laravel 使用而設計的。這些套件可能會有 Route、Controller、View、組態設定檔等等用來增強
-Laravel 程式的功能。本篇指南主要就是在討論有關開發這些專為 Laravel 設計的套件。
+另一方面，有的套件是特別為了供 Laravel 使用而設計的。這些套件可能會有 Route、Controller、View、組態設定檔等等用來增強 Laravel 程式的功能。本篇指南主要就是在討論有關開發這些專為 Laravel 設計的套件。
 
 <a name="a-note-on-facades"></a>
+
 ### 有關 Facade 的注意事項
 
-When writing a Laravel application, it generally does not matter if you use
-contracts or facades since both provide essentially equal levels of
-testability. However, when writing packages, your package will not typically
-have access to all of Laravel's testing helpers. If you would like to be
-able to write your package tests as if the package were installed inside a
-typical Laravel application, you may use the [Orchestral
-Testbench](https://github.com/orchestral/testbench) package.
+在撰寫 Laravel 專案時，要使用 Contract 還是 Facade，一般來說沒什麼差別，因為兩者的可測試性都是相同的。不過，在開發套件的時候，我們要開發的套件可能無法存取所有的 Laravel 測試輔助函式。若想在測試套件是能像在一般的 Laravel 專案一樣測試，可使用 [Orchestral Testbench](https://github.com/orchestral/testbench) 套件。
 
 <a name="package-discovery"></a>
+
 ## Package Discovery
 
-In a Laravel application's `config/app.php` configuration file, the
-`providers` option defines a list of service providers that should be loaded
-by Laravel. When someone installs your package, you will typically want your
-service provider to be included in this list. Instead of requiring users to
-manually add your service provider to the list, you may define the provider
-in the `extra` section of your package's `composer.json` file. In addition
-to service providers, you may also list any
-[facades](/docs/{{version}}/facades) you would like to be registered:
+在 Laravel 專案的 `config/app.php` 設定中，`providers` 選項列出了 Laravel 要載入的 Service Provider。當有人安裝了我們的套件後，通常來說就需要將我們的 Service Provider 列在其中。不過，其實不需要讓使用者手動將 Service Provider 寫在列表中，我們可以在套件的 `composer.json` 檔中的 `extra` 欄位內定義 Provider。除了 Servce Provider 內，也可以列出要註冊的 [Facade](/docs/{{version}}/facades)：
 
 ```json
 "extra": {
@@ -65,17 +63,13 @@ to service providers, you may also list any
 },
 ```
 
-Once your package has been configured for discovery, Laravel will
-automatically register its service providers and facades when it is
-installed, creating a convenient installation experience for your package's
-users.
+設定好 Discovery 後，Larave 就會在套件安裝時自動註冊套件的 Service Provider 與 Facade，帶給套件使用者一個方便的體驗。
 
 <a name="opting-out-of-package-discovery"></a>
-### Opting Out Of Package Discovery
 
-If you are the consumer of a package and would like to disable package
-discovery for a package, you may list the package name in the `extra`
-section of your application's `composer.json` file:
+### 不使用 Package Discovery
+
+若有使用到某個套件且想為該套件禁用 Package Discovery 的話，可以將該套件名稱列在專案 `composer.json` 檔中的 `extra` 段落內：
 
 ```json
 "extra": {
@@ -87,8 +81,7 @@ section of your application's `composer.json` file:
 },
 ```
 
-You may disable package discovery for all packages using the `*` character
-inside of your application's `dont-discover` directive:
+可以在 `dont-discover` 指示詞內使用 `*` 字元來禁用所有套件的 Package Discovery：
 
 ```json
 "extra": {
@@ -101,32 +94,22 @@ inside of your application's `dont-discover` directive:
 ```
 
 <a name="service-providers"></a>
-## Service Providers
 
-[Service providers](/docs/{{version}}/providers) are the connection point
-between your package and Laravel. A service provider is responsible for
-binding things into Laravel's [service
-container](/docs/{{version}}/container) and informing Laravel where to load
-package resources such as views, configuration, and localization files.
+## Service Provider
 
-A service provider extends the `Illuminate\Support\ServiceProvider` class
-and contains two methods: `register` and `boot`. The base `ServiceProvider`
-class is located in the `illuminate/support` Composer package, which you
-should add to your own package's dependencies. To learn more about the
-structure and purpose of service providers, check out [their
-documentation](/docs/{{version}}/providers).
+[Service Provider](/docs/{{version}}/providers) 是套件與 Laravel 間的連結點。Service Provider 負責將各種東西繫結到 Laravel 的 [Service Container](/docs/{{version}}/container) 上，並告訴 Laravel 要在哪裡載入套件的資源，如 View、設定檔、語系檔等。
+
+Service Provider 應繼承 `Illuminate\Support\ServiceProvider` 類別，並包含兩個方法：`register` 與 `boot`。`ServiceProvider` 基礎類別放在 `illuminate/support` Composer 套件中，請在你的套件中將其加為相依性套件。若要瞭解更多有關 Service Provider 的架構與功能，請參見 [Service Provider 的說明文件](/docs/{{version}}/providers)。
 
 <a name="resources"></a>
-## Resources
+
+## 資源
 
 <a name="configuration"></a>
-### Configuration
 
-Typically, you will need to publish your package's configuration file to the
-application's `config` directory. This will allow users of your package to
-easily override your default configuration options. To allow your
-configuration files to be published, call the `publishes` method from the
-`boot` method of your service provider:
+### 組態設定
+
+一般來說，在製作套件的時候我們會想將套件的組態設定檔安裝到專案的 `config` 目錄內。這樣一來套件使用者就能輕鬆地覆寫預設設定。若要讓組態設定檔能安裝到專案內，請在 Service Provider 的 `boot` 方法內呼叫 `publishes` 方法：
 
     /**
      * Bootstrap any package services.
@@ -140,27 +123,20 @@ configuration files to be published, call the `publishes` method from the
         ]);
     }
 
-Now, when users of your package execute Laravel's `vendor:publish` command,
-your file will be copied to the specified publish location. Once your
-configuration has been published, its values may be accessed like any other
-configuration file:
+然後，當套件使用者執行 Laravel 的 `vendor:publish` 指令時，這些檔案就會被複製到指定的^[安裝](Publish)地點。安裝好設定檔後，就可以像其他設定檔樣存取這些設定值：
 
     $value = config('courier.option');
 
-> {note} You should not define closures in your configuration files. They can not be serialized correctly when users execute the `config:cache` Artisan command.
+> {note} 請不要在設定檔中定義閉包。因為當使用者執行 `config:cache` Artisan 指令時，這些閉包沒有辦法被序列化。
+
 
 <a name="default-package-configuration"></a>
-#### Default Package Configuration
 
-You may also merge your own package configuration file with the
-application's published copy. This will allow your users to define only the
-options they actually want to override in the published copy of the
-configuration file. To merge the configuration file values, use the
-`mergeConfigFrom` method within your service provider's `register` method.
+#### 預設套件設定
 
-The `mergeConfigFrom` method accepts the path to your package's
-configuration file as its first argument and the name of the application's
-copy of the configuration file as its second argument:
+可以將套件自己的設定檔跟安裝到專案裡的設定檔合併。這樣一來，就能讓使用者在設定檔中只定義要覆寫的值。若要合併設定檔，請在 Service Provider 的 `register` 方法中使用 `mergeConfigFrom` 方法。
+
+`mergeConfigFrom` 方法接受套件設定檔的路徑作為其第一個引數，而專案中的設定檔名稱則為其第二個引數：
 
     /**
      * Register any application services.
@@ -174,15 +150,14 @@ copy of the configuration file as its second argument:
         );
     }
 
-> {note} This method only merges the first level of the configuration array. If your users partially define a multi-dimensional configuration array, the missing options will not be merged.
+> {note} 該方法只會合併設定陣列中的第一層。若套件使用者只定義了多為陣列中的一部分，則未定義的部分將不會被合併。
+
 
 <a name="routes"></a>
-### Routes
 
-If your package contains routes, you may load them using the
-`loadRoutesFrom` method. This method will automatically determine if the
-application's routes are cached and will not load your routes file if the
-routes have already been cached:
+### Route
+
+若套件中包含 Route，可使用 `loadRoutesFrom` 方法。該方法會自動判斷專案的 Route 是否有被快取，當有快取時將不會載入這些 Route 檔：
 
     /**
      * Bootstrap any package services.
@@ -195,13 +170,10 @@ routes have already been cached:
     }
 
 <a name="migrations"></a>
-### Migrations
 
-If your package contains [database
-migrations](/docs/{{version}}/migrations), you may use the
-`loadMigrationsFrom` method to inform Laravel how to load them. The
-`loadMigrationsFrom` method accepts the path to your package's migrations as
-its only argument:
+### Migration
+
+若套件中有 [資料庫 Migration](/docs/{{version}}/migrations)，可使用 `loadMigrationsFrom` 方法來讓 Laravel 載入這些 Migration。`loadMigrationsFrom` 方法接受套件 Migartion 的路徑作為其唯一的引數：
 
     /**
      * Bootstrap any package services.
@@ -213,18 +185,13 @@ its only argument:
         $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
     }
 
-Once your package's migrations have been registered, they will automatically
-be run when the `php artisan migrate` command is executed. You do not need
-to export them to the application's `database/migrations` directory.
+Migration 註冊好後，執行 `php artisan migrate` 指令時，就會自動執行這些 Migration。不需要將這些檔案匯出到 `database/migrations` 目錄中。
 
 <a name="translations"></a>
-### Translations
 
-If your package contains [translation
-files](/docs/{{version}}/localization), you may use the
-`loadTranslationsFrom` method to inform Laravel how to load them. For
-example, if your package is named `courier`, you should add the following to
-your service provider's `boot` method:
+### 翻譯
+
+若套件有包含[語系檔](/docs/{{version}}/localization)，可使用 `loadTranslationsFrom` 方法來讓 Laravel 載入這些檔案。舉例來說，若套件名稱為 `courier`，則可在 Service Provider 的 `boot` 方法中這樣寫：
 
     /**
      * Bootstrap any package services.
@@ -236,20 +203,15 @@ your service provider's `boot` method:
         $this->loadTranslationsFrom(__DIR__.'/../resources/lang', 'courier');
     }
 
-Package translations are referenced using the `package::file.line` syntax
-convention. So, you may load the `courier` package's `welcome` line from the
-`messages` file like so:
+套件的語系檔使用 `package::file.line` (`套件::檔名.行`) 語法慣例來參照。所以，`courier` 套件的 `messages` 檔案中，`welcome` 行可以這樣載入：
 
     echo trans('courier::messages.welcome');
 
 <a name="publishing-translations"></a>
-#### Publishing Translations
 
-If you would like to publish your package's translations to the
-application's `resources/lang/vendor` directory, you may use the service
-provider's `publishes` method. The `publishes` method accepts an array of
-package paths and their desired publish locations. For example, to publish
-the translation files for the `courier` package, you may do the following:
+#### 安裝翻譯
+
+若想將套件的語系檔安裝到專案的 `resources/lang/vendor` 目錄下，可使用 Service Provider 的 `publishes` 方法。`publishes` 方法接受一組套件路徑與欲安裝位置的陣列。舉例來說，若要為 `courier` 套件安裝語系檔，可以這樣寫：
 
     /**
      * Bootstrap any package services.
@@ -259,25 +221,19 @@ the translation files for the `courier` package, you may do the following:
     public function boot()
     {
         $this->loadTranslationsFrom(__DIR__.'/../resources/lang', 'courier');
-
+    
         $this->publishes([
             __DIR__.'/../resources/lang' => resource_path('lang/vendor/courier'),
         ]);
     }
 
-Now, when users of your package execute Laravel's `vendor:publish` Artisan
-command, your package's translations will be published to the specified
-publish location.
+接著，當套件使用者執行 Laravel 的 `vendor:publish` Artisan 指令後，套件的翻譯語系檔就會被安裝到指定的安裝位置內。
 
 <a name="views"></a>
-### Views
 
-To register your package's [views](/docs/{{version}}/views) with Laravel,
-you need to tell Laravel where the views are located. You may do this using
-the service provider's `loadViewsFrom` method. The `loadViewsFrom` method
-accepts two arguments: the path to your view templates and your package's
-name. For example, if your package's name is `courier`, you would add the
-following to your service provider's `boot` method:
+### View
+
+若要向 Laravel 註冊套件的 [View]，我們需要告訴 Laravel 這些 View 存在哪裡。可以使用 Service Provider 的 `loadViewsFrom` 方法。`loadViewsFrom` 方法接受兩個引數：View 樣板的路徑，以及套件的名稱。舉例來說，若套件名稱為 `courier`，則可在 Service Provider 的 `boot` 方法中加入下列程式：
 
     /**
      * Bootstrap any package services.
@@ -289,34 +245,23 @@ following to your service provider's `boot` method:
         $this->loadViewsFrom(__DIR__.'/../resources/views', 'courier');
     }
 
-Package views are referenced using the `package::view` syntax
-convention. So, once your view path is registered in a service provider, you
-may load the `dashboard` view from the `courier` package like so:
+套件的 View 使用 `package::view` (`套件::View`) 語法慣例來參照。所以，在 Service Provider 內註冊好 View 的路徑後，就可以在 `courier` 套件中像這樣載入 `dashboard` View：
 
     Route::get('/dashboard', function () {
         return view('courier::dashboard');
     });
 
 <a name="overriding-package-views"></a>
-#### Overriding Package Views
 
-When you use the `loadViewsFrom` method, Laravel actually registers two
-locations for your views: the application's `resources/views/vendor`
-directory and the directory you specify. So, using the `courier` package as
-an example, Laravel will first check if a custom version of the view has
-been placed in the `resources/views/vendor/courier` directory by the
-developer. Then, if the view has not been customized, Laravel will search
-the package view directory you specified in your call to
-`loadViewsFrom`. This makes it easy for package users to customize /
-override your package's views.
+#### 覆寫套件的 View
+
+使用 `loadViewsFrom` 方法時，Laravel 實際上在兩個地方上都註冊為這個套件的 View 存放位置：專案的 `resources/views/vendor` 目錄，以及你所指定的目錄。所以，若以 `courier` 套件為例，Laravel 會先檢查 `resources/views/vendor/courier` 目錄下是否有開發人員覆寫的自訂版本。若沒找到自訂版本，Laravel 接著才會在呼叫 `loadViewsFrom` 時提供的路徑下搜尋套件的 View。這樣一來，套件使用者就能輕鬆地客製化 / 覆寫套件的 View。
 
 <a name="publishing-views"></a>
-#### Publishing Views
 
-If you would like to make your views available for publishing to the
-application's `resources/views/vendor` directory, you may use the service
-provider's `publishes` method. The `publishes` method accepts an array of
-package view paths and their desired publish locations:
+#### 安裝 View
+
+若想讓 View 可被安裝到專案的 `resources/views/vendor` 目錄下，可使用 Service Provider 的 `publishes` 方法。`publishes` 方法接受一組套件 View 路徑與欲安裝路徑的陣列：
 
     /**
      * Bootstrap the package services.
@@ -326,31 +271,23 @@ package view paths and their desired publish locations:
     public function boot()
     {
         $this->loadViewsFrom(__DIR__.'/../resources/views', 'courier');
-
+    
         $this->publishes([
             __DIR__.'/../resources/views' => resource_path('views/vendor/courier'),
         ]);
     }
 
-Now, when users of your package execute Laravel's `vendor:publish` Artisan
-command, your package's views will be copied to the specified publish
-location.
+接著，當套件使用者執行 Laravel 的 `vendor:publish` Artisan 指令後，套件的 View 就會被複製到指定的安裝位置內。
 
 <a name="view-components"></a>
-### View Components
 
-If your package contains [view
-components](/docs/{{version}}/blade#components), you may use the
-`loadViewComponentsAs` method to inform Laravel how to load them. The
-`loadViewComponentsAs` method accepts two arguments: the tag prefix for your
-view components and an array of your view component class names. For
-example, if your package's prefix is `courier` and you have `Alert` and
-`Button` view components, you would add the following to your service
-provider's `boot` method:
+### View 元件
+
+若套件中有包含 [View 元件](/docs/{{version}}/blade#components)，可以使用 `loadViewComponentsAs` 方法來讓 Laravel 載入這些元件。`loadViewComponentsAs` 方法接受兩個引數：用於 View 元件標籤的前置詞，以及一組 View 元件類別名稱的陣列。舉例來說，若套件的前置詞為 `courier`，且套件中有 `Alert` 與 `Button` 兩個 View 元件，就可以在 Service Provider 的 `boot` 方法中加上下列程式：
 
     use Courier\Components\Alert;
     use Courier\Components\Button;
-
+    
     /**
      * Bootstrap any package services.
      *
@@ -364,8 +301,7 @@ provider's `boot` method:
         ]);
     }
 
-Once your view components are registered in a service provider, you may
-reference them in your view like so:
+在 Service Provider 中註冊好 View 元件後，就可以像這樣在 View 中參照這些元件：
 
 ```blade
 <x-courier-alert />
@@ -374,28 +310,24 @@ reference them in your view like so:
 ```
 
 <a name="anonymous-components"></a>
-#### Anonymous Components
 
-If your package contains anonymous components, they must be placed within a
-`components` directory of your package's "views" directory (as specified by
-`loadViewsFrom`). Then, you may render them by prefixing the component name
-with the package's view namespace:
+#### 匿名元件
+
+若套件中有匿名元件，則這些套件必須放在套件「view」目錄 (即 `loadViewsFrom` 指定的目錄) 下的 `components` 目錄內。接著，就可以使用套件 View 命名空間作為前置詞來轉譯套件：
 
 ```blade
 <x-courier::alert />
 ```
 
 <a name="commands"></a>
-## Commands
 
-To register your package's Artisan commands with Laravel, you may use the
-`commands` method. This method expects an array of command class names. Once
-the commands have been registered, you may execute them using the [Artisan
-CLI](/docs/{{version}}/artisan):
+## 指令
+
+若要向 Laravel 註冊 Artisan 指令，可使用 `commands` 方法。這個方法接受一組指令類別名稱的陣列。註冊好指令後，就可以使用 [Artisan CLI](/docs/{{version}}/artisan) 來執行這些指令：
 
     use Courier\Console\Commands\InstallCommand;
     use Courier\Console\Commands\NetworkCommand;
-
+    
     /**
      * Bootstrap any package services.
      *
@@ -412,13 +344,10 @@ CLI](/docs/{{version}}/artisan):
     }
 
 <a name="public-assets"></a>
-## Public Assets
 
-Your package may have assets such as JavaScript, CSS, and images. To publish
-these assets to the application's `public` directory, use the service
-provider's `publishes` method. In this example, we will also add a `public`
-asset group tag, which may be used to easily publish groups of related
-assets:
+## 公用素材
+
+套件也可以有像 JavaScript、CSS、圖片等的素材。若要將這些素材安裝到 `public` 目錄內，可使用 Service Provider 的 `publishes` 方法。在這個範例中，我們也給這些素材嫁了一個 `public` 素材群組標籤，這樣我們就能使用該標籤來輕鬆將一組相關的素材安裝到專案內：
 
     /**
      * Bootstrap any package services.
@@ -432,26 +361,17 @@ assets:
         ], 'public');
     }
 
-Now, when your package's users execute the `vendor:publish` command, your
-assets will be copied to the specified publish location. Since users will
-typically need to overwrite the assets every time the package is updated,
-you may use the `--force` flag:
+接著，當專案使用者執行 `vendor:publish` 指令後，素材就會被複製到指定的位置。由於使用者通常會需要在每次套件更新後都覆寫這些素材，因此可以使用 `--force` 旗標：
 
 ```shell
 php artisan vendor:publish --tag=public --force
 ```
 
 <a name="publishing-file-groups"></a>
-## Publishing File Groups
 
-You may want to publish groups of package assets and resources
-separately. For instance, you might want to allow your users to publish your
-package's configuration files without being forced to publish your package's
-assets. You may do this by "tagging" them when calling the `publishes`
-method from a package's service provider. For example, let's use tags to
-define two publish groups for the `courier` package (`courier-config` and
-`courier-migrations`) in the `boot` method of the package's service
-provider:
+## 安裝檔案群組
+
+有時候我們可能會想分別安裝套件素材與資源。舉例來說，我們可以讓使用者安裝套件的設定檔，但不強制使用者安裝套件素材。我們可以通過在 Service Provider 內呼叫 `publishes` 方法時為這些檔案指定「標籤」。舉例來說，我們來在 Service Provider 內 `boot` 方法中為 `courier` 套件定義兩個安裝群組 (`courier-config` 與 `courier-migrations`)：
 
     /**
      * Bootstrap any package services.
@@ -463,14 +383,13 @@ provider:
         $this->publishes([
             __DIR__.'/../config/package.php' => config_path('package.php')
         ], 'courier-config');
-
+    
         $this->publishes([
             __DIR__.'/../database/migrations/' => database_path('migrations')
         ], 'courier-migrations');
     }
 
-Now your users may publish these groups separately by referencing their tag
-when executing the `vendor:publish` command:
+接著，使用者在執行 `vendor:publish` 指令時就可以使用標籤來分別安裝這些群組：
 
 ```shell
 php artisan vendor:publish --tag=courier-config

@@ -22,14 +22,16 @@ for source_dir in docs/*; do
   cp -Rf $source_dir/* "$target_dir"
 
   for md in $target_dir/**/*.md; do
+    echo "Building $target_dir/$md_filename.md..."
+
     md_filename=`echo "$md" | sed -E "s#$target_dir/(.+)\.md#\1#g"`
 
-    po4a-translate --format text --option markdown \
-      --master-charset utf-8 --localized-charset utf-8 \
-      --keep 0 \
-      --master "$source_dir/$md_filename.md" \
-      --po "$po_dir/$md_filename.po" \
-      --localized "$target_dir/$md_filename.md"
+    po2md \
+      --quiet \
+      --wrapwidth 0 \
+      --po-files "$po_dir/$md_filename.po" \
+      --save "$target_dir/$md_filename.md" \
+      "$source_dir/$md_filename.md"
   done
 done
 

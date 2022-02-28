@@ -10,7 +10,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
-"PO-Revision-Date: 2022-02-19 15:51\n"
+"PO-Revision-Date: 2022-02-28 15:57\n"
 
 #: docs/8.x/queues.md:block 1 (header)
 msgid "Queues"
@@ -544,11 +544,11 @@ msgstr "不重複 Job"
 
 #: docs/8.x/queues.md:block 68 (quote)
 msgid "{note} Unique jobs require a cache driver that supports [locks](/docs/{{version}}/cache#atomic-locks). Currently, the `memcached`, `redis`, `dynamodb`, `database`, `file`, and `array` cache drivers support atomic locks. In addition, unique job constraints do not apply to jobs within batches."
-msgstr ""
+msgstr "{note} 若要使用不重複任務，則需要使用支援 [Atomic Lock] 的快取 Driver。目前，`memcached`、`redis`、`dynamodb`、`database`、`file`、`array` 等快取 Driver 有支援 Atomic Lock。此外，不重複任務的^[條件限制](Constraint)不會被套用到批次任務中的人物上。"
 
 #: docs/8.x/queues.md:block 69 (paragraph)
 msgid "Sometimes, you may want to ensure that only one instance of a specific job is on the queue at any point in time. You may do so by implementing the `ShouldBeUnique` interface on your job class. This interface does not require you to define any additional methods on your class:"
-msgstr ""
+msgstr "有時候，我們可能會想確保某個任務在佇列中一次只能有一個實體。我們可以在 Job 類別上實作 `ShouldBeUnique` 介面來確保一次只執行一個實體。要實作這個介面，我們需要在 Class 上定義幾個額外的方法："
 
 #: docs/8.x/queues.md:block 70 (code)
 msgid "<?php\n\n"
@@ -558,7 +558,13 @@ msgid "<?php\n\n"
 "{\n"
 "    ...\n"
 "}\n"
-msgstr ""
+msgstr "<?php\n\n"
+"use Illuminate\\Contracts\\Queue\\ShouldQueue;\n"
+"use Illuminate\\Contracts\\Queue\\ShouldBeUnique;\n\n"
+"class UpdateSearchIndex implements ShouldQueue, ShouldBeUnique\n"
+"{\n"
+"    ...\n"
+"}\n"
 
 #: docs/8.x/queues.md:block 71 (paragraph)
 msgid "In the example above, the `UpdateSearchIndex` job is unique. So, the job will not be dispatched if another instance of the job is already on the queue and has not finished processing."

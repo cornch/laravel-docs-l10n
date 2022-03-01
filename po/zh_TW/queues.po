@@ -10,7 +10,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
-"PO-Revision-Date: 2022-03-01 06:35\n"
+"PO-Revision-Date: 2022-03-01 07:36\n"
 
 #: docs/8.x/queues.md:block 1 (header)
 msgid "Queues"
@@ -642,7 +642,7 @@ msgstr "在開始處理 Job 後仍維持讓 Job 不重複"
 
 #: docs/8.x/queues.md:block 77 (paragraph)
 msgid "By default, unique jobs are \"unlocked\" after a job completes processing or fails all of its retry attempts. However, there may be situations where you would like your job to unlock immediately before it is processed. To accomplish this, your job should implement the `ShouldBeUniqueUntilProcessing` contract instead of the `ShouldBeUnique` contract:"
-msgstr ""
+msgstr "預設情況下，不重複的 Job 會在執行完成或所有嘗試都失敗後「解除鎖定」。不過，有的情況下，我們可能會想在執行完成前就先解除鎖定 Job。為此，不要在該 Job 上實作 `ShouldBeUnique`，而是實作 `ShouldBeUniqueUntillProcessing` Contract："
 
 #: docs/8.x/queues.md:block 78 (code)
 msgid "<?php\n\n"
@@ -653,15 +653,22 @@ msgid "<?php\n\n"
 "{\n"
 "    // ...\n"
 "}\n"
-msgstr ""
+msgstr "<?php\n\n"
+"use App\\Product;\n"
+"use Illuminate\\Contracts\\Queue\\ShouldQueue;\n"
+"use Illuminate\\Contracts\\Queue\\ShouldBeUniqueUntilProcessing;\n\n"
+"class UpdateSearchIndex implements ShouldQueue, ShouldBeUniqueUntilProcessing\n"
+"{\n"
+"    // ...\n"
+"}\n"
 
 #: docs/8.x/queues.md:block 80 (header)
 msgid "Unique Job Locks"
-msgstr ""
+msgstr "不重複 Job 的鎖定"
 
 #: docs/8.x/queues.md:block 81 (paragraph)
 msgid "Behind the scenes, when a `ShouldBeUnique` job is dispatched, Laravel attempts to acquire a [lock](/docs/{{version}}/cache#atomic-locks) with the `uniqueId` key. If the lock is not acquired, the job is not dispatched. This lock is released when the job completes processing or fails all of its retry attempts. By default, Laravel will use the default cache driver to obtain this lock. However, if you wish to use another driver for acquiring the lock, you may define a `uniqueVia` method that returns the cache driver that should be used:"
-msgstr ""
+msgstr "當分派 `ShouldBeUnique` 時，Laravel 會在幕後使用 `uniqueId` 索引鍵來取得一個 [^[Lock](鎖定)](/docs/{{version}}/cache#atomic-locks)。若未能取得 Lock，就不會分派該 Job。當 Job 完成處理或所有嘗試都失敗後，就會解除該 Lock。預設情況下，Laravel 會使用預設的快取 Driver 來取得該 Lock。不過，若想使用其他 Driver 來取得 Lock，可定義一個 `uniqueVia` 方法，並在該方法中回傳要使用的快取 Driver："
 
 #: docs/8.x/queues.md:block 82 (code)
 msgid "use Illuminate\\Support\\Facades\\Cache;\n\n"
@@ -678,19 +685,32 @@ msgid "use Illuminate\\Support\\Facades\\Cache;\n\n"
 "        return Cache::driver('redis');\n"
 "    }\n"
 "}\n"
-msgstr ""
+msgstr "use Illuminate\\Support\\Facades\\Cache;\n\n"
+"class UpdateSearchIndex implements ShouldQueue, ShouldBeUnique\n"
+"{\n"
+"    ...\n\n"
+"    /**\n"
+"     * Get the cache driver for the unique job lock.\n"
+"     *\n"
+"     * @return \\Illuminate\\Contracts\\Cache\\Repository\n"
+"     */\n"
+"    public function uniqueVia()\n"
+"    {\n"
+"        return Cache::driver('redis');\n"
+"    }\n"
+"}\n"
 
 #: docs/8.x/queues.md:block 83 (quote)
 msgid "{tip} If you only need to limit the concurrent processing of a job, use the [`WithoutOverlapping`](/docs/{{version}}/queues#preventing-job-overlaps) job middleware instead."
-msgstr ""
+msgstr "{tip} 若想限制某個 Job 可^[同時](Concurrent)執行的數量，請使用 [`WithoutOverlapping`](/docs/{{version}}/queues#preventing-job-overlaps) Job Middleware 而不是使用 Unique Job。"
 
 #: docs/8.x/queues.md:block 85 (header)
 msgid "Job Middleware"
-msgstr ""
+msgstr "Job Middleware"
 
 #: docs/8.x/queues.md:block 86 (paragraph)
 msgid "Job middleware allow you to wrap custom logic around the execution of queued jobs, reducing boilerplate in the jobs themselves. For example, consider the following `handle` method which leverages Laravel's Redis rate limiting features to allow only one job to process every five seconds:"
-msgstr ""
+msgstr "使用 Job Middleware 就能讓我們將佇列 Job 包裝在一組自定邏輯內執行，讓我們能減少在各個 Job 內撰寫重複的程式碼。舉例來說，假設有下列這個 `handle` 方法，該方法會使用 Laravel 的 Redis 頻率限制功能，限制每 5 秒只能處理 1 個 Job："
 
 #: docs/8.x/queues.md:block 87 (code)
 msgid "use Illuminate\\Support\\Facades\\Redis;\n\n"
@@ -709,15 +729,30 @@ msgid "use Illuminate\\Support\\Facades\\Redis;\n\n"
 "        return $this->release(5);\n"
 "    });\n"
 "}\n"
-msgstr ""
+msgstr "use Illuminate\\Support\\Facades\\Redis;\n\n"
+"/**\n"
+" * Execute the job.\n"
+" *\n"
+" * @return void\n"
+" */\n"
+"public function handle()\n"
+"{\n"
+"    Redis::throttle('key')->block(0)->allow(1)->every(5)->then(function () {\n"
+"        info('已取得 Lock...');\n\n"
+"        // 處理 Job...\n"
+"    }, function () {\n"
+"        // 無法取得 Lock...\n\n"
+"        return $this->release(5);\n"
+"    });\n"
+"}\n"
 
 #: docs/8.x/queues.md:block 88 (paragraph)
 msgid "While this code is valid, the implementation of the `handle` method becomes noisy since it is cluttered with Redis rate limiting logic. In addition, this rate limiting logic must be duplicated for any other jobs that we want to rate limit."
-msgstr ""
+msgstr "雖然我們確實可以這樣寫，但這樣一來 `handle` 方法的實作就變得很亂，因為我們的程式碼跟 Redis 頻率限制的邏輯混在一起了。此外，這樣的頻率限制邏輯一定也會與其他我們想要作頻率限制的 Job 重複。"
 
 #: docs/8.x/queues.md:block 89 (paragraph)
 msgid "Instead of rate limiting in the handle method, we could define a job middleware that handles rate limiting. Laravel does not have a default location for job middleware, so you are welcome to place job middleware anywhere in your application. In this example, we will place the middleware in an `app/Jobs/Middleware` directory:"
-msgstr ""
+msgstr "我們可以定義一個 Job Middleware 來處理頻率限制，而不用在 handle 方法內處理。Laravel 中沒有預設放置 Job Middleware 的地方，因此我們可以隨意在專案內放置這些 Job Middleware。舉例來說，我們可以把 Middleware 放在 `app/Jobs/Middleware` 目錄下："
 
 #: docs/8.x/queues.md:block 90 (code)
 msgid "<?php\n\n"
@@ -745,15 +780,39 @@ msgid "<?php\n\n"
 "                });\n"
 "    }\n"
 "}\n"
-msgstr ""
+msgstr "<?php\n\n"
+"namespace App\\Jobs\\Middleware;\n\n"
+"use Illuminate\\Support\\Facades\\Redis;\n\n"
+"class RateLimited\n"
+"{\n"
+"    /**\n"
+"     * Process the queued job.\n"
+"     *\n"
+"     * @param  mixed  $job\n"
+"     * @param  callable  $next\n"
+"     * @return mixed\n"
+"     */\n"
+"    public function handle($job, $next)\n"
+"    {\n"
+"        Redis::throttle('key')\n"
+"                ->block(0)->allow(1)->every(5)\n"
+"                ->then(function () use ($job, $next) {\n"
+"                    // Lock obtained...\n\n"
+"                    $next($job);\n"
+"                }, function () use ($job) {\n"
+"                    // Could not obtain lock...\n\n"
+"                    $job->release(5);\n"
+"                });\n"
+"    }\n"
+"}\n"
 
 #: docs/8.x/queues.md:block 91 (paragraph)
 msgid "As you can see, like [route middleware](/docs/{{version}}/middleware), job middleware receive the job being processed and a callback that should be invoked to continue processing the job."
-msgstr ""
+msgstr "就像這樣，跟 [Route Middleware](/docs/{{version}}/middleware) 很像，Job Middleware 會收到正在處理的 Job，以及要繼續執行 Job 時要叫用的回呼。"
 
 #: docs/8.x/queues.md:block 92 (paragraph)
 msgid "After creating job middleware, they may be attached to a job by returning them from the job's `middleware` method. This method does not exist on jobs scaffolded by the `make:job` Artisan command, so you will need to manually add it to your job class:"
-msgstr ""
+msgstr "建立好 Job Middleware 後，我們就可以在 Job 的 `middleware` 方法內將這個 Middleware 附加上去了。`make:job` 產生的空 Job 不包含 `middleware` 方法，所以我們需要手動在 Job 類別中新增這個方法："
 
 #: docs/8.x/queues.md:block 93 (code)
 msgid "use App\\Jobs\\Middleware\\RateLimited;\n\n"
@@ -766,19 +825,28 @@ msgid "use App\\Jobs\\Middleware\\RateLimited;\n\n"
 "{\n"
 "    return [new RateLimited];\n"
 "}\n"
-msgstr ""
+msgstr "use App\\Jobs\\Middleware\\RateLimited;\n\n"
+"/**\n"
+" * Get the middleware the job should pass through.\n"
+" *\n"
+" * @return array\n"
+" */\n"
+"public function middleware()\n"
+"{\n"
+"    return [new RateLimited];\n"
+"}\n"
 
 #: docs/8.x/queues.md:block 94 (quote)
 msgid "{tip} Job middleware can also be assigned to queueable event listeners, mailables, and notifications."
-msgstr ""
+msgstr "{tip} Job Middleware 也可以被指派給可放入佇列的 Event Listener、Mailable、Notification 等。"
 
 #: docs/8.x/queues.md:block 96 (header)
 msgid "Rate Limiting"
-msgstr ""
+msgstr "頻率限制"
 
 #: docs/8.x/queues.md:block 97 (paragraph)
 msgid "Although we just demonstrated how to write your own rate limiting job middleware, Laravel actually includes a rate limiting middleware that you may utilize to rate limit jobs. Like [route rate limiters](/docs/{{version}}/routing#defining-rate-limiters), job rate limiters are defined using the `RateLimiter` facade's `for` method."
-msgstr ""
+msgstr "雖然我們已經示範了要如何自行撰寫頻率限制的 Job Middleware。不過，其實 Laravel 有內建用來為 Job 做頻率限制的 Middleware。就跟 [Route 的 Rate Limiter](/docs/{{version}}/routing#defining-rate-limiters) 一樣，可以使用 `RateLimiter` Facade 的 `for` 方法來定義 Job 的頻率限制。"
 
 #: docs/8.x/queues.md:block 98 (paragraph)
 msgid "For example, you may wish to allow users to backup their data once per hour while imposing no such limit on premium customers. To accomplish this, you may define a `RateLimiter` in the `boot` method of your `AppServiceProvider`:"

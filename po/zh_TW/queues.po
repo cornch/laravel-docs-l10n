@@ -10,7 +10,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
-"PO-Revision-Date: 2022-03-01 12:03\n"
+"PO-Revision-Date: 2022-03-01 13:00\n"
 
 #: docs/8.x/queues.md:block 1 (header)
 msgid "Queues"
@@ -894,7 +894,7 @@ msgstr "return Limit::perMinute(50)->by($job->user->id);\n"
 
 #: docs/8.x/queues.md:block 102 (paragraph)
 msgid "Once you have defined your rate limit, you may attach the rate limiter to your backup job using the `Illuminate\\Queue\\Middleware\\RateLimited` middleware. Each time the job exceeds the rate limit, this middleware will release the job back to the queue with an appropriate delay based on the rate limit duration."
-msgstr ""
+msgstr "定義好頻率限制後，我們就可以使用 `Illuminate\\Queue\\Middleware\\RateLimited` Middleware 來將這個 Rate Limiter 附加到備份 Job 上。每當這個 Job 超過頻率限制後，這個 Middleware 就會依照頻率限制的間隔，使用適當的延遲時間來將該 Job 放回到佇列中。"
 
 #: docs/8.x/queues.md:block 103 (code)
 msgid "use Illuminate\\Queue\\Middleware\\RateLimited;\n\n"
@@ -907,15 +907,24 @@ msgid "use Illuminate\\Queue\\Middleware\\RateLimited;\n\n"
 "{\n"
 "    return [new RateLimited('backups')];\n"
 "}\n"
-msgstr ""
+msgstr "use Illuminate\\Queue\\Middleware\\RateLimited;\n\n"
+"/**\n"
+" * Get the middleware the job should pass through.\n"
+" *\n"
+" * @return array\n"
+" */\n"
+"public function middleware()\n"
+"{\n"
+"    return [new RateLimited('backups')];\n"
+"}\n"
 
 #: docs/8.x/queues.md:block 104 (paragraph)
 msgid "Releasing a rate limited job back onto the queue will still increment the job's total number of `attempts`. You may wish to tune your `tries` and `maxExceptions` properties on your job class accordingly. Or, you may wish to use the [`retryUntil` method](#time-based-attempts) to define the amount of time until the job should no longer be attempted."
-msgstr ""
+msgstr "將受頻率限制的 Job 放回佇列後，一樣會增加 Job 的 `attemps` 總數。若有需要可以在 Job 類別上適當地設定 `tries` 與 `maxExceptions` 屬性。或者，也可以使用 [`retryUntil` 方法](#time-based-attempts) 來定義不再重新嘗試 Job 的時間。"
 
 #: docs/8.x/queues.md:block 105 (paragraph)
 msgid "If you do not want a job to be retried when it is rate limited, you may use the `dontRelease` method:"
-msgstr ""
+msgstr "若不想讓 Job 在遇到頻率限制後重新嘗試，可使用 `dontRelease` 方法："
 
 #: docs/8.x/queues.md:block 106 (code)
 msgid "/**\n"
@@ -927,23 +936,31 @@ msgid "/**\n"
 "{\n"
 "    return [(new RateLimited('backups'))->dontRelease()];\n"
 "}\n"
-msgstr ""
+msgstr "/**\n"
+" * Get the middleware the job should pass through.\n"
+" *\n"
+" * @return array\n"
+" */\n"
+"public function middleware()\n"
+"{\n"
+"    return [(new RateLimited('backups'))->dontRelease()];\n"
+"}\n"
 
 #: docs/8.x/queues.md:block 107 (quote)
 msgid "{tip} If you are using Redis, you may use the `Illuminate\\Queue\\Middleware\\RateLimitedWithRedis` middleware, which is fine-tuned for Redis and more efficient than the basic rate limiting middleware."
-msgstr ""
+msgstr "{tip} 若使用 Redis，可使用 `Illuminate\\Queue\\Middleware\\RateLimitedWithRedis` Middleware。這個 Middleware 有為 Redis 做最佳化，比起一般基礎的頻率限制 Middleware 來說會更有效率。"
 
 #: docs/8.x/queues.md:block 109 (header)
 msgid "Preventing Job Overlaps"
-msgstr ""
+msgstr "避免 Job 重疊"
 
 #: docs/8.x/queues.md:block 110 (paragraph)
 msgid "Laravel includes an `Illuminate\\Queue\\Middleware\\WithoutOverlapping` middleware that allows you to prevent job overlaps based on an arbitrary key. This can be helpful when a queued job is modifying a resource that should only be modified by one job at a time."
-msgstr ""
+msgstr "Laravel 隨附了一個 `Illuminate\\Queue\\Middleware\\WithoutOverlapping` Middleware，可讓我們依照任意索引鍵來避免 Job 重疊。使用這個 Middleware 就能避免同一個資源同時被多個佇列 Job 修改。"
 
 #: docs/8.x/queues.md:block 111 (paragraph)
 msgid "For example, let's imagine you have a queued job that updates a user's credit score and you want to prevent credit score update job overlaps for the same user ID. To accomplish this, you can return the `WithoutOverlapping` middleware from your job's `middleware` method:"
-msgstr ""
+msgstr "舉例來說，假設我們有個佇列任務會負責更新使用者的信用分數，而我們想避免兩個更新相同 User ID 的信用分數 Job 重疊。為此，可在 Job 的 `middleware` 方法中回傳 `WithoutOverlapping` Middleware："
 
 #: docs/8.x/queues.md:block 112 (code)
 msgid "use Illuminate\\Queue\\Middleware\\WithoutOverlapping;\n\n"
@@ -956,11 +973,20 @@ msgid "use Illuminate\\Queue\\Middleware\\WithoutOverlapping;\n\n"
 "{\n"
 "    return [new WithoutOverlapping($this->user->id)];\n"
 "}\n"
-msgstr ""
+msgstr "use Illuminate\\Queue\\Middleware\\WithoutOverlapping;\n\n"
+"/**\n"
+" * Get the middleware the job should pass through.\n"
+" *\n"
+" * @return array\n"
+" */\n"
+"public function middleware()\n"
+"{\n"
+"    return [new WithoutOverlapping($this->user->id)];\n"
+"}\n"
 
 #: docs/8.x/queues.md:block 113 (paragraph)
 msgid "Any overlapping jobs will be released back to the queue. You may also specify the number of seconds that must elapse before the released job will be attempted again:"
-msgstr ""
+msgstr "每當有重疊的 Job，這些 Job 都會被重新放到佇列中。我們可以指定一個秒數，讓這些被重新放回佇列的 Job 在重新嘗試前必須等待多久："
 
 #: docs/8.x/queues.md:block 114 (code)
 msgid "/**\n"
@@ -972,11 +998,19 @@ msgid "/**\n"
 "{\n"
 "    return [(new WithoutOverlapping($this->order->id))->releaseAfter(60)];\n"
 "}\n"
-msgstr ""
+msgstr "/**\n"
+" * Get the middleware the job should pass through.\n"
+" *\n"
+" * @return array\n"
+" */\n"
+"public function middleware()\n"
+"{\n"
+"    return [(new WithoutOverlapping($this->order->id))->releaseAfter(60)];\n"
+"}\n"
 
 #: docs/8.x/queues.md:block 115 (paragraph)
 msgid "If you wish to immediately delete any overlapping jobs so that they will not be retried, you may use the `dontRelease` method:"
-msgstr ""
+msgstr "若想在 Job 重疊時馬上刪除這些重疊的 Job 來讓這些 Job 不被重試，請使用 `dontRelease` 方法："
 
 #: docs/8.x/queues.md:block 116 (code)
 msgid "/**\n"
@@ -988,11 +1022,19 @@ msgid "/**\n"
 "{\n"
 "    return [(new WithoutOverlapping($this->order->id))->dontRelease()];\n"
 "}\n"
-msgstr ""
+msgstr "/**\n"
+" * Get the middleware the job should pass through.\n"
+" *\n"
+" * @return array\n"
+" */\n"
+"public function middleware()\n"
+"{\n"
+"    return [(new WithoutOverlapping($this->order->id))->dontRelease()];\n"
+"}\n"
 
 #: docs/8.x/queues.md:block 117 (paragraph)
 msgid "The `WithoutOverlapping` middleware is powered by Laravel's atomic lock feature. Sometimes, your job may unexpectedly fail or timeout in such a way that the lock is not released. Therefore, you may explicitly define a lock expiration time using the `expireAfter` method. For example, the example below will instruct Laravel to release the `WithoutOverlapping` lock three minutes after the job has started processing:"
-msgstr ""
+msgstr "`WithoutOverlapping` Middleware 使用 Laravel 的 Atomic Lock 功能提供。有時候，Job 可能會未預期地失敗或逾時，並可能未正確釋放 Lock。因此，我們可以使用 `expireAfter` 方法來顯式定義一個 Lock 的有效時間。舉例來說，下列範例會讓 Laravel 在 Job 開始處理的 3 分鐘後釋放 `WithoutOverlapping` Lock："
 
 #: docs/8.x/queues.md:block 118 (code)
 msgid "/**\n"
@@ -1004,15 +1046,23 @@ msgid "/**\n"
 "{\n"
 "    return [(new WithoutOverlapping($this->order->id))->expireAfter(180)];\n"
 "}\n"
-msgstr ""
+msgstr "/**\n"
+" * Get the middleware the job should pass through.\n"
+" *\n"
+" * @return array\n"
+" */\n"
+"public function middleware()\n"
+"{\n"
+"    return [(new WithoutOverlapping($this->order->id))->expireAfter(180)];\n"
+"}\n"
 
 #: docs/8.x/queues.md:block 119 (quote)
 msgid "{note} The `WithoutOverlapping` middleware requires a cache driver that supports [locks](/docs/{{version}}/cache#atomic-locks). Currently, the `memcached`, `redis`, `dynamodb`, `database`, `file`, and `array` cache drivers support atomic locks."
-msgstr ""
+msgstr "{note} 若要使用 `WithoutOverlapping` Middleware，則需要使用支援 [Atomic Lock] 的快取 Driver。目前，`memcached`、`redis`、`dynamodb`、`database`、`file`、`array` 等快取 Driver 有支援 Atomic Lock。"
 
 #: docs/8.x/queues.md:block 121 (header)
 msgid "Throttling Exceptions"
-msgstr ""
+msgstr "頻率限制的 Exception"
 
 #: docs/8.x/queues.md:block 122 (paragraph)
 msgid "Laravel includes a `Illuminate\\Queue\\Middleware\\ThrottlesExceptions` middleware that allows you to throttle exceptions. Once the job throws a given number of exceptions, all further attempts to execute the job are delayed until a specified time interval lapses. This middleware is particularly useful for jobs that interact with third-party services that are unstable."

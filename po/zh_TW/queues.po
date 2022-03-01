@@ -10,7 +10,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
-"PO-Revision-Date: 2022-03-01 13:00\n"
+"PO-Revision-Date: 2022-03-01 13:58\n"
 
 #: docs/8.x/queues.md:block 1 (header)
 msgid "Queues"
@@ -1066,11 +1066,11 @@ msgstr "頻率限制的 Exception"
 
 #: docs/8.x/queues.md:block 122 (paragraph)
 msgid "Laravel includes a `Illuminate\\Queue\\Middleware\\ThrottlesExceptions` middleware that allows you to throttle exceptions. Once the job throws a given number of exceptions, all further attempts to execute the job are delayed until a specified time interval lapses. This middleware is particularly useful for jobs that interact with third-party services that are unstable."
-msgstr ""
+msgstr "Laravel 中隨附了一個 `Illuminate\\Queue\\Middleware\\ThrottlesExceptions` Middleware，能讓我們針對 Exception 做頻率限制。每當有 Job 擲回特定數量的 Exception 時，接下來要再次嘗試執行該 Job 前，必須要等待特定的時間過後才能繼續。對於一些使用了不穩定第三方服務的 Job 來說，特別適合使用這個功能。"
 
 #: docs/8.x/queues.md:block 123 (paragraph)
 msgid "For example, let's imagine a queued job that interacts with a third-party API that begins throwing exceptions. To throttle exceptions, you can return the `ThrottlesExceptions` middleware from your job's `middleware` method. Typically, this middleware should be paired with a job that implements [time based attempts](#time-based-attempts):"
-msgstr ""
+msgstr "舉例來說，假設我們有個使用了第三方 API 的佇列 Job，而這個 Job 會擲回 Exception。若要對 Exception 做頻率限制，可以在 Job 的 `middleware` 方法內回傳 `ThrottlesExceptions` Middleware。一般來說，這個 Middleware 應放在實作[基於時間的 attempts](#time-based-attempts)之 Job 內："
 
 #: docs/8.x/queues.md:block 124 (code)
 msgid "use Illuminate\\Queue\\Middleware\\ThrottlesExceptions;\n\n"
@@ -1092,7 +1092,25 @@ msgid "use Illuminate\\Queue\\Middleware\\ThrottlesExceptions;\n\n"
 "{\n"
 "    return now()->addMinutes(5);\n"
 "}\n"
-msgstr ""
+msgstr "use Illuminate\\Queue\\Middleware\\ThrottlesExceptions;\n\n"
+"/**\n"
+" * Get the middleware the job should pass through.\n"
+" *\n"
+" * @return array\n"
+" */\n"
+"public function middleware()\n"
+"{\n"
+"    return [new ThrottlesExceptions(10, 5)];\n"
+"}\n\n"
+"/**\n"
+" * Determine the time at which the job should timeout.\n"
+" *\n"
+" * @return \\DateTime\n"
+" */\n"
+"public function retryUntil()\n"
+"{\n"
+"    return now()->addMinutes(5);\n"
+"}\n"
 
 #: docs/8.x/queues.md:block 125 (paragraph)
 msgid "The first constructor argument accepted by the middleware is the number of exceptions the job can throw before being throttled, while the second constructor argument is the number of minutes that should elapse before the job is attempted again once it has been throttled. In the code example above, if the job throws 10 exceptions within 5 minutes, we will wait 5 minutes before attempting the job again."

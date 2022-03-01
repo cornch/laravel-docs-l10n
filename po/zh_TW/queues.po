@@ -10,7 +10,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
-"PO-Revision-Date: 2022-03-01 07:36\n"
+"PO-Revision-Date: 2022-03-01 12:03\n"
 
 #: docs/8.x/queues.md:block 1 (header)
 msgid "Queues"
@@ -850,7 +850,7 @@ msgstr "雖然我們已經示範了要如何自行撰寫頻率限制的 Job Midd
 
 #: docs/8.x/queues.md:block 98 (paragraph)
 msgid "For example, you may wish to allow users to backup their data once per hour while imposing no such limit on premium customers. To accomplish this, you may define a `RateLimiter` in the `boot` method of your `AppServiceProvider`:"
-msgstr ""
+msgstr "舉例來說，我們可能會想讓使用者能備份資料，而一般的使用者限制為每小時可備份一次，VIP 使用者則不限次數。若要做這種頻率限制，可以在 `AppServiceProvider` 中的 `boot` 方法內定義一個 `RateLimiter`："
 
 #: docs/8.x/queues.md:block 99 (code)
 msgid "use Illuminate\\Cache\\RateLimiting\\Limit;\n"
@@ -868,15 +868,29 @@ msgid "use Illuminate\\Cache\\RateLimiting\\Limit;\n"
 "                    : Limit::perHour(1)->by($job->user->id);\n"
 "    });\n"
 "}\n"
-msgstr ""
+msgstr "use Illuminate\\Cache\\RateLimiting\\Limit;\n"
+"use Illuminate\\Support\\Facades\\RateLimiter;\n\n"
+"/**\n"
+" * Bootstrap any application services.\n"
+" *\n"
+" * @return void\n"
+" */\n"
+"public function boot()\n"
+"{\n"
+"    RateLimiter::for('backups', function ($job) {\n"
+"        return $job->user->vipCustomer()\n"
+"                    ? Limit::none()\n"
+"                    : Limit::perHour(1)->by($job->user->id);\n"
+"    });\n"
+"}\n"
 
 #: docs/8.x/queues.md:block 100 (paragraph)
 msgid "In the example above, we defined an hourly rate limit; however, you may easily define a rate limit based on minutes using the `perMinute` method. In addition, you may pass any value you wish to the `by` method of the rate limit; however, this value is most often used to segment rate limits by customer:"
-msgstr ""
+msgstr "在上述範例中，我們定義了一個每小時的頻率限制。除了以小時來定義頻率限制外，也可以使用 `perMinute` 方法來以分鐘定義頻率限制。此外，我們也可以傳入任意值給頻率限制的 `by` 方法。傳給 `by` 的值通常是用來區分不同使用者的："
 
 #: docs/8.x/queues.md:block 101 (code)
 msgid "return Limit::perMinute(50)->by($job->user->id);\n"
-msgstr ""
+msgstr "return Limit::perMinute(50)->by($job->user->id);\n"
 
 #: docs/8.x/queues.md:block 102 (paragraph)
 msgid "Once you have defined your rate limit, you may attach the rate limiter to your backup job using the `Illuminate\\Queue\\Middleware\\RateLimited` middleware. Each time the job exceeds the rate limit, this middleware will release the job back to the queue with an appropriate delay based on the rate limit duration."

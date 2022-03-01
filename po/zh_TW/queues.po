@@ -10,7 +10,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
-"PO-Revision-Date: 2022-03-01 05:36\n"
+"PO-Revision-Date: 2022-03-01 06:35\n"
 
 #: docs/8.x/queues.md:block 1 (header)
 msgid "Queues"
@@ -572,7 +572,7 @@ msgstr "在上述範例中，`UpdateSearchIndex` Job 是^[不重複](Unique)的�
 
 #: docs/8.x/queues.md:block 72 (paragraph)
 msgid "In certain cases, you may want to define a specific \"key\" that makes the job unique or you may want to specify a timeout beyond which the job no longer stays unique. To accomplish this, you may define `uniqueId` and `uniqueFor` properties or methods on your job class:"
-msgstr ""
+msgstr "在某些情況下，我們可能會想指定要用來判斷 Job 是否重複的「索引鍵」，或是我們可能會想指定一個逾時時間，讓這個 Job 在執行超過該逾時後就不再判斷是否重複。為此，可在 Job 類別上定義 `uniqueId` 與 `uniqueFor` 屬性或方法："
 
 #: docs/8.x/queues.md:block 73 (code)
 msgid "<?php\n\n"
@@ -603,15 +603,42 @@ msgid "<?php\n\n"
 "        return $this->product->id;\n"
 "    }\n"
 "}\n"
-msgstr ""
+msgstr "<?php\n\n"
+"use App\\Product;\n"
+"use Illuminate\\Contracts\\Queue\\ShouldQueue;\n"
+"use Illuminate\\Contracts\\Queue\\ShouldBeUnique;\n\n"
+"class UpdateSearchIndex implements ShouldQueue, ShouldBeUnique\n"
+"{\n"
+"    /**\n"
+"     * The product instance.\n"
+"     *\n"
+"     * @var \\App\\Product\n"
+"     */\n"
+"    public $product;\n\n"
+"    /**\n"
+"     * The number of seconds after which the job's unique lock will be released.\n"
+"     *\n"
+"     * @var int\n"
+"     */\n"
+"    public $uniqueFor = 3600;\n\n"
+"    /**\n"
+"     * The unique ID of the job.\n"
+"     *\n"
+"     * @return string\n"
+"     */\n"
+"    public function uniqueId()\n"
+"    {\n"
+"        return $this->product->id;\n"
+"    }\n"
+"}\n"
 
 #: docs/8.x/queues.md:block 74 (paragraph)
 msgid "In the example above, the `UpdateSearchIndex` job is unique by a product ID. So, any new dispatches of the job with the same product ID will be ignored until the existing job has completed processing. In addition, if the existing job is not processed within one hour, the unique lock will be released and another job with the same unique key can be dispatched to the queue."
-msgstr ""
+msgstr "在上述範例中，`UpdateSearchIndex` Job 使用 Product ID 來判斷是否重複。因此，若新分派的 Job 有相同的 Product ID，則直到現存 Job 執行完畢前，這個 Job 都會被忽略。此外，若現有的 Job 在一個小時內都未被處理，這個不重複鎖定會被解除，之後若有另一個具相同重複索引鍵的 Job 將可被分派進佇列中。"
 
 #: docs/8.x/queues.md:block 76 (header)
 msgid "Keeping Jobs Unique Until Processing Begins"
-msgstr ""
+msgstr "在開始處理 Job 後仍維持讓 Job 不重複"
 
 #: docs/8.x/queues.md:block 77 (paragraph)
 msgid "By default, unique jobs are \"unlocked\" after a job completes processing or fails all of its retry attempts. However, there may be situations where you would like your job to unlock immediately before it is processed. To accomplish this, your job should implement the `ShouldBeUniqueUntilProcessing` contract instead of the `ShouldBeUnique` contract:"

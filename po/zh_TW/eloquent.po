@@ -10,7 +10,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
-"PO-Revision-Date: 2022-02-13 11:32\n"
+"PO-Revision-Date: 2022-03-04 09:30\n"
 
 #: docs/8.x/eloquent.md:block 1 (header)
 msgid "Eloquent: Getting Started"
@@ -2544,11 +2544,55 @@ msgstr "[使用 Lazy Collection 來將查詢結果分段](#chunking-using-lazy-c
 msgid "Chunking Using Lazy Collections"
 msgstr "使用 Lazy Collection 來將查詢結果分段"
 
-#: docs/9.x/eloquent.md:block 343 (paragraph)
+#: docs/9.x/eloquent.md:block 154 (paragraph)
+msgid "The `isDirty` method determines if any of the model's attributes have been changed since the model was retrieved. You may pass a specific attribute name or an array of attributes to the `isDirty` method to determine if any of the attributes are \"dirty\". The `isClean` will determine if an attribute has remained unchanged since the model was retrieved. This method also accepts an optional attribute argument:"
+msgstr ""
+
+#: docs/9.x/eloquent.md:block 155 (code)
+msgid "use App\\Models\\User;\n\n"
+"$user = User::create([\n"
+"    'first_name' => 'Taylor',\n"
+"    'last_name' => 'Otwell',\n"
+"    'title' => 'Developer',\n"
+"]);\n\n"
+"$user->title = 'Painter';\n\n"
+"$user->isDirty(); // true\n"
+"$user->isDirty('title'); // true\n"
+"$user->isDirty('first_name'); // false\n"
+"$user->isDirty(['first_name', 'title']); // true\n\n"
+"$user->isClean(); // false\n"
+"$user->isClean('title'); // false\n"
+"$user->isClean('first_name'); // true\n"
+"$user->isClean(['first_name', 'title']); // false\n\n"
+"$user->save();\n\n"
+"$user->isDirty(); // false\n"
+"$user->isClean(); // true\n"
+msgstr ""
+
+#: docs/9.x/eloquent.md:block 157 (code)
+msgid "$user = User::create([\n"
+"    'first_name' => 'Taylor',\n"
+"    'last_name' => 'Otwell',\n"
+"    'title' => 'Developer',\n"
+"]);\n\n"
+"$user->title = 'Painter';\n\n"
+"$user->save();\n\n"
+"$user->wasChanged(); // true\n"
+"$user->wasChanged('title'); // true\n"
+"$user->wasChanged(['title', 'slug']); // true\n"
+"$user->wasChanged('first_name'); // false\n"
+"$user->wasChanged(['first_name', 'title']); // true\n"
+msgstr ""
+
+#: docs/9.x/eloquent.md:block 187 (quote)
+msgid "{note} All databases except SQL Server require the columns in the second argument of the `upsert` method to have a \"primary\" or \"unique\" index. In addition, the MySQL database driver ignores the second argument of the `upsert` method and always uses the \"primary\" and \"unique\" indexes of the table to detect existing records."
+msgstr ""
+
+#: docs/9.x/eloquent.md:block 344 (paragraph)
 msgid "Alternatively, you may list your observers within an `$observers` property of your applications' `App\\Providers\\EventServiceProvider` class:"
 msgstr "或者，我們也可以在專案的 `App\\Providers\\EventServiceProvider` 類別內的 `$observers` 屬性內列出所有 Observer："
 
-#: docs/9.x/eloquent.md:block 344 (code)
+#: docs/9.x/eloquent.md:block 345 (code)
 msgid "use App\\Models\\User;\n"
 "use App\\Observers\\UserObserver;\n\n"
 "/**\n"

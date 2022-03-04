@@ -1572,24 +1572,70 @@ msgid ""
 msgstr ""
 
 #: docs/9.x/queries.md:block 2 (unordered list)
+msgid "[Where Not Clauses](#where-not-clauses)"
+msgstr ""
+
+#: docs/9.x/queries.md:block 2 (unordered list)
 msgid "[Full Text Where Clauses](#full-text-where-clauses)"
 msgstr ""
 
-#: docs/9.x/queries.md:block 216 (header)
+#: docs/9.x/queries.md:block 148 (header)
+msgid "Where Not Clauses"
+msgstr ""
+
+#: docs/9.x/queries.md:block 149 (paragraph)
+msgid "The `whereNot` and `orWhereNot` methods may be used to negate a given group of query constraints. For example, the following query excludes products that are on clearance or which have a price that is less than ten:"
+msgstr ""
+
+#: docs/9.x/queries.md:block 150 (code)
+msgid ""
+"$products = DB::table('products')\n"
+"                ->whereNot(function ($query) {\n"
+"                    $query->where('clearance', true)\n"
+"                          ->orWhere('price', '<', 10);\n"
+"                })\n"
+"                ->get();\n"
+msgstr ""
+
+#: docs/9.x/queries.md:block 220 (header)
 msgid "Full Text Where Clauses"
 msgstr ""
 
-#: docs/9.x/queries.md:block 217 (quote)
+#: docs/9.x/queries.md:block 221 (quote)
 msgid "{note} Full text where clauses are currently supported by MySQL and PostgreSQL."
 msgstr ""
 
-#: docs/9.x/queries.md:block 218 (paragraph)
+#: docs/9.x/queries.md:block 222 (paragraph)
 msgid "The `whereFullText` and `orWhereFullText` methods may be used to add full text \"where\" clauses to a query for columns that have [full text indexes](/docs/{{version}}/migrations#available-index-types). These methods will be transformed into the appropriate SQL for the underlying database system by Laravel. For example, a `MATCH AGAINST` clause will be generated for applications utilizing MySQL:"
 msgstr ""
 
-#: docs/9.x/queries.md:block 219 (code)
+#: docs/9.x/queries.md:block 223 (code)
 msgid ""
 "$users = DB::table('users')\n"
 "           ->whereFullText('bio', 'web developer')\n"
 "           ->get();\n"
+msgstr ""
+
+#: docs/9.x/queries.md:block 270 (code)
+msgid ""
+"$role = $request->input('role');\n"
+"\n"
+"$users = DB::table('users')\n"
+"                ->when($role, function ($query, $role) {\n"
+"                    $query->where('role_id', $role);\n"
+"                })\n"
+"                ->get();\n"
+msgstr ""
+
+#: docs/9.x/queries.md:block 273 (code)
+msgid ""
+"$sortByVotes = $request->input('sort_by_votes');\n"
+"\n"
+"$users = DB::table('users')\n"
+"                ->when($sortByVotes, function ($query, $sortByVotes) {\n"
+"                    $query->orderBy('votes');\n"
+"                }, function ($query) {\n"
+"                    $query->orderBy('name');\n"
+"                })\n"
+"                ->get();\n"
 msgstr ""

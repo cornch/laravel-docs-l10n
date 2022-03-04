@@ -2834,6 +2834,10 @@ msgstr ""
 msgid "{note} An \"implicit\" rule only *implies* that the attribute is required. Whether it actually invalidates a missing or empty attribute is up to you."
 msgstr ""
 
+#: docs/9.x/validation.md:block 2 (unordered list)
+msgid "[Error Message Indexes & Positions](#error-message-indexes-and-positions)"
+msgstr ""
+
 #: docs/9.x/validation.md:block 49 (paragraph)
 msgid "Laravel's built-in validation rules each has an error message that is located in your application's `lang/en/validation.php` file. Within this file, you will find a translation entry for each validation rule. You are free to change or modify these messages based on the needs of your application."
 msgstr ""
@@ -2887,7 +2891,7 @@ msgid "Accessing Nested Array Data"
 msgstr ""
 
 #: docs/9.x/validation.md:block 599 (paragraph)
-msgid "Sometimes you may need to access the value for a given nested array element when assigning validation rules to the attribute. You may accomplish this using the `Rule::foreEach` method. The `forEach` method accepts a closure that will be invoked for each iteration of the array attribute under validation and will receive the attribute's value and explicit, fully-expanded attribute name. The closure should return an array of rules to assign to the array element:"
+msgid "Sometimes you may need to access the value for a given nested array element when assigning validation rules to the attribute. You may accomplish this using the `Rule::forEach` method. The `forEach` method accepts a closure that will be invoked for each iteration of the array attribute under validation and will receive the attribute's value and explicit, fully-expanded attribute name. The closure should return an array of rules to assign to the array element:"
 msgstr ""
 
 #: docs/9.x/validation.md:block 600 (code)
@@ -2906,6 +2910,42 @@ msgid ""
 "]);\n"
 msgstr ""
 
-#: docs/9.x/validation.md:block 649 (code)
+#: docs/9.x/validation.md:block 602 (header)
+msgid "Error Message Indexes & Positions"
+msgstr ""
+
+#: docs/9.x/validation.md:block 603 (paragraph)
+msgid "When validating arrays, you may want to reference the index or position of a particular item that failed validation within the error message displayed by your application. To accomplish this, you may include the `:index` and `:position` place-holders within your [custom validation message](#manual-customizing-the-error-messages):"
+msgstr ""
+
+#: docs/9.x/validation.md:block 604 (code)
+msgid ""
+"use Illuminate\\Support\\Facades\\Validator;\n"
+"\n"
+"$input = [\n"
+"    'photos' => [\n"
+"        [\n"
+"            'name' => 'BeachVacation.jpg',\n"
+"            'description' => 'A photo of my beach vacation!',\n"
+"        ],\n"
+"        [\n"
+"            'name' => 'GrandCanyon.jpg',\n"
+"            'description' => '',\n"
+"        ],\n"
+"    ],\n"
+"];\n"
+"\n"
+"Validator::validate($input, [\n"
+"    'photos.*.description' => 'required',\n"
+"], [\n"
+"    'photos.*.description.required' => 'Please describe photo #:position.',\n"
+"]);\n"
+msgstr ""
+
+#: docs/9.x/validation.md:block 605 (paragraph)
+msgid "Given the example above, validation will fail and the user will be presented with the following error of *\"Please describe photo #2.\"*"
+msgstr ""
+
+#: docs/9.x/validation.md:block 654 (code)
 msgid "php artisan make:rule Uppercase --implicit\n"
 msgstr ""

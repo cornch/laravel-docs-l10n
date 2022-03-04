@@ -10,7 +10,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
-"PO-Revision-Date: 2022-03-01 13:58\n"
+"PO-Revision-Date: 2022-03-04 06:17\n"
 
 #: docs/8.x/queues.md:block 1 (header)
 msgid "Queues"
@@ -1114,11 +1114,11 @@ msgstr "use Illuminate\\Queue\\Middleware\\ThrottlesExceptions;\n\n"
 
 #: docs/8.x/queues.md:block 125 (paragraph)
 msgid "The first constructor argument accepted by the middleware is the number of exceptions the job can throw before being throttled, while the second constructor argument is the number of minutes that should elapse before the job is attempted again once it has been throttled. In the code example above, if the job throws 10 exceptions within 5 minutes, we will wait 5 minutes before attempting the job again."
-msgstr ""
+msgstr "Middleware 的第一個 Constructor 引數為 Exception 的數量，當 Job 擲回這個數量的 Exception 後就會被限制執行。第二個引數則是當被限制執行後，在繼續執行之前所要等待的分鐘數。在上述的範例中，若 Job 在 5 分鐘內擲回了 10 個 Exception，則 Laravel 會等待 5 分鐘，然後再繼續嘗試執行該 Job。"
 
 #: docs/8.x/queues.md:block 126 (paragraph)
 msgid "When a job throws an exception but the exception threshold has not yet been reached, the job will typically be retried immediately. However, you may specify the number of minutes such a job should be delayed by calling the `backoff` method when attaching the middleware to the job:"
-msgstr ""
+msgstr "當 Job 擲回 Exception，但還未達到所設定的 Exception 閥值，則一般情況下會馬上重試 Job。不過，也可以在講 Middleware 附加到 Job 上時呼叫 `backoff` 方法來指定一個以分鐘為單位的數字，來指定 Job 所要延遲的時間："
 
 #: docs/8.x/queues.md:block 127 (code)
 msgid "use Illuminate\\Queue\\Middleware\\ThrottlesExceptions;\n\n"
@@ -1131,11 +1131,20 @@ msgid "use Illuminate\\Queue\\Middleware\\ThrottlesExceptions;\n\n"
 "{\n"
 "    return [(new ThrottlesExceptions(10, 5))->backoff(5)];\n"
 "}\n"
-msgstr ""
+msgstr "use Illuminate\\Queue\\Middleware\\ThrottlesExceptions;\n\n"
+"/**\n"
+" * Get the middleware the job should pass through.\n"
+" *\n"
+" * @return array\n"
+" */\n"
+"public function middleware()\n"
+"{\n"
+"    return [(new ThrottlesExceptions(10, 5))->backoff(5)];\n"
+"}\n"
 
 #: docs/8.x/queues.md:block 128 (paragraph)
 msgid "Internally, this middleware uses Laravel's cache system to implement rate limiting, and the job's class name is utilized as the cache \"key\". You may override this key by calling the `by` method when attaching the middleware to your job. This may be useful if you have multiple jobs interacting with the same third-party service and you would like them to share a common throttling \"bucket\":"
-msgstr ""
+msgstr "這個 Middleware 在內部使用了 Laravel 的快取系統來實作頻率限制，並使用了該 Job 的類別名稱來作為快取的「索引鍵」。可以在講 Middleware 附加到 Job 上時呼叫 `by` 方法來複寫這個索引鍵。當有多個 Job 都使用了同一個第三方服務時，就很適合使用這個方法來讓這些 Job 都共用相同的頻率限制："
 
 #: docs/8.x/queues.md:block 129 (code)
 msgid "use Illuminate\\Queue\\Middleware\\ThrottlesExceptions;\n\n"
@@ -1148,7 +1157,16 @@ msgid "use Illuminate\\Queue\\Middleware\\ThrottlesExceptions;\n\n"
 "{\n"
 "    return [(new ThrottlesExceptions(10, 10))->by('key')];\n"
 "}\n"
-msgstr ""
+msgstr "use Illuminate\\Queue\\Middleware\\ThrottlesExceptions;\n\n"
+"/**\n"
+" * Get the middleware the job should pass through.\n"
+" *\n"
+" * @return array\n"
+" */\n"
+"public function middleware()\n"
+"{\n"
+"    return [(new ThrottlesExceptions(10, 10))->by('key')];\n"
+"}\n"
 
 #: docs/8.x/queues.md:block 130 (quote)
 msgid "{tip} If you are using Redis, you may use the `Illuminate\\Queue\\Middleware\\ThrottlesExceptionsWithRedis` middleware, which is fine-tuned for Redis and more efficient than the basic exception throttling middleware."

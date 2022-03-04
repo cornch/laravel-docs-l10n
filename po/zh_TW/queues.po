@@ -10,7 +10,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
-"PO-Revision-Date: 2022-03-04 09:30\n"
+"PO-Revision-Date: 2022-03-04 10:38\n"
 
 #: docs/8.x/queues.md:block 1 (header)
 msgid "Queues"
@@ -2404,11 +2404,11 @@ msgstr "從 Route 上回傳批次"
 
 #: docs/8.x/queues.md:block 286 (paragraph)
 msgid "All `Illuminate\\Bus\\Batch` instances are JSON serializable, meaning you can return them directly from one of your application's routes to retrieve a JSON payload containing information about the batch, including its completion progress. This makes it convenient to display information about the batch's completion progress in your application's UI."
-msgstr ""
+msgstr "所有的 `Illuminate\\Bus\\Batch` 實體都可被序列化為 JSON，因此我們可以直接在專案的 Route 中回傳批次實體來取得有關該批次資訊的 JSON Payload，其中也包含該批次的完成度。如此一來，我們就能方便地在專案的 UI 上顯示該批次完成度的資訊。"
 
 #: docs/8.x/queues.md:block 287 (paragraph)
 msgid "To retrieve a batch by its ID, you may use the `Bus` facade's `findBatch` method:"
-msgstr ""
+msgstr "若要使用 ID 來取得批次，可使用 `Bus` Facade 的 `findBatch` 方法："
 
 #: docs/8.x/queues.md:block 288 (code)
 msgid "use Illuminate\\Support\\Facades\\Bus;\n"
@@ -2416,15 +2416,19 @@ msgid "use Illuminate\\Support\\Facades\\Bus;\n"
 "Route::get('/batch/{batchId}', function (string $batchId) {\n"
 "    return Bus::findBatch($batchId);\n"
 "});\n"
-msgstr ""
+msgstr "use Illuminate\\Support\\Facades\\Bus;\n"
+"use Illuminate\\Support\\Facades\\Route;\n\n"
+"Route::get('/batch/{batchId}', function (string $batchId) {\n"
+"    return Bus::findBatch($batchId);\n"
+"});\n"
 
 #: docs/8.x/queues.md:block 290 (header)
 msgid "Cancelling Batches"
-msgstr ""
+msgstr "取消批次"
 
 #: docs/8.x/queues.md:block 291 (paragraph)
 msgid "Sometimes you may need to cancel a given batch's execution. This can be accomplished by calling the `cancel` method on the `Illuminate\\Bus\\Batch` instance:"
-msgstr ""
+msgstr "有時候，我們會需要取消給定批次的執行。若要取消執行批次，可在 `Illuminate\\Bus\\Batch` 實體上呼叫 `cancel` 方法："
 
 #: docs/8.x/queues.md:block 292 (code)
 msgid "/**\n"
@@ -2441,11 +2445,24 @@ msgid "/**\n"
 "        return;\n"
 "    }\n"
 "}\n"
-msgstr ""
+msgstr "/**\n"
+" * Execute the job.\n"
+" *\n"
+" * @return void\n"
+" */\n"
+"public function handle()\n"
+"{\n"
+"    if ($this->user->exceedsImportLimit()) {\n"
+"        return $this->batch()->cancel();\n"
+"    }\n\n"
+"    if ($this->batch()->cancelled()) {\n"
+"        return;\n"
+"    }\n"
+"}\n"
 
 #: docs/8.x/queues.md:block 293 (paragraph)
 msgid "As you may have noticed in previous examples, batched jobs should typically check to see if the batch has been cancelled at the beginning of their `handle` method:"
-msgstr ""
+msgstr "雖然讀者可能已經在前面的範例中注意到了，不過，批次 Job 一般都應在其 `handle` 方法的最前方檢查該批次是否已被取消："
 
 #: docs/8.x/queues.md:block 294 (code)
 msgid "/**\n"
@@ -2460,19 +2477,30 @@ msgid "/**\n"
 "    }\n\n"
 "    // Continue processing...\n"
 "}\n"
-msgstr ""
+msgstr "/**\n"
+" * Execute the job.\n"
+" *\n"
+" * @return void\n"
+" */\n"
+"public function handle()\n"
+"{\n"
+"    if ($this->batch()->cancelled()) {\n"
+"        return;\n"
+"    }\n\n"
+"    // 繼續處理...\n"
+"}\n"
 
 #: docs/8.x/queues.md:block 296 (header)
 msgid "Batch Failures"
-msgstr ""
+msgstr "批次失敗"
 
 #: docs/8.x/queues.md:block 297 (paragraph)
 msgid "When a batched job fails, the `catch` callback (if assigned) will be invoked. This callback is only invoked for the first job that fails within the batch."
-msgstr ""
+msgstr "若批次中的 Job 執行失敗，則會叫用 `catch` 回呼 (若有指定的話)。只有在批次中第一個失敗的 Job 才會叫用該回呼。"
 
 #: docs/8.x/queues.md:block 299 (header)
 msgid "Allowing Failures"
-msgstr ""
+msgstr "允許失敗"
 
 #: docs/8.x/queues.md:block 300 (paragraph)
 msgid "When a job within a batch fails, Laravel will automatically mark the batch as \"cancelled\". If you wish, you may disable this behavior so that a job failure does not automatically mark the batch as cancelled. This may be accomplished by calling the `allowFailures` method while dispatching the batch:"

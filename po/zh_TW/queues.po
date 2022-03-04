@@ -10,7 +10,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
-"PO-Revision-Date: 2022-03-04 07:18\n"
+"PO-Revision-Date: 2022-03-04 08:16\n"
 
 #: docs/8.x/queues.md:block 1 (header)
 msgid "Queues"
@@ -1758,19 +1758,19 @@ msgstr "若有某個佇列 Job 遇到錯誤，我們通常不會想讓這個 Job
 
 #: docs/8.x/queues.md:block 202 (paragraph)
 msgid "One approach to specifying the maximum number of times a job may be attempted is via the `--tries` switch on the Artisan command line. This will apply to all jobs processed by the worker unless the job being processed specifies a more specific number of times it may be attempted:"
-msgstr ""
+msgstr "其中一種指定 Job 最大嘗試次數的方法是在 Artisan 指令列中使用 `--tries` 開關。使用這種方式指定的嘗試次數會套用到所有該 Worker 處理的 Job，除非 Job 上有特別指定嘗試次數："
 
 #: docs/8.x/queues.md:block 203 (code)
 msgid "php artisan queue:work --tries=3\n"
-msgstr ""
+msgstr "php artisan queue:work --tries=3\n"
 
 #: docs/8.x/queues.md:block 204 (paragraph)
 msgid "If a job exceeds its maximum number of attempts, it will be considered a \"failed\" job. For more information on handling failed jobs, consult the [failed job documentation](#dealing-with-failed-jobs)."
-msgstr ""
+msgstr "若 Job 嘗試了最大嘗試次數，則這個 Job 會被視為是「^[執行失敗](Failed)」。更多有關處理執行失敗 Job 的資訊，請參考 [執行失敗 Job 的說明文件](#dealing-with-failed-jobs)。"
 
 #: docs/8.x/queues.md:block 205 (paragraph)
 msgid "You may take a more granular approach by defining the maximum number of times a job may be attempted on the job class itself. If the maximum number of attempts is specified on the job, it will take precedence over the `--tries` value provided on the command line:"
-msgstr ""
+msgstr "也可以用另一種更仔細的方法，就是在 Job 類別內定義這個 Job 的最大嘗試次數。若有在 Job 中指定最大嘗試次數，定義在 Job 類別內的次數會比指令列中 `--tries` 的值擁有更高的優先度："
 
 #: docs/8.x/queues.md:block 206 (code)
 msgid "<?php\n\n"
@@ -1784,15 +1784,25 @@ msgid "<?php\n\n"
 "     */\n"
 "    public $tries = 5;\n"
 "}\n"
-msgstr ""
+msgstr "<?php\n\n"
+"namespace App\\Jobs;\n\n"
+"class ProcessPodcast implements ShouldQueue\n"
+"{\n"
+"    /**\n"
+"     * The number of times the job may be attempted.\n"
+"     *\n"
+"     * @var int\n"
+"     */\n"
+"    public $tries = 5;\n"
+"}\n"
 
 #: docs/8.x/queues.md:block 208 (header)
 msgid "Time Based Attempts"
-msgstr ""
+msgstr "基於時間的嘗試限制"
 
 #: docs/8.x/queues.md:block 209 (paragraph)
 msgid "As an alternative to defining how many times a job may be attempted before it fails, you may define a time at which the job should no longer be attempted. This allows a job to be attempted any number of times within a given time frame. To define the time at which a job should no longer be attempted, add a `retryUntil` method to your job class. This method should return a `DateTime` instance:"
-msgstr ""
+msgstr "除了定義 Job 重試多少次要視為失敗以外，也可以限制 Job 嘗試執行的時間長度。這樣一來，在指定的時間範圍內，Job 就可以不斷重試。若要定義最長可重試時間，請在 Job 類別中定義一個 `retryUntil` 方法。該方法應回傳 `DateTime` 實體："
 
 #: docs/8.x/queues.md:block 210 (code)
 msgid "/**\n"
@@ -1804,19 +1814,27 @@ msgid "/**\n"
 "{\n"
 "    return now()->addMinutes(10);\n"
 "}\n"
-msgstr ""
+msgstr "/**\n"
+" * Determine the time at which the job should timeout.\n"
+" *\n"
+" * @return \\DateTime\n"
+" */\n"
+"public function retryUntil()\n"
+"{\n"
+"    return now()->addMinutes(10);\n"
+"}\n"
 
 #: docs/8.x/queues.md:block 211 (quote)
 msgid "{tip} You may also define a `tries` property or `retryUntil` method on your [queued event listeners](/docs/{{version}}/events#queued-event-listeners)."
-msgstr ""
+msgstr "{tip} 也可以在[放入佇列的 Event Listener](/docs/{{version}}/events#queued-event-listeners) 中定義一個 `tries` 屬性或 `retryUntil` 方法。"
 
 #: docs/8.x/queues.md:block 213 (header)
 msgid "Max Exceptions"
-msgstr ""
+msgstr "最大 Exception 數"
 
 #: docs/8.x/queues.md:block 214 (paragraph)
 msgid "Sometimes you may wish to specify that a job may be attempted many times, but should fail if the retries are triggered by a given number of unhandled exceptions (as opposed to being released by the `release` method directly). To accomplish this, you may define a `maxExceptions` property on your job class:"
-msgstr ""
+msgstr "有時候，我們可能會想讓 Job 可重試多次，但當出現指定數量的未處理 Exception 後，就視為執行失敗 (與直接使用 `release` 方法釋放 Job 不同)。若要指定未處理 Exception 數量，可在 Job 類別中定義一個 `maxExceptions` 屬性："
 
 #: docs/8.x/queues.md:block 215 (code)
 msgid "<?php\n\n"
@@ -1851,39 +1869,70 @@ msgid "<?php\n\n"
 "        });\n"
 "    }\n"
 "}\n"
-msgstr ""
+msgstr "<?php\n\n"
+"namespace App\\Jobs;\n\n"
+"use Illuminate\\Support\\Facades\\Redis;\n\n"
+"class ProcessPodcast implements ShouldQueue\n"
+"{\n"
+"    /**\n"
+"     * The number of times the job may be attempted.\n"
+"     *\n"
+"     * @var int\n"
+"     */\n"
+"    public $tries = 25;\n\n"
+"    /**\n"
+"     * The maximum number of unhandled exceptions to allow before failing.\n"
+"     *\n"
+"     * @var int\n"
+"     */\n"
+"    public $maxExceptions = 3;\n\n"
+"    /**\n"
+"     * Execute the job.\n"
+"     *\n"
+"     * @return void\n"
+"     */\n"
+"    public function handle()\n"
+"    {\n"
+"        Redis::throttle('key')->allow(10)->every(60)->then(function () {\n"
+"            // 已取得 Lock，正在處理 Podcast...\n"
+"        }, function () {\n"
+"            // 無法取得 Lock...\n"
+"            return $this->release(10);\n"
+"        });\n"
+"    }\n"
+"}\n"
 
 #: docs/8.x/queues.md:block 216 (paragraph)
 msgid "In this example, the job is released for ten seconds if the application is unable to obtain a Redis lock and will continue to be retried up to 25 times. However, the job will fail if three unhandled exceptions are thrown by the job."
-msgstr ""
+msgstr "在這個例子中，這個 Job 會在程式無法在 10 秒內取得 Redis Lock 時被釋放，而這個 Job 在此期間最多可嘗試 25 次。不過，若 Job 中有擲回未處理的 Exception，則會被視為是失敗的 Job。"
 
 #: docs/8.x/queues.md:block 218 (header)
 msgid "Timeout"
-msgstr ""
+msgstr "逾時"
 
 #: docs/8.x/queues.md:block 219 (quote)
 msgid "{note} The `pcntl` PHP extension must be installed in order to specify job timeouts."
-msgstr ""
+msgstr "{note} 必須安裝 `pcntl` PHP 擴充程式才可指定 Job 的逾時。"
 
 #: docs/8.x/queues.md:block 220 (paragraph)
 msgid "Often, you know roughly how long you expect your queued jobs to take. For this reason, Laravel allows you to specify a \"timeout\" value. If a job is processing for longer than the number of seconds specified by the timeout value, the worker processing the job will exit with an error. Typically, the worker will be restarted automatically by a [process manager configured on your server](#supervisor-configuration)."
-msgstr ""
+msgstr "通常來說，我們知道某個佇列任務大約需要花多少時間執行。因此，在 Laravel 中，我們可以指定一個「逾時」值。若 Job 執行超過逾時值所指定的秒數後，負責處理該 Job 的 Worker 就會以錯誤終止執行。一般來說，Worker 會自動由 [Server 上設定的 Process Manager](#supervisor-configuration) 重新開啟。"
 
 #: docs/8.x/queues.md:block 221 (paragraph)
 msgid "The maximum number of seconds that jobs can run may be specified using the `--timeout` switch on the Artisan command line:"
-msgstr ""
+msgstr "可在 Artisan 指令列上使用 `--timeout` 開關來指定 Job 能執行的最大秒數："
 
 #: docs/8.x/queues.md:block 222 (code)
 msgid "php artisan queue:work --timeout=30\n"
-msgstr ""
+msgstr "php artisan queue:work --timeout=30\n"
 
 #: docs/8.x/queues.md:block 223 (paragraph)
 msgid "If the job exceeds its maximum attempts by continually timing out, it will be marked as failed."
-msgstr ""
+msgstr "若 Job 不斷執行逾時超過其最大重試次數，則該 Job 會被標記為執行失敗。"
 
 #: docs/8.x/queues.md:block 224 (paragraph)
 msgid "You may also define the maximum number of seconds a job should be allowed to run on the job class itself. If the timeout is specified on the job, it will take precedence over any timeout specified on the command line:"
-msgstr ""
+msgstr "也可以在 Job 類別中定義該 Job 能執行的最大秒數。若有在 Job 上指定逾時，則在 Job 類別上定義的逾時比在指令列上指定的數字擁有更高的優先度："
 
 #: docs/8.x/queues.md:block 225 (code)
 msgid "<?php\n\n"
@@ -1897,19 +1946,29 @@ msgid "<?php\n\n"
 "     */\n"
 "    public $timeout = 120;\n"
 "}\n"
-msgstr ""
+msgstr "<?php\n\n"
+"namespace App\\Jobs;\n\n"
+"class ProcessPodcast implements ShouldQueue\n"
+"{\n"
+"    /**\n"
+"     * The number of seconds the job can run before timing out.\n"
+"     *\n"
+"     * @var int\n"
+"     */\n"
+"    public $timeout = 120;\n"
+"}\n"
 
 #: docs/8.x/queues.md:block 226 (paragraph)
 msgid "Sometimes, IO blocking processes such as sockets or outgoing HTTP connections may not respect your specified timeout. Therefore, when using these features, you should always attempt to specify a timeout using their APIs as well. For example, when using Guzzle, you should always specify a connection and request timeout value."
-msgstr ""
+msgstr "有時候，如 Socket 或連外 HTTP 連線等的 IO Blocking Process 可能不適用所指定的逾時設定。因此，若有使用到這些功能，也請在這些功能的 API 上指定逾時。舉例來說，若使用 Guzzle，則可像這樣指定連線與 Request 的逾時值："
 
 #: docs/8.x/queues.md:block 228 (header)
 msgid "Failing On Timeout"
-msgstr ""
+msgstr "逾時後視為失敗"
 
 #: docs/8.x/queues.md:block 229 (paragraph)
 msgid "If you would like to indicate that a job should be marked as [failed](#dealing-with-failed-jobs) on timeout, you may define the `$failOnTimeout` property on the job class:"
-msgstr ""
+msgstr "若想讓 Job 在逾時後被標記為[執行失敗](#dealing-with-failed-jobs)，可在 Job 類別上定義 `$failOnTimeout` 屬性："
 
 #: docs/8.x/queues.md:block 230 (code)
 msgid "/**\n"
@@ -1918,23 +1977,28 @@ msgid "/**\n"
 " * @var bool\n"
 " */\n"
 "public $failOnTimeout = true;\n"
-msgstr ""
+msgstr "/**\n"
+" * Indicate if the job should be marked as failed on timeout.\n"
+" *\n"
+" * @var bool\n"
+" */\n"
+"public $failOnTimeout = true;\n"
 
 #: docs/8.x/queues.md:block 232 (header)
 msgid "Error Handling"
-msgstr ""
+msgstr "錯誤處理"
 
 #: docs/8.x/queues.md:block 233 (paragraph)
 msgid "If an exception is thrown while the job is being processed, the job will automatically be released back onto the queue so it may be attempted again. The job will continue to be released until it has been attempted the maximum number of times allowed by your application. The maximum number of attempts is defined by the `--tries` switch used on the `queue:work` Artisan command. Alternatively, the maximum number of attempts may be defined on the job class itself. More information on running the queue worker [can be found below](#running-the-queue-worker)."
-msgstr ""
+msgstr "若在處理 Job 時有擲回 Exception，則這個 Job 會被自動釋放回佇列中，好讓這個 Job 能被重新嘗試。被釋放會佇列的 Job 會繼續被重試，直到重試次數達到專案上所設定的最大次數。最大重試次數可使用 `queue:work` Artisan 指令上的 `--tries` 開關來定義。或者，也可以在 Job 類別上定義最大重試次數。更多有關如何執行 Queue Worker 的資訊[可在本文後方找到](#running-the-queue-worker)。"
 
 #: docs/8.x/queues.md:block 235 (header)
 msgid "Manually Releasing A Job"
-msgstr ""
+msgstr "手動釋放 Job"
 
 #: docs/8.x/queues.md:block 236 (paragraph)
 msgid "Sometimes you may wish to manually release a job back onto the queue so that it can be attempted again at a later time. You may accomplish this by calling the `release` method:"
-msgstr ""
+msgstr "有的時候，我們可能會想手動將 Job 釋放會佇列中，好讓這個 Job 能在稍後重試。若要手動釋放 Job，可以呼叫 `release` 方法："
 
 #: docs/8.x/queues.md:block 237 (code)
 msgid "/**\n"
@@ -1947,23 +2011,32 @@ msgid "/**\n"
 "    // ...\n\n"
 "    $this->release();\n"
 "}\n"
-msgstr ""
+msgstr "/**\n"
+" * Execute the job.\n"
+" *\n"
+" * @return void\n"
+" */\n"
+"public function handle()\n"
+"{\n"
+"    // ...\n\n"
+"    $this->release();\n"
+"}\n"
 
 #: docs/8.x/queues.md:block 238 (paragraph)
 msgid "By default, the `release` method will release the job back onto the queue for immediate processing. However, by passing an integer to the `release` method you may instruct the queue to not make the job available for processing until a given number of seconds has elapsed:"
-msgstr ""
+msgstr "預設情況下，`release` 方法會將 Job 釋放會佇列中並立即處理。不過，若傳入一個整數給 `release` 方法，就可以指定讓佇列等待給定秒數後才開始處理該 Job："
 
 #: docs/8.x/queues.md:block 239 (code)
 msgid "$this->release(10);\n"
-msgstr ""
+msgstr "$this->release(10);\n"
 
 #: docs/8.x/queues.md:block 241 (header)
 msgid "Manually Failing A Job"
-msgstr ""
+msgstr "手動讓 Job 失敗"
 
 #: docs/8.x/queues.md:block 242 (paragraph)
 msgid "Occasionally you may need to manually mark a job as \"failed\". To do so, you may call the `fail` method:"
-msgstr ""
+msgstr "有時候，我們可能需要手動將 Job 標記為「失敗」。若要手動將 Job 標記為失敗，可呼叫 `fail` 方法："
 
 #: docs/8.x/queues.md:block 243 (code)
 msgid "/**\n"
@@ -1976,15 +2049,24 @@ msgid "/**\n"
 "    // ...\n\n"
 "    $this->fail();\n"
 "}\n"
-msgstr ""
+msgstr "/**\n"
+" * Execute the job.\n"
+" *\n"
+" * @return void\n"
+" */\n"
+"public function handle()\n"
+"{\n"
+"    // ...\n\n"
+"    $this->fail();\n"
+"}\n"
 
 #: docs/8.x/queues.md:block 244 (paragraph)
 msgid "If you would like to mark your job as failed because of an exception that you have caught, you may pass the exception to the `fail` method:"
-msgstr ""
+msgstr "若要在 Catch 到 Exception 時將 Job 標記為失敗，可將這個 Exception 傳給 `fail` 方法："
 
 #: docs/8.x/queues.md:block 245 (code)
 msgid "$this->fail($exception);\n"
-msgstr ""
+msgstr "$this->fail($exception);\n"
 
 #: docs/8.x/queues.md:block 246 (quote)
 msgid "{tip} For more information on failed jobs, check out the [documentation on dealing with job failures](#dealing-with-failed-jobs)."

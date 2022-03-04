@@ -688,17 +688,7 @@ Laravel 為 [PHPUnit] 功能測試提供了多個資料庫 Assertion。我們會
 
 <a name="assert-deleted"></a>
 
-#### assertDeleted
-
-`assertDeleted` 判斷給定的 Eloquent Model 是否已從資料庫內刪除：
-
-    use App\Models\User;
-    
-    $user = User::find(1);
-    
-    $user->delete();
-    
-    $this->assertDeleted($user);
+#### assertSoftDeleted
 
 `assertSoftDeleted` 方法可用來判斷給定 Eloquent Model 是否已「軟刪除 (Soft Delete)」：
 

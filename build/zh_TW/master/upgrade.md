@@ -44,7 +44,7 @@
 
 #### 預計升級所需時間：30 分鐘
 
-> {note} We attempt to document every possible breaking change. Since some of these breaking changes are in obscure parts of the framework only a portion of these changes may actually affect your application.
+> {tip} 雖然我們已經儘可能地在本說明文件中涵蓋所有^[中斷性變更](Breaking Change)。不過，在 Laravel 中，有些中斷性變更存在一些比較不明顯的地方，且這些更改中幾乎不太會影響到你的專案。 想節省時間嗎？可以使用 [Laravel Shift](https://laravelshift.com/) 來協助你快速升級你的專案。
 
 
 <a name="updating-dependencies"></a>
@@ -55,7 +55,23 @@
 
 #### 最低版本要求為 PHP 8.0.2
 
-Laravel 最低支援的 PHP 版本目前為 8.0.2
+Laravel 先已要求 PHP 最小版本為 8.0.2。
+
+#### Composer 相依性套件
+
+請在專案的 `composer.json` 檔案中更新下列相依性套件：
+
+- `laravel/framework` 升級為 `^9.0`
+
+- `nunomaduro/collision` 升級為 `^6.1`
+
+此外，請在 `composer.json` 檔中將 `facade/ignition` 改為 `"spatie/laravel-ignition": "^1.0"`。
+
+此外，下列第一方專案也有更新新的版本以支援 Laravel 9.x。若有使用這些套件，請在升級前先閱讀各套件的升級指南：
+
+- [Vonage 通知通道 (v3.0)](https://github.com/laravel/vonage-notification-channel/blob/3.x/UPGRADE.md) (用以取代 Nexmo)
+
+最後，請檢視你的專案使用的其他第三方套件，確認一下是否有使用支援 Laravel 9 的版本。
 
 <a name="php-return-types"></a>
 
@@ -93,18 +109,6 @@ Laravel 最低支援的 PHP 版本目前為 8.0.2
 
 - `gc($lifetime): int`
 
-#### Composer 相依性套件
-
-請在專案的 `composer.json` 檔案中更新下列相依性套件：
-
-- `laravel/framework` 升級為 `^9.0`
-
-- `nunomaduro/collision` to `^6.0`
-
-此外，請在 `composer.json` 檔案中將 `facade/ignition` 改為 `"spatie/laravel-ignition": "^1.0"`。
-
-最後，請檢視你的專案使用的其他第三方套件，確認一下是否有使用支援 Laravel 9 的版本。
-
 <a name="application"></a>
 
 ### Application
@@ -118,6 +122,10 @@ Laravel 最低支援的 PHP 版本目前為 8.0.2
 `Illuminate\Contracts\Foundation\Application` 介面的 `storagePath` 方法已更新為接受一個 `$path` 引數。若你有實作這個介面，請更新該實作：
 
     public function storagePath($path = '');
+
+Similarly, the `langPath` method of the `Illuminate\Foundation\Application` class has been updated to accept a `$path` argument:
+
+    public function langPath($path = '');
 
 #### ^[Exception Handler](例外處理常式) 的 `ignore` 方法
 
@@ -302,6 +310,12 @@ protected static function getFacadeAccessor()
 
 `FILESYSTEM_DRIVER` 環境變數已改名為 `FILESYSTEM_DISK`，以更確切反映出其用途。該更改只會影響專案 Skeleton。不過，若你想要的話，也歡迎你更新你專案上的環境變數以反映此更改。
 
+#### 「Cloud」Disk
+
+**受影響的可能：低**
+
+從 2020 年 11 月起，`cloud` Disk 設定選項已自預設的專案 Skeleton 中移除。這個更改只影響專案 Skeleton。若你有在專案中使用 `cloud` Disk，可在你自己的專案 Skeleton 中保留此設定值。
+
 <a name="flysystem-3"></a>
 
 ### Flysystem 3.x
@@ -312,9 +326,11 @@ Laravel 9.x 以從 [Flysystem](https://flysystem.thephpleague.com/v2/docs/) 1.x 
 
 #### Driver 前置需求
 
-使用 S3 或 SFTP Driver 時，需要使用 Composer 套件管理員安裝適當的套件：
+在使用 S3、FTP、SFTP 等 Driver 時，需要使用 Composer 套件管理員安裝適當的套件：
 
-- Amazon S3: `composer require --with-all-dependencies league/flysystem-aws-s3-v3 "^3.0"`
+- Amazon S3: `composer require -W league/flysystem-aws-s3-v3 "^3.0"`
+
+- FTP: `composer require league/flysystem-ftp "^3.0"`
 
 - SFTP: `composer require league/flysystem-sftp-v3 "^3.0"`
 
@@ -459,16 +475,16 @@ Laravel 9.x 中，其中一個最大的更改就是將 SwiftMailer 更改為 Sym
 
 #### Driver 前置需求
 
-若要繼續使用 Mailgun Transport，請在專案中 Require `symfony/mailgun-mailer` Composer 套件：
+若要繼續使用 Mailgun Transport，請在專案中 Require `symfony/mailgun-mailer` 與 `symfony/http-client` Composer 套件：
 
 ```shell
-composer require symfony/mailgun-mailer
+composer require symfony/mailgun-mailer symfony/http-client
 ```
 
-請從專案中移除 `wildbit/swiftmailer-postmark` Composer 套件，並改 Require `symfony/postmark-mailer` Composer 套件：
+請從專案中移除 `wildbit/swiftmailer-postmark` Composer 套件，並改 Require `symfony/postmark-mailer` 與 `symfony/http-client` Composer 套件：
 
 ```shell
-composer require symfony/postmark-mailer
+composer require symfony/postmark-mailer symfony/http-client
 ```
 
 #### 回傳型別的更新
@@ -636,6 +652,27 @@ Laravel 的 `Illuminate\Http\Request` 類別所繼承的 `Symfony\Component\Http
 若你是通過將現有程式碼複製到新安裝的 Laravel 9 應用程式 Skeletong 中來從 Laravel 8 升級到 Laravel 9 的話，需要更新專案的「Trusted Proxy」Middleware。
 
 在 `app/Http/Middleware/TrustProxies.php` 檔案中，請將 `use Fideloper\Proxy\TrustProxies as Middleware` 更新為 `use Illuminate\Http\Middleware\TrustProxies as Middleware`。
+
+接著，在 `app/Http/Middleware/TrustProxies.php` 中，請更新 `$headers` 屬性的定義：
+
+```php
+// 舊的...
+protected $headers = Request::HEADER_X_FORWARDED_ALL;
+
+// 新的...
+protected $headers =
+    Request::HEADER_X_FORWARDED_FOR |
+    Request::HEADER_X_FORWARDED_HOST |
+    Request::HEADER_X_FORWARDED_PORT |
+    Request::HEADER_X_FORWARDED_PROTO |
+    Request::HEADER_X_FORWARDED_AWS_ELB;
+```
+
+最後，請從專案中移除 `fideloper/proxy` Composer 相依性套件：
+
+```shell
+composer remove fideloper/proxy
+```
 
 ### 表單驗證
 

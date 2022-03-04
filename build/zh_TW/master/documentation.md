@@ -1,7 +1,7 @@
 - ## ​前言
 
 
-   - [版本資訊](/docs/{{version}}/release)
+   - [版本資訊](/docs/{{version}}/releases)
 
    - [升級指南](/docs/{{version}}/upgrade)
 
@@ -27,7 +27,7 @@
 
    - [Service Container](/docs/{{version}}/container)
 
-   - [Service Provider](#service-providers)
+   - [Service Provider](/docs/{{version}}/providers)
 
    - [Facade](/docs/{{version}}/facades)
 
@@ -194,4 +194,4 @@
 
    - [Valet](/docs/{{version}}/valet)
 
-- [API 說明文件](/api/master)
+- [API 說明文件](/api/9.x)

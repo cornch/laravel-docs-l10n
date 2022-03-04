@@ -48,8 +48,6 @@ Out of the box, Valet support includes, but is not limited to:
 
 - [Laravel](https://laravel.com)
 
-- [Lumen](https://lumen.laravel.com)
-
 - [Bedrock](https://roots.io/bedrock/)
 
 - [CakePHP 3](https://cakephp.org)

@@ -2,8 +2,6 @@
 
 - [版本策略](#versioning-scheme)
 
-   - [例外](#exceptions)
-
 - [支援政策](#support-policy)
 
 - [Laravel 9](#laravel-9)
@@ -26,14 +24,14 @@ Laravel 及其第一方套件都遵守 [語義化版本](https://semver.org/lang
 
 ## 支援政策
 
-LTS 版本 (如 Laravel 9) 提供 2 年的 Bug 修正以及 3 年的安全性修正。這些版本提供了最長的支援與維護期間。而一般性版本，則提供 18 個月的 Bug 修正以及 2 年的安全性更新。其他額外的函式庫 (如 Lumen) 則只為最新版本提供 Bug 修正。此外，請參考 [Laravel 支援的](/docs/{{version}}/database#introduction) 資料庫版本。
+所有的 Laravel 版本都提供 18 個月的 Bug 修正，以及 2 年的安全性修正。對於其他的函式庫，如 Lumen，則只有最新的版本會收到 Bug 修正。此外，也請參考 [Laravel 支援的](/docs/{{version}}/database#introduction)資料庫版本。
 
 | 版本 | PHP (*) | 釋出日期 | Bug 修正期限 | 安全性修正期限 |
 | --- | --- | --- | --- | --- |
 | 6 (LTS) | 7.2 - 8.0 | 2019 年 9 月 3 日 | 2022 年 1 月 25 日 | 2022 年 9 月 6 日 |
 | 7 | 7.2 - 8.0 | 2020 年 3 月 3 日 | 2020 年 10 月 6 日 | 2021 年 3 月 3 日 |
 | 8 | 7.3 - 8.1 | 2020 年 9 月 8 日 | 2022 年 7 月 26 日 | 2023 年 1 月 24 日 |
-| 9 (LTS) | 8.0 - 8.1 | 2022 年 2 月 8 日 | 2024 年 2 月 8 日 | 2025 年 2 月 8 日 |
+| 9 | 8.0 - 8.1 | 2022 年 2 月 8 日 | 2023 年 8 月 8 日 | 2024 年 2 月 8 日 |
 | 10 | 8.0 - 8.1 | 2023 年 2 月 7 日 | 2024 年 8 月 7 日 | 2025 年 2 月 7 日 |
 
 (*) 支援的 PHP 版本
@@ -54,7 +52,7 @@ Laravel 9 延續了 Laravel 8.x 中推出的各種改進，並支援 Symfony 6.0
 
 Laravel 9.x 所要求的最小 PHP 版本為 8.0。
 
-<a name="laravel-jetstream"></a>
+<a name="symfony-mailer"></a>
 
 ### Symfony Mailer
 
@@ -138,7 +136,7 @@ public function address(): Attribute
 
 *Enum 型別轉換由 [Mohamed Said](https://github.com/themsaid) 參與貢獻*。
 
-現在，Eloquent 能讓我們將屬性值轉換為 PHP Enum 了。若要轉換為 Enum，可在 Model 中的 `$casts` 屬性陣列中指定要型別轉換的屬性與 Enum：
+Eloquent now allows you to cast your attribute values to PHP ["backed" enums](https://www.php.net/manual/en/language.enumerations.backed.php). To accomplish this, you may specify the attribute and enum you wish to cast in your model's `$casts` property array:
 
     use App\Enums\ServerStatus;
     
@@ -359,7 +357,7 @@ return Blade::renderComponent(new HelloComponent('Julian Bashir'));
 
 *針對巢狀陣列輸入的表單驗證改進由 [Steve Bauman](https://github.com/stevebauman) 參與貢獻*。
 
-Sometimes you may need to access the value for a given nested array element when assigning validation rules to the attribute. You may now accomplish this using the `Rule::foreEach` method. The `forEach` method accepts a closure that will be invoked for each iteration of the array attribute under validation and will receive the attribute's value and explicit, fully-expanded attribute name. The closure should return an array of rules to assign to the array element:
+有時候，在為屬性指派認證規則時，我們可能會想存取給定巢狀陣列項目的值。現在，我們可以使用 `Rule::forEach` 方法來達成。`forEach` 方法接受一個閉包。在認證時，每次迭代陣列屬性都會叫用一次這個閉包，且該閉包會收到屬性值與完整展開的屬性名稱。該閉包應回傳一個陣列，其中包含要指派給陣列元素的認證規則：
 
     use App\Rules\HasPermission;
     use Illuminate\Support\Facades\Validator;

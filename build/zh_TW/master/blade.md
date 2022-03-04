@@ -20,7 +20,7 @@
 
    - [條件式 Class](#conditional-classes)
 
-   - [Checked / Selected](#checked-and-selected)
+   - [Checked / Selected / Disabled](#checked-and-selected)
 
    - [Include 子 View](#including-subviews)
 
@@ -493,7 +493,7 @@ Switch 陳述式可以通過 `@switch`, `@case`, `@break`, `@default` 與 `@ends
 
 <a name="checked-and-selected"></a>
 
-### Checked / Selected
+### Checked / Selected / Disabled
 
 為了方便起見，可以使用 `@checked` 指示詞用來可輕鬆地標示給定 HTML 勾選框為「^[已勾選](Checked)」。這個指示詞會在條件為 `true` 時 Echo `checked`：
 
@@ -514,6 +514,12 @@ Switch 陳述式可以通過 `@switch`, `@case`, `@break`, `@default` 與 `@ends
         </option>
     @endforeach
 </select>
+```
+
+Additionally, the `@disabled` directive may be used to indicate if a given element should be "disabled":
+
+```blade
+<button type="submit" @disabled($errors->isNotEmpty())>Submit</button>
 ```
 
 <a name="including-subviews"></a>

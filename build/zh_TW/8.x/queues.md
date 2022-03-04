@@ -301,10 +301,10 @@ Job 類別非常簡單，通常只包含了一個 `handle` 方法，會在佇列
 
 ### 不重複 Job
 
-> {note} Unique jobs require a cache driver that supports [locks](/docs/{{version}}/cache#atomic-locks). Currently, the `memcached`, `redis`, `dynamodb`, `database`, `file`, and `array` cache drivers support atomic locks. In addition, unique job constraints do not apply to jobs within batches.
+> {note} 若要使用不重複任務，則需要使用支援 [Atomic Lock] 的快取 Driver。目前，`memcached`、`redis`、`dynamodb`、`database`、`file`、`array` 等快取 Driver 有支援 Atomic Lock。此外，不重複任務的^[條件限制](Constraint)不會被套用到批次任務中的人物上。
 
 
-Sometimes, you may want to ensure that only one instance of a specific job is on the queue at any point in time. You may do so by implementing the `ShouldBeUnique` interface on your job class. This interface does not require you to define any additional methods on your class:
+有時候，我們可能會想確保某個任務在佇列中一次只能有一個實體。我們可以在 Job 類別上實作 `ShouldBeUnique` 介面來確保一次只執行一個實體。要實作這個介面，我們需要在 Class 上定義幾個額外的方法：
 
     <?php
     
@@ -316,9 +316,9 @@ Sometimes, you may want to ensure that only one instance of a specific job is on
         ...
     }
 
-In the example above, the `UpdateSearchIndex` job is unique. So, the job will not be dispatched if another instance of the job is already on the queue and has not finished processing.
+在上述範例中，`UpdateSearchIndex` Job 是^[不重複](Unique)的。所以，若佇列中已經有該 Job 的另一個實體且尚未執行完畢，就不會再次分派該 Job。
 
-In certain cases, you may want to define a specific "key" that makes the job unique or you may want to specify a timeout beyond which the job no longer stays unique. To accomplish this, you may define `uniqueId` and `uniqueFor` properties or methods on your job class:
+在某些情況下，我們可能會想指定要用來判斷 Job 是否重複的「索引鍵」，或是我們可能會想指定一個逾時時間，讓這個 Job 在執行超過該逾時後就不再判斷是否重複。為此，可在 Job 類別上定義 `uniqueId` 與 `uniqueFor` 屬性或方法：
 
     <?php
     
@@ -353,13 +353,13 @@ In certain cases, you may want to define a specific "key" that makes the job uni
         }
     }
 
-In the example above, the `UpdateSearchIndex` job is unique by a product ID. So, any new dispatches of the job with the same product ID will be ignored until the existing job has completed processing. In addition, if the existing job is not processed within one hour, the unique lock will be released and another job with the same unique key can be dispatched to the queue.
+在上述範例中，`UpdateSearchIndex` Job 使用 Product ID 來判斷是否重複。因此，若新分派的 Job 有相同的 Product ID，則直到現存 Job 執行完畢前，這個 Job 都會被忽略。此外，若現有的 Job 在一個小時內都未被處理，這個不重複鎖定會被解除，之後若有另一個具相同重複索引鍵的 Job 將可被分派進佇列中。
 
 <a name="keeping-jobs-unique-until-processing-begins"></a>
 
-#### Keeping Jobs Unique Until Processing Begins
+#### 在開始處理 Job 後仍維持讓 Job 不重複
 
-By default, unique jobs are "unlocked" after a job completes processing or fails all of its retry attempts. However, there may be situations where you would like your job to unlock immediately before it is processed. To accomplish this, your job should implement the `ShouldBeUniqueUntilProcessing` contract instead of the `ShouldBeUnique` contract:
+預設情況下，不重複的 Job 會在執行完成或所有嘗試都失敗後「解除鎖定」。不過，有的情況下，我們可能會想在執行完成前就先解除鎖定 Job。為此，不要在該 Job 上實作 `ShouldBeUnique`，而是實作 `ShouldBeUniqueUntillProcessing` Contract：
 
     <?php
     
@@ -374,9 +374,9 @@ By default, unique jobs are "unlocked" after a job completes processing or fails
 
 <a name="unique-job-locks"></a>
 
-#### Unique Job Locks
+#### 不重複 Job 的鎖定
 
-Behind the scenes, when a `ShouldBeUnique` job is dispatched, Laravel attempts to acquire a [lock](/docs/{{version}}/cache#atomic-locks) with the `uniqueId` key. If the lock is not acquired, the job is not dispatched. This lock is released when the job completes processing or fails all of its retry attempts. By default, Laravel will use the default cache driver to obtain this lock. However, if you wish to use another driver for acquiring the lock, you may define a `uniqueVia` method that returns the cache driver that should be used:
+當分派 `ShouldBeUnique` 時，Laravel 會在幕後使用 `uniqueId` 索引鍵來取得一個 [^[Lock](鎖定)](/docs/{{version}}/cache#atomic-locks)。若未能取得 Lock，就不會分派該 Job。當 Job 完成處理或所有嘗試都失敗後，就會解除該 Lock。預設情況下，Laravel 會使用預設的快取 Driver 來取得該 Lock。不過，若想使用其他 Driver 來取得 Lock，可定義一個 `uniqueVia` 方法，並在該方法中回傳要使用的快取 Driver：
 
     use Illuminate\Support\Facades\Cache;
     
@@ -395,14 +395,14 @@ Behind the scenes, when a `ShouldBeUnique` job is dispatched, Laravel attempts t
         }
     }
 
-> {tip} If you only need to limit the concurrent processing of a job, use the [`WithoutOverlapping`](/docs/{{version}}/queues#preventing-job-overlaps) job middleware instead.
+> {tip} 若想限制某個 Job 可^[同時](Concurrent)執行的數量，請使用 [`WithoutOverlapping`](/docs/{{version}}/queues#preventing-job-overlaps) Job Middleware 而不是使用 Unique Job。
 
 
 <a name="job-middleware"></a>
 
 ## Job Middleware
 
-Job middleware allow you to wrap custom logic around the execution of queued jobs, reducing boilerplate in the jobs themselves. For example, consider the following `handle` method which leverages Laravel's Redis rate limiting features to allow only one job to process every five seconds:
+使用 Job Middleware 就能讓我們將佇列 Job 包裝在一組自定邏輯內執行，讓我們能減少在各個 Job 內撰寫重複的程式碼。舉例來說，假設有下列這個 `handle` 方法，該方法會使用 Laravel 的 Redis 頻率限制功能，限制每 5 秒只能處理 1 個 Job：
 
     use Illuminate\Support\Facades\Redis;
     
@@ -414,19 +414,19 @@ Job middleware allow you to wrap custom logic around the execution of queued job
     public function handle()
     {
         Redis::throttle('key')->block(0)->allow(1)->every(5)->then(function () {
-            info('Lock obtained...');
+            info('已取得 Lock...');
     
-            // Handle job...
+            // 處理 Job...
         }, function () {
-            // Could not obtain lock...
+            // 無法取得 Lock...
     
             return $this->release(5);
         });
     }
 
-While this code is valid, the implementation of the `handle` method becomes noisy since it is cluttered with Redis rate limiting logic. In addition, this rate limiting logic must be duplicated for any other jobs that we want to rate limit.
+雖然我們確實可以這樣寫，但這樣一來 `handle` 方法的實作就變得很亂，因為我們的程式碼跟 Redis 頻率限制的邏輯混在一起了。此外，這樣的頻率限制邏輯一定也會與其他我們想要作頻率限制的 Job 重複。
 
-Instead of rate limiting in the handle method, we could define a job middleware that handles rate limiting. Laravel does not have a default location for job middleware, so you are welcome to place job middleware anywhere in your application. In this example, we will place the middleware in an `app/Jobs/Middleware` directory:
+我們可以定義一個 Job Middleware 來處理頻率限制，而不用在 handle 方法內處理。Laravel 中沒有預設放置 Job Middleware 的地方，因此我們可以隨意在專案內放置這些 Job Middleware。舉例來說，我們可以把 Middleware 放在 `app/Jobs/Middleware` 目錄下：
 
     <?php
     
@@ -459,9 +459,9 @@ Instead of rate limiting in the handle method, we could define a job middleware 
         }
     }
 
-As you can see, like [route middleware](/docs/{{version}}/middleware), job middleware receive the job being processed and a callback that should be invoked to continue processing the job.
+就像這樣，跟 [Route Middleware](/docs/{{version}}/middleware) 很像，Job Middleware 會收到正在處理的 Job，以及要繼續執行 Job 時要叫用的回呼。
 
-After creating job middleware, they may be attached to a job by returning them from the job's `middleware` method. This method does not exist on jobs scaffolded by the `make:job` Artisan command, so you will need to manually add it to your job class:
+建立好 Job Middleware 後，我們就可以在 Job 的 `middleware` 方法內將這個 Middleware 附加上去了。`make:job` 產生的空 Job 不包含 `middleware` 方法，所以我們需要手動在 Job 類別中新增這個方法：
 
     use App\Jobs\Middleware\RateLimited;
     
@@ -475,16 +475,16 @@ After creating job middleware, they may be attached to a job by returning them f
         return [new RateLimited];
     }
 
-> {tip} Job middleware can also be assigned to queueable event listeners, mailables, and notifications.
+> {tip} Job Middleware 也可以被指派給可放入佇列的 Event Listener、Mailable、Notification 等。
 
 
 <a name="rate-limiting"></a>
 
-### Rate Limiting
+### 頻率限制
 
-Although we just demonstrated how to write your own rate limiting job middleware, Laravel actually includes a rate limiting middleware that you may utilize to rate limit jobs. Like [route rate limiters](/docs/{{version}}/routing#defining-rate-limiters), job rate limiters are defined using the `RateLimiter` facade's `for` method.
+雖然我們已經示範了要如何自行撰寫頻率限制的 Job Middleware。不過，其實 Laravel 有內建用來為 Job 做頻率限制的 Middleware。就跟 [Route 的 Rate Limiter](/docs/{{version}}/routing#defining-rate-limiters) 一樣，可以使用 `RateLimiter` Facade 的 `for` 方法來定義 Job 的頻率限制。
 
-For example, you may wish to allow users to backup their data once per hour while imposing no such limit on premium customers. To accomplish this, you may define a `RateLimiter` in the `boot` method of your `AppServiceProvider`:
+舉例來說，我們可能會想讓使用者能備份資料，而一般的使用者限制為每小時可備份一次，VIP 使用者則不限次數。若要做這種頻率限制，可以在 `AppServiceProvider` 中的 `boot` 方法內定義一個 `RateLimiter`：
 
     use Illuminate\Cache\RateLimiting\Limit;
     use Illuminate\Support\Facades\RateLimiter;
@@ -503,11 +503,11 @@ For example, you may wish to allow users to backup their data once per hour whil
         });
     }
 
-In the example above, we defined an hourly rate limit; however, you may easily define a rate limit based on minutes using the `perMinute` method. In addition, you may pass any value you wish to the `by` method of the rate limit; however, this value is most often used to segment rate limits by customer:
+在上述範例中，我們定義了一個每小時的頻率限制。除了以小時來定義頻率限制外，也可以使用 `perMinute` 方法來以分鐘定義頻率限制。此外，我們也可以傳入任意值給頻率限制的 `by` 方法。傳給 `by` 的值通常是用來區分不同使用者的：
 
     return Limit::perMinute(50)->by($job->user->id);
 
-Once you have defined your rate limit, you may attach the rate limiter to your backup job using the `Illuminate\Queue\Middleware\RateLimited` middleware. Each time the job exceeds the rate limit, this middleware will release the job back to the queue with an appropriate delay based on the rate limit duration.
+定義好頻率限制後，我們就可以使用 `Illuminate\Queue\Middleware\RateLimited` Middleware 來將這個 Rate Limiter 附加到備份 Job 上。每當這個 Job 超過頻率限制後，這個 Middleware 就會依照頻率限制的間隔，使用適當的延遲時間來將該 Job 放回到佇列中。
 
     use Illuminate\Queue\Middleware\RateLimited;
     
@@ -521,9 +521,9 @@ Once you have defined your rate limit, you may attach the rate limiter to your b
         return [new RateLimited('backups')];
     }
 
-Releasing a rate limited job back onto the queue will still increment the job's total number of `attempts`. You may wish to tune your `tries` and `maxExceptions` properties on your job class accordingly. Or, you may wish to use the [`retryUntil` method](#time-based-attempts) to define the amount of time until the job should no longer be attempted.
+將受頻率限制的 Job 放回佇列後，一樣會增加 Job 的 `attemps` 總數。若有需要可以在 Job 類別上適當地設定 `tries` 與 `maxExceptions` 屬性。或者，也可以使用 [`retryUntil` 方法](#time-based-attempts) 來定義不再重新嘗試 Job 的時間。
 
-If you do not want a job to be retried when it is rate limited, you may use the `dontRelease` method:
+若不想讓 Job 在遇到頻率限制後重新嘗試，可使用 `dontRelease` 方法：
 
     /**
      * Get the middleware the job should pass through.
@@ -535,16 +535,16 @@ If you do not want a job to be retried when it is rate limited, you may use the 
         return [(new RateLimited('backups'))->dontRelease()];
     }
 
-> {tip} If you are using Redis, you may use the `Illuminate\Queue\Middleware\RateLimitedWithRedis` middleware, which is fine-tuned for Redis and more efficient than the basic rate limiting middleware.
+> {tip} 若使用 Redis，可使用 `Illuminate\Queue\Middleware\RateLimitedWithRedis` Middleware。這個 Middleware 有為 Redis 做最佳化，比起一般基礎的頻率限制 Middleware 來說會更有效率。
 
 
 <a name="preventing-job-overlaps"></a>
 
-### Preventing Job Overlaps
+### 避免 Job 重疊
 
-Laravel includes an `Illuminate\Queue\Middleware\WithoutOverlapping` middleware that allows you to prevent job overlaps based on an arbitrary key. This can be helpful when a queued job is modifying a resource that should only be modified by one job at a time.
+Laravel 隨附了一個 `Illuminate\Queue\Middleware\WithoutOverlapping` Middleware，可讓我們依照任意索引鍵來避免 Job 重疊。使用這個 Middleware 就能避免同一個資源同時被多個佇列 Job 修改。
 
-For example, let's imagine you have a queued job that updates a user's credit score and you want to prevent credit score update job overlaps for the same user ID. To accomplish this, you can return the `WithoutOverlapping` middleware from your job's `middleware` method:
+舉例來說，假設我們有個佇列任務會負責更新使用者的信用分數，而我們想避免兩個更新相同 User ID 的信用分數 Job 重疊。為此，可在 Job 的 `middleware` 方法中回傳 `WithoutOverlapping` Middleware：
 
     use Illuminate\Queue\Middleware\WithoutOverlapping;
     
@@ -558,7 +558,7 @@ For example, let's imagine you have a queued job that updates a user's credit sc
         return [new WithoutOverlapping($this->user->id)];
     }
 
-Any overlapping jobs will be released back to the queue. You may also specify the number of seconds that must elapse before the released job will be attempted again:
+每當有重疊的 Job，這些 Job 都會被重新放到佇列中。我們可以指定一個秒數，讓這些被重新放回佇列的 Job 在重新嘗試前必須等待多久：
 
     /**
      * Get the middleware the job should pass through.
@@ -570,7 +570,7 @@ Any overlapping jobs will be released back to the queue. You may also specify th
         return [(new WithoutOverlapping($this->order->id))->releaseAfter(60)];
     }
 
-If you wish to immediately delete any overlapping jobs so that they will not be retried, you may use the `dontRelease` method:
+若想在 Job 重疊時馬上刪除這些重疊的 Job 來讓這些 Job 不被重試，請使用 `dontRelease` 方法：
 
     /**
      * Get the middleware the job should pass through.
@@ -582,7 +582,7 @@ If you wish to immediately delete any overlapping jobs so that they will not be 
         return [(new WithoutOverlapping($this->order->id))->dontRelease()];
     }
 
-The `WithoutOverlapping` middleware is powered by Laravel's atomic lock feature. Sometimes, your job may unexpectedly fail or timeout in such a way that the lock is not released. Therefore, you may explicitly define a lock expiration time using the `expireAfter` method. For example, the example below will instruct Laravel to release the `WithoutOverlapping` lock three minutes after the job has started processing:
+`WithoutOverlapping` Middleware 使用 Laravel 的 Atomic Lock 功能提供。有時候，Job 可能會未預期地失敗或逾時，並可能未正確釋放 Lock。因此，我們可以使用 `expireAfter` 方法來顯式定義一個 Lock 的有效時間。舉例來說，下列範例會讓 Laravel 在 Job 開始處理的 3 分鐘後釋放 `WithoutOverlapping` Lock：
 
     /**
      * Get the middleware the job should pass through.
@@ -594,16 +594,16 @@ The `WithoutOverlapping` middleware is powered by Laravel's atomic lock feature.
         return [(new WithoutOverlapping($this->order->id))->expireAfter(180)];
     }
 
-> {note} The `WithoutOverlapping` middleware requires a cache driver that supports [locks](/docs/{{version}}/cache#atomic-locks). Currently, the `memcached`, `redis`, `dynamodb`, `database`, `file`, and `array` cache drivers support atomic locks.
+> {note} 若要使用 `WithoutOverlapping` Middleware，則需要使用支援 [Atomic Lock] 的快取 Driver。目前，`memcached`、`redis`、`dynamodb`、`database`、`file`、`array` 等快取 Driver 有支援 Atomic Lock。
 
 
 <a name="throttling-exceptions"></a>
 
-### Throttling Exceptions
+### 頻率限制的 Exception
 
-Laravel includes a `Illuminate\Queue\Middleware\ThrottlesExceptions` middleware that allows you to throttle exceptions. Once the job throws a given number of exceptions, all further attempts to execute the job are delayed until a specified time interval lapses. This middleware is particularly useful for jobs that interact with third-party services that are unstable.
+Laravel 中隨附了一個 `Illuminate\Queue\Middleware\ThrottlesExceptions` Middleware，能讓我們針對 Exception 做頻率限制。每當有 Job 擲回特定數量的 Exception 時，接下來要再次嘗試執行該 Job 前，必須要等待特定的時間過後才能繼續。對於一些使用了不穩定第三方服務的 Job 來說，特別適合使用這個功能。
 
-For example, let's imagine a queued job that interacts with a third-party API that begins throwing exceptions. To throttle exceptions, you can return the `ThrottlesExceptions` middleware from your job's `middleware` method. Typically, this middleware should be paired with a job that implements [time based attempts](#time-based-attempts):
+舉例來說，假設我們有個使用了第三方 API 的佇列 Job，而這個 Job 會擲回 Exception。若要對 Exception 做頻率限制，可以在 Job 的 `middleware` 方法內回傳 `ThrottlesExceptions` Middleware。一般來說，這個 Middleware 應放在實作[基於時間的 attempts](#time-based-attempts)之 Job 內：
 
     use Illuminate\Queue\Middleware\ThrottlesExceptions;
     
@@ -627,9 +627,9 @@ For example, let's imagine a queued job that interacts with a third-party API th
         return now()->addMinutes(5);
     }
 
-The first constructor argument accepted by the middleware is the number of exceptions the job can throw before being throttled, while the second constructor argument is the number of minutes that should elapse before the job is attempted again once it has been throttled. In the code example above, if the job throws 10 exceptions within 5 minutes, we will wait 5 minutes before attempting the job again.
+Middleware 的第一個 Constructor 引數為 Exception 的數量，當 Job 擲回這個數量的 Exception 後就會被限制執行。第二個引數則是當被限制執行後，在繼續執行之前所要等待的分鐘數。在上述的範例中，若 Job 在 5 分鐘內擲回了 10 個 Exception，則 Laravel 會等待 5 分鐘，然後再繼續嘗試執行該 Job。
 
-When a job throws an exception but the exception threshold has not yet been reached, the job will typically be retried immediately. However, you may specify the number of minutes such a job should be delayed by calling the `backoff` method when attaching the middleware to the job:
+當 Job 擲回 Exception，但還未達到所設定的 Exception 閥值，則一般情況下會馬上重試 Job。不過，也可以在講 Middleware 附加到 Job 上時呼叫 `backoff` 方法來指定一個以分鐘為單位的數字，來指定 Job 所要延遲的時間：
 
     use Illuminate\Queue\Middleware\ThrottlesExceptions;
     
@@ -643,7 +643,7 @@ When a job throws an exception but the exception threshold has not yet been reac
         return [(new ThrottlesExceptions(10, 5))->backoff(5)];
     }
 
-Internally, this middleware uses Laravel's cache system to implement rate limiting, and the job's class name is utilized as the cache "key". You may override this key by calling the `by` method when attaching the middleware to your job. This may be useful if you have multiple jobs interacting with the same third-party service and you would like them to share a common throttling "bucket":
+這個 Middleware 在內部使用了 Laravel 的快取系統來實作頻率限制，並使用了該 Job 的類別名稱來作為快取的「索引鍵」。可以在講 Middleware 附加到 Job 上時呼叫 `by` 方法來複寫這個索引鍵。當有多個 Job 都使用了同一個第三方服務時，就很適合使用這個方法來讓這些 Job 都共用相同的頻率限制：
 
     use Illuminate\Queue\Middleware\ThrottlesExceptions;
     
@@ -657,14 +657,14 @@ Internally, this middleware uses Laravel's cache system to implement rate limiti
         return [(new ThrottlesExceptions(10, 10))->by('key')];
     }
 
-> {tip} If you are using Redis, you may use the `Illuminate\Queue\Middleware\ThrottlesExceptionsWithRedis` middleware, which is fine-tuned for Redis and more efficient than the basic exception throttling middleware.
+> {tip} 若使用 Redis，可使用 `Illuminate\Queue\Middleware\ThrottlesExceptionsWithRedis` Middleware。該 Middleware 有為 Redis 最佳化，因此會比一般的 Exception 頻率限制 Middleware 還要有效率。
 
 
 <a name="dispatching-jobs"></a>
 
-## Dispatching Jobs
+## 分派 Job
 
-Once you have written your job class, you may dispatch it using the `dispatch` method on the job itself. The arguments passed to the `dispatch` method will be given to the job's constructor:
+寫好 Job 類別後，就可以使用 Job 上的 `dispatch` 方法來分派該 Job。傳給 `dispatch` 方法的引數會被傳給 Job 的 Constructor：
 
     <?php
     
@@ -693,7 +693,7 @@ Once you have written your job class, you may dispatch it using the `dispatch` m
         }
     }
 
-If you would like to conditionally dispatch a job, you may use the `dispatchIf` and `dispatchUnless` methods:
+若想要有條件地分派 Job，可使用 `dispatchIf` 與` `dispatchUnless` 方法：
 
     ProcessPodcast::dispatchIf($accountActive, $podcast);
     
@@ -701,9 +701,9 @@ If you would like to conditionally dispatch a job, you may use the `dispatchIf` 
 
 <a name="delayed-dispatching"></a>
 
-### Delayed Dispatching
+### 延遲分派
 
-If you would like to specify that a job should not be immediately available for processing by a queue worker, you may use the `delay` method when dispatching the job. For example, let's specify that a job should not be available for processing until 10 minutes after it has been dispatched:
+若不想讓 Job 馬上被 Queue Worker 處理，可在分派 Job 時使用 `delay` 方法。舉例來說，我們來指定讓一個 Job 在分派的 10 分鐘後才被開始處理：
 
     <?php
     
@@ -733,20 +733,20 @@ If you would like to specify that a job should not be immediately available for 
         }
     }
 
-> {note} The Amazon SQS queue service has a maximum delay time of 15 minutes.
+> {note} Amazon SQS 佇列服務的延遲時間最多只能為 15 分鐘。
 
 
 <a name="dispatching-after-the-response-is-sent-to-browser"></a>
 
-#### Dispatching After The Response Is Sent To Browser
+#### 在 Response 被傳送給瀏覽器後才進行分派
 
-Alternatively, the `dispatchAfterResponse` method delays dispatching a job until after the HTTP response is sent to the user's browser. This will still allow the user to begin using the application even though a queued job is still executing. This should typically only be used for jobs that take about a second, such as sending an email. Since they are processed within the current HTTP request, jobs dispatched in this fashion do not require a queue worker to be running in order for them to be processed:
+`dispatchAfterResponse` 則是另一個分派 Job 的方法，該方法延遲分派 Job，直到 HTTP Response 被傳回使用者瀏覽器後才開始處理Job。這樣一來，在處理佇列 Job 的同時，使用者就能繼續使用我們的網站。一般來說，這種做法應只用於一些只需花費 1 秒鐘的 Job，如寄送 E-Mail 鄧。由於這些 Job 會在目前的 HTTP Request 中處理，因此使用這種方式分派 Job 就不需要執行 Queue Worker：
 
     use App\Jobs\SendNotification;
     
     SendNotification::dispatchAfterResponse();
 
-You may also `dispatch` a closure and chain the `afterResponse` method onto the `dispatch` helper to execute a closure after the HTTP response has been sent to the browser:
+也可以用 `dispatch` 分派一個閉包，然後在 `dispatch` 輔助函式後串上一個 `afterResponse` 方法來在 HTTP Response 被傳送給瀏覽器後執行這個閉包：
 
     use App\Mail\WelcomeMessage;
     use Illuminate\Support\Facades\Mail;
@@ -757,9 +757,9 @@ You may also `dispatch` a closure and chain the `afterResponse` method onto the 
 
 <a name="synchronous-dispatching"></a>
 
-### Synchronous Dispatching
+### 同步分派
 
-If you would like to dispatch a job immediately (synchronously), you may use the `dispatchSync` method. When using this method, the job will not be queued and will be executed immediately within the current process:
+若想馬上分派 Job (即，^[同步](Synchronous))，則可使用 `dispatchSync` 方法。在使用這個方法時，所分派的 Job 不會被放入佇列，而會在目前的處理程序中馬上執行：
 
     <?php
     
@@ -790,11 +790,11 @@ If you would like to dispatch a job immediately (synchronously), you may use the
 
 <a name="jobs-and-database-transactions"></a>
 
-### Jobs & Database Transactions
+### Job 與資料庫 Transaction
 
-While it is perfectly fine to dispatch jobs within database transactions, you should take special care to ensure that your job will actually be able to execute successfully. When dispatching a job within a transaction, it is possible that the job will be processed by a worker before the transaction has committed. When this happens, any updates you have made to models or database records during the database transaction may not yet be reflected in the database. In addition, any models or database records created within the transaction may not exist in the database.
+雖然，在資料庫 Transaction 中分派 Job 是完全 OK 的，但應特別注意 Job 能否被正確執行。當我們在 Transaction 中分派 Job 後，這個 Job 很有可能會在 Transaction 被 Commit 前就被 Queue Worker 給執行了。這時候，我們在 Transaction 中對 Model 或資料庫記錄所做出的更改都還未反應到資料庫上。而且，在 Transaction 中做建立的 Model 或資料庫記錄也可能還未出現在資料庫中。
 
-Thankfully, Laravel provides several methods of working around this problem. First, you may set the `after_commit` connection option in your queue connection's configuration array:
+幸好，Laravel 提供了數種方法可解決這個狀況。第一種方法，我們可以在 Queue 連線的設定陣列中設定 `after_commit` 連線選項：
 
     'redis' => [
         'driver' => 'redis',
@@ -802,32 +802,32 @@ Thankfully, Laravel provides several methods of working around this problem. Fir
         'after_commit' => true,
     ],
 
-When the `after_commit` option is `true`, you may dispatch jobs within database transactions; however, Laravel will wait until all open database transactions have been committed before actually dispatching the job. Of course, if no database transactions are currently open, the job will be dispatched immediately.
+當 `after_commit` 設為 `true` 後，我們就可以在資料庫 Transaction 中分派 Job 了。Laravel 會等到所有資料庫 Transaction 都被 Commit 後才將 Job 分派出去。不過，當然，若目前沒有正在處理的資料庫 Transaction，這個 Job 會馬上被分派。
 
-If a transaction is rolled back due to an exception that occurs during the transaction, the dispatched jobs that were dispatched during that transaction will be discarded.
+若因為 Transaction 中發上 Exception 而造成 Transaction 被 ^[Roll Back](回滾)，則在這個 Transaction 間所分派的 Job 也會被取消。
 
-> {tip} Setting the `after_commit` configuration option to `true` will also cause any queued event listeners, mailables, notifications, and broadcast events to be dispatched after all open database transactions have been committed.
+> {tip} 將 `after_commit` 設定選項設為 `true` 後，所有放入佇列的 Listener、Maillable、Notification、廣播事件……等都會等待到所有資料庫 Transaciton 都 Commit 後才被分派。
 
 
 <a name="specifying-commit-dispatch-behavior-inline"></a>
 
-#### Specifying Commit Dispatch Behavior Inline
+#### 內嵌指定 Commit 的分派行為
 
-If you do not set the `after_commit` queue connection configuration option to `true`, you may still indicate that a specific job should be dispatched after all open database transactions have been committed. To accomplish this, you may chain the `afterCommit` method onto your dispatch operation:
+若未將 `after_commit` 佇列連線選項設為 `true`，則我們還是可以指定讓某個特定的 Job 在所有已開啟的資料庫 Transaction 都被 Commit 後才被分派。若要這麼做，可在分派動作後串上 `afterCommit` 方法：
 
     use App\Jobs\ProcessPodcast;
     
     ProcessPodcast::dispatch($podcast)->afterCommit();
 
-Likewise, if the `after_commit` configuration option is set to `true`, you may indicate that a specific job should be dispatched immediately without waiting for any open database transactions to commit:
+同樣地，若 `after_commit` 選項為 `true`，則我們也可以馬上分派某個特定的 Job，而不等待資料庫 Transaction 的 Commit：
 
     ProcessPodcast::dispatch($podcast)->beforeCommit();
 
 <a name="job-chaining"></a>
 
-### Job Chaining
+### Job 的串聯
 
-Job chaining allows you to specify a list of queued jobs that should be run in sequence after the primary job has executed successfully. If one job in the sequence fails, the rest of the jobs will not be run. To execute a queued job chain, you may use the `chain` method provided by the `Bus` facade. Laravel's command bus is a lower level component that queued job dispatching is built on top of:
+通過 Job 串聯，我們就可以指定一組佇列 Job 的清單，在主要 Job 執行成功後才依序執行這組 Job。若按照順序執行的其中一個 Job 執行失敗，則剩下的 Job 都將不被執行。若要執行佇列的 Job 串聯，可使用 `Bus` Facade 中的 `chain` 方法。Laravel 的 ^[Command Bus](指令匯流排) 是一個低階的原件，佇列 Job 的分派功能就是使用這個原件製作的：
 
     use App\Jobs\OptimizePodcast;
     use App\Jobs\ProcessPodcast;
@@ -840,7 +840,7 @@ Job chaining allows you to specify a list of queued jobs that should be run in s
         new ReleasePodcast,
     ])->dispatch();
 
-In addition to chaining job class instances, you may also chain closures:
+除了串聯 Job 類別實體，我們也可以串聯閉包：
 
     Bus::chain([
         new ProcessPodcast,
@@ -850,14 +850,14 @@ In addition to chaining job class instances, you may also chain closures:
         },
     ])->dispatch();
 
-> {note} Deleting jobs using the `$this->delete()` method within the job will not prevent chained jobs from being processed. The chain will only stop executing if a job in the chain fails.
+> {note} 在 Job 中使用 `$this->delete()` 方法來刪除 Job 是沒有辦法讓串聯的 Job 不被執行的。只有當串聯中的 Job 失敗時才會停止執行。
 
 
 <a name="chain-connection-queue"></a>
 
-#### Chain Connection & Queue
+#### 串聯的連線與佇列
 
-If you would like to specify the connection and queue that should be used for the chained jobs, you may use the `onConnection` and `onQueue` methods. These methods specify the queue connection and queue name that should be used unless the queued job is explicitly assigned a different connection / queue:
+若想指定串聯 Job 的連線與佇列，則可使用 `onConnection` 與 `onQueue` 方法。除非佇列 Job 有特別指定不同的連線或佇列，否則，這些方法可用來指定要使用的連線名稱與佇列名稱：
 
     Bus::chain([
         new ProcessPodcast,
@@ -867,9 +867,9 @@ If you would like to specify the connection and queue that should be used for th
 
 <a name="chain-failures"></a>
 
-#### Chain Failures
+#### 串聯失敗
 
-When chaining jobs, you may use the `catch` method to specify a closure that should be invoked if a job within the chain fails. The given callback will receive the `Throwable` instance that caused the job failure:
+將 Job 串聯起來後，可使用 `catch` 方法來指定當串聯中有 Job 失敗時要被叫用的閉包。給定的回呼會收到一個導致 Job 失敗的 `Throwable` 實體：
 
     use Illuminate\Support\Facades\Bus;
     use Throwable;
@@ -879,18 +879,18 @@ When chaining jobs, you may use the `catch` method to specify a closure that sho
         new OptimizePodcast,
         new ReleasePodcast,
     ])->catch(function (Throwable $e) {
-        // A job within the chain has failed...
+        // 在串聯中有一個 Job 執行失敗...
     })->dispatch();
 
 <a name="customizing-the-queue-and-connection"></a>
 
-### Customizing The Queue & Connection
+### 自定佇列與連線
 
 <a name="dispatching-to-a-particular-queue"></a>
 
-#### Dispatching To A Particular Queue
+#### 分派至特定的佇列
 
-By pushing jobs to different queues, you may "categorize" your queued jobs and even prioritize how many workers you assign to various queues. Keep in mind, this does not push jobs to different queue "connections" as defined by your queue configuration file, but only to specific queues within a single connection. To specify the queue, use the `onQueue` method when dispatching the job:
+我們可以將 Job 分門別類放入不同的佇列中，進而分類管理這些 Job，甚至能針對不同佇列設定優先度、指定要有多少個 Worker。不過請記得，放入不同佇列不會將 Job 推送到佇列設定檔中所定義的不同佇列「連線」上，而只會將 Job 推入單一連線中指定的佇列。若要指定佇列，請在分派 Job 時使用 `onQueue` 方法：
 
     <?php
     
@@ -913,13 +913,13 @@ By pushing jobs to different queues, you may "categorize" your queued jobs and e
         {
             $podcast = Podcast::create(...);
     
-            // Create podcast...
+            // 建立 Podcast...
     
             ProcessPodcast::dispatch($podcast)->onQueue('processing');
         }
     }
 
-Alternatively, you may specify the job's queue by calling the `onQueue` method within the job's constructor:
+或者，也可以在 Job 的 Constructor 中呼叫 `onQueue` 方法來指定 Job 的佇列：
 
     <?php
     
@@ -948,9 +948,9 @@ Alternatively, you may specify the job's queue by calling the `onQueue` method w
 
 <a name="dispatching-to-a-particular-connection"></a>
 
-#### Dispatching To A Particular Connection
+#### 分派至特定連線
 
-If your application interacts with multiple queue connections, you may specify which connection to push a job to using the `onConnection` method:
+若專案有使用到多個佇列連線，則可以使用 `onConnection` 方法來指定要將 Job 推送到哪個連線：
 
     <?php
     
@@ -973,19 +973,19 @@ If your application interacts with multiple queue connections, you may specify w
         {
             $podcast = Podcast::create(...);
     
-            // Create podcast...
+            // 建立 Podcast...
     
             ProcessPodcast::dispatch($podcast)->onConnection('sqs');
         }
     }
 
-You may chain the `onConnection` and `onQueue` methods together to specify the connection and the queue for a job:
+也可以將 `onConnection` 與 `onQueue` 方法串聯在一起來指定 Job 的連線與佇列：
 
     ProcessPodcast::dispatch($podcast)
                   ->onConnection('sqs')
                   ->onQueue('processing');
 
-Alternatively, you may specify the job's connection by calling the `onConnection` method within the job's constructor:
+或者，也可以在 Job 的 Constructor 中呼叫 `onConnection` 來指定 Job 的連線：
 
     <?php
     
@@ -1014,21 +1014,21 @@ Alternatively, you may specify the job's connection by calling the `onConnection
 
 <a name="max-job-attempts-and-timeout"></a>
 
-### Specifying Max Job Attempts / Timeout Values
+### 指定最大嘗試次數與逾時
 
 <a name="max-attempts"></a>
 
-#### Max Attempts
+#### 最大嘗試次數
 
-If one of your queued jobs is encountering an error, you likely do not want it to keep retrying indefinitely. Therefore, Laravel provides various ways to specify how many times or for how long a job may be attempted.
+若有某個佇列 Job 遇到錯誤，我們通常不會想讓這個 Job 一直重試。因此，Laravel 提供了多種定義 Job 重試次數的方法。
 
-One approach to specifying the maximum number of times a job may be attempted is via the `--tries` switch on the Artisan command line. This will apply to all jobs processed by the worker unless the job being processed specifies a more specific number of times it may be attempted:
+其中一種指定 Job 最大嘗試次數的方法是在 Artisan 指令列中使用 `--tries` 開關。使用這種方式指定的嘗試次數會套用到所有該 Worker 處理的 Job，除非 Job 上有特別指定嘗試次數：
 
     php artisan queue:work --tries=3
 
-If a job exceeds its maximum number of attempts, it will be considered a "failed" job. For more information on handling failed jobs, consult the [failed job documentation](#dealing-with-failed-jobs).
+若 Job 嘗試了最大嘗試次數，則這個 Job 會被視為是「^[執行失敗](Failed)」。更多有關處理執行失敗 Job 的資訊，請參考 [執行失敗 Job 的說明文件](#dealing-with-failed-jobs)。
 
-You may take a more granular approach by defining the maximum number of times a job may be attempted on the job class itself. If the maximum number of attempts is specified on the job, it will take precedence over the `--tries` value provided on the command line:
+也可以用另一種更仔細的方法，就是在 Job 類別內定義這個 Job 的最大嘗試次數。若有在 Job 中指定最大嘗試次數，定義在 Job 類別內的次數會比指令列中 `--tries` 的值擁有更高的優先度：
 
     <?php
     
@@ -1046,9 +1046,9 @@ You may take a more granular approach by defining the maximum number of times a 
 
 <a name="time-based-attempts"></a>
 
-#### Time Based Attempts
+#### 基於時間的嘗試限制
 
-As an alternative to defining how many times a job may be attempted before it fails, you may define a time at which the job should no longer be attempted. This allows a job to be attempted any number of times within a given time frame. To define the time at which a job should no longer be attempted, add a `retryUntil` method to your job class. This method should return a `DateTime` instance:
+除了定義 Job 重試多少次要視為失敗以外，也可以限制 Job 嘗試執行的時間長度。這樣一來，在指定的時間範圍內，Job 就可以不斷重試。若要定義最長可重試時間，請在 Job 類別中定義一個 `retryUntil` 方法。該方法應回傳 `DateTime` 實體：
 
     /**
      * Determine the time at which the job should timeout.
@@ -1060,14 +1060,14 @@ As an alternative to defining how many times a job may be attempted before it fa
         return now()->addMinutes(10);
     }
 
-> {tip} You may also define a `tries` property or `retryUntil` method on your [queued event listeners](/docs/{{version}}/events#queued-event-listeners).
+> {tip} 也可以在[放入佇列的 Event Listener](/docs/{{version}}/events#queued-event-listeners) 中定義一個 `tries` 屬性或 `retryUntil` 方法。
 
 
 <a name="max-exceptions"></a>
 
-#### Max Exceptions
+#### 最大 Exception 數
 
-Sometimes you may wish to specify that a job may be attempted many times, but should fail if the retries are triggered by a given number of unhandled exceptions (as opposed to being released by the `release` method directly). To accomplish this, you may define a `maxExceptions` property on your job class:
+有時候，我們可能會想讓 Job 可重試多次，但當出現指定數量的未處理 Exception 後，就視為執行失敗 (與直接使用 `release` 方法釋放 Job 不同)。若要指定未處理 Exception 數量，可在 Job 類別中定義一個 `maxExceptions` 屬性：
 
     <?php
     
@@ -1099,32 +1099,32 @@ Sometimes you may wish to specify that a job may be attempted many times, but sh
         public function handle()
         {
             Redis::throttle('key')->allow(10)->every(60)->then(function () {
-                // Lock obtained, process the podcast...
+                // 已取得 Lock，正在處理 Podcast...
             }, function () {
-                // Unable to obtain lock...
+                // 無法取得 Lock...
                 return $this->release(10);
             });
         }
     }
 
-In this example, the job is released for ten seconds if the application is unable to obtain a Redis lock and will continue to be retried up to 25 times. However, the job will fail if three unhandled exceptions are thrown by the job.
+在這個例子中，這個 Job 會在程式無法在 10 秒內取得 Redis Lock 時被釋放，而這個 Job 在此期間最多可嘗試 25 次。不過，若 Job 中有擲回未處理的 Exception，則會被視為是失敗的 Job。
 
 <a name="timeout"></a>
 
-#### Timeout
+#### 逾時
 
-> {note} The `pcntl` PHP extension must be installed in order to specify job timeouts.
+> {note} 必須安裝 `pcntl` PHP 擴充程式才可指定 Job 的逾時。
 
 
-Often, you know roughly how long you expect your queued jobs to take. For this reason, Laravel allows you to specify a "timeout" value. If a job is processing for longer than the number of seconds specified by the timeout value, the worker processing the job will exit with an error. Typically, the worker will be restarted automatically by a [process manager configured on your server](#supervisor-configuration).
+通常來說，我們知道某個佇列任務大約需要花多少時間執行。因此，在 Laravel 中，我們可以指定一個「逾時」值。若 Job 執行超過逾時值所指定的秒數後，負責處理該 Job 的 Worker 就會以錯誤終止執行。一般來說，Worker 會自動由 [Server 上設定的 Process Manager](#supervisor-configuration) 重新開啟。
 
-The maximum number of seconds that jobs can run may be specified using the `--timeout` switch on the Artisan command line:
+可在 Artisan 指令列上使用 `--timeout` 開關來指定 Job 能執行的最大秒數：
 
     php artisan queue:work --timeout=30
 
-If the job exceeds its maximum attempts by continually timing out, it will be marked as failed.
+若 Job 不斷執行逾時超過其最大重試次數，則該 Job 會被標記為執行失敗。
 
-You may also define the maximum number of seconds a job should be allowed to run on the job class itself. If the timeout is specified on the job, it will take precedence over any timeout specified on the command line:
+也可以在 Job 類別中定義該 Job 能執行的最大秒數。若有在 Job 上指定逾時，則在 Job 類別上定義的逾時比在指令列上指定的數字擁有更高的優先度：
 
     <?php
     
@@ -1140,13 +1140,13 @@ You may also define the maximum number of seconds a job should be allowed to run
         public $timeout = 120;
     }
 
-Sometimes, IO blocking processes such as sockets or outgoing HTTP connections may not respect your specified timeout. Therefore, when using these features, you should always attempt to specify a timeout using their APIs as well. For example, when using Guzzle, you should always specify a connection and request timeout value.
+有時候，如 Socket 或連外 HTTP 連線等的 IO Blocking Process 可能不適用所指定的逾時設定。因此，若有使用到這些功能，也請在這些功能的 API 上指定逾時。舉例來說，若使用 Guzzle，則可像這樣指定連線與 Request 的逾時值：
 
 <a name="failing-on-timeout"></a>
 
-#### Failing On Timeout
+#### 逾時後視為失敗
 
-If you would like to indicate that a job should be marked as [failed](#dealing-with-failed-jobs) on timeout, you may define the `$failOnTimeout` property on the job class:
+若想讓 Job 在逾時後被標記為[執行失敗](#dealing-with-failed-jobs)，可在 Job 類別上定義 `$failOnTimeout` 屬性：
 
 ```php
 /**
@@ -1159,15 +1159,15 @@ public $failOnTimeout = true;
 
 <a name="error-handling"></a>
 
-### Error Handling
+### 錯誤處理
 
-If an exception is thrown while the job is being processed, the job will automatically be released back onto the queue so it may be attempted again. The job will continue to be released until it has been attempted the maximum number of times allowed by your application. The maximum number of attempts is defined by the `--tries` switch used on the `queue:work` Artisan command. Alternatively, the maximum number of attempts may be defined on the job class itself. More information on running the queue worker [can be found below](#running-the-queue-worker).
+若在處理 Job 時有擲回 Exception，則這個 Job 會被自動釋放回佇列中，好讓這個 Job 能被重新嘗試。被釋放會佇列的 Job 會繼續被重試，直到重試次數達到專案上所設定的最大次數。最大重試次數可使用 `queue:work` Artisan 指令上的 `--tries` 開關來定義。或者，也可以在 Job 類別上定義最大重試次數。更多有關如何執行 Queue Worker 的資訊[可在本文後方找到](#running-the-queue-worker)。
 
 <a name="manually-releasing-a-job"></a>
 
-#### Manually Releasing A Job
+#### 手動釋放 Job
 
-Sometimes you may wish to manually release a job back onto the queue so that it can be attempted again at a later time. You may accomplish this by calling the `release` method:
+有的時候，我們可能會想手動將 Job 釋放會佇列中，好讓這個 Job 能在稍後重試。若要手動釋放 Job，可以呼叫 `release` 方法：
 
     /**
      * Execute the job.
@@ -1181,15 +1181,15 @@ Sometimes you may wish to manually release a job back onto the queue so that it 
         $this->release();
     }
 
-By default, the `release` method will release the job back onto the queue for immediate processing. However, by passing an integer to the `release` method you may instruct the queue to not make the job available for processing until a given number of seconds has elapsed:
+預設情況下，`release` 方法會將 Job 釋放會佇列中並立即處理。不過，若傳入一個整數給 `release` 方法，就可以指定讓佇列等待給定秒數後才開始處理該 Job：
 
     $this->release(10);
 
 <a name="manually-failing-a-job"></a>
 
-#### Manually Failing A Job
+#### 手動讓 Job 失敗
 
-Occasionally you may need to manually mark a job as "failed". To do so, you may call the `fail` method:
+有時候，我們可能需要手動將 Job 標記為「失敗」。若要手動將 Job 標記為失敗，可呼叫 `fail` 方法：
 
     /**
      * Execute the job.
@@ -1203,7 +1203,7 @@ Occasionally you may need to manually mark a job as "failed". To do so, you may 
         $this->fail();
     }
 
-If you would like to mark your job as failed because of an exception that you have caught, you may pass the exception to the `fail` method:
+若要在 Catch 到 Exception 時將 Job 標記為失敗，可將這個 Exception 傳給 `fail` 方法：
 
     $this->fail($exception);
 

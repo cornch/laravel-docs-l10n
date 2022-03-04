@@ -257,6 +257,8 @@ Collection 是「Macroable (可巨集)」的，這代表我們可以在執行階
     
     // ['John Doe', 'Jane Doe', 'Johnny Doe']
 
+`concat` 方法將各個項目串接到原始 Collection 陣列中，而串接的各個項目會依照數字順序重新設定索引鍵。若要保留關聯式 Collection 的索引鍵，請參照 [merge](#method-merge) 方法。
+
 <a name="method-contains"></a>
 
 #### `contains()` {.collection-method}

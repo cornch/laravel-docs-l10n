@@ -141,6 +141,8 @@ Once you have configured a queue driver, set the value of the `queue` option in 
 
     'queue' => true,
 
+Even when the `queue` option is set to `false`, it's important to remember that some Scout drivers like Algolia and Meilisearch always index records asynchronously. Meaning, even though the index operation has completed within your Laravel application, the search engine itself may not reflect the new and updated records immediately.
+
 <a name="configuration"></a>
 
 ## Configuration
@@ -274,7 +276,7 @@ To use the database engine, you may simply set the value of the `SCOUT_DRIVER` e
 SCOUT_DRIVER=database
 ```
 
-Once you have specified the database engine as your preferred driver, you must [configure your searchable data](#configuring-searchable-data). Then, you may start [executing search queries](#searching) against your models. Search engine indexing, such as the indexing needed to seed Algolia or MeiliSearch indexes, is unnecessary when using the collection engine.
+Once you have specified the database engine as your preferred driver, you must [configure your searchable data](#configuring-searchable-data). Then, you may start [executing search queries](#searching) against your models. Search engine indexing, such as the indexing needed to seed Algolia or MeiliSearch indexes, is unnecessary when using the database engine.
 
 #### Customizing Database Searching Strategies
 
@@ -609,6 +611,22 @@ If you need to perform advanced customization of the search behavior of an engin
             return $algolia->search($query, $options);
         }
     )->get();
+
+<a name="customizing-the-eloquent-results-query"></a>
+
+#### Customizing The Eloquent Results Query
+
+After Scout retrieves a list of matching Eloquent models from your application's search engine, Eloquent is used to retrieve all of the matching models by their primary keys. You may customize this query by invoking the `query` method. The `query` method accepts a closure that will receive the Eloquent query builder instance as an argument:
+
+```php
+use App\Models\Order;
+
+$orders = Order::search('Star Trek')
+    ->query(fn ($query) => $query->with('invoices'))
+    ->get();
+```
+
+Since this callback is invoked after the relevant models have already been retrieved from your application's search engine, the `query` method should not be used for "filtering" results. Instead, you should use [Scout where clauses](#where-clauses).
 
 <a name="custom-engines"></a>
 

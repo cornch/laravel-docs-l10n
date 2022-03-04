@@ -12,6 +12,8 @@
 
    - [`database` 目錄](#the-database-directory)
 
+   - [`lang` 目錄](#the-lang-directory)
+
    - [`public` 目錄](#the-public-directory)
 
    - [`resources` 目錄](#the-resources-directory)
@@ -86,6 +88,12 @@
 
 `database` 目錄中包含了所有的資料庫遷移檔 (Migration)、Model Factory、以及 Seed。若你想的話，也可以使用這個目錄來存放 SQLite 資料庫。
 
+<a name="the-lang-directory"></a>
+
+#### Lang 目錄
+
+`lang` 目錄用來存放專案的語系檔。
+
 <a name="the-public-directory"></a>
 
 #### Public 目錄
@@ -96,7 +104,7 @@
 
 #### Resources 目錄
 
-`resources` 目錄中包含了 [View](/docs/{{version}}/views) 以及原始未編譯的素材，如 CSS 或 JavaScript。該目錄中也儲存了所有的語系檔。
+`resources` 目錄中包含了 [View](/docs/{{version}}/views) 以及原始未編譯的素材，如 CSS 或 JavaScript。
 
 <a name="the-routes-directory"></a>
 

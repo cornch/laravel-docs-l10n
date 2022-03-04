@@ -40,7 +40,7 @@
 
 #### 預計升級所需時間：15 分鐘
 
-> {note} We attempt to document every possible breaking change. Since some of these breaking changes are in obscure parts of the framework only a portion of these changes may actually affect your application.
+> {note} 我們儘量在說明文件中包含所有的^[中斷性變更](Breaking Change)。不過，在 Laravel 中，有些中斷性變更存在一些比較不明顯的地方，且這些更改中幾乎不太會影響到你的專案。
 
 
 <a name="php-7.3.0-required"></a>

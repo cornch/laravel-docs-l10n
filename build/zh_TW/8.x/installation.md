@@ -183,7 +183,7 @@ curl -s "https://laravel.build/example-app?with=mysql,redis" | bash
 
 若你的電腦上已安裝了 PHP 與 Composer，則可以直接使用 Composer 來建立新的 Laravel 專案。專案建立好後，可以使用 Artisan CLI 的 `serve` 指令來開啟 Laravel 的本機開發伺服器：
 
-    composer create-project laravel/laravel example-app
+    composer create-project laravel/laravel:^8.0 example-app
     
     cd example-app
     

@@ -79,7 +79,7 @@
 若要使用 Mailgun Driver，請使用 Composer 安裝 Symfony 的 Mailgun Mailer Transport：
 
 ```shell
-composer require symfony/mailgun-mailer
+composer require symfony/mailgun-mailer symfony/http-client
 ```
 
 接著，請在 `config/mail.php` 設定檔中將 `default` 選項設為 `mailgun`。設定好預設 Mailer 後，請確認一下 `config/services.php` 設定檔中是否包含下列選項：
@@ -104,7 +104,7 @@ composer require symfony/mailgun-mailer
 若要使用 Postmark Driver，請使用 Composer 安裝 Symfony 的 Postmark Mailer Transport：
 
 ```shell
-composer require symfony/postmark-mailer
+composer require symfony/postmark-mailer symfony/http-client
 ```
 
 接著，請在 `config/mail.php` 設定檔中將 `default` 選項設為 `postmark`。設定好預設 Mailer 後，請確認一下 `config/services.php` 設定檔中是否包含下列選項：

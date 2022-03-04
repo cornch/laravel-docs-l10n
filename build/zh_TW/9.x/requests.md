@@ -554,7 +554,7 @@ Laravel 也提供了一個全域 `old` 輔助函式。若想在 [Blade 樣板](/
 
 #### 其他檔案方法
 
-`UploadedFile` 實體還提供了其他各種方法。請參考[該類別的 API 說明文件](https://api.symfony.com/master/Symfony/Component/HttpFoundation/File/UploadedFile.html)來瞭解有關這些方法的更多資訊。
+`UploadedFile` 實體還提供了其他各種方法。請參考[該類別的 API 說明文件](https://github.com/symfony/symfony/blob/6.0/src/Symfony/Component/HttpFoundation/File/UploadedFile.php)來瞭解有關這些方法的更多資訊。
 
 <a name="storing-uploaded-files"></a>
 

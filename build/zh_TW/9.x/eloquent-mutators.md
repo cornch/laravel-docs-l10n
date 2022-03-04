@@ -66,7 +66,7 @@
          */
         protected function firstName(): Attribute
         {
-            return new Attribute(
+            return Attribute::make(
                 get: fn ($value) => ucfirst($value),
             );
         }
@@ -102,7 +102,7 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
  */
 public function address(): Attribute
 {
-    return new Attribute(
+    return Attribute::make(
         get: fn ($value, $attributes) => new Address(
             $attributes['address_line_one'],
             $attributes['address_line_two'],
@@ -132,12 +132,12 @@ public function address(): Attribute
  */
 public function address(): Attribute
 {
-    return (new Attribute(
+    return Attribute::make(
         get: fn ($value, $attributes) => new Address(
             $attributes['address_line_one'],
             $attributes['address_line_two'],
         ),
-    ))->withoutObjectCaching();
+    )->withoutObjectCaching();
 }
 ```
 
@@ -164,7 +164,7 @@ public function address(): Attribute
          */
         protected function firstName(): Attribute
         {
-            return new Attribute(
+            return Attribute::make(
                 get: fn ($value) => ucfirst($value),
                 set: fn ($value) => strtolower($value),
             );
@@ -198,7 +198,7 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
  */
 public function address(): Attribute
 {
-    return new Attribute(
+    return Attribute::make(
         get: fn ($value, $attributes) => new Address(
             $attributes['address_line_one'],
             $attributes['address_line_two'],
@@ -458,7 +458,7 @@ Laravel 還提供了一個類似的 `AsCollection` 型別轉換，可將 JSON �
 > {note} Enum 型別轉換只可在 PHP 8.1 以上使用。
 
 
-Eloquent 也能讓我們將屬性值轉換為 PHP Enum。為此，可在 Model 中的 `$casts` 屬性陣列中指定要型別轉換的屬性與 Enum：
+Eloquent also allows you to cast your attribute values to PHP ["backed" enums](https://www.php.net/manual/en/language.enumerations.backed.php). To accomplish this, you may specify the attribute and enum you wish to cast in your model's `$casts` property array:
 
     use App\Enums\ServerStatus;
     

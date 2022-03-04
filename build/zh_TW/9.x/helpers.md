@@ -18,25 +18,25 @@ Laravel 提供了多種全域 PHP「輔助函式」。這些函式中，大部�
 
 ### 陣列與物件
 
-[Arr::accessible](#method-array-accessible) [Arr::add](#method-array-add) [Arr::collapse](#method-array-collapse) [Arr::crossJoin](#method-array-crossjoin) [Arr::divide](#method-array-divide) [Arr::dot](#method-array-dot) [Arr::except](#method-array-except) [Arr::exists](#method-array-exists) [Arr::first](#method-array-first) [Arr::flatten](#method-array-flatten) [Arr::forget](#method-array-forget) [Arr::get](#method-array-get) [Arr::has](#method-array-has) [Arr::hasAny](#method-array-hasany) [Arr::isAssoc](#method-array-isassoc) [Arr::last](#method-array-last) [Arr::only](#method-array-only) [Arr::pluck](#method-array-pluck) [Arr::prepend](#method-array-prepend) [Arr::pull](#method-array-pull) [Arr::query](#method-array-query) [Arr::random](#method-array-random) [Arr::set](#method-array-set) [Arr::shuffle](#method-array-shuffle) [Arr::sort](#method-array-sort) [Arr::sortRecursive](#method-array-sort-recursive) [Arr::toCssClasses](#method-array-to-css-classes) [Arr::undot](#method-array-undot) [Arr::where](#method-array-where) [Arr::whereNotNull](#method-array-where-not-null) [Arr::wrap](#method-array-wrap) [data_fill](#method-data-fill) [data_get](#method-data-get) [data_set](#method-data-set) [head](#method-head) [last](#method-last)
+[Arr::accessible](#method-array-accessible) [Arr::add](#method-array-add) [Arr::collapse](#method-array-collapse) [Arr::crossJoin](#method-array-crossjoin) [Arr::divide](#method-array-divide) [Arr::dot](#method-array-dot) [Arr::except](#method-array-except) [Arr::exists](#method-array-exists) [Arr::first](#method-array-first) [Arr::flatten](#method-array-flatten) [Arr::forget](#method-array-forget) [Arr::get](#method-array-get) [Arr::has](#method-array-has) [Arr::hasAny](#method-array-hasany) [Arr::isAssoc](#method-array-isassoc) [Arr::isList](#method-array-islist) [Arr::keyBy](#method-array-keyby) [Arr::last](#method-array-last) [Arr::only](#method-array-only) [Arr::pluck](#method-array-pluck) [Arr::prepend](#method-array-prepend) [Arr::pull](#method-array-pull) [Arr::query](#method-array-query) [Arr::random](#method-array-random) [Arr::set](#method-array-set) [Arr::shuffle](#method-array-shuffle) [Arr::sort](#method-array-sort) [Arr::sortRecursive](#method-array-sort-recursive) [Arr::toCssClasses](#method-array-to-css-classes) [Arr::undot](#method-array-undot) [Arr::where](#method-array-where) [Arr::whereNotNull](#method-array-where-not-null) [Arr::wrap](#method-array-wrap) [data_fill](#method-data-fill) [data_get](#method-data-get) [data_set](#method-data-set) [head](#method-head) [last](#method-last)
 
 <a name="paths-method-list"></a>
 
 ### 路徑
 
-[app_path](#method-app-path) [base_path](#method-base-path) [config_path](#method-config-path) [database_path](#method-database-path) [mix](#method-mix) [public_path](#method-public-path) [resource_path](#method-resource-path) [storage_path](#method-storage-path)
+[app_path](#method-app-path) [base_path](#method-base-path) [config_path](#method-config-path) [database_path](#method-database-path) [lang_path](#method-lang-path) [mix](#method-mix) [public_path](#method-public-path) [resource_path](#method-resource-path) [storage_path](#method-storage-path)
 
 <a name="strings-method-list"></a>
 
 ### 字串
 
-[__](#method-__) [class_basename](#method-class-basename) [e](#method-e) [preg_replace_array](#method-preg-replace-array) [Str::after](#method-str-after) [Str::afterLast](#method-str-after-last) [Str::ascii](#method-str-ascii) [Str::before](#method-str-before) [Str::beforeLast](#method-str-before-last) [Str::between](#method-str-between) [Str::camel](#method-camel-case) [Str::contains](#method-str-contains) [Str::containsAll](#method-str-contains-all) [Str::endsWith](#method-ends-with) [Str::finish](#method-str-finish) [Str::headline](#method-str-headline) [Str::is](#method-str-is) [Str::isAscii](#method-str-is-ascii) [Str::isUuid](#method-str-is-uuid) [Str::kebab](#method-kebab-case) [Str::length](#method-str-length) [Str::limit](#method-str-limit) [Str::lower](#method-str-lower) [Str::markdown](#method-str-markdown) [Str::mask](#method-str-mask) [Str::orderedUuid](#method-str-ordered-uuid) [Str::padBoth](#method-str-padboth) [Str::padLeft](#method-str-padleft) [Str::padRight](#method-str-padright) [Str::plural](#method-str-plural) [Str::pluralStudly](#method-str-plural-studly) [Str::random](#method-str-random) [Str::remove](#method-str-remove) [Str::replace](#method-str-replace) [Str::replaceArray](#method-str-replace-array) [Str::replaceFirst](#method-str-replace-first) [Str::replaceLast](#method-str-replace-last) [Str::reverse](#method-str-reverse) [Str::singular](#method-str-singular) [Str::slug](#method-str-slug) [Str::snake](#method-snake-case) [Str::start](#method-str-start) [Str::startsWith](#method-starts-with) [Str::studly](#method-studly-case) [Str::substr](#method-str-substr) [Str::substrCount](#method-str-substrcount) [Str::substrReplace](#method-str-substrreplace) [Str::swap](#method-str-swap) [Str::title](#method-title-case) [Str::toHtmlString](#method-str-to-html-string) [Str::ucfirst](#method-str-ucfirst) [Str::upper](#method-str-upper) [Str::uuid](#method-str-uuid) [Str::wordCount](#method-str-word-count) [Str::words](#method-str-words) [str](#method-str) [trans](#method-trans) [trans_choice](#method-trans-choice)
+[__](#method-__) [class_basename](#method-class-basename) [e](#method-e) [preg_replace_array](#method-preg-replace-array) [Str::after](#method-str-after) [Str::afterLast](#method-str-after-last) [Str::ascii](#method-str-ascii) [Str::before](#method-str-before) [Str::beforeLast](#method-str-before-last) [Str::between](#method-str-between) [Str::betweenFirst](#method-str-between-first) [Str::camel](#method-camel-case) [Str::contains](#method-str-contains) [Str::containsAll](#method-str-contains-all) [Str::endsWith](#method-ends-with) [Str::excerpt](#method-excerpt) [Str::finish](#method-str-finish) [Str::headline](#method-str-headline) [Str::is](#method-str-is) [Str::isAscii](#method-str-is-ascii) [Str::isUuid](#method-str-is-uuid) [Str::kebab](#method-kebab-case) [Str::length](#method-str-length) [Str::limit](#method-str-limit) [Str::lower](#method-str-lower) [Str::markdown](#method-str-markdown) [Str::mask](#method-str-mask) [Str::orderedUuid](#method-str-ordered-uuid) [Str::padBoth](#method-str-padboth) [Str::padLeft](#method-str-padleft) [Str::padRight](#method-str-padright) [Str::plural](#method-str-plural) [Str::pluralStudly](#method-str-plural-studly) [Str::random](#method-str-random) [Str::remove](#method-str-remove) [Str::replace](#method-str-replace) [Str::replaceArray](#method-str-replace-array) [Str::replaceFirst](#method-str-replace-first) [Str::replaceLast](#method-str-replace-last) [Str::reverse](#method-str-reverse) [Str::singular](#method-str-singular) [Str::slug](#method-str-slug) [Str::snake](#method-snake-case) [Str::start](#method-str-start) [Str::startsWith](#method-starts-with) [Str::studly](#method-studly-case) [Str::substr](#method-str-substr) [Str::substrCount](#method-str-substrcount) [Str::substrReplace](#method-str-substrreplace) [Str::swap](#method-str-swap) [Str::title](#method-title-case) [Str::toHtmlString](#method-str-to-html-string) [Str::ucfirst](#method-str-ucfirst) [Str::upper](#method-str-upper) [Str::uuid](#method-str-uuid) [Str::wordCount](#method-str-word-count) [Str::words](#method-str-words) [str](#method-str) [trans](#method-trans) [trans_choice](#method-trans-choice)
 
 <a name="fluent-strings-method-list"></a>
 
 ### Fluent 字串
 
-[after](#method-fluent-str-after) [afterLast](#method-fluent-str-after-last) [append](#method-fluent-str-append) [ascii](#method-fluent-str-ascii) [basename](#method-fluent-str-basename) [before](#method-fluent-str-before) [beforeLast](#method-fluent-str-before-last) [between](#method-fluent-str-between) [camel](#method-fluent-str-camel) [contains](#method-fluent-str-contains) [containsAll](#method-fluent-str-contains-all) [dirname](#method-fluent-str-dirname) [endsWith](#method-fluent-str-ends-with) [exactly](#method-fluent-str-exactly) [explode](#method-fluent-str-explode) [finish](#method-fluent-str-finish) [is](#method-fluent-str-is) [isAscii](#method-fluent-str-is-ascii) [isEmpty](#method-fluent-str-is-empty) [isNotEmpty](#method-fluent-str-is-not-empty) [isUuid](#method-fluent-str-is-uuid) [kebab](#method-fluent-str-kebab) [length](#method-fluent-str-length) [limit](#method-fluent-str-limit) [lower](#method-fluent-str-lower) [ltrim](#method-fluent-str-ltrim) [markdown](#method-fluent-str-markdown) [mask](#method-fluent-str-mask) [match](#method-fluent-str-match) [matchAll](#method-fluent-str-match-all) [padBoth](#method-fluent-str-padboth) [padLeft](#method-fluent-str-padleft) [padRight](#method-fluent-str-padright) [pipe](#method-fluent-str-pipe) [plural](#method-fluent-str-plural) [prepend](#method-fluent-str-prepend) [remove](#method-fluent-str-remove) [replace](#method-fluent-str-replace) [replaceArray](#method-fluent-str-replace-array) [replaceFirst](#method-fluent-str-replace-first) [replaceLast](#method-fluent-str-replace-last) [replaceMatches](#method-fluent-str-replace-matches) [rtrim](#method-fluent-str-rtrim) [scan](#method-fluent-str-scan) [singular](#method-fluent-str-singular) [slug](#method-fluent-str-slug) [snake](#method-fluent-str-snake) [split](#method-fluent-str-split) [start](#method-fluent-str-start) [startsWith](#method-fluent-str-starts-with) [studly](#method-fluent-str-studly) [substr](#method-fluent-str-substr) [substrReplace](#method-fluent-str-substrreplace) [swap](#method-fluent-str-swap) [tap](#method-fluent-str-tap) [test](#method-fluent-str-test) [title](#method-fluent-str-title) [trim](#method-fluent-str-trim) [ucfirst](#method-fluent-str-ucfirst) [upper](#method-fluent-str-upper) [when](#method-fluent-str-when) [whenContains](#method-fluent-str-when-contains) [whenContainsAll](#method-fluent-str-when-contains-all) [whenEmpty](#method-fluent-str-when-empty) [whenNotEmpty](#method-fluent-str-when-not-empty) [whenStartsWith](#method-fluent-str-when-starts-with) [whenEndsWith](#method-fluent-str-when-ends-with) [whenExactly](#method-fluent-str-when-exactly) [whenIs](#method-fluent-str-when-is) [whenIsAscii](#method-fluent-str-when-is-ascii) [whenIsUuid](#method-fluent-str-when-is-uuid) [whenTest](#method-fluent-str-when-test) [wordCount](#method-fluent-str-word-count) [words](#method-fluent-str-words)
+[after](#method-fluent-str-after) [afterLast](#method-fluent-str-after-last) [append](#method-fluent-str-append) [ascii](#method-fluent-str-ascii) [basename](#method-fluent-str-basename) [before](#method-fluent-str-before) [beforeLast](#method-fluent-str-before-last) [between](#method-fluent-str-between) [betweenFirst](#method-fluent-str-between-first) [camel](#method-fluent-str-camel) [contains](#method-fluent-str-contains) [containsAll](#method-fluent-str-contains-all) [dirname](#method-fluent-str-dirname) [endsWith](#method-fluent-str-ends-with) [excerpt](#method-fluent-str-excerpt) [exactly](#method-fluent-str-exactly) [explode](#method-fluent-str-explode) [finish](#method-fluent-str-finish) [is](#method-fluent-str-is) [isAscii](#method-fluent-str-is-ascii) [isEmpty](#method-fluent-str-is-empty) [isNotEmpty](#method-fluent-str-is-not-empty) [isUuid](#method-fluent-str-is-uuid) [kebab](#method-fluent-str-kebab) [length](#method-fluent-str-length) [limit](#method-fluent-str-limit) [lower](#method-fluent-str-lower) [ltrim](#method-fluent-str-ltrim) [markdown](#method-fluent-str-markdown) [mask](#method-fluent-str-mask) [match](#method-fluent-str-match) [matchAll](#method-fluent-str-match-all) [padBoth](#method-fluent-str-padboth) [padLeft](#method-fluent-str-padleft) [padRight](#method-fluent-str-padright) [pipe](#method-fluent-str-pipe) [plural](#method-fluent-str-plural) [prepend](#method-fluent-str-prepend) [remove](#method-fluent-str-remove) [replace](#method-fluent-str-replace) [replaceArray](#method-fluent-str-replace-array) [replaceFirst](#method-fluent-str-replace-first) [replaceLast](#method-fluent-str-replace-last) [replaceMatches](#method-fluent-str-replace-matches) [rtrim](#method-fluent-str-rtrim) [scan](#method-fluent-str-scan) [singular](#method-fluent-str-singular) [slug](#method-fluent-str-slug) [snake](#method-fluent-str-snake) [split](#method-fluent-str-split) [start](#method-fluent-str-start) [startsWith](#method-fluent-str-starts-with) [studly](#method-fluent-str-studly) [substr](#method-fluent-str-substr) [substrReplace](#method-fluent-str-substrreplace) [swap](#method-fluent-str-swap) [tap](#method-fluent-str-tap) [test](#method-fluent-str-test) [title](#method-fluent-str-title) [trim](#method-fluent-str-trim) [ucfirst](#method-fluent-str-ucfirst) [upper](#method-fluent-str-upper) [when](#method-fluent-str-when) [whenContains](#method-fluent-str-when-contains) [whenContainsAll](#method-fluent-str-when-contains-all) [whenEmpty](#method-fluent-str-when-empty) [whenNotEmpty](#method-fluent-str-when-not-empty) [whenStartsWith](#method-fluent-str-when-starts-with) [whenEndsWith](#method-fluent-str-when-ends-with) [whenExactly](#method-fluent-str-when-exactly) [whenIs](#method-fluent-str-when-is) [whenIsAscii](#method-fluent-str-when-is-ascii) [whenIsUuid](#method-fluent-str-when-is-uuid) [whenTest](#method-fluent-str-when-test) [wordCount](#method-fluent-str-word-count) [words](#method-fluent-str-words)
 
 <a name="urls-method-list"></a>
 
@@ -48,7 +48,7 @@ Laravel 提供了多種全域 PHP「輔助函式」。這些函式中，大部�
 
 ### 其他
 
-[abort](#method-abort) [abort_if](#method-abort-if) [abort_unless](#method-abort-unless) [app](#method-app) [auth](#method-auth) [back](#method-back) [bcrypt](#method-bcrypt) [blank](#method-blank) [broadcast](#method-broadcast) [cache](#method-cache) [class_uses_recursive](#method-class-uses-recursive) [collect](#method-collect) [config](#method-config) [cookie](#method-cookie) [csrf_field](#method-csrf-field) [csrf_token](#method-csrf-token) [dd](#method-dd) [dispatch](#method-dispatch) [dump](#method-dump) [env](#method-env) [event](#method-event) [filled](#method-filled) [info](#method-info) [logger](#method-logger) [method_field](#method-method-field) [now](#method-now) [old](#method-old) [optional](#method-optional) [policy](#method-policy) [redirect](#method-redirect) [report](#method-report) [request](#method-request) [rescue](#method-rescue) [resolve](#method-resolve) [response](#method-response) [retry](#method-retry) [session](#method-session) [tap](#method-tap) [throw_if](#method-throw-if) [throw_unless](#method-throw-unless) [today](#method-today) [trait_uses_recursive](#method-trait-uses-recursive) [transform](#method-transform) [validator](#method-validator) [value](#method-value) [view](#method-view) [with](#method-with)
+[abort](#method-abort) [abort_if](#method-abort-if) [abort_unless](#method-abort-unless) [app](#method-app) [auth](#method-auth) [back](#method-back) [bcrypt](#method-bcrypt) [blank](#method-blank) [broadcast](#method-broadcast) [cache](#method-cache) [class_uses_recursive](#method-class-uses-recursive) [collect](#method-collect) [config](#method-config) [cookie](#method-cookie) [csrf_field](#method-csrf-field) [csrf_token](#method-csrf-token) [decrypt](#method-decrypt) [dd](#method-dd) [dispatch](#method-dispatch) [dump](#method-dump) [encrypt](#method-encrypt) [env](#method-env) [event](#method-event) [filled](#method-filled) [info](#method-info) [logger](#method-logger) [method_field](#method-method-field) [now](#method-now) [old](#method-old) [optional](#method-optional) [policy](#method-policy) [redirect](#method-redirect) [report](#method-report) [request](#method-request) [rescue](#method-rescue) [resolve](#method-resolve) [response](#method-response) [retry](#method-retry) [session](#method-session) [tap](#method-tap) [throw_if](#method-throw-if) [throw_unless](#method-throw-unless) [today](#method-today) [trait_uses_recursive](#method-trait-uses-recursive) [transform](#method-transform) [validator](#method-validator) [value](#method-value) [view](#method-view) [with](#method-with)
 
 <a name="method-listing"></a>
 
@@ -321,7 +321,7 @@ Laravel 提供了多種全域 PHP「輔助函式」。這些函式中，大部�
 
 #### `Arr::isAssoc()` {.collection-method}
 
-若給定的陣列為^[關聯式陣列](Associative Array)，`Arr::isAssoc` 回傳 `true`。當某個陣列的索引鍵不是以 0 開始依序排列的數字時，就是「關聯式」的陣列：
+若給定的陣列為^[關聯式陣列](Associative Array)，`Arr::isAssoc` 方法會回傳 `true`。當某個陣列的索引鍵不是以 0 開始依序排列的數字時，就是「關聯式」的陣列：
 
     use Illuminate\Support\Arr;
     
@@ -332,6 +332,44 @@ Laravel 提供了多種全域 PHP「輔助函式」。這些函式中，大部�
     $isAssoc = Arr::isAssoc([1, 2, 3]);
     
     // false
+
+<a name="method-array-islist"></a>
+
+#### `Arr::isList()` {.collection-method}
+
+若給定陣列的索引鍵是從 0 開始的有序整數的話，`Arr::isList` 方法會回傳 `true`：
+
+    use Illuminate\Support\Arr;
+    
+    $isAssoc = Arr::isList(['foo', 'bar', 'baz']);
+    
+    // true
+    
+    $isAssoc = Arr::isList(['product' => ['name' => 'Desk', 'price' => 100]]);
+    
+    // false
+
+<a name="method-array-keyby"></a>
+
+#### `Arr::keyBy()` {.collection-method}
+
+The `Arr::keyBy` method keys the array by the given key. If multiple items have the same key, only the last one will appear in the new array:
+
+    use Illuminate\Support\Arr;
+    
+    $array = [
+        ['product_id' => 'prod-100', 'name' => 'Desk'],
+        ['product_id' => 'prod-200', 'name' => 'Chair'],
+    ];
+    
+    $keyed = Arr::keyBy($array, 'product_id');
+    
+    /*
+        [
+            'prod-100' => ['product_id' => 'prod-100', 'name' => 'Desk'],
+            'prod-200' => ['product_id' => 'prod-200', 'name' => 'Chair'],
+        ]
+    */
 
 <a name="method-array-last"></a>
 
@@ -831,6 +869,16 @@ Laravel 提供了多種全域 PHP「輔助函式」。這些函式中，大部�
     
     $path = database_path('factories/UserFactory.php');
 
+<a name="method-lang-path"></a>
+
+#### `lang_path()` {.collection-method}
+
+The `lang_path` function returns the fully qualified path to your application's `lang` directory. You may also use the `lang_path` function to generate a fully qualified path to a given file within the directory:
+
+    $path = lang_path();
+    
+    $path = lang_path('en/messages.php');
+
 <a name="method-mix"></a>
 
 #### `mix()` {.collection-method}
@@ -989,6 +1037,18 @@ Laravel 提供了多種全域 PHP「輔助函式」。這些函式中，大部�
     
     // ' is my '
 
+<a name="method-str-between-first"></a>
+
+#### `Str::betweenFirst()` {.collection-method}
+
+The `Str::betweenFirst` method returns the smallest possible portion of a string between two values:
+
+    use Illuminate\Support\Str;
+    
+    $slice = Str::betweenFirst('[a] bc [d]', '[', ']');
+    
+    // 'a'
+
 <a name="method-camel-case"></a>
 
 #### `Str::camel()` {.collection-method}
@@ -1056,6 +1116,33 @@ Str::endsWith` 方法可判斷給定字串是否以給定值結尾：
     $result = Str::endsWith('This is my name', ['this', 'foo']);
     
     // false
+
+<a name="method-excerpt"></a>
+
+#### `Str::excerpt()` {.collection-method}
+
+The `Str::excerpt` method extracts an excerpt from a given string that matches the first instance of a phrase within that string:
+
+    use Illuminate\Support\Str;
+    
+    $excerpt = Str::excerpt('This is my name', 'my', [
+        'radius' => 3
+    ]);
+    
+    // '...is my na...'
+
+The `radius` option, which defaults to `100`, allows you to define the number of characters that should appear on each side of the truncated string.
+
+In addition, you may use the `omission` option to define the string that will be prepended and appended to the truncated string:
+
+    use Illuminate\Support\Str;
+    
+    $excerpt = Str::excerpt('This is my name', 'name', [
+        'radius' => 3,
+        'omission' => '(...) '
+    ]);
+    
+    // '(...) my name'
 
 <a name="method-str-finish"></a>
 
@@ -1802,6 +1889,18 @@ Fluent 字串提供處理字串值一個更流暢、物件導向的介面。我�
     
     // ' is my '
 
+<a name="method-fluent-str-between-first"></a>
+
+#### `betweenFirst` {.collection-method}
+
+The `betweenFirst` method returns the smallest possible portion of a string between two values:
+
+    use Illuminate\Support\Str;
+    
+    $converted = Str::of('[a] bc [d]')->betweenFirst('[', ']');
+    
+    // 'a'
+
 <a name="method-fluent-str-camel"></a>
 
 #### `camel` {.collection-method}
@@ -1865,6 +1964,33 @@ Fluent 字串提供處理字串值一個更流暢、物件導向的介面。我�
     $string = Str::of('/foo/bar/baz')->dirname(2);
     
     // '/foo'
+
+<a name="method-fluent-str-excerpt"></a>
+
+#### `excerpt` {.collection-method}
+
+The `excerpt` method extracts an excerpt from the string that matches the first instance of a phrase within that string:
+
+    use Illuminate\Support\Str;
+    
+    $excerpt = Str::of('This is my name')->excerpt('my', [
+        'radius' => 3
+    ]);
+    
+    // '...is my na...'
+
+The `radius` option, which defaults to `100`, allows you to define the number of characters that should appear on each side of the truncated string.
+
+In addition, you may use the `omission` option to change the string that will be prepended and appended to the truncated string:
+
+    use Illuminate\Support\Str;
+    
+    $excerpt = Str::of('This is my name')->excerpt('name', [
+        'radius' => 3,
+        'omission' => '(...) '
+    ]);
+    
+    // '(...) my name'
 
 <a name="method-fluent-str-ends-with"></a>
 
@@ -3084,6 +3210,14 @@ Str::of('Hello, world!')->wordCount(); // 2
 
     $token = csrf_token();
 
+<a name="method-decrypt"></a>
+
+#### `decrypt()` {.collection-method}
+
+`decrypt` 函式會[解密](/docs/{{version}}/encryption)給定的值。可使用這個方法作為 `Crypt` Facade 的替代。
+
+    $password = decrypt($value);
+
 <a name="method-dd"></a>
 
 #### `dd()` {.collection-method}
@@ -3115,6 +3249,14 @@ Str::of('Hello, world!')->wordCount(); // 2
     dump($value1, $value2, $value3, ...);
 
 若想在傾印變數後停止執行指令碼，請使用 [`dd`](#method-dd) 函式來代替。
+
+<a name="method-encrypt"></a>
+
+#### `encrypt()` {.collection-method}
+
+`encrypt` 函式會[加密](/docs/{{version}}/encryption)給定的值。可使用這個方法作為 `Crypt` Facade 的替代：
+
+    $secret = encrypt('my-secret-value');
 
 <a name="method-env"></a>
 

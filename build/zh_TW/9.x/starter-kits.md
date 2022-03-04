@@ -93,7 +93,7 @@ php artisan breeze:install api
 php artisan migrate
 ```
 
-在安裝時，Breeze 也會在專案的 `.env` 檔案中新增一個 `FRONTEND_URL` 環境變數。這個網址就是 JavaScript 程式的網址。通常來說，在開發期間，這個網址會是 `http://localhost:3000`。
+在安裝過程中，Breeze 會在專案的 `.env` 檔中新增一個 `FRONTEND_URL` 環境變數。這個 URL 應為 JavaScript App 的 URL。在開發時，通常為 `http://localhost:3000`。此外，也應確認一下 `APP_URL` 是否為 `http://localhost:8000`，該網址就是 `serve` Artisan 指令的預設 URL。
 
 <a name="next-reference-implementation"></a>
 

@@ -24,21 +24,19 @@
 
 Laravel 的本土化 (Localization, L10N) 功能可讓我們方便地在多個語系中取得字串，讓我們的程式能更簡單地支援多種語言。
 
-Laravel 提供了兩種管理翻譯字串的方法。第一種方式，就是將翻譯字串保存在 `resources/lang` 目錄內。在這個目錄中，可以為程式要支援的每一個語言都建立一個子目錄。這也是 Laravel 管理如表單驗證錯誤訊息等內建功能翻譯字串的方式：
+Laravel 提供了兩種管理翻譯字串的方法。第一種方式，就是將翻譯字串保存在 `lang` 目錄內。在這個目錄中，可以為程式要支援的每一個語言都建立一個子目錄。這也是 Laravel 管理如表單驗證錯誤訊息等內建功能翻譯字串的方式：
 
-    /resources
-        /lang
-            /en
-                messages.php
-            /es
-                messages.php
+    /lang
+        /en
+            messages.php
+        /es
+            messages.php
 
-第二種方式，是將翻譯字串定義在 `resources/lang` 目錄下的 JSON 檔中。用這種方式時，要支援的每個語言在該目錄中都有一個對應的 JSON 檔。若專案沒有太多要翻譯的字串的話，建議使用這種做法：
+第二種方式，是將翻譯字串定義在 `lang` 目錄下的 JSON 檔中。用這種方式時，要支援的每個語言在該目錄中都有一個對應的 JSON 檔。若專案沒有太多要翻譯的字串的話，建議使用這種做法：
 
-    /resources
-        /lang
-            en.json
-            es.json
+    /lang
+        en.json
+        es.json
 
 在本文件中，我們稍候會討論各種管理翻譯字串的方法。
 
@@ -88,20 +86,19 @@ Laravel 提供了兩種管理翻譯字串的方法。第一種方式，就是將
 
 ### 使用短的索引鍵
 
-一般來說，翻譯字串都保存在 `resources/lang` 目錄內。在這個目錄中，專案要支援的每一個語言都應有一個子目錄。這也是 Laravel 管理如表單驗證錯誤訊息等內建功能翻譯字串的方式：
+一般來說，翻譯字串都保存在 `lang` 目錄內。在這個目錄中，專案要支援的每一個語言都應有一個子目錄。這也是 Laravel 管理如表單驗證錯誤訊息等內建功能翻譯字串的方式：
 
-    /resources
-        /lang
-            /en
-                messages.php
-            /es
-                messages.php
+    /lang
+        /en
+            messages.php
+        /es
+            messages.php
 
 所有的語系檔都回傳一個有字串索引鍵的陣列。如：
 
     <?php
     
-    // resources/lang/en/messages.php
+    // lang/en/messages.php
     
     return [
         'welcome' => 'Welcome to our application!',
@@ -132,7 +129,7 @@ Laravel 提供了兩種管理翻譯字串的方法。第一種方式，就是將
 
 ## 取得翻譯字串
 
-可以使用 `__` 輔助函式來從語系檔中取得翻譯字串。若使用「短索引鍵」來定義翻譯字串的話，請使用「點 (.)」標記法來傳入包含該索引鍵的檔案、以及該索引鍵。舉例來說，我們來從 `resources/lang/en/messages.php` 語系檔中取得 `welcome` 翻譯字串：
+可以使用 `__` 輔助函式來從語系檔中取得翻譯字串。若使用「短索引鍵」來定義翻譯字串的話，請使用「點 (.)」標記法來傳入包含該索引鍵的檔案、以及該索引鍵。舉例來說，我們來從 `lang/en/messages.php` 語系檔中取得 `welcome` 翻譯字串：
 
     echo __('messages.welcome');
 
@@ -203,6 +200,6 @@ Laravel 提供了兩種管理翻譯字串的方法。第一種方式，就是將
 
 ## 覆寫套件的語系檔
 
-有的套件中包含了套件自己的語系檔。除了直接修改套件的檔案來更改語系檔內容外，還可以在 `resources/lang/vendor/{package}/{locale}` 目錄內放置檔案來覆寫這些語系檔。
+有的套件中包含了套件自己的語系檔。除了直接修改套件的檔案來更改語系檔內容外，還可以在 `lang/vendor/{package}/{locale}` 目錄內放置檔案來覆寫這些語系檔。
 
-舉例來說，若想為 `skyrim/hearthfire` 套件覆寫的 `messages.php` 內的英文翻譯，我們可以在 `resources/lang/vendor/hearthfire/en/messages.php` 中放置一個語系檔。在這個的檔案內，我們只需要定義要覆寫的翻譯字串即可。未覆寫的翻譯字串會從該套件的原始語系檔中載入。
+舉例來說，若想為 `skyrim/hearthfire` 套件覆寫的 `messages.php` 內的英文翻譯，我們可以在 `lang/vendor/hearthfire/en/messages.php` 中放置一個語系檔。在這個的檔案內，我們只需要定義要覆寫的翻譯字串即可。未覆寫的翻譯字串會從該套件的原始語系檔中載入。

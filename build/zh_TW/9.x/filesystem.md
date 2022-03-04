@@ -92,25 +92,27 @@ php artisan storage:link
 
 ### Driver 的前置需求
 
-<a name="composer-packages"></a>
-
-#### Composer 套件
-
-使用 S3 或 SFTP Driver 前，需要使用 Composer 套件管理員安裝適當的套件：
-
-- Amazon S3: `composer require --with-all-dependencies league/flysystem-aws-s3-v3 "^3.0"`
-
-- SFTP: `composer require league/flysystem-sftp-v3 "^3.0"`
-
 <a name="s3-driver-configuration"></a>
 
 #### S3 Driver 設定
+
+在使用 S3 Driver 前，需要先使用 Composer 套件管理員安裝 Flysystem S3 套件：
+
+```shell
+composer require -W league/flysystem-aws-s3-v3 "^3.0"
+```
 
 S3 Driver 的設定資訊保存在 `config/filesystems.php` 設定檔內。這個檔案中包含了用於 S3 Driver 的範例設定。可以自行將陣列改為你的 S3 設定與認證資訊。為了方便起見，這些環境變數的名稱都符合 AWS CLI 使用的命名慣例。
 
 <a name="ftp-driver-configuration"></a>
 
 #### FTP Driver 設定
+
+在使用 FTP Driver 前，需要先使用 Composer 套件管理員安裝 Flysystem FTP 套件：
+
+```shell
+composer require league/flysystem-ftp "^3.0"
+```
 
 Laravel 的 Flysystem 整合可以完美配合 FTP。不過，Laravel 的預設 `filesystems.php` 設定檔中並未包含 FTP 的範例設定。若有需要設定 FTP 檔案系統，可使用下列範例設定：
 
@@ -132,24 +134,34 @@ Laravel 的 Flysystem 整合可以完美配合 FTP。不過，Laravel 的預設 
 
 #### SFTP Driver 設定
 
+在使用 SFTP Driver 前，需要先使用 Composer 套件管理員安裝 Flysystem SFTP 套件：
+
+```shell
+composer require league/flysystem-sftp-v3 "^3.0"
+```
+
 Laravel 的 Flysystem 整合可以完美配合 SFTP。不過，Laravel 的預設 `filesystems.php` 設定檔中並未包含 SFTP 的範例設定。若有需要設定 SFTP 檔案系統，可使用下列範例設定：
 
     'sftp' => [
         'driver' => 'sftp',
         'host' => env('SFTP_HOST'),
         
-        // 設定 Basic 身份認證...
+        // Settings for basic authentication...
         'username' => env('SFTP_USERNAME'),
         'password' => env('SFTP_PASSWORD'),
     
-        // 設定有加密密碼之基於 SSH 金鑰的身份認證...
+        // Settings for SSH key based authentication with encryption password...
         'privateKey' => env('SFTP_PRIVATE_KEY'),
         'password' => env('SFTP_PASSWORD'),
     
         // Optional SFTP Settings...
+        // 'hostFingerprint' => env('SFTP_HOST_FINGERPRINT'),
+        // 'maxTries' => 4,
+        // 'passphrase' => env('SFTP_PASSPHRASE'),
         // 'port' => env('SFTP_PORT', 22),
-        // 'root' => env('SFTP_ROOT'),
+        // 'root' => env('SFTP_ROOT', ''),
         // 'timeout' => 30,
+        // 'useAgent' => true,
     ],
 
 <a name="amazon-s3-compatible-filesystems"></a>
@@ -431,7 +443,7 @@ $disk->put('image.jpg', $content);
         'avatars', $request->file('avatar'), $request->user()->id
     );
 
-> {note} 路徑中若有^[不可列印](Unprintable)或無效的 Unicode 字元，則會被自動移除。因此，在將檔案路徑傳給 Laravel 的檔案存放方法前，我們可能會想先^[消毒](Sanitize)檔案路徑。可使用 `League\Flysystem\Util::normalizePath` 來^[正常化](Normalize)檔案路徑。
+> {note} Unprintable and invalid unicode characters will automatically be removed from file paths. Therefore, you may wish to sanitize your file paths before passing them to Laravel's file storage methods. File paths are normalized using the `League\Flysystem\WhitespacePathNormalizer::normalizePath` method.
 
 
 <a name="specifying-a-disk"></a>
@@ -626,7 +638,7 @@ composer require spatie/flysystem-dropbox
             Storage::extend('dropbox', function ($app, $config) {
                 $adapter = new DropboxAdapter(new DropboxClient(
                     $config['authorization_token']
-                ););
+                ));
     
                 return new FilesystemAdapter(
                     new Filesystem($adapter, $config),

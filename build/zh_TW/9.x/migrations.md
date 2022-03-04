@@ -1022,7 +1022,7 @@ We could also modify a column to be nullable:
         $table->string('name', 50)->nullable()->change();
     });
 
-> {note} The following column types can be modified: `bigInteger`, `binary`, `boolean`, `date`, `dateTime`, `dateTimeTz`, `decimal`, `integer`, `json`, `longText`, `mediumText`, `smallInteger`, `string`, `text`, `time`, `unsignedBigInteger`, `unsignedInteger`, `unsignedSmallInteger`, and `uuid`. To modify a `timestamp` column type a [Doctrine type must be registered](#prerequisites).
+> {note} The following column types can be modified: `bigInteger`, `binary`, `boolean`, `char`, `date`, `dateTime`, `dateTimeTz`, `decimal`, `integer`, `json`, `longText`, `mediumText`, `smallInteger`, `string`, `text`, `time`, `unsignedBigInteger`, `unsignedInteger`, `unsignedSmallInteger`, and `uuid`. To modify a `timestamp` column type a [Doctrine type must be registered](#prerequisites).
 
 
 <a name="renaming-columns"></a>
@@ -1251,3 +1251,5 @@ For convenience, each migration operation will dispatch an [event](/docs/{{versi
 | `Illuminate\Database\Events\MigrationsEnded` | A batch of migrations has finished executing. |
 | `Illuminate\Database\Events\MigrationStarted` | A single migration is about to be executed. |
 | `Illuminate\Database\Events\MigrationEnded` | A single migration has finished executing. |
+| `Illuminate\Database\Events\SchemaDumped` | A database schema dump has completed. |
+| `Illuminate\Database\Events\SchemaLoaded` | An existing database schema dump has loaded. |

@@ -10,7 +10,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
-"PO-Revision-Date: 2022-03-04 06:17\n"
+"PO-Revision-Date: 2022-03-04 07:18\n"
 
 #: docs/8.x/queues.md:block 1 (header)
 msgid "Queues"
@@ -1170,15 +1170,15 @@ msgstr "use Illuminate\\Queue\\Middleware\\ThrottlesExceptions;\n\n"
 
 #: docs/8.x/queues.md:block 130 (quote)
 msgid "{tip} If you are using Redis, you may use the `Illuminate\\Queue\\Middleware\\ThrottlesExceptionsWithRedis` middleware, which is fine-tuned for Redis and more efficient than the basic exception throttling middleware."
-msgstr ""
+msgstr "{tip} 若使用 Redis，可使用 `Illuminate\\Queue\\Middleware\\ThrottlesExceptionsWithRedis` Middleware。該 Middleware 有為 Redis 最佳化，因此會比一般的 Exception 頻率限制 Middleware 還要有效率。"
 
 #: docs/8.x/queues.md:block 132 (header)
 msgid "Dispatching Jobs"
-msgstr ""
+msgstr "分派 Job"
 
 #: docs/8.x/queues.md:block 133 (paragraph)
 msgid "Once you have written your job class, you may dispatch it using the `dispatch` method on the job itself. The arguments passed to the `dispatch` method will be given to the job's constructor:"
-msgstr ""
+msgstr "寫好 Job 類別後，就可以使用 Job 上的 `dispatch` 方法來分派該 Job。傳給 `dispatch` 方法的引數會被傳給 Job 的 Constructor："
 
 #: docs/8.x/queues.md:block 134 (code)
 msgid "<?php\n\n"
@@ -1202,24 +1202,45 @@ msgid "<?php\n\n"
 "        ProcessPodcast::dispatch($podcast);\n"
 "    }\n"
 "}\n"
-msgstr ""
+msgstr "<?php\n\n"
+"namespace App\\Http\\Controllers;\n\n"
+"use App\\Http\\Controllers\\Controller;\n"
+"use App\\Jobs\\ProcessPodcast;\n"
+"use App\\Models\\Podcast;\n"
+"use Illuminate\\Http\\Request;\n\n"
+"class PodcastController extends Controller\n"
+"{\n"
+"    /**\n"
+"     * Store a new podcast.\n"
+"     *\n"
+"     * @param  \\Illuminate\\Http\\Request  $request\n"
+"     * @return \\Illuminate\\Http\\Response\n"
+"     */\n"
+"    public function store(Request $request)\n"
+"    {\n"
+"        $podcast = Podcast::create(...);\n\n"
+"        // ...\n\n"
+"        ProcessPodcast::dispatch($podcast);\n"
+"    }\n"
+"}\n"
 
 #: docs/8.x/queues.md:block 135 (paragraph)
 msgid "If you would like to conditionally dispatch a job, you may use the `dispatchIf` and `dispatchUnless` methods:"
-msgstr ""
+msgstr "若想要有條件地分派 Job，可使用 `dispatchIf` 與` `dispatchUnless` 方法："
 
 #: docs/8.x/queues.md:block 136 (code)
 msgid "ProcessPodcast::dispatchIf($accountActive, $podcast);\n\n"
 "ProcessPodcast::dispatchUnless($accountSuspended, $podcast);\n"
-msgstr ""
+msgstr "ProcessPodcast::dispatchIf($accountActive, $podcast);\n\n"
+"ProcessPodcast::dispatchUnless($accountSuspended, $podcast);\n"
 
 #: docs/8.x/queues.md:block 138 (header)
 msgid "Delayed Dispatching"
-msgstr ""
+msgstr "延遲分派"
 
 #: docs/8.x/queues.md:block 139 (paragraph)
 msgid "If you would like to specify that a job should not be immediately available for processing by a queue worker, you may use the `delay` method when dispatching the job. For example, let's specify that a job should not be available for processing until 10 minutes after it has been dispatched:"
-msgstr ""
+msgstr "若不想讓 Job 馬上被 Queue Worker 處理，可在分派 Job 時使用 `delay` 方法。舉例來說，我們來指定讓一個 Job 在分派的 10 分鐘後才被開始處理："
 
 #: docs/8.x/queues.md:block 140 (code)
 msgid "<?php\n\n"
@@ -1244,28 +1265,50 @@ msgid "<?php\n\n"
 "                    ->delay(now()->addMinutes(10));\n"
 "    }\n"
 "}\n"
-msgstr ""
+msgstr "<?php\n\n"
+"namespace App\\Http\\Controllers;\n\n"
+"use App\\Http\\Controllers\\Controller;\n"
+"use App\\Jobs\\ProcessPodcast;\n"
+"use App\\Models\\Podcast;\n"
+"use Illuminate\\Http\\Request;\n\n"
+"class PodcastController extends Controller\n"
+"{\n"
+"    /**\n"
+"     * Store a new podcast.\n"
+"     *\n"
+"     * @param  \\Illuminate\\Http\\Request  $request\n"
+"     * @return \\Illuminate\\Http\\Response\n"
+"     */\n"
+"    public function store(Request $request)\n"
+"    {\n"
+"        $podcast = Podcast::create(...);\n\n"
+"        // ...\n\n"
+"        ProcessPodcast::dispatch($podcast)\n"
+"                    ->delay(now()->addMinutes(10));\n"
+"    }\n"
+"}\n"
 
 #: docs/8.x/queues.md:block 141 (quote)
 msgid "{note} The Amazon SQS queue service has a maximum delay time of 15 minutes."
-msgstr ""
+msgstr "{note} Amazon SQS 佇列服務的延遲時間最多只能為 15 分鐘。"
 
 #: docs/8.x/queues.md:block 143 (header)
 msgid "Dispatching After The Response Is Sent To Browser"
-msgstr ""
+msgstr "在 Response 被傳送給瀏覽器後才進行分派"
 
 #: docs/8.x/queues.md:block 144 (paragraph)
 msgid "Alternatively, the `dispatchAfterResponse` method delays dispatching a job until after the HTTP response is sent to the user's browser. This will still allow the user to begin using the application even though a queued job is still executing. This should typically only be used for jobs that take about a second, such as sending an email. Since they are processed within the current HTTP request, jobs dispatched in this fashion do not require a queue worker to be running in order for them to be processed:"
-msgstr ""
+msgstr "`dispatchAfterResponse` 則是另一個分派 Job 的方法，該方法延遲分派 Job，直到 HTTP Response 被傳回使用者瀏覽器後才開始處理Job。這樣一來，在處理佇列 Job 的同時，使用者就能繼續使用我們的網站。一般來說，這種做法應只用於一些只需花費 1 秒鐘的 Job，如寄送 E-Mail 鄧。由於這些 Job 會在目前的 HTTP Request 中處理，因此使用這種方式分派 Job 就不需要執行 Queue Worker："
 
 #: docs/8.x/queues.md:block 145 (code)
 msgid "use App\\Jobs\\SendNotification;\n\n"
 "SendNotification::dispatchAfterResponse();\n"
-msgstr ""
+msgstr "use App\\Jobs\\SendNotification;\n\n"
+"SendNotification::dispatchAfterResponse();\n"
 
 #: docs/8.x/queues.md:block 146 (paragraph)
 msgid "You may also `dispatch` a closure and chain the `afterResponse` method onto the `dispatch` helper to execute a closure after the HTTP response has been sent to the browser:"
-msgstr ""
+msgstr "也可以用 `dispatch` 分派一個閉包，然後在 `dispatch` 輔助函式後串上一個 `afterResponse` 方法來在 HTTP Response 被傳送給瀏覽器後執行這個閉包："
 
 #: docs/8.x/queues.md:block 147 (code)
 msgid "use App\\Mail\\WelcomeMessage;\n"
@@ -1273,15 +1316,19 @@ msgid "use App\\Mail\\WelcomeMessage;\n"
 "dispatch(function () {\n"
 "    Mail::to('taylor@example.com')->send(new WelcomeMessage);\n"
 "})->afterResponse();\n"
-msgstr ""
+msgstr "use App\\Mail\\WelcomeMessage;\n"
+"use Illuminate\\Support\\Facades\\Mail;\n\n"
+"dispatch(function () {\n"
+"    Mail::to('taylor@example.com')->send(new WelcomeMessage);\n"
+"})->afterResponse();\n"
 
 #: docs/8.x/queues.md:block 149 (header)
 msgid "Synchronous Dispatching"
-msgstr ""
+msgstr "同步分派"
 
 #: docs/8.x/queues.md:block 150 (paragraph)
 msgid "If you would like to dispatch a job immediately (synchronously), you may use the `dispatchSync` method. When using this method, the job will not be queued and will be executed immediately within the current process:"
-msgstr ""
+msgstr "若想馬上分派 Job (即，^[同步](Synchronous))，則可使用 `dispatchSync` 方法。在使用這個方法時，所分派的 Job 不會被放入佇列，而會在目前的處理程序中馬上執行："
 
 #: docs/8.x/queues.md:block 151 (code)
 msgid "<?php\n\n"
@@ -1305,19 +1352,39 @@ msgid "<?php\n\n"
 "        ProcessPodcast::dispatchSync($podcast);\n"
 "    }\n"
 "}\n"
-msgstr ""
+msgstr "<?php\n\n"
+"namespace App\\Http\\Controllers;\n\n"
+"use App\\Http\\Controllers\\Controller;\n"
+"use App\\Jobs\\ProcessPodcast;\n"
+"use App\\Models\\Podcast;\n"
+"use Illuminate\\Http\\Request;\n\n"
+"class PodcastController extends Controller\n"
+"{\n"
+"    /**\n"
+"     * Store a new podcast.\n"
+"     *\n"
+"     * @param  \\Illuminate\\Http\\Request  $request\n"
+"     * @return \\Illuminate\\Http\\Response\n"
+"     */\n"
+"    public function store(Request $request)\n"
+"    {\n"
+"        $podcast = Podcast::create(...);\n\n"
+"        // Create podcast...\n\n"
+"        ProcessPodcast::dispatchSync($podcast);\n"
+"    }\n"
+"}\n"
 
 #: docs/8.x/queues.md:block 153 (header)
 msgid "Jobs & Database Transactions"
-msgstr ""
+msgstr "Job 與資料庫 Transaction"
 
 #: docs/8.x/queues.md:block 154 (paragraph)
 msgid "While it is perfectly fine to dispatch jobs within database transactions, you should take special care to ensure that your job will actually be able to execute successfully. When dispatching a job within a transaction, it is possible that the job will be processed by a worker before the transaction has committed. When this happens, any updates you have made to models or database records during the database transaction may not yet be reflected in the database. In addition, any models or database records created within the transaction may not exist in the database."
-msgstr ""
+msgstr "雖然，在資料庫 Transaction 中分派 Job 是完全 OK 的，但應特別注意 Job 能否被正確執行。當我們在 Transaction 中分派 Job 後，這個 Job 很有可能會在 Transaction 被 Commit 前就被 Queue Worker 給執行了。這時候，我們在 Transaction 中對 Model 或資料庫記錄所做出的更改都還未反應到資料庫上。而且，在 Transaction 中做建立的 Model 或資料庫記錄也可能還未出現在資料庫中。"
 
 #: docs/8.x/queues.md:block 155 (paragraph)
 msgid "Thankfully, Laravel provides several methods of working around this problem. First, you may set the `after_commit` connection option in your queue connection's configuration array:"
-msgstr ""
+msgstr "幸好，Laravel 提供了數種方法可解決這個狀況。第一種方法，我們可以在 Queue 連線的設定陣列中設定 `after_commit` 連線選項："
 
 #: docs/8.x/queues.md:block 156 (code)
 msgid "'redis' => [\n"
@@ -1325,48 +1392,53 @@ msgid "'redis' => [\n"
 "    // ...\n"
 "    'after_commit' => true,\n"
 "],\n"
-msgstr ""
+msgstr "'redis' => [\n"
+"    'driver' => 'redis',\n"
+"    // ...\n"
+"    'after_commit' => true,\n"
+"],\n"
 
 #: docs/8.x/queues.md:block 157 (paragraph)
 msgid "When the `after_commit` option is `true`, you may dispatch jobs within database transactions; however, Laravel will wait until all open database transactions have been committed before actually dispatching the job. Of course, if no database transactions are currently open, the job will be dispatched immediately."
-msgstr ""
+msgstr "當 `after_commit` 設為 `true` 後，我們就可以在資料庫 Transaction 中分派 Job 了。Laravel 會等到所有資料庫 Transaction 都被 Commit 後才將 Job 分派出去。不過，當然，若目前沒有正在處理的資料庫 Transaction，這個 Job 會馬上被分派。"
 
 #: docs/8.x/queues.md:block 158 (paragraph)
 msgid "If a transaction is rolled back due to an exception that occurs during the transaction, the dispatched jobs that were dispatched during that transaction will be discarded."
-msgstr ""
+msgstr "若因為 Transaction 中發上 Exception 而造成 Transaction 被 ^[Roll Back](回滾)，則在這個 Transaction 間所分派的 Job 也會被取消。"
 
 #: docs/8.x/queues.md:block 159 (quote)
 msgid "{tip} Setting the `after_commit` configuration option to `true` will also cause any queued event listeners, mailables, notifications, and broadcast events to be dispatched after all open database transactions have been committed."
-msgstr ""
+msgstr "{tip} 將 `after_commit` 設定選項設為 `true` 後，所有放入佇列的 Listener、Maillable、Notification、廣播事件……等都會等待到所有資料庫 Transaciton 都 Commit 後才被分派。"
 
 #: docs/8.x/queues.md:block 161 (header)
 msgid "Specifying Commit Dispatch Behavior Inline"
-msgstr ""
+msgstr "內嵌指定 Commit 的分派行為"
 
 #: docs/8.x/queues.md:block 162 (paragraph)
 msgid "If you do not set the `after_commit` queue connection configuration option to `true`, you may still indicate that a specific job should be dispatched after all open database transactions have been committed. To accomplish this, you may chain the `afterCommit` method onto your dispatch operation:"
-msgstr ""
+msgstr "若未將 `after_commit` 佇列連線選項設為 `true`，則我們還是可以指定讓某個特定的 Job 在所有已開啟的資料庫 Transaction 都被 Commit 後才被分派。若要這麼做，可在分派動作後串上 `afterCommit` 方法："
 
 #: docs/8.x/queues.md:block 163 (code)
 msgid "use App\\Jobs\\ProcessPodcast;\n\n"
 "ProcessPodcast::dispatch($podcast)->afterCommit();\n"
-msgstr ""
+msgstr "use App\\Jobs\\ProcessPodcast;\n\n"
+"ProcessPodcast::dispatch($podcast)->afterCommit();\n"
 
 #: docs/8.x/queues.md:block 164 (paragraph)
 msgid "Likewise, if the `after_commit` configuration option is set to `true`, you may indicate that a specific job should be dispatched immediately without waiting for any open database transactions to commit:"
-msgstr ""
+msgstr "同樣地，若 `after_commit` 選項為 `true`，則我們也可以馬上分派某個特定的 Job，而不等待資料庫 Transaction 的 Commit："
 
 #: docs/8.x/queues.md:block 165 (code)
 msgid "ProcessPodcast::dispatch($podcast)->beforeCommit();\n"
-msgstr ""
+msgstr "ProcessPodcast::dispatch($podcast)->beforeCommit();\n"
 
 #: docs/8.x/queues.md:block 167 (header)
 msgid "Job Chaining"
-msgstr ""
+msgstr "Job 的串聯"
 
 #: docs/8.x/queues.md:block 168 (paragraph)
 msgid "Job chaining allows you to specify a list of queued jobs that should be run in sequence after the primary job has executed successfully. If one job in the sequence fails, the rest of the jobs will not be run. To execute a queued job chain, you may use the `chain` method provided by the `Bus` facade. Laravel's command bus is a lower level component that queued job dispatching is built on top of:"
-msgstr ""
+msgstr "通過 Job 串聯，我們就可以指定一組佇列 Job 的清單，在主要 Job 執行成功後才依序執行這組 Job。若按照順序執行的其中一個 Job 執行失敗，則剩下的 Job 都將不被執行。若要執行佇列的 Job 串聯，可使用 `Bus` Facade 中的 `chain` 方法。Laravel 的 ^[Command Bus](指令匯流排) 是一個低階的原件，佇列 Job 的分派功能就是使用這個原件製作的："
 
 #: docs/8.x/queues.md:block 169 (code)
 msgid "use App\\Jobs\\OptimizePodcast;\n"
@@ -1378,11 +1450,19 @@ msgid "use App\\Jobs\\OptimizePodcast;\n"
 "    new OptimizePodcast,\n"
 "    new ReleasePodcast,\n"
 "])->dispatch();\n"
-msgstr ""
+msgstr "use App\\Jobs\\OptimizePodcast;\n"
+"use App\\Jobs\\ProcessPodcast;\n"
+"use App\\Jobs\\ReleasePodcast;\n"
+"use Illuminate\\Support\\Facades\\Bus;\n\n"
+"Bus::chain([\n"
+"    new ProcessPodcast,\n"
+"    new OptimizePodcast,\n"
+"    new ReleasePodcast,\n"
+"])->dispatch();\n"
 
 #: docs/8.x/queues.md:block 170 (paragraph)
 msgid "In addition to chaining job class instances, you may also chain closures:"
-msgstr ""
+msgstr "除了串聯 Job 類別實體，我們也可以串聯閉包："
 
 #: docs/8.x/queues.md:block 171 (code)
 msgid "Bus::chain([\n"
@@ -1392,19 +1472,25 @@ msgid "Bus::chain([\n"
 "        Podcast::update(...);\n"
 "    },\n"
 "])->dispatch();\n"
-msgstr ""
+msgstr "Bus::chain([\n"
+"    new ProcessPodcast,\n"
+"    new OptimizePodcast,\n"
+"    function () {\n"
+"        Podcast::update(...);\n"
+"    },\n"
+"])->dispatch();\n"
 
 #: docs/8.x/queues.md:block 172 (quote)
 msgid "{note} Deleting jobs using the `$this->delete()` method within the job will not prevent chained jobs from being processed. The chain will only stop executing if a job in the chain fails."
-msgstr ""
+msgstr "{note} 在 Job 中使用 `$this->delete()` 方法來刪除 Job 是沒有辦法讓串聯的 Job 不被執行的。只有當串聯中的 Job 失敗時才會停止執行。"
 
 #: docs/8.x/queues.md:block 174 (header)
 msgid "Chain Connection & Queue"
-msgstr ""
+msgstr "串聯的連線與佇列"
 
 #: docs/8.x/queues.md:block 175 (paragraph)
 msgid "If you would like to specify the connection and queue that should be used for the chained jobs, you may use the `onConnection` and `onQueue` methods. These methods specify the queue connection and queue name that should be used unless the queued job is explicitly assigned a different connection / queue:"
-msgstr ""
+msgstr "若想指定串聯 Job 的連線與佇列，則可使用 `onConnection` 與 `onQueue` 方法。除非佇列 Job 有特別指定不同的連線或佇列，否則，這些方法可用來指定要使用的連線名稱與佇列名稱："
 
 #: docs/8.x/queues.md:block 176 (code)
 msgid "Bus::chain([\n"
@@ -1412,15 +1498,19 @@ msgid "Bus::chain([\n"
 "    new OptimizePodcast,\n"
 "    new ReleasePodcast,\n"
 "])->onConnection('redis')->onQueue('podcasts')->dispatch();\n"
-msgstr ""
+msgstr "Bus::chain([\n"
+"    new ProcessPodcast,\n"
+"    new OptimizePodcast,\n"
+"    new ReleasePodcast,\n"
+"])->onConnection('redis')->onQueue('podcasts')->dispatch();\n"
 
 #: docs/8.x/queues.md:block 178 (header)
 msgid "Chain Failures"
-msgstr ""
+msgstr "串聯失敗"
 
 #: docs/8.x/queues.md:block 179 (paragraph)
 msgid "When chaining jobs, you may use the `catch` method to specify a closure that should be invoked if a job within the chain fails. The given callback will receive the `Throwable` instance that caused the job failure:"
-msgstr ""
+msgstr "將 Job 串聯起來後，可使用 `catch` 方法來指定當串聯中有 Job 失敗時要被叫用的閉包。給定的回呼會收到一個導致 Job 失敗的 `Throwable` 實體："
 
 #: docs/8.x/queues.md:block 180 (code)
 msgid "use Illuminate\\Support\\Facades\\Bus;\n"
@@ -1432,19 +1522,27 @@ msgid "use Illuminate\\Support\\Facades\\Bus;\n"
 "])->catch(function (Throwable $e) {\n"
 "    // A job within the chain has failed...\n"
 "})->dispatch();\n"
-msgstr ""
+msgstr "use Illuminate\\Support\\Facades\\Bus;\n"
+"use Throwable;\n\n"
+"Bus::chain([\n"
+"    new ProcessPodcast,\n"
+"    new OptimizePodcast,\n"
+"    new ReleasePodcast,\n"
+"])->catch(function (Throwable $e) {\n"
+"    // 在串聯中有一個 Job 執行失敗...\n"
+"})->dispatch();\n"
 
 #: docs/8.x/queues.md:block 182 (header)
 msgid "Customizing The Queue & Connection"
-msgstr ""
+msgstr "自定佇列與連線"
 
 #: docs/8.x/queues.md:block 184 (header)
 msgid "Dispatching To A Particular Queue"
-msgstr ""
+msgstr "分派至特定的佇列"
 
 #: docs/8.x/queues.md:block 185 (paragraph)
 msgid "By pushing jobs to different queues, you may \"categorize\" your queued jobs and even prioritize how many workers you assign to various queues. Keep in mind, this does not push jobs to different queue \"connections\" as defined by your queue configuration file, but only to specific queues within a single connection. To specify the queue, use the `onQueue` method when dispatching the job:"
-msgstr ""
+msgstr "我們可以將 Job 分門別類放入不同的佇列中，進而分類管理這些 Job，甚至能針對不同佇列設定優先度、指定要有多少個 Worker。不過請記得，放入不同佇列不會將 Job 推送到佇列設定檔中所定義的不同佇列「連線」上，而只會將 Job 推入單一連線中指定的佇列。若要指定佇列，請在分派 Job 時使用 `onQueue` 方法："
 
 #: docs/8.x/queues.md:block 186 (code)
 msgid "<?php\n\n"
@@ -1468,11 +1566,31 @@ msgid "<?php\n\n"
 "        ProcessPodcast::dispatch($podcast)->onQueue('processing');\n"
 "    }\n"
 "}\n"
-msgstr ""
+msgstr "<?php\n\n"
+"namespace App\\Http\\Controllers;\n\n"
+"use App\\Http\\Controllers\\Controller;\n"
+"use App\\Jobs\\ProcessPodcast;\n"
+"use App\\Models\\Podcast;\n"
+"use Illuminate\\Http\\Request;\n\n"
+"class PodcastController extends Controller\n"
+"{\n"
+"    /**\n"
+"     * Store a new podcast.\n"
+"     *\n"
+"     * @param  \\Illuminate\\Http\\Request  $request\n"
+"     * @return \\Illuminate\\Http\\Response\n"
+"     */\n"
+"    public function store(Request $request)\n"
+"    {\n"
+"        $podcast = Podcast::create(...);\n\n"
+"        // 建立 Podcast...\n\n"
+"        ProcessPodcast::dispatch($podcast)->onQueue('processing');\n"
+"    }\n"
+"}\n"
 
 #: docs/8.x/queues.md:block 187 (paragraph)
 msgid "Alternatively, you may specify the job's queue by calling the `onQueue` method within the job's constructor:"
-msgstr ""
+msgstr "或者，也可以在 Job 的 Constructor 中呼叫 `onQueue` 方法來指定 Job 的佇列："
 
 #: docs/8.x/queues.md:block 188 (code)
 msgid "<?php\n\n"
@@ -1495,15 +1613,34 @@ msgid "<?php\n\n"
 "        $this->onQueue('processing');\n"
 "    }\n"
 "}\n"
-msgstr ""
+msgstr "<?php\n\n"
+"namespace App\\Jobs;\n\n"
+" use Illuminate\\Bus\\Queueable;\n"
+" use Illuminate\\Contracts\\Queue\\ShouldQueue;\n"
+" use Illuminate\\Foundation\\Bus\\Dispatchable;\n"
+" use Illuminate\\Queue\\InteractsWithQueue;\n"
+" use Illuminate\\Queue\\SerializesModels;\n\n"
+"class ProcessPodcast implements ShouldQueue\n"
+"{\n"
+"    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;\n\n"
+"    /**\n"
+"     * Create a new job instance.\n"
+"     *\n"
+"     * @return void\n"
+"     */\n"
+"    public function __construct()\n"
+"    {\n"
+"        $this->onQueue('processing');\n"
+"    }\n"
+"}\n"
 
 #: docs/8.x/queues.md:block 190 (header)
 msgid "Dispatching To A Particular Connection"
-msgstr ""
+msgstr "分派至特定連線"
 
 #: docs/8.x/queues.md:block 191 (paragraph)
 msgid "If your application interacts with multiple queue connections, you may specify which connection to push a job to using the `onConnection` method:"
-msgstr ""
+msgstr "若專案有使用到多個佇列連線，則可以使用 `onConnection` 方法來指定要將 Job 推送到哪個連線："
 
 #: docs/8.x/queues.md:block 192 (code)
 msgid "<?php\n\n"
@@ -1527,21 +1664,43 @@ msgid "<?php\n\n"
 "        ProcessPodcast::dispatch($podcast)->onConnection('sqs');\n"
 "    }\n"
 "}\n"
-msgstr ""
+msgstr "<?php\n\n"
+"namespace App\\Http\\Controllers;\n\n"
+"use App\\Http\\Controllers\\Controller;\n"
+"use App\\Jobs\\ProcessPodcast;\n"
+"use App\\Models\\Podcast;\n"
+"use Illuminate\\Http\\Request;\n\n"
+"class PodcastController extends Controller\n"
+"{\n"
+"    /**\n"
+"     * Store a new podcast.\n"
+"     *\n"
+"     * @param  \\Illuminate\\Http\\Request  $request\n"
+"     * @return \\Illuminate\\Http\\Response\n"
+"     */\n"
+"    public function store(Request $request)\n"
+"    {\n"
+"        $podcast = Podcast::create(...);\n\n"
+"        // 建立 Podcast...\n\n"
+"        ProcessPodcast::dispatch($podcast)->onConnection('sqs');\n"
+"    }\n"
+"}\n"
 
 #: docs/8.x/queues.md:block 193 (paragraph)
 msgid "You may chain the `onConnection` and `onQueue` methods together to specify the connection and the queue for a job:"
-msgstr ""
+msgstr "也可以將 `onConnection` 與 `onQueue` 方法串聯在一起來指定 Job 的連線與佇列："
 
 #: docs/8.x/queues.md:block 194 (code)
 msgid "ProcessPodcast::dispatch($podcast)\n"
 "              ->onConnection('sqs')\n"
 "              ->onQueue('processing');\n"
-msgstr ""
+msgstr "ProcessPodcast::dispatch($podcast)\n"
+"              ->onConnection('sqs')\n"
+"              ->onQueue('processing');\n"
 
 #: docs/8.x/queues.md:block 195 (paragraph)
 msgid "Alternatively, you may specify the job's connection by calling the `onConnection` method within the job's constructor:"
-msgstr ""
+msgstr "或者，也可以在 Job 的 Constructor 中呼叫 `onConnection` 來指定 Job 的連線："
 
 #: docs/8.x/queues.md:block 196 (code)
 msgid "<?php\n\n"
@@ -1564,19 +1723,38 @@ msgid "<?php\n\n"
 "        $this->onConnection('sqs');\n"
 "    }\n"
 "}\n"
-msgstr ""
+msgstr "<?php\n\n"
+"namespace App\\Jobs;\n\n"
+" use Illuminate\\Bus\\Queueable;\n"
+" use Illuminate\\Contracts\\Queue\\ShouldQueue;\n"
+" use Illuminate\\Foundation\\Bus\\Dispatchable;\n"
+" use Illuminate\\Queue\\InteractsWithQueue;\n"
+" use Illuminate\\Queue\\SerializesModels;\n\n"
+"class ProcessPodcast implements ShouldQueue\n"
+"{\n"
+"    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;\n\n"
+"    /**\n"
+"     * Create a new job instance.\n"
+"     *\n"
+"     * @return void\n"
+"     */\n"
+"    public function __construct()\n"
+"    {\n"
+"        $this->onConnection('sqs');\n"
+"    }\n"
+"}\n"
 
 #: docs/8.x/queues.md:block 198 (header)
 msgid "Specifying Max Job Attempts / Timeout Values"
-msgstr ""
+msgstr "指定最大嘗試次數與逾時"
 
 #: docs/8.x/queues.md:block 200 (header)
 msgid "Max Attempts"
-msgstr ""
+msgstr "最大嘗試次數"
 
 #: docs/8.x/queues.md:block 201 (paragraph)
 msgid "If one of your queued jobs is encountering an error, you likely do not want it to keep retrying indefinitely. Therefore, Laravel provides various ways to specify how many times or for how long a job may be attempted."
-msgstr ""
+msgstr "若有某個佇列 Job 遇到錯誤，我們通常不會想讓這個 Job 一直重試。因此，Laravel 提供了多種定義 Job 重試次數的方法。"
 
 #: docs/8.x/queues.md:block 202 (paragraph)
 msgid "One approach to specifying the maximum number of times a job may be attempted is via the `--tries` switch on the Artisan command line. This will apply to all jobs processed by the worker unless the job being processed specifies a more specific number of times it may be attempted:"

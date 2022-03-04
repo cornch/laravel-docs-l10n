@@ -10,7 +10,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
-"PO-Revision-Date: 2022-03-04 08:16\n"
+"PO-Revision-Date: 2022-03-04 09:30\n"
 
 #: docs/8.x/queues.md:block 1 (header)
 msgid "Queues"
@@ -2070,28 +2070,29 @@ msgstr "$this->fail($exception);\n"
 
 #: docs/8.x/queues.md:block 246 (quote)
 msgid "{tip} For more information on failed jobs, check out the [documentation on dealing with job failures](#dealing-with-failed-jobs)."
-msgstr ""
+msgstr "{tip} 有關失敗 Job 的更多資訊，請參考[有關處理失敗 Job 的說明文件](#dealing-with-failed-jobs)。"
 
 #: docs/8.x/queues.md:block 248 (header)
 msgid "Job Batching"
-msgstr ""
+msgstr "批次 Job"
 
 #: docs/8.x/queues.md:block 249 (paragraph)
 msgid "Laravel's job batching feature allows you to easily execute a batch of jobs and then perform some action when the batch of jobs has completed executing. Before getting started, you should create a database migration to build a table to contain meta information about your job batches, such as their completion percentage. This migration may be generated using the `queue:batches-table` Artisan command:"
-msgstr ""
+msgstr "使用 Laravel 的批次 Job 功能，就可以輕鬆地批次執行多個 Job，並在批次 Job 執行完成後進行一些動作。在開始使用批次 Job 之前，我們需要先建立一個資料庫 Migration，以建立用來保存有關批次 Job ^[詮釋資訊](Meta Information)的資料表，如批次 Job 的完成度等。可以使用 `queue:batches-table` Artisan 指令來建立這個 Migration："
 
 #: docs/8.x/queues.md:block 250 (code)
 msgid "php artisan queue:batches-table\n\n"
 "php artisan migrate\n"
-msgstr ""
+msgstr "php artisan queue:batches-table\n\n"
+"php artisan migrate\n"
 
 #: docs/8.x/queues.md:block 252 (header)
 msgid "Defining Batchable Jobs"
-msgstr ""
+msgstr "定義可批次處理的 Job"
 
 #: docs/8.x/queues.md:block 253 (paragraph)
 msgid "To define a batchable job, you should [create a queueable job](#creating-jobs) as normal; however, you should add the `Illuminate\\Bus\\Batchable` trait to the job class. This trait provides access to a `batch` method which may be used to retrieve the current batch that the job is executing within:"
-msgstr ""
+msgstr "若要定義可批次處理的 Job，請先像平常一樣[建立可放入佇列的 Job](#creating-jobs)。不過，我們還需要在這個 Job 類別中加上 `Illuminate\\Bus\\Batchable` Trait。這個 Trait 提供了一個 `batch` 方法，可使用該方法來取得該 Job 所在的批次："
 
 #: docs/8.x/queues.md:block 254 (code)
 msgid "<?php\n\n"
@@ -2119,15 +2120,39 @@ msgid "<?php\n\n"
 "        // Import a portion of the CSV file...\n"
 "    }\n"
 "}\n"
-msgstr ""
+msgstr "<?php\n\n"
+"namespace App\\Jobs;\n\n"
+"use Illuminate\\Bus\\Batchable;\n"
+"use Illuminate\\Bus\\Queueable;\n"
+"use Illuminate\\Contracts\\Queue\\ShouldQueue;\n"
+"use Illuminate\\Foundation\\Bus\\Dispatchable;\n"
+"use Illuminate\\Queue\\InteractsWithQueue;\n"
+"use Illuminate\\Queue\\SerializesModels;\n\n"
+"class ImportCsv implements ShouldQueue\n"
+"{\n"
+"    use Batchable, Dispatchable, InteractsWithQueue, Queueable, SerializesModels;\n\n"
+"    /**\n"
+"     * Execute the job.\n"
+"     *\n"
+"     * @return void\n"
+"     */\n"
+"    public function handle()\n"
+"    {\n"
+"        if ($this->batch()->cancelled()) {\n"
+"            // Determine if the batch has been cancelled...\n\n"
+"            return;\n"
+"        }\n\n"
+"        // Import a portion of the CSV file...\n"
+"    }\n"
+"}\n"
 
 #: docs/8.x/queues.md:block 256 (header)
 msgid "Dispatching Batches"
-msgstr ""
+msgstr "分派批次"
 
 #: docs/8.x/queues.md:block 257 (paragraph)
 msgid "To dispatch a batch of jobs, you should use the `batch` method of the `Bus` facade. Of course, batching is primarily useful when combined with completion callbacks. So, you may use the `then`, `catch`, and `finally` methods to define completion callbacks for the batch. Each of these callbacks will receive an `Illuminate\\Bus\\Batch` instance when they are invoked. In this example, we will imagine we are queueing a batch of jobs that each process a given number of rows from a CSV file:"
-msgstr ""
+msgstr "若要分派一批次的 Job，可使用 `Bus` Facade 的 `batch` 方法。當然，批次功能與完成回呼一起使用時是最有用。因此，可以使用 `then`, `catch` 與 `finally` 方法來為該批次定義完成回呼。這些回呼都會在被叫用時收到 `Illuminate\\Bus\\Batch` 實體。在這個範例中，我們先假設我們正在處理一批次的任務，用來在 CSV 檔中處理給定數量的行："
 
 #: docs/8.x/queues.md:block 258 (code)
 msgid "use App\\Jobs\\ImportCsv;\n"
@@ -2148,23 +2173,40 @@ msgid "use App\\Jobs\\ImportCsv;\n"
 "    // The batch has finished executing...\n"
 "})->dispatch();\n\n"
 "return $batch->id;\n"
-msgstr ""
+msgstr "use App\\Jobs\\ImportCsv;\n"
+"use Illuminate\\Bus\\Batch;\n"
+"use Illuminate\\Support\\Facades\\Bus;\n"
+"use Throwable;\n\n"
+"$batch = Bus::batch([\n"
+"    new ImportCsv(1, 100),\n"
+"    new ImportCsv(101, 200),\n"
+"    new ImportCsv(201, 300),\n"
+"    new ImportCsv(301, 400),\n"
+"    new ImportCsv(401, 500),\n"
+"])->then(function (Batch $batch) {\n"
+"    // 所有 Job 都成功完成...\n"
+"})->catch(function (Batch $batch, Throwable $e) {\n"
+"    // 偵測到第一個 Job 失敗...\n"
+"})->finally(function (Batch $batch) {\n"
+"    // 批次已完成執行...\n"
+"})->dispatch();\n\n"
+"return $batch->id;\n"
 
 #: docs/8.x/queues.md:block 259 (paragraph)
 msgid "The batch's ID, which may be accessed via the `$batch->id` property, may be used to [query the Laravel command bus](#inspecting-batches) for information about the batch after it has been dispatched."
-msgstr ""
+msgstr "可使用 `$batch->id` 屬性來取得該批次的 ID。在該批次被分派後，可使用這個 ID 來[向 Laravel 的 Command Bus 查詢](#inspecting-batches)有關該批次的資訊。"
 
 #: docs/8.x/queues.md:block 260 (quote)
 msgid "{note} Since batch callbacks are serialized and executed at a later time by the Laravel queue, you should not use the `$this` variable within the callbacks."
-msgstr ""
+msgstr "{note} 由於批次的回呼會被序列化並在稍後由 Laravel 的佇列執行，因此請不要在回呼中使用 `$this` 變數。"
 
 #: docs/8.x/queues.md:block 262 (header)
 msgid "Naming Batches"
-msgstr ""
+msgstr "為批次命名"
 
 #: docs/8.x/queues.md:block 263 (paragraph)
 msgid "Some tools such as Laravel Horizon and Laravel Telescope may provide more user-friendly debug information for batches if batches are named. To assign an arbitrary name to a batch, you may call the `name` method while defining the batch:"
-msgstr ""
+msgstr "若為批次命名，則一些像是 Laravel Horizon 與 Laravel Telescope 之類的工具就可為該批次提供對使用者更友善的偵錯資訊。若要為批次指定任意名稱，可在定義批次時呼叫 `name` 方法："
 
 #: docs/8.x/queues.md:block 264 (code)
 msgid "$batch = Bus::batch([\n"
@@ -2172,15 +2214,19 @@ msgid "$batch = Bus::batch([\n"
 "])->then(function (Batch $batch) {\n"
 "    // All jobs completed successfully...\n"
 "})->name('Import CSV')->dispatch();\n"
-msgstr ""
+msgstr "$batch = Bus::batch([\n"
+"    // ...\n"
+"])->then(function (Batch $batch) {\n"
+"    // 所有 Job 都已成功完成...\n"
+"})->name('Import CSV')->dispatch();\n"
 
 #: docs/8.x/queues.md:block 266 (header)
 msgid "Batch Connection & Queue"
-msgstr ""
+msgstr "批次的連線與佇列"
 
 #: docs/8.x/queues.md:block 267 (paragraph)
 msgid "If you would like to specify the connection and queue that should be used for the batched jobs, you may use the `onConnection` and `onQueue` methods. All batched jobs must execute within the same connection and queue:"
-msgstr ""
+msgstr "若想指定批次 Job 的連線與佇列，可使用 `onConnection` 與 `onQueue` 方法。所有的批次 Job 都必須要相同的連線與佇列中執行："
 
 #: docs/8.x/queues.md:block 268 (code)
 msgid "$batch = Bus::batch([\n"
@@ -2188,15 +2234,19 @@ msgid "$batch = Bus::batch([\n"
 "])->then(function (Batch $batch) {\n"
 "    // All jobs completed successfully...\n"
 "})->onConnection('redis')->onQueue('imports')->dispatch();\n"
-msgstr ""
+msgstr "$batch = Bus::batch([\n"
+"    // ...\n"
+"])->then(function (Batch $batch) {\n"
+"    // 所有 Job 都已成功完成...\n"
+"})->onConnection('redis')->onQueue('imports')->dispatch();\n"
 
 #: docs/8.x/queues.md:block 270 (header)
 msgid "Chains Within Batches"
-msgstr ""
+msgstr "在批次中串聯"
 
 #: docs/8.x/queues.md:block 271 (paragraph)
 msgid "You may define a set of [chained jobs](#job-chaining) within a batch by placing the chained jobs within an array. For example, we may execute two job chains in parallel and execute a callback when both job chains have finished processing:"
-msgstr ""
+msgstr "只要將串聯的 Job 放在陣列中，就可以在批次中定義一組[串聯的 Job](#job-chaining)。舉例來說，我們可以平行執行兩個 Job 串聯，並在這兩個 Job 串聯都處理完畢後執行回呼："
 
 #: docs/8.x/queues.md:block 272 (code)
 msgid "use App\\Jobs\\ReleasePodcast;\n"
@@ -2215,15 +2265,30 @@ msgid "use App\\Jobs\\ReleasePodcast;\n"
 "])->then(function (Batch $batch) {\n"
 "    // ...\n"
 "})->dispatch();\n"
-msgstr ""
+msgstr "use App\\Jobs\\ReleasePodcast;\n"
+"use App\\Jobs\\SendPodcastReleaseNotification;\n"
+"use Illuminate\\Bus\\Batch;\n"
+"use Illuminate\\Support\\Facades\\Bus;\n\n"
+"Bus::batch([\n"
+"    [\n"
+"        new ReleasePodcast(1),\n"
+"        new SendPodcastReleaseNotification(1),\n"
+"    ],\n"
+"    [\n"
+"        new ReleasePodcast(2),\n"
+"        new SendPodcastReleaseNotification(2),\n"
+"    ],\n"
+"])->then(function (Batch $batch) {\n"
+"    // ...\n"
+"})->dispatch();\n"
 
 #: docs/8.x/queues.md:block 274 (header)
 msgid "Adding Jobs To Batches"
-msgstr ""
+msgstr "將 Job 加入批次"
 
 #: docs/8.x/queues.md:block 275 (paragraph)
 msgid "Sometimes it may be useful to add additional jobs to a batch from within a batched job. This pattern can be useful when you need to batch thousands of jobs which may take too long to dispatch during a web request. So, instead, you may wish to dispatch an initial batch of \"loader\" jobs that hydrate the batch with even more jobs:"
-msgstr ""
+msgstr "有時候，若能在批次 Job 中新增其他額外的 Job 會很實用。特別是當我們要在一個 Web Request 中批次處理數千筆 Job 時，會讓 Job 的分派過程變得很耗時。因此，比起直接分派數千筆 Job，我們可以先分派一個初始化的批次，用來作為 Job 的「載入程式」，然後讓這個載入程式再向批次內填入更多的 Job："
 
 #: docs/8.x/queues.md:block 276 (code)
 msgid "$batch = Bus::batch([\n"
@@ -2233,11 +2298,17 @@ msgid "$batch = Bus::batch([\n"
 "])->then(function (Batch $batch) {\n"
 "    // All jobs completed successfully...\n"
 "})->name('Import Contacts')->dispatch();\n"
-msgstr ""
+msgstr "$batch = Bus::batch([\n"
+"    new LoadImportBatch,\n"
+"    new LoadImportBatch,\n"
+"    new LoadImportBatch,\n"
+"])->then(function (Batch $batch) {\n"
+"    // 所有 Job 都成功完成...\n"
+"})->name('Import Contacts')->dispatch();\n"
 
 #: docs/8.x/queues.md:block 277 (paragraph)
 msgid "In this example, we will use the `LoadImportBatch` job to hydrate the batch with additional jobs. To accomplish this, we may use the `add` method on the batch instance that may be accessed via the job's `batch` method:"
-msgstr ""
+msgstr "在這個例子中，我們可以使用 `LoadImportBatch` Job 來填入其他額外的 Job。若要填入其他 Job，我們可以使用批次實體上的 `add` 方法。批次實體可使用 Job 的 `batch` 方法來取得："
 
 #: docs/8.x/queues.md:block 278 (code)
 msgid "use App\\Jobs\\ImportContacts;\n"
@@ -2256,19 +2327,34 @@ msgid "use App\\Jobs\\ImportContacts;\n"
 "        return new ImportContacts;\n"
 "    }));\n"
 "}\n"
-msgstr ""
+msgstr "use App\\Jobs\\ImportContacts;\n"
+"use Illuminate\\Support\\Collection;\n\n"
+"/**\n"
+" * Execute the job.\n"
+" *\n"
+" * @return void\n"
+" */\n"
+"public function handle()\n"
+"{\n"
+"    if ($this->batch()->cancelled()) {\n"
+"        return;\n"
+"    }\n\n"
+"    $this->batch()->add(Collection::times(1000, function () {\n"
+"        return new ImportContacts;\n"
+"    }));\n"
+"}\n"
 
 #: docs/8.x/queues.md:block 279 (quote)
 msgid "{note} You may only add jobs to a batch from within a job that belongs to the same batch."
-msgstr ""
+msgstr "{note} 我們只能向目前 Job 正在執行的批次新增 Job。"
 
 #: docs/8.x/queues.md:block 281 (header)
 msgid "Inspecting Batches"
-msgstr ""
+msgstr "檢查批次"
 
 #: docs/8.x/queues.md:block 282 (paragraph)
 msgid "The `Illuminate\\Bus\\Batch` instance that is provided to batch completion callbacks has a variety of properties and methods to assist you in interacting with and inspecting a given batch of jobs:"
-msgstr ""
+msgstr "提供給批次處理完成回呼的 `Illuminate\\Bus\\Batch` 實體有許多的屬性與方法，可以讓我們處理與取得給定 Job 批次的資訊："
 
 #: docs/8.x/queues.md:block 283 (code)
 msgid "// The UUID of the batch...\n"
@@ -2291,11 +2377,30 @@ msgid "// The UUID of the batch...\n"
 "$batch->cancel();\n\n"
 "// Indicates if the batch has been cancelled...\n"
 "$batch->cancelled();\n"
-msgstr ""
+msgstr "// 批次的 UUID...\n"
+"$batch->id;\n\n"
+"// 批次的名稱 (若有的話)...\n"
+"$batch->name;\n\n"
+"// 指派給該批次的 Job 數...\n"
+"$batch->totalJobs;\n\n"
+"// 還未被佇列處理的 Job 數量...\n"
+"$batch->pendingJobs;\n\n"
+"// The number of jobs that have failed...\n"
+"$batch->failedJobs;\n\n"
+"// The number of jobs that have been processed thus far...\n"
+"$batch->processedJobs();\n\n"
+"// The completion percentage of the batch (0-100)...\n"
+"$batch->progress();\n\n"
+"// Indicates if the batch has finished executing...\n"
+"$batch->finished();\n\n"
+"// Cancel the execution of the batch...\n"
+"$batch->cancel();\n\n"
+"// Indicates if the batch has been cancelled...\n"
+"$batch->cancelled();\n"
 
 #: docs/8.x/queues.md:block 285 (header)
 msgid "Returning Batches From Routes"
-msgstr ""
+msgstr "從 Route 上回傳批次"
 
 #: docs/8.x/queues.md:block 286 (paragraph)
 msgid "All `Illuminate\\Bus\\Batch` instances are JSON serializable, meaning you can return them directly from one of your application's routes to retrieve a JSON payload containing information about the batch, including its completion progress. This makes it convenient to display information about the batch's completion progress in your application's UI."
@@ -3204,5 +3309,13 @@ msgstr ""
 #: docs/9.x/queues.md:block 352 (code)
 msgid "# Process jobs for one hour and then exit...\n"
 "php artisan queue:work --max-time=3600\n"
+msgstr ""
+
+#: docs/9.x/queues.md:block 406 (paragraph)
+msgid "Sometimes your queued jobs will fail. Don't worry, things don't always go as planned! Laravel includes a convenient way to [specify the maximum number of times a job should be attempted](#max-job-attempts-and-timeout). After an asynchronous job has exceeded this number of attempts, it will be inserted into the `failed_jobs` database table. [Synchronously dispatched jobs](/docs/{{version}}/queues#synchronous-dispatching) that fail are not stored in this table and their exceptions are immediately handled by the application."
+msgstr ""
+
+#: docs/9.x/queues.md:block 407 (paragraph)
+msgid "A migration to create the `failed_jobs` table is typically already present in new Laravel applications. However, if your application does not contain a migration for this table, you may use the `queue:failed-table` command to create the migration:"
 msgstr ""
 

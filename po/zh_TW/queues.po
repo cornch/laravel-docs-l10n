@@ -10,7 +10,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
-"PO-Revision-Date: 2022-03-05 07:23\n"
+"PO-Revision-Date: 2022-03-05 08:26\n"
 
 #: docs/8.x/queues.md:block 1 (header)
 msgid "Queues"
@@ -2532,50 +2532,53 @@ msgstr "php artisan queue:retry-batch 32dbc76c-4f82-4749-b610-a639fe0099b5\n"
 
 #: docs/8.x/queues.md:block 307 (header)
 msgid "Pruning Batches"
-msgstr ""
+msgstr "修建批次"
 
 #: docs/8.x/queues.md:block 308 (paragraph)
 msgid "Without pruning, the `job_batches` table can accumulate records very quickly. To mitigate this, you should [schedule](/docs/{{version}}/scheduling) the `queue:prune-batches` Artisan command to run daily:"
-msgstr ""
+msgstr "若未^[修建](Prune)批次，則 `job_batches` 資料表很快就會變得很大。為了避免這個狀況，應[定期](/docs/{{version}}/scheduling)每日執行 `queue:prune-batches` Artisan 指令："
 
 #: docs/8.x/queues.md:block 309 (code)
 msgid "$schedule->command('queue:prune-batches')->daily();\n"
-msgstr ""
+msgstr "$schedule->command('queue:prune-batches')->daily();\n"
 
 #: docs/8.x/queues.md:block 310 (paragraph)
 msgid "By default, all finished batches that are more than 24 hours old will be pruned. You may use the `hours` option when calling the command to determine how long to retain batch data. For example, the following command will delete all batches that finished over 48 hours ago:"
-msgstr ""
+msgstr "預設情況下，完成超過 24 小時的批次會被修建掉。可以在呼叫該指令時使用 `hours` 選項來指定批次資料要保留多久。舉例來說，下列指令會刪除完成超過 48 小時前的所有批次："
 
 #: docs/8.x/queues.md:block 311 (code)
 msgid "$schedule->command('queue:prune-batches --hours=48')->daily();\n"
-msgstr ""
+msgstr "$schedule->command('queue:prune-batches --hours=48')->daily();\n"
 
 #: docs/8.x/queues.md:block 312 (paragraph)
 msgid "Sometimes, your `jobs_batches` table may accumulate batch records for batches that never completed successfully, such as batches where a job failed and that job was never retried successfully. You may instruct the `queue:prune-batches` command to prune these unfinished batch records using the `unfinished` option:"
-msgstr ""
+msgstr "有時候，`jobs_batches` 資料表可能會有一些從未成功完成的批次記錄，如批次中有 Job 失敗且從每次嘗試都失敗的批次。可以在 `queue:prune-batxhes` 指令的使用 `unfinished` 選項來修剪這些未完成的批次："
 
 #: docs/8.x/queues.md:block 313 (code)
 msgid "$schedule->command('queue:prune-batches --hours=48 --unfinished=72')->daily();\n"
-msgstr ""
+msgstr "$schedule->command('queue:prune-batches --hours=48 --unfinished=72')->daily();\n"
 
 #: docs/8.x/queues.md:block 315 (header)
 msgid "Queueing Closures"
-msgstr ""
+msgstr "將閉包放入佇列"
 
 #: docs/8.x/queues.md:block 316 (paragraph)
 msgid "Instead of dispatching a job class to the queue, you may also dispatch a closure. This is great for quick, simple tasks that need to be executed outside of the current request cycle. When dispatching closures to the queue, the closure's code content is cryptographically signed so that it can not be modified in transit:"
-msgstr ""
+msgstr "除了將 Job 類別分派進佇列外，我們也可以分派閉包。分派閉包對於一些要在目前 Request 週期外執行的快速、簡單任務來說很好用。把閉包放入佇列時，該閉包的程式碼內容會以密碼學的方式進行簽署，以避免其程式碼在傳輸過程中遭到篡改："
 
 #: docs/8.x/queues.md:block 317 (code)
 msgid "$podcast = App\\Podcast::find(1);\n\n"
 "dispatch(function () use ($podcast) {\n"
 "    $podcast->publish();\n"
 "});\n"
-msgstr ""
+msgstr "$podcast = App\\Podcast::find(1);\n\n"
+"dispatch(function () use ($podcast) {\n"
+"    $podcast->publish();\n"
+"});\n"
 
 #: docs/8.x/queues.md:block 318 (paragraph)
 msgid "Using the `catch` method, you may provide a closure that should be executed if the queued closure fails to complete successfully after exhausting all of your queue's [configured retry attempts](#max-job-attempts-and-timeout):"
-msgstr ""
+msgstr "使用 `catch` 方法，就能為佇列閉包提供一組要在所有[重試次數](#max-job-attempts-and-timeout)都失敗的時候執行的閉包："
 
 #: docs/8.x/queues.md:block 319 (code)
 msgid "use Throwable;\n\n"
@@ -2584,15 +2587,20 @@ msgid "use Throwable;\n\n"
 "})->catch(function (Throwable $e) {\n"
 "    // This job has failed...\n"
 "});\n"
-msgstr ""
+msgstr "use Throwable;\n\n"
+"dispatch(function () use ($podcast) {\n"
+"    $podcast->publish();\n"
+"})->catch(function (Throwable $e) {\n"
+"    // 該 Job 執行失敗...\n"
+"});\n"
 
 #: docs/8.x/queues.md:block 321 (header)
 msgid "Running The Queue Worker"
-msgstr ""
+msgstr "執行 Queue Worker"
 
 #: docs/8.x/queues.md:block 323 (header)
 msgid "The `queue:work` Command"
-msgstr ""
+msgstr "使用 `queue:work` 指令"
 
 #: docs/8.x/queues.md:block 324 (paragraph)
 msgid "Laravel includes an Artisan command that will start a queue worker and process new jobs as they are pushed onto the queue. You may run the worker using the `queue:work` Artisan command. Note that once the `queue:work` command has started, it will continue to run until it is manually stopped or you close your terminal:"

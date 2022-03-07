@@ -10,7 +10,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
-"PO-Revision-Date: 2022-03-07 03:53\n"
+"PO-Revision-Date: 2022-03-07 04:57\n"
 
 #: docs/8.x/queues.md:block 1 (header)
 msgid "Queues"
@@ -2612,224 +2612,225 @@ msgstr "php artisan queue:work\n"
 
 #: docs/8.x/queues.md:block 326 (quote)
 msgid "{tip} To keep the `queue:work` process running permanently in the background, you should use a process monitor such as [Supervisor](#supervisor-configuration) to ensure that the queue worker does not stop running."
-msgstr ""
+msgstr "{tip} 若要讓 `queue:work` 處理程序在背景持續執行，請使用如 [Supervisor](#supervisor-configuration) 等的 ^[Process Monitor](處理程序監看程式)，以確保 Queue Worker 持續執行。"
 
 #: docs/8.x/queues.md:block 327 (paragraph)
 msgid "Remember, queue workers, are long-lived processes and store the booted application state in memory. As a result, they will not notice changes in your code base after they have been started. So, during your deployment process, be sure to [restart your queue workers](#queue-workers-and-deployment). In addition, remember that any static state created or modified by your application will not be automatically reset between jobs."
-msgstr ""
+msgstr "請記得，Queue Worker 是會持續執行的處理程序，且會將已開啟的程式狀態保存在記憶體中。因此，Queue Worker 開始執行後若有更改程式碼，這些 Worker 將不會知道有這些修改。所以，在部署過程中，請確保有[重新啟動 Queue Worker](#queue-workers-and-deployment)。此外，也請注意，在各個 Job 間，也不會自動重設程式所建立或修改的任何^[靜態狀態](Static State)。"
 
 #: docs/8.x/queues.md:block 328 (paragraph)
 msgid "Alternatively, you may run the `queue:listen` command. When using the `queue:listen` command, you don't have to manually restart the worker when you want to reload your updated code or reset the application state; however, this command is significantly less efficient than the `queue:work` command:"
-msgstr ""
+msgstr "或者，我們也可以執行 `queue:listen` 指令。使用 `queue:listen` 指令時，若有更新程式碼或重設程式的狀態，就不需手動重新啟動 Queue Worker。不過，這個指令比起 `queue:work` 指令來說比較沒有效率："
 
 #: docs/8.x/queues.md:block 329 (code)
 msgid "php artisan queue:listen\n"
-msgstr ""
+msgstr "php artisan queue:listen\n"
 
 #: docs/8.x/queues.md:block 331 (header)
 msgid "Running Multiple Queue Workers"
-msgstr ""
+msgstr "執行多個 Queue Worker"
 
 #: docs/8.x/queues.md:block 332 (paragraph)
 msgid "To assign multiple workers to a queue and process jobs concurrently, you should simply start multiple `queue:work` processes. This can either be done locally via multiple tabs in your terminal or in production using your process manager's configuration settings. [When using Supervisor](#supervisor-configuration), you may use the `numprocs` configuration value."
-msgstr ""
+msgstr "若要指派多個 Worker 給某個 Queue 並同時處理多個 Job，只需要啟動多個 `queue:work` 處理程序即可。若要啟動多個 `queue:work`，在本機上，我們可以開啟多個終端機分頁來執行；若是在正是環境上，則可以使用 Process Manager 的組態設定來啟動多個 `queue:work`。[使用 Supervisor 時](#supervisor-configuration)，可使用 `numprocs` 設定值。"
 
 #: docs/8.x/queues.md:block 334 (header)
 msgid "Specifying The Connection & Queue"
-msgstr ""
+msgstr "指定連線與佇列"
 
 #: docs/8.x/queues.md:block 335 (paragraph)
 msgid "You may also specify which queue connection the worker should utilize. The connection name passed to the `work` command should correspond to one of the connections defined in your `config/queue.php` configuration file:"
-msgstr ""
+msgstr "也可以指定 Worker 要使用的佇列連線。傳給 `work` 指令的連線名稱應對影到 `config/queue.php` 設定檔中所定義的其中一個連線："
 
 #: docs/8.x/queues.md:block 336 (code)
 msgid "php artisan queue:work redis\n"
-msgstr ""
+msgstr "php artisan queue:work redis\n"
 
 #: docs/8.x/queues.md:block 337 (paragraph)
 msgid "By default, the `queue:work` command only processes jobs for the default queue on a given connection. However, you may customize your queue worker even further by only processing particular queues for a given connection. For example, if all of your emails are processed in an `emails` queue on your `redis` queue connection, you may issue the following command to start a worker that only processes that queue:"
-msgstr ""
+msgstr "預設情況下，`queue:work` 指令擲回處理給定連線上預設佇列的 Job。不過，我們也可以自定 Queue Worker，以處理給定連線上的特定佇列。舉例來說，若我們把所有的電子郵件都放在 `redis` 連線的 `emails` 佇列中執行，則我們可以執行下列指令來啟動一個處理該佇列的 Worker："
 
 #: docs/8.x/queues.md:block 338 (code)
 msgid "php artisan queue:work redis --queue=emails\n"
-msgstr ""
+msgstr "php artisan queue:work redis --queue=emails\n"
 
 #: docs/8.x/queues.md:block 340 (header)
 msgid "Processing A Specified Number Of Jobs"
-msgstr ""
+msgstr "處理指定數量的 Job"
 
 #: docs/8.x/queues.md:block 341 (paragraph)
 msgid "The `--once` option may be used to instruct the worker to only process a single job from the queue:"
-msgstr ""
+msgstr "可使用 `--once` 選項來讓 Worker 一次只處理佇列中的一個 Job："
 
 #: docs/8.x/queues.md:block 342 (code)
 msgid "php artisan queue:work --once\n"
-msgstr ""
+msgstr "php artisan queue:work --once\n"
 
 #: docs/8.x/queues.md:block 343 (paragraph)
 msgid "The `--max-jobs` option may be used to instruct the worker to process the given number of jobs and then exit. This option may be useful when combined with [Supervisor](#supervisor-configuration) so that your workers are automatically restarted after processing a given number of jobs, releasing any memory they may have accumulated:"
-msgstr ""
+msgstr "可使用 `--max-jobs` 選項來讓 Worker 只處理特定數量的 Job，然後就終止執行。該選項適合與 [Supervisor](#supervisor-configuration) 搭配使用，這樣我們就能讓 Worker 在處理特定數量的 Job 後自動重新執行，以釋出該 Worker 所積累的記憶體："
 
 #: docs/8.x/queues.md:block 344 (code)
 msgid "php artisan queue:work --max-jobs=1000\n"
-msgstr ""
+msgstr "php artisan queue:work --max-jobs=1000\n"
 
 #: docs/8.x/queues.md:block 346 (header)
 msgid "Processing All Queued Jobs & Then Exiting"
-msgstr ""
+msgstr "處理所有放入佇列的 Job 然後終止執行"
 
 #: docs/8.x/queues.md:block 347 (paragraph)
 msgid "The `--stop-when-empty` option may be used to instruct the worker to process all jobs and then exit gracefully. This option can be useful when processing Laravel queues within a Docker container if you wish to shutdown the container after the queue is empty:"
-msgstr ""
+msgstr "可使用 `--stop-when-empty` 選項來讓 Worker 處理所有的 Job 然後終止執行。在 Docker Container 中處理 Laravel 佇列時，若在佇列為空時停止關閉 Container，就適合使用該選項："
 
 #: docs/8.x/queues.md:block 348 (code)
 msgid "php artisan queue:work --stop-when-empty\n"
-msgstr ""
+msgstr "php artisan queue:work --stop-when-empty\n"
 
 #: docs/8.x/queues.md:block 350 (header)
 msgid "Processing Jobs For A Given Number Of Seconds"
-msgstr ""
+msgstr "在給定秒數內處理 Job"
 
 #: docs/8.x/queues.md:block 351 (paragraph)
 msgid "The `--max-time` option may be used to instruct the worker to process jobs for the given number of seconds and then exit. This option may be useful when combined with [Supervisor](#supervisor-configuration) so that your workers are automatically restarted after processing jobs for a given amount of time, releasing any memory they may have accumulated:"
-msgstr ""
+msgstr "`--max-time` 選項可用來讓 Worker 處理給定秒數的 Job，然後終止執行。該選項是何與 [Supervisor](#supervisor-configuration) 搭配使用，以在處理 Job 給定時間後自動重新啟動 Worker，並釋放期間可能積累的記憶體："
 
 #: docs/8.x/queues.md:block 352 (code)
 msgid "// Process jobs for one hour and then exit...\n"
 "php artisan queue:work --max-time=3600\n"
-msgstr ""
+msgstr "// 處理一小時的 Job 然後終止執行...\n"
+"php artisan queue:work --max-time=3600\n"
 
 #: docs/8.x/queues.md:block 354 (header)
 msgid "Worker Sleep Duration"
-msgstr ""
+msgstr "Worker 的休眠期間"
 
 #: docs/8.x/queues.md:block 355 (paragraph)
 msgid "When jobs are available on the queue, the worker will keep processing jobs with no delay in between them. However, the `sleep` option determines how many seconds the worker will \"sleep\" if there are no new jobs available. While sleeping, the worker will not process any new jobs - the jobs will be processed after the worker wakes up again."
-msgstr ""
+msgstr "若佇列中有 Job，則 Worker 會不間斷地處理這些 Job。不過，使用 `sleep` 選項可用來讓 Worker 判斷當沒有新 Job 時要「休眠」多少秒。在休眠期間，Worker 不會處理任何新的 Job。當 Worker 喚醒後，才會開始處理這些 Job。"
 
 #: docs/8.x/queues.md:block 356 (code)
 msgid "php artisan queue:work --sleep=3\n"
-msgstr ""
+msgstr "php artisan queue:work --sleep=3\n"
 
 #: docs/8.x/queues.md:block 358 (header)
 msgid "Resource Considerations"
-msgstr ""
+msgstr "資源上的考量"
 
 #: docs/8.x/queues.md:block 359 (paragraph)
 msgid "Daemon queue workers do not \"reboot\" the framework before processing each job. Therefore, you should release any heavy resources after each job completes. For example, if you are doing image manipulation with the GD library, you should free the memory with `imagedestroy` when you are done processing the image."
-msgstr ""
+msgstr "Daemon 型的 Queue Worker 並不會在每個 Job 處理後「重新啟動」Laravel。因此，在每個 Job 處理完畢後，請務必釋放任何吃資源的功能。舉例來說，若我們使用了 GD 函式庫來進行圖片處理，則應在處理完圖片後使用 `imagedestroy` 來釋放記憶體。"
 
 #: docs/8.x/queues.md:block 361 (header)
 msgid "Queue Priorities"
-msgstr ""
+msgstr "佇列的優先度"
 
 #: docs/8.x/queues.md:block 362 (paragraph)
 msgid "Sometimes you may wish to prioritize how your queues are processed. For example, in your `config/queue.php` configuration file, you may set the default `queue` for your `redis` connection to `low`. However, occasionally you may wish to push a job to a `high` priority queue like so:"
-msgstr ""
+msgstr "有時候，我們可能會向調整各個佇列的處理優先度。舉例來說，在 `config/queue.php` 設定檔中，我們可以把 `redis` 連線上的預設 `queue` 設為 `low` (低)。不過，有時候，我們可能會想像這樣把 Job 推入 `high` (高) 優先度的佇列："
 
 #: docs/8.x/queues.md:block 363 (code)
 msgid "dispatch((new Job)->onQueue('high'));\n"
-msgstr ""
+msgstr "dispatch((new Job)->onQueue('high'));\n"
 
 #: docs/8.x/queues.md:block 364 (paragraph)
 msgid "To start a worker that verifies that all of the `high` queue jobs are processed before continuing to any jobs on the `low` queue, pass a comma-delimited list of queue names to the `work` command:"
-msgstr ""
+msgstr "若要啟動 Worker 以驗證是否所有 `high` 佇列上的 Job 都比 `low` 佇列上的 Job 還要早被處理，只需要傳入一組以逗號分隔的佇列名稱列表給 `work` 指令即可："
 
 #: docs/8.x/queues.md:block 365 (code)
 msgid "php artisan queue:work --queue=high,low\n"
-msgstr ""
+msgstr "php artisan queue:work --queue=high,low\n"
 
 #: docs/8.x/queues.md:block 367 (header)
 msgid "Queue Workers & Deployment"
-msgstr ""
+msgstr "Queue Worker 與部署"
 
 #: docs/8.x/queues.md:block 368 (paragraph)
 msgid "Since queue workers are long-lived processes, they will not notice changes to your code without being restarted. So, the simplest way to deploy an application using queue workers is to restart the workers during your deployment process. You may gracefully restart all of the workers by issuing the `queue:restart` command:"
-msgstr ""
+msgstr "由於 Queue Worker 時持續執行的處理程序，因此除非重啟啟動 Queue Worker，否則 Queue Worker 不會知道程式碼有被修改過。要部署有使用 Queue Worker 的專案，最簡單的做法就是在部署過程中重新啟動 Queue Worker。我們可以執行 `queue:restart` 指令來重新啟動所有的 Worker："
 
 #: docs/8.x/queues.md:block 369 (code)
 msgid "php artisan queue:restart\n"
-msgstr ""
+msgstr "php artisan queue:restart\n"
 
 #: docs/8.x/queues.md:block 370 (paragraph)
 msgid "This command will instruct all queue workers to gracefully exit after they finish processing their current job so that no existing jobs are lost. Since the queue workers will exit when the `queue:restart` command is executed, you should be running a process manager such as [Supervisor](#supervisor-configuration) to automatically restart the queue workers."
-msgstr ""
+msgstr "該指令會通知所有的 Queue Worker，讓所有的 Worker 在處理完目前 Job 且在現有 Job 不遺失的情況下終止執行 Worker。由於 Queue Worker 會在 `queue:restart` 指令執行後終止執行，因此請務必使用如 [Supervisor](#supervisor-configuration) 這樣的 Process Manager 來自動重新啟動 Queue Worker。"
 
 #: docs/8.x/queues.md:block 371 (quote)
 msgid "{tip} The queue uses the [cache](/docs/{{version}}/cache) to store restart signals, so you should verify that a cache driver is properly configured for your application before using this feature."
-msgstr ""
+msgstr "{tip} 佇列會使用[快取](/docs/{{version}}/cache)來儲存重新啟動訊號，因此在使用此功能前請先確認專案上是否有設定好正確的快取 Driver。"
 
 #: docs/8.x/queues.md:block 373 (header)
 msgid "Job Expirations & Timeouts"
-msgstr ""
+msgstr "Job 的有效期限與逾時"
 
 #: docs/8.x/queues.md:block 375 (header)
 msgid "Job Expiration"
-msgstr ""
+msgstr "Job 的有效期限"
 
 #: docs/8.x/queues.md:block 376 (paragraph)
 msgid "In your `config/queue.php` configuration file, each queue connection defines a `retry_after` option. This option specifies how many seconds the queue connection should wait before retrying a job that is being processed. For example, if the value of `retry_after` is set to `90`, the job will be released back onto the queue if it has been processing for 90 seconds without being released or deleted. Typically, you should set the `retry_after` value to the maximum number of seconds your jobs should reasonably take to complete processing."
-msgstr ""
+msgstr "在 `config/queue.php` 設定檔中，每個佇列連線都有定義一個 `retry_after` 選項。這個選項用來指定在重新嘗試目前處理的 Job 前需要等待多少秒。舉例來說，若 `retry_after` 設為 `90`，則若某個 Job 已被處理 90 秒，且期間沒有被釋放或刪除，則該 Job 會被釋放回佇列中。一般來說，應將 `retry_after` 的值設為 Job 在合理情況下要完成執行所需的最大秒數。"
 
 #: docs/8.x/queues.md:block 377 (quote)
 msgid "{note} The only queue connection which does not contain a `retry_after` value is Amazon SQS. SQS will retry the job based on the [Default Visibility Timeout](https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/AboutVT.html) which is managed within the AWS console."
-msgstr ""
+msgstr "{note} 唯一一個不含 `retry_after` 值的佇列連線是 Amazon SQS。SQS 會使用[預設的 Visibility Timeout](https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/AboutVT.html) 來重試 Job。Visibility Timeout 的值由 AWS Console 中控制。"
 
 #: docs/8.x/queues.md:block 379 (header)
 msgid "Worker Timeouts"
-msgstr ""
+msgstr "Worker 的逾時"
 
 #: docs/8.x/queues.md:block 380 (paragraph)
 msgid "The `queue:work` Artisan command exposes a `--timeout` option. If a job is processing for longer than the number of seconds specified by the timeout value, the worker processing the job will exit with an error. Typically, the worker will be restarted automatically by a [process manager configured on your server](#supervisor-configuration):"
-msgstr ""
+msgstr "`queue:work` Aritsan 指令有一個 `--timeout` 選項。若 Job 執行超過逾時值所指定的秒數後，負責處理該 Job 的 Worker 就會以錯誤終止執行。一般來說，Worker 會自動由 [Server 上設定的 Process Manager](#supervisor-configuration) 重新開啟："
 
 #: docs/8.x/queues.md:block 381 (code)
 msgid "php artisan queue:work --timeout=60\n"
-msgstr ""
+msgstr "php artisan queue:work --timeout=60\n"
 
 #: docs/8.x/queues.md:block 382 (paragraph)
 msgid "The `retry_after` configuration option and the `--timeout` CLI option are different, but work together to ensure that jobs are not lost and that jobs are only successfully processed once."
-msgstr ""
+msgstr "雖然 `retry_after` 設定選項與 `--timeout` CLI 選項並不相同，不過這兩個選項會互相配合使用，以確保 Job 不遺失，且 Job 只會成功執行一次。"
 
 #: docs/8.x/queues.md:block 383 (quote)
 msgid "{note} The `--timeout` value should always be at least several seconds shorter than your `retry_after` configuration value. This will ensure that a worker processing a frozen job is always terminated before the job is retried. If your `--timeout` option is longer than your `retry_after` configuration value, your jobs may be processed twice."
-msgstr ""
+msgstr "{note} `--timeout` 的值必須至少比 `retry_after` 設定選項短個幾秒，以確保 Worker 在處理到當掉的 Job 時會在重試 Job 前先終止該 Job。若 `--timeout` 選項比 `retry_after` 設定值還要長的話，則 Job 就有可能會被處理兩次。"
 
 #: docs/8.x/queues.md:block 385 (header)
 msgid "Supervisor Configuration"
-msgstr ""
+msgstr "Supervisor 設定"
 
 #: docs/8.x/queues.md:block 386 (paragraph)
 msgid "In production, you need a way to keep your `queue:work` processes running. A `queue:work` process may stop running for a variety of reasons, such as an exceeded worker timeout or the execution of the `queue:restart` command."
-msgstr ""
+msgstr "在正式環境中，我們會需要一種能讓 `queue:work` 處理程序持續執行的方法。`queue:work` 可能會因為各種原因而停止執行，如 Worker 執行達到逾時值，或是在執行了 `queue:restart` 指令後等。"
 
 #: docs/8.x/queues.md:block 387 (paragraph)
 msgid "For this reason, you need to configure a process monitor that can detect when your `queue:work` processes exit and automatically restart them. In addition, process monitors can allow you to specify how many `queue:work` processes you would like to run concurrently. Supervisor is a process monitor commonly used in Linux environments and we will discuss how to configure it in the following documentation."
-msgstr ""
+msgstr "因此，我們需要設定一個能偵測到 `queue:work` 處理程序終止執行，並能自動重新啟動這些 Worker 的 Process Monitor。此外，使用 Process Monitor 還能讓我們指定要同時執行多少個 `queue:work` 處理程序。Supervisor 時一個常見用於 Linux 環境的 Process Monitor，在本文中接下來的部分我們會來看看要如何設定 Supervisor。"
 
 #: docs/8.x/queues.md:block 389 (header)
 msgid "Installing Supervisor"
-msgstr ""
+msgstr "安裝 Supervisor"
 
 #: docs/8.x/queues.md:block 390 (paragraph)
 msgid "Supervisor is a process monitor for the Linux operating system, and will automatically restart your `queue:work` processes if they fail. To install Supervisor on Ubuntu, you may use the following command:"
-msgstr ""
+msgstr "Supervisor 是一個用於 Linux 作業系統的 Process Monitor，使用 Supervisor 就可以在 `queue:work` 處理程序執行失敗時自動重新啟動。若要在 Ubuntu 上安裝 Supervisor，可使用下列指令："
 
 #: docs/8.x/queues.md:block 391 (code)
 msgid "sudo apt-get install supervisor\n"
-msgstr ""
+msgstr "sudo apt-get install supervisor\n"
 
 #: docs/8.x/queues.md:block 392 (quote)
 msgid "{tip} If configuring and managing Supervisor yourself sounds overwhelming, consider using [Laravel Forge](https://forge.laravel.com), which will automatically install and configure Supervisor for your production Laravel projects."
-msgstr ""
+msgstr "{tip} 如果你覺得要設定並管理 Supervisor 太難、太複雜的話，可以考慮使用 [Laravel Forge](https://forge.laravel.com)。Laravel Forge 會幫你在 Laravel 專案的正式環境上自動安裝並設定 Supervisor。"
 
 #: docs/8.x/queues.md:block 394 (header)
 msgid "Configuring Supervisor"
-msgstr ""
+msgstr "設定 Supervisor"
 
 #: docs/8.x/queues.md:block 395 (paragraph)
 msgid "Supervisor configuration files are typically stored in the `/etc/supervisor/conf.d` directory. Within this directory, you may create any number of configuration files that instruct supervisor how your processes should be monitored. For example, let's create a `laravel-worker.conf` file that starts and monitors `queue:work` processes:"
-msgstr ""
+msgstr "Supervisor 設定檔一般都存放在 `/etc/supervisor/conf.d` 目錄下。在該目錄中，我們可以建立任意數量的設定檔，以告訴 Supervisor 要如何監看這些處理程序。舉例來說，我們先建立一個用於啟動並監看 `queue:work` 處理程序的 `laravel-worker.conf` 檔案："
 
 #: docs/8.x/queues.md:block 396 (code)
 msgid "[program:laravel-worker]\n"
@@ -2844,66 +2845,80 @@ msgid "[program:laravel-worker]\n"
 "redirect_stderr=true\n"
 "stdout_logfile=/home/forge/app.com/worker.log\n"
 "stopwaitsecs=3600\n"
-msgstr ""
+msgstr "[program:laravel-worker]\n"
+"process_name=%(program_name)s_%(process_num)02d\n"
+"command=php /home/forge/app.com/artisan queue:work sqs --sleep=3 --tries=3 --max-time=3600\n"
+"autostart=true\n"
+"autorestart=true\n"
+"stopasgroup=true\n"
+"killasgroup=true\n"
+"user=forge\n"
+"numprocs=8\n"
+"redirect_stderr=true\n"
+"stdout_logfile=/home/forge/app.com/worker.log\n"
+"stopwaitsecs=3600\n"
 
 #: docs/8.x/queues.md:block 397 (paragraph)
 msgid "In this example, the `numprocs` directive will instruct Supervisor to run eight `queue:work` processes and monitor all of them, automatically restarting them if they fail. You should change the `command` directive of the configuration to reflect your desired queue connection and worker options."
-msgstr ""
+msgstr "在這個範例中，`numprocs` 指示詞用於告訴 Supervisor 要執行 8 個 `queue:work` 處理程序，並監看這 8 個處理程序，然後當這些處理程序執行失敗時自動重新啟動。我們可以更改該設定檔中的 `command` 指示詞，以調整為所需的佇列連線與 Worker 選項。"
 
 #: docs/8.x/queues.md:block 398 (quote)
 msgid "{note} You should ensure that the value of `stopwaitsecs` is greater than the number of seconds consumed by your longest running job. Otherwise, Supervisor may kill the job before it is finished processing."
-msgstr ""
+msgstr "{note} 請務必確保 `stopwaitsecs` 值比花費時間最多的 Job 所需執行的秒數還要大。若該值設定不對，可能會讓 Supervisor 在 Job 處理完成前就終止該 Job。"
 
 #: docs/8.x/queues.md:block 400 (header)
 msgid "Starting Supervisor"
-msgstr ""
+msgstr "開啟 Supervisor"
 
 #: docs/8.x/queues.md:block 401 (paragraph)
 msgid "Once the configuration file has been created, you may update the Supervisor configuration and start the processes using the following commands:"
-msgstr ""
+msgstr "建立好設定檔後，我們就可以使用下列指令更新 Supervisor 設定並開啟我們設定好的處理程序："
 
 #: docs/8.x/queues.md:block 402 (code)
 msgid "sudo supervisorctl reread\n\n"
 "sudo supervisorctl update\n\n"
 "sudo supervisorctl start laravel-worker:*\n"
-msgstr ""
+msgstr "sudo supervisorctl reread\n\n"
+"sudo supervisorctl update\n\n"
+"sudo supervisorctl start laravel-worker:*\n"
 
 #: docs/8.x/queues.md:block 403 (paragraph)
 msgid "For more information on Supervisor, consult the [Supervisor documentation](http://supervisord.org/index.html)."
-msgstr ""
+msgstr "更多有關 Supervisor 的資訊，請參考 [Supervisor 的說明文件](http://supervisord.org/index.html)。"
 
 #: docs/8.x/queues.md:block 405 (header)
 msgid "Dealing With Failed Jobs"
-msgstr ""
+msgstr "處理失敗的 Job"
 
 #: docs/8.x/queues.md:block 406 (paragraph)
 msgid "Sometimes your queued jobs will fail. Don't worry, things don't always go as planned! Laravel includes a convenient way to [specify the maximum number of times a job should be attempted](#max-job-attempts-and-timeout). After a job has exceeded this number of attempts, it will be inserted into the `failed_jobs` database table. Of course, we will need to create that table if it does not already exist. To create a migration for the `failed_jobs` table, you may use the `queue:failed-table` command:"
-msgstr ""
+msgstr "有時候，放入佇列的 Job 可能會執行失敗。請別擔心，計劃永遠趕不上變化！Laravel 中內建了一個方便的方法，可用來[指定 Job 要重試的最大次數](#max-job-attempts-and-timeout)。若某個 Job 已經達到重試次數的最大限制，則該 Job 就會被插入 `failed_jobs` 資料庫資料表中。當然，若沒有這個資料表的話，我們需要先建立該資料表。若要為 `failed_jobs` 資料表建立 Migration，可使用 `queue:failed-tables` 指令："
 
 #: docs/8.x/queues.md:block 407 (code)
 msgid "php artisan queue:failed-table\n\n"
 "php artisan migrate\n"
-msgstr ""
+msgstr "php artisan queue:failed-table\n\n"
+"php artisan migrate\n"
 
 #: docs/8.x/queues.md:block 408 (paragraph)
 msgid "When running a [queue worker](#running-the-queue-worker) process, you may specify the maximum number of times a job should be attempted using the `--tries` switch on the `queue:work` command. If you do not specify a value for the `--tries` option, jobs will only be attempted once or as many times as specified by the job class' `$tries` property:"
-msgstr ""
+msgstr "在執行 [Queue Worker] 處理程序時，我們可以使用 `queue:work` 指令上的 `--tries` 開關來指定某個 Job 所要嘗試執行的最大次數。若為指定 `--tries` 選項的值，則 Job 就只會嘗試執行一次，或是依照 Job 類別中 `$tries` 屬性所設定的值作為最大嘗試次數："
 
 #: docs/8.x/queues.md:block 409 (code)
 msgid "php artisan queue:work redis --tries=3\n"
-msgstr ""
+msgstr "php artisan queue:work redis --tries=3\n"
 
 #: docs/8.x/queues.md:block 410 (paragraph)
 msgid "Using the `--backoff` option, you may specify how many seconds Laravel should wait before retrying a job that has encountered an exception. By default, a job is immediately released back onto the queue so that it may be attempted again:"
-msgstr ""
+msgstr "使用 `--backoff` 選項，就可指定當 Job 遇到 Exception 時，Laravel 要等待多少秒才重新嘗試該 Job。預設情況下，Job 會馬上被釋放回佇列中，以便重新嘗試該 Job："
 
 #: docs/8.x/queues.md:block 411 (code)
 msgid "php artisan queue:work redis --tries=3 --backoff=3\n"
-msgstr ""
+msgstr "php artisan queue:work redis --tries=3 --backoff=3\n"
 
 #: docs/8.x/queues.md:block 412 (paragraph)
 msgid "If you would like to configure how many seconds Laravel should wait before retrying a job that has encountered an exception on a per-job basis, you may do so by defining a `backoff` property on your job class:"
-msgstr ""
+msgstr "若想以 Job 為單位來設定當 Job 遇到 Exception 時 Laravel 要等待多少秒才重新嘗試該 Job，則可在 Job 類別上定義 `backoff` 屬性："
 
 #: docs/8.x/queues.md:block 413 (code)
 msgid "/**\n"
@@ -2912,11 +2927,16 @@ msgid "/**\n"
 " * @var int\n"
 " */\n"
 "public $backoff = 3;\n"
-msgstr ""
+msgstr "/**\n"
+" * The number of seconds to wait before retrying the job.\n"
+" *\n"
+" * @var int\n"
+" */\n"
+"public $backoff = 3;\n"
 
 #: docs/8.x/queues.md:block 414 (paragraph)
 msgid "If you require more complex logic for determining the job's backoff time, you may define a `backoff` method on your job class:"
-msgstr ""
+msgstr "若需要使用更複雜的邏輯來判斷 Job 的 Backoff 時間，可在 Job 類別上定義 `backoff` 方法："
 
 #: docs/8.x/queues.md:block 415 (code)
 msgid "/**\n"
@@ -2928,7 +2948,15 @@ msgid "/**\n"
 "{\n"
 "    return 3;\n"
 "}\n"
-msgstr ""
+msgstr "/**\n"
+"* Calculate the number of seconds to wait before retrying the job.\n"
+"*\n"
+"* @return int\n"
+"*/\n"
+"public function backoff()\n"
+"{\n"
+"    return 3;\n"
+"}\n"
 
 #: docs/8.x/queues.md:block 416 (paragraph)
 msgid "You may easily configure \"exponential\" backoffs by returning an array of backoff values from the `backoff` method. In this example, the retry delay will be 1 second for the first retry, 5 seconds for the second retry, and 10 seconds for the third retry:"

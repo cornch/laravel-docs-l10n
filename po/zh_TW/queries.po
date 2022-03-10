@@ -10,7 +10,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
-"PO-Revision-Date: 2022-03-10 14:29\n"
+"PO-Revision-Date: 2022-03-10 15:31\n"
 
 #: docs/8.x/queries.md:block 1 (header)
 msgid "Database: Query Builder"
@@ -294,7 +294,7 @@ msgstr "將查詢結果分段"
 
 #: docs/8.x/queries.md:block 33 (paragraph)
 msgid "If you need to work with thousands of database records, consider using the `chunk` method provided by the `DB` facade. This method retrieves a small chunk of results at a time and feeds each chunk into a closure for processing. For example, let's retrieve the entire `users` table in chunks of 100 records at a time:"
-msgstr ""
+msgstr "若要處理上千筆資料，請考慮使用 `DB` Facade 的 `chunk` 方法。該方法一次只會取得一小段資料，並將各個分段的內容傳入閉包中供我們處理。舉例來說，我們來以一次只取 100 筆記錄的方式分段取得整個 `users` 資料表："
 
 #: docs/8.x/queries.md:block 34 (code)
 msgid "use Illuminate\\Support\\Facades\\DB;\n\n"
@@ -303,22 +303,30 @@ msgid "use Illuminate\\Support\\Facades\\DB;\n\n"
 "        //\n"
 "    }\n"
 "});\n"
-msgstr ""
+msgstr "use Illuminate\\Support\\Facades\\DB;\n\n"
+"DB::table('users')->orderBy('id')->chunk(100, function ($users) {\n"
+"    foreach ($users as $user) {\n"
+"        //\n"
+"    }\n"
+"});\n"
 
 #: docs/8.x/queries.md:block 35 (paragraph)
 msgid "You may stop further chunks from being processed by returning `false` from the closure:"
-msgstr ""
+msgstr "我們也可以在閉包中回傳 `false` 來停止處理接下來的分段："
 
 #: docs/8.x/queries.md:block 36 (code)
 msgid "DB::table('users')->orderBy('id')->chunk(100, function ($users) {\n"
 "    // Process the records...\n\n"
 "    return false;\n"
 "});\n"
-msgstr ""
+msgstr "DB::table('users')->orderBy('id')->chunk(100, function ($users) {\n"
+"    // 處理資料...\n\n"
+"    return false;\n"
+"});\n"
 
 #: docs/8.x/queries.md:block 37 (paragraph)
 msgid "If you are updating database records while chunking results, your chunk results could change in unexpected ways. If you plan to update the retrieved records while chunking, it is always best to use the `chunkById` method instead. This method will automatically paginate the results based on the record's primary key:"
-msgstr ""
+msgstr "若要在為結果分段的同時更新資料庫中的資料，則分段的結果可能會不如預期。若要在為查詢結果分段的同時更新所取得的資料，最好該用 `chunkById` 方法。該方法會自動使用資料的主索引鍵來將結果分頁："
 
 #: docs/8.x/queries.md:block 38 (code)
 msgid "DB::table('users')->where('active', false)\n"
@@ -329,30 +337,40 @@ msgid "DB::table('users')->where('active', false)\n"
 "                ->update(['active' => true]);\n"
 "        }\n"
 "    });\n"
-msgstr ""
+msgstr "DB::table('users')->where('active', false)\n"
+"    ->chunkById(100, function ($users) {\n"
+"        foreach ($users as $user) {\n"
+"            DB::table('users')\n"
+"                ->where('id', $user->id)\n"
+"                ->update(['active' => true]);\n"
+"        }\n"
+"    });\n"
 
 #: docs/8.x/queries.md:block 39 (quote)
 msgid "{note} When updating or deleting records inside the chunk callback, any changes to the primary key or foreign keys could affect the chunk query. This could potentially result in records not being included in the chunked results."
-msgstr ""
+msgstr "{note} 在分段閉包中更新或刪除資料時，所有對主索引鍵或外部索引鍵所做出的更改都有可能影響分段的資料庫查詢。更新或刪除資料也有可能讓某些資料不被包含在分段的結果中。"
 
 #: docs/8.x/queries.md:block 41 (header)
 msgid "Streaming Results Lazily"
-msgstr ""
+msgstr "延遲的查詢結果資料流"
 
 #: docs/8.x/queries.md:block 42 (paragraph)
 msgid "The `lazy` method works similarly to [the `chunk` method](#chunking-results) in the sense that it executes the query in chunks. However, instead of passing each chunk into a callback, the `lazy()` method returns a [`LazyCollection`](/docs/{{version}}/collections#lazy-collections), which lets you interact with the results as a single stream:"
-msgstr ""
+msgstr "`lazy` 方法與 [`chunk` 方法](#chunking-results) 的原理類似，都是以分段的方式執行查詢。不過，`lazy()` 方法不是直接把每個分段傳入回呼中，而是回傳一個 [`LazyCollection`](/docs/{{version}}/collections#lazy-collections)。使用這個 LazyCollection，就可以以單一資料流的方式使用查詢結果："
 
 #: docs/8.x/queries.md:block 43 (code)
 msgid "use Illuminate\\Support\\Facades\\DB;\n\n"
 "DB::table('users')->orderBy('id')->lazy()->each(function ($user) {\n"
 "    //\n"
 "});\n"
-msgstr ""
+msgstr "use Illuminate\\Support\\Facades\\DB;\n\n"
+"DB::table('users')->orderBy('id')->lazy()->each(function ($user) {\n"
+"    //\n"
+"});\n"
 
 #: docs/8.x/queries.md:block 44 (paragraph)
 msgid "Once again, if you plan to update the retrieved records while iterating over them, it is best to use the `lazyById` or `lazyByIdDesc` methods instead. These methods will automatically paginate the results based on the record's primary key:"
-msgstr ""
+msgstr "一樣，若要在迭代查詢結果的同時更新這些資料的話，最好該用 `lazyById` 或 `lazyByIdDesc` 方法。這些方法會自動使用這些資料的主索引鍵來為查詢結果分頁："
 
 #: docs/8.x/queries.md:block 45 (code)
 msgid "DB::table('users')->where('active', false)\n"
@@ -361,43 +379,52 @@ msgid "DB::table('users')->where('active', false)\n"
 "            ->where('id', $user->id)\n"
 "            ->update(['active' => true]);\n"
 "    });\n"
-msgstr ""
+msgstr "DB::table('users')->where('active', false)\n"
+"    ->lazyById()->each(function ($user) {\n"
+"        DB::table('users')\n"
+"            ->where('id', $user->id)\n"
+"            ->update(['active' => true]);\n"
+"    });\n"
 
 #: docs/8.x/queries.md:block 46 (quote)
 msgid "{note} When updating or deleting records while iterating over them, any changes to the primary key or foreign keys could affect the chunk query. This could potentially result in records not being included in the results."
-msgstr ""
+msgstr "{note} 在迭代時更新或刪除資料時，所有對主索引鍵或外部索引鍵所做出的更改都有可能影響分段的資料庫查詢。更新或刪除資料也有可能讓某些資料不被包含查詢結果中。"
 
 #: docs/8.x/queries.md:block 48 (header)
 msgid "Aggregates"
-msgstr ""
+msgstr "彙總"
 
 #: docs/8.x/queries.md:block 49 (paragraph)
 msgid "The query builder also provides a variety of methods for retrieving aggregate values like `count`, `max`, `min`, `avg`, and `sum`. You may call any of these methods after constructing your query:"
-msgstr ""
+msgstr "Query Builder 還提供了許多用來取得彙總值的方法，如 `count`、`max`、`min`、`avg`、`sum` 等。我們可以在建立查詢時使用這些方法："
 
 #: docs/8.x/queries.md:block 50 (code)
 msgid "use Illuminate\\Support\\Facades\\DB;\n\n"
 "$users = DB::table('users')->count();\n\n"
 "$price = DB::table('orders')->max('price');\n"
-msgstr ""
+msgstr "use Illuminate\\Support\\Facades\\DB;\n\n"
+"$users = DB::table('users')->count();\n\n"
+"$price = DB::table('orders')->max('price');\n"
 
 #: docs/8.x/queries.md:block 51 (paragraph)
 msgid "Of course, you may combine these methods with other clauses to fine-tune how your aggregate value is calculated:"
-msgstr ""
+msgstr "當然，我們也可以使用其他閉包來組合使用這些方法，以微調這些彙總值的計算方法："
 
 #: docs/8.x/queries.md:block 52 (code)
 msgid "$price = DB::table('orders')\n"
 "                ->where('finalized', 1)\n"
 "                ->avg('price');\n"
-msgstr ""
+msgstr "$price = DB::table('orders')\n"
+"                ->where('finalized', 1)\n"
+"                ->avg('price');\n"
 
 #: docs/8.x/queries.md:block 54 (header)
 msgid "Determining If Records Exist"
-msgstr ""
+msgstr "判斷資料是否存在"
 
 #: docs/8.x/queries.md:block 55 (paragraph)
 msgid "Instead of using the `count` method to determine if any records exist that match your query's constraints, you may use the `exists` and `doesntExist` methods:"
-msgstr ""
+msgstr "我們不需要使用 `count` 來判斷是否有某個符合查詢條件的資料存在，而可以使用 `exists` 與 `doesntExist` 方法："
 
 #: docs/8.x/queries.md:block 56 (code)
 msgid "if (DB::table('orders')->where('finalized', 1)->exists()) {\n"
@@ -406,47 +433,56 @@ msgid "if (DB::table('orders')->where('finalized', 1)->exists()) {\n"
 "if (DB::table('orders')->where('finalized', 1)->doesntExist()) {\n"
 "    // ...\n"
 "}\n"
-msgstr ""
+msgstr "if (DB::table('orders')->where('finalized', 1)->exists()) {\n"
+"    // ...\n"
+"}\n\n"
+"if (DB::table('orders')->where('finalized', 1)->doesntExist()) {\n"
+"    // ...\n"
+"}\n"
 
 #: docs/8.x/queries.md:block 58 (header)
 msgid "Select Statements"
-msgstr ""
+msgstr "Select 陳述式"
 
 #: docs/8.x/queries.md:block 60 (header)
 msgid "Specifying A Select Clause"
-msgstr ""
+msgstr "指定 Select 子句"
 
 #: docs/8.x/queries.md:block 61 (paragraph)
 msgid "You may not always want to select all columns from a database table. Using the `select` method, you can specify a custom \"select\" clause for the query:"
-msgstr ""
+msgstr "我們不是每次都想把資料表上所有的欄位都抓下來。使用 `select` 方法，就可以指定查詢的「select」子句："
 
 #: docs/8.x/queries.md:block 62 (code)
 msgid "use Illuminate\\Support\\Facades\\DB;\n\n"
 "$users = DB::table('users')\n"
 "            ->select('name', 'email as user_email')\n"
 "            ->get();\n"
-msgstr ""
+msgstr "use Illuminate\\Support\\Facades\\DB;\n\n"
+"$users = DB::table('users')\n"
+"            ->select('name', 'email as user_email')\n"
+"            ->get();\n"
 
 #: docs/8.x/queries.md:block 63 (paragraph)
 msgid "The `distinct` method allows you to force the query to return distinct results:"
-msgstr ""
+msgstr "可使用 `distinct` 方法來強制查詢只回傳不重複的結果："
 
 #: docs/8.x/queries.md:block 64 (code)
 msgid "$users = DB::table('users')->distinct()->get();\n"
-msgstr ""
+msgstr "$users = DB::table('users')->distinct()->get();\n"
 
 #: docs/8.x/queries.md:block 65 (paragraph)
 msgid "If you already have a query builder instance and you wish to add a column to its existing select clause, you may use the `addSelect` method:"
-msgstr ""
+msgstr "若已經有現有的 Query Builder 實體，而想在現有的 select 子句內新增欄位的話，可使用 `addSelect` 方法："
 
 #: docs/8.x/queries.md:block 66 (code)
 msgid "$query = DB::table('users')->select('name');\n\n"
 "$users = $query->addSelect('age')->get();\n"
-msgstr ""
+msgstr "$query = DB::table('users')->select('name');\n\n"
+"$users = $query->addSelect('age')->get();\n"
 
 #: docs/8.x/queries.md:block 68 (header)
 msgid "Raw Expressions"
-msgstr ""
+msgstr "原始運算式"
 
 #: docs/8.x/queries.md:block 69 (paragraph)
 msgid "Sometimes you may need to insert an arbitrary string into a query. To create a raw string expression, you may use the `raw` method provided by the `DB` facade:"

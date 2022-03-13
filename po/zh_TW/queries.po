@@ -10,7 +10,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
-"PO-Revision-Date: 2022-03-13 02:56\n"
+"PO-Revision-Date: 2022-03-13 04:02\n"
 
 #: docs/8.x/queries.md:block 1 (header)
 msgid "Database: Query Builder"
@@ -608,7 +608,7 @@ msgstr "Inner Join 子句"
 
 #: docs/8.x/queries.md:block 99 (paragraph)
 msgid "The query builder may also be used to add join clauses to your queries. To perform a basic \"inner join\", you may use the `join` method on a query builder instance. The first argument passed to the `join` method is the name of the table you need to join to, while the remaining arguments specify the column constraints for the join. You may even join multiple tables in a single query:"
-msgstr ""
+msgstr "Query Builder 也可用來在查詢內加入 Join 子句。若要使用基本的「Inner Join」，可使用 Query Builder 實體上的 `join` 方法。傳給 `join` 方法的第一個引數是要 Join 的表名，而剩下的引數則為 Join 的欄位條件限制。在單一查詢上可以 Join 多張表："
 
 #: docs/8.x/queries.md:block 100 (code)
 msgid "use Illuminate\\Support\\Facades\\DB;\n\n"
@@ -617,15 +617,20 @@ msgid "use Illuminate\\Support\\Facades\\DB;\n\n"
 "            ->join('orders', 'users.id', '=', 'orders.user_id')\n"
 "            ->select('users.*', 'contacts.phone', 'orders.price')\n"
 "            ->get();\n"
-msgstr ""
+msgstr "use Illuminate\\Support\\Facades\\DB;\n\n"
+"$users = DB::table('users')\n"
+"            ->join('contacts', 'users.id', '=', 'contacts.user_id')\n"
+"            ->join('orders', 'users.id', '=', 'orders.user_id')\n"
+"            ->select('users.*', 'contacts.phone', 'orders.price')\n"
+"            ->get();\n"
 
 #: docs/8.x/queries.md:block 102 (header)
 msgid "Left Join / Right Join Clause"
-msgstr ""
+msgstr "Left Join 與 Right Join 子句"
 
 #: docs/8.x/queries.md:block 103 (paragraph)
 msgid "If you would like to perform a \"left join\" or \"right join\" instead of an \"inner join\", use the `leftJoin` or `rightJoin` methods. These methods have the same signature as the `join` method:"
-msgstr ""
+msgstr "若不想新增「Innert Join」，而是想新增「Left Join」或「Right Join」，可使用 `leftJoin` 或 `rightJoin`。這些方法的^[簽章](Signature)與 `join` 方法相同："
 
 #: docs/8.x/queries.md:block 104 (code)
 msgid "$users = DB::table('users')\n"
@@ -634,29 +639,36 @@ msgid "$users = DB::table('users')\n"
 "$users = DB::table('users')\n"
 "            ->rightJoin('posts', 'users.id', '=', 'posts.user_id')\n"
 "            ->get();\n"
-msgstr ""
+msgstr "$users = DB::table('users')\n"
+"            ->leftJoin('posts', 'users.id', '=', 'posts.user_id')\n"
+"            ->get();\n\n"
+"$users = DB::table('users')\n"
+"            ->rightJoin('posts', 'users.id', '=', 'posts.user_id')\n"
+"            ->get();\n"
 
 #: docs/8.x/queries.md:block 106 (header)
 msgid "Cross Join Clause"
-msgstr ""
+msgstr "Cross Join 子句"
 
 #: docs/8.x/queries.md:block 107 (paragraph)
 msgid "You may use the `crossJoin` method to perform a \"cross join\". Cross joins generate a cartesian product between the first table and the joined table:"
-msgstr ""
+msgstr "可使用 `crossJoin` 方法來新增「Cross Join」。Cross Join 會產生第一個表與被 Join 表的^[笛卡爾乘積](Cartesian Product)："
 
 #: docs/8.x/queries.md:block 108 (code)
 msgid "$sizes = DB::table('sizes')\n"
 "            ->crossJoin('colors')\n"
 "            ->get();\n"
-msgstr ""
+msgstr "$sizes = DB::table('sizes')\n"
+"            ->crossJoin('colors')\n"
+"            ->get();\n"
 
 #: docs/8.x/queries.md:block 110 (header)
 msgid "Advanced Join Clauses"
-msgstr ""
+msgstr "進階的 Join 子句"
 
 #: docs/8.x/queries.md:block 111 (paragraph)
 msgid "You may also specify more advanced join clauses. To get started, pass a closure as the second argument to the `join` method. The closure will receive a `Illuminate\\Database\\Query\\JoinClause` instance which allows you to specify constraints on the \"join\" clause:"
-msgstr ""
+msgstr "我們也可以指定更進階的 Join 子句。若要指定更進階的 Join 子句，`join` 方法的第二個引數請傳入一閉包。該閉包會接收 `Illuminate\\Database\\Query\\JoinClause` 實體，我們可以使用該實體來指定「Join」子句的條件限制："
 
 #: docs/8.x/queries.md:block 112 (code)
 msgid "DB::table('users')\n"
@@ -664,11 +676,15 @@ msgid "DB::table('users')\n"
 "            $join->on('users.id', '=', 'contacts.user_id')->orOn(...);\n"
 "        })\n"
 "        ->get();\n"
-msgstr ""
+msgstr "DB::table('users')\n"
+"        ->join('contacts', function ($join) {\n"
+"            $join->on('users.id', '=', 'contacts.user_id')->orOn(...);\n"
+"        })\n"
+"        ->get();\n"
 
 #: docs/8.x/queries.md:block 113 (paragraph)
 msgid "If you would like to use a \"where\" clause on your joins, you may use the `where` and `orWhere` methods provided by the `JoinClause` instance. Instead of comparing two columns, these methods will compare the column against a value:"
-msgstr ""
+msgstr "若想在 Join 上使用「Where」子句，可使用 `JoinClause` 實體提供的 `where` 與 `orWhere` 方法。除了直接比較兩個欄位外，也可以使用這些方法將欄位與值相比較："
 
 #: docs/8.x/queries.md:block 114 (code)
 msgid "DB::table('users')\n"
@@ -677,11 +693,16 @@ msgid "DB::table('users')\n"
 "                 ->where('contacts.user_id', '>', 5);\n"
 "        })\n"
 "        ->get();\n"
-msgstr ""
+msgstr "DB::table('users')\n"
+"        ->join('contacts', function ($join) {\n"
+"            $join->on('users.id', '=', 'contacts.user_id')\n"
+"                 ->where('contacts.user_id', '>', 5);\n"
+"        })\n"
+"        ->get();\n"
 
 #: docs/8.x/queries.md:block 116 (header)
 msgid "Subquery Joins"
-msgstr ""
+msgstr "子查詢的 Join"
 
 #: docs/8.x/queries.md:block 117 (paragraph)
 msgid "You may use the `joinSub`, `leftJoinSub`, and `rightJoinSub` methods to join a query to a subquery. Each of these methods receives three arguments: the subquery, its table alias, and a closure that defines the related columns. In this example, we will retrieve a collection of users where each user record also contains the `created_at` timestamp of the user's most recently published blog post:"

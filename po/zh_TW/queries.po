@@ -10,7 +10,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
-"PO-Revision-Date: 2022-03-10 15:31\n"
+"PO-Revision-Date: 2022-03-13 02:56\n"
 
 #: docs/8.x/queries.md:block 1 (header)
 msgid "Database: Query Builder"
@@ -482,11 +482,11 @@ msgstr "$query = DB::table('users')->select('name');\n\n"
 
 #: docs/8.x/queries.md:block 68 (header)
 msgid "Raw Expressions"
-msgstr "原始運算式"
+msgstr "Raw 運算式"
 
 #: docs/8.x/queries.md:block 69 (paragraph)
 msgid "Sometimes you may need to insert an arbitrary string into a query. To create a raw string expression, you may use the `raw` method provided by the `DB` facade:"
-msgstr ""
+msgstr "有時候，我們會需要在查詢中插入任意字串。若要建立 ^[Raw](原始的) 字串運算式，可使用 `DB` Facade 提供的 `raw` 方法："
 
 #: docs/8.x/queries.md:block 70 (code)
 msgid "$users = DB::table('users')\n"
@@ -494,55 +494,63 @@ msgid "$users = DB::table('users')\n"
 "             ->where('status', '<>', 1)\n"
 "             ->groupBy('status')\n"
 "             ->get();\n"
-msgstr ""
+msgstr "$users = DB::table('users')\n"
+"             ->select(DB::raw('count(*) as user_count, status'))\n"
+"             ->where('status', '<>', 1)\n"
+"             ->groupBy('status')\n"
+"             ->get();\n"
 
 #: docs/8.x/queries.md:block 71 (quote)
 msgid "{note} Raw statements will be injected into the query as strings, so you should be extremely careful to avoid creating SQL injection vulnerabilities."
-msgstr ""
+msgstr "{note} Raw 運算式會直接以字串形式插入到查詢中，因此在使用上必須格外小心，以避免 SQL Injection 弱點。"
 
 #: docs/8.x/queries.md:block 73 (header)
 msgid "Raw Methods"
-msgstr ""
+msgstr "Raw 方法"
 
 #: docs/8.x/queries.md:block 74 (paragraph)
 msgid "Instead of using the `DB::raw` method, you may also use the following methods to insert a raw expression into various parts of your query. **Remember, Laravel can not guarantee that any query using raw expressions is protected against SQL injection vulnerabilities.**"
-msgstr ""
+msgstr "除了使用 `DB::raw` 方法外，也可以使用下列方法將 Raw 陳述式插入到查詢中的各個部分。**請記得，Laravel 無法保使用 Raw 運算式的查詢有受到避免 SQL Injection 弱點的保護。**"
 
 #: docs/8.x/queries.md:block 76 (header)
 msgid "`selectRaw`"
-msgstr ""
+msgstr "`selectRaw`"
 
 #: docs/8.x/queries.md:block 77 (paragraph)
 msgid "The `selectRaw` method can be used in place of `addSelect(DB::raw(...))`. This method accepts an optional array of bindings as its second argument:"
-msgstr ""
+msgstr "可使用 `selectRaw` 來代替使用 `addSelect(DB::raw(...))`。該方法接受一個可選的第二引數，為一繫結陣列："
 
 #: docs/8.x/queries.md:block 78 (code)
 msgid "$orders = DB::table('orders')\n"
 "                ->selectRaw('price * ? as price_with_tax', [1.0825])\n"
 "                ->get();\n"
-msgstr ""
+msgstr "$orders = DB::table('orders')\n"
+"                ->selectRaw('price * ? as price_with_tax', [1.0825])\n"
+"                ->get();\n"
 
 #: docs/8.x/queries.md:block 80 (header)
 msgid "`whereRaw / orWhereRaw`"
-msgstr ""
+msgstr "`whereRaw / orWhereRaw`"
 
 #: docs/8.x/queries.md:block 81 (paragraph)
 msgid "The `whereRaw` and `orWhereRaw` methods can be used to inject a raw \"where\" clause into your query. These methods accept an optional array of bindings as their second argument:"
-msgstr ""
+msgstr "`whereRaw` 與 `orWhereRaw` 方法可用來在查詢中插入 Raw 的「where」子句。這兩個方法的第三個引數為一可選的繫結陣列："
 
 #: docs/8.x/queries.md:block 82 (code)
 msgid "$orders = DB::table('orders')\n"
 "                ->whereRaw('price > IF(state = \"TX\", ?, 100)', [200])\n"
 "                ->get();\n"
-msgstr ""
+msgstr "$orders = DB::table('orders')\n"
+"                ->whereRaw('price > IF(state = \"TX\", ?, 100)', [200])\n"
+"                ->get();\n"
 
 #: docs/8.x/queries.md:block 84 (header)
 msgid "`havingRaw / orHavingRaw`"
-msgstr ""
+msgstr "`havingRaw / orHavingRaw`"
 
 #: docs/8.x/queries.md:block 85 (paragraph)
 msgid "The `havingRaw` and `orHavingRaw` methods may be used to provide a raw string as the value of the \"having\" clause. These methods accept an optional array of bindings as their second argument:"
-msgstr ""
+msgstr "`havingRaw` 與 `orHavingRaw` 方法可用來向「having」子句提供 Raw 字串作為該子句的值。這兩個方法的第三個引數為一可選的繫結陣列："
 
 #: docs/8.x/queries.md:block 86 (code)
 msgid "$orders = DB::table('orders')\n"
@@ -550,44 +558,53 @@ msgid "$orders = DB::table('orders')\n"
 "                ->groupBy('department')\n"
 "                ->havingRaw('SUM(price) > ?', [2500])\n"
 "                ->get();\n"
-msgstr ""
+msgstr "$orders = DB::table('orders')\n"
+"                ->select('department', DB::raw('SUM(price) as total_sales'))\n"
+"                ->groupBy('department')\n"
+"                ->havingRaw('SUM(price) > ?', [2500])\n"
+"                ->get();\n"
 
 #: docs/8.x/queries.md:block 88 (header)
 msgid "`orderByRaw`"
-msgstr ""
+msgstr "`orderByRaw`"
 
 #: docs/8.x/queries.md:block 89 (paragraph)
 msgid "The `orderByRaw` method may be used to provide a raw string as the value of the \"order by\" clause:"
-msgstr ""
+msgstr "`orderByRaw` 方法可用來提供「order by」子句原始字串作為該子句的值："
 
 #: docs/8.x/queries.md:block 90 (code)
 msgid "$orders = DB::table('orders')\n"
 "                ->orderByRaw('updated_at - created_at DESC')\n"
 "                ->get();\n"
-msgstr ""
+msgstr "$orders = DB::table('orders')\n"
+"                ->orderByRaw('updated_at - created_at DESC')\n"
+"                ->get();\n"
 
 #: docs/8.x/queries.md:block 92 (header)
 msgid "`groupByRaw`"
-msgstr ""
+msgstr "`groupByRaw`"
 
 #: docs/8.x/queries.md:block 93 (paragraph)
 msgid "The `groupByRaw` method may be used to provide a raw string as the value of the `group by` clause:"
-msgstr ""
+msgstr "`groupByRaw` 方法可用來提供「group by」子句原始字串作為該子句的值："
 
 #: docs/8.x/queries.md:block 94 (code)
 msgid "$orders = DB::table('orders')\n"
 "                ->select('city', 'state')\n"
 "                ->groupByRaw('city, state')\n"
 "                ->get();\n"
-msgstr ""
+msgstr "$orders = DB::table('orders')\n"
+"                ->select('city', 'state')\n"
+"                ->groupByRaw('city, state')\n"
+"                ->get();\n"
 
 #: docs/8.x/queries.md:block 96 (header)
 msgid "Joins"
-msgstr ""
+msgstr "Join"
 
 #: docs/8.x/queries.md:block 98 (header)
 msgid "Inner Join Clause"
-msgstr ""
+msgstr "Inner Join 子句"
 
 #: docs/8.x/queries.md:block 99 (paragraph)
 msgid "The query builder may also be used to add join clauses to your queries. To perform a basic \"inner join\", you may use the `join` method on a query builder instance. The first argument passed to the `join` method is the name of the table you need to join to, while the remaining arguments specify the column constraints for the join. You may even join multiple tables in a single query:"

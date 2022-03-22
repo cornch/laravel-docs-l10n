@@ -10,7 +10,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
-"PO-Revision-Date: 2022-03-13 04:02\n"
+"PO-Revision-Date: 2022-03-22 02:43\n"
 
 #: docs/8.x/queries.md:block 1 (header)
 msgid "Database: Query Builder"
@@ -706,7 +706,7 @@ msgstr "子查詢的 Join"
 
 #: docs/8.x/queries.md:block 117 (paragraph)
 msgid "You may use the `joinSub`, `leftJoinSub`, and `rightJoinSub` methods to join a query to a subquery. Each of these methods receives three arguments: the subquery, its table alias, and a closure that defines the related columns. In this example, we will retrieve a collection of users where each user record also contains the `created_at` timestamp of the user's most recently published blog post:"
-msgstr ""
+msgstr "我們可以使用 `joinSub`、`leftJoinSub`、與 `rightJoinSub` 方法來在查詢中 Join 一個子查詢。這幾個方法都接收三個引數：子查詢、資料表別名、定義關聯欄位的閉包。在這個範例中，我們會取得一組使用者 Collection，其中各個使用者記錄中還包含該使用者最近發佈的部落格貼文之 `updated_at` 時戳："
 
 #: docs/8.x/queries.md:block 118 (code)
 msgid "$latestPosts = DB::table('posts')\n"
@@ -717,15 +717,22 @@ msgid "$latestPosts = DB::table('posts')\n"
 "        ->joinSub($latestPosts, 'latest_posts', function ($join) {\n"
 "            $join->on('users.id', '=', 'latest_posts.user_id');\n"
 "        })->get();\n"
-msgstr ""
+msgstr "$latestPosts = DB::table('posts')\n"
+"                   ->select('user_id', DB::raw('MAX(created_at) as last_post_created_at'))\n"
+"                   ->where('is_published', true)\n"
+"                   ->groupBy('user_id');\n\n"
+"$users = DB::table('users')\n"
+"        ->joinSub($latestPosts, 'latest_posts', function ($join) {\n"
+"            $join->on('users.id', '=', 'latest_posts.user_id');\n"
+"        })->get();\n"
 
 #: docs/8.x/queries.md:block 120 (header)
 msgid "Unions"
-msgstr ""
+msgstr "Union"
 
 #: docs/8.x/queries.md:block 121 (paragraph)
 msgid "The query builder also provides a convenient method to \"union\" two or more queries together. For example, you may create an initial query and use the `union` method to union it with more queries:"
-msgstr ""
+msgstr "Laravel 的 Query Builder 還提供了一個可用來「Union」兩個或多個查詢的方便方法。舉例來說，我們可以先建立一個查詢，然後再使用 Union 方法來將該查詢與更多的查詢^[聯集](Union)起來："
 
 #: docs/8.x/queries.md:block 122 (code)
 msgid "use Illuminate\\Support\\Facades\\DB;\n\n"
@@ -735,34 +742,43 @@ msgid "use Illuminate\\Support\\Facades\\DB;\n\n"
 "            ->whereNull('last_name')\n"
 "            ->union($first)\n"
 "            ->get();\n"
-msgstr ""
+msgstr "use Illuminate\\Support\\Facades\\DB;\n\n"
+"$first = DB::table('users')\n"
+"            ->whereNull('first_name');\n\n"
+"$users = DB::table('users')\n"
+"            ->whereNull('last_name')\n"
+"            ->union($first)\n"
+"            ->get();\n"
 
 #: docs/8.x/queries.md:block 123 (paragraph)
 msgid "In addition to the `union` method, the query builder provides a `unionAll` method. Queries that are combined using the `unionAll` method will not have their duplicate results removed. The `unionAll` method has the same method signature as the `union` method."
-msgstr ""
+msgstr "除了 `union` 方法外，Laravel 的 Query Builder 還提供了一個 `unionAll` 方法。在使用 `unionAll` 方法結合的查詢中，若有重複記錄，將保留這些重複的記錄。`unionAll` 方法的^[簽章](Signature)與 `union` 方法相同。"
 
 #: docs/8.x/queries.md:block 125 (header)
 msgid "Basic Where Clauses"
-msgstr ""
+msgstr "基本的 Where 子句"
 
 #: docs/8.x/queries.md:block 127 (header)
 msgid "Where Clauses"
-msgstr ""
+msgstr "Where 子句"
 
 #: docs/8.x/queries.md:block 128 (paragraph)
 msgid "You may use the query builder's `where` method to add \"where\" clauses to the query. The most basic call to the `where` method requires three arguments. The first argument is the name of the column. The second argument is an operator, which can be any of the database's supported operators. The third argument is the value to compare against the column's value."
-msgstr ""
+msgstr "我們可以使用 Query Builder 的 `where` 方法來將「where」子句加到查詢中。一個 `where` 方法的基本呼叫需要三個引數。第一個引數為欄位名稱，第二個引數為運算子，該運算子可為任何資料庫支援的運算子，第三個印數則為要與欄位值相比較的值。"
 
 #: docs/8.x/queries.md:block 129 (paragraph)
 msgid "For example, the following query retrieves users where the value of the `votes` column is equal to `100` and the value of the `age` column is greater than `35`:"
-msgstr ""
+msgstr "舉例來說，下列查詢會取得所有 `votes` 欄位等於 `100`、且 `age` 欄位大於 `35` 的使用者："
 
 #: docs/8.x/queries.md:block 130 (code)
 msgid "$users = DB::table('users')\n"
 "                ->where('votes', '=', 100)\n"
 "                ->where('age', '>', 35)\n"
 "                ->get();\n"
-msgstr ""
+msgstr "$users = DB::table('users')\n"
+"                ->where('votes', '=', 100)\n"
+"                ->where('age', '>', 35)\n"
+"                ->get();\n"
 
 #: docs/8.x/queries.md:block 131 (paragraph)
 msgid "For convenience, if you want to verify that a column is `=` to a given value, you may pass the value as the second argument to the `where` method. Laravel will assume you would like to use the `=` operator:"

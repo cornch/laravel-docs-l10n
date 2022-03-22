@@ -10,7 +10,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
-"PO-Revision-Date: 2022-03-22 12:10\n"
+"PO-Revision-Date: 2022-03-22 13:09\n"
 
 #: docs/8.x/queries.md:block 1 (header)
 msgid "Database: Query Builder"
@@ -1180,7 +1180,7 @@ msgstr "Where Exists 子句"
 
 #: docs/8.x/queries.md:block 205 (paragraph)
 msgid "The `whereExists` method allows you to write \"where exists\" SQL clauses. The `whereExists` method accepts a closure which will receive a query builder instance, allowing you to define the query that should be placed inside of the \"exists\" clause:"
-msgstr ""
+msgstr "使用 `whereExists` 方法，我們就能撰寫「where exists」SQL 子句。`whereExists` 方法接受一個閉包，該閉包會收到一個 Query Builder 實體，我們可以使用該實體來定義要放在「exists」子句內的查詢："
 
 #: docs/8.x/queries.md:block 206 (code)
 msgid "$users = DB::table('users')\n"
@@ -1190,11 +1190,17 @@ msgid "$users = DB::table('users')\n"
 "                     ->whereColumn('orders.user_id', 'users.id');\n"
 "           })\n"
 "           ->get();\n"
-msgstr ""
+msgstr "$users = DB::table('users')\n"
+"           ->whereExists(function ($query) {\n"
+"               $query->select(DB::raw(1))\n"
+"                     ->from('orders')\n"
+"                     ->whereColumn('orders.user_id', 'users.id');\n"
+"           })\n"
+"           ->get();\n"
 
 #: docs/8.x/queries.md:block 207 (paragraph)
 msgid "The query above will produce the following SQL:"
-msgstr ""
+msgstr "上述查詢會產生下列 SQL："
 
 #: docs/8.x/queries.md:block 208 (code)
 msgid "select * from users\n"
@@ -1203,11 +1209,16 @@ msgid "select * from users\n"
 "    from orders\n"
 "    where orders.user_id = users.id\n"
 ")\n"
-msgstr ""
+msgstr "select * from users\n"
+"where exists (\n"
+"    select 1\n"
+"    from orders\n"
+"    where orders.user_id = users.id\n"
+")\n"
 
 #: docs/8.x/queries.md:block 210 (header)
 msgid "Subquery Where Clauses"
-msgstr ""
+msgstr "子查詢的 Where 子句"
 
 #: docs/8.x/queries.md:block 211 (paragraph)
 msgid "Sometimes you may need to construct a \"where\" clause that compares the results of a subquery to a given value. You may accomplish this by passing a closure and a value to the `where` method. For example, the following query will retrieve all users who have a recent \"membership\" of a given type;"

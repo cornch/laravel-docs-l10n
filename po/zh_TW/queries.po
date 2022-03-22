@@ -10,7 +10,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
-"PO-Revision-Date: 2022-03-22 04:38\n"
+"PO-Revision-Date: 2022-03-22 05:34\n"
 
 #: docs/8.x/queries.md:block 1 (header)
 msgid "Database: Query Builder"
@@ -832,18 +832,21 @@ msgstr "Or Where 子句"
 
 #: docs/8.x/queries.md:block 140 (paragraph)
 msgid "When chaining together calls to the query builder's `where` method, the \"where\" clauses will be joined together using the `and` operator. However, you may use the `orWhere` method to join a clause to the query using the `or` operator. The `orWhere` method accepts the same arguments as the `where` method:"
-msgstr ""
+msgstr "在串聯呼叫 Query Builder 的 `where` 方法時，「where」子句通常會使用 `and` 運算子串在一起。不過，我們也可以使用 `orWhere` 方法，以使用 `or` 運算子來串聯子句。`orWhere` 方法接受與 `where` 方法相同的引數："
 
 #: docs/8.x/queries.md:block 141 (code)
 msgid "$users = DB::table('users')\n"
 "                    ->where('votes', '>', 100)\n"
 "                    ->orWhere('name', 'John')\n"
 "                    ->get();\n"
-msgstr ""
+msgstr "$users = DB::table('users')\n"
+"                    ->where('votes', '>', 100)\n"
+"                    ->orWhere('name', 'John')\n"
+"                    ->get();\n"
 
 #: docs/8.x/queries.md:block 142 (paragraph)
 msgid "If you need to group an \"or\" condition within parentheses, you may pass a closure as the first argument to the `orWhere` method:"
-msgstr ""
+msgstr "若將「or」條件放入括號中分組，則傳入一個閉包作為 `orWhere` 的第一個引數："
 
 #: docs/8.x/queries.md:block 143 (code)
 msgid "$users = DB::table('users')\n"
@@ -853,57 +856,69 @@ msgid "$users = DB::table('users')\n"
 "                      ->where('votes', '>', 50);\n"
 "            })\n"
 "            ->get();\n"
-msgstr ""
+msgstr "$users = DB::table('users')\n"
+"            ->where('votes', '>', 100)\n"
+"            ->orWhere(function($query) {\n"
+"                $query->where('name', 'Abigail')\n"
+"                      ->where('votes', '>', 50);\n"
+"            })\n"
+"            ->get();\n"
 
 #: docs/8.x/queries.md:block 144 (paragraph)
 msgid "The example above will produce the following SQL:"
-msgstr ""
+msgstr "上述範例會產生下列 SQL："
 
 #: docs/8.x/queries.md:block 145 (code)
 msgid "select * from users where votes > 100 or (name = 'Abigail' and votes > 50)\n"
-msgstr ""
+msgstr "select * from users where votes > 100 or (name = 'Abigail' and votes > 50)\n"
 
 #: docs/8.x/queries.md:block 146 (quote)
 msgid "{note} You should always group `orWhere` calls in order to avoid unexpected behavior when global scopes are applied."
-msgstr ""
+msgstr "{note} 請總是將 `orWhere` 分組起來，以避免在有套用全域 Scope 時產生未預期的行為。"
 
 #: docs/8.x/queries.md:block 148 (header)
 msgid "JSON Where Clauses"
-msgstr ""
+msgstr "JSON 的 Where 子句"
 
 #: docs/8.x/queries.md:block 149 (paragraph)
 msgid "Laravel also supports querying JSON column types on databases that provide support for JSON column types. Currently, this includes MySQL 5.7+, PostgreSQL, SQL Server 2016, and SQLite 3.9.0 (with the [JSON1 extension](https://www.sqlite.org/json1.html)). To query a JSON column, use the `->` operator:"
-msgstr ""
+msgstr "對於有支援 JSON 欄位型別的資料庫，Laravel 也支援查詢 JSON 欄位。目前，支援 JSON 欄位型別的資料庫包含 MySQL 5.7+、PostgreSQL、SQL Server 2016、SQLite 3.9.0 (搭配 [JSON1 擴充程式](https://www.sqlite.org/json1.html)) 等。若要查詢 JSON 欄位，請使用 `->` 運算子："
 
 #: docs/8.x/queries.md:block 150 (code)
 msgid "$users = DB::table('users')\n"
 "                ->where('preferences->dining->meal', 'salad')\n"
 "                ->get();\n"
-msgstr ""
+msgstr "$users = DB::table('users')\n"
+"                ->where('preferences->dining->meal', 'salad')\n"
+"                ->get();\n"
 
 #: docs/8.x/queries.md:block 151 (paragraph)
 msgid "You may use `whereJsonContains` to query JSON arrays. This feature is not supported by the SQLite database:"
-msgstr ""
+msgstr "也可以使用 `whereJsonContains` 來查詢 JSON 陣列。SQLite 資料庫目前不支援該功能："
 
 #: docs/8.x/queries.md:block 152 (code)
 msgid "$users = DB::table('users')\n"
 "                ->whereJsonContains('options->languages', 'en')\n"
 "                ->get();\n"
-msgstr ""
+msgstr "$users = DB::table('users')\n"
+"                ->whereJsonContains('options->languages', 'en')\n"
+"                ->get();\n"
 
 #: docs/8.x/queries.md:block 153 (paragraph)
 msgid "If your application uses the MySQL or PostgreSQL databases, you may pass an array of values to the `whereJsonContains` method:"
-msgstr ""
+msgstr "若專案使用 MySQL 或 PostgreSQL 資料庫，則可遺傳一組陣列值給 `whereJsonContains` 方法："
 
 #: docs/8.x/queries.md:block 154 (code)
 msgid "$users = DB::table('users')\n"
 "                ->whereJsonContains('options->languages', ['en', 'de'])\n"
 "                ->get();\n"
-msgstr ""
+msgstr "$users = DB::table('users')\n"
+"                ->whereJsonContains('options->languages', ['en', 'de'])\n"
+"                ->get();\n"
 
 #: docs/8.x/queries.md:block 155 (paragraph)
 msgid "You may use `whereJsonLength` method to query JSON arrays by their length:"
-msgstr ""
+msgstr "也可使用 `whereJsonLength` 方法來以長度查詢 JSON 陣列："
 
 #: docs/8.x/queries.md:block 156 (code)
 msgid "$users = DB::table('users')\n"
@@ -912,33 +927,40 @@ msgid "$users = DB::table('users')\n"
 "$users = DB::table('users')\n"
 "                ->whereJsonLength('options->languages', '>', 1)\n"
 "                ->get();\n"
-msgstr ""
+msgstr "$users = DB::table('users')\n"
+"                ->whereJsonLength('options->languages', 0)\n"
+"                ->get();\n\n"
+"$users = DB::table('users')\n"
+"                ->whereJsonLength('options->languages', '>', 1)\n"
+"                ->get();\n"
 
 #: docs/8.x/queries.md:block 158 (header)
 msgid "Additional Where Clauses"
-msgstr ""
+msgstr "額外的 Where 子句"
 
 #: docs/8.x/queries.md:block 159 (paragraph)
 msgid "**whereBetween / orWhereBetween**"
-msgstr ""
+msgstr "**whereBetween / orWhereBetween**"
 
 #: docs/8.x/queries.md:block 160 (paragraph)
 msgid "The `whereBetween` method verifies that a column's value is between two values:"
-msgstr ""
+msgstr "`whereBetween` 方法檢查某個欄位的值是否介於兩個值之間："
 
 #: docs/8.x/queries.md:block 161 (code)
 msgid "$users = DB::table('users')\n"
 "           ->whereBetween('votes', [1, 100])\n"
 "           ->get();\n"
-msgstr ""
+msgstr "$users = DB::table('users')\n"
+"           ->whereBetween('votes', [1, 100])\n"
+"           ->get();\n"
 
 #: docs/8.x/queries.md:block 162 (paragraph)
 msgid "**whereNotBetween / orWhereNotBetween**"
-msgstr ""
+msgstr "**whereNotBetween / orWhereNotBetween**"
 
 #: docs/8.x/queries.md:block 163 (paragraph)
 msgid "The `whereNotBetween` method verifies that a column's value lies outside of two values:"
-msgstr ""
+msgstr "`whereNotBetween` 方法檢查某個欄位的值是否不介於兩個值之間："
 
 #: docs/8.x/queries.md:block 164 (code)
 msgid "$users = DB::table('users')\n"

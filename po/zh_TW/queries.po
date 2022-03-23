@@ -10,7 +10,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
-"PO-Revision-Date: 2022-03-22 13:09\n"
+"PO-Revision-Date: 2022-03-23 17:06\n"
 
 #: docs/8.x/queries.md:block 1 (header)
 msgid "Database: Query Builder"
@@ -1222,7 +1222,7 @@ msgstr "子查詢的 Where 子句"
 
 #: docs/8.x/queries.md:block 211 (paragraph)
 msgid "Sometimes you may need to construct a \"where\" clause that compares the results of a subquery to a given value. You may accomplish this by passing a closure and a value to the `where` method. For example, the following query will retrieve all users who have a recent \"membership\" of a given type;"
-msgstr ""
+msgstr "有時候，我們會需要製作一種「Where」子句，這種「Where」子句需要將某個子查詢的結果與給定值相比較。這種情況，我們只要穿入一個閉包以及一個值給 `where` 方法即可。舉例來說，下列查詢會取得所有最近的「membership」為給定類型的使用者："
 
 #: docs/8.x/queries.md:block 212 (code)
 msgid "use App\\Models\\User;\n\n"
@@ -1233,96 +1233,116 @@ msgid "use App\\Models\\User;\n\n"
 "        ->orderByDesc('membership.start_date')\n"
 "        ->limit(1);\n"
 "}, 'Pro')->get();\n"
-msgstr ""
+msgstr "use App\\Models\\User;\n\n"
+"$users = User::where(function ($query) {\n"
+"    $query->select('type')\n"
+"        ->from('membership')\n"
+"        ->whereColumn('membership.user_id', 'users.id')\n"
+"        ->orderByDesc('membership.start_date')\n"
+"        ->limit(1);\n"
+"}, 'Pro')->get();\n"
 
 #: docs/8.x/queries.md:block 213 (paragraph)
 msgid "Or, you may need to construct a \"where\" clause that compares a column to the results of a subquery. You may accomplish this by passing a column, operator, and closure to the `where` method. For example, the following query will retrieve all income records where the amount is less than average;"
-msgstr ""
+msgstr "或者，有時候我們還需要建立將某個欄位與子查詢結果比較的「where」子句。若要將欄位與子查詢的結果比較，請傳入一個欄位名稱、運算子、以及一個閉包給 `where` 方法。舉例來說，下列查詢會取得所有的收入 (Income) 記錄，其中，這些收入記錄的金額 (Amount) 必須小於平均值："
 
 #: docs/8.x/queries.md:block 214 (code)
 msgid "use App\\Models\\Income;\n\n"
 "$incomes = Income::where('amount', '<', function ($query) {\n"
 "    $query->selectRaw('avg(i.amount)')->from('incomes as i');\n"
 "})->get();\n"
-msgstr ""
+msgstr "use App\\Models\\Income;\n\n"
+"$incomes = Income::where('amount', '<', function ($query) {\n"
+"    $query->selectRaw('avg(i.amount)')->from('incomes as i');\n"
+"})->get();\n"
 
 #: docs/8.x/queries.md:block 216 (header)
 msgid "Ordering, Grouping, Limit & Offset"
-msgstr ""
+msgstr "Order、Group、Limit、Offset"
 
 #: docs/8.x/queries.md:block 218 (header)
 msgid "Ordering"
-msgstr ""
+msgstr "排序"
 
 #: docs/8.x/queries.md:block 220 (header)
 msgid "The `orderBy` Method"
-msgstr ""
+msgstr "`orderBy` 方法"
 
 #: docs/8.x/queries.md:block 221 (paragraph)
 msgid "The `orderBy` method allows you to sort the results of the query by a given column. The first argument accepted by the `orderBy` method should be the column you wish to sort by, while the second argument determines the direction of the sort and may be either `asc` or `desc`:"
-msgstr ""
+msgstr "使用 `orderBy` 方法，我們就能將查詢的結果以給定欄位來排序。`orderBy` 方法的第一個引數為要排序的欄位，而第二個引數則用來判斷排序的方向，可為 `asc` (升冪) 或 `desc` (降冪)："
 
 #: docs/8.x/queries.md:block 222 (code)
 msgid "$users = DB::table('users')\n"
 "                ->orderBy('name', 'desc')\n"
 "                ->get();\n"
-msgstr ""
+msgstr "$users = DB::table('users')\n"
+"                ->orderBy('name', 'desc')\n"
+"                ->get();\n"
 
 #: docs/8.x/queries.md:block 223 (paragraph)
 msgid "To sort by multiple columns, you may simply invoke `orderBy` as many times as necessary:"
-msgstr ""
+msgstr "若要使用多個欄位來排序，只需要叫用所需次數的 `orderBy` 方法即可："
 
 #: docs/8.x/queries.md:block 224 (code)
 msgid "$users = DB::table('users')\n"
 "                ->orderBy('name', 'desc')\n"
 "                ->orderBy('email', 'asc')\n"
 "                ->get();\n"
-msgstr ""
+msgstr "$users = DB::table('users')\n"
+"                ->orderBy('name', 'desc')\n"
+"                ->orderBy('email', 'asc')\n"
+"                ->get();\n"
 
 #: docs/8.x/queries.md:block 226 (header)
 msgid "The `latest` & `oldest` Methods"
-msgstr ""
+msgstr "`latest` 與 `oldest` 方法"
 
 #: docs/8.x/queries.md:block 227 (paragraph)
 msgid "The `latest` and `oldest` methods allow you to easily order results by date. By default, the result will be ordered by the table's `created_at` column. Or, you may pass the column name that you wish to sort by:"
-msgstr ""
+msgstr "使用 `latest` 與 `oldest` 方法，我們就能輕鬆地以日期來進行排序。預設情況，會使用資料表中的 `created_at` 欄位來排序查詢結果。或者，也可以傳入要用來排序的欄位名稱："
 
 #: docs/8.x/queries.md:block 228 (code)
 msgid "$user = DB::table('users')\n"
 "                ->latest()\n"
 "                ->first();\n"
-msgstr ""
+msgstr "$user = DB::table('users')\n"
+"                ->latest()\n"
+"                ->first();\n"
 
 #: docs/8.x/queries.md:block 230 (header)
 msgid "Random Ordering"
-msgstr ""
+msgstr "隨機排序"
 
 #: docs/8.x/queries.md:block 231 (paragraph)
 msgid "The `inRandomOrder` method may be used to sort the query results randomly. For example, you may use this method to fetch a random user:"
-msgstr ""
+msgstr "使用 `inRandomOrder` 方法，我們就可以使用隨機順序來排序查詢的結果。舉例來說，我們可以使用這個方法來取得某個隨機的使用者："
 
 #: docs/8.x/queries.md:block 232 (code)
 msgid "$randomUser = DB::table('users')\n"
 "                ->inRandomOrder()\n"
 "                ->first();\n"
-msgstr ""
+msgstr "$randomUser = DB::table('users')\n"
+"                ->inRandomOrder()\n"
+"                ->first();\n"
 
 #: docs/8.x/queries.md:block 234 (header)
 msgid "Removing Existing Orderings"
-msgstr ""
+msgstr "移除現有的排序"
 
 #: docs/8.x/queries.md:block 235 (paragraph)
 msgid "The `reorder` method removes all of the \"order by\" clauses that have previously been applied to the query:"
-msgstr ""
+msgstr "`reorder` 方法會移除所有之前已套用到查詢上的「order by」子句："
 
 #: docs/8.x/queries.md:block 236 (code)
 msgid "$query = DB::table('users')->orderBy('name');\n\n"
 "$unorderedUsers = $query->reorder()->get();\n"
-msgstr ""
+msgstr "$query = DB::table('users')->orderBy('name');\n\n"
+"$unorderedUsers = $query->reorder()->get();\n"
 
 #: docs/8.x/queries.md:block 237 (paragraph)
 msgid "You may pass a column and direction when calling the `reorder` method in order to remove all existing \"order by\" clauses and apply an entirely new order to the query:"
-msgstr ""
+msgstr "在呼叫 `reorder` 方法時也可以傳入欄位名稱與方向。若有傳入欄位名稱與方向，即可移除所有已套用的「order by」子句，並在查詢上套用全新的排序設定："
 
 #: docs/8.x/queries.md:block 238 (code)
 msgid "$query = DB::table('users')->orderBy('name');\n\n"

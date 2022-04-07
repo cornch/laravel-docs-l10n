@@ -10,7 +10,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
-"PO-Revision-Date: 2022-04-03 07:09\n"
+"PO-Revision-Date: 2022-04-07 03:32\n"
 
 #: docs/8.x/queries.md:block 1 (header)
 msgid "Database: Query Builder"
@@ -1442,7 +1442,7 @@ msgstr "條件式子句"
 
 #: docs/8.x/queries.md:block 260 (paragraph)
 msgid "Sometimes you may want certain query clauses to apply to a query based on another condition. For instance, you may only want to apply a `where` statement if a given input value is present on the incoming HTTP request. You may accomplish this using the `when` method:"
-msgstr ""
+msgstr "有時候，我們會想依據一些條件來決定是否套用某個查詢子句。舉例來說，我們可能會想只在連入 HTTP Request 中包含給定的輸入值時才套用 `where` 子句。這種情況下，只要使用 `when` 即可："
 
 #: docs/8.x/queries.md:block 261 (code)
 msgid "$role = $request->input('role');\n\n"
@@ -1451,15 +1451,20 @@ msgid "$role = $request->input('role');\n\n"
 "                    return $query->where('role_id', $role);\n"
 "                })\n"
 "                ->get();\n"
-msgstr ""
+msgstr "$role = $request->input('role');\n\n"
+"$users = DB::table('users')\n"
+"                ->when($role, function ($query, $role) {\n"
+"                    return $query->where('role_id', $role);\n"
+"                })\n"
+"                ->get();\n"
 
 #: docs/8.x/queries.md:block 262 (paragraph)
 msgid "The `when` method only executes the given closure when the first argument is `true`. If the first argument is `false`, the closure will not be executed. So, in the example above, the closure given to the `when` method will only be invoked if the `role` field is present on the incoming request and evaluates to `true`."
-msgstr ""
+msgstr "`when` 方法只會在第一個引數為 `true` 時才執行給定的閉包。若第一個引數為 `false`，則將不會執行該閉包。因此，在上述的範例中，只有在 `role` 欄位有出現在連入 Request 中，且取值為 `true` 值，才會叫用傳給 `when` 方法的閉包。"
 
 #: docs/8.x/queries.md:block 263 (paragraph)
 msgid "You may pass another closure as the third argument to the `when` method. This closure will only execute if the first argument evaluates as `false`. To illustrate how this feature may be used, we will use it to configure the default ordering of a query:"
-msgstr ""
+msgstr "我們也可以傳入另一個閉包給 `when` 方法，作為其第三個引數。只有在第一個引數取值為 `false` 時才會被執行。為了說明使用這個功能的情況，在這裡我們用這個功能來為查詢設定預設的排序："
 
 #: docs/8.x/queries.md:block 264 (code)
 msgid "$sortByVotes = $request->input('sort_by_votes');\n\n"
@@ -1470,70 +1475,88 @@ msgid "$sortByVotes = $request->input('sort_by_votes');\n\n"
 "                    return $query->orderBy('name');\n"
 "                })\n"
 "                ->get();\n"
-msgstr ""
+msgstr "$sortByVotes = $request->input('sort_by_votes');\n\n"
+"$users = DB::table('users')\n"
+"                ->when($sortByVotes, function ($query, $sortByVotes) {\n"
+"                    return $query->orderBy('votes');\n"
+"                }, function ($query) {\n"
+"                    return $query->orderBy('name');\n"
+"                })\n"
+"                ->get();\n"
 
 #: docs/8.x/queries.md:block 266 (header)
 msgid "Insert Statements"
-msgstr ""
+msgstr "Insert 陳述式"
 
 #: docs/8.x/queries.md:block 267 (paragraph)
 msgid "The query builder also provides an `insert` method that may be used to insert records into the database table. The `insert` method accepts an array of column names and values:"
-msgstr ""
+msgstr "Laravel 的 Query Builder 還提供了一個 `insert` 方法，可用來將資料插入到資料表中。`insert` 方法接受一組欄位名稱與值的陣列："
 
 #: docs/8.x/queries.md:block 268 (code)
 msgid "DB::table('users')->insert([\n"
 "    'email' => 'kayla@example.com',\n"
 "    'votes' => 0\n"
 "]);\n"
-msgstr ""
+msgstr "DB::table('users')->insert([\n"
+"    'email' => 'kayla@example.com',\n"
+"    'votes' => 0\n"
+"]);\n"
 
 #: docs/8.x/queries.md:block 269 (paragraph)
 msgid "You may insert several records at once by passing an array of arrays. Each array represents a record that should be inserted into the table:"
-msgstr ""
+msgstr "我們也可以傳入一組陣列的陣列來一次插入多筆記錄。其中，每個陣列都代表了要插入到資料表的一筆資料："
 
 #: docs/8.x/queries.md:block 270 (code)
 msgid "DB::table('users')->insert([\n"
 "    ['email' => 'picard@example.com', 'votes' => 0],\n"
 "    ['email' => 'janeway@example.com', 'votes' => 0],\n"
 "]);\n"
-msgstr ""
+msgstr "DB::table('users')->insert([\n"
+"    ['email' => 'picard@example.com', 'votes' => 0],\n"
+"    ['email' => 'janeway@example.com', 'votes' => 0],\n"
+"]);\n"
 
 #: docs/8.x/queries.md:block 271 (paragraph)
 msgid "The `insertOrIgnore` method will ignore errors while inserting records into the database:"
-msgstr ""
+msgstr "`insertOrIgnore` 方法在將資料插入資料庫時會忽略期間發生的錯誤："
 
 #: docs/8.x/queries.md:block 272 (code)
 msgid "DB::table('users')->insertOrIgnore([\n"
 "    ['id' => 1, 'email' => 'sisko@example.com'],\n"
 "    ['id' => 2, 'email' => 'archer@example.com'],\n"
 "]);\n"
-msgstr ""
+msgstr "DB::table('users')->insertOrIgnore([\n"
+"    ['id' => 1, 'email' => 'sisko@example.com'],\n"
+"    ['id' => 2, 'email' => 'archer@example.com'],\n"
+"]);\n"
 
 #: docs/8.x/queries.md:block 273 (quote)
 msgid "{note} `insertOrIgnore` will ignore duplicate records and also may ignore other types of errors depending on the database engine. For example, `insertOrIgnore` will [bypass MySQL's strict mode](https://dev.mysql.com/doc/refman/en/sql-mode.html#ignore-effect-on-execution)."
-msgstr ""
+msgstr "{note} `insertOrIgnore` 會忽略因重複資料而引發的錯誤，並且會依照資料庫引擎的不同而可能忽略其他不同類型的錯誤。舉例來說，`insertOrIgnore` 可以用來[繞過 MySQL 的「嚴格模式 - Strict Mode」](https://dev.mysql.com/doc/refman/en/sql-mode.html#ignore-effect-on-execution)。"
 
 #: docs/8.x/queries.md:block 275 (header)
 msgid "Auto-Incrementing IDs"
-msgstr ""
+msgstr "^[Auto-Increment](自動遞增) 的 ID"
 
 #: docs/8.x/queries.md:block 276 (paragraph)
 msgid "If the table has an auto-incrementing id, use the `insertGetId` method to insert a record and then retrieve the ID:"
-msgstr ""
+msgstr "若資料表有 Auto-Increment 的 ID，則可使用 `insertGetId` 方法來插入一筆資料，並取得該 ID："
 
 #: docs/8.x/queries.md:block 277 (code)
 msgid "$id = DB::table('users')->insertGetId(\n"
 "    ['email' => 'john@example.com', 'votes' => 0]\n"
 ");\n"
-msgstr ""
+msgstr "$id = DB::table('users')->insertGetId(\n"
+"    ['email' => 'john@example.com', 'votes' => 0]\n"
+");\n"
 
 #: docs/8.x/queries.md:block 278 (quote)
 msgid "{note} When using PostgreSQL the `insertGetId` method expects the auto-incrementing column to be named `id`. If you would like to retrieve the ID from a different \"sequence\", you may pass the column name as the second parameter to the `insertGetId` method."
-msgstr ""
+msgstr "{note} 使用 PostgreSQL 時，`insertGetId` 方法預設 Auto-Increment 的欄位名稱為 `id`。若想從不同的「^[Sequence](序列)」中取得 ID，則請傳入欄位名稱給 `insertGetId` 方法的第二個因數。"
 
 #: docs/8.x/queries.md:block 280 (header)
 msgid "Upserts"
-msgstr ""
+msgstr "Upsert"
 
 #: docs/8.x/queries.md:block 281 (paragraph)
 msgid "The `upsert` method will insert records that do not exist and update the records that already exist with new values that you may specify. The method's first argument consists of the values to insert or update, while the second argument lists the column(s) that uniquely identify records within the associated table. The method's third and final argument is an array of columns that should be updated if a matching record already exists in the database:"

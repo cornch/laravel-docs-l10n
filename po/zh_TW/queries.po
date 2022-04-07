@@ -10,7 +10,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
-"PO-Revision-Date: 2022-04-07 03:32\n"
+"PO-Revision-Date: 2022-04-07 04:48\n"
 
 #: docs/8.x/queries.md:block 1 (header)
 msgid "Database: Query Builder"
@@ -1560,48 +1560,53 @@ msgstr "Upsert"
 
 #: docs/8.x/queries.md:block 281 (paragraph)
 msgid "The `upsert` method will insert records that do not exist and update the records that already exist with new values that you may specify. The method's first argument consists of the values to insert or update, while the second argument lists the column(s) that uniquely identify records within the associated table. The method's third and final argument is an array of columns that should be updated if a matching record already exists in the database:"
-msgstr ""
+msgstr "當指定的記錄不存在時，`upsert` 方法會插入該筆記錄；若記錄已存在時，則會以指定的值來更新現有記錄。該方法的第一個引數為要插入或更新的值，而第二個引數則是一組用來判斷給定記錄在資料表中是否為^[不重複](Unique)記錄的欄位名稱。該方法的第三個與最後一個引數為一組欄位名稱的陣列，當在資料庫中找到符合的記錄時，會更新資料庫記錄："
 
 #: docs/8.x/queries.md:block 282 (code)
 msgid "DB::table('flights')->upsert([\n"
 "    ['departure' => 'Oakland', 'destination' => 'San Diego', 'price' => 99],\n"
 "    ['departure' => 'Chicago', 'destination' => 'New York', 'price' => 150]\n"
 "], ['departure', 'destination'], ['price']);\n"
-msgstr ""
+msgstr "DB::table('flights')->upsert([\n"
+"    ['departure' => 'Oakland', 'destination' => 'San Diego', 'price' => 99],\n"
+"    ['departure' => 'Chicago', 'destination' => 'New York', 'price' => 150]\n"
+"], ['departure', 'destination'], ['price']);\n"
 
 #: docs/8.x/queries.md:block 283 (paragraph)
 msgid "In the example above, Laravel will attempt to insert two records. If a record already exists with the same `departure` and `destination` column values, Laravel will update that record's `price` column."
-msgstr ""
+msgstr "在上述範例中，Laravel 會嘗試插入量比記錄。若資料庫中已有相同的 `depature` 與 `destination` 欄位值，則 Laravel 會更新該筆資料的 `price` 欄位。"
 
 #: docs/8.x/queries.md:block 284 (quote)
 msgid "{note} All databases except SQL Server require the columns in the second argument of the `upsert` method to have a \"primary\" or \"unique\" index. In addition, the MySQL database driver ignores the second argument of the `upsert` method and always uses the \"primary\" and \"unique\" indexes of the table to detect existing records."
-msgstr ""
+msgstr "{note} 除了 SQL Server 以外，所有的資料庫都要求 `upsert` 方法第二個引數中的欄位必須有「Primary」或「Unique」索引。此外，MySQL 資料庫 Driver 會忽略 `upsert` 方法的第二個引數，該 Driver 只會使用該資料表的「Primary」與「Unique」索引來判斷現有的記錄。"
 
 #: docs/8.x/queries.md:block 286 (header)
 msgid "Update Statements"
-msgstr ""
+msgstr "Update 陳述式"
 
 #: docs/8.x/queries.md:block 287 (paragraph)
 msgid "In addition to inserting records into the database, the query builder can also update existing records using the `update` method. The `update` method, like the `insert` method, accepts an array of column and value pairs indicating the columns to be updated. The `update` method returns the number of affected rows. You may constrain the `update` query using `where` clauses:"
-msgstr ""
+msgstr "除了將資料插入資料庫外，在 Laravel 的 Query Builder 中，也可以使用 `update` 方法來更新現有的資料。`update` 方法與 `insert` 方法類似，接受一組欄位／值配對的陣列，用來代表要更新的欄位。`update` 方法會回傳受影響的行數。我們可以使用 `where` 子句來對 `update` 查詢做條件限制："
 
 #: docs/8.x/queries.md:block 288 (code)
 msgid "$affected = DB::table('users')\n"
 "              ->where('id', 1)\n"
 "              ->update(['votes' => 1]);\n"
-msgstr ""
+msgstr "$affected = DB::table('users')\n"
+"              ->where('id', 1)\n"
+"              ->update(['votes' => 1]);\n"
 
 #: docs/8.x/queries.md:block 290 (header)
 msgid "Update Or Insert"
-msgstr ""
+msgstr "Update Or Insert"
 
 #: docs/8.x/queries.md:block 291 (paragraph)
 msgid "Sometimes you may want to update an existing record in the database or create it if no matching record exists. In this scenario, the `updateOrInsert` method may be used. The `updateOrInsert` method accepts two arguments: an array of conditions by which to find the record, and an array of column and value pairs indicating the columns to be updated."
-msgstr ""
+msgstr "有時候，我們會想更新資料庫內現有的資料，但如果資料庫中還沒有這筆資料的話，就建立一筆新的資料。這時，可以使用 `updateOrInsert` 方法。`updateOrInsert` 方法接受兩個因數：一組用來尋找資料的陣列，以及一組用來表示欄位更新的欄位／值配對陣列。"
 
 #: docs/8.x/queries.md:block 292 (paragraph)
 msgid "The `updateOrInsert` method will attempt to locate a matching database record using the first argument's column and value pairs. If the record exists, it will be updated with the values in the second argument. If the record can not be found, a new record will be inserted with the merged attributes of both arguments:"
-msgstr ""
+msgstr "`updateOrInsert` 方法會試著使用第一個引數的欄位／值配對來找到符合的資料。若有找到資料，則 Query Builder 會使用第二個引數內的值來更新該資料；若找不到資料，則會將這兩個引數合併，並插入到資料庫中："
 
 #: docs/8.x/queries.md:block 293 (code)
 msgid "DB::table('users')\n"
@@ -1609,25 +1614,31 @@ msgid "DB::table('users')\n"
 "        ['email' => 'john@example.com', 'name' => 'John'],\n"
 "        ['votes' => '2']\n"
 "    );\n"
-msgstr ""
+msgstr "DB::table('users')\n"
+"    ->updateOrInsert(\n"
+"        ['email' => 'john@example.com', 'name' => 'John'],\n"
+"        ['votes' => '2']\n"
+"    );\n"
 
 #: docs/8.x/queries.md:block 295 (header)
 msgid "Updating JSON Columns"
-msgstr ""
+msgstr "更新 JSON 欄位"
 
 #: docs/8.x/queries.md:block 296 (paragraph)
 msgid "When updating a JSON column, you should use `->` syntax to update the appropriate key in the JSON object. This operation is supported on MySQL 5.7+ and PostgreSQL 9.5+:"
-msgstr ""
+msgstr "在更新 JSON 欄位時，應使用 `->` 格式來更新 JSON 物件中對應的索引鍵。更新 JSON 物件索引鍵支援 MySQL 5.7 版以上與 PostgreSQL 9.5 版以上："
 
 #: docs/8.x/queries.md:block 297 (code)
 msgid "$affected = DB::table('users')\n"
 "              ->where('id', 1)\n"
 "              ->update(['options->enabled' => true]);\n"
-msgstr ""
+msgstr "$affected = DB::table('users')\n"
+"              ->where('id', 1)\n"
+"              ->update(['options->enabled' => true]);\n"
 
 #: docs/8.x/queries.md:block 299 (header)
 msgid "Increment & Decrement"
-msgstr ""
+msgstr "遞增與遞減"
 
 #: docs/8.x/queries.md:block 300 (paragraph)
 msgid "The query builder also provides convenient methods for incrementing or decrementing the value of a given column. Both of these methods accept at least one argument: the column to modify. A second argument may be provided to specify the amount by which the column should be incremented or decremented:"

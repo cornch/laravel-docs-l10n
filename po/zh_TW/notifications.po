@@ -10,7 +10,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
-"PO-Revision-Date: 2022-04-18 09:23\n"
+"PO-Revision-Date: 2022-04-18 10:01\n"
 
 #: docs/8.x/notifications.md:block 1 (header)
 msgid "Notifications"
@@ -2488,11 +2488,11 @@ msgstr "<?php\n\n"
 
 #: docs/9.x/notifications.md:block 2 (unordered list)
 msgid "[Adding Tags & Metadata](#adding-tags-metadata)"
-msgstr ""
+msgstr "[加上 Tag 與詮釋資料](#adding-tags-metadata)"
 
 #: docs/9.x/notifications.md:block 2 (unordered list)
 msgid "[Customizing The Symfony Message](#customizing-the-symfony-message)"
-msgstr ""
+msgstr "[自訂 Symfony 訊息](#customizing-the-symfony-message)"
 
 #: docs/9.x/notifications.md:block 29 (paragraph)
 msgid "Every notification class has a `via` method that determines on which channels the notification will be delivered. Notifications may be sent on the `mail`, `database`, `broadcast`, `vonage`, and `slack` channels."
@@ -2544,15 +2544,27 @@ msgid "/**\n"
 "                ->subject('Notification Subject')\n"
 "                ->line('...');\n"
 "}\n"
-msgstr ""
+msgstr "/**\n"
+" * Get the mail representation of the notification.\n"
+" *\n"
+" * @param  mixed  $notifiable\n"
+" * @return \\Illuminate\\Notifications\\Messages\\MailMessage\n"
+" */\n"
+"public function toMail($notifiable)\n"
+"{\n"
+"    return (new MailMessage)\n"
+"                ->error()\n"
+"                ->subject('Notification Subject')\n"
+"                ->line('...');\n"
+"}\n"
 
 #: docs/9.x/notifications.md:block 126 (header)
 msgid "Adding Tags & Metadata"
-msgstr ""
+msgstr "新增 Tag 與詮釋資料"
 
 #: docs/9.x/notifications.md:block 127 (paragraph)
 msgid "Some third-party email providers such as Mailgun and Postmark support message \"tags\" and \"metadata\", which may be used to group and track emails sent by your application. You may add tags and metadata to an email message via the `tag` and `metadata` methods:"
-msgstr ""
+msgstr "有的第三方 E-Mail 提供商，如 Mailgun 或 Postmark 等，支援訊息的「Tag」與「詮釋資料」，使用 Tag 與詮釋資料，就可以對專案所送出的 E-Mail 進行分組與追蹤。可以使用 `tag` 與 `metadata` 屬性來為 E-Mail 訊息加上 Tag 與詮釋資料："
 
 #: docs/9.x/notifications.md:block 128 (code)
 msgid "/**\n"
@@ -2568,23 +2580,35 @@ msgid "/**\n"
 "                ->tag('upvote')\n"
 "                ->metadata('comment_id', $this->comment->id);\n"
 "}\n"
-msgstr ""
+msgstr "/**\n"
+" * Get the mail representation of the notification.\n"
+" *\n"
+" * @param  mixed  $notifiable\n"
+" * @return \\Illuminate\\Notifications\\Messages\\MailMessage\n"
+" */\n"
+"public function toMail($notifiable)\n"
+"{\n"
+"    return (new MailMessage)\n"
+"                ->greeting('Comment Upvoted!')\n"
+"                ->tag('upvote')\n"
+"                ->metadata('comment_id', $this->comment->id);\n"
+"}\n"
 
 #: docs/9.x/notifications.md:block 129 (paragraph)
 msgid "If your application is using the Mailgun driver, you may consult Mailgun's documentation for more information on [tags](https://documentation.mailgun.com/en/latest/user_manual.html#tagging-1) and [metadata](https://documentation.mailgun.com/en/latest/user_manual.html#attaching-data-to-messages). Likewise, the Postmark documentation may also be consulted for more information on their support for [tags](https://postmarkapp.com/blog/tags-support-for-smtp) and [metadata](https://postmarkapp.com/support/article/1125-custom-metadata-faq)."
-msgstr ""
+msgstr "若使用 Mailgun Driver，請參考 Mailgun 說明文件中有關 [Tag](https://documentation.mailgun.com/en/latest/user_manual.html#tagging-1) 與[詮釋資料](https://documentation.mailgun.com/en/latest/user_manual.html#attaching-data-to-messages)的更多資訊。同樣地，也請參考 Postmark 說明文件中有關 [Tag](https://postmarkapp.com/blog/tags-support-for-smtp) 與[詮釋資料](https://postmarkapp.com/support/article/1125-custom-metadata-faq)的更多資料。"
 
 #: docs/9.x/notifications.md:block 130 (paragraph)
 msgid "If your application is using Amazon SES to send emails, you should use the `metadata` method to attach [SES \"tags\"](https://docs.aws.amazon.com/ses/latest/APIReference/API_MessageTag.html) to the message. Tags and metadata can be added to the `MailMessage` - these are used by your email service for filtering/processing:"
-msgstr ""
+msgstr "若使用 Amazon SES 來寄送 E-Mail，則請使用 `metadata` 方法來將 [SES「Tag」](https://docs.aws.amazon.com/ses/latest/APIReference/API_MessageTag.html)附加到訊息上。Tag 與詮釋資料可被加到 `MailMessage` 上，這些資料可用來給 E-Mail 服務進行篩選或處理："
 
 #: docs/9.x/notifications.md:block 132 (header)
 msgid "Customizing The Symfony Message"
-msgstr ""
+msgstr "自訂 Symfony Message"
 
 #: docs/9.x/notifications.md:block 133 (paragraph)
 msgid "The `withSymfonyMessage` method of the `MailMessage` class allows you to register a closure which will be invoked with the Symfony Message instance before sending the message. This gives you an opportunity to deeply customize the message before it is delivered:"
-msgstr ""
+msgstr "`MailMessage` 類別的 `withSymfonyMessage` 方法可讓我們註冊一個閉包，在傳送訊息前會以 Symfony Message 實體叫用該閉包。這樣我們就有機會在郵件被送出前深度自訂該訊息："
 
 #: docs/9.x/notifications.md:block 134 (code)
 msgid "use Symfony\\Component\\Mime\\Email;\n\n"
@@ -2603,7 +2627,22 @@ msgid "use Symfony\\Component\\Mime\\Email;\n\n"
 "                    );\n"
 "                });\n"
 "}\n"
-msgstr ""
+msgstr "use Symfony\\Component\\Mime\\Email;\n\n"
+"/**\n"
+" * Get the mail representation of the notification.\n"
+" *\n"
+" * @param  mixed  $notifiable\n"
+" * @return \\Illuminate\\Notifications\\Messages\\MailMessage\n"
+" */\n"
+"public function toMail($notifiable)\n"
+"{\n"
+"    return (new MailMessage)\n"
+"                ->withSymfonyMessage(function (Email $message) {\n"
+"                    $message->getHeaders()->addTextHeader(\n"
+"                        'Custom-Header', 'Header Value'\n"
+"                    );\n"
+"                });\n"
+"}\n"
 
 #: docs/9.x/notifications.md:block 243 (paragraph)
 msgid "Sending SMS notifications in Laravel is powered by [Vonage](https://www.vonage.com/) (formerly known as Nexmo). Before you can send notifications via Vonage, you need to install the `laravel/vonage-notification-channel` and `guzzlehttp/guzzle` packages:"

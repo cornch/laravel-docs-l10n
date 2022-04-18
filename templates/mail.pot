@@ -1314,6 +1314,10 @@ msgid ""
 msgstr ""
 
 #: docs/9.x/mail.md:block 2 (unordered list)
+msgid "[Tags & Metadata](#tags-and-metadata)"
+msgstr ""
+
+#: docs/9.x/mail.md:block 2 (unordered list)
 msgid "[Customizing The Symfony Message](#customizing-the-symfony-message)"
 msgstr ""
 
@@ -1377,14 +1381,45 @@ msgid ""
 msgstr ""
 
 #: docs/9.x/mail.md:block 118 (header)
-msgid "Customizing The Symfony Message"
+msgid "Tags & Metadata"
 msgstr ""
 
 #: docs/9.x/mail.md:block 119 (paragraph)
-msgid "The `withSymfonyMessage` method of the `Mailable` base class allows you to register a closure which will be invoked with the Symfony Message instance before sending the message. This gives you an opportunity to deeply customize the message before it is delivered:"
+msgid "Some third-party email providers such as Mailgun and Postmark support message \"tags\" and \"metadata\", which may be used to group and track emails sent by your application. You may add tags and metadata to an email message via the `tag` and `metadata` methods:"
 msgstr ""
 
 #: docs/9.x/mail.md:block 120 (code)
+msgid ""
+"/**\n"
+" * Build the message.\n"
+" *\n"
+" * @return $this\n"
+" */\n"
+"public function build()\n"
+"{\n"
+"    return $this->view('emails.orders.shipped')\n"
+"                ->tag('shipment')\n"
+"                ->metadata('order_id', $this->order->id);\n"
+"}\n"
+msgstr ""
+
+#: docs/9.x/mail.md:block 121 (paragraph)
+msgid "If your application is using the Mailgun driver, you may consult Mailgun's documentation for more information on [tags](https://documentation.mailgun.com/en/latest/user_manual.html#tagging-1) and [metadata](https://documentation.mailgun.com/en/latest/user_manual.html#attaching-data-to-messages). Likewise, the Postmark documentation may also be consulted for more information on their support for [tags](https://postmarkapp.com/blog/tags-support-for-smtp) and [metadata](https://postmarkapp.com/support/article/1125-custom-metadata-faq)."
+msgstr ""
+
+#: docs/9.x/mail.md:block 122 (paragraph)
+msgid "If your application is using Amazon SES to send emails, you should use the `metadata` method to attach [SES \"tags\"](https://docs.aws.amazon.com/ses/latest/APIReference/API_MessageTag.html) to the message."
+msgstr ""
+
+#: docs/9.x/mail.md:block 124 (header)
+msgid "Customizing The Symfony Message"
+msgstr ""
+
+#: docs/9.x/mail.md:block 125 (paragraph)
+msgid "The `withSymfonyMessage` method of the `Mailable` base class allows you to register a closure which will be invoked with the Symfony Message instance before sending the message. This gives you an opportunity to deeply customize the message before it is delivered:"
+msgstr ""
+
+#: docs/9.x/mail.md:block 126 (code)
 msgid ""
 "use Symfony\\Component\\Mime\\Email;\n"
 "\n"
@@ -1407,11 +1442,11 @@ msgid ""
 "}\n"
 msgstr ""
 
-#: docs/9.x/mail.md:block 220 (paragraph)
+#: docs/9.x/mail.md:block 226 (paragraph)
 msgid "Laravel provides several convenient methods for testing that your mailables contain the content that you expect. These methods are: `assertSeeInHtml`, `assertDontSeeInHtml`, `assertSeeInOrderInHtml`, `assertSeeInText`, `assertDontSeeInText`, and `assertSeeInOrderInText`."
 msgstr ""
 
-#: docs/9.x/mail.md:block 222 (code)
+#: docs/9.x/mail.md:block 228 (code)
 msgid ""
 "use App\\Mail\\InvoicePaid;\n"
 "use App\\Models\\User;\n"
@@ -1431,15 +1466,157 @@ msgid ""
 "}\n"
 msgstr ""
 
-#: docs/9.x/mail.md:block 245 (header)
+#: docs/9.x/mail.md:block 251 (header)
 msgid "Custom Transports"
 msgstr ""
 
-#: docs/9.x/mail.md:block 246 (paragraph)
+#: docs/9.x/mail.md:block 252 (paragraph)
 msgid "Laravel includes a variety of mail transports; however, you may wish to write your own transports to deliver email via other services that Laravel does not support out of the box. To get started, define a class that extends the `Symfony\\Component\\Mailer\\Transport\\AbstractTransport` class. Then, implement the `doSend` and `__toString()` methods on your transport:"
 msgstr ""
 
-#: docs/9.x/mail.md:block 247 (code)
+#: docs/9.x/mail.md:block 253 (code)
+msgid ""
+"use MailchimpTransactional\\ApiClient;\n"
+"use Symfony\\Component\\Mailer\\SentMessage;\n"
+"use Symfony\\Component\\Mailer\\Transport\\AbstractTransport;\n"
+"use Symfony\\Component\\Mime\\MessageConverter;\n"
+"\n"
+"class MailchimpTransport extends AbstractTransport\n"
+"{\n"
+"    /**\n"
+"     * The Mailchimp API client.\n"
+"     *\n"
+"     * @var \\MailchimpTransactional\\ApiClient\n"
+"     */\n"
+"    protected $client;\n"
+"\n"
+"    /**\n"
+"     * Create a new Mailchimp transport instance.\n"
+"     *\n"
+"     * @param  \\MailchimpTransactional\\ApiClient  $client\n"
+"     * @return void\n"
+"     */\n"
+"    public function __construct(ApiClient $client)\n"
+"    {\n"
+"        $this->client = $client;\n"
+"    }\n"
+"\n"
+"    /**\n"
+"     * {@inheritDoc}\n"
+"     */\n"
+"    protected function doSend(SentMessage $message): void\n"
+"    {\n"
+"        $email = MessageConverter::toEmail($message->getOriginalMessage());\n"
+"\n"
+"        $this->client->messages->send(['message' => [\n"
+"            'from_email' => $email->getFrom(),\n"
+"            'to' => collect($email->getTo())->map(function ($email) {\n"
+"                return ['email' => $email->getAddress(), 'type' => 'to'];\n"
+"            })->all(),\n"
+"            'subject' => $email->getSubject(),\n"
+"            'text' => $email->getTextBody(),\n"
+"        ]]);\n"
+"    }\n"
+"\n"
+"    /**\n"
+"     * Get the string representation of the transport.\n"
+"     *\n"
+"     * @return string\n"
+"     */\n"
+"    public function __toString(): string\n"
+"    {\n"
+"        return 'mailchimp';\n"
+"    }\n"
+"}\n"
+msgstr ""
+
+#: docs/9.x/mail.md:block 254 (paragraph)
+msgid "Once you've defined your custom transport, you may register it via the `extend` method provided by the `Mail` facade. Typically, this should be done within the `boot` method of your application's `AppServiceProvider` service provider. A `$config` argument will be passed to the closure provided to the `extend` method. This argument will contain the configuration array defined for the mailer in the application's `config/mail.php` configuration file:"
+msgstr ""
+
+#: docs/9.x/mail.md:block 255 (code)
+msgid ""
+"use App\\Mail\\MailchimpTransport;\n"
+"use Illuminate\\Support\\Facades\\Mail;\n"
+"\n"
+"/**\n"
+" * Bootstrap any application services.\n"
+" *\n"
+" * @return void\n"
+" */\n"
+"public function boot()\n"
+"{\n"
+"    Mail::extend('mailchimp', function (array $config = []) {\n"
+"        return new MailchimpTransport(...);\n"
+"    })\n"
+"}\n"
+msgstr ""
+
+#: docs/9.x/mail.md:block 256 (paragraph)
+msgid "Once your custom transport has been defined and registered, you may create a mailer definition within your application's `config/mail.php` configuration file that utilizes the new transport:"
+msgstr ""
+
+#: docs/9.x/mail.md:block 257 (code)
+msgid ""
+"'mailchimp' => [\n"
+"    'transport' => 'mailchimp',\n"
+"    // ...\n"
+"],\n"
+msgstr ""
+
+#: docs/9.x/mail.md:block 259 (header)
+msgid "Additional Symfony Transports"
+msgstr ""
+
+#: docs/9.x/mail.md:block 260 (paragraph)
+msgid "Laravel includes support for some existing Symfony maintained mail transports like Mailgun and Postmark. However, you may wish to extend Laravel with support for additional Symfony maintained transports. You can do so by requiring the necessary Symfony mailer via Composer and registering the transport with Laravel. For example, you may install and register the \"Sendinblue\" Symfony mailer:"
+msgstr ""
+
+#: docs/9.x/mail.md:block 261 (code)
+msgid "composer require symfony/sendinblue-mailer\n"
+msgstr ""
+
+#: docs/9.x/mail.md:block 262 (paragraph)
+msgid "Once the Sendinblue mailer package has been installed, you may add an entry for your Sendinblue API credentials to your application's `services` configuration file:"
+msgstr ""
+
+#: docs/9.x/mail.md:block 263 (code)
+msgid ""
+"'sendinblue' => [\n"
+"    'key' => 'your-api-key',\n"
+"],\n"
+msgstr ""
+
+#: docs/9.x/mail.md:block 264 (paragraph)
+msgid "Finally, you may use the `Mail` facade's `extend` method to register the transport with Laravel. Typically, this should be done within the `boot` method of a service provider:"
+msgstr ""
+
+#: docs/9.x/mail.md:block 265 (code)
+msgid ""
+"use Illuminate\\Support\\Facades\\Mail;\n"
+"use Symfony\\Component\\Mailer\\Bridge\\Sendinblue\\Transport\\SendinblueTransportFactory;\n"
+"use Symfony\\Component\\Mailer\\Transport\\Dsn;\n"
+"\n"
+"/**\n"
+" * Bootstrap any application services.\n"
+" *\n"
+" * @return void\n"
+" */\n"
+"public function boot()\n"
+"{\n"
+"    Mail::extend('sendinblue', function () {\n"
+"        return (new SendinblueTransportFactory)->create(\n"
+"            new Dsn(\n"
+"                'sendinblue+api',\n"
+"                'default',\n"
+"                config('services.sendinblue.key')\n"
+"            )\n"
+"        );\n"
+"    });\n"
+"}\n"
+msgstr ""
+
+#: docs/master/mail.md:block 247 (code)
 msgid ""
 "use MailchimpTransactional\\ApiClient;\n"
 "use Symfony\\Component\\Mailer\\SentMessage;\n"
@@ -1492,91 +1669,5 @@ msgid ""
 "    {\n"
 "        return 'mailchimp';\n"
 "    }\n"
-"}\n"
-msgstr ""
-
-#: docs/9.x/mail.md:block 248 (paragraph)
-msgid "Once you've defined your custom transport, you may register it via the `extend` method provided by the `Mail` facade. Typically, this should be done within the `boot` method of your application's `AppServiceProvider` service provider. A `$config` argument will be passed to the closure provided to the `extend` method. This argument will contain the configuration array defined for the mailer in the application's `config/mail.php` configuration file:"
-msgstr ""
-
-#: docs/9.x/mail.md:block 249 (code)
-msgid ""
-"use App\\Mail\\MailchimpTransport;\n"
-"use Illuminate\\Support\\Facades\\Mail;\n"
-"\n"
-"/**\n"
-" * Bootstrap any application services.\n"
-" *\n"
-" * @return void\n"
-" */\n"
-"public function boot()\n"
-"{\n"
-"    Mail::extend('mailchimp', function (array $config = []) {\n"
-"        return new MailchimpTransport(...);\n"
-"    })\n"
-"}\n"
-msgstr ""
-
-#: docs/9.x/mail.md:block 250 (paragraph)
-msgid "Once your custom transport has been defined and registered, you may create a mailer definition within your application's `config/mail.php` configuration file that utilizes the new transport:"
-msgstr ""
-
-#: docs/9.x/mail.md:block 251 (code)
-msgid ""
-"'mailchimp' => [\n"
-"    'transport' => 'mailchimp',\n"
-"    // ...\n"
-"],\n"
-msgstr ""
-
-#: docs/9.x/mail.md:block 253 (header)
-msgid "Additional Symfony Transports"
-msgstr ""
-
-#: docs/9.x/mail.md:block 254 (paragraph)
-msgid "Laravel includes support for some existing Symfony maintained mail transports like Mailgun and Postmark. However, you may wish to extend Laravel with support for additional Symfony maintained transports. You can do so by requiring the necessary Symfony mailer via Composer and registering the transport with Laravel. For example, you may install and register the \"Sendinblue\" Symfony mailer:"
-msgstr ""
-
-#: docs/9.x/mail.md:block 255 (code)
-msgid "composer require symfony/sendinblue-mailer\n"
-msgstr ""
-
-#: docs/9.x/mail.md:block 256 (paragraph)
-msgid "Once the Sendinblue mailer package has been installed, you may add an entry for your Sendinblue API credentials to your application's `services` configuration file:"
-msgstr ""
-
-#: docs/9.x/mail.md:block 257 (code)
-msgid ""
-"'sendinblue' => [\n"
-"    'key' => 'your-api-key',\n"
-"],\n"
-msgstr ""
-
-#: docs/9.x/mail.md:block 258 (paragraph)
-msgid "Finally, you may use the `Mail` facade's `extend` method to register the transport with Laravel. Typically, this should be done within the `boot` method of a service provider:"
-msgstr ""
-
-#: docs/9.x/mail.md:block 259 (code)
-msgid ""
-"use Illuminate\\Support\\Facades\\Mail;\n"
-"use Symfony\\Component\\Mailer\\Bridge\\Sendinblue\\Transport\\SendinblueTransportFactory;\n"
-"use Symfony\\Component\\Mailer\\Transport\\Dsn;\n"
-"\n"
-"/**\n"
-" * Bootstrap any application services.\n"
-" *\n"
-" * @return void\n"
-" */\n"
-"public function boot()\n"
-"{\n"
-"    Mail::extend('sendinblue', function () {\n"
-"        return (new SendinblueTransportFactory)->create(\n"
-"            new Dsn(\n"
-"                'sendinblue+api',\n"
-"                'default',\n"
-"                config('services.sendinblue.key')\n"
-"            )\n"
-"        );\n"
-"    });\n"
 "}\n"
 msgstr ""

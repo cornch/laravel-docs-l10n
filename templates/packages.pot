@@ -579,3 +579,72 @@ msgid ""
 "    ]);\n"
 "}\n"
 msgstr ""
+
+#: docs/9.x/packages.md:block 77 (paragraph)
+msgid "If you are building a package that utilizes Blade components or placing components in non-conventional directories, you will need to manually register your component class and its HTML tag alias so that Laravel knows where to find the component. You should typically register your components in the `boot` method of your package's service provider:"
+msgstr ""
+
+#: docs/9.x/packages.md:block 78 (code)
+msgid ""
+"use Illuminate\\Support\\Facades\\Blade;\n"
+"use VendorPackage\\View\\Components\\AlertComponent;\n"
+"\n"
+"/**\n"
+" * Bootstrap your package's services.\n"
+" *\n"
+" * @return void\n"
+" */\n"
+"public function boot()\n"
+"{\n"
+"    Blade::component('package-alert', AlertComponent::class);\n"
+"}\n"
+msgstr ""
+
+#: docs/9.x/packages.md:block 79 (paragraph)
+msgid "Once your component has been registered, it may be rendered using its tag alias:"
+msgstr ""
+
+#: docs/9.x/packages.md:block 80 (code)
+msgid "<x-package-alert/>\n"
+msgstr ""
+
+#: docs/9.x/packages.md:block 82 (header)
+msgid "Autoloading Package Components"
+msgstr ""
+
+#: docs/9.x/packages.md:block 83 (paragraph)
+msgid "Alternatively, you may use the `componentNamespace` method to autoload component classes by convention. For example, a `Nightshade` package might have `Calendar` and `ColorPicker` components that reside within the `Nightshade\\Views\\Components` namespace:"
+msgstr ""
+
+#: docs/9.x/packages.md:block 84 (code)
+msgid ""
+"use Illuminate\\Support\\Facades\\Blade;\n"
+"\n"
+"/**\n"
+" * Bootstrap your package's services.\n"
+" *\n"
+" * @return void\n"
+" */\n"
+"public function boot()\n"
+"{\n"
+"    Blade::componentNamespace('Nightshade\\\\Views\\\\Components', 'nightshade');\n"
+"}\n"
+msgstr ""
+
+#: docs/9.x/packages.md:block 85 (paragraph)
+msgid "This will allow the usage of package components by their vendor namespace using the `package-name::` syntax:"
+msgstr ""
+
+#: docs/9.x/packages.md:block 86 (code)
+msgid ""
+"<x-nightshade::calendar />\n"
+"<x-nightshade::color-picker />\n"
+msgstr ""
+
+#: docs/9.x/packages.md:block 87 (paragraph)
+msgid "Blade will automatically detect the class that's linked to this component by pascal-casing the component name. Subdirectories are also supported using \"dot\" notation."
+msgstr ""
+
+#: docs/9.x/packages.md:block 90 (paragraph)
+msgid "If your package contains anonymous components, they must be placed within a `components` directory of your package's \"views\" directory (as specified by the [`loadViewsFrom` method](#views)). Then, you may render them by prefixing the component name with the package's view namespace:"
+msgstr ""

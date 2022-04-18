@@ -1086,11 +1086,15 @@ msgid ""
 "}\n"
 msgstr ""
 
-#: docs/9.x/eloquent-mutators.md:block 21 (paragraph)
-msgid "When returning value objects from accessors, any changes made to the value object will automatically be synced back to the model before the model is saved. This is possible because Eloquent retains instances returned by accessors so it can be return the same instance each time the accessor is invoked:"
+#: docs/9.x/eloquent-mutators.md:block 22 (header)
+msgid "Accessor Caching"
 msgstr ""
 
-#: docs/9.x/eloquent-mutators.md:block 22 (code)
+#: docs/9.x/eloquent-mutators.md:block 23 (paragraph)
+msgid "When returning value objects from accessors, any changes made to the value object will automatically be synced back to the model before the model is saved. This is possible because Eloquent retains instances returned by accessors so it can return the same instance each time the accessor is invoked:"
+msgstr ""
+
+#: docs/9.x/eloquent-mutators.md:block 24 (code)
 msgid ""
 "use App\\Models\\User;\n"
 "\n"
@@ -1102,11 +1106,25 @@ msgid ""
 "$user->save();\n"
 msgstr ""
 
-#: docs/9.x/eloquent-mutators.md:block 23 (paragraph)
+#: docs/9.x/eloquent-mutators.md:block 25 (paragraph)
+msgid "However, you may sometimes wish to enable caching for primitive values like strings and booleans, particularly if they are computationally intensive. To accomplish this, you may invoke the `shouldCache` method when defining your accessor:"
+msgstr ""
+
+#: docs/9.x/eloquent-mutators.md:block 26 (code)
+msgid ""
+"public function hash(): Attribute\n"
+"{\n"
+"    return Attribute::make(\n"
+"        get: fn ($value) => bcrypt(gzuncompress($value)),\n"
+"    )->shouldCache();\n"
+"}\n"
+msgstr ""
+
+#: docs/9.x/eloquent-mutators.md:block 27 (paragraph)
 msgid "If you would like to disable the object caching behavior of attributes, you may invoke the `withoutObjectCaching` method when defining the attribute:"
 msgstr ""
 
-#: docs/9.x/eloquent-mutators.md:block 24 (code)
+#: docs/9.x/eloquent-mutators.md:block 28 (code)
 msgid ""
 "/**\n"
 " * Interact with the user's address.\n"
@@ -1124,11 +1142,11 @@ msgid ""
 "}\n"
 msgstr ""
 
-#: docs/9.x/eloquent-mutators.md:block 27 (paragraph)
+#: docs/9.x/eloquent-mutators.md:block 31 (paragraph)
 msgid "A mutator transforms an Eloquent attribute value when it is set. To define a mutator, you may provide the `set` argument when defining your attribute. Let's define a mutator for the `first_name` attribute. This mutator will be automatically called when we attempt to set the value of the `first_name` attribute on the model:"
 msgstr ""
 
-#: docs/9.x/eloquent-mutators.md:block 28 (code)
+#: docs/9.x/eloquent-mutators.md:block 32 (code)
 msgid ""
 "<?php\n"
 "\n"
@@ -1155,23 +1173,23 @@ msgid ""
 "}\n"
 msgstr ""
 
-#: docs/9.x/eloquent-mutators.md:block 29 (paragraph)
+#: docs/9.x/eloquent-mutators.md:block 33 (paragraph)
 msgid "The mutator closure will receive the value that is being set on the attribute, allowing you to manipulate the value and return the manipulated value. To use our mutator, we only need to set the `first_name` attribute on an Eloquent model:"
 msgstr ""
 
-#: docs/9.x/eloquent-mutators.md:block 31 (paragraph)
+#: docs/9.x/eloquent-mutators.md:block 35 (paragraph)
 msgid "In this example, the `set` callback will be called with the value `Sally`. The mutator will then apply the `strtolower` function to the name and set its resulting value in model's the internal `$attributes` array."
 msgstr ""
 
-#: docs/9.x/eloquent-mutators.md:block 33 (header)
+#: docs/9.x/eloquent-mutators.md:block 37 (header)
 msgid "Mutating Multiple Attributes"
 msgstr ""
 
-#: docs/9.x/eloquent-mutators.md:block 34 (paragraph)
+#: docs/9.x/eloquent-mutators.md:block 38 (paragraph)
 msgid "Sometimes your mutator may need to set multiple attributes on the underlying model. To do so, you may return an array from the `set` closure. Each key in the array should correspond with an underlying attribute / database column associated with the model:"
 msgstr ""
 
-#: docs/9.x/eloquent-mutators.md:block 35 (code)
+#: docs/9.x/eloquent-mutators.md:block 39 (code)
 msgid ""
 "use App\\Support\\Address;\n"
 "use Illuminate\\Database\\Eloquent\\Casts\\Attribute;\n"
@@ -1196,8 +1214,16 @@ msgid ""
 "}\n"
 msgstr ""
 
-#: docs/9.x/eloquent-mutators.md:block 87 (paragraph)
-msgid "Eloquent also allows you to cast your attribute values to PHP [\"backed\" enums](https://www.php.net/manual/en/language.enumerations.backed.php). To accomplish this, you may specify the attribute and enum you wish to cast in your model's `$casts` property array:"
+#: docs/9.x/eloquent-mutators.md:block 91 (paragraph)
+msgid "Eloquent also allows you to cast your attribute values to PHP [\"backed\" Enums](https://www.php.net/manual/en/language.enumerations.backed.php). To accomplish this, you may specify the attribute and enum you wish to cast in your model's `$casts` property array:"
+msgstr ""
+
+#: docs/9.x/eloquent-mutators.md:block 100 (header)
+msgid "Key Rotation"
+msgstr ""
+
+#: docs/9.x/eloquent-mutators.md:block 101 (paragraph)
+msgid "As you may know, Laravel encrypts strings using the `key` configuration value specified in your application's `app` configuration file. Typically, this value corresponds to the value of the `APP_KEY` environment variable. If you need to rotate your application's encryption key, you will need to manually re-encrypt your encrypted attributes using the new key."
 msgstr ""
 
 #: docs/master/eloquent-mutators.md:block 12 (code)
@@ -1244,6 +1270,10 @@ msgid ""
 "        ),\n"
 "    );\n"
 "}\n"
+msgstr ""
+
+#: docs/master/eloquent-mutators.md:block 21 (paragraph)
+msgid "When returning value objects from accessors, any changes made to the value object will automatically be synced back to the model before the model is saved. This is possible because Eloquent retains instances returned by accessors so it can be return the same instance each time the accessor is invoked:"
 msgstr ""
 
 #: docs/master/eloquent-mutators.md:block 24 (code)
@@ -1314,4 +1344,8 @@ msgid ""
 "        ],\n"
 "    );\n"
 "}\n"
+msgstr ""
+
+#: docs/master/eloquent-mutators.md:block 87 (paragraph)
+msgid "Eloquent also allows you to cast your attribute values to PHP [\"backed\" enums](https://www.php.net/manual/en/language.enumerations.backed.php). To accomplish this, you may specify the attribute and enum you wish to cast in your model's `$casts` property array:"
 msgstr ""

@@ -2295,7 +2295,31 @@ msgid "[Checked / Selected / Disabled](#checked-and-selected)"
 msgstr ""
 
 #: docs/9.x/blade.md:block 2 (unordered list)
+msgid "[Anonymous Index Components](#anonymous-index-components)"
+msgstr ""
+
+#: docs/9.x/blade.md:block 2 (unordered list)
+msgid "[Data Properties / Attributes](#data-properties-attributes)"
+msgstr ""
+
+#: docs/9.x/blade.md:block 2 (unordered list)
+msgid "[Accessing Parent Data](#accessing-parent-data)"
+msgstr ""
+
+#: docs/9.x/blade.md:block 2 (unordered list)
+msgid "[Anonymous Components Namespaces](#anonymous-component-namespaces)"
+msgstr ""
+
+#: docs/9.x/blade.md:block 2 (unordered list)
 msgid "[Rendering Inline Blade Templates](#rendering-inline-blade-templates)"
+msgstr ""
+
+#: docs/9.x/blade.md:block 6 (paragraph)
+msgid "Blade views may be returned from routes or controllers using the global `view` helper. Of course, as mentioned in the documentation on [views](/docs/{{version}}/views), data may be passed to the Blade view using the `view` helper's second argument:"
+msgstr ""
+
+#: docs/9.x/blade.md:block 85 (paragraph)
+msgid "When using loops you may also skip the current iteration or end the loop using the `@continue` and `@break` directives:"
 msgstr ""
 
 #: docs/9.x/blade.md:block 102 (header)
@@ -2419,11 +2443,48 @@ msgid ""
 "</x-card>\n"
 msgstr ""
 
-#: docs/9.x/blade.md:block 325 (quote)
+#: docs/9.x/blade.md:block 343 (quote)
 msgid "{note} The `@aware` directive can not access parent data that is not explicitly passed to the parent component via HTML attributes. Default `@props` values that are not explicitly passed to the parent component can not be accessed by the `@aware` directive."
 msgstr ""
 
-#: docs/9.x/blade.md:block 358 (code)
+#: docs/9.x/blade.md:block 345 (header)
+msgid "Anonymous Component Namespaces"
+msgstr ""
+
+#: docs/9.x/blade.md:block 346 (paragraph)
+msgid "As previously discussed, anonymous components are typically defined by placing a Blade template within your `resources/views/components` directory. However, you may occasionally want to register other anonymous component paths with Laravel in addition to the default path."
+msgstr ""
+
+#: docs/9.x/blade.md:block 347 (paragraph)
+msgid "For example, when building a vacation booking application, you may wish to place flight booking related anonymous components within a `resources/views/flights/bookings/components` directory. To inform Laravel of this anonymous component location, you may use the `anonymousComponentNamespace` method provided by the `Blade` facade."
+msgstr ""
+
+#: docs/9.x/blade.md:block 348 (paragraph)
+msgid "The `anonymousComponentNamespace` method accepts the \"path\" to the anonymous component location as its first argument and the \"namespace\" that components should be placed under as its second argument. As you will see in the example below, the \"namespace\" will be prefixed to the component's name when the component is rendered. Typically, this method should be called from the `boot` method of one of your application's [service providers](/docs/{{version}}/providers):"
+msgstr ""
+
+#: docs/9.x/blade.md:block 349 (code)
+msgid ""
+"/**\n"
+" * Bootstrap any application services.\n"
+" *\n"
+" * @return void\n"
+" */\n"
+"public function boot()\n"
+"{\n"
+"    Blade::anonymousComponentNamespace('flights.bookings.components', 'flights');\n"
+"}\n"
+msgstr ""
+
+#: docs/9.x/blade.md:block 350 (paragraph)
+msgid "Given the example above, you may render a `panel` component that exists within the newly registered component directory like so:"
+msgstr ""
+
+#: docs/9.x/blade.md:block 351 (code)
+msgid "<x-flights::panel :flight=\"$flight\" />\n"
+msgstr ""
+
+#: docs/9.x/blade.md:block 366 (code)
 msgid ""
 "<!-- resources/views/tasks.blade.php -->\n"
 "\n"
@@ -2438,7 +2499,7 @@ msgid ""
 "</x-layout>\n"
 msgstr ""
 
-#: docs/9.x/blade.md:block 391 (code)
+#: docs/9.x/blade.md:block 399 (code)
 msgid ""
 "<!-- /resources/views/post/create.blade.php -->\n"
 "\n"
@@ -2453,7 +2514,7 @@ msgid ""
 "@enderror\n"
 msgstr ""
 
-#: docs/9.x/blade.md:block 393 (code)
+#: docs/9.x/blade.md:block 401 (code)
 msgid ""
 "<!-- /resources/views/auth.blade.php -->\n"
 "\n"
@@ -2464,7 +2525,7 @@ msgid ""
 "    class=\"@error('email') is-invalid @else is-valid @enderror\">\n"
 msgstr ""
 
-#: docs/9.x/blade.md:block 395 (code)
+#: docs/9.x/blade.md:block 403 (code)
 msgid ""
 "<!-- /resources/views/auth.blade.php -->\n"
 "\n"
@@ -2479,26 +2540,26 @@ msgid ""
 "@enderror\n"
 msgstr ""
 
-#: docs/9.x/blade.md:block 409 (header)
+#: docs/9.x/blade.md:block 417 (header)
 msgid "Rendering Inline Blade Templates"
 msgstr ""
 
-#: docs/9.x/blade.md:block 410 (paragraph)
+#: docs/9.x/blade.md:block 418 (paragraph)
 msgid "Sometimes you may need to transform a raw Blade template string into valid HTML. You may accomplish this using the `render` method provided by the `Blade` facade. The `render` method accepts the Blade template string and an optional array of data to provide to the template:"
 msgstr ""
 
-#: docs/9.x/blade.md:block 411 (code)
+#: docs/9.x/blade.md:block 419 (code)
 msgid ""
 "use Illuminate\\Support\\Facades\\Blade;\n"
 "\n"
 "return Blade::render('Hello, {{ $name }}', ['name' => 'Julian Bashir']);\n"
 msgstr ""
 
-#: docs/9.x/blade.md:block 412 (paragraph)
+#: docs/9.x/blade.md:block 420 (paragraph)
 msgid "Laravel renders inline Blade templates by writing them to the `storage/framework/views` directory. If you would like Laravel to remove these temporary files after rendering the Blade template, you may provide the `deleteCachedView` argument to the method:"
 msgstr ""
 
-#: docs/9.x/blade.md:block 413 (code)
+#: docs/9.x/blade.md:block 421 (code)
 msgid ""
 "return Blade::render(\n"
 "    'Hello, {{ $name }}',\n"

@@ -10,7 +10,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
-"PO-Revision-Date: 2022-02-13 13:40\n"
+"PO-Revision-Date: 2022-04-18 09:23\n"
 
 #: docs/8.x/http-client.md:block 1 (header)
 msgid "HTTP Client"
@@ -850,11 +850,42 @@ msgstr "可以使用 `connectTimeout` 方法來指定嘗試連線到伺服器時
 msgid "$response = Http::connectTimeout(3)->get(...);\n"
 msgstr "$response = Http::connectTimeout(3)->get(...);\n"
 
+#: docs/9.x/http-client.md:block 70 (code)
+msgid "$response = Http::retry(3, 100, function ($exception, $request) {\n"
+"    return $exception instanceof ConnectionException;\n"
+"})->post(...);\n"
+msgstr ""
+
 #: docs/9.x/http-client.md:block 71 (paragraph)
+msgid "If a request attempt fails, you may wish to make a change to the request before a new attempt is made. You can achieve this by modifying request argument provided to the callable you provided to the `retry` method. For example, you might want to retry the request with a new authorization token if the first attempt returned an authentication error:"
+msgstr ""
+
+#: docs/9.x/http-client.md:block 72 (code)
+msgid "$response = Http::withToken($this->getToken())->retry(2, 0, function ($exception, $request) {\n"
+"    if (! $exception instanceof RequestException || $exception->response->status() !== 401) {\n"
+"        return false;\n"
+"    }\n\n"
+"    $request->withToken($this->getNewToken());\n\n"
+"    return true;\n"
+"})->post(...);\n"
+msgstr ""
+
+#: docs/9.x/http-client.md:block 73 (paragraph)
 msgid "If all of the requests fail, an instance of `Illuminate\\Http\\Client\\RequestException` will be thrown. If you would like to disable this behavior, you may provide a `throw` argument with a value of `false`. When disabled, the last response received by the client will be returned after all retries have been attempted:"
 msgstr "若 Request 執行失敗，會擲回一個 `Illuminate\\Http\\Client\\RequestException` 實體。若想禁用這個行為，可傳入 `false` 給 `throw` 引數。當禁用擲回 Exception 時，會回傳所有重試中用戶端收到的最後一個 Response："
 
-#: docs/9.x/http-client.md:block 72 (code)
+#: docs/9.x/http-client.md:block 74 (code)
 msgid "$response = Http::retry(3, 100, throw: false)->post(...);\n"
 msgstr "$response = Http::retry(3, 100, throw: false)->post(...);\n"
+
+#: docs/9.x/http-client.md:block 75 (quote)
+msgid "{note} If all of the requests fail because of a connection issue, a `Illuminate\\Http\\Client\\ConnectionException` will still be thrown even when the `throw` argument is set to `false`."
+msgstr ""
+
+#: docs/9.x/http-client.md:block 130 (code)
+msgid "use Illuminate\\Http\\Client\\Request;\n\n"
+"Http::fake(function (Request $request) {\n"
+"    return Http::response('Hello World', 200);\n"
+"});\n"
+msgstr ""
 

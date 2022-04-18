@@ -10,7 +10,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
-"PO-Revision-Date: 2022-04-07 08:06\n"
+"PO-Revision-Date: 2022-04-18 08:15\n"
 
 #: docs/8.x/queries.md:block 1 (header)
 msgid "Database: Query Builder"
@@ -1698,54 +1698,61 @@ msgstr "悲觀鎖定"
 
 #: docs/8.x/queries.md:block 315 (paragraph)
 msgid "The query builder also includes a few functions to help you achieve \"pessimistic locking\" when executing your `select` statements. To execute a statement with a \"shared lock\", you may call the `sharedLock` method. A shared lock prevents the selected rows from being modified until your transaction is committed:"
-msgstr ""
+msgstr "Laravel 的 Query Builder 中，還包含了一些能讓我們在執行 `select` 陳述式時進行「^[悲觀鎖定](Pessimistic Locking)」的功能。若要以「Shared Lock」執行陳述式，可以呼叫 `sharedLock` 方法。使用 Shared Lock 可防止 Select 陳述式所取得的資料在 Transaction 被 Commit 前都不被修改："
 
 #: docs/8.x/queries.md:block 316 (code)
 msgid "DB::table('users')\n"
 "        ->where('votes', '>', 100)\n"
 "        ->sharedLock()\n"
 "        ->get();\n"
-msgstr ""
+msgstr "DB::table('users')\n"
+"        ->where('votes', '>', 100)\n"
+"        ->sharedLock()\n"
+"        ->get();\n"
 
 #: docs/8.x/queries.md:block 317 (paragraph)
 msgid "Alternatively, you may use the `lockForUpdate` method. A \"for update\" lock prevents the selected records from being modified or from being selected with another shared lock:"
-msgstr ""
+msgstr "或者，我們也可以使用 `lockForUpdate` 方法。「For Update」Lock 可防止 Select 陳述式所取得的資料被修改，並且讓其他 Shared Lock 無法 Select 該資料："
 
 #: docs/8.x/queries.md:block 318 (code)
 msgid "DB::table('users')\n"
 "        ->where('votes', '>', 100)\n"
 "        ->lockForUpdate()\n"
 "        ->get();\n"
-msgstr ""
+msgstr "DB::table('users')\n"
+"        ->where('votes', '>', 100)\n"
+"        ->lockForUpdate()\n"
+"        ->get();\n"
 
 #: docs/8.x/queries.md:block 320 (header)
 msgid "Debugging"
-msgstr ""
+msgstr "除錯"
 
 #: docs/8.x/queries.md:block 321 (paragraph)
 msgid "You may use the `dd` and `dump` methods while building a query to dump the current query bindings and SQL. The `dd` method will display the debug information and then stop executing the request. The `dump` method will display the debug information but allow the request to continue executing:"
-msgstr ""
+msgstr "在建立查詢時，可以使用 `dd` 與 `dump` 方法來將目前的查詢繫結於 SQL 傾印出來。`dd` 方法會顯示除錯資訊，然後停止執行該 Request。`dump` 方法會顯示出除錯資訊，並讓 Request 繼續執行："
 
 #: docs/8.x/queries.md:block 322 (code)
 msgid "DB::table('users')->where('votes', '>', 100)->dd();\n\n"
 "DB::table('users')->where('votes', '>', 100)->dump();\n"
-msgstr ""
+msgstr "DB::table('users')->where('votes', '>', 100)->dd();\n\n"
+"DB::table('users')->where('votes', '>', 100)->dump();\n"
 
 #: docs/9.x/queries.md:block 2 (unordered list)
 msgid "[Where Not Clauses](#where-not-clauses)"
-msgstr ""
+msgstr "[Where Not 子句](#where-not-clauses)"
 
 #: docs/9.x/queries.md:block 2 (unordered list)
 msgid "[Full Text Where Clauses](#full-text-where-clauses)"
-msgstr ""
+msgstr "[全文 Where 子句](#full-text-where-clauses)"
 
 #: docs/9.x/queries.md:block 148 (header)
 msgid "Where Not Clauses"
-msgstr ""
+msgstr "Where Not 子句"
 
 #: docs/9.x/queries.md:block 149 (paragraph)
 msgid "The `whereNot` and `orWhereNot` methods may be used to negate a given group of query constraints. For example, the following query excludes products that are on clearance or which have a price that is less than ten:"
-msgstr ""
+msgstr "`whereNot` 與 `orWhereNot` 方法可用來否定給定的查詢條件群組。舉例來說，下列查詢會排除所有目前為 Clearance (清倉)，且價格 (Price) 小於 10 的商品 (Product)："
 
 #: docs/9.x/queries.md:block 150 (code)
 msgid "$products = DB::table('products')\n"
@@ -1754,25 +1761,32 @@ msgid "$products = DB::table('products')\n"
 "                          ->orWhere('price', '<', 10);\n"
 "                })\n"
 "                ->get();\n"
-msgstr ""
+msgstr "$products = DB::table('products')\n"
+"                ->whereNot(function ($query) {\n"
+"                    $query->where('clearance', true)\n"
+"                          ->orWhere('price', '<', 10);\n"
+"                })\n"
+"                ->get();\n"
 
 #: docs/9.x/queries.md:block 220 (header)
 msgid "Full Text Where Clauses"
-msgstr ""
+msgstr "全文 Where 子句"
 
 #: docs/9.x/queries.md:block 221 (quote)
 msgid "{note} Full text where clauses are currently supported by MySQL and PostgreSQL."
-msgstr ""
+msgstr "{note} 目前只有 MySQL 與 PostgreSQL 支援全文 Where 子句。"
 
 #: docs/9.x/queries.md:block 222 (paragraph)
 msgid "The `whereFullText` and `orWhereFullText` methods may be used to add full text \"where\" clauses to a query for columns that have [full text indexes](/docs/{{version}}/migrations#available-index-types). These methods will be transformed into the appropriate SQL for the underlying database system by Laravel. For example, a `MATCH AGAINST` clause will be generated for applications utilizing MySQL:"
-msgstr ""
+msgstr "使用 `whereFullText` 與 `orWhereFullText` 方法，就可在查詢中為有[全文索引](/docs/{{version}}/migrations#available-index-types)的欄位加上全文「where」子句。Laravel 會依據底層的資料庫系統將這些方法轉換為適當的 SQL。舉例來說，使用 MySQL 的專案會產生 `MATCH AGAINST` 子句："
 
 #: docs/9.x/queries.md:block 223 (code)
 msgid "$users = DB::table('users')\n"
 "           ->whereFullText('bio', 'web developer')\n"
 "           ->get();\n"
-msgstr ""
+msgstr "$users = DB::table('users')\n"
+"           ->whereFullText('bio', 'web developer')\n"
+"           ->get();\n"
 
 #: docs/9.x/queries.md:block 270 (code)
 msgid "$role = $request->input('role');\n\n"
@@ -1781,7 +1795,12 @@ msgid "$role = $request->input('role');\n\n"
 "                    $query->where('role_id', $role);\n"
 "                })\n"
 "                ->get();\n"
-msgstr ""
+msgstr "$role = $request->input('role');\n\n"
+"$users = DB::table('users')\n"
+"                ->when($role, function ($query, $role) {\n"
+"                    $query->where('role_id', $role);\n"
+"                })\n"
+"                ->get();\n"
 
 #: docs/9.x/queries.md:block 273 (code)
 msgid "$sortByVotes = $request->input('sort_by_votes');\n\n"
@@ -1792,5 +1811,12 @@ msgid "$sortByVotes = $request->input('sort_by_votes');\n\n"
 "                    $query->orderBy('name');\n"
 "                })\n"
 "                ->get();\n"
-msgstr ""
+msgstr "$sortByVotes = $request->input('sort_by_votes');\n\n"
+"$users = DB::table('users')\n"
+"                ->when($sortByVotes, function ($query, $sortByVotes) {\n"
+"                    $query->orderBy('votes');\n"
+"                }, function ($query) {\n"
+"                    $query->orderBy('name');\n"
+"                })\n"
+"                ->get();\n"
 

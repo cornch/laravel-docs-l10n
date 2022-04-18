@@ -10,7 +10,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
-"PO-Revision-Date: 2022-02-13 12:32\n"
+"PO-Revision-Date: 2022-04-18 10:01\n"
 
 #: docs/8.x/errors.md:block 1 (header)
 msgid "Error Handling"
@@ -496,11 +496,73 @@ msgstr "可以使用 `vendor:publish` Artisan 指令來將 Laravel 的預設錯�
 msgid "php artisan vendor:publish --tag=laravel-errors\n"
 msgstr "php artisan vendor:publish --tag=laravel-errors\n"
 
-#: docs/9.x/errors.md:block 64 (header)
+#: docs/9.x/errors.md:block 2 (unordered list)
+msgid "[Exception Log Levels](#exception-log-levels)"
+msgstr "[Exception 的 Log 等級](#exception-log-levels)"
+
+#: docs/9.x/errors.md:block 33 (header)
+msgid "Exception Log Levels"
+msgstr "Exception 的 Log 等級"
+
+#: docs/9.x/errors.md:block 34 (paragraph)
+msgid "When messages are written to your application's [logs](/docs/{{version}}/logging), the messages are written at a specified [log level](/docs/{{version}}/logging#log-levels), which indicates the severity or importance of the message being logged."
+msgstr "在將訊息寫入專案的 [Log](/docs/{{version}}/logging) 時，這些訊息會以特定的 [Log 等級](/docs/{{version}}/logging#log-levels)寫入。這個等級即代表該日誌訊息的嚴重程度。"
+
+#: docs/9.x/errors.md:block 35 (paragraph)
+msgid "As noted above, even when you register a custom exception reporting callback using the `reportable` method, Laravel will still log the exception using the default logging configuration for the application; however, since the log level can sometimes influence the channels on which a message is logged, you may wish to configure the log level that certain exceptions are logged at."
+msgstr "上面也提過，即使使用了 `reportable` 方法註冊自定的 Exception 回報回呼，Laravel 也還是會使用專案預設的 Log 設定來記錄該 Exception。不過，由於 Log 等級有時候會影響訊息會被記錄在哪些通道內，因此有時候我們可能會想設定某個特定的 Exception 要被記錄在哪個 Log 等級上。"
+
+#: docs/9.x/errors.md:block 36 (paragraph)
+msgid "To accomplish this, you may define an array of exception types and their associated log levels within the `$levels` property of your application's exception handler:"
+msgstr "若要調整 Log 等級，可以在專案的 Exception Handler 上的 `$levels` 屬性中定義一組 Exception 型別於其 Log 等級的陣列："
+
+#: docs/9.x/errors.md:block 37 (code)
+msgid "use PDOException;\n"
+"use Psr\\Log\\LogLevel;\n\n"
+"/**\n"
+" * A list of exception types with their corresponding custom log levels.\n"
+" *\n"
+" * @var array<class-string<\\Throwable>, \\Psr\\Log\\LogLevel::*>\n"
+" */\n"
+"protected $levels = [\n"
+"    PDOException::class => LogLevel::CRITICAL,\n"
+"];\n"
+msgstr "use PDOException;\n"
+"use Psr\\Log\\LogLevel;\n\n"
+"/**\n"
+" * A list of exception types with their corresponding custom log levels.\n"
+" *\n"
+" * @var array<class-string<\\Throwable>, \\Psr\\Log\\LogLevel::*>\n"
+" */\n"
+"protected $levels = [\n"
+"    PDOException::class => LogLevel::CRITICAL,\n"
+"];\n"
+
+#: docs/9.x/errors.md:block 41 (code)
+msgid "use App\\Exceptions\\InvalidOrderException;\n\n"
+"/**\n"
+" * A list of the exception types that are not reported.\n"
+" *\n"
+" * @var array<int, class-string<\\Throwable>>\n"
+" */\n"
+"protected $dontReport = [\n"
+"    InvalidOrderException::class,\n"
+"];\n"
+msgstr "use App\\Exceptions\\InvalidOrderException;\n\n"
+"/**\n"
+" * A list of the exception types that are not reported.\n"
+" *\n"
+" * @var array<int, class-string<\\Throwable>>\n"
+" */\n"
+"protected $dontReport = [\n"
+"    InvalidOrderException::class,\n"
+"];\n"
+
+#: docs/9.x/errors.md:block 70 (header)
 msgid "Fallback HTTP Error Pages"
 msgstr "^[遞補](Fallback)的 HTTP 錯誤頁"
 
-#: docs/9.x/errors.md:block 65 (paragraph)
+#: docs/9.x/errors.md:block 71 (paragraph)
 msgid "You may also define a \"fallback\" error page for a given series of HTTP status codes. This page will be rendered if there is not a corresponding page for the specific HTTP status code that occurred. To accomplish this, define a `4xx.blade.php` template and a `5xx.blade.php` template in your application's `resources/views/errors` directory."
 msgstr "可以為給定的一系列 HTTP 狀態碼定義一個「遞補的」錯誤頁面。當發生的 HTTP 狀態碼沒有對應頁面時，就會轉譯這個遞補的頁面。若要使用遞補頁面，請在專案的 `resources/views/errors` 目錄下定義一個 `4xx.blade.php` 樣板與 `5xx.blade.php` 樣板。"
 

@@ -10,7 +10,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
-"PO-Revision-Date: 2022-02-16 07:19\n"
+"PO-Revision-Date: 2022-04-18 10:01\n"
 
 #: docs/8.x/packages.md:block 1 (header)
 msgid "Package Development"
@@ -731,4 +731,88 @@ msgstr "/**\n"
 "        __DIR__.'/../lang' => $this->app->langPath('vendor/courier'),\n"
 "    ]);\n"
 "}\n"
+
+#: docs/9.x/packages.md:block 77 (paragraph)
+msgid "If you are building a package that utilizes Blade components or placing components in non-conventional directories, you will need to manually register your component class and its HTML tag alias so that Laravel knows where to find the component. You should typically register your components in the `boot` method of your package's service provider:"
+msgstr "若想製作使用 Blade 元件的套件或將元件放在不符合慣例的目錄內，則需要手動註冊元件類別與其 HTML 標籤別名，以讓 Laravel 知道要在哪裡尋找元件。通常，應在套件的 Service Provider 內的 `boot` 方法中註冊你的元件："
+
+#: docs/9.x/packages.md:block 78 (code)
+msgid "use Illuminate\\Support\\Facades\\Blade;\n"
+"use VendorPackage\\View\\Components\\AlertComponent;\n\n"
+"/**\n"
+" * Bootstrap your package's services.\n"
+" *\n"
+" * @return void\n"
+" */\n"
+"public function boot()\n"
+"{\n"
+"    Blade::component('package-alert', AlertComponent::class);\n"
+"}\n"
+msgstr "use Illuminate\\Support\\Facades\\Blade;\n"
+"use VendorPackage\\View\\Components\\AlertComponent;\n\n"
+"/**\n"
+" * Bootstrap your package's services.\n"
+" *\n"
+" * @return void\n"
+" */\n"
+"public function boot()\n"
+"{\n"
+"    Blade::component('package-alert', AlertComponent::class);\n"
+"}\n"
+
+#: docs/9.x/packages.md:block 79 (paragraph)
+msgid "Once your component has been registered, it may be rendered using its tag alias:"
+msgstr "註冊好元件後，便可使用其標籤別名來轉譯："
+
+#: docs/9.x/packages.md:block 80 (code)
+msgid "<x-package-alert/>\n"
+msgstr "<x-package-alert/>\n"
+
+#: docs/9.x/packages.md:block 82 (header)
+msgid "Autoloading Package Components"
+msgstr "自動載入套件元件"
+
+#: docs/9.x/packages.md:block 83 (paragraph)
+msgid "Alternatively, you may use the `componentNamespace` method to autoload component classes by convention. For example, a `Nightshade` package might have `Calendar` and `ColorPicker` components that reside within the `Nightshade\\Views\\Components` namespace:"
+msgstr "或者，也可以使用 `componentNamespace` 方法來依照慣例自動載入元件類別。舉例來說，`Nightshade` 套件可能包含了放在 `Nightshade\\Views\\Components` Namespace 下的 `Calendar` 與 `ColorPicker` 元件："
+
+#: docs/9.x/packages.md:block 84 (code)
+msgid "use Illuminate\\Support\\Facades\\Blade;\n\n"
+"/**\n"
+" * Bootstrap your package's services.\n"
+" *\n"
+" * @return void\n"
+" */\n"
+"public function boot()\n"
+"{\n"
+"    Blade::componentNamespace('Nightshade\\\\Views\\\\Components', 'nightshade');\n"
+"}\n"
+msgstr "use Illuminate\\Support\\Facades\\Blade;\n\n"
+"/**\n"
+" * Bootstrap your package's services.\n"
+" *\n"
+" * @return void\n"
+" */\n"
+"public function boot()\n"
+"{\n"
+"    Blade::componentNamespace('Nightshade\\\\Views\\\\Components', 'nightshade');\n"
+"}\n"
+
+#: docs/9.x/packages.md:block 85 (paragraph)
+msgid "This will allow the usage of package components by their vendor namespace using the `package-name::` syntax:"
+msgstr "這樣一來，就可以讓套件元件通過其 Vendor Namespace 來使用 `package-name::` 語法："
+
+#: docs/9.x/packages.md:block 86 (code)
+msgid "<x-nightshade::calendar />\n"
+"<x-nightshade::color-picker />\n"
+msgstr "<x-nightshade::calendar />\n"
+"<x-nightshade::color-picker />\n"
+
+#: docs/9.x/packages.md:block 87 (paragraph)
+msgid "Blade will automatically detect the class that's linked to this component by pascal-casing the component name. Subdirectories are also supported using \"dot\" notation."
+msgstr "Blade 會通過將元件名稱轉為 Pascal 命名法來自動偵測與這個元件關連的類別。也可以使用「點」語法來支援子目錄。"
+
+#: docs/9.x/packages.md:block 90 (paragraph)
+msgid "If your package contains anonymous components, they must be placed within a `components` directory of your package's \"views\" directory (as specified by the [`loadViewsFrom` method](#views)). Then, you may render them by prefixing the component name with the package's view namespace:"
+msgstr "若套件中有匿名元件，則這些套件必須放在套件「view」目錄 (即 [`loadViewsFrom` 方法](#views) 所指定的目錄) 下的 `components` 目錄內。接著，就可以使用套件 View 命名空間作為前置詞來轉譯套件："
 

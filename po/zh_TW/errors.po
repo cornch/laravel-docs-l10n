@@ -10,7 +10,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
-"PO-Revision-Date: 2022-04-18 09:23\n"
+"PO-Revision-Date: 2022-04-18 10:01\n"
 
 #: docs/8.x/errors.md:block 1 (header)
 msgid "Error Handling"
@@ -506,15 +506,15 @@ msgstr "Exception 的 Log 等級"
 
 #: docs/9.x/errors.md:block 34 (paragraph)
 msgid "When messages are written to your application's [logs](/docs/{{version}}/logging), the messages are written at a specified [log level](/docs/{{version}}/logging#log-levels), which indicates the severity or importance of the message being logged."
-msgstr ""
+msgstr "在將訊息寫入專案的 [Log](/docs/{{version}}/logging) 時，這些訊息會以特定的 [Log 等級](/docs/{{version}}/logging#log-levels)寫入。這個等級即代表該日誌訊息的嚴重程度。"
 
 #: docs/9.x/errors.md:block 35 (paragraph)
 msgid "As noted above, even when you register a custom exception reporting callback using the `reportable` method, Laravel will still log the exception using the default logging configuration for the application; however, since the log level can sometimes influence the channels on which a message is logged, you may wish to configure the log level that certain exceptions are logged at."
-msgstr ""
+msgstr "上面也提過，即使使用了 `reportable` 方法註冊自定的 Exception 回報回呼，Laravel 也還是會使用專案預設的 Log 設定來記錄該 Exception。不過，由於 Log 等級有時候會影響訊息會被記錄在哪些通道內，因此有時候我們可能會想設定某個特定的 Exception 要被記錄在哪個 Log 等級上。"
 
 #: docs/9.x/errors.md:block 36 (paragraph)
 msgid "To accomplish this, you may define an array of exception types and their associated log levels within the `$levels` property of your application's exception handler:"
-msgstr ""
+msgstr "若要調整 Log 等級，可以在專案的 Exception Handler 上的 `$levels` 屬性中定義一組 Exception 型別於其 Log 等級的陣列："
 
 #: docs/9.x/errors.md:block 37 (code)
 msgid "use PDOException;\n"
@@ -527,7 +527,16 @@ msgid "use PDOException;\n"
 "protected $levels = [\n"
 "    PDOException::class => LogLevel::CRITICAL,\n"
 "];\n"
-msgstr ""
+msgstr "use PDOException;\n"
+"use Psr\\Log\\LogLevel;\n\n"
+"/**\n"
+" * A list of exception types with their corresponding custom log levels.\n"
+" *\n"
+" * @var array<class-string<\\Throwable>, \\Psr\\Log\\LogLevel::*>\n"
+" */\n"
+"protected $levels = [\n"
+"    PDOException::class => LogLevel::CRITICAL,\n"
+"];\n"
 
 #: docs/9.x/errors.md:block 41 (code)
 msgid "use App\\Exceptions\\InvalidOrderException;\n\n"
@@ -539,7 +548,15 @@ msgid "use App\\Exceptions\\InvalidOrderException;\n\n"
 "protected $dontReport = [\n"
 "    InvalidOrderException::class,\n"
 "];\n"
-msgstr ""
+msgstr "use App\\Exceptions\\InvalidOrderException;\n\n"
+"/**\n"
+" * A list of the exception types that are not reported.\n"
+" *\n"
+" * @var array<int, class-string<\\Throwable>>\n"
+" */\n"
+"protected $dontReport = [\n"
+"    InvalidOrderException::class,\n"
+"];\n"
 
 #: docs/9.x/errors.md:block 70 (header)
 msgid "Fallback HTTP Error Pages"

@@ -1,0 +1,445 @@
+#
+msgid ""
+msgstr ""
+
+#: docs/8.x/errors.md:block 1 (header)
+msgid "Error Handling"
+msgstr ""
+
+#: docs/8.x/errors.md:block 2 (unordered list)
+msgid "[Introduction](#introduction)"
+msgstr ""
+
+#: docs/8.x/errors.md:block 2 (unordered list)
+msgid "[Configuration](#configuration)"
+msgstr ""
+
+#: docs/8.x/errors.md:block 2 (unordered list)
+msgid "[The Exception Handler](#the-exception-handler)"
+msgstr ""
+
+#: docs/8.x/errors.md:block 2 (unordered list)
+msgid "[Reporting Exceptions](#reporting-exceptions)"
+msgstr ""
+
+#: docs/8.x/errors.md:block 2 (unordered list)
+msgid "[Ignoring Exceptions By Type](#ignoring-exceptions-by-type)"
+msgstr ""
+
+#: docs/8.x/errors.md:block 2 (unordered list)
+msgid "[Rendering Exceptions](#rendering-exceptions)"
+msgstr ""
+
+#: docs/8.x/errors.md:block 2 (unordered list)
+msgid "[Reportable & Renderable Exceptions](#renderable-exceptions)"
+msgstr ""
+
+#: docs/8.x/errors.md:block 2 (unordered list)
+msgid "[HTTP Exceptions](#http-exceptions)"
+msgstr ""
+
+#: docs/8.x/errors.md:block 2 (unordered list)
+msgid "[Custom HTTP Error Pages](#custom-http-error-pages)"
+msgstr ""
+
+#: docs/8.x/errors.md:block 4 (header)
+msgid "Introduction"
+msgstr ""
+
+#: docs/8.x/errors.md:block 5 (paragraph)
+msgid "When you start a new Laravel project, error and exception handling is already configured for you. The `App\\Exceptions\\Handler` class is where all exceptions thrown by your application are logged and then rendered to the user. We'll dive deeper into this class throughout this documentation."
+msgstr ""
+
+#: docs/8.x/errors.md:block 7 (header)
+msgid "Configuration"
+msgstr ""
+
+#: docs/8.x/errors.md:block 8 (paragraph)
+msgid "The `debug` option in your `config/app.php` configuration file determines how much information about an error is actually displayed to the user. By default, this option is set to respect the value of the `APP_DEBUG` environment variable, which is stored in your `.env` file."
+msgstr ""
+
+#: docs/8.x/errors.md:block 9 (paragraph)
+msgid "During local development, you should set the `APP_DEBUG` environment variable to `true`. **In your production environment, this value should always be `false`. If the value is set to `true` in production, you risk exposing sensitive configuration values to your application's end users.**"
+msgstr ""
+
+#: docs/8.x/errors.md:block 11 (header)
+msgid "The Exception Handler"
+msgstr ""
+
+#: docs/8.x/errors.md:block 13 (header)
+msgid "Reporting Exceptions"
+msgstr ""
+
+#: docs/8.x/errors.md:block 14 (paragraph)
+msgid "All exceptions are handled by the `App\\Exceptions\\Handler` class. This class contains a `register` method where you may register custom exception reporting and rendering callbacks. We'll examine each of these concepts in detail. Exception reporting is used to log exceptions or send them to an external service like [Flare](https://flareapp.io), [Bugsnag](https://bugsnag.com) or [Sentry](https://github.com/getsentry/sentry-laravel). By default, exceptions will be logged based on your [logging](/docs/{{version}}/logging) configuration. However, you are free to log exceptions however you wish."
+msgstr ""
+
+#: docs/8.x/errors.md:block 15 (paragraph)
+msgid "For example, if you need to report different types of exceptions in different ways, you may use the `reportable` method to register a closure that should be executed when an exception of a given type needs to be reported. Laravel will deduce what type of exception the closure reports by examining the type-hint of the closure:"
+msgstr ""
+
+#: docs/8.x/errors.md:block 16 (code)
+msgid ""
+"use App\\Exceptions\\InvalidOrderException;\n"
+"\n"
+"/**\n"
+" * Register the exception handling callbacks for the application.\n"
+" *\n"
+" * @return void\n"
+" */\n"
+"public function register()\n"
+"{\n"
+"    $this->reportable(function (InvalidOrderException $e) {\n"
+"        //\n"
+"    });\n"
+"}\n"
+msgstr ""
+
+#: docs/8.x/errors.md:block 17 (paragraph)
+msgid "When you register a custom exception reporting callback using the `reportable` method, Laravel will still log the exception using the default logging configuration for the application. If you wish to stop the propagation of the exception to the default logging stack, you may use the `stop` method when defining your reporting callback or return `false` from the callback:"
+msgstr ""
+
+#: docs/8.x/errors.md:block 18 (code)
+msgid ""
+"$this->reportable(function (InvalidOrderException $e) {\n"
+"    //\n"
+"})->stop();\n"
+"\n"
+"$this->reportable(function (InvalidOrderException $e) {\n"
+"    return false;\n"
+"});\n"
+msgstr ""
+
+#: docs/8.x/errors.md:block 19 (quote)
+msgid "{tip} To customize the exception reporting for a given exception, you may also utilize [reportable exceptions](/docs/{{version}}/errors#renderable-exceptions)."
+msgstr ""
+
+#: docs/8.x/errors.md:block 21 (header)
+msgid "Global Log Context"
+msgstr ""
+
+#: docs/8.x/errors.md:block 22 (paragraph)
+msgid "If available, Laravel automatically adds the current user's ID to every exception's log message as contextual data. You may define your own global contextual data by overriding the `context` method of your application's `App\\Exceptions\\Handler` class. This information will be included in every exception's log message written by your application:"
+msgstr ""
+
+#: docs/8.x/errors.md:block 23 (code)
+msgid ""
+"/**\n"
+" * Get the default context variables for logging.\n"
+" *\n"
+" * @return array\n"
+" */\n"
+"protected function context()\n"
+"{\n"
+"    return array_merge(parent::context(), [\n"
+"        'foo' => 'bar',\n"
+"    ]);\n"
+"}\n"
+msgstr ""
+
+#: docs/8.x/errors.md:block 25 (header)
+msgid "Exception Log Context"
+msgstr ""
+
+#: docs/8.x/errors.md:block 26 (paragraph)
+msgid "While adding context to every log message can be useful, sometimes a particular exception may have unique context that you would like to include in your logs. By defining a `context` method on one of your application's custom exceptions, you may specify any data relevant to that exception that should be added to the exception's log entry:"
+msgstr ""
+
+#: docs/8.x/errors.md:block 27 (code)
+msgid ""
+"<?php\n"
+"\n"
+"namespace App\\Exceptions;\n"
+"\n"
+"use Exception;\n"
+"\n"
+"class InvalidOrderException extends Exception\n"
+"{\n"
+"    // ...\n"
+"\n"
+"    /**\n"
+"     * Get the exception's context information.\n"
+"     *\n"
+"     * @return array\n"
+"     */\n"
+"    public function context()\n"
+"    {\n"
+"        return ['order_id' => $this->orderId];\n"
+"    }\n"
+"}\n"
+msgstr ""
+
+#: docs/8.x/errors.md:block 29 (header)
+msgid "The `report` Helper"
+msgstr ""
+
+#: docs/8.x/errors.md:block 30 (paragraph)
+msgid "Sometimes you may need to report an exception but continue handling the current request. The `report` helper function allows you to quickly report an exception via the exception handler without rendering an error page to the user:"
+msgstr ""
+
+#: docs/8.x/errors.md:block 31 (code)
+msgid ""
+"public function isValid($value)\n"
+"{\n"
+"    try {\n"
+"        // Validate the value...\n"
+"    } catch (Throwable $e) {\n"
+"        report($e);\n"
+"\n"
+"        return false;\n"
+"    }\n"
+"}\n"
+msgstr ""
+
+#: docs/8.x/errors.md:block 33 (header)
+msgid "Ignoring Exceptions By Type"
+msgstr ""
+
+#: docs/8.x/errors.md:block 34 (paragraph)
+msgid "When building your application, there will be some types of exceptions you simply want to ignore and never report. Your application's exception handler contains a `$dontReport` property which is initialized to an empty array. Any classes that you add to this property will never be reported; however, they may still have custom rendering logic:"
+msgstr ""
+
+#: docs/8.x/errors.md:block 35 (code)
+msgid ""
+"use App\\Exceptions\\InvalidOrderException;\n"
+"\n"
+"/**\n"
+" * A list of the exception types that should not be reported.\n"
+" *\n"
+" * @var array\n"
+" */\n"
+"protected $dontReport = [\n"
+"    InvalidOrderException::class,\n"
+"];\n"
+msgstr ""
+
+#: docs/8.x/errors.md:block 36 (quote)
+msgid "{tip} Behind the scenes, Laravel already ignores some types of errors for you, such as exceptions resulting from 404 HTTP \"not found\" errors or 419 HTTP responses generated by invalid CSRF tokens."
+msgstr ""
+
+#: docs/8.x/errors.md:block 38 (header)
+msgid "Rendering Exceptions"
+msgstr ""
+
+#: docs/8.x/errors.md:block 39 (paragraph)
+msgid "By default, the Laravel exception handler will convert exceptions into an HTTP response for you. However, you are free to register a custom rendering closure for exceptions of a given type. You may accomplish this via the `renderable` method of your exception handler."
+msgstr ""
+
+#: docs/8.x/errors.md:block 40 (paragraph)
+msgid "The closure passed to the `renderable` method should return an instance of `Illuminate\\Http\\Response`, which may be generated via the `response` helper. Laravel will deduce what type of exception the closure renders by examining the type-hint of the closure:"
+msgstr ""
+
+#: docs/8.x/errors.md:block 41 (code)
+msgid ""
+"use App\\Exceptions\\InvalidOrderException;\n"
+"\n"
+"/**\n"
+" * Register the exception handling callbacks for the application.\n"
+" *\n"
+" * @return void\n"
+" */\n"
+"public function register()\n"
+"{\n"
+"    $this->renderable(function (InvalidOrderException $e, $request) {\n"
+"        return response()->view('errors.invalid-order', [], 500);\n"
+"    });\n"
+"}\n"
+msgstr ""
+
+#: docs/8.x/errors.md:block 42 (paragraph)
+msgid "You may also use the `renderable` method to override the rendering behavior for built-in Laravel or Symfony exceptions such as `NotFoundHttpException`. If the closure given to the `renderable` method does not return a value, Laravel's default exception rendering will be utilized:"
+msgstr ""
+
+#: docs/8.x/errors.md:block 43 (code)
+msgid ""
+"use Symfony\\Component\\HttpKernel\\Exception\\NotFoundHttpException;\n"
+"\n"
+"/**\n"
+" * Register the exception handling callbacks for the application.\n"
+" *\n"
+" * @return void\n"
+" */\n"
+"public function register()\n"
+"{\n"
+"    $this->renderable(function (NotFoundHttpException $e, $request) {\n"
+"        if ($request->is('api/*')) {\n"
+"            return response()->json([\n"
+"                'message' => 'Record not found.'\n"
+"            ], 404);\n"
+"        }\n"
+"    });\n"
+"}\n"
+msgstr ""
+
+#: docs/8.x/errors.md:block 45 (header)
+msgid "Reportable & Renderable Exceptions"
+msgstr ""
+
+#: docs/8.x/errors.md:block 46 (paragraph)
+msgid "Instead of type-checking exceptions in the exception handler's `register` method, you may define `report` and `render` methods directly on your custom exceptions. When these methods exist, they will be automatically called by the framework:"
+msgstr ""
+
+#: docs/8.x/errors.md:block 47 (code)
+msgid ""
+"<?php\n"
+"\n"
+"namespace App\\Exceptions;\n"
+"\n"
+"use Exception;\n"
+"\n"
+"class InvalidOrderException extends Exception\n"
+"{\n"
+"    /**\n"
+"     * Report the exception.\n"
+"     *\n"
+"     * @return bool|null\n"
+"     */\n"
+"    public function report()\n"
+"    {\n"
+"        //\n"
+"    }\n"
+"\n"
+"    /**\n"
+"     * Render the exception into an HTTP response.\n"
+"     *\n"
+"     * @param  \\Illuminate\\Http\\Request  $request\n"
+"     * @return \\Illuminate\\Http\\Response\n"
+"     */\n"
+"    public function render($request)\n"
+"    {\n"
+"        return response(...);\n"
+"    }\n"
+"}\n"
+msgstr ""
+
+#: docs/8.x/errors.md:block 48 (paragraph)
+msgid "If your exception extends an exception that is already renderable, such as a built-in Laravel or Symfony exception, you may return `false` from the exception's `render` method to render the exception's default HTTP response:"
+msgstr ""
+
+#: docs/8.x/errors.md:block 49 (code)
+msgid ""
+"/**\n"
+" * Render the exception into an HTTP response.\n"
+" *\n"
+" * @param  \\Illuminate\\Http\\Request  $request\n"
+" * @return \\Illuminate\\Http\\Response\n"
+" */\n"
+"public function render($request)\n"
+"{\n"
+"    // Determine if the exception needs custom rendering...\n"
+"\n"
+"    return false;\n"
+"}\n"
+msgstr ""
+
+#: docs/8.x/errors.md:block 50 (paragraph)
+msgid "If your exception contains custom reporting logic that is only necessary when certain conditions are met, you may need to instruct Laravel to sometimes report the exception using the default exception handling configuration. To accomplish this, you may return `false` from the exception's `report` method:"
+msgstr ""
+
+#: docs/8.x/errors.md:block 51 (code)
+msgid ""
+"/**\n"
+" * Report the exception.\n"
+" *\n"
+" * @return bool|null\n"
+" */\n"
+"public function report()\n"
+"{\n"
+"    // Determine if the exception needs custom reporting...\n"
+"\n"
+"    return false;\n"
+"}\n"
+msgstr ""
+
+#: docs/8.x/errors.md:block 52 (quote)
+msgid "{tip} You may type-hint any required dependencies of the `report` method and they will automatically be injected into the method by Laravel's [service container](/docs/{{version}}/container)."
+msgstr ""
+
+#: docs/8.x/errors.md:block 54 (header)
+msgid "HTTP Exceptions"
+msgstr ""
+
+#: docs/8.x/errors.md:block 55 (paragraph)
+msgid "Some exceptions describe HTTP error codes from the server. For example, this may be a \"page not found\" error (404), an \"unauthorized error\" (401) or even a developer generated 500 error. In order to generate such a response from anywhere in your application, you may use the `abort` helper:"
+msgstr ""
+
+#: docs/8.x/errors.md:block 56 (code)
+msgid "abort(404);\n"
+msgstr ""
+
+#: docs/8.x/errors.md:block 58 (header)
+msgid "Custom HTTP Error Pages"
+msgstr ""
+
+#: docs/8.x/errors.md:block 59 (paragraph)
+msgid "Laravel makes it easy to display custom error pages for various HTTP status codes. For example, if you wish to customize the error page for 404 HTTP status codes, create a `resources/views/errors/404.blade.php` view template. This view will be rendered on all 404 errors generated by your application. The views within this directory should be named to match the HTTP status code they correspond to. The `Symfony\\Component\\HttpKernel\\Exception\\HttpException` instance raised by the `abort` function will be passed to the view as an `$exception` variable:"
+msgstr ""
+
+#: docs/8.x/errors.md:block 60 (code)
+msgid "<h2>{{ $exception->getMessage() }}</h2>\n"
+msgstr ""
+
+#: docs/8.x/errors.md:block 61 (paragraph)
+msgid "You may publish Laravel's default error page templates using the `vendor:publish` Artisan command. Once the templates have been published, you may customize them to your liking:"
+msgstr ""
+
+#: docs/8.x/errors.md:block 62 (code)
+msgid "php artisan vendor:publish --tag=laravel-errors\n"
+msgstr ""
+
+#: docs/9.x/errors.md:block 2 (unordered list)
+msgid "[Exception Log Levels](#exception-log-levels)"
+msgstr ""
+
+#: docs/9.x/errors.md:block 33 (header)
+msgid "Exception Log Levels"
+msgstr ""
+
+#: docs/9.x/errors.md:block 34 (paragraph)
+msgid "When messages are written to your application's [logs](/docs/{{version}}/logging), the messages are written at a specified [log level](/docs/{{version}}/logging#log-levels), which indicates the severity or importance of the message being logged."
+msgstr ""
+
+#: docs/9.x/errors.md:block 35 (paragraph)
+msgid "As noted above, even when you register a custom exception reporting callback using the `reportable` method, Laravel will still log the exception using the default logging configuration for the application; however, since the log level can sometimes influence the channels on which a message is logged, you may wish to configure the log level that certain exceptions are logged at."
+msgstr ""
+
+#: docs/9.x/errors.md:block 36 (paragraph)
+msgid "To accomplish this, you may define an array of exception types and their associated log levels within the `$levels` property of your application's exception handler:"
+msgstr ""
+
+#: docs/9.x/errors.md:block 37 (code)
+msgid ""
+"use PDOException;\n"
+"use Psr\\Log\\LogLevel;\n"
+"\n"
+"/**\n"
+" * A list of exception types with their corresponding custom log levels.\n"
+" *\n"
+" * @var array<class-string<\\Throwable>, \\Psr\\Log\\LogLevel::*>\n"
+" */\n"
+"protected $levels = [\n"
+"    PDOException::class => LogLevel::CRITICAL,\n"
+"];\n"
+msgstr ""
+
+#: docs/9.x/errors.md:block 41 (code)
+msgid ""
+"use App\\Exceptions\\InvalidOrderException;\n"
+"\n"
+"/**\n"
+" * A list of the exception types that are not reported.\n"
+" *\n"
+" * @var array<int, class-string<\\Throwable>>\n"
+" */\n"
+"protected $dontReport = [\n"
+"    InvalidOrderException::class,\n"
+"];\n"
+msgstr ""
+
+#: docs/9.x/errors.md:block 70 (header)
+msgid "Fallback HTTP Error Pages"
+msgstr ""
+
+#: docs/9.x/errors.md:block 71 (paragraph)
+msgid "You may also define a \"fallback\" error page for a given series of HTTP status codes. This page will be rendered if there is not a corresponding page for the specific HTTP status code that occurred. To accomplish this, define a `4xx.blade.php` template and a `5xx.blade.php` template in your application's `resources/views/errors` directory."
+msgstr ""

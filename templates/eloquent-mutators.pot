@@ -1,0 +1,1351 @@
+#
+msgid ""
+msgstr ""
+
+#: docs/8.x/eloquent-mutators.md:block 1 (header)
+msgid "Eloquent: Mutators & Casting"
+msgstr ""
+
+#: docs/8.x/eloquent-mutators.md:block 2 (unordered list)
+msgid "[Introduction](#introduction)"
+msgstr ""
+
+#: docs/8.x/eloquent-mutators.md:block 2 (unordered list)
+msgid "[Accessors & Mutators](#accessors-and-mutators)"
+msgstr ""
+
+#: docs/8.x/eloquent-mutators.md:block 2 (unordered list)
+msgid "[Defining An Accessor](#defining-an-accessor)"
+msgstr ""
+
+#: docs/8.x/eloquent-mutators.md:block 2 (unordered list)
+msgid "[Defining A Mutator](#defining-a-mutator)"
+msgstr ""
+
+#: docs/8.x/eloquent-mutators.md:block 2 (unordered list)
+msgid "[Attribute Casting](#attribute-casting)"
+msgstr ""
+
+#: docs/8.x/eloquent-mutators.md:block 2 (unordered list)
+msgid "[Array & JSON Casting](#array-and-json-casting)"
+msgstr ""
+
+#: docs/8.x/eloquent-mutators.md:block 2 (unordered list)
+msgid "[Date Casting](#date-casting)"
+msgstr ""
+
+#: docs/8.x/eloquent-mutators.md:block 2 (unordered list)
+msgid "[Enum Casting](#enum-casting)"
+msgstr ""
+
+#: docs/8.x/eloquent-mutators.md:block 2 (unordered list)
+msgid "[Encrypted Casting](#encrypted-casting)"
+msgstr ""
+
+#: docs/8.x/eloquent-mutators.md:block 2 (unordered list)
+msgid "[Query Time Casting](#query-time-casting)"
+msgstr ""
+
+#: docs/8.x/eloquent-mutators.md:block 2 (unordered list)
+msgid "[Custom Casts](#custom-casts)"
+msgstr ""
+
+#: docs/8.x/eloquent-mutators.md:block 2 (unordered list)
+msgid "[Value Object Casting](#value-object-casting)"
+msgstr ""
+
+#: docs/8.x/eloquent-mutators.md:block 2 (unordered list)
+msgid "[Array / JSON Serialization](#array-json-serialization)"
+msgstr ""
+
+#: docs/8.x/eloquent-mutators.md:block 2 (unordered list)
+msgid "[Inbound Casting](#inbound-casting)"
+msgstr ""
+
+#: docs/8.x/eloquent-mutators.md:block 2 (unordered list)
+msgid "[Cast Parameters](#cast-parameters)"
+msgstr ""
+
+#: docs/8.x/eloquent-mutators.md:block 2 (unordered list)
+msgid "[Castables](#castables)"
+msgstr ""
+
+#: docs/8.x/eloquent-mutators.md:block 4 (header)
+msgid "Introduction"
+msgstr ""
+
+#: docs/8.x/eloquent-mutators.md:block 5 (paragraph)
+msgid "Accessors, mutators, and attribute casting allow you to transform Eloquent attribute values when you retrieve or set them on model instances. For example, you may want to use the [Laravel encrypter](/docs/{{version}}/encryption) to encrypt a value while it is stored in the database, and then automatically decrypt the attribute when you access it on an Eloquent model. Or, you may want to convert a JSON string that is stored in your database to an array when it is accessed via your Eloquent model."
+msgstr ""
+
+#: docs/8.x/eloquent-mutators.md:block 7 (header)
+msgid "Accessors & Mutators"
+msgstr ""
+
+#: docs/8.x/eloquent-mutators.md:block 9 (header)
+msgid "Defining An Accessor"
+msgstr ""
+
+#: docs/8.x/eloquent-mutators.md:block 10 (paragraph)
+msgid "An accessor transforms an Eloquent attribute value when it is accessed. To define an accessor, create a `get{Attribute}Attribute` method on your model where `{Attribute}` is the \"studly\" cased name of the column you wish to access."
+msgstr ""
+
+#: docs/8.x/eloquent-mutators.md:block 11 (paragraph)
+msgid "In this example, we'll define an accessor for the `first_name` attribute. The accessor will automatically be called by Eloquent when attempting to retrieve the value of the `first_name` attribute:"
+msgstr ""
+
+#: docs/8.x/eloquent-mutators.md:block 12 (code)
+msgid ""
+"<?php\n"
+"\n"
+"namespace App\\Models;\n"
+"\n"
+"use Illuminate\\Database\\Eloquent\\Model;\n"
+"\n"
+"class User extends Model\n"
+"{\n"
+"    /**\n"
+"     * Get the user's first name.\n"
+"     *\n"
+"     * @param  string  $value\n"
+"     * @return string\n"
+"     */\n"
+"    public function getFirstNameAttribute($value)\n"
+"    {\n"
+"        return ucfirst($value);\n"
+"    }\n"
+"}\n"
+msgstr ""
+
+#: docs/8.x/eloquent-mutators.md:block 13 (paragraph)
+msgid "As you can see, the original value of the column is passed to the accessor, allowing you to manipulate and return the value. To access the value of the accessor, you may simply access the `first_name` attribute on a model instance:"
+msgstr ""
+
+#: docs/8.x/eloquent-mutators.md:block 14 (code)
+msgid ""
+"use App\\Models\\User;\n"
+"\n"
+"$user = User::find(1);\n"
+"\n"
+"$firstName = $user->first_name;\n"
+msgstr ""
+
+#: docs/8.x/eloquent-mutators.md:block 15 (paragraph)
+msgid "You are not limited to interacting with a single attribute within your accessor. You may also use accessors to return new, computed values from existing attributes:"
+msgstr ""
+
+#: docs/8.x/eloquent-mutators.md:block 16 (code)
+msgid ""
+"/**\n"
+" * Get the user's full name.\n"
+" *\n"
+" * @return string\n"
+" */\n"
+"public function getFullNameAttribute()\n"
+"{\n"
+"    return \"{$this->first_name} {$this->last_name}\";\n"
+"}\n"
+msgstr ""
+
+#: docs/8.x/eloquent-mutators.md:block 17 (quote)
+msgid "{tip} If you would like these computed values to be added to the array / JSON representations of your model, [you will need to append them](/docs/{{version}}/eloquent-serialization#appending-values-to-json)."
+msgstr ""
+
+#: docs/8.x/eloquent-mutators.md:block 19 (header)
+msgid "Defining A Mutator"
+msgstr ""
+
+#: docs/8.x/eloquent-mutators.md:block 20 (paragraph)
+msgid "A mutator transforms an Eloquent attribute value when it is set. To define a mutator, define a `set{Attribute}Attribute` method on your model where `{Attribute}` is the \"studly\" cased name of the column you wish to access."
+msgstr ""
+
+#: docs/8.x/eloquent-mutators.md:block 21 (paragraph)
+msgid "Let's define a mutator for the `first_name` attribute. This mutator will be automatically called when we attempt to set the value of the `first_name` attribute on the model:"
+msgstr ""
+
+#: docs/8.x/eloquent-mutators.md:block 22 (code)
+msgid ""
+"<?php\n"
+"\n"
+"namespace App\\Models;\n"
+"\n"
+"use Illuminate\\Database\\Eloquent\\Model;\n"
+"\n"
+"class User extends Model\n"
+"{\n"
+"    /**\n"
+"     * Set the user's first name.\n"
+"     *\n"
+"     * @param  string  $value\n"
+"     * @return void\n"
+"     */\n"
+"    public function setFirstNameAttribute($value)\n"
+"    {\n"
+"        $this->attributes['first_name'] = strtolower($value);\n"
+"    }\n"
+"}\n"
+msgstr ""
+
+#: docs/8.x/eloquent-mutators.md:block 23 (paragraph)
+msgid "The mutator will receive the value that is being set on the attribute, allowing you to manipulate the value and set the manipulated value on the Eloquent model's internal `$attributes` property. To use our mutator, we only need to set the `first_name` attribute on an Eloquent model:"
+msgstr ""
+
+#: docs/8.x/eloquent-mutators.md:block 24 (code)
+msgid ""
+"use App\\Models\\User;\n"
+"\n"
+"$user = User::find(1);\n"
+"\n"
+"$user->first_name = 'Sally';\n"
+msgstr ""
+
+#: docs/8.x/eloquent-mutators.md:block 25 (paragraph)
+msgid "In this example, the `setFirstNameAttribute` function will be called with the value `Sally`. The mutator will then apply the `strtolower` function to the name and set its resulting value in the internal `$attributes` array."
+msgstr ""
+
+#: docs/8.x/eloquent-mutators.md:block 27 (header)
+msgid "Attribute Casting"
+msgstr ""
+
+#: docs/8.x/eloquent-mutators.md:block 28 (paragraph)
+msgid "Attribute casting provides functionality similar to accessors and mutators without requiring you to define any additional methods on your model. Instead, your model's `$casts` property provides a convenient method of converting attributes to common data types."
+msgstr ""
+
+#: docs/8.x/eloquent-mutators.md:block 29 (paragraph)
+msgid "The `$casts` property should be an array where the key is the name of the attribute being cast and the value is the type you wish to cast the column to. The supported cast types are:"
+msgstr ""
+
+#: docs/8.x/eloquent-mutators.md:block 31 (unordered list)
+msgid "`array`"
+msgstr ""
+
+#: docs/8.x/eloquent-mutators.md:block 31 (unordered list)
+msgid "`AsStringable::class`"
+msgstr ""
+
+#: docs/8.x/eloquent-mutators.md:block 31 (unordered list)
+msgid "`boolean`"
+msgstr ""
+
+#: docs/8.x/eloquent-mutators.md:block 31 (unordered list)
+msgid "`collection`"
+msgstr ""
+
+#: docs/8.x/eloquent-mutators.md:block 31 (unordered list)
+msgid "`date`"
+msgstr ""
+
+#: docs/8.x/eloquent-mutators.md:block 31 (unordered list)
+msgid "`datetime`"
+msgstr ""
+
+#: docs/8.x/eloquent-mutators.md:block 31 (unordered list)
+msgid "`immutable_date`"
+msgstr ""
+
+#: docs/8.x/eloquent-mutators.md:block 31 (unordered list)
+msgid "`immutable_datetime`"
+msgstr ""
+
+#: docs/8.x/eloquent-mutators.md:block 31 (unordered list)
+msgid "`decimal:`<code>&lt;digits&gt;</code>"
+msgstr ""
+
+#: docs/8.x/eloquent-mutators.md:block 31 (unordered list)
+msgid "`double`"
+msgstr ""
+
+#: docs/8.x/eloquent-mutators.md:block 31 (unordered list)
+msgid "`encrypted`"
+msgstr ""
+
+#: docs/8.x/eloquent-mutators.md:block 31 (unordered list)
+msgid "`encrypted:array`"
+msgstr ""
+
+#: docs/8.x/eloquent-mutators.md:block 31 (unordered list)
+msgid "`encrypted:collection`"
+msgstr ""
+
+#: docs/8.x/eloquent-mutators.md:block 31 (unordered list)
+msgid "`encrypted:object`"
+msgstr ""
+
+#: docs/8.x/eloquent-mutators.md:block 31 (unordered list)
+msgid "`float`"
+msgstr ""
+
+#: docs/8.x/eloquent-mutators.md:block 31 (unordered list)
+msgid "`integer`"
+msgstr ""
+
+#: docs/8.x/eloquent-mutators.md:block 31 (unordered list)
+msgid "`object`"
+msgstr ""
+
+#: docs/8.x/eloquent-mutators.md:block 31 (unordered list)
+msgid "`real`"
+msgstr ""
+
+#: docs/8.x/eloquent-mutators.md:block 31 (unordered list)
+msgid "`string`"
+msgstr ""
+
+#: docs/8.x/eloquent-mutators.md:block 31 (unordered list)
+msgid "`timestamp`"
+msgstr ""
+
+#: docs/8.x/eloquent-mutators.md:block 33 (paragraph)
+msgid "To demonstrate attribute casting, let's cast the `is_admin` attribute, which is stored in our database as an integer (`0` or `1`) to a boolean value:"
+msgstr ""
+
+#: docs/8.x/eloquent-mutators.md:block 34 (code)
+msgid ""
+"<?php\n"
+"\n"
+"namespace App\\Models;\n"
+"\n"
+"use Illuminate\\Database\\Eloquent\\Model;\n"
+"\n"
+"class User extends Model\n"
+"{\n"
+"    /**\n"
+"     * The attributes that should be cast.\n"
+"     *\n"
+"     * @var array\n"
+"     */\n"
+"    protected $casts = [\n"
+"        'is_admin' => 'boolean',\n"
+"    ];\n"
+"}\n"
+msgstr ""
+
+#: docs/8.x/eloquent-mutators.md:block 35 (paragraph)
+msgid "After defining the cast, the `is_admin` attribute will always be cast to a boolean when you access it, even if the underlying value is stored in the database as an integer:"
+msgstr ""
+
+#: docs/8.x/eloquent-mutators.md:block 36 (code)
+msgid ""
+"$user = App\\Models\\User::find(1);\n"
+"\n"
+"if ($user->is_admin) {\n"
+"    //\n"
+"}\n"
+msgstr ""
+
+#: docs/8.x/eloquent-mutators.md:block 37 (paragraph)
+msgid "If you need to add a new, temporary cast at runtime, you may use the `mergeCasts` method. These cast definitions will be added to any of the casts already defined on the model:"
+msgstr ""
+
+#: docs/8.x/eloquent-mutators.md:block 38 (code)
+msgid ""
+"$user->mergeCasts([\n"
+"    'is_admin' => 'integer',\n"
+"    'options' => 'object',\n"
+"]);\n"
+msgstr ""
+
+#: docs/8.x/eloquent-mutators.md:block 39 (quote)
+msgid "{note} Attributes that are `null` will not be cast. In addition, you should never define a cast (or an attribute) that has the same name as a relationship."
+msgstr ""
+
+#: docs/8.x/eloquent-mutators.md:block 41 (header)
+msgid "Stringable Casting"
+msgstr ""
+
+#: docs/8.x/eloquent-mutators.md:block 42 (paragraph)
+msgid "You may use the `Illuminate\\Database\\Eloquent\\Casts\\AsStringable` cast class to cast a model attribute to a [fluent `Illuminate\\Support\\Stringable` object](/docs/{{version}}/helpers#fluent-strings-method-list):"
+msgstr ""
+
+#: docs/8.x/eloquent-mutators.md:block 43 (code)
+msgid ""
+"<?php\n"
+"\n"
+"namespace App\\Models;\n"
+"\n"
+"use Illuminate\\Database\\Eloquent\\Casts\\AsStringable;\n"
+"use Illuminate\\Database\\Eloquent\\Model;\n"
+"\n"
+"class User extends Model\n"
+"{\n"
+"    /**\n"
+"     * The attributes that should be cast.\n"
+"     *\n"
+"     * @var array\n"
+"     */\n"
+"    protected $casts = [\n"
+"        'directory' => AsStringable::class,\n"
+"    ];\n"
+"}\n"
+msgstr ""
+
+#: docs/8.x/eloquent-mutators.md:block 45 (header)
+msgid "Array & JSON Casting"
+msgstr ""
+
+#: docs/8.x/eloquent-mutators.md:block 46 (paragraph)
+msgid "The `array` cast is particularly useful when working with columns that are stored as serialized JSON. For example, if your database has a `JSON` or `TEXT` field type that contains serialized JSON, adding the `array` cast to that attribute will automatically deserialize the attribute to a PHP array when you access it on your Eloquent model:"
+msgstr ""
+
+#: docs/8.x/eloquent-mutators.md:block 47 (code)
+msgid ""
+"<?php\n"
+"\n"
+"namespace App\\Models;\n"
+"\n"
+"use Illuminate\\Database\\Eloquent\\Model;\n"
+"\n"
+"class User extends Model\n"
+"{\n"
+"    /**\n"
+"     * The attributes that should be cast.\n"
+"     *\n"
+"     * @var array\n"
+"     */\n"
+"    protected $casts = [\n"
+"        'options' => 'array',\n"
+"    ];\n"
+"}\n"
+msgstr ""
+
+#: docs/8.x/eloquent-mutators.md:block 48 (paragraph)
+msgid "Once the cast is defined, you may access the `options` attribute and it will automatically be deserialized from JSON into a PHP array. When you set the value of the `options` attribute, the given array will automatically be serialized back into JSON for storage:"
+msgstr ""
+
+#: docs/8.x/eloquent-mutators.md:block 49 (code)
+msgid ""
+"use App\\Models\\User;\n"
+"\n"
+"$user = User::find(1);\n"
+"\n"
+"$options = $user->options;\n"
+"\n"
+"$options['key'] = 'value';\n"
+"\n"
+"$user->options = $options;\n"
+"\n"
+"$user->save();\n"
+msgstr ""
+
+#: docs/8.x/eloquent-mutators.md:block 50 (paragraph)
+msgid "To update a single field of a JSON attribute with a more terse syntax, you may use the `->` operator when calling the `update` method:"
+msgstr ""
+
+#: docs/8.x/eloquent-mutators.md:block 51 (code)
+msgid ""
+"$user = User::find(1);\n"
+"\n"
+"$user->update(['options->key' => 'value']);\n"
+msgstr ""
+
+#: docs/8.x/eloquent-mutators.md:block 53 (header)
+msgid "Array Object & Collection Casting"
+msgstr ""
+
+#: docs/8.x/eloquent-mutators.md:block 54 (paragraph)
+msgid "Although the standard `array` cast is sufficient for many applications, it does have some disadvantages. Since the `array` cast returns a primitive type, it is not possible to mutate an offset of the array directly. For example, the following code will trigger a PHP error:"
+msgstr ""
+
+#: docs/8.x/eloquent-mutators.md:block 55 (code)
+msgid ""
+"$user = User::find(1);\n"
+"\n"
+"$user->options['key'] = $value;\n"
+msgstr ""
+
+#: docs/8.x/eloquent-mutators.md:block 56 (paragraph)
+msgid "To solve this, Laravel offers an `AsArrayObject` cast that casts your JSON attribute to an [ArrayObject](https://www.php.net/manual/en/class.arrayobject.php) class. This feature is implemented using Laravel's [custom cast](#custom-casts) implementation, which allows Laravel to intelligently cache and transform the mutated object such that individual offsets may be modified without triggering a PHP error. To use the `AsArrayObject` cast, simply assign it to an attribute:"
+msgstr ""
+
+#: docs/8.x/eloquent-mutators.md:block 57 (code)
+msgid ""
+"use Illuminate\\Database\\Eloquent\\Casts\\AsArrayObject;\n"
+"\n"
+"/**\n"
+" * The attributes that should be cast.\n"
+" *\n"
+" * @var array\n"
+" */\n"
+"protected $casts = [\n"
+"    'options' => AsArrayObject::class,\n"
+"];\n"
+msgstr ""
+
+#: docs/8.x/eloquent-mutators.md:block 58 (paragraph)
+msgid "Similarly, Laravel offers an `AsCollection` cast that casts your JSON attribute to a Laravel [Collection](/docs/{{version}}/collections) instance:"
+msgstr ""
+
+#: docs/8.x/eloquent-mutators.md:block 59 (code)
+msgid ""
+"use Illuminate\\Database\\Eloquent\\Casts\\AsCollection;\n"
+"\n"
+"/**\n"
+" * The attributes that should be cast.\n"
+" *\n"
+" * @var array\n"
+" */\n"
+"protected $casts = [\n"
+"    'options' => AsCollection::class,\n"
+"];\n"
+msgstr ""
+
+#: docs/8.x/eloquent-mutators.md:block 61 (header)
+msgid "Date Casting"
+msgstr ""
+
+#: docs/8.x/eloquent-mutators.md:block 62 (paragraph)
+msgid "By default, Eloquent will cast the `created_at` and `updated_at` columns to instances of [Carbon](https://github.com/briannesbitt/Carbon), which extends the PHP `DateTime` class and provides an assortment of helpful methods. You may cast additional date attributes by defining additional date casts within your model's `$casts` property array. Typically, dates should be cast using the `datetime` or `immutable_datetime` cast types."
+msgstr ""
+
+#: docs/8.x/eloquent-mutators.md:block 63 (paragraph)
+msgid "When defining a `date` or `datetime` cast, you may also specify the date's format. This format will be used when the [model is serialized to an array or JSON](/docs/{{version}}/eloquent-serialization):"
+msgstr ""
+
+#: docs/8.x/eloquent-mutators.md:block 64 (code)
+msgid ""
+"/**\n"
+" * The attributes that should be cast.\n"
+" *\n"
+" * @var array\n"
+" */\n"
+"protected $casts = [\n"
+"    'created_at' => 'datetime:Y-m-d',\n"
+"];\n"
+msgstr ""
+
+#: docs/8.x/eloquent-mutators.md:block 65 (paragraph)
+msgid "When a column is cast as a date, you may set the corresponding model attribute value to a UNIX timestamp, date string (`Y-m-d`), date-time string, or a `DateTime` / `Carbon` instance. The date's value will be correctly converted and stored in your database."
+msgstr ""
+
+#: docs/8.x/eloquent-mutators.md:block 66 (paragraph)
+msgid "You may customize the default serialization format for all of your model's dates by defining a `serializeDate` method on your model. This method does not affect how your dates are formatted for storage in the database:"
+msgstr ""
+
+#: docs/8.x/eloquent-mutators.md:block 67 (code)
+msgid ""
+"/**\n"
+" * Prepare a date for array / JSON serialization.\n"
+" *\n"
+" * @param  \\DateTimeInterface  $date\n"
+" * @return string\n"
+" */\n"
+"protected function serializeDate(DateTimeInterface $date)\n"
+"{\n"
+"    return $date->format('Y-m-d');\n"
+"}\n"
+msgstr ""
+
+#: docs/8.x/eloquent-mutators.md:block 68 (paragraph)
+msgid "To specify the format that should be used when actually storing a model's dates within your database, you should define a `$dateFormat` property on your model:"
+msgstr ""
+
+#: docs/8.x/eloquent-mutators.md:block 69 (code)
+msgid ""
+"/**\n"
+" * The storage format of the model's date columns.\n"
+" *\n"
+" * @var string\n"
+" */\n"
+"protected $dateFormat = 'U';\n"
+msgstr ""
+
+#: docs/8.x/eloquent-mutators.md:block 71 (header)
+msgid "Date Casting, Serialization, & Timezones"
+msgstr ""
+
+#: docs/8.x/eloquent-mutators.md:block 72 (paragraph)
+msgid "By default, the `date` and `datetime` casts will serialize dates to a UTC ISO-8601 date string (`1986-05-28T21:05:54.000000Z`), regardless of the timezone specified in your application's `timezone` configuration option. You are strongly encouraged to always use this serialization format, as well as to store your application's dates in the UTC timezone by not changing your application's `timezone` configuration option from its default `UTC` value. Consistently using the UTC timezone throughout your application will provide the maximum level of interoperability with other date manipulation libraries written in PHP and JavaScript."
+msgstr ""
+
+#: docs/8.x/eloquent-mutators.md:block 73 (paragraph)
+msgid "If a custom format is applied to the `date` or `datetime` cast, such as `datetime:Y-m-d H:i:s`, the inner timezone of the Carbon instance will be used during date serialization. Typically, this will be the timezone specified in your application's `timezone` configuration option."
+msgstr ""
+
+#: docs/8.x/eloquent-mutators.md:block 75 (header)
+msgid "Enum Casting"
+msgstr ""
+
+#: docs/8.x/eloquent-mutators.md:block 76 (quote)
+msgid "{note} Enum casting is only available for PHP 8.1+."
+msgstr ""
+
+#: docs/8.x/eloquent-mutators.md:block 77 (paragraph)
+msgid "Eloquent also allows you to cast your attribute values to PHP enums. To accomplish this, you may specify the attribute and enum you wish to cast in your model's `$casts` property array:"
+msgstr ""
+
+#: docs/8.x/eloquent-mutators.md:block 78 (code)
+msgid ""
+"use App\\Enums\\ServerStatus;\n"
+"\n"
+"/**\n"
+" * The attributes that should be cast.\n"
+" *\n"
+" * @var array\n"
+" */\n"
+"protected $casts = [\n"
+"    'status' => ServerStatus::class,\n"
+"];\n"
+msgstr ""
+
+#: docs/8.x/eloquent-mutators.md:block 79 (paragraph)
+msgid "Once you have defined the cast on your model, the specified attribute will be automatically cast to and from an enum when you interact with the attribute:"
+msgstr ""
+
+#: docs/8.x/eloquent-mutators.md:block 80 (code)
+msgid ""
+"if ($server->status == ServerStatus::provisioned) {\n"
+"    $server->status = ServerStatus::ready;\n"
+"\n"
+"    $server->save();\n"
+"}\n"
+msgstr ""
+
+#: docs/8.x/eloquent-mutators.md:block 82 (header)
+msgid "Encrypted Casting"
+msgstr ""
+
+#: docs/8.x/eloquent-mutators.md:block 83 (paragraph)
+msgid "The `encrypted` cast will encrypt a model's attribute value using Laravel's built-in [encryption](/docs/{{version}}/encryption) features. In addition, the `encrypted:array`, `encrypted:collection`, `encrypted:object`, `AsEncryptedArrayObject`, and `AsEncryptedCollection` casts work like their unencrypted counterparts; however, as you might expect, the underlying value is encrypted when stored in your database."
+msgstr ""
+
+#: docs/8.x/eloquent-mutators.md:block 84 (paragraph)
+msgid "As the final length of the encrypted text is not predictable and is longer than its plain text counterpart, make sure the associated database column is of `TEXT` type or larger. In addition, since the values are encrypted in the database, you will not be able to query or search encrypted attribute values."
+msgstr ""
+
+#: docs/8.x/eloquent-mutators.md:block 86 (header)
+msgid "Query Time Casting"
+msgstr ""
+
+#: docs/8.x/eloquent-mutators.md:block 87 (paragraph)
+msgid "Sometimes you may need to apply casts while executing a query, such as when selecting a raw value from a table. For example, consider the following query:"
+msgstr ""
+
+#: docs/8.x/eloquent-mutators.md:block 88 (code)
+msgid ""
+"use App\\Models\\Post;\n"
+"use App\\Models\\User;\n"
+"\n"
+"$users = User::select([\n"
+"    'users.*',\n"
+"    'last_posted_at' => Post::selectRaw('MAX(created_at)')\n"
+"            ->whereColumn('user_id', 'users.id')\n"
+"])->get();\n"
+msgstr ""
+
+#: docs/8.x/eloquent-mutators.md:block 89 (paragraph)
+msgid "The `last_posted_at` attribute on the results of this query will be a simple string. It would be wonderful if we could apply a `datetime` cast to this attribute when executing the query. Thankfully, we may accomplish this using the `withCasts` method:"
+msgstr ""
+
+#: docs/8.x/eloquent-mutators.md:block 90 (code)
+msgid ""
+"$users = User::select([\n"
+"    'users.*',\n"
+"    'last_posted_at' => Post::selectRaw('MAX(created_at)')\n"
+"            ->whereColumn('user_id', 'users.id')\n"
+"])->withCasts([\n"
+"    'last_posted_at' => 'datetime'\n"
+"])->get();\n"
+msgstr ""
+
+#: docs/8.x/eloquent-mutators.md:block 92 (header)
+msgid "Custom Casts"
+msgstr ""
+
+#: docs/8.x/eloquent-mutators.md:block 93 (paragraph)
+msgid "Laravel has a variety of built-in, helpful cast types; however, you may occasionally need to define your own cast types. You may accomplish this by defining a class that implements the `CastsAttributes` interface."
+msgstr ""
+
+#: docs/8.x/eloquent-mutators.md:block 94 (paragraph)
+msgid "Classes that implement this interface must define a `get` and `set` method. The `get` method is responsible for transforming a raw value from the database into a cast value, while the `set` method should transform a cast value into a raw value that can be stored in the database. As an example, we will re-implement the built-in `json` cast type as a custom cast type:"
+msgstr ""
+
+#: docs/8.x/eloquent-mutators.md:block 95 (code)
+msgid ""
+"<?php\n"
+"\n"
+"namespace App\\Casts;\n"
+"\n"
+"use Illuminate\\Contracts\\Database\\Eloquent\\CastsAttributes;\n"
+"\n"
+"class Json implements CastsAttributes\n"
+"{\n"
+"    /**\n"
+"     * Cast the given value.\n"
+"     *\n"
+"     * @param  \\Illuminate\\Database\\Eloquent\\Model  $model\n"
+"     * @param  string  $key\n"
+"     * @param  mixed  $value\n"
+"     * @param  array  $attributes\n"
+"     * @return array\n"
+"     */\n"
+"    public function get($model, $key, $value, $attributes)\n"
+"    {\n"
+"        return json_decode($value, true);\n"
+"    }\n"
+"\n"
+"    /**\n"
+"     * Prepare the given value for storage.\n"
+"     *\n"
+"     * @param  \\Illuminate\\Database\\Eloquent\\Model  $model\n"
+"     * @param  string  $key\n"
+"     * @param  array  $value\n"
+"     * @param  array  $attributes\n"
+"     * @return string\n"
+"     */\n"
+"    public function set($model, $key, $value, $attributes)\n"
+"    {\n"
+"        return json_encode($value);\n"
+"    }\n"
+"}\n"
+msgstr ""
+
+#: docs/8.x/eloquent-mutators.md:block 96 (paragraph)
+msgid "Once you have defined a custom cast type, you may attach it to a model attribute using its class name:"
+msgstr ""
+
+#: docs/8.x/eloquent-mutators.md:block 97 (code)
+msgid ""
+"<?php\n"
+"\n"
+"namespace App\\Models;\n"
+"\n"
+"use App\\Casts\\Json;\n"
+"use Illuminate\\Database\\Eloquent\\Model;\n"
+"\n"
+"class User extends Model\n"
+"{\n"
+"    /**\n"
+"     * The attributes that should be cast.\n"
+"     *\n"
+"     * @var array\n"
+"     */\n"
+"    protected $casts = [\n"
+"        'options' => Json::class,\n"
+"    ];\n"
+"}\n"
+msgstr ""
+
+#: docs/8.x/eloquent-mutators.md:block 99 (header)
+msgid "Value Object Casting"
+msgstr ""
+
+#: docs/8.x/eloquent-mutators.md:block 100 (paragraph)
+msgid "You are not limited to casting values to primitive types. You may also cast values to objects. Defining custom casts that cast values to objects is very similar to casting to primitive types; however, the `set` method should return an array of key / value pairs that will be used to set raw, storable values on the model."
+msgstr ""
+
+#: docs/8.x/eloquent-mutators.md:block 101 (paragraph)
+msgid "As an example, we will define a custom cast class that casts multiple model values into a single `Address` value object. We will assume the `Address` value has two public properties: `lineOne` and `lineTwo`:"
+msgstr ""
+
+#: docs/8.x/eloquent-mutators.md:block 102 (code)
+msgid ""
+"<?php\n"
+"\n"
+"namespace App\\Casts;\n"
+"\n"
+"use App\\Models\\Address as AddressModel;\n"
+"use Illuminate\\Contracts\\Database\\Eloquent\\CastsAttributes;\n"
+"use InvalidArgumentException;\n"
+"\n"
+"class Address implements CastsAttributes\n"
+"{\n"
+"    /**\n"
+"     * Cast the given value.\n"
+"     *\n"
+"     * @param  \\Illuminate\\Database\\Eloquent\\Model  $model\n"
+"     * @param  string  $key\n"
+"     * @param  mixed  $value\n"
+"     * @param  array  $attributes\n"
+"     * @return \\App\\Models\\Address\n"
+"     */\n"
+"    public function get($model, $key, $value, $attributes)\n"
+"    {\n"
+"        return new AddressModel(\n"
+"            $attributes['address_line_one'],\n"
+"            $attributes['address_line_two']\n"
+"        );\n"
+"    }\n"
+"\n"
+"    /**\n"
+"     * Prepare the given value for storage.\n"
+"     *\n"
+"     * @param  \\Illuminate\\Database\\Eloquent\\Model  $model\n"
+"     * @param  string  $key\n"
+"     * @param  \\App\\Models\\Address  $value\n"
+"     * @param  array  $attributes\n"
+"     * @return array\n"
+"     */\n"
+"    public function set($model, $key, $value, $attributes)\n"
+"    {\n"
+"        if (! $value instanceof AddressModel) {\n"
+"            throw new InvalidArgumentException('The given value is not an Address instance.');\n"
+"        }\n"
+"\n"
+"        return [\n"
+"            'address_line_one' => $value->lineOne,\n"
+"            'address_line_two' => $value->lineTwo,\n"
+"        ];\n"
+"    }\n"
+"}\n"
+msgstr ""
+
+#: docs/8.x/eloquent-mutators.md:block 103 (paragraph)
+msgid "When casting to value objects, any changes made to the value object will automatically be synced back to the model before the model is saved:"
+msgstr ""
+
+#: docs/8.x/eloquent-mutators.md:block 104 (code)
+msgid ""
+"use App\\Models\\User;\n"
+"\n"
+"$user = User::find(1);\n"
+"\n"
+"$user->address->lineOne = 'Updated Address Value';\n"
+"\n"
+"$user->save();\n"
+msgstr ""
+
+#: docs/8.x/eloquent-mutators.md:block 105 (quote)
+msgid "{tip} If you plan to serialize your Eloquent models containing value objects to JSON or arrays, you should implement the `Illuminate\\Contracts\\Support\\Arrayable` and `JsonSerializable` interfaces on the value object."
+msgstr ""
+
+#: docs/8.x/eloquent-mutators.md:block 107 (header)
+msgid "Array / JSON Serialization"
+msgstr ""
+
+#: docs/8.x/eloquent-mutators.md:block 108 (paragraph)
+msgid "When an Eloquent model is converted to an array or JSON using the `toArray` and `toJson` methods, your custom cast value objects will typically be serialized as well as long as they implement the `Illuminate\\Contracts\\Support\\Arrayable` and `JsonSerializable` interfaces. However, when using value objects provided by third-party libraries, you may not have the ability to add these interfaces to the object."
+msgstr ""
+
+#: docs/8.x/eloquent-mutators.md:block 109 (paragraph)
+msgid "Therefore, you may specify that your custom cast class will be responsible for serializing the value object. To do so, your custom cast class should implement the `Illuminate\\Contracts\\Database\\Eloquent\\SerializesCastableAttributes` interface. This interface states that your class should contain a `serialize` method which should return the serialized form of your value object:"
+msgstr ""
+
+#: docs/8.x/eloquent-mutators.md:block 110 (code)
+msgid ""
+"/**\n"
+" * Get the serialized representation of the value.\n"
+" *\n"
+" * @param  \\Illuminate\\Database\\Eloquent\\Model  $model\n"
+" * @param  string  $key\n"
+" * @param  mixed  $value\n"
+" * @param  array  $attributes\n"
+" * @return mixed\n"
+" */\n"
+"public function serialize($model, string $key, $value, array $attributes)\n"
+"{\n"
+"    return (string) $value;\n"
+"}\n"
+msgstr ""
+
+#: docs/8.x/eloquent-mutators.md:block 112 (header)
+msgid "Inbound Casting"
+msgstr ""
+
+#: docs/8.x/eloquent-mutators.md:block 113 (paragraph)
+msgid "Occasionally, you may need to write a custom cast that only transforms values that are being set on the model and does not perform any operations when attributes are being retrieved from the model. A classic example of an inbound only cast is a \"hashing\" cast. Inbound only custom casts should implement the `CastsInboundAttributes` interface, which only requires a `set` method to be defined."
+msgstr ""
+
+#: docs/8.x/eloquent-mutators.md:block 114 (code)
+msgid ""
+"<?php\n"
+"\n"
+"namespace App\\Casts;\n"
+"\n"
+"use Illuminate\\Contracts\\Database\\Eloquent\\CastsInboundAttributes;\n"
+"\n"
+"class Hash implements CastsInboundAttributes\n"
+"{\n"
+"    /**\n"
+"     * The hashing algorithm.\n"
+"     *\n"
+"     * @var string\n"
+"     */\n"
+"    protected $algorithm;\n"
+"\n"
+"    /**\n"
+"     * Create a new cast class instance.\n"
+"     *\n"
+"     * @param  string|null  $algorithm\n"
+"     * @return void\n"
+"     */\n"
+"    public function __construct($algorithm = null)\n"
+"    {\n"
+"        $this->algorithm = $algorithm;\n"
+"    }\n"
+"\n"
+"    /**\n"
+"     * Prepare the given value for storage.\n"
+"     *\n"
+"     * @param  \\Illuminate\\Database\\Eloquent\\Model  $model\n"
+"     * @param  string  $key\n"
+"     * @param  array  $value\n"
+"     * @param  array  $attributes\n"
+"     * @return string\n"
+"     */\n"
+"    public function set($model, $key, $value, $attributes)\n"
+"    {\n"
+"        return is_null($this->algorithm)\n"
+"                    ? bcrypt($value)\n"
+"                    : hash($this->algorithm, $value);\n"
+"    }\n"
+"}\n"
+msgstr ""
+
+#: docs/8.x/eloquent-mutators.md:block 116 (header)
+msgid "Cast Parameters"
+msgstr ""
+
+#: docs/8.x/eloquent-mutators.md:block 117 (paragraph)
+msgid "When attaching a custom cast to a model, cast parameters may be specified by separating them from the class name using a `:` character and comma-delimiting multiple parameters. The parameters will be passed to the constructor of the cast class:"
+msgstr ""
+
+#: docs/8.x/eloquent-mutators.md:block 118 (code)
+msgid ""
+"/**\n"
+" * The attributes that should be cast.\n"
+" *\n"
+" * @var array\n"
+" */\n"
+"protected $casts = [\n"
+"    'secret' => Hash::class.':sha256',\n"
+"];\n"
+msgstr ""
+
+#: docs/8.x/eloquent-mutators.md:block 120 (header)
+msgid "Castables"
+msgstr ""
+
+#: docs/8.x/eloquent-mutators.md:block 121 (paragraph)
+msgid "You may want to allow your application's value objects to define their own custom cast classes. Instead of attaching the custom cast class to your model, you may alternatively attach a value object class that implements the `Illuminate\\Contracts\\Database\\Eloquent\\Castable` interface:"
+msgstr ""
+
+#: docs/8.x/eloquent-mutators.md:block 122 (code)
+msgid ""
+"use App\\Models\\Address;\n"
+"\n"
+"protected $casts = [\n"
+"    'address' => Address::class,\n"
+"];\n"
+msgstr ""
+
+#: docs/8.x/eloquent-mutators.md:block 123 (paragraph)
+msgid "Objects that implement the `Castable` interface must define a `castUsing` method that returns the class name of the custom caster class that is responsible for casting to and from the `Castable` class:"
+msgstr ""
+
+#: docs/8.x/eloquent-mutators.md:block 124 (code)
+msgid ""
+"<?php\n"
+"\n"
+"namespace App\\Models;\n"
+"\n"
+"use Illuminate\\Contracts\\Database\\Eloquent\\Castable;\n"
+"use App\\Casts\\Address as AddressCast;\n"
+"\n"
+"class Address implements Castable\n"
+"{\n"
+"    /**\n"
+"     * Get the name of the caster class to use when casting from / to this cast target.\n"
+"     *\n"
+"     * @param  array  $arguments\n"
+"     * @return string\n"
+"     */\n"
+"    public static function castUsing(array $arguments)\n"
+"    {\n"
+"        return AddressCast::class;\n"
+"    }\n"
+"}\n"
+msgstr ""
+
+#: docs/8.x/eloquent-mutators.md:block 125 (paragraph)
+msgid "When using `Castable` classes, you may still provide arguments in the `$casts` definition. The arguments will be passed to the `castUsing` method:"
+msgstr ""
+
+#: docs/8.x/eloquent-mutators.md:block 126 (code)
+msgid ""
+"use App\\Models\\Address;\n"
+"\n"
+"protected $casts = [\n"
+"    'address' => Address::class.':argument',\n"
+"];\n"
+msgstr ""
+
+#: docs/8.x/eloquent-mutators.md:block 128 (header)
+msgid "Castables & Anonymous Cast Classes"
+msgstr ""
+
+#: docs/8.x/eloquent-mutators.md:block 129 (paragraph)
+msgid "By combining \"castables\" with PHP's [anonymous classes](https://www.php.net/manual/en/language.oop5.anonymous.php), you may define a value object and its casting logic as a single castable object. To accomplish this, return an anonymous class from your value object's `castUsing` method. The anonymous class should implement the `CastsAttributes` interface:"
+msgstr ""
+
+#: docs/8.x/eloquent-mutators.md:block 130 (code)
+msgid ""
+"<?php\n"
+"\n"
+"namespace App\\Models;\n"
+"\n"
+"use Illuminate\\Contracts\\Database\\Eloquent\\Castable;\n"
+"use Illuminate\\Contracts\\Database\\Eloquent\\CastsAttributes;\n"
+"\n"
+"class Address implements Castable\n"
+"{\n"
+"    // ...\n"
+"\n"
+"    /**\n"
+"     * Get the caster class to use when casting from / to this cast target.\n"
+"     *\n"
+"     * @param  array  $arguments\n"
+"     * @return object|string\n"
+"     */\n"
+"    public static function castUsing(array $arguments)\n"
+"    {\n"
+"        return new class implements CastsAttributes\n"
+"        {\n"
+"            public function get($model, $key, $value, $attributes)\n"
+"            {\n"
+"                return new Address(\n"
+"                    $attributes['address_line_one'],\n"
+"                    $attributes['address_line_two']\n"
+"                );\n"
+"            }\n"
+"\n"
+"            public function set($model, $key, $value, $attributes)\n"
+"            {\n"
+"                return [\n"
+"                    'address_line_one' => $value->lineOne,\n"
+"                    'address_line_two' => $value->lineTwo,\n"
+"                ];\n"
+"            }\n"
+"        };\n"
+"    }\n"
+"}\n"
+msgstr ""
+
+#: docs/9.x/eloquent-mutators.md:block 10 (paragraph)
+msgid "An accessor transforms an Eloquent attribute value when it is accessed. To define an accessor, create a protected method on your model to represent the accessible attribute. This method name should correspond to the \"camel case\" representation of the true underlying model attribute / database column when applicable."
+msgstr ""
+
+#: docs/9.x/eloquent-mutators.md:block 11 (paragraph)
+msgid "In this example, we'll define an accessor for the `first_name` attribute. The accessor will automatically be called by Eloquent when attempting to retrieve the value of the `first_name` attribute. All attribute accessor / mutator methods must declare a return type-hint of `Illuminate\\Database\\Eloquent\\Casts\\Attribute`:"
+msgstr ""
+
+#: docs/9.x/eloquent-mutators.md:block 12 (code)
+msgid ""
+"<?php\n"
+"\n"
+"namespace App\\Models;\n"
+"\n"
+"use Illuminate\\Database\\Eloquent\\Casts\\Attribute;\n"
+"use Illuminate\\Database\\Eloquent\\Model;\n"
+"\n"
+"class User extends Model\n"
+"{\n"
+"    /**\n"
+"     * Get the user's first name.\n"
+"     *\n"
+"     * @return \\Illuminate\\Database\\Eloquent\\Casts\\Attribute\n"
+"     */\n"
+"    protected function firstName(): Attribute\n"
+"    {\n"
+"        return Attribute::make(\n"
+"            get: fn ($value) => ucfirst($value),\n"
+"        );\n"
+"    }\n"
+"}\n"
+msgstr ""
+
+#: docs/9.x/eloquent-mutators.md:block 13 (paragraph)
+msgid "All accessor methods return an `Attribute` instance which defines how the attribute will be accessed and, optionally, mutated. In this example, we are only defining how the attribute will be accessed. To do so, we supply the `get` argument to the `Attribute` class constructor."
+msgstr ""
+
+#: docs/9.x/eloquent-mutators.md:block 18 (header)
+msgid "Building Value Objects From Multiple Attributes"
+msgstr ""
+
+#: docs/9.x/eloquent-mutators.md:block 19 (paragraph)
+msgid "Sometimes your accessor may need to transform multiple model attributes into a single \"value object\". To do so, your `get` closure may accept a second argument of `$attributes`, which will be automatically supplied to the closure and will contain an array of all of the model's current attributes:"
+msgstr ""
+
+#: docs/9.x/eloquent-mutators.md:block 20 (code)
+msgid ""
+"use App\\Support\\Address;\n"
+"use Illuminate\\Database\\Eloquent\\Casts\\Attribute;\n"
+"\n"
+"/**\n"
+" * Interact with the user's address.\n"
+" *\n"
+" * @return  \\Illuminate\\Database\\Eloquent\\Casts\\Attribute\n"
+" */\n"
+"public function address(): Attribute\n"
+"{\n"
+"    return Attribute::make(\n"
+"        get: fn ($value, $attributes) => new Address(\n"
+"            $attributes['address_line_one'],\n"
+"            $attributes['address_line_two'],\n"
+"        ),\n"
+"    );\n"
+"}\n"
+msgstr ""
+
+#: docs/9.x/eloquent-mutators.md:block 22 (header)
+msgid "Accessor Caching"
+msgstr ""
+
+#: docs/9.x/eloquent-mutators.md:block 23 (paragraph)
+msgid "When returning value objects from accessors, any changes made to the value object will automatically be synced back to the model before the model is saved. This is possible because Eloquent retains instances returned by accessors so it can return the same instance each time the accessor is invoked:"
+msgstr ""
+
+#: docs/9.x/eloquent-mutators.md:block 24 (code)
+msgid ""
+"use App\\Models\\User;\n"
+"\n"
+"$user = User::find(1);\n"
+"\n"
+"$user->address->lineOne = 'Updated Address Line 1 Value';\n"
+"$user->address->lineTwo = 'Updated Address Line 2 Value';\n"
+"\n"
+"$user->save();\n"
+msgstr ""
+
+#: docs/9.x/eloquent-mutators.md:block 25 (paragraph)
+msgid "However, you may sometimes wish to enable caching for primitive values like strings and booleans, particularly if they are computationally intensive. To accomplish this, you may invoke the `shouldCache` method when defining your accessor:"
+msgstr ""
+
+#: docs/9.x/eloquent-mutators.md:block 26 (code)
+msgid ""
+"public function hash(): Attribute\n"
+"{\n"
+"    return Attribute::make(\n"
+"        get: fn ($value) => bcrypt(gzuncompress($value)),\n"
+"    )->shouldCache();\n"
+"}\n"
+msgstr ""
+
+#: docs/9.x/eloquent-mutators.md:block 27 (paragraph)
+msgid "If you would like to disable the object caching behavior of attributes, you may invoke the `withoutObjectCaching` method when defining the attribute:"
+msgstr ""
+
+#: docs/9.x/eloquent-mutators.md:block 28 (code)
+msgid ""
+"/**\n"
+" * Interact with the user's address.\n"
+" *\n"
+" * @return  \\Illuminate\\Database\\Eloquent\\Casts\\Attribute\n"
+" */\n"
+"public function address(): Attribute\n"
+"{\n"
+"    return Attribute::make(\n"
+"        get: fn ($value, $attributes) => new Address(\n"
+"            $attributes['address_line_one'],\n"
+"            $attributes['address_line_two'],\n"
+"        ),\n"
+"    )->withoutObjectCaching();\n"
+"}\n"
+msgstr ""
+
+#: docs/9.x/eloquent-mutators.md:block 31 (paragraph)
+msgid "A mutator transforms an Eloquent attribute value when it is set. To define a mutator, you may provide the `set` argument when defining your attribute. Let's define a mutator for the `first_name` attribute. This mutator will be automatically called when we attempt to set the value of the `first_name` attribute on the model:"
+msgstr ""
+
+#: docs/9.x/eloquent-mutators.md:block 32 (code)
+msgid ""
+"<?php\n"
+"\n"
+"namespace App\\Models;\n"
+"\n"
+"use Illuminate\\Database\\Eloquent\\Casts\\Attribute;\n"
+"use Illuminate\\Database\\Eloquent\\Model;\n"
+"\n"
+"class User extends Model\n"
+"{\n"
+"    /**\n"
+"     * Interact with the user's first name.\n"
+"     *\n"
+"     * @param  string  $value\n"
+"     * @return \\Illuminate\\Database\\Eloquent\\Casts\\Attribute\n"
+"     */\n"
+"    protected function firstName(): Attribute\n"
+"    {\n"
+"        return Attribute::make(\n"
+"            get: fn ($value) => ucfirst($value),\n"
+"            set: fn ($value) => strtolower($value),\n"
+"        );\n"
+"    }\n"
+"}\n"
+msgstr ""
+
+#: docs/9.x/eloquent-mutators.md:block 33 (paragraph)
+msgid "The mutator closure will receive the value that is being set on the attribute, allowing you to manipulate the value and return the manipulated value. To use our mutator, we only need to set the `first_name` attribute on an Eloquent model:"
+msgstr ""
+
+#: docs/9.x/eloquent-mutators.md:block 35 (paragraph)
+msgid "In this example, the `set` callback will be called with the value `Sally`. The mutator will then apply the `strtolower` function to the name and set its resulting value in model's the internal `$attributes` array."
+msgstr ""
+
+#: docs/9.x/eloquent-mutators.md:block 37 (header)
+msgid "Mutating Multiple Attributes"
+msgstr ""
+
+#: docs/9.x/eloquent-mutators.md:block 38 (paragraph)
+msgid "Sometimes your mutator may need to set multiple attributes on the underlying model. To do so, you may return an array from the `set` closure. Each key in the array should correspond with an underlying attribute / database column associated with the model:"
+msgstr ""
+
+#: docs/9.x/eloquent-mutators.md:block 39 (code)
+msgid ""
+"use App\\Support\\Address;\n"
+"use Illuminate\\Database\\Eloquent\\Casts\\Attribute;\n"
+"\n"
+"/**\n"
+" * Interact with the user's address.\n"
+" *\n"
+" * @return  \\Illuminate\\Database\\Eloquent\\Casts\\Attribute\n"
+" */\n"
+"public function address(): Attribute\n"
+"{\n"
+"    return Attribute::make(\n"
+"        get: fn ($value, $attributes) => new Address(\n"
+"            $attributes['address_line_one'],\n"
+"            $attributes['address_line_two'],\n"
+"        ),\n"
+"        set: fn (Address $value) => [\n"
+"            'address_line_one' => $value->lineOne,\n"
+"            'address_line_two' => $value->lineTwo,\n"
+"        ],\n"
+"    );\n"
+"}\n"
+msgstr ""
+
+#: docs/9.x/eloquent-mutators.md:block 91 (paragraph)
+msgid "Eloquent also allows you to cast your attribute values to PHP [\"backed\" Enums](https://www.php.net/manual/en/language.enumerations.backed.php). To accomplish this, you may specify the attribute and enum you wish to cast in your model's `$casts` property array:"
+msgstr ""
+
+#: docs/9.x/eloquent-mutators.md:block 100 (header)
+msgid "Key Rotation"
+msgstr ""
+
+#: docs/9.x/eloquent-mutators.md:block 101 (paragraph)
+msgid "As you may know, Laravel encrypts strings using the `key` configuration value specified in your application's `app` configuration file. Typically, this value corresponds to the value of the `APP_KEY` environment variable. If you need to rotate your application's encryption key, you will need to manually re-encrypt your encrypted attributes using the new key."
+msgstr ""
+
+#: docs/master/eloquent-mutators.md:block 12 (code)
+msgid ""
+"<?php\n"
+"\n"
+"namespace App\\Models;\n"
+"\n"
+"use Illuminate\\Database\\Eloquent\\Casts\\Attribute;\n"
+"use Illuminate\\Database\\Eloquent\\Model;\n"
+"\n"
+"class User extends Model\n"
+"{\n"
+"    /**\n"
+"     * Get the user's first name.\n"
+"     *\n"
+"     * @return \\Illuminate\\Database\\Eloquent\\Casts\\Attribute\n"
+"     */\n"
+"    protected function firstName(): Attribute\n"
+"    {\n"
+"        return new Attribute(\n"
+"            get: fn ($value) => ucfirst($value),\n"
+"        );\n"
+"    }\n"
+"}\n"
+msgstr ""
+
+#: docs/master/eloquent-mutators.md:block 20 (code)
+msgid ""
+"use App\\Support\\Address;\n"
+"use Illuminate\\Database\\Eloquent\\Casts\\Attribute;\n"
+"\n"
+"/**\n"
+" * Interact with the user's address.\n"
+" *\n"
+" * @return  \\Illuminate\\Database\\Eloquent\\Casts\\Attribute\n"
+" */\n"
+"public function address(): Attribute\n"
+"{\n"
+"    return new Attribute(\n"
+"        get: fn ($value, $attributes) => new Address(\n"
+"            $attributes['address_line_one'],\n"
+"            $attributes['address_line_two'],\n"
+"        ),\n"
+"    );\n"
+"}\n"
+msgstr ""
+
+#: docs/master/eloquent-mutators.md:block 21 (paragraph)
+msgid "When returning value objects from accessors, any changes made to the value object will automatically be synced back to the model before the model is saved. This is possible because Eloquent retains instances returned by accessors so it can be return the same instance each time the accessor is invoked:"
+msgstr ""
+
+#: docs/master/eloquent-mutators.md:block 24 (code)
+msgid ""
+"/**\n"
+" * Interact with the user's address.\n"
+" *\n"
+" * @return  \\Illuminate\\Database\\Eloquent\\Casts\\Attribute\n"
+" */\n"
+"public function address(): Attribute\n"
+"{\n"
+"    return (new Attribute(\n"
+"        get: fn ($value, $attributes) => new Address(\n"
+"            $attributes['address_line_one'],\n"
+"            $attributes['address_line_two'],\n"
+"        ),\n"
+"    ))->withoutObjectCaching();\n"
+"}\n"
+msgstr ""
+
+#: docs/master/eloquent-mutators.md:block 28 (code)
+msgid ""
+"<?php\n"
+"\n"
+"namespace App\\Models;\n"
+"\n"
+"use Illuminate\\Database\\Eloquent\\Casts\\Attribute;\n"
+"use Illuminate\\Database\\Eloquent\\Model;\n"
+"\n"
+"class User extends Model\n"
+"{\n"
+"    /**\n"
+"     * Interact with the user's first name.\n"
+"     *\n"
+"     * @param  string  $value\n"
+"     * @return \\Illuminate\\Database\\Eloquent\\Casts\\Attribute\n"
+"     */\n"
+"    protected function firstName(): Attribute\n"
+"    {\n"
+"        return new Attribute(\n"
+"            get: fn ($value) => ucfirst($value),\n"
+"            set: fn ($value) => strtolower($value),\n"
+"        );\n"
+"    }\n"
+"}\n"
+msgstr ""
+
+#: docs/master/eloquent-mutators.md:block 35 (code)
+msgid ""
+"use App\\Support\\Address;\n"
+"use Illuminate\\Database\\Eloquent\\Casts\\Attribute;\n"
+"\n"
+"/**\n"
+" * Interact with the user's address.\n"
+" *\n"
+" * @return  \\Illuminate\\Database\\Eloquent\\Casts\\Attribute\n"
+" */\n"
+"public function address(): Attribute\n"
+"{\n"
+"    return new Attribute(\n"
+"        get: fn ($value, $attributes) => new Address(\n"
+"            $attributes['address_line_one'],\n"
+"            $attributes['address_line_two'],\n"
+"        ),\n"
+"        set: fn (Address $value) => [\n"
+"            'address_line_one' => $value->lineOne,\n"
+"            'address_line_two' => $value->lineTwo,\n"
+"        ],\n"
+"    );\n"
+"}\n"
+msgstr ""
+
+#: docs/master/eloquent-mutators.md:block 87 (paragraph)
+msgid "Eloquent also allows you to cast your attribute values to PHP [\"backed\" enums](https://www.php.net/manual/en/language.enumerations.backed.php). To accomplish this, you may specify the attribute and enum you wish to cast in your model's `$casts` property array:"
+msgstr ""

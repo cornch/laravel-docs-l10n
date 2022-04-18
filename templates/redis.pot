@@ -1,0 +1,652 @@
+#
+msgid ""
+msgstr ""
+
+#: docs/8.x/redis.md:block 1 (header)
+msgid "Redis"
+msgstr ""
+
+#: docs/8.x/redis.md:block 2 (unordered list)
+msgid "[Introduction](#introduction)"
+msgstr ""
+
+#: docs/8.x/redis.md:block 2 (unordered list)
+msgid "[Configuration](#configuration)"
+msgstr ""
+
+#: docs/8.x/redis.md:block 2 (unordered list)
+msgid "[Clusters](#clusters)"
+msgstr ""
+
+#: docs/8.x/redis.md:block 2 (unordered list)
+msgid "[Predis](#predis)"
+msgstr ""
+
+#: docs/8.x/redis.md:block 2 (unordered list)
+msgid "[phpredis](#phpredis)"
+msgstr ""
+
+#: docs/8.x/redis.md:block 2 (unordered list)
+msgid "[Interacting With Redis](#interacting-with-redis)"
+msgstr ""
+
+#: docs/8.x/redis.md:block 2 (unordered list)
+msgid "[Transactions](#transactions)"
+msgstr ""
+
+#: docs/8.x/redis.md:block 2 (unordered list)
+msgid "[Pipelining Commands](#pipelining-commands)"
+msgstr ""
+
+#: docs/8.x/redis.md:block 2 (unordered list)
+msgid "[Pub / Sub](#pubsub)"
+msgstr ""
+
+#: docs/8.x/redis.md:block 4 (header)
+msgid "Introduction"
+msgstr ""
+
+#: docs/8.x/redis.md:block 5 (paragraph)
+msgid "[Redis](https://redis.io) is an open source, advanced key-value store. It is often referred to as a data structure server since keys can contain [strings](https://redis.io/topics/data-types#strings), [hashes](https://redis.io/topics/data-types#hashes), [lists](https://redis.io/topics/data-types#lists), [sets](https://redis.io/topics/data-types#sets), and [sorted sets](https://redis.io/topics/data-types#sorted-sets)."
+msgstr ""
+
+#: docs/8.x/redis.md:block 6 (paragraph)
+msgid "Before using Redis with Laravel, we encourage you to install and use the [phpredis](https://github.com/phpredis/phpredis) PHP extension via PECL. The extension is more complex to install compared to \"user-land\" PHP packages but may yield better performance for applications that make heavy use of Redis. If you are using [Laravel Sail](/docs/{{version}}/sail), this extension is already installed in your application's Docker container."
+msgstr ""
+
+#: docs/8.x/redis.md:block 7 (paragraph)
+msgid "If you are unable to install the phpredis extension, you may install the `predis/predis` package via Composer. Predis is a Redis client written entirely in PHP and does not require any additional extensions:"
+msgstr ""
+
+#: docs/8.x/redis.md:block 8 (code)
+msgid "composer require predis/predis\n"
+msgstr ""
+
+#: docs/8.x/redis.md:block 10 (header)
+msgid "Configuration"
+msgstr ""
+
+#: docs/8.x/redis.md:block 11 (paragraph)
+msgid "You may configure your application's Redis settings via the `config/database.php` configuration file. Within this file, you will see a `redis` array containing the Redis servers utilized by your application:"
+msgstr ""
+
+#: docs/8.x/redis.md:block 12 (code)
+msgid ""
+"'redis' => [\n"
+"\n"
+"    'client' => env('REDIS_CLIENT', 'phpredis'),\n"
+"\n"
+"    'default' => [\n"
+"        'host' => env('REDIS_HOST', '127.0.0.1'),\n"
+"        'password' => env('REDIS_PASSWORD', null),\n"
+"        'port' => env('REDIS_PORT', 6379),\n"
+"        'database' => env('REDIS_DB', 0),\n"
+"    ],\n"
+"\n"
+"    'cache' => [\n"
+"        'host' => env('REDIS_HOST', '127.0.0.1'),\n"
+"        'password' => env('REDIS_PASSWORD', null),\n"
+"        'port' => env('REDIS_PORT', 6379),\n"
+"        'database' => env('REDIS_CACHE_DB', 1),\n"
+"    ],\n"
+"\n"
+"],\n"
+msgstr ""
+
+#: docs/8.x/redis.md:block 13 (paragraph)
+msgid "Each Redis server defined in your configuration file is required to have a name, host, and a port unless you define a single URL to represent the Redis connection:"
+msgstr ""
+
+#: docs/8.x/redis.md:block 14 (code)
+msgid ""
+"'redis' => [\n"
+"\n"
+"    'client' => env('REDIS_CLIENT', 'phpredis'),\n"
+"\n"
+"    'default' => [\n"
+"        'url' => 'tcp://127.0.0.1:6379?database=0',\n"
+"    ],\n"
+"\n"
+"    'cache' => [\n"
+"        'url' => 'tls://user:password@127.0.0.1:6380?database=1',\n"
+"    ],\n"
+"\n"
+"],\n"
+msgstr ""
+
+#: docs/8.x/redis.md:block 16 (header)
+msgid "Configuring The Connection Scheme"
+msgstr ""
+
+#: docs/8.x/redis.md:block 17 (paragraph)
+msgid "By default, Redis clients will use the `tcp` scheme when connecting to your Redis servers; however, you may use TLS / SSL encryption by specifying a `scheme` configuration option in your Redis server's configuration array:"
+msgstr ""
+
+#: docs/8.x/redis.md:block 18 (code)
+msgid ""
+"'redis' => [\n"
+"\n"
+"    'client' => env('REDIS_CLIENT', 'phpredis'),\n"
+"\n"
+"    'default' => [\n"
+"        'scheme' => 'tls',\n"
+"        'host' => env('REDIS_HOST', '127.0.0.1'),\n"
+"        'password' => env('REDIS_PASSWORD', null),\n"
+"        'port' => env('REDIS_PORT', 6379),\n"
+"        'database' => env('REDIS_DB', 0),\n"
+"    ],\n"
+"\n"
+"],\n"
+msgstr ""
+
+#: docs/8.x/redis.md:block 20 (header)
+msgid "Clusters"
+msgstr ""
+
+#: docs/8.x/redis.md:block 21 (paragraph)
+msgid "If your application is utilizing a cluster of Redis servers, you should define these clusters within a `clusters` key of your Redis configuration. This configuration key does not exist by default so you will need to create it within your application's `config/database.php` configuration file:"
+msgstr ""
+
+#: docs/8.x/redis.md:block 22 (code)
+msgid ""
+"'redis' => [\n"
+"\n"
+"    'client' => env('REDIS_CLIENT', 'phpredis'),\n"
+"\n"
+"    'clusters' => [\n"
+"        'default' => [\n"
+"            [\n"
+"                'host' => env('REDIS_HOST', 'localhost'),\n"
+"                'password' => env('REDIS_PASSWORD', null),\n"
+"                'port' => env('REDIS_PORT', 6379),\n"
+"                'database' => 0,\n"
+"            ],\n"
+"        ],\n"
+"    ],\n"
+"\n"
+"],\n"
+msgstr ""
+
+#: docs/8.x/redis.md:block 23 (paragraph)
+msgid "By default, clusters will perform client-side sharding across your nodes, allowing you to pool nodes and create a large amount of available RAM. However, client-side sharding does not handle failover; therefore, it is primarily suited for transient cached data that is available from another primary data store."
+msgstr ""
+
+#: docs/8.x/redis.md:block 24 (paragraph)
+msgid "If you would like to use native Redis clustering instead of client-side sharding, you may specify this by setting the `options.cluster` configuration value to `redis` within your application's `config/database.php` configuration file:"
+msgstr ""
+
+#: docs/8.x/redis.md:block 25 (code)
+msgid ""
+"'redis' => [\n"
+"\n"
+"    'client' => env('REDIS_CLIENT', 'phpredis'),\n"
+"\n"
+"    'options' => [\n"
+"        'cluster' => env('REDIS_CLUSTER', 'redis'),\n"
+"    ],\n"
+"\n"
+"    'clusters' => [\n"
+"        // ...\n"
+"    ],\n"
+"\n"
+"],\n"
+msgstr ""
+
+#: docs/8.x/redis.md:block 27 (header)
+msgid "Predis"
+msgstr ""
+
+#: docs/8.x/redis.md:block 28 (paragraph)
+msgid "If you would like your application to interact with Redis via the Predis package, you should ensure the `REDIS_CLIENT` environment variable's value is `predis`:"
+msgstr ""
+
+#: docs/8.x/redis.md:block 29 (code)
+msgid ""
+"'redis' => [\n"
+"\n"
+"    'client' => env('REDIS_CLIENT', 'predis'),\n"
+"\n"
+"    // ...\n"
+"],\n"
+msgstr ""
+
+#: docs/8.x/redis.md:block 30 (paragraph)
+msgid "In addition to the default `host`, `port`, `database`, and `password` server configuration options, Predis supports additional [connection parameters](https://github.com/nrk/predis/wiki/Connection-Parameters) that may be defined for each of your Redis servers. To utilize these additional configuration options, add them to your Redis server configuration in your application's `config/database.php` configuration file:"
+msgstr ""
+
+#: docs/8.x/redis.md:block 31 (code)
+msgid ""
+"'default' => [\n"
+"    'host' => env('REDIS_HOST', 'localhost'),\n"
+"    'password' => env('REDIS_PASSWORD', null),\n"
+"    'port' => env('REDIS_PORT', 6379),\n"
+"    'database' => 0,\n"
+"    'read_write_timeout' => 60,\n"
+"],\n"
+msgstr ""
+
+#: docs/8.x/redis.md:block 33 (header)
+msgid "The Redis Facade Alias"
+msgstr ""
+
+#: docs/8.x/redis.md:block 34 (paragraph)
+msgid "Laravel's `config/app.php` configuration file contains an `aliases` array which defines all of the class aliases that will be registered by the framework. For convenience, an alias entry is included for each [facade](/docs/{{version}}/facades) offered by Laravel; however, the `Redis` alias is disabled because it conflicts with the `Redis` class name provided by the phpredis extension. If you are using the Predis client and would like to enable this alias, you may un-comment the alias in your application's `config/app.php` configuration file."
+msgstr ""
+
+#: docs/8.x/redis.md:block 36 (header)
+msgid "phpredis"
+msgstr ""
+
+#: docs/8.x/redis.md:block 37 (paragraph)
+msgid "By default, Laravel will use the phpredis extension to communicate with Redis. The client that Laravel will use to communicate with Redis is dictated by the value of the `redis.client` configuration option, which typically reflects the value of the `REDIS_CLIENT` environment variable:"
+msgstr ""
+
+#: docs/8.x/redis.md:block 38 (code)
+msgid ""
+"'redis' => [\n"
+"\n"
+"    'client' => env('REDIS_CLIENT', 'phpredis'),\n"
+"\n"
+"    // Rest of Redis configuration...\n"
+"],\n"
+msgstr ""
+
+#: docs/8.x/redis.md:block 39 (paragraph)
+msgid "In addition to the default `scheme`, `host`, `port`, `database`, and `password` server configuration options, phpredis supports the following additional connection parameters: `name`, `persistent`, `persistent_id`, `prefix`, `read_timeout`, `retry_interval`, `timeout`, and `context`. You may add any of these options to your Redis server configuration in the `config/database.php` configuration file:"
+msgstr ""
+
+#: docs/8.x/redis.md:block 40 (code)
+msgid ""
+"'default' => [\n"
+"    'host' => env('REDIS_HOST', 'localhost'),\n"
+"    'password' => env('REDIS_PASSWORD', null),\n"
+"    'port' => env('REDIS_PORT', 6379),\n"
+"    'database' => 0,\n"
+"    'read_timeout' => 60,\n"
+"    'context' => [\n"
+"        // 'auth' => ['username', 'secret'],\n"
+"        // 'stream' => ['verify_peer' => false],\n"
+"    ],\n"
+"],\n"
+msgstr ""
+
+#: docs/8.x/redis.md:block 42 (header)
+msgid "phpredis Serialization & Compression"
+msgstr ""
+
+#: docs/8.x/redis.md:block 43 (paragraph)
+msgid "The phpredis extension may also be configured to use a variety serialization and compression algorithms. These algorithms can be configured via the `options` array of your Redis configuration:"
+msgstr ""
+
+#: docs/8.x/redis.md:block 44 (code)
+msgid ""
+"use Redis;\n"
+"\n"
+"'redis' => [\n"
+"\n"
+"    'client' => env('REDIS_CLIENT', 'phpredis'),\n"
+"\n"
+"    'options' => [\n"
+"        'serializer' => Redis::SERIALIZER_MSGPACK,\n"
+"        'compression' => Redis::COMPRESSION_LZ4,\n"
+"    ],\n"
+"\n"
+"    // Rest of Redis configuration...\n"
+"],\n"
+msgstr ""
+
+#: docs/8.x/redis.md:block 45 (paragraph)
+msgid "Currently supported serialization algorithms include: `Redis::SERIALIZER_NONE` (default), `Redis::SERIALIZER_PHP`, `Redis::SERIALIZER_JSON`, `Redis::SERIALIZER_IGBINARY`, and `Redis::SERIALIZER_MSGPACK`."
+msgstr ""
+
+#: docs/8.x/redis.md:block 46 (paragraph)
+msgid "Supported compression algorithms include: `Redis::COMPRESSION_NONE` (default), `Redis::COMPRESSION_LZF`, `Redis::COMPRESSION_ZSTD`, and `Redis::COMPRESSION_LZ4`."
+msgstr ""
+
+#: docs/8.x/redis.md:block 48 (header)
+msgid "Interacting With Redis"
+msgstr ""
+
+#: docs/8.x/redis.md:block 49 (paragraph)
+msgid "You may interact with Redis by calling various methods on the `Redis` [facade](/docs/{{version}}/facades). The `Redis` facade supports dynamic methods, meaning you may call any [Redis command](https://redis.io/commands) on the facade and the command will be passed directly to Redis. In this example, we will call the Redis `GET` command by calling the `get` method on the `Redis` facade:"
+msgstr ""
+
+#: docs/8.x/redis.md:block 50 (code)
+msgid ""
+"<?php\n"
+"\n"
+"namespace App\\Http\\Controllers;\n"
+"\n"
+"use App\\Http\\Controllers\\Controller;\n"
+"use Illuminate\\Support\\Facades\\Redis;\n"
+"\n"
+"class UserController extends Controller\n"
+"{\n"
+"    /**\n"
+"     * Show the profile for the given user.\n"
+"     *\n"
+"     * @param  int  $id\n"
+"     * @return \\Illuminate\\Http\\Response\n"
+"     */\n"
+"    public function show($id)\n"
+"    {\n"
+"        return view('user.profile', [\n"
+"            'user' => Redis::get('user:profile:'.$id)\n"
+"        ]);\n"
+"    }\n"
+"}\n"
+msgstr ""
+
+#: docs/8.x/redis.md:block 51 (paragraph)
+msgid "As mentioned above, you may call any of Redis' commands on the `Redis` facade. Laravel uses magic methods to pass the commands to the Redis server. If a Redis command expects arguments, you should pass those to the facade's corresponding method:"
+msgstr ""
+
+#: docs/8.x/redis.md:block 52 (code)
+msgid ""
+"use Illuminate\\Support\\Facades\\Redis;\n"
+"\n"
+"Redis::set('name', 'Taylor');\n"
+"\n"
+"$values = Redis::lrange('names', 5, 10);\n"
+msgstr ""
+
+#: docs/8.x/redis.md:block 53 (paragraph)
+msgid "Alternatively, you may pass commands to the server using the `Redis` facade's `command` method, which accepts the name of the command as its first argument and an array of values as its second argument:"
+msgstr ""
+
+#: docs/8.x/redis.md:block 54 (code)
+msgid "$values = Redis::command('lrange', ['name', 5, 10]);\n"
+msgstr ""
+
+#: docs/8.x/redis.md:block 56 (header)
+msgid "Using Multiple Redis Connections"
+msgstr ""
+
+#: docs/8.x/redis.md:block 57 (paragraph)
+msgid "Your application's `config/database.php` configuration file allows you to define multiple Redis connections / servers. You may obtain a connection to a specific Redis connection using the `Redis` facade's `connection` method:"
+msgstr ""
+
+#: docs/8.x/redis.md:block 58 (code)
+msgid "$redis = Redis::connection('connection-name');\n"
+msgstr ""
+
+#: docs/8.x/redis.md:block 59 (paragraph)
+msgid "To obtain an instance of the default Redis connection, you may call the `connection` method without any additional arguments:"
+msgstr ""
+
+#: docs/8.x/redis.md:block 60 (code)
+msgid "$redis = Redis::connection();\n"
+msgstr ""
+
+#: docs/8.x/redis.md:block 62 (header)
+msgid "Transactions"
+msgstr ""
+
+#: docs/8.x/redis.md:block 63 (paragraph)
+msgid "The `Redis` facade's `transaction` method provides a convenient wrapper around Redis' native `MULTI` and `EXEC` commands. The `transaction` method accepts a closure as its only argument. This closure will receive a Redis connection instance and may issue any commands it would like to this instance. All of the Redis commands issued within the closure will be executed in a single, atomic transaction:"
+msgstr ""
+
+#: docs/8.x/redis.md:block 64 (code)
+msgid ""
+"use Illuminate\\Support\\Facades\\Redis;\n"
+"\n"
+"Redis::transaction(function ($redis) {\n"
+"    $redis->incr('user_visits', 1);\n"
+"    $redis->incr('total_visits', 1);\n"
+"});\n"
+msgstr ""
+
+#: docs/8.x/redis.md:block 65 (quote)
+msgid "{note} When defining a Redis transaction, you may not retrieve any values from the Redis connection. Remember, your transaction is executed as a single, atomic operation and that operation is not executed until your entire closure has finished executing its commands."
+msgstr ""
+
+#: docs/8.x/redis.md:block 66 (header)
+msgid "Lua Scripts"
+msgstr ""
+
+#: docs/8.x/redis.md:block 67 (paragraph)
+msgid "The `eval` method provides another method of executing multiple Redis commands in a single, atomic operation. However, the `eval` method has the benefit of being able to interact with and inspect Redis key values during that operation. Redis scripts are written in the [Lua programming language](https://www.lua.org)."
+msgstr ""
+
+#: docs/8.x/redis.md:block 68 (paragraph)
+msgid "The `eval` method can be a bit scary at first, but we'll explore a basic example to break the ice. The `eval` method expects several arguments. First, you should pass the Lua script (as a string) to the method. Secondly, you should pass the number of keys (as an integer) that the script interacts with. Thirdly, you should pass the names of those keys. Finally, you may pass any other additional arguments that you need to access within your script."
+msgstr ""
+
+#: docs/8.x/redis.md:block 69 (paragraph)
+msgid "In this example, we will increment a counter, inspect its new value, and increment a second counter if the first counter's value is greater than five. Finally, we will return the value of the first counter:"
+msgstr ""
+
+#: docs/8.x/redis.md:block 70 (code)
+msgid ""
+"$value = Redis::eval(<<<'LUA'\n"
+"    local counter = redis.call(\"incr\", KEYS[1])\n"
+"\n"
+"    if counter > 5 then\n"
+"        redis.call(\"incr\", KEYS[2])\n"
+"    end\n"
+"\n"
+"    return counter\n"
+"LUA, 2, 'first-counter', 'second-counter');\n"
+msgstr ""
+
+#: docs/8.x/redis.md:block 71 (quote)
+msgid "{note} Please consult the [Redis documentation](https://redis.io/commands/eval) for more information on Redis scripting."
+msgstr ""
+
+#: docs/8.x/redis.md:block 73 (header)
+msgid "Pipelining Commands"
+msgstr ""
+
+#: docs/8.x/redis.md:block 74 (paragraph)
+msgid "Sometimes you may need to execute dozens of Redis commands. Instead of making a network trip to your Redis server for each command, you may use the `pipeline` method. The `pipeline` method accepts one argument: a closure that receives a Redis instance. You may issue all of your commands to this Redis instance and they will all be sent to the Redis server at the same time to reduce network trips to the server. The commands will still be executed in the order they were issued:"
+msgstr ""
+
+#: docs/8.x/redis.md:block 75 (code)
+msgid ""
+"use Illuminate\\Support\\Facades\\Redis;\n"
+"\n"
+"Redis::pipeline(function ($pipe) {\n"
+"    for ($i = 0; $i < 1000; $i++) {\n"
+"        $pipe->set(\"key:$i\", $i);\n"
+"    }\n"
+"});\n"
+msgstr ""
+
+#: docs/8.x/redis.md:block 77 (header)
+msgid "Pub / Sub"
+msgstr ""
+
+#: docs/8.x/redis.md:block 78 (paragraph)
+msgid "Laravel provides a convenient interface to the Redis `publish` and `subscribe` commands. These Redis commands allow you to listen for messages on a given \"channel\". You may publish messages to the channel from another application, or even using another programming language, allowing easy communication between applications and processes."
+msgstr ""
+
+#: docs/8.x/redis.md:block 79 (paragraph)
+msgid "First, let's setup a channel listener using the `subscribe` method. We'll place this method call within an [Artisan command](/docs/{{version}}/artisan) since calling the `subscribe` method begins a long-running process:"
+msgstr ""
+
+#: docs/8.x/redis.md:block 80 (code)
+msgid ""
+"<?php\n"
+"\n"
+"namespace App\\Console\\Commands;\n"
+"\n"
+"use Illuminate\\Console\\Command;\n"
+"use Illuminate\\Support\\Facades\\Redis;\n"
+"\n"
+"class RedisSubscribe extends Command\n"
+"{\n"
+"    /**\n"
+"     * The name and signature of the console command.\n"
+"     *\n"
+"     * @var string\n"
+"     */\n"
+"    protected $signature = 'redis:subscribe';\n"
+"\n"
+"    /**\n"
+"     * The console command description.\n"
+"     *\n"
+"     * @var string\n"
+"     */\n"
+"    protected $description = 'Subscribe to a Redis channel';\n"
+"\n"
+"    /**\n"
+"     * Execute the console command.\n"
+"     *\n"
+"     * @return mixed\n"
+"     */\n"
+"    public function handle()\n"
+"    {\n"
+"        Redis::subscribe(['test-channel'], function ($message) {\n"
+"            echo $message;\n"
+"        });\n"
+"    }\n"
+"}\n"
+msgstr ""
+
+#: docs/8.x/redis.md:block 81 (paragraph)
+msgid "Now we may publish messages to the channel using the `publish` method:"
+msgstr ""
+
+#: docs/8.x/redis.md:block 82 (code)
+msgid ""
+"use Illuminate\\Support\\Facades\\Redis;\n"
+"\n"
+"Route::get('/publish', function () {\n"
+"    // ...\n"
+"\n"
+"    Redis::publish('test-channel', json_encode([\n"
+"        'name' => 'Adam Wathan'\n"
+"    ]));\n"
+"});\n"
+msgstr ""
+
+#: docs/8.x/redis.md:block 84 (header)
+msgid "Wildcard Subscriptions"
+msgstr ""
+
+#: docs/8.x/redis.md:block 85 (paragraph)
+msgid "Using the `psubscribe` method, you may subscribe to a wildcard channel, which may be useful for catching all messages on all channels. The channel name will be passed as the second argument to the provided closure:"
+msgstr ""
+
+#: docs/8.x/redis.md:block 86 (code)
+msgid ""
+"Redis::psubscribe(['*'], function ($message, $channel) {\n"
+"    echo $message;\n"
+"});\n"
+"\n"
+"Redis::psubscribe(['users.*'], function ($message, $channel) {\n"
+"    echo $message;\n"
+"});\n"
+msgstr ""
+
+#: docs/9.x/redis.md:block 12 (code)
+msgid ""
+"'redis' => [\n"
+"\n"
+"    'client' => env('REDIS_CLIENT', 'phpredis'),\n"
+"\n"
+"    'default' => [\n"
+"        'host' => env('REDIS_HOST', '127.0.0.1'),\n"
+"        'password' => env('REDIS_PASSWORD'),\n"
+"        'port' => env('REDIS_PORT', 6379),\n"
+"        'database' => env('REDIS_DB', 0),\n"
+"    ],\n"
+"\n"
+"    'cache' => [\n"
+"        'host' => env('REDIS_HOST', '127.0.0.1'),\n"
+"        'password' => env('REDIS_PASSWORD'),\n"
+"        'port' => env('REDIS_PORT', 6379),\n"
+"        'database' => env('REDIS_CACHE_DB', 1),\n"
+"    ],\n"
+"\n"
+"],\n"
+msgstr ""
+
+#: docs/9.x/redis.md:block 18 (code)
+msgid ""
+"'redis' => [\n"
+"\n"
+"    'client' => env('REDIS_CLIENT', 'phpredis'),\n"
+"\n"
+"    'default' => [\n"
+"        'scheme' => 'tls',\n"
+"        'host' => env('REDIS_HOST', '127.0.0.1'),\n"
+"        'password' => env('REDIS_PASSWORD'),\n"
+"        'port' => env('REDIS_PORT', 6379),\n"
+"        'database' => env('REDIS_DB', 0),\n"
+"    ],\n"
+"\n"
+"],\n"
+msgstr ""
+
+#: docs/9.x/redis.md:block 22 (code)
+msgid ""
+"'redis' => [\n"
+"\n"
+"    'client' => env('REDIS_CLIENT', 'phpredis'),\n"
+"\n"
+"    'clusters' => [\n"
+"        'default' => [\n"
+"            [\n"
+"                'host' => env('REDIS_HOST', 'localhost'),\n"
+"                'password' => env('REDIS_PASSWORD'),\n"
+"                'port' => env('REDIS_PORT', 6379),\n"
+"                'database' => 0,\n"
+"            ],\n"
+"        ],\n"
+"    ],\n"
+"\n"
+"],\n"
+msgstr ""
+
+#: docs/9.x/redis.md:block 31 (code)
+msgid ""
+"'default' => [\n"
+"    'host' => env('REDIS_HOST', 'localhost'),\n"
+"    'password' => env('REDIS_PASSWORD'),\n"
+"    'port' => env('REDIS_PORT', 6379),\n"
+"    'database' => 0,\n"
+"    'read_write_timeout' => 60,\n"
+"],\n"
+msgstr ""
+
+#: docs/9.x/redis.md:block 34 (paragraph)
+msgid "Laravel's `config/app.php` configuration file contains an `aliases` array which defines all of the class aliases that will be registered by the framework. By default, no `Redis` alias is included because it would conflict with the `Redis` class name provided by the phpredis extension. If you are using the Predis client and would like to add a `Redis` alias, you may add it to the `aliases` array in your application's `config/app.php` configuration file:"
+msgstr ""
+
+#: docs/9.x/redis.md:block 35 (code)
+msgid ""
+"'aliases' => Facade::defaultAliases()->merge([\n"
+"    'Redis' => Illuminate\\Support\\Facades\\Redis::class,\n"
+"])->toArray(),\n"
+msgstr ""
+
+#: docs/9.x/redis.md:block 41 (code)
+msgid ""
+"'default' => [\n"
+"    'host' => env('REDIS_HOST', 'localhost'),\n"
+"    'password' => env('REDIS_PASSWORD'),\n"
+"    'port' => env('REDIS_PORT', 6379),\n"
+"    'database' => 0,\n"
+"    'read_timeout' => 60,\n"
+"    'context' => [\n"
+"        // 'auth' => ['username', 'secret'],\n"
+"        // 'stream' => ['verify_peer' => false],\n"
+"    ],\n"
+"],\n"
+msgstr ""
+
+#: docs/9.x/redis.md:block 45 (code)
+msgid ""
+"'redis' => [\n"
+"\n"
+"    'client' => env('REDIS_CLIENT', 'phpredis'),\n"
+"\n"
+"    'options' => [\n"
+"        'serializer' => Redis::SERIALIZER_MSGPACK,\n"
+"        'compression' => Redis::COMPRESSION_LZ4,\n"
+"    ],\n"
+"\n"
+"    // Rest of Redis configuration...\n"
+"],\n"
+msgstr ""

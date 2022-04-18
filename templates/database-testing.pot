@@ -1,0 +1,1027 @@
+#
+msgid ""
+msgstr ""
+
+#: docs/8.x/database-testing.md:block 1 (header)
+msgid "Database Testing"
+msgstr ""
+
+#: docs/8.x/database-testing.md:block 2 (unordered list)
+msgid "[Introduction](#introduction)"
+msgstr ""
+
+#: docs/8.x/database-testing.md:block 2 (unordered list)
+msgid "[Resetting The Database After Each Test](#resetting-the-database-after-each-test)"
+msgstr ""
+
+#: docs/8.x/database-testing.md:block 2 (unordered list)
+msgid "[Defining Model Factories](#defining-model-factories)"
+msgstr ""
+
+#: docs/8.x/database-testing.md:block 2 (unordered list)
+msgid "[Concept Overview](#concept-overview)"
+msgstr ""
+
+#: docs/8.x/database-testing.md:block 2 (unordered list)
+msgid "[Generating Factories](#generating-factories)"
+msgstr ""
+
+#: docs/8.x/database-testing.md:block 2 (unordered list)
+msgid "[Factory States](#factory-states)"
+msgstr ""
+
+#: docs/8.x/database-testing.md:block 2 (unordered list)
+msgid "[Factory Callbacks](#factory-callbacks)"
+msgstr ""
+
+#: docs/8.x/database-testing.md:block 2 (unordered list)
+msgid "[Creating Models Using Factories](#creating-models-using-factories)"
+msgstr ""
+
+#: docs/8.x/database-testing.md:block 2 (unordered list)
+msgid "[Instantiating Models](#instantiating-models)"
+msgstr ""
+
+#: docs/8.x/database-testing.md:block 2 (unordered list)
+msgid "[Persisting Models](#persisting-models)"
+msgstr ""
+
+#: docs/8.x/database-testing.md:block 2 (unordered list)
+msgid "[Sequences](#sequences)"
+msgstr ""
+
+#: docs/8.x/database-testing.md:block 2 (unordered list)
+msgid "[Factory Relationships](#factory-relationships)"
+msgstr ""
+
+#: docs/8.x/database-testing.md:block 2 (unordered list)
+msgid "[Has Many Relationships](#has-many-relationships)"
+msgstr ""
+
+#: docs/8.x/database-testing.md:block 2 (unordered list)
+msgid "[Belongs To Relationships](#belongs-to-relationships)"
+msgstr ""
+
+#: docs/8.x/database-testing.md:block 2 (unordered list)
+msgid "[Many To Many Relationships](#many-to-many-relationships)"
+msgstr ""
+
+#: docs/8.x/database-testing.md:block 2 (unordered list)
+msgid "[Polymorphic Relationships](#polymorphic-relationships)"
+msgstr ""
+
+#: docs/8.x/database-testing.md:block 2 (unordered list)
+msgid "[Defining Relationships Within Factories](#defining-relationships-within-factories)"
+msgstr ""
+
+#: docs/8.x/database-testing.md:block 2 (unordered list)
+msgid "[Running Seeders](#running-seeders)"
+msgstr ""
+
+#: docs/8.x/database-testing.md:block 2 (unordered list)
+msgid "[Available Assertions](#available-assertions)"
+msgstr ""
+
+#: docs/8.x/database-testing.md:block 4 (header)
+msgid "Introduction"
+msgstr ""
+
+#: docs/8.x/database-testing.md:block 5 (paragraph)
+msgid "Laravel provides a variety of helpful tools and assertions to make it easier to test your database driven applications. In addition, Laravel model factories and seeders make it painless to create test database records using your application's Eloquent models and relationships. We'll discuss all of these powerful features in the following documentation."
+msgstr ""
+
+#: docs/8.x/database-testing.md:block 7 (header)
+msgid "Resetting The Database After Each Test"
+msgstr ""
+
+#: docs/8.x/database-testing.md:block 8 (paragraph)
+msgid "Before proceeding much further, let's discuss how to reset your database after each of your tests so that data from a previous test does not interfere with subsequent tests. Laravel's included `Illuminate\\Foundation\\Testing\\RefreshDatabase` trait will take care of this for you. Simply use the trait on your test class:"
+msgstr ""
+
+#: docs/8.x/database-testing.md:block 9 (code)
+msgid ""
+"<?php\n"
+"\n"
+"namespace Tests\\Feature;\n"
+"\n"
+"use Illuminate\\Foundation\\Testing\\RefreshDatabase;\n"
+"use Illuminate\\Foundation\\Testing\\WithoutMiddleware;\n"
+"use Tests\\TestCase;\n"
+"\n"
+"class ExampleTest extends TestCase\n"
+"{\n"
+"    use RefreshDatabase;\n"
+"\n"
+"    /**\n"
+"     * A basic functional test example.\n"
+"     *\n"
+"     * @return void\n"
+"     */\n"
+"    public function test_basic_example()\n"
+"    {\n"
+"        $response = $this->get('/');\n"
+"\n"
+"        // ...\n"
+"    }\n"
+"}\n"
+msgstr ""
+
+#: docs/8.x/database-testing.md:block 11 (header)
+msgid "Defining Model Factories"
+msgstr ""
+
+#: docs/8.x/database-testing.md:block 13 (header)
+msgid "Concept Overview"
+msgstr ""
+
+#: docs/8.x/database-testing.md:block 14 (paragraph)
+msgid "First, let's talk about Eloquent model factories. When testing, you may need to insert a few records into your database before executing your test. Instead of manually specifying the value of each column when you create this test data, Laravel allows you to define a set of default attributes for each of your [Eloquent models](/docs/{{version}}/eloquent) using model factories."
+msgstr ""
+
+#: docs/8.x/database-testing.md:block 15 (paragraph)
+msgid "To see an example of how to write a factory, take a look at the `database/factories/UserFactory.php` file in your application. This factory is included with all new Laravel applications and contains the following factory definition:"
+msgstr ""
+
+#: docs/8.x/database-testing.md:block 16 (code)
+msgid ""
+"namespace Database\\Factories;\n"
+"\n"
+"use Illuminate\\Database\\Eloquent\\Factories\\Factory;\n"
+"use Illuminate\\Support\\Str;\n"
+"\n"
+"class UserFactory extends Factory\n"
+"{\n"
+"    /**\n"
+"     * Define the model's default state.\n"
+"     *\n"
+"     * @return array\n"
+"     */\n"
+"    public function definition()\n"
+"    {\n"
+"        return [\n"
+"            'name' => $this->faker->name(),\n"
+"            'email' => $this->faker->unique()->safeEmail(),\n"
+"            'email_verified_at' => now(),\n"
+"            'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password\n"
+"            'remember_token' => Str::random(10),\n"
+"        ];\n"
+"    }\n"
+"}\n"
+msgstr ""
+
+#: docs/8.x/database-testing.md:block 17 (paragraph)
+msgid "As you can see, in their most basic form, factories are classes that extend Laravel's base factory class and define `definition` method. The `definition` method returns the default set of attribute values that should be applied when creating a model using the factory."
+msgstr ""
+
+#: docs/8.x/database-testing.md:block 18 (paragraph)
+msgid "Via the `faker` property, factories have access to the [Faker](https://github.com/FakerPHP/Faker) PHP library, which allows you to conveniently generate various kinds of random data for testing."
+msgstr ""
+
+#: docs/8.x/database-testing.md:block 19 (quote)
+msgid "{tip} You can set your application's Faker locale by adding a `faker_locale` option to your `config/app.php` configuration file."
+msgstr ""
+
+#: docs/8.x/database-testing.md:block 21 (header)
+msgid "Generating Factories"
+msgstr ""
+
+#: docs/8.x/database-testing.md:block 22 (paragraph)
+msgid "To create a factory, execute the `make:factory` [Artisan command](/docs/{{version}}/artisan):"
+msgstr ""
+
+#: docs/8.x/database-testing.md:block 23 (code)
+msgid "php artisan make:factory PostFactory\n"
+msgstr ""
+
+#: docs/8.x/database-testing.md:block 24 (paragraph)
+msgid "The new factory class will be placed in your `database/factories` directory."
+msgstr ""
+
+#: docs/8.x/database-testing.md:block 26 (header)
+msgid "Model & Factory Discovery Conventions"
+msgstr ""
+
+#: docs/8.x/database-testing.md:block 27 (paragraph)
+msgid "Once you have defined your factories, you may use the static `factory` method provided to your models by the `Illuminate\\Database\\Eloquent\\Factories\\HasFactory` trait in order to instantiate a factory instance for that model."
+msgstr ""
+
+#: docs/8.x/database-testing.md:block 28 (paragraph)
+msgid "The `HasFactory` trait's `factory` method will use conventions to determine the proper factory for the model the trait is assigned to. Specifically, the method will look for a factory in the `Database\\Factories` namespace that has a class name matching the model name and is suffixed with `Factory`. If these conventions do not apply to your particular application or factory, you may overwrite the `newFactory` method on your model to return an instance of the model's corresponding factory directly:"
+msgstr ""
+
+#: docs/8.x/database-testing.md:block 29 (code)
+msgid ""
+"use Database\\Factories\\Administration\\FlightFactory;\n"
+"\n"
+"/**\n"
+" * Create a new factory instance for the model.\n"
+" *\n"
+" * @return \\Illuminate\\Database\\Eloquent\\Factories\\Factory\n"
+" */\n"
+"protected static function newFactory()\n"
+"{\n"
+"    return FlightFactory::new();\n"
+"}\n"
+msgstr ""
+
+#: docs/8.x/database-testing.md:block 30 (paragraph)
+msgid "Next, define a `model` property on the corresponding factory:"
+msgstr ""
+
+#: docs/8.x/database-testing.md:block 31 (code)
+msgid ""
+"use App\\Administration\\Flight;\n"
+"use Illuminate\\Database\\Eloquent\\Factories\\Factory;\n"
+"\n"
+"class FlightFactory extends Factory\n"
+"{\n"
+"    /**\n"
+"     * The name of the factory's corresponding model.\n"
+"     *\n"
+"     * @var string\n"
+"     */\n"
+"    protected $model = Flight::class;\n"
+"}\n"
+msgstr ""
+
+#: docs/8.x/database-testing.md:block 33 (header)
+msgid "Factory States"
+msgstr ""
+
+#: docs/8.x/database-testing.md:block 34 (paragraph)
+msgid "State manipulation methods allow you to define discrete modifications that can be applied to your model factories in any combination. For example, your `Database\\Factories\\UserFactory` factory might contain a `suspended` state method that modifies one of its default attribute values."
+msgstr ""
+
+#: docs/8.x/database-testing.md:block 35 (paragraph)
+msgid "State transformation methods typically call the `state` method provided by Laravel's base factory class. The `state` method accepts a closure which will receive the array of raw attributes defined for the factory and should return an array of attributes to modify:"
+msgstr ""
+
+#: docs/8.x/database-testing.md:block 36 (code)
+msgid ""
+"/**\n"
+" * Indicate that the user is suspended.\n"
+" *\n"
+" * @return \\Illuminate\\Database\\Eloquent\\Factories\\Factory\n"
+" */\n"
+"public function suspended()\n"
+"{\n"
+"    return $this->state(function (array $attributes) {\n"
+"        return [\n"
+"            'account_status' => 'suspended',\n"
+"        ];\n"
+"    });\n"
+"}\n"
+msgstr ""
+
+#: docs/8.x/database-testing.md:block 38 (header)
+msgid "Factory Callbacks"
+msgstr ""
+
+#: docs/8.x/database-testing.md:block 39 (paragraph)
+msgid "Factory callbacks are registered using the `afterMaking` and `afterCreating` methods and allow you to perform additional tasks after making or creating a model. You should register these callbacks by defining a `configure` method on your factory class. This method will be automatically called by Laravel when the factory is instantiated:"
+msgstr ""
+
+#: docs/8.x/database-testing.md:block 40 (code)
+msgid ""
+"namespace Database\\Factories;\n"
+"\n"
+"use App\\Models\\User;\n"
+"use Illuminate\\Database\\Eloquent\\Factories\\Factory;\n"
+"use Illuminate\\Support\\Str;\n"
+"\n"
+"class UserFactory extends Factory\n"
+"{\n"
+"    /**\n"
+"     * Configure the model factory.\n"
+"     *\n"
+"     * @return $this\n"
+"     */\n"
+"    public function configure()\n"
+"    {\n"
+"        return $this->afterMaking(function (User $user) {\n"
+"            //\n"
+"        })->afterCreating(function (User $user) {\n"
+"            //\n"
+"        });\n"
+"    }\n"
+"\n"
+"    // ...\n"
+"}\n"
+msgstr ""
+
+#: docs/8.x/database-testing.md:block 42 (header)
+msgid "Creating Models Using Factories"
+msgstr ""
+
+#: docs/8.x/database-testing.md:block 44 (header)
+msgid "Instantiating Models"
+msgstr ""
+
+#: docs/8.x/database-testing.md:block 45 (paragraph)
+msgid "Once you have defined your factories, you may use the static `factory` method provided to your models by the `Illuminate\\Database\\Eloquent\\Factories\\HasFactory` trait in order to instantiate a factory instance for that model. Let's take a look at a few examples of creating models. First, we'll use the `make` method to create models without persisting them to the database:"
+msgstr ""
+
+#: docs/8.x/database-testing.md:block 46 (code)
+msgid ""
+"use App\\Models\\User;\n"
+"\n"
+"public function test_models_can_be_instantiated()\n"
+"{\n"
+"    $user = User::factory()->make();\n"
+"\n"
+"    // Use model in tests...\n"
+"}\n"
+msgstr ""
+
+#: docs/8.x/database-testing.md:block 47 (paragraph)
+msgid "You may create a collection of many models using the `count` method:"
+msgstr ""
+
+#: docs/8.x/database-testing.md:block 48 (code)
+msgid "$users = User::factory()->count(3)->make();\n"
+msgstr ""
+
+#: docs/8.x/database-testing.md:block 50 (header)
+msgid "Applying States"
+msgstr ""
+
+#: docs/8.x/database-testing.md:block 51 (paragraph)
+msgid "You may also apply any of your [states](#factory-states) to the models. If you would like to apply multiple state transformations to the models, you may simply call the state transformation methods directly:"
+msgstr ""
+
+#: docs/8.x/database-testing.md:block 52 (code)
+msgid "$users = User::factory()->count(5)->suspended()->make();\n"
+msgstr ""
+
+#: docs/8.x/database-testing.md:block 54 (header)
+msgid "Overriding Attributes"
+msgstr ""
+
+#: docs/8.x/database-testing.md:block 55 (paragraph)
+msgid "If you would like to override some of the default values of your models, you may pass an array of values to the `make` method. Only the specified attributes will be replaced while the rest of the attributes remain set to their default values as specified by the factory:"
+msgstr ""
+
+#: docs/8.x/database-testing.md:block 56 (code)
+msgid ""
+"$user = User::factory()->make([\n"
+"    'name' => 'Abigail Otwell',\n"
+"]);\n"
+msgstr ""
+
+#: docs/8.x/database-testing.md:block 57 (paragraph)
+msgid "Alternatively, the `state` method may be called directly on the factory instance to perform an inline state transformation:"
+msgstr ""
+
+#: docs/8.x/database-testing.md:block 58 (code)
+msgid ""
+"$user = User::factory()->state([\n"
+"    'name' => 'Abigail Otwell',\n"
+"])->make();\n"
+msgstr ""
+
+#: docs/8.x/database-testing.md:block 59 (quote)
+msgid "{tip} [Mass assignment protection](/docs/{{version}}/eloquent#mass-assignment) is automatically disabled when creating models using factories."
+msgstr ""
+
+#: docs/8.x/database-testing.md:block 61 (header)
+msgid "Persisting Models"
+msgstr ""
+
+#: docs/8.x/database-testing.md:block 62 (paragraph)
+msgid "The `create` method instantiates model instances and persists them to the database using Eloquent's `save` method:"
+msgstr ""
+
+#: docs/8.x/database-testing.md:block 63 (code)
+msgid ""
+"use App\\Models\\User;\n"
+"\n"
+"public function test_models_can_be_persisted()\n"
+"{\n"
+"    // Create a single App\\Models\\User instance...\n"
+"    $user = User::factory()->create();\n"
+"\n"
+"    // Create three App\\Models\\User instances...\n"
+"    $users = User::factory()->count(3)->create();\n"
+"\n"
+"    // Use model in tests...\n"
+"}\n"
+msgstr ""
+
+#: docs/8.x/database-testing.md:block 64 (paragraph)
+msgid "You may override the factory's default model attributes by passing an array of attributes to the `create` method:"
+msgstr ""
+
+#: docs/8.x/database-testing.md:block 65 (code)
+msgid ""
+"$user = User::factory()->create([\n"
+"    'name' => 'Abigail',\n"
+"]);\n"
+msgstr ""
+
+#: docs/8.x/database-testing.md:block 67 (header)
+msgid "Sequences"
+msgstr ""
+
+#: docs/8.x/database-testing.md:block 68 (paragraph)
+msgid "Sometimes you may wish to alternate the value of a given model attribute for each created model. You may accomplish this by defining a state transformation as a sequence. For example, you may wish to alternate the value of an `admin` column between `Y` and `N` for each created user:"
+msgstr ""
+
+#: docs/8.x/database-testing.md:block 69 (code)
+msgid ""
+"use App\\Models\\User;\n"
+"use Illuminate\\Database\\Eloquent\\Factories\\Sequence;\n"
+"\n"
+"$users = User::factory()\n"
+"                ->count(10)\n"
+"                ->state(new Sequence(\n"
+"                    ['admin' => 'Y'],\n"
+"                    ['admin' => 'N'],\n"
+"                ))\n"
+"                ->create();\n"
+msgstr ""
+
+#: docs/8.x/database-testing.md:block 70 (paragraph)
+msgid "In this example, five users will be created with an `admin` value of `Y` and five users will be created with an `admin` value of `N`."
+msgstr ""
+
+#: docs/8.x/database-testing.md:block 71 (paragraph)
+msgid "If necessary, you may include a closure as a sequence value. The closure will be invoked each time the sequence needs a new value:"
+msgstr ""
+
+#: docs/8.x/database-testing.md:block 72 (code)
+msgid ""
+"$users = User::factory()\n"
+"                ->count(10)\n"
+"                ->state(new Sequence(\n"
+"                    fn ($sequence) => ['role' => UserRoles::all()->random()],\n"
+"                ))\n"
+"                ->create();\n"
+msgstr ""
+
+#: docs/8.x/database-testing.md:block 73 (paragraph)
+msgid "Within a sequence closure, you may access the `$index` or `$count` properties on the sequence instance that is injected into the closure. The `$index` property contains the number of iterations through the sequence that have occurred thus far, while the `$count` property contains the total number of times the sequence will be invoked:"
+msgstr ""
+
+#: docs/8.x/database-testing.md:block 74 (code)
+msgid ""
+"$users = User::factory()\n"
+"                ->count(10)\n"
+"                ->sequence(fn ($sequence) => ['name' => 'Name '.$sequence->index])\n"
+"                ->create();\n"
+msgstr ""
+
+#: docs/8.x/database-testing.md:block 76 (header)
+msgid "Factory Relationships"
+msgstr ""
+
+#: docs/8.x/database-testing.md:block 78 (header)
+msgid "Has Many Relationships"
+msgstr ""
+
+#: docs/8.x/database-testing.md:block 79 (paragraph)
+msgid "Next, let's explore building Eloquent model relationships using Laravel's fluent factory methods. First, let's assume our application has an `App\\Models\\User` model and an `App\\Models\\Post` model. Also, let's assume that the `User` model defines a `hasMany` relationship with `Post`. We can create a user that has three posts using the `has` method provided by the Laravel's factories. The `has` method accepts a factory instance:"
+msgstr ""
+
+#: docs/8.x/database-testing.md:block 80 (code)
+msgid ""
+"use App\\Models\\Post;\n"
+"use App\\Models\\User;\n"
+"\n"
+"$user = User::factory()\n"
+"            ->has(Post::factory()->count(3))\n"
+"            ->create();\n"
+msgstr ""
+
+#: docs/8.x/database-testing.md:block 81 (paragraph)
+msgid "By convention, when passing a `Post` model to the `has` method, Laravel will assume that the `User` model must have a `posts` method that defines the relationship. If necessary, you may explicitly specify the name of the relationship that you would like to manipulate:"
+msgstr ""
+
+#: docs/8.x/database-testing.md:block 82 (code)
+msgid ""
+"$user = User::factory()\n"
+"            ->has(Post::factory()->count(3), 'posts')\n"
+"            ->create();\n"
+msgstr ""
+
+#: docs/8.x/database-testing.md:block 83 (paragraph)
+msgid "Of course, you may perform state manipulations on the related models. In addition, you may pass a closure based state transformation if your state change requires access to the parent model:"
+msgstr ""
+
+#: docs/8.x/database-testing.md:block 84 (code)
+msgid ""
+"$user = User::factory()\n"
+"            ->has(\n"
+"                Post::factory()\n"
+"                        ->count(3)\n"
+"                        ->state(function (array $attributes, User $user) {\n"
+"                            return ['user_type' => $user->type];\n"
+"                        })\n"
+"            )\n"
+"            ->create();\n"
+msgstr ""
+
+#: docs/8.x/database-testing.md:block 86 (header)
+msgid "Using Magic Methods"
+msgstr ""
+
+#: docs/8.x/database-testing.md:block 87 (paragraph)
+msgid "For convenience, you may use Laravel's magic factory relationship methods to build relationships. For example, the following example will use convention to determine that the related models should be created via a `posts` relationship method on the `User` model:"
+msgstr ""
+
+#: docs/8.x/database-testing.md:block 88 (code)
+msgid ""
+"$user = User::factory()\n"
+"            ->hasPosts(3)\n"
+"            ->create();\n"
+msgstr ""
+
+#: docs/8.x/database-testing.md:block 89 (paragraph)
+msgid "When using magic methods to create factory relationships, you may pass an array of attributes to override on the related models:"
+msgstr ""
+
+#: docs/8.x/database-testing.md:block 90 (code)
+msgid ""
+"$user = User::factory()\n"
+"            ->hasPosts(3, [\n"
+"                'published' => false,\n"
+"            ])\n"
+"            ->create();\n"
+msgstr ""
+
+#: docs/8.x/database-testing.md:block 91 (paragraph)
+msgid "You may provide a closure based state transformation if your state change requires access to the parent model:"
+msgstr ""
+
+#: docs/8.x/database-testing.md:block 92 (code)
+msgid ""
+"$user = User::factory()\n"
+"            ->hasPosts(3, function (array $attributes, User $user) {\n"
+"                return ['user_type' => $user->type];\n"
+"            })\n"
+"            ->create();\n"
+msgstr ""
+
+#: docs/8.x/database-testing.md:block 94 (header)
+msgid "Belongs To Relationships"
+msgstr ""
+
+#: docs/8.x/database-testing.md:block 95 (paragraph)
+msgid "Now that we have explored how to build \"has many\" relationships using factories, let's explore the inverse of the relationship. The `for` method may be used to define the parent model that factory created models belong to. For example, we can create three `App\\Models\\Post` model instances that belong to a single user:"
+msgstr ""
+
+#: docs/8.x/database-testing.md:block 96 (code)
+msgid ""
+"use App\\Models\\Post;\n"
+"use App\\Models\\User;\n"
+"\n"
+"$posts = Post::factory()\n"
+"            ->count(3)\n"
+"            ->for(User::factory()->state([\n"
+"                'name' => 'Jessica Archer',\n"
+"            ]))\n"
+"            ->create();\n"
+msgstr ""
+
+#: docs/8.x/database-testing.md:block 97 (paragraph)
+msgid "If you already have a parent model instance that should be associated with the models you are creating, you may pass the model instance to the `for` method:"
+msgstr ""
+
+#: docs/8.x/database-testing.md:block 98 (code)
+msgid ""
+"$user = User::factory()->create();\n"
+"\n"
+"$posts = Post::factory()\n"
+"            ->count(3)\n"
+"            ->for($user)\n"
+"            ->create();\n"
+msgstr ""
+
+#: docs/8.x/database-testing.md:block 101 (paragraph)
+msgid "For convenience, you may use Laravel's magic factory relationship methods to define \"belongs to\" relationships. For example, the following example will use convention to determine that the three posts should belong to the `user` relationship on the `Post` model:"
+msgstr ""
+
+#: docs/8.x/database-testing.md:block 102 (code)
+msgid ""
+"$posts = Post::factory()\n"
+"            ->count(3)\n"
+"            ->forUser([\n"
+"                'name' => 'Jessica Archer',\n"
+"            ])\n"
+"            ->create();\n"
+msgstr ""
+
+#: docs/8.x/database-testing.md:block 104 (header)
+msgid "Many To Many Relationships"
+msgstr ""
+
+#: docs/8.x/database-testing.md:block 105 (paragraph)
+msgid "Like [has many relationships](#has-many-relationships), \"many to many\" relationships may be created using the `has` method:"
+msgstr ""
+
+#: docs/8.x/database-testing.md:block 106 (code)
+msgid ""
+"use App\\Models\\Role;\n"
+"use App\\Models\\User;\n"
+"\n"
+"$user = User::factory()\n"
+"            ->has(Role::factory()->count(3))\n"
+"            ->create();\n"
+msgstr ""
+
+#: docs/8.x/database-testing.md:block 108 (header)
+msgid "Pivot Table Attributes"
+msgstr ""
+
+#: docs/8.x/database-testing.md:block 109 (paragraph)
+msgid "If you need to define attributes that should be set on the pivot / intermediate table linking the models, you may use the `hasAttached` method. This method accepts an array of pivot table attribute names and values as its second argument:"
+msgstr ""
+
+#: docs/8.x/database-testing.md:block 110 (code)
+msgid ""
+"use App\\Models\\Role;\n"
+"use App\\Models\\User;\n"
+"\n"
+"$user = User::factory()\n"
+"            ->hasAttached(\n"
+"                Role::factory()->count(3),\n"
+"                ['active' => true]\n"
+"            )\n"
+"            ->create();\n"
+msgstr ""
+
+#: docs/8.x/database-testing.md:block 111 (paragraph)
+msgid "You may provide a closure based state transformation if your state change requires access to the related model:"
+msgstr ""
+
+#: docs/8.x/database-testing.md:block 112 (code)
+msgid ""
+"$user = User::factory()\n"
+"            ->hasAttached(\n"
+"                Role::factory()\n"
+"                    ->count(3)\n"
+"                    ->state(function (array $attributes, User $user) {\n"
+"                        return ['name' => $user->name.' Role'];\n"
+"                    }),\n"
+"                ['active' => true]\n"
+"            )\n"
+"            ->create();\n"
+msgstr ""
+
+#: docs/8.x/database-testing.md:block 113 (paragraph)
+msgid "If you already have model instances that you would like to be attached to the models you are creating, you may pass the model instances to the `hasAttached` method. In this example, the same three roles will be attached to all three users:"
+msgstr ""
+
+#: docs/8.x/database-testing.md:block 114 (code)
+msgid ""
+"$roles = Role::factory()->count(3)->create();\n"
+"\n"
+"$user = User::factory()\n"
+"            ->count(3)\n"
+"            ->hasAttached($roles, ['active' => true])\n"
+"            ->create();\n"
+msgstr ""
+
+#: docs/8.x/database-testing.md:block 117 (paragraph)
+msgid "For convenience, you may use Laravel's magic factory relationship methods to define many to many relationships. For example, the following example will use convention to determine that the related models should be created via a `roles` relationship method on the `User` model:"
+msgstr ""
+
+#: docs/8.x/database-testing.md:block 118 (code)
+msgid ""
+"$user = User::factory()\n"
+"            ->hasRoles(1, [\n"
+"                'name' => 'Editor'\n"
+"            ])\n"
+"            ->create();\n"
+msgstr ""
+
+#: docs/8.x/database-testing.md:block 120 (header)
+msgid "Polymorphic Relationships"
+msgstr ""
+
+#: docs/8.x/database-testing.md:block 121 (paragraph)
+msgid "[Polymorphic relationships](/docs/{{version}}/eloquent-relationships#polymorphic-relationships) may also be created using factories. Polymorphic \"morph many\" relationships are created in the same way as typical \"has many\" relationships. For example, if a `App\\Models\\Post` model has a `morphMany` relationship with a `App\\Models\\Comment` model:"
+msgstr ""
+
+#: docs/8.x/database-testing.md:block 122 (code)
+msgid ""
+"use App\\Models\\Post;\n"
+"\n"
+"$post = Post::factory()->hasComments(3)->create();\n"
+msgstr ""
+
+#: docs/8.x/database-testing.md:block 124 (header)
+msgid "Morph To Relationships"
+msgstr ""
+
+#: docs/8.x/database-testing.md:block 125 (paragraph)
+msgid "Magic methods may not be used to create `morphTo` relationships. Instead, the `for` method must be used directly and the name of the relationship must be explicitly provided. For example, imagine that the `Comment` model has a `commentable` method that defines a `morphTo` relationship. In this situation, we may create three comments that belong to a single post by using the `for` method directly:"
+msgstr ""
+
+#: docs/8.x/database-testing.md:block 126 (code)
+msgid ""
+"$comments = Comment::factory()->count(3)->for(\n"
+"    Post::factory(), 'commentable'\n"
+")->create();\n"
+msgstr ""
+
+#: docs/8.x/database-testing.md:block 128 (header)
+msgid "Polymorphic Many To Many Relationships"
+msgstr ""
+
+#: docs/8.x/database-testing.md:block 129 (paragraph)
+msgid "Polymorphic \"many to many\" (`morphToMany` / `morphedByMany`) relationships may be created just like non-polymorphic \"many to many\" relationships:"
+msgstr ""
+
+#: docs/8.x/database-testing.md:block 130 (code)
+msgid ""
+"use App\\Models\\Tag;\n"
+"use App\\Models\\Video;\n"
+"\n"
+"$videos = Video::factory()\n"
+"            ->hasAttached(\n"
+"                Tag::factory()->count(3),\n"
+"                ['public' => true]\n"
+"            )\n"
+"            ->create();\n"
+msgstr ""
+
+#: docs/8.x/database-testing.md:block 131 (paragraph)
+msgid "Of course, the magic `has` method may also be used to create polymorphic \"many to many\" relationships:"
+msgstr ""
+
+#: docs/8.x/database-testing.md:block 132 (code)
+msgid ""
+"$videos = Video::factory()\n"
+"            ->hasTags(3, ['public' => true])\n"
+"            ->create();\n"
+msgstr ""
+
+#: docs/8.x/database-testing.md:block 134 (header)
+msgid "Defining Relationships Within Factories"
+msgstr ""
+
+#: docs/8.x/database-testing.md:block 135 (paragraph)
+msgid "To define a relationship within your model factory, you will typically assign a new factory instance to the foreign key of the relationship. This is normally done for the \"inverse\" relationships such as `belongsTo` and `morphTo` relationships. For example, if you would like to create a new user when creating a post, you may do the following:"
+msgstr ""
+
+#: docs/8.x/database-testing.md:block 136 (code)
+msgid ""
+"use App\\Models\\User;\n"
+"\n"
+"/**\n"
+" * Define the model's default state.\n"
+" *\n"
+" * @return array\n"
+" */\n"
+"public function definition()\n"
+"{\n"
+"    return [\n"
+"        'user_id' => User::factory(),\n"
+"        'title' => $this->faker->title(),\n"
+"        'content' => $this->faker->paragraph(),\n"
+"    ];\n"
+"}\n"
+msgstr ""
+
+#: docs/8.x/database-testing.md:block 137 (paragraph)
+msgid "If the relationship's columns depend on the factory that defines it you may assign a closure to an attribute. The closure will receive the factory's evaluated attribute array:"
+msgstr ""
+
+#: docs/8.x/database-testing.md:block 138 (code)
+msgid ""
+"/**\n"
+" * Define the model's default state.\n"
+" *\n"
+" * @return array\n"
+" */\n"
+"public function definition()\n"
+"{\n"
+"    return [\n"
+"        'user_id' => User::factory(),\n"
+"        'user_type' => function (array $attributes) {\n"
+"            return User::find($attributes['user_id'])->type;\n"
+"        },\n"
+"        'title' => $this->faker->title(),\n"
+"        'content' => $this->faker->paragraph(),\n"
+"    ];\n"
+"}\n"
+msgstr ""
+
+#: docs/8.x/database-testing.md:block 140 (header)
+msgid "Running Seeders"
+msgstr ""
+
+#: docs/8.x/database-testing.md:block 141 (paragraph)
+msgid "If you would like to use [database seeders](/docs/{{version}}/seeding) to populate your database during a feature test, you may invoke the `seed` method. By default, the `seed` method will execute the `DatabaseSeeder`, which should execute all of your other seeders. Alternatively, you pass a specific seeder class name to the `seed` method:"
+msgstr ""
+
+#: docs/8.x/database-testing.md:block 142 (code)
+msgid ""
+"<?php\n"
+"\n"
+"namespace Tests\\Feature;\n"
+"\n"
+"use Database\\Seeders\\OrderStatusSeeder;\n"
+"use Database\\Seeders\\TransactionStatusSeeder;\n"
+"use Illuminate\\Foundation\\Testing\\RefreshDatabase;\n"
+"use Illuminate\\Foundation\\Testing\\WithoutMiddleware;\n"
+"use Tests\\TestCase;\n"
+"\n"
+"class ExampleTest extends TestCase\n"
+"{\n"
+"    use RefreshDatabase;\n"
+"\n"
+"    /**\n"
+"     * Test creating a new order.\n"
+"     *\n"
+"     * @return void\n"
+"     */\n"
+"    public function test_orders_can_be_created()\n"
+"    {\n"
+"        // Run the DatabaseSeeder...\n"
+"        $this->seed();\n"
+"\n"
+"        // Run a specific seeder...\n"
+"        $this->seed(OrderStatusSeeder::class);\n"
+"\n"
+"        // ...\n"
+"\n"
+"        // Run an array of specific seeders...\n"
+"        $this->seed([\n"
+"            OrderStatusSeeder::class,\n"
+"            TransactionStatusSeeder::class,\n"
+"            // ...\n"
+"        ]);\n"
+"    }\n"
+"}\n"
+msgstr ""
+
+#: docs/8.x/database-testing.md:block 143 (paragraph)
+msgid "Alternatively, you may instruct Laravel to automatically seed the database before each test that uses the `RefreshDatabase` trait. You may accomplish this by defining a `$seed` property on your base test class:"
+msgstr ""
+
+#: docs/8.x/database-testing.md:block 144 (code)
+msgid ""
+"<?php\n"
+"\n"
+"namespace Tests;\n"
+"\n"
+"use Illuminate\\Foundation\\Testing\\TestCase as BaseTestCase;\n"
+"\n"
+"abstract class TestCase extends BaseTestCase\n"
+"{\n"
+"    use CreatesApplication;\n"
+"\n"
+"    /**\n"
+"     * Indicates whether the default seeder should run before each test.\n"
+"     *\n"
+"     * @var bool\n"
+"     */\n"
+"    protected $seed = true;\n"
+"}\n"
+msgstr ""
+
+#: docs/8.x/database-testing.md:block 145 (paragraph)
+msgid "When the `$seed` property is `true`, the test will run the `Database\\Seeders\\DatabaseSeeder` class before each test that uses the `RefreshDatabase` trait. However, you may specify a specific seeder that should be executed by defining a `$seeder` property on your test class:"
+msgstr ""
+
+#: docs/8.x/database-testing.md:block 146 (code)
+msgid ""
+"use Database\\Seeders\\OrderStatusSeeder;\n"
+"\n"
+"/**\n"
+" * Run a specific seeder before each test.\n"
+" *\n"
+" * @var string\n"
+" */\n"
+"protected $seeder = OrderStatusSeeder::class;\n"
+msgstr ""
+
+#: docs/8.x/database-testing.md:block 148 (header)
+msgid "Available Assertions"
+msgstr ""
+
+#: docs/8.x/database-testing.md:block 149 (paragraph)
+msgid "Laravel provides several database assertions for your [PHPUnit](https://phpunit.de/) feature tests. We'll discuss each of these assertions below."
+msgstr ""
+
+#: docs/8.x/database-testing.md:block 151 (header)
+msgid "assertDatabaseCount"
+msgstr ""
+
+#: docs/8.x/database-testing.md:block 152 (paragraph)
+msgid "Assert that a table in the database contains the given number of records:"
+msgstr ""
+
+#: docs/8.x/database-testing.md:block 153 (code)
+msgid "$this->assertDatabaseCount('users', 5);\n"
+msgstr ""
+
+#: docs/8.x/database-testing.md:block 155 (header)
+msgid "assertDatabaseHas"
+msgstr ""
+
+#: docs/8.x/database-testing.md:block 156 (paragraph)
+msgid "Assert that a table in the database contains records matching the given key / value query constraints:"
+msgstr ""
+
+#: docs/8.x/database-testing.md:block 157 (code)
+msgid ""
+"$this->assertDatabaseHas('users', [\n"
+"    'email' => 'sally@example.com',\n"
+"]);\n"
+msgstr ""
+
+#: docs/8.x/database-testing.md:block 159 (header)
+msgid "assertDatabaseMissing"
+msgstr ""
+
+#: docs/8.x/database-testing.md:block 160 (paragraph)
+msgid "Assert that a table in the database does not contain records matching the given key / value query constraints:"
+msgstr ""
+
+#: docs/8.x/database-testing.md:block 161 (code)
+msgid ""
+"$this->assertDatabaseMissing('users', [\n"
+"    'email' => 'sally@example.com',\n"
+"]);\n"
+msgstr ""
+
+#: docs/8.x/database-testing.md:block 163 (header)
+msgid "assertDeleted"
+msgstr ""
+
+#: docs/8.x/database-testing.md:block 164 (paragraph)
+msgid "The `assertDeleted` asserts that a given Eloquent model has been deleted from the database:"
+msgstr ""
+
+#: docs/8.x/database-testing.md:block 165 (code)
+msgid ""
+"use App\\Models\\User;\n"
+"\n"
+"$user = User::find(1);\n"
+"\n"
+"$user->delete();\n"
+"\n"
+"$this->assertDeleted($user);\n"
+msgstr ""
+
+#: docs/8.x/database-testing.md:block 166 (paragraph)
+msgid "The `assertSoftDeleted` method may be used to assert a given Eloquent model has been \"soft deleted\":"
+msgstr ""
+
+#: docs/8.x/database-testing.md:block 167 (code)
+msgid "$this->assertSoftDeleted($user);\n"
+msgstr ""
+
+#: docs/8.x/database-testing.md:block 169 (header)
+msgid "assertModelExists"
+msgstr ""
+
+#: docs/8.x/database-testing.md:block 170 (paragraph)
+msgid "Assert that a given model exists in the database:"
+msgstr ""
+
+#: docs/8.x/database-testing.md:block 171 (code)
+msgid ""
+"use App\\Models\\User;\n"
+"\n"
+"$user = User::factory()->create();\n"
+"\n"
+"$this->assertModelExists($user);\n"
+msgstr ""
+
+#: docs/8.x/database-testing.md:block 173 (header)
+msgid "assertModelMissing"
+msgstr ""
+
+#: docs/8.x/database-testing.md:block 174 (paragraph)
+msgid "Assert that a given model does not exist in the database:"
+msgstr ""
+
+#: docs/8.x/database-testing.md:block 175 (code)
+msgid ""
+"use App\\Models\\User;\n"
+"\n"
+"$user = User::factory()->create();\n"
+"\n"
+"$user->delete();\n"
+"\n"
+"$this->assertModelMissing($user);\n"
+msgstr ""
+
+#: docs/9.x/database-testing.md:block 10 (paragraph)
+msgid "The `Illuminate\\Foundation\\Testing\\RefreshDatabase` trait does not migrate your database if your schema is up to date. Instead, it will only execute the test within a database transaction. Therefore, any records added to the database by test cases that do not use this trait may still exist in the database."
+msgstr ""
+
+#: docs/9.x/database-testing.md:block 11 (paragraph)
+msgid "If you would like to totally reset the database using migrations, you may use the `Illuminate\\Foundation\\Testing\\DatabaseMigrations` trait instead. However, the `DatabaseMigrations` trait is significantly slower than the `RefreshDatabase` trait."
+msgstr ""
+
+#: docs/9.x/database-testing.md:block 19 (paragraph)
+msgid "As you can see, in their most basic form, factories are classes that extend Laravel's base factory class and define a `definition` method. The `definition` method returns the default set of attribute values that should be applied when creating a model using the factory."
+msgstr ""
+
+#: docs/9.x/database-testing.md:block 165 (header)
+msgid "assertSoftDeleted"
+msgstr ""

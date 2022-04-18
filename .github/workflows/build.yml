@@ -12,6 +12,7 @@ jobs:
       - name: Checkout Build
         uses: actions/checkout@v2
         with:
+          fetch-depth: 0
           ref: build
 
       - name: Checkout Submodules
@@ -19,7 +20,8 @@ jobs:
 
       - name: Prepare Environment
         run: |
-          sudo apt-get install po4a zsh
+          sudo apt-get install zsh
+          pip3 install --upgrade mdpo
 
       - name: Update
         run: |
@@ -30,7 +32,6 @@ jobs:
 
       - name: Build
         run: |
-          zsh generate_translations.sh
           zsh build.sh zh_TW
 
       - name: Commit & Push

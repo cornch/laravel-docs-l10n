@@ -1,0 +1,147 @@
+#
+msgid ""
+msgstr ""
+
+#: docs/8.x/console-tests.md:block 1 (header)
+msgid "Console Tests"
+msgstr ""
+
+#: docs/8.x/console-tests.md:block 2 (unordered list)
+msgid "[Introduction](#introduction)"
+msgstr ""
+
+#: docs/8.x/console-tests.md:block 2 (unordered list)
+msgid "[Success / Failure Expectations](#success-failure-expectations)"
+msgstr ""
+
+#: docs/8.x/console-tests.md:block 2 (unordered list)
+msgid "[Input / Output Expectations](#input-output-expectations)"
+msgstr ""
+
+#: docs/8.x/console-tests.md:block 4 (header)
+msgid "Introduction"
+msgstr ""
+
+#: docs/8.x/console-tests.md:block 5 (paragraph)
+msgid "In addition to simplifying HTTP testing, Laravel provides a simple API for testing your application's [custom console commands](/docs/{{version}}/artisan)."
+msgstr ""
+
+#: docs/8.x/console-tests.md:block 7 (header)
+msgid "Success / Failure Expectations"
+msgstr ""
+
+#: docs/8.x/console-tests.md:block 8 (paragraph)
+msgid "To get started, let's explore how to make assertions regarding an Artisan command's exit code. To accomplish this, we will use the `artisan` method to invoke an Artisan command from our test. Then, we will use the `assertExitCode` method to assert that the command completed with a given exit code:"
+msgstr ""
+
+#: docs/8.x/console-tests.md:block 9 (code)
+msgid ""
+"/**\n"
+" * Test a console command.\n"
+" *\n"
+" * @return void\n"
+" */\n"
+"public function test_console_command()\n"
+"{\n"
+"    $this->artisan('inspire')->assertExitCode(0);\n"
+"}\n"
+msgstr ""
+
+#: docs/8.x/console-tests.md:block 10 (paragraph)
+msgid "You may use the `assertNotExitCode` method to assert that the command did not exit with a given exit code:"
+msgstr ""
+
+#: docs/8.x/console-tests.md:block 11 (code)
+msgid "$this->artisan('inspire')->assertNotExitCode(1);\n"
+msgstr ""
+
+#: docs/8.x/console-tests.md:block 12 (paragraph)
+msgid "Of course, all terminal commands typically exit with a status code of `0` when they are successful and a non-zero exit code when they are not successful. Therefore, for convenience, you may utilize the `assertSuccessful` and `assertFailed` assertions to assert that a given command exited with a successful exit code or not:"
+msgstr ""
+
+#: docs/8.x/console-tests.md:block 13 (code)
+msgid ""
+"$this->artisan('inspire')->assertSuccessful();\n"
+"\n"
+"$this->artisan('inspire')->assertFailed();\n"
+msgstr ""
+
+#: docs/8.x/console-tests.md:block 15 (header)
+msgid "Input / Output Expectations"
+msgstr ""
+
+#: docs/8.x/console-tests.md:block 16 (paragraph)
+msgid "Laravel allows you to easily \"mock\" user input for your console commands using the `expectsQuestion` method. In addition, you may specify the exit code and text that you expect to be output by the console command using the `assertExitCode` and `expectsOutput` methods. For example, consider the following console command:"
+msgstr ""
+
+#: docs/8.x/console-tests.md:block 17 (code)
+msgid ""
+"Artisan::command('question', function () {\n"
+"    $name = $this->ask('What is your name?');\n"
+"\n"
+"    $language = $this->choice('Which language do you prefer?', [\n"
+"        'PHP',\n"
+"        'Ruby',\n"
+"        'Python',\n"
+"    ]);\n"
+"\n"
+"    $this->line('Your name is '.$name.' and you prefer '.$language.'.');\n"
+"});\n"
+msgstr ""
+
+#: docs/8.x/console-tests.md:block 18 (paragraph)
+msgid "You may test this command with the following test which utilizes the `expectsQuestion`, `expectsOutput`, `doesntExpectOutput`, and `assertExitCode` methods:"
+msgstr ""
+
+#: docs/8.x/console-tests.md:block 19 (code)
+msgid ""
+"/**\n"
+" * Test a console command.\n"
+" *\n"
+" * @return void\n"
+" */\n"
+"public function test_console_command()\n"
+"{\n"
+"    $this->artisan('question')\n"
+"         ->expectsQuestion('What is your name?', 'Taylor Otwell')\n"
+"         ->expectsQuestion('Which language do you prefer?', 'PHP')\n"
+"         ->expectsOutput('Your name is Taylor Otwell and you prefer PHP.')\n"
+"         ->doesntExpectOutput('Your name is Taylor Otwell and you prefer Ruby.')\n"
+"         ->assertExitCode(0);\n"
+"}\n"
+msgstr ""
+
+#: docs/8.x/console-tests.md:block 21 (header)
+msgid "Confirmation Expectations"
+msgstr ""
+
+#: docs/8.x/console-tests.md:block 22 (paragraph)
+msgid "When writing a command which expects confirmation in the form of a \"yes\" or \"no\" answer, you may utilize the `expectsConfirmation` method:"
+msgstr ""
+
+#: docs/8.x/console-tests.md:block 23 (code)
+msgid ""
+"$this->artisan('module:import')\n"
+"    ->expectsConfirmation('Do you really wish to run this command?', 'no')\n"
+"    ->assertExitCode(1);\n"
+msgstr ""
+
+#: docs/8.x/console-tests.md:block 25 (header)
+msgid "Table Expectations"
+msgstr ""
+
+#: docs/8.x/console-tests.md:block 26 (paragraph)
+msgid "If your command displays a table of information using Artisan's `table` method, it can be cumbersome to write output expectations for the entire table. Instead, you may use the `expectsTable` method. This method accepts the table's headers as its first argument and the table's data as its second argument:"
+msgstr ""
+
+#: docs/8.x/console-tests.md:block 27 (code)
+msgid ""
+"$this->artisan('users:all')\n"
+"    ->expectsTable([\n"
+"        'ID',\n"
+"        'Email',\n"
+"    ], [\n"
+"        [1, 'taylor@example.com'],\n"
+"        [2, 'abigail@example.com'],\n"
+"    ]);\n"
+msgstr ""

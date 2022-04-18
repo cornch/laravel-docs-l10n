@@ -1,0 +1,575 @@
+#
+msgid ""
+msgstr ""
+
+#: docs/8.x/session.md:block 1 (header)
+msgid "HTTP Session"
+msgstr ""
+
+#: docs/8.x/session.md:block 2 (unordered list)
+msgid "[Introduction](#introduction)"
+msgstr ""
+
+#: docs/8.x/session.md:block 2 (unordered list)
+msgid "[Configuration](#configuration)"
+msgstr ""
+
+#: docs/8.x/session.md:block 2 (unordered list)
+msgid "[Driver Prerequisites](#driver-prerequisites)"
+msgstr ""
+
+#: docs/8.x/session.md:block 2 (unordered list)
+msgid "[Interacting With The Session](#interacting-with-the-session)"
+msgstr ""
+
+#: docs/8.x/session.md:block 2 (unordered list)
+msgid "[Retrieving Data](#retrieving-data)"
+msgstr ""
+
+#: docs/8.x/session.md:block 2 (unordered list)
+msgid "[Storing Data](#storing-data)"
+msgstr ""
+
+#: docs/8.x/session.md:block 2 (unordered list)
+msgid "[Flash Data](#flash-data)"
+msgstr ""
+
+#: docs/8.x/session.md:block 2 (unordered list)
+msgid "[Deleting Data](#deleting-data)"
+msgstr ""
+
+#: docs/8.x/session.md:block 2 (unordered list)
+msgid "[Regenerating The Session ID](#regenerating-the-session-id)"
+msgstr ""
+
+#: docs/8.x/session.md:block 2 (unordered list)
+msgid "[Session Blocking](#session-blocking)"
+msgstr ""
+
+#: docs/8.x/session.md:block 2 (unordered list)
+msgid "[Adding Custom Session Drivers](#adding-custom-session-drivers)"
+msgstr ""
+
+#: docs/8.x/session.md:block 2 (unordered list)
+msgid "[Implementing The Driver](#implementing-the-driver)"
+msgstr ""
+
+#: docs/8.x/session.md:block 2 (unordered list)
+msgid "[Registering The Driver](#registering-the-driver)"
+msgstr ""
+
+#: docs/8.x/session.md:block 4 (header)
+msgid "Introduction"
+msgstr ""
+
+#: docs/8.x/session.md:block 5 (paragraph)
+msgid "Since HTTP driven applications are stateless, sessions provide a way to store information about the user across multiple requests. That user information is typically placed in a persistent store / backend that can be accessed from subsequent requests."
+msgstr ""
+
+#: docs/8.x/session.md:block 6 (paragraph)
+msgid "Laravel ships with a variety of session backends that are accessed through an expressive, unified API. Support for popular backends such as [Memcached](https://memcached.org), [Redis](https://redis.io), and databases is included."
+msgstr ""
+
+#: docs/8.x/session.md:block 8 (header)
+msgid "Configuration"
+msgstr ""
+
+#: docs/8.x/session.md:block 9 (paragraph)
+msgid "Your application's session configuration file is stored at `config/session.php`. Be sure to review the options available to you in this file. By default, Laravel is configured to use the `file` session driver, which will work well for many applications. If your application will be load balanced across multiple web servers, you should choose a centralized store that all servers can access, such as Redis or a database."
+msgstr ""
+
+#: docs/8.x/session.md:block 10 (paragraph)
+msgid "The session `driver` configuration option defines where session data will be stored for each request. Laravel ships with several great drivers out of the box:"
+msgstr ""
+
+#: docs/8.x/session.md:block 12 (unordered list)
+msgid "`file` - sessions are stored in `storage/framework/sessions`."
+msgstr ""
+
+#: docs/8.x/session.md:block 12 (unordered list)
+msgid "`cookie` - sessions are stored in secure, encrypted cookies."
+msgstr ""
+
+#: docs/8.x/session.md:block 12 (unordered list)
+msgid "`database` - sessions are stored in a relational database."
+msgstr ""
+
+#: docs/8.x/session.md:block 12 (unordered list)
+msgid "`memcached` / `redis` - sessions are stored in one of these fast, cache based stores."
+msgstr ""
+
+#: docs/8.x/session.md:block 12 (unordered list)
+msgid "`dynamodb` - sessions are stored in AWS DynamoDB."
+msgstr ""
+
+#: docs/8.x/session.md:block 12 (unordered list)
+msgid "`array` - sessions are stored in a PHP array and will not be persisted."
+msgstr ""
+
+#: docs/8.x/session.md:block 14 (quote)
+msgid "{tip} The array driver is primarily used during [testing](/docs/{{version}}/testing) and prevents the data stored in the session from being persisted."
+msgstr ""
+
+#: docs/8.x/session.md:block 16 (header)
+msgid "Driver Prerequisites"
+msgstr ""
+
+#: docs/8.x/session.md:block 18 (header)
+msgid "Database"
+msgstr ""
+
+#: docs/8.x/session.md:block 19 (paragraph)
+msgid "When using the `database` session driver, you will need to create a table to contain the session records. An example `Schema` declaration for the table may be found below:"
+msgstr ""
+
+#: docs/8.x/session.md:block 20 (code)
+msgid ""
+"Schema::create('sessions', function ($table) {\n"
+"    $table->string('id')->primary();\n"
+"    $table->foreignId('user_id')->nullable()->index();\n"
+"    $table->string('ip_address', 45)->nullable();\n"
+"    $table->text('user_agent')->nullable();\n"
+"    $table->text('payload');\n"
+"    $table->integer('last_activity')->index();\n"
+"});\n"
+msgstr ""
+
+#: docs/8.x/session.md:block 21 (paragraph)
+msgid "You may use the `session:table` Artisan command to generate this migration. To learn more about database migrations, you may consult the complete [migration documentation](/docs/{{version}}/migrations):"
+msgstr ""
+
+#: docs/8.x/session.md:block 22 (code)
+msgid ""
+"php artisan session:table\n"
+"\n"
+"php artisan migrate\n"
+msgstr ""
+
+#: docs/8.x/session.md:block 24 (header)
+msgid "Redis"
+msgstr ""
+
+#: docs/8.x/session.md:block 25 (paragraph)
+msgid "Before using Redis sessions with Laravel, you will need to either install the PhpRedis PHP extension via PECL or install the `predis/predis` package (~1.0) via Composer. For more information on configuring Redis, consult Laravel's [Redis documentation](/docs/{{version}}/redis#configuration)."
+msgstr ""
+
+#: docs/8.x/session.md:block 26 (quote)
+msgid "{tip} In the `session` configuration file, the `connection` option may be used to specify which Redis connection is used by the session."
+msgstr ""
+
+#: docs/8.x/session.md:block 28 (header)
+msgid "Interacting With The Session"
+msgstr ""
+
+#: docs/8.x/session.md:block 30 (header)
+msgid "Retrieving Data"
+msgstr ""
+
+#: docs/8.x/session.md:block 31 (paragraph)
+msgid "There are two primary ways of working with session data in Laravel: the global `session` helper and via a `Request` instance. First, let's look at accessing the session via a `Request` instance, which can be type-hinted on a route closure or controller method. Remember, controller method dependencies are automatically injected via the Laravel [service container](/docs/{{version}}/container):"
+msgstr ""
+
+#: docs/8.x/session.md:block 32 (code)
+msgid ""
+"<?php\n"
+"\n"
+"namespace App\\Http\\Controllers;\n"
+"\n"
+"use App\\Http\\Controllers\\Controller;\n"
+"use Illuminate\\Http\\Request;\n"
+"\n"
+"class UserController extends Controller\n"
+"{\n"
+"    /**\n"
+"     * Show the profile for the given user.\n"
+"     *\n"
+"     * @param  Request  $request\n"
+"     * @param  int  $id\n"
+"     * @return Response\n"
+"     */\n"
+"    public function show(Request $request, $id)\n"
+"    {\n"
+"        $value = $request->session()->get('key');\n"
+"\n"
+"        //\n"
+"    }\n"
+"}\n"
+msgstr ""
+
+#: docs/8.x/session.md:block 33 (paragraph)
+msgid "When you retrieve an item from the session, you may also pass a default value as the second argument to the `get` method. This default value will be returned if the specified key does not exist in the session. If you pass a closure as the default value to the `get` method and the requested key does not exist, the closure will be executed and its result returned:"
+msgstr ""
+
+#: docs/8.x/session.md:block 34 (code)
+msgid ""
+"$value = $request->session()->get('key', 'default');\n"
+"\n"
+"$value = $request->session()->get('key', function () {\n"
+"    return 'default';\n"
+"});\n"
+msgstr ""
+
+#: docs/8.x/session.md:block 36 (header)
+msgid "The Global Session Helper"
+msgstr ""
+
+#: docs/8.x/session.md:block 37 (paragraph)
+msgid "You may also use the global `session` PHP function to retrieve and store data in the session. When the `session` helper is called with a single, string argument, it will return the value of that session key. When the helper is called with an array of key / value pairs, those values will be stored in the session:"
+msgstr ""
+
+#: docs/8.x/session.md:block 38 (code)
+msgid ""
+"Route::get('/home', function () {\n"
+"    // Retrieve a piece of data from the session...\n"
+"    $value = session('key');\n"
+"\n"
+"    // Specifying a default value...\n"
+"    $value = session('key', 'default');\n"
+"\n"
+"    // Store a piece of data in the session...\n"
+"    session(['key' => 'value']);\n"
+"});\n"
+msgstr ""
+
+#: docs/8.x/session.md:block 39 (quote)
+msgid "{tip} There is little practical difference between using the session via an HTTP request instance versus using the global `session` helper. Both methods are [testable](/docs/{{version}}/testing) via the `assertSessionHas` method which is available in all of your test cases."
+msgstr ""
+
+#: docs/8.x/session.md:block 41 (header)
+msgid "Retrieving All Session Data"
+msgstr ""
+
+#: docs/8.x/session.md:block 42 (paragraph)
+msgid "If you would like to retrieve all the data in the session, you may use the `all` method:"
+msgstr ""
+
+#: docs/8.x/session.md:block 43 (code)
+msgid "$data = $request->session()->all();\n"
+msgstr ""
+
+#: docs/8.x/session.md:block 45 (header)
+msgid "Determining If An Item Exists In The Session"
+msgstr ""
+
+#: docs/8.x/session.md:block 46 (paragraph)
+msgid "To determine if an item is present in the session, you may use the `has` method. The `has` method returns `true` if the item is present and is not `null`:"
+msgstr ""
+
+#: docs/8.x/session.md:block 47 (code)
+msgid ""
+"if ($request->session()->has('users')) {\n"
+"    //\n"
+"}\n"
+msgstr ""
+
+#: docs/8.x/session.md:block 48 (paragraph)
+msgid "To determine if an item is present in the session, even if its value is `null`, you may use the `exists` method:"
+msgstr ""
+
+#: docs/8.x/session.md:block 49 (code)
+msgid ""
+"if ($request->session()->exists('users')) {\n"
+"    //\n"
+"}\n"
+msgstr ""
+
+#: docs/8.x/session.md:block 50 (paragraph)
+msgid "To determine if an item is not present in the session, you may use the `missing` method. The `missing` method returns `true` if the item is `null` or if the item is not present:"
+msgstr ""
+
+#: docs/8.x/session.md:block 51 (code)
+msgid ""
+"if ($request->session()->missing('users')) {\n"
+"    //\n"
+"}\n"
+msgstr ""
+
+#: docs/8.x/session.md:block 53 (header)
+msgid "Storing Data"
+msgstr ""
+
+#: docs/8.x/session.md:block 54 (paragraph)
+msgid "To store data in the session, you will typically use the request instance's `put` method or the global `session` helper:"
+msgstr ""
+
+#: docs/8.x/session.md:block 55 (code)
+msgid ""
+"// Via a request instance...\n"
+"$request->session()->put('key', 'value');\n"
+"\n"
+"// Via the global \"session\" helper...\n"
+"session(['key' => 'value']);\n"
+msgstr ""
+
+#: docs/8.x/session.md:block 57 (header)
+msgid "Pushing To Array Session Values"
+msgstr ""
+
+#: docs/8.x/session.md:block 58 (paragraph)
+msgid "The `push` method may be used to push a new value onto a session value that is an array. For example, if the `user.teams` key contains an array of team names, you may push a new value onto the array like so:"
+msgstr ""
+
+#: docs/8.x/session.md:block 59 (code)
+msgid "$request->session()->push('user.teams', 'developers');\n"
+msgstr ""
+
+#: docs/8.x/session.md:block 61 (header)
+msgid "Retrieving & Deleting An Item"
+msgstr ""
+
+#: docs/8.x/session.md:block 62 (paragraph)
+msgid "The `pull` method will retrieve and delete an item from the session in a single statement:"
+msgstr ""
+
+#: docs/8.x/session.md:block 63 (code)
+msgid "$value = $request->session()->pull('key', 'default');\n"
+msgstr ""
+
+#: docs/8.x/session.md:block 65 (header)
+msgid "Incrementing & Decrementing Session Values"
+msgstr ""
+
+#: docs/8.x/session.md:block 66 (paragraph)
+msgid "If your session data contains an integer you wish to increment or decrement, you may use the `increment` and `decrement` methods:"
+msgstr ""
+
+#: docs/8.x/session.md:block 67 (code)
+msgid ""
+"$request->session()->increment('count');\n"
+"\n"
+"$request->session()->increment('count', $incrementBy = 2);\n"
+"\n"
+"$request->session()->decrement('count');\n"
+"\n"
+"$request->session()->decrement('count', $decrementBy = 2);\n"
+msgstr ""
+
+#: docs/8.x/session.md:block 69 (header)
+msgid "Flash Data"
+msgstr ""
+
+#: docs/8.x/session.md:block 70 (paragraph)
+msgid "Sometimes you may wish to store items in the session for the next request. You may do so using the `flash` method. Data stored in the session using this method will be available immediately and during the subsequent HTTP request. After the subsequent HTTP request, the flashed data will be deleted. Flash data is primarily useful for short-lived status messages:"
+msgstr ""
+
+#: docs/8.x/session.md:block 71 (code)
+msgid "$request->session()->flash('status', 'Task was successful!');\n"
+msgstr ""
+
+#: docs/8.x/session.md:block 72 (paragraph)
+msgid "If you need to persist your flash data for several requests, you may use the `reflash` method, which will keep all of the flash data for an additional request. If you only need to keep specific flash data, you may use the `keep` method:"
+msgstr ""
+
+#: docs/8.x/session.md:block 73 (code)
+msgid ""
+"$request->session()->reflash();\n"
+"\n"
+"$request->session()->keep(['username', 'email']);\n"
+msgstr ""
+
+#: docs/8.x/session.md:block 74 (paragraph)
+msgid "To persist your flash data only for the current request, you may use the `now` method:"
+msgstr ""
+
+#: docs/8.x/session.md:block 75 (code)
+msgid "$request->session()->now('status', 'Task was successful!');\n"
+msgstr ""
+
+#: docs/8.x/session.md:block 77 (header)
+msgid "Deleting Data"
+msgstr ""
+
+#: docs/8.x/session.md:block 78 (paragraph)
+msgid "The `forget` method will remove a piece of data from the session. If you would like to remove all data from the session, you may use the `flush` method:"
+msgstr ""
+
+#: docs/8.x/session.md:block 79 (code)
+msgid ""
+"// Forget a single key...\n"
+"$request->session()->forget('name');\n"
+"\n"
+"// Forget multiple keys...\n"
+"$request->session()->forget(['name', 'status']);\n"
+"\n"
+"$request->session()->flush();\n"
+msgstr ""
+
+#: docs/8.x/session.md:block 81 (header)
+msgid "Regenerating The Session ID"
+msgstr ""
+
+#: docs/8.x/session.md:block 82 (paragraph)
+msgid "Regenerating the session ID is often done in order to prevent malicious users from exploiting a [session fixation](https://owasp.org/www-community/attacks/Session_fixation) attack on your application."
+msgstr ""
+
+#: docs/8.x/session.md:block 83 (paragraph)
+msgid "Laravel automatically regenerates the session ID during authentication if you are using one of the Laravel [application starter kits](/docs/{{version}}/starter-kits) or [Laravel Fortify](/docs/{{version}}/fortify); however, if you need to manually regenerate the session ID, you may use the `regenerate` method:"
+msgstr ""
+
+#: docs/8.x/session.md:block 84 (code)
+msgid "$request->session()->regenerate();\n"
+msgstr ""
+
+#: docs/8.x/session.md:block 85 (paragraph)
+msgid "If you need to regenerate the session ID and remove all data from the session in a single statement, you may use the `invalidate` method:"
+msgstr ""
+
+#: docs/8.x/session.md:block 86 (code)
+msgid "$request->session()->invalidate();\n"
+msgstr ""
+
+#: docs/8.x/session.md:block 88 (header)
+msgid "Session Blocking"
+msgstr ""
+
+#: docs/8.x/session.md:block 89 (quote)
+msgid "{note} To utilize session blocking, your application must be using a cache driver that supports [atomic locks](/docs/{{version}}/cache#atomic-locks). Currently, those cache drivers include the `memcached`, `dynamodb`, `redis`, and `database` drivers. In addition, you may not use the `cookie` session driver."
+msgstr ""
+
+#: docs/8.x/session.md:block 90 (paragraph)
+msgid "By default, Laravel allows requests using the same session to execute concurrently. So, for example, if you use a JavaScript HTTP library to make two HTTP requests to your application, they will both execute at the same time. For many applications, this is not a problem; however, session data loss can occur in a small subset of applications that make concurrent requests to two different application endpoints which both write data to the session."
+msgstr ""
+
+#: docs/8.x/session.md:block 91 (paragraph)
+msgid "To mitigate this, Laravel provides functionality that allows you to limit concurrent requests for a given session. To get started, you may simply chain the `block` method onto your route definition. In this example, an incoming request to the `/profile` endpoint would acquire a session lock. While this lock is being held, any incoming requests to the `/profile` or `/order` endpoints which share the same session ID will wait for the first request to finish executing before continuing their execution:"
+msgstr ""
+
+#: docs/8.x/session.md:block 92 (code)
+msgid ""
+"Route::post('/profile', function () {\n"
+"    //\n"
+"})->block($lockSeconds = 10, $waitSeconds = 10)\n"
+"\n"
+"Route::post('/order', function () {\n"
+"    //\n"
+"})->block($lockSeconds = 10, $waitSeconds = 10)\n"
+msgstr ""
+
+#: docs/8.x/session.md:block 93 (paragraph)
+msgid "The `block` method accepts two optional arguments. The first argument accepted by the `block` method is the maximum number of seconds the session lock should be held for before it is released. Of course, if the request finishes executing before this time the lock will be released earlier."
+msgstr ""
+
+#: docs/8.x/session.md:block 94 (paragraph)
+msgid "The second argument accepted by the `block` method is the number of seconds a request should wait while attempting to obtain a session lock. An `Illuminate\\Contracts\\Cache\\LockTimeoutException` will be thrown if the request is unable to obtain a session lock within the given number of seconds."
+msgstr ""
+
+#: docs/8.x/session.md:block 95 (paragraph)
+msgid "If neither of these arguments is passed, the lock will be obtained for a maximum of 10 seconds and requests will wait a maximum of 10 seconds while attempting to obtain a lock:"
+msgstr ""
+
+#: docs/8.x/session.md:block 96 (code)
+msgid ""
+"Route::post('/profile', function () {\n"
+"    //\n"
+"})->block()\n"
+msgstr ""
+
+#: docs/8.x/session.md:block 98 (header)
+msgid "Adding Custom Session Drivers"
+msgstr ""
+
+#: docs/8.x/session.md:block 100 (header)
+msgid "Implementing The Driver"
+msgstr ""
+
+#: docs/8.x/session.md:block 101 (paragraph)
+msgid "If none of the existing session drivers fit your application's needs, Laravel makes it possible to write your own session handler. Your custom session driver should implement PHP's built-in `SessionHandlerInterface`. This interface contains just a few simple methods. A stubbed MongoDB implementation looks like the following:"
+msgstr ""
+
+#: docs/8.x/session.md:block 102 (code)
+msgid ""
+"<?php\n"
+"\n"
+"namespace App\\Extensions;\n"
+"\n"
+"class MongoSessionHandler implements \\SessionHandlerInterface\n"
+"{\n"
+"    public function open($savePath, $sessionName) {}\n"
+"    public function close() {}\n"
+"    public function read($sessionId) {}\n"
+"    public function write($sessionId, $data) {}\n"
+"    public function destroy($sessionId) {}\n"
+"    public function gc($lifetime) {}\n"
+"}\n"
+msgstr ""
+
+#: docs/8.x/session.md:block 103 (quote)
+msgid "{tip} Laravel does not ship with a directory to contain your extensions. You are free to place them anywhere you like. In this example, we have created an `Extensions` directory to house the `MongoSessionHandler`."
+msgstr ""
+
+#: docs/8.x/session.md:block 104 (paragraph)
+msgid "Since the purpose of these methods is not readily understandable, let's quickly cover what each of the methods do:"
+msgstr ""
+
+#: docs/8.x/session.md:block 106 (unordered list)
+msgid "The `open` method would typically be used in file based session store systems. Since Laravel ships with a `file` session driver, you will rarely need to put anything in this method. You can simply leave this method empty."
+msgstr ""
+
+#: docs/8.x/session.md:block 106 (unordered list)
+msgid "The `close` method, like the `open` method, can also usually be disregarded. For most drivers, it is not needed."
+msgstr ""
+
+#: docs/8.x/session.md:block 106 (unordered list)
+msgid "The `read` method should return the string version of the session data associated with the given `$sessionId`. There is no need to do any serialization or other encoding when retrieving or storing session data in your driver, as Laravel will perform the serialization for you."
+msgstr ""
+
+#: docs/8.x/session.md:block 106 (unordered list)
+msgid "The `write` method should write the given `$data` string associated with the `$sessionId` to some persistent storage system, such as MongoDB or another storage system of your choice. Again, you should not perform any serialization - Laravel will have already handled that for you."
+msgstr ""
+
+#: docs/8.x/session.md:block 106 (unordered list)
+msgid "The `destroy` method should remove the data associated with the `$sessionId` from persistent storage."
+msgstr ""
+
+#: docs/8.x/session.md:block 106 (unordered list)
+msgid "The `gc` method should destroy all session data that is older than the given `$lifetime`, which is a UNIX timestamp. For self-expiring systems like Memcached and Redis, this method may be left empty."
+msgstr ""
+
+#: docs/8.x/session.md:block 109 (header)
+msgid "Registering The Driver"
+msgstr ""
+
+#: docs/8.x/session.md:block 110 (paragraph)
+msgid "Once your driver has been implemented, you are ready to register it with Laravel. To add additional drivers to Laravel's session backend, you may use the `extend` method provided by the `Session` [facade](/docs/{{version}}/facades). You should call the `extend` method from the `boot` method of a [service provider](/docs/{{version}}/providers). You may do this from the existing `App\\Providers\\AppServiceProvider` or create an entirely new provider:"
+msgstr ""
+
+#: docs/8.x/session.md:block 111 (code)
+msgid ""
+"<?php\n"
+"\n"
+"namespace App\\Providers;\n"
+"\n"
+"use App\\Extensions\\MongoSessionHandler;\n"
+"use Illuminate\\Support\\Facades\\Session;\n"
+"use Illuminate\\Support\\ServiceProvider;\n"
+"\n"
+"class SessionServiceProvider extends ServiceProvider\n"
+"{\n"
+"    /**\n"
+"     * Register any application services.\n"
+"     *\n"
+"     * @return void\n"
+"     */\n"
+"    public function register()\n"
+"    {\n"
+"        //\n"
+"    }\n"
+"\n"
+"    /**\n"
+"     * Bootstrap any application services.\n"
+"     *\n"
+"     * @return void\n"
+"     */\n"
+"    public function boot()\n"
+"    {\n"
+"        Session::extend('mongo', function ($app) {\n"
+"            // Return an implementation of SessionHandlerInterface...\n"
+"            return new MongoSessionHandler;\n"
+"        });\n"
+"    }\n"
+"}\n"
+msgstr ""
+
+#: docs/8.x/session.md:block 112 (paragraph)
+msgid "Once the session driver has been registered, you may use the `mongo` driver in your `config/session.php` configuration file."
+msgstr ""

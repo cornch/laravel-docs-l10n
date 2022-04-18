@@ -1,0 +1,883 @@
+#
+msgid ""
+msgstr ""
+
+#: docs/8.x/facades.md:block 1 (header)
+msgid "Facades"
+msgstr ""
+
+#: docs/8.x/facades.md:block 2 (unordered list)
+msgid "[Introduction](#introduction)"
+msgstr ""
+
+#: docs/8.x/facades.md:block 2 (unordered list)
+msgid "[When To Use Facades](#when-to-use-facades)"
+msgstr ""
+
+#: docs/8.x/facades.md:block 2 (unordered list)
+msgid "[Facades Vs. Dependency Injection](#facades-vs-dependency-injection)"
+msgstr ""
+
+#: docs/8.x/facades.md:block 2 (unordered list)
+msgid "[Facades Vs. Helper Functions](#facades-vs-helper-functions)"
+msgstr ""
+
+#: docs/8.x/facades.md:block 2 (unordered list)
+msgid "[How Facades Work](#how-facades-work)"
+msgstr ""
+
+#: docs/8.x/facades.md:block 2 (unordered list)
+msgid "[Real-Time Facades](#real-time-facades)"
+msgstr ""
+
+#: docs/8.x/facades.md:block 2 (unordered list)
+msgid "[Facade Class Reference](#facade-class-reference)"
+msgstr ""
+
+#: docs/8.x/facades.md:block 4 (header)
+msgid "Introduction"
+msgstr ""
+
+#: docs/8.x/facades.md:block 5 (paragraph)
+msgid "Throughout the Laravel documentation, you will see examples of code that interacts with Laravel's features via \"facades\". Facades provide a \"static\" interface to classes that are available in the application's [service container](/docs/{{version}}/container). Laravel ships with many facades which provide access to almost all of Laravel's features."
+msgstr ""
+
+#: docs/8.x/facades.md:block 6 (paragraph)
+msgid "Laravel facades serve as \"static proxies\" to underlying classes in the service container, providing the benefit of a terse, expressive syntax while maintaining more testability and flexibility than traditional static methods. It's perfectly fine if you don't totally understand how facades work under the hood - just go with the flow and continue learning about Laravel."
+msgstr ""
+
+#: docs/8.x/facades.md:block 7 (paragraph)
+msgid "All of Laravel's facades are defined in the `Illuminate\\Support\\Facades` namespace. So, we can easily access a facade like so:"
+msgstr ""
+
+#: docs/8.x/facades.md:block 8 (code)
+msgid ""
+"use Illuminate\\Support\\Facades\\Cache;\n"
+"use Illuminate\\Support\\Facades\\Route;\n"
+"\n"
+"Route::get('/cache', function () {\n"
+"    return Cache::get('key');\n"
+"});\n"
+msgstr ""
+
+#: docs/8.x/facades.md:block 9 (paragraph)
+msgid "Throughout the Laravel documentation, many of the examples will use facades to demonstrate various features of the framework."
+msgstr ""
+
+#: docs/8.x/facades.md:block 11 (header)
+msgid "Helper Functions"
+msgstr ""
+
+#: docs/8.x/facades.md:block 12 (paragraph)
+msgid "To complement facades, Laravel offers a variety of global \"helper functions\" that make it even easier to interact with common Laravel features. Some of the common helper functions you may interact with are `view`, `response`, `url`, `config`, and more. Each helper function offered by Laravel is documented with their corresponding feature; however, a complete list is available within the dedicated [helper documentation](/docs/{{version}}/helpers)."
+msgstr ""
+
+#: docs/8.x/facades.md:block 13 (paragraph)
+msgid "For example, instead of using the `Illuminate\\Support\\Facades\\Response` facade to generate a JSON response, we may simply use the `response` function. Because helper functions are globally available, you do not need to import any classes in order to use them:"
+msgstr ""
+
+#: docs/8.x/facades.md:block 14 (code)
+msgid ""
+"use Illuminate\\Support\\Facades\\Response;\n"
+"\n"
+"Route::get('/users', function () {\n"
+"    return Response::json([\n"
+"        // ...\n"
+"    ]);\n"
+"});\n"
+"\n"
+"Route::get('/users', function () {\n"
+"    return response()->json([\n"
+"        // ...\n"
+"    ]);\n"
+"});\n"
+msgstr ""
+
+#: docs/8.x/facades.md:block 16 (header)
+msgid "When To Use Facades"
+msgstr ""
+
+#: docs/8.x/facades.md:block 17 (paragraph)
+msgid "Facades have many benefits. They provide a terse, memorable syntax that allows you to use Laravel's features without remembering long class names that must be injected or configured manually. Furthermore, because of their unique usage of PHP's dynamic methods, they are easy to test."
+msgstr ""
+
+#: docs/8.x/facades.md:block 18 (paragraph)
+msgid "However, some care must be taken when using facades. The primary danger of facades is class \"scope creep\". Since facades are so easy to use and do not require injection, it can be easy to let your classes continue to grow and use many facades in a single class. Using dependency injection, this potential is mitigated by the visual feedback a large constructor gives you that your class is growing too large. So, when using facades, pay special attention to the size of your class so that its scope of responsibility stays narrow. If your class is getting too large, consider splitting it into multiple smaller classes."
+msgstr ""
+
+#: docs/8.x/facades.md:block 20 (header)
+msgid "Facades Vs. Dependency Injection"
+msgstr ""
+
+#: docs/8.x/facades.md:block 21 (paragraph)
+msgid "One of the primary benefits of dependency injection is the ability to swap implementations of the injected class. This is useful during testing since you can inject a mock or stub and assert that various methods were called on the stub."
+msgstr ""
+
+#: docs/8.x/facades.md:block 22 (paragraph)
+msgid "Typically, it would not be possible to mock or stub a truly static class method. However, since facades use dynamic methods to proxy method calls to objects resolved from the service container, we actually can test facades just as we would test an injected class instance. For example, given the following route:"
+msgstr ""
+
+#: docs/8.x/facades.md:block 23 (code)
+msgid ""
+"use Illuminate\\Support\\Facades\\Cache;\n"
+"\n"
+"Route::get('/cache', function () {\n"
+"    return Cache::get('key');\n"
+"});\n"
+msgstr ""
+
+#: docs/8.x/facades.md:block 24 (paragraph)
+msgid "Using Laravel's facade testing methods, we can write the following test to verify that the `Cache::get` method was called with the argument we expected:"
+msgstr ""
+
+#: docs/8.x/facades.md:block 25 (code)
+msgid ""
+"use Illuminate\\Support\\Facades\\Cache;\n"
+"\n"
+"/**\n"
+" * A basic functional test example.\n"
+" *\n"
+" * @return void\n"
+" */\n"
+"public function testBasicExample()\n"
+"{\n"
+"    Cache::shouldReceive('get')\n"
+"         ->with('key')\n"
+"         ->andReturn('value');\n"
+"\n"
+"    $response = $this->get('/cache');\n"
+"\n"
+"    $response->assertSee('value');\n"
+"}\n"
+msgstr ""
+
+#: docs/8.x/facades.md:block 27 (header)
+msgid "Facades Vs. Helper Functions"
+msgstr ""
+
+#: docs/8.x/facades.md:block 28 (paragraph)
+msgid "In addition to facades, Laravel includes a variety of \"helper\" functions which can perform common tasks like generating views, firing events, dispatching jobs, or sending HTTP responses. Many of these helper functions perform the same function as a corresponding facade. For example, this facade call and helper call are equivalent:"
+msgstr ""
+
+#: docs/8.x/facades.md:block 29 (code)
+msgid ""
+"return Illuminate\\Support\\Facades\\View::make('profile');\n"
+"\n"
+"return view('profile');\n"
+msgstr ""
+
+#: docs/8.x/facades.md:block 30 (paragraph)
+msgid "There is absolutely no practical difference between facades and helper functions. When using helper functions, you may still test them exactly as you would the corresponding facade. For example, given the following route:"
+msgstr ""
+
+#: docs/8.x/facades.md:block 31 (code)
+msgid ""
+"Route::get('/cache', function () {\n"
+"    return cache('key');\n"
+"});\n"
+msgstr ""
+
+#: docs/8.x/facades.md:block 32 (paragraph)
+msgid "Under the hood, the `cache` helper is going to call the `get` method on the class underlying the `Cache` facade. So, even though we are using the helper function, we can write the following test to verify that the method was called with the argument we expected:"
+msgstr ""
+
+#: docs/8.x/facades.md:block 35 (header)
+msgid "How Facades Work"
+msgstr ""
+
+#: docs/8.x/facades.md:block 36 (paragraph)
+msgid "In a Laravel application, a facade is a class that provides access to an object from the container. The machinery that makes this work is in the `Facade` class. Laravel's facades, and any custom facades you create, will extend the base `Illuminate\\Support\\Facades\\Facade` class."
+msgstr ""
+
+#: docs/8.x/facades.md:block 37 (paragraph)
+msgid "The `Facade` base class makes use of the `__callStatic()` magic-method to defer calls from your facade to an object resolved from the container. In the example below, a call is made to the Laravel cache system. By glancing at this code, one might assume that the static `get` method is being called on the `Cache` class:"
+msgstr ""
+
+#: docs/8.x/facades.md:block 38 (code)
+msgid ""
+"<?php\n"
+"\n"
+"namespace App\\Http\\Controllers;\n"
+"\n"
+"use App\\Http\\Controllers\\Controller;\n"
+"use Illuminate\\Support\\Facades\\Cache;\n"
+"\n"
+"class UserController extends Controller\n"
+"{\n"
+"    /**\n"
+"     * Show the profile for the given user.\n"
+"     *\n"
+"     * @param  int  $id\n"
+"     * @return Response\n"
+"     */\n"
+"    public function showProfile($id)\n"
+"    {\n"
+"        $user = Cache::get('user:'.$id);\n"
+"\n"
+"        return view('profile', ['user' => $user]);\n"
+"    }\n"
+"}\n"
+msgstr ""
+
+#: docs/8.x/facades.md:block 39 (paragraph)
+msgid "Notice that near the top of the file we are \"importing\" the `Cache` facade. This facade serves as a proxy for accessing the underlying implementation of the `Illuminate\\Contracts\\Cache\\Factory` interface. Any calls we make using the facade will be passed to the underlying instance of Laravel's cache service."
+msgstr ""
+
+#: docs/8.x/facades.md:block 40 (paragraph)
+msgid "If we look at that `Illuminate\\Support\\Facades\\Cache` class, you'll see that there is no static method `get`:"
+msgstr ""
+
+#: docs/8.x/facades.md:block 41 (code)
+msgid ""
+"class Cache extends Facade\n"
+"{\n"
+"    /**\n"
+"     * Get the registered name of the component.\n"
+"     *\n"
+"     * @return string\n"
+"     */\n"
+"    protected static function getFacadeAccessor() { return 'cache'; }\n"
+"}\n"
+msgstr ""
+
+#: docs/8.x/facades.md:block 42 (paragraph)
+msgid "Instead, the `Cache` facade extends the base `Facade` class and defines the method `getFacadeAccessor()`. This method's job is to return the name of a service container binding. When a user references any static method on the `Cache` facade, Laravel resolves the `cache` binding from the [service container](/docs/{{version}}/container) and runs the requested method (in this case, `get`) against that object."
+msgstr ""
+
+#: docs/8.x/facades.md:block 44 (header)
+msgid "Real-Time Facades"
+msgstr ""
+
+#: docs/8.x/facades.md:block 45 (paragraph)
+msgid "Using real-time facades, you may treat any class in your application as if it was a facade. To illustrate how this can be used, let's first examine some code that does not use real-time facades. For example, let's assume our `Podcast` model has a `publish` method. However, in order to publish the podcast, we need to inject a `Publisher` instance:"
+msgstr ""
+
+#: docs/8.x/facades.md:block 46 (code)
+msgid ""
+"<?php\n"
+"\n"
+"namespace App\\Models;\n"
+"\n"
+"use App\\Contracts\\Publisher;\n"
+"use Illuminate\\Database\\Eloquent\\Model;\n"
+"\n"
+"class Podcast extends Model\n"
+"{\n"
+"    /**\n"
+"     * Publish the podcast.\n"
+"     *\n"
+"     * @param  Publisher  $publisher\n"
+"     * @return void\n"
+"     */\n"
+"    public function publish(Publisher $publisher)\n"
+"    {\n"
+"        $this->update(['publishing' => now()]);\n"
+"\n"
+"        $publisher->publish($this);\n"
+"    }\n"
+"}\n"
+msgstr ""
+
+#: docs/8.x/facades.md:block 47 (paragraph)
+msgid "Injecting a publisher implementation into the method allows us to easily test the method in isolation since we can mock the injected publisher. However, it requires us to always pass a publisher instance each time we call the `publish` method. Using real-time facades, we can maintain the same testability while not being required to explicitly pass a `Publisher` instance. To generate a real-time facade, prefix the namespace of the imported class with `Facades`:"
+msgstr ""
+
+#: docs/8.x/facades.md:block 48 (code)
+msgid ""
+"<?php\n"
+"\n"
+"namespace App\\Models;\n"
+"\n"
+"use Facades\\App\\Contracts\\Publisher;\n"
+"use Illuminate\\Database\\Eloquent\\Model;\n"
+"\n"
+"class Podcast extends Model\n"
+"{\n"
+"    /**\n"
+"     * Publish the podcast.\n"
+"     *\n"
+"     * @return void\n"
+"     */\n"
+"    public function publish()\n"
+"    {\n"
+"        $this->update(['publishing' => now()]);\n"
+"\n"
+"        Publisher::publish($this);\n"
+"    }\n"
+"}\n"
+msgstr ""
+
+#: docs/8.x/facades.md:block 49 (paragraph)
+msgid "When the real-time facade is used, the publisher implementation will be resolved out of the service container using the portion of the interface or class name that appears after the `Facades` prefix. When testing, we can use Laravel's built-in facade testing helpers to mock this method call:"
+msgstr ""
+
+#: docs/8.x/facades.md:block 50 (code)
+msgid ""
+"<?php\n"
+"\n"
+"namespace Tests\\Feature;\n"
+"\n"
+"use App\\Models\\Podcast;\n"
+"use Facades\\App\\Contracts\\Publisher;\n"
+"use Illuminate\\Foundation\\Testing\\RefreshDatabase;\n"
+"use Tests\\TestCase;\n"
+"\n"
+"class PodcastTest extends TestCase\n"
+"{\n"
+"    use RefreshDatabase;\n"
+"\n"
+"    /**\n"
+"     * A test example.\n"
+"     *\n"
+"     * @return void\n"
+"     */\n"
+"    public function test_podcast_can_be_published()\n"
+"    {\n"
+"        $podcast = Podcast::factory()->create();\n"
+"\n"
+"        Publisher::shouldReceive('publish')->once()->with($podcast);\n"
+"\n"
+"        $podcast->publish();\n"
+"    }\n"
+"}\n"
+msgstr ""
+
+#: docs/8.x/facades.md:block 52 (header)
+msgid "Facade Class Reference"
+msgstr ""
+
+#: docs/8.x/facades.md:block 53 (paragraph)
+msgid "Below you will find every facade and its underlying class. This is a useful tool for quickly digging into the API documentation for a given facade root. The [service container binding](/docs/{{version}}/container) key is also included where applicable."
+msgstr ""
+
+#: docs/8.x/facades.md:block 54 (table)
+msgid "Facade"
+msgstr ""
+
+#: docs/8.x/facades.md:block 54 (table)
+msgid "Class"
+msgstr ""
+
+#: docs/8.x/facades.md:block 54 (table)
+msgid "Service Container Binding"
+msgstr ""
+
+#: docs/8.x/facades.md:block 54 (table)
+msgid "App"
+msgstr ""
+
+#: docs/8.x/facades.md:block 54 (table)
+msgid "[Illuminate\\Foundation\\Application](https://laravel.com/api/{{version}}/Illuminate/Foundation/Application.html)"
+msgstr ""
+
+#: docs/8.x/facades.md:block 54 (table)
+msgid "`app`"
+msgstr ""
+
+#: docs/8.x/facades.md:block 54 (table)
+msgid "Artisan"
+msgstr ""
+
+#: docs/8.x/facades.md:block 54 (table)
+msgid "[Illuminate\\Contracts\\Console\\Kernel](https://laravel.com/api/{{version}}/Illuminate/Contracts/Console/Kernel.html)"
+msgstr ""
+
+#: docs/8.x/facades.md:block 54 (table)
+msgid "`artisan`"
+msgstr ""
+
+#: docs/8.x/facades.md:block 54 (table)
+msgid "Auth"
+msgstr ""
+
+#: docs/8.x/facades.md:block 54 (table)
+msgid "[Illuminate\\Auth\\AuthManager](https://laravel.com/api/{{version}}/Illuminate/Auth/AuthManager.html)"
+msgstr ""
+
+#: docs/8.x/facades.md:block 54 (table)
+msgid "`auth`"
+msgstr ""
+
+#: docs/8.x/facades.md:block 54 (table)
+msgid "Auth (Instance)"
+msgstr ""
+
+#: docs/8.x/facades.md:block 54 (table)
+msgid "[Illuminate\\Contracts\\Auth\\Guard](https://laravel.com/api/{{version}}/Illuminate/Contracts/Auth/Guard.html)"
+msgstr ""
+
+#: docs/8.x/facades.md:block 54 (table)
+msgid "`auth.driver`"
+msgstr ""
+
+#: docs/8.x/facades.md:block 54 (table)
+msgid "Blade"
+msgstr ""
+
+#: docs/8.x/facades.md:block 54 (table)
+msgid "[Illuminate\\View\\Compilers\\BladeCompiler](https://laravel.com/api/{{version}}/Illuminate/View/Compilers/BladeCompiler.html)"
+msgstr ""
+
+#: docs/8.x/facades.md:block 54 (table)
+msgid "`blade.compiler`"
+msgstr ""
+
+#: docs/8.x/facades.md:block 54 (table)
+msgid "Broadcast"
+msgstr ""
+
+#: docs/8.x/facades.md:block 54 (table)
+msgid "[Illuminate\\Contracts\\Broadcasting\\Factory](https://laravel.com/api/{{version}}/Illuminate/Contracts/Broadcasting/Factory.html)"
+msgstr ""
+
+#: docs/8.x/facades.md:block 54 (table)
+msgid "&nbsp;"
+msgstr ""
+
+#: docs/8.x/facades.md:block 54 (table)
+msgid "Broadcast (Instance)"
+msgstr ""
+
+#: docs/8.x/facades.md:block 54 (table)
+msgid "[Illuminate\\Contracts\\Broadcasting\\Broadcaster](https://laravel.com/api/{{version}}/Illuminate/Contracts/Broadcasting/Broadcaster.html)"
+msgstr ""
+
+#: docs/8.x/facades.md:block 54 (table)
+msgid "Bus"
+msgstr ""
+
+#: docs/8.x/facades.md:block 54 (table)
+msgid "[Illuminate\\Contracts\\Bus\\Dispatcher](https://laravel.com/api/{{version}}/Illuminate/Contracts/Bus/Dispatcher.html)"
+msgstr ""
+
+#: docs/8.x/facades.md:block 54 (table)
+msgid "Cache"
+msgstr ""
+
+#: docs/8.x/facades.md:block 54 (table)
+msgid "[Illuminate\\Cache\\CacheManager](https://laravel.com/api/{{version}}/Illuminate/Cache/CacheManager.html)"
+msgstr ""
+
+#: docs/8.x/facades.md:block 54 (table)
+msgid "`cache`"
+msgstr ""
+
+#: docs/8.x/facades.md:block 54 (table)
+msgid "Cache (Instance)"
+msgstr ""
+
+#: docs/8.x/facades.md:block 54 (table)
+msgid "[Illuminate\\Cache\\Repository](https://laravel.com/api/{{version}}/Illuminate/Cache/Repository.html)"
+msgstr ""
+
+#: docs/8.x/facades.md:block 54 (table)
+msgid "`cache.store`"
+msgstr ""
+
+#: docs/8.x/facades.md:block 54 (table)
+msgid "Config"
+msgstr ""
+
+#: docs/8.x/facades.md:block 54 (table)
+msgid "[Illuminate\\Config\\Repository](https://laravel.com/api/{{version}}/Illuminate/Config/Repository.html)"
+msgstr ""
+
+#: docs/8.x/facades.md:block 54 (table)
+msgid "`config`"
+msgstr ""
+
+#: docs/8.x/facades.md:block 54 (table)
+msgid "Cookie"
+msgstr ""
+
+#: docs/8.x/facades.md:block 54 (table)
+msgid "[Illuminate\\Cookie\\CookieJar](https://laravel.com/api/{{version}}/Illuminate/Cookie/CookieJar.html)"
+msgstr ""
+
+#: docs/8.x/facades.md:block 54 (table)
+msgid "`cookie`"
+msgstr ""
+
+#: docs/8.x/facades.md:block 54 (table)
+msgid "Crypt"
+msgstr ""
+
+#: docs/8.x/facades.md:block 54 (table)
+msgid "[Illuminate\\Encryption\\Encrypter](https://laravel.com/api/{{version}}/Illuminate/Encryption/Encrypter.html)"
+msgstr ""
+
+#: docs/8.x/facades.md:block 54 (table)
+msgid "`encrypter`"
+msgstr ""
+
+#: docs/8.x/facades.md:block 54 (table)
+msgid "Date"
+msgstr ""
+
+#: docs/8.x/facades.md:block 54 (table)
+msgid "[Illuminate\\Support\\DateFactory](https://laravel.com/api/{{version}}/Illuminate/Support/DateFactory.html)"
+msgstr ""
+
+#: docs/8.x/facades.md:block 54 (table)
+msgid "`date`"
+msgstr ""
+
+#: docs/8.x/facades.md:block 54 (table)
+msgid "DB"
+msgstr ""
+
+#: docs/8.x/facades.md:block 54 (table)
+msgid "[Illuminate\\Database\\DatabaseManager](https://laravel.com/api/{{version}}/Illuminate/Database/DatabaseManager.html)"
+msgstr ""
+
+#: docs/8.x/facades.md:block 54 (table)
+msgid "`db`"
+msgstr ""
+
+#: docs/8.x/facades.md:block 54 (table)
+msgid "DB (Instance)"
+msgstr ""
+
+#: docs/8.x/facades.md:block 54 (table)
+msgid "[Illuminate\\Database\\Connection](https://laravel.com/api/{{version}}/Illuminate/Database/Connection.html)"
+msgstr ""
+
+#: docs/8.x/facades.md:block 54 (table)
+msgid "`db.connection`"
+msgstr ""
+
+#: docs/8.x/facades.md:block 54 (table)
+msgid "Event"
+msgstr ""
+
+#: docs/8.x/facades.md:block 54 (table)
+msgid "[Illuminate\\Events\\Dispatcher](https://laravel.com/api/{{version}}/Illuminate/Events/Dispatcher.html)"
+msgstr ""
+
+#: docs/8.x/facades.md:block 54 (table)
+msgid "`events`"
+msgstr ""
+
+#: docs/8.x/facades.md:block 54 (table)
+msgid "File"
+msgstr ""
+
+#: docs/8.x/facades.md:block 54 (table)
+msgid "[Illuminate\\Filesystem\\Filesystem](https://laravel.com/api/{{version}}/Illuminate/Filesystem/Filesystem.html)"
+msgstr ""
+
+#: docs/8.x/facades.md:block 54 (table)
+msgid "`files`"
+msgstr ""
+
+#: docs/8.x/facades.md:block 54 (table)
+msgid "Gate"
+msgstr ""
+
+#: docs/8.x/facades.md:block 54 (table)
+msgid "[Illuminate\\Contracts\\Auth\\Access\\Gate](https://laravel.com/api/{{version}}/Illuminate/Contracts/Auth/Access/Gate.html)"
+msgstr ""
+
+#: docs/8.x/facades.md:block 54 (table)
+msgid "Hash"
+msgstr ""
+
+#: docs/8.x/facades.md:block 54 (table)
+msgid "[Illuminate\\Contracts\\Hashing\\Hasher](https://laravel.com/api/{{version}}/Illuminate/Contracts/Hashing/Hasher.html)"
+msgstr ""
+
+#: docs/8.x/facades.md:block 54 (table)
+msgid "`hash`"
+msgstr ""
+
+#: docs/8.x/facades.md:block 54 (table)
+msgid "Http"
+msgstr ""
+
+#: docs/8.x/facades.md:block 54 (table)
+msgid "[Illuminate\\Http\\Client\\Factory](https://laravel.com/api/{{version}}/Illuminate/Http/Client/Factory.html)"
+msgstr ""
+
+#: docs/8.x/facades.md:block 54 (table)
+msgid "Lang"
+msgstr ""
+
+#: docs/8.x/facades.md:block 54 (table)
+msgid "[Illuminate\\Translation\\Translator](https://laravel.com/api/{{version}}/Illuminate/Translation/Translator.html)"
+msgstr ""
+
+#: docs/8.x/facades.md:block 54 (table)
+msgid "`translator`"
+msgstr ""
+
+#: docs/8.x/facades.md:block 54 (table)
+msgid "Log"
+msgstr ""
+
+#: docs/8.x/facades.md:block 54 (table)
+msgid "[Illuminate\\Log\\LogManager](https://laravel.com/api/{{version}}/Illuminate/Log/LogManager.html)"
+msgstr ""
+
+#: docs/8.x/facades.md:block 54 (table)
+msgid "`log`"
+msgstr ""
+
+#: docs/8.x/facades.md:block 54 (table)
+msgid "Mail"
+msgstr ""
+
+#: docs/8.x/facades.md:block 54 (table)
+msgid "[Illuminate\\Mail\\Mailer](https://laravel.com/api/{{version}}/Illuminate/Mail/Mailer.html)"
+msgstr ""
+
+#: docs/8.x/facades.md:block 54 (table)
+msgid "`mailer`"
+msgstr ""
+
+#: docs/8.x/facades.md:block 54 (table)
+msgid "Notification"
+msgstr ""
+
+#: docs/8.x/facades.md:block 54 (table)
+msgid "[Illuminate\\Notifications\\ChannelManager](https://laravel.com/api/{{version}}/Illuminate/Notifications/ChannelManager.html)"
+msgstr ""
+
+#: docs/8.x/facades.md:block 54 (table)
+msgid "Password"
+msgstr ""
+
+#: docs/8.x/facades.md:block 54 (table)
+msgid "[Illuminate\\Auth\\Passwords\\PasswordBrokerManager](https://laravel.com/api/{{version}}/Illuminate/Auth/Passwords/PasswordBrokerManager.html)"
+msgstr ""
+
+#: docs/8.x/facades.md:block 54 (table)
+msgid "`auth.password`"
+msgstr ""
+
+#: docs/8.x/facades.md:block 54 (table)
+msgid "Password (Instance)"
+msgstr ""
+
+#: docs/8.x/facades.md:block 54 (table)
+msgid "[Illuminate\\Auth\\Passwords\\PasswordBroker](https://laravel.com/api/{{version}}/Illuminate/Auth/Passwords/PasswordBroker.html)"
+msgstr ""
+
+#: docs/8.x/facades.md:block 54 (table)
+msgid "`auth.password.broker`"
+msgstr ""
+
+#: docs/8.x/facades.md:block 54 (table)
+msgid "Queue"
+msgstr ""
+
+#: docs/8.x/facades.md:block 54 (table)
+msgid "[Illuminate\\Queue\\QueueManager](https://laravel.com/api/{{version}}/Illuminate/Queue/QueueManager.html)"
+msgstr ""
+
+#: docs/8.x/facades.md:block 54 (table)
+msgid "`queue`"
+msgstr ""
+
+#: docs/8.x/facades.md:block 54 (table)
+msgid "Queue (Instance)"
+msgstr ""
+
+#: docs/8.x/facades.md:block 54 (table)
+msgid "[Illuminate\\Contracts\\Queue\\Queue](https://laravel.com/api/{{version}}/Illuminate/Contracts/Queue/Queue.html)"
+msgstr ""
+
+#: docs/8.x/facades.md:block 54 (table)
+msgid "`queue.connection`"
+msgstr ""
+
+#: docs/8.x/facades.md:block 54 (table)
+msgid "Queue (Base Class)"
+msgstr ""
+
+#: docs/8.x/facades.md:block 54 (table)
+msgid "[Illuminate\\Queue\\Queue](https://laravel.com/api/{{version}}/Illuminate/Queue/Queue.html)"
+msgstr ""
+
+#: docs/8.x/facades.md:block 54 (table)
+msgid "Redirect"
+msgstr ""
+
+#: docs/8.x/facades.md:block 54 (table)
+msgid "[Illuminate\\Routing\\Redirector](https://laravel.com/api/{{version}}/Illuminate/Routing/Redirector.html)"
+msgstr ""
+
+#: docs/8.x/facades.md:block 54 (table)
+msgid "`redirect`"
+msgstr ""
+
+#: docs/8.x/facades.md:block 54 (table)
+msgid "Redis"
+msgstr ""
+
+#: docs/8.x/facades.md:block 54 (table)
+msgid "[Illuminate\\Redis\\RedisManager](https://laravel.com/api/{{version}}/Illuminate/Redis/RedisManager.html)"
+msgstr ""
+
+#: docs/8.x/facades.md:block 54 (table)
+msgid "`redis`"
+msgstr ""
+
+#: docs/8.x/facades.md:block 54 (table)
+msgid "Redis (Instance)"
+msgstr ""
+
+#: docs/8.x/facades.md:block 54 (table)
+msgid "[Illuminate\\Redis\\Connections\\Connection](https://laravel.com/api/{{version}}/Illuminate/Redis/Connections/Connection.html)"
+msgstr ""
+
+#: docs/8.x/facades.md:block 54 (table)
+msgid "`redis.connection`"
+msgstr ""
+
+#: docs/8.x/facades.md:block 54 (table)
+msgid "Request"
+msgstr ""
+
+#: docs/8.x/facades.md:block 54 (table)
+msgid "[Illuminate\\Http\\Request](https://laravel.com/api/{{version}}/Illuminate/Http/Request.html)"
+msgstr ""
+
+#: docs/8.x/facades.md:block 54 (table)
+msgid "`request`"
+msgstr ""
+
+#: docs/8.x/facades.md:block 54 (table)
+msgid "Response"
+msgstr ""
+
+#: docs/8.x/facades.md:block 54 (table)
+msgid "[Illuminate\\Contracts\\Routing\\ResponseFactory](https://laravel.com/api/{{version}}/Illuminate/Contracts/Routing/ResponseFactory.html)"
+msgstr ""
+
+#: docs/8.x/facades.md:block 54 (table)
+msgid "Response (Instance)"
+msgstr ""
+
+#: docs/8.x/facades.md:block 54 (table)
+msgid "[Illuminate\\Http\\Response](https://laravel.com/api/{{version}}/Illuminate/Http/Response.html)"
+msgstr ""
+
+#: docs/8.x/facades.md:block 54 (table)
+msgid "Route"
+msgstr ""
+
+#: docs/8.x/facades.md:block 54 (table)
+msgid "[Illuminate\\Routing\\Router](https://laravel.com/api/{{version}}/Illuminate/Routing/Router.html)"
+msgstr ""
+
+#: docs/8.x/facades.md:block 54 (table)
+msgid "`router`"
+msgstr ""
+
+#: docs/8.x/facades.md:block 54 (table)
+msgid "Schema"
+msgstr ""
+
+#: docs/8.x/facades.md:block 54 (table)
+msgid "[Illuminate\\Database\\Schema\\Builder](https://laravel.com/api/{{version}}/Illuminate/Database/Schema/Builder.html)"
+msgstr ""
+
+#: docs/8.x/facades.md:block 54 (table)
+msgid "Session"
+msgstr ""
+
+#: docs/8.x/facades.md:block 54 (table)
+msgid "[Illuminate\\Session\\SessionManager](https://laravel.com/api/{{version}}/Illuminate/Session/SessionManager.html)"
+msgstr ""
+
+#: docs/8.x/facades.md:block 54 (table)
+msgid "`session`"
+msgstr ""
+
+#: docs/8.x/facades.md:block 54 (table)
+msgid "Session (Instance)"
+msgstr ""
+
+#: docs/8.x/facades.md:block 54 (table)
+msgid "[Illuminate\\Session\\Store](https://laravel.com/api/{{version}}/Illuminate/Session/Store.html)"
+msgstr ""
+
+#: docs/8.x/facades.md:block 54 (table)
+msgid "`session.store`"
+msgstr ""
+
+#: docs/8.x/facades.md:block 54 (table)
+msgid "Storage"
+msgstr ""
+
+#: docs/8.x/facades.md:block 54 (table)
+msgid "[Illuminate\\Filesystem\\FilesystemManager](https://laravel.com/api/{{version}}/Illuminate/Filesystem/FilesystemManager.html)"
+msgstr ""
+
+#: docs/8.x/facades.md:block 54 (table)
+msgid "`filesystem`"
+msgstr ""
+
+#: docs/8.x/facades.md:block 54 (table)
+msgid "Storage (Instance)"
+msgstr ""
+
+#: docs/8.x/facades.md:block 54 (table)
+msgid "[Illuminate\\Contracts\\Filesystem\\Filesystem](https://laravel.com/api/{{version}}/Illuminate/Contracts/Filesystem/Filesystem.html)"
+msgstr ""
+
+#: docs/8.x/facades.md:block 54 (table)
+msgid "`filesystem.disk`"
+msgstr ""
+
+#: docs/8.x/facades.md:block 54 (table)
+msgid "URL"
+msgstr ""
+
+#: docs/8.x/facades.md:block 54 (table)
+msgid "[Illuminate\\Routing\\UrlGenerator](https://laravel.com/api/{{version}}/Illuminate/Routing/UrlGenerator.html)"
+msgstr ""
+
+#: docs/8.x/facades.md:block 54 (table)
+msgid "`url`"
+msgstr ""
+
+#: docs/8.x/facades.md:block 54 (table)
+msgid "Validator"
+msgstr ""
+
+#: docs/8.x/facades.md:block 54 (table)
+msgid "[Illuminate\\Validation\\Factory](https://laravel.com/api/{{version}}/Illuminate/Validation/Factory.html)"
+msgstr ""
+
+#: docs/8.x/facades.md:block 54 (table)
+msgid "`validator`"
+msgstr ""
+
+#: docs/8.x/facades.md:block 54 (table)
+msgid "Validator (Instance)"
+msgstr ""
+
+#: docs/8.x/facades.md:block 54 (table)
+msgid "[Illuminate\\Validation\\Validator](https://laravel.com/api/{{version}}/Illuminate/Validation/Validator.html)"
+msgstr ""
+
+#: docs/8.x/facades.md:block 54 (table)
+msgid "View"
+msgstr ""
+
+#: docs/8.x/facades.md:block 54 (table)
+msgid "[Illuminate\\View\\Factory](https://laravel.com/api/{{version}}/Illuminate/View/Factory.html)"
+msgstr ""
+
+#: docs/8.x/facades.md:block 54 (table)
+msgid "`view`"
+msgstr ""
+
+#: docs/8.x/facades.md:block 54 (table)
+msgid "View (Instance)"
+msgstr ""
+
+#: docs/8.x/facades.md:block 54 (table)
+msgid "[Illuminate\\View\\View](https://laravel.com/api/{{version}}/Illuminate/View/View.html)"
+msgstr ""

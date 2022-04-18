@@ -1,0 +1,799 @@
+#
+msgid ""
+msgstr ""
+
+#: docs/8.x/cache.md:block 1 (header)
+msgid "Cache"
+msgstr ""
+
+#: docs/8.x/cache.md:block 2 (unordered list)
+msgid "[Introduction](#introduction)"
+msgstr ""
+
+#: docs/8.x/cache.md:block 2 (unordered list)
+msgid "[Configuration](#configuration)"
+msgstr ""
+
+#: docs/8.x/cache.md:block 2 (unordered list)
+msgid "[Driver Prerequisites](#driver-prerequisites)"
+msgstr ""
+
+#: docs/8.x/cache.md:block 2 (unordered list)
+msgid "[Cache Usage](#cache-usage)"
+msgstr ""
+
+#: docs/8.x/cache.md:block 2 (unordered list)
+msgid "[Obtaining A Cache Instance](#obtaining-a-cache-instance)"
+msgstr ""
+
+#: docs/8.x/cache.md:block 2 (unordered list)
+msgid "[Retrieving Items From The Cache](#retrieving-items-from-the-cache)"
+msgstr ""
+
+#: docs/8.x/cache.md:block 2 (unordered list)
+msgid "[Storing Items In The Cache](#storing-items-in-the-cache)"
+msgstr ""
+
+#: docs/8.x/cache.md:block 2 (unordered list)
+msgid "[Removing Items From The Cache](#removing-items-from-the-cache)"
+msgstr ""
+
+#: docs/8.x/cache.md:block 2 (unordered list)
+msgid "[The Cache Helper](#the-cache-helper)"
+msgstr ""
+
+#: docs/8.x/cache.md:block 2 (unordered list)
+msgid "[Cache Tags](#cache-tags)"
+msgstr ""
+
+#: docs/8.x/cache.md:block 2 (unordered list)
+msgid "[Storing Tagged Cache Items](#storing-tagged-cache-items)"
+msgstr ""
+
+#: docs/8.x/cache.md:block 2 (unordered list)
+msgid "[Accessing Tagged Cache Items](#accessing-tagged-cache-items)"
+msgstr ""
+
+#: docs/8.x/cache.md:block 2 (unordered list)
+msgid "[Removing Tagged Cache Items](#removing-tagged-cache-items)"
+msgstr ""
+
+#: docs/8.x/cache.md:block 2 (unordered list)
+msgid "[Atomic Locks](#atomic-locks)"
+msgstr ""
+
+#: docs/8.x/cache.md:block 2 (unordered list)
+msgid "[Driver Prerequisites](#lock-driver-prerequisites)"
+msgstr ""
+
+#: docs/8.x/cache.md:block 2 (unordered list)
+msgid "[Managing Locks](#managing-locks)"
+msgstr ""
+
+#: docs/8.x/cache.md:block 2 (unordered list)
+msgid "[Managing Locks Across Processes](#managing-locks-across-processes)"
+msgstr ""
+
+#: docs/8.x/cache.md:block 2 (unordered list)
+msgid "[Adding Custom Cache Drivers](#adding-custom-cache-drivers)"
+msgstr ""
+
+#: docs/8.x/cache.md:block 2 (unordered list)
+msgid "[Writing The Driver](#writing-the-driver)"
+msgstr ""
+
+#: docs/8.x/cache.md:block 2 (unordered list)
+msgid "[Registering The Driver](#registering-the-driver)"
+msgstr ""
+
+#: docs/8.x/cache.md:block 2 (unordered list)
+msgid "[Events](#events)"
+msgstr ""
+
+#: docs/8.x/cache.md:block 4 (header)
+msgid "Introduction"
+msgstr ""
+
+#: docs/8.x/cache.md:block 5 (paragraph)
+msgid "Some of the data retrieval or processing tasks performed by your application could be CPU intensive or take several seconds to complete. When this is the case, it is common to cache the retrieved data for a time so it can be retrieved quickly on subsequent requests for the same data. The cached data is usually stored in a very fast data store such as [Memcached](https://memcached.org) or [Redis](https://redis.io)."
+msgstr ""
+
+#: docs/8.x/cache.md:block 6 (paragraph)
+msgid "Thankfully, Laravel provides an expressive, unified API for various cache backends, allowing you to take advantage of their blazing fast data retrieval and speed up your web application."
+msgstr ""
+
+#: docs/8.x/cache.md:block 8 (header)
+msgid "Configuration"
+msgstr ""
+
+#: docs/8.x/cache.md:block 9 (paragraph)
+msgid "Your application's cache configuration file is located at `config/cache.php`. In this file, you may specify which cache driver you would like to be used by default throughout your application. Laravel supports popular caching backends like [Memcached](https://memcached.org), [Redis](https://redis.io), [DynamoDB](https://aws.amazon.com/dynamodb), and relational databases out of the box. In addition, a file based cache driver is available, while `array` and \"null\" cache drivers provide convenient cache backends for your automated tests."
+msgstr ""
+
+#: docs/8.x/cache.md:block 10 (paragraph)
+msgid "The cache configuration file also contains various other options, which are documented within the file, so make sure to read over these options. By default, Laravel is configured to use the `file` cache driver, which stores the serialized, cached objects on the server's filesystem. For larger applications, it is recommended that you use a more robust driver such as Memcached or Redis. You may even configure multiple cache configurations for the same driver."
+msgstr ""
+
+#: docs/8.x/cache.md:block 12 (header)
+msgid "Driver Prerequisites"
+msgstr ""
+
+#: docs/8.x/cache.md:block 14 (header)
+msgid "Database"
+msgstr ""
+
+#: docs/8.x/cache.md:block 15 (paragraph)
+msgid "When using the `database` cache driver, you will need to setup a table to contain the cache items. You'll find an example `Schema` declaration for the table below:"
+msgstr ""
+
+#: docs/8.x/cache.md:block 16 (code)
+msgid ""
+"Schema::create('cache', function ($table) {\n"
+"    $table->string('key')->unique();\n"
+"    $table->text('value');\n"
+"    $table->integer('expiration');\n"
+"});\n"
+msgstr ""
+
+#: docs/8.x/cache.md:block 17 (quote)
+msgid "{tip} You may also use the `php artisan cache:table` Artisan command to generate a migration with the proper schema."
+msgstr ""
+
+#: docs/8.x/cache.md:block 19 (header)
+msgid "Memcached"
+msgstr ""
+
+#: docs/8.x/cache.md:block 20 (paragraph)
+msgid "Using the Memcached driver requires the [Memcached PECL package](https://pecl.php.net/package/memcached) to be installed. You may list all of your Memcached servers in the `config/cache.php` configuration file. This file already contains a `memcached.servers` entry to get you started:"
+msgstr ""
+
+#: docs/8.x/cache.md:block 21 (code)
+msgid ""
+"'memcached' => [\n"
+"    'servers' => [\n"
+"        [\n"
+"            'host' => env('MEMCACHED_HOST', '127.0.0.1'),\n"
+"            'port' => env('MEMCACHED_PORT', 11211),\n"
+"            'weight' => 100,\n"
+"        ],\n"
+"    ],\n"
+"],\n"
+msgstr ""
+
+#: docs/8.x/cache.md:block 22 (paragraph)
+msgid "If needed, you may set the `host` option to a UNIX socket path. If you do this, the `port` option should be set to `0`:"
+msgstr ""
+
+#: docs/8.x/cache.md:block 23 (code)
+msgid ""
+"'memcached' => [\n"
+"    [\n"
+"        'host' => '/var/run/memcached/memcached.sock',\n"
+"        'port' => 0,\n"
+"        'weight' => 100\n"
+"    ],\n"
+"],\n"
+msgstr ""
+
+#: docs/8.x/cache.md:block 25 (header)
+msgid "Redis"
+msgstr ""
+
+#: docs/8.x/cache.md:block 26 (paragraph)
+msgid "Before using a Redis cache with Laravel, you will need to either install the PhpRedis PHP extension via PECL or install the `predis/predis` package (~1.0) via Composer. [Laravel Sail](/docs/{{version}}/sail) already includes this extension. In addition, official Laravel deployment platforms such as [Laravel Forge](https://forge.laravel.com) and [Laravel Vapor](https://vapor.laravel.com) have the PhpRedis extension installed by default."
+msgstr ""
+
+#: docs/8.x/cache.md:block 27 (paragraph)
+msgid "For more information on configuring Redis, consult its [Laravel documentation page](/docs/{{version}}/redis#configuration)."
+msgstr ""
+
+#: docs/8.x/cache.md:block 29 (header)
+msgid "DynamoDB"
+msgstr ""
+
+#: docs/8.x/cache.md:block 30 (paragraph)
+msgid "Before using the [DynamoDB](https://aws.amazon.com/dynamodb) cache driver, you must create a DynamoDB table to store all of the cached data. Typically, this table should be named `cache`. However, you should name the table based on the value of the `stores.dynamodb.table` configuration value within your application's `cache` configuration file."
+msgstr ""
+
+#: docs/8.x/cache.md:block 31 (paragraph)
+msgid "This table should also have a string partition key with a name that corresponds to the value of the `stores.dynamodb.attributes.key` configuration item within your application's `cache` configuration file. By default, the partition key should be named `key`."
+msgstr ""
+
+#: docs/8.x/cache.md:block 33 (header)
+msgid "Cache Usage"
+msgstr ""
+
+#: docs/8.x/cache.md:block 35 (header)
+msgid "Obtaining A Cache Instance"
+msgstr ""
+
+#: docs/8.x/cache.md:block 36 (paragraph)
+msgid "To obtain a cache store instance, you may use the `Cache` facade, which is what we will use throughout this documentation. The `Cache` facade provides convenient, terse access to the underlying implementations of the Laravel cache contracts:"
+msgstr ""
+
+#: docs/8.x/cache.md:block 37 (code)
+msgid ""
+"<?php\n"
+"\n"
+"namespace App\\Http\\Controllers;\n"
+"\n"
+"use Illuminate\\Support\\Facades\\Cache;\n"
+"\n"
+"class UserController extends Controller\n"
+"{\n"
+"    /**\n"
+"     * Show a list of all users of the application.\n"
+"     *\n"
+"     * @return Response\n"
+"     */\n"
+"    public function index()\n"
+"    {\n"
+"        $value = Cache::get('key');\n"
+"\n"
+"        //\n"
+"    }\n"
+"}\n"
+msgstr ""
+
+#: docs/8.x/cache.md:block 39 (header)
+msgid "Accessing Multiple Cache Stores"
+msgstr ""
+
+#: docs/8.x/cache.md:block 40 (paragraph)
+msgid "Using the `Cache` facade, you may access various cache stores via the `store` method. The key passed to the `store` method should correspond to one of the stores listed in the `stores` configuration array in your `cache` configuration file:"
+msgstr ""
+
+#: docs/8.x/cache.md:block 41 (code)
+msgid ""
+"$value = Cache::store('file')->get('foo');\n"
+"\n"
+"Cache::store('redis')->put('bar', 'baz', 600); // 10 Minutes\n"
+msgstr ""
+
+#: docs/8.x/cache.md:block 43 (header)
+msgid "Retrieving Items From The Cache"
+msgstr ""
+
+#: docs/8.x/cache.md:block 44 (paragraph)
+msgid "The `Cache` facade's `get` method is used to retrieve items from the cache. If the item does not exist in the cache, `null` will be returned. If you wish, you may pass a second argument to the `get` method specifying the default value you wish to be returned if the item doesn't exist:"
+msgstr ""
+
+#: docs/8.x/cache.md:block 45 (code)
+msgid ""
+"$value = Cache::get('key');\n"
+"\n"
+"$value = Cache::get('key', 'default');\n"
+msgstr ""
+
+#: docs/8.x/cache.md:block 46 (paragraph)
+msgid "You may even pass a closure as the default value. The result of the closure will be returned if the specified item does not exist in the cache. Passing a closure allows you to defer the retrieval of default values from a database or other external service:"
+msgstr ""
+
+#: docs/8.x/cache.md:block 47 (code)
+msgid ""
+"$value = Cache::get('key', function () {\n"
+"    return DB::table(...)->get();\n"
+"});\n"
+msgstr ""
+
+#: docs/8.x/cache.md:block 49 (header)
+msgid "Checking For Item Existence"
+msgstr ""
+
+#: docs/8.x/cache.md:block 50 (paragraph)
+msgid "The `has` method may be used to determine if an item exists in the cache. This method will also return `false` if the item exists but its value is `null`:"
+msgstr ""
+
+#: docs/8.x/cache.md:block 51 (code)
+msgid ""
+"if (Cache::has('key')) {\n"
+"    //\n"
+"}\n"
+msgstr ""
+
+#: docs/8.x/cache.md:block 53 (header)
+msgid "Incrementing / Decrementing Values"
+msgstr ""
+
+#: docs/8.x/cache.md:block 54 (paragraph)
+msgid "The `increment` and `decrement` methods may be used to adjust the value of integer items in the cache. Both of these methods accept an optional second argument indicating the amount by which to increment or decrement the item's value:"
+msgstr ""
+
+#: docs/8.x/cache.md:block 55 (code)
+msgid ""
+"Cache::increment('key');\n"
+"Cache::increment('key', $amount);\n"
+"Cache::decrement('key');\n"
+"Cache::decrement('key', $amount);\n"
+msgstr ""
+
+#: docs/8.x/cache.md:block 57 (header)
+msgid "Retrieve & Store"
+msgstr ""
+
+#: docs/8.x/cache.md:block 58 (paragraph)
+msgid "Sometimes you may wish to retrieve an item from the cache, but also store a default value if the requested item doesn't exist. For example, you may wish to retrieve all users from the cache or, if they don't exist, retrieve them from the database and add them to the cache. You may do this using the `Cache::remember` method:"
+msgstr ""
+
+#: docs/8.x/cache.md:block 59 (code)
+msgid ""
+"$value = Cache::remember('users', $seconds, function () {\n"
+"    return DB::table('users')->get();\n"
+"});\n"
+msgstr ""
+
+#: docs/8.x/cache.md:block 60 (paragraph)
+msgid "If the item does not exist in the cache, the closure passed to the `remember` method will be executed and its result will be placed in the cache."
+msgstr ""
+
+#: docs/8.x/cache.md:block 61 (paragraph)
+msgid "You may use the `rememberForever` method to retrieve an item from the cache or store it forever if it does not exist:"
+msgstr ""
+
+#: docs/8.x/cache.md:block 62 (code)
+msgid ""
+"$value = Cache::rememberForever('users', function () {\n"
+"    return DB::table('users')->get();\n"
+"});\n"
+msgstr ""
+
+#: docs/8.x/cache.md:block 64 (header)
+msgid "Retrieve & Delete"
+msgstr ""
+
+#: docs/8.x/cache.md:block 65 (paragraph)
+msgid "If you need to retrieve an item from the cache and then delete the item, you may use the `pull` method. Like the `get` method, `null` will be returned if the item does not exist in the cache:"
+msgstr ""
+
+#: docs/8.x/cache.md:block 66 (code)
+msgid "$value = Cache::pull('key');\n"
+msgstr ""
+
+#: docs/8.x/cache.md:block 68 (header)
+msgid "Storing Items In The Cache"
+msgstr ""
+
+#: docs/8.x/cache.md:block 69 (paragraph)
+msgid "You may use the `put` method on the `Cache` facade to store items in the cache:"
+msgstr ""
+
+#: docs/8.x/cache.md:block 70 (code)
+msgid "Cache::put('key', 'value', $seconds = 10);\n"
+msgstr ""
+
+#: docs/8.x/cache.md:block 71 (paragraph)
+msgid "If the storage time is not passed to the `put` method, the item will be stored indefinitely:"
+msgstr ""
+
+#: docs/8.x/cache.md:block 72 (code)
+msgid "Cache::put('key', 'value');\n"
+msgstr ""
+
+#: docs/8.x/cache.md:block 73 (paragraph)
+msgid "Instead of passing the number of seconds as an integer, you may also pass a `DateTime` instance representing the desired expiration time of the cached item:"
+msgstr ""
+
+#: docs/8.x/cache.md:block 74 (code)
+msgid "Cache::put('key', 'value', now()->addMinutes(10));\n"
+msgstr ""
+
+#: docs/8.x/cache.md:block 76 (header)
+msgid "Store If Not Present"
+msgstr ""
+
+#: docs/8.x/cache.md:block 77 (paragraph)
+msgid "The `add` method will only add the item to the cache if it does not already exist in the cache store. The method will return `true` if the item is actually added to the cache. Otherwise, the method will return `false`. The `add` method is an atomic operation:"
+msgstr ""
+
+#: docs/8.x/cache.md:block 78 (code)
+msgid "Cache::add('key', 'value', $seconds);\n"
+msgstr ""
+
+#: docs/8.x/cache.md:block 80 (header)
+msgid "Storing Items Forever"
+msgstr ""
+
+#: docs/8.x/cache.md:block 81 (paragraph)
+msgid "The `forever` method may be used to store an item in the cache permanently. Since these items will not expire, they must be manually removed from the cache using the `forget` method:"
+msgstr ""
+
+#: docs/8.x/cache.md:block 82 (code)
+msgid "Cache::forever('key', 'value');\n"
+msgstr ""
+
+#: docs/8.x/cache.md:block 83 (quote)
+msgid "{tip} If you are using the Memcached driver, items that are stored \"forever\" may be removed when the cache reaches its size limit."
+msgstr ""
+
+#: docs/8.x/cache.md:block 85 (header)
+msgid "Removing Items From The Cache"
+msgstr ""
+
+#: docs/8.x/cache.md:block 86 (paragraph)
+msgid "You may remove items from the cache using the `forget` method:"
+msgstr ""
+
+#: docs/8.x/cache.md:block 87 (code)
+msgid "Cache::forget('key');\n"
+msgstr ""
+
+#: docs/8.x/cache.md:block 88 (paragraph)
+msgid "You may also remove items by providing a zero or negative number of expiration seconds:"
+msgstr ""
+
+#: docs/8.x/cache.md:block 89 (code)
+msgid ""
+"Cache::put('key', 'value', 0);\n"
+"\n"
+"Cache::put('key', 'value', -5);\n"
+msgstr ""
+
+#: docs/8.x/cache.md:block 90 (paragraph)
+msgid "You may clear the entire cache using the `flush` method:"
+msgstr ""
+
+#: docs/8.x/cache.md:block 91 (code)
+msgid "Cache::flush();\n"
+msgstr ""
+
+#: docs/8.x/cache.md:block 92 (quote)
+msgid "{note} Flushing the cache does not respect your configured cache \"prefix\" and will remove all entries from the cache. Consider this carefully when clearing a cache which is shared by other applications."
+msgstr ""
+
+#: docs/8.x/cache.md:block 94 (header)
+msgid "The Cache Helper"
+msgstr ""
+
+#: docs/8.x/cache.md:block 95 (paragraph)
+msgid "In addition to using the `Cache` facade, you may also use the global `cache` function to retrieve and store data via the cache. When the `cache` function is called with a single, string argument, it will return the value of the given key:"
+msgstr ""
+
+#: docs/8.x/cache.md:block 96 (code)
+msgid "$value = cache('key');\n"
+msgstr ""
+
+#: docs/8.x/cache.md:block 97 (paragraph)
+msgid "If you provide an array of key / value pairs and an expiration time to the function, it will store values in the cache for the specified duration:"
+msgstr ""
+
+#: docs/8.x/cache.md:block 98 (code)
+msgid ""
+"cache(['key' => 'value'], $seconds);\n"
+"\n"
+"cache(['key' => 'value'], now()->addMinutes(10));\n"
+msgstr ""
+
+#: docs/8.x/cache.md:block 99 (paragraph)
+msgid "When the `cache` function is called without any arguments, it returns an instance of the `Illuminate\\Contracts\\Cache\\Factory` implementation, allowing you to call other caching methods:"
+msgstr ""
+
+#: docs/8.x/cache.md:block 100 (code)
+msgid ""
+"cache()->remember('users', $seconds, function () {\n"
+"    return DB::table('users')->get();\n"
+"});\n"
+msgstr ""
+
+#: docs/8.x/cache.md:block 101 (quote)
+msgid "{tip} When testing call to the global `cache` function, you may use the `Cache::shouldReceive` method just as if you were [testing the facade](/docs/{{version}}/mocking#mocking-facades)."
+msgstr ""
+
+#: docs/8.x/cache.md:block 103 (header)
+msgid "Cache Tags"
+msgstr ""
+
+#: docs/8.x/cache.md:block 104 (quote)
+msgid "{note} Cache tags are not supported when using the `file`, `dynamodb`, or `database` cache drivers. Furthermore, when using multiple tags with caches that are stored \"forever\", performance will be best with a driver such as `memcached`, which automatically purges stale records."
+msgstr ""
+
+#: docs/8.x/cache.md:block 106 (header)
+msgid "Storing Tagged Cache Items"
+msgstr ""
+
+#: docs/8.x/cache.md:block 107 (paragraph)
+msgid "Cache tags allow you to tag related items in the cache and then flush all cached values that have been assigned a given tag. You may access a tagged cache by passing in an ordered array of tag names. For example, let's access a tagged cache and `put` a value into the cache:"
+msgstr ""
+
+#: docs/8.x/cache.md:block 108 (code)
+msgid ""
+"Cache::tags(['people', 'artists'])->put('John', $john, $seconds);\n"
+"\n"
+"Cache::tags(['people', 'authors'])->put('Anne', $anne, $seconds);\n"
+msgstr ""
+
+#: docs/8.x/cache.md:block 110 (header)
+msgid "Accessing Tagged Cache Items"
+msgstr ""
+
+#: docs/8.x/cache.md:block 111 (paragraph)
+msgid "To retrieve a tagged cache item, pass the same ordered list of tags to the `tags` method and then call the `get` method with the key you wish to retrieve:"
+msgstr ""
+
+#: docs/8.x/cache.md:block 112 (code)
+msgid ""
+"$john = Cache::tags(['people', 'artists'])->get('John');\n"
+"\n"
+"$anne = Cache::tags(['people', 'authors'])->get('Anne');\n"
+msgstr ""
+
+#: docs/8.x/cache.md:block 114 (header)
+msgid "Removing Tagged Cache Items"
+msgstr ""
+
+#: docs/8.x/cache.md:block 115 (paragraph)
+msgid "You may flush all items that are assigned a tag or list of tags. For example, this statement would remove all caches tagged with either `people`, `authors`, or both. So, both `Anne` and `John` would be removed from the cache:"
+msgstr ""
+
+#: docs/8.x/cache.md:block 116 (code)
+msgid "Cache::tags(['people', 'authors'])->flush();\n"
+msgstr ""
+
+#: docs/8.x/cache.md:block 117 (paragraph)
+msgid "In contrast, this statement would remove only cached values tagged with `authors`, so `Anne` would be removed, but not `John`:"
+msgstr ""
+
+#: docs/8.x/cache.md:block 118 (code)
+msgid "Cache::tags('authors')->flush();\n"
+msgstr ""
+
+#: docs/8.x/cache.md:block 120 (header)
+msgid "Atomic Locks"
+msgstr ""
+
+#: docs/8.x/cache.md:block 121 (quote)
+msgid "{note} To utilize this feature, your application must be using the `memcached`, `redis`, `dynamodb`, `database`, `file`, or `array` cache driver as your application's default cache driver. In addition, all servers must be communicating with the same central cache server."
+msgstr ""
+
+#: docs/8.x/cache.md:block 126 (paragraph)
+msgid "When using the `database` cache driver, you will need to setup a table to contain your application's cache locks. You'll find an example `Schema` declaration for the table below:"
+msgstr ""
+
+#: docs/8.x/cache.md:block 127 (code)
+msgid ""
+"Schema::create('cache_locks', function ($table) {\n"
+"    $table->string('key')->primary();\n"
+"    $table->string('owner');\n"
+"    $table->integer('expiration');\n"
+"});\n"
+msgstr ""
+
+#: docs/8.x/cache.md:block 129 (header)
+msgid "Managing Locks"
+msgstr ""
+
+#: docs/8.x/cache.md:block 130 (paragraph)
+msgid "Atomic locks allow for the manipulation of distributed locks without worrying about race conditions. For example, [Laravel Forge](https://forge.laravel.com) uses atomic locks to ensure that only one remote task is being executed on a server at a time. You may create and manage locks using the `Cache::lock` method:"
+msgstr ""
+
+#: docs/8.x/cache.md:block 131 (code)
+msgid ""
+"use Illuminate\\Support\\Facades\\Cache;\n"
+"\n"
+"$lock = Cache::lock('foo', 10);\n"
+"\n"
+"if ($lock->get()) {\n"
+"    // Lock acquired for 10 seconds...\n"
+"\n"
+"    $lock->release();\n"
+"}\n"
+msgstr ""
+
+#: docs/8.x/cache.md:block 132 (paragraph)
+msgid "The `get` method also accepts a closure. After the closure is executed, Laravel will automatically release the lock:"
+msgstr ""
+
+#: docs/8.x/cache.md:block 133 (code)
+msgid ""
+"Cache::lock('foo')->get(function () {\n"
+"    // Lock acquired indefinitely and automatically released...\n"
+"});\n"
+msgstr ""
+
+#: docs/8.x/cache.md:block 134 (paragraph)
+msgid "If the lock is not available at the moment you request it, you may instruct Laravel to wait for a specified number of seconds. If the lock can not be acquired within the specified time limit, an `Illuminate\\Contracts\\Cache\\LockTimeoutException` will be thrown:"
+msgstr ""
+
+#: docs/8.x/cache.md:block 135 (code)
+msgid ""
+"use Illuminate\\Contracts\\Cache\\LockTimeoutException;\n"
+"\n"
+"$lock = Cache::lock('foo', 10);\n"
+"\n"
+"try {\n"
+"    $lock->block(5);\n"
+"\n"
+"    // Lock acquired after waiting a maximum of 5 seconds...\n"
+"} catch (LockTimeoutException $e) {\n"
+"    // Unable to acquire lock...\n"
+"} finally {\n"
+"    optional($lock)->release();\n"
+"}\n"
+msgstr ""
+
+#: docs/8.x/cache.md:block 136 (paragraph)
+msgid "The example above may be simplified by passing a closure to the `block` method. When a closure is passed to this method, Laravel will attempt to acquire the lock for the specified number of seconds and will automatically release the lock once the closure has been executed:"
+msgstr ""
+
+#: docs/8.x/cache.md:block 137 (code)
+msgid ""
+"Cache::lock('foo', 10)->block(5, function () {\n"
+"    // Lock acquired after waiting a maximum of 5 seconds...\n"
+"});\n"
+msgstr ""
+
+#: docs/8.x/cache.md:block 139 (header)
+msgid "Managing Locks Across Processes"
+msgstr ""
+
+#: docs/8.x/cache.md:block 140 (paragraph)
+msgid "Sometimes, you may wish to acquire a lock in one process and release it in another process. For example, you may acquire a lock during a web request and wish to release the lock at the end of a queued job that is triggered by that request. In this scenario, you should pass the lock's scoped \"owner token\" to the queued job so that the job can re-instantiate the lock using the given token."
+msgstr ""
+
+#: docs/8.x/cache.md:block 141 (paragraph)
+msgid "In the example below, we will dispatch a queued job if a lock is successfully acquired. In addition, we will pass the lock's owner token to the queued job via the lock's `owner` method:"
+msgstr ""
+
+#: docs/8.x/cache.md:block 142 (code)
+msgid ""
+"$podcast = Podcast::find($id);\n"
+"\n"
+"$lock = Cache::lock('processing', 120);\n"
+"\n"
+"if ($lock->get()) {\n"
+"    ProcessPodcast::dispatch($podcast, $lock->owner());\n"
+"}\n"
+msgstr ""
+
+#: docs/8.x/cache.md:block 143 (paragraph)
+msgid "Within our application's `ProcessPodcast` job, we can restore and release the lock using the owner token:"
+msgstr ""
+
+#: docs/8.x/cache.md:block 144 (code)
+msgid "Cache::restoreLock('processing', $this->owner)->release();\n"
+msgstr ""
+
+#: docs/8.x/cache.md:block 145 (paragraph)
+msgid "If you would like to release a lock without respecting its current owner, you may use the `forceRelease` method:"
+msgstr ""
+
+#: docs/8.x/cache.md:block 146 (code)
+msgid "Cache::lock('processing')->forceRelease();\n"
+msgstr ""
+
+#: docs/8.x/cache.md:block 148 (header)
+msgid "Adding Custom Cache Drivers"
+msgstr ""
+
+#: docs/8.x/cache.md:block 150 (header)
+msgid "Writing The Driver"
+msgstr ""
+
+#: docs/8.x/cache.md:block 151 (paragraph)
+msgid "To create our custom cache driver, we first need to implement the `Illuminate\\Contracts\\Cache\\Store` [contract](/docs/{{version}}/contracts). So, a MongoDB cache implementation might look something like this:"
+msgstr ""
+
+#: docs/8.x/cache.md:block 152 (code)
+msgid ""
+"<?php\n"
+"\n"
+"namespace App\\Extensions;\n"
+"\n"
+"use Illuminate\\Contracts\\Cache\\Store;\n"
+"\n"
+"class MongoStore implements Store\n"
+"{\n"
+"    public function get($key) {}\n"
+"    public function many(array $keys) {}\n"
+"    public function put($key, $value, $seconds) {}\n"
+"    public function putMany(array $values, $seconds) {}\n"
+"    public function increment($key, $value = 1) {}\n"
+"    public function decrement($key, $value = 1) {}\n"
+"    public function forever($key, $value) {}\n"
+"    public function forget($key) {}\n"
+"    public function flush() {}\n"
+"    public function getPrefix() {}\n"
+"}\n"
+msgstr ""
+
+#: docs/8.x/cache.md:block 153 (paragraph)
+msgid "We just need to implement each of these methods using a MongoDB connection. For an example of how to implement each of these methods, take a look at the `Illuminate\\Cache\\MemcachedStore` in the [Laravel framework source code](https://github.com/laravel/framework). Once our implementation is complete, we can finish our custom driver registration by calling the `Cache` facade's `extend` method:"
+msgstr ""
+
+#: docs/8.x/cache.md:block 154 (code)
+msgid ""
+"Cache::extend('mongo', function ($app) {\n"
+"    return Cache::repository(new MongoStore);\n"
+"});\n"
+msgstr ""
+
+#: docs/8.x/cache.md:block 155 (quote)
+msgid "{tip} If you're wondering where to put your custom cache driver code, you could create an `Extensions` namespace within your `app` directory. However, keep in mind that Laravel does not have a rigid application structure and you are free to organize your application according to your preferences."
+msgstr ""
+
+#: docs/8.x/cache.md:block 157 (header)
+msgid "Registering The Driver"
+msgstr ""
+
+#: docs/8.x/cache.md:block 158 (paragraph)
+msgid "To register the custom cache driver with Laravel, we will use the `extend` method on the `Cache` facade. Since other service providers may attempt to read cached values within their `boot` method, we will register our custom driver within a `booting` callback. By using the `booting` callback, we can ensure that the custom driver is registered just before the `boot` method is called on our application's service providers but after the `register` method is called on all of the service providers. We will register our `booting` callback within the `register` method of our application's `App\\Providers\\AppServiceProvider` class:"
+msgstr ""
+
+#: docs/8.x/cache.md:block 159 (code)
+msgid ""
+"<?php\n"
+"\n"
+"namespace App\\Providers;\n"
+"\n"
+"use App\\Extensions\\MongoStore;\n"
+"use Illuminate\\Support\\Facades\\Cache;\n"
+"use Illuminate\\Support\\ServiceProvider;\n"
+"\n"
+"class CacheServiceProvider extends ServiceProvider\n"
+"{\n"
+"    /**\n"
+"     * Register any application services.\n"
+"     *\n"
+"     * @return void\n"
+"     */\n"
+"    public function register()\n"
+"    {\n"
+"        $this->app->booting(function () {\n"
+"             Cache::extend('mongo', function ($app) {\n"
+"                 return Cache::repository(new MongoStore);\n"
+"             });\n"
+"         });\n"
+"    }\n"
+"\n"
+"    /**\n"
+"     * Bootstrap any application services.\n"
+"     *\n"
+"     * @return void\n"
+"     */\n"
+"    public function boot()\n"
+"    {\n"
+"        //\n"
+"    }\n"
+"}\n"
+msgstr ""
+
+#: docs/8.x/cache.md:block 160 (paragraph)
+msgid "The first argument passed to the `extend` method is the name of the driver. This will correspond to your `driver` option in the `config/cache.php` configuration file. The second argument is a closure that should return an `Illuminate\\Cache\\Repository` instance. The closure will be passed an `$app` instance, which is an instance of the [service container](/docs/{{version}}/container)."
+msgstr ""
+
+#: docs/8.x/cache.md:block 161 (paragraph)
+msgid "Once your extension is registered, update your `config/cache.php` configuration file's `driver` option to the name of your extension."
+msgstr ""
+
+#: docs/8.x/cache.md:block 163 (header)
+msgid "Events"
+msgstr ""
+
+#: docs/8.x/cache.md:block 164 (paragraph)
+msgid "To execute code on every cache operation, you may listen for the [events](/docs/{{version}}/events) fired by the cache. Typically, you should place these event listeners within your application's `App\\Providers\\EventServiceProvider` class:"
+msgstr ""
+
+#: docs/8.x/cache.md:block 165 (code)
+msgid ""
+"/**\n"
+" * The event listener mappings for the application.\n"
+" *\n"
+" * @var array\n"
+" */\n"
+"protected $listen = [\n"
+"    'Illuminate\\Cache\\Events\\CacheHit' => [\n"
+"        'App\\Listeners\\LogCacheHit',\n"
+"    ],\n"
+"\n"
+"    'Illuminate\\Cache\\Events\\CacheMissed' => [\n"
+"        'App\\Listeners\\LogCacheMissed',\n"
+"    ],\n"
+"\n"
+"    'Illuminate\\Cache\\Events\\KeyForgotten' => [\n"
+"        'App\\Listeners\\LogKeyForgotten',\n"
+"    ],\n"
+"\n"
+"    'Illuminate\\Cache\\Events\\KeyWritten' => [\n"
+"        'App\\Listeners\\LogKeyWritten',\n"
+"    ],\n"
+"];\n"
+msgstr ""

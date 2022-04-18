@@ -1,0 +1,445 @@
+#
+msgid ""
+msgstr ""
+
+#: docs/8.x/views.md:block 1 (header)
+msgid "Views"
+msgstr ""
+
+#: docs/8.x/views.md:block 2 (unordered list)
+msgid "[Introduction](#introduction)"
+msgstr ""
+
+#: docs/8.x/views.md:block 2 (unordered list)
+msgid "[Creating & Rendering Views](#creating-and-rendering-views)"
+msgstr ""
+
+#: docs/8.x/views.md:block 2 (unordered list)
+msgid "[Nested View Directories](#nested-view-directories)"
+msgstr ""
+
+#: docs/8.x/views.md:block 2 (unordered list)
+msgid "[Creating The First Available View](#creating-the-first-available-view)"
+msgstr ""
+
+#: docs/8.x/views.md:block 2 (unordered list)
+msgid "[Determining If A View Exists](#determining-if-a-view-exists)"
+msgstr ""
+
+#: docs/8.x/views.md:block 2 (unordered list)
+msgid "[Passing Data To Views](#passing-data-to-views)"
+msgstr ""
+
+#: docs/8.x/views.md:block 2 (unordered list)
+msgid "[Sharing Data With All Views](#sharing-data-with-all-views)"
+msgstr ""
+
+#: docs/8.x/views.md:block 2 (unordered list)
+msgid "[View Composers](#view-composers)"
+msgstr ""
+
+#: docs/8.x/views.md:block 2 (unordered list)
+msgid "[View Creators](#view-creators)"
+msgstr ""
+
+#: docs/8.x/views.md:block 2 (unordered list)
+msgid "[Optimizing Views](#optimizing-views)"
+msgstr ""
+
+#: docs/8.x/views.md:block 4 (header)
+msgid "Introduction"
+msgstr ""
+
+#: docs/8.x/views.md:block 5 (paragraph)
+msgid "Of course, it's not practical to return entire HTML documents strings directly from your routes and controllers. Thankfully, views provide a convenient way to place all of our HTML in separate files. Views separate your controller / application logic from your presentation logic and are stored in the `resources/views` directory. A simple view might look something like this:"
+msgstr ""
+
+#: docs/8.x/views.md:block 6 (code)
+msgid ""
+"<!-- View stored in resources/views/greeting.blade.php -->\n"
+"\n"
+"<html>\n"
+"    <body>\n"
+"        <h1>Hello, {{ $name }}</h1>\n"
+"    </body>\n"
+"</html>\n"
+msgstr ""
+
+#: docs/8.x/views.md:block 7 (paragraph)
+msgid "Since this view is stored at `resources/views/greeting.blade.php`, we may return it using the global `view` helper like so:"
+msgstr ""
+
+#: docs/8.x/views.md:block 8 (code)
+msgid ""
+"Route::get('/', function () {\n"
+"    return view('greeting', ['name' => 'James']);\n"
+"});\n"
+msgstr ""
+
+#: docs/8.x/views.md:block 9 (quote)
+msgid "{tip} Looking for more information on how to write Blade templates? Check out the full [Blade documentation](/docs/{{version}}/blade) to get started."
+msgstr ""
+
+#: docs/8.x/views.md:block 11 (header)
+msgid "Creating & Rendering Views"
+msgstr ""
+
+#: docs/8.x/views.md:block 12 (paragraph)
+msgid "You may create a view by placing a file with the `.blade.php` extension in your application's `resources/views` directory. The `.blade.php` extension informs the framework that the file contains a [Blade template](/docs/{{version}}/blade). Blade templates contain HTML as well as Blade directives that allow you to easily echo values, create \"if\" statements, iterate over data, and more."
+msgstr ""
+
+#: docs/8.x/views.md:block 13 (paragraph)
+msgid "Once you have created a view, you may return it from one of your application's routes or controllers using the global `view` helper:"
+msgstr ""
+
+#: docs/8.x/views.md:block 15 (paragraph)
+msgid "Views may also be returned using the `View` facade:"
+msgstr ""
+
+#: docs/8.x/views.md:block 16 (code)
+msgid ""
+"use Illuminate\\Support\\Facades\\View;\n"
+"\n"
+"return View::make('greeting', ['name' => 'James']);\n"
+msgstr ""
+
+#: docs/8.x/views.md:block 17 (paragraph)
+msgid "As you can see, the first argument passed to the `view` helper corresponds to the name of the view file in the `resources/views` directory. The second argument is an array of data that should be made available to the view. In this case, we are passing the `name` variable, which is displayed in the view using [Blade syntax](/docs/{{version}}/blade)."
+msgstr ""
+
+#: docs/8.x/views.md:block 19 (header)
+msgid "Nested View Directories"
+msgstr ""
+
+#: docs/8.x/views.md:block 20 (paragraph)
+msgid "Views may also be nested within subdirectories of the `resources/views` directory. \"Dot\" notation may be used to reference nested views. For example, if your view is stored at `resources/views/admin/profile.blade.php`, you may return it from one of your application's routes / controllers like so:"
+msgstr ""
+
+#: docs/8.x/views.md:block 21 (code)
+msgid "return view('admin.profile', $data);\n"
+msgstr ""
+
+#: docs/8.x/views.md:block 22 (quote)
+msgid "{note} View directory names should not contain the `.` character."
+msgstr ""
+
+#: docs/8.x/views.md:block 24 (header)
+msgid "Creating The First Available View"
+msgstr ""
+
+#: docs/8.x/views.md:block 25 (paragraph)
+msgid "Using the `View` facade's `first` method, you may create the first view that exists in a given array of views. This may be useful if your application or package allows views to be customized or overwritten:"
+msgstr ""
+
+#: docs/8.x/views.md:block 26 (code)
+msgid ""
+"use Illuminate\\Support\\Facades\\View;\n"
+"\n"
+"return View::first(['custom.admin', 'admin'], $data);\n"
+msgstr ""
+
+#: docs/8.x/views.md:block 28 (header)
+msgid "Determining If A View Exists"
+msgstr ""
+
+#: docs/8.x/views.md:block 29 (paragraph)
+msgid "If you need to determine if a view exists, you may use the `View` facade. The `exists` method will return `true` if the view exists:"
+msgstr ""
+
+#: docs/8.x/views.md:block 30 (code)
+msgid ""
+"use Illuminate\\Support\\Facades\\View;\n"
+"\n"
+"if (View::exists('emails.customer')) {\n"
+"    //\n"
+"}\n"
+msgstr ""
+
+#: docs/8.x/views.md:block 32 (header)
+msgid "Passing Data To Views"
+msgstr ""
+
+#: docs/8.x/views.md:block 33 (paragraph)
+msgid "As you saw in the previous examples, you may pass an array of data to views to make that data available to the view:"
+msgstr ""
+
+#: docs/8.x/views.md:block 34 (code)
+msgid "return view('greetings', ['name' => 'Victoria']);\n"
+msgstr ""
+
+#: docs/8.x/views.md:block 35 (paragraph)
+msgid "When passing information in this manner, the data should be an array with key / value pairs. After providing data to a view, you can then access each value within your view using the data's keys, such as `<?php echo $name; ?>`."
+msgstr ""
+
+#: docs/8.x/views.md:block 36 (paragraph)
+msgid "As an alternative to passing a complete array of data to the `view` helper function, you may use the `with` method to add individual pieces of data to the view. The `with` method returns an instance of the view object so that you can continue chaining methods before returning the view:"
+msgstr ""
+
+#: docs/8.x/views.md:block 37 (code)
+msgid ""
+"return view('greeting')\n"
+"            ->with('name', 'Victoria')\n"
+"            ->with('occupation', 'Astronaut');\n"
+msgstr ""
+
+#: docs/8.x/views.md:block 39 (header)
+msgid "Sharing Data With All Views"
+msgstr ""
+
+#: docs/8.x/views.md:block 40 (paragraph)
+msgid "Occasionally, you may need to share data with all views that are rendered by your application. You may do so using the `View` facade's `share` method. Typically, you should place calls to the `share` method within a service provider's `boot` method. You are free to add them to the `App\\Providers\\AppServiceProvider` class or generate a separate service provider to house them:"
+msgstr ""
+
+#: docs/8.x/views.md:block 41 (code)
+msgid ""
+"<?php\n"
+"\n"
+"namespace App\\Providers;\n"
+"\n"
+"use Illuminate\\Support\\Facades\\View;\n"
+"\n"
+"class AppServiceProvider extends ServiceProvider\n"
+"{\n"
+"    /**\n"
+"     * Register any application services.\n"
+"     *\n"
+"     * @return void\n"
+"     */\n"
+"    public function register()\n"
+"    {\n"
+"        //\n"
+"    }\n"
+"\n"
+"    /**\n"
+"     * Bootstrap any application services.\n"
+"     *\n"
+"     * @return void\n"
+"     */\n"
+"    public function boot()\n"
+"    {\n"
+"        View::share('key', 'value');\n"
+"    }\n"
+"}\n"
+msgstr ""
+
+#: docs/8.x/views.md:block 43 (header)
+msgid "View Composers"
+msgstr ""
+
+#: docs/8.x/views.md:block 44 (paragraph)
+msgid "View composers are callbacks or class methods that are called when a view is rendered. If you have data that you want to be bound to a view each time that view is rendered, a view composer can help you organize that logic into a single location. View composers may prove particularly useful if the same view is returned by multiple routes or controllers within your application and always needs a particular piece of data."
+msgstr ""
+
+#: docs/8.x/views.md:block 45 (paragraph)
+msgid "Typically, view composers will be registered within one of your application's [service providers](/docs/{{version}}/providers). In this example, we'll assume that we have created a new `App\\Providers\\ViewServiceProvider` to house this logic."
+msgstr ""
+
+#: docs/8.x/views.md:block 46 (paragraph)
+msgid "We'll use the `View` facade's `composer` method to register the view composer. Laravel does not include a default directory for class based view composers, so you are free to organize them however you wish. For example, you could create an `app/View/Composers` directory to house all of your application's view composers:"
+msgstr ""
+
+#: docs/8.x/views.md:block 47 (code)
+msgid ""
+"<?php\n"
+"\n"
+"namespace App\\Providers;\n"
+"\n"
+"use App\\View\\Composers\\ProfileComposer;\n"
+"use Illuminate\\Support\\Facades\\View;\n"
+"use Illuminate\\Support\\ServiceProvider;\n"
+"\n"
+"class ViewServiceProvider extends ServiceProvider\n"
+"{\n"
+"    /**\n"
+"     * Register any application services.\n"
+"     *\n"
+"     * @return void\n"
+"     */\n"
+"    public function register()\n"
+"    {\n"
+"        //\n"
+"    }\n"
+"\n"
+"    /**\n"
+"     * Bootstrap any application services.\n"
+"     *\n"
+"     * @return void\n"
+"     */\n"
+"    public function boot()\n"
+"    {\n"
+"        // Using class based composers...\n"
+"        View::composer('profile', ProfileComposer::class);\n"
+"\n"
+"        // Using closure based composers...\n"
+"        View::composer('dashboard', function ($view) {\n"
+"            //\n"
+"        });\n"
+"    }\n"
+"}\n"
+msgstr ""
+
+#: docs/8.x/views.md:block 48 (quote)
+msgid "{note} Remember, if you create a new service provider to contain your view composer registrations, you will need to add the service provider to the `providers` array in the `config/app.php` configuration file."
+msgstr ""
+
+#: docs/8.x/views.md:block 49 (paragraph)
+msgid "Now that we have registered the composer, the `compose` method of the `App\\View\\Composers\\ProfileComposer` class will be executed each time the `profile` view is being rendered. Let's take a look at an example of the composer class:"
+msgstr ""
+
+#: docs/8.x/views.md:block 50 (code)
+msgid ""
+"<?php\n"
+"\n"
+"namespace App\\View\\Composers;\n"
+"\n"
+"use App\\Repositories\\UserRepository;\n"
+"use Illuminate\\View\\View;\n"
+"\n"
+"class ProfileComposer\n"
+"{\n"
+"    /**\n"
+"     * The user repository implementation.\n"
+"     *\n"
+"     * @var \\App\\Repositories\\UserRepository\n"
+"     */\n"
+"    protected $users;\n"
+"\n"
+"    /**\n"
+"     * Create a new profile composer.\n"
+"     *\n"
+"     * @param  \\App\\Repositories\\UserRepository  $users\n"
+"     * @return void\n"
+"     */\n"
+"    public function __construct(UserRepository $users)\n"
+"    {\n"
+"        // Dependencies are automatically resolved by the service container...\n"
+"        $this->users = $users;\n"
+"    }\n"
+"\n"
+"    /**\n"
+"     * Bind data to the view.\n"
+"     *\n"
+"     * @param  \\Illuminate\\View\\View  $view\n"
+"     * @return void\n"
+"     */\n"
+"    public function compose(View $view)\n"
+"    {\n"
+"        $view->with('count', $this->users->count());\n"
+"    }\n"
+"}\n"
+msgstr ""
+
+#: docs/8.x/views.md:block 51 (paragraph)
+msgid "As you can see, all view composers are resolved via the [service container](/docs/{{version}}/container), so you may type-hint any dependencies you need within a composer's constructor."
+msgstr ""
+
+#: docs/8.x/views.md:block 53 (header)
+msgid "Attaching A Composer To Multiple Views"
+msgstr ""
+
+#: docs/8.x/views.md:block 54 (paragraph)
+msgid "You may attach a view composer to multiple views at once by passing an array of views as the first argument to the `composer` method:"
+msgstr ""
+
+#: docs/8.x/views.md:block 55 (code)
+msgid ""
+"use App\\Views\\Composers\\MultiComposer;\n"
+"\n"
+"View::composer(\n"
+"    ['profile', 'dashboard'],\n"
+"    MultiComposer::class\n"
+");\n"
+msgstr ""
+
+#: docs/8.x/views.md:block 56 (paragraph)
+msgid "The `composer` method also accepts the `*` character as a wildcard, allowing you to attach a composer to all views:"
+msgstr ""
+
+#: docs/8.x/views.md:block 57 (code)
+msgid ""
+"View::composer('*', function ($view) {\n"
+"    //\n"
+"});\n"
+msgstr ""
+
+#: docs/8.x/views.md:block 59 (header)
+msgid "View Creators"
+msgstr ""
+
+#: docs/8.x/views.md:block 60 (paragraph)
+msgid "View \"creators\" are very similar to view composers; however, they are executed immediately after the view is instantiated instead of waiting until the view is about to render. To register a view creator, use the `creator` method:"
+msgstr ""
+
+#: docs/8.x/views.md:block 61 (code)
+msgid ""
+"use App\\View\\Creators\\ProfileCreator;\n"
+"use Illuminate\\Support\\Facades\\View;\n"
+"\n"
+"View::creator('profile', ProfileCreator::class);\n"
+msgstr ""
+
+#: docs/8.x/views.md:block 63 (header)
+msgid "Optimizing Views"
+msgstr ""
+
+#: docs/8.x/views.md:block 64 (paragraph)
+msgid "By default, Blade template views are compiled on demand. When a request is executed that renders a view, Laravel will determine if a compiled version of the view exists. If the file exists, Laravel will then determine if the uncompiled view has been modified more recently than the compiled view. If the compiled view either does not exist, or the uncompiled view has been modified, Laravel will recompile the view."
+msgstr ""
+
+#: docs/8.x/views.md:block 65 (paragraph)
+msgid "Compiling views during the request may have a small negative impact on performance, so Laravel provides the `view:cache` Artisan command to precompile all of the views utilized by your application. For increased performance, you may wish to run this command as part of your deployment process:"
+msgstr ""
+
+#: docs/8.x/views.md:block 66 (code)
+msgid "php artisan view:cache\n"
+msgstr ""
+
+#: docs/8.x/views.md:block 67 (paragraph)
+msgid "You may use the `view:clear` command to clear the view cache:"
+msgstr ""
+
+#: docs/8.x/views.md:block 68 (code)
+msgid "php artisan view:clear\n"
+msgstr ""
+
+#: docs/9.x/views.md:block 50 (code)
+msgid ""
+"<?php\n"
+"\n"
+"namespace App\\View\\Composers;\n"
+"\n"
+"use App\\Repositories\\UserRepository;\n"
+"use Illuminate\\View\\View;\n"
+"\n"
+"class ProfileComposer\n"
+"{\n"
+"    /**\n"
+"     * The user repository implementation.\n"
+"     *\n"
+"     * @var \\App\\Repositories\\UserRepository\n"
+"     */\n"
+"    protected $users;\n"
+"\n"
+"    /**\n"
+"     * Create a new profile composer.\n"
+"     *\n"
+"     * @param  \\App\\Repositories\\UserRepository  $users\n"
+"     * @return void\n"
+"     */\n"
+"    public function __construct(UserRepository $users)\n"
+"    {\n"
+"        $this->users = $users;\n"
+"    }\n"
+"\n"
+"    /**\n"
+"     * Bind data to the view.\n"
+"     *\n"
+"     * @param  \\Illuminate\\View\\View  $view\n"
+"     * @return void\n"
+"     */\n"
+"    public function compose(View $view)\n"
+"    {\n"
+"        $view->with('count', $this->users->count());\n"
+"    }\n"
+"}\n"
+msgstr ""

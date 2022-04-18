@@ -1966,6 +1966,14 @@ msgid ""
 "}\n"
 msgstr ""
 
+#: docs/9.x/notifications.md:block 2 (unordered list)
+msgid "[Adding Tags & Metadata](#adding-tags-metadata)"
+msgstr ""
+
+#: docs/9.x/notifications.md:block 2 (unordered list)
+msgid "[Customizing The Symfony Message](#customizing-the-symfony-message)"
+msgstr ""
+
 #: docs/9.x/notifications.md:block 29 (paragraph)
 msgid "Every notification class has a `via` method that determines on which channels the notification will be delivered. Notifications may be sent on the `mail`, `database`, `broadcast`, `vonage`, and `slack` channels."
 msgstr ""
@@ -1992,31 +2000,110 @@ msgid ""
 "            ->notify(new InvoicePaid($invoice));\n"
 msgstr ""
 
-#: docs/9.x/notifications.md:block 233 (paragraph)
+#: docs/9.x/notifications.md:block 92 (code)
+msgid ""
+"/**\n"
+" * Get the mail representation of the notification.\n"
+" *\n"
+" * @param  mixed  $notifiable\n"
+" * @return \\Illuminate\\Notifications\\Messages\\MailMessage\n"
+" */\n"
+"public function toMail($notifiable)\n"
+"{\n"
+"    return (new MailMessage)\n"
+"                ->error()\n"
+"                ->subject('Notification Subject')\n"
+"                ->line('...');\n"
+"}\n"
+msgstr ""
+
+#: docs/9.x/notifications.md:block 126 (header)
+msgid "Adding Tags & Metadata"
+msgstr ""
+
+#: docs/9.x/notifications.md:block 127 (paragraph)
+msgid "Some third-party email providers such as Mailgun and Postmark support message \"tags\" and \"metadata\", which may be used to group and track emails sent by your application. You may add tags and metadata to an email message via the `tag` and `metadata` methods:"
+msgstr ""
+
+#: docs/9.x/notifications.md:block 128 (code)
+msgid ""
+"/**\n"
+" * Get the mail representation of the notification.\n"
+" *\n"
+" * @param  mixed  $notifiable\n"
+" * @return \\Illuminate\\Notifications\\Messages\\MailMessage\n"
+" */\n"
+"public function toMail($notifiable)\n"
+"{\n"
+"    return (new MailMessage)\n"
+"                ->greeting('Comment Upvoted!')\n"
+"                ->tag('upvote')\n"
+"                ->metadata('comment_id', $this->comment->id);\n"
+"}\n"
+msgstr ""
+
+#: docs/9.x/notifications.md:block 129 (paragraph)
+msgid "If your application is using the Mailgun driver, you may consult Mailgun's documentation for more information on [tags](https://documentation.mailgun.com/en/latest/user_manual.html#tagging-1) and [metadata](https://documentation.mailgun.com/en/latest/user_manual.html#attaching-data-to-messages). Likewise, the Postmark documentation may also be consulted for more information on their support for [tags](https://postmarkapp.com/blog/tags-support-for-smtp) and [metadata](https://postmarkapp.com/support/article/1125-custom-metadata-faq)."
+msgstr ""
+
+#: docs/9.x/notifications.md:block 130 (paragraph)
+msgid "If your application is using Amazon SES to send emails, you should use the `metadata` method to attach [SES \"tags\"](https://docs.aws.amazon.com/ses/latest/APIReference/API_MessageTag.html) to the message. Tags and metadata can be added to the `MailMessage` - these are used by your email service for filtering/processing:"
+msgstr ""
+
+#: docs/9.x/notifications.md:block 132 (header)
+msgid "Customizing The Symfony Message"
+msgstr ""
+
+#: docs/9.x/notifications.md:block 133 (paragraph)
+msgid "The `withSymfonyMessage` method of the `MailMessage` class allows you to register a closure which will be invoked with the Symfony Message instance before sending the message. This gives you an opportunity to deeply customize the message before it is delivered:"
+msgstr ""
+
+#: docs/9.x/notifications.md:block 134 (code)
+msgid ""
+"use Symfony\\Component\\Mime\\Email;\n"
+"\n"
+"/**\n"
+" * Get the mail representation of the notification.\n"
+" *\n"
+" * @param  mixed  $notifiable\n"
+" * @return \\Illuminate\\Notifications\\Messages\\MailMessage\n"
+" */\n"
+"public function toMail($notifiable)\n"
+"{\n"
+"    return (new MailMessage)\n"
+"                ->withSymfonyMessage(function (Email $message) {\n"
+"                    $message->getHeaders()->addTextHeader(\n"
+"                        'Custom-Header', 'Header Value'\n"
+"                    );\n"
+"                });\n"
+"}\n"
+msgstr ""
+
+#: docs/9.x/notifications.md:block 243 (paragraph)
 msgid "Sending SMS notifications in Laravel is powered by [Vonage](https://www.vonage.com/) (formerly known as Nexmo). Before you can send notifications via Vonage, you need to install the `laravel/vonage-notification-channel` and `guzzlehttp/guzzle` packages:"
 msgstr ""
 
-#: docs/9.x/notifications.md:block 234 (code)
+#: docs/9.x/notifications.md:block 244 (code)
 msgid "composer require laravel/vonage-notification-channel guzzlehttp/guzzle\n"
 msgstr ""
 
-#: docs/9.x/notifications.md:block 235 (paragraph)
+#: docs/9.x/notifications.md:block 245 (paragraph)
 msgid "The package includes a [configuration file](https://github.com/laravel/vonage-notification-channel/blob/3.x/config/vonage.php). However, you are not required to export this configuration file to your own application. You can simply use the `VONAGE_KEY` and `VONAGE_SECRET` environment variables to define your Vonage public and secret keys."
 msgstr ""
 
-#: docs/9.x/notifications.md:block 236 (paragraph)
+#: docs/9.x/notifications.md:block 246 (paragraph)
 msgid "After defining your keys, you may set a `VONAGE_SMS_FROM` environment variable that defines the phone number that your SMS messages should be sent from by default. You may generate this phone number within the Vonage control panel:"
 msgstr ""
 
-#: docs/9.x/notifications.md:block 237 (code)
+#: docs/9.x/notifications.md:block 247 (code)
 msgid "VONAGE_SMS_FROM=15556666666\n"
 msgstr ""
 
-#: docs/9.x/notifications.md:block 240 (paragraph)
+#: docs/9.x/notifications.md:block 250 (paragraph)
 msgid "If a notification supports being sent as an SMS, you should define a `toVonage` method on the notification class. This method will receive a `$notifiable` entity and should return an `Illuminate\\Notifications\\Messages\\VonageMessage` instance:"
 msgstr ""
 
-#: docs/9.x/notifications.md:block 241 (code)
+#: docs/9.x/notifications.md:block 251 (code)
 msgid ""
 "/**\n"
 " * Get the Vonage / SMS representation of the notification.\n"
@@ -2031,11 +2118,11 @@ msgid ""
 "}\n"
 msgstr ""
 
-#: docs/9.x/notifications.md:block 244 (paragraph)
+#: docs/9.x/notifications.md:block 254 (paragraph)
 msgid "If your SMS message will contain unicode characters, you should call the `unicode` method when constructing the `VonageMessage` instance:"
 msgstr ""
 
-#: docs/9.x/notifications.md:block 245 (code)
+#: docs/9.x/notifications.md:block 255 (code)
 msgid ""
 "/**\n"
 " * Get the Vonage / SMS representation of the notification.\n"
@@ -2051,11 +2138,11 @@ msgid ""
 "}\n"
 msgstr ""
 
-#: docs/9.x/notifications.md:block 248 (paragraph)
+#: docs/9.x/notifications.md:block 258 (paragraph)
 msgid "If you would like to send some notifications from a phone number that is different from the phone number specified by your `VONAGE_SMS_FROM` environment variable, you may call the `from` method on a `VonageMessage` instance:"
 msgstr ""
 
-#: docs/9.x/notifications.md:block 249 (code)
+#: docs/9.x/notifications.md:block 259 (code)
 msgid ""
 "/**\n"
 " * Get the Vonage / SMS representation of the notification.\n"
@@ -2071,7 +2158,7 @@ msgid ""
 "}\n"
 msgstr ""
 
-#: docs/9.x/notifications.md:block 253 (code)
+#: docs/9.x/notifications.md:block 263 (code)
 msgid ""
 "/**\n"
 " * Get the Vonage / SMS representation of the notification.\n"
@@ -2087,11 +2174,11 @@ msgid ""
 "}\n"
 msgstr ""
 
-#: docs/9.x/notifications.md:block 256 (paragraph)
+#: docs/9.x/notifications.md:block 266 (paragraph)
 msgid "To route Vonage notifications to the proper phone number, define a `routeNotificationForVonage` method on your notifiable entity:"
 msgstr ""
 
-#: docs/9.x/notifications.md:block 257 (code)
+#: docs/9.x/notifications.md:block 267 (code)
 msgid ""
 "<?php\n"
 "\n"

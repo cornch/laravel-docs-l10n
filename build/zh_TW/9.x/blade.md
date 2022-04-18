@@ -516,7 +516,7 @@ Switch 陳述式可以通過 `@switch`, `@case`, `@break`, `@default` 與 `@ends
 </select>
 ```
 
-Additionally, the `@disabled` directive may be used to indicate if a given element should be "disabled":
+此外，可使用 `@disabled` 指示詞來表示給定元素應為「disabled」：
 
 ```blade
 <button type="submit" @disabled($errors->isNotEmpty())>Submit</button>
@@ -1356,7 +1356,7 @@ php artisan make:component Alert --inline
 </li>
 ```
 
-> {note} The `@aware` directive can not access parent data that is not explicitly passed to the parent component via HTML attributes. Default `@props` values that are not explicitly passed to the parent component can not be accessed by the `@aware` directive.
+> {note} `@aware` 指示詞無法存取不是通過 HTML 屬性顯式傳遞給上層原件的上層資料。未顯式傳遞給上層元件的預設 `@props` 值無法被 `@aware` 指示詞存取。
 
 
 <a name="dynamic-components"></a>

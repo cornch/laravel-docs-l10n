@@ -146,15 +146,15 @@ Laravel 的 Flysystem 整合可以完美配合 SFTP。不過，Laravel 的預設
         'driver' => 'sftp',
         'host' => env('SFTP_HOST'),
         
-        // Settings for basic authentication...
+        // 設定 Basic 身份認證...
         'username' => env('SFTP_USERNAME'),
         'password' => env('SFTP_PASSWORD'),
     
-        // Settings for SSH key based authentication with encryption password...
+        // 設定有加密密碼之基於 SSH 金鑰的身份認證...
         'privateKey' => env('SFTP_PRIVATE_KEY'),
         'password' => env('SFTP_PASSWORD'),
     
-        // Optional SFTP Settings...
+        // 可選的 SFTP 設定...
         // 'hostFingerprint' => env('SFTP_HOST_FINGERPRINT'),
         // 'maxTries' => 4,
         // 'passphrase' => env('SFTP_PASSPHRASE'),
@@ -443,7 +443,7 @@ $disk->put('image.jpg', $content);
         'avatars', $request->file('avatar'), $request->user()->id
     );
 
-> {note} Unprintable and invalid unicode characters will automatically be removed from file paths. Therefore, you may wish to sanitize your file paths before passing them to Laravel's file storage methods. File paths are normalized using the `League\Flysystem\WhitespacePathNormalizer::normalizePath` method.
+> {note} 路徑中若有^[不可列印](Unprintable)或無效的 Unicode 字元，則會被自動移除。因此，在將檔案路徑傳給 Laravel 的檔案存放方法前，我們可能會想先^[消毒](Sanitize)檔案路徑。可使用 `League\Flysystem\WhitespacePathNormalizer::normalizePath` 來^[正常化](Normalize)檔案路徑。
 
 
 <a name="specifying-a-disk"></a>

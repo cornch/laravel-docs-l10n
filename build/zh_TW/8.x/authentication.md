@@ -14,7 +14,7 @@
 
    - [取得已登入的使用者](#retrieving-the-authenticated-user)
 
-   - [收保護的 Route](#protecting-routes)
+   - [受保護的 Route](#protecting-routes)
 
    - [登入頻率限制](#login-throttling)
 

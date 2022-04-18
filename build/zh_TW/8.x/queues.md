@@ -1207,14 +1207,14 @@ public $failOnTimeout = true;
 
     $this->fail($exception);
 
-> {tip} For more information on failed jobs, check out the [documentation on dealing with job failures](#dealing-with-failed-jobs).
+> {tip} 有關失敗 Job 的更多資訊，請參考[有關處理失敗 Job 的說明文件](#dealing-with-failed-jobs)。
 
 
 <a name="job-batching"></a>
 
-## Job Batching
+## 批次 Job
 
-Laravel's job batching feature allows you to easily execute a batch of jobs and then perform some action when the batch of jobs has completed executing. Before getting started, you should create a database migration to build a table to contain meta information about your job batches, such as their completion percentage. This migration may be generated using the `queue:batches-table` Artisan command:
+使用 Laravel 的批次 Job 功能，就可以輕鬆地批次執行多個 Job，並在批次 Job 執行完成後進行一些動作。在開始使用批次 Job 之前，我們需要先建立一個資料庫 Migration，以建立用來保存有關批次 Job ^[詮釋資訊](Meta Information)的資料表，如批次 Job 的完成度等。可以使用 `queue:batches-table` Artisan 指令來建立這個 Migration：
 
     php artisan queue:batches-table
     
@@ -1222,9 +1222,9 @@ Laravel's job batching feature allows you to easily execute a batch of jobs and 
 
 <a name="defining-batchable-jobs"></a>
 
-### Defining Batchable Jobs
+### 定義可批次處理的 Job
 
-To define a batchable job, you should [create a queueable job](#creating-jobs) as normal; however, you should add the `Illuminate\Bus\Batchable` trait to the job class. This trait provides access to a `batch` method which may be used to retrieve the current batch that the job is executing within:
+若要定義可批次處理的 Job，請先像平常一樣[建立可放入佇列的 Job](#creating-jobs)。不過，我們還需要在這個 Job 類別中加上 `Illuminate\Bus\Batchable` Trait。這個 Trait 提供了一個 `batch` 方法，可使用該方法來取得該 Job 所在的批次：
 
     <?php
     
@@ -1260,9 +1260,9 @@ To define a batchable job, you should [create a queueable job](#creating-jobs) a
 
 <a name="dispatching-batches"></a>
 
-### Dispatching Batches
+### 分派批次
 
-To dispatch a batch of jobs, you should use the `batch` method of the `Bus` facade. Of course, batching is primarily useful when combined with completion callbacks. So, you may use the `then`, `catch`, and `finally` methods to define completion callbacks for the batch. Each of these callbacks will receive an `Illuminate\Bus\Batch` instance when they are invoked. In this example, we will imagine we are queueing a batch of jobs that each process a given number of rows from a CSV file:
+若要分派一批次的 Job，可使用 `Bus` Facade 的 `batch` 方法。當然，批次功能與完成回呼一起使用時是最有用。因此，可以使用 `then`, `catch` 與 `finally` 方法來為該批次定義完成回呼。這些回呼都會在被叫用時收到 `Illuminate\Bus\Batch` 實體。在這個範例中，我們先假設我們正在處理一批次的任務，用來在 CSV 檔中處理給定數量的行：
 
     use App\Jobs\ImportCsv;
     use Illuminate\Bus\Batch;
@@ -1276,49 +1276,49 @@ To dispatch a batch of jobs, you should use the `batch` method of the `Bus` faca
         new ImportCsv(301, 400),
         new ImportCsv(401, 500),
     ])->then(function (Batch $batch) {
-        // All jobs completed successfully...
+        // 所有 Job 都成功完成...
     })->catch(function (Batch $batch, Throwable $e) {
-        // First batch job failure detected...
+        // 偵測到第一個 Job 失敗...
     })->finally(function (Batch $batch) {
-        // The batch has finished executing...
+        // 批次已完成執行...
     })->dispatch();
     
     return $batch->id;
 
-The batch's ID, which may be accessed via the `$batch->id` property, may be used to [query the Laravel command bus](#inspecting-batches) for information about the batch after it has been dispatched.
+可使用 `$batch->id` 屬性來取得該批次的 ID。在該批次被分派後，可使用這個 ID 來[向 Laravel 的 Command Bus 查詢](#inspecting-batches)有關該批次的資訊。
 
-> {note} Since batch callbacks are serialized and executed at a later time by the Laravel queue, you should not use the `$this` variable within the callbacks.
+> {note} 由於批次的回呼會被序列化並在稍後由 Laravel 的佇列執行，因此請不要在回呼中使用 `$this` 變數。
 
 
 <a name="naming-batches"></a>
 
-#### Naming Batches
+#### 為批次命名
 
-Some tools such as Laravel Horizon and Laravel Telescope may provide more user-friendly debug information for batches if batches are named. To assign an arbitrary name to a batch, you may call the `name` method while defining the batch:
+若為批次命名，則一些像是 Laravel Horizon 與 Laravel Telescope 之類的工具就可為該批次提供對使用者更友善的偵錯資訊。若要為批次指定任意名稱，可在定義批次時呼叫 `name` 方法：
 
     $batch = Bus::batch([
         // ...
     ])->then(function (Batch $batch) {
-        // All jobs completed successfully...
+        // 所有 Job 都已成功完成...
     })->name('Import CSV')->dispatch();
 
 <a name="batch-connection-queue"></a>
 
-#### Batch Connection & Queue
+#### 批次的連線與佇列
 
-If you would like to specify the connection and queue that should be used for the batched jobs, you may use the `onConnection` and `onQueue` methods. All batched jobs must execute within the same connection and queue:
+若想指定批次 Job 的連線與佇列，可使用 `onConnection` 與 `onQueue` 方法。所有的批次 Job 都必須要相同的連線與佇列中執行：
 
     $batch = Bus::batch([
         // ...
     ])->then(function (Batch $batch) {
-        // All jobs completed successfully...
+        // 所有 Job 都已成功完成...
     })->onConnection('redis')->onQueue('imports')->dispatch();
 
 <a name="chains-within-batches"></a>
 
-#### Chains Within Batches
+#### 在批次中串聯
 
-You may define a set of [chained jobs](#job-chaining) within a batch by placing the chained jobs within an array. For example, we may execute two job chains in parallel and execute a callback when both job chains have finished processing:
+只要將串聯的 Job 放在陣列中，就可以在批次中定義一組[串聯的 Job](#job-chaining)。舉例來說，我們可以平行執行兩個 Job 串聯，並在這兩個 Job 串聯都處理完畢後執行回呼：
 
     use App\Jobs\ReleasePodcast;
     use App\Jobs\SendPodcastReleaseNotification;
@@ -1340,19 +1340,19 @@ You may define a set of [chained jobs](#job-chaining) within a batch by placing 
 
 <a name="adding-jobs-to-batches"></a>
 
-### Adding Jobs To Batches
+### 將 Job 加入批次
 
-Sometimes it may be useful to add additional jobs to a batch from within a batched job. This pattern can be useful when you need to batch thousands of jobs which may take too long to dispatch during a web request. So, instead, you may wish to dispatch an initial batch of "loader" jobs that hydrate the batch with even more jobs:
+有時候，若能在批次 Job 中新增其他額外的 Job 會很實用。特別是當我們要在一個 Web Request 中批次處理數千筆 Job 時，會讓 Job 的分派過程變得很耗時。因此，比起直接分派數千筆 Job，我們可以先分派一個初始化的批次，用來作為 Job 的「載入程式」，然後讓這個載入程式再向批次內填入更多的 Job：
 
     $batch = Bus::batch([
         new LoadImportBatch,
         new LoadImportBatch,
         new LoadImportBatch,
     ])->then(function (Batch $batch) {
-        // All jobs completed successfully...
+        // 所有 Job 都成功完成...
     })->name('Import Contacts')->dispatch();
 
-In this example, we will use the `LoadImportBatch` job to hydrate the batch with additional jobs. To accomplish this, we may use the `add` method on the batch instance that may be accessed via the job's `batch` method:
+在這個例子中，我們可以使用 `LoadImportBatch` Job 來填入其他額外的 Job。若要填入其他 Job，我們可以使用批次實體上的 `add` 方法。批次實體可使用 Job 的 `batch` 方法來取得：
 
     use App\Jobs\ImportContacts;
     use Illuminate\Support\Collection;
@@ -1373,25 +1373,25 @@ In this example, we will use the `LoadImportBatch` job to hydrate the batch with
         }));
     }
 
-> {note} You may only add jobs to a batch from within a job that belongs to the same batch.
+> {note} 我們只能向目前 Job 正在執行的批次新增 Job。
 
 
 <a name="inspecting-batches"></a>
 
-### Inspecting Batches
+### 檢查批次
 
-The `Illuminate\Bus\Batch` instance that is provided to batch completion callbacks has a variety of properties and methods to assist you in interacting with and inspecting a given batch of jobs:
+提供給批次處理完成回呼的 `Illuminate\Bus\Batch` 實體有許多的屬性與方法，可以讓我們處理與取得給定 Job 批次的資訊：
 
-    // The UUID of the batch...
+    // 批次的 UUID...
     $batch->id;
     
-    // The name of the batch (if applicable)...
+    // 批次的名稱 (若有的話)...
     $batch->name;
     
-    // The number of jobs assigned to the batch...
+    // 指派給該批次的 Job 數...
     $batch->totalJobs;
     
-    // The number of jobs that have not been processed by the queue...
+    // 還未被佇列處理的 Job 數量...
     $batch->pendingJobs;
     
     // The number of jobs that have failed...
@@ -1414,11 +1414,11 @@ The `Illuminate\Bus\Batch` instance that is provided to batch completion callbac
 
 <a name="returning-batches-from-routes"></a>
 
-#### Returning Batches From Routes
+#### 從 Route 上回傳批次
 
-All `Illuminate\Bus\Batch` instances are JSON serializable, meaning you can return them directly from one of your application's routes to retrieve a JSON payload containing information about the batch, including its completion progress. This makes it convenient to display information about the batch's completion progress in your application's UI.
+所有的 `Illuminate\Bus\Batch` 實體都可被序列化為 JSON，因此我們可以直接在專案的 Route 中回傳批次實體來取得有關該批次資訊的 JSON Payload，其中也包含該批次的完成度。如此一來，我們就能方便地在專案的 UI 上顯示該批次完成度的資訊。
 
-To retrieve a batch by its ID, you may use the `Bus` facade's `findBatch` method:
+若要使用 ID 來取得批次，可使用 `Bus` Facade 的 `findBatch` 方法：
 
     use Illuminate\Support\Facades\Bus;
     use Illuminate\Support\Facades\Route;
@@ -1429,9 +1429,9 @@ To retrieve a batch by its ID, you may use the `Bus` facade's `findBatch` method
 
 <a name="cancelling-batches"></a>
 
-### Cancelling Batches
+### 取消批次
 
-Sometimes you may need to cancel a given batch's execution. This can be accomplished by calling the `cancel` method on the `Illuminate\Bus\Batch` instance:
+有時候，我們會需要取消給定批次的執行。若要取消執行批次，可在 `Illuminate\Bus\Batch` 實體上呼叫 `cancel` 方法：
 
     /**
      * Execute the job.
@@ -1449,7 +1449,7 @@ Sometimes you may need to cancel a given batch's execution. This can be accompli
         }
     }
 
-As you may have noticed in previous examples, batched jobs should typically check to see if the batch has been cancelled at the beginning of their `handle` method:
+雖然讀者可能已經在前面的範例中注意到了，不過，批次 Job 一般都應在其 `handle` 方法的最前方檢查該批次是否已被取消：
 
     /**
      * Execute the job.
@@ -1462,32 +1462,32 @@ As you may have noticed in previous examples, batched jobs should typically chec
             return;
         }
     
-        // Continue processing...
+        // 繼續處理...
     }
 
 <a name="batch-failures"></a>
 
-### Batch Failures
+### 批次失敗
 
-When a batched job fails, the `catch` callback (if assigned) will be invoked. This callback is only invoked for the first job that fails within the batch.
+若批次中的 Job 執行失敗，則會叫用 `catch` 回呼 (若有指定的話)。只有在批次中第一個失敗的 Job 才會叫用該回呼。
 
 <a name="allowing-failures"></a>
 
-#### Allowing Failures
+#### 允許失敗
 
-When a job within a batch fails, Laravel will automatically mark the batch as "cancelled". If you wish, you may disable this behavior so that a job failure does not automatically mark the batch as cancelled. This may be accomplished by calling the `allowFailures` method while dispatching the batch:
+若在批次中的 Job 執行失敗，Laravel 會自動將該批次標記為「^[已取消](Cancelled)」。若有需要的話，我們可以禁用這個行為，好讓 Job 失敗是不要自動將批次標記為取消。若要禁用此行為，可在分派批次時呼叫 `allowFailures` 方法：
 
     $batch = Bus::batch([
         // ...
     ])->then(function (Batch $batch) {
-        // All jobs completed successfully...
+        // 所有 Job 都已成功完成...
     })->allowFailures()->dispatch();
 
 <a name="retrying-failed-batch-jobs"></a>
 
-#### Retrying Failed Batch Jobs
+#### 重試失敗的批次 Job
 
-For convenience, Laravel provides a `queue:retry-batch` Artisan command that allows you to easily retry all of the failed jobs for a given batch. The `queue:retry-batch` command accepts the UUID of the batch whose failed jobs should be retried:
+Laravel 提供了一個方便的 `queue:retry-batch` Artisan 指令，能讓我們輕鬆重試給定批次中所有失敗的 Job。`queue:retry-batch` 指令的參數為要重試 Job 之批次的 UUID：
 
 ```bash
 php artisan queue:retry-batch 32dbc76c-4f82-4749-b610-a639fe0099b5
@@ -1495,25 +1495,25 @@ php artisan queue:retry-batch 32dbc76c-4f82-4749-b610-a639fe0099b5
 
 <a name="pruning-batches"></a>
 
-### Pruning Batches
+### 修建批次
 
-Without pruning, the `job_batches` table can accumulate records very quickly. To mitigate this, you should [schedule](/docs/{{version}}/scheduling) the `queue:prune-batches` Artisan command to run daily:
+若未^[修建](Prune)批次，則 `job_batches` 資料表很快就會變得很大。為了避免這個狀況，應[定期](/docs/{{version}}/scheduling)每日執行 `queue:prune-batches` Artisan 指令：
 
     $schedule->command('queue:prune-batches')->daily();
 
-By default, all finished batches that are more than 24 hours old will be pruned. You may use the `hours` option when calling the command to determine how long to retain batch data. For example, the following command will delete all batches that finished over 48 hours ago:
+預設情況下，完成超過 24 小時的批次會被修建掉。可以在呼叫該指令時使用 `hours` 選項來指定批次資料要保留多久。舉例來說，下列指令會刪除完成超過 48 小時前的所有批次：
 
     $schedule->command('queue:prune-batches --hours=48')->daily();
 
-Sometimes, your `jobs_batches` table may accumulate batch records for batches that never completed successfully, such as batches where a job failed and that job was never retried successfully. You may instruct the `queue:prune-batches` command to prune these unfinished batch records using the `unfinished` option:
+有時候，`jobs_batches` 資料表可能會有一些從未成功完成的批次記錄，如批次中有 Job 失敗且從每次嘗試都失敗的批次。可以在 `queue:prune-batxhes` 指令的使用 `unfinished` 選項來修剪這些未完成的批次：
 
     $schedule->command('queue:prune-batches --hours=48 --unfinished=72')->daily();
 
 <a name="queueing-closures"></a>
 
-## Queueing Closures
+## 將閉包放入佇列
 
-Instead of dispatching a job class to the queue, you may also dispatch a closure. This is great for quick, simple tasks that need to be executed outside of the current request cycle. When dispatching closures to the queue, the closure's code content is cryptographically signed so that it can not be modified in transit:
+除了將 Job 類別分派進佇列外，我們也可以分派閉包。分派閉包對於一些要在目前 Request 週期外執行的快速、簡單任務來說很好用。把閉包放入佇列時，該閉包的程式碼內容會以密碼學的方式進行簽署，以避免其程式碼在傳輸過程中遭到篡改：
 
     $podcast = App\Podcast::find(1);
     
@@ -1521,175 +1521,175 @@ Instead of dispatching a job class to the queue, you may also dispatch a closure
         $podcast->publish();
     });
 
-Using the `catch` method, you may provide a closure that should be executed if the queued closure fails to complete successfully after exhausting all of your queue's [configured retry attempts](#max-job-attempts-and-timeout):
+使用 `catch` 方法，就能為佇列閉包提供一組要在所有[重試次數](#max-job-attempts-and-timeout)都失敗的時候執行的閉包：
 
     use Throwable;
     
     dispatch(function () use ($podcast) {
         $podcast->publish();
     })->catch(function (Throwable $e) {
-        // This job has failed...
+        // 該 Job 執行失敗...
     });
 
 <a name="running-the-queue-worker"></a>
 
-## Running The Queue Worker
+## 執行 Queue Worker
 
 <a name="the-queue-work-command"></a>
 
-### The `queue:work` Command
+### 使用 `queue:work` 指令
 
-Laravel includes an Artisan command that will start a queue worker and process new jobs as they are pushed onto the queue. You may run the worker using the `queue:work` Artisan command. Note that once the `queue:work` command has started, it will continue to run until it is manually stopped or you close your terminal:
+Laravel 中隨附了一個 Artisan 指令，可用來開啟 ^[Queue Worker](佇列背景工作角色)，以在 Job 被推入佇列後處理這些 Job。可以使用 `queue:work` Artisan 指令來執行 Queue Worker。請注意，當執行 `queue:work` 指令後，該指令會持續執行，直到我們手動停止該指令或關閉終端機為止：
 
     php artisan queue:work
 
-> {tip} To keep the `queue:work` process running permanently in the background, you should use a process monitor such as [Supervisor](#supervisor-configuration) to ensure that the queue worker does not stop running.
+> {tip} 若要讓 `queue:work` 處理程序在背景持續執行，請使用如 [Supervisor](#supervisor-configuration) 等的 ^[Process Monitor](處理程序監看程式)，以確保 Queue Worker 持續執行。
 
 
-Remember, queue workers, are long-lived processes and store the booted application state in memory. As a result, they will not notice changes in your code base after they have been started. So, during your deployment process, be sure to [restart your queue workers](#queue-workers-and-deployment). In addition, remember that any static state created or modified by your application will not be automatically reset between jobs.
+請記得，Queue Worker 是會持續執行的處理程序，且會將已開啟的程式狀態保存在記憶體中。因此，Queue Worker 開始執行後若有更改程式碼，這些 Worker 將不會知道有這些修改。所以，在部署過程中，請確保有[重新啟動 Queue Worker](#queue-workers-and-deployment)。此外，也請注意，在各個 Job 間，也不會自動重設程式所建立或修改的任何^[靜態狀態](Static State)。
 
-Alternatively, you may run the `queue:listen` command. When using the `queue:listen` command, you don't have to manually restart the worker when you want to reload your updated code or reset the application state; however, this command is significantly less efficient than the `queue:work` command:
+或者，我們也可以執行 `queue:listen` 指令。使用 `queue:listen` 指令時，若有更新程式碼或重設程式的狀態，就不需手動重新啟動 Queue Worker。不過，這個指令比起 `queue:work` 指令來說比較沒有效率：
 
     php artisan queue:listen
 
 <a name="running-multiple-queue-workers"></a>
 
-#### Running Multiple Queue Workers
+#### 執行多個 Queue Worker
 
-To assign multiple workers to a queue and process jobs concurrently, you should simply start multiple `queue:work` processes. This can either be done locally via multiple tabs in your terminal or in production using your process manager's configuration settings. [When using Supervisor](#supervisor-configuration), you may use the `numprocs` configuration value.
+若要指派多個 Worker 給某個 Queue 並同時處理多個 Job，只需要啟動多個 `queue:work` 處理程序即可。若要啟動多個 `queue:work`，在本機上，我們可以開啟多個終端機分頁來執行；若是在正是環境上，則可以使用 Process Manager 的組態設定來啟動多個 `queue:work`。[使用 Supervisor 時](#supervisor-configuration)，可使用 `numprocs` 設定值。
 
 <a name="specifying-the-connection-queue"></a>
 
-#### Specifying The Connection & Queue
+#### 指定連線與佇列
 
-You may also specify which queue connection the worker should utilize. The connection name passed to the `work` command should correspond to one of the connections defined in your `config/queue.php` configuration file:
+也可以指定 Worker 要使用的佇列連線。傳給 `work` 指令的連線名稱應對影到 `config/queue.php` 設定檔中所定義的其中一個連線：
 
     php artisan queue:work redis
 
-By default, the `queue:work` command only processes jobs for the default queue on a given connection. However, you may customize your queue worker even further by only processing particular queues for a given connection. For example, if all of your emails are processed in an `emails` queue on your `redis` queue connection, you may issue the following command to start a worker that only processes that queue:
+預設情況下，`queue:work` 指令擲回處理給定連線上預設佇列的 Job。不過，我們也可以自定 Queue Worker，以處理給定連線上的特定佇列。舉例來說，若我們把所有的電子郵件都放在 `redis` 連線的 `emails` 佇列中執行，則我們可以執行下列指令來啟動一個處理該佇列的 Worker：
 
     php artisan queue:work redis --queue=emails
 
 <a name="processing-a-specified-number-of-jobs"></a>
 
-#### Processing A Specified Number Of Jobs
+#### 處理指定數量的 Job
 
-The `--once` option may be used to instruct the worker to only process a single job from the queue:
+可使用 `--once` 選項來讓 Worker 一次只處理佇列中的一個 Job：
 
     php artisan queue:work --once
 
-The `--max-jobs` option may be used to instruct the worker to process the given number of jobs and then exit. This option may be useful when combined with [Supervisor](#supervisor-configuration) so that your workers are automatically restarted after processing a given number of jobs, releasing any memory they may have accumulated:
+可使用 `--max-jobs` 選項來讓 Worker 只處理特定數量的 Job，然後就終止執行。該選項適合與 [Supervisor](#supervisor-configuration) 搭配使用，這樣我們就能讓 Worker 在處理特定數量的 Job 後自動重新執行，以釋出該 Worker 所積累的記憶體：
 
     php artisan queue:work --max-jobs=1000
 
 <a name="processing-all-queued-jobs-then-exiting"></a>
 
-#### Processing All Queued Jobs & Then Exiting
+#### 處理所有放入佇列的 Job 然後終止執行
 
-The `--stop-when-empty` option may be used to instruct the worker to process all jobs and then exit gracefully. This option can be useful when processing Laravel queues within a Docker container if you wish to shutdown the container after the queue is empty:
+可使用 `--stop-when-empty` 選項來讓 Worker 處理所有的 Job 然後終止執行。在 Docker Container 中處理 Laravel 佇列時，若在佇列為空時停止關閉 Container，就適合使用該選項：
 
     php artisan queue:work --stop-when-empty
 
 <a name="processing-jobs-for-a-given-number-of-seconds"></a>
 
-#### Processing Jobs For A Given Number Of Seconds
+#### 在給定秒數內處理 Job
 
-The `--max-time` option may be used to instruct the worker to process jobs for the given number of seconds and then exit. This option may be useful when combined with [Supervisor](#supervisor-configuration) so that your workers are automatically restarted after processing jobs for a given amount of time, releasing any memory they may have accumulated:
+`--max-time` 選項可用來讓 Worker 處理給定秒數的 Job，然後終止執行。該選項是何與 [Supervisor](#supervisor-configuration) 搭配使用，以在處理 Job 給定時間後自動重新啟動 Worker，並釋放期間可能積累的記憶體：
 
-    // Process jobs for one hour and then exit...
+    // 處理一小時的 Job 然後終止執行...
     php artisan queue:work --max-time=3600
 
 <a name="worker-sleep-duration"></a>
 
-#### Worker Sleep Duration
+#### Worker 的休眠期間
 
-When jobs are available on the queue, the worker will keep processing jobs with no delay in between them. However, the `sleep` option determines how many seconds the worker will "sleep" if there are no new jobs available. While sleeping, the worker will not process any new jobs - the jobs will be processed after the worker wakes up again.
+若佇列中有 Job，則 Worker 會不間斷地處理這些 Job。不過，使用 `sleep` 選項可用來讓 Worker 判斷當沒有新 Job 時要「休眠」多少秒。在休眠期間，Worker 不會處理任何新的 Job。當 Worker 喚醒後，才會開始處理這些 Job。
 
     php artisan queue:work --sleep=3
 
 <a name="resource-considerations"></a>
 
-#### Resource Considerations
+#### 資源上的考量
 
-Daemon queue workers do not "reboot" the framework before processing each job. Therefore, you should release any heavy resources after each job completes. For example, if you are doing image manipulation with the GD library, you should free the memory with `imagedestroy` when you are done processing the image.
+Daemon 型的 Queue Worker 並不會在每個 Job 處理後「重新啟動」Laravel。因此，在每個 Job 處理完畢後，請務必釋放任何吃資源的功能。舉例來說，若我們使用了 GD 函式庫來進行圖片處理，則應在處理完圖片後使用 `imagedestroy` 來釋放記憶體。
 
 <a name="queue-priorities"></a>
 
-### Queue Priorities
+### 佇列的優先度
 
-Sometimes you may wish to prioritize how your queues are processed. For example, in your `config/queue.php` configuration file, you may set the default `queue` for your `redis` connection to `low`. However, occasionally you may wish to push a job to a `high` priority queue like so:
+有時候，我們可能會向調整各個佇列的處理優先度。舉例來說，在 `config/queue.php` 設定檔中，我們可以把 `redis` 連線上的預設 `queue` 設為 `low` (低)。不過，有時候，我們可能會想像這樣把 Job 推入 `high` (高) 優先度的佇列：
 
     dispatch((new Job)->onQueue('high'));
 
-To start a worker that verifies that all of the `high` queue jobs are processed before continuing to any jobs on the `low` queue, pass a comma-delimited list of queue names to the `work` command:
+若要啟動 Worker 以驗證是否所有 `high` 佇列上的 Job 都比 `low` 佇列上的 Job 還要早被處理，只需要傳入一組以逗號分隔的佇列名稱列表給 `work` 指令即可：
 
     php artisan queue:work --queue=high,low
 
 <a name="queue-workers-and-deployment"></a>
 
-### Queue Workers & Deployment
+### Queue Worker 與部署
 
-Since queue workers are long-lived processes, they will not notice changes to your code without being restarted. So, the simplest way to deploy an application using queue workers is to restart the workers during your deployment process. You may gracefully restart all of the workers by issuing the `queue:restart` command:
+由於 Queue Worker 時持續執行的處理程序，因此除非重啟啟動 Queue Worker，否則 Queue Worker 不會知道程式碼有被修改過。要部署有使用 Queue Worker 的專案，最簡單的做法就是在部署過程中重新啟動 Queue Worker。我們可以執行 `queue:restart` 指令來重新啟動所有的 Worker：
 
     php artisan queue:restart
 
-This command will instruct all queue workers to gracefully exit after they finish processing their current job so that no existing jobs are lost. Since the queue workers will exit when the `queue:restart` command is executed, you should be running a process manager such as [Supervisor](#supervisor-configuration) to automatically restart the queue workers.
+該指令會通知所有的 Queue Worker，讓所有的 Worker 在處理完目前 Job 且在現有 Job 不遺失的情況下終止執行 Worker。由於 Queue Worker 會在 `queue:restart` 指令執行後終止執行，因此請務必使用如 [Supervisor](#supervisor-configuration) 這樣的 Process Manager 來自動重新啟動 Queue Worker。
 
-> {tip} The queue uses the [cache](/docs/{{version}}/cache) to store restart signals, so you should verify that a cache driver is properly configured for your application before using this feature.
+> {tip} 佇列會使用[快取](/docs/{{version}}/cache)來儲存重新啟動訊號，因此在使用此功能前請先確認專案上是否有設定好正確的快取 Driver。
 
 
 <a name="job-expirations-and-timeouts"></a>
 
-### Job Expirations & Timeouts
+### Job 的有效期限與逾時
 
 <a name="job-expiration"></a>
 
-#### Job Expiration
+#### Job 的有效期限
 
-In your `config/queue.php` configuration file, each queue connection defines a `retry_after` option. This option specifies how many seconds the queue connection should wait before retrying a job that is being processed. For example, if the value of `retry_after` is set to `90`, the job will be released back onto the queue if it has been processing for 90 seconds without being released or deleted. Typically, you should set the `retry_after` value to the maximum number of seconds your jobs should reasonably take to complete processing.
+在 `config/queue.php` 設定檔中，每個佇列連線都有定義一個 `retry_after` 選項。這個選項用來指定在重新嘗試目前處理的 Job 前需要等待多少秒。舉例來說，若 `retry_after` 設為 `90`，則若某個 Job 已被處理 90 秒，且期間沒有被釋放或刪除，則該 Job 會被釋放回佇列中。一般來說，應將 `retry_after` 的值設為 Job 在合理情況下要完成執行所需的最大秒數。
 
-> {note} The only queue connection which does not contain a `retry_after` value is Amazon SQS. SQS will retry the job based on the [Default Visibility Timeout](https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/AboutVT.html) which is managed within the AWS console.
+> {note} 唯一一個不含 `retry_after` 值的佇列連線是 Amazon SQS。SQS 會使用[預設的 Visibility Timeout](https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/AboutVT.html) 來重試 Job。Visibility Timeout 的值由 AWS Console 中控制。
 
 
 <a name="worker-timeouts"></a>
 
-#### Worker Timeouts
+#### Worker 的逾時
 
-The `queue:work` Artisan command exposes a `--timeout` option. If a job is processing for longer than the number of seconds specified by the timeout value, the worker processing the job will exit with an error. Typically, the worker will be restarted automatically by a [process manager configured on your server](#supervisor-configuration):
+`queue:work` Aritsan 指令有一個 `--timeout` 選項。若 Job 執行超過逾時值所指定的秒數後，負責處理該 Job 的 Worker 就會以錯誤終止執行。一般來說，Worker 會自動由 [Server 上設定的 Process Manager](#supervisor-configuration) 重新開啟：
 
 ```bash
 php artisan queue:work --timeout=60
 ```
 
-The `retry_after` configuration option and the `--timeout` CLI option are different, but work together to ensure that jobs are not lost and that jobs are only successfully processed once.
+雖然 `retry_after` 設定選項與 `--timeout` CLI 選項並不相同，不過這兩個選項會互相配合使用，以確保 Job 不遺失，且 Job 只會成功執行一次。
 
-> {note} The `--timeout` value should always be at least several seconds shorter than your `retry_after` configuration value. This will ensure that a worker processing a frozen job is always terminated before the job is retried. If your `--timeout` option is longer than your `retry_after` configuration value, your jobs may be processed twice.
+> {note} `--timeout` 的值必須至少比 `retry_after` 設定選項短個幾秒，以確保 Worker 在處理到當掉的 Job 時會在重試 Job 前先終止該 Job。若 `--timeout` 選項比 `retry_after` 設定值還要長的話，則 Job 就有可能會被處理兩次。
 
 
 <a name="supervisor-configuration"></a>
 
-## Supervisor Configuration
+## Supervisor 設定
 
-In production, you need a way to keep your `queue:work` processes running. A `queue:work` process may stop running for a variety of reasons, such as an exceeded worker timeout or the execution of the `queue:restart` command.
+在正式環境中，我們會需要一種能讓 `queue:work` 處理程序持續執行的方法。`queue:work` 可能會因為各種原因而停止執行，如 Worker 執行達到逾時值，或是在執行了 `queue:restart` 指令後等。
 
-For this reason, you need to configure a process monitor that can detect when your `queue:work` processes exit and automatically restart them. In addition, process monitors can allow you to specify how many `queue:work` processes you would like to run concurrently. Supervisor is a process monitor commonly used in Linux environments and we will discuss how to configure it in the following documentation.
+因此，我們需要設定一個能偵測到 `queue:work` 處理程序終止執行，並能自動重新啟動這些 Worker 的 Process Monitor。此外，使用 Process Monitor 還能讓我們指定要同時執行多少個 `queue:work` 處理程序。Supervisor 時一個常見用於 Linux 環境的 Process Monitor，在本文中接下來的部分我們會來看看要如何設定 Supervisor。
 
 <a name="installing-supervisor"></a>
 
-#### Installing Supervisor
+#### 安裝 Supervisor
 
-Supervisor is a process monitor for the Linux operating system, and will automatically restart your `queue:work` processes if they fail. To install Supervisor on Ubuntu, you may use the following command:
+Supervisor 是一個用於 Linux 作業系統的 Process Monitor，使用 Supervisor 就可以在 `queue:work` 處理程序執行失敗時自動重新啟動。若要在 Ubuntu 上安裝 Supervisor，可使用下列指令：
 
     sudo apt-get install supervisor
 
-> {tip} If configuring and managing Supervisor yourself sounds overwhelming, consider using [Laravel Forge](https://forge.laravel.com), which will automatically install and configure Supervisor for your production Laravel projects.
+> {tip} 如果你覺得要設定並管理 Supervisor 太難、太複雜的話，可以考慮使用 [Laravel Forge](https://forge.laravel.com)。Laravel Forge 會幫你在 Laravel 專案的正式環境上自動安裝並設定 Supervisor。
 
 
 <a name="configuring-supervisor"></a>
 
-#### Configuring Supervisor
+#### 設定 Supervisor
 
-Supervisor configuration files are typically stored in the `/etc/supervisor/conf.d` directory. Within this directory, you may create any number of configuration files that instruct supervisor how your processes should be monitored. For example, let's create a `laravel-worker.conf` file that starts and monitors `queue:work` processes:
+Supervisor 設定檔一般都存放在 `/etc/supervisor/conf.d` 目錄下。在該目錄中，我們可以建立任意數量的設定檔，以告訴 Supervisor 要如何監看這些處理程序。舉例來說，我們先建立一個用於啟動並監看 `queue:work` 處理程序的 `laravel-worker.conf` 檔案：
 
 ```ini
 [program:laravel-worker]
@@ -1706,16 +1706,16 @@ stdout_logfile=/home/forge/app.com/worker.log
 stopwaitsecs=3600
 ```
 
-In this example, the `numprocs` directive will instruct Supervisor to run eight `queue:work` processes and monitor all of them, automatically restarting them if they fail. You should change the `command` directive of the configuration to reflect your desired queue connection and worker options.
+在這個範例中，`numprocs` 指示詞用於告訴 Supervisor 要執行 8 個 `queue:work` 處理程序，並監看這 8 個處理程序，然後當這些處理程序執行失敗時自動重新啟動。我們可以更改該設定檔中的 `command` 指示詞，以調整為所需的佇列連線與 Worker 選項。
 
-> {note} You should ensure that the value of `stopwaitsecs` is greater than the number of seconds consumed by your longest running job. Otherwise, Supervisor may kill the job before it is finished processing.
+> {note} 請務必確保 `stopwaitsecs` 值比花費時間最多的 Job 所需執行的秒數還要大。若該值設定不對，可能會讓 Supervisor 在 Job 處理完成前就終止該 Job。
 
 
 <a name="starting-supervisor"></a>
 
-#### Starting Supervisor
+#### 開啟 Supervisor
 
-Once the configuration file has been created, you may update the Supervisor configuration and start the processes using the following commands:
+建立好設定檔後，我們就可以使用下列指令更新 Supervisor 設定並開啟我們設定好的處理程序：
 
 ```bash
 sudo supervisorctl reread
@@ -1725,27 +1725,27 @@ sudo supervisorctl update
 sudo supervisorctl start laravel-worker:*
 ```
 
-For more information on Supervisor, consult the [Supervisor documentation](http://supervisord.org/index.html).
+更多有關 Supervisor 的資訊，請參考 [Supervisor 的說明文件](http://supervisord.org/index.html)。
 
 <a name="dealing-with-failed-jobs"></a>
 
-## Dealing With Failed Jobs
+## 處理失敗的 Job
 
-Sometimes your queued jobs will fail. Don't worry, things don't always go as planned! Laravel includes a convenient way to [specify the maximum number of times a job should be attempted](#max-job-attempts-and-timeout). After a job has exceeded this number of attempts, it will be inserted into the `failed_jobs` database table. Of course, we will need to create that table if it does not already exist. To create a migration for the `failed_jobs` table, you may use the `queue:failed-table` command:
+有時候，放入佇列的 Job 可能會執行失敗。請別擔心，計劃永遠趕不上變化！Laravel 中內建了一個方便的方法，可用來[指定 Job 要重試的最大次數](#max-job-attempts-and-timeout)。若某個 Job 已經達到重試次數的最大限制，則該 Job 就會被插入 `failed_jobs` 資料庫資料表中。當然，若沒有這個資料表的話，我們需要先建立該資料表。若要為 `failed_jobs` 資料表建立 Migration，可使用 `queue:failed-tables` 指令：
 
     php artisan queue:failed-table
     
     php artisan migrate
 
-When running a [queue worker](#running-the-queue-worker) process, you may specify the maximum number of times a job should be attempted using the `--tries` switch on the `queue:work` command. If you do not specify a value for the `--tries` option, jobs will only be attempted once or as many times as specified by the job class' `$tries` property:
+在執行 [Queue Worker] 處理程序時，我們可以使用 `queue:work` 指令上的 `--tries` 開關來指定某個 Job 所要嘗試執行的最大次數。若為指定 `--tries` 選項的值，則 Job 就只會嘗試執行一次，或是依照 Job 類別中 `$tries` 屬性所設定的值作為最大嘗試次數：
 
     php artisan queue:work redis --tries=3
 
-Using the `--backoff` option, you may specify how many seconds Laravel should wait before retrying a job that has encountered an exception. By default, a job is immediately released back onto the queue so that it may be attempted again:
+使用 `--backoff` 選項，就可指定當 Job 遇到 Exception 時，Laravel 要等待多少秒才重新嘗試該 Job。預設情況下，Job 會馬上被釋放回佇列中，以便重新嘗試該 Job：
 
     php artisan queue:work redis --tries=3 --backoff=3
 
-If you would like to configure how many seconds Laravel should wait before retrying a job that has encountered an exception on a per-job basis, you may do so by defining a `backoff` property on your job class:
+若想以 Job 為單位來設定當 Job 遇到 Exception 時 Laravel 要等待多少秒才重新嘗試該 Job，則可在 Job 類別上定義 `backoff` 屬性：
 
     /**
      * The number of seconds to wait before retrying the job.
@@ -1754,7 +1754,7 @@ If you would like to configure how many seconds Laravel should wait before retry
      */
     public $backoff = 3;
 
-If you require more complex logic for determining the job's backoff time, you may define a `backoff` method on your job class:
+若需要使用更複雜的邏輯來判斷 Job 的 Backoff 時間，可在 Job 類別上定義 `backoff` 方法：
 
     /**
     * Calculate the number of seconds to wait before retrying the job.
@@ -1766,7 +1766,7 @@ If you require more complex logic for determining the job's backoff time, you ma
         return 3;
     }
 
-You may easily configure "exponential" backoffs by returning an array of backoff values from the `backoff` method. In this example, the retry delay will be 1 second for the first retry, 5 seconds for the second retry, and 10 seconds for the third retry:
+只要在 `backoff` 方法中回傳一組包含 Backoff 值的陣列，就能輕鬆地設定「指數級」的 Backoff。在這個例子中，第一次重試的延遲為 1 秒，第二次重試為 5 秒，第三次重試為 10 秒：
 
     /**
     * Calculate the number of seconds to wait before retrying the job.
@@ -1780,9 +1780,9 @@ You may easily configure "exponential" backoffs by returning an array of backoff
 
 <a name="cleaning-up-after-failed-jobs"></a>
 
-### Cleaning Up After Failed Jobs
+### 當 Job 執行失敗後進行清理
 
-When a particular job fails, you may want to send an alert to your users or revert any actions that were partially completed by the job. To accomplish this, you may define a `failed` method on your job class. The `Throwable` instance that caused the job to fail will be passed to the `failed` method:
+若某個特定的 Job 失敗後，我們可能會想傳送通知給使用者，或是恢復這個 Job 中所部分完成的一些動作。為此，我們可以在 Job 類別中定義一個 `failed` 方法。導致該 Job 失敗的 `Throwable` 實體會傳入給 `failed` 方法：
 
     <?php
     
@@ -1841,51 +1841,51 @@ When a particular job fails, you may want to send an alert to your users or reve
         }
     }
 
-> {note} A new instance of the job is instantiated before invoking the `failed` method; therefore, any class property modifications that may have occurred within the `handle` method will be lost.
+> {note} 叫用 `failed` 方法前會先初始化該 Job 的一個新。因此，在 `handle` 方法中對類別屬性做出的更改都將遺失。
 
 
 <a name="retrying-failed-jobs"></a>
 
-### Retrying Failed Jobs
+### 重試失敗的 Job
 
-To view all of the failed jobs that have been inserted into your `failed_jobs` database table, you may use the `queue:failed` Artisan command:
+若要檢視所有已插入 `failed_jobs` 資料表中失敗的 Job，可使用 `queue:failed` Artisan 指令：
 
     php artisan queue:failed
 
-The `queue:failed` command will list the job ID, connection, queue, failure time, and other information about the job. The job ID may be used to retry the failed job. For instance, to retry a failed job that has an ID of `ce7bb17c-cdd8-41f0-a8ec-7b4fef4e5ece`, issue the following command:
+`queue:failed` 指令會列出 Job ID、連線、佇列、失敗時間……等，以及其他有關該 Job 的資訊。可使用 Job ID 來重試失敗的 Job。舉例來說，若要重試 ID 為 `ce7bb17c-cdd8-41f0-a8ec-7b4fef4e5ece` 的失敗 Job，請執行下列指令：
 
     php artisan queue:retry ce7bb17c-cdd8-41f0-a8ec-7b4fef4e5ece
 
-If necessary, you may pass multiple IDs to the command:
+若有需要，可傳入多個 ID 給該指令：
 
     php artisan queue:retry ce7bb17c-cdd8-41f0-a8ec-7b4fef4e5ece 91401d2c-0784-4f43-824c-34f94a33c24d
 
-You may also retry all of the failed jobs for a particular queue:
+也可以嘗試特定佇列中所有失敗的 Job：
 
     php artisan queue:retry --queue=name
 
-To retry all of your failed jobs, execute the `queue:retry` command and pass `all` as the ID:
+若要重試所有失敗的 Job，請執行 `queue:retry` 指令，並傳入 `all` 作為 ID：
 
     php artisan queue:retry all
 
-If you would like to delete a failed job, you may use the `queue:forget` command:
+若想刪除失敗的 Job，可使用 `queue:forget` 指令：
 
     php artisan queue:forget 91401d2c-0784-4f43-824c-34f94a33c24d
 
-> {tip} When using [Horizon](/docs/{{version}}/horizon), you should use the `horizon:forget` command to delete a failed job instead of the `queue:forget` command.
+> {tip} 使用 [Horizon](/docs/{{version}}/horizon)，請不要使用 `queue:forget` 指令，請使用 `horizon:forget` 指令來刪除失敗的 Job。
 
 
-To delete all of your failed jobs from the `failed_jobs` table, you may use the `queue:flush` command:
+若要從 `failed_jobs` 資料表中刪除所有失敗的 Job，可使用 `queue:flush` 指令：
 
     php artisan queue:flush
 
 <a name="ignoring-missing-models"></a>
 
-### Ignoring Missing Models
+### 忽略不存在的 Model
 
-When injecting an Eloquent model into a job, the model is automatically serialized before being placed on the queue and re-retrieved from the database when the job is processed. However, if the model has been deleted while the job was waiting to be processed by a worker, your job may fail with a `ModelNotFoundException`.
+將 Eloquent Model 插入進 Job 時，該 Model 會自動被序列化再放入佇列中，並在要處理該 Job 時再重新從資料庫中取出。不過，若在該 Job 等待被 Worker 處理的期間刪除了該 Model，則 Job 可能會遇到 `ModelNotFoundException` 而失敗。
 
-For convenience, you may choose to automatically delete jobs with missing models by setting your job's `deleteWhenMissingModels` property to `true`. When this property is set to `true`, Laravel will quietly discard the job without raising an exception:
+為了方便起見，可將 Job 的 `deleteWhenMissingModels` 屬性設為 `true`，就可以自動刪除有遺失 Model 的 Job。若該選項設為 `true`，則 Laravel 會自動默默地在不產生 Exception 的情況下取消該 Job：
 
     /**
      * Delete the job if its models no longer exist.
@@ -1896,31 +1896,31 @@ For convenience, you may choose to automatically delete jobs with missing models
 
 <a name="pruning-failed-jobs"></a>
 
-### Pruning Failed Jobs
+### 修剪失敗的 Job
 
-You may delete all of the records in your application's `failed_jobs` table by invoking the `queue:prune-failed` Artisan command:
+可以呼叫 `queue:prune-failed` Artisan 指令來刪除專案中所有 `failed_jobs` 資料表中的記錄：
 
     php artisan queue:prune-failed
 
-If you provide the `--hours` option to the command, only the failed job records that were inserted within the last N number of hours will be retained. For example, the following command will delete all of the failed job records that were inserted more than 48 hours ago:
+若有提供 `--hours` 選項給該指令，則只會保留過去 N 小時中所插入的失敗 Job 記錄。舉例來說，下列指令會刪除所有插入超過 48 小時的失敗 Job 記錄：
 
     php artisan queue:prune-failed --hours=48
 
 <a name="storing-failed-jobs-in-dynamodb"></a>
 
-### Storing Failed Jobs In DynamoDB
+### 排序 DynamoDB 中的失敗 Job
 
-Laravel also provides support for storing your failed job records in [DynamoDB](https://aws.amazon.com/dynamodb) instead of a relational database table. However, you must create a DynamoDB table to store all of the failed job records. Typically, this table should be named `failed_jobs`, but you should name the table based on the value of the `queue.failed.table` configuration value within your application's `queue` configuration file.
+出了將失敗 Job 記錄保存在關聯式資料庫資料表意外，在 Laravel 中，也支援將失敗 Job 記錄保存在 [DynamoDB](https://aws.amazon.com/dynamodb) 中。不過，若要保存在 DynamoDB 資料表中，我們需要先建立一個 DynamoDB 資料表來保存失敗的 Job 記錄。一般來說，這個資料表的名稱應為 `failed_jobs`，不過，請依照專案的 `queue` 組態設定檔中 `queue.failed.table` 設定值來命名資料表。
 
-The `failed_jobs` table should have a string primary partition key named `application` and a string primary sort key named `uuid`. The `application` portion of the key will contain your application's name as defined by the `name` configuration value within your application's `app` configuration file. Since the application name is part of the DynamoDB table's key, you can use the same table to store failed jobs for multiple Laravel applications.
+`failed_jobs` 資料表應有一個名為 `application` 的字串^[主分區索引鍵](Primary Partition Key)，以及一個名為 `uuid` 的字串^[主排序索引鍵](Primary Sort Key)。索引鍵的 `application` 這個部分會包含專案的名稱，即 `app` 組態設定檔中的 `name` 設定值。由於專案名稱會是 DynamoDB 資料表中索引鍵的一部分，因此，我們可以使用相同的資料表來保存多個 Laravel 專案中的失敗 Job。
 
-In addition, ensure that you install the AWS SDK so that your Laravel application can communicate with Amazon DynamoDB:
+此外，也請確保有安裝 AWS SDK，好讓 Laravel 專案能與 Amazon DynamoDB 溝通：
 
 ```nothing
 composer require aws/aws-sdk-php
 ```
 
-Next, set the `queue.failed.driver` configuration option's value to `dynamodb`. In addition, you should define `key`, `secret`, and `region` configuration options within the failed job configuration array. These options will be used to authenticate with AWS. When using the `dynamodb` driver, the `queue.failed.database` configuration option is unnecessary:
+接著，請設定 `queue.failed.driver` 設定選項值為 `dynamodb`。此外，也請在失敗 Job 設定陣列中定義 `key`、`secret`、`region` 等設定選項。這些選項會用來向 AWS 進行身份驗證。使用 `dynamodb` Driver 時，就不需要 `queue.failed.database` 設定選項：
 
 ```php
 'failed' => [
@@ -1934,17 +1934,17 @@ Next, set the `queue.failed.driver` configuration option's value to `dynamodb`. 
 
 <a name="disabling-failed-job-storage"></a>
 
-### Disabling Failed Job Storage
+### 不保存失敗的 Job
 
-You may instruct Laravel to discard failed jobs without storing them by setting the `queue.failed.driver` configuration option's value to `null`. Typically, this may be accomplished via the `QUEUE_FAILED_DRIVER` environment variable:
+只要將 `queue.failed.driver` 設定值設為 `null`，就可以讓 Laravel 不保存失敗的 Job 以忽略這些 Job。一般來說，可使用 `QUEUE_FAILED_DRIVER` 環境變數來調整這個值：
 
     QUEUE_FAILED_DRIVER=null
 
 <a name="failed-job-events"></a>
 
-### Failed Job Events
+### 失敗 Job 的事件
 
-If you would like to register an event listener that will be invoked when a job fails, you may use the `Queue` facade's `failing` method. For example, we may attach a closure to this event from the `boot` method of the `AppServiceProvider` that is included with Laravel:
+若想註冊一個會在每次 Job 失敗時叫用的 Event Listener，可使用 `Queue` Facade 的 `failing` 方法。舉例來說，我們可以在 Laravel 中內建的 `AppServiceProvider` 中 `boot` 方法內將一個閉包附加至該事件上：
 
     <?php
     
@@ -1983,35 +1983,35 @@ If you would like to register an event listener that will be invoked when a job 
 
 <a name="clearing-jobs-from-queues"></a>
 
-## Clearing Jobs From Queues
+## 在佇列中清理 Job
 
-> {tip} When using [Horizon](/docs/{{version}}/horizon), you should use the `horizon:clear` command to clear jobs from the queue instead of the `queue:clear` command.
+> {tip} 使用 [Horizon](/docs/{{version}}/horizon)，請不要使用 `queue:clear` 指令，請使用 `horizon:clear` 指令來清理佇列中的 Job。
 
 
-If you would like to delete all jobs from the default queue of the default connection, you may do so using the `queue:clear` Artisan command:
+若想從預設連線的預設佇列中刪除所有 Job，可使用 `queue:clear` Artisan 指令：
 
     php artisan queue:clear
 
-You may also provide the `connection` argument and `queue` option to delete jobs from a specific connection and queue:
+可以提供 `connection` 引數與 `queue` 選項來刪除特定連線與佇列中的 Job：
 
     php artisan queue:clear redis --queue=emails
 
-> {note} Clearing jobs from queues is only available for the SQS, Redis, and database queue drivers. In addition, the SQS message deletion process takes up to 60 seconds, so jobs sent to the SQS queue up to 60 seconds after you clear the queue might also be deleted.
+> {note} 目前，只有 SQS、Redis、資料庫等佇列 Driver 能支援清除佇列中的 Job。此外，刪除 SQS Message 可能會需要至多 60 秒的時間，因此在清理佇列的 60 秒後所傳送給 SQS 佇列的 Job 也可能會被刪除。
 
 
 <a name="monitoring-your-queues"></a>
 
-## Monitoring Your Queues
+## 監控佇列
 
-If your queue receives a sudden influx of jobs, it could become overwhelmed, leading to a long wait time for jobs to complete. If you wish, Laravel can alert you when your queue job count exceeds a specified threshold.
+若佇列突然收到大量的 Job，則佇列可能會有來不及處理，造成 Job 需要更長的等待時間才能完成。若有需要的話，Laravel 可以在佇列 Job 遇到特定閥值時傳送通知。
 
-To get started, you should schedule the `queue:monitor` command to [run every minute](/docs/{{version}}/scheduling). The command accepts the names of the queues you wish to monitor as well as your desired job count threshold:
+若要開始監控佇列，請排程設定[每 10 分鐘執行](/docs/{{version}}/scheduling) `queue:monitor` 指令。這個指令接受要監控的佇列名稱，以及所要設定的 Job 數量閥值：
 
 ```bash
 php artisan queue:monitor redis:default,redis:deployments --max=100
 ```
 
-Scheduling this command alone is not enough to trigger a notification alerting you of the queue's overwhelmed status. When the command encounters a queue that has a job count exceeding your threshold, an `Illuminate\Queue\Events\QueueBusy` event will be dispatched. You may listen for this event within your application's `EventServiceProvider` in order to send a notification to you or your development team:
+若只排程執行這個指令，當佇列的負載過高時還不會觸發通知。當這個指令遇到有佇列超過指定閥值量的 Job 數時，會分派一個 `Illuminate\Queue\Events\QueueBusy` 事件。我們可以在專案的 `EventServiceProvider` 內監聽這個事件，以傳送通知給開發團隊：
 
 ```php
 use App\Notifications\QueueHasLongWaitTime;
@@ -2039,9 +2039,9 @@ public function boot()
 
 <a name="job-events"></a>
 
-## Job Events
+## Job 事件
 
-Using the `before` and `after` methods on the `Queue` [facade](/docs/{{version}}/facades), you may specify callbacks to be executed before or after a queued job is processed. These callbacks are a great opportunity to perform additional logging or increment statistics for a dashboard. Typically, you should call these methods from the `boot` method of a [service provider](/docs/{{version}}/providers). For example, we may use the `AppServiceProvider` that is included with Laravel:
+在 `Queue` [Facade](/docs/{{version}}/facades) 上使用 `before` 與 `after` 方法，就可以指定要在佇列 Job 處理前後所要執行的回呼。在這些回呼中，我們就有機會能進行記錄額外的日誌、增加主控台上統計數字等動作。一般來說，應在某個 [Service Provider](/docs/{{version}}/providers) 中 `boot` 方法內呼叫這些方法。舉例來說，我們可以使用 Laravel 中內建的 `AppServiceProvider`：
 
     <?php
     
@@ -2085,7 +2085,7 @@ Using the `before` and `after` methods on the `Queue` [facade](/docs/{{version}}
         }
     }
 
-Using the `looping` method on the `Queue` [facade](/docs/{{version}}/facades), you may specify callbacks that execute before the worker attempts to fetch a job from a queue. For example, you might register a closure to rollback any transactions that were left open by a previously failed job:
+使用 `Queue` [Facade](/docs/{{version}}/facades) 的 `looping` 方法，我們就能指定要在 Worker 嘗試從佇列中取得 Job 前執行的回呼。舉例來說，我們可以註冊一個閉包來回溯前一個失敗 Job 中未關閉的 Transaction：
 
     use Illuminate\Support\Facades\DB;
     use Illuminate\Support\Facades\Queue;

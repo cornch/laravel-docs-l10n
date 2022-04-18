@@ -6,7 +6,7 @@
 
    - [View Route](#view-routes)
 
-   - [The Route List](#the-route-list)
+   - [Route 列表](#the-route-list)
 
 - [Route 參數](#route-parameters)
 
@@ -163,21 +163,21 @@ Laravel 中所有的 Route 都在 Route 檔案中定義，這些檔案位在 `ro
 
 <a name="the-route-list"></a>
 
-### The Route List
+### Route 列表
 
-The `route:list` Artisan command can easily provide an overview of all of the routes that are defined by your application:
+使用 `route:list` Artisan 指令就可輕鬆檢視專案中定義的所有 Route 一覽：
 
 ```shell
 php artisan route:list
 ```
 
-By default, the route middleware that are assigned to each route will not be displayed in the `route:list` output; however, you can instruct Laravel to display the route middleware by adding the `-v` option to the command:
+預設情況下，指派給各個 Route 的 Middleware 不會顯示在 `route:list` 輸出中。不過，我們可以在該指令後加上 `-v` 選項來讓 Laravel 顯示 Route Middleware：
 
 ```shell
 php artisan route:list -v
 ```
 
-In addition, you may instruct Laravel to hide any routes that are defined by third-party packages by providing the `--except-vendor` option when executing the `route:list` command:
+此外，也可以在執行 `route:list` 指令時提供 `--except-vendor` 選項來讓 Laravel 隱藏由第三方套件所定義的 Route：
 
 ```shell
 php artisan route:list --except-vendor

@@ -1748,7 +1748,7 @@ The field under validation must be an array and must contain at least the specif
 
 #### 存取巢狀陣列資料
 
-Sometimes you may need to access the value for a given nested array element when assigning validation rules to the attribute. You may accomplish this using the `Rule::forEach` method. The `forEach` method accepts a closure that will be invoked for each iteration of the array attribute under validation and will receive the attribute's value and explicit, fully-expanded attribute name. The closure should return an array of rules to assign to the array element:
+有時候，在為屬性指派認證規則時，我們可能會想存取給定巢狀陣列項目的值。為此，我們可以使用 `Rule::forEach` 方法來達成。`forEach` 方法接受一個閉包。在認證時，每次迭代陣列屬性都會叫用一次這個閉包，且該閉包會收到屬性值與完整展開的屬性名稱。該閉包應回傳一個陣列，其中包含要指派給陣列元素的認證規則：
 
     use App\Rules\HasPermission;
     use Illuminate\Support\Facades\Validator;

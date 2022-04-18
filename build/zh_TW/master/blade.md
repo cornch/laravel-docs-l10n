@@ -516,7 +516,7 @@ Switch 陳述式可以通過 `@switch`, `@case`, `@break`, `@default` 與 `@ends
 </select>
 ```
 
-Additionally, the `@disabled` directive may be used to indicate if a given element should be "disabled":
+此外，可使用 `@disabled` 指示詞來表示給定元素應為「disabled」：
 
 ```blade
 <button type="submit" @disabled($errors->isNotEmpty())>Submit</button>

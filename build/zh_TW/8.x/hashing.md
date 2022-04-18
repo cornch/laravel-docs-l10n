@@ -1,43 +1,43 @@
-# Hashing
+# 雜湊
 
-- [Introduction](#introduction)
+- [簡介](#introduction)
 
-- [Configuration](#configuration)
+- [設定](#configuration)
 
-- [Basic Usage](#basic-usage)
+- [基礎用法](#basic-usage)
 
-   - [Hashing Passwords](#hashing-passwords)
+   - [雜湊密碼](#hashing-passwords)
 
-   - [Verifying That A Password Matches A Hash](#verifying-that-a-password-matches-a-hash)
+   - [驗證密碼是否符合雜湊](#verifying-that-a-password-matches-a-hash)
 
-   - [Determining If A Password Needs To Be Rehashed](#determining-if-a-password-needs-to-be-rehashed)
+   - [判斷是否需要重新雜湊密碼](#determining-if-a-password-needs-to-be-rehashed)
 
 <a name="introduction"></a>
 
-## Introduction
+## 簡介
 
-The Laravel `Hash` [facade](/docs/{{version}}/facades) provides secure Bcrypt and Argon2 hashing for storing user passwords. If you are using one of the [Laravel application starter kits](/docs/{{version}}/starter-kits), Bcrypt will be used for registration and authentication by default.
+Laravel 的 `Hash` [Facade](/docs/{{version}}/facades) 提供了安全的 Bcrypt 與 Argon2 雜湊，用以儲存使用者密碼。若使用 [Laravel 專案入門套件](/docs/{{version}}/starter-kits)，則預設會使用 Bcrypt 來註冊與登入。
 
-Bcrypt is a great choice for hashing passwords because its "work factor" is adjustable, which means that the time it takes to generate a hash can be increased as hardware power increases. When hashing passwords, slow is good. The longer an algorithm takes to hash a password, the longer it takes malicious users to generate "rainbow tables" of all possible string hash values that may be used in brute force attacks against applications.
+Bcrypt 是雜湊密碼的一個不錯的選擇，因為其「^[Work Factor](工作因)」是可調整的，這表示，隨著硬體功能的提升，我們也能調整產生雜湊所需的時間。在雜湊密碼時，慢即是好。若演算法需要更多的時間來雜湊密碼，惡意使用者要產生「^[彩虹表](Rainbow Table)」的時間也就更長。彩虹表是一個包含各種可能字串雜湊值的表格，可用來暴力破解密碼。
 
 <a name="configuration"></a>
 
-## Configuration
+## 設定
 
-The default hashing driver for your application is configured in your application's `config/hashing.php` configuration file. There are currently several supported drivers: [Bcrypt](https://en.wikipedia.org/wiki/Bcrypt) and [Argon2](https://en.wikipedia.org/wiki/Argon2) (Argon2i and Argon2id variants).
+專案中預設的雜湊 Driver 設定在專案的 `config/hashing.php` 設定檔中。目前有支援多個 Driver： [Bcrypt](https://en.wikipedia.org/wiki/Bcrypt) 與 [Argon2](https://en.wikipedia.org/wiki/Argon2) (Argon2i 與 Argon2id 變形)。
 
-> {note} The Argon2i driver requires PHP 7.2.0 or greater and the Argon2id driver requires PHP 7.3.0 or greater.
+> {note} Argon2i Driver 需要 PHP 最低版本 7.2.0，Argon2id Driver 需要 PHP 最低版本 7.3.0。
 
 
 <a name="basic-usage"></a>
 
-## Basic Usage
+## 基礎用法
 
 <a name="hashing-passwords"></a>
 
-### Hashing Passwords
+### 雜湊密碼
 
-You may hash a password by calling the `make` method on the `Hash` facade:
+可以呼叫 `Hash` Facade 上的 `make` 方法來雜湊密碼：
 
     <?php
     
@@ -67,9 +67,9 @@ You may hash a password by calling the `make` method on the `Hash` facade:
 
 <a name="adjusting-the-bcrypt-work-factor"></a>
 
-#### Adjusting The Bcrypt Work Factor
+#### 調整 Bcrypt 的 Work Factor
 
-If you are using the Bcrypt algorithm, the `make` method allows you to manage the work factor of the algorithm using the `rounds` option; however, the default work factor managed by Laravel is acceptable for most applications:
+若使用 Bcrypt 演算法，可使用 `rounds` 選項來在 `make` 方法中控制 Bcrypt 的 Work Factor。不過，Laravel 所控制的預設 Work Factor 對於大多數專案來說應是可接受的值：
 
     $hashed = Hash::make('password', [
         'rounds' => 12,
@@ -77,9 +77,9 @@ If you are using the Bcrypt algorithm, the `make` method allows you to manage th
 
 <a name="adjusting-the-argon2-work-factor"></a>
 
-#### Adjusting The Argon2 Work Factor
+#### 調整 Argon2 的 Work Factor
 
-If you are using the Argon2 algorithm, the `make` method allows you to manage the work factor of the algorithm using the `memory`, `time`, and `threads` options; however, the default values managed by Laravel are acceptable for most applications:
+若使用 Argon2 演算法，可使用 `memory`、`time`、`threads` 等選項來在 `make` 方法中控制 Argon2 演算法的 Work Factor。不過，Laravel 所控制的預設 Work Factor 對於大多數專案來說應是可接受的值：
 
     $hashed = Hash::make('password', [
         'memory' => 1024,
@@ -87,24 +87,24 @@ If you are using the Argon2 algorithm, the `make` method allows you to manage th
         'threads' => 2,
     ]);
 
-> {tip} For more information on these options, please refer to the [official PHP documentation regarding Argon hashing](https://secure.php.net/manual/en/function.password-hash.php).
+> {tip} 有關這些選項的詳細資訊，請參考 [PHP 官方說明文件中有關 Argon 雜湊的說明](https://secure.php.net/manual/en/function.password-hash.php)。
 
 
 <a name="verifying-that-a-password-matches-a-hash"></a>
 
-### Verifying That A Password Matches A Hash
+### 驗證密碼是否符合雜湊
 
-The `check` method provided by the `Hash` facade allows you to verify that a given plain-text string corresponds to a given hash:
+`Hash` Facade 的 `check` 方法可用來驗證給定的純文字字串是否對應給定的雜湊：
 
     if (Hash::check('plain-text', $hashedPassword)) {
-        // The passwords match...
+        // 密碼正確...
     }
 
 <a name="determining-if-a-password-needs-to-be-rehashed"></a>
 
-### Determining If A Password Needs To Be Rehashed
+### 判斷密碼是否需要重新雜湊
 
-The `needsRehash` method provided by the `Hash` facade allows you to determine if the work factor used by the hasher has changed since the password was hashed. Some applications choose to perform this check during the application's authentication process:
+`Hash` Facade 的 `needsRehash` 方法可用來判斷自從該密碼被雜湊以來 Hash 程式的 Work Factor 是否有經過更改。有的專案會在網站的身份驗證過程中做這項檢查：
 
     if (Hash::needsRehash($hashed)) {
         $hashed = Hash::make('plain-text');

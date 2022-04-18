@@ -1,85 +1,85 @@
-# Resetting Passwords
+# 重設密碼
 
-- [Introduction](#introduction)
+- [簡介](#introduction)
 
-   - [Model Preparation](#model-preparation)
+   - [Model 的準備](#model-preparation)
 
-   - [Database Preparation](#database-preparation)
+   - [資料庫的準備](#database-preparation)
 
-   - [Configuring Trusted Hosts](#configuring-trusted-hosts)
+   - [設定 Trusted Hosts](#configuring-trusted-hosts)
 
-- [Routing](#routing)
+- [路由](#routing)
 
-   - [Requesting The Password Reset Link](#requesting-the-password-reset-link)
+   - [產生密碼重設連結](#requesting-the-password-reset-link)
 
-   - [Resetting The Password](#resetting-the-password)
+   - [重設密碼](#resetting-the-password)
 
-- [Deleting Expired Tokens](#deleting-expired-tokens)
+- [刪除過期的 Token](#deleting-expired-tokens)
 
-- [Customization](#password-customization)
+- [自定](#password-customization)
 
 <a name="introduction"></a>
 
-## Introduction
+## 簡介
 
-Most web applications provide a way for users to reset their forgotten passwords. Rather than forcing you to re-implement this by hand for every application you create, Laravel provides convenient services for sending password reset links and secure resetting passwords.
+大多數的 Web App 都提供了能讓使用者重設密碼的功能。在 Laravel 中，我們不需要為密碼重設重造輪子，Laravel 已提供了方便的服務，可讓我們傳送密碼重設連結病安全地重設密碼。
 
-> {tip} Want to get started fast? Install a Laravel [application starter kit](/docs/{{version}}/starter-kits) in a fresh Laravel application. Laravel's starter kits will take care of scaffolding your entire authentication system, including resetting forgotten passwords.
+> {tip} 想要快速入門嗎？請在全新的 Laravel 應用程式內安裝一個 [Laravel 應用程式入門套件](docs/{{version}}/starter-kits)。這些入門套件會幫你搞定整個驗證系統的 Scaffolding，其中也包含了重設忘記密碼的支援。
 
 
 <a name="model-preparation"></a>
 
-### Model Preparation
+### Model 的準備
 
-Before using the password reset features of Laravel, your application's `App\Models\User` model must use the `Illuminate\Notifications\Notifiable` trait. Typically, this trait is already included on the default `App\Models\User` model that is created with new Laravel applications.
+在使用 Laravel 的密碼重設功能前，專案中的 `App\Models\User` Model 必須使用 `Illuminate\Notifications\Notifiable` Trait。一般來說，在 Laravel 新專案中，預設的 `App\Models\User` 內已包含了該 Trait。
 
-Next, verify that your `App\Models\User` model implements the `Illuminate\Contracts\Auth\CanResetPassword` contract. The `App\Models\User` model included with the framework already implements this interface, and uses the `Illuminate\Auth\Passwords\CanResetPassword` trait to include the methods needed to implement the interface.
+接著，請確認一下 `App\Models\User` Model 是否有實作 `Illuminate\Contracts\Auth\CanResetPassword` Contract。Laravel 中包含的 `App\Models\User` Model 已經有實作該介面了，且這個 Model 還使用了 `Illuminate\Auth\Passwords\CanResetPassword` Trait 來提供實作該介面所需要的各個方法。
 
 <a name="database-preparation"></a>
 
-### Database Preparation
+### 資料庫的準備
 
-A table must be created to store your application's password reset tokens. The migration for this table is included in the default Laravel application, so you only need to migrate your database to create this table:
+我們需要一個資料表來保存網站的密碼重設 ^[Token](權杖)。在預設 Laravel 中已包含了用於建立該資料表的 Migration，因此我們只需要進行 Migrate 即可建立該資料表：
 
     php artisan migrate
 
 <a name="configuring-trusted-hosts"></a>
 
-### Configuring Trusted Hosts
+### 設定信任的主機 (Trusted Hosts)
 
-By default, Laravel will respond to all requests it receives regardless of the content of the HTTP request's `Host` header. In addition, the `Host` header's value will be used when generating absolute URLs to your application during a web request.
+預設情況下，無論收到的 HTTP Request 中 `Host` 標頭內容為何，Laravel 都會回應所有收到的 Request。此外，Laravel 還會使用 `Host` 標頭的值來在 Request 中產生絕對路徑的網址。
 
-Typically, you should configure your web server, such as Nginx or Apache, to only send requests to your application that match a given host name. However, if you do not have the ability to customize your web server directly and need to instruct Laravel to only respond to certain host names, you may do so by enabling the `App\Http\Middleware\TrustHosts` middleware for your application. This is particularly important when your application offers password reset functionality.
+一般來說，應在 Web Server 上 (如 Nginx 或 Apache) 設定只有特定的主機名稱時才將 Request 送往你的程式中。不過，若沒機會能自訂 Web Server，則需要讓 Laravel 只對特定主機名稱作回應。為此，可以啟用專案中的 `App\Http\Middleware\TrustHosts` Middleware。若網站要提供密碼重設功能，設定 Trust Host 就非常重要。
 
-To learn more about this middleware, please consult the [`TrustHosts` middleware documentation](/docs/{{version}}/requests#configuring-trusted-hosts).
+若要瞭解更多有關該 Middleware 的資訊，請參考 [`TrustHosts` Middleware 的說明文件](/docs/{{version}}/requests#configuring-trusted-hosts)。
 
 <a name="routing"></a>
 
-## Routing
+## 路由
 
-To properly implement support for allowing users to reset their passwords, we will need to define several routes. First, we will need a pair of routes to handle allowing the user to request a password reset link via their email address. Second, we will need a pair of routes to handle actually resetting the password once the user visits the password reset link that is emailed to them and completes the password reset form.
+若要正確實作讓使用者重設密碼的功能，我們需要定義多個 Route。首先，我們需要一組用來讓使用者通過 E-Mail 位址要求密碼重設連結的 Route。接著，我們需要定義一組 Route 來實際處理密碼重設功能，即，處理使用者點擊信件中的密碼重設連結後顯示與送出密碼重設表單的 Route。
 
 <a name="requesting-the-password-reset-link"></a>
 
-### Requesting The Password Reset Link
+### 要求密碼重設連結
 
 <a name="the-password-reset-link-request-form"></a>
 
-#### The Password Reset Link Request Form
+#### 要求密碼重設連結的表單
 
-First, we will define the routes that are needed to request password reset links. To get started, we will define a route that returns a view with the password reset link request form:
+首先，我們需要定義一個用來要求密碼重設連結的 Route。首先，我們先定義一個回傳 View 的 Route，該 View 即為要求密碼重設連結的表單：
 
     Route::get('/forgot-password', function () {
         return view('auth.forgot-password');
     })->middleware('guest')->name('password.request');
 
-The view that is returned by this route should have a form containing an `email` field, which will allow the user to request a password reset link for a given email address.
+該 Route 所回傳的 View 應包含一個 `email` 欄位，該欄位用來讓使用者可使用給定的 E-Mail 位址要求密碼重設連結。
 
 <a name="password-reset-link-handling-the-form-submission"></a>
 
-#### Handling The Form Submission
+#### 處理表單的送出
 
-Next, we will define a route that handles the form submission request from the "forgot password" view. This route will be responsible for validating the email address and sending the password reset request to the corresponding user:
+接著，我們需要定義一個 Route 來處理「忘記密碼」View 送出的表單。這個 Route 會負責驗證 E-Mail 位址，並寄出密碼重設連結給對應的使用者：
 
     use Illuminate\Http\Request;
     use Illuminate\Support\Facades\Password;
@@ -96,36 +96,36 @@ Next, we will define a route that handles the form submission request from the "
                     : back()->withErrors(['email' => __($status)]);
     })->middleware('guest')->name('password.email');
 
-Before moving on, let's examine this route in more detail. First, the request's `email` attribute is validated. Next, we will use Laravel's built-in "password broker" (via the `Password` facade) to send a password reset link to the user. The password broker will take care of retrieving the user by the given field (in this case, the email address) and sending the user a password reset link via Laravel's built-in [notification system](/docs/{{version}}/notifications).
+在繼續之前，我們先來詳細看看這個 Route。首先，會先驗證 Request 的 `email` 屬性。接著，我們使用 Laravel 內建的「Password Broker」(在 `Password` Facade 上) 來傳送密碼重設連結給該使用者。Password Broker 會負責使用給定的欄位 (在這個例子中是 E-Mail 位址) 來取得使用者，並使用 Laravel 內建的[通知系統](/docs/{{version}}/notifications)來傳送密碼重設連結給使用者。
 
-The `sendResetLink` method returns a "status" slug. This status may be translated using Laravel's [localization](/docs/{{version}}/localization) helpers in order to display a user-friendly message to the user regarding the status of their request. The translation of the password reset status is determined by your application's `resources/lang/{lang}/passwords.php` language file. An entry for each possible value of the status slug is located within the `passwords` language file.
+`sendResetLink` 方法會回傳一個「status」slug。我們可以使用 Laravel 的[本土化]輔助函式來翻譯這個「status」，以顯示使用者友善的訊息告知使用者其密碼要求狀態。密碼重設的翻譯會依據專案中的 `resources/lang/{lang}/passwords.php` 語系檔來判斷。在 `passwords` 語系檔中，所有可能的 status slug 值都有對應的欄位。
 
-You may be wondering how Laravel knows how to retrieve the user record from your application's database when calling the `Password` facade's `sendResetLink` method. The Laravel password broker utilizes your authentication system's "user providers" to retrieve database records. The user provider used by the password broker is configured within the `passwords` configuration array of your `config/auth.php` configuration file. To learn more about writing custom user providers, consult the [authentication documentation](/docs/{{version}}/authentication#adding-custom-user-providers).
+讀者可能會想，在呼叫 `Password` Facade 的 `sendResetLink` 時，Laravel 是怎麼知道要如何從專案資料庫中取得使用者記錄的？其實，Laravel 的 Password Broker 使用了身份驗證系統的「User Providers」來取得資料庫記錄。Password Broker 使用的 User Provider 設定在 `config/auth.php` 設定檔中的 `password` 設定陣列中。如欲瞭解更多有關如何撰寫自定 User Provider 的資訊，請參考[身份驗證說明文件](/docs/{{version}}/authentication#adding-custom-user-providers)。
 
-> {tip} When manually implementing password resets, you are required to define the contents of the views and routes yourself. If you would like scaffolding that includes all necessary authentication and verification logic, check out the [Laravel application starter kits](/docs/{{version}}/starter-kits).
+> {tip} 手動實作密碼重設功能時，我們需要自行定義這些 View 的內容與 Route。若想要有包含所有必要之身份驗證與驗證 View 的 Scaffolding，請參考 [Laravel 專案入門套件](/docs/{{version}}/starter-kits)。
 
 
 <a name="resetting-the-password"></a>
 
-### Resetting The Password
+### 重設密碼
 
 <a name="the-password-reset-form"></a>
 
-#### The Password Reset Form
+#### 密碼重設表單
 
-Next, we will define the routes necessary to actually reset the password once the user clicks on the password reset link that has been emailed to them and provides a new password. First, let's define the route that will display the reset password form that is displayed when the user clicks the reset password link. This route will receive a `token` parameter that we will use later to verify the password reset request:
+接著，我們還需要定義一個 Route，能讓使用者在點擊信件中的密碼重設連結後能真的重設密碼。首先，我們先定義一個在使用者點擊密碼重設連結後顯示密碼重設表單的 Route。這個 Route 會收到一個 `token` 參數，我們在稍後會用來驗證這個密碼重設 Request。
 
     Route::get('/reset-password/{token}', function ($token) {
         return view('auth.reset-password', ['token' => $token]);
     })->middleware('guest')->name('password.reset');
 
-The view that is returned by this route should display a form containing an `email` field, a `password` field, a `password_confirmation` field, and a hidden `token` field, which should contain the value of the secret `$token` received by our route.
+該表單回傳的 View 應顯示一個表單，其中需包含 `email`、`password`、`password_confirmation` 等欄位，以及一個隱藏的 `token` 等欄位，該 `token` 欄位中應包含該 Route 所收到的私密 Token `$token` 值。
 
 <a name="password-reset-handling-the-form-submission"></a>
 
-#### Handling The Form Submission
+#### 處理表單的送出
 
-Of course, we need to define a route to actually handle the password reset form submission. This route will be responsible for validating the incoming request and updating the user's password in the database:
+當然，我們還需要定義一個實際用來處理表單送出的 Route。這個 Route 要負責驗證連入的 Request，並更新資料庫中該使用者的密碼：
 
     use Illuminate\Auth\Events\PasswordReset;
     use Illuminate\Http\Request;
@@ -158,35 +158,35 @@ Of course, we need to define a route to actually handle the password reset form 
                     : back()->withErrors(['email' => [__($status)]]);
     })->middleware('guest')->name('password.update');
 
-Before moving on, let's examine this route in more detail. First, the request's `token`, `email`, and `password` attributes are validated. Next, we will use Laravel's built-in "password broker" (via the `Password` facade) to validate the password reset request credentials.
+在繼續之前，我們先來仔細看看這個 Route。首先，在這個 Route 中會先驗證 Request 的 `token`、`email`、`password` 等欄位。接著，​我們 (通過 `Password` Facade) 使用 Laravel 內建的「Password Broker」來驗證密碼重設 Request 是否有效。
 
-If the token, email address, and password given to the password broker are valid, the closure passed to the `reset` method will be invoked. Within this closure, which receives the user instance and the plain-text password provided to the password reset form, we may update the user's password in the database.
+若傳給 Password Broker 的 Token、E-Mail 位址、密碼等均正確，則會呼叫傳給 `reset` 方法的閉包。這個閉包會收到 User 實體以及傳給密碼重設表單的明文密碼。在該閉包中，我們就可以更新資料庫中該使用者的密碼。
 
-The `reset` method returns a "status" slug. This status may be translated using Laravel's [localization](/docs/{{version}}/localization) helpers in order to display a user-friendly message to the user regarding the status of their request. The translation of the password reset status is determined by your application's `resources/lang/{lang}/passwords.php` language file. An entry for each possible value of the status slug is located within the `passwords` language file.
+`reset` 方法會回傳一個「status」slug。我們可以使用 Laravel 的[本土化](/docs/{{version}}/localization)輔助函式來翻譯這個「status」，以顯示使用者友善的訊息告知使用者其密碼要求狀態。密碼重設的翻譯會依據專案中的 `resources/lang/{lang}/passwords.php` 語系檔來判斷。在 `passwords` 語系檔中，所有可能的 status slug 值都有對應的欄位。
 
-Before moving on, you may be wondering how Laravel knows how to retrieve the user record from your application's database when calling the `Password` facade's `reset` method. The Laravel password broker utilizes your authentication system's "user providers" to retrieve database records. The user provider used by the password broker is configured within the `passwords` configuration array of your `config/auth.php` configuration file. To learn more about writing custom user providers, consult the [authentication documentation](/docs/{{version}}/authentication#adding-custom-user-providers).
+在繼續之前，讀者可能會想，在呼叫 `Password` Facade 的 `reset` 時，Laravel 是怎麼知道要如何從專案資料庫中取得使用者記錄的？其實，Laravel 的 Password Broker 使用了身份驗證系統的「User Providers」來取得資料庫記錄。Password Broker 使用的 User Provider 設定在 `config/auth.php` 設定檔中的 `password` 設定陣列中。如欲瞭解更多有關如何撰寫自定 User Provider 的資訊，請參考[身份驗證說明文件](/docs/{{version}}/authentication#adding-custom-user-providers)。
 
 <a name="deleting-expired-tokens"></a>
 
-## Deleting Expired Tokens
+## 刪除過期的 Token
 
-Password reset tokens that have expired will still be present within your database. However, you may easily delete these records using the `auth:clear-resets` Artisan command:
+過期的密碼重設連結會繼續保存在資料庫中。不過，我們可以使用 `auth:clear-resets` Artisan 指令來輕鬆刪除這些記錄：
 
     php artisan auth:clear-resets
 
-If you would like to automate this process, consider adding the command to your application's [scheduler](/docs/{{version}}/scheduling):
+若想自動化這個過程，可以考慮將該指令加入專案的[排程任務](/docs/{{version}}/scheduling)中：
 
     $schedule->command('auth:clear-resets')->everyFifteenMinutes();
 
 <a name="password-customization"></a>
 
-## Customization
+## 自定
 
 <a name="reset-link-customization"></a>
 
-#### Reset Link Customization
+#### 自定重設連結
 
-You may customize the password reset link URL using the `createUrlUsing` method provided by the `ResetPassword` notification class. This method accepts a closure which receives the user instance that is receiving the notification as well as the password reset link token. Typically, you should call this method from your `App\Providers\AuthServiceProvider` service provider's `boot` method:
+我們可以使用 `ResetPassword` 通知類別的 `createUrlUsing` 方法來自定密碼重設連結的網址。這個方法接受一個閉包，該閉包會收到要接收通知的使用者實體，以及密碼重設連結的 Token。一般來說，我們可以在 `App\Providers\AuthServiceProvider` Service Provider 的 `boot` 方法內呼叫這個方法：
 
     use Illuminate\Auth\Notifications\ResetPassword;
     
@@ -206,9 +206,9 @@ You may customize the password reset link URL using the `createUrlUsing` method 
 
 <a name="reset-email-customization"></a>
 
-#### Reset Email Customization
+#### 自定重設 E-Mail
 
-You may easily modify the notification class used to send the password reset link to the user. To get started, override the `sendPasswordResetNotification` method on your `App\Models\User` model. Within this method, you may send the notification using any [notification class](/docs/{{version}}/notifications) of your own creation. The password reset `$token` is the first argument received by the method. You may use this `$token` to build the password reset URL of your choice and send your notification to the user:
+我們也可以輕鬆調整用來傳送密碼重設連結給使用者的通知類別。若要自定該通知，請在 `App\Models\User` Model 中複寫 `sendPasswordResetNotification` 方法。在該方法中，我們可以使用任何一個自行建立的 [Notification 類別](/docs/{{version}}/notifications)來傳送通知。該方法的第一個引數是密碼重設連結的 `$token`。我們可以使用這個 `$token` 來建立我們自已的密碼重設連結並用來傳送通知給使用者：
 
     use App\Notifications\ResetPasswordNotification;
     

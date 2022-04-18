@@ -1,29 +1,29 @@
-# Rate Limiting
+# 頻率限制
 
-- [Introduction](#introduction)
+- [簡介](#introduction)
 
-   - [Cache Configuration](#cache-configuration)
+   - [快取設定](#cache-configuration)
 
-- [Basic Usage](#basic-usage)
+- [基礎用法](#basic-usage)
 
-   - [Manually Incrementing Attempts](#manually-incrementing-attempts)
+   - [手動增加嘗試次數](#manually-incrementing-attempts)
 
-   - [Clearing Attempts](#clearing-attempts)
+   - [清除嘗試次數](#clearing-attempts)
 
 <a name="introduction"></a>
 
-## Introduction
+## 簡介
 
-Laravel includes a simple to use rate limiting abstraction which, in conjunction with your application's <cache>, provides an easy way to limit any action during a specified window of time.
+Laravel 中內建了一個簡單易用的頻率限制抽象功能，該功能會與專案的 <cache> 搭配使用，讓我們能輕鬆限制指定時間內任何動作的頻率。
 
-> {tip} If you are interested in rate limiting incoming HTTP requests, please consult the [rate limiter middleware documentation](routing#rate-limiting).
+> {tip} 若想對連入 HTTP Request 的頻率限制，請參考 [Rate Limiter Middleware 的說明文件](routing#rate-limiting)。
 
 
 <a name="cache-configuration"></a>
 
-### Cache Configuration
+### 快取設定
 
-Typically, the rate limiter utilizes your default application cache as defined by the `default` key within your application's `cache` configuration file. However, you may specify which cache driver the rate limiter should use by defining a `limiter` key within your application's `cache` configuration file:
+一般來說，Rate Limiter 會使用專案中 `cache` 設定檔 `default` 索引鍵上所定義的預設快取。不過，我們可以在專案的 `cache` 設定檔中定義 `limiter` 索引鍵來指定 Rate Limiter 要使用哪個快取 Driver：
 
     'default' => 'memcached',
     
@@ -31,11 +31,11 @@ Typically, the rate limiter utilizes your default application cache as defined b
 
 <a name="basic-usage"></a>
 
-## Basic Usage
+## 基礎用法
 
-The `Illuminate\Support\Facades\RateLimiter` facade may be used to interact with the rate limiter. The simplest method offered by the rate limiter is the `attempt` method, which rate limits a given callback for a given number of seconds.
+可通過 `Illuminate\Support\Facades\RateLimiter` Facade 來使用 Rate Limiter。Rate Limiter 所提供的最簡單的方法是 `attempt` 方法，該方法會對給定閉包以給定秒數來做頻率限制。
 
-The `attempt` method returns `false` when the callback has no remaining attempts available; otherwise, the `attempt` method will return the callback's result or `true`. The first argument accepted by the `attempt` method is a rate limiter "key", which may be any string of your choosing that represents the action being rate limited:
+若該回呼已無法再嘗試，則 `attempt` 方法會回傳 `false`。若還能繼續嘗試，則 `attempt` 會回傳該回呼的執行結果或 `true`。`attempt` 方法的第一個引數為 Rate Limiter 的「索引鍵」，索引鍵可以是任意字串，用來表示要被頻率限制的動作：
 
     use Illuminate\Support\Facades\RateLimiter;
     
@@ -43,7 +43,7 @@ The `attempt` method returns `false` when the callback has no remaining attempts
         'send-message:'.$user->id,
         $perMinute = 5,
         function() {
-            // Send message...
+            // 傳送訊息...
         }
     );
     
@@ -53,9 +53,9 @@ The `attempt` method returns `false` when the callback has no remaining attempts
 
 <a name="manually-incrementing-attempts"></a>
 
-### Manually Incrementing Attempts
+### 手動增加嘗試次數
 
-If you would like to manually interact with the rate limiter, a variety of other methods are available. For example, you may invoke the `tooManyAttempts` method to determine if a given rate limiter key has exceeded its maximum number of allowed attempts per minute:
+若想手動使用 Rate Limiter，則還有其他許多能使用的方法。舉例來說，我們可以叫用 `tooManyAttempts` 方法來判斷給定的 Rate Limiter 索引鍵是否已遇到其每分鐘所允許的最大嘗試次數：
 
     use Illuminate\Support\Facades\RateLimiter;
     
@@ -63,21 +63,21 @@ If you would like to manually interact with the rate limiter, a variety of other
         return 'Too many attempts!';
     }
 
-Alternatively, you may use the `remaining` method to retrieve the number of attempts remaining for a given key. If a given key has retries remaining, you may invoke the `hit` method to increment the number of total attempts:
+或者，也可以使用 `remaining` 方法來取得給定索引鍵剩下的嘗試次數。若給定的索引鍵還有可嘗試的次數，則可叫用 `hit` 方法來增加總嘗試次數：
 
     use Illuminate\Support\Facades\RateLimiter;
     
     if (RateLimiter::remaining('send-message:'.$user->id, $perMinute = 5)) {
         RateLimiter::hit('send-message:'.$user->id);
     
-        // Send message...
+        // 傳送訊息...
     }
 
 <a name="determining-limiter-availability"></a>
 
-#### Determining Limiter Availability
+#### 判斷 Limiter 是否可用
 
-When a key has no more attempts left, the `availableIn` method returns the number of seconds remaining until more attempts will be available:
+若某個索引鍵已無可用的嘗試次數，則 `availableIn` 方法會回傳距離下次可獲得嘗試次數的剩餘秒數：
 
     use Illuminate\Support\Facades\RateLimiter;
     
@@ -89,9 +89,9 @@ When a key has no more attempts left, the `availableIn` method returns the numbe
 
 <a name="clearing-attempts"></a>
 
-### Clearing Attempts
+### 清除嘗試次數
 
-You may reset the number of attempts for a given rate limiter key using the `clear` method. For example, you may reset the number of attempts when a given message is read by the receiver:
+可使用 `clear` 方法來重設給定 Rate Limiter 索引鍵的嘗試次數。舉例來說，我們可以在收件人已閱讀某個訊息後重設嘗試次數：
 
     use App\Models\Message;
     use Illuminate\Support\Facades\RateLimiter;

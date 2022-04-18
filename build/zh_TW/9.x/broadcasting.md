@@ -609,7 +609,7 @@ window.Echo = new Echo({
 
 <a name="customizing-the-authorization-request"></a>
 
-#### 自訂授權 Endpoint
+#### 自訂授權 Request
 
 我們可以自訂 Laravel Echo 要如何執行授權請求。只需要在初始化 Echo 時提供一個自訂授權程式即可：
 
@@ -977,7 +977,7 @@ Echo.join(`chat.${roomId}`)
 
 不過，我們讓事件在專案中負責其他功能，那麼如果只建立一個用來廣播的事件就很麻煩。為了解決這個問題，再 Laravel 中，我們可以讓 Eloquent Model 自動將其狀態更改廣播出去：
 
-To get started, your Eloquent model should use the `Illuminate\Database\Eloquent\BroadcastsEvents` trait. In addition, the model should define a `broadcastOn` method, which will return an array of channels that the model's events should broadcast on:
+要開始設定自動廣播，應在 Eloquent Model 上使用 `Illuminate\Database\Eloquent\BroadcastsEvents` Trait。此外，該 Model 應定義一個 `broadcastOn` 方法，並在其中回傳一組包含頻道名稱的陣列，以供 Model 事件廣播：
 
 ```php
 <?php

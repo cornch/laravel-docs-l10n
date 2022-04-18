@@ -589,7 +589,7 @@ Echo.private(`orders.${orderId}`)
 
 <a name="customizing-the-authorization-request"></a>
 
-#### 自訂授權 Endpoint
+#### 自訂授權 Request
 
 我們可以自訂 Laravel Echo 要如何執行授權請求。只需要在初始化 Echo 時提供一個自訂授權程式即可：
 

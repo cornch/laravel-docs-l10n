@@ -136,7 +136,7 @@ public function address(): Attribute
 
 *Enum 型別轉換由 [Mohamed Said](https://github.com/themsaid) 參與貢獻*。
 
-Eloquent now allows you to cast your attribute values to PHP ["backed" enums](https://www.php.net/manual/en/language.enumerations.backed.php). To accomplish this, you may specify the attribute and enum you wish to cast in your model's `$casts` property array:
+現在，Eloquent 也能讓我們將屬性值轉換為 PHP 的 [「Backed」Enum](https://www.php.net/manual/en/language.enumerations.backed.php) 了。為此，可在 Model 中的 `$casts` 屬性陣列中指定要型別轉換的屬性與 Enum：
 
     use App\Enums\ServerStatus;
     

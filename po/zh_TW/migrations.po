@@ -10,7 +10,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
-"PO-Revision-Date: 2022-04-25 09:14\n"
+"PO-Revision-Date: 2022-04-25 10:21\n"
 
 #: docs/8.x/migrations.md:block 1 (header)
 msgid "Database: Migrations"
@@ -248,7 +248,7 @@ msgstr "匿名 Migration"
 
 #: docs/8.x/migrations.md:block 28 (paragraph)
 msgid "As you may have noticed in the example above, Laravel will automatically assign a class name to all of the migrations that you generate using the `make:migration` command. However, if you wish, you may return an anonymous class from your migration file. This is primarily useful if your application accumulates many migrations and two of them have a class name collision:"
-msgstr ""
+msgstr "在上述的範例中可以看到，Laravel 會自動為所有使用 `make:migration` 指令所產生的所有 Migration 指定一個類別名稱。不過，若有需要的話，我們可以在 Migration 檔中回傳一個匿名類別。若專案中已經有許多的 Migration，且其中某兩個 Migration 發生的類別名稱衝突時，就很適合使用這個方法："
 
 #: docs/8.x/migrations.md:block 29 (code)
 msgid "<?php\n\n"
@@ -257,15 +257,20 @@ msgid "<?php\n\n"
 "{\n"
 "    //\n"
 "};\n"
-msgstr ""
+msgstr "<?php\n\n"
+"use Illuminate\\Database\\Migrations\\Migration;\n\n"
+"return new class extends Migration\n"
+"{\n"
+"    //\n"
+"};\n"
 
 #: docs/8.x/migrations.md:block 31 (header)
 msgid "Setting The Migration Connection"
-msgstr ""
+msgstr "設定 Migration 的連線"
 
 #: docs/8.x/migrations.md:block 32 (paragraph)
 msgid "If your migration will be interacting with a database connection other than your application's default database connection, you should set the `$connection` property of your migration:"
-msgstr ""
+msgstr "若 Migration 會使用與專案預設資料庫連線不同的資料庫連線，則請在 Migration 中設定 `$connection` 屬性："
 
 #: docs/8.x/migrations.md:block 33 (code)
 msgid "/**\n"
@@ -283,118 +288,135 @@ msgid "/**\n"
 "{\n"
 "    //\n"
 "}\n"
-msgstr ""
+msgstr "/**\n"
+" * The database connection that should be used by the migration.\n"
+" *\n"
+" * @var string\n"
+" */\n"
+"protected $connection = 'pgsql';\n\n"
+"/**\n"
+" * Run the migrations.\n"
+" *\n"
+" * @return void\n"
+" */\n"
+"public function up()\n"
+"{\n"
+"    //\n"
+"}\n"
 
 #: docs/8.x/migrations.md:block 35 (header)
 msgid "Running Migrations"
-msgstr ""
+msgstr "執行 Migration"
 
 #: docs/8.x/migrations.md:block 36 (paragraph)
 msgid "To run all of your outstanding migrations, execute the `migrate` Artisan command:"
-msgstr ""
+msgstr "若要執行所有尚未執行過的 Migration，請執行 `migrate` Artisan 指令："
 
 #: docs/8.x/migrations.md:block 37 (code)
 msgid "php artisan migrate\n"
-msgstr ""
+msgstr "php artisan migrate\n"
 
 #: docs/8.x/migrations.md:block 38 (paragraph)
 msgid "If you would like to see which migrations have run thus far, you may use the `migrate:status` Artisan command:"
-msgstr ""
+msgstr "若想檢視目前為止已執行了哪些 Migration，可使用 `migrate:status` Artisan 指令："
 
 #: docs/8.x/migrations.md:block 39 (code)
 msgid "php artisan migrate:status\n"
-msgstr ""
+msgstr "php artisan migrate:status\n"
 
 #: docs/8.x/migrations.md:block 41 (header)
 msgid "Forcing Migrations To Run In Production"
-msgstr ""
+msgstr "在正式環境中強制執行 Migration"
 
 #: docs/8.x/migrations.md:block 42 (paragraph)
 msgid "Some migration operations are destructive, which means they may cause you to lose data. In order to protect you from running these commands against your production database, you will be prompted for confirmation before the commands are executed. To force the commands to run without a prompt, use the `--force` flag:"
-msgstr ""
+msgstr "有些 Migration 中的動作是破壞性的，也就是一些會導致資料消失的動作。為了避免在正式環境資料庫中執行這些破壞性的動作，因此在執行指令時，會出現提示要求確認。若要強制該指令不跳出提示直接執行，請使用 `--force` 旗標："
 
 #: docs/8.x/migrations.md:block 43 (code)
 msgid "php artisan migrate --force\n"
-msgstr ""
+msgstr "php artisan migrate --force\n"
 
 #: docs/8.x/migrations.md:block 45 (header)
 msgid "Rolling Back Migrations"
-msgstr ""
+msgstr "復原 Migration"
 
 #: docs/8.x/migrations.md:block 46 (paragraph)
 msgid "To roll back the latest migration operation, you may use the `rollback` Artisan command. This command rolls back the last \"batch\" of migrations, which may include multiple migration files:"
-msgstr ""
+msgstr "若要復原最後執行的 Migration 動作，可使用 `rollback` Artisan 指令。該指令會復原最後「一批」執行的 Migration，其中可能包含多個 Migration 檔："
 
 #: docs/8.x/migrations.md:block 47 (code)
 msgid "php artisan migrate:rollback\n"
-msgstr ""
+msgstr "php artisan migrate:rollback\n"
 
 #: docs/8.x/migrations.md:block 48 (paragraph)
 msgid "You may roll back a limited number of migrations by providing the `step` option to the `rollback` command. For example, the following command will roll back the last five migrations:"
-msgstr ""
+msgstr "我們也可以提供各一個 `step` 選項給 `rollback` 指令，以限制要復原的 Migration 數量。舉例來說，下列指令只會復原最後 5 個 Migration："
 
 #: docs/8.x/migrations.md:block 49 (code)
 msgid "php artisan migrate:rollback --step=5\n"
-msgstr ""
+msgstr "php artisan migrate:rollback --step=5\n"
 
 #: docs/8.x/migrations.md:block 50 (paragraph)
 msgid "The `migrate:reset` command will roll back all of your application's migrations:"
-msgstr ""
+msgstr "`migrate:reset` 指令會復原專案中所有的 Migration："
 
 #: docs/8.x/migrations.md:block 51 (code)
 msgid "php artisan migrate:reset\n"
-msgstr ""
+msgstr "php artisan migrate:reset\n"
 
 #: docs/8.x/migrations.md:block 53 (header)
 msgid "Roll Back & Migrate Using A Single Command"
-msgstr ""
+msgstr "以單一指令來復原並 Migrate"
 
 #: docs/8.x/migrations.md:block 54 (paragraph)
 msgid "The `migrate:refresh` command will roll back all of your migrations and then execute the `migrate` command. This command effectively re-creates your entire database:"
-msgstr ""
+msgstr "`migrate:refresh` 指令會將所有的 Migration 都復原回去，並接著執行 `migrate` 指令。使用該指令，就可以有效率的重建整個資料庫："
 
 #: docs/8.x/migrations.md:block 55 (code)
 msgid "php artisan migrate:refresh\n\n"
 "// Refresh the database and run all database seeds...\n"
 "php artisan migrate:refresh --seed\n"
-msgstr ""
+msgstr "php artisan migrate:refresh\n\n"
+"// 重新整理資料庫，病執行所有的資料庫 Seed...\n"
+"php artisan migrate:refresh --seed\n"
 
 #: docs/8.x/migrations.md:block 56 (paragraph)
 msgid "You may roll back and re-migrate a limited number of migrations by providing the `step` option to the `refresh` command. For example, the following command will roll back and re-migrate the last five migrations:"
-msgstr ""
+msgstr "我們也可以提供各一個 `step` 選項給 `refresh` 指令，以限制要復原並重新 Migrate 的 Migration 數量。舉例來說，下列指令只會復原並重新 Migrate 最後 5 個 Migration："
 
 #: docs/8.x/migrations.md:block 57 (code)
 msgid "php artisan migrate:refresh --step=5\n"
-msgstr ""
+msgstr "php artisan migrate:refresh --step=5\n"
 
 #: docs/8.x/migrations.md:block 59 (header)
 msgid "Drop All Tables & Migrate"
-msgstr ""
+msgstr "刪除所有資料表並 Migrate"
 
 #: docs/8.x/migrations.md:block 60 (paragraph)
 msgid "The `migrate:fresh` command will drop all tables from the database and then execute the `migrate` command:"
-msgstr ""
+msgstr "`migrate:fresh` 指令會刪除資料庫中所有資料表，並接著執行 `migrate` 指令："
 
 #: docs/8.x/migrations.md:block 61 (code)
 msgid "php artisan migrate:fresh\n\n"
 "php artisan migrate:fresh --seed\n"
-msgstr ""
+msgstr "php artisan migrate:fresh\n\n"
+"php artisan migrate:fresh --seed\n"
 
 #: docs/8.x/migrations.md:block 62 (quote)
 msgid "{note} The `migrate:fresh` command will drop all database tables regardless of their prefix. This command should be used with caution when developing on a database that is shared with other applications."
-msgstr ""
+msgstr "{note} 不論資料表是否有^[前置詞](Prefix)，`migrate:fresh` 指令會刪除所有的資料庫資料表。在使用與其他專案共享的資料庫時，若要與本指令搭配使用請務必注意。"
 
 #: docs/8.x/migrations.md:block 64 (header)
 msgid "Tables"
-msgstr ""
+msgstr "資料表"
 
 #: docs/8.x/migrations.md:block 66 (header)
 msgid "Creating Tables"
-msgstr ""
+msgstr "建立資料表"
 
 #: docs/8.x/migrations.md:block 67 (paragraph)
 msgid "To create a new database table, use the `create` method on the `Schema` facade. The `create` method accepts two arguments: the first is the name of the table, while the second is a closure which receives a `Blueprint` object that may be used to define the new table:"
-msgstr ""
+msgstr "若要建立新的資料庫資料表，請使用 `Schema` Facade 上的 `create` 方法。`create` 方法接受兩個引數：資料表名稱、以及一個接收 `Blueprint` 物件的閉包。`Blueprint` 物件可用來定義新資料表："
 
 #: docs/8.x/migrations.md:block 68 (code)
 msgid "use Illuminate\\Database\\Schema\\Blueprint;\n"
@@ -405,19 +427,26 @@ msgid "use Illuminate\\Database\\Schema\\Blueprint;\n"
 "    $table->string('email');\n"
 "    $table->timestamps();\n"
 "});\n"
-msgstr ""
+msgstr "use Illuminate\\Database\\Schema\\Blueprint;\n"
+"use Illuminate\\Support\\Facades\\Schema;\n\n"
+"Schema::create('users', function (Blueprint $table) {\n"
+"    $table->id();\n"
+"    $table->string('name');\n"
+"    $table->string('email');\n"
+"    $table->timestamps();\n"
+"});\n"
 
 #: docs/8.x/migrations.md:block 69 (paragraph)
 msgid "When creating the table, you may use any of the schema builder's [column methods](#creating-columns) to define the table's columns."
-msgstr ""
+msgstr "建立資料表時，我們可以使用任意 Schema Builder 的[欄位方法](#creating-columns)來定義資料表欄位。"
 
 #: docs/8.x/migrations.md:block 71 (header)
 msgid "Checking For Table / Column Existence"
-msgstr ""
+msgstr "檢查資料表與欄位是否存在"
 
 #: docs/8.x/migrations.md:block 72 (paragraph)
 msgid "You may check for the existence of a table or column using the `hasTable` and `hasColumn` methods:"
-msgstr ""
+msgstr "我們可以使用 `hasTable` 與 `hasColumn` 方法來檢查資料表或欄位是否存在："
 
 #: docs/8.x/migrations.md:block 73 (code)
 msgid "if (Schema::hasTable('users')) {\n"
@@ -426,36 +455,46 @@ msgid "if (Schema::hasTable('users')) {\n"
 "if (Schema::hasColumn('users', 'email')) {\n"
 "    // The \"users\" table exists and has an \"email\" column...\n"
 "}\n"
-msgstr ""
+msgstr "if (Schema::hasTable('users')) {\n"
+"    // 「users」資料表存在...\n"
+"}\n\n"
+"if (Schema::hasColumn('users', 'email')) {\n"
+"    // 「users」資料表存在，且包含一個「email」欄位...\n"
+"}\n"
 
 #: docs/8.x/migrations.md:block 75 (header)
 msgid "Database Connection & Table Options"
-msgstr ""
+msgstr "資料庫連線與資料表選項"
 
 #: docs/8.x/migrations.md:block 76 (paragraph)
 msgid "If you want to perform a schema operation on a database connection that is not your application's default connection, use the `connection` method:"
-msgstr ""
+msgstr "若要在非專案預設連線的資料庫連線上做 Schema 動作，請使用 `connection` 方法："
 
 #: docs/8.x/migrations.md:block 77 (code)
 msgid "Schema::connection('sqlite')->create('users', function (Blueprint $table) {\n"
 "    $table->id();\n"
 "});\n"
-msgstr ""
+msgstr "Schema::connection('sqlite')->create('users', function (Blueprint $table) {\n"
+"    $table->id();\n"
+"});\n"
 
 #: docs/8.x/migrations.md:block 78 (paragraph)
 msgid "In addition, a few other properties and methods may be used to define other aspects of the table's creation. The `engine` property may be used to specify the table's storage engine when using MySQL:"
-msgstr ""
+msgstr "此外，還有一些其他的屬性或方法，可用來調整資料表建立中的其他細節。使用 MySQL 時，可使用 `engine` 屬性來指定資料表的 Storage Engine："
 
 #: docs/8.x/migrations.md:block 79 (code)
 msgid "Schema::create('users', function (Blueprint $table) {\n"
 "    $table->engine = 'InnoDB';\n\n"
 "    // ...\n"
 "});\n"
-msgstr ""
+msgstr "Schema::create('users', function (Blueprint $table) {\n"
+"    $table->engine = 'InnoDB';\n\n"
+"    // ...\n"
+"});\n"
 
 #: docs/8.x/migrations.md:block 80 (paragraph)
 msgid "The `charset` and `collation` properties may be used to specify the character set and collation for the created table when using MySQL:"
-msgstr ""
+msgstr "使用 MySQL 時，`charset` 與 `collation` 屬性可用來指定建立資料表的 Character Set 與 Collection："
 
 #: docs/8.x/migrations.md:block 81 (code)
 msgid "Schema::create('users', function (Blueprint $table) {\n"
@@ -463,26 +502,33 @@ msgid "Schema::create('users', function (Blueprint $table) {\n"
 "    $table->collation = 'utf8mb4_unicode_ci';\n\n"
 "    // ...\n"
 "});\n"
-msgstr ""
+msgstr "Schema::create('users', function (Blueprint $table) {\n"
+"    $table->charset = 'utf8mb4';\n"
+"    $table->collation = 'utf8mb4_unicode_ci';\n\n"
+"    // ...\n"
+"});\n"
 
 #: docs/8.x/migrations.md:block 82 (paragraph)
 msgid "The `temporary` method may be used to indicate that the table should be \"temporary\". Temporary tables are only visible to the current connection's database session and are dropped automatically when the connection is closed:"
-msgstr ""
+msgstr "`temporary` 方法可用來表示該資料表是「臨時」資料表。臨時資料表只可在目前連線的資料庫工作階段中使用，且會在連線關閉後自動刪除："
 
 #: docs/8.x/migrations.md:block 83 (code)
 msgid "Schema::create('calculations', function (Blueprint $table) {\n"
 "    $table->temporary();\n\n"
 "    // ...\n"
 "});\n"
-msgstr ""
+msgstr "Schema::create('calculations', function (Blueprint $table) {\n"
+"    $table->temporary();\n\n"
+"    // ...\n"
+"});\n"
 
 #: docs/8.x/migrations.md:block 85 (header)
 msgid "Updating Tables"
-msgstr ""
+msgstr "更新資料表"
 
 #: docs/8.x/migrations.md:block 86 (paragraph)
 msgid "The `table` method on the `Schema` facade may be used to update existing tables. Like the `create` method, the `table` method accepts two arguments: the name of the table and a closure that receives a `Blueprint` instance you may use to add columns or indexes to the table:"
-msgstr ""
+msgstr "`Schema` Facade 上的 `table` 方法可用來更新現有的資料表。與 `create` 方法類似，`table` 方法接受兩個因數：資料表名稱，以及一個接收 `Blueprint` 實體的閉包。使用 `Blueprint` 實體，即可用來在資料表上新增欄位或索引："
 
 #: docs/8.x/migrations.md:block 87 (code)
 msgid "use Illuminate\\Database\\Schema\\Blueprint;\n"
@@ -490,573 +536,579 @@ msgid "use Illuminate\\Database\\Schema\\Blueprint;\n"
 "Schema::table('users', function (Blueprint $table) {\n"
 "    $table->integer('votes');\n"
 "});\n"
-msgstr ""
+msgstr "use Illuminate\\Database\\Schema\\Blueprint;\n"
+"use Illuminate\\Support\\Facades\\Schema;\n\n"
+"Schema::table('users', function (Blueprint $table) {\n"
+"    $table->integer('votes');\n"
+"});\n"
 
 #: docs/8.x/migrations.md:block 89 (header)
 msgid "Renaming / Dropping Tables"
-msgstr ""
+msgstr "重新命名或刪除資料表"
 
 #: docs/8.x/migrations.md:block 90 (paragraph)
 msgid "To rename an existing database table, use the `rename` method:"
-msgstr ""
+msgstr "若要重新命名現有的資料表，可使用 `rename` 方法："
 
 #: docs/8.x/migrations.md:block 91 (code)
 msgid "use Illuminate\\Support\\Facades\\Schema;\n\n"
 "Schema::rename($from, $to);\n"
-msgstr ""
+msgstr "use Illuminate\\Support\\Facades\\Schema;\n\n"
+"Schema::rename($from, $to);\n"
 
 #: docs/8.x/migrations.md:block 92 (paragraph)
 msgid "To drop an existing table, you may use the `drop` or `dropIfExists` methods:"
-msgstr ""
+msgstr "若要移除現有的資料表，可使用 `drop` 或 `dropIfExists` 方法："
 
 #: docs/8.x/migrations.md:block 93 (code)
 msgid "Schema::drop('users');\n\n"
 "Schema::dropIfExists('users');\n"
-msgstr ""
+msgstr "Schema::drop('users');\n\n"
+"Schema::dropIfExists('users');\n"
 
 #: docs/8.x/migrations.md:block 95 (header)
 msgid "Renaming Tables With Foreign Keys"
-msgstr ""
+msgstr "與外部索引鍵一起重新命名資料表"
 
 #: docs/8.x/migrations.md:block 96 (paragraph)
 msgid "Before renaming a table, you should verify that any foreign key constraints on the table have an explicit name in your migration files instead of letting Laravel assign a convention based name. Otherwise, the foreign key constraint name will refer to the old table name."
-msgstr ""
+msgstr "在重新命名資料表時，請務必確認該資料表上的^[外部索引鍵條件](Foreign Key Constraint)是否有直接設定名稱，而不是使用 Laravel 所指定的基於慣例的名稱。若未直接設定名稱，則這些外部索引鍵條件的名稱可能會參照到舊的資料表名稱："
 
 #: docs/8.x/migrations.md:block 98 (header)
 msgid "Columns"
-msgstr ""
+msgstr "欄位"
 
 #: docs/8.x/migrations.md:block 100 (header)
 msgid "Creating Columns"
-msgstr ""
+msgstr "建立欄位"
 
 #: docs/8.x/migrations.md:block 101 (paragraph)
 msgid "The `table` method on the `Schema` facade may be used to update existing tables. Like the `create` method, the `table` method accepts two arguments: the name of the table and a closure that receives an `Illuminate\\Database\\Schema\\Blueprint` instance you may use to add columns to the table:"
-msgstr ""
+msgstr "`Schema` Facade 上的 `table` 方法可用來更新現有的資料表。與 `create` 方法類似，`table` 方法接受兩個因數：資料表名稱，以及一個接收 `Illuminate\\Database\\Schema\\Blueprint` 實體的閉包。使用這個 `Blueprint` 實體，即可用來在資料表上新增欄位或索引："
 
 #: docs/8.x/migrations.md:block 104 (header)
 msgid "Available Column Types"
-msgstr ""
+msgstr "可用的欄位型別"
 
 #: docs/8.x/migrations.md:block 105 (paragraph)
 msgid "The schema builder blueprint offers a variety of methods that correspond to the different types of columns you can add to your database tables. Each of the available methods are listed in the table below:"
-msgstr ""
+msgstr "Schema Builder Blueprint 提供了多種方法，這些方法對應到可新增至資料庫資料表中各種不同的欄位型別。可用的各個方法列在下表中："
 
 #: docs/8.x/migrations.md:block 108 (paragraph)
 msgid "[bigIncrements](#column-method-bigIncrements) [bigInteger](#column-method-bigInteger) [binary](#column-method-binary) [boolean](#column-method-boolean) [char](#column-method-char) [dateTimeTz](#column-method-dateTimeTz) [dateTime](#column-method-dateTime) [date](#column-method-date) [decimal](#column-method-decimal) [double](#column-method-double) [enum](#column-method-enum) [float](#column-method-float) [foreignId](#column-method-foreignId) [foreignIdFor](#column-method-foreignIdFor) [foreignUuid](#column-method-foreignUuid) [geometryCollection](#column-method-geometryCollection) [geometry](#column-method-geometry) [id](#column-method-id) [increments](#column-method-increments) [integer](#column-method-integer) [ipAddress](#column-method-ipAddress) [json](#column-method-json) [jsonb](#column-method-jsonb) [lineString](#column-method-lineString) [longText](#column-method-longText) [macAddress](#column-method-macAddress) [mediumIncrements](#column-method-mediumIncrements) [mediumInteger](#column-method-mediumInteger) [mediumText](#column-method-mediumText) [morphs](#column-method-morphs) [multiLineString](#column-method-multiLineString) [multiPoint](#column-method-multiPoint) [multiPolygon](#column-method-multiPolygon) [nullableMorphs](#column-method-nullableMorphs) [nullableTimestamps](#column-method-nullableTimestamps) [nullableUuidMorphs](#column-method-nullableUuidMorphs) [point](#column-method-point) [polygon](#column-method-polygon) [rememberToken](#column-method-rememberToken) [set](#column-method-set) [smallIncrements](#column-method-smallIncrements) [smallInteger](#column-method-smallInteger) [softDeletesTz](#column-method-softDeletesTz) [softDeletes](#column-method-softDeletes) [string](#column-method-string) [text](#column-method-text) [timeTz](#column-method-timeTz) [time](#column-method-time) [timestampTz](#column-method-timestampTz) [timestamp](#column-method-timestamp) [timestampsTz](#column-method-timestampsTz) [timestamps](#column-method-timestamps) [tinyIncrements](#column-method-tinyIncrements) [tinyInteger](#column-method-tinyInteger) [tinyText](#column-method-tinyText) [unsignedBigInteger](#column-method-unsignedBigInteger) [unsignedDecimal](#column-method-unsignedDecimal) [unsignedInteger](#column-method-unsignedInteger) [unsignedMediumInteger](#column-method-unsignedMediumInteger) [unsignedSmallInteger](#column-method-unsignedSmallInteger) [unsignedTinyInteger](#column-method-unsignedTinyInteger) [uuidMorphs](#column-method-uuidMorphs) [uuid](#column-method-uuid) [year](#column-method-year)"
-msgstr ""
+msgstr "[bigIncrements](#column-method-bigIncrements) [bigInteger](#column-method-bigInteger) [binary](#column-method-binary) [boolean](#column-method-boolean) [char](#column-method-char) [dateTimeTz](#column-method-dateTimeTz) [dateTime](#column-method-dateTime) [date](#column-method-date) [decimal](#column-method-decimal) [double](#column-method-double) [enum](#column-method-enum) [float](#column-method-float) [foreignId](#column-method-foreignId) [foreignIdFor](#column-method-foreignIdFor) [foreignUuid](#column-method-foreignUuid) [geometryCollection](#column-method-geometryCollection) [geometry](#column-method-geometry) [id](#column-method-id) [increments](#column-method-increments) [integer](#column-method-integer) [ipAddress](#column-method-ipAddress) [json](#column-method-json) [jsonb](#column-method-jsonb) [lineString](#column-method-lineString) [longText](#column-method-longText) [macAddress](#column-method-macAddress) [mediumIncrements](#column-method-mediumIncrements) [mediumInteger](#column-method-mediumInteger) [mediumText](#column-method-mediumText) [morphs](#column-method-morphs) [multiLineString](#column-method-multiLineString) [multiPoint](#column-method-multiPoint) [multiPolygon](#column-method-multiPolygon) [nullableMorphs](#column-method-nullableMorphs) [nullableTimestamps](#column-method-nullableTimestamps) [nullableUuidMorphs](#column-method-nullableUuidMorphs) [point](#column-method-point) [polygon](#column-method-polygon) [rememberToken](#column-method-rememberToken) [set](#column-method-set) [smallIncrements](#column-method-smallIncrements) [smallInteger](#column-method-smallInteger) [softDeletesTz](#column-method-softDeletesTz) [softDeletes](#column-method-softDeletes) [string](#column-method-string) [text](#column-method-text) [timeTz](#column-method-timeTz) [time](#column-method-time) [timestampTz](#column-method-timestampTz) [timestamp](#column-method-timestamp) [timestampsTz](#column-method-timestampsTz) [timestamps](#column-method-timestamps) [tinyIncrements](#column-method-tinyIncrements) [tinyInteger](#column-method-tinyInteger) [tinyText](#column-method-tinyText) [unsignedBigInteger](#column-method-unsignedBigInteger) [unsignedDecimal](#column-method-unsignedDecimal) [unsignedInteger](#column-method-unsignedInteger) [unsignedMediumInteger](#column-method-unsignedMediumInteger) [unsignedSmallInteger](#column-method-unsignedSmallInteger) [unsignedTinyInteger](#column-method-unsignedTinyInteger) [uuidMorphs](#column-method-uuidMorphs) [uuid](#column-method-uuid) [year](#column-method-year)"
 
 #: docs/8.x/migrations.md:block 111 (header)
 msgid "`bigIncrements()` {.collection-method .first-collection-method}"
-msgstr ""
+msgstr "`bigIncrements()` {.collection-method .first-collection-method}"
 
 #: docs/8.x/migrations.md:block 112 (paragraph)
 msgid "The `bigIncrements` method creates an auto-incrementing `UNSIGNED BIGINT` (primary key) equivalent column:"
-msgstr ""
+msgstr "`bigIncrements` 方法建立一個 ^[Auto-Increment](自動遞增) 的 `UNSIGNED BIGINT` (^[主索引鍵](Primary Key)) 或相等欄位："
 
 #: docs/8.x/migrations.md:block 113 (code)
 msgid "$table->bigIncrements('id');\n"
-msgstr ""
+msgstr "$table->bigIncrements('id');\n"
 
 #: docs/8.x/migrations.md:block 115 (header)
 msgid "`bigInteger()` {.collection-method}"
-msgstr ""
+msgstr "`bigInteger()` {.collection-method}"
 
 #: docs/8.x/migrations.md:block 116 (paragraph)
 msgid "The `bigInteger` method creates a `BIGINT` equivalent column:"
-msgstr ""
+msgstr "`bigInteger` 方法建立一個 `BIGINT` 或相等的欄位："
 
 #: docs/8.x/migrations.md:block 117 (code)
 msgid "$table->bigInteger('votes');\n"
-msgstr ""
+msgstr "$table->bigInteger('votes');\n"
 
 #: docs/8.x/migrations.md:block 119 (header)
 msgid "`binary()` {.collection-method}"
-msgstr ""
+msgstr "`binary()` {.collection-method}"
 
 #: docs/8.x/migrations.md:block 120 (paragraph)
 msgid "The `binary` method creates a `BLOB` equivalent column:"
-msgstr ""
+msgstr "`binary` 方法建立一個 `BLOB` 或相等欄位："
 
 #: docs/8.x/migrations.md:block 121 (code)
 msgid "$table->binary('photo');\n"
-msgstr ""
+msgstr "$table->binary('photo');\n"
 
 #: docs/8.x/migrations.md:block 123 (header)
 msgid "`boolean()` {.collection-method}"
-msgstr ""
+msgstr "`boolean()` {.collection-method}"
 
 #: docs/8.x/migrations.md:block 124 (paragraph)
 msgid "The `boolean` method creates a `BOOLEAN` equivalent column:"
-msgstr ""
+msgstr "`boolean` 方法建立一個 `BOOLEAN` 或相等欄位："
 
 #: docs/8.x/migrations.md:block 125 (code)
 msgid "$table->boolean('confirmed');\n"
-msgstr ""
+msgstr "$table->boolean('confirmed');\n"
 
 #: docs/8.x/migrations.md:block 127 (header)
 msgid "`char()` {.collection-method}"
-msgstr ""
+msgstr "`char()` {.collection-method}"
 
 #: docs/8.x/migrations.md:block 128 (paragraph)
 msgid "The `char` method creates a `CHAR` equivalent column with of a given length:"
-msgstr ""
+msgstr "`char` 方法以給定的長度來建立一個 `CHAR` 或相等欄位："
 
 #: docs/8.x/migrations.md:block 129 (code)
 msgid "$table->char('name', 100);\n"
-msgstr ""
+msgstr "$table->char('name', 100);\n"
 
 #: docs/8.x/migrations.md:block 131 (header)
 msgid "`dateTimeTz()` {.collection-method}"
-msgstr ""
+msgstr "`dateTimeTz()` {.collection-method}"
 
 #: docs/8.x/migrations.md:block 132 (paragraph)
 msgid "The `dateTimeTz` method creates a `DATETIME` (with timezone) equivalent column with an optional precision (total digits):"
-msgstr ""
+msgstr "`dateTimeTz` 方法以給定的精度 (總位數) 建立一個 `DATETIME` (含時區) 或相等欄位："
 
 #: docs/8.x/migrations.md:block 133 (code)
 msgid "$table->dateTimeTz('created_at', $precision = 0);\n"
-msgstr ""
+msgstr "$table->dateTimeTz('created_at', $precision = 0);\n"
 
 #: docs/8.x/migrations.md:block 135 (header)
 msgid "`dateTime()` {.collection-method}"
-msgstr ""
+msgstr "`dateTime()` {.collection-method}"
 
 #: docs/8.x/migrations.md:block 136 (paragraph)
 msgid "The `dateTime` method creates a `DATETIME` equivalent column with an optional precision (total digits):"
-msgstr ""
+msgstr "`dateTime` 方法會使用給定的可選精度 (總位數) 來建立一個 `DATETIME` 或相等欄位："
 
 #: docs/8.x/migrations.md:block 137 (code)
 msgid "$table->dateTime('created_at', $precision = 0);\n"
-msgstr ""
+msgstr "$table->dateTime('created_at', $precision = 0);\n"
 
 #: docs/8.x/migrations.md:block 139 (header)
 msgid "`date()` {.collection-method}"
-msgstr ""
+msgstr "`date()` {.collection-method}"
 
 #: docs/8.x/migrations.md:block 140 (paragraph)
 msgid "The `date` method creates a `DATE` equivalent column:"
-msgstr ""
+msgstr "`date` 方法會建立一個 `DATE` 或相等欄位："
 
 #: docs/8.x/migrations.md:block 141 (code)
 msgid "$table->date('created_at');\n"
-msgstr ""
+msgstr "$table->date('created_at');\n"
 
 #: docs/8.x/migrations.md:block 143 (header)
 msgid "`decimal()` {.collection-method}"
-msgstr ""
+msgstr "`decimal()` {.collection-method}"
 
 #: docs/8.x/migrations.md:block 144 (paragraph)
 msgid "The `decimal` method creates a `DECIMAL` equivalent column with the given precision (total digits) and scale (decimal digits):"
-msgstr ""
+msgstr "`decimal` 方法會以給定的^[精度](Precision) (總位數) 與^[小數位數](Scale) (小數位數) 來建立一個 `DECIMAL` 或相等欄位："
 
 #: docs/8.x/migrations.md:block 145 (code)
 msgid "$table->decimal('amount', $precision = 8, $scale = 2);\n"
-msgstr ""
+msgstr "$table->decimal('amount', $precision = 8, $scale = 2);\n"
 
 #: docs/8.x/migrations.md:block 147 (header)
 msgid "`double()` {.collection-method}"
-msgstr ""
+msgstr "`double()` {.collection-method}"
 
 #: docs/8.x/migrations.md:block 148 (paragraph)
 msgid "The `double` method creates a `DOUBLE` equivalent column with the given precision (total digits) and scale (decimal digits):"
-msgstr ""
+msgstr "`double` 方法會以給定的^[精度](Precision) (總位數) 與^[小數位數](Scale) (小數位數) 來建立一個 `DOUBLE` 或相等欄位："
 
 #: docs/8.x/migrations.md:block 149 (code)
 msgid "$table->double('amount', 8, 2);\n"
-msgstr ""
+msgstr "$table->double('amount', 8, 2);\n"
 
 #: docs/8.x/migrations.md:block 151 (header)
 msgid "`enum()` {.collection-method}"
-msgstr ""
+msgstr "`enum()` {.collection-method}"
 
 #: docs/8.x/migrations.md:block 152 (paragraph)
 msgid "The `enum` method creates a `ENUM` equivalent column with the given valid values:"
-msgstr ""
+msgstr "`enum` 方法以給定的有效值來建立一個 `ENUM` 或相等欄位："
 
 #: docs/8.x/migrations.md:block 153 (code)
 msgid "$table->enum('difficulty', ['easy', 'hard']);\n"
-msgstr ""
+msgstr "$table->enum('difficulty', ['easy', 'hard']);\n"
 
 #: docs/8.x/migrations.md:block 155 (header)
 msgid "`float()` {.collection-method}"
-msgstr ""
+msgstr "`float()` {.collection-method}"
 
 #: docs/8.x/migrations.md:block 156 (paragraph)
 msgid "The `float` method creates a `FLOAT` equivalent column with the given precision (total digits) and scale (decimal digits):"
-msgstr ""
+msgstr "`float` 方法會以給定的^[精度](Precision) (總位數) 與^[小數位數](Scale) (小數位數) 來建立一個 `FLOAT` 或相等欄位："
 
 #: docs/8.x/migrations.md:block 157 (code)
 msgid "$table->float('amount', 8, 2);\n"
-msgstr ""
+msgstr "$table->float('amount', 8, 2);\n"
 
 #: docs/8.x/migrations.md:block 159 (header)
 msgid "`foreignId()` {.collection-method}"
-msgstr ""
+msgstr "`foreignId()` {.collection-method}"
 
 #: docs/8.x/migrations.md:block 160 (paragraph)
 msgid "The `foreignId` method creates an `UNSIGNED BIGINT` equivalent column:"
-msgstr ""
+msgstr "`foreignId` 方法會建立一個 `UNSIGNED BIGINT` 或相等的欄位："
 
 #: docs/8.x/migrations.md:block 161 (code)
 msgid "$table->foreignId('user_id');\n"
-msgstr ""
+msgstr "$table->foreignId('user_id');\n"
 
 #: docs/8.x/migrations.md:block 163 (header)
 msgid "`foreignIdFor()` {.collection-method}"
-msgstr ""
+msgstr "`foreignIdFor()` {.collection-method}"
 
 #: docs/8.x/migrations.md:block 164 (paragraph)
 msgid "The `foreignIdFor` method adds a `{column}_id UNSIGNED BIGINT` equivalent column for a given model class:"
-msgstr ""
+msgstr "`foreighIdFor` 方法會以給定的 Model 類別來建立一個 `{欄位}_id UNSIGNED BIGINT` 或相等欄位："
 
 #: docs/8.x/migrations.md:block 165 (code)
 msgid "$table->foreignIdFor(User::class);\n"
-msgstr ""
+msgstr "$table->foreignIdFor(User::class);\n"
 
 #: docs/8.x/migrations.md:block 167 (header)
 msgid "`foreignUuid()` {.collection-method}"
-msgstr ""
+msgstr "`foreignUuid()` {.collection-method}"
 
 #: docs/8.x/migrations.md:block 168 (paragraph)
 msgid "The `foreignUuid` method creates a `UUID` equivalent column:"
-msgstr ""
+msgstr "`foreignUuid` 方法會建立一個 `UUID` 或相等欄位："
 
 #: docs/8.x/migrations.md:block 169 (code)
 msgid "$table->foreignUuid('user_id');\n"
-msgstr ""
+msgstr "$table->foreignUuid('user_id');\n"
 
 #: docs/8.x/migrations.md:block 171 (header)
 msgid "`geometryCollection()` {.collection-method}"
-msgstr ""
+msgstr "`geometryCollection()` {.collection-method}"
 
 #: docs/8.x/migrations.md:block 172 (paragraph)
 msgid "The `geometryCollection` method creates a `GEOMETRYCOLLECTION` equivalent column:"
-msgstr ""
+msgstr "`geometryCollection` 方法會建立一個 `GEOMETRYCOLLECTION` 或相等欄位："
 
 #: docs/8.x/migrations.md:block 173 (code)
 msgid "$table->geometryCollection('positions');\n"
-msgstr ""
+msgstr "$table->geometryCollection('positions');\n"
 
 #: docs/8.x/migrations.md:block 175 (header)
 msgid "`geometry()` {.collection-method}"
-msgstr ""
+msgstr "`geometry()` {.collection-method}"
 
 #: docs/8.x/migrations.md:block 176 (paragraph)
 msgid "The `geometry` method creates a `GEOMETRY` equivalent column:"
-msgstr ""
+msgstr "`geometry` 方法建立一個 `GEOMETRY` 或相等欄位："
 
 #: docs/8.x/migrations.md:block 177 (code)
 msgid "$table->geometry('positions');\n"
-msgstr ""
+msgstr "$table->geometry('positions');\n"
 
 #: docs/8.x/migrations.md:block 179 (header)
 msgid "`id()` {.collection-method}"
-msgstr ""
+msgstr "`id()` {.collection-method}"
 
 #: docs/8.x/migrations.md:block 180 (paragraph)
 msgid "The `id` method is an alias of the `bigIncrements` method. By default, the method will create an `id` column; however, you may pass a column name if you would like to assign a different name to the column:"
-msgstr ""
+msgstr "`id` 欄位為 `bigIncrements` 方法的別名。預設情況下，該方法會建立一個 `id` 欄位。不過，若想為該欄位指定不同的名稱，也可以傳入欄位名稱："
 
 #: docs/8.x/migrations.md:block 181 (code)
 msgid "$table->id();\n"
-msgstr ""
+msgstr "$table->id();\n"
 
 #: docs/8.x/migrations.md:block 183 (header)
 msgid "`increments()` {.collection-method}"
-msgstr ""
+msgstr "`increments()` {.collection-method}"
 
 #: docs/8.x/migrations.md:block 184 (paragraph)
 msgid "The `increments` method creates an auto-incrementing `UNSIGNED INTEGER` equivalent column as a primary key:"
-msgstr ""
+msgstr "`increments` 方法會建立一個 ^[Auto-Increment](自動遞增) 的 `UNSIGNED INTEGER` 或同等欄位作為^[主索引鍵](Primary Key)："
 
 #: docs/8.x/migrations.md:block 185 (code)
 msgid "$table->increments('id');\n"
-msgstr ""
+msgstr "$table->increments('id');\n"
 
 #: docs/8.x/migrations.md:block 187 (header)
 msgid "`integer()` {.collection-method}"
-msgstr ""
+msgstr "`integer()` {.collection-method}"
 
 #: docs/8.x/migrations.md:block 188 (paragraph)
 msgid "The `integer` method creates an `INTEGER` equivalent column:"
-msgstr ""
+msgstr "`integer` 方法建立一個 `INTEGER` 或相等的欄位："
 
 #: docs/8.x/migrations.md:block 189 (code)
 msgid "$table->integer('votes');\n"
-msgstr ""
+msgstr "$table->integer('votes');\n"
 
 #: docs/8.x/migrations.md:block 191 (header)
 msgid "`ipAddress()` {.collection-method}"
-msgstr ""
+msgstr "`ipAddress()` {.collection-method}"
 
 #: docs/8.x/migrations.md:block 192 (paragraph)
 msgid "The `ipAddress` method creates a `VARCHAR` equivalent column:"
-msgstr ""
+msgstr "`ipAddress` 方法會建立一個 `VARCHAR` 或相等欄位："
 
 #: docs/8.x/migrations.md:block 193 (code)
 msgid "$table->ipAddress('visitor');\n"
-msgstr ""
+msgstr "$table->ipAddress('visitor');\n"
 
 #: docs/8.x/migrations.md:block 195 (header)
 msgid "`json()` {.collection-method}"
-msgstr ""
+msgstr "`json()` {.collection-method}"
 
 #: docs/8.x/migrations.md:block 196 (paragraph)
 msgid "The `json` method creates a `JSON` equivalent column:"
-msgstr ""
+msgstr "`json` 方法會建立一個 `JSON` 或相等欄位："
 
 #: docs/8.x/migrations.md:block 197 (code)
 msgid "$table->json('options');\n"
-msgstr ""
+msgstr "$table->json('options');\n"
 
 #: docs/8.x/migrations.md:block 199 (header)
 msgid "`jsonb()` {.collection-method}"
-msgstr ""
+msgstr "`jsonb()` {.collection-method}"
 
 #: docs/8.x/migrations.md:block 200 (paragraph)
 msgid "The `jsonb` method creates a `JSONB` equivalent column:"
-msgstr ""
+msgstr "`jsonb` 方法會建立一個 `JSONB` 或相等欄位："
 
 #: docs/8.x/migrations.md:block 201 (code)
 msgid "$table->jsonb('options');\n"
-msgstr ""
+msgstr "$table->jsonb('options');\n"
 
 #: docs/8.x/migrations.md:block 203 (header)
 msgid "`lineString()` {.collection-method}"
-msgstr ""
+msgstr "`lineString()` {.collection-method}"
 
 #: docs/8.x/migrations.md:block 204 (paragraph)
 msgid "The `lineString` method creates a `LINESTRING` equivalent column:"
-msgstr ""
+msgstr "`lineString` 方法建立一個 `LINESTRING` 或相等的欄位："
 
 #: docs/8.x/migrations.md:block 205 (code)
 msgid "$table->lineString('positions');\n"
-msgstr ""
+msgstr "$table->lineString('positions');\n"
 
 #: docs/8.x/migrations.md:block 207 (header)
 msgid "`longText()` {.collection-method}"
-msgstr ""
+msgstr "`longText()` {.collection-method}"
 
 #: docs/8.x/migrations.md:block 208 (paragraph)
 msgid "The `longText` method creates a `LONGTEXT` equivalent column:"
-msgstr ""
+msgstr "`longText` 方法建立一個 `LONGTEXT` 或相等欄位："
 
 #: docs/8.x/migrations.md:block 209 (code)
 msgid "$table->longText('description');\n"
-msgstr ""
+msgstr "$table->longText('description');\n"
 
 #: docs/8.x/migrations.md:block 211 (header)
 msgid "`macAddress()` {.collection-method}"
-msgstr ""
+msgstr "`macAddress()` {.collection-method}"
 
 #: docs/8.x/migrations.md:block 212 (paragraph)
 msgid "The `macAddress` method creates a column that is intended to hold a MAC address. Some database systems, such as PostgreSQL, have a dedicated column type for this type of data. Other database systems will use a string equivalent column:"
-msgstr ""
+msgstr "`macAddress` 方法會建立一個用來保存 MAC 位址的欄位。在某些資料庫系統，如 PostgreSQL 中，有專門的欄位可用來保存這種類型的資料。在其他資料庫系統，則會使用相等的字串欄位："
 
 #: docs/8.x/migrations.md:block 213 (code)
 msgid "$table->macAddress('device');\n"
-msgstr ""
+msgstr "$table->macAddress('device');\n"
 
 #: docs/8.x/migrations.md:block 215 (header)
 msgid "`mediumIncrements()` {.collection-method}"
-msgstr ""
+msgstr "`mediumIncrements()` {.collection-method}"
 
 #: docs/8.x/migrations.md:block 216 (paragraph)
 msgid "The `mediumIncrements` method creates an auto-incrementing `UNSIGNED MEDIUMINT` equivalent column as a primary key:"
-msgstr ""
+msgstr "`mediumIncrements` 方法會建立一個 ^[Auto-Increment](自動遞增) 的 `UNSIGNED MEDIUMINT` 或同等欄位作為^[主索引鍵](Primary Key)："
 
 #: docs/8.x/migrations.md:block 217 (code)
 msgid "$table->mediumIncrements('id');\n"
-msgstr ""
+msgstr "$table->mediumIncrements('id');\n"
 
 #: docs/8.x/migrations.md:block 219 (header)
 msgid "`mediumInteger()` {.collection-method}"
-msgstr ""
+msgstr "`mediumInteger()` {.collection-method}"
 
 #: docs/8.x/migrations.md:block 220 (paragraph)
 msgid "The `mediumInteger` method creates a `MEDIUMINT` equivalent column:"
-msgstr ""
+msgstr "`mediumInteger` 方法建立一個 `MEDIUMINT` 或相等的欄位："
 
 #: docs/8.x/migrations.md:block 221 (code)
 msgid "$table->mediumInteger('votes');\n"
-msgstr ""
+msgstr "$table->mediumInteger('votes');\n"
 
 #: docs/8.x/migrations.md:block 223 (header)
 msgid "`mediumText()` {.collection-method}"
-msgstr ""
+msgstr "`mediumText()` {.collection-method}"
 
 #: docs/8.x/migrations.md:block 224 (paragraph)
 msgid "The `mediumText` method creates a `MEDIUMTEXT` equivalent column:"
-msgstr ""
+msgstr "`mediumText` 方法建立一個 `MEDIUMTEXT` 或相等的欄位："
 
 #: docs/8.x/migrations.md:block 225 (code)
 msgid "$table->mediumText('description');\n"
-msgstr ""
+msgstr "$table->mediumText('description');\n"
 
 #: docs/8.x/migrations.md:block 227 (header)
 msgid "`morphs()` {.collection-method}"
-msgstr ""
+msgstr "`morphs()` {.collection-method}"
 
 #: docs/8.x/migrations.md:block 228 (paragraph)
 msgid "The `morphs` method is a convenience method that adds a `{column}_id` `UNSIGNED BIGINT` equivalent column and a `{column}_type` `VARCHAR` equivalent column."
-msgstr ""
+msgstr "`morphs` 是一個方便方法，會新增一個 `{欄位}_id` `UNSIGNED BIGINT` 或相等欄位，以及一個 `{欄位}_type` `VARCHAR` 或想等欄位。"
 
 #: docs/8.x/migrations.md:block 229 (paragraph)
 msgid "This method is intended to be used when defining the columns necessary for a polymorphic [Eloquent relationship](/docs/{{version}}/eloquent-relationships). In the following example, `taggable_id` and `taggable_type` columns would be created:"
-msgstr ""
+msgstr "該方法主要是要給多型 [Eloquent 關聯](/docs/{{version}}/eloquent-relationships)定義欄位用的。在下列範例中，會建立 `taggable_id` 與 `taggable_type` 欄位："
 
 #: docs/8.x/migrations.md:block 230 (code)
 msgid "$table->morphs('taggable');\n"
-msgstr ""
+msgstr "$table->morphs('taggable');\n"
 
 #: docs/8.x/migrations.md:block 232 (header)
 msgid "`multiLineString()` {.collection-method}"
-msgstr ""
+msgstr "`multiLineString()` {.collection-method}"
 
 #: docs/8.x/migrations.md:block 233 (paragraph)
 msgid "The `multiLineString` method creates a `MULTILINESTRING` equivalent column:"
-msgstr ""
+msgstr "`multiLineString` 方法建立一個 `MULTILINESTRING` 或相等的欄位："
 
 #: docs/8.x/migrations.md:block 234 (code)
 msgid "$table->multiLineString('positions');\n"
-msgstr ""
+msgstr "$table->multiLineString('positions');\n"
 
 #: docs/8.x/migrations.md:block 236 (header)
 msgid "`multiPoint()` {.collection-method}"
-msgstr ""
+msgstr "`multiPoint()` {.collection-method}"
 
 #: docs/8.x/migrations.md:block 237 (paragraph)
 msgid "The `multiPoint` method creates a `MULTIPOINT` equivalent column:"
-msgstr ""
+msgstr "`multiPoint` 方法建立一個 `MULTIPOINT` 或相等的欄位："
 
 #: docs/8.x/migrations.md:block 238 (code)
 msgid "$table->multiPoint('positions');\n"
-msgstr ""
+msgstr "$table->multiPoint('positions');\n"
 
 #: docs/8.x/migrations.md:block 240 (header)
 msgid "`multiPolygon()` {.collection-method}"
-msgstr ""
+msgstr "`multiPolygon()` {.collection-method}"
 
 #: docs/8.x/migrations.md:block 241 (paragraph)
 msgid "The `multiPolygon` method creates a `MULTIPOLYGON` equivalent column:"
-msgstr ""
+msgstr "`multiPolygon` 方法建立一個 `MULTIPOLYGON` 或相等的欄位："
 
 #: docs/8.x/migrations.md:block 242 (code)
 msgid "$table->multiPolygon('positions');\n"
-msgstr ""
+msgstr "$table->multiPolygon('positions');\n"
 
 #: docs/8.x/migrations.md:block 244 (header)
 msgid "`nullableTimestamps()` {.collection-method}"
-msgstr ""
+msgstr "`nullableTimestamps()` {.collection-method}"
 
 #: docs/8.x/migrations.md:block 245 (paragraph)
 msgid "The `nullableTimestamps` method is an alias of the [timestamps](#column-method-timestamps) method:"
-msgstr ""
+msgstr "`nullabaleTimestamps` 方法是 [timestamps](#column-method-timestamps) 方法的別名："
 
 #: docs/8.x/migrations.md:block 246 (code)
 msgid "$table->nullableTimestamps(0);\n"
-msgstr ""
+msgstr "$table->nullableTimestamps(0);\n"
 
 #: docs/8.x/migrations.md:block 248 (header)
 msgid "`nullableMorphs()` {.collection-method}"
-msgstr ""
+msgstr "`nullableMorphs()` {.collection-method}"
 
 #: docs/8.x/migrations.md:block 249 (paragraph)
 msgid "The method is similar to the [morphs](#column-method-morphs) method; however, the columns that are created will be \"nullable\":"
-msgstr ""
+msgstr "該方法與 [morphs](#column-method-morphs) 方法類似。不過，使用 `nullableMorphs` 方法建立的欄位會是「nullable」的："
 
 #: docs/8.x/migrations.md:block 250 (code)
 msgid "$table->nullableMorphs('taggable');\n"
-msgstr ""
+msgstr "$table->nullableMorphs('taggable');\n"
 
 #: docs/8.x/migrations.md:block 252 (header)
 msgid "`nullableUuidMorphs()` {.collection-method}"
-msgstr ""
+msgstr "`nullableUuidMorphs()` {.collection-method}"
 
 #: docs/8.x/migrations.md:block 253 (paragraph)
 msgid "The method is similar to the [uuidMorphs](#column-method-uuidMorphs) method; however, the columns that are created will be \"nullable\":"
-msgstr ""
+msgstr "該方法與 [uuidMorphs](#column-method-uuidMorphs) 方法類似。不過，使用 `nullableMorphs` 方法建立的欄位會是「nullable」的："
 
 #: docs/8.x/migrations.md:block 254 (code)
 msgid "$table->nullableUuidMorphs('taggable');\n"
-msgstr ""
+msgstr "$table->nullableUuidMorphs('taggable');\n"
 
 #: docs/8.x/migrations.md:block 256 (header)
 msgid "`point()` {.collection-method}"
-msgstr ""
+msgstr "`point()` {.collection-method}"
 
 #: docs/8.x/migrations.md:block 257 (paragraph)
 msgid "The `point` method creates a `POINT` equivalent column:"
-msgstr ""
+msgstr "`point` 方法會建立一個 `POINT` 或相等欄位："
 
 #: docs/8.x/migrations.md:block 258 (code)
 msgid "$table->point('position');\n"
-msgstr ""
+msgstr "$table->point('position');\n"
 
 #: docs/8.x/migrations.md:block 260 (header)
 msgid "`polygon()` {.collection-method}"
-msgstr ""
+msgstr "`polygon()` {.collection-method}"
 
 #: docs/8.x/migrations.md:block 261 (paragraph)
 msgid "The `polygon` method creates a `POLYGON` equivalent column:"
-msgstr ""
+msgstr "`polygon` 方法建立一個 `POLYGON` 或相等的欄位："
 
 #: docs/8.x/migrations.md:block 262 (code)
 msgid "$table->polygon('position');\n"
-msgstr ""
+msgstr "$table->polygon('position');\n"
 
 #: docs/8.x/migrations.md:block 264 (header)
 msgid "`rememberToken()` {.collection-method}"
-msgstr ""
+msgstr "`rememberToken()` {.collection-method}"
 
 #: docs/8.x/migrations.md:block 265 (paragraph)
 msgid "The `rememberToken` method creates a nullable, `VARCHAR(100)` equivalent column that is intended to store the current \"remember me\" [authentication token](/docs/{{version}}/authentication#remembering-users):"
-msgstr ""
+msgstr "`rememberToken` 方法會建立一個 Nullable 的 `VARCHAR(100)` 或相等的欄位，用於存放目前的「記住我」[身份驗證權杖](/docs/{{version}}/authentication#remembering-users)："
 
 #: docs/8.x/migrations.md:block 266 (code)
 msgid "$table->rememberToken();\n"
-msgstr ""
+msgstr "$table->rememberToken();\n"
 
 #: docs/8.x/migrations.md:block 268 (header)
 msgid "`set()` {.collection-method}"
-msgstr ""
+msgstr "`set()` {.collection-method}"
 
 #: docs/8.x/migrations.md:block 269 (paragraph)
 msgid "The `set` method creates a `SET` equivalent column with the given list of valid values:"
-msgstr ""
+msgstr "`set` 方法會以給定的有效值來建立一個 `SET` 或相等欄位："
 
 #: docs/8.x/migrations.md:block 270 (code)
 msgid "$table->set('flavors', ['strawberry', 'vanilla']);\n"
-msgstr ""
+msgstr "$table->set('flavors', ['strawberry', 'vanilla']);\n"
 
 #: docs/8.x/migrations.md:block 272 (header)
 msgid "`smallIncrements()` {.collection-method}"
-msgstr ""
+msgstr "`smallIncrements()` {.collection-method}"
 
 #: docs/8.x/migrations.md:block 273 (paragraph)
 msgid "The `smallIncrements` method creates an auto-incrementing `UNSIGNED SMALLINT` equivalent column as a primary key:"
-msgstr ""
+msgstr "`smallIncrements` 方法會建立一個 ^[Auto-Increment](自動遞增) 的 `UNSIGNED SMALLINT` 或同等欄位作為^[主索引鍵](Primary Key)："
 
 #: docs/8.x/migrations.md:block 274 (code)
 msgid "$table->smallIncrements('id');\n"
-msgstr ""
+msgstr "$table->smallIncrements('id');\n"
 
 #: docs/8.x/migrations.md:block 276 (header)
 msgid "`smallInteger()` {.collection-method}"
-msgstr ""
+msgstr "`smallInteger()` {.collection-method}"
 
 #: docs/8.x/migrations.md:block 277 (paragraph)
 msgid "The `smallInteger` method creates a `SMALLINT` equivalent column:"
-msgstr ""
+msgstr "`smallInteger` 方法建立一個 `SMALLINT` 或相等的欄位："
 
 #: docs/8.x/migrations.md:block 278 (code)
 msgid "$table->smallInteger('votes');\n"
-msgstr ""
+msgstr "$table->smallInteger('votes');\n"
 
 #: docs/8.x/migrations.md:block 280 (header)
 msgid "`softDeletesTz()` {.collection-method}"
-msgstr ""
+msgstr "`softDeletesTz()` {.collection-method}"
 
 #: docs/8.x/migrations.md:block 281 (paragraph)
 msgid "The `softDeletesTz` method adds a nullable `deleted_at` `TIMESTAMP` (with timezone) equivalent column with an optional precision (total digits). This column is intended to store the `deleted_at` timestamp needed for Eloquent's \"soft delete\" functionality:"

@@ -10,7 +10,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
-"PO-Revision-Date: 2022-04-28 08:47\n"
+"PO-Revision-Date: 2022-04-28 09:47\n"
 
 #: docs/8.x/redis.md:block 1 (header)
 msgid "Redis"
@@ -356,15 +356,15 @@ msgstr "目前所支援的序列化演算法有 `Redis::SERIALIZER_NONE` (預設
 
 #: docs/8.x/redis.md:block 46 (paragraph)
 msgid "Supported compression algorithms include: `Redis::COMPRESSION_NONE` (default), `Redis::COMPRESSION_LZF`, `Redis::COMPRESSION_ZSTD`, and `Redis::COMPRESSION_LZ4`."
-msgstr ""
+msgstr "支援的壓縮演算法包含：`Redis::COMPRESSION_NONE` (預設)、`Redis::COMPRESSION_LZF`、`Redis::COMPRESSION_ZSTD`、`Redis::COMPRESSION_LZ4`。"
 
 #: docs/8.x/redis.md:block 48 (header)
 msgid "Interacting With Redis"
-msgstr ""
+msgstr "使用 Redis"
 
 #: docs/8.x/redis.md:block 49 (paragraph)
 msgid "You may interact with Redis by calling various methods on the `Redis` [facade](/docs/{{version}}/facades). The `Redis` facade supports dynamic methods, meaning you may call any [Redis command](https://redis.io/commands) on the facade and the command will be passed directly to Redis. In this example, we will call the Redis `GET` command by calling the `get` method on the `Redis` facade:"
-msgstr ""
+msgstr "我們可以呼叫 `Redis` [Facade](/docs/{{version}}/facades) 上的各種方法來使用 Redis。`Redis` Facade 支援動態方法，著表示，我們可以在該 Facade 上呼叫任何的 [Redis 指令](https://redis.io/commands)，而該指令會被直接傳到 Redis 上。在這個範例中，我們會在 `Redis` Facade 上呼叫 `get` 方法，以呼叫 Redis 的 `GET` 指令："
 
 #: docs/8.x/redis.md:block 50 (code)
 msgid "<?php\n\n"
@@ -386,53 +386,73 @@ msgid "<?php\n\n"
 "        ]);\n"
 "    }\n"
 "}\n"
-msgstr ""
+msgstr "<?php\n\n"
+"namespace App\\Http\\Controllers;\n\n"
+"use App\\Http\\Controllers\\Controller;\n"
+"use Illuminate\\Support\\Facades\\Redis;\n\n"
+"class UserController extends Controller\n"
+"{\n"
+"    /**\n"
+"     * Show the profile for the given user.\n"
+"     *\n"
+"     * @param  int  $id\n"
+"     * @return \\Illuminate\\Http\\Response\n"
+"     */\n"
+"    public function show($id)\n"
+"    {\n"
+"        return view('user.profile', [\n"
+"            'user' => Redis::get('user:profile:'.$id)\n"
+"        ]);\n"
+"    }\n"
+"}\n"
 
 #: docs/8.x/redis.md:block 51 (paragraph)
 msgid "As mentioned above, you may call any of Redis' commands on the `Redis` facade. Laravel uses magic methods to pass the commands to the Redis server. If a Redis command expects arguments, you should pass those to the facade's corresponding method:"
-msgstr ""
+msgstr "剛才也提到過，我們可以在 `Redis` Facade 上呼叫任何的 Redis 指令。Laravel 會使用 Magic Method 來將這些指令傳給 Redis 伺服器。若是有要求引數的 Redis 指令，則我們可以將引數傳給 Facade 上對應的方法："
 
 #: docs/8.x/redis.md:block 52 (code)
 msgid "use Illuminate\\Support\\Facades\\Redis;\n\n"
 "Redis::set('name', 'Taylor');\n\n"
 "$values = Redis::lrange('names', 5, 10);\n"
-msgstr ""
+msgstr "use Illuminate\\Support\\Facades\\Redis;\n\n"
+"Redis::set('name', 'Taylor');\n\n"
+"$values = Redis::lrange('names', 5, 10);\n"
 
 #: docs/8.x/redis.md:block 53 (paragraph)
 msgid "Alternatively, you may pass commands to the server using the `Redis` facade's `command` method, which accepts the name of the command as its first argument and an array of values as its second argument:"
-msgstr ""
+msgstr "或者，我們也可以使用 `Redis` Facade 的 `command` 方法來將指令傳給 Redis 伺服器。`command` 方法的第一個引數是指令名稱，而第二個引數則是一個陣列："
 
 #: docs/8.x/redis.md:block 54 (code)
 msgid "$values = Redis::command('lrange', ['name', 5, 10]);\n"
-msgstr ""
+msgstr "$values = Redis::command('lrange', ['name', 5, 10]);\n"
 
 #: docs/8.x/redis.md:block 56 (header)
 msgid "Using Multiple Redis Connections"
-msgstr ""
+msgstr "使用多個 Redis 連線"
 
 #: docs/8.x/redis.md:block 57 (paragraph)
 msgid "Your application's `config/database.php` configuration file allows you to define multiple Redis connections / servers. You may obtain a connection to a specific Redis connection using the `Redis` facade's `connection` method:"
-msgstr ""
+msgstr "在專案的 `config/database.php` 設定檔中，我們可以定義多個 Redis 連線／伺服器。我們可以使用 `Redis` Facade 上的 `connection` 方法來取得一個特定的 Redis 連線："
 
 #: docs/8.x/redis.md:block 58 (code)
 msgid "$redis = Redis::connection('connection-name');\n"
-msgstr ""
+msgstr "$redis = Redis::connection('connection-name');\n"
 
 #: docs/8.x/redis.md:block 59 (paragraph)
 msgid "To obtain an instance of the default Redis connection, you may call the `connection` method without any additional arguments:"
-msgstr ""
+msgstr "若要取得預設的 Redis 連線，可直接呼叫 `connection` 方法而不帶任何引數："
 
 #: docs/8.x/redis.md:block 60 (code)
 msgid "$redis = Redis::connection();\n"
-msgstr ""
+msgstr "$redis = Redis::connection();\n"
 
 #: docs/8.x/redis.md:block 62 (header)
 msgid "Transactions"
-msgstr ""
+msgstr "Transaction"
 
 #: docs/8.x/redis.md:block 63 (paragraph)
 msgid "The `Redis` facade's `transaction` method provides a convenient wrapper around Redis' native `MULTI` and `EXEC` commands. The `transaction` method accepts a closure as its only argument. This closure will receive a Redis connection instance and may issue any commands it would like to this instance. All of the Redis commands issued within the closure will be executed in a single, atomic transaction:"
-msgstr ""
+msgstr "`Redis` Facade 的 `transaction` 方法提供了一個 Redis 原生 `MULTI` 與 `EXEC` 指令的方便包裝。`transaction` 方法只有一個引數，該引數為一個閉包。傳入的閉包會收到一個 Redis 連線實體，並可在該實體上下任何指令。在該閉包中所下的所有指令，都會被放在單一、不可部分完成 (Atomic) 的 Transaction 內執行："
 
 #: docs/8.x/redis.md:block 64 (code)
 msgid "use Illuminate\\Support\\Facades\\Redis;\n\n"
@@ -440,27 +460,31 @@ msgid "use Illuminate\\Support\\Facades\\Redis;\n\n"
 "    $redis->incr('user_visits', 1);\n"
 "    $redis->incr('total_visits', 1);\n"
 "});\n"
-msgstr ""
+msgstr "use Illuminate\\Support\\Facades\\Redis;\n\n"
+"Redis::transaction(function ($redis) {\n"
+"    $redis->incr('user_visits', 1);\n"
+"    $redis->incr('total_visits', 1);\n"
+"});\n"
 
 #: docs/8.x/redis.md:block 65 (quote)
 msgid "{note} When defining a Redis transaction, you may not retrieve any values from the Redis connection. Remember, your transaction is executed as a single, atomic operation and that operation is not executed until your entire closure has finished executing its commands."
-msgstr ""
+msgstr "{note} 定義 Redis Transaction 時，無法從 Redis 連線中取值。請記得，Transaction 是以單一、不可部分完成的動作來執行的，因此這些動作會在整個閉包內的指令都執行完畢後才被執行。"
 
 #: docs/8.x/redis.md:block 66 (header)
 msgid "Lua Scripts"
-msgstr ""
+msgstr "Lua Script"
 
 #: docs/8.x/redis.md:block 67 (paragraph)
 msgid "The `eval` method provides another method of executing multiple Redis commands in a single, atomic operation. However, the `eval` method has the benefit of being able to interact with and inspect Redis key values during that operation. Redis scripts are written in the [Lua programming language](https://www.lua.org)."
-msgstr ""
+msgstr "`eval` 方法提供了另一種以單一、不可部分完成動作執行多個 Redis 指令的方法。不過，使用 `eval` 方法還有個好處，就是能在動作的期間處理與偵測 Redis 的索引鍵值。Redis Script 使用 [Lua 程式語言](https://www.lua.org)撰寫。"
 
 #: docs/8.x/redis.md:block 68 (paragraph)
 msgid "The `eval` method can be a bit scary at first, but we'll explore a basic example to break the ice. The `eval` method expects several arguments. First, you should pass the Lua script (as a string) to the method. Secondly, you should pass the number of keys (as an integer) that the script interacts with. Thirdly, you should pass the names of those keys. Finally, you may pass any other additional arguments that you need to access within your script."
-msgstr ""
+msgstr "雖然，一開始，`eval` 方法可能有點可怕。不過我們會先來看看一個簡單的例子。`eval` 方法接受多個引數。首先，我們需要先 (以字串形式) 傳入 Lua Script 給該方法。然後。我們需要將該 Script 要處理的索引鍵數量 (以整數形式) 傳入。再來，我們需要傳入這些索引鍵的名稱。最後，我們可以傳入在該 Script 中需要存取的其他引數。"
 
 #: docs/8.x/redis.md:block 69 (paragraph)
 msgid "In this example, we will increment a counter, inspect its new value, and increment a second counter if the first counter's value is greater than five. Finally, we will return the value of the first counter:"
-msgstr ""
+msgstr "在這個範例中，我們會遞增一個計數器，並取得該計數器的值，判斷該值是否大於 5。如果大於 5，就再遞增另一個計數器。最後，回傳第一個計數器的值："
 
 #: docs/8.x/redis.md:block 70 (code)
 msgid "$value = Redis::eval(<<<'LUA'\n"
@@ -470,15 +494,21 @@ msgid "$value = Redis::eval(<<<'LUA'\n"
 "    end\n\n"
 "    return counter\n"
 "LUA, 2, 'first-counter', 'second-counter');\n"
-msgstr ""
+msgstr "$value = Redis::eval(<<<'LUA'\n"
+"    local counter = redis.call(\"incr\", KEYS[1])\n\n"
+"    if counter > 5 then\n"
+"        redis.call(\"incr\", KEYS[2])\n"
+"    end\n\n"
+"    return counter\n"
+"LUA, 2, 'first-counter', 'second-counter');\n"
 
 #: docs/8.x/redis.md:block 71 (quote)
 msgid "{note} Please consult the [Redis documentation](https://redis.io/commands/eval) for more information on Redis scripting."
-msgstr ""
+msgstr "{note} 有關更多在 Redis 上撰寫 Script 的資訊，請參考 [Redis 的說明文件](https://redis.io/commands/eval)。"
 
 #: docs/8.x/redis.md:block 73 (header)
 msgid "Pipelining Commands"
-msgstr ""
+msgstr "指令管道"
 
 #: docs/8.x/redis.md:block 74 (paragraph)
 msgid "Sometimes you may need to execute dozens of Redis commands. Instead of making a network trip to your Redis server for each command, you may use the `pipeline` method. The `pipeline` method accepts one argument: a closure that receives a Redis instance. You may issue all of your commands to this Redis instance and they will all be sent to the Redis server at the same time to reduce network trips to the server. The commands will still be executed in the order they were issued:"

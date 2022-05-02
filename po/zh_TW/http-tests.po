@@ -10,7 +10,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
-"PO-Revision-Date: 2022-05-02 16:00\n"
+"PO-Revision-Date: 2022-05-02 16:57\n"
 
 #: docs/8.x/http-tests.md:block 1 (header)
 msgid "HTTP Tests"
@@ -404,19 +404,19 @@ msgstr "$response = $this->withoutExceptionHandling()->get('/');\n"
 
 #: docs/8.x/http-tests.md:block 41 (paragraph)
 msgid "In addition, if you would like to ensure that your application is not utilizing features that have been deprecated by the PHP language or the libraries your application is using, you may invoke the `withoutDeprecationHandling` method before making your request. When deprecation handling is disabled, deprecation warnings will be converted to exceptions, thus causing your test to fail:"
-msgstr ""
+msgstr "此外，若想確保專案中未使用到 PHP 或其他專案使用套件中宣告 ^[Deprecated](已過時) 的功能，我們可以在建立 Request 前叫用 `withoutDeprecationHandling` 方法。停用 Deprecation Handling 後，Deprecation ^[Warning](警告) 會被轉換為 Exception，並導致測試執行失敗："
 
 #: docs/8.x/http-tests.md:block 42 (code)
 msgid "$response = $this->withoutDeprecationHandling()->get('/');\n"
-msgstr ""
+msgstr "$response = $this->withoutDeprecationHandling()->get('/');\n"
 
 #: docs/8.x/http-tests.md:block 44 (header)
 msgid "Testing JSON APIs"
-msgstr ""
+msgstr "測試 JSON API"
 
 #: docs/8.x/http-tests.md:block 45 (paragraph)
 msgid "Laravel also provides several helpers for testing JSON APIs and their responses. For example, the `json`, `getJson`, `postJson`, `putJson`, `patchJson`, `deleteJson`, and `optionsJson` methods may be used to issue JSON requests with various HTTP verbs. You may also easily pass data and headers to these methods. To get started, let's write a test to make a `POST` request to `/api/user` and assert that the expected JSON data was returned:"
-msgstr ""
+msgstr "Laravel 中也提供了數種可用來測試 JSON API 與起 Response 的輔助函式。舉例來說，`json`、`getJson`、`postJson`、`putJson`、`patchJson`、`deleteJson`、`optionsJson` 等方法可用來以各種 HTTP ^[Verb](指令動詞) 來建立 JSON Request。我們也可以輕鬆地將資料與 Header 傳給這些方法。若要開始測試 JSON API，我們先來撰寫一個建立連到  `/api/user` 的 `POST` Request，並撰寫預期回傳 JSON 資料的 Assertion："
 
 #: docs/8.x/http-tests.md:block 46 (code)
 msgid "<?php\n\n"
@@ -439,15 +439,34 @@ msgid "<?php\n\n"
 "            ]);\n"
 "    }\n"
 "}\n"
-msgstr ""
+msgstr "<?php\n\n"
+"namespace Tests\\Feature;\n\n"
+"use Tests\\TestCase;\n\n"
+"class ExampleTest extends TestCase\n"
+"{\n"
+"    /**\n"
+"     * A basic functional test example.\n"
+"     *\n"
+"     * @return void\n"
+"     */\n"
+"    public function test_making_an_api_request()\n"
+"    {\n"
+"        $response = $this->postJson('/api/user', ['name' => 'Sally']);\n\n"
+"        $response\n"
+"            ->assertStatus(201)\n"
+"            ->assertJson([\n"
+"                'created' => true,\n"
+"            ]);\n"
+"    }\n"
+"}\n"
 
 #: docs/8.x/http-tests.md:block 47 (paragraph)
 msgid "In addition, JSON response data may be accessed as array variables on the response, making it convenient for you to inspect the individual values returned within a JSON response:"
-msgstr ""
+msgstr "此外，在 Response 上，我們可以用陣列變數的形式來存取 JSON Response 的資料。這麼一來我們就能方便地檢查 JSON Response 中回傳的各個值："
 
 #: docs/8.x/http-tests.md:block 48 (code)
 msgid "$this->assertTrue($response['created']);\n"
-msgstr ""
+msgstr "$this->assertTrue($response['created']);\n"
 
 #: docs/8.x/http-tests.md:block 49 (quote)
 msgid "{tip} The `assertJson` method converts the response to an array and utilizes `PHPUnit::assertArraySubset` to verify that the given array exists within the JSON response returned by the application. So, if there are other properties in the JSON response, this test will still pass as long as the given fragment is present."

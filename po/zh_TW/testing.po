@@ -10,7 +10,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
-"PO-Revision-Date: 2022-05-02 14:51\n"
+"PO-Revision-Date: 2022-05-02 16:00\n"
 
 #: docs/8.x/testing.md:block 1 (header)
 msgid "Testing: Getting Started"
@@ -236,7 +236,7 @@ msgstr "有時候，我們會需要為一些專案所使用的特定資源做準
 
 #: docs/8.x/testing.md:block 54 (paragraph)
 msgid "Using the `ParallelTesting` facade, you may specify code to be executed on the `setUp` and `tearDown` of a process or test case. The given closures receive the `$token` and `$testCase` variables that contain the process token and the current test case, respectively:"
-msgstr ""
+msgstr "只要使用 `ParallelTesting` Facade，就可指定要在處理程序或測試例的 `setUp` 或 `tearDown` 內要執行的特定程式碼。給定的閉包會收到 `$token` 與 `$testCase` 變數，著兩個變數中分別包含了處理程序的 Token，以及目前的測試例："
 
 #: docs/8.x/testing.md:block 55 (code)
 msgid "<?php\n\n"
@@ -271,53 +271,84 @@ msgid "<?php\n\n"
 "        });\n"
 "    }\n"
 "}\n"
-msgstr ""
+msgstr "<?php\n\n"
+"namespace App\\Providers;\n\n"
+"use Illuminate\\Support\\Facades\\Artisan;\n"
+"use Illuminate\\Support\\Facades\\ParallelTesting;\n"
+"use Illuminate\\Support\\ServiceProvider;\n\n"
+"class AppServiceProvider extends ServiceProvider\n"
+"{\n"
+"    /**\n"
+"     * Bootstrap any application services.\n"
+"     *\n"
+"     * @return void\n"
+"     */\n"
+"    public function boot()\n"
+"    {\n"
+"        ParallelTesting::setUpProcess(function ($token) {\n"
+"            // ...\n"
+"        });\n\n"
+"        ParallelTesting::setUpTestCase(function ($token, $testCase) {\n"
+"            // ...\n"
+"        });\n\n"
+"        // Executed when a test database is created...\n"
+"        ParallelTesting::setUpTestDatabase(function ($database, $token) {\n"
+"            Artisan::call('db:seed');\n"
+"        });\n\n"
+"        ParallelTesting::tearDownTestCase(function ($token, $testCase) {\n"
+"            // ...\n"
+"        });\n\n"
+"        ParallelTesting::tearDownProcess(function ($token) {\n"
+"            // ...\n"
+"        });\n"
+"    }\n"
+"}\n"
 
 #: docs/8.x/testing.md:block 57 (header)
 msgid "Accessing The Parallel Testing Token"
-msgstr ""
+msgstr "存取平行測試的 Token"
 
 #: docs/8.x/testing.md:block 58 (paragraph)
 msgid "If you would like to access to current parallel process \"token\" from any other location in your application's test code, you may use the `token` method. This token is a unique, string identifier for an individual test process and may be used to segment resources across parallel test processes. For example, Laravel automatically appends this token to the end of the test databases created by each parallel testing process:"
-msgstr ""
+msgstr "若想從測試程式碼中的任何地方存取目前平行處理程序的「Token」，我們可以使用 `token` 方法。對於各個測試處理程序來說，平行處理程序的「Token」是一個不重複的字串，可用來在多個平行測試處理程序上為資源分段。舉例來說，Laravel 會自動將該 Token 放在各個由平行測試處理程序所建立的測試資料庫名稱後方："
 
 #: docs/8.x/testing.md:block 59 (code)
 msgid "$token = ParallelTesting::token();\n"
-msgstr ""
+msgstr "$token = ParallelTesting::token();\n"
 
 #: docs/9.x/testing.md:block 2 (unordered list)
 msgid "[Reporting Test Coverage](#reporting-test-coverage)"
-msgstr ""
+msgstr "[回報測試覆蓋率](#reporting-test-coverage)"
 
 #: docs/9.x/testing.md:block 58 (paragraph)
 msgid "If you would like to access the current parallel process \"token\" from any other location in your application's test code, you may use the `token` method. This token is a unique, string identifier for an individual test process and may be used to segment resources across parallel test processes. For example, Laravel automatically appends this token to the end of the test databases created by each parallel testing process:"
-msgstr ""
+msgstr "若想從測試程式碼中的任何地方存取目前平行處理程序的「Token」，我們可以使用 `token` 方法。對於各個測試處理程序來說，平行處理程序的「Token」是一個不重複的字串，可用來在多個平行測試處理程序上為資源分段。舉例來說，Laravel 會自動將該 Token 放在各個由平行測試處理程序所建立的測試資料庫名稱後方："
 
 #: docs/9.x/testing.md:block 61 (header)
 msgid "Reporting Test Coverage"
-msgstr ""
+msgstr "回報測試覆蓋率"
 
 #: docs/9.x/testing.md:block 62 (quote)
 msgid "{note} This feature requires [Xdebug](https://xdebug.org) or [PCOV](https://pecl.php.net/package/pcov)."
-msgstr ""
+msgstr "{note} 要使用該功能，需安裝 [Xdebug](https://xdebug.org) 或 [PCOV](https://pecl.php.net/package/pcov)。"
 
 #: docs/9.x/testing.md:block 63 (paragraph)
 msgid "When running your application tests, you may want to determine whether your test cases are actually covering the application code and how much application code is used when running your tests. To accomplish this, you may provide the `--coverage` option when invoking the `test` command:"
-msgstr ""
+msgstr "在執行專案測試時，我們可能會想判斷測試例是否有實際涵蓋到專案的程式碼、或是想知道在執行測試時到底使用到專案中多少的程式碼。若要瞭解測試覆蓋率，可在叫用 `test` 指令時提供 `--coverage` 選項："
 
 #: docs/9.x/testing.md:block 64 (code)
 msgid "php artisan test --coverage\n"
-msgstr ""
+msgstr "php artisan test --coverage\n"
 
 #: docs/9.x/testing.md:block 66 (header)
 msgid "Enforcing A Minimum Coverage Threshold"
-msgstr ""
+msgstr "強制最低覆蓋率門檻"
 
 #: docs/9.x/testing.md:block 67 (paragraph)
 msgid "You may use the `--min` option to define a minimum test coverage threshold for your application. The test suite will fail if this threshold is not met:"
-msgstr ""
+msgstr "可使用 `--min` 選項來為專案定義最低測試覆蓋率門檻。若未符合該門檻，測試套件會執行失敗："
 
 #: docs/9.x/testing.md:block 68 (code)
 msgid "php artisan test --coverage --min=80.3\n"
-msgstr ""
+msgstr "php artisan test --coverage --min=80.3\n"
 

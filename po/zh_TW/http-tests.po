@@ -10,7 +10,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
-"PO-Revision-Date: 2022-05-02 16:57\n"
+"PO-Revision-Date: 2022-05-03 06:34\n"
 
 #: docs/8.x/http-tests.md:block 1 (header)
 msgid "HTTP Tests"
@@ -470,15 +470,15 @@ msgstr "$this->assertTrue($response['created']);\n"
 
 #: docs/8.x/http-tests.md:block 49 (quote)
 msgid "{tip} The `assertJson` method converts the response to an array and utilizes `PHPUnit::assertArraySubset` to verify that the given array exists within the JSON response returned by the application. So, if there are other properties in the JSON response, this test will still pass as long as the given fragment is present."
-msgstr ""
+msgstr "{tip} `assertJson` 方法會將 Response 轉換為陣列，並使用 `PHPUnit::assertArraySubset` 來驗證給定陣列是否有包含在專案回傳的 JSON Response 中。所以，如果在 JSON Response 中有包含其他屬性，只要給定的部分有包含在 JSON 裡，測試就會通過。"
 
 #: docs/8.x/http-tests.md:block 51 (header)
 msgid "Asserting Exact JSON Matches"
-msgstr ""
+msgstr "判斷 JSON 是否完全符合"
 
 #: docs/8.x/http-tests.md:block 52 (paragraph)
 msgid "As previously mentioned, the `assertJson` method may be used to assert that a fragment of JSON exists within the JSON response. If you would like to verify that a given array **exactly matches** the JSON returned by your application, you should use the `assertExactJson` method:"
-msgstr ""
+msgstr "剛才也提到過，`assertJson` 方法可用來判斷給定的部分 JSON 是否有包含在 JSON Response 中。若想檢查給定的陣列是否與專案回傳的 JSON **完全符合**，請使用 `assertExactJson` 方法："
 
 #: docs/8.x/http-tests.md:block 53 (code)
 msgid "<?php\n\n"
@@ -501,11 +501,30 @@ msgid "<?php\n\n"
 "            ]);\n"
 "    }\n"
 "}\n"
-msgstr ""
+msgstr "<?php\n\n"
+"namespace Tests\\Feature;\n\n"
+"use Tests\\TestCase;\n\n"
+"class ExampleTest extends TestCase\n"
+"{\n"
+"    /**\n"
+"     * A basic functional test example.\n"
+"     *\n"
+"     * @return void\n"
+"     */\n"
+"    public function test_asserting_an_exact_json_match()\n"
+"    {\n"
+"        $response = $this->postJson('/user', ['name' => 'Sally']);\n\n"
+"        $response\n"
+"            ->assertStatus(201)\n"
+"            ->assertExactJson([\n"
+"                'created' => true,\n"
+"            ]);\n"
+"    }\n"
+"}\n"
 
 #: docs/8.x/http-tests.md:block 55 (header)
 msgid "Asserting On JSON Paths"
-msgstr ""
+msgstr "判斷 JSON 路徑"
 
 #: docs/8.x/http-tests.md:block 56 (paragraph)
 msgid "If you would like to verify that the JSON response contains the given data at a specified path, you should use the `assertJsonPath` method:"

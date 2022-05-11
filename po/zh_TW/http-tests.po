@@ -10,7 +10,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
-"PO-Revision-Date: 2022-05-10 04:16\n"
+"PO-Revision-Date: 2022-05-11 08:26\n"
 
 #: docs/8.x/http-tests.md:block 1 (header)
 msgid "HTTP Tests"
@@ -676,17 +676,19 @@ msgstr "判斷 JSON Collection"
 
 #: docs/8.x/http-tests.md:block 75 (paragraph)
 msgid "Often, your route will return a JSON response that contains multiple items, such as multiple users:"
-msgstr ""
+msgstr "通常來說，在 Route 中回傳的 Json Response 會包含多個項目，如多位使用者："
 
 #: docs/8.x/http-tests.md:block 76 (code)
 msgid "Route::get('/users', function () {\n"
 "    return User::all();\n"
 "});\n"
-msgstr ""
+msgstr "Route::get('/users', function () {\n"
+"    return User::all();\n"
+"});\n"
 
 #: docs/8.x/http-tests.md:block 77 (paragraph)
 msgid "In these situations, we may use the fluent JSON object's `has` method to make assertions against the users included in the response. For example, let's assert that the JSON response contains three users. Next, we'll make some assertions about the first user in the collection using the `first` method. The `first` method accepts a closure which receives another assertable JSON string that we can use to make assertions about the first object in the JSON collection:"
-msgstr ""
+msgstr "在這些情況下，我們可以使用 Fluent JSON 物件的 `has` 方法來針對該 Response 中的使用者進行 Assertion。舉例來說，我們來判斷 JSON Response 中是否有包含三位使用者。接著，我們再使用 `first` 方法來對該 Collection 中的使用者做 Assertion。`first` 方法接受一個閉包，該閉包會收到另一個可 Assert 的 JSON 字串，我們可以使用這個 JSON 字串來針對該 JSON Collection 中的第一個物件進行 Assertion："
 
 #: docs/8.x/http-tests.md:block 78 (code)
 msgid "$response\n"
@@ -699,7 +701,16 @@ msgid "$response\n"
 "                     ->etc()\n"
 "             )\n"
 "    );\n"
-msgstr ""
+msgstr "$response\n"
+"    ->assertJson(fn (AssertableJson $json) =>\n"
+"        $json->has(3)\n"
+"             ->first(fn ($json) =>\n"
+"                $json->where('id', 1)\n"
+"                     ->where('name', 'Victoria Faith')\n"
+"                     ->missing('password')\n"
+"                     ->etc()\n"
+"             )\n"
+"    );\n"
 
 #: docs/8.x/http-tests.md:block 80 (header)
 msgid "Scoping JSON Collection Assertions"

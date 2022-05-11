@@ -10,7 +10,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
-"PO-Revision-Date: 2022-05-11 08:26\n"
+"PO-Revision-Date: 2022-05-11 09:22\n"
 
 #: docs/8.x/http-tests.md:block 1 (header)
 msgid "HTTP Tests"
@@ -714,11 +714,11 @@ msgstr "$response\n"
 
 #: docs/8.x/http-tests.md:block 80 (header)
 msgid "Scoping JSON Collection Assertions"
-msgstr ""
+msgstr "限定範圍的 JSON Collection Assertion"
 
 #: docs/8.x/http-tests.md:block 81 (paragraph)
 msgid "Sometimes, your application's routes will return JSON collections that are assigned named keys:"
-msgstr ""
+msgstr "有時候，Route 可能會回傳被指派為命名索引鍵的 JSON Collection："
 
 #: docs/8.x/http-tests.md:block 82 (code)
 msgid "Route::get('/users', function () {\n"
@@ -727,11 +727,16 @@ msgid "Route::get('/users', function () {\n"
 "        'users' => User::all(),\n"
 "    ];\n"
 "})\n"
-msgstr ""
+msgstr "Route::get('/users', function () {\n"
+"    return [\n"
+"        'meta' => [...],\n"
+"        'users' => User::all(),\n"
+"    ];\n"
+"})\n"
 
 #: docs/8.x/http-tests.md:block 83 (paragraph)
 msgid "When testing these routes, you may use the `has` method to assert against the number of items in the collection. In addition, you may use the `has` method to scope a chain of assertions:"
-msgstr ""
+msgstr "在測試這類 Route 時，可以使用 `has` 方法來判斷該 Collection 中的項目數。此外，也可以使用 `has` 方法來在一連串的 Assertion 間限制判斷的範圍："
 
 #: docs/8.x/http-tests.md:block 84 (code)
 msgid "$response\n"
@@ -745,7 +750,17 @@ msgid "$response\n"
 "                     ->etc()\n"
 "             )\n"
 "    );\n"
-msgstr ""
+msgstr "$response\n"
+"    ->assertJson(fn (AssertableJson $json) =>\n"
+"        $json->has('meta')\n"
+"             ->has('users', 3)\n"
+"             ->has('users.0', fn ($json) =>\n"
+"                $json->where('id', 1)\n"
+"                     ->where('name', 'Victoria Faith')\n"
+"                     ->missing('password')\n"
+"                     ->etc()\n"
+"             )\n"
+"    );\n"
 
 #: docs/8.x/http-tests.md:block 85 (paragraph)
 msgid "However, instead of making two separate calls to the `has` method to assert against the `users` collection, you may make a single call which provides a closure as its third parameter. When doing so, the closure will automatically be invoked and scoped to the first item in the collection:"

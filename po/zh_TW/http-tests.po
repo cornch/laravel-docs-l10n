@@ -10,7 +10,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
-"PO-Revision-Date: 2022-05-11 09:22\n"
+"PO-Revision-Date: 2022-05-24 17:06\n"
 
 #: docs/8.x/http-tests.md:block 1 (header)
 msgid "HTTP Tests"
@@ -764,7 +764,7 @@ msgstr "$response\n"
 
 #: docs/8.x/http-tests.md:block 85 (paragraph)
 msgid "However, instead of making two separate calls to the `has` method to assert against the `users` collection, you may make a single call which provides a closure as its third parameter. When doing so, the closure will automatically be invoked and scoped to the first item in the collection:"
-msgstr ""
+msgstr "不過，除了一次對 `users` Collection 呼叫兩次 `has` 方法以外，我們也可以只呼叫一次，並提供一個閉包作為該方法的第三個引數。傳入閉包時，Laravel 會自動叫用該閉包，並將作用範圍限定在該 Collection 的第一個項目："
 
 #: docs/8.x/http-tests.md:block 86 (code)
 msgid "$response\n"
@@ -777,15 +777,24 @@ msgid "$response\n"
 "                     ->etc()\n"
 "             )\n"
 "    );\n"
-msgstr ""
+msgstr "$response\n"
+"    ->assertJson(fn (AssertableJson $json) =>\n"
+"        $json->has('meta')\n"
+"             ->has('users', 3, fn ($json) =>\n"
+"                $json->where('id', 1)\n"
+"                     ->where('name', 'Victoria Faith')\n"
+"                     ->missing('password')\n"
+"                     ->etc()\n"
+"             )\n"
+"    );\n"
 
 #: docs/8.x/http-tests.md:block 88 (header)
 msgid "Asserting JSON Types"
-msgstr ""
+msgstr "判斷 JSON 型別"
 
 #: docs/8.x/http-tests.md:block 89 (paragraph)
 msgid "You may only want to assert that the properties in the JSON response are of a certain type. The `Illuminate\\Testing\\Fluent\\AssertableJson` class provides the `whereType` and `whereAllType` methods for doing just that:"
-msgstr ""
+msgstr "我們可能會想檢查 JSON Response 中的某些屬性是否為特定的型別。`Illuminate\\Testing\\Fluent\\AssertableJson` 類別中，提供了 `whereType` 與 `whereAllType` 方法可讓我們檢查 JSON 屬性中的型別："
 
 #: docs/8.x/http-tests.md:block 90 (code)
 msgid "$response->assertJson(fn (AssertableJson $json) =>\n"
@@ -795,26 +804,35 @@ msgid "$response->assertJson(fn (AssertableJson $json) =>\n"
 "            'meta' => 'array'\n"
 "        ])\n"
 ");\n"
-msgstr ""
+msgstr "$response->assertJson(fn (AssertableJson $json) =>\n"
+"    $json->whereType('id', 'integer')\n"
+"         ->whereAllType([\n"
+"            'users.0.name' => 'string',\n"
+"            'meta' => 'array'\n"
+"        ])\n"
+");\n"
 
 #: docs/8.x/http-tests.md:block 91 (paragraph)
 msgid "You may specify multiple types using the `|` character, or passing an array of types as the second parameter to the `whereType` method. The assertion will be successful if the response value is any of the listed types:"
-msgstr ""
+msgstr "我們也可以使用 `|` 字元來指定多個型別，或者，也可以傳入一組型別陣列作為 `whereType` 的第二個引數。若 Response 值符合任意列出的型別，則該 Assertion 會執行成功："
 
 #: docs/8.x/http-tests.md:block 92 (code)
 msgid "$response->assertJson(fn (AssertableJson $json) =>\n"
 "    $json->whereType('name', 'string|null')\n"
 "         ->whereType('id', ['string', 'integer'])\n"
 ");\n"
-msgstr ""
+msgstr "$response->assertJson(fn (AssertableJson $json) =>\n"
+"    $json->whereType('name', 'string|null')\n"
+"         ->whereType('id', ['string', 'integer'])\n"
+");\n"
 
 #: docs/8.x/http-tests.md:block 93 (paragraph)
 msgid "The `whereType` and `whereAllType` methods recognize the following types: `string`, `integer`, `double`, `boolean`, `array`, and `null`."
-msgstr ""
+msgstr "`whereType` 與 `whereAllType` 方法可支援下列型別： `string`、`integer`、`double`、`boolean`、`array`、`null`。"
 
 #: docs/8.x/http-tests.md:block 95 (header)
 msgid "Testing File Uploads"
-msgstr ""
+msgstr "測試檔案上傳"
 
 #: docs/8.x/http-tests.md:block 96 (paragraph)
 msgid "The `Illuminate\\Http\\UploadedFile` class provides a `fake` method which may be used to generate dummy files or images for testing. This, combined with the `Storage` facade's `fake` method, greatly simplifies the testing of file uploads. For example, you may combine these two features to easily test an avatar upload form:"

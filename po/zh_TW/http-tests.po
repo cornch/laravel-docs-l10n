@@ -10,7 +10,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
-"PO-Revision-Date: 2022-05-24 17:06\n"
+"PO-Revision-Date: 2022-05-24 18:12\n"
 
 #: docs/8.x/http-tests.md:block 1 (header)
 msgid "HTTP Tests"
@@ -836,7 +836,7 @@ msgstr "測試檔案上傳"
 
 #: docs/8.x/http-tests.md:block 96 (paragraph)
 msgid "The `Illuminate\\Http\\UploadedFile` class provides a `fake` method which may be used to generate dummy files or images for testing. This, combined with the `Storage` facade's `fake` method, greatly simplifies the testing of file uploads. For example, you may combine these two features to easily test an avatar upload form:"
-msgstr ""
+msgstr "`Illuminate\\Http\\UploadedFile` 類別提供了一個 `fake` 方法，可用來產生用於測試的假檔案或圖片。只要將 `UploadedFile` 的 `fake` 方法與 `Storage` Facade 的 `fake` 方法一起使用，我們就能大幅簡化測試檔案上傳的過程。舉例來說，我們可以將這兩個功能搭配使用，來測試某個上傳使用者大頭照的表單："
 
 #: docs/8.x/http-tests.md:block 97 (code)
 msgid "<?php\n\n"
@@ -858,55 +858,78 @@ msgid "<?php\n\n"
 "        Storage::disk('avatars')->assertExists($file->hashName());\n"
 "    }\n"
 "}\n"
-msgstr ""
+msgstr "<?php\n\n"
+"namespace Tests\\Feature;\n\n"
+"use Illuminate\\Foundation\\Testing\\RefreshDatabase;\n"
+"use Illuminate\\Foundation\\Testing\\WithoutMiddleware;\n"
+"use Illuminate\\Http\\UploadedFile;\n"
+"use Illuminate\\Support\\Facades\\Storage;\n"
+"use Tests\\TestCase;\n\n"
+"class ExampleTest extends TestCase\n"
+"{\n"
+"    public function test_avatars_can_be_uploaded()\n"
+"    {\n"
+"        Storage::fake('avatars');\n\n"
+"        $file = UploadedFile::fake()->image('avatar.jpg');\n\n"
+"        $response = $this->post('/avatar', [\n"
+"            'avatar' => $file,\n"
+"        ]);\n\n"
+"        Storage::disk('avatars')->assertExists($file->hashName());\n"
+"    }\n"
+"}\n"
 
 #: docs/8.x/http-tests.md:block 98 (paragraph)
 msgid "If you would like to assert that a given file does not exist, you may use the `assertMissing` method provided by the `Storage` facade:"
-msgstr ""
+msgstr "若想檢查給定的檔案是否不存在，可使用 `Storage` Facade 的 `assertMissing` 方法："
 
 #: docs/8.x/http-tests.md:block 99 (code)
 msgid "Storage::fake('avatars');\n\n"
 "// ...\n\n"
 "Storage::disk('avatars')->assertMissing('missing.jpg');\n"
-msgstr ""
+msgstr "Storage::fake('avatars');\n\n"
+"// ...\n\n"
+"Storage::disk('avatars')->assertMissing('missing.jpg');\n"
 
 #: docs/8.x/http-tests.md:block 101 (header)
 msgid "Fake File Customization"
-msgstr ""
+msgstr "自訂 Fake 檔案"
 
 #: docs/8.x/http-tests.md:block 102 (paragraph)
 msgid "When creating files using the `fake` method provided by the `UploadedFile` class, you may specify the width, height, and size of the image (in kilobytes) in order to better test your application's validation rules:"
-msgstr ""
+msgstr "在使用 `UploadedFile` 類別的 `fake` 方法來建立檔案時，我們可以指定圖片的長寬與檔案大小 (單位為 KB)，以更好地測試程式中的表單驗證規則："
 
 #: docs/8.x/http-tests.md:block 103 (code)
 msgid "UploadedFile::fake()->image('avatar.jpg', $width, $height)->size(100);\n"
-msgstr ""
+msgstr "UploadedFile::fake()->image('avatar.jpg', $width, $height)->size(100);\n"
 
 #: docs/8.x/http-tests.md:block 104 (paragraph)
 msgid "In addition to creating images, you may create files of any other type using the `create` method:"
-msgstr ""
+msgstr "除了建立圖片外，還可以使用 `create` 方法來建立任何其他類型的檔案："
 
 #: docs/8.x/http-tests.md:block 105 (code)
 msgid "UploadedFile::fake()->create('document.pdf', $sizeInKilobytes);\n"
-msgstr ""
+msgstr "// $sizeInKilobytes = 單位為 KB 的檔案大小\n"
+"UploadedFile::fake()->create('document.pdf', $sizeInKilobytes);\n"
 
 #: docs/8.x/http-tests.md:block 106 (paragraph)
 msgid "If needed, you may pass a `$mimeType` argument to the method to explicitly define the MIME type that should be returned by the file:"
-msgstr ""
+msgstr "若有需要，可傳入 `$mimeType` 引數，以明顯定義 File 要回傳的 MIME 型別："
 
 #: docs/8.x/http-tests.md:block 107 (code)
 msgid "UploadedFile::fake()->create(\n"
 "    'document.pdf', $sizeInKilobytes, 'application/pdf'\n"
 ");\n"
-msgstr ""
+msgstr "UploadedFile::fake()->create(\n"
+"    'document.pdf', $sizeInKilobytes, 'application/pdf'\n"
+");\n"
 
 #: docs/8.x/http-tests.md:block 109 (header)
 msgid "Testing Views"
-msgstr ""
+msgstr "測試 View"
 
 #: docs/8.x/http-tests.md:block 110 (paragraph)
 msgid "Laravel also allows you to render a view without making a simulated HTTP request to the application. To accomplish this, you may call the `view` method within your test. The `view` method accepts the view name and an optional array of data. The method returns an instance of `Illuminate\\Testing\\TestView`, which offers several methods to conveniently make assertions about the view's contents:"
-msgstr ""
+msgstr "在 Laravel 中，我們也可以在不模擬 HTTP Request 的情況轉譯 View。若要在不模擬 HTTP Request 的情況下轉譯 View，我們可以在測試中呼叫 `view` 方法。`view` 方法的參數為 View 的名稱，以及一組可選的資料陣列。該方法會回傳 `Illuminate\\Testing\\TestView` 的實體，使用 `TestView`，我們就能方便地針對 View 的內容進行 Assertion："
 
 #: docs/8.x/http-tests.md:block 111 (code)
 msgid "<?php\n\n"
@@ -920,19 +943,29 @@ msgid "<?php\n\n"
 "        $view->assertSee('Taylor');\n"
 "    }\n"
 "}\n"
-msgstr ""
+msgstr "<?php\n\n"
+"namespace Tests\\Feature;\n\n"
+"use Tests\\TestCase;\n\n"
+"class ExampleTest extends TestCase\n"
+"{\n"
+"    public function test_a_welcome_view_can_be_rendered()\n"
+"    {\n"
+"        $view = $this->view('welcome', ['name' => 'Taylor']);\n\n"
+"        $view->assertSee('Taylor');\n"
+"    }\n"
+"}\n"
 
 #: docs/8.x/http-tests.md:block 112 (paragraph)
 msgid "The `TestView` class provides the following assertion methods: `assertSee`, `assertSeeInOrder`, `assertSeeText`, `assertSeeTextInOrder`, `assertDontSee`, and `assertDontSeeText`."
-msgstr ""
+msgstr "`TestView` 類別還提供了下列 Assertion 方法：`assertSee`、`assertSeeInOrder`、`assertSeeText`、`assertSeeTextInOrder`、`assertDontSee`、`assertDontSeeText`。"
 
 #: docs/8.x/http-tests.md:block 113 (paragraph)
 msgid "If needed, you may get the raw, rendered view contents by casting the `TestView` instance to a string:"
-msgstr ""
+msgstr "若有需要，我們可以將 `TestView` 實體轉換型別為字串來取得原始的 View 內容轉譯結果："
 
 #: docs/8.x/http-tests.md:block 114 (code)
 msgid "$contents = (string) $this->view('welcome');\n"
-msgstr ""
+msgstr "$contents = (string) $this->view('welcome');\n"
 
 #: docs/8.x/http-tests.md:block 116 (header)
 msgid "Sharing Errors"

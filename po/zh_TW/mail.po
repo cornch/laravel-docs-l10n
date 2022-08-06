@@ -10,7 +10,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
-"PO-Revision-Date: 2022-04-18 10:01\n"
+"PO-Revision-Date: 2022-08-06 05:46\n"
 
 #: docs/8.x/mail.md:block 1 (header)
 msgid "Mail"
@@ -1607,6 +1607,10 @@ msgstr "/**\n"
 "];\n"
 
 #: docs/9.x/mail.md:block 2 (unordered list)
+msgid "[Attachable Objects](#attachable-objects)"
+msgstr ""
+
+#: docs/9.x/mail.md:block 2 (unordered list)
 msgid "[Tags & Metadata](#tags-and-metadata)"
 msgstr "[Tag 與詮釋資料](#tags-and-metadata)"
 
@@ -1682,15 +1686,105 @@ msgstr "'ses' => [\n"
 "    ],\n"
 "],\n"
 
+#: docs/9.x/mail.md:block 54 (quote)
+msgid "**Note** You may type-hint dependencies on the mailable's `build` method. The Laravel [service container](/docs/{{version}}/container) automatically injects these dependencies."
+msgstr ""
+
+#: docs/9.x/mail.md:block 71 (quote)
+msgid "**Note** You may wish to create a `resources/views/emails` directory to house all of your email templates; however, you are free to place them wherever you wish within your `resources/views` directory."
+msgstr ""
+
+#: docs/9.x/mail.md:block 112 (quote)
+msgid "**Warning** The `$message` variable is not available in plain-text message templates since plain-text messages do not utilize inline attachments."
+msgstr ""
+
 #: docs/9.x/mail.md:block 118 (header)
+msgid "Attachable Objects"
+msgstr ""
+
+#: docs/9.x/mail.md:block 119 (paragraph)
+msgid "While attaching files to messages via simple string paths is often sufficient, in many cases the attachable entities within your application are represented by classes. For example, if your application is attaching a photo to a message, your application may also have a `Photo` model that represents that photo. When that is the case, wouldn't it be convenient to simply pass the `Photo` model to the `attach` method? Attachable objects allow you to do just that."
+msgstr ""
+
+#: docs/9.x/mail.md:block 120 (paragraph)
+msgid "To get started, implement the `Illuminate\\Contracts\\Mail\\Attachable` interface on the object that will be attachable to messages. This interface dictates that your class defines a `toMailAttachment` method that returns an `Illuminate\\Mail\\Attachment` instance:"
+msgstr ""
+
+#: docs/9.x/mail.md:block 121 (code)
+msgid "<?php\n\n"
+"namespace App\\Models;\n\n"
+"use Illuminate\\Contracts\\Mail\\Attachable;\n"
+"use Illuminate\\Database\\Eloquent\\Model;\n"
+"use Illuminate\\Mail\\Attachment;\n\n"
+"class Photo extends Model implements Attachable\n"
+"{\n"
+"    /**\n"
+"     * Get the attachable representation of the model.\n"
+"     *\n"
+"     * @return \\Illuminate\\Mail\\Attachment\n"
+"     */\n"
+"    public function toMailAttachment()\n"
+"    {\n"
+"        return Attachment::fromPath('/path/to/file');\n"
+"    }\n"
+"}\n"
+msgstr ""
+
+#: docs/9.x/mail.md:block 122 (paragraph)
+msgid "Once you have defined your attachable object, you may simply pass an instance of that object to the `attach` method when building an email message:"
+msgstr ""
+
+#: docs/9.x/mail.md:block 123 (code)
+msgid "/**\n"
+" * Build the message.\n"
+" *\n"
+" * @return $this\n"
+" */\n"
+"public function build()\n"
+"{\n"
+"    return $this->view('photos.resized')\n"
+"                ->attach($this->photo);\n"
+"}\n"
+msgstr ""
+
+#: docs/9.x/mail.md:block 124 (paragraph)
+msgid "Of course, attachment data may be stored on a remote file storage service such as Amazon S3. So, Laravel also allows you to generate attachment instances from data that is stored on one of your application's [filesystem disks](/docs/{{version}}/filesystem):"
+msgstr ""
+
+#: docs/9.x/mail.md:block 125 (code)
+msgid "// Create an attachment from a file on your default disk...\n"
+"return Attachment::fromStorage($this->path);\n\n"
+"// Create an attachment from a file on a specific disk...\n"
+"return Attachment::fromStorageDisk('backblaze', $this->path);\n"
+msgstr ""
+
+#: docs/9.x/mail.md:block 126 (paragraph)
+msgid "In addition, you may create attachment instances via data that you have in memory. To accomplish this, provide a closure to the `fromData` method. The closure should return the raw data that represents the attachment:"
+msgstr ""
+
+#: docs/9.x/mail.md:block 127 (code)
+msgid "return Attachment::fromData(fn () => $this->content, 'Photo Name');\n"
+msgstr ""
+
+#: docs/9.x/mail.md:block 128 (paragraph)
+msgid "Laravel also provides additional methods that you may use to customize your attachments. For example, you may use the `as` and `withMime` methods to customize the file's name and MIME type:"
+msgstr ""
+
+#: docs/9.x/mail.md:block 129 (code)
+msgid "return Attachment::fromPath('/path/to/file')\n"
+"        ->as('Photo Name')\n"
+"        ->withMime('image/jpeg');\n"
+msgstr ""
+
+#: docs/9.x/mail.md:block 131 (header)
 msgid "Tags & Metadata"
 msgstr "Tag 與詮釋資料"
 
-#: docs/9.x/mail.md:block 119 (paragraph)
+#: docs/9.x/mail.md:block 132 (paragraph)
 msgid "Some third-party email providers such as Mailgun and Postmark support message \"tags\" and \"metadata\", which may be used to group and track emails sent by your application. You may add tags and metadata to an email message via the `tag` and `metadata` methods:"
 msgstr "有的第三方 E-Mail 提供商，如 Mailgun 或 Postmark 等，支援訊息的「Tag」與「詮釋資料」，使用 Tag 與詮釋資料，就可以對專案所送出的 E-Mail 進行分組與追蹤。可以使用 `tag` 與 `metadata` 屬性來為 E-Mail 訊息加上 Tag 與詮釋資料："
 
-#: docs/9.x/mail.md:block 120 (code)
+#: docs/9.x/mail.md:block 133 (code)
 msgid "/**\n"
 " * Build the message.\n"
 " *\n"
@@ -1714,23 +1808,23 @@ msgstr "/**\n"
 "                ->metadata('order_id', $this->order->id);\n"
 "}\n"
 
-#: docs/9.x/mail.md:block 121 (paragraph)
+#: docs/9.x/mail.md:block 134 (paragraph)
 msgid "If your application is using the Mailgun driver, you may consult Mailgun's documentation for more information on [tags](https://documentation.mailgun.com/en/latest/user_manual.html#tagging-1) and [metadata](https://documentation.mailgun.com/en/latest/user_manual.html#attaching-data-to-messages). Likewise, the Postmark documentation may also be consulted for more information on their support for [tags](https://postmarkapp.com/blog/tags-support-for-smtp) and [metadata](https://postmarkapp.com/support/article/1125-custom-metadata-faq)."
 msgstr "若使用 Mailgun Driver，請參考 Mailgun 說明文件中有關 [Tag](https://documentation.mailgun.com/en/latest/user_manual.html#tagging-1) 與[詮釋資料](https://documentation.mailgun.com/en/latest/user_manual.html#attaching-data-to-messages)的更多資訊。同樣地，也請參考 Postmark 說明文件中有關 [Tag](https://postmarkapp.com/blog/tags-support-for-smtp) 與[詮釋資料](https://postmarkapp.com/support/article/1125-custom-metadata-faq)的更多資料。"
 
-#: docs/9.x/mail.md:block 122 (paragraph)
+#: docs/9.x/mail.md:block 135 (paragraph)
 msgid "If your application is using Amazon SES to send emails, you should use the `metadata` method to attach [SES \"tags\"](https://docs.aws.amazon.com/ses/latest/APIReference/API_MessageTag.html) to the message."
 msgstr "若使用 Amazon SES 來寄送 E-Mail，則可使用 `metadata` 方法來將  [SES「Tag」](https://docs.aws.amazon.com/ses/latest/APIReference/API_MessageTag.html)附加到訊息上。"
 
-#: docs/9.x/mail.md:block 124 (header)
+#: docs/9.x/mail.md:block 137 (header)
 msgid "Customizing The Symfony Message"
 msgstr "自訂 Symfony Message"
 
-#: docs/9.x/mail.md:block 125 (paragraph)
+#: docs/9.x/mail.md:block 138 (paragraph)
 msgid "The `withSymfonyMessage` method of the `Mailable` base class allows you to register a closure which will be invoked with the Symfony Message instance before sending the message. This gives you an opportunity to deeply customize the message before it is delivered:"
 msgstr "`Mailable` 基礎類別的 `withSymfonyMessage` 方法可讓我們註冊一個閉包，在傳送訊息前會以 Symfony Message 實體叫用該閉包。這樣我們就有機會在郵件被送出前深度自訂該訊息："
 
-#: docs/9.x/mail.md:block 126 (code)
+#: docs/9.x/mail.md:block 139 (code)
 msgid "use Symfony\\Component\\Mime\\Email;\n\n"
 "/**\n"
 " * Build the message.\n"
@@ -1764,11 +1858,23 @@ msgstr "use Symfony\\Component\\Mime\\Email;\n\n"
 "    return $this;\n"
 "}\n"
 
-#: docs/9.x/mail.md:block 226 (paragraph)
+#: docs/9.x/mail.md:block 153 (quote)
+msgid "**Note** Do not use excess indentation when writing Markdown emails. Per Markdown standards, Markdown parsers will render indented content as code blocks."
+msgstr ""
+
+#: docs/9.x/mail.md:block 216 (quote)
+msgid "**Note** To learn more about working around these issues, please review the documentation regarding [queued jobs and database transactions](/docs/{{version}}/queues#jobs-and-database-transactions)."
+msgstr ""
+
+#: docs/9.x/mail.md:block 225 (quote)
+msgid "**Warning** [Inline attachments](#inline-attachments) will not be rendered when a mailable is previewed in your browser. To preview these mailables, you should send them to an email testing application such as [MailHog](https://github.com/mailhog/MailHog) or [HELO](https://usehelo.com)."
+msgstr ""
+
+#: docs/9.x/mail.md:block 239 (paragraph)
 msgid "Laravel provides several convenient methods for testing that your mailables contain the content that you expect. These methods are: `assertSeeInHtml`, `assertDontSeeInHtml`, `assertSeeInOrderInHtml`, `assertSeeInText`, `assertDontSeeInText`, and `assertSeeInOrderInText`."
 msgstr "Laravel 提供了多種可測試 Mailable 是否包含於其內容的方便方法。這些方法是：`assertSeeInHtml`、`assertDontSeeInHtml`、`assertSeeInOrderInHtml`、`assertSeeInText`、`assertDontSeeInText`、`assertSeeInOrderInText`"
 
-#: docs/9.x/mail.md:block 228 (code)
+#: docs/9.x/mail.md:block 241 (code)
 msgid "use App\\Mail\\InvoicePaid;\n"
 "use App\\Models\\User;\n\n"
 "public function test_mailable_content()\n"
@@ -1794,15 +1900,15 @@ msgstr "use App\\Mail\\InvoicePaid;\n"
 "    $mailable->assertSeeInOrderInText(['Invoice Paid', 'Thanks']);\n"
 "}\n"
 
-#: docs/9.x/mail.md:block 251 (header)
+#: docs/9.x/mail.md:block 264 (header)
 msgid "Custom Transports"
 msgstr "自訂 Transport"
 
-#: docs/9.x/mail.md:block 252 (paragraph)
+#: docs/9.x/mail.md:block 265 (paragraph)
 msgid "Laravel includes a variety of mail transports; however, you may wish to write your own transports to deliver email via other services that Laravel does not support out of the box. To get started, define a class that extends the `Symfony\\Component\\Mailer\\Transport\\AbstractTransport` class. Then, implement the `doSend` and `__toString()` methods on your transport:"
 msgstr "Laravel 中包含了許多的 Mail Transport。不過，有時候我們可能會需要撰寫自己的 Transport 來使用 Laravel 預設未支援的其他服務來寄送郵件。要開始撰寫 Transport，請先定義一個繼承了`Symfony\\Component\\Mailer\\Transport\\AbstractTransport` 的類別。接著，請在該 Transport 上實作 `doSend` 與 `__toString()` 方法："
 
-#: docs/9.x/mail.md:block 253 (code)
+#: docs/9.x/mail.md:block 266 (code)
 msgid "use MailchimpTransactional\\ApiClient;\n"
 "use Symfony\\Component\\Mailer\\SentMessage;\n"
 "use Symfony\\Component\\Mailer\\Transport\\AbstractTransport;\n"
@@ -1898,11 +2004,11 @@ msgstr "use MailchimpTransactional\\ApiClient;\n"
 "    }\n"
 "}\n"
 
-#: docs/9.x/mail.md:block 254 (paragraph)
+#: docs/9.x/mail.md:block 267 (paragraph)
 msgid "Once you've defined your custom transport, you may register it via the `extend` method provided by the `Mail` facade. Typically, this should be done within the `boot` method of your application's `AppServiceProvider` service provider. A `$config` argument will be passed to the closure provided to the `extend` method. This argument will contain the configuration array defined for the mailer in the application's `config/mail.php` configuration file:"
 msgstr "定義好自訂 Transport 後，就可以使用 `Mail` Facade 的 `extend` 方法來註冊這個 Transport。一般來說，應在 `AppServiceProvider` Service Provider 中 `boot` 方法內註冊這個 Transport。傳給 `extend` 方法的閉包會收到一個 `$config` 引數。這個引數中會包含在專案 `config/mail.php` 內定義給該方法的設定陣列："
 
-#: docs/9.x/mail.md:block 255 (code)
+#: docs/9.x/mail.md:block 268 (code)
 msgid "use App\\Mail\\MailchimpTransport;\n"
 "use Illuminate\\Support\\Facades\\Mail;\n\n"
 "/**\n"
@@ -1913,28 +2019,16 @@ msgid "use App\\Mail\\MailchimpTransport;\n"
 "public function boot()\n"
 "{\n"
 "    Mail::extend('mailchimp', function (array $config = []) {\n"
-"        return new MailchimpTransport(...);\n"
+"        return new MailchimpTransport(/* ... */);\n"
 "    })\n"
 "}\n"
-msgstr "use App\\Mail\\MailchimpTransport;\n"
-"use Illuminate\\Support\\Facades\\Mail;\n\n"
-"/**\n"
-" * Bootstrap any application services.\n"
-" *\n"
-" * @return void\n"
-" */\n"
-"public function boot()\n"
-"{\n"
-"    Mail::extend('mailchimp', function (array $config = []) {\n"
-"        return new MailchimpTransport(...);\n"
-"    })\n"
-"}\n"
+msgstr ""
 
-#: docs/9.x/mail.md:block 256 (paragraph)
+#: docs/9.x/mail.md:block 269 (paragraph)
 msgid "Once your custom transport has been defined and registered, you may create a mailer definition within your application's `config/mail.php` configuration file that utilizes the new transport:"
 msgstr "定義並註冊好自訂 Transport 後，就可以在專案 `config/mail.php` 設定檔內建立一個使用這個新 Transport 的 Mailer 定義："
 
-#: docs/9.x/mail.md:block 257 (code)
+#: docs/9.x/mail.md:block 270 (code)
 msgid "'mailchimp' => [\n"
 "    'transport' => 'mailchimp',\n"
 "    // ...\n"
@@ -1944,23 +2038,23 @@ msgstr "'mailchimp' => [\n"
 "    // ...\n"
 "],\n"
 
-#: docs/9.x/mail.md:block 259 (header)
+#: docs/9.x/mail.md:block 272 (header)
 msgid "Additional Symfony Transports"
 msgstr "額外的 Symfony Transport"
 
-#: docs/9.x/mail.md:block 260 (paragraph)
+#: docs/9.x/mail.md:block 273 (paragraph)
 msgid "Laravel includes support for some existing Symfony maintained mail transports like Mailgun and Postmark. However, you may wish to extend Laravel with support for additional Symfony maintained transports. You can do so by requiring the necessary Symfony mailer via Composer and registering the transport with Laravel. For example, you may install and register the \"Sendinblue\" Symfony mailer:"
 msgstr "Laravel 支援一些像是 Mailgun 與 Postmark 等現有 Symfony 維護的 Mail Transport。不過，有時候我們可能會需要讓 Laravel 也支援其他由 Symfony 維護的 Transport。若要讓 Laravel 支援這些 Transport，只要使用 Composer 安裝這些 Symfony Mailer，然後再向 Laravel 註冊這個 Transport。舉例來說，我們可以安裝並註冊「Sendinblue」Symfony Mailer："
 
-#: docs/9.x/mail.md:block 261 (code)
+#: docs/9.x/mail.md:block 274 (code)
 msgid "composer require symfony/sendinblue-mailer\n"
 msgstr "composer require symfony/sendinblue-mailer\n"
 
-#: docs/9.x/mail.md:block 262 (paragraph)
+#: docs/9.x/mail.md:block 275 (paragraph)
 msgid "Once the Sendinblue mailer package has been installed, you may add an entry for your Sendinblue API credentials to your application's `services` configuration file:"
 msgstr "安裝好 Sendinblue Mailer 套件後，就可以在專案的 `services` 設定檔中加上 Sendinblue 的 API 認證："
 
-#: docs/9.x/mail.md:block 263 (code)
+#: docs/9.x/mail.md:block 276 (code)
 msgid "'sendinblue' => [\n"
 "    'key' => 'your-api-key',\n"
 "],\n"
@@ -1968,11 +2062,11 @@ msgstr "'sendinblue' => [\n"
 "    'key' => 'your-api-key',\n"
 "],\n"
 
-#: docs/9.x/mail.md:block 264 (paragraph)
+#: docs/9.x/mail.md:block 277 (paragraph)
 msgid "Finally, you may use the `Mail` facade's `extend` method to register the transport with Laravel. Typically, this should be done within the `boot` method of a service provider:"
 msgstr "最後，使用 `Mail` Facade 的 `extend` 方法來向 Laravel 註冊這個 Transport。一般來說，應在某個 Service Provider 內註冊一個 `boot` 方法："
 
-#: docs/9.x/mail.md:block 265 (code)
+#: docs/9.x/mail.md:block 278 (code)
 msgid "use Illuminate\\Support\\Facades\\Mail;\n"
 "use Symfony\\Component\\Mailer\\Bridge\\Sendinblue\\Transport\\SendinblueTransportFactory;\n"
 "use Symfony\\Component\\Mailer\\Transport\\Dsn;\n\n"
@@ -2108,5 +2202,33 @@ msgstr "use MailchimpTransactional\\ApiClient;\n"
 "    {\n"
 "        return 'mailchimp';\n"
 "    }\n"
+"}\n"
+
+#: docs/master/mail.md:block 249 (code)
+msgid "use App\\Mail\\MailchimpTransport;\n"
+"use Illuminate\\Support\\Facades\\Mail;\n\n"
+"/**\n"
+" * Bootstrap any application services.\n"
+" *\n"
+" * @return void\n"
+" */\n"
+"public function boot()\n"
+"{\n"
+"    Mail::extend('mailchimp', function (array $config = []) {\n"
+"        return new MailchimpTransport(...);\n"
+"    })\n"
+"}\n"
+msgstr "use App\\Mail\\MailchimpTransport;\n"
+"use Illuminate\\Support\\Facades\\Mail;\n\n"
+"/**\n"
+" * Bootstrap any application services.\n"
+" *\n"
+" * @return void\n"
+" */\n"
+"public function boot()\n"
+"{\n"
+"    Mail::extend('mailchimp', function (array $config = []) {\n"
+"        return new MailchimpTransport(...);\n"
+"    })\n"
 "}\n"
 

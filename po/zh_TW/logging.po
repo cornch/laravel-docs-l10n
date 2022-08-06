@@ -10,7 +10,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
-"PO-Revision-Date: 2022-04-18 10:01\n"
+"PO-Revision-Date: 2022-08-06 05:46\n"
 
 #: docs/8.x/logging.md:block 1 (header)
 msgid "Logging"
@@ -810,6 +810,10 @@ msgstr "<?php\n\n"
 "    }\n"
 "}\n"
 
+#: docs/9.x/logging.md:block 20 (quote)
+msgid "**Note** Check out the documentation on [advanced channel customization](#monolog-channel-customization) to learn more about the `monolog` and `custom` drivers."
+msgstr ""
+
 #: docs/9.x/logging.md:block 27 (paragraph)
 msgid "Additionally, the retention policy for the `daily` channel can be configured via the `days` option:"
 msgstr "此外，也可以使用 `days` 選項來設定 `daily` 通道的保留政策："
@@ -825,4 +829,54 @@ msgstr "要保留的每日日誌檔天數"
 #: docs/9.x/logging.md:block 28 (table)
 msgid "`7`"
 msgstr "`7`"
+
+#: docs/9.x/logging.md:block 64 (paragraph)
+msgid "Occasionally, you may wish to specify some contextual information that should be included with all subsequent log entries in a particular channel. For example, you may wish to log a request ID that is associated with each incoming request to your application. To accomplish this, you may call the `Log` facade's `withContext` method:"
+msgstr ""
+
+#: docs/9.x/logging.md:block 66 (paragraph)
+msgid "If you would like to share contextual information across *all* logging channels, you may call the `Log::shareContext()` method. This method will provide the contextual information to all created channels and any channels that are created subsequently. Typically, the `shareContext` method should be called from the `boot` method of an application service provider:"
+msgstr ""
+
+#: docs/9.x/logging.md:block 67 (code)
+msgid "use Illuminate\\Support\\Facades\\Log;\n"
+"use Illuminate\\Support\\Str;\n\n"
+"class AppServiceProvider\n"
+"{\n"
+"    /**\n"
+"     * Bootstrap any application services.\n"
+"     *\n"
+"     * @return void\n"
+"     */\n"
+"    public function boot()\n"
+"    {\n"
+"        Log::shareContext([\n"
+"            'invocation-id' => (string) Str::uuid(),\n"
+"        ]);\n"
+"    }\n"
+"}\n"
+msgstr ""
+
+#: docs/9.x/logging.md:block 89 (quote)
+msgid "**Note** All of your \"tap\" classes are resolved by the [service container](/docs/{{version}}/container), so any constructor dependencies they require will automatically be injected."
+msgstr ""
+
+#: docs/9.x/logging.md:block 106 (code)
+msgid "<?php\n\n"
+"namespace App\\Logging;\n\n"
+"use Monolog\\Logger;\n\n"
+"class CreateCustomLogger\n"
+"{\n"
+"    /**\n"
+"     * Create a custom Monolog instance.\n"
+"     *\n"
+"     * @param  array  $config\n"
+"     * @return \\Monolog\\Logger\n"
+"     */\n"
+"    public function __invoke(array $config)\n"
+"    {\n"
+"        return new Logger(/* ... */);\n"
+"    }\n"
+"}\n"
+msgstr ""
 

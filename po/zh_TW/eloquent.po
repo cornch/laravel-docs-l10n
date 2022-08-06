@@ -10,7 +10,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
-"PO-Revision-Date: 2022-05-03 08:04\n"
+"PO-Revision-Date: 2022-08-06 05:46\n"
 
 #: docs/8.x/eloquent.md:block 1 (header)
 msgid "Eloquent: Getting Started"
@@ -2540,23 +2540,60 @@ msgstr "$user = User::findOrFail(1);\n\n"
 msgid "[Chunk Using Lazy Collections](#chunking-using-lazy-collections)"
 msgstr "[使用 Lazy Collection 來將查詢結果分段](#chunking-using-lazy-collections)"
 
-#: docs/9.x/eloquent.md:block 83 (header)
+#: docs/9.x/eloquent.md:block 6 (quote)
+msgid "**Note** Before getting started, be sure to configure a database connection in your application's `config/database.php` configuration file. For more information on configuring your database, check out [the database configuration documentation](/docs/{{version}}/database#configuration)."
+msgstr ""
+
+#: docs/9.x/eloquent.md:block 16 (header)
+msgid "Inspecting Models"
+msgstr ""
+
+#: docs/9.x/eloquent.md:block 17 (paragraph)
+msgid "Sometimes it can be difficult to determine all of a model's available attributes and relationships just by skimming its code. Instead, try the `model:show` Artisan command, which provides a convenient overview of all the model's attributes and relations:"
+msgstr ""
+
+#: docs/9.x/eloquent.md:block 18 (code)
+msgid "php artisan model:show Flight\n"
+msgstr ""
+
+#: docs/9.x/eloquent.md:block 63 (quote)
+msgid "**Note** Since Eloquent models are query builders, you should review all of the methods provided by Laravel's [query builder](/docs/{{version}}/queries). You may use any of these methods when writing your Eloquent queries."
+msgstr ""
+
+#: docs/9.x/eloquent.md:block 87 (header)
 msgid "Chunking Using Lazy Collections"
 msgstr "使用 Lazy Collection 來將查詢結果分段"
 
-#: docs/9.x/eloquent.md:block 93 (quote)
-msgid "{note} Since the `cursor` method only ever holds a single Eloquent model in memory at a time, it cannot eager load relationships. If you need to eager load relationships, consider using [the `lazy` method](#chunking-using-lazy-collections) instead."
-msgstr "{note} 由於 `cursor` 方法一次只會將一個 Eloquent Model 放在記憶體內，因此我們沒有辦法對關聯做積極式載入。若想積極式載入關聯，請考慮使用 [`lazy` 方法](#chunking-using-lazy-collections) 代替。"
+#: docs/9.x/eloquent.md:block 97 (quote)
+msgid "**Warning** Since the `cursor` method only ever holds a single Eloquent model in memory at a time, it cannot eager load relationships. If you need to eager load relationships, consider using [the `lazy` method](#chunking-using-lazy-collections) instead."
+msgstr ""
 
-#: docs/9.x/eloquent.md:block 98 (paragraph)
+#: docs/9.x/eloquent.md:block 102 (paragraph)
 msgid "Although the `cursor` method uses far less memory than a regular query (by only holding a single Eloquent model in memory at a time), it will still eventually run out of memory. This is [due to PHP's PDO driver internally caching all raw query results in its buffer](https://www.php.net/manual/en/mysqlinfo.concepts.buffering.php). If you're dealing with a very large number of Eloquent records, consider using [the `lazy` method](#chunking-using-lazy-collections) instead."
 msgstr "雖然 `cursor` 方法比起一般查詢使用較少記憶體 (因為記憶體內一次只會有一筆 Eloquent Model)，但最終還是由可能會記憶體不足。這是[因為 PHP 的 PDO Driver 會自動在內部將所有的查詢結果都快取在其緩衝區 (Buffer) 上](https://www.php.net/manual/en/mysqlinfo.concepts.buffering.php)。所以，若要處理非常大量的 Eloquent 紀錄，請考慮使用 [`lazy` 方法]#chunking-using-lazy-collections)替代。"
 
-#: docs/9.x/eloquent.md:block 154 (paragraph)
+#: docs/9.x/eloquent.md:block 118 (paragraph)
+msgid "Sometimes you may wish to perform some other action if no results are found. The `findOr` and `firstOr` methods will return a single model instance or, if no results are found, execute the given closure. The value returned by the closure will be considered the result of the method:"
+msgstr ""
+
+#: docs/9.x/eloquent.md:block 119 (code)
+msgid "$flight = Flight::findOr(1, function () {\n"
+"    // ...\n"
+"});\n\n"
+"$flight = Flight::where('legs', '>', 3)->firstOr(function () {\n"
+"    // ...\n"
+"});\n"
+msgstr ""
+
+#: docs/9.x/eloquent.md:block 154 (quote)
+msgid "**Warning** When issuing a mass update via Eloquent, the `saving`, `saved`, `updating`, and `updated` model events will not be fired for the updated models. This is because the models are never actually retrieved when issuing a mass update."
+msgstr ""
+
+#: docs/9.x/eloquent.md:block 158 (paragraph)
 msgid "The `isDirty` method determines if any of the model's attributes have been changed since the model was retrieved. You may pass a specific attribute name or an array of attributes to the `isDirty` method to determine if any of the attributes are \"dirty\". The `isClean` method will determine if an attribute has remained unchanged since the model was retrieved. This method also accepts an optional attribute argument:"
 msgstr "`isDirty` 方法判斷自取得 Model 以來，Model 中是否有任何的屬性經過修改。可以傳入一個屬性名稱或是一組屬性陣列給 `isDirty` 方法來判斷這些屬性是否有被更改 (Dirty)。`isClean` 方法則用來判斷某個屬性是否從取得 Model 以來都沒有被更改過。這個方法同樣也接受一個可選的屬性引數："
 
-#: docs/9.x/eloquent.md:block 155 (code)
+#: docs/9.x/eloquent.md:block 159 (code)
 msgid "use App\\Models\\User;\n\n"
 "$user = User::create([\n"
 "    'first_name' => 'Taylor',\n"
@@ -2594,7 +2631,7 @@ msgstr "use App\\Models\\User;\n\n"
 "$user->isDirty(); // false\n"
 "$user->isClean(); // true\n"
 
-#: docs/9.x/eloquent.md:block 157 (code)
+#: docs/9.x/eloquent.md:block 161 (code)
 msgid "$user = User::create([\n"
 "    'first_name' => 'Taylor',\n"
 "    'last_name' => 'Otwell',\n"
@@ -2620,15 +2657,43 @@ msgstr "$user = User::create([\n"
 "$user->wasChanged('first_name'); // false\n"
 "$user->wasChanged(['first_name', 'title']); // true\n"
 
-#: docs/9.x/eloquent.md:block 187 (quote)
-msgid "{note} All databases except SQL Server require the columns in the second argument of the `upsert` method to have a \"primary\" or \"unique\" index. In addition, the MySQL database driver ignores the second argument of the `upsert` method and always uses the \"primary\" and \"unique\" indexes of the table to detect existing records."
-msgstr "{note} 除了 SQL Server 以外，所有的資料庫都要求 `upsert` 方法第二個引數中的欄位必須有「Primary」或「Unique」索引。此外，MySQL 資料庫 Driver 會忽略 `upsert` 方法的第二個引數，該 Driver 只會使用該資料表的「Primary」與「Unique」索引來判斷現有的記錄。"
+#: docs/9.x/eloquent.md:block 191 (quote)
+msgid "**Warning** All databases except SQL Server require the columns in the second argument of the `upsert` method to have a \"primary\" or \"unique\" index. In addition, the MySQL database driver ignores the second argument of the `upsert` method and always uses the \"primary\" and \"unique\" indexes of the table to detect existing records."
+msgstr ""
 
-#: docs/9.x/eloquent.md:block 322 (paragraph)
+#: docs/9.x/eloquent.md:block 202 (quote)
+msgid "**Warning** The `destroy` method loads each model individually and calls the `delete` method so that the `deleting` and `deleted` events are properly dispatched for each model."
+msgstr ""
+
+#: docs/9.x/eloquent.md:block 207 (quote)
+msgid "**Warning** When executing a mass delete statement via Eloquent, the `deleting` and `deleted` model events will not be dispatched for the deleted models. This is because the models are never actually retrieved when executing the delete statement."
+msgstr ""
+
+#: docs/9.x/eloquent.md:block 212 (quote)
+msgid "**Note** The `SoftDeletes` trait will automatically cast the `deleted_at` attribute to a `DateTime` / `Carbon` instance for you."
+msgstr ""
+
+#: docs/9.x/eloquent.md:block 258 (quote)
+msgid "**Warning** Soft deleting models will be permanently deleted (`forceDelete`) if they match the prunable query."
+msgstr ""
+
+#: docs/9.x/eloquent.md:block 279 (quote)
+msgid "**Note** If your global scope is adding columns to the select clause of the query, you should use the `addSelect` method instead of `select`. This will prevent the unintentional replacement of the query's existing select clause."
+msgstr ""
+
+#: docs/9.x/eloquent.md:block 325 (quote)
+msgid "**Note** Want to broadcast your Eloquent events directly to your client-side application? Check out Laravel's [model event broadcasting](/docs/{{version}}/broadcasting#model-broadcasting)."
+msgstr ""
+
+#: docs/9.x/eloquent.md:block 326 (paragraph)
 msgid "Eloquent models dispatch several events, allowing you to hook into the following moments in a model's lifecycle: `retrieved`, `creating`, `created`, `updating`, `updated`, `saving`, `saved`, `deleting`, `deleted`, `trashed`, `forceDeleted`, `restoring`, `restored`, and `replicating`."
 msgstr "Eloquent Model 會分派數種事件，能讓我們在 Model 生命週期中的下列時刻進行攔截 (Hook)：`retrieved`, `creating`, `created`, `updating`, `updated`, `saving`, `saved`, `deleting`, `deleted`, `trashed`, `forceDeleted`, `restoring`, `restored`, 與 `replicating`。"
 
-#: docs/9.x/eloquent.md:block 341 (code)
+#: docs/9.x/eloquent.md:block 331 (quote)
+msgid "**Warning** When issuing a mass update or delete query via Eloquent, the `saved`, `updated`, `deleting`, and `deleted` model events will not be dispatched for the affected models. This is because the models are never actually retrieved when performing mass updates or deletes."
+msgstr ""
+
+#: docs/9.x/eloquent.md:block 345 (code)
 msgid "<?php\n\n"
 "namespace App\\Observers;\n\n"
 "use App\\Models\\User;\n\n"
@@ -2744,11 +2809,11 @@ msgstr "<?php\n\n"
 "    }\n"
 "}\n"
 
-#: docs/9.x/eloquent.md:block 344 (paragraph)
+#: docs/9.x/eloquent.md:block 348 (paragraph)
 msgid "Alternatively, you may list your observers within an `$observers` property of your applications' `App\\Providers\\EventServiceProvider` class:"
 msgstr "或者，我們也可以在專案的 `App\\Providers\\EventServiceProvider` 類別內的 `$observers` 屬性內列出所有 Observer："
 
-#: docs/9.x/eloquent.md:block 345 (code)
+#: docs/9.x/eloquent.md:block 349 (code)
 msgid "use App\\Models\\User;\n"
 "use App\\Observers\\UserObserver;\n\n"
 "/**\n"
@@ -2769,4 +2834,8 @@ msgstr "use App\\Models\\User;\n"
 "protected $observers = [\n"
 "    User::class => [UserObserver::class],\n"
 "];\n"
+
+#: docs/9.x/eloquent.md:block 350 (quote)
+msgid "**Note** There are additional events an observer can listen to, such as `saving` and `retrieved`. These events are described within the [events](#events) documentation."
+msgstr ""
 

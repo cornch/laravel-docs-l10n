@@ -10,7 +10,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
-"PO-Revision-Date: 2022-04-18 08:15\n"
+"PO-Revision-Date: 2022-08-06 05:47\n"
 
 #: docs/8.x/queries.md:block 1 (header)
 msgid "Database: Query Builder"
@@ -1746,6 +1746,42 @@ msgstr "[Where Not 子句](#where-not-clauses)"
 msgid "[Full Text Where Clauses](#full-text-where-clauses)"
 msgstr "[全文 Where 子句](#full-text-where-clauses)"
 
+#: docs/9.x/queries.md:block 7 (quote)
+msgid "**Warning** PDO does not support binding column names. Therefore, you should never allow user input to dictate the column names referenced by your queries, including \"order by\" columns."
+msgstr ""
+
+#: docs/9.x/queries.md:block 16 (quote)
+msgid "**Note** Laravel collections provide a variety of extremely powerful methods for mapping and reducing data. For more information on Laravel collections, check out the [collection documentation](/docs/{{version}}/collections)."
+msgstr ""
+
+#: docs/9.x/queries.md:block 39 (quote)
+msgid "**Warning** When updating or deleting records inside the chunk callback, any changes to the primary key or foreign keys could affect the chunk query. This could potentially result in records not being included in the chunked results."
+msgstr ""
+
+#: docs/9.x/queries.md:block 46 (quote)
+msgid "**Warning** When updating or deleting records while iterating over them, any changes to the primary key or foreign keys could affect the chunk query. This could potentially result in records not being included in the results."
+msgstr ""
+
+#: docs/9.x/queries.md:block 71 (quote)
+msgid "**Warning** Raw statements will be injected into the query as strings, so you should be extremely careful to avoid creating SQL injection vulnerabilities."
+msgstr ""
+
+#: docs/9.x/queries.md:block 77 (paragraph)
+msgid "The `selectRaw` method can be used in place of `addSelect(DB::raw(/* ... */))`. This method accepts an optional array of bindings as its second argument:"
+msgstr ""
+
+#: docs/9.x/queries.md:block 112 (code)
+msgid "DB::table('users')\n"
+"        ->join('contacts', function ($join) {\n"
+"            $join->on('users.id', '=', 'contacts.user_id')->orOn(/* ... */);\n"
+"        })\n"
+"        ->get();\n"
+msgstr ""
+
+#: docs/9.x/queries.md:block 146 (quote)
+msgid "**Warning** You should always group `orWhere` calls in order to avoid unexpected behavior when global scopes are applied."
+msgstr ""
+
 #: docs/9.x/queries.md:block 148 (header)
 msgid "Where Not Clauses"
 msgstr "Where Not 子句"
@@ -1768,13 +1804,17 @@ msgstr "$products = DB::table('products')\n"
 "                })\n"
 "                ->get();\n"
 
+#: docs/9.x/queries.md:block 174 (quote)
+msgid "**Warning** If you are adding a large array of integer bindings to your query, the `whereIntegerInRaw` or `whereIntegerNotInRaw` methods may be used to greatly reduce your memory usage."
+msgstr ""
+
 #: docs/9.x/queries.md:block 220 (header)
 msgid "Full Text Where Clauses"
 msgstr "全文 Where 子句"
 
 #: docs/9.x/queries.md:block 221 (quote)
-msgid "{note} Full text where clauses are currently supported by MySQL and PostgreSQL."
-msgstr "{note} 目前只有 MySQL 與 PostgreSQL 支援全文 Where 子句。"
+msgid "**Warning** Full text where clauses are currently supported by MySQL and PostgreSQL."
+msgstr ""
 
 #: docs/9.x/queries.md:block 222 (paragraph)
 msgid "The `whereFullText` and `orWhereFullText` methods may be used to add full text \"where\" clauses to a query for columns that have [full text indexes](/docs/{{version}}/migrations#available-index-types). These methods will be transformed into the appropriate SQL for the underlying database system by Laravel. For example, a `MATCH AGAINST` clause will be generated for applications utilizing MySQL:"
@@ -1819,4 +1859,43 @@ msgstr "$sortByVotes = $request->input('sort_by_votes');\n\n"
 "                    $query->orderBy('name');\n"
 "                })\n"
 "                ->get();\n"
+
+#: docs/9.x/queries.md:block 280 (paragraph)
+msgid "The `insertOrIgnore` method will ignore errors while inserting records into the database. When using this method, you should be aware that duplicate record errors will be ignored and other types of errors may also be ignored depending on the database engine. For example, `insertOrIgnore` will [bypass MySQL's strict mode](https://dev.mysql.com/doc/refman/en/sql-mode.html#ignore-effect-on-execution):"
+msgstr ""
+
+#: docs/9.x/queries.md:block 282 (paragraph)
+msgid "The `insertUsing` method will insert new records into the table while using a subquery to determine the data that should be inserted:"
+msgstr ""
+
+#: docs/9.x/queries.md:block 283 (code)
+msgid "DB::table('pruned_users')->insertUsing([\n"
+"    'id', 'name', 'email', 'email_verified_at'\n"
+"], DB::table('users')->select(\n"
+"    'id', 'name', 'email', 'email_verified_at'\n"
+")->where('updated_at', '<=', now()->subMonth()));\n"
+msgstr ""
+
+#: docs/9.x/queries.md:block 288 (quote)
+msgid "**Warning** When using PostgreSQL the `insertGetId` method expects the auto-incrementing column to be named `id`. If you would like to retrieve the ID from a different \"sequence\", you may pass the column name as the second parameter to the `insertGetId` method."
+msgstr ""
+
+#: docs/9.x/queries.md:block 292 (code)
+msgid "DB::table('flights')->upsert(\n"
+"    [\n"
+"        ['departure' => 'Oakland', 'destination' => 'San Diego', 'price' => 99],\n"
+"        ['departure' => 'Chicago', 'destination' => 'New York', 'price' => 150]\n"
+"    ],\n"
+"    ['departure', 'destination'],\n"
+"    ['price']\n"
+");\n"
+msgstr ""
+
+#: docs/9.x/queries.md:block 294 (quote)
+msgid "**Warning** All databases except SQL Server require the columns in the second argument of the `upsert` method to have a \"primary\" or \"unique\" index. In addition, the MySQL database driver ignores the second argument of the `upsert` method and always uses the \"primary\" and \"unique\" indexes of the table to detect existing records."
+msgstr ""
+
+#: docs/master/queries.md:block 217 (quote)
+msgid "{note} Full text where clauses are currently supported by MySQL and PostgreSQL."
+msgstr "{note} 目前只有 MySQL 與 PostgreSQL 支援全文 Where 子句。"
 

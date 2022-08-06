@@ -10,7 +10,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
-"PO-Revision-Date: 2022-04-18 09:23\n"
+"PO-Revision-Date: 2022-08-06 05:46\n"
 
 #: docs/8.x/eloquent-resources.md:block 1 (header)
 msgid "Eloquent: API Resources"
@@ -1190,6 +1190,37 @@ msgstr "<?php\n\n"
 "    }\n"
 "}\n"
 
+#: docs/9.x/eloquent-resources.md:block 18 (quote)
+msgid "**Note** This is a high-level overview of resources and resource collections. You are highly encouraged to read the other sections of this documentation to gain a deeper understanding of the customization and power offered to you by resources."
+msgstr ""
+
+#: docs/9.x/eloquent-resources.md:block 47 (quote)
+msgid "**Note** If you have not read the [concept overview](#concept-overview), you are highly encouraged to do so before proceeding with this documentation."
+msgstr ""
+
+#: docs/9.x/eloquent-resources.md:block 56 (quote)
+msgid "**Note** If you would like to include relationships only when they have already been loaded, check out the documentation on [conditional relationships](#conditional-relationships)."
+msgstr ""
+
+#: docs/9.x/eloquent-resources.md:block 70 (code)
+msgid "<?php\n\n"
+"namespace App\\Http\\Resources;\n\n"
+"use Illuminate\\Http\\Resources\\Json\\JsonResource;\n\n"
+"class UserResource extends JsonResource\n"
+"{\n"
+"    /**\n"
+"     * The \"data\" wrapper that should be applied.\n"
+"     *\n"
+"     * @var string|null\n"
+"     */\n"
+"    public static $wrap = 'user';\n"
+"}\n"
+msgstr ""
+
+#: docs/9.x/eloquent-resources.md:block 73 (quote)
+msgid "**Warning** The `withoutWrapping` method only affects the outermost response and will not remove `data` keys that you manually add to your own resource collections."
+msgstr ""
+
 #: docs/9.x/eloquent-resources.md:block 92 (code)
 msgid "/**\n"
 " * Transform the resource into an array.\n"
@@ -1283,4 +1314,48 @@ msgstr "/**\n"
 "        'updated_at' => $this->updated_at,\n"
 "    ];\n"
 "}\n"
+
+#: docs/9.x/eloquent-resources.md:block 103 (quote)
+msgid "**Warning** The `mergeWhen` method should not be used within arrays that mix string and numeric keys. Furthermore, it should not be used within arrays with numeric keys that are not ordered sequentially."
+msgstr ""
+
+#: docs/9.x/eloquent-resources.md:block 111 (header)
+msgid "Conditional Relationship Counts"
+msgstr ""
+
+#: docs/9.x/eloquent-resources.md:block 112 (paragraph)
+msgid "In addition to conditionally including relationships, you may conditionally include relationship \"counts\" on your resource responses based on if the relationship's count has been loaded on the model:"
+msgstr ""
+
+#: docs/9.x/eloquent-resources.md:block 113 (code)
+msgid "new UserResource($user->loadCount('posts'));\n"
+msgstr ""
+
+#: docs/9.x/eloquent-resources.md:block 114 (paragraph)
+msgid "The `whenCounted` method may be used to conditionally include a relationship's count in your resource response. This method avoids unnecessarily including the attribute if the relationships's count is not present:"
+msgstr ""
+
+#: docs/9.x/eloquent-resources.md:block 115 (code)
+msgid "/**\n"
+" * Transform the resource into an array.\n"
+" *\n"
+" * @param  \\Illuminate\\Http\\Request  $request\n"
+" * @return array\n"
+" */\n"
+"public function toArray($request)\n"
+"{\n"
+"    return [\n"
+"        'id' => $this->id,\n"
+"        'name' => $this->name,\n"
+"        'email' => $this->email,\n"
+"        'posts_count' => $this->whenCounted('posts'),\n"
+"        'created_at' => $this->created_at,\n"
+"        'updated_at' => $this->updated_at,\n"
+"    ];\n"
+"}\n"
+msgstr ""
+
+#: docs/9.x/eloquent-resources.md:block 116 (paragraph)
+msgid "In this example, if the `posts` relationship's count has not been loaded, the `posts_count` key will be removed from the resource response before it is sent to the client."
+msgstr ""
 

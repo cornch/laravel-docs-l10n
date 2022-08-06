@@ -1018,10 +1018,103 @@ msgstr ""
 msgid "If you would like to totally reset the database using migrations, you may use the `Illuminate\\Foundation\\Testing\\DatabaseMigrations` trait instead. However, the `DatabaseMigrations` trait is significantly slower than the `RefreshDatabase` trait."
 msgstr ""
 
+#: docs/9.x/database-testing.md:block 18 (code)
+msgid ""
+"namespace Database\\Factories;\n"
+"\n"
+"use Illuminate\\Database\\Eloquent\\Factories\\Factory;\n"
+"use Illuminate\\Support\\Str;\n"
+"\n"
+"class UserFactory extends Factory\n"
+"{\n"
+"    /**\n"
+"     * Define the model's default state.\n"
+"     *\n"
+"     * @return array\n"
+"     */\n"
+"    public function definition()\n"
+"    {\n"
+"        return [\n"
+"            'name' => fake()->name(),\n"
+"            'email' => fake()->unique()->safeEmail(),\n"
+"            'email_verified_at' => now(),\n"
+"            'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password\n"
+"            'remember_token' => Str::random(10),\n"
+"        ];\n"
+"    }\n"
+"}\n"
+msgstr ""
+
 #: docs/9.x/database-testing.md:block 19 (paragraph)
 msgid "As you can see, in their most basic form, factories are classes that extend Laravel's base factory class and define a `definition` method. The `definition` method returns the default set of attribute values that should be applied when creating a model using the factory."
 msgstr ""
 
-#: docs/9.x/database-testing.md:block 165 (header)
+#: docs/9.x/database-testing.md:block 20 (paragraph)
+msgid "Via the `fake` helper, factories have access to the [Faker](https://github.com/FakerPHP/Faker) PHP library, which allows you to conveniently generate various kinds of random data for testing."
+msgstr ""
+
+#: docs/9.x/database-testing.md:block 21 (quote)
+msgid "**Note** You can set your application's Faker locale by adding a `faker_locale` option to your `config/app.php` configuration file."
+msgstr ""
+
+#: docs/9.x/database-testing.md:block 39 (header)
+msgid "\"Trashed\" State"
+msgstr ""
+
+#: docs/9.x/database-testing.md:block 40 (paragraph)
+msgid "If your Eloquent model can be [soft deleted](/docs/{{version}}/eloquent#soft-deleting), you may invoke the built-in `trashed` state method to indicate that the created model should already be \"soft deleted\". You do not need to manually define the `trashed` state as it is automatically available to all factories:"
+msgstr ""
+
+#: docs/9.x/database-testing.md:block 41 (code)
+msgid ""
+"use App\\Models\\User;\n"
+"\n"
+"$user = User::factory()->trashed()->create();\n"
+msgstr ""
+
+#: docs/9.x/database-testing.md:block 64 (quote)
+msgid "**Note** [Mass assignment protection](/docs/{{version}}/eloquent#mass-assignment) is automatically disabled when creating models using factories."
+msgstr ""
+
+#: docs/9.x/database-testing.md:block 141 (code)
+msgid ""
+"use App\\Models\\User;\n"
+"\n"
+"/**\n"
+" * Define the model's default state.\n"
+" *\n"
+" * @return array\n"
+" */\n"
+"public function definition()\n"
+"{\n"
+"    return [\n"
+"        'user_id' => User::factory(),\n"
+"        'title' => fake()->title(),\n"
+"        'content' => fake()->paragraph(),\n"
+"    ];\n"
+"}\n"
+msgstr ""
+
+#: docs/9.x/database-testing.md:block 143 (code)
+msgid ""
+"/**\n"
+" * Define the model's default state.\n"
+" *\n"
+" * @return array\n"
+" */\n"
+"public function definition()\n"
+"{\n"
+"    return [\n"
+"        'user_id' => User::factory(),\n"
+"        'user_type' => function (array $attributes) {\n"
+"            return User::find($attributes['user_id'])->type;\n"
+"        },\n"
+"        'title' => fake()->title(),\n"
+"        'content' => fake()->paragraph(),\n"
+"    ];\n"
+"}\n"
+msgstr ""
+
+#: docs/9.x/database-testing.md:block 168 (header)
 msgid "assertSoftDeleted"
 msgstr ""

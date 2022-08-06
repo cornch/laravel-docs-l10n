@@ -735,19 +735,48 @@ msgid ""
 "];\n"
 msgstr ""
 
+#: docs/9.x/http-client.md:block 2 (unordered list)
+msgid "[Guzzle Middleware](#guzzle-middleware)"
+msgstr ""
+
+#: docs/9.x/http-client.md:block 2 (unordered list)
+msgid "[Preventing Stray Requests](#preventing-stray-requests)"
+msgstr ""
+
+#: docs/9.x/http-client.md:block 53 (code)
+msgid ""
+"// Basic authentication...\n"
+"$response = Http::withBasicAuth('taylor@laravel.com', 'secret')->post(/* ... */);\n"
+"\n"
+"// Digest authentication...\n"
+"$response = Http::withDigestAuth('taylor@laravel.com', 'secret')->post(/* ... */);\n"
+msgstr ""
+
+#: docs/9.x/http-client.md:block 57 (code)
+msgid "$response = Http::withToken('token')->post(/* ... */);\n"
+msgstr ""
+
+#: docs/9.x/http-client.md:block 61 (code)
+msgid "$response = Http::timeout(3)->get(/* ... */);\n"
+msgstr ""
+
 #: docs/9.x/http-client.md:block 63 (paragraph)
 msgid "You may specify the maximum number of seconds to wait while trying to connect to a server using the `connectTimeout` method:"
 msgstr ""
 
 #: docs/9.x/http-client.md:block 64 (code)
-msgid "$response = Http::connectTimeout(3)->get(...);\n"
+msgid "$response = Http::connectTimeout(3)->get(/* ... */);\n"
+msgstr ""
+
+#: docs/9.x/http-client.md:block 68 (code)
+msgid "$response = Http::retry(3, 100)->post(/* ... */);\n"
 msgstr ""
 
 #: docs/9.x/http-client.md:block 70 (code)
 msgid ""
 "$response = Http::retry(3, 100, function ($exception, $request) {\n"
 "    return $exception instanceof ConnectionException;\n"
-"})->post(...);\n"
+"})->post(/* ... */);\n"
 msgstr ""
 
 #: docs/9.x/http-client.md:block 71 (paragraph)
@@ -764,7 +793,7 @@ msgid ""
 "    $request->withToken($this->getNewToken());\n"
 "\n"
 "    return true;\n"
-"})->post(...);\n"
+"})->post(/* ... */);\n"
 msgstr ""
 
 #: docs/9.x/http-client.md:block 73 (paragraph)
@@ -772,18 +801,185 @@ msgid "If all of the requests fail, an instance of `Illuminate\\Http\\Client\\Re
 msgstr ""
 
 #: docs/9.x/http-client.md:block 74 (code)
-msgid "$response = Http::retry(3, 100, throw: false)->post(...);\n"
+msgid "$response = Http::retry(3, 100, throw: false)->post(/* ... */);\n"
 msgstr ""
 
 #: docs/9.x/http-client.md:block 75 (quote)
-msgid "{note} If all of the requests fail because of a connection issue, a `Illuminate\\Http\\Client\\ConnectionException` will still be thrown even when the `throw` argument is set to `false`."
+msgid "**Warning** If all of the requests fail because of a connection issue, a `Illuminate\\Http\\Client\\ConnectionException` will still be thrown even when the `throw` argument is set to `false`."
 msgstr ""
 
-#: docs/9.x/http-client.md:block 130 (code)
+#: docs/9.x/http-client.md:block 83 (code)
+msgid ""
+"$response = Http::post(/* ... */);\n"
+"\n"
+"// Throw an exception if a client or server error occurred...\n"
+"$response->throw();\n"
+"\n"
+"// Throw an exception if an error occurred and the given condition is true...\n"
+"$response->throwIf($condition);\n"
+"\n"
+"// Throw an exception if an error occurred and the given condition is false...\n"
+"$response->throwUnless($condition);\n"
+"\n"
+"return $response['user']['id'];\n"
+msgstr ""
+
+#: docs/9.x/http-client.md:block 86 (code)
+msgid "return Http::post(/* ... */)->throw()->json();\n"
+msgstr ""
+
+#: docs/9.x/http-client.md:block 88 (code)
+msgid ""
+"return Http::post(/* ... */)->throw(function ($response, $e) {\n"
+"    //\n"
+"})->json();\n"
+msgstr ""
+
+#: docs/9.x/http-client.md:block 90 (header)
+msgid "Guzzle Middleware"
+msgstr ""
+
+#: docs/9.x/http-client.md:block 91 (paragraph)
+msgid "Since Laravel's HTTP client is powered by Guzzle, you may take advantage of [Guzzle Middleware](https://docs.guzzlephp.org/en/stable/handlers-and-middleware.html) to manipulate the outgoing request or inspect the incoming response. To manipulate the outgoing request, register a Guzzle middleware via the `withMiddleware` method in combination with Guzzle's `mapRequest` middleware factory:"
+msgstr ""
+
+#: docs/9.x/http-client.md:block 92 (code)
+msgid ""
+"use GuzzleHttp\\Middleware;\n"
+"use Illuminate\\Support\\Facades\\Http;\n"
+"use Psr\\Http\\Message\\RequestInterface;\n"
+"\n"
+"$response = Http::withMiddleware(\n"
+"    Middleware::mapRequest(function (RequestInterface $request) {\n"
+"        $request->withHeader('X-Example', 'Value');\n"
+"        \n"
+"        return $request;\n"
+"    })\n"
+"->get('http://example.com');\n"
+msgstr ""
+
+#: docs/9.x/http-client.md:block 93 (paragraph)
+msgid "Likewise, you can inspect the incoming HTTP response by registering a middleware via the `withMiddleware` method in combination with Guzzle's `mapResponse` middleware factory:"
+msgstr ""
+
+#: docs/9.x/http-client.md:block 94 (code)
+msgid ""
+"use GuzzleHttp\\Middleware;\n"
+"use Illuminate\\Support\\Facades\\Http;\n"
+"use Psr\\Http\\Message\\ResponseInterface;\n"
+"\n"
+"$response = Http::withMiddleware(\n"
+"    Middleware::mapResponse(function (ResponseInterface $response) {\n"
+"        $header = $response->getHeader('X-Example');\n"
+"\n"
+"        // ...\n"
+"        \n"
+"        return $response;\n"
+"    })\n"
+")->get('http://example.com');\n"
+msgstr ""
+
+#: docs/9.x/http-client.md:block 114 (paragraph)
+msgid "Many Laravel services provide functionality to help you easily and expressively write tests, and Laravel's HTTP client is no exception. The `Http` facade's `fake` method allows you to instruct the HTTP client to return stubbed / dummy responses when requests are made."
+msgstr ""
+
+#: docs/9.x/http-client.md:block 118 (code)
+msgid ""
+"use Illuminate\\Support\\Facades\\Http;\n"
+"\n"
+"Http::fake();\n"
+"\n"
+"$response = Http::post(/* ... */);\n"
+msgstr ""
+
+#: docs/9.x/http-client.md:block 129 (paragraph)
+msgid "When all the responses in a response sequence have been consumed, any further requests will cause the response sequence to throw an exception. If you would like to specify a default response that should be returned when a sequence is empty, you may use the `whenEmpty` method:"
+msgstr ""
+
+#: docs/9.x/http-client.md:block 136 (code)
 msgid ""
 "use Illuminate\\Http\\Client\\Request;\n"
 "\n"
 "Http::fake(function (Request $request) {\n"
 "    return Http::response('Hello World', 200);\n"
 "});\n"
+msgstr ""
+
+#: docs/9.x/http-client.md:block 138 (header)
+msgid "Preventing Stray Requests"
+msgstr ""
+
+#: docs/9.x/http-client.md:block 139 (paragraph)
+msgid "If you would like to ensure that all requests sent via the HTTP client have been faked throughout your individual test or complete test suite, you can call the `preventStrayRequests` method. After calling this method, any requests that do not have a corresponding fake response will throw an exception rather than making the actual HTTP request:"
+msgstr ""
+
+#: docs/9.x/http-client.md:block 140 (code)
+msgid ""
+"use Illuminate\\Support\\Facades\\Http;\n"
+"\n"
+"Http::preventStrayRequests();\n"
+"\n"
+"Http::fake([\n"
+"    'github.com/*' => Http::response('ok'),\n"
+"]);\n"
+"\n"
+"// An \"ok\" response is returned...\n"
+"Http::get('https://github.com/laravel/framework');\n"
+"\n"
+"// An exception is thrown...\n"
+"Http::get('https://laravel.com');\n"
+msgstr ""
+
+#: docs/9.x/http-client.md:block 153 (header)
+msgid "Recording Requests / Responses"
+msgstr ""
+
+#: docs/9.x/http-client.md:block 154 (paragraph)
+msgid "You may use the `recorded` method to gather all requests and their corresponding responses. The `recorded` method returns a collection of arrays that contains instances of `Illuminate\\Http\\Client\\Request` and `Illuminate\\Http\\Client\\Response`:"
+msgstr ""
+
+#: docs/9.x/http-client.md:block 155 (code)
+msgid ""
+"Http::fake([\n"
+"    'https://laravel.com' => Http::response(status: 500),\n"
+"    'https://nova.laravel.com/' => Http::response(),\n"
+"]);\n"
+"\n"
+"Http::get('https://laravel.com');\n"
+"Http::get('https://nova.laravel.com/');\n"
+"\n"
+"$recorded = Http::recorded();\n"
+"\n"
+"[$request, $response] = $recorded[0];\n"
+msgstr ""
+
+#: docs/9.x/http-client.md:block 156 (paragraph)
+msgid "Additionally, the `recorded` method accepts a closure which will receive an instance of `Illuminate\\Http\\Client\\Request` and `Illuminate\\Http\\Client\\Response` and may be used to filter request / response pairs based on your expectations:"
+msgstr ""
+
+#: docs/9.x/http-client.md:block 157 (code)
+msgid ""
+"use Illuminate\\Http\\Client\\Request;\n"
+"use Illuminate\\Http\\Client\\Response;\n"
+"\n"
+"Http::fake([\n"
+"    'https://laravel.com' => Http::response(status: 500),\n"
+"    'https://nova.laravel.com/' => Http::response(),\n"
+"]);\n"
+"\n"
+"Http::get('https://laravel.com');\n"
+"Http::get('https://nova.laravel.com/');\n"
+"\n"
+"$recorded = Http::recorded(function (Request $request, Response $response) {\n"
+"    return $request->url() !== 'https://laravel.com' &&\n"
+"           $response->successful();\n"
+"});\n"
+msgstr ""
+
+#: docs/master/http-client.md:block 64 (code)
+msgid "$response = Http::connectTimeout(3)->get(...);\n"
+msgstr ""
+
+#: docs/master/http-client.md:block 72 (code)
+msgid "$response = Http::retry(3, 100, throw: false)->post(...);\n"
 msgstr ""

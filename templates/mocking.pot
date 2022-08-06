@@ -880,15 +880,111 @@ msgid ""
 "}\n"
 msgstr ""
 
-#: docs/9.x/mocking.md:block 79 (header)
+#: docs/9.x/mocking.md:block 23 (quote)
+msgid "**Warning** You should not mock the `Request` facade. Instead, pass the input you desire into the [HTTP testing methods](/docs/{{version}}/http-tests) such as `get` and `post` when running your test. Likewise, instead of mocking the `Config` facade, call the `Config::set` method in your tests."
+msgstr ""
+
+#: docs/9.x/mocking.md:block 53 (quote)
+msgid "**Warning** After calling `Event::fake()`, no event listeners will be executed. So, if your tests use model factories that rely on events, such as creating a UUID during a model's `creating` event, you should call `Event::fake()` **after** using your factories."
+msgstr ""
+
+#: docs/9.x/mocking.md:block 58 (paragraph)
+msgid "You may fake all events except for a set of specified events using the `fakeExcept` method:"
+msgstr ""
+
+#: docs/9.x/mocking.md:block 59 (code)
+msgid ""
+"Event::fakeExcept([\n"
+"    OrderCreated::class,\n"
+"]);\n"
+msgstr ""
+
+#: docs/9.x/mocking.md:block 76 (paragraph)
+msgid "When calling the `Mail` facade's assertion methods, the mailable instance accepted by the provided closure exposes helpful methods for examining the mailable:"
+msgstr ""
+
+#: docs/9.x/mocking.md:block 77 (code)
+msgid ""
+"Mail::assertSent(OrderShipped::class, function ($mail) use ($user) {\n"
+"    return $mail->hasTo($user->email) &&\n"
+"           $mail->hasCc('...') &&\n"
+"           $mail->hasBcc('...') &&\n"
+"           $mail->hasReplyTo('...') &&\n"
+"           $mail->hasFrom('...') &&\n"
+"           $mail->hasSubject('...');\n"
+"});\n"
+msgstr ""
+
+#: docs/9.x/mocking.md:block 81 (header)
 msgid "Testing Mailable Content"
 msgstr ""
 
-#: docs/9.x/mocking.md:block 80 (paragraph)
+#: docs/9.x/mocking.md:block 82 (paragraph)
 msgid "We suggest testing the content of your mailables separately from your tests that assert that a given mailable was \"sent\" to a specific user. To learn how to test the content of your mailables, check out our documentation on the [testing mailables](/docs/{{version}}/mail#testing-mailables)."
 msgstr ""
 
-#: docs/9.x/mocking.md:block 112 (code)
+#: docs/9.x/mocking.md:block 87 (code)
+msgid ""
+"<?php\n"
+"\n"
+"namespace Tests\\Feature;\n"
+"\n"
+"use App\\Notifications\\OrderShipped;\n"
+"use Illuminate\\Foundation\\Testing\\RefreshDatabase;\n"
+"use Illuminate\\Foundation\\Testing\\WithoutMiddleware;\n"
+"use Illuminate\\Support\\Facades\\Notification;\n"
+"use Tests\\TestCase;\n"
+"\n"
+"class ExampleTest extends TestCase\n"
+"{\n"
+"    public function test_orders_can_be_shipped()\n"
+"    {\n"
+"        Notification::fake();\n"
+"\n"
+"        // Perform order shipping...\n"
+"\n"
+"        // Assert that no notifications were sent...\n"
+"        Notification::assertNothingSent();\n"
+"\n"
+"        // Assert a notification was sent to the given users...\n"
+"        Notification::assertSentTo(\n"
+"            [$user], OrderShipped::class\n"
+"        );\n"
+"\n"
+"        // Assert a notification was not sent...\n"
+"        Notification::assertNotSentTo(\n"
+"            [$user], AnotherNotification::class\n"
+"        );\n"
+"\n"
+"        // Assert that a given number of notifications were sent...\n"
+"        Notification::assertCount(3);\n"
+"    }\n"
+"}\n"
+msgstr ""
+
+#: docs/9.x/mocking.md:block 92 (paragraph)
+msgid "If the code you are testing sends [on-demand notifications](/docs/{{version}}/notifications#on-demand-notifications), you can test that the on-demand notification was sent via the `assertSentOnDemand` method:"
+msgstr ""
+
+#: docs/9.x/mocking.md:block 93 (code)
+msgid "Notification::assertSentOnDemand(OrderShipped::class);\n"
+msgstr ""
+
+#: docs/9.x/mocking.md:block 94 (paragraph)
+msgid "By passing a closure as the second argument to the `assertSentOnDemand` method, you may determine if an on-demand notification was sent to the correct \"route\" address:"
+msgstr ""
+
+#: docs/9.x/mocking.md:block 95 (code)
+msgid ""
+"Notification::assertSentOnDemand(\n"
+"    OrderShipped::class,\n"
+"    function ($notification, $channels, $notifiable) use ($user) {\n"
+"        return $notifiable->routes['mail'] === $user->email;\n"
+"    }\n"
+");\n"
+msgstr ""
+
+#: docs/9.x/mocking.md:block 114 (code)
 msgid ""
 "<?php\n"
 "\n"
@@ -925,15 +1021,15 @@ msgid ""
 "}\n"
 msgstr ""
 
-#: docs/9.x/mocking.md:block 113 (paragraph)
+#: docs/9.x/mocking.md:block 115 (paragraph)
 msgid "By default, the `fake` method will delete all files in its temporary directory. If you would like to keep these files, you may use the \"persistentFake\" method instead. For more information on testing file uploads, you may consult the [HTTP testing documentation's information on file uploads](/docs/{{version}}/http-tests#testing-file-uploads)."
 msgstr ""
 
-#: docs/9.x/mocking.md:block 114 (quote)
-msgid "{note} The `image` method requires the [GD extension](https://www.php.net/manual/en/book.image.php)."
+#: docs/9.x/mocking.md:block 116 (quote)
+msgid "**Warning** The `image` method requires the [GD extension](https://www.php.net/manual/en/book.image.php)."
 msgstr ""
 
-#: docs/9.x/mocking.md:block 118 (code)
+#: docs/9.x/mocking.md:block 120 (code)
 msgid ""
 "use Illuminate\\Support\\Carbon;\n"
 "\n"

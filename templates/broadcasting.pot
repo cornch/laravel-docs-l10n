@@ -1583,6 +1583,70 @@ msgstr ""
 msgid "In this example, all notifications sent to `App\\Models\\User` instances via the `broadcast` channel would be received by the callback. A channel authorization callback for the `App.Models.User.{id}` channel is included in the default `BroadcastServiceProvider` that ships with the Laravel framework."
 msgstr ""
 
+#: docs/9.x/broadcasting.md:block 12 (quote)
+msgid "**Note** Before diving into event broadcasting, make sure you have read Laravel's documentation on [events and listeners](/docs/{{version}}/events)."
+msgstr ""
+
+#: docs/9.x/broadcasting.md:block 63 (code)
+msgid ""
+"import Echo from 'laravel-echo';\n"
+"import Pusher from 'pusher-js';\n"
+"\n"
+"window.Pusher = Pusher;\n"
+"\n"
+"window.Echo = new Echo({\n"
+"    broadcaster: 'pusher',\n"
+"    key: import.meta.env.VITE_PUSHER_APP_KEY,\n"
+"    cluster: import.meta.env.VITE_PUSHER_APP_CLUSTER,\n"
+"    forceTLS: true\n"
+"});\n"
+msgstr ""
+
+#: docs/9.x/broadcasting.md:block 66 (quote)
+msgid "**Note** To learn more about compiling your application's JavaScript assets, please consult the documentation on [Vite](/docs/{{version}}/vite)."
+msgstr ""
+
+#: docs/9.x/broadcasting.md:block 70 (code)
+msgid ""
+"import Echo from 'laravel-echo';\n"
+"import Pusher from 'pusher-js';\n"
+"\n"
+"const options = {\n"
+"    broadcaster: 'pusher',\n"
+"    key: 'your-pusher-channels-key'\n"
+"}\n"
+"\n"
+"window.Echo = new Echo({\n"
+"    ...options,\n"
+"    client: new Pusher(options.key, options)\n"
+"});\n"
+msgstr ""
+
+#: docs/9.x/broadcasting.md:block 78 (code)
+msgid ""
+"import Echo from 'laravel-echo';\n"
+"import Pusher from 'pusher-js';\n"
+"\n"
+"window.Pusher = Pusher;\n"
+"\n"
+"window.Echo = new Echo({\n"
+"    broadcaster: 'pusher',\n"
+"    key: import.meta.env.VITE_ABLY_PUBLIC_KEY,\n"
+"    wsHost: 'realtime-pusher.ably.io',\n"
+"    wsPort: 443,\n"
+"    disableStats: true,\n"
+"    encrypted: true,\n"
+"});\n"
+msgstr ""
+
+#: docs/9.x/broadcasting.md:block 79 (paragraph)
+msgid "Note that our Ably Echo configuration references a `VITE_ABLY_PUBLIC_KEY` environment variable. This variable's value should be your Ably public key. Your public key is the portion of your Ably key that occurs before the `:` character."
+msgstr ""
+
+#: docs/9.x/broadcasting.md:block 87 (quote)
+msgid "**Note** If you would like to explore open source alternatives to Pusher, check out the [open source alternatives](#open-source-alternatives)."
+msgstr ""
+
 #: docs/9.x/broadcasting.md:block 96 (code)
 msgid ""
 "<?php\n"
@@ -1608,6 +1672,45 @@ msgid ""
 "}\n"
 msgstr ""
 
+#: docs/9.x/broadcasting.md:block 144 (quote)
+msgid "**Note** To learn more about working around these issues, please review the documentation regarding [queued jobs and database transactions](/docs/{{version}}/queues#jobs-and-database-transactions)."
+msgstr ""
+
+#: docs/9.x/broadcasting.md:block 172 (quote)
+msgid "**Warning** Unlike HTTP route model binding, channel model binding does not support automatic [implicit model binding scoping](/docs/{{version}}/routing#implicit-model-binding-scoping). However, this is rarely a problem because most channels can be scoped based on a single model's unique, primary key."
+msgstr ""
+
+#: docs/9.x/broadcasting.md:block 185 (quote)
+msgid "**Note** Like many other classes in Laravel, channel classes will automatically be resolved by the [service container](/docs/{{version}}/container). So, you may type-hint any dependencies required by your channel in its constructor."
+msgstr ""
+
+#: docs/9.x/broadcasting.md:block 197 (quote)
+msgid "**Warning** Your event must use the `Illuminate\\Broadcasting\\InteractsWithSockets` trait in order to call the `toOthers` method."
+msgstr ""
+
+#: docs/9.x/broadcasting.md:block 216 (code)
+msgid ""
+"Echo.private(`orders.${this.order.id}`)\n"
+"    .listen(/* ... */)\n"
+"    .listen(/* ... */)\n"
+"    .listen(/* ... */);\n"
+msgstr ""
+
+#: docs/9.x/broadcasting.md:block 253 (code)
+msgid ""
+"Echo.join(`chat.${roomId}`)\n"
+"    .here(/* ... */)\n"
+"    .joining(/* ... */)\n"
+"    .leaving(/* ... */)\n"
+"    .listen('NewMessage', (e) => {\n"
+"        //\n"
+"    });\n"
+msgstr ""
+
+#: docs/9.x/broadcasting.md:block 256 (quote)
+msgid "**Warning** Before reading the following documentation about model broadcasting, we recommend you become familiar with the general concepts of Laravel's model broadcasting services as well as how to manually create and listen to broadcast events."
+msgstr ""
+
 #: docs/9.x/broadcasting.md:block 259 (paragraph)
 msgid "To get started, your Eloquent model should use the `Illuminate\\Database\\Eloquent\\BroadcastsEvents` trait. In addition, the model should define a `broadcastOn` method, which will return an array of channels that the model's events should broadcast on:"
 msgstr ""
@@ -1628,4 +1731,8 @@ msgid ""
 "        $this, $event\n"
 "    ))->dontBroadcastToCurrentUser();\n"
 "}\n"
+msgstr ""
+
+#: docs/9.x/broadcasting.md:block 295 (quote)
+msgid "**Note** When using [Pusher Channels](https://pusher.com/channels), you must enable the \"Client Events\" option in the \"App Settings\" section of your [application dashboard](https://dashboard.pusher.com/) in order to send client events."
 msgstr ""

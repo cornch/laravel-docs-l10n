@@ -10,7 +10,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
-"PO-Revision-Date: 2022-02-13 13:40\n"
+"PO-Revision-Date: 2022-08-06 05:46\n"
 
 #: docs/8.x/localization.md:block 1 (header)
 msgid "Localization"
@@ -350,6 +350,10 @@ msgstr "有的套件中包含了套件自己的語系檔。除了直接修改套
 msgid "So, for example, if you need to override the English translation strings in `messages.php` for a package named `skyrim/hearthfire`, you should place a language file at: `resources/lang/vendor/hearthfire/en/messages.php`. Within this file, you should only define the translation strings you wish to override. Any translation strings you don't override will still be loaded from the package's original language files."
 msgstr "舉例來說，若想為 `skyrim/hearthfire` 套件覆寫的 `messages.php` 內的英文翻譯，我們可以在 `resources/lang/vendor/hearthfire/en/messages.php` 中放置一個語系檔。在這個的檔案內，我們只需要定義要覆寫的翻譯字串即可。未覆寫的翻譯字串會從該套件的原始語系檔中載入。"
 
+#: docs/9.x/localization.md:block 2 (unordered list)
+msgid "[Pluralization Language](#pluralization-language)"
+msgstr ""
+
 #: docs/9.x/localization.md:block 6 (paragraph)
 msgid "Laravel provides two ways to manage translation strings. First, language strings may be stored in files within the `lang` directory. Within this directory, there may be subdirectories for each language supported by the application. This is the approach Laravel uses to manage translation strings for built-in Laravel features such as validation error messages:"
 msgstr "Laravel 提供了兩種管理翻譯字串的方法。第一種方式，就是將翻譯字串保存在 `lang` 目錄內。在這個目錄中，可以為程式要支援的每一個語言都建立一個子目錄。這也是 Laravel 管理如表單驗證錯誤訊息等內建功能翻譯字串的方式："
@@ -378,11 +382,37 @@ msgstr "/lang\n"
 "    en.json\n"
 "    es.json\n"
 
-#: docs/9.x/localization.md:block 26 (paragraph)
+#: docs/9.x/localization.md:block 23 (header)
+msgid "Pluralization Language"
+msgstr ""
+
+#: docs/9.x/localization.md:block 24 (paragraph)
+msgid "You may instruct Laravel's \"pluralizer\", which is used by Eloquent and other portions of the framework to convert singular strings to plural strings, to use a language other than English. This may be accomplished by invoking the `useLanguage` method within the `boot` method of one of your application's service providers. The pluralizer's currently supported languages are: `french`, `norwegian-bokmal`, `portuguese`, `spanish`, and `turkish`:"
+msgstr ""
+
+#: docs/9.x/localization.md:block 25 (code)
+msgid "use Illuminate\\Support\\Pluralizer;\n\n"
+"/**\n"
+" * Bootstrap any application services.\n"
+" *\n"
+" * @return void\n"
+" */\n"
+"public function boot()\n"
+"{\n"
+"    Pluralizer::useLanguage('spanish');     \n\n"
+"    // ...     \n"
+"}\n"
+msgstr ""
+
+#: docs/9.x/localization.md:block 26 (quote)
+msgid "**Warning** If you customize the pluralizer's language, you should explicitly define your Eloquent model's [table names](/docs/{{version}}/eloquent#table-names)."
+msgstr ""
+
+#: docs/9.x/localization.md:block 31 (paragraph)
 msgid "Typically, translation strings are stored in files within the `lang` directory. Within this directory, there should be a subdirectory for each language supported by your application. This is the approach Laravel uses to manage translation strings for built-in Laravel features such as validation error messages:"
 msgstr "一般來說，翻譯字串都保存在 `lang` 目錄內。在這個目錄中，專案要支援的每一個語言都應有一個子目錄。這也是 Laravel 管理如表單驗證錯誤訊息等內建功能翻譯字串的方式："
 
-#: docs/9.x/localization.md:block 29 (code)
+#: docs/9.x/localization.md:block 34 (code)
 msgid "<?php\n\n"
 "// lang/en/messages.php\n\n"
 "return [\n"
@@ -394,19 +424,23 @@ msgstr "<?php\n\n"
 "    'welcome' => 'Welcome to our application!',\n"
 "];\n"
 
-#: docs/9.x/localization.md:block 34 (paragraph)
+#: docs/9.x/localization.md:block 35 (quote)
+msgid "**Warning** For languages that differ by territory, you should name the language directories according to the ISO 15897. For example, \"en_GB\" should be used for British English rather than \"en-gb\"."
+msgstr ""
+
+#: docs/9.x/localization.md:block 39 (paragraph)
 msgid "For this reason, Laravel also provides support for defining translation strings using the \"default\" translation of the string as the key. Translation files that use translation strings as keys are stored as JSON files in the `lang` directory. For example, if your application has a Spanish translation, you should create a `lang/es.json` file:"
 msgstr "因此，Laravel 提供了使用「預設」翻譯作為翻譯字串索引鍵的支援。使用翻譯字串作為索引鍵的語系檔保存在 `lang` 目錄下的 JSON 檔中。舉例來說，若我們的專案有西班牙語翻譯，就可建立一個像這樣的 `lang/es.json` 檔："
 
-#: docs/9.x/localization.md:block 40 (paragraph)
+#: docs/9.x/localization.md:block 45 (paragraph)
 msgid "You may retrieve translation strings from your language files using the `__` helper function. If you are using \"short keys\" to define your translation strings, you should pass the file that contains the key and the key itself to the `__` function using \"dot\" syntax. For example, let's retrieve the `welcome` translation string from the `lang/en/messages.php` language file:"
 msgstr "可以使用 `__` 輔助函式來從語系檔中取得翻譯字串。若使用「短索引鍵」來定義翻譯字串的話，請使用「點 (.)」標記法來傳入包含該索引鍵的檔案、以及該索引鍵。舉例來說，我們來從 `lang/en/messages.php` 語系檔中取得 `welcome` 翻譯字串："
 
-#: docs/9.x/localization.md:block 72 (paragraph)
+#: docs/9.x/localization.md:block 77 (paragraph)
 msgid "Some packages may ship with their own language files. Instead of changing the package's core files to tweak these lines, you may override them by placing files in the `lang/vendor/{package}/{locale}` directory."
 msgstr "有的套件中包含了套件自己的語系檔。除了直接修改套件的檔案來更改語系檔內容外，還可以在 `lang/vendor/{package}/{locale}` 目錄內放置檔案來覆寫這些語系檔。"
 
-#: docs/9.x/localization.md:block 73 (paragraph)
+#: docs/9.x/localization.md:block 78 (paragraph)
 msgid "So, for example, if you need to override the English translation strings in `messages.php` for a package named `skyrim/hearthfire`, you should place a language file at: `lang/vendor/hearthfire/en/messages.php`. Within this file, you should only define the translation strings you wish to override. Any translation strings you don't override will still be loaded from the package's original language files."
 msgstr "舉例來說，若想為 `skyrim/hearthfire` 套件覆寫的 `messages.php` 內的英文翻譯，我們可以在 `lang/vendor/hearthfire/en/messages.php` 中放置一個語系檔。在這個的檔案內，我們只需要定義要覆寫的翻譯字串即可。未覆寫的翻譯字串會從該套件的原始語系檔中載入。"
 

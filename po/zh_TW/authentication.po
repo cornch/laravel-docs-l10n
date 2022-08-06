@@ -10,7 +10,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
-"PO-Revision-Date: 2022-04-18 09:23\n"
+"PO-Revision-Date: 2022-08-06 05:46\n"
 
 #: docs/8.x/authentication.md:block 1 (header)
 msgid "Authentication"
@@ -1349,6 +1349,30 @@ msgstr "/**\n"
 "    ],\n"
 "];\n"
 
+#: docs/9.x/authentication.md:block 9 (quote)
+msgid "**Note** Guards and providers should not be confused with \"roles\" and \"permissions\". To learn more about authorizing user actions via permissions, please refer to the [authorization](/docs/{{version}}/authorization) documentation."
+msgstr ""
+
+#: docs/9.x/authentication.md:block 31 (paragraph)
+msgid "*[Laravel Jetstream](https://jetstream.laravel.com)* is a robust application starter kit that consumes and exposes Laravel Fortify's authentication services with a beautiful, modern UI powered by [Tailwind CSS](https://tailwindcss.com), [Livewire](https://laravel-livewire.com), and / or [Inertia](https://inertiajs.com). Laravel Jetstream includes optional support for two-factor authentication, team support, browser session management, profile management, and built-in integration with [Laravel Sanctum](/docs/{{version}}/sanctum) to offer API token authentication. Laravel's API authentication offerings are discussed below."
+msgstr ""
+
+#: docs/9.x/authentication.md:block 50 (quote)
+msgid "**Warning** This portion of the documentation discusses authenticating users via the [Laravel application starter kits](/docs/{{version}}/starter-kits), which includes UI scaffolding to help you get started quickly. If you would like to integrate with Laravel's authentication systems directly, check out the documentation on [manually authenticating users](#authenticating-users)."
+msgstr ""
+
+#: docs/9.x/authentication.md:block 55 (paragraph)
+msgid "[Laravel Jetstream](https://jetstream.laravel.com) is a more robust application starter kit that includes support for scaffolding your application with [Livewire](https://laravel-livewire.com) or [Inertia and Vue](https://inertiajs.com). In addition, Jetstream features optional support for two-factor authentication, teams, profile management, browser session management, API support via [Laravel Sanctum](/docs/{{version}}/sanctum), account deletion, and more."
+msgstr ""
+
+#: docs/9.x/authentication.md:block 66 (quote)
+msgid "**Note** Even though it is possible to determine if a user is authenticated using the `check` method, you will typically use a middleware to verify that the user is authenticated before allowing the user access to certain routes / controllers. To learn more about this, check out the documentation on [protecting routes](/docs/{{version}}/authentication#protecting-routes)."
+msgstr ""
+
+#: docs/9.x/authentication.md:block 82 (quote)
+msgid "**Note** If you would like to rate limit other routes in your application, check out the [rate limiting documentation](/docs/{{version}}/routing#rate-limiting)."
+msgstr ""
+
 #: docs/9.x/authentication.md:block 87 (code)
 msgid "<?php\n\n"
 "namespace App\\Http\\Controllers;\n\n"
@@ -1405,11 +1429,41 @@ msgstr "<?php\n\n"
 "    }\n"
 "}\n"
 
-#: docs/9.x/authentication.md:block 150 (paragraph)
+#: docs/9.x/authentication.md:block 96 (quote)
+msgid "**Warning** In these examples, `email` is not a required option, it is merely used as an example. You should use whatever column name corresponds to a \"username\" in your database table."
+msgstr ""
+
+#: docs/9.x/authentication.md:block 97 (paragraph)
+msgid "The `attemptWhen` method, which receives a closure as its second argument, may be used to perform more extensive inspection of the potential user before actually authenticating the user. The closure receives the potential user and should return `true` or `false` to indicate if the user may be authenticated:"
+msgstr ""
+
+#: docs/9.x/authentication.md:block 98 (code)
+msgid "if (Auth::attemptWhen([\n"
+"    'email' => $email,\n"
+"    'password' => $password,\n"
+"], function ($user) {\n"
+"    return $user->isNotBanned();\n"
+"})) {\n"
+"    // Authentication was successful...\n"
+"}\n"
+msgstr ""
+
+#: docs/9.x/authentication.md:block 109 (paragraph)
+msgid "If your application offers \"remember me\" functionality, you may use the `viaRemember` method to determine if the currently authenticated user was authenticated using the \"remember me\" cookie:"
+msgstr ""
+
+#: docs/9.x/authentication.md:block 110 (code)
+msgid "use Illuminate\\Support\\Facades\\Auth;\n\n"
+"if (Auth::viaRemember()) {\n"
+"    // ...\n"
+"}\n"
+msgstr ""
+
+#: docs/9.x/authentication.md:block 154 (paragraph)
 msgid "Before getting started, you should make sure that the `Illuminate\\Session\\Middleware\\AuthenticateSession` middleware is included on the routes that should receive session authentication. Typically, you should place this middleware on a route group definition so that it can be applied to the majority of your application's routes. By default, the `AuthenticateSession` middleware may be attached to a route using the `auth.session` route middleware key as defined in your application's HTTP kernel:"
 msgstr "在開始之前，請先確保要收到 Session 身份驗證的 Route 都有包含 `Illuminate\\Session\\Middleware\\AuthenticateSession` Middleware。一般來說，應在 Route 群組定義內放入這個 Middleware，好讓該 Middleware 被套用到專案中大多數的 Route。預設情況下，`AuthenticateSession` Middleware 可使用專案 HTTP Kernel 中所定義的 `auth.session` 這個 Route Middleware 索引鍵來附加到 Route 上："
 
-#: docs/9.x/authentication.md:block 151 (code)
+#: docs/9.x/authentication.md:block 155 (code)
 msgid "Route::middleware(['auth', 'auth.session'])->group(function () {\n"
 "    Route::get('/', function () {\n"
 "        // ...\n"
@@ -1420,4 +1474,8 @@ msgstr "Route::middleware(['auth', 'auth.session'])->group(function () {\n"
 "        // ...\n"
 "    });\n"
 "});\n"
+
+#: docs/9.x/authentication.md:block 162 (quote)
+msgid "**Note** The following documentation discusses how to integrate with Laravel's password confirmation features directly; however, if you would like to get started more quickly, the [Laravel application starter kits](/docs/{{version}}/starter-kits) include support for this feature!"
+msgstr ""
 

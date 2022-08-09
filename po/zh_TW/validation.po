@@ -10,7 +10,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
-"PO-Revision-Date: 2022-08-06 05:47\n"
+"PO-Revision-Date: 2022-08-09 14:00\n"
 
 #: docs/8.x/validation.md:block 1 (header)
 msgid "Validation"
@@ -3224,7 +3224,7 @@ msgstr "{note} 「隱式」規則只 **暗示** 該屬性為必填欄位。至�
 
 #: docs/9.x/validation.md:block 2 (unordered list)
 msgid "[Validation Error Response Format](#validation-error-response-format)"
-msgstr ""
+msgstr "[驗證錯誤的 Response 格式](#validation-error-response-format)"
 
 #: docs/9.x/validation.md:block 2 (unordered list)
 msgid "[Error Message Indexes & Positions](#error-message-indexes-and-positions)"
@@ -3232,11 +3232,11 @@ msgstr "[錯誤訊息的索引與位置](#error-message-indexes-and-positions)"
 
 #: docs/9.x/validation.md:block 2 (unordered list)
 msgid "[Validating Files](#validating-files)"
-msgstr ""
+msgstr "[驗證](#validating-files)"
 
 #: docs/9.x/validation.md:block 22 (paragraph)
 msgid "If validation fails during a traditional HTTP request, a redirect response to the previous URL will be generated. If the incoming request is an XHR request, a [JSON response containing the validation error messages](#validation-error-response-format) will be returned."
-msgstr ""
+msgstr "若驗證失敗時使用的是傳統 HTTP Request，則會產生一個回到上一頁網址的 Redirect Response。若連入的 Request 是 XHR Request，則會回傳一個[包含驗證錯誤訊息的 JSON Response]](#validation-error-response-format)。"
 
 #: docs/9.x/validation.md:block 49 (paragraph)
 msgid "Laravel's built-in validation rules each has an error message that is located in your application's `lang/en/validation.php` file. Within this file, you will find a translation entry for each validation rule. You are free to change or modify these messages based on the needs of your application."
@@ -3244,7 +3244,7 @@ msgstr "在專案的 `lang/en/validation.php` 檔案中，有所有 Laravel 內�
 
 #: docs/9.x/validation.md:block 53 (paragraph)
 msgid "In this example, we used a traditional form to send data to the application. However, many applications receive XHR requests from a JavaScript powered frontend. When using the `validate` method during an XHR request, Laravel will not generate a redirect response. Instead, Laravel generates a [JSON response containing all of the validation errors](#validation-error-response-format). This JSON response will be sent with a 422 HTTP status code."
-msgstr ""
+msgstr "在這個例子中，我們使用傳統的表單來將資料傳給程式。不過，有許多程式是接受來自 JavaScript 前端的 XHR Request。在 XHR Request 中使用 `validate` 方法時，Laravel 不會產生 Redirect Response，而是產生一個[包含所有驗證錯誤的 JSON Response](#validation-error-response-format)。JSON Response 會以 422 HTTP 狀態碼傳送。"
 
 #: docs/9.x/validation.md:block 57 (code)
 msgid "<!-- /resources/views/post/create.blade.php -->\n\n"
@@ -3268,15 +3268,15 @@ msgstr "<!-- /resources/views/post/create.blade.php -->\n\n"
 
 #: docs/9.x/validation.md:block 73 (header)
 msgid "Validation Error Response Format"
-msgstr ""
+msgstr "驗證錯誤的 Response 格式"
 
 #: docs/9.x/validation.md:block 74 (paragraph)
 msgid "When your application throws a `Illuminate\\Validation\\ValidationException` exception and the incoming HTTP request is expecting a JSON response, Laravel will automatically format the error messages for you and return a `422 Unprocessable Entity` HTTP response."
-msgstr ""
+msgstr "當專案擲回 `Illuminate\\Validation\\ValidationException` Exception 且連入 HTTP Request 預期要回傳 JSON Response 時，Laravel 會自動格式化錯誤訊息，並回傳 `422 Unprocessable Entity` HTTP Response。"
 
 #: docs/9.x/validation.md:block 75 (paragraph)
 msgid "Below, you can review an example of the JSON response format for validation errors. Note that nested error keys are flattened into \"dot\" notation format:"
-msgstr ""
+msgstr "下方是一個範例的驗證錯誤 JSON Response 格式。請注意，巢狀的錯誤索引鍵會被扁平化為「點 (.)」表示法："
 
 #: docs/9.x/validation.md:block 76 (code)
 msgid "{\n"
@@ -3297,23 +3297,40 @@ msgid "{\n"
 "        ]\n"
 "    }\n"
 "}\n"
-msgstr ""
+msgstr "{\n"
+"    \"message\": \"The team name must be a string. (and 4 more errors)\",\n"
+"    \"errors\": {\n"
+"        \"team_name\": [\n"
+"            \"The team name must be a string.\",\n"
+"            \"The team name must be at least 1 characters.\"\n"
+"        ],\n"
+"        \"authorization.role\": [\n"
+"            \"The selected authorization.role is invalid.\"\n"
+"        ],\n"
+"        \"users.0.email\": [\n"
+"            \"The users.0.email field is required.\"\n"
+"        ],\n"
+"        \"users.2.email\": [\n"
+"            \"The users.2.email must be a valid email address.\"\n"
+"        ]\n"
+"    }\n"
+"}\n"
 
 #: docs/9.x/validation.md:block 86 (quote)
 msgid "**Note** You may type-hint any dependencies you require within the `rules` method's signature. They will automatically be resolved via the Laravel [service container](/docs/{{version}}/container)."
-msgstr ""
+msgstr "**Note** 在 `rules` 方法的^[簽章](Signature) 中可以對任何需要的相依性進行^[型別提示](Type-Hint)。型別提示的相依性會由 Laravel 的 [Service Container](/docs/{{version}}/container) 自動解析。"
 
 #: docs/9.x/validation.md:block 89 (paragraph)
 msgid "If validation fails, a redirect response will be generated to send the user back to their previous location. The errors will also be flashed to the session so they are available for display. If the request was an XHR request, an HTTP response with a 422 status code will be returned to the user including a [JSON representation of the validation errors](#validation-error-response-format)."
-msgstr ""
+msgstr "若驗證失敗，會產生一個 Redirect Response，並將使用者傳送回前一個位置。錯誤訊息也會被快閃存入 Session 中以便顯示。若目前的 Request 是 XHR Request，則會回傳一個 422 狀態碼的 HTTP Response 給使用者，其中包含了[以 JSON 呈現的驗證錯誤訊息](#validation-error-response-format)："
 
 #: docs/9.x/validation.md:block 115 (quote)
 msgid "**Note** You may type-hint any dependencies you need within the `authorize` method's signature. They will automatically be resolved via the Laravel [service container](/docs/{{version}}/container)."
-msgstr ""
+msgstr "**Note** 在 `authorize` 方法的^[簽章](Signature) 中可以對任何需要的相依性進行^[型別提示](Type-Hint)。型別提示中的相依性會由 Laravel 的 [Service Container](/docs/{{version}}/container) 自動解析。"
 
 #: docs/9.x/validation.md:block 139 (paragraph)
 msgid "If you would like to create a validator instance manually but still take advantage of the automatic redirection offered by the HTTP request's `validate` method, you may call the `validate` method on an existing validator instance. If validation fails, the user will automatically be redirected or, in the case of an XHR request, a [JSON response will be returned](#validation-error-response-format):"
-msgstr ""
+msgstr "若想手動建立 Validator 實體，但也想要使用 HTTP Request 的 `validate` 方法提供的自動重新導向功能，可以在現有 Validator 實體上呼叫 `validate` 方法。若驗證失敗，使用者會被重新導向。XHR Request 的情況下，則會[回傳 JSON Response](#validation-error-response-format)："
 
 #: docs/9.x/validation.md:block 166 (code)
 msgid "$validator = Validator::make(/* ... */);\n\n"
@@ -3327,7 +3344,17 @@ msgid "$validator = Validator::make(/* ... */);\n\n"
 "if ($validator->fails()) {\n"
 "    //\n"
 "}\n"
-msgstr ""
+msgstr "$validator = Validator::make(/* ... */);\n\n"
+"$validator->after(function ($validator) {\n"
+"    if ($this->somethingElseIsInvalid()) {\n"
+"        $validator->errors()->add(\n"
+"            'field', 'Something is wrong with this field!'\n"
+"        );\n"
+"    }\n"
+"});\n\n"
+"if ($validator->fails()) {\n"
+"    //\n"
+"}\n"
 
 #: docs/9.x/validation.md:block 206 (paragraph)
 msgid "You may customize the error messages used for specified attribute and rule combinations within your application's validation language files. To do so, add your message customizations to the `custom` array of your application's `lang/xx/validation.php` language file:"
@@ -3357,7 +3384,17 @@ msgid "use Illuminate\\Support\\Facades\\Validator;\n\n"
 "Validator::make($input, [\n"
 "    'user' => 'array:name,username',\n"
 "]);\n"
-msgstr ""
+msgstr "use Illuminate\\Support\\Facades\\Validator;\n\n"
+"$input = [\n"
+"    'user' => [\n"
+"        'name' => 'Taylor Otwell',\n"
+"        'username' => 'taylorotwell',\n"
+"        'admin' => true,\n"
+"    ],\n"
+"];\n\n"
+"Validator::make($input, [\n"
+"    'user' => 'array:name,username',\n"
+"]);\n"
 
 #: docs/9.x/validation.md:block 261 (paragraph)
 msgid "In general, you should always specify the array keys that are allowed to be present within your array."
@@ -3365,19 +3402,19 @@ msgstr "一般來說，請總是指定允許出現在陣列中的索引鍵："
 
 #: docs/9.x/validation.md:block 306 (paragraph)
 msgid "The integer under validation must have an exact length of *value*."
-msgstr ""
+msgstr "要驗證的整數的長度必須完全符合 **值**。"
 
 #: docs/9.x/validation.md:block 309 (paragraph)
 msgid "The integer validation must have a length between the given *min* and *max*."
-msgstr ""
+msgstr "要驗證的整數長度必須介於給定的 **最小值** 與 **最大值**。"
 
 #: docs/9.x/validation.md:block 336 (quote)
 msgid "**Warning** The `dns` and `spoof` validators require the PHP `intl` extension."
-msgstr ""
+msgstr "**Warning** `dns` 與 `spoof` Validator 需要有 PHP 的 `intl` 擴充程式。"
 
 #: docs/9.x/validation.md:block 344 (quote)
 msgid "**Warning** Enums are only available on PHP 8.1+."
-msgstr ""
+msgstr "**Warning** Enum 只在 PHP 8.1 以上提供。"
 
 #: docs/9.x/validation.md:block 351 (paragraph)
 msgid "If complex conditional exclusion logic is required, you may utilize the `Rule::excludeIf` method. This method accepts a boolean or a closure. When given a closure, the closure should return `true` or `false` to indicate if the field under validation should be excluded:"
@@ -3430,23 +3467,34 @@ msgid "use Illuminate\\Support\\Facades\\Validator;\n"
 "    ],\n"
 "    'airports.*' => Rule::in(['NYC', 'LIT']),\n"
 "]);\n"
-msgstr ""
+msgstr "use Illuminate\\Support\\Facades\\Validator;\n"
+"use Illuminate\\Validation\\Rule;\n\n"
+"$input = [\n"
+"    'airports' => ['NYC', 'LAS'],\n"
+"];\n\n"
+"Validator::make($input, [\n"
+"    'airports' => [\n"
+"        'required',\n"
+"        'array',\n"
+"    ],\n"
+"    'airports.*' => Rule::in(['NYC', 'LIT']),\n"
+"]);\n"
 
 #: docs/9.x/validation.md:block 408 (quote)
 msgid "**Warning** This validation rule does not verify that the input is of the \"integer\" variable type, only that the input is of a type accepted by PHP's `FILTER_VALIDATE_INT` rule. If you need to validate the input as being a number please use this rule in combination with [the `numeric` validation rule](#rule-numeric)."
-msgstr ""
+msgstr "**Warning** 這個驗證規則並不會驗證輸入是否為「^[整數](Integer)」變數型別，只會驗證該輸入值是否為 PHP 的 `FILTER_VALIDATE_INT` 規則接受的類型。若想驗證輸入是否為一數字，請搭配 [`numeric` 驗證規則](#rule-numeric)一起使用此規則。"
 
 #: docs/9.x/validation.md:block 452 (quote)
 msgid "**Warning** The [`bcmath` PHP extension](https://www.php.net/manual/en/book.bc.php) is required in order to use the `multiple_of` rule."
-msgstr ""
+msgstr "**Warning** 必須安裝 [`bcmath` PHP 擴充程式](https://www.php.net/manual/en/book.bc.php)，才可使用 `multiple_of` 規則。"
 
 #: docs/9.x/validation.md:block 461 (quote)
 msgid "**Warning** When using the `regex` / `not_regex` patterns, it may be necessary to specify your validation rules using an array instead of using `|` delimiters, especially if the regular expression contains a `|` character."
-msgstr ""
+msgstr "**Warning** 在使用 `regex` / `not_regex` 格式時，可能會需要以變數方式來指定驗證規則，而不是使用 `|` 分隔符號。尤其是當正規表示式包含 `|` 字元時。"
 
 #: docs/9.x/validation.md:block 471 (quote)
 msgid "**Warning** This rule was renamed to `current_password` with the intention of removing it in Laravel 9. Please use the [Current Password](#rule-current-password) rule instead."
-msgstr ""
+msgstr "**Warning** 該驗證欄位已改名為 `current_password`，並將於 Laravel 9 中移除。請改用 [current_password](#rule-current-password) 規則代替。"
 
 #: docs/9.x/validation.md:block 481 (paragraph)
 msgid "If complex conditional prohibition logic is required, you may utilize the `Rule::prohibitedIf` method. This method accepts a boolean or a closure. When given a closure, the closure should return `true` or `false` to indicate if the field under validation should be prohibited:"
@@ -3472,7 +3520,7 @@ msgstr "use Illuminate\\Support\\Facades\\Validator;\n"
 
 #: docs/9.x/validation.md:block 493 (quote)
 msgid "**Warning** When using the `regex` / `not_regex` patterns, it may be necessary to specify rules in an array instead of using `|` delimiters, especially if the regular expression contains a `|` character."
-msgstr ""
+msgstr "**Warning** 使用 `regex` / `not_regex` 格式時，可能有需要使用陣列方式制定規則，而不是使用 `|` 分隔字元。特別是當正規式中有包含 `|` 字元時。"
 
 #: docs/9.x/validation.md:block 504 (code)
 msgid "use Illuminate\\Support\\Facades\\Validator;\n"
@@ -3502,7 +3550,7 @@ msgstr "The field under validation must be an array and must contain at least th
 
 #: docs/9.x/validation.md:block 554 (quote)
 msgid "**Warning** You should never pass any user controlled request input into the `ignore` method. Instead, you should only pass a system generated unique ID such as an auto-incrementing ID or UUID from an Eloquent model instance. Otherwise, your application will be vulnerable to an SQL injection attack."
-msgstr ""
+msgstr "**Warning** 絕對不要傳入任何由使用者控制的 Request 輸入給 `ignore` 方法。請只傳入 Eloquent Model 實體中由系統產生的不重複 ID，如^[自動遞增 ID](Auto-Incrementing ID) 或 UUID。若傳入了使用者控制的資料，可能會讓你的程式發生如 ^[SQL 注入](SQL Injection)等弱點。"
 
 #: docs/9.x/validation.md:block 563 (code)
 msgid "'email' => Rule::unique('users')->where(fn ($query) => $query->where('account_id', 1))\n"
@@ -3510,11 +3558,11 @@ msgstr "'email' => Rule::unique('users')->where(fn ($query) => $query->where('ac
 
 #: docs/9.x/validation.md:block 583 (quote)
 msgid "**Note** If you are attempting to validate a field that should always be present but may be empty, check out [this note on optional fields](#a-note-on-optional-fields)."
-msgstr ""
+msgstr "**Note** 若想驗證某個欄位必須存在，但可為空，請參考[這個關於可選欄位的備註](#a-note-on-optional-fields)。"
 
 #: docs/9.x/validation.md:block 592 (quote)
 msgid "**Note** The `$input` parameter passed to your closure will be an instance of `Illuminate\\Support\\Fluent` and may be used to access your input and files under validation."
-msgstr ""
+msgstr "**Note** 傳給閉包的 `$input` 引數會是 `Illuminate\\Support\\Fluent` 的實體。且可用來存取所有正在驗證的輸入與檔案。"
 
 #: docs/9.x/validation.md:block 612 (header)
 msgid "Accessing Nested Array Data"
@@ -3600,11 +3648,11 @@ msgstr "在上述的範例中，會驗證失敗，而使用者會看到這個錯
 
 #: docs/9.x/validation.md:block 621 (header)
 msgid "Validating Files"
-msgstr ""
+msgstr "驗證檔案"
 
 #: docs/9.x/validation.md:block 622 (paragraph)
 msgid "Laravel provides a variety of validation rules that may be used to validate uploaded files, such as `mimes`, `image`, `min`, and `max`. While you are free to specify these rules individually when validating files, Laravel also offers a fluent file validation rule builder that you may find convenient:"
-msgstr ""
+msgstr "Laravel 提供了多種驗證規則，可用來驗證已上傳的檔案，如 `mimes`、`image`、`min`、`max`。雖然我們也可以自行個別指定這些規則，但 Laravel 還提供了一種能流暢建立檔案驗證規則的建構程式："
 
 #: docs/9.x/validation.md:block 623 (code)
 msgid "use Illuminate\\Support\\Facades\\Validator;\n"
@@ -3617,11 +3665,20 @@ msgid "use Illuminate\\Support\\Facades\\Validator;\n"
 "            ->max(12 * 1024),\n"
 "    ],\n"
 "]);\n"
-msgstr ""
+msgstr "use Illuminate\\Support\\Facades\\Validator;\n"
+"use Illuminate\\Validation\\Rules\\File;\n\n"
+"Validator::validate($input, [\n"
+"    'attachment' => [\n"
+"        'required',\n"
+"        File::types(['mp3', 'wav'])\n"
+"            ->min(1024)\n"
+"            ->max(12 * 1024),\n"
+"    ],\n"
+"]);\n"
 
 #: docs/9.x/validation.md:block 624 (paragraph)
 msgid "If your application accepts images uploaded by your users, you may use the `File` rule's `image` constructor method to indicate that the uploaded file should be an image. In addition, the `dimensions` rule may be used to limit the dimensions of the image:"
-msgstr ""
+msgstr "若專案接受使用者上傳圖片，則可使用 `File` 規則的 `image` Constructor 方法來指定這個上傳的檔案應為圖片。此外，使用 `dimensions` 規則可用來限制圖片的長寬："
 
 #: docs/9.x/validation.md:block 625 (code)
 msgid "use Illuminate\\Support\\Facades\\Validator;\n"
@@ -3635,27 +3692,37 @@ msgid "use Illuminate\\Support\\Facades\\Validator;\n"
 "            ->dimensions(Rule::dimensions()->maxWidth(1000)->maxHeight(500)),\n"
 "    ],\n"
 "]);\n"
-msgstr ""
+msgstr "use Illuminate\\Support\\Facades\\Validator;\n"
+"use Illuminate\\Validation\\Rules\\File;\n\n"
+"Validator::validate($input, [\n"
+"    'photo' => [\n"
+"        'required',\n"
+"        File::image()\n"
+"            ->min(1024)\n"
+"            ->max(12 * 1024)\n"
+"            ->dimensions(Rule::dimensions()->maxWidth(1000)->maxHeight(500)),\n"
+"    ],\n"
+"]);\n"
 
 #: docs/9.x/validation.md:block 626 (quote)
 msgid "**Note** More information regarding validating image dimensions may be found in the [dimension rule documentation](#rule-dimensions)."
-msgstr ""
+msgstr "**Note** 更多有關驗證圖片長寬的資訊，請參考 [dimension 規則的說明文件](#rule-dimensions)。"
 
 #: docs/9.x/validation.md:block 628 (header)
 msgid "File Types"
-msgstr ""
+msgstr "檔案類型"
 
 #: docs/9.x/validation.md:block 629 (paragraph)
 msgid "Even though you only need to specify the extensions when invoking the `types` method, this method actually validates the MIME type of the file by reading the file's contents and guessing its MIME type. A full listing of MIME types and their corresponding extensions may be found at the following location:"
-msgstr ""
+msgstr "雖然在叫用 `types` 方法時只需要指定副檔名，但該方法其實會實際讀取檔案的內容名推測其 MIME 型別，然後再驗證該檔案實際的 MIME 型別。完整的 MIME 型別列表，以及這些 MIME 對應的副檔名可在下列位置中找到："
 
 #: docs/9.x/validation.md:block 657 (code)
 msgid "php artisan make:rule Uppercase --invokable\n"
-msgstr ""
+msgstr "php artisan make:rule Uppercase --invokable\n"
 
 #: docs/9.x/validation.md:block 658 (paragraph)
 msgid "Once the rule has been created, we are ready to define its behavior. A rule object contains a single method: `__invoke`. This method receives the attribute name, its value, and a callback that should be invoked on failure with the validation error message:"
-msgstr ""
+msgstr "建立好規則後，就可以來定義其行為了。Rule 物件只包含了單一方法：`__invoke`。該方法會收到屬性的名稱、屬性值、以及一個應在驗證失敗時以錯誤訊息叫用的回呼："
 
 #: docs/9.x/validation.md:block 659 (code)
 msgid "<?php\n\n"
@@ -3678,31 +3745,54 @@ msgid "<?php\n\n"
 "        }\n"
 "    }\n"
 "}\n"
-msgstr ""
+msgstr "<?php\n\n"
+"namespace App\\Rules;\n\n"
+"use Illuminate\\Contracts\\Validation\\InvokableRule;\n\n"
+"class Uppercase implements InvokableRule\n"
+"{\n"
+"    /**\n"
+"     * Run the validation rule.\n"
+"     *\n"
+"     * @param  string  $attribute\n"
+"     * @param  mixed  $value\n"
+"     * @param  \\Closure  $fail\n"
+"     * @return void\n"
+"     */\n"
+"    public function __invoke($attribute, $value, $fail)\n"
+"    {\n"
+"        if (strtoupper($value) !== $value) {\n"
+"            $fail('The :attribute must be uppercase.');\n"
+"        }\n"
+"    }\n"
+"}\n"
 
 #: docs/9.x/validation.md:block 662 (header)
 msgid "Translating Validation Messages"
-msgstr ""
+msgstr "翻譯驗證訊息"
 
 #: docs/9.x/validation.md:block 663 (paragraph)
 msgid "Instead of providing a literal error message to the `$fail` closure, you may also provide a [translation string key](/docs/{{version}}/localization) and instruct Laravel to translate the error message:"
-msgstr ""
+msgstr "除了提供字面錯誤訊息給 `$fail` 閉包外，也可以提供[翻譯字串的索引鍵](/docs/{{version}}/localization)，並告訴 Laravel 要翻譯這個錯誤訊息："
 
 #: docs/9.x/validation.md:block 664 (code)
 msgid "if (strtoupper($value) !== $value) {\n"
 "    $fail('validation.uppercase')->translate();\n"
 "}\n"
-msgstr ""
+msgstr "if (strtoupper($value) !== $value) {\n"
+"    $fail('validation.uppercase')->translate();\n"
+"}\n"
 
 #: docs/9.x/validation.md:block 665 (paragraph)
 msgid "If necessary, you may provide placeholder replacements and the preferred language as the first and second arguments to the `translate` method:"
-msgstr ""
+msgstr "若有需要，`translate` 方法的第一個引數可以設定預留位置 (Placeholder) 的取代值，第二個引數可以設定偏好的語言："
 
 #: docs/9.x/validation.md:block 666 (code)
 msgid "$fail('validation.location')->translate([\n"
 "    'value' => $this->value,\n"
 "], 'fr')\n"
-msgstr ""
+msgstr "$fail('validation.location')->translate([\n"
+"    'value' => $this->value,\n"
+"], 'fr')\n"
 
 #: docs/9.x/validation.md:block 669 (code)
 msgid "<?php\n\n"
@@ -3730,7 +3820,31 @@ msgid "<?php\n\n"
 "        return $this;\n"
 "    }\n"
 "}\n"
-msgstr ""
+msgstr "<?php\n\n"
+"namespace App\\Rules;\n\n"
+"use Illuminate\\Contracts\\Validation\\DataAwareRule;\n"
+"use Illuminate\\Contracts\\Validation\\InvokableRule;\n\n"
+"class Uppercase implements DataAwareRule, InvokableRule\n"
+"{\n"
+"    /**\n"
+"     * All of the data under validation.\n"
+"     *\n"
+"     * @var array\n"
+"     */\n"
+"    protected $data = [];\n\n"
+"    // ...\n\n"
+"    /**\n"
+"     * Set the data under validation.\n"
+"     *\n"
+"     * @param  array  $data\n"
+"     * @return $this\n"
+"     */\n"
+"    public function setData($data)\n"
+"    {\n"
+"        $this->data = $data;\n\n"
+"        return $this;\n"
+"    }\n"
+"}\n"
 
 #: docs/9.x/validation.md:block 671 (code)
 msgid "<?php\n\n"
@@ -3758,15 +3872,39 @@ msgid "<?php\n\n"
 "        return $this;\n"
 "    }\n"
 "}\n"
-msgstr ""
+msgstr "<?php\n\n"
+"namespace App\\Rules;\n\n"
+"use Illuminate\\Contracts\\Validation\\InvokableRule;\n"
+"use Illuminate\\Contracts\\Validation\\ValidatorAwareRule;\n\n"
+"class Uppercase implements InvokableRule, ValidatorAwareRule\n"
+"{\n"
+"    /**\n"
+"     * The validator instance.\n"
+"     *\n"
+"     * @var \\Illuminate\\Validation\\Validator\n"
+"     */\n"
+"    protected $validator;\n\n"
+"    // ...\n\n"
+"    /**\n"
+"     * Set the current validator.\n"
+"     *\n"
+"     * @param  \\Illuminate\\Validation\\Validator  $validator\n"
+"     * @return $this\n"
+"     */\n"
+"    public function setValidator($validator)\n"
+"    {\n"
+"        $this->validator = $validator;\n\n"
+"        return $this;\n"
+"    }\n"
+"}\n"
 
 #: docs/9.x/validation.md:block 682 (code)
 msgid "php artisan make:rule Uppercase --invokable --implicit\n"
-msgstr ""
+msgstr "php artisan make:rule Uppercase --invokable --implicit\n"
 
 #: docs/9.x/validation.md:block 683 (quote)
 msgid "**Warning** An \"implicit\" rule only *implies* that the attribute is required. Whether it actually invalidates a missing or empty attribute is up to you."
-msgstr ""
+msgstr "**Warning** 「隱式」規則只 **暗示** 該屬性為必填欄位。至於當屬性不存在或屬性為空時是否要視為驗證失敗，則取決於你。"
 
 #: docs/master/validation.md:block 222 (paragraph)
 msgid "[Accepted](#rule-accepted) [Accepted If](#rule-accepted-if) [Active URL](#rule-active-url) [After (Date)](#rule-after) [After Or Equal (Date)](#rule-after-or-equal) [Alpha](#rule-alpha) [Alpha Dash](#rule-alpha-dash) [Alpha Numeric](#rule-alpha-num) [Array](#rule-array) [Bail](#rule-bail) [Before (Date)](#rule-before) [Before Or Equal (Date)](#rule-before-or-equal) [Between](#rule-between) [Boolean](#rule-boolean) [Confirmed](#rule-confirmed) [Current Password](#rule-current-password) [Date](#rule-date) [Date Equals](#rule-date-equals) [Date Format](#rule-date-format) [Declined](#rule-declined) [Declined If](#rule-declined-if) [Different](#rule-different) [Digits](#rule-digits) [Digits Between](#rule-digits-between) [Dimensions (Image Files)](#rule-dimensions) [Distinct](#rule-distinct) [Email](#rule-email) [Ends With](#rule-ends-with) [Enum](#rule-enum) [Exclude](#rule-exclude) [Exclude If](#rule-exclude-if) [Exclude Unless](#rule-exclude-unless) [Exclude Without](#rule-exclude-without) [Exists (Database)](#rule-exists) [File](#rule-file) [Filled](#rule-filled) [Greater Than](#rule-gt) [Greater Than Or Equal](#rule-gte) [Image (File)](#rule-image) [In](#rule-in) [In Array](#rule-in-array) [Integer](#rule-integer) [IP Address](#rule-ip) [MAC Address](#rule-mac) [JSON](#rule-json) [Less Than](#rule-lt) [Less Than Or Equal](#rule-lte) [Max](#rule-max) [MIME Types](#rule-mimetypes) [MIME Type By File Extension](#rule-mimes) [Min](#rule-min) [Multiple Of](#multiple-of) [Not In](#rule-not-in) [Not Regex](#rule-not-regex) [Nullable](#rule-nullable) [Numeric](#rule-numeric) [Password](#rule-password) [Present](#rule-present) [Prohibited](#rule-prohibited) [Prohibited If](#rule-prohibited-if) [Prohibited Unless](#rule-prohibited-unless) [Prohibits](#rule-prohibits) [Regular Expression](#rule-regex) [Required](#rule-required) [Required If](#rule-required-if) [Required Unless](#rule-required-unless) [Required With](#rule-required-with) [Required With All](#rule-required-with-all) [Required Without](#rule-required-without) [Required Without All](#rule-required-without-all) [Required Array Keys](#rule-required-array-keys) [Same](#rule-same) [Size](#rule-size) [Sometimes](#validating-when-present) [Starts With](#rule-starts-with) [String](#rule-string) [Timezone](#rule-timezone) [Unique (Database)](#rule-unique) [URL](#rule-url) [UUID](#rule-uuid)"

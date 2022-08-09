@@ -10,7 +10,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
-"PO-Revision-Date: 2022-08-06 05:46\n"
+"PO-Revision-Date: 2022-08-09 13:36\n"
 
 #: docs/8.x/mail.md:block 1 (header)
 msgid "Mail"
@@ -1608,7 +1608,7 @@ msgstr "/**\n"
 
 #: docs/9.x/mail.md:block 2 (unordered list)
 msgid "[Attachable Objects](#attachable-objects)"
-msgstr ""
+msgstr "[可附加的物件](#attachable-objects)"
 
 #: docs/9.x/mail.md:block 2 (unordered list)
 msgid "[Tags & Metadata](#tags-and-metadata)"
@@ -1688,27 +1688,27 @@ msgstr "'ses' => [\n"
 
 #: docs/9.x/mail.md:block 54 (quote)
 msgid "**Note** You may type-hint dependencies on the mailable's `build` method. The Laravel [service container](/docs/{{version}}/container) automatically injects these dependencies."
-msgstr ""
+msgstr "**Note** 也可以在 Mailable 的 `build` 方法上對相依性項目進行型別提示。Laravel 的 [Service Container](/docs/{{version}}/container) 會自動插入這些相依性項目。"
 
 #: docs/9.x/mail.md:block 71 (quote)
 msgid "**Note** You may wish to create a `resources/views/emails` directory to house all of your email templates; however, you are free to place them wherever you wish within your `resources/views` directory."
-msgstr ""
+msgstr "**Note** 可以建立一個 `resources/views/emails` 目錄來放置所有的郵件樣板。不過，不一定要放在這個目錄，可以隨意放在 `resources/views` 目錄下。"
 
 #: docs/9.x/mail.md:block 112 (quote)
 msgid "**Warning** The `$message` variable is not available in plain-text message templates since plain-text messages do not utilize inline attachments."
-msgstr ""
+msgstr "**Warning** `$message` 變數無法在純文字訊息樣板中使用，因為純文字樣板無法使用內嵌的附加檔案。"
 
 #: docs/9.x/mail.md:block 118 (header)
 msgid "Attachable Objects"
-msgstr ""
+msgstr "可附加的物件"
 
 #: docs/9.x/mail.md:block 119 (paragraph)
 msgid "While attaching files to messages via simple string paths is often sufficient, in many cases the attachable entities within your application are represented by classes. For example, if your application is attaching a photo to a message, your application may also have a `Photo` model that represents that photo. When that is the case, wouldn't it be convenient to simply pass the `Photo` model to the `attach` method? Attachable objects allow you to do just that."
-msgstr ""
+msgstr "雖然一般來說，以簡單的字串路徑來將檔案附加到訊息上通常就夠了。但很多情況下，在專案中，可附加的物件都是以類別形式存在的。舉例來說，若要將照片附加到訊息中，則專案內可能有一個用來代表該照片的 `Photo` Model`。 這時，若可以直接將 `Photo` Model 附加到 `attach` 方法上不是很方便嗎？使用可附加的物件，就可以輕鬆達成。"
 
 #: docs/9.x/mail.md:block 120 (paragraph)
 msgid "To get started, implement the `Illuminate\\Contracts\\Mail\\Attachable` interface on the object that will be attachable to messages. This interface dictates that your class defines a `toMailAttachment` method that returns an `Illuminate\\Mail\\Attachment` instance:"
-msgstr ""
+msgstr "若要開始定義可附加物件，請在要被附加到訊息的物件上實作 `Illuminate\\Contracts\\Mail\\Attachable` 介面。該介面會要求這個類別定義 `toMailAttachment`，且該方法應回傳 `Illuminate\\Mail\\Attachment` 實體："
 
 #: docs/9.x/mail.md:block 121 (code)
 msgid "<?php\n\n"
@@ -1728,11 +1728,27 @@ msgid "<?php\n\n"
 "        return Attachment::fromPath('/path/to/file');\n"
 "    }\n"
 "}\n"
-msgstr ""
+msgstr "<?php\n\n"
+"namespace App\\Models;\n\n"
+"use Illuminate\\Contracts\\Mail\\Attachable;\n"
+"use Illuminate\\Database\\Eloquent\\Model;\n"
+"use Illuminate\\Mail\\Attachment;\n\n"
+"class Photo extends Model implements Attachable\n"
+"{\n"
+"    /**\n"
+"     * Get the attachable representation of the model.\n"
+"     *\n"
+"     * @return \\Illuminate\\Mail\\Attachment\n"
+"     */\n"
+"    public function toMailAttachment()\n"
+"    {\n"
+"        return Attachment::fromPath('/path/to/file');\n"
+"    }\n"
+"}\n"
 
 #: docs/9.x/mail.md:block 122 (paragraph)
 msgid "Once you have defined your attachable object, you may simply pass an instance of that object to the `attach` method when building an email message:"
-msgstr ""
+msgstr "定義好可附加物件後，在建立 E-Mail 訊息時，只要將該物件的實體傳給 `attach` 方法即可："
 
 #: docs/9.x/mail.md:block 123 (code)
 msgid "/**\n"
@@ -1745,36 +1761,50 @@ msgid "/**\n"
 "    return $this->view('photos.resized')\n"
 "                ->attach($this->photo);\n"
 "}\n"
-msgstr ""
+msgstr "/**\n"
+" * Build the message.\n"
+" *\n"
+" * @return $this\n"
+" */\n"
+"public function build()\n"
+"{\n"
+"    return $this->view('photos.resized')\n"
+"                ->attach($this->photo);\n"
+"}\n"
 
 #: docs/9.x/mail.md:block 124 (paragraph)
 msgid "Of course, attachment data may be stored on a remote file storage service such as Amazon S3. So, Laravel also allows you to generate attachment instances from data that is stored on one of your application's [filesystem disks](/docs/{{version}}/filesystem):"
-msgstr ""
+msgstr "當然，要附加的資料也可能存放在如 Amazon S3 之類的遠端檔案儲存服務上。因此，在 Laravel 中，我們可以從存放在專案[檔案系統磁碟](/docs/{{version}}/filesystem)上的資料來產生附件實體："
 
 #: docs/9.x/mail.md:block 125 (code)
 msgid "// Create an attachment from a file on your default disk...\n"
 "return Attachment::fromStorage($this->path);\n\n"
 "// Create an attachment from a file on a specific disk...\n"
 "return Attachment::fromStorageDisk('backblaze', $this->path);\n"
-msgstr ""
+msgstr "// 從預設磁碟上的檔案來建立附件...\n"
+"return Attachment::fromStorage($this->path);\n\n"
+"// 從指定磁碟上的檔案來建立附件...\n"
+"return Attachment::fromStorageDisk('backblaze', $this->path);\n"
 
 #: docs/9.x/mail.md:block 126 (paragraph)
 msgid "In addition, you may create attachment instances via data that you have in memory. To accomplish this, provide a closure to the `fromData` method. The closure should return the raw data that represents the attachment:"
-msgstr ""
+msgstr "此外，也可以使用記憶體中的資料來建立附件實體。若要從記憶體中建立，請傳入一個閉包給 `fromData` 方法。該閉包應回傳代表該附件的原始資料："
 
 #: docs/9.x/mail.md:block 127 (code)
 msgid "return Attachment::fromData(fn () => $this->content, 'Photo Name');\n"
-msgstr ""
+msgstr "return Attachment::fromData(fn () => $this->content, 'Photo Name');\n"
 
 #: docs/9.x/mail.md:block 128 (paragraph)
 msgid "Laravel also provides additional methods that you may use to customize your attachments. For example, you may use the `as` and `withMime` methods to customize the file's name and MIME type:"
-msgstr ""
+msgstr "Laravel 也提供了一些額外的方法，讓我們可以自訂附件。舉例來說，可以使用 `as` 與 `withMime` 方法來自訂檔案名稱與 MIME 型別："
 
 #: docs/9.x/mail.md:block 129 (code)
 msgid "return Attachment::fromPath('/path/to/file')\n"
 "        ->as('Photo Name')\n"
 "        ->withMime('image/jpeg');\n"
-msgstr ""
+msgstr "return Attachment::fromPath('/path/to/file')\n"
+"        ->as('Photo Name')\n"
+"        ->withMime('image/jpeg');\n"
 
 #: docs/9.x/mail.md:block 131 (header)
 msgid "Tags & Metadata"
@@ -1860,15 +1890,15 @@ msgstr "use Symfony\\Component\\Mime\\Email;\n\n"
 
 #: docs/9.x/mail.md:block 153 (quote)
 msgid "**Note** Do not use excess indentation when writing Markdown emails. Per Markdown standards, Markdown parsers will render indented content as code blocks."
-msgstr ""
+msgstr "**Note** 在撰寫 Markdown 郵件時請不要增加縮排。依據 Markdown 標準，Markdown 解析程式會將縮排的內容轉譯為程式碼區塊。"
 
 #: docs/9.x/mail.md:block 216 (quote)
 msgid "**Note** To learn more about working around these issues, please review the documentation regarding [queued jobs and database transactions](/docs/{{version}}/queues#jobs-and-database-transactions)."
-msgstr ""
+msgstr "**Note** 要瞭解更多有關這類問題的解決方法，請參考有關[佇列任務與資料庫 Transaction](/docs/{{version}}/queues#jobs-and-database-transactions) 有關的說明文件。"
 
 #: docs/9.x/mail.md:block 225 (quote)
 msgid "**Warning** [Inline attachments](#inline-attachments) will not be rendered when a mailable is previewed in your browser. To preview these mailables, you should send them to an email testing application such as [MailHog](https://github.com/mailhog/MailHog) or [HELO](https://usehelo.com)."
-msgstr ""
+msgstr "**Warning** 在瀏覽器中預覽 Mailable 時，不會轉譯[內嵌的附件](#inline-attachments)。若要瀏覽有內嵌附件的 Mailable，請將郵件傳送到如 [MailHog](https://github.com/mailhog/MailHog) 或 [HELO](https://usehelo.com) 之類的郵件測試程式。"
 
 #: docs/9.x/mail.md:block 239 (paragraph)
 msgid "Laravel provides several convenient methods for testing that your mailables contain the content that you expect. These methods are: `assertSeeInHtml`, `assertDontSeeInHtml`, `assertSeeInOrderInHtml`, `assertSeeInText`, `assertDontSeeInText`, and `assertSeeInOrderInText`."
@@ -2022,7 +2052,19 @@ msgid "use App\\Mail\\MailchimpTransport;\n"
 "        return new MailchimpTransport(/* ... */);\n"
 "    })\n"
 "}\n"
-msgstr ""
+msgstr "use App\\Mail\\MailchimpTransport;\n"
+"use Illuminate\\Support\\Facades\\Mail;\n\n"
+"/**\n"
+" * Bootstrap any application services.\n"
+" *\n"
+" * @return void\n"
+" */\n"
+"public function boot()\n"
+"{\n"
+"    Mail::extend('mailchimp', function (array $config = []) {\n"
+"        return new MailchimpTransport(/* ... */);\n"
+"    })\n"
+"}\n"
 
 #: docs/9.x/mail.md:block 269 (paragraph)
 msgid "Once your custom transport has been defined and registered, you may create a mailer definition within your application's `config/mail.php` configuration file that utilizes the new transport:"

@@ -10,7 +10,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
-"PO-Revision-Date: 2022-08-06 05:47\n"
+"PO-Revision-Date: 2022-08-09 13:36\n"
 
 #: docs/8.x/notifications.md:block 1 (header)
 msgid "Notifications"
@@ -2496,7 +2496,7 @@ msgstr "[自訂 Symfony 訊息](#customizing-the-symfony-message)"
 
 #: docs/9.x/notifications.md:block 20 (quote)
 msgid "**Note** Remember, you may use the `Notifiable` trait on any of your models. You are not limited to only including it on your `User` model."
-msgstr ""
+msgstr "**Note** 請記得，任何的 Model 都可以使用 `Notifiable` Trait。不是只有 `User` Model 上才能用。"
 
 #: docs/9.x/notifications.md:block 29 (paragraph)
 msgid "Every notification class has a `via` method that determines on which channels the notification will be delivered. Notifications may be sent on the `mail`, `database`, `broadcast`, `vonage`, and `slack` channels."
@@ -2504,7 +2504,7 @@ msgstr "每個 Notification 類別都有一個 `via` 方法，用來判斷該通
 
 #: docs/9.x/notifications.md:block 30 (quote)
 msgid "**Note** If you would like to use other delivery channels such as Telegram or Pusher, check out the community driven [Laravel Notification Channels website](http://laravel-notification-channels.com)."
-msgstr ""
+msgstr "**Note** 若想使用其他通道傳送，如 Telegram 或 Pusher，請參考看看由社群提供的 [Laravel Notification Channels 網站](http://laravel-notification-channels.com)。"
 
 #: docs/9.x/notifications.md:block 32 (code)
 msgid "/**\n"
@@ -2530,19 +2530,19 @@ msgstr "/**\n"
 
 #: docs/9.x/notifications.md:block 35 (quote)
 msgid "**Warning** Before queueing notifications you should configure your queue and [start a worker](/docs/{{version}}/queues)."
-msgstr ""
+msgstr "**Warning** 在將通知放入佇列前，請先設定好佇列，並[執行一個 ^[Worker](背景工作角色)](/docs/{{version}}/queues)。"
 
 #: docs/9.x/notifications.md:block 42 (header)
 msgid "Delaying Notifications"
-msgstr ""
+msgstr "延遲通知"
 
 #: docs/9.x/notifications.md:block 46 (header)
 msgid "Delaying Notifications Per Channel"
-msgstr ""
+msgstr "依照通道延遲通知"
 
 #: docs/9.x/notifications.md:block 49 (paragraph)
 msgid "Alternatively, you may define a `withDelay` method on the notification class itself. The `withDelay` method should return an array of channel names and delay values:"
-msgstr ""
+msgstr "或者，也可以在通知類別內定義 `withDelay` 方法。`withDelay` 方法應回傳一組通道名稱的陣列，以及延遲值："
 
 #: docs/9.x/notifications.md:block 50 (code)
 msgid "/**\n"
@@ -2558,11 +2558,23 @@ msgid "/**\n"
 "        'sms' => now()->addMinutes(10),\n"
 "    ];\n"
 "}\n"
-msgstr ""
+msgstr "/**\n"
+" * Determine the notification's delivery delay.\n"
+" *\n"
+" * @param  mixed  $notifiable\n"
+" * @return array\n"
+" */\n"
+"public function withDelay($notifiable)\n"
+"{\n"
+"    return [\n"
+"        'mail' => now()->addMinutes(5),\n"
+"        'sms' => now()->addMinutes(10),\n"
+"    ];\n"
+"}\n"
 
 #: docs/9.x/notifications.md:block 66 (quote)
 msgid "**Note** To learn more about working around these issues, please review the documentation regarding [queued jobs and database transactions](/docs/{{version}}/queues#jobs-and-database-transactions)."
-msgstr ""
+msgstr "**Note** 要瞭解更多有關這類問題的解決方法，請參考有關[佇列任務與資料庫 Transaction](/docs/{{version}}/queues#jobs-and-database-transactions) 有關的說明文件。"
 
 #: docs/9.x/notifications.md:block 75 (code)
 msgid "Notification::route('mail', 'taylor@example.com')\n"
@@ -2591,15 +2603,30 @@ msgid "/**\n"
 "                ->action('View Invoice', $url)\n"
 "                ->line('Thank you for using our application!');\n"
 "}\n"
-msgstr ""
+msgstr "/**\n"
+" * Get the mail representation of the notification.\n"
+" *\n"
+" * @param  mixed  $notifiable\n"
+" * @return \\Illuminate\\Notifications\\Messages\\MailMessage\n"
+" */\n"
+"public function toMail($notifiable)\n"
+"{\n"
+"    $url = url('/invoice/'.$this->invoice->id);\n\n"
+"    return (new MailMessage)\n"
+"                ->greeting('Hello!')\n"
+"                ->line('One of your invoices has been paid!')\n"
+"                ->lineIf($this->amount > 0, \"Amount paid: {$this->amount}\")\n"
+"                ->action('View Invoice', $url)\n"
+"                ->line('Thank you for using our application!');\n"
+"}\n"
 
 #: docs/9.x/notifications.md:block 85 (quote)
 msgid "**Note** Note we are using `$this->invoice->id` in our `toMail` method. You may pass any data your notification needs to generate its message into the notification's constructor."
-msgstr ""
+msgstr "**Note** 請注意，在 `toMail` 中，我們使用了 `$this->invoice->id`。我們可以將通知訊息所需要的任何資料傳入該通知的 ^[Constructor](建構函式) 中。"
 
 #: docs/9.x/notifications.md:block 88 (quote)
 msgid "**Note** When sending mail notifications, be sure to set the `name` configuration option in your `config/app.php` configuration file. This value will be used in the header and footer of your mail notification messages."
-msgstr ""
+msgstr "**Note** 在傳送郵件通知時，請確保有在 `config/app.php` 設定檔中設定 `name` 設定選項。在郵件通知訊息的頁頭與頁尾中會使用到這個值。"
 
 #: docs/9.x/notifications.md:block 98 (code)
 msgid "/**\n"
@@ -2631,11 +2658,11 @@ msgstr "/**\n"
 
 #: docs/9.x/notifications.md:block 123 (quote)
 msgid "**Note** The `attach` method offered by notification mail messages also accepts [attachable objects](/docs/{{version}}/mail#attachable-objects). Please consult the comprehensive [attachable object documentation](/docs/{{version}}/mail#attachable-objects) to learn more."
-msgstr ""
+msgstr "**Note** 通知 Mail 訊息的 `attach` 方法也可傳入[可附加的物件](/docs/{{version}}/mail#attachable-objects)。請參考完整的[可附加的物件說明文件](/docs/{{version}}/mail#attachable-objects)以瞭解詳情。"
 
 #: docs/9.x/notifications.md:block 128 (paragraph)
 msgid "When necessary, multiple files may be attached to a message using the `attachMany` method:"
-msgstr ""
+msgstr "若有需要，可使用 `attachMany` 方法來將多個檔案附加到訊息上："
 
 #: docs/9.x/notifications.md:block 129 (code)
 msgid "/**\n"
@@ -2656,7 +2683,24 @@ msgid "/**\n"
 "                    ],\n"
 "                ]);\n"
 "}\n"
-msgstr ""
+msgstr "/**\n"
+" * Get the mail representation of the notification.\n"
+" *\n"
+" * @param  mixed  $notifiable\n"
+" * @return \\Illuminate\\Notifications\\Messages\\MailMessage\n"
+" */\n"
+"public function toMail($notifiable)\n"
+"{\n"
+"    return (new MailMessage)\n"
+"                ->greeting('Hello!')\n"
+"                ->attachMany([\n"
+"                    '/path/to/forge.svg',\n"
+"                    '/path/to/vapor.svg' => [\n"
+"                        'as' => 'Logo.svg',\n"
+"                        'mime' => 'image/svg+xml',\n"
+"                    ],\n"
+"                ]);\n"
+"}\n"
 
 #: docs/9.x/notifications.md:block 135 (header)
 msgid "Adding Tags & Metadata"
@@ -2746,7 +2790,7 @@ msgstr "use Symfony\\Component\\Mime\\Email;\n\n"
 
 #: docs/9.x/notifications.md:block 212 (quote)
 msgid "**Note** To access your notifications from your JavaScript client, you should define a notification controller for your application which returns the notifications for a notifiable entity, such as the current user. You may then make an HTTP request to that controller's URL from your JavaScript client."
-msgstr ""
+msgstr "**Note**  若要在 JavaScript 用戶端中存取通知，請定義一個用來為 Notifiable 實體 (如：目前使用者) 回傳通知的 Notification Controller。接著就可以從 JavaScript 用戶端上建立一個 HTTP Request 來連線到該 Controller 的網址。"
 
 #: docs/9.x/notifications.md:block 252 (paragraph)
 msgid "Sending SMS notifications in Laravel is powered by [Vonage](https://www.vonage.com/) (formerly known as Nexmo). Before you can send notifications via Vonage, you need to install the `laravel/vonage-notification-channel` and `guzzlehttp/guzzle` packages:"
@@ -2926,5 +2970,5 @@ msgstr "<?php\n\n"
 
 #: docs/9.x/notifications.md:block 329 (quote)
 msgid "**Note** After registering listeners in your `EventServiceProvider`, use the `event:generate` Artisan command to quickly generate listener classes."
-msgstr ""
+msgstr "**Note** 在 `EventServiceProvider` 中註冊好 Listener 後，可使用 `event:generate` Artisan 指令來快速產生 Listener 類別。"
 

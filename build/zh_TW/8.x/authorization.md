@@ -264,7 +264,7 @@ Gate::allowIf(fn ($user) => $user->isAdministrator());
 Gate::denyIf(fn ($user) => $user->banned());
 ```
 
-若該動作未授權、或是使用者未登入，則 Laravel 會自動擲回 `Illuminate\Auth\Access\AuthorizationException` 例外。`AuthorizationException` 實體會自動由 Laravel 的例外處理常式轉換為 403 HTTP 回應：
+若該動作未授權、或是使用者未登入，則 Laravel 會自動擲回 `Illuminate\Auth\Access\AuthorizationException` 例外。`AuthorizationException` 實體會自動由 Laravel 的例外處理常式轉換為 403 HTTP 回應。
 
 <a name="creating-policies"></a>
 

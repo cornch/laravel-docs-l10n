@@ -8,6 +8,8 @@
 
    - [回報 Exception](#reporting-exceptions)
 
+   - [Exception 的 Log 等級](#exception-log-levels)
+
    - [依照型別忽略 Exception](#ignoring-exceptions-by-type)
 
    - [轉譯 Exception](#rendering-exceptions)
@@ -68,7 +70,7 @@
         return false;
     });
 
-> {tip} 若要為給定的例外自訂 Exception 回報，可使用 [Reportable 的例外](/docs/{{version}}/errors#renderable-exceptions)。
+> **Note** 若要為給定的例外自訂 Exception 回報，可使用 [Reportable 的例外](/docs/{{version}}/errors#renderable-exceptions)。
 
 
 <a name="global-log-context"></a>
@@ -133,6 +135,28 @@
         }
     }
 
+<a name="exception-log-levels"></a>
+
+### Exception 的 Log 等級
+
+在將訊息寫入專案的 [Log](/docs/{{version}}/logging) 時，這些訊息會以特定的 [Log 等級](/docs/{{version}}/logging#log-levels)寫入。這個等級即代表該日誌訊息的嚴重程度。
+
+上面也提過，即使使用了 `reportable` 方法註冊自定的 Exception 回報回呼，Laravel 也還是會使用專案預設的 Log 設定來記錄該 Exception。不過，由於 Log 等級有時候會影響訊息會被記錄在哪些通道內，因此有時候我們可能會想設定某個特定的 Exception 要被記錄在哪個 Log 等級上。
+
+若要調整 Log 等級，可以在專案的 Exception Handler 上的 `$levels` 屬性中定義一組 Exception 型別於其 Log 等級的陣列：
+
+    use PDOException;
+    use Psr\Log\LogLevel;
+    
+    /**
+     * A list of exception types with their corresponding custom log levels.
+     *
+     * @var array<class-string<\Throwable>, \Psr\Log\LogLevel::*>
+     */
+    protected $levels = [
+        PDOException::class => LogLevel::CRITICAL,
+    ];
+
 <a name="ignoring-exceptions-by-type"></a>
 
 ### 以類型忽略例外
@@ -142,15 +166,15 @@
     use App\Exceptions\InvalidOrderException;
     
     /**
-     * A list of the exception types that should not be reported.
+     * A list of the exception types that are not reported.
      *
-     * @var array
+     * @var array<int, class-string<\Throwable>>
      */
     protected $dontReport = [
         InvalidOrderException::class,
     ];
 
-> {tip} Laravel 已經預先幫你在內部忽略了一些類型的錯誤。如：產生 404 HTTP「找不到」錯誤的 Exception、還有因為無效 CSRF Token 產生的 419 HTTP Response。
+> **Note** 在 Laravel 內部，Laravel 已經預先幫你忽略了一些類型的錯誤。如：產生 404 HTTP「找不到」錯誤的 Exception、還有因為無效 CSRF Token 產生的 419 HTTP Response。
 
 
 <a name="rendering-exceptions"></a>
@@ -227,7 +251,7 @@
          */
         public function render($request)
         {
-            return response(...);
+            return response(/* ... */);
         }
     }
 
@@ -260,7 +284,7 @@
         return false;
     }
 
-> {tip} 可以在 `report` 方法中型別提示任何的^[相依性](Dependency)。Laravel 的 [Service Container](/docs/{{version}}/container) 會自動插入這些相依性。
+> **Note** 可以在 `report` 方法中型別提示任何的^[相依性](Dependency)。Laravel 的 [Service Container](/docs/{{version}}/container) 會自動插入這些相依性。
 
 
 <a name="http-exceptions"></a>

@@ -12,6 +12,8 @@
 
    - [監聽查詢事件](#listening-for-query-events)
 
+   - [監控積累的查詢時間](#monitoring-cumulative-query-time)
+
 - [資料庫 Transaction](#database-transactions)
 
 - [連線至資料庫 CLI](#connecting-to-the-database-cli)
@@ -26,7 +28,7 @@
 
 - MySQL 5.7+ ([版本政策](https://en.wikipedia.org/wiki/MySQL#Release_history))
 
-- PostgreSQL 9.6+ ([版本政策](https://www.postgresql.org/support/versioning/))
+- PostgreSQL 10.0+ ([版本政策](https://www.postgresql.org/support/versioning/))
 
 - SQLite 3.8.8+
 
@@ -170,6 +172,16 @@ driver://username:password@host:port/database?options
         echo $user->name;
     }
 
+<a name="selecting-scalar-values"></a>
+
+#### Select ^[純量](Scalar)值
+
+有時候，有些資料庫查詢只會回傳一個單一、^[純量](Scalar)的值。在 Laravel 中，我們不一定要從資料物件中取出該查詢的純量值，而可以使用 `scalar` 方法來直接取得這個值：
+
+    $burgers = DB::scalar(
+        "select count(case when food = 'burger' then 1 end) as burgers from menu"
+    );
+
 <a name="using-named-bindings"></a>
 
 #### 使用命名繫結
@@ -227,7 +239,7 @@ driver://username:password@host:port/database?options
 
     DB::unprepared('update users set votes = 100 where name = "Dries"');
 
-> {note} 由於未預先準備的陳述式並不繫結參數，因此這些查詢可能容易遭受 SQL 注入攻擊。在未預先準備的陳述式中，不應包含使用者可控制的值。
+> **Warning** 由於未預先準備的陳述式並不繫結參數，因此這些查詢可能容易遭受 SQL 注入攻擊。在未預先準備的陳述式中，不應包含使用者可控制的值。
 
 
 <a name="implicit-commits-in-transactions"></a>
@@ -248,7 +260,7 @@ driver://username:password@host:port/database?options
 
     use Illuminate\Support\Facades\DB;
     
-    $users = DB::connection('sqlite')->select(...);
+    $users = DB::connection('sqlite')->select(/* ... */);
 
 也可以通過連線實體上的 `getPdo` 方法來存取原始、底層的 PDO 實體：
 
@@ -290,6 +302,45 @@ driver://username:password@host:port/database?options
                 // $query->sql;
                 // $query->bindings;
                 // $query->time;
+            });
+        }
+    }
+
+<a name="monitoring-cumulative-query-time"></a>
+
+### 監控積累的查詢時間
+
+在現代網頁 App 中常見的效能瓶頸就是在查詢資料庫所花費的時間上。幸好，Laravel 可以在程式在單一 Request 中查詢資料庫花費太多時間時，叫用指定的閉包或回呼。若要開始監控積累的查詢時間，請向 `whenQueryingForLongerThan` 方法提供一個查詢時間的閥值 (單位為毫秒)，以及一個閉包。可以在某個 [Service Provider](/docs/{{version}}/providers) 中叫用此方法：
+
+    <?php
+    
+    namespace App\Providers;
+    
+    use Illuminate\Database\Connection;
+    use Illuminate\Support\Facades\DB;
+    use Illuminate\Support\ServiceProvider;
+    
+    class AppServiceProvider extends ServiceProvider
+    {
+        /**
+         * Register any application services.
+         *
+         * @return void
+         */
+        public function register()
+        {
+            //
+        }
+    
+        /**
+         * Bootstrap any application services.
+         *
+         * @return void
+         */
+        public function boot()
+        {
+            DB::whenQueryingForLongerThan(500, function (Connection $connection) {
+                // Notify development team...
             });
         }
     }
@@ -340,7 +391,7 @@ driver://username:password@host:port/database?options
 
     DB::commit();
 
-> {tip} `DB` Facade 的 Transaction 方法會同時控制到 [Query Builder](/docs/{{version}}/queries) 與 [Eloquent ORM](/docs/{{version}}/eloquent)。
+> **Note** `DB` Facade 的 Transaction 方法會同時控制到 [Query Builder](/docs/{{version}}/queries) 與 [Eloquent ORM](/docs/{{version}}/eloquent)。
 
 
 <a name="connecting-to-the-database-cli"></a>

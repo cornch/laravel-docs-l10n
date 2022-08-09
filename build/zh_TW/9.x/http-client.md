@@ -16,6 +16,8 @@
 
    - [錯誤處理](#error-handling)
 
+   - [Guzzle Middleware](#guzzle-middleware)
+
    - [Guzzle 選項](#guzzle-options)
 
 - [同時進行的 Request](#concurrent-requests)
@@ -27,6 +29,8 @@
    - [模擬 Response](#faking-responses)
 
    - [攔截 Request](#inspecting-requests)
+
+   - [Preventing Stray Requests](#preventing-stray-requests)
 
 - [事件](#events)
 
@@ -170,11 +174,11 @@ composer require guzzlehttp/guzzle
 
 可以使用 `withBasicAuth` 方法來指定使用 Basic 身分驗證的^[認證](Credential)，或是使用 `withDigestAuth` 方法來指定 Digest 身分驗證的認證：
 
-    // Basic 身份認證...
-    $response = Http::withBasicAuth('taylor@laravel.com', 'secret')->post(...);
+    // Basic authentication...
+    $response = Http::withBasicAuth('taylor@laravel.com', 'secret')->post(/* ... */);
     
-    // Digest 身份認證...
-    $response = Http::withDigestAuth('taylor@laravel.com', 'secret')->post(...);
+    // Digest authentication...
+    $response = Http::withDigestAuth('taylor@laravel.com', 'secret')->post(/* ... */);
 
 <a name="bearer-tokens"></a>
 
@@ -182,7 +186,7 @@ composer require guzzlehttp/guzzle
 
 若想快速在 Request 的 `Authorization` 標頭中加上 Bearer ^[權杖](Token)，可使用 `withToken` 方法：
 
-    $response = Http::withToken('token')->post(...);
+    $response = Http::withToken('token')->post(/* ... */);
 
 <a name="timeout"></a>
 
@@ -190,13 +194,13 @@ composer require guzzlehttp/guzzle
 
 可使用 `timeout` 方法來為 Response 指定最多要等待的秒數：
 
-    $response = Http::timeout(3)->get(...);
+    $response = Http::timeout(3)->get(/* ... */);
 
 當達到給定的逾時秒數後，會擲回 `Illuminate\Http\Client\ConnectionException` 實體。
 
 可以使用 `connectTimeout` 方法來指定嘗試連線到伺服器時要等待的最大秒數：
 
-    $response = Http::connectTimeout(3)->get(...);
+    $response = Http::connectTimeout(3)->get(/* ... */);
 
 <a name="retries"></a>
 
@@ -204,17 +208,32 @@ composer require guzzlehttp/guzzle
 
 若想讓 HTTP 用戶端在發生用戶端錯誤或伺服器端錯誤時自動重試，可以使用 `retry` 方法。`retry` 方法接受該 Request 要重試的最大次數，以及每次重試間要等待多少毫秒：
 
-    $response = Http::retry(3, 100)->post(...);
+    $response = Http::retry(3, 100)->post(/* ... */);
 
 若有需要，可以傳入第三個引數給 `retry` 方法。第三個引數應為一個 Callable，用來判斷是否要重試。舉例來說，我們可以判斷只在 Request 遇到 `ConnectionException` 時才重試：
 
-    $response = Http::retry(3, 100, function ($exception) {
+    $response = Http::retry(3, 100, function ($exception, $request) {
         return $exception instanceof ConnectionException;
-    })->post(...);
+    })->post(/* ... */);
+
+若 Request 查詢失敗，我們可能會想在進行新嘗試前對 Request 做點修改。若要在重新嘗試前對 Request 做修改，我們只需要將提供 `retry` 方法的 Request 引數更改為 Callable 即可。舉例來說，在第一次嘗試回傳身份驗證錯誤時，我們可能會想以新的 Authorization Token 來重試該 Request：
+
+    $response = Http::withToken($this->getToken())->retry(2, 0, function ($exception, $request) {
+        if (! $exception instanceof RequestException || $exception->response->status() !== 401) {
+            return false;
+        }
+    
+        $request->withToken($this->getNewToken());
+    
+        return true;
+    })->post(/* ... */);
 
 若 Request 執行失敗，會擲回一個 `Illuminate\Http\Client\RequestException` 實體。若想禁用這個行為，可傳入 `false` 給 `throw` 引數。當禁用擲回 Exception 時，會回傳所有重試中用戶端收到的最後一個 Response：
 
-    $response = Http::retry(3, 100, throw: false)->post(...);
+    $response = Http::retry(3, 100, throw: false)->post(/* ... */);
+
+> **Warning** If all of the requests fail because of a connection issue, a `Illuminate\Http\Client\ConnectionException` will still be thrown even when the `throw` argument is set to `false`.
+
 
 <a name="error-handling"></a>
 
@@ -243,13 +262,16 @@ composer require guzzlehttp/guzzle
 
 假設有個 Response 實體，而我們想在該 Response 的狀態碼為伺服器端或用戶端錯誤時擲回 `Illuminate\Http\Client\RequestException`，則可以使用 `throw` 或 `throwIf` 方法：
 
-    $response = Http::post(...);
+    $response = Http::post(/* ... */);
     
-    // 若發生用戶端或伺服器端錯誤，擲回 Exception...
+    // Throw an exception if a client or server error occurred...
     $response->throw();
     
-    // 若發生錯誤且給定條件為 True，擲回 Exception...
+    // Throw an exception if an error occurred and the given condition is true...
     $response->throwIf($condition);
+    
+    // Throw an exception if an error occurred and the given condition is false...
+    $response->throwUnless($condition);
     
     return $response['user']['id'];
 
@@ -257,13 +279,47 @@ composer require guzzlehttp/guzzle
 
 如果沒有發生錯誤，`throw` 方法會回傳 Response 實體，能讓我們在 `throw` 方法後繼續串上其他操作：
 
-    return Http::post(...)->throw()->json();
+    return Http::post(/* ... */)->throw()->json();
 
 若想在 Exception 被擲回前加上其他額外的邏輯，可傳入一個閉包給 `throw` 方法。叫用閉包後，就會自動擲回 Exception，因此我們不需要在閉包內重新擲回 Exception：
 
-    return Http::post(...)->throw(function ($response, $e) {
+    return Http::post(/* ... */)->throw(function ($response, $e) {
         //
     })->json();
+
+<a name="guzzle-middleware"></a>
+
+### Guzzle Middleware
+
+Since Laravel's HTTP client is powered by Guzzle, you may take advantage of [Guzzle Middleware](https://docs.guzzlephp.org/en/stable/handlers-and-middleware.html) to manipulate the outgoing request or inspect the incoming response. To manipulate the outgoing request, register a Guzzle middleware via the `withMiddleware` method in combination with Guzzle's `mapRequest` middleware factory:
+
+    use GuzzleHttp\Middleware;
+    use Illuminate\Support\Facades\Http;
+    use Psr\Http\Message\RequestInterface;
+    
+    $response = Http::withMiddleware(
+        Middleware::mapRequest(function (RequestInterface $request) {
+            $request->withHeader('X-Example', 'Value');
+            
+            return $request;
+        })
+    ->get('http://example.com');
+
+Likewise, you can inspect the incoming HTTP response by registering a middleware via the `withMiddleware` method in combination with Guzzle's `mapResponse` middleware factory:
+
+    use GuzzleHttp\Middleware;
+    use Illuminate\Support\Facades\Http;
+    use Psr\Http\Message\ResponseInterface;
+    
+    $response = Http::withMiddleware(
+        Middleware::mapResponse(function (ResponseInterface $response) {
+            $header = $response->getHeader('X-Example');
+    
+            // ...
+            
+            return $response;
+        })
+    )->get('http://example.com');
 
 <a name="guzzle-options"></a>
 
@@ -343,7 +399,7 @@ $response = Http::github()->get('/');
 
 ## 測試
 
-許多 Laravel 的服務都提供了能讓我們輕鬆撰寫測試的功能，而 Laravel 的 HTTP 包裝也不例外。`Http` Facade 的 `fake` 方法能讓我們指定 HTTP 用戶端在建立 Request 後回傳一組虛擬的 Response。
+Many Laravel services provide functionality to help you easily and expressively write tests, and Laravel's HTTP client is no exception. The `Http` facade's `fake` method allows you to instruct the HTTP client to return stubbed / dummy responses when requests are made.
 
 <a name="faking-responses"></a>
 
@@ -355,7 +411,7 @@ $response = Http::github()->get('/');
     
     Http::fake();
     
-    $response = Http::post(...);
+    $response = Http::post(/* ... */);
 
 <a name="faking-specific-urls"></a>
 
@@ -395,7 +451,7 @@ $response = Http::github()->get('/');
                                 ->pushStatus(404),
     ]);
 
-用完 Response 序列內的所有 Response 後，接下來再建立 Request 就會導致 Response 系列擲回一個 Exception。若想指定當序列為空時要回傳的預設 Response，可使用 `whenEmpty` 方法：
+When all the responses in a response sequence have been consumed, any further requests will cause the response sequence to throw an exception. If you would like to specify a default response that should be returned when a sequence is empty, you may use the `whenEmpty` method:
 
     Http::fake([
         // 為 GitHub Endpoint 模擬一系列的 Response...
@@ -417,9 +473,31 @@ $response = Http::github()->get('/');
 
 若某些 Endpoint 需要使用比較複雜的邏輯來判斷要回傳什麼 Response 的話，可傳入一個閉包給 `fake` 方法。該閉包會收到一組 `Illuminate\Http\Client\Request` 的實體，而該閉包必須回傳 Response 實體。在這個閉包內，我們就可以任意加上邏輯來判斷要回傳什麼類型的 Response：
 
-    Http::fake(function ($request) {
+    use Illuminate\Http\Client\Request;
+    
+    Http::fake(function (Request $request) {
         return Http::response('Hello World', 200);
     });
+
+<a name="preventing-stray-requests"></a>
+
+### Preventing Stray Requests
+
+If you would like to ensure that all requests sent via the HTTP client have been faked throughout your individual test or complete test suite, you can call the `preventStrayRequests` method. After calling this method, any requests that do not have a corresponding fake response will throw an exception rather than making the actual HTTP request:
+
+    use Illuminate\Support\Facades\Http;
+    
+    Http::preventStrayRequests();
+    
+    Http::fake([
+        'github.com/*' => Http::response('ok'),
+    ]);
+    
+    // An "ok" response is returned...
+    Http::get('https://github.com/laravel/framework');
+    
+    // An exception is thrown...
+    Http::get('https://laravel.com');
 
 <a name="inspecting-requests"></a>
 
@@ -475,6 +553,46 @@ $response = Http::github()->get('/');
     Http::fake();
     
     Http::assertNothingSent();
+
+<a name="recording-requests-and-responses"></a>
+
+#### Recording Requests / Responses
+
+You may use the `recorded` method to gather all requests and their corresponding responses. The `recorded` method returns a collection of arrays that contains instances of `Illuminate\Http\Client\Request` and `Illuminate\Http\Client\Response`:
+
+```php
+Http::fake([
+    'https://laravel.com' => Http::response(status: 500),
+    'https://nova.laravel.com/' => Http::response(),
+]);
+
+Http::get('https://laravel.com');
+Http::get('https://nova.laravel.com/');
+
+$recorded = Http::recorded();
+
+[$request, $response] = $recorded[0];
+```
+
+Additionally, the `recorded` method accepts a closure which will receive an instance of `Illuminate\Http\Client\Request` and `Illuminate\Http\Client\Response` and may be used to filter request / response pairs based on your expectations:
+
+```php
+use Illuminate\Http\Client\Request;
+use Illuminate\Http\Client\Response;
+
+Http::fake([
+    'https://laravel.com' => Http::response(status: 500),
+    'https://nova.laravel.com/' => Http::response(),
+]);
+
+Http::get('https://laravel.com');
+Http::get('https://nova.laravel.com/');
+
+$recorded = Http::recorded(function (Request $request, Response $response) {
+    return $request->url() !== 'https://laravel.com' &&
+           $response->successful();
+});
+```
 
 <a name="events"></a>
 

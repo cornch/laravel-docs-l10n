@@ -74,7 +74,7 @@
 
 ## 簡介
 
-Laravel 中包含了 Eloquent。Eloquent 是一個物件關聯對映 (ORM, Object-Relational Mapper)，能讓開發人員以更愉快的方式與資料庫互動。在使用 Eloquent 時，每個資料表都會有一個對應的「Model」，我們可以使用這個 Model 來與中聯辦互動。除了從資料表中取得資料外，通過 Eloquent Model，我們還能進行插入、更新、與刪除的動作。
+Laravel 中包含了 Eloquent。Eloquent 是一個物件關聯對映 (ORM, Object-Relational Mapper)，能讓開發人員以更愉快的方式與資料庫互動。在使用 Eloquent 時，每個資料表都會有一個對應的「Model」，我們可以通過 Model 來使用資料表。除了從資料表中取得資料外，通過 Eloquent Model，我們還能進行插入、更新、與刪除的動作。
 
 > {tip} 在開始之前，請先確定是否有在 `config/database.php` 組態設定檔中設定好資料庫連線。更多有關設定資料庫則資訊，請參考[資料庫組態設定說明文件](/docs/{{version}}/database#configuration)。
 

@@ -74,7 +74,7 @@
         $table->integer('expiration');
     });
 
-> {tip} 可以使用 `php artisan cache:table` Artisan 指令來產生包含正確 Schema 的 Migration。
+> **Note** 可以使用 `php artisan cache:table` Artisan 指令來產生包含正確 Schema 的 Migration。
 
 
 <a name="memcached"></a>
@@ -173,7 +173,7 @@
 也可以傳入一個閉包來作為預設值。若指定項目不存在於快取內，則該閉包的結果會被回傳。傳入閉包可讓你暫緩從資料庫或其他外部服務取得預設值的過程：
 
     $value = Cache::get('key', function () {
-        return DB::table(...)->get();
+        return DB::table(/* ... */)->get();
     });
 
 <a name="checking-for-item-existence"></a>
@@ -255,7 +255,7 @@
 
     Cache::forever('key', 'value');
 
-> {tip} 若使用 Memcached Driver，使用「forever」儲存的項目可能會在快取達到大小限制時被移除。
+> **Note** 若使用 Memcached Driver，使用「forever」儲存的項目可能會在快取達到大小限制時被移除。
 
 
 <a name="removing-items-from-the-cache"></a>
@@ -276,7 +276,7 @@
 
     Cache::flush();
 
-> {note} 使用 Flush 移除快取並不理會所設定的快取「前綴」，會將快取內所有的項目都移除。當快取有與其他應用程式共用時，在清除快取前請三思。
+> **Warning** 使用 Flush 移除快取並不理會所設定的快取「^[Prefix](前置詞)」，會將快取內所有的項目都移除。當快取有與其他應用程式共用時，在清除快取前請三思。
 
 
 <a name="the-cache-helper"></a>
@@ -299,21 +299,21 @@
         return DB::table('users')->get();
     });
 
-> {tip} 在測試呼叫全域的 `cache` 函式時，可以像在[測試 Facade](/docs/{{version}}/mocking#mocking-facades)一樣，使用 `Cache::shouldReceive` 方法。
+> **Note** 在測試呼叫全域的 `cache` 函式時，可以像在[測試 Facade](/docs/{{version}}/mocking#mocking-facades)一樣，使用 `Cache::shouldReceive` 方法。
 
 
 <a name="cache-tags"></a>
 
 ## 快取標籤
 
-> {note} 使用 `file`, `dynamodb` 或 `database` 快取 Driver 時，不支援使用快取標籤。此外，在以「forever」儲存的快取上使用多重標籤時，搭配 `memcached` Driver 能取得最佳效能，這些 Driver 通常會自動移除舊的記錄。
+> **Warning** 使用 `file`, `dynamodb` 或 `database` 快取 Driver 時，不支援使用快取標籤。此外，在以「forever」儲存的快取上使用多重標籤時，搭配 `memcached` Driver 能取得最佳效能，這些 Driver 通常會自動移除舊的記錄。
 
 
 <a name="storing-tagged-cache-items"></a>
 
 ### 儲存標籤的快取項目
 
-快取標籤能讓你將快取內相關的項目標記在一起，並能將所有被指派到相同標籤的快取值一起被清除。可以通過傳入包含標籤名稱的有序陣列來存取標籤快取。舉例來說，我們來存取一個被標籤的快取，並將一個值 `put` 進快取內：
+快取標籤能讓你將快取內相關的項目標記在一起，並能將所有被指派到相同標籤的快取值一起被清除。可以通過傳入包含標籤名稱的有序陣列來存取標籤快取。在儲存快取項目時，若有使用標籤，則必須提供這些標籤，才可存取該項目。舉例來說，我們來存取一個被標籤的快取，並將一個值 `put` 進快取內：
 
     Cache::tags(['people', 'artists'])->put('John', $john, $seconds);
     
@@ -345,7 +345,7 @@
 
 ## Atomic Lock (不可部分完成的鎖定)
 
-> {note} 若要使用此功能，則應用程式必須要使用 `memcached`, `redis`, `dynamodb`, `database`, `file` 或 `array` 作為應用程式的預設快取 Driver。另外，所有的伺服器也都必須要連線至相同的中央快取伺服器。
+> **Warning** 若要使用此功能，則應用程式必須要使用 `memcached`, `redis`, `dynamodb`, `database`, `file` 或 `array` 作為應用程式的預設快取 Driver。另外，所有的伺服器也都必須要連線至相同的中央快取伺服器。
 
 
 <a name="lock-driver-prerequisites"></a>
@@ -468,7 +468,7 @@
         return Cache::repository(new MongoStore);
     });
 
-> {tip} 若不知道該將自定快取 Driver 的程式碼放在哪裡，可在 `app` 目錄內建立一個 `Extensions` 命名空間。不過，請記得，Laravel 並沒有硬性規定應用程式的架構，你可以隨意依照你的喜好來阻止程式碼。
+> **Note** 若不知道該將自定快取 Driver 的程式碼放在哪裡，可在 `app` 目錄內建立一個 `Extensions` 命名空間。不過，請記得，Laravel 並沒有硬性規定應用程式的架構，你可以隨意依照你的喜好來阻止程式碼。
 
 
 <a name="registering-the-driver"></a>

@@ -121,7 +121,7 @@ server {
 composer install --optimize-autoloader --no-dev
 ```
 
-> {tip} 除了最佳化 Autoloader 外，也應確保有將 `composer.lock` 檔案加到專案的版本控制儲存庫內。當有 `composer.lock` 檔時，專案的相依性套件可以安裝得更快。
+> **Note** 除了最佳化 Autoloader 外，也應確保有將 `composer.lock` 檔案加到專案的版本控制儲存庫內。當有 `composer.lock` 檔時，專案的相依性套件可以安裝得更快。
 
 
 <a name="optimizing-configuration-loading"></a>
@@ -136,7 +136,7 @@ php artisan config:cache
 
 該指令會將所有的 Laravel 組態設定檔合併為單一、經過快取的檔案。該檔案通常可以減少一些框架在載入組態設定值時讀取檔案系統的次數。
 
-> {note} 若在部署流程中執行了 `config:cache` 指令，應確保只有在組態設定檔中呼叫 `env` 函式。設定檔被快取後，就不會再載入 `.env` 檔了。所有 `env` 函式查詢 `.env` 變數的呼叫都會回傳 `null`。
+> **Warning** 若在部署流程中執行了 `config:cache` 指令，應確保只有在組態設定檔中呼叫 `env` 函式。設定檔被快取後，就不會再載入 `.env` 檔了。所有 `env` 函式查詢 `.env` 變數的呼叫都會回傳 `null`。
 
 
 <a name="optimizing-route-loading"></a>
@@ -167,7 +167,7 @@ php artisan view:cache
 
 ## 除錯模式
 
-config/app.php 組態設定檔中的 debug 選項用來判斷錯誤在實際顯示給使用者時要包含多少資訊。預設情況下，這個選項被設為依照 APP_DEBUG 環境變數值，該環境變數儲存於 `.env` 檔內。
+config/app.php 組態設定檔中的 debug 選項用來判斷錯誤在實際顯示給使用者時要包含多少資訊。預設情況下，這個選項被設為依照 `APP_DEBUG` 環境變數值，該環境變數儲存於專案的 `.env` 檔內。
 
 **在正式環境上，這個值一定要是 `false`。若在正式環境上將 `APP_DEBUG` 變數設為 `true`，則會有將機敏設定值暴露給應用程式終端使用者的風險。**
 

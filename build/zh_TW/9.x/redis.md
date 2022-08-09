@@ -1,32 +1,32 @@
 # Redis
 
-- [Introduction](#introduction)
+- [簡介](#introduction)
 
-- [Configuration](#configuration)
+- [組態設定](#configuration)
 
-   - [Clusters](#clusters)
+   - [叢集](#clusters)
 
    - [Predis](#predis)
 
    - [phpredis](#phpredis)
 
-- [Interacting With Redis](#interacting-with-redis)
+- [使用 Redis](#interacting-with-redis)
 
-   - [Transactions](#transactions)
+   - [Transaction](#transactions)
 
-   - [Pipelining Commands](#pipelining-commands)
+   - [指令管道](#pipelining-commands)
 
 - [Pub / Sub](#pubsub)
 
 <a name="introduction"></a>
 
-## Introduction
+## 簡介
 
-[Redis](https://redis.io) is an open source, advanced key-value store. It is often referred to as a data structure server since keys can contain [strings](https://redis.io/topics/data-types#strings), [hashes](https://redis.io/topics/data-types#hashes), [lists](https://redis.io/topics/data-types#lists), [sets](https://redis.io/topics/data-types#sets), and [sorted sets](https://redis.io/topics/data-types#sorted-sets).
+[Redis](https://redis.io) 是一個開放原始碼的高階索引鍵／值存放空間。Redis 常被稱作資料結構伺服器，因為索引鍵中可以保存[字串 (String)](https://redis.io/topics/data-types#strings)、[雜湊 (Hash)](https://redis.io/topics/data-types#hashes)、[清單 (List)](https://redis.io/topics/data-types#lists)、[集合 (Set)](https://redis.io/topics/data-types#sets)、[有序集合 (Sorted Set)](https://redis.io/topics/data-types#sorted-sets)等。
 
-Before using Redis with Laravel, we encourage you to install and use the [phpredis](https://github.com/phpredis/phpredis) PHP extension via PECL. The extension is more complex to install compared to "user-land" PHP packages but may yield better performance for applications that make heavy use of Redis. If you are using [Laravel Sail](/docs/{{version}}/sail), this extension is already installed in your application's Docker container.
+在 Laravel 中使用 Redis 前，我們建議先使用 PECL 安裝 [phpredis](https://github.com/phpredis/phpredis) PHP 擴充程式。比起安裝其他「User-Land (即，非 PHP 官方套件)」提供的 PHP 套件，要安裝 phpredis 比較複雜一點。不過，對於重度使用 Redis 的專案來說，使用 phpredis 的效能會比較好。若使用 [Laravel Sail](/docs/{{version}}/sail)，則該擴充程式已安裝在專案的 Docker Container 裡了。
 
-If you are unable to install the phpredis extension, you may install the `predis/predis` package via Composer. Predis is a Redis client written entirely in PHP and does not require any additional extensions:
+若無法安裝 phpredis 擴充程式，則可使用 Composer 安裝 `predis/predis` 套件。Predis 是完全以 PHP 撰寫的 Redis 用戶端。使用 Predis 就不需要安裝其他額外的擴充程式：
 
 ```shell
 composer require predis/predis
@@ -34,9 +34,9 @@ composer require predis/predis
 
 <a name="configuration"></a>
 
-## Configuration
+## 組態設定
 
-You may configure your application's Redis settings via the `config/database.php` configuration file. Within this file, you will see a `redis` array containing the Redis servers utilized by your application:
+我們可以在 `config/database.php` 設定檔中設定專案的 Redis 設定。在該檔案中，可以看到一個 `redis` 陣列，其中存放的就是專案要使用的 Redis 伺服器：
 
     'redis' => [
     
@@ -58,7 +58,7 @@ You may configure your application's Redis settings via the `config/database.php
     
     ],
 
-Each Redis server defined in your configuration file is required to have a name, host, and a port unless you define a single URL to represent the Redis connection:
+除非使用單一 URL 來代表 Redis 連線，否則該設定檔中所定義的每個 Redis 伺服器都必須有名稱、主機、連接埠：
 
     'redis' => [
     
@@ -76,9 +76,9 @@ Each Redis server defined in your configuration file is required to have a name,
 
 <a name="configuring-the-connection-scheme"></a>
 
-#### Configuring The Connection Scheme
+#### 設定連線的 Scheme
 
-By default, Redis clients will use the `tcp` scheme when connecting to your Redis servers; however, you may use TLS / SSL encryption by specifying a `scheme` configuration option in your Redis server's configuration array:
+預設情況下，Redis 用戶端會使用 `tcp` ^[Scheme](配置) 來連線到 Redis 伺服器。不過，我們也可以在 Redis 伺服器設定陣列中指定 `scheme` 設定選項來使用 TLS / SSL 加密：
 
     'redis' => [
     
@@ -96,9 +96,9 @@ By default, Redis clients will use the `tcp` scheme when connecting to your Redi
 
 <a name="clusters"></a>
 
-### Clusters
+### 叢集
 
-If your application is utilizing a cluster of Redis servers, you should define these clusters within a `clusters` key of your Redis configuration. This configuration key does not exist by default so you will need to create it within your application's `config/database.php` configuration file:
+若專案使用 Redis 伺服器叢集 (Cluster)，則應在 Redis 設定中的 `clusters` 索引鍵下定義這些叢集。預設情況下沒有該設定索引鍵，因此我們需要手動在 `config/database.php` 設定檔中建立該索引鍵：
 
     'redis' => [
     
@@ -117,9 +117,9 @@ If your application is utilizing a cluster of Redis servers, you should define t
     
     ],
 
-By default, clusters will perform client-side sharding across your nodes, allowing you to pool nodes and create a large amount of available RAM. However, client-side sharding does not handle failover; therefore, it is primarily suited for transient cached data that is available from another primary data store.
+預設情況下，叢集會在各個節點間做用戶端分區 (Sharding)，讓我們能集區化 (Pool) 節點，並儘量取得更多可用的 RAM。不過，使用用戶端分區將無法處理 ^[Failover](容錯移轉)。因此，這種做法主要只適合用在一些存放時間短的、快取的資料。這些資料應該要能從其他主要的資料存放空間內取得。
 
-If you would like to use native Redis clustering instead of client-side sharding, you may specify this by setting the `options.cluster` configuration value to `redis` within your application's `config/database.php` configuration file:
+若想使用 Redis 原生的叢集功能，而不使用用戶端分區，則我們可以在 `config/database.php` 設定檔中將 `options.cluster` 設定值設為 `redis`：
 
     'redis' => [
     
@@ -139,7 +139,7 @@ If you would like to use native Redis clustering instead of client-side sharding
 
 ### Predis
 
-If you would like your application to interact with Redis via the Predis package, you should ensure the `REDIS_CLIENT` environment variable's value is `predis`:
+若專案通過 Predis 套件來使用 Redis，則請確定 `REDIS_CLIENT` 環境變數是否有設為 `predis`：
 
     'redis' => [
     
@@ -148,7 +148,7 @@ If you would like your application to interact with Redis via the Predis package
         // ...
     ],
 
-In addition to the default `host`, `port`, `database`, and `password` server configuration options, Predis supports additional [connection parameters](https://github.com/nrk/predis/wiki/Connection-Parameters) that may be defined for each of your Redis servers. To utilize these additional configuration options, add them to your Redis server configuration in your application's `config/database.php` configuration file:
+除了預設的 `host`、`port`、`database`、`password` 等伺服器設定選項外，Predis 還支援其他的[連線參數](https://github.com/nrk/predis/wiki/Connection-Parameters)，這些連線參數可以在每個 Redis 伺服器上定義。若要使用這些其他的設定選項，請將這些選項駕到 `config/database.php` 設定檔中的 Redis 伺服器設定內：
 
     'default' => [
         'host' => env('REDIS_HOST', 'localhost'),
@@ -160,24 +160,28 @@ In addition to the default `host`, `port`, `database`, and `password` server con
 
 <a name="the-redis-facade-alias"></a>
 
-#### The Redis Facade Alias
+#### Redis Facade 的別名
 
-Laravel's `config/app.php` configuration file contains an `aliases` array which defines all of the class aliases that will be registered by the framework. For convenience, an alias entry is included for each [facade](/docs/{{version}}/facades) offered by Laravel; however, the `Redis` alias is disabled because it conflicts with the `Redis` class name provided by the phpredis extension. If you are using the Predis client and would like to enable this alias, you may un-comment the alias in your application's `config/app.php` configuration file.
+Laravel 的 `config/app.php` 設定檔中包含了一個 `aliases` 陣列，該陣列中定義了所有 Laravel 會註冊的類別別名。預設情況下，該檔案中並未包含 `Redis` 別名，因為使用 `Redis` 會與 phpredis 擴充程式的 `Redis` 類別名稱衝突。在使用 Predis 用戶端時，若想新增使用 `Redis` 別名，則可將該別名加入到專案 `config/app.php` 設定檔中的 `aliases` 陣列中：
+
+    'aliases' => Facade::defaultAliases()->merge([
+        'Redis' => Illuminate\Support\Facades\Redis::class,
+    ])->toArray(),
 
 <a name="phpredis"></a>
 
 ### phpredis
 
-By default, Laravel will use the phpredis extension to communicate with Redis. The client that Laravel will use to communicate with Redis is dictated by the value of the `redis.client` configuration option, which typically reflects the value of the `REDIS_CLIENT` environment variable:
+預設情況下，Laravel 會使用 phpredis 擴充程式來與 Redis 溝通。Laravel 要用來與 Redis 溝通的用戶端是由 `redis.client` 設定選項來判斷的，一般來說這個設定選項的值就是 `REDIS_CLIENT` 環境變數值：
 
     'redis' => [
     
         'client' => env('REDIS_CLIENT', 'phpredis'),
     
-        // Rest of Redis configuration...
+        // 其餘 Redis 設定...
     ],
 
-In addition to the default `scheme`, `host`, `port`, `database`, and `password` server configuration options, phpredis supports the following additional connection parameters: `name`, `persistent`, `persistent_id`, `prefix`, `read_timeout`, `retry_interval`, `timeout`, and `context`. You may add any of these options to your Redis server configuration in the `config/database.php` configuration file:
+出了預設的 `scheme`、`host`、`port`、`database`、`password` 等伺服器設定選項外，phpredis 還支援下列其他的連線參數：`name`、`persistent`、`persistent_id`、`prefix`、`read_timeout`、`retry_interval`、`timeout`、`context` 等。我們可以在 `config/database.php` 設定檔中將這些選項新增到 Redis 伺服器設定上：
 
     'default' => [
         'host' => env('REDIS_HOST', 'localhost'),
@@ -193,9 +197,9 @@ In addition to the default `scheme`, `host`, `port`, `database`, and `password` 
 
 <a name="phpredis-serialization"></a>
 
-#### phpredis Serialization & Compression
+#### phpredis 的序列化與壓縮
 
-The phpredis extension may also be configured to use a variety serialization and compression algorithms. These algorithms can be configured via the `options` array of your Redis configuration:
+phpredis 擴充程式可以設定各種各樣的序列化與壓縮演算法。可以在 Redis 設定的 `options` 陣列內設定這些演算法：
 
     'redis' => [
     
@@ -209,15 +213,15 @@ The phpredis extension may also be configured to use a variety serialization and
         // Rest of Redis configuration...
     ],
 
-Currently supported serialization algorithms include: `Redis::SERIALIZER_NONE` (default), `Redis::SERIALIZER_PHP`, `Redis::SERIALIZER_JSON`, `Redis::SERIALIZER_IGBINARY`, and `Redis::SERIALIZER_MSGPACK`.
+目前所支援的序列化演算法有 `Redis::SERIALIZER_NONE` (預設)、`Redis::SERIALIZER_PHP`、`Redis::SERIALIZER_JSON`、`Redis::SERIALIZER_IGBINARY`、`Redis::SERIALIZER_MSGPACK` 。
 
-Supported compression algorithms include: `Redis::COMPRESSION_NONE` (default), `Redis::COMPRESSION_LZF`, `Redis::COMPRESSION_ZSTD`, and `Redis::COMPRESSION_LZ4`.
+支援的壓縮演算法包含：`Redis::COMPRESSION_NONE` (預設)、`Redis::COMPRESSION_LZF`、`Redis::COMPRESSION_ZSTD`、`Redis::COMPRESSION_LZ4`。
 
 <a name="interacting-with-redis"></a>
 
-## Interacting With Redis
+## 使用 Redis
 
-You may interact with Redis by calling various methods on the `Redis` [facade](/docs/{{version}}/facades). The `Redis` facade supports dynamic methods, meaning you may call any [Redis command](https://redis.io/commands) on the facade and the command will be passed directly to Redis. In this example, we will call the Redis `GET` command by calling the `get` method on the `Redis` facade:
+我們可以呼叫 `Redis` [Facade](/docs/{{version}}/facades) 上的各種方法來使用 Redis。`Redis` Facade 支援動態方法，著表示，我們可以在該 Facade 上呼叫任何的 [Redis 指令](https://redis.io/commands)，而該指令會被直接傳到 Redis 上。在這個範例中，我們會在 `Redis` Facade 上呼叫 `get` 方法，以呼叫 Redis 的 `GET` 指令：
 
     <?php
     
@@ -242,7 +246,7 @@ You may interact with Redis by calling various methods on the `Redis` [facade](/
         }
     }
 
-As mentioned above, you may call any of Redis' commands on the `Redis` facade. Laravel uses magic methods to pass the commands to the Redis server. If a Redis command expects arguments, you should pass those to the facade's corresponding method:
+剛才也提到過，我們可以在 `Redis` Facade 上呼叫任何的 Redis 指令。Laravel 會使用 Magic Method 來將這些指令傳給 Redis 伺服器。若是有要求引數的 Redis 指令，則我們可以將引數傳給 Facade 上對應的方法：
 
     use Illuminate\Support\Facades\Redis;
     
@@ -250,27 +254,27 @@ As mentioned above, you may call any of Redis' commands on the `Redis` facade. L
     
     $values = Redis::lrange('names', 5, 10);
 
-Alternatively, you may pass commands to the server using the `Redis` facade's `command` method, which accepts the name of the command as its first argument and an array of values as its second argument:
+或者，我們也可以使用 `Redis` Facade 的 `command` 方法來將指令傳給 Redis 伺服器。`command` 方法的第一個引數是指令名稱，而第二個引數則是一個陣列：
 
     $values = Redis::command('lrange', ['name', 5, 10]);
 
 <a name="using-multiple-redis-connections"></a>
 
-#### Using Multiple Redis Connections
+#### 使用多個 Redis 連線
 
-Your application's `config/database.php` configuration file allows you to define multiple Redis connections / servers. You may obtain a connection to a specific Redis connection using the `Redis` facade's `connection` method:
+在專案的 `config/database.php` 設定檔中，我們可以定義多個 Redis 連線／伺服器。我們可以使用 `Redis` Facade 上的 `connection` 方法來取得一個特定的 Redis 連線：
 
     $redis = Redis::connection('connection-name');
 
-To obtain an instance of the default Redis connection, you may call the `connection` method without any additional arguments:
+若要取得預設的 Redis 連線，可直接呼叫 `connection` 方法而不帶任何引數：
 
     $redis = Redis::connection();
 
 <a name="transactions"></a>
 
-### Transactions
+### Transaction
 
-The `Redis` facade's `transaction` method provides a convenient wrapper around Redis' native `MULTI` and `EXEC` commands. The `transaction` method accepts a closure as its only argument. This closure will receive a Redis connection instance and may issue any commands it would like to this instance. All of the Redis commands issued within the closure will be executed in a single, atomic transaction:
+`Redis` Facade 的 `transaction` 方法提供了一個 Redis 原生 `MULTI` 與 `EXEC` 指令的方便包裝。`transaction` 方法只有一個引數，該引數為一個閉包。傳入的閉包會收到一個 Redis 連線實體，並可在該實體上下任何指令。在該閉包中所下的所有指令，都會被放在單一、不可部分完成 (Atomic) 的 Transaction 內執行：
 
     use Illuminate\Support\Facades\Redis;
     
@@ -279,16 +283,16 @@ The `Redis` facade's `transaction` method provides a convenient wrapper around R
         $redis->incr('total_visits', 1);
     });
 
-> {note} When defining a Redis transaction, you may not retrieve any values from the Redis connection. Remember, your transaction is executed as a single, atomic operation and that operation is not executed until your entire closure has finished executing its commands.
+> **Warning** 定義 Redis Transaction 時，無法從 Redis 連線中取值。請記得，Transaction 是以單一、不可部分完成的動作來執行的，因此這些動作會在整個閉包內的指令都執行完畢後才被執行。
 
 
-#### Lua Scripts
+#### Lua Script
 
-The `eval` method provides another method of executing multiple Redis commands in a single, atomic operation. However, the `eval` method has the benefit of being able to interact with and inspect Redis key values during that operation. Redis scripts are written in the [Lua programming language](https://www.lua.org).
+`eval` 方法提供了另一種以單一、不可部分完成動作執行多個 Redis 指令的方法。不過，使用 `eval` 方法還有個好處，就是能在動作的期間處理與偵測 Redis 的索引鍵值。Redis Script 使用 [Lua 程式語言](https://www.lua.org)撰寫。
 
-The `eval` method can be a bit scary at first, but we'll explore a basic example to break the ice. The `eval` method expects several arguments. First, you should pass the Lua script (as a string) to the method. Secondly, you should pass the number of keys (as an integer) that the script interacts with. Thirdly, you should pass the names of those keys. Finally, you may pass any other additional arguments that you need to access within your script.
+雖然，一開始，`eval` 方法可能有點可怕。不過我們會先來看看一個簡單的例子。`eval` 方法接受多個引數。首先，我們需要先 (以字串形式) 傳入 Lua Script 給該方法。然後。我們需要將該 Script 要處理的索引鍵數量 (以整數形式) 傳入。再來，我們需要傳入這些索引鍵的名稱。最後，我們可以傳入在該 Script 中需要存取的其他引數。
 
-In this example, we will increment a counter, inspect its new value, and increment a second counter if the first counter's value is greater than five. Finally, we will return the value of the first counter:
+在這個範例中，我們會遞增一個計數器，並取得該計數器的值，判斷該值是否大於 5。如果大於 5，就再遞增另一個計數器。最後，回傳第一個計數器的值：
 
     $value = Redis::eval(<<<'LUA'
         local counter = redis.call("incr", KEYS[1])
@@ -300,14 +304,14 @@ In this example, we will increment a counter, inspect its new value, and increme
         return counter
     LUA, 2, 'first-counter', 'second-counter');
 
-> {note} Please consult the [Redis documentation](https://redis.io/commands/eval) for more information on Redis scripting.
+> **Warning** 有關更多在 Redis 上撰寫 Script 的資訊，請參考 [Redis 的說明文件](https://redis.io/commands/eval)。
 
 
 <a name="pipelining-commands"></a>
 
-### Pipelining Commands
+### 指令管道
 
-Sometimes you may need to execute dozens of Redis commands. Instead of making a network trip to your Redis server for each command, you may use the `pipeline` method. The `pipeline` method accepts one argument: a closure that receives a Redis instance. You may issue all of your commands to this Redis instance and they will all be sent to the Redis server at the same time to reduce network trips to the server. The commands will still be executed in the order they were issued:
+有時候，我們會需要執行多個 Redis 指令。除了個別以網路連線將每個指令傳給 Redis，我們還可以使用 `pipeline` 方法。`pipeline` 方法只有一個引數：一個接收 Redis 實體的閉包。我們可以使用這個 Redis 實體來下指令，下的所有指令會被一次性地傳送給 Redis 伺服器，以減少網路使用。指令會依照所下的順序執行：
 
     use Illuminate\Support\Facades\Redis;
     
@@ -321,9 +325,9 @@ Sometimes you may need to execute dozens of Redis commands. Instead of making a 
 
 ## Pub / Sub
 
-Laravel provides a convenient interface to the Redis `publish` and `subscribe` commands. These Redis commands allow you to listen for messages on a given "channel". You may publish messages to the channel from another application, or even using another programming language, allowing easy communication between applications and processes.
+Laravel 中為 Redis 的 `publish` 與 `subscribe` 指令提供了一個方便的介面。使用這兩個 Redis 指令，我們就能在給定的「頻道 (Channel)」上監聽訊息。接著，我們可以在另一個專案內、甚至使用另一個程式語言來 ^[Publish](發佈) 訊息。這樣一來我們就能輕鬆地在不同專案或處理程序間進行溝通。
 
-First, let's setup a channel listener using the `subscribe` method. We'll place this method call within an [Artisan command](/docs/{{version}}/artisan) since calling the `subscribe` method begins a long-running process:
+首先，我們先使用 `subscribe` 方法來建立一個頻道的 ^[Listener](監聽程式)。我們將這個指令放在一個 [Artisan 指令](/docs/{{version}}/artisan)內呼叫。因為，呼叫 ^[`subscribe`](訂閱) 方法就代表要開啟一個執行時間較長的處理程序：
 
     <?php
     
@@ -361,7 +365,7 @@ First, let's setup a channel listener using the `subscribe` method. We'll place 
         }
     }
 
-Now we may publish messages to the channel using the `publish` method:
+接著，我們就能使用 `publish` 方法來將訊息發佈到頻道上：
 
     use Illuminate\Support\Facades\Redis;
     
@@ -375,9 +379,9 @@ Now we may publish messages to the channel using the `publish` method:
 
 <a name="wildcard-subscriptions"></a>
 
-#### Wildcard Subscriptions
+#### 使用萬用字元來 Subscribe
 
-Using the `psubscribe` method, you may subscribe to a wildcard channel, which may be useful for catching all messages on all channels. The channel name will be passed as the second argument to the provided closure:
+使用 `psubscribe` 方法，我們就能以萬用字元來 Subscribe 頻道。若要從所有頻道中取得所有的訊息，就適合使用這個方法。頻道名稱會以第二個引數傳給所提供的閉包：
 
     Redis::psubscribe(['*'], function ($message, $channel) {
         echo $message;

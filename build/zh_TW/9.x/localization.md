@@ -4,6 +4,8 @@
 
    - [設定語系](#configuring-the-locale)
 
+   - [複數化語言](#pluralization-language)
+
 - [定義翻譯字串](#defining-translation-strings)
 
    - [使用短的索引鍵](#using-short-keys)
@@ -78,6 +80,29 @@ Laravel 提供了兩種管理翻譯字串的方法。第一種方式，就是將
         //
     }
 
+<a name="pluralization-language"></a>
+
+### 複數化 (Pluralization) 語言
+
+在 Laravel 中，Eloquent 等地方會使用「複數化程式 (Pluralizer)」來將單數字串轉為複數字串。我們可以讓這個複數化程式使用英文以外的語言。若要讓複數化程式使用英文以外的語言，請在專案的其中一個 Service Provider 中 `boot` 方法內叫用 `useLanguage` 方法。複數化程式目前支援的語言有：法文 `french`、書面挪威語 `norwegian-bokmal`、葡萄牙文 `portuguese`、西班牙文 `spanish`、與土耳其文 `turkish`：
+
+    use Illuminate\Support\Pluralizer;
+    
+    /**
+     * Bootstrap any application services.
+     *
+     * @return void
+     */
+    public function boot()
+    {
+        Pluralizer::useLanguage('spanish');     
+    
+        // ...     
+    }
+
+> **Warning** 若自訂了複數化程式的語言，則請顯式定義 Eloquent Model 的[資料表名稱](/docs/{{version}}/eloquent#table-names)。
+
+
 <a name="defining-translation-strings"></a>
 
 ## 定義翻譯字串
@@ -104,7 +129,7 @@ Laravel 提供了兩種管理翻譯字串的方法。第一種方式，就是將
         'welcome' => 'Welcome to our application!',
     ];
 
-> {note} 對於會因國家或地區而有所區別的語系，請依照 ISO 15897 命名語系檔目錄。舉例來說，英式英語應使用「en_GB」而非「en-gb」。
+> **Warning** 對於會因國家或地區而有所區別的語系，請依照 ISO 15897 命名語系檔目錄。舉例來說，英式英語應使用「en_GB」而非「en-gb」。
 
 
 <a name="using-translation-strings-as-keys"></a>

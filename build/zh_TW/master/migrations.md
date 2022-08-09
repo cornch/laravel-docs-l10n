@@ -1,101 +1,101 @@
-# Database: Migrations
+# 資料庫：Migration
 
-- [Introduction](#introduction)
+- [簡介](#introduction)
 
-- [Generating Migrations](#generating-migrations)
+- [產生 Migration](#generating-migrations)
 
-   - [Squashing Migrations](#squashing-migrations)
+   - [壓縮 Migration](#squashing-migrations)
 
-- [Migration Structure](#migration-structure)
+- [Migration 的架構](#migration-structure)
 
-- [Running Migrations](#running-migrations)
+- [執行 Migration](#running-migrations)
 
-   - [Rolling Back Migrations](#rolling-back-migrations)
+   - [復原 Migration](#rolling-back-migrations)
 
-- [Tables](#tables)
+- [資料表](#tables)
 
-   - [Creating Tables](#creating-tables)
+   - [建立資料表](#creating-tables)
 
-   - [Updating Tables](#updating-tables)
+   - [更新資料表](#updating-tables)
 
-   - [Renaming / Dropping Tables](#renaming-and-dropping-tables)
+   - [重新命名或刪除資料表](#renaming-and-dropping-tables)
 
-- [Columns](#columns)
+- [欄位](#columns)
 
-   - [Creating Columns](#creating-columns)
+   - [建立欄位](#creating-columns)
 
-   - [Available Column Types](#available-column-types)
+   - [可用的欄位型別](#available-column-types)
 
-   - [Column Modifiers](#column-modifiers)
+   - [欄位修飾詞](#column-modifiers)
 
-   - [Modifying Columns](#modifying-columns)
+   - [修改欄位](#modifying-columns)
 
-   - [Dropping Columns](#dropping-columns)
+   - [刪除欄位](#dropping-columns)
 
-- [Indexes](#indexes)
+- [索引](#indexes)
 
-   - [Creating Indexes](#creating-indexes)
+   - [建立索引](#creating-indexes)
 
-   - [Renaming Indexes](#renaming-indexes)
+   - [重新命名索引](#renaming-indexes)
 
-   - [Dropping Indexes](#dropping-indexes)
+   - [刪除索引](#dropping-indexes)
 
-   - [Foreign Key Constraints](#foreign-key-constraints)
+   - [Foreign Key Constraint](#foreign-key-constraints)
 
-- [Events](#events)
+- [Event](#events)
 
 <a name="introduction"></a>
 
-## Introduction
+## 簡介
 
-Migrations are like version control for your database, allowing your team to define and share the application's database schema definition. If you have ever had to tell a teammate to manually add a column to their local database schema after pulling in your changes from source control, you've faced the problem that database migrations solve.
+「^[Migration](移轉)」就像是資料表的版本控制一樣，我們能通過 Migration 來定義並與開發團隊共享專案的資料庫結構定義。讀者是否曾經在從版控拉去更新後，還需要告訴同事要手動新增欄位？資料庫 Migration 就是要解決這樣的問題。
 
-The Laravel `Schema` [facade](/docs/{{version}}/facades) provides database agnostic support for creating and manipulating tables across all of Laravel's supported database systems. Typically, migrations will use this facade to create and modify database tables and columns.
+Laravel 的 `Schema` [Facade](/docs/{{version}}/facades) 提供了一種可建立或修改資料表的功能，該功能不區分資料，可用在所有 Laravel 支援的資料庫系統上。一般來說，Migration 會使用該 Facade 來建立或修改資料庫資料表與欄位。
 
 <a name="generating-migrations"></a>
 
-## Generating Migrations
+## 產生 Migration
 
-You may use the `make:migration` [Artisan command](/docs/{{version}}/artisan) to generate a database migration. The new migration will be placed in your `database/migrations` directory. Each migration filename contains a timestamp that allows Laravel to determine the order of the migrations:
+我們可以使用 `make:migration` [Artisan 指令](/docs/{{version}}/artisan) 來產生資料庫 Migration。新建立的 Migration 會放在 `database/migrations` 目錄下。各個 Migration 的檔名都包含了一個時戳，用來讓 Laravel 判斷各個 Migration 的執行順序：
 
 ```shell
 php artisan make:migration create_flights_table
 ```
 
-Laravel will use the name of the migration to attempt to guess the name of the table and whether or not the migration will be creating a new table. If Laravel is able to determine the table name from the migration name, Laravel will pre-fill the generated migration file with the specified table. Otherwise, you may simply specify the table in the migration file manually.
+Laravel 會使用 Migration 的名稱來嘗試推測資料表的名稱，並嘗試推測該 Migration 是否要建立新資料表。若 Laravel 可判斷檔案名稱，則 Laravel 會預先在產生的 Migration 檔中填入特定的資料表。若無法判斷時，我們只需要在 Migration 檔中手動指定資料表即可。
 
-If you would like to specify a custom path for the generated migration, you may use the `--path` option when executing the `make:migration` command. The given path should be relative to your application's base path.
+若想為產生的 Migration 檔指定自訂的路徑，則可在執行 `make:migration` 指令時使用 `--path` 選項。給定的路徑應為相對於專案根目錄的相對路徑。
 
-> {tip} Migration stubs may be customized using [stub publishing](/docs/{{version}}/artisan#stub-customization).
+> {tip} 可以[安裝 Stub](/docs/{{version}}/artisan#stub-customization) 來自訂 Migration 的 Stub。
 
 
 <a name="squashing-migrations"></a>
 
-### Squashing Migrations
+### 壓縮 Migration
 
-As you build your application, you may accumulate more and more migrations over time. This can lead to your `database/migrations` directory becoming bloated with potentially hundreds of migrations. If you would like, you may "squash" your migrations into a single SQL file. To get started, execute the `schema:dump` command:
+在我們持續撰寫專案的同時，我們可能會逐漸累積出越來越多的資料庫 Migration 檔。這樣可能會導致 `database/migrations` 目錄中包含了數百個 Migration 檔。若有需要的話，我們可以將 Migration 檔「壓縮」進單一 SQL 檔內。要開始壓縮，請執行 `schema:dump` 指令：
 
 ```shell
 php artisan schema:dump
 
-# Dump the current database schema and prune all existing migrations...
+# 傾印目前的資料庫結構，並刪除所有現存的 Migration...
 php artisan schema:dump --prune
 ```
 
-When you execute this command, Laravel will write a "schema" file to your application's `database/schema` directory. Now, when you attempt to migrate your database and no other migrations have been executed, Laravel will execute the schema file's SQL statements first. After executing the schema file's statements, Laravel will execute any remaining migrations that were not part of the schema dump.
+執行該指令時，Laravel 會將一個「^[Schema](結構描述)」檔案寫入 `database/schema` 目錄內。接著，當要移轉資料庫且尚未執行過任何 Migration 時，Laravel 會先執行該 Schema 檔中的 SQL。執行完 Schema 檔內的陳述式後，接著 Laravel 才會執行不在該 Schema 傾印中剩下的 Migration。
 
-You should commit your database schema file to source control so that other new developers on your team may quickly create your application's initial database structure.
+請將資料庫 Schema 檔 ^[Commit](簽入) 進版本控制中，好讓團隊中其他的新開發人員可快速建立專案的初始資料庫結構。
 
-> {note} Migration squashing is only available for the MySQL, PostgreSQL, and SQLite databases and utilizes the database's command-line client. Schema dumps may not be restored to in-memory SQLite databases.
+> {note} Migration 壓縮只支援 MySQL、PostgreSQL、SQLite 等資料庫，且會使用資料庫的主控台用戶端。Schema 傾印無法用來復原 In-Memory 的 SQLite 資料庫。
 
 
 <a name="migration-structure"></a>
 
-## Migration Structure
+## Migration 的架構
 
-A migration class contains two methods: `up` and `down`. The `up` method is used to add new tables, columns, or indexes to your database, while the `down` method should reverse the operations performed by the `up` method.
+Migration 類別中包含了兩個方法：`up` 與 `down`。`up` 方法可用來在資料庫中新增新資料表、欄位、索引等；而 `down` 方法則用來做與 `up` 方法相反的事。
 
-Within both of these methods, you may use the Laravel schema builder to expressively create and modify tables. To learn about all of the methods available on the `Schema` builder, [check out its documentation](#creating-tables). For example, the following migration creates a `flights` table:
+在這兩個方法中，我們可以使用 Laravel 的 Schema Builder 來以描述性的方法建立與修改資料表。若要瞭解 `Schema` Builder 中所有可用的方法，[請參考 Schema Builder 的說明文件](#creating-tables)。舉例來說，下列 Migration 會建立一個 `flights` 資料表：
 
     <?php
     
@@ -133,9 +133,9 @@ Within both of these methods, you may use the Laravel schema builder to expressi
 
 <a name="anonymous-migrations"></a>
 
-#### Anonymous Migrations
+#### 匿名 Migration
 
-As you may have noticed in the example above, Laravel will automatically assign a class name to all of the migrations that you generate using the `make:migration` command. However, if you wish, you may return an anonymous class from your migration file. This is primarily useful if your application accumulates many migrations and two of them have a class name collision:
+在上述的範例中可以看到，Laravel 會自動為所有使用 `make:migration` 指令所產生的所有 Migration 指定一個類別名稱。不過，若有需要的話，我們可以在 Migration 檔中回傳一個匿名類別。若專案中已經有許多的 Migration，且其中某兩個 Migration 發生的類別名稱衝突時，就很適合使用這個方法：
 
     <?php
     
@@ -148,9 +148,9 @@ As you may have noticed in the example above, Laravel will automatically assign 
 
 <a name="setting-the-migration-connection"></a>
 
-#### Setting The Migration Connection
+#### 設定 Migration 的連線
 
-If your migration will be interacting with a database connection other than your application's default database connection, you should set the `$connection` property of your migration:
+若 Migration 會使用與專案預設資料庫連線不同的資料庫連線，則請在 Migration 中設定 `$connection` 屬性：
 
     /**
      * The database connection that should be used by the migration.
@@ -171,15 +171,15 @@ If your migration will be interacting with a database connection other than your
 
 <a name="running-migrations"></a>
 
-## Running Migrations
+## 執行 Migration
 
-To run all of your outstanding migrations, execute the `migrate` Artisan command:
+若要執行所有尚未執行過的 Migration，請執行 `migrate` Artisan 指令：
 
 ```shell
 php artisan migrate
 ```
 
-If you would like to see which migrations have run thus far, you may use the `migrate:status` Artisan command:
+若想檢視目前為止已執行了哪些 Migration，可使用 `migrate:status` Artisan 指令：
 
 ```shell
 php artisan migrate:status
@@ -187,9 +187,9 @@ php artisan migrate:status
 
 <a name="forcing-migrations-to-run-in-production"></a>
 
-#### Forcing Migrations To Run In Production
+#### 在正式環境中強制執行 Migration
 
-Some migration operations are destructive, which means they may cause you to lose data. In order to protect you from running these commands against your production database, you will be prompted for confirmation before the commands are executed. To force the commands to run without a prompt, use the `--force` flag:
+有些 Migration 中的動作是破壞性的，也就是一些會導致資料消失的動作。為了避免在正式環境資料庫中執行這些破壞性的動作，因此在執行指令時，會出現提示要求確認。若要強制該指令不跳出提示直接執行，請使用 `--force` 旗標：
 
 ```shell
 php artisan migrate --force
@@ -197,27 +197,27 @@ php artisan migrate --force
 
 <a name="rolling-back-migrations"></a>
 
-### Rolling Back Migrations
+### 復原 Migration
 
-To roll back the latest migration operation, you may use the `rollback` Artisan command. This command rolls back the last "batch" of migrations, which may include multiple migration files:
+若要復原最後執行的 Migration 動作，可使用 `rollback` Artisan 指令。該指令會復原最後「一批」執行的 Migration，其中可能包含多個 Migration 檔：
 
 ```shell
 php artisan migrate:rollback
 ```
 
-You may roll back a limited number of migrations by providing the `step` option to the `rollback` command. For example, the following command will roll back the last five migrations:
+我們也可以提供各一個 `step` 選項給 `rollback` 指令，以限制要復原的 Migration 數量。舉例來說，下列指令只會復原最後 5 個 Migration：
 
 ```shell
 php artisan migrate:rollback --step=5
 ```
 
-You may roll back a specific "batch" of migrations by providing the `batch` option to the `rollback` command, where the `batch` option corresponds to a batch value within your application's `migrations` database table. For example, the following command will roll back all migrations in batch three:
+只要提供 `batch` 選項給 `rollback` 指令，就可以復原特定「批次」的 Migration。這裡的 `batch` 選項，對應到專案資料庫中 `migrations` 資料表的 batch 值。舉例來說，下列指令會復原所有第 3 批次的 Migration：
 
 ```shell
 php artisan migrate:rollback --batch=3
 ```
 
-The `migrate:reset` command will roll back all of your application's migrations:
+`migrate:reset` 指令會復原專案中所有的 Migration：
 
 ```shell
 php artisan migrate:reset
@@ -225,18 +225,18 @@ php artisan migrate:reset
 
 <a name="roll-back-migrate-using-a-single-command"></a>
 
-#### Roll Back & Migrate Using A Single Command
+#### 以單一指令來復原並 Migrate
 
-The `migrate:refresh` command will roll back all of your migrations and then execute the `migrate` command. This command effectively re-creates your entire database:
+`migrate:refresh` 指令會將所有的 Migration 都復原回去，並接著執行 `migrate` 指令。使用該指令，就可以有效率的重建整個資料庫：
 
 ```shell
 php artisan migrate:refresh
 
-# Refresh the database and run all database seeds...
+# 重新整理資料庫，並執行所有的資料庫 Seed...
 php artisan migrate:refresh --seed
 ```
 
-You may roll back and re-migrate a limited number of migrations by providing the `step` option to the `refresh` command. For example, the following command will roll back and re-migrate the last five migrations:
+我們也可以提供各一個 `step` 選項給 `refresh` 指令，以限制要復原並重新 Migrate 的 Migration 數量。舉例來說，下列指令只會復原並重新 Migrate 最後 5 個 Migration：
 
 ```shell
 php artisan migrate:refresh --step=5
@@ -244,9 +244,9 @@ php artisan migrate:refresh --step=5
 
 <a name="drop-all-tables-migrate"></a>
 
-#### Drop All Tables & Migrate
+#### 刪除所有資料表並 Migrate
 
-The `migrate:fresh` command will drop all tables from the database and then execute the `migrate` command:
+`migrate:fresh` 指令會刪除資料庫中所有資料表，並接著執行 `migrate` 指令：
 
 ```shell
 php artisan migrate:fresh
@@ -254,18 +254,18 @@ php artisan migrate:fresh
 php artisan migrate:fresh --seed
 ```
 
-> {note} The `migrate:fresh` command will drop all database tables regardless of their prefix. This command should be used with caution when developing on a database that is shared with other applications.
+> {note} 不論資料表是否有^[前置詞](Prefix)，`migrate:fresh` 指令會刪除所有的資料庫資料表。在使用與其他專案共享的資料庫時，若要與本指令搭配使用請務必注意。
 
 
 <a name="tables"></a>
 
-## Tables
+## 資料表
 
 <a name="creating-tables"></a>
 
-### Creating Tables
+### 建立資料表
 
-To create a new database table, use the `create` method on the `Schema` facade. The `create` method accepts two arguments: the first is the name of the table, while the second is a closure which receives a `Blueprint` object that may be used to define the new table:
+若要建立新的資料庫資料表，請使用 `Schema` Facade 上的 `create` 方法。`create` 方法接受兩個引數：資料表名稱、以及一個接收 `Blueprint` 物件的閉包。`Blueprint` 物件可用來定義新資料表：
 
     use Illuminate\Database\Schema\Blueprint;
     use Illuminate\Support\Facades\Schema;
@@ -277,33 +277,33 @@ To create a new database table, use the `create` method on the `Schema` facade. 
         $table->timestamps();
     });
 
-When creating the table, you may use any of the schema builder's [column methods](#creating-columns) to define the table's columns.
+建立資料表時，我們可以使用任意 Schema Builder 的[欄位方法](#creating-columns)來定義資料表欄位。
 
 <a name="checking-for-table-column-existence"></a>
 
-#### Checking For Table / Column Existence
+#### 檢查資料表與欄位是否存在
 
-You may check for the existence of a table or column using the `hasTable` and `hasColumn` methods:
+我們可以使用 `hasTable` 與 `hasColumn` 方法來檢查資料表或欄位是否存在：
 
     if (Schema::hasTable('users')) {
-        // The "users" table exists...
+        // 「users」資料表存在...
     }
     
     if (Schema::hasColumn('users', 'email')) {
-        // The "users" table exists and has an "email" column...
+        // 「users」資料表存在，且包含一個「email」欄位...
     }
 
 <a name="database-connection-table-options"></a>
 
-#### Database Connection & Table Options
+#### 資料庫連線與資料表選項
 
-If you want to perform a schema operation on a database connection that is not your application's default connection, use the `connection` method:
+若要在非專案預設連線的資料庫連線上做 Schema 動作，請使用 `connection` 方法：
 
     Schema::connection('sqlite')->create('users', function (Blueprint $table) {
         $table->id();
     });
 
-In addition, a few other properties and methods may be used to define other aspects of the table's creation. The `engine` property may be used to specify the table's storage engine when using MySQL:
+此外，還有一些其他的屬性或方法，可用來調整資料表建立中的其他細節。使用 MySQL 時，可使用 `engine` 屬性來指定資料表的 Storage Engine：
 
     Schema::create('users', function (Blueprint $table) {
         $table->engine = 'InnoDB';
@@ -311,7 +311,7 @@ In addition, a few other properties and methods may be used to define other aspe
         // ...
     });
 
-The `charset` and `collation` properties may be used to specify the character set and collation for the created table when using MySQL:
+使用 MySQL 時，`charset` 與 `collation` 屬性可用來指定建立資料表的 Character Set 與 Collection：
 
     Schema::create('users', function (Blueprint $table) {
         $table->charset = 'utf8mb4';
@@ -320,7 +320,7 @@ The `charset` and `collation` properties may be used to specify the character se
         // ...
     });
 
-The `temporary` method may be used to indicate that the table should be "temporary". Temporary tables are only visible to the current connection's database session and are dropped automatically when the connection is closed:
+`temporary` 方法可用來表示該資料表是「臨時」資料表。臨時資料表只可在目前連線的資料庫工作階段中使用，且會在連線關閉後自動刪除：
 
     Schema::create('calculations', function (Blueprint $table) {
         $table->temporary();
@@ -330,9 +330,9 @@ The `temporary` method may be used to indicate that the table should be "tempora
 
 <a name="updating-tables"></a>
 
-### Updating Tables
+### 更新資料表
 
-The `table` method on the `Schema` facade may be used to update existing tables. Like the `create` method, the `table` method accepts two arguments: the name of the table and a closure that receives a `Blueprint` instance you may use to add columns or indexes to the table:
+`Schema` Facade 上的 `table` 方法可用來更新現有的資料表。與 `create` 方法類似，`table` 方法接受兩個因數：資料表名稱，以及一個接收 `Blueprint` 實體的閉包。使用 `Blueprint` 實體，即可用來在資料表上新增欄位或索引：
 
     use Illuminate\Database\Schema\Blueprint;
     use Illuminate\Support\Facades\Schema;
@@ -343,15 +343,15 @@ The `table` method on the `Schema` facade may be used to update existing tables.
 
 <a name="renaming-and-dropping-tables"></a>
 
-### Renaming / Dropping Tables
+### 重新命名或刪除資料表
 
-To rename an existing database table, use the `rename` method:
+若要重新命名現有的資料表，可使用 `rename` 方法：
 
     use Illuminate\Support\Facades\Schema;
     
     Schema::rename($from, $to);
 
-To drop an existing table, you may use the `drop` or `dropIfExists` methods:
+若要移除現有的資料表，可使用 `drop` 或 `dropIfExists` 方法：
 
     Schema::drop('users');
     
@@ -359,19 +359,19 @@ To drop an existing table, you may use the `drop` or `dropIfExists` methods:
 
 <a name="renaming-tables-with-foreign-keys"></a>
 
-#### Renaming Tables With Foreign Keys
+#### 與外部索引鍵一起重新命名資料表
 
-Before renaming a table, you should verify that any foreign key constraints on the table have an explicit name in your migration files instead of letting Laravel assign a convention based name. Otherwise, the foreign key constraint name will refer to the old table name.
+在重新命名資料表時，請務必確認該資料表上的^[外部索引鍵條件](Foreign Key Constraint)是否有直接設定名稱，而不是使用 Laravel 所指定的基於慣例的名稱。若未直接設定名稱，則這些外部索引鍵條件的名稱可能會參照到舊的資料表名稱：
 
 <a name="columns"></a>
 
-## Columns
+## 欄位
 
 <a name="creating-columns"></a>
 
-### Creating Columns
+### 建立欄位
 
-The `table` method on the `Schema` facade may be used to update existing tables. Like the `create` method, the `table` method accepts two arguments: the name of the table and a closure that receives an `Illuminate\Database\Schema\Blueprint` instance you may use to add columns to the table:
+`Schema` Facade 上的 `table` 方法可用來更新現有的資料表。與 `create` 方法類似，`table` 方法接受兩個因數：資料表名稱，以及一個接收 `Illuminate\Database\Schema\Blueprint` 實體的閉包。使用這個 `Blueprint` 實體，即可用來在資料表上新增欄位或索引：
 
     use Illuminate\Database\Schema\Blueprint;
     use Illuminate\Support\Facades\Schema;
@@ -382,9 +382,9 @@ The `table` method on the `Schema` facade may be used to update existing tables.
 
 <a name="available-column-types"></a>
 
-### Available Column Types
+### 可用的欄位型別
 
-The schema builder blueprint offers a variety of methods that correspond to the different types of columns you can add to your database tables. Each of the available methods are listed in the table below:
+Schema Builder Blueprint 提供了多種方法，這些方法對應到可新增至資料庫資料表中各種不同的欄位型別。可用的各個方法列在下表中：
 
 [bigIncrements](#column-method-bigIncrements) [bigInteger](#column-method-bigInteger) [binary](#column-method-binary) [boolean](#column-method-boolean) [char](#column-method-char) [dateTimeTz](#column-method-dateTimeTz) [dateTime](#column-method-dateTime) [date](#column-method-date) [decimal](#column-method-decimal) [double](#column-method-double) [enum](#column-method-enum) [float](#column-method-float) [foreignId](#column-method-foreignId) [foreignIdFor](#column-method-foreignIdFor) [foreignUuid](#column-method-foreignUuid) [geometryCollection](#column-method-geometryCollection) [geometry](#column-method-geometry) [id](#column-method-id) [increments](#column-method-increments) [integer](#column-method-integer) [ipAddress](#column-method-ipAddress) [json](#column-method-json) [jsonb](#column-method-jsonb) [lineString](#column-method-lineString) [longText](#column-method-longText) [macAddress](#column-method-macAddress) [mediumIncrements](#column-method-mediumIncrements) [mediumInteger](#column-method-mediumInteger) [mediumText](#column-method-mediumText) [morphs](#column-method-morphs) [multiLineString](#column-method-multiLineString) [multiPoint](#column-method-multiPoint) [multiPolygon](#column-method-multiPolygon) [nullableMorphs](#column-method-nullableMorphs) [nullableTimestamps](#column-method-nullableTimestamps) [nullableUuidMorphs](#column-method-nullableUuidMorphs) [point](#column-method-point) [polygon](#column-method-polygon) [rememberToken](#column-method-rememberToken) [set](#column-method-set) [smallIncrements](#column-method-smallIncrements) [smallInteger](#column-method-smallInteger) [softDeletesTz](#column-method-softDeletesTz) [softDeletes](#column-method-softDeletes) [string](#column-method-string) [text](#column-method-text) [timeTz](#column-method-timeTz) [time](#column-method-time) [timestampTz](#column-method-timestampTz) [timestamp](#column-method-timestamp) [timestampsTz](#column-method-timestampsTz) [timestamps](#column-method-timestamps) [tinyIncrements](#column-method-tinyIncrements) [tinyInteger](#column-method-tinyInteger) [tinyText](#column-method-tinyText) [unsignedBigInteger](#column-method-unsignedBigInteger) [unsignedDecimal](#column-method-unsignedDecimal) [unsignedInteger](#column-method-unsignedInteger) [unsignedMediumInteger](#column-method-unsignedMediumInteger) [unsignedSmallInteger](#column-method-unsignedSmallInteger) [unsignedTinyInteger](#column-method-unsignedTinyInteger) [uuidMorphs](#column-method-uuidMorphs) [uuid](#column-method-uuid) [year](#column-method-year)
 
@@ -392,7 +392,7 @@ The schema builder blueprint offers a variety of methods that correspond to the 
 
 #### `bigIncrements()` {.collection-method .first-collection-method}
 
-The `bigIncrements` method creates an auto-incrementing `UNSIGNED BIGINT` (primary key) equivalent column:
+`bigIncrements` 方法建立一個 ^[Auto-Increment](自動遞增) 的 `UNSIGNED BIGINT` (^[主索引鍵](Primary Key)) 或相等欄位：
 
     $table->bigIncrements('id');
 
@@ -400,7 +400,7 @@ The `bigIncrements` method creates an auto-incrementing `UNSIGNED BIGINT` (prima
 
 #### `bigInteger()` {.collection-method}
 
-The `bigInteger` method creates a `BIGINT` equivalent column:
+`bigInteger` 方法建立一個 `BIGINT` 或相等的欄位：
 
     $table->bigInteger('votes');
 
@@ -408,7 +408,7 @@ The `bigInteger` method creates a `BIGINT` equivalent column:
 
 #### `binary()` {.collection-method}
 
-The `binary` method creates a `BLOB` equivalent column:
+`binary` 方法建立一個 `BLOB` 或相等欄位：
 
     $table->binary('photo');
 
@@ -416,7 +416,7 @@ The `binary` method creates a `BLOB` equivalent column:
 
 #### `boolean()` {.collection-method}
 
-The `boolean` method creates a `BOOLEAN` equivalent column:
+`boolean` 方法建立一個 `BOOLEAN` 或相等欄位：
 
     $table->boolean('confirmed');
 
@@ -424,7 +424,7 @@ The `boolean` method creates a `BOOLEAN` equivalent column:
 
 #### `char()` {.collection-method}
 
-The `char` method creates a `CHAR` equivalent column with of a given length:
+`char` 方法以給定的長度來建立一個 `CHAR` 或相等欄位：
 
     $table->char('name', 100);
 
@@ -432,7 +432,7 @@ The `char` method creates a `CHAR` equivalent column with of a given length:
 
 #### `dateTimeTz()` {.collection-method}
 
-The `dateTimeTz` method creates a `DATETIME` (with timezone) equivalent column with an optional precision (total digits):
+`dateTimeTz` 方法以給定的精度 (總位數) 建立一個 `DATETIME` (含時區) 或相等欄位：
 
     $table->dateTimeTz('created_at', $precision = 0);
 
@@ -440,7 +440,7 @@ The `dateTimeTz` method creates a `DATETIME` (with timezone) equivalent column w
 
 #### `dateTime()` {.collection-method}
 
-The `dateTime` method creates a `DATETIME` equivalent column with an optional precision (total digits):
+`dateTime` 方法會使用給定的可選精度 (總位數) 來建立一個 `DATETIME` 或相等欄位：
 
     $table->dateTime('created_at', $precision = 0);
 
@@ -448,7 +448,7 @@ The `dateTime` method creates a `DATETIME` equivalent column with an optional pr
 
 #### `date()` {.collection-method}
 
-The `date` method creates a `DATE` equivalent column:
+`date` 方法會建立一個 `DATE` 或相等欄位：
 
     $table->date('created_at');
 
@@ -456,7 +456,7 @@ The `date` method creates a `DATE` equivalent column:
 
 #### `decimal()` {.collection-method}
 
-The `decimal` method creates a `DECIMAL` equivalent column with the given precision (total digits) and scale (decimal digits):
+`decimal` 方法會以給定的^[精度](Precision) (總位數) 與^[小數位數](Scale) (小數位數) 來建立一個 `DECIMAL` 或相等欄位：
 
     $table->decimal('amount', $precision = 8, $scale = 2);
 
@@ -464,7 +464,7 @@ The `decimal` method creates a `DECIMAL` equivalent column with the given precis
 
 #### `double()` {.collection-method}
 
-The `double` method creates a `DOUBLE` equivalent column with the given precision (total digits) and scale (decimal digits):
+`double` 方法會以給定的^[精度](Precision) (總位數) 與^[小數位數](Scale) (小數位數) 來建立一個 `DOUBLE` 或相等欄位：
 
     $table->double('amount', 8, 2);
 
@@ -472,7 +472,7 @@ The `double` method creates a `DOUBLE` equivalent column with the given precisio
 
 #### `enum()` {.collection-method}
 
-The `enum` method creates a `ENUM` equivalent column with the given valid values:
+`enum` 方法以給定的有效值來建立一個 `ENUM` 或相等欄位：
 
     $table->enum('difficulty', ['easy', 'hard']);
 
@@ -480,7 +480,7 @@ The `enum` method creates a `ENUM` equivalent column with the given valid values
 
 #### `float()` {.collection-method}
 
-The `float` method creates a `FLOAT` equivalent column with the given precision (total digits) and scale (decimal digits):
+`float` 方法會以給定的^[精度](Precision) (總位數) 與^[小數位數](Scale) (小數位數) 來建立一個 `FLOAT` 或相等欄位：
 
     $table->float('amount', 8, 2);
 
@@ -488,7 +488,7 @@ The `float` method creates a `FLOAT` equivalent column with the given precision 
 
 #### `foreignId()` {.collection-method}
 
-The `foreignId` method creates an `UNSIGNED BIGINT` equivalent column:
+`foreignId` 方法會建立一個 `UNSIGNED BIGINT` 或相等的欄位：
 
     $table->foreignId('user_id');
 
@@ -496,7 +496,7 @@ The `foreignId` method creates an `UNSIGNED BIGINT` equivalent column:
 
 #### `foreignIdFor()` {.collection-method}
 
-The `foreignIdFor` method adds a `{column}_id UNSIGNED BIGINT` equivalent column for a given model class:
+`foreighIdFor` 方法會以給定的 Model 類別來建立一個 `{欄位}_id UNSIGNED BIGINT` 或相等欄位：
 
     $table->foreignIdFor(User::class);
 
@@ -504,7 +504,7 @@ The `foreignIdFor` method adds a `{column}_id UNSIGNED BIGINT` equivalent column
 
 #### `foreignUuid()` {.collection-method}
 
-The `foreignUuid` method creates a `UUID` equivalent column:
+`foreignUuid` 方法會建立一個 `UUID` 或相等欄位：
 
     $table->foreignUuid('user_id');
 
@@ -512,7 +512,7 @@ The `foreignUuid` method creates a `UUID` equivalent column:
 
 #### `geometryCollection()` {.collection-method}
 
-The `geometryCollection` method creates a `GEOMETRYCOLLECTION` equivalent column:
+`geometryCollection` 方法會建立一個 `GEOMETRYCOLLECTION` 或相等欄位：
 
     $table->geometryCollection('positions');
 
@@ -520,7 +520,7 @@ The `geometryCollection` method creates a `GEOMETRYCOLLECTION` equivalent column
 
 #### `geometry()` {.collection-method}
 
-The `geometry` method creates a `GEOMETRY` equivalent column:
+`geometry` 方法建立一個 `GEOMETRY` 或相等欄位：
 
     $table->geometry('positions');
 
@@ -528,7 +528,7 @@ The `geometry` method creates a `GEOMETRY` equivalent column:
 
 #### `id()` {.collection-method}
 
-The `id` method is an alias of the `bigIncrements` method. By default, the method will create an `id` column; however, you may pass a column name if you would like to assign a different name to the column:
+`id` 欄位為 `bigIncrements` 方法的別名。預設情況下，該方法會建立一個 `id` 欄位。不過，若想為該欄位指定不同的名稱，也可以傳入欄位名稱：
 
     $table->id();
 
@@ -536,7 +536,7 @@ The `id` method is an alias of the `bigIncrements` method. By default, the metho
 
 #### `increments()` {.collection-method}
 
-The `increments` method creates an auto-incrementing `UNSIGNED INTEGER` equivalent column as a primary key:
+`increments` 方法會建立一個 ^[Auto-Increment](自動遞增) 的 `UNSIGNED INTEGER` 或同等欄位作為^[主索引鍵](Primary Key)：
 
     $table->increments('id');
 
@@ -544,7 +544,7 @@ The `increments` method creates an auto-incrementing `UNSIGNED INTEGER` equivale
 
 #### `integer()` {.collection-method}
 
-The `integer` method creates an `INTEGER` equivalent column:
+`integer` 方法建立一個 `INTEGER` 或相等的欄位：
 
     $table->integer('votes');
 
@@ -552,7 +552,7 @@ The `integer` method creates an `INTEGER` equivalent column:
 
 #### `ipAddress()` {.collection-method}
 
-The `ipAddress` method creates a `VARCHAR` equivalent column:
+`ipAddress` 方法會建立一個 `VARCHAR` 或相等欄位：
 
     $table->ipAddress('visitor');
 
@@ -560,7 +560,7 @@ The `ipAddress` method creates a `VARCHAR` equivalent column:
 
 #### `json()` {.collection-method}
 
-The `json` method creates a `JSON` equivalent column:
+`json` 方法會建立一個 `JSON` 或相等欄位：
 
     $table->json('options');
 
@@ -568,7 +568,7 @@ The `json` method creates a `JSON` equivalent column:
 
 #### `jsonb()` {.collection-method}
 
-The `jsonb` method creates a `JSONB` equivalent column:
+`jsonb` 方法會建立一個 `JSONB` 或相等欄位：
 
     $table->jsonb('options');
 
@@ -576,7 +576,7 @@ The `jsonb` method creates a `JSONB` equivalent column:
 
 #### `lineString()` {.collection-method}
 
-The `lineString` method creates a `LINESTRING` equivalent column:
+`lineString` 方法建立一個 `LINESTRING` 或相等的欄位：
 
     $table->lineString('positions');
 
@@ -584,7 +584,7 @@ The `lineString` method creates a `LINESTRING` equivalent column:
 
 #### `longText()` {.collection-method}
 
-The `longText` method creates a `LONGTEXT` equivalent column:
+`longText` 方法建立一個 `LONGTEXT` 或相等欄位：
 
     $table->longText('description');
 
@@ -592,7 +592,7 @@ The `longText` method creates a `LONGTEXT` equivalent column:
 
 #### `macAddress()` {.collection-method}
 
-The `macAddress` method creates a column that is intended to hold a MAC address. Some database systems, such as PostgreSQL, have a dedicated column type for this type of data. Other database systems will use a string equivalent column:
+`macAddress` 方法會建立一個用來保存 MAC 位址的欄位。在某些資料庫系統，如 PostgreSQL 中，有專門的欄位可用來保存這種類型的資料。在其他資料庫系統，則會使用相等的字串欄位：
 
     $table->macAddress('device');
 
@@ -600,7 +600,7 @@ The `macAddress` method creates a column that is intended to hold a MAC address.
 
 #### `mediumIncrements()` {.collection-method}
 
-The `mediumIncrements` method creates an auto-incrementing `UNSIGNED MEDIUMINT` equivalent column as a primary key:
+`mediumIncrements` 方法會建立一個 ^[Auto-Increment](自動遞增) 的 `UNSIGNED MEDIUMINT` 或同等欄位作為^[主索引鍵](Primary Key)：
 
     $table->mediumIncrements('id');
 
@@ -608,7 +608,7 @@ The `mediumIncrements` method creates an auto-incrementing `UNSIGNED MEDIUMINT` 
 
 #### `mediumInteger()` {.collection-method}
 
-The `mediumInteger` method creates a `MEDIUMINT` equivalent column:
+`mediumInteger` 方法建立一個 `MEDIUMINT` 或相等的欄位：
 
     $table->mediumInteger('votes');
 
@@ -616,7 +616,7 @@ The `mediumInteger` method creates a `MEDIUMINT` equivalent column:
 
 #### `mediumText()` {.collection-method}
 
-The `mediumText` method creates a `MEDIUMTEXT` equivalent column:
+`mediumText` 方法建立一個 `MEDIUMTEXT` 或相等的欄位：
 
     $table->mediumText('description');
 
@@ -624,9 +624,9 @@ The `mediumText` method creates a `MEDIUMTEXT` equivalent column:
 
 #### `morphs()` {.collection-method}
 
-The `morphs` method is a convenience method that adds a `{column}_id` `UNSIGNED BIGINT` equivalent column and a `{column}_type` `VARCHAR` equivalent column.
+`morphs` 是一個方便方法，會新增一個 `{欄位}_id` `UNSIGNED BIGINT` 或相等欄位，以及一個 `{欄位}_type` `VARCHAR` 或想等欄位。
 
-This method is intended to be used when defining the columns necessary for a polymorphic [Eloquent relationship](/docs/{{version}}/eloquent-relationships). In the following example, `taggable_id` and `taggable_type` columns would be created:
+該方法主要是要給多型 [Eloquent 關聯](/docs/{{version}}/eloquent-relationships)定義欄位用的。在下列範例中，會建立 `taggable_id` 與 `taggable_type` 欄位：
 
     $table->morphs('taggable');
 
@@ -634,7 +634,7 @@ This method is intended to be used when defining the columns necessary for a pol
 
 #### `multiLineString()` {.collection-method}
 
-The `multiLineString` method creates a `MULTILINESTRING` equivalent column:
+`multiLineString` 方法建立一個 `MULTILINESTRING` 或相等的欄位：
 
     $table->multiLineString('positions');
 
@@ -642,7 +642,7 @@ The `multiLineString` method creates a `MULTILINESTRING` equivalent column:
 
 #### `multiPoint()` {.collection-method}
 
-The `multiPoint` method creates a `MULTIPOINT` equivalent column:
+`multiPoint` 方法建立一個 `MULTIPOINT` 或相等的欄位：
 
     $table->multiPoint('positions');
 
@@ -650,7 +650,7 @@ The `multiPoint` method creates a `MULTIPOINT` equivalent column:
 
 #### `multiPolygon()` {.collection-method}
 
-The `multiPolygon` method creates a `MULTIPOLYGON` equivalent column:
+`multiPolygon` 方法建立一個 `MULTIPOLYGON` 或相等的欄位：
 
     $table->multiPolygon('positions');
 
@@ -658,7 +658,7 @@ The `multiPolygon` method creates a `MULTIPOLYGON` equivalent column:
 
 #### `nullableTimestamps()` {.collection-method}
 
-The `nullableTimestamps` method is an alias of the [timestamps](#column-method-timestamps) method:
+`nullabaleTimestamps` 方法是 [timestamps](#column-method-timestamps) 方法的別名：
 
     $table->nullableTimestamps(0);
 
@@ -666,7 +666,7 @@ The `nullableTimestamps` method is an alias of the [timestamps](#column-method-t
 
 #### `nullableMorphs()` {.collection-method}
 
-The method is similar to the [morphs](#column-method-morphs) method; however, the columns that are created will be "nullable":
+該方法與 [morphs](#column-method-morphs) 方法類似。不過，使用 `nullableMorphs` 方法建立的欄位會是「nullable」的：
 
     $table->nullableMorphs('taggable');
 
@@ -674,7 +674,7 @@ The method is similar to the [morphs](#column-method-morphs) method; however, th
 
 #### `nullableUuidMorphs()` {.collection-method}
 
-The method is similar to the [uuidMorphs](#column-method-uuidMorphs) method; however, the columns that are created will be "nullable":
+該方法與 [uuidMorphs](#column-method-uuidMorphs) 方法類似。不過，使用 `nullableMorphs` 方法建立的欄位會是「nullable」的：
 
     $table->nullableUuidMorphs('taggable');
 
@@ -682,7 +682,7 @@ The method is similar to the [uuidMorphs](#column-method-uuidMorphs) method; how
 
 #### `point()` {.collection-method}
 
-The `point` method creates a `POINT` equivalent column:
+`point` 方法會建立一個 `POINT` 或相等欄位：
 
     $table->point('position');
 
@@ -690,7 +690,7 @@ The `point` method creates a `POINT` equivalent column:
 
 #### `polygon()` {.collection-method}
 
-The `polygon` method creates a `POLYGON` equivalent column:
+`polygon` 方法建立一個 `POLYGON` 或相等的欄位：
 
     $table->polygon('position');
 
@@ -698,7 +698,7 @@ The `polygon` method creates a `POLYGON` equivalent column:
 
 #### `rememberToken()` {.collection-method}
 
-The `rememberToken` method creates a nullable, `VARCHAR(100)` equivalent column that is intended to store the current "remember me" [authentication token](/docs/{{version}}/authentication#remembering-users):
+`rememberToken` 方法會建立一個 Nullable 的 `VARCHAR(100)` 或相等的欄位，用於存放目前的「記住我」[身份驗證權杖](/docs/{{version}}/authentication#remembering-users)：
 
     $table->rememberToken();
 
@@ -706,7 +706,7 @@ The `rememberToken` method creates a nullable, `VARCHAR(100)` equivalent column 
 
 #### `set()` {.collection-method}
 
-The `set` method creates a `SET` equivalent column with the given list of valid values:
+`set` 方法會以給定的有效值來建立一個 `SET` 或相等欄位：
 
     $table->set('flavors', ['strawberry', 'vanilla']);
 
@@ -714,7 +714,7 @@ The `set` method creates a `SET` equivalent column with the given list of valid 
 
 #### `smallIncrements()` {.collection-method}
 
-The `smallIncrements` method creates an auto-incrementing `UNSIGNED SMALLINT` equivalent column as a primary key:
+`smallIncrements` 方法會建立一個 ^[Auto-Increment](自動遞增) 的 `UNSIGNED SMALLINT` 或同等欄位作為^[主索引鍵](Primary Key)：
 
     $table->smallIncrements('id');
 
@@ -722,7 +722,7 @@ The `smallIncrements` method creates an auto-incrementing `UNSIGNED SMALLINT` eq
 
 #### `smallInteger()` {.collection-method}
 
-The `smallInteger` method creates a `SMALLINT` equivalent column:
+`smallInteger` 方法建立一個 `SMALLINT` 或相等的欄位：
 
     $table->smallInteger('votes');
 
@@ -730,7 +730,7 @@ The `smallInteger` method creates a `SMALLINT` equivalent column:
 
 #### `softDeletesTz()` {.collection-method}
 
-The `softDeletesTz` method adds a nullable `deleted_at` `TIMESTAMP` (with timezone) equivalent column with an optional precision (total digits). This column is intended to store the `deleted_at` timestamp needed for Eloquent's "soft delete" functionality:
+`softDeletesTz` 方法會以給定的可選^[精度](Precision) (總位數) 新增一個 Nullable 的 `deleted_at` `TIMESTAMP` (含時區) 或相等欄位。該欄位主要是給 Eloquent「軟刪除」功能使用的，用來保存 `deleted_at` 時戳：
 
     $table->softDeletesTz($column = 'deleted_at', $precision = 0);
 
@@ -738,7 +738,7 @@ The `softDeletesTz` method adds a nullable `deleted_at` `TIMESTAMP` (with timezo
 
 #### `softDeletes()` {.collection-method}
 
-The `softDeletes` method adds a nullable `deleted_at` `TIMESTAMP` equivalent column with an optional precision (total digits). This column is intended to store the `deleted_at` timestamp needed for Eloquent's "soft delete" functionality:
+`softDeletes` 方法會以給定的可選^[精度](Precision) (總位數) 新增一個 Nullable 的 `deleted_at` `TIMESTAMP` 或相等欄位。該欄位主要是給 Eloquent「軟刪除」功能使用的，用來保存 `deleted_at` 時戳：
 
     $table->softDeletes($column = 'deleted_at', $precision = 0);
 
@@ -746,7 +746,7 @@ The `softDeletes` method adds a nullable `deleted_at` `TIMESTAMP` equivalent col
 
 #### `string()` {.collection-method}
 
-The `string` method creates a `VARCHAR` equivalent column of the given length:
+`string` 方法以給定的長度來建立一個 `VARCHAR` 或相等欄位：
 
     $table->string('name', 100);
 
@@ -754,7 +754,7 @@ The `string` method creates a `VARCHAR` equivalent column of the given length:
 
 #### `text()` {.collection-method}
 
-The `text` method creates a `TEXT` equivalent column:
+`text` 方法會建立一個 `TEXT` 或相等欄位：
 
     $table->text('description');
 
@@ -762,7 +762,7 @@ The `text` method creates a `TEXT` equivalent column:
 
 #### `timeTz()` {.collection-method}
 
-The `timeTz` method creates a `TIME` (with timezone) equivalent column with an optional precision (total digits):
+`timeTz` 方法以給定的精度 (總位數) 建立一個 `TIME` (含時區) 或相等欄位：
 
     $table->timeTz('sunrise', $precision = 0);
 
@@ -770,7 +770,7 @@ The `timeTz` method creates a `TIME` (with timezone) equivalent column with an o
 
 #### `time()` {.collection-method}
 
-The `time` method creates a `TIME` equivalent column with an optional precision (total digits):
+`time` 方法會使用給定的可選精度 (總位數) 來建立一個 `TIME` 或相等欄位：
 
     $table->time('sunrise', $precision = 0);
 
@@ -778,7 +778,7 @@ The `time` method creates a `TIME` equivalent column with an optional precision 
 
 #### `timestampTz()` {.collection-method}
 
-The `timestampTz` method creates a `TIMESTAMP` (with timezone) equivalent column with an optional precision (total digits):
+`timestampTz` 方法以給定的精度 (總位數) 建立一個 `TIMESTAMP` (含時區) 或相等欄位：
 
     $table->timestampTz('added_at', $precision = 0);
 
@@ -786,7 +786,7 @@ The `timestampTz` method creates a `TIMESTAMP` (with timezone) equivalent column
 
 #### `timestamp()` {.collection-method}
 
-The `timestamp` method creates a `TIMESTAMP` equivalent column with an optional precision (total digits):
+`timestamp` 方法會使用給定的可選精度 (總位數) 來建立一個 `TIMESTAMP` 或相等欄位：
 
     $table->timestamp('added_at', $precision = 0);
 
@@ -794,7 +794,7 @@ The `timestamp` method creates a `TIMESTAMP` equivalent column with an optional 
 
 #### `timestampsTz()` {.collection-method}
 
-The `timestampsTz` method creates `created_at` and `updated_at` `TIMESTAMP` (with timezone) equivalent columns with an optional precision (total digits):
+`timestampsTz` 方法以給定可選^[精度](Precision) (總位數) 建立 `TIMESTAMP` (含時區) 或相等的 `created_at` 與 `updated_at` 欄位：
 
     $table->timestampsTz($precision = 0);
 
@@ -802,7 +802,7 @@ The `timestampsTz` method creates `created_at` and `updated_at` `TIMESTAMP` (wit
 
 #### `timestamps()` {.collection-method}
 
-The `timestamps` method creates `created_at` and `updated_at` `TIMESTAMP` equivalent columns with an optional precision (total digits):
+`timestamps` 方法以給定可選^[精度](Precision) (總位數) 建立 `TIMESTAMP` 或相等的 `created_at` 與 `updated_at` 欄位：
 
     $table->timestamps($precision = 0);
 
@@ -810,7 +810,7 @@ The `timestamps` method creates `created_at` and `updated_at` `TIMESTAMP` equiva
 
 #### `tinyIncrements()` {.collection-method}
 
-The `tinyIncrements` method creates an auto-incrementing `UNSIGNED TINYINT` equivalent column as a primary key:
+`tinyIncrements` 方法會建立一個 ^[Auto-Increment](自動遞增) 的 `UNSIGNED TINYINT` 或同等欄位作為^[主索引鍵](Primary Key)：
 
     $table->tinyIncrements('id');
 
@@ -818,7 +818,7 @@ The `tinyIncrements` method creates an auto-incrementing `UNSIGNED TINYINT` equi
 
 #### `tinyInteger()` {.collection-method}
 
-The `tinyInteger` method creates a `TINYINT` equivalent column:
+`tinyInteger` 方法建立一個 `TINYINT` 或相等的欄位：
 
     $table->tinyInteger('votes');
 
@@ -826,7 +826,7 @@ The `tinyInteger` method creates a `TINYINT` equivalent column:
 
 #### `tinyText()` {.collection-method}
 
-The `tinyText` method creates a `TINYTEXT` equivalent column:
+`tinyText` 方法建立一個 `TINYTEXT` 或相等欄位：
 
     $table->tinyText('notes');
 
@@ -834,7 +834,7 @@ The `tinyText` method creates a `TINYTEXT` equivalent column:
 
 #### `unsignedBigInteger()` {.collection-method}
 
-The `unsignedBigInteger` method creates an `UNSIGNED BIGINT` equivalent column:
+`unsignedBigInteger` 方法會建立一個 `UNSIGNED BIGINT` 或相等的欄位：
 
     $table->unsignedBigInteger('votes');
 
@@ -842,7 +842,7 @@ The `unsignedBigInteger` method creates an `UNSIGNED BIGINT` equivalent column:
 
 #### `unsignedDecimal()` {.collection-method}
 
-The `unsignedDecimal` method creates an `UNSIGNED DECIMAL` equivalent column with an optional precision (total digits) and scale (decimal digits):
+`unsignedDecimal` 方法會以給定的可選^[精度](Precision) (總位數) 與^[小數位數](Scale) (小數位數) 來建立一個 `UNSIGNED DECIMAL` 或相等欄位：
 
     $table->unsignedDecimal('amount', $precision = 8, $scale = 2);
 
@@ -850,7 +850,7 @@ The `unsignedDecimal` method creates an `UNSIGNED DECIMAL` equivalent column wit
 
 #### `unsignedInteger()` {.collection-method}
 
-The `unsignedInteger` method creates an `UNSIGNED INTEGER` equivalent column:
+`unsignedInteger` 方法會建立一個 `UNSIGNED INTEGER` 或相等的欄位：
 
     $table->unsignedInteger('votes');
 
@@ -858,7 +858,7 @@ The `unsignedInteger` method creates an `UNSIGNED INTEGER` equivalent column:
 
 #### `unsignedMediumInteger()` {.collection-method}
 
-The `unsignedMediumInteger` method creates an `UNSIGNED MEDIUMINT` equivalent column:
+`unsignedMediumInteger` 方法會建立一個 `UNSIGNED MEDIUMINT` 或相等的欄位：
 
     $table->unsignedMediumInteger('votes');
 
@@ -866,7 +866,7 @@ The `unsignedMediumInteger` method creates an `UNSIGNED MEDIUMINT` equivalent co
 
 #### `unsignedSmallInteger()` {.collection-method}
 
-The `unsignedSmallInteger` method creates an `UNSIGNED SMALLINT` equivalent column:
+`unsignedSmallInteger` 方法會建立一個 `UNSIGNED SMALLINT` 或相等的欄位：
 
     $table->unsignedSmallInteger('votes');
 
@@ -874,7 +874,7 @@ The `unsignedSmallInteger` method creates an `UNSIGNED SMALLINT` equivalent colu
 
 #### `unsignedTinyInteger()` {.collection-method}
 
-The `unsignedTinyInteger` method creates an `UNSIGNED TINYINT` equivalent column:
+`unsignedTinyInteger` 方法會建立一個 `UNSIGNED TINYINT` 或相等的欄位：
 
     $table->unsignedTinyInteger('votes');
 
@@ -882,9 +882,9 @@ The `unsignedTinyInteger` method creates an `UNSIGNED TINYINT` equivalent column
 
 #### `uuidMorphs()` {.collection-method}
 
-The `uuidMorphs` method is a convenience method that adds a `{column}_id` `CHAR(36)` equivalent column and a `{column}_type` `VARCHAR` equivalent column.
+`uuidMorphs` 是一個方便方法，會新增一個 `{欄位}_id` `CHAR(36)` 或相等欄位，以及一個 `{欄位}_type` `VARCHAR` 或想等欄位。
 
-This method is intended to be used when defining the columns necessary for a polymorphic [Eloquent relationship](/docs/{{version}}/eloquent-relationships) that use UUID identifiers. In the following example, `taggable_id` and `taggable_type` columns would be created:
+該方法主要是要給使用 UUID 作為識別字元的多型 [Eloquent 關聯](/docs/{{version}}/eloquent-relationships)定義欄位用的。在下列範例中，會建立 `taggable_id` 與 `taggable_type` 欄位：
 
     $table->uuidMorphs('taggable');
 
@@ -892,7 +892,7 @@ This method is intended to be used when defining the columns necessary for a pol
 
 #### `uuid()` {.collection-method}
 
-The `uuid` method creates a `UUID` equivalent column:
+`uuid` 方法會建立一個 `UUID` 或相等欄位：
 
     $table->uuid('id');
 
@@ -900,15 +900,15 @@ The `uuid` method creates a `UUID` equivalent column:
 
 #### `year()` {.collection-method}
 
-The `year` method creates a `YEAR` equivalent column:
+`year` 方法會建立一個 `YEAR` 或相等欄位：
 
     $table->year('birth_year');
 
 <a name="column-modifiers"></a>
 
-### Column Modifiers
+### 欄位修飾詞
 
-In addition to the column types listed above, there are several column "modifiers" you may use when adding a column to a database table. For example, to make the column "nullable", you may use the `nullable` method:
+除了上列欄位型別外，還有多種可在將欄位新增至資料表時使用的欄位「修飾詞」。舉例來說，若要將欄位設為「Nullable」，可使用 `nullable` 方法：
 
     use Illuminate\Database\Schema\Blueprint;
     use Illuminate\Support\Facades\Schema;
@@ -917,34 +917,34 @@ In addition to the column types listed above, there are several column "modifier
         $table->string('email')->nullable();
     });
 
-The following table contains all of the available column modifiers. This list does not include [index modifiers](#creating-indexes):
+下表中包含了所有可用的修飾詞。該列表中未包含[索引修飾詞](#creating-indexes)：
 
-| Modifier | Description |
+| 修飾詞 | 說明 |
 | --- | --- |
-| `->after('column')` | Place the column "after" another column (MySQL). |
-| `->autoIncrement()` | Set INTEGER columns as auto-incrementing (primary key). |
-| `->charset('utf8mb4')` | Specify a character set for the column (MySQL). |
-| `->collation('utf8mb4_unicode_ci')` | Specify a collation for the column (MySQL/PostgreSQL/SQL Server). |
-| `->comment('my comment')` | Add a comment to a column (MySQL/PostgreSQL). |
-| `->default($value)` | Specify a "default" value for the column. |
-| `->first()` | Place the column "first" in the table (MySQL). |
-| `->from($integer)` | Set the starting value of an auto-incrementing field (MySQL / PostgreSQL). |
-| `->invisible()` | Make the column "invisible" to `SELECT *` queries (MySQL). |
-| `->nullable($value = true)` | Allow NULL values to be inserted into the column. |
-| `->storedAs($expression)` | Create a stored generated column (MySQL / PostgreSQL). |
-| `->unsigned()` | Set INTEGER columns as UNSIGNED (MySQL). |
-| `->useCurrent()` | Set TIMESTAMP columns to use CURRENT_TIMESTAMP as default value. |
-| `->useCurrentOnUpdate()` | Set TIMESTAMP columns to use CURRENT_TIMESTAMP when a record is updated. |
-| `->virtualAs($expression)` | Create a virtual generated column (MySQL). |
-| `->generatedAs($expression)` | Create an identity column with specified sequence options (PostgreSQL). |
-| `->always()` | Defines the precedence of sequence values over input for an identity column (PostgreSQL). |
-| `->isGeometry()` | Set spatial column type to `geometry` - the default type is `geography` (PostgreSQL). |
+| `->after('column')` | 將欄位放在另一個欄位「^[之後](After)」(MySQL)。 |
+| `->autoIncrement()` | 將 INTEGER 欄位設為 ^[Auto-Increment](自動遞增) (^[主索引鍵](Primary Key))。 |
+| `->charset('utf8mb4')` | 指定用於該欄位的 Character Set (MySQL)。 |
+| `->collation('utf8mb4_unicode_ci')` | 指定用於該欄位的 Collation (MySQL/PostgreSQL/SQL Server)。 |
+| `->comment('my comment')` | 為該欄位新增註解 (MySQL/PostgreSQL)。 |
+| `->default($value)` | 為欄位指定「^[預設](Default)」值。 |
+| `->first()` | 將欄位放在資料表中的「^[第一個](First)」欄位 (MySQL)。 |
+| `->from($integer)` | 設定 ^[Auto-Increment](自動遞增) 欄位的起始值 (MySQL / PostgreSQL)。 |
+| `->invisible()` | 讓該欄位在 `SELECT *` 查詢中「^[不可見](Invisible)」(MySQL)。 |
+| `->nullable($value = true)` | 允許將 NULL 值插入該欄位中。 |
+| `->storedAs($expression)` | 建立一個 Stored Generated 的欄位 (MySQL / PostgreSQL)。 |
+| `->unsigned()` | 將 INTEGER 欄位設為 UNSIGNED (MySQL)。 |
+| `->useCurrent()` | 設定 TIMESTAMP 欄位使用 CURRENT_TIMESTAMP 作為預設值。 |
+| `->useCurrentOnUpdate()` | 在資料更新時，將 TIMESTAMP 欄位設為 CURRENT_TIMESTAMP。 |
+| `->virtualAs($expression)` | 建立 Virtual Generated 欄位 (MySQL)。 |
+| `->generatedAs($expression)` | 以指定的 ^[Sequence](順序) 選項來建立 Identity 欄位 (PostgreSQL)。 |
+| `->always()` | 定義一個優先使用 Sequence 值而不使用輸入值的 Identity 欄位 (PostgreSQL)。 |
+| `->isGeometry()` | 將 Spatial 欄位的型別設為 `geometry` —— 即 `geography` 的預設型別 (PostgreSQL)。 |
 
 <a name="default-expressions"></a>
 
-#### Default Expressions
+#### 預設運算式
 
-The `default` modifier accepts a value or an `Illuminate\Database\Query\Expression` instance. Using an `Expression` instance will prevent Laravel from wrapping the value in quotes and allow you to use database specific functions. One situation where this is particularly useful is when you need to assign default values to JSON columns:
+`default` 修飾詞可接受 `Illuminate\Database\Query\Expression` 實體。使用 `Expression` 實體時，Laravel 就不會將輸入值包裝在引號內，能讓我們使用資料庫所提供的函式。有一些狀況特別適合使用這個方法，如要給 JSON 欄位指定預設值時：
 
     <?php
     
@@ -970,14 +970,14 @@ The `default` modifier accepts a value or an `Illuminate\Database\Query\Expressi
         }
     };
 
-> {note} Support for default expressions depends on your database driver, database version, and the field type. Please refer to your database's documentation.
+> {note} 對於預設運算式的支援程度會因資料庫 Driver、資料庫版本、欄位型別等而有所不同。請參考資料庫的說明文件。
 
 
 <a name="column-order"></a>
 
-#### Column Order
+#### 欄位順序
 
-When using the MySQL database, the `after` method may be used to add columns after an existing column in the schema:
+在使用 MySQL 資料庫時，可使用 `after` 方法來將欄位插入到資料表結構中的某個現有欄位之後：
 
     $table->after('password', function ($table) {
         $table->string('address_line1');
@@ -987,17 +987,17 @@ When using the MySQL database, the `after` method may be used to add columns aft
 
 <a name="modifying-columns"></a>
 
-### Modifying Columns
+### 修改欄位
 
 <a name="prerequisites"></a>
 
-#### Prerequisites
+#### 前置要求
 
-Before modifying a column, you must install the `doctrine/dbal` package using the Composer package manager. The Doctrine DBAL library is used to determine the current state of the column and to create the SQL queries needed to make the requested changes to your column:
+要修改欄位前，必須先使用 Composer 套件管理員來安裝 `doctrine/dbal` 套件。Doctrine DBAL 函式庫要用來判斷目前欄位的狀態，並用以建立要修改欄位所需要的 SQL 查詢：
 
     composer require doctrine/dbal
 
-If you plan to modify columns created using the `timestamp` method, you must also add the following configuration to your application's `config/database.php` configuration file:
+若有需要修改使用 `timestamp` 方法建立的欄位，則必須在 `config/database.php` 設定檔中加上下列設定：
 
 ```php
 use Illuminate\Database\DBAL\TimestampType;
@@ -1009,84 +1009,84 @@ use Illuminate\Database\DBAL\TimestampType;
 ],
 ```
 
-> {note} If your application is using Microsoft SQL Server, please ensure that you install `doctrine/dbal:^3.0`.
+> {note} 使用 Microsoft SQL Server 時，請確保有安裝 `doctrine/dbal:^3.0`。
 
 
 <a name="updating-column-attributes"></a>
 
-#### Updating Column Attributes
+#### 更新欄位屬性
 
-The `change` method allows you to modify the type and attributes of existing columns. For example, you may wish to increase the size of a `string` column. To see the `change` method in action, let's increase the size of the `name` column from 25 to 50. To accomplish this, we simply define the new state of the column and then call the `change` method:
+使用 `change` 欄位，即可修改現有欄位的型別或屬性。舉例來說，我們可以用來增加 `string` 欄位的大小。來看看使用 `change` 方法的例子，我們來把 `name` 欄位的大小從 25 增加到 50。若要增加 `name` 欄位的大小，我們只需要定義該欄位的新狀態，然後呼叫 `change` 方法即可：
 
     Schema::table('users', function (Blueprint $table) {
         $table->string('name', 50)->change();
     });
 
-We could also modify a column to be nullable:
+我們也可以將某個欄位更改為 nullable：
 
     Schema::table('users', function (Blueprint $table) {
         $table->string('name', 50)->nullable()->change();
     });
 
-> {note} The following column types can be modified: `bigInteger`, `binary`, `boolean`, `date`, `dateTime`, `dateTimeTz`, `decimal`, `integer`, `json`, `longText`, `mediumText`, `smallInteger`, `string`, `text`, `time`, `unsignedBigInteger`, `unsignedInteger`, `unsignedSmallInteger`, and `uuid`. To modify a `timestamp` column type a [Doctrine type must be registered](#prerequisites).
+> {note} 可修改的欄位型別有：`bigInteger`、`binary`、`boolean`、`date`、`dateTime`、`dateTimeTz`、`decimal`、`integer`、`json`、`longText`、`mediumText`、`smallInteger`、`string`、`text`、`time`、`unsignedBigInteger`、`unsignedInteger`、`unsignedSmallInteger`、`uuid` 等。若要修改 `timestamp` 欄位型別，則[必須先將其註冊為 Doctrine 型別](#prerequisites)。
 
 
 <a name="renaming-columns"></a>
 
-#### Renaming Columns
+#### 重新命名欄位
 
-To rename a column, you may use the `renameColumn` method provided by the schema builder blueprint. Before renaming a column, ensure that you have installed the `doctrine/dbal` library via the Composer package manager:
+若要重新命名欄位，可使用 Schema Builder Blueprint 提供的 `renameColumn` 方法。在重新命名欄位前，請先確認是否有使用 Composer 套件管理員安裝 `doctrine/dbal` 函式庫：
 
     Schema::table('users', function (Blueprint $table) {
         $table->renameColumn('from', 'to');
     });
 
-> {note} Renaming an `enum` column is not currently supported.
+> {note} 目前尚不支援重新命名 `enum` 欄位。
 
 
 <a name="dropping-columns"></a>
 
-### Dropping Columns
+### 刪除欄位
 
-To drop a column, you may use the `dropColumn` method on the schema builder blueprint. If your application is utilizing an SQLite database, you must install the `doctrine/dbal` package via the Composer package manager before the `dropColumn` method may be used:
+若要刪除欄位，可使用 Schema Builder Blueprint 上的 `dropColumn` 方法。若為使用 SQLite 資料庫的專案，則在使用 `dropColumn` 前必須先使用 Composer 套件管理員安裝 `doctrine/dbal` 套件：
 
     Schema::table('users', function (Blueprint $table) {
         $table->dropColumn('votes');
     });
 
-You may drop multiple columns from a table by passing an array of column names to the `dropColumn` method:
+可以傳入一組欄位名稱的陣列給 `dropColumn` 方法來一次移除多個欄位：
 
     Schema::table('users', function (Blueprint $table) {
         $table->dropColumn(['votes', 'avatar', 'location']);
     });
 
-> {note} Dropping or modifying multiple columns within a single migration while using an SQLite database is not supported.
+> {note} 使用 SQLite 資料庫時，不支援在單一 Migration 中刪除或修改多個欄位。
 
 
 <a name="available-command-aliases"></a>
 
-#### Available Command Aliases
+#### 可用的指令別名
 
-Laravel provides several convenient methods related to dropping common types of columns. Each of these methods is described in the table below:
+Laravel 提供了多種可用來刪除常見欄位型別的方便方法。下表中說明了這些方法：
 
-| Command | Description |
+| 指令 | 說明 |
 | --- | --- |
-| `$table->dropMorphs('morphable');` | Drop the `morphable_id` and `morphable_type` columns. |
-| `$table->dropRememberToken();` | Drop the `remember_token` column. |
-| `$table->dropSoftDeletes();` | Drop the `deleted_at` column. |
-| `$table->dropSoftDeletesTz();` | Alias of `dropSoftDeletes()` method. |
-| `$table->dropTimestamps();` | Drop the `created_at` and `updated_at` columns. |
-| `$table->dropTimestampsTz();` | Alias of `dropTimestamps()` method. |
+| `$table->dropMorphs('morphable');` | 刪除 `morphable_id` 與 `morphable_type` 欄位。 |
+| `$table->dropRememberToken();` | 刪除 `remember_token` 欄位。 |
+| `$table->dropSoftDeletes();` | 刪除 `deleted_at` 欄位。 |
+| `$table->dropSoftDeletesTz();` | `dropSoftDeletes()` 方法的別名。 |
+| `$table->dropTimestamps();` | 刪除 `created_at` 與 `updated_at` 欄位。 |
+| `$table->dropTimestampsTz();` | `dropTimestamps()` 方法的別名。 |
 
 <a name="indexes"></a>
 
-## Indexes
+## 索引
 
 <a name="creating-indexes"></a>
 
-### Creating Indexes
+### 建立索引
 
-The Laravel schema builder supports several types of indexes. The following example creates a new `email` column and specifies that its values should be unique. To create the index, we can chain the `unique` method onto the column definition:
+Laravel 的 Schema Builder 支援多種類型的索引。下列為一個建立新 `email` 欄位並指定該欄位值^[不可重複](Unique)的範例。若要建立索引，我們可以將 `unique` 方法串聯到欄位定義之後呼叫：
 
     use Illuminate\Database\Schema\Blueprint;
     use Illuminate\Support\Facades\Schema;
@@ -1095,39 +1095,39 @@ The Laravel schema builder supports several types of indexes. The following exam
         $table->string('email')->unique();
     });
 
-Alternatively, you may create the index after defining the column. To do so, you should call the `unique` method on the schema builder blueprint. This method accepts the name of the column that should receive a unique index:
+或者，我們也可以在定義完欄位後再建立索引。若要在定義欄位完後才建立索引，我們需要在 Schema Builder Blueprint 上呼叫 `unique` 方法。該方法的引數為要設為 Unique 索引的欄位名稱：
 
     $table->unique('email');
 
-You may even pass an array of columns to an index method to create a compound (or composite) index:
+我們也可以傳入一組欄位的陣列給索引方法，以建立一個^[複合式](Compound) / ^[組合式](Composite)的索引
 
     $table->index(['account_id', 'created_at']);
 
-When creating an index, Laravel will automatically generate an index name based on the table, column names, and the index type, but you may pass a second argument to the method to specify the index name yourself:
+建立索引時，Laravel 會自動依據資料表名稱、欄位名稱、索引類型等來產生索引名稱。不過，我們也可以傳入第二個因數給該方法來自行指定索引名稱：
 
     $table->unique('email', 'unique_email');
 
 <a name="available-index-types"></a>
 
-#### Available Index Types
+#### 可用的索引類型
 
-Laravel's schema builder blueprint class provides methods for creating each type of index supported by Laravel. Each index method accepts an optional second argument to specify the name of the index. If omitted, the name will be derived from the names of the table and column(s) used for the index, as well as the index type. Each of the available index methods is described in the table below:
+Laravel 的 Schema Builder Blueprint 為 Laravel 所支援的各種索引類型都提供了方法。每個索引方法都接受可選的第二引數，可用來指定索引的名稱。若未提供索引名稱，則會自動使用索引的資料表名稱、欄位名稱、以及索引型別等來產生索引名稱。下表為可用的索引方法：
 
-| Command | Description |
+| 指令 | 說明 |
 | --- | --- |
-| `$table->primary('id');` | Adds a primary key. |
-| `$table->primary(['id', 'parent_id']);` | Adds composite keys. |
-| `$table->unique('email');` | Adds a unique index. |
-| `$table->index('state');` | Adds an index. |
-| `$table->fullText('body');` | Adds a full text index (MySQL/PostgreSQL). |
-| `$table->fullText('body')->language('english');` | Adds a full text index of the specified language (PostgreSQL). |
-| `$table->spatialIndex('location');` | Adds a spatial index (except SQLite). |
+| `$table->primary('id');` | 新增^[主索引鍵](Primary Key)。 |
+| `$table->primary(['id', 'parent_id']);` | 新增^[複合式索引鍵](Composite Keys)。 |
+| `$table->unique('email');` | 新增 ^[Unique](不重複) 索引 |
+| `$table->index('state');` | 新增索引。 |
+| `$table->fullText('body');` | 新增全文索引 (MySQL/PostgreSQL)。 |
+| `$table->fullText('body')->language('english');` | 以指定的語言來新增全文索引 (PostgreSQL)。 |
+| `$table->spatialIndex('location');` | 新增 ^[Spatial](空間) 索引 (除了 SQLite)。 |
 
 <a name="index-lengths-mysql-mariadb"></a>
 
-#### Index Lengths & MySQL / MariaDB
+#### 索引的長度與 MySQL / MariaDB
 
-By default, Laravel uses the `utf8mb4` character set. If you are running a version of MySQL older than the 5.7.7 release or MariaDB older than the 10.2.2 release, you may need to manually configure the default string length generated by migrations in order for MySQL to create indexes for them. You may configure the default string length by calling the `Schema::defaultStringLength` method within the `boot` method of your `App\Providers\AppServiceProvider` class:
+預設情況下，Laravel 使用 `utf8mb4` Character Set。若使用的 MySQL 版本小於 5.7.7，或是小於 10.2.2 版的 MariaDB，則需要手動調整 Migration 產生的預設字串長度，以讓 MySQL 能為這些字串欄位建立索引。可以在 `App\Providers\AppServiceProvider` 類別的 `boot` 方法內呼叫 `Schema::defaultStringLength` 方法來調整預設的字串長度：
 
     use Illuminate\Support\Facades\Schema;
     
@@ -1141,40 +1141,40 @@ By default, Laravel uses the `utf8mb4` character set. If you are running a versi
         Schema::defaultStringLength(191);
     }
 
-Alternatively, you may enable the `innodb_large_prefix` option for your database. Refer to your database's documentation for instructions on how to properly enable this option.
+或者，也可以啟用資料庫的 `innodb_large_prefix` 選項。請參考所使用資料庫的說明文件，以瞭解如何正確啟用該選項。
 
 <a name="renaming-indexes"></a>
 
-### Renaming Indexes
+### 重新命名索引
 
-To rename an index, you may use the `renameIndex` method provided by the schema builder blueprint. This method accepts the current index name as its first argument and the desired name as its second argument:
+若要重新命名索引，可使用 Schema Builder Blueprint 提供的 `renameIndex` 方法。該方法的第一個引數為目前的索引名稱，而第二個引數則為要修改的名稱：
 
     $table->renameIndex('from', 'to')
 
 <a name="dropping-indexes"></a>
 
-### Dropping Indexes
+### 刪除索引
 
-To drop an index, you must specify the index's name. By default, Laravel automatically assigns an index name based on the table name, the name of the indexed column, and the index type. Here are some examples:
+若要刪除索引，則需要指定索引的名稱。預設情況下，Laravel 會自動依照資料表名稱、索引欄位名稱、以及索引類型來指派索引名稱。範例如下：
 
-| Command | Description |
+| 指令 | 說明 |
 | --- | --- |
-| `$table->dropPrimary('users_id_primary');` | Drop a primary key from the "users" table. |
-| `$table->dropUnique('users_email_unique');` | Drop a unique index from the "users" table. |
-| `$table->dropIndex('geo_state_index');` | Drop a basic index from the "geo" table. |
-| `$table->dropSpatialIndex('geo_location_spatialindex');` | Drop a spatial index from the "geo" table (except SQLite). |
+| `$table->dropPrimary('users_id_primary');` | 在「users」資料表內刪除^[主索引鍵](Primary Key)。 |
+| `$table->dropUnique('users_email_unique');` | 從「users」資料表中刪除 Unique 索引。 |
+| `$table->dropIndex('geo_state_index');` | 從「geo」資料表中刪除一般索引。 |
+| `$table->dropSpatialIndex('geo_location_spatialindex');` | 從「geo」資料表中刪除 Spatial 索引 (除了 SQLite)。 |
 
-If you pass an array of columns into a method that drops indexes, the conventional index name will be generated based on the table name, columns, and index type:
+在刪除索引上時，若傳入一組欄位陣列給該方法，則會自動依照資料表名稱、欄位名稱、索引型別等產生慣例式的索引名稱：
 
     Schema::table('geo', function (Blueprint $table) {
-        $table->dropIndex(['state']); // Drops index 'geo_state_index'
+        $table->dropIndex(['state']); // 刪除 'geo_state_index' 索引
     });
 
 <a name="foreign-key-constraints"></a>
 
-### Foreign Key Constraints
+### Foreign Key Constraint
 
-Laravel also provides support for creating foreign key constraints, which are used to force referential integrity at the database level. For example, let's define a `user_id` column on the `posts` table that references the `id` column on a `users` table:
+在 Laravel 中，也可以建立 ^[Foreign Key Constraint](外部索引鍵的條件約束)。使用 Foreigh Key Constraint，就可在資料庫層級上強制確保參照的完整性。舉例來說，我們來在 `posts` 資料表上定義一個參照到 `users` 資料表 `id` 欄位的 `user_id` 欄位：
 
     use Illuminate\Database\Schema\Blueprint;
     use Illuminate\Support\Facades\Schema;
@@ -1185,36 +1185,36 @@ Laravel also provides support for creating foreign key constraints, which are us
         $table->foreign('user_id')->references('id')->on('users');
     });
 
-Since this syntax is rather verbose, Laravel provides additional, terser methods that use conventions to provide a better developer experience. When using the `foreignId` method to create your column, the example above can be rewritten like so:
+由於這個語法有點複雜，因此 Laravel 提供了一個額外的、簡潔的方法。這種方法使用慣例，來提供更好的^[開發者經驗](DX)。在使用 `foreignID` 方法建立欄位時，上方的範例可以被這樣改寫：
 
     Schema::table('posts', function (Blueprint $table) {
         $table->foreignId('user_id')->constrained();
     });
 
-The `foreignId` method creates an `UNSIGNED BIGINT` equivalent column, while the `constrained` method will use conventions to determine the table and column name being referenced. If your table name does not match Laravel's conventions, you may specify the table name by passing it as an argument to the `constrained` method:
+`foreignId` 方法會建立一個 `UNSIGNED BIGINT` 或相等欄位，而 `constrained` 方法會使用慣例來判斷要參照的資料表與欄位。若表名不符合 Laravel 的慣例，可在 `constrained` 方法的第二個引數上指定資料表名稱：
 
     Schema::table('posts', function (Blueprint $table) {
         $table->foreignId('user_id')->constrained('users');
     });
 
-You may also specify the desired action for the "on delete" and "on update" properties of the constraint:
+也可以指定 Constraint「on delete」與「on update」屬性的動作：
 
     $table->foreignId('user_id')
           ->constrained()
           ->onUpdate('cascade')
           ->onDelete('cascade');
 
-An alternative, expressive syntax is also provided for these actions:
+或者，也有比較描述性的語法可以設定這些動作：
 
-| Method | Description |
+| 方法 | 說明 |
 | --- | --- |
-| `$table->cascadeOnUpdate();` | Updates should cascade. |
-| `$table->restrictOnUpdate();` | Updates should be restricted. |
-| `$table->cascadeOnDelete();` | Deletes should cascade. |
-| `$table->restrictOnDelete();` | Deletes should be restricted. |
-| `$table->nullOnDelete();` | Deletes should set the foreign key value to null. |
+| `$table->cascadeOnUpdate();` | 更新時應串聯更新 (Cascade)。 |
+| `$table->restrictOnUpdate();` | 更新時應限制更新 (Restricted)。 |
+| `$table->cascadeOnDelete();` | 刪除時應串聯刪除 (Cascade)。 |
+| `$table->restrictOnDelete();` | 刪除時應限制刪除 (Restricted)。 |
+| `$table->nullOnDelete();` | 刪除時應將外部索引鍵設為 null。 |
 
-Any additional [column modifiers](#column-modifiers) must be called before the `constrained` method:
+若有額外的[欄位修飾詞](#column-modifiers)，應將其放在 `constrained` 方法前呼叫：
 
     $table->foreignId('user_id')
           ->nullable()
@@ -1222,38 +1222,38 @@ Any additional [column modifiers](#column-modifiers) must be called before the `
 
 <a name="dropping-foreign-keys"></a>
 
-#### Dropping Foreign Keys
+#### 刪除外部索引鍵
 
-To drop a foreign key, you may use the `dropForeign` method, passing the name of the foreign key constraint to be deleted as an argument. Foreign key constraints use the same naming convention as indexes. In other words, the foreign key constraint name is based on the name of the table and the columns in the constraint, followed by a "_foreign" suffix:
+若要刪除 ^[Foreign Key](外部索引鍵)，可使用 `dropForeign` 方法，傳入要刪除的 ^[Foreign Key Constraint](外部索引鍵條件約束) 名稱即可。Foreign Key Constraint 使用與索引相同的命名規範。換句話說，Foreign Key Constraint 的名稱會使用要約束的資料表名稱與欄位名稱組成，並在後方加上「_foreign」後置詞：
 
     $table->dropForeign('posts_user_id_foreign');
 
-Alternatively, you may pass an array containing the column name that holds the foreign key to the `dropForeign` method. The array will be converted to a foreign key constraint name using Laravel's constraint naming conventions:
+或者，也可以傳入一組包含欄位名稱的陣列給 `dropForeign` 方法。這組陣列中應包含 Foreign Key 的名稱。傳入該陣列後，Laravel 會使用約束的命名管理來將該陣列轉換為 Foreign Key Constraint 的名稱：
 
     $table->dropForeign(['user_id']);
 
 <a name="toggling-foreign-key-constraints"></a>
 
-#### Toggling Foreign Key Constraints
+#### 啟用／禁用 Foreign Key Constraint
 
-You may enable or disable foreign key constraints within your migrations by using the following methods:
+可以使用下列方法來在 Migration 中啟用或禁用 Foreign Key Constraint：
 
     Schema::enableForeignKeyConstraints();
     
     Schema::disableForeignKeyConstraints();
 
-> {note} SQLite disables foreign key constraints by default. When using SQLite, make sure to [enable foreign key support](/docs/{{version}}/database#configuration) in your database configuration before attempting to create them in your migrations. In addition, SQLite only supports foreign keys upon creation of the table and [not when tables are altered](https://www.sqlite.org/omitted.html).
+> {note} SQLite 預設會禁用 Foreign Key Constraint。使用 SQLite 時，在 Migration 中建立 Foreign Key Constraint 前，請先檢查是否有在資料庫設定中[啟用 Foreign Key 支援](/docs/{{version}}/database#configuration)。此外，SQLite 只支援在建立資料表時設定 Foreign Key，而[無法在修改資料表時新增](https://www.sqlite.org/omitted.html)。
 
 
 <a name="events"></a>
 
-## Events
+## Event
 
-For convenience, each migration operation will dispatch an [event](/docs/{{version}}/events). All of the following events extend the base `Illuminate\Database\Events\MigrationEvent` class:
+為了讓開發更方便，Migration 中的各個動作都會分派 ^[[Event](/docs/{{version}}/events)](事件)。下列的所有 Event 都繼承了 `Illuminate\Database\Events\MigrationEvent` 類別：
 
-| Class | Description |
+| 類別 | 說明 |
 | --- | --- |
-| `Illuminate\Database\Events\MigrationsStarted` | A batch of migrations is about to be executed. |
-| `Illuminate\Database\Events\MigrationsEnded` | A batch of migrations has finished executing. |
-| `Illuminate\Database\Events\MigrationStarted` | A single migration is about to be executed. |
-| `Illuminate\Database\Events\MigrationEnded` | A single migration has finished executing. |
+| `Illuminate\Database\Events\MigrationsStarted` | 即將執行一批 Migration。 |
+| `Illuminate\Database\Events\MigrationsEnded` | 已完成執行一批 Migration。 |
+| `Illuminate\Database\Events\MigrationStarted` | 即將執行單一 Migration。 |
+| `Illuminate\Database\Events\MigrationEnded` | 已完成執行單一 Migration。 |

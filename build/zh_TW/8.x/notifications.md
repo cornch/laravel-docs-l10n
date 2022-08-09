@@ -24,7 +24,7 @@
 
    - [自訂收件人](#customizing-the-recipient)
 
-   - [自訂主旨(#customizing-the-subject)
+   - [自訂主旨](#customizing-the-subject)
 
    - [自訂 Mailer](#customizing-the-mailer)
 

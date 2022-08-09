@@ -24,13 +24,17 @@
 
    - [自訂收件人](#customizing-the-recipient)
 
-   - [自訂主旨(#customizing-the-subject)
+   - [自訂主旨](#customizing-the-subject)
 
    - [自訂 Mailer](#customizing-the-mailer)
 
    - [自訂樣板](#customizing-the-templates)
 
    - [附加檔案](#mail-attachments)
+
+   - [加上 Tag 與詮釋資料](#adding-tags-metadata)
+
+   - [自訂 Symfony 訊息](#customizing-the-symfony-message)
 
    - [使用 Mailable](#using-mailables)
 
@@ -140,7 +144,7 @@ php artisan make:notification InvoicePaid
     
     $user->notify(new InvoicePaid($invoice));
 
-> {tip} 請記得，任何的 Model 都可以使用 `Notifiable` Trait。不是只有 `User` Model 上才能用。
+> **Note** 請記得，任何的 Model 都可以使用 `Notifiable` Trait。不是只有 `User` Model 上才能用。
 
 
 <a name="using-the-notification-facade"></a>
@@ -163,7 +167,7 @@ php artisan make:notification InvoicePaid
 
 每個 Notification 類別都有一個 `via` 方法，用來判斷該通知要在哪些通道上傳送。通知在 `mail`、`database`、`broadcast`、`vonage`、`slack`等通道上傳送：
 
-> {tip} 若想使用其他通道傳送，如 Telegram 或 Pusher，請參考看看由社群提供的 [Laravel Notification Channels 網站](http://laravel-notification-channels.com)。
+> **Note** 若想使用其他通道傳送，如 Telegram 或 Pusher，請參考看看由社群提供的 [Laravel Notification Channels 網站](http://laravel-notification-channels.com)。
 
 
 `via` 方法會收到一個 `$notifiable` 實體，也就是該通知正在傳給的類別實體。可使用 `$nofiable` 來判斷該通知要在哪些通道上傳送：
@@ -183,7 +187,7 @@ php artisan make:notification InvoicePaid
 
 ### 將通知放入佇列
 
-> {note} 在將通知放入佇列前，請先設定好佇列，並[執行一個 ^[Worker](背景工作角色)](/docs/{{version}}/queues)。
+> **Warning** 在將通知放入佇列前，請先設定好佇列，並[執行一個 ^[Worker](背景工作角色)](/docs/{{version}}/queues)。
 
 
 傳送通知可能會需要花費時間，特別是需要使用外部 API 呼叫來傳送通知的頻道。若要加速程式的回應時間，可在通知類別上加入 `ShouldQueue` 介面與 `Queueable` Trait 來讓通知使用佇列。使用 `make:notification` 指令產生的通知中，預設已有匯入該介面與 Trait，因此我們可以直接將其加入通知類別：
@@ -207,11 +211,21 @@ php artisan make:notification InvoicePaid
 
     $user->notify(new InvoicePaid($invoice));
 
+在將通知放入佇列時，Laravel 會為每個收件人與每個通道的組合建立佇列^[任務](Job)。舉例來說，若通知有三個收件人與兩個通道，則會^[派發](Dispatch)六個任務。
+
+<a name="delaying-notifications"></a>
+
+#### 延遲通知
+
 若想延遲傳送通知，可在通知初始化之後串聯呼叫 `delay` 方法：
 
     $delay = now()->addMinutes(10);
     
     $user->notify((new InvoicePaid($invoice))->delay($delay));
+
+<a name="delaying-notifications-per-channel"></a>
+
+#### 依照通道延遲通知
 
 可傳入陣列給 `delay` 方法來指定特定通道要延遲的時間：
 
@@ -220,7 +234,21 @@ php artisan make:notification InvoicePaid
         'sms' => now()->addMinutes(10),
     ]));
 
-在將通知放入佇列時，Laravel 會為每個收件人與每個通道的組合建立佇列^[任務](Job)。舉例來說，若通知有三個收件人與兩個通道，則會^[派發](Dispatch)六個任務。
+或者，也可以在通知類別內定義 `withDelay` 方法。`withDelay` 方法應回傳一組通道名稱的陣列，以及延遲值：
+
+    /**
+     * Determine the notification's delivery delay.
+     *
+     * @param  mixed  $notifiable
+     * @return array
+     */
+    public function withDelay($notifiable)
+    {
+        return [
+            'mail' => now()->addMinutes(5),
+            'sms' => now()->addMinutes(10),
+        ];
+    }
 
 <a name="customizing-the-notification-queue-connection"></a>
 
@@ -291,7 +319,7 @@ php artisan make:notification InvoicePaid
         }
     }
 
-> {tip} 要瞭解更多有關這類問題的解決方法，請參考有關[佇列任務與資料庫 Transaction](/docs/{{version}}/queues#jobs-and-database-transactions) 有關的說明文件。
+> **Note** 要瞭解更多有關這類問題的解決方法，請參考有關[佇列任務與資料庫 Transaction](/docs/{{version}}/queues#jobs-and-database-transactions) 有關的說明文件。
 
 
 <a name="determining-if-the-queued-notification-should-be-sent"></a>
@@ -356,16 +384,17 @@ php artisan make:notification InvoicePaid
         return (new MailMessage)
                     ->greeting('Hello!')
                     ->line('One of your invoices has been paid!')
+                    ->lineIf($this->amount > 0, "Amount paid: {$this->amount}")
                     ->action('View Invoice', $url)
                     ->line('Thank you for using our application!');
     }
 
-> {tip} 請注意，在 `toMail` 中，我們使用了 `$this->invoice->id`。我們可以將通知訊息所需要的任何資料傳入該通知的 ^[Constructor](建構函式) 中。
+> **Note** 請注意，在 `toMail` 中，我們使用了 `$this->invoice->id`。我們可以將通知訊息所需要的任何資料傳入該通知的 ^[Constructor](建構函式) 中。
 
 
 在這個範例中，我們註冊了一個^[招呼語](Greeting)，^[一行文字](Line)，一個^[動作](Action)，然後是又^[一行的文字](Line)。`MailMessage` 物件提供的這些方法讓我們可以簡單快速地格式化簡短的交易電子郵件。Mail 通道會將該這些訊息元件翻譯為漂亮的回應式 HTML 電子郵件樣板與一個回應的純文字版本。下列是 `mail` 通道產生的電子郵件範例：
 
-> {tip} 在傳送郵件通知時，請確保有在 `config/app.php` 設定檔中設定 `name` 設定選項。在郵件通知訊息的頁頭與頁尾中會使用到這個值。
+> **Note** 在傳送郵件通知時，請確保有在 `config/app.php` 設定檔中設定 `name` 設定選項。在郵件通知訊息的頁頭與頁尾中會使用到這個值。
 
 
 <a name="other-mail-notification-formatting-options"></a>
@@ -413,7 +442,7 @@ php artisan make:notification InvoicePaid
      * Get the mail representation of the notification.
      *
      * @param  mixed  $notifiable
-     * @return \Illuminate\Notifications\Message
+     * @return \Illuminate\Notifications\Messages\MailMessage
      */
     public function toMail($notifiable)
     {
@@ -542,6 +571,9 @@ php artisan vendor:publish --tag=laravel-notifications
                     ->attach('/path/to/file');
     }
 
+> **Note** 通知 Mail 訊息的 `attach` 方法也可傳入[可附加的物件](/docs/{{version}}/mail#attachable-objects)。請參考完整的[可附加的物件說明文件](/docs/{{version}}/mail#attachable-objects)以瞭解詳情。
+
+
 將檔案附加至訊息時，也可傳入一個陣列給 `attach` 方法來指定要顯示的檔案名稱與 / 或 MIME 類型：
 
     /**
@@ -577,6 +609,27 @@ php artisan vendor:publish --tag=laravel-notifications
                     ->attachFromStorage('/path/to/file');
     }
 
+若有需要，可使用 `attachMany` 方法來將多個檔案附加到訊息上：
+
+    /**
+     * Get the mail representation of the notification.
+     *
+     * @param  mixed  $notifiable
+     * @return \Illuminate\Notifications\Messages\MailMessage
+     */
+    public function toMail($notifiable)
+    {
+        return (new MailMessage)
+                    ->greeting('Hello!')
+                    ->attachMany([
+                        '/path/to/forge.svg',
+                        '/path/to/vapor.svg' => [
+                            'as' => 'Logo.svg',
+                            'mime' => 'image/svg+xml',
+                        ],
+                    ]);
+    }
+
 <a name="raw-data-attachments"></a>
 
 #### 原始資料附加檔案
@@ -596,6 +649,54 @@ php artisan vendor:publish --tag=laravel-notifications
                     ->attachData($this->pdf, 'name.pdf', [
                         'mime' => 'application/pdf',
                     ]);
+    }
+
+<a name="adding-tags-metadata"></a>
+
+### 新增 Tag 與詮釋資料
+
+有的第三方 E-Mail 提供商，如 Mailgun 或 Postmark 等，支援訊息的「Tag」與「詮釋資料」，使用 Tag 與詮釋資料，就可以對專案所送出的 E-Mail 進行分組與追蹤。可以使用 `tag` 與 `metadata` 屬性來為 E-Mail 訊息加上 Tag 與詮釋資料：
+
+    /**
+     * Get the mail representation of the notification.
+     *
+     * @param  mixed  $notifiable
+     * @return \Illuminate\Notifications\Messages\MailMessage
+     */
+    public function toMail($notifiable)
+    {
+        return (new MailMessage)
+                    ->greeting('Comment Upvoted!')
+                    ->tag('upvote')
+                    ->metadata('comment_id', $this->comment->id);
+    }
+
+若使用 Mailgun Driver，請參考 Mailgun 說明文件中有關 [Tag](https://documentation.mailgun.com/en/latest/user_manual.html#tagging-1) 與[詮釋資料](https://documentation.mailgun.com/en/latest/user_manual.html#attaching-data-to-messages)的更多資訊。同樣地，也請參考 Postmark 說明文件中有關 [Tag](https://postmarkapp.com/blog/tags-support-for-smtp) 與[詮釋資料](https://postmarkapp.com/support/article/1125-custom-metadata-faq)的更多資料。
+
+若使用 Amazon SES 來寄送 E-Mail，則請使用 `metadata` 方法來將 [SES「Tag」](https://docs.aws.amazon.com/ses/latest/APIReference/API_MessageTag.html)附加到訊息上。Tag 與詮釋資料可被加到 `MailMessage` 上，這些資料可用來給 E-Mail 服務進行篩選或處理：
+
+<a name="customizing-the-symfony-message"></a>
+
+### 自訂 Symfony Message
+
+`MailMessage` 類別的 `withSymfonyMessage` 方法可讓我們註冊一個閉包，在傳送訊息前會以 Symfony Message 實體叫用該閉包。這樣我們就有機會在郵件被送出前深度自訂該訊息：
+
+    use Symfony\Component\Mime\Email;
+    
+    /**
+     * Get the mail representation of the notification.
+     *
+     * @param  mixed  $notifiable
+     * @return \Illuminate\Notifications\Messages\MailMessage
+     */
+    public function toMail($notifiable)
+    {
+        return (new MailMessage)
+                    ->withSymfonyMessage(function (Email $message) {
+                        $message->getHeaders()->addTextHeader(
+                            'Custom-Header', 'Header Value'
+                        );
+                    });
     }
 
 <a name="using-mailables"></a>
@@ -852,7 +953,7 @@ php artisan migrate
         echo $notification->type;
     }
 
-> {tip} 若要在 JavaScript 用戶端中存取通知，請定義一個用來為 Notifiable 實體 (如：目前使用者) 回傳通知的 Notification Controller。接著就可以從 JavaScript 用戶端上建立一個 HTTP Request 來連線到該 Controller 的網址。
+> **Note** 若要在 JavaScript 用戶端中存取通知，請定義一個用來為 Notifiable 實體 (如：目前使用者) 回傳通知的 Notification Controller。接著就可以從 JavaScript 用戶端上建立一個 HTTP Request 來連線到該 Controller 的網址。
 
 
 <a name="marking-notifications-as-read"></a>
@@ -1352,7 +1453,7 @@ composer require laravel/slack-notification-channel
         ],
     ];
 
-> {tip} 在 `EventServiceProvider` 中註冊好 Listener 後，可使用 `event:generate` Artisan 指令來快速產生 Listener 類別。
+> **Note** 在 `EventServiceProvider` 中註冊好 Listener 後，可使用 `event:generate` Artisan 指令來快速產生 Listener 類別。
 
 
 在 Event Listener 中，可以在該 Event 上存取 `notifiable`、`notification`、`channel`、`response` 等屬性，以取得更多有關通知收件人或通知本身的資訊：

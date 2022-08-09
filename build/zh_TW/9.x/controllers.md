@@ -75,7 +75,7 @@
 
 當有連入請求符合這個路由 URI 時，將叫用 `App\Http\Controllers\UserController` 類別的 `show` 方法，且 route 參數會被傳入這個方法內。
 
-> {tip} Controller 並**不一定**要有繼承基礎類別。不過，若不繼承基礎 Controller 的話將無法使用一些如 `middleware` 或 `authorize` 方法等方便的功能。
+> **Note** Controller 並**不一定**要有繼承基礎類別。不過，若不繼承基礎 Controller 的話將無法使用一些如 `middleware` 或 `authorize` 方法等方便的功能。
 
 
 <a name="single-action-controllers"></a>
@@ -116,7 +116,7 @@
 php artisan make:controller ProvisionServer --invokable
 ```
 
-> {tip} Controller 的 Stub 可通過[發佈 Stub](/docs/{{version}}/artisan#stub-customization) 來自定。
+> **Note** Controller 的 Stub 可通過[發佈 Stub](/docs/{{version}}/artisan#stub-customization) 來自定。
 
 
 <a name="controller-middleware"></a>
@@ -360,7 +360,7 @@ Laravel 的[限定範圍的隱式 Model 繫結](/docs/{{version}}/routing#implic
 
 ### 本地化資源 URI
 
-預設情況下，`Route::resource` 會使用英語的動詞來建立資源 URI。若有需要本地化 `create` 與 `action` 動作的動詞，可以使用 `Route::resourceVerbs` 方法。這可以放在專案的 `App\Providers\RouteServiceProvider` 中之 `boot` 方法開頭。
+預設情況下，`Route::resource` 會使用英語的動詞與複數規則來建立資源 URI。若有需要本地化 `create` 與 `action` 動作的動詞，可以使用 `Route::resourceVerbs` 方法。這可以放在專案的 `App\Providers\RouteServiceProvider` 中之 `boot` 方法開頭。
 
     /**
      * Define your route model bindings, pattern filters, etc.
@@ -377,11 +377,11 @@ Laravel 的[限定範圍的隱式 Model 繫結](/docs/{{version}}/routing#implic
         // ...
     }
 
-自訂完動詞後，使用如 `Route::resource('fotos', PhotoController::class)` 註冊的資源路由就會產生下列 URI：
+Laravel 的複數化程式 (Pluralizer) 可以[按照需求設定支援不同的語言](/docs/{{version}}/localization#pluralization-language)。自訂好動詞與複數化語言後，如 `Route::resource('publicacion', PublicacionController::class)` 這樣的 Resource Route 就會產生下列 URI：
 
-    /fotos/crear
+    /publicacion/crear
     
-    /fotos/{foto}/editar
+    /publicacion/{publicaciones}/editar
 
 <a name="restful-supplementing-resource-controllers"></a>
 
@@ -394,7 +394,7 @@ Laravel 的[限定範圍的隱式 Model 繫結](/docs/{{version}}/routing#implic
     Route::get('/photos/popular', [PhotoController::class, 'popular']);
     Route::resource('photos', PhotoController::class);
 
-> {tip} 請記得要保持 Controller 的功能專一。若發現常常需要使用除了一般資源動作以外的方法，請考慮將 Controller 拆分成兩個、更小的 Controller。
+> **Note** 請記得要保持 Controller 的功能專一。若發現常常需要使用除了一般資源動作以外的方法，請考慮將 Controller 拆分成兩個、更小的 Controller。
 
 
 <a name="dependency-injection-and-controllers"></a>

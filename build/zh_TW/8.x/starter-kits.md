@@ -45,7 +45,7 @@ php artisan migrate
 建立好 Laravel 專案後，可以使用 Composer 來安裝 Laravel Breeze：
 
 ```bash
-composer require laravel/breeze --dev
+composer require laravel/breeze:1.9.2
 ```
 
 安裝好 Laravel Breeze 套件後，執行 `breeze:install` Artisan 指令。這個指令會將登入用 View、路由、Controller、以及其他一些資源安裝到專案中。Laravel Breeze 會將其所有程式碼安裝到專案中，因此對於 Breeze 的功能與實作你擁有完整的控制權與可見性。安裝好 Breeze 之後，你需要接著編譯資源，這樣網站才會有 CSS 檔可用：

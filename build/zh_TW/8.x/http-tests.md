@@ -1,40 +1,40 @@
 # HTTP 測試
 
-- [Introduction](#introduction)
+- [簡介](#introduction)
 
-- [Making Requests](#making-requests)
+- [建立 Request](#making-requests)
 
-   - [Customizing Request Headers](#customizing-request-headers)
+   - [自訂 Request Header](#customizing-request-headers)
 
-   - [Cookies](#cookies)
+   - [Cookie](#cookies)
 
-   - [Session / Authentication](#session-and-authentication)
+   - [Session 與身份驗證](#session-and-authentication)
 
-   - [Debugging Responses](#debugging-responses)
+   - [為 Response 進行除錯](#debugging-responses)
 
-   - [Exception Handling](#exception-handling)
+   - [處理 Exception](#exception-handling)
 
-- [Testing JSON APIs](#testing-json-apis)
+- [測試 JSON API](#testing-json-apis)
 
-   - [Fluent JSON Testing](#fluent-json-testing)
+   - [Fluent 的 JSON 測試](#fluent-json-testing)
 
-- [Testing File Uploads](#testing-file-uploads)
+- [測試檔案上傳](#testing-file-uploads)
 
-- [Testing Views](#testing-views)
+- [測試 View](#testing-views)
 
-   - [Rendering Blade & Components](#rendering-blade-and-components)
+   - [轉譯 Blade 與原件](#rendering-blade-and-components)
 
-- [Available Assertions](#available-assertions)
+- [可用的 Assertion](#available-assertions)
 
-   - [Response Assertions](#response-assertions)
+   - [Response 上的 Assertion](#response-assertions)
 
-   - [Authentication Assertions](#authentication-assertions)
+   - [身份驗證的 Assertion](#authentication-assertions)
 
 <a name="introduction"></a>
 
-## Introduction
+## 簡介
 
-Laravel provides a very fluent API for making HTTP requests to your application and examining the responses. For example, take a look at the feature test defined below:
+Laravel 提供了一個語義化的 API，這個 API 可以建立連到我們專案的 HTTP ^[Request](請求)，並讓我們能加以檢查 ^[Response](回覆)。舉例來說，我們來看看下面定義的這個 Feature Test：
 
     <?php
     
@@ -59,15 +59,15 @@ Laravel provides a very fluent API for making HTTP requests to your application 
         }
     }
 
-The `get` method makes a `GET` request into the application, while the `assertStatus` method asserts that the returned response should have the given HTTP status code. In addition to this simple assertion, Laravel also contains a variety of assertions for inspecting the response headers, content, JSON structure, and more.
+`get` 方法會建立連到專案的 `GET` Request，而 `assertStatus` 方法則會判斷回傳的 Response 是否為給定的 HTTP 狀態碼。出了這種簡單的 ^[Assertion](判斷提示) 外，Laravel 也提供了各種不同的 Assertion，可用來檢查 Response 的 ^[Header](標頭)、內容、JSON 結構…等。
 
 <a name="making-requests"></a>
 
-## Making Requests
+## 建立 Request
 
-To make a request to your application, you may invoke the `get`, `post`, `put`, `patch`, or `delete` methods within your test. These methods do not actually issue a "real" HTTP request to your application. Instead, the entire network request is simulated internally.
+若要建立連到專案的 Request，可以在測試中叫用 `get`、`post`、`put`、`patch`、`delete` 方法。這些方法不會真的建立「真正的」HTTP Request，而是在程式內部模擬一段網路連線。
 
-Instead of returning an `Illuminate\Http\Response` instance, test request methods return an instance of `Illuminate\Testing\TestResponse`, which provides a [variety of helpful assertions](#available-assertions) that allow you to inspect your application's responses:
+這些測試 Request 方法不是回傳 `Illuminate\Http\Response` 實體，而是回傳 `Illuminate\Testing\TestResponse` 的實體。`TestResponse` 實體提供了[各種實用的 Assertion](#available-assertions)，可讓我們檢查專案的 Response：
 
     <?php
     
@@ -92,16 +92,16 @@ Instead of returning an `Illuminate\Http\Response` instance, test request method
         }
     }
 
-In general, each of your tests should only make one request to your application. Unexpected behavior may occur if multiple requests are executed within a single test method.
+一般來說，每個測試都應只向專案建立一個 Request。若在單一測試方法內建立多個 Request，可能會發生未預期的行為。
 
-> {tip} For convenience, the CSRF middleware is automatically disabled when running tests.
+> {tip} 為了方便起見，在執行測試時會自動禁用 CSRF Middleware。
 
 
 <a name="customizing-request-headers"></a>
 
-### Customizing Request Headers
+### 自訂 Request 的 Header
 
-You may use the `withHeaders` method to customize the request's headers before it is sent to the application. This method allows you to add any custom headers you would like to the request:
+可使用 `withHeaders` 方法來在 Request 傳送到專案前先自訂 Request 的 Header。使用這個方法，我們就可以自行加上任何需要的自定 Request：
 
     <?php
     
@@ -128,9 +128,9 @@ You may use the `withHeaders` method to customize the request's headers before i
 
 <a name="cookies"></a>
 
-### Cookies
+### Cookie
 
-You may use the `withCookie` or `withCookies` methods to set cookie values before making a request. The `withCookie` method accepts a cookie name and value as its two arguments, while the `withCookies` method accepts an array of name / value pairs:
+我們可以使用 `withCookie` 或 `withCookies` 方法來在建立 Request 前設定 Cookie 值。`withCookie` 方法有兩個引數：Cookie 名稱與 Cookie 值。`withCookies` 方法則接受一組名稱／值配對的陣列：
 
     <?php
     
@@ -153,9 +153,9 @@ You may use the `withCookie` or `withCookies` methods to set cookie values befor
 
 <a name="session-and-authentication"></a>
 
-### Session / Authentication
+### Session 與身份驗證
 
-Laravel provides several helpers for interacting with the session during HTTP testing. First, you may set the session data to a given array using the `withSession` method. This is useful for loading the session with data before issuing a request to your application:
+Laravel 提供了各種在 HTTP 測試期間處理 Session 的輔助函式。首先，我們可以使用給定 `withSession` 方法來以給定的陣列設定 Session 資料。若要在向專案傳送 Request 前先在 Session 內載入資料，就適合使用這個方法：
 
     <?php
     
@@ -171,7 +171,7 @@ Laravel provides several helpers for interacting with the session during HTTP te
         }
     }
 
-Laravel's session is typically used to maintain state for the currently authenticated user. Therefore, the `actingAs` helper method provides a simple way to authenticate a given user as the current user. For example, we may use a [model factory](/docs/{{version}}/database-testing#writing-factories) to generate and authenticate a user:
+由於 Laravel 的 Session 通常是用來保存目前登入使用者的狀態，因此，也有一個 `actingAs` 輔助函式方法，可更簡單地讓我們將給定的使用者登入為目前使用者。舉例來說，我們可以使用 [Model Factory](/docs/{{version}}/database-testing#writing-factories) 來產生並登入使用者：
 
     <?php
     
@@ -192,15 +192,15 @@ Laravel's session is typically used to maintain state for the currently authenti
         }
     }
 
-You may also specify which guard should be used to authenticate the given user by passing the guard name as the second argument to the `actingAs` method:
+我們可以使用 `actingAs` 方法的第二個引數來指定要使用哪個 Guard 來驗證給定使用者：
 
     $this->actingAs($user, 'web')
 
 <a name="debugging-responses"></a>
 
-### Debugging Responses
+### 為 Response 進行除錯
 
-After making a test request to your application, the `dump`, `dumpHeaders`, and `dumpSession` methods may be used to examine and debug the response contents:
+向專案建立測試 Request 後，可使用 `dump`、`dumpHeaders`、`dumpSession` 方法來取得 Response 的內容或對其除錯：
 
     <?php
     
@@ -227,7 +227,7 @@ After making a test request to your application, the `dump`, `dumpHeaders`, and 
         }
     }
 
-Alternatively, you may use the `dd`, `ddHeaders`, and `ddSession` methods to dump information about the response and then stop execution:
+或者，我們可以使用 `dd`、`ddHeaders`、`ddSession` 方法來將該 Response 相關的資料傾印出來，並停止執行：
 
     <?php
     
@@ -256,21 +256,21 @@ Alternatively, you may use the `dd`, `ddHeaders`, and `ddSession` methods to dum
 
 <a name="exception-handling"></a>
 
-### Exception Handling
+### 處理 Exception
 
-Sometimes you may want to test that your application is throwing a specific exception. To ensure that the exception does not get caught by Laravel's exception handler and returned as an HTTP response, you may invoke the `withoutExceptionHandling` method before making your request:
+有時候，我們可能會想測試專案是否有擲回特定的 ^[Exception](例外)。為了避免該 Exception 被 Laravel 的 Exception ^[Handler](處理常式)攔截並轉為 HTTP Response，請在建立 Request 前先叫用 `withoutExceptionHandling` 方法：
 
     $response = $this->withoutExceptionHandling()->get('/');
 
-In addition, if you would like to ensure that your application is not utilizing features that have been deprecated by the PHP language or the libraries your application is using, you may invoke the `withoutDeprecationHandling` method before making your request. When deprecation handling is disabled, deprecation warnings will be converted to exceptions, thus causing your test to fail:
+此外，若想確保專案中未使用到 PHP 或其他專案使用套件中宣告 ^[Deprecated](已過時) 的功能，我們可以在建立 Request 前叫用 `withoutDeprecationHandling` 方法。停用 Deprecation Handling 後，Deprecation ^[Warning](警告) 會被轉換為 Exception，並導致測試執行失敗：
 
     $response = $this->withoutDeprecationHandling()->get('/');
 
 <a name="testing-json-apis"></a>
 
-## Testing JSON APIs
+## 測試 JSON API
 
-Laravel also provides several helpers for testing JSON APIs and their responses. For example, the `json`, `getJson`, `postJson`, `putJson`, `patchJson`, `deleteJson`, and `optionsJson` methods may be used to issue JSON requests with various HTTP verbs. You may also easily pass data and headers to these methods. To get started, let's write a test to make a `POST` request to `/api/user` and assert that the expected JSON data was returned:
+Laravel 中也提供了數種可用來測試 JSON API 與起 Response 的輔助函式。舉例來說，`json`、`getJson`、`postJson`、`putJson`、`patchJson`、`deleteJson`、`optionsJson` 等方法可用來以各種 HTTP ^[Verb](指令動詞) 來建立 JSON Request。我們也可以輕鬆地將資料與 Header 傳給這些方法。若要開始測試 JSON API，我們先來撰寫一個建立連到 `/api/user` 的 `POST` Request，並撰寫預期回傳 JSON 資料的 Assertion：
 
     <?php
     
@@ -297,18 +297,18 @@ Laravel also provides several helpers for testing JSON APIs and their responses.
         }
     }
 
-In addition, JSON response data may be accessed as array variables on the response, making it convenient for you to inspect the individual values returned within a JSON response:
+此外，在 Response 上，我們可以用陣列變數的形式來存取 JSON Response 的資料。這麼一來我們就能方便地檢查 JSON Response 中回傳的各個值：
 
     $this->assertTrue($response['created']);
 
-> {tip} The `assertJson` method converts the response to an array and utilizes `PHPUnit::assertArraySubset` to verify that the given array exists within the JSON response returned by the application. So, if there are other properties in the JSON response, this test will still pass as long as the given fragment is present.
+> {tip} `assertJson` 方法會將 Response 轉換為陣列，並使用 `PHPUnit::assertArraySubset` 來驗證給定陣列是否有包含在專案回傳的 JSON Response 中。所以，如果在 JSON Response 中有包含其他屬性，只要給定的部分有包含在 JSON 裡，測試就會通過。
 
 
 <a name="verifying-exact-match"></a>
 
-#### Asserting Exact JSON Matches
+#### 判斷 JSON 是否完全符合
 
-As previously mentioned, the `assertJson` method may be used to assert that a fragment of JSON exists within the JSON response. If you would like to verify that a given array **exactly matches** the JSON returned by your application, you should use the `assertExactJson` method:
+剛才也提到過，`assertJson` 方法可用來判斷給定的部分 JSON 是否有包含在 JSON Response 中。若想檢查給定的陣列是否與專案回傳的 JSON **完全符合**，請使用 `assertExactJson` 方法：
 
     <?php
     
@@ -337,9 +337,9 @@ As previously mentioned, the `assertJson` method may be used to assert that a fr
 
 <a name="verifying-json-paths"></a>
 
-#### Asserting On JSON Paths
+#### 判斷 JSON 路徑
 
-If you would like to verify that the JSON response contains the given data at a specified path, you should use the `assertJsonPath` method:
+若想檢查 JSON Response 中，特定路徑上是否有包含給定資料，可使用 `assertJsonPath` 方法：
 
     <?php
     
@@ -366,9 +366,9 @@ If you would like to verify that the JSON response contains the given data at a 
 
 <a name="fluent-json-testing"></a>
 
-### Fluent JSON Testing
+### Fluent JSON 測試
 
-Laravel also offers a beautiful way to fluently test your application's JSON responses. To get started, pass a closure to the `assertJson` method. This closure will be invoked with an instance of `Illuminate\Testing\Fluent\AssertableJson` which can be used to make assertions against the JSON that was returned by your application. The `where` method may be used to make assertions against a particular attribute of the JSON, while the `missing` method may be used to assert that a particular attribute is missing from the JSON:
+Laravel 也提供了另一種較好看、語義化的方法來讓我們測試專案的 JSON Response。若要用這種方法來測試 JSON Response，只需要傳入一個閉包給 `assertJson`。在叫用這個閉包時，該閉包會收到一個 `Illuminate\Testing\Fluent\AssertableJson` 實體。`AssertableJson` 可用來對專案回傳的 JSON 做 Assertion。`where` 方法可用來對 JSON 中特定屬性做 Assertion。而 `missing` 方法可用來判斷 JSON 中是否不含特定屬性：
 
     use Illuminate\Testing\Fluent\AssertableJson;
     
@@ -390,31 +390,31 @@ Laravel also offers a beautiful way to fluently test your application's JSON res
             );
     }
 
-#### Understanding The `etc` Method
+#### 瞭解 `etc` 方法
 
-In the example above, you may have noticed we invoked the `etc` method at the end of our assertion chain. This method informs Laravel that there may be other attributes present on the JSON object. If the `etc` method is not used, the test will fail if other attributes that you did not make assertions against exist on the JSON object.
+在上述的範例中，讀者可能有注意到我們在 Assersion 串列的最後面叫用了 `etc` 方法。叫用該方法可讓 Laravel 知道在 JSON 物件中可能還有其他屬性。在沒有使用 `etc` 方法的情況下，若 JSON 物件中還有其他屬性存在，而我們未對這些屬性進行 Assersion 時，測試會執行失敗。
 
-The intention behind this behavior is to protect you from unintentionally exposing sensitive information in your JSON responses by forcing you to either explicitly make an assertion against the attribute or explicitly allow additional attributes via the `etc` method.
+這種在沒有呼叫 `etc` 方法的情況下會使測試失敗的行為，是為了避免讓我們在 JSON Response 中不小心暴露出機敏資訊，所以才強制我們要針對所有屬性做 Assersion，或是使用 `etc` 方法來顯式允許其他額外的屬性。
 
 <a name="asserting-json-attribute-presence-and-absence"></a>
 
-#### Asserting Attribute Presence / Absence
+#### 判斷屬性存在／不存在
 
-To assert that an attribute is present or absent, you may use the `has` and `missing` methods:
+若要判斷某個屬性存在或不存在，可使用 `has` 或 `missing` 方法：
 
     $response->assertJson(fn (AssertableJson $json) =>
         $json->has('data')
              ->missing('message')
     );
 
-In addition, the `hasAll` and `missingAll` methods allow asserting the presence or absence of multiple attributes simultaneously:
+此外，使用 `hasAll` 或 `missingAll` 方法，就可以同時針對多個屬性判斷存在或不存在：
 
     $response->assertJson(fn (AssertableJson $json) =>
         $json->hasAll('status', 'data')
              ->missingAll('message', 'code')
     );
 
-You may use the `hasAny` method to determine if at least one of a given list of attributes is present:
+我們可以使用 `hasAny` 方法來判斷給定屬性列表中是否至少有一個屬性存在：
 
     $response->assertJson(fn (AssertableJson $json) =>
         $json->has('status')
@@ -423,15 +423,15 @@ You may use the `hasAny` method to determine if at least one of a given list of 
 
 <a name="asserting-against-json-collections"></a>
 
-#### Asserting Against JSON Collections
+#### 判斷 JSON Collection
 
-Often, your route will return a JSON response that contains multiple items, such as multiple users:
+通常來說，在 Route 中回傳的 Json Response 會包含多個項目，如多位使用者：
 
     Route::get('/users', function () {
         return User::all();
     });
 
-In these situations, we may use the fluent JSON object's `has` method to make assertions against the users included in the response. For example, let's assert that the JSON response contains three users. Next, we'll make some assertions about the first user in the collection using the `first` method. The `first` method accepts a closure which receives another assertable JSON string that we can use to make assertions about the first object in the JSON collection:
+在這些情況下，我們可以使用 Fluent JSON 物件的 `has` 方法來針對該 Response 中的使用者進行 Assertion。舉例來說，我們來判斷 JSON Response 中是否有包含三位使用者。接著，我們再使用 `first` 方法來對該 Collection 中的使用者做 Assertion。`first` 方法接受一個閉包，該閉包會收到另一個可 Assert 的 JSON 字串，我們可以使用這個 JSON 字串來針對該 JSON Collection 中的第一個物件進行 Assertion：
 
     $response
         ->assertJson(fn (AssertableJson $json) =>
@@ -446,9 +446,9 @@ In these situations, we may use the fluent JSON object's `has` method to make as
 
 <a name="scoping-json-collection-assertions"></a>
 
-#### Scoping JSON Collection Assertions
+#### 限定範圍的 JSON Collection Assertion
 
-Sometimes, your application's routes will return JSON collections that are assigned named keys:
+有時候，Route 可能會回傳被指派為命名索引鍵的 JSON Collection：
 
     Route::get('/users', function () {
         return [
@@ -457,7 +457,7 @@ Sometimes, your application's routes will return JSON collections that are assig
         ];
     })
 
-When testing these routes, you may use the `has` method to assert against the number of items in the collection. In addition, you may use the `has` method to scope a chain of assertions:
+在測試這類 Route 時，可以使用 `has` 方法來判斷該 Collection 中的項目數。此外，也可以使用 `has` 方法來在一連串的 Assertion 間限制判斷的範圍：
 
     $response
         ->assertJson(fn (AssertableJson $json) =>
@@ -471,7 +471,7 @@ When testing these routes, you may use the `has` method to assert against the nu
                  )
         );
 
-However, instead of making two separate calls to the `has` method to assert against the `users` collection, you may make a single call which provides a closure as its third parameter. When doing so, the closure will automatically be invoked and scoped to the first item in the collection:
+不過，除了一次對 `users` Collection 呼叫兩次 `has` 方法以外，我們也可以只呼叫一次，並提供一個閉包作為該方法的第三個引數。傳入閉包時，Laravel 會自動叫用該閉包，並將作用範圍限定在該 Collection 的第一個項目：
 
     $response
         ->assertJson(fn (AssertableJson $json) =>
@@ -486,9 +486,9 @@ However, instead of making two separate calls to the `has` method to assert agai
 
 <a name="asserting-json-types"></a>
 
-#### Asserting JSON Types
+#### 判斷 JSON 型別
 
-You may only want to assert that the properties in the JSON response are of a certain type. The `Illuminate\Testing\Fluent\AssertableJson` class provides the `whereType` and `whereAllType` methods for doing just that:
+我們可能會想檢查 JSON Response 中的某些屬性是否為特定的型別。`Illuminate\Testing\Fluent\AssertableJson` 類別中，提供了 `whereType` 與 `whereAllType` 方法可讓我們檢查 JSON 屬性中的型別：
 
     $response->assertJson(fn (AssertableJson $json) =>
         $json->whereType('id', 'integer')
@@ -498,20 +498,20 @@ You may only want to assert that the properties in the JSON response are of a ce
             ])
     );
 
-You may specify multiple types using the `|` character, or passing an array of types as the second parameter to the `whereType` method. The assertion will be successful if the response value is any of the listed types:
+我們也可以使用 `|` 字元來指定多個型別，或者，也可以傳入一組型別陣列作為 `whereType` 的第二個引數。若 Response 值符合任意列出的型別，則該 Assertion 會執行成功：
 
     $response->assertJson(fn (AssertableJson $json) =>
         $json->whereType('name', 'string|null')
              ->whereType('id', ['string', 'integer'])
     );
 
-The `whereType` and `whereAllType` methods recognize the following types: `string`, `integer`, `double`, `boolean`, `array`, and `null`.
+`whereType` 與 `whereAllType` 方法可支援下列型別： `string`、`integer`、`double`、`boolean`、`array`、`null`。
 
 <a name="testing-file-uploads"></a>
 
-## Testing File Uploads
+## 測試檔案上傳
 
-The `Illuminate\Http\UploadedFile` class provides a `fake` method which may be used to generate dummy files or images for testing. This, combined with the `Storage` facade's `fake` method, greatly simplifies the testing of file uploads. For example, you may combine these two features to easily test an avatar upload form:
+`Illuminate\Http\UploadedFile` 類別提供了一個 `fake` 方法，可用來產生用於測試的假檔案或圖片。只要將 `UploadedFile` 的 `fake` 方法與 `Storage` Facade 的 `fake` 方法一起使用，我們就能大幅簡化測試檔案上傳的過程。舉例來說，我們可以將這兩個功能搭配使用，來測試某個上傳使用者大頭照的表單：
 
     <?php
     
@@ -539,7 +539,7 @@ The `Illuminate\Http\UploadedFile` class provides a `fake` method which may be u
         }
     }
 
-If you would like to assert that a given file does not exist, you may use the `assertMissing` method provided by the `Storage` facade:
+若想檢查給定的檔案是否不存在，可使用 `Storage` Facade 的 `assertMissing` 方法：
 
     Storage::fake('avatars');
     
@@ -549,17 +549,18 @@ If you would like to assert that a given file does not exist, you may use the `a
 
 <a name="fake-file-customization"></a>
 
-#### Fake File Customization
+#### 自訂 Fake 檔案
 
-When creating files using the `fake` method provided by the `UploadedFile` class, you may specify the width, height, and size of the image (in kilobytes) in order to better test your application's validation rules:
+在使用 `UploadedFile` 類別的 `fake` 方法來建立檔案時，我們可以指定圖片的長寬與檔案大小 (單位為 kB)，以更好地測試程式中的表單驗證規則：
 
     UploadedFile::fake()->image('avatar.jpg', $width, $height)->size(100);
 
-In addition to creating images, you may create files of any other type using the `create` method:
+除了建立圖片外，還可以使用 `create` 方法來建立任何其他類型的檔案：
 
+    // $sizeInKilobytes = 單位為 kB 的檔案大小
     UploadedFile::fake()->create('document.pdf', $sizeInKilobytes);
 
-If needed, you may pass a `$mimeType` argument to the method to explicitly define the MIME type that should be returned by the file:
+若有需要，可傳入 `$mimeType` 引數，以明顯定義 File 要回傳的 MIME 型別：
 
     UploadedFile::fake()->create(
         'document.pdf', $sizeInKilobytes, 'application/pdf'
@@ -567,9 +568,9 @@ If needed, you may pass a `$mimeType` argument to the method to explicitly defin
 
 <a name="testing-views"></a>
 
-## Testing Views
+## 測試 View
 
-Laravel also allows you to render a view without making a simulated HTTP request to the application. To accomplish this, you may call the `view` method within your test. The `view` method accepts the view name and an optional array of data. The method returns an instance of `Illuminate\Testing\TestView`, which offers several methods to conveniently make assertions about the view's contents:
+在 Laravel 中，我們也可以在不模擬 HTTP Request 的情況轉譯 View。若要在不模擬 HTTP Request 的情況下轉譯 View，我們可以在測試中呼叫 `view` 方法。`view` 方法的參數為 View 的名稱，以及一組可選的資料陣列。該方法會回傳 `Illuminate\Testing\TestView` 的實體，使用 `TestView`，我們就能方便地針對 View 的內容進行 Assertion：
 
     <?php
     
@@ -587,17 +588,17 @@ Laravel also allows you to render a view without making a simulated HTTP request
         }
     }
 
-The `TestView` class provides the following assertion methods: `assertSee`, `assertSeeInOrder`, `assertSeeText`, `assertSeeTextInOrder`, `assertDontSee`, and `assertDontSeeText`.
+`TestView` 類別還提供了下列 Assertion 方法：`assertSee`、`assertSeeInOrder`、`assertSeeText`、`assertSeeTextInOrder`、`assertDontSee`、`assertDontSeeText`。
 
-If needed, you may get the raw, rendered view contents by casting the `TestView` instance to a string:
+若有需要，我們可以將 `TestView` 實體轉換型別為字串來取得原始的 View 內容轉譯結果：
 
     $contents = (string) $this->view('welcome');
 
 <a name="sharing-errors"></a>
 
-#### Sharing Errors
+#### 共用錯誤訊息
 
-Some views may depend on errors shared in the [global error bag provided by Laravel](/docs/{{version}}/validation#quick-displaying-the-validation-errors). To hydrate the error bag with error messages, you may use the `withViewErrors` method:
+有的 View 會使用到 [Laravel 所提供的全域 Error Bag](/docs/{{version}}/validation#quick-displaying-the-validation-errors)中共享的錯誤。若要在全域 Error Bag 中填充錯誤訊息，可使用 `withViewErrors` 方法：
 
     $view = $this->withViewErrors([
         'name' => ['Please provide a valid name.']
@@ -607,9 +608,9 @@ Some views may depend on errors shared in the [global error bag provided by Lara
 
 <a name="rendering-blade-and-components"></a>
 
-### Rendering Blade & Components
+### 轉譯 Blade 與元件
 
-If necessary, you may use the `blade` method to evaluate and render a raw [Blade](/docs/{{version}}/blade) string. Like the `view` method, the `blade` method returns an instance of `Illuminate\Testing\TestView`:
+若有需要，可以使用 `blade` 方法來取值並轉譯原始的 [Blade](/docs/{{version}}/blade) 字串。與 `view` 方法類似，`blade` 方法也會回傳 `Illuminate\Testing\TestView` 的實體：
 
     $view = $this->blade(
         '<x-component :name="$name" />',
@@ -618,7 +619,7 @@ If necessary, you may use the `blade` method to evaluate and render a raw [Blade
     
     $view->assertSee('Taylor');
 
-You may use the `component` method to evaluate and render a [Blade component](/docs/{{version}}/blade#components). Like the `view` method, the `component` method returns an instance of `Illuminate\Testing\TestView`:
+可以使用 `component` 方法來取值並轉譯 [Blade 元件](/docs/{{version}}/blade#components)。與 `view` 方法類似，`component` 元件也會回傳 `Illuminate\Testing\TestView` 的實體：
 
     $view = $this->component(Profile::class, ['name' => 'Taylor']);
     
@@ -626,13 +627,13 @@ You may use the `component` method to evaluate and render a [Blade component](/d
 
 <a name="available-assertions"></a>
 
-## Available Assertions
+## 可用的 Assertion
 
 <a name="response-assertions"></a>
 
-### Response Assertions
+### Response 的 Assertion
 
-Laravel's `Illuminate\Testing\TestResponse` class provides a variety of custom assertion methods that you may utilize when testing your application. These assertions may be accessed on the response that is returned by the `json`, `get`, `post`, `put`, and `delete` test methods:
+Laravel 的 `Illuminate\Testing\TestResponse` 類別提供了各種自訂 Assertion 方法供我們在測試程式時使用。這些 Assertion 可在 `json`、`get`、`post`、`put`、`delete` 測試方法回傳的 Response 上存取：
 
 [assertCookie](#assert-cookie) [assertCookieExpired](#assert-cookie-expired) [assertCookieNotExpired](#assert-cookie-not-expired) [assertCookieMissing](#assert-cookie-missing) [assertCreated](#assert-created) [assertDontSee](#assert-dont-see) [assertDontSeeText](#assert-dont-see-text) [assertDownload](#assert-download) [assertExactJson](#assert-exact-json) [assertForbidden](#assert-forbidden) [assertHeader](#assert-header) [assertHeaderMissing](#assert-header-missing) [assertJson](#assert-json) [assertJsonCount](#assert-json-count) [assertJsonFragment](#assert-json-fragment) [assertJsonMissing](#assert-json-missing) [assertJsonMissingExact](#assert-json-missing-exact) [assertJsonMissingValidationErrors](#assert-json-missing-validation-errors) [assertJsonPath](#assert-json-path) [assertJsonStructure](#assert-json-structure) [assertJsonValidationErrors](#assert-json-validation-errors) [assertJsonValidationErrorFor](#assert-json-validation-error-for) [assertLocation](#assert-location) [assertNoContent](#assert-no-content) [assertNotFound](#assert-not-found) [assertOk](#assert-ok) [assertPlainCookie](#assert-plain-cookie) [assertRedirect](#assert-redirect) [assertRedirectContains](#assert-redirect-contains) [assertRedirectToSignedRoute](#assert-redirect-to-signed-route) [assertSee](#assert-see) [assertSeeInOrder](#assert-see-in-order) [assertSeeText](#assert-see-text) [assertSeeTextInOrder](#assert-see-text-in-order) [assertSessionHas](#assert-session-has) [assertSessionHasInput](#assert-session-has-input) [assertSessionHasAll](#assert-session-has-all) [assertSessionHasErrors](#assert-session-has-errors) [assertSessionHasErrorsIn](#assert-session-has-errors-in) [assertSessionHasNoErrors](#assert-session-has-no-errors) [assertSessionDoesntHaveErrors](#assert-session-doesnt-have-errors) [assertSessionMissing](#assert-session-missing) [assertSimilarJson](#assert-similar-json) [assertStatus](#assert-status) [assertSuccessful](#assert-successful) [assertUnauthorized](#assert-unauthorized) [assertUnprocessable](#assert-unprocessable) [assertValid](#assert-valid) [assertInvalid](#assert-invalid) [assertViewHas](#assert-view-has) [assertViewHasAll](#assert-view-has-all) [assertViewIs](#assert-view-is) [assertViewMissing](#assert-view-missing)
 
@@ -640,7 +641,7 @@ Laravel's `Illuminate\Testing\TestResponse` class provides a variety of custom a
 
 #### assertCookie
 
-Assert that the response contains the given cookie:
+判斷 Response 包含給定 Cookie：
 
     $response->assertCookie($cookieName, $value = null);
 
@@ -648,7 +649,7 @@ Assert that the response contains the given cookie:
 
 #### assertCookieExpired
 
-Assert that the response contains the given cookie and it is expired:
+判斷 Response 包含給定 Cookie，且該 Cookie 已逾期：
 
     $response->assertCookieExpired($cookieName);
 
@@ -656,7 +657,7 @@ Assert that the response contains the given cookie and it is expired:
 
 #### assertCookieNotExpired
 
-Assert that the response contains the given cookie and it is not expired:
+判斷 Response 包含給定 Cookie，且該 Cookie 未逾期：
 
     $response->assertCookieNotExpired($cookieName);
 
@@ -664,7 +665,7 @@ Assert that the response contains the given cookie and it is not expired:
 
 #### assertCookieMissing
 
-Assert that the response does not contains the given cookie:
+判斷 Response 不包含給定 Cookie：
 
     $response->assertCookieMissing($cookieName);
 
@@ -672,7 +673,7 @@ Assert that the response does not contains the given cookie:
 
 #### assertCreated
 
-Assert that the response has a 201 HTTP status code:
+判斷 Response 是否為 201 HTTP 狀態碼：
 
     $response->assertCreated();
 
@@ -680,7 +681,7 @@ Assert that the response has a 201 HTTP status code:
 
 #### assertDontSee
 
-Assert that the given string is not contained within the response returned by the application. This assertion will automatically escape the given string unless you pass a second argument of `false`:
+判斷程式回傳的 Response 中是否不包含給定字串。除非將第二個引數設為 `false`，否則該 Assertion 會自動逸出給定的字串：
 
     $response->assertDontSee($value, $escaped = true);
 
@@ -688,7 +689,7 @@ Assert that the given string is not contained within the response returned by th
 
 #### assertDontSeeText
 
-Assert that the given string is not contained within the response text. This assertion will automatically escape the given string unless you pass a second argument of `false`. This method will pass the response content to the `strip_tags` PHP function before making the assertion:
+判斷 Response 的文字中是否不包含給定字串。除非將第二個引數設為 `false`，否則該 Assertion 會自動逸出給定的字串。該方法會將 Response 的內容傳給 `strip_tags` PHP 函式，然後再進行判斷：
 
     $response->assertDontSeeText($value, $escaped = true);
 
@@ -696,11 +697,11 @@ Assert that the given string is not contained within the response text. This ass
 
 #### assertDownload
 
-Assert that the response is a "download". Typically, this means the invoked route that returned the response returned a `Response::download` response, `BinaryFileResponse`, or `Storage::download` response:
+判斷 Response 是否為「檔案下載」。一般來說，就表示所叫用的 Route 回傳了 `Response::download` Response、`BinaryFileResponse`、 或是 `Storage::download` Response：
 
     $response->assertDownload();
 
-If you wish, you may assert that the downloadable file was assigned a given file name:
+若有需要，可判斷該下載檔案是否為給定的檔名：
 
     $response->assertDownload('image.jpg');
 
@@ -708,7 +709,7 @@ If you wish, you may assert that the downloadable file was assigned a given file
 
 #### assertExactJson
 
-Assert that the response contains an exact match of the given JSON data:
+判斷 Response 是否包含與給定的 JSON 資料完全相符的內容：
 
     $response->assertExactJson(array $data);
 
@@ -716,7 +717,7 @@ Assert that the response contains an exact match of the given JSON data:
 
 #### assertForbidden
 
-Assert that the response has a forbidden (403) HTTP status code:
+判斷 Response 是否為禁止存取 (403) HTTP 狀態碼：
 
     $response->assertForbidden();
 
@@ -724,7 +725,7 @@ Assert that the response has a forbidden (403) HTTP status code:
 
 #### assertHeader
 
-Assert that the given header and value is present on the response:
+判斷 Response 中是否有給定的 Header 與值：
 
     $response->assertHeader($headerName, $value = null);
 
@@ -732,7 +733,7 @@ Assert that the given header and value is present on the response:
 
 #### assertHeaderMissing
 
-Assert that the given header is not present on the response:
+判斷 Response 中是否不含給定的 Header：
 
     $response->assertHeaderMissing($headerName);
 
@@ -740,17 +741,17 @@ Assert that the given header is not present on the response:
 
 #### assertJson
 
-Assert that the response contains the given JSON data:
+判斷 Response 是否包含給定的 JSON 資料：
 
     $response->assertJson(array $data, $strict = false);
 
-The `assertJson` method converts the response to an array and utilizes `PHPUnit::assertArraySubset` to verify that the given array exists within the JSON response returned by the application. So, if there are other properties in the JSON response, this test will still pass as long as the given fragment is present.
+`assertJson` 方法會將 Response 轉換為陣列，並使用 `PHPUnit::assertArraySubset` 來驗證給定陣列是否有包含在專案回傳的 JSON Response 中。所以，如果在 JSON Response 中有包含其他屬性，只要給定的部分有包含在 JSON 裡，測試就會通過。
 
 <a name="assert-json-count"></a>
 
 #### assertJsonCount
 
-Assert that the response JSON has an array with the expected number of items at the given key:
+判斷 Response JSON 是否為一組陣列，且該陣列在給定的索引鍵上有包含預期數量的項目：
 
     $response->assertJsonCount($count, $key = null);
 
@@ -758,7 +759,7 @@ Assert that the response JSON has an array with the expected number of items at 
 
 #### assertJsonFragment
 
-Assert that the response contains the given JSON data anywhere in the response:
+判斷 Response 中，是否有在任意位置上包含給定的 JSON 資料：
 
     Route::get('/users', function () {
         return [
@@ -776,7 +777,7 @@ Assert that the response contains the given JSON data anywhere in the response:
 
 #### assertJsonMissing
 
-Assert that the response does not contain the given JSON data:
+判斷 Response 中是否不包含給定的 JSON 資料：
 
     $response->assertJsonMissing(array $data);
 
@@ -784,7 +785,7 @@ Assert that the response does not contain the given JSON data:
 
 #### assertJsonMissingExact
 
-Assert that the response does not contain the exact JSON data:
+判斷 Response 是否不包含完全相符的 JSON 資料：
 
     $response->assertJsonMissingExact(array $data);
 
@@ -792,22 +793,22 @@ Assert that the response does not contain the exact JSON data:
 
 #### assertJsonMissingValidationErrors
 
-Assert that the response has no JSON validation errors for the given keys:
+判斷 Response 中，給定的索引鍵上是否不含 JSON 驗證錯誤：
 
     $response->assertJsonMissingValidationErrors($keys);
 
-> {tip} The more generic [assertValid](#assert-valid) method may be used to assert that a response does not have validation errors that were returned as JSON **and** that no errors were flashed to session storage.
+> {tip} 還有一個更泛用的 [assertValid](#assert-valid) 方法，可用來檢查 Response 是否不含以 JSON 格式回傳的驗證錯誤，**並檢查** Session Storage 上是否未有快閃存入錯誤訊息。
 
 
 <a name="assert-json-path"></a>
 
 #### assertJsonPath
 
-Assert that the response contains the given data at the specified path:
+判斷 Response 中在特定路徑上是否包含給定的資料：
 
     $response->assertJsonPath($path, $expectedValue);
 
-For example, if the JSON response returned by your application contains the following data:
+舉例來說，若程式回傳了包含下列資料的 JSON Response：
 
 ```js
 {
@@ -817,7 +818,7 @@ For example, if the JSON response returned by your application contains the foll
 }
 ```
 
-You may assert that the `name` property of the `user` object matches a given value like so:
+則我們可以像這樣判斷 `user` 物件的 `name` 屬性是否符合給定的值：
 
     $response->assertJsonPath('user.name', 'Steve Schoger');
 
@@ -825,11 +826,11 @@ You may assert that the `name` property of the `user` object matches a given val
 
 #### assertJsonStructure
 
-Assert that the response has a given JSON structure:
+判斷 Response 是否含有給定的 JSON 結構：
 
     $response->assertJsonStructure(array $structure);
 
-For example, if the JSON response returned by your application contains the following data:
+舉例來說，若程式回傳了包含下列資料的 JSON Response：
 
 ```js
 {
@@ -839,7 +840,7 @@ For example, if the JSON response returned by your application contains the foll
 }
 ```
 
-You may assert that the JSON structure matches your expectations like so:
+也可以像這樣檢查 JSON 結構是否符合預期：
 
     $response->assertJsonStructure([
         'user' => [
@@ -847,7 +848,7 @@ You may assert that the JSON structure matches your expectations like so:
         ]
     ]);
 
-Sometimes, JSON responses returned by your application may contain arrays of objects:
+有時候，程式會回傳的 JSON Response 會包含一組由物件組成的陣列：
 
 ```js
 {
@@ -866,7 +867,7 @@ Sometimes, JSON responses returned by your application may contain arrays of obj
 }
 ```
 
-In this situation, you may use the `*` character to assert against the structure of all of the objects in the array:
+這時，我們可以使用 `*` 字元來對該陣列中的所有物件進行結構檢查：
 
     $response->assertJsonStructure([
         'user' => [
@@ -882,18 +883,18 @@ In this situation, you may use the `*` character to assert against the structure
 
 #### assertJsonValidationErrors
 
-Assert that the response has the given JSON validation errors for the given keys. This method should be used when asserting against responses where the validation errors are returned as a JSON structure instead of being flashed to the session:
+判斷 Response 中，給定的索引鍵上是否有給定的 JSON 驗證錯誤。該方法應用於檢查以 JSON 格式回傳的表單驗證錯誤 Response，而不應用於檢查快閃存入 Session 中的表單驗證錯誤：
 
     $response->assertJsonValidationErrors(array $data, $responseKey = 'errors');
 
-> {tip} The more generic [assertInvalid](#assert-invalid) method may be used to assert that a response has validation errors returned as JSON **or** that errors were flashed to session storage.
+> {tip} 還有一個更泛用的 [assertInvalid](#assert-invalid) 方法，可用來檢查 Response 是否包含以 JSON 格式回傳的驗證錯誤，**或是** Session Storage 上是否有快閃存入錯誤訊息。
 
 
 <a name="assert-json-validation-error-for"></a>
 
 #### assertJsonValidationErrorFor
 
-Assert the response has any JSON validation errors for the given key:
+判斷 Response 中，給定的索引鍵上是否有任何的 JSON 驗證規則：
 
     $response->assertJsonValidationErrorFor(string $key, $responseKey = 'errors');
 
@@ -901,7 +902,7 @@ Assert the response has any JSON validation errors for the given key:
 
 #### assertLocation
 
-Assert that the response has the given URI value in the `Location` header:
+判斷 Response 中，`Location` Header 上是否有給定的 URI 值：
 
     $response->assertLocation($uri);
 
@@ -909,7 +910,7 @@ Assert that the response has the given URI value in the `Location` header:
 
 #### assertNoContent
 
-Assert that the response has the given HTTP status code and no content:
+判斷 Response 是否為給定的 HTTP 狀態碼，且不含內容：
 
     $response->assertNoContent($status = 204);
 
@@ -917,7 +918,7 @@ Assert that the response has the given HTTP status code and no content:
 
 #### assertNotFound
 
-Assert that the response has a not found (404) HTTP status code:
+判斷 Response 是否為找不到 (404) HTTP 狀態碼：
 
     $response->assertNotFound();
 
@@ -925,7 +926,7 @@ Assert that the response has a not found (404) HTTP status code:
 
 #### assertOk
 
-Assert that the response has a 200 HTTP status code:
+判斷 Response 是否為 200 HTTP 狀態碼：
 
     $response->assertOk();
 
@@ -933,7 +934,7 @@ Assert that the response has a 200 HTTP status code:
 
 #### assertPlainCookie
 
-Assert that the response contains the given unencrypted cookie:
+判斷 Response 是否包含給定未加密的 Cookie：
 
     $response->assertPlainCookie($cookieName, $value = null);
 
@@ -941,7 +942,7 @@ Assert that the response contains the given unencrypted cookie:
 
 #### assertRedirect
 
-Assert that the response is a redirect to the given URI:
+判斷 Response 是否為指向給定 URI 的重新導向：
 
     $response->assertRedirect($uri);
 
@@ -949,7 +950,7 @@ Assert that the response is a redirect to the given URI:
 
 #### assertRedirectContains
 
-Assert whether the response is redirecting to a URI that contains the given string:
+判斷 Response 是否在重新導向至包含給定字串的 URI：
 
     $response->assertRedirectContains($string);
 
@@ -957,7 +958,7 @@ Assert whether the response is redirecting to a URI that contains the given stri
 
 #### assertRedirectToSignedRoute
 
-Assert that the response is a redirect to the given signed route:
+判斷 Response 是否為指向給定簽名 Route 的重新導向：
 
     $response->assertRedirectToSignedRoute($name = null, $parameters = []);
 
@@ -965,7 +966,7 @@ Assert that the response is a redirect to the given signed route:
 
 #### assertSee
 
-Assert that the given string is contained within the response. This assertion will automatically escape the given string unless you pass a second argument of `false`:
+判斷 Response 中是否包含給定字串。除非將第二個引數設為 `false`，否則該 Assertion 會自動逸出給定的字串：
 
     $response->assertSee($value, $escaped = true);
 

@@ -6,7 +6,7 @@
 
    - [存取 Request](#accessing-the-request)
 
-   - [Request 路徑與方法](#request-path-and-method)
+   - [Request 路徑、主機、與方法](#request-path-and-method)
 
    - [Request 標頭](#request-headers)
 
@@ -121,7 +121,7 @@ Laravel 的 `Illuminate\Http\Request` 類別提供了一種物件導向的方法
 
 <a name="request-path-and-method"></a>
 
-### Request 的路徑與方法
+### Request 路徑、主機、與方法
 
 `Illuminate\Http\Request` 提供了多種可檢查連入 HTTP Request 的方法。這個方法也繼承了 `Symfony\Component\HttpFoundation\Request` 類別。我們稍後會討論其中幾個最重要的方法。
 
@@ -162,6 +162,16 @@ Laravel 的 `Illuminate\Http\Request` 類別提供了一種物件導向的方法
 若想將查詢字串資料附加到目前的 URL，可以使用 `fullUrlWithQuery` 方法。傳入一個包含查詢字串變數的陣列，然後這個方法會將給定的陣列與目前的查詢字串合併：
 
     $request->fullUrlWithQuery(['type' => 'phone']);
+
+<a name="retrieving-the-request-host"></a>
+
+#### 取得 Request 主機
+
+可以使用 `host`、`httpHost`、與 `schemeAndHttpHost` 來取得連入 Request 的「主機」：
+
+    $request->host();
+    $request->httpHost();
+    $request->schemeAndHttpHost();
 
 <a name="retrieving-the-request-method"></a>
 
@@ -246,7 +256,7 @@ composer require nyholm/psr7
         //
     });
 
-> {tip} 若從 Route 或 Controller 中回傳 PSR-7 Response，這個 Response 會先被轉回到 Laravel 的 Response 實體，然後才會由 Laravel 顯示出來。
+> **Note** 若從 Route 或 Controller 中回傳 PSR-7 Response，這個 Response 會先被轉回到 Laravel 的 Response 實體，然後才會由 Laravel 顯示出來。
 
 
 <a name="input"></a>
@@ -321,6 +331,14 @@ composer require nyholm/psr7
 
     $name = $request->input('user.name');
 
+<a name="retrieving-stringable-input-values"></a>
+
+#### 取得 Stringable 的輸入值
+
+除了將輸入值以原生型別的 `string` 取得，還可以使用 `string` 方法來將 Request 資料以 [`Illuminate\Support\Stringable`](/docs/{{version}}/helpers#fluent-strings) 實體的形式取得：
+
+    $name = $request->string('name')->trim();
+
 <a name="retrieving-boolean-input-values"></a>
 
 #### 取得布林輸入值
@@ -342,6 +360,16 @@ composer require nyholm/psr7
     $elapsed = $request->date('elapsed', '!H:i', 'Europe/Madrid');
 
 若輸入中有值，但格式不正確時，會擲回 `InvalidArgumentException`。因此，建議你在叫用 `date` 方法前先驗證輸入。
+
+<a name="retrieving-enum-input-values"></a>
+
+#### 取得 Enum 輸入值
+
+也可以從 Request 中取得對應到 [PHP Enum](https://www.php.net/manual/en/language.types.enumerations.php) 的輸入值。若 Request 中沒有輸入值，或是給定的名稱或 Enum 中沒有符合該輸入值的後端值 (Backing Value)，則會回傳 `null`。`enum` 方法的第一個引數為輸入值的名稱、第二個引數為 Enum 類別：
+
+    use App\Enums\Status;
+    
+    $status = $request->enum('status', Status::class);
 
 <a name="retrieving-input-via-dynamic-properties"></a>
 
@@ -367,7 +395,7 @@ composer require nyholm/psr7
     
     $input = $request->except('credit_card');
 
-> {note} `only` 方法會回傳所要求的所有索引鍵 / 值配對組。不過，若要求的索引鍵 / 值配對未出現在 Request 中，將不會回傳。
+> **Warning** `only` 方法會回傳所要求的所有索引鍵 / 值配對組。不過，若要求的索引鍵 / 值配對未出現在 Request 中，將不會回傳。
 
 
 <a name="determining-if-input-is-present"></a>
@@ -508,7 +536,32 @@ Laravel 也提供了一個全域 `old` 輔助函式。若想在 [Blade 樣板](/
 
 預設情況下，Laravel 中包含了 `App\Http\Middleware\TrimStrings` 與 `App\Http\Middleware\ConvertEmptyStringsToNull` 這兩個 Middleware，且放在程式的全域 Middleware Stack 中。這些 Middleware 被列在 `App\Http\Kernel` 類別的全域 Middleware Stack 中。這些 Middleware 會自動修剪 Request 中的所有連入子船，並將空白的字串欄位轉為 `null`。這樣，我們就不需要在 Route 或 Controller 中去費心正常化這些資料。
 
-若想禁用這些行為，可在 `App\Http\Kernel` 類別的 `$middleware` 屬性中將其移除：
+#### 禁用輸入正規化
+
+若想在所有 Request 上禁用這些行為，可在 `App\Http\Kernel` 類別的 `$middleware` 屬性中將其移除：
+
+若只想在專案中一部分的 Request 上禁用字串修剪與空字串轉換，可使用這兩個 Middleware 提供的 `skipWhen` 方法。請傳入一個回傳 `true` 或 `false` 的閉包給該方法，用來判斷是否應跳過字串的正規化。一般來說，應在專案的 `AppServiceProvider` 中 `boot` 方法內叫用這個 `skipWhen` 方法。
+
+```php
+use App\Http\Middleware\ConvertEmptyStringsToNull;
+use App\Http\Middleware\TrimStrings;
+
+/**
+ * Bootstrap any application services.
+ *
+ * @return void
+ */
+public function boot()
+{
+    TrimStrings::skipWhen(function ($request) {
+        return $request->is('admin/*');
+    });
+
+    ConvertEmptyStringsToNull::skipWhen(function ($request) {
+        // ...
+    });
+}
+```
 
 <a name="files"></a>
 
@@ -576,7 +629,7 @@ Laravel 也提供了一個全域 `old` 輔助函式。若想在 [Blade 樣板](/
     
     $path = $request->photo->storeAs('images', 'filename.jpg', 's3');
 
-> {tip} 更多有關 Laravel 中檔案儲存的資訊，請參考完整的[檔案儲存說明文件](/docs/{{version}}/filesystem)。
+> **Note** 更多有關 Laravel 中檔案儲存的資訊，請參考完整的[檔案儲存說明文件](/docs/{{version}}/filesystem)。
 
 
 <a name="configuring-trusted-proxies"></a>
@@ -614,7 +667,7 @@ Laravel 也提供了一個全域 `old` 輔助函式。若想在 [Blade 樣板](/
         protected $headers = Request::HEADER_X_FORWARDED_FOR | Request::HEADER_X_FORWARDED_HOST | Request::HEADER_X_FORWARDED_PORT | Request::HEADER_X_FORWARDED_PROTO;
     }
 
-> {tip} 若要使用 AWS Elastic Load Balancing，則 `$headers` 的值應為 `Request::HEADER_X_FORWARDED_AWS_ELB`。更多有關能用在 `$headers` 屬性的常數資訊，請參考 Symfony 說明文件中的 [Trusting Proxies](https://symfony.com/doc/current/deployment/proxies.html)。
+> **Note** 若要使用 AWS Elastic Load Balancing，則 `$headers` 的值應為 `Request::HEADER_X_FORWARDED_AWS_ELB`。更多有關能用在 `$headers` 屬性的常數資訊，請參考 Symfony 說明文件中的 [Trusting Proxies](https://symfony.com/doc/current/deployment/proxies.html)。
 
 
 <a name="trusting-all-proxies"></a>

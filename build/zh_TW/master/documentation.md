@@ -178,7 +178,7 @@
 
    - [Jetstream](https://jetstream.laravel.com)
 
-   - [Octane](/docs/{{version}}/mocking)
+   - [Octane](/docs/{{version}}/octane)
 
    - [Passport](/docs/{{version}}/passport)
 

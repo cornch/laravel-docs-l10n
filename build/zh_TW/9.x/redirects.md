@@ -1,56 +1,56 @@
-# HTTP Redirects
+# HTTP 重新導向
 
-- [Creating Redirects](#creating-redirects)
+- [建立 Redirect](#creating-redirects)
 
-- [Redirecting To Named Routes](#redirecting-named-routes)
+- [重新導向至命名 Route](#redirecting-named-routes)
 
-- [Redirecting To Controller Actions](#redirecting-controller-actions)
+- [重新導向至 Controller 動作](#redirecting-controller-actions)
 
-- [Redirecting With Flashed Session Data](#redirecting-with-flashed-session-data)
+- [重新導向並帶上快閃存入的 Session 資料](#redirecting-with-flashed-session-data)
 
 <a name="creating-redirects"></a>
 
-## Creating Redirects
+## 建立 Redirect
 
-Redirect responses are instances of the `Illuminate\Http\RedirectResponse` class, and contain the proper headers needed to redirect the user to another URL. There are several ways to generate a `RedirectResponse` instance. The simplest method is to use the global `redirect` helper:
+^[Redirect](重新導向) Response 是 `Illuminate\Http\RedirectResponse` 類別的實體，Redirect Response 中包含了用來將使用者重新導向到另一個網址所需的一些 ^[Header](標頭)。要產生 `RedirectResponse` 實體有幾個方法。最簡單的方法是使用全域的 `redirect` 輔助函式：
 
     Route::get('/dashboard', function () {
         return redirect('/home/dashboard');
     });
 
-Sometimes you may wish to redirect the user to their previous location, such as when a submitted form is invalid. You may do so by using the global `back` helper function. Since this feature utilizes the [session](/docs/{{version}}/session), make sure the route calling the `back` function is using the `web` middleware group or has all of the session middleware applied:
+有時候 (如：使用者送出了無效的表單時)，我們可能會想把使用者重新導向到使用者瀏覽的前一個位置。為此，我們可以使用全域的 `back` 輔助函式。由於這個功能使用了 [Session](/docs/{{version}}/session)，因此請確保呼叫 `back` 函式的 Route 有使用 `web` Middleware 群組：
 
     Route::post('/user/profile', function () {
-        // Validate the request...
+        // 驗證 Request...
     
         return back()->withInput();
     });
 
 <a name="redirecting-named-routes"></a>
 
-## Redirecting To Named Routes
+## 重新導向到命名 Route
 
-When you call the `redirect` helper with no parameters, an instance of `Illuminate\Routing\Redirector` is returned, allowing you to call any method on the `Redirector` instance. For example, to generate a `RedirectResponse` to a named route, you may use the `route` method:
+呼叫 `redirect` 輔助函式時若沒有帶上任何參數，則會回傳 `Illuminate\Routing\Redirector` 實體，這樣我們就可以呼叫 `Redirect` 實體上的所有方法。舉例來說，若要為某個命名 Route 產生 `RedirectResponse`，可以使用 `route` 方法：
 
     return redirect()->route('login');
 
-If your route has parameters, you may pass them as the second argument to the `route` method:
+若 Route 有參數，則可將這些 Route 參數作為第二個引數傳給 `route` 方法：
 
-    // For a route with the following URI: profile/{id}
+    // 用於下列 URI 的 Route：/profile/{id}
     
     return redirect()->route('profile', ['id' => 1]);
 
 <a name="populating-parameters-via-eloquent-models"></a>
 
-#### Populating Parameters Via Eloquent Models
+#### 使用 Eloquent Model 來填充參數
 
-If you are redirecting to a route with an "ID" parameter that is being populated from an Eloquent model, you may pass the model itself. The ID will be extracted automatically:
+若要重新導向的 Route 中有個可從 Eloquent Model 中填充的「ID」參數，則可傳入 Model。會自動取出 ID：
 
-    // For a route with the following URI: profile/{id}
+    // 用於下列 URI 的 Route：/profile/{id}
     
     return redirect()->route('profile', [$user]);
 
-If you would like to customize the value that is placed in the route parameter, you should override the `getRouteKey` method on your Eloquent model:
+若想自定放入 Route 參數的值，可在 Eloquent Model 上複寫 `getRouteKey` 方法：
 
     /**
      * Get the value of the model's route key.
@@ -64,15 +64,15 @@ If you would like to customize the value that is placed in the route parameter, 
 
 <a name="redirecting-controller-actions"></a>
 
-## Redirecting To Controller Actions
+## 重新導向到 Controller 動作
 
-You may also generate redirects to [controller actions](/docs/{{version}}/controllers). To do so, pass the controller and action name to the `action` method:
+也可以產生一個前往 [Controller 動作](/docs/{{version}}/controllers)的重新導向。若要重新導向到 Controller 動作，請將 Controller 與動作名稱傳入 `action` 方法：
 
     use App\Http\Controllers\HomeController;
     
     return redirect()->action([HomeController::class, 'index']);
 
-If your controller route requires parameters, you may pass them as the second argument to the `action` method:
+若這個 Controller 的 Route 有要求參數，則可將這些參數作為第二個引數傳給 `action` 方法：
 
     return redirect()->action(
         [UserController::class, 'profile'], ['id' => 1]
@@ -80,21 +80,21 @@ If your controller route requires parameters, you may pass them as the second ar
 
 <a name="redirecting-with-flashed-session-data"></a>
 
-## Redirecting With Flashed Session Data
+## 重新導向時帶上快閃存入的 Session 資料
 
-Redirecting to a new URL and [flashing data to the session](/docs/{{version}}/session#flash-data) are usually done at the same time. Typically, this is done after successfully performing an action when you flash a success message to the session. For convenience, you may create a `RedirectResponse` instance and flash data to the session in a single, fluent method chain:
+通常，我們在重新導向到新網址的時候，也會[將資料快閃存入 Session]。一般來說，這種情況通常是當某個動作順利進行，而我們將成功訊息寫入 Session 時。為了方便起見，我們可以建立一個 `RedirectResponse` 實體，並以一行流暢的方法串連呼叫來將資料快閃存入 Session：
 
     Route::post('/user/profile', function () {
-        // Update the user's profile...
+        // 更新使用者的個人資料...
     
         return redirect('/dashboard')->with('status', 'Profile updated!');
     });
 
-You may use the `withInput` method provided by the `RedirectResponse` instance to flash the current request's input data to the session before redirecting the user to a new location. Once the input has been flashed to the session, you may easily [retrieve it](/docs/{{version}}/requests#retrieving-old-input) during the next request:
+可以使用 `RedirectResponse` 實體提供的 `withInput` 方法來在將使用者重新導向到新位置前先將目前 Request 的輸入資料快閃存入 Session 中。將輸入資料快閃存入 Session 後，我們就可以在下一個 Request 中輕鬆地[取得這些資料](/docs/{{version}}/requests#retrieving-old-input)：
 
     return back()->withInput();
 
-After the user is redirected, you may display the flashed message from the [session](/docs/{{version}}/session). For example, using [Blade syntax](/docs/{{version}}/blade):
+使用者被重新導向後，我們就可以從 [Session](/docs/{{version}}/session) 中顯示出剛才快閃存入的資料。舉例來說，我們可以使用 [Blade 語法](/docs/{{version}}/blade)：
 
     @if (session('status'))
         <div class="alert alert-success">

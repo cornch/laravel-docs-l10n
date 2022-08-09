@@ -16,6 +16,8 @@
 
    - [目錄架構](/docs/{{version}}/structure)
 
+   - [前端](/docs/{{version}}/octane)
+
    - [入門套件](/docs/{{version}}/starter-kits)
 
    - [部署](/docs/{{version}}/deployment)
@@ -50,6 +52,8 @@
 
    - [Blade 樣板](/docs/{{version}}/blade)
 
+   - [打包資源](/docs/{{version}}/vite)
+
    - [產生 URL](/docs/{{version}}/urls)
 
    - [Session](/docs/{{version}}/session)
@@ -70,8 +74,6 @@
    - [快取](/docs/{{version}}/cache)
 
    - [Collection](/docs/{{version}}/collections)
-
-   - [編譯資源](/docs/{{version}}/mix)
 
    - [Contract](/docs/{{version}}/contracts)
 
@@ -178,9 +180,13 @@
 
    - [Jetstream](https://jetstream.laravel.com)
 
-   - [Octane](/docs/{{version}}/mocking)
+   - [Mix](/docs/{{version}}/mix)
+
+   - [Octane](/docs/{{version}}/octane)
 
    - [Passport](/docs/{{version}}/passport)
+
+   - [Pint](/docs/{{version}}/pint)
 
    - [Sail](/docs/{{version}}/sail)
 

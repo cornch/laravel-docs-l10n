@@ -24,7 +24,7 @@ Laravel 及其第一方套件都遵守 [語義化版本](https://semver.org/lang
 
 ## 支援政策
 
-所有的 Laravel 版本都提供 18 個月的 Bug 修正，以及 2 年的安全性修正。對於其他的函式庫，如 Lumen，則只有最新的版本會收到 Bug 修正。此外，也請參考 [Laravel 支援的](/docs/{{version}}/database#introduction)資料庫版本。
+所有的 Laravel 版本都提供 18 個月的 Bug 修正，以及 2 年的安全性修正。對於其他的函式庫，如 Lumen，則只有最新的主要版本會收到 Bug 修正。此外，也請參考 [Laravel 支援的](/docs/{{version}}/database#introduction)資料庫版本。
 
 | 版本 | PHP (*) | 釋出日期 | Bug 修正期限 | 安全性修正期限 |
 | --- | --- | --- | --- | --- |
@@ -32,7 +32,7 @@ Laravel 及其第一方套件都遵守 [語義化版本](https://semver.org/lang
 | 7 | 7.2 - 8.0 | 2020 年 3 月 3 日 | 2020 年 10 月 6 日 | 2021 年 3 月 3 日 |
 | 8 | 7.3 - 8.1 | 2020 年 9 月 8 日 | 2022 年 7 月 26 日 | 2023 年 1 月 24 日 |
 | 9 | 8.0 - 8.1 | 2022 年 2 月 8 日 | 2023 年 8 月 8 日 | 2024 年 2 月 8 日 |
-| 10 | 8.0 - 8.1 | 2023 年 2 月 7 日 | 2024 年 8 月 7 日 | 2025 年 2 月 7 日 |
+| 10 | 8.1 | 2023 年 2 月 7 日 | 2024 年 8 月 7 日 | 2025 年 2 月 7 日 |
 
 (*) 支援的 PHP 版本
 
@@ -131,7 +131,7 @@ public function address(): Attribute
 
 ### Enum Eloquent 屬性型別轉換
 
-> {note} Enum 型別轉換只可在 PHP 8.1 以上使用。
+> **Warning** Enum 型別轉換只可在 PHP 8.1 以上使用。
 
 
 *Enum 型別轉換由 [Mohamed Said](https://github.com/themsaid) 參與貢獻*。

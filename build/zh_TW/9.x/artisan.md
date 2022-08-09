@@ -65,7 +65,7 @@ php artisan help migrate
 若使用 [Laravel Sail](/docs/{{version}}/sail) 作為本機開發環境，請記得使用 `sail` 指令列來叫用 Artisan 指令。Sail 會在專案的 Docker 容器內執行 Artisan 指令。
 
 ```shell
-./sail artisan list
+./vendor/bin/sail artisan list
 ```
 
 <a name="tinker"></a>
@@ -84,7 +84,7 @@ Laravel Tinker 是用於 Laravel 框架的強大 REPL，由 [PsySH](https://gith
 composer require laravel/tinker
 ```
 
-> {tip} 想找個能與你的 Laravel 應用程式互動的圖形化 UI 嗎？試試 [Tinkerwell](https://tinkerwell.app) 吧！
+> **Note** 想找個能與你的 Laravel 應用程式互動的圖形化 UI 嗎？試試 [Tinkerwell](https://tinkerwell.app) 吧！
 
 
 <a name="usage"></a>
@@ -103,7 +103,7 @@ php artisan tinker
 php artisan vendor:publish --provider="Laravel\Tinker\TinkerServiceProvider"
 ```
 
-> {note} `dispatch` 輔助函式與 `Dispatchable` 類別上的 `dispatch` 方法需要仰賴垃圾回收機制來將任務放進佇列中。因此，在使用 Tinker 時，應使用 `Bus::dispatch` 或 `Queue::push` 來分派任務。
+> **Warning** `dispatch` 輔助函式與 `Dispatchable` 類別上的 `dispatch` 方法需要仰賴垃圾回收機制來將任務放進佇列中。因此，在使用 Tinker 時，應使用 `Bus::dispatch` 或 `Queue::push` 來分派任務。
 
 
 <a name="command-allow-list"></a>
@@ -186,7 +186,7 @@ php artisan make:command SendEmails
         }
     }
 
-> {tip} 為了提升程式碼重複使用率，最好保持主控台指令精簡，並將指令的任務委託給應用程式服務來完成。在上方的例子中，可以注意到我們插入了一個服務類別來處理寄送 E-Mail 的這個「重責大任」。
+> **Note** 為了提升程式碼重複使用率，最好保持主控台指令精簡，並將指令的任務委託給應用程式服務來完成。在上方的例子中，可以注意到我們插入了一個服務類別來處理寄送 E-Mail 的這個「重責大任」。
 
 
 <a name="closure-commands"></a>
@@ -327,10 +327,10 @@ php artisan mail:send 1 -Q
 
     'mail:send {user*}'
 
-呼叫這個方法的時候，`user` 引數在指令列中可以按照順序傳入。舉例來說，下列指令會將 `user` 的值設為一個內容為 `foo` 與 `bar` 的陣列：
+呼叫這個方法的時候，`user` 引數在指令列中可以按照順序傳入。舉例來說，下列指令會將 `user` 的值設為一個內容為 `1` 與 `2` 的陣列：
 
 ```shell
-php artisan mail:send foo bar
+php artisan mail:send 1 2
 ```
 
 `*` 字元可以與可選引數組合使用來定義，這樣一來可允許有 0 個或多個引數的實體：
@@ -343,7 +343,7 @@ php artisan mail:send foo bar
 
 定義預期有多個輸入值的選項時，每個傳入指令的選項值都應以選項名稱作為前綴：
 
-    'mail:send {user} {--id=*}'
+    'mail:send {--id=*}'
 
 可以通過傳入多個 `-id` 引數來叫用這樣的指令：
 
@@ -547,7 +547,7 @@ php artisan mail:send --id=1 --id=2
     
     $bar->finish();
 
-> {tip} 有關更進階的選項，請參考 [Symfony Progress Bar 元件說明文件](https://symfony.com/doc/current/components/console/helpers/progressbar.html)。
+> **Note** 有關更進階的選項，請參考 [Symfony Progress Bar 元件說明文件](https://symfony.com/doc/current/components/console/helpers/progressbar.html)。
 
 
 <a name="registering-commands"></a>

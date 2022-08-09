@@ -42,7 +42,7 @@
 
     $collection = collect([1, 2, 3]);
 
-> {tip} [Eloquent](/docs/{{version}}/eloquent) 查詢的結果總會回傳為 `Collection` 實體。
+> **Note** [Eloquent](/docs/{{version}}/eloquent) 查詢的結果總會回傳為 `Collection` 實體。
 
 
 <a name="extending-collections"></a>
@@ -93,7 +93,7 @@ Collection 是「Macroable (可巨集)」的，這代表我們可以在執行階
 
 在 Collection 說明文件剩下的一大部分，我們會討論 `Collection` 類別內可用的各個方法。請記住，這裡所有的方法都可以互相串接使用，以流利地操作底層的陣列。此外，幾乎所有的函式都會回傳一個新的 `Collection` 實體，讓你可以在有需要的時候保留原始的 Collection 拷貝：
 
-[all](#method-all) [average](#method-average) [avg](#method-avg) [chunk](#method-chunk) [chunkWhile](#method-chunkwhile) [collapse](#method-collapse) [collect](#method-collect) [combine](#method-combine) [concat](#method-concat) [contains](#method-contains) [containsStrict](#method-containsstrict) [count](#method-count) [countBy](#method-countBy) [crossJoin](#method-crossjoin) [dd](#method-dd) [diff](#method-diff) [diffAssoc](#method-diffassoc) [diffKeys](#method-diffkeys) [doesntContain](#method-doesntcontain) [dump](#method-dump) [duplicates](#method-duplicates) [duplicatesStrict](#method-duplicatesstrict) [each](#method-each) [eachSpread](#method-eachspread) [every](#method-every) [except](#method-except) [filter](#method-filter) [first](#method-first) [firstWhere](#method-first-where) [flatMap](#method-flatmap) [flatten](#method-flatten) [flip](#method-flip) [forget](#method-forget) [forPage](#method-forpage) [get](#method-get) [groupBy](#method-groupby) [has](#method-has) [implode](#method-implode) [intersect](#method-intersect) [intersectByKeys](#method-intersectbykeys) [isEmpty](#method-isempty) [isNotEmpty](#method-isnotempty) [join](#method-join) [keyBy](#method-keyby) [keys](#method-keys) [last](#method-last) [macro](#method-macro) [make](#method-make) [map](#method-map) [mapInto](#method-mapinto) [mapSpread](#method-mapspread) [mapToGroups](#method-maptogroups) [mapWithKeys](#method-mapwithkeys) [max](#method-max) [median](#method-median) [merge](#method-merge) [mergeRecursive](#method-mergerecursive) [min](#method-min) [mode](#method-mode) [nth](#method-nth) [only](#method-only) [pad](#method-pad) [partition](#method-partition) [pipe](#method-pipe) [pipeInto](#method-pipeinto) [pipeThrough](#method-pipethrough) [pluck](#method-pluck) [pop](#method-pop) [prepend](#method-prepend) [pull](#method-pull) [push](#method-push) [put](#method-put) [random](#method-random) [range](#method-range) [reduce](#method-reduce) [reduceMany](#method-reduce-many) [reduceSpread](#method-reduce-spread) [reject](#method-reject) [replace](#method-replace) [replaceRecursive](#method-replacerecursive) [reverse](#method-reverse) [search](#method-search) [shift](#method-shift) [shuffle](#method-shuffle) [sliding](#method-sliding) [skip](#method-skip) [skipUntil](#method-skipuntil) [skipWhile](#method-skipwhile) [slice](#method-slice) [sole](#method-sole) [some](#method-some) [sort](#method-sort) [sortBy](#method-sortby) [sortByDesc](#method-sortbydesc) [sortDesc](#method-sortdesc) [sortKeys](#method-sortkeys) [sortKeysDesc](#method-sortkeysdesc) [sortKeysUsing](#method-sortkeysusing) [splice](#method-splice) [split](#method-split) [splitIn](#method-splitin) [sum](#method-sum) [take](#method-take) [takeUntil](#method-takeuntil) [takeWhile](#method-takewhile) [tap](#method-tap) [times](#method-times) [toArray](#method-toarray) [toJson](#method-tojson) [transform](#method-transform) [undot](#method-undot) [union](#method-union) [unique](#method-unique) [uniqueStrict](#method-uniquestrict) [unless](#method-unless) [unlessEmpty](#method-unlessempty) [unlessNotEmpty](#method-unlessnotempty) [unwrap](#method-unwrap) [values](#method-values) [when](#method-when) [whenEmpty](#method-whenempty) [whenNotEmpty](#method-whennotempty) [where](#method-where) [whereStrict](#method-wherestrict) [whereBetween](#method-wherebetween) [whereIn](#method-wherein) [whereInStrict](#method-whereinstrict) [whereInstanceOf](#method-whereinstanceof) [whereNotBetween](#method-wherenotbetween) [whereNotIn](#method-wherenotin) [whereNotInStrict](#method-wherenotinstrict) [whereNotNull](#method-wherenotnull) [whereNull](#method-wherenull) [wrap](#method-wrap) [zip](#method-zip)
+[all](#method-all) [average](#method-average) [avg](#method-avg) [chunk](#method-chunk) [chunkWhile](#method-chunkwhile) [collapse](#method-collapse) [collect](#method-collect) [combine](#method-combine) [concat](#method-concat) [contains](#method-contains) [containsOneItem](#method-containsoneitem) [containsStrict](#method-containsstrict) [count](#method-count) [countBy](#method-countBy) [crossJoin](#method-crossjoin) [dd](#method-dd) [diff](#method-diff) [diffAssoc](#method-diffassoc) [diffKeys](#method-diffkeys) [doesntContain](#method-doesntcontain) [dump](#method-dump) [duplicates](#method-duplicates) [duplicatesStrict](#method-duplicatesstrict) [each](#method-each) [eachSpread](#method-eachspread) [every](#method-every) [except](#method-except) [filter](#method-filter) [first](#method-first) [firstOrFail](#method-first-or-fail) [firstWhere](#method-first-where) [flatMap](#method-flatmap) [flatten](#method-flatten) [flip](#method-flip) [forget](#method-forget) [forPage](#method-forpage) [get](#method-get) [groupBy](#method-groupby) [has](#method-has) [hasAny](#method-hasany) [implode](#method-implode) [intersect](#method-intersect) [intersectByKeys](#method-intersectbykeys) [isEmpty](#method-isempty) [isNotEmpty](#method-isnotempty) [join](#method-join) [keyBy](#method-keyby) [keys](#method-keys) [last](#method-last) [lazy](#method-lazy) [macro](#method-macro) [make](#method-make) [map](#method-map) [mapInto](#method-mapinto) [mapSpread](#method-mapspread) [mapToGroups](#method-maptogroups) [mapWithKeys](#method-mapwithkeys) [max](#method-max) [median](#method-median) [merge](#method-merge) [mergeRecursive](#method-mergerecursive) [min](#method-min) [mode](#method-mode) [nth](#method-nth) [only](#method-only) [pad](#method-pad) [partition](#method-partition) [pipe](#method-pipe) [pipeInto](#method-pipeinto) [pipeThrough](#method-pipethrough) [pluck](#method-pluck) [pop](#method-pop) [prepend](#method-prepend) [pull](#method-pull) [push](#method-push) [put](#method-put) [random](#method-random) [range](#method-range) [reduce](#method-reduce) [reduceSpread](#method-reduce-spread) [reject](#method-reject) [replace](#method-replace) [replaceRecursive](#method-replacerecursive) [reverse](#method-reverse) [search](#method-search) [shift](#method-shift) [shuffle](#method-shuffle) [skip](#method-skip) [skipUntil](#method-skipuntil) [skipWhile](#method-skipwhile) [slice](#method-slice) [sliding](#method-sliding) [sole](#method-sole) [some](#method-some) [sort](#method-sort) [sortBy](#method-sortby) [sortByDesc](#method-sortbydesc) [sortDesc](#method-sortdesc) [sortKeys](#method-sortkeys) [sortKeysDesc](#method-sortkeysdesc) [sortKeysUsing](#method-sortkeysusing) [splice](#method-splice) [split](#method-split) [splitIn](#method-splitin) [sum](#method-sum) [take](#method-take) [takeUntil](#method-takeuntil) [takeWhile](#method-takewhile) [tap](#method-tap) [times](#method-times) [toArray](#method-toarray) [toJson](#method-tojson) [transform](#method-transform) [undot](#method-undot) [union](#method-union) [unique](#method-unique) [uniqueStrict](#method-uniquestrict) [unless](#method-unless) [unlessEmpty](#method-unlessempty) [unlessNotEmpty](#method-unlessnotempty) [unwrap](#method-unwrap) [value](#method-value) [values](#method-values) [when](#method-when) [whenEmpty](#method-whenempty) [whenNotEmpty](#method-whennotempty) [where](#method-where) [whereStrict](#method-wherestrict) [whereBetween](#method-wherebetween) [whereIn](#method-wherein) [whereInStrict](#method-whereinstrict) [whereInstanceOf](#method-whereinstanceof) [whereNotBetween](#method-wherenotbetween) [whereNotIn](#method-wherenotin) [whereNotInStrict](#method-wherenotinstrict) [whereNotNull](#method-wherenotnull) [whereNull](#method-wherenull) [wrap](#method-wrap) [zip](#method-zip)
 
 <a name="method-listing"></a>
 
@@ -226,7 +226,7 @@ Collection 是「Macroable (可巨集)」的，這代表我們可以在執行階
     
     // [1, 2, 3]
 
-> {tip} `collect` 方法特別適合用於如有 `Enumerable` 實體且需要一個非 Lazy Collection 的實體。由於 `collect()` 是 `Enumerable` Contract 的一部分，因此我們可以安全地使用該方法來取得 `Collection` 實體。
+> **Note** `collect` 方法特別適合用於如有 `Enumerable` 實體且需要一個非 Lazy Collection 的實體。由於 `collect()` 是 `Enumerable` Contract 的一部分，因此我們可以安全地使用該方法來取得 `Collection` 實體。
 
 
 <a name="method-combine"></a>
@@ -300,13 +300,31 @@ Collection 是「Macroable (可巨集)」的，這代表我們可以在執行階
 
 請參考 [doesntContain](#method-doesntcontain) 方法以瞭解與 `contains` 相反的方法。
 
+<a name="method-containsoneitem"></a>
+
+#### `containsOneItem()` {.collection-method}
+
+`containsOneItem` 用於判斷該 Collection 是否只包含一個項目：
+
+    collect([])->containsOneItem();
+    
+    // false
+    
+    collect(['1'])->containsOneItem();
+    
+    // true
+    
+    collect(['1', '2'])->containsOneItem();
+    
+    // false
+
 <a name="method-containsstrict"></a>
 
 #### `containsStrict()` {.collection-method}
 
 該方法與 [`contains`](#method-contains) 方法的簽章一致。不過，所有的數值比對都是使用「嚴格」比對模式。
 
-> {tip} 在使用 [Eloquent Collection](/docs/{{version}}/eloquent-collections#method-contains) 時，該方法的行為有經過修改。
+> **Note** 在使用 [Eloquent Collection](/docs/{{version}}/eloquent-collections#method-contains) 時，該方法的行為有經過修改。
 
 
 <a name="method-count"></a>
@@ -422,7 +440,7 @@ The `crossJoin` method cross joins the collection's values among the given array
     
     // [1, 3, 5]
 
-> {tip} 在使用 [Eloquent Collection](/docs/{{version}}/eloquent-collections#method-diff) 時，該方法的行為有經過修改。
+> **Note** 在使用 [Eloquent Collection](/docs/{{version}}/eloquent-collections#method-diff) 時，該方法的行為有經過修改。
 
 
 <a name="method-diffassoc"></a>
@@ -637,7 +655,7 @@ The `crossJoin` method cross joins the collection's values among the given array
 
 請參考 [only](#method-only) 方法以瞭解與 `except` 相反的方法。
 
-> {tip} 在使用 [Eloquent Collection](/docs/{{version}}/eloquent-collections#method-except) 時，該方法的行為有經過修改。
+> **Note** 在使用 [Eloquent Collection](/docs/{{version}}/eloquent-collections#method-except) 時，該方法的行為有經過修改。
 
 
 <a name="method-filter"></a>
@@ -683,6 +701,24 @@ The `crossJoin` method cross joins the collection's values among the given array
     collect([1, 2, 3, 4])->first();
     
     // 1
+
+<a name="method-first-or-fail"></a>
+
+#### `firstOrFail()` {.collection-method}
+
+`firstOrFail` 方法與 `first` 方法完全相同。不過，若無結果，則會擲回 `Illuminate\Support\ItemNotFoundException` Exception：
+
+    collect([1, 2, 3, 4])->firstOrFail(function ($value, $key) {
+        return $value > 5;
+    });
+    
+    // 擲回 ItemNotFoundException...
+
+我們也可以不帶任何參數地呼叫 `firstOrFail` 方法，以取得該 Collection 中的第一個元素。若該 Collection 為空，則會擲回 `Illuminate\Support\ItemNotFoundException` Exception：
+
+    collect([])->firstOrFail();
+    
+    // 擲回 ItemNotFoundException...
 
 <a name="method-first-where"></a>
 
@@ -810,7 +846,7 @@ The `crossJoin` method cross joins the collection's values among the given array
     
     // ['framework' => 'laravel']
 
-> {note} 與其他大多數 Collection 方法不同，`forget` 不會回傳經過修改的新 Collection。該方法會修改被呼叫的那個 Collection。
+> **Warning** 與其他大多數 Collection 方法不同，`forget` 不會回傳經過修改的新 Collection。該方法會修改被呼叫的那個 Collection。
 
 
 <a name="method-forpage"></a>
@@ -914,7 +950,7 @@ The `crossJoin` method cross joins the collection's values among the given array
     
     $result = $data->groupBy(['skill', function ($item) {
         return $item['roles'];
-    }], $preserveKeys = true);
+    }], preserveKeys: true);
     
     /*
     [
@@ -961,6 +997,22 @@ The `crossJoin` method cross joins the collection's values among the given array
     
     // false
 
+<a name="method-hasany"></a>
+
+#### `hasAny()` {.collection-method}
+
+`hasAny` 方法用於判斷給定的多個索引鍵中，是否有任何索引鍵存在於該 Collection 上：
+
+    $collection = collect(['account_id' => 1, 'product' => 'Desk', 'amount' => 5]);
+    
+    $collection->hasAny(['product', 'price']);
+    
+    // true
+    
+    $collection->hasAny(['name', 'price']);
+    
+    // false
+
 <a name="method-implode"></a>
 
 #### `implode()` {.collection-method}
@@ -996,7 +1048,7 @@ The `crossJoin` method cross joins the collection's values among the given array
     
     // [0 => 'Desk', 2 => 'Chair']
 
-> {tip} 在使用 [Eloquent Collection](/docs/{{version}}/eloquent-collections#method-intersect) 時，該方法的行為有經過修改。
+> **Note** 在使用 [Eloquent Collection](/docs/{{version}}/eloquent-collections#method-intersect) 時，該方法的行為有經過修改。
 
 
 <a name="method-intersectbykeys"></a>
@@ -1073,7 +1125,7 @@ The `crossJoin` method cross joins the collection's values among the given array
 
 也可以傳入回呼給該方法。該回呼應回傳用於為該 Collection 加上索引鍵的值：
 
-    $keyed = $collection->keyBy(function ($item) {
+    $keyed = $collection->keyBy(function ($item, $key) {
         return strtoupper($item['product_id']);
     });
     
@@ -1121,6 +1173,32 @@ The `crossJoin` method cross joins the collection's values among the given array
     
     // 4
 
+<a name="method-lazy"></a>
+
+#### `lazy()` {.collection-method}
+
+`lazy` 方法使用底層項目陣列來回傳一個新的 [`LazyCollection`](#lazy-collections) 實體：
+
+    $lazyCollection = collect([1, 2, 3, 4])->lazy();
+    
+    get_class($lazyCollection);
+    
+    // Illuminate\Support\LazyCollection
+    
+    $lazyCollection->all();
+    
+    // [1, 2, 3, 4]
+
+若想轉換一個有許多項目的大型 `Collection`，就特別適合使用該方法：
+
+    $count = $hugeCollection
+        ->lazy()
+        ->where('country', 'FR')
+        ->where('balance', '>', '100')
+        ->count();
+
+將 Collection 轉為 `LazyCollection` 後，就可避免使用到大量額外的記憶體。雖然，**原始陣列的值** 還是會保存在記憶體中，但之後所進行的篩選結果將不會被保存在記憶體中。因此，在篩選 Collection 結果時，將不會使用到額外的記憶體。
+
 <a name="method-macro"></a>
 
 #### `macro()` {.collection-method}
@@ -1149,7 +1227,7 @@ The static `make` method creates a new collection instance. See the [Creating Co
     
     // [2, 4, 6, 8, 10]
 
-> {note} 與其他 Collection 方法類似，`map` 會回傳一個新的 Collection 實體。該方法不會修改正在呼叫的 Collection。若想改變原始 Collection，請使用 [`transform`](#method-transform) 方法代替。
+> **Warning** 與其他 Collection 方法類似，`map` 會回傳一個新的 Collection 實體。該方法不會修改正在呼叫的 Collection。若想改變原始 Collection，請使用 [`transform`](#method-transform) 方法代替。
 
 
 <a name="method-mapinto"></a>
@@ -1422,7 +1500,7 @@ The `mapInto()` method iterates over the collection, creating a new instance of 
 
 請參考 [except](#method-except) 方法以瞭解與 `only` 相反的方法。
 
-> {tip} 在使用 [Eloquent Collection](/docs/{{version}}/eloquent-collections#method-only) 時，該方法的行為有經過修改。
+> **Note** 在使用 [Eloquent Collection](/docs/{{version}}/eloquent-collections#method-only) 時，該方法的行為有經過修改。
 
 
 <a name="method-pad"></a>
@@ -1562,9 +1640,15 @@ The `mapInto()` method iterates over the collection, creating a new instance of 
 
     $collection = collect([
         [
+            'name' => 'Laracon',
             'speakers' => [
                 'first_day' => ['Rosa', 'Judith'],
-                'second_day' => ['Angela', 'Kathleen'],
+            ],
+        ],
+        [
+            'name' => 'VueConf',
+            'speakers' => [
+                'first_day' => ['Abigail', 'Joey'],
             ],
         ],
     ]);
@@ -1573,7 +1657,7 @@ The `mapInto()` method iterates over the collection, creating a new instance of 
     
     $plucked->all();
     
-    // ['Rosa', 'Judith']
+    // [['Rosa', 'Judith'], ['Abigail', 'Joey']]
 
 若存在重複的索引鍵，則最後一個相符合的元素會被插入 pluck 後的 Collection：
 
@@ -1708,6 +1792,14 @@ The `mapInto()` method iterates over the collection, creating a new instance of 
 
 若該 Collection 實體內的項目比所要求的還要少，則 `random` 方法會擲回一個 `InvalidArgumentException`。
 
+`random` 函式也接受傳入一個閉包，該閉包會收到目前 Collection 的實體：
+
+    $random = $collection->random(fn ($items) => min(10, count($items)));
+    
+    $random->all();
+    
+    // [1, 2, 3, 4, 5] - (隨機取得)
+
 <a name="method-range"></a>
 
 #### `range()` {.collection-method}
@@ -1761,24 +1853,6 @@ The `mapInto()` method iterates over the collection, creating a new instance of 
     });
     
     // 4264
-
-<a name="method-reduce-many"></a>
-
-#### `reduceMany()` {.collection-method}
-
-`reduceMany` 方法會將該 Collection 歸約 (Reduce) 為一組包含值的陣列，並將每次迭代的結果傳遞給下一個迭代。這個方法與 `reduce` 方法類似，不過 `reduceMany` 接受多個初始值：
-
-    [$creditsRemaining, $batch] = Image::where('status', 'unprocessed')
-        ->get()
-        ->reduceMany(function ($creditsRemaining, $batch, $image) {
-            if ($creditsRemaining >= $image->creditsRequired()) {
-                $batch->push($image);
-    
-                $creditsRemaining -= $image->creditsRequired();
-            }
-    
-            return [$creditsRemaining, $batch];
-        }, $creditsAvailable, collect());
 
 <a name="method-reduce-spread"></a>
 
@@ -1945,36 +2019,6 @@ The `mapInto()` method iterates over the collection, creating a new instance of 
     
     // [3, 2, 5, 1, 4] - (隨機產生)
 
-<a name="method-sliding"></a>
-
-#### `sliding()` {.collection-method}
-
-`sliding` 方法會以代表「Sliding Window」的方式將該 Collection 中的項目拆分為數個片段並回傳一個新的 Collection：
-
-    $collection = collect([1, 2, 3, 4, 5]);
-    
-    $chunks = $collection->sliding(2);
-    
-    $chunks->toArray();
-    
-    // [[1, 2], [2, 3], [3, 4], [4, 5]]
-
-這個方法特別適合與 [`eachSpread`](#method-eachspread) 方法一起使用：
-
-    $transactions->sliding(2)->eachSpread(function ($previous, $current) {
-        $current->total = $previous->total + $current->amount;
-    });
-
-也可以傳入第二個可選的「區間 (step)」值，用來判斷每個片段中第一個項目的距離：
-
-    $collection = collect([1, 2, 3, 4, 5]);
-    
-    $chunks = $collection->sliding(3, step: 2);
-    
-    $chunks->toArray();
-    
-    // [[1, 2, 3], [3, 4, 5]]
-
 <a name="method-skip"></a>
 
 #### `skip()` {.collection-method}
@@ -2015,7 +2059,7 @@ The `mapInto()` method iterates over the collection, creating a new instance of 
     
     // [3, 4]
 
-> {note} 若找不到給定的值，或是回呼從未回傳 `true`，則 `skipUntil` 方法會回傳一個空 Collection。
+> **Warning** 若找不到給定的值，或是回呼從未回傳 `true`，則 `skipUntil` 方法會回傳一個空 Collection。
 
 
 <a name="method-skipwhile"></a>
@@ -2034,7 +2078,7 @@ The `mapInto()` method iterates over the collection, creating a new instance of 
     
     // [4]
 
-> {note} 若該回呼從未回傳 `true`，則 `skipWhile` 方法會回傳一個空 Collection。
+> **Warning** 若該回呼從未回傳 `true`，則 `skipWhile` 方法會回傳一個空 Collection。
 
 
 <a name="method-slice"></a>
@@ -2060,6 +2104,36 @@ The `mapInto()` method iterates over the collection, creating a new instance of 
     // [5, 6]
 
 回傳的部分預設會保留索引鍵。若不想保留原始的索引鍵，可以使用 [`values`](#method-values) 方法來重新索引這些項目。
+
+<a name="method-sliding"></a>
+
+#### `sliding()` {.collection-method}
+
+`sliding` 方法會以代表「Sliding Window」的方式將該 Collection 中的項目拆分為數個片段並回傳一個新的 Collection：
+
+    $collection = collect([1, 2, 3, 4, 5]);
+    
+    $chunks = $collection->sliding(2);
+    
+    $chunks->toArray();
+    
+    // [[1, 2], [2, 3], [3, 4], [4, 5]]
+
+這個方法特別適合與 [`eachSpread`](#method-eachspread) 方法一起使用：
+
+    $transactions->sliding(2)->eachSpread(function ($previous, $current) {
+        $current->total = $previous->total + $current->amount;
+    });
+
+也可以傳入第二個可選的「區間 (step)」值，用來判斷每個片段中第一個項目的距離：
+
+    $collection = collect([1, 2, 3, 4, 5]);
+    
+    $chunks = $collection->sliding(3, step: 2);
+    
+    $chunks->toArray();
+    
+    // [[1, 2, 3], [3, 4, 5]]
 
 <a name="method-sole"></a>
 
@@ -2118,7 +2192,7 @@ The `mapInto()` method iterates over the collection, creating a new instance of 
 
 若有進階的排序需求，可以傳入包含自訂演算法的回呼給 `sort`。請參考 PHP 說明文件中的 [`uasort`](https://secure.php.net/manual/en/function.uasort.php#refsect1-function.uasort-parameters)，該函式為 Collection 的 `sort` 方法內部所使用。
 
-> {tip} 若有需要排序包含巢狀陣列或物件的 Collection，請參考 [`sortBy`](#method-sortby) 與 [`sortByDesc`](#method-sortbydesc) 方法。
+> **Note** 若有需要排序包含巢狀陣列或物件的 Collection，請參考 [`sortBy`](#method-sortby) 與 [`sortByDesc`](#method-sortbydesc) 方法。
 
 
 <a name="method-sortby"></a>
@@ -2474,7 +2548,7 @@ The `mapInto()` method iterates over the collection, creating a new instance of 
     
     // [1, 2]
 
-> {note} 若找不到給定的值，或是回呼從未回傳 `true`，則 `skipUntil` 方法會回傳該 Collection 中的所有項目。
+> **Warning** 若找不到給定的值，或是回呼從未回傳 `true`，則 `skipUntil` 方法會回傳該 Collection 中的所有項目。
 
 
 <a name="method-takewhile"></a>
@@ -2493,7 +2567,7 @@ The `mapInto()` method iterates over the collection, creating a new instance of 
     
     // [1, 2]
 
-> {note} 若回呼從未回傳 `false`，則 `takeWhile` 方法會回傳該 Collection 中的所有項目。
+> **Warning** 若回呼從未回傳 `false`，則 `takeWhile` 方法會回傳該 Collection 中的所有項目。
 
 
 <a name="method-tap"></a>
@@ -2541,7 +2615,7 @@ The `mapInto()` method iterates over the collection, creating a new instance of 
         ]
     */
 
-> {note} `toArray` 也會將該 Collection 中所有 `Arrayable` 實作的巢狀物件轉換為陣列。若只是想取得該 Collection 底層的原始陣列，請使用 [`all`](#method-all) 方法代替。
+> **Warning** `toArray` 也會將該 Collection 中所有 `Arrayable` 實作的巢狀物件轉換為陣列。若只是想取得該 Collection 底層的原始陣列，請使用 [`all`](#method-all) 方法代替。
 
 
 <a name="method-tojson"></a>
@@ -2572,7 +2646,7 @@ The `mapInto()` method iterates over the collection, creating a new instance of 
     
     // [2, 4, 6, 8, 10]
 
-> {note} 與其他 Collection 方法不同，`transform` 會修改該 Collection 本身。若想建立新的 Collection，請使用 [`map`](#method-map) 方法代替。
+> **Warning** 與其他 Collection 方法不同，`transform` 會修改該 Collection 本身。若想建立新的 Collection，請使用 [`map`](#method-map) 方法代替。
 
 
 <a name="method-undot"></a>
@@ -2589,7 +2663,7 @@ The `mapInto()` method iterates over the collection, creating a new instance of 
         'address.suburb' => 'Detroit',
         'address.state' => 'MI',
         'address.postcode' => '48219'
-    ])
+    ]);
     
     $person = $person->undot();
     
@@ -2679,7 +2753,7 @@ The `mapInto()` method iterates over the collection, creating a new instance of 
 
 `unique` 方法在比對項目值時使用了「鬆散 (Loose)」的比對方法。這標示，具有整數值的字串與一個有相同值的整數會被視為相同。請使用 [`uniqueStrict`](#method-uniquestrict) 方法來使用「嚴格 (Strict)」比對進行過濾。
 
-> {tip} 在使用 [Eloquent Collection](/docs/{{version}}/eloquent-collections#method-unique) 時，該方法的行為有經過修改。
+> **Note** 在使用 [Eloquent Collection](/docs/{{version}}/eloquent-collections#method-unique) 時，該方法的行為有經過修改。
 
 
 <a name="method-uniquestrict"></a>
@@ -2754,6 +2828,21 @@ The `mapInto()` method iterates over the collection, creating a new instance of 
     
     // 'John Doe'
 
+<a name="method-value"></a>
+
+#### `value()` {.collection-method}
+
+`value` 方法會取得該 Collection 中的第一個元素內取得給定的值：
+
+    $collection = collect([
+        ['product' => 'Desk', 'price' => 200],
+        ['product' => 'Speaker', 'price' => 400],
+    ]);
+    
+    $value = $collection->value('price');
+    
+    // 200
+
 <a name="method-values"></a>
 
 #### `values()` {.collection-method}
@@ -2780,15 +2869,15 @@ The `mapInto()` method iterates over the collection, creating a new instance of 
 
 #### `when()` {.collection-method}
 
-`when` 方法會在傳入該方法的第一個引數取值為 `true` 時執行給定的回呼：
+`when` 方法會在傳給該方法的第一個引數取值為 `true` 時執行給定的回呼。Collection 實體與傳給 `when` 方法的第一個引數會被提供給該閉包：
 
     $collection = collect([1, 2, 3]);
     
-    $collection->when(true, function ($collection) {
+    $collection->when(true, function ($collection, $value) {
         return $collection->push(4);
     });
     
-    $collection->when(false, function ($collection) {
+    $collection->when(false, function ($collection, $value) {
         return $collection->push(5);
     });
     
@@ -2800,7 +2889,7 @@ The `mapInto()` method iterates over the collection, creating a new instance of 
 
     $collection = collect([1, 2, 3]);
     
-    $collection->when(false, function ($collection) {
+    $collection->when(false, function ($collection, $value) {
         return $collection->push(4);
     }, function ($collection) {
         return $collection->push(5);
@@ -3198,7 +3287,7 @@ Collection 也提供了「高階訊息 (Higher Order Message)」的支援，在 
 
 ### 簡介
 
-> {note} 在開始學習有關 Laravel 的 Lazy Collection 之前，建議先花點時間熟悉 [PHP Generator](https://www.php.net/manual/en/language.generators.overview.php)。
+> **Warning** 在開始學習有關 Laravel 的 Lazy Collection 之前，建議先花點時間熟悉 [PHP Generator](https://www.php.net/manual/en/language.generators.overview.php)。
 
 
 為了補強已經很強大的 `Collection` 類別，`LazyCollection` 類別使用了 PHP 的 [Generator](https://www.php.net/manual/en/language.generators.overview.php) 來讓你能在不使用太多記憶體的情況下處理非常大量的資料。
@@ -3262,9 +3351,9 @@ Collection 也提供了「高階訊息 (Higher Order Message)」的支援，在 
 
 幾乎所有在 `Collection` 類別中可用的方法都可在 `LazyCollection` 類別上使用。這兩個類別都實作了 `Illuminate\Support\Enumerable` Contract，該介面定義了下列方法：
 
-[all](#method-all) [average](#method-average) [avg](#method-avg) [chunk](#method-chunk) [chunkWhile](#method-chunkwhile) [collapse](#method-collapse) [collect](#method-collect) [combine](#method-combine) [concat](#method-concat) [contains](#method-contains) [containsStrict](#method-containsstrict) [count](#method-count) [countBy](#method-countBy) [crossJoin](#method-crossjoin) [dd](#method-dd) [diff](#method-diff) [diffAssoc](#method-diffassoc) [diffKeys](#method-diffkeys) [dump](#method-dump) [duplicates](#method-duplicates) [duplicatesStrict](#method-duplicatesstrict) [each](#method-each) [eachSpread](#method-eachspread) [every](#method-every) [except](#method-except) [filter](#method-filter) [first](#method-first) [firstWhere](#method-first-where) [flatMap](#method-flatmap) [flatten](#method-flatten) [flip](#method-flip) [forPage](#method-forpage) [get](#method-get) [groupBy](#method-groupby) [has](#method-has) [implode](#method-implode) [intersect](#method-intersect) [intersectByKeys](#method-intersectbykeys) [isEmpty](#method-isempty) [isNotEmpty](#method-isnotempty) [join](#method-join) [keyBy](#method-keyby) [keys](#method-keys) [last](#method-last) [macro](#method-macro) [make](#method-make) [map](#method-map) [mapInto](#method-mapinto) [mapSpread](#method-mapspread) [mapToGroups](#method-maptogroups) [mapWithKeys](#method-mapwithkeys) [max](#method-max) [median](#method-median) [merge](#method-merge) [mergeRecursive](#method-mergerecursive) [min](#method-min) [mode](#method-mode) [nth](#method-nth) [only](#method-only) [pad](#method-pad) [partition](#method-partition) [pipe](#method-pipe) [pluck](#method-pluck) [random](#method-random) [reduce](#method-reduce) [reject](#method-reject) [replace](#method-replace) [replaceRecursive](#method-replacerecursive) [reverse](#method-reverse) [search](#method-search) [shuffle](#method-shuffle) [skip](#method-skip) [slice](#method-slice) [some](#method-some) [sort](#method-sort) [sortBy](#method-sortby) [sortByDesc](#method-sortbydesc) [sortKeys](#method-sortkeys) [sortKeysDesc](#method-sortkeysdesc) [split](#method-split) [sum](#method-sum) [take](#method-take) [tap](#method-tap) [times](#method-times) [toArray](#method-toarray) [toJson](#method-tojson) [union](#method-union) [unique](#method-unique) [uniqueStrict](#method-uniquestrict) [unless](#method-unless) [unlessEmpty](#method-unlessempty) [unlessNotEmpty](#method-unlessnotempty) [unwrap](#method-unwrap) [values](#method-values) [when](#method-when) [whenEmpty](#method-whenempty) [whenNotEmpty](#method-whennotempty) [where](#method-where) [whereStrict](#method-wherestrict) [whereBetween](#method-wherebetween) [whereIn](#method-wherein) [whereInStrict](#method-whereinstrict) [whereInstanceOf](#method-whereinstanceof) [whereNotBetween](#method-wherenotbetween) [whereNotIn](#method-wherenotin) [whereNotInStrict](#method-wherenotinstrict) [wrap](#method-wrap) [zip](#method-zip)
+[all](#method-all) [average](#method-average) [avg](#method-avg) [chunk](#method-chunk) [chunkWhile](#method-chunkwhile) [collapse](#method-collapse) [collect](#method-collect) [combine](#method-combine) [concat](#method-concat) [contains](#method-contains) [containsStrict](#method-containsstrict) [count](#method-count) [countBy](#method-countBy) [crossJoin](#method-crossjoin) [dd](#method-dd) [diff](#method-diff) [diffAssoc](#method-diffassoc) [diffKeys](#method-diffkeys) [dump](#method-dump) [duplicates](#method-duplicates) [duplicatesStrict](#method-duplicatesstrict) [each](#method-each) [eachSpread](#method-eachspread) [every](#method-every) [except](#method-except) [filter](#method-filter) [first](#method-first) [firstOrFail](#method-first-or-fail) [firstWhere](#method-first-where) [flatMap](#method-flatmap) [flatten](#method-flatten) [flip](#method-flip) [forPage](#method-forpage) [get](#method-get) [groupBy](#method-groupby) [has](#method-has) [implode](#method-implode) [intersect](#method-intersect) [intersectByKeys](#method-intersectbykeys) [isEmpty](#method-isempty) [isNotEmpty](#method-isnotempty) [join](#method-join) [keyBy](#method-keyby) [keys](#method-keys) [last](#method-last) [macro](#method-macro) [make](#method-make) [map](#method-map) [mapInto](#method-mapinto) [mapSpread](#method-mapspread) [mapToGroups](#method-maptogroups) [mapWithKeys](#method-mapwithkeys) [max](#method-max) [median](#method-median) [merge](#method-merge) [mergeRecursive](#method-mergerecursive) [min](#method-min) [mode](#method-mode) [nth](#method-nth) [only](#method-only) [pad](#method-pad) [partition](#method-partition) [pipe](#method-pipe) [pluck](#method-pluck) [random](#method-random) [reduce](#method-reduce) [reject](#method-reject) [replace](#method-replace) [replaceRecursive](#method-replacerecursive) [reverse](#method-reverse) [search](#method-search) [shuffle](#method-shuffle) [skip](#method-skip) [slice](#method-slice) [sole](#method-sole) [some](#method-some) [sort](#method-sort) [sortBy](#method-sortby) [sortByDesc](#method-sortbydesc) [sortKeys](#method-sortkeys) [sortKeysDesc](#method-sortkeysdesc) [split](#method-split) [sum](#method-sum) [take](#method-take) [tap](#method-tap) [times](#method-times) [toArray](#method-toarray) [toJson](#method-tojson) [union](#method-union) [unique](#method-unique) [uniqueStrict](#method-uniquestrict) [unless](#method-unless) [unlessEmpty](#method-unlessempty) [unlessNotEmpty](#method-unlessnotempty) [unwrap](#method-unwrap) [values](#method-values) [when](#method-when) [whenEmpty](#method-whenempty) [whenNotEmpty](#method-whennotempty) [where](#method-where) [whereStrict](#method-wherestrict) [whereBetween](#method-wherebetween) [whereIn](#method-wherein) [whereInStrict](#method-whereinstrict) [whereInstanceOf](#method-whereinstanceof) [whereNotBetween](#method-wherenotbetween) [whereNotIn](#method-wherenotin) [whereNotInStrict](#method-wherenotinstrict) [wrap](#method-wrap) [zip](#method-zip)
 
-> {note} 會^[修改](Mutate) Collection 的方法 (如 `shift`、`pop`、`prepend` 等) 在 `LazyCollection` 類別上都 **不可用**。
+> **Warning** 會修改 (Mutate) Collection 的方法 (如 `shift`、`pop`、`prepend` 等) 在 `LazyCollection` 類別上都 **不可用**。
 
 
 <a name="lazy-collection-methods"></a>

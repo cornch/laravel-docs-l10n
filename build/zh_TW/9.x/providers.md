@@ -24,7 +24,7 @@ Service Provider 是 Laravel 中負責啟動應用程式的中心點。不過是
 
 在本篇概覽中，讀者將可以學習到如何撰寫你自己的 Service Provider，並將這些 Provider 註冊到 Laravel 專案上。
 
-> {tip} 若想瞭解 Laravel 如何處理 Request 以及其內部如何運作，請參考我們有關 Laravel [Request 的生命週期](/docs/{{version}}/lifecycle)說明文件。
+> **Note** 若想瞭解 Laravel 如何處理 Request 以及其內部如何運作，請參考我們有關 Laravel [Request 的生命週期](/docs/{{version}}/lifecycle)說明文件。
 
 
 <a name="writing-service-providers"></a>

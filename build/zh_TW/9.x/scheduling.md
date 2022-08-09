@@ -273,7 +273,7 @@ php artisan schedule:list
         return 'America/Chicago';
     }
 
-> {note} 請注意，某些時區會使用日光節約時間。若發生日光節約時間，則某些排程任務可能會執行兩次、甚至是執行多次。因此，我們建議儘可能不要在排程上設定時區。
+> **Warning** 請注意，某些時區會使用日光節約時間。若發生日光節約時間，則某些排程任務可能會執行兩次、甚至是執行多次。因此，我們建議儘可能不要在排程上設定時區。
 
 
 <a name="preventing-task-overlaps"></a>
@@ -290,11 +290,13 @@ php artisan schedule:list
 
     $schedule->command('emails:send')->withoutOverlapping(10);
 
+其實，`withoutOverlapping` 方法會使用專案的 [Cache](/docs/{{version}}/cache) 來取得鎖定。若有需要的話，可以使用 `schedule:clear-cache` Artisan 指令來清除這些快取鎖定。通常只有在因為未預期的伺服器問題而導致任務當掉時才需要這麼做。
+
 <a name="running-tasks-on-one-server"></a>
 
 ### 在單一伺服器上執行任務
 
-> {note} 若要使用此功能，則專案必須使用 `memcached`、`redis`、`dynamodb`、`database`、`file`、`array` 等其中一個快取 Driver 作為專案的預設快取 Driver。另外，所有的伺服器都必須要連線至相同的中央快取伺服器。
+> **Warning** 若要使用此功能，則專案必須使用 `memcached`、`redis`、`dynamodb`、`database`、`file`、`array` 等其中一個快取 Driver 作為專案的預設快取 Driver。另外，所有的伺服器都必須要連線至相同的中央快取伺服器。
 
 
 若專案的排程程式在多個伺服器上執行，則可限制排程任務只在單一伺服器上執行。舉例來說，假設我們設定了一個排程任務，每週五晚上會產生新報表。若任務排程程式在三個工作伺服器上執行，則這個排程任務會在這三台伺服器上都執行，且會產生三次報表。這可不好！
@@ -306,6 +308,24 @@ php artisan schedule:list
                     ->at('17:00')
                     ->onOneServer();
 
+<a name="naming-unique-jobs"></a>
+
+#### 為單一伺服器 Job 命名
+
+有時候，我們需要將排程分派相同的 Job，但使用不同的參數，且又要讓 Laravel 能在單一伺服器上以不同的兩種參數來執行這個 Job。這時，可以使用 `name` 方法來為各個排程定義指定一個不重複的名稱：
+
+```php
+$schedule->job(new CheckUptime('https://laravel.com'))
+            ->name('check_uptime:laravel.com')
+            ->everyFiveMinutes()
+            ->onOneServer();
+
+$schedule->job(new CheckUptime('https://vapor.laravel.com'))
+            ->name('check_uptime:vapor.laravel.com')
+            ->everyFiveMinutes()
+            ->onOneServer();
+```
+
 <a name="background-tasks"></a>
 
 ### 背景任務
@@ -316,7 +336,7 @@ php artisan schedule:list
              ->daily()
              ->runInBackground();
 
-> {note} `runInBackground` 方法只可用在 `command` 與 `exec` 方法所定義的排程任務上。
+> **Warning** `runInBackground` 方法只可用在 `command` 與 `exec` 方法所定義的排程任務上。
 
 
 <a name="maintenance-mode"></a>
@@ -378,7 +398,7 @@ Laravel 的排程程式提供了數種便利的方法可處理排程任務產生
              ->daily()
              ->emailOutputOnFailure('taylor@example.com');
 
-> {note} `emailOutputTo`、`emailOutputOnFailure`、`sendOutputTo`、`appendOutputTo` 等方法只能在 `command` 與 `exec` 方法上使用。
+> **Warning** `emailOutputTo`、`emailOutputOnFailure`、`sendOutputTo`、`appendOutputTo` 等方法只能在 `command` 與 `exec` 方法上使用。
 
 
 <a name="task-hooks"></a>

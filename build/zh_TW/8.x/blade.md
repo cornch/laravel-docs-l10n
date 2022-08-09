@@ -536,7 +536,7 @@ Blade 的 `@include` 指示詞可用來在 Blade View 中包含另一個 View。
 
 元件與 Slot 提供了與 Section, Layout 與 Include 類似的功能。不過，有些人可能會覺得元件跟 Slot 比較好懂。撰寫元件有兩種方法：一種是基於類別的元件，另一種則是匿名元件。
 
-若要建立基於類別的元件，可以使用 `make:component` Artisan 指令。為了解釋如何使用元件，我們將會建立一個簡單的 `Alert` 元件。`make:component` 指令會將元件放在 `app\View\Components` 目錄中：
+若要建立基於類別的元件，可以使用 `make:component` Artisan 指令。為了解釋如何使用元件，我們將會建立一個簡單的 `Alert` 元件。`make:component` 指令會將元件放在 `app/View/Components` 目錄中：
 
     php artisan make:component Alert
 
@@ -546,7 +546,7 @@ Blade 的 `@include` 指示詞可用來在 Blade View 中包含另一個 View。
 
     php artisan make:component Forms/Input
 
-上述指令會在 `App\View\Components\Forms` 目錄內建立一個 `Input` 元件，而 View 會被放在 `resources/views/components/forms` 目錄內。
+上述指令會在 `app/View/Components/Forms` 目錄內建立一個 `Input` 元件，而 View 會被放在 `resources/views/components/forms` 目錄內。
 
 <a name="manually-registering-package-components"></a>
 
@@ -601,7 +601,7 @@ Blade 會通過將元件名稱轉為 Pascal 命名法 (pascal-case) 來自動偵
     
     <x-user-profile/>
 
-若元件類別在 `app\View\Components` 目錄中嵌套多層，可以使用 `.` 字元來標示巢狀目錄。舉例來說，假設有個位於 `app\View\Components\Inputs\Button.php` 的元件，我們可以像這樣轉譯該元件：
+若元件類別在 `app/View/Components` 目錄中嵌套多層，可以使用 `.` 字元來標示巢狀目錄。舉例來說，假設有個位於 `app/View/Components/Inputs/Button.php` 的元件，我們可以像這樣轉譯該元件：
 
     <x-inputs.button/>
 

@@ -22,6 +22,10 @@
 
    - [內嵌的附加檔案](#inline-attachments)
 
+   - [可附加的物件](#attachable-objects)
+
+   - [Tag 與詮釋資料](#tags-and-metadata)
+
    - [自訂 Symfony 訊息](#customizing-the-symfony-message)
 
 - [Markdown 的 Mailable](#markdown-mailables)
@@ -204,7 +208,7 @@ php artisan make:mail OrderShipped
 
 產生好 Mailable 類別後，請打開該類別，我們來看看裡面的內容。首先，可以注意到所有的 Mailable 類別都在 `build` 方法內進行設定。在該方法中，可呼叫如 `form`、`view`、`attach` 等方法來設定 E-Mail 的顯示方式與寄送設定。
 
-> {tip} 也可以在 Mailable 的 `build` 方法上對相依性項目進行型別提示。Laravel 的 [Service Container](/docs/{{version}}/container) 會自動插入這些相依性項目。
+> **Note** 也可以在 Mailable 的 `build` 方法上對相依性項目進行型別提示。Laravel 的 [Service Container](/docs/{{version}}/container) 會自動插入這些相依性項目。
 
 
 <a name="configuring-the-sender"></a>
@@ -256,7 +260,7 @@ php artisan make:mail OrderShipped
         return $this->view('emails.orders.shipped');
     }
 
-> {tip} 可以建立一個 `resources/views/emails` 目錄來放置所有的郵件樣板。不過，不一定要放在這個目錄，可以隨意放在 `resources/views` 目錄下。
+> **Note** 可以建立一個 `resources/views/emails` 目錄來放置所有的郵件樣板。不過，不一定要放在這個目錄，可以隨意放在 `resources/views` 目錄下。
 
 
 <a name="plain-text-emails"></a>
@@ -503,7 +507,7 @@ php artisan make:mail OrderShipped
 </body>
 ```
 
-> {note} `$message` 變數無法在純文字訊息樣板中使用，因為純文字樣板無法使用內嵌的附加檔案。
+> **Warning** `$message` 變數無法在純文字訊息樣板中使用，因為純文字樣板無法使用內嵌的附加檔案。
 
 
 <a name="embedding-raw-data-attachments"></a>
@@ -519,6 +523,88 @@ php artisan make:mail OrderShipped
     <img src="{{ $message->embedData($data, 'example-image.jpg') }}">
 </body>
 ```
+
+<a name="attachable-objects"></a>
+
+### 可附加的物件
+
+雖然一般來說，以簡單的字串路徑來將檔案附加到訊息上通常就夠了。但很多情況下，在專案中，可附加的物件都是以類別形式存在的。舉例來說，若要將照片附加到訊息中，則專案內可能有一個用來代表該照片的 `Photo` Model`。 這時，若可以直接將 `Photo`Model 附加到`attach` 方法上不是很方便嗎？使用可附加的物件，就可以輕鬆達成。
+
+若要開始定義可附加物件，請在要被附加到訊息的物件上實作 `Illuminate\Contracts\Mail\Attachable` 介面。該介面會要求這個類別定義 `toMailAttachment`，且該方法應回傳 `Illuminate\Mail\Attachment` 實體：
+
+    <?php
+    
+    namespace App\Models;
+    
+    use Illuminate\Contracts\Mail\Attachable;
+    use Illuminate\Database\Eloquent\Model;
+    use Illuminate\Mail\Attachment;
+    
+    class Photo extends Model implements Attachable
+    {
+        /**
+         * Get the attachable representation of the model.
+         *
+         * @return \Illuminate\Mail\Attachment
+         */
+        public function toMailAttachment()
+        {
+            return Attachment::fromPath('/path/to/file');
+        }
+    }
+
+定義好可附加物件後，在建立 E-Mail 訊息時，只要將該物件的實體傳給 `attach` 方法即可：
+
+    /**
+     * Build the message.
+     *
+     * @return $this
+     */
+    public function build()
+    {
+        return $this->view('photos.resized')
+                    ->attach($this->photo);
+    }
+
+當然，要附加的資料也可能存放在如 Amazon S3 之類的遠端檔案儲存服務上。因此，在 Laravel 中，我們可以從存放在專案[檔案系統磁碟](/docs/{{version}}/filesystem)上的資料來產生附件實體：
+
+    // 從預設磁碟上的檔案來建立附件...
+    return Attachment::fromStorage($this->path);
+    
+    // 從指定磁碟上的檔案來建立附件...
+    return Attachment::fromStorageDisk('backblaze', $this->path);
+
+此外，也可以使用記憶體中的資料來建立附件實體。若要從記憶體中建立，請傳入一個閉包給 `fromData` 方法。該閉包應回傳代表該附件的原始資料：
+
+    return Attachment::fromData(fn () => $this->content, 'Photo Name');
+
+Laravel 也提供了一些額外的方法，讓我們可以自訂附件。舉例來說，可以使用 `as` 與 `withMime` 方法來自訂檔案名稱與 MIME 型別：
+
+    return Attachment::fromPath('/path/to/file')
+            ->as('Photo Name')
+            ->withMime('image/jpeg');
+
+<a name="tags-and-metadata"></a>
+
+### Tag 與詮釋資料
+
+有的第三方 E-Mail 提供商，如 Mailgun 或 Postmark 等，支援訊息的「Tag」與「詮釋資料」，使用 Tag 與詮釋資料，就可以對專案所送出的 E-Mail 進行分組與追蹤。可以使用 `tag` 與 `metadata` 屬性來為 E-Mail 訊息加上 Tag 與詮釋資料：
+
+    /**
+     * Build the message.
+     *
+     * @return $this
+     */
+    public function build()
+    {
+        return $this->view('emails.orders.shipped')
+                    ->tag('shipment')
+                    ->metadata('order_id', $this->order->id);
+    }
+
+若使用 Mailgun Driver，請參考 Mailgun 說明文件中有關 [Tag](https://documentation.mailgun.com/en/latest/user_manual.html#tagging-1) 與[詮釋資料](https://documentation.mailgun.com/en/latest/user_manual.html#attaching-data-to-messages)的更多資訊。同樣地，也請參考 Postmark 說明文件中有關 [Tag](https://postmarkapp.com/blog/tags-support-for-smtp) 與[詮釋資料](https://postmarkapp.com/support/article/1125-custom-metadata-faq)的更多資料。
+
+若使用 Amazon SES 來寄送 E-Mail，則可使用 `metadata` 方法來將 [SES「Tag」](https://docs.aws.amazon.com/ses/latest/APIReference/API_MessageTag.html)附加到訊息上。
 
 <a name="customizing-the-symfony-message"></a>
 
@@ -598,7 +684,7 @@ Thanks,<br>
 @endcomponent
 ```
 
-> {tip} 在撰寫 Markdown 郵件時請不要增加縮排。依據 Markdown 標準，Markdown 解析程式會將縮排的內容轉譯為程式碼區塊。
+> **Note** 在撰寫 Markdown 郵件時請不要增加縮排。依據 Markdown 標準，Markdown 解析程式會將縮排的內容轉譯為程式碼區塊。
 
 
 <a name="button-component"></a>
@@ -817,7 +903,7 @@ php artisan vendor:publish --tag=laravel-mail
         }
     }
 
-> {tip} 要瞭解更多有關這類問題的解決方法，請參考有關[佇列任務與資料庫 Transaction](/docs/{{version}}/queues#jobs-and-database-transactions) 有關的說明文件。
+> **Note** 要瞭解更多有關這類問題的解決方法，請參考有關[佇列任務與資料庫 Transaction](/docs/{{version}}/queues#jobs-and-database-transactions) 有關的說明文件。
 
 
 <a name="rendering-mailables"></a>
@@ -845,7 +931,7 @@ php artisan vendor:publish --tag=laravel-mail
         return new App\Mail\InvoicePaid($invoice);
     });
 
-> {note} 在瀏覽器中預覽 Mailable 時，不會轉譯[內嵌的附件](#inline-attachments)。若要瀏覽有內嵌附件的 Mailable，請將郵件傳送到如 [MailHog](https://github.com/mailhog/MailHog) 或 [HELO](https://usehelo.com) 之類的郵件測試程式。
+> **Warning** 在瀏覽器中預覽 Mailable 時，不會轉譯[內嵌的附件](#inline-attachments)。若要瀏覽有內嵌附件的 Mailable，請將郵件傳送到如 [MailHog](https://github.com/mailhog/MailHog) 或 [HELO](https://usehelo.com) 之類的郵件測試程式。
 
 
 <a name="localizing-mailables"></a>
@@ -1004,7 +1090,7 @@ Laravel 中包含了許多的 Mail Transport。不過，有時候我們可能會
          */
         public function __construct(ApiClient $client)
         {
-            $this->client = $client
+            $this->client = $client;
         }
     
         /**
@@ -1048,7 +1134,7 @@ Laravel 中包含了許多的 Mail Transport。不過，有時候我們可能會
     public function boot()
     {
         Mail::extend('mailchimp', function (array $config = []) {
-            return new MailchimpTransport(...);
+            return new MailchimpTransport(/* ... */);
         })
     }
 

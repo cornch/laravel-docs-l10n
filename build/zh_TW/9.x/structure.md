@@ -112,7 +112,7 @@
 
 `routes` 目錄包含了專案的所有路由定義。預設情況下，Laravel 包含了幾個路由檔：`web.php`, `api.php`, `console.php`, 與 `channels.php`。
 
-`RouteServiceProvider` 會將 `web.php` 中的路由放在 `web` Middleware 群組中。`web` Middleware 群組提供了如 Session 狀態、CSRF 保護、以及 Cookie 加密等功能。若你的專案不使用 stateless (無狀態) 的 RESTful API，則一般來說所有的路由都會放在 `web.php` 檔案中。
+The `web.php` file contains routes that the `RouteServiceProvider` places in the `web` middleware group, which provides session state, CSRF protection, and cookie encryption. If your application does not offer a stateless, RESTful API then all your routes will most likely be defined in the `web.php` file.
 
 `RouteServiceProvider` 會將 `api.php` 中的路由放在 `api` Middleware 群組中。這些路由是給 Stateless 的請求用的，所以通過這些路由進入網站的請求應[使用 Token](/docs/{{version}}/sanctum)來進行登入認證，且將無法存取 Session 狀態。
 
@@ -150,7 +150,7 @@
 
 其他的資料夾則會在使用 `make` Artisan 指令產生類別時產生在 `app` 目錄下。舉例來說，執行了 `make:job` Artisan 指令來產生 Job 類別後，才會產生 `app/Jobs` 目錄。
 
-> {tip} `app` 目錄內的許多類別都可以通過指令來由 Artisan 產生。若要檢視所有可用的指令，請在終端機中執行 `php artisan list make` 指令。
+> **Note** `app` 目錄內的許多類別都可以通過指令來由 Artisan 產生。若要檢視所有可用的指令，請在終端機中執行 `php artisan list make` 指令。
 
 
 <a name="the-broadcasting-directory"></a>

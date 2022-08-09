@@ -10,7 +10,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
-"PO-Revision-Date: 2022-04-18 09:23\n"
+"PO-Revision-Date: 2022-08-09 12:03\n"
 
 #: docs/8.x/eloquent-resources.md:block 1 (header)
 msgid "Eloquent: API Resources"
@@ -1190,6 +1190,48 @@ msgstr "<?php\n\n"
 "    }\n"
 "}\n"
 
+#: docs/9.x/eloquent-resources.md:block 18 (quote)
+msgid "**Note** This is a high-level overview of resources and resource collections. You are highly encouraged to read the other sections of this documentation to gain a deeper understanding of the customization and power offered to you by resources."
+msgstr "**Note** 這裡提供的是對於 Resource 與 Resource Collection 的高階概覽。我們強烈建議你閱讀本文中的其他段落以深入瞭解 Resource 提供的客製化功能。"
+
+#: docs/9.x/eloquent-resources.md:block 47 (quote)
+msgid "**Note** If you have not read the [concept overview](#concept-overview), you are highly encouraged to do so before proceeding with this documentation."
+msgstr "**Note** 若你還未閱讀《[概念概覽](#concept-overview)》，我們強烈建議你在繼續之前先閱讀該段落。"
+
+#: docs/9.x/eloquent-resources.md:block 56 (quote)
+msgid "**Note** If you would like to include relationships only when they have already been loaded, check out the documentation on [conditional relationships](#conditional-relationships)."
+msgstr "**Note** 若只想在關聯已載入的情況下才將這些關聯包含在回應內，請參考[條件式關聯](#conditional-relationships)。"
+
+#: docs/9.x/eloquent-resources.md:block 70 (code)
+msgid "<?php\n\n"
+"namespace App\\Http\\Resources;\n\n"
+"use Illuminate\\Http\\Resources\\Json\\JsonResource;\n\n"
+"class UserResource extends JsonResource\n"
+"{\n"
+"    /**\n"
+"     * The \"data\" wrapper that should be applied.\n"
+"     *\n"
+"     * @var string|null\n"
+"     */\n"
+"    public static $wrap = 'user';\n"
+"}\n"
+msgstr "<?php\n\n"
+"namespace App\\Http\\Resources;\n\n"
+"use Illuminate\\Http\\Resources\\Json\\JsonResource;\n\n"
+"class UserResource extends JsonResource\n"
+"{\n"
+"    /**\n"
+"     * The \"data\" wrapper that should be applied.\n"
+"     *\n"
+"     * @var string|null\n"
+"     */\n"
+"    public static $wrap = 'user';\n"
+"}\n"
+
+#: docs/9.x/eloquent-resources.md:block 73 (quote)
+msgid "**Warning** The `withoutWrapping` method only affects the outermost response and will not remove `data` keys that you manually add to your own resource collections."
+msgstr "**Warning** `withoutWrapping` 方法只會影響最外層的回應。`withoutWrapping` 方法不會移除手動新增到 Resource Collection 內的 `data` 索引鍵。"
+
 #: docs/9.x/eloquent-resources.md:block 92 (code)
 msgid "/**\n"
 " * Transform the resource into an array.\n"
@@ -1283,4 +1325,64 @@ msgstr "/**\n"
 "        'updated_at' => $this->updated_at,\n"
 "    ];\n"
 "}\n"
+
+#: docs/9.x/eloquent-resources.md:block 103 (quote)
+msgid "**Warning** The `mergeWhen` method should not be used within arrays that mix string and numeric keys. Furthermore, it should not be used within arrays with numeric keys that are not ordered sequentially."
+msgstr "**Warning** `mergeWhen` 方法不可使用在組合使用數字與字串索引鍵的陣列上。此外，`mergeWhen` 也不能使用在數字索引鍵沒有連續的陣列上。"
+
+#: docs/9.x/eloquent-resources.md:block 111 (header)
+msgid "Conditional Relationship Counts"
+msgstr "條件式關聯的計數"
+
+#: docs/9.x/eloquent-resources.md:block 112 (paragraph)
+msgid "In addition to conditionally including relationships, you may conditionally include relationship \"counts\" on your resource responses based on if the relationship's count has been loaded on the model:"
+msgstr "除了可有條件地包含關聯外，我們也可以依據關聯的計數是否已載入到 Model 上來將關聯的「計數 (Count)」包含到 Resource Response 上："
+
+#: docs/9.x/eloquent-resources.md:block 113 (code)
+msgid "new UserResource($user->loadCount('posts'));\n"
+msgstr "new UserResource($user->loadCount('posts'));\n"
+
+#: docs/9.x/eloquent-resources.md:block 114 (paragraph)
+msgid "The `whenCounted` method may be used to conditionally include a relationship's count in your resource response. This method avoids unnecessarily including the attribute if the relationships's count is not present:"
+msgstr "`whenCounted` 方法可用來有條件地在 Resource Response 上包含關聯的計數。使用該方法也能避免在關聯沒有計數時將其包含進來："
+
+#: docs/9.x/eloquent-resources.md:block 115 (code)
+msgid "/**\n"
+" * Transform the resource into an array.\n"
+" *\n"
+" * @param  \\Illuminate\\Http\\Request  $request\n"
+" * @return array\n"
+" */\n"
+"public function toArray($request)\n"
+"{\n"
+"    return [\n"
+"        'id' => $this->id,\n"
+"        'name' => $this->name,\n"
+"        'email' => $this->email,\n"
+"        'posts_count' => $this->whenCounted('posts'),\n"
+"        'created_at' => $this->created_at,\n"
+"        'updated_at' => $this->updated_at,\n"
+"    ];\n"
+"}\n"
+msgstr "/**\n"
+" * Transform the resource into an array.\n"
+" *\n"
+" * @param  \\Illuminate\\Http\\Request  $request\n"
+" * @return array\n"
+" */\n"
+"public function toArray($request)\n"
+"{\n"
+"    return [\n"
+"        'id' => $this->id,\n"
+"        'name' => $this->name,\n"
+"        'email' => $this->email,\n"
+"        'posts_count' => $this->whenCounted('posts'),\n"
+"        'created_at' => $this->created_at,\n"
+"        'updated_at' => $this->updated_at,\n"
+"    ];\n"
+"}\n"
+
+#: docs/9.x/eloquent-resources.md:block 116 (paragraph)
+msgid "In this example, if the `posts` relationship's count has not been loaded, the `posts_count` key will be removed from the resource response before it is sent to the client."
+msgstr "在這個範例中，若 `posts` 關聯的計數未載入，則 `posts_count` 索引鍵就會在傳給用戶端前被移除。"
 

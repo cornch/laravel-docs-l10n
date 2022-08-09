@@ -10,7 +10,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
-"PO-Revision-Date: 2022-04-18 09:23\n"
+"PO-Revision-Date: 2022-08-06 05:46\n"
 
 #: docs/8.x/http-tests.md:block 1 (header)
 msgid "HTTP Tests"
@@ -18,71 +18,71 @@ msgstr "HTTP 測試"
 
 #: docs/8.x/http-tests.md:block 2 (unordered list)
 msgid "[Introduction](#introduction)"
-msgstr ""
+msgstr "[簡介](#introduction)"
 
 #: docs/8.x/http-tests.md:block 2 (unordered list)
 msgid "[Making Requests](#making-requests)"
-msgstr ""
+msgstr "[建立 Request](#making-requests)"
 
 #: docs/8.x/http-tests.md:block 2 (unordered list)
 msgid "[Customizing Request Headers](#customizing-request-headers)"
-msgstr ""
+msgstr "[自訂 Request Header](#customizing-request-headers)"
 
 #: docs/8.x/http-tests.md:block 2 (unordered list)
 msgid "[Cookies](#cookies)"
-msgstr ""
+msgstr "[Cookie](#cookies)"
 
 #: docs/8.x/http-tests.md:block 2 (unordered list)
 msgid "[Session / Authentication](#session-and-authentication)"
-msgstr ""
+msgstr "[Session 與身份驗證](#session-and-authentication)"
 
 #: docs/8.x/http-tests.md:block 2 (unordered list)
 msgid "[Debugging Responses](#debugging-responses)"
-msgstr ""
+msgstr "[為 Response 進行除錯](#debugging-responses)"
 
 #: docs/8.x/http-tests.md:block 2 (unordered list)
 msgid "[Exception Handling](#exception-handling)"
-msgstr ""
+msgstr "[處理 Exception](#exception-handling)"
 
 #: docs/8.x/http-tests.md:block 2 (unordered list)
 msgid "[Testing JSON APIs](#testing-json-apis)"
-msgstr ""
+msgstr "[測試 JSON API](#testing-json-apis)"
 
 #: docs/8.x/http-tests.md:block 2 (unordered list)
 msgid "[Fluent JSON Testing](#fluent-json-testing)"
-msgstr ""
+msgstr "[Fluent 的 JSON 測試](#fluent-json-testing)"
 
 #: docs/8.x/http-tests.md:block 2 (unordered list)
 msgid "[Testing File Uploads](#testing-file-uploads)"
-msgstr ""
+msgstr "[測試檔案上傳](#testing-file-uploads)"
 
 #: docs/8.x/http-tests.md:block 2 (unordered list)
 msgid "[Testing Views](#testing-views)"
-msgstr ""
+msgstr "[測試 View](#testing-views)"
 
 #: docs/8.x/http-tests.md:block 2 (unordered list)
 msgid "[Rendering Blade & Components](#rendering-blade-and-components)"
-msgstr ""
+msgstr "[轉譯 Blade 與原件](#rendering-blade-and-components)"
 
 #: docs/8.x/http-tests.md:block 2 (unordered list)
 msgid "[Available Assertions](#available-assertions)"
-msgstr ""
+msgstr "[可用的 Assertion](#available-assertions)"
 
 #: docs/8.x/http-tests.md:block 2 (unordered list)
 msgid "[Response Assertions](#response-assertions)"
-msgstr ""
+msgstr "[Response 上的 Assertion](#response-assertions)"
 
 #: docs/8.x/http-tests.md:block 2 (unordered list)
 msgid "[Authentication Assertions](#authentication-assertions)"
-msgstr ""
+msgstr "[身份驗證的 Assertion](#authentication-assertions)"
 
 #: docs/8.x/http-tests.md:block 4 (header)
 msgid "Introduction"
-msgstr ""
+msgstr "簡介"
 
 #: docs/8.x/http-tests.md:block 5 (paragraph)
 msgid "Laravel provides a very fluent API for making HTTP requests to your application and examining the responses. For example, take a look at the feature test defined below:"
-msgstr ""
+msgstr "Laravel 提供了一個語義化的 API，這個 API 可以建立連到我們專案的 HTTP ^[Request](請求)，並讓我們能加以檢查 ^[Response](回覆)。舉例來說，我們來看看下面定義的這個 Feature Test："
 
 #: docs/8.x/http-tests.md:block 6 (code)
 msgid "<?php\n\n"
@@ -103,39 +103,56 @@ msgid "<?php\n\n"
 "        $response->assertStatus(200);\n"
 "    }\n"
 "}\n"
-msgstr ""
+msgstr "<?php\n\n"
+"namespace Tests\\Feature;\n\n"
+"use Illuminate\\Foundation\\Testing\\RefreshDatabase;\n"
+"use Illuminate\\Foundation\\Testing\\WithoutMiddleware;\n"
+"use Tests\\TestCase;\n\n"
+"class ExampleTest extends TestCase\n"
+"{\n"
+"    /**\n"
+"     * A basic test example.\n"
+"     *\n"
+"     * @return void\n"
+"     */\n"
+"    public function test_a_basic_request()\n"
+"    {\n"
+"        $response = $this->get('/');\n\n"
+"        $response->assertStatus(200);\n"
+"    }\n"
+"}\n"
 
 #: docs/8.x/http-tests.md:block 7 (paragraph)
 msgid "The `get` method makes a `GET` request into the application, while the `assertStatus` method asserts that the returned response should have the given HTTP status code. In addition to this simple assertion, Laravel also contains a variety of assertions for inspecting the response headers, content, JSON structure, and more."
-msgstr ""
+msgstr "`get` 方法會建立連到專案的 `GET` Request，而 `assertStatus` 方法則會判斷回傳的 Response 是否為給定的 HTTP 狀態碼。出了這種簡單的 ^[Assertion](判斷提示) 外，Laravel 也提供了各種不同的 Assertion，可用來檢查 Response 的 ^[Header](標頭)、內容、JSON 結構…等。"
 
 #: docs/8.x/http-tests.md:block 9 (header)
 msgid "Making Requests"
-msgstr ""
+msgstr "建立 Request"
 
 #: docs/8.x/http-tests.md:block 10 (paragraph)
 msgid "To make a request to your application, you may invoke the `get`, `post`, `put`, `patch`, or `delete` methods within your test. These methods do not actually issue a \"real\" HTTP request to your application. Instead, the entire network request is simulated internally."
-msgstr ""
+msgstr "若要建立連到專案的 Request，可以在測試中叫用 `get`、`post`、`put`、`patch`、`delete` 方法。這些方法不會真的建立「真正的」HTTP Request，而是在程式內部模擬一段網路連線。"
 
 #: docs/8.x/http-tests.md:block 11 (paragraph)
 msgid "Instead of returning an `Illuminate\\Http\\Response` instance, test request methods return an instance of `Illuminate\\Testing\\TestResponse`, which provides a [variety of helpful assertions](#available-assertions) that allow you to inspect your application's responses:"
-msgstr ""
+msgstr "這些測試 Request 方法不是回傳 `Illuminate\\Http\\Response` 實體，而是回傳 `Illuminate\\Testing\\TestResponse` 的實體。`TestResponse` 實體提供了[各種實用的 Assertion](#available-assertions)，可讓我們檢查專案的 Response："
 
 #: docs/8.x/http-tests.md:block 13 (paragraph)
 msgid "In general, each of your tests should only make one request to your application. Unexpected behavior may occur if multiple requests are executed within a single test method."
-msgstr ""
+msgstr "一般來說，每個測試都應只向專案建立一個 Request。若在單一測試方法內建立多個 Request，可能會發生未預期的行為。"
 
 #: docs/8.x/http-tests.md:block 14 (quote)
 msgid "{tip} For convenience, the CSRF middleware is automatically disabled when running tests."
-msgstr ""
+msgstr "{tip} 為了方便起見，在執行測試時會自動禁用 CSRF Middleware。"
 
 #: docs/8.x/http-tests.md:block 16 (header)
 msgid "Customizing Request Headers"
-msgstr ""
+msgstr "自訂 Request 的 Header"
 
 #: docs/8.x/http-tests.md:block 17 (paragraph)
 msgid "You may use the `withHeaders` method to customize the request's headers before it is sent to the application. This method allows you to add any custom headers you would like to the request:"
-msgstr ""
+msgstr "可使用 `withHeaders` 方法來在 Request 傳送到專案前先自訂 Request 的 Header。使用這個方法，我們就可以自行加上任何需要的自定 Request："
 
 #: docs/8.x/http-tests.md:block 18 (code)
 msgid "<?php\n\n"
@@ -156,15 +173,32 @@ msgid "<?php\n\n"
 "        $response->assertStatus(201);\n"
 "    }\n"
 "}\n"
-msgstr ""
+msgstr "<?php\n\n"
+"namespace Tests\\Feature;\n\n"
+"use Tests\\TestCase;\n\n"
+"class ExampleTest extends TestCase\n"
+"{\n"
+"    /**\n"
+"     * A basic functional test example.\n"
+"     *\n"
+"     * @return void\n"
+"     */\n"
+"    public function test_interacting_with_headers()\n"
+"    {\n"
+"        $response = $this->withHeaders([\n"
+"            'X-Header' => 'Value',\n"
+"        ])->post('/user', ['name' => 'Sally']);\n\n"
+"        $response->assertStatus(201);\n"
+"    }\n"
+"}\n"
 
 #: docs/8.x/http-tests.md:block 20 (header)
 msgid "Cookies"
-msgstr ""
+msgstr "Cookie"
 
 #: docs/8.x/http-tests.md:block 21 (paragraph)
 msgid "You may use the `withCookie` or `withCookies` methods to set cookie values before making a request. The `withCookie` method accepts a cookie name and value as its two arguments, while the `withCookies` method accepts an array of name / value pairs:"
-msgstr ""
+msgstr "我們可以使用 `withCookie` 或 `withCookies` 方法來在建立 Request 前設定 Cookie 值。`withCookie` 方法有兩個引數：Cookie 名稱與 Cookie 值。`withCookies` 方法則接受一組名稱／值配對的陣列："
 
 #: docs/8.x/http-tests.md:block 22 (code)
 msgid "<?php\n\n"
@@ -181,15 +215,28 @@ msgid "<?php\n\n"
 "        ])->get('/');\n"
 "    }\n"
 "}\n"
-msgstr ""
+msgstr "<?php\n\n"
+"namespace Tests\\Feature;\n\n"
+"use Tests\\TestCase;\n\n"
+"class ExampleTest extends TestCase\n"
+"{\n"
+"    public function test_interacting_with_cookies()\n"
+"    {\n"
+"        $response = $this->withCookie('color', 'blue')->get('/');\n\n"
+"        $response = $this->withCookies([\n"
+"            'color' => 'blue',\n"
+"            'name' => 'Taylor',\n"
+"        ])->get('/');\n"
+"    }\n"
+"}\n"
 
 #: docs/8.x/http-tests.md:block 24 (header)
 msgid "Session / Authentication"
-msgstr ""
+msgstr "Session 與身份驗證"
 
 #: docs/8.x/http-tests.md:block 25 (paragraph)
 msgid "Laravel provides several helpers for interacting with the session during HTTP testing. First, you may set the session data to a given array using the `withSession` method. This is useful for loading the session with data before issuing a request to your application:"
-msgstr ""
+msgstr "Laravel 提供了各種在 HTTP 測試期間處理 Session 的輔助函式。首先，我們可以使用給定 `withSession` 方法來以給定的陣列設定 Session 資料。若要在向專案傳送 Request 前先在 Session 內載入資料，就適合使用這個方法："
 
 #: docs/8.x/http-tests.md:block 26 (code)
 msgid "<?php\n\n"
@@ -202,11 +249,20 @@ msgid "<?php\n\n"
 "        $response = $this->withSession(['banned' => false])->get('/');\n"
 "    }\n"
 "}\n"
-msgstr ""
+msgstr "<?php\n\n"
+"namespace Tests\\Feature;\n\n"
+"use Tests\\TestCase;\n\n"
+"class ExampleTest extends TestCase\n"
+"{\n"
+"    public function test_interacting_with_the_session()\n"
+"    {\n"
+"        $response = $this->withSession(['banned' => false])->get('/');\n"
+"    }\n"
+"}\n"
 
 #: docs/8.x/http-tests.md:block 27 (paragraph)
 msgid "Laravel's session is typically used to maintain state for the currently authenticated user. Therefore, the `actingAs` helper method provides a simple way to authenticate a given user as the current user. For example, we may use a [model factory](/docs/{{version}}/database-testing#writing-factories) to generate and authenticate a user:"
-msgstr ""
+msgstr "由於 Laravel 的 Session 通常是用來保存目前登入使用者的狀態，因此，也有一個 `actingAs` 輔助函式方法，可更簡單地讓我們將給定的使用者登入為目前使用者。舉例來說，我們可以使用 [Model Factory](/docs/{{version}}/database-testing#writing-factories) 來產生並登入使用者："
 
 #: docs/8.x/http-tests.md:block 28 (code)
 msgid "<?php\n\n"
@@ -223,23 +279,36 @@ msgid "<?php\n\n"
 "                         ->get('/');\n"
 "    }\n"
 "}\n"
-msgstr ""
+msgstr "<?php\n\n"
+"namespace Tests\\Feature;\n\n"
+"use App\\Models\\User;\n"
+"use Tests\\TestCase;\n\n"
+"class ExampleTest extends TestCase\n"
+"{\n"
+"    public function test_an_action_that_requires_authentication()\n"
+"    {\n"
+"        $user = User::factory()->create();\n\n"
+"        $response = $this->actingAs($user)\n"
+"                         ->withSession(['banned' => false])\n"
+"                         ->get('/');\n"
+"    }\n"
+"}\n"
 
 #: docs/8.x/http-tests.md:block 29 (paragraph)
 msgid "You may also specify which guard should be used to authenticate the given user by passing the guard name as the second argument to the `actingAs` method:"
-msgstr ""
+msgstr "我們可以使用 `actingAs` 方法的第二個引數來指定要使用哪個 Guard 來驗證給定使用者："
 
 #: docs/8.x/http-tests.md:block 30 (code)
 msgid "$this->actingAs($user, 'web')\n"
-msgstr ""
+msgstr "$this->actingAs($user, 'web')\n"
 
 #: docs/8.x/http-tests.md:block 32 (header)
 msgid "Debugging Responses"
-msgstr ""
+msgstr "為 Response 進行除錯"
 
 #: docs/8.x/http-tests.md:block 33 (paragraph)
 msgid "After making a test request to your application, the `dump`, `dumpHeaders`, and `dumpSession` methods may be used to examine and debug the response contents:"
-msgstr ""
+msgstr "向專案建立測試 Request 後，可使用 `dump`、`dumpHeaders`、`dumpSession` 方法來取得 Response 的內容或對其除錯："
 
 #: docs/8.x/http-tests.md:block 34 (code)
 msgid "<?php\n\n"
@@ -260,11 +329,28 @@ msgid "<?php\n\n"
 "        $response->dump();\n"
 "    }\n"
 "}\n"
-msgstr ""
+msgstr "<?php\n\n"
+"namespace Tests\\Feature;\n\n"
+"use Tests\\TestCase;\n\n"
+"class ExampleTest extends TestCase\n"
+"{\n"
+"    /**\n"
+"     * A basic test example.\n"
+"     *\n"
+"     * @return void\n"
+"     */\n"
+"    public function test_basic_test()\n"
+"    {\n"
+"        $response = $this->get('/');\n\n"
+"        $response->dumpHeaders();\n\n"
+"        $response->dumpSession();\n\n"
+"        $response->dump();\n"
+"    }\n"
+"}\n"
 
 #: docs/8.x/http-tests.md:block 35 (paragraph)
 msgid "Alternatively, you may use the `dd`, `ddHeaders`, and `ddSession` methods to dump information about the response and then stop execution:"
-msgstr ""
+msgstr "或者，我們可以使用 `dd`、`ddHeaders`、`ddSession` 方法來將該 Response 相關的資料傾印出來，並停止執行："
 
 #: docs/8.x/http-tests.md:block 36 (code)
 msgid "<?php\n\n"
@@ -285,35 +371,52 @@ msgid "<?php\n\n"
 "        $response->dd();\n"
 "    }\n"
 "}\n"
-msgstr ""
+msgstr "<?php\n\n"
+"namespace Tests\\Feature;\n\n"
+"use Tests\\TestCase;\n\n"
+"class ExampleTest extends TestCase\n"
+"{\n"
+"    /**\n"
+"     * A basic test example.\n"
+"     *\n"
+"     * @return void\n"
+"     */\n"
+"    public function test_basic_test()\n"
+"    {\n"
+"        $response = $this->get('/');\n\n"
+"        $response->ddHeaders();\n\n"
+"        $response->ddSession();\n\n"
+"        $response->dd();\n"
+"    }\n"
+"}\n"
 
 #: docs/8.x/http-tests.md:block 38 (header)
 msgid "Exception Handling"
-msgstr ""
+msgstr "處理 Exception"
 
 #: docs/8.x/http-tests.md:block 39 (paragraph)
 msgid "Sometimes you may want to test that your application is throwing a specific exception. To ensure that the exception does not get caught by Laravel's exception handler and returned as an HTTP response, you may invoke the `withoutExceptionHandling` method before making your request:"
-msgstr ""
+msgstr "有時候，我們可能會想測試專案是否有擲回特定的 ^[Exception](例外)。為了避免該 Exception 被 Laravel 的 Exception ^[Handler](處理常式)攔截並轉為 HTTP Response，請在建立 Request 前先叫用 `withoutExceptionHandling` 方法："
 
 #: docs/8.x/http-tests.md:block 40 (code)
 msgid "$response = $this->withoutExceptionHandling()->get('/');\n"
-msgstr ""
+msgstr "$response = $this->withoutExceptionHandling()->get('/');\n"
 
 #: docs/8.x/http-tests.md:block 41 (paragraph)
 msgid "In addition, if you would like to ensure that your application is not utilizing features that have been deprecated by the PHP language or the libraries your application is using, you may invoke the `withoutDeprecationHandling` method before making your request. When deprecation handling is disabled, deprecation warnings will be converted to exceptions, thus causing your test to fail:"
-msgstr ""
+msgstr "此外，若想確保專案中未使用到 PHP 或其他專案使用套件中宣告 ^[Deprecated](已過時) 的功能，我們可以在建立 Request 前叫用 `withoutDeprecationHandling` 方法。停用 Deprecation Handling 後，Deprecation ^[Warning](警告) 會被轉換為 Exception，並導致測試執行失敗："
 
 #: docs/8.x/http-tests.md:block 42 (code)
 msgid "$response = $this->withoutDeprecationHandling()->get('/');\n"
-msgstr ""
+msgstr "$response = $this->withoutDeprecationHandling()->get('/');\n"
 
 #: docs/8.x/http-tests.md:block 44 (header)
 msgid "Testing JSON APIs"
-msgstr ""
+msgstr "測試 JSON API"
 
 #: docs/8.x/http-tests.md:block 45 (paragraph)
 msgid "Laravel also provides several helpers for testing JSON APIs and their responses. For example, the `json`, `getJson`, `postJson`, `putJson`, `patchJson`, `deleteJson`, and `optionsJson` methods may be used to issue JSON requests with various HTTP verbs. You may also easily pass data and headers to these methods. To get started, let's write a test to make a `POST` request to `/api/user` and assert that the expected JSON data was returned:"
-msgstr ""
+msgstr "Laravel 中也提供了數種可用來測試 JSON API 與起 Response 的輔助函式。舉例來說，`json`、`getJson`、`postJson`、`putJson`、`patchJson`、`deleteJson`、`optionsJson` 等方法可用來以各種 HTTP ^[Verb](指令動詞) 來建立 JSON Request。我們也可以輕鬆地將資料與 Header 傳給這些方法。若要開始測試 JSON API，我們先來撰寫一個建立連到  `/api/user` 的 `POST` Request，並撰寫預期回傳 JSON 資料的 Assertion："
 
 #: docs/8.x/http-tests.md:block 46 (code)
 msgid "<?php\n\n"
@@ -336,27 +439,46 @@ msgid "<?php\n\n"
 "            ]);\n"
 "    }\n"
 "}\n"
-msgstr ""
+msgstr "<?php\n\n"
+"namespace Tests\\Feature;\n\n"
+"use Tests\\TestCase;\n\n"
+"class ExampleTest extends TestCase\n"
+"{\n"
+"    /**\n"
+"     * A basic functional test example.\n"
+"     *\n"
+"     * @return void\n"
+"     */\n"
+"    public function test_making_an_api_request()\n"
+"    {\n"
+"        $response = $this->postJson('/api/user', ['name' => 'Sally']);\n\n"
+"        $response\n"
+"            ->assertStatus(201)\n"
+"            ->assertJson([\n"
+"                'created' => true,\n"
+"            ]);\n"
+"    }\n"
+"}\n"
 
 #: docs/8.x/http-tests.md:block 47 (paragraph)
 msgid "In addition, JSON response data may be accessed as array variables on the response, making it convenient for you to inspect the individual values returned within a JSON response:"
-msgstr ""
+msgstr "此外，在 Response 上，我們可以用陣列變數的形式來存取 JSON Response 的資料。這麼一來我們就能方便地檢查 JSON Response 中回傳的各個值："
 
 #: docs/8.x/http-tests.md:block 48 (code)
 msgid "$this->assertTrue($response['created']);\n"
-msgstr ""
+msgstr "$this->assertTrue($response['created']);\n"
 
 #: docs/8.x/http-tests.md:block 49 (quote)
 msgid "{tip} The `assertJson` method converts the response to an array and utilizes `PHPUnit::assertArraySubset` to verify that the given array exists within the JSON response returned by the application. So, if there are other properties in the JSON response, this test will still pass as long as the given fragment is present."
-msgstr ""
+msgstr "{tip} `assertJson` 方法會將 Response 轉換為陣列，並使用 `PHPUnit::assertArraySubset` 來驗證給定陣列是否有包含在專案回傳的 JSON Response 中。所以，如果在 JSON Response 中有包含其他屬性，只要給定的部分有包含在 JSON 裡，測試就會通過。"
 
 #: docs/8.x/http-tests.md:block 51 (header)
 msgid "Asserting Exact JSON Matches"
-msgstr ""
+msgstr "判斷 JSON 是否完全符合"
 
 #: docs/8.x/http-tests.md:block 52 (paragraph)
 msgid "As previously mentioned, the `assertJson` method may be used to assert that a fragment of JSON exists within the JSON response. If you would like to verify that a given array **exactly matches** the JSON returned by your application, you should use the `assertExactJson` method:"
-msgstr ""
+msgstr "剛才也提到過，`assertJson` 方法可用來判斷給定的部分 JSON 是否有包含在 JSON Response 中。若想檢查給定的陣列是否與專案回傳的 JSON **完全符合**，請使用 `assertExactJson` 方法："
 
 #: docs/8.x/http-tests.md:block 53 (code)
 msgid "<?php\n\n"
@@ -379,15 +501,34 @@ msgid "<?php\n\n"
 "            ]);\n"
 "    }\n"
 "}\n"
-msgstr ""
+msgstr "<?php\n\n"
+"namespace Tests\\Feature;\n\n"
+"use Tests\\TestCase;\n\n"
+"class ExampleTest extends TestCase\n"
+"{\n"
+"    /**\n"
+"     * A basic functional test example.\n"
+"     *\n"
+"     * @return void\n"
+"     */\n"
+"    public function test_asserting_an_exact_json_match()\n"
+"    {\n"
+"        $response = $this->postJson('/user', ['name' => 'Sally']);\n\n"
+"        $response\n"
+"            ->assertStatus(201)\n"
+"            ->assertExactJson([\n"
+"                'created' => true,\n"
+"            ]);\n"
+"    }\n"
+"}\n"
 
 #: docs/8.x/http-tests.md:block 55 (header)
 msgid "Asserting On JSON Paths"
-msgstr ""
+msgstr "判斷 JSON 路徑"
 
 #: docs/8.x/http-tests.md:block 56 (paragraph)
 msgid "If you would like to verify that the JSON response contains the given data at a specified path, you should use the `assertJsonPath` method:"
-msgstr ""
+msgstr "若想檢查 JSON Response 中，特定路徑上是否有包含給定資料，可使用 `assertJsonPath` 方法："
 
 #: docs/8.x/http-tests.md:block 57 (code)
 msgid "<?php\n\n"
@@ -408,15 +549,32 @@ msgid "<?php\n\n"
 "            ->assertJsonPath('team.owner.name', 'Darian');\n"
 "    }\n"
 "}\n"
-msgstr ""
+msgstr "<?php\n\n"
+"namespace Tests\\Feature;\n\n"
+"use Tests\\TestCase;\n\n"
+"class ExampleTest extends TestCase\n"
+"{\n"
+"    /**\n"
+"     * A basic functional test example.\n"
+"     *\n"
+"     * @return void\n"
+"     */\n"
+"    public function test_asserting_a_json_paths_value()\n"
+"    {\n"
+"        $response = $this->postJson('/user', ['name' => 'Sally']);\n\n"
+"        $response\n"
+"            ->assertStatus(201)\n"
+"            ->assertJsonPath('team.owner.name', 'Darian');\n"
+"    }\n"
+"}\n"
 
 #: docs/8.x/http-tests.md:block 59 (header)
 msgid "Fluent JSON Testing"
-msgstr ""
+msgstr "Fluent JSON 測試"
 
 #: docs/8.x/http-tests.md:block 60 (paragraph)
 msgid "Laravel also offers a beautiful way to fluently test your application's JSON responses. To get started, pass a closure to the `assertJson` method. This closure will be invoked with an instance of `Illuminate\\Testing\\Fluent\\AssertableJson` which can be used to make assertions against the JSON that was returned by your application. The `where` method may be used to make assertions against a particular attribute of the JSON, while the `missing` method may be used to assert that a particular attribute is missing from the JSON:"
-msgstr ""
+msgstr "Laravel 也提供了另一種較好看、語義化的方法來讓我們測試專案的 JSON Response。若要用這種方法來測試 JSON Response，只需要傳入一個閉包給 `assertJson`。在叫用這個閉包時，該閉包會收到一個 `Illuminate\\Testing\\Fluent\\AssertableJson` 實體。`AssertableJson` 可用來對專案回傳的 JSON 做 Assertion。`where` 方法可用來對 JSON 中特定屬性做 Assertion。而 `missing` 方法可用來判斷 JSON 中是否不含特定屬性："
 
 #: docs/8.x/http-tests.md:block 61 (code)
 msgid "use Illuminate\\Testing\\Fluent\\AssertableJson;\n\n"
@@ -436,74 +594,101 @@ msgid "use Illuminate\\Testing\\Fluent\\AssertableJson;\n\n"
 "                 ->etc()\n"
 "        );\n"
 "}\n"
-msgstr ""
+msgstr "use Illuminate\\Testing\\Fluent\\AssertableJson;\n\n"
+"/**\n"
+" * A basic functional test example.\n"
+" *\n"
+" * @return void\n"
+" */\n"
+"public function test_fluent_json()\n"
+"{\n"
+"    $response = $this->getJson('/users/1');\n\n"
+"    $response\n"
+"        ->assertJson(fn (AssertableJson $json) =>\n"
+"            $json->where('id', 1)\n"
+"                 ->where('name', 'Victoria Faith')\n"
+"                 ->missing('password')\n"
+"                 ->etc()\n"
+"        );\n"
+"}\n"
 
 #: docs/8.x/http-tests.md:block 62 (header)
 msgid "Understanding The `etc` Method"
-msgstr ""
+msgstr "瞭解 `etc` 方法"
 
 #: docs/8.x/http-tests.md:block 63 (paragraph)
 msgid "In the example above, you may have noticed we invoked the `etc` method at the end of our assertion chain. This method informs Laravel that there may be other attributes present on the JSON object. If the `etc` method is not used, the test will fail if other attributes that you did not make assertions against exist on the JSON object."
-msgstr ""
+msgstr "在上述的範例中，讀者可能有注意到我們在 Assersion 串列的最後面叫用了 `etc` 方法。叫用該方法可讓 Laravel 知道在 JSON 物件中可能還有其他屬性。在沒有使用 `etc` 方法的情況下，若 JSON 物件中還有其他屬性存在，而我們未對這些屬性進行 Assersion 時，測試會執行失敗。"
 
 #: docs/8.x/http-tests.md:block 64 (paragraph)
 msgid "The intention behind this behavior is to protect you from unintentionally exposing sensitive information in your JSON responses by forcing you to either explicitly make an assertion against the attribute or explicitly allow additional attributes via the `etc` method."
-msgstr ""
+msgstr "這種在沒有呼叫 `etc` 方法的情況下會使測試失敗的行為，是為了避免讓我們在 JSON Response 中不小心暴露出機敏資訊，所以才強制我們要針對所有屬性做 Assersion，或是使用 `etc` 方法來顯式允許其他額外的屬性。"
 
 #: docs/8.x/http-tests.md:block 66 (header)
 msgid "Asserting Attribute Presence / Absence"
-msgstr ""
+msgstr "判斷屬性存在／不存在"
 
 #: docs/8.x/http-tests.md:block 67 (paragraph)
 msgid "To assert that an attribute is present or absent, you may use the `has` and `missing` methods:"
-msgstr ""
+msgstr "若要判斷某個屬性存在或不存在，可使用 `has` 或 `missing` 方法："
 
 #: docs/8.x/http-tests.md:block 68 (code)
 msgid "$response->assertJson(fn (AssertableJson $json) =>\n"
 "    $json->has('data')\n"
 "         ->missing('message')\n"
 ");\n"
-msgstr ""
+msgstr "$response->assertJson(fn (AssertableJson $json) =>\n"
+"    $json->has('data')\n"
+"         ->missing('message')\n"
+");\n"
 
 #: docs/8.x/http-tests.md:block 69 (paragraph)
 msgid "In addition, the `hasAll` and `missingAll` methods allow asserting the presence or absence of multiple attributes simultaneously:"
-msgstr ""
+msgstr "此外，使用 `hasAll` 或 `missingAll` 方法，就可以同時針對多個屬性判斷存在或不存在："
 
 #: docs/8.x/http-tests.md:block 70 (code)
 msgid "$response->assertJson(fn (AssertableJson $json) =>\n"
 "    $json->hasAll('status', 'data')\n"
 "         ->missingAll('message', 'code')\n"
 ");\n"
-msgstr ""
+msgstr "$response->assertJson(fn (AssertableJson $json) =>\n"
+"    $json->hasAll('status', 'data')\n"
+"         ->missingAll('message', 'code')\n"
+");\n"
 
 #: docs/8.x/http-tests.md:block 71 (paragraph)
 msgid "You may use the `hasAny` method to determine if at least one of a given list of attributes is present:"
-msgstr ""
+msgstr "我們可以使用 `hasAny` 方法來判斷給定屬性列表中是否至少有一個屬性存在："
 
 #: docs/8.x/http-tests.md:block 72 (code)
 msgid "$response->assertJson(fn (AssertableJson $json) =>\n"
 "    $json->has('status')\n"
 "         ->hasAny('data', 'message', 'code')\n"
 ");\n"
-msgstr ""
+msgstr "$response->assertJson(fn (AssertableJson $json) =>\n"
+"    $json->has('status')\n"
+"         ->hasAny('data', 'message', 'code')\n"
+");\n"
 
 #: docs/8.x/http-tests.md:block 74 (header)
 msgid "Asserting Against JSON Collections"
-msgstr ""
+msgstr "判斷 JSON Collection"
 
 #: docs/8.x/http-tests.md:block 75 (paragraph)
 msgid "Often, your route will return a JSON response that contains multiple items, such as multiple users:"
-msgstr ""
+msgstr "通常來說，在 Route 中回傳的 Json Response 會包含多個項目，如多位使用者："
 
 #: docs/8.x/http-tests.md:block 76 (code)
 msgid "Route::get('/users', function () {\n"
 "    return User::all();\n"
 "});\n"
-msgstr ""
+msgstr "Route::get('/users', function () {\n"
+"    return User::all();\n"
+"});\n"
 
 #: docs/8.x/http-tests.md:block 77 (paragraph)
 msgid "In these situations, we may use the fluent JSON object's `has` method to make assertions against the users included in the response. For example, let's assert that the JSON response contains three users. Next, we'll make some assertions about the first user in the collection using the `first` method. The `first` method accepts a closure which receives another assertable JSON string that we can use to make assertions about the first object in the JSON collection:"
-msgstr ""
+msgstr "在這些情況下，我們可以使用 Fluent JSON 物件的 `has` 方法來針對該 Response 中的使用者進行 Assertion。舉例來說，我們來判斷 JSON Response 中是否有包含三位使用者。接著，我們再使用 `first` 方法來對該 Collection 中的使用者做 Assertion。`first` 方法接受一個閉包，該閉包會收到另一個可 Assert 的 JSON 字串，我們可以使用這個 JSON 字串來針對該 JSON Collection 中的第一個物件進行 Assertion："
 
 #: docs/8.x/http-tests.md:block 78 (code)
 msgid "$response\n"
@@ -516,15 +701,24 @@ msgid "$response\n"
 "                     ->etc()\n"
 "             )\n"
 "    );\n"
-msgstr ""
+msgstr "$response\n"
+"    ->assertJson(fn (AssertableJson $json) =>\n"
+"        $json->has(3)\n"
+"             ->first(fn ($json) =>\n"
+"                $json->where('id', 1)\n"
+"                     ->where('name', 'Victoria Faith')\n"
+"                     ->missing('password')\n"
+"                     ->etc()\n"
+"             )\n"
+"    );\n"
 
 #: docs/8.x/http-tests.md:block 80 (header)
 msgid "Scoping JSON Collection Assertions"
-msgstr ""
+msgstr "限定範圍的 JSON Collection Assertion"
 
 #: docs/8.x/http-tests.md:block 81 (paragraph)
 msgid "Sometimes, your application's routes will return JSON collections that are assigned named keys:"
-msgstr ""
+msgstr "有時候，Route 可能會回傳被指派為命名索引鍵的 JSON Collection："
 
 #: docs/8.x/http-tests.md:block 82 (code)
 msgid "Route::get('/users', function () {\n"
@@ -533,11 +727,16 @@ msgid "Route::get('/users', function () {\n"
 "        'users' => User::all(),\n"
 "    ];\n"
 "})\n"
-msgstr ""
+msgstr "Route::get('/users', function () {\n"
+"    return [\n"
+"        'meta' => [...],\n"
+"        'users' => User::all(),\n"
+"    ];\n"
+"})\n"
 
 #: docs/8.x/http-tests.md:block 83 (paragraph)
 msgid "When testing these routes, you may use the `has` method to assert against the number of items in the collection. In addition, you may use the `has` method to scope a chain of assertions:"
-msgstr ""
+msgstr "在測試這類 Route 時，可以使用 `has` 方法來判斷該 Collection 中的項目數。此外，也可以使用 `has` 方法來在一連串的 Assertion 間限制判斷的範圍："
 
 #: docs/8.x/http-tests.md:block 84 (code)
 msgid "$response\n"
@@ -551,11 +750,21 @@ msgid "$response\n"
 "                     ->etc()\n"
 "             )\n"
 "    );\n"
-msgstr ""
+msgstr "$response\n"
+"    ->assertJson(fn (AssertableJson $json) =>\n"
+"        $json->has('meta')\n"
+"             ->has('users', 3)\n"
+"             ->has('users.0', fn ($json) =>\n"
+"                $json->where('id', 1)\n"
+"                     ->where('name', 'Victoria Faith')\n"
+"                     ->missing('password')\n"
+"                     ->etc()\n"
+"             )\n"
+"    );\n"
 
 #: docs/8.x/http-tests.md:block 85 (paragraph)
 msgid "However, instead of making two separate calls to the `has` method to assert against the `users` collection, you may make a single call which provides a closure as its third parameter. When doing so, the closure will automatically be invoked and scoped to the first item in the collection:"
-msgstr ""
+msgstr "不過，除了一次對 `users` Collection 呼叫兩次 `has` 方法以外，我們也可以只呼叫一次，並提供一個閉包作為該方法的第三個引數。傳入閉包時，Laravel 會自動叫用該閉包，並將作用範圍限定在該 Collection 的第一個項目："
 
 #: docs/8.x/http-tests.md:block 86 (code)
 msgid "$response\n"
@@ -568,15 +777,24 @@ msgid "$response\n"
 "                     ->etc()\n"
 "             )\n"
 "    );\n"
-msgstr ""
+msgstr "$response\n"
+"    ->assertJson(fn (AssertableJson $json) =>\n"
+"        $json->has('meta')\n"
+"             ->has('users', 3, fn ($json) =>\n"
+"                $json->where('id', 1)\n"
+"                     ->where('name', 'Victoria Faith')\n"
+"                     ->missing('password')\n"
+"                     ->etc()\n"
+"             )\n"
+"    );\n"
 
 #: docs/8.x/http-tests.md:block 88 (header)
 msgid "Asserting JSON Types"
-msgstr ""
+msgstr "判斷 JSON 型別"
 
 #: docs/8.x/http-tests.md:block 89 (paragraph)
 msgid "You may only want to assert that the properties in the JSON response are of a certain type. The `Illuminate\\Testing\\Fluent\\AssertableJson` class provides the `whereType` and `whereAllType` methods for doing just that:"
-msgstr ""
+msgstr "我們可能會想檢查 JSON Response 中的某些屬性是否為特定的型別。`Illuminate\\Testing\\Fluent\\AssertableJson` 類別中，提供了 `whereType` 與 `whereAllType` 方法可讓我們檢查 JSON 屬性中的型別："
 
 #: docs/8.x/http-tests.md:block 90 (code)
 msgid "$response->assertJson(fn (AssertableJson $json) =>\n"
@@ -586,30 +804,39 @@ msgid "$response->assertJson(fn (AssertableJson $json) =>\n"
 "            'meta' => 'array'\n"
 "        ])\n"
 ");\n"
-msgstr ""
+msgstr "$response->assertJson(fn (AssertableJson $json) =>\n"
+"    $json->whereType('id', 'integer')\n"
+"         ->whereAllType([\n"
+"            'users.0.name' => 'string',\n"
+"            'meta' => 'array'\n"
+"        ])\n"
+");\n"
 
 #: docs/8.x/http-tests.md:block 91 (paragraph)
 msgid "You may specify multiple types using the `|` character, or passing an array of types as the second parameter to the `whereType` method. The assertion will be successful if the response value is any of the listed types:"
-msgstr ""
+msgstr "我們也可以使用 `|` 字元來指定多個型別，或者，也可以傳入一組型別陣列作為 `whereType` 的第二個引數。若 Response 值符合任意列出的型別，則該 Assertion 會執行成功："
 
 #: docs/8.x/http-tests.md:block 92 (code)
 msgid "$response->assertJson(fn (AssertableJson $json) =>\n"
 "    $json->whereType('name', 'string|null')\n"
 "         ->whereType('id', ['string', 'integer'])\n"
 ");\n"
-msgstr ""
+msgstr "$response->assertJson(fn (AssertableJson $json) =>\n"
+"    $json->whereType('name', 'string|null')\n"
+"         ->whereType('id', ['string', 'integer'])\n"
+");\n"
 
 #: docs/8.x/http-tests.md:block 93 (paragraph)
 msgid "The `whereType` and `whereAllType` methods recognize the following types: `string`, `integer`, `double`, `boolean`, `array`, and `null`."
-msgstr ""
+msgstr "`whereType` 與 `whereAllType` 方法可支援下列型別： `string`、`integer`、`double`、`boolean`、`array`、`null`。"
 
 #: docs/8.x/http-tests.md:block 95 (header)
 msgid "Testing File Uploads"
-msgstr ""
+msgstr "測試檔案上傳"
 
 #: docs/8.x/http-tests.md:block 96 (paragraph)
 msgid "The `Illuminate\\Http\\UploadedFile` class provides a `fake` method which may be used to generate dummy files or images for testing. This, combined with the `Storage` facade's `fake` method, greatly simplifies the testing of file uploads. For example, you may combine these two features to easily test an avatar upload form:"
-msgstr ""
+msgstr "`Illuminate\\Http\\UploadedFile` 類別提供了一個 `fake` 方法，可用來產生用於測試的假檔案或圖片。只要將 `UploadedFile` 的 `fake` 方法與 `Storage` Facade 的 `fake` 方法一起使用，我們就能大幅簡化測試檔案上傳的過程。舉例來說，我們可以將這兩個功能搭配使用，來測試某個上傳使用者大頭照的表單："
 
 #: docs/8.x/http-tests.md:block 97 (code)
 msgid "<?php\n\n"
@@ -631,55 +858,78 @@ msgid "<?php\n\n"
 "        Storage::disk('avatars')->assertExists($file->hashName());\n"
 "    }\n"
 "}\n"
-msgstr ""
+msgstr "<?php\n\n"
+"namespace Tests\\Feature;\n\n"
+"use Illuminate\\Foundation\\Testing\\RefreshDatabase;\n"
+"use Illuminate\\Foundation\\Testing\\WithoutMiddleware;\n"
+"use Illuminate\\Http\\UploadedFile;\n"
+"use Illuminate\\Support\\Facades\\Storage;\n"
+"use Tests\\TestCase;\n\n"
+"class ExampleTest extends TestCase\n"
+"{\n"
+"    public function test_avatars_can_be_uploaded()\n"
+"    {\n"
+"        Storage::fake('avatars');\n\n"
+"        $file = UploadedFile::fake()->image('avatar.jpg');\n\n"
+"        $response = $this->post('/avatar', [\n"
+"            'avatar' => $file,\n"
+"        ]);\n\n"
+"        Storage::disk('avatars')->assertExists($file->hashName());\n"
+"    }\n"
+"}\n"
 
 #: docs/8.x/http-tests.md:block 98 (paragraph)
 msgid "If you would like to assert that a given file does not exist, you may use the `assertMissing` method provided by the `Storage` facade:"
-msgstr ""
+msgstr "若想檢查給定的檔案是否不存在，可使用 `Storage` Facade 的 `assertMissing` 方法："
 
 #: docs/8.x/http-tests.md:block 99 (code)
 msgid "Storage::fake('avatars');\n\n"
 "// ...\n\n"
 "Storage::disk('avatars')->assertMissing('missing.jpg');\n"
-msgstr ""
+msgstr "Storage::fake('avatars');\n\n"
+"// ...\n\n"
+"Storage::disk('avatars')->assertMissing('missing.jpg');\n"
 
 #: docs/8.x/http-tests.md:block 101 (header)
 msgid "Fake File Customization"
-msgstr ""
+msgstr "自訂 Fake 檔案"
 
 #: docs/8.x/http-tests.md:block 102 (paragraph)
 msgid "When creating files using the `fake` method provided by the `UploadedFile` class, you may specify the width, height, and size of the image (in kilobytes) in order to better test your application's validation rules:"
-msgstr ""
+msgstr "在使用 `UploadedFile` 類別的 `fake` 方法來建立檔案時，我們可以指定圖片的長寬與檔案大小 (單位為 kB)，以更好地測試程式中的表單驗證規則："
 
 #: docs/8.x/http-tests.md:block 103 (code)
 msgid "UploadedFile::fake()->image('avatar.jpg', $width, $height)->size(100);\n"
-msgstr ""
+msgstr "UploadedFile::fake()->image('avatar.jpg', $width, $height)->size(100);\n"
 
 #: docs/8.x/http-tests.md:block 104 (paragraph)
 msgid "In addition to creating images, you may create files of any other type using the `create` method:"
-msgstr ""
+msgstr "除了建立圖片外，還可以使用 `create` 方法來建立任何其他類型的檔案："
 
 #: docs/8.x/http-tests.md:block 105 (code)
 msgid "UploadedFile::fake()->create('document.pdf', $sizeInKilobytes);\n"
-msgstr ""
+msgstr "// $sizeInKilobytes = 單位為 kB 的檔案大小\n"
+"UploadedFile::fake()->create('document.pdf', $sizeInKilobytes);\n"
 
 #: docs/8.x/http-tests.md:block 106 (paragraph)
 msgid "If needed, you may pass a `$mimeType` argument to the method to explicitly define the MIME type that should be returned by the file:"
-msgstr ""
+msgstr "若有需要，可傳入 `$mimeType` 引數，以明顯定義 File 要回傳的 MIME 型別："
 
 #: docs/8.x/http-tests.md:block 107 (code)
 msgid "UploadedFile::fake()->create(\n"
 "    'document.pdf', $sizeInKilobytes, 'application/pdf'\n"
 ");\n"
-msgstr ""
+msgstr "UploadedFile::fake()->create(\n"
+"    'document.pdf', $sizeInKilobytes, 'application/pdf'\n"
+");\n"
 
 #: docs/8.x/http-tests.md:block 109 (header)
 msgid "Testing Views"
-msgstr ""
+msgstr "測試 View"
 
 #: docs/8.x/http-tests.md:block 110 (paragraph)
 msgid "Laravel also allows you to render a view without making a simulated HTTP request to the application. To accomplish this, you may call the `view` method within your test. The `view` method accepts the view name and an optional array of data. The method returns an instance of `Illuminate\\Testing\\TestView`, which offers several methods to conveniently make assertions about the view's contents:"
-msgstr ""
+msgstr "在 Laravel 中，我們也可以在不模擬 HTTP Request 的情況轉譯 View。若要在不模擬 HTTP Request 的情況下轉譯 View，我們可以在測試中呼叫 `view` 方法。`view` 方法的參數為 View 的名稱，以及一組可選的資料陣列。該方法會回傳 `Illuminate\\Testing\\TestView` 的實體，使用 `TestView`，我們就能方便地針對 View 的內容進行 Assertion："
 
 #: docs/8.x/http-tests.md:block 111 (code)
 msgid "<?php\n\n"
@@ -693,42 +943,55 @@ msgid "<?php\n\n"
 "        $view->assertSee('Taylor');\n"
 "    }\n"
 "}\n"
-msgstr ""
+msgstr "<?php\n\n"
+"namespace Tests\\Feature;\n\n"
+"use Tests\\TestCase;\n\n"
+"class ExampleTest extends TestCase\n"
+"{\n"
+"    public function test_a_welcome_view_can_be_rendered()\n"
+"    {\n"
+"        $view = $this->view('welcome', ['name' => 'Taylor']);\n\n"
+"        $view->assertSee('Taylor');\n"
+"    }\n"
+"}\n"
 
 #: docs/8.x/http-tests.md:block 112 (paragraph)
 msgid "The `TestView` class provides the following assertion methods: `assertSee`, `assertSeeInOrder`, `assertSeeText`, `assertSeeTextInOrder`, `assertDontSee`, and `assertDontSeeText`."
-msgstr ""
+msgstr "`TestView` 類別還提供了下列 Assertion 方法：`assertSee`、`assertSeeInOrder`、`assertSeeText`、`assertSeeTextInOrder`、`assertDontSee`、`assertDontSeeText`。"
 
 #: docs/8.x/http-tests.md:block 113 (paragraph)
 msgid "If needed, you may get the raw, rendered view contents by casting the `TestView` instance to a string:"
-msgstr ""
+msgstr "若有需要，我們可以將 `TestView` 實體轉換型別為字串來取得原始的 View 內容轉譯結果："
 
 #: docs/8.x/http-tests.md:block 114 (code)
 msgid "$contents = (string) $this->view('welcome');\n"
-msgstr ""
+msgstr "$contents = (string) $this->view('welcome');\n"
 
 #: docs/8.x/http-tests.md:block 116 (header)
 msgid "Sharing Errors"
-msgstr ""
+msgstr "共用錯誤訊息"
 
 #: docs/8.x/http-tests.md:block 117 (paragraph)
 msgid "Some views may depend on errors shared in the [global error bag provided by Laravel](/docs/{{version}}/validation#quick-displaying-the-validation-errors). To hydrate the error bag with error messages, you may use the `withViewErrors` method:"
-msgstr ""
+msgstr "有的 View 會使用到 [Laravel 所提供的全域 Error Bag](/docs/{{version}}/validation#quick-displaying-the-validation-errors)中共享的錯誤。若要在全域 Error Bag 中填充錯誤訊息，可使用 `withViewErrors` 方法："
 
 #: docs/8.x/http-tests.md:block 118 (code)
 msgid "$view = $this->withViewErrors([\n"
 "    'name' => ['Please provide a valid name.']\n"
 "])->view('form');\n\n"
 "$view->assertSee('Please provide a valid name.');\n"
-msgstr ""
+msgstr "$view = $this->withViewErrors([\n"
+"    'name' => ['Please provide a valid name.']\n"
+"])->view('form');\n\n"
+"$view->assertSee('Please provide a valid name.');\n"
 
 #: docs/8.x/http-tests.md:block 120 (header)
 msgid "Rendering Blade & Components"
-msgstr ""
+msgstr "轉譯 Blade 與元件"
 
 #: docs/8.x/http-tests.md:block 121 (paragraph)
 msgid "If necessary, you may use the `blade` method to evaluate and render a raw [Blade](/docs/{{version}}/blade) string. Like the `view` method, the `blade` method returns an instance of `Illuminate\\Testing\\TestView`:"
-msgstr ""
+msgstr "若有需要，可以使用 `blade` 方法來取值並轉譯原始的 [Blade](/docs/{{version}}/blade) 字串。與 `view` 方法類似，`blade` 方法也會回傳 `Illuminate\\Testing\\TestView` 的實體："
 
 #: docs/8.x/http-tests.md:block 122 (code)
 msgid "$view = $this->blade(\n"
@@ -736,220 +999,225 @@ msgid "$view = $this->blade(\n"
 "    ['name' => 'Taylor']\n"
 ");\n\n"
 "$view->assertSee('Taylor');\n"
-msgstr ""
+msgstr "$view = $this->blade(\n"
+"    '<x-component :name=\"$name\" />',\n"
+"    ['name' => 'Taylor']\n"
+");\n\n"
+"$view->assertSee('Taylor');\n"
 
 #: docs/8.x/http-tests.md:block 123 (paragraph)
 msgid "You may use the `component` method to evaluate and render a [Blade component](/docs/{{version}}/blade#components). Like the `view` method, the `component` method returns an instance of `Illuminate\\Testing\\TestView`:"
-msgstr ""
+msgstr "可以使用 `component` 方法來取值並轉譯 [Blade 元件](/docs/{{version}}/blade#components)。與 `view` 方法類似，`component` 元件也會回傳 `Illuminate\\Testing\\TestView` 的實體："
 
 #: docs/8.x/http-tests.md:block 124 (code)
 msgid "$view = $this->component(Profile::class, ['name' => 'Taylor']);\n\n"
 "$view->assertSee('Taylor');\n"
-msgstr ""
+msgstr "$view = $this->component(Profile::class, ['name' => 'Taylor']);\n\n"
+"$view->assertSee('Taylor');\n"
 
 #: docs/8.x/http-tests.md:block 126 (header)
 msgid "Available Assertions"
-msgstr ""
+msgstr "可用的 Assertion"
 
 #: docs/8.x/http-tests.md:block 128 (header)
 msgid "Response Assertions"
-msgstr ""
+msgstr "Response 的 Assertion"
 
 #: docs/8.x/http-tests.md:block 129 (paragraph)
 msgid "Laravel's `Illuminate\\Testing\\TestResponse` class provides a variety of custom assertion methods that you may utilize when testing your application. These assertions may be accessed on the response that is returned by the `json`, `get`, `post`, `put`, and `delete` test methods:"
-msgstr ""
+msgstr "Laravel 的 `Illuminate\\Testing\\TestResponse` 類別提供了各種自訂 Assertion 方法供我們在測試程式時使用。這些 Assertion 可在 `json`、`get`、`post`、`put`、`delete` 測試方法回傳的 Response 上存取："
 
 #: docs/8.x/http-tests.md:block 132 (paragraph)
 msgid "[assertCookie](#assert-cookie) [assertCookieExpired](#assert-cookie-expired) [assertCookieNotExpired](#assert-cookie-not-expired) [assertCookieMissing](#assert-cookie-missing) [assertCreated](#assert-created) [assertDontSee](#assert-dont-see) [assertDontSeeText](#assert-dont-see-text) [assertDownload](#assert-download) [assertExactJson](#assert-exact-json) [assertForbidden](#assert-forbidden) [assertHeader](#assert-header) [assertHeaderMissing](#assert-header-missing) [assertJson](#assert-json) [assertJsonCount](#assert-json-count) [assertJsonFragment](#assert-json-fragment) [assertJsonMissing](#assert-json-missing) [assertJsonMissingExact](#assert-json-missing-exact) [assertJsonMissingValidationErrors](#assert-json-missing-validation-errors) [assertJsonPath](#assert-json-path) [assertJsonStructure](#assert-json-structure) [assertJsonValidationErrors](#assert-json-validation-errors) [assertJsonValidationErrorFor](#assert-json-validation-error-for) [assertLocation](#assert-location) [assertNoContent](#assert-no-content) [assertNotFound](#assert-not-found) [assertOk](#assert-ok) [assertPlainCookie](#assert-plain-cookie) [assertRedirect](#assert-redirect) [assertRedirectContains](#assert-redirect-contains) [assertRedirectToSignedRoute](#assert-redirect-to-signed-route) [assertSee](#assert-see) [assertSeeInOrder](#assert-see-in-order) [assertSeeText](#assert-see-text) [assertSeeTextInOrder](#assert-see-text-in-order) [assertSessionHas](#assert-session-has) [assertSessionHasInput](#assert-session-has-input) [assertSessionHasAll](#assert-session-has-all) [assertSessionHasErrors](#assert-session-has-errors) [assertSessionHasErrorsIn](#assert-session-has-errors-in) [assertSessionHasNoErrors](#assert-session-has-no-errors) [assertSessionDoesntHaveErrors](#assert-session-doesnt-have-errors) [assertSessionMissing](#assert-session-missing) [assertSimilarJson](#assert-similar-json) [assertStatus](#assert-status) [assertSuccessful](#assert-successful) [assertUnauthorized](#assert-unauthorized) [assertUnprocessable](#assert-unprocessable) [assertValid](#assert-valid) [assertInvalid](#assert-invalid) [assertViewHas](#assert-view-has) [assertViewHasAll](#assert-view-has-all) [assertViewIs](#assert-view-is) [assertViewMissing](#assert-view-missing)"
-msgstr ""
+msgstr "[assertCookie](#assert-cookie) [assertCookieExpired](#assert-cookie-expired) [assertCookieNotExpired](#assert-cookie-not-expired) [assertCookieMissing](#assert-cookie-missing) [assertCreated](#assert-created) [assertDontSee](#assert-dont-see) [assertDontSeeText](#assert-dont-see-text) [assertDownload](#assert-download) [assertExactJson](#assert-exact-json) [assertForbidden](#assert-forbidden) [assertHeader](#assert-header) [assertHeaderMissing](#assert-header-missing) [assertJson](#assert-json) [assertJsonCount](#assert-json-count) [assertJsonFragment](#assert-json-fragment) [assertJsonMissing](#assert-json-missing) [assertJsonMissingExact](#assert-json-missing-exact) [assertJsonMissingValidationErrors](#assert-json-missing-validation-errors) [assertJsonPath](#assert-json-path) [assertJsonStructure](#assert-json-structure) [assertJsonValidationErrors](#assert-json-validation-errors) [assertJsonValidationErrorFor](#assert-json-validation-error-for) [assertLocation](#assert-location) [assertNoContent](#assert-no-content) [assertNotFound](#assert-not-found) [assertOk](#assert-ok) [assertPlainCookie](#assert-plain-cookie) [assertRedirect](#assert-redirect) [assertRedirectContains](#assert-redirect-contains) [assertRedirectToSignedRoute](#assert-redirect-to-signed-route) [assertSee](#assert-see) [assertSeeInOrder](#assert-see-in-order) [assertSeeText](#assert-see-text) [assertSeeTextInOrder](#assert-see-text-in-order) [assertSessionHas](#assert-session-has) [assertSessionHasInput](#assert-session-has-input) [assertSessionHasAll](#assert-session-has-all) [assertSessionHasErrors](#assert-session-has-errors) [assertSessionHasErrorsIn](#assert-session-has-errors-in) [assertSessionHasNoErrors](#assert-session-has-no-errors) [assertSessionDoesntHaveErrors](#assert-session-doesnt-have-errors) [assertSessionMissing](#assert-session-missing) [assertSimilarJson](#assert-similar-json) [assertStatus](#assert-status) [assertSuccessful](#assert-successful) [assertUnauthorized](#assert-unauthorized) [assertUnprocessable](#assert-unprocessable) [assertValid](#assert-valid) [assertInvalid](#assert-invalid) [assertViewHas](#assert-view-has) [assertViewHasAll](#assert-view-has-all) [assertViewIs](#assert-view-is) [assertViewMissing](#assert-view-missing)"
 
 #: docs/8.x/http-tests.md:block 135 (header)
 msgid "assertCookie"
-msgstr ""
+msgstr "assertCookie"
 
 #: docs/8.x/http-tests.md:block 136 (paragraph)
 msgid "Assert that the response contains the given cookie:"
-msgstr ""
+msgstr "判斷 Response 包含給定 Cookie："
 
 #: docs/8.x/http-tests.md:block 137 (code)
 msgid "$response->assertCookie($cookieName, $value = null);\n"
-msgstr ""
+msgstr "$response->assertCookie($cookieName, $value = null);\n"
 
 #: docs/8.x/http-tests.md:block 139 (header)
 msgid "assertCookieExpired"
-msgstr ""
+msgstr "assertCookieExpired"
 
 #: docs/8.x/http-tests.md:block 140 (paragraph)
 msgid "Assert that the response contains the given cookie and it is expired:"
-msgstr ""
+msgstr "判斷 Response 包含給定 Cookie，且該 Cookie 已逾期："
 
 #: docs/8.x/http-tests.md:block 141 (code)
 msgid "$response->assertCookieExpired($cookieName);\n"
-msgstr ""
+msgstr "$response->assertCookieExpired($cookieName);\n"
 
 #: docs/8.x/http-tests.md:block 143 (header)
 msgid "assertCookieNotExpired"
-msgstr ""
+msgstr "assertCookieNotExpired"
 
 #: docs/8.x/http-tests.md:block 144 (paragraph)
 msgid "Assert that the response contains the given cookie and it is not expired:"
-msgstr ""
+msgstr "判斷 Response 包含給定 Cookie，且該 Cookie 未逾期："
 
 #: docs/8.x/http-tests.md:block 145 (code)
 msgid "$response->assertCookieNotExpired($cookieName);\n"
-msgstr ""
+msgstr "$response->assertCookieNotExpired($cookieName);\n"
 
 #: docs/8.x/http-tests.md:block 147 (header)
 msgid "assertCookieMissing"
-msgstr ""
+msgstr "assertCookieMissing"
 
 #: docs/8.x/http-tests.md:block 148 (paragraph)
 msgid "Assert that the response does not contains the given cookie:"
-msgstr ""
+msgstr "判斷 Response 不包含給定 Cookie："
 
 #: docs/8.x/http-tests.md:block 149 (code)
 msgid "$response->assertCookieMissing($cookieName);\n"
-msgstr ""
+msgstr "$response->assertCookieMissing($cookieName);\n"
 
 #: docs/8.x/http-tests.md:block 151 (header)
 msgid "assertCreated"
-msgstr ""
+msgstr "assertCreated"
 
 #: docs/8.x/http-tests.md:block 152 (paragraph)
 msgid "Assert that the response has a 201 HTTP status code:"
-msgstr ""
+msgstr "判斷 Response 是否為 201 HTTP 狀態碼："
 
 #: docs/8.x/http-tests.md:block 153 (code)
 msgid "$response->assertCreated();\n"
-msgstr ""
+msgstr "$response->assertCreated();\n"
 
 #: docs/8.x/http-tests.md:block 155 (header)
 msgid "assertDontSee"
-msgstr ""
+msgstr "assertDontSee"
 
 #: docs/8.x/http-tests.md:block 156 (paragraph)
 msgid "Assert that the given string is not contained within the response returned by the application. This assertion will automatically escape the given string unless you pass a second argument of `false`:"
-msgstr ""
+msgstr "判斷程式回傳的 Response 中是否不包含給定字串。除非將第二個引數設為 `false`，否則該 Assertion 會自動逸出給定的字串："
 
 #: docs/8.x/http-tests.md:block 157 (code)
 msgid "$response->assertDontSee($value, $escaped = true);\n"
-msgstr ""
+msgstr "$response->assertDontSee($value, $escaped = true);\n"
 
 #: docs/8.x/http-tests.md:block 159 (header)
 msgid "assertDontSeeText"
-msgstr ""
+msgstr "assertDontSeeText"
 
 #: docs/8.x/http-tests.md:block 160 (paragraph)
 msgid "Assert that the given string is not contained within the response text. This assertion will automatically escape the given string unless you pass a second argument of `false`. This method will pass the response content to the `strip_tags` PHP function before making the assertion:"
-msgstr ""
+msgstr "判斷 Response 的文字中是否不包含給定字串。除非將第二個引數設為 `false`，否則該 Assertion 會自動逸出給定的字串。該方法會將 Response 的內容傳給 `strip_tags` PHP 函式，然後再進行判斷："
 
 #: docs/8.x/http-tests.md:block 161 (code)
 msgid "$response->assertDontSeeText($value, $escaped = true);\n"
-msgstr ""
+msgstr "$response->assertDontSeeText($value, $escaped = true);\n"
 
 #: docs/8.x/http-tests.md:block 163 (header)
 msgid "assertDownload"
-msgstr ""
+msgstr "assertDownload"
 
 #: docs/8.x/http-tests.md:block 164 (paragraph)
 msgid "Assert that the response is a \"download\". Typically, this means the invoked route that returned the response returned a `Response::download` response, `BinaryFileResponse`, or `Storage::download` response:"
-msgstr ""
+msgstr "判斷 Response 是否為「檔案下載」。一般來說，就表示所叫用的 Route 回傳了 `Response::download` Response、`BinaryFileResponse`、 或是 `Storage::download` Response："
 
 #: docs/8.x/http-tests.md:block 165 (code)
 msgid "$response->assertDownload();\n"
-msgstr ""
+msgstr "$response->assertDownload();\n"
 
 #: docs/8.x/http-tests.md:block 166 (paragraph)
 msgid "If you wish, you may assert that the downloadable file was assigned a given file name:"
-msgstr ""
+msgstr "若有需要，可判斷該下載檔案是否為給定的檔名："
 
 #: docs/8.x/http-tests.md:block 167 (code)
 msgid "$response->assertDownload('image.jpg');\n"
-msgstr ""
+msgstr "$response->assertDownload('image.jpg');\n"
 
 #: docs/8.x/http-tests.md:block 169 (header)
 msgid "assertExactJson"
-msgstr ""
+msgstr "assertExactJson"
 
 #: docs/8.x/http-tests.md:block 170 (paragraph)
 msgid "Assert that the response contains an exact match of the given JSON data:"
-msgstr ""
+msgstr "判斷 Response 是否包含與給定的 JSON 資料完全相符的內容："
 
 #: docs/8.x/http-tests.md:block 171 (code)
 msgid "$response->assertExactJson(array $data);\n"
-msgstr ""
+msgstr "$response->assertExactJson(array $data);\n"
 
 #: docs/8.x/http-tests.md:block 173 (header)
 msgid "assertForbidden"
-msgstr ""
+msgstr "assertForbidden"
 
 #: docs/8.x/http-tests.md:block 174 (paragraph)
 msgid "Assert that the response has a forbidden (403) HTTP status code:"
-msgstr ""
+msgstr "判斷 Response 是否為禁止存取 (403) HTTP 狀態碼："
 
 #: docs/8.x/http-tests.md:block 175 (code)
 msgid "$response->assertForbidden();\n"
-msgstr ""
+msgstr "$response->assertForbidden();\n"
 
 #: docs/8.x/http-tests.md:block 177 (header)
 msgid "assertHeader"
-msgstr ""
+msgstr "assertHeader"
 
 #: docs/8.x/http-tests.md:block 178 (paragraph)
 msgid "Assert that the given header and value is present on the response:"
-msgstr ""
+msgstr "判斷 Response 中是否有給定的 Header 與值："
 
 #: docs/8.x/http-tests.md:block 179 (code)
 msgid "$response->assertHeader($headerName, $value = null);\n"
-msgstr ""
+msgstr "$response->assertHeader($headerName, $value = null);\n"
 
 #: docs/8.x/http-tests.md:block 181 (header)
 msgid "assertHeaderMissing"
-msgstr ""
+msgstr "assertHeaderMissing"
 
 #: docs/8.x/http-tests.md:block 182 (paragraph)
 msgid "Assert that the given header is not present on the response:"
-msgstr ""
+msgstr "判斷 Response 中是否不含給定的 Header："
 
 #: docs/8.x/http-tests.md:block 183 (code)
 msgid "$response->assertHeaderMissing($headerName);\n"
-msgstr ""
+msgstr "$response->assertHeaderMissing($headerName);\n"
 
 #: docs/8.x/http-tests.md:block 185 (header)
 msgid "assertJson"
-msgstr ""
+msgstr "assertJson"
 
 #: docs/8.x/http-tests.md:block 186 (paragraph)
 msgid "Assert that the response contains the given JSON data:"
-msgstr ""
+msgstr "判斷 Response 是否包含給定的 JSON 資料："
 
 #: docs/8.x/http-tests.md:block 187 (code)
 msgid "$response->assertJson(array $data, $strict = false);\n"
-msgstr ""
+msgstr "$response->assertJson(array $data, $strict = false);\n"
 
 #: docs/8.x/http-tests.md:block 188 (paragraph)
 msgid "The `assertJson` method converts the response to an array and utilizes `PHPUnit::assertArraySubset` to verify that the given array exists within the JSON response returned by the application. So, if there are other properties in the JSON response, this test will still pass as long as the given fragment is present."
-msgstr ""
+msgstr " `assertJson` 方法會將 Response 轉換為陣列，並使用 `PHPUnit::assertArraySubset` 來驗證給定陣列是否有包含在專案回傳的 JSON Response 中。所以，如果在 JSON Response 中有包含其他屬性，只要給定的部分有包含在 JSON 裡，測試就會通過。"
 
 #: docs/8.x/http-tests.md:block 190 (header)
 msgid "assertJsonCount"
-msgstr ""
+msgstr "assertJsonCount"
 
 #: docs/8.x/http-tests.md:block 191 (paragraph)
 msgid "Assert that the response JSON has an array with the expected number of items at the given key:"
-msgstr ""
+msgstr "判斷 Response JSON 是否為一組陣列，且該陣列在給定的索引鍵上有包含預期數量的項目："
 
 #: docs/8.x/http-tests.md:block 192 (code)
 msgid "$response->assertJsonCount($count, $key = null);\n"
-msgstr ""
+msgstr "$response->assertJsonCount($count, $key = null);\n"
 
 #: docs/8.x/http-tests.md:block 194 (header)
 msgid "assertJsonFragment"
-msgstr ""
+msgstr "assertJsonFragment"
 
 #: docs/8.x/http-tests.md:block 195 (paragraph)
 msgid "Assert that the response contains the given JSON data anywhere in the response:"
-msgstr ""
+msgstr "判斷 Response 中，是否有在任意位置上包含給定的 JSON 資料："
 
 #: docs/8.x/http-tests.md:block 196 (code)
 msgid "Route::get('/users', function () {\n"
@@ -962,63 +1230,72 @@ msgid "Route::get('/users', function () {\n"
 "    ];\n"
 "});\n\n"
 "$response->assertJsonFragment(['name' => 'Taylor Otwell']);\n"
-msgstr ""
+msgstr "Route::get('/users', function () {\n"
+"    return [\n"
+"        'users' => [\n"
+"            [\n"
+"                'name' => 'Taylor Otwell',\n"
+"            ],\n"
+"        ],\n"
+"    ];\n"
+"});\n\n"
+"$response->assertJsonFragment(['name' => 'Taylor Otwell']);\n"
 
 #: docs/8.x/http-tests.md:block 198 (header)
 msgid "assertJsonMissing"
-msgstr ""
+msgstr "assertJsonMissing"
 
 #: docs/8.x/http-tests.md:block 199 (paragraph)
 msgid "Assert that the response does not contain the given JSON data:"
-msgstr ""
+msgstr "判斷 Response 中是否不包含給定的 JSON 資料："
 
 #: docs/8.x/http-tests.md:block 200 (code)
 msgid "$response->assertJsonMissing(array $data);\n"
-msgstr ""
+msgstr "$response->assertJsonMissing(array $data);\n"
 
 #: docs/8.x/http-tests.md:block 202 (header)
 msgid "assertJsonMissingExact"
-msgstr ""
+msgstr "assertJsonMissingExact"
 
 #: docs/8.x/http-tests.md:block 203 (paragraph)
 msgid "Assert that the response does not contain the exact JSON data:"
-msgstr ""
+msgstr "判斷 Response 是否不包含完全相符的 JSON 資料："
 
 #: docs/8.x/http-tests.md:block 204 (code)
 msgid "$response->assertJsonMissingExact(array $data);\n"
-msgstr ""
+msgstr "$response->assertJsonMissingExact(array $data);\n"
 
 #: docs/8.x/http-tests.md:block 206 (header)
 msgid "assertJsonMissingValidationErrors"
-msgstr ""
+msgstr "assertJsonMissingValidationErrors"
 
 #: docs/8.x/http-tests.md:block 207 (paragraph)
 msgid "Assert that the response has no JSON validation errors for the given keys:"
-msgstr ""
+msgstr "判斷 Response 中，給定的索引鍵上是否不含 JSON 驗證錯誤："
 
 #: docs/8.x/http-tests.md:block 208 (code)
 msgid "$response->assertJsonMissingValidationErrors($keys);\n"
-msgstr ""
+msgstr "$response->assertJsonMissingValidationErrors($keys);\n"
 
 #: docs/8.x/http-tests.md:block 209 (quote)
 msgid "{tip} The more generic [assertValid](#assert-valid) method may be used to assert that a response does not have validation errors that were returned as JSON **and** that no errors were flashed to session storage."
-msgstr ""
+msgstr "{tip} 還有一個更泛用的 [assertValid](#assert-valid) 方法，可用來檢查 Response 是否不含以 JSON 格式回傳的驗證錯誤，**並檢查** Session Storage 上是否未有快閃存入錯誤訊息。"
 
 #: docs/8.x/http-tests.md:block 211 (header)
 msgid "assertJsonPath"
-msgstr ""
+msgstr "assertJsonPath"
 
 #: docs/8.x/http-tests.md:block 212 (paragraph)
 msgid "Assert that the response contains the given data at the specified path:"
-msgstr ""
+msgstr "判斷 Response 中在特定路徑上是否包含給定的資料："
 
 #: docs/8.x/http-tests.md:block 213 (code)
 msgid "$response->assertJsonPath($path, $expectedValue);\n"
-msgstr ""
+msgstr "$response->assertJsonPath($path, $expectedValue);\n"
 
 #: docs/8.x/http-tests.md:block 214 (paragraph)
 msgid "For example, if the JSON response returned by your application contains the following data:"
-msgstr ""
+msgstr "舉例來說，若程式回傳了包含下列資料的 JSON Response："
 
 #: docs/8.x/http-tests.md:block 215 (code)
 msgid "{\n"
@@ -1026,31 +1303,35 @@ msgid "{\n"
 "        \"name\": \"Steve Schoger\"\n"
 "    }\n"
 "}\n"
-msgstr ""
+msgstr "{\n"
+"    \"user\": {\n"
+"        \"name\": \"Steve Schoger\"\n"
+"    }\n"
+"}\n"
 
 #: docs/8.x/http-tests.md:block 216 (paragraph)
 msgid "You may assert that the `name` property of the `user` object matches a given value like so:"
-msgstr ""
+msgstr "則我們可以像這樣判斷 `user` 物件的 `name` 屬性是否符合給定的值："
 
 #: docs/8.x/http-tests.md:block 217 (code)
 msgid "$response->assertJsonPath('user.name', 'Steve Schoger');\n"
-msgstr ""
+msgstr "$response->assertJsonPath('user.name', 'Steve Schoger');\n"
 
 #: docs/8.x/http-tests.md:block 219 (header)
 msgid "assertJsonStructure"
-msgstr ""
+msgstr "assertJsonStructure"
 
 #: docs/8.x/http-tests.md:block 220 (paragraph)
 msgid "Assert that the response has a given JSON structure:"
-msgstr ""
+msgstr "判斷 Response 是否含有給定的 JSON 結構："
 
 #: docs/8.x/http-tests.md:block 221 (code)
 msgid "$response->assertJsonStructure(array $structure);\n"
-msgstr ""
+msgstr "$response->assertJsonStructure(array $structure);\n"
 
 #: docs/8.x/http-tests.md:block 224 (paragraph)
 msgid "You may assert that the JSON structure matches your expectations like so:"
-msgstr ""
+msgstr "也可以像這樣檢查 JSON 結構是否符合預期："
 
 #: docs/8.x/http-tests.md:block 225 (code)
 msgid "$response->assertJsonStructure([\n"
@@ -1058,11 +1339,15 @@ msgid "$response->assertJsonStructure([\n"
 "        'name',\n"
 "    ]\n"
 "]);\n"
-msgstr ""
+msgstr "$response->assertJsonStructure([\n"
+"    'user' => [\n"
+"        'name',\n"
+"    ]\n"
+"]);\n"
 
 #: docs/8.x/http-tests.md:block 226 (paragraph)
 msgid "Sometimes, JSON responses returned by your application may contain arrays of objects:"
-msgstr ""
+msgstr "有時候，程式會回傳的 JSON Response 會包含一組由物件組成的陣列："
 
 #: docs/8.x/http-tests.md:block 227 (code)
 msgid "{\n"
@@ -1079,11 +1364,24 @@ msgid "{\n"
 "        }\n"
 "    ]\n"
 "}\n"
-msgstr ""
+msgstr "{\n"
+"    \"user\": [\n"
+"        {\n"
+"            \"name\": \"Steve Schoger\",\n"
+"            \"age\": 55,\n"
+"            \"location\": \"Earth\"\n"
+"        },\n"
+"        {\n"
+"            \"name\": \"Mary Schoger\",\n"
+"            \"age\": 60,\n"
+"            \"location\": \"Earth\"\n"
+"        }\n"
+"    ]\n"
+"}\n"
 
 #: docs/8.x/http-tests.md:block 228 (paragraph)
 msgid "In this situation, you may use the `*` character to assert against the structure of all of the objects in the array:"
-msgstr ""
+msgstr "這時，我們可以使用 `*` 字元來對該陣列中的所有物件進行結構檢查："
 
 #: docs/8.x/http-tests.md:block 229 (code)
 msgid "$response->assertJsonStructure([\n"
@@ -1095,147 +1393,155 @@ msgid "$response->assertJsonStructure([\n"
 "        ]\n"
 "    ]\n"
 "]);\n"
-msgstr ""
+msgstr "$response->assertJsonStructure([\n"
+"    'user' => [\n"
+"        '*' => [\n"
+"             'name',\n"
+"             'age',\n"
+"             'location'\n"
+"        ]\n"
+"    ]\n"
+"]);\n"
 
 #: docs/8.x/http-tests.md:block 231 (header)
 msgid "assertJsonValidationErrors"
-msgstr ""
+msgstr "assertJsonValidationErrors"
 
 #: docs/8.x/http-tests.md:block 232 (paragraph)
 msgid "Assert that the response has the given JSON validation errors for the given keys. This method should be used when asserting against responses where the validation errors are returned as a JSON structure instead of being flashed to the session:"
-msgstr ""
+msgstr "判斷 Response 中，給定的索引鍵上是否有給定的 JSON 驗證錯誤。該方法應用於檢查以 JSON 格式回傳的表單驗證錯誤 Response，而不應用於檢查快閃存入 Session 中的表單驗證錯誤："
 
 #: docs/8.x/http-tests.md:block 233 (code)
 msgid "$response->assertJsonValidationErrors(array $data, $responseKey = 'errors');\n"
-msgstr ""
+msgstr "$response->assertJsonValidationErrors(array $data, $responseKey = 'errors');\n"
 
 #: docs/8.x/http-tests.md:block 234 (quote)
 msgid "{tip} The more generic [assertInvalid](#assert-invalid) method may be used to assert that a response has validation errors returned as JSON **or** that errors were flashed to session storage."
-msgstr ""
+msgstr "{tip} 還有一個更泛用的 [assertInvalid](#assert-invalid) 方法，可用來檢查 Response 是否包含以 JSON 格式回傳的驗證錯誤，**或是** Session Storage 上是否有快閃存入錯誤訊息。"
 
 #: docs/8.x/http-tests.md:block 236 (header)
 msgid "assertJsonValidationErrorFor"
-msgstr ""
+msgstr "assertJsonValidationErrorFor"
 
 #: docs/8.x/http-tests.md:block 237 (paragraph)
 msgid "Assert the response has any JSON validation errors for the given key:"
-msgstr ""
+msgstr "判斷 Response 中，給定的索引鍵上是否有任何的 JSON 驗證規則："
 
 #: docs/8.x/http-tests.md:block 238 (code)
 msgid "$response->assertJsonValidationErrorFor(string $key, $responseKey = 'errors');\n"
-msgstr ""
+msgstr "$response->assertJsonValidationErrorFor(string $key, $responseKey = 'errors');\n"
 
 #: docs/8.x/http-tests.md:block 240 (header)
 msgid "assertLocation"
-msgstr ""
+msgstr "assertLocation"
 
 #: docs/8.x/http-tests.md:block 241 (paragraph)
 msgid "Assert that the response has the given URI value in the `Location` header:"
-msgstr ""
+msgstr "判斷 Response 中，`Location` Header 上是否有給定的 URI 值："
 
 #: docs/8.x/http-tests.md:block 242 (code)
 msgid "$response->assertLocation($uri);\n"
-msgstr ""
+msgstr "$response->assertLocation($uri);\n"
 
 #: docs/8.x/http-tests.md:block 244 (header)
 msgid "assertNoContent"
-msgstr ""
+msgstr "assertNoContent"
 
 #: docs/8.x/http-tests.md:block 245 (paragraph)
 msgid "Assert that the response has the given HTTP status code and no content:"
-msgstr ""
+msgstr "判斷 Response 是否為給定的 HTTP 狀態碼，且不含內容："
 
 #: docs/8.x/http-tests.md:block 246 (code)
 msgid "$response->assertNoContent($status = 204);\n"
-msgstr ""
+msgstr "$response->assertNoContent($status = 204);\n"
 
 #: docs/8.x/http-tests.md:block 248 (header)
 msgid "assertNotFound"
-msgstr ""
+msgstr "assertNotFound"
 
 #: docs/8.x/http-tests.md:block 249 (paragraph)
 msgid "Assert that the response has a not found (404) HTTP status code:"
-msgstr ""
+msgstr "判斷 Response 是否為找不到 (404) HTTP 狀態碼："
 
 #: docs/8.x/http-tests.md:block 250 (code)
 msgid "$response->assertNotFound();\n"
-msgstr ""
+msgstr "$response->assertNotFound();\n"
 
 #: docs/8.x/http-tests.md:block 252 (header)
 msgid "assertOk"
-msgstr ""
+msgstr "assertOk"
 
 #: docs/8.x/http-tests.md:block 253 (paragraph)
 msgid "Assert that the response has a 200 HTTP status code:"
-msgstr ""
+msgstr "判斷 Response 是否為 200 HTTP 狀態碼："
 
 #: docs/8.x/http-tests.md:block 254 (code)
 msgid "$response->assertOk();\n"
-msgstr ""
+msgstr "$response->assertOk();\n"
 
 #: docs/8.x/http-tests.md:block 256 (header)
 msgid "assertPlainCookie"
-msgstr ""
+msgstr "assertPlainCookie"
 
 #: docs/8.x/http-tests.md:block 257 (paragraph)
 msgid "Assert that the response contains the given unencrypted cookie:"
-msgstr ""
+msgstr "判斷 Response 是否包含給定未加密的 Cookie："
 
 #: docs/8.x/http-tests.md:block 258 (code)
 msgid "$response->assertPlainCookie($cookieName, $value = null);\n"
-msgstr ""
+msgstr "$response->assertPlainCookie($cookieName, $value = null);\n"
 
 #: docs/8.x/http-tests.md:block 260 (header)
 msgid "assertRedirect"
-msgstr ""
+msgstr "assertRedirect"
 
 #: docs/8.x/http-tests.md:block 261 (paragraph)
 msgid "Assert that the response is a redirect to the given URI:"
-msgstr ""
+msgstr "判斷 Response 是否為指向給定 URI 的重新導向："
 
 #: docs/8.x/http-tests.md:block 262 (code)
 msgid "$response->assertRedirect($uri);\n"
-msgstr ""
+msgstr "$response->assertRedirect($uri);\n"
 
 #: docs/8.x/http-tests.md:block 264 (header)
 msgid "assertRedirectContains"
-msgstr ""
+msgstr "assertRedirectContains"
 
 #: docs/8.x/http-tests.md:block 265 (paragraph)
 msgid "Assert whether the response is redirecting to a URI that contains the given string:"
-msgstr ""
+msgstr "判斷 Response 是否在重新導向至包含給定字串的 URI："
 
 #: docs/8.x/http-tests.md:block 266 (code)
 msgid "$response->assertRedirectContains($string);\n"
-msgstr ""
+msgstr "$response->assertRedirectContains($string);\n"
 
 #: docs/8.x/http-tests.md:block 268 (header)
 msgid "assertRedirectToSignedRoute"
-msgstr ""
+msgstr "assertRedirectToSignedRoute"
 
 #: docs/8.x/http-tests.md:block 269 (paragraph)
 msgid "Assert that the response is a redirect to the given signed route:"
-msgstr ""
+msgstr "判斷 Response 是否為指向給定簽名 Route 的重新導向："
 
 #: docs/8.x/http-tests.md:block 270 (code)
 msgid "$response->assertRedirectToSignedRoute($name = null, $parameters = []);\n"
-msgstr ""
+msgstr "$response->assertRedirectToSignedRoute($name = null, $parameters = []);\n"
 
 #: docs/8.x/http-tests.md:block 272 (header)
 msgid "assertSee"
-msgstr ""
+msgstr "assertSee"
 
 #: docs/8.x/http-tests.md:block 273 (paragraph)
 msgid "Assert that the given string is contained within the response. This assertion will automatically escape the given string unless you pass a second argument of `false`:"
-msgstr ""
+msgstr "判斷 Response 中是否包含給定字串。除非將第二個引數設為 `false`，否則該 Assertion 會自動逸出給定的字串："
 
 #: docs/8.x/http-tests.md:block 274 (code)
 msgid "$response->assertSee($value, $escaped = true);\n"
-msgstr ""
+msgstr "$response->assertSee($value, $escaped = true);\n"
 
 #: docs/8.x/http-tests.md:block 276 (header)
 msgid "assertSeeInOrder"
-msgstr ""
+msgstr "assertSeeInOrder"
 
 #: docs/8.x/http-tests.md:block 277 (paragraph)
 msgid "Assert that the given strings are contained in order within the response. This assertion will automatically escape the given strings unless you pass a second argument of `false`:"
@@ -1634,6 +1940,18 @@ msgstr ""
 msgid "$this->assertAuthenticatedAs($user, $guard = null);\n"
 msgstr ""
 
+#: docs/9.x/http-tests.md:block 14 (quote)
+msgid "**Note** For convenience, the CSRF middleware is automatically disabled when running tests."
+msgstr ""
+
+#: docs/9.x/http-tests.md:block 29 (paragraph)
+msgid "You may also specify which guard should be used to authenticate the given user by passing the guard name as the second argument to the `actingAs` method. The guard that is provided to the `actingAs` method will also become the default guard for the duration of the test:"
+msgstr ""
+
+#: docs/9.x/http-tests.md:block 49 (quote)
+msgid "**Note** The `assertJson` method converts the response to an array and utilizes `PHPUnit::assertArraySubset` to verify that the given array exists within the JSON response returned by the application. So, if there are other properties in the JSON response, this test will still pass as long as the given fragment is present."
+msgstr ""
+
 #: docs/9.x/http-tests.md:block 58 (paragraph)
 msgid "The `assertJsonPath` method also accepts a closure, which may be used to dynamically determine if the assertion should pass:"
 msgstr ""
@@ -1642,11 +1960,71 @@ msgstr ""
 msgid "$response->assertJsonPath('team.owner.name', fn ($name) => strlen($name) >= 3);\n"
 msgstr ""
 
-#: docs/9.x/http-tests.md:block 134 (paragraph)
-msgid "[assertCookie](#assert-cookie) [assertCookieExpired](#assert-cookie-expired) [assertCookieNotExpired](#assert-cookie-not-expired) [assertCookieMissing](#assert-cookie-missing) [assertCreated](#assert-created) [assertDontSee](#assert-dont-see) [assertDontSeeText](#assert-dont-see-text) [assertDownload](#assert-download) [assertExactJson](#assert-exact-json) [assertForbidden](#assert-forbidden) [assertHeader](#assert-header) [assertHeaderMissing](#assert-header-missing) [assertJson](#assert-json) [assertJsonCount](#assert-json-count) [assertJsonFragment](#assert-json-fragment) [assertJsonMissing](#assert-json-missing) [assertJsonMissingExact](#assert-json-missing-exact) [assertJsonMissingValidationErrors](#assert-json-missing-validation-errors) [assertJsonPath](#assert-json-path) [assertJsonStructure](#assert-json-structure) [assertJsonValidationErrors](#assert-json-validation-errors) [assertJsonValidationErrorFor](#assert-json-validation-error-for) [assertLocation](#assert-location) [assertNoContent](#assert-no-content) [assertNotFound](#assert-not-found) [assertOk](#assert-ok) [assertPlainCookie](#assert-plain-cookie) [assertRedirect](#assert-redirect) [assertRedirectContains](#assert-redirect-contains) [assertRedirectToSignedRoute](#assert-redirect-to-signed-route) [assertSee](#assert-see) [assertSeeInOrder](#assert-see-in-order) [assertSeeText](#assert-see-text) [assertSeeTextInOrder](#assert-see-text-in-order) [assertSessionHas](#assert-session-has) [assertSessionHasInput](#assert-session-has-input) [assertSessionHasAll](#assert-session-has-all) [assertSessionHasErrors](#assert-session-has-errors) [assertSessionHasErrorsIn](#assert-session-has-errors-in) [assertSessionHasNoErrors](#assert-session-has-no-errors) [assertSessionDoesntHaveErrors](#assert-session-doesnt-have-errors) [assertSessionMissing](#assert-session-missing) [assertStatus](#assert-status) [assertSuccessful](#assert-successful) [assertUnauthorized](#assert-unauthorized) [assertUnprocessable](#assert-unprocessable) [assertValid](#assert-valid) [assertInvalid](#assert-invalid) [assertViewHas](#assert-view-has) [assertViewHasAll](#assert-view-has-all) [assertViewIs](#assert-view-is) [assertViewMissing](#assert-view-missing)"
+#: docs/9.x/http-tests.md:block 63 (code)
+msgid "use Illuminate\\Testing\\Fluent\\AssertableJson;\n\n"
+"/**\n"
+" * A basic functional test example.\n"
+" *\n"
+" * @return void\n"
+" */\n"
+"public function test_fluent_json()\n"
+"{\n"
+"    $response = $this->getJson('/users/1');\n\n"
+"    $response\n"
+"        ->assertJson(fn (AssertableJson $json) =>\n"
+"            $json->where('id', 1)\n"
+"                 ->where('name', 'Victoria Faith')\n"
+"                 ->whereNot('status', 'pending')\n"
+"                 ->missing('password')\n"
+"                 ->etc()\n"
+"        );\n"
+"}\n"
 msgstr ""
 
-#: docs/9.x/http-tests.md:block 271 (paragraph)
+#: docs/9.x/http-tests.md:block 72 (code)
+msgid "$response->assertJson(fn (AssertableJson $json) =>\n"
+"    $json->hasAll(['status', 'data'])\n"
+"         ->missingAll(['message', 'code'])\n"
+");\n"
+msgstr ""
+
+#: docs/9.x/http-tests.md:block 134 (paragraph)
+msgid "[assertCookie](#assert-cookie) [assertCookieExpired](#assert-cookie-expired) [assertCookieNotExpired](#assert-cookie-not-expired) [assertCookieMissing](#assert-cookie-missing) [assertCreated](#assert-created) [assertDontSee](#assert-dont-see) [assertDontSeeText](#assert-dont-see-text) [assertDownload](#assert-download) [assertExactJson](#assert-exact-json) [assertForbidden](#assert-forbidden) [assertHeader](#assert-header) [assertHeaderMissing](#assert-header-missing) [assertJson](#assert-json) [assertJsonCount](#assert-json-count) [assertJsonFragment](#assert-json-fragment) [assertJsonMissing](#assert-json-missing) [assertJsonMissingExact](#assert-json-missing-exact) [assertJsonMissingValidationErrors](#assert-json-missing-validation-errors) [assertJsonPath](#assert-json-path) [assertJsonMissingPath](#assert-json-missing-path) [assertJsonStructure](#assert-json-structure) [assertJsonValidationErrors](#assert-json-validation-errors) [assertJsonValidationErrorFor](#assert-json-validation-error-for) [assertLocation](#assert-location) [assertNoContent](#assert-no-content) [assertNotFound](#assert-not-found) [assertOk](#assert-ok) [assertPlainCookie](#assert-plain-cookie) [assertRedirect](#assert-redirect) [assertRedirectContains](#assert-redirect-contains) [assertRedirectToSignedRoute](#assert-redirect-to-signed-route) [assertSee](#assert-see) [assertSeeInOrder](#assert-see-in-order) [assertSeeText](#assert-see-text) [assertSeeTextInOrder](#assert-see-text-in-order) [assertSessionHas](#assert-session-has) [assertSessionHasInput](#assert-session-has-input) [assertSessionHasAll](#assert-session-has-all) [assertSessionHasErrors](#assert-session-has-errors) [assertSessionHasErrorsIn](#assert-session-has-errors-in) [assertSessionHasNoErrors](#assert-session-has-no-errors) [assertSessionDoesntHaveErrors](#assert-session-doesnt-have-errors) [assertSessionMissing](#assert-session-missing) [assertStatus](#assert-status) [assertSuccessful](#assert-successful) [assertUnauthorized](#assert-unauthorized) [assertUnprocessable](#assert-unprocessable) [assertValid](#assert-valid) [assertInvalid](#assert-invalid) [assertViewHas](#assert-view-has) [assertViewHasAll](#assert-view-has-all) [assertViewIs](#assert-view-is) [assertViewMissing](#assert-view-missing)"
+msgstr ""
+
+#: docs/9.x/http-tests.md:block 211 (quote)
+msgid "**Note** The more generic [assertValid](#assert-valid) method may be used to assert that a response does not have validation errors that were returned as JSON **and** that no errors were flashed to session storage."
+msgstr ""
+
+#: docs/9.x/http-tests.md:block 216 (paragraph)
+msgid "For example, if the following JSON response is returned by your application:"
+msgstr ""
+
+#: docs/9.x/http-tests.md:block 221 (header)
+msgid "assertJsonMissingPath"
+msgstr ""
+
+#: docs/9.x/http-tests.md:block 222 (paragraph)
+msgid "Assert that the response does not contain the given path:"
+msgstr ""
+
+#: docs/9.x/http-tests.md:block 223 (code)
+msgid "$response->assertJsonMissingPath($path);\n"
+msgstr ""
+
+#: docs/9.x/http-tests.md:block 226 (paragraph)
+msgid "You may assert that it does not contain the `email` property of the `user` object:"
+msgstr ""
+
+#: docs/9.x/http-tests.md:block 227 (code)
+msgid "$response->assertJsonMissingPath('user.email');\n"
+msgstr ""
+
+#: docs/9.x/http-tests.md:block 244 (quote)
+msgid "**Note** The more generic [assertInvalid](#assert-invalid) method may be used to assert that a response has validation errors returned as JSON **or** that errors were flashed to session storage."
+msgstr ""
+
+#: docs/9.x/http-tests.md:block 279 (paragraph)
 msgid "Assert that the response is a redirect to the given [signed route](/docs/{{version}}/urls#signed-urls):"
 msgstr ""
 

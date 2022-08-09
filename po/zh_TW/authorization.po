@@ -10,7 +10,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
-"PO-Revision-Date: 2022-04-18 09:23\n"
+"PO-Revision-Date: 2022-08-06 06:42\n"
 
 #: docs/8.x/authorization.md:block 1 (header)
 msgid "Authorization"
@@ -463,8 +463,8 @@ msgstr "use Illuminate\\Support\\Facades\\Auth;\n\n"
 "Gate::denyIf(fn ($user) => $user->banned());\n"
 
 #: docs/8.x/authorization.md:block 54 (paragraph)
-msgid "If the action is not authorized or if no user is currently authenticated, Laravel will automatically throw an `Illuminate\\Auth\\Access\\AuthorizationException` exception. Instances of `AuthorizationException` are automatically converted to a 403 HTTP response by Laravel's exception handler:"
-msgstr "若該動作未授權、或是使用者未登入，則 Laravel 會自動擲回 `Illuminate\\Auth\\Access\\AuthorizationException` 例外。`AuthorizationException` 實體會自動由 Laravel 的例外處理常式轉換為 403 HTTP 回應："
+msgid "If the action is not authorized or if no user is currently authenticated, Laravel will automatically throw an `Illuminate\\Auth\\Access\\AuthorizationException` exception. Instances of `AuthorizationException` are automatically converted to a 403 HTTP response by Laravel's exception handler."
+msgstr "若該動作未授權、或是使用者未登入，則 Laravel 會自動擲回 `Illuminate\\Auth\\Access\\AuthorizationException` 例外。`AuthorizationException` 實體會自動由 Laravel 的例外處理常式轉換為 403 HTTP 回應。"
 
 #: docs/8.x/authorization.md:block 56 (header)
 msgid "Creating Policies"
@@ -1374,15 +1374,155 @@ msgstr "/**\n"
 msgid "You do not need to choose between exclusively using gates or exclusively using policies when building an application. Most applications will most likely contain some mixture of gates and policies, and that is perfectly fine! Gates are most applicable to actions that are not related to any model or resource, such as viewing an administrator dashboard. In contrast, policies should be used when you wish to authorize an action for a particular model or resource."
 msgstr "在製作應用程式時，不需要只使用 Gate 或只使用 Policy。大多數應用程式都在某種程度上組合使用 Gate 與 Policy，這樣完全沒問題！Gate 最適合用來處理與 Model 或資源沒關係的操作，如檢視管理員縱覽頁。相較之下，Policy 則應使用於想授權對特定 Model 或 Resource 的操作時"
 
-#: docs/9.x/authorization.md:block 52 (paragraph)
+#: docs/9.x/authorization.md:block 12 (quote)
+msgid "**Warning** Gates are a great way to learn the basics of Laravel's authorization features; however, when building robust Laravel applications you should consider using [policies](#creating-policies) to organize your authorization rules."
+msgstr "**Warning** Gate 是學習基礎 Laravel 授權功能的最好的方法。但是，在製作大型 Laravel 應用程式時，應考慮通過 [Policy](#creating-policies) 來整理各個授權規則。"
+
+#: docs/9.x/authorization.md:block 43 (header)
+msgid "Customizing The HTTP Response Status"
+msgstr "自定 HTTP Response 狀態"
+
+#: docs/9.x/authorization.md:block 44 (paragraph)
+msgid "When an action is denied via a Gate, a `403` HTTP response is returned; however, it can sometimes be useful to return an alternative HTTP status code. You may customize the HTTP status code returned for a failed authorization check using the `denyWithStatus` static constructor on the `Illuminate\\Auth\\Access\\Response` class:"
+msgstr "當 Gate 拒絕某個動作時，會回傳 `403` HTTP Response。不過，在某些情況下，若能回傳其他的 HTTP 狀態碼更好。我們可以使用 `Illuminate\\Auth\\Access\\Response` 類別的 `denyWithStatus` 靜態建構函式來自訂在授權檢查失敗的時候要回傳的 HTTP 狀態碼："
+
+#: docs/9.x/authorization.md:block 45 (code)
+msgid "use App\\Models\\User;\n"
+"use Illuminate\\Auth\\Access\\Response;\n"
+"use Illuminate\\Support\\Facades\\Gate;\n\n"
+"Gate::define('edit-settings', function (User $user) {\n"
+"    return $user->isAdmin\n"
+"                ? Response::allow()\n"
+"                : Response::denyWithStatus(404);\n"
+"});\n"
+msgstr "use App\\Models\\User;\n"
+"use Illuminate\\Auth\\Access\\Response;\n"
+"use Illuminate\\Support\\Facades\\Gate;\n\n"
+"Gate::define('edit-settings', function (User $user) {\n"
+"    return $user->isAdmin\n"
+"                ? Response::allow()\n"
+"                : Response::denyWithStatus(404);\n"
+"});\n"
+
+#: docs/9.x/authorization.md:block 46 (paragraph)
+msgid "Because hiding resources via a `404` response is such a common pattern for web applications, the `denyAsNotFound` method is offered for convenience:"
+msgstr "而因為使用 `404` Response 來隱藏資源是在 Web App 中常見的手段，因此為了方便， Laravel 也提供了 `denyAsNotFound` 方法："
+
+#: docs/9.x/authorization.md:block 47 (code)
+msgid "use App\\Models\\User;\n"
+"use Illuminate\\Auth\\Access\\Response;\n"
+"use Illuminate\\Support\\Facades\\Gate;\n\n"
+"Gate::define('edit-settings', function (User $user) {\n"
+"    return $user->isAdmin\n"
+"                ? Response::allow()\n"
+"                : Response::denyAsNotFound();\n"
+"});\n"
+msgstr "use App\\Models\\User;\n"
+"use Illuminate\\Auth\\Access\\Response;\n"
+"use Illuminate\\Support\\Facades\\Gate;\n\n"
+"Gate::define('edit-settings', function (User $user) {\n"
+"    return $user->isAdmin\n"
+"                ? Response::allow()\n"
+"                : Response::denyAsNotFound();\n"
+"});\n"
+
+#: docs/9.x/authorization.md:block 58 (paragraph)
 msgid "Occasionally, you may wish to determine if the currently authenticated user is authorized to perform a given action without writing a dedicated gate that corresponds to the action. Laravel allows you to perform these types of \"inline\" authorization checks via the `Gate::allowIf` and `Gate::denyIf` methods:"
 msgstr "有時候，我們可能需要判斷目前登入的使用者是否有權限進行給定動作，但我們不想給這個動作撰寫獨立的 Gate。在 Laravel，我們可以使用 `Gate::allowIf` 與 `Gate::denyIf` 方法來進行這類的「內嵌」授權檢查："
 
-#: docs/9.x/authorization.md:block 53 (code)
+#: docs/9.x/authorization.md:block 59 (code)
 msgid "use Illuminate\\Support\\Facades\\Gate;\n\n"
 "Gate::allowIf(fn ($user) => $user->isAdministrator());\n\n"
 "Gate::denyIf(fn ($user) => $user->banned());\n"
 msgstr "use Illuminate\\Support\\Facades\\Gate;\n\n"
 "Gate::allowIf(fn ($user) => $user->isAdministrator());\n\n"
 "Gate::denyIf(fn ($user) => $user->banned());\n"
+
+#: docs/9.x/authorization.md:block 80 (quote)
+msgid "**Warning** Any policies that are explicitly mapped in your `AuthServiceProvider` will take precedence over any potentially auto-discovered policies."
+msgstr "**Warning** 所有在 `AuthServiceProvider` 中顯式映射之 Policy 的優先級都會比 Auto-Discover 的 Policy 高。"
+
+#: docs/9.x/authorization.md:block 90 (quote)
+msgid "**Note** All policies are resolved via the Laravel [service container](/docs/{{version}}/container), allowing you to type-hint any needed dependencies in the policy's constructor to have them automatically injected."
+msgstr "**Note** 所有的 Policy 都經由 Laravel 的 [Service Container](/docs/{{version}}/container) 進行解析，這樣一來，可以在 Policy 的建構函式 (Constructor) 內對任何所需的相依項進行型別提示，這些相依項會被自動插入到 Class 內。"
+
+#: docs/9.x/authorization.md:block 101 (paragraph)
+msgid "When an action is denied via a policy method, a `403` HTTP response is returned; however, it can sometimes be useful to return an alternative HTTP status code. You may customize the HTTP status code returned for a failed authorization check using the `denyWithStatus` static constructor on the `Illuminate\\Auth\\Access\\Response` class:"
+msgstr "當 Policy 方法拒絕某個動作時，會回傳 `403` HTTP Response。不過，在某些情況下，若能回傳其他的 HTTP 狀態碼更好。我們可以使用 `Illuminate\\Auth\\Access\\Response` 類別的 `denyWithStatus` 靜態建構函式來自訂在授權檢查失敗的時候要回傳的 HTTP 狀態碼："
+
+#: docs/9.x/authorization.md:block 102 (code)
+msgid "use App\\Models\\Post;\n"
+"use App\\Models\\User;\n"
+"use Illuminate\\Auth\\Access\\Response;\n\n"
+"/**\n"
+" * Determine if the given post can be updated by the user.\n"
+" *\n"
+" * @param  \\App\\Models\\User  $user\n"
+" * @param  \\App\\Models\\Post  $post\n"
+" * @return \\Illuminate\\Auth\\Access\\Response\n"
+" */\n"
+"public function update(User $user, Post $post)\n"
+"{\n"
+"    return $user->id === $post->user_id\n"
+"                ? Response::allow()\n"
+"                : Response::denyWithStatus(404);\n"
+"}\n"
+msgstr "use App\\Models\\Post;\n"
+"use App\\Models\\User;\n"
+"use Illuminate\\Auth\\Access\\Response;\n\n"
+"/**\n"
+" * Determine if the given post can be updated by the user.\n"
+" *\n"
+" * @param  \\App\\Models\\User  $user\n"
+" * @param  \\App\\Models\\Post  $post\n"
+" * @return \\Illuminate\\Auth\\Access\\Response\n"
+" */\n"
+"public function update(User $user, Post $post)\n"
+"{\n"
+"    return $user->id === $post->user_id\n"
+"                ? Response::allow()\n"
+"                : Response::denyWithStatus(404);\n"
+"}\n"
+
+#: docs/9.x/authorization.md:block 104 (code)
+msgid "use App\\Models\\Post;\n"
+"use App\\Models\\User;\n"
+"use Illuminate\\Auth\\Access\\Response;\n\n"
+"/**\n"
+" * Determine if the given post can be updated by the user.\n"
+" *\n"
+" * @param  \\App\\Models\\User  $user\n"
+" * @param  \\App\\Models\\Post  $post\n"
+" * @return \\Illuminate\\Auth\\Access\\Response\n"
+" */\n"
+"public function update(User $user, Post $post)\n"
+"{\n"
+"    return $user->id === $post->user_id\n"
+"                ? Response::allow()\n"
+"                : Response::denyAsNotFound();\n"
+"}\n"
+msgstr "use App\\Models\\Post;\n"
+"use App\\Models\\User;\n"
+"use Illuminate\\Auth\\Access\\Response;\n\n"
+"/**\n"
+" * Determine if the given post can be updated by the user.\n"
+" *\n"
+" * @param  \\App\\Models\\User  $user\n"
+" * @param  \\App\\Models\\Post  $post\n"
+" * @return \\Illuminate\\Auth\\Access\\Response\n"
+" */\n"
+"public function update(User $user, Post $post)\n"
+"{\n"
+"    return $user->id === $post->user_id\n"
+"                ? Response::allow()\n"
+"                : Response::denyAsNotFound();\n"
+"}\n"
+
+#: docs/9.x/authorization.md:block 118 (quote)
+msgid "**Warning** The `before` method of a policy class will not be called if the class doesn't contain a method with a name matching the name of the ability being checked."
+msgstr "**Warning** 若 Policy 類別內不含要檢查權限名稱的方法，則 `before` 方法將不會被呼叫。"
+
+#: docs/9.x/authorization.md:block 146 (quote)
+msgid "**Note** You may use the `make:policy` command with the `--model` option to quickly generate a policy class for a given model: `php artisan make:policy PostPolicy --model=Post`."
+msgstr "**Note** 可以使用 `--model` 選項搭配 `make:policy` 指令來快速為給定的 Model 產生 Policy：`php artisan make:policy PostPolicy --model=Post`。"
 

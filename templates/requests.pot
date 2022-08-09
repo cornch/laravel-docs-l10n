@@ -1016,6 +1016,106 @@ msgstr ""
 msgid "The `allSubdomainsOfApplicationUrl` helper method will return a regular expression matching all subdomains of your application's `app.url` configuration value. This helper method provides a convenient way to allow all of your application's subdomains when building an application that utilizes wildcard subdomains."
 msgstr ""
 
-#: docs/9.x/requests.md:block 200 (paragraph)
+#: docs/9.x/requests.md:block 2 (unordered list)
+msgid "[Request Path, Host, & Method](#request-path-and-method)"
+msgstr ""
+
+#: docs/9.x/requests.md:block 21 (header)
+msgid "Request Path, Host, & Method"
+msgstr ""
+
+#: docs/9.x/requests.md:block 40 (header)
+msgid "Retrieving The Request Host"
+msgstr ""
+
+#: docs/9.x/requests.md:block 41 (paragraph)
+msgid "You may retrieve the \"host\" of the incoming request via the `host`, `httpHost`, and `schemeAndHttpHost` methods:"
+msgstr ""
+
+#: docs/9.x/requests.md:block 42 (code)
+msgid ""
+"$request->host();\n"
+"$request->httpHost();\n"
+"$request->schemeAndHttpHost();\n"
+msgstr ""
+
+#: docs/9.x/requests.md:block 75 (quote)
+msgid "**Note** If you return a PSR-7 response instance from a route or controller, it will automatically be converted back to a Laravel response instance and be displayed by the framework."
+msgstr ""
+
+#: docs/9.x/requests.md:block 111 (header)
+msgid "Retrieving Stringable Input Values"
+msgstr ""
+
+#: docs/9.x/requests.md:block 112 (paragraph)
+msgid "Instead of retrieving the request's input data as a primitive `string`, you may use the `string` method to retrieve the request data as an instance of [`Illuminate\\Support\\Stringable`](/docs/{{version}}/helpers#fluent-strings):"
+msgstr ""
+
+#: docs/9.x/requests.md:block 113 (code)
+msgid "$name = $request->string('name')->trim();\n"
+msgstr ""
+
+#: docs/9.x/requests.md:block 126 (header)
+msgid "Retrieving Enum Input Values"
+msgstr ""
+
+#: docs/9.x/requests.md:block 127 (paragraph)
+msgid "Input values that correspond to [PHP enums](https://www.php.net/manual/en/language.types.enumerations.php) may also be retrieved from the request. If the request does not contain an input value with the given name or the enum does not have a backing value that matches the input value, `null` will be returned. The `enum` method accepts the name of the input value and the enum class as its first and second arguments:"
+msgstr ""
+
+#: docs/9.x/requests.md:block 128 (code)
+msgid ""
+"use App\\Enums\\Status;\n"
+"\n"
+"$status = $request->enum('status', Status::class);\n"
+msgstr ""
+
+#: docs/9.x/requests.md:block 138 (quote)
+msgid "**Warning** The `only` method returns all of the key / value pairs that you request; however, it will not return key / value pairs that are not present on the request."
+msgstr ""
+
+#: docs/9.x/requests.md:block 193 (header)
+msgid "Disabling Input Normalization"
+msgstr ""
+
+#: docs/9.x/requests.md:block 194 (paragraph)
+msgid "If you would like to disable this behavior for all requests, you may remove the two middleware from your application's middleware stack by removing them from the `$middleware` property of your `App\\Http\\Kernel` class."
+msgstr ""
+
+#: docs/9.x/requests.md:block 195 (paragraph)
+msgid "If you would like to disable string trimming and empty string conversion for a subset of requests to your application, you may use the `skipWhen` method offered by both middleware. This method accepts a closure which should return `true` or `false` to indicate if input normalization should be skipped. Typically, the `skipWhen` method should be invoked in the `boot` method of your application's `AppServiceProvider`."
+msgstr ""
+
+#: docs/9.x/requests.md:block 196 (code)
+msgid ""
+"use App\\Http\\Middleware\\ConvertEmptyStringsToNull;\n"
+"use App\\Http\\Middleware\\TrimStrings;\n"
+"\n"
+"/**\n"
+" * Bootstrap any application services.\n"
+" *\n"
+" * @return void\n"
+" */\n"
+"public function boot()\n"
+"{\n"
+"    TrimStrings::skipWhen(function ($request) {\n"
+"        return $request->is('admin/*');\n"
+"    });\n"
+"\n"
+"    ConvertEmptyStringsToNull::skipWhen(function ($request) {\n"
+"        // ...\n"
+"    });\n"
+"}\n"
+msgstr ""
+
+#: docs/9.x/requests.md:block 215 (paragraph)
 msgid "There are a variety of other methods available on `UploadedFile` instances. Check out the [API documentation for the class](https://github.com/symfony/symfony/blob/6.0/src/Symfony/Component/HttpFoundation/File/UploadedFile.php) for more information regarding these methods."
+msgstr ""
+
+#: docs/9.x/requests.md:block 224 (quote)
+msgid "**Note** For more information about file storage in Laravel, check out the complete [file storage documentation](/docs/{{version}}/filesystem)."
+msgstr ""
+
+#: docs/9.x/requests.md:block 230 (quote)
+msgid "**Note** If you are using AWS Elastic Load Balancing, your `$headers` value should be `Request::HEADER_X_FORWARDED_AWS_ELB`. For more information on the constants that may be used in the `$headers` property, check out Symfony's documentation on [trusting proxies](https://symfony.com/doc/current/deployment/proxies.html)."
 msgstr ""

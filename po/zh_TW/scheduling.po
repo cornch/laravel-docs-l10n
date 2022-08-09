@@ -10,7 +10,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
-"PO-Revision-Date: 2022-03-07 10:01\n"
+"PO-Revision-Date: 2022-08-09 13:35\n"
 
 #: docs/8.x/scheduling.md:block 1 (header)
 msgid "Task Scheduling"
@@ -1095,4 +1095,50 @@ msgstr "/**\n"
 "        'App\\Listeners\\LogScheduledTaskFailed',\n"
 "    ],\n"
 "];\n"
+
+#: docs/9.x/scheduling.md:block 67 (quote)
+msgid "**Warning** Remember that some timezones utilize daylight savings time. When daylight saving time changes occur, your scheduled task may run twice or even not run at all. For this reason, we recommend avoiding timezone scheduling when possible."
+msgstr "**Warning** 請注意，某些時區會使用日光節約時間。若發生日光節約時間，則某些排程任務可能會執行兩次、甚至是執行多次。因此，我們建議儘可能不要在排程上設定時區。"
+
+#: docs/9.x/scheduling.md:block 75 (paragraph)
+msgid "Behind the scenes, the `withoutOverlapping` method utilizes your application's [cache](/docs/{{version}}/cache) to obtain locks. If necessary, you can clear these cache locks using the `schedule:clear-cache` Artisan command. This is typically only necessary if a task becomes stuck due to an unexpected server problem."
+msgstr "其實，`withoutOverlapping` 方法會使用專案的 [Cache](/docs/{{version}}/cache) 來取得鎖定。若有需要的話，可以使用 `schedule:clear-cache` Artisan 指令來清除這些快取鎖定。通常只有在因為未預期的伺服器問題而導致任務當掉時才需要這麼做。"
+
+#: docs/9.x/scheduling.md:block 78 (quote)
+msgid "**Warning** To utilize this feature, your application must be using the `database`, `memcached`, `dynamodb`, or `redis` cache driver as your application's default cache driver. In addition, all servers must be communicating with the same central cache server."
+msgstr "**Warning** 若要使用此功能，則專案必須使用 `memcached`、`redis`、`dynamodb`、`database`、`file`、`array` 等其中一個快取 Driver 作為專案的預設快取 Driver。另外，所有的伺服器都必須要連線至相同的中央快取伺服器。"
+
+#: docs/9.x/scheduling.md:block 83 (header)
+msgid "Naming Single Server Jobs"
+msgstr "為單一伺服器 Job 命名"
+
+#: docs/9.x/scheduling.md:block 84 (paragraph)
+msgid "Sometimes you may need to schedule the same job to be dispatched with different parameters, while still instructing Laravel to run each permutation of the job on a single server. To accomplish this, you may assign each schedule definition a unique name via the `name` method:"
+msgstr "有時候，我們需要將排程分派相同的 Job，但使用不同的參數，且又要讓 Laravel 能在單一伺服器上以不同的兩種參數來執行這個 Job。這時，可以使用 `name` 方法來為各個排程定義指定一個不重複的名稱："
+
+#: docs/9.x/scheduling.md:block 85 (code)
+msgid "$schedule->job(new CheckUptime('https://laravel.com'))\n"
+"            ->name('check_uptime:laravel.com')\n"
+"            ->everyFiveMinutes()\n"
+"            ->onOneServer();\n\n"
+"$schedule->job(new CheckUptime('https://vapor.laravel.com'))\n"
+"            ->name('check_uptime:vapor.laravel.com')\n"
+"            ->everyFiveMinutes()\n"
+"            ->onOneServer();\n"
+msgstr "$schedule->job(new CheckUptime('https://laravel.com'))\n"
+"            ->name('check_uptime:laravel.com')\n"
+"            ->everyFiveMinutes()\n"
+"            ->onOneServer();\n\n"
+"$schedule->job(new CheckUptime('https://vapor.laravel.com'))\n"
+"            ->name('check_uptime:vapor.laravel.com')\n"
+"            ->everyFiveMinutes()\n"
+"            ->onOneServer();\n"
+
+#: docs/9.x/scheduling.md:block 90 (quote)
+msgid "**Warning** The `runInBackground` method may only be used when scheduling tasks via the `command` and `exec` methods."
+msgstr "**Warning** `runInBackground` 方法只可用在 `command` 與 `exec` 方法所定義的排程任務上。"
+
+#: docs/9.x/scheduling.md:block 114 (quote)
+msgid "**Warning** The `emailOutputTo`, `emailOutputOnFailure`, `sendOutputTo`, and `appendOutputTo` methods are exclusive to the `command` and `exec` methods."
+msgstr "**Warning** `emailOutputTo`、`emailOutputOnFailure`、`sendOutputTo`、`appendOutputTo` 等方法只能在 `command` 與 `exec` 方法上使用。"
 

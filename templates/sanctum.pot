@@ -676,6 +676,22 @@ msgstr ""
 msgid "[Token Expiration](#token-expiration)"
 msgstr ""
 
+#: docs/9.x/sanctum.md:block 18 (quote)
+msgid "**Note** It is perfectly fine to use Sanctum only for API token authentication or only for SPA authentication. Just because you use Sanctum does not mean you are required to use both features it offers."
+msgstr ""
+
+#: docs/9.x/sanctum.md:block 21 (quote)
+msgid "**Note** The most recent versions of Laravel already include Laravel Sanctum. However, if your application's `composer.json` file does not include `laravel/sanctum`, you may follow the installation instructions below."
+msgstr ""
+
+#: docs/9.x/sanctum.md:block 28 (paragraph)
+msgid "Next, if you plan to utilize Sanctum to authenticate a SPA, you should add Sanctum's middleware to your `api` middleware group within your application's `app/Http/Kernel.php` file:"
+msgstr ""
+
+#: docs/9.x/sanctum.md:block 43 (quote)
+msgid "**Note** You should not use API tokens to authenticate your own first-party SPA. Instead, use Sanctum's built-in [SPA authentication features](#spa-authentication)."
+msgstr ""
+
 #: docs/9.x/sanctum.md:block 84 (header)
 msgid "Token Expiration"
 msgstr ""
@@ -694,4 +710,46 @@ msgstr ""
 
 #: docs/9.x/sanctum.md:block 88 (code)
 msgid "$schedule->command('sanctum:prune-expired --hours=24')->daily();\n"
+msgstr ""
+
+#: docs/9.x/sanctum.md:block 93 (quote)
+msgid "**Warning** In order to authenticate, your SPA and API must share the same top-level domain. However, they may be placed on different subdomains. Additionally, you should ensure that you send the `Accept: application/json` header with your request."
+msgstr ""
+
+#: docs/9.x/sanctum.md:block 99 (quote)
+msgid "**Warning** If you are accessing your application via a URL that includes a port (`127.0.0.1:8000`), you should ensure that you include the port number with the domain."
+msgstr ""
+
+#: docs/9.x/sanctum.md:block 124 (quote)
+msgid "**Warning** You are free to write your own `/login` endpoint; however, you should ensure that it authenticates the user using the standard, [session based authentication services that Laravel provides](/docs/{{version}}/authentication#authenticating-users). Typically, this means using the `web` authentication guard."
+msgstr ""
+
+#: docs/9.x/sanctum.md:block 134 (code)
+msgid ""
+"window.Echo = new Echo({\n"
+"    broadcaster: \"pusher\",\n"
+"    cluster: import.meta.env.VITE_PUSHER_APP_CLUSTER,\n"
+"    encrypted: true,\n"
+"    key: import.meta.env.VITE_PUSHER_APP_KEY,\n"
+"    authorizer: (channel, options) => {\n"
+"        return {\n"
+"            authorize: (socketId, callback) => {\n"
+"                axios.post('/api/broadcasting/auth', {\n"
+"                    socket_id: socketId,\n"
+"                    channel_name: channel.name\n"
+"                })\n"
+"                .then(response => {\n"
+"                    callback(false, response.data);\n"
+"                })\n"
+"                .catch(error => {\n"
+"                    callback(true, error);\n"
+"                });\n"
+"            }\n"
+"        };\n"
+"    },\n"
+"})\n"
+msgstr ""
+
+#: docs/9.x/sanctum.md:block 144 (quote)
+msgid "**Note** When issuing tokens for a mobile application, you are also free to specify [token abilities](#token-abilities)."
 msgstr ""

@@ -514,6 +514,10 @@ msgstr ""
 msgid "php artisan db mysql\n"
 msgstr ""
 
+#: docs/9.x/database.md:block 2 (unordered list)
+msgid "[Monitoring Cumulative Query Time](#monitoring-cumulative-query-time)"
+msgstr ""
+
 #: docs/9.x/database.md:block 7 (unordered list)
 msgid "PostgreSQL 10.0+ ([Version Policy](https://www.postgresql.org/support/versioning/))"
 msgstr ""
@@ -531,6 +535,65 @@ msgid ""
 "$burgers = DB::scalar(\n"
 "    \"select count(case when food = 'burger' then 1 end) as burgers from menu\"\n"
 ");\n"
+msgstr ""
+
+#: docs/9.x/database.md:block 78 (quote)
+msgid "**Warning** Since unprepared statements do not bind parameters, they may be vulnerable to SQL injection. You should never allow user controlled values within an unprepared statement."
+msgstr ""
+
+#: docs/9.x/database.md:block 87 (code)
+msgid ""
+"use Illuminate\\Support\\Facades\\DB;\n"
+"\n"
+"$users = DB::connection('sqlite')->select(/* ... */);\n"
+msgstr ""
+
+#: docs/9.x/database.md:block 95 (header)
+msgid "Monitoring Cumulative Query Time"
+msgstr ""
+
+#: docs/9.x/database.md:block 96 (paragraph)
+msgid "A common performance bottleneck of modern web applications is the amount of time they spend querying databases. Thankfully, Laravel can invoke a closure or callback of your choice when it spends too much time querying the database during a single request. To get started, provide a query time threshold (in milliseconds) and closure to the `whenQueryingForLongerThan` method. You may invoke this method in the `boot` method of a [service provider](/docs/{{version}}/providers):"
+msgstr ""
+
+#: docs/9.x/database.md:block 97 (code)
+msgid ""
+"<?php\n"
+"\n"
+"namespace App\\Providers;\n"
+"\n"
+"use Illuminate\\Database\\Connection;\n"
+"use Illuminate\\Support\\Facades\\DB;\n"
+"use Illuminate\\Support\\ServiceProvider;\n"
+"\n"
+"class AppServiceProvider extends ServiceProvider\n"
+"{\n"
+"    /**\n"
+"     * Register any application services.\n"
+"     *\n"
+"     * @return void\n"
+"     */\n"
+"    public function register()\n"
+"    {\n"
+"        //\n"
+"    }\n"
+"\n"
+"    /**\n"
+"     * Bootstrap any application services.\n"
+"     *\n"
+"     * @return void\n"
+"     */\n"
+"    public function boot()\n"
+"    {\n"
+"        DB::whenQueryingForLongerThan(500, function (Connection $connection) {\n"
+"            // Notify development team...\n"
+"        });\n"
+"    }\n"
+"}\n"
+msgstr ""
+
+#: docs/9.x/database.md:block 114 (quote)
+msgid "**Note** The `DB` facade's transaction methods control the transactions for both the [query builder](/docs/{{version}}/queries) and [Eloquent ORM](/docs/{{version}}/eloquent)."
 msgstr ""
 
 #: docs/master/database.md:block 5 (paragraph)

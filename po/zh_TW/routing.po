@@ -10,7 +10,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
-"PO-Revision-Date: 2022-04-18 10:02\n"
+"PO-Revision-Date: 2022-08-09 13:35\n"
 
 #: docs/8.x/routing.md:block 1 (header)
 msgid "Routing"
@@ -1363,6 +1363,18 @@ msgstr "[Route 列表](#the-route-list)"
 msgid "[Implicit Enum Binding](#implicit-enum-binding)"
 msgstr "[隱式 Enum 繫結](#implicit-enum-binding)"
 
+#: docs/9.x/routing.md:block 19 (quote)
+msgid "**Note** When defining multiple routes that share the same URI, routes using the `get`, `post`, `put`, `patch`, `delete`, and `options` methods should be defined before routes using the `any`, `match`, and `redirect` methods. This ensures the incoming request is matched with the correct route."
+msgstr "**Note** 註冊多個共享同 URI 的 Route 時，應將這些 `any`, `match`, 與 `redirect` 方法的 Route 定義在 `get`, `post`, `put`, `patch`, `delete`, 與 `options` 方法定義之前。這樣一來可以確保連入的 Request 被配對到正確的 Route 上。"
+
+#: docs/9.x/routing.md:block 36 (quote)
+msgid "**Warning** When using route parameters in redirect routes, the following parameters are reserved by Laravel and cannot be used: `destination` and `status`."
+msgstr "**Warning** 在重新導向 Route 中使用 Route 參數時，有幾個參數名稱是 Laravel 的保留字，無法使用：`destination` 與 `status`。"
+
+#: docs/9.x/routing.md:block 41 (quote)
+msgid "**Warning** When using route parameters in view routes, the following parameters are reserved by Laravel and cannot be used: `view`, `data`, `status`, and `headers`."
+msgstr "**Warning** 在 View 的 Route 中使用 Route 參數時，有幾個參數名稱是 Laravel 的保留字，無法使用：`view`、`data`、`status`、`header`。"
+
 #: docs/9.x/routing.md:block 43 (header)
 msgid "The Route List"
 msgstr "Route 列表"
@@ -1384,14 +1396,30 @@ msgid "php artisan route:list -v\n"
 msgstr "php artisan route:list -v\n"
 
 #: docs/9.x/routing.md:block 48 (paragraph)
+msgid "You may also instruct Laravel to only show routes that begin with a given URI:"
+msgstr "也可以讓 Laravel 值顯示以給定 URI 開頭的 Route："
+
+#: docs/9.x/routing.md:block 49 (code)
+msgid "php artisan route:list --path=api\n"
+msgstr "php artisan route:list --path=api\n"
+
+#: docs/9.x/routing.md:block 50 (paragraph)
 msgid "In addition, you may instruct Laravel to hide any routes that are defined by third-party packages by providing the `--except-vendor` option when executing the `route:list` command:"
 msgstr "此外，也可以在執行 `route:list` 指令時提供 `--except-vendor` 選項來讓 Laravel 隱藏由第三方套件所定義的 Route："
 
-#: docs/9.x/routing.md:block 49 (code)
+#: docs/9.x/routing.md:block 51 (code)
 msgid "php artisan route:list --except-vendor\n"
 msgstr "php artisan route:list --except-vendor\n"
 
-#: docs/9.x/routing.md:block 72 (code)
+#: docs/9.x/routing.md:block 52 (paragraph)
+msgid "Likewise, you may also instruct Laravel to only show routes that are defined by third-party packages by providing the `--only-vendor` option when executing the `route:list` command:"
+msgstr "類似地，執行 `route:list` 指令時，也可以提供 `--only-vendor` 選項來讓 Laravel 只顯示第三方套件定義的 Route："
+
+#: docs/9.x/routing.md:block 53 (code)
+msgid "php artisan route:list --only-vendor\n"
+msgstr "php artisan route:list --only-vendor\n"
+
+#: docs/9.x/routing.md:block 76 (code)
 msgid "Route::get('/user/{id}/{name}', function ($id, $name) {\n"
 "    //\n"
 "})->whereNumber('id')->whereAlpha('name');\n\n"
@@ -1417,15 +1445,31 @@ msgstr "Route::get('/user/{id}/{name}', function ($id, $name) {\n"
 "    //\n"
 "})->whereIn('category', ['movie', 'song', 'painting']);\n"
 
-#: docs/9.x/routing.md:block 164 (header)
+#: docs/9.x/routing.md:block 88 (quote)
+msgid "**Warning** Encoded forward slashes are only supported within the last route segment."
+msgstr "**Warning** 只有最後一個 Route 片段才支援編碼斜線。"
+
+#: docs/9.x/routing.md:block 95 (quote)
+msgid "**Warning** Route names should always be unique."
+msgstr "**Warning** Route 名稱不可重複。"
+
+#: docs/9.x/routing.md:block 104 (quote)
+msgid "**Note** Sometimes, you may wish to specify request-wide default values for URL parameters, such as the current locale. To accomplish this, you may use the [`URL::defaults` method](/docs/{{version}}/urls#default-values)."
+msgstr "**Note** 有時候，我們可能會想為 URL 引數指定 Request 層級的預設值，例如目前使用的語系等。為此，可以使用 [`URL::defaults` 方法](/docs/{{version}}/urls#default-values)。"
+
+#: docs/9.x/routing.md:block 125 (quote)
+msgid "**Warning** In order to ensure your subdomain routes are reachable, you should register subdomain routes before registering root domain routes. This will prevent root domain routes from overwriting subdomain routes which have the same URI path."
+msgstr "**Warning** 為了確保子網域 Route 有效，請在註冊任何根網域 Route 前先註冊子網域 Route。這樣可以避免根網域的 Route 去複寫到子網域 Route 中有相同 URI 路徑的 Route。"
+
+#: docs/9.x/routing.md:block 168 (header)
 msgid "Implicit Enum Binding"
 msgstr "隱式 Enum 繫結"
 
-#: docs/9.x/routing.md:block 165 (paragraph)
+#: docs/9.x/routing.md:block 169 (paragraph)
 msgid "PHP 8.1 introduced support for [Enums](https://www.php.net/manual/en/language.enumerations.backed.php). To compliment this feature, Laravel allows you to type-hint a [backed Enum](https://www.php.net/manual/en/language.enumerations.backed.php) on your route definition and Laravel will only invoke the route if that route segment corresponds to a valid Enum value. Otherwise, a 404 HTTP response will be returned automatically. For example, given the following Enum:"
 msgstr "PHP 8.1 新增了對 [Enum](https://www.php.net/manual/en/language.enumerations.backed.php) 的支援。為了配合這個功能，Laravel 中提供了能在 Route 定義中對 [Backed Enum](https://www.php.net/manual/en/language.enumerations.backed.php) 進行型別提示的功能。加上型別提示後，只有當網址中的相應的 Route 片段為有效的 Enum 時，Laravel 才會叫用該 Route。若不是有效的 Enum 值，則會自動回傳 404 HTTP Response。舉例來說，假設有下列 Enum："
 
-#: docs/9.x/routing.md:block 166 (code)
+#: docs/9.x/routing.md:block 170 (code)
 msgid "<?php\n\n"
 "namespace App\\Enums;\n\n"
 "enum Category: string\n"
@@ -1441,11 +1485,11 @@ msgstr "<?php\n\n"
 "    case People = 'people';\n"
 "}\n"
 
-#: docs/9.x/routing.md:block 167 (paragraph)
+#: docs/9.x/routing.md:block 171 (paragraph)
 msgid "You may define a route that will only be invoked if the `{category}` route segment is `fruits` or `people`. Otherwise, Laravel will return a 404 HTTP response:"
 msgstr "我們可以定義一個只有當 `{category}` 路由片段為 `fruits` 或 `people` 時才會被叫用的路由。若為其他值，Laravel 會回傳 HTTP 404 Response："
 
-#: docs/9.x/routing.md:block 168 (code)
+#: docs/9.x/routing.md:block 172 (code)
 msgid "use App\\Enums\\Category;\n"
 "use Illuminate\\Support\\Facades\\Route;\n\n"
 "Route::get('/categories/{category}', function (Category $category) {\n"
@@ -1456,6 +1500,56 @@ msgstr "use App\\Enums\\Category;\n"
 "Route::get('/categories/{category}', function (Category $category) {\n"
 "    return $category->value;\n"
 "});\n"
+
+#: docs/9.x/routing.md:block 193 (quote)
+msgid "**Warning** The fallback route should always be the last route registered by your application."
+msgstr "**Warning** 遞補的 Route 應該要保持為專案中最後一個註冊的 Route。"
+
+#: docs/9.x/routing.md:block 200 (code)
+msgid "use Illuminate\\Cache\\RateLimiting\\Limit;\n"
+"use Illuminate\\Http\\Request;\n"
+"use Illuminate\\Support\\Facades\\RateLimiter;\n\n"
+"/**\n"
+" * Configure the rate limiters for the application.\n"
+" *\n"
+" * @return void\n"
+" */\n"
+"protected function configureRateLimiting()\n"
+"{\n"
+"    RateLimiter::for('global', function (Request $request) {\n"
+"        return Limit::perMinute(1000);\n"
+"    });\n"
+"}\n"
+msgstr "use Illuminate\\Cache\\RateLimiting\\Limit;\n"
+"use Illuminate\\Http\\Request;\n"
+"use Illuminate\\Support\\Facades\\RateLimiter;\n\n"
+"/**\n"
+" * Configure the rate limiters for the application.\n"
+" *\n"
+" * @return void\n"
+" */\n"
+"protected function configureRateLimiting()\n"
+"{\n"
+"    RateLimiter::for('global', function (Request $request) {\n"
+"        return Limit::perMinute(1000);\n"
+"    });\n"
+"}\n"
+
+#: docs/9.x/routing.md:block 202 (code)
+msgid "RateLimiter::for('global', function (Request $request) {\n"
+"    return Limit::perMinute(1000)->response(function (Request $request, array $headers) {\n"
+"        return response('Custom response...', 429, $headers);\n"
+"    });\n"
+"});\n"
+msgstr "RateLimiter::for('global', function (Request $request) {\n"
+"    return Limit::perMinute(1000)->response(function (Request $request, array $headers) {\n"
+"        return response('Custom response...', 429, $headers);\n"
+"    });\n"
+"});\n"
+
+#: docs/9.x/routing.md:block 237 (quote)
+msgid "**Note** For more information on CORS and CORS headers, please consult the [MDN web documentation on CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS#The_HTTP_response_headers)."
+msgstr "**Note** 更多有關 CORS 與 CORS 標頭的資訊，請參考 [MDN 網頁說明文件上的 CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS#The_HTTP_response_headers)。"
 
 #: docs/master/routing.md:block 157 (paragraph)
 msgid "PHP 8.1 introduced support for [Enums](https://www.php.net/manual/en/language.enumerations.backed.php). To compliment this feature, Laravel allows you to type-hint an Enum on your route definition and Laravel will only invoke the route if that route segment corresponds to a valid Enum value. Otherwise, a 404 HTTP response will be returned automatically. For example, given the following Enum:"

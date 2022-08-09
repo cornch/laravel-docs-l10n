@@ -891,6 +891,10 @@ msgid ""
 msgstr ""
 
 #: docs/9.x/scout.md:block 2 (unordered list)
+msgid "[Configuring Search Engines Per Model](#configuring-search-engines-per-model)"
+msgstr ""
+
+#: docs/9.x/scout.md:block 2 (unordered list)
 msgid "[Database / Collection Engines](#database-and-collection-engines)"
 msgstr ""
 
@@ -906,51 +910,101 @@ msgstr ""
 msgid "Currently, Scout ships with [Algolia](https://www.algolia.com/), [MeiliSearch](https://www.meilisearch.com), and MySQL / PostgreSQL (`database`) drivers. In addition, Scout includes a \"collection\" driver that is designed for local development usage and does not require any external dependencies or third-party services. Furthermore, writing custom drivers is simple and you are free to extend Scout with your own search implementations."
 msgstr ""
 
+#: docs/9.x/scout.md:block 30 (quote)
+msgid "**Warning** When upgrading Scout on an application that utilizes MeiliSearch, you should always [review any additional breaking changes](https://github.com/meilisearch/MeiliSearch/releases) to the MeiliSearch service itself."
+msgstr ""
+
 #: docs/9.x/scout.md:block 36 (paragraph)
 msgid "Even when the `queue` option is set to `false`, it's important to remember that some Scout drivers like Algolia and Meilisearch always index records asynchronously. Meaning, even though the index operation has completed within your Laravel application, the search engine itself may not reflect the new and updated records immediately."
 msgstr ""
 
-#: docs/9.x/scout.md:block 57 (header)
+#: docs/9.x/scout.md:block 37 (paragraph)
+msgid "To specify the connection and queue that your Scout jobs utilize, you may define the `queue` configuration option as an array:"
+msgstr ""
+
+#: docs/9.x/scout.md:block 38 (code)
+msgid ""
+"'queue' => [\n"
+"    'connection' => 'redis',\n"
+"    'queue' => 'scout'\n"
+"],\n"
+msgstr ""
+
+#: docs/9.x/scout.md:block 54 (header)
+msgid "Configuring Search Engines Per Model"
+msgstr ""
+
+#: docs/9.x/scout.md:block 55 (paragraph)
+msgid "When searching, Scout will typically use the default search engine specified in your application's `scout` configuration file. However, the search engine for a particular model can be changed by overriding the `searchableUsing` method on the model:"
+msgstr ""
+
+#: docs/9.x/scout.md:block 56 (code)
+msgid ""
+"<?php\n"
+"\n"
+"namespace App\\Models;\n"
+"\n"
+"use Illuminate\\Database\\Eloquent\\Model;\n"
+"use Laravel\\Scout\\EngineManager;\n"
+"use Laravel\\Scout\\Searchable;\n"
+"\n"
+"class User extends Model\n"
+"{\n"
+"    use Searchable;\n"
+"\n"
+"    /**\n"
+"     * Get the engine used to index the model.\n"
+"     *\n"
+"     * @return \\Laravel\\Scout\\Engines\\Engine\n"
+"     */\n"
+"    public function searchableUsing()\n"
+"    {\n"
+"        return app(EngineManager::class)->engine('meilisearch');\n"
+"    }\n"
+"}\n"
+msgstr ""
+
+#: docs/9.x/scout.md:block 63 (header)
 msgid "Database / Collection Engines"
 msgstr ""
 
-#: docs/9.x/scout.md:block 59 (header)
+#: docs/9.x/scout.md:block 65 (header)
 msgid "Database Engine"
 msgstr ""
 
-#: docs/9.x/scout.md:block 60 (quote)
-msgid "{note} The database engine currently supports MySQL and PostgreSQL."
-msgstr ""
-
-#: docs/9.x/scout.md:block 61 (paragraph)
-msgid "If your application interacts with small to medium sized databases or has a light workload, you may find it more convenient to get started with Scout's \"database\" engine. The database engine will use \"where like\" clauses and full text indexes when filtering results from your existing database to determine the applicable search results for your query."
-msgstr ""
-
-#: docs/9.x/scout.md:block 62 (paragraph)
-msgid "To use the database engine, you may simply set the value of the `SCOUT_DRIVER` environment variable to `database`, or specify the `database` driver directly in your application's `scout` configuration file:"
-msgstr ""
-
-#: docs/9.x/scout.md:block 63 (code)
-msgid "SCOUT_DRIVER=database\n"
-msgstr ""
-
-#: docs/9.x/scout.md:block 64 (paragraph)
-msgid "Once you have specified the database engine as your preferred driver, you must [configure your searchable data](#configuring-searchable-data). Then, you may start [executing search queries](#searching) against your models. Search engine indexing, such as the indexing needed to seed Algolia or MeiliSearch indexes, is unnecessary when using the database engine."
-msgstr ""
-
-#: docs/9.x/scout.md:block 65 (header)
-msgid "Customizing Database Searching Strategies"
-msgstr ""
-
-#: docs/9.x/scout.md:block 66 (paragraph)
-msgid "By default, the database engine will execute a \"where like\" query against every model attribute that you have [configured as searchable](#configuring-searchable-data). However, in some situations, this may result in poor performance. Therefore, the database engine's search strategy can be configured so that some specified columns utilize full text search queries or only use \"where like\" constraints to search the prefixes of strings (`example%`) instead of searching within the entire string (`%example%`)."
+#: docs/9.x/scout.md:block 66 (quote)
+msgid "**Warning** The database engine currently supports MySQL and PostgreSQL."
 msgstr ""
 
 #: docs/9.x/scout.md:block 67 (paragraph)
+msgid "If your application interacts with small to medium sized databases or has a light workload, you may find it more convenient to get started with Scout's \"database\" engine. The database engine will use \"where like\" clauses and full text indexes when filtering results from your existing database to determine the applicable search results for your query."
+msgstr ""
+
+#: docs/9.x/scout.md:block 68 (paragraph)
+msgid "To use the database engine, you may simply set the value of the `SCOUT_DRIVER` environment variable to `database`, or specify the `database` driver directly in your application's `scout` configuration file:"
+msgstr ""
+
+#: docs/9.x/scout.md:block 69 (code)
+msgid "SCOUT_DRIVER=database\n"
+msgstr ""
+
+#: docs/9.x/scout.md:block 70 (paragraph)
+msgid "Once you have specified the database engine as your preferred driver, you must [configure your searchable data](#configuring-searchable-data). Then, you may start [executing search queries](#searching) against your models. Search engine indexing, such as the indexing needed to seed Algolia or MeiliSearch indexes, is unnecessary when using the database engine."
+msgstr ""
+
+#: docs/9.x/scout.md:block 71 (header)
+msgid "Customizing Database Searching Strategies"
+msgstr ""
+
+#: docs/9.x/scout.md:block 72 (paragraph)
+msgid "By default, the database engine will execute a \"where like\" query against every model attribute that you have [configured as searchable](#configuring-searchable-data). However, in some situations, this may result in poor performance. Therefore, the database engine's search strategy can be configured so that some specified columns utilize full text search queries or only use \"where like\" constraints to search the prefixes of strings (`example%`) instead of searching within the entire string (`%example%`)."
+msgstr ""
+
+#: docs/9.x/scout.md:block 73 (paragraph)
 msgid "To define this behavior, you may assign PHP attributes to your model's `toSearchableArray` method. Any columns that are not assigned additional search strategy behavior will continue to use the default \"where like\" strategy:"
 msgstr ""
 
-#: docs/9.x/scout.md:block 68 (code)
+#: docs/9.x/scout.md:block 74 (code)
 msgid ""
 "use Laravel\\Scout\\Attributes\\SearchUsingFullText;\n"
 "use Laravel\\Scout\\Attributes\\SearchUsingPrefix;\n"
@@ -973,39 +1027,47 @@ msgid ""
 "}\n"
 msgstr ""
 
-#: docs/9.x/scout.md:block 69 (quote)
-msgid "{note} Before specifying that a column should use full text query constraints, ensure that the column has been assigned a [full text index](/docs/{{version}}/migrations#available-index-types)."
+#: docs/9.x/scout.md:block 75 (quote)
+msgid "**Warning** Before specifying that a column should use full text query constraints, ensure that the column has been assigned a [full text index](/docs/{{version}}/migrations#available-index-types)."
 msgstr ""
 
-#: docs/9.x/scout.md:block 71 (header)
+#: docs/9.x/scout.md:block 77 (header)
 msgid "Collection Engine"
 msgstr ""
 
-#: docs/9.x/scout.md:block 76 (header)
+#: docs/9.x/scout.md:block 82 (header)
 msgid "Differences From Database Engine"
 msgstr ""
 
-#: docs/9.x/scout.md:block 77 (paragraph)
+#: docs/9.x/scout.md:block 83 (paragraph)
 msgid "On first glance, the \"database\" and \"collections\" engines are fairly similar. They both interact directly with your database to retrieve search results. However, the collection engine does not utilize full text indexes or `LIKE` clauses to find matching records. Instead, it pulls all possible records and uses Laravel's `Str::is` helper to determine if the search string exists within the model attribute values."
 msgstr ""
 
-#: docs/9.x/scout.md:block 78 (paragraph)
+#: docs/9.x/scout.md:block 84 (paragraph)
 msgid "The collection engine is the most portable search engine as it works across all relational databases supported by Laravel (including SQLite and SQL Server); however, it is less efficient than Scout's database engine."
 msgstr ""
 
-#: docs/9.x/scout.md:block 133 (quote)
-msgid "{note} The `shouldBeSearchable` method is not applicable when using Scout's \"database\" engine, as all searchable data is always stored in the database. To achieve similar behavior when using the database engine, you should use [where clauses](#where-clauses) instead."
+#: docs/9.x/scout.md:block 109 (quote)
+msgid "**Note** The `searchable` method can be considered an \"upsert\" operation. In other words, if the model record is already in your index, it will be updated. If it does not exist in the search index, it will be added to the index."
 msgstr ""
 
-#: docs/9.x/scout.md:block 175 (header)
+#: docs/9.x/scout.md:block 139 (quote)
+msgid "**Warning** The `shouldBeSearchable` method is not applicable when using Scout's \"database\" engine, as all searchable data is always stored in the database. To achieve similar behavior when using the database engine, you should use [where clauses](#where-clauses) instead."
+msgstr ""
+
+#: docs/9.x/scout.md:block 175 (quote)
+msgid "**Note** When a soft deleted model is permanently deleted using `forceDelete`, Scout will remove it from the search index automatically."
+msgstr ""
+
+#: docs/9.x/scout.md:block 181 (header)
 msgid "Customizing The Eloquent Results Query"
 msgstr ""
 
-#: docs/9.x/scout.md:block 176 (paragraph)
+#: docs/9.x/scout.md:block 182 (paragraph)
 msgid "After Scout retrieves a list of matching Eloquent models from your application's search engine, Eloquent is used to retrieve all of the matching models by their primary keys. You may customize this query by invoking the `query` method. The `query` method accepts a closure that will receive the Eloquent query builder instance as an argument:"
 msgstr ""
 
-#: docs/9.x/scout.md:block 177 (code)
+#: docs/9.x/scout.md:block 183 (code)
 msgid ""
 "use App\\Models\\Order;\n"
 "\n"
@@ -1014,6 +1076,18 @@ msgid ""
 "    ->get();\n"
 msgstr ""
 
-#: docs/9.x/scout.md:block 178 (paragraph)
+#: docs/9.x/scout.md:block 184 (paragraph)
 msgid "Since this callback is invoked after the relevant models have already been retrieved from your application's search engine, the `query` method should not be used for \"filtering\" results. Instead, you should use [Scout where clauses](#where-clauses)."
+msgstr ""
+
+#: docs/master/scout.md:block 59 (quote)
+msgid "{note} The database engine currently supports MySQL and PostgreSQL."
+msgstr ""
+
+#: docs/master/scout.md:block 68 (quote)
+msgid "{note} Before specifying that a column should use full text query constraints, ensure that the column has been assigned a [full text index](/docs/{{version}}/migrations#available-index-types)."
+msgstr ""
+
+#: docs/master/scout.md:block 132 (quote)
+msgid "{note} The `shouldBeSearchable` method is not applicable when using Scout's \"database\" engine, as all searchable data is always stored in the database. To achieve similar behavior when using the database engine, you should use [where clauses](#where-clauses) instead."
 msgstr ""

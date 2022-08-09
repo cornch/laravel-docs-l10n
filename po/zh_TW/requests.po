@@ -10,7 +10,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
-"PO-Revision-Date: 2022-02-15 10:31\n"
+"PO-Revision-Date: 2022-08-09 13:35\n"
 
 #: docs/8.x/requests.md:block 1 (header)
 msgid "HTTP Requests"
@@ -1094,7 +1094,119 @@ msgstr "/**\n"
 msgid "The `allSubdomainsOfApplicationUrl` helper method will return a regular expression matching all subdomains of your application's `app.url` configuration value. This helper method provides a convenient way to allow all of your application's subdomains when building an application that utilizes wildcard subdomains."
 msgstr "`allSubdomainsOfApplicationUrl` 輔助函式會回傳一個可配對應用程式中 `app.url` 設定值子網域的正規表示式。使用這個輔助函式，就可以方便地在使用萬用子網域的程式中允許所有的子網域。"
 
-#: docs/9.x/requests.md:block 200 (paragraph)
+#: docs/9.x/requests.md:block 2 (unordered list)
+msgid "[Request Path, Host, & Method](#request-path-and-method)"
+msgstr "[Request 路徑、主機、與方法](#request-path-and-method)"
+
+#: docs/9.x/requests.md:block 21 (header)
+msgid "Request Path, Host, & Method"
+msgstr "Request 路徑、主機、與方法"
+
+#: docs/9.x/requests.md:block 40 (header)
+msgid "Retrieving The Request Host"
+msgstr "取得 Request 主機"
+
+#: docs/9.x/requests.md:block 41 (paragraph)
+msgid "You may retrieve the \"host\" of the incoming request via the `host`, `httpHost`, and `schemeAndHttpHost` methods:"
+msgstr "可以使用 `host`、`httpHost`、與 `schemeAndHttpHost` 來取得連入 Request 的「主機」："
+
+#: docs/9.x/requests.md:block 42 (code)
+msgid "$request->host();\n"
+"$request->httpHost();\n"
+"$request->schemeAndHttpHost();\n"
+msgstr "$request->host();\n"
+"$request->httpHost();\n"
+"$request->schemeAndHttpHost();\n"
+
+#: docs/9.x/requests.md:block 75 (quote)
+msgid "**Note** If you return a PSR-7 response instance from a route or controller, it will automatically be converted back to a Laravel response instance and be displayed by the framework."
+msgstr "**Note** 若從 Route 或 Controller 中回傳 PSR-7 Response，這個 Response 會先被轉回到 Laravel 的 Response 實體，然後才會由 Laravel 顯示出來。"
+
+#: docs/9.x/requests.md:block 111 (header)
+msgid "Retrieving Stringable Input Values"
+msgstr "取得 Stringable 的輸入值"
+
+#: docs/9.x/requests.md:block 112 (paragraph)
+msgid "Instead of retrieving the request's input data as a primitive `string`, you may use the `string` method to retrieve the request data as an instance of [`Illuminate\\Support\\Stringable`](/docs/{{version}}/helpers#fluent-strings):"
+msgstr "除了將輸入值以原生型別的 `string` 取得，還可以使用 `string` 方法來將 Request 資料以 [`Illuminate\\Support\\Stringable`](/docs/{{version}}/helpers#fluent-strings) 實體的形式取得："
+
+#: docs/9.x/requests.md:block 113 (code)
+msgid "$name = $request->string('name')->trim();\n"
+msgstr "$name = $request->string('name')->trim();\n"
+
+#: docs/9.x/requests.md:block 126 (header)
+msgid "Retrieving Enum Input Values"
+msgstr "取得 Enum 輸入值"
+
+#: docs/9.x/requests.md:block 127 (paragraph)
+msgid "Input values that correspond to [PHP enums](https://www.php.net/manual/en/language.types.enumerations.php) may also be retrieved from the request. If the request does not contain an input value with the given name or the enum does not have a backing value that matches the input value, `null` will be returned. The `enum` method accepts the name of the input value and the enum class as its first and second arguments:"
+msgstr "也可以從 Request 中取得對應到 [PHP Enum](https://www.php.net/manual/en/language.types.enumerations.php) 的輸入值。若 Request 中沒有輸入值，或是給定的名稱或 Enum 中沒有符合該輸入值的後端值 (Backing Value)，則會回傳 `null`。`enum` 方法的第一個引數為輸入值的名稱、第二個引數為 Enum 類別："
+
+#: docs/9.x/requests.md:block 128 (code)
+msgid "use App\\Enums\\Status;\n\n"
+"$status = $request->enum('status', Status::class);\n"
+msgstr "use App\\Enums\\Status;\n\n"
+"$status = $request->enum('status', Status::class);\n"
+
+#: docs/9.x/requests.md:block 138 (quote)
+msgid "**Warning** The `only` method returns all of the key / value pairs that you request; however, it will not return key / value pairs that are not present on the request."
+msgstr "**Warning** `only` 方法會回傳所要求的所有索引鍵 / 值配對組。不過，若要求的索引鍵 / 值配對未出現在 Request 中，將不會回傳。"
+
+#: docs/9.x/requests.md:block 193 (header)
+msgid "Disabling Input Normalization"
+msgstr "禁用輸入正規化"
+
+#: docs/9.x/requests.md:block 194 (paragraph)
+msgid "If you would like to disable this behavior for all requests, you may remove the two middleware from your application's middleware stack by removing them from the `$middleware` property of your `App\\Http\\Kernel` class."
+msgstr "若想在所有 Request 上禁用這些行為，可在 `App\\Http\\Kernel` 類別的 `$middleware` 屬性中將其移除："
+
+#: docs/9.x/requests.md:block 195 (paragraph)
+msgid "If you would like to disable string trimming and empty string conversion for a subset of requests to your application, you may use the `skipWhen` method offered by both middleware. This method accepts a closure which should return `true` or `false` to indicate if input normalization should be skipped. Typically, the `skipWhen` method should be invoked in the `boot` method of your application's `AppServiceProvider`."
+msgstr "若只想在專案中一部分的 Request 上禁用字串修剪與空字串轉換，可使用這兩個 Middleware 提供的 `skipWhen` 方法。請傳入一個回傳 `true` 或 `false` 的閉包給該方法，用來判斷是否應跳過字串的正規化。一般來說，應在專案的 `AppServiceProvider` 中 `boot` 方法內叫用這個 `skipWhen` 方法。"
+
+#: docs/9.x/requests.md:block 196 (code)
+msgid "use App\\Http\\Middleware\\ConvertEmptyStringsToNull;\n"
+"use App\\Http\\Middleware\\TrimStrings;\n\n"
+"/**\n"
+" * Bootstrap any application services.\n"
+" *\n"
+" * @return void\n"
+" */\n"
+"public function boot()\n"
+"{\n"
+"    TrimStrings::skipWhen(function ($request) {\n"
+"        return $request->is('admin/*');\n"
+"    });\n\n"
+"    ConvertEmptyStringsToNull::skipWhen(function ($request) {\n"
+"        // ...\n"
+"    });\n"
+"}\n"
+msgstr "use App\\Http\\Middleware\\ConvertEmptyStringsToNull;\n"
+"use App\\Http\\Middleware\\TrimStrings;\n\n"
+"/**\n"
+" * Bootstrap any application services.\n"
+" *\n"
+" * @return void\n"
+" */\n"
+"public function boot()\n"
+"{\n"
+"    TrimStrings::skipWhen(function ($request) {\n"
+"        return $request->is('admin/*');\n"
+"    });\n\n"
+"    ConvertEmptyStringsToNull::skipWhen(function ($request) {\n"
+"        // ...\n"
+"    });\n"
+"}\n"
+
+#: docs/9.x/requests.md:block 215 (paragraph)
 msgid "There are a variety of other methods available on `UploadedFile` instances. Check out the [API documentation for the class](https://github.com/symfony/symfony/blob/6.0/src/Symfony/Component/HttpFoundation/File/UploadedFile.php) for more information regarding these methods."
 msgstr "`UploadedFile` 實體還提供了其他各種方法。請參考[該類別的 API 說明文件](https://github.com/symfony/symfony/blob/6.0/src/Symfony/Component/HttpFoundation/File/UploadedFile.php)來瞭解有關這些方法的更多資訊。"
+
+#: docs/9.x/requests.md:block 224 (quote)
+msgid "**Note** For more information about file storage in Laravel, check out the complete [file storage documentation](/docs/{{version}}/filesystem)."
+msgstr "**Note** 更多有關 Laravel 中檔案儲存的資訊，請參考完整的[檔案儲存說明文件](/docs/{{version}}/filesystem)。"
+
+#: docs/9.x/requests.md:block 230 (quote)
+msgid "**Note** If you are using AWS Elastic Load Balancing, your `$headers` value should be `Request::HEADER_X_FORWARDED_AWS_ELB`. For more information on the constants that may be used in the `$headers` property, check out Symfony's documentation on [trusting proxies](https://symfony.com/doc/current/deployment/proxies.html)."
+msgstr "**Note** 若要使用 AWS Elastic Load Balancing，則 `$headers` 的值應為 `Request::HEADER_X_FORWARDED_AWS_ELB`。更多有關能用在 `$headers` 屬性的常數資訊，請參考 Symfony 說明文件中的 [Trusting Proxies](https://symfony.com/doc/current/deployment/proxies.html)。"
 

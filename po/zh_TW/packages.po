@@ -10,7 +10,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
-"PO-Revision-Date: 2022-04-18 10:01\n"
+"PO-Revision-Date: 2022-08-09 13:36\n"
 
 #: docs/8.x/packages.md:block 1 (header)
 msgid "Package Development"
@@ -682,6 +682,18 @@ msgstr "接著，使用者在執行 `vendor:publish` 指令時就可以使用標
 msgid "php artisan vendor:publish --tag=courier-config\n"
 msgstr "php artisan vendor:publish --tag=courier-config\n"
 
+#: docs/9.x/packages.md:block 2 (unordered list)
+msgid "[\"About\" Artisan Command](#about-artisan-command)"
+msgstr "[「About」Artisan 指令](#about-artisan-command)"
+
+#: docs/9.x/packages.md:block 34 (quote)
+msgid "**Warning** You should not define closures in your configuration files. They can not be serialized correctly when users execute the `config:cache` Artisan command."
+msgstr "**Warning** 請不要在設定檔中定義閉包。因為當使用者執行 `config:cache` Artisan 指令時，這些閉包沒有辦法被序列化。"
+
+#: docs/9.x/packages.md:block 40 (quote)
+msgid "**Warning** This method only merges the first level of the configuration array. If your users partially define a multi-dimensional configuration array, the missing options will not be merged."
+msgstr "**Warning** 該方法只會合併設定陣列中的第一層。若套件使用者只定義了多為陣列中的一部分，則未定義的部分將不會被合併。"
+
 #: docs/9.x/packages.md:block 53 (code)
 msgid "/**\n"
 " * Bootstrap any package services.\n"
@@ -815,4 +827,48 @@ msgstr "Blade 會通過將元件名稱轉為 Pascal 命名法來自動偵測與�
 #: docs/9.x/packages.md:block 90 (paragraph)
 msgid "If your package contains anonymous components, they must be placed within a `components` directory of your package's \"views\" directory (as specified by the [`loadViewsFrom` method](#views)). Then, you may render them by prefixing the component name with the package's view namespace:"
 msgstr "若套件中有匿名元件，則這些套件必須放在套件「view」目錄 (即 [`loadViewsFrom` 方法](#views) 所指定的目錄) 下的 `components` 目錄內。接著，就可以使用套件 View 命名空間作為前置詞來轉譯套件："
+
+#: docs/9.x/packages.md:block 93 (header)
+msgid "\"About\" Artisan Command"
+msgstr "「About」Artisan 指令"
+
+#: docs/9.x/packages.md:block 94 (paragraph)
+msgid "Laravel's built-in `about` Artisan command provides a synopsis of the application's environment and configuration. Packages may push additional information to this command's output via the `AboutCommand` class. Typically, this information may be added from your package service provider's `register` method:"
+msgstr "Laravel 的內建 `about` Artisan  指令提供了有關專案環境與設定的一覽。套件也可以使用 `AboutCommand` 類別來將額外資訊推入該指令的輸出中。一般來說，可在套件 Service Provider 的 `register` 方法內加上該資訊："
+
+#: docs/9.x/packages.md:block 95 (code)
+msgid "use Illuminate\\Foundation\\Console\\AboutCommand;\n\n"
+"/**\n"
+" * Register any application services.\n"
+" *\n"
+" * @return void\n"
+" */\n"
+"public function register()\n"
+"{\n"
+"    AboutCommand::add('My Package', 'Version', '1.0.0');\n"
+"}\n"
+msgstr "use Illuminate\\Foundation\\Console\\AboutCommand;\n\n"
+"/**\n"
+" * Register any application services.\n"
+" *\n"
+" * @return void\n"
+" */\n"
+"public function register()\n"
+"{\n"
+"    AboutCommand::add('My Package', 'Version', '1.0.0');\n"
+"}\n"
+
+#: docs/9.x/packages.md:block 96 (paragraph)
+msgid "The `about` command's values may also be provided a closures if deferred execution is desirable:"
+msgstr "若有需要延遲執行，則也可以使用閉包來將值提供給 `about` 指令："
+
+#: docs/9.x/packages.md:block 97 (code)
+msgid "AboutCommand::add('My Package', [\n"
+"    'Version' => '1.0.0',\n"
+"    'Driver' => fn () => config('my-package.driver'),\n"
+"]);\n"
+msgstr "AboutCommand::add('My Package', [\n"
+"    'Version' => '1.0.0',\n"
+"    'Driver' => fn () => config('my-package.driver'),\n"
+"]);\n"
 

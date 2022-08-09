@@ -10,7 +10,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
-"PO-Revision-Date: 2022-04-18 09:23\n"
+"PO-Revision-Date: 2022-08-09 12:03\n"
 
 #: docs/8.x/eloquent-relationships.md:block 1 (header)
 msgid "Eloquent: Relationships"
@@ -3284,11 +3284,85 @@ msgid "$users = User::where('vip', true)->get();\n\n"
 msgstr "$users = User::where('vip', true)->get();\n\n"
 "$posts = Post::whereBelongsTo($users)->get();\n"
 
+#: docs/9.x/eloquent-relationships.md:block 81 (quote)
+msgid "**Warning** Because PostgreSQL does not support executing the `MAX` function against UUID columns, it is not currently possible to use one-of-many relationships in combination with PostgreSQL UUID columns."
+msgstr "**Warning** 由於 PostgreSQL 不支援在 UUID 欄位上執行 `MAX` 函式，因此目前一對多關聯無法搭配 PostgreSQL 的 UUID 欄位使用。"
+
 #: docs/9.x/eloquent-relationships.md:block 84 (paragraph)
 msgid "It is possible to construct more advanced \"has one of many\" relationships. For example, a `Product` model may have many associated `Price` models that are retained in the system even after new pricing is published. In addition, new pricing data for the product may be able to be published in advance to take effect at a future date via a `published_at` column."
 msgstr "我們還可以進一步地做出進階的「一對多中之一」關聯。舉例來說，`Product` Model 可能會有許多相應的 `Price` Model，這些 `Price` Model 會在每次更新商品價格後保留在系統內。此外，我們也可以進一步地通過 `published_at` 欄位來讓某個商品價格在未來的時間點生效。"
 
-#: docs/9.x/eloquent-relationships.md:block 407 (paragraph)
+#: docs/9.x/eloquent-relationships.md:block 145 (quote)
+msgid "**Warning** Intermediate tables that utilize Eloquent's automatically maintained timestamps are required to have both `created_at` and `updated_at` timestamp columns."
+msgstr "**Warning** 使用 Eloquent 自動維護時戳的中介資料表會需要擁有 `created_at` 與 `updated_at` 兩個時戳欄位。"
+
+#: docs/9.x/eloquent-relationships.md:block 159 (paragraph)
+msgid "If you would like to define a custom model to represent the intermediate table of your many-to-many relationship, you may call the `using` method when defining the relationship. Custom pivot models give you the opportunity to define additional behavior on the pivot model, such as methods and casts."
+msgstr "若想定義一個代表多對多關聯之中介資料表的自訂 Model，則可以在定義關聯時呼叫 `using` 方法。自訂樞紐 Model (Pivot Model) 能讓我們有機會在樞紐 Model 上定義一些額外的行為，如方法或 ^[Cast](型別轉換) 等。"
+
+#: docs/9.x/eloquent-relationships.md:block 164 (quote)
+msgid "**Warning** Pivot models may not use the `SoftDeletes` trait. If you need to soft delete pivot records consider converting your pivot model to an actual Eloquent model."
+msgstr "**Warning** 樞紐 Model 不能使用 `SoftDeletes` Trait。若有需要對樞紐紀錄作軟刪除，請考慮將樞紐 Model 改寫成真正的 Eloquent Model。"
+
+#: docs/9.x/eloquent-relationships.md:block 220 (quote)
+msgid "**Note** It is possible to construct more advanced \"one of many\" relationships. For more information, please consult the [has one of many documentation](#advanced-has-one-of-many-relationships)."
+msgstr "**Note** 還有辦法建立建立更進階的「One of Many」關聯。更多資訊請參考 [Has One of Many 說明文件](#advanced-has-one-of-many-relationships)。"
+
+#: docs/9.x/eloquent-relationships.md:block 227 (quote)
+msgid "**Note** Before diving into polymorphic many-to-many relationships, you may benefit from reading the documentation on typical [many-to-many relationships](#many-to-many)."
+msgstr "**Note** 在進一步深入瞭解多型的 Many-to-Many 關聯前，我們建議你先閱讀有關普通 [Many-to-Many 關聯](#many-to-many)的說明文件。"
+
+#: docs/9.x/eloquent-relationships.md:block 252 (quote)
+msgid "**Warning** When adding a \"morph map\" to your existing application, every morphable `*_type` column value in your database that still contains a fully-qualified class will need to be converted to its \"map\" name."
+msgstr "**Warning** 在專案中使用「Morph Map」時，所有的 morphable `*_type` 欄位值還是會保持原本的完整各式類別名稱，需要再更改為其「映射 (Map)」的名稱。"
+
+#: docs/9.x/eloquent-relationships.md:block 258 (quote)
+msgid "**Warning** When defining dynamic relationships, always provide explicit key name arguments to the Eloquent relationship methods."
+msgstr "**Warning** 在定義動態關聯時，請總是提供顯式的索引鍵名稱給 Eloquent 關聯方法。"
+
+#: docs/9.x/eloquent-relationships.md:block 292 (quote)
+msgid "**Warning** Eloquent does not currently support querying for relationship existence across databases. The relationships must exist within the same database."
+msgstr "**Warning** 由於 Eloquent 目前並不支援在多個資料庫間查詢關聯的存否，因此要查詢的關聯必須在同一個資料庫中。"
+
+#: docs/9.x/eloquent-relationships.md:block 295 (paragraph)
+msgid "If you would like to query for a relationship's existence with a single, simple where condition attached to the relationship query, you may find it more convenient to use the `whereRelation`, `orWhereRelation`, `whereMorphRelation`, and `orWhereMorphRelation` methods. For example, we may query for all posts that have unapproved comments:"
+msgstr "若想要使用附加在關聯查詢上的簡單且單一的 Where 條件來查詢關聯的存否，那麼用 `whereRelation`、`orWhereRelation`、`whereMorphRelation`、`orWhereMorphRelation` 方法應該會很方便。舉例來說，我們可以查詢所有有未審核 (Unapproved) 留言的貼文："
+
+#: docs/9.x/eloquent-relationships.md:block 376 (paragraph)
+msgid "Alternatively, you may specify nested eager loaded relationships by providing a nested array to the `with` method, which can be convenient when eager loading multiple nested relationships:"
+msgstr "或者，只要傳入一組巢狀陣列給 `with` 方法，就可以積極式載入巢狀關聯。若要積極式載入多個巢狀關聯，該方法很好用："
+
+#: docs/9.x/eloquent-relationships.md:block 377 (code)
+msgid "$books = Book::with([\n"
+"    'author' => [\n"
+"        'contacts',\n"
+"        'publisher',\n"
+"    ],\n"
+"])->get();\n"
+msgstr "$books = Book::with([\n"
+"    'author' => [\n"
+"        'contacts',\n"
+"        'publisher',\n"
+"    ],\n"
+"])->get();\n"
+
+#: docs/9.x/eloquent-relationships.md:block 389 (quote)
+msgid "**Warning** When using this feature, you should always include the `id` column and any relevant foreign key columns in the list of columns you wish to retrieve."
+msgstr "**Warning** 使用這個功能時，請務必在欄位列表中包含 `id` 欄位以及其他相關的外部索引鍵欄位。"
+
+#: docs/9.x/eloquent-relationships.md:block 404 (quote)
+msgid "**Warning** The `limit` and `take` query builder methods may not be used when constraining eager loads."
+msgstr "**Warning** 積極式載入不能使用 `limit` 與 `take` Query Builder 方法來作條件限制。"
+
+#: docs/9.x/eloquent-relationships.md:block 409 (paragraph)
 msgid "In this example, Eloquent will only eager load posts that have not been hidden and videos that have a `type` value of \"educational\"."
 msgstr "在這個範例中，Eloquent 只會積極載入非隱藏的貼文，以及 `type` 值不是「educational」的影片。"
+
+#: docs/9.x/eloquent-relationships.md:block 456 (quote)
+msgid "**Note** Before using the `create` method, be sure to review the [mass assignment](/docs/{{version}}/eloquent#mass-assignment) documentation."
+msgstr "**Note** 在使用 `create` 方法前，請先閱讀[大量賦值](/docs/{{version}}/eloquent#mass-assignment)的說明文件。"
+
+#: docs/9.x/eloquent-relationships.md:block 498 (quote)
+msgid "**Warning** Parent model timestamps will only be updated if the child model is updated using Eloquent's `save` method."
+msgstr "**Warning** 只有在使用 Eloquent 的 `save` 方法來更新子 Model 時，才會更新上傳 Model 的時戳。"
 

@@ -1183,6 +1183,18 @@ msgstr ""
 msgid "[Implicit Enum Binding](#implicit-enum-binding)"
 msgstr ""
 
+#: docs/9.x/routing.md:block 19 (quote)
+msgid "**Note** When defining multiple routes that share the same URI, routes using the `get`, `post`, `put`, `patch`, `delete`, and `options` methods should be defined before routes using the `any`, `match`, and `redirect` methods. This ensures the incoming request is matched with the correct route."
+msgstr ""
+
+#: docs/9.x/routing.md:block 36 (quote)
+msgid "**Warning** When using route parameters in redirect routes, the following parameters are reserved by Laravel and cannot be used: `destination` and `status`."
+msgstr ""
+
+#: docs/9.x/routing.md:block 41 (quote)
+msgid "**Warning** When using route parameters in view routes, the following parameters are reserved by Laravel and cannot be used: `view`, `data`, `status`, and `headers`."
+msgstr ""
+
 #: docs/9.x/routing.md:block 43 (header)
 msgid "The Route List"
 msgstr ""
@@ -1204,14 +1216,30 @@ msgid "php artisan route:list -v\n"
 msgstr ""
 
 #: docs/9.x/routing.md:block 48 (paragraph)
-msgid "In addition, you may instruct Laravel to hide any routes that are defined by third-party packages by providing the `--except-vendor` option when executing the `route:list` command:"
+msgid "You may also instruct Laravel to only show routes that begin with a given URI:"
 msgstr ""
 
 #: docs/9.x/routing.md:block 49 (code)
+msgid "php artisan route:list --path=api\n"
+msgstr ""
+
+#: docs/9.x/routing.md:block 50 (paragraph)
+msgid "In addition, you may instruct Laravel to hide any routes that are defined by third-party packages by providing the `--except-vendor` option when executing the `route:list` command:"
+msgstr ""
+
+#: docs/9.x/routing.md:block 51 (code)
 msgid "php artisan route:list --except-vendor\n"
 msgstr ""
 
-#: docs/9.x/routing.md:block 72 (code)
+#: docs/9.x/routing.md:block 52 (paragraph)
+msgid "Likewise, you may also instruct Laravel to only show routes that are defined by third-party packages by providing the `--only-vendor` option when executing the `route:list` command:"
+msgstr ""
+
+#: docs/9.x/routing.md:block 53 (code)
+msgid "php artisan route:list --only-vendor\n"
+msgstr ""
+
+#: docs/9.x/routing.md:block 76 (code)
 msgid ""
 "Route::get('/user/{id}/{name}', function ($id, $name) {\n"
 "    //\n"
@@ -1230,15 +1258,31 @@ msgid ""
 "})->whereIn('category', ['movie', 'song', 'painting']);\n"
 msgstr ""
 
-#: docs/9.x/routing.md:block 164 (header)
+#: docs/9.x/routing.md:block 88 (quote)
+msgid "**Warning** Encoded forward slashes are only supported within the last route segment."
+msgstr ""
+
+#: docs/9.x/routing.md:block 95 (quote)
+msgid "**Warning** Route names should always be unique."
+msgstr ""
+
+#: docs/9.x/routing.md:block 104 (quote)
+msgid "**Note** Sometimes, you may wish to specify request-wide default values for URL parameters, such as the current locale. To accomplish this, you may use the [`URL::defaults` method](/docs/{{version}}/urls#default-values)."
+msgstr ""
+
+#: docs/9.x/routing.md:block 125 (quote)
+msgid "**Warning** In order to ensure your subdomain routes are reachable, you should register subdomain routes before registering root domain routes. This will prevent root domain routes from overwriting subdomain routes which have the same URI path."
+msgstr ""
+
+#: docs/9.x/routing.md:block 168 (header)
 msgid "Implicit Enum Binding"
 msgstr ""
 
-#: docs/9.x/routing.md:block 165 (paragraph)
+#: docs/9.x/routing.md:block 169 (paragraph)
 msgid "PHP 8.1 introduced support for [Enums](https://www.php.net/manual/en/language.enumerations.backed.php). To compliment this feature, Laravel allows you to type-hint a [backed Enum](https://www.php.net/manual/en/language.enumerations.backed.php) on your route definition and Laravel will only invoke the route if that route segment corresponds to a valid Enum value. Otherwise, a 404 HTTP response will be returned automatically. For example, given the following Enum:"
 msgstr ""
 
-#: docs/9.x/routing.md:block 166 (code)
+#: docs/9.x/routing.md:block 170 (code)
 msgid ""
 "<?php\n"
 "\n"
@@ -1251,11 +1295,11 @@ msgid ""
 "}\n"
 msgstr ""
 
-#: docs/9.x/routing.md:block 167 (paragraph)
+#: docs/9.x/routing.md:block 171 (paragraph)
 msgid "You may define a route that will only be invoked if the `{category}` route segment is `fruits` or `people`. Otherwise, Laravel will return a 404 HTTP response:"
 msgstr ""
 
-#: docs/9.x/routing.md:block 168 (code)
+#: docs/9.x/routing.md:block 172 (code)
 msgid ""
 "use App\\Enums\\Category;\n"
 "use Illuminate\\Support\\Facades\\Route;\n"
@@ -1263,6 +1307,42 @@ msgid ""
 "Route::get('/categories/{category}', function (Category $category) {\n"
 "    return $category->value;\n"
 "});\n"
+msgstr ""
+
+#: docs/9.x/routing.md:block 193 (quote)
+msgid "**Warning** The fallback route should always be the last route registered by your application."
+msgstr ""
+
+#: docs/9.x/routing.md:block 200 (code)
+msgid ""
+"use Illuminate\\Cache\\RateLimiting\\Limit;\n"
+"use Illuminate\\Http\\Request;\n"
+"use Illuminate\\Support\\Facades\\RateLimiter;\n"
+"\n"
+"/**\n"
+" * Configure the rate limiters for the application.\n"
+" *\n"
+" * @return void\n"
+" */\n"
+"protected function configureRateLimiting()\n"
+"{\n"
+"    RateLimiter::for('global', function (Request $request) {\n"
+"        return Limit::perMinute(1000);\n"
+"    });\n"
+"}\n"
+msgstr ""
+
+#: docs/9.x/routing.md:block 202 (code)
+msgid ""
+"RateLimiter::for('global', function (Request $request) {\n"
+"    return Limit::perMinute(1000)->response(function (Request $request, array $headers) {\n"
+"        return response('Custom response...', 429, $headers);\n"
+"    });\n"
+"});\n"
+msgstr ""
+
+#: docs/9.x/routing.md:block 237 (quote)
+msgid "**Note** For more information on CORS and CORS headers, please consult the [MDN web documentation on CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS#The_HTTP_response_headers)."
 msgstr ""
 
 #: docs/master/routing.md:block 157 (paragraph)

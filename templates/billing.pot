@@ -3168,25 +3168,374 @@ msgstr ""
 msgid "{tip} In order to test a variety of billing scenarios, such as credit card denials and failures, you may use the vast range of [testing card numbers and tokens](https://stripe.com/docs/testing) provided by Stripe."
 msgstr ""
 
-#: docs/9.x/billing.md:block 488 (paragraph)
+#: docs/9.x/billing.md:block 2 (unordered list)
+msgid "[Subscriptions With Multiple Products](#subscriptions-with-multiple-products)"
+msgstr ""
+
+#: docs/9.x/billing.md:block 2 (unordered list)
+msgid "[Creating Payment Intents](#creating-payment-intents)"
+msgstr ""
+
+#: docs/9.x/billing.md:block 9 (quote)
+msgid "**Warning** To prevent breaking changes, Cashier uses a fixed Stripe API version. Cashier 13 utilizes Stripe API version `2020-08-27`. The Stripe API version will be updated on minor releases in order to make use of new Stripe features and improvements."
+msgstr ""
+
+#: docs/9.x/billing.md:block 14 (quote)
+msgid "**Warning** To ensure Cashier properly handles all Stripe events, remember to [set up Cashier's webhook handling](#handling-stripe-webhooks)."
+msgstr ""
+
+#: docs/9.x/billing.md:block 23 (quote)
+msgid "**Warning** Stripe recommends that any column used for storing Stripe identifiers should be case-sensitive. Therefore, you should ensure the column collation for the `stripe_id` column is set to `utf8_bin` when using MySQL. More information regarding this can be found in the [Stripe documentation](https://stripe.com/docs/upgrades#what-changes-does-stripe-consider-to-be-backwards-compatible)."
+msgstr ""
+
+#: docs/9.x/billing.md:block 32 (quote)
+msgid "**Warning** If you're using a model other than Laravel's supplied `App\\Models\\User` model, you'll need to publish and alter the [Cashier migrations](#installation) provided to match your alternative model's table name."
+msgstr ""
+
+#: docs/9.x/billing.md:block 36 (code)
+msgid ""
+"STRIPE_KEY=your-stripe-key\n"
+"STRIPE_SECRET=your-stripe-secret\n"
+"STRIPE_WEBHOOK_SECRET=your-stripe-webhook-secret\n"
+msgstr ""
+
+#: docs/9.x/billing.md:block 37 (quote)
+msgid "**Warning** You should ensure that the `STRIPE_WEBHOOK_SECRET` environment variable is defined in your application's `.env` file, as this variable is used to ensure that incoming webhooks are actually from Stripe."
+msgstr ""
+
+#: docs/9.x/billing.md:block 44 (quote)
+msgid "**Warning** In order to use locales other than `en`, ensure the `ext-intl` PHP extension is installed and configured on your server."
+msgstr ""
+
+#: docs/9.x/billing.md:block 51 (quote)
+msgid "**Warning** Unfortunately, for now, no tax is calculated for [single charges](#single-charges) or [single charge checkouts](#single-charge-checkouts). In addition, Stripe Tax is currently \"invite-only\" during its beta period. You can request access to Stripe Tax via the [Stripe Tax website](https://stripe.com/tax#request-access)."
+msgstr ""
+
+#: docs/9.x/billing.md:block 137 (quote)
+msgid "**Note** If you would like more information about Setup Intents and gathering customer payment details please [review this overview provided by Stripe](https://stripe.com/docs/payments/save-and-reuse#php)."
+msgstr ""
+
+#: docs/9.x/billing.md:block 171 (quote)
+msgid "**Warning** The default payment method on a customer can only be used for invoicing and creating new subscriptions. Due to limitations imposed by Stripe, it may not be used for single charges."
+msgstr ""
+
+#: docs/9.x/billing.md:block 176 (quote)
+msgid "**Note** To learn how to retrieve payment method identifiers please review the [payment method storage documentation](#storing-payment-methods)."
+msgstr ""
+
+#: docs/9.x/billing.md:block 187 (quote)
+msgid "**Warning** If a user has an active subscription, your application should not allow them to delete their default payment method."
+msgstr ""
+
+#: docs/9.x/billing.md:block 197 (quote)
+msgid "**Warning** Passing a payment method identifier directly to the `create` subscription method will also automatically add it to the user's stored payment methods."
+msgstr ""
+
+#: docs/9.x/billing.md:block 215 (paragraph)
+msgid "Or, if you would like to apply a [Stripe promotion code](https://stripe.com/docs/billing/subscriptions/discounts/codes), you may use the `withPromotionCode` method:"
+msgstr ""
+
+#: docs/9.x/billing.md:block 216 (code)
+msgid ""
+"$user->newSubscription('default', 'price_monthly')\n"
+"     ->withPromotionCode('promo_code_id')\n"
+"     ->create($paymentMethod);\n"
+msgstr ""
+
+#: docs/9.x/billing.md:block 217 (paragraph)
+msgid "The given promotion code ID should be the Stripe API ID assigned to the promotion code and not the customer facing promotion code. If you need to find a promotion code ID based on a given customer facing promotion code, you may use the `findPromotionCode` method:"
+msgstr ""
+
+#: docs/9.x/billing.md:block 218 (code)
+msgid ""
+"// Find a promotion code ID by its customer facing code...\n"
+"$promotionCode = $user->findPromotionCode('SUMMERSALE');\n"
+"\n"
+"// Find an active promotion code ID by its customer facing code...\n"
+"$promotionCode = $user->findActivePromotionCode('SUMMERSALE');\n"
+msgstr ""
+
+#: docs/9.x/billing.md:block 219 (paragraph)
+msgid "In the example above, the returned `$promotionCode` object is an instance of `Laravel\\Cashier\\PromotionCode`. This class decorates an underlying `Stripe\\PromotionCode` object. You can retrieve the coupon related to the promotion code by invoking the `coupon` method:"
+msgstr ""
+
+#: docs/9.x/billing.md:block 220 (code)
+msgid "$coupon = $user->findPromotionCode('SUMMERSALE')->coupon();\n"
+msgstr ""
+
+#: docs/9.x/billing.md:block 221 (paragraph)
+msgid "The coupon instance allows you to determine the discount amount and whether the coupon represents a fixed discount or percentage based discount:"
+msgstr ""
+
+#: docs/9.x/billing.md:block 222 (code)
+msgid ""
+"if ($coupon->isPercentage()) {\n"
+"    return $coupon->percentOff().'%'; // 21.5%\n"
+"} else {\n"
+"    return $coupon->amountOff(); // $5.99\n"
+"}\n"
+msgstr ""
+
+#: docs/9.x/billing.md:block 223 (paragraph)
+msgid "You can also retrieve the discounts that are currently applied to a customer or subscription:"
+msgstr ""
+
+#: docs/9.x/billing.md:block 224 (code)
+msgid ""
+"$discount = $billable->discount();\n"
+"\n"
+"$discount = $subscription->discount();\n"
+msgstr ""
+
+#: docs/9.x/billing.md:block 225 (paragraph)
+msgid "The returned `Laravel\\Cashier\\Discount` instances decorate an underlying `Stripe\\Discount` object instance. You may retrieve the coupon related to this discount by invoking the `coupon` method:"
+msgstr ""
+
+#: docs/9.x/billing.md:block 226 (code)
+msgid "$coupon = $subscription->discount()->coupon();\n"
+msgstr ""
+
+#: docs/9.x/billing.md:block 227 (paragraph)
+msgid "If you would like to apply a new coupon or promotion code to a customer or subscription, you may do so via the `applyCoupon` or `applyPromotionCode` methods:"
+msgstr ""
+
+#: docs/9.x/billing.md:block 228 (code)
+msgid ""
+"$billable->applyCoupon('coupon_id');\n"
+"$billable->applyPromotionCode('promotion_code_id');\n"
+"\n"
+"$subscription->applyCoupon('coupon_id');\n"
+"$subscription->applyPromotionCode('promotion_code_id');\n"
+msgstr ""
+
+#: docs/9.x/billing.md:block 229 (paragraph)
+msgid "Remember, you should use the Stripe API ID assigned to the promotion code and not the customer facing promotion code. Only one coupon or promotion code can be applied to a customer or subscription at a given time."
+msgstr ""
+
+#: docs/9.x/billing.md:block 230 (paragraph)
+msgid "For more info on this subject, please consult the Stripe documentation regarding [coupons](https://stripe.com/docs/billing/subscriptions/coupons) and [promotion codes](https://stripe.com/docs/billing/subscriptions/coupons/codes)."
+msgstr ""
+
+#: docs/9.x/billing.md:block 256 (quote)
+msgid "**Warning** If a user has two subscriptions with the same name, the most recent subscription will always be returned by the `subscription` method. For example, a user might have two subscription records named `default`; however, one of the subscriptions may be an old, expired subscription, while the other is the current, active subscription. The most recent subscription will always be returned while older subscriptions are kept in the database for historical review."
+msgstr ""
+
+#: docs/9.x/billing.md:block 274 (quote)
+msgid "**Warning** When a subscription is in an `incomplete` state it cannot be changed until the payment is confirmed. Therefore, the `swap` and `updateQuantity` methods will throw an exception when the subscription is in an `incomplete` state."
+msgstr ""
+
+#: docs/9.x/billing.md:block 295 (quote)
+msgid "**Warning** Executing the `noProrate` method before the `swapAndInvoice` method will have no effect on proration. An invoice will always be issued."
+msgstr ""
+
+#: docs/9.x/billing.md:block 306 (header)
+msgid "Quantities For Subscriptions With Multiple Products"
+msgstr ""
+
+#: docs/9.x/billing.md:block 307 (paragraph)
+msgid "If your subscription is a [subscription with multiple products](#subscriptions-with-multiple-products), you should pass the ID of the price whose quantity you wish to increment or decrement as the second argument to the increment / decrement methods:"
+msgstr ""
+
+#: docs/9.x/billing.md:block 310 (header)
+msgid "Subscriptions With Multiple Products"
+msgstr ""
+
+#: docs/9.x/billing.md:block 311 (paragraph)
+msgid "[Subscription with multiple products](https://stripe.com/docs/billing/subscriptions/multiple-products) allow you to assign multiple billing products to a single subscription. For example, imagine you are building a customer service \"helpdesk\" application that has a base subscription price of $10 per month but offers a live chat add-on product for an additional $15 per month. Information for subscriptions with multiple products is stored in Cashier's `subscription_items` database table."
+msgstr ""
+
+#: docs/9.x/billing.md:block 312 (paragraph)
+msgid "You may specify multiple products for a given subscription by passing an array of prices as the second argument to the `newSubscription` method:"
+msgstr ""
+
+#: docs/9.x/billing.md:block 324 (quote)
+msgid "**Warning** You may not remove the last price on a subscription. Instead, you should simply cancel the subscription."
+msgstr ""
+
+#: docs/9.x/billing.md:block 327 (paragraph)
+msgid "You may also change the prices attached to a subscription with multiple products. For example, imagine a customer has a `price_basic` subscription with a `price_chat` add-on product and you want to upgrade the customer from the `price_basic` to the `price_pro` price:"
+msgstr ""
+
+#: docs/9.x/billing.md:block 336 (paragraph)
+msgid "By default, Stripe will prorate charges when adding or removing prices from a subscription with multiple products. If you would like to make a price adjustment without proration, you should chain the `noProrate` method onto your price operation:"
+msgstr ""
+
+#: docs/9.x/billing.md:block 342 (quote)
+msgid "**Warning** When a subscription has multiple prices the `stripe_price` and `quantity` attributes on the `Subscription` model will be `null`. To access the individual price attributes, you should use the `items` relationship available on the `Subscription` model."
+msgstr ""
+
+#: docs/9.x/billing.md:block 377 (quote)
+msgid "**Warning** Instead of calculating Tax Rates manually, you can [automatically calculate taxes using Stripe Tax](#tax-configuration)"
+msgstr ""
+
+#: docs/9.x/billing.md:block 381 (paragraph)
+msgid "If you're offering subscriptions with multiple products, you may define different tax rates for each price by implementing a `priceTaxRates` method on your billable model:"
+msgstr ""
+
+#: docs/9.x/billing.md:block 383 (quote)
+msgid "**Warning** The `taxRates` method only applies to subscription charges. If you use Cashier to make \"one off\" charges, you will need to manually specify the tax rate at that time."
+msgstr ""
+
+#: docs/9.x/billing.md:block 388 (paragraph)
+msgid "This will also sync any item tax rates for a subscription with multiple products. If your application is offering subscriptions with multiple products, you should ensure that your billable model implements the `priceTaxRates` method [discussed above](#subscription-taxes)."
+msgstr ""
+
+#: docs/9.x/billing.md:block 393 (quote)
+msgid "**Warning** These methods are also available on any `Laravel\\Cashier\\Invoice` object. However, when invoked on an `Invoice` object, the methods will determine the exemption status at the time the invoice was created."
+msgstr ""
+
+#: docs/9.x/billing.md:block 425 (quote)
+msgid "**Warning** If the customer's subscription is not canceled before the trial ending date they will be charged as soon as the trial expires, so you should be sure to notify your users of their trial ending date."
+msgstr ""
+
+#: docs/9.x/billing.md:block 432 (paragraph)
+msgid "To determine if an existing trial has expired, you may use the `hasExpiredTrial` methods:"
+msgstr ""
+
+#: docs/9.x/billing.md:block 433 (code)
+msgid ""
+"if ($user->hasExpiredTrial('default')) {\n"
+"    //\n"
+"}\n"
+"\n"
+"if ($user->subscription('default')->hasExpiredTrial()) {\n"
+"    //\n"
+"}\n"
+msgstr ""
+
+#: docs/9.x/billing.md:block 441 (quote)
+msgid "**Warning** Be sure to add a [date cast](/docs/{{version}}/eloquent-mutators##date-casting) for the `trial_ends_at` attribute within your billable model's class definition."
+msgstr ""
+
+#: docs/9.x/billing.md:block 456 (quote)
+msgid "**Note** You may use [the Stripe CLI](https://stripe.com/docs/stripe-cli) to help test webhooks during local development."
+msgstr ""
+
+#: docs/9.x/billing.md:block 469 (quote)
+msgid "**Warning** Make sure you protect incoming Stripe webhook requests with Cashier's included [webhook signature verification](#verifying-webhook-signatures) middleware."
+msgstr ""
+
+#: docs/9.x/billing.md:block 498 (quote)
+msgid "**Warning** The `charge` method accepts the payment amount in the lowest denominator of the currency used by your application. For example, if customers are paying in United States Dollars, amounts should be specified in pennies."
+msgstr ""
+
+#: docs/9.x/billing.md:block 505 (paragraph)
 msgid "Similarly to `invoicePrice`, you may use the `tabPrice` method to create a one-time charge for multiple items (up to 250 items per invoice) by adding them to the customer's \"tab\" and then invoicing the customer. For example, we may invoice a customer for five shirts and two mugs:"
 msgstr ""
 
-#: docs/9.x/billing.md:block 489 (code)
+#: docs/9.x/billing.md:block 506 (code)
 msgid ""
 "$user->tabPrice('price_tshirt', 5);\n"
 "$user->tabPrice('price_mug', 2);\n"
 "$user->invoice();\n"
 msgstr ""
 
-#: docs/9.x/billing.md:block 492 (paragraph)
-msgid "Although the `invoiceFor` method is available for you to use, it is recommendeded that you use the `invoicePrice` and `tabPrice` methods with pre-defined prices. By doing so, you will have access to better analytics and data within your Stripe dashboard regarding your sales on a per-product basis."
+#: docs/9.x/billing.md:block 509 (paragraph)
+msgid "Although the `invoiceFor` method is available for you to use, it is recommended that you use the `invoicePrice` and `tabPrice` methods with pre-defined prices. By doing so, you will have access to better analytics and data within your Stripe dashboard regarding your sales on a per-product basis."
 msgstr ""
 
-#: docs/9.x/billing.md:block 493 (quote)
-msgid "{note} The `invoice`, `invoicePrice`, and `invoiceFor` methods will create a Stripe invoice which will retry failed billing attempts. If you do not want invoices to retry failed charges, you will need to close them using the Stripe API after the first failed charge."
+#: docs/9.x/billing.md:block 510 (quote)
+msgid "**Warning** The `invoice`, `invoicePrice`, and `invoiceFor` methods will create a Stripe invoice which will retry failed billing attempts. If you do not want invoices to retry failed charges, you will need to close them using the Stripe API after the first failed charge."
 msgstr ""
 
-#: docs/9.x/billing.md:block 519 (header)
+#: docs/9.x/billing.md:block 512 (header)
+msgid "Creating Payment Intents"
+msgstr ""
+
+#: docs/9.x/billing.md:block 513 (paragraph)
+msgid "You can create a new Stripe payment intent by invoking the `pay` method on a billable model instance. Calling this method will create a payment intent that is wrapped in a `Laravel\\Cashier\\Payment` instance:"
+msgstr ""
+
+#: docs/9.x/billing.md:block 514 (code)
+msgid ""
+"use Illuminate\\Http\\Request;\n"
+"\n"
+"Route::post('/pay', function (Request $request) {\n"
+"    $payment = $request->user()->pay(\n"
+"        $request->get('amount')\n"
+"    );\n"
+"\n"
+"    return $payment->client_secret;\n"
+"});\n"
+msgstr ""
+
+#: docs/9.x/billing.md:block 515 (paragraph)
+msgid "After creating the payment intent, you can return the client secret to your application's frontend so that the user can complete the payment in their browser. To read more about building entire payment flows using Stripe payment intents, please consult the [Stripe documentation](https://stripe.com/docs/payments/accept-a-payment?platform=web)."
+msgstr ""
+
+#: docs/9.x/billing.md:block 516 (paragraph)
+msgid "When using the `pay` method, the default payment methods that are enabled within your Stripe dashboard will be available to the customer. Alternatively, if you only want to allow for some specific payment methods to be used, you may use the `payWith` method:"
+msgstr ""
+
+#: docs/9.x/billing.md:block 517 (code)
+msgid ""
+"use Illuminate\\Http\\Request;\n"
+"\n"
+"Route::post('/pay', function (Request $request) {\n"
+"    $payment = $request->user()->payWith(\n"
+"        $request->get('amount'), ['card', 'bancontact']\n"
+"    );\n"
+"\n"
+"    return $payment->client_secret;\n"
+"});\n"
+msgstr ""
+
+#: docs/9.x/billing.md:block 518 (quote)
+msgid "**Warning** The `pay` and `payWith` methods accept the payment amount in the lowest denominator of the currency used by your application. For example, if customers are paying in United States Dollars, amounts should be specified in pennies."
+msgstr ""
+
+#: docs/9.x/billing.md:block 541 (paragraph)
+msgid "Similarly, if the customer has multiple subscriptions, you can also retrieve the upcoming invoice for a specific subscription:"
+msgstr ""
+
+#: docs/9.x/billing.md:block 544 (header)
 msgid "Previewing Subscription Invoices"
+msgstr ""
+
+#: docs/9.x/billing.md:block 575 (code)
+msgid ""
+"use Illuminate\\Http\\Request;\n"
+"use Stripe\\Checkout\\Session;\n"
+"use Stripe\\Customer;\n"
+"\n"
+"Route::get('/product-checkout', function (Request $request) {\n"
+"    return $request->user()->checkout(['price_tshirt' => 1], [\n"
+"        'success_url' => route('checkout-success').'?session_id={CHECKOUT_SESSION_ID}',\n"
+"        'cancel_url' => route('checkout-cancel'),\n"
+"    ]);\n"
+"});\n"
+"\n"
+"Route::get('/checkout-success', function (Request $request) {\n"
+"    $checkoutSession = $request->user()->stripe()->checkout->sessions->retrieve($request->get('session_id'));\n"
+"\n"
+"    return view('checkout.success', ['checkoutSession' => $checkoutSession]);\n"
+"})->name('checkout-success');\n"
+msgstr ""
+
+#: docs/9.x/billing.md:block 584 (quote)
+msgid "**Warning** When using the `checkoutCharge` method, Stripe will always create a new product and price in your Stripe dashboard. Therefore, we recommend that you create the products up front in your Stripe dashboard and use the `checkout` method instead."
+msgstr ""
+
+#: docs/9.x/billing.md:block 587 (quote)
+msgid "**Warning** Using Stripe Checkout for subscriptions requires you to enable the `customer.subscription.created` webhook in your Stripe dashboard. This webhook will create the subscription record in your database and store all of the relevant subscription items."
+msgstr ""
+
+#: docs/9.x/billing.md:block 594 (quote)
+msgid "**Warning** Unfortunately Stripe Checkout does not support all subscription billing options when starting subscriptions. Using the `anchorBillingCycleOn` method on the subscription builder, setting proration behavior, or setting payment behavior will not have any effect during Stripe Checkout sessions. Please consult [the Stripe Checkout Session API documentation](https://stripe.com/docs/api/checkout/sessions/create) to review which parameters are available."
+msgstr ""
+
+#: docs/9.x/billing.md:block 608 (quote)
+msgid "**Warning** If you have already configured [automatic tax collection](#tax-configuration) in your application's service provider then this feature will be enabled automatically and there is no need to invoke the `collectTaxIds` method."
+msgstr ""
+
+#: docs/9.x/billing.md:block 627 (quote)
+msgid "**Warning** Before getting started, review [Stripe's guide on PSD2 and SCA](https://stripe.com/guides/strong-customer-authentication) as well as their [documentation on the new SCA APIs](https://stripe.com/docs/strong-customer-authentication)."
+msgstr ""
+
+#: docs/9.x/billing.md:block 641 (quote)
+msgid "**Warning** Notifications will be sent even when customers are manually making a payment that requires additional confirmation. Unfortunately, there is no way for Stripe to know that the payment was done manually or \"off-session\". But, a customer will simply see a \"Payment Successful\" message if they visit the payment page after already confirming their payment. The customer will not be allowed to accidentally confirm the same payment twice and incur an accidental second charge."
+msgstr ""
+
+#: docs/9.x/billing.md:block 657 (quote)
+msgid "**Note** In order to test a variety of billing scenarios, such as credit card denials and failures, you may use the vast range of [testing card numbers and tokens](https://stripe.com/docs/testing) provided by Stripe."
 msgstr ""

@@ -18,10 +18,15 @@ jobs:
       - name: Checkout Submodules
         run: git submodule update --init --recursive
 
+      - name: Setup Python
+        uses: actions/setup-python@v2
+
+      - name: Setup Poetry
+        uses: abatilo/actions-poetry@v2.0.0
+
       - name: Prepare Environment
         run: |
-          sudo apt-get install zsh
-          pip3 install --upgrade mdpo
+          poetry install
 
       - name: Update
         run: |
@@ -32,7 +37,7 @@ jobs:
 
       - name: Build
         run: |
-          zsh build.sh zh_TW
+          poetry run python3 build.py zh_TW
 
       - name: Commit & Push
         run: |

@@ -1,6 +1,9 @@
 import os
 import shutil
 import sys
+import requests
+import yaml
+import polib
 from glob import glob
 from mdpo.po2md import pofile_to_markdown
 
@@ -10,9 +13,37 @@ if len(sys.argv) < 2 or not sys.argv[1]:
 
 locale = sys.argv[1]
 
+crowdinToken = os.getenv('CROWDIN_TOKEN')
+
+if crowdinToken is None:
+  print('Error: CROWDIN_TOKEN environment variable is not set')
+  sys.exit(1)
+
 if os.path.exists(f'po/{locale}.po'):
   print(f'Error: po/{locale} does not exist')
   sys.exit(1)
+
+file_translators = {}
+def list_file_translators(project_id, file_id):
+    if file_id in file_translators:
+        return file_translators[file_id]
+
+    translators = {}
+    has_more = True
+    per_page = 500
+    offset = 0
+    while has_more:
+        response = requests.get(f'https://api.crowdin.com/api/v2/projects/{project_id}/languages/{locale.replace("_", "-")}/translations?fileId={file_id}&offset={offset}&limit={per_page}', headers={ 'Authorization': f'Bearer {crowdinToken}' }).json()
+        for translation in response['data']:
+            translators[translation['data']['user']['id']] = {
+                'name': translation['data']['user']['fullName'],
+                'avatarUrl': translation['data']['user']['avatarUrl']
+            } 
+        has_more = len(response['data']) >= per_page
+        offset += per_page
+
+    file_translators[file_id] = translators
+    return translators
 
 for source_dir in glob('docs/*'):
   version = os.path.basename(source_dir)
@@ -30,9 +61,28 @@ for source_dir in glob('docs/*'):
 
     print(f'Building {target_dir}/{md_filename}.md...')
 
+    pofile = polib.pofile(f'{po_dir}/{md_filename}.po')
+    file_id = pofile.metadata['X-Crowdin-File-ID']
+    project_id = pofile.metadata['X-Crowdin-Project-ID']
+    updated_at = pofile.metadata['PO-Revision-Date']
+
     pofile_to_markdown(
         f'{source_dir}/{md_filename}.md',
         f'{po_dir}/{md_filename}.po',
         save=f'{target_dir}/{md_filename}.md',
         wrapwidth=0,
     )
+
+    # write front matter    
+    front_matters = {}
+    if file_id is not None:
+      front_matters['crowdinUrl'] = f'https://crowdin.com/translate/laravel-docs/{file_id}/en-{locale.replace("_", "").lower()}' 
+      front_matters['updatedAt'] = f'{updated_at.replace(" ", "T")}:00Z'
+      front_matters['contributors'] = list_file_translators(project_id, file_id)
+      front_matters['progress'] = pofile.percent_translated()
+
+    with open(f'{target_dir}/{md_filename}.md', 'r') as f:
+        markdown_data = f.read()
+    
+    with open(f'{target_dir}/{md_filename}.md', 'w') as f:
+        f.write(f'---\n{yaml.dump(front_matters)}---\n\n{markdown_data}')

@@ -16,9 +16,15 @@ jobs:
       - name: Checkout Submodules
         run: git submodule update --init --recursive
 
+      - name: Setup Python
+        uses: actions/setup-python@v2
+
+      - name: Setup Poetry
+        uses: abatilo/actions-poetry@v2.0.0
+
       - name: Prepare Environment
         run: |
-          pip3 install -r ./requirements.txt
+          poetry install
 
       - name: Git Config
         run: |
@@ -27,7 +33,7 @@ jobs:
 
       - name: Build
         run: |
-          python3 update_template.py
+          poetry run python3 update_template.py
 
       - name: Commit & Push
         run: |

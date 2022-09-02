@@ -1,67 +1,43 @@
+---
+contributors: {}
+crowdinUrl: https://crowdin.com/translate/laravel-docs/81/en-zhtw
+progress: 0
+updatedAt: '2022-08-06T05:46:00Z'
+---
+
 # Laravel Homestead
 
 - [Introduction](#introduction)
-
 - [Installation & Setup](#installation-and-setup)
-
    - [First Steps](#first-steps)
-
    - [Configuring Homestead](#configuring-homestead)
-
    - [Configuring Nginx Sites](#configuring-nginx-sites)
-
    - [Configuring Services](#configuring-services)
-
    - [Launching The Vagrant Box](#launching-the-vagrant-box)
-
    - [Per Project Installation](#per-project-installation)
-
    - [Installing Optional Features](#installing-optional-features)
-
    - [Aliases](#aliases)
-
 - [Updating Homestead](#updating-homestead)
-
 - [Daily Usage](#daily-usage)
-
    - [Connecting Via SSH](#connecting-via-ssh)
-
    - [Adding Additional Sites](#adding-additional-sites)
-
    - [Environment Variables](#environment-variables)
-
    - [Ports](#ports)
-
    - [PHP Versions](#php-versions)
-
    - [Connecting To Databases](#connecting-to-databases)
-
    - [Database Backups](#database-backups)
-
    - [Configuring Cron Schedules](#configuring-cron-schedules)
-
    - [Configuring MailHog](#configuring-mailhog)
-
    - [Configuring Minio](#configuring-minio)
-
    - [Laravel Dusk](#laravel-dusk)
-
    - [Sharing Your Environment](#sharing-your-environment)
-
 - [Debugging & Profiling](#debugging-and-profiling)
-
    - [Debugging Web Requests With Xdebug](#debugging-web-requests)
-
    - [Debugging CLI Applications](#debugging-cli-applications)
-
    - [Profiling Applications with Blackfire](#profiling-applications-with-blackfire)
-
 - [Network Interfaces](#network-interfaces)
-
 - [Extending Homestead](#extending-homestead)
-
 - [Provider Specific Settings](#provider-specific-settings)
-
    - [VirtualBox](#provider-specific-virtualbox)
 
 <a name="introduction"></a>
@@ -75,7 +51,6 @@ Laravel strives to make the entire PHP development experience delightful, includ
 Homestead runs on any Windows, macOS, or Linux system and includes Nginx, PHP, MySQL, PostgreSQL, Redis, Memcached, Node, and all of the other software you need to develop amazing Laravel applications.
 
 > {note} If you are using Windows, you may need to enable hardware virtualization (VT-x). It can usually be enabled via your BIOS. If you are using Hyper-V on a UEFI system you may additionally need to disable Hyper-V in order to access VT-x.
-
 
 <a name="included-software"></a>
 
@@ -96,7 +71,6 @@ Homestead runs on any Windows, macOS, or Linux system and includes Nginx, PHP, M
 Before launching your Homestead environment, you must install [Vagrant](https://www.vagrantup.com/downloads.html) as well as one of the following supported providers:
 
 - [VirtualBox 6.1.x](https://www.virtualbox.org/wiki/Downloads)
-
 - [Parallels](https://www.parallels.com/products/desktop/)
 
 All of these software packages provide easy-to-use visual installers for all popular operating systems.
@@ -145,7 +119,6 @@ The `provider` key in your `Homestead.yaml` file indicates which Vagrant provide
 
 > {note} If you are using Apple Silicon, you should add `box: laravel/homestead-arm` to your `Homestead.yaml` file. Apple Silicon requires the Parallels provider.
 
-
 <a name="configuring-shared-folders"></a>
 
 #### Configuring Shared Folders
@@ -160,7 +133,6 @@ folders:
 
 > {note} Windows users should not use the `~/` path syntax and instead should use the full path to their project, such as `C:\Users\user\Code\project1`.
 
-
 You should always map individual applications to their own folder mapping instead of mapping a single large directory that contains all of your applications. When you map a folder, the virtual machine must keep track of all disk IO for *every* file in the folder. You may experience reduced performance if you have a large number of files in a folder:
 
 ```yaml
@@ -173,7 +145,6 @@ folders:
 
 > {note} You should never mount `.` (the current directory) when using Homestead. This causes Vagrant to not map the current folder to `/vagrant` and will break optional features and cause unexpected results while provisioning.
 
-
 To enable [NFS](https://www.vagrantup.com/docs/synced-folders/nfs.html), you may add a `type` option to your folder mapping:
 
 ```yaml
@@ -184,7 +155,6 @@ folders:
 ```
 
 > {note} When using NFS on Windows, you should consider installing the [vagrant-winnfsd](https://github.com/winnfsd/vagrant-winnfsd) plug-in. This plug-in will maintain the correct user / group permissions for files and directories within the Homestead virtual machine.
-
 
 You may also pass any options supported by Vagrant's [Synced Folders](https://www.vagrantup.com/docs/synced-folders/basic_usage.html) by listing them under the `options` key:
 
@@ -213,7 +183,6 @@ sites:
 If you change the `sites` property after provisioning the Homestead virtual machine, you should execute the `vagrant reload --provision` command in your terminal to update the Nginx configuration on the virtual machine.
 
 > {note} Homestead scripts are built to be as idempotent as possible. However, if you are experiencing issues while provisioning you should destroy and rebuild the machine by executing the `vagrant destroy && vagrant up` command.
-
 
 <a name="hostname-resolution"></a>
 
@@ -331,7 +300,6 @@ You may specify a supported version of Elasticsearch, which must be an exact ver
 
 > {tip} Check out the [Elasticsearch documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current) to learn how to customize your configuration.
 
-
 <a name="mariadb"></a>
 
 #### MariaDB
@@ -437,7 +405,6 @@ sites:
 
 > {note} You should ensure that you have configured a [folder mapping](#configuring-shared-folders) for the project's directory before adding the site.
 
-
 If Vagrant is not automatically managing your "hosts" file, you may need to add the new site to that file as well. On macOS and Linux, this file is located at `/etc/hosts`. On Windows, it is located at `C:\Windows\System32\drivers\etc\hosts`:
 
     192.168.56.56  homestead.test
@@ -498,7 +465,6 @@ After updating the `Homestead.yaml` file, be sure to re-provision the machine by
 By default, the following ports are forwarded to your Homestead environment:
 
 - **HTTP:** 8000 &rarr; Forwards To 80
-
 - **HTTPS:** 44300 &rarr; Forwards To 443
 
 <a name="forwarding-additional-ports"></a>
@@ -519,17 +485,11 @@ ports:
 Below is a list of additional Homestead service ports that you may wish to map from your host machine to your Vagrant box:
 
 - **SSH:** 2222 &rarr; To 22
-
 - **ngrok UI:** 4040 &rarr; To 4040
-
 - **MySQL:** 33060 &rarr; To 3306
-
 - **PostgreSQL:** 54320 &rarr; To 5432
-
 - **MongoDB:** 27017 &rarr; To 27017
-
 - **Mailhog:** 8025 &rarr; To 8025
-
 - **Minio:** 9600 &rarr; To 9600
 
 <a name="php-versions"></a>
@@ -578,7 +538,6 @@ php81
 A `homestead` database is configured for both MySQL and PostgreSQL out of the box. To connect to your MySQL or PostgreSQL database from your host machine's database client, you should connect to `127.0.0.1` on port `33060` (MySQL) or `54320` (PostgreSQL). The username and password for both databases is `homestead` / `secret`.
 
 > {note} You should only use these non-standard ports when connecting to the databases from your host machine. You will use the default 3306 and 5432 ports in your Laravel application's `database` configuration file since Laravel is running *within* the virtual machine.
-
 
 <a name="database-backups"></a>
 
@@ -700,7 +659,6 @@ share homestead.test -region=eu -subdomain=laravel
 
 > {note} Remember, Vagrant is inherently insecure and you are exposing your virtual machine to the Internet when running the `share` command.
 
-
 <a name="debugging-and-profiling"></a>
 
 ## Debugging & Profiling
@@ -714,7 +672,6 @@ Homestead includes support for step debugging using [Xdebug](https://xdebug.org)
 By default, Xdebug is already running and ready to accept connections. If you need to enable Xdebug on the CLI, execute the `sudo phpenmod xdebug` command within your Homestead virtual machine. Next, follow your IDE's instructions to enable debugging. Finally, configure your browser to trigger Xdebug with an extension or [bookmarklet](https://www.jetbrains.com/phpstorm/marklets/).
 
 > {note} Xdebug causes PHP to run significantly slower. To disable Xdebug, run `sudo phpdismod xdebug` within your Homestead virtual machine and restart the FPM service.
-
 
 <a name="autostarting-xdebug"></a>
 

@@ -1,17 +1,21 @@
+---
+contributors:
+  14684796:
+    avatarUrl: https://crowdin-static.downloads.crowdin.com/avatar/14684796/medium/60f7dc21ec0bf9cfcb61983640bb4809_default.png
+    name: cornch
+crowdinUrl: https://crowdin.com/translate/laravel-docs/59/en-zhtw
+progress: 100
+updatedAt: '2022-08-09T12:03:00Z'
+---
+
 # Eloquent：序列化
 
 - [簡介](#introduction)
-
 - [序列化 Model 與 Collection](#serializing-models-and-collections)
-
    - [序列化為陣列](#serializing-to-arrays)
-
    - [序列化為 JSON](#serializing-to-json)
-
 - [從 JSON 中隱藏屬性](#hiding-attributes-from-json)
-
 - [將資料加入 JSON](#appending-values-to-json)
-
 - [日期的序列化](#date-serialization)
 
 <a name="introduction"></a>
@@ -21,7 +25,6 @@
 在使用 Laravel 製作 API 時，我們常常會需要將 Model 於關聯轉換為陣列或 JSON。Eloquent 中包含了一些用來進行這些轉換的方便方法，我們也能控制哪些屬性要被包含在 Model 序列化呈現中。
 
 > {tip} 若想瞭解有關控制 Eloquent Model 與 JSON 序列化更強健的方法，請參考 [Eloquent API 資源](/docs/{{version}}/eloquent-resources)說明文件。
-
 
 <a name="serializing-models-and-collections"></a>
 
@@ -104,7 +107,6 @@
     }
 
 > {tip} 若要隱藏關聯，請將關聯的方法名稱加到 Eloquent Model 的 `$hidden` 屬性內。
-
 
 或者，我們也可以使用 `visible` 屬性來定義一個「允許列表」，代表要被包含在 Model 之陣列與 JSON 呈現的屬性。當 Model 被轉換為陣列或 JSON 時，所有不在 `$visible` 陣列內的屬性都會被隱藏：
 

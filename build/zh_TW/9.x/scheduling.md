@@ -1,35 +1,30 @@
+---
+contributors:
+  14684796:
+    avatarUrl: https://crowdin-static.downloads.crowdin.com/avatar/14684796/medium/60f7dc21ec0bf9cfcb61983640bb4809_default.png
+    name: cornch
+crowdinUrl: https://crowdin.com/translate/laravel-docs/147/en-zhtw
+progress: 100
+updatedAt: '2022-08-09T13:35:00Z'
+---
+
 # 任務排程
 
 - [簡介](#introduction)
-
 - [定義排程](#defining-schedules)
-
    - [排程執行 Artisan 指令](#scheduling-artisan-commands)
-
    - [排程執行放入佇列的 Job](#scheduling-queued-jobs)
-
    - [排程執行 Shell 指令](#scheduling-shell-commands)
-
    - [排程的頻率選項](#schedule-frequency-options)
-
    - [時區](#timezones)
-
    - [防止排程任務重疊](#preventing-task-overlaps)
-
    - [在單一伺服器上執行任務](#running-tasks-on-one-server)
-
    - [背景任務](#background-tasks)
-
    - [維護模式](#maintenance-mode)
-
 - [執行排程程式](#running-the-scheduler)
-
    - [在本機上執行排程程式](#running-the-scheduler-locally)
-
 - [任務的輸出](#task-output)
-
 - [任務的 Hook](#task-hooks)
-
 - [事件](#events)
 
 <a name="introduction"></a>
@@ -275,7 +270,6 @@ php artisan schedule:list
 
 > **Warning** 請注意，某些時區會使用日光節約時間。若發生日光節約時間，則某些排程任務可能會執行兩次、甚至是執行多次。因此，我們建議儘可能不要在排程上設定時區。
 
-
 <a name="preventing-task-overlaps"></a>
 
 ### 避免任務重疊
@@ -297,7 +291,6 @@ php artisan schedule:list
 ### 在單一伺服器上執行任務
 
 > **Warning** 若要使用此功能，則專案必須使用 `memcached`、`redis`、`dynamodb`、`database`、`file`、`array` 等其中一個快取 Driver 作為專案的預設快取 Driver。另外，所有的伺服器都必須要連線至相同的中央快取伺服器。
-
 
 若專案的排程程式在多個伺服器上執行，則可限制排程任務只在單一伺服器上執行。舉例來說，假設我們設定了一個排程任務，每週五晚上會產生新報表。若任務排程程式在三個工作伺服器上執行，則這個排程任務會在這三台伺服器上都執行，且會產生三次報表。這可不好！
 
@@ -337,7 +330,6 @@ $schedule->job(new CheckUptime('https://vapor.laravel.com'))
              ->runInBackground();
 
 > **Warning** `runInBackground` 方法只可用在 `command` 與 `exec` 方法所定義的排程任務上。
-
 
 <a name="maintenance-mode"></a>
 
@@ -399,7 +391,6 @@ Laravel 的排程程式提供了數種便利的方法可處理排程任務產生
              ->emailOutputOnFailure('taylor@example.com');
 
 > **Warning** `emailOutputTo`、`emailOutputOnFailure`、`sendOutputTo`、`appendOutputTo` 等方法只能在 `command` 與 `exec` 方法上使用。
-
 
 <a name="task-hooks"></a>
 

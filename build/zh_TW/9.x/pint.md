@@ -1,17 +1,18 @@
+---
+contributors: {}
+crowdinUrl: https://crowdin.com/translate/laravel-docs/178/en-zhtw
+progress: 0
+updatedAt: '2022-08-06T06:42:00Z'
+---
+
 # Laravel Pint
 
 - [Introduction](#introduction)
-
 - [Installation](#installation)
-
 - [Running Pint](#running-pint)
-
 - [Configuring Pint](#configuring-pint)
-
    - [Presets](#presets)
-
    - [Rules](#rules)
-
    - [Excluding Files / Folders](#excluding-files-or-folders)
 
 <a name="introduction"></a>

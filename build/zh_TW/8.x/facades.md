@@ -1,17 +1,21 @@
+---
+contributors:
+  14684796:
+    avatarUrl: https://crowdin-static.downloads.crowdin.com/avatar/14684796/medium/60f7dc21ec0bf9cfcb61983640bb4809_default.png
+    name: cornch
+crowdinUrl: https://crowdin.com/translate/laravel-docs/71/en-zhtw
+progress: 100
+updatedAt: '2022-02-13T13:39:00Z'
+---
+
 # Facade
 
 - [簡介](#introduction)
-
 - [什麼時候使用 Facade](#when-to-use-contracts)
-
    - [Facades Vs. 相依性插入](#facades-vs-dependency-injection)
-
    - [Facades Vs. 輔助函式](#facades-vs-helper-functions)
-
 - [Facade 是怎麼運作的](#how-facades-work)
-
 - [即時 Facade](#real-time-facades)
-
 - [Facade 類別參照](#facade-class-reference)
 
 <a name="introduction"></a>

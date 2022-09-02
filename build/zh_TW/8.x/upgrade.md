@@ -1,3 +1,13 @@
+---
+contributors:
+  14684796:
+    avatarUrl: https://crowdin-static.downloads.crowdin.com/avatar/14684796/medium/60f7dc21ec0bf9cfcb61983640bb4809_default.png
+    name: cornch
+crowdinUrl: https://crowdin.com/translate/laravel-docs/165/en-zhtw
+progress: 66
+updatedAt: '2022-08-06T05:47:00Z'
+---
+
 # 升級指南
 
 - [從 7.x 升級至 8.0](#upgrade-8.0)
@@ -7,15 +17,10 @@
 ## 高度影響的更改
 
 - [Model Factory](#model-factories)
-
 - [Queue `retryAfter` Method](#queue-retry-after-method)
-
 - [Queue `timeoutAt` Property](#queue-timeout-at-property)
-
 - [Queue `allOnQueue` and `allOnConnection`](#queue-allOnQueue-allOnConnection)
-
 - [Pagination Defaults](#pagination-defaults)
-
 - [Seeder & Factory Namespaces](#seeder-factory-namespaces)
 
 <a name="medium-impact-changes"></a>
@@ -23,13 +28,9 @@
 ## 中度影響的更改
 
 - [PHP 7.3.0 Required](#php-7.3.0-required)
-
 - [Failed Jobs Table Batch Support](#failed-jobs-table-batch-support)
-
 - [Maintenance Mode Updates](#maintenance-mode-updates)
-
 - [The `php artisan down --message` Option](#artisan-down-message)
-
 - [The `assertExactJson` Method](#assert-exact-json-method)
 
 <a name="upgrade-8.0"></a>
@@ -41,7 +42,6 @@
 #### 預計升級所需時間：15 分鐘
 
 > {note} 我們儘量在說明文件中包含所有的^[中斷性變更](Breaking Change)。不過，在 Laravel 中，有些中斷性變更存在一些比較不明顯的地方，且這些更改中幾乎不太會影響到你的專案。
-
 
 <a name="php-7.3.0-required"></a>
 
@@ -58,25 +58,17 @@
 Update the following dependencies in your `composer.json` file:
 
 - `guzzlehttp/guzzle` to `^7.0.1`
-
 - `facade/ignition` to `^2.3.6`
-
 - `laravel/framework` to `^8.0`
-
 - `laravel/ui` to `^3.0`
-
 - `nunomaduro/collision` to `^5.0`
-
 - `phpunit/phpunit` to `^9.0`
 
 The following first-party packages have new major releases to support Laravel 8. If applicable, you should read their individual upgrade guides before upgrading:
 
 - [Horizon v5.0](https://github.com/laravel/horizon/blob/master/UPGRADE.md)
-
 - [Passport v10.0](https://github.com/laravel/passport/blob/master/UPGRADE.md)
-
 - [Socialite v5.0](https://github.com/laravel/socialite/blob/master/UPGRADE.md)
-
 - [Telescope v4.0](https://github.com/laravel/telescope/blob/master/UPGRADE.md)
 
 In addition, the Laravel installer has been updated to support `composer create-project` and Laravel Jetstream. Any installer older than 4.0 will cease to work after October 2020. You should upgrade your global installer to `^4.0` as soon as possible.

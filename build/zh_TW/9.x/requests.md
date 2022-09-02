@@ -1,43 +1,34 @@
+---
+contributors:
+  14684796:
+    avatarUrl: https://crowdin-static.downloads.crowdin.com/avatar/14684796/medium/60f7dc21ec0bf9cfcb61983640bb4809_default.png
+    name: cornch
+crowdinUrl: https://crowdin.com/translate/laravel-docs/137/en-zhtw
+progress: 100
+updatedAt: '2022-08-09T13:35:00Z'
+---
+
 # HTTP Request
 
 - [簡介](#introduction)
-
 - [使用 Request](#interacting-with-the-request)
-
    - [存取 Request](#accessing-the-request)
-
    - [Request 路徑、主機、與方法](#request-path-and-method)
-
    - [Request 標頭](#request-headers)
-
    - [Request 的 IP 位址](#request-ip-address)
-
    - [判斷適當的內容](#content-negotiation)
-
    - [PSR-7 Request](#psr7-requests)
-
 - [輸入](#input)
-
    - [取得輸入](#retrieving-input)
-
    - [判斷輸入是否存在](#determining-if-input-is-present)
-
    - [合併額外的輸入](#merging-additional-input)
-
    - [舊輸入](#old-input)
-
    - [Cookie](#cookies)
-
    - [修剪輸入與正常化 (Normalization)](#input-trimming-and-normalization)
-
 - [檔案](#files)
-
    - [取得上傳的檔案](#retrieving-uploaded-files)
-
    - [保存上傳的檔案](#storing-uploaded-files)
-
 - [設定 Trusted Proxies](#configuring-trusted-proxies)
-
 - [設定 Trusted Hosts](#configuring-trusted-hosts)
 
 <a name="introduction"></a>
@@ -258,7 +249,6 @@ composer require nyholm/psr7
 
 > **Note** 若從 Route 或 Controller 中回傳 PSR-7 Response，這個 Response 會先被轉回到 Laravel 的 Response 實體，然後才會由 Laravel 顯示出來。
 
-
 <a name="input"></a>
 
 ## 輸入
@@ -396,7 +386,6 @@ composer require nyholm/psr7
     $input = $request->except('credit_card');
 
 > **Warning** `only` 方法會回傳所要求的所有索引鍵 / 值配對組。不過，若要求的索引鍵 / 值配對未出現在 Request 中，將不會回傳。
-
 
 <a name="determining-if-input-is-present"></a>
 
@@ -631,7 +620,6 @@ public function boot()
 
 > **Note** 更多有關 Laravel 中檔案儲存的資訊，請參考完整的[檔案儲存說明文件](/docs/{{version}}/filesystem)。
 
-
 <a name="configuring-trusted-proxies"></a>
 
 ## 設定信任的代理 (Trusted Proxy)
@@ -668,7 +656,6 @@ public function boot()
     }
 
 > **Note** 若要使用 AWS Elastic Load Balancing，則 `$headers` 的值應為 `Request::HEADER_X_FORWARDED_AWS_ELB`。更多有關能用在 `$headers` 屬性的常數資訊，請參考 Symfony 說明文件中的 [Trusting Proxies](https://symfony.com/doc/current/deployment/proxies.html)。
-
 
 <a name="trusting-all-proxies"></a>
 

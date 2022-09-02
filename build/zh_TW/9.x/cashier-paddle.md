@@ -1,87 +1,53 @@
+---
+contributors: {}
+crowdinUrl: https://crowdin.com/translate/laravel-docs/23/en-zhtw
+progress: 0
+updatedAt: '2022-08-06T05:46:00Z'
+---
+
 # Laravel Cashier (Paddle)
 
 - [Introduction](#introduction)
-
 - [Upgrading Cashier](#upgrading-cashier)
-
 - [Installation](#installation)
-
    - [Paddle Sandbox](#paddle-sandbox)
-
    - [Database Migrations](#database-migrations)
-
 - [Configuration](#configuration)
-
    - [Billable Model](#billable-model)
-
    - [API Keys](#api-keys)
-
    - [Paddle JS](#paddle-js)
-
    - [Currency Configuration](#currency-configuration)
-
    - [Overriding Default Models](#overriding-default-models)
-
 - [Core Concepts](#core-concepts)
-
    - [Pay Links](#pay-links)
-
    - [Inline Checkout](#inline-checkout)
-
    - [User Identification](#user-identification)
-
 - [Prices](#prices)
-
 - [Customers](#customers)
-
    - [Customer Defaults](#customer-defaults)
-
 - [Subscriptions](#subscriptions)
-
    - [Creating Subscriptions](#creating-subscriptions)
-
    - [Checking Subscription Status](#checking-subscription-status)
-
    - [Subscription Single Charges](#subscription-single-charges)
-
    - [Updating Payment Information](#updating-payment-information)
-
    - [Changing Plans](#changing-plans)
-
    - [Subscription Quantity](#subscription-quantity)
-
    - [Subscription Modifiers](#subscription-modifiers)
-
    - [Pausing Subscriptions](#pausing-subscriptions)
-
    - [Cancelling Subscriptions](#cancelling-subscriptions)
-
 - [Subscription Trials](#subscription-trials)
-
    - [With Payment Method Up Front](#with-payment-method-up-front)
-
    - [Without Payment Method Up Front](#without-payment-method-up-front)
-
 - [Handling Paddle Webhooks](#handling-paddle-webhooks)
-
    - [Defining Webhook Event Handlers](#defining-webhook-event-handlers)
-
    - [Verifying Webhook Signatures](#verifying-webhook-signatures)
-
 - [Single Charges](#single-charges)
-
    - [Simple Charge](#simple-charge)
-
    - [Charging Products](#charging-products)
-
    - [Refunding Orders](#refunding-orders)
-
 - [Receipts](#receipts)
-
    - [Past & Upcoming Payments](#past-and-upcoming-payments)
-
 - [Handling Failed Payments](#handling-failed-payments)
-
 - [Testing](#testing)
 
 <a name="introduction"></a>
@@ -109,7 +75,6 @@ composer require laravel/cashier-paddle
 ```
 
 > **Warning** To ensure Cashier properly handles all Paddle events, remember to [set up Cashier's webhook handling](#handling-paddle-webhooks).
-
 
 <a name="paddle-sandbox"></a>
 
@@ -229,7 +194,6 @@ CASHIER_CURRENCY_LOCALE=nl_BE
 
 > **Warning** In order to use locales other than `en`, ensure the `ext-intl` PHP extension is installed and configured on your server.
 
-
 <a name="overriding-default-models"></a>
 
 ### Overriding Default Models
@@ -302,7 +266,6 @@ For more information on pay links, you may review [the Paddle API documentation 
 
 > **Warning** After a subscription state change, the delay for receiving the corresponding webhook is typically minimal but you should account for this in your application by considering that your user's subscription might not be immediately available after completing the checkout.
 
-
 <a name="manually-rendering-pay-links"></a>
 
 #### Manually Rendering Pay Links
@@ -363,7 +326,6 @@ $options = [
 Please consult Paddle's [guide on Inline Checkout](https://developer.paddle.com/guides/how-tos/checkout/inline-checkout) as well as their [parameter reference](https://developer.paddle.com/reference/paddle-js/parameters) for further details on the inline checkout's available options.
 
 > **Warning** If you would like to also use the `passthrough` option when specifying custom options, you should provide a key / value array as its value. Cashier will automatically handle converting the array to a JSON string. In addition, the `customer_id` passthrough option is reserved for internal Cashier usage.
-
 
 <a name="manually-rendering-an-inline-checkout"></a>
 
@@ -500,7 +462,6 @@ You may display the original listed prices (without coupon discounts) using the 
 
 > **Warning** When using the prices API, Paddle only allows applying coupons to one-time purchase products and not to subscription plans.
 
-
 <a name="customers"></a>
 
 ## Customers
@@ -617,7 +578,6 @@ You can also pass an array of metadata using the `withMetadata` method:
 
 > **Warning** When providing metadata, please avoid using `subscription_name` as a metadata key. This key is reserved for internal use by Cashier.
 
-
 <a name="checking-subscription-status"></a>
 
 ### Checking Subscription Status
@@ -730,7 +690,6 @@ If you would like subscriptions to still be considered active when they are `pas
 
 > **Warning** When a subscription is in a `past_due` state it cannot be changed until payment information has been updated. Therefore, the `swap` and `updateQuantity` methods will throw an exception when the subscription is in a `past_due` state.
 
-
 <a name="subscription-scopes"></a>
 
 #### Subscription Scopes
@@ -811,7 +770,6 @@ If you would like to swap plans and immediately invoice the user instead of wait
     $user->subscription('default')->swapAndInvoice($premium = 34567);
 
 > **Warning** Plans may not be swapped when a trial is active. For additional information regarding this limitation, please see the [Paddle documentation](https://developer.paddle.com/api-reference/subscription-api/users/updateuser#usage-notes).
-
 
 <a name="prorations"></a>
 
@@ -915,7 +873,6 @@ To resume a paused a subscription, you may call the `unpause` method on the user
 
 > **Warning** A subscription cannot be modified while it is paused. If you want to swap to a different plan or update quantities you must resume the subscription first.
 
-
 <a name="cancelling-subscriptions"></a>
 
 ### Cancelling Subscriptions
@@ -938,7 +895,6 @@ If you wish to cancel a subscription immediately, you may call the `cancelNow` m
 
 > **Warning** Paddle's subscriptions cannot be resumed after cancellation. If your customer wishes to resume their subscription, they will have to subscribe to a new subscription.
 
-
 <a name="subscription-trials"></a>
 
 ## Subscription Trials
@@ -948,7 +904,6 @@ If you wish to cancel a subscription immediately, you may call the `cancelNow` m
 ### With Payment Method Up Front
 
 > **Warning** While trialing and collecting payment method details up front, Paddle prevents any subscription changes such as swapping plans or updating quantities. If you want to allow a customer to swap plans during a trial the subscription must be cancelled and recreated.
-
 
 If you would like to offer trial periods to your customers while still collecting payment method information up front, you should use the `trialDays` method when creating your subscription pay links:
 
@@ -966,7 +921,6 @@ If you would like to offer trial periods to your customers while still collectin
 This method will set the trial period ending date on the subscription record within your application's database, as well as instruct Paddle to not begin billing the customer until after this date.
 
 > **Warning** If the customer's subscription is not cancelled before the trial ending date they will be charged as soon as the trial expires, so you should be sure to notify your users of their trial ending date.
-
 
 You may determine if the user is within their trial period using either the `onTrial` method of the user instance or the `onTrial` method of the subscription instance. The two examples below are equivalent:
 
@@ -1042,7 +996,6 @@ You may use the `onGenericTrial` method if you wish to know specifically that th
 
 > **Warning** There is no way to extend or modify a trial period on a Paddle subscription after it has been created.
 
-
 <a name="handling-paddle-webhooks"></a>
 
 ## Handling Paddle Webhooks
@@ -1054,17 +1007,12 @@ By default, this controller will automatically handle cancelling subscriptions t
 To ensure your application can handle Paddle webhooks, be sure to [configure the webhook URL in the Paddle control panel](https://vendors.paddle.com/alerts-webhooks). By default, Cashier's webhook controller responds to the `/paddle/webhook` URL path. The full list of all webhooks you should enable in the Paddle control panel are:
 
 - Subscription Created
-
 - Subscription Updated
-
 - Subscription Cancelled
-
 - Payment Succeeded
-
 - Subscription Payment Succeeded
 
 > **Warning** Make sure you protect incoming requests with Cashier's included [webhook signature verification](/docs/{{version}}/cashier-paddle#verifying-webhook-signatures) middleware.
-
 
 <a name="webhooks-csrf-protection"></a>
 
@@ -1089,7 +1037,6 @@ For Paddle to be able to send your application webhooks during local development
 Cashier automatically handles subscription cancellation on failed charges and other common Paddle webhooks. However, if you have additional webhook events you would like to handle, you may do so by listening to the following events that are dispatched by Cashier:
 
 - `Laravel\Paddle\Events\WebhookReceived`
-
 - `Laravel\Paddle\Events\WebhookHandled`
 
 Both events contain the full payload of the Paddle webhook. For example, if you wish to handle the `invoice.payment_succeeded` webhook, you may register a [listener](/docs/{{version}}/events#defining-listeners) that will handle the event:
@@ -1138,13 +1085,9 @@ Once your listener has been defined, you may register it within your application
 Cashier also emit events dedicated to the type of the received webhook. In addition to the full payload from Paddle, they also contain the relevant models that were used to process the webhook such as the billable model, the subscription, or the receipt:
 
 - `Laravel\Paddle\Events\PaymentSucceeded`
-
 - `Laravel\Paddle\Events\SubscriptionPaymentSucceeded`
-
 - `Laravel\Paddle\Events\SubscriptionCreated`
-
 - `Laravel\Paddle\Events\SubscriptionUpdated`
-
 - `Laravel\Paddle\Events\SubscriptionCancelled`
 
 You can also override the default, built-in webhook route by defining the `CASHIER_WEBHOOK` environment variable in your application's `.env` file. This value should be the full URL to your webhook route and needs to match the URL set in your Paddle control panel:
@@ -1257,7 +1200,6 @@ You may optionally specify a specific amount to refund as well as a reason for t
     );
 
 > **Note** You can use the `$refundRequestId` as a reference for the refund when contacting Paddle support.
-
 
 <a name="receipts"></a>
 

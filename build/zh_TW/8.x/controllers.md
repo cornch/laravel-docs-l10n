@@ -1,31 +1,28 @@
+---
+contributors:
+  14684796:
+    avatarUrl: https://crowdin-static.downloads.crowdin.com/avatar/14684796/medium/60f7dc21ec0bf9cfcb61983640bb4809_default.png
+    name: cornch
+crowdinUrl: https://crowdin.com/translate/laravel-docs/37/en-zhtw
+progress: 100
+updatedAt: '2022-08-09T12:04:00Z'
+---
+
 # 控制器 - Controller
 
 - [簡介](#introduction)
-
 - [撰寫 Controller](#writing-controllers)
-
    - [「Controller」基礎](#basic-controllers)
-
    - [單一動作的 Controller](#single-action-controllers)
-
 - [Controller Middleware](#controller-middleware)
-
 - [Resource Controller](#resource-controllers)
-
    - [部分的 Resource Route](#restful-partial-resource-routes)
-
    - [巢狀 Resource](#restful-nested-resources)
-
    - [命名 Resource Route](#restful-naming-resource-routes)
-
    - [命名 Resource Route 的參數](#restful-naming-resource-route-parameters)
-
    - [限制範圍的 Resource Route](#restful-scoping-resource-routes)
-
    - [本土化 Resource URI](#restful-localizing-resource-uris)
-
    - [補充 Resource Controller](#restful-supplementing-resource-controllers)
-
 - [相依性插入與 Controller](#dependency-injection-and-controllers)
 
 <a name="introduction"></a>
@@ -77,7 +74,6 @@
 
 > {tip} Controller 並**不一定**要有繼承基礎類別。不過，若不繼承基礎 Controller 的話將無法使用一些如 `middleware` 或 `authorize` 方法等方便的功能。
 
-
 <a name="single-action-controllers"></a>
 
 ### 單一動作的 Controller
@@ -115,7 +111,6 @@
     php artisan make:controller ProvisionServer --invokable
 
 > {tip} Controller 的 Stub 可通過[發佈 Stub](/docs/{{version}}/artisan#stub-customization) 來自定。
-
 
 <a name="controller-middleware"></a>
 
@@ -385,7 +380,6 @@ Laravel 的[限定範圍的隱式 Model 繫結](/docs/{{version}}/routing#implic
     Route::resource('photos', PhotoController::class);
 
 > {tip} 請記得要保持 Controller 的功能專一。若發現常常需要使用除了一般資源動作以外的方法，請考慮將 Controller 拆分成兩個、更小的 Controller。
-
 
 <a name="dependency-injection-and-controllers"></a>
 

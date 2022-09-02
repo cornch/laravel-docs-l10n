@@ -1,21 +1,23 @@
+---
+contributors:
+  14684796:
+    avatarUrl: https://crowdin-static.downloads.crowdin.com/avatar/14684796/medium/60f7dc21ec0bf9cfcb61983640bb4809_default.png
+    name: cornch
+crowdinUrl: https://crowdin.com/translate/laravel-docs/119/en-zhtw
+progress: 100
+updatedAt: '2022-08-09T13:36:00Z'
+---
+
 # 重設密碼
 
 - [簡介](#introduction)
-
    - [Model 的準備](#model-preparation)
-
    - [資料庫的準備](#database-preparation)
-
    - [設定 Trusted Hosts](#configuring-trusted-hosts)
-
 - [路由](#routing)
-
    - [產生密碼重設連結](#requesting-the-password-reset-link)
-
    - [重設密碼](#resetting-the-password)
-
 - [刪除過期的 Token](#deleting-expired-tokens)
-
 - [自定](#password-customization)
 
 <a name="introduction"></a>
@@ -25,7 +27,6 @@
 大多數的 Web App 都提供了能讓使用者重設密碼的功能。在 Laravel 中，我們不需要為密碼重設重造輪子，Laravel 已提供了方便的服務，可讓我們傳送密碼重設連結並安全地重設密碼。
 
 > {tip} 想要快速入門嗎？請在全新的 Laravel 應用程式內安裝一個 [Laravel 應用程式入門套件](docs/{{version}}/starter-kits)。這些入門套件會幫你搞定整個驗證系統的 Scaffolding，其中也包含了重設忘記密碼的支援。
-
 
 <a name="model-preparation"></a>
 
@@ -103,7 +104,6 @@
 讀者可能會想，在呼叫 `Password` Facade 的 `sendResetLink` 時，Laravel 是怎麼知道要如何從專案資料庫中取得使用者記錄的？其實，Laravel 的 Password Broker 使用了身份驗證系統的「User Providers」來取得資料庫記錄。Password Broker 使用的 User Provider 設定在 `config/auth.php` 設定檔中的 `password` 設定陣列中。如欲瞭解更多有關如何撰寫自定 User Provider 的資訊，請參考[身份驗證說明文件](/docs/{{version}}/authentication#adding-custom-user-providers)。
 
 > {tip} 手動實作密碼重設功能時，我們需要自行定義這些 View 的內容與 Route。若想要有包含所有必要之身份驗證與驗證 View 的 Scaffolding，請參考 [Laravel 專案入門套件](/docs/{{version}}/starter-kits)。
-
 
 <a name="resetting-the-password"></a>
 

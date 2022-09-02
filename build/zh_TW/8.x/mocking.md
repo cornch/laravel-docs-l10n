@@ -1,35 +1,27 @@
+---
+contributors: {}
+crowdinUrl: https://crowdin.com/translate/laravel-docs/107/en-zhtw
+progress: 0
+updatedAt: '2022-08-06T05:46:00Z'
+---
+
 # Mocking
 
 - [Introduction](#introduction)
-
 - [Mocking Objects](#mocking-objects)
-
 - [Mocking Facades](#mocking-facades)
-
    - [Facade Spies](#facade-spies)
-
 - [Bus Fake](#bus-fake)
-
    - [Job Chains](#bus-job-chains)
-
    - [Job Batches](#job-batches)
-
 - [Event Fake](#event-fake)
-
    - [Scoped Event Fakes](#scoped-event-fakes)
-
 - [HTTP Fake](#http-fake)
-
 - [Mail Fake](#mail-fake)
-
 - [Notification Fake](#notification-fake)
-
 - [Queue Fake](#queue-fake)
-
    - [Job Chains](#job-chains)
-
 - [Storage Fake](#storage-fake)
-
 - [Interacting With Time](#interacting-with-time)
 
 <a name="introduction"></a>
@@ -142,7 +134,6 @@ We can mock the call to the `Cache` facade by using the `shouldReceive` method, 
     }
 
 > {note} You should not mock the `Request` facade. Instead, pass the input you desire into the [HTTP testing methods](/docs/{{version}}/http-tests) such as `get` and `post` when running your test. Likewise, instead of mocking the `Config` facade, call the `Config::set` method in your tests.
-
 
 <a name="facade-spies"></a>
 
@@ -313,7 +304,6 @@ If you would simply like to assert that an event listener is listening to a give
     );
 
 > {note} After calling `Event::fake()`, no event listeners will be executed. So, if your tests use model factories that rely on events, such as creating a UUID during a model's `creating` event, you should call `Event::fake()` **after** using your factories.
-
 
 <a name="faking-a-subset-of-events"></a>
 
@@ -638,7 +628,6 @@ The `Storage` facade's `fake` method allows you to easily generate a fake disk t
 For more information on testing file uploads, you may consult the [HTTP testing documentation's information on file uploads](/docs/{{version}}/http-tests#testing-file-uploads).
 
 > {tip} By default, the `fake` method will delete all files in its temporary directory. If you would like to keep these files, you may use the "persistentFake" method instead.
-
 
 <a name="interacting-with-time"></a>
 

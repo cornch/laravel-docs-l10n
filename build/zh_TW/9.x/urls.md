@@ -1,19 +1,22 @@
+---
+contributors:
+  14684796:
+    avatarUrl: https://crowdin-static.downloads.crowdin.com/avatar/14684796/medium/60f7dc21ec0bf9cfcb61983640bb4809_default.png
+    name: cornch
+crowdinUrl: https://crowdin.com/translate/laravel-docs/167/en-zhtw
+progress: 100
+updatedAt: '2022-02-15T16:28:00Z'
+---
+
 # 產生 URL
 
 - [簡介](#introduction)
-
 - [基礎](#the-basics)
-
    - [產生 URL](#generating-urls)
-
    - [存取目前 URL](#accessing-the-current-url)
-
 - [命名 Route 的 URL](#urls-for-named-routes)
-
    - [簽名的 URL](#signed-urls)
-
 - [Controller 動作的 URL](#urls-for-controller-actions)
-
 - [預設值](#default-values)
 
 <a name="introduction"></a>

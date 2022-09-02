@@ -1,9 +1,17 @@
+---
+contributors:
+  14684796:
+    avatarUrl: https://crowdin-static.downloads.crowdin.com/avatar/14684796/medium/60f7dc21ec0bf9cfcb61983640bb4809_default.png
+    name: cornch
+crowdinUrl: https://crowdin.com/translate/laravel-docs/63/en-zhtw
+progress: 100
+updatedAt: '2022-02-13T12:32:00Z'
+---
+
 # 加密
 
 - [簡介](#introduction)
-
 - [組態設定](#configuration)
-
 - [使用 Encrypter](#using-the-encrypter)
 
 <a name="introduction"></a>

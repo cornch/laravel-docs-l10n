@@ -1,47 +1,33 @@
+---
+contributors: {}
+crowdinUrl: https://crowdin.com/translate/laravel-docs/111/en-zhtw
+progress: 0
+updatedAt: '2022-08-06T05:47:00Z'
+---
+
 # Laravel Octane
 
 - [Introduction](#introduction)
-
 - [Installation](#installation)
-
 - [Server Prerequisites](#server-prerequisites)
-
    - [RoadRunner](#roadrunner)
-
    - [Swoole](#swoole)
-
 - [Serving Your Application](#serving-your-application)
-
    - [Serving Your Application Via HTTPS](#serving-your-application-via-https)
-
    - [Serving Your Application Via Nginx](#serving-your-application-via-nginx)
-
    - [Watching For File Changes](#watching-for-file-changes)
-
    - [Specifying The Worker Count](#specifying-the-worker-count)
-
    - [Specifying The Max Request Count](#specifying-the-max-request-count)
-
    - [Reloading The Workers](#reloading-the-workers)
-
    - [Stopping The Server](#stopping-the-server)
-
 - [Dependency Injection & Octane](#dependency-injection-and-octane)
-
    - [Container Injection](#container-injection)
-
    - [Request Injection](#request-injection)
-
    - [Configuration Repository Injection](#configuration-repository-injection)
-
 - [Managing Memory Leaks](#managing-memory-leaks)
-
 - [Concurrent Tasks](#concurrent-tasks)
-
 - [Ticks & Intervals](#ticks-and-intervals)
-
 - [The Octane Cache](#the-octane-cache)
-
 - [Tables](#tables)
 
 <a name="introduction"></a>
@@ -71,7 +57,6 @@ php artisan octane:install
 ## Server Prerequisites
 
 > **Warning** Laravel Octane requires [PHP 8.0+](https://php.net/releases/).
-
 
 <a name="roadrunner"></a>
 
@@ -136,7 +121,6 @@ pecl install swoole
 
 > **Warning** Before serving an Octane application via Sail, ensure you have the latest version of Laravel Sail and execute `./vendor/bin/sail build --no-cache` within your application's root directory.
 
-
 Alternatively, you may develop your Swoole based Octane application using [Laravel Sail](/docs/{{version}}/sail), the official Docker based development environment for Laravel. Laravel Sail includes the Swoole extension by default. However, you will still need to adjust the `supervisor.conf` file used by Sail to keep your application running. To get started, execute the `sail:publish` Artisan command:
 
 ```shell
@@ -197,7 +181,6 @@ By default, applications running via Octane generate links prefixed with `http:/
 ### Serving Your Application Via Nginx
 
 > **Note** If you aren't quite ready to manage your own server configuration or aren't comfortable configuring all of the various services needed to run a robust Laravel Octane application, check out [Laravel Forge](https://forge.laravel.com).
-
 
 In production environments, you should serve your Octane application behind a traditional web server such as a Nginx or Apache. Doing so will allow the web server to serve your static assets such as images and stylesheets, as well as manage your SSL certificate termination.
 
@@ -428,7 +411,6 @@ The global `request` helper will always return the request the application is cu
 
 > **Warning** It is acceptable to type-hint the `Illuminate\Http\Request` instance on your controller methods and route closures.
 
-
 <a name="configuration-repository-injection"></a>
 
 ### Configuration Repository Injection
@@ -503,7 +485,6 @@ While building your application, you should take special care to avoid creating 
 
 > **Warning** This feature requires [Swoole](#swoole).
 
-
 When using Swoole, you may execute operations concurrently via light-weight background tasks. You may accomplish this using Octane's `concurrently` method. You may combine this method with PHP array destructuring to retrieve the results of each operation:
 
 ```php
@@ -529,7 +510,6 @@ php artisan octane:start --workers=4 --task-workers=6
 
 > **Warning** This feature requires [Swoole](#swoole).
 
-
 When using Swoole, you may register "tick" operations that will be executed every specified number of seconds. You may register "tick" callbacks via the `tick` method. The first argument provided to the `tick` method should be a string that represents the name of the ticker. The second argument should be a callable that will be invoked at the specified interval.
 
 In this example, we will register a closure to be invoked every 10 seconds. Typically, the `tick` method should be called within the `boot` method of one of your application's service providers:
@@ -553,7 +533,6 @@ Octane::tick('simple-ticker', fn () => ray('Ticking...'))
 
 > **Warning** This feature requires [Swoole](#swoole).
 
-
 When using Swoole, you may leverage the Octane cache driver, which provides read and write speeds of up to 2 million operations per second. Therefore, this cache driver is an excellent choice for applications that need extreme read / write speeds from their caching layer.
 
 This cache driver is powered by [Swoole tables](https://www.swoole.co.uk/docs/modules/swoole-table). All data stored in the cache is available to all workers on the server. However, the cached data will be flushed when the server is restarted:
@@ -563,7 +542,6 @@ Cache::store('octane')->put('framework', 'Laravel', 30);
 ```
 
 > **Note** The maximum number of entries allowed in the Octane cache may be defined in your application's `octane` configuration file.
-
 
 <a name="cache-intervals"></a>
 
@@ -584,7 +562,6 @@ Cache::store('octane')->interval('random', function () {
 ## Tables
 
 > **Warning** This feature requires [Swoole](#swoole).
-
 
 When using Swoole, you may define and interact with your own arbitrary [Swoole tables](https://www.swoole.co.uk/docs/modules/swoole-table). Swoole tables provide extreme performance throughput and the data in these tables can be accessed by all workers on the server. However, the data within them will be lost when the server is restarted.
 
@@ -613,4 +590,3 @@ return Octane::table('example')->get('uuid');
 ```
 
 > **Warning** The column types supported by Swoole tables are: `string`, `int`, and `float`.
-

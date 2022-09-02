@@ -1,55 +1,37 @@
+---
+contributors: {}
+crowdinUrl: https://crowdin.com/translate/laravel-docs/143/en-zhtw
+progress: 0
+updatedAt: '2022-08-06T05:47:00Z'
+---
+
 # Laravel Sail
 
 - [Introduction](#introduction)
-
 - [Installation & Setup](#installation)
-
    - [Installing Sail Into Existing Applications](#installing-sail-into-existing-applications)
-
    - [Configuring A Shell Alias](#configuring-a-shell-alias)
-
 - [Starting & Stopping Sail](#starting-and-stopping-sail)
-
 - [Executing Commands](#executing-sail-commands)
-
    - [Executing PHP Commands](#executing-php-commands)
-
    - [Executing Composer Commands](#executing-composer-commands)
-
    - [Executing Artisan Commands](#executing-artisan-commands)
-
    - [Executing Node / NPM Commands](#executing-node-npm-commands)
-
 - [Interacting With Databases](#interacting-with-sail-databases)
-
    - [MySQL](#mysql)
-
    - [Redis](#redis)
-
    - [MeiliSearch](#meilisearch)
-
 - [File Storage](#file-storage)
-
 - [Running Tests](#running-tests)
-
    - [Laravel Dusk](#laravel-dusk)
-
 - [Previewing Emails](#previewing-emails)
-
 - [Container CLI](#sail-container-cli)
-
 - [PHP Versions](#sail-php-versions)
-
 - [Node Versions](#sail-node-versions)
-
 - [Sharing Your Site](#sharing-your-site)
-
 - [Debugging With Xdebug](#debugging-with-xdebug)
-
    - [Xdebug CLI Usage](#xdebug-cli-usage)
-
    - [Xdebug Browser Usage](#xdebug-browser-usage)
-
 - [Customization](#sail-customization)
 
 <a name="introduction"></a>
@@ -295,7 +277,6 @@ You may create buckets via the MinIO console, which is available at `http://loca
 
 > **Warning** Generating temporary storage URLs via the `temporaryUrl` method is not supported when using MinIO.
 
-
 <a name="running-tests"></a>
 
 ## Running Tests
@@ -476,7 +457,6 @@ sail share --subdomain=my-sail-site
 
 > **Note** The `share` command is powered by [Expose](https://github.com/beyondcode/expose), an open source tunneling service by [BeyondCode](https://beyondco.de).
 
-
 <a name="debugging-with-xdebug"></a>
 
 ## Debugging With Xdebug
@@ -526,7 +506,6 @@ To debug your application while interacting with the application via a web brows
 If you're using PhpStorm, please review JetBrain's documentation regarding [zero-configuration debugging](https://www.jetbrains.com/help/phpstorm/zero-configuration-debugging.html).
 
 > **Warning** Laravel Sail relies on `artisan serve` to serve your application. The `artisan serve` command only accepts the `XDEBUG_CONFIG` and `XDEBUG_MODE` variables as of Laravel version 8.53.0. Older versions of Laravel (8.52.0 and below) do not support these variables and will not accept debug connections.
-
 
 <a name="sail-customization"></a>
 

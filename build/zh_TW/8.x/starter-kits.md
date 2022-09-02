@@ -1,15 +1,20 @@
+---
+contributors:
+  14684796:
+    avatarUrl: https://crowdin-static.downloads.crowdin.com/avatar/14684796/medium/60f7dc21ec0bf9cfcb61983640bb4809_default.png
+    name: cornch
+crowdinUrl: https://crowdin.com/translate/laravel-docs/157/en-zhtw
+progress: 100
+updatedAt: '2022-08-09T14:00:00Z'
+---
+
 # 入門套件
 
 - [簡介](#introduction)
-
 - [Laravel Breeze](#laravel-breeze)
-
    - [安裝](#laravel-breeze-installation)
-
    - [Breeze & Inertia](#breeze-and-inertia)
-
    - [Breeze & Next.js / API](#breeze-and-next)
-
 - [Laravel Jetstream](#laravel-jetstream)
 
 <a name="introduction"></a>
@@ -61,7 +66,6 @@ php artisan migrate
 接著，在瀏覽器中打開網站的 `/login` 或 `/register` 網址。Breeze 中所有的路由都定義在 `routes/auth.php` 中。
 
 > {tip} 要瞭解更多有關如何編譯網站的 CSS 與 JavaScript 的資訊，請參考 [Laravel Mix 說明文件](/docs/{{version}}/mix#running-mix)。
-
 
 <a name="breeze-and-inertia"></a>
 

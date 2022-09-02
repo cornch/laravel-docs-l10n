@@ -1,13 +1,19 @@
+---
+contributors:
+  14684796:
+    avatarUrl: https://crowdin-static.downloads.crowdin.com/avatar/14684796/medium/60f7dc21ec0bf9cfcb61983640bb4809_default.png
+    name: cornch
+crowdinUrl: https://crowdin.com/translate/laravel-docs/33/en-zhtw
+progress: 100
+updatedAt: '2022-02-13T10:32:00Z'
+---
+
 # Contract
 
 - [簡介](#introduction)
-
    - [Contract Vs. Facade](#contracts-vs-facades)
-
 - [什麼時候使用 Contract](#when-to-use-contracts)
-
 - [如何使用 Contract](#how-to-use-contracts)
-
 - [Contract 參照](#contract-reference)
 
 <a name="introduction"></a>

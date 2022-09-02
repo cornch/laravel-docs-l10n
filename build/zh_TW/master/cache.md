@@ -1,45 +1,35 @@
+---
+contributors:
+  14684796:
+    avatarUrl: https://crowdin-static.downloads.crowdin.com/avatar/14684796/medium/60f7dc21ec0bf9cfcb61983640bb4809_default.png
+    name: cornch
+crowdinUrl: https://crowdin.com/translate/laravel-docs/21/en-zhtw
+progress: 100
+updatedAt: '2022-08-06T06:42:00Z'
+---
+
 # 快取
 
 - [簡介](#introduction)
-
 - [組態設定](#configuration)
-
    - [Driver 前置需求](#driver-prerequisites)
-
 - [使用 Cache](#cache-usage)
-
    - [取得 Cache 實體](#obtaining-a-cache-instance)
-
    - [從 Cache 中取得項目](#retrieving-items-from-the-cache)
-
    - [在 Cache 內儲存項目](#storing-items-in-the-cache)
-
    - [從 Cache 內移除項目](#removing-items-from-the-cache)
-
    - [Cache 輔助函式](#the-cache-helper)
-
 - [Cache 標籤](#cache-tags)
-
    - [保存有標籤的 Cache 項目](#storing-tagged-cache-items)
-
    - [存取有標籤的 Cache 項目](#accessing-tagged-cache-items)
-
    - [移除有標籤的 Cache 項目](#removing-tagged-cache-items)
-
 - [Atomic Lock](#atomic-locks)
-
    - [Driver 前置需求](#lock-driver-prerequisites)
-
    - [管理 Lock](#managing-locks)
-
    - [在不同處理程序間管理 Lock](#managing-locks-across-processes)
-
 - [新增自訂的 Cache Driver](#adding-custom-cache-drivers)
-
    - [撰寫 Driver](#writing-the-driver)
-
    - [註冊 Driver](#registering-the-driver)
-
 - [事件](#events)
 
 <a name="introduction"></a>
@@ -75,7 +65,6 @@
     });
 
 > {tip} 可以使用 `php artisan cache:table` Artisan 指令來產生包含正確 Schema 的 Migration。
-
 
 <a name="memcached"></a>
 
@@ -257,7 +246,6 @@
 
 > {tip} 若使用 Memcached Driver，使用「forever」儲存的項目可能會在快取達到大小限制時被移除。
 
-
 <a name="removing-items-from-the-cache"></a>
 
 ### 從快取內取得項目
@@ -277,7 +265,6 @@
     Cache::flush();
 
 > {note} 使用 Flush 移除快取並不理會所設定的快取「前綴」，會將快取內所有的項目都移除。當快取有與其他應用程式共用時，在清除快取前請三思。
-
 
 <a name="the-cache-helper"></a>
 
@@ -301,13 +288,11 @@
 
 > {tip} 在測試呼叫全域的 `cache` 函式時，可以像在[測試 Facade](/docs/{{version}}/mocking#mocking-facades)一樣，使用 `Cache::shouldReceive` 方法。
 
-
 <a name="cache-tags"></a>
 
 ## 快取標籤
 
 > {note} 使用 `file`, `dynamodb` 或 `database` 快取 Driver 時，不支援使用快取標籤。此外，在以「forever」儲存的快取上使用多重標籤時，搭配 `memcached` Driver 能取得最佳效能，這些 Driver 通常會自動移除舊的記錄。
-
 
 <a name="storing-tagged-cache-items"></a>
 
@@ -346,7 +331,6 @@
 ## Atomic Lock (不可部分完成的鎖定)
 
 > {note} 若要使用此功能，則應用程式必須要使用 `memcached`, `redis`, `dynamodb`, `database`, `file` 或 `array` 作為應用程式的預設快取 Driver。另外，所有的伺服器也都必須要連線至相同的中央快取伺服器。
-
 
 <a name="lock-driver-prerequisites"></a>
 
@@ -469,7 +453,6 @@
     });
 
 > {tip} 若不知道該將自定快取 Driver 的程式碼放在哪裡，可在 `app` 目錄內建立一個 `Extensions` 命名空間。不過，請記得，Laravel 並沒有硬性規定應用程式的架構，你可以隨意依照你的喜好來阻止程式碼。
-
 
 <a name="registering-the-driver"></a>
 

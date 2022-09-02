@@ -1,3 +1,10 @@
+---
+contributors: {}
+crowdinUrl: https://crowdin.com/translate/laravel-docs/91/en-zhtw
+progress: 0
+updatedAt: '2022-01-29T05:45:00Z'
+---
+
 The MIT License (MIT)
 
 Copyright (c) Taylor Otwell

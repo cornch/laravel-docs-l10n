@@ -1,45 +1,32 @@
+---
+contributors: {}
+crowdinUrl: https://crowdin.com/translate/laravel-docs/145/en-zhtw
+progress: 0
+updatedAt: '2022-08-06T05:47:00Z'
+---
+
 # Laravel Sanctum
 
 - [Introduction](#introduction)
-
    - [How It Works](#how-it-works)
-
 - [Installation](#installation)
-
 - [Configuration](#configuration)
-
    - [Overriding Default Models](#overriding-default-models)
-
 - [API Token Authentication](#api-token-authentication)
-
    - [Issuing API Tokens](#issuing-api-tokens)
-
    - [Token Abilities](#token-abilities)
-
    - [Protecting Routes](#protecting-routes)
-
    - [Revoking Tokens](#revoking-tokens)
-
    - [Token Expiration](#token-expiration)
-
 - [SPA Authentication](#spa-authentication)
-
    - [Configuration](#spa-configuration)
-
    - [Authenticating](#spa-authenticating)
-
    - [Protecting Routes](#protecting-spa-routes)
-
    - [Authorizing Private Broadcast Channels](#authorizing-private-broadcast-channels)
-
 - [Mobile Application Authentication](#mobile-application-authentication)
-
    - [Issuing API Tokens](#issuing-mobile-api-tokens)
-
    - [Protecting Routes](#protecting-mobile-api-routes)
-
    - [Revoking Tokens](#revoking-mobile-api-tokens)
-
 - [Testing](#testing)
 
 <a name="introduction"></a>
@@ -74,13 +61,11 @@ Sanctum will only attempt to authenticate using cookies when the incoming reques
 
 > **Note** It is perfectly fine to use Sanctum only for API token authentication or only for SPA authentication. Just because you use Sanctum does not mean you are required to use both features it offers.
 
-
 <a name="installation"></a>
 
 ## Installation
 
 > **Note** The most recent versions of Laravel already include Laravel Sanctum. However, if your application's `composer.json` file does not include `laravel/sanctum`, you may follow the installation instructions below.
-
 
 You may install Laravel Sanctum via the Composer package manager:
 
@@ -151,7 +136,6 @@ Then, you may instruct Sanctum to use your custom model via the `usePersonalAcce
 ## API Token Authentication
 
 > **Note** You should not use API tokens to authenticate your own first-party SPA. Instead, use Sanctum's built-in [SPA authentication features](#spa-authentication).
-
 
 <a name="issuing-api-tokens"></a>
 
@@ -291,7 +275,6 @@ For this feature, Sanctum does not use tokens of any kind. Instead, Sanctum uses
 
 > **Warning** In order to authenticate, your SPA and API must share the same top-level domain. However, they may be placed on different subdomains. Additionally, you should ensure that you send the `Accept: application/json` header with your request.
 
-
 <a name="spa-configuration"></a>
 
 ### Configuration
@@ -303,7 +286,6 @@ For this feature, Sanctum does not use tokens of any kind. Instead, Sanctum uses
 First, you should configure which domains your SPA will be making requests from. You may configure these domains using the `stateful` configuration option in your `sanctum` configuration file. This configuration setting determines which domains will maintain "stateful" authentication using Laravel session cookies when making requests to your API.
 
 > **Warning** If you are accessing your application via a URL that includes a port (`127.0.0.1:8000`), you should ensure that you include the port number with the domain.
-
 
 <a name="sanctum-middleware"></a>
 
@@ -364,7 +346,6 @@ If the login request is successful, you will be authenticated and subsequent req
 Of course, if your user's session expires due to lack of activity, subsequent requests to the Laravel application may receive 401 or 419 HTTP error response. In this case, you should redirect the user to your SPA's login page.
 
 > **Warning** You are free to write your own `/login` endpoint; however, you should ensure that it authenticates the user using the standard, [session based authentication services that Laravel provides](/docs/{{version}}/authentication#authenticating-users). Typically, this means using the `web` authentication guard.
-
 
 <a name="protecting-spa-routes"></a>
 
@@ -453,7 +434,6 @@ Typically, you will make a request to the token endpoint from your mobile applic
 When the mobile application uses the token to make an API request to your application, it should pass the token in the `Authorization` header as a `Bearer` token.
 
 > **Note** When issuing tokens for a mobile application, you are also free to specify [token abilities](#token-abilities).
-
 
 <a name="protecting-mobile-api-routes"></a>
 

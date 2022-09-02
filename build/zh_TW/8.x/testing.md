@@ -1,13 +1,19 @@
+---
+contributors:
+  14684796:
+    avatarUrl: https://crowdin-static.downloads.crowdin.com/avatar/14684796/medium/60f7dc21ec0bf9cfcb61983640bb4809_default.png
+    name: cornch
+crowdinUrl: https://crowdin.com/translate/laravel-docs/163/en-zhtw
+progress: 100
+updatedAt: '2022-08-09T14:00:00Z'
+---
+
 # 測試：入門
 
 - [簡介](#introduction)
-
 - [環境](#environment)
-
 - [建立測試](#creating-tests)
-
 - [執行測試](#running-tests)
-
    - [平行執行測試](#running-tests-in-parallel)
 
 <a name="introduction"></a>
@@ -61,7 +67,6 @@ Laravel 中包含了一個 `CreatesApplication` Trait。在專案的基礎 `Test
 
 > {tip} 可以[安裝 Stub](/docs/{{version}}/artisan#stub-customization) 來自訂測試的 Stub。
 
-
 產生好測試後，即可如平常使用 [PHPUnit](https://phpunit.de) 一般來定義測試方法。若要執行測試，請在終端機內執行 `vendor/bin/phpunit` 或 `php artisan test` 指令：
 
     <?php
@@ -84,7 +89,6 @@ Laravel 中包含了一個 `CreatesApplication` Trait。在專案的基礎 `Test
     }
 
 > {note} 若有自行在測試類別內定義 `setUp` / `tearDown` 方法，請記得呼叫上層類別內對應的 `parent::setUp()` / `parent::tearDown()` 方法。
-
 
 <a name="running-tests"></a>
 
@@ -115,7 +119,6 @@ Laravel 中包含了一個 `CreatesApplication` Trait。在專案的基礎 `Test
     php artisan test --parallel --processes=4
 
 > {note} 平行執行測試時，可能無法使用部分 PHPUnit 的選項 (如 `--do-not-cache-result`)。
-
 
 <a name="parallel-testing-and-databases"></a>
 

@@ -1,31 +1,28 @@
+---
+contributors:
+  14684796:
+    avatarUrl: https://crowdin-static.downloads.crowdin.com/avatar/14684796/medium/60f7dc21ec0bf9cfcb61983640bb4809_default.png
+    name: cornch
+crowdinUrl: https://crowdin.com/translate/laravel-docs/115/en-zhtw
+progress: 100
+updatedAt: '2022-08-09T13:36:00Z'
+---
+
 # 資料庫：分頁
 
 - [簡介](#introduction)
-
 - [基礎用法](#basic-usage)
-
    - [為 Query Builder 的結果分頁](#paginating-query-builder-results)
-
    - [為 Eloquent 的結果分頁](#paginating-eloquent-results)
-
    - [Cursor Pagination](#cursor-pagination)
-
    - [手動建立 Paginator](#manually-creating-a-paginator)
-
    - [自訂 URL](#customizing-pagination-urls)
-
 - [顯示 Pagination 的結果](#displaying-pagination-results)
-
    - [調整 Pagination Link Window](#adjusting-the-pagination-link-window)
-
    - [將結果轉為 JSON](#converting-results-to-json)
-
 - [自訂 Pagination 的 View](#customizing-the-pagination-view)
-
    - [使用 Bootstrap](#using-bootstrap)
-
 - [Paginator 與 LengthAwarePaginator 實體的方法](#paginator-instance-methods)
-
 - [Cursor Paginator 實體的方法](#cursor-paginator-instance-methods)
 
 <a name="introduction"></a>
@@ -149,7 +146,6 @@ http://localhost/users?cursor=eyJpZCI6MTUsIl9wb2ludHNUb05leHRJdGVtcyI6dHJ1ZX0
 
 > **Warning** 查詢中功能必須要有「Order By」子句，才可使用 Cursor 的分頁。
 
-
 <a name="cursor-vs-offset-pagination"></a>
 
 #### Cursor 與 Offset Pagination 的比較
@@ -167,15 +163,12 @@ select * from users where id > 15 order by id asc limit 15;
 比起使用 Offset 的 Pagination，使用 Cursor 的 Pagination 有下列優點：
 
 - 當資料量龐大時，若「Order By」的欄位有索引，則使用 Cursor 的 Pagination 會比較有效率。這是因為，「Offset」子句會先掃描所有先前已經配對的資料。
-
 - 如果這些資料很常寫入的話，當使用者在件事頁面時，若在這個頁面中有新增或刪除資料，使用 Offset 的 Pagination 可能會跳過或重複顯示某些資料。
 
 不過，使用 Cursor 的 Pagination 也有下列限制：
 
 - 與 `simplePaginate` 類似，使用 Cursor 的 Pagination 只能顯示「下一頁」與「上一頁」的連結，無法產生頁碼連結。
-
 - 在使用 Cursor 的 Pagination 中，必須至少以 1 個不重複欄位排序，或是以多個組合起來不重複的欄位進行排序。不支援有 `null` 值的欄位。
-
 - 若要在「Order By」子句中包含運算式，則必須先將這些運算式加到「Select」子句內，並設定^[別名](Alias)後以別名來在「Order By」中使用。
 
 <a name="manually-creating-a-paginator"></a>
@@ -189,7 +182,6 @@ select * from users where id > 15 order by id asc limit 15;
 換句話說，`Paginator` 對應 Query Builder 上的 `simplePaginate` 方法，而 `CursorPaginator` 則是對應 `cursorPaginate` 方法，`LengthAwarePaginator` 對應 `paginate` 方法。
 
 > **Warning** 手動建立 Paginator 實體時，應「切割 - Slice」要傳給 Paginator 的結果陣列。如果不知道要如何切割陣列，請參考 [array_slice](https://secure.php.net/manual/en/function.array-slice.php) PHP 函式。
-
 
 <a name="customizing-pagination-urls"></a>
 

@@ -1,35 +1,30 @@
+---
+contributors:
+  14684796:
+    avatarUrl: https://crowdin-static.downloads.crowdin.com/avatar/14684796/medium/60f7dc21ec0bf9cfcb61983640bb4809_default.png
+    name: cornch
+crowdinUrl: https://crowdin.com/translate/laravel-docs/65/en-zhtw
+progress: 3
+updatedAt: '2022-08-06T05:46:00Z'
+---
+
 # Laravel Envoy
 
 - [簡介](#introduction)
-
 - [安裝](#installation)
-
 - [Writing Tasks](#writing-tasks)
-
    - [Defining Tasks](#defining-tasks)
-
    - [Multiple Servers](#multiple-servers)
-
    - [Setup](#setup)
-
    - [Variables](#variables)
-
    - [Stories](#stories)
-
    - [Hooks](#completion-hooks)
-
 - [Running Tasks](#running-tasks)
-
    - [Confirming Task Execution](#confirming-task-execution)
-
 - [Notifications](#notifications)
-
    - [Slack](#slack)
-
    - [Discord](#discord)
-
    - [Telegram](#telegram)
-
    - [Microsoft Teams](#microsoft-teams)
 
 <a name="introduction"></a>

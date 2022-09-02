@@ -1,73 +1,49 @@
+---
+contributors:
+  14684796:
+    avatarUrl: https://crowdin-static.downloads.crowdin.com/avatar/14684796/medium/60f7dc21ec0bf9cfcb61983640bb4809_default.png
+    name: cornch
+crowdinUrl: https://crowdin.com/translate/laravel-docs/171/en-zhtw
+progress: 99
+updatedAt: '2022-08-09T14:00:00Z'
+---
+
 # 表單驗證 - Validation
 
 - [簡介](#introduction)
-
 - [「表單驗證」快速入門](#validation-quickstart)
-
    - [定義 Route](#quick-defining-the-routes)
-
    - [建立 Controller](#quick-creating-the-controller)
-
    - [撰寫表單驗證邏輯](#quick-writing-the-validation-logic)
-
    - [顯示驗證錯誤](#quick-displaying-the-validation-errors)
-
    - [重新回填表單](#repopulating-forms)
-
    - [有關可選欄位的注意事項](#a-note-on-optional-fields)
-
    - [驗證錯誤的 Response 格式](#validation-error-response-format)
-
 - [Form Request 的驗證](#form-request-validation)
-
    - [建立 Form Request](#creating-form-requests)
-
    - [授權 Form Request](#authorizing-form-requests)
-
    - [自訂錯誤訊息](#customizing-the-error-messages)
-
    - [為表單驗證準備輸入](#preparing-input-for-validation)
-
 - [手動建立 Validator](#manually-creating-validators)
-
    - [自動重新導向](#automatic-redirection)
-
    - [命名的 Error Bag](#named-error-bags)
-
    - [自訂錯誤訊息](#manual-customizing-the-error-messages)
-
    - [After Validation Hook](#after-validation-hook)
-
 - [處理已驗證的輸入](#working-with-validated-input)
-
 - [處理錯誤訊息](#working-with-error-messages)
-
    - [在語系檔中指定自訂訊息](#specifying-custom-messages-in-language-files)
-
    - [在語系檔中指定屬性](#specifying-attribute-in-language-files)
-
    - [在語系檔中指定值](#specifying-values-in-language-files)
-
 - [可用的表單驗證規則](#available-validation-rules)
-
 - [條件式新增規則](#conditionally-adding-rules)
-
 - [驗證陣列](#validating-arrays)
-
    - [驗證巢狀陣列輸入](#validating-nested-array-input)
-
    - [錯誤訊息的索引與位置](#error-message-indexes-and-positions)
-
 - [驗證](#validating-files)
-
 - [驗證密碼](#validating-passwords)
-
 - [自訂驗證規則](#custom-validation-rules)
-
    - [使用 Rule 物件](#using-rule-objects)
-
    - [使用閉包](#using-closures)
-
    - [隱式規則](#implicit-rules)
 
 <a name="introduction"></a>
@@ -369,7 +345,6 @@ php artisan make:request StorePostRequest
 
 > **Note** 在 `rules` 方法的^[簽章](Signature) 中可以對任何需要的相依性進行^[型別提示](Type-Hint)。型別提示的相依性會由 Laravel 的 [Service Container](/docs/{{version}}/container) 自動解析。
 
-
 那麼，要怎麼執行驗證規則呢？我們只需要在 Controller 方法中型別提示這個 Request 即可。連入的 Form Request 會在呼叫 Controller 方法前驗證。這表示，我們就不需要在 Controller 中放一些凌亂的驗證邏輯：
 
     /**
@@ -491,7 +466,6 @@ Form Request 類別中也包含了一個 `authorize` 方法。在這個方法中
     }
 
 > **Note** 在 `authorize` 方法的^[簽章](Signature) 中可以對任何需要的相依性進行^[型別提示](Type-Hint)。型別提示中的相依性會由 Laravel 的 [Service Container](/docs/{{version}}/container) 自動解析。
-
 
 <a name="customizing-the-error-messages"></a>
 
@@ -1099,19 +1073,14 @@ The field under validation must not end with one of the given values.
 上方的例子會套用 `RFCValidation` 與 `DNSCheckValidation` 驗證。此處列出了所有可套用的驗證風格：
 
 - `rfc`: `RFCValidation`
-
 - `strict`: `NoRFCWarningsValidation`
-
 - `dns`: `DNSCheckValidation`
-
 - `spoof`: `SpoofCheckValidation`
-
 - `filter`: `FilterEmailValidation`
 
 `filter` Validator 使用 PHP 的 `filter_var` 函式，是隨 Laravel 提供的 Validator。在 Laravel 5.8 以前是 Laravel 的預設 E-Mail 驗證行為。
 
 > **Warning** `dns` 與 `spoof` Validator 需要有 PHP 的 `intl` 擴充程式。
-
 
 <a name="rule-ends-with"></a>
 
@@ -1133,7 +1102,6 @@ The field under validation must not end with one of the given values.
     ]);
 
 > **Warning** Enum 只在 PHP 8.1 以上提供。
-
 
 <a name="rule-exclude"></a>
 
@@ -1303,7 +1271,6 @@ The field under validation must not end with one of the given values.
 
 > **Warning** 這個驗證規則並不會驗證輸入是否為「^[整數](Integer)」變數型別，只會驗證該輸入值是否為 PHP 的 `FILTER_VALIDATE_INT` 規則接受的類型。若想驗證輸入是否為一數字，請搭配 [`numeric` 驗證規則](#rule-numeric)一起使用此規則。
 
-
 <a name="rule-ip"></a>
 
 #### ip
@@ -1392,7 +1359,6 @@ The field under validation must not end with one of the given values.
 
 > **Warning** 必須安裝 [`bcmath` PHP 擴充程式](https://www.php.net/manual/en/book.bc.php)，才可使用 `multiple_of` 規則。
 
-
 <a name="rule-not-in"></a>
 
 #### not_in:*foo*,*bar*,...
@@ -1418,7 +1384,6 @@ The field under validation must not end with one of the given values.
 
 > **Warning** 在使用 `regex` / `not_regex` 格式時，可能會需要以變數方式來指定驗證規則，而不是使用 `|` 分隔符號。尤其是當正規表示式包含 `|` 字元時。
 
-
 <a name="rule-nullable"></a>
 
 #### nullable
@@ -1438,7 +1403,6 @@ The field under validation must not end with one of the given values.
 該驗證欄位必須符合已登入使用者的密碼。
 
 > **Warning** 該驗證欄位已改名為 `current_password`，並將於 Laravel 9 中移除。請改用 [current_password](#rule-current-password) 規則代替。
-
 
 <a name="rule-present"></a>
 
@@ -1493,7 +1457,6 @@ The field under validation must not end with one of the given values.
 
 > **Warning** 使用 `regex` / `not_regex` 格式時，可能有需要使用陣列方式制定規則，而不是使用 `|` 分隔字元。特別是當正規式中有包含 `|` 字元時。
 
-
 <a name="rule-required"></a>
 
 #### required
@@ -1501,11 +1464,8 @@ The field under validation must not end with one of the given values.
 該驗證欄位必須存在於輸入資料中，且不可為空。當某個欄位滿足下列條件時，將被視為「空 (Empty)」：
 
 - 該值為 `null`。
-
 - 該值為空字串。
-
 - 該值為空陣列或空的 `Countable` 物件。
-
 - 該值為一無路徑的已上傳檔案。
 
 <a name="rule-required-if"></a>
@@ -1645,7 +1605,6 @@ The field under validation must be an array and must contain at least the specif
 
 > **Warning** 絕對不要傳入任何由使用者控制的 Request 輸入給 `ignore` 方法。請只傳入 Eloquent Model 實體中由系統產生的不重複 ID，如^[自動遞增 ID](Auto-Incrementing ID) 或 UUID。若傳入了使用者控制的資料，可能會讓你的程式發生如 ^[SQL 注入](SQL Injection)等弱點。
 
-
 除了直接將 Model 的索引鍵值傳給 `ignore` 方法外，還可以傳入整個 Model 實體。Laravel 會自動從 Model 中取出索引鍵：
 
     Rule::unique('users')->ignore($user)
@@ -1716,7 +1675,6 @@ The field under validation must be an array and must contain at least the specif
 
 > **Note** 若想驗證某個欄位必須存在，但可為空，請參考[這個關於可選欄位的備註](#a-note-on-optional-fields)。
 
-
 <a name="complex-conditional-validation"></a>
 
 #### 複雜的條件式驗證
@@ -1743,7 +1701,6 @@ The field under validation must be an array and must contain at least the specif
     });
 
 > **Note** 傳給閉包的 `$input` 引數會是 `Illuminate\Support\Fluent` 的實體。且可用來存取所有正在驗證的輸入與檔案。
-
 
 <a name="complex-conditional-array-validation"></a>
 
@@ -1905,7 +1862,6 @@ Laravel 提供了多種驗證規則，可用來驗證已上傳的檔案，如 `m
     ]);
 
 > **Note** 更多有關驗證圖片長寬的資訊，請參考 [dimension 規則的說明文件](#rule-dimensions)。
-
 
 <a name="validating-files-file-types"></a>
 
@@ -2180,4 +2136,3 @@ php artisan make:rule Uppercase --invokable --implicit
 ```
 
 > **Warning** 「隱式」規則只 **暗示** 該屬性為必填欄位。至於當屬性不存在或屬性為空時是否要視為驗證失敗，則取決於你。
-

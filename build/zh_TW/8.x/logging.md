@@ -1,29 +1,27 @@
+---
+contributors:
+  14684796:
+    avatarUrl: https://crowdin-static.downloads.crowdin.com/avatar/14684796/medium/60f7dc21ec0bf9cfcb61983640bb4809_default.png
+    name: cornch
+crowdinUrl: https://crowdin.com/translate/laravel-docs/97/en-zhtw
+progress: 100
+updatedAt: '2022-08-09T13:36:00Z'
+---
+
 # 日誌
 
 - [簡介](#introduction)
-
 - [組態設定](#configuration)
-
    - [可用的通道 Driver](#available-channel-drivers)
-
    - [通道的前置需求](#channel-prerequisites)
-
    - [記錄 Deprecation Warning](#logging-deprecation-warnings)
-
 - [建立 Log Stack](#building-log-stacks)
-
 - [撰寫 Log 訊息](#writing-log-messages)
-
    - [上下文資訊](#contextual-information)
-
    - [寫入特定通道](#writing-to-specific-channels)
-
 - [自訂的 Monolog 通道](#monolog-channel-customization)
-
    - [為某個通道自訂 Monolog](#customizing-monolog-for-channels)
-
    - [建立 Monolog Handler 的通道](#creating-monolog-handler-channels)
-
    - [使用 Factory 建立自定通道](#creating-custom-channels-via-factories)
 
 <a name="introduction"></a>
@@ -76,7 +74,6 @@ Laravel 的 Log 紀錄是基於「^[通道](Channel)」的。每個通道都代�
 | `syslog` | 基於 `SyslogHandler` 的 Monolog Driver |
 
 > {tip} 請閱讀[進階的通道客製化](#monolog-channel-customization)以瞭解更多有關 `monolog` 與 `custom` Driver 的資訊。
-
 
 <a name="channel-prerequisites"></a>
 
@@ -341,7 +338,6 @@ PHP、Laravel、或是其他函式庫等，通常會通知使用者其部分功�
     }
 
 > {tip} 所有的「Tap」類別都會由 [Service Container](/docs/{{version}}/container) 解析，所以在 ^[Constructor](建構函式) 中要求的相依性都會自動被插入。
-
 
 <a name="creating-monolog-handler-channels"></a>
 

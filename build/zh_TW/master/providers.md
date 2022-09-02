@@ -1,15 +1,20 @@
+---
+contributors:
+  14684796:
+    avatarUrl: https://crowdin-static.downloads.crowdin.com/avatar/14684796/medium/60f7dc21ec0bf9cfcb61983640bb4809_default.png
+    name: cornch
+crowdinUrl: https://crowdin.com/translate/laravel-docs/121/en-zhtw
+progress: 100
+updatedAt: '2022-08-09T13:36:00Z'
+---
+
 # Service Provider
 
 - [簡介](#introduction)
-
 - [撰寫 ServiceProvider](#writing-service-providers)
-
    - [Register 方法](#the-register-method)
-
    - [Boot 方法](#the-boot-method)
-
 - [註冊 Provider](#registering-providers)
-
 - [延遲的 Provider](#deferred-providers)
 
 <a name="introduction"></a>
@@ -25,7 +30,6 @@ Service Provider 是 Laravel 中負責啟動應用程式的中心點。不過是
 在本篇概覽中，讀者將可以學習到如何撰寫你自己的 Service Provider，並將這些 Provider 註冊到 Laravel 專案上。
 
 > {tip} 若想瞭解 Laravel 如何處理 Request 以及其內部如何運作，請參考我們有關 Laravel [Request 的生命週期](/docs/{{version}}/lifecycle)說明文件。
-
 
 <a name="writing-service-providers"></a>
 

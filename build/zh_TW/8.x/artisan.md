@@ -1,45 +1,35 @@
+---
+contributors:
+  14684796:
+    avatarUrl: https://crowdin-static.downloads.crowdin.com/avatar/14684796/medium/60f7dc21ec0bf9cfcb61983640bb4809_default.png
+    name: cornch
+crowdinUrl: https://crowdin.com/translate/laravel-docs/9/en-zhtw
+progress: 100
+updatedAt: '2022-08-06T06:42:00Z'
+---
+
 # Artisan 主控台
 
 - [簡介](#introduction)
-
    - [Tinker (REPL)](#tinker)
-
 - [撰寫指令](#writing-commands)
-
    - [產生指令](#generating-commands)
-
    - [指令結構](#command-structure)
-
    - [閉包指令](#closure-commands)
-
 - [定義預期的輸入](#defining-input-expectations)
-
    - [引數](#arguments)
-
    - [選項](#options)
-
    - [輸入陣列](#input-arrays)
-
    - [輸入說明](#input-descriptions)
-
 - [指令 I/O](#command-io)
-
    - [取得輸入](#retrieving-input)
-
    - [為輸入進行提示](#prompting-for-input)
-
    - [撰寫輸出](#writing-output)
-
 - [註冊指令](#registering-commands)
-
 - [使用程式碼呼叫指令](#programmatically-executing-commands)
-
    - [自其他指令內呼叫指令](#calling-commands-from-other-commands)
-
 - [處理訊號 (Signal)](#signal-handling)
-
 - [自訂 Stub](#stub-customization)
-
 - [事件](#events)
 
 <a name="introduction"></a>
@@ -78,7 +68,6 @@ Laravel Tinker 是用於 Laravel 框架的強大 REPL，由 [PsySH](https://gith
 
 > {tip} 想找個能與你的 Laravel 應用程式互動的圖形化 UI 嗎？試試 [Tinkerwell](https://tinkerwell.app) 吧！
 
-
 <a name="usage"></a>
 
 #### 使用
@@ -92,7 +81,6 @@ Tinker 可讓你在指令列內與完整的 Laravel 專案進行互動，包含 
     php artisan vendor:publish --provider="Laravel\Tinker\TinkerServiceProvider"
 
 > {note} `dispatch` 輔助函式與 `Dispatchable` 類別上的 `dispatch` 方法需要仰賴垃圾回收機制來將任務放進佇列中。因此，在使用 Tinker 時，應使用 `Bus::dispatch` 或 `Queue::push` 來分派任務。
-
 
 <a name="command-allow-list"></a>
 
@@ -183,7 +171,6 @@ Tinker 使用一個「allow」清單來判斷哪些 Artisan 指令可在其 Shel
     }
 
 > {tip} 為了提升程式碼重複使用率，最好保持主控台指令精簡，並將指令的任務委託給應用程式服務來完成。在上方的例子中，可以注意到我們插入了一個服務類別來處理寄送 E-Mail 的這個「重責大任」。
-
 
 <a name="closure-commands"></a>
 
@@ -532,7 +519,6 @@ Tinker 使用一個「allow」清單來判斷哪些 Artisan 指令可在其 Shel
     $bar->finish();
 
 > {tip} 有關更進階的選項，請參考 [Symfony Progress Bar 元件說明文件](https://symfony.com/doc/current/components/console/helpers/progressbar.html)。
-
 
 <a name="registering-commands"></a>
 

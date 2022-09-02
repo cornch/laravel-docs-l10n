@@ -1,23 +1,24 @@
+---
+contributors:
+  14684796:
+    avatarUrl: https://crowdin-static.downloads.crowdin.com/avatar/14684796/medium/60f7dc21ec0bf9cfcb61983640bb4809_default.png
+    name: cornch
+crowdinUrl: https://crowdin.com/translate/laravel-docs/25/en-zhtw
+progress: 100
+updatedAt: '2022-08-06T06:42:00Z'
+---
+
 # Collection
 
 - [簡介](#introduction)
-
    - [建立 Collection](#creating-collections)
-
    - [擴充 Collection](#extending-collections)
-
 - [可用方法](#available-methods)
-
 - [高階訊息 (Higher Order Message)](#higher-order-messages)
-
 - [Lazy Collection](#lazy-collections)
-
    - [簡介](#lazy-collection-introduction)
-
    - [建立 Lazy Collection](#creating-lazy-collections)
-
    - [Enumerable Contract](#the-enumerable-contract)
-
    - [Lazy Collection 方法](#lazy-collection-methods)
 
 <a name="introduction"></a>
@@ -43,7 +44,6 @@
     $collection = collect([1, 2, 3]);
 
 > {tip} [Eloquent](/docs/{{version}}/eloquent) 查詢的結果總會回傳為 `Collection` 實體。
-
 
 <a name="extending-collections"></a>
 
@@ -228,7 +228,6 @@ Collection 是「Macroable (可巨集)」的，這代表我們可以在執行階
 
 > {tip} `collect` 方法特別適合用於如有 `Enumerable` 實體且需要一個非 Lazy Collection 的實體。由於 `collect()` 是 `Enumerable` Contract 的一部分，因此我們可以安全地使用該方法來取得 `Collection` 實體。
 
-
 <a name="method-combine"></a>
 
 #### `combine()` {.collection-method}
@@ -307,7 +306,6 @@ Collection 是「Macroable (可巨集)」的，這代表我們可以在執行階
 該方法與 [`contains`](#method-contains) 方法的簽章一致。不過，所有的數值比對都是使用「嚴格」比對模式。
 
 > {tip} 在使用 [Eloquent Collection](/docs/{{version}}/eloquent-collections#method-contains) 時，該方法的行為有經過修改。
-
 
 <a name="method-count"></a>
 
@@ -423,7 +421,6 @@ The `crossJoin` method cross joins the collection's values among the given array
     // [1, 3, 5]
 
 > {tip} 在使用 [Eloquent Collection](/docs/{{version}}/eloquent-collections#method-diff) 時，該方法的行為有經過修改。
-
 
 <a name="method-diffassoc"></a>
 
@@ -639,7 +636,6 @@ The `crossJoin` method cross joins the collection's values among the given array
 
 > {tip} 在使用 [Eloquent Collection](/docs/{{version}}/eloquent-collections#method-except) 時，該方法的行為有經過修改。
 
-
 <a name="method-filter"></a>
 
 #### `filter()` {.collection-method}
@@ -811,7 +807,6 @@ The `crossJoin` method cross joins the collection's values among the given array
     // ['framework' => 'laravel']
 
 > {note} 與其他大多數 Collection 方法不同，`forget` 不會回傳經過修改的新 Collection。該方法會修改被呼叫的那個 Collection。
-
 
 <a name="method-forpage"></a>
 
@@ -998,7 +993,6 @@ The `crossJoin` method cross joins the collection's values among the given array
 
 > {tip} 在使用 [Eloquent Collection](/docs/{{version}}/eloquent-collections#method-intersect) 時，該方法的行為有經過修改。
 
-
 <a name="method-intersectbykeys"></a>
 
 #### `intersectByKeys()` {.collection-method}
@@ -1150,7 +1144,6 @@ The static `make` method creates a new collection instance. See the [Creating Co
     // [2, 4, 6, 8, 10]
 
 > {note} 與其他 Collection 方法類似，`map` 會回傳一個新的 Collection 實體。該方法不會修改正在呼叫的 Collection。若想改變原始 Collection，請使用 [`transform`](#method-transform) 方法代替。
-
 
 <a name="method-mapinto"></a>
 
@@ -1423,7 +1416,6 @@ The `mapInto()` method iterates over the collection, creating a new instance of 
 請參考 [except](#method-except) 方法以瞭解與 `only` 相反的方法。
 
 > {tip} 在使用 [Eloquent Collection](/docs/{{version}}/eloquent-collections#method-only) 時，該方法的行為有經過修改。
-
 
 <a name="method-pad"></a>
 
@@ -2017,7 +2009,6 @@ The `mapInto()` method iterates over the collection, creating a new instance of 
 
 > {note} 若找不到給定的值，或是回呼從未回傳 `true`，則 `skipUntil` 方法會回傳一個空 Collection。
 
-
 <a name="method-skipwhile"></a>
 
 #### `skipWhile()` {.collection-method}
@@ -2035,7 +2026,6 @@ The `mapInto()` method iterates over the collection, creating a new instance of 
     // [4]
 
 > {note} 若該回呼從未回傳 `true`，則 `skipWhile` 方法會回傳一個空 Collection。
-
 
 <a name="method-slice"></a>
 
@@ -2119,7 +2109,6 @@ The `mapInto()` method iterates over the collection, creating a new instance of 
 若有進階的排序需求，可以傳入包含自訂演算法的回呼給 `sort`。請參考 PHP 說明文件中的 [`uasort`](https://secure.php.net/manual/en/function.uasort.php#refsect1-function.uasort-parameters)，該函式為 Collection 的 `sort` 方法內部所使用。
 
 > {tip} 若有需要排序包含巢狀陣列或物件的 Collection，請參考 [`sortBy`](#method-sortby) 與 [`sortByDesc`](#method-sortbydesc) 方法。
-
 
 <a name="method-sortby"></a>
 
@@ -2476,7 +2465,6 @@ The `mapInto()` method iterates over the collection, creating a new instance of 
 
 > {note} 若找不到給定的值，或是回呼從未回傳 `true`，則 `skipUntil` 方法會回傳該 Collection 中的所有項目。
 
-
 <a name="method-takewhile"></a>
 
 #### `takeWhile()` {.collection-method}
@@ -2494,7 +2482,6 @@ The `mapInto()` method iterates over the collection, creating a new instance of 
     // [1, 2]
 
 > {note} 若回呼從未回傳 `false`，則 `takeWhile` 方法會回傳該 Collection 中的所有項目。
-
 
 <a name="method-tap"></a>
 
@@ -2543,7 +2530,6 @@ The `mapInto()` method iterates over the collection, creating a new instance of 
 
 > {note} `toArray` 也會將該 Collection 中所有 `Arrayable` 實作的巢狀物件轉換為陣列。若只是想取得該 Collection 底層的原始陣列，請使用 [`all`](#method-all) 方法代替。
 
-
 <a name="method-tojson"></a>
 
 #### `toJson()` {.collection-method}
@@ -2573,7 +2559,6 @@ The `mapInto()` method iterates over the collection, creating a new instance of 
     // [2, 4, 6, 8, 10]
 
 > {note} 與其他 Collection 方法不同，`transform` 會修改該 Collection 本身。若想建立新的 Collection，請使用 [`map`](#method-map) 方法代替。
-
 
 <a name="method-undot"></a>
 
@@ -2680,7 +2665,6 @@ The `mapInto()` method iterates over the collection, creating a new instance of 
 `unique` 方法在比對項目值時使用了「鬆散 (Loose)」的比對方法。這標示，具有整數值的字串與一個有相同值的整數會被視為相同。請使用 [`uniqueStrict`](#method-uniquestrict) 方法來使用「嚴格 (Strict)」比對進行過濾。
 
 > {tip} 在使用 [Eloquent Collection](/docs/{{version}}/eloquent-collections#method-unique) 時，該方法的行為有經過修改。
-
 
 <a name="method-uniquestrict"></a>
 
@@ -3200,7 +3184,6 @@ Collection 也提供了「高階訊息 (Higher Order Message)」的支援，在 
 
 > {note} 在開始學習有關 Laravel 的 Lazy Collection 之前，建議先花點時間熟悉 [PHP Generator](https://www.php.net/manual/en/language.generators.overview.php)。
 
-
 為了補強已經很強大的 `Collection` 類別，`LazyCollection` 類別使用了 PHP 的 [Generator](https://www.php.net/manual/en/language.generators.overview.php) 來讓你能在不使用太多記憶體的情況下處理非常大量的資料。
 
 舉例來說，假設你的專案需要處理一個好幾 GB 的日誌檔，但又想利用 Laravel 的 Collection 方法來解析日誌。比起一次將整個檔案讀入記憶體，使用 Lazy Collection 的話，記憶體內一次就只會保持一小部分的檔案。
@@ -3265,7 +3248,6 @@ Collection 也提供了「高階訊息 (Higher Order Message)」的支援，在 
 [all](#method-all) [average](#method-average) [avg](#method-avg) [chunk](#method-chunk) [chunkWhile](#method-chunkwhile) [collapse](#method-collapse) [collect](#method-collect) [combine](#method-combine) [concat](#method-concat) [contains](#method-contains) [containsStrict](#method-containsstrict) [count](#method-count) [countBy](#method-countBy) [crossJoin](#method-crossjoin) [dd](#method-dd) [diff](#method-diff) [diffAssoc](#method-diffassoc) [diffKeys](#method-diffkeys) [dump](#method-dump) [duplicates](#method-duplicates) [duplicatesStrict](#method-duplicatesstrict) [each](#method-each) [eachSpread](#method-eachspread) [every](#method-every) [except](#method-except) [filter](#method-filter) [first](#method-first) [firstWhere](#method-first-where) [flatMap](#method-flatmap) [flatten](#method-flatten) [flip](#method-flip) [forPage](#method-forpage) [get](#method-get) [groupBy](#method-groupby) [has](#method-has) [implode](#method-implode) [intersect](#method-intersect) [intersectByKeys](#method-intersectbykeys) [isEmpty](#method-isempty) [isNotEmpty](#method-isnotempty) [join](#method-join) [keyBy](#method-keyby) [keys](#method-keys) [last](#method-last) [macro](#method-macro) [make](#method-make) [map](#method-map) [mapInto](#method-mapinto) [mapSpread](#method-mapspread) [mapToGroups](#method-maptogroups) [mapWithKeys](#method-mapwithkeys) [max](#method-max) [median](#method-median) [merge](#method-merge) [mergeRecursive](#method-mergerecursive) [min](#method-min) [mode](#method-mode) [nth](#method-nth) [only](#method-only) [pad](#method-pad) [partition](#method-partition) [pipe](#method-pipe) [pluck](#method-pluck) [random](#method-random) [reduce](#method-reduce) [reject](#method-reject) [replace](#method-replace) [replaceRecursive](#method-replacerecursive) [reverse](#method-reverse) [search](#method-search) [shuffle](#method-shuffle) [skip](#method-skip) [slice](#method-slice) [some](#method-some) [sort](#method-sort) [sortBy](#method-sortby) [sortByDesc](#method-sortbydesc) [sortKeys](#method-sortkeys) [sortKeysDesc](#method-sortkeysdesc) [split](#method-split) [sum](#method-sum) [take](#method-take) [tap](#method-tap) [times](#method-times) [toArray](#method-toarray) [toJson](#method-tojson) [union](#method-union) [unique](#method-unique) [uniqueStrict](#method-uniquestrict) [unless](#method-unless) [unlessEmpty](#method-unlessempty) [unlessNotEmpty](#method-unlessnotempty) [unwrap](#method-unwrap) [values](#method-values) [when](#method-when) [whenEmpty](#method-whenempty) [whenNotEmpty](#method-whennotempty) [where](#method-where) [whereStrict](#method-wherestrict) [whereBetween](#method-wherebetween) [whereIn](#method-wherein) [whereInStrict](#method-whereinstrict) [whereInstanceOf](#method-whereinstanceof) [whereNotBetween](#method-wherenotbetween) [whereNotIn](#method-wherenotin) [whereNotInStrict](#method-wherenotinstrict) [wrap](#method-wrap) [zip](#method-zip)
 
 > {note} 會^[修改](Mutate) Collection 的方法 (如 `shift`、`pop`、`prepend` 等) 在 `LazyCollection` 類別上都 **不可用**。
-
 
 <a name="lazy-collection-methods"></a>
 

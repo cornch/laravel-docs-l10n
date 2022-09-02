@@ -1,39 +1,32 @@
+---
+contributors:
+  14684796:
+    avatarUrl: https://crowdin-static.downloads.crowdin.com/avatar/14684796/medium/60f7dc21ec0bf9cfcb61983640bb4809_default.png
+    name: cornch
+crowdinUrl: https://crowdin.com/translate/laravel-docs/105/en-zhtw
+progress: 100
+updatedAt: '2022-08-09T13:36:00Z'
+---
+
 # 編譯資源 (Mix)
 
 - [簡介](#introduction)
-
 - [安裝與設定](#installation)
-
 - [執行 Mix](#running-mix)
-
 - [處理樣式表](#working-with-stylesheets)
-
    - [Tailwind CSS](#tailwindcss)
-
    - [PostCSS](#postcss)
-
    - [Sass](#sass)
-
    - [URL 的處理](#url-processing)
-
    - [Source Map](#css-source-maps)
-
 - [處理 JavaScript](#working-with-scripts)
-
    - [Vue](#vue)
-
    - [React](#react)
-
    - [拆分出第三方函式庫](#vendor-extraction)
-
    - [自訂 Webpack 設定](#custom-webpack-configuration)
-
 - [版本化 / 避免快取](#versioning-and-cache-busting)
-
 - [Browsersync 重新載入](#browsersync-reloading)
-
 - [環境變數](#environment-variables)
-
 - [通知](#notifications)
 
 <a name="introduction"></a>
@@ -52,7 +45,6 @@ mix.js('resources/js/app.js', 'public/js')
 若你搞不懂怎麼用 Webpack 與編輯素材、或是覺得很複雜的話，你一定會喜歡 Laravel Mix 的。不過，不一定要使用 Laravel Mix 也能開發你的網站。你可以自由決定要使用哪個素材管道工具，甚至也可以不使用任何工具。
 
 > {tip} 若想使用 Laravel 與 [Tailwind CSS](https://tailwindcss.com) 來製作網站且想要有個起始點的話，請參考看看我們的[專案入門套件](/docs/{{version}}/starter-kits)。
-
 
 <a name="installation"></a>
 
@@ -225,7 +217,6 @@ mix.sass('resources/sass/app.sass', 'public/css')
 
 > {note} 傳入任何相對路徑給 `url()` 時，就不會套用 URL 複寫。舉例來說，`url('/images/thing.png')` 或 `url('http://example.com/images/thing.png')` 這兩種寫法將不會被修改。
 
-
 預設情況下，Laravel Mix 與 Webpack 會找到 `example.png` 這個檔案，並將其複製到 `public/images` 資料夾中，然後在產生的樣式表中複寫掉 `url()`。因此，編譯過的 CSS 會是這樣：
 
 ```css
@@ -287,9 +278,7 @@ mix.js('resources/js/app.js', 'public/js');
 只要這一行程式碼，就可以使用：
 
 - 最新的 ECMAScript 語法
-
 - 模組 (Module)
-
 - 為正式環境 Minify 原始碼
 
 <a name="vue"></a>
@@ -350,9 +339,7 @@ mix.js('resources/js/app.js', 'public/js')
 `extract` 方法接收一組包含要拆分為獨立 `vendor.js` 檔案的函式庫或模組陣列。使用上述範例中的這個程式碼片段，Mix 會產生下列檔案：
 
 - `public/js/manifest.js`: *Webpack Manifest Runtime*
-
 - `public/js/vendor.js`: *第三方函式庫*
-
 - `public/js/app.js`: *專案程式碼*
 
 為了避免產生 JavaScript 錯誤，請確保使用正確的順序載入這些檔案：

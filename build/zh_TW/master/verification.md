@@ -1,23 +1,24 @@
+---
+contributors:
+  14684796:
+    avatarUrl: https://crowdin-static.downloads.crowdin.com/avatar/14684796/medium/60f7dc21ec0bf9cfcb61983640bb4809_default.png
+    name: cornch
+crowdinUrl: https://crowdin.com/translate/laravel-docs/173/en-zhtw
+progress: 100
+updatedAt: '2022-08-09T14:00:00Z'
+---
+
 # E-Mail 驗證
 
 - [簡介](#introduction)
-
    - [Model 的準備](#model-preparation)
-
    - [資料庫的準備](#database-preparation)
-
 - [路由](#verification-routing)
-
    - [E-Mail 驗證說明](#the-email-verification-notice)
-
    - [E-Mail 驗證的處理程式](#the-email-verification-handler)
-
    - [重新傳送 E-Mail 驗證](#resending-the-verification-email)
-
    - [受保護的 Route](#protecting-routes)
-
 - [自定](#customization)
-
 - [事件](#events)
 
 <a name="introduction"></a>
@@ -27,7 +28,6 @@
 許多的 Web App 都需要使用者先驗證電子郵件位址後才能繼續使用。使用 Laravel 時，開發人員不需要在每個新專案上都自行為這個功能重造輪子。Laravel 提供了方便的內建服務，可用來傳送與驗證電子郵件驗證的 Request。
 
 > {tip} 想要快速入門嗎？請在全新的 Laravel 應用程式內安裝一個 [Laravel 應用程式入門套件](docs/{{version}}/starter-kits)。這些入門套件會幫你搞定整個驗證系統的 Scaffolding，其中也包含了電子郵件驗證的支援。
-
 
 <a name="model-preparation"></a>
 
@@ -91,7 +91,6 @@ php artisan migrate
 回傳這個 E-Mail 驗證提示的 Route 應命名為 `verification.notice`。將 Route 命名為這個名稱非常重要，因為 [Laravel 中內建的](#protecting-routes) `verified` Middleware 會在使用者尚未驗證 E-Mail 位址時自動重新導向至該 Route 上。
 
 > {tip} 手動實作 E-Mail 驗證時，我們需要自行定義驗證提示中的內容。若想要有包含所有必要之身份驗證與 E-Mail 驗證 View 的 Scaffolding，請參考 [Laravel 專案入門套件](/docs/{{version}}/starter-kits)。
-
 
 <a name="the-email-verification-handler"></a>
 
@@ -170,7 +169,6 @@ php artisan migrate
     }
 
 > {tip} 若想瞭解更多有關郵件通知的資訊，請參考[郵件通知的說明文件](/docs/{{version}}/notifications#mail-notifications)。
-
 
 <a name="events"></a>
 

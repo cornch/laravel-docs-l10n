@@ -1,65 +1,42 @@
+---
+contributors: {}
+crowdinUrl: https://crowdin.com/translate/laravel-docs/161/en-zhtw
+progress: 0
+updatedAt: '2022-08-06T05:47:00Z'
+---
+
 # Laravel Telescope
 
 - [Introduction](#introduction)
-
 - [Installation](#installation)
-
    - [Local Only Installation](#local-only-installation)
-
    - [Configuration](#configuration)
-
    - [Data Pruning](#data-pruning)
-
    - [Dashboard Authorization](#dashboard-authorization)
-
 - [Upgrading Telescope](#upgrading-telescope)
-
 - [Filtering](#filtering)
-
    - [Entries](#filtering-entries)
-
    - [Batches](#filtering-batches)
-
 - [Tagging](#tagging)
-
 - [Available Watchers](#available-watchers)
-
    - [Batch Watcher](#batch-watcher)
-
    - [Cache Watcher](#cache-watcher)
-
    - [Command Watcher](#command-watcher)
-
    - [Dump Watcher](#dump-watcher)
-
    - [Event Watcher](#event-watcher)
-
    - [Exception Watcher](#exception-watcher)
-
    - [Gate Watcher](#gate-watcher)
-
    - [HTTP Client Watcher](#http-client-watcher)
-
    - [Job Watcher](#job-watcher)
-
    - [Log Watcher](#log-watcher)
-
    - [Mail Watcher](#mail-watcher)
-
    - [Model Watcher](#model-watcher)
-
    - [Notification Watcher](#notification-watcher)
-
    - [Query Watcher](#query-watcher)
-
    - [Redis Watcher](#redis-watcher)
-
    - [Request Watcher](#request-watcher)
-
    - [Schedule Watcher](#schedule-watcher)
-
    - [View Watcher](#view-watcher)
-
 - [Displaying User Avatars](#displaying-user-avatars)
 
 <a name="introduction"></a>
@@ -170,7 +147,6 @@ The Telescope dashboard may be accessed at the `/telescope` route. By default, y
     }
 
 > {note} You should ensure you change your `APP_ENV` environment variable to `production` in your production environment. Otherwise, your Telescope installation will be publicly available.
-
 
 <a name="upgrading-telescope"></a>
 

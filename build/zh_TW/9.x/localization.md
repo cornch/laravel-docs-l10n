@@ -1,23 +1,24 @@
+---
+contributors:
+  14684796:
+    avatarUrl: https://crowdin-static.downloads.crowdin.com/avatar/14684796/medium/60f7dc21ec0bf9cfcb61983640bb4809_default.png
+    name: cornch
+crowdinUrl: https://crowdin.com/translate/laravel-docs/95/en-zhtw
+progress: 100
+updatedAt: '2022-08-09T13:36:00Z'
+---
+
 # 本土化
 
 - [簡介](#introduction)
-
    - [設定語系](#configuring-the-locale)
-
    - [複數化語言](#pluralization-language)
-
 - [定義翻譯字串](#defining-translation-strings)
-
    - [使用短的索引鍵](#using-short-keys)
-
    - [使用翻譯字串作為索引鍵](#using-translation-strings-as-keys)
-
 - [取得翻譯字串](#retrieving-translation-strings)
-
    - [在翻譯字串中取代參數](#replacing-parameters-in-translation-strings)
-
    - [單複數的處理](#pluralization)
-
 - [覆寫套件的語系檔](#overriding-package-language-files)
 
 <a name="introduction"></a>
@@ -102,7 +103,6 @@ Laravel 提供了兩種管理翻譯字串的方法。第一種方式，就是將
 
 > **Warning** 若自訂了複數化程式的語言，則請顯式定義 Eloquent Model 的[資料表名稱](/docs/{{version}}/eloquent#table-names)。
 
-
 <a name="defining-translation-strings"></a>
 
 ## 定義翻譯字串
@@ -130,7 +130,6 @@ Laravel 提供了兩種管理翻譯字串的方法。第一種方式，就是將
     ];
 
 > **Warning** 對於會因國家或地區而有所區別的語系，請依照 ISO 15897 命名語系檔目錄。舉例來說，英式英語應使用「en_GB」而非「en-gb」。
-
 
 <a name="using-translation-strings-as-keys"></a>
 

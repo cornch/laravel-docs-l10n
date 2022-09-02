@@ -1,57 +1,38 @@
+---
+contributors: {}
+crowdinUrl: https://crowdin.com/translate/laravel-docs/149/en-zhtw
+progress: 0
+updatedAt: '2022-08-06T05:47:00Z'
+---
+
 # Laravel Scout
 
 - [Introduction](#introduction)
-
 - [Installation](#installation)
-
    - [Driver Prerequisites](#driver-prerequisites)
-
    - [Queueing](#queueing)
-
 - [Configuration](#configuration)
-
    - [Configuring Model Indexes](#configuring-model-indexes)
-
    - [Configuring Searchable Data](#configuring-searchable-data)
-
    - [Configuring The Model ID](#configuring-the-model-id)
-
    - [Configuring Search Engines Per Model](#configuring-search-engines-per-model)
-
    - [Identifying Users](#identifying-users)
-
 - [Database / Collection Engines](#database-and-collection-engines)
-
    - [Database Engine](#database-engine)
-
    - [Collection Engine](#collection-engine)
-
 - [Indexing](#indexing)
-
    - [Batch Import](#batch-import)
-
    - [Adding Records](#adding-records)
-
    - [Updating Records](#updating-records)
-
    - [Removing Records](#removing-records)
-
    - [Pausing Indexing](#pausing-indexing)
-
    - [Conditionally Searchable Model Instances](#conditionally-searchable-model-instances)
-
 - [Searching](#searching)
-
    - [Where Clauses](#where-clauses)
-
    - [Pagination](#pagination)
-
    - [Soft Deleting](#soft-deleting)
-
    - [Customizing Engine Searches](#customizing-engine-searches)
-
 - [Custom Engines](#custom-engines)
-
 - [Builder Macros](#builder-macros)
 
 <a name="introduction"></a>
@@ -131,7 +112,6 @@ For more information regarding MeiliSearch, please consult the [MeiliSearch docu
 In addition, you should ensure that you install a version of `meilisearch/meilisearch-php` that is compatible with your MeiliSearch binary version by reviewing [MeiliSearch's documentation regarding binary compatibility](https://github.com/meilisearch/meilisearch-php#-compatibility-with-meilisearch).
 
 > **Warning** When upgrading Scout on an application that utilizes MeiliSearch, you should always [review any additional breaking changes](https://github.com/meilisearch/MeiliSearch/releases) to the MeiliSearch service itself.
-
 
 <a name="queueing"></a>
 
@@ -305,7 +285,6 @@ Enabling this feature this will also pass the request's IP address and your auth
 
 > **Warning** The database engine currently supports MySQL and PostgreSQL.
 
-
 If your application interacts with small to medium sized databases or has a light workload, you may find it more convenient to get started with Scout's "database" engine. The database engine will use "where like" clauses and full text indexes when filtering results from your existing database to determine the applicable search results for your query.
 
 To use the database engine, you may simply set the value of the `SCOUT_DRIVER` environment variable to `database`, or specify the `database` driver directly in your application's `scout` configuration file:
@@ -345,7 +324,6 @@ public function toSearchableArray()
 ```
 
 > **Warning** Before specifying that a column should use full text query constraints, ensure that the column has been assigned a [full text index](/docs/{{version}}/migrations#available-index-types).
-
 
 <a name="collection-engine"></a>
 
@@ -438,7 +416,6 @@ Or, if you already have a collection of Eloquent models in memory, you may call 
 
 > **Note** The `searchable` method can be considered an "upsert" operation. In other words, if the model record is already in your index, it will be updated. If it does not exist in the search index, it will be added to the index.
 
-
 <a name="updating-records"></a>
 
 ### Updating Records
@@ -520,7 +497,6 @@ Sometimes you may need to only make a model searchable under certain conditions.
 The `shouldBeSearchable` method is only applied when manipulating models through the `save` and `create` methods, queries, or relationships. Directly making models or collections searchable using the `searchable` method will override the result of the `shouldBeSearchable` method.
 
 > **Warning** The `shouldBeSearchable` method is not applicable when using Scout's "database" engine, as all searchable data is always stored in the database. To achieve similar behavior when using the database engine, you should use [where clauses](#where-clauses) instead.
-
 
 <a name="searching"></a>
 
@@ -610,7 +586,6 @@ Of course, if you would like to retrieve the pagination results as JSON, you may
 
 > **Warning** Since search engines are not aware of your Eloquent model's global scope definitions, you should not utilize global scopes in applications that utilize Scout pagination. Or, you should recreate the global scope's constraints when searching via Scout.
 
-
 <a name="soft-deleting"></a>
 
 ### Soft Deleting
@@ -630,7 +605,6 @@ When this configuration option is `true`, Scout will not remove soft deleted mod
     $orders = Order::search('Star Trek')->onlyTrashed()->get();
 
 > **Note** When a soft deleted model is permanently deleted using `forceDelete`, Scout will remove it from the search index automatically.
-
 
 <a name="customizing-engine-searches"></a>
 

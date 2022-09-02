@@ -1,51 +1,35 @@
+---
+contributors: {}
+crowdinUrl: https://crowdin.com/translate/laravel-docs/149/en-zhtw
+progress: 0
+updatedAt: '2022-08-06T05:47:00Z'
+---
+
 # Laravel Scout
 
 - [Introduction](#introduction)
-
 - [Installation](#installation)
-
    - [Driver Prerequisites](#driver-prerequisites)
-
    - [Queueing](#queueing)
-
 - [Configuration](#configuration)
-
    - [Configuring Model Indexes](#configuring-model-indexes)
-
    - [Configuring Searchable Data](#configuring-searchable-data)
-
    - [Configuring The Model ID](#configuring-the-model-id)
-
    - [Identifying Users](#identifying-users)
-
 - [Local Development](#local-development)
-
 - [Indexing](#indexing)
-
    - [Batch Import](#batch-import)
-
    - [Adding Records](#adding-records)
-
    - [Updating Records](#updating-records)
-
    - [Removing Records](#removing-records)
-
    - [Pausing Indexing](#pausing-indexing)
-
    - [Conditionally Searchable Model Instances](#conditionally-searchable-model-instances)
-
 - [Searching](#searching)
-
    - [Where Clauses](#where-clauses)
-
    - [Pagination](#pagination)
-
    - [Soft Deleting](#soft-deleting)
-
    - [Customizing Engine Searches](#customizing-engine-searches)
-
 - [Custom Engines](#custom-engines)
-
 - [Builder Macros](#builder-macros)
 
 <a name="introduction"></a>
@@ -115,7 +99,6 @@ For more information regarding MeiliSearch, please consult the [MeiliSearch docu
 In addition, you should ensure that you install a version of `meilisearch/meilisearch-php` that is compatible with your MeiliSearch binary version by reviewing [MeiliSearch's documentation regarding binary compatibility](https://github.com/meilisearch/meilisearch-php#-compatibility-with-meilisearch).
 
 > {note} When upgrading Scout on an application that utilizes MeiliSearch, you should always [review any additional breaking changes](https://github.com/meilisearch/MeiliSearch/releases) to the MeiliSearch service itself.
-
 
 <a name="queueing"></a>
 
@@ -320,7 +303,6 @@ Or, if you already have a collection of Eloquent models in memory, you may call 
 
 > {tip} The `searchable` method can be considered an "upsert" operation. In other words, if the model record is already in your index, it will be updated. If it does not exist in the search index, it will be added to the index.
 
-
 <a name="updating-records"></a>
 
 ### Updating Records
@@ -506,7 +488,6 @@ When this configuration option is `true`, Scout will not remove soft deleted mod
     $orders = Order::search('Star Trek')->onlyTrashed()->get();
 
 > {tip} When a soft deleted model is permanently deleted using `forceDelete`, Scout will remove it from the search index automatically.
-
 
 <a name="customizing-engine-searches"></a>
 

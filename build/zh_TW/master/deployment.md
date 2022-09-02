@@ -1,25 +1,25 @@
+---
+contributors:
+  14684796:
+    avatarUrl: https://crowdin-static.downloads.crowdin.com/avatar/14684796/medium/60f7dc21ec0bf9cfcb61983640bb4809_default.png
+    name: cornch
+crowdinUrl: https://crowdin.com/translate/laravel-docs/45/en-zhtw
+progress: 100
+updatedAt: '2022-08-09T12:04:00Z'
+---
+
 # 部署
 
 - [簡介](#introduction)
-
 - [伺服器需求](#server-requirements)
-
 - [伺服器設定](#server-configuration)
-
    - [Nginx](#nginx)
-
 - [最佳化](#optimization)
-
    - [Autoloader 的最佳化](#autoloader-optimization)
-
    - [最佳化設定檔的載入](#optimizing-configuration-loading)
-
    - [最佳化 Route 的載入](#optimizing-route-loading)
-
    - [最佳化 View 的載入](#optimizing-view-loading)
-
 - [偵錯模式](#debug-mode)
-
 - [使用 Forge 或 Vapor 部署](#deploying-with-forge-or-vapor)
 
 <a name="introduction"></a>
@@ -35,27 +35,16 @@
 Laravel Framework 有一些系統需求。請確保網頁伺服器有達到下列最小 PHP 版本需求與擴充套件需求：
 
 - PHP >= 8.0
-
 - BCMath PHP 擴充套件
-
 - Ctype PHP 擴充套件
-
 - DOM PHP Extension
-
 - Fileinfo PHP 擴充套件
-
 - JSON PHP 擴充套件
-
 - Mbstring PHP 擴充套件
-
 - OpenSSL PHP 擴充套件
-
 - PCRE PHP Extension
-
 - PDO PHP 擴充套件
-
 - Tokenizer PHP 擴充套件
-
 - XML PHP 擴充套件
 
 <a name="server-configuration"></a>
@@ -121,7 +110,6 @@ composer install --optimize-autoloader --no-dev
 
 > {tip} 除了最佳化 Autoloader 外，也應確保有將 `composer.lock` 檔案加到專案的版本控制儲存庫內。當有 `composer.lock` 檔時，專案的相依性套件可以安裝得更快。
 
-
 <a name="optimizing-configuration-loading"></a>
 
 ### 最佳化組態設定檔載入
@@ -135,7 +123,6 @@ php artisan config:cache
 該指令會將所有的 Laravel 組態設定檔合併為單一、經過快取的檔案。該檔案通常可以減少一些框架在載入組態設定值時讀取檔案系統的次數。
 
 > {note} 若在部署流程中執行了 `config:cache` 指令，應確保只有在組態設定檔中呼叫 `env` 函式。設定檔被快取後，就不會再載入 `.env` 檔了。所有 `env` 函式查詢 `.env` 變數的呼叫都會回傳 `null`。
-
 
 <a name="optimizing-route-loading"></a>
 

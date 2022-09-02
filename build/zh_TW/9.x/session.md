@@ -1,29 +1,27 @@
+---
+contributors:
+  14684796:
+    avatarUrl: https://crowdin-static.downloads.crowdin.com/avatar/14684796/medium/60f7dc21ec0bf9cfcb61983640bb4809_default.png
+    name: cornch
+crowdinUrl: https://crowdin.com/translate/laravel-docs/153/en-zhtw
+progress: 95
+updatedAt: '2022-08-06T05:47:00Z'
+---
+
 # HTTP Session
 
 - [簡介](#introduction)
-
    - [組態設定](#configuration)
-
    - [Driver 前置需求](#driver-prerequisites)
-
 - [使用 Session](#interacting-with-the-session)
-
    - [取得資料](#retrieving-data)
-
    - [保存資料](#storing-data)
-
    - [快閃資料](#flash-data)
-
    - [刪除資料](#deleting-data)
-
    - [重新產生 Session ID](#regenerating-the-session-id)
-
 - [Session 鎖定](#session-blocking)
-
 - [新增自訂的 Session Driver](#adding-custom-session-drivers)
-
    - [實作 Driver](#implementing-the-driver)
-
    - [註冊 Driver](#registering-the-driver)
 
 <a name="introduction"></a>
@@ -43,19 +41,13 @@ Laravel 隨附了多種 Session 後端，能讓我們使用直觀且同一的 AP
 Session 的 `driver` 設定定義了每個 Request 的 Session 資料要存在哪裡。Laravel 隨附了多個不錯的 Driver：
 
 - `file` - Session 儲存在 `storage/framework/sessions`。
-
 - `cookie` - Session 儲存在安全的加密 Cookie 中。
-
 - `database` - Session 儲存在關聯式資料庫中。
-
 - `memcached` / `redis` - Session 儲存在其中一個快速、基於快取的存放空間中。
-
 - `dynamodb` - Session 儲存在 AWS DynamoDB。
-
 - `array` - Session 儲存在 PHP 陣列中，且不會被^[持續保存](Persist)。
 
 > **Note** The array driver is primarily used during [testing](/docs/{{version}}/testing) and prevents the data stored in the session from being persisted.
-
 
 <a name="driver-prerequisites"></a>
 
@@ -91,7 +83,6 @@ php artisan migrate
 在 Laravel 上使用 Redis Session 前，必須先使用 PECL 安裝 PhpRedis PHP 擴充程式，或是使用 Composer 安裝 `predis/predis` 套件 (~1.0)。更多有關設定 Redis 的資訊，請參考 Laravel 的 [Redis 說明文件](/docs/{{version}}/redis#configuration)。
 
 > **Note** In the `session` configuration file, the `connection` option may be used to specify which Redis connection is used by the session.
-
 
 <a name="interacting-with-the-session"></a>
 
@@ -153,7 +144,6 @@ php artisan migrate
     });
 
 > **Note** There is little practical difference between using the session via an HTTP request instance versus using the global `session` helper. Both methods are [testable](/docs/{{version}}/testing) via the `assertSessionHas` method which is available in all of your test cases.
-
 
 <a name="retrieving-all-session-data"></a>
 
@@ -279,7 +269,6 @@ php artisan migrate
 
 > **Warning** To utilize session blocking, your application must be using a cache driver that supports [atomic locks](/docs/{{version}}/cache#atomic-locks). Currently, those cache drivers include the `memcached`, `dynamodb`, `redis`, and `database` drivers. In addition, you may not use the `cookie` session driver.
 
-
 預設情況下，Laravel 能讓多個 Request 使用相同的 Session 來同步執行。不過，舉例來說，若我們使用某個 JavaScript HTTP 函式庫來建立兩個連到我們專案的 HTTP Request，且這兩個 Request 會同時執行。對於大多數的專案來說，這不會有什麼問題。不過，對一部分的專案，如果這兩個 Request 送往兩個不同的 Endpoint (端點)，且這兩個 Endpoint 都有寫入資料到 Session 的話，就有可能會發生 Session 資料遺失的問題。
 
 為了解決這個問題，Laravel 提供了能讓我們針對給定 Session 限制同步 Request 數量的功能。要開始使用 Session 封鎖，我們只需要在 Route 定義後方串上 `block` 方法即可。在這個例子中，所有連入到 `/profile` Endpoint 的 Request 都會取得一個 Session Lock (鎖定)。當被 Lock 時，所有連到 `/profile` 或 `/order` Endpoint 的 Request 若有相同的 Session ID，都必須等到第一個 Request 執行完成後，才能繼續執行：
@@ -328,19 +317,13 @@ php artisan migrate
 
 > **Note** Laravel does not ship with a directory to contain your extensions. You are free to place them anywhere you like. In this example, we have created an `Extensions` directory to house the `MongoSessionHandler`.
 
-
 由於只看這些方法很難看出他們的功能，所以我們來快速看一下各個方法都用來做什麼：
 
 - `open` 方法通常是給一些基於檔案的 Session 存放系統使用的。因為 Laravel 已經有附帶 `file` Session Driver 了，所以通常這個方法裡應該不需要寫什麼內容。留空即可。
-
 - `close` 方法跟 `open` 方法一樣，通常可以忽略。對大多數的 Driver 來說並不需要。
-
 - `read` 方法應回傳與給定 `$sessionId` 關聯的字串版本 Session 資料。在從 Driver 中取出資料時不需要進行任何的^[序列化](Serialization) 或其他編碼，因為 Laravel 會幫你序列化。
-
 - `write` 方法應將給定的 `$data` 字串以 `$sessionId` 關聯並保存到儲存系統中，例如 MongoDB 或其他你選擇的儲存系統。同樣的，不需要進行任何序列化 —— Laravel 已經幫你序列化好了。
-
 - `destroy` 方法從持續性儲存系統中移除任何與 `$sessionId` 關聯的資料。
-
 - `gc` 方法移除所有時間舊於 `$lifetime` 的 `Session` 資料。`$lifetime` 是 UNIX 時戳。對於^[自帶有效期限](Self-Expiring)的系統，如 Memcached 或 Redis，可以將這個方法留空。
 
 <a name="registering-the-driver"></a>

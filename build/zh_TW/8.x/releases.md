@@ -1,11 +1,18 @@
+---
+contributors:
+  14684796:
+    avatarUrl: https://crowdin-static.downloads.crowdin.com/avatar/14684796/medium/60f7dc21ec0bf9cfcb61983640bb4809_default.png
+    name: cornch
+crowdinUrl: https://crowdin.com/translate/laravel-docs/135/en-zhtw
+progress: 100
+updatedAt: '2022-08-09T13:35:00Z'
+---
+
 # 版本資訊
 
 - [版本策略](#versioning-scheme)
-
    - [例外](#exceptions)
-
 - [支援政策](#support-policy)
-
 - [Laravel 8](#laravel-8)
 
 <a name="versioning-scheme"></a>
@@ -404,4 +411,3 @@ Laravel 的分頁程式 (Paginator) 已更新為預設使用 [Tailwind CSS](http
 若你偏好使用 Laravel 7.x 風格的 Controller 路由前置，只需要在專案的 `RouteServiceProvider` 中加上 `$namespace` 屬性即可。
 
 > {note} 這個更改只會影響新安裝的 Laravel 8.x 專案。對於從 Laravel 7.x 升級來的專案，`RouteServiceProvider` 內還是會有 `$namespace` 屬性。
-

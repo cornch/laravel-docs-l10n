@@ -1,33 +1,29 @@
+---
+contributors:
+  14684796:
+    avatarUrl: https://crowdin-static.downloads.crowdin.com/avatar/14684796/medium/60f7dc21ec0bf9cfcb61983640bb4809_default.png
+    name: cornch
+crowdinUrl: https://crowdin.com/translate/laravel-docs/85/en-zhtw
+progress: 81
+updatedAt: '2022-08-06T05:46:00Z'
+---
+
 # HTTP 用戶端
 
 - [簡介](#introduction)
-
 - [建立 Request](#making-requests)
-
    - [Request 資料](#request-data)
-
    - [標頭 (Header)](#headers)
-
    - [身份認證](#authentication)
-
    - [逾時](#timeout)
-
    - [重試](#retries)
-
    - [錯誤處理](#error-handling)
-
    - [Guzzle 選項](#guzzle-options)
-
 - [同時進行的 Request](#concurrent-requests)
-
 - [Macro](#macros)
-
 - [測試](#testing)
-
    - [模擬 Response](#faking-responses)
-
    - [攔截 Request](#inspecting-requests)
-
 - [事件](#events)
 
 <a name="introduction"></a>

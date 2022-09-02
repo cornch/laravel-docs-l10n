@@ -1,19 +1,22 @@
+---
+contributors:
+  14684796:
+    avatarUrl: https://crowdin-static.downloads.crowdin.com/avatar/14684796/medium/60f7dc21ec0bf9cfcb61983640bb4809_default.png
+    name: cornch
+crowdinUrl: https://crowdin.com/translate/laravel-docs/43/en-zhtw
+progress: 100
+updatedAt: '2022-08-09T12:04:00Z'
+---
+
 # 資料庫：入門
 
 - [簡介](#introduction)
-
    - [組態設定](#configuration)
-
    - [讀寫連線](#read-and-write-connections)
-
 - [執行 SQL 查詢](#running-queries)
-
    - [使用多個資料庫連線](#using-multiple-database-connections)
-
    - [監聽查詢事件](#listening-for-query-events)
-
 - [資料庫 Transaction](#database-transactions)
-
 - [連線至資料庫 CLI](#connecting-to-the-database-cli)
 
 <a name="introduction"></a>
@@ -23,13 +26,9 @@
 幾乎所有的現代網站都會與資料庫互動。比起直接使用原始 SQL，Laravel 通過[流暢的 Query Builder](/docs/{{version}}/queries)、[Eloquent ORM](/docs/{{version}}/eloquent) 等功能大大簡化了與多種支援資料庫互動的過程。目前，Laravel 對 5 種資料庫提供了第一方支援：
 
 - MariaDB 10.2+ ([版本政策](https://mariadb.org/about/#maintenance-policy))
-
 - MySQL 5.7+ ([版本政策](https://en.wikipedia.org/wiki/MySQL#Release_history))
-
 - PostgreSQL 9.6+ ([版本政策](https://www.postgresql.org/support/versioning/))
-
 - SQLite 3.8.8+
-
 - SQL Server 2017+ ([版本政策](https://docs.microsoft.com/en-us/lifecycle/products/?products=sql-server))
 
 <a name="configuration"></a>
@@ -225,7 +224,6 @@ driver://username:password@host:port/database?options
 
 > {note} 由於未預先準備的陳述式並不繫結參數，因此這些查詢可能容易遭受 SQL 注入攻擊。在未預先準備的陳述式中，不應包含使用者可控制的值。
 
-
 <a name="implicit-commits-in-transactions"></a>
 
 #### 隱式 Commit
@@ -337,7 +335,6 @@ driver://username:password@host:port/database?options
     DB::commit();
 
 > {tip} `DB` Facade 的 Transaction 方法會同時控制到 [Query Builder](/docs/{{version}}/queries) 與 [Eloquent ORM](/docs/{{version}}/eloquent)。
-
 
 <a name="connecting-to-the-database-cli"></a>
 

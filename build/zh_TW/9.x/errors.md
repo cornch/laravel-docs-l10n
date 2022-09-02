@@ -1,23 +1,24 @@
+---
+contributors:
+  14684796:
+    avatarUrl: https://crowdin-static.downloads.crowdin.com/avatar/14684796/medium/60f7dc21ec0bf9cfcb61983640bb4809_default.png
+    name: cornch
+crowdinUrl: https://crowdin.com/translate/laravel-docs/67/en-zhtw
+progress: 100
+updatedAt: '2022-08-09T12:03:00Z'
+---
+
 # 錯誤處理
 
 - [簡介](#introduction)
-
 - [組態設定](#configuration)
-
 - [Exception Handler](#the-exception-handler)
-
    - [回報 Exception](#reporting-exceptions)
-
    - [Exception 的 Log 等級](#exception-log-levels)
-
    - [依照型別忽略 Exception](#ignoring-exceptions-by-type)
-
    - [轉譯 Exception](#rendering-exceptions)
-
    - [Reportable 與 Renderable 的 Exception](#renderable-exceptions)
-
 - [HTTP Exception](#http-exceptions)
-
    - [自訂 HTTP 錯誤的頁面](#custom-http-error-pages)
 
 <a name="introduction"></a>
@@ -71,7 +72,6 @@
     });
 
 > **Note** 若要為給定的例外自訂 Exception 回報，可使用 [Reportable 的例外](/docs/{{version}}/errors#renderable-exceptions)。
-
 
 <a name="global-log-context"></a>
 
@@ -175,7 +175,6 @@
     ];
 
 > **Note** 在 Laravel 內部，Laravel 已經預先幫你忽略了一些類型的錯誤。如：產生 404 HTTP「找不到」錯誤的 Exception、還有因為無效 CSRF Token 產生的 419 HTTP Response。
-
 
 <a name="rendering-exceptions"></a>
 
@@ -285,7 +284,6 @@
     }
 
 > **Note** 可以在 `report` 方法中型別提示任何的^[相依性](Dependency)。Laravel 的 [Service Container](/docs/{{version}}/container) 會自動插入這些相依性。
-
 
 <a name="http-exceptions"></a>
 

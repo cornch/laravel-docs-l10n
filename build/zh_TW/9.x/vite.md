@@ -1,47 +1,33 @@
+---
+contributors: {}
+crowdinUrl: https://crowdin.com/translate/laravel-docs/180/en-zhtw
+progress: 0
+updatedAt: '2022-08-06T06:42:00Z'
+---
+
 # Bundling Assets (Vite)
 
 - [Introduction](#introduction)
-
 - [Installation & Setup](#installation)
-
    - [Installing Node](#installing-node)
-
    - [Installing Vite And The Laravel Plugin](#installing-vite-and-laravel-plugin)
-
    - [Configuring Vite](#configuring-vite)
-
    - [Loading Your Scripts And Styles](#loading-your-scripts-and-styles)
-
 - [Running Vite](#running-vite)
-
 - [Working With JavaScript](#working-with-scripts)
-
    - [Aliases](#aliases)
-
    - [Vue](#vue)
-
    - [React](#react)
-
    - [Inertia](#inertia)
-
    - [URL Processing](#url-processing)
-
 - [Working With Stylesheets](#working-with-stylesheets)
-
 - [Working With Blade & Routes](#working-with-blade-and-routes)
-
 - [Custom Base URLs](#custom-base-urls)
-
 - [Environment Variables](#environment-variables)
-
 - [Server-Side Rendering (SSR)](#ssr)
-
 - [Script & Style Tag Attributes](#script-and-style-attributes)
-
    - [Content Security Policy (CSP) Nonce](#content-security-policy-csp-nonce)
-
    - [Subresource Integrity (SRI)](#subresource-integrity-sri)
-
    - [Arbitrary Attributes](#arbitrary-attributes)
 
 <a name="introduction"></a>
@@ -53,7 +39,6 @@
 Laravel integrates seamlessly with Vite by providing an official plugin and Blade directive to load your assets for development and production.
 
 > **Note** Are you running Laravel Mix? Vite has replaced Laravel Mix in new Laravel installations. For Mix documentation, please visit the [Laravel Mix](https://laravel-mix.com/) website. If you would like to switch to Vite, please see our [migration guide](https://github.com/laravel/vite-plugin/blob/main/UPGRADE.md#migrating-from-laravel-mix-to-vite).
-
 
 <a name="vite-or-mix"></a>
 
@@ -74,7 +59,6 @@ Have you started a new Laravel application using our Vite scaffolding but need t
 ## Installation & Setup
 
 > **Note** The following documentation discusses how to manually install and configure the Laravel Vite plugin. However, Laravel's [starter kits](/docs/{{version}}/starter-kits) already include all of this scaffolding and are the fastest way to get started with Laravel and Vite.
-
 
 <a name="installing-node"></a>
 
@@ -285,7 +269,6 @@ export default defineConfig({
 
 > **Note** Laravel's [starter kits](/docs/{{version}}/starter-kits) already include the proper Laravel, Vue, and Vite configuration. Check out [Laravel Breeze](/docs/{{version}}/starter-kits#breeze-and-inertia) for the fastest way to get started with Laravel, Vue, and Vite.
 
-
 <a name="react"></a>
 
 ### React
@@ -300,7 +283,6 @@ When using Vite with React, you will need to ensure that any files containing JS
 The `@viteReactRefresh` directive must be called before the `@vite` directive.
 
 > **Note** Laravel's [starter kits](/docs/{{version}}/starter-kits) already include the proper Laravel, React, and Vite configuration. Check out [Laravel Breeze](/docs/{{version}}/starter-kits#breeze-and-inertia) for the fastest way to get started with Laravel, React, and Vite.
-
 
 <a name="inertia"></a>
 
@@ -324,7 +306,6 @@ createInertiaApp({
 ```
 
 > **Note** Laravel's [starter kits](/docs/{{version}}/starter-kits) already include the proper Laravel, Inertia, and Vite configuration. Check out [Laravel Breeze](/docs/{{version}}/starter-kits#breeze-and-inertia) for the fastest way to get started with Laravel, Inertia, and Vite.
-
 
 <a name="url-processing"></a>
 
@@ -504,7 +485,6 @@ node bootstrap/ssr/ssr.mjs
 
 > **Note** Laravel's [starter kits](/docs/{{version}}/starter-kits) already include the proper Laravel, Inertia SSR, and Vite configuration. Check out [Laravel Breeze](/docs/{{version}}/starter-kits#breeze-and-inertia) for the fastest way to get started with Laravel, Inertia SSR, and Vite.
 
-
 <a name="script-and-style-attributes"></a>
 
 ## Script & Style Tag Attributes
@@ -633,4 +613,3 @@ Vite::useStyleTagAttributes(fn (string $src, string $url, array|null $chunk, arr
 ```
 
 > **Warning** The `$chunk` and `$manifest` arguments will be `null` while the Vite development server is running.
-

@@ -1,9 +1,17 @@
+---
+contributors:
+  14684796:
+    avatarUrl: https://crowdin-static.downloads.crowdin.com/avatar/14684796/medium/60f7dc21ec0bf9cfcb61983640bb4809_default.png
+    name: cornch
+crowdinUrl: https://crowdin.com/translate/laravel-docs/29/en-zhtw
+progress: 100
+updatedAt: '2022-02-13T10:32:00Z'
+---
+
 # 主控台測試
 
 - [簡介](#introduction)
-
 - [預期成功 / 預期失敗](#success-failure-expectations)
-
 - [預期輸入 / 預期輸出](#input-output-expectations)
 
 <a name="introduction"></a>

@@ -1,99 +1,62 @@
+---
+contributors:
+  14684796:
+    avatarUrl: https://crowdin-static.downloads.crowdin.com/avatar/14684796/medium/60f7dc21ec0bf9cfcb61983640bb4809_default.png
+    name: cornch
+crowdinUrl: https://crowdin.com/translate/laravel-docs/109/en-zhtw
+progress: 100
+updatedAt: '2022-08-09T13:36:00Z'
+---
+
 # 通知 - Notification
 
 - [簡介](#introduction)
-
 - [產生 Notification](#generating-notifications)
-
 - [傳送通知](#sending-notifications)
-
    - [使用 Notifiable Trait](#using-the-notifiable-trait)
-
    - [使用 Notification Facade](#using-the-notification-facade)
-
    - [指定遞送通道](#specifying-delivery-channels)
-
    - [將 Notification 放入佇列](#queueing-notifications)
-
    - [隨需通知](#on-demand-notifications)
-
 - [郵件通知](#mail-notifications)
-
    - [格式化郵件通知](#formatting-mail-messages)
-
    - [自訂寄件人](#customizing-the-sender)
-
    - [自訂收件人](#customizing-the-recipient)
-
    - [自訂主旨](#customizing-the-subject)
-
    - [自訂 Mailer](#customizing-the-mailer)
-
    - [自訂樣板](#customizing-the-templates)
-
    - [附加檔案](#mail-attachments)
-
    - [加上 Tag 與詮釋資料](#adding-tags-metadata)
-
    - [自訂 Symfony 訊息](#customizing-the-symfony-message)
-
    - [使用 Mailable](#using-mailables)
-
    - [預覽郵件通知](#previewing-mail-notifications)
-
 - [Markdown 的郵件通知](#markdown-mail-notifications)
-
    - [產生訊息](#generating-the-message)
-
    - [撰寫訊息](#writing-the-message)
-
    - [自訂元件](#customizing-the-components)
-
 - [資料庫通知](#database-notifications)
-
    - [前置要求](#database-prerequisites)
-
    - [格式化資料庫通知](#formatting-database-notifications)
-
    - [存取通知](#accessing-the-notifications)
-
    - [將通知標記為已讀](#marking-notifications-as-read)
-
 - [廣播通知](#broadcast-notifications)
-
    - [前置要求](#broadcast-prerequisites)
-
    - [格式化廣播通知](#formatting-broadcast-notifications)
-
    - [監聽通知](#listening-for-notifications)
-
 - [簡訊通知](#sms-notifications)
-
    - [前置要求](#sms-prerequisites)
-
    - [格式化簡訊通知](#formatting-sms-notifications)
-
    - [格式化 Shortcode 的通知](#formatting-shortcode-notifications)
-
    - [自訂寄件號碼](#customizing-the-from-number)
-
    - [加上 Client Reference](#adding-a-client-reference)
-
    - [路由簡訊通知](#routing-sms-notifications)
-
 - [Slack 通知](#slack-notifications)
-
    - [前置要求](#slack-prerequisites)
-
    - [格式化 Slack 通知](#formatting-slack-notifications)
-
    - [Slack 附件](#slack-attachments)
-
    - [路由 Slack 通知](#routing-slack-notifications)
-
 - [本土化通知](#localizing-notifications)
-
 - [通知事件](#notification-events)
-
 - [自訂通道](#custom-channels)
 
 <a name="introduction"></a>
@@ -146,7 +109,6 @@ php artisan make:notification InvoicePaid
 
 > **Note** 請記得，任何的 Model 都可以使用 `Notifiable` Trait。不是只有 `User` Model 上才能用。
 
-
 <a name="using-the-notification-facade"></a>
 
 ### 使用 Notification Facade
@@ -169,7 +131,6 @@ php artisan make:notification InvoicePaid
 
 > **Note** 若想使用其他通道傳送，如 Telegram 或 Pusher，請參考看看由社群提供的 [Laravel Notification Channels 網站](http://laravel-notification-channels.com)。
 
-
 `via` 方法會收到一個 `$notifiable` 實體，也就是該通知正在傳給的類別實體。可使用 `$nofiable` 來判斷該通知要在哪些通道上傳送：
 
     /**
@@ -188,7 +149,6 @@ php artisan make:notification InvoicePaid
 ### 將通知放入佇列
 
 > **Warning** 在將通知放入佇列前，請先設定好佇列，並[執行一個 ^[Worker](背景工作角色)](/docs/{{version}}/queues)。
-
 
 傳送通知可能會需要花費時間，特別是需要使用外部 API 呼叫來傳送通知的頻道。若要加速程式的回應時間，可在通知類別上加入 `ShouldQueue` 介面與 `Queueable` Trait 來讓通知使用佇列。使用 `make:notification` 指令產生的通知中，預設已有匯入該介面與 Trait，因此我們可以直接將其加入通知類別：
 
@@ -321,7 +281,6 @@ php artisan make:notification InvoicePaid
 
 > **Note** 要瞭解更多有關這類問題的解決方法，請參考有關[佇列任務與資料庫 Transaction](/docs/{{version}}/queues#jobs-and-database-transactions) 有關的說明文件。
 
-
 <a name="determining-if-the-queued-notification-should-be-sent"></a>
 
 #### 判斷是否應送出某個佇列的通知
@@ -391,11 +350,9 @@ php artisan make:notification InvoicePaid
 
 > **Note** 請注意，在 `toMail` 中，我們使用了 `$this->invoice->id`。我們可以將通知訊息所需要的任何資料傳入該通知的 ^[Constructor](建構函式) 中。
 
-
 在這個範例中，我們註冊了一個^[招呼語](Greeting)，^[一行文字](Line)，一個^[動作](Action)，然後是又^[一行的文字](Line)。`MailMessage` 物件提供的這些方法讓我們可以簡單快速地格式化簡短的交易電子郵件。Mail 通道會將該這些訊息元件翻譯為漂亮的回應式 HTML 電子郵件樣板與一個回應的純文字版本。下列是 `mail` 通道產生的電子郵件範例：
 
 > **Note** 在傳送郵件通知時，請確保有在 `config/app.php` 設定檔中設定 `name` 設定選項。在郵件通知訊息的頁頭與頁尾中會使用到這個值。
-
 
 <a name="other-mail-notification-formatting-options"></a>
 
@@ -572,7 +529,6 @@ php artisan vendor:publish --tag=laravel-notifications
     }
 
 > **Note** 通知 Mail 訊息的 `attach` 方法也可傳入[可附加的物件](/docs/{{version}}/mail#attachable-objects)。請參考完整的[可附加的物件說明文件](/docs/{{version}}/mail#attachable-objects)以瞭解詳情。
-
 
 將檔案附加至訊息時，也可傳入一個陣列給 `attach` 方法來指定要顯示的檔案名稱與 / 或 MIME 類型：
 
@@ -954,7 +910,6 @@ php artisan migrate
     }
 
 > **Note** 若要在 JavaScript 用戶端中存取通知，請定義一個用來為 Notifiable 實體 (如：目前使用者) 回傳通知的 Notification Controller。接著就可以從 JavaScript 用戶端上建立一個 HTTP Request 來連線到該 Controller 的網址。
-
 
 <a name="marking-notifications-as-read"></a>
 
@@ -1454,7 +1409,6 @@ composer require laravel/slack-notification-channel
     ];
 
 > **Note** 在 `EventServiceProvider` 中註冊好 Listener 後，可使用 `event:generate` Artisan 指令來快速產生 Listener 類別。
-
 
 在 Event Listener 中，可以在該 Event 上存取 `notifiable`、`notification`、`channel`、`response` 等屬性，以取得更多有關通知收件人或通知本身的資訊：
 

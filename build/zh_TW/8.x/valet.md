@@ -1,39 +1,29 @@
+---
+contributors: {}
+crowdinUrl: https://crowdin.com/translate/laravel-docs/169/en-zhtw
+progress: 0
+updatedAt: '2022-08-06T05:47:00Z'
+---
+
 # Laravel Valet
 
 - [Introduction](#introduction)
-
 - [Installation](#installation)
-
    - [Upgrading Valet](#upgrading-valet)
-
 - [Serving Sites](#serving-sites)
-
    - [The "Park" Command](#the-park-command)
-
    - [The "Link" Command](#the-link-command)
-
    - [Securing Sites With TLS](#securing-sites)
-
    - [Serving a Default Site](#serving-a-default-site)
-
 - [Sharing Sites](#sharing-sites)
-
    - [Sharing Sites Via Ngrok](#sharing-sites-via-ngrok)
-
    - [Sharing Sites Via Expose](#sharing-sites-via-expose)
-
    - [Sharing Sites On Your Local Network](#sharing-sites-on-your-local-network)
-
 - [Site Specific Environment Variables](#site-specific-environment-variables)
-
 - [Proxying Services](#proxying-services)
-
 - [Custom Valet Drivers](#custom-valet-drivers)
-
    - [Local Drivers](#local-drivers)
-
 - [Other Valet Commands](#other-valet-commands)
-
 - [Valet Directories & Files](#valet-directories-and-files)
 
 <a name="introduction"></a>
@@ -47,47 +37,26 @@ In other words, Valet is a blazing fast Laravel development environment that use
 Out of the box, Valet support includes, but is not limited to:
 
 - [Laravel](https://laravel.com)
-
 - [Lumen](https://lumen.laravel.com)
-
 - [Bedrock](https://roots.io/bedrock/)
-
 - [CakePHP 3](https://cakephp.org)
-
 - [Concrete5](https://www.concrete5.org/)
-
 - [Contao](https://contao.org/en/)
-
 - [Craft](https://craftcms.com)
-
 - [Drupal](https://www.drupal.org/)
-
 - [ExpressionEngine](https://www.expressionengine.com/)
-
 - [Jigsaw](https://jigsaw.tighten.co)
-
 - [Joomla](https://www.joomla.org/)
-
 - [Katana](https://github.com/themsaid/katana)
-
 - [Kirby](https://getkirby.com/)
-
 - [Magento](https://magento.com/)
-
 - [OctoberCMS](https://octobercms.com/)
-
 - [Sculpin](https://sculpin.io/)
-
 - [Slim](https://www.slimframework.com)
-
 - [Statamic](https://statamic.com)
-
 - Static HTML
-
 - [Symfony](https://symfony.com)
-
 - [WordPress](https://wordpress.org)
-
 - [Zend](https://framework.zend.com)
 
 However, you may extend Valet with your own [custom drivers](#custom-valet-drivers).
@@ -97,7 +66,6 @@ However, you may extend Valet with your own [custom drivers](#custom-valet-drive
 ## Installation
 
 > {note} Valet requires macOS and [Homebrew](https://brew.sh/). Before installation, you should make sure that no other programs such as Apache or Nginx are binding to your local machine's port 80.
-
 
 To get started, you first need to ensure that Homebrew is up to date using the `update` command:
 
@@ -136,7 +104,6 @@ You may also create a `.valetphprc` file in the root of your project. The `.vale
 Once this file has been created, you may simply execute the `valet use` command and the command will determine the site's preferred PHP version by reading the file.
 
 > {note} Valet only serves one PHP version at a time, even if you have multiple PHP versions installed.
-
 
 <a name="database"></a>
 
@@ -241,7 +208,6 @@ To share a site, navigate to the site's directory in your terminal and run Valet
 To stop sharing your site, you may press `Control + C`. Sharing your site using Ngrok requires you to [create an Ngrok account](https://dashboard.ngrok.com/signup) and [setup an authentication token](https://dashboard.ngrok.com/get-started/your-authtoken).
 
 > {tip} You may pass additional Ngrok parameters to the share command, such as `valet share --region=eu`. For more information, consult the [ngrok documentation](https://ngrok.com/docs).
-
 
 <a name="sharing-sites-via-expose"></a>
 
@@ -368,7 +334,6 @@ The `isStaticFile` should determine if the incoming request is for a file that i
     }
 
 > {note} The `isStaticFile` method will only be called if the `serves` method returns `true` for the incoming request and the request URI is not `/`.
-
 
 <a name="the-frontcontrollerpath-method"></a>
 

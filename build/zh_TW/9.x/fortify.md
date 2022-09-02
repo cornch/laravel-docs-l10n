@@ -1,51 +1,35 @@
+---
+contributors: {}
+crowdinUrl: https://crowdin.com/translate/laravel-docs/75/en-zhtw
+progress: 0
+updatedAt: '2022-08-06T05:46:00Z'
+---
+
 # Laravel Fortify
 
 - [Introduction](#introduction)
-
    - [What Is Fortify?](#what-is-fortify)
-
    - [When Should I Use Fortify?](#when-should-i-use-fortify)
-
 - [Installation](#installation)
-
    - [The Fortify Service Provider](#the-fortify-service-provider)
-
    - [Fortify Features](#fortify-features)
-
    - [Disabling Views](#disabling-views)
-
 - [Authentication](#authentication)
-
    - [Customizing User Authentication](#customizing-user-authentication)
-
    - [Customizing The Authentication Pipeline](#customizing-the-authentication-pipeline)
-
    - [Customizing Redirects](#customizing-authentication-redirects)
-
 - [Two Factor Authentication](#two-factor-authentication)
-
    - [Enabling Two Factor Authentication](#enabling-two-factor-authentication)
-
    - [Authenticating With Two Factor Authentication](#authenticating-with-two-factor-authentication)
-
    - [Disabling Two Factor Authentication](#disabling-two-factor-authentication)
-
 - [Registration](#registration)
-
    - [Customizing Registration](#customizing-registration)
-
 - [Password Reset](#password-reset)
-
    - [Requesting A Password Reset Link](#requesting-a-password-reset-link)
-
    - [Resetting The Password](#resetting-the-password)
-
    - [Customizing Password Resets](#customizing-password-resets)
-
 - [Email Verification](#email-verification)
-
    - [Protecting Routes](#protecting-routes)
-
 - [Password Confirmation](#password-confirmation)
 
 <a name="introduction"></a>
@@ -57,7 +41,6 @@
 Since Fortify does not provide its own user interface, it is meant to be paired with your own user interface which makes requests to the routes it registers. We will discuss exactly how to make requests to these routes in the remainder of this documentation.
 
 > **Note** Remember, Fortify is a package that is meant to give you a head start implementing Laravel's authentication features. **You are not required to use it.** You are always free to manually interact with Laravel's authentication services by following the documentation available in the [authentication](/docs/{{version}}/authentication), [password reset](/docs/{{version}}/passwords), and [email verification](/docs/{{version}}/verification) documentation.
-
 
 <a name="what-is-fortify"></a>
 
@@ -306,7 +289,6 @@ class User extends Authenticatable
 Next, you should build a screen within your application where users can manage their two factor authentication settings. This screen should allow the user to enable and disable two factor authentication, as well as regenerate their two factor authentication recovery codes.
 
 > By default, the `features` array of the `fortify` configuration file instructs Fortify's two factor authentication settings to require password confirmation before modification. Therefore, your application should implement Fortify's [password confirmation](#password-confirmation) feature before continuing.
-
 
 <a name="enabling-two-factor-authentication"></a>
 

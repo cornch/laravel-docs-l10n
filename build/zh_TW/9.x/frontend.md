@@ -1,21 +1,20 @@
+---
+contributors: {}
+crowdinUrl: https://crowdin.com/translate/laravel-docs/176/en-zhtw
+progress: 0
+updatedAt: '2022-08-06T06:42:00Z'
+---
+
 # Frontend
 
 - [Introduction](#introduction)
-
 - [Using PHP](#using-php)
-
    - [PHP & Blade](#php-and-blade)
-
    - [Livewire](#livewire)
-
    - [Starter Kits](#php-starter-kits)
-
 - [Using Vue / React](#using-vue-react)
-
    - [Inertia](#inertia)
-
    - [Starter Kits](#inertia-starter-kits)
-
 - [Bundling Assets](#bundling-assets)
 
 <a name="introduction"></a>
@@ -212,4 +211,3 @@ By default, Laravel utilizes [Vite](https://vitejs.dev) to bundle your assets. V
 The fastest way to get started with Laravel and Vite is by beginning your application's development using [Laravel Breeze](/docs/{{version}}/starter-kits#laravel-breeze), our simplest starter kit that jump-starts your application by providing frontend and backend authentication scaffolding.
 
 > **Note** For more detailed documentation on utilizing Vite with Laravel, please see our [dedicated documentation on bundling and compiling your assets](/docs/{{version}}/vite).
-

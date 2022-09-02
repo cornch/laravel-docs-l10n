@@ -1,37 +1,31 @@
+---
+contributors:
+  14684796:
+    avatarUrl: https://crowdin-static.downloads.crowdin.com/avatar/14684796/medium/60f7dc21ec0bf9cfcb61983640bb4809_default.png
+    name: cornch
+crowdinUrl: https://crowdin.com/translate/laravel-docs/85/en-zhtw
+progress: 81
+updatedAt: '2022-08-06T05:46:00Z'
+---
+
 # HTTP 用戶端
 
 - [簡介](#introduction)
-
 - [建立 Request](#making-requests)
-
    - [Request 資料](#request-data)
-
    - [標頭 (Header)](#headers)
-
    - [身份認證](#authentication)
-
    - [逾時](#timeout)
-
    - [重試](#retries)
-
    - [錯誤處理](#error-handling)
-
    - [Guzzle Middleware](#guzzle-middleware)
-
    - [Guzzle 選項](#guzzle-options)
-
 - [同時進行的 Request](#concurrent-requests)
-
 - [Macro](#macros)
-
 - [測試](#testing)
-
    - [模擬 Response](#faking-responses)
-
    - [攔截 Request](#inspecting-requests)
-
    - [Preventing Stray Requests](#preventing-stray-requests)
-
 - [事件](#events)
 
 <a name="introduction"></a>
@@ -233,7 +227,6 @@ composer require guzzlehttp/guzzle
     $response = Http::retry(3, 100, throw: false)->post(/* ... */);
 
 > **Warning** If all of the requests fail because of a connection issue, a `Illuminate\Http\Client\ConnectionException` will still be thrown even when the `throw` argument is set to `false`.
-
 
 <a name="error-handling"></a>
 

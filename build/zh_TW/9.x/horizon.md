@@ -1,29 +1,24 @@
+---
+contributors: {}
+crowdinUrl: https://crowdin.com/translate/laravel-docs/83/en-zhtw
+progress: 0
+updatedAt: '2022-08-06T05:46:00Z'
+---
+
 # Laravel Horizon
 
 - [Introduction](#introduction)
-
 - [Installation](#installation)
-
    - [Configuration](#configuration)
-
    - [Balancing Strategies](#balancing-strategies)
-
    - [Dashboard Authorization](#dashboard-authorization)
-
 - [Upgrading Horizon](#upgrading-horizon)
-
 - [Running Horizon](#running-horizon)
-
    - [Deploying Horizon](#deploying-horizon)
-
 - [Tags](#tags)
-
 - [Notifications](#notifications)
-
 - [Metrics](#metrics)
-
 - [Deleting Failed Jobs](#deleting-failed-jobs)
-
 - [Clearing Jobs From Queues](#clearing-jobs-from-queues)
 
 <a name="introduction"></a>
@@ -31,7 +26,6 @@
 ## Introduction
 
 > **Note** Before digging into Laravel Horizon, you should familiarize yourself with Laravel's base [queue services](/docs/{{version}}/queues). Horizon augments Laravel's queue with additional features that may be confusing if you are not already familiar with the basic queue features offered by Laravel.
-
 
 [Laravel Horizon](https://github.com/laravel/horizon) provides a beautiful dashboard and code-driven configuration for your Laravel powered [Redis queues](/docs/{{version}}/queues). Horizon allows you to easily monitor key metrics of your queue system such as job throughput, runtime, and job failures.
 
@@ -42,7 +36,6 @@ When using Horizon, all of your queue worker configuration is stored in a single
 ## Installation
 
 > **Warning** Laravel Horizon requires that you use [Redis](https://redis.io) to power your queue. Therefore, you should ensure that your queue connection is set to `redis` in your application's `config/queue.php` configuration file.
-
 
 You may install Horizon into your project using the Composer package manager:
 
@@ -63,7 +56,6 @@ php artisan horizon:install
 After publishing Horizon's assets, its primary configuration file will be located at `config/horizon.php`. This configuration file allows you to configure the queue worker options for your application. Each configuration option includes a description of its purpose, so be sure to thoroughly explore this file.
 
 > **Warning** Horizon uses a Redis connection named `horizon` internally. This Redis connection name is reserved and should not be assigned to another Redis connection in the `database.php` configuration file or as the value of the `use` option in the `horizon.php` configuration file.
-
 
 <a name="environments"></a>
 
@@ -90,7 +82,6 @@ After installation, the primary Horizon configuration option that you should fam
 When you start Horizon, it will use the worker process configuration options for the environment that your application is running on. Typically, the environment is determined by the value of the `APP_ENV` [environment variable](/docs/{{version}}/configuration#determining-the-current-environment). For example, the default `local` Horizon environment is configured to start three worker processes and automatically balance the number of worker processes assigned to each queue. The default `production` environment is configured to start a maximum of 10 worker processes and automatically balance the number of worker processes assigned to each queue.
 
 > **Warning** You should ensure that the `environments` portion of your `horizon` configuration file contains an entry for each [environment](/docs/{{version}}/configuration#environment-configuration) on which you plan to run Horizon.
-
 
 <a name="supervisors"></a>
 
@@ -249,7 +240,6 @@ sudo apt-get install supervisor
 
 > **Note** If configuring Supervisor yourself sounds overwhelming, consider using [Laravel Forge](https://forge.laravel.com), which will automatically install and configure Supervisor for your Laravel projects.
 
-
 <a name="supervisor-configuration"></a>
 
 #### Supervisor Configuration
@@ -272,7 +262,6 @@ When defining your Supervisor configuration, you should ensure that the value of
 
 > **Warning** While the examples above are valid for Ubuntu based servers, the location and file extension expected of Supervisor configuration files may vary between other server operating systems. Please consult your server's documentation for more information.
 
-
 <a name="starting-supervisor"></a>
 
 #### Starting Supervisor
@@ -288,7 +277,6 @@ sudo supervisorctl start horizon
 ```
 
 > **Note** For more information on running Supervisor, consult the [Supervisor documentation](http://supervisord.org/index.html).
-
 
 <a name="tags"></a>
 
@@ -373,7 +361,6 @@ If you would like to manually define the tags for one of your queueable objects,
 ## Notifications
 
 > **Warning** When configuring Horizon to send Slack or SMS notifications, you should review the [prerequisites for the relevant notification channel](/docs/{{version}}/notifications).
-
 
 If you would like to be notified when one of your queues has a long wait time, you may use the `Horizon::routeMailNotificationsTo`, `Horizon::routeSlackNotificationsTo`, and `Horizon::routeSmsNotificationsTo` methods. You may call these methods from the `boot` method of your application's `App\Providers\HorizonServiceProvider`:
 

@@ -1,79 +1,52 @@
+---
+contributors:
+  14684796:
+    avatarUrl: https://crowdin-static.downloads.crowdin.com/avatar/14684796/medium/60f7dc21ec0bf9cfcb61983640bb4809_default.png
+    name: cornch
+crowdinUrl: https://crowdin.com/translate/laravel-docs/17/en-zhtw
+progress: 100
+updatedAt: '2022-08-06T06:42:00Z'
+---
+
 # Blade 樣板
 
 - [簡介](#introduction)
-
 - [顯示資料](#displaying-data)
-
    - [HTML 實體編碼](#html-entity-encoding)
-
    - [Blade 與 JavaScript 框架](#blade-and-javascript-frameworks)
-
 - [Blade 指示詞](#blade-directives)
-
    - [If 陳述式](#if-statements)
-
    - [Switch 陳述式](#switch-statements)
-
    - [迴圈](#loops)
-
    - [迴圈變數](#the-loop-variable)
-
    - [條件式 Class](#conditional-classes)
-
    - [Checked / Selected / Disabled](#checked-and-selected)
-
    - [Include 子 View](#including-subviews)
-
    - [`@once` 指示詞](#the-once-directive)
-
    - [原始 PHP](#raw-php)
-
    - [註解](#comments)
-
 - [元件](#components)
-
    - [轉譯元件](#rendering-components)
-
    - [將資料傳給元件](#passing-data-to-components)
-
    - [元件屬性](#component-attributes)
-
    - [保留字](#reserved-keywords)
-
    - [Slot](#slots)
-
    - [內嵌元件 View](#inline-component-views)
-
    - [匿名元件](#anonymous-components)
-
    - [動態元件](#dynamic-components)
-
    - [手動註冊元件](#manually-registering-components)
-
 - [製作 Layout](#building-layouts)
-
    - [使用元件的 Layout](#layouts-using-components)
-
    - [使用樣板繼承的 Layout](#layouts-using-template-inheritance)
-
 - [表單](#forms)
-
    - [CSRF 欄位](#csrf-field)
-
    - [方法欄位](#method-field)
-
    - [表單驗證錯誤](#validation-errors)
-
 - [Stack](#stacks)
-
 - [插入 Service](#service-injection)
-
 - [轉譯內嵌的 Blade 樣板](#rendering-inline-blade-templates)
-
 - [擴充 Blade](#extending-blade)
-
    - [自訂的 Echo 處理常式](#custom-echo-handlers)
-
    - [自訂 If 陳述式](#custom-if-statements)
 
 <a name="introduction"></a>
@@ -89,7 +62,6 @@ Blade 樣板可以在路由或 Controller 內通過 `view` 全域輔助函式來
     });
 
 > {tip} 想要將 Blade 樣板的功能提升到新的境界並輕鬆製作動態使用者界面嗎？請參考看看 [Laravel Livewire](https://laravel-livewire.com)。
-
 
 <a name="displaying-data"></a>
 
@@ -108,7 +80,6 @@ Hello, {{ $name }}.
 ```
 
 > {tip} Blade 的 `{{ }}` echo 陳述式會自動通過 PHP 的 `htmlspecialchars` 函式來防止 XSS 攻擊。
-
 
 在 Blade 中不只可以顯示傳進來的變數，還可以 echo 任何 PHP 函式的回傳值。事實上，可以在 Blade 的 echo 陳述式中放入任何的 PHP 程式碼：
 
@@ -153,7 +124,6 @@ Hello, {!! $name !!}.
 ```
 
 > {note} 在輸出使用者提供的資料時，請格外小心。平常在顯示使用者提供的資料時應該要使用經過逸出的雙大括號語法來防止 XSS 攻擊。
-
 
 <a name="blade-and-javascript-frameworks"></a>
 
@@ -208,7 +178,6 @@ Hello, @{{ name }}.
 ```
 
 > {note} 請只在轉譯現有變數為 JSON 時使用 `Js::from` 方法。Blade 樣板引擎是是基於正規標示式實作的，若將複雜的陳述式傳給指示詞可能會導致未預期的錯誤。
-
 
 <a name="the-at-verbatim-directive"></a>
 
@@ -393,7 +362,6 @@ Switch 陳述式可以通過 `@switch`, `@case`, `@break`, `@default` 與 `@ends
 
 > {tip} 在使用 `foreach` 迴圈迭代時，可以使用[迴圈變數](#the-loop-variable)來取得有關迴圈的有用資訊，如目前是否在迴圈的第一次或最後一次迭代。
 
-
 在使用迴圈時，也可以通過 `@continue` 與 `@break` 指示詞來結束迴圈或跳過目前迭代：
 
 ```blade
@@ -528,7 +496,6 @@ Switch 陳述式可以通過 `@switch`, `@case`, `@break`, `@default` 與 `@ends
 
 > {tip} 雖然可以使用 `@include` 指示詞，但 Blade 的[元件](#components)提供了類似的功能，但比起 `@include` 指示詞來說有更多的優勢，如資料與屬性綁定。
 
-
 Blade 的 `@include` 指示詞可用來在 Blade View 中包含另一個 View。所有上層 View 中可用的變數在 Include 的 View 當中都保持可用：
 
 ```blade
@@ -569,7 +536,6 @@ Blade 的 `@include` 指示詞可用來在 Blade View 中包含另一個 View。
 
 > {note} 應避免在 Blade View 中使用 `__DIR__` 與 `__FILE__` 常數，因為這些常數會參照到經過快取與編譯過的 View。
 
-
 <a name="rendering-views-for-collections"></a>
 
 #### 為 Collection 轉譯 View
@@ -589,7 +555,6 @@ Blade 的 `@include` 指示詞可用來在 Blade View 中包含另一個 View。
 ```
 
 > {note} 通過 `@each` 所轉譯的 View 不會繼承其上層 View 的變數。若子 View 有需要這些變數，應使用 `@foreach` 與 `@include` 指示詞來代替。
-
 
 <a name="the-once-directive"></a>
 
@@ -968,7 +933,6 @@ public function __construct(AlertCreator $creator, $type, $message)
 
 > {note} 目前不支援在元件標籤內使用如 `@env` 的指示詞。舉例來說，`<x-alert :live="@env('production')"/>` 將不會被編譯。
 
-
 <a name="default-merged-attributes"></a>
 
 #### 預設與合併屬性
@@ -1016,7 +980,6 @@ public function __construct(AlertCreator $creator, $type, $message)
 ```
 
 > {tip} 若不想讓要套用條件式編譯 Class 的 HTML 收到經過合併的屬性，請使用 [`@class` 指示詞](#conditional-classes)。
-
 
 <a name="non-class-attribute-merging"></a>
 
@@ -1103,17 +1066,11 @@ public function __construct(AlertCreator $creator, $type, $message)
 預設情況下，Blade 中保留了一些關鍵字來作為內部使用，以用於轉譯元件。下列關鍵字將無法在元件內被定義為公用屬性或屬性名稱：
 
 - `data`
-
 - `render`
-
 - `resolveView`
-
 - `shouldRender`
-
 - `view`
-
 - `withAttributes`
-
 - `withName`
 
 <a name="slots"></a>
@@ -1372,7 +1329,6 @@ php artisan make:component Alert --inline
 
 > {note} 下列有關手動註冊元件的說明文件主要適用於撰寫包含 View 元件的 Laravel 套件的套件作者。若你並不撰寫套件，則這部分的元件說明文件可能跟你比較沒關係。
 
-
 在為專案撰寫元件時，元件會在 `app/View/Components` 與 `resources/views/components` 目錄下被 Auto Discover (自動偵測)。
 
 不過，若想製作使用 Blade 元件的套件或將元件放在不符合慣例的目錄內，則需要手動註冊元件類別與其 HTML 標籤別名，以讓 Laravel 知道要在哪裡尋找元件。通常，應在套件的 Service Provider 內的 `boot` 方法中註冊你的元件：
@@ -1554,7 +1510,6 @@ Blade 會通過將元件名稱轉為 Pascal 命名法 (pascal-case) 來自動偵
 In this example, the `sidebar` section is utilizing the `@@parent` directive to append (rather than overwriting) content to the layout's sidebar. The `@@parent` directive will be replaced by the content of the layout when the view is rendered.
 
 > {tip} 相較於前一個例子，`sidebar` 段落是以 `@endsection` 結束的，而不是 `@show`。`@endsection` 指示詞只會定義一個段落，而 `@show` 則會定義並 **馬上 Yield** 該段落。
-
 
 `@yield` 指示詞也接受一個預設值作為其第二個參數。這個值會在要 Yield 的段落未定義時被轉譯：
 
@@ -1759,7 +1714,6 @@ Blade 中可以通過 `directive` 方法來自訂指示詞。當 Blade 編譯器
     <?php echo ($var)->format('m/d/Y H:i'); ?>
 
 > {note} 更新完 Blade 的指示詞邏輯後，會需要刪除所有已快取的 Blade View。可以通過 `view:clear` Artisan 指令來移除已快取的 Blade View。
-
 
 <a name="custom-echo-handlers"></a>
 

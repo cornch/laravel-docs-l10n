@@ -1,9 +1,17 @@
+---
+contributors:
+  14684796:
+    avatarUrl: https://crowdin-static.downloads.crowdin.com/avatar/14684796/medium/60f7dc21ec0bf9cfcb61983640bb4809_default.png
+    name: cornch
+crowdinUrl: https://crowdin.com/translate/laravel-docs/135/en-zhtw
+progress: 100
+updatedAt: '2022-08-09T13:35:00Z'
+---
+
 # 版本資訊
 
 - [版本策略](#versioning-scheme)
-
 - [支援政策](#support-policy)
-
 - [Laravel 9](#laravel-9)
 
 <a name="versioning-scheme"></a>
@@ -132,7 +140,6 @@ public function address(): Attribute
 ### Enum Eloquent 屬性型別轉換
 
 > **Warning** Enum 型別轉換只可在 PHP 8.1 以上使用。
-
 
 *Enum 型別轉換由 [Mohamed Said](https://github.com/themsaid) 參與貢獻*。
 

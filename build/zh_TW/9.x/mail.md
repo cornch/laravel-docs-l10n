@@ -1,59 +1,42 @@
+---
+contributors:
+  14684796:
+    avatarUrl: https://crowdin-static.downloads.crowdin.com/avatar/14684796/medium/60f7dc21ec0bf9cfcb61983640bb4809_default.png
+    name: cornch
+crowdinUrl: https://crowdin.com/translate/laravel-docs/99/en-zhtw
+progress: 100
+updatedAt: '2022-08-09T13:36:00Z'
+---
+
 # 郵件
 
 - [簡介](#introduction)
-
    - [組態設定](#configuration)
-
    - [Driver 前置需求](#driver-prerequisites)
-
    - [Failover 設定](#failover-configuration)
-
 - [產生 Mailable](#generating-mailables)
-
 - [撰寫 Mailable](#writing-mailables)
-
    - [設定寄件人](#configuring-the-sender)
-
    - [設定 View](#configuring-the-view)
-
    - [View 資料](#view-data)
-
    - [附加檔案](#attachments)
-
    - [內嵌的附加檔案](#inline-attachments)
-
    - [可附加的物件](#attachable-objects)
-
    - [Tag 與詮釋資料](#tags-and-metadata)
-
    - [自訂 Symfony 訊息](#customizing-the-symfony-message)
-
 - [Markdown 的 Mailable](#markdown-mailables)
-
    - [產生 Markdown 的 Mailable](#generating-markdown-mailables)
-
    - [撰寫 Markdown 訊息](#writing-markdown-messages)
-
    - [自定元件](#customizing-the-components)
-
 - [傳送郵件](#sending-mail)
-
    - [將郵件放入佇列](#queueing-mail)
-
 - [轉譯 Mailable](#rendering-mailables)
-
    - [在瀏覽器中預覽 Mailable](#previewing-mailables-in-the-browser)
-
 - [本土化 Mailable](#localizing-mailables)
-
 - [測試 Mailable](#testing-mailables)
-
 - [郵件與本機開發](#mail-and-local-development)
-
 - [事件](#events)
-
 - [自訂 Transport](#custom-transports)
-
    - [額外的 Symfony Transport](#additional-symfony-transports)
 
 <a name="introduction"></a>
@@ -210,7 +193,6 @@ php artisan make:mail OrderShipped
 
 > **Note** 也可以在 Mailable 的 `build` 方法上對相依性項目進行型別提示。Laravel 的 [Service Container](/docs/{{version}}/container) 會自動插入這些相依性項目。
 
-
 <a name="configuring-the-sender"></a>
 
 ### 設定寄件人
@@ -261,7 +243,6 @@ php artisan make:mail OrderShipped
     }
 
 > **Note** 可以建立一個 `resources/views/emails` 目錄來放置所有的郵件樣板。不過，不一定要放在這個目錄，可以隨意放在 `resources/views` 目錄下。
-
 
 <a name="plain-text-emails"></a>
 
@@ -509,7 +490,6 @@ php artisan make:mail OrderShipped
 
 > **Warning** `$message` 變數無法在純文字訊息樣板中使用，因為純文字樣板無法使用內嵌的附加檔案。
 
-
 <a name="embedding-raw-data-attachments"></a>
 
 #### 內嵌原始資料附件
@@ -685,7 +665,6 @@ Thanks,<br>
 ```
 
 > **Note** 在撰寫 Markdown 郵件時請不要增加縮排。依據 Markdown 標準，Markdown 解析程式會將縮排的內容轉譯為程式碼區塊。
-
 
 <a name="button-component"></a>
 
@@ -905,7 +884,6 @@ php artisan vendor:publish --tag=laravel-mail
 
 > **Note** 要瞭解更多有關這類問題的解決方法，請參考有關[佇列任務與資料庫 Transaction](/docs/{{version}}/queues#jobs-and-database-transactions) 有關的說明文件。
 
-
 <a name="rendering-mailables"></a>
 
 ## 轉譯 Mailable
@@ -932,7 +910,6 @@ php artisan vendor:publish --tag=laravel-mail
     });
 
 > **Warning** 在瀏覽器中預覽 Mailable 時，不會轉譯[內嵌的附件](#inline-attachments)。若要瀏覽有內嵌附件的 Mailable，請將郵件傳送到如 [MailHog](https://github.com/mailhog/MailHog) 或 [HELO](https://usehelo.com) 之類的郵件測試程式。
-
 
 <a name="localizing-mailables"></a>
 

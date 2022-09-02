@@ -1,7 +1,16 @@
+---
+contributors:
+  14684796:
+    avatarUrl: https://crowdin-static.downloads.crowdin.com/avatar/14684796/medium/60f7dc21ec0bf9cfcb61983640bb4809_default.png
+    name: cornch
+crowdinUrl: https://crowdin.com/translate/laravel-docs/79/en-zhtw
+progress: 95
+updatedAt: '2022-08-06T05:46:00Z'
+---
+
 # 輔助函式
 
 - [簡介](#introduction)
-
 - [可用方法](#available-methods)
 
 <a name="introduction"></a>
@@ -3486,7 +3495,6 @@ Str::of('Hello, world!')->wordCount(); // 2
     $env = env('APP_ENV', 'production');
 
 > **Warning** If you execute the `config:cache` command during your deployment process, you should be sure that you are only calling the `env` function from within your configuration files. Once the configuration has been cached, the `.env` file will not be loaded and all calls to the `env` function will return `null`.
-
 
 <a name="method-event"></a>
 

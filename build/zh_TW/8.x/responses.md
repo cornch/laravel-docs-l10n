@@ -1,33 +1,29 @@
+---
+contributors:
+  14684796:
+    avatarUrl: https://crowdin-static.downloads.crowdin.com/avatar/14684796/medium/60f7dc21ec0bf9cfcb61983640bb4809_default.png
+    name: cornch
+crowdinUrl: https://crowdin.com/translate/laravel-docs/139/en-zhtw
+progress: 100
+updatedAt: '2022-08-09T13:35:00Z'
+---
+
 # HTTP Response
 
 - [建立 Response](#creating-responses)
-
    - [在 Response 上附加標頭](#attaching-headers-to-responses)
-
    - [在 Response 上附加 Cookie](#attaching-cookies-to-responses)
-
    - [Cookie 與加密](#cookies-and-encryption)
-
 - [重新導向](#redirects)
-
    - [重新導向之命名 Route](#redirecting-named-routes)
-
    - [重新導向至 Controller 動作](#redirecting-controller-actions)
-
    - [重新導向至外部網域](#redirecting-external-domains)
-
    - [重新導向並帶上快閃存入的 Session 資料](#redirecting-with-flashed-session-data)
-
 - [其他 Response 類型](#other-response-types)
-
    - [View Response](#view-responses)
-
    - [JSON Response](#json-responses)
-
    - [檔案下載](#file-downloads)
-
    - [File Response](#file-responses)
-
 - [Response Macro](#response-macros)
 
 <a name="creating-responses"></a>
@@ -51,7 +47,6 @@
     });
 
 > {tip} 你知道你也可以從 Route 或 Controller 中回傳 [Eloquent Collection](/docs/{{version}}/eloquent-collections) 嗎？回傳的 Eloquent Collection 會自動被轉為 JSON。試試看吧！
-
 
 <a name="response-objects"></a>
 
@@ -325,7 +320,6 @@ Redirect Response (重新導向回應) 是 `Illuminate\Http\RedirectResponse` �
     return response()->download($pathToFile, $name, $headers);
 
 > {note} Symfony HttpFoundation —— 負責處理檔案下載的類別 —— 要求下載的檔案名稱必須為 ASCII。
-
 
 <a name="streamed-downloads"></a>
 

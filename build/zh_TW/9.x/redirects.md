@@ -1,11 +1,18 @@
+---
+contributors:
+  14684796:
+    avatarUrl: https://crowdin-static.downloads.crowdin.com/avatar/14684796/medium/60f7dc21ec0bf9cfcb61983640bb4809_default.png
+    name: cornch
+crowdinUrl: https://crowdin.com/translate/laravel-docs/131/en-zhtw
+progress: 100
+updatedAt: '2022-05-25T09:27:00Z'
+---
+
 # HTTP 重新導向
 
 - [建立 Redirect](#creating-redirects)
-
 - [重新導向至命名 Route](#redirecting-named-routes)
-
 - [重新導向至 Controller 動作](#redirecting-controller-actions)
-
 - [重新導向並帶上快閃存入的 Session 資料](#redirecting-with-flashed-session-data)
 
 <a name="creating-redirects"></a>

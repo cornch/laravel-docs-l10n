@@ -1,3 +1,13 @@
+---
+contributors:
+  14684796:
+    avatarUrl: https://crowdin-static.downloads.crowdin.com/avatar/14684796/medium/60f7dc21ec0bf9cfcb61983640bb4809_default.png
+    name: cornch
+crowdinUrl: https://crowdin.com/translate/laravel-docs/165/en-zhtw
+progress: 66
+updatedAt: '2022-08-06T05:47:00Z'
+---
+
 # 升級指南
 
 - [從 8.x 升級至 9.0](#upgrade-9.0)
@@ -7,9 +17,7 @@
 ## 高度影響的更改
 
 - [更新相依性套件](#updating-dependencies)
-
 - [Flysystem 3.x](#flysystem-3)
-
 - [Symfony Mailer](#symfony-mailer)
 
 <a name="medium-impact-changes"></a>
@@ -17,23 +25,14 @@
 ## 中度影響的更改
 
 - [Belongs To Many 的 `firstOrNew`、`firstOrCreate`、`updateOrCreate` 等方法](#belongs-to-many-first-or-new)
-
 - [自訂型別轉換與 `null`](#custom-casts-and-null)
-
 - [預設 HTTP 用戶端的逾時設定](#http-client-default-timeout)
-
 - [PHP 回傳型別](#php-return-types)
-
 - [Postgres的「Schema」設定](#postgres-schema-configuration)
-
 - [`assertDeleted` 方法](#the-assert-deleted-method)
-
 - [`lang` 目錄](#the-lang-directory)
-
 - [`password` 規則](#the-password-rule)
-
 - [`when` 與 `unless` 方法](#when-and-unless-methods)
-
 - [未驗證的陣列索引鍵](#unvalidated-array-keys)
 
 <a name="upgrade-9.0"></a>
@@ -45,7 +44,6 @@
 #### 預計升級所需時間：30 分鐘
 
 > **Note** We attempt to document every possible breaking change. Since some of these breaking changes are in obscure parts of the framework only a portion of these changes may actually affect your application. Want to save time? You can use [Laravel Shift](https://laravelshift.com/) to help automate your application upgrades.
-
 
 <a name="updating-dependencies"></a>
 
@@ -62,7 +60,6 @@ Laravel 先已要求 PHP 最小版本為 8.0.2。
 請在專案的 `composer.json` 檔案中更新下列相依性套件：
 
 - `laravel/framework` 升級為 `^9.0`
-
 - `nunomaduro/collision` 升級為 `^6.1`
 
 In addition, please replace `facade/ignition` with `"spatie/laravel-ignition": "^1.0"` and `pusher/pusher-php-server` (if applicable) with `"pusher/pusher-php-server": "^5.0"` in your application's `composer.json` file.
@@ -80,33 +77,21 @@ In addition, please replace `facade/ignition` with `"spatie/laravel-ignition": "
 對於一些如 `offsetGet`、`offSet` ⋯⋯等方法，PHP 已經開始進入一個要求回傳型別的過渡階段。因此，Laravel 9 也開始在程式碼中實作這些回傳型別。一般來說，應該是不會影響使用者的程式碼。不過，若你有複寫 Laravel 核心類別中的這些要求回傳型別的方法，則請在你的專案或套件程式碼中加上回傳型別：
 
 - `count(): int`
-
 - `getIterator(): Traversable`
-
 - `getSize(): int`
-
 - `jsonSerialize(): array`
-
 - `offsetExists($key): bool`
-
 - `offsetGet($key): mixed`
-
 - `offsetSet($key, $value): void`
-
 - `offsetUnset($key): void`
 
 此外，PHP `SessionHandlerInterface` 的方法實作中也有新增回傳型別。一樣，通常這不會影響到你的專案或套件程式碼：
 
 - `open($savePath, $sessionName): bool`
-
 - `close(): bool`
-
 - `read($sessionId): string|false`
-
 - `write($sessionId, $data): bool`
-
 - `destroy($sessionId): bool`
-
 - `gc($lifetime): int`
 
 <a name="application"></a>
@@ -341,9 +326,7 @@ Laravel 9.x 以從 [Flysystem](https://flysystem.thephpleague.com/v2/docs/) 1.x 
 在使用 S3、FTP、SFTP 等 Driver 時，需要使用 Composer 套件管理員安裝適當的套件：
 
 - Amazon S3: `composer require -W league/flysystem-aws-s3-v3 "^3.0"`
-
 - FTP: `composer require league/flysystem-ftp "^3.0"`
-
 - SFTP: `composer require league/flysystem-sftp-v3 "^3.0"`
 
 #### 覆寫已存在的檔案
@@ -537,7 +520,6 @@ The `send`, `html`, `raw`, and `plain` methods on `Illuminate\Mail\Mailer` no lo
 
 > **Warning** Please thoroughly review the [Symfony Mailer documentation](https://symfony.com/doc/6.0/mailer.html#creating-sending-messages) for all possible interactions with the `Symfony\Component\Mime\Email` object.
 
-
 下面詳細列出了針對這些改名過的方法。其中許多方法都是用來直接使用 SwiftMailer / Symfony Mailer 的低階方法，所以在大多數 Laravel 專案中並不常用：
 
     Message::getSwiftMessage();
@@ -613,7 +595,6 @@ Additionally, a new `sent` property has been added to the `MessageSent` event. T
 若要瞭解更多可用的選項，請參考 [Symfony Mailer 說明文件](https://symfony.com/doc/6.0/mailer.html#transport-setup)。
 
 > **Warning** In spite of the example above, you are not generally advised to disable SSL verification since it introduces the possibility of "man-in-the-middle" attacks.
-
 
 #### SMTP `auth_mode`
 

@@ -1,7 +1,16 @@
+---
+contributors:
+  14684796:
+    avatarUrl: https://crowdin-static.downloads.crowdin.com/avatar/14684796/medium/60f7dc21ec0bf9cfcb61983640bb4809_default.png
+    name: cornch
+crowdinUrl: https://crowdin.com/translate/laravel-docs/79/en-zhtw
+progress: 95
+updatedAt: '2022-08-06T05:46:00Z'
+---
+
 # 輔助函式
 
 - [簡介](#introduction)
-
 - [可用方法](#available-methods)
 
 <a name="introduction"></a>
@@ -3213,7 +3222,6 @@ Str::of('Hello, world!')->wordCount(); // 2
     $env = env('APP_ENV', 'production');
 
 > {note} 若在部署流程中執行了 `config:cache` 指令，應確保只有在組態設定檔中呼叫 `env` 函式。設定檔被快取後，就不會再載入 `.env` 檔了。所有 `env` 函式查詢 `.env` 變數的呼叫都會回傳 `null`。
-
 
 <a name="method-event"></a>
 

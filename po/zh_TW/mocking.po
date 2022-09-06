@@ -10,95 +10,95 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
-"PO-Revision-Date: 2022-08-06 05:46\n"
+"PO-Revision-Date: 2022-09-06 05:56\n"
 
 #: docs/8.x/mocking.md:block 1 (header)
 msgid "Mocking"
-msgstr ""
+msgstr "Mock"
 
 #: docs/8.x/mocking.md:block 2 (unordered list)
 msgid "[Introduction](#introduction)"
-msgstr ""
+msgstr "[簡介](#introduction)"
 
 #: docs/8.x/mocking.md:block 2 (unordered list)
 msgid "[Mocking Objects](#mocking-objects)"
-msgstr ""
+msgstr "[Mock 物件](#mocking-objects)"
 
 #: docs/8.x/mocking.md:block 2 (unordered list)
 msgid "[Mocking Facades](#mocking-facades)"
-msgstr ""
+msgstr "[Mock Facade](#mocking-facades)"
 
 #: docs/8.x/mocking.md:block 2 (unordered list)
 msgid "[Facade Spies](#facade-spies)"
-msgstr ""
+msgstr "[Facade 的 Spy](#facade-spies)"
 
 #: docs/8.x/mocking.md:block 2 (unordered list)
 msgid "[Bus Fake](#bus-fake)"
-msgstr ""
+msgstr "[Bus Fake](#bus-fake)"
 
 #: docs/8.x/mocking.md:block 2 (unordered list)
 msgid "[Job Chains](#bus-job-chains)"
-msgstr ""
+msgstr "[Job Chain](#bus-job-chains)"
 
 #: docs/8.x/mocking.md:block 2 (unordered list)
 msgid "[Job Batches](#job-batches)"
-msgstr ""
+msgstr "[批次 Job](#job-batches)"
 
 #: docs/8.x/mocking.md:block 2 (unordered list)
 msgid "[Event Fake](#event-fake)"
-msgstr ""
+msgstr "[Event Fake](#event-fake)"
 
 #: docs/8.x/mocking.md:block 2 (unordered list)
 msgid "[Scoped Event Fakes](#scoped-event-fakes)"
-msgstr ""
+msgstr "[限定範圍的 Event Fake](#scoped-event-fakes)"
 
 #: docs/8.x/mocking.md:block 2 (unordered list)
 msgid "[HTTP Fake](#http-fake)"
-msgstr ""
+msgstr "[HTTP Fake](#http-fake)"
 
 #: docs/8.x/mocking.md:block 2 (unordered list)
 msgid "[Mail Fake](#mail-fake)"
-msgstr ""
+msgstr "[Mail Fake](#mail-fake)"
 
 #: docs/8.x/mocking.md:block 2 (unordered list)
 msgid "[Notification Fake](#notification-fake)"
-msgstr ""
+msgstr "[Notification Fake](#notification-fake)"
 
 #: docs/8.x/mocking.md:block 2 (unordered list)
 msgid "[Queue Fake](#queue-fake)"
-msgstr ""
+msgstr "[Queue Fake](#queue-fake)"
 
 #: docs/8.x/mocking.md:block 2 (unordered list)
 msgid "[Job Chains](#job-chains)"
-msgstr ""
+msgstr "[Job Chain](#job-chains)"
 
 #: docs/8.x/mocking.md:block 2 (unordered list)
 msgid "[Storage Fake](#storage-fake)"
-msgstr ""
+msgstr "[Storage Fake](#storage-fake)"
 
 #: docs/8.x/mocking.md:block 2 (unordered list)
 msgid "[Interacting With Time](#interacting-with-time)"
-msgstr ""
+msgstr "[處理時間](#interacting-with-time)"
 
 #: docs/8.x/mocking.md:block 4 (header)
 msgid "Introduction"
-msgstr ""
+msgstr "簡介"
 
 #: docs/8.x/mocking.md:block 5 (paragraph)
 msgid "When testing Laravel applications, you may wish to \"mock\" certain aspects of your application so they are not actually executed during a given test. For example, when testing a controller that dispatches an event, you may wish to mock the event listeners so they are not actually executed during the test. This allows you to only test the controller's HTTP response without worrying about the execution of the event listeners since the event listeners can be tested in their own test case."
-msgstr ""
+msgstr "在測試 Laravel 專案時，我們有時候會需要「^[Mock](模擬)」某部分的程式，好讓執行測試時不要真的執行這一部分程式。舉例來說，在測試會分派 Event 的 Controller 時，我們可能會想 Mock 該 Event 的 Listener，讓這些 Event Listener 在測試階段不要真的被執行。這樣一來，我們就可以只測試 Controller 的 HTTP Response，而不需擔心 Event Listener 的執行，因為這些 Event Listener 可以在其自己的測試例中測試。"
 
 #: docs/8.x/mocking.md:block 6 (paragraph)
 msgid "Laravel provides helpful methods for mocking events, jobs, and other facades out of the box. These helpers primarily provide a convenience layer over Mockery so you do not have to manually make complicated Mockery method calls."
-msgstr ""
+msgstr "Laravel 提供了各種開箱即用的實用方法，可用於 Mock Event、Job、與其他 Facade。這些輔助函式主要提供一個 Mockery 之上的方便層，讓我們不需手動進行複雜的 Mockery 方法呼叫。"
 
 #: docs/8.x/mocking.md:block 8 (header)
 msgid "Mocking Objects"
-msgstr ""
+msgstr "Mock 物件"
 
 #: docs/8.x/mocking.md:block 9 (paragraph)
 msgid "When mocking an object that is going to be injected into your application via Laravel's [service container](/docs/{{version}}/container), you will need to bind your mocked instance into the container as an `instance` binding. This will instruct the container to use your mocked instance of the object instead of constructing the object itself:"
-msgstr ""
+msgstr "若要 Mock 一些會被  Laravel [Service Container](/docs/{{version}}/container) 插入到程式中的物件，只需要使用 `instance` 繫結來將 Mock 後的實體繫結到 Container 中。這樣一來，Container 就會使用 Mock 後的物件實體，而不會再重新建立一個物件："
 
 #: docs/8.x/mocking.md:block 10 (code)
 msgid "use App\\Service;\n"
@@ -113,11 +113,22 @@ msgid "use App\\Service;\n"
 "        })\n"
 "    );\n"
 "}\n"
-msgstr ""
+msgstr "use App\\Service;\n"
+"use Mockery;\n"
+"use Mockery\\MockInterface;\n\n"
+"public function test_something_can_be_mocked()\n"
+"{\n"
+"    $this->instance(\n"
+"        Service::class,\n"
+"        Mockery::mock(Service::class, function (MockInterface $mock) {\n"
+"            $mock->shouldReceive('process')->once();\n"
+"        })\n"
+"    );\n"
+"}\n"
 
 #: docs/8.x/mocking.md:block 11 (paragraph)
 msgid "In order to make this more convenient, you may use the `mock` method that is provided by Laravel's base test case class. For example, the following example is equivalent to the example above:"
-msgstr ""
+msgstr "為了讓這個過程更方便，我們可以使用 Laravel 基礎測試例 Class 中的 `mock` 方法。舉例來說，下面這個範例與上一個範例是相等的："
 
 #: docs/8.x/mocking.md:block 12 (code)
 msgid "use App\\Service;\n"
@@ -125,11 +136,15 @@ msgid "use App\\Service;\n"
 "$mock = $this->mock(Service::class, function (MockInterface $mock) {\n"
 "    $mock->shouldReceive('process')->once();\n"
 "});\n"
-msgstr ""
+msgstr "use App\\Service;\n"
+"use Mockery\\MockInterface;\n\n"
+"$mock = $this->mock(Service::class, function (MockInterface $mock) {\n"
+"    $mock->shouldReceive('process')->once();\n"
+"});\n"
 
 #: docs/8.x/mocking.md:block 13 (paragraph)
 msgid "You may use the `partialMock` method when you only need to mock a few methods of an object. The methods that are not mocked will be executed normally when called:"
-msgstr ""
+msgstr "若只需要 Mock 某個物件的一部分方法，可使用 `partialMock` 方法。若呼叫了未被 Mock 的方法，則這些方法會正常執行："
 
 #: docs/8.x/mocking.md:block 14 (code)
 msgid "use App\\Service;\n"
@@ -137,26 +152,33 @@ msgid "use App\\Service;\n"
 "$mock = $this->partialMock(Service::class, function (MockInterface $mock) {\n"
 "    $mock->shouldReceive('process')->once();\n"
 "});\n"
-msgstr ""
+msgstr "use App\\Service;\n"
+"use Mockery\\MockInterface;\n\n"
+"$mock = $this->partialMock(Service::class, function (MockInterface $mock) {\n"
+"    $mock->shouldReceive('process')->once();\n"
+"});\n"
 
 #: docs/8.x/mocking.md:block 15 (paragraph)
 msgid "Similarly, if you want to [spy](http://docs.mockery.io/en/latest/reference/spies.html) on an object, Laravel's base test case class offers a `spy` method as a convenient wrapper around the `Mockery::spy` method. Spies are similar to mocks; however, spies record any interaction between the spy and the code being tested, allowing you to make assertions after the code is executed:"
-msgstr ""
+msgstr "類似的，若我們想 [Spy] 某個物件，Laravel 的基礎測試 Class 中也提供了一個 `spy` 方法來作為 `Mockery::spy` 方法的方便包裝。Spy 與 Mock 類似；不過，Spy 會記錄所有 Spy 與正在測試的程式碼間的互動，能讓我們在程式碼執行後進行 Assertion："
 
 #: docs/8.x/mocking.md:block 16 (code)
 msgid "use App\\Service;\n\n"
 "$spy = $this->spy(Service::class);\n\n"
 "// ...\n\n"
 "$spy->shouldHaveReceived('process');\n"
-msgstr ""
+msgstr "use App\\Service;\n\n"
+"$spy = $this->spy(Service::class);\n\n"
+"// ...\n\n"
+"$spy->shouldHaveReceived('process');\n"
 
 #: docs/8.x/mocking.md:block 18 (header)
 msgid "Mocking Facades"
-msgstr ""
+msgstr "Mock Facade"
 
 #: docs/8.x/mocking.md:block 19 (paragraph)
 msgid "Unlike traditional static method calls, [facades](/docs/{{version}}/facades) (including [real-time facades](/docs/{{version}}/facades#real-time-facades)) may be mocked. This provides a great advantage over traditional static methods and grants you the same testability that you would have if you were using traditional dependency injection. When testing, you may often want to mock a call to a Laravel facade that occurs in one of your controllers. For example, consider the following controller action:"
-msgstr ""
+msgstr "與傳統的靜態方法呼叫不同，[Facade] (包含即時 Facade) 是可以被 Mock 的。這樣一來，我們還是能使用傳統的靜態方法呼叫，同時又不會失去傳統相依性插入所帶來的可測試性。在測試時，我們通常會想 Mock 在 Controller 中的某個 Laravel Facade 呼叫。舉例來說，來看看下列 Controller 動作："
 
 #: docs/8.x/mocking.md:block 20 (code)
 msgid "<?php\n\n"
@@ -175,7 +197,22 @@ msgid "<?php\n\n"
 "        //\n"
 "    }\n"
 "}\n"
-msgstr ""
+msgstr "<?php\n\n"
+"namespace App\\Http\\Controllers;\n\n"
+"use Illuminate\\Support\\Facades\\Cache;\n\n"
+"class UserController extends Controller\n"
+"{\n"
+"    /**\n"
+"     * Retrieve a list of all users of the application.\n"
+"     *\n"
+"     * @return \\Illuminate\\Http\\Response\n"
+"     */\n"
+"    public function index()\n"
+"    {\n"
+"        $value = Cache::get('key');\n\n"
+"        //\n"
+"    }\n"
+"}\n"
 
 #: docs/8.x/mocking.md:block 21 (paragraph)
 msgid "We can mock the call to the `Cache` facade by using the `shouldReceive` method, which will return an instance of a [Mockery](https://github.com/padraic/mockery) mock. Since facades are actually resolved and managed by the Laravel [service container](/docs/{{version}}/container), they have much more testability than a typical static class. For example, let's mock our call to the `Cache` facade's `get` method:"

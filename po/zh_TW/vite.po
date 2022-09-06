@@ -10,7 +10,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
-"PO-Revision-Date: 2022-09-04 07:34\n"
+"PO-Revision-Date: 2022-09-06 05:56\n"
 
 #: docs/9.x/vite.md:block 1 (header)
 msgid "Bundling Assets (Vite)"
@@ -525,15 +525,15 @@ msgstr "URL 的處理"
 
 #: docs/9.x/vite.md:block 81 (paragraph)
 msgid "When using Vite and referencing assets in your application's HTML, CSS, or JS, there are a couple of things to consider. First, if you reference assets with an absolute path, Vite will not include the asset in the build; therefore, you should ensure that the asset is available in your public directory."
-msgstr ""
+msgstr "使用 Vite 並在專案的 HTML、CSS、JS 等地方參照素材時，還需要考慮到幾點。首先，若要參照的資源使用絕對路徑，則 Vite 將不會在建置的結果中包含該資源；同時，還需要確定該素材是否在 public 目錄下可用。"
 
 #: docs/9.x/vite.md:block 82 (paragraph)
 msgid "When referencing relative asset paths, you should remember that the paths are relative to the file where they are referenced. Any assets referenced via a relative path will be re-written, versioned, and bundled by Vite."
-msgstr ""
+msgstr "使用相對路徑參照素材時，請記得，路徑是相對於正在參照該資源的檔案。Vite 會複寫使用相對路徑所參照的素材，並為其加上版本，然後進行打包。"
 
 #: docs/9.x/vite.md:block 83 (paragraph)
 msgid "Consider the following project structure:"
-msgstr ""
+msgstr "來看一下下面這樣的專案結構："
 
 #: docs/9.x/vite.md:block 84 (code)
 msgid "public/\n"
@@ -544,26 +544,36 @@ msgid "public/\n"
 "      Welcome.vue\n"
 "  images/\n"
 "    abigail.png\n"
-msgstr ""
+msgstr "public/\n"
+"  taylor.png\n"
+"resources/\n"
+"  js/\n"
+"    Pages/\n"
+"      Welcome.vue\n"
+"  images/\n"
+"    abigail.png\n"
 
 #: docs/9.x/vite.md:block 85 (paragraph)
 msgid "The following example demonstrates how Vite will treat relative and absolute URLs:"
-msgstr ""
+msgstr "下列範例展示 Vite 如何處理相對與絕對 URL："
 
 #: docs/9.x/vite.md:block 86 (code)
 msgid "<!-- This asset is not handled by Vite and will not be included in the build -->\n"
 "<img src=\"/taylor.png\">\n\n"
 "<!-- This asset will be re-written, versioned, and bundled by Vite -->\n"
 "<img src=\"../../images/abigail.png\">\n"
-msgstr ""
+msgstr "<!-- 該素材不會被 Vite 出列，且不會包含在建置結果中 -->\n"
+"<img src=\"/taylor.png\">\n\n"
+"<!-- 該素材會被 Vite 複寫，且會加上版本並打包 -->\n"
+"<img src=\"../../images/abigail.png\">\n"
 
 #: docs/9.x/vite.md:block 88 (header)
 msgid "Working With Stylesheets"
-msgstr ""
+msgstr "處理 CSS"
 
 #: docs/9.x/vite.md:block 89 (paragraph)
 msgid "You can learn more about Vite's CSS support within the [Vite documentation](https://vitejs.dev/guide/features.html#css). If you are using PostCSS plugins such as [Tailwind](https://tailwindcss.com), you may create a `postcss.config.js` file in the root of your project and Vite will automatically apply it:"
-msgstr ""
+msgstr "你可以在 [Vite 說明文件](https://vitejs.dev/guide/features.html#css)中瞭解更多有關 Vite 對 CSS 的支援。若使用如 [Tailwind](https://tailwindcss.com) 等的 PostCSS 外掛，可在專案根目錄中建立一個 `postcss.config.js` 檔。Vite 會自動套用該檔案中的設定："
 
 #: docs/9.x/vite.md:block 90 (code)
 msgid "module.exports = {\n"
@@ -572,15 +582,20 @@ msgid "module.exports = {\n"
 "        autoprefixer: {},\n"
 "    },\n"
 "};\n"
-msgstr ""
+msgstr "module.exports = {\n"
+"    plugins: {\n"
+"        tailwindcss: {},\n"
+"        autoprefixer: {},\n"
+"    },\n"
+"};\n"
 
 #: docs/9.x/vite.md:block 92 (header)
 msgid "Working With Blade & Routes"
-msgstr ""
+msgstr "處理 Blade 與 Route"
 
 #: docs/9.x/vite.md:block 93 (paragraph)
 msgid "When your application is built using traditional server-side rendering with Blade, Vite can improve your development workflow by automatically refreshing the browser when you make changes to view files in your application. To get started, you can simply specify the `refresh` option as `true`."
-msgstr ""
+msgstr "若專案使用 Blade 這樣傳統式的伺服器端轉譯，則 Vite 可以在 View 檔案被修改的時候幫你自動重新整理瀏覽器來改進開發流程。若要開始讓 Vite 自動重新整理，只需要將 `refresh` 選項設為 `true` 即可。"
 
 #: docs/9.x/vite.md:block 94 (code)
 msgid "import { defineConfig } from 'vite';\n"
@@ -593,19 +608,28 @@ msgid "import { defineConfig } from 'vite';\n"
 "        }),\n"
 "    ],\n"
 "});\n"
-msgstr ""
+msgstr "import { defineConfig } from 'vite';\n"
+"import laravel from 'laravel-vite-plugin';\n\n"
+"export default defineConfig({\n"
+"    plugins: [\n"
+"        laravel({\n"
+"            // ...\n"
+"            refresh: true,\n"
+"        }),\n"
+"    ],\n"
+"});\n"
 
 #: docs/9.x/vite.md:block 95 (paragraph)
 msgid "When the `refresh` option is `true`, saving files in `resources/views/**`, `app/View/Components/**`, and `routes/**` will trigger the browser to perform a full page refresh while you are running `npm run dev`."
-msgstr ""
+msgstr "當 `refresh` 選項設為 `true` 後，在執行 `npm run dev` 時，一旦在 `resources/views/**`、`app/View/Components/**`、and `routes/**` 內保存檔案後，就會觸發瀏覽器進行整頁的重新整理。"
 
 #: docs/9.x/vite.md:block 96 (paragraph)
 msgid "Watching the `routes/**` directory is useful if you are utilizing [Ziggy](https://github.com/tighten/ziggy) to generate route links within your application's frontend."
-msgstr ""
+msgstr "若使用 [Ziggy](https://github.com/tighten/ziggy) 來在網頁前端中產生 Route 連結，監看 `routes/**` 目錄就很實用。"
 
 #: docs/9.x/vite.md:block 97 (paragraph)
 msgid "If these default paths do not suit your needs, you can specify your own list of paths to watch:"
-msgstr ""
+msgstr "若這些預設的路徑不符合你的需求，也可以自行指定一組要監看的路徑清單："
 
 #: docs/9.x/vite.md:block 98 (code)
 msgid "import { defineConfig } from 'vite';\n"
@@ -618,11 +642,20 @@ msgid "import { defineConfig } from 'vite';\n"
 "        }),\n"
 "    ],\n"
 "});\n"
-msgstr ""
+msgstr "import { defineConfig } from 'vite';\n"
+"import laravel from 'laravel-vite-plugin';\n\n"
+"export default defineConfig({\n"
+"    plugins: [\n"
+"        laravel({\n"
+"            // ...\n"
+"            refresh: ['resources/views/**'],\n"
+"        }),\n"
+"    ],\n"
+"});\n"
 
 #: docs/9.x/vite.md:block 99 (paragraph)
 msgid "Under the hood, the Laravel Vite plugin uses the [`vite-plugin-full-reload`](https://github.com/ElMassimo/vite-plugin-full-reload) package, which offers some advanced configuration options to fine-tune this feature's behavior. If you need this level of customization, you may provide a `config` definition:"
-msgstr ""
+msgstr "其實，Laravel 的 Vite 外掛使用了 [`vite-plugin-full-reload`](https://github.com/ElMassimo/vite-plugin-full-reload) 套件，該套件還提供了一些選項，能微調這個重新整理功能的行為。若有需要自定這類微調，可以加上一個 `config` 定義："
 
 #: docs/9.x/vite.md:block 100 (code)
 msgid "import { defineConfig } from 'vite';\n"
@@ -638,59 +671,71 @@ msgid "import { defineConfig } from 'vite';\n"
 "        }),\n"
 "    ],\n"
 "});\n"
-msgstr ""
+msgstr "import { defineConfig } from 'vite';\n"
+"import laravel from 'laravel-vite-plugin';\n\n"
+"export default defineConfig({\n"
+"    plugins: [\n"
+"        laravel({\n"
+"            // ...\n"
+"            refresh: [{\n"
+"                paths: ['path/to/watch/**'],\n"
+"                config: { delay: 300 }\n"
+"            }],\n"
+"        }),\n"
+"    ],\n"
+"});\n"
 
 #: docs/9.x/vite.md:block 102 (header)
 msgid "Custom Base URLs"
-msgstr ""
+msgstr "自定 Base URL"
 
 #: docs/9.x/vite.md:block 103 (paragraph)
 msgid "If your Vite compiled assets are deployed to a domain separate from your application, such as via a CDN, you must specify the `ASSET_URL` environment variable within your application's `.env` file:"
-msgstr ""
+msgstr "若由 Vite 編譯出來的素材會被部署到與專案不同的網域上，如 CDN 等，則可在專案的 `.env` 檔案中指定 `ASSET_URL` 環境變數："
 
 #: docs/9.x/vite.md:block 104 (code)
 msgid "ASSET_URL=https://cdn.example.com\n"
-msgstr ""
+msgstr "ASSET_URL=https://cdn.example.com\n"
 
 #: docs/9.x/vite.md:block 105 (paragraph)
 msgid "After configuring the asset URL, all re-written URLs to your assets will be prefixed with the configured value:"
-msgstr ""
+msgstr "設定好素材 URL 後，所有被複寫的素材 URL 的前方都會被加上該設定值："
 
 #: docs/9.x/vite.md:block 106 (code)
 msgid "https://cdn.example.com/build/assets/app.9dce8d17.js\n"
-msgstr ""
+msgstr "https://cdn.example.com/build/assets/app.9dce8d17.js\n"
 
 #: docs/9.x/vite.md:block 107 (paragraph)
 msgid "Remember that [absolute URLs are not re-written by Vite](#url-processing), so they will not be prefixed."
-msgstr ""
+msgstr "請記得，[Vite 不會複寫絕對 URL](#url-processing)，所以這些絕對 URL 會被保持原樣。"
 
 #: docs/9.x/vite.md:block 109 (header)
 msgid "Environment Variables"
-msgstr ""
+msgstr "環境變數"
 
 #: docs/9.x/vite.md:block 110 (paragraph)
 msgid "You may inject environment variables into your JavaScript by prefixing them with `VITE_` in your application's `.env` file:"
-msgstr ""
+msgstr "在專案的 `.env` 檔中，只要為環境變數名稱冠上 `VITE_` 前置詞，就可將這些環境變數注入到 JavaScript 中："
 
 #: docs/9.x/vite.md:block 111 (code)
 msgid "VITE_SENTRY_DSN_PUBLIC=http://example.com\n"
-msgstr ""
+msgstr "VITE_SENTRY_DSN_PUBLIC=http://example.com\n"
 
 #: docs/9.x/vite.md:block 112 (paragraph)
 msgid "You may access injected environment variables via the `import.meta.env` object:"
-msgstr ""
+msgstr "可以使用 `import.meta.env` 物件來存取注入的變數："
 
 #: docs/9.x/vite.md:block 113 (code)
 msgid "import.meta.env.VITE_SENTRY_DSN_PUBLIC\n"
-msgstr ""
+msgstr "import.meta.env.VITE_SENTRY_DSN_PUBLIC\n"
 
 #: docs/9.x/vite.md:block 115 (header)
 msgid "Server-Side Rendering (SSR)"
-msgstr ""
+msgstr "伺服器端轉譯 (SSR)"
 
 #: docs/9.x/vite.md:block 116 (paragraph)
 msgid "The Laravel Vite plugin makes it painless to set up server-side rendering with Vite. To get started, create an SSR entry point at `resources/js/ssr.js` and specify the entry point by passing a configuration option to the Laravel plugin:"
-msgstr ""
+msgstr "使用 Laravel 的 Vite 外掛，就可以無痛在 Vite 上設定伺服器端轉譯 (SSR, Server Side Rendering)。若要開始設定 SSR，請建立一個 `resources/js/ssr.js` 來作為 SSR 的進入點，並在 Laravel 的 Vite 外掛上傳入一組設定來指定該進入點："
 
 #: docs/9.x/vite.md:block 117 (code)
 msgid "import { defineConfig } from 'vite';\n"
@@ -703,11 +748,20 @@ msgid "import { defineConfig } from 'vite';\n"
 "        }),\n"
 "    ],\n"
 "});\n"
-msgstr ""
+msgstr "import { defineConfig } from 'vite';\n"
+"import laravel from 'laravel-vite-plugin';\n\n"
+"export default defineConfig({\n"
+"    plugins: [\n"
+"        laravel({\n"
+"            input: 'resources/js/app.js',\n"
+"            ssr: 'resources/js/ssr.js',\n"
+"        }),\n"
+"    ],\n"
+"});\n"
 
 #: docs/9.x/vite.md:block 118 (paragraph)
 msgid "To ensure you don't forget to rebuild the SSR entry point, we recommend augmenting the \"build\" script in your application's `package.json` to create your SSR build:"
-msgstr ""
+msgstr "為了避免我們忘記要重新建置 SSR 進入點，建議調整專案的 `package.json` 內的「build」指令來建立 SSR 建置："
 
 #: docs/9.x/vite.md:block 119 (code)
 msgid "\"scripts\": {\n"
@@ -715,32 +769,37 @@ msgid "\"scripts\": {\n"
 "     \"build\": \"vite build\" // [tl! remove]\n"
 "     \"build\": \"vite build && vite build --ssr\" // [tl! add]\n"
 "}\n"
-msgstr ""
+msgstr "\"scripts\": {\n"
+"     \"dev\": \"vite\",\n"
+"     \"build\": \"vite build\" // [tl! remove]\n"
+"     \"build\": \"vite build && vite build --ssr\" // [tl! add]\n"
+"}\n"
 
 #: docs/9.x/vite.md:block 120 (paragraph)
 msgid "Then, to build and start the SSR server, you may run the following commands:"
-msgstr ""
+msgstr "接著，若要開始建置並執行 SSR 伺服器，可執行下列指令："
 
 #: docs/9.x/vite.md:block 121 (code)
 msgid "npm run build\n"
 "node bootstrap/ssr/ssr.mjs\n"
-msgstr ""
+msgstr "npm run build\n"
+"node bootstrap/ssr/ssr.mjs\n"
 
 #: docs/9.x/vite.md:block 122 (quote)
 msgid "**Note** Laravel's [starter kits](/docs/{{version}}/starter-kits) already include the proper Laravel, Inertia SSR, and Vite configuration. Check out [Laravel Breeze](/docs/{{version}}/starter-kits#breeze-and-inertia) for the fastest way to get started with Laravel, Inertia SSR, and Vite."
-msgstr ""
+msgstr "**Note** Laravel 的[入門套件](/docs/{{version}}/starter-kits)中已經包含了適當的 Laravel、Inertia SSR、與 Vite 設定。請參考看看使用 [Laravel Breeze](/docs/{{version}}/starter-kits#breeze-and-inertia)，來用最快的速度開始使用 Laravel、Inertia SSR、與 Vite。"
 
 #: docs/9.x/vite.md:block 124 (header)
 msgid "Script & Style Tag Attributes"
-msgstr ""
+msgstr "Script 與 Style 標籤的屬性"
 
 #: docs/9.x/vite.md:block 126 (header)
 msgid "Content Security Policy (CSP) Nonce"
-msgstr ""
+msgstr "內容安全性原則 (CSP) 的 Nonce"
 
 #: docs/9.x/vite.md:block 127 (paragraph)
 msgid "If you wish to include a [`nonce` attribute](https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/nonce) on your script and style tags as part of your [Content Security Policy](https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP), you may generate or specify a nonce using the `useCspNonce` method within a custom [middleware](/docs/{{version}}/middleware):"
-msgstr ""
+msgstr "若想在 script 與 style 上為[內容安全性原則 (CSP, Content Security Policy)](https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP) 加上 [`nonce` 屬性](https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/nonce)，可以自定一個 [Middleware](/docs/{{version}}/middleware) 來使用 `useCspNonce` 方法來產生或指定一個 Nonce。"
 
 #: docs/9.x/vite.md:block 128 (code)
 msgid "<?php\n\n"
@@ -764,35 +823,55 @@ msgid "<?php\n\n"
 "        ]);\n"
 "    }\n"
 "}\n"
-msgstr ""
+msgstr "<?php\n\n"
+"namespace App\\Http\\Middleware;\n\n"
+"use Closure;\n"
+"use Illuminate\\Support\\Facades\\Vite;\n\n"
+"class AddContentSecurityPolicyHeaders\n"
+"{\n"
+"    /**\n"
+"     * Handle an incoming request.\n"
+"     *\n"
+"     * @param  \\Illuminate\\Http\\Request  $request\n"
+"     * @param  \\Closure  $next\n"
+"     * @return mixed\n"
+"     */\n"
+"    public function handle($request, Closure $next)\n"
+"    {\n"
+"        Vite::useCspNonce();\n\n"
+"        return $next($request)->withHeaders([\n"
+"            'Content-Security-Policy' => \"script-src 'nonce-\".Vite::cspNonce().\"'\",\n"
+"        ]);\n"
+"    }\n"
+"}\n"
 
 #: docs/9.x/vite.md:block 129 (paragraph)
 msgid "After invoking the `useCspNonce` method, Laravel will automatically include the `nonce` attributes on all generated script and style tags."
-msgstr ""
+msgstr "呼叫 `useCspNonce` 方法後，Laravel 就會自動在所有產生的 script 與 style 標籤上包含一個 `nonce` 屬性。"
 
 #: docs/9.x/vite.md:block 130 (paragraph)
 msgid "If you need to specify the nonce elsewhere, including the [Ziggy `@route` directive](https://github.com/tighten/ziggy#using-routes-with-a-content-security-policy) included with Laravel's [starter kits](/docs/{{version}}/starter-kits), you may retrieve it using the `cspNonce` method:"
-msgstr ""
+msgstr "若有需要在別處指定 Nonce，如在 Laravel [入門套件](/docs/{{version}}/starter-kits)中所包含的 [Ziggy `@route` 指示詞](https://github.com/tighten/ziggy#using-routes-with-a-content-security-policy)，則可以使用 `cspNonce` 方法來取得該 Nonce："
 
 #: docs/9.x/vite.md:block 131 (code)
 msgid "@routes(nonce: Vite::cspNonce())\n"
-msgstr ""
+msgstr "@routes(nonce: Vite::cspNonce())\n"
 
 #: docs/9.x/vite.md:block 132 (paragraph)
 msgid "If you already have a nonce that you would like to instruct Laravel to use, you may pass the nonce to the `useCspNonce` method:"
-msgstr ""
+msgstr "若已有 Nonce，且想讓 Laravel 使用該 Nonce，則可傳入該 Nonce 給 `useCspNonce` 方法："
 
 #: docs/9.x/vite.md:block 133 (code)
 msgid "Vite::useCspNonce($nonce);\n"
-msgstr ""
+msgstr "Vite::useCspNonce($nonce);\n"
 
 #: docs/9.x/vite.md:block 135 (header)
 msgid "Subresource Integrity (SRI)"
-msgstr ""
+msgstr "子資源完整性 (SRI)"
 
 #: docs/9.x/vite.md:block 136 (paragraph)
 msgid "If your Vite manifest includes `integrity` hashes for your assets, Laravel will automatically add the `integrity` attribute on any script and style tags it generates in order to enforce [Subresource Integrity](https://developer.mozilla.org/en-US/docs/Web/Security/Subresource_Integrity). By default, Vite does not include the `integrity` hash in its manifest, but you may enable it by installing the [`vite-plugin-manifest-uri`](https://www.npmjs.com/package/vite-plugin-manifest-sri) NPM plugin:"
-msgstr ""
+msgstr "若 Vite Manifest 中有包含資源的 ^[`integrity`](完整性) 雜湊，則 Laravel 會自動在所有 Vite 產生的 script 與 style 標籤上加上 `integrity` 屬性，已強制確保[子資源完整性 (SRI, Subresource Integrity)](https://developer.mozilla.org/en-US/docs/Web/Security/Subresource_Integrity)。預設情況下，Vite 不會在其 Manifest 檔中包含 `integrity` 雜湊。但只要安裝 [`vite-plugin-manifest-uri`](https://www.npmjs.com/package/vite-plugin-manifest-sri) NPM 外掛，就可啟用該功能："
 
 #: docs/9.x/vite.md:block 137 (code)
 msgid "npm install -D vite-plugin-manifest-sri\n"
@@ -800,7 +879,7 @@ msgstr "npm install -D vite-plugin-manifest-sri\n"
 
 #: docs/9.x/vite.md:block 138 (paragraph)
 msgid "You may then enable this plugin in your `vite.config.js` file:"
-msgstr ""
+msgstr "可以在 `vite.config.js` 檔中啟用該外掛："
 
 #: docs/9.x/vite.md:block 139 (code)
 msgid "import { defineConfig } from 'vite';\n"
@@ -814,32 +893,43 @@ msgid "import { defineConfig } from 'vite';\n"
 "        manifestSRI(),// [tl! add]\n"
 "    ],\n"
 "});\n"
-msgstr ""
+msgstr "import { defineConfig } from 'vite';\n"
+"import laravel from 'laravel-vite-plugin';\n"
+"import manifestSRI from 'vite-plugin-manifest-sri';// [tl! add]\n\n"
+"export default defineConfig({\n"
+"    plugins: [\n"
+"        laravel({\n"
+"            // ...\n"
+"        }),\n"
+"        manifestSRI(),// [tl! add]\n"
+"    ],\n"
+"});\n"
 
 #: docs/9.x/vite.md:block 140 (paragraph)
 msgid "If required, you may also customize the manifest key where the integrity hash can be found:"
-msgstr ""
+msgstr "若有需要，也可以指定 Manifest 中保存 Integrity 雜湊的索引鍵："
 
 #: docs/9.x/vite.md:block 141 (code)
 msgid "use Illuminate\\Support\\Facades\\Vite;\n\n"
 "Vite::useIntegrityKey('custom-integrity-key');\n"
-msgstr ""
+msgstr "use Illuminate\\Support\\Facades\\Vite;\n\n"
+"Vite::useIntegrityKey('custom-integrity-key');\n"
 
 #: docs/9.x/vite.md:block 142 (paragraph)
 msgid "If you would like to disable this auto-detection completely, you may pass `false` to the `useIntegrityKey` method:"
-msgstr ""
+msgstr "若有需要完全禁用自動偵測，可傳入 `false` 給 `useIntegrityKey` 方法："
 
 #: docs/9.x/vite.md:block 143 (code)
 msgid "Vite::useIntegrityKey(false);\n"
-msgstr ""
+msgstr "Vite::useIntegrityKey(false);\n"
 
 #: docs/9.x/vite.md:block 145 (header)
 msgid "Arbitrary Attributes"
-msgstr ""
+msgstr "任意屬性"
 
 #: docs/9.x/vite.md:block 146 (paragraph)
 msgid "If you need to include additional attributes on your script and style tags, such as the [`data-turbo-track`](https://turbo.hotwired.dev/handbook/drive#reloading-when-assets-change) attribute, you may specify them via the `useScriptTagAttributes` and `useStyleTagAttributes` methods. Typically, this methods should be invoked from a [service provider](/docs/{{version}}/providers):"
-msgstr ""
+msgstr "若有需要在 script 與 style 標籤上加入其他的額外屬性，如 [`data-turbo-track`](https://turbo.hotwired.dev/handbook/drive#reloading-when-assets-change) 等，則可使用 `useScriptTagAttributes` 與 `useStyleTagAttributes` 方法。一般來說，應該在某個 [Service Provider](/docs/{{version}}/providers) 中叫用該方法："
 
 #: docs/9.x/vite.md:block 147 (code)
 msgid "use Illuminate\\Support\\Facades\\Vite;\n\n"
@@ -851,11 +941,19 @@ msgid "use Illuminate\\Support\\Facades\\Vite;\n\n"
 "Vite::useStyleTagAttributes([\n"
 "    'data-turbo-track' => 'reload',\n"
 "]);\n"
-msgstr ""
+msgstr "use Illuminate\\Support\\Facades\\Vite;\n\n"
+"Vite::useScriptTagAttributes([\n"
+"    'data-turbo-track' => 'reload', // 為屬性指定值...\n"
+"    'async' => true, // 指定一個沒有值的屬性...\n"
+"    'integrity' => false, // 排除掉一個原本會被包含的屬性...\n"
+"]);\n\n"
+"Vite::useStyleTagAttributes([\n"
+"    'data-turbo-track' => 'reload',\n"
+"]);\n"
 
 #: docs/9.x/vite.md:block 148 (paragraph)
 msgid "If you need to conditionally add attributes, you may pass a callback that will receive the asset source path, its URL, its manifest chunk, and the entire manifest:"
-msgstr ""
+msgstr "若有需要有條件地新增屬性，則可傳入一個回呼。該回呼會收到素材的原始檔路徑、其 URL、該素材的 Manifest Chunk、以及整個 Manifest："
 
 #: docs/9.x/vite.md:block 149 (code)
 msgid "use Illuminate\\Support\\Facades\\Vite;\n\n"
@@ -865,9 +963,15 @@ msgid "use Illuminate\\Support\\Facades\\Vite;\n\n"
 "Vite::useStyleTagAttributes(fn (string $src, string $url, array|null $chunk, array|null $manifest) => [\n"
 "    'data-turbo-track' => $chunk && $chunk['isEntry'] ? 'reload' : false,\n"
 "]);\n"
-msgstr ""
+msgstr "use Illuminate\\Support\\Facades\\Vite;\n\n"
+"Vite::useScriptTagAttributes(fn (string $src, string $url, array|null $chunk, array|null $manifest) => [\n"
+"    'data-turbo-track' => $src === 'resources/js/app.js' ? 'reload' : false,\n"
+"]);\n\n"
+"Vite::useStyleTagAttributes(fn (string $src, string $url, array|null $chunk, array|null $manifest) => [\n"
+"    'data-turbo-track' => $chunk && $chunk['isEntry'] ? 'reload' : false,\n"
+"]);\n"
 
 #: docs/9.x/vite.md:block 150 (quote)
 msgid "**Warning** The `$chunk` and `$manifest` arguments will be `null` while the Vite development server is running."
-msgstr ""
+msgstr "**Warning** 在執行 Vite 開發伺服器時，`$chunk` 與 `$manifest` 屬性會是 `null`。"
 

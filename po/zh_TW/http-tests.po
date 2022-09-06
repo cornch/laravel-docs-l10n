@@ -10,7 +10,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
-"PO-Revision-Date: 2022-09-04 07:33\n"
+"PO-Revision-Date: 2022-09-06 04:55\n"
 
 #: docs/8.x/http-tests.md:block 1 (header)
 msgid "HTTP Tests"
@@ -1927,63 +1927,63 @@ msgstr "身份驗證 Assertion"
 
 #: docs/8.x/http-tests.md:block 381 (paragraph)
 msgid "Laravel also provides a variety of authentication related assertions that you may utilize within your application's feature tests. Note that these methods are invoked on the test class itself and not the `Illuminate\\Testing\\TestResponse` instance returned by methods such as `get` and `post`."
-msgstr ""
+msgstr "Laravel 也提供了各種與身份驗證相關的 Assertion，讓我們能在專案的 Feature Test 中使用。請注意，這些方法需要在 Test Class 上呼叫，而不是在 `get` 或 `post` 方法回傳的  `Illuminate\\Testing\\TestResponse`實體上呼叫。"
 
 #: docs/8.x/http-tests.md:block 383 (header)
 msgid "assertAuthenticated"
-msgstr ""
+msgstr "assertAuthenticated"
 
 #: docs/8.x/http-tests.md:block 384 (paragraph)
 msgid "Assert that a user is authenticated:"
-msgstr ""
+msgstr "判斷使用者已登入："
 
 #: docs/8.x/http-tests.md:block 385 (code)
 msgid "$this->assertAuthenticated($guard = null);\n"
-msgstr ""
+msgstr "$this->assertAuthenticated($guard = null);\n"
 
 #: docs/8.x/http-tests.md:block 387 (header)
 msgid "assertGuest"
-msgstr ""
+msgstr "assertGuest"
 
 #: docs/8.x/http-tests.md:block 388 (paragraph)
 msgid "Assert that a user is not authenticated:"
-msgstr ""
+msgstr "判斷使用者是否未登入："
 
 #: docs/8.x/http-tests.md:block 389 (code)
 msgid "$this->assertGuest($guard = null);\n"
-msgstr ""
+msgstr "$this->assertGuest($guard = null);\n"
 
 #: docs/8.x/http-tests.md:block 391 (header)
 msgid "assertAuthenticatedAs"
-msgstr ""
+msgstr "assertAuthenticatedAs"
 
 #: docs/8.x/http-tests.md:block 392 (paragraph)
 msgid "Assert that a specific user is authenticated:"
-msgstr ""
+msgstr "判斷是否已登入特定的使用者："
 
 #: docs/8.x/http-tests.md:block 393 (code)
 msgid "$this->assertAuthenticatedAs($user, $guard = null);\n"
-msgstr ""
+msgstr "$this->assertAuthenticatedAs($user, $guard = null);\n"
 
 #: docs/9.x/http-tests.md:block 14 (quote)
 msgid "**Note** For convenience, the CSRF middleware is automatically disabled when running tests."
-msgstr ""
+msgstr "**Note** 為了方便期間，在執行測試期間會自動禁用 CSRF Middleware。"
 
 #: docs/9.x/http-tests.md:block 29 (paragraph)
 msgid "You may also specify which guard should be used to authenticate the given user by passing the guard name as the second argument to the `actingAs` method. The guard that is provided to the `actingAs` method will also become the default guard for the duration of the test:"
-msgstr ""
+msgstr "只要在 `actingAs` 方法上傳入第二個引數，就可以指定要使用哪個 Guard 來登入給定的使用者。傳給 `actingAs` 方法的 Guard 會在該測試期間變成預設的 Guard："
 
 #: docs/9.x/http-tests.md:block 49 (quote)
 msgid "**Note** The `assertJson` method converts the response to an array and utilizes `PHPUnit::assertArraySubset` to verify that the given array exists within the JSON response returned by the application. So, if there are other properties in the JSON response, this test will still pass as long as the given fragment is present."
-msgstr ""
+msgstr "**Note** `assertJson` 方法會將 Response 轉換為陣列，並使用 `PHPUnit::assertArraySubset` 來驗證給定陣列是否有包含在專案回傳的 JSON Response 中。所以，如果在 JSON Response 中有包含其他屬性，只要給定的部分有包含在 JSON 裡，測試就會通過。"
 
 #: docs/9.x/http-tests.md:block 58 (paragraph)
 msgid "The `assertJsonPath` method also accepts a closure, which may be used to dynamically determine if the assertion should pass:"
-msgstr ""
+msgstr "`assertJsonPath` 方法也接受一個閉包，該閉包可用於動態判斷該 Assertion 是否應設為通過："
 
 #: docs/9.x/http-tests.md:block 59 (code)
 msgid "$response->assertJsonPath('team.owner.name', fn ($name) => strlen($name) >= 3);\n"
-msgstr ""
+msgstr "$response->assertJsonPath('team.owner.name', fn ($name) => strlen($name) >= 3);\n"
 
 #: docs/9.x/http-tests.md:block 63 (code)
 msgid "use Illuminate\\Testing\\Fluent\\AssertableJson;\n\n"
@@ -2004,7 +2004,24 @@ msgid "use Illuminate\\Testing\\Fluent\\AssertableJson;\n\n"
 "                 ->etc()\n"
 "        );\n"
 "}\n"
-msgstr ""
+msgstr "use Illuminate\\Testing\\Fluent\\AssertableJson;\n\n"
+"/**\n"
+" * A basic functional test example.\n"
+" *\n"
+" * @return void\n"
+" */\n"
+"public function test_fluent_json()\n"
+"{\n"
+"    $response = $this->getJson('/users/1');\n\n"
+"    $response\n"
+"        ->assertJson(fn (AssertableJson $json) =>\n"
+"            $json->where('id', 1)\n"
+"                 ->where('name', 'Victoria Faith')\n"
+"                 ->whereNot('status', 'pending')\n"
+"                 ->missing('password')\n"
+"                 ->etc()\n"
+"        );\n"
+"}\n"
 
 #: docs/9.x/http-tests.md:block 72 (code)
 msgid "$response->assertJson(fn (AssertableJson $json) =>\n"

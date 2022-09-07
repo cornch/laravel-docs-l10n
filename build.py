@@ -4,8 +4,11 @@ import sys
 import requests
 import yaml
 import polib
+from dotenv import load_dotenv
 from glob import glob
 from mdpo.po2md import pofile_to_markdown
+
+load_dotenv()
 
 if len(sys.argv) < 2 or not sys.argv[1]:
   print('Usage: ./build.py <locale>')

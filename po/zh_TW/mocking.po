@@ -10,7 +10,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
-"PO-Revision-Date: 2022-09-06 06:53\n"
+"PO-Revision-Date: 2022-09-07 08:28\n"
 
 #: docs/8.x/mocking.md:block 1 (header)
 msgid "Mocking"
@@ -638,7 +638,7 @@ msgstr "Mail Fake"
 
 #: docs/8.x/mocking.md:block 67 (paragraph)
 msgid "You may use the `Mail` facade's `fake` method to prevent mail from being sent. Typically, sending mail is unrelated to the code you are actually testing. Most likely, it is sufficient to simply assert that Laravel was instructed to send a given mailable."
-msgstr "可以使用 `Mail` Facade 的 `fake` 方法來避免寄出 Mail。一般來說，寄送 Mail 與實際要測試的程式碼是不相關的。通常，只要判斷 Laravel 是否有接到指示要基礎給定 Mailable 就夠了。"
+msgstr "可以使用 `Mail` Facade 的 `fake` 方法來避免寄出 Mail。一般來說，寄送 Mail 與實際要測試的程式碼是不相關的。通常，只要判斷 Laravel 是否有接到指示要寄出給定 Mailable 就夠了。"
 
 #: docs/8.x/mocking.md:block 68 (paragraph)
 msgid "After calling the `Mail` facade's `fake` method, you may then assert that [mailables](/docs/{{version}}/mail) were instructed to be sent to users and even inspect the data the mailables received:"
@@ -706,17 +706,19 @@ msgstr "Mail::assertQueued(OrderShipped::class);\n\n"
 
 #: docs/8.x/mocking.md:block 72 (paragraph)
 msgid "You may pass a closure to the `assertSent`, `assertNotSent`, `assertQueued`, or `assertNotQueued` methods in order to assert that a mailable was sent that passes a given \"truth test\". If at least one mailable was sent that passes the given truth test then the assertion will be successful:"
-msgstr ""
+msgstr "可以傳入一個閉包給 `assertSent`、`assertNotSent`、`assertQueued`、`assertNotQueued` 方法來判斷 Mailable 是否通過給定的「真值測試 (Truth Test)」。若至少有一個寄出的 Mailable 通過給定的真值測試，則該 Assertion 會被視為成功："
 
 #: docs/8.x/mocking.md:block 73 (code)
 msgid "Mail::assertSent(function (OrderShipped $mail) use ($order) {\n"
 "    return $mail->order->id === $order->id;\n"
 "});\n"
-msgstr ""
+msgstr "Mail::assertSent(function (OrderShipped $mail) use ($order) {\n"
+"    return $mail->order->id === $order->id;\n"
+"});\n"
 
 #: docs/8.x/mocking.md:block 74 (paragraph)
 msgid "When calling the `Mail` facade's assertion methods, the mailable instance accepted by the provided closure exposes helpful methods for examining the recipients of the mailable:"
-msgstr ""
+msgstr "呼叫 `Mail` Facade 的 Assertion 方法時，所提供的閉包內收到的 Mailable 實體上有一些實用的方法，可用來檢查 Mailable 的收件者："
 
 #: docs/8.x/mocking.md:block 75 (code)
 msgid "Mail::assertSent(OrderShipped::class, function ($mail) use ($user) {\n"
@@ -724,30 +726,37 @@ msgid "Mail::assertSent(OrderShipped::class, function ($mail) use ($user) {\n"
 "           $mail->hasCc('...') &&\n"
 "           $mail->hasBcc('...');\n"
 "});\n"
-msgstr ""
+msgstr "Mail::assertSent(OrderShipped::class, function ($mail) use ($user) {\n"
+"    return $mail->hasTo($user->email) &&\n"
+"           $mail->hasCc('...') &&\n"
+"           $mail->hasBcc('...');\n"
+"});\n"
 
 #: docs/8.x/mocking.md:block 76 (paragraph)
 msgid "You may have noticed that there are two methods for asserting that mail was not sent: `assertNotSent` and `assertNotQueued`. Sometimes you may wish to assert that no mail was sent **or** queued. To accomplish this, you may use the `assertNothingOutgoing` and `assertNotOutgoing` methods:"
-msgstr ""
+msgstr "讀者可能已經注意到，總共有兩個方法可用來檢查郵件是否未被送出：`assertNotSent`、`assertNotQueued`。有時候，我們可能會希望判斷沒有任何郵件被寄出，**而且** 也沒有任何郵件被放入佇列。若要判斷是否沒有郵件被寄出或放入佇列，可使用 `assertNothingOutgoing` 與 `assertNotOutgoing` 方法："
 
 #: docs/8.x/mocking.md:block 77 (code)
 msgid "Mail::assertNothingOutgoing();\n\n"
 "Mail::assertNotOutgoing(function (OrderShipped $mail) use ($order) {\n"
 "    return $mail->order->id === $order->id;\n"
 "});\n"
-msgstr ""
+msgstr "Mail::assertNothingOutgoing();\n\n"
+"Mail::assertNotOutgoing(function (OrderShipped $mail) use ($order) {\n"
+"    return $mail->order->id === $order->id;\n"
+"});\n"
 
 #: docs/8.x/mocking.md:block 79 (header)
 msgid "Notification Fake"
-msgstr ""
+msgstr "Notification Fake"
 
 #: docs/8.x/mocking.md:block 80 (paragraph)
 msgid "You may use the `Notification` facade's `fake` method to prevent notifications from being sent. Typically, sending notifications is unrelated to the code you are actually testing. Most likely, it is sufficient to simply assert that Laravel was instructed to send a given notification."
-msgstr ""
+msgstr "可以使用 `Notification` Facade 的 `fake` 方法來避免送出 Notification。一般來說，送出 Notification 與實際要測試的程式碼是不相關的。通常，只要判斷 Laravel 是否有接到指示要送出給定的 Notification 就夠了。"
 
 #: docs/8.x/mocking.md:block 81 (paragraph)
 msgid "After calling the `Notification` facade's `fake` method, you may then assert that [notifications](/docs/{{version}}/notifications) were instructed to be sent to users and even inspect the data the notifications received:"
-msgstr ""
+msgstr "呼叫 `Notification` Facade 的 `fake` 方法後，就可以判斷是否有被要求要將該 [Notification](/docs/{{version}}/notification) 送出給使用者，甚至還能判斷 Notification 收到的資料："
 
 #: docs/8.x/mocking.md:block 82 (code)
 msgid "<?php\n\n"
@@ -775,7 +784,31 @@ msgid "<?php\n\n"
 "        );\n"
 "    }\n"
 "}\n"
-msgstr ""
+msgstr "<?php\n\n"
+"namespace Tests\\Feature;\n\n"
+"use App\\Notifications\\OrderShipped;\n"
+"use Illuminate\\Foundation\\Testing\\RefreshDatabase;\n"
+"use Illuminate\\Foundation\\Testing\\WithoutMiddleware;\n"
+"use Illuminate\\Support\\Facades\\Notification;\n"
+"use Tests\\TestCase;\n\n"
+"class ExampleTest extends TestCase\n"
+"{\n"
+"    public function test_orders_can_be_shipped()\n"
+"    {\n"
+"        Notification::fake();\n\n"
+"        // 處理訂單出貨...\n\n"
+"        // 判斷未有 Notification 被送出...\n"
+"        Notification::assertNothingSent();\n\n"
+"        // 判斷某個 Notification 是否被傳送至給定的使用者...\n"
+"        Notification::assertSentTo(\n"
+"            [$user], OrderShipped::class\n"
+"        );\n\n"
+"        // 判斷某個 Notification 是否未被送出...\n"
+"        Notification::assertNotSentTo(\n"
+"            [$user], AnotherNotification::class\n"
+"        );\n"
+"    }\n"
+"}\n"
 
 #: docs/8.x/mocking.md:block 83 (paragraph)
 msgid "You may pass a closure to the `assertSentTo` or `assertNotSentTo` methods in order to assert that a notification was sent that passes a given \"truth test\". If at least one notification was sent that passes the given truth test then the assertion will be successful:"

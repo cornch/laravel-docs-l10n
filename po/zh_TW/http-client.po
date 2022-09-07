@@ -10,7 +10,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
-"PO-Revision-Date: 2022-08-06 05:46\n"
+"PO-Revision-Date: 2022-08-11 10:54\n"
 
 #: docs/8.x/http-client.md:block 1 (header)
 msgid "HTTP Client"
@@ -844,26 +844,29 @@ msgstr "/**\n"
 
 #: docs/9.x/http-client.md:block 2 (unordered list)
 msgid "[Guzzle Middleware](#guzzle-middleware)"
-msgstr ""
+msgstr "[Guzzle Middleware](#guzzle-middleware)"
 
 #: docs/9.x/http-client.md:block 2 (unordered list)
 msgid "[Preventing Stray Requests](#preventing-stray-requests)"
-msgstr ""
+msgstr "[避免漏掉的 Request](#preventing-stray-requests)"
 
 #: docs/9.x/http-client.md:block 53 (code)
 msgid "// Basic authentication...\n"
 "$response = Http::withBasicAuth('taylor@laravel.com', 'secret')->post(/* ... */);\n\n"
 "// Digest authentication...\n"
 "$response = Http::withDigestAuth('taylor@laravel.com', 'secret')->post(/* ... */);\n"
-msgstr ""
+msgstr "// Basic 身份認證...\n"
+"$response = Http::withBasicAuth('taylor@laravel.com', 'secret')->post(/* ... */);\n\n"
+"// Digest 身份認證...\n"
+"$response = Http::withDigestAuth('taylor@laravel.com', 'secret')->post(/* ... */);\n"
 
 #: docs/9.x/http-client.md:block 57 (code)
 msgid "$response = Http::withToken('token')->post(/* ... */);\n"
-msgstr ""
+msgstr "$response = Http::withToken('token')->post(/* ... */);\n"
 
 #: docs/9.x/http-client.md:block 61 (code)
 msgid "$response = Http::timeout(3)->get(/* ... */);\n"
-msgstr ""
+msgstr "$response = Http::timeout(3)->get(/* ... */);\n"
 
 #: docs/9.x/http-client.md:block 63 (paragraph)
 msgid "You may specify the maximum number of seconds to wait while trying to connect to a server using the `connectTimeout` method:"
@@ -871,17 +874,19 @@ msgstr "可以使用 `connectTimeout` 方法來指定嘗試連線到伺服器時
 
 #: docs/9.x/http-client.md:block 64 (code)
 msgid "$response = Http::connectTimeout(3)->get(/* ... */);\n"
-msgstr ""
+msgstr "$response = Http::connectTimeout(3)->get(/* ... */);\n"
 
 #: docs/9.x/http-client.md:block 68 (code)
 msgid "$response = Http::retry(3, 100)->post(/* ... */);\n"
-msgstr ""
+msgstr "$response = Http::retry(3, 100)->post(/* ... */);\n"
 
 #: docs/9.x/http-client.md:block 70 (code)
 msgid "$response = Http::retry(3, 100, function ($exception, $request) {\n"
 "    return $exception instanceof ConnectionException;\n"
 "})->post(/* ... */);\n"
-msgstr ""
+msgstr "$response = Http::retry(3, 100, function ($exception, $request) {\n"
+"    return $exception instanceof ConnectionException;\n"
+"})->post(/* ... */);\n"
 
 #: docs/9.x/http-client.md:block 71 (paragraph)
 msgid "If a request attempt fails, you may wish to make a change to the request before a new attempt is made. You can achieve this by modifying request argument provided to the callable you provided to the `retry` method. For example, you might want to retry the request with a new authorization token if the first attempt returned an authentication error:"
@@ -895,7 +900,13 @@ msgid "$response = Http::withToken($this->getToken())->retry(2, 0, function ($ex
 "    $request->withToken($this->getNewToken());\n\n"
 "    return true;\n"
 "})->post(/* ... */);\n"
-msgstr ""
+msgstr "$response = Http::withToken($this->getToken())->retry(2, 0, function ($exception, $request) {\n"
+"    if (! $exception instanceof RequestException || $exception->response->status() !== 401) {\n"
+"        return false;\n"
+"    }\n\n"
+"    $request->withToken($this->getNewToken());\n\n"
+"    return true;\n"
+"})->post(/* ... */);\n"
 
 #: docs/9.x/http-client.md:block 73 (paragraph)
 msgid "If all of the requests fail, an instance of `Illuminate\\Http\\Client\\RequestException` will be thrown. If you would like to disable this behavior, you may provide a `throw` argument with a value of `false`. When disabled, the last response received by the client will be returned after all retries have been attempted:"
@@ -903,11 +914,11 @@ msgstr "若 Request 執行失敗，會擲回一個 `Illuminate\\Http\\Client\\Re
 
 #: docs/9.x/http-client.md:block 74 (code)
 msgid "$response = Http::retry(3, 100, throw: false)->post(/* ... */);\n"
-msgstr ""
+msgstr "$response = Http::retry(3, 100, throw: false)->post(/* ... */);\n"
 
 #: docs/9.x/http-client.md:block 75 (quote)
 msgid "**Warning** If all of the requests fail because of a connection issue, a `Illuminate\\Http\\Client\\ConnectionException` will still be thrown even when the `throw` argument is set to `false`."
-msgstr ""
+msgstr "**Warning** 若所有的 Request 都因為連線問題而失敗，即使 `throw` 引數設為 `false`，還是會擲回 `Illuminate\\Http\\Client\\ConnectionException`。"
 
 #: docs/9.x/http-client.md:block 83 (code)
 msgid "$response = Http::post(/* ... */);\n\n"
@@ -918,25 +929,34 @@ msgid "$response = Http::post(/* ... */);\n\n"
 "// Throw an exception if an error occurred and the given condition is false...\n"
 "$response->throwUnless($condition);\n\n"
 "return $response['user']['id'];\n"
-msgstr ""
+msgstr "$response = Http::post(/* ... */);\n\n"
+"// 若發生用戶端或伺服器錯誤，擲回 Exception...\n"
+"$response->throw();\n\n"
+"// 若發生錯誤，且給定的條件為 true，則擲回 Exception...\n"
+"$response->throwIf($condition);\n\n"
+"// 若發生錯誤，且給定的條件為 false，則擲回 Exception...\n"
+"$response->throwUnless($condition);\n\n"
+"return $response['user']['id'];\n"
 
 #: docs/9.x/http-client.md:block 86 (code)
 msgid "return Http::post(/* ... */)->throw()->json();\n"
-msgstr ""
+msgstr "return Http::post(/* ... */)->throw()->json();\n"
 
 #: docs/9.x/http-client.md:block 88 (code)
 msgid "return Http::post(/* ... */)->throw(function ($response, $e) {\n"
 "    //\n"
 "})->json();\n"
-msgstr ""
+msgstr "return Http::post(/* ... */)->throw(function ($response, $e) {\n"
+"    //\n"
+"})->json();\n"
 
 #: docs/9.x/http-client.md:block 90 (header)
 msgid "Guzzle Middleware"
-msgstr ""
+msgstr "Guzzle Middleware"
 
 #: docs/9.x/http-client.md:block 91 (paragraph)
 msgid "Since Laravel's HTTP client is powered by Guzzle, you may take advantage of [Guzzle Middleware](https://docs.guzzlephp.org/en/stable/handlers-and-middleware.html) to manipulate the outgoing request or inspect the incoming response. To manipulate the outgoing request, register a Guzzle middleware via the `withMiddleware` method in combination with Guzzle's `mapRequest` middleware factory:"
-msgstr ""
+msgstr "由於 Laravel 的 HTTP 用戶端使用 Guzzle，因此我們也可以使用 [Guzzle 的 Middleware 功能](https://docs.guzzlephp.org/en/stable/handlers-and-middleware.html)來對修改連外 Request，或是檢查連入的 Response。若要修改連外的 Request，可使用 `withMiddleware` 方法來註冊 Guzzle Middleware，並搭配使用 Guzzle 的 `mapRequest` Middleware Factory："
 
 #: docs/9.x/http-client.md:block 92 (code)
 msgid "use GuzzleHttp\\Middleware;\n"
@@ -949,11 +969,20 @@ msgid "use GuzzleHttp\\Middleware;\n"
 "        return $request;\n"
 "    })\n"
 "->get('http://example.com');\n"
-msgstr ""
+msgstr "use GuzzleHttp\\Middleware;\n"
+"use Illuminate\\Support\\Facades\\Http;\n"
+"use Psr\\Http\\Message\\RequestInterface;\n\n"
+"$response = Http::withMiddleware(\n"
+"    Middleware::mapRequest(function (RequestInterface $request) {\n"
+"        $request->withHeader('X-Example', 'Value');\n"
+"        \n"
+"        return $request;\n"
+"    })\n"
+"->get('http://example.com');\n"
 
 #: docs/9.x/http-client.md:block 93 (paragraph)
 msgid "Likewise, you can inspect the incoming HTTP response by registering a middleware via the `withMiddleware` method in combination with Guzzle's `mapResponse` middleware factory:"
-msgstr ""
+msgstr "類似地，我們也可以將 `withMiddleware` 方法與 Guzzle 的 `mapResponse` Middleware Factory 搭配使用來註冊用於檢查連入 HTTP Request 的 Middleware："
 
 #: docs/9.x/http-client.md:block 94 (code)
 msgid "use GuzzleHttp\\Middleware;\n"
@@ -967,21 +996,33 @@ msgid "use GuzzleHttp\\Middleware;\n"
 "        return $response;\n"
 "    })\n"
 ")->get('http://example.com');\n"
-msgstr ""
+msgstr "use GuzzleHttp\\Middleware;\n"
+"use Illuminate\\Support\\Facades\\Http;\n"
+"use Psr\\Http\\Message\\ResponseInterface;\n\n"
+"$response = Http::withMiddleware(\n"
+"    Middleware::mapResponse(function (ResponseInterface $response) {\n"
+"        $header = $response->getHeader('X-Example');\n\n"
+"        // ...\n"
+"        \n"
+"        return $response;\n"
+"    })\n"
+")->get('http://example.com');\n"
 
 #: docs/9.x/http-client.md:block 114 (paragraph)
 msgid "Many Laravel services provide functionality to help you easily and expressively write tests, and Laravel's HTTP client is no exception. The `Http` facade's `fake` method allows you to instruct the HTTP client to return stubbed / dummy responses when requests are made."
-msgstr ""
+msgstr "許多 Laravel 的服務都提供了能讓我們輕鬆撰寫測試的功能，而 Laravel 的 HTTP 用戶端也不例外。`Http` Facade 的 `fake` 方法能讓我們指定 HTTP 用戶端在建立 Request 後回傳一組虛擬的 Response。"
 
 #: docs/9.x/http-client.md:block 118 (code)
 msgid "use Illuminate\\Support\\Facades\\Http;\n\n"
 "Http::fake();\n\n"
 "$response = Http::post(/* ... */);\n"
-msgstr ""
+msgstr "use Illuminate\\Support\\Facades\\Http;\n\n"
+"Http::fake();\n\n"
+"$response = Http::post(/* ... */);\n"
 
 #: docs/9.x/http-client.md:block 129 (paragraph)
 msgid "When all the responses in a response sequence have been consumed, any further requests will cause the response sequence to throw an exception. If you would like to specify a default response that should be returned when a sequence is empty, you may use the `whenEmpty` method:"
-msgstr ""
+msgstr "用完 Response 序列內的所有 Response 後，若之後又建立新的 Request，就會導致 Response 序列擲回 Exception。若想指定當序列為空時要回傳的預設 Response，可使用 `whenEmpty` 方法："
 
 #: docs/9.x/http-client.md:block 136 (code)
 msgid "use Illuminate\\Http\\Client\\Request;\n\n"
@@ -995,11 +1036,11 @@ msgstr "use Illuminate\\Http\\Client\\Request;\n\n"
 
 #: docs/9.x/http-client.md:block 138 (header)
 msgid "Preventing Stray Requests"
-msgstr ""
+msgstr "避免漏掉的 Request"
 
 #: docs/9.x/http-client.md:block 139 (paragraph)
 msgid "If you would like to ensure that all requests sent via the HTTP client have been faked throughout your individual test or complete test suite, you can call the `preventStrayRequests` method. After calling this method, any requests that do not have a corresponding fake response will throw an exception rather than making the actual HTTP request:"
-msgstr ""
+msgstr "若要確保在個別測試或整個測試套件中，所有使用 HTTP 用戶端的 Request 都有被 Fake 到，則可以使用 `preventStrayRequests` 方法。呼叫該方法後，若有任何找不到對應 Fake Response 的 Request，就不會產生實際的 HTTP Request，而會擲回 Exception："
 
 #: docs/9.x/http-client.md:block 140 (code)
 msgid "use Illuminate\\Support\\Facades\\Http;\n\n"
@@ -1011,15 +1052,23 @@ msgid "use Illuminate\\Support\\Facades\\Http;\n\n"
 "Http::get('https://github.com/laravel/framework');\n\n"
 "// An exception is thrown...\n"
 "Http::get('https://laravel.com');\n"
-msgstr ""
+msgstr "use Illuminate\\Support\\Facades\\Http;\n\n"
+"Http::preventStrayRequests();\n\n"
+"Http::fake([\n"
+"    'github.com/*' => Http::response('ok'),\n"
+"]);\n\n"
+"// 回傳「ok」Response...\n"
+"Http::get('https://github.com/laravel/framework');\n\n"
+"// 擲回 Exception...\n"
+"Http::get('https://laravel.com');\n"
 
 #: docs/9.x/http-client.md:block 153 (header)
 msgid "Recording Requests / Responses"
-msgstr ""
+msgstr "記錄 Request 或 Response"
 
 #: docs/9.x/http-client.md:block 154 (paragraph)
 msgid "You may use the `recorded` method to gather all requests and their corresponding responses. The `recorded` method returns a collection of arrays that contains instances of `Illuminate\\Http\\Client\\Request` and `Illuminate\\Http\\Client\\Response`:"
-msgstr ""
+msgstr "可以使用 `recorded` 方法來取得所有的 Request 與其對應的 Response。`recorded` 方法會回傳一組陣列的 Collection，其內容為 `Illuminate\\Http\\Client\\Request` 與 `Illuminate\\Http\\Client\\Response` 的實體："
 
 #: docs/9.x/http-client.md:block 155 (code)
 msgid "Http::fake([\n"
@@ -1030,11 +1079,18 @@ msgid "Http::fake([\n"
 "Http::get('https://nova.laravel.com/');\n\n"
 "$recorded = Http::recorded();\n\n"
 "[$request, $response] = $recorded[0];\n"
-msgstr ""
+msgstr "Http::fake([\n"
+"    'https://laravel.com' => Http::response(status: 500),\n"
+"    'https://nova.laravel.com/' => Http::response(),\n"
+"]);\n\n"
+"Http::get('https://laravel.com');\n"
+"Http::get('https://nova.laravel.com/');\n\n"
+"$recorded = Http::recorded();\n\n"
+"[$request, $response] = $recorded[0];\n"
 
 #: docs/9.x/http-client.md:block 156 (paragraph)
 msgid "Additionally, the `recorded` method accepts a closure which will receive an instance of `Illuminate\\Http\\Client\\Request` and `Illuminate\\Http\\Client\\Response` and may be used to filter request / response pairs based on your expectations:"
-msgstr ""
+msgstr "此外，也可傳入閉包給 `recorded` 方法，該閉包會收到 `Illuminate\\Http\\Client\\Request` 與 `Illuminate\\Http\\Client\\Response` 的實體。可以傳入閉包來依據需求過濾 Request／Response 配對："
 
 #: docs/9.x/http-client.md:block 157 (code)
 msgid "use Illuminate\\Http\\Client\\Request;\n"
@@ -1049,7 +1105,18 @@ msgid "use Illuminate\\Http\\Client\\Request;\n"
 "    return $request->url() !== 'https://laravel.com' &&\n"
 "           $response->successful();\n"
 "});\n"
-msgstr ""
+msgstr "use Illuminate\\Http\\Client\\Request;\n"
+"use Illuminate\\Http\\Client\\Response;\n\n"
+"Http::fake([\n"
+"    'https://laravel.com' => Http::response(status: 500),\n"
+"    'https://nova.laravel.com/' => Http::response(),\n"
+"]);\n\n"
+"Http::get('https://laravel.com');\n"
+"Http::get('https://nova.laravel.com/');\n\n"
+"$recorded = Http::recorded(function (Request $request, Response $response) {\n"
+"    return $request->url() !== 'https://laravel.com' &&\n"
+"           $response->successful();\n"
+"});\n"
 
 #: docs/master/http-client.md:block 64 (code)
 msgid "$response = Http::connectTimeout(3)->get(...);\n"

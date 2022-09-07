@@ -4,8 +4,8 @@ contributors:
     avatarUrl: https://crowdin-static.downloads.crowdin.com/avatar/14684796/medium/60f7dc21ec0bf9cfcb61983640bb4809_default.png
     name: cornch
 crowdinUrl: https://crowdin.com/translate/laravel-docs/87/en-zhtw
-progress: 67
-updatedAt: '2022-08-06T05:46:00Z'
+progress: 100
+updatedAt: '2022-09-06T05:56:00Z'
 ---
 
 # HTTP 測試
@@ -966,7 +966,7 @@ Laravel 的 `Illuminate\Testing\TestResponse` 類別提供了各種自訂 Assert
 
 #### assertSeeInOrder
 
-Assert that the given strings are contained in order within the response. This assertion will automatically escape the given strings unless you pass a second argument of `false`:
+判斷 Response 中，是否有依照順序包含給定字串。除非將第二個引數設為 `false`，否則該 Assertion 會自動逸出給定的字串：
 
     $response->assertSeeInOrder(array $values, $escaped = true);
 
@@ -974,7 +974,7 @@ Assert that the given strings are contained in order within the response. This a
 
 #### assertSeeText
 
-Assert that the given string is contained within the response text. This assertion will automatically escape the given string unless you pass a second argument of `false`. The response content will be passed to the `strip_tags` PHP function before the assertion is made:
+判斷 Response 的文字中是否包含給定字串。除非將第二個引數設為 `false`，否則該 Assertion 會自動逸出給定的字串。該方法會將 Response 的內容傳給 `strip_tags` PHP 函式，然後再進行判斷：
 
     $response->assertSeeText($value, $escaped = true);
 
@@ -982,7 +982,7 @@ Assert that the given string is contained within the response text. This asserti
 
 #### assertSeeTextInOrder
 
-Assert that the given strings are contained in order within the response text. This assertion will automatically escape the given strings unless you pass a second argument of `false`. The response content will be passed to the `strip_tags` PHP function before the assertion is made:
+判斷 Response 的文字中，是否有依照順序出現給定的字串。除非將第二個引數設為 `false`，否則該 Assertion 會自動逸出給定的字串。該方法會將 Response 的內容傳給 `strip_tags` PHP 函式，然後再進行判斷：
 
     $response->assertSeeTextInOrder(array $values, $escaped = true);
 
@@ -990,11 +990,11 @@ Assert that the given strings are contained in order within the response text. T
 
 #### assertSessionHas
 
-Assert that the session contains the given piece of data:
+判斷 Session 是否包含給定的資料：
 
     $response->assertSessionHas($key, $value = null);
 
-If needed, a closure can be provided as the second argument to the `assertSessionHas` method. The assertion will pass if the closure returns `true`:
+若有需要，`assertSessionHas` 方法的第二個引數也可以傳入閉包。若閉包回傳 `true`，則會視為 Assertion 通過：
 
     $response->assertSessionHas($key, function ($value) {
         return $value->name === 'Taylor Otwell';
@@ -1004,11 +1004,11 @@ If needed, a closure can be provided as the second argument to the `assertSessio
 
 #### assertSessionHasInput
 
-Assert that the session has a given value in the [flashed input array](/docs/{{version}}/responses#redirecting-with-flashed-session-data):
+判斷 Session 中[快閃的輸入陣列](/docs/{{version}}/responses#redirecting-with-flashed-session-data)內是否包含給定值：
 
     $response->assertSessionHasInput($key, $value = null);
 
-If needed, a closure can be provided as the second argument to the `assertSessionHasInput` method. The assertion will pass if the closure returns `true`:
+若有需要若有需要，`assertSessionHasInput` 方法的第二個引數也可以傳入閉包。若閉包回傳 `true`，則會視為 Assertion 通過：
 
     $response->assertSessionHasInput($key, function ($value) {
         return Crypt::decryptString($value) === 'secret';
@@ -1018,11 +1018,11 @@ If needed, a closure can be provided as the second argument to the `assertSessio
 
 #### assertSessionHasAll
 
-Assert that the session contains a given array of key / value pairs:
+判斷 Session 內是否包含給定的索引鍵／值配對陣列：
 
     $response->assertSessionHasAll(array $data);
 
-For example, if your application's session contains `name` and `status` keys, you may assert that both exist and have the specified values like so:
+舉例來說，若網站的 Session 內有 `name` 與 `status` 索引鍵，則可以像這樣來判斷這兩個欄位是否都存在且為特定的值：
 
     $response->assertSessionHasAll([
         'name' => 'Taylor Otwell',
@@ -1033,17 +1033,17 @@ For example, if your application's session contains `name` and `status` keys, yo
 
 #### assertSessionHasErrors
 
-Assert that the session contains an error for the given `$keys`. If `$keys` is an associative array, assert that the session contains a specific error message (value) for each field (key). This method should be used when testing routes that flash validation errors to the session instead of returning them as a JSON structure:
+判斷 Session 內給定的 `$keys` 中是否有錯誤。若``$keys` 為關聯式陣列，則會判斷 Session 中，各個欄位 (陣列索引鍵) 是否有特定的錯誤訊息 (陣列值)。請勿使用該方法來測試會回傳 JSON 結構的 Route，請使用該方法來測試將驗證錯誤訊息快閃存入 Session 的 Route：
 
     $response->assertSessionHasErrors(
         array $keys, $format = null, $errorBag = 'default'
     );
 
-For example, to assert that the `name` and `email` fields have validation error messages that were flashed to the session, you may invoke the `assertSessionHasErrors` method like so:
+舉例來說，若要判斷 `name` 與 `email` 欄位中是否有快閃存入 Session 的驗證錯誤訊息，可像這樣叫用 `assertSessionHasErrors` 方法：
 
     $response->assertSessionHasErrors(['name', 'email']);
 
-Or, you may assert that a given field has a particular validation error message:
+或者，也可以判斷給定欄位是否有特定的驗證錯誤訊息：
 
     $response->assertSessionHasErrors([
         'name' => 'The given name was invalid.'
@@ -1053,7 +1053,7 @@ Or, you may assert that a given field has a particular validation error message:
 
 #### assertSessionHasErrorsIn
 
-Assert that the session contains an error for the given `$keys` within a specific [error bag](/docs/{{version}}/validation#named-error-bags). If `$keys` is an associative array, assert that the session contains a specific error message (value) for each field (key), within the error bag:
+判斷 Session 中，在特定的 [Error Bag](/docs/{{version}}/validation#named-error-bags) 中，給定的 `$keys` 內是否有錯誤訊息。若 `$keys` 為關聯式陣列，則會判斷 Session 中各個欄位 (陣列索引鍵) 是否有特定的錯誤訊息 (陣列值)：
 
     $response->assertSessionHasErrorsIn($errorBag, $keys = [], $format = null);
 
@@ -1061,7 +1061,7 @@ Assert that the session contains an error for the given `$keys` within a specifi
 
 #### assertSessionHasNoErrors
 
-Assert that the session has no validation errors:
+判斷 Session 中是否無驗證錯誤：
 
     $response->assertSessionHasNoErrors();
 
@@ -1069,7 +1069,7 @@ Assert that the session has no validation errors:
 
 #### assertSessionDoesntHaveErrors
 
-Assert that the session has no validation errors for the given keys:
+判斷 Session 中給定的索引鍵是否無驗證錯誤：
 
     $response->assertSessionDoesntHaveErrors($keys = [], $format = null, $errorBag = 'default');
 
@@ -1077,7 +1077,7 @@ Assert that the session has no validation errors for the given keys:
 
 #### assertSessionMissing
 
-Assert that the session does not contain the given key:
+判斷 Session 中是否不包含給定的索引鍵：
 
     $response->assertSessionMissing($key);
 
@@ -1085,7 +1085,7 @@ Assert that the session does not contain the given key:
 
 #### assertStatus
 
-Assert that the response has a given HTTP status code:
+判斷 Response 是否回傳給定的 HTTP 狀態碼：
 
     $response->assertStatus($code);
 
@@ -1093,7 +1093,7 @@ Assert that the response has a given HTTP status code:
 
 #### assertSuccessful
 
-Assert that the response has a successful (>= 200 and < 300) HTTP status code:
+判斷 Response 是否有成功的 HTTP 狀態碼 (>= 200 且 < 300)：
 
     $response->assertSuccessful();
 
@@ -1101,7 +1101,7 @@ Assert that the response has a successful (>= 200 and < 300) HTTP status code:
 
 #### assertUnauthorized
 
-Assert that the response has an unauthorized (401) HTTP status code:
+判斷 Response 是否為禁止存取 (401) HTTP 狀態碼：
 
     $response->assertUnauthorized();
 
@@ -1109,7 +1109,7 @@ Assert that the response has an unauthorized (401) HTTP status code:
 
 #### assertUnprocessable
 
-Assert that the response has an unprocessable entity (422) HTTP status code:
+判斷 Response 是否為無法處理 (422) HTTP 狀態碼：
 
     $response->assertUnprocessable();
 
@@ -1117,23 +1117,23 @@ Assert that the response has an unprocessable entity (422) HTTP status code:
 
 #### assertValid
 
-Assert that the response has no validation errors for the given keys. This method may be used for asserting against responses where the validation errors are returned as a JSON structure or where the validation errors have been flashed to the session:
+判斷 Response 中，不包含給定索引鍵的驗證錯誤。該方法可用來判斷以 JSON 結構回傳驗證錯誤，或是將驗證錯誤快閃存入 Session 的 Response：
 
-    // Assert that no validation errors are present...
+    // 判斷無驗證錯誤訊息...
     $response->assertValid();
     
-    // Assert that the given keys do not have validation errors...
+    // 判斷給定的索引鍵中沒有給定的驗證錯誤訊息...
     $response->assertValid(['name', 'email']);
 
 <a name="assert-invalid"></a>
 
 #### assertInvalid
 
-Assert that the response has validation errors for the given keys. This method may be used for asserting against responses where the validation errors are returned as a JSON structure or where the validation errors have been flashed to the session:
+判斷 Response 中，給定的索引鍵是否有驗證錯誤訊息。該方法可用於檢查以 JSON 格式回傳錯誤訊息，或是將驗證錯誤訊息快閃存入 Session 的 Response：
 
     $response->assertInvalid(['name', 'email']);
 
-You may also assert that a given key has a particular validation error message. When doing so, you may provide the entire message or only a small portion of the message:
+也可以判斷給定的索引鍵是否有特定的錯誤訊息。在判斷是否有特定的錯誤訊息時，可提供完整的訊息，或是其中一段的錯誤訊息：
 
     $response->assertInvalid([
         'name' => 'The name field is required.',
@@ -1144,17 +1144,17 @@ You may also assert that a given key has a particular validation error message. 
 
 #### assertViewHas
 
-Assert that the response view contains given a piece of data:
+判斷 Response View 中是否包含給定的一部分資料：
 
     $response->assertViewHas($key, $value = null);
 
-Passing a closure as the second argument to the `assertViewHas` method will allow you to inspect and make assertions against a particular piece of view data:
+若在 `assertViewHas` 方法中的第二個引數傳入閉包，則可檢查並針對一部分的資料做 Assertion：
 
     $response->assertViewHas('user', function (User $user) {
         return $user->name === 'Taylor';
     });
 
-In addition, view data may be accessed as array variables on the response, allowing you to conveniently inspect it:
+此外，也可以在 Response 上以陣列變數的形式來存取 View Data，讓我們可以方便地檢查這些值：
 
     $this->assertEquals('Taylor', $response['name']);
 
@@ -1162,18 +1162,18 @@ In addition, view data may be accessed as array variables on the response, allow
 
 #### assertViewHasAll
 
-Assert that the response view has a given list of data:
+判斷 Response View 中是否包含一組資料：
 
     $response->assertViewHasAll(array $data);
 
-This method may be used to assert that the view simply contains data matching the given keys:
+該方法可用於檢查 View 中是否含有符合給定索引鍵的資料：
 
     $response->assertViewHasAll([
         'name',
         'email',
     ]);
 
-Or, you may assert that the view data is present and has specific values:
+或者，也可以判斷是否包含特定的 View Data，且這些資料是否為指定的值：
 
     $response->assertViewHasAll([
         'name' => 'Taylor Otwell',
@@ -1184,7 +1184,7 @@ Or, you may assert that the view data is present and has specific values:
 
 #### assertViewIs
 
-Assert that the given view was returned by the route:
+判斷 Route 是否回傳給定的 View：
 
     $response->assertViewIs($value);
 
@@ -1192,21 +1192,21 @@ Assert that the given view was returned by the route:
 
 #### assertViewMissing
 
-Assert that the given data key was not made available to the view returned in the application's response:
+判斷程式回傳的 Reponse 中，是否不含給定的資料索引鍵：
 
     $response->assertViewMissing($key);
 
 <a name="authentication-assertions"></a>
 
-### Authentication Assertions
+### 身份驗證 Assertion
 
-Laravel also provides a variety of authentication related assertions that you may utilize within your application's feature tests. Note that these methods are invoked on the test class itself and not the `Illuminate\Testing\TestResponse` instance returned by methods such as `get` and `post`.
+Laravel 也提供了各種與身份驗證相關的 Assertion，讓我們能在專案的 Feature Test 中使用。請注意，這些方法需要在 Test Class 上呼叫，而不是在 `get` 或 `post` 方法回傳的 `Illuminate\Testing\TestResponse`實體上呼叫。
 
 <a name="assert-authenticated"></a>
 
 #### assertAuthenticated
 
-Assert that a user is authenticated:
+判斷使用者已登入：
 
     $this->assertAuthenticated($guard = null);
 
@@ -1214,7 +1214,7 @@ Assert that a user is authenticated:
 
 #### assertGuest
 
-Assert that a user is not authenticated:
+判斷使用者是否未登入：
 
     $this->assertGuest($guard = null);
 
@@ -1222,6 +1222,6 @@ Assert that a user is not authenticated:
 
 #### assertAuthenticatedAs
 
-Assert that a specific user is authenticated:
+判斷是否已登入特定的使用者：
 
     $this->assertAuthenticatedAs($user, $guard = null);

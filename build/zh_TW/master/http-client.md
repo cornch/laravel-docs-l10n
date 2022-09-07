@@ -4,8 +4,8 @@ contributors:
     avatarUrl: https://crowdin-static.downloads.crowdin.com/avatar/14684796/medium/60f7dc21ec0bf9cfcb61983640bb4809_default.png
     name: cornch
 crowdinUrl: https://crowdin.com/translate/laravel-docs/85/en-zhtw
-progress: 81
-updatedAt: '2022-08-06T05:46:00Z'
+progress: 100
+updatedAt: '2022-08-11T10:54:00Z'
 ---
 
 # HTTP 用戶端

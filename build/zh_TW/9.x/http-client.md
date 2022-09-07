@@ -4,8 +4,8 @@ contributors:
     avatarUrl: https://crowdin-static.downloads.crowdin.com/avatar/14684796/medium/60f7dc21ec0bf9cfcb61983640bb4809_default.png
     name: cornch
 crowdinUrl: https://crowdin.com/translate/laravel-docs/85/en-zhtw
-progress: 81
-updatedAt: '2022-08-06T05:46:00Z'
+progress: 100
+updatedAt: '2022-08-11T10:54:00Z'
 ---
 
 # HTTP 用戶端
@@ -25,7 +25,7 @@ updatedAt: '2022-08-06T05:46:00Z'
 - [測試](#testing)
    - [模擬 Response](#faking-responses)
    - [攔截 Request](#inspecting-requests)
-   - [Preventing Stray Requests](#preventing-stray-requests)
+   - [避免漏掉的 Request](#preventing-stray-requests)
 - [事件](#events)
 
 <a name="introduction"></a>
@@ -168,10 +168,10 @@ composer require guzzlehttp/guzzle
 
 可以使用 `withBasicAuth` 方法來指定使用 Basic 身分驗證的^[認證](Credential)，或是使用 `withDigestAuth` 方法來指定 Digest 身分驗證的認證：
 
-    // Basic authentication...
+    // Basic 身份認證...
     $response = Http::withBasicAuth('taylor@laravel.com', 'secret')->post(/* ... */);
     
-    // Digest authentication...
+    // Digest 身份認證...
     $response = Http::withDigestAuth('taylor@laravel.com', 'secret')->post(/* ... */);
 
 <a name="bearer-tokens"></a>
@@ -226,7 +226,7 @@ composer require guzzlehttp/guzzle
 
     $response = Http::retry(3, 100, throw: false)->post(/* ... */);
 
-> **Warning** If all of the requests fail because of a connection issue, a `Illuminate\Http\Client\ConnectionException` will still be thrown even when the `throw` argument is set to `false`.
+> **Warning** 若所有的 Request 都因為連線問題而失敗，即使 `throw` 引數設為 `false`，還是會擲回 `Illuminate\Http\Client\ConnectionException`。
 
 <a name="error-handling"></a>
 
@@ -257,13 +257,13 @@ composer require guzzlehttp/guzzle
 
     $response = Http::post(/* ... */);
     
-    // Throw an exception if a client or server error occurred...
+    // 若發生用戶端或伺服器錯誤，擲回 Exception...
     $response->throw();
     
-    // Throw an exception if an error occurred and the given condition is true...
+    // 若發生錯誤，且給定的條件為 true，則擲回 Exception...
     $response->throwIf($condition);
     
-    // Throw an exception if an error occurred and the given condition is false...
+    // 若發生錯誤，且給定的條件為 false，則擲回 Exception...
     $response->throwUnless($condition);
     
     return $response['user']['id'];
@@ -284,7 +284,7 @@ composer require guzzlehttp/guzzle
 
 ### Guzzle Middleware
 
-Since Laravel's HTTP client is powered by Guzzle, you may take advantage of [Guzzle Middleware](https://docs.guzzlephp.org/en/stable/handlers-and-middleware.html) to manipulate the outgoing request or inspect the incoming response. To manipulate the outgoing request, register a Guzzle middleware via the `withMiddleware` method in combination with Guzzle's `mapRequest` middleware factory:
+由於 Laravel 的 HTTP 用戶端使用 Guzzle，因此我們也可以使用 [Guzzle 的 Middleware 功能](https://docs.guzzlephp.org/en/stable/handlers-and-middleware.html)來對修改連外 Request，或是檢查連入的 Response。若要修改連外的 Request，可使用 `withMiddleware` 方法來註冊 Guzzle Middleware，並搭配使用 Guzzle 的 `mapRequest` Middleware Factory：
 
     use GuzzleHttp\Middleware;
     use Illuminate\Support\Facades\Http;
@@ -298,7 +298,7 @@ Since Laravel's HTTP client is powered by Guzzle, you may take advantage of [Guz
         })
     ->get('http://example.com');
 
-Likewise, you can inspect the incoming HTTP response by registering a middleware via the `withMiddleware` method in combination with Guzzle's `mapResponse` middleware factory:
+類似地，我們也可以將 `withMiddleware` 方法與 Guzzle 的 `mapResponse` Middleware Factory 搭配使用來註冊用於檢查連入 HTTP Request 的 Middleware：
 
     use GuzzleHttp\Middleware;
     use Illuminate\Support\Facades\Http;
@@ -392,7 +392,7 @@ $response = Http::github()->get('/');
 
 ## 測試
 
-Many Laravel services provide functionality to help you easily and expressively write tests, and Laravel's HTTP client is no exception. The `Http` facade's `fake` method allows you to instruct the HTTP client to return stubbed / dummy responses when requests are made.
+許多 Laravel 的服務都提供了能讓我們輕鬆撰寫測試的功能，而 Laravel 的 HTTP 用戶端也不例外。`Http` Facade 的 `fake` 方法能讓我們指定 HTTP 用戶端在建立 Request 後回傳一組虛擬的 Response。
 
 <a name="faking-responses"></a>
 
@@ -444,7 +444,7 @@ Many Laravel services provide functionality to help you easily and expressively 
                                 ->pushStatus(404),
     ]);
 
-When all the responses in a response sequence have been consumed, any further requests will cause the response sequence to throw an exception. If you would like to specify a default response that should be returned when a sequence is empty, you may use the `whenEmpty` method:
+用完 Response 序列內的所有 Response 後，若之後又建立新的 Request，就會導致 Response 序列擲回 Exception。若想指定當序列為空時要回傳的預設 Response，可使用 `whenEmpty` 方法：
 
     Http::fake([
         // 為 GitHub Endpoint 模擬一系列的 Response...
@@ -474,9 +474,9 @@ When all the responses in a response sequence have been consumed, any further re
 
 <a name="preventing-stray-requests"></a>
 
-### Preventing Stray Requests
+### 避免漏掉的 Request
 
-If you would like to ensure that all requests sent via the HTTP client have been faked throughout your individual test or complete test suite, you can call the `preventStrayRequests` method. After calling this method, any requests that do not have a corresponding fake response will throw an exception rather than making the actual HTTP request:
+若要確保在個別測試或整個測試套件中，所有使用 HTTP 用戶端的 Request 都有被 Fake 到，則可以使用 `preventStrayRequests` 方法。呼叫該方法後，若有任何找不到對應 Fake Response 的 Request，就不會產生實際的 HTTP Request，而會擲回 Exception：
 
     use Illuminate\Support\Facades\Http;
     
@@ -486,10 +486,10 @@ If you would like to ensure that all requests sent via the HTTP client have been
         'github.com/*' => Http::response('ok'),
     ]);
     
-    // An "ok" response is returned...
+    // 回傳「ok」Response...
     Http::get('https://github.com/laravel/framework');
     
-    // An exception is thrown...
+    // 擲回 Exception...
     Http::get('https://laravel.com');
 
 <a name="inspecting-requests"></a>
@@ -549,9 +549,9 @@ If you would like to ensure that all requests sent via the HTTP client have been
 
 <a name="recording-requests-and-responses"></a>
 
-#### Recording Requests / Responses
+#### 記錄 Request 或 Response
 
-You may use the `recorded` method to gather all requests and their corresponding responses. The `recorded` method returns a collection of arrays that contains instances of `Illuminate\Http\Client\Request` and `Illuminate\Http\Client\Response`:
+可以使用 `recorded` 方法來取得所有的 Request 與其對應的 Response。`recorded` 方法會回傳一組陣列的 Collection，其內容為 `Illuminate\Http\Client\Request` 與 `Illuminate\Http\Client\Response` 的實體：
 
 ```php
 Http::fake([
@@ -567,7 +567,7 @@ $recorded = Http::recorded();
 [$request, $response] = $recorded[0];
 ```
 
-Additionally, the `recorded` method accepts a closure which will receive an instance of `Illuminate\Http\Client\Request` and `Illuminate\Http\Client\Response` and may be used to filter request / response pairs based on your expectations:
+此外，也可傳入閉包給 `recorded` 方法，該閉包會收到 `Illuminate\Http\Client\Request` 與 `Illuminate\Http\Client\Response` 的實體。可以傳入閉包來依據需求過濾 Request／Response 配對：
 
 ```php
 use Illuminate\Http\Client\Request;

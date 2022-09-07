@@ -5,7 +5,7 @@ contributors:
     name: cornch
 crowdinUrl: https://crowdin.com/translate/laravel-docs/47/en-zhtw
 progress: 100
-updatedAt: '2022-08-09T12:04:00Z'
+updatedAt: '2022-08-09T16:25:00Z'
 ---
 
 - ## ​前言
@@ -20,7 +20,7 @@ updatedAt: '2022-08-09T12:04:00Z'
    - [安裝](/docs/{{version}}/installation)
    - [組態設定](/docs/{{version}}/configuration)
    - [目錄架構](/docs/{{version}}/structure)
-   - [前端](/docs/{{version}}/octane)
+   - [前端](/docs/{{version}}/frontend)
    - [入門套件](/docs/{{version}}/starter-kits)
    - [部署](/docs/{{version}}/deployment)
 - ## 架構概念

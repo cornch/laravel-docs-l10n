@@ -4,8 +4,8 @@ contributors:
     avatarUrl: https://crowdin-static.downloads.crowdin.com/avatar/14684796/medium/60f7dc21ec0bf9cfcb61983640bb4809_default.png
     name: cornch
 crowdinUrl: https://crowdin.com/translate/laravel-docs/77/en-zhtw
-progress: 96
-updatedAt: '2022-08-06T05:46:00Z'
+progress: 100
+updatedAt: '2022-08-10T03:15:00Z'
 ---
 
 # 雜湊
@@ -89,7 +89,7 @@ Bcrypt 是雜湊密碼的一個不錯的選擇，因為其「^[Work Factor](工�
         'threads' => 2,
     ]);
 
-> **Note** For more information on these options, please refer to the [official PHP documentation regarding Argon hashing](https://secure.php.net/manual/en/function.password-hash.php).
+> **Note** 有關這些選項的詳細資訊，請參考 [PHP 官方說明文件中有關 Argon 雜湊的說明](https://secure.php.net/manual/en/function.password-hash.php)。
 
 <a name="verifying-that-a-password-matches-a-hash"></a>
 

@@ -5,13 +5,13 @@ contributors:
     name: cornch
 crowdinUrl: https://crowdin.com/translate/laravel-docs/63/en-zhtw
 progress: 100
-updatedAt: '2022-02-13T12:32:00Z'
+updatedAt: '2022-09-09T05:21:00Z'
 ---
 
 # 加密
 
 - [簡介](#introduction)
-- [組態設定](#configuration)
+- [設定](#configuration)
 - [使用 Encrypter](#using-the-encrypter)
 
 <a name="introduction"></a>
@@ -22,9 +22,9 @@ Laravel 的加密服務提供一個簡單且方便的介面，可讓我們通過
 
 <a name="configuration"></a>
 
-## 組態設定
+## 設定
 
-在開始使用 Laravel 的 Encrypter 前，我們必須先在 `config/app.php` 組態設定檔中設定 `key`。這個設定以 `APP_KEY` 環境變數提供，我們可以使用 `php artisan key:generate` 指令來產生這個變數值。`key:generate` 指令會使用 PHP 的安全隨機位元組產生器來為你的專案建立密碼學上安全的密鑰。一般來說，`APP_KEY` 環境變數會在 [Laravel 的安裝過程](/docs/{{version}}/installation)中就為你產生好了。
+在開始使用 Laravel 的 Encrypter 前，我們必須先在 `config/app.php` 設定檔中設定 `key`。這個設定以 `APP_KEY` 環境變數提供，我們可以使用 `php artisan key:generate` 指令來產生這個變數值。`key:generate` 指令會使用 PHP 的安全隨機位元組產生器來為你的專案建立密碼學上安全的密鑰。一般來說，`APP_KEY` 環境變數會在 [Laravel 的安裝過程](/docs/{{version}}/installation)中就為你產生好了。
 
 <a name="using-the-encrypter"></a>
 

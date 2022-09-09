@@ -5,7 +5,7 @@ contributors:
     name: cornch
 crowdinUrl: https://crowdin.com/translate/laravel-docs/123/en-zhtw
 progress: 100
-updatedAt: '2022-08-09T13:35:00Z'
+updatedAt: '2022-09-09T05:22:00Z'
 ---
 
 # 資料庫：Query Builder
@@ -996,9 +996,9 @@ Laravel 的 Query Builder 中，還包含了一些能讓我們在執行 `select`
 
 <a name="debugging"></a>
 
-## 除錯
+## 偵錯
 
-在建立查詢時，可以使用 `dd` 與 `dump` 方法來將目前的查詢繫結於 SQL 傾印出來。`dd` 方法會顯示除錯資訊，然後停止執行該 Request。`dump` 方法會顯示出除錯資訊，並讓 Request 繼續執行：
+在建立查詢時，可以使用 `dd` 與 `dump` 方法來將目前的查詢繫結於 SQL 傾印出來。`dd` 方法會顯示偵錯資訊，然後停止執行該 Request。`dump` 方法會顯示出偵錯資訊，並讓 Request 繼續執行：
 
     DB::table('users')->where('votes', '>', 100)->dd();
     

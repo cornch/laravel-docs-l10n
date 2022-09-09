@@ -1,16 +1,19 @@
 ---
-contributors: {}
+contributors:
+  14684796:
+    avatarUrl: https://crowdin-static.downloads.crowdin.com/avatar/14684796/medium/60f7dc21ec0bf9cfcb61983640bb4809_default.png
+    name: cornch
 crowdinUrl: https://crowdin.com/translate/laravel-docs/75/en-zhtw
-progress: 0
-updatedAt: '2022-08-06T05:46:00Z'
+progress: 2
+updatedAt: '2022-09-08T11:28:00Z'
 ---
 
 # Laravel Fortify
 
-- [Introduction](#introduction)
-   - [What Is Fortify?](#what-is-fortify)
-   - [When Should I Use Fortify?](#when-should-i-use-fortify)
-- [Installation](#installation)
+- [簡介](#introduction)
+   - [什麼是 Fortify？](#what-is-fortify)
+   - [什麼時候該用 Fortify？](#when-should-i-use-fortify)
+- [安裝](#installation)
    - [The Fortify Service Provider](#the-fortify-service-provider)
    - [Fortify Features](#fortify-features)
    - [Disabling Views](#disabling-views)

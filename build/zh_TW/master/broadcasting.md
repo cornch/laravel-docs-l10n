@@ -5,14 +5,14 @@ contributors:
     name: cornch
 crowdinUrl: https://crowdin.com/translate/laravel-docs/19/en-zhtw
 progress: 100
-updatedAt: '2022-08-06T06:42:00Z'
+updatedAt: '2022-09-09T05:22:00Z'
 ---
 
 # 廣播 - Broadcast
 
 - [簡介](#introduction)
 - [伺服器端安裝](#server-side-installation)
-   - [組態設定](#configuration)
+   - [設定](#configuration)
    - [Pusher Channels](#pusher-channels)
    - [Ably](#ably)
    - [開放原始碼替代](#open-source-alternatives)
@@ -78,15 +78,15 @@ updatedAt: '2022-08-06T06:42:00Z'
 
 <a name="configuration"></a>
 
-### 組態設定
+### 設定
 
-專案中，所有關於事件廣播的組態設定都放在 `config/boradcasting.php` 組態設定檔中。Laravel 內建支援多個 Broadcast Driver：[Pusher Channels](https://pusher.com/channels)、[Redis](/docs/{{version}}/redis)、以及一個用於本機開發與除錯的 `log` Driver。此外，也包含了一個可以在測試期間完全禁用廣播的 `null` Driver。`config/boradcasting.php` 組態設定中包含了各個 Driver 的組態設定範例。
+專案中，所有關於事件廣播的設定都放在 `config/boradcasting.php` 設定檔中。Laravel 內建支援多個 Broadcast Driver：[Pusher Channels](https://pusher.com/channels)、[Redis](/docs/{{version}}/redis)、以及一個用於本機開發與偵錯的 `log` Driver。此外，也包含了一個可以在測試期間完全禁用廣播的 `null` Driver。`config/boradcasting.php` 設定中包含了各個 Driver 的設定範例。
 
 <a name="broadcast-service-provider"></a>
 
 #### Broadcast Service Provider
 
-在廣播任何事件以前，需要先註冊 `App\Providers\BroadcastServiceProvider`。在新安裝的 Laravel 專案中，只需要在 `config/app.php` 組態設定檔內的 `providers` 陣列中取消註解這個 Provider 即可。這個 `BroadcastServiceProvider` 包含了要註冊廣播授權路由以及回呼所需的程式碼。
+在廣播任何事件以前，需要先註冊 `App\Providers\BroadcastServiceProvider`。在新安裝的 Laravel 專案中，只需要在 `config/app.php` 設定檔內的 `providers` 陣列中取消註解這個 Provider 即可。這個 `BroadcastServiceProvider` 包含了要註冊廣播授權路由以及回呼所需的程式碼。
 
 <a name="queue-configuration"></a>
 
@@ -104,7 +104,7 @@ updatedAt: '2022-08-06T06:42:00Z'
 composer require pusher/pusher-php-server
 ```
 
-接著，應在 `config/broadcasting.php` 組態設定檔中設定 Pusher Channels 的憑證。該檔案中已經有包含了一個範例的 Pusher Channels 設定，讓你可以快速指定你的 Key, Secret 以及 Application ID。通常來說，這些值應該要通過 `PUSHER_APP_KEY`, `PUSHER_APP_SECRET` 與 `PUSHER_APP_ID` [環境變數](/docs/{{version}}/configuration#environment-configuration) 來設定：
+接著，應在 `config/broadcasting.php` 設定檔中設定 Pusher Channels 的憑證。該檔案中已經有包含了一個範例的 Pusher Channels 設定，讓你可以快速指定你的 Key, Secret 以及 Application ID。通常來說，這些值應該要通過 `PUSHER_APP_KEY`, `PUSHER_APP_SECRET` 與 `PUSHER_APP_ID` [環境變數](/docs/{{version}}/configuration#environment-configuration) 來設定：
 
 ```ini
 PUSHER_APP_ID=your-pusher-app-id
@@ -139,7 +139,7 @@ BROADCAST_DRIVER=pusher
 composer require ably/ably-php
 ```
 
-接著，應在 `config/broadcasting.php` 組態設定檔中設定 Pusher Channels 的憑證。該檔案中已經有包含了一個範例的 Ably 設定，讓你可以快速指定你的金鑰。通常來說，這個值應該要通過 `ABLY_KEY` [環境變數](/docs/{{version}}/configuration#environment-configuration) 來設定：
+接著，應在 `config/broadcasting.php` 設定檔中設定 Pusher Channels 的憑證。該檔案中已經有包含了一個範例的 Ably 設定，讓你可以快速指定你的金鑰。通常來說，這個值應該要通過 `ABLY_KEY` [環境變數](/docs/{{version}}/configuration#environment-configuration) 來設定：
 
 ```ini
 ABLY_KEY=your-ably-key
@@ -255,7 +255,7 @@ window.Echo = new Echo({
 });
 ```
 
-請注意，Ably Echo 組態設定中參考了 `MIX_ABLY_PUBLIC_KEY` 環境變數。這個環境變數應為 Ably 的公開金鑰。公開金鑰就是 Ably 金鑰中出現在 `:` 字元之前的部分。
+請注意，Ably Echo 設定中參考了 `MIX_ABLY_PUBLIC_KEY` 環境變數。這個環境變數應為 Ably 的公開金鑰。公開金鑰就是 Ably 金鑰中出現在 `:` 字元之前的部分。
 
 取消註解並依照需求調整好 Echo 設定後，就可以編譯專案素材：
 
@@ -465,7 +465,7 @@ Echo.private(`orders.${orderId}`)
 
 ### Broadcast 佇列
 
-預設情況下，所有的廣播事件都會使用 `queue.php` 組態設定檔中的預設佇列連連。可以通過在事件類別內定義 `queue` 屬性來自訂 Broadcaster 要使用的佇列連線名稱：
+預設情況下，所有的廣播事件都會使用 `queue.php` 設定檔中的預設佇列連連。可以通過在事件類別內定義 `queue` 屬性來自訂 Broadcaster 要使用的佇列連線名稱：
 
     /**
      * The name of the queue connection to use when broadcasting the event.
@@ -729,7 +729,7 @@ axios.post('/task', task)
 
 <a name="only-to-others-configuration"></a>
 
-#### 組態設定
+#### 設定
 
 初始化 Laravel Echo 實體時，會指派一個 Socket ID 給這個連線。若是使用全域的 [Axios](https://github.com/mzabriskie/axios) 實體來在 JavaScript 端建立 HTTP 連線，則 Socket ID 會以 `X-Socket-ID` 標頭被自動附加到每個外連請求上。接著，當呼叫 `toOthers` 方法時，Laravel 會從標頭內拆出這個 Socket ID，並告知廣播程式不要廣播給有該 Socket ID 的連線。
 
@@ -835,7 +835,7 @@ Echo.leave(`orders.${this.order.id}`);
 
 ### 命名空間 (Namespace)
 
-你可能已經注意到，我們並沒有為事件類別指定完整的 `App\Events` 命名空間。這是因為，Echo 會自動假設事件都放在 `App\Events` 命名空間下。不過，我們可以在初始化 Echo 時傳入 `namespace` 組態設定選項來設定要使用的根命名空間：
+你可能已經注意到，我們並沒有為事件類別指定完整的 `App\Events` 命名空間。這是因為，Echo 會自動假設事件都放在 `App\Events` 命名空間下。不過，我們可以在初始化 Echo 時傳入 `namespace` 設定選項來設定要使用的根命名空間：
 
 ```js
 window.Echo = new Echo({

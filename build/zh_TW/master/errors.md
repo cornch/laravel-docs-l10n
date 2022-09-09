@@ -5,13 +5,13 @@ contributors:
     name: cornch
 crowdinUrl: https://crowdin.com/translate/laravel-docs/67/en-zhtw
 progress: 100
-updatedAt: '2022-08-09T12:03:00Z'
+updatedAt: '2022-09-09T05:21:00Z'
 ---
 
 # 錯誤處理
 
 - [簡介](#introduction)
-- [組態設定](#configuration)
+- [設定](#configuration)
 - [Exception Handler](#the-exception-handler)
    - [回報 Exception](#reporting-exceptions)
    - [依照型別忽略 Exception](#ignoring-exceptions-by-type)
@@ -28,9 +28,9 @@ updatedAt: '2022-08-09T12:03:00Z'
 
 <a name="configuration"></a>
 
-## 組態設定
+## 設定
 
-`config/app.php` 組態設定檔中的 `debug` 選項用來判斷錯誤在實際顯示給使用者時要包含多少資訊。預設情況下，這個選項被設為依照 `APP_DEBUG` 環境變數值，該環境變數儲存於 `.env` 檔內。
+`config/app.php` 設定檔中的 `debug` 選項用來判斷錯誤在實際顯示給使用者時要包含多少資訊。預設情況下，這個選項被設為依照 `APP_DEBUG` 環境變數值，該環境變數儲存於 `.env` 檔內。
 
 在本機上開發時，應將 `APP_DEBUG` 環境變數設為 `true`。 **在正式環境上，這個值一定要是 `false`。若在正式環境上將該值設為 `true`，則會有將機敏設定值暴露給應用程式終端使用者的風險。**
 
@@ -42,7 +42,7 @@ updatedAt: '2022-08-09T12:03:00Z'
 
 ### 回報 Exception
 
-所有的 Exception 都由 `App\Exceptions\Handler` 類別負責處理。該類別中包含了一個 `register` 方法，可用來註冊所有自訂的 Exception 回報與轉譯回呼。我們來詳細看看其中各個概念。「回報 Exception」就是指將例外紀錄到 ^[Log](日誌)，或是傳送到如 [Flare](https://flareapp.io)、[Bugsnag](https://bugsnag.com)、[Sentry](https://github.com/getsentry/sentry-laravel)⋯⋯等外部服務。預設情況下，Laravel 會使用專案的[Log](/docs/{{version}}/logging) 組態設定來紀錄 Exception。不過，我們也可以隨意調整 Exception 要如何紀錄。
+所有的 Exception 都由 `App\Exceptions\Handler` 類別負責處理。該類別中包含了一個 `register` 方法，可用來註冊所有自訂的 Exception 回報與轉譯回呼。我們來詳細看看其中各個概念。「回報 Exception」就是指將例外紀錄到 ^[Log](日誌)，或是傳送到如 [Flare](https://flareapp.io)、[Bugsnag](https://bugsnag.com)、[Sentry](https://github.com/getsentry/sentry-laravel)⋯⋯等外部服務。預設情況下，Laravel 會使用專案的[Log](/docs/{{version}}/logging) 設定來紀錄 Exception。不過，我們也可以隨意調整 Exception 要如何紀錄。
 
 舉例來說，如果想以不同的方式回報不同類型的 Exception，可以使用 `reportable` 方法來註冊一個閉包。這個閉包會在給定類型的 Exception 需要回報時被呼叫。Laravel 會自動使用該閉包的^[型別提示](Type-Hint)來推導該閉包接受什麼類型的 Exception：
 

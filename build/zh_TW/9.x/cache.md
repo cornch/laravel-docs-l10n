@@ -5,13 +5,13 @@ contributors:
     name: cornch
 crowdinUrl: https://crowdin.com/translate/laravel-docs/21/en-zhtw
 progress: 100
-updatedAt: '2022-08-06T06:42:00Z'
+updatedAt: '2022-09-09T05:22:00Z'
 ---
 
 # 快取
 
 - [簡介](#introduction)
-- [組態設定](#configuration)
+- [設定](#configuration)
    - [Driver 前置需求](#driver-prerequisites)
 - [使用 Cache](#cache-usage)
    - [取得 Cache 實體](#obtaining-a-cache-instance)
@@ -42,11 +42,11 @@ updatedAt: '2022-08-06T06:42:00Z'
 
 <a name="configuration"></a>
 
-## 組態設定
+## 設定
 
-快取組態設定檔位於 `config/cache.php`。在這個檔案中，可以指定專案中預設要使用哪個快取 Driver。Laravel 內建支援像是 [Memcached](https://memcached.org), [Redis](https://redis.io), [DynamoDB](https://aws.amazon.com/dynamodb) 以及關聯式資料庫等多種熱門的快取後端。此外，也可以使用基於檔案的快取 Driver，而 `array` 與「null」Driver 則為自動化測試提供方便的快取後端。
+快取設定檔位於 `config/cache.php`。在這個檔案中，可以指定專案中預設要使用哪個快取 Driver。Laravel 內建支援像是 [Memcached](https://memcached.org), [Redis](https://redis.io), [DynamoDB](https://aws.amazon.com/dynamodb) 以及關聯式資料庫等多種熱門的快取後端。此外，也可以使用基於檔案的快取 Driver，而 `array` 與「null」Driver 則為自動化測試提供方便的快取後端。
 
-快取組態設定檔也包含了其他數種選項，並在該設定檔中包含了說明文件。請確保有先閱讀這些選項。預設情況下，Laravel 設定使用 `file` 快取 Driver，在伺服器的檔案系統上儲存經過序列化的快取物件。對於大型的專案，建議使用如 Memcached 或 Redis 等更專門的快取 Driver。甚至也可以為相同的 Driver 設定多個快取設定。
+快取設定檔也包含了其他數種選項，並在該設定檔中包含了說明文件。請確保有先閱讀這些選項。預設情況下，Laravel 設定使用 `file` 快取 Driver，在伺服器的檔案系統上儲存經過序列化的快取物件。對於大型的專案，建議使用如 Memcached 或 Redis 等更專門的快取 Driver。甚至也可以為相同的 Driver 設定多個快取設定。
 
 <a name="driver-prerequisites"></a>
 
@@ -70,7 +70,7 @@ updatedAt: '2022-08-06T06:42:00Z'
 
 #### Memcached
 
-要使用 Memcached Driver 需要安裝 [Memcached PECL 套件](https://pecl.php.net/package/memcached)。可以在 `config/cache.php` 組態設定檔中列出所有的 Memcached 伺服器。這個檔案已預先包含了 `memcached.servers` 欄位來讓你開始使用：
+要使用 Memcached Driver 需要安裝 [Memcached PECL 套件](https://pecl.php.net/package/memcached)。可以在 `config/cache.php` 設定檔中列出所有的 Memcached 伺服器。這個檔案已預先包含了 `memcached.servers` 欄位來讓你開始使用：
 
     'memcached' => [
         'servers' => [
@@ -104,9 +104,9 @@ updatedAt: '2022-08-06T06:42:00Z'
 
 #### DynamoDB
 
-在開始使用 [DynamoDB](https://aws.amazon.com/dynamodb) 快取 Driver 前，必須先建立 DynamoDB 資料表以儲存所有的快取資料。通常來說，這個資料表應命名為 `cache`。不過，應依照專案的 `cache` 組態設定檔中的 `stores.dynamodb.table` 設定值來設定這個資料表的名稱。
+在開始使用 [DynamoDB](https://aws.amazon.com/dynamodb) 快取 Driver 前，必須先建立 DynamoDB 資料表以儲存所有的快取資料。通常來說，這個資料表應命名為 `cache`。不過，應依照專案的 `cache` 設定檔中的 `stores.dynamodb.table` 設定值來設定這個資料表的名稱。
 
-該資料表也應擁有一個字串 Partition Key，其名稱應對應專案的 `cache` 組態設定檔的 `stores.dynamodb.attributes.key` 設定值。預設情況下，該 Partition Key 應命名為 `key`。
+該資料表也應擁有一個字串 Partition Key，其名稱應對應專案的 `cache` 設定檔的 `stores.dynamodb.attributes.key` 設定值。預設情況下，該 Partition Key 應命名為 `key`。
 
 <a name="cache-usage"></a>
 
@@ -143,7 +143,7 @@ updatedAt: '2022-08-06T06:42:00Z'
 
 #### 存取多個快取儲存
 
-使用 `Cache` Facade，即可通過 `store` 方法來存取多個快取儲存。傳入給 `store` 方法的索引鍵應對應於列在 `cache` 組態設定檔中 `stores` 設定的索引鍵名稱：
+使用 `Cache` Facade，即可通過 `store` 方法來存取多個快取儲存。傳入給 `store` 方法的索引鍵應對應於列在 `cache` 設定檔中 `stores` 設定的索引鍵名稱：
 
     $value = Cache::store('file')->get('foo');
     
@@ -495,9 +495,9 @@ updatedAt: '2022-08-06T06:42:00Z'
         }
     }
 
-傳入 `extend` 方法的第一個引數為 Driver 的名稱。這個名稱應對應到 `config/cache.php` 組態設定檔中的 `driver` 選項。第二個引數則是一個應回傳 `Illuminate\Cache\Repository` 實體的閉包。該閉包會被傳入一個 `$app` 實體，即為 [Service Container](/docs/{{version}}/container) 的實體。
+傳入 `extend` 方法的第一個引數為 Driver 的名稱。這個名稱應對應到 `config/cache.php` 設定檔中的 `driver` 選項。第二個引數則是一個應回傳 `Illuminate\Cache\Repository` 實體的閉包。該閉包會被傳入一個 `$app` 實體，即為 [Service Container](/docs/{{version}}/container) 的實體。
 
-註冊好擴充程式後，就可以將 `config/cache.php` 組態設定檔中的 `driver` 選項更新為擴充程式的名稱。
+註冊好擴充程式後，就可以將 `config/cache.php` 設定檔中的 `driver` 選項更新為擴充程式的名稱。
 
 <a name="events"></a>
 

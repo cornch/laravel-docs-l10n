@@ -5,7 +5,7 @@ contributors:
     name: cornch
 crowdinUrl: https://crowdin.com/translate/laravel-docs/135/en-zhtw
 progress: 100
-updatedAt: '2022-08-09T13:35:00Z'
+updatedAt: '2022-09-09T05:22:00Z'
 ---
 
 # 版本資訊
@@ -393,7 +393,7 @@ return Blade::renderComponent(new HelloComponent('Julian Bashir'));
 
 *Ignition 由 [Spatie](https://spatie.be/) 開發*。
 
-Ignition 是由 Spatie 製作的開放原始碼例外除錯頁面。Ignition 現已被重新設計。Laravel 9.x 隨附了這個全新、改進過的 Ignition，並包含了亮色 / 暗色主題、可自訂的「在編輯器中開啟」功能⋯等。
+Ignition 是由 Spatie 製作的開放原始碼例外偵錯頁面。Ignition 現已被重新設計。Laravel 9.x 隨附了這個全新、改進過的 Ignition，並包含了亮色 / 暗色主題、可自訂的「在編輯器中開啟」功能⋯等。
 
 <a name="improved-route-list"></a>
 

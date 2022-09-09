@@ -5,7 +5,7 @@ contributors:
     name: cornch
 crowdinUrl: https://crowdin.com/translate/laravel-docs/159/en-zhtw
 progress: 100
-updatedAt: '2022-08-09T14:00:00Z'
+updatedAt: '2022-09-09T05:22:00Z'
 ---
 
 # 目錄結構
@@ -63,7 +63,7 @@ updatedAt: '2022-08-09T14:00:00Z'
 
 #### Config 目錄
 
-`config` 目錄，如同目錄名字所示，包含了專案的所有組態設定檔。最好可以閱讀一下這些檔案，並熟悉一下有什麼選項可以設定。
+`config` 目錄，如同目錄名字所示，包含了專案的所有設定檔。最好可以閱讀一下這些檔案，並熟悉一下有什麼選項可以設定。
 
 <a name="the-database-directory"></a>
 

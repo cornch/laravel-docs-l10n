@@ -5,7 +5,7 @@ contributors:
     name: cornch
 crowdinUrl: https://crowdin.com/translate/laravel-docs/87/en-zhtw
 progress: 100
-updatedAt: '2022-09-06T05:56:00Z'
+updatedAt: '2022-09-09T05:21:00Z'
 ---
 
 # HTTP 測試
@@ -15,7 +15,7 @@ updatedAt: '2022-09-06T05:56:00Z'
    - [自訂 Request Header](#customizing-request-headers)
    - [Cookie](#cookies)
    - [Session 與身份驗證](#session-and-authentication)
-   - [為 Response 進行除錯](#debugging-responses)
+   - [為 Response 進行偵錯](#debugging-responses)
    - [處理 Exception](#exception-handling)
 - [測試 JSON API](#testing-json-apis)
    - [Fluent 的 JSON 測試](#fluent-json-testing)
@@ -193,9 +193,9 @@ Laravel 提供了各種在 HTTP 測試期間處理 Session 的輔助函式。首
 
 <a name="debugging-responses"></a>
 
-### 為 Response 進行除錯
+### 為 Response 進行偵錯
 
-向專案建立測試 Request 後，可使用 `dump`、`dumpHeaders`、`dumpSession` 方法來取得 Response 的內容或對其除錯：
+向專案建立測試 Request 後，可使用 `dump`、`dumpHeaders`、`dumpSession` 方法來取得 Response 的內容或對其偵錯：
 
     <?php
     

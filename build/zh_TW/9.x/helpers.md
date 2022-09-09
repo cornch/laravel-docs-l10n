@@ -5,7 +5,7 @@ contributors:
     name: cornch
 crowdinUrl: https://crowdin.com/translate/laravel-docs/79/en-zhtw
 progress: 100
-updatedAt: '2022-08-15T06:56:00Z'
+updatedAt: '2022-09-09T05:21:00Z'
 ---
 
 # 輔助函式
@@ -3402,13 +3402,13 @@ Str::of('Hello, world!')->wordCount(); // 2
 
 #### `config()` {.collection-method}
 
-`config` 函式可取得[組態設定](/docs/{{version}}/configuration)變數中的值。組態設定值可以通過「點 (.)」語法來存取，即包含設定檔名稱與欲存取的選項名。也可以指定設定選項不存在時要回傳的預設值：
+`config` 函式可取得[設定](/docs/{{version}}/configuration)變數中的值。設定值可以通過「點 (.)」語法來存取，即包含設定檔名稱與欲存取的選項名。也可以指定設定選項不存在時要回傳的預設值：
 
     $value = config('app.timezone');
     
     $value = config('app.timezone', $default);
 
-也可以在執行階段傳入一組索引鍵 / 值配對的陣列來設定組態設定值。不過，請注意，該函式只會影響目前 Request 的設定值，並不會實際更新組態設定：
+也可以在執行階段傳入一組索引鍵 / 值配對的陣列來設定設定值。不過，請注意，該函式只會影響目前 Request 的設定值，並不會實際更新設定：
 
     config(['app.debug' => true]);
 
@@ -3494,7 +3494,7 @@ Str::of('Hello, world!')->wordCount(); // 2
     
     $env = env('APP_ENV', 'production');
 
-> **Warning** 若在部署流程中執行了 `config:cache` 指令，應確保只有在組態設定檔中呼叫 `env` 函式。設定檔被快取後，就不會再載入 `.env` 檔了。所有 `env` 函式查詢 `.env` 變數的呼叫都會回傳 `null`。
+> **Warning** 若在部署流程中執行了 `config:cache` 指令，應確保只有在設定檔中呼叫 `env` 函式。設定檔被快取後，就不會再載入 `.env` 檔了。所有 `env` 函式查詢 `.env` 變數的呼叫都會回傳 `null`。
 
 <a name="method-event"></a>
 

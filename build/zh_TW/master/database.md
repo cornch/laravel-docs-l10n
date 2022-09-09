@@ -5,13 +5,13 @@ contributors:
     name: cornch
 crowdinUrl: https://crowdin.com/translate/laravel-docs/43/en-zhtw
 progress: 100
-updatedAt: '2022-08-09T12:04:00Z'
+updatedAt: '2022-09-09T05:22:00Z'
 ---
 
 # 資料庫：入門
 
 - [簡介](#introduction)
-   - [組態設定](#configuration)
+   - [設定](#configuration)
    - [讀寫連線](#read-and-write-connections)
 - [執行 SQL 查詢](#running-queries)
    - [使用多個資料庫連線](#using-multiple-database-connections)
@@ -32,15 +32,15 @@ updatedAt: '2022-08-09T12:04:00Z'
 
 <a name="configuration"></a>
 
-### 組態設定
+### 設定
 
-用於 Laravel 資料庫服務的組態設定檔位於專案的 `config/database.php` 組態設定檔中。可以這個設定檔中定義所有的資料庫連線，並可指定預設要使用哪個連線。該檔案中的大多數的設定選項都使用專案的環境變數。該檔案內含有 Laravel 所支援的大多數資料庫系統的設定範例。
+用於 Laravel 資料庫服務的設定檔位於專案的 `config/database.php` 設定檔中。可以這個設定檔中定義所有的資料庫連線，並可指定預設要使用哪個連線。該檔案中的大多數的設定選項都使用專案的環境變數。該檔案內含有 Laravel 所支援的大多數資料庫系統的設定範例。
 
-預設情況下，Laravel 的範例[環境設定](/docs/{{version}}/configuration#environment-configuration)已準備好與 [Laravel Sail](/docs/{{version}}/sail) 一起使用。Laravel Sail 是一個 Docker 設定，用於在本機上開發 Laravel 專案。不過，可以隨意依據本機資料庫的需求來更改資料庫組態設定。
+預設情況下，Laravel 的範例[環境設定](/docs/{{version}}/configuration#environment-configuration)已準備好與 [Laravel Sail](/docs/{{version}}/sail) 一起使用。Laravel Sail 是一個 Docker 設定，用於在本機上開發 Laravel 專案。不過，可以隨意依據本機資料庫的需求來更改資料庫設定。
 
 <a name="sqlite-configuration"></a>
 
-#### SQLite 組態設定
+#### SQLite 設定
 
 SQLite 資料庫包含在檔案系統上的單一檔案。可以在終端機內使用 `touch` 指令來建立一個新的 SQLite 資料庫：`touch database/database.sqlite`。建立好該資料庫後，只需要輕鬆地將使用絕對路徑來將 `DB_DATABASE` 環境變數指向該資料庫即可：
 
@@ -57,15 +57,15 @@ DB_FOREIGN_KEYS=true
 
 <a name="mssql-configuration"></a>
 
-#### Microsoft SQL Server 組態設定
+#### Microsoft SQL Server 設定
 
 若要使用 Microsoft SQL Server 資料庫，則應確保有安裝 `sqlsrv` 與 `pdo_sqlsrv` PHP 擴充套件，以及任何可能需要的相依性，如 Microsoft SQL ODBC 驅動器。
 
 <a name="configuration-using-urls"></a>
 
-#### 使用 URL 來進行組態設定
+#### 使用 URL 來進行設定
 
-一般來說，資料庫的連線是通過多個組態設定值來設定的，如 `host`, `database`, `username`, `password`…等。這幾個組態設定值都有其對應的環境變數。這表示在正式環境伺服器上設定資料庫連線資訊時，需要處理多個環境變數。
+一般來說，資料庫的連線是通過多個設定值來設定的，如 `host`, `database`, `username`, `password`…等。這幾個設定值都有其對應的環境變數。這表示在正式環境伺服器上設定資料庫連線資訊時，需要處理多個環境變數。
 
 像 AWS 或 Heroku 等受管理的資料庫提供商會提供單一的資料庫「URL」，該 URL 在單一字串內包含了所有用於該資料庫的連線資訊。一下為這種 URL 的範例：
 
@@ -80,7 +80,7 @@ driver://username:password@host:port/database?options
 驅動器://使用者名稱:密碼@主機:連接埠/資料庫?選項
 ```
 
-為了方便起見，Laravel 也支援這些 URL 作為設定多個組態設定選項的替代。若有提供 `url` 組態設定選項 (或相應的 `DATABASE_URL` 環境變數)，則會使用該值來拆出資料庫連線與金鑰資訊。
+為了方便起見，Laravel 也支援這些 URL 作為設定多個設定選項的替代。若有提供 `url` 設定選項 (或相應的 `DATABASE_URL` 環境變數)，則會使用該值來拆出資料庫連線與金鑰資訊。
 
 <a name="read-and-write-connections"></a>
 
@@ -112,9 +112,9 @@ driver://username:password@host:port/database?options
         'prefix' => '',
     ],
 
-請注意，在組態設定陣列中加入了三個新的鍵值：`read`, `write`, `stick`。`read` 與 `write` 索引鍵為一個陣列，包含單一索引鍵：`host`。其他用於 `read` 與 `write` 連線的資料庫選項會從主要的 `mysql` 組態設定陣列合併過來：
+請注意，在設定陣列中加入了三個新的鍵值：`read`, `write`, `stick`。`read` 與 `write` 索引鍵為一個陣列，包含單一索引鍵：`host`。其他用於 `read` 與 `write` 連線的資料庫選項會從主要的 `mysql` 設定陣列合併過來：
 
-只需要將 `mysql` 陣列中所需要複寫的值放到 `read` 與 `write` 陣列中即可。因此，在這個例子中，「read」連線的主機會是 `192.168.1.1` ，而「write」連線則會使用 `192.168.1.3`。資料庫認證、前置詞、字元集、以及其他主要 `mysql` 陣列中的選項都將在這兩個連線間共用。當 `host` 組態設定陣列中有多個值時，每個請求都會隨機選擇一個資料庫主機。
+只需要將 `mysql` 陣列中所需要複寫的值放到 `read` 與 `write` 陣列中即可。因此，在這個例子中，「read」連線的主機會是 `192.168.1.1` ，而「write」連線則會使用 `192.168.1.3`。資料庫認證、前置詞、字元集、以及其他主要 `mysql` 陣列中的選項都將在這兩個連線間共用。當 `host` 設定陣列中有多個值時，每個請求都會隨機選擇一個資料庫主機。
 
 <a name="the-sticky-option"></a>
 
@@ -241,7 +241,7 @@ driver://username:password@host:port/database?options
 
 ### 使用多個資料庫連線
 
-若 `config/database.php` 組態設定檔中有有定義多個連線，則可以通過 `DB` Facade 的 `connection` 方法來存取各個連線。傳入 `connection` 方法內的連線名稱應對應到 `config/database.php` 設定檔內所列出的其中一個連線名稱，或是在執行階段使用 `config` 輔助函式所設定的連線：
+若 `config/database.php` 設定檔中有有定義多個連線，則可以通過 `DB` Facade 的 `connection` 方法來存取各個連線。傳入 `connection` 方法內的連線名稱應對應到 `config/database.php` 設定檔內所列出的其中一個連線名稱，或是在執行階段使用 `config` 輔助函式所設定的連線：
 
     use Illuminate\Support\Facades\DB;
     
@@ -255,7 +255,7 @@ driver://username:password@host:port/database?options
 
 ### 監聽查詢事件
 
-若想讓網站在每次執行 SQL 查詢時叫用某個閉包，可以使用 `DB` Facade 的 `listen` 方法。該方法適用於記錄查詢或除錯。可以在 [Service Provider](/docs/{{version}}/providers) 內的 `boot` 方法中註冊查詢的監聽程式閉包：
+若想讓網站在每次執行 SQL 查詢時叫用某個閉包，可以使用 `DB` Facade 的 `listen` 方法。該方法適用於記錄查詢或偵錯。可以在 [Service Provider](/docs/{{version}}/providers) 內的 `boot` 方法中註冊查詢的監聽程式閉包：
 
     <?php
     

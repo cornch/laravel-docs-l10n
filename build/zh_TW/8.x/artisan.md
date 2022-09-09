@@ -5,7 +5,7 @@ contributors:
     name: cornch
 crowdinUrl: https://crowdin.com/translate/laravel-docs/9/en-zhtw
 progress: 100
-updatedAt: '2022-08-06T06:42:00Z'
+updatedAt: '2022-09-09T05:22:00Z'
 ---
 
 # Artisan 主控台
@@ -76,7 +76,7 @@ Tinker 可讓你在指令列內與完整的 Laravel 專案進行互動，包含 
 
     php artisan tinker
 
-可以通過 `vendor:publish` 指令來安裝 Tinker 的組態設定檔：
+可以通過 `vendor:publish` 指令來安裝 Tinker 的設定檔：
 
     php artisan vendor:publish --provider="Laravel\Tinker\TinkerServiceProvider"
 
@@ -86,7 +86,7 @@ Tinker 可讓你在指令列內與完整的 Laravel 專案進行互動，包含 
 
 #### 指令允許列表
 
-Tinker 使用一個「allow」清單來判斷哪些 Artisan 指令可在其 Shell 內執行。預設情況下，可以執行 `clear-compiled`, `down`, `env`, `inspire`, `migrate`, `optimize` 以及 `up` 指令。若想允許更多指令，可以將要允許的指令加在 `tinker.php` 組態設定檔中的 `commands` 陣列內：
+Tinker 使用一個「allow」清單來判斷哪些 Artisan 指令可在其 Shell 內執行。預設情況下，可以執行 `clear-compiled`, `down`, `env`, `inspire`, `migrate`, `optimize` 以及 `up` 指令。若想允許更多指令，可以將要允許的指令加在 `tinker.php` 設定檔中的 `commands` 陣列內：
 
     'commands' => [
         // App\Console\Commands\ExampleCommand::class,
@@ -96,7 +96,7 @@ Tinker 使用一個「allow」清單來判斷哪些 Artisan 指令可在其 Shel
 
 #### 不應以別名使用的類別
 
-一般來說，Tinker 會在使用過程中自動為類別加上別名。但有些類別可能不希望被設定別名。可以通過在 `tinker.php` 組態設定檔中的 `dont_alias` 陣列中列出這些不想被自動別名的類別來達成：
+一般來說，Tinker 會在使用過程中自動為類別加上別名。但有些類別可能不希望被設定別名。可以通過在 `tinker.php` 設定檔中的 `dont_alias` 陣列中列出這些不想被自動別名的類別來達成：
 
     'dont_alias' => [
         App\Models\User::class,

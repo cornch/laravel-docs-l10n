@@ -5,7 +5,7 @@ contributors:
     name: cornch
 crowdinUrl: https://crowdin.com/translate/laravel-docs/125/en-zhtw
 progress: 100
-updatedAt: '2022-08-09T13:36:00Z'
+updatedAt: '2022-09-09T05:22:00Z'
 ---
 
 # 佇列 - Queue
@@ -43,7 +43,7 @@ updatedAt: '2022-08-09T13:36:00Z'
    - [佇列的優先度](#queue-priorities)
    - [Queue Worker 與部署](#queue-workers-and-deployment)
    - [Job 的實效性與逾時](#job-expirations-and-timeouts)
-- [Supervisor 組態設定](#supervisor-configuration)
+- [Supervisor 設定](#supervisor-configuration)
 - [處理失敗的 Job](#dealing-with-failed-jobs)
    - [在 Job 失敗後進行清理](#cleaning-up-after-failed-jobs)
    - [重試失敗的 Job](#retrying-failed-jobs)
@@ -1517,7 +1517,7 @@ php artisan queue:listen
 
 #### 執行多個 Queue Worker
 
-若要指派多個 Worker 給某個 Queue 並同時處理多個 Job，只需要啟動多個 `queue:work` 處理程序即可。若要啟動多個 `queue:work`，在本機上，我們可以開啟多個終端機分頁來執行；若是在正是環境上，則可以使用 Process Manager 的組態設定來啟動多個 `queue:work`。[使用 Supervisor 時](#supervisor-configuration)，可使用 `numprocs` 設定值。
+若要指派多個 Worker 給某個 Queue 並同時處理多個 Job，只需要啟動多個 `queue:work` 處理程序即可。若要啟動多個 `queue:work`，在本機上，我們可以開啟多個終端機分頁來執行；若是在正是環境上，則可以使用 Process Manager 的設定來啟動多個 `queue:work`。[使用 Supervisor 時](#supervisor-configuration)，可使用 `numprocs` 設定值。
 
 <a name="specifying-the-connection-queue"></a>
 
@@ -1910,9 +1910,9 @@ php artisan queue:prune-failed --hours=48
 
 ### 排序 DynamoDB 中的失敗 Job
 
-出了將失敗 Job 記錄保存在關聯式資料庫資料表意外，在 Laravel 中，也支援將失敗 Job 記錄保存在 [DynamoDB](https://aws.amazon.com/dynamodb) 中。不過，若要保存在 DynamoDB 資料表中，我們需要先建立一個 DynamoDB 資料表來保存失敗的 Job 記錄。一般來說，這個資料表的名稱應為 `failed_jobs`，不過，請依照專案的 `queue` 組態設定檔中 `queue.failed.table` 設定值來命名資料表。
+出了將失敗 Job 記錄保存在關聯式資料庫資料表意外，在 Laravel 中，也支援將失敗 Job 記錄保存在 [DynamoDB](https://aws.amazon.com/dynamodb) 中。不過，若要保存在 DynamoDB 資料表中，我們需要先建立一個 DynamoDB 資料表來保存失敗的 Job 記錄。一般來說，這個資料表的名稱應為 `failed_jobs`，不過，請依照專案的 `queue` 設定檔中 `queue.failed.table` 設定值來命名資料表。
 
-`failed_jobs` 資料表應有一個名為 `application` 的字串^[主分區索引鍵](Primary Partition Key)，以及一個名為 `uuid` 的字串^[主排序索引鍵](Primary Sort Key)。索引鍵的 `application` 這個部分會包含專案的名稱，即 `app` 組態設定檔中的 `name` 設定值。由於專案名稱會是 DynamoDB 資料表中索引鍵的一部分，因此，我們可以使用相同的資料表來保存多個 Laravel 專案中的失敗 Job。
+`failed_jobs` 資料表應有一個名為 `application` 的字串^[主分區索引鍵](Primary Partition Key)，以及一個名為 `uuid` 的字串^[主排序索引鍵](Primary Sort Key)。索引鍵的 `application` 這個部分會包含專案的名稱，即 `app` 設定檔中的 `name` 設定值。由於專案名稱會是 DynamoDB 資料表中索引鍵的一部分，因此，我們可以使用相同的資料表來保存多個 Laravel 專案中的失敗 Job。
 
 此外，也請確保有安裝 AWS SDK，好讓 Laravel 專案能與 Amazon DynamoDB 溝通：
 

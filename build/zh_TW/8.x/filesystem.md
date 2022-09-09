@@ -5,13 +5,13 @@ contributors:
     name: cornch
 crowdinUrl: https://crowdin.com/translate/laravel-docs/73/en-zhtw
 progress: 100
-updatedAt: '2022-08-09T12:03:00Z'
+updatedAt: '2022-09-09T05:21:00Z'
 ---
 
 # 檔案存放空間
 
 - [簡介](#introduction)
-- [組態設定](#configuration)
+- [設定](#configuration)
    - [Local Driver](#the-local-driver)
    - [Public Disk](#the-public-disk)
    - [Driver 前置需求](#driver-prerequisites)

@@ -5,13 +5,13 @@ contributors:
     name: cornch
 crowdinUrl: https://crowdin.com/translate/laravel-docs/153/en-zhtw
 progress: 100
-updatedAt: '2022-08-10T03:15:00Z'
+updatedAt: '2022-09-09T05:22:00Z'
 ---
 
 # HTTP Session
 
 - [簡介](#introduction)
-   - [組態設定](#configuration)
+   - [設定](#configuration)
    - [Driver 前置需求](#driver-prerequisites)
 - [使用 Session](#interacting-with-the-session)
    - [取得資料](#retrieving-data)
@@ -36,7 +36,7 @@ Laravel 隨附了多種 Session 後端，能讓我們使用直觀且同一的 AP
 
 ### 設定
 
-專案的 Session 組態設定檔存在 `config/session.php` 中。建議先閱讀該檔案了解一下有哪些可用的選項。預設情況下，Laravel 設定使用 `file` Session Driver，對於大多數的專案來說，都可以使用這個 Driver。若你的網站會在多個 Web Server (網頁伺服器) 間做 Load Balance (負載平衡)，那我們就會需要選擇一種集中式的存放方案，如 Redis 或資料庫。
+專案的 Session 設定檔存在 `config/session.php` 中。建議先閱讀該檔案了解一下有哪些可用的選項。預設情況下，Laravel 設定使用 `file` Session Driver，對於大多數的專案來說，都可以使用這個 Driver。若你的網站會在多個 Web Server (網頁伺服器) 間做 Load Balance (負載平衡)，那我們就會需要選擇一種集中式的存放方案，如 Redis 或資料庫。
 
 Session 的 `driver` 設定定義了每個 Request 的 Session 資料要存在哪裡。Laravel 隨附了多個不錯的 Driver：
 

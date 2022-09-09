@@ -5,7 +5,7 @@ contributors:
     name: cornch
 crowdinUrl: https://crowdin.com/translate/laravel-docs/163/en-zhtw
 progress: 100
-updatedAt: '2022-08-09T14:00:00Z'
+updatedAt: '2022-09-09T05:22:00Z'
 ---
 
 # 測試：入門
@@ -34,7 +34,7 @@ Laravel 在設計時就已將測試考慮進去。而且，Laravel 有內建 PHP
 
 執行測試時，Laravel 會自動依照 `phpunit.xml` 檔內定義的環境變數來將[設定環境](/docs/{{version}}/configuration#environment-configuration)設為 `testing`。在測試期間，Laravel 也會自動將 Session 與 Cache 設為 `array` Driver，以不保存測試期間的 Session 或 Cache 資料。
 
-若有需要，也可以自行定義其他的測試環境設定值。`testing` 環境變數可以在專案的 `phpunit.xml` 檔案中修改。不過，在執行測試前，請記得使用 `config:clear` Artisan 指令來清除組態設定快取！
+若有需要，也可以自行定義其他的測試環境設定值。`testing` 環境變數可以在專案的 `phpunit.xml` 檔案中修改。不過，在執行測試前，請記得使用 `config:clear` Artisan 指令來清除設定快取！
 
 <a name="the-env-testing-environment-file"></a>
 
@@ -98,7 +98,7 @@ Laravel 中包含了一個 `CreatesApplication` Trait。在專案的基礎 `Test
 
     ./vendor/bin/phpunit
 
-除了 `phpunit` 指令外，我們也可以使用 `test` Artisan 指令來執行測試。Artisan 的測試執行程式會提供較多輸出的測試報告，以讓我們能更輕鬆地進行開發與除錯：
+除了 `phpunit` 指令外，我們也可以使用 `test` Artisan 指令來執行測試。Artisan 的測試執行程式會提供較多輸出的測試報告，以讓我們能更輕鬆地進行開發與偵錯：
 
     php artisan test
 

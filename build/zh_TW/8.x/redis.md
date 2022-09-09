@@ -5,13 +5,13 @@ contributors:
     name: cornch
 crowdinUrl: https://crowdin.com/translate/laravel-docs/133/en-zhtw
 progress: 100
-updatedAt: '2022-08-09T13:35:00Z'
+updatedAt: '2022-09-09T05:22:00Z'
 ---
 
 # Redis
 
 - [簡介](#introduction)
-- [組態設定](#configuration)
+- [設定](#configuration)
    - [叢集](#clusters)
    - [Predis](#predis)
    - [phpredis](#phpredis)
@@ -36,7 +36,7 @@ composer require predis/predis
 
 <a name="configuration"></a>
 
-## 組態設定
+## 設定
 
 我們可以在 `config/database.php` 設定檔中設定專案的 Redis 設定。在該檔案中，可以看到一個 `redis` 陣列，其中存放的就是專案要使用的 Redis 伺服器：
 

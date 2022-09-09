@@ -5,7 +5,7 @@ contributors:
     name: cornch
 crowdinUrl: https://crowdin.com/translate/laravel-docs/135/en-zhtw
 progress: 100
-updatedAt: '2022-08-09T13:35:00Z'
+updatedAt: '2022-09-09T05:22:00Z'
 ---
 
 # 版本資訊

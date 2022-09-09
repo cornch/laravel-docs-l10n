@@ -5,17 +5,17 @@ contributors:
     name: cornch
 crowdinUrl: https://crowdin.com/translate/laravel-docs/27/en-zhtw
 progress: 100
-updatedAt: '2022-08-09T12:03:00Z'
+updatedAt: '2022-09-09T05:22:00Z'
 ---
 
-# 組態設定
+# 設定
 
 - [簡介](#introduction)
-- [環境組態設定](#environment-configuration)
+- [環境組態](#environment-configuration)
    - [環境變數型別](#environment-variable-types)
-   - [取得環境組態設定](#retrieving-environment-configuration)
+   - [取得環境設定](#retrieving-environment-configuration)
    - [判斷目前的環境](#determining-the-current-environment)
-- [存取組態設定值](#accessing-configuration-values)
+- [存取設定值](#accessing-configuration-values)
 - [設定快取](#configuration-caching)
 - [偵錯模式](#debug-mode)
 - [維護模式](#maintenance-mode)
@@ -24,21 +24,21 @@ updatedAt: '2022-08-09T12:03:00Z'
 
 ## 簡介
 
-Laravel 框架的所有組態設定檔都儲存在 `config` 目錄內。各個選項都有說明文件，歡迎閱讀這些檔案並熟悉可用的選項。
+在 Laravel 框架中，所有設定檔都儲存在 `config` 目錄內。各個選項都有說明文件，歡迎閱讀這些檔案並熟悉可用的選項。
 
-這些組態設定檔能讓你設定一些東西，像是資料庫連線資訊、郵件伺服器設定，以及其他數種核心組態設定值，如網站的時區、以及加密金鑰。
+這些設定檔能讓你設定一些東西，像是資料庫連線資訊、郵件伺服器設定，以及其他數種核心設定值，如網站的時區、以及加密金鑰。
 
 <a name="environment-configuration"></a>
 
 ## 環境組態
 
-若我們能根據網站正在執行的環境不同，而載入不同的組態設定值，那麼會有很多好處。舉例來說，在本機與正式環境上我們可能會想使用不同的快取 Driver。
+若我們能根據網站正在執行的環境不同，而載入不同的設定值，那麼會有很多好處。舉例來說，在本機與正式環境上我們可能會想使用不同的快取 Driver。
 
 為了輕鬆達成此目標，Laravel 使用了 [DotEnv](https://github.com/vlucas/phpdotenv) PHP 函式庫。在全新的 Laravel 安裝上，專案的根目錄中會包含一個定義了許多常見環境變數的 `.env.example` 檔案。在 Laravel 的安裝過程中，這個檔案會自動被複製為 `.env`。
 
-Laravel 的預設 `.env` 檔包含了一些可能會依據專案是在本機還是正式環境上執行而不同的常見組態設定值。這些值接著會在 `config` 目錄中的 Laravel 組態設定檔內通過 Laravel 的 `env` 函式來取用。
+Laravel 的預設 `.env` 檔包含了一些可能會依據專案是在本機還是正式環境上執行而不同的常見設定值。這些值接著會在 `config` 目錄中的 Laravel 設定檔內通過 Laravel 的 `env` 函式來取用。
 
-若是與團隊協作開發，可能會想繼續將 `.env.example` 檔案包含在專案中。只要在範例組態設定檔中填入一些預留位置值，團隊中的其他開發人員就能清楚地知道要執行專案需要哪些環境變數。
+若是與團隊協作開發，可能會想繼續將 `.env.example` 檔案包含在專案中。只要在範例設定檔中填入一些預留位置值，團隊中的其他開發人員就能清楚地知道要執行專案需要哪些環境變數。
 
 > {tip} 任何 `.env` 檔內的變數都可通過外部環境變數來複寫，如伺服器等級或是系統等級的環境變數。
 
@@ -81,7 +81,7 @@ APP_NAME="My Application"
 
 ### 取得環境設定
 
-該檔案中列出的所有變數都會在網站接收到請求的時候被載入進 `$_ENV` PHP 超全域變數內。不過，可以使用 `env` 輔助函式來在組態設定檔中取得這些變數。事實上，若閱讀 Laravel 的組態設定檔，就會發現其中許多選項已經使用到這個輔助函式了：
+該檔案中列出的所有變數都會在網站接收到請求的時候被載入進 `$_ENV` PHP 超全域變數內。不過，可以使用 `env` 輔助函式來在設定檔中取得這些變數。事實上，若閱讀 Laravel 的設定檔，就會發現其中許多選項已經使用到這個輔助函式了：
 
     'debug' => env('APP_DEBUG', false),
 
@@ -113,14 +113,14 @@ APP_NAME="My Application"
 
 ## 存取設定值
 
-可以輕鬆的在專案內的任何地方通過 `config` 全域輔助函式來存取組態設定值。組態設定值可以通過「點」語法來存取，即包含設定檔名稱與欲存取的選項名。也可以指定設定選項不存在時要回傳的預設值：
+可以輕鬆的在專案內的任何地方通過 `config` 全域輔助函式來存取設定值。設定值可以通過「點」語法來存取，即包含設定檔名稱與欲存取的選項名。也可以指定設定選項不存在時要回傳的預設值：
 
     $value = config('app.timezone');
     
-    // 若組態設定值不存在時，取得預設值...
+    // 若設定值不存在時，取得預設值...
     $value = config('app.timezone', 'Asia/Seoul');
 
-若要在執行階段修改組態設定值，可以傳入陣列進 `config` 輔助函式：
+若要在執行階段修改設定值，可以傳入陣列進 `config` 輔助函式：
 
     config(['app.timezone' => 'America/Chicago']);
 
@@ -128,17 +128,17 @@ APP_NAME="My Application"
 
 ## 設定快取
 
-為了加速網站執行，應使用 `config:cache` Artisan 指令來將所有的組態設定檔快取為單一檔案。這個指令會將所有的組態設定選項合併為單一檔案，以讓 Laravel 可快速載入。
+為了加速網站執行，應使用 `config:cache` Artisan 指令來將所有的設定檔快取為單一檔案。這個指令會將所有的設定選項合併為單一檔案，以讓 Laravel 可快速載入。
 
-`php artisan config:cache` 指令通常應放在部署流程中。該指令不應在本機開發時執行，因為在專案開發的時候會時常需要修改組態設定值。
+`php artisan config:cache` 指令通常應放在部署流程中。該指令不應在本機開發時執行，因為在專案開發的時候會時常需要修改設定值。
 
-> {note} 若在部署流程中執行了 `config:cache` 指令，應確保只有在組態設定檔中呼叫 `env` 函式。設定檔被快取後，就不會再載入 `.env` 檔了。因此，`env` 函式只會回傳外部的、系統等級的環境變數。
+> {note} 若在部署流程中執行了 `config:cache` 指令，應確保只有在設定檔中呼叫 `env` 函式。設定檔被快取後，就不會再載入 `.env` 檔了。因此，`env` 函式只會回傳外部的、系統等級的環境變數。
 
 <a name="debug-mode"></a>
 
-## 除錯模式
+## 偵錯模式
 
-`config/app.php` 組態設定檔中的 `debug` 選項用來判斷錯誤在實際顯示給使用者時要包含多少資訊。預設情況下，這個選項被設為依照 `APP_DEBUG` 環境變數值，該環境變數儲存於 `.env` 檔內。
+`config/app.php` 設定檔中的 `debug` 選項用來判斷錯誤在實際顯示給使用者時要包含多少資訊。預設情況下，這個選項被設為依照 `APP_DEBUG` 環境變數值，該環境變數儲存於 `.env` 檔內。
 
 在本機上開發時，應將 `APP_DEBUG` 環境變數設為 `true`。 **在正式環境上，這個值一定要是 `false`。若在正式環境上將該變數設為 `true`，則會有將機敏設定值暴露給網站終端使用者的風險。**
 

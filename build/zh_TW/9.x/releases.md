@@ -42,7 +42,18 @@ Laravel 及其第一方套件都遵守 [語義化版本](https://semver.org/lang
 | 9 | 8.0 - 8.1 | 2022 年 2 月 8 日 | 2023 年 8 月 8 日 | 2024 年 2 月 8 日 |
 | 10 | 8.1 | 2023 年 2 月 7 日 | 2024 年 8 月 7 日 | 2025 年 2 月 7 日 |
 
-(*) 支援的 PHP 版本
+<div class="version-colors">
+    <div class="end-of-life">
+        <div class="color-box"></div>
+        <div>End of life</div>
+    </div>
+    <div class="security-fixes">
+        <div class="color-box"></div>
+        <div>Security fixes only</div>
+    </div>
+</div>
+(*) Supported PHP versions
+
 
 <a name="laravel-9"></a>
 
@@ -395,7 +406,11 @@ return Blade::renderComponent(new HelloComponent('Julian Bashir'));
 
 Ignition 是由 Spatie 製作的開放原始碼例外偵錯頁面。Ignition 現已被重新設計。Laravel 9.x 隨附了這個全新、改進過的 Ignition，並包含了亮色 / 暗色主題、可自訂的「在編輯器中開啟」功能⋯等。
 
+<p align="center">
+<img width="100%" src="https://user-images.githubusercontent.com/483853/149235404-f7caba56-ebdf-499e-9883-cac5d5610369.png"/>
+</p>
 <a name="improved-route-list"></a>
+
 
 ### 改進過的 `route:list` CLI 輸出
 
@@ -403,7 +418,11 @@ Ignition 是由 Spatie 製作的開放原始碼例外偵錯頁面。Ignition 現
 
 Laravel 9.x 更新中的 `route:list` CLI 已大幅改進，能讓你在探索路由定義時獲得全新、漂亮的體驗。
 
+<p align="center">
+<img src="https://user-images.githubusercontent.com/5457236/148321982-38c8b869-f188-4f42-a3cc-a03451d5216c.png"/>
+</p>
 <a name="test-coverage-support-on-artisan-test-Command"></a>
+
 
 ### 使用 Artisan `test` 指令來取得測試覆蓋率
 
@@ -417,13 +436,21 @@ php artisan test --coverage
 
 測試覆蓋率會直接顯示在 CLI 輸出中。
 
-此外，若想指定測試覆蓋率的最小百分比值，可以使用 `--min` 選項。當沒滿足最小值時，測試套件就會執行失敗：
+<p align="center">
+<img width="100%" src="https://user-images.githubusercontent.com/5457236/150133237-440290c2-3538-4d8e-8eac-4fdd5ec7bd9e.png"/>
+</p>
+In addition, if you would like to specify a minimum threshold that your test coverage percentage must meet, you may use the `--min` option. The test suite will fail if the given minimum threshold is not met:
+
 
 ```shell
 php artisan test --coverage --min=80.3
 ```
 
+<p align="center">
+<img width="100%" src="https://user-images.githubusercontent.com/5457236/149989853-a29a7629-2bfa-4bf3-bbf7-cdba339ec157.png"/>
+</p>
 <a name="soketi-echo-server"></a>
+
 
 ### Soketi Echo 伺服器
 
@@ -441,7 +468,11 @@ php artisan test --coverage --min=80.3
 
 Laravel 9.x 在 Collection 元件上新增了改進過的、「^[泛型](Generic)」風格的型別定義，提升了對 IDE 與靜態檢查的支援。如 [PHPStorm](https://blog.jetbrains.com/phpstorm/2021/12/phpstorm-2021-3-release/#support_for_future_laravel_collections) 等 IDE 或 [PHPStan](https://phpstan.org) 等靜態檢查工具現在可以原生地更理解 Laravel Collection 了。
 
+<p align="center">
+<img width="100%" src="https://user-images.githubusercontent.com/5457236/151783350-ed301660-1e09-44c1-b549-85c6db3f078d.gif"/>
+</p>
 <a name="new-helpers"></a>
+
 
 ### 新的輔助函式
 

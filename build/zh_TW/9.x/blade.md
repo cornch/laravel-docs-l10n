@@ -1087,7 +1087,9 @@ public function __construct(AlertCreator $creator, $type, $message)
 
 預設情況下，Blade 中保留了一些關鍵字來作為內部使用，以用於轉譯元件。下列關鍵字將無法在元件內被定義為公用屬性或屬性名稱：
 
-- `data`
+- <div class="content-list" markdown="1">
+`data`
+
 - `render`
 - `resolveView`
 - `shouldRender`
@@ -1095,7 +1097,9 @@ public function __construct(AlertCreator $creator, $type, $message)
 - `withAttributes`
 - `withName`
 
+</div>
 <a name="slots"></a>
+
 
 ### Slot
 

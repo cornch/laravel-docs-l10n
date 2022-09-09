@@ -133,7 +133,9 @@ updatedAt: '2022-09-09T05:22:00Z'
 
 `$casts` 屬性應為一個陣列，其索引鍵為要進行型別轉換的屬性名稱，而值則為要將該欄位進行型別轉換的型別。支援的轉換型別如下：
 
-- `array`
+- <div class="content-list" markdown="1">
+`array`
+
 - `AsStringable::class`
 - `boolean`
 - `collection`
@@ -154,7 +156,9 @@ updatedAt: '2022-09-09T05:22:00Z'
 - `string`
 - `timestamp`
 
-為了演示屬性型別轉換，我們來對 `is_admin` 屬性進行型別轉換。該欄位在資料庫中是以整數 (`0` 或 `1`) 來表示布林值的：
+</div>
+To demonstrate attribute casting, let's cast the `is_admin` attribute, which is stored in our database as an integer (`0` or `1`) to a boolean value:
+
 
     <?php
     

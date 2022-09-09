@@ -260,14 +260,18 @@ php artisan migrate
 
 現在，你已經建立好 Laravel 專案了，你可能會想知道接下來該學些什麼。首先，我們強烈建議你先閱讀下列說明文件來熟悉一下 Laravel 是怎麼運作的：
 
-- [Request 的生命週期](/docs/{{version}}/lifecycle)
+- <div class="content-list" markdown="1">
+[Request Lifecycle](/docs/{{version}}/lifecycle)
+
 - [設定](/docs/{{version}}/configuration)
 - [目錄架構](/docs/{{version}}/structure)
 - [前端](/docs/{{version}}/frontend)
 - [Service Container](/docs/{{version}}/container)
 - [Facade](/docs/{{version}}/facades)
 
-你想要如何使用 Laravel 也會影響學習的下一步。使用 Laravel 的方法不只一種，我們稍後也會來探索一下幾種使用 Laravel 的主要方法。
+</div>
+How you want to use Laravel will also dictate the next steps on your journey. There are a variety of ways to use Laravel, and we'll explore two primary use cases for the framework below.
+
 
 <a name="laravel-the-fullstack-framework"></a>
 

@@ -207,11 +207,15 @@ php artisan serve
 
 請確保 Composer 的系統等級 vendor bin 資料夾有放在 `$PATH` 中，這樣作業系統才能找到 `laravel` 可執行檔。這個資料夾在不同作業系統上會在不同位置。不過，常見的位置如下：
 
-- macOS: `$HOME/.composer/vendor/bin`
+- <div class="content-list" markdown="1">
+macOS: `$HOME/.composer/vendor/bin`
+
 - Windows: `%USERPROFILE%\AppData\Roaming\Composer\vendor\bin`
 - GNU/Linux 發行版: `$HOME/.config/composer/vendor/bin` 或 `$HOME/.composer/vendor/bin`
 
-為了方便起見，Laravel 安裝程式也可以幫你的新專案建立 Git ^[Repository](存放庫)。要指定 Laravel 安裝程式建立 Git Repository，請在建立新專案時傳入 `--git` ^[Flag](旗標)：
+</div>
+For convenience, the Laravel installer can also create a Git repository for your new project. To indicate that you want a Git repository to be created, pass the `--git` flag when creating a new project:
+
 
 ```shell
 laravel new example-app --git
@@ -271,13 +275,17 @@ Laravel 只能架設在「網頁目錄」的根目錄下。請不要嘗試將 La
 
 現在，你已經建立好 Laravel 專案了，你可能會想知道接下來該學些什麼。首先，我們強烈建議你先閱讀下列說明文件來熟悉一下 Laravel 是怎麼運作的：
 
-- [Request 的生命週期](/docs/{{version}}/lifecycle)
+- <div class="content-list" markdown="1">
+[Request Lifecycle](/docs/{{version}}/lifecycle)
+
 - [設定](/docs/{{version}}/configuration)
 - [目錄架構](/docs/{{version}}/structure)
 - [Service Container](/docs/{{version}}/container)
 - [Facade](/docs/{{version}}/facades)
 
-你想要如何使用 Laravel 也會影響學習的下一步。使用 Laravel 的方法不只一種，我們稍後也會來探索一下幾種使用 Laravel 的主要方法。
+</div>
+How you want to use Laravel will also dictate the next steps on your journey. There are a variety of ways to use Laravel, and we'll explore two primary use cases for the framework below.
+
 
 <a name="laravel-the-fullstack-framework"></a>
 

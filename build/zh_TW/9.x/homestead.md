@@ -56,7 +56,16 @@ Homestead runs on any Windows, macOS, or Linux system and includes Nginx, PHP, M
 
 ### Included Software
 
-- Ubuntu 20.04
+- <style>
+    #software-list > ul {
+        column-count: 2; -moz-column-count: 2; -webkit-column-count: 2;
+        column-gap: 5em; -moz-column-gap: 5em; -webkit-column-gap: 5em;
+        line-height: 1.9;
+    }
+</style>
+<div id="software-list" markdown="1">
+Ubuntu 20.04
+
 - Git
 - PHP 8.1
 - PHP 8.0
@@ -83,11 +92,22 @@ Homestead runs on any Windows, macOS, or Linux system and includes Nginx, PHP, M
 - XHProf / Tideways / XHGui
 - wp-cli
 
+</div>
 <a name="optional-software"></a>
+
 
 ### Optional Software
 
-- Apache
+- <style>
+    #software-list > ul {
+        column-count: 2; -moz-column-count: 2; -webkit-column-count: 2;
+        column-gap: 5em; -moz-column-gap: 5em; -webkit-column-gap: 5em;
+        line-height: 1.9;
+    }
+</style>
+<div id="software-list" markdown="1">
+Apache
+
 - Blackfire
 - Cassandra
 - Chronograf
@@ -117,7 +137,9 @@ Homestead runs on any Windows, macOS, or Linux system and includes Nginx, PHP, M
 - Trader <small>(PHP extension)</small>
 - Webdriver & Laravel Dusk Utilities
 
+</div>
 <a name="installation-and-setup"></a>
+
 
 ## Installation & Setup
 
@@ -521,10 +543,14 @@ After updating the `Homestead.yaml` file, be sure to re-provision the machine by
 
 By default, the following ports are forwarded to your Homestead environment:
 
-- **HTTP:** 8000 &rarr; Forwards To 80
+- <div class="content-list" markdown="1">
+**HTTP:** 8000 &rarr; Forwards To 80
+
 - **HTTPS:** 44300 &rarr; Forwards To 443
 
+</div>
 <a name="forwarding-additional-ports"></a>
+
 
 #### Forwarding Additional Ports
 
@@ -541,7 +567,9 @@ ports:
 
 Below is a list of additional Homestead service ports that you may wish to map from your host machine to your Vagrant box:
 
-- **SSH:** 2222 &rarr; To 22
+- <div class="content-list" markdown="1">
+**SSH:** 2222 &rarr; To 22
+
 - **ngrok UI:** 4040 &rarr; To 4040
 - **MySQL:** 33060 &rarr; To 3306
 - **PostgreSQL:** 54320 &rarr; To 5432
@@ -549,7 +577,9 @@ Below is a list of additional Homestead service ports that you may wish to map f
 - **Mailhog:** 8025 &rarr; To 8025
 - **Minio:** 9600 &rarr; To 9600
 
+</div>
 <a name="php-versions"></a>
+
 
 ### PHP Versions
 

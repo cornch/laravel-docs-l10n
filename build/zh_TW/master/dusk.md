@@ -951,9 +951,23 @@ Dusk 提供了多種與 JavaScript 對話方塊互動的方法。舉例來說，
 
 Dusk 提供了多種可對網站進行的 Assertion。下面列出了所有可用的 Assertion：
 
+<style>
+    .collection-method-list > p {
+        column-count: 3; -moz-column-count: 3; -webkit-column-count: 3;
+        column-gap: 2em; -moz-column-gap: 2em; -webkit-column-gap: 2em;
+    }
+
+    .collection-method-list a {
+        display: block;
+    }
+</style>
+<div class="collection-method-list" markdown="1">
 [assertTitle](#assert-title) [assertTitleContains](#assert-title-contains) [assertUrlIs](#assert-url-is) [assertSchemeIs](#assert-scheme-is) [assertSchemeIsNot](#assert-scheme-is-not) [assertHostIs](#assert-host-is) [assertHostIsNot](#assert-host-is-not) [assertPortIs](#assert-port-is) [assertPortIsNot](#assert-port-is-not) [assertPathBeginsWith](#assert-path-begins-with) [assertPathIs](#assert-path-is) [assertPathIsNot](#assert-path-is-not) [assertRouteIs](#assert-route-is) [assertQueryStringHas](#assert-query-string-has) [assertQueryStringMissing](#assert-query-string-missing) [assertFragmentIs](#assert-fragment-is) [assertFragmentBeginsWith](#assert-fragment-begins-with) [assertFragmentIsNot](#assert-fragment-is-not) [assertHasCookie](#assert-has-cookie) [assertHasPlainCookie](#assert-has-plain-cookie) [assertCookieMissing](#assert-cookie-missing) [assertPlainCookieMissing](#assert-plain-cookie-missing) [assertCookieValue](#assert-cookie-value) [assertPlainCookieValue](#assert-plain-cookie-value) [assertSee](#assert-see) [assertDontSee](#assert-dont-see) [assertSeeIn](#assert-see-in) [assertDontSeeIn](#assert-dont-see-in) [assertSeeAnythingIn](#assert-see-anything-in) [assertSeeNothingIn](#assert-see-nothing-in) [assertScript](#assert-script) [assertSourceHas](#assert-source-has) [assertSourceMissing](#assert-source-missing) [assertSeeLink](#assert-see-link) [assertDontSeeLink](#assert-dont-see-link) [assertInputValue](#assert-input-value) [assertInputValueIsNot](#assert-input-value-is-not) [assertChecked](#assert-checked) [assertNotChecked](#assert-not-checked) [assertRadioSelected](#assert-radio-selected) [assertRadioNotSelected](#assert-radio-not-selected) [assertSelected](#assert-selected) [assertNotSelected](#assert-not-selected) [assertSelectHasOptions](#assert-select-has-options) [assertSelectMissingOptions](#assert-select-missing-options) [assertSelectHasOption](#assert-select-has-option) [assertSelectMissingOption](#assert-select-missing-option) [assertValue](#assert-value) [assertValueIsNot](#assert-value-is-not) [assertAttribute](#assert-attribute) [assertAttributeContains](#assert-attribute-contains) [assertAriaAttribute](#assert-aria-attribute) [assertDataAttribute](#assert-data-attribute) [assertVisible](#assert-visible) [assertPresent](#assert-present) [assertNotPresent](#assert-not-present) [assertMissing](#assert-missing) [assertInputPresent](#assert-input-present) [assertInputMissing](#assert-input-missing) [assertDialogOpened](#assert-dialog-opened) [assertEnabled](#assert-enabled) [assertDisabled](#assert-disabled) [assertButtonEnabled](#assert-button-enabled) [assertButtonDisabled](#assert-button-disabled) [assertFocused](#assert-focused) [assertNotFocused](#assert-not-focused) [assertAuthenticated](#assert-authenticated) [assertGuest](#assert-guest) [assertAuthenticatedAs](#assert-authenticated-as) [assertVue](#assert-vue) [assertVueIsNot](#assert-vue-is-not) [assertVueContains](#assert-vue-contains) [assertVueDoesNotContain](#assert-vue-does-not-contain)
 
+
+</div>
 <a name="assert-title"></a>
+
 
 #### assertTitle
 

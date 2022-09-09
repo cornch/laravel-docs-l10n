@@ -277,11 +277,15 @@ mix.js('resources/js/app.js', 'public/js');
 
 只要這一行程式碼，就可以使用：
 
-- 最新的 ECMAScript 語法
+- <div class="content-list" markdown="1">
+The latest EcmaScript syntax.
+
 - 模組 (Module)
 - 為正式環境 Minify 原始碼
 
+</div>
 <a name="vue"></a>
+
 
 ### Vue
 
@@ -338,11 +342,15 @@ mix.js('resources/js/app.js', 'public/js')
 
 `extract` 方法接收一組包含要拆分為獨立 `vendor.js` 檔案的函式庫或模組陣列。使用上述範例中的這個程式碼片段，Mix 會產生下列檔案：
 
-- `public/js/manifest.js`: *Webpack Manifest Runtime*
+- <div class="content-list" markdown="1">
+`public/js/manifest.js`: *The Webpack manifest runtime*
+
 - `public/js/vendor.js`: *第三方函式庫*
 - `public/js/app.js`: *專案程式碼*
 
-為了避免產生 JavaScript 錯誤，請確保使用正確的順序載入這些檔案：
+</div>
+To avoid JavaScript errors, be sure to load these files in the proper order:
+
 
 ```html
 <script src="/js/manifest.js"></script>

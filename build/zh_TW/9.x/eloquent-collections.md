@@ -52,9 +52,33 @@ Eloquent 中，所有回傳多筆 Model 結果的方法都會回傳 `Illuminate\
 
 除此之外，`Illuminate\Database\Eloquent\Collection` 類別還提供了一組可用來處理 Model Collection 的方法。大多數的方法都會回傳 `Illuminate\Database\Eloquent\Collection` 實體。不過，有些如 `modelKeys` 之類的方法則會回傳 `Illuminate\Support\Collection` 實體。
 
+<style>
+    .collection-method-list > p {
+        columns: 14.4em 1; -moz-columns: 14.4em 1; -webkit-columns: 14.4em 1;
+    }
+
+    .collection-method-list a {
+        display: block;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .collection-method code {
+        font-size: 14px;
+    }
+
+    .collection-method:not(.first-collection-method) {
+        margin-top: 50px;
+    }
+</style>
+<div class="collection-method-list" markdown="1">
 [append](#method-append) [contains](#method-contains) [diff](#method-diff) [except](#method-except) [find](#method-find) [fresh](#method-fresh) [intersect](#method-intersect) [load](#method-load) [loadMissing](#method-loadMissing) [modelKeys](#method-modelKeys) [makeVisible](#method-makeVisible) [makeHidden](#method-makeHidden) [only](#method-only) [toQuery](#method-toquery) [unique](#method-unique)
 
+
+</div>
 <a name="method-append"></a>
+
 
 #### `append($attributes)` {.collection-method .first-collection-method}
 

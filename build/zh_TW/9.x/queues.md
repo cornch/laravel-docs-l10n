@@ -149,11 +149,15 @@ php artisan migrate
 
 下列 Queue Driver 還需要一些相依性套件。可以使用 Composer 套件管理員來安裝這些相依性套件：
 
-- Amazon SQS: `aws/aws-sdk-php ~3.0`
+- <div class="content-list" markdown="1">
+Amazon SQS: `aws/aws-sdk-php ~3.0`
+
 - Beanstalkd: `pda/pheanstalk ~4.0`
 - Redis: `predis/predis ~1.0` 或 phpredis PHP 擴充套件
 
+</div>
 <a name="creating-jobs"></a>
+
 
 ## 建立 Job
 

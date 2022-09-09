@@ -47,7 +47,18 @@ Laravel 及其第一方套件都遵守 [語義化版本](https://semver.org/lang
 | 9 | 8.0 - 8.1 | 2022 年 2 月 8 日 | 2023 年 8 月 8 日 | 2024 年 2 月 8 日 |
 | 10 | 8.0 - 8.1 | 2023 年 2 月 7 日 | 2024 年 8 月 7 日 | 2025 年 2 月 7 日 |
 
-(*) 支援的 PHP 版本
+<div class="version-colors">
+    <div class="end-of-life">
+        <div class="color-box"></div>
+        <div>End of life</div>
+    </div>
+    <div class="security-fixes">
+        <div class="color-box"></div>
+        <div>Security fixes only</div>
+    </div>
+</div>
+(*) Supported PHP versions
+
 
 <a name="laravel-8"></a>
 

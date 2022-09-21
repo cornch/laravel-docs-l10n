@@ -49,10 +49,6 @@ def list_file_translators(project_id, file_id):
     file_translators[file_id] = translators
     return translators
 
-def enables_html_block(self, block, details):
-  if block is md4c.BlockType.HTML:
-    return False
-
 for source_dir in glob('docs/*'):
   version = os.path.basename(source_dir)
   target_dir = f'build/{locale}/{version}'
@@ -79,9 +75,6 @@ for source_dir in glob('docs/*'):
         f'{po_dir}/{md_filename}.po',
         save=f'{target_dir}/{md_filename}.md',
         wrapwidth=0,
-        events={
-          'enter_block': enables_html_block,
-        },
       )
 
     # write front matter    

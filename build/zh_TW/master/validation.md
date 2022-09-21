@@ -808,13 +808,14 @@ The credit card number field is required when payment type is credit card.
         display: block;
     }
 </style>
+
 <div class="collection-method-list" markdown="1">
+
 [Accepted](#rule-accepted) [Accepted If](#rule-accepted-if) [Active URL](#rule-active-url) [After (Date)](#rule-after) [After Or Equal (Date)](#rule-after-or-equal) [Alpha](#rule-alpha) [Alpha Dash](#rule-alpha-dash) [Alpha Numeric](#rule-alpha-num) [Array](#rule-array) [Bail](#rule-bail) [Before (Date)](#rule-before) [Before Or Equal (Date)](#rule-before-or-equal) [Between](#rule-between) [Boolean](#rule-boolean) [Confirmed](#rule-confirmed) [Current Password](#rule-current-password) [Date](#rule-date) [Date Equals](#rule-date-equals) [Date Format](#rule-date-format) [Declined](#rule-declined) [Declined If](#rule-declined-if) [Different](#rule-different) [Digits](#rule-digits) [Digits Between](#rule-digits-between) [Dimensions (Image Files)](#rule-dimensions) [Distinct](#rule-distinct) [Email](#rule-email) [Ends With](#rule-ends-with) [Enum](#rule-enum) [Exclude](#rule-exclude) [Exclude If](#rule-exclude-if) [Exclude Unless](#rule-exclude-unless) [Exclude Without](#rule-exclude-without) [Exists (Database)](#rule-exists) [File](#rule-file) [Filled](#rule-filled) [Greater Than](#rule-gt) [Greater Than Or Equal](#rule-gte) [Image (File)](#rule-image) [In](#rule-in) [In Array](#rule-in-array) [Integer](#rule-integer) [IP Address](#rule-ip) [MAC Address](#rule-mac) [JSON](#rule-json) [Less Than](#rule-lt) [Less Than Or Equal](#rule-lte) [Max](#rule-max) [MIME Types](#rule-mimetypes) [MIME Type By File Extension](#rule-mimes) [Min](#rule-min) [Multiple Of](#multiple-of) [Not In](#rule-not-in) [Not Regex](#rule-not-regex) [Nullable](#rule-nullable) [Numeric](#rule-numeric) [Password](#rule-password) [Present](#rule-present) [Prohibited](#rule-prohibited) [Prohibited If](#rule-prohibited-if) [Prohibited Unless](#rule-prohibited-unless) [Prohibits](#rule-prohibits) [Regular Expression](#rule-regex) [Required](#rule-required) [Required If](#rule-required-if) [Required Unless](#rule-required-unless) [Required With](#rule-required-with) [Required With All](#rule-required-with-all) [Required Without](#rule-required-without) [Required Without All](#rule-required-without-all) [Required Array Keys](#rule-required-array-keys) [Same](#rule-same) [Size](#rule-size) [Sometimes](#validating-when-present) [Starts With](#rule-starts-with) [String](#rule-string) [Timezone](#rule-timezone) [Unique (Database)](#rule-unique) [URL](#rule-url) [UUID](#rule-uuid)
 
-
 </div>
-<a name="rule-accepted"></a>
 
+<a name="rule-accepted"></a>
 
 #### accepted
 
@@ -1042,17 +1043,17 @@ Distinct 預設使用鬆散的 (Loose) 變數比較。若要使用嚴格 (Strict
 
 上方的例子會套用 `RFCValidation` 與 `DNSCheckValidation` 驗證。此處列出了所有可套用的驗證風格：
 
-- <div class="content-list" markdown="1">
-`rfc`: `RFCValidation`
+<div class="content-list" markdown="1">
 
+- `rfc`: `RFCValidation`
 - `strict`: `NoRFCWarningsValidation`
 - `dns`: `DNSCheckValidation`
 - `spoof`: `SpoofCheckValidation`
 - `filter`: `FilterEmailValidation`
 
 </div>
-The `filter` validator, which uses PHP's `filter_var` function, ships with Laravel and was Laravel's default email validation behavior prior to Laravel version 5.8.
 
+`filter` Validator 使用 PHP 的 `filter_var` 函式，是隨 Laravel 提供的 Validator。在 Laravel 5.8 以前是 Laravel 的預設 E-Mail 驗證行為。
 
 > {note} `dns` 與 `spoof` Validator 需要有 PHP 的 `intl` 擴充程式。
 
@@ -1401,16 +1402,16 @@ The `filter` validator, which uses PHP's `filter_var` function, ships with Larav
 
 該驗證欄位必須存在於輸入資料中，且不可為空。當某個欄位滿足下列條件時，將被視為「空 (Empty)」：
 
-- <div class="content-list" markdown="1">
-The value is `null`.
+<div class="content-list" markdown="1">
 
+- 該值為 `null`。
 - 該值為空字串。
 - 該值為空陣列或空的 `Countable` 物件。
 - 該值為一無路徑的已上傳檔案。
 
 </div>
-<a name="rule-required-if"></a>
 
+<a name="rule-required-if"></a>
 
 #### required_if:*另一欄位*,*值*,...
 

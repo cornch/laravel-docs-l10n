@@ -16,9 +16,9 @@ updatedAt: '2022-08-06T05:47:00Z'
 
 ## 高度影響的更改
 
-- <div class="content-list" markdown="1">
-[Model Factories](#model-factories)
+<div class="content-list" markdown="1">
 
+- [Model Factory](#model-factories)
 - [Queue `retryAfter` Method](#queue-retry-after-method)
 - [Queue `timeoutAt` Property](#queue-timeout-at-property)
 - [Queue `allOnQueue` and `allOnConnection`](#queue-allOnQueue-allOnConnection)
@@ -26,22 +26,22 @@ updatedAt: '2022-08-06T05:47:00Z'
 - [Seeder & Factory Namespaces](#seeder-factory-namespaces)
 
 </div>
-<a name="medium-impact-changes"></a>
 
+<a name="medium-impact-changes"></a>
 
 ## 中度影響的更改
 
-- <div class="content-list" markdown="1">
-[PHP 7.3.0 Required](#php-7.3.0-required)
+<div class="content-list" markdown="1">
 
+- [PHP 7.3.0 Required](#php-7.3.0-required)
 - [Failed Jobs Table Batch Support](#failed-jobs-table-batch-support)
 - [Maintenance Mode Updates](#maintenance-mode-updates)
 - [The `php artisan down --message` Option](#artisan-down-message)
 - [The `assertExactJson` Method](#assert-exact-json-method)
 
 </div>
-<a name="upgrade-8.0"></a>
 
+<a name="upgrade-8.0"></a>
 
 ## 從 7.x 升級到 8.0
 
@@ -65,9 +65,9 @@ updatedAt: '2022-08-06T05:47:00Z'
 
 Update the following dependencies in your `composer.json` file:
 
-- <div class="content-list" markdown="1">
-`guzzlehttp/guzzle` to `^7.0.1`
+<div class="content-list" markdown="1">
 
+- `guzzlehttp/guzzle` to `^7.0.1`
 - `facade/ignition` to `^2.3.6`
 - `laravel/framework` to `^8.0`
 - `laravel/ui` to `^3.0`
@@ -75,19 +75,19 @@ Update the following dependencies in your `composer.json` file:
 - `phpunit/phpunit` to `^9.0`
 
 </div>
+
 The following first-party packages have new major releases to support Laravel 8. If applicable, you should read their individual upgrade guides before upgrading:
 
+<div class="content-list" markdown="1">
 
-- <div class="content-list" markdown="1">
-[Horizon v5.0](https://github.com/laravel/horizon/blob/master/UPGRADE.md)
-
+- [Horizon v5.0](https://github.com/laravel/horizon/blob/master/UPGRADE.md)
 - [Passport v10.0](https://github.com/laravel/passport/blob/master/UPGRADE.md)
 - [Socialite v5.0](https://github.com/laravel/socialite/blob/master/UPGRADE.md)
 - [Telescope v4.0](https://github.com/laravel/telescope/blob/master/UPGRADE.md)
 
 </div>
-In addition, the Laravel installer has been updated to support `composer create-project` and Laravel Jetstream. Any installer older than 4.0 will cease to work after October 2020. You should upgrade your global installer to `^4.0` as soon as possible.
 
+In addition, the Laravel installer has been updated to support `composer create-project` and Laravel Jetstream. Any installer older than 4.0 will cease to work after October 2020. You should upgrade your global installer to `^4.0` as soon as possible.
 
 Finally, examine any other third-party packages consumed by your application and verify you are using the proper version for Laravel 8 support.
 

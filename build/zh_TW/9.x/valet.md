@@ -38,15 +38,16 @@ In other words, Valet is a blazing fast Laravel development environment that use
 
 Out of the box, Valet support includes, but is not limited to:
 
-- <style>
+<style>
     #valet-support > ul {
         column-count: 3; -moz-column-count: 3; -webkit-column-count: 3;
         line-height: 1.9;
     }
 </style>
-<div id="valet-support" markdown="1">
-[Laravel](https://laravel.com)
 
+<div id="valet-support" markdown="1">
+
+- [Laravel](https://laravel.com)
 - [Bedrock](https://roots.io/bedrock/)
 - [CakePHP 3](https://cakephp.org)
 - [Concrete5](https://www.concrete5.org/)
@@ -69,8 +70,8 @@ Out of the box, Valet support includes, but is not limited to:
 - [Zend](https://framework.zend.com)
 
 </div>
-However, you may extend Valet with your own [custom drivers](#custom-valet-drivers).
 
+However, you may extend Valet with your own [custom drivers](#custom-valet-drivers).
 
 <a name="installation"></a>
 

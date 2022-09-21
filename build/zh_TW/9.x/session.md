@@ -40,18 +40,18 @@ Laravel 隨附了多種 Session 後端，能讓我們使用直觀且同一的 AP
 
 Session 的 `driver` 設定定義了每個 Request 的 Session 資料要存在哪裡。Laravel 隨附了多個不錯的 Driver：
 
-- <div class="content-list" markdown="1">
-`file` - sessions are stored in `storage/framework/sessions`.
+<div class="content-list" markdown="1">
 
+- `file` - Session 儲存在 `storage/framework/sessions`。
 - `cookie` - Session 儲存在安全的加密 Cookie 中。
 - `database` - Session 儲存在關聯式資料庫中。
 - `memcached` / `redis` - Session 儲存在其中一個快速、基於快取的存放空間中。
 - `dynamodb` - Session 儲存在 AWS DynamoDB。
 - `array` - Session 儲存在 PHP 陣列中，且不會被^[持續保存](Persist)。
 
-> </div>
-**Note** The array driver is primarily used during [testing](/docs/{{version}}/testing) and prevents the data stored in the session from being persisted.
+</div>
 
+> **Note** Array Driver 主要是用在[測試](/docs/{{version}}/testing)上的，會讓保存在 Session 裡的資料不被持續保存。
 
 <a name="driver-prerequisites"></a>
 
@@ -323,9 +323,9 @@ php artisan migrate
 
 由於只看這些方法很難看出他們的功能，所以我們來快速看一下各個方法都用來做什麼：
 
-- <div class="content-list" markdown="1">
-The `open` method would typically be used in file based session store systems. Since Laravel ships with a `file` session driver, you will rarely need to put anything in this method. You can simply leave this method empty.
+<div class="content-list" markdown="1">
 
+- `open` 方法通常是給一些基於檔案的 Session 存放系統使用的。因為 Laravel 已經有附帶 `file` Session Driver 了，所以通常這個方法裡應該不需要寫什麼內容。留空即可。
 - `close` 方法跟 `open` 方法一樣，通常可以忽略。對大多數的 Driver 來說並不需要。
 - `read` 方法應回傳與給定 `$sessionId` 關聯的字串版本 Session 資料。在從 Driver 中取出資料時不需要進行任何的^[序列化](Serialization) 或其他編碼，因為 Laravel 會幫你序列化。
 - `write` 方法應將給定的 `$data` 字串以 `$sessionId` 關聯並保存到儲存系統中，例如 MongoDB 或其他你選擇的儲存系統。同樣的，不需要進行任何序列化 —— Laravel 已經幫你序列化好了。
@@ -333,8 +333,8 @@ The `open` method would typically be used in file based session store systems. S
 - `gc` 方法移除所有時間舊於 `$lifetime` 的 `Session` 資料。`$lifetime` 是 UNIX 時戳。對於^[自帶有效期限](Self-Expiring)的系統，如 Memcached 或 Redis，可以將這個方法留空。
 
 </div>
-<a name="registering-the-driver"></a>
 
+<a name="registering-the-driver"></a>
 
 #### 註冊 Driver
 

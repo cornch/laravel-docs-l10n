@@ -57,8 +57,8 @@ Laravel 及其第一方套件都遵守 [語義化版本](https://semver.org/lang
         <div>Security fixes only</div>
     </div>
 </div>
-(*) Supported PHP versions
 
+(*) 支援的 PHP 版本
 
 <a name="laravel-8"></a>
 

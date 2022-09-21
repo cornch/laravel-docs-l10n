@@ -70,13 +70,14 @@ Eloquent 中，所有回傳多筆 Model 結果的方法都會回傳 `Illuminate\
         margin-top: 50px;
     }
 </style>
+
 <div id="collection-method-list" markdown="1">
+
 [contains](#method-contains) [diff](#method-diff) [except](#method-except) [find](#method-find) [fresh](#method-fresh) [intersect](#method-intersect) [load](#method-load) [loadMissing](#method-loadMissing) [modelKeys](#method-modelKeys) [makeVisible](#method-makeVisible) [makeHidden](#method-makeHidden) [only](#method-only) [toQuery](#method-toquery) [unique](#method-unique)
 
-
 </div>
-<a name="method-contains"></a>
 
+<a name="method-contains"></a>
 
 #### `contains($key, $operator = null, $value = null)` {.collection-method .first-collection-method}
 

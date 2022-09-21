@@ -35,8 +35,8 @@ updatedAt: '2022-08-09T14:00:00Z'
 對於從頭開始撰寫 Laravel 專案來說，Breeze 提供了一個絕佳的起始點。而且，對於打算通過 [Laravel Livewire](https://laravel-livewire.com) 來提升 Blade 樣板功能的專案來說，Breeze 也是個不錯的選項。
 
 <img src="https://laravel.com/img/docs/breeze-register.png">
-<a name="laravel-breeze-installation"></a>
 
+<a name="laravel-breeze-installation"></a>
 
 ### 安裝
 

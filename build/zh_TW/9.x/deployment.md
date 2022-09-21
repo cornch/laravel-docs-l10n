@@ -34,9 +34,9 @@ updatedAt: '2022-09-09T05:22:00Z'
 
 Laravel Framework 有一些系統需求。請確保網頁伺服器有達到下列最小 PHP 版本需求與擴充套件需求：
 
-- <div class="content-list" markdown="1">
-PHP >= 8.0
+<div class="content-list" markdown="1">
 
+- PHP >= 8.0
 - BCMath PHP 擴充套件
 - Ctype PHP 擴充套件
 - cURL PHP 擴充套件
@@ -51,8 +51,8 @@ PHP >= 8.0
 - XML PHP 擴充套件
 
 </div>
-<a name="server-configuration"></a>
 
+<a name="server-configuration"></a>
 
 ## 伺服器設定
 

@@ -16,21 +16,21 @@ updatedAt: '2022-08-06T05:47:00Z'
 
 ## 高度影響的更改
 
-- <div class="content-list" markdown="1">
-[Updating Dependencies](#updating-dependencies)
+<div class="content-list" markdown="1">
 
+- [更新相依性套件](#updating-dependencies)
 - [Flysystem 3.x](#flysystem-3)
 - [Symfony Mailer](#symfony-mailer)
 
 </div>
-<a name="medium-impact-changes"></a>
 
+<a name="medium-impact-changes"></a>
 
 ## 中度影響的更改
 
-- <div class="content-list" markdown="1">
-[Belongs To Many `firstOrNew`, `firstOrCreate`, and `updateOrCreate` methods](#belongs-to-many-first-or-new)
+<div class="content-list" markdown="1">
 
+- [Belongs To Many 的 `firstOrNew`、`firstOrCreate`、`updateOrCreate` 等方法](#belongs-to-many-first-or-new)
 - [自訂型別轉換與 `null`](#custom-casts-and-null)
 - [預設 HTTP 用戶端的逾時設定](#http-client-default-timeout)
 - [PHP 回傳型別](#php-return-types)
@@ -42,8 +42,8 @@ updatedAt: '2022-08-06T05:47:00Z'
 - [未驗證的陣列索引鍵](#unvalidated-array-keys)
 
 </div>
-<a name="upgrade-9.0"></a>
 
+<a name="upgrade-9.0"></a>
 
 ## 從 8.x 升級到 9.0
 
@@ -67,23 +67,24 @@ Laravel 先已要求 PHP 最小版本為 8.0.2。
 
 請在專案的 `composer.json` 檔案中更新下列相依性套件：
 
-- <div class="content-list" markdown="1">
-`laravel/framework` to `^9.0`
+<div class="content-list" markdown="1">
 
+- `laravel/framework` 升級為 `^9.0`
 - `nunomaduro/collision` 升級為 `^6.1`
 
 </div>
-In addition, please replace `facade/ignition` with `"spatie/laravel-ignition": "^1.0"` in your application's `composer.json` file.
 
+此外，請在 `composer.json` 檔中將 `facade/ignition` 改為 `"spatie/laravel-ignition": "^1.0"`。
 
 此外，下列第一方專案也有更新新的版本以支援 Laravel 9.x。若有使用這些套件，請在升級前先閱讀各套件的升級指南：
 
-- <div class="content-list" markdown="1">
-[Vonage Notification Channel (v3.0)](https://github.com/laravel/vonage-notification-channel/blob/3.x/UPGRADE.md) (Replaces Nexmo)
+<div class="content-list" markdown="1">
+
+- [Vonage 通知通道 (v3.0)](https://github.com/laravel/vonage-notification-channel/blob/3.x/UPGRADE.md) (用以取代 Nexmo)
 
 </div>
-Finally, examine any other third-party packages consumed by your application and verify you are using the proper version for Laravel 9 support.
 
+最後，請檢視你的專案使用的其他第三方套件，確認一下是否有使用支援 Laravel 9 的版本。
 
 <a name="php-return-types"></a>
 
@@ -91,9 +92,9 @@ Finally, examine any other third-party packages consumed by your application and
 
 對於一些如 `offsetGet`、`offSet` ⋯⋯等方法，PHP 已經開始進入一個要求回傳型別的過渡階段。因此，Laravel 9 也開始在程式碼中實作這些回傳型別。一般來說，應該是不會影響使用者的程式碼。不過，若你有複寫 Laravel 核心類別中的這些要求回傳型別的方法，則請在你的專案或套件程式碼中加上回傳型別：
 
-- <div class="content-list" markdown="1">
-`count(): int`
+<div class="content-list" markdown="1">
 
+- `count(): int`
 - `getIterator(): Traversable`
 - `getSize(): int`
 - `jsonSerialize(): array`
@@ -103,12 +104,12 @@ Finally, examine any other third-party packages consumed by your application and
 - `offsetUnset($key): void`
 
 </div>
-In addition, return types were added to methods implementing PHP's `SessionHandlerInterface`. Again, it is unlikely that this change affects your own application or package code:
 
+此外，PHP `SessionHandlerInterface` 的方法實作中也有新增回傳型別。一樣，通常這不會影響到你的專案或套件程式碼：
 
-- <div class="content-list" markdown="1">
-`open($savePath, $sessionName): bool`
+<div class="content-list" markdown="1">
 
+- `open($savePath, $sessionName): bool`
 - `close(): bool`
 - `read($sessionId): string|false`
 - `write($sessionId, $data): bool`
@@ -116,8 +117,8 @@ In addition, return types were added to methods implementing PHP's `SessionHandl
 - `gc($lifetime): int`
 
 </div>
-<a name="application"></a>
 
+<a name="application"></a>
 
 ### Application
 

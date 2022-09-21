@@ -32,8 +32,8 @@ updatedAt: '2022-08-06T05:46:00Z'
 When using Horizon, all of your queue worker configuration is stored in a single, simple configuration file. By defining your application's worker configuration in a version controlled file, you may easily scale or modify your application's queue workers when deploying your application.
 
 <img src="https://laravel.com/img/docs/horizon-example.png">
-<a name="installation"></a>
 
+<a name="installation"></a>
 
 ## Installation
 

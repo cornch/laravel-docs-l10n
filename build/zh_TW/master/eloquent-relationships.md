@@ -55,9 +55,9 @@ updatedAt: '2022-08-09T12:03:00Z'
 
 資料庫中的資料表通常會互相彼此關聯。舉例來說，部落格文章可能會有許多的留言，而訂單則可能會關聯到建立訂單的使用者。在 Eloquent 中，要管理並處理這些關聯非常簡單，並支援多種常見的關聯：
 
-- <div class="content-list" markdown="1">
-[One To One](#one-to-one)
+<div class="content-list" markdown="1">
 
+- [一對一](#one-to-one)
 - [一對多](#one-to-many)
 - [多對多](#many-to-many)
 - [間接一對一](#has-one-through)
@@ -67,8 +67,8 @@ updatedAt: '2022-08-09T12:03:00Z'
 - [多對多 (多型)](#many-to-many-polymorphic-relations)
 
 </div>
-<a name="defining-relationships"></a>
 
+<a name="defining-relationships"></a>
 
 ## 定義關聯
 

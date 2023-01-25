@@ -10,7 +10,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
-"PO-Revision-Date: 2023-01-25 07:02\n"
+"PO-Revision-Date: 2023-01-25 08:42\n"
 
 #: docs/8.x/artisan.md:block 1 (header)
 msgid "Artisan Console"
@@ -1212,7 +1212,7 @@ msgstr "Artisan 會在執行指令的時候分派三個事件： `Illuminate\\Co
 
 #: docs/9.x/artisan.md:block 2 (unordered list)
 msgid "[Isolatable Commands](#isolatable-commands)"
-msgstr ""
+msgstr "[可隔離的指令](#isolatable-commands)"
 
 #: docs/9.x/artisan.md:block 12 (code)
 msgid "./vendor/bin/sail artisan list\n"
@@ -1294,15 +1294,15 @@ msgstr "**Note** 為了提升程式碼重複使用率，最好保持主控台指
 
 #: docs/9.x/artisan.md:block 65 (header)
 msgid "Isolatable Commands"
-msgstr ""
+msgstr "可隔離的指令"
 
 #: docs/9.x/artisan.md:block 66 (quote)
 msgid "**Warning** To utilize this feature, your application must be using the `memcached`, `redis`, `dynamodb`, `database`, `file`, or `array` cache driver as your application's default cache driver. In addition, all servers must be communicating with the same central cache server."
-msgstr ""
+msgstr "**Warning** 若要使用此功能，則應用程式必須要使用 `memcached`, `redis`, `dynamodb`, `database`, `file` 或 `array` 作為應用程式的預設快取 Driver。另外，所有的伺服器也都必須要連線至相同的中央快取伺服器。"
 
 #: docs/9.x/artisan.md:block 67 (paragraph)
 msgid "Sometimes you may wish to ensure that only one instance of a command can run at a time. To accomplish this, you may implement the `Illuminate\\Contracts\\Console\\Isolatable` interface on your command class:"
-msgstr ""
+msgstr "有時候，我們可能需要確保某個指令在同一時間只有一個實體在執行。為此，可以在指令類別上實作 `Illuminate\\Contracts\\Console\\Isolatable` Interface："
 
 #: docs/9.x/artisan.md:block 68 (code)
 msgid "<?php\n\n"
@@ -1313,31 +1313,38 @@ msgid "<?php\n\n"
 "{\n"
 "    // ...\n"
 "}\n"
-msgstr ""
+msgstr "<?php\n\n"
+"namespace App\\Console\\Commands;\n\n"
+"use Illuminate\\Console\\Command;\n"
+"use Illuminate\\Contracts\\Console\\Isolatable;\n\n"
+"class SendEmails extends Command implements Isolatable\n"
+"{\n"
+"    // ...\n"
+"}\n"
 
 #: docs/9.x/artisan.md:block 69 (paragraph)
 msgid "When a command is marked as `Isolatable`, Laravel will automatically add an `--isolated` option to the command. When the command is invoked with that option, Laravel will ensure that no other instances of that command are already running. Laravel accomplishes this by attempting to acquire an atomic lock using your application's default cache driver. If other instances of the command are running, the command will not execute; however, the command will still exit with a successful exit status code:"
-msgstr ""
+msgstr "將指令標記為 ^[`Isolatable`](可隔離的) 後，Laravel 會自動為該指令加上一個 `--isolated` 選項。使用 `--isolated` 選項呼叫該指令時，Laravel 會確保沒有其他該指令的實體正在執行。Laravel 通過在預設快取 Driver 上取得 ^[Atomic Lock](不可部分完成鎖定) 來確保只有一個實體在執行。若該指令有其他實體在執行，就不會執行該指令。不過，該指令依然會以成功的終止狀態碼結束："
 
 #: docs/9.x/artisan.md:block 70 (code)
 msgid "php artisan mail:send 1 --isolated\n"
-msgstr ""
+msgstr "php artisan mail:send 1 --isolated\n"
 
 #: docs/9.x/artisan.md:block 71 (paragraph)
 msgid "If you would like to specify the exit status code that the command should return if it is not able to execute, you may provide the desired status code via the `isolated` option:"
-msgstr ""
+msgstr "若想指定該指令無法執行時回傳的終止狀態碼，可使用 `isolated` 選項來設定："
 
 #: docs/9.x/artisan.md:block 72 (code)
 msgid "php artisan mail:send 1 --isolated=12\n"
-msgstr ""
+msgstr "php artisan mail:send 1 --isolated=12\n"
 
 #: docs/9.x/artisan.md:block 74 (header)
 msgid "Lock Expiration Time"
-msgstr ""
+msgstr "Lock 的逾期時間"
 
 #: docs/9.x/artisan.md:block 75 (paragraph)
 msgid "By default, isolation locks expire after the command is finished. Or, if the command is interrupted and unable to finish, the lock will expire after one hour. However, you may adjust the lock expiration time by defining a `isolationLockExpiresAt` method on your command:"
-msgstr ""
+msgstr "預設情況下，指令完成執行後，獨立指令的 Lock 就會逾時。而如果指令在執行時遭到中斷而無法完成，該 Lock 會在一小時後逾時。不過，你可以在指令中定義一個 `isolationLockExpiresAt` 方法來調整逾時時間："
 
 #: docs/9.x/artisan.md:block 76 (code)
 msgid "/**\n"
@@ -1349,7 +1356,15 @@ msgid "/**\n"
 "{\n"
 "    return now()->addMinutes(5);\n"
 "}\n"
-msgstr ""
+msgstr "/**\n"
+" * Determine when an isolation lock expires for the command.\n"
+" *\n"
+" * @return \\DateTimeInterface|\\DateInterval\n"
+" */\n"
+"public function isolationLockExpiresAt()\n"
+"{\n"
+"    return now()->addMinutes(5);\n"
+"}\n"
 
 #: docs/9.x/artisan.md:block 85 (code)
 msgid "// Optional argument...\n"
@@ -1403,7 +1418,7 @@ msgstr "**Note** 有關更進階的選項，請參考 [Symfony Progress Bar 元�
 
 #: docs/9.x/artisan.md:block 213 (paragraph)
 msgid "As you may know, operating systems allow signals to be sent to running processes. For example, the `SIGTERM` signal is how operating systems ask a program to terminate. If you wish to listen for signals in your Artisan console commands and execute code when they occur, you may use the `trap` method:"
-msgstr ""
+msgstr "讀者可能已經知道，在作業系統中，我們可以傳送訊號 (Signal) 給正在執行的處理程序。舉例來說，作業系統會使用 `SIGTERM` 訊號來要求某個程式停止執行。若想在 Artisan 主控台指令上監聽這些訊號，可使用 `trap` 方法："
 
 #: docs/9.x/artisan.md:block 214 (code)
 msgid "/**\n"
@@ -1418,18 +1433,32 @@ msgid "/**\n"
 "        // ...\n"
 "    }\n"
 "}\n"
-msgstr ""
+msgstr "/**\n"
+" * Execute the console command.\n"
+" *\n"
+" * @return mixed\n"
+" */\n"
+"public function handle()\n"
+"{\n"
+"    $this->trap(SIGTERM, fn () => $this->shouldKeepRunning = false);\n\n"
+"    while ($this->shouldKeepRunning) {\n"
+"        // ...\n"
+"    }\n"
+"}\n"
 
 #: docs/9.x/artisan.md:block 215 (paragraph)
 msgid "To listen for multiple signals at once, you may provide an array of signals to the `trap` method:"
-msgstr ""
+msgstr "若要同時監聽多個訊號，可提供一組訊號的陣列給 `trap` 方法："
 
 #: docs/9.x/artisan.md:block 216 (code)
 msgid "$this->trap([SIGTERM, SIGQUIT], function ($signal) {\n"
 "    $this->shouldKeepRunning = false;\n\n"
 "    dump($signal); // SIGTERM / SIGQUIT\n"
 "});\n"
-msgstr ""
+msgstr "$this->trap([SIGTERM, SIGQUIT], function ($signal) {\n"
+"    $this->shouldKeepRunning = false;\n\n"
+"    dump($signal); // SIGTERM / SIGQUIT\n"
+"});\n"
 
 #: docs/master/artisan.md:block 47 (code)
 msgid "<?php\n\n"
@@ -1459,7 +1488,33 @@ msgid "<?php\n\n"
 "        $drip->send(User::find($this->argument('user')));\n"
 "    }\n"
 "}\n"
-msgstr ""
+msgstr "<?php\n\n"
+"namespace App\\Console\\Commands;\n\n"
+"use App\\Models\\User;\n"
+"use App\\Support\\DripEmailer;\n"
+"use Illuminate\\Console\\Command;\n\n"
+"class SendEmails extends Command\n"
+"{\n"
+"    /**\n"
+"     * The name and signature of the console command.\n"
+"     *\n"
+"     * @var string\n"
+"     */\n"
+"    protected $signature = 'mail:send {user}';\n\n"
+"    /**\n"
+"     * The console command description.\n"
+"     *\n"
+"     * @var string\n"
+"     */\n"
+"    protected $description = 'Send a marketing email to a user';\n\n"
+"    /**\n"
+"     * Execute the console command.\n"
+"     */\n"
+"    public function handle(DripEmailer $drip): void\n"
+"    {\n"
+"        $drip->send(User::find($this->argument('user')));\n"
+"    }\n"
+"}\n"
 
 #: docs/master/artisan.md:block 52 (code)
 msgid "/**\n"

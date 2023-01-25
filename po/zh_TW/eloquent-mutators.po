@@ -10,7 +10,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
-"PO-Revision-Date: 2023-01-25 07:02\n"
+"PO-Revision-Date: 2023-01-25 10:52\n"
 
 #: docs/8.x/eloquent-mutators.md:block 1 (header)
 msgid "Eloquent: Mutators & Casting"
@@ -1508,7 +1508,7 @@ msgstr "該更動子閉包會接收目前正在設定的屬性的值，讓你可
 
 #: docs/9.x/eloquent-mutators.md:block 35 (paragraph)
 msgid "In this example, the `set` callback will be called with the value `Sally`. The mutator will then apply the `strtolower` function to the name and set its resulting value in the model's internal `$attributes` array."
-msgstr ""
+msgstr "在此範例中，`set` 閉包會以 `Sally` 值呼叫。更動子接著會在名字上套用 `strtolower` 函式，並將其結果設定到 Model 內部的 `$attribuets` 陣列上。"
 
 #: docs/9.x/eloquent-mutators.md:block 37 (header)
 msgid "Mutating Multiple Attributes"
@@ -1562,7 +1562,7 @@ msgstr "use App\\Support\\Address;\n"
 
 #: docs/9.x/eloquent-mutators.md:block 45 (unordered list)
 msgid "<code>decimal:&lt;precision&gt;</code>"
-msgstr ""
+msgstr "<code>decimal:&lt;precision&gt;</code>"
 
 #: docs/9.x/eloquent-mutators.md:block 53 (quote)
 msgid "**Warning** Attributes that are `null` will not be cast. In addition, you should never define a cast (or an attribute) that has the same name as a relationship."
@@ -1574,14 +1574,17 @@ msgstr "**Warning** Enum 型別轉換只可在 PHP 8.1 以上使用。"
 
 #: docs/9.x/eloquent-mutators.md:block 91 (paragraph)
 msgid "Eloquent also allows you to cast your attribute values to PHP [Enums](https://www.php.net/manual/en/language.enumerations.backed.php). To accomplish this, you may specify the attribute and enum you wish to cast in your model's `$casts` property array:"
-msgstr ""
+msgstr "Eloquent 也能讓我們將屬性值轉換為 PHP 的 [Enum](https://www.php.net/manual/en/language.enumerations.backed.php)。若要轉換成 Enum，可在 Model 中的 `$casts` 屬性陣列中指定要型別轉換的屬性與 Enum："
 
 #: docs/9.x/eloquent-mutators.md:block 94 (code)
 msgid "if ($server->status == ServerStatus::Provisioned) {\n"
 "    $server->status = ServerStatus::Ready;\n\n"
 "    $server->save();\n"
 "}\n"
-msgstr ""
+msgstr "if ($server->status == ServerStatus::Provisioned) {\n"
+"    $server->status = ServerStatus::Ready;\n\n"
+"    $server->save();\n"
+"}\n"
 
 #: docs/9.x/eloquent-mutators.md:block 100 (header)
 msgid "Key Rotation"
@@ -1593,15 +1596,15 @@ msgstr "讀者可能已經知道，Laravel 會使用專案 `app` 設定檔中的
 
 #: docs/9.x/eloquent-mutators.md:block 110 (paragraph)
 msgid "Laravel has a variety of built-in, helpful cast types; however, you may occasionally need to define your own cast types. To create a cast, execute the `make:cast` Artisan command. The new cast class will be placed in your `app/Casts` directory:"
-msgstr ""
+msgstr "Laravel 中有各種內建的實用型別轉換類型。不過，有時候，我們還是需要定義自定 Cast。若要建立型別轉換程式，請執行 `make:cast` Artisan 指令。新建立的 Cast 類別會被放在 `app/Casts` 目錄下："
 
 #: docs/9.x/eloquent-mutators.md:block 111 (code)
 msgid "php artisan make:cast Json\n"
-msgstr ""
+msgstr "php artisan make:cast Json\n"
 
 #: docs/9.x/eloquent-mutators.md:block 112 (paragraph)
 msgid "All custom cast classes implement the `CastsAttributes` interface. Classes that implement this interface must define a `get` and `set` method. The `get` method is responsible for transforming a raw value from the database into a cast value, while the `set` method should transform a cast value into a raw value that can be stored in the database. As an example, we will re-implement the built-in `json` cast type as a custom cast type:"
-msgstr ""
+msgstr "所有的自定 Cast 類別都實作了 `CastsAttributes` 界面。實作了這個介面的類別必須定義一組 `get` 與 `set` 方法。`get` 方法用於將儲存在資料庫內的原始值轉換為型別值；`set` 方法則負責將型別值轉換為可儲存在資料庫內的原始值。在這裡，我們將重新實作一個內建的 `json` 型別轉換類型為例："
 
 #: docs/9.x/eloquent-mutators.md:block 120 (code)
 msgid "<?php\n\n"
@@ -1647,7 +1650,49 @@ msgid "<?php\n\n"
 "        ];\n"
 "    }\n"
 "}\n"
-msgstr ""
+msgstr "<?php\n\n"
+"namespace App\\Casts;\n\n"
+"use App\\ValueObjects\\Address as AddressValueObject;\n"
+"use Illuminate\\Contracts\\Database\\Eloquent\\CastsAttributes;\n"
+"use InvalidArgumentException;\n\n"
+"class Address implements CastsAttributes\n"
+"{\n"
+"    /**\n"
+"     * Cast the given value.\n"
+"     *\n"
+"     * @param  \\Illuminate\\Database\\Eloquent\\Model  $model\n"
+"     * @param  string  $key\n"
+"     * @param  mixed  $value\n"
+"     * @param  array  $attributes\n"
+"     * @return \\App\\ValueObjects\\Address\n"
+"     */\n"
+"    public function get($model, $key, $value, $attributes)\n"
+"    {\n"
+"        return new AddressValueObject(\n"
+"            $attributes['address_line_one'],\n"
+"            $attributes['address_line_two']\n"
+"        );\n"
+"    }\n\n"
+"    /**\n"
+"     * Prepare the given value for storage.\n"
+"     *\n"
+"     * @param  \\Illuminate\\Database\\Eloquent\\Model  $model\n"
+"     * @param  string  $key\n"
+"     * @param  \\App\\ValueObjects\\Address  $value\n"
+"     * @param  array  $attributes\n"
+"     * @return array\n"
+"     */\n"
+"    public function set($model, $key, $value, $attributes)\n"
+"    {\n"
+"        if (! $value instanceof AddressValueObject) {\n"
+"            throw new InvalidArgumentException('The given value is not an Address instance.');\n"
+"        }\n\n"
+"        return [\n"
+"            'address_line_one' => $value->lineOne,\n"
+"            'address_line_two' => $value->lineTwo,\n"
+"        ];\n"
+"    }\n"
+"}\n"
 
 #: docs/9.x/eloquent-mutators.md:block 123 (quote)
 msgid "**Note** If you plan to serialize your Eloquent models containing value objects to JSON or arrays, you should implement the `Illuminate\\Contracts\\Support\\Arrayable` and `JsonSerializable` interfaces on the value object."

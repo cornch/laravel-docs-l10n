@@ -10,7 +10,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
-"PO-Revision-Date: 2022-08-09 13:35\n"
+"PO-Revision-Date: 2023-01-25 07:03\n"
 
 #: docs/8.x/seeding.md:block 1 (header)
 msgid "Database: Seeding"
@@ -236,9 +236,17 @@ msgstr "[靜音 Model Events](#muting-model-events)"
 msgid "**Note** [Mass assignment protection](/docs/{{version}}/eloquent#mass-assignment) is automatically disabled during database seeding."
 msgstr "**Note** 在進行 Seeder 時，會自動禁用[大量賦值保護](/docs/{{version}}/eloquent#mass-assignment)。"
 
+#: docs/9.x/seeding.md:block 11 (paragraph)
+msgid "A seeder class only contains one method by default: `run`. This method is called when the `db:seed` [Artisan command](/docs/{{version}}/artisan) is executed. Within the `run` method, you may insert data into your database however you wish. You may use the [query builder](/docs/{{version}}/queries) to manually insert data or you may use [Eloquent model factories](/docs/{{version}}/eloquent-factories)."
+msgstr ""
+
 #: docs/9.x/seeding.md:block 14 (quote)
 msgid "**Note** You may type-hint any dependencies you need within the `run` method's signature. They will automatically be resolved via the Laravel [service container](/docs/{{version}}/container)."
 msgstr "**Note** 在 `run` 方法的簽章 (Signature) 中，我們可以 ^[Type-Hint](型別提示) 任何需要的相依性。Laravel 的 [Service Container](/docs/{{version}}/container) 會自動解析 Type-Hint 中的相依性。"
+
+#: docs/9.x/seeding.md:block 17 (paragraph)
+msgid "Of course, manually specifying the attributes for each model seed is cumbersome. Instead, you can use [model factories](/docs/{{version}}/eloquent-factories) to conveniently generate large amounts of database records. First, review the [model factory documentation](/docs/{{version}}/eloquent-factories) to learn how to define your factories."
+msgstr ""
 
 #: docs/9.x/seeding.md:block 25 (header)
 msgid "Muting Model Events"
@@ -287,4 +295,84 @@ msgstr "<?php\n\n"
 "        ]);\n"
 "    }\n"
 "}\n"
+
+#: docs/9.x/seeding.md:block 32 (paragraph)
+msgid "You may also seed your database using the `migrate:fresh` command in combination with the `--seed` option, which will drop all tables and re-run all of your migrations. This command is useful for completely re-building your database. The `--seeder` option may be used to specify a specific seeder to run:"
+msgstr ""
+
+#: docs/9.x/seeding.md:block 33 (code)
+msgid "php artisan migrate:fresh --seed\n\n"
+"php artisan migrate:fresh --seed --seeder=UserSeeder \n"
+msgstr ""
+
+#: docs/master/seeding.md:block 13 (code)
+msgid "<?php\n\n"
+"namespace Database\\Seeders;\n\n"
+"use Illuminate\\Database\\Seeder;\n"
+"use Illuminate\\Support\\Facades\\DB;\n"
+"use Illuminate\\Support\\Facades\\Hash;\n"
+"use Illuminate\\Support\\Str;\n\n"
+"class DatabaseSeeder extends Seeder\n"
+"{\n"
+"    /**\n"
+"     * Run the database seeders.\n"
+"     */\n"
+"    public function run(): void\n"
+"    {\n"
+"        DB::table('users')->insert([\n"
+"            'name' => Str::random(10),\n"
+"            'email' => Str::random(10).'@gmail.com',\n"
+"            'password' => Hash::make('password'),\n"
+"        ]);\n"
+"    }\n"
+"}\n"
+msgstr ""
+
+#: docs/master/seeding.md:block 19 (code)
+msgid "use App\\Models\\User;\n\n"
+"/**\n"
+" * Run the database seeders.\n"
+" */\n"
+"public function run(): void\n"
+"{\n"
+"    User::factory()\n"
+"            ->count(50)\n"
+"            ->hasPosts(1)\n"
+"            ->create();\n"
+"}\n"
+msgstr ""
+
+#: docs/master/seeding.md:block 23 (code)
+msgid "/**\n"
+" * Run the database seeders.\n"
+" */\n"
+"public function run(): void\n"
+"{\n"
+"    $this->call([\n"
+"        UserSeeder::class,\n"
+"        PostSeeder::class,\n"
+"        CommentSeeder::class,\n"
+"    ]);\n"
+"}\n"
+msgstr ""
+
+#: docs/master/seeding.md:block 27 (code)
+msgid "<?php\n\n"
+"namespace Database\\Seeders;\n\n"
+"use Illuminate\\Database\\Seeder;\n"
+"use Illuminate\\Database\\Console\\Seeds\\WithoutModelEvents;\n\n"
+"class DatabaseSeeder extends Seeder\n"
+"{\n"
+"    use WithoutModelEvents;\n\n"
+"    /**\n"
+"     * Run the database seeders.\n"
+"     */\n"
+"    public function run(): void\n"
+"    {\n"
+"        $this->call([\n"
+"            UserSeeder::class,\n"
+"        ]);\n"
+"    }\n"
+"}\n"
+msgstr ""
 

@@ -10,7 +10,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
-"PO-Revision-Date: 2022-08-09 13:36\n"
+"PO-Revision-Date: 2023-01-25 07:02\n"
 
 #: docs/8.x/migrations.md:block 1 (header)
 msgid "Database: Migrations"
@@ -2220,6 +2220,10 @@ msgstr "`Illuminate\\Database\\Events\\MigrationEnded`"
 msgid "A single migration has finished executing."
 msgstr "已完成執行單一 Migration。"
 
+#: docs/9.x/migrations.md:block 2 (unordered list)
+msgid "[Renaming Columns](#renaming-columns)"
+msgstr ""
+
 #: docs/9.x/migrations.md:block 13 (quote)
 msgid "**Note** Migration stubs may be customized using [stub publishing](/docs/{{version}}/artisan#stub-customization)."
 msgstr "**Note** 可以[安裝 Stub](/docs/{{version}}/artisan#stub-customization) 來自訂 Migration 的 Stub。"
@@ -2232,11 +2236,24 @@ msgstr "php artisan schema:dump\n\n"
 "# 傾印目前的資料庫結構，並刪除所有現存的 Migration...\n"
 "php artisan schema:dump --prune\n"
 
-#: docs/9.x/migrations.md:block 20 (quote)
+#: docs/9.x/migrations.md:block 18 (paragraph)
+msgid "When you execute this command, Laravel will write a \"schema\" file to your application's `database/schema` directory. The schema file's name will correspond to the database connection. Now, when you attempt to migrate your database and no other migrations have been executed, Laravel will execute first the SQL statements of the schema file of the database connection you are using. After executing the schema file's statements, Laravel will execute any remaining migrations that were not part of the schema dump."
+msgstr ""
+
+#: docs/9.x/migrations.md:block 19 (paragraph)
+msgid "If your application's tests use a different database connection than the one you typically use during local development, you should ensure you have dumped a schema file using that database connection so that your tests are able to build your database. You may wish to do this after dumping the database connection you typically use during local development:"
+msgstr ""
+
+#: docs/9.x/migrations.md:block 20 (code)
+msgid "php artisan schema:dump\n"
+"php artisan schema:dump --database=testing --prune\n"
+msgstr ""
+
+#: docs/9.x/migrations.md:block 22 (quote)
 msgid "**Warning** Migration squashing is only available for the MySQL, PostgreSQL, and SQLite databases and utilizes the database's command-line client. Schema dumps may not be restored to in-memory SQLite databases."
 msgstr "**Warning** Migration 壓縮只支援 MySQL、PostgreSQL、SQLite 等資料庫，且會使用資料庫的主控台用戶端。Schema 傾印無法用來復原 In-Memory 的 SQLite 資料庫。"
 
-#: docs/9.x/migrations.md:block 25 (code)
+#: docs/9.x/migrations.md:block 27 (code)
 msgid "<?php\n\n"
 "use Illuminate\\Database\\Migrations\\Migration;\n"
 "use Illuminate\\Database\\Schema\\Blueprint;\n"
@@ -2298,15 +2315,35 @@ msgstr "<?php\n\n"
 "    }\n"
 "};\n"
 
-#: docs/9.x/migrations.md:block 36 (paragraph)
+#: docs/9.x/migrations.md:block 38 (paragraph)
 msgid "If you would like to see the SQL statements that will be executed by the migrations without actually running them, you may provide the `--pretend` flag to the `migrate` command:"
 msgstr "若想檢視 Migration 中會執行的 SQL 陳述式而不實際執行這些 SQL，則可提供 `--pretend` 旗標給 `migrate` 指令："
 
-#: docs/9.x/migrations.md:block 37 (code)
+#: docs/9.x/migrations.md:block 39 (code)
 msgid "php artisan migrate --pretend\n"
 msgstr "php artisan migrate --pretend\n"
 
-#: docs/9.x/migrations.md:block 53 (code)
+#: docs/9.x/migrations.md:block 40 (header)
+msgid "Isolating Migration Execution"
+msgstr ""
+
+#: docs/9.x/migrations.md:block 41 (paragraph)
+msgid "If you are deploying your application across multiple servers and running migrations as part of your deployment process, you likely do not want two servers attempting to migrate the database at the same time. To avoid this, you may use the `isolated` option when invoking the `migrate` command."
+msgstr ""
+
+#: docs/9.x/migrations.md:block 42 (paragraph)
+msgid "When the `isolated` option is provided, Laravel will acquire an atomic lock using your application's cache driver before attempting to run your migrations. All other attempts to run the `migrate` command while that lock is held will not execute; however, the command will still exit with a successful exit status code:"
+msgstr ""
+
+#: docs/9.x/migrations.md:block 43 (code)
+msgid "php artisan migrate --isolated\n"
+msgstr ""
+
+#: docs/9.x/migrations.md:block 44 (quote)
+msgid "**Warning** To utilize this feature, your application must be using the `memcached`, `redis`, `dynamodb`, `database`, `file`, or `array` cache driver as your application's default cache driver. In addition, all servers must be communicating with the same central cache server."
+msgstr ""
+
+#: docs/9.x/migrations.md:block 60 (code)
 msgid "php artisan migrate:refresh\n\n"
 "# Refresh the database and run all database seeds...\n"
 "php artisan migrate:refresh --seed\n"
@@ -2314,15 +2351,15 @@ msgstr "php artisan migrate:refresh\n\n"
 "# 重新整理資料庫，並執行所有的資料庫 Seed...\n"
 "php artisan migrate:refresh --seed\n"
 
-#: docs/9.x/migrations.md:block 60 (quote)
+#: docs/9.x/migrations.md:block 67 (quote)
 msgid "**Warning** The `migrate:fresh` command will drop all database tables regardless of their prefix. This command should be used with caution when developing on a database that is shared with other applications."
 msgstr "**Warning** 不論資料表是否有前置詞 (Prefix)，`migrate:fresh` 指令會刪除所有的資料庫資料表。在使用與其他專案共享的資料庫時，若要與本指令搭配使用請務必注意。"
 
-#: docs/9.x/migrations.md:block 82 (paragraph)
+#: docs/9.x/migrations.md:block 89 (paragraph)
 msgid "If you would like to add a \"comment\" to a database table, you may invoke the `comment` method on the table instance. Table comments are currently only supported by MySQL and Postgres:"
 msgstr "若想在資料表上加入「註解」，可在 Table 實體上叫用 `comment` 方法。資料表註解目前只支援 MySQL 與 Postgres："
 
-#: docs/9.x/migrations.md:block 83 (code)
+#: docs/9.x/migrations.md:block 90 (code)
 msgid "Schema::create('calculations', function (Blueprint $table) {\n"
 "    $table->comment('Business calculations');\n\n"
 "    // ...\n"
@@ -2332,7 +2369,63 @@ msgstr "Schema::create('calculations', function (Blueprint $table) {\n"
 "    // ...\n"
 "});\n"
 
-#: docs/9.x/migrations.md:block 377 (code)
+#: docs/9.x/migrations.md:block 115 (paragraph)
+msgid "[bigIncrements](#column-method-bigIncrements) [bigInteger](#column-method-bigInteger) [binary](#column-method-binary) [boolean](#column-method-boolean) [char](#column-method-char) [dateTimeTz](#column-method-dateTimeTz) [dateTime](#column-method-dateTime) [date](#column-method-date) [decimal](#column-method-decimal) [double](#column-method-double) [enum](#column-method-enum) [float](#column-method-float) [foreignId](#column-method-foreignId) [foreignIdFor](#column-method-foreignIdFor) [foreignUlid](#column-method-foreignUlid) [foreignUuid](#column-method-foreignUuid) [geometryCollection](#column-method-geometryCollection) [geometry](#column-method-geometry) [id](#column-method-id) [increments](#column-method-increments) [integer](#column-method-integer) [ipAddress](#column-method-ipAddress) [json](#column-method-json) [jsonb](#column-method-jsonb) [lineString](#column-method-lineString) [longText](#column-method-longText) [macAddress](#column-method-macAddress) [mediumIncrements](#column-method-mediumIncrements) [mediumInteger](#column-method-mediumInteger) [mediumText](#column-method-mediumText) [morphs](#column-method-morphs) [multiLineString](#column-method-multiLineString) [multiPoint](#column-method-multiPoint) [multiPolygon](#column-method-multiPolygon) [nullableMorphs](#column-method-nullableMorphs) [nullableTimestamps](#column-method-nullableTimestamps) [nullableUlidMorphs](#column-method-nullableUlidMorphs) [nullableUuidMorphs](#column-method-nullableUuidMorphs) [point](#column-method-point) [polygon](#column-method-polygon) [rememberToken](#column-method-rememberToken) [set](#column-method-set) [smallIncrements](#column-method-smallIncrements) [smallInteger](#column-method-smallInteger) [softDeletesTz](#column-method-softDeletesTz) [softDeletes](#column-method-softDeletes) [string](#column-method-string) [text](#column-method-text) [timeTz](#column-method-timeTz) [time](#column-method-time) [timestampTz](#column-method-timestampTz) [timestamp](#column-method-timestamp) [timestampsTz](#column-method-timestampsTz) [timestamps](#column-method-timestamps) [tinyIncrements](#column-method-tinyIncrements) [tinyInteger](#column-method-tinyInteger) [tinyText](#column-method-tinyText) [unsignedBigInteger](#column-method-unsignedBigInteger) [unsignedDecimal](#column-method-unsignedDecimal) [unsignedInteger](#column-method-unsignedInteger) [unsignedMediumInteger](#column-method-unsignedMediumInteger) [unsignedSmallInteger](#column-method-unsignedSmallInteger) [unsignedTinyInteger](#column-method-unsignedTinyInteger) [ulidMorphs](#column-method-ulidMorphs) [uuidMorphs](#column-method-uuidMorphs) [ulid](#column-method-ulid) [uuid](#column-method-uuid) [year](#column-method-year)"
+msgstr ""
+
+#: docs/9.x/migrations.md:block 174 (header)
+msgid "`foreignUlid()` {.collection-method}"
+msgstr ""
+
+#: docs/9.x/migrations.md:block 175 (paragraph)
+msgid "The `foreignUlid` method creates a `ULID` equivalent column:"
+msgstr ""
+
+#: docs/9.x/migrations.md:block 176 (code)
+msgid "$table->foreignUlid('user_id');\n"
+msgstr ""
+
+#: docs/9.x/migrations.md:block 263 (header)
+msgid "`nullableUlidMorphs()` {.collection-method}"
+msgstr ""
+
+#: docs/9.x/migrations.md:block 264 (paragraph)
+msgid "The method is similar to the [ulidMorphs](#column-method-ulidMorphs) method; however, the columns that are created will be \"nullable\":"
+msgstr ""
+
+#: docs/9.x/migrations.md:block 265 (code)
+msgid "$table->nullableUlidMorphs('taggable');\n"
+msgstr ""
+
+#: docs/9.x/migrations.md:block 371 (header)
+msgid "`ulidMorphs()` {.collection-method}"
+msgstr ""
+
+#: docs/9.x/migrations.md:block 372 (paragraph)
+msgid "The `ulidMorphs` method is a convenience method that adds a `{column}_id` `CHAR(26)` equivalent column and a `{column}_type` `VARCHAR` equivalent column."
+msgstr ""
+
+#: docs/9.x/migrations.md:block 373 (paragraph)
+msgid "This method is intended to be used when defining the columns necessary for a polymorphic [Eloquent relationship](/docs/{{version}}/eloquent-relationships) that use ULID identifiers. In the following example, `taggable_id` and `taggable_type` columns would be created:"
+msgstr ""
+
+#: docs/9.x/migrations.md:block 374 (code)
+msgid "$table->ulidMorphs('taggable');\n"
+msgstr ""
+
+#: docs/9.x/migrations.md:block 381 (header)
+msgid "`ulid()` {.collection-method}"
+msgstr ""
+
+#: docs/9.x/migrations.md:block 382 (paragraph)
+msgid "The `ulid` method creates a `ULID` equivalent column:"
+msgstr ""
+
+#: docs/9.x/migrations.md:block 383 (code)
+msgid "$table->ulid('id');\n"
+msgstr ""
+
+#: docs/9.x/migrations.md:block 401 (code)
 msgid "<?php\n\n"
 "use Illuminate\\Support\\Facades\\Schema;\n"
 "use Illuminate\\Database\\Schema\\Blueprint;\n"
@@ -2376,75 +2469,201 @@ msgstr "<?php\n\n"
 "    }\n"
 "};\n"
 
-#: docs/9.x/migrations.md:block 378 (quote)
+#: docs/9.x/migrations.md:block 402 (quote)
 msgid "**Warning** Support for default expressions depends on your database driver, database version, and the field type. Please refer to your database's documentation. In addition, it is not possible to combine raw `default` expressions (using `DB::raw`) with column changes via the `change` method."
 msgstr "**Warning** default 陳述式的支援程度會依據資料庫 Driver、資料庫版本、欄位型別等而有所不同。請參考所使用的資料庫之說明文件。此外，在使用 `change` 方法更改欄位時，無法使用原始的 `default` 陳述式 (即，使用 `DB::raw`)。"
 
-#: docs/9.x/migrations.md:block 391 (quote)
+#: docs/9.x/migrations.md:block 415 (quote)
 msgid "**Warning** If your application is using Microsoft SQL Server, please ensure that you install `doctrine/dbal:^3.0`."
 msgstr "**Warning** 使用 Microsoft SQL Server 時，請確保有安裝 `doctrine/dbal:^3.0`。"
 
-#: docs/9.x/migrations.md:block 398 (quote)
-msgid "**Warning** The following column types can be modified: `bigInteger`, `binary`, `boolean`, `char`, `date`, `dateTime`, `dateTimeTz`, `decimal`, `integer`, `json`, `longText`, `mediumText`, `smallInteger`, `string`, `text`, `time`, `unsignedBigInteger`, `unsignedInteger`, `unsignedSmallInteger`, and `uuid`. To modify a `timestamp` column type a [Doctrine type must be registered](#prerequisites)."
-msgstr "**Warning** 可修改的欄位型別有：`bigInteger`、`binary`、`boolean`、`char`、`date`、`dateTime`、`dateTimeTz`、`decimal`、`integer`、`json`、`longText`、`mediumText`、`smallInteger`、`string`、`text`、`time`、`unsignedBigInteger`、`unsignedInteger`、`unsignedSmallInteger`、`uuid` 等。若要修改 `timestamp` 欄位型別，則[必須先將其註冊為 Doctrine 型別](#prerequisites)。"
+#: docs/9.x/migrations.md:block 422 (quote)
+msgid "**Warning** The following column types can be modified: `bigInteger`, `binary`, `boolean`, `char`, `date`, `dateTime`, `dateTimeTz`, `decimal`, `double`, `integer`, `json`, `longText`, `mediumText`, `smallInteger`, `string`, `text`, `time`, `tinyText`, `unsignedBigInteger`, `unsignedInteger`, `unsignedSmallInteger`, and `uuid`. To modify a `timestamp` column type a [Doctrine type must be registered](#prerequisites)."
+msgstr ""
 
-#: docs/9.x/migrations.md:block 403 (quote)
-msgid "**Warning** Renaming an `enum` column is not currently supported."
-msgstr "**Warning** 目前尚不支援重新命名 `enum` 欄位。"
+#: docs/9.x/migrations.md:block 425 (paragraph)
+msgid "To rename a column, you may use the `renameColumn` method provided by the schema builder:"
+msgstr ""
 
-#: docs/9.x/migrations.md:block 410 (quote)
-msgid "**Warning** Dropping or modifying multiple columns within a single migration while using an SQLite database is not supported."
-msgstr "**Warning** 使用 SQLite 資料庫時，不支援在單一 Migration 中刪除或修改多個欄位。"
+#: docs/9.x/migrations.md:block 428 (header)
+msgid "Renaming Columns On Legacy Databases"
+msgstr ""
 
-#: docs/9.x/migrations.md:block 430 (table)
+#: docs/9.x/migrations.md:block 429 (paragraph)
+msgid "If you are running a database installation older than one of the following releases, you should ensure that you have installed the `doctrine/dbal` library via the Composer package manager before renaming a column:"
+msgstr ""
+
+#: docs/9.x/migrations.md:block 431 (unordered list)
+msgid "MySQL < `8.0.3`"
+msgstr ""
+
+#: docs/9.x/migrations.md:block 431 (unordered list)
+msgid "MariaDB < `10.5.2`"
+msgstr ""
+
+#: docs/9.x/migrations.md:block 431 (unordered list)
+msgid "SQLite < `3.25.0`"
+msgstr ""
+
+#: docs/9.x/migrations.md:block 435 (paragraph)
+msgid "To drop a column, you may use the `dropColumn` method on the schema builder:"
+msgstr ""
+
+#: docs/9.x/migrations.md:block 440 (header)
+msgid "Dropping Columns On Legacy Databases"
+msgstr ""
+
+#: docs/9.x/migrations.md:block 441 (paragraph)
+msgid "If you are running a version of SQLite prior to `3.35.0`, you must install the `doctrine/dbal` package via the Composer package manager before the `dropColumn` method may be used. Dropping or modifying multiple columns within a single migration while using this package is not supported."
+msgstr ""
+
+#: docs/9.x/migrations.md:block 461 (table)
 msgid "`$table->fullText('body');`"
 msgstr "`$table->fullText('body');`"
 
-#: docs/9.x/migrations.md:block 430 (table)
+#: docs/9.x/migrations.md:block 461 (table)
 msgid "Adds a full text index (MySQL/PostgreSQL)."
 msgstr "新增全文索引 (MySQL/PostgreSQL)。"
 
-#: docs/9.x/migrations.md:block 430 (table)
+#: docs/9.x/migrations.md:block 461 (table)
 msgid "`$table->fullText('body')->language('english');`"
 msgstr "`$table->fullText('body')->language('english');`"
 
-#: docs/9.x/migrations.md:block 430 (table)
+#: docs/9.x/migrations.md:block 461 (table)
 msgid "Adds a full text index of the specified language (PostgreSQL)."
 msgstr "以指定的語言來新增全文索引 (PostgreSQL)。"
 
-#: docs/9.x/migrations.md:block 443 (table)
+#: docs/9.x/migrations.md:block 471 (quote)
+msgid "**Warning** If your application is utilizing an SQLite database, you must install the `doctrine/dbal` package via the Composer package manager before the `renameIndex` method may be used."
+msgstr ""
+
+#: docs/9.x/migrations.md:block 475 (table)
 msgid "`$table->dropFullText('posts_body_fulltext');`"
 msgstr "`$table->dropFullText('posts_body_fulltext');`"
 
-#: docs/9.x/migrations.md:block 443 (table)
+#: docs/9.x/migrations.md:block 475 (table)
 msgid "Drop a full text index from the \"posts\" table."
 msgstr "從「users」資料表中刪除全文索引。"
 
-#: docs/9.x/migrations.md:block 470 (quote)
+#: docs/9.x/migrations.md:block 501 (code)
+msgid "Schema::enableForeignKeyConstraints();\n\n"
+"Schema::disableForeignKeyConstraints();\n\n"
+"Schema::withoutForeignKeyConstraints(function () {\n"
+"    // Constraints disabled within this closure...\n"
+"});\n"
+msgstr ""
+
+#: docs/9.x/migrations.md:block 502 (quote)
 msgid "**Warning** SQLite disables foreign key constraints by default. When using SQLite, make sure to [enable foreign key support](/docs/{{version}}/database#configuration) in your database configuration before attempting to create them in your migrations. In addition, SQLite only supports foreign keys upon creation of the table and [not when tables are altered](https://www.sqlite.org/omitted.html)."
 msgstr "**Warning**  SQLite 預設會禁用 Foreign Key Constraint。使用 SQLite 時，在 Migration 中建立 Foreign Key Constraint 前，請先檢查是否有在資料庫設定中[啟用 Foreign Key 支援](/docs/{{version}}/database#configuration)。此外，SQLite 只支援在建立資料表時設定 Foreign Key，而[無法在修改資料表時新增](https://www.sqlite.org/omitted.html)。"
 
-#: docs/9.x/migrations.md:block 474 (table)
+#: docs/9.x/migrations.md:block 506 (table)
 msgid "`Illuminate\\Database\\Events\\SchemaDumped`"
 msgstr "`Illuminate\\Database\\Events\\SchemaDumped`"
 
-#: docs/9.x/migrations.md:block 474 (table)
+#: docs/9.x/migrations.md:block 506 (table)
 msgid "A database schema dump has completed."
 msgstr "已傾印完成資料庫結構。"
 
-#: docs/9.x/migrations.md:block 474 (table)
+#: docs/9.x/migrations.md:block 506 (table)
 msgid "`Illuminate\\Database\\Events\\SchemaLoaded`"
 msgstr "`Illuminate\\Database\\Events\\SchemaLoaded`"
 
-#: docs/9.x/migrations.md:block 474 (table)
+#: docs/9.x/migrations.md:block 506 (table)
 msgid "An existing database schema dump has loaded."
 msgstr "已載入現有的資料庫結構傾印。"
 
-#: docs/master/migrations.md:block 50 (paragraph)
+#: docs/master/migrations.md:block 27 (code)
+msgid "<?php\n\n"
+"use Illuminate\\Database\\Migrations\\Migration;\n"
+"use Illuminate\\Database\\Schema\\Blueprint;\n"
+"use Illuminate\\Support\\Facades\\Schema;\n\n"
+"return new class extends Migration\n"
+"{\n"
+"    /**\n"
+"     * Run the migrations.\n"
+"     */\n"
+"    public function up(): void\n"
+"    {\n"
+"        Schema::create('flights', function (Blueprint $table) {\n"
+"            $table->id();\n"
+"            $table->string('name');\n"
+"            $table->string('airline');\n"
+"            $table->timestamps();\n"
+"        });\n"
+"    }\n\n"
+"    /**\n"
+"     * Reverse the migrations.\n"
+"     */\n"
+"    public function down(): void\n"
+"    {\n"
+"        Schema::drop('flights');\n"
+"    }\n"
+"};\n"
+msgstr ""
+
+#: docs/master/migrations.md:block 31 (code)
+msgid "/**\n"
+" * The database connection that should be used by the migration.\n"
+" *\n"
+" * @var string\n"
+" */\n"
+"protected $connection = 'pgsql';\n\n"
+"/**\n"
+" * Run the migrations.\n"
+" */\n"
+"public function up(): void\n"
+"{\n"
+"    // ...\n"
+"}\n"
+msgstr ""
+
+#: docs/master/migrations.md:block 55 (paragraph)
 msgid "You may roll back a specific \"batch\" of migrations by providing the `batch` option to the `rollback` command, where the `batch` option corresponds to a batch value within your application's `migrations` database table. For example, the following command will roll back all migrations in batch three:"
 msgstr "只要提供 `batch` 選項給 `rollback` 指令，就可以復原特定「批次」的 Migration。這裡的 `batch` 選項，對應到專案資料庫中 `migrations` 資料表的 batch 值。舉例來說，下列指令會復原所有第 3 批次的 Migration："
 
-#: docs/master/migrations.md:block 51 (code)
+#: docs/master/migrations.md:block 56 (code)
 msgid "php artisan migrate:rollback --batch=3\n"
 msgstr "php artisan migrate:rollback --batch=3\n"
+
+#: docs/master/migrations.md:block 403 (code)
+msgid "<?php\n\n"
+"use Illuminate\\Support\\Facades\\Schema;\n"
+"use Illuminate\\Database\\Schema\\Blueprint;\n"
+"use Illuminate\\Database\\Query\\Expression;\n"
+"use Illuminate\\Database\\Migrations\\Migration;\n\n"
+"return new class extends Migration\n"
+"{\n"
+"    /**\n"
+"     * Run the migrations.\n"
+"     */\n"
+"    public function up(): void\n"
+"    {\n"
+"        Schema::create('flights', function (Blueprint $table) {\n"
+"            $table->id();\n"
+"            $table->json('movies')->default(new Expression('(JSON_ARRAY())'));\n"
+"            $table->timestamps();\n"
+"        });\n"
+"    }\n"
+"};\n"
+msgstr ""
+
+#: docs/master/migrations.md:block 408 (code)
+msgid "$table->after('password', function (Blueprint $table) {\n"
+"    $table->string('address_line1');\n"
+"    $table->string('address_line2');\n"
+"    $table->string('city');\n"
+"});\n"
+msgstr ""
+
+#: docs/master/migrations.md:block 467 (code)
+msgid "use Illuminate\\Support\\Facades\\Schema;\n\n"
+"/**\n"
+" * Bootstrap any application services.\n"
+" */\n"
+"public function boot(): void\n"
+"{\n"
+"    Schema::defaultStringLength(191);\n"
+"}\n"
+msgstr ""
 

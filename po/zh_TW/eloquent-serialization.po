@@ -10,7 +10,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
-"PO-Revision-Date: 2023-01-25 07:02\n"
+"PO-Revision-Date: 2023-01-25 12:14\n"
 
 #: docs/8.x/eloquent-serialization.md:block 1 (header)
 msgid "Eloquent: Serialization"
@@ -384,12 +384,13 @@ msgstr "**Note** 若要隱藏關聯，請將關聯的方法名稱加到 Eloquent
 
 #: docs/9.x/eloquent-serialization.md:block 41 (paragraph)
 msgid "If you wish to temporarily override all of the visible or hidden attributes, you may use the `setVisible` and `setHidden` methods respectively:"
-msgstr ""
+msgstr "若想暫時複寫所有 Visible 或 Hidden 屬性的話，可使用對應的 `setVisible` 與 `setHidden` 方法："
 
 #: docs/9.x/eloquent-serialization.md:block 42 (code)
 msgid "return $user->setVisible(['id', 'name'])->toArray();\n\n"
 "return $user->setHidden(['email', 'password', 'remember_token'])->toArray();\n"
-msgstr ""
+msgstr "return $user->setVisible(['id', 'name'])->toArray();\n\n"
+"return $user->setHidden(['email', 'password', 'remember_token'])->toArray();\n"
 
 #: docs/9.x/eloquent-serialization.md:block 46 (code)
 msgid "<?php\n\n"
@@ -446,7 +447,22 @@ msgid "<?php\n\n"
 "        );\n"
 "    }\n"
 "}\n"
-msgstr ""
+msgstr "<?php\n\n"
+"namespace App\\Models;\n\n"
+"use Illuminate\\Database\\Eloquent\\Casts\\Attribute;\n"
+"use Illuminate\\Database\\Eloquent\\Model;\n\n"
+"class User extends Model\n"
+"{\n"
+"    /**\n"
+"     * Determine if the user is an administrator.\n"
+"     */\n"
+"    protected function isAdmin(): Attribute\n"
+"    {\n"
+"        return new Attribute(\n"
+"            get: fn () => 'yes',\n"
+"        );\n"
+"    }\n"
+"}\n"
 
 #: docs/master/eloquent-serialization.md:block 59 (code)
 msgid "/**\n"
@@ -456,5 +472,11 @@ msgid "/**\n"
 "{\n"
 "    return $date->format('Y-m-d');\n"
 "}\n"
-msgstr ""
+msgstr "/**\n"
+" * Prepare a date for array / JSON serialization.\n"
+" */\n"
+"protected function serializeDate(DateTimeInterface $date): string\n"
+"{\n"
+"    return $date->format('Y-m-d');\n"
+"}\n"
 

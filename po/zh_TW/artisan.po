@@ -10,7 +10,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
-"PO-Revision-Date: 2022-09-09 05:22\n"
+"PO-Revision-Date: 2023-01-25 07:02\n"
 
 #: docs/8.x/artisan.md:block 1 (header)
 msgid "Artisan Console"
@@ -1210,6 +1210,10 @@ msgstr "事件"
 msgid "Artisan dispatches three events when running commands: `Illuminate\\Console\\Events\\ArtisanStarting`, `Illuminate\\Console\\Events\\CommandStarting`, and `Illuminate\\Console\\Events\\CommandFinished`. The `ArtisanStarting` event is dispatched immediately when Artisan starts running. Next, the `CommandStarting` event is dispatched immediately before a command runs. Finally, the `CommandFinished` event is dispatched once a command finishes executing."
 msgstr "Artisan 會在執行指令的時候分派三個事件： `Illuminate\\Console\\Events\\ArtisanStarting`, `Illuminate\\Console\\Events\\CommandStarting` 與 `Illuminate\\Console\\Events\\CommandFinished`。`ArtisanStarting` 事件會在 Artisan 開始執行後馬上被分派。接著，`CommandStarting` 事件會在指令開始執行前的瞬間被分派。最後，`CommandFinished` 事件會在指令完成執行後被分派。"
 
+#: docs/9.x/artisan.md:block 2 (unordered list)
+msgid "[Isolatable Commands](#isolatable-commands)"
+msgstr ""
+
 #: docs/9.x/artisan.md:block 12 (code)
 msgid "./vendor/bin/sail artisan list\n"
 msgstr "./vendor/bin/sail artisan list\n"
@@ -1288,7 +1292,66 @@ msgstr "<?php\n\n"
 msgid "**Note** For greater code reuse, it is good practice to keep your console commands light and let them defer to application services to accomplish their tasks. In the example above, note that we inject a service class to do the \"heavy lifting\" of sending the e-mails."
 msgstr "**Note** 為了提升程式碼重複使用率，最好保持主控台指令精簡，並將指令的任務委託給應用程式服務來完成。在上方的例子中，可以注意到我們插入了一個服務類別來處理寄送 E-Mail 的這個「重責大任」。"
 
+#: docs/9.x/artisan.md:block 65 (header)
+msgid "Isolatable Commands"
+msgstr ""
+
+#: docs/9.x/artisan.md:block 66 (quote)
+msgid "**Warning** To utilize this feature, your application must be using the `memcached`, `redis`, `dynamodb`, `database`, `file`, or `array` cache driver as your application's default cache driver. In addition, all servers must be communicating with the same central cache server."
+msgstr ""
+
+#: docs/9.x/artisan.md:block 67 (paragraph)
+msgid "Sometimes you may wish to ensure that only one instance of a command can run at a time. To accomplish this, you may implement the `Illuminate\\Contracts\\Console\\Isolatable` interface on your command class:"
+msgstr ""
+
+#: docs/9.x/artisan.md:block 68 (code)
+msgid "<?php\n\n"
+"namespace App\\Console\\Commands;\n\n"
+"use Illuminate\\Console\\Command;\n"
+"use Illuminate\\Contracts\\Console\\Isolatable;\n\n"
+"class SendEmails extends Command implements Isolatable\n"
+"{\n"
+"    // ...\n"
+"}\n"
+msgstr ""
+
+#: docs/9.x/artisan.md:block 69 (paragraph)
+msgid "When a command is marked as `Isolatable`, Laravel will automatically add an `--isolated` option to the command. When the command is invoked with that option, Laravel will ensure that no other instances of that command are already running. Laravel accomplishes this by attempting to acquire an atomic lock using your application's default cache driver. If other instances of the command are running, the command will not execute; however, the command will still exit with a successful exit status code:"
+msgstr ""
+
+#: docs/9.x/artisan.md:block 70 (code)
+msgid "php artisan mail:send 1 --isolated\n"
+msgstr ""
+
+#: docs/9.x/artisan.md:block 71 (paragraph)
+msgid "If you would like to specify the exit status code that the command should return if it is not able to execute, you may provide the desired status code via the `isolated` option:"
+msgstr ""
+
 #: docs/9.x/artisan.md:block 72 (code)
+msgid "php artisan mail:send 1 --isolated=12\n"
+msgstr ""
+
+#: docs/9.x/artisan.md:block 74 (header)
+msgid "Lock Expiration Time"
+msgstr ""
+
+#: docs/9.x/artisan.md:block 75 (paragraph)
+msgid "By default, isolation locks expire after the command is finished. Or, if the command is interrupted and unable to finish, the lock will expire after one hour. However, you may adjust the lock expiration time by defining a `isolationLockExpiresAt` method on your command:"
+msgstr ""
+
+#: docs/9.x/artisan.md:block 76 (code)
+msgid "/**\n"
+" * Determine when an isolation lock expires for the command.\n"
+" *\n"
+" * @return \\DateTimeInterface|\\DateInterval\n"
+" */\n"
+"public function isolationLockExpiresAt()\n"
+"{\n"
+"    return now()->addMinutes(5);\n"
+"}\n"
+msgstr ""
+
+#: docs/9.x/artisan.md:block 85 (code)
 msgid "// Optional argument...\n"
 "'mail:send {user?}'\n\n"
 "// Optional argument with default value...\n"
@@ -1298,47 +1361,267 @@ msgstr "// 可選引數...\n"
 "// 有預設值的可選引數...\n"
 "'mail:send {user=foo}'\n"
 
-#: docs/9.x/artisan.md:block 86 (code)
+#: docs/9.x/artisan.md:block 99 (code)
 msgid "'mail:send {user} {--queue=default}'\n"
 msgstr "'mail:send {user} {--queue=default}'\n"
 
-#: docs/9.x/artisan.md:block 90 (code)
+#: docs/9.x/artisan.md:block 103 (code)
 msgid "'mail:send {user} {--Q|queue}'\n"
 msgstr "'mail:send {user} {--Q|queue}'\n"
 
-#: docs/9.x/artisan.md:block 96 (code)
+#: docs/9.x/artisan.md:block 109 (code)
 msgid "'mail:send {user*}'\n"
 msgstr "'mail:send {user*}'\n"
 
-#: docs/9.x/artisan.md:block 97 (paragraph)
+#: docs/9.x/artisan.md:block 110 (paragraph)
 msgid "When calling this method, the `user` arguments may be passed in order to the command line. For example, the following command will set the value of `user` to an array with `1` and `2` as its values:"
 msgstr "呼叫這個方法的時候，`user` 引數在指令列中可以按照順序傳入。舉例來說，下列指令會將 `user` 的值設為一個內容為 `1` 與 `2` 的陣列："
 
-#: docs/9.x/artisan.md:block 98 (code)
+#: docs/9.x/artisan.md:block 111 (code)
 msgid "php artisan mail:send 1 2\n"
 msgstr "php artisan mail:send 1 2\n"
 
-#: docs/9.x/artisan.md:block 100 (code)
+#: docs/9.x/artisan.md:block 113 (code)
 msgid "'mail:send {user?*}'\n"
 msgstr "'mail:send {user?*}'\n"
 
-#: docs/9.x/artisan.md:block 104 (code)
+#: docs/9.x/artisan.md:block 117 (code)
 msgid "'mail:send {--id=*}'\n"
 msgstr "'mail:send {--id=*}'\n"
 
-#: docs/9.x/artisan.md:block 105 (paragraph)
+#: docs/9.x/artisan.md:block 118 (paragraph)
 msgid "Such a command may be invoked by passing multiple `--id` arguments:"
 msgstr "可以通過傳入多個 `-id` 引數來叫用這樣的指令："
 
-#: docs/9.x/artisan.md:block 106 (code)
+#: docs/9.x/artisan.md:block 119 (code)
 msgid "php artisan mail:send --id=1 --id=2\n"
 msgstr "php artisan mail:send --id=1 --id=2\n"
 
-#: docs/9.x/artisan.md:block 165 (quote)
+#: docs/9.x/artisan.md:block 178 (quote)
 msgid "**Note** For more advanced options, check out the [Symfony Progress Bar component documentation](https://symfony.com/doc/current/components/console/helpers/progressbar.html)."
 msgstr "**Note** 有關更進階的選項，請參考 [Symfony Progress Bar 元件說明文件](https://symfony.com/doc/current/components/console/helpers/progressbar.html)。"
 
-#: docs/master/artisan.md:block 104 (code)
-msgid "'mail:send {user} {--id=*}'\n"
-msgstr "'mail:send {user} {--id=*}'\n"
+#: docs/9.x/artisan.md:block 213 (paragraph)
+msgid "As you may know, operating systems allow signals to be sent to running processes. For example, the `SIGTERM` signal is how operating systems ask a program to terminate. If you wish to listen for signals in your Artisan console commands and execute code when they occur, you may use the `trap` method:"
+msgstr ""
+
+#: docs/9.x/artisan.md:block 214 (code)
+msgid "/**\n"
+" * Execute the console command.\n"
+" *\n"
+" * @return mixed\n"
+" */\n"
+"public function handle()\n"
+"{\n"
+"    $this->trap(SIGTERM, fn () => $this->shouldKeepRunning = false);\n\n"
+"    while ($this->shouldKeepRunning) {\n"
+"        // ...\n"
+"    }\n"
+"}\n"
+msgstr ""
+
+#: docs/9.x/artisan.md:block 215 (paragraph)
+msgid "To listen for multiple signals at once, you may provide an array of signals to the `trap` method:"
+msgstr ""
+
+#: docs/9.x/artisan.md:block 216 (code)
+msgid "$this->trap([SIGTERM, SIGQUIT], function ($signal) {\n"
+"    $this->shouldKeepRunning = false;\n\n"
+"    dump($signal); // SIGTERM / SIGQUIT\n"
+"});\n"
+msgstr ""
+
+#: docs/master/artisan.md:block 47 (code)
+msgid "<?php\n\n"
+"namespace App\\Console\\Commands;\n\n"
+"use App\\Models\\User;\n"
+"use App\\Support\\DripEmailer;\n"
+"use Illuminate\\Console\\Command;\n\n"
+"class SendEmails extends Command\n"
+"{\n"
+"    /**\n"
+"     * The name and signature of the console command.\n"
+"     *\n"
+"     * @var string\n"
+"     */\n"
+"    protected $signature = 'mail:send {user}';\n\n"
+"    /**\n"
+"     * The console command description.\n"
+"     *\n"
+"     * @var string\n"
+"     */\n"
+"    protected $description = 'Send a marketing email to a user';\n\n"
+"    /**\n"
+"     * Execute the console command.\n"
+"     */\n"
+"    public function handle(DripEmailer $drip): void\n"
+"    {\n"
+"        $drip->send(User::find($this->argument('user')));\n"
+"    }\n"
+"}\n"
+msgstr ""
+
+#: docs/master/artisan.md:block 52 (code)
+msgid "/**\n"
+" * Register the closure based commands for the application.\n"
+" */\n"
+"protected function commands(): void\n"
+"{\n"
+"    require base_path('routes/console.php');\n"
+"}\n"
+msgstr ""
+
+#: docs/master/artisan.md:block 54 (code)
+msgid "Artisan::command('mail:send {user}', function (string $user) {\n"
+"    $this->info(\"Sending email to: {$user}!\");\n"
+"});\n"
+msgstr ""
+
+#: docs/master/artisan.md:block 59 (code)
+msgid "use App\\Models\\User;\n"
+"use App\\Support\\DripEmailer;\n\n"
+"Artisan::command('mail:send {user}', function (DripEmailer $drip, string $user) {\n"
+"    $drip->send(User::find($user));\n"
+"});\n"
+msgstr ""
+
+#: docs/master/artisan.md:block 63 (code)
+msgid "Artisan::command('mail:send {user}', function (string $user) {\n"
+"    // ...\n"
+"})->purpose('Send a marketing email to a user');\n"
+msgstr ""
+
+#: docs/master/artisan.md:block 76 (code)
+msgid "use DateTimeInterface;\n"
+"use DateInterval;\n\n"
+"/**\n"
+" * Determine when an isolation lock expires for the command.\n"
+" */\n"
+"public function isolationLockExpiresAt(): DateTimeInterface|DateInterval\n"
+"{\n"
+"    return now()->addMinutes(5);\n"
+"}\n"
+msgstr ""
+
+#: docs/master/artisan.md:block 129 (code)
+msgid "/**\n"
+" * Execute the console command.\n"
+" */\n"
+"public function handle(): void\n"
+"{\n"
+"    $userId = $this->argument('user');\n"
+"}\n"
+msgstr ""
+
+#: docs/master/artisan.md:block 137 (code)
+msgid "/**\n"
+" * Execute the console command.\n"
+" */\n"
+"public function handle(): void\n"
+"{\n"
+"    $name = $this->ask('What is your name?');\n\n"
+"    // ...\n"
+"}\n"
+msgstr ""
+
+#: docs/master/artisan.md:block 143 (code)
+msgid "if ($this->confirm('Do you wish to continue?')) {\n"
+"    // ...\n"
+"}\n"
+msgstr ""
+
+#: docs/master/artisan.md:block 145 (code)
+msgid "if ($this->confirm('Do you wish to continue?', true)) {\n"
+"    // ...\n"
+"}\n"
+msgstr ""
+
+#: docs/master/artisan.md:block 151 (code)
+msgid "$name = $this->anticipate('What is your address?', function (string $input) {\n"
+"    // Return auto-completion options...\n"
+"});\n"
+msgstr ""
+
+#: docs/master/artisan.md:block 161 (code)
+msgid "/**\n"
+" * Execute the console command.\n"
+" */\n"
+"public function handle(): void\n"
+"{\n"
+"    // ...\n\n"
+"    $this->info('The command was successful!');\n"
+"}\n"
+msgstr ""
+
+#: docs/master/artisan.md:block 175 (code)
+msgid "use App\\Models\\User;\n\n"
+"$users = $this->withProgressBar(User::all(), function (User $user) {\n"
+"    $this->performTask($user);\n"
+"});\n"
+msgstr ""
+
+#: docs/master/artisan.md:block 182 (code)
+msgid "/**\n"
+" * Register the commands for the application.\n"
+" */\n"
+"protected function commands(): void\n"
+"{\n"
+"    $this->load(__DIR__.'/Commands');\n"
+"    $this->load(__DIR__.'/../Domain/Orders/Commands');\n\n"
+"    // ...\n"
+"}\n"
+msgstr ""
+
+#: docs/master/artisan.md:block 188 (code)
+msgid "use Illuminate\\Support\\Facades\\Artisan;\n\n"
+"Route::post('/user/{user}/mail', function (string $user) {\n"
+"    $exitCode = Artisan::call('mail:send', [\n"
+"        'user' => $user, '--queue' => 'default'\n"
+"    ]);\n\n"
+"    // ...\n"
+"});\n"
+msgstr ""
+
+#: docs/master/artisan.md:block 202 (code)
+msgid "use Illuminate\\Support\\Facades\\Artisan;\n\n"
+"Route::post('/user/{user}/mail', function (string $user) {\n"
+"    Artisan::queue('mail:send', [\n"
+"        'user' => $user, '--queue' => 'default'\n"
+"    ]);\n\n"
+"    // ...\n"
+"});\n"
+msgstr ""
+
+#: docs/master/artisan.md:block 208 (code)
+msgid "/**\n"
+" * Execute the console command.\n"
+" */\n"
+"public function handle(): void\n"
+"{\n"
+"    $this->call('mail:send', [\n"
+"        'user' => 1, '--queue' => 'default'\n"
+"    ]);\n\n"
+"    // ...\n"
+"}\n"
+msgstr ""
+
+#: docs/master/artisan.md:block 214 (code)
+msgid "/**\n"
+" * Execute the console command.\n"
+" */\n"
+"public function handle(): void\n"
+"{\n"
+"    $this->trap(SIGTERM, fn () => $this->shouldKeepRunning = false);\n\n"
+"    while ($this->shouldKeepRunning) {\n"
+"        // ...\n"
+"    }\n"
+"}\n"
+msgstr ""
+
+#: docs/master/artisan.md:block 216 (code)
+msgid "$this->trap([SIGTERM, SIGQUIT], function (int $signal) {\n"
+"    $this->shouldKeepRunning = false;\n\n"
+"    dump($signal); // SIGTERM / SIGQUIT\n"
+"});\n"
+msgstr ""
 

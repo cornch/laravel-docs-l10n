@@ -5,7 +5,7 @@ contributors:
     name: cornch
 crowdinUrl: https://crowdin.com/translate/laravel-docs/61/en-zhtw
 progress: 100
-updatedAt: '2022-09-09T05:21:00Z'
+updatedAt: '2022-11-28T12:19:00Z'
 ---
 
 # Eloquent：入門
@@ -125,7 +125,7 @@ php artisan make:model Member --pivot
 
 看一眼上方的範例後，讀者應該已經發現，我們並沒有告訴 Eloquent，我們的 `Flight` Model 要對應到哪個資料表。依照慣例，除非有特別指定，否則 Eloquent 會將類別名稱的複數形式改為「蛇行命名法 (snake_case)」來當作表名。因此，在這個例子中，Eloquent 會假設 `Flight` Model 將資料儲存在 `flights` 資料表中，而 `AirTrafficController` Model 則會儲存在 `air_traffic_controllers` 資料表中。
 
-若你的 Model 對應的資料表不符合這個管理，可以手動在 Model 上定義 `table` 屬性來指定 Model 的表名：
+若你的 Model 對應的資料表不符合這個慣例，可以手動在 Model 上定義 `table` 屬性來指定 Model 的表名：
 
     <?php
     
@@ -725,7 +725,7 @@ Eloquent 提供了 `isDirty`、`isClean`、`wasChanged` 等方法，用以檢驗
 
 不過，在使用 `create` 方法時，應在 Model 類別上設定好 `fillable` 或 `guarded` 屬性。由於所有的 Eloquent Model 預設都有針對大量賦值弱點 (Mass Assignment Vulnerability) 進行保護，因此必須設定這些屬性。
 
-當使用者傳入一個未預期的 HTTP 請求欄位，且該欄位會更改開發人員未預期的資料庫欄位時，就會導致大量賦值弱點。舉例來說，惡意使用者可能會通過 HTTP 請求傳入一個 `is_admin` 屬性，而該屬性可能會傳入 Model 的 `create` 方法，進一步導致使用者能自行將自己的權限提升未管理員。
+當使用者傳入一個未預期的 HTTP 請求欄位，且該欄位會更改開發人員未預期的資料庫欄位時，就會導致大量賦值弱點。舉例來說，惡意使用者可能會通過 HTTP 請求傳入一個 `is_admin` 屬性，而該屬性可能會傳入 Model 的 `create` 方法，進一步導致使用者能自行將自己的權限提升為管理員。
 
 因此，要開始使用大量賦值，應先定義哪些 Model 屬性能被大量複製。可以使用 Model 上的 `$fillable` 屬性來達成。舉例來說，我們來設定讓 `Flight` Model 的 `name` 屬性可被大量複製：
 

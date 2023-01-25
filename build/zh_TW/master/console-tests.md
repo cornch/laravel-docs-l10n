@@ -5,7 +5,7 @@ contributors:
     name: cornch
 crowdinUrl: https://crowdin.com/translate/laravel-docs/29/en-zhtw
 progress: 100
-updatedAt: '2022-02-13T10:32:00Z'
+updatedAt: '2022-12-16T03:30:00Z'
 ---
 
 # 主控台測試
@@ -18,7 +18,7 @@ updatedAt: '2022-02-13T10:32:00Z'
 
 ## 簡介
 
-除了簡化 HTTP 測試，Laravel 提供了一個簡單的 API 來測試專案的[自訂主控台指令](/docs/{{version}}/artisan)。
+在 Laravel 中除了能簡單地測試 HTTP 外，Laravel 還提供了一個簡單的 API 來測試專案的[自訂主控台指令](/docs/{{version}}/artisan)。
 
 <a name="success-failure-expectations"></a>
 

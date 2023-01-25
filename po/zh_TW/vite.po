@@ -10,7 +10,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
-"PO-Revision-Date: 2023-01-25 17:44\n"
+"PO-Revision-Date: 2023-01-25 18:14\n"
 
 #: docs/9.x/vite.md:block 1 (header)
 msgid "Asset Bundling (Vite)"
@@ -284,11 +284,11 @@ msgstr "在 HTTPS 的開發伺服器使用 Vite"
 
 #: docs/9.x/vite.md:block 40 (paragraph)
 msgid "If your local development web server is serving your application via HTTPS, you may run into issues connecting to the Vite development server."
-msgstr ""
+msgstr "若你的本機開發環境使用 HTTPS，則在連線到 Vite 開發伺服器時可能會遇到一些問題。"
 
 #: docs/9.x/vite.md:block 41 (paragraph)
 msgid "If you are using [Laravel Valet](/docs/{{version}}/valet) for local development and have run the [secure command](/docs/{{version}}/valet#securing-sites) against your application, you may configure the Vite development server to automatically use Valet's generated TLS certificates:"
-msgstr ""
+msgstr "如果你使用 [Laravel Valet](/docs/{{version}}/valet) 來作為本機開發環境，並對專案使用了 [secure 指令](/docs/{{version}}/valet#securing-sites)，那麼可以設定讓 Vite 開發伺服器自動使用 Valet 所產生的 TLS 憑證："
 
 #: docs/9.x/vite.md:block 42 (code)
 msgid "import { defineConfig } from 'vite';\n"
@@ -301,11 +301,20 @@ msgid "import { defineConfig } from 'vite';\n"
 "        }),\n"
 "    ],\n"
 "});\n"
-msgstr ""
+msgstr "import { defineConfig } from 'vite';\n"
+"import laravel from 'laravel-vite-plugin';\n\n"
+"export default defineConfig({\n"
+"    plugins: [\n"
+"        laravel({\n"
+"            // ...\n"
+"            valetTls: 'my-app.test', // [tl! add]\n"
+"        }),\n"
+"    ],\n"
+"});\n"
 
 #: docs/9.x/vite.md:block 43 (paragraph)
 msgid "When using another web server, you should generate a trusted certificate and manually configure Vite to use the generated certificates:"
-msgstr ""
+msgstr "使用其他網頁伺服器時，應產生受信任的憑證，並手動設定 Vite 使用所產生的憑證："
 
 #: docs/9.x/vite.md:block 44 (code)
 msgid "// ...\n"
@@ -322,11 +331,24 @@ msgid "// ...\n"
 "        }, // [tl! add]\n"
 "    }, // [tl! add]\n"
 "});\n"
-msgstr ""
+msgstr "// ...\n"
+"import fs from 'fs'; // [tl! add]\n\n"
+"const host = 'my-app.test'; // [tl! add]\n\n"
+"export default defineConfig({\n"
+"    // ...\n"
+"    server: { // [tl! add]\n"
+"        host, // [tl! add]\n"
+"        hmr: { host }, // [tl! add]\n"
+"        https: { // [tl! add]\n"
+"            key: fs.readFileSync(`/path/to/${host}.key`), // [tl! add]\n"
+"            cert: fs.readFileSync(`/path/to/${host}.crt`), // [tl! add]\n"
+"        }, // [tl! add]\n"
+"    }, // [tl! add]\n"
+"});\n"
 
 #: docs/9.x/vite.md:block 45 (paragraph)
 msgid "If you are unable to generate a trusted certificate for your system, you may install and configure the [`@vitejs/plugin-basic-ssl` plugin](https://github.com/vitejs/vite-plugin-basic-ssl). When using untrusted certificates, you will need to accept the certificate warning for Vite's development server in your browser by following the \"Local\" link in your console when running the `npm run dev` command."
-msgstr ""
+msgstr "若無法產生系統所信任的憑證，可以安裝並設定 [`@vitejs/plugin-basic-ssl` 外掛](https://github.com/vitejs/vite-plugin-basic-ssl)。在使用未受信任的憑證時，就需要打開執行 `npm run dev` 指令時顯示在主控台的「Local」連結，以在瀏覽器中接受 Vite 開發伺服器的憑證警告。"
 
 #: docs/9.x/vite.md:block 47 (header)
 msgid "Loading Your Scripts And Styles"
@@ -370,7 +392,7 @@ msgstr "`@vite` 指示詞會自動偵測到 Vite 的開發伺服器，並自動�
 
 #: docs/9.x/vite.md:block 53 (paragraph)
 msgid "If needed, you may also specify the build path of your compiled assets when invoking the `@vite` directive:"
-msgstr ""
+msgstr "若有需要，也可以在呼叫 `@vite` 指示詞時指定編譯資源的建置路徑："
 
 #: docs/9.x/vite.md:block 54 (code)
 msgid "<!doctype html>\n"
@@ -378,7 +400,11 @@ msgid "<!doctype html>\n"
 "    {{-- Given build path is relative to public path. --}}\n\n"
 "    @vite('resources/js/app.js', 'vendor/courier/build')\n"
 "</head>\n"
-msgstr ""
+msgstr "<!doctype html>\n"
+"<head>\n"
+"    {{-- 提供相對於 public 路徑的建置路徑。 --}}\n\n"
+"    @vite('resources/js/app.js', 'vendor/courier/build')\n"
+"</head>\n"
 
 #: docs/9.x/vite.md:block 56 (header)
 msgid "Running Vite"
@@ -486,7 +512,28 @@ msgid "import { defineConfig } from 'vite';\n"
 "        }),\n"
 "    ],\n"
 "});\n"
-msgstr ""
+msgstr "import { defineConfig } from 'vite';\n"
+"import laravel from 'laravel-vite-plugin';\n"
+"import vue from '@vitejs/plugin-vue';\n\n"
+"export default defineConfig({\n"
+"    plugins: [\n"
+"        laravel(['resources/js/app.js']),\n"
+"        vue({\n"
+"            template: {\n"
+"                transformAssetUrls: {\n"
+"                    // Vue 外掛會在使用 SFC (單檔案元件) 時複寫 (Re-write) 素材 URL\n"
+"                    // 以指向 Laravel 網頁伺服器。將此設定值改為 `null`，可讓 Laravel\n"
+"                    // 外掛改將複寫的素材 URL 重新指向 Vite 伺服器。\n"
+"                    base: null,\n\n"
+"                    // Vue 外掛會解析絕對 URL，並將這些 URL 視為磁碟上的檔案路徑。\n"
+"                    // 將此設定改為 `false`，就會使這些 URL 保持不動，以按照逾期地\n"
+"                    // 參照到 public 目錄下的素材。\n"
+"                    includeAbsolute: false,\n"
+"                },\n"
+"            },\n"
+"        }),\n"
+"    ],\n"
+"});\n"
 
 #: docs/9.x/vite.md:block 72 (quote)
 msgid "**Note** Laravel's [starter kits](/docs/{{version}}/starter-kits) already include the proper Laravel, Vue, and Vite configuration. Check out [Laravel Breeze](/docs/{{version}}/starter-kits#breeze-and-inertia) for the fastest way to get started with Laravel, Vue, and Vite."
@@ -534,7 +581,17 @@ msgid "import { createApp, h } from 'vue';\n"
 "      .mount(el)\n"
 "  },\n"
 "});\n"
-msgstr ""
+msgstr "import { createApp, h } from 'vue';\n"
+"import { createInertiaApp } from '@inertiajs/vue3';\n"
+"import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';\n\n"
+"createInertiaApp({\n"
+"  resolve: (name) => resolvePageComponent(`./Pages/${name}.vue`, import.meta.glob('./Pages/**/*.vue')),\n"
+"  setup({ el, App, props, plugin }) {\n"
+"    return createApp({ render: () => h(App, props) })\n"
+"      .use(plugin)\n"
+"      .mount(el)\n"
+"  },\n"
+"});\n"
 
 #: docs/9.x/vite.md:block 83 (quote)
 msgid "**Note** Laravel's [starter kits](/docs/{{version}}/starter-kits) already include the proper Laravel, Inertia, and Vite configuration. Check out [Laravel Breeze](/docs/{{version}}/starter-kits#breeze-and-inertia) for the fastest way to get started with Laravel, Inertia, and Vite."
@@ -546,7 +603,7 @@ msgstr "URL 的處理"
 
 #: docs/9.x/vite.md:block 86 (paragraph)
 msgid "When using Vite and referencing assets in your application's HTML, CSS, or JS, there are a couple of caveats to consider. First, if you reference assets with an absolute path, Vite will not include the asset in the build; therefore, you should ensure that the asset is available in your public directory."
-msgstr ""
+msgstr "使用 Vite 並在專案的 HTML、CSS、JS 等地方參照素材時，還需要考慮到幾點。首先，若要參照的資源使用絕對路徑，則 Vite 將不會在建置的結果中包含該資源；同時，還需要確定該素材是否在 public 目錄下可用。"
 
 #: docs/9.x/vite.md:block 87 (paragraph)
 msgid "When referencing relative asset paths, you should remember that the paths are relative to the file where they are referenced. Any assets referenced via a relative path will be re-written, versioned, and bundled by Vite."
@@ -616,34 +673,37 @@ msgstr "處理 Blade 與 Route"
 
 #: docs/9.x/vite.md:block 99 (header)
 msgid "Processing Static Assets With Vite"
-msgstr ""
+msgstr "使用 Vite 處理靜態素材"
 
 #: docs/9.x/vite.md:block 100 (paragraph)
 msgid "When referencing assets in your JavaScript or CSS, Vite automatically processes and versions them. In addition, when building Blade based applications, Vite can also process and version static assets that you reference solely in Blade templates."
-msgstr ""
+msgstr "在 JavaScript 或 CSS 中參照素材時，Vite 會自動處理這些素材並為其加上版本。此外，在建置基於 Blade 的專案時，也可以使用 Vite 來處理只在 Blade 中被參照的靜態資源，並為這些資源加上版本。"
 
 #: docs/9.x/vite.md:block 101 (paragraph)
 msgid "However, in order to accomplish this, you need to make Vite aware of your assets by importing the static assets into the application's entry point. For example, if you want to process and version all images stored in `resources/images` and all fonts stored in `resources/fonts`, you should add the following in your application's `resources/js/app.js` entry point:"
-msgstr ""
+msgstr "不過，若要達成此目的，我們需要先在專案的 ^[Entry Point](進入點) 匯入這些素材，好讓 Vite 知道有這些素材的存在。舉例來說，若想處理並為所有 `resources/images` 下的圖片、以及 `resources/fonts` 下的所有字體加上版本，就需要在專案的 `resources/js/app.js` Entry Point 內加上下列程式碼："
 
 #: docs/9.x/vite.md:block 102 (code)
 msgid "import.meta.glob([\n"
 "  '../images/**',\n"
 "  '../fonts/**',\n"
 "]);\n"
-msgstr ""
+msgstr "import.meta.glob([\n"
+"  '../images/**',\n"
+"  '../fonts/**',\n"
+"]);\n"
 
 #: docs/9.x/vite.md:block 103 (paragraph)
 msgid "These assets will now be processed by Vite when running `npm run build`. You can then reference these assets in Blade templates using the `Vite::asset` method, which will return the versioned URL for a given asset:"
-msgstr ""
+msgstr "接著在執行 `npm run build` 時，這些素材就會自動被 Vite 處理。我們接著就可以在 Blade 樣板中使用 `Vite::asset` 方法來參照這些素材。該方法會回傳給定資源加上版本後的 URL："
 
 #: docs/9.x/vite.md:block 104 (code)
 msgid "<img src=\"{{ Vite::asset('resources/images/logo.png') }}\">\n"
-msgstr ""
+msgstr "<img src=\"{{ Vite::asset('resources/images/logo.png') }}\">\n"
 
 #: docs/9.x/vite.md:block 106 (header)
 msgid "Refreshing On Save"
-msgstr ""
+msgstr "保存時重新整理"
 
 #: docs/9.x/vite.md:block 107 (paragraph)
 msgid "When your application is built using traditional server-side rendering with Blade, Vite can improve your development workflow by automatically refreshing the browser when you make changes to view files in your application. To get started, you can simply specify the `refresh` option as `true`."
@@ -673,27 +733,27 @@ msgstr "import { defineConfig } from 'vite';\n"
 
 #: docs/9.x/vite.md:block 109 (paragraph)
 msgid "When the `refresh` option is `true`, saving files in the following directories will trigger the browser to perform a full page refresh while you are running `npm run dev`:"
-msgstr ""
+msgstr "當 `refresh` 選項設為 `true` 後，在執行 `npm run dev` 時，一旦在下列目錄中保存檔案，就會觸發瀏覽器進行整頁的重新整理："
 
 #: docs/9.x/vite.md:block 110 (unordered list)
 msgid "`app/View/Components/**`"
-msgstr ""
+msgstr "`app/View/Components/**`"
 
 #: docs/9.x/vite.md:block 110 (unordered list)
 msgid "`lang/**`"
-msgstr ""
+msgstr "`lang/**`"
 
 #: docs/9.x/vite.md:block 110 (unordered list)
 msgid "`resources/lang/**`"
-msgstr ""
+msgstr "`resources/lang/**`"
 
 #: docs/9.x/vite.md:block 110 (unordered list)
 msgid "`resources/views/**`"
-msgstr ""
+msgstr "`resources/views/**`"
 
 #: docs/9.x/vite.md:block 110 (unordered list)
 msgid "`routes/**`"
-msgstr ""
+msgstr "`routes/**`"
 
 #: docs/9.x/vite.md:block 111 (paragraph)
 msgid "Watching the `routes/**` directory is useful if you are utilizing [Ziggy](https://github.com/tighten/ziggy) to generate route links within your application's frontend."
@@ -759,7 +819,7 @@ msgstr "import { defineConfig } from 'vite';\n"
 
 #: docs/9.x/vite.md:block 118 (paragraph)
 msgid "It is common in JavaScript applications to [create aliases](#aliases) to regularly referenced directories. But, you may also create aliases to use in Blade by using the `macro` method on the `Illuminate\\Support\\Vite` class. Typically, \"macros\" should be defined within the `boot` method of a [service provider](/docs/{{version}}/providers):"
-msgstr ""
+msgstr "在 JavaScript 專案中，為常用的目錄[建立別名](#aliases)是很常見的。不過，我們也可以使用 `Illuminate\\Support\\Vite` 類別的 `macro` 方法來建立能在 Blade 中使用的別名。一般來說，「^[Macro](巨集)」應在某個 [Service Provider](/docs/{{version}}/providers) 內定義："
 
 #: docs/9.x/vite.md:block 119 (code)
 msgid "/**\n"
@@ -771,15 +831,23 @@ msgid "/**\n"
 "{\n"
 "    Vite::macro('image', fn ($asset) => $this->asset(\"resources/images/{$asset}\"));\n"
 "}\n"
-msgstr ""
+msgstr "/**\n"
+" * Bootstrap any application services.\n"
+" *\n"
+" * @return void\n"
+" */\n"
+"public function boot()\n"
+"{\n"
+"    Vite::macro('image', fn ($asset) => $this->asset(\"resources/images/{$asset}\"));\n"
+"}\n"
 
 #: docs/9.x/vite.md:block 120 (paragraph)
 msgid "Once a macro has been defined, it can be invoked within your templates. For example, we can use the `image` macro defined above to reference an asset located at `resources/images/logo.png`:"
-msgstr ""
+msgstr "定義好 Macro 後，就可以在樣板中呼叫。舉例來說，我們可以使用 `image` Macro 定義來參照到位在 `resources/images/logo.png` 的素材："
 
 #: docs/9.x/vite.md:block 121 (code)
 msgid "<img src=\"{{ Vite::image('logo.png') }}\" alt=\"Laravel Logo\">\n"
-msgstr ""
+msgstr "<img src=\"{{ Vite::image('logo.png') }}\" alt=\"Laravel Logo\">\n"
 
 #: docs/9.x/vite.md:block 123 (header)
 msgid "Custom Base URLs"
@@ -827,15 +895,15 @@ msgstr "import.meta.env.VITE_SENTRY_DSN_PUBLIC\n"
 
 #: docs/9.x/vite.md:block 136 (header)
 msgid "Disabling Vite In Tests"
-msgstr ""
+msgstr "在測試時禁用 Vite"
 
 #: docs/9.x/vite.md:block 137 (paragraph)
 msgid "Laravel's Vite integration will attempt to resolve your assets while running your tests, which requires you to either run the Vite development server or build your assets."
-msgstr ""
+msgstr "Laravel 的 Vite 整合會在執行測試時嘗試解析素材，要能解析素材就必須要執行 Vite 開發伺服器或建置素材。"
 
 #: docs/9.x/vite.md:block 138 (paragraph)
 msgid "If you would prefer to mock Vite during testing, you may call the `withoutVite` method, which is is available for any tests that extend Laravel's `TestCase` class:"
-msgstr ""
+msgstr "若想在測試時 Mock (模擬) Vite，可呼叫 `withoutVite` 方法。該方法可在任何繼承了 Laravel  `TestCase` 的類別中使用："
 
 #: docs/9.x/vite.md:block 139 (code)
 msgid "use Tests\\TestCase;\n\n"
@@ -847,11 +915,19 @@ msgid "use Tests\\TestCase;\n\n"
 "        // ...\n"
 "    }\n"
 "}\n"
-msgstr ""
+msgstr "use Tests\\TestCase;\n\n"
+"class ExampleTest extends TestCase\n"
+"{\n"
+"    public function test_without_vite_example()\n"
+"    {\n"
+"        $this->withoutVite();\n\n"
+"        // ...\n"
+"    }\n"
+"}\n"
 
 #: docs/9.x/vite.md:block 140 (paragraph)
 msgid "If you would like to disable Vite for all tests, you may call the `withoutVite` method from the `setUp` method on your base `TestCase` class:"
-msgstr ""
+msgstr "若想在所有測試中禁用 Vite，可在基礎 `TestCase` 類別的 `setUp` 方法中呼叫 `withoutVite` 方法："
 
 #: docs/9.x/vite.md:block 141 (code)
 msgid "<?php\n\n"
@@ -866,7 +942,18 @@ msgid "<?php\n\n"
 "        $this->withoutVite();\n"
 "    }// [tl! add:end]\n"
 "}\n"
-msgstr ""
+msgstr "<?php\n\n"
+"namespace Tests;\n\n"
+"use Illuminate\\Foundation\\Testing\\TestCase as BaseTestCase;\n\n"
+"abstract class TestCase extends BaseTestCase\n"
+"{\n"
+"    use CreatesApplication;\n\n"
+"    protected function setUp(): void// [tl! add:start]\n"
+"    {\n"
+"        parent::setUp();\n\n"
+"        $this->withoutVite();\n"
+"    }// [tl! add:end]\n"
+"}\n"
 
 #: docs/9.x/vite.md:block 143 (header)
 msgid "Server-Side Rendering (SSR)"
@@ -1116,11 +1203,11 @@ msgstr "**Warning** 在執行 Vite 開發伺服器時，`$chunk` 與 `$manifest`
 
 #: docs/9.x/vite.md:block 180 (header)
 msgid "Advanced Customization"
-msgstr ""
+msgstr "進階客製化"
 
 #: docs/9.x/vite.md:block 181 (paragraph)
 msgid "Out of the box, Laravel's Vite plugin uses sensible conventions that should work for the majority of applications; however, sometimes you may need to customize Vite's behavior. To enable additional customization options, we offer the following methods and options which can be used in place of the `@vite` Blade directive:"
-msgstr ""
+msgstr "在新安裝好的 Laravel Vite 外掛中使用到了一些合理的慣例。這些慣例應該適用於大多數專案。不過，有時候我們還是需要自定 Vite 的姓外。若要啟用額外的客製化選項，Laravel 提供了下列方法與選項，可用於替代 `@vite` Blade 指示詞："
 
 #: docs/9.x/vite.md:block 182 (code)
 msgid "<!doctype html>\n"
@@ -1133,11 +1220,20 @@ msgid "<!doctype html>\n"
 "            ->withEntryPoints(['resources/js/app.js']) // Specify the entry points...\n"
 "    }}\n"
 "</head>\n"
-msgstr ""
+msgstr "<!doctype html>\n"
+"<head>\n"
+"    {{-- ... --}}\n\n"
+"    {{\n"
+"        Vite::useHotFile(storage_path('vite.hot')) // 自定「Hot」檔...\n"
+"            ->useBuildDirectory('bundle') // 自定建置目錄...\n"
+"            ->useManifestFilename('assets.json') // 自定 Manifest 檔名...\n"
+"            ->withEntryPoints(['resources/js/app.js']) // 指定 Entry Point...\n"
+"    }}\n"
+"</head>\n"
 
 #: docs/9.x/vite.md:block 183 (paragraph)
 msgid "Within the `vite.config.js` file, you should then specify the same configuration:"
-msgstr ""
+msgstr "在 `vite.config.js` 中，也可以指定相同的設定："
 
 #: docs/9.x/vite.md:block 184 (code)
 msgid "import { defineConfig } from 'vite';\n"
@@ -1154,7 +1250,20 @@ msgid "import { defineConfig } from 'vite';\n"
 "      manifest: 'assets.json', // Customize the manifest filename...\n"
 "    },\n"
 "});\n"
-msgstr ""
+msgstr "import { defineConfig } from 'vite';\n"
+"import laravel from 'laravel-vite-plugin';\n\n"
+"export default defineConfig({\n"
+"    plugins: [\n"
+"        laravel({\n"
+"            hotFile: 'storage/vite.hot', // 自定「Hot」檔名...\n"
+"            buildDirectory: 'bundle', // 自定建置目錄...\n"
+"            input: ['resources/js/app.js'], // 自定 Entry Point...\n"
+"        }),\n"
+"    ],\n"
+"    build: {\n"
+"      manifest: 'assets.json', // 自定 Manifest 檔名...\n"
+"    },\n"
+"});\n"
 
 #: docs/master/vite.md:block 119 (code)
 msgid "/**\n"
@@ -1164,7 +1273,13 @@ msgid "/**\n"
 "{\n"
 "    Vite::macro('image', fn (string $asset) => $this->asset(\"resources/images/{$asset}\"));\n"
 "}\n"
-msgstr ""
+msgstr "/**\n"
+" * Bootstrap any application services.\n"
+" */\n"
+"public function boot(): void\n"
+"{\n"
+"    Vite::macro('image', fn (string $asset) => $this->asset(\"resources/images/{$asset}\"));\n"
+"}\n"
 
 #: docs/master/vite.md:block 139 (code)
 msgid "use Tests\\TestCase;\n\n"
@@ -1176,7 +1291,15 @@ msgid "use Tests\\TestCase;\n\n"
 "        // ...\n"
 "    }\n"
 "}\n"
-msgstr ""
+msgstr "use Tests\\TestCase;\n\n"
+"class ExampleTest extends TestCase\n"
+"{\n"
+"    public function test_without_vite_example(): void\n"
+"    {\n"
+"        $this->withoutVite();\n\n"
+"        // ...\n"
+"    }\n"
+"}\n"
 
 #: docs/master/vite.md:block 156 (code)
 msgid "<?php\n\n"
@@ -1200,5 +1323,25 @@ msgid "<?php\n\n"
 "        ]);\n"
 "    }\n"
 "}\n"
-msgstr ""
+msgstr "<?php\n\n"
+"namespace App\\Http\\Middleware;\n\n"
+"use Closure;\n"
+"use Illuminate\\Http\\Request;\n"
+"use Illuminate\\Support\\Facades\\Vite;\n"
+"use Symfony\\Component\\HttpFoundation\\Response;\n\n"
+"class AddContentSecurityPolicyHeaders\n"
+"{\n"
+"    /**\n"
+"     * Handle an incoming request.\n"
+"     *\n"
+"     * @param  \\Closure(\\Illuminate\\Http\\Request): (\\Symfony\\Component\\HttpFoundation\\Response)  $next\n"
+"     */\n"
+"    public function handle(Request $request, Closure $next, string $role): Response\n"
+"    {\n"
+"        Vite::useCspNonce();\n\n"
+"        return $next($request)->withHeaders([\n"
+"            'Content-Security-Policy' => \"script-src 'nonce-\".Vite::cspNonce().\"'\",\n"
+"        ]);\n"
+"    }\n"
+"}\n"
 

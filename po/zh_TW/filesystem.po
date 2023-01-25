@@ -10,7 +10,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
-"PO-Revision-Date: 2023-01-25 07:02\n"
+"PO-Revision-Date: 2023-01-25 12:14\n"
 
 #: docs/8.x/filesystem.md:block 1 (header)
 msgid "File Storage"
@@ -1086,7 +1086,7 @@ msgstr "建立並註冊好擴充的 Service Provider 後，就可以在 `config/
 
 #: docs/9.x/filesystem.md:block 2 (unordered list)
 msgid "[Scoped & Read-Only Filesystems](#scoped-and-read-only-filesystems)"
-msgstr ""
+msgstr "[限定範圍與唯讀的檔案系統](#scoped-and-read-only-filesystems)"
 
 #: docs/9.x/filesystem.md:block 2 (unordered list)
 msgid "[Prepending & Appending To Files](#prepending-appending-to-files)"
@@ -1147,23 +1147,41 @@ msgid "'sftp' => [\n"
 "    // 'timeout' => 30,\n"
 "    // 'useAgent' => true,\n"
 "],\n"
-msgstr ""
+msgstr "'sftp' => [\n"
+"    'driver' => 'sftp',\n"
+"    'host' => env('SFTP_HOST'),\n"
+"    \n"
+"    // 設定 Basic 身份認證...\n"
+"    'username' => env('SFTP_USERNAME'),\n"
+"    'password' => env('SFTP_PASSWORD'),\n\n"
+"    // 設定有加密密碼之基於 SSH 金鑰的身份認證...\n"
+"    'privateKey' => env('SFTP_PRIVATE_KEY'),\n"
+"    'passphrase' => env('SFTP_PASSPHRASE'),\n\n"
+"    // 可選的 SFTP 設定...\n"
+"    // 'hostFingerprint' => env('SFTP_HOST_FINGERPRINT'),\n"
+"    // 'maxTries' => 4,\n"
+"    // 'passphrase' => env('SFTP_PASSPHRASE'),\n"
+"    // 'port' => env('SFTP_PORT', 22),\n"
+"    // 'root' => env('SFTP_ROOT', ''),\n"
+"    // 'timeout' => 30,\n"
+"    // 'useAgent' => true,\n"
+"],\n"
 
 #: docs/9.x/filesystem.md:block 45 (header)
 msgid "Scoped & Read-Only Filesystems"
-msgstr ""
+msgstr "限定範圍與唯讀的檔案系統"
 
 #: docs/9.x/filesystem.md:block 46 (paragraph)
 msgid "Scoped disks allow you to define a filesystem where all paths are automatically prefixed with a given path prefix. Before creating a scoped filesystem disk, you will need to install an additional Flysystem package via the Composer package manager:"
-msgstr ""
+msgstr "使用限定範圍的 Disk，我們可以定義一個檔案系統，在該檔案系統中，所有的路徑都會自動被加上給定的路徑前置詞。在建立限定範圍的檔案系統 Disk 前，我們需要先使用 Composer 套件管理員安裝一個額外的 Flysystem 套件："
 
 #: docs/9.x/filesystem.md:block 47 (code)
 msgid "composer require league/flysystem-path-prefixing \"^3.0\"\n"
-msgstr ""
+msgstr "composer require league/flysystem-path-prefixing \"^3.0\"\n"
 
 #: docs/9.x/filesystem.md:block 48 (paragraph)
 msgid "You may create a path scoped instance of any existing filesystem disk by defining a disk that utilizes the `scoped` driver. For example, you may create a disk which scopes your existing `s3` disk to a specific path prefix, and then every file operation using your scoped disk will utilize the specified prefix:"
-msgstr ""
+msgstr "只要使用 `scoped` Driver，我們就可以使用任何現有的檔案系統 Disk 來定義限定路徑範圍的 Disk。舉例來說，我們可以建立一個 Disk，該 Disk 使用現有的 `s3` Disk，並將路徑限定在特定的路徑前置詞內。接著，使用這個限定範圍 Disk 的所有檔案操作都會在這個指定的前置詞下："
 
 #: docs/9.x/filesystem.md:block 49 (code)
 msgid "'s3-videos' => [\n"
@@ -1171,19 +1189,23 @@ msgid "'s3-videos' => [\n"
 "    'disk' => 's3',\n"
 "    'prefix' => 'path/to/videos',\n"
 "],\n"
-msgstr ""
+msgstr "'s3-videos' => [\n"
+"    'driver' => 'scoped',\n"
+"    'disk' => 's3',\n"
+"    'prefix' => 'path/to/videos',\n"
+"],\n"
 
 #: docs/9.x/filesystem.md:block 50 (paragraph)
 msgid "\"Read-only\" disks allow you to create filesystem disks that do not allow write operations. Before using the `read-only` configuration option, you will need to install an additional Flysystem package via the Composer package manager:"
-msgstr ""
+msgstr "使用「唯讀」Disk，我們就能建立不允許任何寫入操作的檔案系統 Disk。在使用 `read-only` 組態設定選項前，我們還需要使用 Composer 套件管理員安裝一個額外的 Flysystem 套件："
 
 #: docs/9.x/filesystem.md:block 51 (code)
 msgid "composer require league/flysystem-read-only \"^3.0\"\n"
-msgstr ""
+msgstr "composer require league/flysystem-read-only \"^3.0\"\n"
 
 #: docs/9.x/filesystem.md:block 52 (paragraph)
 msgid "Next, you may include the `read-only` configuration option in one or more of your disk's configuration arrays:"
-msgstr ""
+msgstr "接著，我們可以在任何一個或多個 Disk 設定內加上 `read-only` 設定選項："
 
 #: docs/9.x/filesystem.md:block 53 (code)
 msgid "'s3-videos' => [\n"
@@ -1191,7 +1213,11 @@ msgid "'s3-videos' => [\n"
 "    // ...\n"
 "    'read-only' => true,\n"
 "],\n"
-msgstr ""
+msgstr "'s3-videos' => [\n"
+"    'driver' => 's3',\n"
+"    // ...\n"
+"    'read-only' => true,\n"
+"],\n"
 
 #: docs/9.x/filesystem.md:block 57 (paragraph)
 msgid "Typically, after updating the disk's credentials to match the credentials of the service you are planning to use, you only need to update the value of the `endpoint` configuration option. This option's value is typically defined via the `AWS_ENDPOINT` environment variable:"
@@ -1199,19 +1225,19 @@ msgstr "一般來說，為 Disk 設定要使用服務的認證資訊後，就只
 
 #: docs/9.x/filesystem.md:block 60 (header)
 msgid "MinIO"
-msgstr ""
+msgstr "MinIO"
 
 #: docs/9.x/filesystem.md:block 61 (paragraph)
 msgid "In order for Laravel's Flysystem integration to generate proper URLs when using MinIO, you should define the `AWS_URL` environment variable so that it matches your application's local URL and includes the bucket name in the URL path:"
-msgstr ""
+msgstr "為了讓 Laravel 的 Flysystem 整合在使用 MinIO 時整合正確的 URL，請定義 `AWS_URL` 環境變數，並設定適用於專案本機 URL 的值，且該值應在 URL 路徑內包含 Bucket 名稱："
 
 #: docs/9.x/filesystem.md:block 62 (code)
 msgid "AWS_URL=http://localhost:9000/local\n"
-msgstr ""
+msgstr "AWS_URL=http://localhost:9000/local\n"
 
 #: docs/9.x/filesystem.md:block 63 (quote)
 msgid "**Warning** Generating temporary storage URLs via the `temporaryUrl` method is not supported when using MinIO."
-msgstr ""
+msgstr "**Warning** 使用 MinIO 時，不支援通過 `temporaryUrl` 方法來產生臨時儲存空間 URL。"
 
 #: docs/9.x/filesystem.md:block 91 (quote)
 msgid "**Warning** When using the `local` driver, the return value of `url` is not URL encoded. For this reason, we recommend always storing your files using names that will create valid URLs."
@@ -1219,11 +1245,11 @@ msgstr "**Warning** 使用 `local` Driver 時，`url` 的回傳值未經過 URL 
 
 #: docs/9.x/filesystem.md:block 110 (paragraph)
 msgid "The MIME type of a given file may be obtained via the `mimeType` method:"
-msgstr ""
+msgstr "使用 `mimeType` 方法，就可取得給定檔案的 MIME 型別："
 
 #: docs/9.x/filesystem.md:block 111 (code)
 msgid "$mime = Storage::mimeType('file.jpg')\n"
-msgstr ""
+msgstr "$mime = Storage::mimeType('file.jpg')\n"
 
 #: docs/9.x/filesystem.md:block 121 (header)
 msgid "Failed Writes"
@@ -1366,7 +1392,28 @@ msgid "<?php\n\n"
 "        });\n"
 "    }\n"
 "}\n"
-msgstr ""
+msgstr "<?php\n\n"
+"namespace App\\Providers;\n\n"
+"use DateTime;\n"
+"use Illuminate\\Support\\Facades\\Storage;\n"
+"use Illuminate\\Support\\Facades\\URL;\n"
+"use Illuminate\\Support\\ServiceProvider;\n\n"
+"class AppServiceProvider extends ServiceProvider\n"
+"{\n"
+"    /**\n"
+"     * Bootstrap any application services.\n"
+"     */\n"
+"    public function boot(): void\n"
+"    {\n"
+"        Storage::disk('local')->buildTemporaryUrlsUsing(function (string $path, DateTime $expiration, array $options) {\n"
+"            return URL::temporarySignedRoute(\n"
+"                'files.download',\n"
+"                $expiration,\n"
+"                array_merge($options, ['path' => $path])\n"
+"            );\n"
+"        });\n"
+"    }\n"
+"}\n"
 
 #: docs/master/filesystem.md:block 144 (code)
 msgid "<?php\n\n"
@@ -1384,7 +1431,21 @@ msgid "<?php\n\n"
 "        return $path;\n"
 "    }\n"
 "}\n"
-msgstr ""
+msgstr "<?php\n\n"
+"namespace App\\Http\\Controllers;\n\n"
+"use App\\Http\\Controllers\\Controller;\n"
+"use Illuminate\\Http\\Request;\n\n"
+"class UserAvatarController extends Controller\n"
+"{\n"
+"    /**\n"
+"     * Update the avatar for the user.\n"
+"     */\n"
+"    public function update(Request $request): string\n"
+"    {\n"
+"        $path = $request->file('avatar')->store('avatars');\n\n"
+"        return $path;\n"
+"    }\n"
+"}\n"
 
 #: docs/master/filesystem.md:block 210 (code)
 msgid "<?php\n\n"
@@ -1422,5 +1483,39 @@ msgid "<?php\n\n"
 "        });\n"
 "    }\n"
 "}\n"
-msgstr ""
+msgstr "<?php\n\n"
+"namespace App\\Providers;\n\n"
+"use Illuminate\\Contracts\\Foundation\\Application;\n"
+"use Illuminate\\Filesystem\\FilesystemAdapter;\n"
+"use Illuminate\\Support\\Facades\\Storage;\n"
+"use Illuminate\\Support\\ServiceProvider;\n"
+"use League\\Flysystem\\Filesystem;\n"
+"use Spatie\\Dropbox\\Client as DropboxClient;\n"
+"use Spatie\\FlysystemDropbox\\DropboxAdapter;\n\n"
+"class AppServiceProvider extends ServiceProvider\n"
+"{\n"
+"    /**\n"
+"     * Register any application services.\n"
+"     */\n"
+"    public function register(): void\n"
+"    {\n"
+"        // ...\n"
+"    }\n\n"
+"    /**\n"
+"     * Bootstrap any application services.\n"
+"     */\n"
+"    public function boot(): void\n"
+"    {\n"
+"        Storage::extend('dropbox', function (Application $app, array $config) {\n"
+"            $adapter = new DropboxAdapter(new DropboxClient(\n"
+"                $config['authorization_token']\n"
+"            ));\n\n"
+"            return new FilesystemAdapter(\n"
+"                new Filesystem($adapter, $config),\n"
+"                $adapter,\n"
+"                $config\n"
+"            );\n"
+"        });\n"
+"    }\n"
+"}\n"
 

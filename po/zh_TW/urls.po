@@ -10,7 +10,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
-"PO-Revision-Date: 2022-02-15 16:28\n"
+"PO-Revision-Date: 2023-01-25 07:03\n"
 
 #: docs/8.x/urls.md:block 1 (header)
 msgid "URL Generation"
@@ -445,4 +445,59 @@ msgstr "if (! $request->hasValidSignatureWhileIgnoring(['page', 'order'])) {\n"
 #: docs/9.x/urls.md:block 45 (paragraph)
 msgid "Instead of validating signed URLs using the incoming request instance, you may assign the `Illuminate\\Routing\\Middleware\\ValidateSignature` [middleware](/docs/{{version}}/middleware) to the route. If it is not already present, you should assign this middleware a key in your HTTP kernel's `routeMiddleware` array:"
 msgstr "除了使用連入 Request 實體來驗證簽名 URL 外，也可以將  `Illuminate\\Routing\\Middleware\\ValidateSignature` [Middleware](/docs/{{version}}/middleware) 指派給 Route。若該 Middleware 不存在，請在 HTTP Kernel 的 `routeMiddleware` 陣列中為該 Middleware 設定一個索引鍵："
+
+#: docs/master/urls.md:block 21 (code)
+msgid "Route::get('/post/{post}', function (Post $post) {\n"
+"    // ...\n"
+"})->name('post.show');\n"
+msgstr ""
+
+#: docs/master/urls.md:block 25 (code)
+msgid "Route::get('/post/{post}/comment/{comment}', function (Post $post, Comment $comment) {\n"
+"    // ...\n"
+"})->name('comment.show');\n\n"
+"echo route('comment.show', ['post' => 1, 'comment' => 3]);\n\n"
+"// http://example.com/post/1/comment/3\n"
+msgstr ""
+
+#: docs/master/urls.md:block 52 (code)
+msgid "use Illuminate\\Routing\\Exceptions\\InvalidSignatureException;\n\n"
+"/**\n"
+" * Register the exception handling callbacks for the application.\n"
+" */\n"
+"public function register(): void\n"
+"{\n"
+"    $this->renderable(function (InvalidSignatureException $e) {\n"
+"        return response()->view('error.link-expired', [], 403);\n"
+"    });\n"
+"}\n"
+msgstr ""
+
+#: docs/master/urls.md:block 62 (code)
+msgid "Route::get('/{locale}/posts', function () {\n"
+"    // ...\n"
+"})->name('post.index');\n"
+msgstr ""
+
+#: docs/master/urls.md:block 64 (code)
+msgid "<?php\n\n"
+"namespace App\\Http\\Middleware;\n\n"
+"use Closure;\n"
+"use Illuminate\\Http\\Request;\n"
+"use Illuminate\\Support\\Facades\\URL;\n"
+"use Symfony\\Component\\HttpFoundation\\Response;\n\n"
+"class SetDefaultLocaleForUrls\n"
+"{\n"
+"    /**\n"
+"     * Handle an incoming request.\n"
+"     *\n"
+"     * @param  \\Closure(\\Illuminate\\Http\\Request): (\\Symfony\\Component\\HttpFoundation\\Response)  $next\n"
+"     */\n"
+"    public function handle(Request $request, Closure $next): Response\n"
+"    {\n"
+"        URL::defaults(['locale' => $request->user()->locale]);\n\n"
+"        return $next($request);\n"
+"    }\n"
+"}\n"
+msgstr ""
 

@@ -10,7 +10,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
-"PO-Revision-Date: 2022-08-06 05:46\n"
+"PO-Revision-Date: 2023-01-25 07:02\n"
 
 #: docs/8.x/horizon.md:block 1 (header)
 msgid "Laravel Horizon"
@@ -571,6 +571,10 @@ msgstr ""
 msgid "php artisan horizon:clear --queue=emails\n"
 msgstr ""
 
+#: docs/9.x/horizon.md:block 2 (unordered list)
+msgid "[Silenced Jobs](#silenced-jobs)"
+msgstr ""
+
 #: docs/9.x/horizon.md:block 5 (quote)
 msgid "**Note** Before digging into Laravel Horizon, you should familiarize yourself with Laravel's base [queue services](/docs/{{version}}/queues). Horizon augments Laravel's queue with additional features that may be confusing if you are not already familiar with the basic queue features offered by Laravel."
 msgstr ""
@@ -587,6 +591,10 @@ msgstr ""
 msgid "**Warning** You should ensure that the `environments` portion of your `horizon` configuration file contains an entry for each [environment](/docs/{{version}}/configuration#environment-configuration) on which you plan to run Horizon."
 msgstr ""
 
+#: docs/9.x/horizon.md:block 28 (paragraph)
+msgid "As you can see in Horizon's default configuration file, each environment can contain one or more \"supervisors\". By default, the configuration file defines this supervisor as `supervisor-1`; however, you are free to name your supervisors whatever you want. Each supervisor is essentially responsible for \"supervising\" a group of worker processes and takes care of balancing worker processes across queues."
+msgstr ""
+
 #: docs/9.x/horizon.md:block 40 (paragraph)
 msgid "The `balanceMaxShift` and `balanceCooldown` configuration values determine how quickly Horizon will scale to meet worker demand. In the example above, a maximum of one new process will be created or destroyed every three seconds. You are free to tweak these values as necessary based on your application's needs."
 msgstr ""
@@ -595,23 +603,139 @@ msgstr ""
 msgid "When the `balance` option is set to `false`, the default Laravel behavior will be used, wherein queues are processed in the order they are listed in your configuration."
 msgstr ""
 
-#: docs/9.x/horizon.md:block 76 (quote)
-msgid "**Note** If configuring Supervisor yourself sounds overwhelming, consider using [Laravel Forge](https://forge.laravel.com), which will automatically install and configure Supervisor for your Laravel projects."
+#: docs/9.x/horizon.md:block 50 (header)
+msgid "Silenced Jobs"
 msgstr ""
 
-#: docs/9.x/horizon.md:block 81 (paragraph)
-msgid "When defining your Supervisor configuration, you should ensure that the value of `stopwaitsecs` is greater than the number of seconds consumed by your longest running job. Otherwise, Supervisor may kill the job before it is finished processing."
+#: docs/9.x/horizon.md:block 51 (paragraph)
+msgid "Sometimes, you may not be interested in viewing certain jobs dispatched by your application or third-party packages. Instead of these jobs taking up space in your \"Completed Jobs\" list, you can silence them. To get started, add the job's class name to the `silenced` configuration option in your application's `horizon` configuration file:"
+msgstr ""
+
+#: docs/9.x/horizon.md:block 52 (code)
+msgid "'silenced' => [\n"
+"    App\\Jobs\\ProcessPodcast::class,\n"
+"],\n"
+msgstr ""
+
+#: docs/9.x/horizon.md:block 53 (paragraph)
+msgid "Alternatively, the job you wish to silence can implement the `Laravel\\Horizon\\Contracts\\Silenced` interface. If a job implements this interface, it will automatically be silenced, even if it is not present in the `silenced` configuration array:"
+msgstr ""
+
+#: docs/9.x/horizon.md:block 54 (code)
+msgid "use Laravel\\Horizon\\Contracts\\Silenced;\n\n"
+"class ProcessPodcast implements ShouldQueue, Silenced\n"
+"{\n"
+"    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;\n\n"
+"    // ...\n"
+"}\n"
 msgstr ""
 
 #: docs/9.x/horizon.md:block 82 (quote)
+msgid "**Note** If configuring Supervisor yourself sounds overwhelming, consider using [Laravel Forge](https://forge.laravel.com), which will automatically install and configure Supervisor for your Laravel projects."
+msgstr ""
+
+#: docs/9.x/horizon.md:block 87 (paragraph)
+msgid "When defining your Supervisor configuration, you should ensure that the value of `stopwaitsecs` is greater than the number of seconds consumed by your longest running job. Otherwise, Supervisor may kill the job before it is finished processing."
+msgstr ""
+
+#: docs/9.x/horizon.md:block 88 (quote)
 msgid "**Warning** While the examples above are valid for Ubuntu based servers, the location and file extension expected of Supervisor configuration files may vary between other server operating systems. Please consult your server's documentation for more information."
 msgstr ""
 
-#: docs/9.x/horizon.md:block 87 (quote)
+#: docs/9.x/horizon.md:block 93 (quote)
 msgid "**Note** For more information on running Supervisor, consult the [Supervisor documentation](http://supervisord.org/index.html)."
 msgstr ""
 
-#: docs/9.x/horizon.md:block 100 (quote)
+#: docs/9.x/horizon.md:block 106 (quote)
 msgid "**Warning** When configuring Horizon to send Slack or SMS notifications, you should review the [prerequisites for the relevant notification channel](/docs/{{version}}/notifications)."
+msgstr ""
+
+#: docs/master/horizon.md:block 45 (code)
+msgid "/**\n"
+" * Register the Horizon gate.\n"
+" *\n"
+" * This gate determines who can access Horizon in non-local environments.\n"
+" */\n"
+"protected function gate(): void\n"
+"{\n"
+"    Gate::define('viewHorizon', function (User $user) {\n"
+"        return in_array($user->email, [\n"
+"            'taylor@laravel.com',\n"
+"        ]);\n"
+"    });\n"
+"}\n"
+msgstr ""
+
+#: docs/master/horizon.md:block 97 (code)
+msgid "<?php\n\n"
+"namespace App\\Jobs;\n\n"
+"use App\\Models\\Video;\n"
+"use Illuminate\\Bus\\Queueable;\n"
+"use Illuminate\\Contracts\\Queue\\ShouldQueue;\n"
+"use Illuminate\\Foundation\\Bus\\Dispatchable;\n"
+"use Illuminate\\Queue\\InteractsWithQueue;\n"
+"use Illuminate\\Queue\\SerializesModels;\n\n"
+"class RenderVideo implements ShouldQueue\n"
+"{\n"
+"    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;\n\n"
+"    /**\n"
+"     * The video instance.\n"
+"     *\n"
+"     * @var \\App\\Models\\Video\n"
+"     */\n"
+"    public $video;\n\n"
+"    /**\n"
+"     * Create a new job instance.\n"
+"     */\n"
+"    public function __construct(Video $video)\n"
+"    {\n"
+"        $this->video = $video;\n"
+"    }\n\n"
+"    /**\n"
+"     * Execute the job.\n"
+"     */\n"
+"    public function handle(): void\n"
+"    {\n"
+"        // ...\n"
+"    }\n"
+"}\n"
+msgstr ""
+
+#: docs/master/horizon.md:block 103 (code)
+msgid "class RenderVideo implements ShouldQueue\n"
+"{\n"
+"    /**\n"
+"     * Get the tags that should be assigned to the job.\n"
+"     *\n"
+"     * @return array<int, string>\n"
+"     */\n"
+"    public function tags(): array\n"
+"    {\n"
+"        return ['render', 'video:'.$this->video->id];\n"
+"    }\n"
+"}\n"
+msgstr ""
+
+#: docs/master/horizon.md:block 108 (code)
+msgid "/**\n"
+" * Bootstrap any application services.\n"
+" */\n"
+"public function boot(): void\n"
+"{\n"
+"    parent::boot();\n\n"
+"    Horizon::routeSmsNotificationsTo('15556667777');\n"
+"    Horizon::routeMailNotificationsTo('example@example.com');\n"
+"    Horizon::routeSlackNotificationsTo('slack-webhook-url', '#channel');\n"
+"}\n"
+msgstr ""
+
+#: docs/master/horizon.md:block 116 (code)
+msgid "/**\n"
+" * Define the application's command schedule.\n"
+" */\n"
+"protected function schedule(Schedule $schedule): void\n"
+"{\n"
+"    $schedule->command('horizon:snapshot')->everyFiveMinutes();\n"
+"}\n"
 msgstr ""
 

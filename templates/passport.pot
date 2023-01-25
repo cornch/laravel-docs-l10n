@@ -1817,6 +1817,10 @@ msgid ""
 "}\n"
 msgstr ""
 
+#: docs/9.x/passport.md:block 2 (unordered list)
+msgid "[Overriding Routes](#overriding-routes)"
+msgstr ""
+
 #: docs/9.x/passport.md:block 6 (quote)
 msgid "**Warning** This documentation assumes you are already familiar with OAuth2. If you do not know anything about OAuth2, consider familiarizing yourself with the general [terminology](https://oauth2.thephpleague.com/terminology/) and features of OAuth2 before continuing."
 msgstr ""
@@ -1825,50 +1829,535 @@ msgstr ""
 msgid "**Note** If you would like to use UUIDs as the primary key value of the Passport `Client` model instead of auto-incrementing integers, please install Passport using [the `uuids` option](#client-uuids)."
 msgstr ""
 
-#: docs/9.x/passport.md:block 24 (paragraph)
+#: docs/9.x/passport.md:block 22 (paragraph)
 msgid "Finally, in your application's `config/auth.php` configuration file, you should define an `api` authentication guard and set the `driver` option to `passport`. This will instruct your application to use Passport's `TokenGuard` when authenticating incoming API requests:"
 msgstr ""
 
-#: docs/9.x/passport.md:block 60 (quote)
+#: docs/9.x/passport.md:block 33 (code)
+msgid ""
+"/**\n"
+" * Register any authentication / authorization services.\n"
+" *\n"
+" * @return void\n"
+" */\n"
+"public function boot()\n"
+"{\n"
+"    $this->registerPolicies();\n"
+"\n"
+"    Passport::loadKeysFrom(__DIR__.'/../secrets/oauth');\n"
+"}\n"
+msgstr ""
+
+#: docs/9.x/passport.md:block 57 (code)
+msgid ""
+"/**\n"
+" * Register any authentication / authorization services.\n"
+" *\n"
+" * @return void\n"
+" */\n"
+"public function boot()\n"
+"{\n"
+"    $this->registerPolicies();\n"
+"\n"
+"    Passport::tokensExpireIn(now()->addDays(15));\n"
+"    Passport::refreshTokensExpireIn(now()->addDays(30));\n"
+"    Passport::personalAccessTokensExpireIn(now()->addMonths(6));\n"
+"}\n"
+msgstr ""
+
+#: docs/9.x/passport.md:block 58 (quote)
 msgid "**Warning** The `expires_at` columns on Passport's database tables are read-only and for display purposes only. When issuing tokens, Passport stores the expiration information within the signed and encrypted tokens. If you need to invalidate a token you should [revoke it](#revoking-tokens)."
 msgstr ""
 
-#: docs/9.x/passport.md:block 108 (quote)
-msgid "**Note** Remember, the `/oauth/authorize` route is already defined by the `Passport::routes` method. You do not need to manually define this route."
+#: docs/9.x/passport.md:block 64 (code)
+msgid ""
+"use App\\Models\\Passport\\AuthCode;\n"
+"use App\\Models\\Passport\\Client;\n"
+"use App\\Models\\Passport\\PersonalAccessClient;\n"
+"use App\\Models\\Passport\\RefreshToken;\n"
+"use App\\Models\\Passport\\Token;\n"
+"\n"
+"/**\n"
+" * Register any authentication / authorization services.\n"
+" *\n"
+" * @return void\n"
+" */\n"
+"public function boot()\n"
+"{\n"
+"    $this->registerPolicies();\n"
+"\n"
+"    Passport::useTokenModel(Token::class);\n"
+"    Passport::useRefreshTokenModel(RefreshToken::class);\n"
+"    Passport::useAuthCodeModel(AuthCode::class);\n"
+"    Passport::useClientModel(Client::class);\n"
+"    Passport::usePersonalAccessClientModel(PersonalAccessClient::class);\n"
+"}\n"
 msgstr ""
 
-#: docs/9.x/passport.md:block 121 (quote)
-msgid "**Note** Like the `/oauth/authorize` route, the `/oauth/token` route is defined for you by the `Passport::routes` method. There is no need to manually define this route."
+#: docs/9.x/passport.md:block 66 (header)
+msgid "Overriding Routes"
 msgstr ""
 
-#: docs/9.x/passport.md:block 174 (quote)
+#: docs/9.x/passport.md:block 67 (paragraph)
+msgid "Sometimes you may wish to customize the routes defined by Passport. To achieve this, you first need to ignore the routes registered by Passport by adding `Passport::ignoreRoutes` to the `register` method of your application's `AppServiceProvider`:"
+msgstr ""
+
+#: docs/9.x/passport.md:block 68 (code)
+msgid ""
+"use Laravel\\Passport\\Passport;\n"
+"\n"
+"/**\n"
+" * Register any application services.\n"
+" *\n"
+" * @return void\n"
+" */\n"
+"public function register()\n"
+"{\n"
+"    Passport::ignoreRoutes();\n"
+"}\n"
+msgstr ""
+
+#: docs/9.x/passport.md:block 69 (paragraph)
+msgid "Then, you may copy the routes defined by Passport in [its routes file](https://github.com/laravel/passport/blob/11.x/routes/web.php) to your application's `routes/web.php` file and modify them to your liking:"
+msgstr ""
+
+#: docs/9.x/passport.md:block 70 (code)
+msgid ""
+"Route::group([\n"
+"    'as' => 'passport.',\n"
+"    'prefix' => config('passport.path', 'oauth'),\n"
+"    'namespace' => 'Laravel\\Passport\\Http\\Controllers',\n"
+"], function () {\n"
+"    // Passport routes...\n"
+"});\n"
+msgstr ""
+
+#: docs/9.x/passport.md:block 111 (code)
+msgid ""
+"use Illuminate\\Http\\Request;\n"
+"use Illuminate\\Support\\Str;\n"
+"\n"
+"Route::get('/redirect', function (Request $request) {\n"
+"    $request->session()->put('state', $state = Str::random(40));\n"
+"\n"
+"    $query = http_build_query([\n"
+"        'client_id' => 'client-id',\n"
+"        'redirect_uri' => 'http://third-party-app.com/callback',\n"
+"        'response_type' => 'code',\n"
+"        'scope' => '',\n"
+"        'state' => $state,\n"
+"        // 'prompt' => '', // \"none\", \"consent\", or \"login\"\n"
+"    ]);\n"
+"\n"
+"    return redirect('http://passport-app.test/oauth/authorize?'.$query);\n"
+"});\n"
+msgstr ""
+
+#: docs/9.x/passport.md:block 112 (paragraph)
+msgid "The `prompt` parameter may be used to specify the authentication behavior of the Passport application."
+msgstr ""
+
+#: docs/9.x/passport.md:block 113 (paragraph)
+msgid "If the `prompt` value is `none`, Passport will always throw an authentication error if the user is not already authenticated with the Passport application. If the value is `consent`, Passport will always display the authorization approval screen, even if all scopes were previously granted to the consuming application. When the value is `login`, the Passport application will always prompt the user to re-login to the application, even if they already have an existing session."
+msgstr ""
+
+#: docs/9.x/passport.md:block 114 (paragraph)
+msgid "If no `prompt` value is provided, the user will be prompted for authorization only if they have not previously authorized access to the consuming application for the requested scopes."
+msgstr ""
+
+#: docs/9.x/passport.md:block 115 (quote)
+msgid "**Note** Remember, the `/oauth/authorize` route is already defined by Passport. You do not need to manually define this route."
+msgstr ""
+
+#: docs/9.x/passport.md:block 118 (paragraph)
+msgid "When receiving authorization requests, Passport will automatically respond based on the value of `prompt` parameter (if present) and may display a template to the user allowing them to approve or deny the authorization request. If they approve the request, they will be redirected back to the `redirect_uri` that was specified by the consuming application. The `redirect_uri` must match the `redirect` URL that was specified when the client was created."
+msgstr ""
+
+#: docs/9.x/passport.md:block 121 (paragraph)
+msgid "Sometimes you may wish to skip the authorization prompt, such as when authorizing a first-party client. You may accomplish this by [extending the `Client` model](#overriding-default-models) and defining a `skipsAuthorization` method. If `skipsAuthorization` returns `true` the client will be approved and the user will be redirected back to the `redirect_uri` immediately, unless the consuming application has explicitly set the `prompt` parameter when redirecting for authorization:"
+msgstr ""
+
+#: docs/9.x/passport.md:block 128 (quote)
+msgid "**Note** Like the `/oauth/authorize` route, the `/oauth/token` route is defined for you by Passport. There is no need to manually define this route."
+msgstr ""
+
+#: docs/9.x/passport.md:block 173 (code)
+msgid ""
+"use Illuminate\\Http\\Request;\n"
+"use Illuminate\\Support\\Str;\n"
+"\n"
+"Route::get('/redirect', function (Request $request) {\n"
+"    $request->session()->put('state', $state = Str::random(40));\n"
+"\n"
+"    $request->session()->put(\n"
+"        'code_verifier', $code_verifier = Str::random(128)\n"
+"    );\n"
+"\n"
+"    $codeChallenge = strtr(rtrim(\n"
+"        base64_encode(hash('sha256', $code_verifier, true))\n"
+"    , '='), '+/', '-_');\n"
+"\n"
+"    $query = http_build_query([\n"
+"        'client_id' => 'client-id',\n"
+"        'redirect_uri' => 'http://third-party-app.com/callback',\n"
+"        'response_type' => 'code',\n"
+"        'scope' => '',\n"
+"        'state' => $state,\n"
+"        'code_challenge' => $codeChallenge,\n"
+"        'code_challenge_method' => 'S256',\n"
+"        // 'prompt' => '', // \"none\", \"consent\", or \"login\"\n"
+"    ]);\n"
+"\n"
+"    return redirect('http://passport-app.test/oauth/authorize?'.$query);\n"
+"});\n"
+msgstr ""
+
+#: docs/9.x/passport.md:block 181 (quote)
 msgid "**Warning** We no longer recommend using password grant tokens. Instead, you should choose [a grant type that is currently recommended by OAuth2 Server](https://oauth2.thephpleague.com/authorization-server/which-grant/)."
 msgstr ""
 
-#: docs/9.x/passport.md:block 184 (quote)
+#: docs/9.x/passport.md:block 189 (paragraph)
+msgid "Once you have created a password grant client, you may request an access token by issuing a `POST` request to the `/oauth/token` route with the user's email address and password. Remember, this route is already registered by Passport so there is no need to define it manually. If the request is successful, you will receive an `access_token` and `refresh_token` in the JSON response from the server:"
+msgstr ""
+
+#: docs/9.x/passport.md:block 191 (quote)
 msgid "**Note** Remember, access tokens are long-lived by default. However, you are free to [configure your maximum access token lifetime](#configuration) if needed."
 msgstr ""
 
-#: docs/9.x/passport.md:block 202 (quote)
+#: docs/9.x/passport.md:block 209 (quote)
 msgid "**Warning** We no longer recommend using implicit grant tokens. Instead, you should choose [a grant type that is currently recommended by OAuth2 Server](https://oauth2.thephpleague.com/authorization-server/which-grant/)."
 msgstr ""
 
-#: docs/9.x/passport.md:block 226 (quote)
+#: docs/9.x/passport.md:block 211 (code)
+msgid ""
+"/**\n"
+" * Register any authentication / authorization services.\n"
+" *\n"
+" * @return void\n"
+" */\n"
+"public function boot()\n"
+"{\n"
+"    $this->registerPolicies();\n"
+"\n"
+"    Passport::enableImplicitGrant();\n"
+"}\n"
+msgstr ""
+
+#: docs/9.x/passport.md:block 213 (code)
+msgid ""
+"use Illuminate\\Http\\Request;\n"
+"\n"
+"Route::get('/redirect', function (Request $request) {\n"
+"    $request->session()->put('state', $state = Str::random(40));\n"
+"\n"
+"    $query = http_build_query([\n"
+"        'client_id' => 'client-id',\n"
+"        'redirect_uri' => 'http://third-party-app.com/callback',\n"
+"        'response_type' => 'token',\n"
+"        'scope' => '',\n"
+"        'state' => $state,\n"
+"        // 'prompt' => '', // \"none\", \"consent\", or \"login\"\n"
+"    ]);\n"
+"\n"
+"    return redirect('http://passport-app.test/oauth/authorize?'.$query);\n"
+"});\n"
+msgstr ""
+
+#: docs/9.x/passport.md:block 233 (quote)
 msgid "**Note** If your application is primarily using Passport to issue personal access tokens, consider using [Laravel Sanctum](/docs/{{version}}/sanctum), Laravel's light-weight first-party library for issuing API access tokens."
 msgstr ""
 
-#: docs/9.x/passport.md:block 263 (quote)
+#: docs/9.x/passport.md:block 270 (quote)
 msgid "**Warning** If you are using the [client credentials grant](#client-credentials-grant-tokens), you should use [the `client` middleware](#client-credentials-grant-tokens) to protect your routes instead of the `auth:api` middleware."
 msgstr ""
 
-#: docs/9.x/passport.md:block 270 (quote)
+#: docs/9.x/passport.md:block 277 (quote)
 msgid "**Note** For more information on using multiple user providers with Passport, please consult the [password grant documentation](#customizing-the-user-provider)."
 msgstr ""
 
-#: docs/9.x/passport.md:block 327 (quote)
+#: docs/9.x/passport.md:block 288 (code)
+msgid ""
+"/**\n"
+" * Register any authentication / authorization services.\n"
+" *\n"
+" * @return void\n"
+" */\n"
+"public function boot()\n"
+"{\n"
+"    $this->registerPolicies();\n"
+"\n"
+"    Passport::tokensCan([\n"
+"        'place-orders' => 'Place orders',\n"
+"        'check-status' => 'Check order status',\n"
+"    ]);\n"
+"}\n"
+msgstr ""
+
+#: docs/9.x/passport.md:block 293 (quote)
+msgid "**Note** Passport's default scopes do not apply to personal access tokens that are generated by the user."
+msgstr ""
+
+#: docs/9.x/passport.md:block 335 (quote)
 msgid "**Warning** You should ensure that the `CreateFreshApiToken` middleware is the last middleware listed in your middleware stack."
 msgstr ""
 
-#: docs/9.x/passport.md:block 337 (quote)
+#: docs/9.x/passport.md:block 341 (code)
+msgid ""
+"/**\n"
+" * Register any authentication / authorization services.\n"
+" *\n"
+" * @return void\n"
+" */\n"
+"public function boot()\n"
+"{\n"
+"    $this->registerPolicies();\n"
+"\n"
+"    Passport::cookie('custom_name');\n"
+"}\n"
+msgstr ""
+
+#: docs/9.x/passport.md:block 345 (quote)
 msgid "**Note** If you choose to send the `X-CSRF-TOKEN` header instead of `X-XSRF-TOKEN`, you will need to use the unencrypted token provided by `csrf_token()`."
+msgstr ""
+
+#: docs/master/passport.md:block 33 (code)
+msgid ""
+"/**\n"
+" * Register any authentication / authorization services.\n"
+" */\n"
+"public function boot(): void\n"
+"{\n"
+"    $this->registerPolicies();\n"
+"\n"
+"    Passport::loadKeysFrom(__DIR__.'/../secrets/oauth');\n"
+"}\n"
+msgstr ""
+
+#: docs/master/passport.md:block 57 (code)
+msgid ""
+"/**\n"
+" * Register any authentication / authorization services.\n"
+" */\n"
+"public function boot(): void\n"
+"{\n"
+"    $this->registerPolicies();\n"
+"\n"
+"    Passport::tokensExpireIn(now()->addDays(15));\n"
+"    Passport::refreshTokensExpireIn(now()->addDays(30));\n"
+"    Passport::personalAccessTokensExpireIn(now()->addMonths(6));\n"
+"}\n"
+msgstr ""
+
+#: docs/master/passport.md:block 64 (code)
+msgid ""
+"use App\\Models\\Passport\\AuthCode;\n"
+"use App\\Models\\Passport\\Client;\n"
+"use App\\Models\\Passport\\PersonalAccessClient;\n"
+"use App\\Models\\Passport\\RefreshToken;\n"
+"use App\\Models\\Passport\\Token;\n"
+"\n"
+"/**\n"
+" * Register any authentication / authorization services.\n"
+" */\n"
+"public function boot(): void\n"
+"{\n"
+"    $this->registerPolicies();\n"
+"\n"
+"    Passport::useTokenModel(Token::class);\n"
+"    Passport::useRefreshTokenModel(RefreshToken::class);\n"
+"    Passport::useAuthCodeModel(AuthCode::class);\n"
+"    Passport::useClientModel(Client::class);\n"
+"    Passport::usePersonalAccessClientModel(PersonalAccessClient::class);\n"
+"}\n"
+msgstr ""
+
+#: docs/master/passport.md:block 105 (code)
+msgid ""
+"axios.delete('/oauth/clients/' + clientId)\n"
+"    .then(response => {\n"
+"        // ...\n"
+"    });\n"
+msgstr ""
+
+#: docs/master/passport.md:block 122 (code)
+msgid ""
+"<?php\n"
+"\n"
+"namespace App\\Models\\Passport;\n"
+"\n"
+"use Laravel\\Passport\\Client as BaseClient;\n"
+"\n"
+"class Client extends BaseClient\n"
+"{\n"
+"    /**\n"
+"     * Determine if the client should skip the authorization prompt.\n"
+"     */\n"
+"    public function skipsAuthorization(): bool\n"
+"    {\n"
+"        return $this->firstParty();\n"
+"    }\n"
+"}\n"
+msgstr ""
+
+#: docs/master/passport.md:block 154 (code)
+msgid ""
+"/**\n"
+" * Define the application's command schedule.\n"
+" */\n"
+"protected function schedule(Schedule $schedule): void\n"
+"{\n"
+"    $schedule->command('passport:purge')->hourly();\n"
+"}\n"
+msgstr ""
+
+#: docs/master/passport.md:block 202 (code)
+msgid ""
+"<?php\n"
+"\n"
+"namespace App\\Models;\n"
+"\n"
+"use Illuminate\\Foundation\\Auth\\User as Authenticatable;\n"
+"use Illuminate\\Notifications\\Notifiable;\n"
+"use Laravel\\Passport\\HasApiTokens;\n"
+"\n"
+"class User extends Authenticatable\n"
+"{\n"
+"    use HasApiTokens, Notifiable;\n"
+"\n"
+"    /**\n"
+"     * Find the user instance for the given username.\n"
+"     */\n"
+"    public function findForPassport(string $username): User\n"
+"    {\n"
+"        return $this->where('username', $username)->first();\n"
+"    }\n"
+"}\n"
+msgstr ""
+
+#: docs/master/passport.md:block 206 (code)
+msgid ""
+"<?php\n"
+"\n"
+"namespace App\\Models;\n"
+"\n"
+"use Illuminate\\Foundation\\Auth\\User as Authenticatable;\n"
+"use Illuminate\\Notifications\\Notifiable;\n"
+"use Illuminate\\Support\\Facades\\Hash;\n"
+"use Laravel\\Passport\\HasApiTokens;\n"
+"\n"
+"class User extends Authenticatable\n"
+"{\n"
+"    use HasApiTokens, Notifiable;\n"
+"\n"
+"    /**\n"
+"     * Validate the password of the user for the Passport password grant.\n"
+"     */\n"
+"    public function validateForPassportPasswordGrant(string $password): bool\n"
+"    {\n"
+"        return Hash::check($password, $this->password);\n"
+"    }\n"
+"}\n"
+msgstr ""
+
+#: docs/master/passport.md:block 211 (code)
+msgid ""
+"/**\n"
+" * Register any authentication / authorization services.\n"
+" */\n"
+"public function boot(): void\n"
+"{\n"
+"    $this->registerPolicies();\n"
+"\n"
+"    Passport::enableImplicitGrant();\n"
+"}\n"
+msgstr ""
+
+#: docs/master/passport.md:block 269 (code)
+msgid ""
+"Route::get('/user', function () {\n"
+"    // ...\n"
+"})->middleware('auth:api');\n"
+msgstr ""
+
+#: docs/master/passport.md:block 276 (code)
+msgid ""
+"Route::get('/customer', function () {\n"
+"    // ...\n"
+"})->middleware('auth:api-customers');\n"
+msgstr ""
+
+#: docs/master/passport.md:block 288 (code)
+msgid ""
+"/**\n"
+" * Register any authentication / authorization services.\n"
+" */\n"
+"public function boot(): void\n"
+"{\n"
+"    $this->registerPolicies();\n"
+"\n"
+"    Passport::tokensCan([\n"
+"        'place-orders' => 'Place orders',\n"
+"        'check-status' => 'Check order status',\n"
+"    ]);\n"
+"}\n"
+msgstr ""
+
+#: docs/master/passport.md:block 319 (code)
+msgid ""
+"use Illuminate\\Http\\Request;\n"
+"\n"
+"Route::get('/orders', function (Request $request) {\n"
+"    if ($request->user()->tokenCan('place-orders')) {\n"
+"        // ...\n"
+"    }\n"
+"});\n"
+msgstr ""
+
+#: docs/master/passport.md:block 341 (code)
+msgid ""
+"/**\n"
+" * Register any authentication / authorization services.\n"
+" */\n"
+"public function boot(): void\n"
+"{\n"
+"    $this->registerPolicies();\n"
+"\n"
+"    Passport::cookie('custom_name');\n"
+"}\n"
+msgstr ""
+
+#: docs/master/passport.md:block 353 (code)
+msgid ""
+"use App\\Models\\User;\n"
+"use Laravel\\Passport\\Passport;\n"
+"\n"
+"public function test_servers_can_be_created(): void\n"
+"{\n"
+"    Passport::actingAs(\n"
+"        User::factory()->create(),\n"
+"        ['create-servers']\n"
+"    );\n"
+"\n"
+"    $response = $this->post('/api/create-server');\n"
+"\n"
+"    $response->assertStatus(201);\n"
+"}\n"
+msgstr ""
+
+#: docs/master/passport.md:block 355 (code)
+msgid ""
+"use Laravel\\Passport\\Client;\n"
+"use Laravel\\Passport\\Passport;\n"
+"\n"
+"public function test_orders_can_be_retrieved(): void\n"
+"{\n"
+"    Passport::actingAsClient(\n"
+"        Client::factory()->create(),\n"
+"        ['check-status']\n"
+"    );\n"
+"\n"
+"    $response = $this->get('/api/orders');\n"
+"\n"
+"    $response->assertStatus(200);\n"
+"}\n"
 msgstr ""

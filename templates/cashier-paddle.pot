@@ -1907,6 +1907,14 @@ msgstr ""
 msgid "For automated tests, including those executed within a CI environment, you may use [Laravel's HTTP Client](/docs/{{version}}/http-client#testing) to fake HTTP calls made to Paddle. Although this does not test the actual responses from Paddle, it does provide a way to test your application without actually calling Paddle's API."
 msgstr ""
 
+#: docs/9.x/cashier-paddle.md:block 2 (unordered list)
+msgid "[Multiple Subscriptions](#multiple-subscriptions)"
+msgstr ""
+
+#: docs/9.x/cashier-paddle.md:block 6 (paragraph)
+msgid "While working with Cashier we recommend you also review Paddle's [user guides](https://developer.paddle.com/guides) and [API documentation](https://developer.paddle.com/api-reference)."
+msgstr ""
+
 #: docs/9.x/cashier-paddle.md:block 14 (quote)
 msgid "**Warning** To ensure Cashier properly handles all Paddle events, remember to [set up Cashier's webhook handling](#handling-paddle-webhooks)."
 msgstr ""
@@ -1976,27 +1984,72 @@ msgstr ""
 msgid "**Warning** Plans may not be swapped when a trial is active. For additional information regarding this limitation, please see the [Paddle documentation](https://developer.paddle.com/api-reference/subscription-api/users/updateuser#usage-notes)."
 msgstr ""
 
-#: docs/9.x/cashier-paddle.md:block 257 (quote)
+#: docs/9.x/cashier-paddle.md:block 220 (paragraph)
+msgid "By default, Paddle prorates charges when swapping between plans. The `noProrate` method may be used to update the subscriptions without prorating the charges:"
+msgstr ""
+
+#: docs/9.x/cashier-paddle.md:block 249 (header)
+msgid "Multiple Subscriptions"
+msgstr ""
+
+#: docs/9.x/cashier-paddle.md:block 250 (paragraph)
+msgid "Paddle allows your customers to have multiple subscriptions simultaneously. For example, you may run a gym that offers a swimming subscription and a weight-lifting subscription, and each subscription may have different pricing. Of course, customers should be able to subscribe to either or both plans."
+msgstr ""
+
+#: docs/9.x/cashier-paddle.md:block 251 (paragraph)
+msgid "When your application creates subscriptions, you may provide the name of the subscription to the `newSubscription` method. The name may be any string that represents the type of subscription the user is initiating:"
+msgstr ""
+
+#: docs/9.x/cashier-paddle.md:block 252 (code)
+msgid ""
+"use Illuminate\\Http\\Request;\n"
+"\n"
+"Route::post('/swimming/subscribe', function (Request $request) {\n"
+"    $request->user()\n"
+"        ->newSubscription('swimming', $swimmingMonthly = 12345)\n"
+"        ->create($request->paymentMethodId);\n"
+"\n"
+"    // ...\n"
+"});\n"
+msgstr ""
+
+#: docs/9.x/cashier-paddle.md:block 253 (paragraph)
+msgid "In this example, we initiated a monthly swimming subscription for the customer. However, they may want to swap to a yearly subscription at a later time. When adjusting the customer's subscription, we can simply swap the price on the `swimming` subscription:"
+msgstr ""
+
+#: docs/9.x/cashier-paddle.md:block 254 (code)
+msgid "$user->subscription('swimming')->swap($swimmingYearly = 34567);\n"
+msgstr ""
+
+#: docs/9.x/cashier-paddle.md:block 255 (paragraph)
+msgid "Of course, you may also cancel the subscription entirely:"
+msgstr ""
+
+#: docs/9.x/cashier-paddle.md:block 256 (code)
+msgid "$user->subscription('swimming')->cancel();\n"
+msgstr ""
+
+#: docs/9.x/cashier-paddle.md:block 266 (quote)
 msgid "**Warning** A subscription cannot be modified while it is paused. If you want to swap to a different plan or update quantities you must resume the subscription first."
 msgstr ""
 
-#: docs/9.x/cashier-paddle.md:block 267 (quote)
+#: docs/9.x/cashier-paddle.md:block 276 (quote)
 msgid "**Warning** Paddle's subscriptions cannot be resumed after cancellation. If your customer wishes to resume their subscription, they will have to subscribe to a new subscription."
 msgstr ""
 
-#: docs/9.x/cashier-paddle.md:block 272 (quote)
+#: docs/9.x/cashier-paddle.md:block 281 (quote)
 msgid "**Warning** While trialing and collecting payment method details up front, Paddle prevents any subscription changes such as swapping plans or updating quantities. If you want to allow a customer to swap plans during a trial the subscription must be cancelled and recreated."
 msgstr ""
 
-#: docs/9.x/cashier-paddle.md:block 276 (quote)
+#: docs/9.x/cashier-paddle.md:block 285 (quote)
 msgid "**Warning** If the customer's subscription is not cancelled before the trial ending date they will be charged as soon as the trial expires, so you should be sure to notify your users of their trial ending date."
 msgstr ""
 
-#: docs/9.x/cashier-paddle.md:block 279 (paragraph)
+#: docs/9.x/cashier-paddle.md:block 288 (paragraph)
 msgid "To determine if an existing trial has expired, you may use the `hasExpiredTrial` methods:"
 msgstr ""
 
-#: docs/9.x/cashier-paddle.md:block 280 (code)
+#: docs/9.x/cashier-paddle.md:block 289 (code)
 msgid ""
 "if ($user->hasExpiredTrial('default')) {\n"
 "    //\n"
@@ -2007,18 +2060,270 @@ msgid ""
 "}\n"
 msgstr ""
 
-#: docs/9.x/cashier-paddle.md:block 296 (quote)
+#: docs/9.x/cashier-paddle.md:block 305 (quote)
 msgid "**Warning** There is no way to extend or modify a trial period on a Paddle subscription after it has been created."
 msgstr ""
 
-#: docs/9.x/cashier-paddle.md:block 300 (paragraph)
+#: docs/9.x/cashier-paddle.md:block 309 (paragraph)
 msgid "By default, this controller will automatically handle cancelling subscriptions that have too many failed charges ([as defined by your Paddle dunning settings](https://vendors.paddle.com/recover-settings#dunning-form-id)), subscription updates, and payment method changes; however, as we'll soon discover, you can extend this controller to handle any Paddle webhook event you like."
 msgstr ""
 
-#: docs/9.x/cashier-paddle.md:block 303 (quote)
+#: docs/9.x/cashier-paddle.md:block 312 (quote)
 msgid "**Warning** Make sure you protect incoming requests with Cashier's included [webhook signature verification](/docs/{{version}}/cashier-paddle#verifying-webhook-signatures) middleware."
 msgstr ""
 
-#: docs/9.x/cashier-paddle.md:block 357 (quote)
+#: docs/9.x/cashier-paddle.md:block 366 (quote)
 msgid "**Note** You can use the `$refundRequestId` as a reference for the refund when contacting Paddle support."
+msgstr ""
+
+#: docs/9.x/cashier-paddle.md:block 382 (paragraph)
+msgid "Alternatively, you can perform more precise customization by [listening](/docs/{{version}}/events) for the `subscription_payment_failed` Paddle event via the `WebhookReceived` event dispatched by Cashier. You should also ensure the \"Subscription Payment Failed\" option is enabled in the Webhook settings of your Paddle dashboard:"
+msgstr ""
+
+#: docs/9.x/cashier-paddle.md:block 383 (code)
+msgid ""
+"<?php\n"
+"\n"
+"namespace App\\Listeners;\n"
+"\n"
+"use Laravel\\Paddle\\Events\\WebhookReceived;\n"
+"\n"
+"class PaddleEventListener\n"
+"{\n"
+"    /**\n"
+"     * Handle received Paddle webhooks.\n"
+"     *\n"
+"     * @param  \\Laravel\\Paddle\\Events\\WebhookReceived  $event\n"
+"     * @return void\n"
+"     */\n"
+"    public function handle(WebhookReceived $event)\n"
+"    {\n"
+"        if ($event->payload['alert_name'] === 'subscription_payment_failed') {\n"
+"            // Handle the failed subscription payment...\n"
+"        }\n"
+"    }\n"
+"}\n"
+msgstr ""
+
+#: docs/9.x/cashier-paddle.md:block 384 (paragraph)
+msgid "Once your listener has been defined, you should register it within your application's `EventServiceProvider`:"
+msgstr ""
+
+#: docs/master/cashier-paddle.md:block 28 (code)
+msgid ""
+"use Laravel\\Paddle\\Cashier;\n"
+"\n"
+"/**\n"
+" * Register any application services.\n"
+" */\n"
+"public function register(): void\n"
+"{\n"
+"    Cashier::ignoreMigrations();\n"
+"}\n"
+msgstr ""
+
+#: docs/master/cashier-paddle.md:block 58 (code)
+msgid ""
+"use App\\Models\\Cashier\\Receipt;\n"
+"use App\\Models\\Cashier\\Subscription;\n"
+"\n"
+"/**\n"
+" * Bootstrap any application services.\n"
+" */\n"
+"public function boot(): void\n"
+"{\n"
+"    Cashier::useReceiptModel(Receipt::class);\n"
+"    Cashier::useSubscriptionModel(Subscription::class);\n"
+"}\n"
+msgstr ""
+
+#: docs/master/cashier-paddle.md:block 138 (code)
+msgid ""
+"/**\n"
+" * Get the customer's email address to associate with Paddle.\n"
+" */\n"
+"public function paddleEmail(): string|null\n"
+"{\n"
+"    return $this->email;\n"
+"}\n"
+"\n"
+"/**\n"
+" * Get the customer's country to associate with Paddle.\n"
+" *\n"
+" * This needs to be a 2 letter code. See the link below for supported countries.\n"
+" *\n"
+" * @link https://developer.paddle.com/reference/platform-parameters/supported-countries\n"
+" */\n"
+"public function paddleCountry(): string|null\n"
+"{\n"
+"    // ...\n"
+"}\n"
+"\n"
+"/**\n"
+" * Get the customer's postal code to associate with Paddle.\n"
+" *\n"
+" * See the link below for countries which require this.\n"
+" *\n"
+" * @link https://developer.paddle.com/reference/platform-parameters/supported-countries#countries-requiring-postcode\n"
+" */\n"
+"public function paddlePostcode(): string|null\n"
+"{\n"
+"    // ...\n"
+"}\n"
+msgstr ""
+
+#: docs/master/cashier-paddle.md:block 166 (code)
+msgid ""
+"if ($user->subscribed('default')) {\n"
+"    // ...\n"
+"}\n"
+msgstr ""
+
+#: docs/master/cashier-paddle.md:block 168 (code)
+msgid ""
+"<?php\n"
+"\n"
+"namespace App\\Http\\Middleware;\n"
+"\n"
+"use Closure;\n"
+"use Illuminate\\Http\\Request;\n"
+"use Symfony\\Component\\HttpFoundation\\Response;\n"
+"\n"
+"class EnsureUserIsSubscribed\n"
+"{\n"
+"    /**\n"
+"     * Handle an incoming request.\n"
+"     *\n"
+"     * @param  \\Closure(\\Illuminate\\Http\\Request): (\\Symfony\\Component\\HttpFoundation\\Response)  $next\n"
+"     */\n"
+"    public function handle(Request $request, Closure $next): Response\n"
+"    {\n"
+"        if ($request->user() && ! $request->user()->subscribed('default')) {\n"
+"            // This user is not a paying customer...\n"
+"            return redirect('billing');\n"
+"        }\n"
+"\n"
+"        return $next($request);\n"
+"    }\n"
+"}\n"
+msgstr ""
+
+#: docs/master/cashier-paddle.md:block 170 (code)
+msgid ""
+"if ($user->subscription('default')->onTrial()) {\n"
+"    // ...\n"
+"}\n"
+msgstr ""
+
+#: docs/master/cashier-paddle.md:block 172 (code)
+msgid ""
+"if ($user->subscribedToPlan($monthly = 12345, 'default')) {\n"
+"    // ...\n"
+"}\n"
+msgstr ""
+
+#: docs/master/cashier-paddle.md:block 174 (code)
+msgid ""
+"if ($user->subscribedToPlan([$monthly = 12345, $yearly = 54321], 'default')) {\n"
+"    // ...\n"
+"}\n"
+msgstr ""
+
+#: docs/master/cashier-paddle.md:block 176 (code)
+msgid ""
+"if ($user->subscription('default')->recurring()) {\n"
+"    // ...\n"
+"}\n"
+msgstr ""
+
+#: docs/master/cashier-paddle.md:block 180 (code)
+msgid ""
+"if ($user->subscription('default')->cancelled()) {\n"
+"    // ...\n"
+"}\n"
+msgstr ""
+
+#: docs/master/cashier-paddle.md:block 182 (code)
+msgid ""
+"if ($user->subscription('default')->onGracePeriod()) {\n"
+"    // ...\n"
+"}\n"
+msgstr ""
+
+#: docs/master/cashier-paddle.md:block 184 (code)
+msgid ""
+"if ($user->subscription('default')->ended()) {\n"
+"    // ...\n"
+"}\n"
+msgstr ""
+
+#: docs/master/cashier-paddle.md:block 188 (code)
+msgid ""
+"if ($user->subscription('default')->pastDue()) {\n"
+"    // ...\n"
+"}\n"
+msgstr ""
+
+#: docs/master/cashier-paddle.md:block 191 (code)
+msgid ""
+"use Laravel\\Paddle\\Cashier;\n"
+"\n"
+"/**\n"
+" * Register any application services.\n"
+" */\n"
+"public function register(): void\n"
+"{\n"
+"    Cashier::keepPastDueSubscriptionsActive();\n"
+"}\n"
+msgstr ""
+
+#: docs/master/cashier-paddle.md:block 263 (code)
+msgid ""
+"if ($user->subscription('default')->onPausedGracePeriod()) {\n"
+"    // ...\n"
+"}\n"
+msgstr ""
+
+#: docs/master/cashier-paddle.md:block 287 (code)
+msgid ""
+"if ($user->onTrial('default')) {\n"
+"    // ...\n"
+"}\n"
+"\n"
+"if ($user->subscription('default')->onTrial()) {\n"
+"    // ...\n"
+"}\n"
+msgstr ""
+
+#: docs/master/cashier-paddle.md:block 289 (code)
+msgid ""
+"if ($user->hasExpiredTrial('default')) {\n"
+"    // ...\n"
+"}\n"
+"\n"
+"if ($user->subscription('default')->hasExpiredTrial()) {\n"
+"    // ...\n"
+"}\n"
+msgstr ""
+
+#: docs/master/cashier-paddle.md:block 325 (code)
+msgid ""
+"<?php\n"
+"\n"
+"namespace App\\Listeners;\n"
+"\n"
+"use Laravel\\Paddle\\Events\\WebhookReceived;\n"
+"\n"
+"class PaddleEventListener\n"
+"{\n"
+"    /**\n"
+"     * Handle received Paddle webhooks.\n"
+"     */\n"
+"    public function handle(WebhookReceived $event): void\n"
+"    {\n"
+"        if ($event->payload['alert_name'] === 'payment_succeeded') {\n"
+"            // Handle the incoming event...\n"
+"        }\n"
+"    }\n"
+"}\n"
 msgstr ""

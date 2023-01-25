@@ -709,22 +709,60 @@ msgstr ""
 msgid "sail build --no-cache\n"
 msgstr ""
 
-#: docs/9.x/sail.md:block 67 (code)
+#: docs/9.x/sail.md:block 2 (unordered list)
+msgid "[Configuring A Shell Alias](#configuring-a-shell-alias)"
+msgstr ""
+
+#: docs/9.x/sail.md:block 24 (header)
+msgid "Configuring A Shell Alias"
+msgstr ""
+
+#: docs/9.x/sail.md:block 27 (paragraph)
+msgid "However, instead of repeatedly typing `vendor/bin/sail` to execute Sail commands, you may wish to configure a shell alias that allows you to execute Sail's commands more easily:"
+msgstr ""
+
+#: docs/9.x/sail.md:block 28 (code)
+msgid "alias sail='[ -f sail ] && sh sail || sh vendor/bin/sail'\n"
+msgstr ""
+
+#: docs/9.x/sail.md:block 29 (paragraph)
+msgid "To make sure this is always available, you may add this to your shell configuration file in your home directory, such as `~/.zshrc` or `~/.bashrc`, and then restart your shell."
+msgstr ""
+
+#: docs/9.x/sail.md:block 30 (paragraph)
+msgid "Once the shell alias has been configured, you may execute Sail commands by simply typing `sail`. The remainder of this documentation's examples will assume that you have configured this alias:"
+msgstr ""
+
+#: docs/9.x/sail.md:block 59 (code)
+msgid ""
+"docker run --rm \\\n"
+"    -u \"$(id -u):$(id -g)\" \\\n"
+"    -v \"$(pwd):/var/www/html\" \\\n"
+"    -w /var/www/html \\\n"
+"    laravelsail/php82-composer:latest \\\n"
+"    composer install --ignore-platform-reqs\n"
+msgstr ""
+
+#: docs/9.x/sail.md:block 60 (paragraph)
+msgid "When using the `laravelsail/phpXX-composer` image, you should use the same version of PHP that you plan to use for your application (`74`, `80`, `81`, or `82`)."
+msgstr ""
+
+#: docs/9.x/sail.md:block 68 (code)
 msgid ""
 "sail node --version\n"
 "\n"
 "sail npm run dev\n"
 msgstr ""
 
-#: docs/9.x/sail.md:block 74 (paragraph)
+#: docs/9.x/sail.md:block 75 (paragraph)
 msgid "As you may have noticed, your application's `docker-compose.yml` file contains an entry for a MySQL container. This container uses a [Docker volume](https://docs.docker.com/storage/volumes/) so that the data stored in your database is persisted even when stopping and restarting your containers."
 msgstr ""
 
-#: docs/9.x/sail.md:block 75 (paragraph)
+#: docs/9.x/sail.md:block 76 (paragraph)
 msgid "In addition, the first time the MySQL container starts, it will create two databases for you. The first database is named using the value of your `DB_DATABASE` environment variable and is for your local development. The second is a dedicated testing database named `testing` and will ensure that your tests do not interfere with your development data."
 msgstr ""
 
-#: docs/9.x/sail.md:block 90 (code)
+#: docs/9.x/sail.md:block 91 (code)
 msgid ""
 "FILESYSTEM_DISK=s3\n"
 "AWS_ACCESS_KEY_ID=sail\n"
@@ -735,38 +773,65 @@ msgid ""
 "AWS_USE_PATH_STYLE_ENDPOINT=true\n"
 msgstr ""
 
-#: docs/9.x/sail.md:block 91 (paragraph)
+#: docs/9.x/sail.md:block 92 (paragraph)
 msgid "In order for Laravel's Flysystem integration to generate proper URLs when using MinIO, you should define the `AWS_URL` environment variable so that it matches your application's local URL and includes the bucket name in the URL path:"
 msgstr ""
 
-#: docs/9.x/sail.md:block 92 (code)
+#: docs/9.x/sail.md:block 93 (code)
 msgid "AWS_URL=http://localhost:9000/local\n"
 msgstr ""
 
-#: docs/9.x/sail.md:block 93 (paragraph)
+#: docs/9.x/sail.md:block 94 (paragraph)
 msgid "You may create buckets via the MinIO console, which is available at `http://localhost:8900`. The default username for the MinIO console is `sail` while the default password is `password`."
 msgstr ""
 
-#: docs/9.x/sail.md:block 100 (paragraph)
-msgid "By default, Sail will create a dedicated `testing` database that your tests do not interfere with the current state of your database. In a default Laravel installation, Sail will also configure your `phpunit.xml` file to use this database when executing your tests:"
+#: docs/9.x/sail.md:block 95 (quote)
+msgid "**Warning** Generating temporary storage URLs via the `temporaryUrl` method is not supported when using MinIO."
 msgstr ""
 
-#: docs/9.x/sail.md:block 101 (code)
+#: docs/9.x/sail.md:block 102 (paragraph)
+msgid "By default, Sail will create a dedicated `testing` database so that your tests do not interfere with the current state of your database. In a default Laravel installation, Sail will also configure your `phpunit.xml` file to use this database when executing your tests:"
+msgstr ""
+
+#: docs/9.x/sail.md:block 103 (code)
 msgid "<env name=\"DB_DATABASE\" value=\"testing\"/>\n"
 msgstr ""
 
-#: docs/9.x/sail.md:block 147 (quote)
+#: docs/9.x/sail.md:block 129 (paragraph)
+msgid "Sail currently supports serving your application via PHP 8.2, 8.1, PHP 8.0, or PHP 7.4. The default PHP version used by Sail is currently PHP 8.1. To change the PHP version that is used to serve your application, you should update the `build` definition of the `laravel.test` container in your application's `docker-compose.yml` file:"
+msgstr ""
+
+#: docs/9.x/sail.md:block 130 (code)
+msgid ""
+"# PHP 8.2\n"
+"context: ./vendor/laravel/sail/runtimes/8.2\n"
+"\n"
+"# PHP 8.1\n"
+"context: ./vendor/laravel/sail/runtimes/8.1\n"
+"\n"
+"# PHP 8.0\n"
+"context: ./vendor/laravel/sail/runtimes/8.0\n"
+"\n"
+"# PHP 7.4\n"
+"context: ./vendor/laravel/sail/runtimes/7.4\n"
+msgstr ""
+
+#: docs/9.x/sail.md:block 137 (paragraph)
+msgid "Sail installs Node 18 by default. To change the Node version that is installed when building your images, you may update the `build.args` definition of the `laravel.test` service in your application's `docker-compose.yml` file:"
+msgstr ""
+
+#: docs/9.x/sail.md:block 149 (quote)
 msgid "**Note** The `share` command is powered by [Expose](https://github.com/beyondcode/expose), an open source tunneling service by [BeyondCode](https://beyondco.de)."
 msgstr ""
 
-#: docs/9.x/sail.md:block 151 (code)
+#: docs/9.x/sail.md:block 153 (code)
 msgid "SAIL_XDEBUG_MODE=develop,debug,coverage\n"
 msgstr ""
 
-#: docs/9.x/sail.md:block 153 (paragraph)
+#: docs/9.x/sail.md:block 155 (paragraph)
 msgid "Internally, the `XDEBUG_CONFIG` environment variable is defined as `client_host=host.docker.internal` so that Xdebug will be properly configured for Mac and Windows (WSL2). If your local machine is running Linux, you should ensure that you are running Docker Engine 17.06.0+ and Compose 1.16.0+. Otherwise, you will need to manually define this environment variable as shown below."
 msgstr ""
 
-#: docs/9.x/sail.md:block 166 (quote)
+#: docs/9.x/sail.md:block 168 (quote)
 msgid "**Warning** Laravel Sail relies on `artisan serve` to serve your application. The `artisan serve` command only accepts the `XDEBUG_CONFIG` and `XDEBUG_MODE` variables as of Laravel version 8.53.0. Older versions of Laravel (8.52.0 and below) do not support these variables and will not accept debug connections."
 msgstr ""

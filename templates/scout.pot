@@ -930,15 +930,88 @@ msgid ""
 "],\n"
 msgstr ""
 
-#: docs/9.x/scout.md:block 54 (header)
+#: docs/9.x/scout.md:block 49 (paragraph)
+msgid "Some search engines such as MeiliSearch will only perform filter operations (`>`, `<`, etc.) on data of the correct type. So, when using these search engines and customizing your searchable data, you should ensure that numeric values are cast to their correct type:"
+msgstr ""
+
+#: docs/9.x/scout.md:block 50 (code)
+msgid ""
+"public function toSearchableArray()\n"
+"{\n"
+"    return [\n"
+"        'id' => (int) $this->id,\n"
+"        'name' => $this->name,\n"
+"        'price' => (float) $this->price,\n"
+"    ];\n"
+"}\n"
+msgstr ""
+
+#: docs/9.x/scout.md:block 52 (header)
+msgid "Configuring Filterable Data & Index Settings (MeiliSearch)"
+msgstr ""
+
+#: docs/9.x/scout.md:block 53 (paragraph)
+msgid "Unlike Scout's other drivers, MeiliSearch requires you to pre-define index search settings such as filterable attributes, sortable attributes, and [other supported settings fields](https://docs.meilisearch.com/reference/api/settings.html)."
+msgstr ""
+
+#: docs/9.x/scout.md:block 54 (paragraph)
+msgid "Filterable attributes are any attributes you plan to filter on when invoking Scout's `where` method, while sortable attributes are any attributes you plan to sort by when invoking Scout's `orderBy` method. To define your index settings, adjust the `index-settings` portion of your `meilisearch` configuration entry in your application's `scout` configuration file:"
+msgstr ""
+
+#: docs/9.x/scout.md:block 55 (code)
+msgid ""
+"use App\\Models\\User;\n"
+"use App\\Models\\Flight;\n"
+"\n"
+"'meilisearch' => [\n"
+"    'host' => env('MEILISEARCH_HOST', 'http://localhost:7700'),\n"
+"    'key' => env('MEILISEARCH_KEY', null),\n"
+"    'index-settings' => [\n"
+"        User::class => [\n"
+"            'filterableAttributes'=> ['id', 'name', 'email'],\n"
+"            'sortableAttributes' => ['created_at'],\n"
+"            // Other settings fields...\n"
+"        ],\n"
+"        Flight::class => [\n"
+"            'filterableAttributes'=> ['id', 'destination'],\n"
+"            'sortableAttributes' => ['updated_at'],\n"
+"        ],\n"
+"    ],\n"
+"],\n"
+msgstr ""
+
+#: docs/9.x/scout.md:block 56 (paragraph)
+msgid "If the model underlying a given index is soft deletable and is included in the `index-settings` array, Scout will automatically include support for filtering on soft deleted models on that index. If you have no other filterable or sortable attributes to define for a soft deletable model index, you may simply add an empty entry to the `index-settings` array for that model:"
+msgstr ""
+
+#: docs/9.x/scout.md:block 57 (code)
+msgid ""
+"'index-settings' => [\n"
+"    Flight::class => []\n"
+"],\n"
+msgstr ""
+
+#: docs/9.x/scout.md:block 58 (paragraph)
+msgid "After configuring your application's index settings, you must invoke the `scout:sync-index-settings` Artisan command. This command will inform MeiliSearch of your currently configured index settings. For convenience, you may wish to make this command part of your deployment process:"
+msgstr ""
+
+#: docs/9.x/scout.md:block 59 (code)
+msgid "php artisan scout:sync-index-settings\n"
+msgstr ""
+
+#: docs/9.x/scout.md:block 62 (paragraph)
+msgid "By default, Scout will use the primary key of the model as the model's unique ID / key that is stored in the search index. If you need to customize this behavior, you may override the `getScoutKey` and the `getScoutKeyName` methods on the model:"
+msgstr ""
+
+#: docs/9.x/scout.md:block 65 (header)
 msgid "Configuring Search Engines Per Model"
 msgstr ""
 
-#: docs/9.x/scout.md:block 55 (paragraph)
+#: docs/9.x/scout.md:block 66 (paragraph)
 msgid "When searching, Scout will typically use the default search engine specified in your application's `scout` configuration file. However, the search engine for a particular model can be changed by overriding the `searchableUsing` method on the model:"
 msgstr ""
 
-#: docs/9.x/scout.md:block 56 (code)
+#: docs/9.x/scout.md:block 67 (code)
 msgid ""
 "<?php\n"
 "\n"
@@ -964,47 +1037,47 @@ msgid ""
 "}\n"
 msgstr ""
 
-#: docs/9.x/scout.md:block 63 (header)
+#: docs/9.x/scout.md:block 74 (header)
 msgid "Database / Collection Engines"
 msgstr ""
 
-#: docs/9.x/scout.md:block 65 (header)
+#: docs/9.x/scout.md:block 76 (header)
 msgid "Database Engine"
 msgstr ""
 
-#: docs/9.x/scout.md:block 66 (quote)
+#: docs/9.x/scout.md:block 77 (quote)
 msgid "**Warning** The database engine currently supports MySQL and PostgreSQL."
 msgstr ""
 
-#: docs/9.x/scout.md:block 67 (paragraph)
+#: docs/9.x/scout.md:block 78 (paragraph)
 msgid "If your application interacts with small to medium sized databases or has a light workload, you may find it more convenient to get started with Scout's \"database\" engine. The database engine will use \"where like\" clauses and full text indexes when filtering results from your existing database to determine the applicable search results for your query."
 msgstr ""
 
-#: docs/9.x/scout.md:block 68 (paragraph)
+#: docs/9.x/scout.md:block 79 (paragraph)
 msgid "To use the database engine, you may simply set the value of the `SCOUT_DRIVER` environment variable to `database`, or specify the `database` driver directly in your application's `scout` configuration file:"
 msgstr ""
 
-#: docs/9.x/scout.md:block 69 (code)
+#: docs/9.x/scout.md:block 80 (code)
 msgid "SCOUT_DRIVER=database\n"
 msgstr ""
 
-#: docs/9.x/scout.md:block 70 (paragraph)
+#: docs/9.x/scout.md:block 81 (paragraph)
 msgid "Once you have specified the database engine as your preferred driver, you must [configure your searchable data](#configuring-searchable-data). Then, you may start [executing search queries](#searching) against your models. Search engine indexing, such as the indexing needed to seed Algolia or MeiliSearch indexes, is unnecessary when using the database engine."
 msgstr ""
 
-#: docs/9.x/scout.md:block 71 (header)
+#: docs/9.x/scout.md:block 82 (header)
 msgid "Customizing Database Searching Strategies"
 msgstr ""
 
-#: docs/9.x/scout.md:block 72 (paragraph)
+#: docs/9.x/scout.md:block 83 (paragraph)
 msgid "By default, the database engine will execute a \"where like\" query against every model attribute that you have [configured as searchable](#configuring-searchable-data). However, in some situations, this may result in poor performance. Therefore, the database engine's search strategy can be configured so that some specified columns utilize full text search queries or only use \"where like\" constraints to search the prefixes of strings (`example%`) instead of searching within the entire string (`%example%`)."
 msgstr ""
 
-#: docs/9.x/scout.md:block 73 (paragraph)
+#: docs/9.x/scout.md:block 84 (paragraph)
 msgid "To define this behavior, you may assign PHP attributes to your model's `toSearchableArray` method. Any columns that are not assigned additional search strategy behavior will continue to use the default \"where like\" strategy:"
 msgstr ""
 
-#: docs/9.x/scout.md:block 74 (code)
+#: docs/9.x/scout.md:block 85 (code)
 msgid ""
 "use Laravel\\Scout\\Attributes\\SearchUsingFullText;\n"
 "use Laravel\\Scout\\Attributes\\SearchUsingPrefix;\n"
@@ -1027,47 +1100,55 @@ msgid ""
 "}\n"
 msgstr ""
 
-#: docs/9.x/scout.md:block 75 (quote)
+#: docs/9.x/scout.md:block 86 (quote)
 msgid "**Warning** Before specifying that a column should use full text query constraints, ensure that the column has been assigned a [full text index](/docs/{{version}}/migrations#available-index-types)."
 msgstr ""
 
-#: docs/9.x/scout.md:block 77 (header)
+#: docs/9.x/scout.md:block 88 (header)
 msgid "Collection Engine"
 msgstr ""
 
-#: docs/9.x/scout.md:block 82 (header)
+#: docs/9.x/scout.md:block 93 (header)
 msgid "Differences From Database Engine"
 msgstr ""
 
-#: docs/9.x/scout.md:block 83 (paragraph)
+#: docs/9.x/scout.md:block 94 (paragraph)
 msgid "On first glance, the \"database\" and \"collections\" engines are fairly similar. They both interact directly with your database to retrieve search results. However, the collection engine does not utilize full text indexes or `LIKE` clauses to find matching records. Instead, it pulls all possible records and uses Laravel's `Str::is` helper to determine if the search string exists within the model attribute values."
 msgstr ""
 
-#: docs/9.x/scout.md:block 84 (paragraph)
+#: docs/9.x/scout.md:block 95 (paragraph)
 msgid "The collection engine is the most portable search engine as it works across all relational databases supported by Laravel (including SQLite and SQL Server); however, it is less efficient than Scout's database engine."
 msgstr ""
 
-#: docs/9.x/scout.md:block 109 (quote)
+#: docs/9.x/scout.md:block 120 (quote)
 msgid "**Note** The `searchable` method can be considered an \"upsert\" operation. In other words, if the model record is already in your index, it will be updated. If it does not exist in the search index, it will be added to the index."
 msgstr ""
 
-#: docs/9.x/scout.md:block 139 (quote)
+#: docs/9.x/scout.md:block 150 (quote)
 msgid "**Warning** The `shouldBeSearchable` method is not applicable when using Scout's \"database\" engine, as all searchable data is always stored in the database. To achieve similar behavior when using the database engine, you should use [where clauses](#where-clauses) instead."
 msgstr ""
 
-#: docs/9.x/scout.md:block 175 (quote)
+#: docs/9.x/scout.md:block 170 (quote)
+msgid "**Warning** If your application is using MeiliSearch, you must configure your application's [filterable attributes](#configuring-filterable-data-for-meilisearch) before utilizing Scout's \"where\" clauses."
+msgstr ""
+
+#: docs/9.x/scout.md:block 181 (quote)
+msgid "**Warning** Since search engines are not aware of your Eloquent model's global scope definitions, you should not utilize global scopes in applications that utilize Scout pagination. Or, you should recreate the global scope's constraints when searching via Scout."
+msgstr ""
+
+#: docs/9.x/scout.md:block 188 (quote)
 msgid "**Note** When a soft deleted model is permanently deleted using `forceDelete`, Scout will remove it from the search index automatically."
 msgstr ""
 
-#: docs/9.x/scout.md:block 181 (header)
+#: docs/9.x/scout.md:block 194 (header)
 msgid "Customizing The Eloquent Results Query"
 msgstr ""
 
-#: docs/9.x/scout.md:block 182 (paragraph)
+#: docs/9.x/scout.md:block 195 (paragraph)
 msgid "After Scout retrieves a list of matching Eloquent models from your application's search engine, Eloquent is used to retrieve all of the matching models by their primary keys. You may customize this query by invoking the `query` method. The `query` method accepts a closure that will receive the Eloquent query builder instance as an argument:"
 msgstr ""
 
-#: docs/9.x/scout.md:block 183 (code)
+#: docs/9.x/scout.md:block 196 (code)
 msgid ""
 "use App\\Models\\Order;\n"
 "\n"
@@ -1076,18 +1157,204 @@ msgid ""
 "    ->get();\n"
 msgstr ""
 
-#: docs/9.x/scout.md:block 184 (paragraph)
+#: docs/9.x/scout.md:block 197 (paragraph)
 msgid "Since this callback is invoked after the relevant models have already been retrieved from your application's search engine, the `query` method should not be used for \"filtering\" results. Instead, you should use [Scout where clauses](#where-clauses)."
 msgstr ""
 
-#: docs/master/scout.md:block 59 (quote)
-msgid "{note} The database engine currently supports MySQL and PostgreSQL."
+#: docs/master/scout.md:block 44 (code)
+msgid ""
+"<?php\n"
+"\n"
+"namespace App\\Models;\n"
+"\n"
+"use Illuminate\\Database\\Eloquent\\Model;\n"
+"use Laravel\\Scout\\Searchable;\n"
+"\n"
+"class Post extends Model\n"
+"{\n"
+"    use Searchable;\n"
+"\n"
+"    /**\n"
+"     * Get the name of the index associated with the model.\n"
+"     */\n"
+"    public function searchableAs(): string\n"
+"    {\n"
+"        return 'posts_index';\n"
+"    }\n"
+"}\n"
 msgstr ""
 
-#: docs/master/scout.md:block 68 (quote)
-msgid "{note} Before specifying that a column should use full text query constraints, ensure that the column has been assigned a [full text index](/docs/{{version}}/migrations#available-index-types)."
+#: docs/master/scout.md:block 48 (code)
+msgid ""
+"<?php\n"
+"\n"
+"namespace App\\Models;\n"
+"\n"
+"use Illuminate\\Database\\Eloquent\\Model;\n"
+"use Laravel\\Scout\\Searchable;\n"
+"\n"
+"class Post extends Model\n"
+"{\n"
+"    use Searchable;\n"
+"\n"
+"    /**\n"
+"     * Get the indexable data array for the model.\n"
+"     *\n"
+"     * @return array<string, mixed>\n"
+"     */\n"
+"    public function toSearchableArray(): array\n"
+"    {\n"
+"        $array = $this->toArray();\n"
+"\n"
+"        // Customize the data array...\n"
+"\n"
+"        return $array;\n"
+"    }\n"
+"}\n"
 msgstr ""
 
-#: docs/master/scout.md:block 132 (quote)
-msgid "{note} The `shouldBeSearchable` method is not applicable when using Scout's \"database\" engine, as all searchable data is always stored in the database. To achieve similar behavior when using the database engine, you should use [where clauses](#where-clauses) instead."
+#: docs/master/scout.md:block 63 (code)
+msgid ""
+"<?php\n"
+"\n"
+"namespace App\\Models;\n"
+"\n"
+"use Illuminate\\Database\\Eloquent\\Model;\n"
+"use Laravel\\Scout\\Searchable;\n"
+"\n"
+"class User extends Model\n"
+"{\n"
+"    use Searchable;\n"
+"\n"
+"    /**\n"
+"     * Get the value used to index the model.\n"
+"     */\n"
+"    public function getScoutKey(): mixed\n"
+"    {\n"
+"        return $this->email;\n"
+"    }\n"
+"\n"
+"    /**\n"
+"     * Get the key name used to index the model.\n"
+"     */\n"
+"    public function getScoutKeyName(): mixed\n"
+"    {\n"
+"        return 'email';\n"
+"    }\n"
+"}\n"
+msgstr ""
+
+#: docs/master/scout.md:block 67 (code)
+msgid ""
+"<?php\n"
+"\n"
+"namespace App\\Models;\n"
+"\n"
+"use Illuminate\\Database\\Eloquent\\Model;\n"
+"use Laravel\\Scout\\Engines\\Engine;\n"
+"use Laravel\\Scout\\EngineManager;\n"
+"use Laravel\\Scout\\Searchable;\n"
+"\n"
+"class User extends Model\n"
+"{\n"
+"    use Searchable;\n"
+"\n"
+"    /**\n"
+"     * Get the engine used to index the model.\n"
+"     */\n"
+"    public function searchableUsing(): Engine\n"
+"    {\n"
+"        return app(EngineManager::class)->engine('meilisearch');\n"
+"    }\n"
+"}\n"
+msgstr ""
+
+#: docs/master/scout.md:block 85 (code)
+msgid ""
+"use Laravel\\Scout\\Attributes\\SearchUsingFullText;\n"
+"use Laravel\\Scout\\Attributes\\SearchUsingPrefix;\n"
+"\n"
+"/**\n"
+" * Get the indexable data array for the model.\n"
+" *\n"
+" * @return array<string, mixed>\n"
+" */\n"
+"#[SearchUsingPrefix(['id', 'email'])]\n"
+"#[SearchUsingFullText(['bio'])]\n"
+"public function toSearchableArray(): array\n"
+"{\n"
+"    return [\n"
+"        'id' => $this->id,\n"
+"        'name' => $this->name,\n"
+"        'email' => $this->email,\n"
+"        'bio' => $this->bio,\n"
+"    ];\n"
+"}\n"
+msgstr ""
+
+#: docs/master/scout.md:block 107 (code)
+msgid ""
+"/**\n"
+" * Modify the query used to retrieve models when making all of the models searchable.\n"
+" */\n"
+"protected function makeAllSearchableUsing(Builder $query): Builder\n"
+"{\n"
+"    return $query->with('author');\n"
+"}\n"
+msgstr ""
+
+#: docs/master/scout.md:block 148 (code)
+msgid ""
+"/**\n"
+" * Determine if the model should be searchable.\n"
+" */\n"
+"public function shouldBeSearchable(): bool\n"
+"{\n"
+"    return $this->isPublished();\n"
+"}\n"
+msgstr ""
+
+#: docs/master/scout.md:block 196 (code)
+msgid ""
+"use App\\Models\\Order;\n"
+"use Illuminate\\Database\\Eloquent\\Builder;\n"
+"\n"
+"$orders = Order::search('Star Trek')\n"
+"    ->query(fn (Builder $query) => $query->with('invoices'))\n"
+"    ->get();\n"
+msgstr ""
+
+#: docs/master/scout.md:block 208 (code)
+msgid ""
+"use App\\ScoutExtensions\\MySqlSearchEngine;\n"
+"use Laravel\\Scout\\EngineManager;\n"
+"\n"
+"/**\n"
+" * Bootstrap any application services.\n"
+" */\n"
+"public function boot(): void\n"
+"{\n"
+"    resolve(EngineManager::class)->extend('mysql', function () {\n"
+"        return new MySqlSearchEngine;\n"
+"    });\n"
+"}\n"
+msgstr ""
+
+#: docs/master/scout.md:block 214 (code)
+msgid ""
+"use Illuminate\\Support\\Facades\\Response;\n"
+"use Illuminate\\Support\\ServiceProvider;\n"
+"use Laravel\\Scout\\Builder;\n"
+"\n"
+"/**\n"
+" * Bootstrap any application services.\n"
+" */\n"
+"public function boot(): void\n"
+"{\n"
+"    Builder::macro('count', function () {\n"
+"        return $this->engine()->getTotalCount(\n"
+"            $this->engine()->search($this)\n"
+"        );\n"
+"    });\n"
+"}\n"
 msgstr ""

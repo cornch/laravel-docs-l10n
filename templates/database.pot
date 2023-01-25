@@ -518,6 +518,18 @@ msgstr ""
 msgid "[Monitoring Cumulative Query Time](#monitoring-cumulative-query-time)"
 msgstr ""
 
+#: docs/9.x/database.md:block 2 (unordered list)
+msgid "[Inspecting Your Databases](#inspecting-your-databases)"
+msgstr ""
+
+#: docs/9.x/database.md:block 2 (unordered list)
+msgid "[Monitoring Your Databases](#monitoring-your-databases)"
+msgstr ""
+
+#: docs/9.x/database.md:block 7 (unordered list)
+msgid "MariaDB 10.3+ ([Version Policy](https://mariadb.org/about/#maintenance-policy))"
+msgstr ""
+
 #: docs/9.x/database.md:block 7 (unordered list)
 msgid "PostgreSQL 10.0+ ([Version Policy](https://www.postgresql.org/support/versioning/))"
 msgstr ""
@@ -565,6 +577,7 @@ msgid ""
 "use Illuminate\\Database\\Connection;\n"
 "use Illuminate\\Support\\Facades\\DB;\n"
 "use Illuminate\\Support\\ServiceProvider;\n"
+"use Illuminate\\Database\\Events\\QueryExecuted;\n"
 "\n"
 "class AppServiceProvider extends ServiceProvider\n"
 "{\n"
@@ -585,7 +598,7 @@ msgid ""
 "     */\n"
 "    public function boot()\n"
 "    {\n"
-"        DB::whenQueryingForLongerThan(500, function (Connection $connection) {\n"
+"        DB::whenQueryingForLongerThan(500, function (Connection $connection, QueryExecuted $event) {\n"
 "            // Notify development team...\n"
 "        });\n"
 "    }\n"
@@ -596,6 +609,199 @@ msgstr ""
 msgid "**Note** The `DB` facade's transaction methods control the transactions for both the [query builder](/docs/{{version}}/queries) and [Eloquent ORM](/docs/{{version}}/eloquent)."
 msgstr ""
 
-#: docs/master/database.md:block 5 (paragraph)
-msgid "Almost every modern web application interacts with a database. Laravel makes interacting with databases extremely simple across a variety of supported databases using raw SQL, a [fluent query builder](/docs/{{version}}/queries), and the [Eloquent ORM](/docs/{{version}}/eloquent). Currently, Laravel provides first-party support for four databases:"
+#: docs/9.x/database.md:block 122 (header)
+msgid "Inspecting Your Databases"
+msgstr ""
+
+#: docs/9.x/database.md:block 123 (paragraph)
+msgid "Using the `db:show` and `db:table` Artisan commands, you can get valuable insight into your database and its associated tables. To see an overview of your database, including its size, type, number of open connections, and a summary of its tables, you may use the `db:show` command:"
+msgstr ""
+
+#: docs/9.x/database.md:block 124 (code)
+msgid "php artisan db:show\n"
+msgstr ""
+
+#: docs/9.x/database.md:block 125 (paragraph)
+msgid "You may specify which database connection should be inspected by providing the database connection name to the command via the `--database` option:"
+msgstr ""
+
+#: docs/9.x/database.md:block 126 (code)
+msgid "php artisan db:show --database=pgsql\n"
+msgstr ""
+
+#: docs/9.x/database.md:block 127 (paragraph)
+msgid "If you would like to include table row counts and database view details within the output of the command, you may provide the `--counts` and `--views` options, respectively. On large databases, retrieving row counts and view details can be slow:"
+msgstr ""
+
+#: docs/9.x/database.md:block 128 (code)
+msgid "php artisan db:show --counts --views\n"
+msgstr ""
+
+#: docs/9.x/database.md:block 130 (header)
+msgid "Table Overview"
+msgstr ""
+
+#: docs/9.x/database.md:block 131 (paragraph)
+msgid "If you would like to get an overview of an individual table within your database, you may execute the `db:table` Artisan command. This command provides a general overview of a database table, including its columns, types, attributes, keys, and indexes:"
+msgstr ""
+
+#: docs/9.x/database.md:block 132 (code)
+msgid "php artisan db:table users\n"
+msgstr ""
+
+#: docs/9.x/database.md:block 134 (header)
+msgid "Monitoring Your Databases"
+msgstr ""
+
+#: docs/9.x/database.md:block 135 (paragraph)
+msgid "Using the `db:monitor` Artisan command, you can instruct Laravel to dispatch an `Illuminate\\Database\\Events\\DatabaseBusy` event if your database is managing more than a specified number of open connections."
+msgstr ""
+
+#: docs/9.x/database.md:block 136 (paragraph)
+msgid "To get started, you should schedule the `db:monitor` command to [run every minute](/docs/{{version}}/scheduling). The command accepts the names of the database connection configurations that you wish to monitor as well as the maximum number of open connections that should be tolerated before dispatching an event:"
+msgstr ""
+
+#: docs/9.x/database.md:block 137 (code)
+msgid "php artisan db:monitor --databases=mysql,pgsql --max=100\n"
+msgstr ""
+
+#: docs/9.x/database.md:block 138 (paragraph)
+msgid "Scheduling this command alone is not enough to trigger a notification alerting you of the number of open connections. When the command encounters a database that has an open connection count that exceeds your threshold, a `DatabaseBusy` event will be dispatched. You should listen for this event within your application's `EventServiceProvider` in order to send a notification to you or your development team:"
+msgstr ""
+
+#: docs/9.x/database.md:block 139 (code)
+msgid ""
+"use App\\Notifications\\DatabaseApproachingMaxConnections;\n"
+"use Illuminate\\Database\\Events\\DatabaseBusy;\n"
+"use Illuminate\\Support\\Facades\\Event;\n"
+"use Illuminate\\Support\\Facades\\Notification;\n"
+"\n"
+"/**\n"
+" * Register any other events for your application.\n"
+" *\n"
+" * @return void\n"
+" */\n"
+"public function boot()\n"
+"{\n"
+"    Event::listen(function (DatabaseBusy $event) {\n"
+"        Notification::route('mail', 'dev@example.com')\n"
+"                ->notify(new DatabaseApproachingMaxConnections(\n"
+"                    $event->connectionName,\n"
+"                    $event->connections\n"
+"                ));\n"
+"    });\n"
+"}\n"
+msgstr ""
+
+#: docs/master/database.md:block 46 (code)
+msgid ""
+"<?php\n"
+"\n"
+"namespace App\\Http\\Controllers;\n"
+"\n"
+"use App\\Http\\Controllers\\Controller;\n"
+"use Illuminate\\Support\\Facades\\DB;\n"
+"use Illuminate\\View\\View;\n"
+"\n"
+"class UserController extends Controller\n"
+"{\n"
+"    /**\n"
+"     * Show a list of all of the application's users.\n"
+"     */\n"
+"    public function index(): View\n"
+"    {\n"
+"        $users = DB::select('select * from users where active = ?', [1]);\n"
+"\n"
+"        return view('user.index', ['users' => $users]);\n"
+"    }\n"
+"}\n"
+msgstr ""
+
+#: docs/master/database.md:block 93 (code)
+msgid ""
+"<?php\n"
+"\n"
+"namespace App\\Providers;\n"
+"\n"
+"use Illuminate\\Database\\Events\\QueryExecuted;\n"
+"use Illuminate\\Support\\Facades\\DB;\n"
+"use Illuminate\\Support\\ServiceProvider;\n"
+"\n"
+"class AppServiceProvider extends ServiceProvider\n"
+"{\n"
+"    /**\n"
+"     * Register any application services.\n"
+"     */\n"
+"    public function register(): void\n"
+"    {\n"
+"        // ...\n"
+"    }\n"
+"\n"
+"    /**\n"
+"     * Bootstrap any application services.\n"
+"     */\n"
+"    public function boot(): void\n"
+"    {\n"
+"        DB::listen(function (QueryExecuted $query) {\n"
+"            // $query->sql;\n"
+"            // $query->bindings;\n"
+"            // $query->time;\n"
+"        });\n"
+"    }\n"
+"}\n"
+msgstr ""
+
+#: docs/master/database.md:block 97 (code)
+msgid ""
+"<?php\n"
+"\n"
+"namespace App\\Providers;\n"
+"\n"
+"use Illuminate\\Database\\Connection;\n"
+"use Illuminate\\Support\\Facades\\DB;\n"
+"use Illuminate\\Support\\ServiceProvider;\n"
+"use Illuminate\\Database\\Events\\QueryExecuted;\n"
+"\n"
+"class AppServiceProvider extends ServiceProvider\n"
+"{\n"
+"    /**\n"
+"     * Register any application services.\n"
+"     */\n"
+"    public function register(): void\n"
+"    {\n"
+"        // ...\n"
+"    }\n"
+"\n"
+"    /**\n"
+"     * Bootstrap any application services.\n"
+"     */\n"
+"    public function boot(): void\n"
+"    {\n"
+"        DB::whenQueryingForLongerThan(500, function (Connection $connection, QueryExecuted $event) {\n"
+"            // Notify development team...\n"
+"        });\n"
+"    }\n"
+"}\n"
+msgstr ""
+
+#: docs/master/database.md:block 139 (code)
+msgid ""
+"use App\\Notifications\\DatabaseApproachingMaxConnections;\n"
+"use Illuminate\\Database\\Events\\DatabaseBusy;\n"
+"use Illuminate\\Support\\Facades\\Event;\n"
+"use Illuminate\\Support\\Facades\\Notification;\n"
+"\n"
+"/**\n"
+" * Register any other events for your application.\n"
+" */\n"
+"public function boot(): void\n"
+"{\n"
+"    Event::listen(function (DatabaseBusy $event) {\n"
+"        Notification::route('mail', 'dev@example.com')\n"
+"                ->notify(new DatabaseApproachingMaxConnections(\n"
+"                    $event->connectionName,\n"
+"                    $event->connections\n"
+"                ));\n"
+"    });\n"
+"}\n"
 msgstr ""

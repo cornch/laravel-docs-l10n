@@ -10,7 +10,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
-"PO-Revision-Date: 2022-08-09 12:03\n"
+"PO-Revision-Date: 2023-01-25 07:02\n"
 
 #: docs/8.x/eloquent-collections.md:block 1 (header)
 msgid "Eloquent: Collections"
@@ -333,8 +333,8 @@ msgid "Once you have defined a `newCollection` method, you will receive an insta
 msgstr "定義好 `newCollection` 方法後，之後，在 Eloquent 通常會回傳 `Illuminate\\Database\\Eloquent\\Collection` 實體的時候，就會變成你的自訂 Collection 實體。若想在專案中的所有 Model 上都使用某個自訂 Collection，則可在一個基礎 Model 類別上定義 `newCollection` 方法，並讓專案內所有的 Model 都繼承該基礎 Model："
 
 #: docs/9.x/eloquent-collections.md:block 19 (paragraph)
-msgid "[append](#method-append) [contains](#method-contains) [diff](#method-diff) [except](#method-except) [find](#method-find) [fresh](#method-fresh) [intersect](#method-intersect) [load](#method-load) [loadMissing](#method-loadMissing) [modelKeys](#method-modelKeys) [makeVisible](#method-makeVisible) [makeHidden](#method-makeHidden) [only](#method-only) [toQuery](#method-toquery) [unique](#method-unique)"
-msgstr "[append](#method-append) [contains](#method-contains) [diff](#method-diff) [except](#method-except) [find](#method-find) [fresh](#method-fresh) [intersect](#method-intersect) [load](#method-load) [loadMissing](#method-loadMissing) [modelKeys](#method-modelKeys) [makeVisible](#method-makeVisible) [makeHidden](#method-makeHidden) [only](#method-only) [toQuery](#method-toquery) [unique](#method-unique)"
+msgid "[append](#method-append) [contains](#method-contains) [diff](#method-diff) [except](#method-except) [find](#method-find) [fresh](#method-fresh) [intersect](#method-intersect) [load](#method-load) [loadMissing](#method-loadMissing) [modelKeys](#method-modelKeys) [makeVisible](#method-makeVisible) [makeHidden](#method-makeHidden) [only](#method-only) [setVisible](#method-setVisible) [setHidden](#method-setHidden) [toQuery](#method-toquery) [unique](#method-unique)"
+msgstr ""
 
 #: docs/9.x/eloquent-collections.md:block 22 (header)
 msgid "`append($attributes)` {.collection-method .first-collection-method}"
@@ -353,4 +353,69 @@ msgstr "$users->append('team');\n\n"
 #: docs/9.x/eloquent-collections.md:block 26 (header)
 msgid "`contains($key, $operator = null, $value = null)` {.collection-method}"
 msgstr "`contains($key, $operator = null, $value = null)` {.collection-method}"
+
+#: docs/9.x/eloquent-collections.md:block 52 (code)
+msgid "$users->load(['comments', 'posts']);\n\n"
+"$users->load('comments.author');\n\n"
+"$users->load(['comments', 'posts' => fn ($query) => $query->where('active', 1)]);\n"
+msgstr ""
+
+#: docs/9.x/eloquent-collections.md:block 56 (code)
+msgid "$users->loadMissing(['comments', 'posts']);\n\n"
+"$users->loadMissing('comments.author');\n\n"
+"$users->loadMissing(['comments', 'posts' => fn ($query) => $query->where('active', 1)]);\n"
+msgstr ""
+
+#: docs/9.x/eloquent-collections.md:block 74 (header)
+msgid "`setVisible($attributes)` {.collection-method}"
+msgstr ""
+
+#: docs/9.x/eloquent-collections.md:block 75 (paragraph)
+msgid "The `setVisible` method [temporarily overrides](/docs/{{version}}/eloquent-serialization#temporarily-modifying-attribute-visibility) all of the visible attributes on each model in the collection:"
+msgstr ""
+
+#: docs/9.x/eloquent-collections.md:block 76 (code)
+msgid "$users = $users->setVisible(['id', 'name']);\n"
+msgstr ""
+
+#: docs/9.x/eloquent-collections.md:block 78 (header)
+msgid "`setHidden($attributes)` {.collection-method}"
+msgstr ""
+
+#: docs/9.x/eloquent-collections.md:block 79 (paragraph)
+msgid "The `setHidden` method [temporarily overrides](/docs/{{version}}/eloquent-serialization#temporarily-modifying-attribute-visibility) all of the hidden attributes on each model in the collection:"
+msgstr ""
+
+#: docs/9.x/eloquent-collections.md:block 80 (code)
+msgid "$users = $users->setHidden(['email', 'password', 'remember_token']);\n"
+msgstr ""
+
+#: docs/master/eloquent-collections.md:block 9 (code)
+msgid "$names = User::all()->reject(function (User $user) {\n"
+"    return $user->active === false;\n"
+"})->map(function (User $user) {\n"
+"    return $user->name;\n"
+"});\n"
+msgstr ""
+
+#: docs/master/eloquent-collections.md:block 92 (code)
+msgid "<?php\n\n"
+"namespace App\\Models;\n\n"
+"use App\\Support\\UserCollection;\n"
+"use Illuminate\\Database\\Eloquent\\Collection;\n"
+"use Illuminate\\Database\\Eloquent\\Model;\n\n"
+"class User extends Model\n"
+"{\n"
+"    /**\n"
+"     * Create a new Eloquent Collection instance.\n"
+"     *\n"
+"     * @param  array<int, \\Illuminate\\Database\\Eloquent\\Model>  $models\n"
+"     * @return \\Illuminate\\Database\\Eloquent\\Collection<int, \\Illuminate\\Database\\Eloquent\\Model>\n"
+"     */\n"
+"    public function newCollection(array $models = []): Collection\n"
+"    {\n"
+"        return new UserCollection($models);\n"
+"    }\n"
+"}\n"
+msgstr ""
 

@@ -11,6 +11,7 @@ updatedAt: '2023-01-25T17:44:00Z'
 # View
 
 - [簡介](#introduction)
+   - [以 React 或 Vue 來撰寫 View](#writing-views-in-react-or-vue)
 - [建立與轉譯 View](#creating-and-rendering-views)
    - [巢狀的 View 目錄](#nested-view-directories)
    - [建立第一個 View](#creating-the-first-available-view)
@@ -25,7 +26,9 @@ updatedAt: '2023-01-25T17:44:00Z'
 
 ## 簡介
 
-當然，從 Route 或 Controller 中回傳整個 HTML 文件的字串很不實際。幸好，View 這個功能提供了一個方便的方法，能將我們所有的 HTML 放在與 Route 或 Controller 不同的檔案中。View 將呈現的邏輯從 Controller 或應用程式的邏輯拆分開來。View 保存在 `resources/views` 目錄中。下列是個簡單的 View：
+當那果然，直接從 Route 或 Controller 中回傳整個 HTML 文件字串不是很實際。幸好，使用 View，我們就能方便地將所有的 HTML 都放在獨立的檔案中。
+
+使用 View 就可從 Controller / 應用程式的邏輯中將顯示邏輯拆出來並放在 `resources/views` 目錄下。使用 Laravel 時，View 樣板通常使用 [Blade 樣板語言撰寫](/docs/{{version}}/blade)。一個簡單的 View 看起來可能像這樣：
 
 ```blade
 <!-- View 保存於 resources/views/greeting.blade.php -->
@@ -44,6 +47,14 @@ updatedAt: '2023-01-25T17:44:00Z'
     });
 
 > **Note** 想瞭解更多有關如何撰寫 Blade 樣板的資訊嗎？請參考完整的 [Blade 說明文件](/docs/{{version}}/blade)來入門 Blade 樣板。
+
+<a name="writing-views-in-react-or-vue"></a>
+
+### 以 React 或 Vue 來撰寫 View
+
+除了使用 Blade 來在 PHP 中撰寫前端樣板外，許多開發人員也開始偏好使用 React 或 Vue 來撰寫樣板。在 Laravel 中，多虧有了 [Inertia](https://inertiajs.com/)，要使用 React 或 Vue 來撰寫樣板一點也不麻煩。Inertia 是一個可將 React 或 Vue 前端與 Laravel 後端搭配使用的一個套件，可讓我們不需處理建立 SPA 常見的麻煩。
+
+Laravel 的 Breeze 與 Jetstream [入門套件](/docs/{{version}}/starter-kits) 藉由 Inertia 驅動，能讓你在製作下一個 Laravel 專案時有個好的起始點。此外，[Laravel Bootcamp](https://bootcamp.laravel.com) 還提供了使用 Inertia 製作 Laravel 專案的完整示範，並包含了使用 Vue 與 React 的範例。
 
 <a name="creating-and-rendering-views"></a>
 

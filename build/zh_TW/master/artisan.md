@@ -16,6 +16,7 @@ updatedAt: '2023-01-25T09:52:00Z'
    - [產生指令](#generating-commands)
    - [指令結構](#command-structure)
    - [閉包指令](#closure-commands)
+   - [可隔離的指令](#isolatable-commands)
 - [定義預期的輸入](#defining-input-expectations)
    - [引數](#arguments)
    - [選項](#options)
@@ -55,7 +56,7 @@ php artisan help migrate
 若使用 [Laravel Sail](/docs/{{version}}/sail) 作為本機開發環境，請記得使用 `sail` 指令列來叫用 Artisan 指令。Sail 會在專案的 Docker 容器內執行 Artisan 指令。
 
 ```shell
-./sail artisan list
+./vendor/bin/sail artisan list
 ```
 
 <a name="tinker"></a>
@@ -74,7 +75,7 @@ Laravel Tinker 是用於 Laravel 框架的強大 REPL，由 [PsySH](https://gith
 composer require laravel/tinker
 ```
 
-> {tip} 想找個能與你的 Laravel 應用程式互動的圖形化 UI 嗎？試試 [Tinkerwell](https://tinkerwell.app) 吧！
+> **Note** 想找個能與你的 Laravel 應用程式互動的圖形化 UI 嗎？試試 [Tinkerwell](https://tinkerwell.app) 吧！
 
 <a name="usage"></a>
 
@@ -92,7 +93,7 @@ php artisan tinker
 php artisan vendor:publish --provider="Laravel\Tinker\TinkerServiceProvider"
 ```
 
-> {note} `dispatch` 輔助函式與 `Dispatchable` 類別上的 `dispatch` 方法需要仰賴垃圾回收機制來將任務放進佇列中。因此，在使用 Tinker 時，應使用 `Bus::dispatch` 或 `Queue::push` 來分派任務。
+> **Warning** `dispatch` 輔助函式與 `Dispatchable` 類別上的 `dispatch` 方法需要仰賴垃圾回收機制來將任務放進佇列中。因此，在使用 Tinker 時，應使用 `Bus::dispatch` 或 `Queue::push` 來分派任務。
 
 <a name="command-allow-list"></a>
 
@@ -163,28 +164,15 @@ php artisan make:command SendEmails
         protected $description = 'Send a marketing email to a user';
     
         /**
-         * Create a new command instance.
-         *
-         * @return void
-         */
-        public function __construct()
-        {
-            parent::__construct();
-        }
-    
-        /**
          * Execute the console command.
-         *
-         * @param  \App\Support\DripEmailer  $drip
-         * @return mixed
          */
-        public function handle(DripEmailer $drip)
+        public function handle(DripEmailer $drip): void
         {
             $drip->send(User::find($this->argument('user')));
         }
     }
 
-> {tip} 為了提升程式碼重複使用率，最好保持主控台指令精簡，並將指令的任務委託給應用程式服務來完成。在上方的例子中，可以注意到我們插入了一個服務類別來處理寄送 E-Mail 的這個「重責大任」。
+> **Note** 為了提升程式碼重複使用率，最好保持主控台指令精簡，並將指令的任務委託給應用程式服務來完成。在上方的例子中，可以注意到我們插入了一個服務類別來處理寄送 E-Mail 的這個「重責大任」。
 
 <a name="closure-commands"></a>
 
@@ -194,17 +182,15 @@ php artisan make:command SendEmails
 
     /**
      * Register the closure based commands for the application.
-     *
-     * @return void
      */
-    protected function commands()
+    protected function commands(): void
     {
         require base_path('routes/console.php');
     }
 
 這個檔案並沒有定義 HTTP 路由，而是定義從主控台「路由」進入專案的進入點。在該檔案內，可以通過 `Artisan::command` 方法來定義基於閉包的主控台指令。`command` 方法接受 2 個引數：[指令簽章](#defining-input-expectations)，以及一個用來接收指令引數與選項的閉包：
 
-    Artisan::command('mail:send {user}', function ($user) {
+    Artisan::command('mail:send {user}', function (string $user) {
         $this->info("Sending email to: {$user}!");
     });
 
@@ -219,7 +205,7 @@ php artisan make:command SendEmails
     use App\Models\User;
     use App\Support\DripEmailer;
     
-    Artisan::command('mail:send {user}', function (DripEmailer $drip, $user) {
+    Artisan::command('mail:send {user}', function (DripEmailer $drip, string $user) {
         $drip->send(User::find($user));
     });
 
@@ -229,9 +215,60 @@ php artisan make:command SendEmails
 
 在定義基於閉包的指令時，可以使用 `purpose` 方法來為該指令加上描述。這段描述會在執行 `php artisan list` 或 `php artisan help` 指令時顯示：
 
-    Artisan::command('mail:send {user}', function ($user) {
+    Artisan::command('mail:send {user}', function (string $user) {
         // ...
     })->purpose('Send a marketing email to a user');
+
+<a name="isolatable-commands"></a>
+
+### 可隔離的指令
+
+> **Warning** 若要使用此功能，則應用程式必須要使用 `memcached`, `redis`, `dynamodb`, `database`, `file` 或 `array` 作為應用程式的預設快取 Driver。另外，所有的伺服器也都必須要連線至相同的中央快取伺服器。
+
+有時候，我們可能需要確保某個指令在同一時間只有一個實體在執行。為此，可以在指令類別上實作 `Illuminate\Contracts\Console\Isolatable` Interface：
+
+    <?php
+    
+    namespace App\Console\Commands;
+    
+    use Illuminate\Console\Command;
+    use Illuminate\Contracts\Console\Isolatable;
+    
+    class SendEmails extends Command implements Isolatable
+    {
+        // ...
+    }
+
+將指令標記為 ^[`Isolatable`](可隔離的) 後，Laravel 會自動為該指令加上一個 `--isolated` 選項。使用 `--isolated` 選項呼叫該指令時，Laravel 會確保沒有其他該指令的實體正在執行。Laravel 通過在預設快取 Driver 上取得 ^[Atomic Lock](不可部分完成鎖定) 來確保只有一個實體在執行。若該指令有其他實體在執行，就不會執行該指令。不過，該指令依然會以成功的終止狀態碼結束：
+
+```shell
+php artisan mail:send 1 --isolated
+```
+
+若想指定該指令無法執行時回傳的終止狀態碼，可使用 `isolated` 選項來設定：
+
+```shell
+php artisan mail:send 1 --isolated=12
+```
+
+<a name="lock-expiration-time"></a>
+
+#### Lock 的逾期時間
+
+預設情況下，指令完成執行後，獨立指令的 Lock 就會逾時。而如果指令在執行時遭到中斷而無法完成，該 Lock 會在一小時後逾時。不過，你可以在指令中定義一個 `isolationLockExpiresAt` 方法來調整逾時時間：
+
+```php
+use DateTimeInterface;
+use DateInterval;
+
+/**
+ * Determine when an isolation lock expires for the command.
+ */
+public function isolationLockExpiresAt(): DateTimeInterface|DateInterval
+{
+    return now()->addMinutes(5);
+}
+```
 
 <a name="defining-input-expectations"></a>
 
@@ -324,10 +361,10 @@ php artisan mail:send 1 -Q
 
     'mail:send {user*}'
 
-呼叫這個方法的時候，`user` 引數在指令列中可以按照順序傳入。舉例來說，下列指令會將 `user` 的值設為一個內容為 `foo` 與 `bar` 的陣列：
+呼叫這個方法的時候，`user` 引數在指令列中可以按照順序傳入。舉例來說，下列指令會將 `user` 的值設為一個內容為 `1` 與 `2` 的陣列：
 
 ```shell
-php artisan mail:send foo bar
+php artisan mail:send 1 2
 ```
 
 `*` 字元可以與可選引數組合使用來定義，這樣一來可允許有 0 個或多個引數的實體：
@@ -340,7 +377,7 @@ php artisan mail:send foo bar
 
 定義預期有多個輸入值的選項時，每個傳入指令的選項值都應以選項名稱作為前綴：
 
-    'mail:send {user} {--id=*}'
+    'mail:send {--id=*}'
 
 可以通過傳入多個 `-id` 引數來叫用這樣的指令：
 
@@ -375,14 +412,10 @@ php artisan mail:send --id=1 --id=2
 
     /**
      * Execute the console command.
-     *
-     * @return int
      */
-    public function handle()
+    public function handle(): void
     {
         $userId = $this->argument('user');
-    
-        //
     }
 
 若要將所有引數截取為陣列，則可呼叫 `arguments` 方法：
@@ -405,12 +438,12 @@ php artisan mail:send --id=1 --id=2
 
     /**
      * Execute the console command.
-     *
-     * @return mixed
      */
-    public function handle()
+    public function handle(): void
     {
         $name = $this->ask('What is your name?');
+    
+        // ...
     }
 
 `secret` 方法與 `ask` 類似，但使用者在指令列輸入的過程中將看不到他們自己的輸入值。這個方法適用於像使用者詢問如密碼等機密資訊的時候：
@@ -424,13 +457,13 @@ php artisan mail:send --id=1 --id=2
 若需要使用者回答簡單的「yes / no」的確認問題，可以使用 `confirm` 方法。預設情況下，這個方法會回傳 `false`，但若使用者在提示時輸入 `y` 或 `yes`，則該方法會回傳 `true`。
 
     if ($this->confirm('Do you wish to continue?')) {
-        //
+        // ...
     }
 
 若有必要，也可以通過將 `true` 傳入為 `confirm` 方法的第二個引數來指定讓確認提示預設回傳 `true`：
 
     if ($this->confirm('Do you wish to continue?', true)) {
-        //
+        // ...
     }
 
 <a name="auto-completion"></a>
@@ -443,7 +476,7 @@ php artisan mail:send --id=1 --id=2
 
 另外，也可以將一個閉包傳給 `anticipate` 方法的第二個引數。這個閉包會在每次使用者輸入字元的時候被呼叫。該閉包應接受一個字串參數，其中包含了目前使用者的輸入值，並回傳用於自動補全的選項陣列：
 
-    $name = $this->anticipate('What is your address?', function ($input) {
+    $name = $this->anticipate('What is your address?', function (string $input) {
         // 回傳自動補全的選項...
     });
 
@@ -477,10 +510,8 @@ php artisan mail:send --id=1 --id=2
 
     /**
      * Execute the console command.
-     *
-     * @return mixed
      */
-    public function handle()
+    public function handle(): void
     {
         // ...
     
@@ -524,7 +555,7 @@ php artisan mail:send --id=1 --id=2
 
     use App\Models\User;
     
-    $users = $this->withProgressBar(User::all(), function ($user) {
+    $users = $this->withProgressBar(User::all(), function (User $user) {
         $this->performTask($user);
     });
 
@@ -544,7 +575,7 @@ php artisan mail:send --id=1 --id=2
     
     $bar->finish();
 
-> {tip} 有關更進階的選項，請參考 [Symfony Progress Bar 元件說明文件](https://symfony.com/doc/current/components/console/helpers/progressbar.html)。
+> **Note** 有關更進階的選項，請參考 [Symfony Progress Bar 元件說明文件](https://symfony.com/doc/current/components/console/helpers/progressbar.html)。
 
 <a name="registering-commands"></a>
 
@@ -554,10 +585,8 @@ php artisan mail:send --id=1 --id=2
 
     /**
      * Register the commands for the application.
-     *
-     * @return void
      */
-    protected function commands()
+    protected function commands(): void
     {
         $this->load(__DIR__.'/Commands');
         $this->load(__DIR__.'/../Domain/Orders/Commands');
@@ -579,12 +608,12 @@ php artisan mail:send --id=1 --id=2
 
     use Illuminate\Support\Facades\Artisan;
     
-    Route::post('/user/{user}/mail', function ($user) {
+    Route::post('/user/{user}/mail', function (string $user) {
         $exitCode = Artisan::call('mail:send', [
             'user' => $user, '--queue' => 'default'
         ]);
     
-        //
+        // ...
     });
 
 或者，也可以將整個 Artisan 指令作為字串傳給 `call` 方法：
@@ -623,12 +652,12 @@ php artisan mail:send --id=1 --id=2
 
     use Illuminate\Support\Facades\Artisan;
     
-    Route::post('/user/{user}/mail', function ($user) {
+    Route::post('/user/{user}/mail', function (string $user) {
         Artisan::queue('mail:send', [
             'user' => $user, '--queue' => 'default'
         ]);
     
-        //
+        // ...
     });
 
 可以使用 `onConnection` 與 `onQueue` 方法來指定 Artisan 指令應分派到哪個連線或佇列上：
@@ -645,16 +674,14 @@ php artisan mail:send --id=1 --id=2
 
     /**
      * Execute the console command.
-     *
-     * @return mixed
      */
-    public function handle()
+    public function handle(): void
     {
         $this->call('mail:send', [
             'user' => 1, '--queue' => 'default'
         ]);
     
-        //
+        // ...
     }
 
 若有需要呼叫另一個主控台指令並忽略其所有輸出，則可使用 `callSilently` 方法。`callSilently` 方法的簽章與 `call` 方法相同：
@@ -667,47 +694,27 @@ php artisan mail:send --id=1 --id=2
 
 ## 處理訊號
 
-驅動 Artisan 主控台的 Symfony Console 能夠設定指令能處理那些處理程序訊號（若有的話）。舉例來說，你可能會想要讓指令能處理 `SIGINT` 與 `SIGTERM` 訊號。
-
-要開始處理訊號，請先在 Artisan 指令類別上實作 `Symfony\Component\Console\Command\SignalableCommandInterface` 介面。這個介面要求要定義兩個方法：`getSubscribedSignals` 與 `handleSignal` ：
-
-```php
-<?php
-
-use Symfony\Component\Console\Command\SignalableCommandInterface;
-
-class StartServer extends Command implements SignalableCommandInterface
-{
-    // ...
+讀者可能已經知道，在作業系統中，我們可以傳送訊號 (Signal) 給正在執行的處理程序。舉例來說，作業系統會使用 `SIGTERM` 訊號來要求某個程式停止執行。若想在 Artisan 主控台指令上監聽這些訊號，可使用 `trap` 方法：
 
     /**
-     * Get the list of signals handled by the command.
-     *
-     * @return array
+     * Execute the console command.
      */
-    public function getSubscribedSignals(): array
+    public function handle(): void
     {
-        return [SIGINT, SIGTERM];
-    }
-
-    /**
-     * Handle an incoming signal.
-     *
-     * @param  int  $signal
-     * @return void
-     */
-    public function handleSignal(int $signal): void
-    {
-        if ($signal === SIGINT) {
-            $this->stopServer();
-
-            return;
+        $this->trap(SIGTERM, fn () => $this->shouldKeepRunning = false);
+    
+        while ($this->shouldKeepRunning) {
+            // ...
         }
     }
-}
-```
 
-你可能已經看得出來，`getSubscribedSignals` 應回傳一個包含所有指令能處理訊號的陣列，而 `handleSignal` 則接收訊號並根據訊號進行回應。
+若要同時監聽多個訊號，可提供一組訊號的陣列給 `trap` 方法：
+
+    $this->trap([SIGTERM, SIGQUIT], function (int $signal) {
+        $this->shouldKeepRunning = false;
+    
+        dump($signal); // SIGTERM / SIGQUIT
+    });
 
 <a name="stub-customization"></a>
 

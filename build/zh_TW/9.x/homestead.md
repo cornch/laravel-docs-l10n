@@ -68,6 +68,7 @@ Homestead runs on any Windows, macOS, or Linux system and includes Nginx, PHP, M
 
 - Ubuntu 20.04
 - Git
+- PHP 8.2
 - PHP 8.1
 - PHP 8.0
 - PHP 7.4
@@ -80,8 +81,9 @@ Homestead runs on any Windows, macOS, or Linux system and includes Nginx, PHP, M
 - MySQL 8.0
 - lmm
 - Sqlite3
-- PostgreSQL 13
+- PostgreSQL 15
 - Composer
+- Docker
 - Node (With Yarn, Bower, Grunt, and Gulp)
 - Redis
 - Memcached
@@ -115,7 +117,6 @@ Homestead runs on any Windows, macOS, or Linux system and includes Nginx, PHP, M
 - Chronograf
 - CouchDB
 - Crystal & Lucky Framework
-- Docker
 - Elasticsearch
 - EventStoreDB
 - Gearman
@@ -346,7 +347,6 @@ features:
     - chronograf: true
     - couchdb: true
     - crystal: true
-    - docker: true
     - elasticsearch:
         version: 7.9.0
     - eventstore: true
@@ -359,6 +359,7 @@ features:
     - meilisearch: true
     - minio: true
     - mongodb: true
+    - mysql: true
     - neo4j: true
     - ohmyzsh: true
     - openresty: true
@@ -585,7 +586,7 @@ Below is a list of additional Homestead service ports that you may wish to map f
 
 ### PHP Versions
 
-Homestead 6 introduced support for running multiple versions of PHP on the same virtual machine. You may specify which version of PHP to use for a given site within your `Homestead.yaml` file. The available PHP versions are: "5.6", "7.0", "7.1", "7.2", "7.3", "7.4", "8.0" (the default), and "8.1":
+Homestead supports running multiple versions of PHP on the same virtual machine. You may specify which version of PHP to use for a given site within your `Homestead.yaml` file. The available PHP versions are: "5.6", "7.0", "7.1", "7.2", "7.3", "7.4", "8.0", "8.1", and "8.2" (the default):
 
 ```yaml
 sites:
@@ -605,6 +606,7 @@ php7.3 artisan list
 php7.4 artisan list
 php8.0 artisan list
 php8.1 artisan list
+php8.2 artisan list
 ```
 
 You may change the default version of PHP used by the CLI by issuing the following commands from within your Homestead virtual machine:
@@ -618,6 +620,7 @@ php73
 php74
 php80
 php81
+php82
 ```
 
 <a name="connecting-to-databases"></a>
@@ -770,8 +773,9 @@ When debugging functional tests that make requests to the web server, it is easi
 
 ```ini
 ; If Homestead.yaml contains a different subnet for the IP address, this address may be different...
-xdebug.remote_host = 192.168.10.1
-xdebug.remote_autostart = 1
+xdebug.client_host = 192.168.10.1
+xdebug.mode = debug
+xdebug.start_with_request = yes
 ```
 
 <a name="debugging-cli-applications"></a>
@@ -801,7 +805,7 @@ features:
         client_token: "client_value"
 ```
 
-Blackfire server credentials and client credentials [require a Blackfire account](https://blackfire.io/signup). Blackfire offers various options to profile an application, including a CLI tool and browser extension. Please [review the Blackfire documentation for more details](https://blackfire.io/docs/cookbooks/index).
+Blackfire server credentials and client credentials [require a Blackfire account](https://blackfire.io/signup). Blackfire offers various options to profile an application, including a CLI tool and browser extension. Please [review the Blackfire documentation for more details](https://blackfire.io/docs/php/integrations/laravel/index).
 
 <a name="network-interfaces"></a>
 

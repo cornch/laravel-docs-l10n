@@ -22,7 +22,7 @@ updatedAt: '2023-01-25T14:53:00Z'
 
 Laravel 中內建了一個簡單易用的頻率限制抽象功能，該功能會與專案的 <cache> 搭配使用，讓我們能輕鬆限制指定時間內任何動作的頻率。
 
-> {tip} 若想對連入 HTTP Request 的頻率限制，請參考 [Rate Limiter Middleware 的說明文件](routing#rate-limiting)。
+> **Note** 若想對連入 HTTP Request 的頻率限制，請參考 [Rate Limiter Middleware 的說明文件](routing#rate-limiting)。
 
 <a name="cache-configuration"></a>
 
@@ -103,11 +103,8 @@ Laravel 中內建了一個簡單易用的頻率限制抽象功能，該功能會
     
     /**
      * Mark the message as read.
-     *
-     * @param  \App\Models\Message  $message
-     * @return \App\Models\Message
      */
-    public function read(Message $message)
+    public function read(Message $message): Message
     {
         $message->markAsRead();
     

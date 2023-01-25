@@ -20,6 +20,7 @@ updatedAt: '2023-01-25T10:52:00Z'
    - [安裝](/docs/{{version}}/installation)
    - [設定](/docs/{{version}}/configuration)
    - [目錄架構](/docs/{{version}}/structure)
+   - [前端](/docs/{{version}}/frontend)
    - [入門套件](/docs/{{version}}/starter-kits)
    - [部署](/docs/{{version}}/deployment)
 - ## 架構概念
@@ -40,6 +41,7 @@ updatedAt: '2023-01-25T10:52:00Z'
    - [Response](/docs/{{version}}/responses)
    - [View](/docs/{{version}}/views)
    - [Blade 樣板](/docs/{{version}}/blade)
+   - [打包素材](/docs/{{version}}/vite)
    - [產生 URL](/docs/{{version}}/urls)
    - [Session](/docs/{{version}}/session)
    - [表單驗證](/docs/{{version}}/validation)
@@ -52,7 +54,6 @@ updatedAt: '2023-01-25T10:52:00Z'
    - [Broadcast](/docs/{{version}}/broadcasting)
    - [快取](/docs/{{version}}/cache)
    - [Collection](/docs/{{version}}/collections)
-   - [編譯資源](/docs/{{version}}/mix)
    - [Contract](/docs/{{version}}/contracts)
    - [Event](/docs/{{version}}/events)
    - [檔案儲存](/docs/{{version}}/filesystem)
@@ -92,6 +93,7 @@ updatedAt: '2023-01-25T10:52:00Z'
    - [Mutator 與 Cast](/docs/{{version}}/eloquent-mutators)
    - [API Resource](/docs/{{version}}/eloquent-resources)
    - [序列化](/docs/{{version}}/eloquent-serialization)
+   - [Factory](/docs/{{version}}/eloquent-factories)
 - ## 測試
 
 
@@ -113,8 +115,10 @@ updatedAt: '2023-01-25T10:52:00Z'
    - [Homestead](/docs/{{version}}/homestead)
    - [Horizon](/docs/{{version}}/horizon)
    - [Jetstream](https://jetstream.laravel.com)
+   - [Mix](/docs/{{version}}/mix)
    - [Octane](/docs/{{version}}/octane)
    - [Passport](/docs/{{version}}/passport)
+   - [Pint](/docs/{{version}}/pint)
    - [Sail](/docs/{{version}}/sail)
    - [Sanctum](/docs/{{version}}/sanctum)
    - [Scout](/docs/{{version}}/scout)

@@ -43,21 +43,21 @@ Laravel 的加密服務提供一個簡單且方便的介面，可讓我們通過
     use App\Http\Controllers\Controller;
     use App\Models\User;
     use Illuminate\Http\Request;
+    use Illuminate\Http\Response;
     use Illuminate\Support\Facades\Crypt;
     
     class DigitalOceanTokenController extends Controller
     {
         /**
          * Store a DigitalOcean API token for the user.
-         *
-         * @param  \Illuminate\Http\Request  $request
-         * @return \Illuminate\Http\Response
          */
-        public function storeSecret(Request $request)
+        public function storeSecret(Request $request): Response
         {
             $request->user()->fill([
                 'token' => Crypt::encryptString($request->token),
             ])->save();
+    
+            return response()->noContent();
         }
     }
 
@@ -73,5 +73,5 @@ Laravel 的加密服務提供一個簡單且方便的介面，可讓我們通過
     try {
         $decrypted = Crypt::decryptString($encryptedValue);
     } catch (DecryptException $e) {
-        //
+        // ...
     }

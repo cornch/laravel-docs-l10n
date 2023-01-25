@@ -41,7 +41,7 @@ updatedAt: '2023-01-25T10:52:00Z'
    - [Response](/docs/{{version}}/responses)
    - [View](/docs/{{version}}/views)
    - [Blade 樣板](/docs/{{version}}/blade)
-   - [Bundling Assets](/docs/{{version}}/vite)
+   - [打包素材](/docs/{{version}}/vite)
    - [產生 URL](/docs/{{version}}/urls)
    - [Session](/docs/{{version}}/session)
    - [表單驗證](/docs/{{version}}/validation)
@@ -93,6 +93,7 @@ updatedAt: '2023-01-25T10:52:00Z'
    - [Mutator 與 Cast](/docs/{{version}}/eloquent-mutators)
    - [API Resource](/docs/{{version}}/eloquent-resources)
    - [序列化](/docs/{{version}}/eloquent-serialization)
+   - [Factory](/docs/{{version}}/eloquent-factories)
 - ## 測試
 
 

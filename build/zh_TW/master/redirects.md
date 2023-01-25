@@ -61,10 +61,8 @@ updatedAt: '2023-01-25T14:53:00Z'
 
     /**
      * Get the value of the model's route key.
-     *
-     * @return mixed
      */
-    public function getRouteKey()
+    public function getRouteKey(): mixed
     {
         return $this->slug;
     }

@@ -75,7 +75,7 @@ Eloquent 中，所有回傳多筆 Model 結果的方法都會回傳 `Illuminate\
 
 <div class="collection-method-list" markdown="1">
 
-[append](#method-append) [contains](#method-contains) [diff](#method-diff) [except](#method-except) [find](#method-find) [fresh](#method-fresh) [intersect](#method-intersect) [load](#method-load) [loadMissing](#method-loadMissing) [modelKeys](#method-modelKeys) [makeVisible](#method-makeVisible) [makeHidden](#method-makeHidden) [only](#method-only) [toQuery](#method-toquery) [unique](#method-unique)
+[append](#method-append) [contains](#method-contains) [diff](#method-diff) [except](#method-except) [find](#method-find) [fresh](#method-fresh) [intersect](#method-intersect) [load](#method-load) [loadMissing](#method-loadMissing) [modelKeys](#method-modelKeys) [makeVisible](#method-makeVisible) [makeHidden](#method-makeHidden) [only](#method-only) [setVisible](#method-setVisible) [setHidden](#method-setHidden) [toQuery](#method-toquery) [unique](#method-unique)
 
 </div>
 
@@ -156,6 +156,8 @@ Eloquent 中，所有回傳多筆 Model 結果的方法都會回傳 `Illuminate\
     $users->load(['comments', 'posts']);
     
     $users->load('comments.author');
+    
+    $users->load(['comments', 'posts' => fn ($query) => $query->where('active', 1)]);
 
 <a name="method-loadMissing"></a>
 
@@ -166,6 +168,8 @@ Eloquent 中，所有回傳多筆 Model 結果的方法都會回傳 `Illuminate\
     $users->loadMissing(['comments', 'posts']);
     
     $users->loadMissing('comments.author');
+    
+    $users->loadMissing(['comments', 'posts' => fn ($query) => $query->where('active', 1)]);
 
 <a name="method-modelKeys"></a>
 
@@ -200,6 +204,22 @@ Eloquent 中，所有回傳多筆 Model 結果的方法都會回傳 `Illuminate\
 `except` 方法會回傳符合給定主鍵的所有 Model：
 
     $users = $users->only([1, 2, 3]);
+
+<a name="method-setVisible"></a>
+
+#### `setVisible($attributes)` {.collection-method}
+
+`setVisible` 方法可[暫時複寫掉](/docs/{{version}}/eloquent-serialization#temporarily-modifying-attribute-visibility)該 Collection 中各個 Model 的所有 ^[visible](可見) 屬性：
+
+    $users = $users->setVisible(['id', 'name']);
+
+<a name="method-setHidden"></a>
+
+#### `setHidden($attributes)` {.collection-method}
+
+`setHidden` 方法可[暫時複寫掉](/docs/{{version}}/eloquent-serialization#temporarily-modifying-attribute-visibility)該 Collection 中各個 Model 的所有 ^[hidden](隱藏) 屬性：
+
+    $users = $users->setHidden(['email', 'password', 'remember_token']);
 
 <a name="method-toquery"></a>
 

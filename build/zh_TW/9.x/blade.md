@@ -11,6 +11,7 @@ updatedAt: '2023-01-25T09:52:00Z'
 # Blade 樣板
 
 - [簡介](#introduction)
+   - [使用 Livewire 來增強 Blade 的功能](#supercharging-blade-with-livewire)
 - [顯示資料](#displaying-data)
    - [HTML 實體編碼](#html-entity-encoding)
    - [Blade 與 JavaScript 框架](#blade-and-javascript-frameworks)
@@ -38,7 +39,7 @@ updatedAt: '2023-01-25T09:52:00Z'
    - [匿名 Index 原件](#anonymous-index-components)
    - [Data 屬性](#data-properties-attributes)
    - [存取上層資料](#accessing-parent-data)
-   - [Anonymous Components Namespaces](#anonymous-component-namespaces)
+   - [匿名元件的路徑](#anonymous-component-paths)
 - [製作 Layout](#building-layouts)
    - [使用元件的 Layout](#layouts-using-components)
    - [使用樣板繼承的 Layout](#layouts-using-template-inheritance)
@@ -49,6 +50,7 @@ updatedAt: '2023-01-25T09:52:00Z'
 - [Stack](#stacks)
 - [插入 Service](#service-injection)
 - [轉譯內嵌的 Blade 樣板](#rendering-inline-blade-templates)
+- [轉譯 Blade 片段](#rendering-blade-fragments)
 - [擴充 Blade](#extending-blade)
    - [自訂的 Echo 處理常式](#custom-echo-handlers)
    - [自訂 If 陳述式](#custom-if-statements)
@@ -65,7 +67,11 @@ Blade 是 Laravel 內建的一個簡單但強大的樣板引擎。與其他 PHP 
         return view('greeting', ['name' => 'Finn']);
     });
 
-> **Note** Want to take your Blade templates to the next level and build dynamic interfaces with ease? Check out [Laravel Livewire](https://laravel-livewire.com).
+<a name="supercharging-blade-with-livewire"></a>
+
+### 使用 Livewire 來增強 Blade 的功能
+
+想讓你的 Blade 樣板更進一步增加功能，並輕鬆使用 Blade 製作動態界面嗎？請參考看看 [Laravel Livewire](https://laravel-livewire.com)。原本只能通過 React 或 Vue 等前端框架才能達成的動態功能，使用 Liveware 後，你只需要撰寫 Blade 元件就可以實現了，不需要增加專案複雜度、不需要使用前端轉譯、不用麻煩地處理建置各種 JavaScript 框架，就能建立現代、互動性的前端。
 
 <a name="displaying-data"></a>
 
@@ -616,6 +622,12 @@ Blade 的 `@include` 指示詞可用來在 Blade View 中包含另一個 View。
 @endphp
 ```
 
+若只想撰寫單一 PHP 陳述式，可以在 `@php` 指示詞內包含該陳述式：
+
+```blade
+@php($counter = 1)
+```
+
 <a name="comments"></a>
 
 ### 註解
@@ -810,6 +822,20 @@ Blade 會通過將元件名稱轉為 Pascal 命名法 (pascal-case) 來自動偵
 <x-alert alert-type="danger" />
 ```
 
+<a name="short-attribute-syntax"></a>
+
+#### 簡短的屬性語法
+
+將屬性傳入元件時，也可以使用「簡短屬性」語法。由於屬性名稱常常都與對應的變數名稱相同，因此此功能應該適用於大多數情況下：
+
+```blade
+{{-- 簡短屬性語法... --}}
+<x-profile :$userId :$name />
+
+{{-- 對應於... --}}
+<x-profile :user-id="$userId" :name="$name" />
+```
+
 <a name="escaping-attribute-rendering"></a>
 
 #### 逸出屬性轉譯
@@ -850,7 +876,7 @@ Blade 會轉譯為下列 HTML：
 可以在元件樣板中通過叫用與方法名稱相同的變數來執行此方法：
 
 ```blade
-<option {{ $isSelected($value) ? 'selected="selected"' : '' }} value="{{ $value }}">
+<option {{ $isSelected($value) ? 'selected' : '' }} value="{{ $value }}">
     {{ $label }}
 </option>
 ```
@@ -1405,15 +1431,13 @@ Blade 會通過將元件名稱轉為 Pascal 命名法 (pascal-case) 來自動偵
 
 > **Warning** `@aware` 指示詞無法存取不是通過 HTML 屬性顯式傳遞給上層原件的上層資料。未顯式傳遞給上層元件的預設 `@props` 值無法被 `@aware` 指示詞存取。
 
-<a name="anonymous-component-namespaces"></a>
+<a name="anonymous-component-paths"></a>
 
-### Anonymous Component Namespaces
+### 匿名元件路徑
 
 前面也提到過，若要定義匿名原件，一般是將 Blade 樣板放在 `resources/views/components` 目錄內。不過，有時候，我們可能會想向 Laravel 註冊預設路徑以外的其他路徑來放置匿名原件。
 
-For example, when building a vacation booking application, you may wish to place flight booking related anonymous components within a `resources/views/flights/bookings/components` directory. To inform Laravel of this anonymous component location, you may use the `anonymousComponentNamespace` method provided by the `Blade` facade.
-
-The `anonymousComponentNamespace` method accepts the "path" to the anonymous component location as its first argument and the "namespace" that components should be placed under as its second argument. As you will see in the example below, the "namespace" will be prefixed to the component's name when the component is rendered. Typically, this method should be called from the `boot` method of one of your application's [service providers](/docs/{{version}}/providers):
+`anonymousComponentPath ` 方法的第一個引數為匿名原件位置的「路徑」，而第二個可選引數則是該元件所要被放置的「Namespace」。一般來說，應在專案的某個 [Service Provider](/docs/{{version}}/providers) 內 `boot` 方法中呼叫：
 
     /**
      * Bootstrap any application services.
@@ -1422,13 +1446,23 @@ The `anonymousComponentNamespace` method accepts the "path" to the anonymous com
      */
     public function boot()
     {
-        Blade::anonymousComponentNamespace('flights.bookings.components', 'flights');
+        Blade::anonymousComponentPath(__DIR__.'/../components');
     }
 
-Given the example above, you may render a `panel` component that exists within the newly registered component directory like so:
+若像上述範例這樣，不指定前置詞來註冊元件路徑的話，在 Blade 元件時也就不需要使用對應的前置詞。舉例來說，若上述程式碼中註冊的路徑下有 `panel.blade.php` 元件的話，可以像這樣轉譯該元件：
 
 ```blade
-<x-flights::panel :flight="$flight" />
+<x-panel />
+```
+
+也可以使用 `anonymousComponentPath` 方法的第二個引來提供前置詞「Namespace」：
+
+    Blade::anonymousComponentPath(__DIR__.'/../components', 'dashboard');
+
+提供前置詞時，若要轉譯這些放在「Namespace」下的元件，只要在該元件的名稱前方加上其 Namespace 即可：
+
+```blade
+<x-dashboard::panel />
 ```
 
 <a name="building-layouts"></a>
@@ -1729,6 +1763,28 @@ return Blade::render(
     ['name' => 'Julian Bashir'],
     deleteCachedView: true
 );
+```
+
+<a name="rendering-blade-fragments"></a>
+
+## 轉譯 Blade 片段
+
+使用如 [Turbo](https://turbo.hotwired.dev/) 與 [htmx](https://htmx.org/) 等前端框架時，我們偶爾只需要在 HTTP Response 中回傳一部分的 Blade 樣板即可。Blade 的「片段 (Fragment)」功能可實現這一行為。若要使用 Blade 片段，請將 Blade 樣板中的一部分放在 `@fragment` 與 `@endfragment` 指示詞中：
+
+```blade
+@fragment('user-list')
+    <ul>
+        @foreach ($users as $user)
+            <li>{{ $user->name }}</li>
+        @endforeach
+    </ul>
+@endfragment
+```
+
+接著，在轉譯使用該樣板的 View 時，可以呼叫 `fragment` 方法來指定只在連外 HTTP Response 中包含特定的片段：
+
+```php
+return view('dashboard', ['users' => $users])->fragment('user-list');
 ```
 
 <a name="extending-blade"></a>

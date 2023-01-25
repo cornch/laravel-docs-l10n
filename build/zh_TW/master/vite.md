@@ -494,12 +494,10 @@ export default defineConfig({
 
     /**
      * Bootstrap any application services.
-     *
-     * @return void
      */
-    public function boot()
+    public function boot(): void
     {
-        Vite::macro('image', fn ($asset) => $this->asset("resources/images/{$asset}"));
+        Vite::macro('image', fn (string $asset) => $this->asset("resources/images/{$asset}"));
     }
 
 定義好 Macro 後，就可以在樣板中呼叫。舉例來說，我們可以使用 `image` Macro 定義來參照到位在 `resources/images/logo.png` 的素材：
@@ -555,7 +553,7 @@ use Tests\TestCase;
 
 class ExampleTest extends TestCase
 {
-    public function test_without_vite_example()
+    public function test_without_vite_example(): void
     {
         $this->withoutVite();
 
@@ -641,18 +639,18 @@ node bootstrap/ssr/ssr.mjs
 namespace App\Http\Middleware;
 
 use Closure;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Vite;
+use Symfony\Component\HttpFoundation\Response;
 
 class AddContentSecurityPolicyHeaders
 {
     /**
      * Handle an incoming request.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure  $next
-     * @return mixed
+     * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
-    public function handle($request, Closure $next)
+    public function handle(Request $request, Closure $next, string $role): Response
     {
         Vite::useCspNonce();
 

@@ -133,6 +133,7 @@ php artisan schedule:list
 | `->everyThirtyMinutes();` | 每 30 分鐘執行任務 |
 | `->hourly();` | 每小時執行任務 |
 | `->hourlyAt(17);` | 每小時的第 17 分鐘執行任務 |
+| `->everyOddHour();` | 每奇數小時執行任務 |
 | `->everyTwoHours();` | 每 2 小時執行任務 |
 | `->everyThreeHours();` | 每 3 小時執行任務 |
 | `->everyFourHours();` | 每 4 小時執行任務 |
@@ -140,6 +141,7 @@ php artisan schedule:list
 | `->daily();` | 每當午夜時執行任務 |
 | `->dailyAt('13:00');` | 每天 13:00 執行任務 |
 | `->twiceDaily(1, 13);` | 每天的 1:00 與 13:00 執行任務 |
+| `->twiceDailyAt(1, 13, 15);` | 每天的 1:15 與 13:15 執行任務 |
 | `->weekly();` | 每週日 00:00 執行任務 |
 | `->weeklyOn(1, '8:00');` | 每週一 8:00 執行任務 |
 | `->monthly();` | 每月 1 號的 00:00 執行任務 |
@@ -147,6 +149,7 @@ php artisan schedule:list
 | `->twiceMonthly(1, 16, '13:00');` | 每個月的 1 號與 16 號的 13:00 執行任務 |
 | `->lastDayOfMonth('15:00');` | 每個月最後一天的 15:00 執行該任務 |
 | `->quarterly();` | 每一季第一天的 00:00 執行該任務 |
+| `->quarterlyOn(4, '14:00');` | 每一季 4 號的 14:00 執行任務 |
 | `->yearly();` | 每年第一天的 00:00 執行該任務 |
 | `->yearlyOn(6, 1, '17:00');` | 每年 6 月 1 日的 17:00 執行該任務 |
 | `->timezone('America/New_York');` | 為給任務設定時區 |
@@ -317,6 +320,15 @@ $schedule->job(new CheckUptime('https://vapor.laravel.com'))
             ->name('check_uptime:vapor.laravel.com')
             ->everyFiveMinutes()
             ->onOneServer();
+```
+
+類似地，若要在單一伺服器上執行排程的閉包，也必須為這些閉包指定名稱：
+
+```php
+$schedule->call(fn () => User::resetApiRequestCount())
+    ->name('reset-api-request-count')
+    ->daily()
+    ->onOneServer();
 ```
 
 <a name="background-tasks"></a>

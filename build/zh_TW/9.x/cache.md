@@ -505,25 +505,34 @@ updatedAt: '2023-01-25T09:52:00Z'
 
 若要在每個快取操作時執行程式碼，可以監聽快取所觸發的[事件](/docs/{{version}}/events)。一般來說，這些事件監聽程式應放置於專案的 `App\Providers\EventServiceProvider` 類別：
 
+    use App\Listeners\LogCacheHit;
+    use App\Listeners\LogCacheMissed;
+    use App\Listeners\LogKeyForgotten;
+    use App\Listeners\LogKeyWritten;
+    use Illuminate\Cache\Events\CacheHit;
+    use Illuminate\Cache\Events\CacheMissed;
+    use Illuminate\Cache\Events\KeyForgotten;
+    use Illuminate\Cache\Events\KeyWritten;
+    
     /**
      * The event listener mappings for the application.
      *
      * @var array
      */
     protected $listen = [
-        'Illuminate\Cache\Events\CacheHit' => [
-            'App\Listeners\LogCacheHit',
+        CacheHit::class => [
+            LogCacheHit::class,
         ],
     
-        'Illuminate\Cache\Events\CacheMissed' => [
-            'App\Listeners\LogCacheMissed',
+        CacheMissed::class => [
+            LogCacheMissed::class,
         ],
     
-        'Illuminate\Cache\Events\KeyForgotten' => [
-            'App\Listeners\LogKeyForgotten',
+        KeyForgotten::class => [
+            LogKeyForgotten::class,
         ],
     
-        'Illuminate\Cache\Events\KeyWritten' => [
-            'App\Listeners\LogKeyWritten',
+        KeyWritten::class => [
+            LogKeyWritten::class,
         ],
     ];

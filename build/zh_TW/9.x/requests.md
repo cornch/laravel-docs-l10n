@@ -317,7 +317,7 @@ composer require nyholm/psr7
 
 #### 取得 JSON 輸入值
 
-傳送 JSON 的 Request 時，只要 Request 的 `Content-Type` 由正確設定為 `application/json`，就可以使用 `input` 方法來存取 JSON 資料。也可以使用「點 (.)」標記法來存取 JSON 陣列中的巢狀資料：
+傳送 JSON 的 Request 時，只要 Request 的 `Content-Type` 由正確設定為 `application/json`，就可以使用 `input` 方法來存取 JSON 資料。也可以使用「點 (.)」標記法來存取 JSON 陣列／物件中的巢狀資料：
 
     $name = $request->input('user.name');
 
@@ -423,13 +423,13 @@ composer require nyholm/psr7
         //
     }
 
-若想判斷某個值是否有出現在 Request 中，且該值不為空時，可使用 `filled` 方法：
+若想判斷某個值是否有出現在 Request 中，且該值不是空字串時，可使用 `filled` 方法：
 
     if ($request->filled('name')) {
         //
     }
 
-`whenFilled` 方法會執行給定的閉包來判斷 Request 中某個值是否為空：
+`whenFilled` 方法會執行給定的閉包來判斷 Request 中某個值是否為空字串：
 
     $request->whenFilled('name', function ($input) {
         //
@@ -443,17 +443,23 @@ composer require nyholm/psr7
         // 未填寫「name」...
     });
 
-若要判斷 Request 中是否不存在給定的索引鍵，可使用 `missing` 方法：
+若要判斷 Request 中是否不存在給定的索引鍵，可使用 `missing` 方法與 `whenMissing` 方法：
 
     if ($request->missing('name')) {
         //
     }
+    
+    $request->whenMissing('name', function ($input) {
+        // 沒有「name」值...
+    }, function () {
+        // 有「name」值...
+    });
 
 <a name="merging-additional-input"></a>
 
 ### 合併額外的輸入
 
-有時候，我們可能會想手動把額外的輸入合併到 Request 中現存的輸入資料內。為此，可以使用 `merge` 方法：
+有時候，我們需要手動合併額外的輸入到 Request 中現有的輸入資料。這種情況下，可使用 `merge` 方法。若 Request 中已存在給定的輸入索引鍵，則會使用提供給 `merge` 方法的資料來複寫：
 
     $request->merge(['votes' => 0]);
 
@@ -523,7 +529,7 @@ Laravel 也提供了一個全域 `old` 輔助函式。若想在 [Blade 樣板](/
 
 ## 輸入修剪與正常化
 
-預設情況下，Laravel 中包含了 `App\Http\Middleware\TrimStrings` 與 `App\Http\Middleware\ConvertEmptyStringsToNull` 這兩個 Middleware，且放在程式的全域 Middleware Stack 中。這些 Middleware 被列在 `App\Http\Kernel` 類別的全域 Middleware Stack 中。這些 Middleware 會自動修剪 Request 中的所有連入子船，並將空白的字串欄位轉為 `null`。這樣，我們就不需要在 Route 或 Controller 中去費心正常化這些資料。
+預設情況下，Laravel 中包含了 `App\Http\Middleware\TrimStrings` 與 `Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull` 這兩個 Middleware，且放在程式的全域 Middleware Stack 中。這些 Middleware 被列在 `App\Http\Kernel` 類別的全域 Middleware Stack 中。這些 Middleware 會自動修剪 Request 中的所有連入子船，並將空白的字串欄位轉為 `null`。這樣，我們就不需要在 Route 或 Controller 中去費心正常化這些資料。
 
 #### 禁用輸入正規化
 
@@ -532,8 +538,8 @@ Laravel 也提供了一個全域 `old` 輔助函式。若想在 [Blade 樣板](/
 若只想在專案中一部分的 Request 上禁用字串修剪與空字串轉換，可使用這兩個 Middleware 提供的 `skipWhen` 方法。請傳入一個回傳 `true` 或 `false` 的閉包給該方法，用來判斷是否應跳過字串的正規化。一般來說，應在專案的 `AppServiceProvider` 中 `boot` 方法內叫用這個 `skipWhen` 方法。
 
 ```php
-use App\Http\Middleware\ConvertEmptyStringsToNull;
 use App\Http\Middleware\TrimStrings;
+use Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull;
 
 /**
  * Bootstrap any application services.

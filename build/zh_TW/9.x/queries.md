@@ -518,13 +518,13 @@ select * from users where votes > 100 or (name = 'Abigail' and votes > 50)
 
 ### JSON 的 Where 子句
 
-對於有支援 JSON 欄位型別的資料庫，Laravel 也支援查詢 JSON 欄位。目前，支援 JSON 欄位型別的資料庫包含 MySQL 5.7+、PostgreSQL、SQL Server 2016、SQLite 3.9.0 (搭配 [JSON1 擴充程式](https://www.sqlite.org/json1.html)) 等。若要查詢 JSON 欄位，請使用 `->` 運算子：
+對於有支援 JSON 欄位型別的資料庫，Laravel 也支援查詢 JSON 欄位。目前，支援 JSON 欄位型別的資料庫包含 MySQL 5.7+、PostgreSQL、SQL Server 2016、SQLite 3.39.0 (搭配 [JSON1 擴充程式](https://www.sqlite.org/json1.html)) 等。若要查詢 JSON 欄位，請使用 `->` 運算子：
 
     $users = DB::table('users')
                     ->where('preferences->dining->meal', 'salad')
                     ->get();
 
-也可以使用 `whereJsonContains` 來查詢 JSON 陣列。SQLite 資料庫目前不支援該功能：
+也可以使用 `whereJsonContains` 來查詢 JSON 陣列。3.38.0 版以前的 SQLite 不支援此功能：
 
     $users = DB::table('users')
                     ->whereJsonContains('options->languages', 'en')
@@ -566,6 +566,20 @@ select * from users where votes > 100 or (name = 'Abigail' and votes > 50)
                         ->whereNotBetween('votes', [1, 100])
                         ->get();
 
+**whereBetweenColumns / whereNotBetweenColumns / orWhereBetweenColumns / orWhereNotBetweenColumns**
+
+`whereBetweenColumns` 方法會驗證欄位值是否介於資料表中同一行的兩個欄位值之間：
+
+    $patients = DB::table('patients')
+                           ->whereBetweenColumns('weight', ['minimum_allowed_weight', 'maximum_allowed_weight'])
+                           ->get();
+
+`whereNotBetweenColumns` 方法會驗證欄位值是否不在資料表中同一行的兩個欄位值之間：
+
+    $patients = DB::table('patients')
+                           ->whereNotBetweenColumns('weight', ['minimum_allowed_weight', 'maximum_allowed_weight'])
+                           ->get();
+
 **whereIn / whereNotIn / orWhereIn / orWhereNotIn**
 
 `whereIn` 方法可檢查給定欄位的值是否包含在給定陣列中：
@@ -579,6 +593,24 @@ select * from users where votes > 100 or (name = 'Abigail' and votes > 50)
     $users = DB::table('users')
                         ->whereNotIn('id', [1, 2, 3])
                         ->get();
+
+也可以提供查詢物件作為 `whereIn` 方法的第二個引數：
+
+    $activeUsers = DB::table('users')->select('id')->where('is_active', 1);
+    
+    $users = DB::table('comments')
+                        ->whereIn('user_id', $activeUsers)
+                        ->get();
+
+上述範例會產生下列 SQL：
+
+```sql
+select * from comments where user_id in (
+    select id
+    from users
+    where is_active = 1
+)
+```
 
 > **Warning** 若要在查詢中加上大量的整數陣列，可使用 `whereIntegerInRaw` 與 `whereIntegerNotInRaw` 等方法來有效降低記憶體使用量。
 
@@ -989,9 +1021,16 @@ Laravel 的 Query Builder 還提供了用來遞增與遞減給定欄位值的方
     
     DB::table('users')->decrement('votes', 5);
 
-在遞增或遞減時，也可以指定其他要更新的欄位：
+若有需要，可以在進行遞增或遞減時指定額外的欄位：
 
     DB::table('users')->increment('votes', 1, ['name' => 'John']);
+
+此外，也可以使用 `incrementEach` 與 `decrementEach` 方法來同時遞增或遞減多個欄位：
+
+    DB::table('users')->incrementEach([
+        'votes' => 5,
+        'balance' => 100,
+    ]);
 
 <a name="delete-statements"></a>
 

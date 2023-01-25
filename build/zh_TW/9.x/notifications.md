@@ -223,6 +223,21 @@ php artisan make:notification InvoicePaid
      */
     public $connection = 'redis';
 
+或者，若想為通知所支援的各個通知通道個別指定佇列連線，可在通知上定義一個 `viaConnections` 方法。這個方法應回傳一組通道名稱 / 佇列名稱配對的陣列：
+
+    /**
+     * Determine which connections should be used for each notification channel.
+     *
+     * @return array
+     */
+    public function viaConnections()
+    {
+        return [
+            'mail' => 'redis',
+            'database' => 'sync',
+        ];
+    }
+
 <a name="customizing-notification-channel-queues"></a>
 
 #### 自訂通知通道佇列
@@ -307,9 +322,12 @@ php artisan make:notification InvoicePaid
 
 有時候，我們會需要將通知傳給不是我們網站使用者的人。只要使用 `Notification` Facade 上的 `route` 方法，就可以在送出通知前指定特別的通知 Route 資訊：
 
+    use Illuminate\Broadcasting\Channel;
+    
     Notification::route('mail', 'taylor@example.com')
                 ->route('vonage', '5555555555')
                 ->route('slack', 'https://hooks.slack.com/services/...')
+                ->route('broadcast', [new Channel('channel-name')])
                 ->notify(new InvoicePaid($invoice));
 
 若想在傳送隨需通知時為 `mail` Route 提供收件人名稱，可提供一個索引鍵為郵件位址而值為姓名的陣列：
@@ -356,6 +374,26 @@ php artisan make:notification InvoicePaid
 
 > **Note** 在傳送郵件通知時，請確保有在 `config/app.php` 設定檔中設定 `name` 設定選項。在郵件通知訊息的頁頭與頁尾中會使用到這個值。
 
+<a name="error-messages"></a>
+
+#### 錯誤訊息
+
+有些通知是用來通知使用者錯誤的，如付款失敗等。可在建立訊息時呼叫 `error` 方法來標示該郵件訊息是錯誤通知。在郵件訊息上使用 `error` 方法時，動作按鈕會從黑色變成紅色的：
+
+    /**
+     * Get the mail representation of the notification.
+     *
+     * @param  mixed  $notifiable
+     * @return \Illuminate\Notifications\Messages\MailMessage
+     */
+    public function toMail($notifiable)
+    {
+        return (new MailMessage)
+                    ->error()
+                    ->subject('Invoice Payment Failed')
+                    ->line('...');
+    }
+
 <a name="other-mail-notification-formatting-options"></a>
 
 #### 其他郵件通知的格式化選項
@@ -389,26 +427,6 @@ php artisan make:notification InvoicePaid
             ['emails.name.html', 'emails.name.plain'],
             ['invoice' => $this->invoice]
         );
-    }
-
-<a name="error-messages"></a>
-
-#### 錯誤訊息
-
-有些通知是用來通知使用者錯誤的，如付款失敗等。可在建立訊息時呼叫 `error` 方法來標示該郵件訊息是錯誤通知。在郵件訊息上使用 `error` 方法時，動作按鈕會從黑色變成紅色的：
-
-    /**
-     * Get the mail representation of the notification.
-     *
-     * @param  mixed  $notifiable
-     * @return \Illuminate\Notifications\Messages\MailMessage
-     */
-    public function toMail($notifiable)
-    {
-        return (new MailMessage)
-                    ->error()
-                    ->subject('Notification Subject')
-                    ->line('...');
     }
 
 <a name="customizing-the-sender"></a>
@@ -631,7 +649,7 @@ php artisan vendor:publish --tag=laravel-notifications
 
 若使用 Mailgun Driver，請參考 Mailgun 說明文件中有關 [Tag](https://documentation.mailgun.com/en/latest/user_manual.html#tagging-1) 與[詮釋資料](https://documentation.mailgun.com/en/latest/user_manual.html#attaching-data-to-messages)的更多資訊。同樣地，也請參考 Postmark 說明文件中有關 [Tag](https://postmarkapp.com/blog/tags-support-for-smtp) 與[詮釋資料](https://postmarkapp.com/support/article/1125-custom-metadata-faq)的更多資料。
 
-If your application is using Amazon SES to send emails, you should use the `metadata` method to attach [SES "tags"](https://docs.aws.amazon.com/ses/latest/APIReference/API_MessageTag.html) to the message. Tags and metadata can be added to the `MailMessage` - these are used by your email service for filtering/processing:
+若使用 Amazon SES 來寄送 E-Mail，則可使用 `metadata` 方法來將 [SES「Tag」](https://docs.aws.amazon.com/ses/latest/APIReference/API_MessageTag.html)附加到訊息上。
 
 <a name="customizing-the-symfony-message"></a>
 
@@ -758,18 +776,18 @@ php artisan make:notification InvoicePaid --markdown=mail.invoice.paid
 Markdown 的郵件通知混合使用了 Blade 元件與 Markdown 語法，讓我們能輕鬆地使用 Laravel 內建的通知元件來建立通知：
 
 ```blade
-@component('mail::message')
+<x-mail::message>
 # Invoice Paid
 
 Your invoice has been paid!
 
-@component('mail::button', ['url' => $url])
+<x-mail::button :url="$url">
 View Invoice
-@endcomponent
+</x-mail::button>
 
 Thanks,<br>
 {{ config('app.name') }}
-@endcomponent
+</x-mail::message>
 ```
 
 <a name="button-component"></a>
@@ -779,9 +797,9 @@ Thanks,<br>
 Button 元件用來轉譯一個置中的按鈕連結。這個元件接受兩個引數，一個是 `url` 網址，另一個則是可選的 `color` 顏色。支援的顏色有 `primary`、`green`、`red`。在通知中可以加上不限數量的 Button 元件：
 
 ```blade
-@component('mail::button', ['url' => $url, 'color' => 'green'])
+<x-mail::button :url="$url" color="green">
 View Invoice
-@endcomponent
+</x-mail::button>
 ```
 
 <a name="panel-component"></a>
@@ -791,9 +809,9 @@ View Invoice
 Panel 元件將給定的文字區塊轉譯在一個面板中，面板的底色與通知中其他部分的背景色稍有不同。我們可以使用 Panel 元件來讓給定區塊的文字較為醒目：
 
 ```blade
-@component('mail::panel')
+<x-mail::panel>
 This is the panel content.
-@endcomponent
+</x-mail::panel>
 ```
 
 <a name="table-component"></a>
@@ -803,12 +821,12 @@ This is the panel content.
 Table 元件可讓我們將 Markdown 表格轉為 HTML 表格。該元件接受一個 Markdown 表格作為其內容。支援使用預設的 Markdown 表格對其格式來對其表格欄位：
 
 ```blade
-@component('mail::table')
+<x-mail::table>
 | Laravel       | Table         | Example  |
 | ------------- |:-------------:| --------:|
 | Col 2 is      | Centered      | $10      |
 | Col 3 is      | Right-Aligned | $20      |
-@endcomponent
+</x-mail::table>
 ```
 
 <a name="customizing-the-components"></a>
@@ -1352,14 +1370,17 @@ composer require laravel/slack-notification-channel
 
 在傳送通知時，通知系統會分派一個 `Illuminate\Notifications\Events\NotificationSending` [事件](/docs/{{version}}/events)。該 Event 中包含了一個「Notifiable」實體，以及通知實體本身。可以在專案的 `EventServiceProvider` 中為該 Event 註冊 Listener：
 
+    use App\Listeners\CheckNotificationStatus;
+    use Illuminate\Notifications\Events\NotificationSending;
+    
     /**
      * The event listener mappings for the application.
      *
      * @var array
      */
     protected $listen = [
-        'Illuminate\Notifications\Events\NotificationSending' => [
-            'App\Listeners\CheckNotificationStatus',
+        NotificationSending::class => [
+            CheckNotificationStatus::class,
         ],
     ];
 
@@ -1399,14 +1420,17 @@ composer require laravel/slack-notification-channel
 
 在傳送通知時，通知系統會分派一個 `Illuminate\Notifications\Events\NotificationSent` [事件](/docs/{{version}}/events)。該 Event 中包含了一個「Notifiable」實體，以及通知實體本身。可以在專案的 `EventServiceProvider` 中為該 Event 註冊 Listener：
 
+    use App\Listeners\LogNotification;
+    use Illuminate\Notifications\Events\NotificationSent;
+    
     /**
      * The event listener mappings for the application.
      *
      * @var array
      */
     protected $listen = [
-        'Illuminate\Notifications\Events\NotificationSent' => [
-            'App\Listeners\LogNotification',
+        NotificationSent::class => [
+            LogNotification::class,
         ],
     ];
 

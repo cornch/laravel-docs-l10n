@@ -598,10 +598,10 @@ window.Echo = new Echo({
                     channel_name: channel.name
                 })
                 .then(response => {
-                    callback(false, response.data);
+                    callback(null, response.data);
                 })
                 .catch(error => {
-                    callback(true, error);
+                    callback(error);
                 });
             }
         };

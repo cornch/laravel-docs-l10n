@@ -210,7 +210,7 @@ composer require guzzlehttp/guzzle
         return $exception instanceof ConnectionException;
     })->post(/* ... */);
 
-If a request attempt fails, you may wish to make a change to the request before a new attempt is made. You can achieve this by modifying request argument provided to the callable you provided to the `retry` method. For example, you might want to retry the request with a new authorization token if the first attempt returned an authentication error:
+若 Request 查詢失敗，我們可能會想在進行新嘗試前對 Request 做點修改。若要在重新嘗試前對 Request 做修改，我們只需要將提供 `retry` 方法的 Request 引數更改為 Callable 即可。舉例來說，在第一次嘗試回傳身份驗證錯誤時，我們可能會想以新的 Authorization Token 來重試該 Request：
 
     $response = Http::withToken($this->getToken())->retry(2, 0, function ($exception, $request) {
         if (! $exception instanceof RequestException || $exception->response->status() !== 401) {
@@ -257,14 +257,20 @@ If a request attempt fails, you may wish to make a change to the request before 
 
     $response = Http::post(/* ... */);
     
-    // Throw an exception if a client or server error occurred...
+    // 當發生 Client 端或 Server 端錯誤時擲回 Exception...
     $response->throw();
     
-    // Throw an exception if an error occurred and the given condition is true...
+    // 當發生錯誤且給定條件為 true 時擲回 Exception...
     $response->throwIf($condition);
     
-    // Throw an exception if an error occurred and the given condition is false...
+    // 當發生錯誤且給定閉包解析為 true 時擲回 Exception...
+    $response->throwIf(fn ($response) => true);
+    
+    // 當發生錯誤且給定條件為 false 時擲回 Exception...
     $response->throwUnless($condition);
+    
+    // 當發生錯誤且給定閉包解析為 false 時擲回 Exception...
+    $response->throwUnless(fn ($response) => false);
     
     return $response['user']['id'];
 
@@ -292,11 +298,11 @@ If a request attempt fails, you may wish to make a change to the request before 
     
     $response = Http::withMiddleware(
         Middleware::mapRequest(function (RequestInterface $request) {
-            $request->withHeader('X-Example', 'Value');
+            $request = $request->withHeader('X-Example', 'Value');
             
             return $request;
         })
-    ->get('http://example.com');
+    )->get('http://example.com');
 
 類似地，我們也可以將 `withMiddleware` 方法與 Guzzle 的 `mapResponse` Middleware Factory 搭配使用來註冊用於檢查連入 HTTP Request 的 Middleware：
 

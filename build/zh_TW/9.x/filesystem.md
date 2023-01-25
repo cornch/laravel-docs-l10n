@@ -15,6 +15,7 @@ updatedAt: '2023-01-25T12:14:00Z'
    - [Local Driver](#the-local-driver)
    - [Public Disk](#the-public-disk)
    - [Driver 前置需求](#driver-prerequisites)
+   - [限定範圍與唯讀的檔案系統](#scoped-and-read-only-filesystems)
    - [與 Amazon S3 相容的檔案系統](#amazon-s3-compatible-filesystems)
 - [取得 Disk 實體](#obtaining-disk-instances)
    - [隨需建立的 Disk](#on-demand-disks)
@@ -141,15 +142,15 @@ Laravel 的 Flysystem 整合可以完美配合 SFTP。不過，Laravel 的預設
         'driver' => 'sftp',
         'host' => env('SFTP_HOST'),
         
-        // Settings for basic authentication...
+        // 設定 Basic 身份認證...
         'username' => env('SFTP_USERNAME'),
         'password' => env('SFTP_PASSWORD'),
     
-        // Settings for SSH key based authentication with encryption password...
+        // 設定有加密密碼之基於 SSH 金鑰的身份認證...
         'privateKey' => env('SFTP_PRIVATE_KEY'),
-        'password' => env('SFTP_PASSWORD'),
+        'passphrase' => env('SFTP_PASSPHRASE'),
     
-        // Optional SFTP Settings...
+        // 可選的 SFTP 設定...
         // 'hostFingerprint' => env('SFTP_HOST_FINGERPRINT'),
         // 'maxTries' => 4,
         // 'passphrase' => env('SFTP_PASSPHRASE'),
@@ -158,6 +159,42 @@ Laravel 的 Flysystem 整合可以完美配合 SFTP。不過，Laravel 的預設
         // 'timeout' => 30,
         // 'useAgent' => true,
     ],
+
+<a name="scoped-and-read-only-filesystems"></a>
+
+### 限定範圍與唯讀的檔案系統
+
+使用限定範圍的 Disk，我們可以定義一個檔案系統，在該檔案系統中，所有的路徑都會自動被加上給定的路徑前置詞。在建立限定範圍的檔案系統 Disk 前，我們需要先使用 Composer 套件管理員安裝一個額外的 Flysystem 套件：
+
+```shell
+composer require league/flysystem-path-prefixing "^3.0"
+```
+
+只要使用 `scoped` Driver，我們就可以使用任何現有的檔案系統 Disk 來定義限定路徑範圍的 Disk。舉例來說，我們可以建立一個 Disk，該 Disk 使用現有的 `s3` Disk，並將路徑限定在特定的路徑前置詞內。接著，使用這個限定範圍 Disk 的所有檔案操作都會在這個指定的前置詞下：
+
+```php
+'s3-videos' => [
+    'driver' => 'scoped',
+    'disk' => 's3',
+    'prefix' => 'path/to/videos',
+],
+```
+
+使用「唯讀」Disk，我們就能建立不允許任何寫入操作的檔案系統 Disk。在使用 `read-only` 組態設定選項前，我們還需要使用 Composer 套件管理員安裝一個額外的 Flysystem 套件：
+
+```shell
+composer require league/flysystem-read-only "^3.0"
+```
+
+接著，我們可以在任何一個或多個 Disk 設定內加上 `read-only` 設定選項：
+
+```php
+'s3-videos' => [
+    'driver' => 's3',
+    // ...
+    'read-only' => true,
+],
+```
 
 <a name="amazon-s3-compatible-filesystems"></a>
 
@@ -168,6 +205,18 @@ Laravel 的 Flysystem 整合可以完美配合 SFTP。不過，Laravel 的預設
 一般來說，為 Disk 設定要使用服務的認證資訊後，就只需要更改 `endpoint` 設定選項即可。這個選項值通常是以 `AWS_ENDPOINT` 環境變數定義的：
 
     'endpoint' => env('AWS_ENDPOINT', 'https://minio:9000'),
+
+<a name="minio"></a>
+
+#### MinIO
+
+為了讓 Laravel 的 Flysystem 整合在使用 MinIO 時整合正確的 URL，請定義 `AWS_URL` 環境變數，並設定適用於專案本機 URL 的值，且該值應在 URL 路徑內包含 Bucket 名稱：
+
+```ini
+AWS_URL=http://localhost:9000/local
+```
+
+> **Warning** 使用 MinIO 時，不支援通過 `temporaryUrl` 方法來產生臨時儲存空間 URL。
 
 <a name="obtaining-disk-instances"></a>
 
@@ -322,6 +371,10 @@ $disk->put('image.jpg', $content);
 `lastModified` 方法回傳以 UNIX ^[時戳](Timestamp)表示的檔案最後修改時間：
 
     $time = Storage::lastModified('file.jpg');
+
+使用 `mimeType` 方法，就可取得給定檔案的 MIME 型別：
+
+    $mime = Storage::mimeType('file.jpg')
 
 <a name="file-paths"></a>
 

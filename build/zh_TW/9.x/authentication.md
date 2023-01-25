@@ -126,7 +126,7 @@ Laravel Sanctum 是我們在 [Laravel Jetstream](https://jetstream.laravel.com) 
 
 當你的專案真的需要所有 OAuth2 規格所提供的功能時，就可以選擇使用 Passport。
 
-此外，若想要快速入門，我們誠摯推薦你使用 [Laravel Jetstream](https://jetstream.laravel.com) 來作為快速建立新 Laravel 專案的方法。Laravel Jetstream 已經使用了我們偏好的認證 Stack —— 使用 Laravel 的內建認證服務與 Laravel Sanctum。
+此外，若想要快速入門，我們誠摯推薦你使用 [Laravel Breeze](/docs/{{version}}/starter-kits#laravel-breeze) 來作為快速建立新 Laravel 專案的方法。Laravel Breeze 已經使用了我們偏好的認證 Stack —— 使用 Laravel 的內建認證服務與 Laravel Sanctum。
 
 <a name="authentication-quickstart"></a>
 
@@ -297,6 +297,16 @@ Laravel 的重新導向程式中提供的 `intended` 方法可以用來將使用
 
     if (Auth::attempt(['email' => $email, 'password' => $password, 'active' => 1])) {
         // 認證成功...
+    }
+
+對於複雜的查詢條件，可以提供在帳號密碼陣列中提供一個閉包。Laravel 會以查詢實體來呼叫此閉包，讓你可以依據專案需求自定查詢：
+
+    if (Auth::attempt([
+        'email' => $email, 
+        'password' => $password, 
+        fn ($query) => $query->has('activeSubscription'),
+    ])) {
+        // 登入成功...
     }
 
 > **Warning** 不一定要像這個例子一樣使用 `email` 欄位，此處只是以 E-Mail 當作範例。可以使用任何在資料庫中相當於「使用者名稱」的欄位來認證。

@@ -12,6 +12,7 @@ updatedAt: '2023-01-25T07:02:00Z'
    - [Configuration](#configuration)
    - [Balancing Strategies](#balancing-strategies)
    - [Dashboard Authorization](#dashboard-authorization)
+   - [Silenced Jobs](#silenced-jobs)
 - [Upgrading Horizon](#upgrading-horizon)
 - [Running Horizon](#running-horizon)
    - [Deploying Horizon](#deploying-horizon)
@@ -25,7 +26,7 @@ updatedAt: '2023-01-25T07:02:00Z'
 
 ## Introduction
 
-> {tip} Before digging into Laravel Horizon, you should familiarize yourself with Laravel's base [queue services](/docs/{{version}}/queues). Horizon augments Laravel's queue with additional features that may be confusing if you are not already familiar with the basic queue features offered by Laravel.
+> **Note** Before digging into Laravel Horizon, you should familiarize yourself with Laravel's base [queue services](/docs/{{version}}/queues). Horizon augments Laravel's queue with additional features that may be confusing if you are not already familiar with the basic queue features offered by Laravel.
 
 [Laravel Horizon](https://github.com/laravel/horizon) provides a beautiful dashboard and code-driven configuration for your Laravel powered [Redis queues](/docs/{{version}}/queues). Horizon allows you to easily monitor key metrics of your queue system such as job throughput, runtime, and job failures.
 
@@ -37,7 +38,7 @@ When using Horizon, all of your queue worker configuration is stored in a single
 
 ## Installation
 
-> {note} Laravel Horizon requires that you use [Redis](https://redis.io) to power your queue. Therefore, you should ensure that your queue connection is set to `redis` in your application's `config/queue.php` configuration file.
+> **Warning** Laravel Horizon requires that you use [Redis](https://redis.io) to power your queue. Therefore, you should ensure that your queue connection is set to `redis` in your application's `config/queue.php` configuration file.
 
 You may install Horizon into your project using the Composer package manager:
 
@@ -57,7 +58,7 @@ php artisan horizon:install
 
 After publishing Horizon's assets, its primary configuration file will be located at `config/horizon.php`. This configuration file allows you to configure the queue worker options for your application. Each configuration option includes a description of its purpose, so be sure to thoroughly explore this file.
 
-> {note} Horizon uses a Redis connection named `horizon` internally. This Redis connection name is reserved and should not be assigned to another Redis connection in the `database.php` configuration file or as the value of the `use` option in the `horizon.php` configuration file.
+> **Warning** Horizon uses a Redis connection named `horizon` internally. This Redis connection name is reserved and should not be assigned to another Redis connection in the `database.php` configuration file or as the value of the `use` option in the `horizon.php` configuration file.
 
 <a name="environments"></a>
 
@@ -83,13 +84,13 @@ After installation, the primary Horizon configuration option that you should fam
 
 When you start Horizon, it will use the worker process configuration options for the environment that your application is running on. Typically, the environment is determined by the value of the `APP_ENV` [environment variable](/docs/{{version}}/configuration#determining-the-current-environment). For example, the default `local` Horizon environment is configured to start three worker processes and automatically balance the number of worker processes assigned to each queue. The default `production` environment is configured to start a maximum of 10 worker processes and automatically balance the number of worker processes assigned to each queue.
 
-> {note} You should ensure that the `environments` portion of your `horizon` configuration file contains an entry for each [environment](/docs/{{version}}/configuration#environment-configuration) on which you plan to run Horizon.
+> **Warning** You should ensure that the `environments` portion of your `horizon` configuration file contains an entry for each [environment](/docs/{{version}}/configuration#environment-configuration) on which you plan to run Horizon.
 
 <a name="supervisors"></a>
 
 #### Supervisors
 
-As you can see in Horizon's default configuration file. Each environment can contain one or more "supervisors". By default, the configuration file defines this supervisor as `supervisor-1`; however, you are free to name your supervisors whatever you want. Each supervisor is essentially responsible for "supervising" a group of worker processes and takes care of balancing worker processes across queues.
+As you can see in Horizon's default configuration file, each environment can contain one or more "supervisors". By default, the configuration file defines this supervisor as `supervisor-1`; however, you are free to name your supervisors whatever you want. Each supervisor is essentially responsible for "supervising" a group of worker processes and takes care of balancing worker processes across queues.
 
 You may add additional supervisors to a given environment if you would like to define a new group of worker processes that should run in that environment. You may choose to do this if you would like to define a different balancing strategy or worker process count for a given queue used by your application.
 
@@ -126,9 +127,9 @@ When using the `auto` strategy, you may define the `minProcesses` and `maxProces
         ],
     ],
 
-The `balanceMaxShift` and `balanceCooldown` configuration values to determine how quickly Horizon will scale to meet worker demand. In the example above, a maximum of one new process will be created or destroyed every three seconds. You are free to tweak these values as necessary based on your application's needs.
+The `balanceMaxShift` and `balanceCooldown` configuration values determine how quickly Horizon will scale to meet worker demand. In the example above, a maximum of one new process will be created or destroyed every three seconds. You are free to tweak these values as necessary based on your application's needs.
 
-When the `balance` option is set to `false`, the default Laravel behavior will be used, which processes queues in the order they are listed in your configuration.
+When the `balance` option is set to `false`, the default Laravel behavior will be used, wherein queues are processed in the order they are listed in your configuration.
 
 <a name="dashboard-authorization"></a>
 
@@ -140,12 +141,10 @@ Horizon exposes a dashboard at the `/horizon` URI. By default, you will only be 
      * Register the Horizon gate.
      *
      * This gate determines who can access Horizon in non-local environments.
-     *
-     * @return void
      */
-    protected function gate()
+    protected function gate(): void
     {
-        Gate::define('viewHorizon', function ($user) {
+        Gate::define('viewHorizon', function (User $user) {
             return in_array($user->email, [
                 'taylor@laravel.com',
             ]);
@@ -157,6 +156,27 @@ Horizon exposes a dashboard at the `/horizon` URI. By default, you will only be 
 #### Alternative Authentication Strategies
 
 Remember that Laravel automatically injects the authenticated user into the gate closure. If your application is providing Horizon security via another method, such as IP restrictions, then your Horizon users may not need to "login". Therefore, you will need to change `function ($user)` closure signature above to `function ($user = null)` in order to force Laravel to not require authentication.
+
+<a name="silenced-jobs"></a>
+
+### Silenced Jobs
+
+Sometimes, you may not be interested in viewing certain jobs dispatched by your application or third-party packages. Instead of these jobs taking up space in your "Completed Jobs" list, you can silence them. To get started, add the job's class name to the `silenced` configuration option in your application's `horizon` configuration file:
+
+    'silenced' => [
+        App\Jobs\ProcessPodcast::class,
+    ],
+
+Alternatively, the job you wish to silence can implement the `Laravel\Horizon\Contracts\Silenced` interface. If a job implements this interface, it will automatically be silenced, even if it is not present in the `silenced` configuration array:
+
+    use Laravel\Horizon\Contracts\Silenced;
+    
+    class ProcessPodcast implements ShouldQueue, Silenced
+    {
+        use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+    
+        // ...
+    }
 
 <a name="upgrading-horizon"></a>
 
@@ -240,7 +260,7 @@ Supervisor is a process monitor for the Linux operating system and will automati
 sudo apt-get install supervisor
 ```
 
-> {tip} If configuring Supervisor yourself sounds overwhelming, consider using [Laravel Forge](https://forge.laravel.com), which will automatically install and configure Supervisor for your Laravel projects.
+> **Note** If configuring Supervisor yourself sounds overwhelming, consider using [Laravel Forge](https://forge.laravel.com), which will automatically install and configure Supervisor for your Laravel projects.
 
 <a name="supervisor-configuration"></a>
 
@@ -260,7 +280,9 @@ stdout_logfile=/home/forge/example.com/horizon.log
 stopwaitsecs=3600
 ```
 
-> {note} You should ensure that the value of `stopwaitsecs` is greater than the number of seconds consumed by your longest running job. Otherwise, Supervisor may kill the job before it is finished processing.
+When defining your Supervisor configuration, you should ensure that the value of `stopwaitsecs` is greater than the number of seconds consumed by your longest running job. Otherwise, Supervisor may kill the job before it is finished processing.
+
+> **Warning** While the examples above are valid for Ubuntu based servers, the location and file extension expected of Supervisor configuration files may vary between other server operating systems. Please consult your server's documentation for more information.
 
 <a name="starting-supervisor"></a>
 
@@ -276,7 +298,7 @@ sudo supervisorctl update
 sudo supervisorctl start horizon
 ```
 
-> {tip} For more information on running Supervisor, consult the [Supervisor documentation](http://supervisord.org/index.html).
+> **Note** For more information on running Supervisor, consult the [Supervisor documentation](http://supervisord.org/index.html).
 
 <a name="tags"></a>
 
@@ -308,9 +330,6 @@ Horizon allows you to assign “tags” to jobs, including mailables, broadcast 
     
         /**
          * Create a new job instance.
-         *
-         * @param  \App\Models\Video  $video
-         * @return void
          */
         public function __construct(Video $video)
         {
@@ -319,12 +338,10 @@ Horizon allows you to assign “tags” to jobs, including mailables, broadcast 
     
         /**
          * Execute the job.
-         *
-         * @return void
          */
-        public function handle()
+        public function handle(): void
         {
-            //
+            // ...
         }
     }
 
@@ -348,9 +365,9 @@ If you would like to manually define the tags for one of your queueable objects,
         /**
          * Get the tags that should be assigned to the job.
          *
-         * @return array
+         * @return array<int, string>
          */
-        public function tags()
+        public function tags(): array
         {
             return ['render', 'video:'.$this->video->id];
         }
@@ -360,16 +377,14 @@ If you would like to manually define the tags for one of your queueable objects,
 
 ## Notifications
 
-> {note} When configuring Horizon to send Slack or SMS notifications, you should review the [prerequisites for the relevant notification channel](/docs/{{version}}/notifications).
+> **Warning** When configuring Horizon to send Slack or SMS notifications, you should review the [prerequisites for the relevant notification channel](/docs/{{version}}/notifications).
 
 If you would like to be notified when one of your queues has a long wait time, you may use the `Horizon::routeMailNotificationsTo`, `Horizon::routeSlackNotificationsTo`, and `Horizon::routeSmsNotificationsTo` methods. You may call these methods from the `boot` method of your application's `App\Providers\HorizonServiceProvider`:
 
     /**
      * Bootstrap any application services.
-     *
-     * @return void
      */
-    public function boot()
+    public function boot(): void
     {
         parent::boot();
     
@@ -397,11 +412,8 @@ Horizon includes a metrics dashboard which provides information regarding your j
 
     /**
      * Define the application's command schedule.
-     *
-     * @param  \Illuminate\Console\Scheduling\Schedule  $schedule
-     * @return void
      */
-    protected function schedule(Schedule $schedule)
+    protected function schedule(Schedule $schedule): void
     {
         $schedule->command('horizon:snapshot')->everyFiveMinutes();
     }

@@ -23,6 +23,7 @@ updatedAt: '2023-01-25T10:52:00Z'
    - [限制範圍的 Resource Route](#restful-scoping-resource-routes)
    - [本土化 Resource URI](#restful-localizing-resource-uris)
    - [補充 Resource Controller](#restful-supplementing-resource-controllers)
+   - [單例的 Resource Controller](#singleton-resource-controllers)
 - [相依性插入與 Controller](#dependency-injection-and-controllers)
 
 <a name="introduction"></a>
@@ -45,7 +46,6 @@ updatedAt: '2023-01-25T10:52:00Z'
     
     namespace App\Http\Controllers;
     
-    use App\Http\Controllers\Controller;
     use App\Models\User;
     
     class UserController extends Controller
@@ -84,7 +84,6 @@ updatedAt: '2023-01-25T10:52:00Z'
     
     namespace App\Http\Controllers;
     
-    use App\Http\Controllers\Controller;
     use App\Models\User;
     
     class ProvisionServer extends Controller
@@ -200,6 +199,20 @@ php artisan make:controller PhotoController --resource
             ->missing(function (Request $request) {
                 return Redirect::route('photos.index');
             });
+
+<a name="soft-deleted-models"></a>
+
+#### 軟刪除的 Model
+
+一般來說，隱式型別繫結不會取得被[軟刪除](/docs/{{version}}/eloquent#soft-deleting)的 Model，而會回傳 404 HTTP Response。不過，我們也可以在定義 Route 時呼叫 `withTrashed` 方法來讓 Laravel 取得這些已刪除的 Model：
+
+    use App\Http\Controllers\PhotoController;
+    
+    Route::resource('photos', PhotoController::class)->withTrashed();
+
+在呼叫 `withTrashed` 時若不提供屬性，則可讓 `show`、`edit`、與 `update` Resource Route 存取軟刪除的 Model。可以傳入一組陣列給 `withTrashed` 方法來指定只使用這些 Route 中的一部分：
+
+    Route::resource('photos', PhotoController::class)->withTrashed(['show']);
 
 <a name="specifying-the-resource-model"></a>
 
@@ -390,6 +403,84 @@ Laravel 的複數化程式 (Pluralizer) 可以[按照需求設定支援不同的
     Route::resource('photos', PhotoController::class);
 
 > **Note** 請記得要保持 Controller 的功能專一。若發現常常需要使用除了一般資源動作以外的方法，請考慮將 Controller 拆分成兩個、更小的 Controller。
+
+<a name="singleton-resource-controllers"></a>
+
+### 單例 Resource Controller
+
+有時候，專案中可能會有只有一個實體的資源。舉例來說，我們可以編輯或更新使用者的「個人檔案 (Profile)」，而每個使用者通常都不會有超過一個的「個人檔案」。類似的，一張圖片可能也只有一個「縮圖」。這些資源就叫做「單例資源」，意思是，這些資源只會有一個實體。在這些情況下，我們可以註冊一個「單例」的 Resource Controller：
+
+```php
+use App\Http\Controllers\ProfileController;
+use Illuminate\Support\Facades\Route;
+
+Route::singleton('profile', ProfileController::class);
+```
+
+上面的單例 Resource 定義會註冊下列 Route。就像這樣，單例 Resource 不會註冊「建立」Route，而該程式碼註冊的 Route 也不接受識別子 (Identifier)，因為這些資源只會有一個實體：
+
+| 動詞 | URI | 動作 | Route 名稱 |
+| --- | --- | --- | --- |
+| GET | `/profile` | show | profile.show |
+| GET | `/profile/edit` | edit | profile.edit |
+| PUT/PATCH | `/profile` | update | profile.update |
+
+單例資源也可以被巢狀包含在標準的資源中：
+
+```php
+Route::singleton('photos.thumbnail', ThumbnailController::class);
+```
+
+在此範例中，`photos` 資源會擁有所有的[標準 Resource Route](#actions-handled-by-resource-controller)。不過，`thumbnail` 資源會是一個單例資源，並擁有下列 Route：
+
+| 動詞 | URI | 動作 | Route 名稱 |
+| --- | --- | --- | --- |
+| GET | `/photos/{photo}/thumbnail` | show | photos.thumbnail.show |
+| GET | `/photos/{photo}/thumbnail/edit` | edit | photos.thumbnail.edit |
+| PUT/PATCH | `/photos/{photo}/thumbnail` | update | photos.thumbnail.update |
+
+<a name="creatable-singleton-resources"></a>
+
+#### 可建立的單例資源
+
+有時候，我們會需要為某個單例資源定義建立與保存的 Route。這時，我們可以在註冊單例資源 Route 時呼叫 `creatable` 方法：
+
+```php
+Route::singleton('photos.thumbnail', ThumbnailController::class)->creatable();
+```
+
+在此範例中，會註冊下列 Route。如下所示，在可被建立的單例資源中，也會一併建立 `DELETE` Route：
+
+| 動詞 | URI | 動作 | Route 名稱 |
+| --- | --- | --- | --- |
+| GET | `/photos/{photo}/thumbnail/create` | create | photos.thumbnail.create |
+| POST | `/photos/{photo}/thumbnail` | store | photos.thumbnail.store |
+| GET | `/photos/{photo}/thumbnail` | show | photos.thumbnail.show |
+| GET | `/photos/{photo}/thumbnail/edit` | edit | photos.thumbnail.edit |
+| PUT/PATCH | `/photos/{photo}/thumbnail` | update | photos.thumbnail.update |
+| DELETE | `/photos/{photo}/thumbnail` | destroy | photos.thumbnail.destroy |
+
+若想讓 Laravel 為單例資源註冊 `DELETE` Route，但又不想註冊建立與保存的 Route，可使用 `destroyable` 方法：
+
+```php
+Route::singleton(...)->destroyable();
+```
+
+<a name="api-singleton-resources"></a>
+
+#### API 的單例資源
+
+`apiSingleton` 方法可用來註冊通過 API 操作的單例資源。因此，這些資源不需要 `create` 與 `edit` Route：
+
+```php
+Route::apiSingleton('profile', ProfileController::class);
+```
+
+檔案，API 的單例資源也可以被設為 `creatable`，也就是可為該資源註冊 `store` 與 `destroy` Route：
+
+```php
+Route::apiSingleton('photos.thumbnail', ProfileController::class)->creatable();
+```
 
 <a name="dependency-injection-and-controllers"></a>
 

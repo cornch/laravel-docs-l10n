@@ -44,6 +44,8 @@ updatedAt: '2023-01-25T16:13:00Z'
 
 不論專案大小，Laravel 預設的目錄結構都可提供一個不錯的起始點。不過，你也可以隨意調整要如何整理你的專案。Laravel 幾乎不限制 Class 要放在哪裡 —— 只要 Composer 可以自動載入 (Autoload) 該 Class 即可。
 
+> **Note** 是 Laravel 新手嗎？請參考 [Laravel Bootcamp (英語)](https://bootcamp.laravel.com) 來瞭解 Laravel 框架，同時我們也會帶領你建立你的第一個 Laravel 專案。
+
 <a name="the-root-directory"></a>
 
 ## 根目錄

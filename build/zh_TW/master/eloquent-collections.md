@@ -32,9 +32,9 @@ Eloquent 中，所有回傳多筆 Model 結果的方法都會回傳 `Illuminate\
 
 不過，剛才也提到過，Collection 比起陣列來說多了很多更強大的功能。而且，Collection 也提供了多種可通過直觀介面串連使用的各個 map / reduce 操作。舉例來說，我們可以將所有非啟用狀態的 Model 移除，並取得剩餘使用者的名字：
 
-    $names = User::all()->reject(function ($user) {
+    $names = User::all()->reject(function (User $user) {
         return $user->active === false;
-    })->map(function ($user) {
+    })->map(function (User $user) {
         return $user->name;
     });
 
@@ -53,13 +53,15 @@ Eloquent 中，所有回傳多筆 Model 結果的方法都會回傳 `Illuminate\
 除此之外，`Illuminate\Database\Eloquent\Collection` 類別還提供了一組可用來處理 Model Collection 的方法。大多數的方法都會回傳 `Illuminate\Database\Eloquent\Collection` 實體。不過，有些如 `modelKeys` 之類的方法則會回傳 `Illuminate\Support\Collection` 實體。
 
 <style>
-    #collection-method-list > p {
-        column-count: 1; -moz-column-count: 1; -webkit-column-count: 1;
-        column-gap: 2em; -moz-column-gap: 2em; -webkit-column-gap: 2em;
+    .collection-method-list > p {
+        columns: 14.4em 1; -moz-columns: 14.4em 1; -webkit-columns: 14.4em 1;
     }
 
-    #collection-method-list a {
+    .collection-method-list a {
         display: block;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
     }
 
     .collection-method code {
@@ -71,15 +73,25 @@ Eloquent 中，所有回傳多筆 Model 結果的方法都會回傳 `Illuminate\
     }
 </style>
 
-<div id="collection-method-list" markdown="1">
+<div class="collection-method-list" markdown="1">
 
-[contains](#method-contains) [diff](#method-diff) [except](#method-except) [find](#method-find) [fresh](#method-fresh) [intersect](#method-intersect) [load](#method-load) [loadMissing](#method-loadMissing) [modelKeys](#method-modelKeys) [makeVisible](#method-makeVisible) [makeHidden](#method-makeHidden) [only](#method-only) [toQuery](#method-toquery) [unique](#method-unique)
+[append](#method-append) [contains](#method-contains) [diff](#method-diff) [except](#method-except) [find](#method-find) [fresh](#method-fresh) [intersect](#method-intersect) [load](#method-load) [loadMissing](#method-loadMissing) [modelKeys](#method-modelKeys) [makeVisible](#method-makeVisible) [makeHidden](#method-makeHidden) [only](#method-only) [setVisible](#method-setVisible) [setHidden](#method-setHidden) [toQuery](#method-toquery) [unique](#method-unique)
 
 </div>
 
+<a name="method-append"></a>
+
+#### `append($attributes)` {.collection-method .first-collection-method}
+
+`append` 方法可用來表示某個屬性應被[附加](/docs/{{version}}/eloquent-serialization#appending-values-to-json)到該 Collection 中的每個 Model 上。可傳入一組屬性陣列或單一屬性給該方法：
+
+    $users->append('team');
+    
+    $users->append(['team', 'is_admin']);
+
 <a name="method-contains"></a>
 
-#### `contains($key, $operator = null, $value = null)` {.collection-method .first-collection-method}
+#### `contains($key, $operator = null, $value = null)` {.collection-method}
 
 `contains` 方法可用來判斷給定的 Model 實體是否包含在該 Collection 內。該方法可接受主鍵 (Primary Key) 或 Model 實體：
 
@@ -144,6 +156,8 @@ Eloquent 中，所有回傳多筆 Model 結果的方法都會回傳 `Illuminate\
     $users->load(['comments', 'posts']);
     
     $users->load('comments.author');
+    
+    $users->load(['comments', 'posts' => fn ($query) => $query->where('active', 1)]);
 
 <a name="method-loadMissing"></a>
 
@@ -154,6 +168,8 @@ Eloquent 中，所有回傳多筆 Model 結果的方法都會回傳 `Illuminate\
     $users->loadMissing(['comments', 'posts']);
     
     $users->loadMissing('comments.author');
+    
+    $users->loadMissing(['comments', 'posts' => fn ($query) => $query->where('active', 1)]);
 
 <a name="method-modelKeys"></a>
 
@@ -189,6 +205,22 @@ Eloquent 中，所有回傳多筆 Model 結果的方法都會回傳 `Illuminate\
 
     $users = $users->only([1, 2, 3]);
 
+<a name="method-setVisible"></a>
+
+#### `setVisible($attributes)` {.collection-method}
+
+`setVisible` 方法可[暫時複寫掉](/docs/{{version}}/eloquent-serialization#temporarily-modifying-attribute-visibility)該 Collection 中各個 Model 的所有 ^[visible](可見) 屬性：
+
+    $users = $users->setVisible(['id', 'name']);
+
+<a name="method-setHidden"></a>
+
+#### `setHidden($attributes)` {.collection-method}
+
+`setHidden` 方法可[暫時複寫掉](/docs/{{version}}/eloquent-serialization#temporarily-modifying-attribute-visibility)該 Collection 中各個 Model 的所有 ^[hidden](隱藏) 屬性：
+
+    $users = $users->setHidden(['email', 'password', 'remember_token']);
+
 <a name="method-toquery"></a>
 
 #### `toQuery()` {.collection-method}
@@ -222,6 +254,7 @@ Eloquent 中，所有回傳多筆 Model 結果的方法都會回傳 `Illuminate\
     namespace App\Models;
     
     use App\Support\UserCollection;
+    use Illuminate\Database\Eloquent\Collection;
     use Illuminate\Database\Eloquent\Model;
     
     class User extends Model
@@ -229,10 +262,10 @@ Eloquent 中，所有回傳多筆 Model 結果的方法都會回傳 `Illuminate\
         /**
          * Create a new Eloquent Collection instance.
          *
-         * @param  array  $models
-         * @return \Illuminate\Database\Eloquent\Collection
+         * @param  array<int, \Illuminate\Database\Eloquent\Model>  $models
+         * @return \Illuminate\Database\Eloquent\Collection<int, \Illuminate\Database\Eloquent\Model>
          */
-        public function newCollection(array $models = [])
+        public function newCollection(array $models = []): Collection
         {
             return new UserCollection($models);
         }

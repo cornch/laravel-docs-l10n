@@ -12,6 +12,7 @@ updatedAt: '2023-01-25T12:14:00Z'
 
 - [簡介](#introduction)
    - [設定語系](#configuring-the-locale)
+   - [複數化語言](#pluralization-language)
 - [定義翻譯字串](#defining-translation-strings)
    - [使用短的索引鍵](#using-short-keys)
    - [使用翻譯字串作為索引鍵](#using-translation-strings-as-keys)
@@ -34,7 +35,7 @@ Laravel 提供了兩種管理翻譯字串的方法。第一種方式，就是將
         /es
             messages.php
 
-Or, translation strings may be defined within JSON files that are placed within the `lang` directory. When taking this approach, each language supported by your application would have a corresponding JSON file within this directory. This approach is recommended for application's that have a large number of translatable strings:
+第二種方式，是將翻譯字串定義在 `lang` 目錄下的 JSON 檔中。用這種方式時，要支援的每個語言在該目錄中都有一個對應的 JSON 檔。若專案沒有太多要翻譯的字串的話，建議使用這種做法：
 
     /lang
         en.json
@@ -52,14 +53,14 @@ Or, translation strings may be defined within JSON files that are placed within 
 
     use Illuminate\Support\Facades\App;
     
-    Route::get('/greeting/{locale}', function ($locale) {
+    Route::get('/greeting/{locale}', function (string $locale) {
         if (! in_array($locale, ['en', 'es', 'fr'])) {
             abort(400);
         }
     
         App::setLocale($locale);
     
-        //
+        // ...
     });
 
 也可以設定一個「遞補語系」，當目前語系中找不到給定的翻譯字串時，就會使用遞補語系。遞補語系跟預設語系一樣，在 `config/app.php` 設定檔中設定：
@@ -77,8 +78,28 @@ Or, translation strings may be defined within JSON files that are placed within 
     $locale = App::currentLocale();
     
     if (App::isLocale('en')) {
-        //
+        // ...
     }
+
+<a name="pluralization-language"></a>
+
+### 複數化 (Pluralization) 語言
+
+在 Laravel 中，Eloquent 等地方會使用「複數化程式 (Pluralizer)」來將單數字串轉為複數字串。我們可以讓這個複數化程式使用英文以外的語言。若要讓複數化程式使用英文以外的語言，請在專案的其中一個 Service Provider 中 `boot` 方法內叫用 `useLanguage` 方法。複數化程式目前支援的語言有：法文 `french`、書面挪威語 `norwegian-bokmal`、葡萄牙文 `portuguese`、西班牙文 `spanish`、與土耳其文 `turkish`：
+
+    use Illuminate\Support\Pluralizer;
+    
+    /**
+     * Bootstrap any application services.
+     */
+    public function boot(): void
+    {
+        Pluralizer::useLanguage('spanish');     
+    
+        // ...     
+    }
+
+> **Warning** 若自訂了複數化程式的語言，則請顯式定義 Eloquent Model 的[資料表名稱](/docs/{{version}}/eloquent#table-names)。
 
 <a name="defining-translation-strings"></a>
 
@@ -106,7 +127,7 @@ Or, translation strings may be defined within JSON files that are placed within 
         'welcome' => 'Welcome to our application!',
     ];
 
-> {note} 對於會因國家或地區而有所區別的語系，請依照 ISO 15897 命名語系檔目錄。舉例來說，英式英語應使用「en_GB」而非「en-gb」。
+> **Warning** 對於會因國家或地區而有所區別的語系，請依照 ISO 15897 命名語系檔目錄。舉例來說，英式英語應使用「en_GB」而非「en-gb」。
 
 <a name="using-translation-strings-as-keys"></a>
 

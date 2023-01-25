@@ -176,13 +176,16 @@ php artisan migrate
 
 使用 [Laravel 專案入門套件](/docs/{{version}}/starter-kits)時，Laravel 會在 E-Mail 驗證過程中分派多個[事件](/docs/{{version}}/events)。若是在專案中手動處理 E-Mail 驗證，則我們可能需要手動在驗證完成後分派這些事件。我們可以在專案的 `EventServiceProvider` 中將 Listener 附加到這些事件上：
 
+    use App\Listeners\LogVerifiedUser;
+    use Illuminate\Auth\Events\Verified;
+    
     /**
      * The event listener mappings for the application.
      *
      * @var array
      */
     protected $listen = [
-        'Illuminate\Auth\Events\Verified' => [
-            'App\Listeners\LogVerifiedUser',
+        Verified::class => [
+            LogVerifiedUser::class,
         ],
     ];

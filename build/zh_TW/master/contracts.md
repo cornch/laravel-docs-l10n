@@ -71,9 +71,6 @@ Laravel 中，許多類型的類別都會通過 [Service Container](/docs/{{vers
     
         /**
          * Create a new event handler instance.
-         *
-         * @param  \Illuminate\Contracts\Redis\Factory  $redis
-         * @return void
          */
         public function __construct(Factory $redis)
         {
@@ -82,13 +79,10 @@ Laravel 中，許多類型的類別都會通過 [Service Container](/docs/{{vers
     
         /**
          * Handle the event.
-         *
-         * @param  \App\Events\OrderWasPlaced  $event
-         * @return void
          */
-        public function handle(OrderWasPlaced $event)
+        public function handle(OrderWasPlaced $event): void
         {
-            //
+            // ...
         }
     }
 

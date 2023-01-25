@@ -87,10 +87,8 @@ Facade 提供了許多的好處。Facade 提供了簡介、好記憶的語法，
     
     /**
      * A basic functional test example.
-     *
-     * @return void
      */
-    public function testBasicExample()
+    public function test_basic_example(): void
     {
         Cache::shouldReceive('get')
              ->with('key')
@@ -123,10 +121,8 @@ Facade 提供了許多的好處。Facade 提供了簡介、好記憶的語法，
     
     /**
      * A basic functional test example.
-     *
-     * @return void
      */
-    public function testBasicExample()
+    public function test_basic_example(): void
     {
         Cache::shouldReceive('get')
              ->with('key')
@@ -151,16 +147,14 @@ Facade 提供了許多的好處。Facade 提供了簡介、好記憶的語法，
     
     use App\Http\Controllers\Controller;
     use Illuminate\Support\Facades\Cache;
+    use Illuminate\View\View;
     
     class UserController extends Controller
     {
         /**
          * Show the profile for the given user.
-         *
-         * @param  int  $id
-         * @return Response
          */
-        public function showProfile($id)
+        public function showProfile(string $id): View
         {
             $user = Cache::get('user:'.$id);
     
@@ -176,10 +170,11 @@ Facade 提供了許多的好處。Facade 提供了簡介、好記憶的語法，
     {
         /**
          * Get the registered name of the component.
-         *
-         * @return string
          */
-        protected static function getFacadeAccessor() { return 'cache'; }
+        protected static function getFacadeAccessor(): string
+        {
+            return 'cache';
+        }
     }
 
 沒有 `get` 方法，`Cache` Facade 只有繼承了基礎的 `Facade` 類別並定義了 `getFacadeAccessor()` 方法。這個方法的功能就是用來回傳 Service Container 繫結的名稱。當使用者在 `Cache` Facade 上參照任何靜態方法時，Laravel 會去從 [Service Container](/docs/{{version}}/container) 中解析出 `cache` 繫結，然後在這個物件上執行要求的方法 (在這個例子中就是 `get`)。
@@ -201,11 +196,8 @@ Facade 提供了許多的好處。Facade 提供了簡介、好記憶的語法，
     {
         /**
          * Publish the podcast.
-         *
-         * @param  Publisher  $publisher
-         * @return void
          */
-        public function publish(Publisher $publisher)
+        public function publish(Publisher $publisher): void
         {
             $this->update(['publishing' => now()]);
     
@@ -226,10 +218,8 @@ Facade 提供了許多的好處。Facade 提供了簡介、好記憶的語法，
     {
         /**
          * Publish the podcast.
-         *
-         * @return void
          */
-        public function publish()
+        public function publish(): void
         {
             $this->update(['publishing' => now()]);
     
@@ -254,10 +244,8 @@ Facade 提供了許多的好處。Facade 提供了簡介、好記憶的語法，
     
         /**
          * A test example.
-         *
-         * @return void
          */
-        public function test_podcast_can_be_published()
+        public function test_podcast_can_be_published(): void
         {
             $podcast = Podcast::factory()->create();
     
@@ -272,6 +260,8 @@ Facade 提供了許多的好處。Facade 提供了簡介、好記憶的語法，
 ## Facade 類別參照
 
 在下表中，讀者可以找到所有的 Facade 與其底層的類別。對於像在 API 說明文件中找到某個 Facade 來源的時候，下表是很實用的工具。若有 [Service container 的繫結](/docs/{{version}}/container)索引鍵時，下表中也會列出。
+
+<div class="overflow-auto">
 
 | Facade | 類別 | Service Container 的繫結 |
 | --- | --- | --- |
@@ -322,3 +312,4 @@ Facade 提供了許多的好處。Facade 提供了簡介、好記憶的語法，
 | Validator (實體) | [Illuminate\Validation\Validator](https://laravel.com/api/{{version}}/Illuminate/Validation/Validator.html) | &nbsp; |
 | View | [Illuminate\View\Factory](https://laravel.com/api/{{version}}/Illuminate/View/Factory.html) | `view` |
 | View (實體) | [Illuminate\View\View](https://laravel.com/api/{{version}}/Illuminate/View/View.html) | &nbsp; |
+| Vite | [Illuminate\Foundation\Vite](https://laravel.com/api/{{version}}/Illuminate/Foundation/Vite.html) | &nbsp; |

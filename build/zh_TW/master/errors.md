@@ -14,6 +14,7 @@ updatedAt: '2023-01-25T12:14:00Z'
 - [設定](#configuration)
 - [Exception Handler](#the-exception-handler)
    - [回報 Exception](#reporting-exceptions)
+   - [Exception 的 Log 等級](#exception-log-levels)
    - [依照型別忽略 Exception](#ignoring-exceptions-by-type)
    - [轉譯 Exception](#rendering-exceptions)
    - [Reportable 與 Renderable 的 Exception](#renderable-exceptions)
@@ -50,27 +51,25 @@ updatedAt: '2023-01-25T12:14:00Z'
     
     /**
      * Register the exception handling callbacks for the application.
-     *
-     * @return void
      */
-    public function register()
+    public function register(): void
     {
         $this->reportable(function (InvalidOrderException $e) {
-            //
+            // ...
         });
     }
 
 使用 `reportable` 方法定義自訂的 Exception 回報回呼時，Laravel 還是會使用專案的預設 Log 設定來紀錄例外。若想停止將 Exception ^[傳播](Propagation)給預設的日誌 Stack，請在定義回報回呼時使用 `stop` 方法，或是在該回呼內回傳 `false`：
 
     $this->reportable(function (InvalidOrderException $e) {
-        //
+        // ...
     })->stop();
     
     $this->reportable(function (InvalidOrderException $e) {
         return false;
     });
 
-> {tip} 若要為給定的例外自訂 Exception 回報，可使用 [Reportable 的例外](/docs/{{version}}/errors#renderable-exceptions)。
+> **Note** 若要為給定的例外自訂 Exception 回報，可使用 [Reportable 的例外](/docs/{{version}}/errors#renderable-exceptions)。
 
 <a name="global-log-context"></a>
 
@@ -81,9 +80,9 @@ updatedAt: '2023-01-25T12:14:00Z'
     /**
      * Get the default context variables for logging.
      *
-     * @return array
+     * @return array<string, mixed>
      */
-    protected function context()
+    protected function context(): array
     {
         return array_merge(parent::context(), [
             'foo' => 'bar',
@@ -109,9 +108,9 @@ updatedAt: '2023-01-25T12:14:00Z'
         /**
          * Get the exception's context information.
          *
-         * @return array
+         * @return array<string, mixed>
          */
-        public function context()
+        public function context(): array
         {
             return ['order_id' => $this->orderId];
         }
@@ -123,16 +122,38 @@ updatedAt: '2023-01-25T12:14:00Z'
 
 有時候，我們可能會想回報某個 Exception，但又想繼續執行目前的 Request。使用 `report` 輔助函式，就能輕鬆地在不轉譯出錯誤頁面的情況下使用 Exception Handler 來回報這個 Exception：
 
-    public function isValid($value)
+    public function isValid(string $value): bool
     {
         try {
-            // Validate the value...
+            // 驗證資料...
         } catch (Throwable $e) {
             report($e);
     
             return false;
         }
     }
+
+<a name="exception-log-levels"></a>
+
+### Exception 的 Log 等級
+
+在將訊息寫入專案的 [Log](/docs/{{version}}/logging) 時，這些訊息會以特定的 [Log 等級](/docs/{{version}}/logging#log-levels)寫入。這個等級即代表該日誌訊息的嚴重程度。
+
+上面也提過，即使使用了 `reportable` 方法註冊自定的 Exception 回報回呼，Laravel 也還是會使用專案預設的 Log 設定來記錄該 Exception。不過，由於 Log 等級有時候會影響訊息會被記錄在哪些通道內，因此有時候我們可能會想設定某個特定的 Exception 要被記錄在哪個 Log 等級上。
+
+若要調整 Log 等級，可以在專案的 Exception Handler 上的 `$levels` 屬性中定義一組 Exception 型別於其 Log 等級的陣列：
+
+    use PDOException;
+    use Psr\Log\LogLevel;
+    
+    /**
+     * A list of exception types with their corresponding custom log levels.
+     *
+     * @var array<class-string<\Throwable>, \Psr\Log\LogLevel::*>
+     */
+    protected $levels = [
+        PDOException::class => LogLevel::CRITICAL,
+    ];
 
 <a name="ignoring-exceptions-by-type"></a>
 
@@ -143,15 +164,15 @@ updatedAt: '2023-01-25T12:14:00Z'
     use App\Exceptions\InvalidOrderException;
     
     /**
-     * A list of the exception types that should not be reported.
+     * A list of the exception types that are not reported.
      *
-     * @var array
+     * @var array<int, class-string<\Throwable>>
      */
     protected $dontReport = [
         InvalidOrderException::class,
     ];
 
-> {tip} Laravel 已經預先幫你在內部忽略了一些類型的錯誤。如：產生 404 HTTP「找不到」錯誤的 Exception、還有因為無效 CSRF Token 產生的 419 HTTP Response。
+> **Note** 在 Laravel 內部，Laravel 已經預先幫你忽略了一些類型的錯誤。如：產生 404 HTTP「找不到」錯誤的 Exception、還有因為無效 CSRF Token 產生的 419 HTTP Response。
 
 <a name="rendering-exceptions"></a>
 
@@ -162,31 +183,29 @@ updatedAt: '2023-01-25T12:14:00Z'
 傳給 `renderable` 方法的閉包應回傳一個 `Illuminate\Http\Response` 的實體。可以使用 `response` 輔助函式來產生該實體。Laravel 會依照該閉包的型別提示來判斷這個閉包能轉移哪種類型的 Exception：
 
     use App\Exceptions\InvalidOrderException;
+    use Illuminate\Http\Request;
     
     /**
      * Register the exception handling callbacks for the application.
-     *
-     * @return void
      */
-    public function register()
+    public function register(): void
     {
-        $this->renderable(function (InvalidOrderException $e, $request) {
+        $this->renderable(function (InvalidOrderException $e, Request $request) {
             return response()->view('errors.invalid-order', [], 500);
         });
     }
 
 也可以使用 `renderable` 方法來複寫 Laravel 或 Symfony 內建 Exception 的轉移行外。如：`NotFoundHttpException`。若傳給 `renderable` 方法的閉包未回傳任何值，則會使用 Laravel 的預設 Exception 轉譯：
 
+    use Illuminate\Http\Request;
     use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
     
     /**
      * Register the exception handling callbacks for the application.
-     *
-     * @return void
      */
-    public function register()
+    public function register(): void
     {
-        $this->renderable(function (NotFoundHttpException $e, $request) {
+        $this->renderable(function (NotFoundHttpException $e, Request $request) {
             if ($request->is('api/*')) {
                 return response()->json([
                     'message' => 'Record not found.'
@@ -206,28 +225,25 @@ updatedAt: '2023-01-25T12:14:00Z'
     namespace App\Exceptions;
     
     use Exception;
+    use Illuminate\Http\Request;
+    use Illuminate\Http\Response;
     
     class InvalidOrderException extends Exception
     {
         /**
          * Report the exception.
-         *
-         * @return bool|null
          */
-        public function report()
+        public function report(): void
         {
-            //
+            // ...
         }
     
         /**
          * Render the exception into an HTTP response.
-         *
-         * @param  \Illuminate\Http\Request  $request
-         * @return \Illuminate\Http\Response
          */
-        public function render($request)
+        public function render(Request $request): Response
         {
-            return response(...);
+            return response(/* ... */);
         }
     }
 
@@ -235,13 +251,13 @@ updatedAt: '2023-01-25T12:14:00Z'
 
     /**
      * Render the exception into an HTTP response.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
      */
-    public function render($request)
+    public function render(Request $request): Response|bool
     {
-        // Determine if the exception needs custom rendering...
+        if (/** 判斷 Exception 是否需要自定轉譯程式 */) {
+    
+            return response(/* ... */);
+        }
     
         return false;
     }
@@ -250,17 +266,20 @@ updatedAt: '2023-01-25T12:14:00Z'
 
     /**
      * Report the exception.
-     *
-     * @return bool|null
      */
-    public function report()
+    public function report(): bool
     {
-        // Determine if the exception needs custom reporting...
+        if (/** 判斷 Exception 是否需要自定回報邏輯 */) {
+    
+            // ...
+    
+            return true;
+        }
     
         return false;
     }
 
-> {tip} 可以在 `report` 方法中型別提示任何的^[相依性](Dependency)。Laravel 的 [Service Container](/docs/{{version}}/container) 會自動插入這些相依性。
+> **Note** 可以在 `report` 方法中型別提示任何的^[相依性](Dependency)。Laravel 的 [Service Container](/docs/{{version}}/container) 會自動插入這些相依性。
 
 <a name="http-exceptions"></a>
 

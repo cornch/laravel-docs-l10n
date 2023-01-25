@@ -50,7 +50,7 @@ Out of the box, Valet support includes, but is not limited to:
 - [Laravel](https://laravel.com)
 - [Bedrock](https://roots.io/bedrock/)
 - [CakePHP 3](https://cakephp.org)
-- [Concrete5](https://www.concrete5.org/)
+- [ConcreteCMS](https://www.concretecms.com/)
 - [Contao](https://contao.org/en/)
 - [Craft](https://craftcms.com)
 - [Drupal](https://www.drupal.org/)
@@ -139,13 +139,13 @@ If your application needs a database, check out [DBngin](https://dbngin.com). DB
 
 #### Resetting Your Installation
 
-If you are having trouble getting your Valet installation to run properly, executing the `composer global update` command followed by `valet install` will reset your installation and can solve a variety of problems. In rare cases, it may be necessary to "hard reset" Valet by executing `valet uninstall --force` followed by `valet install`.
+If you are having trouble getting your Valet installation to run properly, executing the `composer global require laravel/valet` command followed by `valet install` will reset your installation and can solve a variety of problems. In rare cases, it may be necessary to "hard reset" Valet by executing `valet uninstall --force` followed by `valet install`.
 
 <a name="upgrading-valet"></a>
 
 ### Upgrading Valet
 
-You may update your Valet installation by executing the `composer global update` command in your terminal. After upgrading, it is good practice to run the `valet install` command so Valet can make additional upgrades to your configuration files if necessary.
+You may update your Valet installation by executing the `composer global require laravel/valet` command in your terminal. After upgrading, it is good practice to run the `valet install` command so Valet can make additional upgrades to your configuration files if necessary.
 
 <a name="serving-sites"></a>
 
@@ -450,6 +450,8 @@ The `frontControllerPath` method should return the fully qualified path to your 
 
 If you would like to define a custom Valet driver for a single application, create a `LocalValetDriver.php` file in the application's root directory. Your custom driver may extend the base `ValetDriver` class or extend an existing application specific driver such as the `LaravelValetDriver`:
 
+    use Valet\Drivers\LaravelValetDriver;
+    
     class LocalValetDriver extends LaravelValetDriver
     {
         /**
@@ -485,6 +487,7 @@ If you would like to define a custom Valet driver for a single application, crea
 
 | Command | Description |
 | --- | --- |
+| `valet list` | Display a list of all Valet commands. |
 | `valet forget` | Run this command from a "parked" directory to remove it from the parked directory list. |
 | `valet log` | View a list of logs which are written by Valet's services. |
 | `valet paths` | View all of your "parked" paths. |

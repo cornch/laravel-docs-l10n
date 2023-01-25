@@ -29,7 +29,7 @@ Service Provider 是 Laravel 中負責啟動應用程式的中心點。不過是
 
 在本篇概覽中，讀者將可以學習到如何撰寫你自己的 Service Provider，並將這些 Provider 註冊到 Laravel 專案上。
 
-> {tip} 若想瞭解 Laravel 如何處理 Request 以及其內部如何運作，請參考我們有關 Laravel [Request 的生命週期](/docs/{{version}}/lifecycle)說明文件。
+> **Note** 若想瞭解 Laravel 如何處理 Request 以及其內部如何運作，請參考我們有關 Laravel [Request 的生命週期](/docs/{{version}}/lifecycle)說明文件。
 
 <a name="writing-service-providers"></a>
 
@@ -56,18 +56,17 @@ php artisan make:provider RiakServiceProvider
     namespace App\Providers;
     
     use App\Services\Riak\Connection;
+    use Illuminate\Contracts\Foundation\Application;
     use Illuminate\Support\ServiceProvider;
     
     class RiakServiceProvider extends ServiceProvider
     {
         /**
          * Register any application services.
-         *
-         * @return void
          */
-        public function register()
+        public function register(): void
         {
-            $this->app->singleton(Connection::class, function ($app) {
+            $this->app->singleton(Connection::class, function (Application $app) {
                 return new Connection(config('riak'));
             });
         }
@@ -131,13 +130,11 @@ php artisan make:provider RiakServiceProvider
     {
         /**
          * Bootstrap any application services.
-         *
-         * @return void
          */
-        public function boot()
+        public function boot(): void
         {
             View::composer('view', function () {
-                //
+                // ...
             });
         }
     }
@@ -152,14 +149,11 @@ php artisan make:provider RiakServiceProvider
     
     /**
      * Bootstrap any application services.
-     *
-     * @param  \Illuminate\Contracts\Routing\ResponseFactory  $response
-     * @return void
      */
-    public function boot(ResponseFactory $response)
+    public function boot(ResponseFactory $response): void
     {
-        $response->macro('serialized', function ($value) {
-            //
+        $response->macro('serialized', function (mixed $value) {
+            // ...
         });
     }
 
@@ -192,6 +186,7 @@ Laravel 會編譯並保存延遲的 Service Provider 名稱、以及其所提供
     namespace App\Providers;
     
     use App\Services\Riak\Connection;
+    use Illuminate\Contracts\Foundation\Application;
     use Illuminate\Contracts\Support\DeferrableProvider;
     use Illuminate\Support\ServiceProvider;
     
@@ -199,12 +194,10 @@ Laravel 會編譯並保存延遲的 Service Provider 名稱、以及其所提供
     {
         /**
          * Register any application services.
-         *
-         * @return void
          */
-        public function register()
+        public function register(): void
         {
-            $this->app->singleton(Connection::class, function ($app) {
+            $this->app->singleton(Connection::class, function (Application $app) {
                 return new Connection($app['config']['riak']);
             });
         }
@@ -212,9 +205,9 @@ Laravel 會編譯並保存延遲的 Service Provider 名稱、以及其所提供
         /**
          * Get the services provided by the provider.
          *
-         * @return array
+         * @return array<int, string>
          */
-        public function provides()
+        public function provides(): array
         {
             return [Connection::class];
         }

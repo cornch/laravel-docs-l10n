@@ -39,8 +39,8 @@ Laravel 及其第一方套件都遵守 [語義化版本](https://semver.org/lang
 | 6 (LTS) | 7.2 - 8.0 | 2019 年 9 月 3 日 | 2022 年 1 月 25 日 | 2022 年 9 月 6 日 |
 | 7 | 7.2 - 8.0 | 2020 年 3 月 3 日 | 2020 年 10 月 6 日 | 2021 年 3 月 3 日 |
 | 8 | 7.3 - 8.1 | 2020 年 9 月 8 日 | 2022 年 7 月 26 日 | 2023 年 1 月 24 日 |
-| 9 | 8.0 - 8.1 | 2022 年 2 月 8 日 | 2023 年 8 月 8 日 | February 8th, 2024 |
-| 10 | 8.1 | 2023 年 2 月 7 日 | August 7th, 2024 | February 7th, 2025 |
+| 9 | 8.0 - 8.2 | 2022 年 2 月 8 日 | 2023 年 8 月 8 日 | 2024 年 2 月 6 日 |
+| 10 | 8.1 - 8.2 | 2023 年 2 月 7 日 | 2024 年 8 月 6 日 | 2025 年 2 月 4 日 |
 
 <div class="version-colors">
     <div class="end-of-life">
@@ -169,8 +169,8 @@ public function address(): Attribute
 
 定義好 Model 的型別轉換後，每次存取該屬性時就會自動轉換對 Enum 進行轉換：
 
-    if ($server->status == ServerStatus::provisioned) {
-        $server->status = ServerStatus::ready;
+    if ($server->status == ServerStatus::Provisioned) {
+        $server->status = ServerStatus::Ready;
     
         $server->save();
     }

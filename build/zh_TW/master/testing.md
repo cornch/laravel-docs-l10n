@@ -72,7 +72,7 @@ php artisan make:test UserTest --pest
 php artisan make:test UserTest --unit --pest
 ```
 
-> {tip} 可以[安裝 Stub](/docs/{{version}}/artisan#stub-customization) 來自訂測試的 Stub。
+> **Note** 可以[安裝 Stub](/docs/{{version}}/artisan#stub-customization) 來自訂測試的 Stub。
 
 產生好測試後，即可如平常使用 [PHPUnit](https://phpunit.de) 一般來定義測試方法。若要執行測試，請在終端機內執行 `vendor/bin/phpunit` 或 `php artisan test` 指令：
 
@@ -86,16 +86,14 @@ php artisan make:test UserTest --unit --pest
     {
         /**
          * A basic test example.
-         *
-         * @return void
          */
-        public function test_basic_test()
+        public function test_basic_test(): void
         {
             $this->assertTrue(true);
         }
     }
 
-> {note} 若有自行在測試類別內定義 `setUp` / `tearDown` 方法，請記得呼叫上層類別內對應的 `parent::setUp()` / `parent::tearDown()` 方法。
+> **Warning** 若有自行在測試類別內定義 `setUp` / `tearDown` 方法，請記得呼叫上層類別內對應的 `parent::setUp()` / `parent::tearDown()` 方法。
 
 <a name="running-tests"></a>
 
@@ -135,13 +133,13 @@ php artisan test --parallel
 php artisan test --parallel --processes=4
 ```
 
-> {note} 平行執行測試時，可能無法使用部分 PHPUnit 的選項 (如 `--do-not-cache-result`)。
+> **Warning** 平行執行測試時，可能無法使用部分 PHPUnit 的選項 (如 `--do-not-cache-result`)。
 
 <a name="parallel-testing-and-databases"></a>
 
 #### 平行測試與資料庫
 
-Laravel 會自動為每個執行測試的平行處理程序建立並 Migrate 測試資料庫。Laravel 會使用每個處理程序都不同的處理程序 Token 來作為資料庫的前置詞。舉例來說，若有兩個平行的測試處理程序，則 Laravel 會建立並使用 `your_db_test_1` 與 `your_db_test_2` 測試資料庫。
+只要你有設定主要的資料庫連線，Laravel 就會自動為每個執行測試的平行處理程序建立並 Migrate 測試資料庫。Laravel 會使用每個處理程序都不同的處理程序 Token 來作為資料庫的前置詞。舉例來說，若有兩個平行的測試處理程序，則 Laravel 會建立並使用 `your_db_test_1` 與 `your_db_test_2` 測試資料庫。
 
 預設情況下，在不同的 `test` Artisan 指令間，會共用相同的測試資料庫，以在連續呼叫 `test` 指令時使用這些資料庫。不過，我們也可以使用 `--create-databases` 選項來重新建立測試資料庫：
 
@@ -164,34 +162,33 @@ php artisan test --parallel --recreate-databases
     use Illuminate\Support\Facades\Artisan;
     use Illuminate\Support\Facades\ParallelTesting;
     use Illuminate\Support\ServiceProvider;
+    use PHPUnit\Framework\TestCase;
     
     class AppServiceProvider extends ServiceProvider
     {
         /**
          * Bootstrap any application services.
-         *
-         * @return void
          */
-        public function boot()
+        public function boot(): void
         {
-            ParallelTesting::setUpProcess(function ($token) {
+            ParallelTesting::setUpProcess(function (int $token) {
                 // ...
             });
     
-            ParallelTesting::setUpTestCase(function ($token, $testCase) {
+            ParallelTesting::setUpTestCase(function (int $token, TestCase $testCase) {
                 // ...
             });
     
-            // Executed when a test database is created...
-            ParallelTesting::setUpTestDatabase(function ($database, $token) {
+            // 測試資料庫建立後會被執行...
+            ParallelTesting::setUpTestDatabase(function (string $database, int $token) {
                 Artisan::call('db:seed');
             });
     
-            ParallelTesting::tearDownTestCase(function ($token, $testCase) {
+            ParallelTesting::tearDownTestCase(function (int $token, TestCase $testCase) {
                 // ...
             });
     
-            ParallelTesting::tearDownProcess(function ($token) {
+            ParallelTesting::tearDownProcess(function (int $token) {
                 // ...
             });
         }
@@ -209,7 +206,7 @@ php artisan test --parallel --recreate-databases
 
 ### 回報測試覆蓋率
 
-> {note} This feature requires [Xdebug](https://xdebug.org) or [PCOV](https://pecl.php.net/package/pcov).
+> **Warning** 要使用該功能，需安裝 [Xdebug](https://xdebug.org) 或 [PCOV](https://pecl.php.net/package/pcov)。
 
 在執行專案測試時，我們可能會想判斷測試例是否有實際涵蓋到專案的程式碼、或是想知道在執行測試時到底使用到專案中多少的程式碼。若要瞭解測試覆蓋率，可在叫用 `test` 指令時提供 `--coverage` 選項：
 

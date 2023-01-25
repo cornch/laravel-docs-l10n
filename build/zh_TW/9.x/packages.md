@@ -341,26 +341,19 @@ Blade 會通過將元件名稱轉為 Pascal 命名法來自動偵測與這個元
 
 ### 「About」Artisan 指令
 
-Laravel's built-in `about` Artisan command provides a synopsis of the application's environment and configuration. Packages may push additional information to this command's output via the `AboutCommand` class. Typically, this information may be added from your package service provider's `register` method:
+Laravel 的內建 `about` Artisan 指令提供了有關專案環境與設定的一覽。套件也可以使用 `AboutCommand` 類別來將額外資訊推入該指令的輸出中。一般來說，可在套件 Service Provider 的 `boot` 方法內加上該資訊：
 
     use Illuminate\Foundation\Console\AboutCommand;
     
     /**
-     * Register any application services.
+     * Bootstrap any application services.
      *
      * @return void
      */
-    public function register()
+    public function boot()
     {
-        AboutCommand::add('My Package', 'Version', '1.0.0');
+        AboutCommand::add('My Package', fn () => ['Version' => '1.0.0']);
     }
-
-The `about` command's values may also be provided a closures if deferred execution is desirable:
-
-    AboutCommand::add('My Package', [
-        'Version' => '1.0.0',
-        'Driver' => fn () => config('my-package.driver'),
-    ]);
 
 <a name="commands"></a>
 

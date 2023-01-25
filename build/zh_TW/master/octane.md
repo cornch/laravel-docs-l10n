@@ -56,7 +56,7 @@ php artisan octane:install
 
 ## Server Prerequisites
 
-> {note} Laravel Octane requires [PHP 8.0+](https://php.net/releases/).
+> **Warning** Laravel Octane requires [PHP 8.0+](https://php.net/releases/).
 
 <a name="roadrunner"></a>
 
@@ -94,7 +94,7 @@ After installing the RoadRunner binary, you may exit your Sail shell session. Yo
 Next, update the `command` directive of your application's `docker/supervisord.conf` file so that Sail serves your application using Octane instead of the PHP development server:
 
 ```ini
-command=/usr/bin/php -d variables_order=EGPCS /var/www/html/artisan octane:start --server=roadrunner --host=0.0.0.0 --rpc-port=6001 --port=8000
+command=/usr/bin/php -d variables_order=EGPCS /var/www/html/artisan octane:start --server=roadrunner --host=0.0.0.0 --rpc-port=6001 --port=80
 ```
 
 Finally, ensure the `rr` binary is executable and build your Sail images:
@@ -119,7 +119,7 @@ pecl install swoole
 
 #### Swoole Via Laravel Sail
 
-> {note} Before serving an Octane application via Sail, ensure you have the latest version of Laravel Sail and execute `./vendor/bin/sail build --no-cache` within your application's root directory.
+> **Warning** Before serving an Octane application via Sail, ensure you have the latest version of Laravel Sail and execute `./vendor/bin/sail build --no-cache` within your application's root directory.
 
 Alternatively, you may develop your Swoole based Octane application using [Laravel Sail](/docs/{{version}}/sail), the official Docker based development environment for Laravel. Laravel Sail includes the Swoole extension by default. However, you will still need to adjust the `supervisor.conf` file used by Sail to keep your application running. To get started, execute the `sail:publish` Artisan command:
 
@@ -151,7 +151,7 @@ Swoole supports a few additional configuration options that you may add to your 
         'log_file' => storage_path('logs/swoole_http.log'),
         'package_max_length' => 10 * 1024 * 1024,
     ],
-];
+],
 ```
 
 <a name="serving-your-application"></a>
@@ -180,7 +180,7 @@ By default, applications running via Octane generate links prefixed with `http:/
 
 ### Serving Your Application Via Nginx
 
-> {tip} If you aren't quite ready to manage your own server configuration or aren't comfortable configuring all of the various services needed to run a robust Laravel Octane application, check out [Laravel Forge](https://forge.laravel.com).
+> **Note** If you aren't quite ready to manage your own server configuration or aren't comfortable configuring all of the various services needed to run a robust Laravel Octane application, check out [Laravel Forge](https://forge.laravel.com).
 
 In production environments, you should serve your Octane application behind a traditional web server such as a Nginx or Apache. Doing so will allow the web server to serve your static assets such as images and stylesheets, as well as manage your SSL certificate termination.
 
@@ -250,7 +250,7 @@ Since your application is loaded in memory once when the Octane server starts, a
 php artisan octane:start --watch
 ```
 
-Before using this feature, you should ensure that [Node](https://nodejs.org) is installed within your local development environment. In addition, you should install the [Chokidar](https://github.com/paulmillr/chokidar) file-watching library within your project:library:
+Before using this feature, you should ensure that [Node](https://nodejs.org) is installed within your local development environment. In addition, you should install the [Chokidar](https://github.com/paulmillr/chokidar) file-watching library within your project:
 
 ```shell
 npm install --save-dev chokidar
@@ -278,7 +278,7 @@ php artisan octane:start --workers=4 --task-workers=6
 
 ### Specifying The Max Request Count
 
-To help prevent stray memory leaks, Octane can gracefully restart a worker once it has handled a given number of requests. To instruct Octane to do this, you may use the `--max-requests` option:
+To help prevent stray memory leaks, Octane gracefully restarts any worker once it has handled 500 requests. To adjust this number, you may use the `--max-requests` option:
 
 ```shell
 php artisan octane:start --max-requests=250
@@ -332,15 +332,14 @@ In general, you should avoid injecting the application service container or HTTP
 
 ```php
 use App\Service;
+use Illuminate\Contracts\Foundation\Application;
 
 /**
  * Register any application services.
- *
- * @return void
  */
-public function register()
+public function register(): void
 {
-    $this->app->singleton(Service::class, function ($app) {
+    $this->app->singleton(Service::class, function (Application $app) {
         return new Service($app);
     });
 }
@@ -353,8 +352,9 @@ As a work-around, you could either stop registering the binding as a singleton, 
 ```php
 use App\Service;
 use Illuminate\Container\Container;
+use Illuminate\Contracts\Foundation\Application;
 
-$this->app->bind(Service::class, function ($app) {
+$this->app->bind(Service::class, function (Application $app) {
     return new Service($app);
 });
 
@@ -373,15 +373,14 @@ In general, you should avoid injecting the application service container or HTTP
 
 ```php
 use App\Service;
+use Illuminate\Contracts\Foundation\Application;
 
 /**
  * Register any application services.
- *
- * @return void
  */
-public function register()
+public function register(): void
 {
-    $this->app->singleton(Service::class, function ($app) {
+    $this->app->singleton(Service::class, function (Application $app) {
         return new Service($app['request']);
     });
 }
@@ -393,12 +392,13 @@ As a work-around, you could either stop registering the binding as a singleton, 
 
 ```php
 use App\Service;
+use Illuminate\Contracts\Foundation\Application;
 
-$this->app->bind(Service::class, function ($app) {
+$this->app->bind(Service::class, function (Application $app) {
     return new Service($app['request']);
 });
 
-$this->app->singleton(Service::class, function ($app) {
+$this->app->singleton(Service::class, function (Application $app) {
     return new Service(fn () => $app['request']);
 });
 
@@ -409,7 +409,7 @@ $service->method($request->input('name'));
 
 The global `request` helper will always return the request the application is currently handling and is therefore safe to use within your application.
 
-> {note} It is acceptable to type-hint the `Illuminate\Http\Request` instance on your controller methods and route closures.
+> **Warning** It is acceptable to type-hint the `Illuminate\Http\Request` instance on your controller methods and route closures.
 
 <a name="configuration-repository-injection"></a>
 
@@ -419,15 +419,14 @@ In general, you should avoid injecting the configuration repository instance int
 
 ```php
 use App\Service;
+use Illuminate\Contracts\Foundation\Application;
 
 /**
  * Register any application services.
- *
- * @return void
  */
-public function register()
+public function register(): void
 {
-    $this->app->singleton(Service::class, function ($app) {
+    $this->app->singleton(Service::class, function (Application $app) {
         return new Service($app->make('config'));
     });
 }
@@ -440,8 +439,9 @@ As a work-around, you could either stop registering the binding as a singleton, 
 ```php
 use App\Service;
 use Illuminate\Container\Container;
+use Illuminate\Contracts\Foundation\Application;
 
-$this->app->bind(Service::class, function ($app) {
+$this->app->bind(Service::class, function (Application $app) {
     return new Service($app->make('config'));
 });
 
@@ -465,15 +465,14 @@ use Illuminate\Support\Str;
 
 /**
  * Handle an incoming request.
- *
- * @param  \Illuminate\Http\Request  $request
- * @return void
  */
-public function index(Request $request)
+public function index(Request $request): array
 {
     Service::$data[] = Str::random(10);
 
-    // ...
+    return [
+        // ...
+    ];
 }
 ```
 
@@ -483,7 +482,7 @@ While building your application, you should take special care to avoid creating 
 
 ## Concurrent Tasks
 
-> {note} This feature requires [Swoole](#swoole).
+> **Warning** This feature requires [Swoole](#swoole).
 
 When using Swoole, you may execute operations concurrently via light-weight background tasks. You may accomplish this using Octane's `concurrently` method. You may combine this method with PHP array destructuring to retrieve the results of each operation:
 
@@ -504,11 +503,13 @@ Concurrent tasks processed by Octane utilize Swoole's "task workers", and execut
 php artisan octane:start --workers=4 --task-workers=6
 ```
 
+When invoking the `concurrently` method, you should not provide more than 1024 tasks due to limitations imposed by Swoole's task system.
+
 <a name="ticks-and-intervals"></a>
 
 ## Ticks & Intervals
 
-> {note} This feature requires [Swoole](#swoole).
+> **Warning** This feature requires [Swoole](#swoole).
 
 When using Swoole, you may register "tick" operations that will be executed every specified number of seconds. You may register "tick" callbacks via the `tick` method. The first argument provided to the `tick` method should be a string that represents the name of the ticker. The second argument should be a callable that will be invoked at the specified interval.
 
@@ -531,7 +532,7 @@ Octane::tick('simple-ticker', fn () => ray('Ticking...'))
 
 ## The Octane Cache
 
-> {note} This feature requires [Swoole](#swoole).
+> **Warning** This feature requires [Swoole](#swoole).
 
 When using Swoole, you may leverage the Octane cache driver, which provides read and write speeds of up to 2 million operations per second. Therefore, this cache driver is an excellent choice for applications that need extreme read / write speeds from their caching layer.
 
@@ -541,7 +542,7 @@ This cache driver is powered by [Swoole tables](https://www.swoole.co.uk/docs/mo
 Cache::store('octane')->put('framework', 'Laravel', 30);
 ```
 
-> {tip} The maximum number of entries allowed in the Octane cache may be defined in your application's `octane` configuration file.
+> **Note** The maximum number of entries allowed in the Octane cache may be defined in your application's `octane` configuration file.
 
 <a name="cache-intervals"></a>
 
@@ -554,14 +555,14 @@ use Illuminate\Support\Str;
 
 Cache::store('octane')->interval('random', function () {
     return Str::random(10);
-}, seconds: 5)
+}, seconds: 5);
 ```
 
 <a name="tables"></a>
 
 ## Tables
 
-> {note} This feature requires [Swoole](#swoole).
+> **Warning** This feature requires [Swoole](#swoole).
 
 When using Swoole, you may define and interact with your own arbitrary [Swoole tables](https://www.swoole.co.uk/docs/modules/swoole-table). Swoole tables provide extreme performance throughput and the data in these tables can be accessed by all workers on the server. However, the data within them will be lost when the server is restarted.
 
@@ -589,4 +590,4 @@ Octane::table('example')->set('uuid', [
 return Octane::table('example')->get('uuid');
 ```
 
-> {note} The column types supported by Swoole tables are: `string`, `int`, and `float`.
+> **Warning** The column types supported by Swoole tables are: `string`, `int`, and `float`.

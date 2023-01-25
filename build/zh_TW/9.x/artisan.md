@@ -16,6 +16,7 @@ updatedAt: '2023-01-25T09:52:00Z'
    - [產生指令](#generating-commands)
    - [指令結構](#command-structure)
    - [閉包指令](#closure-commands)
+   - [可隔離的指令](#isolatable-commands)
 - [定義預期的輸入](#defining-input-expectations)
    - [引數](#arguments)
    - [選項](#options)
@@ -222,6 +223,56 @@ php artisan make:command SendEmails
     Artisan::command('mail:send {user}', function ($user) {
         // ...
     })->purpose('Send a marketing email to a user');
+
+<a name="isolatable-commands"></a>
+
+### 可隔離的指令
+
+> **Warning** 若要使用此功能，則應用程式必須要使用 `memcached`, `redis`, `dynamodb`, `database`, `file` 或 `array` 作為應用程式的預設快取 Driver。另外，所有的伺服器也都必須要連線至相同的中央快取伺服器。
+
+有時候，我們可能需要確保某個指令在同一時間只有一個實體在執行。為此，可以在指令類別上實作 `Illuminate\Contracts\Console\Isolatable` Interface：
+
+    <?php
+    
+    namespace App\Console\Commands;
+    
+    use Illuminate\Console\Command;
+    use Illuminate\Contracts\Console\Isolatable;
+    
+    class SendEmails extends Command implements Isolatable
+    {
+        // ...
+    }
+
+將指令標記為 ^[`Isolatable`](可隔離的) 後，Laravel 會自動為該指令加上一個 `--isolated` 選項。使用 `--isolated` 選項呼叫該指令時，Laravel 會確保沒有其他該指令的實體正在執行。Laravel 通過在預設快取 Driver 上取得 ^[Atomic Lock](不可部分完成鎖定) 來確保只有一個實體在執行。若該指令有其他實體在執行，就不會執行該指令。不過，該指令依然會以成功的終止狀態碼結束：
+
+```shell
+php artisan mail:send 1 --isolated
+```
+
+若想指定該指令無法執行時回傳的終止狀態碼，可使用 `isolated` 選項來設定：
+
+```shell
+php artisan mail:send 1 --isolated=12
+```
+
+<a name="lock-expiration-time"></a>
+
+#### Lock 的逾期時間
+
+預設情況下，指令完成執行後，獨立指令的 Lock 就會逾時。而如果指令在執行時遭到中斷而無法完成，該 Lock 會在一小時後逾時。不過，你可以在指令中定義一個 `isolationLockExpiresAt` 方法來調整逾時時間：
+
+```php
+/**
+ * Determine when an isolation lock expires for the command.
+ *
+ * @return \DateTimeInterface|\DateInterval
+ */
+public function isolationLockExpiresAt()
+{
+    return now()->addMinutes(5);
+}
+```
 
 <a name="defining-input-expectations"></a>
 
@@ -657,47 +708,29 @@ php artisan mail:send --id=1 --id=2
 
 ## 處理訊號
 
-驅動 Artisan 主控台的 Symfony Console 能夠設定指令能處理那些處理程序訊號（若有的話）。舉例來說，你可能會想要讓指令能處理 `SIGINT` 與 `SIGTERM` 訊號。
-
-要開始處理訊號，請先在 Artisan 指令類別上實作 `Symfony\Component\Console\Command\SignalableCommandInterface` 介面。這個介面要求要定義兩個方法：`getSubscribedSignals` 與 `handleSignal` ：
-
-```php
-<?php
-
-use Symfony\Component\Console\Command\SignalableCommandInterface;
-
-class StartServer extends Command implements SignalableCommandInterface
-{
-    // ...
+讀者可能已經知道，在作業系統中，我們可以傳送訊號 (Signal) 給正在執行的處理程序。舉例來說，作業系統會使用 `SIGTERM` 訊號來要求某個程式停止執行。若想在 Artisan 主控台指令上監聽這些訊號，可使用 `trap` 方法：
 
     /**
-     * Get the list of signals handled by the command.
+     * Execute the console command.
      *
-     * @return array
+     * @return mixed
      */
-    public function getSubscribedSignals(): array
+    public function handle()
     {
-        return [SIGINT, SIGTERM];
-    }
-
-    /**
-     * Handle an incoming signal.
-     *
-     * @param  int  $signal
-     * @return void
-     */
-    public function handleSignal(int $signal): void
-    {
-        if ($signal === SIGINT) {
-            $this->stopServer();
-
-            return;
+        $this->trap(SIGTERM, fn () => $this->shouldKeepRunning = false);
+    
+        while ($this->shouldKeepRunning) {
+            // ...
         }
     }
-}
-```
 
-你可能已經看得出來，`getSubscribedSignals` 應回傳一個包含所有指令能處理訊號的陣列，而 `handleSignal` 則接收訊號並根據訊號進行回應。
+若要同時監聽多個訊號，可提供一組訊號的陣列給 `trap` 方法：
+
+    $this->trap([SIGTERM, SIGQUIT], function ($signal) {
+        $this->shouldKeepRunning = false;
+    
+        dump($signal); // SIGTERM / SIGQUIT
+    });
 
 <a name="stub-customization"></a>
 

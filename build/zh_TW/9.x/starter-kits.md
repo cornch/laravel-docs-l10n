@@ -30,11 +30,17 @@ updatedAt: '2023-01-25T16:13:00Z'
 
 ## Laravel Breeze
 
-[Laravel Breeze](https://github.com/laravel/breeze) is a minimal, simple implementation of all of Laravel's [authentication features](/docs/{{version}}/authentication), including login, registration, password reset, email verification, and password confirmation. Laravel Breeze's default view layer is made up of simple [Blade templates](/docs/{{version}}/blade) styled with [Tailwind CSS](https://tailwindcss.com). Or, Breeze can scaffold your application using Vue or React and [Inertia](https://inertiajs.com).
+[Laravel Breeze](https://github.com/laravel/breeze) 是一個簡單且最小化實作出所有 Laravel [認證功能](/docs/{{version}}/authentication)的套件，包含登入、註冊、密碼重設、電子郵件認證、以及密碼確認。此外，Breeze 中也包含了一個簡單的「個人檔案」頁面，在該頁面中，使用者可以更新其名稱、E-Mail 位址、以及密碼。
+
+Laravel Breeze 的預設 View 層是由 [Blade 樣板](/docs/{{version}}/blade)構成的，並使用 [Tailwind CSS](https://tailwindcss.com)。或者，Breeze 也可以使用 Vue 或 React 以及 [Inertia](https://inertiajs.com) 來 Scaffold 你的專案。
 
 對於從頭開始撰寫 Laravel 專案來說，Breeze 提供了一個絕佳的起始點。而且，對於打算通過 [Laravel Livewire](https://laravel-livewire.com) 來提升 Blade 樣板功能的專案來說，Breeze 也是個不錯的選項。
 
 <img src="https://laravel.com/img/docs/breeze-register.png">
+
+#### Laravel Bootcamp
+
+如果你第一次接觸 Laravel，歡迎參考 [Laravel Bootcamp (英語)](https://bootcamp.laravel.com)。Laravel Bootcamp 會帶領你使用 Breeze 來建立你的第一個 Laravel 專案。Laravel Bootcamp 是學習各種有關 Laravel 與 Breeze 相關技術的好地方。
 
 <a name="laravel-breeze-installation"></a>
 
@@ -65,6 +71,16 @@ npm run dev
 ```
 
 接著，在瀏覽器中打開網站的 `/login` 或 `/register` 網址。Breeze 中所有的路由都定義在 `routes/auth.php` 中。
+
+<a name="dark-mode"></a>
+
+#### 深色模式
+
+若想在 Scaffold 專案前端時讓 Breeze 包含「深色模式」的支援，只要在執行 `breeze:install` 指令時加上 `--dark` 指示詞即可：
+
+```shell
+php artisan breeze:install --dark
+```
 
 > **Note** 要瞭解更多有關如何編譯網站的 CSS 與 JavaScript 的資訊，請參考 Laravel 的 [Vite 說明文件](/docs/{{version}}/mix#running-mix)。
 

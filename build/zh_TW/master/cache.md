@@ -58,13 +58,13 @@ updatedAt: '2023-01-25T09:52:00Z'
 
 在使用 `database` 快取 Driver 時，需要先設定包含快取項目的資料表。該資料表的 `Schema` 宣告範例如下：
 
-    Schema::create('cache', function ($table) {
+    Schema::create('cache', function (Blueprint $table) {
         $table->string('key')->unique();
         $table->text('value');
         $table->integer('expiration');
     });
 
-> {tip} 可以使用 `php artisan cache:table` Artisan 指令來產生包含正確 Schema 的 Migration。
+> **Note** 可以使用 `php artisan cache:table` Artisan 指令來產生包含正確 Schema 的 Migration。
 
 <a name="memcached"></a>
 
@@ -128,14 +128,14 @@ updatedAt: '2023-01-25T09:52:00Z'
     {
         /**
          * Show a list of all users of the application.
-         *
-         * @return Response
          */
-        public function index()
+        public function index(): array
         {
             $value = Cache::get('key');
     
-            //
+            return [
+                // ...
+            ];
         }
     }
 
@@ -162,7 +162,7 @@ updatedAt: '2023-01-25T09:52:00Z'
 也可以傳入一個閉包來作為預設值。若指定項目不存在於快取內，則該閉包的結果會被回傳。傳入閉包可讓你暫緩從資料庫或其他外部服務取得預設值的過程：
 
     $value = Cache::get('key', function () {
-        return DB::table(...)->get();
+        return DB::table(/* ... */)->get();
     });
 
 <a name="checking-for-item-existence"></a>
@@ -172,7 +172,7 @@ updatedAt: '2023-01-25T09:52:00Z'
 `has` 方法可以用來判斷某個項目是否存在於快取內。該方法也會在項目存在，但其值為 `null` 時回傳 `false`：
 
     if (Cache::has('key')) {
-        //
+        // ...
     }
 
 <a name="incrementing-decrementing-values"></a>
@@ -244,7 +244,7 @@ updatedAt: '2023-01-25T09:52:00Z'
 
     Cache::forever('key', 'value');
 
-> {tip} 若使用 Memcached Driver，使用「forever」儲存的項目可能會在快取達到大小限制時被移除。
+> **Note** 若使用 Memcached Driver，使用「forever」儲存的項目可能會在快取達到大小限制時被移除。
 
 <a name="removing-items-from-the-cache"></a>
 
@@ -264,7 +264,7 @@ updatedAt: '2023-01-25T09:52:00Z'
 
     Cache::flush();
 
-> {note} 使用 Flush 移除快取並不理會所設定的快取「前綴」，會將快取內所有的項目都移除。當快取有與其他應用程式共用時，在清除快取前請三思。
+> **Warning** 使用 Flush 移除快取並不理會所設定的快取「^[Prefix](前置詞)」，會將快取內所有的項目都移除。當快取有與其他應用程式共用時，在清除快取前請三思。
 
 <a name="the-cache-helper"></a>
 
@@ -286,19 +286,19 @@ updatedAt: '2023-01-25T09:52:00Z'
         return DB::table('users')->get();
     });
 
-> {tip} 在測試呼叫全域的 `cache` 函式時，可以像在[測試 Facade](/docs/{{version}}/mocking#mocking-facades)一樣，使用 `Cache::shouldReceive` 方法。
+> **Note** 在測試呼叫全域的 `cache` 函式時，可以像在[測試 Facade](/docs/{{version}}/mocking#mocking-facades)一樣，使用 `Cache::shouldReceive` 方法。
 
 <a name="cache-tags"></a>
 
 ## 快取標籤
 
-> {note} 使用 `file`, `dynamodb` 或 `database` 快取 Driver 時，不支援使用快取標籤。此外，在以「forever」儲存的快取上使用多重標籤時，搭配 `memcached` Driver 能取得最佳效能，這些 Driver 通常會自動移除舊的記錄。
+> **Warning** 使用 `file`, `dynamodb` 或 `database` 快取 Driver 時，不支援使用快取標籤。此外，在以「forever」儲存的快取上使用多重標籤時，搭配 `memcached` Driver 能取得最佳效能，這些 Driver 通常會自動移除舊的記錄。
 
 <a name="storing-tagged-cache-items"></a>
 
 ### 儲存標籤的快取項目
 
-快取標籤能讓你將快取內相關的項目標記在一起，並能將所有被指派到相同標籤的快取值一起被清除。可以通過傳入包含標籤名稱的有序陣列來存取標籤快取。舉例來說，我們來存取一個被標籤的快取，並將一個值 `put` 進快取內：
+快取標籤能讓你將快取內相關的項目標記在一起，並能將所有被指派到相同標籤的快取值一起被清除。可以通過傳入包含標籤名稱的有序陣列來存取標籤快取。在儲存快取項目時，若有使用標籤，則必須提供這些標籤，才可存取該項目。舉例來說，我們來存取一個被標籤的快取，並將一個值 `put` 進快取內：
 
     Cache::tags(['people', 'artists'])->put('John', $john, $seconds);
     
@@ -330,7 +330,7 @@ updatedAt: '2023-01-25T09:52:00Z'
 
 ## Atomic Lock (不可部分完成的鎖定)
 
-> {note} 若要使用此功能，則應用程式必須要使用 `memcached`, `redis`, `dynamodb`, `database`, `file` 或 `array` 作為應用程式的預設快取 Driver。另外，所有的伺服器也都必須要連線至相同的中央快取伺服器。
+> **Warning** 若要使用此功能，則應用程式必須要使用 `memcached`, `redis`, `dynamodb`, `database`, `file` 或 `array` 作為應用程式的預設快取 Driver。另外，所有的伺服器也都必須要連線至相同的中央快取伺服器。
 
 <a name="lock-driver-prerequisites"></a>
 
@@ -342,7 +342,7 @@ updatedAt: '2023-01-25T09:52:00Z'
 
 在使用 `database` 快取 Driver 時，需要設定包含專案快取 Lock 的資料表。下列為範例的資料表 `Schema` 宣告：
 
-    Schema::create('cache_locks', function ($table) {
+    Schema::create('cache_locks', function (Blueprint $table) {
         $table->string('key')->primary();
         $table->string('owner');
         $table->integer('expiration');
@@ -448,11 +448,11 @@ updatedAt: '2023-01-25T09:52:00Z'
 
 我們只需要通過 MongoDB 連線來實作其中的各個方法即可。有關如何實作這些方法，請參考 [Laravel 框架原始碼](https://github.com/laravel/framework) 中的 `Illuminate\Cache\MemcachedStore`。實作完成後，就可以呼叫 `Cache` Facade 的 `extend` 方法來註冊自訂 Driver：
 
-    Cache::extend('mongo', function ($app) {
+    Cache::extend('mongo', function (Application $app) {
         return Cache::repository(new MongoStore);
     });
 
-> {tip} 若不知道該將自定快取 Driver 的程式碼放在哪裡，可在 `app` 目錄內建立一個 `Extensions` 命名空間。不過，請記得，Laravel 並沒有硬性規定應用程式的架構，你可以隨意依照你的喜好來阻止程式碼。
+> **Note** 若不知道該將自定快取 Driver 的程式碼放在哪裡，可在 `app` 目錄內建立一個 `Extensions` 命名空間。不過，請記得，Laravel 並沒有硬性規定應用程式的架構，你可以隨意依照你的喜好來阻止程式碼。
 
 <a name="registering-the-driver"></a>
 
@@ -465,6 +465,7 @@ updatedAt: '2023-01-25T09:52:00Z'
     namespace App\Providers;
     
     use App\Extensions\MongoStore;
+    use Illuminate\Contracts\Foundation\Application;
     use Illuminate\Support\Facades\Cache;
     use Illuminate\Support\ServiceProvider;
     
@@ -472,13 +473,11 @@ updatedAt: '2023-01-25T09:52:00Z'
     {
         /**
          * Register any application services.
-         *
-         * @return void
          */
-        public function register()
+        public function register(): void
         {
             $this->app->booting(function () {
-                 Cache::extend('mongo', function ($app) {
+                 Cache::extend('mongo', function (Application $app) {
                      return Cache::repository(new MongoStore);
                  });
              });
@@ -486,12 +485,10 @@ updatedAt: '2023-01-25T09:52:00Z'
     
         /**
          * Bootstrap any application services.
-         *
-         * @return void
          */
-        public function boot()
+        public function boot(): void
         {
-            //
+            // ...
         }
     }
 
@@ -505,25 +502,34 @@ updatedAt: '2023-01-25T09:52:00Z'
 
 若要在每個快取操作時執行程式碼，可以監聽快取所觸發的[事件](/docs/{{version}}/events)。一般來說，這些事件監聽程式應放置於專案的 `App\Providers\EventServiceProvider` 類別：
 
+    use App\Listeners\LogCacheHit;
+    use App\Listeners\LogCacheMissed;
+    use App\Listeners\LogKeyForgotten;
+    use App\Listeners\LogKeyWritten;
+    use Illuminate\Cache\Events\CacheHit;
+    use Illuminate\Cache\Events\CacheMissed;
+    use Illuminate\Cache\Events\KeyForgotten;
+    use Illuminate\Cache\Events\KeyWritten;
+    
     /**
      * The event listener mappings for the application.
      *
      * @var array
      */
     protected $listen = [
-        'Illuminate\Cache\Events\CacheHit' => [
-            'App\Listeners\LogCacheHit',
+        CacheHit::class => [
+            LogCacheHit::class,
         ],
     
-        'Illuminate\Cache\Events\CacheMissed' => [
-            'App\Listeners\LogCacheMissed',
+        CacheMissed::class => [
+            LogCacheMissed::class,
         ],
     
-        'Illuminate\Cache\Events\KeyForgotten' => [
-            'App\Listeners\LogKeyForgotten',
+        KeyForgotten::class => [
+            LogKeyForgotten::class,
         ],
     
-        'Illuminate\Cache\Events\KeyWritten' => [
-            'App\Listeners\LogKeyWritten',
+        KeyWritten::class => [
+            LogKeyWritten::class,
         ],
     ];

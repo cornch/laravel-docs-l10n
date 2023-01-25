@@ -16,19 +16,23 @@ updatedAt: '2023-01-25T10:52:00Z'
 - [執行 SQL 查詢](#running-queries)
    - [使用多個資料庫連線](#using-multiple-database-connections)
    - [監聽查詢事件](#listening-for-query-events)
+   - [監控積累的查詢時間](#monitoring-cumulative-query-time)
 - [資料庫 Transaction](#database-transactions)
 - [連線至資料庫 CLI](#connecting-to-the-database-cli)
+- [檢視資料庫](#inspecting-your-databases)
+- [監控資料庫](#monitoring-your-databases)
 
 <a name="introduction"></a>
 
 ## 簡介
 
-Almost every modern web application interacts with a database. Laravel makes interacting with databases extremely simple across a variety of supported databases using raw SQL, a [fluent query builder](/docs/{{version}}/queries), and the [Eloquent ORM](/docs/{{version}}/eloquent). Currently, Laravel provides first-party support for four databases:
+幾乎所有的現代網站都會與資料庫互動。比起直接使用原始 SQL，Laravel 通過[流暢的 Query Builder](/docs/{{version}}/queries)、[Eloquent ORM](/docs/{{version}}/eloquent) 等功能大大簡化了與多種支援資料庫互動的過程。目前，Laravel 對 5 種資料庫提供了第一方支援：
 
 <div class="content-list" markdown="1">
 
+- MariaDB 10.3+ ([版本政策](https://mariadb.org/about/#maintenance-policy))
 - MySQL 5.7+ ([版本政策](https://en.wikipedia.org/wiki/MySQL#Release_history))
-- PostgreSQL 9.6+ ([版本政策](https://www.postgresql.org/support/versioning/))
+- PostgreSQL 10.0+ ([版本政策](https://www.postgresql.org/support/versioning/))
 - SQLite 3.8.8+
 - SQL Server 2017+ ([版本政策](https://docs.microsoft.com/en-us/lifecycle/products/?products=sql-server))
 
@@ -144,15 +148,14 @@ driver://username:password@host:port/database?options
     
     use App\Http\Controllers\Controller;
     use Illuminate\Support\Facades\DB;
+    use Illuminate\View\View;
     
     class UserController extends Controller
     {
         /**
          * Show a list of all of the application's users.
-         *
-         * @return \Illuminate\Http\Response
          */
-        public function index()
+        public function index(): View
         {
             $users = DB::select('select * from users where active = ?', [1]);
     
@@ -171,6 +174,16 @@ driver://username:password@host:port/database?options
     foreach ($users as $user) {
         echo $user->name;
     }
+
+<a name="selecting-scalar-values"></a>
+
+#### Select ^[純量](Scalar)值
+
+有時候，有些資料庫查詢只會回傳一個單一、^[純量](Scalar)的值。在 Laravel 中，我們不一定要從資料物件中取出該查詢的純量值，而可以使用 `scalar` 方法來直接取得這個值：
+
+    $burgers = DB::scalar(
+        "select count(case when food = 'burger' then 1 end) as burgers from menu"
+    );
 
 <a name="using-named-bindings"></a>
 
@@ -229,7 +242,7 @@ driver://username:password@host:port/database?options
 
     DB::unprepared('update users set votes = 100 where name = "Dries"');
 
-> {note} 由於未預先準備的陳述式並不繫結參數，因此這些查詢可能容易遭受 SQL 注入攻擊。在未預先準備的陳述式中，不應包含使用者可控制的值。
+> **Warning** 由於未預先準備的陳述式並不繫結參數，因此這些查詢可能容易遭受 SQL 注入攻擊。在未預先準備的陳述式中，不應包含使用者可控制的值。
 
 <a name="implicit-commits-in-transactions"></a>
 
@@ -249,7 +262,7 @@ driver://username:password@host:port/database?options
 
     use Illuminate\Support\Facades\DB;
     
-    $users = DB::connection('sqlite')->select(...);
+    $users = DB::connection('sqlite')->select(/* ... */);
 
 也可以通過連線實體上的 `getPdo` 方法來存取原始、底層的 PDO 實體：
 
@@ -265,6 +278,7 @@ driver://username:password@host:port/database?options
     
     namespace App\Providers;
     
+    use Illuminate\Database\Events\QueryExecuted;
     use Illuminate\Support\Facades\DB;
     use Illuminate\Support\ServiceProvider;
     
@@ -272,25 +286,57 @@ driver://username:password@host:port/database?options
     {
         /**
          * Register any application services.
-         *
-         * @return void
          */
-        public function register()
+        public function register(): void
         {
-            //
+            // ...
         }
     
         /**
          * Bootstrap any application services.
-         *
-         * @return void
          */
-        public function boot()
+        public function boot(): void
         {
-            DB::listen(function ($query) {
+            DB::listen(function (QueryExecuted $query) {
                 // $query->sql;
                 // $query->bindings;
                 // $query->time;
+            });
+        }
+    }
+
+<a name="monitoring-cumulative-query-time"></a>
+
+### 監控積累的查詢時間
+
+在現代網頁 App 中常見的效能瓶頸就是在查詢資料庫所花費的時間上。幸好，Laravel 可以在程式在單一 Request 中查詢資料庫花費太多時間時，叫用指定的閉包或回呼。若要開始監控積累的查詢時間，請向 `whenQueryingForLongerThan` 方法提供一個查詢時間的閥值 (單位為毫秒)，以及一個閉包。可以在某個 [Service Provider](/docs/{{version}}/providers) 中叫用此方法：
+
+    <?php
+    
+    namespace App\Providers;
+    
+    use Illuminate\Database\Connection;
+    use Illuminate\Support\Facades\DB;
+    use Illuminate\Support\ServiceProvider;
+    use Illuminate\Database\Events\QueryExecuted;
+    
+    class AppServiceProvider extends ServiceProvider
+    {
+        /**
+         * Register any application services.
+         */
+        public function register(): void
+        {
+            // ...
+        }
+    
+        /**
+         * Bootstrap any application services.
+         */
+        public function boot(): void
+        {
+            DB::whenQueryingForLongerThan(500, function (Connection $connection, QueryExecuted $event) {
+                // 通知開發團隊...
             });
         }
     }
@@ -341,7 +387,7 @@ driver://username:password@host:port/database?options
 
     DB::commit();
 
-> {tip} `DB` Facade 的 Transaction 方法會同時控制到 [Query Builder](/docs/{{version}}/queries) 與 [Eloquent ORM](/docs/{{version}}/eloquent)。
+> **Note** `DB` Facade 的 Transaction 方法會同時控制到 [Query Builder](/docs/{{version}}/queries) 與 [Eloquent ORM](/docs/{{version}}/eloquent)。
 
 <a name="connecting-to-the-database-cli"></a>
 
@@ -357,4 +403,71 @@ php artisan db
 
 ```shell
 php artisan db mysql
+```
+
+<a name="inspecting-your-databases"></a>
+
+## 檢視資料庫
+
+使用 `db:show` 與 `db:table` Artisan 指令，即可檢視有關資料庫與其關聯的資料表的各種實用資料。若要檢視資料庫的概覽，如資料庫大小、型別、開啟中的連線數、資料表概覽等，可使用 `db:show` 指令：
+
+```shell
+php artisan db:show
+```
+
+也可以提供 `--database` 選項來提供要檢視的資料庫連線名稱：
+
+```shell
+php artisan db:show --database=pgsql
+```
+
+若要在該指令的輸出中包含資料表的行數統計與資料庫 View 的詳情，可提供 `--counts` 與 `--views`，這兩個指令分別對應了此二功能。在大型資料庫中，取得行數與 View 的詳情可能較慢：
+
+```shell
+php artisan db:show --counts --views
+```
+
+<a name="table-overview"></a>
+
+#### 資料表概覽
+
+若想取得資料庫中個別資料表的概覽，可執行 `db:table` Artisan 指令。該指令會為某個資料庫資料表提供一般性的概覽，包含其欄位、型別、屬性、索引鍵、與索引等：
+
+```shell
+php artisan db:table users
+```
+
+<a name="monitoring-your-databases"></a>
+
+## 監控資料庫
+
+使用 `db:monitor` Artisan 指令，當資料庫中處理了超過特定數量的連線時，Laravel 就會分派一個 `Illuminate\Database\Events\DatabaseBusy` 事件。
+
+若要開始監控資料庫，可設定排程，[每分鐘](/docs/{{version}}/scheduling)都執行一次 `db:monitor` 指令。可傳入要監控的資料庫連線名稱給該指令，或是分派 Event 前可允許的最大開放連線數：
+
+```shell
+php artisan db:monitor --databases=mysql,pgsql --max=100
+```
+
+若只排程執行該指令，檔開放連線數過高時仍然不會觸發通知來提醒你。當該指令偵測到資料庫的開放連線數超過指定的閥值時，會分派一個 `DatabaseBusy` 事件。我們需要在專案的 `EventServiceProvider` 內監聽該事件，才能將通知傳送給你，或是你的開發團隊：
+
+```php
+use App\Notifications\DatabaseApproachingMaxConnections;
+use Illuminate\Database\Events\DatabaseBusy;
+use Illuminate\Support\Facades\Event;
+use Illuminate\Support\Facades\Notification;
+
+/**
+ * Register any other events for your application.
+ */
+public function boot(): void
+{
+    Event::listen(function (DatabaseBusy $event) {
+        Notification::route('mail', 'dev@example.com')
+                ->notify(new DatabaseApproachingMaxConnections(
+                    $event->connectionName,
+                    $event->connections
+                ));
+    });
+}
 ```

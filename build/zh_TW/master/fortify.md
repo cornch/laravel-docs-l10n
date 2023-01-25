@@ -43,7 +43,7 @@ updatedAt: '2023-01-25T07:02:00Z'
 
 由於 Fortify 並不提供 UI，因此你需要自行實作使用這些路由的 UI。在本說明文件中，我們會在稍後討論如何向這些路由建立 Request。
 
-> {tip} 請記得，Fortify 的功能是要讓你能在實作 Laravel 的登入功能時能更快上手。**你也可以不使用 Foritfy**。若你想要的話，也可以參考 [登入驗證](/docs/{{version}}/authentication)、[密碼重設](/docs/{{version}}/passwords)、與 [E-Mail 驗證](/docs/{{version}}/verification)等說明文件來手動使用 Laravel 的登入服務。
+> **Note** Remember, Fortify is a package that is meant to give you a head start implementing Laravel's authentication features. **You are not required to use it.** You are always free to manually interact with Laravel's authentication services by following the documentation available in the [authentication](/docs/{{version}}/authentication), [password reset](/docs/{{version}}/passwords), and [email verification](/docs/{{version}}/verification) documentation.
 
 <a name="what-is-fortify"></a>
 
@@ -95,7 +95,7 @@ composer require laravel/fortify
 php artisan vendor:publish --provider="Laravel\Fortify\FortifyServiceProvider"
 ```
 
-這個指令會將 Fortify 的 ^[Action](動作) 安裝到 `app/Actions` 目錄下，如果這個目錄不存在的話，該指令也會一併建立。然後，也會安裝 Fortify 的設定檔與 Migration 檔案。
+This command will publish Fortify's actions to your `app/Actions` directory, which will be created if it does not exist. In addition, the `FortifyServiceProvider`, configuration file, and all necessary database migrations will be published.
 
 接著，請 Migrate 資料庫：
 
@@ -153,10 +153,8 @@ Fortify Service Provider 會註冊 Fortify 所安裝的 Action，並告訴 Forti
     
     /**
      * Bootstrap any application services.
-     *
-     * @return void
      */
-    public function boot()
+    public function boot(): void
     {
         Fortify::loginView(function () {
             return view('auth.login');
@@ -187,10 +185,8 @@ use Laravel\Fortify\Fortify;
 
 /**
  * Bootstrap any application services.
- *
- * @return void
  */
-public function boot()
+public function boot(): void
 {
     Fortify::authenticateUsing(function (Request $request) {
         $user = User::where('email', $request->email)->first();
@@ -249,16 +245,16 @@ If you need advanced customization of this behavior, you may bind implementation
 
 ```php
 use Laravel\Fortify\Contracts\LogoutResponse;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 
 /**
  * Register any application services.
- *
- * @return void
  */
-public function register()
+public function register(): void
 {
     $this->app->instance(LogoutResponse::class, new class implements LogoutResponse {
-        public function toResponse($request)
+        public function toResponse(Request $request): RedirectResponse
         {
             return redirect('/');
         }
@@ -297,12 +293,14 @@ Next, you should build a screen within your application where users can manage t
 
 ### Enabling Two Factor Authentication
 
-To enable two factor authentication, your application should make a POST request to the `/user/two-factor-authentication` endpoint defined by Fortify. If the request is successful, the user will be redirected back to the previous URL and the `status` session variable will be set to `two-factor-authentication-enabled`. You may detect this `status` session variable within your templates to display the appropriate success message. If the request was an XHR request, `200` HTTP response will be returned:
+To begin enabling two factor authentication, your application should make a POST request to the `/user/two-factor-authentication` endpoint defined by Fortify. If the request is successful, the user will be redirected back to the previous URL and the `status` session variable will be set to `two-factor-authentication-enabled`. You may detect this `status` session variable within your templates to display the appropriate success message. If the request was an XHR request, `200` HTTP response will be returned.
+
+After choosing to enable two factor authentication, the user must still "confirm" their two factor authentication configuration by providing a valid two factor authentication code. So, your "success" message should instruct the user that two factor authentication confirmation is still required:
 
 ```html
 @if (session('status') == 'two-factor-authentication-enabled')
-    <div class="mb-4 font-medium text-sm text-green-600">
-        Two factor authentication has been enabled.
+    <div class="mb-4 font-medium text-sm">
+        Please finish configuring two factor authentication below.
     </div>
 @endif
 ```
@@ -314,6 +312,24 @@ $request->user()->twoFactorQrCodeSvg();
 ```
 
 If you are building a JavaScript powered frontend, you may make an XHR GET request to the `/user/two-factor-qr-code` endpoint to retrieve the user's two factor authentication QR code. This endpoint will return a JSON object containing an `svg` key.
+
+<a name="confirming-two-factor-authentication"></a>
+
+#### Confirming Two Factor Authentication
+
+In addition to displaying the user's two factor authentication QR code, you should provide a text input where the user can supply a valid authentication code to "confirm" their two factor authentication configuration. This code should be provided to the Laravel application via a POST request to the `/user/confirmed-two-factor-authentication` endpoint defined by Fortify.
+
+If the request is successful, the user will be redirected back to the previous URL and the `status` session variable will be set to `two-factor-authentication-confirmed`:
+
+```html
+@if (session('status') == 'two-factor-authentication-confirmed')
+    <div class="mb-4 font-medium text-sm">
+        Two factor authentication confirmed and enabled successfully.
+    </div>
+@endif
+```
+
+If the request to the two factor authentication confirmation endpoint was made via an XHR request, a `200` HTTP response will be returned.
 
 <a name="displaying-the-recovery-codes"></a>
 
@@ -342,10 +358,8 @@ use Laravel\Fortify\Fortify;
 
 /**
  * Bootstrap any application services.
- *
- * @return void
  */
-public function boot()
+public function boot(): void
 {
     Fortify::twoFactorChallengeView(function () {
         return view('auth.two-factor-challenge');
@@ -373,17 +387,15 @@ To disable two factor authentication, your application should make a DELETE requ
 
 To begin implementing our application's registration functionality, we need to instruct Fortify how to return our "register" view. Remember, Fortify is a headless authentication library. If you would like a frontend implementation of Laravel's authentication features that are already completed for you, you should use an [application starter kit](/docs/{{version}}/starter-kits).
 
-All of the Fortify's view rendering logic may be customized using the appropriate methods available via the `Laravel\Fortify\Fortify` class. Typically, you should call this method from the `boot` method of your `App\Providers\FortifyServiceProvider` class:
+All of Fortify's view rendering logic may be customized using the appropriate methods available via the `Laravel\Fortify\Fortify` class. Typically, you should call this method from the `boot` method of your `App\Providers\FortifyServiceProvider` class:
 
 ```php
 use Laravel\Fortify\Fortify;
 
 /**
  * Bootstrap any application services.
- *
- * @return void
  */
-public function boot()
+public function boot(): void
 {
     Fortify::registerView(function () {
         return view('auth.register');
@@ -397,7 +409,7 @@ Fortify will take care of defining the `/register` route that returns this view.
 
 The `/register` endpoint expects a string `name`, string email address / username, `password`, and `password_confirmation` fields. The name of the email / username field should match the `username` configuration value defined within your application's `fortify` configuration file.
 
-If the registration attempt is successful, Fortify will redirect the user to the URI configured via the `home` configuration option within your application's `fortify` configuration file. If the login request was an XHR request, a 200 HTTP response will be returned.
+If the registration attempt is successful, Fortify will redirect the user to the URI configured via the `home` configuration option within your application's `fortify` configuration file. If the request was an XHR request, a 201 HTTP response will be returned.
 
 If the request was not successful, the user will be redirected back to the registration screen and the validation errors will be available to you via the shared `$errors` [Blade template variable](/docs/{{version}}/validation#quick-displaying-the-validation-errors). Or, in the case of an XHR request, the validation errors will be returned with a 422 HTTP response.
 
@@ -424,10 +436,8 @@ use Laravel\Fortify\Fortify;
 
 /**
  * Bootstrap any application services.
- *
- * @return void
  */
-public function boot()
+public function boot(): void
 {
     Fortify::requestPasswordResetLinkView(function () {
         return view('auth.forgot-password');
@@ -469,15 +479,14 @@ All of Fortify's view rendering logic may be customized using the appropriate me
 
 ```php
 use Laravel\Fortify\Fortify;
+use Illuminate\Http\Request;
 
 /**
  * Bootstrap any application services.
- *
- * @return void
  */
-public function boot()
+public function boot(): void
 {
-    Fortify::resetPasswordView(function ($request) {
+    Fortify::resetPasswordView(function (Request $request) {
         return view('auth.reset-password', ['request' => $request]);
     });
 
@@ -528,10 +537,8 @@ use Laravel\Fortify\Fortify;
 
 /**
  * Bootstrap any application services.
- *
- * @return void
  */
-public function boot()
+public function boot(): void
 {
     Fortify::verifyEmailView(function () {
         return view('auth.verify-email');
@@ -588,10 +595,8 @@ use Laravel\Fortify\Fortify;
 
 /**
  * Bootstrap any application services.
- *
- * @return void
  */
-public function boot()
+public function boot(): void
 {
     Fortify::confirmPasswordView(function () {
         return view('auth.confirm-password');

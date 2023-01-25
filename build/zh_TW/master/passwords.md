@@ -26,7 +26,7 @@ updatedAt: '2023-01-25T18:14:00Z'
 
 大多數的 Web App 都提供了能讓使用者重設密碼的功能。在 Laravel 中，我們不需要為密碼重設重造輪子，Laravel 已提供了方便的服務，可讓我們傳送密碼重設連結並安全地重設密碼。
 
-> {tip} 想要快速入門嗎？請在全新的 Laravel 應用程式內安裝一個 [Laravel 應用程式入門套件](docs/{{version}}/starter-kits)。這些入門套件會幫你搞定整個驗證系統的 Scaffolding，其中也包含了重設忘記密碼的支援。
+> **Note** 想要快速入門嗎？請在全新的 Laravel 應用程式內安裝一個 [Laravel 應用程式入門套件](docs/{{version}}/starter-kits)。這些入門套件會幫你搞定整個驗證系統的 Scaffolding，其中也包含了重設忘記密碼的支援。
 
 <a name="model-preparation"></a>
 
@@ -105,7 +105,7 @@ php artisan migrate
 
 讀者可能會想，在呼叫 `Password` Facade 的 `sendResetLink` 時，Laravel 是怎麼知道要如何從專案資料庫中取得使用者記錄的？其實，Laravel 的 Password Broker 使用了身份驗證系統的「User Providers」來取得資料庫記錄。Password Broker 使用的 User Provider 設定在 `config/auth.php` 設定檔中的 `password` 設定陣列中。如欲瞭解更多有關如何撰寫自定 User Provider 的資訊，請參考[身份驗證說明文件](/docs/{{version}}/authentication#adding-custom-user-providers)。
 
-> {tip} 手動實作密碼重設功能時，我們需要自行定義這些 View 的內容與 Route。若想要有包含所有必要之身份驗證與驗證 View 的 Scaffolding，請參考 [Laravel 專案入門套件](/docs/{{version}}/starter-kits)。
+> **Note** 手動實作密碼重設功能時，我們需要自行定義這些 View 的內容與 Route。若想要有包含所有必要之身份驗證與驗證 View 的 Scaffolding，請參考 [Laravel 專案入門套件](/docs/{{version}}/starter-kits)。
 
 <a name="resetting-the-password"></a>
 
@@ -117,7 +117,7 @@ php artisan migrate
 
 接著，我們還需要定義一個 Route，能讓使用者在點擊信件中的密碼重設連結後能真的重設密碼。首先，我們先定義一個在使用者點擊密碼重設連結後顯示密碼重設表單的 Route。這個 Route 會收到一個 `token` 參數，我們在稍後會用來驗證這個密碼重設 Request。
 
-    Route::get('/reset-password/{token}', function ($token) {
+    Route::get('/reset-password/{token}', function (string $token) {
         return view('auth.reset-password', ['token' => $token]);
     })->middleware('guest')->name('password.reset');
 
@@ -129,6 +129,7 @@ php artisan migrate
 
 當然，我們還需要定義一個實際用來處理表單送出的 Route。這個 Route 要負責驗證連入的 Request，並更新資料庫中該使用者的密碼：
 
+    use App\Models\User;
     use Illuminate\Auth\Events\PasswordReset;
     use Illuminate\Http\Request;
     use Illuminate\Support\Facades\Hash;
@@ -144,7 +145,7 @@ php artisan migrate
     
         $status = Password::reset(
             $request->only('email', 'password', 'password_confirmation', 'token'),
-            function ($user, $password) {
+            function (User $user, string $password) {
                 $user->forceFill([
                     'password' => Hash::make($password)
                 ])->setRememberToken(Str::random(60));
@@ -192,18 +193,17 @@ php artisan auth:clear-resets
 
 我們可以使用 `ResetPassword` 通知類別的 `createUrlUsing` 方法來自定密碼重設連結的網址。這個方法接受一個閉包，該閉包會收到要接收通知的使用者實體，以及密碼重設連結的 Token。一般來說，我們可以在 `App\Providers\AuthServiceProvider` Service Provider 的 `boot` 方法內呼叫這個方法：
 
+    use App\Models\User;
     use Illuminate\Auth\Notifications\ResetPassword;
     
     /**
      * Register any authentication / authorization services.
-     *
-     * @return void
      */
-    public function boot()
+    public function boot(): void
     {
         $this->registerPolicies();
     
-        ResetPassword::createUrlUsing(function ($user, string $token) {
+        ResetPassword::createUrlUsing(function (User $user, string $token) {
             return 'https://example.com/reset-password?token='.$token;
         });
     }
@@ -220,9 +220,8 @@ php artisan auth:clear-resets
      * Send a password reset notification to the user.
      *
      * @param  string  $token
-     * @return void
      */
-    public function sendPasswordResetNotification($token)
+    public function sendPasswordResetNotification($token): void
     {
         $url = 'https://example.com/reset-password?token='.$token;
     

@@ -17,6 +17,7 @@ updatedAt: '2023-01-25T12:14:00Z'
    - [依照型別忽略 Exception](#ignoring-exceptions-by-type)
    - [轉譯 Exception](#rendering-exceptions)
    - [Reportable 與 Renderable 的 Exception](#renderable-exceptions)
+   - [依型別映射 Exception](#mapping-exceptions-by-type)
 - [HTTP Exception](#http-exceptions)
    - [自訂 HTTP 錯誤的頁面](#custom-http-error-pages)
 
@@ -261,6 +262,34 @@ updatedAt: '2023-01-25T12:14:00Z'
     }
 
 > {tip} 可以在 `report` 方法中型別提示任何的^[相依性](Dependency)。Laravel 的 [Service Container](/docs/{{version}}/container) 會自動插入這些相依性。
+
+<a name="mapping-exceptions-by-type"></a>
+
+### 依型別映射 Exception
+
+專案中使用的第三方函式庫可能會擲回 Exception，而有時候我們會想讓這些 Exception 變成是[可被轉譯](#renderable-exceptions)的，但因為我們無法控制第三方的 Exception，因此無法做到。
+
+幸好，在 Laravel 中，我們可以將這些 Exception 映射為其他由專案所管理的 Exception 型別。若要映射這些 Exception，可以在 Exception Handler 的 `register` 方法內呼叫 `map` 方法：
+
+    use League\Flysystem\Exception;
+    use App\Exceptions\FilesystemException;
+    
+    /**
+     * Register the exception handling callbacks for the application.
+     *
+     * @return void
+     */
+    public function register()
+    {
+        $this->map(Exception::class, FilesystemException::class);
+    }
+
+若想進一步控制目標 Exception，可以傳入一個閉包給 `map` 方法：
+
+    use League\Flysystem\Exception;
+    use App\Exceptions\FilesystemException;
+    
+    $this->map(fn (Exception $e) => new FilesystemException($e));
 
 <a name="http-exceptions"></a>
 

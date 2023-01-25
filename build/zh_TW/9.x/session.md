@@ -173,7 +173,7 @@ php artisan migrate
         //
     }
 
-若要判斷 Session 中是否沒有某個項目，可使用 `missing` 方法。`missing` 方法會在該項目為 `null` 或不存在時回傳 `true`：
+若要判斷 Session 中是否沒有某個項目，可使用 `missing` 方法。`missing` 方法會在該項目不存在時回傳 `true`：
 
     if ($request->session()->missing('users')) {
         //

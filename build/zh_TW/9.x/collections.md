@@ -1056,6 +1056,14 @@ The `crossJoin` method cross joins the collection's values among the given array
     
     // '1-2-3-4-5'
 
+若想為 implode 後的值自定格式，可以傳入一個閉包給 `implode` 方法：
+
+    $collection->implode(function ($item, $key) {
+        return strtoupper($item['product']);
+    }, ', ');
+    
+    // DESK, CHAIR
+
 <a name="method-intersect"></a>
 
 #### `intersect()` {.collection-method}
@@ -3024,7 +3032,7 @@ The `mapInto()` method iterates over the collection, creating a new instance of 
 
 `where` 方法在比對項目值時使用了「鬆散 (Loose)」的比對方法。這標示，具有整數值的字串與一個有相同值的整數會被視為相同。請使用 [`whereStrict`](#method-wherestrict) 方法來使用「嚴格 (Strict)」比對進行過濾。
 
-若有需要，也可以傳入一個比較運算子來作為第二個參數。
+也可以選擇性地傳入一個比較運算子來作為該方法的第二個參數。支援的運算子有 '===', '!==', '!=', '==', '=', '<>', '>', '<', '>=', 與 '<='：
 
     $collection = collect([
         ['name' => 'Jim', 'deleted_at' => '2019-01-01 00:00:00'],
@@ -3361,7 +3369,20 @@ Collection 也提供了「高階訊息 (Higher Order Message)」的支援，在 
 
 幾乎所有在 `Collection` 類別中可用的方法都可在 `LazyCollection` 類別上使用。這兩個類別都實作了 `Illuminate\Support\Enumerable` Contract，該介面定義了下列方法：
 
-<div id="collection-method-list" markdown="1">
+<style>
+    .collection-method-list > p {
+        columns: 10.8em 3; -moz-columns: 10.8em 3; -webkit-columns: 10.8em 3;
+    }
+
+    .collection-method-list a {
+        display: block;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+</style>
+
+<div class="collection-method-list" markdown="1">
 
 [all](#method-all) [average](#method-average) [avg](#method-avg) [chunk](#method-chunk) [chunkWhile](#method-chunkwhile) [collapse](#method-collapse) [collect](#method-collect) [combine](#method-combine) [concat](#method-concat) [contains](#method-contains) [containsStrict](#method-containsstrict) [count](#method-count) [countBy](#method-countBy) [crossJoin](#method-crossjoin) [dd](#method-dd) [diff](#method-diff) [diffAssoc](#method-diffassoc) [diffKeys](#method-diffkeys) [dump](#method-dump) [duplicates](#method-duplicates) [duplicatesStrict](#method-duplicatesstrict) [each](#method-each) [eachSpread](#method-eachspread) [every](#method-every) [except](#method-except) [filter](#method-filter) [first](#method-first) [firstOrFail](#method-first-or-fail) [firstWhere](#method-first-where) [flatMap](#method-flatmap) [flatten](#method-flatten) [flip](#method-flip) [forPage](#method-forpage) [get](#method-get) [groupBy](#method-groupby) [has](#method-has) [implode](#method-implode) [intersect](#method-intersect) [intersectByKeys](#method-intersectbykeys) [isEmpty](#method-isempty) [isNotEmpty](#method-isnotempty) [join](#method-join) [keyBy](#method-keyby) [keys](#method-keys) [last](#method-last) [macro](#method-macro) [make](#method-make) [map](#method-map) [mapInto](#method-mapinto) [mapSpread](#method-mapspread) [mapToGroups](#method-maptogroups) [mapWithKeys](#method-mapwithkeys) [max](#method-max) [median](#method-median) [merge](#method-merge) [mergeRecursive](#method-mergerecursive) [min](#method-min) [mode](#method-mode) [nth](#method-nth) [only](#method-only) [pad](#method-pad) [partition](#method-partition) [pipe](#method-pipe) [pluck](#method-pluck) [random](#method-random) [reduce](#method-reduce) [reject](#method-reject) [replace](#method-replace) [replaceRecursive](#method-replacerecursive) [reverse](#method-reverse) [search](#method-search) [shuffle](#method-shuffle) [skip](#method-skip) [slice](#method-slice) [sole](#method-sole) [some](#method-some) [sort](#method-sort) [sortBy](#method-sortby) [sortByDesc](#method-sortbydesc) [sortKeys](#method-sortkeys) [sortKeysDesc](#method-sortkeysdesc) [split](#method-split) [sum](#method-sum) [take](#method-take) [tap](#method-tap) [times](#method-times) [toArray](#method-toarray) [toJson](#method-tojson) [union](#method-union) [unique](#method-unique) [uniqueStrict](#method-uniquestrict) [unless](#method-unless) [unlessEmpty](#method-unlessempty) [unlessNotEmpty](#method-unlessnotempty) [unwrap](#method-unwrap) [values](#method-values) [when](#method-when) [whenEmpty](#method-whenempty) [whenNotEmpty](#method-whennotempty) [where](#method-where) [whereStrict](#method-wherestrict) [whereBetween](#method-wherebetween) [whereIn](#method-wherein) [whereInStrict](#method-whereinstrict) [whereInstanceOf](#method-whereinstanceof) [whereNotBetween](#method-wherenotbetween) [whereNotIn](#method-wherenotin) [whereNotInStrict](#method-wherenotinstrict) [wrap](#method-wrap) [zip](#method-zip)
 

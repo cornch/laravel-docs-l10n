@@ -24,7 +24,7 @@ updatedAt: '2023-01-25T12:14:00Z'
 
 在使用 Laravel 製作 API 時，我們常常會需要將 Model 於關聯轉換為陣列或 JSON。Eloquent 中包含了一些用來進行這些轉換的方便方法，我們也能控制哪些屬性要被包含在 Model 序列化呈現中。
 
-> {tip} 若想瞭解有關控制 Eloquent Model 與 JSON 序列化更強健的方法，請參考 [Eloquent API 資源](/docs/{{version}}/eloquent-resources)說明文件。
+> **Note** 若想瞭解有關控制 Eloquent Model 與 JSON 序列化更強健的方法，請參考 [Eloquent API 資源](/docs/{{version}}/eloquent-resources)說明文件。
 
 <a name="serializing-models-and-collections"></a>
 
@@ -106,7 +106,7 @@ updatedAt: '2023-01-25T12:14:00Z'
         protected $hidden = ['password'];
     }
 
-> {tip} 若要隱藏關聯，請將關聯的方法名稱加到 Eloquent Model 的 `$hidden` 屬性內。
+> **Note** 若要隱藏關聯，請將關聯的方法名稱加到 Eloquent Model 的 `$hidden` 屬性內。
 
 或者，我們也可以使用 `visible` 屬性來定義一個「允許列表」，代表要被包含在 Model 之陣列與 JSON 呈現的屬性。當 Model 被轉換為陣列或 JSON 時，所有不在 `$visible` 陣列內的屬性都會被隱藏：
 
@@ -138,6 +138,12 @@ updatedAt: '2023-01-25T12:14:00Z'
 
     return $user->makeHidden('attribute')->toArray();
 
+若想暫時複寫所有 Visible 或 Hidden 屬性的話，可使用對應的 `setVisible` 與 `setHidden` 方法：
+
+    return $user->setVisible(['id', 'name'])->toArray();
+    
+    return $user->setHidden(['email', 'password', 'remember_token'])->toArray();
+
 <a name="appending-values-to-json"></a>
 
 ## 將值附加到 JSON
@@ -155,8 +161,6 @@ updatedAt: '2023-01-25T12:14:00Z'
     {
         /**
          * Determine if the user is an administrator.
-         *
-         * @return \Illuminate\Database\Eloquent\Casts\Attribute
          */
         protected function isAdmin(): Attribute
         {
@@ -208,11 +212,8 @@ updatedAt: '2023-01-25T12:14:00Z'
 
     /**
      * Prepare a date for array / JSON serialization.
-     *
-     * @param  \DateTimeInterface  $date
-     * @return string
      */
-    protected function serializeDate(DateTimeInterface $date)
+    protected function serializeDate(DateTimeInterface $date): string
     {
         return $date->format('Y-m-d');
     }

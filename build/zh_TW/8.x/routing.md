@@ -451,7 +451,7 @@ Route 群組也可以用來處理子網域路由。我們可以像在設定 Rout
         return $user->email;
     })->withTrashed();
 
-<a name="customizing-the-key"></a> <a name="customizing-the-default-key-name"></a>
+<a name="customizing-the-default-key-name"></a>
 
 #### 自訂索引鍵
 

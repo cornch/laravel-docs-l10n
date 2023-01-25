@@ -15,6 +15,7 @@ updatedAt: '2023-01-25T07:03:00Z'
    - [Configuring Model Indexes](#configuring-model-indexes)
    - [Configuring Searchable Data](#configuring-searchable-data)
    - [Configuring The Model ID](#configuring-the-model-id)
+   - [Configuring Search Engines Per Model](#configuring-search-engines-per-model)
    - [Identifying Users](#identifying-users)
 - [Database / Collection Engines](#database-and-collection-engines)
    - [Database Engine](#database-engine)
@@ -110,7 +111,7 @@ For more information regarding MeiliSearch, please consult the [MeiliSearch docu
 
 In addition, you should ensure that you install a version of `meilisearch/meilisearch-php` that is compatible with your MeiliSearch binary version by reviewing [MeiliSearch's documentation regarding binary compatibility](https://github.com/meilisearch/meilisearch-php#-compatibility-with-meilisearch).
 
-> {note} When upgrading Scout on an application that utilizes MeiliSearch, you should always [review any additional breaking changes](https://github.com/meilisearch/MeiliSearch/releases) to the MeiliSearch service itself.
+> **Warning** When upgrading Scout on an application that utilizes MeiliSearch, you should always [review any additional breaking changes](https://github.com/meilisearch/MeiliSearch/releases) to the MeiliSearch service itself.
 
 <a name="queueing"></a>
 
@@ -121,6 +122,15 @@ While not strictly required to use Scout, you should strongly consider configuri
 Once you have configured a queue driver, set the value of the `queue` option in your `config/scout.php` configuration file to `true`:
 
     'queue' => true,
+
+Even when the `queue` option is set to `false`, it's important to remember that some Scout drivers like Algolia and Meilisearch always index records asynchronously. Meaning, even though the index operation has completed within your Laravel application, the search engine itself may not reflect the new and updated records immediately.
+
+To specify the connection and queue that your Scout jobs utilize, you may define the `queue` configuration option as an array:
+
+    'queue' => [
+        'connection' => 'redis',
+        'queue' => 'scout'
+    ],
 
 <a name="configuration"></a>
 
@@ -145,10 +155,8 @@ Each Eloquent model is synced with a given search "index", which contains all of
     
         /**
          * Get the name of the index associated with the model.
-         *
-         * @return string
          */
-        public function searchableAs()
+        public function searchableAs(): string
         {
             return 'posts_index';
         }
@@ -174,9 +182,9 @@ By default, the entire `toArray` form of a given model will be persisted to its 
         /**
          * Get the indexable data array for the model.
          *
-         * @return array
+         * @return array<string, mixed>
          */
-        public function toSearchableArray()
+        public function toSearchableArray(): array
         {
             $array = $this->toArray();
     
@@ -186,11 +194,65 @@ By default, the entire `toArray` form of a given model will be persisted to its 
         }
     }
 
+Some search engines such as MeiliSearch will only perform filter operations (`>`, `<`, etc.) on data of the correct type. So, when using these search engines and customizing your searchable data, you should ensure that numeric values are cast to their correct type:
+
+    public function toSearchableArray()
+    {
+        return [
+            'id' => (int) $this->id,
+            'name' => $this->name,
+            'price' => (float) $this->price,
+        ];
+    }
+
+<a name="configuring-filterable-data-for-meilisearch"></a>
+
+#### Configuring Filterable Data & Index Settings (MeiliSearch)
+
+Unlike Scout's other drivers, MeiliSearch requires you to pre-define index search settings such as filterable attributes, sortable attributes, and [other supported settings fields](https://docs.meilisearch.com/reference/api/settings.html).
+
+Filterable attributes are any attributes you plan to filter on when invoking Scout's `where` method, while sortable attributes are any attributes you plan to sort by when invoking Scout's `orderBy` method. To define your index settings, adjust the `index-settings` portion of your `meilisearch` configuration entry in your application's `scout` configuration file:
+
+```php
+use App\Models\User;
+use App\Models\Flight;
+
+'meilisearch' => [
+    'host' => env('MEILISEARCH_HOST', 'http://localhost:7700'),
+    'key' => env('MEILISEARCH_KEY', null),
+    'index-settings' => [
+        User::class => [
+            'filterableAttributes'=> ['id', 'name', 'email'],
+            'sortableAttributes' => ['created_at'],
+            // Other settings fields...
+        ],
+        Flight::class => [
+            'filterableAttributes'=> ['id', 'destination'],
+            'sortableAttributes' => ['updated_at'],
+        ],
+    ],
+],
+```
+
+If the model underlying a given index is soft deletable and is included in the `index-settings` array, Scout will automatically include support for filtering on soft deleted models on that index. If you have no other filterable or sortable attributes to define for a soft deletable model index, you may simply add an empty entry to the `index-settings` array for that model:
+
+```php
+'index-settings' => [
+    Flight::class => []
+],
+```
+
+After configuring your application's index settings, you must invoke the `scout:sync-index-settings` Artisan command. This command will inform MeiliSearch of your currently configured index settings. For convenience, you may wish to make this command part of your deployment process:
+
+```shell
+php artisan scout:sync-index-settings
+```
+
 <a name="configuring-the-model-id"></a>
 
 ### Configuring The Model ID
 
-By default, Scout will use the primary key of the model as model's unique ID / key that is stored in the search index. If you need to customize this behavior, you may override the `getScoutKey` and the `getScoutKeyName` methods on the model:
+By default, Scout will use the primary key of the model as the model's unique ID / key that is stored in the search index. If you need to customize this behavior, you may override the `getScoutKey` and the `getScoutKeyName` methods on the model:
 
     <?php
     
@@ -205,22 +267,46 @@ By default, Scout will use the primary key of the model as model's unique ID / k
     
         /**
          * Get the value used to index the model.
-         *
-         * @return mixed
          */
-        public function getScoutKey()
+        public function getScoutKey(): mixed
         {
             return $this->email;
         }
     
         /**
          * Get the key name used to index the model.
-         *
-         * @return mixed
          */
-        public function getScoutKeyName()
+        public function getScoutKeyName(): mixed
         {
             return 'email';
+        }
+    }
+
+<a name="configuring-search-engines-per-model"></a>
+
+### Configuring Search Engines Per Model
+
+When searching, Scout will typically use the default search engine specified in your application's `scout` configuration file. However, the search engine for a particular model can be changed by overriding the `searchableUsing` method on the model:
+
+    <?php
+    
+    namespace App\Models;
+    
+    use Illuminate\Database\Eloquent\Model;
+    use Laravel\Scout\Engines\Engine;
+    use Laravel\Scout\EngineManager;
+    use Laravel\Scout\Searchable;
+    
+    class User extends Model
+    {
+        use Searchable;
+    
+        /**
+         * Get the engine used to index the model.
+         */
+        public function searchableUsing(): Engine
+        {
+            return app(EngineManager::class)->engine('meilisearch');
         }
     }
 
@@ -244,7 +330,7 @@ Enabling this feature this will also pass the request's IP address and your auth
 
 ### Database Engine
 
-> {note} The database engine currently supports MySQL and PostgreSQL.
+> **Warning** The database engine currently supports MySQL and PostgreSQL.
 
 If your application interacts with small to medium sized databases or has a light workload, you may find it more convenient to get started with Scout's "database" engine. The database engine will use "where like" clauses and full text indexes when filtering results from your existing database to determine the applicable search results for your query.
 
@@ -269,11 +355,11 @@ use Laravel\Scout\Attributes\SearchUsingPrefix;
 /**
  * Get the indexable data array for the model.
  *
- * @return array
+ * @return array<string, mixed>
  */
 #[SearchUsingPrefix(['id', 'email'])]
 #[SearchUsingFullText(['bio'])]
-public function toSearchableArray()
+public function toSearchableArray(): array
 {
     return [
         'id' => $this->id,
@@ -284,7 +370,7 @@ public function toSearchableArray()
 }
 ```
 
-> {note} Before specifying that a column should use full text query constraints, ensure that the column has been assigned a [full text index](/docs/{{version}}/migrations#available-index-types).
+> **Warning** Before specifying that a column should use full text query constraints, ensure that the column has been assigned a [full text index](/docs/{{version}}/migrations#available-index-types).
 
 <a name="collection-engine"></a>
 
@@ -334,11 +420,8 @@ If you would like to modify the query that is used to retrieve all of your model
 
     /**
      * Modify the query used to retrieve models when making all of the models searchable.
-     *
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
-     * @return \Illuminate\Database\Eloquent\Builder
      */
-    protected function makeAllSearchableUsing($query)
+    protected function makeAllSearchableUsing(Builder $query): Builder
     {
         return $query->with('author');
     }
@@ -375,7 +458,7 @@ Or, if you already have a collection of Eloquent models in memory, you may call 
 
     $orders->searchable();
 
-> {tip} The `searchable` method can be considered an "upsert" operation. In other words, if the model record is already in your index, it will be updated. If it does not exist in the search index, it will be added to the index.
+> **Note** The `searchable` method can be considered an "upsert" operation. In other words, if the model record is already in your index, it will be updated. If it does not exist in the search index, it will be added to the index.
 
 <a name="updating-records"></a>
 
@@ -447,17 +530,15 @@ Sometimes you may need to only make a model searchable under certain conditions.
 
     /**
      * Determine if the model should be searchable.
-     *
-     * @return bool
      */
-    public function shouldBeSearchable()
+    public function shouldBeSearchable(): bool
     {
         return $this->isPublished();
     }
 
 The `shouldBeSearchable` method is only applied when manipulating models through the `save` and `create` methods, queries, or relationships. Directly making models or collections searchable using the `searchable` method will override the result of the `shouldBeSearchable` method.
 
-> {note} The `shouldBeSearchable` method is not applicable when using Scout's "database" engine, as all searchable data is always stored in the database. To achieve similar behavior when using the database engine, you should use [where clauses](#where-clauses) instead.
+> **Warning** The `shouldBeSearchable` method is not applicable when using Scout's "database" engine, as all searchable data is always stored in the database. To achieve similar behavior when using the database engine, you should use [where clauses](#where-clauses) instead.
 
 <a name="searching"></a>
 
@@ -510,6 +591,8 @@ You may use the `whereIn` method to constrain results against a given set of val
 
 Since a search index is not a relational database, more advanced "where" clauses are not currently supported.
 
+> **Warning** If your application is using MeiliSearch, you must configure your application's [filterable attributes](#configuring-filterable-data-for-meilisearch) before utilizing Scout's "where" clauses.
+
 <a name="pagination"></a>
 
 ### Pagination
@@ -545,6 +628,8 @@ Of course, if you would like to retrieve the pagination results as JSON, you may
         return Order::search($request->input('query'))->paginate(15);
     });
 
+> **Warning** Since search engines are not aware of your Eloquent model's global scope definitions, you should not utilize global scopes in applications that utilize Scout pagination. Or, you should recreate the global scope's constraints when searching via Scout.
+
 <a name="soft-deleting"></a>
 
 ### Soft Deleting
@@ -563,7 +648,7 @@ When this configuration option is `true`, Scout will not remove soft deleted mod
     // Only include trashed records when retrieving results...
     $orders = Order::search('Star Trek')->onlyTrashed()->get();
 
-> {tip} When a soft deleted model is permanently deleted using `forceDelete`, Scout will remove it from the search index automatically.
+> **Note** When a soft deleted model is permanently deleted using `forceDelete`, Scout will remove it from the search index automatically.
 
 <a name="customizing-engine-searches"></a>
 
@@ -585,6 +670,23 @@ If you need to perform advanced customization of the search behavior of an engin
             return $algolia->search($query, $options);
         }
     )->get();
+
+<a name="customizing-the-eloquent-results-query"></a>
+
+#### Customizing The Eloquent Results Query
+
+After Scout retrieves a list of matching Eloquent models from your application's search engine, Eloquent is used to retrieve all of the matching models by their primary keys. You may customize this query by invoking the `query` method. The `query` method accepts a closure that will receive the Eloquent query builder instance as an argument:
+
+```php
+use App\Models\Order;
+use Illuminate\Database\Eloquent\Builder;
+
+$orders = Order::search('Star Trek')
+    ->query(fn (Builder $query) => $query->with('invoices'))
+    ->get();
+```
+
+Since this callback is invoked after the relevant models have already been retrieved from your application's search engine, the `query` method should not be used for "filtering" results. Instead, you should use [Scout where clauses](#where-clauses).
 
 <a name="custom-engines"></a>
 
@@ -615,15 +717,13 @@ You may find it helpful to review the implementations of these methods on the `L
 
 Once you have written your custom engine, you may register it with Scout using the `extend` method of the Scout engine manager. Scout's engine manager may be resolved from the Laravel service container. You should call the `extend` method from the `boot` method of your `App\Providers\AppServiceProvider` class or any other service provider used by your application:
 
-    use App\ScoutExtensions\MySqlSearchEngine
+    use App\ScoutExtensions\MySqlSearchEngine;
     use Laravel\Scout\EngineManager;
     
     /**
      * Bootstrap any application services.
-     *
-     * @return void
      */
-    public function boot()
+    public function boot(): void
     {
         resolve(EngineManager::class)->extend('mysql', function () {
             return new MySqlSearchEngine;
@@ -646,10 +746,8 @@ If you would like to define a custom Scout search builder method, you may use th
     
     /**
      * Bootstrap any application services.
-     *
-     * @return void
      */
-    public function boot()
+    public function boot(): void
     {
         Builder::macro('count', function () {
             return $this->engine()->getTotalCount(

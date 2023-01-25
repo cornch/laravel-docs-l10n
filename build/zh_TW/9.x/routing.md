@@ -256,6 +256,10 @@ Route 參數必須要包裝在 `{}` 大括號中，且只能使用字母。在 R
         //
     })->whereUuid('id');
     
+    Route::get('/user/{id}', function ($id) {
+        //
+    })->whereUlid('id');
+    
     Route::get('/category/{category}', function ($category) {
         //
     })->whereIn('category', ['movie', 'song', 'painting']);
@@ -326,6 +330,8 @@ Laravel 的路由元件能接受除了 `/` 外的所有字元出現在 Route 的
     
     // 產生重新導向...
     return redirect()->route('profile');
+    
+    return to_route('profile');
 
 若命名 Route 有定義參數，則可以將這些參數作為第二個引數傳給 `route` 函式。傳入的參數會自動依照正確位置插入到產生的 URL 裡：
 
@@ -547,6 +553,12 @@ Route 群組也可以用來處理子網域路由。我們可以像在設定 Rout
         });
     });
 
+類似地，也可以通過呼叫 `withoutScopedBindings` 方法來明顯讓 Laravel 不使用限定範圍的繫結：
+
+    Route::get('/users/{user}/posts/{post:slug}', function (User $user, Post $post) {
+        return $post;
+    })->withoutScopedBindings();
+
 <a name="customizing-missing-model-behavior"></a>
 
 #### 自訂找不到 Model 的行為
@@ -567,7 +579,7 @@ Route 群組也可以用來處理子網域路由。我們可以像在設定 Rout
 
 ### 隱式 Enum 繫結
 
-PHP 8.1 introduced support for [Enums](https://www.php.net/manual/en/language.enumerations.backed.php). To compliment this feature, Laravel allows you to type-hint a [backed Enum](https://www.php.net/manual/en/language.enumerations.backed.php) on your route definition and Laravel will only invoke the route if that route segment corresponds to a valid Enum value. Otherwise, a 404 HTTP response will be returned automatically. For example, given the following Enum:
+PHP 8.1 新增了對 [Enum](https://www.php.net/manual/en/language.enumerations.backed.php) 的支援。為了配合這個功能，Laravel 中提供了能在 Route 定義中對 [String-Backed Enum](https://www.php.net/manual/en/language.enumerations.backed.php) 進行型別提示的功能。加上型別提示後，只有當網址中的相應的 Route 片段為有效的 Enum 時，Laravel 才會叫用該 Route。若不是有效的 Enum 值，則會自動回傳 404 HTTP Response。舉例來說，假設有下列 Enum：
 
 ```php
 <?php

@@ -47,7 +47,7 @@ updatedAt: '2023-01-25T16:13:00Z'
 
 ## 從 8.x 升級到 9.0
 
-<a name="estimated-upgrade-time-10-minutes"></a>
+<a name="estimated-upgrade-time-30-minutes"></a>
 
 #### 預計升級所需時間：30 分鐘
 

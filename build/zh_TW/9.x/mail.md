@@ -22,6 +22,7 @@ updatedAt: '2023-01-25T14:53:00Z'
    - [附加檔案](#attachments)
    - [內嵌的附加檔案](#inline-attachments)
    - [可附加的物件](#attachable-objects)
+   - [標頭 (Header)](#headers)
    - [Tag 與詮釋資料](#tags-and-metadata)
    - [自訂 Symfony 訊息](#customizing-the-symfony-message)
 - [Markdown 的 Mailable](#markdown-mailables)
@@ -189,30 +190,45 @@ php artisan make:mail OrderShipped
 
 ## 撰寫 Mailable
 
-產生好 Mailable 類別後，請打開該類別，我們來看看裡面的內容。首先，可以注意到所有的 Mailable 類別都在 `build` 方法內進行設定。在該方法中，可呼叫如 `form`、`view`、`attach` 等方法來設定 E-Mail 的顯示方式與寄送設定。
+產生 Mailable 類別後，請先開啟該類別，讓我們來看看該類別的內容。Mailable 類別可通過多個方法來進行設定，包含 `envelope`、`content`、與 `attachments` 方法。
 
-> **Note** You may type-hint dependencies on the mailable's `build` method. The Laravel [service container](/docs/{{version}}/container) automatically injects these dependencies.
+`evelope` 方法回傳 `Illuminate\Mail\Mailables\Envelope` 物件，用來定義標題，而有的時候也會用來定義收件者與訊息。`content` 方法回傳 `Illuminate\Mail\Mailables\Content` 物件，該物件定義用來產生訊息內容的 [Blade 樣板](/docs/{{version}}/blade)。
 
 <a name="configuring-the-sender"></a>
 
 ### 設定寄件人
 
-<a name="using-the-from-method"></a>
+<a name="using-the-envelope"></a>
 
-#### 使用 `from` 方法
+#### 使用 Evelope
 
-首先，我們先來看看如何設定寄件人。或者，換句話說，也就是郵件要「^[從](From)」誰那裡寄出。要設定寄件人，有兩種方法。第一種方法，我們可以在 Mailable 類別的 `build` 方法內使用 `from` 方法來設定：
+首先，我們先來看看如何設定寄件人。或者，換句話說，也就是郵件要「從 (From)」誰那裡寄出。要設定寄件人，有兩種方法。第一種方法，我們可以在訊息的 Evelope 上指定「from」位址：
 
+    use Illuminate\Mail\Mailables\Address;
+    use Illuminate\Mail\Mailables\Envelope;
+    
     /**
-     * Build the message.
+     * Get the message envelope.
      *
-     * @return $this
+     * @return \Illuminate\Mail\Mailables\Envelope
      */
-    public function build()
+    public function envelope()
     {
-        return $this->from('example@example.com', 'Example')
-                    ->view('emails.orders.shipped');
+        return new Envelope(
+            from: new Address('jeffrey@example.com', 'Jeffrey Way'),
+            subject: 'Order Shipped',
+        );
     }
+
+若有需要的話，可以指定 `replyTo` 位址：
+
+    return new Envelope(
+        from: new Address('jeffrey@example.com', 'Jeffrey Way'),
+        replyTo: [
+            new Address('taylor@example.com', 'Taylor Otwell'),
+        ],
+        subject: 'Order Shipped',
+    );
 
 <a name="using-a-global-from-address"></a>
 
@@ -230,16 +246,18 @@ php artisan make:mail OrderShipped
 
 ### ​設定 View
 
-在 Mailable 類別的 `build` 方法中，可以使用 `view` 方法來指定在轉譯郵件內容時欲使用哪個樣板。由於一般來說大部分郵件都是使用 [Blade 樣板]來轉譯內容的，因此在建立郵件內容時，我們就可以使用 [Blade 樣板引擎](/docs/{{version}}/blade)的完整功能與便利：
+在 Mailable 類別的 `content` 方法中，可以定義 `view`，或者，可以說在 `content` 方法中指定轉譯郵件內容時要使用哪個樣板。由於一般來說大部分郵件都是使用 [Blade 樣板]來轉譯內容的，因此在建立郵件內容時，我們就可以使用 [Blade 樣板引擎](/docs/{{version}}/blade)的完整功能與便利：
 
     /**
-     * Build the message.
+     * Get the message content definition.
      *
-     * @return $this
+     * @return \Illuminate\Mail\Mailables\Content
      */
-    public function build()
+    public function content()
     {
-        return $this->view('emails.orders.shipped');
+        return new Content(
+            view: 'emails.orders.shipped',
+        );
     }
 
 > **Note** 可以建立一個 `resources/views/emails` 目錄來放置所有的郵件樣板。不過，不一定要放在這個目錄，可以隨意放在 `resources/views` 目錄下。
@@ -248,18 +266,27 @@ php artisan make:mail OrderShipped
 
 #### 純文字郵件
 
-若想為郵件定義純文字版本，可使用 `text` 方法。與 `view` 方法一樣，`text` 方法接受一個用來轉譯郵件內容的樣板名稱。可以同時為郵件定義 HTML 與純文字版本：
+若想為郵件定義純文字版本，可以在定義訊息的 `Content` 時使用 `text` 方法。與 `view` 參數類似，`text` 參數應為用來轉譯 E-Mail 內容的樣板名稱。可以同時為訊息定義 HTML 與純文字的版本：
 
     /**
-     * Build the message.
+     * Get the message content definition.
      *
-     * @return $this
+     * @return \Illuminate\Mail\Mailables\Content
      */
-    public function build()
+    public function content()
     {
-        return $this->view('emails.orders.shipped')
-                    ->text('emails.orders.shipped_plain');
+        return new Content(
+            view: 'emails.orders.shipped',
+            text: 'emails.orders.shipped-text'
+        );
     }
+
+為了讓程式碼更清除，可以使用 `html` 參數。這個參數是 `view` 參數的別名：
+
+    return new Content(
+        html: 'emails.orders.shipped',
+        text: 'emails.orders.shipped-text'
+    );
 
 <a name="view-data"></a>
 
@@ -278,6 +305,7 @@ php artisan make:mail OrderShipped
     use App\Models\Order;
     use Illuminate\Bus\Queueable;
     use Illuminate\Mail\Mailable;
+    use Illuminate\Mail\Mailables\Content;
     use Illuminate\Queue\SerializesModels;
     
     class OrderShipped extends Mailable
@@ -303,13 +331,15 @@ php artisan make:mail OrderShipped
         }
     
         /**
-         * Build the message.
+         * Get the message content definition.
          *
-         * @return $this
+         * @return \Illuminate\Mail\Mailables\Content
          */
-        public function build()
+        public function content()
         {
-            return $this->view('emails.orders.shipped');
+            return new Content(
+                view: 'emails.orders.shipped',
+            );
         }
     }
 
@@ -319,11 +349,11 @@ php artisan make:mail OrderShipped
         Price: {{ $order->price }}
     </div>
 
-<a name="via-the-with-method"></a>
+<a name="via-the-with-parameter"></a>
 
-#### 通過 `with` 方法：
+#### 通過 `with` 參數：
 
-若想在資料被傳給樣板前自訂其格式，可使用 `with` 方法來手動傳入資料。一般來說，我們還是會使用 Mailable 類別的 Constroctor 來傳入資料。不過，我們可以將該資料設為 `protected` 或 `private` 屬性，這樣樣板中才不會有這些資料。接著，呼叫 `with` 方法，傳入欲在樣板中使用的資料：
+若想在資料被傳給樣板前自訂其格式，可使用 `Content` 定義的 `with` 參數來手動將資料傳給 View。一般來說，我們還是會使用 Mailable 類別的 Constroctor 來傳入資料。不過，我們可以將該資料設為 `protected` 或 `private` 屬性，這樣這些資料才不會被自動暴露到樣板中：
 
     <?php
     
@@ -332,6 +362,7 @@ php artisan make:mail OrderShipped
     use App\Models\Order;
     use Illuminate\Bus\Queueable;
     use Illuminate\Mail\Mailable;
+    use Illuminate\Mail\Mailables\Content;
     use Illuminate\Queue\SerializesModels;
     
     class OrderShipped extends Mailable
@@ -357,17 +388,19 @@ php artisan make:mail OrderShipped
         }
     
         /**
-         * Build the message.
+         * Get the message content definition.
          *
-         * @return $this
+         * @return \Illuminate\Mail\Mailables\Content
          */
-        public function build()
+        public function content()
         {
-            return $this->view('emails.orders.shipped')
-                        ->with([
-                            'orderName' => $this->order->name,
-                            'orderPrice' => $this->order->price,
-                        ]);
+            return new Content(
+                view: 'emails.orders.shipped',
+                with: [
+                    'orderName' => $this->order->name,
+                    'orderPrice' => $this->order->price,
+                ],
+            );
         }
     }
 
@@ -381,97 +414,105 @@ php artisan make:mail OrderShipped
 
 ### 附加檔案
 
-若要將檔案附加至 E-Mail，請使用 Mailable 類別 `build` 方法中的 `attach` 方法。`attach` 方法接受檔案的完整路徑作為其第一個引數：
+若要將附件加到 E-Mail 中，可以在訊息的 `attachments` 方法所回傳的陣列內加上附件。首先，我們需要將附件的檔案路徑提供給 `Attachment` 類別的 `fromPath` 方法來加上附件：
 
+    use Illuminate\Mail\Mailables\Attachment;
+    
     /**
-     * Build the message.
+     * Get the attachments for the message.
      *
-     * @return $this
+     * @return \Illuminate\Mail\Mailables\Attachment[]
      */
-    public function build()
+    public function attachments()
     {
-        return $this->view('emails.orders.shipped')
-                    ->attach('/path/to/file');
+        return [
+            Attachment::fromPath('/path/to/file'),
+        ];
     }
 
-將檔案附加至訊息時，也可傳入一個陣列給 `attach` 方法來指定要顯示的檔案名稱與 / 或 MIME 類型：
+將檔案附加至訊息時，也可以使用 `as` 與 `withMime` 方法來指定附件的顯示名稱與／或 MIME 型別：
 
     /**
-     * Build the message.
+     * Get the attachments for the message.
      *
-     * @return $this
+     * @return \Illuminate\Mail\Mailables\Attachment[]
      */
-    public function build()
+    public function attachments()
     {
-        return $this->view('emails.orders.shipped')
-                    ->attach('/path/to/file', [
-                        'as' => 'name.pdf',
-                        'mime' => 'application/pdf',
-                    ]);
+        return [
+            Attachment::fromPath('/path/to/file')
+                    ->as('name.pdf')
+                    ->withMime('application/pdf'),
+        ];
     }
 
 <a name="attaching-files-from-disk"></a>
 
 #### 從 Disk 中附加檔案
 
-若有儲存在[檔案系統 Disk](/docs/{{version}}/filesystem)中的檔案，可使用 `attachFromStorage` 方法來將其附加至郵件中：
+若有儲存在[檔案系統 Disk](/docs/{{version}}/filesystem)中的檔案，可使用 `fromStorage` 方法來將其附加至郵件中：
 
     /**
-     * Build the message.
+     * Get the attachments for the message.
      *
-     * @return $this
+     * @return \Illuminate\Mail\Mailables\Attachment[]
      */
-    public function build()
+    public function attachments()
     {
-       return $this->view('emails.orders.shipped')
-                   ->attachFromStorage('/path/to/file');
+        return [
+            Attachment::fromStorage('/path/to/file'),
+        ];
     }
 
-若有需要，可使用 `attachFromStorage` 方法的第三與第四個引數來指定檔案名稱與其他額外的選項：
+當然，也可以指定附件的名稱與 MIME 型別：
 
     /**
-     * Build the message.
+     * Get the attachments for the message.
      *
-     * @return $this
+     * @return \Illuminate\Mail\Mailables\Attachment[]
      */
-    public function build()
+    public function attachments()
     {
-       return $this->view('emails.orders.shipped')
-                   ->attachFromStorage('/path/to/file', 'name.pdf', [
-                       'mime' => 'application/pdf'
-                   ]);
+        return [
+            Attachment::fromStorage('/path/to/file')
+                    ->as('name.pdf')
+                    ->withMime('application/pdf'),
+        ];
     }
 
-若想指定預設以外的 Disk，可使用 `attachFromStorageDisk` 方法：
+若想指定非預設的 Disk，可使用 `fromStorageDisk` 方法：
 
     /**
-     * Build the message.
+     * Get the attachments for the message.
      *
-     * @return $this
+     * @return \Illuminate\Mail\Mailables\Attachment[]
      */
-    public function build()
+    public function attachments()
     {
-       return $this->view('emails.orders.shipped')
-                   ->attachFromStorageDisk('s3', '/path/to/file');
+        return [
+            Attachment::fromStorageDisk('s3', '/path/to/file')
+                    ->as('name.pdf')
+                    ->withMime('application/pdf'),
+        ];
     }
 
 <a name="raw-data-attachments"></a>
 
 #### 原始資料附加檔案
 
-可使用 `attachData` 方法來以位元組原始字串的形式作為附件附加。舉例來說，我們可能會在記憶體內產生 PDF，然後想在不寫入 Disk 的情況下將其附加到郵件上。`attachData` 方法接受原始資料位元組作為其第一個引數，檔案名稱為其第二個引數，然後是一組選項陣列作為其第三個引數：
+可使用 `fromData` 方法來將位元組原始字串 (Raw String of Bytes) 形式的值作為附件附加。舉例來說，我們可能會在記憶體內產生 PDF，然後想在不寫入 Disk 的情況下將其附加到郵件上。`fromData` 方法需傳入一個閉包，Laravel 會使用該閉包用來取得原始資料字串，以及附加檔案的名稱：
 
     /**
-     * Build the message.
+     * Get the attachments for the message.
      *
-     * @return $this
+     * @return \Illuminate\Mail\Mailables\Attachment[]
      */
-    public function build()
+    public function attachments()
     {
-        return $this->view('emails.orders.shipped')
-                    ->attachData($this->pdf, 'name.pdf', [
-                        'mime' => 'application/pdf',
-                    ]);
+        return [
+            Attachment::fromData(fn () => $this->pdf, 'Report.pdf')
+                    ->withMime('application/pdf'),
+        ];
     }
 
 <a name="inline-attachments"></a>
@@ -533,17 +574,16 @@ php artisan make:mail OrderShipped
         }
     }
 
-Once you have defined your attachable object, you may simply pass an instance of that object to the `attach` method when building an email message:
+定義好可附加的物件後，就可以在建立 E-Mail 訊息時從 `attachments` 方法中回傳該物件的實體：
 
     /**
-     * Build the message.
+     * Get the attachments for the message.
      *
-     * @return $this
+     * @return array
      */
-    public function build()
+    public function attachments()
     {
-        return $this->view('photos.resized')
-                    ->attach($this->photo);
+        return [$this->photo];
     }
 
 當然，要附加的資料也可能存放在如 Amazon S3 之類的遠端檔案儲存服務上。因此，在 Laravel 中，我們可以從存放在專案[檔案系統磁碟](/docs/{{version}}/filesystem)上的資料來產生附件實體：
@@ -564,22 +604,54 @@ Laravel 也提供了一些額外的方法，讓我們可以自訂附件。舉例
             ->as('Photo Name')
             ->withMime('image/jpeg');
 
+<a name="headers"></a>
+
+### 標頭 (Header)
+
+有時候，我們會需要在連外訊息中加上額外的標頭。舉例來說，我們可能會需要設定自定的 `Message-Id` 或其他任意的文字標頭。
+
+若要設定標頭，請在 Mailable 內定義一個 `headers` 方法。`headers` 方法應回傳 `Illuminate\Mail\Mailables\Headers` 實體。該類別接受 `messageId`、`references`、與 `text` 參數。當然，我們只需要提供該訊息所需要的參數即可：
+
+    use Illuminate\Mail\Mailables\Headers;
+    
+    /**
+     * Get the message headers.
+     *
+     * @return \Illuminate\Mail\Mailables\Headers
+     */
+    public function headers()
+    {
+        return new Headers(
+            messageId: 'custom-message-id@example.com',
+            references: ['previous-message@example.com'],
+            text: [
+                'X-Custom-Header' => 'Custom Value',
+            ],
+        );
+    }
+
 <a name="tags-and-metadata"></a>
 
 ### Tag 與詮釋資料
 
-Some third-party email providers such as Mailgun and Postmark support message "tags" and "metadata", which may be used to group and track emails sent by your application. You may add tags and metadata to an email message via the `tag` and `metadata` methods:
+有的第三方 E-Mail 提供商，如 Mailgun 或 Postmark 等，支援訊息的「Tag」與「詮釋資料 (Metadata)」，使用 Tag 與詮釋資料，就可以對專案所送出的 E-Mail 進行分組與追蹤。可以通過 `Evelope` 定義來為 E-Mail 訊息加上 Tag 與詮釋資料：
 
+    use Illuminate\Mail\Mailables\Envelope;
+    
     /**
-     * Build the message.
+     * Get the message envelope.
      *
-     * @return $this
+     * @return \Illuminate\Mail\Mailables\Envelope
      */
-    public function build()
+    public function envelope()
     {
-        return $this->view('emails.orders.shipped')
-                    ->tag('shipment')
-                    ->metadata('order_id', $this->order->id);
+        return new Envelope(
+            subject: 'Order Shipped',
+            tags: ['shipment'],
+            metadata: [
+                'order_id' => $this->order->id,
+            ],
+        );
     }
 
 若使用 Mailgun Driver，請參考 Mailgun 說明文件中有關 [Tag](https://documentation.mailgun.com/en/latest/user_manual.html#tagging-1) 與[詮釋資料](https://documentation.mailgun.com/en/latest/user_manual.html#attaching-data-to-messages)的更多資訊。同樣地，也請參考 Postmark 說明文件中有關 [Tag](https://postmarkapp.com/blog/tags-support-for-smtp) 與[詮釋資料](https://postmarkapp.com/support/article/1125-custom-metadata-faq)的更多資料。
@@ -590,26 +662,26 @@ Some third-party email providers such as Mailgun and Postmark support message "t
 
 ### 自訂 Symfony Message
 
-The `withSymfonyMessage` method of the `Mailable` base class allows you to register a closure which will be invoked with the Symfony Message instance before sending the message. This gives you an opportunity to deeply customize the message before it is delivered:
+Laravel 的郵件是使用 Symfony Mailer 驅動的。在 Laravel 中，我們可以註冊一個在寄送訊息前會被呼叫的回呼，該回呼會收到 Symfony Message 實體。這樣，我們就能在郵件被寄送前深度自定訊息。若要註冊這個回呼，可以在 `Evelope` 實體上定義一個 `using` 參數：
 
+    use Illuminate\Mail\Mailables\Envelope;
     use Symfony\Component\Mime\Email;
     
     /**
-     * Build the message.
+     * Get the message envelope.
      *
-     * @return $this
+     * @return \Illuminate\Mail\Mailables\Envelope
      */
-    public function build()
+    public function envelope()
     {
-        $this->view('emails.orders.shipped');
-    
-        $this->withSymfonyMessage(function (Email $message) {
-            $message->getHeaders()->addTextHeader(
-                'Custom-Header', 'Header Value'
-            );
-        });
-    
-        return $this;
+        return new Envelope(
+            subject: 'Order Shipped',
+            using: [
+                function (Email $message) {
+                    // ...
+                },
+            ]
+        );
     }
 
 <a name="markdown-mailables"></a>
@@ -628,19 +700,23 @@ Markdown Mailer 訊息可讓我們在 Mailable 內使用內建樣板與 [Mail No
 php artisan make:mail OrderShipped --markdown=emails.orders.shipped
 ```
 
-接著，在 `build` 方法內設定 Mailable 時，不呼叫 `view` 方法，而是改呼叫 `markdown` 方法。`makrdown` 方法接受 Markdown 樣板的名稱，以及一組用來提供給樣板的可選資料陣列：
+接著，在 `content` 方法中設定 Mailable 的 `Content` 定義時，請將 `view` 參數改成 `markdown` 參數：
 
+    use Illuminate\Mail\Mailables\Content;
+    
     /**
-     * Build the message.
+     * Get the message content definition.
      *
-     * @return $this
+     * @return \Illuminate\Mail\Mailables\Content
      */
-    public function build()
+    public function content()
     {
-        return $this->from('example@example.com')
-                    ->markdown('emails.orders.shipped', [
-                        'url' => $this->orderUrl,
-                    ]);
+        return new Content(
+            markdown: 'emails.orders.shipped',
+            with: [
+                'url' => $this->orderUrl,
+            ],
+        );
     }
 
 <a name="writing-markdown-messages"></a>
@@ -650,18 +726,18 @@ php artisan make:mail OrderShipped --markdown=emails.orders.shipped
 Markdown 的 Markdown 使用 Blade 元件與 Markdown 格式的組合，讓我們能輕鬆地使用 Laravel 內建的 E-Mail UI 元件來建立訊息：
 
 ```blade
-@component('mail::message')
+<x-mail::message>
 # Order Shipped
 
 Your order has been shipped!
 
-@component('mail::button', ['url' => $url])
+<x-mail::button :url="$url">
 View Order
-@endcomponent
+</x-mail::button>
 
 Thanks,<br>
 {{ config('app.name') }}
-@endcomponent
+</x-mail::message>
 ```
 
 > **Note** 在撰寫 Markdown 郵件時請不要增加縮排。依據 Markdown 標準，Markdown 解析程式會將縮排的內容轉譯為程式碼區塊。
@@ -673,9 +749,9 @@ Thanks,<br>
 Button 元件轉譯一個置中的按鈕連結。這個元件接受兩個引數，一個是 `url` 網址，另一個則是可選的 `color` 顏色。支援的顏色有 `primary`、`success`、`error`。在訊息中可以加上不限數量的 Button 元件：
 
 ```blade
-@component('mail::button', ['url' => $url, 'color' => 'success'])
+<x-mail::button :url="$url" color="success">
 View Order
-@endcomponent
+</x-mail::button>
 ```
 
 <a name="panel-component"></a>
@@ -685,9 +761,9 @@ View Order
 Panel 元件將給定的文字區塊轉譯在一個面板中，面板的底色與訊息中其他部分的背景色稍有不同。我們可以使用 Panel 元件來讓給定區塊的文字較為醒目：
 
 ```blade
-@component('mail::panel')
+<x-mail::panel>
 This is the panel content.
-@endcomponent
+</x-mail::panel>
 ```
 
 <a name="table-component"></a>
@@ -697,12 +773,12 @@ This is the panel content.
 Table 元件可讓我們將 Markdown 表格轉為 HTML 表格。該元件接受一個 Markdown 表格作為其內容。支援使用預設的 Markdown 表格對其格式來對其表格欄位：
 
 ```blade
-@component('mail::table')
+<x-mail::table>
 | Laravel       | Table         | Example  |
 | ------------- |:-------------:| --------:|
 | Col 2 is      | Centered      | $10      |
 | Col 3 is      | Right-Aligned | $20      |
-@endcomponent
+</x-mail::table>
 ```
 
 <a name="customizing-the-components"></a>
@@ -952,7 +1028,7 @@ php artisan vendor:publish --tag=laravel-mail
 
 ## 測試 Mailable
 
-Laravel provides several convenient methods for testing that your mailables contain the content that you expect. These methods are: `assertSeeInHtml`, `assertDontSeeInHtml`, `assertSeeInOrderInHtml`, `assertSeeInText`, `assertDontSeeInText`, and `assertSeeInOrderInText`.
+Laravel 提供了各種可用來檢查 Mailable 結構的方法。此外，Laravel 還提供了多種方便的方法，可讓你測試 Mailable 是否包含預期的內容。這些測試方法有：`assertSeeInHtml`, `assertDontSeeInHtml`, `assertSeeInOrderInHtml`, `assertSeeInText`, `assertDontSeeInText`, `assertSeeInOrderInText`, `assertHasAttachment`, `assertHasAttachedData`, `assertHasAttachmentFromStorage`, 與 `assertHasAttachmentFromStorageDisk`。
 
 就和預期的一樣，有「HTML」的^ [Assertion](判斷提示) 判斷 HTML 版本的 Mailable 是否包含給定字串，而「Text」版本的 Assertion 則判斷純文字版本的 Mailable 是否包含給定字串：
 
@@ -965,12 +1041,27 @@ Laravel provides several convenient methods for testing that your mailables cont
     
         $mailable = new InvoicePaid($user);
     
+        $mailable->assertFrom('jeffrey@example.com');
+        $mailable->assertTo('taylor@example.com');
+        $mailable->assertHasCc('abigail@example.com');
+        $mailable->assertHasBcc('victoria@example.com');
+        $mailable->assertHasReplyTo('tyler@example.com');
+        $mailable->assertHasSubject('Invoice Paid');
+        $mailable->assertHasTag('example-tag');
+        $mailable->assertHasMetadata('key', 'value');
+    
         $mailable->assertSeeInHtml($user->email);
         $mailable->assertSeeInHtml('Invoice Paid');
         $mailable->assertSeeInOrderInHtml(['Invoice Paid', 'Thanks']);
     
         $mailable->assertSeeInText($user->email);
         $mailable->assertSeeInOrderInText(['Invoice Paid', 'Thanks']);
+    
+        $mailable->assertHasAttachment('/path/to/file');
+        $mailable->assertHasAttachment(Attachment::fromPath('/path/to/file'));
+        $mailable->assertHasAttachedData($pdfData, 'name.pdf', ['mime' => 'application/pdf']);
+        $mailable->assertHasAttachmentFromStorage('/path/to/file', 'name.pdf', ['mime' => 'application/pdf']);
+        $mailable->assertHasAttachmentFromStorageDisk('s3', '/path/to/file', 'name.pdf', ['mime' => 'application/pdf']);
     }
 
 <a name="testing-mailable-sending"></a>
@@ -1025,17 +1116,23 @@ Laravel provides several convenient methods for testing that your mailables cont
 
 在處理郵件訊息寄送時，Laravel 會觸發兩個事件。`MessageSending` 事件會在寄出郵件前觸發，而`MessageSent` 事件則會在訊息寄出後觸發。請記得，這些事件都是在 *寄送* 郵件的時候出發的，而不是在放入佇列時觸發。可以在 `App\Providers\EventServiceProvider` Service Provider 上為這些 Event 註冊 Listener：
 
+    use App\Listeners\LogSendingMessage;
+    use App\Listeners\LogSentMessage;
+    use Illuminate\Mail\Events\MessageSending;
+    use Illuminate\Mail\Events\MessageSent;
+    
     /**
      * The event listener mappings for the application.
      *
      * @var array
      */
     protected $listen = [
-        'Illuminate\Mail\Events\MessageSending' => [
-            'App\Listeners\LogSendingMessage',
+        MessageSending::class => [
+            LogSendingMessage::class,
         ],
-        'Illuminate\Mail\Events\MessageSent' => [
-            'App\Listeners\LogSentMessage',
+    
+        MessageSent::class => [
+            LogSentMessage::class,
         ],
     ];
 
@@ -1067,6 +1164,8 @@ Laravel 中包含了許多的 Mail Transport。不過，有時候我們可能會
          */
         public function __construct(ApiClient $client)
         {
+            parent::__construct();
+            
             $this->client = $client;
         }
     

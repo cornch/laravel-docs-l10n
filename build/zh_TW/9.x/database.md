@@ -19,6 +19,8 @@ updatedAt: '2023-01-25T10:52:00Z'
    - [監控積累的查詢時間](#monitoring-cumulative-query-time)
 - [資料庫 Transaction](#database-transactions)
 - [連線至資料庫 CLI](#connecting-to-the-database-cli)
+- [檢視資料庫](#inspecting-your-databases)
+- [監控資料庫](#monitoring-your-databases)
 
 <a name="introduction"></a>
 
@@ -28,7 +30,7 @@ updatedAt: '2023-01-25T10:52:00Z'
 
 <div class="content-list" markdown="1">
 
-- MariaDB 10.2+ ([版本政策](https://mariadb.org/about/#maintenance-policy))
+- MariaDB 10.3+ ([版本政策](https://mariadb.org/about/#maintenance-policy))
 - MySQL 5.7+ ([版本政策](https://en.wikipedia.org/wiki/MySQL#Release_history))
 - PostgreSQL 10.0+ ([版本政策](https://www.postgresql.org/support/versioning/))
 - SQLite 3.8.8+
@@ -320,6 +322,7 @@ driver://username:password@host:port/database?options
     use Illuminate\Database\Connection;
     use Illuminate\Support\Facades\DB;
     use Illuminate\Support\ServiceProvider;
+    use Illuminate\Database\Events\QueryExecuted;
     
     class AppServiceProvider extends ServiceProvider
     {
@@ -340,7 +343,7 @@ driver://username:password@host:port/database?options
          */
         public function boot()
         {
-            DB::whenQueryingForLongerThan(500, function (Connection $connection) {
+            DB::whenQueryingForLongerThan(500, function (Connection $connection, QueryExecuted $event) {
                 // Notify development team...
             });
         }
@@ -408,4 +411,73 @@ php artisan db
 
 ```shell
 php artisan db mysql
+```
+
+<a name="inspecting-your-databases"></a>
+
+## 檢視資料庫
+
+使用 `db:show` 與 `db:table` Artisan 指令，即可檢視有關資料庫與其關聯的資料表的各種實用資料。若要檢視資料庫的概覽，如資料庫大小、型別、開啟中的連線數、資料表概覽等，可使用 `db:show` 指令：
+
+```shell
+php artisan db:show
+```
+
+也可以提供 `--database` 選項來提供要檢視的資料庫連線名稱：
+
+```shell
+php artisan db:show --database=pgsql
+```
+
+若要在該指令的輸出中包含資料表的行數統計與資料庫 View 的詳情，可提供 `--counts` 與 `--views`，這兩個指令分別對應了此二功能。在大型資料庫中，取得行數與 View 的詳情可能較慢：
+
+```shell
+php artisan db:show --counts --views
+```
+
+<a name="table-overview"></a>
+
+#### 資料表概覽
+
+若想取得資料庫中個別資料表的概覽，可執行 `db:table` Artisan 指令。該指令會為某個資料庫資料表提供一般性的概覽，包含其欄位、型別、屬性、索引鍵、與索引等：
+
+```shell
+php artisan db:table users
+```
+
+<a name="monitoring-your-databases"></a>
+
+## 監控資料庫
+
+使用 `db:monitor` Artisan 指令，當資料庫中處理了超過特定數量的連線時，Laravel 就會分派一個 `Illuminate\Database\Events\DatabaseBusy` 事件。
+
+若要開始監控資料庫，可設定排程，[每分鐘](/docs/{{version}}/scheduling)都執行一次 `db:monitor` 指令。可傳入要監控的資料庫連線名稱給該指令，或是分派 Event 前可允許的最大開放連線數：
+
+```shell
+php artisan db:monitor --databases=mysql,pgsql --max=100
+```
+
+若只排程執行該指令，檔開放連線數過高時仍然不會觸發通知來提醒你。當該指令偵測到資料庫的開放連線數超過指定的閥值時，會分派一個 `DatabaseBusy` 事件。我們需要在專案的 `EventServiceProvider` 內監聽該事件，才能將通知傳送給你，或是你的開發團隊：
+
+```php
+use App\Notifications\DatabaseApproachingMaxConnections;
+use Illuminate\Database\Events\DatabaseBusy;
+use Illuminate\Support\Facades\Event;
+use Illuminate\Support\Facades\Notification;
+
+/**
+ * Register any other events for your application.
+ *
+ * @return void
+ */
+public function boot()
+{
+    Event::listen(function (DatabaseBusy $event) {
+        Notification::route('mail', 'dev@example.com')
+                ->notify(new DatabaseApproachingMaxConnections(
+                    $event->connectionName,
+                    $event->connections
+                ));
+    });
+}
 ```

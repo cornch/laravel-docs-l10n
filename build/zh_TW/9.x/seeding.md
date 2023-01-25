@@ -35,7 +35,7 @@ updatedAt: '2023-01-25T14:53:00Z'
 php artisan make:seeder UserSeeder
 ```
 
-Seeder 類別中預設只包含了一個方法：`run`。執行 `db:seed` [Artisan 指令](/docs/{{version}}/artisan) 時，會呼叫該方法。在 `run` 方法中，我們可以任意將資料寫入資料庫內。我們可以使用 [Query Builder](/docs/{{version}}/queries) 來手動寫入資料，或是使用 [Eloquent Model Factory](/docs/{{version}}/database-testing#defining-model-factories) 來寫入資料。
+Seeder 類別中預設只包含了一個方法：`run`。執行 `db:seed` [Artisan 指令](/docs/{{version}}/artisan) 時，會呼叫該方法。在 `run` 方法中，我們可以任意將資料寫入資料庫內。我們可以使用 [Query Builder](/docs/{{version}}/queries) 來手動寫入資料，或是使用 [Eloquent Model Factory](/docs/{{version}}/eloquent-factories) 來寫入資料。
 
 來看看一個範例，讓我們來修改預設的 `DatabaseSeeder` 類別，並在 `run` 方法內新增一個資料庫 Insert 陳述式：
 
@@ -71,7 +71,7 @@ Seeder 類別中預設只包含了一個方法：`run`。執行 `db:seed` [Artis
 
 ### 使用 Model Factory
 
-當然，手動為每個要填入的 Model 指定屬性值是很麻煩的。我們不需要這麼做，而可以使用 [Model Factory](/docs/{{version}}/database-testing#defining-model-factories) 來方便地產生大量資料。首先，請先看看 [Model Factory 的說明文件](/docs/{{version}}/database-testing#defining-model-factories)以瞭解如何定義 Factory。
+當然，手動為每個要填入的 Model 指定屬性值是很麻煩的。我們不需要這麼做，而可以使用 [Model Factory](/docs/{{version}}/eloquent-factories) 來方便地產生大量資料。首先，請先看看 [Model Factory 的說明文件](/docs/{{version}}/eloquent-factories)以瞭解如何定義 Factory。
 
 舉例來說，我們先來建立 50 個使用者，其中每個使用者都有 1 篇關聯的貼文：
 
@@ -152,10 +152,12 @@ php artisan db:seed
 php artisan db:seed --class=UserSeeder
 ```
 
-我們也可以使用 `migrate:fresh` 指令，並搭配 `--seed` 選項來填充資料。該指令會刪除所有資料表，並重新執行所有的 Migration。若有需要完全重建資料庫，就很適合使用這個指令：
+我們也可以使用 `migrate:fresh` 指令，並搭配 `--seed` 選項來填充資料。該指令會刪除所有資料表，並重新執行所有的 Migration。若有需要完全重建資料庫，就很適合使用這個指令。`--seeder` 選項可用來指定執行特定的 Seeder：
 
 ```shell
 php artisan migrate:fresh --seed
+
+php artisan migrate:fresh --seed --seeder=UserSeeder
 ```
 
 <a name="forcing-seeding-production"></a>

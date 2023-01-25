@@ -141,7 +141,7 @@ php artisan test --parallel --processes=4
 
 #### 平行測試與資料庫
 
-Laravel 會自動為每個執行測試的平行處理程序建立並 Migrate 測試資料庫。Laravel 會使用每個處理程序都不同的處理程序 Token 來作為資料庫的前置詞。舉例來說，若有兩個平行的測試處理程序，則 Laravel 會建立並使用 `your_db_test_1` 與 `your_db_test_2` 測試資料庫。
+只要你有設定主要的資料庫連線，Laravel 就會自動為每個執行測試的平行處理程序建立並 Migrate 測試資料庫。Laravel 會使用每個處理程序都不同的處理程序 Token 來作為資料庫的前置詞。舉例來說，若有兩個平行的測試處理程序，則 Laravel 會建立並使用 `your_db_test_1` 與 `your_db_test_2` 測試資料庫。
 
 預設情況下，在不同的 `test` Artisan 指令間，會共用相同的測試資料庫，以在連續呼叫 `test` 指令時使用這些資料庫。不過，我們也可以使用 `--create-databases` 選項來重新建立測試資料庫：
 

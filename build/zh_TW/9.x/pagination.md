@@ -170,6 +170,7 @@ select * from users where id > 15 order by id asc limit 15;
 - 與 `simplePaginate` 類似，使用 Cursor 的 Pagination 只能顯示「下一頁」與「上一頁」的連結，無法產生頁碼連結。
 - 在使用 Cursor 的 Pagination 中，必須至少以 1 個不重複欄位排序，或是以多個組合起來不重複的欄位進行排序。不支援有 `null` 值的欄位。
 - 若要在「Order By」子句中包含運算式，則必須先將這些運算式加到「Select」子句內，並設定^[別名](Alias)後以別名來在「Order By」中使用。
+- 不支援有參數的查詢運算式。
 
 <a name="manually-creating-a-paginator"></a>
 

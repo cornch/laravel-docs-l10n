@@ -13,7 +13,7 @@ updatedAt: '2023-01-25T14:53:00Z'
 - [簡介](#introduction)
 - [使用 Request](#interacting-with-the-request)
    - [存取 Request](#accessing-the-request)
-   - [Request 路徑與方法](#request-path-and-method)
+   - [Request 路徑、主機、與方法](#request-path-and-method)
    - [Request 標頭](#request-headers)
    - [Request 的 IP 位址](#request-ip-address)
    - [判斷適當的內容](#content-negotiation)
@@ -52,20 +52,20 @@ Laravel 的 `Illuminate\Http\Request` 類別提供了一種物件導向的方法
     namespace App\Http\Controllers;
     
     use Illuminate\Http\Request;
+    use Illuminate\Http\Response;
     
     class UserController extends Controller
     {
         /**
          * Store a new user.
-         *
-         * @param  \Illuminate\Http\Request  $request
-         * @return \Illuminate\Http\Response
          */
-        public function store(Request $request)
+        public function store(Request $request): Response
         {
             $name = $request->input('name');
     
-            //
+            // ...
+    
+            return response()->noContent();
         }
     }
 
@@ -74,7 +74,7 @@ Laravel 的 `Illuminate\Http\Request` 類別提供了一種物件導向的方法
     use Illuminate\Http\Request;
     
     Route::get('/', function (Request $request) {
-        //
+        // ...
     });
 
 <a name="dependency-injection-route-parameters"></a>
@@ -94,25 +94,24 @@ Laravel 的 `Illuminate\Http\Request` 類別提供了一種物件導向的方法
     namespace App\Http\Controllers;
     
     use Illuminate\Http\Request;
+    use Illuminate\Http\Response;
     
     class UserController extends Controller
     {
         /**
          * Update the specified user.
-         *
-         * @param  \Illuminate\Http\Request  $request
-         * @param  string  $id
-         * @return \Illuminate\Http\Response
          */
-        public function update(Request $request, $id)
+        public function update(Request $request, string $id): Response
         {
-            //
+            // ...
+    
+            return response()->noContent();
         }
     }
 
 <a name="request-path-and-method"></a>
 
-### Request 的路徑與方法
+### Request 路徑、主機、與方法
 
 `Illuminate\Http\Request` 提供了多種可檢查連入 HTTP Request 的方法。這個方法也繼承了 `Symfony\Component\HttpFoundation\Request` 類別。我們稍後會討論其中幾個最重要的方法。
 
@@ -131,13 +130,13 @@ Laravel 的 `Illuminate\Http\Request` 類別提供了一種物件導向的方法
 可以使用 `is` 方法來驗證連入 Request 的路徑是否符合給定的格式。使用這個方法的時候，可以使用 `*` 字元作為萬用字元：
 
     if ($request->is('admin/*')) {
-        //
+        // ...
     }
 
 使用 `routeIs` 方法可以判斷連入的 Request 是否為某個[命名 Route](/docs/{{version}}/routing#named-routes)：
 
     if ($request->routeIs('admin.*')) {
-        //
+        // ...
     }
 
 <a name="retrieving-the-request-url"></a>
@@ -154,6 +153,16 @@ Laravel 的 `Illuminate\Http\Request` 類別提供了一種物件導向的方法
 
     $request->fullUrlWithQuery(['type' => 'phone']);
 
+<a name="retrieving-the-request-host"></a>
+
+#### 取得 Request 主機
+
+可以使用 `host`、`httpHost`、與 `schemeAndHttpHost` 來取得連入 Request 的「主機」：
+
+    $request->host();
+    $request->httpHost();
+    $request->schemeAndHttpHost();
+
 <a name="retrieving-the-request-method"></a>
 
 #### 取得 Request 的方法
@@ -163,7 +172,7 @@ Laravel 的 `Illuminate\Http\Request` 類別提供了一種物件導向的方法
     $method = $request->method();
     
     if ($request->isMethod('post')) {
-        //
+        // ...
     }
 
 <a name="request-headers"></a>
@@ -179,7 +188,7 @@ Laravel 的 `Illuminate\Http\Request` 類別提供了一種物件導向的方法
 `hasHeader` 方法可用來判斷 Request 是否包含給定的標頭：
 
     if ($request->hasHeader('X-Header-Name')) {
-        //
+        // ...
     }
 
 為了方便起見，可以使用 `bearerToken` 方法來從 `Authorization` 標頭中取得 Bearer Token。若該標頭不存在，會回傳空字串：
@@ -234,10 +243,10 @@ composer require nyholm/psr7
     use Psr\Http\Message\ServerRequestInterface;
     
     Route::get('/', function (ServerRequestInterface $request) {
-        //
+        // ...
     });
 
-> {tip} 若從 Route 或 Controller 中回傳 PSR-7 Response，這個 Response 會先被轉回到 Laravel 的 Response 實體，然後才會由 Laravel 顯示出來。
+> **Note** 若從 Route 或 Controller 中回傳 PSR-7 Response，這個 Response 會先被轉回到 Laravel 的 Response 實體，然後才會由 Laravel 顯示出來。
 
 <a name="input"></a>
 
@@ -261,7 +270,7 @@ composer require nyholm/psr7
 
 使用 `collect` 方法也可以用來將連入 Request 輸入中的一部分取得為 Collection：
 
-    $request->collect('users')->each(function ($user) {
+    $request->collect('users')->each(function (string $user) {
         // ...
     });
 
@@ -307,9 +316,17 @@ composer require nyholm/psr7
 
 #### 取得 JSON 輸入值
 
-傳送 JSON 的 Request 時，只要 Request 的 `Content-Type` 由正確設定為 `application/json`，就可以使用 `input` 方法來存取 JSON 資料。也可以使用「點 (.)」標記法來存取 JSON 陣列中的巢狀資料：
+傳送 JSON 的 Request 時，只要 Request 的 `Content-Type` 由正確設定為 `application/json`，就可以使用 `input` 方法來存取 JSON 資料。也可以使用「點 (.)」標記法來存取 JSON 陣列／物件中的巢狀資料：
 
     $name = $request->input('user.name');
+
+<a name="retrieving-stringable-input-values"></a>
+
+#### 取得 Stringable 的輸入值
+
+除了將輸入值以原生型別的 `string` 取得，還可以使用 `string` 方法來將 Request 資料以 [`Illuminate\Support\Stringable`](/docs/{{version}}/helpers#fluent-strings) 實體的形式取得：
+
+    $name = $request->string('name')->trim();
 
 <a name="retrieving-boolean-input-values"></a>
 
@@ -332,6 +349,16 @@ composer require nyholm/psr7
     $elapsed = $request->date('elapsed', '!H:i', 'Europe/Madrid');
 
 若輸入中有值，但格式不正確時，會擲回 `InvalidArgumentException`。因此，建議你在叫用 `date` 方法前先驗證輸入。
+
+<a name="retrieving-enum-input-values"></a>
+
+#### 取得 Enum 輸入值
+
+也可以從 Request 中取得對應到 [PHP Enum](https://www.php.net/manual/en/language.types.enumerations.php) 的輸入值。若 Request 中沒有輸入值，或是給定的名稱或 Enum 中沒有符合該輸入值的後端值 (Backing Value)，則會回傳 `null`。`enum` 方法的第一個引數為輸入值的名稱、第二個引數為 Enum 類別：
+
+    use App\Enums\Status;
+    
+    $status = $request->enum('status', Status::class);
 
 <a name="retrieving-input-via-dynamic-properties"></a>
 
@@ -357,7 +384,7 @@ composer require nyholm/psr7
     
     $input = $request->except('credit_card');
 
-> {note} `only` 方法會回傳所要求的所有索引鍵 / 值配對組。不過，若要求的索引鍵 / 值配對未出現在 Request 中，將不會回傳。
+> **Warning** `only` 方法會回傳所要求的所有索引鍵 / 值配對組。不過，若要求的索引鍵 / 值配對未出現在 Request 中，將不會回傳。
 
 <a name="determining-if-input-is-present"></a>
 
@@ -366,66 +393,72 @@ composer require nyholm/psr7
 可以使用 `has` 方法來判斷某個值是否存在 Request 中。若給定的輸入值存在於 Request 中，`has` 方法會回傳 `true`：
 
     if ($request->has('name')) {
-        //
+        // ...
     }
 
 傳入陣列時，`has` 方法判斷其中所有的值是否都存在：
 
     if ($request->has(['name', 'email'])) {
-        //
+        // ...
     }
 
 `whenHas` 方法會執行給定的閉包來判斷某個值是否存在於 Request 中：
 
-    $request->whenHas('name', function ($input) {
-        //
+    $request->whenHas('name', function (string $input) {
+        // ...
     });
 
 可以傳入第二個閉包給 `whenHas` 方法，當指定的值未存在於 Request 中，則會執行這個閉包：
 
-    $request->whenHas('name', function ($input) {
-        // The "name" value is present...
+    $request->whenHas('name', function (string $input) {
+        // 有「name」值...
     }, function () {
-        // The "name" value is not present...
+        // 沒有「name」值...
     });
 
 `hasAny` 方法會給定的值有其中一個存在時回傳 `true`：
 
     if ($request->hasAny(['name', 'email'])) {
-        //
+        // ...
     }
 
-若想判斷某個值是否有出現在 Request 中，且該值不為空時，可使用 `filled` 方法：
+若想判斷某個值是否有出現在 Request 中，且該值不是空字串時，可使用 `filled` 方法：
 
     if ($request->filled('name')) {
-        //
+        // ...
     }
 
-`whenFilled` 方法會執行給定的閉包來判斷 Request 中某個值是否為空：
+`whenFilled` 方法會執行給定的閉包來判斷 Request 中某個值是否為空字串：
 
-    $request->whenFilled('name', function ($input) {
-        //
+    $request->whenFilled('name', function (string $input) {
+        // ...
     });
 
 可以傳入第二個閉包給 `whenFilled` 方法，當 Request 中指定的值為空時會執行這個閉包：
 
-    $request->whenFilled('name', function ($input) {
+    $request->whenFilled('name', function (string $input) {
         // 已填寫「name」...
     }, function () {
         // 未填寫「name」...
     });
 
-若要判斷 Request 中是否不存在給定的索引鍵，可使用 `missing` 方法：
+若要判斷 Request 中是否不存在給定的索引鍵，可使用 `missing` 方法與 `whenMissing` 方法：
 
     if ($request->missing('name')) {
-        //
+        // ...
     }
+    
+    $request->whenMissing('name', function (array $input) {
+        // 沒有「name」值...
+    }, function () {
+        // 有「name」值...
+    });
 
 <a name="merging-additional-input"></a>
 
 ### 合併額外的輸入
 
-有時候，我們可能會想手動把額外的輸入合併到 Request 中現存的輸入資料內。為此，可以使用 `merge` 方法：
+有時候，我們需要手動合併額外的輸入到 Request 中現有的輸入資料。這種情況下，可使用 `merge` 方法。若 Request 中已存在給定的輸入索引鍵，則會使用提供給 `merge` 方法的資料來複寫：
 
     $request->merge(['votes' => 0]);
 
@@ -495,9 +528,33 @@ Laravel 也提供了一個全域 `old` 輔助函式。若想在 [Blade 樣板](/
 
 ## 輸入修剪與正常化
 
-預設情況下，Laravel 中包含了 `App\Http\Middleware\TrimStrings` 與 `App\Http\Middleware\ConvertEmptyStringsToNull` 這兩個 Middleware，且放在程式的全域 Middleware Stack 中。這些 Middleware 被列在 `App\Http\Kernel` 類別的全域 Middleware Stack 中。這些 Middleware 會自動修剪 Request 中的所有連入子船，並將空白的字串欄位轉為 `null`。這樣，我們就不需要在 Route 或 Controller 中去費心正常化這些資料。
+預設情況下，Laravel 中包含了 `App\Http\Middleware\TrimStrings` 與 `Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull` 這兩個 Middleware，且放在程式的全域 Middleware Stack 中。這些 Middleware 被列在 `App\Http\Kernel` 類別的全域 Middleware Stack 中。這些 Middleware 會自動修剪 Request 中的所有連入子船，並將空白的字串欄位轉為 `null`。這樣，我們就不需要在 Route 或 Controller 中去費心正常化這些資料。
 
-若想禁用這些行為，可在 `App\Http\Kernel` 類別的 `$middleware` 屬性中將其移除：
+#### 禁用輸入正規化
+
+若想在所有 Request 上禁用這些行為，可在 `App\Http\Kernel` 類別的 `$middleware` 屬性中將其移除：
+
+若只想在專案中一部分的 Request 上禁用字串修剪與空字串轉換，可使用這兩個 Middleware 提供的 `skipWhen` 方法。請傳入一個回傳 `true` 或 `false` 的閉包給該方法，用來判斷是否應跳過字串的正規化。一般來說，應在專案的 `AppServiceProvider` 中 `boot` 方法內叫用這個 `skipWhen` 方法。
+
+```php
+use App\Http\Middleware\TrimStrings;
+use Illuminate\Http\Request;
+use Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull;
+
+/**
+ * Bootstrap any application services.
+ */
+public function boot(): void
+{
+    TrimStrings::skipWhen(function (Request $request) {
+        return $request->is('admin/*');
+    });
+
+    ConvertEmptyStringsToNull::skipWhen(function (Request $request) {
+        // ...
+    });
+}
+```
 
 <a name="files"></a>
 
@@ -516,7 +573,7 @@ Laravel 也提供了一個全域 `old` 輔助函式。若想在 [Blade 樣板](/
 可以使用 `hasFile` 方法來判斷某個檔案是否存在於 Request 中：
 
     if ($request->hasFile('photo')) {
-        //
+        // ...
     }
 
 <a name="validating-successful-uploads"></a>
@@ -526,7 +583,7 @@ Laravel 也提供了一個全域 `old` 輔助函式。若想在 [Blade 樣板](/
 除了檢查檔案是否存在外，還可以使用 `isValid` 方法來確認上傳檔案的過程中是否無問題：
 
     if ($request->file('photo')->isValid()) {
-        //
+        // ...
     }
 
 <a name="file-paths-extensions"></a>
@@ -565,7 +622,7 @@ Laravel 也提供了一個全域 `old` 輔助函式。若想在 [Blade 樣板](/
     
     $path = $request->photo->storeAs('images', 'filename.jpg', 's3');
 
-> {tip} 更多有關 Laravel 中檔案儲存的資訊，請參考完整的[檔案儲存說明文件](/docs/{{version}}/filesystem)。
+> **Note** 更多有關 Laravel 中檔案儲存的資訊，請參考完整的[檔案儲存說明文件](/docs/{{version}}/filesystem)。
 
 <a name="configuring-trusted-proxies"></a>
 
@@ -602,7 +659,7 @@ Laravel 也提供了一個全域 `old` 輔助函式。若想在 [Blade 樣板](/
         protected $headers = Request::HEADER_X_FORWARDED_FOR | Request::HEADER_X_FORWARDED_HOST | Request::HEADER_X_FORWARDED_PORT | Request::HEADER_X_FORWARDED_PROTO;
     }
 
-> {tip} 若要使用 AWS Elastic Load Balancing，則 `$headers` 的值應為 `Request::HEADER_X_FORWARDED_AWS_ELB`。更多有關能用在 `$headers` 屬性的常數資訊，請參考 Symfony 說明文件中的 [Trusting Proxies](https://symfony.com/doc/current/deployment/proxies.html)。
+> **Note** 若要使用 AWS Elastic Load Balancing，則 `$headers` 的值應為 `Request::HEADER_X_FORWARDED_AWS_ELB`。更多有關能用在 `$headers` 屬性的常數資訊，請參考 Symfony 說明文件中的 [Trusting Proxies](https://symfony.com/doc/current/deployment/proxies.html)。
 
 <a name="trusting-all-proxies"></a>
 
@@ -630,9 +687,9 @@ Laravel 也提供了一個全域 `old` 輔助函式。若想在 [Blade 樣板](/
     /**
      * Get the host patterns that should be trusted.
      *
-     * @return array
+     * @return array<int, string>
      */
-    public function hosts()
+    public function hosts(): array
     {
         return [
             'laravel.test',

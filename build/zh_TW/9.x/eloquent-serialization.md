@@ -138,6 +138,12 @@ updatedAt: '2023-01-25T12:14:00Z'
 
     return $user->makeHidden('attribute')->toArray();
 
+若想暫時複寫所有 Visible 或 Hidden 屬性的話，可使用對應的 `setVisible` 與 `setHidden` 方法：
+
+    return $user->setVisible(['id', 'name'])->toArray();
+    
+    return $user->setHidden(['email', 'password', 'remember_token'])->toArray();
+
 <a name="appending-values-to-json"></a>
 
 ## 將值附加到 JSON

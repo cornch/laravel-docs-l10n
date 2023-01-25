@@ -10,7 +10,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
-"PO-Revision-Date: 2022-08-06 05:47\n"
+"PO-Revision-Date: 2023-01-25 07:03\n"
 
 #: docs/8.x/upgrade.md:block 1 (header)
 msgid "Upgrade Guide"
@@ -699,8 +699,8 @@ msgid "`nunomaduro/collision` to `^6.1`"
 msgstr "`nunomaduro/collision` 升級為 `^6.1`"
 
 #: docs/9.x/upgrade.md:block 28 (paragraph)
-msgid "In addition, please replace `facade/ignition` with `\"spatie/laravel-ignition\": \"^1.0\"` in your application's `composer.json` file."
-msgstr "此外，請在 `composer.json` 檔中將 `facade/ignition` 改為 `\"spatie/laravel-ignition\": \"^1.0\"`。"
+msgid "In addition, please replace `facade/ignition` with `\"spatie/laravel-ignition\": \"^1.0\"` and `pusher/pusher-php-server` (if applicable) with `\"pusher/pusher-php-server\": \"^5.0\"` in your application's `composer.json` file."
+msgstr ""
 
 #: docs/9.x/upgrade.md:block 29 (paragraph)
 msgid "Furthermore, the following first-party packages have received new major releases to support Laravel 9.x. If applicable, you should read their individual upgrade guides before upgrading:"
@@ -1694,59 +1694,209 @@ msgstr "use Illuminate\\Support\\Facades\\Validator;\n\n"
 msgid "We also encourage you to view the changes in the `laravel/laravel` [GitHub repository](https://github.com/laravel/laravel). While many of these changes are not required, you may wish to keep these files in sync with your application. Some of these changes will be covered in this upgrade guide, but others, such as changes to configuration files or comments, will not be. You can easily view the changes with the [GitHub comparison tool](https://github.com/laravel/laravel/compare/8.x...9.x) and choose which updates are important to you."
 msgstr "我們也鼓勵你檢視 `laravel/laravel` [GitHub 存放庫](https://github.com/laravel/laravel)上的更改。雖然這些更改中大多數都不是必須要進行的，但你可能也會想讓專案中的這些檔案保持同步。其中一些修改有在本升級指南中提到，但有些其他的更改（如設定檔的更改或註解等）就沒有提到。可以通過 [GitHub 的比較工具](https://github.com/laravel/laravel/compare/8.x...9.x)來輕鬆地檢視這些更改，並自行評估哪些更改對你來說比較重要。"
 
-#: docs/master/upgrade.md:block 17 (quote)
-msgid "{tip} We attempt to document every possible breaking change. Since some of these breaking changes are in obscure parts of the framework only a portion of these changes may actually affect your application. Want to save time? You can use [Laravel Shift](https://laravelshift.com/) to help automate your application upgrades."
-msgstr "{tip} 雖然我們已經儘可能地在本說明文件中涵蓋所有^[中斷性變更](Breaking Change)。不過，在 Laravel 中，有些中斷性變更存在一些比較不明顯的地方，且這些更改中幾乎不太會影響到你的專案。 想節省時間嗎？可以使用 [Laravel Shift](https://laravelshift.com/) 來協助你快速升級你的專案。"
+#: docs/master/upgrade.md:block 2 (unordered list)
+msgid "[Upgrading To 10.0 From 9.x](#upgrade-10.0)"
+msgstr ""
 
-#: docs/master/upgrade.md:block 130 (paragraph)
-msgid "Write operations such as `put`, `write`, `writeStream` now overwrite existing files by default. If you do not want to overwrite existing files, you should manually check for the file's existence before performing the write operation."
-msgstr "如 `put`、`write`、`writeStream` 等寫入操作現在會預設覆蓋現有的檔案。若不想複寫現有的檔案，請在執行寫入動作前先確認檔案是否存在。"
+#: docs/master/upgrade.md:block 6 (unordered list)
+msgid "[Updating Minimum Stability](#updating-minimum-stability)"
+msgstr ""
 
-#: docs/master/upgrade.md:block 142 (code)
-msgid "use Illuminate\\Filesystem\\FilesystemAdapter;\n"
-"use Illuminate\\Support\\Facades\\Storage;\n"
-"use League\\Flysystem\\Filesystem;\n"
-"use Spatie\\Dropbox\\Client as DropboxClient;\n"
-"use Spatie\\FlysystemDropbox\\DropboxAdapter;\n\n"
-"Storage::extend('dropbox', function ($app, $config) {\n"
-"    $adapter = new DropboxAdapter(new DropboxClient(\n"
-"        $config['authorization_token']\n"
-"    ););\n\n"
-"    return new FilesystemAdapter(\n"
-"        new Filesystem($adapter, $config),\n"
-"        $adapter,\n"
-"        $config\n"
-"    );\n"
-"});\n"
-msgstr "use Illuminate\\Filesystem\\FilesystemAdapter;\n"
-"use Illuminate\\Support\\Facades\\Storage;\n"
-"use League\\Flysystem\\Filesystem;\n"
-"use Spatie\\Dropbox\\Client as DropboxClient;\n"
-"use Spatie\\FlysystemDropbox\\DropboxAdapter;\n\n"
-"Storage::extend('dropbox', function ($app, $config) {\n"
-"    $adapter = new DropboxAdapter(new DropboxClient(\n"
-"        $config['authorization_token']\n"
-"    ););\n\n"
-"    return new FilesystemAdapter(\n"
-"        new Filesystem($adapter, $config),\n"
-"        $adapter,\n"
-"        $config\n"
-"    );\n"
-"});\n"
+#: docs/master/upgrade.md:block 11 (unordered list)
+msgid "[Model \"Dates\" Property](#model-dates-property)"
+msgstr ""
 
-#: docs/master/upgrade.md:block 166 (code)
-msgid "$response = Http::timeout(120)->get(...);\n"
-msgstr "$response = Http::timeout(120)->get(...);\n"
+#: docs/master/upgrade.md:block 11 (unordered list)
+msgid "[Service Mocking](#serving-mocking)"
+msgstr ""
 
-#: docs/master/upgrade.md:block 183 (paragraph)
-msgid "The `send`, `html`, `text`, and `plain` methods no longer return the number of recipients that received the message. Instead, an instance of `Illuminate\\Mail\\SentMessage` is returned. This object contains an instance of `Symfony\\Component\\Mailer\\SentMessage` that is accessible via the `getSymfonySentMessage` method or by dynamically invoking methods on the object."
-msgstr "`send`、`html`、`text`、`plain` 等方法將不再回傳會接受到該訊息的收件人數量了，而是回傳一個 `Illuminate\\Mail\\SentMessage` 實體。這個物件中包含了一個可以通過 `getSymfonySentMessage` 方法或是在該物件上動態叫用方法取得的 `Symfony\\Component\\Mailer\\SentMessage`："
+#: docs/master/upgrade.md:block 14 (header)
+msgid "Low Impact Changes"
+msgstr ""
 
-#: docs/master/upgrade.md:block 187 (quote)
-msgid "{note} Please thoroughly review the [Symfony Mailer documentation](https://symfony.com/doc/6.0/mailer.html#creating-sending-messages) for all possible interactions with the `Symfony\\Component\\Mime\\Email` object."
-msgstr "{note} 請稍微檢視一下 [Symfony Mailer 說明文件](https://symfony.com/doc/6.0/mailer.html#creating-sending-messages)以瞭解所有使用 `Symfony\\Component\\Mime\\Email` 物件的方法。"
+#: docs/master/upgrade.md:block 16 (unordered list)
+msgid "[Closure Validation Rule Messages](#closure-validation-rule-messages)"
+msgstr ""
 
-#: docs/master/upgrade.md:block 202 (quote)
-msgid "{note} In spite of the example above, you are not generally advised to disable SSL verification since it introduces the possibility of \"man-in-the-middle\" attacks."
-msgstr "{note} 雖然有上述這樣的範例，但一般來說建議不要禁用 SSL 驗證，因為有可能會導致「^[中間人](man-in-the-middle, MITM)」攻擊"
+#: docs/master/upgrade.md:block 16 (unordered list)
+msgid "[Monolog 3](#monolog-3)"
+msgstr ""
+
+#: docs/master/upgrade.md:block 16 (unordered list)
+msgid "[Query Exception Constructor](#query-exception-constructor)"
+msgstr ""
+
+#: docs/master/upgrade.md:block 16 (unordered list)
+msgid "[Rate Limiter Return Values](#rate-limiter-return-values)"
+msgstr ""
+
+#: docs/master/upgrade.md:block 16 (unordered list)
+msgid "[Relation `getBaseQuery` Method](#relation-getbasequery-method)"
+msgstr ""
+
+#: docs/master/upgrade.md:block 16 (unordered list)
+msgid "[The `Redirect::home` Method](#redirect-home)"
+msgstr ""
+
+#: docs/master/upgrade.md:block 16 (unordered list)
+msgid "[The `Bus::dispatchNow` Method](#dispatch-now)"
+msgstr ""
+
+#: docs/master/upgrade.md:block 19 (header)
+msgid "Upgrading To 10.0 From 9.x"
+msgstr ""
+
+#: docs/master/upgrade.md:block 21 (header)
+msgid "Estimated Upgrade Time: 10 Minutes"
+msgstr ""
+
+#: docs/master/upgrade.md:block 26 (header)
+msgid "PHP 8.1.0 Required"
+msgstr ""
+
+#: docs/master/upgrade.md:block 27 (paragraph)
+msgid "Laravel now requires PHP 8.1.0 or greater."
+msgstr ""
+
+#: docs/master/upgrade.md:block 31 (unordered list)
+msgid "`laravel/framework` to `^10.0`"
+msgstr ""
+
+#: docs/master/upgrade.md:block 31 (unordered list)
+msgid "`spatie/laravel-ignition` to `^2.0`"
+msgstr ""
+
+#: docs/master/upgrade.md:block 33 (header)
+msgid "Minimum Stability"
+msgstr ""
+
+#: docs/master/upgrade.md:block 34 (paragraph)
+msgid "You should update the `minimum-stability` setting in your application's `composer.json` file to `stable`:"
+msgstr ""
+
+#: docs/master/upgrade.md:block 35 (code)
+msgid "\"minimum-stability\": \"stable\",\n"
+msgstr ""
+
+#: docs/master/upgrade.md:block 38 (header)
+msgid "Query Exception Constructor"
+msgstr ""
+
+#: docs/master/upgrade.md:block 40 (paragraph)
+msgid "The `Illuminate\\Database\\QueryException` constructor now accepts a string connection name as its first argument. If your application is mainly throwing this exception, you should adjust your code accordingly."
+msgstr ""
+
+#: docs/master/upgrade.md:block 43 (header)
+msgid "Model \"Dates\" Property"
+msgstr ""
+
+#: docs/master/upgrade.md:block 45 (paragraph)
+msgid "The Eloquent model's deprecated `$dates` property has been removed. Your application should now use the `$casts` property:"
+msgstr ""
+
+#: docs/master/upgrade.md:block 46 (code)
+msgid "protected $casts = [\n"
+"    'deployed_at' => 'datetime',\n"
+"];\n"
+msgstr ""
+
+#: docs/master/upgrade.md:block 48 (header)
+msgid "Relation `getBaseQuery` Method"
+msgstr ""
+
+#: docs/master/upgrade.md:block 50 (paragraph)
+msgid "The `getBaseQuery` method on the `Illuminate\\Database\\Eloquent\\Relations\\Relation` class has been renamed to `toBase`."
+msgstr ""
+
+#: docs/master/upgrade.md:block 51 (header)
+msgid "Logging"
+msgstr ""
+
+#: docs/master/upgrade.md:block 53 (header)
+msgid "Monolog 3"
+msgstr ""
+
+#: docs/master/upgrade.md:block 55 (paragraph)
+msgid "Laravel's Monolog dependency has been updated to Monolog 3.x. If you are directly interacting with Monolog within your application, you should review Monolog's [upgrade guide](https://github.com/Seldaek/monolog/blob/main/UPGRADE.md)."
+msgstr ""
+
+#: docs/master/upgrade.md:block 56 (header)
+msgid "Queues"
+msgstr ""
+
+#: docs/master/upgrade.md:block 58 (header)
+msgid "The `Bus::dispatchNow` Method"
+msgstr ""
+
+#: docs/master/upgrade.md:block 60 (paragraph)
+msgid "The deprecated `Bus::dispatchNow` and `dispatch_now` methods have been removed. Instead, your application should use the `Bus::dispatchSync` and `dispatch_sync` methods, respectively."
+msgstr ""
+
+#: docs/master/upgrade.md:block 63 (header)
+msgid "Rate Limiter Return Values"
+msgstr ""
+
+#: docs/master/upgrade.md:block 65 (paragraph)
+msgid "When invoking the `RateLimiter::attempt` method, the value returned by the provided closure will now be returned by the method. If nothing or `null` is returned, the `attempt` method will return `true`:"
+msgstr ""
+
+#: docs/master/upgrade.md:block 66 (code)
+msgid "$value = RateLimiter::attempt('key', 10, fn () => ['example'], 1);\n\n"
+"$value; // ['example']\n"
+msgstr ""
+
+#: docs/master/upgrade.md:block 68 (header)
+msgid "The `Redirect::home` Method"
+msgstr ""
+
+#: docs/master/upgrade.md:block 70 (paragraph)
+msgid "The deprecated `Redirect::home` method has been removed. Instead, your application should redirect to an explicitly named route:"
+msgstr ""
+
+#: docs/master/upgrade.md:block 71 (code)
+msgid "return Redirect::route('home');\n"
+msgstr ""
+
+#: docs/master/upgrade.md:block 74 (header)
+msgid "Service Mocking"
+msgstr ""
+
+#: docs/master/upgrade.md:block 76 (paragraph)
+msgid "The deprecated `MocksApplicationServices` trait has been removed from the framework. This trait provided testing methods such as `expectsEvents`, `expectsJobs`, and `expectsNotifications`."
+msgstr ""
+
+#: docs/master/upgrade.md:block 77 (paragraph)
+msgid "If your application uses these methods, we recommend you transition to `Event::fake`, `Bus::fake`, and `Notification::fake`, respectively. You can learn more about mocking via the complete [mocking documentation](/docs/{{version}}/mocking)."
+msgstr ""
+
+#: docs/master/upgrade.md:block 80 (header)
+msgid "Closure Validation Rule Messages"
+msgstr ""
+
+#: docs/master/upgrade.md:block 82 (paragraph)
+msgid "When writing closure based custom validation rules, invoking the `$fail` callback more than once will now append the messages to an array instead of overwriting the previous message. Typically, this will not affect your application."
+msgstr ""
+
+#: docs/master/upgrade.md:block 83 (paragraph)
+msgid "In addition, the `$fail` callback now returns an object. If you were previously type-hinting the return type of your validation closure, this may require you to update your type-hint:"
+msgstr ""
+
+#: docs/master/upgrade.md:block 84 (code)
+msgid "public function rules()\n"
+"{\n"
+"    'name' => [\n"
+"        function ($attribute, $value, $fail) {\n"
+"            $fail('validation.translation.key')->translate();\n"
+"        },\n"
+"    ],\n"
+"}\n"
+msgstr ""
+
+#: docs/master/upgrade.md:block 87 (paragraph)
+msgid "We also encourage you to view the changes in the `laravel/laravel` [GitHub repository](https://github.com/laravel/laravel). While many of these changes are not required, you may wish to keep these files in sync with your application. Some of these changes will be covered in this upgrade guide, but others, such as changes to configuration files or comments, will not be."
+msgstr ""
+
+#: docs/master/upgrade.md:block 88 (paragraph)
+msgid "You can easily view the changes with the [GitHub comparison tool](https://github.com/laravel/laravel/compare/9.x...10.x) and choose which updates are important to you. However, many of the changes shown by the GitHub comparison tool are due to our organization's adoption of PHP native types. These changes are backwards compatible and the adoption of them during the migration to Laravel 10 is optional."
+msgstr ""
 

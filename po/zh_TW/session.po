@@ -10,7 +10,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
-"PO-Revision-Date: 2022-09-09 05:22\n"
+"PO-Revision-Date: 2023-01-25 07:03\n"
 
 #: docs/8.x/session.md:block 1 (header)
 msgid "HTTP Session"
@@ -656,6 +656,10 @@ msgstr "**Note** 在 `session` 設定檔中，可使用 `connection` 選項來�
 msgid "**Note** There is little practical difference between using the session via an HTTP request instance versus using the global `session` helper. Both methods are [testable](/docs/{{version}}/testing) via the `assertSessionHas` method which is available in all of your test cases."
 msgstr "**Note** 使用 HTTP Request 實體跟全域 `session` 輔助函式在實務上沒有太大的不同。不管是哪種方式都是[可測試的](/docs/{{version}}/testing)，測試時可以使用測試例中的 `assertSessionHas` 方法來測試。"
 
+#: docs/9.x/session.md:block 50 (paragraph)
+msgid "To determine if an item is not present in the session, you may use the `missing` method. The `missing` method returns `true` if the item is not present:"
+msgstr ""
+
 #: docs/9.x/session.md:block 89 (quote)
 msgid "**Warning** To utilize session blocking, your application must be using a cache driver that supports [atomic locks](/docs/{{version}}/cache#atomic-locks). Currently, those cache drivers include the `memcached`, `dynamodb`, `redis`, and `database` drivers. In addition, you may not use the `cookie` session driver."
 msgstr "**Warning** 若要使用 Session 鎖定，必須要使用支援 [Atomic Lock](/docs/{{version}}/cache#atomic-locks) (不可部分完成鎖定) 的快取 Driver。目前，支援 Atomic Lock 的快取 Driver 有 `memcached`、`dynamodb`、`redis`、`database` 等 Driver。此外，也沒辦法使用 `cookie` Session Driver。"
@@ -663,4 +667,100 @@ msgstr "**Warning** 若要使用 Session 鎖定，必須要使用支援 [Atomic 
 #: docs/9.x/session.md:block 103 (quote)
 msgid "**Note** Laravel does not ship with a directory to contain your extensions. You are free to place them anywhere you like. In this example, we have created an `Extensions` directory to house the `MongoSessionHandler`."
 msgstr "**Note** Laravel 中沒有內建用來放置擴充程式的目錄。你可以自由放置這些擴充程式。在這個例子中，我們建立了一個 `Extensions` 目錄來放置 `MongoSessionHandler`。"
+
+#: docs/master/session.md:block 20 (code)
+msgid "use Illuminate\\Database\\Schema\\Blueprint;\n"
+"use Illuminate\\Support\\Facades\\Schema;\n\n"
+"Schema::create('sessions', function (Blueprint $table) {\n"
+"    $table->string('id')->primary();\n"
+"    $table->foreignId('user_id')->nullable()->index();\n"
+"    $table->string('ip_address', 45)->nullable();\n"
+"    $table->text('user_agent')->nullable();\n"
+"    $table->text('payload');\n"
+"    $table->integer('last_activity')->index();\n"
+"});\n"
+msgstr ""
+
+#: docs/master/session.md:block 32 (code)
+msgid "<?php\n\n"
+"namespace App\\Http\\Controllers;\n\n"
+"use App\\Http\\Controllers\\Controller;\n"
+"use Illuminate\\Http\\Request;\n"
+"use Illuminate\\View\\View;\n\n"
+"class UserController extends Controller\n"
+"{\n"
+"    /**\n"
+"     * Show the profile for the given user.\n"
+"     */\n"
+"    public function show(Request $request, string $id): View\n"
+"    {\n"
+"        $value = $request->session()->get('key');\n\n"
+"        // ...\n\n"
+"        $user = $this->users->find($id);\n\n"
+"        return view('user.profile', ['user' => $user]);\n"
+"    }\n"
+"}\n"
+msgstr ""
+
+#: docs/master/session.md:block 47 (code)
+msgid "if ($request->session()->has('users')) {\n"
+"    // ...\n"
+"}\n"
+msgstr ""
+
+#: docs/master/session.md:block 49 (code)
+msgid "if ($request->session()->exists('users')) {\n"
+"    // ...\n"
+"}\n"
+msgstr ""
+
+#: docs/master/session.md:block 51 (code)
+msgid "if ($request->session()->missing('users')) {\n"
+"    // ...\n"
+"}\n"
+msgstr ""
+
+#: docs/master/session.md:block 92 (code)
+msgid "Route::post('/profile', function () {\n"
+"    // ...\n"
+"})->block($lockSeconds = 10, $waitSeconds = 10)\n\n"
+"Route::post('/order', function () {\n"
+"    // ...\n"
+"})->block($lockSeconds = 10, $waitSeconds = 10)\n"
+msgstr ""
+
+#: docs/master/session.md:block 96 (code)
+msgid "Route::post('/profile', function () {\n"
+"    // ...\n"
+"})->block()\n"
+msgstr ""
+
+#: docs/master/session.md:block 111 (code)
+msgid "<?php\n\n"
+"namespace App\\Providers;\n\n"
+"use App\\Extensions\\MongoSessionHandler;\n"
+"use Illuminate\\Contracts\\Foundation\\Application;\n"
+"use Illuminate\\Support\\Facades\\Session;\n"
+"use Illuminate\\Support\\ServiceProvider;\n\n"
+"class SessionServiceProvider extends ServiceProvider\n"
+"{\n"
+"    /**\n"
+"     * Register any application services.\n"
+"     */\n"
+"    public function register(): void\n"
+"    {\n"
+"        // ...\n"
+"    }\n\n"
+"    /**\n"
+"     * Bootstrap any application services.\n"
+"     */\n"
+"    public function boot(): void\n"
+"    {\n"
+"        Session::extend('mongo', function (Application $app) {\n"
+"            // Return an implementation of SessionHandlerInterface...\n"
+"            return new MongoSessionHandler;\n"
+"        });\n"
+"    }\n"
+"}\n"
+msgstr ""
 

@@ -4,16 +4,16 @@ on:
   pull_request:
     types: [closed]
   push:
+    branches: [l10n_main]
     paths:
       - '.github/workflows/**'
       - 'po/zh_TW/**'
   workflow_dispatch:
-    inputs: []
 
 jobs:
   build:
     runs-on: ubuntu-latest
-    if: ${{ github.head_ref == 'l10n_main' }}
+    if: ${{ github.event_name != 'pull_request' || github.head_ref == 'l10n_main' }}
     steps:
       - name: Checkout Build
         uses: actions/checkout@v2
@@ -25,10 +25,14 @@ jobs:
         run: git submodule update --init --recursive
 
       - name: Setup Python
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v4
+        with: 
+          python-version: '3.10' 
 
       - name: Setup Poetry
         uses: abatilo/actions-poetry@v2
+        with:
+          poetry-version: '1.3.2'
 
       - name: Prepare Environment
         run: |

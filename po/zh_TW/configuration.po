@@ -10,7 +10,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
-"PO-Revision-Date: 2022-09-09 05:22\n"
+"PO-Revision-Date: 2023-01-25 07:02\n"
 
 #: docs/8.x/configuration.md:block 1 (header)
 msgid "Configuration"
@@ -400,6 +400,10 @@ msgstr "維護模式替代"
 msgid "Since maintenance mode requires your application to have several seconds of downtime, consider alternatives like [Laravel Vapor](https://vapor.laravel.com) and [Envoyer](https://envoyer.io) to accomplish zero-downtime deployment with Laravel."
 msgstr "由於維護模式會導致應用程式有數秒的停機時間，可考慮使用像是 [Laravel Vapor](https://vapor.laravel.com) 與 [Envoyer](https://envoyer.io) 等替代方案來在 Laravel 中達成不需停機的部署。"
 
+#: docs/9.x/configuration.md:block 2 (unordered list)
+msgid "[Encrypting Environment Files](#encrypting-environment-files)"
+msgstr ""
+
 #: docs/9.x/configuration.md:block 8 (header)
 msgid "Application Overview"
 msgstr "專案概覽"
@@ -424,19 +428,131 @@ msgstr "php artisan about --only=environment\n"
 msgid "**Note** Any variable in your `.env` file can be overridden by external environment variables such as server-level or system-level environment variables."
 msgstr "**Note** 任何 `.env` 檔內的變數都可通過外部環境變數來複寫，如伺服器等級或是系統等級的環境變數。"
 
-#: docs/9.x/configuration.md:block 43 (quote)
+#: docs/9.x/configuration.md:block 23 (paragraph)
+msgid "However, it is possible to encrypt your environment file using Laravel's built-in [environment encryption](#encrypting-environment-files). Encrypted environment files may be placed in source control safely."
+msgstr ""
+
+#: docs/9.x/configuration.md:block 26 (paragraph)
+msgid "Before loading your application's environment variables, Laravel determines if an `APP_ENV` environment variable has been externally provided or if the `--env` CLI argument has been specified. If so, Laravel will attempt to load an `.env.[APP_ENV]` file if it exists. If it does not exist, the default `.env` file will be loaded."
+msgstr ""
+
+#: docs/9.x/configuration.md:block 35 (paragraph)
+msgid "All of the variables listed in the `.env` file will be loaded into the `$_ENV` PHP super-global when your application receives a request. However, you may use the `env` function to retrieve values from these variables in your configuration files. In fact, if you review the Laravel configuration files, you will notice many of the options are already using this function:"
+msgstr ""
+
+#: docs/9.x/configuration.md:block 44 (quote)
 msgid "**Note** The current application environment detection can be overridden by defining a server-level `APP_ENV` environment variable."
 msgstr "**Note** 可以通過在伺服器等級上定義 `APP_ENV` 環境變數來複寫網站偵測到的應用程式環境。"
 
+#: docs/9.x/configuration.md:block 46 (header)
+msgid "Encrypting Environment Files"
+msgstr ""
+
+#: docs/9.x/configuration.md:block 47 (paragraph)
+msgid "Unencrypted environment files should never be stored in source control. However, Laravel allows you to encrypt your environment files so that they may safely be added to source control with the rest of your application."
+msgstr ""
+
+#: docs/9.x/configuration.md:block 49 (header)
+msgid "Encryption"
+msgstr ""
+
+#: docs/9.x/configuration.md:block 50 (paragraph)
+msgid "To encrypt an environment file, you may use the `env:encrypt` command:"
+msgstr ""
+
+#: docs/9.x/configuration.md:block 51 (code)
+msgid "php artisan env:encrypt\n"
+msgstr ""
+
+#: docs/9.x/configuration.md:block 52 (paragraph)
+msgid "Running the `env:encrypt` command will encrypt your `.env` file and place the encrypted contents in an `.env.encrypted` file. The decryption key is presented in the output of the command and should be stored in a secure password manager. If you would like to provide your own encryption key you may use the `--key` option when invoking the command:"
+msgstr ""
+
+#: docs/9.x/configuration.md:block 53 (code)
+msgid "php artisan env:encrypt --key=3UVsEgGVK36XN82KKeyLFMhvosbZN1aF\n"
+msgstr ""
+
 #: docs/9.x/configuration.md:block 54 (quote)
+msgid "**Note** The length of the key provided should match the key length required by the encryption cipher being used. By default, Laravel will use the `AES-256-CBC` cipher which requires a 32 character key. You are free to use any cipher supported by Laravel's [encrypter](/docs/{{version}}/encryption) by passing the `--cipher` option when invoking the command."
+msgstr ""
+
+#: docs/9.x/configuration.md:block 55 (paragraph)
+msgid "If your application has multiple environment files, such as `.env` and `.env.staging`, you may specify the environment file that should be encrypted by providing the environment name via the `--env` option:"
+msgstr ""
+
+#: docs/9.x/configuration.md:block 56 (code)
+msgid "php artisan env:encrypt --env=staging\n"
+msgstr ""
+
+#: docs/9.x/configuration.md:block 58 (header)
+msgid "Decryption"
+msgstr ""
+
+#: docs/9.x/configuration.md:block 59 (paragraph)
+msgid "To decrypt an environment file, you may use the `env:decrypt` command. This command requires a decryption key, which Laravel will retrieve from the `LARAVEL_ENV_ENCRYPTION_KEY` environment variable:"
+msgstr ""
+
+#: docs/9.x/configuration.md:block 60 (code)
+msgid "php artisan env:decrypt\n"
+msgstr ""
+
+#: docs/9.x/configuration.md:block 61 (paragraph)
+msgid "Or, the key may be provided directly to the command via the `--key` option:"
+msgstr ""
+
+#: docs/9.x/configuration.md:block 62 (code)
+msgid "php artisan env:decrypt --key=3UVsEgGVK36XN82KKeyLFMhvosbZN1aF\n"
+msgstr ""
+
+#: docs/9.x/configuration.md:block 63 (paragraph)
+msgid "When the `env:decrypt` command is invoked, Laravel will decrypt the contents of the `.env.encrypted` file and place the decrypted contents in the `.env` file."
+msgstr ""
+
+#: docs/9.x/configuration.md:block 64 (paragraph)
+msgid "The `--cipher` option may be provided to the `env:decrypt` command in order to use a custom encryption cipher:"
+msgstr ""
+
+#: docs/9.x/configuration.md:block 65 (code)
+msgid "php artisan env:decrypt --key=qUWuNRdfuImXcKxZ --cipher=AES-128-CBC\n"
+msgstr ""
+
+#: docs/9.x/configuration.md:block 66 (paragraph)
+msgid "If your application has multiple environment files, such as `.env` and `.env.staging`, you may specify the environment file that should be decrypted by providing the environment name via the `--env` option:"
+msgstr ""
+
+#: docs/9.x/configuration.md:block 67 (code)
+msgid "php artisan env:decrypt --env=staging\n"
+msgstr ""
+
+#: docs/9.x/configuration.md:block 68 (paragraph)
+msgid "In order to overwrite an existing environment file, you may provide the `--force` option to the `env:decrypt` command:"
+msgstr ""
+
+#: docs/9.x/configuration.md:block 69 (code)
+msgid "php artisan env:decrypt --force\n"
+msgstr ""
+
+#: docs/9.x/configuration.md:block 72 (paragraph)
+msgid "You may easily access your configuration values using the global `config` function from anywhere in your application. The configuration values may be accessed using \"dot\" syntax, which includes the name of the file and option you wish to access. A default value may also be specified and will be returned if the configuration option does not exist:"
+msgstr ""
+
+#: docs/9.x/configuration.md:block 74 (paragraph)
+msgid "To set configuration values at runtime, pass an array to the `config` function:"
+msgstr ""
+
+#: docs/9.x/configuration.md:block 80 (quote)
 msgid "**Warning** If you execute the `config:cache` command during your deployment process, you should be sure that you are only calling the `env` function from within your configuration files. Once the configuration has been cached, the `.env` file will not be loaded; therefore, the `env` function will only return external, system level environment variables."
 msgstr "**Warning**  若在部署流程中執行了 `config:cache` 指令，應確保只有在設定檔中呼叫 `env` 函式。設定檔被快取後，就不會再載入 `.env` 檔了。因此，`env` 函式只會回傳外部的、系統等級的環境變數。"
 
-#: docs/9.x/configuration.md:block 75 (quote)
+#: docs/9.x/configuration.md:block 96 (paragraph)
+msgid "To allow maintenance mode to be bypassed using a secret token, you may use the `secret` option to specify a maintenance mode bypass token:"
+msgstr ""
+
+#: docs/9.x/configuration.md:block 101 (quote)
 msgid "**Note** Your maintenance mode secret should typically consist of alpha-numeric characters and, optionally, dashes. You should avoid using characters that have special meaning in URLs such as `?`."
 msgstr "**Note** 維護模式的密碼通常來說應該要由字母與數字字元組成，並可選地包含減號 (`-`, Dash)。應避免一些在 URL 中由特殊意義的字元，如 `?`。"
 
-#: docs/9.x/configuration.md:block 89 (quote)
+#: docs/9.x/configuration.md:block 115 (quote)
 msgid "**Note** You may customize the default maintenance mode template by defining your own template at `resources/views/errors/503.blade.php`."
 msgstr "**Note** 可以通過在 `resources/views/errors/503.blade.php` 中定義你自己的樣板來自定預設的維護模式樣板。"
 

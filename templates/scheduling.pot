@@ -1003,6 +1003,30 @@ msgid ""
 "];\n"
 msgstr ""
 
+#: docs/9.x/scheduling.md:block 33 (table)
+msgid "`->everyOddHour();`"
+msgstr ""
+
+#: docs/9.x/scheduling.md:block 33 (table)
+msgid "Run the task every odd hour"
+msgstr ""
+
+#: docs/9.x/scheduling.md:block 33 (table)
+msgid "`->twiceDailyAt(1, 13, 15);`"
+msgstr ""
+
+#: docs/9.x/scheduling.md:block 33 (table)
+msgid "Run the task daily at 1:15 & 13:15"
+msgstr ""
+
+#: docs/9.x/scheduling.md:block 33 (table)
+msgid "`->quarterlyOn(4, '14:00');`"
+msgstr ""
+
+#: docs/9.x/scheduling.md:block 33 (table)
+msgid "Run the task every quarter on the 4th at 14:00"
+msgstr ""
+
 #: docs/9.x/scheduling.md:block 67 (quote)
 msgid "**Warning** Remember that some timezones utilize daylight savings time. When daylight saving time changes occur, your scheduled task may run twice or even not run at all. For this reason, we recommend avoiding timezone scheduling when possible."
 msgstr ""
@@ -1036,10 +1060,74 @@ msgid ""
 "            ->onOneServer();\n"
 msgstr ""
 
-#: docs/9.x/scheduling.md:block 90 (quote)
+#: docs/9.x/scheduling.md:block 86 (paragraph)
+msgid "Similarly, scheduled closures must be assigned a name if they are intended to be run on one server:"
+msgstr ""
+
+#: docs/9.x/scheduling.md:block 87 (code)
+msgid ""
+"$schedule->call(fn () => User::resetApiRequestCount())\n"
+"    ->name('reset-api-request-count')\n"
+"    ->daily()\n"
+"    ->onOneServer();\n"
+msgstr ""
+
+#: docs/9.x/scheduling.md:block 92 (quote)
 msgid "**Warning** The `runInBackground` method may only be used when scheduling tasks via the `command` and `exec` methods."
 msgstr ""
 
-#: docs/9.x/scheduling.md:block 114 (quote)
+#: docs/9.x/scheduling.md:block 116 (quote)
 msgid "**Warning** The `emailOutputTo`, `emailOutputOnFailure`, `sendOutputTo`, and `appendOutputTo` methods are exclusive to the `command` and `exec` methods."
+msgstr ""
+
+#: docs/master/scheduling.md:block 10 (code)
+msgid ""
+"<?php\n"
+"\n"
+"namespace App\\Console;\n"
+"\n"
+"use Illuminate\\Console\\Scheduling\\Schedule;\n"
+"use Illuminate\\Foundation\\Console\\Kernel as ConsoleKernel;\n"
+"use Illuminate\\Support\\Facades\\DB;\n"
+"\n"
+"class Kernel extends ConsoleKernel\n"
+"{\n"
+"    /**\n"
+"     * Define the application's command schedule.\n"
+"     */\n"
+"    protected function schedule(Schedule $schedule): void\n"
+"    {\n"
+"        $schedule->call(function () {\n"
+"            DB::table('recent_users')->delete();\n"
+"        })->daily();\n"
+"    }\n"
+"}\n"
+msgstr ""
+
+#: docs/master/scheduling.md:block 37 (code)
+msgid ""
+"// Run once per week on Monday at 1 PM...\n"
+"$schedule->call(function () {\n"
+"    // ...\n"
+"})->weekly()->mondays()->at('13:00');\n"
+"\n"
+"// Run hourly from 8 AM to 5 PM on weekdays...\n"
+"$schedule->command('foo')\n"
+"          ->weekdays()\n"
+"          ->hourly()\n"
+"          ->timezone('America/Chicago')\n"
+"          ->between('8:00', '17:00');\n"
+msgstr ""
+
+#: docs/master/scheduling.md:block 70 (code)
+msgid ""
+"use DateTimeZone;\n"
+"\n"
+"/**\n"
+" * Get the timezone that should be used by default for scheduled events.\n"
+" */\n"
+"protected function scheduleTimezone(): DateTimeZone|string|null\n"
+"{\n"
+"    return 'America/Chicago';\n"
+"}\n"
 msgstr ""

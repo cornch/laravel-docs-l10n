@@ -1043,6 +1043,10 @@ msgstr ""
 msgid "**Note** If you return a PSR-7 response instance from a route or controller, it will automatically be converted back to a Laravel response instance and be displayed by the framework."
 msgstr ""
 
+#: docs/9.x/requests.md:block 108 (paragraph)
+msgid "When sending JSON requests to your application, you may access the JSON data via the `input` method as long as the `Content-Type` header of the request is properly set to `application/json`. You may even use \"dot\" syntax to retrieve values that are nested within JSON arrays / objects:"
+msgstr ""
+
 #: docs/9.x/requests.md:block 111 (header)
 msgid "Retrieving Stringable Input Values"
 msgstr ""
@@ -1074,6 +1078,39 @@ msgstr ""
 msgid "**Warning** The `only` method returns all of the key / value pairs that you request; however, it will not return key / value pairs that are not present on the request."
 msgstr ""
 
+#: docs/9.x/requests.md:block 151 (paragraph)
+msgid "If you would like to determine if a value is present on the request and is not an empty string, you may use the `filled` method:"
+msgstr ""
+
+#: docs/9.x/requests.md:block 153 (paragraph)
+msgid "The `whenFilled` method will execute the given closure if a value is present on the request and is not an empty string:"
+msgstr ""
+
+#: docs/9.x/requests.md:block 157 (paragraph)
+msgid "To determine if a given key is absent from the request, you may use the `missing` and `whenMissing` methods:"
+msgstr ""
+
+#: docs/9.x/requests.md:block 158 (code)
+msgid ""
+"if ($request->missing('name')) {\n"
+"    //\n"
+"}\n"
+"\n"
+"$request->whenMissing('name', function ($input) {\n"
+"    // The \"name\" value is missing...\n"
+"}, function () {\n"
+"    // The \"name\" value is present...\n"
+"});\n"
+msgstr ""
+
+#: docs/9.x/requests.md:block 161 (paragraph)
+msgid "Sometimes you may need to manually merge additional input into the request's existing input data. To accomplish this, you may use the `merge` method. If a given input key already exists on the request, it will be overwritten by the data provided to the `merge` method:"
+msgstr ""
+
+#: docs/9.x/requests.md:block 192 (paragraph)
+msgid "By default, Laravel includes the `App\\Http\\Middleware\\TrimStrings` and `Illuminate\\Foundation\\Http\\Middleware\\ConvertEmptyStringsToNull` middleware in your application's global middleware stack. These middleware are listed in the global middleware stack by the `App\\Http\\Kernel` class. These middleware will automatically trim all incoming string fields on the request, as well as convert any empty string fields to `null`. This allows you to not have to worry about these normalization concerns in your routes and controllers."
+msgstr ""
+
 #: docs/9.x/requests.md:block 193 (header)
 msgid "Disabling Input Normalization"
 msgstr ""
@@ -1088,8 +1125,8 @@ msgstr ""
 
 #: docs/9.x/requests.md:block 196 (code)
 msgid ""
-"use App\\Http\\Middleware\\ConvertEmptyStringsToNull;\n"
 "use App\\Http\\Middleware\\TrimStrings;\n"
+"use Illuminate\\Foundation\\Http\\Middleware\\ConvertEmptyStringsToNull;\n"
 "\n"
 "/**\n"
 " * Bootstrap any application services.\n"
@@ -1118,4 +1155,231 @@ msgstr ""
 
 #: docs/9.x/requests.md:block 230 (quote)
 msgid "**Note** If you are using AWS Elastic Load Balancing, your `$headers` value should be `Request::HEADER_X_FORWARDED_AWS_ELB`. For more information on the constants that may be used in the `$headers` property, check out Symfony's documentation on [trusting proxies](https://symfony.com/doc/current/deployment/proxies.html)."
+msgstr ""
+
+#: docs/master/requests.md:block 11 (code)
+msgid ""
+"<?php\n"
+"\n"
+"namespace App\\Http\\Controllers;\n"
+"\n"
+"use Illuminate\\Http\\Request;\n"
+"use Illuminate\\Http\\Response;\n"
+"\n"
+"class UserController extends Controller\n"
+"{\n"
+"    /**\n"
+"     * Store a new user.\n"
+"     */\n"
+"    public function store(Request $request): Response\n"
+"    {\n"
+"        $name = $request->input('name');\n"
+"\n"
+"        // ...\n"
+"\n"
+"        return response()->noContent();\n"
+"    }\n"
+"}\n"
+msgstr ""
+
+#: docs/master/requests.md:block 13 (code)
+msgid ""
+"use Illuminate\\Http\\Request;\n"
+"\n"
+"Route::get('/', function (Request $request) {\n"
+"    // ...\n"
+"});\n"
+msgstr ""
+
+#: docs/master/requests.md:block 19 (code)
+msgid ""
+"<?php\n"
+"\n"
+"namespace App\\Http\\Controllers;\n"
+"\n"
+"use Illuminate\\Http\\Request;\n"
+"use Illuminate\\Http\\Response;\n"
+"\n"
+"class UserController extends Controller\n"
+"{\n"
+"    /**\n"
+"     * Update the specified user.\n"
+"     */\n"
+"    public function update(Request $request, string $id): Response\n"
+"    {\n"
+"        // ...\n"
+"\n"
+"        return response()->noContent();\n"
+"    }\n"
+"}\n"
+msgstr ""
+
+#: docs/master/requests.md:block 30 (code)
+msgid ""
+"if ($request->is('admin/*')) {\n"
+"    // ...\n"
+"}\n"
+msgstr ""
+
+#: docs/master/requests.md:block 32 (code)
+msgid ""
+"if ($request->routeIs('admin.*')) {\n"
+"    // ...\n"
+"}\n"
+msgstr ""
+
+#: docs/master/requests.md:block 46 (code)
+msgid ""
+"$method = $request->method();\n"
+"\n"
+"if ($request->isMethod('post')) {\n"
+"    // ...\n"
+"}\n"
+msgstr ""
+
+#: docs/master/requests.md:block 52 (code)
+msgid ""
+"if ($request->hasHeader('X-Header-Name')) {\n"
+"    // ...\n"
+"}\n"
+msgstr ""
+
+#: docs/master/requests.md:block 74 (code)
+msgid ""
+"use Psr\\Http\\Message\\ServerRequestInterface;\n"
+"\n"
+"Route::get('/', function (ServerRequestInterface $request) {\n"
+"    // ...\n"
+"});\n"
+msgstr ""
+
+#: docs/master/requests.md:block 87 (code)
+msgid ""
+"$request->collect('users')->each(function (string $user) {\n"
+"    // ...\n"
+"});\n"
+msgstr ""
+
+#: docs/master/requests.md:block 142 (code)
+msgid ""
+"if ($request->has('name')) {\n"
+"    // ...\n"
+"}\n"
+msgstr ""
+
+#: docs/master/requests.md:block 144 (code)
+msgid ""
+"if ($request->has(['name', 'email'])) {\n"
+"    // ...\n"
+"}\n"
+msgstr ""
+
+#: docs/master/requests.md:block 146 (code)
+msgid ""
+"$request->whenHas('name', function (string $input) {\n"
+"    // ...\n"
+"});\n"
+msgstr ""
+
+#: docs/master/requests.md:block 148 (code)
+msgid ""
+"$request->whenHas('name', function (string $input) {\n"
+"    // The \"name\" value is present...\n"
+"}, function () {\n"
+"    // The \"name\" value is not present...\n"
+"});\n"
+msgstr ""
+
+#: docs/master/requests.md:block 150 (code)
+msgid ""
+"if ($request->hasAny(['name', 'email'])) {\n"
+"    // ...\n"
+"}\n"
+msgstr ""
+
+#: docs/master/requests.md:block 152 (code)
+msgid ""
+"if ($request->filled('name')) {\n"
+"    // ...\n"
+"}\n"
+msgstr ""
+
+#: docs/master/requests.md:block 154 (code)
+msgid ""
+"$request->whenFilled('name', function (string $input) {\n"
+"    // ...\n"
+"});\n"
+msgstr ""
+
+#: docs/master/requests.md:block 156 (code)
+msgid ""
+"$request->whenFilled('name', function (string $input) {\n"
+"    // The \"name\" value is filled...\n"
+"}, function () {\n"
+"    // The \"name\" value is not filled...\n"
+"});\n"
+msgstr ""
+
+#: docs/master/requests.md:block 158 (code)
+msgid ""
+"if ($request->missing('name')) {\n"
+"    // ...\n"
+"}\n"
+"\n"
+"$request->whenMissing('name', function (array $input) {\n"
+"    // The \"name\" value is missing...\n"
+"}, function () {\n"
+"    // The \"name\" value is present...\n"
+"});\n"
+msgstr ""
+
+#: docs/master/requests.md:block 196 (code)
+msgid ""
+"use App\\Http\\Middleware\\TrimStrings;\n"
+"use Illuminate\\Http\\Request;\n"
+"use Illuminate\\Foundation\\Http\\Middleware\\ConvertEmptyStringsToNull;\n"
+"\n"
+"/**\n"
+" * Bootstrap any application services.\n"
+" */\n"
+"public function boot(): void\n"
+"{\n"
+"    TrimStrings::skipWhen(function (Request $request) {\n"
+"        return $request->is('admin/*');\n"
+"    });\n"
+"\n"
+"    ConvertEmptyStringsToNull::skipWhen(function (Request $request) {\n"
+"        // ...\n"
+"    });\n"
+"}\n"
+msgstr ""
+
+#: docs/master/requests.md:block 204 (code)
+msgid ""
+"if ($request->hasFile('photo')) {\n"
+"    // ...\n"
+"}\n"
+msgstr ""
+
+#: docs/master/requests.md:block 208 (code)
+msgid ""
+"if ($request->file('photo')->isValid()) {\n"
+"    // ...\n"
+"}\n"
+msgstr ""
+
+#: docs/master/requests.md:block 240 (code)
+msgid ""
+"/**\n"
+" * Get the host patterns that should be trusted.\n"
+" *\n"
+" * @return array<int, string>\n"
+" */\n"
+"public function hosts(): array\n"
+"{\n"
+"    return [\n"
+"        'laravel.test',\n"
+"        $this->allSubdomainsOfApplicationUrl(),\n"
+"    ];\n"
+"}\n"
 msgstr ""

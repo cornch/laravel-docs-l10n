@@ -5,7 +5,7 @@ contributors:
     name: cornch
 crowdinUrl: https://crowdin.com/translate/laravel-docs/13/en-zhtw
 progress: 100
-updatedAt: '2022-08-06T06:42:00Z'
+updatedAt: '2023-01-25T09:52:00Z'
 ---
 
 # 授權
@@ -242,7 +242,7 @@ Gate 是簡單的閉包，用來判斷使用者是否已被授權執行特定的
 
 ### 內嵌授權
 
-有時候，我們可能需要判斷目前登入的使用者是否有權限進行給定動作，但我們不想給這個動作撰寫獨立的 Gate。在 Laravel，我們可以使用 `Gate::allowIf` 與 `Gate::denyIf` 方法來進行這類的「內嵌」授權檢查：
+Occasionally, you may wish to determine if the currently authenticated user is authorized to perform a given action without writing a dedicate gate that corresponds to the action. Laravel allows you to perform these types of "inline" authorization checks via the `Gate::allowIf` and `Gate::denyIf` methods:
 
 ```php
 use Illuminate\Support\Facades\Auth;

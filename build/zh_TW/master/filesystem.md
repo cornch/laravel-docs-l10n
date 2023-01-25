@@ -5,7 +5,7 @@ contributors:
     name: cornch
 crowdinUrl: https://crowdin.com/translate/laravel-docs/73/en-zhtw
 progress: 100
-updatedAt: '2022-09-09T05:21:00Z'
+updatedAt: '2023-01-25T12:14:00Z'
 ---
 
 # 檔案存放空間
@@ -138,15 +138,15 @@ Laravel 的 Flysystem 整合可以完美配合 SFTP。不過，Laravel 的預設
         'driver' => 'sftp',
         'host' => env('SFTP_HOST'),
         
-        // 設定 Basic 身份認證...
+        // Settings for basic authentication...
         'username' => env('SFTP_USERNAME'),
         'password' => env('SFTP_PASSWORD'),
     
-        // 設定有加密密碼之基於 SSH 金鑰的身份認證...
+        // Settings for SSH key based authentication with encryption password...
         'privateKey' => env('SFTP_PRIVATE_KEY'),
         'password' => env('SFTP_PASSWORD'),
     
-        // 可選的 SFTP 設定...
+        // Optional SFTP Settings...
         // 'port' => env('SFTP_PORT', 22),
         // 'root' => env('SFTP_ROOT', ''),
         // 'timeout' => 30,

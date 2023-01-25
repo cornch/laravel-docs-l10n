@@ -5,7 +5,7 @@ contributors:
     name: cornch
 crowdinUrl: https://crowdin.com/translate/laravel-docs/57/en-zhtw
 progress: 100
-updatedAt: '2022-08-09T12:03:00Z'
+updatedAt: '2023-01-25T12:14:00Z'
 ---
 
 # Eloquent：API 資源

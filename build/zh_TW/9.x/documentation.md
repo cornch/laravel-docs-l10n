@@ -5,7 +5,7 @@ contributors:
     name: cornch
 crowdinUrl: https://crowdin.com/translate/laravel-docs/47/en-zhtw
 progress: 100
-updatedAt: '2022-09-09T05:22:00Z'
+updatedAt: '2023-01-25T10:52:00Z'
 ---
 
 - ## ​前言
@@ -41,7 +41,7 @@ updatedAt: '2022-09-09T05:22:00Z'
    - [Response](/docs/{{version}}/responses)
    - [View](/docs/{{version}}/views)
    - [Blade 樣板](/docs/{{version}}/blade)
-   - [打包資源](/docs/{{version}}/vite)
+   - [Bundling Assets](/docs/{{version}}/vite)
    - [產生 URL](/docs/{{version}}/urls)
    - [Session](/docs/{{version}}/session)
    - [表單驗證](/docs/{{version}}/validation)

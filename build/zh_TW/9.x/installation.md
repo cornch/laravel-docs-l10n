@@ -5,7 +5,7 @@ contributors:
     name: cornch
 crowdinUrl: https://crowdin.com/translate/laravel-docs/89/en-zhtw
 progress: 100
-updatedAt: '2022-09-09T05:21:00Z'
+updatedAt: '2023-01-25T12:14:00Z'
 ---
 
 # 安裝
@@ -114,7 +114,7 @@ cd example-app
 ./vendor/bin/sail up
 ```
 
-首次執行 Sail 的 `up` 指令時，會在本機上建置 Sail 的專案 Container。這個過程可能需要花費數分鐘的時間。**不過別擔心，之後要開啟 Sail 會變得很快。**
+The first time you run the Sail `up` command, Sail's application containers will be built on your local machine. This could take several minutes. **Don't worry, subsequent attempts to start Sail will be much faster.**
 
 開啟專案的 Docker Container 後，就可以在瀏覽器中開啟 http://localhost 來存取專案網站。
 
@@ -144,7 +144,7 @@ cd example-app
 ./vendor/bin/sail up
 ```
 
-首次執行 Sail 的 `up` 指令時，會在本機上建置 Sail 的專案 Container。這個過程可能需要花費數分鐘的時間。**不過別擔心，之後要開啟 Sail 會變得很快。**
+The first time you run the Sail `up` command, Sail's application containers will be built on your local machine. This could take several minutes. **Don't worry, subsequent attempts to start Sail will be much faster.**
 
 開啟專案的 Docker Container 後，就可以在瀏覽器中開啟 http://localhost 來存取專案網站。
 
@@ -176,7 +176,7 @@ cd example-app
 ./vendor/bin/sail up
 ```
 
-首次執行 Sail 的 `up` 指令時，會在本機上建置 Sail 的專案 Container。這個過程可能需要花費數分鐘的時間。**不過別擔心，之後要開啟 Sail 會變得很快。**
+The first time you run the Sail `up` command, Sail's application containers will be built on your local machine. This could take several minutes. **Don't worry, subsequent attempts to start Sail will be much faster.**
 
 開啟專案的 Docker Container 後，就可以在瀏覽器中開啟 http://localhost 來存取專案網站。
 

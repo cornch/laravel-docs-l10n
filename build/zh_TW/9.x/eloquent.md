@@ -5,7 +5,7 @@ contributors:
     name: cornch
 crowdinUrl: https://crowdin.com/translate/laravel-docs/61/en-zhtw
 progress: 100
-updatedAt: '2022-11-28T12:19:00Z'
+updatedAt: '2023-01-25T10:52:00Z'
 ---
 
 # Eloquent：入門
@@ -1581,7 +1581,7 @@ php artisan make:observer UserObserver --model=User
     
     $user->saveQuietly();
 
-You may also "update", "delete", "soft delete", "restore", and "replicate" a given model without dispatching any events:
+也可以在不分派任何事件的情況下「更新 (Update)」、「刪除 (Delete)」、「軟刪除 (Soft Delete)」、「恢復 (Restore)」、「複製 (Replicate)」給定的 Model：
 
     $user->deleteQuietly();
     

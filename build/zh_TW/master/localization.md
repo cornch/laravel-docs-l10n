@@ -5,7 +5,7 @@ contributors:
     name: cornch
 crowdinUrl: https://crowdin.com/translate/laravel-docs/95/en-zhtw
 progress: 100
-updatedAt: '2022-08-09T13:36:00Z'
+updatedAt: '2023-01-25T12:14:00Z'
 ---
 
 # 本土化
@@ -34,7 +34,7 @@ Laravel 提供了兩種管理翻譯字串的方法。第一種方式，就是將
         /es
             messages.php
 
-第二種方式，是將翻譯字串定義在 `lang` 目錄下的 JSON 檔中。用這種方式時，要支援的每個語言在該目錄中都有一個對應的 JSON 檔。若專案沒有太多要翻譯的字串的話，建議使用這種做法：
+Or, translation strings may be defined within JSON files that are placed within the `lang` directory. When taking this approach, each language supported by your application would have a corresponding JSON file within this directory. This approach is recommended for application's that have a large number of translatable strings:
 
     /lang
         en.json

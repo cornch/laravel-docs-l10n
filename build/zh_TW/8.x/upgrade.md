@@ -4,8 +4,8 @@ contributors:
     avatarUrl: https://crowdin-static.downloads.crowdin.com/avatar/14684796/medium/60f7dc21ec0bf9cfcb61983640bb4809_default.png
     name: cornch
 crowdinUrl: https://crowdin.com/translate/laravel-docs/165/en-zhtw
-progress: 66
-updatedAt: '2022-08-06T05:47:00Z'
+progress: 57
+updatedAt: '2023-01-25T16:13:00Z'
 ---
 
 # 升級指南
@@ -19,10 +19,10 @@ updatedAt: '2022-08-06T05:47:00Z'
 <div class="content-list" markdown="1">
 
 - [Model Factory](#model-factories)
-- [Queue `retryAfter` Method](#queue-retry-after-method)
-- [Queue `timeoutAt` Property](#queue-timeout-at-property)
-- [Queue `allOnQueue` and `allOnConnection`](#queue-allOnQueue-allOnConnection)
-- [Pagination Defaults](#pagination-defaults)
+- [Queue 的 `retryAfter` 方法](#queue-retry-after-method)
+- [Queue 的 `timeoutAt` 屬性](#queue-timeout-at-property)
+- [Queue 的 `allOnQueue` 與 `allOnConnection` 屬性](#queue-allOnQueue-allOnConnection)
+- [分頁的預設](#pagination-defaults)
 - [Seeder & Factory Namespaces](#seeder-factory-namespaces)
 
 </div>

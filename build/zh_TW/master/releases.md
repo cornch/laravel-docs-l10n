@@ -5,7 +5,7 @@ contributors:
     name: cornch
 crowdinUrl: https://crowdin.com/translate/laravel-docs/135/en-zhtw
 progress: 100
-updatedAt: '2022-09-09T05:22:00Z'
+updatedAt: '2023-01-25T14:53:00Z'
 ---
 
 # 版本資訊
@@ -32,15 +32,15 @@ Laravel 及其第一方套件都遵守 [語義化版本](https://semver.org/lang
 
 ## 支援政策
 
-所有的 Laravel 版本都提供 18 個月的 Bug 修正，以及 2 年的安全性修正。對於其他的函式庫，如 Lumen，則只有最新的版本會收到 Bug 修正。此外，也請參考 [Laravel 支援的](/docs/{{version}}/database#introduction)資料庫版本。
+For all Laravel releases, bug fixes are provided for 18 months and security fixes are provided for 2 years. For all additional libraries, including Lumen, only the latest release receives bug fixes. In addition, please review the database versions [supported by Laravel](/docs/{{version}}/database#introduction).
 
 | 版本 | PHP (*) | 釋出日期 | Bug 修正期限 | 安全性修正期限 |
 | --- | --- | --- | --- | --- |
 | 6 (LTS) | 7.2 - 8.0 | 2019 年 9 月 3 日 | 2022 年 1 月 25 日 | 2022 年 9 月 6 日 |
 | 7 | 7.2 - 8.0 | 2020 年 3 月 3 日 | 2020 年 10 月 6 日 | 2021 年 3 月 3 日 |
 | 8 | 7.3 - 8.1 | 2020 年 9 月 8 日 | 2022 年 7 月 26 日 | 2023 年 1 月 24 日 |
-| 9 | 8.0 - 8.1 | 2022 年 2 月 8 日 | 2023 年 8 月 8 日 | 2024 年 2 月 8 日 |
-| 10 | 8.1 | 2023 年 2 月 7 日 | 2024 年 8 月 7 日 | 2025 年 2 月 7 日 |
+| 9 | 8.0 - 8.1 | 2022 年 2 月 8 日 | 2023 年 8 月 8 日 | February 8th, 2024 |
+| 10 | 8.1 | 2023 年 2 月 7 日 | August 7th, 2024 | February 7th, 2025 |
 
 <div class="version-colors">
     <div class="end-of-life">
@@ -150,11 +150,11 @@ public function address(): Attribute
 
 ### Enum Eloquent 屬性型別轉換
 
-> {note} Enum 型別轉換只可在 PHP 8.1 以上使用。
+> {note} Enum casting is only available for PHP 8.1+.
 
 *Enum 型別轉換由 [Mohamed Said](https://github.com/themsaid) 參與貢獻*。
 
-現在，Eloquent 也能讓我們將屬性值轉換為 PHP 的 [「Backed」Enum](https://www.php.net/manual/en/language.enumerations.backed.php) 了。為此，可在 Model 中的 `$casts` 屬性陣列中指定要型別轉換的屬性與 Enum：
+Eloquent now allows you to cast your attribute values to PHP ["backed" enums](https://www.php.net/manual/en/language.enumerations.backed.php). To accomplish this, you may specify the attribute and enum you wish to cast in your model's `$casts` property array:
 
     use App\Enums\ServerStatus;
     

@@ -2,7 +2,7 @@
 contributors: {}
 crowdinUrl: https://crowdin.com/translate/laravel-docs/111/en-zhtw
 progress: 0
-updatedAt: '2022-08-06T05:47:00Z'
+updatedAt: '2023-01-25T07:02:00Z'
 ---
 
 # Laravel Octane

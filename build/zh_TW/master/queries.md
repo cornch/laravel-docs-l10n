@@ -5,7 +5,7 @@ contributors:
     name: cornch
 crowdinUrl: https://crowdin.com/translate/laravel-docs/123/en-zhtw
 progress: 100
-updatedAt: '2022-09-09T05:22:00Z'
+updatedAt: '2023-01-25T14:53:00Z'
 ---
 
 # 資料庫：Query Builder
@@ -715,7 +715,7 @@ where exists (
 
 ### 全文 Where 子句
 
-> {note} 目前只有 MySQL 與 PostgreSQL 支援全文 Where 子句。
+> {note} Full text where clauses are currently supported by MySQL and PostgreSQL.
 
 使用 `whereFullText` 與 `orWhereFullText` 方法，就可在查詢中為有[全文索引](/docs/{{version}}/migrations#available-index-types)的欄位加上全文「where」子句。Laravel 會依據底層的資料庫系統將這些方法轉換為適當的 SQL。舉例來說，使用 MySQL 的專案會產生 `MATCH AGAINST` 子句：
 

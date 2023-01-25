@@ -5,7 +5,7 @@ contributors:
     name: cornch
 crowdinUrl: https://crowdin.com/translate/laravel-docs/159/en-zhtw
 progress: 100
-updatedAt: '2022-09-09T05:22:00Z'
+updatedAt: '2023-01-25T16:13:00Z'
 ---
 
 # 目錄結構

@@ -5,7 +5,7 @@ contributors:
     name: cornch
 crowdinUrl: https://crowdin.com/translate/laravel-docs/85/en-zhtw
 progress: 100
-updatedAt: '2022-08-11T10:54:00Z'
+updatedAt: '2023-01-25T12:14:00Z'
 ---
 
 # HTTP 用戶端
@@ -210,7 +210,7 @@ composer require guzzlehttp/guzzle
         return $exception instanceof ConnectionException;
     })->post(/* ... */);
 
-若 Request 查詢失敗，我們可能會想在進行新嘗試前對 Request 做點修改。若要在重新嘗試前對 Request 做修改，我們只需要將提供 `retry` 方法的 Request 引數更改為 Callable 即可。舉例來說，在第一次嘗試回傳身份驗證錯誤時，我們可能會想以新的 Authorization Token 來重試該 Request：
+If a request attempt fails, you may wish to make a change to the request before a new attempt is made. You can achieve this by modifying request argument provided to the callable you provided to the `retry` method. For example, you might want to retry the request with a new authorization token if the first attempt returned an authentication error:
 
     $response = Http::withToken($this->getToken())->retry(2, 0, function ($exception, $request) {
         if (! $exception instanceof RequestException || $exception->response->status() !== 401) {
@@ -257,13 +257,13 @@ composer require guzzlehttp/guzzle
 
     $response = Http::post(/* ... */);
     
-    // 若發生用戶端或伺服器錯誤，擲回 Exception...
+    // Throw an exception if a client or server error occurred...
     $response->throw();
     
-    // 若發生錯誤，且給定的條件為 true，則擲回 Exception...
+    // Throw an exception if an error occurred and the given condition is true...
     $response->throwIf($condition);
     
-    // 若發生錯誤，且給定的條件為 false，則擲回 Exception...
+    // Throw an exception if an error occurred and the given condition is false...
     $response->throwUnless($condition);
     
     return $response['user']['id'];

@@ -5,7 +5,7 @@ contributors:
     name: cornch
 crowdinUrl: https://crowdin.com/translate/laravel-docs/33/en-zhtw
 progress: 100
-updatedAt: '2022-02-13T10:32:00Z'
+updatedAt: '2023-01-25T09:52:00Z'
 ---
 
 # Contract

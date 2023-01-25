@@ -5,7 +5,7 @@ contributors:
     name: cornch
 crowdinUrl: https://crowdin.com/translate/laravel-docs/99/en-zhtw
 progress: 100
-updatedAt: '2022-09-09T05:22:00Z'
+updatedAt: '2023-01-25T14:53:00Z'
 ---
 
 # 郵件
@@ -506,7 +506,7 @@ php artisan make:mail OrderShipped
 
 ### 自訂 Symfony Message
 
-`Mailable` 基礎類別的 `withSymfonyMessage` 方法可讓我們註冊一個閉包，在傳送訊息前會以 Symfony Message 實體叫用該閉包。這樣我們就有機會在郵件被送出前深度自訂該訊息：
+The `withSymfonyMessage` method of the `Mailable` base class allows you to register a closure which will be invoked with the Symfony Message instance before sending the message. This gives you an opportunity to deeply customize the message before it is delivered:
 
     use Symfony\Component\Mime\Email;
     
@@ -868,7 +868,7 @@ php artisan vendor:publish --tag=laravel-mail
 
 ## 測試 Mailable
 
-Laravel 提供了多種可測試 Mailable 是否包含於其內容的方便方法。這些方法是：`assertSeeInHtml`、`assertDontSeeInHtml`、`assertSeeInOrderInHtml`、`assertSeeInText`、`assertDontSeeInText`、`assertSeeInOrderInText`
+Laravel provides several convenient methods for testing that your mailables contain the content that you expect. These methods are: `assertSeeInHtml`, `assertDontSeeInHtml`, `assertSeeInOrderInHtml`, `assertSeeInText`, `assertDontSeeInText`, and `assertSeeInOrderInText`.
 
 就和預期的一樣，有「HTML」的^ [Assertion](判斷提示) 判斷 HTML 版本的 Mailable 是否包含給定字串，而「Text」版本的 Assertion 則判斷純文字版本的 Mailable 是否包含給定字串：
 

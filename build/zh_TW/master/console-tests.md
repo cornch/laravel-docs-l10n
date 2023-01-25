@@ -5,7 +5,7 @@ contributors:
     name: cornch
 crowdinUrl: https://crowdin.com/translate/laravel-docs/29/en-zhtw
 progress: 100
-updatedAt: '2022-12-16T03:30:00Z'
+updatedAt: '2023-01-25T09:52:00Z'
 ---
 
 # 主控台測試

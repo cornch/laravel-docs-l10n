@@ -5,7 +5,7 @@ contributors:
     name: cornch
 crowdinUrl: https://crowdin.com/translate/laravel-docs/103/en-zhtw
 progress: 100
-updatedAt: '2022-08-09T13:36:00Z'
+updatedAt: '2023-01-25T14:53:00Z'
 ---
 
 # 資料庫：Migration
@@ -1030,7 +1030,7 @@ use Illuminate\Database\DBAL\TimestampType;
         $table->string('name', 50)->nullable()->change();
     });
 
-> **Warning** 可修改的欄位型別有：`bigInteger`、`binary`、`boolean`、`char`、`date`、`dateTime`、`dateTimeTz`、`decimal`、`integer`、`json`、`longText`、`mediumText`、`smallInteger`、`string`、`text`、`time`、`unsignedBigInteger`、`unsignedInteger`、`unsignedSmallInteger`、`uuid` 等。若要修改 `timestamp` 欄位型別，則[必須先將其註冊為 Doctrine 型別](#prerequisites)。
+> **Warning** The following column types can be modified: `bigInteger`, `binary`, `boolean`, `char`, `date`, `dateTime`, `dateTimeTz`, `decimal`, `integer`, `json`, `longText`, `mediumText`, `smallInteger`, `string`, `text`, `time`, `unsignedBigInteger`, `unsignedInteger`, `unsignedSmallInteger`, and `uuid`. To modify a `timestamp` column type a [Doctrine type must be registered](#prerequisites).
 
 <a name="renaming-columns"></a>
 
@@ -1042,7 +1042,7 @@ use Illuminate\Database\DBAL\TimestampType;
         $table->renameColumn('from', 'to');
     });
 
-> **Warning** 目前尚不支援重新命名 `enum` 欄位。
+> **Warning** Renaming an `enum` column is not currently supported.
 
 <a name="dropping-columns"></a>
 
@@ -1060,7 +1060,7 @@ use Illuminate\Database\DBAL\TimestampType;
         $table->dropColumn(['votes', 'avatar', 'location']);
     });
 
-> **Warning** 使用 SQLite 資料庫時，不支援在單一 Migration 中刪除或修改多個欄位。
+> **Warning** Dropping or modifying multiple columns within a single migration while using an SQLite database is not supported.
 
 <a name="available-command-aliases"></a>
 

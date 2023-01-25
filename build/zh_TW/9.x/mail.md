@@ -5,7 +5,7 @@ contributors:
     name: cornch
 crowdinUrl: https://crowdin.com/translate/laravel-docs/99/en-zhtw
 progress: 100
-updatedAt: '2022-09-09T05:22:00Z'
+updatedAt: '2023-01-25T14:53:00Z'
 ---
 
 # 郵件
@@ -191,7 +191,7 @@ php artisan make:mail OrderShipped
 
 產生好 Mailable 類別後，請打開該類別，我們來看看裡面的內容。首先，可以注意到所有的 Mailable 類別都在 `build` 方法內進行設定。在該方法中，可呼叫如 `form`、`view`、`attach` 等方法來設定 E-Mail 的顯示方式與寄送設定。
 
-> **Note** 也可以在 Mailable 的 `build` 方法上對相依性項目進行型別提示。Laravel 的 [Service Container](/docs/{{version}}/container) 會自動插入這些相依性項目。
+> **Note** You may type-hint dependencies on the mailable's `build` method. The Laravel [service container](/docs/{{version}}/container) automatically injects these dependencies.
 
 <a name="configuring-the-sender"></a>
 
@@ -533,7 +533,7 @@ php artisan make:mail OrderShipped
         }
     }
 
-定義好可附加物件後，在建立 E-Mail 訊息時，只要將該物件的實體傳給 `attach` 方法即可：
+Once you have defined your attachable object, you may simply pass an instance of that object to the `attach` method when building an email message:
 
     /**
      * Build the message.
@@ -568,7 +568,7 @@ Laravel 也提供了一些額外的方法，讓我們可以自訂附件。舉例
 
 ### Tag 與詮釋資料
 
-有的第三方 E-Mail 提供商，如 Mailgun 或 Postmark 等，支援訊息的「Tag」與「詮釋資料」，使用 Tag 與詮釋資料，就可以對專案所送出的 E-Mail 進行分組與追蹤。可以使用 `tag` 與 `metadata` 屬性來為 E-Mail 訊息加上 Tag 與詮釋資料：
+Some third-party email providers such as Mailgun and Postmark support message "tags" and "metadata", which may be used to group and track emails sent by your application. You may add tags and metadata to an email message via the `tag` and `metadata` methods:
 
     /**
      * Build the message.
@@ -590,7 +590,7 @@ Laravel 也提供了一些額外的方法，讓我們可以自訂附件。舉例
 
 ### 自訂 Symfony Message
 
-`Mailable` 基礎類別的 `withSymfonyMessage` 方法可讓我們註冊一個閉包，在傳送訊息前會以 Symfony Message 實體叫用該閉包。這樣我們就有機會在郵件被送出前深度自訂該訊息：
+The `withSymfonyMessage` method of the `Mailable` base class allows you to register a closure which will be invoked with the Symfony Message instance before sending the message. This gives you an opportunity to deeply customize the message before it is delivered:
 
     use Symfony\Component\Mime\Email;
     
@@ -952,7 +952,7 @@ php artisan vendor:publish --tag=laravel-mail
 
 ## 測試 Mailable
 
-Laravel 提供了多種可測試 Mailable 是否包含於其內容的方便方法。這些方法是：`assertSeeInHtml`、`assertDontSeeInHtml`、`assertSeeInOrderInHtml`、`assertSeeInText`、`assertDontSeeInText`、`assertSeeInOrderInText`
+Laravel provides several convenient methods for testing that your mailables contain the content that you expect. These methods are: `assertSeeInHtml`, `assertDontSeeInHtml`, `assertSeeInOrderInHtml`, `assertSeeInText`, `assertDontSeeInText`, and `assertSeeInOrderInText`.
 
 就和預期的一樣，有「HTML」的^ [Assertion](判斷提示) 判斷 HTML 版本的 Mailable 是否包含給定字串，而「Text」版本的 Assertion 則判斷純文字版本的 Mailable 是否包含給定字串：
 

@@ -5,7 +5,7 @@ contributors:
     name: cornch
 crowdinUrl: https://crowdin.com/translate/laravel-docs/157/en-zhtw
 progress: 100
-updatedAt: '2022-08-09T14:00:00Z'
+updatedAt: '2023-01-25T16:13:00Z'
 ---
 
 # 入門套件
@@ -30,7 +30,7 @@ updatedAt: '2022-08-09T14:00:00Z'
 
 ## Laravel Breeze
 
-[Laravel Breeze](https://github.com/laravel/breeze) 是一個簡單且最小化實作出所有 Laravel [認證功能](/docs/{{version}}/authentication)的套件，包含登入、註冊、密碼重設、電子郵件認證、以及密碼確認。Laravel Breeze 預設的 View 層是通過簡單的 [Blade 樣板](/docs/{{version}}/blade) 搭配 [Tailwind CSS](https://tailwindcss.com) 提供樣式組合而成的。或者，Breeze 也可以使用 Vue 或 React 搭配 [Inertia](https://inertiajs.com) 來 Scaffold 你的專案。
+[Laravel Breeze](https://github.com/laravel/breeze) is a minimal, simple implementation of all of Laravel's [authentication features](/docs/{{version}}/authentication), including login, registration, password reset, email verification, and password confirmation. Laravel Breeze's default view layer is made up of simple [Blade templates](/docs/{{version}}/blade) styled with [Tailwind CSS](https://tailwindcss.com). Or, Breeze can scaffold your application using Vue or React and [Inertia](https://inertiajs.com).
 
 對於從頭開始撰寫 Laravel 專案來說，Breeze 提供了一個絕佳的起始點。而且，對於打算通過 [Laravel Livewire](https://laravel-livewire.com) 來提升 Blade 樣板功能的專案來說，Breeze 也是個不錯的選項。
 

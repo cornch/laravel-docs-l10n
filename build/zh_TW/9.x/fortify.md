@@ -4,8 +4,8 @@ contributors:
     avatarUrl: https://crowdin-static.downloads.crowdin.com/avatar/14684796/medium/60f7dc21ec0bf9cfcb61983640bb4809_default.png
     name: cornch
 crowdinUrl: https://crowdin.com/translate/laravel-docs/75/en-zhtw
-progress: 37
-updatedAt: '2023-01-07T07:10:00Z'
+progress: 35
+updatedAt: '2023-01-25T07:02:00Z'
 ---
 
 # Laravel Fortify

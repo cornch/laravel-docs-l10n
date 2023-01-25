@@ -5,7 +5,7 @@ contributors:
     name: cornch
 crowdinUrl: https://crowdin.com/translate/laravel-docs/43/en-zhtw
 progress: 100
-updatedAt: '2022-09-09T05:22:00Z'
+updatedAt: '2023-01-25T10:52:00Z'
 ---
 
 # 資料庫：入門
@@ -23,7 +23,7 @@ updatedAt: '2022-09-09T05:22:00Z'
 
 ## 簡介
 
-幾乎所有的現代網站都會與資料庫互動。比起直接使用原始 SQL，Laravel 通過[流暢的 Query Builder](/docs/{{version}}/queries)、[Eloquent ORM](/docs/{{version}}/eloquent) 等功能大大簡化了與多種支援資料庫互動的過程。目前，Laravel 對四種資料庫提供了第一方支援：
+Almost every modern web application interacts with a database. Laravel makes interacting with databases extremely simple across a variety of supported databases using raw SQL, a [fluent query builder](/docs/{{version}}/queries), and the [Eloquent ORM](/docs/{{version}}/eloquent). Currently, Laravel provides first-party support for four databases:
 
 <div class="content-list" markdown="1">
 

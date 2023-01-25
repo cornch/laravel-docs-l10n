@@ -5,7 +5,7 @@ contributors:
     name: cornch
 crowdinUrl: https://crowdin.com/translate/laravel-docs/61/en-zhtw
 progress: 100
-updatedAt: '2022-11-28T12:19:00Z'
+updatedAt: '2023-01-25T10:52:00Z'
 ---
 
 # Eloquent：入門

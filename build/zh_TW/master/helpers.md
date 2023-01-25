@@ -5,7 +5,7 @@ contributors:
     name: cornch
 crowdinUrl: https://crowdin.com/translate/laravel-docs/79/en-zhtw
 progress: 100
-updatedAt: '2022-09-09T05:21:00Z'
+updatedAt: '2023-01-25T12:14:00Z'
 ---
 
 # 輔助函式
@@ -3472,7 +3472,7 @@ Str::of('Hello, world!')->wordCount(); // 2
 為了方便起見，也可以提供陣列作為 `retry` 函式的第一個引數。會使用這個真累來判斷每次嘗試間要暫停多久：
 
     return retry([100, 200] function () {
-        // 第一次嘗試時休息 100ms，第二次嘗試時休息 200ms...
+        // Sleep for 100ms on first retry, 200ms on second retry...
     });
 
 若只想在特定條件下重試，可傳入一個閉包作為第四個引數給 `retry` 函式：

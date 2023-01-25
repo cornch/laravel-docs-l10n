@@ -5,7 +5,7 @@ contributors:
     name: cornch
 crowdinUrl: https://crowdin.com/translate/laravel-docs/109/en-zhtw
 progress: 100
-updatedAt: '2022-08-09T13:36:00Z'
+updatedAt: '2023-01-25T14:53:00Z'
 ---
 
 # 通知 - Notification
@@ -631,7 +631,7 @@ php artisan vendor:publish --tag=laravel-notifications
 
 若使用 Mailgun Driver，請參考 Mailgun 說明文件中有關 [Tag](https://documentation.mailgun.com/en/latest/user_manual.html#tagging-1) 與[詮釋資料](https://documentation.mailgun.com/en/latest/user_manual.html#attaching-data-to-messages)的更多資訊。同樣地，也請參考 Postmark 說明文件中有關 [Tag](https://postmarkapp.com/blog/tags-support-for-smtp) 與[詮釋資料](https://postmarkapp.com/support/article/1125-custom-metadata-faq)的更多資料。
 
-若使用 Amazon SES 來寄送 E-Mail，則請使用 `metadata` 方法來將 [SES「Tag」](https://docs.aws.amazon.com/ses/latest/APIReference/API_MessageTag.html)附加到訊息上。Tag 與詮釋資料可被加到 `MailMessage` 上，這些資料可用來給 E-Mail 服務進行篩選或處理：
+If your application is using Amazon SES to send emails, you should use the `metadata` method to attach [SES "tags"](https://docs.aws.amazon.com/ses/latest/APIReference/API_MessageTag.html) to the message. Tags and metadata can be added to the `MailMessage` - these are used by your email service for filtering/processing:
 
 <a name="customizing-the-symfony-message"></a>
 

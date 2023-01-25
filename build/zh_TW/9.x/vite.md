@@ -5,10 +5,10 @@ contributors:
     name: cornch
 crowdinUrl: https://crowdin.com/translate/laravel-docs/180/en-zhtw
 progress: 100
-updatedAt: '2022-09-06T05:56:00Z'
+updatedAt: '2023-01-25T18:14:00Z'
 ---
 
-# 打包資源 (Vite)
+# Bundling Assets (Vite)
 
 - [簡介](#introduction)
 - [安裝與設定](#installation)
@@ -142,7 +142,7 @@ Laravel 的 Vite 外掛也支援多個 Entry Point，且還有一些進階的設
 
 #### 在 HTTPS 的開發伺服器使用 Vite
 
-若開發用 Web Server 在 HTTPS 上執行 (例如使用了 Valet 的 [secure 指令](/docs/{{version}}/valet#securing-sites))，則在連線到 Vite 的開發伺服器時可能會遇到一些問題。我們可以在 `vite.config.js` 設定檔中加上下列設定來讓 Vite 使用 HTTPS 來執行：
+If your development web server is running on HTTPS, including Valet's [secure command](/docs/{{version}}/valet#securing-sites), you may run into issues connecting to the Vite development server. You may configure Vite to also run on HTTPS by adding the following to your `vite.config.js` configuration file:
 
 ```js
 export default defineConfig({
@@ -154,7 +154,7 @@ export default defineConfig({
 });
 ```
 
-此外，還需要在執行 `npm run dev` 指令時點擊主控台上輸出的「Local」連結來在瀏覽器中接受 Vite 開發伺服器的憑證警告。
+You will also need to accept the certificate warning for Vite's development server in your browser by following the "Local" link in your console when running the `npm run dev` command.
 
 <a name="loading-your-scripts-and-styles"></a>
 
@@ -251,16 +251,17 @@ export default defineConfig({
         vue({
             template: {
                 transformAssetUrls: {
-                    // 在 SFC (單檔案元件，Single File Component) 內參照
-                    // 素材時，Vue 外掛會複寫素材的 URL，並指向 Laravel
-                    // 的 Web Server。將這個選項設為 `null` 好讓 Laravel 的
-                    // Vite 外掛能將這些素材 URL 複寫為 Vite 的開發伺服器。
+                    // The Vue plugin will re-write asset URLs, when referenced
+                    // in Single File Components, to point to the Laravel web
+                    // server. Setting this to `null` allows the Laravel plugin
+                    // to instead re-write asset URLs to point to the Vite
+                    // server instead.
                     base: null,
 
-                    // Vue 外掛會解析絕對網址，並將這些網址視為硬碟上檔
-                    // 案的絕對路徑。將這個選項設為 `false` 好 Vue 將絕對
-                    // 網址保持原樣，讓我們可以如預期般地使用網址來參照
-                    // public 目錄下的素材。
+                    // The Vue plugin will parse absolute URLs and treat them
+                    // as absolute paths to files on disk. Setting this to
+                    // `false` will leave absolute URLs un-touched so they can
+                    // reference assets in the public directly as expected.
                     includeAbsolute: false,
                 },
             },
@@ -313,7 +314,7 @@ createInertiaApp({
 
 ### URL 的處理
 
-使用 Vite 並在專案的 HTML、CSS、JS 等地方參照素材時，還需要考慮到幾點。首先，若要參照的資源使用絕對路徑，則 Vite 將不會在建置的結果中包含該資源；同時，還需要確定該素材是否在 public 目錄下可用。
+When using Vite and referencing assets in your application's HTML, CSS, or JS, there are a couple of things to consider. First, if you reference assets with an absolute path, Vite will not include the asset in the build; therefore, you should ensure that the asset is available in your public directory.
 
 使用相對路徑參照素材時，請記得，路徑是相對於正在參照該資源的檔案。Vite 會複寫使用相對路徑所參照的素材，並為其加上版本，然後進行打包。
 
@@ -375,7 +376,7 @@ export default defineConfig({
 });
 ```
 
-當 `refresh` 選項設為 `true` 後，在執行 `npm run dev` 時，一旦在 `resources/views/**`、`app/View/Components/**`、and `routes/**` 內保存檔案後，就會觸發瀏覽器進行整頁的重新整理。
+When the `refresh` option is `true`, saving files in `resources/views/**`, `app/View/Components/**`, and `routes/**` will trigger the browser to perform a full page refresh while you are running `npm run dev`.
 
 若使用 [Ziggy](https://github.com/tighten/ziggy) 來在網頁前端中產生 Route 連結，監看 `routes/**` 目錄就很實用。
 

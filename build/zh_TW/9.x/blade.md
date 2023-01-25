@@ -5,7 +5,7 @@ contributors:
     name: cornch
 crowdinUrl: https://crowdin.com/translate/laravel-docs/17/en-zhtw
 progress: 100
-updatedAt: '2022-08-06T06:42:00Z'
+updatedAt: '2023-01-25T09:52:00Z'
 ---
 
 # Blade 樣板
@@ -38,7 +38,7 @@ updatedAt: '2022-08-06T06:42:00Z'
    - [匿名 Index 原件](#anonymous-index-components)
    - [Data 屬性](#data-properties-attributes)
    - [存取上層資料](#accessing-parent-data)
-   - [匿名原件的 Namespace](#anonymous-component-namespaces)
+   - [Anonymous Components Namespaces](#anonymous-component-namespaces)
 - [製作 Layout](#building-layouts)
    - [使用元件的 Layout](#layouts-using-components)
    - [使用樣板繼承的 Layout](#layouts-using-template-inheritance)
@@ -65,7 +65,7 @@ Blade 是 Laravel 內建的一個簡單但強大的樣板引擎。與其他 PHP 
         return view('greeting', ['name' => 'Finn']);
     });
 
-> **Note** 想要將 Blade 樣板的功能提升到新的境界並輕鬆製作動態使用者界面嗎？請參考看看 [Laravel Livewire](https://laravel-livewire.com)。
+> **Note** Want to take your Blade templates to the next level and build dynamic interfaces with ease? Check out [Laravel Livewire](https://laravel-livewire.com).
 
 <a name="displaying-data"></a>
 
@@ -1407,13 +1407,13 @@ Blade 會通過將元件名稱轉為 Pascal 命名法 (pascal-case) 來自動偵
 
 <a name="anonymous-component-namespaces"></a>
 
-### 匿名原件的 Namespace
+### Anonymous Component Namespaces
 
 前面也提到過，若要定義匿名原件，一般是將 Blade 樣板放在 `resources/views/components` 目錄內。不過，有時候，我們可能會想向 Laravel 註冊預設路徑以外的其他路徑來放置匿名原件。
 
-舉例來說，在製作度假訂票系統時，我們可能會想把機票相關的匿名原件放在 `resources/views/flights/bookings/components` 目錄內。若要讓 Laravel 知道這個匿名原件路徑，我們可以使用 `Blade` Facade 所提供的 `anonymousComponentNamespace` 方法。
+For example, when building a vacation booking application, you may wish to place flight booking related anonymous components within a `resources/views/flights/bookings/components` directory. To inform Laravel of this anonymous component location, you may use the `anonymousComponentNamespace` method provided by the `Blade` facade.
 
-`anonymousComponentNamespace` 方法的第一個引數為匿名原件位置的「路徑」，而第二個引數則是該原件所要被放置的「Namespace」。稍後我們會在範例中看到，在轉譯原件時，這個「Namespace」會被放在原件名稱的前面。一般來說，應在專案的某個 [Service Provider](/docs/{{version}}/providers) 內 `boot` 方法中呼叫：
+The `anonymousComponentNamespace` method accepts the "path" to the anonymous component location as its first argument and the "namespace" that components should be placed under as its second argument. As you will see in the example below, the "namespace" will be prefixed to the component's name when the component is rendered. Typically, this method should be called from the `boot` method of one of your application's [service providers](/docs/{{version}}/providers):
 
     /**
      * Bootstrap any application services.
@@ -1425,7 +1425,7 @@ Blade 會通過將元件名稱轉為 Pascal 命名法 (pascal-case) 來自動偵
         Blade::anonymousComponentNamespace('flights.bookings.components', 'flights');
     }
 
-有了上述的範例，若在新註冊的原件目錄中有個 `panel` 原件，我們就像這樣轉譯該原件：
+Given the example above, you may render a `panel` component that exists within the newly registered component directory like so:
 
 ```blade
 <x-flights::panel :flight="$flight" />

@@ -5,7 +5,7 @@ contributors:
     name: cornch
 crowdinUrl: https://crowdin.com/translate/laravel-docs/25/en-zhtw
 progress: 100
-updatedAt: '2022-08-06T06:42:00Z'
+updatedAt: '2023-01-25T09:52:00Z'
 ---
 
 # Collection
@@ -1783,7 +1783,7 @@ The `mapInto()` method iterates over the collection, creating a new instance of 
 
 #### `reduceMany()` {.collection-method}
 
-`reduceMany` 方法會將該 Collection 歸約 (Reduce) 為一組包含值的陣列，並將每次迭代的結果傳遞給下一個迭代。這個方法與 `reduce` 方法類似，不過 `reduceMany` 接受多個初始值：
+The `reduceMany` method reduces the collection to an array of values, passing the results of each iteration into the subsequent iteration. This method is similar to the `reduce` method; however, it can accept multiple initial values:
 
     [$creditsRemaining, $batch] = Image::where('status', 'unprocessed')
         ->get()

@@ -5,7 +5,7 @@ contributors:
     name: cornch
 crowdinUrl: https://crowdin.com/translate/laravel-docs/141/en-zhtw
 progress: 100
-updatedAt: '2022-08-09T13:35:00Z'
+updatedAt: '2023-01-25T14:53:00Z'
 ---
 
 # 路由
@@ -528,7 +528,7 @@ Route 群組也可以用來處理子網域路由。我們可以像在設定 Rout
 
 ### 隱式 Enum 繫結
 
-PHP 8.1 新增了對 [Enum](https://www.php.net/manual/en/language.enumerations.backed.php) 的支援。為了配合這個功能，Laravel 中提供了能在 Route 定義中對 Enum 進行型別提示的功能。加上型別提示後，只有當網址中的相應的 Route 片段為有效的 Enum 時，Laravel 才會叫用該 Route。若不是有效的 Enum 值，則會自動回傳 404 HTTP Response。舉例來說，假設有下列 Enum：
+PHP 8.1 introduced support for [Enums](https://www.php.net/manual/en/language.enumerations.backed.php). To compliment this feature, Laravel allows you to type-hint an Enum on your route definition and Laravel will only invoke the route if that route segment corresponds to a valid Enum value. Otherwise, a 404 HTTP response will be returned automatically. For example, given the following Enum:
 
 ```php
 <?php

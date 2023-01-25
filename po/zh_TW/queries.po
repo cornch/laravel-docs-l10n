@@ -10,7 +10,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
-"PO-Revision-Date: 2022-09-09 05:22\n"
+"PO-Revision-Date: 2023-01-25 07:03\n"
 
 #: docs/8.x/queries.md:block 1 (header)
 msgid "Database: Query Builder"
@@ -1808,23 +1808,74 @@ msgstr "$products = DB::table('products')\n"
 "                })\n"
 "                ->get();\n"
 
-#: docs/9.x/queries.md:block 174 (quote)
+#: docs/9.x/queries.md:block 153 (paragraph)
+msgid "Laravel also supports querying JSON column types on databases that provide support for JSON column types. Currently, this includes MySQL 5.7+, PostgreSQL, SQL Server 2016, and SQLite 3.39.0 (with the [JSON1 extension](https://www.sqlite.org/json1.html)). To query a JSON column, use the `->` operator:"
+msgstr ""
+
+#: docs/9.x/queries.md:block 155 (paragraph)
+msgid "You may use `whereJsonContains` to query JSON arrays. This feature is not supported by SQLite database versions less than 3.38.0:"
+msgstr ""
+
+#: docs/9.x/queries.md:block 169 (paragraph)
+msgid "**whereBetweenColumns / whereNotBetweenColumns / orWhereBetweenColumns / orWhereNotBetweenColumns**"
+msgstr ""
+
+#: docs/9.x/queries.md:block 170 (paragraph)
+msgid "The `whereBetweenColumns` method verifies that a column's value is between the two values of two columns in the same table row:"
+msgstr ""
+
+#: docs/9.x/queries.md:block 171 (code)
+msgid "$patients = DB::table('patients')\n"
+"                       ->whereBetweenColumns('weight', ['minimum_allowed_weight', 'maximum_allowed_weight'])\n"
+"                       ->get();\n"
+msgstr ""
+
+#: docs/9.x/queries.md:block 172 (paragraph)
+msgid "The `whereNotBetweenColumns` method verifies that a column's value lies outside the two values of two columns in the same table row:"
+msgstr ""
+
+#: docs/9.x/queries.md:block 173 (code)
+msgid "$patients = DB::table('patients')\n"
+"                       ->whereNotBetweenColumns('weight', ['minimum_allowed_weight', 'maximum_allowed_weight'])\n"
+"                       ->get();\n"
+msgstr ""
+
+#: docs/9.x/queries.md:block 179 (paragraph)
+msgid "You may also provide a query object as the `whereIn` method's second argument:"
+msgstr ""
+
+#: docs/9.x/queries.md:block 180 (code)
+msgid "$activeUsers = DB::table('users')->select('id')->where('is_active', 1);\n\n"
+"$users = DB::table('comments')\n"
+"                    ->whereIn('user_id', $activeUsers)\n"
+"                    ->get();\n"
+msgstr ""
+
+#: docs/9.x/queries.md:block 182 (code)
+msgid "select * from comments where user_id in (\n"
+"    select id\n"
+"    from users\n"
+"    where is_active = 1\n"
+")\n"
+msgstr ""
+
+#: docs/9.x/queries.md:block 183 (quote)
 msgid "**Warning** If you are adding a large array of integer bindings to your query, the `whereIntegerInRaw` or `whereIntegerNotInRaw` methods may be used to greatly reduce your memory usage."
 msgstr "**Warning** 若要在查詢中加上大量的整數陣列，可使用 `whereIntegerInRaw` 與 `whereIntegerNotInRaw` 等方法來有效降低記憶體使用量。"
 
-#: docs/9.x/queries.md:block 220 (header)
+#: docs/9.x/queries.md:block 229 (header)
 msgid "Full Text Where Clauses"
 msgstr "全文 Where 子句"
 
-#: docs/9.x/queries.md:block 221 (quote)
+#: docs/9.x/queries.md:block 230 (quote)
 msgid "**Warning** Full text where clauses are currently supported by MySQL and PostgreSQL."
 msgstr "**Warning** 目前只有 MySQL 與 PostgreSQL 支援全文 Where 子句。"
 
-#: docs/9.x/queries.md:block 222 (paragraph)
+#: docs/9.x/queries.md:block 231 (paragraph)
 msgid "The `whereFullText` and `orWhereFullText` methods may be used to add full text \"where\" clauses to a query for columns that have [full text indexes](/docs/{{version}}/migrations#available-index-types). These methods will be transformed into the appropriate SQL for the underlying database system by Laravel. For example, a `MATCH AGAINST` clause will be generated for applications utilizing MySQL:"
 msgstr "使用 `whereFullText` 與 `orWhereFullText` 方法，就可在查詢中為有[全文索引](/docs/{{version}}/migrations#available-index-types)的欄位加上全文「where」子句。Laravel 會依據底層的資料庫系統將這些方法轉換為適當的 SQL。舉例來說，使用 MySQL 的專案會產生 `MATCH AGAINST` 子句："
 
-#: docs/9.x/queries.md:block 223 (code)
+#: docs/9.x/queries.md:block 232 (code)
 msgid "$users = DB::table('users')\n"
 "           ->whereFullText('bio', 'web developer')\n"
 "           ->get();\n"
@@ -1832,7 +1883,7 @@ msgstr "$users = DB::table('users')\n"
 "           ->whereFullText('bio', 'web developer')\n"
 "           ->get();\n"
 
-#: docs/9.x/queries.md:block 270 (code)
+#: docs/9.x/queries.md:block 279 (code)
 msgid "$role = $request->input('role');\n\n"
 "$users = DB::table('users')\n"
 "                ->when($role, function ($query, $role) {\n"
@@ -1846,7 +1897,7 @@ msgstr "$role = $request->input('role');\n\n"
 "                })\n"
 "                ->get();\n"
 
-#: docs/9.x/queries.md:block 273 (code)
+#: docs/9.x/queries.md:block 282 (code)
 msgid "$sortByVotes = $request->input('sort_by_votes');\n\n"
 "$users = DB::table('users')\n"
 "                ->when($sortByVotes, function ($query, $sortByVotes) {\n"
@@ -1864,15 +1915,15 @@ msgstr "$sortByVotes = $request->input('sort_by_votes');\n\n"
 "                })\n"
 "                ->get();\n"
 
-#: docs/9.x/queries.md:block 280 (paragraph)
+#: docs/9.x/queries.md:block 289 (paragraph)
 msgid "The `insertOrIgnore` method will ignore errors while inserting records into the database. When using this method, you should be aware that duplicate record errors will be ignored and other types of errors may also be ignored depending on the database engine. For example, `insertOrIgnore` will [bypass MySQL's strict mode](https://dev.mysql.com/doc/refman/en/sql-mode.html#ignore-effect-on-execution):"
 msgstr "`insertOrIgnore` 方法在將指令插入到資料庫時會忽略錯誤。使用此方法時，請記得，當因資料庫重複而發生錯誤時，該錯誤會被忽略，而依據資料庫引擎的不同，也有可能會忽略其他類型的錯誤。舉例來說，`insertOrIgnore` 會[忽略 MySQL 的 嚴格模式 (Strict Mode)](https://dev.mysql.com/doc/refman/en/sql-mode.html#ignore-effect-on-execution)："
 
-#: docs/9.x/queries.md:block 282 (paragraph)
+#: docs/9.x/queries.md:block 291 (paragraph)
 msgid "The `insertUsing` method will insert new records into the table while using a subquery to determine the data that should be inserted:"
 msgstr "`insertUsing` 方法會使用子查詢來判斷是否應插入該資料，然後在將新資料插入到資料表中："
 
-#: docs/9.x/queries.md:block 283 (code)
+#: docs/9.x/queries.md:block 292 (code)
 msgid "DB::table('pruned_users')->insertUsing([\n"
 "    'id', 'name', 'email', 'email_verified_at'\n"
 "], DB::table('users')->select(\n"
@@ -1884,11 +1935,11 @@ msgstr "DB::table('pruned_users')->insertUsing([\n"
 "    'id', 'name', 'email', 'email_verified_at'\n"
 ")->where('updated_at', '<=', now()->subMonth()));\n"
 
-#: docs/9.x/queries.md:block 288 (quote)
+#: docs/9.x/queries.md:block 297 (quote)
 msgid "**Warning** When using PostgreSQL the `insertGetId` method expects the auto-incrementing column to be named `id`. If you would like to retrieve the ID from a different \"sequence\", you may pass the column name as the second parameter to the `insertGetId` method."
 msgstr "**Warning**  使用 PostgreSQL 時，`insertGetId` 方法預設 Auto-Increment 的欄位名稱為 `id`。若想從不同的「^[Sequence](序列)」中取得 ID，則請傳入欄位名稱給 `insertGetId` 方法的第二個因數。"
 
-#: docs/9.x/queries.md:block 292 (code)
+#: docs/9.x/queries.md:block 301 (code)
 msgid "DB::table('flights')->upsert(\n"
 "    [\n"
 "        ['departure' => 'Oakland', 'destination' => 'San Diego', 'price' => 99],\n"
@@ -1906,11 +1957,192 @@ msgstr "DB::table('flights')->upsert(\n"
 "    ['price']\n"
 ");\n"
 
-#: docs/9.x/queries.md:block 294 (quote)
+#: docs/9.x/queries.md:block 303 (quote)
 msgid "**Warning** All databases except SQL Server require the columns in the second argument of the `upsert` method to have a \"primary\" or \"unique\" index. In addition, the MySQL database driver ignores the second argument of the `upsert` method and always uses the \"primary\" and \"unique\" indexes of the table to detect existing records."
 msgstr "**Warning** 除了 SQL Server 以外，所有的資料庫都要求 `upsert` 方法第二個引數中的欄位必須有「Primary」或「Unique」索引。此外，MySQL 資料庫 Driver 會忽略 `upsert` 方法的第二個引數，該 Driver 只會使用該資料表的「Primary」與「Unique」索引來判斷現有的記錄。"
 
-#: docs/master/queries.md:block 217 (quote)
-msgid "{note} Full text where clauses are currently supported by MySQL and PostgreSQL."
-msgstr "{note} 目前只有 MySQL 與 PostgreSQL 支援全文 Where 子句。"
+#: docs/9.x/queries.md:block 321 (paragraph)
+msgid "If needed, you may also specify additional columns to update during the increment or decrement operation:"
+msgstr ""
+
+#: docs/9.x/queries.md:block 323 (paragraph)
+msgid "In addition, you may increment or decrement multiple columns at once using the `incrementEach` and `decrementEach` methods:"
+msgstr ""
+
+#: docs/9.x/queries.md:block 324 (code)
+msgid "DB::table('users')->incrementEach([\n"
+"    'votes' => 5,\n"
+"    'balance' => 100,\n"
+"]);\n"
+msgstr ""
+
+#: docs/master/queries.md:block 13 (code)
+msgid "<?php\n\n"
+"namespace App\\Http\\Controllers;\n\n"
+"use App\\Http\\Controllers\\Controller;\n"
+"use Illuminate\\Support\\Facades\\DB;\n"
+"use Illuminate\\View\\View;\n\n"
+"class UserController extends Controller\n"
+"{\n"
+"    /**\n"
+"     * Show a list of all of the application's users.\n"
+"     */\n"
+"    public function index(): View\n"
+"    {\n"
+"        $users = DB::table('users')->get();\n\n"
+"        return view('user.index', ['users' => $users]);\n"
+"    }\n"
+"}\n"
+msgstr ""
+
+#: docs/master/queries.md:block 34 (code)
+msgid "use Illuminate\\Support\\Collection;\n"
+"use Illuminate\\Support\\Facades\\DB;\n\n"
+"DB::table('users')->orderBy('id')->chunk(100, function (Collection $users) {\n"
+"    foreach ($users as $user) {\n"
+"        // ...\n"
+"    }\n"
+"});\n"
+msgstr ""
+
+#: docs/master/queries.md:block 36 (code)
+msgid "DB::table('users')->orderBy('id')->chunk(100, function (Collection $users) {\n"
+"    // Process the records...\n\n"
+"    return false;\n"
+"});\n"
+msgstr ""
+
+#: docs/master/queries.md:block 38 (code)
+msgid "DB::table('users')->where('active', false)\n"
+"    ->chunkById(100, function (Collection $users) {\n"
+"        foreach ($users as $user) {\n"
+"            DB::table('users')\n"
+"                ->where('id', $user->id)\n"
+"                ->update(['active' => true]);\n"
+"        }\n"
+"    });\n"
+msgstr ""
+
+#: docs/master/queries.md:block 43 (code)
+msgid "use Illuminate\\Support\\Facades\\DB;\n\n"
+"DB::table('users')->orderBy('id')->lazy()->each(function (object $user) {\n"
+"    // ...\n"
+"});\n"
+msgstr ""
+
+#: docs/master/queries.md:block 45 (code)
+msgid "DB::table('users')->where('active', false)\n"
+"    ->lazyById()->each(function (object $user) {\n"
+"        DB::table('users')\n"
+"            ->where('id', $user->id)\n"
+"            ->update(['active' => true]);\n"
+"    });\n"
+msgstr ""
+
+#: docs/master/queries.md:block 112 (code)
+msgid "DB::table('users')\n"
+"        ->join('contacts', function (JoinClause $join) {\n"
+"            $join->on('users.id', '=', 'contacts.user_id')->orOn(/* ... */);\n"
+"        })\n"
+"        ->get();\n"
+msgstr ""
+
+#: docs/master/queries.md:block 114 (code)
+msgid "DB::table('users')\n"
+"        ->join('contacts', function (JoinClause $join) {\n"
+"            $join->on('users.id', '=', 'contacts.user_id')\n"
+"                 ->where('contacts.user_id', '>', 5);\n"
+"        })\n"
+"        ->get();\n"
+msgstr ""
+
+#: docs/master/queries.md:block 118 (code)
+msgid "$latestPosts = DB::table('posts')\n"
+"                   ->select('user_id', DB::raw('MAX(created_at) as last_post_created_at'))\n"
+"                   ->where('is_published', true)\n"
+"                   ->groupBy('user_id');\n\n"
+"$users = DB::table('users')\n"
+"        ->joinSub($latestPosts, 'latest_posts', function (JoinClause $join) {\n"
+"            $join->on('users.id', '=', 'latest_posts.user_id');\n"
+"        })->get();\n"
+msgstr ""
+
+#: docs/master/queries.md:block 143 (code)
+msgid "$users = DB::table('users')\n"
+"            ->where('votes', '>', 100)\n"
+"            ->orWhere(function(Builder $query) {\n"
+"                $query->where('name', 'Abigail')\n"
+"                      ->where('votes', '>', 50);\n"
+"            })\n"
+"            ->get();\n"
+msgstr ""
+
+#: docs/master/queries.md:block 150 (code)
+msgid "$products = DB::table('products')\n"
+"                ->whereNot(function (Builder $query) {\n"
+"                    $query->where('clearance', true)\n"
+"                          ->orWhere('price', '<', 10);\n"
+"                })\n"
+"                ->get();\n"
+msgstr ""
+
+#: docs/master/queries.md:block 210 (code)
+msgid "$users = DB::table('users')\n"
+"           ->where('name', '=', 'John')\n"
+"           ->where(function (Builder $query) {\n"
+"               $query->where('votes', '>', 100)\n"
+"                     ->orWhere('title', '=', 'Admin');\n"
+"           })\n"
+"           ->get();\n"
+msgstr ""
+
+#: docs/master/queries.md:block 219 (code)
+msgid "$users = DB::table('users')\n"
+"           ->whereExists(function (Builder $query) {\n"
+"               $query->select(DB::raw(1))\n"
+"                     ->from('orders')\n"
+"                     ->whereColumn('orders.user_id', 'users.id');\n"
+"           })\n"
+"           ->get();\n"
+msgstr ""
+
+#: docs/master/queries.md:block 225 (code)
+msgid "use App\\Models\\User;\n"
+"use Illuminate\\Database\\Query\\Builder;\n\n"
+"$users = User::where(function (Builder $query) {\n"
+"    $query->select('type')\n"
+"        ->from('membership')\n"
+"        ->whereColumn('membership.user_id', 'users.id')\n"
+"        ->orderByDesc('membership.start_date')\n"
+"        ->limit(1);\n"
+"}, 'Pro')->get();\n"
+msgstr ""
+
+#: docs/master/queries.md:block 227 (code)
+msgid "use App\\Models\\Income;\n"
+"use Illuminate\\Database\\Query\\Builder;\n\n"
+"$incomes = Income::where('amount', '<', function (Builder $query) {\n"
+"    $query->selectRaw('avg(i.amount)')->from('incomes as i');\n"
+"})->get();\n"
+msgstr ""
+
+#: docs/master/queries.md:block 279 (code)
+msgid "$role = $request->string('role');\n\n"
+"$users = DB::table('users')\n"
+"                ->when($role, function (Builder $query, string $role) {\n"
+"                    $query->where('role_id', $role);\n"
+"                })\n"
+"                ->get();\n"
+msgstr ""
+
+#: docs/master/queries.md:block 282 (code)
+msgid "$sortByVotes = $request->boolean('sort_by_votes');\n\n"
+"$users = DB::table('users')\n"
+"                ->when($sortByVotes, function (Builder $query, bool $sortByVotes) {\n"
+"                    $query->orderBy('votes');\n"
+"                }, function (Builder $query) {\n"
+"                    $query->orderBy('name');\n"
+"                })\n"
+"                ->get();\n"
+msgstr ""
 

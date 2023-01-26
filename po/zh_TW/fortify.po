@@ -10,7 +10,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
-"PO-Revision-Date: 2023-01-25 19:18\n"
+"PO-Revision-Date: 2023-01-26 06:01\n"
 
 #: docs/8.x/fortify.md:block 1 (header)
 msgid "Laravel Fortify"
@@ -622,19 +622,19 @@ msgstr "禁用兩步驟驗證"
 
 #: docs/8.x/fortify.md:block 106 (paragraph)
 msgid "To disable two factor authentication, your application should make a DELETE request to the `/user/two-factor-authentication` endpoint. Remember, Fortify's two factor authentication endpoints require [password confirmation](#password-confirmation) prior to being called."
-msgstr ""
+msgstr "若要禁用兩步驟驗證，則你的網站需要向 `/user/two-factor-authentication` Endpoint 傳送一個 DELETE Request。請記得，需要先[確認密碼](#password-confirmation)，才能呼叫 Fortify 的兩步驟驗證 Endpoint。"
 
 #: docs/8.x/fortify.md:block 108 (header)
 msgid "Registration"
-msgstr ""
+msgstr "註冊"
 
 #: docs/8.x/fortify.md:block 109 (paragraph)
 msgid "To begin implementing our application's registration functionality, we need to instruct Fortify how to return our \"register\" view. Remember, Fortify is a headless authentication library. If you would like a frontend implementation of Laravel's authentication features that are already completed for you, you should use an [application starter kit](/docs/{{version}}/starter-kits)."
-msgstr ""
+msgstr "若要開始實作網站的登入功能，我們需要告訴 Fortify 如何回傳「註冊」View。請記得，Fortify 是一個無周邊 (Headless) 的登入函式庫。若你想要現成的完整 Laravel 登入功能前端實作，請使用[專案入門套件](/docs/{{version}}/starter-kits)。"
 
 #: docs/8.x/fortify.md:block 110 (paragraph)
 msgid "All of Fortify's view rendering logic may be customized using the appropriate methods available via the `Laravel\\Fortify\\Fortify` class. Typically, you should call this method from the `boot` method of your `App\\Providers\\FortifyServiceProvider` class:"
-msgstr ""
+msgstr "Fortify 中所有的 View 轉譯邏輯都可使用 `Laravel\\Fortify\\Fortify` 類別中相應的方法來客製化。一般來說，應該在專案的 `App\\Providers\\FortifyServiceProvider` 類別中的 `boot` 方法內呼叫這些方法："
 
 #: docs/8.x/fortify.md:block 111 (code)
 msgid "use Laravel\\Fortify\\Fortify;\n\n"
@@ -650,47 +650,59 @@ msgid "use Laravel\\Fortify\\Fortify;\n\n"
 "    });\n\n"
 "    // ...\n"
 "}\n"
-msgstr ""
+msgstr "use Laravel\\Fortify\\Fortify;\n\n"
+"/**\n"
+" * Bootstrap any application services.\n"
+" *\n"
+" * @return void\n"
+" */\n"
+"public function boot()\n"
+"{\n"
+"    Fortify::registerView(function () {\n"
+"        return view('auth.register');\n"
+"    });\n\n"
+"    // ...\n"
+"}\n"
 
 #: docs/8.x/fortify.md:block 112 (paragraph)
 msgid "Fortify will take care of defining the `/register` route that returns this view. Your `register` template should include a form that makes a POST request to the `/register` endpoint defined by Fortify."
-msgstr ""
+msgstr "Fortify 會處理好 `/register` Route 的定義，並回傳這個 View。`register` 樣板中應包含一個表單，用來向 Fortify 定義的 `/register` Endpoint 建立 POST Request。"
 
 #: docs/8.x/fortify.md:block 113 (paragraph)
 msgid "The `/register` endpoint expects a string `name`, string email address / username, `password`, and `password_confirmation` fields. The name of the email / username field should match the `username` configuration value defined within your application's `fortify` configuration file."
-msgstr ""
+msgstr "應傳入一組字串的 `name`、字串的 E-Mail 位址或使用者名稱、`password` 與 `password_confirmation` 欄位給 `/register` Endpoint。E-Mail 位址或使用者名稱欄位的名稱應符合專案中 `fortify` 設定檔內定義的 `username` 設定值一致。"
 
 #: docs/8.x/fortify.md:block 114 (paragraph)
 msgid "If the registration attempt is successful, Fortify will redirect the user to the URI configured via the `home` configuration option within your application's `fortify` configuration file. If the login request was an XHR request, a 200 HTTP response will be returned."
-msgstr ""
+msgstr "若註冊嘗試成功，Fortify 會將使用者重新導向到專案 `fortify` 設定檔中 `home` 設定選項所指定的 URI。若登入 Request 是 XHR Request，則會回傳 200 HTTP Response。"
 
 #: docs/8.x/fortify.md:block 115 (paragraph)
 msgid "If the request was not successful, the user will be redirected back to the registration screen and the validation errors will be available to you via the shared `$errors` [Blade template variable](/docs/{{version}}/validation#quick-displaying-the-validation-errors). Or, in the case of an XHR request, the validation errors will be returned with a 422 HTTP response."
-msgstr ""
+msgstr "若 Request 未成功，則使用者會被重新導向回註冊畫面，而共用的 `$errors` [Blade 樣板變數](/docs/{{version}}/validation#quick-displaying-the-validation-errors) 中會包含驗證錯誤訊息。或者，若使用的是 XHR Request，則會使用 422 HTTP Response 來回傳驗證錯誤。"
 
 #: docs/8.x/fortify.md:block 117 (header)
 msgid "Customizing Registration"
-msgstr ""
+msgstr "自定註冊"
 
 #: docs/8.x/fortify.md:block 118 (paragraph)
 msgid "The user validation and creation process may be customized by modifying the `App\\Actions\\Fortify\\CreateNewUser` action that was generated when you installed Laravel Fortify."
-msgstr ""
+msgstr "只要修改安裝 Laravel Fortify 時產生的 `App\\Actions\\Fortify\\CreateNewUser` 動作，就可自定驗證與建立使用者的流程。"
 
 #: docs/8.x/fortify.md:block 120 (header)
 msgid "Password Reset"
-msgstr ""
+msgstr "重設密碼"
 
 #: docs/8.x/fortify.md:block 122 (header)
 msgid "Requesting A Password Reset Link"
-msgstr ""
+msgstr "要求密碼重設連結"
 
 #: docs/8.x/fortify.md:block 123 (paragraph)
 msgid "To begin implementing our application's password reset functionality, we need to instruct Fortify how to return our \"forgot password\" view. Remember, Fortify is a headless authentication library. If you would like a frontend implementation of Laravel's authentication features that are already completed for you, you should use an [application starter kit](/docs/{{version}}/starter-kits)."
-msgstr ""
+msgstr "若要開始實作網站的密碼重設功能，我們需要告訴 Fortify 如何回傳「忘記密碼」View。請記得，Fortify 是一個無周邊 (Headless) 的登入函式庫。若你想要現成的完整 Laravel 登入功能前端實作，請使用[專案入門套件](/docs/{{version}}/starter-kits)。"
 
 #: docs/8.x/fortify.md:block 124 (paragraph)
 msgid "All of Fortify's view rendering logic may be customized using the appropriate methods available via the `Laravel\\Fortify\\Fortify` class. Typically, you should call this method from the `boot` method of your application's `App\\Providers\\FortifyServiceProvider` class:"
-msgstr ""
+msgstr "Fortify 中所有的 View 轉譯邏輯都可使用 `Laravel\\Fortify\\Fortify` 類別中相應的方法來客製化。一般來說，應在 `App\\Providers\\FortifyServiceProvider` 類別中的 `boot` 方法內呼叫這些方法："
 
 #: docs/8.x/fortify.md:block 125 (code)
 msgid "use Laravel\\Fortify\\Fortify;\n\n"
@@ -706,27 +718,39 @@ msgid "use Laravel\\Fortify\\Fortify;\n\n"
 "    });\n\n"
 "    // ...\n"
 "}\n"
-msgstr ""
+msgstr "use Laravel\\Fortify\\Fortify;\n\n"
+"/**\n"
+" * Bootstrap any application services.\n"
+" *\n"
+" * @return void\n"
+" */\n"
+"public function boot()\n"
+"{\n"
+"    Fortify::requestPasswordResetLinkView(function () {\n"
+"        return view('auth.forgot-password');\n"
+"    });\n\n"
+"    // ...\n"
+"}\n"
 
 #: docs/8.x/fortify.md:block 126 (paragraph)
 msgid "Fortify will take care of defining the `/forgot-password` endpoint that returns this view. Your `forgot-password` template should include a form that makes a POST request to the `/forgot-password` endpoint."
-msgstr ""
+msgstr "Fortify 會處理好用來回傳此 View 的 `/forgot-password` Endpoint。`forgot-password` 樣板中應包含一個表單，用來向 `/forgot-password` Endpoint 建立 POST Request。"
 
 #: docs/8.x/fortify.md:block 127 (paragraph)
 msgid "The `/forgot-password` endpoint expects a string `email` field. The name of this field / database column should match the `email` configuration value within your application's `fortify` configuration file."
-msgstr ""
+msgstr "應傳入一個字串的 `email` 欄位給 `/forgot-password` Endpoint。該欄位與資料庫欄位的名稱應符合專案中 `fortify` 設定檔內的 `email` 設定值。"
 
 #: docs/8.x/fortify.md:block 129 (header)
 msgid "Handling The Password Reset Link Request Response"
-msgstr ""
+msgstr "處理密碼重設連結要求的 Response"
 
 #: docs/8.x/fortify.md:block 130 (paragraph)
 msgid "If the password reset link request was successful, Fortify will redirect the user back to the `/forgot-password` endpoint and send an email to the user with a secure link they can use to reset their password. If the request was an XHR request, a 200 HTTP response will be returned."
-msgstr ""
+msgstr "若要求密碼重設連結成功，Fortify 會將使用者重新導向回 `/forgot-password` Endpoint，並傳送一封包含安全連結的 E-Mail 給該使用者，以供重設密碼。若使用 XHR Request，則會回傳 200 HTTP Response。"
 
 #: docs/8.x/fortify.md:block 131 (paragraph)
 msgid "After being redirected back to the `/forgot-password` endpoint after a successful request, the `status` session variable may be used to display the status of the password reset link request attempt. The value of this session variable will match one of the translation strings defined within your application's `passwords` [language file](/docs/{{version}}/localization):"
-msgstr ""
+msgstr "請求成功並重新導向回 `/forgot-password` Endpoint 後，可使用 `status` Session 變數來顯示密碼重設連結請求嘗試的狀態。這個 Session 變數的值會是專案中 `passwords` [語系檔](/docs/{{version}}/localization)內的其中一個值："
 
 #: docs/8.x/fortify.md:block 132 (code)
 msgid "@if (session('status'))\n"
@@ -734,19 +758,23 @@ msgid "@if (session('status'))\n"
 "        {{ session('status') }}\n"
 "    </div>\n"
 "@endif\n"
-msgstr ""
+msgstr "@if (session('status'))\n"
+"    <div class=\"mb-4 font-medium text-sm text-green-600\">\n"
+"        {{ session('status') }}\n"
+"    </div>\n"
+"@endif\n"
 
 #: docs/8.x/fortify.md:block 133 (paragraph)
 msgid "If the request was not successful, the user will be redirected back to the request password reset link screen and the validation errors will be available to you via the shared `$errors` [Blade template variable](/docs/{{version}}/validation#quick-displaying-the-validation-errors). Or, in the case of an XHR request, the validation errors will be returned with a 422 HTTP response."
-msgstr ""
+msgstr "若 Request 未成功，則使用者會被重新導向回密碼重設連結請求畫面，而共用的 `$errors` [Blade 樣板變數](/docs/{{version}}/validation#quick-displaying-the-validation-errors) 中會包含驗證錯誤訊息。或者，若使用的是 XHR Request，則會使用 422 HTTP Response 來回傳驗證錯誤。"
 
 #: docs/8.x/fortify.md:block 135 (header)
 msgid "Resetting The Password"
-msgstr ""
+msgstr "重設密碼"
 
 #: docs/8.x/fortify.md:block 136 (paragraph)
 msgid "To finish implementing our application's password reset functionality, we need to instruct Fortify how to return our \"reset password\" view."
-msgstr ""
+msgstr "要實作網站密碼重設功能的最後一個步驟，我們需要告訴 Fortify 如何回傳「重設密碼」View。"
 
 #: docs/8.x/fortify.md:block 138 (code)
 msgid "use Laravel\\Fortify\\Fortify;\n\n"
@@ -762,43 +790,55 @@ msgid "use Laravel\\Fortify\\Fortify;\n\n"
 "    });\n\n"
 "    // ...\n"
 "}\n"
-msgstr ""
+msgstr "use Laravel\\Fortify\\Fortify;\n\n"
+"/**\n"
+" * Bootstrap any application services.\n"
+" *\n"
+" * @return void\n"
+" */\n"
+"public function boot()\n"
+"{\n"
+"    Fortify::resetPasswordView(function ($request) {\n"
+"        return view('auth.reset-password', ['request' => $request]);\n"
+"    });\n\n"
+"    // ...\n"
+"}\n"
 
 #: docs/8.x/fortify.md:block 139 (paragraph)
 msgid "Fortify will take care of defining the route to display this view. Your `reset-password` template should include a form that makes a POST request to `/reset-password`."
-msgstr ""
+msgstr "Fortify 會處理好用來顯示此 View 的 Route。`reset-password` 樣板中應包含一個表單，用來向 `/reset-password` Endpoint 建立 POST Request。"
 
 #: docs/8.x/fortify.md:block 140 (paragraph)
 msgid "The `/reset-password` endpoint expects a string `email` field, a `password` field, a `password_confirmation` field, and a hidden field named `token` that contains the value of `request()->route('token')`. The name of the \"email\" field / database column should match the `email` configuration value defined within your application's `fortify` configuration file."
-msgstr ""
+msgstr "應傳入一組字串的 `email`、`password`、`password_confirmation`、以及一個隱藏的 `token` 欄位給 /reset-password` Endpoint。`token` 欄位應包含 `request()->route('token')` 的值。而「電子郵件」欄位與資料庫欄位的名稱應與專案中 `fortify` 設定檔的 `email` 設定值相同。"
 
 #: docs/8.x/fortify.md:block 142 (header)
 msgid "Handling The Password Reset Response"
-msgstr ""
+msgstr "處理密碼重設的 Response"
 
 #: docs/8.x/fortify.md:block 143 (paragraph)
 msgid "If the password reset request was successful, Fortify will redirect back to the `/login` route so that the user can log in with their new password. In addition, a `status` session variable will be set so that you may display the successful status of the reset on your login screen:"
-msgstr ""
+msgstr "成功重設密碼後，Fortify 會重新導向回 `/login` Route，好讓使用者能以新密碼登入。此外，Fortify 也會設定 `status` Session 變數，讓你能在登入畫面上顯示重設的成功狀態："
 
 #: docs/8.x/fortify.md:block 145 (paragraph)
 msgid "If the request was an XHR request, a 200 HTTP response will be returned."
-msgstr ""
+msgstr "若 Request 為 XHR Request，則會回傳 200 HTTP Response。"
 
 #: docs/8.x/fortify.md:block 146 (paragraph)
 msgid "If the request was not successful, the user will be redirected back to the reset password screen and the validation errors will be available to you via the shared `$errors` [Blade template variable](/docs/{{version}}/validation#quick-displaying-the-validation-errors). Or, in the case of an XHR request, the validation errors will be returned with a 422 HTTP response."
-msgstr ""
+msgstr "若 Request 未成功，則使用者會被重新導向回重設密碼畫面，而共用的 `$errors` [Blade 樣板變數](/docs/{{version}}/validation#quick-displaying-the-validation-errors) 中會包含驗證錯誤訊息。或者，若使用的是 XHR Request，則會使用 422 HTTP Response 來回傳驗證錯誤。"
 
 #: docs/8.x/fortify.md:block 148 (header)
 msgid "Customizing Password Resets"
-msgstr ""
+msgstr "自定密碼重設"
 
 #: docs/8.x/fortify.md:block 149 (paragraph)
 msgid "The password reset process may be customized by modifying the `App\\Actions\\ResetUserPassword` action that was generated when you installed Laravel Fortify."
-msgstr ""
+msgstr "只要修改安裝 Laravel Fortify 時產生的 `App\\Actions\\Fortify\\ResetUserPassword` 動作，就可自定重設密碼的流程。"
 
 #: docs/8.x/fortify.md:block 151 (header)
 msgid "Email Verification"
-msgstr ""
+msgstr "E-Mail 驗證"
 
 #: docs/8.x/fortify.md:block 152 (paragraph)
 msgid "After registration, you may wish for users to verify their email address before they continue accessing your application. To get started, ensure the `emailVerification` feature is enabled in your `fortify` configuration file's `features` array. Next, you should ensure that your `App\\Models\\User` class implements the `Illuminate\\Contracts\\Auth\\MustVerifyEmail` interface."
@@ -1013,7 +1053,21 @@ msgid "use Laravel\\Fortify\\Contracts\\LogoutResponse;\n"
 "        }\n"
 "    });\n"
 "}\n"
-msgstr ""
+msgstr "use Laravel\\Fortify\\Contracts\\LogoutResponse;\n"
+"use Illuminate\\Http\\RedirectResponse;\n"
+"use Illuminate\\Http\\Request;\n\n"
+"/**\n"
+" * Register any application services.\n"
+" */\n"
+"public function register(): void\n"
+"{\n"
+"    $this->app->instance(LogoutResponse::class, new class implements LogoutResponse {\n"
+"        public function toResponse(Request $request): RedirectResponse\n"
+"        {\n"
+"            return redirect('/');\n"
+"        }\n"
+"    });\n"
+"}\n"
 
 #: docs/master/fortify.md:block 107 (code)
 msgid "use Laravel\\Fortify\\Fortify;\n\n"
@@ -1027,7 +1081,17 @@ msgid "use Laravel\\Fortify\\Fortify;\n\n"
 "    });\n\n"
 "    // ...\n"
 "}\n"
-msgstr ""
+msgstr "use Laravel\\Fortify\\Fortify;\n\n"
+"/**\n"
+" * Bootstrap any application services.\n"
+" */\n"
+"public function boot(): void\n"
+"{\n"
+"    Fortify::twoFactorChallengeView(function () {\n"
+"        return view('auth.two-factor-challenge');\n"
+"    });\n\n"
+"    // ...\n"
+"}\n"
 
 #: docs/master/fortify.md:block 118 (code)
 msgid "use Laravel\\Fortify\\Fortify;\n\n"
@@ -1041,7 +1105,17 @@ msgid "use Laravel\\Fortify\\Fortify;\n\n"
 "    });\n\n"
 "    // ...\n"
 "}\n"
-msgstr ""
+msgstr "use Laravel\\Fortify\\Fortify;\n\n"
+"/**\n"
+" * Bootstrap any application services.\n"
+" */\n"
+"public function boot(): void\n"
+"{\n"
+"    Fortify::registerView(function () {\n"
+"        return view('auth.register');\n"
+"    });\n\n"
+"    // ...\n"
+"}\n"
 
 #: docs/master/fortify.md:block 132 (code)
 msgid "use Laravel\\Fortify\\Fortify;\n\n"
@@ -1055,7 +1129,17 @@ msgid "use Laravel\\Fortify\\Fortify;\n\n"
 "    });\n\n"
 "    // ...\n"
 "}\n"
-msgstr ""
+msgstr "use Laravel\\Fortify\\Fortify;\n\n"
+"/**\n"
+" * Bootstrap any application services.\n"
+" */\n"
+"public function boot(): void\n"
+"{\n"
+"    Fortify::requestPasswordResetLinkView(function () {\n"
+"        return view('auth.forgot-password');\n"
+"    });\n\n"
+"    // ...\n"
+"}\n"
 
 #: docs/master/fortify.md:block 145 (code)
 msgid "use Laravel\\Fortify\\Fortify;\n"
@@ -1070,7 +1154,18 @@ msgid "use Laravel\\Fortify\\Fortify;\n"
 "    });\n\n"
 "    // ...\n"
 "}\n"
-msgstr ""
+msgstr "use Laravel\\Fortify\\Fortify;\n"
+"use Illuminate\\Http\\Request;\n\n"
+"/**\n"
+" * Bootstrap any application services.\n"
+" */\n"
+"public function boot(): void\n"
+"{\n"
+"    Fortify::resetPasswordView(function (Request $request) {\n"
+"        return view('auth.reset-password', ['request' => $request]);\n"
+"    });\n\n"
+"    // ...\n"
+"}\n"
 
 #: docs/master/fortify.md:block 162 (code)
 msgid "use Laravel\\Fortify\\Fortify;\n\n"
@@ -1084,7 +1179,17 @@ msgid "use Laravel\\Fortify\\Fortify;\n\n"
 "    });\n\n"
 "    // ...\n"
 "}\n"
-msgstr ""
+msgstr "use Laravel\\Fortify\\Fortify;\n\n"
+"/**\n"
+" * Bootstrap any application services.\n"
+" */\n"
+"public function boot(): void\n"
+"{\n"
+"    Fortify::verifyEmailView(function () {\n"
+"        return view('auth.verify-email');\n"
+"    });\n\n"
+"    // ...\n"
+"}\n"
 
 #: docs/master/fortify.md:block 179 (code)
 msgid "use Laravel\\Fortify\\Fortify;\n\n"
@@ -1098,5 +1203,15 @@ msgid "use Laravel\\Fortify\\Fortify;\n\n"
 "    });\n\n"
 "    // ...\n"
 "}\n"
-msgstr ""
+msgstr "use Laravel\\Fortify\\Fortify;\n\n"
+"/**\n"
+" * Bootstrap any application services.\n"
+" */\n"
+"public function boot(): void\n"
+"{\n"
+"    Fortify::confirmPasswordView(function () {\n"
+"        return view('auth.confirm-password');\n"
+"    });\n\n"
+"    // ...\n"
+"}\n"
 

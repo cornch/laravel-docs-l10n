@@ -10,7 +10,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
-"PO-Revision-Date: 2023-01-26 06:01\n"
+"PO-Revision-Date: 2023-01-26 07:37\n"
 
 #: docs/8.x/fortify.md:block 1 (header)
 msgid "Laravel Fortify"
@@ -842,15 +842,15 @@ msgstr "E-Mail 驗證"
 
 #: docs/8.x/fortify.md:block 152 (paragraph)
 msgid "After registration, you may wish for users to verify their email address before they continue accessing your application. To get started, ensure the `emailVerification` feature is enabled in your `fortify` configuration file's `features` array. Next, you should ensure that your `App\\Models\\User` class implements the `Illuminate\\Contracts\\Auth\\MustVerifyEmail` interface."
-msgstr ""
+msgstr "註冊好後，你可能也會想讓使用者在繼續使用網站前先驗證其 E-Mail 位址。若要驗證使用者的 `E-Mail` 位址，請在 `fortify` 設定檔中的 `features` 陣列內啟用 `emailVerification` 功能。接著，請確保有 `App\\Models\\User` 類別有實作 `Illuminate\\Contracts\\Auth\\MustVerifyEmail` 介面。"
 
 #: docs/8.x/fortify.md:block 153 (paragraph)
 msgid "Once these two setup steps have been completed, newly registered users will receive an email prompting them to verify their email address ownership. However, we need to inform Fortify how to display the email verification screen which informs the user that they need to go click the verification link in the email."
-msgstr ""
+msgstr "完成這兩個步驟後，新註冊的使用者就會收到一封 E-Mail，提醒他們要驗證其 E-Mail 位址。不過，我們還需要告訴 Fortify 如何顯示 E-Mail 驗證畫面，用來告訴使用者要點擊 E-Mail 中的驗證連結。"
 
 #: docs/8.x/fortify.md:block 154 (paragraph)
 msgid "All of Fortify's view's rendering logic may be customized using the appropriate methods available via the `Laravel\\Fortify\\Fortify` class. Typically, you should call this method from the `boot` method of your application's `App\\Providers\\FortifyServiceProvider` class:"
-msgstr ""
+msgstr "Fortify 中所有的 View 轉譯邏輯都可使用 `Laravel\\Fortify\\Fortify` 類別中相應的方法來客製化。一般來說，應在 `App\\Providers\\FortifyServiceProvider` 類別中的 `boot` 方法內呼叫這些方法："
 
 #: docs/8.x/fortify.md:block 155 (code)
 msgid "use Laravel\\Fortify\\Fortify;\n\n"
@@ -866,27 +866,39 @@ msgid "use Laravel\\Fortify\\Fortify;\n\n"
 "    });\n\n"
 "    // ...\n"
 "}\n"
-msgstr ""
+msgstr "use Laravel\\Fortify\\Fortify;\n\n"
+"/**\n"
+" * Bootstrap any application services.\n"
+" *\n"
+" * @return void\n"
+" */\n"
+"public function boot()\n"
+"{\n"
+"    Fortify::verifyEmailView(function () {\n"
+"        return view('auth.verify-email');\n"
+"    });\n\n"
+"    // ...\n"
+"}\n"
 
 #: docs/8.x/fortify.md:block 156 (paragraph)
 msgid "Fortify will take care of defining the route that displays this view when a user is redirected to the `/email/verify` endpoint by Laravel's built-in `verified` middleware."
-msgstr ""
+msgstr "Fortify 會處理好用來使用者被 Laravel 內建的 `verified` Middleware 重新導向到 `/email/verify` Endpoint 時顯示這個 View 的 Route 定義。"
 
 #: docs/8.x/fortify.md:block 157 (paragraph)
 msgid "Your `verify-email` template should include an informational message instructing the user to click the email verification link that was sent to their email address."
-msgstr ""
+msgstr "`verify-email` 樣板中應顯示提示訊息，告訴使用者要點擊寄送到其 E-Mail 位址內的 E-Mail 驗證連結。"
 
 #: docs/8.x/fortify.md:block 159 (header)
 msgid "Resending Email Verification Links"
-msgstr ""
+msgstr "重新寄送驗證電子郵件"
 
 #: docs/8.x/fortify.md:block 160 (paragraph)
 msgid "If you wish, you may add a button to your application's `verify-email` template that triggers a POST request to the `/email/verification-notification` endpoint. When this endpoint receives a request, a new verification email link will be emailed to the user, allowing the user to get a new verification link if the previous one was accidentally deleted or lost."
-msgstr ""
+msgstr "若有需要，也可以在 `verify-email` 樣板內加上一個按鈕，用來向 `/email/verification-notification` Endpoint 傳送 POST Request。當此 Endpoint 收到 Request 後，會寄送一封新的 E-Mail 驗證連結給該使用者，以免使用者不小心刪除或沒收到之前寄送的驗證連結。"
 
 #: docs/8.x/fortify.md:block 161 (paragraph)
 msgid "If the request to resend the verification link email was successful, Fortify will redirect the user back to the `/email/verify` endpoint with a `status` session variable, allowing you to display an informational message to the user informing them the operation was successful. If the request was an XHR request, a 202 HTTP response will be returned:"
-msgstr ""
+msgstr "若重新寄送驗證連結的 Request 成功，則 Fortify 會將使用者重新導向回 `/email/verify` Endpoint，並設定 `status` Session 變數，讓你可以顯示提示訊息告訴使用者此操作已成功執行。若 Request 為 XHR Request，則會回傳 202 HTTP Response："
 
 #: docs/8.x/fortify.md:block 162 (code)
 msgid "@if (session('status') == 'verification-link-sent')\n"
@@ -894,33 +906,39 @@ msgid "@if (session('status') == 'verification-link-sent')\n"
 "        A new email verification link has been emailed to you!\n"
 "    </div>\n"
 "@endif\n"
-msgstr ""
+msgstr "@if (session('status') == 'verification-link-sent')\n"
+"    <div class=\"mb-4 font-medium text-sm text-green-600\">\n"
+"        A new email verification link has been emailed to you!\n"
+"    </div>\n"
+"@endif\n"
 
 #: docs/8.x/fortify.md:block 164 (header)
 msgid "Protecting Routes"
-msgstr ""
+msgstr "保護 Route"
 
 #: docs/8.x/fortify.md:block 165 (paragraph)
 msgid "To specify that a route or group of routes requires that the user has verified their email address, you should attach Laravel's built-in `verified` middleware to the route. This middleware is registered within your application's `App\\Http\\Kernel` class:"
-msgstr ""
+msgstr "若要指定某個 Route 或某一組 Route 需要求使用者先進行 E-Mail 位址驗證，則可在這些 Route 上加入 Laravel 的內建 `verified` Middleware。此 Middleware 已在 `App\\Http\\Kernel` 類別內註冊："
 
 #: docs/8.x/fortify.md:block 166 (code)
 msgid "Route::get('/dashboard', function () {\n"
 "    // ...\n"
 "})->middleware(['verified']);\n"
-msgstr ""
+msgstr "Route::get('/dashboard', function () {\n"
+"    // ...\n"
+"})->middleware(['verified']);\n"
 
 #: docs/8.x/fortify.md:block 168 (header)
 msgid "Password Confirmation"
-msgstr ""
+msgstr "密碼確認"
 
 #: docs/8.x/fortify.md:block 169 (paragraph)
 msgid "While building your application, you may occasionally have actions that should require the user to confirm their password before the action is performed. Typically, these routes are protected by Laravel's built-in `password.confirm` middleware."
-msgstr ""
+msgstr "在製作網站時，有時候會有一些動作是在執行前需要先向使用者要求確認密碼的。一般來說，這些 Route 是由 Laravel 的內建 `password.confirm` Middleware 所保護的。"
 
 #: docs/8.x/fortify.md:block 170 (paragraph)
 msgid "To begin implementing password confirmation functionality, we need to instruct Fortify how to return our application's \"password confirmation\" view. Remember, Fortify is a headless authentication library. If you would like a frontend implementation of Laravel's authentication features that are already completed for you, you should use an [application starter kit](/docs/{{version}}/starter-kits)."
-msgstr ""
+msgstr "若要開始實作網站的密碼確認功能，我們需要告訴 Fortify 如何回傳「確認密碼」View。請記得，Fortify 是一個無周邊 (Headless) 的登入函式庫。若你想要現成的完整 Laravel 登入功能前端實作，請使用[專案入門套件](/docs/{{version}}/starter-kits)。"
 
 #: docs/8.x/fortify.md:block 172 (code)
 msgid "use Laravel\\Fortify\\Fortify;\n\n"
@@ -936,35 +954,47 @@ msgid "use Laravel\\Fortify\\Fortify;\n\n"
 "    });\n\n"
 "    // ...\n"
 "}\n"
-msgstr ""
+msgstr "use Laravel\\Fortify\\Fortify;\n\n"
+"/**\n"
+" * Bootstrap any application services.\n"
+" *\n"
+" * @return void\n"
+" */\n"
+"public function boot()\n"
+"{\n"
+"    Fortify::confirmPasswordView(function () {\n"
+"        return view('auth.confirm-password');\n"
+"    });\n\n"
+"    // ...\n"
+"}\n"
 
 #: docs/8.x/fortify.md:block 173 (paragraph)
 msgid "Fortify will take care of defining the `/user/confirm-password` endpoint that returns this view. Your `confirm-password` template should include a form that makes a POST request to the `/user/confirm-password` endpoint. The `/user/confirm-password` endpoint expects a `password` field that contains the user's current password."
-msgstr ""
+msgstr "Fortify 會處理好用來回傳此 View 的 `/user/confirm-password` Endpoint。`confirm-password` 樣板中應包含一個表單，用來向 `/user/confirm-password` Endpoint 建立 POST Request。應傳送一個包含使用者目前密碼的 `password` 欄位給 `/user/confirm-password` Endpoint。"
 
 #: docs/8.x/fortify.md:block 174 (paragraph)
 msgid "If the password matches the user's current password, Fortify will redirect the user to the route they were attempting to access. If the request was an XHR request, a 201 HTTP response will be returned."
-msgstr ""
+msgstr "若送出的密碼符合該使用者目前的密碼，則 Fortify 會將使用者重新導向回該使用者原本嘗試存取的 Route。若 Request 為 XHR Request，則會回傳 201 HTTP Response。"
 
 #: docs/8.x/fortify.md:block 175 (paragraph)
 msgid "If the request was not successful, the user will be redirected back to the confirm password screen and the validation errors will be available to you via the shared `$errors` Blade template variable. Or, in the case of an XHR request, the validation errors will be returned with a 422 HTTP response."
-msgstr ""
+msgstr "若 Request 未成功，則使用者會被重新導向回確認密碼畫面，而共用的 `$errors` Blade 樣板變數中會包含驗證錯誤訊息。或者，若使用的是 XHR Request，則會使用 422 HTTP Response 來回傳驗證錯誤。"
 
 #: docs/9.x/fortify.md:block 7 (quote)
 msgid "**Note** Remember, Fortify is a package that is meant to give you a head start implementing Laravel's authentication features. **You are not required to use it.** You are always free to manually interact with Laravel's authentication services by following the documentation available in the [authentication](/docs/{{version}}/authentication), [password reset](/docs/{{version}}/passwords), and [email verification](/docs/{{version}}/verification) documentation."
-msgstr ""
+msgstr "**Note** 請記得，Fortify 的功能是要讓你能在實作 Laravel 的登入功能時能更快上手。**你也可以不使用 Foritfy**。若你想要的話，也可以參考 [登入驗證](/docs/{{version}}/authentication)、[密碼重設](/docs/{{version}}/passwords)、與 [E-Mail 驗證](/docs/{{version}}/verification)等說明文件來手動使用 Laravel 的登入服務。"
 
 #: docs/9.x/fortify.md:block 31 (paragraph)
 msgid "This command will publish Fortify's actions to your `app/Actions` directory, which will be created if it does not exist. In addition, the `FortifyServiceProvider`, configuration file, and all necessary database migrations will be published."
-msgstr ""
+msgstr "這個指令會將 Fortify 的 ^[Action](動作) 安裝到 `app/Actions` 目錄下，如果這個目錄不存在的話，該指令也會一併建立。此外，也會安裝 `FortifyServiceProvider`、設定檔、以及所需的 Migration 檔案。"
 
 #: docs/9.x/fortify.md:block 85 (paragraph)
 msgid "To begin enabling two factor authentication, your application should make a POST request to the `/user/two-factor-authentication` endpoint defined by Fortify. If the request is successful, the user will be redirected back to the previous URL and the `status` session variable will be set to `two-factor-authentication-enabled`. You may detect this `status` session variable within your templates to display the appropriate success message. If the request was an XHR request, `200` HTTP response will be returned."
-msgstr ""
+msgstr "若要啟用兩步驟驗證，你的網站需要先向 Fortify 所定義的 `/user/two-factor-authentication` Endpoint 傳送 POST Request。若 Request 成功，則使用者會被重新導向回之前的 URL，並且 `status` Session 變數會被設為 `two-factor-authentication-enabled`。我們可以在樣板中檢查這個 `status` Session 變數，並顯示適當的成功訊息。若 Request 為 XHR Request，則會回傳 `200` HTTP Response："
 
 #: docs/9.x/fortify.md:block 86 (paragraph)
 msgid "After choosing to enable two factor authentication, the user must still \"confirm\" their two factor authentication configuration by providing a valid two factor authentication code. So, your \"success\" message should instruct the user that two factor authentication confirmation is still required:"
-msgstr ""
+msgstr "若選擇啟用兩步驟驗證，則使用者必須先提供一個有效的 2FA 代碼來「確認」其 2FA 設定。因此，畫面上的「成功」訊息應提示使用者仍需進一步確認 2FA："
 
 #: docs/9.x/fortify.md:block 87 (code)
 msgid "@if (session('status') == 'two-factor-authentication-enabled')\n"
@@ -972,19 +1002,23 @@ msgid "@if (session('status') == 'two-factor-authentication-enabled')\n"
 "        Please finish configuring two factor authentication below.\n"
 "    </div>\n"
 "@endif\n"
-msgstr ""
+msgstr "@if (session('status') == 'two-factor-authentication-enabled')\n"
+"    <div class=\"mb-4 font-medium text-sm\">\n"
+"        Please finish configuring two factor authentication below.\n"
+"    </div>\n"
+"@endif\n"
 
 #: docs/9.x/fortify.md:block 92 (header)
 msgid "Confirming Two Factor Authentication"
-msgstr ""
+msgstr "確認 2FA"
 
 #: docs/9.x/fortify.md:block 93 (paragraph)
 msgid "In addition to displaying the user's two factor authentication QR code, you should provide a text input where the user can supply a valid authentication code to \"confirm\" their two factor authentication configuration. This code should be provided to the Laravel application via a POST request to the `/user/confirmed-two-factor-authentication` endpoint defined by Fortify."
-msgstr ""
+msgstr "除了顯示使用者的 2FA QR Code 外，也應提供一個文字輸入框來讓使用者提供有效的 2FA 代碼以「確認」其 2FA 設定。此代碼應通過向 Fortify 所定義的 `/user/confirmed-two-factor-authentication` Endpoint 傳送 POST Request 來提供給 Laravel。"
 
 #: docs/9.x/fortify.md:block 94 (paragraph)
 msgid "If the request is successful, the user will be redirected back to the previous URL and the `status` session variable will be set to `two-factor-authentication-confirmed`:"
-msgstr ""
+msgstr "若 Request 成功，則使用者會被重新導向回其之前瀏覽的 URL，而 `status` Session 變數會被設為 `two-factor-authentication-confirmed`："
 
 #: docs/9.x/fortify.md:block 95 (code)
 msgid "@if (session('status') == 'two-factor-authentication-confirmed')\n"
@@ -992,15 +1026,19 @@ msgid "@if (session('status') == 'two-factor-authentication-confirmed')\n"
 "        Two factor authentication confirmed and enabled successfully.\n"
 "    </div>\n"
 "@endif\n"
-msgstr ""
+msgstr "@if (session('status') == 'two-factor-authentication-confirmed')\n"
+"    <div class=\"mb-4 font-medium text-sm\">\n"
+"        Two factor authentication confirmed and enabled successfully.\n"
+"    </div>\n"
+"@endif\n"
 
 #: docs/9.x/fortify.md:block 96 (paragraph)
 msgid "If the request to the two factor authentication confirmation endpoint was made via an XHR request, a `200` HTTP response will be returned."
-msgstr ""
+msgstr "若使用 XHR Request 來向 2FA 確認 Endpoint 傳送 Request，則會回傳 `200` HTTP Response。"
 
 #: docs/9.x/fortify.md:block 121 (paragraph)
 msgid "If the registration attempt is successful, Fortify will redirect the user to the URI configured via the `home` configuration option within your application's `fortify` configuration file. If the request was an XHR request, a 201 HTTP response will be returned."
-msgstr ""
+msgstr "若註冊嘗試成功，Fortify 會將使用者重新導向到專案 `fortify` 設定檔中 `home` 設定選項所指定的 URI。若 Request 是 XHR Request，則會回傳 201 HTTP Response。"
 
 #: docs/master/fortify.md:block 53 (code)
 msgid "use Laravel\\Fortify\\Fortify;\n\n"
@@ -1014,7 +1052,17 @@ msgid "use Laravel\\Fortify\\Fortify;\n\n"
 "    });\n\n"
 "    // ...\n"
 "}\n"
-msgstr ""
+msgstr "use Laravel\\Fortify\\Fortify;\n\n"
+"/**\n"
+" * Bootstrap any application services.\n"
+" */\n"
+"public function boot(): void\n"
+"{\n"
+"    Fortify::loginView(function () {\n"
+"        return view('auth.login');\n"
+"    });\n\n"
+"    // ...\n"
+"}\n"
 
 #: docs/master/fortify.md:block 61 (code)
 msgid "use App\\Models\\User;\n"
@@ -1035,7 +1083,24 @@ msgid "use App\\Models\\User;\n"
 "    });\n\n"
 "    // ...\n"
 "}\n"
-msgstr ""
+msgstr "use App\\Models\\User;\n"
+"use Illuminate\\Http\\Request;\n"
+"use Illuminate\\Support\\Facades\\Hash;\n"
+"use Laravel\\Fortify\\Fortify;\n\n"
+"/**\n"
+" * Bootstrap any application services.\n"
+" */\n"
+"public function boot(): void\n"
+"{\n"
+"    Fortify::authenticateUsing(function (Request $request) {\n"
+"        $user = User::where('email', $request->email)->first();\n\n"
+"        if ($user &&\n"
+"            Hash::check($request->password, $user->password)) {\n"
+"            return $user;\n"
+"        }\n"
+"    });\n\n"
+"    // ...\n"
+"}\n"
 
 #: docs/master/fortify.md:block 75 (code)
 msgid "use Laravel\\Fortify\\Contracts\\LogoutResponse;\n"

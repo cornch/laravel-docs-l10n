@@ -10,87 +10,87 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
-"PO-Revision-Date: 2023-01-25 07:03\n"
+"PO-Revision-Date: 2023-01-26 05:03\n"
 
 #: docs/9.x/eloquent-factories.md:block 1 (header)
 msgid "Eloquent: Factories"
-msgstr ""
+msgstr "Eloquent：Factory"
 
 #: docs/9.x/eloquent-factories.md:block 2 (unordered list)
 msgid "[Introduction](#introduction)"
-msgstr ""
+msgstr "[簡介](#introduction)"
 
 #: docs/9.x/eloquent-factories.md:block 2 (unordered list)
 msgid "[Defining Model Factories](#defining-model-factories)"
-msgstr ""
+msgstr "[定義 Model Factory](#defining-model-factories)"
 
 #: docs/9.x/eloquent-factories.md:block 2 (unordered list)
 msgid "[Generating Factories](#generating-factories)"
-msgstr ""
+msgstr "[產生 Factory](#generating-factories)"
 
 #: docs/9.x/eloquent-factories.md:block 2 (unordered list)
 msgid "[Factory States](#factory-states)"
-msgstr ""
+msgstr "[State - Factory 狀態](#factory-states)"
 
 #: docs/9.x/eloquent-factories.md:block 2 (unordered list)
 msgid "[Factory Callbacks](#factory-callbacks)"
-msgstr ""
+msgstr "[Factory 回呼](#factory-callbacks)"
 
 #: docs/9.x/eloquent-factories.md:block 2 (unordered list)
 msgid "[Creating Models Using Factories](#creating-models-using-factories)"
-msgstr ""
+msgstr "[使用 Factory 建立 Model](#creating-models-using-factories)"
 
 #: docs/9.x/eloquent-factories.md:block 2 (unordered list)
 msgid "[Instantiating Models](#instantiating-models)"
-msgstr ""
+msgstr "[初始化 Model](#instantiating-models)"
 
 #: docs/9.x/eloquent-factories.md:block 2 (unordered list)
 msgid "[Persisting Models](#persisting-models)"
-msgstr ""
+msgstr "[保存 Model](#persisting-models)"
 
 #: docs/9.x/eloquent-factories.md:block 2 (unordered list)
 msgid "[Sequences](#sequences)"
-msgstr ""
+msgstr "[Sequence - 序列](#sequences)"
 
 #: docs/9.x/eloquent-factories.md:block 2 (unordered list)
 msgid "[Factory Relationships](#factory-relationships)"
-msgstr ""
+msgstr "[Factory 關聯](#factory-relationships)"
 
 #: docs/9.x/eloquent-factories.md:block 2 (unordered list)
 msgid "[Has Many Relationships](#has-many-relationships)"
-msgstr ""
+msgstr "[HasMany 關聯](#has-many-relationships)"
 
 #: docs/9.x/eloquent-factories.md:block 2 (unordered list)
 msgid "[Belongs To Relationships](#belongs-to-relationships)"
-msgstr ""
+msgstr "[BelongsTo 關聯](#belongs-to-relationships)"
 
 #: docs/9.x/eloquent-factories.md:block 2 (unordered list)
 msgid "[Many To Many Relationships](#many-to-many-relationships)"
-msgstr ""
+msgstr "[多對多關聯](#many-to-many-relationships)"
 
 #: docs/9.x/eloquent-factories.md:block 2 (unordered list)
 msgid "[Polymorphic Relationships](#polymorphic-relationships)"
-msgstr ""
+msgstr "[多型關聯](#polymorphic-relationships)"
 
 #: docs/9.x/eloquent-factories.md:block 2 (unordered list)
 msgid "[Defining Relationships Within Factories](#defining-relationships-within-factories)"
-msgstr ""
+msgstr "[在 Factory 內定義關聯](#defining-relationships-within-factories)"
 
 #: docs/9.x/eloquent-factories.md:block 2 (unordered list)
 msgid "[Recycling An Existing Model For Relationships](#recycling-an-existing-model-for-relationships)"
-msgstr ""
+msgstr "[在關聯上回收利用現有的 Model](#recycling-an-existing-model-for-relationships)"
 
 #: docs/9.x/eloquent-factories.md:block 4 (header)
 msgid "Introduction"
-msgstr ""
+msgstr "簡介"
 
 #: docs/9.x/eloquent-factories.md:block 5 (paragraph)
 msgid "When testing your application or seeding your database, you may need to insert a few records into your database. Instead of manually specifying the value of each column, Laravel allows you to define a set of default attributes for each of your [Eloquent models](/docs/{{version}}/eloquent) using model factories."
-msgstr ""
+msgstr "在測試專案或為資料庫填充資料時，我們可能會需要先插入一些資料到資料庫內。比起在建立這個測試資料時手動指定各個欄位的值，在 Laravel 中，我們可以使用 Model Factory 來為各個 [Eloquent Model](/docs/{{version}}/eloquent) 定義一系列的預設屬性。"
 
 #: docs/9.x/eloquent-factories.md:block 6 (paragraph)
 msgid "To see an example of how to write a factory, take a look at the `database/factories/UserFactory.php` file in your application. This factory is included with all new Laravel applications and contains the following factory definition:"
-msgstr ""
+msgstr "若要看看如何撰寫 Factory 的範例，請參考專案中的 `database/factories/UserFactory.php`。該 Factory 包含在所有的 Laravel 新專案內，裡面有下列 Factory 定義："
 
 #: docs/9.x/eloquent-factories.md:block 7 (code)
 msgid "namespace Database\\Factories;\n\n"
@@ -114,35 +114,55 @@ msgid "namespace Database\\Factories;\n\n"
 "        ];\n"
 "    }\n"
 "}\n"
-msgstr ""
+msgstr "namespace Database\\Factories;\n\n"
+"use Illuminate\\Database\\Eloquent\\Factories\\Factory;\n"
+"use Illuminate\\Support\\Str;\n\n"
+"class UserFactory extends Factory\n"
+"{\n"
+"    /**\n"
+"     * Define the model's default state.\n"
+"     *\n"
+"     * @return array\n"
+"     */\n"
+"    public function definition()\n"
+"    {\n"
+"        return [\n"
+"            'name' => fake()->name(),\n"
+"            'email' => fake()->unique()->safeEmail(),\n"
+"            'email_verified_at' => now(),\n"
+"            'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password\n"
+"            'remember_token' => Str::random(10),\n"
+"        ];\n"
+"    }\n"
+"}\n"
 
 #: docs/9.x/eloquent-factories.md:block 8 (paragraph)
 msgid "As you can see, in their most basic form, factories are classes that extend Laravel's base factory class and define a `definition` method. The `definition` method returns the default set of attribute values that should be applied when creating a model using the factory."
-msgstr ""
+msgstr "如上所示，最基礎的 Factory 格式就像這樣，只需繼承 Laravel 的基礎 Factory 類別並定義一個 `definition` 方法。`definition` 方法應回傳一組預設的屬性值，會在使用 Factory 建立 Model 時被套用到該 Model 上。"
 
 #: docs/9.x/eloquent-factories.md:block 9 (paragraph)
 msgid "Via the `fake` helper, factories have access to the [Faker](https://github.com/FakerPHP/Faker) PHP library, which allows you to conveniently generate various kinds of random data for testing and seeding."
-msgstr ""
+msgstr "通過 `fake` 輔助函式，Factory 就可以存取 [Faker](https://github.com/FakerPHP/Faker) PHP 函式庫。該函式庫可用來方便地產生各種類型的隨機資料以進行測試或資料填充。"
 
 #: docs/9.x/eloquent-factories.md:block 10 (quote)
 msgid "**Note** You can set your application's Faker locale by adding a `faker_locale` option to your `config/app.php` configuration file."
-msgstr ""
+msgstr "**Note** 可以通過在 `config/app.php` 設定檔中加上 `faker_locale` 選項來設定專案的 Faker 語系設定。"
 
 #: docs/9.x/eloquent-factories.md:block 12 (header)
 msgid "Defining Model Factories"
-msgstr ""
+msgstr "定義 Model Factory"
 
 #: docs/9.x/eloquent-factories.md:block 14 (header)
 msgid "Generating Factories"
-msgstr ""
+msgstr "產生 Factory"
 
 #: docs/9.x/eloquent-factories.md:block 15 (paragraph)
 msgid "To create a factory, execute the `make:factory` [Artisan command](/docs/{{version}}/artisan):"
-msgstr ""
+msgstr "若要建立 Factory，請執行 `make:factory` [Artisan 指令](/docs/{{version}}/artisan)："
 
 #: docs/9.x/eloquent-factories.md:block 16 (code)
 msgid "php artisan make:factory PostFactory\n"
-msgstr ""
+msgstr "php artisan make:factory PostFactory\n"
 
 #: docs/9.x/eloquent-factories.md:block 17 (paragraph)
 msgid "The new factory class will be placed in your `database/factories` directory."

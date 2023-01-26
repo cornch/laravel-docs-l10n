@@ -4,8 +4,8 @@ contributors:
     avatarUrl: https://crowdin-static.downloads.crowdin.com/avatar/14684796/medium/60f7dc21ec0bf9cfcb61983640bb4809_default.png
     name: cornch
 crowdinUrl: https://crowdin.com/translate/laravel-docs/165/en-zhtw
-progress: 57
-updatedAt: '2023-01-25T16:13:00Z'
+progress: 100
+updatedAt: '2023-01-26T07:37:00Z'
 ---
 
 # 升級指南
@@ -51,7 +51,7 @@ updatedAt: '2023-01-25T16:13:00Z'
 
 #### 預計升級所需時間：30 分鐘
 
-> **Note** We attempt to document every possible breaking change. Since some of these breaking changes are in obscure parts of the framework only a portion of these changes may actually affect your application. Want to save time? You can use [Laravel Shift](https://laravelshift.com/) to help automate your application upgrades.
+> **Note** 雖然我們已經儘可能地在本說明文件中涵蓋所有^[中斷性變更](Breaking Change)。不過，在 Laravel 中，有些中斷性變更存在一些比較不明顯的地方，且這些更改中幾乎不太會影響到你的專案。 想節省時間嗎？可以使用 [Laravel Shift](https://laravelshift.com/) 來協助你快速升級你的專案。
 
 <a name="updating-dependencies"></a>
 
@@ -74,7 +74,7 @@ Laravel 先已要求 PHP 最小版本為 8.0.2。
 
 </div>
 
-In addition, please replace `facade/ignition` with `"spatie/laravel-ignition": "^1.0"` and `pusher/pusher-php-server` (if applicable) with `"pusher/pusher-php-server": "^5.0"` in your application's `composer.json` file.
+此外，請在專案的 `composer.json` 檔中將 `facade/ignition` 改為 `"spatie/laravel-ignition": "^1.0"`，並將 `pusher/pusher-php-server` (若有的話) 改為`"pusher/pusher-php-server": "^5.0"`。
 
 此外，下列第一方專案也有更新新的版本以支援 Laravel 9.x。若有使用這些套件，請在升級前先閱讀各套件的升級指南：
 
@@ -132,7 +132,7 @@ In addition, please replace `facade/ignition` with `"spatie/laravel-ignition": "
 
     public function storagePath($path = '');
 
-Similarly, the `langPath` method of the `Illuminate\Foundation\Application` class has been updated to accept a `$path` argument:
+類似地，`Illuminate\Foundation\Application` 類別的 `langPath` 方法現在也更新為接受一個 `$path` 引數：
 
     public function langPath($path = '');
 
@@ -146,11 +146,11 @@ Exception Handler 的 `ignore` 方法現在已從 `protected` 改為 `public`。
 public function ignore(string $class);
 ```
 
-#### Exception Handler Contract Binding
+#### Exception Handler 的 Contract 繫結
 
 **受影響的可能：非常低**
 
-Previously, in order to override the default Laravel exception handler, custom implementations were bound into the service container using the `\App\Exceptions\Handler::class` type. However, you should now bind custom implementations using the `\Illuminate\Contracts\Debug\ExceptionHandler::class` type.
+在之前版本的 Laravel 中，若要複寫 Laravel 預設的 Exception Handler，就必須使用 `\App\Exceptions\Handler::class` 型別來向 Service Container 繫結自定實作。不過，現在請改用 `\Illuminate\Contracts\Debug\ExceptionHandler::class` 型別來繫結自定實作。
 
 ### Blade
 
@@ -160,11 +160,11 @@ Previously, in order to override the default Laravel exception handler, custom i
 
 在 Blade 樣板中迭代 `LazyCollection` 實體時，將不再提供 `$loop` 變數。因為存取 `$loop` 變數會讓整個 `LazyCollection` 都被載入進記憶體內，因此在這種情況下使用 Lazy Collection 來^[轉譯](Render)是沒意義的。
 
-#### Checked / Disabled / Selected Blade Directives
+#### Checked / Disabled / Selected Blade 指示詞
 
 **受影響的可能：低**
 
-The new `@checked`, `@disabled`, and `@selected` Blade directives may conflict with Vue events of the same name. You may use `@@` to escape the directives and avoid this conflict: `@@selected`.
+新的 `@checked`、`@disabled`、與 `@selected` Blade 指示詞可能會擁有相同名稱的 Vue 事件衝突。可使用 `@@` 來逸出這些指示詞，以避免衝突：`@@selected`。
 
 ### Collections
 
@@ -355,11 +355,11 @@ Laravel 9.x 以從 [Flysystem](https://flysystem.thephpleague.com/v2/docs/) 1.x 
 
 #### 覆寫已存在的檔案
 
-Write operations such as `put`, `write`, and `writeStream` now overwrite existing files by default. If you do not want to overwrite existing files, you should manually check for the file's existence before performing the write operation.
+如 `put`、`write`、與 `writeStream` 等寫入操作現在會預設覆蓋現有的檔案。若不想複寫現有的檔案，請在執行寫入動作前先確認檔案是否存在。
 
-#### Write Exceptions
+#### 寫入 Exception
 
-Write operations such as `put`, `write`, and `writeStream` no longer throw an exception when a write operation fails. Instead, `false` is returned. If you would like to preserve the previous behavior which threw exceptions, you may define the `throw` option within a filesystem disk's configuration array:
+`put`、`write`、與 `writeStream` 等的寫入操作現在已不會在寫入操作失敗時擲回 Exception，而會回傳 `false`。若想保留此一擲回 Exception 的行為，可在 filesystem 的 disk 設定陣列中定義 `throw` 選項：
 
 ```php
 'public' => [
@@ -520,7 +520,7 @@ composer require symfony/postmark-mailer symfony/http-client
 
 #### 回傳型別的更新
 
-The `send`, `html`, `raw`, and `plain` methods on `Illuminate\Mail\Mailer` no longer return `void`. Instead, an instance of `Illuminate\Mail\SentMessage` is returned. This object contains an instance of `Symfony\Component\Mailer\SentMessage` that is accessible via the `getSymfonySentMessage` method or by dynamically invoking methods on the object.
+`Illuminate\Mail\Mailer` 的 `send`、`html`、`raw`、`plain` 等方法將不再回傳 `void`，而是回傳一個 `Illuminate\Mail\SentMessage` 實體。這個物件中包含了一個 `Symfony\Component\Mailer\SentMessage` 實體，可以通過 `getSymfonySentMessage` 方法來取得該實體，或是在該物件上動態呼叫方法：
 
 #### 「Swift」方法的更名
 
@@ -542,7 +542,7 @@ The `send`, `html`, `raw`, and `plain` methods on `Illuminate\Mail\Mailer` no lo
         );
     });
 
-> **Warning** Please thoroughly review the [Symfony Mailer documentation](https://symfony.com/doc/6.0/mailer.html#creating-sending-messages) for all possible interactions with the `Symfony\Component\Mime\Email` object.
+> **Warning** 請稍微檢視一下 [Symfony Mailer 說明文件](https://symfony.com/doc/6.0/mailer.html#creating-sending-messages)以瞭解所有使用 `Symfony\Component\Mime\Email` 物件的方法。
 
 下面詳細列出了針對這些改名過的方法。其中許多方法都是用來直接使用 SwiftMailer / Symfony Mailer 的低階方法，所以在大多數 Laravel 專案中並不常用：
 
@@ -590,11 +590,11 @@ The `send`, `html`, `raw`, and `plain` methods on `Illuminate\Mail\Mailer` no lo
 
 SwiftMailer 提供了可使用 `mime.idgenerator.idright` 設定選項來定義要包含在產生之 Message ID 中的自訂網域。Symfony Mailer 不支援這個功能。Symfony Mailer 只會依據寄件人自動產生 Message ID。
 
-#### `MessageSent` Event Changes
+#### `MessageSent` Event 的更改
 
-The `message` property of the `Illuminate\Mail\Events\MessageSent` event now contains an instance of `Symfony\Component\Mime\Email` instead of an instance of `Swift_Message`. This message represents the email **before** it is sent.
+`Illuminate\Mail\Events\MessageSent` 事件的 `message` 屬性現在已不再包含 `Swift_Message` 實體，而改為 `Symfony\Component\Mime\Email` 實體。此訊息表示了 E-Mail **寄出前** 的狀態。
 
-Additionally, a new `sent` property has been added to the `MessageSent` event. This property contains an instance of `Illuminate\Mail\SentMessage` and contains information about the sent email, such as the message ID.
+此外，`MessageSent` 事件中也加上了一個新的 `sent` 屬性。此屬性包含了 `Illuminate\Mail\SentMessage` 實體，其中有已寄出 E-Mail 的資訊，如 Message ID。
 
 #### 強制重新連線
 
@@ -618,7 +618,7 @@ Additionally, a new `sent` property has been added to the `MessageSent` event. T
 
 若要瞭解更多可用的選項，請參考 [Symfony Mailer 說明文件](https://symfony.com/doc/6.0/mailer.html#transport-setup)。
 
-> **Warning** In spite of the example above, you are not generally advised to disable SSL verification since it introduces the possibility of "man-in-the-middle" attacks.
+> **note** 雖然有上述這樣的範例，但一般來說建議不要禁用 SSL 驗證，因為有可能會導致「^[中間人](man-in-the-middle, MITM)」攻擊
 
 #### SMTP `auth_mode`
 

@@ -1,13 +1,16 @@
 ---
-contributors: {}
+contributors:
+  14684796:
+    avatarUrl: https://crowdin-static.downloads.crowdin.com/avatar/14684796/medium/60f7dc21ec0bf9cfcb61983640bb4809_default.png
+    name: cornch
 crowdinUrl: https://crowdin.com/translate/laravel-docs/145/en-zhtw
-progress: 0
-updatedAt: '2023-01-25T07:03:00Z'
+progress: 1
+updatedAt: '2023-01-26T11:09:00Z'
 ---
 
 # Laravel Sanctum
 
-- [Introduction](#introduction)
+- [簡介](#introduction)
    - [How It Works](#how-it-works)
 - [Installation](#installation)
 - [Configuration](#configuration)

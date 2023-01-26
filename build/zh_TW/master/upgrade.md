@@ -4,13 +4,13 @@ contributors:
     avatarUrl: https://crowdin-static.downloads.crowdin.com/avatar/14684796/medium/60f7dc21ec0bf9cfcb61983640bb4809_default.png
     name: cornch
 crowdinUrl: https://crowdin.com/translate/laravel-docs/165/en-zhtw
-progress: 57
-updatedAt: '2023-01-25T16:13:00Z'
+progress: 100
+updatedAt: '2023-01-26T07:37:00Z'
 ---
 
 # 升級指南
 
-- [Upgrading To 10.0 From 9.x](#upgrade-10.0)
+- [從 9.x 版升級至 10.0 版](#upgrade-10.0)
 
 <a name="high-impact-changes"></a>
 
@@ -19,7 +19,7 @@ updatedAt: '2023-01-25T16:13:00Z'
 <div class="content-list" markdown="1">
 
 - [更新相依性套件](#updating-dependencies)
-- [Updating Minimum Stability](#updating-minimum-stability)
+- [更新 Minimum Stability](#updating-minimum-stability)
 
 </div>
 
@@ -29,36 +29,36 @@ updatedAt: '2023-01-25T16:13:00Z'
 
 <div class="content-list" markdown="1">
 
-- [Model "Dates" Property](#model-dates-property)
-- [Service Mocking](#serving-mocking)
+- [Model 的「Dates」屬性](#model-dates-property)
+- [Service Mock](#serving-mocking)
 
 </div>
 
 <a name="low-impact-changes"></a>
 
-## Low Impact Changes
+## 低影響的更改
 
 <div class="content-list" markdown="1">
 
-- [Closure Validation Rule Messages](#closure-validation-rule-messages)
+- [閉包的 Validation Rule 訊息](#closure-validation-rule-messages)
 - [Monolog 3](#monolog-3)
-- [Query Exception Constructor](#query-exception-constructor)
-- [Rate Limiter Return Values](#rate-limiter-return-values)
-- [Relation `getBaseQuery` Method](#relation-getbasequery-method)
-- [The `Redirect::home` Method](#redirect-home)
-- [The `Bus::dispatchNow` Method](#dispatch-now)
+- [Query Exception 的 Constructor](#query-exception-constructor)
+- [Rate Limiter 的回傳值](#rate-limiter-return-values)
+- [關聯的 `getBaseQuery` 方法](#relation-getbasequery-method)
+- [`Redirect::home` 方法](#redirect-home)
+- [`Bus::dispatchNow` 方法](#dispatch-now)
 
 </div>
 
 <a name="upgrade-10.0"></a>
 
-## Upgrading To 10.0 From 9.x
+## 從 9.x 版升級至 10.0 版
 
 <a name="estimated-upgrade-time-??-minutes"></a>
 
-#### Estimated Upgrade Time: 10 Minutes
+#### 預計升級所需時間：10 分鐘
 
-> **Note** We attempt to document every possible breaking change. Since some of these breaking changes are in obscure parts of the framework only a portion of these changes may actually affect your application. Want to save time? You can use [Laravel Shift](https://laravelshift.com/) to help automate your application upgrades.
+> **Note** 雖然我們已經儘可能地在本說明文件中涵蓋所有^[中斷性變更](Breaking Change)。不過，在 Laravel 中，有些中斷性變更存在一些比較不明顯的地方，且這些更改中幾乎不太會影響到你的專案。 想節省時間嗎？可以使用 [Laravel Shift](https://laravelshift.com/) 來協助你快速升級你的專案。
 
 <a name="updating-dependencies"></a>
 
@@ -66,9 +66,9 @@ updatedAt: '2023-01-25T16:13:00Z'
 
 **受影響的可能：高**
 
-#### PHP 8.1.0 Required
+#### 最低版本要求為 PHP 8.1.0
 
-Laravel now requires PHP 8.1.0 or greater.
+Laravel 現在要求的 PHP 最低版本為 8.1.0 版。
 
 #### Composer 相依性套件
 
@@ -76,14 +76,14 @@ Laravel now requires PHP 8.1.0 or greater.
 
 <div class="content-list" markdown="1">
 
-- `laravel/framework` to `^10.0`
-- `spatie/laravel-ignition` to `^2.0`
+- `laravel/framework` 升級為 `^10.0`
+- `spatie/laravel-ignition` 升級為 `^2.0`
 
 </div>
 
 #### Minimum Stability
 
-You should update the `minimum-stability` setting in your application's `composer.json` file to `stable`:
+請將專案中 `composer.json` 檔內的 `minimum-stability` 設定更新為 `stable`：
 
 ```json
 "minimum-stability": "stable",
@@ -93,21 +93,21 @@ You should update the `minimum-stability` setting in your application's `compose
 
 <a name="query-exception-constructor"></a>
 
-#### Query Exception Constructor
+#### Query Exception 的 Constructor
 
 **受影響的可能：非常低**
 
-The `Illuminate\Database\QueryException` constructor now accepts a string connection name as its first argument. If your application is mainly throwing this exception, you should adjust your code accordingly.
+`Illuminate\Database\QueryException` 的 Constractor 現在接受一個字串的連線名稱作為其第一個引數。若你的專案有擲回此 Exception，請對程式做出相應修改。
 
 ### Eloquent
 
 <a name="model-dates-property"></a>
 
-#### Model "Dates" Property
+#### Model 的「Dates」屬性
 
 **受影響的可能性：中等**
 
-The Eloquent model's deprecated `$dates` property has been removed. Your application should now use the `$casts` property:
+Eloquent Model 中停止支援 (Deprecated) 的 `$dates` 屬性已被移除。請使用 `$casts` 屬性代替：
 
 ```php
 protected $casts = [
@@ -117,13 +117,13 @@ protected $casts = [
 
 <a name="relation-getbasequery-method"></a>
 
-#### Relation `getBaseQuery` Method
+#### 關聯的 `getBaseQuery` 方法
 
 **受影響的可能：非常低**
 
-The `getBaseQuery` method on the `Illuminate\Database\Eloquent\Relations\Relation` class has been renamed to `toBase`.
+`Illuminate\Database\Eloquent\Relations\Relation` 上的 `getBaseQuery` 方法已重新命名為 `toBase`。
 
-### Logging
+### 日誌
 
 <a name="monolog-3"></a>
 
@@ -131,27 +131,27 @@ The `getBaseQuery` method on the `Illuminate\Database\Eloquent\Relations\Relatio
 
 **受影響的可能：低**
 
-Laravel's Monolog dependency has been updated to Monolog 3.x. If you are directly interacting with Monolog within your application, you should review Monolog's [upgrade guide](https://github.com/Seldaek/monolog/blob/main/UPGRADE.md).
+Laravel 的 Monologo 相依性套件已升級為 Monolog 3.x 版。若你有在專案中直接用到 Monologo，請檢視 Monolog 的[升級指南](https://github.com/Seldaek/monolog/blob/main/UPGRADE.md)。
 
-### Queues
+### 佇列 - Queue
 
 <a name="dispatch-now"></a>
 
-#### The `Bus::dispatchNow` Method
+#### `Bus::dispatchNow` 方法
 
 **受影響的可能：低**
 
-The deprecated `Bus::dispatchNow` and `dispatch_now` methods have been removed. Instead, your application should use the `Bus::dispatchSync` and `dispatch_sync` methods, respectively.
+停止支援 (Deprecated) 的 `Bus::dispatchNow` 與 `dispatch_now` 方法現已移除。請分別改用 `Bus::dispatchSync` 與 `dispatch_sync` 方法。
 
 ### 路由
 
 <a name="rate-limiter-return-values"></a>
 
-#### Rate Limiter Return Values
+#### Rate Limiter 的回傳值
 
 **受影響的可能：低**
 
-When invoking the `RateLimiter::attempt` method, the value returned by the provided closure will now be returned by the method. If nothing or `null` is returned, the `attempt` method will return `true`:
+在呼叫 `RateLimiter::attempt` 方法時，該方法現在會回傳提供給該方法閉包的回傳值。若該閉包沒有回傳值，或是回傳了 `null`，則 `attempt` 方法會回傳 `true`：
 
 ```php
 $value = RateLimiter::attempt('key', 10, fn () => ['example'], 1);
@@ -161,11 +161,11 @@ $value; // ['example']
 
 <a name="redirect-home"></a>
 
-#### The `Redirect::home` Method
+#### `Redirect::home` 方法
 
 **受影響的可能：非常低**
 
-The deprecated `Redirect::home` method has been removed. Instead, your application should redirect to an explicitly named route:
+停止支援 (Deprecated) 的 `Redirect::home` 方法現已被移除。請改為直接使用命名 Route 來做重新導向：
 
 ```php
 return Redirect::route('home');
@@ -175,25 +175,25 @@ return Redirect::route('home');
 
 <a name="service-mocking"></a>
 
-#### Service Mocking
+#### Service Mock
 
 **受影響的可能性：中等**
 
-The deprecated `MocksApplicationServices` trait has been removed from the framework. This trait provided testing methods such as `expectsEvents`, `expectsJobs`, and `expectsNotifications`.
+停止支援 (Deprecated) 的 `MocksApplicationServices` Trait 已從 Laravel Framework 中移除。這個 Trait 提供了如 `expectsEvents`、`expectesJobs`、與 `expectesNotifications` 等的測試方法。
 
-If your application uses these methods, we recommend you transition to `Event::fake`, `Bus::fake`, and `Notification::fake`, respectively. You can learn more about mocking via the complete [mocking documentation](/docs/{{version}}/mocking).
+如果你使用到這些方法，建議分別改用 `Event::fake`、`Bus::fake`、與 `Notification::fake`。更多有關 Mock 的資訊，可參考完整的 [Mock 說明文件](/docs/{{version}}/mocking)。
 
 ### 表單驗證
 
 <a name="closure-validation-rule-messages"></a>
 
-#### Closure Validation Rule Messages
+#### 閉包的 Validation Rule 訊息
 
 **受影響的可能：非常低**
 
-When writing closure based custom validation rules, invoking the `$fail` callback more than once will now append the messages to an array instead of overwriting the previous message. Typically, this will not affect your application.
+在撰寫基於閉包的自定 Validation Rule 時，若呼叫 `$fail` 回呼超過一次時，原本訊息會被取代，現在改為會將訊息加到陣列的尾端。一般來說，這應該不會影響到你的專案。
 
-In addition, the `$fail` callback now returns an object. If you were previously type-hinting the return type of your validation closure, this may require you to update your type-hint:
+此外，`$fail` 回呼現在會回傳一個物件。如果原本有在 Validation 閉包中 ^[Type-Hint](型別提示) 回傳型別，則可能有需要更新：
 
 ```php
 public function rules()
@@ -210,6 +210,6 @@ public function rules()
 
 ### 其他
 
-We also encourage you to view the changes in the `laravel/laravel` [GitHub repository](https://github.com/laravel/laravel). While many of these changes are not required, you may wish to keep these files in sync with your application. Some of these changes will be covered in this upgrade guide, but others, such as changes to configuration files or comments, will not be.
+我們也建議你檢視 `laravel/laravel` [GitHub 存放庫](https://github.com/laravel/laravel)上的更改。雖然這些更改中大多數都不是必須要進行的，但你可能也會想讓專案中的這些檔案保持同步。其中一些修改有在本升級指南中提到，但有些其他的更改 (如設定檔的更改或註解等) 就沒有提到。
 
-You can easily view the changes with the [GitHub comparison tool](https://github.com/laravel/laravel/compare/9.x...10.x) and choose which updates are important to you. However, many of the changes shown by the GitHub comparison tool are due to our organization's adoption of PHP native types. These changes are backwards compatible and the adoption of them during the migration to Laravel 10 is optional.
+你可以輕鬆地通過 [GitHub 的比較工具](https://github.com/laravel/laravel/compare/9.x...10.x)來檢視這些更改，並自行判斷哪些修改對你來說是重要的。不過，GitHub 比較工具上顯示的許多更改都是因為 Laravel 選用了 PHP 原生型別導致的。這些更改是能向下相容的，而在升級到 Laravel 10 時，可選擇是否要加上這些原生型別提示。

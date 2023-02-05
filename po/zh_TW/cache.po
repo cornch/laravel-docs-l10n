@@ -10,7 +10,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
-"PO-Revision-Date: 2023-01-25 09:52\n"
+"PO-Revision-Date: 2023-02-05 10:34\n"
 
 #: docs/8.x/cache.md:block 1 (header)
 msgid "Cache"
@@ -928,9 +928,9 @@ msgstr "**Note** 在測試呼叫全域的 `cache` 函式時，可以像在[測�
 msgid "**Warning** Cache tags are not supported when using the `file`, `dynamodb`, or `database` cache drivers. Furthermore, when using multiple tags with caches that are stored \"forever\", performance will be best with a driver such as `memcached`, which automatically purges stale records."
 msgstr "**Warning** 使用 `file`, `dynamodb` 或 `database` 快取 Driver 時，不支援使用快取標籤。此外，在以「forever」儲存的快取上使用多重標籤時，搭配 `memcached` Driver 能取得最佳效能，這些 Driver 通常會自動移除舊的記錄。"
 
-#: docs/9.x/cache.md:block 107 (paragraph)
-msgid "Cache tags allow you to tag related items in the cache and then flush all cached values that have been assigned a given tag. You may access a tagged cache by passing in an ordered array of tag names. Items stored via tags may not be accessed without also providing the tags that were used to store the value. For example, let's access a tagged cache and `put` a value into the cache:"
-msgstr "快取標籤能讓你將快取內相關的項目標記在一起，並能將所有被指派到相同標籤的快取值一起被清除。可以通過傳入包含標籤名稱的有序陣列來存取標籤快取。在儲存快取項目時，若有使用標籤，則必須提供這些標籤，才可存取該項目。舉例來說，我們來存取一個被標籤的快取，並將一個值 `put` 進快取內："
+#: docs/9.x/cache.md:block 111 (paragraph)
+msgid "Items stored via tags may not be accessed without also providing the tags that were used to store the value. To retrieve a tagged cache item, pass the same ordered list of tags to the `tags` method and then call the `get` method with the key you wish to retrieve:"
+msgstr "若沒有提供與保存項目時所指定的相同 Tag，就無法存取這些項目。若要取得待 Tag 的快取項目，請將相同的 Tag 以相同的順序傳入給 `tags` 方法，然後再以指定的索引鍵來呼叫 `get` 方法："
 
 #: docs/9.x/cache.md:block 121 (quote)
 msgid "**Warning** To utilize this feature, your application must be using the `memcached`, `redis`, `dynamodb`, `database`, `file`, or `array` cache driver as your application's default cache driver. In addition, all servers must be communicating with the same central cache server."
@@ -996,6 +996,10 @@ msgstr "use App\\Listeners\\LogCacheHit;\n"
 "    ],\n"
 "];\n"
 
+#: docs/master/cache.md:block 2 (unordered list)
+msgid "[Pruning Stale Cache Tags](#pruning-stale-cache-tags)"
+msgstr "[修建過時的快取 Tag](#pruning-stale-cache-tags)"
+
 #: docs/master/cache.md:block 16 (code)
 msgid "Schema::create('cache', function (Blueprint $table) {\n"
 "    $table->string('key')->unique();\n"
@@ -1050,7 +1054,27 @@ msgstr "if (Cache::has('key')) {\n"
 "    // ...\n"
 "}\n"
 
-#: docs/master/cache.md:block 127 (code)
+#: docs/master/cache.md:block 107 (paragraph)
+msgid "Cache tags allow you to tag related items in the cache and then flush all cached values that have been assigned a given tag. You may access a tagged cache by passing in an ordered array of tag names. Items stored via tags may not be accessed without also providing the tags that were used to store the value. For example, let's access a tagged cache and `put` a value into the cache:"
+msgstr "快取標籤能讓你將快取內相關的項目標記在一起，並能將所有被指派到相同標籤的快取值一起被清除。可以通過傳入包含標籤名稱的有序陣列來存取標籤快取。在儲存快取項目時，若有使用標籤，則必須提供這些標籤，才可存取該項目。舉例來說，我們來存取一個被標籤的快取，並將一個值 `put` 進快取內："
+
+#: docs/master/cache.md:block 120 (header)
+msgid "Pruning Stale Cache Tags"
+msgstr "修建過時的快取 Tag"
+
+#: docs/master/cache.md:block 121 (quote)
+msgid "**Warning** Pruning stale cache tags is only necessary when using Redis as your application's cache driver."
+msgstr "**Warning** 只有當專案使用 Redis 作為快取 Driver 時，才需要修建過時的快取 Tag。"
+
+#: docs/master/cache.md:block 122 (paragraph)
+msgid "In order to properly prune stale cache tag entries when using the Redis cache driver, Laravel's `cache:prune-stale-tags` Artisan command should be [scheduled](/docs/{{version}}/scheduling) in your application's `App\\Console\\Kernel` class:"
+msgstr "在使用 Redis 快取 Driver 時，若要正確地修建過時的快取 Tag，請在專案的 `App\\Console\\Kernel` 類別內[排程](/docs/{{version}}/scheduling)呼叫 Laravel 的 `cache:prune-stale-tags` Artisan 指令："
+
+#: docs/master/cache.md:block 123 (code)
+msgid "$schedule->command('cache:prune-stale-tags')->hourly();\n"
+msgstr "$schedule->command('cache:prune-stale-tags')->hourly();\n"
+
+#: docs/master/cache.md:block 132 (code)
 msgid "Schema::create('cache_locks', function (Blueprint $table) {\n"
 "    $table->string('key')->primary();\n"
 "    $table->string('owner');\n"
@@ -1062,7 +1086,7 @@ msgstr "Schema::create('cache_locks', function (Blueprint $table) {\n"
 "    $table->integer('expiration');\n"
 "});\n"
 
-#: docs/master/cache.md:block 154 (code)
+#: docs/master/cache.md:block 159 (code)
 msgid "Cache::extend('mongo', function (Application $app) {\n"
 "    return Cache::repository(new MongoStore);\n"
 "});\n"
@@ -1070,7 +1094,7 @@ msgstr "Cache::extend('mongo', function (Application $app) {\n"
 "    return Cache::repository(new MongoStore);\n"
 "});\n"
 
-#: docs/master/cache.md:block 159 (code)
+#: docs/master/cache.md:block 164 (code)
 msgid "<?php\n\n"
 "namespace App\\Providers;\n\n"
 "use App\\Extensions\\MongoStore;\n"

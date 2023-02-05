@@ -10,7 +10,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
-"PO-Revision-Date: 2023-01-25 12:14\n"
+"PO-Revision-Date: 2023-02-05 10:34\n"
 
 #: docs/8.x/eloquent-mutators.md:block 1 (header)
 msgid "Eloquent: Mutators & Casting"
@@ -1586,27 +1586,57 @@ msgstr "if ($server->status == ServerStatus::Provisioned) {\n"
 "    $server->save();\n"
 "}\n"
 
-#: docs/9.x/eloquent-mutators.md:block 100 (header)
+#: docs/9.x/eloquent-mutators.md:block 96 (header)
+msgid "Casting Arrays Of Enums"
+msgstr "型別轉換一組 Enum 的陣列"
+
+#: docs/9.x/eloquent-mutators.md:block 97 (paragraph)
+msgid "Sometimes you may need your model to store an array of enum values within a single column. To accomplish this, you may utilize the `AsEnumArrayObject` or `AsEnumCollection` casts provided by Laravel:"
+msgstr "有時候，我們需要在 Model 中將一組 Enum 值的陣列保存在單一一個欄位裡。這時，可以使用 Laravel 所提供的 `AsEnumArrayObject` 或 `AsEnumCollection` Cast："
+
+#: docs/9.x/eloquent-mutators.md:block 98 (code)
+msgid "use App\\Enums\\ServerStatus;\n"
+"use Illuminate\\Database\\Eloquent\\Casts\\AsEnumCollection;\n\n"
+"/**\n"
+" * The attributes that should be cast.\n"
+" *\n"
+" * @var array\n"
+" */\n"
+"protected $casts = [\n"
+"    'statuses' => AsEnumCollection::class.':'.ServerStatus::class,\n"
+"];\n"
+msgstr "use App\\Enums\\ServerStatus;\n"
+"use Illuminate\\Database\\Eloquent\\Casts\\AsEnumCollection;\n\n"
+"/**\n"
+" * The attributes that should be cast.\n"
+" *\n"
+" * @var array\n"
+" */\n"
+"protected $casts = [\n"
+"    'statuses' => AsEnumCollection::class.':'.ServerStatus::class,\n"
+"];\n"
+
+#: docs/9.x/eloquent-mutators.md:block 104 (header)
 msgid "Key Rotation"
 msgstr "更改密鑰"
 
-#: docs/9.x/eloquent-mutators.md:block 101 (paragraph)
+#: docs/9.x/eloquent-mutators.md:block 105 (paragraph)
 msgid "As you may know, Laravel encrypts strings using the `key` configuration value specified in your application's `app` configuration file. Typically, this value corresponds to the value of the `APP_KEY` environment variable. If you need to rotate your application's encryption key, you will need to manually re-encrypt your encrypted attributes using the new key."
 msgstr "讀者可能已經知道，Laravel 會使用專案 `app` 設定檔中的 `key` 設定值來加密字串。一般來說，這個設定值對應的是 `APP_KEY` 環境變數。若有需要更改專案的加密密鑰，則我們需要使用新的密鑰來重新加密這些經過加密的屬性。"
 
-#: docs/9.x/eloquent-mutators.md:block 110 (paragraph)
+#: docs/9.x/eloquent-mutators.md:block 114 (paragraph)
 msgid "Laravel has a variety of built-in, helpful cast types; however, you may occasionally need to define your own cast types. To create a cast, execute the `make:cast` Artisan command. The new cast class will be placed in your `app/Casts` directory:"
 msgstr "Laravel 中有各種內建的實用型別轉換類型。不過，有時候，我們還是需要定義自定 Cast。若要建立型別轉換程式，請執行 `make:cast` Artisan 指令。新建立的 Cast 類別會被放在 `app/Casts` 目錄下："
 
-#: docs/9.x/eloquent-mutators.md:block 111 (code)
+#: docs/9.x/eloquent-mutators.md:block 115 (code)
 msgid "php artisan make:cast Json\n"
 msgstr "php artisan make:cast Json\n"
 
-#: docs/9.x/eloquent-mutators.md:block 112 (paragraph)
+#: docs/9.x/eloquent-mutators.md:block 116 (paragraph)
 msgid "All custom cast classes implement the `CastsAttributes` interface. Classes that implement this interface must define a `get` and `set` method. The `get` method is responsible for transforming a raw value from the database into a cast value, while the `set` method should transform a cast value into a raw value that can be stored in the database. As an example, we will re-implement the built-in `json` cast type as a custom cast type:"
 msgstr "所有的自定 Cast 類別都實作了 `CastsAttributes` 界面。實作了這個介面的類別必須定義一組 `get` 與 `set` 方法。`get` 方法用於將儲存在資料庫內的原始值轉換為型別值；`set` 方法則負責將型別值轉換為可儲存在資料庫內的原始值。在這裡，我們將重新實作一個內建的 `json` 型別轉換類型為例："
 
-#: docs/9.x/eloquent-mutators.md:block 120 (code)
+#: docs/9.x/eloquent-mutators.md:block 124 (code)
 msgid "<?php\n\n"
 "namespace App\\Casts;\n\n"
 "use App\\ValueObjects\\Address as AddressValueObject;\n"
@@ -1694,23 +1724,23 @@ msgstr "<?php\n\n"
 "    }\n"
 "}\n"
 
-#: docs/9.x/eloquent-mutators.md:block 123 (quote)
+#: docs/9.x/eloquent-mutators.md:block 127 (quote)
 msgid "**Note** If you plan to serialize your Eloquent models containing value objects to JSON or arrays, you should implement the `Illuminate\\Contracts\\Support\\Arrayable` and `JsonSerializable` interfaces on the value object."
 msgstr "**Note** 若有打算要將包含數值物件的 Eloquent Model 序列化為 JSON 或陣列，則該數值物件應實作 `Illuminate\\Contracts\\Support\\Arrayable` 與 `JsonSerializable` 介面。"
 
-#: docs/9.x/eloquent-mutators.md:block 131 (paragraph)
+#: docs/9.x/eloquent-mutators.md:block 135 (paragraph)
 msgid "Occasionally, you may need to write a custom cast class that only transforms values that are being set on the model and does not perform any operations when attributes are being retrieved from the model."
 msgstr "有時候，我們可能會需要撰寫只在值被寫入 Model 時要進行轉換的自定 Cast 類別，而在從 Model 中取值時不進行任何操作。"
 
-#: docs/9.x/eloquent-mutators.md:block 132 (paragraph)
+#: docs/9.x/eloquent-mutators.md:block 136 (paragraph)
 msgid "Inbound only custom casts should implement the `CastsInboundAttributes` interface, which only requires a `set` method to be defined. The `make:cast` Artisan command may be invoked with the `--inbound` option to generate an inbound only cast class:"
 msgstr "^[Inbound Only](傳入限定) 自定 Cast 應實作 `CastsInboundAttributes ` 介面，該介面只要求定義 `set` 方法。在呼叫 `make:cast` Artisan 指令時使用 `--inbound` 選項，就可產生 Inbound Only 的 Cast 類別："
 
-#: docs/9.x/eloquent-mutators.md:block 133 (code)
+#: docs/9.x/eloquent-mutators.md:block 137 (code)
 msgid "php artisan make:cast Hash --inbound\n"
 msgstr "php artisan make:cast Hash --inbound\n"
 
-#: docs/9.x/eloquent-mutators.md:block 134 (paragraph)
+#: docs/9.x/eloquent-mutators.md:block 138 (paragraph)
 msgid "A classic example of an inbound only cast is a \"hashing\" cast. For example, we may define a cast that hashes inbound values via a given algorithm:"
 msgstr "Inbound Only Cast 的典型例子就是「雜湊」Cast。舉例來說，我們可以定義一個 Cast，以使用給定演算法來雜湊傳入的值："
 

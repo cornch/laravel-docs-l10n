@@ -10,7 +10,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
-"PO-Revision-Date: 2023-01-25 14:53\n"
+"PO-Revision-Date: 2023-02-05 10:35\n"
 
 #: docs/8.x/queues.md:block 1 (header)
 msgid "Queues"
@@ -3885,8 +3885,8 @@ msgid "**Warning** Deleting jobs using the `$this->delete()` method within the j
 msgstr "**Warning** 在 Job 中使用 `$this->delete()` 方法來刪除 Job 是沒有辦法讓串聯的 Job 不被執行的。只有當串聯中的 Job 失敗時才會停止執行。"
 
 #: docs/9.x/queues.md:block 187 (quote)
-msgid "{note} Since chain callbacks are serialized and executed at a later time by the Laravel queue, you should not use the `$this` variable within chain callbacks."
-msgstr "{note} 由於串聯的回呼會被序列化並在稍後由 Laravel 的佇列執行，因此請不要在串聯的回呼中使用 `$this` 變數。"
+msgid "**Warning** Since chain callbacks are serialized and executed at a later time by the Laravel queue, you should not use the `$this` variable within chain callbacks."
+msgstr "**Warning** 由於串聯的回呼會被序列化並在稍後由 Laravel 的佇列執行，因此請不要在串聯的回呼中使用 `$this` 變數。"
 
 #: docs/9.x/queues.md:block 193 (code)
 msgid "<?php\n\n"
@@ -4018,6 +4018,32 @@ msgstr "**Warning** 由於批次的回呼會被序列化並在稍後由 Laravel 
 msgid "**Warning** You may only add jobs to a batch from within a job that belongs to the same batch."
 msgstr "**Warning** 我們只能向目前 Job 正在執行的批次新增 Job。"
 
+#: docs/9.x/queues.md:block 300 (paragraph)
+msgid "As you may have noticed in the previous examples, batched jobs should typically determine if their corresponding batch has been cancelled before continuing execution. However, for convenience, you may assign the `SkipIfBatchCancelled` [middleware](#job-middleware) to the job instead. As its name indicates, this middleware will instruct Laravel to not process the job if its corresponding batch has been cancelled:"
+msgstr "讀者可能已經從上面的範例中注意到，批次的 Job 一般都應該在繼續執行前先判斷自己所在的批次是否已被取消。不過，為了讓開發過程更方便，也可以在 Job 上指定 `SkipIfBatchCancelled` [Middleware](#job-middleware)，這樣就不需要手動檢查批次是否已被取消。就像該 Middleware 的名稱一樣，這個 Middleware 會告訴 Laravel，當 Job 對應的批次被取消時，就不要在繼續處理 Job："
+
+#: docs/9.x/queues.md:block 301 (code)
+msgid "use Illuminate\\Queue\\Middleware\\SkipIfBatchCancelled;\n\n"
+"/**\n"
+" * Get the middleware the job should pass through.\n"
+" *\n"
+" * @return array\n"
+" */\n"
+"public function middleware()\n"
+"{\n"
+"    return [new SkipIfBatchCancelled];\n"
+"}\n"
+msgstr "use Illuminate\\Queue\\Middleware\\SkipIfBatchCancelled;\n\n"
+"/**\n"
+" * Get the middleware the job should pass through.\n"
+" *\n"
+" * @return array\n"
+" */\n"
+"public function middleware()\n"
+"{\n"
+"    return [new SkipIfBatchCancelled];\n"
+"}\n"
+
 #: docs/9.x/queues.md:block 321 (paragraph)
 msgid "Likewise, your `jobs_batches` table may also accumulate batch records for cancelled batches. You may instruct the `queue:prune-batches` command to prune these cancelled batch records using the `cancelled` option:"
 msgstr "類似的，`jobs_batches` 資料表可能會累積一些已取消批次的批次記錄。可以在 `queue:prune-batxhes` 指令上使用 `cancelled` 選項來修剪這些已取消的批次："
@@ -4027,8 +4053,8 @@ msgid "$schedule->command('queue:prune-batches --hours=48 --cancelled=72')->dail
 msgstr "$schedule->command('queue:prune-batches --hours=48 --cancelled=72')->daily();\n"
 
 #: docs/9.x/queues.md:block 329 (quote)
-msgid "{note} Since `catch` callbacks are serialized and executed at a later time by the Laravel queue, you should not use the `$this` variable within `catch` callbacks."
-msgstr "{note} 由於 `catch` 回呼會被序列化並在稍後由 Laravel 的佇列執行，因此請不要在 `catch` 回呼中使用 `$this` 變數。"
+msgid "**Warning** Since `catch` callbacks are serialized and executed at a later time by the Laravel queue, you should not use the `$this` variable within `catch` callbacks."
+msgstr "**Warning** 由於 `catch` 的回呼會被序列化並在稍後由 Laravel 的佇列執行，因此請不要在 `catch` 的回呼中使用 `$this` 變數。"
 
 #: docs/9.x/queues.md:block 336 (quote)
 msgid "**Note** To keep the `queue:work` process running permanently in the background, you should use a process monitor such as [Supervisor](#supervisor-configuration) to ensure that the queue worker does not stop running."
@@ -5297,6 +5323,10 @@ msgstr "/**\n"
 "    }\n\n"
 "    // 繼續處理...\n"
 "}\n"
+
+#: docs/master/queues.md:block 329 (quote)
+msgid "{note} Since `catch` callbacks are serialized and executed at a later time by the Laravel queue, you should not use the `$this` variable within `catch` callbacks."
+msgstr "{note} 由於 `catch` 回呼會被序列化並在稍後由 Laravel 的佇列執行，因此請不要在 `catch` 回呼中使用 `$this` 變數。"
 
 #: docs/master/queues.md:block 428 (code)
 msgid "/**\n"

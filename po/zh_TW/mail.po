@@ -10,7 +10,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
-"PO-Revision-Date: 2023-01-25 14:53\n"
+"PO-Revision-Date: 2023-02-05 10:35\n"
 
 #: docs/8.x/mail.md:block 1 (header)
 msgid "Mail"
@@ -2535,8 +2535,8 @@ msgid "**Note** To learn more about working around these issues, please review t
 msgstr "**Note** 要瞭解更多有關這類問題的解決方法，請參考有關[佇列任務與資料庫 Transaction](/docs/{{version}}/queues#jobs-and-database-transactions) 有關的說明文件。"
 
 #: docs/9.x/mail.md:block 234 (quote)
-msgid "**Warning** [Inline attachments](#inline-attachments) will not be rendered when a mailable is previewed in your browser. To preview these mailables, you should send them to an email testing application such as [MailHog](https://github.com/mailhog/MailHog) or [HELO](https://usehelo.com)."
-msgstr "**Warning** 在瀏覽器中預覽 Mailable 時，不會轉譯[內嵌的附件](#inline-attachments)。若要瀏覽有內嵌附件的 Mailable，請將郵件傳送到如 [MailHog](https://github.com/mailhog/MailHog) 或 [HELO](https://usehelo.com) 之類的郵件測試程式。"
+msgid "**Warning** [Inline attachments](#inline-attachments) will not be rendered when a mailable is previewed in your browser. To preview these mailables, you should send them to an email testing application such as [Mailpit](https://github.com/axllent/mailpit) or [HELO](https://usehelo.com)."
+msgstr "**Warning** 在瀏覽器中預覽 Mailable 時，不會轉譯[內嵌的附件](#inline-attachments)。若要瀏覽有內嵌附件的 Mailable，請將郵件傳送到如 [Mailpit](https://github.com/axllent/mailpit) 或 [HELO](https://usehelo.com) 之類的郵件測試程式。"
 
 #: docs/9.x/mail.md:block 248 (paragraph)
 msgid "Laravel provides a variety of methods for inspecting your mailable's structure. In addition, Laravel provides several convenient methods for testing that your mailable contains the content that you expect. These methods are: `assertSeeInHtml`, `assertDontSeeInHtml`, `assertSeeInOrderInHtml`, `assertSeeInText`, `assertDontSeeInText`, `assertSeeInOrderInText`, `assertHasAttachment`, `assertHasAttachedData`, `assertHasAttachmentFromStorage`, and `assertHasAttachmentFromStorageDisk`."
@@ -2593,6 +2593,14 @@ msgstr "use App\\Mail\\InvoicePaid;\n"
 "    $mailable->assertHasAttachmentFromStorage('/path/to/file', 'name.pdf', ['mime' => 'application/pdf']);\n"
 "    $mailable->assertHasAttachmentFromStorageDisk('s3', '/path/to/file', 'name.pdf', ['mime' => 'application/pdf']);\n"
 "}\n"
+
+#: docs/9.x/mail.md:block 261 (header)
+msgid "HELO / Mailtrap / Mailpit"
+msgstr "HELO / Mailtrap / Mailpit"
+
+#: docs/9.x/mail.md:block 263 (paragraph)
+msgid "If you are using [Laravel Sail](/docs/{{version}}/sail), you may preview your messages using [Mailpit](https://github.com/axllent/mailpit). When Sail is running, you may access the Mailpit interface at: `http://localhost:8025`."
+msgstr "若使用 [Laravel Sail](/docs/{{version}}/sail),，則可使用 [Mailpit](https://github.com/axllent/mailpit) 來預覽訊息。當 Sail 有在執行時，可在 `http://localhost:8025` 上存取 Mailpit  的界面。"
 
 #: docs/9.x/mail.md:block 271 (code)
 msgid "use App\\Listeners\\LogSendingMessage;\n"
@@ -2754,7 +2762,7 @@ msgid "use App\\Mail\\MailchimpTransport;\n"
 "{\n"
 "    Mail::extend('mailchimp', function (array $config = []) {\n"
 "        return new MailchimpTransport(/* ... */);\n"
-"    })\n"
+"    });\n"
 "}\n"
 msgstr "use App\\Mail\\MailchimpTransport;\n"
 "use Illuminate\\Support\\Facades\\Mail;\n\n"
@@ -2767,7 +2775,7 @@ msgstr "use App\\Mail\\MailchimpTransport;\n"
 "{\n"
 "    Mail::extend('mailchimp', function (array $config = []) {\n"
 "        return new MailchimpTransport(/* ... */);\n"
-"    })\n"
+"    });\n"
 "}\n"
 
 #: docs/9.x/mail.md:block 278 (paragraph)
@@ -2793,8 +2801,8 @@ msgid "Laravel includes support for some existing Symfony maintained mail transp
 msgstr "Laravel 支援一些像是 Mailgun 與 Postmark 等現有 Symfony 維護的 Mail Transport。不過，有時候我們可能會需要讓 Laravel 也支援其他由 Symfony 維護的 Transport。若要讓 Laravel 支援這些 Transport，只要使用 Composer 安裝這些 Symfony Mailer，然後再向 Laravel 註冊這個 Transport。舉例來說，我們可以安裝並註冊「Sendinblue」Symfony Mailer："
 
 #: docs/9.x/mail.md:block 283 (code)
-msgid "composer require symfony/sendinblue-mailer\n"
-msgstr "composer require symfony/sendinblue-mailer\n"
+msgid "composer require symfony/sendinblue-mailer symfony/http-client\n"
+msgstr "composer require symfony/sendinblue-mailer symfony/http-client\n"
 
 #: docs/9.x/mail.md:block 284 (paragraph)
 msgid "Once the Sendinblue mailer package has been installed, you may add an entry for your Sendinblue API credentials to your application's `services` configuration file:"
@@ -2809,8 +2817,8 @@ msgstr "'sendinblue' => [\n"
 "],\n"
 
 #: docs/9.x/mail.md:block 286 (paragraph)
-msgid "Finally, you may use the `Mail` facade's `extend` method to register the transport with Laravel. Typically, this should be done within the `boot` method of a service provider:"
-msgstr "最後，使用 `Mail` Facade 的 `extend` 方法來向 Laravel 註冊這個 Transport。一般來說，應在某個 Service Provider 內註冊一個 `boot` 方法："
+msgid "Next, you may use the `Mail` facade's `extend` method to register the transport with Laravel. Typically, this should be done within the `boot` method of a service provider:"
+msgstr "接著，使用 `Mail` Facade 的 `extend` 方法來向 Laravel 註冊這個 Transport。一般來說，應在某個 Service Provider 內註冊一個 `boot` 方法："
 
 #: docs/9.x/mail.md:block 287 (code)
 msgid "use Illuminate\\Support\\Facades\\Mail;\n"
@@ -2853,6 +2861,20 @@ msgstr "use Illuminate\\Support\\Facades\\Mail;\n"
 "        );\n"
 "    });\n"
 "}\n"
+
+#: docs/9.x/mail.md:block 288 (paragraph)
+msgid "Once your transport has been registered, you may create a mailer definition within your application's config/mail.php configuration file that utilizes the new transport:"
+msgstr "註冊好 Transport 後，就可以在專案的 config/mail.php 設定檔中建立一個使用這個新 Transport 的 Mailer 定義："
+
+#: docs/9.x/mail.md:block 289 (code)
+msgid "'sendinblue' => [\n"
+"    'transport' => 'sendinblue',\n"
+"    // ...\n"
+"],\n"
+msgstr "'sendinblue' => [\n"
+"    'transport' => 'sendinblue',\n"
+"    // ...\n"
+"],\n"
 
 #: docs/master/mail.md:block 60 (code)
 msgid "use Illuminate\\Mail\\Mailables\\Address;\n"
@@ -3496,6 +3518,10 @@ msgstr "<?php\n\n"
 "    }\n"
 "}\n"
 
+#: docs/master/mail.md:block 234 (quote)
+msgid "**Warning** [Inline attachments](#inline-attachments) will not be rendered when a mailable is previewed in your browser. To preview these mailables, you should send them to an email testing application such as [MailHog](https://github.com/mailhog/MailHog) or [HELO](https://usehelo.com)."
+msgstr "**Warning** 在瀏覽器中預覽 Mailable 時，不會轉譯[內嵌的附件](#inline-attachments)。若要瀏覽有內嵌附件的 Mailable，請將郵件傳送到如 [MailHog](https://github.com/mailhog/MailHog) 或 [HELO](https://usehelo.com) 之類的郵件測試程式。"
+
 #: docs/master/mail.md:block 243 (code)
 msgid "use Illuminate\\Contracts\\Translation\\HasLocalePreference;\n\n"
 "class User extends Model implements HasLocalePreference\n"
@@ -3707,6 +3733,14 @@ msgstr "use App\\Mail\\MailchimpTransport;\n"
 "        return new MailchimpTransport(/* ... */);\n"
 "    })\n"
 "}\n"
+
+#: docs/master/mail.md:block 283 (code)
+msgid "composer require symfony/sendinblue-mailer\n"
+msgstr "composer require symfony/sendinblue-mailer\n"
+
+#: docs/master/mail.md:block 286 (paragraph)
+msgid "Finally, you may use the `Mail` facade's `extend` method to register the transport with Laravel. Typically, this should be done within the `boot` method of a service provider:"
+msgstr "最後，使用 `Mail` Facade 的 `extend` 方法來向 Laravel 註冊這個 Transport。一般來說，應在某個 Service Provider 內註冊一個 `boot` 方法："
 
 #: docs/master/mail.md:block 287 (code)
 msgid "use Illuminate\\Support\\Facades\\Mail;\n"

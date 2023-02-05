@@ -1242,27 +1242,50 @@ msgid ""
 "}\n"
 msgstr ""
 
-#: docs/9.x/eloquent-mutators.md:block 100 (header)
+#: docs/9.x/eloquent-mutators.md:block 96 (header)
+msgid "Casting Arrays Of Enums"
+msgstr ""
+
+#: docs/9.x/eloquent-mutators.md:block 97 (paragraph)
+msgid "Sometimes you may need your model to store an array of enum values within a single column. To accomplish this, you may utilize the `AsEnumArrayObject` or `AsEnumCollection` casts provided by Laravel:"
+msgstr ""
+
+#: docs/9.x/eloquent-mutators.md:block 98 (code)
+msgid ""
+"use App\\Enums\\ServerStatus;\n"
+"use Illuminate\\Database\\Eloquent\\Casts\\AsEnumCollection;\n"
+"\n"
+"/**\n"
+" * The attributes that should be cast.\n"
+" *\n"
+" * @var array\n"
+" */\n"
+"protected $casts = [\n"
+"    'statuses' => AsEnumCollection::class.':'.ServerStatus::class,\n"
+"];\n"
+msgstr ""
+
+#: docs/9.x/eloquent-mutators.md:block 104 (header)
 msgid "Key Rotation"
 msgstr ""
 
-#: docs/9.x/eloquent-mutators.md:block 101 (paragraph)
+#: docs/9.x/eloquent-mutators.md:block 105 (paragraph)
 msgid "As you may know, Laravel encrypts strings using the `key` configuration value specified in your application's `app` configuration file. Typically, this value corresponds to the value of the `APP_KEY` environment variable. If you need to rotate your application's encryption key, you will need to manually re-encrypt your encrypted attributes using the new key."
 msgstr ""
 
-#: docs/9.x/eloquent-mutators.md:block 110 (paragraph)
+#: docs/9.x/eloquent-mutators.md:block 114 (paragraph)
 msgid "Laravel has a variety of built-in, helpful cast types; however, you may occasionally need to define your own cast types. To create a cast, execute the `make:cast` Artisan command. The new cast class will be placed in your `app/Casts` directory:"
 msgstr ""
 
-#: docs/9.x/eloquent-mutators.md:block 111 (code)
+#: docs/9.x/eloquent-mutators.md:block 115 (code)
 msgid "php artisan make:cast Json\n"
 msgstr ""
 
-#: docs/9.x/eloquent-mutators.md:block 112 (paragraph)
+#: docs/9.x/eloquent-mutators.md:block 116 (paragraph)
 msgid "All custom cast classes implement the `CastsAttributes` interface. Classes that implement this interface must define a `get` and `set` method. The `get` method is responsible for transforming a raw value from the database into a cast value, while the `set` method should transform a cast value into a raw value that can be stored in the database. As an example, we will re-implement the built-in `json` cast type as a custom cast type:"
 msgstr ""
 
-#: docs/9.x/eloquent-mutators.md:block 120 (code)
+#: docs/9.x/eloquent-mutators.md:block 124 (code)
 msgid ""
 "<?php\n"
 "\n"
@@ -1314,23 +1337,23 @@ msgid ""
 "}\n"
 msgstr ""
 
-#: docs/9.x/eloquent-mutators.md:block 123 (quote)
+#: docs/9.x/eloquent-mutators.md:block 127 (quote)
 msgid "**Note** If you plan to serialize your Eloquent models containing value objects to JSON or arrays, you should implement the `Illuminate\\Contracts\\Support\\Arrayable` and `JsonSerializable` interfaces on the value object."
 msgstr ""
 
-#: docs/9.x/eloquent-mutators.md:block 131 (paragraph)
+#: docs/9.x/eloquent-mutators.md:block 135 (paragraph)
 msgid "Occasionally, you may need to write a custom cast class that only transforms values that are being set on the model and does not perform any operations when attributes are being retrieved from the model."
 msgstr ""
 
-#: docs/9.x/eloquent-mutators.md:block 132 (paragraph)
+#: docs/9.x/eloquent-mutators.md:block 136 (paragraph)
 msgid "Inbound only custom casts should implement the `CastsInboundAttributes` interface, which only requires a `set` method to be defined. The `make:cast` Artisan command may be invoked with the `--inbound` option to generate an inbound only cast class:"
 msgstr ""
 
-#: docs/9.x/eloquent-mutators.md:block 133 (code)
+#: docs/9.x/eloquent-mutators.md:block 137 (code)
 msgid "php artisan make:cast Hash --inbound\n"
 msgstr ""
 
-#: docs/9.x/eloquent-mutators.md:block 134 (paragraph)
+#: docs/9.x/eloquent-mutators.md:block 138 (paragraph)
 msgid "A classic example of an inbound only cast is a \"hashing\" cast. For example, we may define a cast that hashes inbound values via a given algorithm:"
 msgstr ""
 

@@ -613,27 +613,56 @@ msgid ""
 "}\n"
 msgstr ""
 
-#: docs/master/middleware.md:block 32 (code)
+#: docs/master/middleware.md:block 29 (paragraph)
+msgid "If you would like to assign middleware to specific routes, you may invoke the `middleware` method when defining the route:"
+msgstr ""
+
+#: docs/master/middleware.md:block 30 (code)
 msgid ""
+"use App\\Http\\Middleware\\Authenticate;\n"
+"\n"
 "Route::get('/profile', function () {\n"
 "    // ...\n"
-"})->middleware('auth');\n"
+"})->middleware(Authenticate::class);\n"
+msgstr ""
+
+#: docs/master/middleware.md:block 32 (code)
+msgid ""
+"Route::get('/', function () {\n"
+"    // ...\n"
+"})->middleware([First::class, Second::class]);\n"
+msgstr ""
+
+#: docs/master/middleware.md:block 33 (paragraph)
+msgid "For convenience, you may assign aliases to middleware in your application's `app/Http/Kernel.php` file. By default, the `$middlewareAliases` property of this class contains entries for the middleware included with Laravel. You may add your own middleware to this list and assign it an alias of your choosing:"
 msgstr ""
 
 #: docs/master/middleware.md:block 34 (code)
 msgid ""
-"Route::get('/', function () {\n"
-"    // ...\n"
-"})->middleware(['first', 'second']);\n"
+"// Within App\\Http\\Kernel class...\n"
+"\n"
+"protected $middlewareAliases = [\n"
+"    'auth' => \\App\\Http\\Middleware\\Authenticate::class,\n"
+"    'auth.basic' => \\Illuminate\\Auth\\Middleware\\AuthenticateWithBasicAuth::class,\n"
+"    'bindings' => \\Illuminate\\Routing\\Middleware\\SubstituteBindings::class,\n"
+"    'cache.headers' => \\Illuminate\\Http\\Middleware\\SetCacheHeaders::class,\n"
+"    'can' => \\Illuminate\\Auth\\Middleware\\Authorize::class,\n"
+"    'guest' => \\App\\Http\\Middleware\\RedirectIfAuthenticated::class,\n"
+"    'signed' => \\Illuminate\\Routing\\Middleware\\ValidateSignature::class,\n"
+"    'throttle' => \\Illuminate\\Routing\\Middleware\\ThrottleRequests::class,\n"
+"    'verified' => \\Illuminate\\Auth\\Middleware\\EnsureEmailIsVerified::class,\n"
+"];\n"
+msgstr ""
+
+#: docs/master/middleware.md:block 35 (paragraph)
+msgid "Once the middleware alias has been defined in the HTTP kernel, you may use the alias when assigning middlware to routes:"
 msgstr ""
 
 #: docs/master/middleware.md:block 36 (code)
 msgid ""
-"use App\\Http\\Middleware\\EnsureTokenIsValid;\n"
-"\n"
 "Route::get('/profile', function () {\n"
 "    // ...\n"
-"})->middleware(EnsureTokenIsValid::class);\n"
+"})->middleware('auth');\n"
 msgstr ""
 
 #: docs/master/middleware.md:block 40 (code)
@@ -660,6 +689,30 @@ msgid ""
 "        // ...\n"
 "    });\n"
 "});\n"
+msgstr ""
+
+#: docs/master/middleware.md:block 48 (code)
+msgid ""
+"/**\n"
+" * The application's route middleware groups.\n"
+" *\n"
+" * @var array\n"
+" */\n"
+"protected $middlewareGroups = [\n"
+"    'web' => [\n"
+"        \\App\\Http\\Middleware\\EncryptCookies::class,\n"
+"        \\Illuminate\\Cookie\\Middleware\\AddQueuedCookiesToResponse::class,\n"
+"        \\Illuminate\\Session\\Middleware\\StartSession::class,\n"
+"        \\Illuminate\\View\\Middleware\\ShareErrorsFromSession::class,\n"
+"        \\App\\Http\\Middleware\\VerifyCsrfToken::class,\n"
+"        \\Illuminate\\Routing\\Middleware\\SubstituteBindings::class,\n"
+"    ],\n"
+"\n"
+"    'api' => [\n"
+"        \\Illuminate\\Routing\\Middleware\\ThrottleRequests::class.':api',\n"
+"        \\Illuminate\\Routing\\Middleware\\SubstituteBindings::class,\n"
+"    ],\n"
+"];\n"
 msgstr ""
 
 #: docs/master/middleware.md:block 50 (code)

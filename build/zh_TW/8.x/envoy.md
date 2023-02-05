@@ -4,24 +4,24 @@ contributors:
     avatarUrl: https://crowdin-static.downloads.crowdin.com/avatar/14684796/medium/60f7dc21ec0bf9cfcb61983640bb4809_default.png
     name: cornch
 crowdinUrl: https://crowdin.com/translate/laravel-docs/65/en-zhtw
-progress: 3
-updatedAt: '2022-08-06T05:46:00Z'
+progress: 100
+updatedAt: '2023-02-05T10:34:00Z'
 ---
 
 # Laravel Envoy
 
 - [簡介](#introduction)
 - [安裝](#installation)
-- [Writing Tasks](#writing-tasks)
-   - [Defining Tasks](#defining-tasks)
-   - [Multiple Servers](#multiple-servers)
-   - [Setup](#setup)
-   - [Variables](#variables)
-   - [Stories](#stories)
-   - [Hooks](#completion-hooks)
-- [Running Tasks](#running-tasks)
-   - [Confirming Task Execution](#confirming-task-execution)
-- [Notifications](#notifications)
+- [撰寫任務](#writing-tasks)
+   - [定義任務](#defining-tasks)
+   - [多伺服器](#multiple-servers)
+   - [設定](#setup)
+   - [變數](#variables)
+   - [Story](#stories)
+   - [Hook](#completion-hooks)
+- [執行任務](#running-tasks)
+   - [確認任務的執行](#confirming-task-execution)
+- [通知](#notifications)
    - [Slack](#slack)
    - [Discord](#discord)
    - [Telegram](#telegram)
@@ -29,33 +29,33 @@ updatedAt: '2022-08-06T05:46:00Z'
 
 <a name="introduction"></a>
 
-## Introduction
+## 簡介
 
-[Laravel Envoy](https://github.com/laravel/envoy) is a tool for executing common tasks you run on your remote servers. Using [Blade](/docs/{{version}}/blade) style syntax, you can easily setup tasks for deployment, Artisan commands, and more. Currently, Envoy only supports the Mac and Linux operating systems. However, Windows support is achievable using [WSL2](https://docs.microsoft.com/en-us/windows/wsl/install-win10).
+[Laravel Envoy](https://github.com/laravel/envoy) 是一個用於在遠端伺服器上執行通用性任務的工具。只要使用 [Blade](/docs/{{version}}/blade) 風格的語法，就能輕鬆地設定部署任務、執行 Artisan 指令…等更多的任務。目前，Envoy 只支援 Mac 與 Linux 作業系統。不過，在 Windows 上可以通過 [WSL2](https://docs.microsoft.com/zh-tw/windows/wsl/install-win10) 來支援。
 
 <a name="installation"></a>
 
-## Installation
+## 安裝
 
-First, install Envoy into your project using the Composer package manager:
+首先，使用 Composer 套件管理員來將 Envoy 裝到你的專案中：
 
     composer require laravel/envoy --dev
 
-Once Envoy has been installed, the Envoy binary will be available in your application's `vendor/bin` directory:
+安裝好 Envoy 後，Envoy 執行檔就會被放在專案的 `vendor/bin` 目錄下：
 
     php vendor/bin/envoy
 
 <a name="writing-tasks"></a>
 
-## Writing Tasks
+## 撰寫任務
 
 <a name="defining-tasks"></a>
 
-### Defining Tasks
+### 定義任務
 
-Tasks are the basic building block of Envoy. Tasks define the shell commands that should execute on your remote servers when the task is invoked. For example, you might define a task that executes the `php artisan queue:restart` command on all of your application's queue worker servers.
+「任務」是 Envoy 中基本的建置區塊。任務定義了當某個任務被呼叫時，要在遠端伺服器上執行哪些 Shell 指令。舉例來說，可以定義一個會在專案的所有 Queue Worker 伺服器上執行 `php artisan queue:restart` 指令的任務。
 
-All of your Envoy tasks should be defined in an `Envoy.blade.php` file at the root of your application. Here's an example to get you started:
+所有的 Envoy 任務都應定義在專案根目錄上的 `Envoy.blade.php` 檔中。我們來看看一個入門範例：
 
 ```bash
 @servers(['web' => ['user@192.168.1.1'], 'workers' => ['user@192.168.1.2']])
@@ -66,13 +66,13 @@ All of your Envoy tasks should be defined in an `Envoy.blade.php` file at the ro
 @endtask
 ```
 
-As you can see, an array of `@servers` is defined at the top of the file, allowing you to reference these servers via the `on` option of your task declarations. The `@servers` declaration should always be placed on a single line. Within your `@task` declarations, you should place the shell commands that should execute on your servers when the task is invoked.
+就像這樣，檔案最上方定義了一組 `@servers` 的陣列，可以在定義任務的 `on` 選項中參照到這些伺服器。`@servers` 定義必須保持在同一行內。在 `@task` 定義內，應放置所有該任務在伺服器上被呼叫時要執行的 Shell 指令。
 
 <a name="local-tasks"></a>
 
-#### Local Tasks
+#### 本機任務
 
-You can force a script to run on your local computer by specifying the server's IP address as `127.0.0.1`:
+只要將伺服器的 IP 指定為 `127.0.0.1`，就可以強制讓某個 Script 在你的本機電腦上執行：
 
 ```bash
 @servers(['localhost' => '127.0.0.1'])
@@ -80,9 +80,9 @@ You can force a script to run on your local computer by specifying the server's 
 
 <a name="importing-envoy-tasks"></a>
 
-#### Importing Envoy Tasks
+#### 匯入 Envoy 任務
 
-Using the `@import` directive, you may import other Envoy files so their stories and tasks are added to yours. After the files have been imported, you may execute the tasks they contain as if they were defined in your own Envoy file:
+使用 `@import` 指示詞即可匯入其他 Envoy 檔案，讓其他 Envoy 檔案中的 Story 與任務變成目前這個檔案內的 Story 與任務。匯入的檔案後，就呼叫匯入檔案內的定義：
 
 ```bash
 @import('vendor/package/Envoy.blade.php')
@@ -90,9 +90,9 @@ Using the `@import` directive, you may import other Envoy files so their stories
 
 <a name="multiple-servers"></a>
 
-### Multiple Servers
+### 多個伺服器
 
-Envoy allows you to easily run a task across multiple servers. First, add additional servers to your `@servers` declaration. Each server should be assigned a unique name. Once you have defined your additional servers you may list each of the servers in the task's `on` array:
+在 Envoy 中，我們可以輕鬆地在多個伺服器上執行同一個任務。首先，在 `@servers` 定義中加上更多的伺服器。請為各個伺服器指定一個不重複的名稱。定義好伺服器後，就可以在任務的 `on` 陣列中列出這些伺服器：
 
 ```bash
 @servers(['web-1' => '192.168.1.1', 'web-2' => '192.168.1.2'])
@@ -106,9 +106,9 @@ Envoy allows you to easily run a task across multiple servers. First, add additi
 
 <a name="parallel-execution"></a>
 
-#### Parallel Execution
+#### 平行執行
 
-By default, tasks will be executed on each server serially. In other words, a task will finish running on the first server before proceeding to execute on the second server. If you would like to run a task across multiple servers in parallel, add the `parallel` option to your task declaration:
+預設情況下，任務會在各個伺服器間依序執行。也就是說，某個任務會先在第一個伺服器上執行，然後才在第二個伺服器上執行。若想讓某個任務在多個伺服器間平行執行，請在任務定義中加上 `parallel` 選項：
 
 ```bash
 @servers(['web-1' => '192.168.1.1', 'web-2' => '192.168.1.2'])
@@ -122,9 +122,9 @@ By default, tasks will be executed on each server serially. In other words, a ta
 
 <a name="setup"></a>
 
-### Setup
+### 設定
 
-Sometimes, you may need to execute arbitrary PHP code before running your Envoy tasks. You may use the `@setup` directive to define a block of PHP code that should execute before your tasks:
+有時候，我們需要在 Envoy 任務前先執行一些 PHP 程式碼。可以使用 `@setup` 指示詞來定義一組 PHP 程式碼區塊，這個程式碼區塊會在任務前執行：
 
 ```php
 @setup
@@ -132,7 +132,7 @@ Sometimes, you may need to execute arbitrary PHP code before running your Envoy 
 @endsetup
 ```
 
-If you need to require other PHP files before your task is executed, you may use the `@include` directive at the top of your `Envoy.blade.php` file:
+若有需要在任務執行前 require 其他的 PHP 的哪敢，可以在 `Envoy.blade.php` 檔案的頂端使用 `@include` 指示詞：
 
 ```bash
 @include('vendor/autoload.php')
@@ -144,13 +144,13 @@ If you need to require other PHP files before your task is executed, you may use
 
 <a name="variables"></a>
 
-### Variables
+### 變數
 
-If needed, you may pass arguments to Envoy tasks by specifying them on the command line when invoking Envoy:
+若有需要，可以在執行 Envoy 時在指令列上指定要傳給 Envoy 的引數：
 
     php vendor/bin/envoy run deploy --branch=master
 
-You may access the options within your tasks using Blade's "echo" syntax. You may also define Blade `if` statements and loops within your tasks. For example, let's verify the presence of the `$branch` variable before executing the `git pull` command:
+可以使用 Blade 的「echo」語法來在任務中存取這些選項。在任務中，也可以定義 Blade 的 `if` 陳述式與迴圈。舉例來說，我們來看看一個在執行 `git pull` 指令前先檢查 `$branch` 變數是否存在的範例：
 
 ```bash
 @servers(['web' => ['user@192.168.1.1']])
@@ -168,9 +168,9 @@ You may access the options within your tasks using Blade's "echo" syntax. You ma
 
 <a name="stories"></a>
 
-### Stories
+### Story
 
-Stories group a set of tasks under a single, convenient name. For instance, a `deploy` story may run the `update-code` and `install-dependencies` tasks by listing the task names within its definition:
+「Story」是一組任務，通過「Story」可以將這組任務放在單一一個名稱下以方便重複使用。舉例來說，若要讓 `deploy` Story 執行 `update-code` 與 `install-dependencies` 任務，我們只需要在 `deploy` 這個 Story 的定義中分別列出這些任務即可：
 
 ```bash
 @servers(['web' => ['user@192.168.1.1']])
@@ -191,23 +191,23 @@ Stories group a set of tasks under a single, convenient name. For instance, a `d
 @endtask
 ```
 
-Once the story has been written, you may invoke it in the same way you would invoke a task:
+寫好 Story 後，就可以像執行任務一樣執行 Story：
 
     php vendor/bin/envoy run deploy
 
 <a name="completion-hooks"></a>
 
-### Hooks
+### Hook
 
-When tasks and stories run, a number of hooks are executed. The hook types supported by Envoy are `@before`, `@after`, `@error`, `@success`, and `@finished`. All of the code in these hooks is interpreted as PHP and executed locally, not on the remote servers that your tasks interact with.
+在執行任務與 Story 時，也會執行到多個 Hook。Envoy 支援的 Hook 類型為 `@before`、`@after`、`@error`、`@success`、與 `@finished`。這些 Hook 中所有的程式碼都會在本機上以 PHP 執行，而不是在執行任務的遠端伺服器上執行：
 
-You may define as many of each of these hooks as you like. They will be executed in the order that they appear in your Envoy script.
+可以依照需求任意定義這些 Hook。這些 Hook 會以在 Envoy 指令稿內出現的順序執行：
 
 <a name="hook-before"></a>
 
 #### `@before`
 
-Before each task execution, all of the `@before` hooks registered in your Envoy script will execute. The `@before` hooks receive the name of the task that will be executed:
+在執行各個任務之前，會執行所有在 Envoy 指令稿內註冊的 `@before` hook 。`@before` Hook 會收到正在執行的任務名稱：
 
 ```php
 @before
@@ -221,7 +221,7 @@ Before each task execution, all of the `@before` hooks registered in your Envoy 
 
 #### `@after`
 
-After each task execution, all of the `@after` hooks registered in your Envoy script will execute. The `@after` hooks receive the name of the task that was executed:
+在執行各個任務之後，會執行所有在 Envoy 指令稿內註冊的 `@after` hook 。`@after` Hook 會收到剛才執行完畢的任務名稱：
 
 ```php
 @after
@@ -235,7 +235,7 @@ After each task execution, all of the `@after` hooks registered in your Envoy sc
 
 #### `@error`
 
-After every task failure (exits with a status code greater than `0`), all of the `@error` hooks registered in your Envoy script will execute. The `@error` hooks receive the name of the task that was executed:
+當有任何任務失敗 (終止代碼大於 `0` 時)，會執行所有在 Envoy 指令稿內註冊的 `@error` hook 。`@error` Hook 會收到剛才執行完畢的任務名稱：
 
 ```php
 @error
@@ -249,7 +249,7 @@ After every task failure (exits with a status code greater than `0`), all of the
 
 #### `@success`
 
-If all tasks have executed without errors, all of the `@success` hooks registered in your Envoy script will execute:
+若所有任務都完成執行且沒有產生錯誤，則會執行所有 Envoy 指令稿內註冊的 `@success` Hook：
 
 ```bash
 @success
@@ -261,29 +261,29 @@ If all tasks have executed without errors, all of the `@success` hooks registere
 
 #### `@finished`
 
-After all tasks have been executed (regardless of exit status), all of the `@finished` hooks will be executed. The `@finished` hooks receive the status code of the completed task, which may be `null` or an `integer` greater than or equal to `0`:
+當所有任務都執行完畢後 (無論終止狀態碼為何)，會執行所有 `@finished` Hook。`@finished` Hook 會收到已完成任務的終止狀態碼，該狀態碼可能是 `null`，或是大於或等於 `0` 的 `integer`：
 
 ```bash
 @finished
     if ($exitCode > 0) {
-        // There were errors in one of the tasks...
+        // 其中一個任務有錯誤...
     }
 @endfinished
 ```
 
 <a name="running-tasks"></a>
 
-## Running Tasks
+## 執行任務
 
-To run a task or story that is defined in your application's `Envoy.blade.php` file, execute Envoy's `run` command, passing the name of the task or story you would like to execute. Envoy will execute the task and display the output from your remote servers as the task is running:
+若要執行專案中 `Envoy.blade.php` 檔案所定義的任務或 Story，可以執行 Envoy 的 `run` 指令，並傳入要執行的任務或 Story 名稱。Envoy 會執行該任務，並在執行任務時顯示遠端伺服器上的輸出：
 
     php vendor/bin/envoy run deploy
 
 <a name="confirming-task-execution"></a>
 
-### Confirming Task Execution
+### 確認任務的執行
 
-If you would like to be prompted for confirmation before running a given task on your servers, you should add the `confirm` directive to your task declaration. This option is particularly useful for destructive operations:
+若想在任務於遠端伺服器上執行前提示確認，請在任務定義中加上 `confirm` 指示詞。對於一些破壞性的操作，就特別適合這個選項：
 
 ```bash
 @task('deploy', ['on' => 'web', 'confirm' => true])
@@ -295,21 +295,21 @@ If you would like to be prompted for confirmation before running a given task on
 
 <a name="notifications"></a>
 
-## Notifications
+## 通知
 
 <a name="slack"></a>
 
 ### Slack
 
-Envoy supports sending notifications to [Slack](https://slack.com) after each task is executed. The `@slack` directive accepts a Slack hook URL and a channel / user name. You may retrieve your webhook URL by creating an "Incoming WebHooks" integration in your Slack control panel.
+Envoy 支援在當任務執行完畢後將通知傳送給 [Slack](https://slack.com)。`@slack` 指示詞接受一組 Slack Hook URL 與一組 Channel (頻道) / User name (使用者名稱)。可以在 Slack 的控制面板中建立「Incoming WebHooks (連入 Webhook)」來取得一組 Webhook URL。
 
-You should pass the entire webhook URL as the first argument given to the `@slack` directive. The second argument given to the `@slack` directive should be a channel name (`#channel`) or a user name (`@user`):
+請將完整的 Webhook URL 作為第一個引數傳給 `@slack` 指示詞。傳給 `@slack` 指示詞的第二個引數應為頻道名稱 (`#channel`) 或使用者名稱 (`@user`)：
 
     @finished
         @slack('webhook-url', '#bots')
     @endfinished
 
-By default, Envoy notifications will send a message to the notification channel describing the task that was executed. However, you may overwrite this message with your own custom message by passing a third argument to the `@slack` directive:
+預設情況下，Envoy 會傳送描述已執行任務的訊息給通知頻道。不過，只要傳入第三個引數給 `@slack` 指示詞，就可以使用自定訊息來複寫這個訊息：
 
     @finished
         @slack('webhook-url', '#bots', 'Hello, Slack.')
@@ -319,7 +319,7 @@ By default, Envoy notifications will send a message to the notification channel 
 
 ### Discord
 
-Envoy also supports sending notifications to [Discord](https://discord.com) after each task is executed. The `@discord` directive accepts a Discord hook URL and a message. You may retrieve your webhook URL by creating a "Webhook" in your Server Settings and choosing which channel the webhook should post to. You should pass the entire Webhook URL into the `@discord` directive:
+Envoy 也支援在各個任務執行完畢後傳送通知給 [Discord](https://discord.com)。`@discord` 指示詞接受一個 Discord Hook URL 與訊息。若要取得 Webhook URL，請在 Dsicrod 的伺服器設定建立一個「Webhook」，並指定該 Webhook 要傳送訊息到哪個頻道。請將完整的 Webhook URL 傳入 `@discord` 指示詞內：
 
     @finished
         @discord('discord-webhook-url')
@@ -329,7 +329,7 @@ Envoy also supports sending notifications to [Discord](https://discord.com) afte
 
 ### Telegram
 
-Envoy also supports sending notifications to [Telegram](https://telegram.org) after each task is executed. The `@telegram` directive accepts a Telegram Bot ID and a Chat ID. You may retrieve your Bot ID by creating a new bot using [BotFather](https://t.me/botfather). You can retrieve a valid Chat ID using [@username_to_id_bot](https://t.me/username_to_id_bot). You should pass the entire Bot ID and Chat ID into the `@telegram` directive:
+Envoy 也支援在各個任務執行完畢後傳送通知到 [Telegram](https://telegram.org)。`@telegram` 指示詞接受一個 Telegram Bot ID 與一個 Chat ID。若要取得 Bot ID，可以使用 [BotFather](https://t.me/botfather) 來建立一個新的 Bot。使用 [@username_to_id_bot](https://t.me/username_to_id_bot) 即可取得有效的 Chat ID。請傳入完整的 Bot ID 與 Chat ID 給 `@telegram` 指示詞：
 
     @finished
         @telegram('bot-id','chat-id')
@@ -339,7 +339,7 @@ Envoy also supports sending notifications to [Telegram](https://telegram.org) af
 
 ### Microsoft Teams
 
-Envoy also supports sending notifications to [Microsoft Teams](https://www.microsoft.com/en-us/microsoft-teams) after each task is executed. The `@microsoftTeams` directive accepts a Teams Webhook (required), a message, theme color (success, info, warning, error), and an array of options. You may retrieve your Teams Webook by creating a new [incoming webhook](https://docs.microsoft.com/en-us/microsoftteams/platform/webhooks-and-connectors/how-to/add-incoming-webhook). The Teams API has many other attributes to customize your message box like title, summary, and sections. You can find more information on the [Microsoft Teams documentation](https://docs.microsoft.com/en-us/microsoftteams/platform/webhooks-and-connectors/how-to/connectors-using?tabs=cURL#example-of-connector-message). You should pass the entire Webhook URL into the `@microsoftTeams` directive:
+Envoy 也支援在任務執行完成後傳送通知給 [Microsoft Teams](https://www.microsoft.com/en-us/microsoft-teams)。`@microsoftTeams` 指示詞的引數為一個 Teams Webhook (必填)、一個訊息、主題色 (success、info、warning、error)、與一組選項陣列。若要取得 Teams Webhook，請建立一個新的 [連入 Webhook](https://docs.microsoft.com/zh-tw/microsoftteams/platform/webhooks-and-connectors/how-to/add-incoming-webhook)。Teams 的 API 還有其他選項，可用在自定 Message Box，如標題、摘要、段落等。更多資訊請參考 [Microsoft Teams 的說明文件](https://docs.microsoft.com/zh-tw/microsoftteams/platform/webhooks-and-connectors/how-to/connectors-using?tabs=cURL#example-of-connector-message)。請傳入完整的 Webhook URL 給 `@microsoftTeams` 指示詞：
 
     @finished
         @microsoftTeams('webhook-url')

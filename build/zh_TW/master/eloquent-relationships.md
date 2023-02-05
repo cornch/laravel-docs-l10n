@@ -5,7 +5,7 @@ contributors:
     name: cornch
 crowdinUrl: https://crowdin.com/translate/laravel-docs/55/en-zhtw
 progress: 100
-updatedAt: '2023-01-25T12:14:00Z'
+updatedAt: '2023-02-05T10:34:00Z'
 ---
 
 # Eloquent：關聯
@@ -512,15 +512,15 @@ public function currentPricing(): HasOne
 
     class Project extends Model
     {
-        public function deployments(): HasManyThrough
+        public function deployments(): HasOneThrough
         {
             return $this->hasManyThrough(
                 Deployment::class,
                 Environment::class,
-                'project_id', // environments 表上的外部索引鍵...
-                'environment_id', // deployments 表上的外部索引鍵...
-                'id', // projects 表上的內部索引鍵...
-                'id' // environments 表上的內部索引鍵...
+                'project_id', // Foreign key on the environments table...
+                'environment_id', // Foreign key on the deployments table...
+                'id', // Local key on the projects table...
+                'id' // Local key on the environments table...
             );
         }
     }

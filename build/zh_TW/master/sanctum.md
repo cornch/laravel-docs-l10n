@@ -5,7 +5,7 @@ contributors:
     name: cornch
 crowdinUrl: https://crowdin.com/translate/laravel-docs/145/en-zhtw
 progress: 1
-updatedAt: '2023-01-26T11:09:00Z'
+updatedAt: '2023-02-05T10:35:00Z'
 ---
 
 # Laravel Sanctum

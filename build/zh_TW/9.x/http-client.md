@@ -5,7 +5,7 @@ contributors:
     name: cornch
 crowdinUrl: https://crowdin.com/translate/laravel-docs/85/en-zhtw
 progress: 100
-updatedAt: '2023-01-25T12:14:00Z'
+updatedAt: '2023-02-05T10:35:00Z'
 ---
 
 # HTTP 用戶端
@@ -257,19 +257,19 @@ composer require guzzlehttp/guzzle
 
     $response = Http::post(/* ... */);
     
-    // 當發生 Client 端或 Server 端錯誤時擲回 Exception...
+    // Throw an exception if a client or server error occurred...
     $response->throw();
     
-    // 當發生錯誤且給定條件為 true 時擲回 Exception...
+    // Throw an exception if an error occurred and the given condition is true...
     $response->throwIf($condition);
     
-    // 當發生錯誤且給定閉包解析為 true 時擲回 Exception...
+    // Throw an exception if an error occurred and the given closure resolves to true...
     $response->throwIf(fn ($response) => true);
     
-    // 當發生錯誤且給定條件為 false 時擲回 Exception...
+    // Throw an exception if an error occurred and the given condition is false...
     $response->throwUnless($condition);
     
-    // 當發生錯誤且給定閉包解析為 false 時擲回 Exception...
+    // Throw an exception if an error occurred and the given closure resolves to false...
     $response->throwUnless(fn ($response) => false);
     
     return $response['user']['id'];

@@ -5,7 +5,7 @@ contributors:
     name: cornch
 crowdinUrl: https://crowdin.com/translate/laravel-docs/180/en-zhtw
 progress: 100
-updatedAt: '2023-01-25T18:14:00Z'
+updatedAt: '2023-02-05T10:37:00Z'
 ---
 
 # 打包素材 (Vite)

@@ -5,7 +5,7 @@ contributors:
     name: cornch
 crowdinUrl: https://crowdin.com/translate/laravel-docs/143/en-zhtw
 progress: 100
-updatedAt: '2023-01-26T10:53:00Z'
+updatedAt: '2023-02-05T10:35:00Z'
 ---
 
 # Laravel Sail

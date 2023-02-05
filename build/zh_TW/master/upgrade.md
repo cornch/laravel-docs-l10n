@@ -5,7 +5,7 @@ contributors:
     name: cornch
 crowdinUrl: https://crowdin.com/translate/laravel-docs/165/en-zhtw
 progress: 100
-updatedAt: '2023-01-26T07:37:00Z'
+updatedAt: '2023-02-05T10:35:00Z'
 ---
 
 # 升級指南
@@ -30,7 +30,7 @@ updatedAt: '2023-01-26T07:37:00Z'
 <div class="content-list" markdown="1">
 
 - [Model 的「Dates」屬性](#model-dates-property)
-- [Service Mock](#serving-mocking)
+- [Service Mocking](#serving-mocking)
 
 </div>
 

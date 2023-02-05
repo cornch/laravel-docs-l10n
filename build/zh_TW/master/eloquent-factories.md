@@ -5,7 +5,7 @@ contributors:
     name: cornch
 crowdinUrl: https://crowdin.com/translate/laravel-docs/181/en-zhtw
 progress: 100
-updatedAt: '2023-01-26T06:01:00Z'
+updatedAt: '2023-02-05T10:37:00Z'
 ---
 
 # Eloquent：Factory

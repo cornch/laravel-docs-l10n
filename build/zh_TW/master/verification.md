@@ -128,7 +128,7 @@ php artisan migrate
 
 ### 受保護的 Route
 
-可以使用 [Route Middleware](/docs/{{version}}/middleware) 來只讓已通過 E-Mail 驗證的使用者存取給定的 Route。Laravel 中隨附了一個 `verified` Middleware，該 Middleware 參照了 `Illuminate\Auth\Middleware\EnsureEmailIsVerified` 類別。由於該 Middleware 已預先註冊在專案的 HTTP Kernel 中了，因此我們只需要在 Route 定義中附加該 Middleware 即可。一般來說，該 Middelware 已與 `auth` Middleware 配對：
+可以使用 [Route Middleware](/docs/{{version}}/middleware) 來只讓已通過 E-Mail 驗證的使用者存取給定的 Route。Laravel 中隨附了一個 `verified` Middleware 別名，即 `Illuminate\Auth\Middleware\EnsureEmailIsVerified` 類別的別名。由於該 Middleware 已預先註冊在專案的 HTTP Kernel 中了，因此我們只需要在 Route 定義中附加該 Middleware 即可。一般來說，該 Middelware 已與 `auth` Middleware 配對：
 
     Route::get('/profile', function () {
         // 只有已驗證使用者可存取此 Route...

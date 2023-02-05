@@ -195,13 +195,13 @@ cd example-app
 
 ### 選擇 Sail 服務
 
-通過 Sail 建立新的 Laravel 專案時，可以使用 `with` 查詢字串變數來選擇新專案的 `docker-compose.yml` 檔案內要設定哪些服務。可用的服務包含 `mysql`, `pgsql`, `mariadb`, `redis`, `memcached`, `meilisearch`, `minio`, `selenium`, 與 `mailhog`：
+通過 Sail 建立新的 Laravel 專案時，可以使用 `with` 查詢字串變數來選擇新專案的 `docker-compose.yml` 檔案內要設定哪些服務。可用的服務包含 `mysql`, `pgsql`, `mariadb`, `redis`, `memcached`, `meilisearch`, `minio`, `selenium`, 與 `mailpit`：
 
 ```shell
 curl -s "https://laravel.build/example-app?with=mysql,redis" | bash
 ```
 
-若未指定要設定哪些服務，則預設將設定 `mysql`, `redis`, `meilisearch`, `mailhog`, 與 `selenium`。
+若未指定要設定哪些服務，則預設將設定 `mysql`, `redis`, `meilisearch`, `mailpit`, 與 `selenium`。
 
 只要在網址後加上 `devcontainer` 參數，就可以讓 Sail 安裝一個預設的 [Devcontainer](/docs/{{version}}/sail#using-devcontainers)：
 

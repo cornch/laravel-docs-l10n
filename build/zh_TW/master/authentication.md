@@ -451,11 +451,11 @@ RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
     
     }
 
-接著，請[註冊路由 Middleware](/docs/{{version}}/middleware#registering-middleware)，並將其附加到路由上：
+接著，將這個 Middleware 附加到 Route 上：
 
     Route::get('/api/user', function () {
         // 只有已登入使用者可以存取這個 Route...
-    })->middleware('auth.basic.once');
+    })->middleware(AuthenticateOnceWithBasicAuth::class);
 
 <a name="logging-out"></a>
 
@@ -489,7 +489,7 @@ RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
 
 Laravel 也提供了另一個機制，可以用來在不影響目前裝置上 Session 的情況下將使用者在其他裝置的 Session 無效化並登出使用者。該功能通常適用於使用者更改密碼、或是想將其他 Session 無效化但想讓目前裝置保持認證的情況。
 
-在開始之前，請先確保要收到 Session 身份驗證的 Route 都有包含 `Illuminate\Session\Middleware\AuthenticateSession` Middleware。一般來說，應在 Route 群組定義內放入這個 Middleware，好讓該 Middleware 被套用到專案中大多數的 Route。預設情況下，`AuthenticateSession` Middleware 可使用專案 HTTP Kernel 中所定義的 `auth.session` 這個 Route Middleware 索引鍵來附加到 Route 上：
+在開始之前，請先確保要收到 Session 身份驗證的 Route 都有包含 `Illuminate\Session\Middleware\AuthenticateSession` Middleware。一般來說，應在 Route 群組定義內放入這個 Middleware，好讓該 Middleware 被套用到專案中大多數的 Route。預設情況下，`AuthenticateSession` Middleware 可使用專案 HTTP Kernel 中所定義的 `auth.session` 這個 Route Middleware 來附加到 Route 上：
 
     Route::middleware(['auth', 'auth.session'])->group(function () {
         Route::get('/', function () {

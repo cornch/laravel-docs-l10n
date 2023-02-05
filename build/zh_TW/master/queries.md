@@ -722,7 +722,17 @@ select * from users where name = 'John' and (votes > 100 or title = 'Admin')
                })
                ->get();
 
-上述查詢會產生下列 SQL：
+或者，除了閉包外，也可以提供一個 Query 物件給 `whereExists` 方法：
+
+    $orders = DB::table('orders')
+                    ->select(DB::raw(1))
+                    ->whereColumn('orders.user_id', 'users.id');
+    
+    $users = DB::table('users')
+                        ->whereExists($orders)
+                        ->get();
+
+上面的兩個範例都會產生下列 SQL：
 
 ```sql
 select * from users

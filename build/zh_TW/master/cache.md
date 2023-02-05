@@ -23,6 +23,7 @@ updatedAt: '2023-02-05T10:34:00Z'
    - [保存有標籤的 Cache 項目](#storing-tagged-cache-items)
    - [存取有標籤的 Cache 項目](#accessing-tagged-cache-items)
    - [移除有標籤的 Cache 項目](#removing-tagged-cache-items)
+   - [修建過時的快取 Tag](#pruning-stale-cache-tags)
 - [Atomic Lock](#atomic-locks)
    - [Driver 前置需求](#lock-driver-prerequisites)
    - [管理 Lock](#managing-locks)
@@ -325,6 +326,16 @@ updatedAt: '2023-02-05T10:34:00Z'
 與之相比，下列這個陳述式只會移除被標記為 `authors` 的快取值，因此 `Anne` 會被移除，而 `John` 則不會：
 
     Cache::tags('authors')->flush();
+
+<a name="pruning-stale-cache-tags"></a>
+
+### 修建過時的快取 Tag
+
+> **Warning** 只有當專案使用 Redis 作為快取 Driver 時，才需要修建過時的快取 Tag。
+
+在使用 Redis 快取 Driver 時，若要正確地修建過時的快取 Tag，請在專案的 `App\Console\Kernel` 類別內[排程](/docs/{{version}}/scheduling)呼叫 Laravel 的 `cache:prune-stale-tags` Artisan 指令：
+
+    $schedule->command('cache:prune-stale-tags')->hourly();
 
 <a name="atomic-locks"></a>
 

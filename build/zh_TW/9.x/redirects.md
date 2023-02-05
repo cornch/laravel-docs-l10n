@@ -47,6 +47,10 @@ updatedAt: '2023-02-05T10:35:00Z'
     
     return redirect()->route('profile', ['id' => 1]);
 
+Laravel 也提供了一個方便的全域 `to_route` 函式：
+
+    return to_route('profile', ['id' => 1]);
+
 <a name="populating-parameters-via-eloquent-models"></a>
 
 #### 使用 Eloquent Model 來填充參數

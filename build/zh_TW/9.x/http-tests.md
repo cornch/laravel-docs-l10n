@@ -25,6 +25,7 @@ updatedAt: '2023-02-05T10:35:00Z'
 - [可用的 Assertion](#available-assertions)
    - [Response 上的 Assertion](#response-assertions)
    - [身份驗證的 Assertion](#authentication-assertions)
+   - [Validation 的 Assertion](#validation-assertions)
 
 <a name="introduction"></a>
 
@@ -655,7 +656,7 @@ Laravel 的 `Illuminate\Testing\TestResponse` 類別提供了各種自訂 Assert
 
 <div class="collection-method-list" markdown="1">
 
-[assertCookie](#assert-cookie) [assertCookieExpired](#assert-cookie-expired) [assertCookieNotExpired](#assert-cookie-not-expired) [assertCookieMissing](#assert-cookie-missing) [assertCreated](#assert-created) [assertDontSee](#assert-dont-see) [assertDontSeeText](#assert-dont-see-text) [assertDownload](#assert-download) [assertExactJson](#assert-exact-json) [assertForbidden](#assert-forbidden) [assertHeader](#assert-header) [assertHeaderMissing](#assert-header-missing) [assertJson](#assert-json) [assertJsonCount](#assert-json-count) [assertJsonFragment](#assert-json-fragment) [assertJsonMissing](#assert-json-missing) [assertJsonMissingExact](#assert-json-missing-exact) [assertJsonMissingValidationErrors](#assert-json-missing-validation-errors) [assertJsonPath](#assert-json-path) [assertJsonMissingPath](#assert-json-missing-path) [assertJsonStructure](#assert-json-structure) [assertJsonValidationErrors](#assert-json-validation-errors) [assertJsonValidationErrorFor](#assert-json-validation-error-for) [assertLocation](#assert-location) [assertContent](#assert-content) [assertNoContent](#assert-no-content) [assertStreamedContent](#assert-streamed-content) [assertNotFound](#assert-not-found) [assertOk](#assert-ok) [assertPlainCookie](#assert-plain-cookie) [assertRedirect](#assert-redirect) [assertRedirectContains](#assert-redirect-contains) [assertRedirectToRoute](#assert-redirect-to-route) [assertRedirectToSignedRoute](#assert-redirect-to-signed-route) [assertSee](#assert-see) [assertSeeInOrder](#assert-see-in-order) [assertSeeText](#assert-see-text) [assertSeeTextInOrder](#assert-see-text-in-order) [assertSessionHas](#assert-session-has) [assertSessionHasInput](#assert-session-has-input) [assertSessionHasAll](#assert-session-has-all) [assertSessionHasErrors](#assert-session-has-errors) [assertSessionHasErrorsIn](#assert-session-has-errors-in) [assertSessionHasNoErrors](#assert-session-has-no-errors) [assertSessionDoesntHaveErrors](#assert-session-doesnt-have-errors) [assertSessionMissing](#assert-session-missing) [assertStatus](#assert-status) [assertSuccessful](#assert-successful) [assertUnauthorized](#assert-unauthorized) [assertUnprocessable](#assert-unprocessable) [assertValid](#assert-valid) [assertInvalid](#assert-invalid) [assertViewHas](#assert-view-has) [assertViewHasAll](#assert-view-has-all) [assertViewIs](#assert-view-is) [assertViewMissing](#assert-view-missing)
+[assertCookie](#assert-cookie) [assertCookieExpired](#assert-cookie-expired) [assertCookieNotExpired](#assert-cookie-not-expired) [assertCookieMissing](#assert-cookie-missing) [assertCreated](#assert-created) [assertDontSee](#assert-dont-see) [assertDontSeeText](#assert-dont-see-text) [assertDownload](#assert-download) [assertExactJson](#assert-exact-json) [assertForbidden](#assert-forbidden) [assertHeader](#assert-header) [assertHeaderMissing](#assert-header-missing) [assertJson](#assert-json) [assertJsonCount](#assert-json-count) [assertJsonFragment](#assert-json-fragment) [assertJsonIsArray](#assert-json-is-array) [assertJsonIsObject](#assert-json-is-object) [assertJsonMissing](#assert-json-missing) [assertJsonMissingExact](#assert-json-missing-exact) [assertJsonMissingValidationErrors](#assert-json-missing-validation-errors) [assertJsonPath](#assert-json-path) [assertJsonMissingPath](#assert-json-missing-path) [assertJsonStructure](#assert-json-structure) [assertJsonValidationErrors](#assert-json-validation-errors) [assertJsonValidationErrorFor](#assert-json-validation-error-for) [assertLocation](#assert-location) [assertContent](#assert-content) [assertNoContent](#assert-no-content) [assertStreamedContent](#assert-streamed-content) [assertNotFound](#assert-not-found) [assertOk](#assert-ok) [assertPlainCookie](#assert-plain-cookie) [assertRedirect](#assert-redirect) [assertRedirectContains](#assert-redirect-contains) [assertRedirectToRoute](#assert-redirect-to-route) [assertRedirectToSignedRoute](#assert-redirect-to-signed-route) [assertSee](#assert-see) [assertSeeInOrder](#assert-see-in-order) [assertSeeText](#assert-see-text) [assertSeeTextInOrder](#assert-see-text-in-order) [assertSessionHas](#assert-session-has) [assertSessionHasInput](#assert-session-has-input) [assertSessionHasAll](#assert-session-has-all) [assertSessionHasErrors](#assert-session-has-errors) [assertSessionHasErrorsIn](#assert-session-has-errors-in) [assertSessionHasNoErrors](#assert-session-has-no-errors) [assertSessionDoesntHaveErrors](#assert-session-doesnt-have-errors) [assertSessionMissing](#assert-session-missing) [assertStatus](#assert-status) [assertSuccessful](#assert-successful) [assertUnauthorized](#assert-unauthorized) [assertUnprocessable](#assert-unprocessable) [assertValid](#assert-valid) [assertInvalid](#assert-invalid) [assertViewHas](#assert-view-has) [assertViewHasAll](#assert-view-has-all) [assertViewIs](#assert-view-is) [assertViewMissing](#assert-view-missing)
 
 </div>
 
@@ -794,6 +795,22 @@ Laravel 的 `Illuminate\Testing\TestResponse` 類別提供了各種自訂 Assert
     });
     
     $response->assertJsonFragment(['name' => 'Taylor Otwell']);
+
+<a name="assert-json-is-array"></a>
+
+#### assertJsonIsArray
+
+判斷 Response JSON 為一陣列：
+
+    $response->assertJsonIsArray();
+
+<a name="assert-json-is-object"></a>
+
+#### assertJsonIsObject
+
+判斷 Response JSON 為一物件：
+
+    $response->assertJsonIsObject();
 
 <a name="assert-json-missing"></a>
 
@@ -1303,3 +1320,36 @@ Laravel 也提供了各種與身份驗證相關的 Assertion，讓我們能在�
 判斷是否已登入特定的使用者：
 
     $this->assertAuthenticatedAs($user, $guard = null);
+
+<a name="validation-assertions"></a>
+
+## Validation 的 Assertion
+
+Laravel 提供的 Assertion 中，主要有兩種是用來針對 Validation 判斷的，可用來確保 Request 中的資料是有效或無效的。
+
+<a name="validation-assert-valid"></a>
+
+#### assertValid
+
+判斷 Response 中，不包含給定索引鍵的驗證錯誤。該方法可用來判斷以 JSON 結構回傳驗證錯誤，或是將驗證錯誤快閃存入 Session 的 Response：
+
+    // 判斷無驗證錯誤訊息...
+    $response->assertValid();
+    
+    // 判斷給定的索引鍵中沒有給定的驗證錯誤訊息...
+    $response->assertValid(['name', 'email']);
+
+<a name="validation-assert-invalid"></a>
+
+#### assertInvalid
+
+判斷 Response 中，給定的索引鍵是否有驗證錯誤訊息。該方法可用於檢查以 JSON 格式回傳錯誤訊息，或是將驗證錯誤訊息快閃存入 Session 的 Response：
+
+    $response->assertInvalid(['name', 'email']);
+
+也可以判斷給定的索引鍵是否有特定的錯誤訊息。在判斷是否有特定的錯誤訊息時，可提供完整的訊息，或是其中一段的錯誤訊息：
+
+    $response->assertInvalid([
+        'name' => 'The name field is required.',
+        'email' => 'valid email address',
+    ]);

@@ -652,6 +652,12 @@ Laravel 也提供了另一個機制，可以用來在不影響目前裝置上 Se
         ],
     ],
 
+最後，在 Route 中指定驗證 Middleware 時可參照這個 Guard：
+
+    Route::middleware('auth:api')->group(function () {
+        // ...
+    }
+
 <a name="adding-custom-user-providers"></a>
 
 ## 新增自訂 User Provider

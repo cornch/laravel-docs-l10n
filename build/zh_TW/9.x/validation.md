@@ -859,7 +859,7 @@ The credit card number field is required when payment type is credit card.
 
 <div class="collection-method-list" markdown="1">
 
-[Accepted](#rule-accepted) [Accepted If](#rule-accepted-if) [Active URL](#rule-active-url) [After (Date)](#rule-after) [After Or Equal (Date)](#rule-after-or-equal) [Alpha](#rule-alpha) [Alpha Dash](#rule-alpha-dash) [Alpha Numeric](#rule-alpha-num) [Array](#rule-array) [Ascii](#rule-ascii) [Bail](#rule-bail) [Before (Date)](#rule-before) [Before Or Equal (Date)](#rule-before-or-equal) [Between](#rule-between) [Boolean](#rule-boolean) [Confirmed](#rule-confirmed) [Current Password](#rule-current-password) [Date](#rule-date) [Date Equals](#rule-date-equals) [Date Format](#rule-date-format) [Decimal](#rule-decimal) [Declined](#rule-declined) [Declined If](#rule-declined-if) [Different](#rule-different) [Digits](#rule-digits) [Digits Between](#rule-digits-between) [Dimensions (Image Files)](#rule-dimensions) [Distinct](#rule-distinct) [Doesnt Start With](#rule-doesnt-start-with) [Doesnt End With](#rule-doesnt-end-with) [Email](#rule-email) [Ends With](#rule-ends-with) [Enum](#rule-enum) [Exclude](#rule-exclude) [Exclude If](#rule-exclude-if) [Exclude Unless](#rule-exclude-unless) [Exclude With](#rule-exclude-with) [Exclude Without](#rule-exclude-without) [Exists (Database)](#rule-exists) [File](#rule-file) [Filled](#rule-filled) [Greater Than](#rule-gt) [Greater Than Or Equal](#rule-gte) [Image (File)](#rule-image) [In](#rule-in) [In Array](#rule-in-array) [Integer](#rule-integer) [IP Address](#rule-ip) [JSON](#rule-json) [Less Than](#rule-lt) [Less Than Or Equal](#rule-lte) [Lowercase](#rule-lowercase) [MAC Address](#rule-mac) [Max](#rule-max) [Max Digits](#rule-max-digits) [MIME Types](#rule-mimetypes) [MIME Type By File Extension](#rule-mimes) [Min](#rule-min) [Min Digits](#rule-min-digits) [Multiple Of](#rule-multiple-of) [Not In](#rule-not-in) [Not Regex](#rule-not-regex) [Nullable](#rule-nullable) [Numeric](#rule-numeric) [Password](#rule-password) [Present](#rule-present) [Prohibited](#rule-prohibited) [Prohibited If](#rule-prohibited-if) [Prohibited Unless](#rule-prohibited-unless) [Prohibits](#rule-prohibits) [Regular Expression](#rule-regex) [Required](#rule-required) [Required If](#rule-required-if) [Required Unless](#rule-required-unless) [Required With](#rule-required-with) [Required With All](#rule-required-with-all) [Required Without](#rule-required-without) [Required Without All](#rule-required-without-all) [Required Array Keys](#rule-required-array-keys) [Same](#rule-same) [Size](#rule-size) [Sometimes](#validating-when-present) [Starts With](#rule-starts-with) [String](#rule-string) [Timezone](#rule-timezone) [Unique (Database)](#rule-unique) [Uppercase](#rule-uppercase) [URL](#rule-url) [ULID](#rule-ulid) [UUID](#rule-uuid)
+[Accepted](#rule-accepted) [Accepted If](#rule-accepted-if) [Active URL](#rule-active-url) [After (Date)](#rule-after) [After Or Equal (Date)](#rule-after-or-equal) [Alpha](#rule-alpha) [Alpha Dash](#rule-alpha-dash) [Alpha Numeric](#rule-alpha-num) [Array](#rule-array) [Ascii](#rule-ascii) [Bail](#rule-bail) [Before (Date)](#rule-before) [Before Or Equal (Date)](#rule-before-or-equal) [Between](#rule-between) [Boolean](#rule-boolean) [Confirmed](#rule-confirmed) [Current Password](#rule-current-password) [Date](#rule-date) [Date Equals](#rule-date-equals) [Date Format](#rule-date-format) [Decimal](#rule-decimal) [Declined](#rule-declined) [Declined If](#rule-declined-if) [Different](#rule-different) [Digits](#rule-digits) [Digits Between](#rule-digits-between) [Dimensions (Image Files)](#rule-dimensions) [Distinct](#rule-distinct) [Doesnt Start With](#rule-doesnt-start-with) [Doesnt End With](#rule-doesnt-end-with) [Email](#rule-email) [Ends With](#rule-ends-with) [Enum](#rule-enum) [Exclude](#rule-exclude) [Exclude If](#rule-exclude-if) [Exclude Unless](#rule-exclude-unless) [Exclude With](#rule-exclude-with) [Exclude Without](#rule-exclude-without) [Exists (Database)](#rule-exists) [File](#rule-file) [Filled](#rule-filled) [Greater Than](#rule-gt) [Greater Than Or Equal](#rule-gte) [Image (File)](#rule-image) [In](#rule-in) [In Array](#rule-in-array) [Integer](#rule-integer) [IP Address](#rule-ip) [JSON](#rule-json) [Less Than](#rule-lt) [Less Than Or Equal](#rule-lte) [Lowercase](#rule-lowercase) [MAC Address](#rule-mac) [Max](#rule-max) [Max Digits](#rule-max-digits) [MIME Types](#rule-mimetypes) [MIME Type By File Extension](#rule-mimes) [Min](#rule-min) [Min Digits](#rule-min-digits) [Missing](#rule-missing) [Missing If](#rule-missing-if) [Missing Unless](#rule-missing-unless) [Missing With](#rule-missing-with) [Missing With All](#rule-missing-with-all) [Multiple Of](#rule-multiple-of) [Not In](#rule-not-in) [Not Regex](#rule-not-regex) [Nullable](#rule-nullable) [Numeric](#rule-numeric) [Password](#rule-password) [Present](#rule-present) [Prohibited](#rule-prohibited) [Prohibited If](#rule-prohibited-if) [Prohibited Unless](#rule-prohibited-unless) [Prohibits](#rule-prohibits) [Regular Expression](#rule-regex) [Required](#rule-required) [Required If](#rule-required-if) [Required Unless](#rule-required-unless) [Required With](#rule-required-with) [Required With All](#rule-required-with-all) [Required Without](#rule-required-without) [Required Without All](#rule-required-without-all) [Required Array Keys](#rule-required-array-keys) [Same](#rule-same) [Size](#rule-size) [Sometimes](#validating-when-present) [Starts With](#rule-starts-with) [String](#rule-string) [Timezone](#rule-timezone) [Unique (Database)](#rule-unique) [Uppercase](#rule-uppercase) [URL](#rule-url) [ULID](#rule-ulid) [UUID](#rule-uuid)
 
 </div>
 
@@ -903,19 +903,37 @@ The credit card number field is required when payment type is credit card.
 
 #### alpha
 
-該驗證欄位只能由字母組成。
+該驗證欄位必須只由 [`\p{L}`](https://util.unicode.org/UnicodeJsps/list-unicodeset.jsp?a=%5B%3AL%3A%5D&g=&i=) 與 [`\p{M}`](https://util.unicode.org/UnicodeJsps/list-unicodeset.jsp?a=%5B%3AM%3A%5D&g=&i=) 內的 Unicode 的字母字元組成。
+
+若要進一步限制該驗證規則為只允許 ASCII 範圍 (`a-z` 與 `A-Z`)，可提供 `ascii` 選項給該驗證規則：
+
+```php
+'username' => 'alpha:ascii',
+```
 
 <a name="rule-alpha-dash"></a>
 
 #### alpha_dash
 
-該驗證欄位只能由字母或數字字元、以及減號 (-) 或底線組成。
+該驗證欄位必須完全由 `\p{L}`](https://util.unicode.org/UnicodeJsps/list-unicodeset.jsp?a=%5B%3AL%3A%5D&g=&i=)、[`\p{M}`](https://util.unicode.org/UnicodeJsps/list-unicodeset.jsp?a=%5B%3AM%3A%5D&g=&i=)、[`\p{N}`](https://util.unicode.org/UnicodeJsps/list-unicodeset.jsp?a=%5B%3AN%3A%5D&g=&i=) 內所包含的 Unicode 字母數字字元、以及 ASCII 的減號 (`-`) 與 ASCII 的底線 (`_`) 所組成。
+
+若要進一步限制該驗證規則為只允許 ASCII 範圍 (`a-z` 與 `A-Z`)，可提供 `ascii` 選項給該驗證規則：
+
+```php
+'username' => 'alpha_dash:ascii',
+```
 
 <a name="rule-alpha-num"></a>
 
 #### alpha_num
 
-該驗證欄位只能由字母或數字字元組成。
+該驗證欄位必須完全由 `\p{L}`](https://util.unicode.org/UnicodeJsps/list-unicodeset.jsp?a=%5B%3AL%3A%5D&g=&i=)、[`\p{M}`](https://util.unicode.org/UnicodeJsps/list-unicodeset.jsp?a=%5B%3AM%3A%5D&g=&i=) 與 [`\p{N}`](https://util.unicode.org/UnicodeJsps/list-unicodeset.jsp?a=%5B%3AN%3A%5D&g=&i=) 內所包含的 Unicode 字母數字字元所組成。
+
+若要進一步限制該驗證規則為只允許 ASCII 範圍 (`a-z` 與 `A-Z`)，可提供 `ascii` 選項給該驗證規則：
+
+```php
+'username' => 'alpha_num:ascii',
+```
 
 <a name="rule-array"></a>
 
@@ -1430,6 +1448,36 @@ Distinct 預設使用鬆散的 (Loose) 變數比較。若要使用嚴格 (Strict
 該驗證欄位必須為 *值* 的倍數。
 
 > **Warning** 必須安裝 [`bcmath` PHP 擴充程式](https://www.php.net/manual/en/book.bc.php)，才可使用 `multiple_of` 規則。
+
+<a name="rule-missing"></a>
+
+#### missing
+
+要驗證的欄位不可存在於輸入資料中。
+
+<a name="rule-missing-if"></a>
+
+#### missing_if:*另一欄位*,*值*,...
+
+若 *另一欄位* 欄位為給定的其中一個 *值* 時，該驗證欄位不可存在。
+
+<a name="rule-missing-unless"></a>
+
+#### missing_unless:*另一欄位*,*值*
+
+除非 *另一欄位* 欄位為給定的其中一個 *值* 時，否則該驗證欄位不可存在。
+
+<a name="rule-missing-with"></a>
+
+#### missing_with:*foo*,*bar*,...
+
+**只有在** 任一指定的其他欄位存在時，該驗證欄位不可存在。
+
+<a name="rule-missing-with-all"></a>
+
+#### missing_with_all:*foo*,*bar*,...
+
+**只有在** 所有指定的其他欄位都存在時，該驗證欄位不可存在。
 
 <a name="rule-not-in"></a>
 

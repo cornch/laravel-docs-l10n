@@ -5,7 +5,7 @@ contributors:
     name: cornch
 crowdinUrl: https://crowdin.com/translate/laravel-docs/85/en-zhtw
 progress: 100
-updatedAt: '2023-02-05T10:35:00Z'
+updatedAt: '2023-02-11T12:59:00Z'
 ---
 
 # HTTP 用戶端
@@ -61,6 +61,7 @@ composer require guzzlehttp/guzzle
     $response->successful() : bool;
     $response->redirect(): bool;
     $response->failed() : bool;
+    $response->notFound() : bool;
     $response->serverError() : bool;
     $response->clientError() : bool;
     $response->header($header) : string;
@@ -69,6 +70,21 @@ composer require guzzlehttp/guzzle
 `Illuminate\Http\Client\Response` 物件也實作了 PHP 的 `ArrayAccess` 實體，能讓我們直接在 Response 上存取 JSON Response 資料：
 
     return Http::get('http://example.com/users/1')['name'];
+
+<a name="uri-templates"></a>
+
+#### URI 樣板
+
+在 HTTP Client 中，也可使用 [URI 樣板規格 (URI Template Specification)](https://www.rfc-editor.org/rfc/rfc6570)來建立 Request URL。若要定義可由 URI 樣板展開的 URL 參數，請使用 `withUrlParameters` 方法：
+
+```php
+Http::withUrlParameters([
+    'endpoint' => 'https://laravel.com',
+    'page' => 'docs',
+    'version' => '9.x',
+    'topic' => 'validation',
+])->get('{+endpoint}/{page}/{version}/{topic}');
+```
 
 <a name="dumping-requests"></a>
 
@@ -279,6 +295,12 @@ composer require guzzlehttp/guzzle
     
     // 當發生錯誤且給定閉包解析為 false 時擲回 Exception...
     $response->throwUnless(fn (Response $response) => false);
+    
+    // 當 Response 會特定狀態碼時擲回 Exception...
+    $response->throwIfStatus(403);
+    
+    // 除非 Response 為特定狀態碼，否則擲回 Exception...
+    $response->throwUnlessStatus(200);
     
     return $response['user']['id'];
 

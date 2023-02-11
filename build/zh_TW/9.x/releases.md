@@ -5,7 +5,7 @@ contributors:
     name: cornch
 crowdinUrl: https://crowdin.com/translate/laravel-docs/135/en-zhtw
 progress: 100
-updatedAt: '2023-01-25T14:53:00Z'
+updatedAt: '2023-02-11T12:59:00Z'
 ---
 
 # 版本資訊
@@ -40,7 +40,7 @@ Laravel 及其第一方套件都遵守 [語義化版本](https://semver.org/lang
 | 7 | 7.2 - 8.0 | 2020 年 3 月 3 日 | 2020 年 10 月 6 日 | 2021 年 3 月 3 日 |
 | 8 | 7.3 - 8.1 | 2020 年 9 月 8 日 | 2022 年 7 月 26 日 | 2023 年 1 月 24 日 |
 | 9 | 8.0 - 8.2 | 2022 年 2 月 8 日 | 2023 年 8 月 8 日 | 2024 年 2 月 6 日 |
-| 10 | 8.1 - 8.2 | 2023 年 2 月 7 日 | 2024 年 8 月 6 日 | 2025 年 2 月 4 日 |
+| 10 | 8.1 - 8.2 | 2023 年第 1 季 | 2024 年 8 月 6 日 | 2025 年 2 月 4 日 |
 
 <div class="version-colors">
     <div class="end-of-life">

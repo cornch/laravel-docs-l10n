@@ -5,7 +5,7 @@ contributors:
     name: cornch
 crowdinUrl: https://crowdin.com/translate/laravel-docs/180/en-zhtw
 progress: 100
-updatedAt: '2023-02-05T10:37:00Z'
+updatedAt: '2023-02-11T13:03:00Z'
 ---
 
 # 打包素材 (Vite)
@@ -37,6 +37,7 @@ updatedAt: '2023-02-05T10:37:00Z'
    - [Subresource Integrity (SRI)](#subresource-integrity-sri)
    - [任意屬性](#arbitrary-attributes)
 - [進階客製化](#advanced-customization)
+   - [修正開發伺服器的 URL](#correcting-dev-server-urls)
 
 <a name="introduction"></a>
 
@@ -281,7 +282,13 @@ export default defineConfig({
 
 ### Vue
 
-若要讓 Vue 外掛與 Laravel 的 Vite 外掛一起使用，還需要在 `vite.config.js` 設定檔中加上一些其他的設定：
+若想使用 [Vue](https://vuejs.org/) 框架來建置前端，則也需要安裝 `@vitejs/plugin-vue` 外掛：
+
+```sh
+npm install --save-dev @vitejs/plugin-vue
+```
+
+接著，就可以在 `vite.config.js` 設定檔中加上該外掛。接著，要將 Vue 外掛與 Laravel 搭配使用還需要進行一些步驟：
 
 ```js
 import { defineConfig } from 'vite';
@@ -316,7 +323,30 @@ export default defineConfig({
 
 ### React
 
-在 Vite 中使用 React 時，需要確定任何包含 JSX 的檔案都使用 `.jsx` 或 `.tsx` 副檔名，並請記得，若有需要的話要[像剛才提到的一樣](#configuring-vite)更新 Entry Point。除了現有的 `@vite` 指示詞外，可能也許要再加上額外的 `@viteReactRefresh` Blade 指示詞。
+若想使用 [React](https://reactjs.org/) 框架來建置前端，則也需要安裝 `@vitejs/plugin-react` 外掛：
+
+```sh
+npm install --save-dev @vitejs/plugin-react
+```
+
+可以在 `vite.config.js` 設定檔中加上該外掛：
+
+```js
+import { defineConfig } from 'vite';
+import laravel from 'laravel-vite-plugin';
+import react from '@vitejs/plugin-react';
+
+export default defineConfig({
+    plugins: [
+        laravel(['resources/js/app.jsx']),
+        react(),
+    ],
+});
+```
+
+請確認包含 JSX 的檔案都使用 `.jsx` 或 `.tsx` 副檔名。若有需要，請記得更新 Entry Point，像[上文所提到的](#configuring-vite)。
+
+還需要在現有的 `@vite` Blade 指示詞旁一起使用 `@viteReactRefresh` 指示詞。
 
 ```blade
 @viteReactRefresh
@@ -490,7 +520,7 @@ export default defineConfig({
 
 ### 別名
 
-在 JavaScript 專案中，為常用的目錄[建立別名](#aliases)是很常見的。不過，我們也可以使用 `Illuminate\Support\Vite` 類別的 `macro` 方法來建立能在 Blade 中使用的別名。一般來說，「^[Macro](巨集)」應在某個 [Service Provider](/docs/{{version}}/providers) 內定義：
+在 JavaScript 專案中，為常用的目錄[建立別名](#aliases)是很常見的。不過，我們也可以使用 `Illuminate\Support\Facade\Vite` 類別的 `macro` 方法來建立能在 Blade 中使用的別名。一般來說，「^[Macro](巨集)」應在某個 [Service Provider](/docs/{{version}}/providers) 內定義：
 
     /**
      * Bootstrap any application services.
@@ -682,7 +712,7 @@ Vite::useCspNonce($nonce);
 若 Vite Manifest 中有包含資源的 ^[`integrity`](完整性) 雜湊，則 Laravel 會自動在所有 Vite 產生的 script 與 style 標籤上加上 `integrity` 屬性，已強制確保[子資源完整性 (SRI, Subresource Integrity)](https://developer.mozilla.org/en-US/docs/Web/Security/Subresource_Integrity)。預設情況下，Vite 不會在其 Manifest 檔中包含 `integrity` 雜湊。但只要安裝 [`vite-plugin-manifest-uri`](https://www.npmjs.com/package/vite-plugin-manifest-sri) NPM 外掛，就可啟用該功能：
 
 ```shell
-npm install -D vite-plugin-manifest-sri
+npm install --save-dev vite-plugin-manifest-sri
 ```
 
 可以在 `vite.config.js` 檔中啟用該外掛：
@@ -790,4 +820,43 @@ export default defineConfig({
       manifest: 'assets.json', // 自定 Manifest 檔名...
     },
 });
+```
+
+<a name="correcting-dev-server-urls"></a>
+
+### 修正開發伺服器的 URL
+
+在 Vite 生態系統中，有些外掛會假設 URL 以斜線 (`/`) 開頭的 URL 是指向 Vite 開發伺服器的。不過，由於 Laravel 整合的特性，這個假設在 Laravel 中並不成立。
+
+舉例來說，在使用 Vite 伺服器提供素材時，`vite-imagetools` 外掛會像下面這樣輸出 URL：
+
+```html
+<img src="/@imagetools/f0b2f404b13f052c604e632f2fb60381bf61a520">
+```
+
+`vite-imagetools` 外掛預期這個輸出 URL 會被 Vite 攔截，讓這個外掛能處理所有以 `/@imagetools` 開頭的所有 URL。若你使用的外掛有預期這樣的行為，就需要手動修正 URL。可以在 `vite.config.js` 檔案中修改 `transformOnServe` 選項來修正 URL。
+
+在這個範例中，我們在產生的程式碼中，為所有的 `/@imagetools` 網址前方加上開發伺服器的 URL：
+
+```js
+import { defineConfig } from 'vite';
+import laravel from 'laravel-vite-plugin';
+import { imagetools } from 'vite-imagetools';
+
+export default defineConfig({
+    plugins: [
+        laravel({
+            // ...
+            transformOnServe: (code, devServerUrl) => code.replaceAll('/@imagetools', devServerUrl+'/@imagetools'),
+        }),
+        imagetools(),
+    ],
+});
+```
+
+現在，Vite 伺服器在提供素材時，就會輸出指向 Vite 開發伺服器的 URL：
+
+```html
+- <img src="/@imagetools/f0b2f404b13f052c604e632f2fb60381bf61a520"><!-- [tl! remove] -->
++ <img src="http://[::1]:5173/@imagetools/f0b2f404b13f052c604e632f2fb60381bf61a520"><!-- [tl! add] -->
 ```

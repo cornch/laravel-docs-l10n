@@ -5,7 +5,7 @@ contributors:
     name: cornch
 crowdinUrl: https://crowdin.com/translate/laravel-docs/55/en-zhtw
 progress: 100
-updatedAt: '2023-02-05T10:34:00Z'
+updatedAt: '2023-02-11T12:59:00Z'
 ---
 
 # Eloquent：關聯
@@ -431,6 +431,16 @@ public function currentPricing()
 
 傳給 `hasOneThrough` 方法的第一個引述是最後我們想存取的 Model 名稱；第二個引數則是中介 Model 的名稱。
 
+或者，若這個關聯中所涉及的所有 Model 上都已定義了相關的關聯，則可以呼叫 `through` 方法，並提供這些關聯的名稱來以串聯呼叫的方式定義「has-one-through」關聯。舉例來說，若 `Mechanic` 方法中有 `cars` 關聯，而 `Car` Model 中有 `owner` 屬性，則可像這樣定義「has-one-through」關聯來將 Mechanic 與 Owner 關聯起來：
+
+```php
+// 字串語法...
+return $this->through('cars')->has('owner');
+
+// 動態語法...
+return $this->throughCars()->hasOwner();
+```
+
 <a name="has-one-through-key-conventions"></a>
 
 #### 索引鍵慣例
@@ -454,6 +464,16 @@ public function currentPricing()
             );
         }
     }
+
+或者，就像剛才討論過的，若此關聯所涉及的所有 Model 中都已定義了相關的關聯，則可以呼叫 `through` 方法，並提供這些關聯的名稱，來以串聯呼叫的方式來定義「has-one-through」關聯。使用這種方式，即可重複使用現有關聯中定義的索引鍵慣例：
+
+```php
+// 字串語法...
+return $this->through('cars')->has('owner');
+
+// 動態語法...
+return $this->throughCars()->hasOwner();
+```
 
 <a name="has-many-through"></a>
 
@@ -496,6 +516,16 @@ public function currentPricing()
 
 傳給 `hasManyThrough` 方法的第一個引述是最後我們想存取的 Model 名稱；第二個引數則是中介 Model 的名稱。
 
+或者，若這個關聯中所涉及的所有 Model 上都已定義了相關的關聯，則可以呼叫 `through` 方法，並提供這些關聯的名稱來以串聯呼叫的方式定義「has-many-through」關聯。舉例來說，若 `Project` 方法中有 `environments` 關聯，而 `Environment` Model 中有 `deployments` 屬性，則可像這樣定義「has-many-through」關聯來將 Project 與 Deployment 關聯起來：
+
+```php
+// 字串語法...
+return $this->through('environments')->has('deployments');
+
+// 動態語法...
+return $this->throughEnvironments()->hasDeployments();
+```
+
 雖然 `Deployment` Model 的資料表不包含 `project_id` 欄位，但 `hasManyThrough` 關聯可讓我們通過 `$project->deployments` 來存取專案的部署。為了取得這些 Model，Eloquent 會先在中介的 `Environment` Model 資料表上讀取 `project_id`。找到相關的環境 ID 後，再通過這些 ID 來查詢 `Deployment` Model 的資料表。
 
 <a name="has-many-through-key-conventions"></a>
@@ -518,6 +548,16 @@ public function currentPricing()
             );
         }
     }
+
+或者，就像剛才討論過的，若此關聯所涉及的所有 Model 中都已定義了相關的關聯，則可以呼叫 `through` 方法，並提供這些關聯的名稱，來以串聯呼叫的方式來定義「has-many-through」關聯。使用這種方式，即可重複使用現有關聯中定義的索引鍵慣例：
+
+```php
+// 字串語法...
+return $this->through('environments')->has('deployments');
+
+// 動態語法...
+return $this->throughEnvironments()->hasDeployments();
+```
 
 <a name="many-to-many"></a>
 

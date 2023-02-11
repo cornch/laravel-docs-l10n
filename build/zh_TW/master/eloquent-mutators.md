@@ -5,7 +5,7 @@ contributors:
     name: cornch
 crowdinUrl: https://crowdin.com/translate/laravel-docs/53/en-zhtw
 progress: 100
-updatedAt: '2023-02-05T10:34:00Z'
+updatedAt: '2023-02-11T12:59:00Z'
 ---
 
 # Eloquent：更動子與型別轉換
@@ -456,6 +456,24 @@ Eloquent 也能讓我們將屬性值轉換為 PHP 的 [Enum](https://www.php.net
     
         $server->save();
     }
+
+<a name="casting-arrays-of-enums"></a>
+
+#### 型別轉換一組 Enum 的陣列
+
+有時候，我們需要在 Model 中將一組 Enum 值的陣列保存在單一一個欄位裡。這時，可以使用 Laravel 所提供的 `AsEnumArrayObject` 或 `AsEnumCollection` Cast：
+
+    use App\Enums\ServerStatus;
+    use Illuminate\Database\Eloquent\Casts\AsEnumCollection;
+    
+    /**
+     * The attributes that should be cast.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'statuses' => AsEnumCollection::class.':'.ServerStatus::class,
+    ];
 
 <a name="encrypted-casting"></a>
 

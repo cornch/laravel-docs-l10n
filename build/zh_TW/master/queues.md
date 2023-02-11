@@ -5,7 +5,7 @@ contributors:
     name: cornch
 crowdinUrl: https://crowdin.com/translate/laravel-docs/125/en-zhtw
 progress: 100
-updatedAt: '2023-02-05T10:35:00Z'
+updatedAt: '2023-02-11T12:59:00Z'
 ---
 
 # 佇列 - Queue
@@ -118,7 +118,7 @@ php artisan migrate
 
 **Redis Cluster**
 
-若 Redis 佇列要使用 Redis Cluster，則設定的佇列名稱必須包含一個 [Key Hash Tag](https://redis.io/topics/cluster-spec#keys-hash-tags)。必須加上 Key Hash Tag，這樣才能確保給定佇列中所有的 Redis 索引鍵都有被放在相同的 Hash Slot 中：
+若 Redis 佇列要使用 Redis Cluster，則設定的佇列名稱必須包含一個 [Key Hash Tag](https://redis.io/docs/reference/cluster-spec/#hash-tags)。必須加上 Key Hash Tag，這樣才能確保給定佇列中所有的 Redis 索引鍵都有被放在相同的 Hash Slot 中：
 
     'redis' => [
         'driver' => 'redis',
@@ -1422,18 +1422,16 @@ php artisan migrate
         }
     }
 
-雖然讀者可能已經在前面的範例中注意到了，不過，批次 Job 一般都應在其 `handle` 方法的最前方檢查該批次是否已被取消：
+讀者可能已經從上面的範例中注意到，批次的 Job 一般都應該在繼續執行前先判斷自己所在的批次是否已被取消。不過，為了讓開發過程更方便，也可以在 Job 上指定 `SkipIfBatchCancelled` [Middleware](#job-middleware)，這樣就不需要手動檢查批次是否已被取消。就像該 Middleware 的名稱一樣，這個 Middleware 會告訴 Laravel，當 Job 對應的批次被取消時，就不要在繼續處理 Job：
 
-    /**
-     * Execute the job.
-     */
-    public function handle(): void
-    {
-        if ($this->batch()->cancelled()) {
-            return;
-        }
+    use Illuminate\Queue\Middleware\SkipIfBatchCancelled;
     
-        // 繼續處理...
+    /**
+     * Get the middleware the job should pass through.
+     */
+    public function middleware(): array
+    {
+        return [new SkipIfBatchCancelled];
     }
 
 <a name="batch-failures"></a>
@@ -1506,7 +1504,7 @@ php artisan queue:retry-batch 32dbc76c-4f82-4749-b610-a639fe0099b5
         // 該 Job 執行失敗...
     });
 
-> {note} 由於 `catch` 回呼會被序列化並在稍後由 Laravel 的佇列執行，因此請不要在 `catch` 回呼中使用 `$this` 變數。
+> **Warning** 由於 `catch` 的回呼會被序列化並在稍後由 Laravel 的佇列執行，因此請不要在 `catch` 的回呼中使用 `$this` 變數。
 
 <a name="running-the-queue-worker"></a>
 
@@ -1601,7 +1599,7 @@ php artisan queue:work --max-time=3600
 
 #### Worker 的休眠期間
 
-若佇列中有 Job，則 Worker 會不間斷地處理這些 Job。不過，使用 `sleep` 選項可用來讓 Worker 判斷當沒有新 Job 時要「休眠」多少秒。在休眠期間，Worker 不會處理任何新的 Job。當 Worker 喚醒後，才會開始處理這些 Job。
+若佇列中有 Job，則 Worker 會不間斷地處理這些 Job。不過，使用 `sleep` 選項可用來讓 Worker 判斷當沒有 Job 時要「休眠」多少秒。當然，在休眠期間，Worker 就不會處理任何新的 Job：
 
 ```shell
 php artisan queue:work --sleep=3

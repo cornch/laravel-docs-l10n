@@ -5,7 +5,7 @@ contributors:
     name: cornch
 crowdinUrl: https://crowdin.com/translate/laravel-docs/143/en-zhtw
 progress: 100
-updatedAt: '2023-02-05T10:35:00Z'
+updatedAt: '2023-02-11T12:59:00Z'
 ---
 
 # Laravel Sail
@@ -73,6 +73,16 @@ php artisan sail:install
 
 ```shell
 ./vendor/bin/sail up
+```
+
+<a name="adding-additional-services"></a>
+
+#### 新增額外服務
+
+若想在現有的 Sail 專案中加上更多服務，可以執行 `sail:add` Artisan 指令：
+
+```shell
+php artisan sail:add
 ```
 
 <a name="using-devcontainers"></a>
@@ -353,15 +363,15 @@ selenium:
 
 ## 預覽 E-Mail
 
-Laravel Sail 的預設 `docker-compose.yml` 檔案中包含了 [MailHog](https://github.com/mailhog/MailHog) 服務。MailHog 會在本機開發過程中攔截你的專案所寄出的所有 E-Mail，並提供一個方便的 Web 界面可供你在瀏覽器中預覽這些 E-Mail 訊息。使用 Sail 時，MailHog 的預設主機名稱為 `mailhog`，且可在連接埠 1025 上使用：
+Laravel Sail 的預設 `docker-compose.yml` 檔案中包含了 [Mailpit](https://github.com/axllent/mailpit) 服務。Mailpit 會在本機開發過程中攔截你的專案所寄出的所有 E-Mail，並提供一個方便的 Web 界面可供你在瀏覽器中預覽這些 E-Mail 訊息。使用 Sail 時，Mailpit 的預設主機名稱為 `mailpit`，且可在連接埠 1025 上使用：
 
 ```ini
-MAIL_HOST=mailhog
+MAIL_HOST=mailpit
 MAIL_PORT=1025
 MAIL_ENCRYPTION=null
 ```
 
-當 Sail 有在執行時，可在此處存取 MailHog 的 Web 界面：http://localhost:8025
+當 Sail 有在執行時，可在此處存取 Mailpit 的 Web 界面：http://localhost:8025
 
 <a name="sail-container-cli"></a>
 
@@ -385,7 +395,7 @@ sail tinker
 
 ## PHP 版本
 
-Sail 目前支援使用 PHP 8.1、PHP 8.1、PHP 8.0、或 PHP 7.4 來執行你的專案。目前 Sail 所使用的預設 PHP 版本為 PHP 8.1。若要修改專案使用的 PHP 版本，請更新 `docker-compose.yml` 檔案中 `laravel.test` Container 的 `build` 定義：
+Sail 目前支援使用 PHP 8.2、8.1、PHP 8.0、或 PHP 7.4 來執行你的專案。目前 Sail 所使用的預設 PHP 版本為 PHP 8.2。若要修改專案使用的 PHP 版本，請更新 `docker-compose.yml` 檔案中 `laravel.test` Container 的 `build` 定義：
 
 ```yaml
 # PHP 8.2

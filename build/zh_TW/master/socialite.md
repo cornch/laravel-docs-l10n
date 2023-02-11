@@ -2,7 +2,7 @@
 contributors: {}
 crowdinUrl: https://crowdin.com/translate/laravel-docs/155/en-zhtw
 progress: 0
-updatedAt: '2022-08-06T05:47:00Z'
+updatedAt: '2023-02-11T10:28:00Z'
 ---
 
 # Laravel Socialite

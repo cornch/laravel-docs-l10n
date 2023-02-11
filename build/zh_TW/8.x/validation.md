@@ -5,7 +5,7 @@ contributors:
     name: cornch
 crowdinUrl: https://crowdin.com/translate/laravel-docs/171/en-zhtw
 progress: 99
-updatedAt: '2023-02-05T10:35:00Z'
+updatedAt: '2023-02-11T12:59:00Z'
 ---
 
 # 表單驗證 - Validation

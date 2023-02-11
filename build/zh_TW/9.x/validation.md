@@ -5,7 +5,7 @@ contributors:
     name: cornch
 crowdinUrl: https://crowdin.com/translate/laravel-docs/171/en-zhtw
 progress: 99
-updatedAt: '2023-02-05T10:35:00Z'
+updatedAt: '2023-02-11T12:59:00Z'
 ---
 
 # 表單驗證 - Validation
@@ -1446,8 +1446,6 @@ Distinct 預設使用鬆散的 (Loose) 變數比較。若要使用嚴格 (Strict
 #### multiple_of:*值*
 
 該驗證欄位必須為 *值* 的倍數。
-
-> **Warning** 必須安裝 [`bcmath` PHP 擴充程式](https://www.php.net/manual/en/book.bc.php)，才可使用 `multiple_of` 規則。
 
 <a name="rule-missing"></a>
 

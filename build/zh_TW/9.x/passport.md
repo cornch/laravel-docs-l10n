@@ -2,7 +2,7 @@
 contributors: {}
 crowdinUrl: https://crowdin.com/translate/laravel-docs/117/en-zhtw
 progress: 0
-updatedAt: '2023-02-05T10:35:00Z'
+updatedAt: '2023-02-11T10:28:00Z'
 ---
 
 # Laravel Passport
@@ -583,6 +583,9 @@ When tokens have been revoked or expired, you might want to purge them from the 
 ```shell
 # Purge revoked and expired tokens and auth codes...
 php artisan passport:purge
+
+# Only purge tokens expired for more than 6 hours...
+php artisan passport:purge --hours=6
 
 # Only purge revoked tokens and auth codes...
 php artisan passport:purge --revoked

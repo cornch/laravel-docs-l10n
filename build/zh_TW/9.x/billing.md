@@ -2,7 +2,7 @@
 contributors: {}
 crowdinUrl: https://crowdin.com/translate/laravel-docs/15/en-zhtw
 progress: 0
-updatedAt: '2023-01-25T07:02:00Z'
+updatedAt: '2023-02-11T10:27:00Z'
 ---
 
 # Laravel Cashier (Stripe)
@@ -1454,7 +1454,7 @@ If you would like to offer trial periods without collecting the user's payment m
         'trial_ends_at' => now()->addDays(10),
     ]);
 
-> **Warning** Be sure to add a [date cast](/docs/{{version}}/eloquent-mutators##date-casting) for the `trial_ends_at` attribute within your billable model's class definition.
+> **Warning** Be sure to add a [date cast](/docs/{{version}}/eloquent-mutators#date-casting) for the `trial_ends_at` attribute within your billable model's class definition.
 
 Cashier refers to this type of trial as a "generic trial", since it is not attached to any existing subscription. The `onTrial` method on the billable model instance will return `true` if the current date is not past the value of `trial_ends_at`:
 

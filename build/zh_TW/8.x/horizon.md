@@ -4,8 +4,8 @@ contributors:
     avatarUrl: https://crowdin-static.downloads.crowdin.com/avatar/14684796/medium/60f7dc21ec0bf9cfcb61983640bb4809_default.png
     name: cornch
 crowdinUrl: https://crowdin.com/translate/laravel-docs/83/en-zhtw
-progress: 25
-updatedAt: '2023-02-07T11:21:00Z'
+progress: 24
+updatedAt: '2023-02-11T10:27:00Z'
 ---
 
 # Laravel Horizon

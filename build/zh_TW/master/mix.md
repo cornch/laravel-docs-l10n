@@ -5,7 +5,7 @@ contributors:
     name: cornch
 crowdinUrl: https://crowdin.com/translate/laravel-docs/105/en-zhtw
 progress: 100
-updatedAt: '2022-08-09T13:36:00Z'
+updatedAt: '2023-02-11T10:28:00Z'
 ---
 
 # Laravel Mix

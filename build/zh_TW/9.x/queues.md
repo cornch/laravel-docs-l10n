@@ -5,7 +5,7 @@ contributors:
     name: cornch
 crowdinUrl: https://crowdin.com/translate/laravel-docs/125/en-zhtw
 progress: 100
-updatedAt: '2023-02-05T10:35:00Z'
+updatedAt: '2023-02-11T12:59:00Z'
 ---
 
 # 佇列 - Queue
@@ -1634,7 +1634,7 @@ php artisan queue:work --max-time=3600
 
 #### Worker 的休眠期間
 
-若佇列中有 Job，則 Worker 會不間斷地處理這些 Job。不過，使用 `sleep` 選項可用來讓 Worker 判斷當沒有新 Job 時要「休眠」多少秒。在休眠期間，Worker 不會處理任何新的 Job。當 Worker 喚醒後，才會開始處理這些 Job。
+若佇列中有 Job，則 Worker 會不間斷地處理這些 Job。不過，使用 `sleep` 選項可用來讓 Worker 判斷當沒有 Job 時要「休眠」多少秒。當然，在休眠期間，Worker 就不會處理任何新的 Job：
 
 ```shell
 php artisan queue:work --sleep=3

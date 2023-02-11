@@ -5,7 +5,7 @@ contributors:
     name: cornch
 crowdinUrl: https://crowdin.com/translate/laravel-docs/49/en-zhtw
 progress: 100
-updatedAt: '2023-01-25T10:52:00Z'
+updatedAt: '2023-02-11T12:59:00Z'
 ---
 
 # Laravel Dusk
@@ -16,7 +16,7 @@ updatedAt: '2023-01-25T10:52:00Z'
    - [使用其他瀏覽器](#using-other-browsers)
 - [入門](#getting-started)
    - [產生測試](#generating-tests)
-   - [資料庫 Migration](#migrations)
+   - [在每個測試之後重設資料庫](#resetting-the-database-after-each-test)
    - [執行測試](#running-tests)
    - [處理環境](#environment-handling)
 - [「Browser」基礎](#browser-basics)
@@ -155,11 +155,17 @@ php artisan dusk:chrome-driver --detect
 php artisan dusk:make LoginTest
 ```
 
-<a name="migrations"></a>
+<a name="resetting-the-database-after-each-test"></a>
 
-### 資料庫 Migration
+### 在每個測試後重設資料庫
 
-我們所撰寫的大部分的測試所互動的頁面都會從專案的資料庫內取得資料。不過，Dusk 測試不應使用 `RefreshDatabase` Trait。`RefreshDatabase` Trait 使用資料庫 Transaction，會讓資料無法在不同 HTTP 請求間共用。請改用 `DatabaseMigrations` Trait，為每個測試重新 Migrate 資料庫：
+我們要寫的測試大部分都會使用到一些會從資料庫中取得資料的頁面。不過，Dusk 測試不應該使用 `RefreshDatabase` Trait。`RefreshDatabase` Trait 使用的是資料庫 Transaction，而在多個 HTTP 間是沒辦法使用 Trasaction 的。因此，有兩個替代方案：`DatabaseMigrations` Trait 與 `DatabaseTruncation` Trait。
+
+<a name="reset-migrations"></a>
+
+#### 使用資料庫 Migration
+
+`DatabaseMigrations` Trait 會在每個測試前執行資料庫 Migration。不過，在各個測試前 Drop 資料表再重建一次通常會比 ^[Trauncate](截斷) 資料表來得慢：
 
     <?php
     
@@ -176,6 +182,59 @@ php artisan dusk:make LoginTest
     }
 
 > **Warning** 在記憶體內的 SQLite 資料庫無法在執行 Dusk 測試時使用。由於瀏覽器會在自己的處理程序內執行，因此將無法存取其他處理程序中在記憶體內的資料庫。
+
+<a name="reset-truncation"></a>
+
+#### 使用資料庫 Truncation
+
+使用 `DatabaseTruncation` Trait 前，需要先使用 Composer 套件管理員安裝 `doctrine/dbal` 套件：
+
+```shell
+composer require --dev doctrine/dbal
+```
+
+`DatabaseTruncation` Trait 會在第一個測試前執行資料庫 Migration，以確保資料庫資料表有被正確建立。接著，在之後的測試中，資料庫的資料表只會被 Truncate，這樣一來比起重新執行所有 Migration 來說會快很多：
+
+    <?php
+    
+    namespace Tests\Browser;
+    
+    use App\Models\User;
+    use Illuminate\Foundation\Testing\DatabaseTruncation;
+    use Laravel\Dusk\Chrome;
+    use Tests\DuskTestCase;
+    
+    class ExampleTest extends DuskTestCase
+    {
+        use DatabaseTruncation;
+    }
+
+預設情況下，這個 Trait 會 Truncate 除了 `migrations` 資料表以外的所有資料表。若要自定要 Truncate 的資料表，可以在測試類別上定義 `$tablesToTruncate` 屬性：
+
+    /**
+     * Indicates which tables should be truncated.
+     *
+     * @var array
+     */
+    protected $tablesToTruncate = ['users'];
+
+或者，也可以在測試類別上定義 `$exceptTables` 來指定在 Truncate 時要排除哪些資料表：
+
+    /**
+     * Indicates which tables should be excluded from truncation.
+     *
+     * @var array
+     */
+    protected $exceptTables = ['users'];
+
+若要指定要 Truncate 資料表的資料庫連線，可在測試類別上定義 `$connectionsToTruncate` 屬性：
+
+    /**
+     * Indicates which connections should have their tables truncated.
+     *
+     * @var array
+     */
+    protected $connectionsToTruncate = ['mysql'];
 
 <a name="running-tests"></a>
 

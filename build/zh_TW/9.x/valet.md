@@ -5,7 +5,7 @@ contributors:
     name: cornch
 crowdinUrl: https://crowdin.com/translate/laravel-docs/169/en-zhtw
 progress: 100
-updatedAt: '2023-02-05T10:35:00Z'
+updatedAt: '2023-02-11T10:28:00Z'
 ---
 
 # Laravel Valet

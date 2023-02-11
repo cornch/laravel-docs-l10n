@@ -5,7 +5,7 @@ contributors:
     name: cornch
 crowdinUrl: https://crowdin.com/translate/laravel-docs/99/en-zhtw
 progress: 100
-updatedAt: '2023-02-05T10:35:00Z'
+updatedAt: '2023-02-11T12:59:00Z'
 ---
 
 # 郵件
@@ -959,7 +959,7 @@ php artisan vendor:publish --tag=laravel-mail
         return new App\Mail\InvoicePaid($invoice);
     });
 
-> **Warning** 在瀏覽器中預覽 Mailable 時，不會轉譯[內嵌的附件](#inline-attachments)。若要瀏覽有內嵌附件的 Mailable，請將郵件傳送到如 [MailHog](https://github.com/mailhog/MailHog) 或 [HELO](https://usehelo.com) 之類的郵件測試程式。
+> **Warning** 在瀏覽器中預覽 Mailable 時，不會轉譯[內嵌的附件](#inline-attachments)。若要瀏覽有內嵌附件的 Mailable，請將郵件傳送到如 [Mailpit](https://github.com/axllent/mailpit) 或 [HELO](https://usehelo.com) 之類的郵件測試程式。
 
 <a name="localizing-mailables"></a>
 
@@ -1056,11 +1056,11 @@ Laravel 提供了各種可用來檢查 Mailable 結構的方法。此外，Larav
 
 <a name="mailtrap"></a>
 
-#### HELO / Mailtrap / MailHog
+#### HELO / Mailtrap / Mailpit
 
 或者，也可以使用如 [HELO](https://usehelo.com) 或 [Mailtrap](https://mailtrap.io) 這類服務搭配 `smtp` Driver 來將電子郵件寄送到一個「模擬的」收件夾，並像在真的郵件用戶端一樣檢視這些郵件。這種做法的好處就是可以在 Mailtrap 的訊息檢視工具中實際檢視寄出的郵件。
 
-若使用 [Laravel Sail](/docs/{{version}}/sail),，則可使用 [MailHog](https://github.com/mailhog/MailHog) 來預覽訊息。當 Sail 有在執行時，可在 `http://localhost:8025` 上存取 MailHog 的界面。
+若使用 [Laravel Sail](/docs/{{version}}/sail),，則可使用 [Mailpit](https://github.com/axllent/mailpit) 來預覽訊息。當 Sail 有在執行時，可在 `http://localhost:8025` 上存取 Mailpit 的界面。
 
 <a name="using-a-global-to-address"></a>
 
@@ -1174,7 +1174,7 @@ Laravel 中包含了許多的 Mail Transport。不過，有時候我們可能會
     {
         Mail::extend('mailchimp', function (array $config = []) {
             return new MailchimpTransport(/* ... */);
-        })
+        });
     }
 
 定義並註冊好自訂 Transport 後，就可以在專案 `config/mail.php` 設定檔內建立一個使用這個新 Transport 的 Mailer 定義：
@@ -1191,7 +1191,7 @@ Laravel 中包含了許多的 Mail Transport。不過，有時候我們可能會
 Laravel 支援一些像是 Mailgun 與 Postmark 等現有 Symfony 維護的 Mail Transport。不過，有時候我們可能會需要讓 Laravel 也支援其他由 Symfony 維護的 Transport。若要讓 Laravel 支援這些 Transport，只要使用 Composer 安裝這些 Symfony Mailer，然後再向 Laravel 註冊這個 Transport。舉例來說，我們可以安裝並註冊「Sendinblue」Symfony Mailer：
 
 ```none
-composer require symfony/sendinblue-mailer
+composer require symfony/sendinblue-mailer symfony/http-client
 ```
 
 安裝好 Sendinblue Mailer 套件後，就可以在專案的 `services` 設定檔中加上 Sendinblue 的 API 認證：
@@ -1200,7 +1200,7 @@ composer require symfony/sendinblue-mailer
         'key' => 'your-api-key',
     ],
 
-最後，使用 `Mail` Facade 的 `extend` 方法來向 Laravel 註冊這個 Transport。一般來說，應在某個 Service Provider 內註冊一個 `boot` 方法：
+接著，使用 `Mail` Facade 的 `extend` 方法來向 Laravel 註冊這個 Transport。一般來說，應在某個 Service Provider 內註冊一個 `boot` 方法：
 
     use Illuminate\Support\Facades\Mail;
     use Symfony\Component\Mailer\Bridge\Sendinblue\Transport\SendinblueTransportFactory;
@@ -1221,3 +1221,10 @@ composer require symfony/sendinblue-mailer
             );
         });
     }
+
+註冊好 Transport 後，就可以在專案的 config/mail.php 設定檔中建立一個使用這個新 Transport 的 Mailer 定義：
+
+    'sendinblue' => [
+        'transport' => 'sendinblue',
+        // ...
+    ],

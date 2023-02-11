@@ -5,7 +5,7 @@ contributors:
     name: cornch
 crowdinUrl: https://crowdin.com/translate/laravel-docs/77/en-zhtw
 progress: 100
-updatedAt: '2023-01-25T12:14:00Z'
+updatedAt: '2023-02-11T10:27:00Z'
 ---
 
 # 雜湊

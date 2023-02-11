@@ -2,7 +2,7 @@
 contributors: {}
 crowdinUrl: https://crowdin.com/translate/laravel-docs/81/en-zhtw
 progress: 0
-updatedAt: '2023-01-25T07:02:00Z'
+updatedAt: '2023-02-11T10:27:00Z'
 ---
 
 # Laravel Homestead

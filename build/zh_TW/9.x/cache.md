@@ -5,7 +5,7 @@ contributors:
     name: cornch
 crowdinUrl: https://crowdin.com/translate/laravel-docs/21/en-zhtw
 progress: 100
-updatedAt: '2023-02-05T10:34:00Z'
+updatedAt: '2023-02-11T12:58:00Z'
 ---
 
 # 快取
@@ -366,8 +366,8 @@ updatedAt: '2023-02-05T10:34:00Z'
 
 `get` 方法也接收一個閉包。在該閉包執行後，Laravel 會自動釋放 Lock：
 
-    Cache::lock('foo')->get(function () {
-        // 立刻要求 Lock 並自動釋放……
+    Cache::lock('foo', 10)->get(function () {
+        // 取得 10 秒的 Lock，然後自動釋放...
     });
 
 若在要求時無法取得 Lock，則可以告訴 Laravel 要等待多少秒的事件。若在指定的時間限制後仍無法取得 Lock，則會擲回 `Illuminate\Contracts\Cache\LockTimeoutException`：

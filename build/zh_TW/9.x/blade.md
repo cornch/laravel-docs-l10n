@@ -5,7 +5,7 @@ contributors:
     name: cornch
 crowdinUrl: https://crowdin.com/translate/laravel-docs/17/en-zhtw
 progress: 100
-updatedAt: '2023-01-25T09:52:00Z'
+updatedAt: '2023-02-11T12:58:00Z'
 ---
 
 # Blade 樣板
@@ -449,7 +449,7 @@ Switch 陳述式可以通過 `@switch`, `@case`, `@break`, `@default` 與 `@ends
 
 <a name="conditional-classes"></a>
 
-### 有條件的 Class
+### 按條件顯示／隱藏 Class 與 Style
 
 `@class` 指示詞可以有條件地編譯 CSS class 字串。`@class` 指示詞接受一組包含 class 的陣列，其中，陣列的索引鍵代表欲新增的 class，陣列值則是一個布林運算式。若陣列的元素有數字索引鍵，則該元素一定會被加到轉譯後的 Class 列表上：
 
@@ -467,6 +467,21 @@ Switch 陳述式可以通過 `@switch`, `@case`, `@break`, `@default` 與 `@ends
 ])></span>
 
 <span class="p-4 text-gray-500 bg-red"></span>
+```
+
+類似地，`@style` 指示詞可用來依照條件在 HTML 元素內顯示或隱藏內嵌 CSS 樣式：
+
+```blade
+@php
+    $isActive = true;
+@endphp
+
+<span @style([
+    'background-color: red',
+    'font-weight: bold' => $isActive,
+])></span>
+
+<span style="background-color: red; font-weight: bold;"></span>
 ```
 
 <a name="additional-attributes"></a>
@@ -1785,6 +1800,26 @@ return Blade::render(
 
 ```php
 return view('dashboard', ['users' => $users])->fragment('user-list');
+```
+
+使用 `fragmentIf` 方法，就能依照給定條件來回傳 View Fragment。若不符合條件，則會回傳整個 View：
+
+```php
+return view('dashboard', ['users' => $users])
+    ->fragmentIf($request->hasHeader('HX-Request'), 'user-list');
+```
+
+使用 `fragments` 與 `fragmentsIf` 方法，就能在 Response 中回傳多個 View Fragment。各個 Fragment 會被串接在一起：
+
+```php
+view('dashboard', ['users' => $users])
+    ->fragments(['user-list', 'comment-list']);
+
+view('dashboard', ['users' => $users])
+    ->fragmentsIf(
+        $request->hasHeader('HX-Request'),
+        ['user-list', 'comment-list']
+    );
 ```
 
 <a name="extending-blade"></a>

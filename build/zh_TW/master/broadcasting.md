@@ -5,7 +5,7 @@ contributors:
     name: cornch
 crowdinUrl: https://crowdin.com/translate/laravel-docs/19/en-zhtw
 progress: 100
-updatedAt: '2023-01-25T09:52:00Z'
+updatedAt: '2023-02-11T12:58:00Z'
 ---
 
 # 廣播 - Broadcast
@@ -64,7 +64,7 @@ updatedAt: '2023-01-25T09:52:00Z'
 
 #### 支援的 Driver
 
-預設情況下，Laravel 包含了兩個伺服器端廣播 Driver 可供選擇：[Pusher Channels](https://pusher.com/channels) 與 [Ably](https://ably.io)。不過，也有如 [laravel-websockets](https://beyondco.de/docs/laravel-websockets/getting-started/introduction) 與 [soketi](https://docs.soketi.app/) 這樣由社群開發的套件提供不需要商業 Broadcast Provider 的額外 Broadcast Driver。
+預設情況下，Laravel 包含了兩個伺服器端廣播 Driver 可供選擇：[Pusher Channels](https://pusher.com/channels) 與 [Ably](https://ably.com)。不過，也有如 [laravel-websockets](https://beyondco.de/docs/laravel-websockets/getting-started/introduction) 與 [soketi](https://docs.soketi.app/) 這樣由社群開發的套件提供不需要商業 Broadcast Provider 的額外 Broadcast Driver。
 
 > **Note** 在深入探討事件廣播前，請先確保你已閱讀有關 [事件與監聽程式](/docs/{{version}}/events)的 Laravel 說明文件。
 
@@ -133,7 +133,7 @@ BROADCAST_DRIVER=pusher
 
 ### Ably
 
-若有打算要使用 [Ably](https://ably.io)，那麼應通過 Composer 套件管理員來安裝 Ably 的 PHP SDK：
+若有打算要使用 [Ably](https://ably.com)，則請使用 Composer 套件管理員來安裝 Ably 的 PHP SDK：
 
 ```shell
 composer require ably/ably-php
@@ -274,7 +274,7 @@ npm run dev
 
 ## 概念概覽
 
-Laravel 的事件廣播功能能讓你以基於 Driver 的方法來將伺服器端的 Laravel 事件通過 WebSockets 廣播到用戶端 JavaScript 上。目前，Laravel 隨附了 [Pusher Channels](https://pusher.com/channels) 與 [Ably](https://ably.io) 兩個 Driver。可以在用戶端使用 [Laravel Echo](#client-side-installation) JavaScript 套件來輕鬆取得事件。
+Laravel 的事件廣播功能能讓你以基於 Driver 的方法來將伺服器端的 Laravel 事件通過 WebSockets 廣播到用戶端 JavaScript 上。目前，Laravel 隨附了 [Pusher Channels](https://pusher.com/channels) 與 [Ably](https://ably.com) 兩個 Driver。可以在用戶端使用 [Laravel Echo](#client-side-installation) JavaScript 套件來輕鬆取得事件。
 
 事件是通過「頻道 (Channel)」進行廣播的，頻道可以被設為公共或私有。任何網站的瀏覽者都可以在不登入或經過授權的情況下訂閱公開頻道。不過，如果要訂閱私有頻道，就必須要登入並經過授權才可以監聽該頻道。
 

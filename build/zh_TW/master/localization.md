@@ -5,7 +5,7 @@ contributors:
     name: cornch
 crowdinUrl: https://crowdin.com/translate/laravel-docs/95/en-zhtw
 progress: 100
-updatedAt: '2023-01-25T12:14:00Z'
+updatedAt: '2023-02-11T12:59:00Z'
 ---
 
 # 本土化
@@ -183,6 +183,29 @@ Laravel 提供了兩種管理翻譯字串的方法。第一種方式，就是將
 
     'welcome' => 'Welcome, :NAME', // Welcome, DAYLE
     'goodbye' => 'Goodbye, :Name', // Goodbye, Dayle
+
+<a name="object-replacement-formatting"></a>
+
+#### 物件取代格式
+
+若在預留位置上嘗試提供物件時，則會呼叫該物件的 `__toString` 方法。[`__toString`](https://www.php.net/manual/en/language.oop5.magic.php#object.tostring) 方法是 PHP 的其中一個「魔法方法」。不過，有的時候我們可能無法控制給定類別的 `__toString` 方法，如：來自第三方函式庫的類別。
+
+因此，在 Laravel 中，我們可以針對特定類型的物件註冊自訂的格式處理常式。若要自定格式處理常式，請呼叫 Translator 的 `stringable` 方法。`stringable` 方法接受一個閉包，請在該閉包的型別提示 (Type-hint) 中指定其負責格式化的物件。一般情況下來說，應在專案的 `AppServiceProvider` 類別中 `boot` 方法內呼叫這個 `stringable` 方法：
+
+    use Illuminate\Support\Facades\Lang;
+    use Money\Money;
+    
+    /**
+     * Bootstrap any application services.
+     *
+     * @return void
+     */
+    public function boot()
+    {
+        Lang::stringable(function (Money $money) {
+            return $money->formatTo('en_GB');
+        });
+    }
 
 <a name="pluralization"></a>
 

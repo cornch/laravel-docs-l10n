@@ -5,7 +5,7 @@ contributors:
     name: cornch
 crowdinUrl: https://crowdin.com/translate/laravel-docs/93/en-zhtw
 progress: 100
-updatedAt: '2022-08-09T13:36:00Z'
+updatedAt: '2023-02-11T10:27:00Z'
 ---
 
 # Request 的生命週期

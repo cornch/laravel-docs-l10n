@@ -2,7 +2,7 @@
 contributors: {}
 crowdinUrl: https://crowdin.com/translate/laravel-docs/117/en-zhtw
 progress: 0
-updatedAt: '2023-02-05T10:35:00Z'
+updatedAt: '2023-02-11T10:28:00Z'
 ---
 
 # Laravel Passport

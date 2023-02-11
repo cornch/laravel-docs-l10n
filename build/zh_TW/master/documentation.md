@@ -5,7 +5,7 @@ contributors:
     name: cornch
 crowdinUrl: https://crowdin.com/translate/laravel-docs/47/en-zhtw
 progress: 100
-updatedAt: '2023-01-25T10:52:00Z'
+updatedAt: '2023-02-11T12:59:00Z'
 ---
 
 - ## ​前言
@@ -63,6 +63,7 @@ updatedAt: '2023-01-25T10:52:00Z'
    - [郵件](/docs/{{version}}/mail)
    - [通知](/docs/{{version}}/notifications)
    - [套件開發](/docs/{{version}}/packages)
+   - [Processes](/docs/{{version}}/processes)
    - [佇列](/docs/{{version}}/queues)
    - [頻率限制](/docs/{{version}}/rate-limiting)
    - [任務排程](/docs/{{version}}/scheduling)

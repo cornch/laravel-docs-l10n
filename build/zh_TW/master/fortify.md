@@ -5,7 +5,7 @@ contributors:
     name: cornch
 crowdinUrl: https://crowdin.com/translate/laravel-docs/75/en-zhtw
 progress: 100
-updatedAt: '2023-01-26T07:37:00Z'
+updatedAt: '2023-02-11T12:59:00Z'
 ---
 
 # Laravel Fortify

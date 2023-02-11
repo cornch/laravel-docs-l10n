@@ -5,7 +5,7 @@ contributors:
     name: cornch
 crowdinUrl: https://crowdin.com/translate/laravel-docs/165/en-zhtw
 progress: 100
-updatedAt: '2023-02-05T10:35:00Z'
+updatedAt: '2023-02-11T12:59:00Z'
 ---
 
 # 升級指南
@@ -83,6 +83,19 @@ Laravel 現在要求的 PHP 最低版本為 8.1.0 版。
 - `spatie/laravel-ignition` 升級為 `^2.0`
 
 </div>
+
+或者，可選地，如果想使用 [PHPUnit 10](https://phpunit.de/announcements/phpunit-10.html)，請在專案的 `phpunit.xml` 設定檔中的 `<coverage>` 段落中刪除 `processUncoveredFiles` 屬性。接著，請在專案的 `composer.json` 檔案中更新下列相依性套件：
+
+<div class="content-list" markdown="1">
+
+- `nunomaduro/collision` to `^7.0`
+- `phpunit/phpunit` to `^10.0`
+
+</div>
+
+最後，請檢視你的專案使用的其他第三方套件，確認一下是否有使用支援 Laravel 10 的版本。
+
+<a name="updating-minimum-stability"></a>
 
 #### Minimum Stability
 

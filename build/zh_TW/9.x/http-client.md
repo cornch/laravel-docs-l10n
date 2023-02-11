@@ -5,7 +5,7 @@ contributors:
     name: cornch
 crowdinUrl: https://crowdin.com/translate/laravel-docs/85/en-zhtw
 progress: 100
-updatedAt: '2023-02-05T10:35:00Z'
+updatedAt: '2023-02-11T12:59:00Z'
 ---
 
 # HTTP 用戶端
@@ -53,15 +53,13 @@ composer require guzzlehttp/guzzle
 `get` 方法會回傳 `Illuminate\Http\Client\Response` 的實體，該實體提供了許多用來取得 Response 資訊的方法：
 
     $response->body() : string;
-    $response->json($key = null) : array|mixed;
+    $response->json($key = null, $default = null) : array|mixed;
     $response->object() : object;
     $response->collect($key = null) : Illuminate\Support\Collection;
     $response->status() : int;
-    $response->ok() : bool;
     $response->successful() : bool;
     $response->redirect(): bool;
     $response->failed() : bool;
-    $response->serverError() : bool;
     $response->clientError() : bool;
     $response->header($header) : string;
     $response->headers() : array;
@@ -69,6 +67,40 @@ composer require guzzlehttp/guzzle
 `Illuminate\Http\Client\Response` 物件也實作了 PHP 的 `ArrayAccess` 實體，能讓我們直接在 Response 上存取 JSON Response 資料：
 
     return Http::get('http://example.com/users/1')['name'];
+
+除了上述所列的 Response 方法外，也可以使用下列方法來判斷 Response 是否有給定的狀態碼：
+
+    $response->ok() : bool;                  // 200 OK
+    $response->created() : bool;             // 201 Created
+    $response->accepted() : bool;            // 202 Accepted
+    $response->noContent() : bool;           // 204 No Content
+    $response->movedPermanently() : bool;    // 301 Moved Permanently
+    $response->found() : bool;               // 302 Found
+    $response->badRequest() : bool;          // 400 Bad Request
+    $response->unauthorized() : bool;        // 401 Unauthorized
+    $response->paymentRequired() : bool;     // 402 Payment Required
+    $response->forbidden() : bool;           // 403 Forbidden
+    $response->notFound() : bool;            // 404 Not Found
+    $response->requestTimeout() : bool;      // 408 Request Timeout
+    $response->conflict() : bool;            // 409 Conflict
+    $response->unprocessableEntity() : bool; // 422 Unprocessable Entity
+    $response->tooManyRequests() : bool;     // 429 Too Many Requests
+    $response->serverError() : bool;         // 500 Internal Server Error
+
+<a name="uri-templates"></a>
+
+#### URI 樣板
+
+在 HTTP Client 中，也可使用 [URI 樣板規格 (URI Template Specification)](https://www.rfc-editor.org/rfc/rfc6570)來建立 Request URL。若要定義可由 URI 樣板展開的 URL 參數，請使用 `withUrlParameters` 方法：
+
+```php
+Http::withUrlParameters([
+    'endpoint' => 'https://laravel.com',
+    'page' => 'docs',
+    'version' => '9.x',
+    'topic' => 'validation',
+])->get('{+endpoint}/{page}/{version}/{topic}');
+```
 
 <a name="dumping-requests"></a>
 

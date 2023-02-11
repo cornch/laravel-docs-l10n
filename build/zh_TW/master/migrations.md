@@ -5,7 +5,7 @@ contributors:
     name: cornch
 crowdinUrl: https://crowdin.com/translate/laravel-docs/103/en-zhtw
 progress: 100
-updatedAt: '2023-01-25T14:53:00Z'
+updatedAt: '2023-02-11T12:59:00Z'
 ---
 
 # 資料庫：Migration

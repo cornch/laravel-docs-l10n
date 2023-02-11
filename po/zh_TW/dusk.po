@@ -10,7 +10,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
-"PO-Revision-Date: 2023-02-11 10:27\n"
+"PO-Revision-Date: 2023-02-11 12:59\n"
 
 #: docs/10.x/dusk.md:block 1 (header)
 msgid "Laravel Dusk"
@@ -42,7 +42,7 @@ msgstr "[產生測試](#generating-tests)"
 
 #: docs/10.x/dusk.md:block 2 (unordered list)
 msgid "[Resetting The Database After Each Test](#resetting-the-database-after-each-test)"
-msgstr ""
+msgstr "[在每個測試之後重設資料庫](#resetting-the-database-after-each-test)"
 
 #: docs/10.x/dusk.md:block 2 (unordered list)
 msgid "[Running Tests](#running-tests)"
@@ -350,19 +350,19 @@ msgstr "php artisan dusk:make LoginTest\n"
 
 #: docs/10.x/dusk.md:block 34 (header)
 msgid "Resetting The Database After Each Test"
-msgstr ""
+msgstr "在每個測試後重設資料庫"
 
 #: docs/10.x/dusk.md:block 35 (paragraph)
 msgid "Most of the tests you write will interact with pages that retrieve data from your application's database; however, your Dusk tests should never use the `RefreshDatabase` trait. The `RefreshDatabase` trait leverages database transactions which will not be applicable or available across HTTP requests. Instead, you have two options: the `DatabaseMigrations` trait and the `DatabaseTruncation` trait."
-msgstr ""
+msgstr "我們要寫的測試大部分都會使用到一些會從資料庫中取得資料的頁面。不過，Dusk 測試不應該使用 `RefreshDatabase` Trait。`RefreshDatabase` Trait 使用的是資料庫 Transaction，而在多個 HTTP 間是沒辦法使用 Trasaction 的。因此，有兩個替代方案：`DatabaseMigrations` Trait 與 `DatabaseTruncation` Trait。"
 
 #: docs/10.x/dusk.md:block 37 (header)
 msgid "Using Database Migrations"
-msgstr ""
+msgstr "使用資料庫 Migration"
 
 #: docs/10.x/dusk.md:block 38 (paragraph)
 msgid "The `DatabaseMigrations` trait will run your database migrations before each test. However, dropping and re-creating your database tables for each test is typically slower than truncating the tables:"
-msgstr ""
+msgstr "`DatabaseMigrations` Trait 會在每個測試前執行資料庫 Migration。不過，在各個測試前 Drop 資料表再重建一次通常會比 ^[Trauncate](截斷) 資料表來得慢："
 
 #: docs/10.x/dusk.md:block 39 (code)
 msgid "<?php\n\n"
@@ -392,19 +392,19 @@ msgstr "**Warning** 在記憶體內的 SQLite 資料庫無法在執行 Dusk 測�
 
 #: docs/10.x/dusk.md:block 42 (header)
 msgid "Using Database Truncation"
-msgstr ""
+msgstr "使用資料庫 Truncation"
 
 #: docs/10.x/dusk.md:block 43 (paragraph)
 msgid "Before using the `DatabaseTruncation` trait, you must install the `doctrine/dbal` package using the Composer package manager:"
-msgstr ""
+msgstr "使用 `DatabaseTruncation` Trait 前，需要先使用 Composer 套件管理員安裝 `doctrine/dbal` 套件："
 
 #: docs/10.x/dusk.md:block 44 (code)
 msgid "composer require --dev doctrine/dbal\n"
-msgstr ""
+msgstr "composer require --dev doctrine/dbal\n"
 
 #: docs/10.x/dusk.md:block 45 (paragraph)
 msgid "The `DatabaseTruncation` trait will migrate your database on the first test in order to ensure your database tables have been properly created. However, on subsequent tests, the database's tables will simply be truncated - providing a speed boost over re-running all of your database migrations:"
-msgstr ""
+msgstr "`DatabaseTruncation` Trait 會在第一個測試前執行資料庫 Migration，以確保資料庫資料表有被正確建立。接著，在之後的測試中，資料庫的資料表只會被 Truncate，這樣一來比起重新執行所有 Migration 來說會快很多："
 
 #: docs/10.x/dusk.md:block 46 (code)
 msgid "<?php\n\n"
@@ -417,11 +417,20 @@ msgid "<?php\n\n"
 "{\n"
 "    use DatabaseTruncation;\n"
 "}\n"
-msgstr ""
+msgstr "<?php\n\n"
+"namespace Tests\\Browser;\n\n"
+"use App\\Models\\User;\n"
+"use Illuminate\\Foundation\\Testing\\DatabaseTruncation;\n"
+"use Laravel\\Dusk\\Chrome;\n"
+"use Tests\\DuskTestCase;\n\n"
+"class ExampleTest extends DuskTestCase\n"
+"{\n"
+"    use DatabaseTruncation;\n"
+"}\n"
 
 #: docs/10.x/dusk.md:block 47 (paragraph)
 msgid "By default, this trait will truncate all tables except the `migrations` table. If you would like to customize the tables that should be truncated, you may define a `$tablesToTruncate` property on your test class:"
-msgstr ""
+msgstr "預設情況下，這個 Trait 會 Truncate 除了 `migrations` 資料表以外的所有資料表。若要自定要 Truncate 的資料表，可以在測試類別上定義 `$tablesToTruncate` 屬性："
 
 #: docs/10.x/dusk.md:block 48 (code)
 msgid "/**\n"
@@ -430,11 +439,16 @@ msgid "/**\n"
 " * @var array\n"
 " */\n"
 "protected $tablesToTruncate = ['users'];\n"
-msgstr ""
+msgstr "/**\n"
+" * Indicates which tables should be truncated.\n"
+" *\n"
+" * @var array\n"
+" */\n"
+"protected $tablesToTruncate = ['users'];\n"
 
 #: docs/10.x/dusk.md:block 49 (paragraph)
 msgid "Alternatively, you may define an `$exceptTables` property on your test class to specify which tables should be excluded from truncation:"
-msgstr ""
+msgstr "或者，也可以在測試類別上定義 `$exceptTables` 來指定在 Truncate 時要排除哪些資料表："
 
 #: docs/10.x/dusk.md:block 50 (code)
 msgid "/**\n"
@@ -443,11 +457,16 @@ msgid "/**\n"
 " * @var array\n"
 " */\n"
 "protected $exceptTables = ['users'];\n"
-msgstr ""
+msgstr "/**\n"
+" * Indicates which tables should be excluded from truncation.\n"
+" *\n"
+" * @var array\n"
+" */\n"
+"protected $exceptTables = ['users'];\n"
 
 #: docs/10.x/dusk.md:block 51 (paragraph)
 msgid "To specify the database connections that should have their tables truncated, you may define a `$connectionsToTruncate` property on your test class:"
-msgstr ""
+msgstr "若要指定要 Truncate 資料表的資料庫連線，可在測試類別上定義 `$connectionsToTruncate` 屬性："
 
 #: docs/10.x/dusk.md:block 52 (code)
 msgid "/**\n"
@@ -456,7 +475,12 @@ msgid "/**\n"
 " * @var array\n"
 " */\n"
 "protected $connectionsToTruncate = ['mysql'];\n"
-msgstr ""
+msgstr "/**\n"
+" * Indicates which connections should have their tables truncated.\n"
+" *\n"
+" * @var array\n"
+" */\n"
+"protected $connectionsToTruncate = ['mysql'];\n"
 
 #: docs/10.x/dusk.md:block 54 (header)
 msgid "Running Tests"
@@ -4112,5 +4136,5 @@ msgstr "$browser->with('iframe', function ($iframe) {\n"
 
 #: docs/master/dusk.md:block 47 (paragraph)
 msgid "By default, this trait will not truncate the `migrations` table. If you would like to further customize the tables that are excluded from truncation, you may define an `$exceptTables` property on your test class:"
-msgstr ""
+msgstr "預設情況下，這個 Trait 不會 Truncate `migrations` 資料表。不過，如果還想進一步自定要在 Truncate 時排除的資料表，可在測試類別上定義 `$exceptTables` 屬性："
 

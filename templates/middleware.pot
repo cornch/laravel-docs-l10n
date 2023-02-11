@@ -2,72 +2,481 @@
 msgid ""
 msgstr ""
 
-#: docs/8.x/middleware.md:block 1 (header)
+#: docs/10.x/middleware.md:block 1 (header)
 msgid "Middleware"
 msgstr ""
 
-#: docs/8.x/middleware.md:block 2 (unordered list)
+#: docs/10.x/middleware.md:block 2 (unordered list)
 msgid "[Introduction](#introduction)"
 msgstr ""
 
-#: docs/8.x/middleware.md:block 2 (unordered list)
+#: docs/10.x/middleware.md:block 2 (unordered list)
 msgid "[Defining Middleware](#defining-middleware)"
 msgstr ""
 
-#: docs/8.x/middleware.md:block 2 (unordered list)
+#: docs/10.x/middleware.md:block 2 (unordered list)
 msgid "[Registering Middleware](#registering-middleware)"
 msgstr ""
 
-#: docs/8.x/middleware.md:block 2 (unordered list)
+#: docs/10.x/middleware.md:block 2 (unordered list)
 msgid "[Global Middleware](#global-middleware)"
 msgstr ""
 
-#: docs/8.x/middleware.md:block 2 (unordered list)
+#: docs/10.x/middleware.md:block 2 (unordered list)
 msgid "[Assigning Middleware To Routes](#assigning-middleware-to-routes)"
 msgstr ""
 
-#: docs/8.x/middleware.md:block 2 (unordered list)
+#: docs/10.x/middleware.md:block 2 (unordered list)
 msgid "[Middleware Groups](#middleware-groups)"
 msgstr ""
 
-#: docs/8.x/middleware.md:block 2 (unordered list)
+#: docs/10.x/middleware.md:block 2 (unordered list)
 msgid "[Sorting Middleware](#sorting-middleware)"
 msgstr ""
 
-#: docs/8.x/middleware.md:block 2 (unordered list)
+#: docs/10.x/middleware.md:block 2 (unordered list)
 msgid "[Middleware Parameters](#middleware-parameters)"
 msgstr ""
 
-#: docs/8.x/middleware.md:block 2 (unordered list)
+#: docs/10.x/middleware.md:block 2 (unordered list)
 msgid "[Terminable Middleware](#terminable-middleware)"
 msgstr ""
 
-#: docs/8.x/middleware.md:block 4 (header)
+#: docs/10.x/middleware.md:block 4 (header)
 msgid "Introduction"
 msgstr ""
 
-#: docs/8.x/middleware.md:block 5 (paragraph)
+#: docs/10.x/middleware.md:block 5 (paragraph)
 msgid "Middleware provide a convenient mechanism for inspecting and filtering HTTP requests entering your application. For example, Laravel includes a middleware that verifies the user of your application is authenticated. If the user is not authenticated, the middleware will redirect the user to your application's login screen. However, if the user is authenticated, the middleware will allow the request to proceed further into the application."
 msgstr ""
 
-#: docs/8.x/middleware.md:block 6 (paragraph)
+#: docs/10.x/middleware.md:block 6 (paragraph)
 msgid "Additional middleware can be written to perform a variety of tasks besides authentication. For example, a logging middleware might log all incoming requests to your application. There are several middleware included in the Laravel framework, including middleware for authentication and CSRF protection. All of these middleware are located in the `app/Http/Middleware` directory."
 msgstr ""
 
-#: docs/8.x/middleware.md:block 8 (header)
+#: docs/10.x/middleware.md:block 8 (header)
 msgid "Defining Middleware"
 msgstr ""
 
-#: docs/8.x/middleware.md:block 9 (paragraph)
+#: docs/10.x/middleware.md:block 9 (paragraph)
 msgid "To create a new middleware, use the `make:middleware` Artisan command:"
 msgstr ""
 
-#: docs/8.x/middleware.md:block 10 (code)
+#: docs/10.x/middleware.md:block 10 (code)
 msgid "php artisan make:middleware EnsureTokenIsValid\n"
 msgstr ""
 
-#: docs/8.x/middleware.md:block 11 (paragraph)
+#: docs/10.x/middleware.md:block 11 (paragraph)
 msgid "This command will place a new `EnsureTokenIsValid` class within your `app/Http/Middleware` directory. In this middleware, we will only allow access to the route if the supplied `token` input matches a specified value. Otherwise, we will redirect the users back to the `home` URI:"
+msgstr ""
+
+#: docs/10.x/middleware.md:block 12 (code)
+msgid ""
+"<?php\n"
+"\n"
+"namespace App\\Http\\Middleware;\n"
+"\n"
+"use Closure;\n"
+"use Illuminate\\Http\\Request;\n"
+"use Symfony\\Component\\HttpFoundation\\Response;\n"
+"\n"
+"class EnsureTokenIsValid\n"
+"{\n"
+"    /**\n"
+"     * Handle an incoming request.\n"
+"     *\n"
+"     * @param  \\Closure(\\Illuminate\\Http\\Request): (\\Symfony\\Component\\HttpFoundation\\Response)  $next\n"
+"     */\n"
+"    public function handle(Request $request, Closure $next): Response\n"
+"    {\n"
+"        if ($request->input('token') !== 'my-secret-token') {\n"
+"            return redirect('home');\n"
+"        }\n"
+"\n"
+"        return $next($request);\n"
+"    }\n"
+"}\n"
+msgstr ""
+
+#: docs/10.x/middleware.md:block 13 (paragraph)
+msgid "As you can see, if the given `token` does not match our secret token, the middleware will return an HTTP redirect to the client; otherwise, the request will be passed further into the application. To pass the request deeper into the application (allowing the middleware to \"pass\"), you should call the `$next` callback with the `$request`."
+msgstr ""
+
+#: docs/10.x/middleware.md:block 14 (paragraph)
+msgid "It's best to envision middleware as a series of \"layers\" HTTP requests must pass through before they hit your application. Each layer can examine the request and even reject it entirely."
+msgstr ""
+
+#: docs/10.x/middleware.md:block 15 (quote)
+msgid "**Note** All middleware are resolved via the [service container](/docs/{{version}}/container), so you may type-hint any dependencies you need within a middleware's constructor."
+msgstr ""
+
+#: docs/10.x/middleware.md:block 17 (header)
+msgid "Middleware & Responses"
+msgstr ""
+
+#: docs/10.x/middleware.md:block 18 (paragraph)
+msgid "Of course, a middleware can perform tasks before or after passing the request deeper into the application. For example, the following middleware would perform some task **before** the request is handled by the application:"
+msgstr ""
+
+#: docs/10.x/middleware.md:block 19 (code)
+msgid ""
+"<?php\n"
+"\n"
+"namespace App\\Http\\Middleware;\n"
+"\n"
+"use Closure;\n"
+"use Illuminate\\Http\\Request;\n"
+"use Symfony\\Component\\HttpFoundation\\Response;\n"
+"\n"
+"class BeforeMiddleware\n"
+"{\n"
+"    public function handle(Request $request, Closure $next): Response\n"
+"    {\n"
+"        // Perform action\n"
+"\n"
+"        return $next($request);\n"
+"    }\n"
+"}\n"
+msgstr ""
+
+#: docs/10.x/middleware.md:block 20 (paragraph)
+msgid "However, this middleware would perform its task **after** the request is handled by the application:"
+msgstr ""
+
+#: docs/10.x/middleware.md:block 21 (code)
+msgid ""
+"<?php\n"
+"\n"
+"namespace App\\Http\\Middleware;\n"
+"\n"
+"use Closure;\n"
+"use Illuminate\\Http\\Request;\n"
+"use Symfony\\Component\\HttpFoundation\\Response;\n"
+"\n"
+"class AfterMiddleware\n"
+"{\n"
+"    public function handle(Request $request, Closure $next): Response\n"
+"    {\n"
+"        $response = $next($request);\n"
+"\n"
+"        // Perform action\n"
+"\n"
+"        return $response;\n"
+"    }\n"
+"}\n"
+msgstr ""
+
+#: docs/10.x/middleware.md:block 23 (header)
+msgid "Registering Middleware"
+msgstr ""
+
+#: docs/10.x/middleware.md:block 25 (header)
+msgid "Global Middleware"
+msgstr ""
+
+#: docs/10.x/middleware.md:block 26 (paragraph)
+msgid "If you want a middleware to run during every HTTP request to your application, list the middleware class in the `$middleware` property of your `app/Http/Kernel.php` class."
+msgstr ""
+
+#: docs/10.x/middleware.md:block 28 (header)
+msgid "Assigning Middleware To Routes"
+msgstr ""
+
+#: docs/10.x/middleware.md:block 29 (paragraph)
+msgid "If you would like to assign middleware to specific routes, you may invoke the `middleware` method when defining the route:"
+msgstr ""
+
+#: docs/10.x/middleware.md:block 30 (code)
+msgid ""
+"use App\\Http\\Middleware\\Authenticate;\n"
+"\n"
+"Route::get('/profile', function () {\n"
+"    // ...\n"
+"})->middleware(Authenticate::class);\n"
+msgstr ""
+
+#: docs/10.x/middleware.md:block 31 (paragraph)
+msgid "You may assign multiple middleware to the route by passing an array of middleware names to the `middleware` method:"
+msgstr ""
+
+#: docs/10.x/middleware.md:block 32 (code)
+msgid ""
+"Route::get('/', function () {\n"
+"    // ...\n"
+"})->middleware([First::class, Second::class]);\n"
+msgstr ""
+
+#: docs/10.x/middleware.md:block 33 (paragraph)
+msgid "For convenience, you may assign aliases to middleware in your application's `app/Http/Kernel.php` file. By default, the `$middlewareAliases` property of this class contains entries for the middleware included with Laravel. You may add your own middleware to this list and assign it an alias of your choosing:"
+msgstr ""
+
+#: docs/10.x/middleware.md:block 34 (code)
+msgid ""
+"// Within App\\Http\\Kernel class...\n"
+"\n"
+"protected $middlewareAliases = [\n"
+"    'auth' => \\App\\Http\\Middleware\\Authenticate::class,\n"
+"    'auth.basic' => \\Illuminate\\Auth\\Middleware\\AuthenticateWithBasicAuth::class,\n"
+"    'bindings' => \\Illuminate\\Routing\\Middleware\\SubstituteBindings::class,\n"
+"    'cache.headers' => \\Illuminate\\Http\\Middleware\\SetCacheHeaders::class,\n"
+"    'can' => \\Illuminate\\Auth\\Middleware\\Authorize::class,\n"
+"    'guest' => \\App\\Http\\Middleware\\RedirectIfAuthenticated::class,\n"
+"    'signed' => \\Illuminate\\Routing\\Middleware\\ValidateSignature::class,\n"
+"    'throttle' => \\Illuminate\\Routing\\Middleware\\ThrottleRequests::class,\n"
+"    'verified' => \\Illuminate\\Auth\\Middleware\\EnsureEmailIsVerified::class,\n"
+"];\n"
+msgstr ""
+
+#: docs/10.x/middleware.md:block 35 (paragraph)
+msgid "Once the middleware alias has been defined in the HTTP kernel, you may use the alias when assigning middlware to routes:"
+msgstr ""
+
+#: docs/10.x/middleware.md:block 36 (code)
+msgid ""
+"Route::get('/profile', function () {\n"
+"    // ...\n"
+"})->middleware('auth');\n"
+msgstr ""
+
+#: docs/10.x/middleware.md:block 38 (header)
+msgid "Excluding Middleware"
+msgstr ""
+
+#: docs/10.x/middleware.md:block 39 (paragraph)
+msgid "When assigning middleware to a group of routes, you may occasionally need to prevent the middleware from being applied to an individual route within the group. You may accomplish this using the `withoutMiddleware` method:"
+msgstr ""
+
+#: docs/10.x/middleware.md:block 40 (code)
+msgid ""
+"use App\\Http\\Middleware\\EnsureTokenIsValid;\n"
+"\n"
+"Route::middleware([EnsureTokenIsValid::class])->group(function () {\n"
+"    Route::get('/', function () {\n"
+"        // ...\n"
+"    });\n"
+"\n"
+"    Route::get('/profile', function () {\n"
+"        // ...\n"
+"    })->withoutMiddleware([EnsureTokenIsValid::class]);\n"
+"});\n"
+msgstr ""
+
+#: docs/10.x/middleware.md:block 41 (paragraph)
+msgid "You may also exclude a given set of middleware from an entire [group](/docs/{{version}}/routing#route-groups) of route definitions:"
+msgstr ""
+
+#: docs/10.x/middleware.md:block 42 (code)
+msgid ""
+"use App\\Http\\Middleware\\EnsureTokenIsValid;\n"
+"\n"
+"Route::withoutMiddleware([EnsureTokenIsValid::class])->group(function () {\n"
+"    Route::get('/profile', function () {\n"
+"        // ...\n"
+"    });\n"
+"});\n"
+msgstr ""
+
+#: docs/10.x/middleware.md:block 43 (paragraph)
+msgid "The `withoutMiddleware` method can only remove route middleware and does not apply to [global middleware](#global-middleware)."
+msgstr ""
+
+#: docs/10.x/middleware.md:block 45 (header)
+msgid "Middleware Groups"
+msgstr ""
+
+#: docs/10.x/middleware.md:block 46 (paragraph)
+msgid "Sometimes you may want to group several middleware under a single key to make them easier to assign to routes. You may accomplish this using the `$middlewareGroups` property of your HTTP kernel."
+msgstr ""
+
+#: docs/10.x/middleware.md:block 47 (paragraph)
+msgid "Laravel includes predefined `web` and `api` middleware groups that contain common middleware you may want to apply to your web and API routes. Remember, these middleware groups are automatically applied by your application's `App\\Providers\\RouteServiceProvider` service provider to routes within your corresponding `web` and `api` route files:"
+msgstr ""
+
+#: docs/10.x/middleware.md:block 48 (code)
+msgid ""
+"/**\n"
+" * The application's route middleware groups.\n"
+" *\n"
+" * @var array\n"
+" */\n"
+"protected $middlewareGroups = [\n"
+"    'web' => [\n"
+"        \\App\\Http\\Middleware\\EncryptCookies::class,\n"
+"        \\Illuminate\\Cookie\\Middleware\\AddQueuedCookiesToResponse::class,\n"
+"        \\Illuminate\\Session\\Middleware\\StartSession::class,\n"
+"        \\Illuminate\\View\\Middleware\\ShareErrorsFromSession::class,\n"
+"        \\App\\Http\\Middleware\\VerifyCsrfToken::class,\n"
+"        \\Illuminate\\Routing\\Middleware\\SubstituteBindings::class,\n"
+"    ],\n"
+"\n"
+"    'api' => [\n"
+"        \\Illuminate\\Routing\\Middleware\\ThrottleRequests::class.':api',\n"
+"        \\Illuminate\\Routing\\Middleware\\SubstituteBindings::class,\n"
+"    ],\n"
+"];\n"
+msgstr ""
+
+#: docs/10.x/middleware.md:block 49 (paragraph)
+msgid "Middleware groups may be assigned to routes and controller actions using the same syntax as individual middleware. Again, middleware groups make it more convenient to assign many middleware to a route at once:"
+msgstr ""
+
+#: docs/10.x/middleware.md:block 50 (code)
+msgid ""
+"Route::get('/', function () {\n"
+"    // ...\n"
+"})->middleware('web');\n"
+"\n"
+"Route::middleware(['web'])->group(function () {\n"
+"    // ...\n"
+"});\n"
+msgstr ""
+
+#: docs/10.x/middleware.md:block 51 (quote)
+msgid "**Note** Out of the box, the `web` and `api` middleware groups are automatically applied to your application's corresponding `routes/web.php` and `routes/api.php` files by the `App\\Providers\\RouteServiceProvider`."
+msgstr ""
+
+#: docs/10.x/middleware.md:block 53 (header)
+msgid "Sorting Middleware"
+msgstr ""
+
+#: docs/10.x/middleware.md:block 54 (paragraph)
+msgid "Rarely, you may need your middleware to execute in a specific order but not have control over their order when they are assigned to the route. In this case, you may specify your middleware priority using the `$middlewarePriority` property of your `app/Http/Kernel.php` file. This property may not exist in your HTTP kernel by default. If it does not exist, you may copy its default definition below:"
+msgstr ""
+
+#: docs/10.x/middleware.md:block 55 (code)
+msgid ""
+"/**\n"
+" * The priority-sorted list of middleware.\n"
+" *\n"
+" * This forces non-global middleware to always be in the given order.\n"
+" *\n"
+" * @var string[]\n"
+" */\n"
+"protected $middlewarePriority = [\n"
+"    \\Illuminate\\Foundation\\Http\\Middleware\\HandlePrecognitiveRequests::class,\n"
+"    \\Illuminate\\Cookie\\Middleware\\EncryptCookies::class,\n"
+"    \\Illuminate\\Session\\Middleware\\StartSession::class,\n"
+"    \\Illuminate\\View\\Middleware\\ShareErrorsFromSession::class,\n"
+"    \\Illuminate\\Contracts\\Auth\\Middleware\\AuthenticatesRequests::class,\n"
+"    \\Illuminate\\Routing\\Middleware\\ThrottleRequests::class,\n"
+"    \\Illuminate\\Routing\\Middleware\\ThrottleRequestsWithRedis::class,\n"
+"    \\Illuminate\\Contracts\\Session\\Middleware\\AuthenticatesSessions::class,\n"
+"    \\Illuminate\\Routing\\Middleware\\SubstituteBindings::class,\n"
+"    \\Illuminate\\Auth\\Middleware\\Authorize::class,\n"
+"];\n"
+msgstr ""
+
+#: docs/10.x/middleware.md:block 57 (header)
+msgid "Middleware Parameters"
+msgstr ""
+
+#: docs/10.x/middleware.md:block 58 (paragraph)
+msgid "Middleware can also receive additional parameters. For example, if your application needs to verify that the authenticated user has a given \"role\" before performing a given action, you could create an `EnsureUserHasRole` middleware that receives a role name as an additional argument."
+msgstr ""
+
+#: docs/10.x/middleware.md:block 59 (paragraph)
+msgid "Additional middleware parameters will be passed to the middleware after the `$next` argument:"
+msgstr ""
+
+#: docs/10.x/middleware.md:block 60 (code)
+msgid ""
+"<?php\n"
+"\n"
+"namespace App\\Http\\Middleware;\n"
+"\n"
+"use Closure;\n"
+"use Illuminate\\Http\\Request;\n"
+"use Symfony\\Component\\HttpFoundation\\Response;\n"
+"\n"
+"class EnsureUserHasRole\n"
+"{\n"
+"    /**\n"
+"     * Handle an incoming request.\n"
+"     *\n"
+"     * @param  \\Closure(\\Illuminate\\Http\\Request): (\\Symfony\\Component\\HttpFoundation\\Response)  $next\n"
+"     */\n"
+"    public function handle(Request $request, Closure $next, string $role): Response\n"
+"    {\n"
+"        if (! $request->user()->hasRole($role)) {\n"
+"            // Redirect...\n"
+"        }\n"
+"\n"
+"        return $next($request);\n"
+"    }\n"
+"\n"
+"}\n"
+msgstr ""
+
+#: docs/10.x/middleware.md:block 61 (paragraph)
+msgid "Middleware parameters may be specified when defining the route by separating the middleware name and parameters with a `:`. Multiple parameters should be delimited by commas:"
+msgstr ""
+
+#: docs/10.x/middleware.md:block 62 (code)
+msgid ""
+"Route::put('/post/{id}', function (string $id) {\n"
+"    // ...\n"
+"})->middleware('role:editor');\n"
+msgstr ""
+
+#: docs/10.x/middleware.md:block 64 (header)
+msgid "Terminable Middleware"
+msgstr ""
+
+#: docs/10.x/middleware.md:block 65 (paragraph)
+msgid "Sometimes a middleware may need to do some work after the HTTP response has been sent to the browser. If you define a `terminate` method on your middleware and your web server is using FastCGI, the `terminate` method will automatically be called after the response is sent to the browser:"
+msgstr ""
+
+#: docs/10.x/middleware.md:block 66 (code)
+msgid ""
+"<?php\n"
+"\n"
+"namespace Illuminate\\Session\\Middleware;\n"
+"\n"
+"use Closure;\n"
+"use Illuminate\\Http\\Request;\n"
+"use Symfony\\Component\\HttpFoundation\\Response;\n"
+"\n"
+"class TerminatingMiddleware\n"
+"{\n"
+"    /**\n"
+"     * Handle an incoming request.\n"
+"     *\n"
+"     * @param  \\Closure(\\Illuminate\\Http\\Request): (\\Symfony\\Component\\HttpFoundation\\Response)  $next\n"
+"     */\n"
+"    public function handle(Request $request, Closure $next): Response\n"
+"    {\n"
+"        return $next($request);\n"
+"    }\n"
+"\n"
+"    /**\n"
+"     * Handle tasks after the response has been sent to the browser.\n"
+"     */\n"
+"    public function terminate(Request $request, Response $response): void\n"
+"    {\n"
+"        // ...\n"
+"    }\n"
+"}\n"
+msgstr ""
+
+#: docs/10.x/middleware.md:block 67 (paragraph)
+msgid "The `terminate` method should receive both the request and the response. Once you have defined a terminable middleware, you should add it to the list of routes or global middleware in the `app/Http/Kernel.php` file."
+msgstr ""
+
+#: docs/10.x/middleware.md:block 68 (paragraph)
+msgid "When calling the `terminate` method on your middleware, Laravel will resolve a fresh instance of the middleware from the [service container](/docs/{{version}}/container). If you would like to use the same middleware instance when the `handle` and `terminate` methods are called, register the middleware with the container using the container's `singleton` method. Typically this should be done in the `register` method of your `AppServiceProvider`:"
+msgstr ""
+
+#: docs/10.x/middleware.md:block 69 (code)
+msgid ""
+"use App\\Http\\Middleware\\TerminatingMiddleware;\n"
+"\n"
+"/**\n"
+" * Register any application services.\n"
+" */\n"
+"public function register(): void\n"
+"{\n"
+"    $this->app->singleton(TerminatingMiddleware::class);\n"
+"}\n"
 msgstr ""
 
 #: docs/8.x/middleware.md:block 12 (code)
@@ -98,24 +507,8 @@ msgid ""
 "}\n"
 msgstr ""
 
-#: docs/8.x/middleware.md:block 13 (paragraph)
-msgid "As you can see, if the given `token` does not match our secret token, the middleware will return an HTTP redirect to the client; otherwise, the request will be passed further into the application. To pass the request deeper into the application (allowing the middleware to \"pass\"), you should call the `$next` callback with the `$request`."
-msgstr ""
-
-#: docs/8.x/middleware.md:block 14 (paragraph)
-msgid "It's best to envision middleware as a series of \"layers\" HTTP requests must pass through before they hit your application. Each layer can examine the request and even reject it entirely."
-msgstr ""
-
 #: docs/8.x/middleware.md:block 15 (quote)
 msgid "{tip} All middleware are resolved via the [service container](/docs/{{version}}/container), so you may type-hint any dependencies you need within a middleware's constructor."
-msgstr ""
-
-#: docs/8.x/middleware.md:block 17 (header)
-msgid "Middleware & Responses"
-msgstr ""
-
-#: docs/8.x/middleware.md:block 18 (paragraph)
-msgid "Of course, a middleware can perform tasks before or after passing the request deeper into the application. For example, the following middleware would perform some task **before** the request is handled by the application:"
 msgstr ""
 
 #: docs/8.x/middleware.md:block 19 (code)
@@ -137,10 +530,6 @@ msgid ""
 "}\n"
 msgstr ""
 
-#: docs/8.x/middleware.md:block 20 (paragraph)
-msgid "However, this middleware would perform its task **after** the request is handled by the application:"
-msgstr ""
-
 #: docs/8.x/middleware.md:block 21 (code)
 msgid ""
 "<?php\n"
@@ -160,22 +549,6 @@ msgid ""
 "        return $response;\n"
 "    }\n"
 "}\n"
-msgstr ""
-
-#: docs/8.x/middleware.md:block 23 (header)
-msgid "Registering Middleware"
-msgstr ""
-
-#: docs/8.x/middleware.md:block 25 (header)
-msgid "Global Middleware"
-msgstr ""
-
-#: docs/8.x/middleware.md:block 26 (paragraph)
-msgid "If you want a middleware to run during every HTTP request to your application, list the middleware class in the `$middleware` property of your `app/Http/Kernel.php` class."
-msgstr ""
-
-#: docs/8.x/middleware.md:block 28 (header)
-msgid "Assigning Middleware To Routes"
 msgstr ""
 
 #: docs/8.x/middleware.md:block 29 (paragraph)
@@ -210,10 +583,6 @@ msgid ""
 "})->middleware('auth');\n"
 msgstr ""
 
-#: docs/8.x/middleware.md:block 33 (paragraph)
-msgid "You may assign multiple middleware to the route by passing an array of middleware names to the `middleware` method:"
-msgstr ""
-
 #: docs/8.x/middleware.md:block 34 (code)
 msgid ""
 "Route::get('/', function () {\n"
@@ -234,14 +603,6 @@ msgid ""
 "})->middleware(EnsureTokenIsValid::class);\n"
 msgstr ""
 
-#: docs/8.x/middleware.md:block 38 (header)
-msgid "Excluding Middleware"
-msgstr ""
-
-#: docs/8.x/middleware.md:block 39 (paragraph)
-msgid "When assigning middleware to a group of routes, you may occasionally need to prevent the middleware from being applied to an individual route within the group. You may accomplish this using the `withoutMiddleware` method:"
-msgstr ""
-
 #: docs/8.x/middleware.md:block 40 (code)
 msgid ""
 "use App\\Http\\Middleware\\EnsureTokenIsValid;\n"
@@ -257,10 +618,6 @@ msgid ""
 "});\n"
 msgstr ""
 
-#: docs/8.x/middleware.md:block 41 (paragraph)
-msgid "You may also exclude a given set of middleware from an entire [group](/docs/{{version}}/routing#route-groups) of route definitions:"
-msgstr ""
-
 #: docs/8.x/middleware.md:block 42 (code)
 msgid ""
 "use App\\Http\\Middleware\\EnsureTokenIsValid;\n"
@@ -270,18 +627,6 @@ msgid ""
 "        //\n"
 "    });\n"
 "});\n"
-msgstr ""
-
-#: docs/8.x/middleware.md:block 43 (paragraph)
-msgid "The `withoutMiddleware` method can only remove route middleware and does not apply to [global middleware](#global-middleware)."
-msgstr ""
-
-#: docs/8.x/middleware.md:block 45 (header)
-msgid "Middleware Groups"
-msgstr ""
-
-#: docs/8.x/middleware.md:block 46 (paragraph)
-msgid "Sometimes you may want to group several middleware under a single key to make them easier to assign to routes. You may accomplish this using the `$middlewareGroups` property of your HTTP kernel."
 msgstr ""
 
 #: docs/8.x/middleware.md:block 47 (paragraph)
@@ -313,10 +658,6 @@ msgid ""
 "];\n"
 msgstr ""
 
-#: docs/8.x/middleware.md:block 49 (paragraph)
-msgid "Middleware groups may be assigned to routes and controller actions using the same syntax as individual middleware. Again, middleware groups make it more convenient to assign many middleware to a route at once:"
-msgstr ""
-
 #: docs/8.x/middleware.md:block 50 (code)
 msgid ""
 "Route::get('/', function () {\n"
@@ -330,14 +671,6 @@ msgstr ""
 
 #: docs/8.x/middleware.md:block 51 (quote)
 msgid "{tip} Out of the box, the `web` and `api` middleware groups are automatically applied to your application's corresponding `routes/web.php` and `routes/api.php` files by the `App\\Providers\\RouteServiceProvider`."
-msgstr ""
-
-#: docs/8.x/middleware.md:block 53 (header)
-msgid "Sorting Middleware"
-msgstr ""
-
-#: docs/8.x/middleware.md:block 54 (paragraph)
-msgid "Rarely, you may need your middleware to execute in a specific order but not have control over their order when they are assigned to the route. In this case, you may specify your middleware priority using the `$middlewarePriority` property of your `app/Http/Kernel.php` file. This property may not exist in your HTTP kernel by default. If it does not exist, you may copy its default definition below:"
 msgstr ""
 
 #: docs/8.x/middleware.md:block 55 (code)
@@ -360,18 +693,6 @@ msgid ""
 "    \\Illuminate\\Routing\\Middleware\\SubstituteBindings::class,\n"
 "    \\Illuminate\\Auth\\Middleware\\Authorize::class,\n"
 "];\n"
-msgstr ""
-
-#: docs/8.x/middleware.md:block 57 (header)
-msgid "Middleware Parameters"
-msgstr ""
-
-#: docs/8.x/middleware.md:block 58 (paragraph)
-msgid "Middleware can also receive additional parameters. For example, if your application needs to verify that the authenticated user has a given \"role\" before performing a given action, you could create an `EnsureUserHasRole` middleware that receives a role name as an additional argument."
-msgstr ""
-
-#: docs/8.x/middleware.md:block 59 (paragraph)
-msgid "Additional middleware parameters will be passed to the middleware after the `$next` argument:"
 msgstr ""
 
 #: docs/8.x/middleware.md:block 60 (code)
@@ -404,23 +725,11 @@ msgid ""
 "}\n"
 msgstr ""
 
-#: docs/8.x/middleware.md:block 61 (paragraph)
-msgid "Middleware parameters may be specified when defining the route by separating the middleware name and parameters with a `:`. Multiple parameters should be delimited by commas:"
-msgstr ""
-
 #: docs/8.x/middleware.md:block 62 (code)
 msgid ""
 "Route::put('/post/{id}', function ($id) {\n"
 "    //\n"
 "})->middleware('role:editor');\n"
-msgstr ""
-
-#: docs/8.x/middleware.md:block 64 (header)
-msgid "Terminable Middleware"
-msgstr ""
-
-#: docs/8.x/middleware.md:block 65 (paragraph)
-msgid "Sometimes a middleware may need to do some work after the HTTP response has been sent to the browser. If you define a `terminate` method on your middleware and your web server is using FastCGI, the `terminate` method will automatically be called after the response is sent to the browser:"
 msgstr ""
 
 #: docs/8.x/middleware.md:block 66 (code)
@@ -459,14 +768,6 @@ msgid ""
 "}\n"
 msgstr ""
 
-#: docs/8.x/middleware.md:block 67 (paragraph)
-msgid "The `terminate` method should receive both the request and the response. Once you have defined a terminable middleware, you should add it to the list of routes or global middleware in the `app/Http/Kernel.php` file."
-msgstr ""
-
-#: docs/8.x/middleware.md:block 68 (paragraph)
-msgid "When calling the `terminate` method on your middleware, Laravel will resolve a fresh instance of the middleware from the [service container](/docs/{{version}}/container). If you would like to use the same middleware instance when the `handle` and `terminate` methods are called, register the middleware with the container using the container's `singleton` method. Typically this should be done in the `register` method of your `AppServiceProvider`:"
-msgstr ""
-
 #: docs/8.x/middleware.md:block 69 (code)
 msgid ""
 "use App\\Http\\Middleware\\TerminatingMiddleware;\n"
@@ -480,14 +781,6 @@ msgid ""
 "{\n"
 "    $this->app->singleton(TerminatingMiddleware::class);\n"
 "}\n"
-msgstr ""
-
-#: docs/9.x/middleware.md:block 15 (quote)
-msgid "**Note** All middleware are resolved via the [service container](/docs/{{version}}/container), so you may type-hint any dependencies you need within a middleware's constructor."
-msgstr ""
-
-#: docs/9.x/middleware.md:block 47 (paragraph)
-msgid "Laravel includes predefined `web` and `api` middleware groups that contain common middleware you may want to apply to your web and API routes. Remember, these middleware groups are automatically applied by your application's `App\\Providers\\RouteServiceProvider` service provider to routes within your corresponding `web` and `api` route files:"
 msgstr ""
 
 #: docs/9.x/middleware.md:block 48 (code)
@@ -512,297 +805,4 @@ msgid ""
 "        \\Illuminate\\Routing\\Middleware\\SubstituteBindings::class,\n"
 "    ],\n"
 "];\n"
-msgstr ""
-
-#: docs/9.x/middleware.md:block 51 (quote)
-msgid "**Note** Out of the box, the `web` and `api` middleware groups are automatically applied to your application's corresponding `routes/web.php` and `routes/api.php` files by the `App\\Providers\\RouteServiceProvider`."
-msgstr ""
-
-#: docs/9.x/middleware.md:block 55 (code)
-msgid ""
-"/**\n"
-" * The priority-sorted list of middleware.\n"
-" *\n"
-" * This forces non-global middleware to always be in the given order.\n"
-" *\n"
-" * @var string[]\n"
-" */\n"
-"protected $middlewarePriority = [\n"
-"    \\Illuminate\\Foundation\\Http\\Middleware\\HandlePrecognitiveRequests::class,\n"
-"    \\Illuminate\\Cookie\\Middleware\\EncryptCookies::class,\n"
-"    \\Illuminate\\Session\\Middleware\\StartSession::class,\n"
-"    \\Illuminate\\View\\Middleware\\ShareErrorsFromSession::class,\n"
-"    \\Illuminate\\Contracts\\Auth\\Middleware\\AuthenticatesRequests::class,\n"
-"    \\Illuminate\\Routing\\Middleware\\ThrottleRequests::class,\n"
-"    \\Illuminate\\Routing\\Middleware\\ThrottleRequestsWithRedis::class,\n"
-"    \\Illuminate\\Contracts\\Session\\Middleware\\AuthenticatesSessions::class,\n"
-"    \\Illuminate\\Routing\\Middleware\\SubstituteBindings::class,\n"
-"    \\Illuminate\\Auth\\Middleware\\Authorize::class,\n"
-"];\n"
-msgstr ""
-
-#: docs/master/middleware.md:block 12 (code)
-msgid ""
-"<?php\n"
-"\n"
-"namespace App\\Http\\Middleware;\n"
-"\n"
-"use Closure;\n"
-"use Illuminate\\Http\\Request;\n"
-"use Symfony\\Component\\HttpFoundation\\Response;\n"
-"\n"
-"class EnsureTokenIsValid\n"
-"{\n"
-"    /**\n"
-"     * Handle an incoming request.\n"
-"     *\n"
-"     * @param  \\Closure(\\Illuminate\\Http\\Request): (\\Symfony\\Component\\HttpFoundation\\Response)  $next\n"
-"     */\n"
-"    public function handle(Request $request, Closure $next): Response\n"
-"    {\n"
-"        if ($request->input('token') !== 'my-secret-token') {\n"
-"            return redirect('home');\n"
-"        }\n"
-"\n"
-"        return $next($request);\n"
-"    }\n"
-"}\n"
-msgstr ""
-
-#: docs/master/middleware.md:block 19 (code)
-msgid ""
-"<?php\n"
-"\n"
-"namespace App\\Http\\Middleware;\n"
-"\n"
-"use Closure;\n"
-"use Illuminate\\Http\\Request;\n"
-"use Symfony\\Component\\HttpFoundation\\Response;\n"
-"\n"
-"class BeforeMiddleware\n"
-"{\n"
-"    public function handle(Request $request, Closure $next): Response\n"
-"    {\n"
-"        // Perform action\n"
-"\n"
-"        return $next($request);\n"
-"    }\n"
-"}\n"
-msgstr ""
-
-#: docs/master/middleware.md:block 21 (code)
-msgid ""
-"<?php\n"
-"\n"
-"namespace App\\Http\\Middleware;\n"
-"\n"
-"use Closure;\n"
-"use Illuminate\\Http\\Request;\n"
-"use Symfony\\Component\\HttpFoundation\\Response;\n"
-"\n"
-"class AfterMiddleware\n"
-"{\n"
-"    public function handle(Request $request, Closure $next): Response\n"
-"    {\n"
-"        $response = $next($request);\n"
-"\n"
-"        // Perform action\n"
-"\n"
-"        return $response;\n"
-"    }\n"
-"}\n"
-msgstr ""
-
-#: docs/master/middleware.md:block 29 (paragraph)
-msgid "If you would like to assign middleware to specific routes, you may invoke the `middleware` method when defining the route:"
-msgstr ""
-
-#: docs/master/middleware.md:block 30 (code)
-msgid ""
-"use App\\Http\\Middleware\\Authenticate;\n"
-"\n"
-"Route::get('/profile', function () {\n"
-"    // ...\n"
-"})->middleware(Authenticate::class);\n"
-msgstr ""
-
-#: docs/master/middleware.md:block 32 (code)
-msgid ""
-"Route::get('/', function () {\n"
-"    // ...\n"
-"})->middleware([First::class, Second::class]);\n"
-msgstr ""
-
-#: docs/master/middleware.md:block 33 (paragraph)
-msgid "For convenience, you may assign aliases to middleware in your application's `app/Http/Kernel.php` file. By default, the `$middlewareAliases` property of this class contains entries for the middleware included with Laravel. You may add your own middleware to this list and assign it an alias of your choosing:"
-msgstr ""
-
-#: docs/master/middleware.md:block 34 (code)
-msgid ""
-"// Within App\\Http\\Kernel class...\n"
-"\n"
-"protected $middlewareAliases = [\n"
-"    'auth' => \\App\\Http\\Middleware\\Authenticate::class,\n"
-"    'auth.basic' => \\Illuminate\\Auth\\Middleware\\AuthenticateWithBasicAuth::class,\n"
-"    'bindings' => \\Illuminate\\Routing\\Middleware\\SubstituteBindings::class,\n"
-"    'cache.headers' => \\Illuminate\\Http\\Middleware\\SetCacheHeaders::class,\n"
-"    'can' => \\Illuminate\\Auth\\Middleware\\Authorize::class,\n"
-"    'guest' => \\App\\Http\\Middleware\\RedirectIfAuthenticated::class,\n"
-"    'signed' => \\Illuminate\\Routing\\Middleware\\ValidateSignature::class,\n"
-"    'throttle' => \\Illuminate\\Routing\\Middleware\\ThrottleRequests::class,\n"
-"    'verified' => \\Illuminate\\Auth\\Middleware\\EnsureEmailIsVerified::class,\n"
-"];\n"
-msgstr ""
-
-#: docs/master/middleware.md:block 35 (paragraph)
-msgid "Once the middleware alias has been defined in the HTTP kernel, you may use the alias when assigning middlware to routes:"
-msgstr ""
-
-#: docs/master/middleware.md:block 36 (code)
-msgid ""
-"Route::get('/profile', function () {\n"
-"    // ...\n"
-"})->middleware('auth');\n"
-msgstr ""
-
-#: docs/master/middleware.md:block 40 (code)
-msgid ""
-"use App\\Http\\Middleware\\EnsureTokenIsValid;\n"
-"\n"
-"Route::middleware([EnsureTokenIsValid::class])->group(function () {\n"
-"    Route::get('/', function () {\n"
-"        // ...\n"
-"    });\n"
-"\n"
-"    Route::get('/profile', function () {\n"
-"        // ...\n"
-"    })->withoutMiddleware([EnsureTokenIsValid::class]);\n"
-"});\n"
-msgstr ""
-
-#: docs/master/middleware.md:block 42 (code)
-msgid ""
-"use App\\Http\\Middleware\\EnsureTokenIsValid;\n"
-"\n"
-"Route::withoutMiddleware([EnsureTokenIsValid::class])->group(function () {\n"
-"    Route::get('/profile', function () {\n"
-"        // ...\n"
-"    });\n"
-"});\n"
-msgstr ""
-
-#: docs/master/middleware.md:block 48 (code)
-msgid ""
-"/**\n"
-" * The application's route middleware groups.\n"
-" *\n"
-" * @var array\n"
-" */\n"
-"protected $middlewareGroups = [\n"
-"    'web' => [\n"
-"        \\App\\Http\\Middleware\\EncryptCookies::class,\n"
-"        \\Illuminate\\Cookie\\Middleware\\AddQueuedCookiesToResponse::class,\n"
-"        \\Illuminate\\Session\\Middleware\\StartSession::class,\n"
-"        \\Illuminate\\View\\Middleware\\ShareErrorsFromSession::class,\n"
-"        \\App\\Http\\Middleware\\VerifyCsrfToken::class,\n"
-"        \\Illuminate\\Routing\\Middleware\\SubstituteBindings::class,\n"
-"    ],\n"
-"\n"
-"    'api' => [\n"
-"        \\Illuminate\\Routing\\Middleware\\ThrottleRequests::class.':api',\n"
-"        \\Illuminate\\Routing\\Middleware\\SubstituteBindings::class,\n"
-"    ],\n"
-"];\n"
-msgstr ""
-
-#: docs/master/middleware.md:block 50 (code)
-msgid ""
-"Route::get('/', function () {\n"
-"    // ...\n"
-"})->middleware('web');\n"
-"\n"
-"Route::middleware(['web'])->group(function () {\n"
-"    // ...\n"
-"});\n"
-msgstr ""
-
-#: docs/master/middleware.md:block 60 (code)
-msgid ""
-"<?php\n"
-"\n"
-"namespace App\\Http\\Middleware;\n"
-"\n"
-"use Closure;\n"
-"use Illuminate\\Http\\Request;\n"
-"use Symfony\\Component\\HttpFoundation\\Response;\n"
-"\n"
-"class EnsureUserHasRole\n"
-"{\n"
-"    /**\n"
-"     * Handle an incoming request.\n"
-"     *\n"
-"     * @param  \\Closure(\\Illuminate\\Http\\Request): (\\Symfony\\Component\\HttpFoundation\\Response)  $next\n"
-"     */\n"
-"    public function handle(Request $request, Closure $next, string $role): Response\n"
-"    {\n"
-"        if (! $request->user()->hasRole($role)) {\n"
-"            // Redirect...\n"
-"        }\n"
-"\n"
-"        return $next($request);\n"
-"    }\n"
-"\n"
-"}\n"
-msgstr ""
-
-#: docs/master/middleware.md:block 62 (code)
-msgid ""
-"Route::put('/post/{id}', function (string $id) {\n"
-"    // ...\n"
-"})->middleware('role:editor');\n"
-msgstr ""
-
-#: docs/master/middleware.md:block 66 (code)
-msgid ""
-"<?php\n"
-"\n"
-"namespace Illuminate\\Session\\Middleware;\n"
-"\n"
-"use Closure;\n"
-"use Illuminate\\Http\\Request;\n"
-"use Symfony\\Component\\HttpFoundation\\Response;\n"
-"\n"
-"class TerminatingMiddleware\n"
-"{\n"
-"    /**\n"
-"     * Handle an incoming request.\n"
-"     *\n"
-"     * @param  \\Closure(\\Illuminate\\Http\\Request): (\\Symfony\\Component\\HttpFoundation\\Response)  $next\n"
-"     */\n"
-"    public function handle(Request $request, Closure $next): Response\n"
-"    {\n"
-"        return $next($request);\n"
-"    }\n"
-"\n"
-"    /**\n"
-"     * Handle tasks after the response has been sent to the browser.\n"
-"     */\n"
-"    public function terminate(Request $request, Response $response): void\n"
-"    {\n"
-"        // ...\n"
-"    }\n"
-"}\n"
-msgstr ""
-
-#: docs/master/middleware.md:block 69 (code)
-msgid ""
-"use App\\Http\\Middleware\\TerminatingMiddleware;\n"
-"\n"
-"/**\n"
-" * Register any application services.\n"
-" */\n"
-"public function register(): void\n"
-"{\n"
-"    $this->app->singleton(TerminatingMiddleware::class);\n"
-"}\n"
 msgstr ""

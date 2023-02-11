@@ -2,108 +2,1098 @@
 msgid ""
 msgstr ""
 
-#: docs/8.x/requests.md:block 1 (header)
+#: docs/10.x/requests.md:block 1 (header)
 msgid "HTTP Requests"
 msgstr ""
 
-#: docs/8.x/requests.md:block 2 (unordered list)
+#: docs/10.x/requests.md:block 2 (unordered list)
 msgid "[Introduction](#introduction)"
 msgstr ""
 
-#: docs/8.x/requests.md:block 2 (unordered list)
+#: docs/10.x/requests.md:block 2 (unordered list)
 msgid "[Interacting With The Request](#interacting-with-the-request)"
 msgstr ""
 
-#: docs/8.x/requests.md:block 2 (unordered list)
+#: docs/10.x/requests.md:block 2 (unordered list)
 msgid "[Accessing The Request](#accessing-the-request)"
+msgstr ""
+
+#: docs/10.x/requests.md:block 2 (unordered list)
+msgid "[Request Path, Host, & Method](#request-path-and-method)"
+msgstr ""
+
+#: docs/10.x/requests.md:block 2 (unordered list)
+msgid "[Request Headers](#request-headers)"
+msgstr ""
+
+#: docs/10.x/requests.md:block 2 (unordered list)
+msgid "[Request IP Address](#request-ip-address)"
+msgstr ""
+
+#: docs/10.x/requests.md:block 2 (unordered list)
+msgid "[Content Negotiation](#content-negotiation)"
+msgstr ""
+
+#: docs/10.x/requests.md:block 2 (unordered list)
+msgid "[PSR-7 Requests](#psr7-requests)"
+msgstr ""
+
+#: docs/10.x/requests.md:block 2 (unordered list)
+msgid "[Input](#input)"
+msgstr ""
+
+#: docs/10.x/requests.md:block 2 (unordered list)
+msgid "[Retrieving Input](#retrieving-input)"
+msgstr ""
+
+#: docs/10.x/requests.md:block 2 (unordered list)
+msgid "[Determining If Input Is Present](#determining-if-input-is-present)"
+msgstr ""
+
+#: docs/10.x/requests.md:block 2 (unordered list)
+msgid "[Merging Additional Input](#merging-additional-input)"
+msgstr ""
+
+#: docs/10.x/requests.md:block 2 (unordered list)
+msgid "[Old Input](#old-input)"
+msgstr ""
+
+#: docs/10.x/requests.md:block 2 (unordered list)
+msgid "[Cookies](#cookies)"
+msgstr ""
+
+#: docs/10.x/requests.md:block 2 (unordered list)
+msgid "[Input Trimming & Normalization](#input-trimming-and-normalization)"
+msgstr ""
+
+#: docs/10.x/requests.md:block 2 (unordered list)
+msgid "[Files](#files)"
+msgstr ""
+
+#: docs/10.x/requests.md:block 2 (unordered list)
+msgid "[Retrieving Uploaded Files](#retrieving-uploaded-files)"
+msgstr ""
+
+#: docs/10.x/requests.md:block 2 (unordered list)
+msgid "[Storing Uploaded Files](#storing-uploaded-files)"
+msgstr ""
+
+#: docs/10.x/requests.md:block 2 (unordered list)
+msgid "[Configuring Trusted Proxies](#configuring-trusted-proxies)"
+msgstr ""
+
+#: docs/10.x/requests.md:block 2 (unordered list)
+msgid "[Configuring Trusted Hosts](#configuring-trusted-hosts)"
+msgstr ""
+
+#: docs/10.x/requests.md:block 4 (header)
+msgid "Introduction"
+msgstr ""
+
+#: docs/10.x/requests.md:block 5 (paragraph)
+msgid "Laravel's `Illuminate\\Http\\Request` class provides an object-oriented way to interact with the current HTTP request being handled by your application as well as retrieve the input, cookies, and files that were submitted with the request."
+msgstr ""
+
+#: docs/10.x/requests.md:block 7 (header)
+msgid "Interacting With The Request"
+msgstr ""
+
+#: docs/10.x/requests.md:block 9 (header)
+msgid "Accessing The Request"
+msgstr ""
+
+#: docs/10.x/requests.md:block 10 (paragraph)
+msgid "To obtain an instance of the current HTTP request via dependency injection, you should type-hint the `Illuminate\\Http\\Request` class on your route closure or controller method. The incoming request instance will automatically be injected by the Laravel [service container](/docs/{{version}}/container):"
+msgstr ""
+
+#: docs/10.x/requests.md:block 11 (code)
+msgid ""
+"<?php\n"
+"\n"
+"namespace App\\Http\\Controllers;\n"
+"\n"
+"use Illuminate\\Http\\Request;\n"
+"use Illuminate\\Http\\Response;\n"
+"\n"
+"class UserController extends Controller\n"
+"{\n"
+"    /**\n"
+"     * Store a new user.\n"
+"     */\n"
+"    public function store(Request $request): Response\n"
+"    {\n"
+"        $name = $request->input('name');\n"
+"\n"
+"        // ...\n"
+"\n"
+"        return response()->noContent();\n"
+"    }\n"
+"}\n"
+msgstr ""
+
+#: docs/10.x/requests.md:block 12 (paragraph)
+msgid "As mentioned, you may also type-hint the `Illuminate\\Http\\Request` class on a route closure. The service container will automatically inject the incoming request into the closure when it is executed:"
+msgstr ""
+
+#: docs/10.x/requests.md:block 13 (code)
+msgid ""
+"use Illuminate\\Http\\Request;\n"
+"\n"
+"Route::get('/', function (Request $request) {\n"
+"    // ...\n"
+"});\n"
+msgstr ""
+
+#: docs/10.x/requests.md:block 15 (header)
+msgid "Dependency Injection & Route Parameters"
+msgstr ""
+
+#: docs/10.x/requests.md:block 16 (paragraph)
+msgid "If your controller method is also expecting input from a route parameter you should list your route parameters after your other dependencies. For example, if your route is defined like so:"
+msgstr ""
+
+#: docs/10.x/requests.md:block 17 (code)
+msgid ""
+"use App\\Http\\Controllers\\UserController;\n"
+"\n"
+"Route::put('/user/{id}', [UserController::class, 'update']);\n"
+msgstr ""
+
+#: docs/10.x/requests.md:block 18 (paragraph)
+msgid "You may still type-hint the `Illuminate\\Http\\Request` and access your `id` route parameter by defining your controller method as follows:"
+msgstr ""
+
+#: docs/10.x/requests.md:block 19 (code)
+msgid ""
+"<?php\n"
+"\n"
+"namespace App\\Http\\Controllers;\n"
+"\n"
+"use Illuminate\\Http\\Request;\n"
+"use Illuminate\\Http\\Response;\n"
+"\n"
+"class UserController extends Controller\n"
+"{\n"
+"    /**\n"
+"     * Update the specified user.\n"
+"     */\n"
+"    public function update(Request $request, string $id): Response\n"
+"    {\n"
+"        // ...\n"
+"\n"
+"        return response()->noContent();\n"
+"    }\n"
+"}\n"
+msgstr ""
+
+#: docs/10.x/requests.md:block 21 (header)
+msgid "Request Path, Host, & Method"
+msgstr ""
+
+#: docs/10.x/requests.md:block 22 (paragraph)
+msgid "The `Illuminate\\Http\\Request` instance provides a variety of methods for examining the incoming HTTP request and extends the `Symfony\\Component\\HttpFoundation\\Request` class. We will discuss a few of the most important methods below."
+msgstr ""
+
+#: docs/10.x/requests.md:block 24 (header)
+msgid "Retrieving The Request Path"
+msgstr ""
+
+#: docs/10.x/requests.md:block 25 (paragraph)
+msgid "The `path` method returns the request's path information. So, if the incoming request is targeted at `http://example.com/foo/bar`, the `path` method will return `foo/bar`:"
+msgstr ""
+
+#: docs/10.x/requests.md:block 26 (code)
+msgid "$uri = $request->path();\n"
+msgstr ""
+
+#: docs/10.x/requests.md:block 28 (header)
+msgid "Inspecting The Request Path / Route"
+msgstr ""
+
+#: docs/10.x/requests.md:block 29 (paragraph)
+msgid "The `is` method allows you to verify that the incoming request path matches a given pattern. You may use the `*` character as a wildcard when utilizing this method:"
+msgstr ""
+
+#: docs/10.x/requests.md:block 30 (code)
+msgid ""
+"if ($request->is('admin/*')) {\n"
+"    // ...\n"
+"}\n"
+msgstr ""
+
+#: docs/10.x/requests.md:block 31 (paragraph)
+msgid "Using the `routeIs` method, you may determine if the incoming request has matched a [named route](/docs/{{version}}/routing#named-routes):"
+msgstr ""
+
+#: docs/10.x/requests.md:block 32 (code)
+msgid ""
+"if ($request->routeIs('admin.*')) {\n"
+"    // ...\n"
+"}\n"
+msgstr ""
+
+#: docs/10.x/requests.md:block 34 (header)
+msgid "Retrieving The Request URL"
+msgstr ""
+
+#: docs/10.x/requests.md:block 35 (paragraph)
+msgid "To retrieve the full URL for the incoming request you may use the `url` or `fullUrl` methods. The `url` method will return the URL without the query string, while the `fullUrl` method includes the query string:"
+msgstr ""
+
+#: docs/10.x/requests.md:block 36 (code)
+msgid ""
+"$url = $request->url();\n"
+"\n"
+"$urlWithQueryString = $request->fullUrl();\n"
+msgstr ""
+
+#: docs/10.x/requests.md:block 37 (paragraph)
+msgid "If you would like to append query string data to the current URL, you may call the `fullUrlWithQuery` method. This method merges the given array of query string variables with the current query string:"
+msgstr ""
+
+#: docs/10.x/requests.md:block 38 (code)
+msgid "$request->fullUrlWithQuery(['type' => 'phone']);\n"
+msgstr ""
+
+#: docs/10.x/requests.md:block 40 (header)
+msgid "Retrieving The Request Host"
+msgstr ""
+
+#: docs/10.x/requests.md:block 41 (paragraph)
+msgid "You may retrieve the \"host\" of the incoming request via the `host`, `httpHost`, and `schemeAndHttpHost` methods:"
+msgstr ""
+
+#: docs/10.x/requests.md:block 42 (code)
+msgid ""
+"$request->host();\n"
+"$request->httpHost();\n"
+"$request->schemeAndHttpHost();\n"
+msgstr ""
+
+#: docs/10.x/requests.md:block 44 (header)
+msgid "Retrieving The Request Method"
+msgstr ""
+
+#: docs/10.x/requests.md:block 45 (paragraph)
+msgid "The `method` method will return the HTTP verb for the request. You may use the `isMethod` method to verify that the HTTP verb matches a given string:"
+msgstr ""
+
+#: docs/10.x/requests.md:block 46 (code)
+msgid ""
+"$method = $request->method();\n"
+"\n"
+"if ($request->isMethod('post')) {\n"
+"    // ...\n"
+"}\n"
+msgstr ""
+
+#: docs/10.x/requests.md:block 48 (header)
+msgid "Request Headers"
+msgstr ""
+
+#: docs/10.x/requests.md:block 49 (paragraph)
+msgid "You may retrieve a request header from the `Illuminate\\Http\\Request` instance using the `header` method. If the header is not present on the request, `null` will be returned. However, the `header` method accepts an optional second argument that will be returned if the header is not present on the request:"
+msgstr ""
+
+#: docs/10.x/requests.md:block 50 (code)
+msgid ""
+"$value = $request->header('X-Header-Name');\n"
+"\n"
+"$value = $request->header('X-Header-Name', 'default');\n"
+msgstr ""
+
+#: docs/10.x/requests.md:block 51 (paragraph)
+msgid "The `hasHeader` method may be used to determine if the request contains a given header:"
+msgstr ""
+
+#: docs/10.x/requests.md:block 52 (code)
+msgid ""
+"if ($request->hasHeader('X-Header-Name')) {\n"
+"    // ...\n"
+"}\n"
+msgstr ""
+
+#: docs/10.x/requests.md:block 53 (paragraph)
+msgid "For convenience, the `bearerToken` method may be used to retrieve a bearer token from the `Authorization` header. If no such header is present, an empty string will be returned:"
+msgstr ""
+
+#: docs/10.x/requests.md:block 54 (code)
+msgid "$token = $request->bearerToken();\n"
+msgstr ""
+
+#: docs/10.x/requests.md:block 56 (header)
+msgid "Request IP Address"
+msgstr ""
+
+#: docs/10.x/requests.md:block 57 (paragraph)
+msgid "The `ip` method may be used to retrieve the IP address of the client that made the request to your application:"
+msgstr ""
+
+#: docs/10.x/requests.md:block 58 (code)
+msgid "$ipAddress = $request->ip();\n"
+msgstr ""
+
+#: docs/10.x/requests.md:block 60 (header)
+msgid "Content Negotiation"
+msgstr ""
+
+#: docs/10.x/requests.md:block 61 (paragraph)
+msgid "Laravel provides several methods for inspecting the incoming request's requested content types via the `Accept` header. First, the `getAcceptableContentTypes` method will return an array containing all of the content types accepted by the request:"
+msgstr ""
+
+#: docs/10.x/requests.md:block 62 (code)
+msgid "$contentTypes = $request->getAcceptableContentTypes();\n"
+msgstr ""
+
+#: docs/10.x/requests.md:block 63 (paragraph)
+msgid "The `accepts` method accepts an array of content types and returns `true` if any of the content types are accepted by the request. Otherwise, `false` will be returned:"
+msgstr ""
+
+#: docs/10.x/requests.md:block 64 (code)
+msgid ""
+"if ($request->accepts(['text/html', 'application/json'])) {\n"
+"    // ...\n"
+"}\n"
+msgstr ""
+
+#: docs/10.x/requests.md:block 65 (paragraph)
+msgid "You may use the `prefers` method to determine which content type out of a given array of content types is most preferred by the request. If none of the provided content types are accepted by the request, `null` will be returned:"
+msgstr ""
+
+#: docs/10.x/requests.md:block 66 (code)
+msgid "$preferred = $request->prefers(['text/html', 'application/json']);\n"
+msgstr ""
+
+#: docs/10.x/requests.md:block 67 (paragraph)
+msgid "Since many applications only serve HTML or JSON, you may use the `expectsJson` method to quickly determine if the incoming request expects a JSON response:"
+msgstr ""
+
+#: docs/10.x/requests.md:block 68 (code)
+msgid ""
+"if ($request->expectsJson()) {\n"
+"    // ...\n"
+"}\n"
+msgstr ""
+
+#: docs/10.x/requests.md:block 70 (header)
+msgid "PSR-7 Requests"
+msgstr ""
+
+#: docs/10.x/requests.md:block 71 (paragraph)
+msgid "The [PSR-7 standard](https://www.php-fig.org/psr/psr-7/) specifies interfaces for HTTP messages, including requests and responses. If you would like to obtain an instance of a PSR-7 request instead of a Laravel request, you will first need to install a few libraries. Laravel uses the *Symfony HTTP Message Bridge* component to convert typical Laravel requests and responses into PSR-7 compatible implementations:"
+msgstr ""
+
+#: docs/10.x/requests.md:block 72 (code)
+msgid ""
+"composer require symfony/psr-http-message-bridge\n"
+"composer require nyholm/psr7\n"
+msgstr ""
+
+#: docs/10.x/requests.md:block 73 (paragraph)
+msgid "Once you have installed these libraries, you may obtain a PSR-7 request by type-hinting the request interface on your route closure or controller method:"
+msgstr ""
+
+#: docs/10.x/requests.md:block 74 (code)
+msgid ""
+"use Psr\\Http\\Message\\ServerRequestInterface;\n"
+"\n"
+"Route::get('/', function (ServerRequestInterface $request) {\n"
+"    // ...\n"
+"});\n"
+msgstr ""
+
+#: docs/10.x/requests.md:block 75 (quote)
+msgid "**Note** If you return a PSR-7 response instance from a route or controller, it will automatically be converted back to a Laravel response instance and be displayed by the framework."
+msgstr ""
+
+#: docs/10.x/requests.md:block 77 (header)
+msgid "Input"
+msgstr ""
+
+#: docs/10.x/requests.md:block 79 (header)
+msgid "Retrieving Input"
+msgstr ""
+
+#: docs/10.x/requests.md:block 81 (header)
+msgid "Retrieving All Input Data"
+msgstr ""
+
+#: docs/10.x/requests.md:block 82 (paragraph)
+msgid "You may retrieve all of the incoming request's input data as an `array` using the `all` method. This method may be used regardless of whether the incoming request is from an HTML form or is an XHR request:"
+msgstr ""
+
+#: docs/10.x/requests.md:block 83 (code)
+msgid "$input = $request->all();\n"
+msgstr ""
+
+#: docs/10.x/requests.md:block 84 (paragraph)
+msgid "Using the `collect` method, you may retrieve all of the incoming request's input data as a [collection](/docs/{{version}}/collections):"
+msgstr ""
+
+#: docs/10.x/requests.md:block 85 (code)
+msgid "$input = $request->collect();\n"
+msgstr ""
+
+#: docs/10.x/requests.md:block 86 (paragraph)
+msgid "The `collect` method also allows you to retrieve a subset of the incoming request input as a collection:"
+msgstr ""
+
+#: docs/10.x/requests.md:block 87 (code)
+msgid ""
+"$request->collect('users')->each(function (string $user) {\n"
+"    // ...\n"
+"});\n"
+msgstr ""
+
+#: docs/10.x/requests.md:block 89 (header)
+msgid "Retrieving An Input Value"
+msgstr ""
+
+#: docs/10.x/requests.md:block 90 (paragraph)
+msgid "Using a few simple methods, you may access all of the user input from your `Illuminate\\Http\\Request` instance without worrying about which HTTP verb was used for the request. Regardless of the HTTP verb, the `input` method may be used to retrieve user input:"
+msgstr ""
+
+#: docs/10.x/requests.md:block 91 (code)
+msgid "$name = $request->input('name');\n"
+msgstr ""
+
+#: docs/10.x/requests.md:block 92 (paragraph)
+msgid "You may pass a default value as the second argument to the `input` method. This value will be returned if the requested input value is not present on the request:"
+msgstr ""
+
+#: docs/10.x/requests.md:block 93 (code)
+msgid "$name = $request->input('name', 'Sally');\n"
+msgstr ""
+
+#: docs/10.x/requests.md:block 94 (paragraph)
+msgid "When working with forms that contain array inputs, use \"dot\" notation to access the arrays:"
+msgstr ""
+
+#: docs/10.x/requests.md:block 95 (code)
+msgid ""
+"$name = $request->input('products.0.name');\n"
+"\n"
+"$names = $request->input('products.*.name');\n"
+msgstr ""
+
+#: docs/10.x/requests.md:block 96 (paragraph)
+msgid "You may call the `input` method without any arguments in order to retrieve all of the input values as an associative array:"
+msgstr ""
+
+#: docs/10.x/requests.md:block 97 (code)
+msgid "$input = $request->input();\n"
+msgstr ""
+
+#: docs/10.x/requests.md:block 99 (header)
+msgid "Retrieving Input From The Query String"
+msgstr ""
+
+#: docs/10.x/requests.md:block 100 (paragraph)
+msgid "While the `input` method retrieves values from the entire request payload (including the query string), the `query` method will only retrieve values from the query string:"
+msgstr ""
+
+#: docs/10.x/requests.md:block 101 (code)
+msgid "$name = $request->query('name');\n"
+msgstr ""
+
+#: docs/10.x/requests.md:block 102 (paragraph)
+msgid "If the requested query string value data is not present, the second argument to this method will be returned:"
+msgstr ""
+
+#: docs/10.x/requests.md:block 103 (code)
+msgid "$name = $request->query('name', 'Helen');\n"
+msgstr ""
+
+#: docs/10.x/requests.md:block 104 (paragraph)
+msgid "You may call the `query` method without any arguments in order to retrieve all of the query string values as an associative array:"
+msgstr ""
+
+#: docs/10.x/requests.md:block 105 (code)
+msgid "$query = $request->query();\n"
+msgstr ""
+
+#: docs/10.x/requests.md:block 107 (header)
+msgid "Retrieving JSON Input Values"
+msgstr ""
+
+#: docs/10.x/requests.md:block 108 (paragraph)
+msgid "When sending JSON requests to your application, you may access the JSON data via the `input` method as long as the `Content-Type` header of the request is properly set to `application/json`. You may even use \"dot\" syntax to retrieve values that are nested within JSON arrays / objects:"
+msgstr ""
+
+#: docs/10.x/requests.md:block 109 (code)
+msgid "$name = $request->input('user.name');\n"
+msgstr ""
+
+#: docs/10.x/requests.md:block 111 (header)
+msgid "Retrieving Stringable Input Values"
+msgstr ""
+
+#: docs/10.x/requests.md:block 112 (paragraph)
+msgid "Instead of retrieving the request's input data as a primitive `string`, you may use the `string` method to retrieve the request data as an instance of [`Illuminate\\Support\\Stringable`](/docs/{{version}}/helpers#fluent-strings):"
+msgstr ""
+
+#: docs/10.x/requests.md:block 113 (code)
+msgid "$name = $request->string('name')->trim();\n"
+msgstr ""
+
+#: docs/10.x/requests.md:block 115 (header)
+msgid "Retrieving Boolean Input Values"
+msgstr ""
+
+#: docs/10.x/requests.md:block 116 (paragraph)
+msgid "When dealing with HTML elements like checkboxes, your application may receive \"truthy\" values that are actually strings. For example, \"true\" or \"on\". For convenience, you may use the `boolean` method to retrieve these values as booleans. The `boolean` method returns `true` for 1, \"1\", true, \"true\", \"on\", and \"yes\". All other values will return `false`:"
+msgstr ""
+
+#: docs/10.x/requests.md:block 117 (code)
+msgid "$archived = $request->boolean('archived');\n"
+msgstr ""
+
+#: docs/10.x/requests.md:block 119 (header)
+msgid "Retrieving Date Input Values"
+msgstr ""
+
+#: docs/10.x/requests.md:block 120 (paragraph)
+msgid "For convenience, input values containing dates / times may be retrieved as Carbon instances using the `date` method. If the request does not contain an input value with the given name, `null` will be returned:"
+msgstr ""
+
+#: docs/10.x/requests.md:block 121 (code)
+msgid "$birthday = $request->date('birthday');\n"
+msgstr ""
+
+#: docs/10.x/requests.md:block 122 (paragraph)
+msgid "The second and third arguments accepted by the `date` method may be used to specify the date's format and timezone, respectively:"
+msgstr ""
+
+#: docs/10.x/requests.md:block 123 (code)
+msgid "$elapsed = $request->date('elapsed', '!H:i', 'Europe/Madrid');\n"
+msgstr ""
+
+#: docs/10.x/requests.md:block 124 (paragraph)
+msgid "If the input value is present but has an invalid format, an `InvalidArgumentException` will be thrown; therefore, it is recommended that you validate the input before invoking the `date` method."
+msgstr ""
+
+#: docs/10.x/requests.md:block 126 (header)
+msgid "Retrieving Enum Input Values"
+msgstr ""
+
+#: docs/10.x/requests.md:block 127 (paragraph)
+msgid "Input values that correspond to [PHP enums](https://www.php.net/manual/en/language.types.enumerations.php) may also be retrieved from the request. If the request does not contain an input value with the given name or the enum does not have a backing value that matches the input value, `null` will be returned. The `enum` method accepts the name of the input value and the enum class as its first and second arguments:"
+msgstr ""
+
+#: docs/10.x/requests.md:block 128 (code)
+msgid ""
+"use App\\Enums\\Status;\n"
+"\n"
+"$status = $request->enum('status', Status::class);\n"
+msgstr ""
+
+#: docs/10.x/requests.md:block 130 (header)
+msgid "Retrieving Input Via Dynamic Properties"
+msgstr ""
+
+#: docs/10.x/requests.md:block 131 (paragraph)
+msgid "You may also access user input using dynamic properties on the `Illuminate\\Http\\Request` instance. For example, if one of your application's forms contains a `name` field, you may access the value of the field like so:"
+msgstr ""
+
+#: docs/10.x/requests.md:block 132 (code)
+msgid "$name = $request->name;\n"
+msgstr ""
+
+#: docs/10.x/requests.md:block 133 (paragraph)
+msgid "When using dynamic properties, Laravel will first look for the parameter's value in the request payload. If it is not present, Laravel will search for the field in the matched route's parameters."
+msgstr ""
+
+#: docs/10.x/requests.md:block 135 (header)
+msgid "Retrieving A Portion Of The Input Data"
+msgstr ""
+
+#: docs/10.x/requests.md:block 136 (paragraph)
+msgid "If you need to retrieve a subset of the input data, you may use the `only` and `except` methods. Both of these methods accept a single `array` or a dynamic list of arguments:"
+msgstr ""
+
+#: docs/10.x/requests.md:block 137 (code)
+msgid ""
+"$input = $request->only(['username', 'password']);\n"
+"\n"
+"$input = $request->only('username', 'password');\n"
+"\n"
+"$input = $request->except(['credit_card']);\n"
+"\n"
+"$input = $request->except('credit_card');\n"
+msgstr ""
+
+#: docs/10.x/requests.md:block 138 (quote)
+msgid "**Warning** The `only` method returns all of the key / value pairs that you request; however, it will not return key / value pairs that are not present on the request."
+msgstr ""
+
+#: docs/10.x/requests.md:block 140 (header)
+msgid "Determining If Input Is Present"
+msgstr ""
+
+#: docs/10.x/requests.md:block 141 (paragraph)
+msgid "You may use the `has` method to determine if a value is present on the request. The `has` method returns `true` if the value is present on the request:"
+msgstr ""
+
+#: docs/10.x/requests.md:block 142 (code)
+msgid ""
+"if ($request->has('name')) {\n"
+"    // ...\n"
+"}\n"
+msgstr ""
+
+#: docs/10.x/requests.md:block 143 (paragraph)
+msgid "When given an array, the `has` method will determine if all of the specified values are present:"
+msgstr ""
+
+#: docs/10.x/requests.md:block 144 (code)
+msgid ""
+"if ($request->has(['name', 'email'])) {\n"
+"    // ...\n"
+"}\n"
+msgstr ""
+
+#: docs/10.x/requests.md:block 145 (paragraph)
+msgid "The `whenHas` method will execute the given closure if a value is present on the request:"
+msgstr ""
+
+#: docs/10.x/requests.md:block 146 (code)
+msgid ""
+"$request->whenHas('name', function (string $input) {\n"
+"    // ...\n"
+"});\n"
+msgstr ""
+
+#: docs/10.x/requests.md:block 147 (paragraph)
+msgid "A second closure may be passed to the `whenHas` method that will be executed if the specified value is not present on the request:"
+msgstr ""
+
+#: docs/10.x/requests.md:block 148 (code)
+msgid ""
+"$request->whenHas('name', function (string $input) {\n"
+"    // The \"name\" value is present...\n"
+"}, function () {\n"
+"    // The \"name\" value is not present...\n"
+"});\n"
+msgstr ""
+
+#: docs/10.x/requests.md:block 149 (paragraph)
+msgid "The `hasAny` method returns `true` if any of the specified values are present:"
+msgstr ""
+
+#: docs/10.x/requests.md:block 150 (code)
+msgid ""
+"if ($request->hasAny(['name', 'email'])) {\n"
+"    // ...\n"
+"}\n"
+msgstr ""
+
+#: docs/10.x/requests.md:block 151 (paragraph)
+msgid "If you would like to determine if a value is present on the request and is not an empty string, you may use the `filled` method:"
+msgstr ""
+
+#: docs/10.x/requests.md:block 152 (code)
+msgid ""
+"if ($request->filled('name')) {\n"
+"    // ...\n"
+"}\n"
+msgstr ""
+
+#: docs/10.x/requests.md:block 153 (paragraph)
+msgid "The `whenFilled` method will execute the given closure if a value is present on the request and is not an empty string:"
+msgstr ""
+
+#: docs/10.x/requests.md:block 154 (code)
+msgid ""
+"$request->whenFilled('name', function (string $input) {\n"
+"    // ...\n"
+"});\n"
+msgstr ""
+
+#: docs/10.x/requests.md:block 155 (paragraph)
+msgid "A second closure may be passed to the `whenFilled` method that will be executed if the specified value is not \"filled\":"
+msgstr ""
+
+#: docs/10.x/requests.md:block 156 (code)
+msgid ""
+"$request->whenFilled('name', function (string $input) {\n"
+"    // The \"name\" value is filled...\n"
+"}, function () {\n"
+"    // The \"name\" value is not filled...\n"
+"});\n"
+msgstr ""
+
+#: docs/10.x/requests.md:block 157 (paragraph)
+msgid "To determine if a given key is absent from the request, you may use the `missing` and `whenMissing` methods:"
+msgstr ""
+
+#: docs/10.x/requests.md:block 158 (code)
+msgid ""
+"if ($request->missing('name')) {\n"
+"    // ...\n"
+"}\n"
+"\n"
+"$request->whenMissing('name', function (array $input) {\n"
+"    // The \"name\" value is missing...\n"
+"}, function () {\n"
+"    // The \"name\" value is present...\n"
+"});\n"
+msgstr ""
+
+#: docs/10.x/requests.md:block 160 (header)
+msgid "Merging Additional Input"
+msgstr ""
+
+#: docs/10.x/requests.md:block 161 (paragraph)
+msgid "Sometimes you may need to manually merge additional input into the request's existing input data. To accomplish this, you may use the `merge` method. If a given input key already exists on the request, it will be overwritten by the data provided to the `merge` method:"
+msgstr ""
+
+#: docs/10.x/requests.md:block 162 (code)
+msgid "$request->merge(['votes' => 0]);\n"
+msgstr ""
+
+#: docs/10.x/requests.md:block 163 (paragraph)
+msgid "The `mergeIfMissing` method may be used to merge input into the request if the corresponding keys do not already exist within the request's input data:"
+msgstr ""
+
+#: docs/10.x/requests.md:block 164 (code)
+msgid "$request->mergeIfMissing(['votes' => 0]);\n"
+msgstr ""
+
+#: docs/10.x/requests.md:block 166 (header)
+msgid "Old Input"
+msgstr ""
+
+#: docs/10.x/requests.md:block 167 (paragraph)
+msgid "Laravel allows you to keep input from one request during the next request. This feature is particularly useful for re-populating forms after detecting validation errors. However, if you are using Laravel's included [validation features](/docs/{{version}}/validation), it is possible that you will not need to manually use these session input flashing methods directly, as some of Laravel's built-in validation facilities will call them automatically."
+msgstr ""
+
+#: docs/10.x/requests.md:block 169 (header)
+msgid "Flashing Input To The Session"
+msgstr ""
+
+#: docs/10.x/requests.md:block 170 (paragraph)
+msgid "The `flash` method on the `Illuminate\\Http\\Request` class will flash the current input to the [session](/docs/{{version}}/session) so that it is available during the user's next request to the application:"
+msgstr ""
+
+#: docs/10.x/requests.md:block 171 (code)
+msgid "$request->flash();\n"
+msgstr ""
+
+#: docs/10.x/requests.md:block 172 (paragraph)
+msgid "You may also use the `flashOnly` and `flashExcept` methods to flash a subset of the request data to the session. These methods are useful for keeping sensitive information such as passwords out of the session:"
+msgstr ""
+
+#: docs/10.x/requests.md:block 173 (code)
+msgid ""
+"$request->flashOnly(['username', 'email']);\n"
+"\n"
+"$request->flashExcept('password');\n"
+msgstr ""
+
+#: docs/10.x/requests.md:block 175 (header)
+msgid "Flashing Input Then Redirecting"
+msgstr ""
+
+#: docs/10.x/requests.md:block 176 (paragraph)
+msgid "Since you often will want to flash input to the session and then redirect to the previous page, you may easily chain input flashing onto a redirect using the `withInput` method:"
+msgstr ""
+
+#: docs/10.x/requests.md:block 177 (code)
+msgid ""
+"return redirect('form')->withInput();\n"
+"\n"
+"return redirect()->route('user.create')->withInput();\n"
+"\n"
+"return redirect('form')->withInput(\n"
+"    $request->except('password')\n"
+");\n"
+msgstr ""
+
+#: docs/10.x/requests.md:block 179 (header)
+msgid "Retrieving Old Input"
+msgstr ""
+
+#: docs/10.x/requests.md:block 180 (paragraph)
+msgid "To retrieve flashed input from the previous request, invoke the `old` method on an instance of `Illuminate\\Http\\Request`. The `old` method will pull the previously flashed input data from the [session](/docs/{{version}}/session):"
+msgstr ""
+
+#: docs/10.x/requests.md:block 181 (code)
+msgid "$username = $request->old('username');\n"
+msgstr ""
+
+#: docs/10.x/requests.md:block 182 (paragraph)
+msgid "Laravel also provides a global `old` helper. If you are displaying old input within a [Blade template](/docs/{{version}}/blade), it is more convenient to use the `old` helper to repopulate the form. If no old input exists for the given field, `null` will be returned:"
+msgstr ""
+
+#: docs/10.x/requests.md:block 183 (code)
+msgid "<input type=\"text\" name=\"username\" value=\"{{ old('username') }}\">\n"
+msgstr ""
+
+#: docs/10.x/requests.md:block 185 (header)
+msgid "Cookies"
+msgstr ""
+
+#: docs/10.x/requests.md:block 187 (header)
+msgid "Retrieving Cookies From Requests"
+msgstr ""
+
+#: docs/10.x/requests.md:block 188 (paragraph)
+msgid "All cookies created by the Laravel framework are encrypted and signed with an authentication code, meaning they will be considered invalid if they have been changed by the client. To retrieve a cookie value from the request, use the `cookie` method on an `Illuminate\\Http\\Request` instance:"
+msgstr ""
+
+#: docs/10.x/requests.md:block 189 (code)
+msgid "$value = $request->cookie('name');\n"
+msgstr ""
+
+#: docs/10.x/requests.md:block 191 (header)
+msgid "Input Trimming & Normalization"
+msgstr ""
+
+#: docs/10.x/requests.md:block 192 (paragraph)
+msgid "By default, Laravel includes the `App\\Http\\Middleware\\TrimStrings` and `Illuminate\\Foundation\\Http\\Middleware\\ConvertEmptyStringsToNull` middleware in your application's global middleware stack. These middleware are listed in the global middleware stack by the `App\\Http\\Kernel` class. These middleware will automatically trim all incoming string fields on the request, as well as convert any empty string fields to `null`. This allows you to not have to worry about these normalization concerns in your routes and controllers."
+msgstr ""
+
+#: docs/10.x/requests.md:block 193 (header)
+msgid "Disabling Input Normalization"
+msgstr ""
+
+#: docs/10.x/requests.md:block 194 (paragraph)
+msgid "If you would like to disable this behavior for all requests, you may remove the two middleware from your application's middleware stack by removing them from the `$middleware` property of your `App\\Http\\Kernel` class."
+msgstr ""
+
+#: docs/10.x/requests.md:block 195 (paragraph)
+msgid "If you would like to disable string trimming and empty string conversion for a subset of requests to your application, you may use the `skipWhen` method offered by both middleware. This method accepts a closure which should return `true` or `false` to indicate if input normalization should be skipped. Typically, the `skipWhen` method should be invoked in the `boot` method of your application's `AppServiceProvider`."
+msgstr ""
+
+#: docs/10.x/requests.md:block 196 (code)
+msgid ""
+"use App\\Http\\Middleware\\TrimStrings;\n"
+"use Illuminate\\Http\\Request;\n"
+"use Illuminate\\Foundation\\Http\\Middleware\\ConvertEmptyStringsToNull;\n"
+"\n"
+"/**\n"
+" * Bootstrap any application services.\n"
+" */\n"
+"public function boot(): void\n"
+"{\n"
+"    TrimStrings::skipWhen(function (Request $request) {\n"
+"        return $request->is('admin/*');\n"
+"    });\n"
+"\n"
+"    ConvertEmptyStringsToNull::skipWhen(function (Request $request) {\n"
+"        // ...\n"
+"    });\n"
+"}\n"
+msgstr ""
+
+#: docs/10.x/requests.md:block 198 (header)
+msgid "Files"
+msgstr ""
+
+#: docs/10.x/requests.md:block 200 (header)
+msgid "Retrieving Uploaded Files"
+msgstr ""
+
+#: docs/10.x/requests.md:block 201 (paragraph)
+msgid "You may retrieve uploaded files from an `Illuminate\\Http\\Request` instance using the `file` method or using dynamic properties. The `file` method returns an instance of the `Illuminate\\Http\\UploadedFile` class, which extends the PHP `SplFileInfo` class and provides a variety of methods for interacting with the file:"
+msgstr ""
+
+#: docs/10.x/requests.md:block 202 (code)
+msgid ""
+"$file = $request->file('photo');\n"
+"\n"
+"$file = $request->photo;\n"
+msgstr ""
+
+#: docs/10.x/requests.md:block 203 (paragraph)
+msgid "You may determine if a file is present on the request using the `hasFile` method:"
+msgstr ""
+
+#: docs/10.x/requests.md:block 204 (code)
+msgid ""
+"if ($request->hasFile('photo')) {\n"
+"    // ...\n"
+"}\n"
+msgstr ""
+
+#: docs/10.x/requests.md:block 206 (header)
+msgid "Validating Successful Uploads"
+msgstr ""
+
+#: docs/10.x/requests.md:block 207 (paragraph)
+msgid "In addition to checking if the file is present, you may verify that there were no problems uploading the file via the `isValid` method:"
+msgstr ""
+
+#: docs/10.x/requests.md:block 208 (code)
+msgid ""
+"if ($request->file('photo')->isValid()) {\n"
+"    // ...\n"
+"}\n"
+msgstr ""
+
+#: docs/10.x/requests.md:block 210 (header)
+msgid "File Paths & Extensions"
+msgstr ""
+
+#: docs/10.x/requests.md:block 211 (paragraph)
+msgid "The `UploadedFile` class also contains methods for accessing the file's fully-qualified path and its extension. The `extension` method will attempt to guess the file's extension based on its contents. This extension may be different from the extension that was supplied by the client:"
+msgstr ""
+
+#: docs/10.x/requests.md:block 212 (code)
+msgid ""
+"$path = $request->photo->path();\n"
+"\n"
+"$extension = $request->photo->extension();\n"
+msgstr ""
+
+#: docs/10.x/requests.md:block 214 (header)
+msgid "Other File Methods"
+msgstr ""
+
+#: docs/10.x/requests.md:block 215 (paragraph)
+msgid "There are a variety of other methods available on `UploadedFile` instances. Check out the [API documentation for the class](https://github.com/symfony/symfony/blob/6.0/src/Symfony/Component/HttpFoundation/File/UploadedFile.php) for more information regarding these methods."
+msgstr ""
+
+#: docs/10.x/requests.md:block 217 (header)
+msgid "Storing Uploaded Files"
+msgstr ""
+
+#: docs/10.x/requests.md:block 218 (paragraph)
+msgid "To store an uploaded file, you will typically use one of your configured [filesystems](/docs/{{version}}/filesystem). The `UploadedFile` class has a `store` method that will move an uploaded file to one of your disks, which may be a location on your local filesystem or a cloud storage location like Amazon S3."
+msgstr ""
+
+#: docs/10.x/requests.md:block 219 (paragraph)
+msgid "The `store` method accepts the path where the file should be stored relative to the filesystem's configured root directory. This path should not contain a filename, since a unique ID will automatically be generated to serve as the filename."
+msgstr ""
+
+#: docs/10.x/requests.md:block 220 (paragraph)
+msgid "The `store` method also accepts an optional second argument for the name of the disk that should be used to store the file. The method will return the path of the file relative to the disk's root:"
+msgstr ""
+
+#: docs/10.x/requests.md:block 221 (code)
+msgid ""
+"$path = $request->photo->store('images');\n"
+"\n"
+"$path = $request->photo->store('images', 's3');\n"
+msgstr ""
+
+#: docs/10.x/requests.md:block 222 (paragraph)
+msgid "If you do not want a filename to be automatically generated, you may use the `storeAs` method, which accepts the path, filename, and disk name as its arguments:"
+msgstr ""
+
+#: docs/10.x/requests.md:block 223 (code)
+msgid ""
+"$path = $request->photo->storeAs('images', 'filename.jpg');\n"
+"\n"
+"$path = $request->photo->storeAs('images', 'filename.jpg', 's3');\n"
+msgstr ""
+
+#: docs/10.x/requests.md:block 224 (quote)
+msgid "**Note** For more information about file storage in Laravel, check out the complete [file storage documentation](/docs/{{version}}/filesystem)."
+msgstr ""
+
+#: docs/10.x/requests.md:block 226 (header)
+msgid "Configuring Trusted Proxies"
+msgstr ""
+
+#: docs/10.x/requests.md:block 227 (paragraph)
+msgid "When running your applications behind a load balancer that terminates TLS / SSL certificates, you may notice your application sometimes does not generate HTTPS links when using the `url` helper. Typically this is because your application is being forwarded traffic from your load balancer on port 80 and does not know it should generate secure links."
+msgstr ""
+
+#: docs/10.x/requests.md:block 228 (paragraph)
+msgid "To solve this, you may use the `App\\Http\\Middleware\\TrustProxies` middleware that is included in your Laravel application, which allows you to quickly customize the load balancers or proxies that should be trusted by your application. Your trusted proxies should be listed as an array on the `$proxies` property of this middleware. In addition to configuring the trusted proxies, you may configure the proxy `$headers` that should be trusted:"
+msgstr ""
+
+#: docs/10.x/requests.md:block 229 (code)
+msgid ""
+"<?php\n"
+"\n"
+"namespace App\\Http\\Middleware;\n"
+"\n"
+"use Illuminate\\Http\\Middleware\\TrustProxies as Middleware;\n"
+"use Illuminate\\Http\\Request;\n"
+"\n"
+"class TrustProxies extends Middleware\n"
+"{\n"
+"    /**\n"
+"     * The trusted proxies for this application.\n"
+"     *\n"
+"     * @var string|array\n"
+"     */\n"
+"    protected $proxies = [\n"
+"        '192.168.1.1',\n"
+"        '192.168.1.2',\n"
+"    ];\n"
+"\n"
+"    /**\n"
+"     * The headers that should be used to detect proxies.\n"
+"     *\n"
+"     * @var int\n"
+"     */\n"
+"    protected $headers = Request::HEADER_X_FORWARDED_FOR | Request::HEADER_X_FORWARDED_HOST | Request::HEADER_X_FORWARDED_PORT | Request::HEADER_X_FORWARDED_PROTO;\n"
+"}\n"
+msgstr ""
+
+#: docs/10.x/requests.md:block 230 (quote)
+msgid "**Note** If you are using AWS Elastic Load Balancing, your `$headers` value should be `Request::HEADER_X_FORWARDED_AWS_ELB`. For more information on the constants that may be used in the `$headers` property, check out Symfony's documentation on [trusting proxies](https://symfony.com/doc/current/deployment/proxies.html)."
+msgstr ""
+
+#: docs/10.x/requests.md:block 232 (header)
+msgid "Trusting All Proxies"
+msgstr ""
+
+#: docs/10.x/requests.md:block 233 (paragraph)
+msgid "If you are using Amazon AWS or another \"cloud\" load balancer provider, you may not know the IP addresses of your actual balancers. In this case, you may use `*` to trust all proxies:"
+msgstr ""
+
+#: docs/10.x/requests.md:block 234 (code)
+msgid ""
+"/**\n"
+" * The trusted proxies for this application.\n"
+" *\n"
+" * @var string|array\n"
+" */\n"
+"protected $proxies = '*';\n"
+msgstr ""
+
+#: docs/10.x/requests.md:block 236 (header)
+msgid "Configuring Trusted Hosts"
+msgstr ""
+
+#: docs/10.x/requests.md:block 237 (paragraph)
+msgid "By default, Laravel will respond to all requests it receives regardless of the content of the HTTP request's `Host` header. In addition, the `Host` header's value will be used when generating absolute URLs to your application during a web request."
+msgstr ""
+
+#: docs/10.x/requests.md:block 238 (paragraph)
+msgid "Typically, you should configure your web server, such as Nginx or Apache, to only send requests to your application that match a given host name. However, if you do not have the ability to customize your web server directly and need to instruct Laravel to only respond to certain host names, you may do so by enabling the `App\\Http\\Middleware\\TrustHosts` middleware for your application."
+msgstr ""
+
+#: docs/10.x/requests.md:block 239 (paragraph)
+msgid "The `TrustHosts` middleware is already included in the `$middleware` stack of your application; however, you should uncomment it so that it becomes active. Within this middleware's `hosts` method, you may specify the host names that your application should respond to. Incoming requests with other `Host` value headers will be rejected:"
+msgstr ""
+
+#: docs/10.x/requests.md:block 240 (code)
+msgid ""
+"/**\n"
+" * Get the host patterns that should be trusted.\n"
+" *\n"
+" * @return array<int, string>\n"
+" */\n"
+"public function hosts(): array\n"
+"{\n"
+"    return [\n"
+"        'laravel.test',\n"
+"        $this->allSubdomainsOfApplicationUrl(),\n"
+"    ];\n"
+"}\n"
+msgstr ""
+
+#: docs/10.x/requests.md:block 241 (paragraph)
+msgid "The `allSubdomainsOfApplicationUrl` helper method will return a regular expression matching all subdomains of your application's `app.url` configuration value. This helper method provides a convenient way to allow all of your application's subdomains when building an application that utilizes wildcard subdomains."
 msgstr ""
 
 #: docs/8.x/requests.md:block 2 (unordered list)
 msgid "[Request Path & Method](#request-path-and-method)"
-msgstr ""
-
-#: docs/8.x/requests.md:block 2 (unordered list)
-msgid "[Request Headers](#request-headers)"
-msgstr ""
-
-#: docs/8.x/requests.md:block 2 (unordered list)
-msgid "[Request IP Address](#request-ip-address)"
-msgstr ""
-
-#: docs/8.x/requests.md:block 2 (unordered list)
-msgid "[Content Negotiation](#content-negotiation)"
-msgstr ""
-
-#: docs/8.x/requests.md:block 2 (unordered list)
-msgid "[PSR-7 Requests](#psr7-requests)"
-msgstr ""
-
-#: docs/8.x/requests.md:block 2 (unordered list)
-msgid "[Input](#input)"
-msgstr ""
-
-#: docs/8.x/requests.md:block 2 (unordered list)
-msgid "[Retrieving Input](#retrieving-input)"
-msgstr ""
-
-#: docs/8.x/requests.md:block 2 (unordered list)
-msgid "[Determining If Input Is Present](#determining-if-input-is-present)"
-msgstr ""
-
-#: docs/8.x/requests.md:block 2 (unordered list)
-msgid "[Merging Additional Input](#merging-additional-input)"
-msgstr ""
-
-#: docs/8.x/requests.md:block 2 (unordered list)
-msgid "[Old Input](#old-input)"
-msgstr ""
-
-#: docs/8.x/requests.md:block 2 (unordered list)
-msgid "[Cookies](#cookies)"
-msgstr ""
-
-#: docs/8.x/requests.md:block 2 (unordered list)
-msgid "[Input Trimming & Normalization](#input-trimming-and-normalization)"
-msgstr ""
-
-#: docs/8.x/requests.md:block 2 (unordered list)
-msgid "[Files](#files)"
-msgstr ""
-
-#: docs/8.x/requests.md:block 2 (unordered list)
-msgid "[Retrieving Uploaded Files](#retrieving-uploaded-files)"
-msgstr ""
-
-#: docs/8.x/requests.md:block 2 (unordered list)
-msgid "[Storing Uploaded Files](#storing-uploaded-files)"
-msgstr ""
-
-#: docs/8.x/requests.md:block 2 (unordered list)
-msgid "[Configuring Trusted Proxies](#configuring-trusted-proxies)"
-msgstr ""
-
-#: docs/8.x/requests.md:block 2 (unordered list)
-msgid "[Configuring Trusted Hosts](#configuring-trusted-hosts)"
-msgstr ""
-
-#: docs/8.x/requests.md:block 4 (header)
-msgid "Introduction"
-msgstr ""
-
-#: docs/8.x/requests.md:block 5 (paragraph)
-msgid "Laravel's `Illuminate\\Http\\Request` class provides an object-oriented way to interact with the current HTTP request being handled by your application as well as retrieve the input, cookies, and files that were submitted with the request."
-msgstr ""
-
-#: docs/8.x/requests.md:block 7 (header)
-msgid "Interacting With The Request"
-msgstr ""
-
-#: docs/8.x/requests.md:block 9 (header)
-msgid "Accessing The Request"
-msgstr ""
-
-#: docs/8.x/requests.md:block 10 (paragraph)
-msgid "To obtain an instance of the current HTTP request via dependency injection, you should type-hint the `Illuminate\\Http\\Request` class on your route closure or controller method. The incoming request instance will automatically be injected by the Laravel [service container](/docs/{{version}}/container):"
 msgstr ""
 
 #: docs/8.x/requests.md:block 11 (code)
@@ -131,10 +1121,6 @@ msgid ""
 "}\n"
 msgstr ""
 
-#: docs/8.x/requests.md:block 12 (paragraph)
-msgid "As mentioned, you may also type-hint the `Illuminate\\Http\\Request` class on a route closure. The service container will automatically inject the incoming request into the closure when it is executed:"
-msgstr ""
-
 #: docs/8.x/requests.md:block 13 (code)
 msgid ""
 "use Illuminate\\Http\\Request;\n"
@@ -142,25 +1128,6 @@ msgid ""
 "Route::get('/', function (Request $request) {\n"
 "    //\n"
 "});\n"
-msgstr ""
-
-#: docs/8.x/requests.md:block 15 (header)
-msgid "Dependency Injection & Route Parameters"
-msgstr ""
-
-#: docs/8.x/requests.md:block 16 (paragraph)
-msgid "If your controller method is also expecting input from a route parameter you should list your route parameters after your other dependencies. For example, if your route is defined like so:"
-msgstr ""
-
-#: docs/8.x/requests.md:block 17 (code)
-msgid ""
-"use App\\Http\\Controllers\\UserController;\n"
-"\n"
-"Route::put('/user/{id}', [UserController::class, 'update']);\n"
-msgstr ""
-
-#: docs/8.x/requests.md:block 18 (paragraph)
-msgid "You may still type-hint the `Illuminate\\Http\\Request` and access your `id` route parameter by defining your controller method as follows:"
 msgstr ""
 
 #: docs/8.x/requests.md:block 19 (code)
@@ -191,30 +1158,6 @@ msgstr ""
 msgid "Request Path & Method"
 msgstr ""
 
-#: docs/8.x/requests.md:block 22 (paragraph)
-msgid "The `Illuminate\\Http\\Request` instance provides a variety of methods for examining the incoming HTTP request and extends the `Symfony\\Component\\HttpFoundation\\Request` class. We will discuss a few of the most important methods below."
-msgstr ""
-
-#: docs/8.x/requests.md:block 24 (header)
-msgid "Retrieving The Request Path"
-msgstr ""
-
-#: docs/8.x/requests.md:block 25 (paragraph)
-msgid "The `path` method returns the request's path information. So, if the incoming request is targeted at `http://example.com/foo/bar`, the `path` method will return `foo/bar`:"
-msgstr ""
-
-#: docs/8.x/requests.md:block 26 (code)
-msgid "$uri = $request->path();\n"
-msgstr ""
-
-#: docs/8.x/requests.md:block 28 (header)
-msgid "Inspecting The Request Path / Route"
-msgstr ""
-
-#: docs/8.x/requests.md:block 29 (paragraph)
-msgid "The `is` method allows you to verify that the incoming request path matches a given pattern. You may use the `*` character as a wildcard when utilizing this method:"
-msgstr ""
-
 #: docs/8.x/requests.md:block 30 (code)
 msgid ""
 "if ($request->is('admin/*')) {\n"
@@ -222,46 +1165,11 @@ msgid ""
 "}\n"
 msgstr ""
 
-#: docs/8.x/requests.md:block 31 (paragraph)
-msgid "Using the `routeIs` method, you may determine if the incoming request has matched a [named route](/docs/{{version}}/routing#named-routes):"
-msgstr ""
-
 #: docs/8.x/requests.md:block 32 (code)
 msgid ""
 "if ($request->routeIs('admin.*')) {\n"
 "    //\n"
 "}\n"
-msgstr ""
-
-#: docs/8.x/requests.md:block 34 (header)
-msgid "Retrieving The Request URL"
-msgstr ""
-
-#: docs/8.x/requests.md:block 35 (paragraph)
-msgid "To retrieve the full URL for the incoming request you may use the `url` or `fullUrl` methods. The `url` method will return the URL without the query string, while the `fullUrl` method includes the query string:"
-msgstr ""
-
-#: docs/8.x/requests.md:block 36 (code)
-msgid ""
-"$url = $request->url();\n"
-"\n"
-"$urlWithQueryString = $request->fullUrl();\n"
-msgstr ""
-
-#: docs/8.x/requests.md:block 37 (paragraph)
-msgid "If you would like to append query string data to the current URL, you may call the `fullUrlWithQuery` method. This method merges the given array of query string variables with the current query string:"
-msgstr ""
-
-#: docs/8.x/requests.md:block 38 (code)
-msgid "$request->fullUrlWithQuery(['type' => 'phone']);\n"
-msgstr ""
-
-#: docs/8.x/requests.md:block 40 (header)
-msgid "Retrieving The Request Method"
-msgstr ""
-
-#: docs/8.x/requests.md:block 41 (paragraph)
-msgid "The `method` method will return the HTTP verb for the request. You may use the `isMethod` method to verify that the HTTP verb matches a given string:"
 msgstr ""
 
 #: docs/8.x/requests.md:block 42 (code)
@@ -273,110 +1181,11 @@ msgid ""
 "}\n"
 msgstr ""
 
-#: docs/8.x/requests.md:block 44 (header)
-msgid "Request Headers"
-msgstr ""
-
-#: docs/8.x/requests.md:block 45 (paragraph)
-msgid "You may retrieve a request header from the `Illuminate\\Http\\Request` instance using the `header` method. If the header is not present on the request, `null` will be returned. However, the `header` method accepts an optional second argument that will be returned if the header is not present on the request:"
-msgstr ""
-
-#: docs/8.x/requests.md:block 46 (code)
-msgid ""
-"$value = $request->header('X-Header-Name');\n"
-"\n"
-"$value = $request->header('X-Header-Name', 'default');\n"
-msgstr ""
-
-#: docs/8.x/requests.md:block 47 (paragraph)
-msgid "The `hasHeader` method may be used to determine if the request contains a given header:"
-msgstr ""
-
 #: docs/8.x/requests.md:block 48 (code)
 msgid ""
 "if ($request->hasHeader('X-Header-Name')) {\n"
 "    //\n"
 "}\n"
-msgstr ""
-
-#: docs/8.x/requests.md:block 49 (paragraph)
-msgid "For convenience, the `bearerToken` method may be used to retrieve a bearer token from the `Authorization` header. If no such header is present, an empty string will be returned:"
-msgstr ""
-
-#: docs/8.x/requests.md:block 50 (code)
-msgid "$token = $request->bearerToken();\n"
-msgstr ""
-
-#: docs/8.x/requests.md:block 52 (header)
-msgid "Request IP Address"
-msgstr ""
-
-#: docs/8.x/requests.md:block 53 (paragraph)
-msgid "The `ip` method may be used to retrieve the IP address of the client that made the request to your application:"
-msgstr ""
-
-#: docs/8.x/requests.md:block 54 (code)
-msgid "$ipAddress = $request->ip();\n"
-msgstr ""
-
-#: docs/8.x/requests.md:block 56 (header)
-msgid "Content Negotiation"
-msgstr ""
-
-#: docs/8.x/requests.md:block 57 (paragraph)
-msgid "Laravel provides several methods for inspecting the incoming request's requested content types via the `Accept` header. First, the `getAcceptableContentTypes` method will return an array containing all of the content types accepted by the request:"
-msgstr ""
-
-#: docs/8.x/requests.md:block 58 (code)
-msgid "$contentTypes = $request->getAcceptableContentTypes();\n"
-msgstr ""
-
-#: docs/8.x/requests.md:block 59 (paragraph)
-msgid "The `accepts` method accepts an array of content types and returns `true` if any of the content types are accepted by the request. Otherwise, `false` will be returned:"
-msgstr ""
-
-#: docs/8.x/requests.md:block 60 (code)
-msgid ""
-"if ($request->accepts(['text/html', 'application/json'])) {\n"
-"    // ...\n"
-"}\n"
-msgstr ""
-
-#: docs/8.x/requests.md:block 61 (paragraph)
-msgid "You may use the `prefers` method to determine which content type out of a given array of content types is most preferred by the request. If none of the provided content types are accepted by the request, `null` will be returned:"
-msgstr ""
-
-#: docs/8.x/requests.md:block 62 (code)
-msgid "$preferred = $request->prefers(['text/html', 'application/json']);\n"
-msgstr ""
-
-#: docs/8.x/requests.md:block 63 (paragraph)
-msgid "Since many applications only serve HTML or JSON, you may use the `expectsJson` method to quickly determine if the incoming request expects a JSON response:"
-msgstr ""
-
-#: docs/8.x/requests.md:block 64 (code)
-msgid ""
-"if ($request->expectsJson()) {\n"
-"    // ...\n"
-"}\n"
-msgstr ""
-
-#: docs/8.x/requests.md:block 66 (header)
-msgid "PSR-7 Requests"
-msgstr ""
-
-#: docs/8.x/requests.md:block 67 (paragraph)
-msgid "The [PSR-7 standard](https://www.php-fig.org/psr/psr-7/) specifies interfaces for HTTP messages, including requests and responses. If you would like to obtain an instance of a PSR-7 request instead of a Laravel request, you will first need to install a few libraries. Laravel uses the *Symfony HTTP Message Bridge* component to convert typical Laravel requests and responses into PSR-7 compatible implementations:"
-msgstr ""
-
-#: docs/8.x/requests.md:block 68 (code)
-msgid ""
-"composer require symfony/psr-http-message-bridge\n"
-"composer require nyholm/psr7\n"
-msgstr ""
-
-#: docs/8.x/requests.md:block 69 (paragraph)
-msgid "Once you have installed these libraries, you may obtain a PSR-7 request by type-hinting the request interface on your route closure or controller method:"
 msgstr ""
 
 #: docs/8.x/requests.md:block 70 (code)
@@ -392,38 +1201,6 @@ msgstr ""
 msgid "{tip} If you return a PSR-7 response instance from a route or controller, it will automatically be converted back to a Laravel response instance and be displayed by the framework."
 msgstr ""
 
-#: docs/8.x/requests.md:block 73 (header)
-msgid "Input"
-msgstr ""
-
-#: docs/8.x/requests.md:block 75 (header)
-msgid "Retrieving Input"
-msgstr ""
-
-#: docs/8.x/requests.md:block 77 (header)
-msgid "Retrieving All Input Data"
-msgstr ""
-
-#: docs/8.x/requests.md:block 78 (paragraph)
-msgid "You may retrieve all of the incoming request's input data as an `array` using the `all` method. This method may be used regardless of whether the incoming request is from an HTML form or is an XHR request:"
-msgstr ""
-
-#: docs/8.x/requests.md:block 79 (code)
-msgid "$input = $request->all();\n"
-msgstr ""
-
-#: docs/8.x/requests.md:block 80 (paragraph)
-msgid "Using the `collect` method, you may retrieve all of the incoming request's input data as a [collection](/docs/{{version}}/collections):"
-msgstr ""
-
-#: docs/8.x/requests.md:block 81 (code)
-msgid "$input = $request->collect();\n"
-msgstr ""
-
-#: docs/8.x/requests.md:block 82 (paragraph)
-msgid "The `collect` method also allows you to retrieve a subset of the incoming request input as a collection:"
-msgstr ""
-
 #: docs/8.x/requests.md:block 83 (code)
 msgid ""
 "$request->collect('users')->each(function ($user) {\n"
@@ -431,166 +1208,12 @@ msgid ""
 "});\n"
 msgstr ""
 
-#: docs/8.x/requests.md:block 85 (header)
-msgid "Retrieving An Input Value"
-msgstr ""
-
-#: docs/8.x/requests.md:block 86 (paragraph)
-msgid "Using a few simple methods, you may access all of the user input from your `Illuminate\\Http\\Request` instance without worrying about which HTTP verb was used for the request. Regardless of the HTTP verb, the `input` method may be used to retrieve user input:"
-msgstr ""
-
-#: docs/8.x/requests.md:block 87 (code)
-msgid "$name = $request->input('name');\n"
-msgstr ""
-
-#: docs/8.x/requests.md:block 88 (paragraph)
-msgid "You may pass a default value as the second argument to the `input` method. This value will be returned if the requested input value is not present on the request:"
-msgstr ""
-
-#: docs/8.x/requests.md:block 89 (code)
-msgid "$name = $request->input('name', 'Sally');\n"
-msgstr ""
-
-#: docs/8.x/requests.md:block 90 (paragraph)
-msgid "When working with forms that contain array inputs, use \"dot\" notation to access the arrays:"
-msgstr ""
-
-#: docs/8.x/requests.md:block 91 (code)
-msgid ""
-"$name = $request->input('products.0.name');\n"
-"\n"
-"$names = $request->input('products.*.name');\n"
-msgstr ""
-
-#: docs/8.x/requests.md:block 92 (paragraph)
-msgid "You may call the `input` method without any arguments in order to retrieve all of the input values as an associative array:"
-msgstr ""
-
-#: docs/8.x/requests.md:block 93 (code)
-msgid "$input = $request->input();\n"
-msgstr ""
-
-#: docs/8.x/requests.md:block 95 (header)
-msgid "Retrieving Input From The Query String"
-msgstr ""
-
-#: docs/8.x/requests.md:block 96 (paragraph)
-msgid "While the `input` method retrieves values from the entire request payload (including the query string), the `query` method will only retrieve values from the query string:"
-msgstr ""
-
-#: docs/8.x/requests.md:block 97 (code)
-msgid "$name = $request->query('name');\n"
-msgstr ""
-
-#: docs/8.x/requests.md:block 98 (paragraph)
-msgid "If the requested query string value data is not present, the second argument to this method will be returned:"
-msgstr ""
-
-#: docs/8.x/requests.md:block 99 (code)
-msgid "$name = $request->query('name', 'Helen');\n"
-msgstr ""
-
-#: docs/8.x/requests.md:block 100 (paragraph)
-msgid "You may call the `query` method without any arguments in order to retrieve all of the query string values as an associative array:"
-msgstr ""
-
-#: docs/8.x/requests.md:block 101 (code)
-msgid "$query = $request->query();\n"
-msgstr ""
-
-#: docs/8.x/requests.md:block 103 (header)
-msgid "Retrieving JSON Input Values"
-msgstr ""
-
 #: docs/8.x/requests.md:block 104 (paragraph)
 msgid "When sending JSON requests to your application, you may access the JSON data via the `input` method as long as the `Content-Type` header of the request is properly set to `application/json`. You may even use \"dot\" syntax to retrieve values that are nested within JSON arrays:"
 msgstr ""
 
-#: docs/8.x/requests.md:block 105 (code)
-msgid "$name = $request->input('user.name');\n"
-msgstr ""
-
-#: docs/8.x/requests.md:block 107 (header)
-msgid "Retrieving Boolean Input Values"
-msgstr ""
-
-#: docs/8.x/requests.md:block 108 (paragraph)
-msgid "When dealing with HTML elements like checkboxes, your application may receive \"truthy\" values that are actually strings. For example, \"true\" or \"on\". For convenience, you may use the `boolean` method to retrieve these values as booleans. The `boolean` method returns `true` for 1, \"1\", true, \"true\", \"on\", and \"yes\". All other values will return `false`:"
-msgstr ""
-
-#: docs/8.x/requests.md:block 109 (code)
-msgid "$archived = $request->boolean('archived');\n"
-msgstr ""
-
-#: docs/8.x/requests.md:block 111 (header)
-msgid "Retrieving Date Input Values"
-msgstr ""
-
-#: docs/8.x/requests.md:block 112 (paragraph)
-msgid "For convenience, input values containing dates / times may be retrieved as Carbon instances using the `date` method. If the request does not contain an input value with the given name, `null` will be returned:"
-msgstr ""
-
-#: docs/8.x/requests.md:block 113 (code)
-msgid "$birthday = $request->date('birthday');\n"
-msgstr ""
-
-#: docs/8.x/requests.md:block 114 (paragraph)
-msgid "The second and third arguments accepted by the `date` method may be used to specify the date's format and timezone, respectively:"
-msgstr ""
-
-#: docs/8.x/requests.md:block 115 (code)
-msgid "$elapsed = $request->date('elapsed', '!H:i', 'Europe/Madrid');\n"
-msgstr ""
-
-#: docs/8.x/requests.md:block 116 (paragraph)
-msgid "If the input value is present but has an invalid format, an `InvalidArgumentException` will be thrown; therefore, it is recommended that you validate the input before invoking the `date` method."
-msgstr ""
-
-#: docs/8.x/requests.md:block 118 (header)
-msgid "Retrieving Input Via Dynamic Properties"
-msgstr ""
-
-#: docs/8.x/requests.md:block 119 (paragraph)
-msgid "You may also access user input using dynamic properties on the `Illuminate\\Http\\Request` instance. For example, if one of your application's forms contains a `name` field, you may access the value of the field like so:"
-msgstr ""
-
-#: docs/8.x/requests.md:block 120 (code)
-msgid "$name = $request->name;\n"
-msgstr ""
-
-#: docs/8.x/requests.md:block 121 (paragraph)
-msgid "When using dynamic properties, Laravel will first look for the parameter's value in the request payload. If it is not present, Laravel will search for the field in the matched route's parameters."
-msgstr ""
-
-#: docs/8.x/requests.md:block 123 (header)
-msgid "Retrieving A Portion Of The Input Data"
-msgstr ""
-
-#: docs/8.x/requests.md:block 124 (paragraph)
-msgid "If you need to retrieve a subset of the input data, you may use the `only` and `except` methods. Both of these methods accept a single `array` or a dynamic list of arguments:"
-msgstr ""
-
-#: docs/8.x/requests.md:block 125 (code)
-msgid ""
-"$input = $request->only(['username', 'password']);\n"
-"\n"
-"$input = $request->only('username', 'password');\n"
-"\n"
-"$input = $request->except(['credit_card']);\n"
-"\n"
-"$input = $request->except('credit_card');\n"
-msgstr ""
-
 #: docs/8.x/requests.md:block 126 (quote)
 msgid "{note} The `only` method returns all of the key / value pairs that you request; however, it will not return key / value pairs that are not present on the request."
-msgstr ""
-
-#: docs/8.x/requests.md:block 128 (header)
-msgid "Determining If Input Is Present"
-msgstr ""
-
-#: docs/8.x/requests.md:block 129 (paragraph)
-msgid "You may use the `has` method to determine if a value is present on the request. The `has` method returns `true` if the value is present on the request:"
 msgstr ""
 
 #: docs/8.x/requests.md:block 130 (code)
@@ -600,19 +1223,11 @@ msgid ""
 "}\n"
 msgstr ""
 
-#: docs/8.x/requests.md:block 131 (paragraph)
-msgid "When given an array, the `has` method will determine if all of the specified values are present:"
-msgstr ""
-
 #: docs/8.x/requests.md:block 132 (code)
 msgid ""
 "if ($request->has(['name', 'email'])) {\n"
 "    //\n"
 "}\n"
-msgstr ""
-
-#: docs/8.x/requests.md:block 133 (paragraph)
-msgid "The `whenHas` method will execute the given closure if a value is present on the request:"
 msgstr ""
 
 #: docs/8.x/requests.md:block 134 (code)
@@ -622,10 +1237,6 @@ msgid ""
 "});\n"
 msgstr ""
 
-#: docs/8.x/requests.md:block 135 (paragraph)
-msgid "A second closure may be passed to the `whenHas` method that will be executed if the specified value is not present on the request:"
-msgstr ""
-
 #: docs/8.x/requests.md:block 136 (code)
 msgid ""
 "$request->whenHas('name', function ($input) {\n"
@@ -633,10 +1244,6 @@ msgid ""
 "}, function () {\n"
 "    // The \"name\" value is not present...\n"
 "});\n"
-msgstr ""
-
-#: docs/8.x/requests.md:block 137 (paragraph)
-msgid "The `hasAny` method returns `true` if any of the specified values are present:"
 msgstr ""
 
 #: docs/8.x/requests.md:block 138 (code)
@@ -668,10 +1275,6 @@ msgid ""
 "});\n"
 msgstr ""
 
-#: docs/8.x/requests.md:block 143 (paragraph)
-msgid "A second closure may be passed to the `whenFilled` method that will be executed if the specified value is not \"filled\":"
-msgstr ""
-
 #: docs/8.x/requests.md:block 144 (code)
 msgid ""
 "$request->whenFilled('name', function ($input) {\n"
@@ -692,114 +1295,8 @@ msgid ""
 "}\n"
 msgstr ""
 
-#: docs/8.x/requests.md:block 148 (header)
-msgid "Merging Additional Input"
-msgstr ""
-
 #: docs/8.x/requests.md:block 149 (paragraph)
 msgid "Sometimes you may need to manually merge additional input into the request's existing input data. To accomplish this, you may use the `merge` method:"
-msgstr ""
-
-#: docs/8.x/requests.md:block 150 (code)
-msgid "$request->merge(['votes' => 0]);\n"
-msgstr ""
-
-#: docs/8.x/requests.md:block 151 (paragraph)
-msgid "The `mergeIfMissing` method may be used to merge input into the request if the corresponding keys do not already exist within the request's input data:"
-msgstr ""
-
-#: docs/8.x/requests.md:block 152 (code)
-msgid "$request->mergeIfMissing(['votes' => 0]);\n"
-msgstr ""
-
-#: docs/8.x/requests.md:block 154 (header)
-msgid "Old Input"
-msgstr ""
-
-#: docs/8.x/requests.md:block 155 (paragraph)
-msgid "Laravel allows you to keep input from one request during the next request. This feature is particularly useful for re-populating forms after detecting validation errors. However, if you are using Laravel's included [validation features](/docs/{{version}}/validation), it is possible that you will not need to manually use these session input flashing methods directly, as some of Laravel's built-in validation facilities will call them automatically."
-msgstr ""
-
-#: docs/8.x/requests.md:block 157 (header)
-msgid "Flashing Input To The Session"
-msgstr ""
-
-#: docs/8.x/requests.md:block 158 (paragraph)
-msgid "The `flash` method on the `Illuminate\\Http\\Request` class will flash the current input to the [session](/docs/{{version}}/session) so that it is available during the user's next request to the application:"
-msgstr ""
-
-#: docs/8.x/requests.md:block 159 (code)
-msgid "$request->flash();\n"
-msgstr ""
-
-#: docs/8.x/requests.md:block 160 (paragraph)
-msgid "You may also use the `flashOnly` and `flashExcept` methods to flash a subset of the request data to the session. These methods are useful for keeping sensitive information such as passwords out of the session:"
-msgstr ""
-
-#: docs/8.x/requests.md:block 161 (code)
-msgid ""
-"$request->flashOnly(['username', 'email']);\n"
-"\n"
-"$request->flashExcept('password');\n"
-msgstr ""
-
-#: docs/8.x/requests.md:block 163 (header)
-msgid "Flashing Input Then Redirecting"
-msgstr ""
-
-#: docs/8.x/requests.md:block 164 (paragraph)
-msgid "Since you often will want to flash input to the session and then redirect to the previous page, you may easily chain input flashing onto a redirect using the `withInput` method:"
-msgstr ""
-
-#: docs/8.x/requests.md:block 165 (code)
-msgid ""
-"return redirect('form')->withInput();\n"
-"\n"
-"return redirect()->route('user.create')->withInput();\n"
-"\n"
-"return redirect('form')->withInput(\n"
-"    $request->except('password')\n"
-");\n"
-msgstr ""
-
-#: docs/8.x/requests.md:block 167 (header)
-msgid "Retrieving Old Input"
-msgstr ""
-
-#: docs/8.x/requests.md:block 168 (paragraph)
-msgid "To retrieve flashed input from the previous request, invoke the `old` method on an instance of `Illuminate\\Http\\Request`. The `old` method will pull the previously flashed input data from the [session](/docs/{{version}}/session):"
-msgstr ""
-
-#: docs/8.x/requests.md:block 169 (code)
-msgid "$username = $request->old('username');\n"
-msgstr ""
-
-#: docs/8.x/requests.md:block 170 (paragraph)
-msgid "Laravel also provides a global `old` helper. If you are displaying old input within a [Blade template](/docs/{{version}}/blade), it is more convenient to use the `old` helper to repopulate the form. If no old input exists for the given field, `null` will be returned:"
-msgstr ""
-
-#: docs/8.x/requests.md:block 171 (code)
-msgid "<input type=\"text\" name=\"username\" value=\"{{ old('username') }}\">\n"
-msgstr ""
-
-#: docs/8.x/requests.md:block 173 (header)
-msgid "Cookies"
-msgstr ""
-
-#: docs/8.x/requests.md:block 175 (header)
-msgid "Retrieving Cookies From Requests"
-msgstr ""
-
-#: docs/8.x/requests.md:block 176 (paragraph)
-msgid "All cookies created by the Laravel framework are encrypted and signed with an authentication code, meaning they will be considered invalid if they have been changed by the client. To retrieve a cookie value from the request, use the `cookie` method on an `Illuminate\\Http\\Request` instance:"
-msgstr ""
-
-#: docs/8.x/requests.md:block 177 (code)
-msgid "$value = $request->cookie('name');\n"
-msgstr ""
-
-#: docs/8.x/requests.md:block 179 (header)
-msgid "Input Trimming & Normalization"
 msgstr ""
 
 #: docs/8.x/requests.md:block 180 (paragraph)
@@ -810,42 +1307,11 @@ msgstr ""
 msgid "If you would like to disable this behavior, you may remove the two middleware from your application's middleware stack by removing them from the `$middleware` property of your `App\\Http\\Kernel` class."
 msgstr ""
 
-#: docs/8.x/requests.md:block 183 (header)
-msgid "Files"
-msgstr ""
-
-#: docs/8.x/requests.md:block 185 (header)
-msgid "Retrieving Uploaded Files"
-msgstr ""
-
-#: docs/8.x/requests.md:block 186 (paragraph)
-msgid "You may retrieve uploaded files from an `Illuminate\\Http\\Request` instance using the `file` method or using dynamic properties. The `file` method returns an instance of the `Illuminate\\Http\\UploadedFile` class, which extends the PHP `SplFileInfo` class and provides a variety of methods for interacting with the file:"
-msgstr ""
-
-#: docs/8.x/requests.md:block 187 (code)
-msgid ""
-"$file = $request->file('photo');\n"
-"\n"
-"$file = $request->photo;\n"
-msgstr ""
-
-#: docs/8.x/requests.md:block 188 (paragraph)
-msgid "You may determine if a file is present on the request using the `hasFile` method:"
-msgstr ""
-
 #: docs/8.x/requests.md:block 189 (code)
 msgid ""
 "if ($request->hasFile('photo')) {\n"
 "    //\n"
 "}\n"
-msgstr ""
-
-#: docs/8.x/requests.md:block 191 (header)
-msgid "Validating Successful Uploads"
-msgstr ""
-
-#: docs/8.x/requests.md:block 192 (paragraph)
-msgid "In addition to checking if the file is present, you may verify that there were no problems uploading the file via the `isValid` method:"
 msgstr ""
 
 #: docs/8.x/requests.md:block 193 (code)
@@ -855,145 +1321,16 @@ msgid ""
 "}\n"
 msgstr ""
 
-#: docs/8.x/requests.md:block 195 (header)
-msgid "File Paths & Extensions"
-msgstr ""
-
-#: docs/8.x/requests.md:block 196 (paragraph)
-msgid "The `UploadedFile` class also contains methods for accessing the file's fully-qualified path and its extension. The `extension` method will attempt to guess the file's extension based on its contents. This extension may be different from the extension that was supplied by the client:"
-msgstr ""
-
-#: docs/8.x/requests.md:block 197 (code)
-msgid ""
-"$path = $request->photo->path();\n"
-"\n"
-"$extension = $request->photo->extension();\n"
-msgstr ""
-
-#: docs/8.x/requests.md:block 199 (header)
-msgid "Other File Methods"
-msgstr ""
-
 #: docs/8.x/requests.md:block 200 (paragraph)
 msgid "There are a variety of other methods available on `UploadedFile` instances. Check out the [API documentation for the class](https://api.symfony.com/master/Symfony/Component/HttpFoundation/File/UploadedFile.html) for more information regarding these methods."
-msgstr ""
-
-#: docs/8.x/requests.md:block 202 (header)
-msgid "Storing Uploaded Files"
-msgstr ""
-
-#: docs/8.x/requests.md:block 203 (paragraph)
-msgid "To store an uploaded file, you will typically use one of your configured [filesystems](/docs/{{version}}/filesystem). The `UploadedFile` class has a `store` method that will move an uploaded file to one of your disks, which may be a location on your local filesystem or a cloud storage location like Amazon S3."
-msgstr ""
-
-#: docs/8.x/requests.md:block 204 (paragraph)
-msgid "The `store` method accepts the path where the file should be stored relative to the filesystem's configured root directory. This path should not contain a filename, since a unique ID will automatically be generated to serve as the filename."
-msgstr ""
-
-#: docs/8.x/requests.md:block 205 (paragraph)
-msgid "The `store` method also accepts an optional second argument for the name of the disk that should be used to store the file. The method will return the path of the file relative to the disk's root:"
-msgstr ""
-
-#: docs/8.x/requests.md:block 206 (code)
-msgid ""
-"$path = $request->photo->store('images');\n"
-"\n"
-"$path = $request->photo->store('images', 's3');\n"
-msgstr ""
-
-#: docs/8.x/requests.md:block 207 (paragraph)
-msgid "If you do not want a filename to be automatically generated, you may use the `storeAs` method, which accepts the path, filename, and disk name as its arguments:"
-msgstr ""
-
-#: docs/8.x/requests.md:block 208 (code)
-msgid ""
-"$path = $request->photo->storeAs('images', 'filename.jpg');\n"
-"\n"
-"$path = $request->photo->storeAs('images', 'filename.jpg', 's3');\n"
 msgstr ""
 
 #: docs/8.x/requests.md:block 209 (quote)
 msgid "{tip} For more information about file storage in Laravel, check out the complete [file storage documentation](/docs/{{version}}/filesystem)."
 msgstr ""
 
-#: docs/8.x/requests.md:block 211 (header)
-msgid "Configuring Trusted Proxies"
-msgstr ""
-
-#: docs/8.x/requests.md:block 212 (paragraph)
-msgid "When running your applications behind a load balancer that terminates TLS / SSL certificates, you may notice your application sometimes does not generate HTTPS links when using the `url` helper. Typically this is because your application is being forwarded traffic from your load balancer on port 80 and does not know it should generate secure links."
-msgstr ""
-
-#: docs/8.x/requests.md:block 213 (paragraph)
-msgid "To solve this, you may use the `App\\Http\\Middleware\\TrustProxies` middleware that is included in your Laravel application, which allows you to quickly customize the load balancers or proxies that should be trusted by your application. Your trusted proxies should be listed as an array on the `$proxies` property of this middleware. In addition to configuring the trusted proxies, you may configure the proxy `$headers` that should be trusted:"
-msgstr ""
-
-#: docs/8.x/requests.md:block 214 (code)
-msgid ""
-"<?php\n"
-"\n"
-"namespace App\\Http\\Middleware;\n"
-"\n"
-"use Illuminate\\Http\\Middleware\\TrustProxies as Middleware;\n"
-"use Illuminate\\Http\\Request;\n"
-"\n"
-"class TrustProxies extends Middleware\n"
-"{\n"
-"    /**\n"
-"     * The trusted proxies for this application.\n"
-"     *\n"
-"     * @var string|array\n"
-"     */\n"
-"    protected $proxies = [\n"
-"        '192.168.1.1',\n"
-"        '192.168.1.2',\n"
-"    ];\n"
-"\n"
-"    /**\n"
-"     * The headers that should be used to detect proxies.\n"
-"     *\n"
-"     * @var int\n"
-"     */\n"
-"    protected $headers = Request::HEADER_X_FORWARDED_FOR | Request::HEADER_X_FORWARDED_HOST | Request::HEADER_X_FORWARDED_PORT | Request::HEADER_X_FORWARDED_PROTO;\n"
-"}\n"
-msgstr ""
-
 #: docs/8.x/requests.md:block 215 (quote)
 msgid "{tip} If you are using AWS Elastic Load Balancing, your `$headers` value should be `Request::HEADER_X_FORWARDED_AWS_ELB`. For more information on the constants that may be used in the `$headers` property, check out Symfony's documentation on [trusting proxies](https://symfony.com/doc/current/deployment/proxies.html)."
-msgstr ""
-
-#: docs/8.x/requests.md:block 217 (header)
-msgid "Trusting All Proxies"
-msgstr ""
-
-#: docs/8.x/requests.md:block 218 (paragraph)
-msgid "If you are using Amazon AWS or another \"cloud\" load balancer provider, you may not know the IP addresses of your actual balancers. In this case, you may use `*` to trust all proxies:"
-msgstr ""
-
-#: docs/8.x/requests.md:block 219 (code)
-msgid ""
-"/**\n"
-" * The trusted proxies for this application.\n"
-" *\n"
-" * @var string|array\n"
-" */\n"
-"protected $proxies = '*';\n"
-msgstr ""
-
-#: docs/8.x/requests.md:block 221 (header)
-msgid "Configuring Trusted Hosts"
-msgstr ""
-
-#: docs/8.x/requests.md:block 222 (paragraph)
-msgid "By default, Laravel will respond to all requests it receives regardless of the content of the HTTP request's `Host` header. In addition, the `Host` header's value will be used when generating absolute URLs to your application during a web request."
-msgstr ""
-
-#: docs/8.x/requests.md:block 223 (paragraph)
-msgid "Typically, you should configure your web server, such as Nginx or Apache, to only send requests to your application that match a given host name. However, if you do not have the ability to customize your web server directly and need to instruct Laravel to only respond to certain host names, you may do so by enabling the `App\\Http\\Middleware\\TrustHosts` middleware for your application."
-msgstr ""
-
-#: docs/8.x/requests.md:block 224 (paragraph)
-msgid "The `TrustHosts` middleware is already included in the `$middleware` stack of your application; however, you should uncomment it so that it becomes active. Within this middleware's `hosts` method, you may specify the host names that your application should respond to. Incoming requests with other `Host` value headers will be rejected:"
 msgstr ""
 
 #: docs/8.x/requests.md:block 225 (code)
@@ -1012,84 +1349,6 @@ msgid ""
 "}\n"
 msgstr ""
 
-#: docs/8.x/requests.md:block 226 (paragraph)
-msgid "The `allSubdomainsOfApplicationUrl` helper method will return a regular expression matching all subdomains of your application's `app.url` configuration value. This helper method provides a convenient way to allow all of your application's subdomains when building an application that utilizes wildcard subdomains."
-msgstr ""
-
-#: docs/9.x/requests.md:block 2 (unordered list)
-msgid "[Request Path, Host, & Method](#request-path-and-method)"
-msgstr ""
-
-#: docs/9.x/requests.md:block 21 (header)
-msgid "Request Path, Host, & Method"
-msgstr ""
-
-#: docs/9.x/requests.md:block 40 (header)
-msgid "Retrieving The Request Host"
-msgstr ""
-
-#: docs/9.x/requests.md:block 41 (paragraph)
-msgid "You may retrieve the \"host\" of the incoming request via the `host`, `httpHost`, and `schemeAndHttpHost` methods:"
-msgstr ""
-
-#: docs/9.x/requests.md:block 42 (code)
-msgid ""
-"$request->host();\n"
-"$request->httpHost();\n"
-"$request->schemeAndHttpHost();\n"
-msgstr ""
-
-#: docs/9.x/requests.md:block 75 (quote)
-msgid "**Note** If you return a PSR-7 response instance from a route or controller, it will automatically be converted back to a Laravel response instance and be displayed by the framework."
-msgstr ""
-
-#: docs/9.x/requests.md:block 108 (paragraph)
-msgid "When sending JSON requests to your application, you may access the JSON data via the `input` method as long as the `Content-Type` header of the request is properly set to `application/json`. You may even use \"dot\" syntax to retrieve values that are nested within JSON arrays / objects:"
-msgstr ""
-
-#: docs/9.x/requests.md:block 111 (header)
-msgid "Retrieving Stringable Input Values"
-msgstr ""
-
-#: docs/9.x/requests.md:block 112 (paragraph)
-msgid "Instead of retrieving the request's input data as a primitive `string`, you may use the `string` method to retrieve the request data as an instance of [`Illuminate\\Support\\Stringable`](/docs/{{version}}/helpers#fluent-strings):"
-msgstr ""
-
-#: docs/9.x/requests.md:block 113 (code)
-msgid "$name = $request->string('name')->trim();\n"
-msgstr ""
-
-#: docs/9.x/requests.md:block 126 (header)
-msgid "Retrieving Enum Input Values"
-msgstr ""
-
-#: docs/9.x/requests.md:block 127 (paragraph)
-msgid "Input values that correspond to [PHP enums](https://www.php.net/manual/en/language.types.enumerations.php) may also be retrieved from the request. If the request does not contain an input value with the given name or the enum does not have a backing value that matches the input value, `null` will be returned. The `enum` method accepts the name of the input value and the enum class as its first and second arguments:"
-msgstr ""
-
-#: docs/9.x/requests.md:block 128 (code)
-msgid ""
-"use App\\Enums\\Status;\n"
-"\n"
-"$status = $request->enum('status', Status::class);\n"
-msgstr ""
-
-#: docs/9.x/requests.md:block 138 (quote)
-msgid "**Warning** The `only` method returns all of the key / value pairs that you request; however, it will not return key / value pairs that are not present on the request."
-msgstr ""
-
-#: docs/9.x/requests.md:block 151 (paragraph)
-msgid "If you would like to determine if a value is present on the request and is not an empty string, you may use the `filled` method:"
-msgstr ""
-
-#: docs/9.x/requests.md:block 153 (paragraph)
-msgid "The `whenFilled` method will execute the given closure if a value is present on the request and is not an empty string:"
-msgstr ""
-
-#: docs/9.x/requests.md:block 157 (paragraph)
-msgid "To determine if a given key is absent from the request, you may use the `missing` and `whenMissing` methods:"
-msgstr ""
-
 #: docs/9.x/requests.md:block 158 (code)
 msgid ""
 "if ($request->missing('name')) {\n"
@@ -1101,26 +1360,6 @@ msgid ""
 "}, function () {\n"
 "    // The \"name\" value is present...\n"
 "});\n"
-msgstr ""
-
-#: docs/9.x/requests.md:block 161 (paragraph)
-msgid "Sometimes you may need to manually merge additional input into the request's existing input data. To accomplish this, you may use the `merge` method. If a given input key already exists on the request, it will be overwritten by the data provided to the `merge` method:"
-msgstr ""
-
-#: docs/9.x/requests.md:block 192 (paragraph)
-msgid "By default, Laravel includes the `App\\Http\\Middleware\\TrimStrings` and `Illuminate\\Foundation\\Http\\Middleware\\ConvertEmptyStringsToNull` middleware in your application's global middleware stack. These middleware are listed in the global middleware stack by the `App\\Http\\Kernel` class. These middleware will automatically trim all incoming string fields on the request, as well as convert any empty string fields to `null`. This allows you to not have to worry about these normalization concerns in your routes and controllers."
-msgstr ""
-
-#: docs/9.x/requests.md:block 193 (header)
-msgid "Disabling Input Normalization"
-msgstr ""
-
-#: docs/9.x/requests.md:block 194 (paragraph)
-msgid "If you would like to disable this behavior for all requests, you may remove the two middleware from your application's middleware stack by removing them from the `$middleware` property of your `App\\Http\\Kernel` class."
-msgstr ""
-
-#: docs/9.x/requests.md:block 195 (paragraph)
-msgid "If you would like to disable string trimming and empty string conversion for a subset of requests to your application, you may use the `skipWhen` method offered by both middleware. This method accepts a closure which should return `true` or `false` to indicate if input normalization should be skipped. Typically, the `skipWhen` method should be invoked in the `boot` method of your application's `AppServiceProvider`."
 msgstr ""
 
 #: docs/9.x/requests.md:block 196 (code)
@@ -1142,244 +1381,5 @@ msgid ""
 "    ConvertEmptyStringsToNull::skipWhen(function ($request) {\n"
 "        // ...\n"
 "    });\n"
-"}\n"
-msgstr ""
-
-#: docs/9.x/requests.md:block 215 (paragraph)
-msgid "There are a variety of other methods available on `UploadedFile` instances. Check out the [API documentation for the class](https://github.com/symfony/symfony/blob/6.0/src/Symfony/Component/HttpFoundation/File/UploadedFile.php) for more information regarding these methods."
-msgstr ""
-
-#: docs/9.x/requests.md:block 224 (quote)
-msgid "**Note** For more information about file storage in Laravel, check out the complete [file storage documentation](/docs/{{version}}/filesystem)."
-msgstr ""
-
-#: docs/9.x/requests.md:block 230 (quote)
-msgid "**Note** If you are using AWS Elastic Load Balancing, your `$headers` value should be `Request::HEADER_X_FORWARDED_AWS_ELB`. For more information on the constants that may be used in the `$headers` property, check out Symfony's documentation on [trusting proxies](https://symfony.com/doc/current/deployment/proxies.html)."
-msgstr ""
-
-#: docs/master/requests.md:block 11 (code)
-msgid ""
-"<?php\n"
-"\n"
-"namespace App\\Http\\Controllers;\n"
-"\n"
-"use Illuminate\\Http\\Request;\n"
-"use Illuminate\\Http\\Response;\n"
-"\n"
-"class UserController extends Controller\n"
-"{\n"
-"    /**\n"
-"     * Store a new user.\n"
-"     */\n"
-"    public function store(Request $request): Response\n"
-"    {\n"
-"        $name = $request->input('name');\n"
-"\n"
-"        // ...\n"
-"\n"
-"        return response()->noContent();\n"
-"    }\n"
-"}\n"
-msgstr ""
-
-#: docs/master/requests.md:block 13 (code)
-msgid ""
-"use Illuminate\\Http\\Request;\n"
-"\n"
-"Route::get('/', function (Request $request) {\n"
-"    // ...\n"
-"});\n"
-msgstr ""
-
-#: docs/master/requests.md:block 19 (code)
-msgid ""
-"<?php\n"
-"\n"
-"namespace App\\Http\\Controllers;\n"
-"\n"
-"use Illuminate\\Http\\Request;\n"
-"use Illuminate\\Http\\Response;\n"
-"\n"
-"class UserController extends Controller\n"
-"{\n"
-"    /**\n"
-"     * Update the specified user.\n"
-"     */\n"
-"    public function update(Request $request, string $id): Response\n"
-"    {\n"
-"        // ...\n"
-"\n"
-"        return response()->noContent();\n"
-"    }\n"
-"}\n"
-msgstr ""
-
-#: docs/master/requests.md:block 30 (code)
-msgid ""
-"if ($request->is('admin/*')) {\n"
-"    // ...\n"
-"}\n"
-msgstr ""
-
-#: docs/master/requests.md:block 32 (code)
-msgid ""
-"if ($request->routeIs('admin.*')) {\n"
-"    // ...\n"
-"}\n"
-msgstr ""
-
-#: docs/master/requests.md:block 46 (code)
-msgid ""
-"$method = $request->method();\n"
-"\n"
-"if ($request->isMethod('post')) {\n"
-"    // ...\n"
-"}\n"
-msgstr ""
-
-#: docs/master/requests.md:block 52 (code)
-msgid ""
-"if ($request->hasHeader('X-Header-Name')) {\n"
-"    // ...\n"
-"}\n"
-msgstr ""
-
-#: docs/master/requests.md:block 74 (code)
-msgid ""
-"use Psr\\Http\\Message\\ServerRequestInterface;\n"
-"\n"
-"Route::get('/', function (ServerRequestInterface $request) {\n"
-"    // ...\n"
-"});\n"
-msgstr ""
-
-#: docs/master/requests.md:block 87 (code)
-msgid ""
-"$request->collect('users')->each(function (string $user) {\n"
-"    // ...\n"
-"});\n"
-msgstr ""
-
-#: docs/master/requests.md:block 142 (code)
-msgid ""
-"if ($request->has('name')) {\n"
-"    // ...\n"
-"}\n"
-msgstr ""
-
-#: docs/master/requests.md:block 144 (code)
-msgid ""
-"if ($request->has(['name', 'email'])) {\n"
-"    // ...\n"
-"}\n"
-msgstr ""
-
-#: docs/master/requests.md:block 146 (code)
-msgid ""
-"$request->whenHas('name', function (string $input) {\n"
-"    // ...\n"
-"});\n"
-msgstr ""
-
-#: docs/master/requests.md:block 148 (code)
-msgid ""
-"$request->whenHas('name', function (string $input) {\n"
-"    // The \"name\" value is present...\n"
-"}, function () {\n"
-"    // The \"name\" value is not present...\n"
-"});\n"
-msgstr ""
-
-#: docs/master/requests.md:block 150 (code)
-msgid ""
-"if ($request->hasAny(['name', 'email'])) {\n"
-"    // ...\n"
-"}\n"
-msgstr ""
-
-#: docs/master/requests.md:block 152 (code)
-msgid ""
-"if ($request->filled('name')) {\n"
-"    // ...\n"
-"}\n"
-msgstr ""
-
-#: docs/master/requests.md:block 154 (code)
-msgid ""
-"$request->whenFilled('name', function (string $input) {\n"
-"    // ...\n"
-"});\n"
-msgstr ""
-
-#: docs/master/requests.md:block 156 (code)
-msgid ""
-"$request->whenFilled('name', function (string $input) {\n"
-"    // The \"name\" value is filled...\n"
-"}, function () {\n"
-"    // The \"name\" value is not filled...\n"
-"});\n"
-msgstr ""
-
-#: docs/master/requests.md:block 158 (code)
-msgid ""
-"if ($request->missing('name')) {\n"
-"    // ...\n"
-"}\n"
-"\n"
-"$request->whenMissing('name', function (array $input) {\n"
-"    // The \"name\" value is missing...\n"
-"}, function () {\n"
-"    // The \"name\" value is present...\n"
-"});\n"
-msgstr ""
-
-#: docs/master/requests.md:block 196 (code)
-msgid ""
-"use App\\Http\\Middleware\\TrimStrings;\n"
-"use Illuminate\\Http\\Request;\n"
-"use Illuminate\\Foundation\\Http\\Middleware\\ConvertEmptyStringsToNull;\n"
-"\n"
-"/**\n"
-" * Bootstrap any application services.\n"
-" */\n"
-"public function boot(): void\n"
-"{\n"
-"    TrimStrings::skipWhen(function (Request $request) {\n"
-"        return $request->is('admin/*');\n"
-"    });\n"
-"\n"
-"    ConvertEmptyStringsToNull::skipWhen(function (Request $request) {\n"
-"        // ...\n"
-"    });\n"
-"}\n"
-msgstr ""
-
-#: docs/master/requests.md:block 204 (code)
-msgid ""
-"if ($request->hasFile('photo')) {\n"
-"    // ...\n"
-"}\n"
-msgstr ""
-
-#: docs/master/requests.md:block 208 (code)
-msgid ""
-"if ($request->file('photo')->isValid()) {\n"
-"    // ...\n"
-"}\n"
-msgstr ""
-
-#: docs/master/requests.md:block 240 (code)
-msgid ""
-"/**\n"
-" * Get the host patterns that should be trusted.\n"
-" *\n"
-" * @return array<int, string>\n"
-" */\n"
-"public function hosts(): array\n"
-"{\n"
-"    return [\n"
-"        'laravel.test',\n"
-"        $this->allSubdomainsOfApplicationUrl(),\n"
-"    ];\n"
 "}\n"
 msgstr ""

@@ -10,111 +10,1179 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
-"PO-Revision-Date: 2023-01-25 14:53\n"
+"PO-Revision-Date: 2023-02-11 10:28\n"
 
-#: docs/8.x/requests.md:block 1 (header)
+#: docs/10.x/requests.md:block 1 (header)
 msgid "HTTP Requests"
 msgstr "HTTP Request"
 
-#: docs/8.x/requests.md:block 2 (unordered list)
+#: docs/10.x/requests.md:block 2 (unordered list)
 msgid "[Introduction](#introduction)"
 msgstr "[簡介](#introduction)"
 
-#: docs/8.x/requests.md:block 2 (unordered list)
+#: docs/10.x/requests.md:block 2 (unordered list)
 msgid "[Interacting With The Request](#interacting-with-the-request)"
 msgstr "[使用 Request](#interacting-with-the-request)"
 
-#: docs/8.x/requests.md:block 2 (unordered list)
+#: docs/10.x/requests.md:block 2 (unordered list)
 msgid "[Accessing The Request](#accessing-the-request)"
 msgstr "[存取 Request](#accessing-the-request)"
+
+#: docs/10.x/requests.md:block 2 (unordered list)
+msgid "[Request Path, Host, & Method](#request-path-and-method)"
+msgstr "[Request 路徑、主機、與方法](#request-path-and-method)"
+
+#: docs/10.x/requests.md:block 2 (unordered list)
+msgid "[Request Headers](#request-headers)"
+msgstr "[Request 標頭](#request-headers)"
+
+#: docs/10.x/requests.md:block 2 (unordered list)
+msgid "[Request IP Address](#request-ip-address)"
+msgstr "[Request 的 IP 位址](#request-ip-address)"
+
+#: docs/10.x/requests.md:block 2 (unordered list)
+msgid "[Content Negotiation](#content-negotiation)"
+msgstr "[判斷適當的內容](#content-negotiation)"
+
+#: docs/10.x/requests.md:block 2 (unordered list)
+msgid "[PSR-7 Requests](#psr7-requests)"
+msgstr "[PSR-7 Request](#psr7-requests)"
+
+#: docs/10.x/requests.md:block 2 (unordered list)
+msgid "[Input](#input)"
+msgstr "[輸入](#input)"
+
+#: docs/10.x/requests.md:block 2 (unordered list)
+msgid "[Retrieving Input](#retrieving-input)"
+msgstr "[取得輸入](#retrieving-input)"
+
+#: docs/10.x/requests.md:block 2 (unordered list)
+msgid "[Determining If Input Is Present](#determining-if-input-is-present)"
+msgstr "[判斷輸入是否存在](#determining-if-input-is-present)"
+
+#: docs/10.x/requests.md:block 2 (unordered list)
+msgid "[Merging Additional Input](#merging-additional-input)"
+msgstr "[合併額外的輸入](#merging-additional-input)"
+
+#: docs/10.x/requests.md:block 2 (unordered list)
+msgid "[Old Input](#old-input)"
+msgstr "[舊輸入](#old-input)"
+
+#: docs/10.x/requests.md:block 2 (unordered list)
+msgid "[Cookies](#cookies)"
+msgstr "[Cookie](#cookies)"
+
+#: docs/10.x/requests.md:block 2 (unordered list)
+msgid "[Input Trimming & Normalization](#input-trimming-and-normalization)"
+msgstr "[修剪輸入與正常化 (Normalization)](#input-trimming-and-normalization)"
+
+#: docs/10.x/requests.md:block 2 (unordered list)
+msgid "[Files](#files)"
+msgstr "[檔案](#files)"
+
+#: docs/10.x/requests.md:block 2 (unordered list)
+msgid "[Retrieving Uploaded Files](#retrieving-uploaded-files)"
+msgstr "[取得上傳的檔案](#retrieving-uploaded-files)"
+
+#: docs/10.x/requests.md:block 2 (unordered list)
+msgid "[Storing Uploaded Files](#storing-uploaded-files)"
+msgstr "[保存上傳的檔案](#storing-uploaded-files)"
+
+#: docs/10.x/requests.md:block 2 (unordered list)
+msgid "[Configuring Trusted Proxies](#configuring-trusted-proxies)"
+msgstr "[設定 Trusted Proxies](#configuring-trusted-proxies)"
+
+#: docs/10.x/requests.md:block 2 (unordered list)
+msgid "[Configuring Trusted Hosts](#configuring-trusted-hosts)"
+msgstr "[設定 Trusted Hosts](#configuring-trusted-hosts)"
+
+#: docs/10.x/requests.md:block 4 (header)
+msgid "Introduction"
+msgstr "簡介"
+
+#: docs/10.x/requests.md:block 5 (paragraph)
+msgid "Laravel's `Illuminate\\Http\\Request` class provides an object-oriented way to interact with the current HTTP request being handled by your application as well as retrieve the input, cookies, and files that were submitted with the request."
+msgstr "Laravel 的 `Illuminate\\Http\\Request` 類別提供了一種物件導向的方法來讓你存取目前程式在處理的 HTTP Request，包含 Request 的輸入、Cookie、上傳的檔案⋯⋯等。"
+
+#: docs/10.x/requests.md:block 7 (header)
+msgid "Interacting With The Request"
+msgstr "使用 Request"
+
+#: docs/10.x/requests.md:block 9 (header)
+msgid "Accessing The Request"
+msgstr "存取 Request"
+
+#: docs/10.x/requests.md:block 10 (paragraph)
+msgid "To obtain an instance of the current HTTP request via dependency injection, you should type-hint the `Illuminate\\Http\\Request` class on your route closure or controller method. The incoming request instance will automatically be injected by the Laravel [service container](/docs/{{version}}/container):"
+msgstr "若要通過相依性插入 (Dependency Injection) 來取得目前的 HTTP Request，可在 Route 閉包或 Controller 方法上型別提示 `Illuminate\\Http\\Request` 類別。連入的 Request 實體會自動被插入到 Laravel 的 [Service Container](/docs/{{version}}/container)："
+
+#: docs/10.x/requests.md:block 11 (code)
+msgid "<?php\n\n"
+"namespace App\\Http\\Controllers;\n\n"
+"use Illuminate\\Http\\Request;\n"
+"use Illuminate\\Http\\Response;\n\n"
+"class UserController extends Controller\n"
+"{\n"
+"    /**\n"
+"     * Store a new user.\n"
+"     */\n"
+"    public function store(Request $request): Response\n"
+"    {\n"
+"        $name = $request->input('name');\n\n"
+"        // ...\n\n"
+"        return response()->noContent();\n"
+"    }\n"
+"}\n"
+msgstr "<?php\n\n"
+"namespace App\\Http\\Controllers;\n\n"
+"use Illuminate\\Http\\Request;\n"
+"use Illuminate\\Http\\Response;\n\n"
+"class UserController extends Controller\n"
+"{\n"
+"    /**\n"
+"     * Store a new user.\n"
+"     */\n"
+"    public function store(Request $request): Response\n"
+"    {\n"
+"        $name = $request->input('name');\n\n"
+"        // ...\n\n"
+"        return response()->noContent();\n"
+"    }\n"
+"}\n"
+
+#: docs/10.x/requests.md:block 12 (paragraph)
+msgid "As mentioned, you may also type-hint the `Illuminate\\Http\\Request` class on a route closure. The service container will automatically inject the incoming request into the closure when it is executed:"
+msgstr "剛才也提到過，我們也可以在 Route 閉包上型別提示 `Illuminate\\Http\\Request` 類別。Service Container 會自動在閉包執行時將連入的 Request 插入進去："
+
+#: docs/10.x/requests.md:block 13 (code)
+msgid "use Illuminate\\Http\\Request;\n\n"
+"Route::get('/', function (Request $request) {\n"
+"    // ...\n"
+"});\n"
+msgstr "use Illuminate\\Http\\Request;\n\n"
+"Route::get('/', function (Request $request) {\n"
+"    // ...\n"
+"});\n"
+
+#: docs/10.x/requests.md:block 15 (header)
+msgid "Dependency Injection & Route Parameters"
+msgstr "相依性插入與 Route 參數"
+
+#: docs/10.x/requests.md:block 16 (paragraph)
+msgid "If your controller method is also expecting input from a route parameter you should list your route parameters after your other dependencies. For example, if your route is defined like so:"
+msgstr "若 Controller 方法中還會從 Route 引數中收到輸入，請將 Route 引數列在其他相依性之後。舉例來說，若 Route 定義長這樣："
+
+#: docs/10.x/requests.md:block 17 (code)
+msgid "use App\\Http\\Controllers\\UserController;\n\n"
+"Route::put('/user/{id}', [UserController::class, 'update']);\n"
+msgstr "use App\\Http\\Controllers\\UserController;\n\n"
+"Route::put('/user/{id}', [UserController::class, 'update']);\n"
+
+#: docs/10.x/requests.md:block 18 (paragraph)
+msgid "You may still type-hint the `Illuminate\\Http\\Request` and access your `id` route parameter by defining your controller method as follows:"
+msgstr "則我們還是可以像這樣定義 Controller 方法來型別提示 `Illuminate\\Http\\Request` 並取得 `id` Route 參數："
+
+#: docs/10.x/requests.md:block 19 (code)
+msgid "<?php\n\n"
+"namespace App\\Http\\Controllers;\n\n"
+"use Illuminate\\Http\\Request;\n"
+"use Illuminate\\Http\\Response;\n\n"
+"class UserController extends Controller\n"
+"{\n"
+"    /**\n"
+"     * Update the specified user.\n"
+"     */\n"
+"    public function update(Request $request, string $id): Response\n"
+"    {\n"
+"        // ...\n\n"
+"        return response()->noContent();\n"
+"    }\n"
+"}\n"
+msgstr "<?php\n\n"
+"namespace App\\Http\\Controllers;\n\n"
+"use Illuminate\\Http\\Request;\n"
+"use Illuminate\\Http\\Response;\n\n"
+"class UserController extends Controller\n"
+"{\n"
+"    /**\n"
+"     * Update the specified user.\n"
+"     */\n"
+"    public function update(Request $request, string $id): Response\n"
+"    {\n"
+"        // ...\n\n"
+"        return response()->noContent();\n"
+"    }\n"
+"}\n"
+
+#: docs/10.x/requests.md:block 21 (header)
+msgid "Request Path, Host, & Method"
+msgstr "Request 路徑、主機、與方法"
+
+#: docs/10.x/requests.md:block 22 (paragraph)
+msgid "The `Illuminate\\Http\\Request` instance provides a variety of methods for examining the incoming HTTP request and extends the `Symfony\\Component\\HttpFoundation\\Request` class. We will discuss a few of the most important methods below."
+msgstr "`Illuminate\\Http\\Request` 提供了多種可檢查連入 HTTP Request 的方法。這個方法也繼承了 `Symfony\\Component\\HttpFoundation\\Request` 類別。我們稍後會討論其中幾個最重要的方法。"
+
+#: docs/10.x/requests.md:block 24 (header)
+msgid "Retrieving The Request Path"
+msgstr "取得 Request 的路徑"
+
+#: docs/10.x/requests.md:block 25 (paragraph)
+msgid "The `path` method returns the request's path information. So, if the incoming request is targeted at `http://example.com/foo/bar`, the `path` method will return `foo/bar`:"
+msgstr "`path` 方法會回傳 Request 的路徑資訊。因此，若連入 Request 是在瀏覽 `http://example.com/foo/bar`，則 `path` 方法會回傳 `foo/bar`："
+
+#: docs/10.x/requests.md:block 26 (code)
+msgid "$uri = $request->path();\n"
+msgstr "$uri = $request->path();\n"
+
+#: docs/10.x/requests.md:block 28 (header)
+msgid "Inspecting The Request Path / Route"
+msgstr "偵測 Request 路徑與 Route"
+
+#: docs/10.x/requests.md:block 29 (paragraph)
+msgid "The `is` method allows you to verify that the incoming request path matches a given pattern. You may use the `*` character as a wildcard when utilizing this method:"
+msgstr "可以使用 `is` 方法來驗證連入 Request 的路徑是否符合給定的格式。使用這個方法的時候，可以使用 `*` 字元作為萬用字元："
+
+#: docs/10.x/requests.md:block 30 (code)
+msgid "if ($request->is('admin/*')) {\n"
+"    // ...\n"
+"}\n"
+msgstr "if ($request->is('admin/*')) {\n"
+"    // ...\n"
+"}\n"
+
+#: docs/10.x/requests.md:block 31 (paragraph)
+msgid "Using the `routeIs` method, you may determine if the incoming request has matched a [named route](/docs/{{version}}/routing#named-routes):"
+msgstr "使用 `routeIs` 方法可以判斷連入的 Request 是否為某個[命名 Route](/docs/{{version}}/routing#named-routes)："
+
+#: docs/10.x/requests.md:block 32 (code)
+msgid "if ($request->routeIs('admin.*')) {\n"
+"    // ...\n"
+"}\n"
+msgstr "if ($request->routeIs('admin.*')) {\n"
+"    // ...\n"
+"}\n"
+
+#: docs/10.x/requests.md:block 34 (header)
+msgid "Retrieving The Request URL"
+msgstr "取得 Request 的 URL"
+
+#: docs/10.x/requests.md:block 35 (paragraph)
+msgid "To retrieve the full URL for the incoming request you may use the `url` or `fullUrl` methods. The `url` method will return the URL without the query string, while the `fullUrl` method includes the query string:"
+msgstr "若要取得連入 Request 的完整 URL，可以使用 `url` 或 `fullUrl` 方法。`url` 方法會回傳不含查詢字串 (Query String) 的 URL，而 `fullUrl` 則包含查詢字串："
+
+#: docs/10.x/requests.md:block 36 (code)
+msgid "$url = $request->url();\n\n"
+"$urlWithQueryString = $request->fullUrl();\n"
+msgstr "$url = $request->url();\n\n"
+"$urlWithQueryString = $request->fullUrl();\n"
+
+#: docs/10.x/requests.md:block 37 (paragraph)
+msgid "If you would like to append query string data to the current URL, you may call the `fullUrlWithQuery` method. This method merges the given array of query string variables with the current query string:"
+msgstr "若想將查詢字串資料附加到目前的 URL，可以使用 `fullUrlWithQuery` 方法。傳入一個包含查詢字串變數的陣列，然後這個方法會將給定的陣列與目前的查詢字串合併："
+
+#: docs/10.x/requests.md:block 38 (code)
+msgid "$request->fullUrlWithQuery(['type' => 'phone']);\n"
+msgstr "$request->fullUrlWithQuery(['type' => 'phone']);\n"
+
+#: docs/10.x/requests.md:block 40 (header)
+msgid "Retrieving The Request Host"
+msgstr "取得 Request 主機"
+
+#: docs/10.x/requests.md:block 41 (paragraph)
+msgid "You may retrieve the \"host\" of the incoming request via the `host`, `httpHost`, and `schemeAndHttpHost` methods:"
+msgstr "可以使用 `host`、`httpHost`、與 `schemeAndHttpHost` 來取得連入 Request 的「主機」："
+
+#: docs/10.x/requests.md:block 42 (code)
+msgid "$request->host();\n"
+"$request->httpHost();\n"
+"$request->schemeAndHttpHost();\n"
+msgstr "$request->host();\n"
+"$request->httpHost();\n"
+"$request->schemeAndHttpHost();\n"
+
+#: docs/10.x/requests.md:block 44 (header)
+msgid "Retrieving The Request Method"
+msgstr "取得 Request 的方法"
+
+#: docs/10.x/requests.md:block 45 (paragraph)
+msgid "The `method` method will return the HTTP verb for the request. You may use the `isMethod` method to verify that the HTTP verb matches a given string:"
+msgstr "`method` 方法會回傳該 Request 的 HTTP 動詞 (Verb)。可以使用 `isMethod` 方法來判斷目前的 HTTP 動詞是否符合給定字串："
+
+#: docs/10.x/requests.md:block 46 (code)
+msgid "$method = $request->method();\n\n"
+"if ($request->isMethod('post')) {\n"
+"    // ...\n"
+"}\n"
+msgstr "$method = $request->method();\n\n"
+"if ($request->isMethod('post')) {\n"
+"    // ...\n"
+"}\n"
+
+#: docs/10.x/requests.md:block 48 (header)
+msgid "Request Headers"
+msgstr "Request 標頭"
+
+#: docs/10.x/requests.md:block 49 (paragraph)
+msgid "You may retrieve a request header from the `Illuminate\\Http\\Request` instance using the `header` method. If the header is not present on the request, `null` will be returned. However, the `header` method accepts an optional second argument that will be returned if the header is not present on the request:"
+msgstr "可以使用 `header` 方法來從 `Illuminate\\Http\\Request` 內取得 Request 的標頭 (Header)。若該 Request 未包含指定的標頭，則會回傳 `null`。不過，`header` 方法也接受第三個可選的引數，會在標頭不存在時回傳該值："
+
+#: docs/10.x/requests.md:block 50 (code)
+msgid "$value = $request->header('X-Header-Name');\n\n"
+"$value = $request->header('X-Header-Name', 'default');\n"
+msgstr "$value = $request->header('X-Header-Name');\n\n"
+"$value = $request->header('X-Header-Name', 'default');\n"
+
+#: docs/10.x/requests.md:block 51 (paragraph)
+msgid "The `hasHeader` method may be used to determine if the request contains a given header:"
+msgstr "`hasHeader` 方法可用來判斷 Request 是否包含給定的標頭："
+
+#: docs/10.x/requests.md:block 52 (code)
+msgid "if ($request->hasHeader('X-Header-Name')) {\n"
+"    // ...\n"
+"}\n"
+msgstr "if ($request->hasHeader('X-Header-Name')) {\n"
+"    // ...\n"
+"}\n"
+
+#: docs/10.x/requests.md:block 53 (paragraph)
+msgid "For convenience, the `bearerToken` method may be used to retrieve a bearer token from the `Authorization` header. If no such header is present, an empty string will be returned:"
+msgstr "為了方便起見，可以使用 `bearerToken` 方法來從 `Authorization` 標頭中取得 Bearer Token。若該標頭不存在，會回傳空字串："
+
+#: docs/10.x/requests.md:block 54 (code)
+msgid "$token = $request->bearerToken();\n"
+msgstr "$token = $request->bearerToken();\n"
+
+#: docs/10.x/requests.md:block 56 (header)
+msgid "Request IP Address"
+msgstr "Request 的 IP 位址"
+
+#: docs/10.x/requests.md:block 57 (paragraph)
+msgid "The `ip` method may be used to retrieve the IP address of the client that made the request to your application:"
+msgstr "可以使用 `ip` 方法來取得用戶端發起 Request 使用的 IP 位址："
+
+#: docs/10.x/requests.md:block 58 (code)
+msgid "$ipAddress = $request->ip();\n"
+msgstr "$ipAddress = $request->ip();\n"
+
+#: docs/10.x/requests.md:block 60 (header)
+msgid "Content Negotiation"
+msgstr "判斷適當的內容"
+
+#: docs/10.x/requests.md:block 61 (paragraph)
+msgid "Laravel provides several methods for inspecting the incoming request's requested content types via the `Accept` header. First, the `getAcceptableContentTypes` method will return an array containing all of the content types accepted by the request:"
+msgstr "Laravel 提供了數種方法來通過 `Accept` 標頭判斷連入 Request 所要求的 Content Type (內容類型)。首先，`getAcceptableContentTypes` 會回傳一個陣列，其中包含該 Request 所接受的所有 Content Type："
+
+#: docs/10.x/requests.md:block 62 (code)
+msgid "$contentTypes = $request->getAcceptableContentTypes();\n"
+msgstr "$contentTypes = $request->getAcceptableContentTypes();\n"
+
+#: docs/10.x/requests.md:block 63 (paragraph)
+msgid "The `accepts` method accepts an array of content types and returns `true` if any of the content types are accepted by the request. Otherwise, `false` will be returned:"
+msgstr "`accepts` 方法接受一個包含 Content Type 的陣列，當陣列中有任何一個 Content Type 是 Request 接受的，就會回傳 `true`。否則，會回傳 `false`："
+
+#: docs/10.x/requests.md:block 64 (code)
+msgid "if ($request->accepts(['text/html', 'application/json'])) {\n"
+"    // ...\n"
+"}\n"
+msgstr "if ($request->accepts(['text/html', 'application/json'])) {\n"
+"    // ...\n"
+"}\n"
+
+#: docs/10.x/requests.md:block 65 (paragraph)
+msgid "You may use the `prefers` method to determine which content type out of a given array of content types is most preferred by the request. If none of the provided content types are accepted by the request, `null` will be returned:"
+msgstr "可以使用 `prefers` 方法來判斷給定陣列中的哪個 Content Type 是該 Request 最優先選擇的。若所提供的 Content Type 都不為 Request 接受，則會回傳 `null`："
+
+#: docs/10.x/requests.md:block 66 (code)
+msgid "$preferred = $request->prefers(['text/html', 'application/json']);\n"
+msgstr "$preferred = $request->prefers(['text/html', 'application/json']);\n"
+
+#: docs/10.x/requests.md:block 67 (paragraph)
+msgid "Since many applications only serve HTML or JSON, you may use the `expectsJson` method to quickly determine if the incoming request expects a JSON response:"
+msgstr "因為大部分專案都只提供 HTML 或 JSON，所以我們可以通過 `expectsJson` 方法來快速判斷連入的 Request 是否預期 Response 應為 JSON："
+
+#: docs/10.x/requests.md:block 68 (code)
+msgid "if ($request->expectsJson()) {\n"
+"    // ...\n"
+"}\n"
+msgstr "if ($request->expectsJson()) {\n"
+"    // ...\n"
+"}\n"
+
+#: docs/10.x/requests.md:block 70 (header)
+msgid "PSR-7 Requests"
+msgstr "PSR-7 Request"
+
+#: docs/10.x/requests.md:block 71 (paragraph)
+msgid "The [PSR-7 standard](https://www.php-fig.org/psr/psr-7/) specifies interfaces for HTTP messages, including requests and responses. If you would like to obtain an instance of a PSR-7 request instead of a Laravel request, you will first need to install a few libraries. Laravel uses the *Symfony HTTP Message Bridge* component to convert typical Laravel requests and responses into PSR-7 compatible implementations:"
+msgstr "[PSR-7 標準](https://www.php-fig.org/psr/psr-7/) 指定了用於 HTTP 訊息通訊的介面，其中包含 Request 與 Response。若你想取得 PSR-7 Request 的實體而不是 Laravel Request，首先你會需要安裝幾個函式庫。Laravel 使用 *Symfony 的 HTTP Message Bridge* 元件來將一般的 Laravel Request 與 Response 轉換為相容於 PSR-7 的實作："
+
+#: docs/10.x/requests.md:block 72 (code)
+msgid "composer require symfony/psr-http-message-bridge\n"
+"composer require nyholm/psr7\n"
+msgstr "composer require symfony/psr-http-message-bridge\n"
+"composer require nyholm/psr7\n"
+
+#: docs/10.x/requests.md:block 73 (paragraph)
+msgid "Once you have installed these libraries, you may obtain a PSR-7 request by type-hinting the request interface on your route closure or controller method:"
+msgstr "安裝好這些函式庫後，就可以在 Route 閉包或 Controller 方法上型別提示 PSR-7 Request 介面來取得 PSR-7 Request 的實體："
+
+#: docs/10.x/requests.md:block 74 (code)
+msgid "use Psr\\Http\\Message\\ServerRequestInterface;\n\n"
+"Route::get('/', function (ServerRequestInterface $request) {\n"
+"    // ...\n"
+"});\n"
+msgstr "use Psr\\Http\\Message\\ServerRequestInterface;\n\n"
+"Route::get('/', function (ServerRequestInterface $request) {\n"
+"    // ...\n"
+"});\n"
+
+#: docs/10.x/requests.md:block 75 (quote)
+msgid "**Note** If you return a PSR-7 response instance from a route or controller, it will automatically be converted back to a Laravel response instance and be displayed by the framework."
+msgstr "**Note** 若從 Route 或 Controller 中回傳 PSR-7 Response，這個 Response 會先被轉回到 Laravel 的 Response 實體，然後才會由 Laravel 顯示出來。"
+
+#: docs/10.x/requests.md:block 77 (header)
+msgid "Input"
+msgstr "輸入"
+
+#: docs/10.x/requests.md:block 79 (header)
+msgid "Retrieving Input"
+msgstr "取得輸入"
+
+#: docs/10.x/requests.md:block 81 (header)
+msgid "Retrieving All Input Data"
+msgstr "取得所有輸入的資料"
+
+#: docs/10.x/requests.md:block 82 (paragraph)
+msgid "You may retrieve all of the incoming request's input data as an `array` using the `all` method. This method may be used regardless of whether the incoming request is from an HTML form or is an XHR request:"
+msgstr "可以使用 `all` 方法來將所有連入 Request 的輸入資料取得為 `array`。無論連入的 Request 是來自 HTML 表單還是 XHR Request，都可以使用這個方法："
+
+#: docs/10.x/requests.md:block 83 (code)
+msgid "$input = $request->all();\n"
+msgstr "$input = $request->all();\n"
+
+#: docs/10.x/requests.md:block 84 (paragraph)
+msgid "Using the `collect` method, you may retrieve all of the incoming request's input data as a [collection](/docs/{{version}}/collections):"
+msgstr "使用 `collect` 方法就可以將連入 Request 的輸入資料作為 [Collection](/docs/{{version}}/collections) 取得："
+
+#: docs/10.x/requests.md:block 85 (code)
+msgid "$input = $request->collect();\n"
+msgstr "$input = $request->collect();\n"
+
+#: docs/10.x/requests.md:block 86 (paragraph)
+msgid "The `collect` method also allows you to retrieve a subset of the incoming request input as a collection:"
+msgstr "使用 `collect` 方法也可以用來將連入 Request 輸入中的一部分取得為 Collection："
+
+#: docs/10.x/requests.md:block 87 (code)
+msgid "$request->collect('users')->each(function (string $user) {\n"
+"    // ...\n"
+"});\n"
+msgstr "$request->collect('users')->each(function (string $user) {\n"
+"    // ...\n"
+"});\n"
+
+#: docs/10.x/requests.md:block 89 (header)
+msgid "Retrieving An Input Value"
+msgstr "取得輸入值"
+
+#: docs/10.x/requests.md:block 90 (paragraph)
+msgid "Using a few simple methods, you may access all of the user input from your `Illuminate\\Http\\Request` instance without worrying about which HTTP verb was used for the request. Regardless of the HTTP verb, the `input` method may be used to retrieve user input:"
+msgstr "使用幾個簡單的方法，不需要擔心 Request 使用了哪個 HTTP 動詞，都可以存取 `Illuminate\\Http\\Request` 實體中所有的使用者輸入。無論 HTTP 動詞是什麼，都可以用 `input` 方法來取得使用者輸入："
+
+#: docs/10.x/requests.md:block 91 (code)
+msgid "$name = $request->input('name');\n"
+msgstr "$name = $request->input('name');\n"
+
+#: docs/10.x/requests.md:block 92 (paragraph)
+msgid "You may pass a default value as the second argument to the `input` method. This value will be returned if the requested input value is not present on the request:"
+msgstr "也可以傳入第二個引數給 `input` 方法來取得預設值。若 Request 中沒有要求的輸入值時，就會回傳這個預設值："
+
+#: docs/10.x/requests.md:block 93 (code)
+msgid "$name = $request->input('name', 'Sally');\n"
+msgstr "$name = $request->input('name', 'Sally');\n"
+
+#: docs/10.x/requests.md:block 94 (paragraph)
+msgid "When working with forms that contain array inputs, use \"dot\" notation to access the arrays:"
+msgstr "在處理包含陣列輸入的表單時，可以使用「點 (.)」標記法來存取陣列："
+
+#: docs/10.x/requests.md:block 95 (code)
+msgid "$name = $request->input('products.0.name');\n\n"
+"$names = $request->input('products.*.name');\n"
+msgstr "$name = $request->input('products.0.name');\n\n"
+"$names = $request->input('products.*.name');\n"
+
+#: docs/10.x/requests.md:block 96 (paragraph)
+msgid "You may call the `input` method without any arguments in order to retrieve all of the input values as an associative array:"
+msgstr "呼叫 `input` 方法時若不傳入任何引數，則可以用關聯式陣列的方式取得所有輸入資料："
+
+#: docs/10.x/requests.md:block 97 (code)
+msgid "$input = $request->input();\n"
+msgstr "$input = $request->input();\n"
+
+#: docs/10.x/requests.md:block 99 (header)
+msgid "Retrieving Input From The Query String"
+msgstr "取得查詢字串上的輸入"
+
+#: docs/10.x/requests.md:block 100 (paragraph)
+msgid "While the `input` method retrieves values from the entire request payload (including the query string), the `query` method will only retrieve values from the query string:"
+msgstr "雖然 `input` 方法可以從所有的 Request 承載 (Payload) 上取得資料 (其中也包含查詢字串)，若使用 `query` 方法，則可以只從查詢字串中取得資料："
+
+#: docs/10.x/requests.md:block 101 (code)
+msgid "$name = $request->query('name');\n"
+msgstr "$name = $request->query('name');\n"
+
+#: docs/10.x/requests.md:block 102 (paragraph)
+msgid "If the requested query string value data is not present, the second argument to this method will be returned:"
+msgstr "若要求的查詢字串值不存在，則會回傳第二個傳入該方法的值："
+
+#: docs/10.x/requests.md:block 103 (code)
+msgid "$name = $request->query('name', 'Helen');\n"
+msgstr "$name = $request->query('name', 'Helen');\n"
+
+#: docs/10.x/requests.md:block 104 (paragraph)
+msgid "You may call the `query` method without any arguments in order to retrieve all of the query string values as an associative array:"
+msgstr "呼叫 `query` 方法時若不傳入任何引數，則可以用關聯式陣列的方式取得所有查詢字串的資料："
+
+#: docs/10.x/requests.md:block 105 (code)
+msgid "$query = $request->query();\n"
+msgstr "$query = $request->query();\n"
+
+#: docs/10.x/requests.md:block 107 (header)
+msgid "Retrieving JSON Input Values"
+msgstr "取得 JSON 輸入值"
+
+#: docs/10.x/requests.md:block 108 (paragraph)
+msgid "When sending JSON requests to your application, you may access the JSON data via the `input` method as long as the `Content-Type` header of the request is properly set to `application/json`. You may even use \"dot\" syntax to retrieve values that are nested within JSON arrays / objects:"
+msgstr "傳送 JSON 的 Request 時，只要 Request 的 `Content-Type` 由正確設定為 `application/json`，就可以使用 `input` 方法來存取 JSON 資料。也可以使用「點 (.)」標記法來存取 JSON 陣列／物件中的巢狀資料："
+
+#: docs/10.x/requests.md:block 109 (code)
+msgid "$name = $request->input('user.name');\n"
+msgstr "$name = $request->input('user.name');\n"
+
+#: docs/10.x/requests.md:block 111 (header)
+msgid "Retrieving Stringable Input Values"
+msgstr "取得 Stringable 的輸入值"
+
+#: docs/10.x/requests.md:block 112 (paragraph)
+msgid "Instead of retrieving the request's input data as a primitive `string`, you may use the `string` method to retrieve the request data as an instance of [`Illuminate\\Support\\Stringable`](/docs/{{version}}/helpers#fluent-strings):"
+msgstr "除了將輸入值以原生型別的 `string` 取得，還可以使用 `string` 方法來將 Request 資料以 [`Illuminate\\Support\\Stringable`](/docs/{{version}}/helpers#fluent-strings) 實體的形式取得："
+
+#: docs/10.x/requests.md:block 113 (code)
+msgid "$name = $request->string('name')->trim();\n"
+msgstr "$name = $request->string('name')->trim();\n"
+
+#: docs/10.x/requests.md:block 115 (header)
+msgid "Retrieving Boolean Input Values"
+msgstr "取得布林輸入值"
+
+#: docs/10.x/requests.md:block 116 (paragraph)
+msgid "When dealing with HTML elements like checkboxes, your application may receive \"truthy\" values that are actually strings. For example, \"true\" or \"on\". For convenience, you may use the `boolean` method to retrieve these values as booleans. The `boolean` method returns `true` for 1, \"1\", true, \"true\", \"on\", and \"yes\". All other values will return `false`:"
+msgstr "在處理如勾選框 (Checkbox) 等 HTML 元素時，我們的程式可能會收到以字串形式呈現的「真假」值。舉例來說，這個值可能是「true」或「on」。為了方便起見，我們可以使用 `boolean` 方法來將這些值以布林方式取得。值為 1、\"1\"、true、\"true\"、\"on\"、\"yes\" 時，`boolean` 方法回傳 `true`。其他任何的值則會回傳 `false`："
+
+#: docs/10.x/requests.md:block 117 (code)
+msgid "$archived = $request->boolean('archived');\n"
+msgstr "$archived = $request->boolean('archived');\n"
+
+#: docs/10.x/requests.md:block 119 (header)
+msgid "Retrieving Date Input Values"
+msgstr "取得日期的輸入值"
+
+#: docs/10.x/requests.md:block 120 (paragraph)
+msgid "For convenience, input values containing dates / times may be retrieved as Carbon instances using the `date` method. If the request does not contain an input value with the given name, `null` will be returned:"
+msgstr "為了方便起見，我們可以使用 `date` 方法來將包含日期 / 時間的輸入值以 Carbon 實體來存取。若 Request 中為包含給定名稱的輸入值，則會回傳 `null`："
+
+#: docs/10.x/requests.md:block 121 (code)
+msgid "$birthday = $request->date('birthday');\n"
+msgstr "$birthday = $request->date('birthday');\n"
+
+#: docs/10.x/requests.md:block 122 (paragraph)
+msgid "The second and third arguments accepted by the `date` method may be used to specify the date's format and timezone, respectively:"
+msgstr "可以使用 `date` 的第二與第三個引數來分別指定日期的格式與時區："
+
+#: docs/10.x/requests.md:block 123 (code)
+msgid "$elapsed = $request->date('elapsed', '!H:i', 'Europe/Madrid');\n"
+msgstr "$elapsed = $request->date('elapsed', '!H:i', 'Europe/Madrid');\n"
+
+#: docs/10.x/requests.md:block 124 (paragraph)
+msgid "If the input value is present but has an invalid format, an `InvalidArgumentException` will be thrown; therefore, it is recommended that you validate the input before invoking the `date` method."
+msgstr "若輸入中有值，但格式不正確時，會擲回 `InvalidArgumentException`。因此，建議你在叫用 `date` 方法前先驗證輸入。"
+
+#: docs/10.x/requests.md:block 126 (header)
+msgid "Retrieving Enum Input Values"
+msgstr "取得 Enum 輸入值"
+
+#: docs/10.x/requests.md:block 127 (paragraph)
+msgid "Input values that correspond to [PHP enums](https://www.php.net/manual/en/language.types.enumerations.php) may also be retrieved from the request. If the request does not contain an input value with the given name or the enum does not have a backing value that matches the input value, `null` will be returned. The `enum` method accepts the name of the input value and the enum class as its first and second arguments:"
+msgstr "也可以從 Request 中取得對應到 [PHP Enum](https://www.php.net/manual/en/language.types.enumerations.php) 的輸入值。若 Request 中沒有輸入值，或是給定的名稱或 Enum 中沒有符合該輸入值的後端值 (Backing Value)，則會回傳 `null`。`enum` 方法的第一個引數為輸入值的名稱、第二個引數為 Enum 類別："
+
+#: docs/10.x/requests.md:block 128 (code)
+msgid "use App\\Enums\\Status;\n\n"
+"$status = $request->enum('status', Status::class);\n"
+msgstr "use App\\Enums\\Status;\n\n"
+"$status = $request->enum('status', Status::class);\n"
+
+#: docs/10.x/requests.md:block 130 (header)
+msgid "Retrieving Input Via Dynamic Properties"
+msgstr "通過動態屬性來取得輸入"
+
+#: docs/10.x/requests.md:block 131 (paragraph)
+msgid "You may also access user input using dynamic properties on the `Illuminate\\Http\\Request` instance. For example, if one of your application's forms contains a `name` field, you may access the value of the field like so:"
+msgstr "可以在 `Illuminate\\Http\\Request` 實體上通過動態屬性來存取使用者輸入。舉例來說，若其中一個程式的表單包含了 `name` 欄位，則可以像這樣存取該欄位的值："
+
+#: docs/10.x/requests.md:block 132 (code)
+msgid "$name = $request->name;\n"
+msgstr "$name = $request->name;\n"
+
+#: docs/10.x/requests.md:block 133 (paragraph)
+msgid "When using dynamic properties, Laravel will first look for the parameter's value in the request payload. If it is not present, Laravel will search for the field in the matched route's parameters."
+msgstr "使用動態方法時，Laravel 會先在 Request 的 Payload (承載) 上尋找參數值。若 Payload 上沒有該值，Laravel 會接著在 Route 參數中尋找符合名稱的欄位："
+
+#: docs/10.x/requests.md:block 135 (header)
+msgid "Retrieving A Portion Of The Input Data"
+msgstr "取得部分輸入資料"
+
+#: docs/10.x/requests.md:block 136 (paragraph)
+msgid "If you need to retrieve a subset of the input data, you may use the `only` and `except` methods. Both of these methods accept a single `array` or a dynamic list of arguments:"
+msgstr "若只想取得一部分的輸入資料，可以使用 `only` 或 `except` 方法。這兩個方法都接受一個 `array` 值、或是一組引數的動態列表："
+
+#: docs/10.x/requests.md:block 137 (code)
+msgid "$input = $request->only(['username', 'password']);\n\n"
+"$input = $request->only('username', 'password');\n\n"
+"$input = $request->except(['credit_card']);\n\n"
+"$input = $request->except('credit_card');\n"
+msgstr "$input = $request->only(['username', 'password']);\n\n"
+"$input = $request->only('username', 'password');\n\n"
+"$input = $request->except(['credit_card']);\n\n"
+"$input = $request->except('credit_card');\n"
+
+#: docs/10.x/requests.md:block 138 (quote)
+msgid "**Warning** The `only` method returns all of the key / value pairs that you request; however, it will not return key / value pairs that are not present on the request."
+msgstr "**Warning** `only` 方法會回傳所要求的所有索引鍵 / 值配對組。不過，若要求的索引鍵 / 值配對未出現在 Request 中，將不會回傳。"
+
+#: docs/10.x/requests.md:block 140 (header)
+msgid "Determining If Input Is Present"
+msgstr "判斷輸入是否存在"
+
+#: docs/10.x/requests.md:block 141 (paragraph)
+msgid "You may use the `has` method to determine if a value is present on the request. The `has` method returns `true` if the value is present on the request:"
+msgstr "可以使用 `has` 方法來判斷某個值是否存在 Request 中。若給定的輸入值存在於 Request 中，`has` 方法會回傳 `true`："
+
+#: docs/10.x/requests.md:block 142 (code)
+msgid "if ($request->has('name')) {\n"
+"    // ...\n"
+"}\n"
+msgstr "if ($request->has('name')) {\n"
+"    // ...\n"
+"}\n"
+
+#: docs/10.x/requests.md:block 143 (paragraph)
+msgid "When given an array, the `has` method will determine if all of the specified values are present:"
+msgstr "傳入陣列時，`has` 方法判斷其中所有的值是否都存在："
+
+#: docs/10.x/requests.md:block 144 (code)
+msgid "if ($request->has(['name', 'email'])) {\n"
+"    // ...\n"
+"}\n"
+msgstr "if ($request->has(['name', 'email'])) {\n"
+"    // ...\n"
+"}\n"
+
+#: docs/10.x/requests.md:block 145 (paragraph)
+msgid "The `whenHas` method will execute the given closure if a value is present on the request:"
+msgstr "`whenHas` 方法會執行給定的閉包來判斷某個值是否存在於 Request 中："
+
+#: docs/10.x/requests.md:block 146 (code)
+msgid "$request->whenHas('name', function (string $input) {\n"
+"    // ...\n"
+"});\n"
+msgstr "$request->whenHas('name', function (string $input) {\n"
+"    // ...\n"
+"});\n"
+
+#: docs/10.x/requests.md:block 147 (paragraph)
+msgid "A second closure may be passed to the `whenHas` method that will be executed if the specified value is not present on the request:"
+msgstr "可以傳入第二個閉包給 `whenHas` 方法，當指定的值未存在於 Request 中，則會執行這個閉包："
+
+#: docs/10.x/requests.md:block 148 (code)
+msgid "$request->whenHas('name', function (string $input) {\n"
+"    // The \"name\" value is present...\n"
+"}, function () {\n"
+"    // The \"name\" value is not present...\n"
+"});\n"
+msgstr "$request->whenHas('name', function (string $input) {\n"
+"    // 有「name」值...\n"
+"}, function () {\n"
+"    // 沒有「name」值...\n"
+"});\n"
+
+#: docs/10.x/requests.md:block 149 (paragraph)
+msgid "The `hasAny` method returns `true` if any of the specified values are present:"
+msgstr "`hasAny` 方法會給定的值有其中一個存在時回傳 `true`："
+
+#: docs/10.x/requests.md:block 150 (code)
+msgid "if ($request->hasAny(['name', 'email'])) {\n"
+"    // ...\n"
+"}\n"
+msgstr "if ($request->hasAny(['name', 'email'])) {\n"
+"    // ...\n"
+"}\n"
+
+#: docs/10.x/requests.md:block 151 (paragraph)
+msgid "If you would like to determine if a value is present on the request and is not an empty string, you may use the `filled` method:"
+msgstr "若想判斷某個值是否有出現在 Request 中，且該值不是空字串時，可使用 `filled` 方法："
+
+#: docs/10.x/requests.md:block 152 (code)
+msgid "if ($request->filled('name')) {\n"
+"    // ...\n"
+"}\n"
+msgstr "if ($request->filled('name')) {\n"
+"    // ...\n"
+"}\n"
+
+#: docs/10.x/requests.md:block 153 (paragraph)
+msgid "The `whenFilled` method will execute the given closure if a value is present on the request and is not an empty string:"
+msgstr "`whenFilled` 方法會執行給定的閉包來判斷 Request 中某個值是否為空字串："
+
+#: docs/10.x/requests.md:block 154 (code)
+msgid "$request->whenFilled('name', function (string $input) {\n"
+"    // ...\n"
+"});\n"
+msgstr "$request->whenFilled('name', function (string $input) {\n"
+"    // ...\n"
+"});\n"
+
+#: docs/10.x/requests.md:block 155 (paragraph)
+msgid "A second closure may be passed to the `whenFilled` method that will be executed if the specified value is not \"filled\":"
+msgstr "可以傳入第二個閉包給 `whenFilled` 方法，當 Request 中指定的值為空時會執行這個閉包："
+
+#: docs/10.x/requests.md:block 156 (code)
+msgid "$request->whenFilled('name', function (string $input) {\n"
+"    // The \"name\" value is filled...\n"
+"}, function () {\n"
+"    // The \"name\" value is not filled...\n"
+"});\n"
+msgstr "$request->whenFilled('name', function (string $input) {\n"
+"    // 已填寫「name」...\n"
+"}, function () {\n"
+"    // 未填寫「name」...\n"
+"});\n"
+
+#: docs/10.x/requests.md:block 157 (paragraph)
+msgid "To determine if a given key is absent from the request, you may use the `missing` and `whenMissing` methods:"
+msgstr "若要判斷 Request 中是否不存在給定的索引鍵，可使用 `missing` 方法與 `whenMissing` 方法："
+
+#: docs/10.x/requests.md:block 158 (code)
+msgid "if ($request->missing('name')) {\n"
+"    // ...\n"
+"}\n\n"
+"$request->whenMissing('name', function (array $input) {\n"
+"    // The \"name\" value is missing...\n"
+"}, function () {\n"
+"    // The \"name\" value is present...\n"
+"});\n"
+msgstr "if ($request->missing('name')) {\n"
+"    // ...\n"
+"}\n\n"
+"$request->whenMissing('name', function (array $input) {\n"
+"    // 沒有「name」值...\n"
+"}, function () {\n"
+"    // 有「name」值...\n"
+"});\n"
+
+#: docs/10.x/requests.md:block 160 (header)
+msgid "Merging Additional Input"
+msgstr "合併額外的輸入"
+
+#: docs/10.x/requests.md:block 161 (paragraph)
+msgid "Sometimes you may need to manually merge additional input into the request's existing input data. To accomplish this, you may use the `merge` method. If a given input key already exists on the request, it will be overwritten by the data provided to the `merge` method:"
+msgstr "有時候，我們需要手動合併額外的輸入到 Request 中現有的輸入資料。這種情況下，可使用 `merge` 方法。若 Request 中已存在給定的輸入索引鍵，則會使用提供給 `merge` 方法的資料來複寫："
+
+#: docs/10.x/requests.md:block 162 (code)
+msgid "$request->merge(['votes' => 0]);\n"
+msgstr "$request->merge(['votes' => 0]);\n"
+
+#: docs/10.x/requests.md:block 163 (paragraph)
+msgid "The `mergeIfMissing` method may be used to merge input into the request if the corresponding keys do not already exist within the request's input data:"
+msgstr "使用 `mergeIfMissing` 方法就可以只在 Request 的輸入資料中缺少特定索引鍵時才合併進 Request："
+
+#: docs/10.x/requests.md:block 164 (code)
+msgid "$request->mergeIfMissing(['votes' => 0]);\n"
+msgstr "$request->mergeIfMissing(['votes' => 0]);\n"
+
+#: docs/10.x/requests.md:block 166 (header)
+msgid "Old Input"
+msgstr "舊輸入"
+
+#: docs/10.x/requests.md:block 167 (paragraph)
+msgid "Laravel allows you to keep input from one request during the next request. This feature is particularly useful for re-populating forms after detecting validation errors. However, if you are using Laravel's included [validation features](/docs/{{version}}/validation), it is possible that you will not need to manually use these session input flashing methods directly, as some of Laravel's built-in validation facilities will call them automatically."
+msgstr "Laravel 提供了將輸入資料從一個 Request 帶到下一個 Request 的功能。這個功能特別適合用在表單驗證失敗後要重新填充表單時。不過，若你使用 Laravel 提供的[表單驗證功能](/docs/{{version}}/validation)，那麼你應該不需要直接手動進行這些 Session 的 Input 快閃方法，因為 Laravel 的內建表單驗證功能已經自動處理好了。"
+
+#: docs/10.x/requests.md:block 169 (header)
+msgid "Flashing Input To The Session"
+msgstr "將輸入資料快閃進 Session"
+
+#: docs/10.x/requests.md:block 170 (paragraph)
+msgid "The `flash` method on the `Illuminate\\Http\\Request` class will flash the current input to the [session](/docs/{{version}}/session) so that it is available during the user's next request to the application:"
+msgstr "使用 `Illuminate\\Http\\Request` 類別的 `flash` 方法，就可以將目前的輸入快閃 (Flash) 進 [Session](/docs/{{version}}/session)。這樣一來，使用者的下個 Request 中就有這些輸入值可用："
+
+#: docs/10.x/requests.md:block 171 (code)
+msgid "$request->flash();\n"
+msgstr "$request->flash();\n"
+
+#: docs/10.x/requests.md:block 172 (paragraph)
+msgid "You may also use the `flashOnly` and `flashExcept` methods to flash a subset of the request data to the session. These methods are useful for keeping sensitive information such as passwords out of the session:"
+msgstr "也可以使用 `flashOnly` 與 `flashExcept` 方法來只將一部分的 Request 資料刷入 Session。這些方法特別適用於想讓一些機密資料（如密碼）不要被刷入 Session 時："
+
+#: docs/10.x/requests.md:block 173 (code)
+msgid "$request->flashOnly(['username', 'email']);\n\n"
+"$request->flashExcept('password');\n"
+msgstr "$request->flashOnly(['username', 'email']);\n\n"
+"$request->flashExcept('password');\n"
+
+#: docs/10.x/requests.md:block 175 (header)
+msgid "Flashing Input Then Redirecting"
+msgstr "快閃存入輸入後再重新導向"
+
+#: docs/10.x/requests.md:block 176 (paragraph)
+msgid "Since you often will want to flash input to the session and then redirect to the previous page, you may easily chain input flashing onto a redirect using the `withInput` method:"
+msgstr "由於我們很常會需要再將輸入資料快閃存入 Session 後再重新導向回上一頁，因此我們只要把 `withInput` 方法串到重新導向後，就可以輕鬆地快閃存入輸入值："
+
+#: docs/10.x/requests.md:block 177 (code)
+msgid "return redirect('form')->withInput();\n\n"
+"return redirect()->route('user.create')->withInput();\n\n"
+"return redirect('form')->withInput(\n"
+"    $request->except('password')\n"
+");\n"
+msgstr "return redirect('form')->withInput();\n\n"
+"return redirect()->route('user.create')->withInput();\n\n"
+"return redirect('form')->withInput(\n"
+"    $request->except('password')\n"
+");\n"
+
+#: docs/10.x/requests.md:block 179 (header)
+msgid "Retrieving Old Input"
+msgstr "取得舊輸入"
+
+#: docs/10.x/requests.md:block 180 (paragraph)
+msgid "To retrieve flashed input from the previous request, invoke the `old` method on an instance of `Illuminate\\Http\\Request`. The `old` method will pull the previously flashed input data from the [session](/docs/{{version}}/session):"
+msgstr "若要取得前一個 Request 中的快閃輸入，可叫用 `Illuminate\\Http\\Request` 上的 `old` 方法。`old` 方法從 [Session](/docs/{{version}}/session) 中拉取前次快閃存入輸入資料："
+
+#: docs/10.x/requests.md:block 181 (code)
+msgid "$username = $request->old('username');\n"
+msgstr "$username = $request->old('username');\n"
+
+#: docs/10.x/requests.md:block 182 (paragraph)
+msgid "Laravel also provides a global `old` helper. If you are displaying old input within a [Blade template](/docs/{{version}}/blade), it is more convenient to use the `old` helper to repopulate the form. If no old input exists for the given field, `null` will be returned:"
+msgstr "Laravel 也提供了一個全域 `old` 輔助函式。若想在 [Blade 樣板](/docs/{{version}}/blade)中顯示舊輸入，那麼使用 `old` 輔助函式來將其填回表單回比較方便。若給定欄位沒有舊輸入的話，會回傳 `null`："
+
+#: docs/10.x/requests.md:block 183 (code)
+msgid "<input type=\"text\" name=\"username\" value=\"{{ old('username') }}\">\n"
+msgstr "<input type=\"text\" name=\"username\" value=\"{{ old('username') }}\">\n"
+
+#: docs/10.x/requests.md:block 185 (header)
+msgid "Cookies"
+msgstr "Cookie"
+
+#: docs/10.x/requests.md:block 187 (header)
+msgid "Retrieving Cookies From Requests"
+msgstr "從 Request 中取得 Cookie"
+
+#: docs/10.x/requests.md:block 188 (paragraph)
+msgid "All cookies created by the Laravel framework are encrypted and signed with an authentication code, meaning they will be considered invalid if they have been changed by the client. To retrieve a cookie value from the request, use the `cookie` method on an `Illuminate\\Http\\Request` instance:"
+msgstr "所有由 Laravel 框架所建立的 Cookie 都是經過加密且使用驗證碼簽名過的，這代表若用戶端有修改這些值，就會讓 Cookie 變成無效。若要從 Request 中取得 Cookie，請使用 `Illuminate\\Http\\Request` 實體上的 `cookie` 方法："
+
+#: docs/10.x/requests.md:block 189 (code)
+msgid "$value = $request->cookie('name');\n"
+msgstr "$value = $request->cookie('name');\n"
+
+#: docs/10.x/requests.md:block 191 (header)
+msgid "Input Trimming & Normalization"
+msgstr "輸入修剪與正常化"
+
+#: docs/10.x/requests.md:block 192 (paragraph)
+msgid "By default, Laravel includes the `App\\Http\\Middleware\\TrimStrings` and `Illuminate\\Foundation\\Http\\Middleware\\ConvertEmptyStringsToNull` middleware in your application's global middleware stack. These middleware are listed in the global middleware stack by the `App\\Http\\Kernel` class. These middleware will automatically trim all incoming string fields on the request, as well as convert any empty string fields to `null`. This allows you to not have to worry about these normalization concerns in your routes and controllers."
+msgstr "預設情況下，Laravel 中包含了 `App\\Http\\Middleware\\TrimStrings` 與 `Illuminate\\Foundation\\Http\\Middleware\\ConvertEmptyStringsToNull` 這兩個 Middleware，且放在程式的全域 Middleware Stack 中。這些 Middleware 被列在 `App\\Http\\Kernel` 類別的全域 Middleware Stack 中。這些 Middleware 會自動修剪 Request 中的所有連入子船，並將空白的字串欄位轉為 `null`。這樣，我們就不需要在 Route 或 Controller 中去費心正常化這些資料。"
+
+#: docs/10.x/requests.md:block 193 (header)
+msgid "Disabling Input Normalization"
+msgstr "禁用輸入正規化"
+
+#: docs/10.x/requests.md:block 194 (paragraph)
+msgid "If you would like to disable this behavior for all requests, you may remove the two middleware from your application's middleware stack by removing them from the `$middleware` property of your `App\\Http\\Kernel` class."
+msgstr "若想在所有 Request 上禁用這些行為，可在 `App\\Http\\Kernel` 類別的 `$middleware` 屬性中將其移除："
+
+#: docs/10.x/requests.md:block 195 (paragraph)
+msgid "If you would like to disable string trimming and empty string conversion for a subset of requests to your application, you may use the `skipWhen` method offered by both middleware. This method accepts a closure which should return `true` or `false` to indicate if input normalization should be skipped. Typically, the `skipWhen` method should be invoked in the `boot` method of your application's `AppServiceProvider`."
+msgstr "若只想在專案中一部分的 Request 上禁用字串修剪與空字串轉換，可使用這兩個 Middleware 提供的 `skipWhen` 方法。請傳入一個回傳 `true` 或 `false` 的閉包給該方法，用來判斷是否應跳過字串的正規化。一般來說，應在專案的 `AppServiceProvider` 中 `boot` 方法內叫用這個 `skipWhen` 方法。"
+
+#: docs/10.x/requests.md:block 196 (code)
+msgid "use App\\Http\\Middleware\\TrimStrings;\n"
+"use Illuminate\\Http\\Request;\n"
+"use Illuminate\\Foundation\\Http\\Middleware\\ConvertEmptyStringsToNull;\n\n"
+"/**\n"
+" * Bootstrap any application services.\n"
+" */\n"
+"public function boot(): void\n"
+"{\n"
+"    TrimStrings::skipWhen(function (Request $request) {\n"
+"        return $request->is('admin/*');\n"
+"    });\n\n"
+"    ConvertEmptyStringsToNull::skipWhen(function (Request $request) {\n"
+"        // ...\n"
+"    });\n"
+"}\n"
+msgstr "use App\\Http\\Middleware\\TrimStrings;\n"
+"use Illuminate\\Http\\Request;\n"
+"use Illuminate\\Foundation\\Http\\Middleware\\ConvertEmptyStringsToNull;\n\n"
+"/**\n"
+" * Bootstrap any application services.\n"
+" */\n"
+"public function boot(): void\n"
+"{\n"
+"    TrimStrings::skipWhen(function (Request $request) {\n"
+"        return $request->is('admin/*');\n"
+"    });\n\n"
+"    ConvertEmptyStringsToNull::skipWhen(function (Request $request) {\n"
+"        // ...\n"
+"    });\n"
+"}\n"
+
+#: docs/10.x/requests.md:block 198 (header)
+msgid "Files"
+msgstr "檔案"
+
+#: docs/10.x/requests.md:block 200 (header)
+msgid "Retrieving Uploaded Files"
+msgstr "取得上傳的檔案"
+
+#: docs/10.x/requests.md:block 201 (paragraph)
+msgid "You may retrieve uploaded files from an `Illuminate\\Http\\Request` instance using the `file` method or using dynamic properties. The `file` method returns an instance of the `Illuminate\\Http\\UploadedFile` class, which extends the PHP `SplFileInfo` class and provides a variety of methods for interacting with the file:"
+msgstr "可以使用 `file` 方法或動態屬性來從 `Illuminate\\Http\\Request` 實體上取得上傳的檔案。`file` 方法會回傳 `Illuminate\\Http\\UploadedFile` 類別的實體，該實體繼承了 PHP 的 `SplFileInfo` 類別，並提供各種能處理使用該檔案的方法："
+
+#: docs/10.x/requests.md:block 202 (code)
+msgid "$file = $request->file('photo');\n\n"
+"$file = $request->photo;\n"
+msgstr "$file = $request->file('photo');\n\n"
+"$file = $request->photo;\n"
+
+#: docs/10.x/requests.md:block 203 (paragraph)
+msgid "You may determine if a file is present on the request using the `hasFile` method:"
+msgstr "可以使用 `hasFile` 方法來判斷某個檔案是否存在於 Request 中："
+
+#: docs/10.x/requests.md:block 204 (code)
+msgid "if ($request->hasFile('photo')) {\n"
+"    // ...\n"
+"}\n"
+msgstr "if ($request->hasFile('photo')) {\n"
+"    // ...\n"
+"}\n"
+
+#: docs/10.x/requests.md:block 206 (header)
+msgid "Validating Successful Uploads"
+msgstr "驗證成功上傳"
+
+#: docs/10.x/requests.md:block 207 (paragraph)
+msgid "In addition to checking if the file is present, you may verify that there were no problems uploading the file via the `isValid` method:"
+msgstr "除了檢查檔案是否存在外，還可以使用 `isValid` 方法來確認上傳檔案的過程中是否無問題："
+
+#: docs/10.x/requests.md:block 208 (code)
+msgid "if ($request->file('photo')->isValid()) {\n"
+"    // ...\n"
+"}\n"
+msgstr "if ($request->file('photo')->isValid()) {\n"
+"    // ...\n"
+"}\n"
+
+#: docs/10.x/requests.md:block 210 (header)
+msgid "File Paths & Extensions"
+msgstr "檔案路徑與副檔名"
+
+#: docs/10.x/requests.md:block 211 (paragraph)
+msgid "The `UploadedFile` class also contains methods for accessing the file's fully-qualified path and its extension. The `extension` method will attempt to guess the file's extension based on its contents. This extension may be different from the extension that was supplied by the client:"
+msgstr "`UploadedFile` 類別也包含了能存取檔案完整路徑與副檔名的方法。`extension` 方法可以使用檔案的內容來推測檔案的副檔名。這個副檔名克呢功能會與用戶端提供的副檔名有所不同："
+
+#: docs/10.x/requests.md:block 212 (code)
+msgid "$path = $request->photo->path();\n\n"
+"$extension = $request->photo->extension();\n"
+msgstr "$path = $request->photo->path();\n\n"
+"$extension = $request->photo->extension();\n"
+
+#: docs/10.x/requests.md:block 214 (header)
+msgid "Other File Methods"
+msgstr "其他檔案方法"
+
+#: docs/10.x/requests.md:block 215 (paragraph)
+msgid "There are a variety of other methods available on `UploadedFile` instances. Check out the [API documentation for the class](https://github.com/symfony/symfony/blob/6.0/src/Symfony/Component/HttpFoundation/File/UploadedFile.php) for more information regarding these methods."
+msgstr "`UploadedFile` 實體還提供了其他各種方法。請參考[該類別的 API 說明文件](https://github.com/symfony/symfony/blob/6.0/src/Symfony/Component/HttpFoundation/File/UploadedFile.php)來瞭解有關這些方法的更多資訊。"
+
+#: docs/10.x/requests.md:block 217 (header)
+msgid "Storing Uploaded Files"
+msgstr "儲存上傳的檔案"
+
+#: docs/10.x/requests.md:block 218 (paragraph)
+msgid "To store an uploaded file, you will typically use one of your configured [filesystems](/docs/{{version}}/filesystem). The `UploadedFile` class has a `store` method that will move an uploaded file to one of your disks, which may be a location on your local filesystem or a cloud storage location like Amazon S3."
+msgstr "若要儲存已上傳的檔案，通常我們需要先設定好[檔案系統](/docs/{{version}}/filesystem)。`UploadedFile` 類別中有個 `store` 方法，該方法可以將已上傳的檔案移到其中一個磁碟裡。這個磁碟可以是本機檔案系統，也可以是像 Amazon S3 之類的雲端儲存空間。"
+
+#: docs/10.x/requests.md:block 219 (paragraph)
+msgid "The `store` method accepts the path where the file should be stored relative to the filesystem's configured root directory. This path should not contain a filename, since a unique ID will automatically be generated to serve as the filename."
+msgstr "`store` 方法接受一個路徑，該路徑就是相對於檔案系統設定中根目錄的位置。路徑不包含檔案名稱，Laravel 會自動產生獨立的 ID 來當作檔案名稱。"
+
+#: docs/10.x/requests.md:block 220 (paragraph)
+msgid "The `store` method also accepts an optional second argument for the name of the disk that should be used to store the file. The method will return the path of the file relative to the disk's root:"
+msgstr "`store` 方法也接受可選的第二個引數，該引數是要用來儲存檔案的磁碟名稱。 `store` 方法會回傳相對於磁碟根目錄的檔案路徑："
+
+#: docs/10.x/requests.md:block 221 (code)
+msgid "$path = $request->photo->store('images');\n\n"
+"$path = $request->photo->store('images', 's3');\n"
+msgstr "$path = $request->photo->store('images');\n\n"
+"$path = $request->photo->store('images', 's3');\n"
+
+#: docs/10.x/requests.md:block 222 (paragraph)
+msgid "If you do not want a filename to be automatically generated, you may use the `storeAs` method, which accepts the path, filename, and disk name as its arguments:"
+msgstr "若不想要自動產生的檔案名稱，可以使用 `storeAs` 方法，該方法的引數是路徑、檔案名稱、磁碟名稱："
+
+#: docs/10.x/requests.md:block 223 (code)
+msgid "$path = $request->photo->storeAs('images', 'filename.jpg');\n\n"
+"$path = $request->photo->storeAs('images', 'filename.jpg', 's3');\n"
+msgstr "$path = $request->photo->storeAs('images', 'filename.jpg');\n\n"
+"$path = $request->photo->storeAs('images', 'filename.jpg', 's3');\n"
+
+#: docs/10.x/requests.md:block 224 (quote)
+msgid "**Note** For more information about file storage in Laravel, check out the complete [file storage documentation](/docs/{{version}}/filesystem)."
+msgstr "**Note** 更多有關 Laravel 中檔案儲存的資訊，請參考完整的[檔案儲存說明文件](/docs/{{version}}/filesystem)。"
+
+#: docs/10.x/requests.md:block 226 (header)
+msgid "Configuring Trusted Proxies"
+msgstr "設定信任的代理 (Trusted Proxy)"
+
+#: docs/10.x/requests.md:block 227 (paragraph)
+msgid "When running your applications behind a load balancer that terminates TLS / SSL certificates, you may notice your application sometimes does not generate HTTPS links when using the `url` helper. Typically this is because your application is being forwarded traffic from your load balancer on port 80 and does not know it should generate secure links."
+msgstr "在負責處理 TLS / SSL 證書的 Load Balancer (負載平衡器) 後方執行應用程式時，有時候由 `url` 輔助函式產生的連結可能不會使用 HTTPS。者通常是因為，Load Balancer 把流量傳過來時使用的是 80 Port，因為 Laravel 不知道是否要產生 HTTPS 的連結。"
+
+#: docs/10.x/requests.md:block 228 (paragraph)
+msgid "To solve this, you may use the `App\\Http\\Middleware\\TrustProxies` middleware that is included in your Laravel application, which allows you to quickly customize the load balancers or proxies that should be trusted by your application. Your trusted proxies should be listed as an array on the `$proxies` property of this middleware. In addition to configuring the trusted proxies, you may configure the proxy `$headers` that should be trusted:"
+msgstr "為此，我們可以使用 Laravel 專案中有包含的 `App\\Http\\Middleware\\TrustProxies` Middleware。該 Middleware 能讓我們快速自訂程式要信任的 Load Balancer 或代理伺服器 (Proxy)。應在該 Middleware 內的 `$proxies` 屬性內列出信任的代理伺服器。除了設定信任的代理外，也可以設定信任代理的 `$headers`："
+
+#: docs/10.x/requests.md:block 229 (code)
+msgid "<?php\n\n"
+"namespace App\\Http\\Middleware;\n\n"
+"use Illuminate\\Http\\Middleware\\TrustProxies as Middleware;\n"
+"use Illuminate\\Http\\Request;\n\n"
+"class TrustProxies extends Middleware\n"
+"{\n"
+"    /**\n"
+"     * The trusted proxies for this application.\n"
+"     *\n"
+"     * @var string|array\n"
+"     */\n"
+"    protected $proxies = [\n"
+"        '192.168.1.1',\n"
+"        '192.168.1.2',\n"
+"    ];\n\n"
+"    /**\n"
+"     * The headers that should be used to detect proxies.\n"
+"     *\n"
+"     * @var int\n"
+"     */\n"
+"    protected $headers = Request::HEADER_X_FORWARDED_FOR | Request::HEADER_X_FORWARDED_HOST | Request::HEADER_X_FORWARDED_PORT | Request::HEADER_X_FORWARDED_PROTO;\n"
+"}\n"
+msgstr "<?php\n\n"
+"namespace App\\Http\\Middleware;\n\n"
+"use Illuminate\\Http\\Middleware\\TrustProxies as Middleware;\n"
+"use Illuminate\\Http\\Request;\n\n"
+"class TrustProxies extends Middleware\n"
+"{\n"
+"    /**\n"
+"     * The trusted proxies for this application.\n"
+"     *\n"
+"     * @var string|array\n"
+"     */\n"
+"    protected $proxies = [\n"
+"        '192.168.1.1',\n"
+"        '192.168.1.2',\n"
+"    ];\n\n"
+"    /**\n"
+"     * The headers that should be used to detect proxies.\n"
+"     *\n"
+"     * @var int\n"
+"     */\n"
+"    protected $headers = Request::HEADER_X_FORWARDED_FOR | Request::HEADER_X_FORWARDED_HOST | Request::HEADER_X_FORWARDED_PORT | Request::HEADER_X_FORWARDED_PROTO;\n"
+"}\n"
+
+#: docs/10.x/requests.md:block 230 (quote)
+msgid "**Note** If you are using AWS Elastic Load Balancing, your `$headers` value should be `Request::HEADER_X_FORWARDED_AWS_ELB`. For more information on the constants that may be used in the `$headers` property, check out Symfony's documentation on [trusting proxies](https://symfony.com/doc/current/deployment/proxies.html)."
+msgstr "**Note** 若要使用 AWS Elastic Load Balancing，則 `$headers` 的值應為 `Request::HEADER_X_FORWARDED_AWS_ELB`。更多有關能用在 `$headers` 屬性的常數資訊，請參考 Symfony 說明文件中的 [Trusting Proxies](https://symfony.com/doc/current/deployment/proxies.html)。"
+
+#: docs/10.x/requests.md:block 232 (header)
+msgid "Trusting All Proxies"
+msgstr "信任所有代理"
+
+#: docs/10.x/requests.md:block 233 (paragraph)
+msgid "If you are using Amazon AWS or another \"cloud\" load balancer provider, you may not know the IP addresses of your actual balancers. In this case, you may use `*` to trust all proxies:"
+msgstr "若使用 Amazon AWS 或其他的「雲端」Load Balancer 提供者，則我們可能不知道 Load Balancer 實際的 IP 位置。這時，可以使用 `*` 來信任所有代理："
+
+#: docs/10.x/requests.md:block 234 (code)
+msgid "/**\n"
+" * The trusted proxies for this application.\n"
+" *\n"
+" * @var string|array\n"
+" */\n"
+"protected $proxies = '*';\n"
+msgstr "/**\n"
+" * The trusted proxies for this application.\n"
+" *\n"
+" * @var string|array\n"
+" */\n"
+"protected $proxies = '*';\n"
+
+#: docs/10.x/requests.md:block 236 (header)
+msgid "Configuring Trusted Hosts"
+msgstr "設定信任的主機 (Trusted Hosts)"
+
+#: docs/10.x/requests.md:block 237 (paragraph)
+msgid "By default, Laravel will respond to all requests it receives regardless of the content of the HTTP request's `Host` header. In addition, the `Host` header's value will be used when generating absolute URLs to your application during a web request."
+msgstr "預設情況下，無論收到的 HTTP Request 中 `Host` 標頭內容為何，Laravel 都會回應所有收到的 Request。此外，Laravel 還會使用 `Host` 標頭的值來在 Request 中為你的程式產生絕對路徑的網址。"
+
+#: docs/10.x/requests.md:block 238 (paragraph)
+msgid "Typically, you should configure your web server, such as Nginx or Apache, to only send requests to your application that match a given host name. However, if you do not have the ability to customize your web server directly and need to instruct Laravel to only respond to certain host names, you may do so by enabling the `App\\Http\\Middleware\\TrustHosts` middleware for your application."
+msgstr "一般來說，應在 Web Server 上 (如 Nginx 或 Apache) 設定只有特定的主機名稱時才將 Request 送往你的程式中。不過，若沒機會能自訂 Web Server，則需要讓 Laravel 只對特定主機名稱作回應。為此，可以啟用專案中的 `App\\Http\\Middleware\\TrustHosts` Middleware。"
+
+#: docs/10.x/requests.md:block 239 (paragraph)
+msgid "The `TrustHosts` middleware is already included in the `$middleware` stack of your application; however, you should uncomment it so that it becomes active. Within this middleware's `hosts` method, you may specify the host names that your application should respond to. Incoming requests with other `Host` value headers will be rejected:"
+msgstr "`TrustHosts` Middleware 以預先包含在專案中的 `$middlware` Stack 裡的。不過，需要先取消註解這個 Middleware，才能啟用它。在這個 Middleware 中有個 `hosts` 方法，我們可以在其中指定我們的程式要回應的主機名稱。有其他 `Host` 標頭值的連入 Request 將會被拒絕："
+
+#: docs/10.x/requests.md:block 240 (code)
+msgid "/**\n"
+" * Get the host patterns that should be trusted.\n"
+" *\n"
+" * @return array<int, string>\n"
+" */\n"
+"public function hosts(): array\n"
+"{\n"
+"    return [\n"
+"        'laravel.test',\n"
+"        $this->allSubdomainsOfApplicationUrl(),\n"
+"    ];\n"
+"}\n"
+msgstr "/**\n"
+" * Get the host patterns that should be trusted.\n"
+" *\n"
+" * @return array<int, string>\n"
+" */\n"
+"public function hosts(): array\n"
+"{\n"
+"    return [\n"
+"        'laravel.test',\n"
+"        $this->allSubdomainsOfApplicationUrl(),\n"
+"    ];\n"
+"}\n"
+
+#: docs/10.x/requests.md:block 241 (paragraph)
+msgid "The `allSubdomainsOfApplicationUrl` helper method will return a regular expression matching all subdomains of your application's `app.url` configuration value. This helper method provides a convenient way to allow all of your application's subdomains when building an application that utilizes wildcard subdomains."
+msgstr "`allSubdomainsOfApplicationUrl` 輔助函式會回傳一個可配對應用程式中 `app.url` 設定值子網域的正規表示式。使用這個輔助函式，就可以方便地在使用萬用子網域的程式中允許所有的子網域。"
 
 #: docs/8.x/requests.md:block 2 (unordered list)
 msgid "[Request Path & Method](#request-path-and-method)"
 msgstr "[Request 路徑與方法](#request-path-and-method)"
-
-#: docs/8.x/requests.md:block 2 (unordered list)
-msgid "[Request Headers](#request-headers)"
-msgstr "[Request 標頭](#request-headers)"
-
-#: docs/8.x/requests.md:block 2 (unordered list)
-msgid "[Request IP Address](#request-ip-address)"
-msgstr "[Request 的 IP 位址](#request-ip-address)"
-
-#: docs/8.x/requests.md:block 2 (unordered list)
-msgid "[Content Negotiation](#content-negotiation)"
-msgstr "[判斷適當的內容](#content-negotiation)"
-
-#: docs/8.x/requests.md:block 2 (unordered list)
-msgid "[PSR-7 Requests](#psr7-requests)"
-msgstr "[PSR-7 Request](#psr7-requests)"
-
-#: docs/8.x/requests.md:block 2 (unordered list)
-msgid "[Input](#input)"
-msgstr "[輸入](#input)"
-
-#: docs/8.x/requests.md:block 2 (unordered list)
-msgid "[Retrieving Input](#retrieving-input)"
-msgstr "[取得輸入](#retrieving-input)"
-
-#: docs/8.x/requests.md:block 2 (unordered list)
-msgid "[Determining If Input Is Present](#determining-if-input-is-present)"
-msgstr "[判斷輸入是否存在](#determining-if-input-is-present)"
-
-#: docs/8.x/requests.md:block 2 (unordered list)
-msgid "[Merging Additional Input](#merging-additional-input)"
-msgstr "[合併額外的輸入](#merging-additional-input)"
-
-#: docs/8.x/requests.md:block 2 (unordered list)
-msgid "[Old Input](#old-input)"
-msgstr "[舊輸入](#old-input)"
-
-#: docs/8.x/requests.md:block 2 (unordered list)
-msgid "[Cookies](#cookies)"
-msgstr "[Cookie](#cookies)"
-
-#: docs/8.x/requests.md:block 2 (unordered list)
-msgid "[Input Trimming & Normalization](#input-trimming-and-normalization)"
-msgstr "[修剪輸入與正常化 (Normalization)](#input-trimming-and-normalization)"
-
-#: docs/8.x/requests.md:block 2 (unordered list)
-msgid "[Files](#files)"
-msgstr "[檔案](#files)"
-
-#: docs/8.x/requests.md:block 2 (unordered list)
-msgid "[Retrieving Uploaded Files](#retrieving-uploaded-files)"
-msgstr "[取得上傳的檔案](#retrieving-uploaded-files)"
-
-#: docs/8.x/requests.md:block 2 (unordered list)
-msgid "[Storing Uploaded Files](#storing-uploaded-files)"
-msgstr "[保存上傳的檔案](#storing-uploaded-files)"
-
-#: docs/8.x/requests.md:block 2 (unordered list)
-msgid "[Configuring Trusted Proxies](#configuring-trusted-proxies)"
-msgstr "[設定 Trusted Proxies](#configuring-trusted-proxies)"
-
-#: docs/8.x/requests.md:block 2 (unordered list)
-msgid "[Configuring Trusted Hosts](#configuring-trusted-hosts)"
-msgstr "[設定 Trusted Hosts](#configuring-trusted-hosts)"
-
-#: docs/8.x/requests.md:block 4 (header)
-msgid "Introduction"
-msgstr "簡介"
-
-#: docs/8.x/requests.md:block 5 (paragraph)
-msgid "Laravel's `Illuminate\\Http\\Request` class provides an object-oriented way to interact with the current HTTP request being handled by your application as well as retrieve the input, cookies, and files that were submitted with the request."
-msgstr "Laravel 的 `Illuminate\\Http\\Request` 類別提供了一種物件導向的方法來讓你存取目前程式在處理的 HTTP Request，包含 Request 的輸入、Cookie、上傳的檔案⋯⋯等。"
-
-#: docs/8.x/requests.md:block 7 (header)
-msgid "Interacting With The Request"
-msgstr "使用 Request"
-
-#: docs/8.x/requests.md:block 9 (header)
-msgid "Accessing The Request"
-msgstr "存取 Request"
-
-#: docs/8.x/requests.md:block 10 (paragraph)
-msgid "To obtain an instance of the current HTTP request via dependency injection, you should type-hint the `Illuminate\\Http\\Request` class on your route closure or controller method. The incoming request instance will automatically be injected by the Laravel [service container](/docs/{{version}}/container):"
-msgstr "若要通過相依性插入 (Dependency Injection) 來取得目前的 HTTP Request，可在 Route 閉包或 Controller 方法上型別提示 `Illuminate\\Http\\Request` 類別。連入的 Request 實體會自動被插入到 Laravel 的 [Service Container](/docs/{{version}}/container)："
 
 #: docs/8.x/requests.md:block 11 (code)
 msgid "<?php\n\n"
@@ -152,10 +1220,6 @@ msgstr "<?php\n\n"
 "    }\n"
 "}\n"
 
-#: docs/8.x/requests.md:block 12 (paragraph)
-msgid "As mentioned, you may also type-hint the `Illuminate\\Http\\Request` class on a route closure. The service container will automatically inject the incoming request into the closure when it is executed:"
-msgstr "剛才也提到過，我們也可以在 Route 閉包上型別提示 `Illuminate\\Http\\Request` 類別。Service Container 會自動在閉包執行時將連入的 Request 插入進去："
-
 #: docs/8.x/requests.md:block 13 (code)
 msgid "use Illuminate\\Http\\Request;\n\n"
 "Route::get('/', function (Request $request) {\n"
@@ -165,24 +1229,6 @@ msgstr "use Illuminate\\Http\\Request;\n\n"
 "Route::get('/', function (Request $request) {\n"
 "    //\n"
 "});\n"
-
-#: docs/8.x/requests.md:block 15 (header)
-msgid "Dependency Injection & Route Parameters"
-msgstr "相依性插入與 Route 參數"
-
-#: docs/8.x/requests.md:block 16 (paragraph)
-msgid "If your controller method is also expecting input from a route parameter you should list your route parameters after your other dependencies. For example, if your route is defined like so:"
-msgstr "若 Controller 方法中還會從 Route 引數中收到輸入，請將 Route 引數列在其他相依性之後。舉例來說，若 Route 定義長這樣："
-
-#: docs/8.x/requests.md:block 17 (code)
-msgid "use App\\Http\\Controllers\\UserController;\n\n"
-"Route::put('/user/{id}', [UserController::class, 'update']);\n"
-msgstr "use App\\Http\\Controllers\\UserController;\n\n"
-"Route::put('/user/{id}', [UserController::class, 'update']);\n"
-
-#: docs/8.x/requests.md:block 18 (paragraph)
-msgid "You may still type-hint the `Illuminate\\Http\\Request` and access your `id` route parameter by defining your controller method as follows:"
-msgstr "則我們還是可以像這樣定義 Controller 方法來型別提示 `Illuminate\\Http\\Request` 並取得 `id` Route 參數："
 
 #: docs/8.x/requests.md:block 19 (code)
 msgid "<?php\n\n"
@@ -224,30 +1270,6 @@ msgstr "<?php\n\n"
 msgid "Request Path & Method"
 msgstr "Request 的路徑與方法"
 
-#: docs/8.x/requests.md:block 22 (paragraph)
-msgid "The `Illuminate\\Http\\Request` instance provides a variety of methods for examining the incoming HTTP request and extends the `Symfony\\Component\\HttpFoundation\\Request` class. We will discuss a few of the most important methods below."
-msgstr "`Illuminate\\Http\\Request` 提供了多種可檢查連入 HTTP Request 的方法。這個方法也繼承了 `Symfony\\Component\\HttpFoundation\\Request` 類別。我們稍後會討論其中幾個最重要的方法。"
-
-#: docs/8.x/requests.md:block 24 (header)
-msgid "Retrieving The Request Path"
-msgstr "取得 Request 的路徑"
-
-#: docs/8.x/requests.md:block 25 (paragraph)
-msgid "The `path` method returns the request's path information. So, if the incoming request is targeted at `http://example.com/foo/bar`, the `path` method will return `foo/bar`:"
-msgstr "`path` 方法會回傳 Request 的路徑資訊。因此，若連入 Request 是在瀏覽 `http://example.com/foo/bar`，則 `path` 方法會回傳 `foo/bar`："
-
-#: docs/8.x/requests.md:block 26 (code)
-msgid "$uri = $request->path();\n"
-msgstr "$uri = $request->path();\n"
-
-#: docs/8.x/requests.md:block 28 (header)
-msgid "Inspecting The Request Path / Route"
-msgstr "偵測 Request 路徑與 Route"
-
-#: docs/8.x/requests.md:block 29 (paragraph)
-msgid "The `is` method allows you to verify that the incoming request path matches a given pattern. You may use the `*` character as a wildcard when utilizing this method:"
-msgstr "可以使用 `is` 方法來驗證連入 Request 的路徑是否符合給定的格式。使用這個方法的時候，可以使用 `*` 字元作為萬用字元："
-
 #: docs/8.x/requests.md:block 30 (code)
 msgid "if ($request->is('admin/*')) {\n"
 "    //\n"
@@ -256,10 +1278,6 @@ msgstr "if ($request->is('admin/*')) {\n"
 "    //\n"
 "}\n"
 
-#: docs/8.x/requests.md:block 31 (paragraph)
-msgid "Using the `routeIs` method, you may determine if the incoming request has matched a [named route](/docs/{{version}}/routing#named-routes):"
-msgstr "使用 `routeIs` 方法可以判斷連入的 Request 是否為某個[命名 Route](/docs/{{version}}/routing#named-routes)："
-
 #: docs/8.x/requests.md:block 32 (code)
 msgid "if ($request->routeIs('admin.*')) {\n"
 "    //\n"
@@ -267,36 +1285,6 @@ msgid "if ($request->routeIs('admin.*')) {\n"
 msgstr "if ($request->routeIs('admin.*')) {\n"
 "    //\n"
 "}\n"
-
-#: docs/8.x/requests.md:block 34 (header)
-msgid "Retrieving The Request URL"
-msgstr "取得 Request 的 URL"
-
-#: docs/8.x/requests.md:block 35 (paragraph)
-msgid "To retrieve the full URL for the incoming request you may use the `url` or `fullUrl` methods. The `url` method will return the URL without the query string, while the `fullUrl` method includes the query string:"
-msgstr "若要取得連入 Request 的完整 URL，可以使用 `url` 或 `fullUrl` 方法。`url` 方法會回傳不含查詢字串 (Query String) 的 URL，而 `fullUrl` 則包含查詢字串："
-
-#: docs/8.x/requests.md:block 36 (code)
-msgid "$url = $request->url();\n\n"
-"$urlWithQueryString = $request->fullUrl();\n"
-msgstr "$url = $request->url();\n\n"
-"$urlWithQueryString = $request->fullUrl();\n"
-
-#: docs/8.x/requests.md:block 37 (paragraph)
-msgid "If you would like to append query string data to the current URL, you may call the `fullUrlWithQuery` method. This method merges the given array of query string variables with the current query string:"
-msgstr "若想將查詢字串資料附加到目前的 URL，可以使用 `fullUrlWithQuery` 方法。傳入一個包含查詢字串變數的陣列，然後這個方法會將給定的陣列與目前的查詢字串合併："
-
-#: docs/8.x/requests.md:block 38 (code)
-msgid "$request->fullUrlWithQuery(['type' => 'phone']);\n"
-msgstr "$request->fullUrlWithQuery(['type' => 'phone']);\n"
-
-#: docs/8.x/requests.md:block 40 (header)
-msgid "Retrieving The Request Method"
-msgstr "取得 Request 的方法"
-
-#: docs/8.x/requests.md:block 41 (paragraph)
-msgid "The `method` method will return the HTTP verb for the request. You may use the `isMethod` method to verify that the HTTP verb matches a given string:"
-msgstr "`method` 方法會回傳該 Request 的 HTTP 動詞 (Verb)。可以使用 `isMethod` 方法來判斷目前的 HTTP 動詞是否符合給定字串："
 
 #: docs/8.x/requests.md:block 42 (code)
 msgid "$method = $request->method();\n\n"
@@ -308,24 +1296,6 @@ msgstr "$method = $request->method();\n\n"
 "    //\n"
 "}\n"
 
-#: docs/8.x/requests.md:block 44 (header)
-msgid "Request Headers"
-msgstr "Request 標頭"
-
-#: docs/8.x/requests.md:block 45 (paragraph)
-msgid "You may retrieve a request header from the `Illuminate\\Http\\Request` instance using the `header` method. If the header is not present on the request, `null` will be returned. However, the `header` method accepts an optional second argument that will be returned if the header is not present on the request:"
-msgstr "可以使用 `header` 方法來從 `Illuminate\\Http\\Request` 內取得 Request 的標頭 (Header)。若該 Request 未包含指定的標頭，則會回傳 `null`。不過，`header` 方法也接受第三個可選的引數，會在標頭不存在時回傳該值："
-
-#: docs/8.x/requests.md:block 46 (code)
-msgid "$value = $request->header('X-Header-Name');\n\n"
-"$value = $request->header('X-Header-Name', 'default');\n"
-msgstr "$value = $request->header('X-Header-Name');\n\n"
-"$value = $request->header('X-Header-Name', 'default');\n"
-
-#: docs/8.x/requests.md:block 47 (paragraph)
-msgid "The `hasHeader` method may be used to determine if the request contains a given header:"
-msgstr "`hasHeader` 方法可用來判斷 Request 是否包含給定的標頭："
-
 #: docs/8.x/requests.md:block 48 (code)
 msgid "if ($request->hasHeader('X-Header-Name')) {\n"
 "    //\n"
@@ -333,88 +1303,6 @@ msgid "if ($request->hasHeader('X-Header-Name')) {\n"
 msgstr "if ($request->hasHeader('X-Header-Name')) {\n"
 "    //\n"
 "}\n"
-
-#: docs/8.x/requests.md:block 49 (paragraph)
-msgid "For convenience, the `bearerToken` method may be used to retrieve a bearer token from the `Authorization` header. If no such header is present, an empty string will be returned:"
-msgstr "為了方便起見，可以使用 `bearerToken` 方法來從 `Authorization` 標頭中取得 Bearer Token。若該標頭不存在，會回傳空字串："
-
-#: docs/8.x/requests.md:block 50 (code)
-msgid "$token = $request->bearerToken();\n"
-msgstr "$token = $request->bearerToken();\n"
-
-#: docs/8.x/requests.md:block 52 (header)
-msgid "Request IP Address"
-msgstr "Request 的 IP 位址"
-
-#: docs/8.x/requests.md:block 53 (paragraph)
-msgid "The `ip` method may be used to retrieve the IP address of the client that made the request to your application:"
-msgstr "可以使用 `ip` 方法來取得用戶端發起 Request 使用的 IP 位址："
-
-#: docs/8.x/requests.md:block 54 (code)
-msgid "$ipAddress = $request->ip();\n"
-msgstr "$ipAddress = $request->ip();\n"
-
-#: docs/8.x/requests.md:block 56 (header)
-msgid "Content Negotiation"
-msgstr "判斷適當的內容"
-
-#: docs/8.x/requests.md:block 57 (paragraph)
-msgid "Laravel provides several methods for inspecting the incoming request's requested content types via the `Accept` header. First, the `getAcceptableContentTypes` method will return an array containing all of the content types accepted by the request:"
-msgstr "Laravel 提供了數種方法來通過 `Accept` 標頭判斷連入 Request 所要求的 Content Type (內容類型)。首先，`getAcceptableContentTypes` 會回傳一個陣列，其中包含該 Request 所接受的所有 Content Type："
-
-#: docs/8.x/requests.md:block 58 (code)
-msgid "$contentTypes = $request->getAcceptableContentTypes();\n"
-msgstr "$contentTypes = $request->getAcceptableContentTypes();\n"
-
-#: docs/8.x/requests.md:block 59 (paragraph)
-msgid "The `accepts` method accepts an array of content types and returns `true` if any of the content types are accepted by the request. Otherwise, `false` will be returned:"
-msgstr "`accepts` 方法接受一個包含 Content Type 的陣列，當陣列中有任何一個 Content Type 是 Request 接受的，就會回傳 `true`。否則，會回傳 `false`："
-
-#: docs/8.x/requests.md:block 60 (code)
-msgid "if ($request->accepts(['text/html', 'application/json'])) {\n"
-"    // ...\n"
-"}\n"
-msgstr "if ($request->accepts(['text/html', 'application/json'])) {\n"
-"    // ...\n"
-"}\n"
-
-#: docs/8.x/requests.md:block 61 (paragraph)
-msgid "You may use the `prefers` method to determine which content type out of a given array of content types is most preferred by the request. If none of the provided content types are accepted by the request, `null` will be returned:"
-msgstr "可以使用 `prefers` 方法來判斷給定陣列中的哪個 Content Type 是該 Request 最優先選擇的。若所提供的 Content Type 都不為 Request 接受，則會回傳 `null`："
-
-#: docs/8.x/requests.md:block 62 (code)
-msgid "$preferred = $request->prefers(['text/html', 'application/json']);\n"
-msgstr "$preferred = $request->prefers(['text/html', 'application/json']);\n"
-
-#: docs/8.x/requests.md:block 63 (paragraph)
-msgid "Since many applications only serve HTML or JSON, you may use the `expectsJson` method to quickly determine if the incoming request expects a JSON response:"
-msgstr "因為大部分專案都只提供 HTML 或 JSON，所以我們可以通過 `expectsJson` 方法來快速判斷連入的 Request 是否預期 Response 應為 JSON："
-
-#: docs/8.x/requests.md:block 64 (code)
-msgid "if ($request->expectsJson()) {\n"
-"    // ...\n"
-"}\n"
-msgstr "if ($request->expectsJson()) {\n"
-"    // ...\n"
-"}\n"
-
-#: docs/8.x/requests.md:block 66 (header)
-msgid "PSR-7 Requests"
-msgstr "PSR-7 Request"
-
-#: docs/8.x/requests.md:block 67 (paragraph)
-msgid "The [PSR-7 standard](https://www.php-fig.org/psr/psr-7/) specifies interfaces for HTTP messages, including requests and responses. If you would like to obtain an instance of a PSR-7 request instead of a Laravel request, you will first need to install a few libraries. Laravel uses the *Symfony HTTP Message Bridge* component to convert typical Laravel requests and responses into PSR-7 compatible implementations:"
-msgstr "[PSR-7 標準](https://www.php-fig.org/psr/psr-7/) 指定了用於 HTTP 訊息通訊的介面，其中包含 Request 與 Response。若你想取得 PSR-7 Request 的實體而不是 Laravel Request，首先你會需要安裝幾個函式庫。Laravel 使用 *Symfony 的 HTTP Message Bridge* 元件來將一般的 Laravel Request 與 Response 轉換為相容於 PSR-7 的實作："
-
-#: docs/8.x/requests.md:block 68 (code)
-msgid "composer require symfony/psr-http-message-bridge\n"
-"composer require nyholm/psr7\n"
-msgstr "composer require symfony/psr-http-message-bridge\n"
-"composer require nyholm/psr7\n"
-
-#: docs/8.x/requests.md:block 69 (paragraph)
-msgid "Once you have installed these libraries, you may obtain a PSR-7 request by type-hinting the request interface on your route closure or controller method:"
-msgstr "安裝好這些函式庫後，就可以在 Route 閉包或 Controller 方法上型別提示 PSR-7 Request 介面來取得 PSR-7 Request 的實體："
 
 #: docs/8.x/requests.md:block 70 (code)
 msgid "use Psr\\Http\\Message\\ServerRequestInterface;\n\n"
@@ -430,38 +1318,6 @@ msgstr "use Psr\\Http\\Message\\ServerRequestInterface;\n\n"
 msgid "{tip} If you return a PSR-7 response instance from a route or controller, it will automatically be converted back to a Laravel response instance and be displayed by the framework."
 msgstr "{tip} 若從 Route 或 Controller 中回傳 PSR-7 Response，這個 Response 會先被轉回到 Laravel 的 Response 實體，然後才會由 Laravel 顯示出來。"
 
-#: docs/8.x/requests.md:block 73 (header)
-msgid "Input"
-msgstr "輸入"
-
-#: docs/8.x/requests.md:block 75 (header)
-msgid "Retrieving Input"
-msgstr "取得輸入"
-
-#: docs/8.x/requests.md:block 77 (header)
-msgid "Retrieving All Input Data"
-msgstr "取得所有輸入的資料"
-
-#: docs/8.x/requests.md:block 78 (paragraph)
-msgid "You may retrieve all of the incoming request's input data as an `array` using the `all` method. This method may be used regardless of whether the incoming request is from an HTML form or is an XHR request:"
-msgstr "可以使用 `all` 方法來將所有連入 Request 的輸入資料取得為 `array`。無論連入的 Request 是來自 HTML 表單還是 XHR Request，都可以使用這個方法："
-
-#: docs/8.x/requests.md:block 79 (code)
-msgid "$input = $request->all();\n"
-msgstr "$input = $request->all();\n"
-
-#: docs/8.x/requests.md:block 80 (paragraph)
-msgid "Using the `collect` method, you may retrieve all of the incoming request's input data as a [collection](/docs/{{version}}/collections):"
-msgstr "使用 `collect` 方法就可以將連入 Request 的輸入資料作為 [Collection](/docs/{{version}}/collections) 取得："
-
-#: docs/8.x/requests.md:block 81 (code)
-msgid "$input = $request->collect();\n"
-msgstr "$input = $request->collect();\n"
-
-#: docs/8.x/requests.md:block 82 (paragraph)
-msgid "The `collect` method also allows you to retrieve a subset of the incoming request input as a collection:"
-msgstr "使用 `collect` 方法也可以用來將連入 Request 輸入中的一部分取得為 Collection："
-
 #: docs/8.x/requests.md:block 83 (code)
 msgid "$request->collect('users')->each(function ($user) {\n"
 "    // ...\n"
@@ -470,165 +1326,13 @@ msgstr "$request->collect('users')->each(function ($user) {\n"
 "    // ...\n"
 "});\n"
 
-#: docs/8.x/requests.md:block 85 (header)
-msgid "Retrieving An Input Value"
-msgstr "取得輸入值"
-
-#: docs/8.x/requests.md:block 86 (paragraph)
-msgid "Using a few simple methods, you may access all of the user input from your `Illuminate\\Http\\Request` instance without worrying about which HTTP verb was used for the request. Regardless of the HTTP verb, the `input` method may be used to retrieve user input:"
-msgstr "使用幾個簡單的方法，不需要擔心 Request 使用了哪個 HTTP 動詞，都可以存取 `Illuminate\\Http\\Request` 實體中所有的使用者輸入。無論 HTTP 動詞是什麼，都可以用 `input` 方法來取得使用者輸入："
-
-#: docs/8.x/requests.md:block 87 (code)
-msgid "$name = $request->input('name');\n"
-msgstr "$name = $request->input('name');\n"
-
-#: docs/8.x/requests.md:block 88 (paragraph)
-msgid "You may pass a default value as the second argument to the `input` method. This value will be returned if the requested input value is not present on the request:"
-msgstr "也可以傳入第二個引數給 `input` 方法來取得預設值。若 Request 中沒有要求的輸入值時，就會回傳這個預設值："
-
-#: docs/8.x/requests.md:block 89 (code)
-msgid "$name = $request->input('name', 'Sally');\n"
-msgstr "$name = $request->input('name', 'Sally');\n"
-
-#: docs/8.x/requests.md:block 90 (paragraph)
-msgid "When working with forms that contain array inputs, use \"dot\" notation to access the arrays:"
-msgstr "在處理包含陣列輸入的表單時，可以使用「點 (.)」標記法來存取陣列："
-
-#: docs/8.x/requests.md:block 91 (code)
-msgid "$name = $request->input('products.0.name');\n\n"
-"$names = $request->input('products.*.name');\n"
-msgstr "$name = $request->input('products.0.name');\n\n"
-"$names = $request->input('products.*.name');\n"
-
-#: docs/8.x/requests.md:block 92 (paragraph)
-msgid "You may call the `input` method without any arguments in order to retrieve all of the input values as an associative array:"
-msgstr "呼叫 `input` 方法時若不傳入任何引數，則可以用關聯式陣列的方式取得所有輸入資料："
-
-#: docs/8.x/requests.md:block 93 (code)
-msgid "$input = $request->input();\n"
-msgstr "$input = $request->input();\n"
-
-#: docs/8.x/requests.md:block 95 (header)
-msgid "Retrieving Input From The Query String"
-msgstr "取得查詢字串上的輸入"
-
-#: docs/8.x/requests.md:block 96 (paragraph)
-msgid "While the `input` method retrieves values from the entire request payload (including the query string), the `query` method will only retrieve values from the query string:"
-msgstr "雖然 `input` 方法可以從所有的 Request 承載 (Payload) 上取得資料 (其中也包含查詢字串)，若使用 `query` 方法，則可以只從查詢字串中取得資料："
-
-#: docs/8.x/requests.md:block 97 (code)
-msgid "$name = $request->query('name');\n"
-msgstr "$name = $request->query('name');\n"
-
-#: docs/8.x/requests.md:block 98 (paragraph)
-msgid "If the requested query string value data is not present, the second argument to this method will be returned:"
-msgstr "若要求的查詢字串值不存在，則會回傳第二個傳入該方法的值："
-
-#: docs/8.x/requests.md:block 99 (code)
-msgid "$name = $request->query('name', 'Helen');\n"
-msgstr "$name = $request->query('name', 'Helen');\n"
-
-#: docs/8.x/requests.md:block 100 (paragraph)
-msgid "You may call the `query` method without any arguments in order to retrieve all of the query string values as an associative array:"
-msgstr "呼叫 `query` 方法時若不傳入任何引數，則可以用關聯式陣列的方式取得所有查詢字串的資料："
-
-#: docs/8.x/requests.md:block 101 (code)
-msgid "$query = $request->query();\n"
-msgstr "$query = $request->query();\n"
-
-#: docs/8.x/requests.md:block 103 (header)
-msgid "Retrieving JSON Input Values"
-msgstr "取得 JSON 輸入值"
-
 #: docs/8.x/requests.md:block 104 (paragraph)
 msgid "When sending JSON requests to your application, you may access the JSON data via the `input` method as long as the `Content-Type` header of the request is properly set to `application/json`. You may even use \"dot\" syntax to retrieve values that are nested within JSON arrays:"
 msgstr "傳送 JSON 的 Request 時，只要 Request 的 `Content-Type` 由正確設定為 `application/json`，就可以使用 `input` 方法來存取 JSON 資料。也可以使用「點 (.)」標記法來存取 JSON 陣列中的巢狀資料："
 
-#: docs/8.x/requests.md:block 105 (code)
-msgid "$name = $request->input('user.name');\n"
-msgstr "$name = $request->input('user.name');\n"
-
-#: docs/8.x/requests.md:block 107 (header)
-msgid "Retrieving Boolean Input Values"
-msgstr "取得布林輸入值"
-
-#: docs/8.x/requests.md:block 108 (paragraph)
-msgid "When dealing with HTML elements like checkboxes, your application may receive \"truthy\" values that are actually strings. For example, \"true\" or \"on\". For convenience, you may use the `boolean` method to retrieve these values as booleans. The `boolean` method returns `true` for 1, \"1\", true, \"true\", \"on\", and \"yes\". All other values will return `false`:"
-msgstr "在處理如勾選框 (Checkbox) 等 HTML 元素時，我們的程式可能會收到以字串形式呈現的「真假」值。舉例來說，這個值可能是「true」或「on」。為了方便起見，我們可以使用 `boolean` 方法來將這些值以布林方式取得。值為 1、\"1\"、true、\"true\"、\"on\"、\"yes\" 時，`boolean` 方法回傳 `true`。其他任何的值則會回傳 `false`："
-
-#: docs/8.x/requests.md:block 109 (code)
-msgid "$archived = $request->boolean('archived');\n"
-msgstr "$archived = $request->boolean('archived');\n"
-
-#: docs/8.x/requests.md:block 111 (header)
-msgid "Retrieving Date Input Values"
-msgstr "取得日期的輸入值"
-
-#: docs/8.x/requests.md:block 112 (paragraph)
-msgid "For convenience, input values containing dates / times may be retrieved as Carbon instances using the `date` method. If the request does not contain an input value with the given name, `null` will be returned:"
-msgstr "為了方便起見，我們可以使用 `date` 方法來將包含日期 / 時間的輸入值以 Carbon 實體來存取。若 Request 中為包含給定名稱的輸入值，則會回傳 `null`："
-
-#: docs/8.x/requests.md:block 113 (code)
-msgid "$birthday = $request->date('birthday');\n"
-msgstr "$birthday = $request->date('birthday');\n"
-
-#: docs/8.x/requests.md:block 114 (paragraph)
-msgid "The second and third arguments accepted by the `date` method may be used to specify the date's format and timezone, respectively:"
-msgstr "可以使用 `date` 的第二與第三個引數來分別指定日期的格式與時區："
-
-#: docs/8.x/requests.md:block 115 (code)
-msgid "$elapsed = $request->date('elapsed', '!H:i', 'Europe/Madrid');\n"
-msgstr "$elapsed = $request->date('elapsed', '!H:i', 'Europe/Madrid');\n"
-
-#: docs/8.x/requests.md:block 116 (paragraph)
-msgid "If the input value is present but has an invalid format, an `InvalidArgumentException` will be thrown; therefore, it is recommended that you validate the input before invoking the `date` method."
-msgstr "若輸入中有值，但格式不正確時，會擲回 `InvalidArgumentException`。因此，建議你在叫用 `date` 方法前先驗證輸入。"
-
-#: docs/8.x/requests.md:block 118 (header)
-msgid "Retrieving Input Via Dynamic Properties"
-msgstr "通過動態屬性來取得輸入"
-
-#: docs/8.x/requests.md:block 119 (paragraph)
-msgid "You may also access user input using dynamic properties on the `Illuminate\\Http\\Request` instance. For example, if one of your application's forms contains a `name` field, you may access the value of the field like so:"
-msgstr "可以在 `Illuminate\\Http\\Request` 實體上通過動態屬性來存取使用者輸入。舉例來說，若其中一個程式的表單包含了 `name` 欄位，則可以像這樣存取該欄位的值："
-
-#: docs/8.x/requests.md:block 120 (code)
-msgid "$name = $request->name;\n"
-msgstr "$name = $request->name;\n"
-
-#: docs/8.x/requests.md:block 121 (paragraph)
-msgid "When using dynamic properties, Laravel will first look for the parameter's value in the request payload. If it is not present, Laravel will search for the field in the matched route's parameters."
-msgstr "使用動態方法時，Laravel 會先在 Request 的 Payload (承載) 上尋找參數值。若 Payload 上沒有該值，Laravel 會接著在 Route 參數中尋找符合名稱的欄位："
-
-#: docs/8.x/requests.md:block 123 (header)
-msgid "Retrieving A Portion Of The Input Data"
-msgstr "取得部分輸入資料"
-
-#: docs/8.x/requests.md:block 124 (paragraph)
-msgid "If you need to retrieve a subset of the input data, you may use the `only` and `except` methods. Both of these methods accept a single `array` or a dynamic list of arguments:"
-msgstr "若只想取得一部分的輸入資料，可以使用 `only` 或 `except` 方法。這兩個方法都接受一個 `array` 值、或是一組引數的動態列表："
-
-#: docs/8.x/requests.md:block 125 (code)
-msgid "$input = $request->only(['username', 'password']);\n\n"
-"$input = $request->only('username', 'password');\n\n"
-"$input = $request->except(['credit_card']);\n\n"
-"$input = $request->except('credit_card');\n"
-msgstr "$input = $request->only(['username', 'password']);\n\n"
-"$input = $request->only('username', 'password');\n\n"
-"$input = $request->except(['credit_card']);\n\n"
-"$input = $request->except('credit_card');\n"
-
 #: docs/8.x/requests.md:block 126 (quote)
 msgid "{note} The `only` method returns all of the key / value pairs that you request; however, it will not return key / value pairs that are not present on the request."
 msgstr "{note} `only` 方法會回傳所要求的所有索引鍵 / 值配對組。不過，若要求的索引鍵 / 值配對未出現在 Request 中，將不會回傳。"
-
-#: docs/8.x/requests.md:block 128 (header)
-msgid "Determining If Input Is Present"
-msgstr "判斷輸入是否存在"
-
-#: docs/8.x/requests.md:block 129 (paragraph)
-msgid "You may use the `has` method to determine if a value is present on the request. The `has` method returns `true` if the value is present on the request:"
-msgstr "可以使用 `has` 方法來判斷某個值是否存在 Request 中。若給定的輸入值存在於 Request 中，`has` 方法會回傳 `true`："
 
 #: docs/8.x/requests.md:block 130 (code)
 msgid "if ($request->has('name')) {\n"
@@ -638,10 +1342,6 @@ msgstr "if ($request->has('name')) {\n"
 "    //\n"
 "}\n"
 
-#: docs/8.x/requests.md:block 131 (paragraph)
-msgid "When given an array, the `has` method will determine if all of the specified values are present:"
-msgstr "傳入陣列時，`has` 方法判斷其中所有的值是否都存在："
-
 #: docs/8.x/requests.md:block 132 (code)
 msgid "if ($request->has(['name', 'email'])) {\n"
 "    //\n"
@@ -650,10 +1350,6 @@ msgstr "if ($request->has(['name', 'email'])) {\n"
 "    //\n"
 "}\n"
 
-#: docs/8.x/requests.md:block 133 (paragraph)
-msgid "The `whenHas` method will execute the given closure if a value is present on the request:"
-msgstr "`whenHas` 方法會執行給定的閉包來判斷某個值是否存在於 Request 中："
-
 #: docs/8.x/requests.md:block 134 (code)
 msgid "$request->whenHas('name', function ($input) {\n"
 "    //\n"
@@ -661,10 +1357,6 @@ msgid "$request->whenHas('name', function ($input) {\n"
 msgstr "$request->whenHas('name', function ($input) {\n"
 "    //\n"
 "});\n"
-
-#: docs/8.x/requests.md:block 135 (paragraph)
-msgid "A second closure may be passed to the `whenHas` method that will be executed if the specified value is not present on the request:"
-msgstr "可以傳入第二個閉包給 `whenHas` 方法，當指定的值未存在於 Request 中，則會執行這個閉包："
 
 #: docs/8.x/requests.md:block 136 (code)
 msgid "$request->whenHas('name', function ($input) {\n"
@@ -677,10 +1369,6 @@ msgstr "$request->whenHas('name', function ($input) {\n"
 "}, function () {\n"
 "    // The \"name\" value is not present...\n"
 "});\n"
-
-#: docs/8.x/requests.md:block 137 (paragraph)
-msgid "The `hasAny` method returns `true` if any of the specified values are present:"
-msgstr "`hasAny` 方法會給定的值有其中一個存在時回傳 `true`："
 
 #: docs/8.x/requests.md:block 138 (code)
 msgid "if ($request->hasAny(['name', 'email'])) {\n"
@@ -714,10 +1402,6 @@ msgstr "$request->whenFilled('name', function ($input) {\n"
 "    //\n"
 "});\n"
 
-#: docs/8.x/requests.md:block 143 (paragraph)
-msgid "A second closure may be passed to the `whenFilled` method that will be executed if the specified value is not \"filled\":"
-msgstr "可以傳入第二個閉包給 `whenFilled` 方法，當 Request 中指定的值為空時會執行這個閉包："
-
 #: docs/8.x/requests.md:block 144 (code)
 msgid "$request->whenFilled('name', function ($input) {\n"
 "    // The \"name\" value is filled...\n"
@@ -742,115 +1426,9 @@ msgstr "if ($request->missing('name')) {\n"
 "    //\n"
 "}\n"
 
-#: docs/8.x/requests.md:block 148 (header)
-msgid "Merging Additional Input"
-msgstr "合併額外的輸入"
-
 #: docs/8.x/requests.md:block 149 (paragraph)
 msgid "Sometimes you may need to manually merge additional input into the request's existing input data. To accomplish this, you may use the `merge` method:"
 msgstr "有時候，我們可能會想手動把額外的輸入合併到 Request 中現存的輸入資料內。為此，可以使用 `merge` 方法："
-
-#: docs/8.x/requests.md:block 150 (code)
-msgid "$request->merge(['votes' => 0]);\n"
-msgstr "$request->merge(['votes' => 0]);\n"
-
-#: docs/8.x/requests.md:block 151 (paragraph)
-msgid "The `mergeIfMissing` method may be used to merge input into the request if the corresponding keys do not already exist within the request's input data:"
-msgstr "使用 `mergeIfMissing` 方法就可以只在 Request 的輸入資料中缺少特定索引鍵時才合併進 Request："
-
-#: docs/8.x/requests.md:block 152 (code)
-msgid "$request->mergeIfMissing(['votes' => 0]);\n"
-msgstr "$request->mergeIfMissing(['votes' => 0]);\n"
-
-#: docs/8.x/requests.md:block 154 (header)
-msgid "Old Input"
-msgstr "舊輸入"
-
-#: docs/8.x/requests.md:block 155 (paragraph)
-msgid "Laravel allows you to keep input from one request during the next request. This feature is particularly useful for re-populating forms after detecting validation errors. However, if you are using Laravel's included [validation features](/docs/{{version}}/validation), it is possible that you will not need to manually use these session input flashing methods directly, as some of Laravel's built-in validation facilities will call them automatically."
-msgstr "Laravel 提供了將輸入資料從一個 Request 帶到下一個 Request 的功能。這個功能特別適合用在表單驗證失敗後要重新填充表單時。不過，若你使用 Laravel 提供的[表單驗證功能](/docs/{{version}}/validation)，那麼你應該不需要直接手動進行這些 Session 的 Input 快閃方法，因為 Laravel 的內建表單驗證功能已經自動處理好了。"
-
-#: docs/8.x/requests.md:block 157 (header)
-msgid "Flashing Input To The Session"
-msgstr "將輸入資料快閃進 Session"
-
-#: docs/8.x/requests.md:block 158 (paragraph)
-msgid "The `flash` method on the `Illuminate\\Http\\Request` class will flash the current input to the [session](/docs/{{version}}/session) so that it is available during the user's next request to the application:"
-msgstr "使用 `Illuminate\\Http\\Request` 類別的 `flash` 方法，就可以將目前的輸入快閃 (Flash) 進 [Session](/docs/{{version}}/session)。這樣一來，使用者的下個 Request 中就有這些輸入值可用："
-
-#: docs/8.x/requests.md:block 159 (code)
-msgid "$request->flash();\n"
-msgstr "$request->flash();\n"
-
-#: docs/8.x/requests.md:block 160 (paragraph)
-msgid "You may also use the `flashOnly` and `flashExcept` methods to flash a subset of the request data to the session. These methods are useful for keeping sensitive information such as passwords out of the session:"
-msgstr "也可以使用 `flashOnly` 與 `flashExcept` 方法來只將一部分的 Request 資料刷入 Session。這些方法特別適用於想讓一些機密資料（如密碼）不要被刷入 Session 時："
-
-#: docs/8.x/requests.md:block 161 (code)
-msgid "$request->flashOnly(['username', 'email']);\n\n"
-"$request->flashExcept('password');\n"
-msgstr "$request->flashOnly(['username', 'email']);\n\n"
-"$request->flashExcept('password');\n"
-
-#: docs/8.x/requests.md:block 163 (header)
-msgid "Flashing Input Then Redirecting"
-msgstr "快閃存入輸入後再重新導向"
-
-#: docs/8.x/requests.md:block 164 (paragraph)
-msgid "Since you often will want to flash input to the session and then redirect to the previous page, you may easily chain input flashing onto a redirect using the `withInput` method:"
-msgstr "由於我們很常會需要再將輸入資料快閃存入 Session 後再重新導向回上一頁，因此我們只要把 `withInput` 方法串到重新導向後，就可以輕鬆地快閃存入輸入值："
-
-#: docs/8.x/requests.md:block 165 (code)
-msgid "return redirect('form')->withInput();\n\n"
-"return redirect()->route('user.create')->withInput();\n\n"
-"return redirect('form')->withInput(\n"
-"    $request->except('password')\n"
-");\n"
-msgstr "return redirect('form')->withInput();\n\n"
-"return redirect()->route('user.create')->withInput();\n\n"
-"return redirect('form')->withInput(\n"
-"    $request->except('password')\n"
-");\n"
-
-#: docs/8.x/requests.md:block 167 (header)
-msgid "Retrieving Old Input"
-msgstr "取得舊輸入"
-
-#: docs/8.x/requests.md:block 168 (paragraph)
-msgid "To retrieve flashed input from the previous request, invoke the `old` method on an instance of `Illuminate\\Http\\Request`. The `old` method will pull the previously flashed input data from the [session](/docs/{{version}}/session):"
-msgstr "若要取得前一個 Request 中的快閃輸入，可叫用 `Illuminate\\Http\\Request` 上的 `old` 方法。`old` 方法從 [Session](/docs/{{version}}/session) 中拉取前次快閃存入輸入資料："
-
-#: docs/8.x/requests.md:block 169 (code)
-msgid "$username = $request->old('username');\n"
-msgstr "$username = $request->old('username');\n"
-
-#: docs/8.x/requests.md:block 170 (paragraph)
-msgid "Laravel also provides a global `old` helper. If you are displaying old input within a [Blade template](/docs/{{version}}/blade), it is more convenient to use the `old` helper to repopulate the form. If no old input exists for the given field, `null` will be returned:"
-msgstr "Laravel 也提供了一個全域 `old` 輔助函式。若想在 [Blade 樣板](/docs/{{version}}/blade)中顯示舊輸入，那麼使用 `old` 輔助函式來將其填回表單回比較方便。若給定欄位沒有舊輸入的話，會回傳 `null`："
-
-#: docs/8.x/requests.md:block 171 (code)
-msgid "<input type=\"text\" name=\"username\" value=\"{{ old('username') }}\">\n"
-msgstr "<input type=\"text\" name=\"username\" value=\"{{ old('username') }}\">\n"
-
-#: docs/8.x/requests.md:block 173 (header)
-msgid "Cookies"
-msgstr "Cookie"
-
-#: docs/8.x/requests.md:block 175 (header)
-msgid "Retrieving Cookies From Requests"
-msgstr "從 Request 中取得 Cookie"
-
-#: docs/8.x/requests.md:block 176 (paragraph)
-msgid "All cookies created by the Laravel framework are encrypted and signed with an authentication code, meaning they will be considered invalid if they have been changed by the client. To retrieve a cookie value from the request, use the `cookie` method on an `Illuminate\\Http\\Request` instance:"
-msgstr "所有由 Laravel 框架所建立的 Cookie 都是經過加密且使用驗證碼簽名過的，這代表若用戶端有修改這些值，就會讓 Cookie 變成無效。若要從 Request 中取得 Cookie，請使用 `Illuminate\\Http\\Request` 實體上的 `cookie` 方法："
-
-#: docs/8.x/requests.md:block 177 (code)
-msgid "$value = $request->cookie('name');\n"
-msgstr "$value = $request->cookie('name');\n"
-
-#: docs/8.x/requests.md:block 179 (header)
-msgid "Input Trimming & Normalization"
-msgstr "輸入修剪與正常化"
 
 #: docs/8.x/requests.md:block 180 (paragraph)
 msgid "By default, Laravel includes the `App\\Http\\Middleware\\TrimStrings` and `App\\Http\\Middleware\\ConvertEmptyStringsToNull` middleware in your application's global middleware stack. These middleware are listed in the global middleware stack by the `App\\Http\\Kernel` class. These middleware will automatically trim all incoming string fields on the request, as well as convert any empty string fields to `null`. This allows you to not have to worry about these normalization concerns in your routes and controllers."
@@ -860,28 +1438,6 @@ msgstr "預設情況下，Laravel 中包含了 `App\\Http\\Middleware\\TrimStrin
 msgid "If you would like to disable this behavior, you may remove the two middleware from your application's middleware stack by removing them from the `$middleware` property of your `App\\Http\\Kernel` class."
 msgstr "若想禁用這些行為，可在 `App\\Http\\Kernel` 類別的 `$middleware` 屬性中將其移除："
 
-#: docs/8.x/requests.md:block 183 (header)
-msgid "Files"
-msgstr "檔案"
-
-#: docs/8.x/requests.md:block 185 (header)
-msgid "Retrieving Uploaded Files"
-msgstr "取得上傳的檔案"
-
-#: docs/8.x/requests.md:block 186 (paragraph)
-msgid "You may retrieve uploaded files from an `Illuminate\\Http\\Request` instance using the `file` method or using dynamic properties. The `file` method returns an instance of the `Illuminate\\Http\\UploadedFile` class, which extends the PHP `SplFileInfo` class and provides a variety of methods for interacting with the file:"
-msgstr "可以使用 `file` 方法或動態屬性來從 `Illuminate\\Http\\Request` 實體上取得上傳的檔案。`file` 方法會回傳 `Illuminate\\Http\\UploadedFile` 類別的實體，該實體繼承了 PHP 的 `SplFileInfo` 類別，並提供各種能處理使用該檔案的方法："
-
-#: docs/8.x/requests.md:block 187 (code)
-msgid "$file = $request->file('photo');\n\n"
-"$file = $request->photo;\n"
-msgstr "$file = $request->file('photo');\n\n"
-"$file = $request->photo;\n"
-
-#: docs/8.x/requests.md:block 188 (paragraph)
-msgid "You may determine if a file is present on the request using the `hasFile` method:"
-msgstr "可以使用 `hasFile` 方法來判斷某個檔案是否存在於 Request 中："
-
 #: docs/8.x/requests.md:block 189 (code)
 msgid "if ($request->hasFile('photo')) {\n"
 "    //\n"
@@ -889,14 +1445,6 @@ msgid "if ($request->hasFile('photo')) {\n"
 msgstr "if ($request->hasFile('photo')) {\n"
 "    //\n"
 "}\n"
-
-#: docs/8.x/requests.md:block 191 (header)
-msgid "Validating Successful Uploads"
-msgstr "驗證成功上傳"
-
-#: docs/8.x/requests.md:block 192 (paragraph)
-msgid "In addition to checking if the file is present, you may verify that there were no problems uploading the file via the `isValid` method:"
-msgstr "除了檢查檔案是否存在外，還可以使用 `isValid` 方法來確認上傳檔案的過程中是否無問題："
 
 #: docs/8.x/requests.md:block 193 (code)
 msgid "if ($request->file('photo')->isValid()) {\n"
@@ -906,163 +1454,17 @@ msgstr "if ($request->file('photo')->isValid()) {\n"
 "    //\n"
 "}\n"
 
-#: docs/8.x/requests.md:block 195 (header)
-msgid "File Paths & Extensions"
-msgstr "檔案路徑與副檔名"
-
-#: docs/8.x/requests.md:block 196 (paragraph)
-msgid "The `UploadedFile` class also contains methods for accessing the file's fully-qualified path and its extension. The `extension` method will attempt to guess the file's extension based on its contents. This extension may be different from the extension that was supplied by the client:"
-msgstr "`UploadedFile` 類別也包含了能存取檔案完整路徑與副檔名的方法。`extension` 方法可以使用檔案的內容來推測檔案的副檔名。這個副檔名克呢功能會與用戶端提供的副檔名有所不同："
-
-#: docs/8.x/requests.md:block 197 (code)
-msgid "$path = $request->photo->path();\n\n"
-"$extension = $request->photo->extension();\n"
-msgstr "$path = $request->photo->path();\n\n"
-"$extension = $request->photo->extension();\n"
-
-#: docs/8.x/requests.md:block 199 (header)
-msgid "Other File Methods"
-msgstr "其他檔案方法"
-
 #: docs/8.x/requests.md:block 200 (paragraph)
 msgid "There are a variety of other methods available on `UploadedFile` instances. Check out the [API documentation for the class](https://api.symfony.com/master/Symfony/Component/HttpFoundation/File/UploadedFile.html) for more information regarding these methods."
 msgstr "`UploadedFile` 實體還提供了其他各種方法。請參考[該類別的 API 說明文件](https://api.symfony.com/master/Symfony/Component/HttpFoundation/File/UploadedFile.html)來瞭解有關這些方法的更多資訊。"
-
-#: docs/8.x/requests.md:block 202 (header)
-msgid "Storing Uploaded Files"
-msgstr "儲存上傳的檔案"
-
-#: docs/8.x/requests.md:block 203 (paragraph)
-msgid "To store an uploaded file, you will typically use one of your configured [filesystems](/docs/{{version}}/filesystem). The `UploadedFile` class has a `store` method that will move an uploaded file to one of your disks, which may be a location on your local filesystem or a cloud storage location like Amazon S3."
-msgstr "若要儲存已上傳的檔案，通常我們需要先設定好[檔案系統](/docs/{{version}}/filesystem)。`UploadedFile` 類別中有個 `store` 方法，該方法可以將已上傳的檔案移到其中一個磁碟裡。這個磁碟可以是本機檔案系統，也可以是像 Amazon S3 之類的雲端儲存空間。"
-
-#: docs/8.x/requests.md:block 204 (paragraph)
-msgid "The `store` method accepts the path where the file should be stored relative to the filesystem's configured root directory. This path should not contain a filename, since a unique ID will automatically be generated to serve as the filename."
-msgstr "`store` 方法接受一個路徑，該路徑就是相對於檔案系統設定中根目錄的位置。路徑不包含檔案名稱，Laravel 會自動產生獨立的 ID 來當作檔案名稱。"
-
-#: docs/8.x/requests.md:block 205 (paragraph)
-msgid "The `store` method also accepts an optional second argument for the name of the disk that should be used to store the file. The method will return the path of the file relative to the disk's root:"
-msgstr "`store` 方法也接受可選的第二個引數，該引數是要用來儲存檔案的磁碟名稱。 `store` 方法會回傳相對於磁碟根目錄的檔案路徑："
-
-#: docs/8.x/requests.md:block 206 (code)
-msgid "$path = $request->photo->store('images');\n\n"
-"$path = $request->photo->store('images', 's3');\n"
-msgstr "$path = $request->photo->store('images');\n\n"
-"$path = $request->photo->store('images', 's3');\n"
-
-#: docs/8.x/requests.md:block 207 (paragraph)
-msgid "If you do not want a filename to be automatically generated, you may use the `storeAs` method, which accepts the path, filename, and disk name as its arguments:"
-msgstr "若不想要自動產生的檔案名稱，可以使用 `storeAs` 方法，該方法的引數是路徑、檔案名稱、磁碟名稱："
-
-#: docs/8.x/requests.md:block 208 (code)
-msgid "$path = $request->photo->storeAs('images', 'filename.jpg');\n\n"
-"$path = $request->photo->storeAs('images', 'filename.jpg', 's3');\n"
-msgstr "$path = $request->photo->storeAs('images', 'filename.jpg');\n\n"
-"$path = $request->photo->storeAs('images', 'filename.jpg', 's3');\n"
 
 #: docs/8.x/requests.md:block 209 (quote)
 msgid "{tip} For more information about file storage in Laravel, check out the complete [file storage documentation](/docs/{{version}}/filesystem)."
 msgstr "{tip} 更多有關 Laravel 中檔案儲存的資訊，請參考完整的[檔案儲存說明文件](/docs/{{version}}/filesystem)。"
 
-#: docs/8.x/requests.md:block 211 (header)
-msgid "Configuring Trusted Proxies"
-msgstr "設定信任的代理 (Trusted Proxy)"
-
-#: docs/8.x/requests.md:block 212 (paragraph)
-msgid "When running your applications behind a load balancer that terminates TLS / SSL certificates, you may notice your application sometimes does not generate HTTPS links when using the `url` helper. Typically this is because your application is being forwarded traffic from your load balancer on port 80 and does not know it should generate secure links."
-msgstr "在負責處理 TLS / SSL 證書的 Load Balancer (負載平衡器) 後方執行應用程式時，有時候由 `url` 輔助函式產生的連結可能不會使用 HTTPS。者通常是因為，Load Balancer 把流量傳過來時使用的是 80 Port，因為 Laravel 不知道是否要產生 HTTPS 的連結。"
-
-#: docs/8.x/requests.md:block 213 (paragraph)
-msgid "To solve this, you may use the `App\\Http\\Middleware\\TrustProxies` middleware that is included in your Laravel application, which allows you to quickly customize the load balancers or proxies that should be trusted by your application. Your trusted proxies should be listed as an array on the `$proxies` property of this middleware. In addition to configuring the trusted proxies, you may configure the proxy `$headers` that should be trusted:"
-msgstr "為此，我們可以使用 Laravel 專案中有包含的 `App\\Http\\Middleware\\TrustProxies` Middleware。該 Middleware 能讓我們快速自訂程式要信任的 Load Balancer 或代理伺服器 (Proxy)。應在該 Middleware 內的 `$proxies` 屬性內列出信任的代理伺服器。除了設定信任的代理外，也可以設定信任代理的 `$headers`："
-
-#: docs/8.x/requests.md:block 214 (code)
-msgid "<?php\n\n"
-"namespace App\\Http\\Middleware;\n\n"
-"use Illuminate\\Http\\Middleware\\TrustProxies as Middleware;\n"
-"use Illuminate\\Http\\Request;\n\n"
-"class TrustProxies extends Middleware\n"
-"{\n"
-"    /**\n"
-"     * The trusted proxies for this application.\n"
-"     *\n"
-"     * @var string|array\n"
-"     */\n"
-"    protected $proxies = [\n"
-"        '192.168.1.1',\n"
-"        '192.168.1.2',\n"
-"    ];\n\n"
-"    /**\n"
-"     * The headers that should be used to detect proxies.\n"
-"     *\n"
-"     * @var int\n"
-"     */\n"
-"    protected $headers = Request::HEADER_X_FORWARDED_FOR | Request::HEADER_X_FORWARDED_HOST | Request::HEADER_X_FORWARDED_PORT | Request::HEADER_X_FORWARDED_PROTO;\n"
-"}\n"
-msgstr "<?php\n\n"
-"namespace App\\Http\\Middleware;\n\n"
-"use Illuminate\\Http\\Middleware\\TrustProxies as Middleware;\n"
-"use Illuminate\\Http\\Request;\n\n"
-"class TrustProxies extends Middleware\n"
-"{\n"
-"    /**\n"
-"     * The trusted proxies for this application.\n"
-"     *\n"
-"     * @var string|array\n"
-"     */\n"
-"    protected $proxies = [\n"
-"        '192.168.1.1',\n"
-"        '192.168.1.2',\n"
-"    ];\n\n"
-"    /**\n"
-"     * The headers that should be used to detect proxies.\n"
-"     *\n"
-"     * @var int\n"
-"     */\n"
-"    protected $headers = Request::HEADER_X_FORWARDED_FOR | Request::HEADER_X_FORWARDED_HOST | Request::HEADER_X_FORWARDED_PORT | Request::HEADER_X_FORWARDED_PROTO;\n"
-"}\n"
-
 #: docs/8.x/requests.md:block 215 (quote)
 msgid "{tip} If you are using AWS Elastic Load Balancing, your `$headers` value should be `Request::HEADER_X_FORWARDED_AWS_ELB`. For more information on the constants that may be used in the `$headers` property, check out Symfony's documentation on [trusting proxies](https://symfony.com/doc/current/deployment/proxies.html)."
 msgstr "{tip} 若要使用 AWS Elastic Load Balancing，則 `$headers` 的值應為 `Request::HEADER_X_FORWARDED_AWS_ELB`。更多有關能用在 `$headers` 屬性的常數資訊，請參考 Symfony 說明文件中的 [Trusting Proxies](https://symfony.com/doc/current/deployment/proxies.html)。"
-
-#: docs/8.x/requests.md:block 217 (header)
-msgid "Trusting All Proxies"
-msgstr "信任所有代理"
-
-#: docs/8.x/requests.md:block 218 (paragraph)
-msgid "If you are using Amazon AWS or another \"cloud\" load balancer provider, you may not know the IP addresses of your actual balancers. In this case, you may use `*` to trust all proxies:"
-msgstr "若使用 Amazon AWS 或其他的「雲端」Load Balancer 提供者，則我們可能不知道 Load Balancer 實際的 IP 位置。這時，可以使用 `*` 來信任所有代理："
-
-#: docs/8.x/requests.md:block 219 (code)
-msgid "/**\n"
-" * The trusted proxies for this application.\n"
-" *\n"
-" * @var string|array\n"
-" */\n"
-"protected $proxies = '*';\n"
-msgstr "/**\n"
-" * The trusted proxies for this application.\n"
-" *\n"
-" * @var string|array\n"
-" */\n"
-"protected $proxies = '*';\n"
-
-#: docs/8.x/requests.md:block 221 (header)
-msgid "Configuring Trusted Hosts"
-msgstr "設定信任的主機 (Trusted Hosts)"
-
-#: docs/8.x/requests.md:block 222 (paragraph)
-msgid "By default, Laravel will respond to all requests it receives regardless of the content of the HTTP request's `Host` header. In addition, the `Host` header's value will be used when generating absolute URLs to your application during a web request."
-msgstr "預設情況下，無論收到的 HTTP Request 中 `Host` 標頭內容為何，Laravel 都會回應所有收到的 Request。此外，Laravel 還會使用 `Host` 標頭的值來在 Request 中為你的程式產生絕對路徑的網址。"
-
-#: docs/8.x/requests.md:block 223 (paragraph)
-msgid "Typically, you should configure your web server, such as Nginx or Apache, to only send requests to your application that match a given host name. However, if you do not have the ability to customize your web server directly and need to instruct Laravel to only respond to certain host names, you may do so by enabling the `App\\Http\\Middleware\\TrustHosts` middleware for your application."
-msgstr "一般來說，應在 Web Server 上 (如 Nginx 或 Apache) 設定只有特定的主機名稱時才將 Request 送往你的程式中。不過，若沒機會能自訂 Web Server，則需要讓 Laravel 只對特定主機名稱作回應。為此，可以啟用專案中的 `App\\Http\\Middleware\\TrustHosts` Middleware。"
-
-#: docs/8.x/requests.md:block 224 (paragraph)
-msgid "The `TrustHosts` middleware is already included in the `$middleware` stack of your application; however, you should uncomment it so that it becomes active. Within this middleware's `hosts` method, you may specify the host names that your application should respond to. Incoming requests with other `Host` value headers will be rejected:"
-msgstr "`TrustHosts` Middleware 以預先包含在專案中的 `$middlware` Stack 裡的。不過，需要先取消註解這個 Middleware，才能啟用它。在這個 Middleware 中有個 `hosts` 方法，我們可以在其中指定我們的程式要回應的主機名稱。有其他 `Host` 標頭值的連入 Request 將會被拒絕："
 
 #: docs/8.x/requests.md:block 225 (code)
 msgid "/**\n"
@@ -1090,84 +1492,6 @@ msgstr "/**\n"
 "    ];\n"
 "}\n"
 
-#: docs/8.x/requests.md:block 226 (paragraph)
-msgid "The `allSubdomainsOfApplicationUrl` helper method will return a regular expression matching all subdomains of your application's `app.url` configuration value. This helper method provides a convenient way to allow all of your application's subdomains when building an application that utilizes wildcard subdomains."
-msgstr "`allSubdomainsOfApplicationUrl` 輔助函式會回傳一個可配對應用程式中 `app.url` 設定值子網域的正規表示式。使用這個輔助函式，就可以方便地在使用萬用子網域的程式中允許所有的子網域。"
-
-#: docs/9.x/requests.md:block 2 (unordered list)
-msgid "[Request Path, Host, & Method](#request-path-and-method)"
-msgstr "[Request 路徑、主機、與方法](#request-path-and-method)"
-
-#: docs/9.x/requests.md:block 21 (header)
-msgid "Request Path, Host, & Method"
-msgstr "Request 路徑、主機、與方法"
-
-#: docs/9.x/requests.md:block 40 (header)
-msgid "Retrieving The Request Host"
-msgstr "取得 Request 主機"
-
-#: docs/9.x/requests.md:block 41 (paragraph)
-msgid "You may retrieve the \"host\" of the incoming request via the `host`, `httpHost`, and `schemeAndHttpHost` methods:"
-msgstr "可以使用 `host`、`httpHost`、與 `schemeAndHttpHost` 來取得連入 Request 的「主機」："
-
-#: docs/9.x/requests.md:block 42 (code)
-msgid "$request->host();\n"
-"$request->httpHost();\n"
-"$request->schemeAndHttpHost();\n"
-msgstr "$request->host();\n"
-"$request->httpHost();\n"
-"$request->schemeAndHttpHost();\n"
-
-#: docs/9.x/requests.md:block 75 (quote)
-msgid "**Note** If you return a PSR-7 response instance from a route or controller, it will automatically be converted back to a Laravel response instance and be displayed by the framework."
-msgstr "**Note** 若從 Route 或 Controller 中回傳 PSR-7 Response，這個 Response 會先被轉回到 Laravel 的 Response 實體，然後才會由 Laravel 顯示出來。"
-
-#: docs/9.x/requests.md:block 108 (paragraph)
-msgid "When sending JSON requests to your application, you may access the JSON data via the `input` method as long as the `Content-Type` header of the request is properly set to `application/json`. You may even use \"dot\" syntax to retrieve values that are nested within JSON arrays / objects:"
-msgstr "傳送 JSON 的 Request 時，只要 Request 的 `Content-Type` 由正確設定為 `application/json`，就可以使用 `input` 方法來存取 JSON 資料。也可以使用「點 (.)」標記法來存取 JSON 陣列／物件中的巢狀資料："
-
-#: docs/9.x/requests.md:block 111 (header)
-msgid "Retrieving Stringable Input Values"
-msgstr "取得 Stringable 的輸入值"
-
-#: docs/9.x/requests.md:block 112 (paragraph)
-msgid "Instead of retrieving the request's input data as a primitive `string`, you may use the `string` method to retrieve the request data as an instance of [`Illuminate\\Support\\Stringable`](/docs/{{version}}/helpers#fluent-strings):"
-msgstr "除了將輸入值以原生型別的 `string` 取得，還可以使用 `string` 方法來將 Request 資料以 [`Illuminate\\Support\\Stringable`](/docs/{{version}}/helpers#fluent-strings) 實體的形式取得："
-
-#: docs/9.x/requests.md:block 113 (code)
-msgid "$name = $request->string('name')->trim();\n"
-msgstr "$name = $request->string('name')->trim();\n"
-
-#: docs/9.x/requests.md:block 126 (header)
-msgid "Retrieving Enum Input Values"
-msgstr "取得 Enum 輸入值"
-
-#: docs/9.x/requests.md:block 127 (paragraph)
-msgid "Input values that correspond to [PHP enums](https://www.php.net/manual/en/language.types.enumerations.php) may also be retrieved from the request. If the request does not contain an input value with the given name or the enum does not have a backing value that matches the input value, `null` will be returned. The `enum` method accepts the name of the input value and the enum class as its first and second arguments:"
-msgstr "也可以從 Request 中取得對應到 [PHP Enum](https://www.php.net/manual/en/language.types.enumerations.php) 的輸入值。若 Request 中沒有輸入值，或是給定的名稱或 Enum 中沒有符合該輸入值的後端值 (Backing Value)，則會回傳 `null`。`enum` 方法的第一個引數為輸入值的名稱、第二個引數為 Enum 類別："
-
-#: docs/9.x/requests.md:block 128 (code)
-msgid "use App\\Enums\\Status;\n\n"
-"$status = $request->enum('status', Status::class);\n"
-msgstr "use App\\Enums\\Status;\n\n"
-"$status = $request->enum('status', Status::class);\n"
-
-#: docs/9.x/requests.md:block 138 (quote)
-msgid "**Warning** The `only` method returns all of the key / value pairs that you request; however, it will not return key / value pairs that are not present on the request."
-msgstr "**Warning** `only` 方法會回傳所要求的所有索引鍵 / 值配對組。不過，若要求的索引鍵 / 值配對未出現在 Request 中，將不會回傳。"
-
-#: docs/9.x/requests.md:block 151 (paragraph)
-msgid "If you would like to determine if a value is present on the request and is not an empty string, you may use the `filled` method:"
-msgstr "若想判斷某個值是否有出現在 Request 中，且該值不是空字串時，可使用 `filled` 方法："
-
-#: docs/9.x/requests.md:block 153 (paragraph)
-msgid "The `whenFilled` method will execute the given closure if a value is present on the request and is not an empty string:"
-msgstr "`whenFilled` 方法會執行給定的閉包來判斷 Request 中某個值是否為空字串："
-
-#: docs/9.x/requests.md:block 157 (paragraph)
-msgid "To determine if a given key is absent from the request, you may use the `missing` and `whenMissing` methods:"
-msgstr "若要判斷 Request 中是否不存在給定的索引鍵，可使用 `missing` 方法與 `whenMissing` 方法："
-
 #: docs/9.x/requests.md:block 158 (code)
 msgid "if ($request->missing('name')) {\n"
 "    //\n"
@@ -1185,26 +1509,6 @@ msgstr "if ($request->missing('name')) {\n"
 "}, function () {\n"
 "    // 有「name」值...\n"
 "});\n"
-
-#: docs/9.x/requests.md:block 161 (paragraph)
-msgid "Sometimes you may need to manually merge additional input into the request's existing input data. To accomplish this, you may use the `merge` method. If a given input key already exists on the request, it will be overwritten by the data provided to the `merge` method:"
-msgstr "有時候，我們需要手動合併額外的輸入到 Request 中現有的輸入資料。這種情況下，可使用 `merge` 方法。若 Request 中已存在給定的輸入索引鍵，則會使用提供給 `merge` 方法的資料來複寫："
-
-#: docs/9.x/requests.md:block 192 (paragraph)
-msgid "By default, Laravel includes the `App\\Http\\Middleware\\TrimStrings` and `Illuminate\\Foundation\\Http\\Middleware\\ConvertEmptyStringsToNull` middleware in your application's global middleware stack. These middleware are listed in the global middleware stack by the `App\\Http\\Kernel` class. These middleware will automatically trim all incoming string fields on the request, as well as convert any empty string fields to `null`. This allows you to not have to worry about these normalization concerns in your routes and controllers."
-msgstr "預設情況下，Laravel 中包含了 `App\\Http\\Middleware\\TrimStrings` 與 `Illuminate\\Foundation\\Http\\Middleware\\ConvertEmptyStringsToNull` 這兩個 Middleware，且放在程式的全域 Middleware Stack 中。這些 Middleware 被列在 `App\\Http\\Kernel` 類別的全域 Middleware Stack 中。這些 Middleware 會自動修剪 Request 中的所有連入子船，並將空白的字串欄位轉為 `null`。這樣，我們就不需要在 Route 或 Controller 中去費心正常化這些資料。"
-
-#: docs/9.x/requests.md:block 193 (header)
-msgid "Disabling Input Normalization"
-msgstr "禁用輸入正規化"
-
-#: docs/9.x/requests.md:block 194 (paragraph)
-msgid "If you would like to disable this behavior for all requests, you may remove the two middleware from your application's middleware stack by removing them from the `$middleware` property of your `App\\Http\\Kernel` class."
-msgstr "若想在所有 Request 上禁用這些行為，可在 `App\\Http\\Kernel` 類別的 `$middleware` 屬性中將其移除："
-
-#: docs/9.x/requests.md:block 195 (paragraph)
-msgid "If you would like to disable string trimming and empty string conversion for a subset of requests to your application, you may use the `skipWhen` method offered by both middleware. This method accepts a closure which should return `true` or `false` to indicate if input normalization should be skipped. Typically, the `skipWhen` method should be invoked in the `boot` method of your application's `AppServiceProvider`."
-msgstr "若只想在專案中一部分的 Request 上禁用字串修剪與空字串轉換，可使用這兩個 Middleware 提供的 `skipWhen` 方法。請傳入一個回傳 `true` 或 `false` 的閉包給該方法，用來判斷是否應跳過字串的正規化。一般來說，應在專案的 `AppServiceProvider` 中 `boot` 方法內叫用這個 `skipWhen` 方法。"
 
 #: docs/9.x/requests.md:block 196 (code)
 msgid "use App\\Http\\Middleware\\TrimStrings;\n"
@@ -1238,309 +1542,5 @@ msgstr "use App\\Http\\Middleware\\TrimStrings;\n"
 "    ConvertEmptyStringsToNull::skipWhen(function ($request) {\n"
 "        // ...\n"
 "    });\n"
-"}\n"
-
-#: docs/9.x/requests.md:block 215 (paragraph)
-msgid "There are a variety of other methods available on `UploadedFile` instances. Check out the [API documentation for the class](https://github.com/symfony/symfony/blob/6.0/src/Symfony/Component/HttpFoundation/File/UploadedFile.php) for more information regarding these methods."
-msgstr "`UploadedFile` 實體還提供了其他各種方法。請參考[該類別的 API 說明文件](https://github.com/symfony/symfony/blob/6.0/src/Symfony/Component/HttpFoundation/File/UploadedFile.php)來瞭解有關這些方法的更多資訊。"
-
-#: docs/9.x/requests.md:block 224 (quote)
-msgid "**Note** For more information about file storage in Laravel, check out the complete [file storage documentation](/docs/{{version}}/filesystem)."
-msgstr "**Note** 更多有關 Laravel 中檔案儲存的資訊，請參考完整的[檔案儲存說明文件](/docs/{{version}}/filesystem)。"
-
-#: docs/9.x/requests.md:block 230 (quote)
-msgid "**Note** If you are using AWS Elastic Load Balancing, your `$headers` value should be `Request::HEADER_X_FORWARDED_AWS_ELB`. For more information on the constants that may be used in the `$headers` property, check out Symfony's documentation on [trusting proxies](https://symfony.com/doc/current/deployment/proxies.html)."
-msgstr "**Note** 若要使用 AWS Elastic Load Balancing，則 `$headers` 的值應為 `Request::HEADER_X_FORWARDED_AWS_ELB`。更多有關能用在 `$headers` 屬性的常數資訊，請參考 Symfony 說明文件中的 [Trusting Proxies](https://symfony.com/doc/current/deployment/proxies.html)。"
-
-#: docs/master/requests.md:block 11 (code)
-msgid "<?php\n\n"
-"namespace App\\Http\\Controllers;\n\n"
-"use Illuminate\\Http\\Request;\n"
-"use Illuminate\\Http\\Response;\n\n"
-"class UserController extends Controller\n"
-"{\n"
-"    /**\n"
-"     * Store a new user.\n"
-"     */\n"
-"    public function store(Request $request): Response\n"
-"    {\n"
-"        $name = $request->input('name');\n\n"
-"        // ...\n\n"
-"        return response()->noContent();\n"
-"    }\n"
-"}\n"
-msgstr "<?php\n\n"
-"namespace App\\Http\\Controllers;\n\n"
-"use Illuminate\\Http\\Request;\n"
-"use Illuminate\\Http\\Response;\n\n"
-"class UserController extends Controller\n"
-"{\n"
-"    /**\n"
-"     * Store a new user.\n"
-"     */\n"
-"    public function store(Request $request): Response\n"
-"    {\n"
-"        $name = $request->input('name');\n\n"
-"        // ...\n\n"
-"        return response()->noContent();\n"
-"    }\n"
-"}\n"
-
-#: docs/master/requests.md:block 13 (code)
-msgid "use Illuminate\\Http\\Request;\n\n"
-"Route::get('/', function (Request $request) {\n"
-"    // ...\n"
-"});\n"
-msgstr "use Illuminate\\Http\\Request;\n\n"
-"Route::get('/', function (Request $request) {\n"
-"    // ...\n"
-"});\n"
-
-#: docs/master/requests.md:block 19 (code)
-msgid "<?php\n\n"
-"namespace App\\Http\\Controllers;\n\n"
-"use Illuminate\\Http\\Request;\n"
-"use Illuminate\\Http\\Response;\n\n"
-"class UserController extends Controller\n"
-"{\n"
-"    /**\n"
-"     * Update the specified user.\n"
-"     */\n"
-"    public function update(Request $request, string $id): Response\n"
-"    {\n"
-"        // ...\n\n"
-"        return response()->noContent();\n"
-"    }\n"
-"}\n"
-msgstr "<?php\n\n"
-"namespace App\\Http\\Controllers;\n\n"
-"use Illuminate\\Http\\Request;\n"
-"use Illuminate\\Http\\Response;\n\n"
-"class UserController extends Controller\n"
-"{\n"
-"    /**\n"
-"     * Update the specified user.\n"
-"     */\n"
-"    public function update(Request $request, string $id): Response\n"
-"    {\n"
-"        // ...\n\n"
-"        return response()->noContent();\n"
-"    }\n"
-"}\n"
-
-#: docs/master/requests.md:block 30 (code)
-msgid "if ($request->is('admin/*')) {\n"
-"    // ...\n"
-"}\n"
-msgstr "if ($request->is('admin/*')) {\n"
-"    // ...\n"
-"}\n"
-
-#: docs/master/requests.md:block 32 (code)
-msgid "if ($request->routeIs('admin.*')) {\n"
-"    // ...\n"
-"}\n"
-msgstr "if ($request->routeIs('admin.*')) {\n"
-"    // ...\n"
-"}\n"
-
-#: docs/master/requests.md:block 46 (code)
-msgid "$method = $request->method();\n\n"
-"if ($request->isMethod('post')) {\n"
-"    // ...\n"
-"}\n"
-msgstr "$method = $request->method();\n\n"
-"if ($request->isMethod('post')) {\n"
-"    // ...\n"
-"}\n"
-
-#: docs/master/requests.md:block 52 (code)
-msgid "if ($request->hasHeader('X-Header-Name')) {\n"
-"    // ...\n"
-"}\n"
-msgstr "if ($request->hasHeader('X-Header-Name')) {\n"
-"    // ...\n"
-"}\n"
-
-#: docs/master/requests.md:block 74 (code)
-msgid "use Psr\\Http\\Message\\ServerRequestInterface;\n\n"
-"Route::get('/', function (ServerRequestInterface $request) {\n"
-"    // ...\n"
-"});\n"
-msgstr "use Psr\\Http\\Message\\ServerRequestInterface;\n\n"
-"Route::get('/', function (ServerRequestInterface $request) {\n"
-"    // ...\n"
-"});\n"
-
-#: docs/master/requests.md:block 87 (code)
-msgid "$request->collect('users')->each(function (string $user) {\n"
-"    // ...\n"
-"});\n"
-msgstr "$request->collect('users')->each(function (string $user) {\n"
-"    // ...\n"
-"});\n"
-
-#: docs/master/requests.md:block 142 (code)
-msgid "if ($request->has('name')) {\n"
-"    // ...\n"
-"}\n"
-msgstr "if ($request->has('name')) {\n"
-"    // ...\n"
-"}\n"
-
-#: docs/master/requests.md:block 144 (code)
-msgid "if ($request->has(['name', 'email'])) {\n"
-"    // ...\n"
-"}\n"
-msgstr "if ($request->has(['name', 'email'])) {\n"
-"    // ...\n"
-"}\n"
-
-#: docs/master/requests.md:block 146 (code)
-msgid "$request->whenHas('name', function (string $input) {\n"
-"    // ...\n"
-"});\n"
-msgstr "$request->whenHas('name', function (string $input) {\n"
-"    // ...\n"
-"});\n"
-
-#: docs/master/requests.md:block 148 (code)
-msgid "$request->whenHas('name', function (string $input) {\n"
-"    // The \"name\" value is present...\n"
-"}, function () {\n"
-"    // The \"name\" value is not present...\n"
-"});\n"
-msgstr "$request->whenHas('name', function (string $input) {\n"
-"    // 有「name」值...\n"
-"}, function () {\n"
-"    // 沒有「name」值...\n"
-"});\n"
-
-#: docs/master/requests.md:block 150 (code)
-msgid "if ($request->hasAny(['name', 'email'])) {\n"
-"    // ...\n"
-"}\n"
-msgstr "if ($request->hasAny(['name', 'email'])) {\n"
-"    // ...\n"
-"}\n"
-
-#: docs/master/requests.md:block 152 (code)
-msgid "if ($request->filled('name')) {\n"
-"    // ...\n"
-"}\n"
-msgstr "if ($request->filled('name')) {\n"
-"    // ...\n"
-"}\n"
-
-#: docs/master/requests.md:block 154 (code)
-msgid "$request->whenFilled('name', function (string $input) {\n"
-"    // ...\n"
-"});\n"
-msgstr "$request->whenFilled('name', function (string $input) {\n"
-"    // ...\n"
-"});\n"
-
-#: docs/master/requests.md:block 156 (code)
-msgid "$request->whenFilled('name', function (string $input) {\n"
-"    // The \"name\" value is filled...\n"
-"}, function () {\n"
-"    // The \"name\" value is not filled...\n"
-"});\n"
-msgstr "$request->whenFilled('name', function (string $input) {\n"
-"    // 已填寫「name」...\n"
-"}, function () {\n"
-"    // 未填寫「name」...\n"
-"});\n"
-
-#: docs/master/requests.md:block 158 (code)
-msgid "if ($request->missing('name')) {\n"
-"    // ...\n"
-"}\n\n"
-"$request->whenMissing('name', function (array $input) {\n"
-"    // The \"name\" value is missing...\n"
-"}, function () {\n"
-"    // The \"name\" value is present...\n"
-"});\n"
-msgstr "if ($request->missing('name')) {\n"
-"    // ...\n"
-"}\n\n"
-"$request->whenMissing('name', function (array $input) {\n"
-"    // 沒有「name」值...\n"
-"}, function () {\n"
-"    // 有「name」值...\n"
-"});\n"
-
-#: docs/master/requests.md:block 196 (code)
-msgid "use App\\Http\\Middleware\\TrimStrings;\n"
-"use Illuminate\\Http\\Request;\n"
-"use Illuminate\\Foundation\\Http\\Middleware\\ConvertEmptyStringsToNull;\n\n"
-"/**\n"
-" * Bootstrap any application services.\n"
-" */\n"
-"public function boot(): void\n"
-"{\n"
-"    TrimStrings::skipWhen(function (Request $request) {\n"
-"        return $request->is('admin/*');\n"
-"    });\n\n"
-"    ConvertEmptyStringsToNull::skipWhen(function (Request $request) {\n"
-"        // ...\n"
-"    });\n"
-"}\n"
-msgstr "use App\\Http\\Middleware\\TrimStrings;\n"
-"use Illuminate\\Http\\Request;\n"
-"use Illuminate\\Foundation\\Http\\Middleware\\ConvertEmptyStringsToNull;\n\n"
-"/**\n"
-" * Bootstrap any application services.\n"
-" */\n"
-"public function boot(): void\n"
-"{\n"
-"    TrimStrings::skipWhen(function (Request $request) {\n"
-"        return $request->is('admin/*');\n"
-"    });\n\n"
-"    ConvertEmptyStringsToNull::skipWhen(function (Request $request) {\n"
-"        // ...\n"
-"    });\n"
-"}\n"
-
-#: docs/master/requests.md:block 204 (code)
-msgid "if ($request->hasFile('photo')) {\n"
-"    // ...\n"
-"}\n"
-msgstr "if ($request->hasFile('photo')) {\n"
-"    // ...\n"
-"}\n"
-
-#: docs/master/requests.md:block 208 (code)
-msgid "if ($request->file('photo')->isValid()) {\n"
-"    // ...\n"
-"}\n"
-msgstr "if ($request->file('photo')->isValid()) {\n"
-"    // ...\n"
-"}\n"
-
-#: docs/master/requests.md:block 240 (code)
-msgid "/**\n"
-" * Get the host patterns that should be trusted.\n"
-" *\n"
-" * @return array<int, string>\n"
-" */\n"
-"public function hosts(): array\n"
-"{\n"
-"    return [\n"
-"        'laravel.test',\n"
-"        $this->allSubdomainsOfApplicationUrl(),\n"
-"    ];\n"
-"}\n"
-msgstr "/**\n"
-" * Get the host patterns that should be trusted.\n"
-" *\n"
-" * @return array<int, string>\n"
-" */\n"
-"public function hosts(): array\n"
-"{\n"
-"    return [\n"
-"        'laravel.test',\n"
-"        $this->allSubdomainsOfApplicationUrl(),\n"
-"    ];\n"
 "}\n"
 

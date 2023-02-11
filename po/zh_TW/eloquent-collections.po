@@ -10,37 +10,37 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
-"PO-Revision-Date: 2023-01-25 10:52\n"
+"PO-Revision-Date: 2023-02-11 10:27\n"
 
-#: docs/8.x/eloquent-collections.md:block 1 (header)
+#: docs/10.x/eloquent-collections.md:block 1 (header)
 msgid "Eloquent: Collections"
 msgstr "Eloquent：Collection"
 
-#: docs/8.x/eloquent-collections.md:block 2 (unordered list)
+#: docs/10.x/eloquent-collections.md:block 2 (unordered list)
 msgid "[Introduction](#introduction)"
 msgstr "[簡介](#introduction)"
 
-#: docs/8.x/eloquent-collections.md:block 2 (unordered list)
+#: docs/10.x/eloquent-collections.md:block 2 (unordered list)
 msgid "[Available Methods](#available-methods)"
 msgstr "[可用方法](#available-methods)"
 
-#: docs/8.x/eloquent-collections.md:block 2 (unordered list)
+#: docs/10.x/eloquent-collections.md:block 2 (unordered list)
 msgid "[Custom Collections](#custom-collections)"
 msgstr "[自訂 Collections](#custom-collections)"
 
-#: docs/8.x/eloquent-collections.md:block 4 (header)
+#: docs/10.x/eloquent-collections.md:block 4 (header)
 msgid "Introduction"
 msgstr "簡介"
 
-#: docs/8.x/eloquent-collections.md:block 5 (paragraph)
+#: docs/10.x/eloquent-collections.md:block 5 (paragraph)
 msgid "All Eloquent methods that return more than one model result will return instances of the `Illuminate\\Database\\Eloquent\\Collection` class, including results retrieved via the `get` method or accessed via a relationship. The Eloquent collection object extends Laravel's [base collection](/docs/{{version}}/collections), so it naturally inherits dozens of methods used to fluently work with the underlying array of Eloquent models. Be sure to review the Laravel collection documentation to learn all about these helpful methods!"
 msgstr "Eloquent 中，所有回傳多筆 Model 結果的方法都會回傳 `Illuminate\\Database\\Eloquent\\Collection` 的實體，這些方法包含 `get` 方法或是以關聯進行存取時。Eloquent Collection 物件繼承自 Laravel 的[基礎 Collection](/docs/{{version}}/collections)，因此，這些 Collection 也自然繼承了數十種可用來流暢地操作底層 Eloquent Model 陣列的方法。記得看看 Laravel Collection 說明文件來了解這些實用的方法！"
 
-#: docs/8.x/eloquent-collections.md:block 6 (paragraph)
+#: docs/10.x/eloquent-collections.md:block 6 (paragraph)
 msgid "All collections also serve as iterators, allowing you to loop over them as if they were simple PHP arrays:"
 msgstr "所有的 Collection 也可作為迭代器使用，因此你可以很輕鬆地像迭代一般 PHP 陣列一樣迭代這些 Collection："
 
-#: docs/8.x/eloquent-collections.md:block 7 (code)
+#: docs/10.x/eloquent-collections.md:block 7 (code)
 msgid "use App\\Models\\User;\n\n"
 "$users = User::where('active', 1)->get();\n\n"
 "foreach ($users as $user) {\n"
@@ -52,9 +52,329 @@ msgstr "use App\\Models\\User;\n\n"
 "    echo $user->name;\n"
 "}\n"
 
-#: docs/8.x/eloquent-collections.md:block 8 (paragraph)
+#: docs/10.x/eloquent-collections.md:block 8 (paragraph)
 msgid "However, as previously mentioned, collections are much more powerful than arrays and expose a variety of map / reduce operations that may be chained using an intuitive interface. For example, we may remove all inactive models and then gather the first name for each remaining user:"
 msgstr "不過，剛才也提到過，Collection 比起陣列來說多了很多更強大的功能。而且，Collection 也提供了多種可通過直觀介面串連使用的各個 map / reduce 操作。舉例來說，我們可以將所有非啟用狀態的 Model 移除，並取得剩餘使用者的名字："
+
+#: docs/10.x/eloquent-collections.md:block 9 (code)
+msgid "$names = User::all()->reject(function (User $user) {\n"
+"    return $user->active === false;\n"
+"})->map(function (User $user) {\n"
+"    return $user->name;\n"
+"});\n"
+msgstr "$names = User::all()->reject(function (User $user) {\n"
+"    return $user->active === false;\n"
+"})->map(function (User $user) {\n"
+"    return $user->name;\n"
+"});\n"
+
+#: docs/10.x/eloquent-collections.md:block 11 (header)
+msgid "Eloquent Collection Conversion"
+msgstr "Eloquent Collection 轉換"
+
+#: docs/10.x/eloquent-collections.md:block 12 (paragraph)
+msgid "While most Eloquent collection methods return a new instance of an Eloquent collection, the `collapse`, `flatten`, `flip`, `keys`, `pluck`, and `zip` methods return a [base collection](/docs/{{version}}/collections) instance. Likewise, if a `map` operation returns a collection that does not contain any Eloquent models, it will be converted to a base collection instance."
+msgstr "雖然大多數的 Eloquent Collection 方法都會回傳新的 Eloquent Collection 實體，但 `collapse`, `flatten`, `flip`, `keys`, `pluck`, 與 `zip` 方法都會回傳[基礎 collection](/docs/{{version}}/collections)實體。同樣地，若 `map` 操作回傳不包含任何 Eloquent Model 的實體，則會回傳基礎 Collection 實體。"
+
+#: docs/10.x/eloquent-collections.md:block 14 (header)
+msgid "Available Methods"
+msgstr "可用方法"
+
+#: docs/10.x/eloquent-collections.md:block 15 (paragraph)
+msgid "All Eloquent collections extend the base [Laravel collection](/docs/{{version}}/collections#available-methods) object; therefore, they inherit all of the powerful methods provided by the base collection class."
+msgstr "所有的 Eloquent Collection 都繼承自基礎  [Laravel Collection](/docs/{{version}}/collections#available-methods) 物件。因此，這些 Collection 都繼承了基礎 Collection 類別所提供的所有強大方法。"
+
+#: docs/10.x/eloquent-collections.md:block 16 (paragraph)
+msgid "In addition, the `Illuminate\\Database\\Eloquent\\Collection` class provides a superset of methods to aid with managing your model collections. Most methods return `Illuminate\\Database\\Eloquent\\Collection` instances; however, some methods, like `modelKeys`, return an `Illuminate\\Support\\Collection` instance."
+msgstr "除此之外，`Illuminate\\Database\\Eloquent\\Collection` 類別還提供了一組可用來處理 Model Collection 的方法。大多數的方法都會回傳 `Illuminate\\Database\\Eloquent\\Collection` 實體。不過，有些如 `modelKeys` 之類的方法則會回傳 `Illuminate\\Support\\Collection` 實體。"
+
+#: docs/10.x/eloquent-collections.md:block 19 (paragraph)
+msgid "[append](#method-append) [contains](#method-contains) [diff](#method-diff) [except](#method-except) [find](#method-find) [fresh](#method-fresh) [intersect](#method-intersect) [load](#method-load) [loadMissing](#method-loadMissing) [modelKeys](#method-modelKeys) [makeVisible](#method-makeVisible) [makeHidden](#method-makeHidden) [only](#method-only) [setVisible](#method-setVisible) [setHidden](#method-setHidden) [toQuery](#method-toquery) [unique](#method-unique)"
+msgstr "[append](#method-append) [contains](#method-contains) [diff](#method-diff) [except](#method-except) [find](#method-find) [fresh](#method-fresh) [intersect](#method-intersect) [load](#method-load) [loadMissing](#method-loadMissing) [modelKeys](#method-modelKeys) [makeVisible](#method-makeVisible) [makeHidden](#method-makeHidden) [only](#method-only) [setVisible](#method-setVisible) [setHidden](#method-setHidden) [toQuery](#method-toquery) [unique](#method-unique)"
+
+#: docs/10.x/eloquent-collections.md:block 22 (header)
+msgid "`append($attributes)` {.collection-method .first-collection-method}"
+msgstr "`append($attributes)` {.collection-method .first-collection-method}"
+
+#: docs/10.x/eloquent-collections.md:block 23 (paragraph)
+msgid "The `append` method may be used to indicate that an attribute should be [appended](/docs/{{version}}/eloquent-serialization#appending-values-to-json) for every model in the collection. This method accepts an array of attributes or a single attribute:"
+msgstr "`append` 方法可用來表示某個屬性應被[附加](/docs/{{version}}/eloquent-serialization#appending-values-to-json)到該 Collection 中的每個 Model 上。可傳入一組屬性陣列或單一屬性給該方法："
+
+#: docs/10.x/eloquent-collections.md:block 24 (code)
+msgid "$users->append('team');\n\n"
+"$users->append(['team', 'is_admin']);\n"
+msgstr "$users->append('team');\n\n"
+"$users->append(['team', 'is_admin']);\n"
+
+#: docs/10.x/eloquent-collections.md:block 26 (header)
+msgid "`contains($key, $operator = null, $value = null)` {.collection-method}"
+msgstr "`contains($key, $operator = null, $value = null)` {.collection-method}"
+
+#: docs/10.x/eloquent-collections.md:block 27 (paragraph)
+msgid "The `contains` method may be used to determine if a given model instance is contained by the collection. This method accepts a primary key or a model instance:"
+msgstr "`contains` 方法可用來判斷給定的 Model 實體是否包含在該 Collection 內。該方法可接受主鍵 (Primary Key) 或 Model 實體："
+
+#: docs/10.x/eloquent-collections.md:block 28 (code)
+msgid "$users->contains(1);\n\n"
+"$users->contains(User::find(1));\n"
+msgstr "$users->contains(1);\n\n"
+"$users->contains(User::find(1));\n"
+
+#: docs/10.x/eloquent-collections.md:block 30 (header)
+msgid "`diff($items)` {.collection-method}"
+msgstr "`diff($items)` {.collection-method}"
+
+#: docs/10.x/eloquent-collections.md:block 31 (paragraph)
+msgid "The `diff` method returns all of the models that are not present in the given collection:"
+msgstr "`diff` 方法會回傳所有不存在給定 Collection 中的所有 Model："
+
+#: docs/10.x/eloquent-collections.md:block 32 (code)
+msgid "use App\\Models\\User;\n\n"
+"$users = $users->diff(User::whereIn('id', [1, 2, 3])->get());\n"
+msgstr "use App\\Models\\User;\n\n"
+"$users = $users->diff(User::whereIn('id', [1, 2, 3])->get());\n"
+
+#: docs/10.x/eloquent-collections.md:block 34 (header)
+msgid "`except($keys)` {.collection-method}"
+msgstr "`except($keys)` {.collection-method}"
+
+#: docs/10.x/eloquent-collections.md:block 35 (paragraph)
+msgid "The `except` method returns all of the models that do not have the given primary keys:"
+msgstr "`except` 方法會回傳沒有給定主鍵的所有 Model："
+
+#: docs/10.x/eloquent-collections.md:block 36 (code)
+msgid "$users = $users->except([1, 2, 3]);\n"
+msgstr "$users = $users->except([1, 2, 3]);\n"
+
+#: docs/10.x/eloquent-collections.md:block 38 (header)
+msgid "`find($key)` {.collection-method}"
+msgstr "`find($key)` {.collection-method}"
+
+#: docs/10.x/eloquent-collections.md:block 39 (paragraph)
+msgid "The `find` method returns the model that has a primary key matching the given key. If `$key` is a model instance, `find` will attempt to return a model matching the primary key. If `$key` is an array of keys, `find` will return all models which have a primary key in the given array:"
+msgstr "`find` 方法會回傳主鍵符合給定索引鍵的 Model。若 `$key` 為 Model 實體，則 `find` 會嘗試回傳符合該主鍵的 Model。若 `$key` 為一組索引鍵的陣列，則 `find` 會回傳所有主鍵包含在給定陣列中的 Model："
+
+#: docs/10.x/eloquent-collections.md:block 40 (code)
+msgid "$users = User::all();\n\n"
+"$user = $users->find(1);\n"
+msgstr "$users = User::all();\n\n"
+"$user = $users->find(1);\n"
+
+#: docs/10.x/eloquent-collections.md:block 42 (header)
+msgid "`fresh($with = [])` {.collection-method}"
+msgstr "`fresh($with = [])` {.collection-method}"
+
+#: docs/10.x/eloquent-collections.md:block 43 (paragraph)
+msgid "The `fresh` method retrieves a fresh instance of each model in the collection from the database. In addition, any specified relationships will be eager loaded:"
+msgstr "`fresh` 方法會從資料庫中取得該 Collection 中各個 Model 的最新實體 (Fresh Instance)。此外，若有指定關聯，則會積極式載入 (Eager Loading) 這些關聯："
+
+#: docs/10.x/eloquent-collections.md:block 44 (code)
+msgid "$users = $users->fresh();\n\n"
+"$users = $users->fresh('comments');\n"
+msgstr "$users = $users->fresh();\n\n"
+"$users = $users->fresh('comments');\n"
+
+#: docs/10.x/eloquent-collections.md:block 46 (header)
+msgid "`intersect($items)` {.collection-method}"
+msgstr "`intersect($items)` {.collection-method}"
+
+#: docs/10.x/eloquent-collections.md:block 47 (paragraph)
+msgid "The `intersect` method returns all of the models that are also present in the given collection:"
+msgstr "`diff` 方法會回傳所有同時存在於給定 Collection 中的所有 Model："
+
+#: docs/10.x/eloquent-collections.md:block 48 (code)
+msgid "use App\\Models\\User;\n\n"
+"$users = $users->intersect(User::whereIn('id', [1, 2, 3])->get());\n"
+msgstr "use App\\Models\\User;\n\n"
+"$users = $users->intersect(User::whereIn('id', [1, 2, 3])->get());\n"
+
+#: docs/10.x/eloquent-collections.md:block 50 (header)
+msgid "`load($relations)` {.collection-method}"
+msgstr "`load($relations)` {.collection-method}"
+
+#: docs/10.x/eloquent-collections.md:block 51 (paragraph)
+msgid "The `load` method eager loads the given relationships for all models in the collection:"
+msgstr "`load` 方法會積極式載入 (Eager Loading) Collection 中所有 Model 上的給定關聯："
+
+#: docs/10.x/eloquent-collections.md:block 52 (code)
+msgid "$users->load(['comments', 'posts']);\n\n"
+"$users->load('comments.author');\n\n"
+"$users->load(['comments', 'posts' => fn ($query) => $query->where('active', 1)]);\n"
+msgstr "$users->load(['comments', 'posts']);\n\n"
+"$users->load('comments.author');\n\n"
+"$users->load(['comments', 'posts' => fn ($query) => $query->where('active', 1)]);\n"
+
+#: docs/10.x/eloquent-collections.md:block 54 (header)
+msgid "`loadMissing($relations)` {.collection-method}"
+msgstr "`loadMissing($relations)` {.collection-method}"
+
+#: docs/10.x/eloquent-collections.md:block 55 (paragraph)
+msgid "The `loadMissing` method eager loads the given relationships for all models in the collection if the relationships are not already loaded:"
+msgstr "`loadMissing` 方法會在該 Collection 中所有 Model 的給定關聯尚未載入時將其積極式載入 (Eager Loading)："
+
+#: docs/10.x/eloquent-collections.md:block 56 (code)
+msgid "$users->loadMissing(['comments', 'posts']);\n\n"
+"$users->loadMissing('comments.author');\n\n"
+"$users->loadMissing(['comments', 'posts' => fn ($query) => $query->where('active', 1)]);\n"
+msgstr "$users->loadMissing(['comments', 'posts']);\n\n"
+"$users->loadMissing('comments.author');\n\n"
+"$users->loadMissing(['comments', 'posts' => fn ($query) => $query->where('active', 1)]);\n"
+
+#: docs/10.x/eloquent-collections.md:block 58 (header)
+msgid "`modelKeys()` {.collection-method}"
+msgstr "`modelKeys()` {.collection-method}"
+
+#: docs/10.x/eloquent-collections.md:block 59 (paragraph)
+msgid "The `modelKeys` method returns the primary keys for all models in the collection:"
+msgstr "`modelKeys` 方法會回傳該 Collection 中所有方法的主鍵："
+
+#: docs/10.x/eloquent-collections.md:block 60 (code)
+msgid "$users->modelKeys();\n\n"
+"// [1, 2, 3, 4, 5]\n"
+msgstr "$users->modelKeys();\n\n"
+"// [1, 2, 3, 4, 5]\n"
+
+#: docs/10.x/eloquent-collections.md:block 62 (header)
+msgid "`makeVisible($attributes)` {.collection-method}"
+msgstr "`makeVisible($attributes)` {.collection-method}"
+
+#: docs/10.x/eloquent-collections.md:block 63 (paragraph)
+msgid "The `makeVisible` method [makes attributes visible](/docs/{{version}}/eloquent-serialization#hiding-attributes-from-json) that are typically \"hidden\" on each model in the collection:"
+msgstr "`makeVisible` 方法會將該 Collection 中所有 Model 上通常「隱藏 (Hidden)」的屬性[設為可見](/docs/{{version}}/eloquent-serialization#hiding-attributes-from-json)："
+
+#: docs/10.x/eloquent-collections.md:block 64 (code)
+msgid "$users = $users->makeVisible(['address', 'phone_number']);\n"
+msgstr "$users = $users->makeVisible(['address', 'phone_number']);\n"
+
+#: docs/10.x/eloquent-collections.md:block 66 (header)
+msgid "`makeHidden($attributes)` {.collection-method}"
+msgstr "`makeHidden($attributes)` {.collection-method}"
+
+#: docs/10.x/eloquent-collections.md:block 67 (paragraph)
+msgid "The `makeHidden` method [hides attributes](/docs/{{version}}/eloquent-serialization#hiding-attributes-from-json) that are typically \"visible\" on each model in the collection:"
+msgstr "`makeHidden` 方法會將該 Collection 中所有 Model 上通常「可見 (Visible)」的屬性[設為隱藏](/docs/{{version}}/eloquent-serialization#hiding-attributes-from-json)："
+
+#: docs/10.x/eloquent-collections.md:block 68 (code)
+msgid "$users = $users->makeHidden(['address', 'phone_number']);\n"
+msgstr "$users = $users->makeHidden(['address', 'phone_number']);\n"
+
+#: docs/10.x/eloquent-collections.md:block 70 (header)
+msgid "`only($keys)` {.collection-method}"
+msgstr "`only($keys)` {.collection-method}"
+
+#: docs/10.x/eloquent-collections.md:block 71 (paragraph)
+msgid "The `only` method returns all of the models that have the given primary keys:"
+msgstr "`except` 方法會回傳符合給定主鍵的所有 Model："
+
+#: docs/10.x/eloquent-collections.md:block 72 (code)
+msgid "$users = $users->only([1, 2, 3]);\n"
+msgstr "$users = $users->only([1, 2, 3]);\n"
+
+#: docs/10.x/eloquent-collections.md:block 74 (header)
+msgid "`setVisible($attributes)` {.collection-method}"
+msgstr "`setVisible($attributes)` {.collection-method}"
+
+#: docs/10.x/eloquent-collections.md:block 75 (paragraph)
+msgid "The `setVisible` method [temporarily overrides](/docs/{{version}}/eloquent-serialization#temporarily-modifying-attribute-visibility) all of the visible attributes on each model in the collection:"
+msgstr "`setVisible` 方法可[暫時複寫掉](/docs/{{version}}/eloquent-serialization#temporarily-modifying-attribute-visibility)該 Collection 中各個 Model 的所有 ^[visible](可見) 屬性："
+
+#: docs/10.x/eloquent-collections.md:block 76 (code)
+msgid "$users = $users->setVisible(['id', 'name']);\n"
+msgstr "$users = $users->setVisible(['id', 'name']);\n"
+
+#: docs/10.x/eloquent-collections.md:block 78 (header)
+msgid "`setHidden($attributes)` {.collection-method}"
+msgstr "`setHidden($attributes)` {.collection-method}"
+
+#: docs/10.x/eloquent-collections.md:block 79 (paragraph)
+msgid "The `setHidden` method [temporarily overrides](/docs/{{version}}/eloquent-serialization#temporarily-modifying-attribute-visibility) all of the hidden attributes on each model in the collection:"
+msgstr "`setHidden` 方法可[暫時複寫掉](/docs/{{version}}/eloquent-serialization#temporarily-modifying-attribute-visibility)該 Collection 中各個 Model 的所有 ^[hidden](隱藏) 屬性："
+
+#: docs/10.x/eloquent-collections.md:block 80 (code)
+msgid "$users = $users->setHidden(['email', 'password', 'remember_token']);\n"
+msgstr "$users = $users->setHidden(['email', 'password', 'remember_token']);\n"
+
+#: docs/10.x/eloquent-collections.md:block 82 (header)
+msgid "`toQuery()` {.collection-method}"
+msgstr "`toQuery()` {.collection-method}"
+
+#: docs/10.x/eloquent-collections.md:block 83 (paragraph)
+msgid "The `toQuery` method returns an Eloquent query builder instance containing a `whereIn` constraint on the collection model's primary keys:"
+msgstr "`toQuery` 方法回傳 Eloquent Query Builder 實體，並包含了由該 Collection 中 Model 的主索引鍵所組成的 `whereIn` 限制式："
+
+#: docs/10.x/eloquent-collections.md:block 84 (code)
+msgid "use App\\Models\\User;\n\n"
+"$users = User::where('status', 'VIP')->get();\n\n"
+"$users->toQuery()->update([\n"
+"    'status' => 'Administrator',\n"
+"]);\n"
+msgstr "use App\\Models\\User;\n\n"
+"$users = User::where('status', 'VIP')->get();\n\n"
+"$users->toQuery()->update([\n"
+"    'status' => 'Administrator',\n"
+"]);\n"
+
+#: docs/10.x/eloquent-collections.md:block 86 (header)
+msgid "`unique($key = null, $strict = false)` {.collection-method}"
+msgstr "`unique($key = null, $strict = false)` {.collection-method}"
+
+#: docs/10.x/eloquent-collections.md:block 87 (paragraph)
+msgid "The `unique` method returns all of the unique models in the collection. Any models of the same type with the same primary key as another model in the collection are removed:"
+msgstr "`unique` 方法會回傳該 Collection 中所有不重複的 Model。只要某個 Model 在該 Collection 中有另一個具有相同型別與相同主鍵的 Model，就會被移除："
+
+#: docs/10.x/eloquent-collections.md:block 88 (code)
+msgid "$users = $users->unique();\n"
+msgstr "$users = $users->unique();\n"
+
+#: docs/10.x/eloquent-collections.md:block 90 (header)
+msgid "Custom Collections"
+msgstr "自訂 Collection"
+
+#: docs/10.x/eloquent-collections.md:block 91 (paragraph)
+msgid "If you would like to use a custom `Collection` object when interacting with a given model, you may define a `newCollection` method on your model:"
+msgstr "若想在與給定 Model 互動時使用自訂 `Collection` 實體，可在 Model 中定義一個 `newCollection` 方法："
+
+#: docs/10.x/eloquent-collections.md:block 92 (code)
+msgid "<?php\n\n"
+"namespace App\\Models;\n\n"
+"use App\\Support\\UserCollection;\n"
+"use Illuminate\\Database\\Eloquent\\Collection;\n"
+"use Illuminate\\Database\\Eloquent\\Model;\n\n"
+"class User extends Model\n"
+"{\n"
+"    /**\n"
+"     * Create a new Eloquent Collection instance.\n"
+"     *\n"
+"     * @param  array<int, \\Illuminate\\Database\\Eloquent\\Model>  $models\n"
+"     * @return \\Illuminate\\Database\\Eloquent\\Collection<int, \\Illuminate\\Database\\Eloquent\\Model>\n"
+"     */\n"
+"    public function newCollection(array $models = []): Collection\n"
+"    {\n"
+"        return new UserCollection($models);\n"
+"    }\n"
+"}\n"
+msgstr "<?php\n\n"
+"namespace App\\Models;\n\n"
+"use App\\Support\\UserCollection;\n"
+"use Illuminate\\Database\\Eloquent\\Collection;\n"
+"use Illuminate\\Database\\Eloquent\\Model;\n\n"
+"class User extends Model\n"
+"{\n"
+"    /**\n"
+"     * Create a new Eloquent Collection instance.\n"
+"     *\n"
+"     * @param  array<int, \\Illuminate\\Database\\Eloquent\\Model>  $models\n"
+"     * @return \\Illuminate\\Database\\Eloquent\\Collection<int, \\Illuminate\\Database\\Eloquent\\Model>\n"
+"     */\n"
+"    public function newCollection(array $models = []): Collection\n"
+"    {\n"
+"        return new UserCollection($models);\n"
+"    }\n"
+"}\n"
+
+#: docs/10.x/eloquent-collections.md:block 93 (paragraph)
+msgid "Once you have defined a `newCollection` method, you will receive an instance of your custom collection anytime Eloquent would normally return an `Illuminate\\Database\\Eloquent\\Collection` instance. If you would like to use a custom collection for every model in your application, you should define the `newCollection` method on a base model class that is extended by all of your application's models."
+msgstr "定義好 `newCollection` 方法後，之後，在 Eloquent 通常會回傳 `Illuminate\\Database\\Eloquent\\Collection` 實體的時候，就會變成你的自訂 Collection 實體。若想在專案中的所有 Model 上都使用某個自訂 Collection，則可在一個基礎 Model 類別上定義 `newCollection` 方法，並讓專案內所有的 Model 都繼承該基礎 Model："
 
 #: docs/8.x/eloquent-collections.md:block 9 (code)
 msgid "$names = User::all()->reject(function ($user) {\n"
@@ -68,26 +388,6 @@ msgstr "$names = User::all()->reject(function ($user) {\n"
 "    return $user->name;\n"
 "});\n"
 
-#: docs/8.x/eloquent-collections.md:block 11 (header)
-msgid "Eloquent Collection Conversion"
-msgstr "Eloquent Collection 轉換"
-
-#: docs/8.x/eloquent-collections.md:block 12 (paragraph)
-msgid "While most Eloquent collection methods return a new instance of an Eloquent collection, the `collapse`, `flatten`, `flip`, `keys`, `pluck`, and `zip` methods return a [base collection](/docs/{{version}}/collections) instance. Likewise, if a `map` operation returns a collection that does not contain any Eloquent models, it will be converted to a base collection instance."
-msgstr "雖然大多數的 Eloquent Collection 方法都會回傳新的 Eloquent Collection 實體，但 `collapse`, `flatten`, `flip`, `keys`, `pluck`, 與 `zip` 方法都會回傳[基礎 collection](/docs/{{version}}/collections)實體。同樣地，若 `map` 操作回傳不包含任何 Eloquent Model 的實體，則會回傳基礎 Collection 實體。"
-
-#: docs/8.x/eloquent-collections.md:block 14 (header)
-msgid "Available Methods"
-msgstr "可用方法"
-
-#: docs/8.x/eloquent-collections.md:block 15 (paragraph)
-msgid "All Eloquent collections extend the base [Laravel collection](/docs/{{version}}/collections#available-methods) object; therefore, they inherit all of the powerful methods provided by the base collection class."
-msgstr "所有的 Eloquent Collection 都繼承自基礎  [Laravel Collection](/docs/{{version}}/collections#available-methods) 物件。因此，這些 Collection 都繼承了基礎 Collection 類別所提供的所有強大方法。"
-
-#: docs/8.x/eloquent-collections.md:block 16 (paragraph)
-msgid "In addition, the `Illuminate\\Database\\Eloquent\\Collection` class provides a superset of methods to aid with managing your model collections. Most methods return `Illuminate\\Database\\Eloquent\\Collection` instances; however, some methods, like `modelKeys`, return an `Illuminate\\Support\\Collection` instance."
-msgstr "除此之外，`Illuminate\\Database\\Eloquent\\Collection` 類別還提供了一組可用來處理 Model Collection 的方法。大多數的方法都會回傳 `Illuminate\\Database\\Eloquent\\Collection` 實體。不過，有些如 `modelKeys` 之類的方法則會回傳 `Illuminate\\Support\\Collection` 實體。"
-
 #: docs/8.x/eloquent-collections.md:block 19 (paragraph)
 msgid "[contains](#method-contains) [diff](#method-diff) [except](#method-except) [find](#method-find) [fresh](#method-fresh) [intersect](#method-intersect) [load](#method-load) [loadMissing](#method-loadMissing) [modelKeys](#method-modelKeys) [makeVisible](#method-makeVisible) [makeHidden](#method-makeHidden) [only](#method-only) [toQuery](#method-toquery) [unique](#method-unique)"
 msgstr "[contains](#method-contains) [diff](#method-diff) [except](#method-except) [find](#method-find) [fresh](#method-fresh) [intersect](#method-intersect) [load](#method-load) [loadMissing](#method-loadMissing) [modelKeys](#method-modelKeys) [makeVisible](#method-makeVisible) [makeHidden](#method-makeHidden) [only](#method-only) [toQuery](#method-toquery) [unique](#method-unique)"
@@ -96,201 +396,17 @@ msgstr "[contains](#method-contains) [diff](#method-diff) [except](#method-excep
 msgid "`contains($key, $operator = null, $value = null)` {.collection-method .first-collection-method}"
 msgstr "`contains($key, $operator = null, $value = null)` {.collection-method .first-collection-method}"
 
-#: docs/8.x/eloquent-collections.md:block 23 (paragraph)
-msgid "The `contains` method may be used to determine if a given model instance is contained by the collection. This method accepts a primary key or a model instance:"
-msgstr "`contains` 方法可用來判斷給定的 Model 實體是否包含在該 Collection 內。該方法可接受主鍵 (Primary Key) 或 Model 實體："
-
-#: docs/8.x/eloquent-collections.md:block 24 (code)
-msgid "$users->contains(1);\n\n"
-"$users->contains(User::find(1));\n"
-msgstr "$users->contains(1);\n\n"
-"$users->contains(User::find(1));\n"
-
-#: docs/8.x/eloquent-collections.md:block 26 (header)
-msgid "`diff($items)` {.collection-method}"
-msgstr "`diff($items)` {.collection-method}"
-
-#: docs/8.x/eloquent-collections.md:block 27 (paragraph)
-msgid "The `diff` method returns all of the models that are not present in the given collection:"
-msgstr "`diff` 方法會回傳所有不存在給定 Collection 中的所有 Model："
-
-#: docs/8.x/eloquent-collections.md:block 28 (code)
-msgid "use App\\Models\\User;\n\n"
-"$users = $users->diff(User::whereIn('id', [1, 2, 3])->get());\n"
-msgstr "use App\\Models\\User;\n\n"
-"$users = $users->diff(User::whereIn('id', [1, 2, 3])->get());\n"
-
-#: docs/8.x/eloquent-collections.md:block 30 (header)
-msgid "`except($keys)` {.collection-method}"
-msgstr "`except($keys)` {.collection-method}"
-
-#: docs/8.x/eloquent-collections.md:block 31 (paragraph)
-msgid "The `except` method returns all of the models that do not have the given primary keys:"
-msgstr "`except` 方法會回傳沒有給定主鍵的所有 Model："
-
-#: docs/8.x/eloquent-collections.md:block 32 (code)
-msgid "$users = $users->except([1, 2, 3]);\n"
-msgstr "$users = $users->except([1, 2, 3]);\n"
-
-#: docs/8.x/eloquent-collections.md:block 34 (header)
-msgid "`find($key)` {.collection-method}"
-msgstr "`find($key)` {.collection-method}"
-
-#: docs/8.x/eloquent-collections.md:block 35 (paragraph)
-msgid "The `find` method returns the model that has a primary key matching the given key. If `$key` is a model instance, `find` will attempt to return a model matching the primary key. If `$key` is an array of keys, `find` will return all models which have a primary key in the given array:"
-msgstr "`find` 方法會回傳主鍵符合給定索引鍵的 Model。若 `$key` 為 Model 實體，則 `find` 會嘗試回傳符合該主鍵的 Model。若 `$key` 為一組索引鍵的陣列，則 `find` 會回傳所有主鍵包含在給定陣列中的 Model："
-
-#: docs/8.x/eloquent-collections.md:block 36 (code)
-msgid "$users = User::all();\n\n"
-"$user = $users->find(1);\n"
-msgstr "$users = User::all();\n\n"
-"$user = $users->find(1);\n"
-
-#: docs/8.x/eloquent-collections.md:block 38 (header)
-msgid "`fresh($with = [])` {.collection-method}"
-msgstr "`fresh($with = [])` {.collection-method}"
-
-#: docs/8.x/eloquent-collections.md:block 39 (paragraph)
-msgid "The `fresh` method retrieves a fresh instance of each model in the collection from the database. In addition, any specified relationships will be eager loaded:"
-msgstr "`fresh` 方法會從資料庫中取得該 Collection 中各個 Model 的最新實體 (Fresh Instance)。此外，若有指定關聯，則會積極式載入 (Eager Loading) 這些關聯："
-
-#: docs/8.x/eloquent-collections.md:block 40 (code)
-msgid "$users = $users->fresh();\n\n"
-"$users = $users->fresh('comments');\n"
-msgstr "$users = $users->fresh();\n\n"
-"$users = $users->fresh('comments');\n"
-
-#: docs/8.x/eloquent-collections.md:block 42 (header)
-msgid "`intersect($items)` {.collection-method}"
-msgstr "`intersect($items)` {.collection-method}"
-
-#: docs/8.x/eloquent-collections.md:block 43 (paragraph)
-msgid "The `intersect` method returns all of the models that are also present in the given collection:"
-msgstr "`diff` 方法會回傳所有同時存在於給定 Collection 中的所有 Model："
-
-#: docs/8.x/eloquent-collections.md:block 44 (code)
-msgid "use App\\Models\\User;\n\n"
-"$users = $users->intersect(User::whereIn('id', [1, 2, 3])->get());\n"
-msgstr "use App\\Models\\User;\n\n"
-"$users = $users->intersect(User::whereIn('id', [1, 2, 3])->get());\n"
-
-#: docs/8.x/eloquent-collections.md:block 46 (header)
-msgid "`load($relations)` {.collection-method}"
-msgstr "`load($relations)` {.collection-method}"
-
-#: docs/8.x/eloquent-collections.md:block 47 (paragraph)
-msgid "The `load` method eager loads the given relationships for all models in the collection:"
-msgstr "`load` 方法會積極式載入 (Eager Loading) Collection 中所有 Model 上的給定關聯："
-
 #: docs/8.x/eloquent-collections.md:block 48 (code)
 msgid "$users->load(['comments', 'posts']);\n\n"
 "$users->load('comments.author');\n"
 msgstr "$users->load(['comments', 'posts']);\n\n"
 "$users->load('comments.author');\n"
 
-#: docs/8.x/eloquent-collections.md:block 50 (header)
-msgid "`loadMissing($relations)` {.collection-method}"
-msgstr "`loadMissing($relations)` {.collection-method}"
-
-#: docs/8.x/eloquent-collections.md:block 51 (paragraph)
-msgid "The `loadMissing` method eager loads the given relationships for all models in the collection if the relationships are not already loaded:"
-msgstr "`loadMissing` 方法會在該 Collection 中所有 Model 的給定關聯尚未載入時將其積極式載入 (Eager Loading)："
-
 #: docs/8.x/eloquent-collections.md:block 52 (code)
 msgid "$users->loadMissing(['comments', 'posts']);\n\n"
 "$users->loadMissing('comments.author');\n"
 msgstr "$users->loadMissing(['comments', 'posts']);\n\n"
 "$users->loadMissing('comments.author');\n"
-
-#: docs/8.x/eloquent-collections.md:block 54 (header)
-msgid "`modelKeys()` {.collection-method}"
-msgstr "`modelKeys()` {.collection-method}"
-
-#: docs/8.x/eloquent-collections.md:block 55 (paragraph)
-msgid "The `modelKeys` method returns the primary keys for all models in the collection:"
-msgstr "`modelKeys` 方法會回傳該 Collection 中所有方法的主鍵："
-
-#: docs/8.x/eloquent-collections.md:block 56 (code)
-msgid "$users->modelKeys();\n\n"
-"// [1, 2, 3, 4, 5]\n"
-msgstr "$users->modelKeys();\n\n"
-"// [1, 2, 3, 4, 5]\n"
-
-#: docs/8.x/eloquent-collections.md:block 58 (header)
-msgid "`makeVisible($attributes)` {.collection-method}"
-msgstr "`makeVisible($attributes)` {.collection-method}"
-
-#: docs/8.x/eloquent-collections.md:block 59 (paragraph)
-msgid "The `makeVisible` method [makes attributes visible](/docs/{{version}}/eloquent-serialization#hiding-attributes-from-json) that are typically \"hidden\" on each model in the collection:"
-msgstr "`makeVisible` 方法會將該 Collection 中所有 Model 上通常「隱藏 (Hidden)」的屬性[設為可見](/docs/{{version}}/eloquent-serialization#hiding-attributes-from-json)："
-
-#: docs/8.x/eloquent-collections.md:block 60 (code)
-msgid "$users = $users->makeVisible(['address', 'phone_number']);\n"
-msgstr "$users = $users->makeVisible(['address', 'phone_number']);\n"
-
-#: docs/8.x/eloquent-collections.md:block 62 (header)
-msgid "`makeHidden($attributes)` {.collection-method}"
-msgstr "`makeHidden($attributes)` {.collection-method}"
-
-#: docs/8.x/eloquent-collections.md:block 63 (paragraph)
-msgid "The `makeHidden` method [hides attributes](/docs/{{version}}/eloquent-serialization#hiding-attributes-from-json) that are typically \"visible\" on each model in the collection:"
-msgstr "`makeHidden` 方法會將該 Collection 中所有 Model 上通常「可見 (Visible)」的屬性[設為隱藏](/docs/{{version}}/eloquent-serialization#hiding-attributes-from-json)："
-
-#: docs/8.x/eloquent-collections.md:block 64 (code)
-msgid "$users = $users->makeHidden(['address', 'phone_number']);\n"
-msgstr "$users = $users->makeHidden(['address', 'phone_number']);\n"
-
-#: docs/8.x/eloquent-collections.md:block 66 (header)
-msgid "`only($keys)` {.collection-method}"
-msgstr "`only($keys)` {.collection-method}"
-
-#: docs/8.x/eloquent-collections.md:block 67 (paragraph)
-msgid "The `only` method returns all of the models that have the given primary keys:"
-msgstr "`except` 方法會回傳符合給定主鍵的所有 Model："
-
-#: docs/8.x/eloquent-collections.md:block 68 (code)
-msgid "$users = $users->only([1, 2, 3]);\n"
-msgstr "$users = $users->only([1, 2, 3]);\n"
-
-#: docs/8.x/eloquent-collections.md:block 70 (header)
-msgid "`toQuery()` {.collection-method}"
-msgstr "`toQuery()` {.collection-method}"
-
-#: docs/8.x/eloquent-collections.md:block 71 (paragraph)
-msgid "The `toQuery` method returns an Eloquent query builder instance containing a `whereIn` constraint on the collection model's primary keys:"
-msgstr "`toQuery` 方法回傳 Eloquent Query Builder 實體，並包含了由該 Collection 中 Model 的主索引鍵所組成的 `whereIn` 限制式："
-
-#: docs/8.x/eloquent-collections.md:block 72 (code)
-msgid "use App\\Models\\User;\n\n"
-"$users = User::where('status', 'VIP')->get();\n\n"
-"$users->toQuery()->update([\n"
-"    'status' => 'Administrator',\n"
-"]);\n"
-msgstr "use App\\Models\\User;\n\n"
-"$users = User::where('status', 'VIP')->get();\n\n"
-"$users->toQuery()->update([\n"
-"    'status' => 'Administrator',\n"
-"]);\n"
-
-#: docs/8.x/eloquent-collections.md:block 74 (header)
-msgid "`unique($key = null, $strict = false)` {.collection-method}"
-msgstr "`unique($key = null, $strict = false)` {.collection-method}"
-
-#: docs/8.x/eloquent-collections.md:block 75 (paragraph)
-msgid "The `unique` method returns all of the unique models in the collection. Any models of the same type with the same primary key as another model in the collection are removed:"
-msgstr "`unique` 方法會回傳該 Collection 中所有不重複的 Model。只要某個 Model 在該 Collection 中有另一個具有相同型別與相同主鍵的 Model，就會被移除："
-
-#: docs/8.x/eloquent-collections.md:block 76 (code)
-msgid "$users = $users->unique();\n"
-msgstr "$users = $users->unique();\n"
-
-#: docs/8.x/eloquent-collections.md:block 78 (header)
-msgid "Custom Collections"
-msgstr "自訂 Collection"
-
-#: docs/8.x/eloquent-collections.md:block 79 (paragraph)
-msgid "If you would like to use a custom `Collection` object when interacting with a given model, you may define a `newCollection` method on your model:"
-msgstr "若想在與給定 Model 互動時使用自訂 `Collection` 實體，可在 Model 中定義一個 `newCollection` 方法："
 
 #: docs/8.x/eloquent-collections.md:block 80 (code)
 msgid "<?php\n\n"
@@ -323,122 +439,6 @@ msgstr "<?php\n\n"
 "     * @return \\Illuminate\\Database\\Eloquent\\Collection\n"
 "     */\n"
 "    public function newCollection(array $models = [])\n"
-"    {\n"
-"        return new UserCollection($models);\n"
-"    }\n"
-"}\n"
-
-#: docs/8.x/eloquent-collections.md:block 81 (paragraph)
-msgid "Once you have defined a `newCollection` method, you will receive an instance of your custom collection anytime Eloquent would normally return an `Illuminate\\Database\\Eloquent\\Collection` instance. If you would like to use a custom collection for every model in your application, you should define the `newCollection` method on a base model class that is extended by all of your application's models."
-msgstr "定義好 `newCollection` 方法後，之後，在 Eloquent 通常會回傳 `Illuminate\\Database\\Eloquent\\Collection` 實體的時候，就會變成你的自訂 Collection 實體。若想在專案中的所有 Model 上都使用某個自訂 Collection，則可在一個基礎 Model 類別上定義 `newCollection` 方法，並讓專案內所有的 Model 都繼承該基礎 Model："
-
-#: docs/9.x/eloquent-collections.md:block 19 (paragraph)
-msgid "[append](#method-append) [contains](#method-contains) [diff](#method-diff) [except](#method-except) [find](#method-find) [fresh](#method-fresh) [intersect](#method-intersect) [load](#method-load) [loadMissing](#method-loadMissing) [modelKeys](#method-modelKeys) [makeVisible](#method-makeVisible) [makeHidden](#method-makeHidden) [only](#method-only) [setVisible](#method-setVisible) [setHidden](#method-setHidden) [toQuery](#method-toquery) [unique](#method-unique)"
-msgstr "[append](#method-append) [contains](#method-contains) [diff](#method-diff) [except](#method-except) [find](#method-find) [fresh](#method-fresh) [intersect](#method-intersect) [load](#method-load) [loadMissing](#method-loadMissing) [modelKeys](#method-modelKeys) [makeVisible](#method-makeVisible) [makeHidden](#method-makeHidden) [only](#method-only) [setVisible](#method-setVisible) [setHidden](#method-setHidden) [toQuery](#method-toquery) [unique](#method-unique)"
-
-#: docs/9.x/eloquent-collections.md:block 22 (header)
-msgid "`append($attributes)` {.collection-method .first-collection-method}"
-msgstr "`append($attributes)` {.collection-method .first-collection-method}"
-
-#: docs/9.x/eloquent-collections.md:block 23 (paragraph)
-msgid "The `append` method may be used to indicate that an attribute should be [appended](/docs/{{version}}/eloquent-serialization#appending-values-to-json) for every model in the collection. This method accepts an array of attributes or a single attribute:"
-msgstr "`append` 方法可用來表示某個屬性應被[附加](/docs/{{version}}/eloquent-serialization#appending-values-to-json)到該 Collection 中的每個 Model 上。可傳入一組屬性陣列或單一屬性給該方法："
-
-#: docs/9.x/eloquent-collections.md:block 24 (code)
-msgid "$users->append('team');\n\n"
-"$users->append(['team', 'is_admin']);\n"
-msgstr "$users->append('team');\n\n"
-"$users->append(['team', 'is_admin']);\n"
-
-#: docs/9.x/eloquent-collections.md:block 26 (header)
-msgid "`contains($key, $operator = null, $value = null)` {.collection-method}"
-msgstr "`contains($key, $operator = null, $value = null)` {.collection-method}"
-
-#: docs/9.x/eloquent-collections.md:block 52 (code)
-msgid "$users->load(['comments', 'posts']);\n\n"
-"$users->load('comments.author');\n\n"
-"$users->load(['comments', 'posts' => fn ($query) => $query->where('active', 1)]);\n"
-msgstr "$users->load(['comments', 'posts']);\n\n"
-"$users->load('comments.author');\n\n"
-"$users->load(['comments', 'posts' => fn ($query) => $query->where('active', 1)]);\n"
-
-#: docs/9.x/eloquent-collections.md:block 56 (code)
-msgid "$users->loadMissing(['comments', 'posts']);\n\n"
-"$users->loadMissing('comments.author');\n\n"
-"$users->loadMissing(['comments', 'posts' => fn ($query) => $query->where('active', 1)]);\n"
-msgstr "$users->loadMissing(['comments', 'posts']);\n\n"
-"$users->loadMissing('comments.author');\n\n"
-"$users->loadMissing(['comments', 'posts' => fn ($query) => $query->where('active', 1)]);\n"
-
-#: docs/9.x/eloquent-collections.md:block 74 (header)
-msgid "`setVisible($attributes)` {.collection-method}"
-msgstr "`setVisible($attributes)` {.collection-method}"
-
-#: docs/9.x/eloquent-collections.md:block 75 (paragraph)
-msgid "The `setVisible` method [temporarily overrides](/docs/{{version}}/eloquent-serialization#temporarily-modifying-attribute-visibility) all of the visible attributes on each model in the collection:"
-msgstr "`setVisible` 方法可[暫時複寫掉](/docs/{{version}}/eloquent-serialization#temporarily-modifying-attribute-visibility)該 Collection 中各個 Model 的所有 ^[visible](可見) 屬性："
-
-#: docs/9.x/eloquent-collections.md:block 76 (code)
-msgid "$users = $users->setVisible(['id', 'name']);\n"
-msgstr "$users = $users->setVisible(['id', 'name']);\n"
-
-#: docs/9.x/eloquent-collections.md:block 78 (header)
-msgid "`setHidden($attributes)` {.collection-method}"
-msgstr "`setHidden($attributes)` {.collection-method}"
-
-#: docs/9.x/eloquent-collections.md:block 79 (paragraph)
-msgid "The `setHidden` method [temporarily overrides](/docs/{{version}}/eloquent-serialization#temporarily-modifying-attribute-visibility) all of the hidden attributes on each model in the collection:"
-msgstr "`setHidden` 方法可[暫時複寫掉](/docs/{{version}}/eloquent-serialization#temporarily-modifying-attribute-visibility)該 Collection 中各個 Model 的所有 ^[hidden](隱藏) 屬性："
-
-#: docs/9.x/eloquent-collections.md:block 80 (code)
-msgid "$users = $users->setHidden(['email', 'password', 'remember_token']);\n"
-msgstr "$users = $users->setHidden(['email', 'password', 'remember_token']);\n"
-
-#: docs/master/eloquent-collections.md:block 9 (code)
-msgid "$names = User::all()->reject(function (User $user) {\n"
-"    return $user->active === false;\n"
-"})->map(function (User $user) {\n"
-"    return $user->name;\n"
-"});\n"
-msgstr "$names = User::all()->reject(function (User $user) {\n"
-"    return $user->active === false;\n"
-"})->map(function (User $user) {\n"
-"    return $user->name;\n"
-"});\n"
-
-#: docs/master/eloquent-collections.md:block 92 (code)
-msgid "<?php\n\n"
-"namespace App\\Models;\n\n"
-"use App\\Support\\UserCollection;\n"
-"use Illuminate\\Database\\Eloquent\\Collection;\n"
-"use Illuminate\\Database\\Eloquent\\Model;\n\n"
-"class User extends Model\n"
-"{\n"
-"    /**\n"
-"     * Create a new Eloquent Collection instance.\n"
-"     *\n"
-"     * @param  array<int, \\Illuminate\\Database\\Eloquent\\Model>  $models\n"
-"     * @return \\Illuminate\\Database\\Eloquent\\Collection<int, \\Illuminate\\Database\\Eloquent\\Model>\n"
-"     */\n"
-"    public function newCollection(array $models = []): Collection\n"
-"    {\n"
-"        return new UserCollection($models);\n"
-"    }\n"
-"}\n"
-msgstr "<?php\n\n"
-"namespace App\\Models;\n\n"
-"use App\\Support\\UserCollection;\n"
-"use Illuminate\\Database\\Eloquent\\Collection;\n"
-"use Illuminate\\Database\\Eloquent\\Model;\n\n"
-"class User extends Model\n"
-"{\n"
-"    /**\n"
-"     * Create a new Eloquent Collection instance.\n"
-"     *\n"
-"     * @param  array<int, \\Illuminate\\Database\\Eloquent\\Model>  $models\n"
-"     * @return \\Illuminate\\Database\\Eloquent\\Collection<int, \\Illuminate\\Database\\Eloquent\\Model>\n"
-"     */\n"
-"    public function newCollection(array $models = []): Collection\n"
 "    {\n"
 "        return new UserCollection($models);\n"
 "    }\n"

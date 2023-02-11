@@ -10,7 +10,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
-"PO-Revision-Date: 2023-02-11 12:59\n"
+"PO-Revision-Date: 2023-02-11 13:03\n"
 
 #: docs/10.x/vite.md:block 1 (header)
 msgid "Asset Bundling (Vite)"
@@ -1327,11 +1327,11 @@ msgstr "<img src=\"/@imagetools/f0b2f404b13f052c604e632f2fb60381bf61a520\">\n"
 
 #: docs/10.x/vite.md:block 197 (paragraph)
 msgid "The `vite-imagetools` plugin is expecting that the output URL will be intercepted by Vite and the plugin may then handle all URLs that start with `/@imagetools`. If you are using plugins that are expecting this behaviour, you will need to manually correct the URLs. You can do this in your `vite.config.js` file by using the `transformOnServe` option."
-msgstr ""
+msgstr "`vite-imagetools` 外掛預期這個輸出 URL 會被 Vite 攔截，讓這個外掛能處理所有以 `/@imagetools` 開頭的所有 URL。若你使用的外掛有預期這樣的行為，就需要手動修正 URL。可以在 `vite.config.js` 檔案中修改 `transformOnServe` 選項來修正 URL。"
 
 #: docs/10.x/vite.md:block 198 (paragraph)
 msgid "In this particular example, we will append the dev server URL to all occurrences of `/@imagetools` within the generated code:"
-msgstr ""
+msgstr "在這個範例中，我們在產生的程式碼中，為所有的 `/@imagetools` 網址前方加上開發伺服器的 URL："
 
 #: docs/10.x/vite.md:block 199 (code)
 msgid "import { defineConfig } from 'vite';\n"
@@ -1346,16 +1346,28 @@ msgid "import { defineConfig } from 'vite';\n"
 "        imagetools(),\n"
 "    ],\n"
 "});\n"
-msgstr ""
+msgstr "import { defineConfig } from 'vite';\n"
+"import laravel from 'laravel-vite-plugin';\n"
+"import { imagetools } from 'vite-imagetools';\n\n"
+"export default defineConfig({\n"
+"    plugins: [\n"
+"        laravel({\n"
+"            // ...\n"
+"            transformOnServe: (code, devServerUrl) => code.replaceAll('/@imagetools', devServerUrl+'/@imagetools'),\n"
+"        }),\n"
+"        imagetools(),\n"
+"    ],\n"
+"});\n"
 
 #: docs/10.x/vite.md:block 200 (paragraph)
 msgid "Now, while Vite is serving Assets, it will output URLs that point to the Vite dev server:"
-msgstr ""
+msgstr "現在，Vite 伺服器在提供素材時，就會輸出指向 Vite 開發伺服器的 URL："
 
 #: docs/10.x/vite.md:block 201 (code)
 msgid "- <img src=\"/@imagetools/f0b2f404b13f052c604e632f2fb60381bf61a520\"><!-- [tl! remove] -->\n"
 "+ <img src=\"http://[::1]:5173/@imagetools/f0b2f404b13f052c604e632f2fb60381bf61a520\"><!-- [tl! add] -->\n"
-msgstr ""
+msgstr "- <img src=\"/@imagetools/f0b2f404b13f052c604e632f2fb60381bf61a520\"><!-- [tl! remove] -->\n"
+"+ <img src=\"http://[::1]:5173/@imagetools/f0b2f404b13f052c604e632f2fb60381bf61a520\"><!-- [tl! add] -->\n"
 
 #: docs/9.x/vite.md:block 126 (code)
 msgid "/**\n"

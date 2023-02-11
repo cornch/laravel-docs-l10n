@@ -2,48 +2,96 @@
 msgid ""
 msgstr ""
 
-#: docs/8.x/encryption.md:block 1 (header)
+#: docs/10.x/encryption.md:block 1 (header)
 msgid "Encryption"
 msgstr ""
 
-#: docs/8.x/encryption.md:block 2 (unordered list)
+#: docs/10.x/encryption.md:block 2 (unordered list)
 msgid "[Introduction](#introduction)"
 msgstr ""
 
-#: docs/8.x/encryption.md:block 2 (unordered list)
+#: docs/10.x/encryption.md:block 2 (unordered list)
 msgid "[Configuration](#configuration)"
 msgstr ""
 
-#: docs/8.x/encryption.md:block 2 (unordered list)
+#: docs/10.x/encryption.md:block 2 (unordered list)
 msgid "[Using The Encrypter](#using-the-encrypter)"
 msgstr ""
 
-#: docs/8.x/encryption.md:block 4 (header)
+#: docs/10.x/encryption.md:block 4 (header)
 msgid "Introduction"
 msgstr ""
 
-#: docs/8.x/encryption.md:block 5 (paragraph)
+#: docs/10.x/encryption.md:block 5 (paragraph)
 msgid "Laravel's encryption services provide a simple, convenient interface for encrypting and decrypting text via OpenSSL using AES-256 and AES-128 encryption. All of Laravel's encrypted values are signed using a message authentication code (MAC) so that their underlying value can not be modified or tampered with once encrypted."
 msgstr ""
 
-#: docs/8.x/encryption.md:block 7 (header)
+#: docs/10.x/encryption.md:block 7 (header)
 msgid "Configuration"
 msgstr ""
 
-#: docs/8.x/encryption.md:block 8 (paragraph)
+#: docs/10.x/encryption.md:block 8 (paragraph)
 msgid "Before using Laravel's encrypter, you must set the `key` configuration option in your `config/app.php` configuration file. This configuration value is driven by the `APP_KEY` environment variable. You should use the `php artisan key:generate` command to generate this variable's value since the `key:generate` command will use PHP's secure random bytes generator to build a cryptographically secure key for your application. Typically, the value of the `APP_KEY` environment variable will be generated for you during [Laravel's installation](/docs/{{version}}/installation)."
 msgstr ""
 
-#: docs/8.x/encryption.md:block 10 (header)
+#: docs/10.x/encryption.md:block 10 (header)
 msgid "Using The Encrypter"
 msgstr ""
 
-#: docs/8.x/encryption.md:block 12 (header)
+#: docs/10.x/encryption.md:block 12 (header)
 msgid "Encrypting A Value"
 msgstr ""
 
-#: docs/8.x/encryption.md:block 13 (paragraph)
+#: docs/10.x/encryption.md:block 13 (paragraph)
 msgid "You may encrypt a value using the `encryptString` method provided by the `Crypt` facade. All encrypted values are encrypted using OpenSSL and the AES-256-CBC cipher. Furthermore, all encrypted values are signed with a message authentication code (MAC). The integrated message authentication code will prevent the decryption of any values that have been tampered with by malicious users:"
+msgstr ""
+
+#: docs/10.x/encryption.md:block 14 (code)
+msgid ""
+"<?php\n"
+"\n"
+"namespace App\\Http\\Controllers;\n"
+"\n"
+"use App\\Http\\Controllers\\Controller;\n"
+"use App\\Models\\User;\n"
+"use Illuminate\\Http\\Request;\n"
+"use Illuminate\\Http\\Response;\n"
+"use Illuminate\\Support\\Facades\\Crypt;\n"
+"\n"
+"class DigitalOceanTokenController extends Controller\n"
+"{\n"
+"    /**\n"
+"     * Store a DigitalOcean API token for the user.\n"
+"     */\n"
+"    public function storeSecret(Request $request): Response\n"
+"    {\n"
+"        $request->user()->fill([\n"
+"            'token' => Crypt::encryptString($request->token),\n"
+"        ])->save();\n"
+"\n"
+"        return response()->noContent();\n"
+"    }\n"
+"}\n"
+msgstr ""
+
+#: docs/10.x/encryption.md:block 16 (header)
+msgid "Decrypting A Value"
+msgstr ""
+
+#: docs/10.x/encryption.md:block 17 (paragraph)
+msgid "You may decrypt values using the `decryptString` method provided by the `Crypt` facade. If the value can not be properly decrypted, such as when the message authentication code is invalid, an `Illuminate\\Contracts\\Encryption\\DecryptException` will be thrown:"
+msgstr ""
+
+#: docs/10.x/encryption.md:block 18 (code)
+msgid ""
+"use Illuminate\\Contracts\\Encryption\\DecryptException;\n"
+"use Illuminate\\Support\\Facades\\Crypt;\n"
+"\n"
+"try {\n"
+"    $decrypted = Crypt::decryptString($encryptedValue);\n"
+"} catch (DecryptException $e) {\n"
+"    // ...\n"
+"}\n"
 msgstr ""
 
 #: docs/8.x/encryption.md:block 14 (code)
@@ -74,14 +122,6 @@ msgid ""
 "}\n"
 msgstr ""
 
-#: docs/8.x/encryption.md:block 16 (header)
-msgid "Decrypting A Value"
-msgstr ""
-
-#: docs/8.x/encryption.md:block 17 (paragraph)
-msgid "You may decrypt values using the `decryptString` method provided by the `Crypt` facade. If the value can not be properly decrypted, such as when the message authentication code is invalid, an `Illuminate\\Contracts\\Encryption\\DecryptException` will be thrown:"
-msgstr ""
-
 #: docs/8.x/encryption.md:block 18 (code)
 msgid ""
 "use Illuminate\\Contracts\\Encryption\\DecryptException;\n"
@@ -91,45 +131,5 @@ msgid ""
 "    $decrypted = Crypt::decryptString($encryptedValue);\n"
 "} catch (DecryptException $e) {\n"
 "    //\n"
-"}\n"
-msgstr ""
-
-#: docs/master/encryption.md:block 14 (code)
-msgid ""
-"<?php\n"
-"\n"
-"namespace App\\Http\\Controllers;\n"
-"\n"
-"use App\\Http\\Controllers\\Controller;\n"
-"use App\\Models\\User;\n"
-"use Illuminate\\Http\\Request;\n"
-"use Illuminate\\Http\\Response;\n"
-"use Illuminate\\Support\\Facades\\Crypt;\n"
-"\n"
-"class DigitalOceanTokenController extends Controller\n"
-"{\n"
-"    /**\n"
-"     * Store a DigitalOcean API token for the user.\n"
-"     */\n"
-"    public function storeSecret(Request $request): Response\n"
-"    {\n"
-"        $request->user()->fill([\n"
-"            'token' => Crypt::encryptString($request->token),\n"
-"        ])->save();\n"
-"\n"
-"        return response()->noContent();\n"
-"    }\n"
-"}\n"
-msgstr ""
-
-#: docs/master/encryption.md:block 18 (code)
-msgid ""
-"use Illuminate\\Contracts\\Encryption\\DecryptException;\n"
-"use Illuminate\\Support\\Facades\\Crypt;\n"
-"\n"
-"try {\n"
-"    $decrypted = Crypt::decryptString($encryptedValue);\n"
-"} catch (DecryptException $e) {\n"
-"    // ...\n"
 "}\n"
 msgstr ""

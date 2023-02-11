@@ -2,107 +2,960 @@
 msgid ""
 msgstr ""
 
-#: docs/8.x/eloquent-resources.md:block 1 (header)
+#: docs/10.x/eloquent-resources.md:block 1 (header)
 msgid "Eloquent: API Resources"
 msgstr ""
 
-#: docs/8.x/eloquent-resources.md:block 2 (unordered list)
+#: docs/10.x/eloquent-resources.md:block 2 (unordered list)
 msgid "[Introduction](#introduction)"
 msgstr ""
 
-#: docs/8.x/eloquent-resources.md:block 2 (unordered list)
+#: docs/10.x/eloquent-resources.md:block 2 (unordered list)
 msgid "[Generating Resources](#generating-resources)"
 msgstr ""
 
-#: docs/8.x/eloquent-resources.md:block 2 (unordered list)
+#: docs/10.x/eloquent-resources.md:block 2 (unordered list)
 msgid "[Concept Overview](#concept-overview)"
 msgstr ""
 
-#: docs/8.x/eloquent-resources.md:block 2 (unordered list)
+#: docs/10.x/eloquent-resources.md:block 2 (unordered list)
 msgid "[Resource Collections](#resource-collections)"
 msgstr ""
 
-#: docs/8.x/eloquent-resources.md:block 2 (unordered list)
+#: docs/10.x/eloquent-resources.md:block 2 (unordered list)
 msgid "[Writing Resources](#writing-resources)"
 msgstr ""
 
-#: docs/8.x/eloquent-resources.md:block 2 (unordered list)
+#: docs/10.x/eloquent-resources.md:block 2 (unordered list)
 msgid "[Data Wrapping](#data-wrapping)"
 msgstr ""
 
-#: docs/8.x/eloquent-resources.md:block 2 (unordered list)
+#: docs/10.x/eloquent-resources.md:block 2 (unordered list)
 msgid "[Pagination](#pagination)"
 msgstr ""
 
-#: docs/8.x/eloquent-resources.md:block 2 (unordered list)
+#: docs/10.x/eloquent-resources.md:block 2 (unordered list)
 msgid "[Conditional Attributes](#conditional-attributes)"
 msgstr ""
 
-#: docs/8.x/eloquent-resources.md:block 2 (unordered list)
+#: docs/10.x/eloquent-resources.md:block 2 (unordered list)
 msgid "[Conditional Relationships](#conditional-relationships)"
 msgstr ""
 
-#: docs/8.x/eloquent-resources.md:block 2 (unordered list)
+#: docs/10.x/eloquent-resources.md:block 2 (unordered list)
 msgid "[Adding Meta Data](#adding-meta-data)"
 msgstr ""
 
-#: docs/8.x/eloquent-resources.md:block 2 (unordered list)
+#: docs/10.x/eloquent-resources.md:block 2 (unordered list)
 msgid "[Resource Responses](#resource-responses)"
 msgstr ""
 
-#: docs/8.x/eloquent-resources.md:block 4 (header)
+#: docs/10.x/eloquent-resources.md:block 4 (header)
 msgid "Introduction"
 msgstr ""
 
-#: docs/8.x/eloquent-resources.md:block 5 (paragraph)
+#: docs/10.x/eloquent-resources.md:block 5 (paragraph)
 msgid "When building an API, you may need a transformation layer that sits between your Eloquent models and the JSON responses that are actually returned to your application's users. For example, you may wish to display certain attributes for a subset of users and not others, or you may wish to always include certain relationships in the JSON representation of your models. Eloquent's resource classes allow you to expressively and easily transform your models and model collections into JSON."
 msgstr ""
 
-#: docs/8.x/eloquent-resources.md:block 6 (paragraph)
+#: docs/10.x/eloquent-resources.md:block 6 (paragraph)
 msgid "Of course, you may always convert Eloquent models or collections to JSON using their `toJson` methods; however, Eloquent resources provide more granular and robust control over the JSON serialization of your models and their relationships."
 msgstr ""
 
-#: docs/8.x/eloquent-resources.md:block 8 (header)
+#: docs/10.x/eloquent-resources.md:block 8 (header)
 msgid "Generating Resources"
 msgstr ""
 
-#: docs/8.x/eloquent-resources.md:block 9 (paragraph)
+#: docs/10.x/eloquent-resources.md:block 9 (paragraph)
 msgid "To generate a resource class, you may use the `make:resource` Artisan command. By default, resources will be placed in the `app/Http/Resources` directory of your application. Resources extend the `Illuminate\\Http\\Resources\\Json\\JsonResource` class:"
 msgstr ""
 
-#: docs/8.x/eloquent-resources.md:block 10 (code)
+#: docs/10.x/eloquent-resources.md:block 10 (code)
 msgid "php artisan make:resource UserResource\n"
 msgstr ""
 
-#: docs/8.x/eloquent-resources.md:block 12 (header)
+#: docs/10.x/eloquent-resources.md:block 12 (header)
 msgid "Resource Collections"
 msgstr ""
 
-#: docs/8.x/eloquent-resources.md:block 13 (paragraph)
+#: docs/10.x/eloquent-resources.md:block 13 (paragraph)
 msgid "In addition to generating resources that transform individual models, you may generate resources that are responsible for transforming collections of models. This allows your JSON responses to include links and other meta information that is relevant to an entire collection of a given resource."
 msgstr ""
 
-#: docs/8.x/eloquent-resources.md:block 14 (paragraph)
+#: docs/10.x/eloquent-resources.md:block 14 (paragraph)
 msgid "To create a resource collection, you should use the `--collection` flag when creating the resource. Or, including the word `Collection` in the resource name will indicate to Laravel that it should create a collection resource. Collection resources extend the `Illuminate\\Http\\Resources\\Json\\ResourceCollection` class:"
 msgstr ""
 
-#: docs/8.x/eloquent-resources.md:block 15 (code)
+#: docs/10.x/eloquent-resources.md:block 15 (code)
 msgid ""
 "php artisan make:resource User --collection\n"
 "\n"
 "php artisan make:resource UserCollection\n"
 msgstr ""
 
-#: docs/8.x/eloquent-resources.md:block 17 (header)
+#: docs/10.x/eloquent-resources.md:block 17 (header)
 msgid "Concept Overview"
+msgstr ""
+
+#: docs/10.x/eloquent-resources.md:block 18 (quote)
+msgid "**Note** This is a high-level overview of resources and resource collections. You are highly encouraged to read the other sections of this documentation to gain a deeper understanding of the customization and power offered to you by resources."
+msgstr ""
+
+#: docs/10.x/eloquent-resources.md:block 19 (paragraph)
+msgid "Before diving into all of the options available to you when writing resources, let's first take a high-level look at how resources are used within Laravel. A resource class represents a single model that needs to be transformed into a JSON structure. For example, here is a simple `UserResource` resource class:"
+msgstr ""
+
+#: docs/10.x/eloquent-resources.md:block 20 (code)
+msgid ""
+"<?php\n"
+"\n"
+"namespace App\\Http\\Resources;\n"
+"\n"
+"use Illuminate\\Http\\Request;\n"
+"use Illuminate\\Http\\Resources\\Json\\JsonResource;\n"
+"\n"
+"class UserResource extends JsonResource\n"
+"{\n"
+"    /**\n"
+"     * Transform the resource into an array.\n"
+"     *\n"
+"     * @return array<string, mixed>\n"
+"     */\n"
+"    public function toArray(Request $request): array\n"
+"    {\n"
+"        return [\n"
+"            'id' => $this->id,\n"
+"            'name' => $this->name,\n"
+"            'email' => $this->email,\n"
+"            'created_at' => $this->created_at,\n"
+"            'updated_at' => $this->updated_at,\n"
+"        ];\n"
+"    }\n"
+"}\n"
+msgstr ""
+
+#: docs/10.x/eloquent-resources.md:block 21 (paragraph)
+msgid "Every resource class defines a `toArray` method which returns the array of attributes that should be converted to JSON when the resource is returned as a response from a route or controller method."
+msgstr ""
+
+#: docs/10.x/eloquent-resources.md:block 22 (paragraph)
+msgid "Note that we can access model properties directly from the `$this` variable. This is because a resource class will automatically proxy property and method access down to the underlying model for convenient access. Once the resource is defined, it may be returned from a route or controller. The resource accepts the underlying model instance via its constructor:"
+msgstr ""
+
+#: docs/10.x/eloquent-resources.md:block 23 (code)
+msgid ""
+"use App\\Http\\Resources\\UserResource;\n"
+"use App\\Models\\User;\n"
+"\n"
+"Route::get('/user/{id}', function (string $id) {\n"
+"    return new UserResource(User::findOrFail($id));\n"
+"});\n"
+msgstr ""
+
+#: docs/10.x/eloquent-resources.md:block 26 (paragraph)
+msgid "If you are returning a collection of resources or a paginated response, you should use the `collection` method provided by your resource class when creating the resource instance in your route or controller:"
+msgstr ""
+
+#: docs/10.x/eloquent-resources.md:block 27 (code)
+msgid ""
+"use App\\Http\\Resources\\UserResource;\n"
+"use App\\Models\\User;\n"
+"\n"
+"Route::get('/users', function () {\n"
+"    return UserResource::collection(User::all());\n"
+"});\n"
+msgstr ""
+
+#: docs/10.x/eloquent-resources.md:block 28 (paragraph)
+msgid "Note that this does not allow any addition of custom meta data that may need to be returned with your collection. If you would like to customize the resource collection response, you may create a dedicated resource to represent the collection:"
+msgstr ""
+
+#: docs/10.x/eloquent-resources.md:block 29 (code)
+msgid "php artisan make:resource UserCollection\n"
+msgstr ""
+
+#: docs/10.x/eloquent-resources.md:block 30 (paragraph)
+msgid "Once the resource collection class has been generated, you may easily define any meta data that should be included with the response:"
+msgstr ""
+
+#: docs/10.x/eloquent-resources.md:block 31 (code)
+msgid ""
+"<?php\n"
+"\n"
+"namespace App\\Http\\Resources;\n"
+"\n"
+"use Illuminate\\Http\\Request;\n"
+"use Illuminate\\Http\\Resources\\Json\\ResourceCollection;\n"
+"\n"
+"class UserCollection extends ResourceCollection\n"
+"{\n"
+"    /**\n"
+"     * Transform the resource collection into an array.\n"
+"     *\n"
+"     * @return array<int|string, mixed>\n"
+"     */\n"
+"    public function toArray(Request $request): array\n"
+"    {\n"
+"        return [\n"
+"            'data' => $this->collection,\n"
+"            'links' => [\n"
+"                'self' => 'link-value',\n"
+"            ],\n"
+"        ];\n"
+"    }\n"
+"}\n"
+msgstr ""
+
+#: docs/10.x/eloquent-resources.md:block 32 (paragraph)
+msgid "After defining your resource collection, it may be returned from a route or controller:"
+msgstr ""
+
+#: docs/10.x/eloquent-resources.md:block 33 (code)
+msgid ""
+"use App\\Http\\Resources\\UserCollection;\n"
+"use App\\Models\\User;\n"
+"\n"
+"Route::get('/users', function () {\n"
+"    return new UserCollection(User::all());\n"
+"});\n"
+msgstr ""
+
+#: docs/10.x/eloquent-resources.md:block 35 (header)
+msgid "Preserving Collection Keys"
+msgstr ""
+
+#: docs/10.x/eloquent-resources.md:block 36 (paragraph)
+msgid "When returning a resource collection from a route, Laravel resets the collection's keys so that they are in numerical order. However, you may add a `preserveKeys` property to your resource class indicating whether a collection's original keys should be preserved:"
+msgstr ""
+
+#: docs/10.x/eloquent-resources.md:block 37 (code)
+msgid ""
+"<?php\n"
+"\n"
+"namespace App\\Http\\Resources;\n"
+"\n"
+"use Illuminate\\Http\\Resources\\Json\\JsonResource;\n"
+"\n"
+"class UserResource extends JsonResource\n"
+"{\n"
+"    /**\n"
+"     * Indicates if the resource's collection keys should be preserved.\n"
+"     *\n"
+"     * @var bool\n"
+"     */\n"
+"    public $preserveKeys = true;\n"
+"}\n"
+msgstr ""
+
+#: docs/10.x/eloquent-resources.md:block 38 (paragraph)
+msgid "When the `preserveKeys` property is set to `true`, collection keys will be preserved when the collection is returned from a route or controller:"
+msgstr ""
+
+#: docs/10.x/eloquent-resources.md:block 39 (code)
+msgid ""
+"use App\\Http\\Resources\\UserResource;\n"
+"use App\\Models\\User;\n"
+"\n"
+"Route::get('/users', function () {\n"
+"    return UserResource::collection(User::all()->keyBy->id);\n"
+"});\n"
+msgstr ""
+
+#: docs/10.x/eloquent-resources.md:block 41 (header)
+msgid "Customizing The Underlying Resource Class"
+msgstr ""
+
+#: docs/10.x/eloquent-resources.md:block 42 (paragraph)
+msgid "Typically, the `$this->collection` property of a resource collection is automatically populated with the result of mapping each item of the collection to its singular resource class. The singular resource class is assumed to be the collection's class name without the trailing `Collection` portion of the class name. In addition, depending on your personal preference, the singular resource class may or may not be suffixed with `Resource`."
+msgstr ""
+
+#: docs/10.x/eloquent-resources.md:block 43 (paragraph)
+msgid "For example, `UserCollection` will attempt to map the given user instances into the `UserResource` resource. To customize this behavior, you may override the `$collects` property of your resource collection:"
+msgstr ""
+
+#: docs/10.x/eloquent-resources.md:block 44 (code)
+msgid ""
+"<?php\n"
+"\n"
+"namespace App\\Http\\Resources;\n"
+"\n"
+"use Illuminate\\Http\\Resources\\Json\\ResourceCollection;\n"
+"\n"
+"class UserCollection extends ResourceCollection\n"
+"{\n"
+"    /**\n"
+"     * The resource that this resource collects.\n"
+"     *\n"
+"     * @var string\n"
+"     */\n"
+"    public $collects = Member::class;\n"
+"}\n"
+msgstr ""
+
+#: docs/10.x/eloquent-resources.md:block 46 (header)
+msgid "Writing Resources"
+msgstr ""
+
+#: docs/10.x/eloquent-resources.md:block 47 (quote)
+msgid "**Note** If you have not read the [concept overview](#concept-overview), you are highly encouraged to do so before proceeding with this documentation."
+msgstr ""
+
+#: docs/10.x/eloquent-resources.md:block 48 (paragraph)
+msgid "In essence, resources are simple. They only need to transform a given model into an array. So, each resource contains a `toArray` method which translates your model's attributes into an API friendly array that can be returned from your application's routes or controllers:"
+msgstr ""
+
+#: docs/10.x/eloquent-resources.md:block 50 (paragraph)
+msgid "Once a resource has been defined, it may be returned directly from a route or controller:"
+msgstr ""
+
+#: docs/10.x/eloquent-resources.md:block 53 (header)
+msgid "Relationships"
+msgstr ""
+
+#: docs/10.x/eloquent-resources.md:block 54 (paragraph)
+msgid "If you would like to include related resources in your response, you may add them to the array returned by your resource's `toArray` method. In this example, we will use the `PostResource` resource's `collection` method to add the user's blog posts to the resource response:"
+msgstr ""
+
+#: docs/10.x/eloquent-resources.md:block 55 (code)
+msgid ""
+"use App\\Http\\Resources\\PostResource;\n"
+"use Illuminate\\Http\\Request;\n"
+"\n"
+"/**\n"
+" * Transform the resource into an array.\n"
+" *\n"
+" * @return array<string, mixed>\n"
+" */\n"
+"public function toArray(Request $request): array\n"
+"{\n"
+"    return [\n"
+"        'id' => $this->id,\n"
+"        'name' => $this->name,\n"
+"        'email' => $this->email,\n"
+"        'posts' => PostResource::collection($this->posts),\n"
+"        'created_at' => $this->created_at,\n"
+"        'updated_at' => $this->updated_at,\n"
+"    ];\n"
+"}\n"
+msgstr ""
+
+#: docs/10.x/eloquent-resources.md:block 56 (quote)
+msgid "**Note** If you would like to include relationships only when they have already been loaded, check out the documentation on [conditional relationships](#conditional-relationships)."
+msgstr ""
+
+#: docs/10.x/eloquent-resources.md:block 59 (paragraph)
+msgid "While resources transform a single model into an array, resource collections transform a collection of models into an array. However, it is not absolutely necessary to define a resource collection class for each one of your models since all resources provide a `collection` method to generate an \"ad-hoc\" resource collection on the fly:"
+msgstr ""
+
+#: docs/10.x/eloquent-resources.md:block 61 (paragraph)
+msgid "However, if you need to customize the meta data returned with the collection, it is necessary to define your own resource collection:"
+msgstr ""
+
+#: docs/10.x/eloquent-resources.md:block 62 (code)
+msgid ""
+"<?php\n"
+"\n"
+"namespace App\\Http\\Resources;\n"
+"\n"
+"use Illuminate\\Http\\Resources\\Json\\ResourceCollection;\n"
+"\n"
+"class UserCollection extends ResourceCollection\n"
+"{\n"
+"    /**\n"
+"     * Transform the resource collection into an array.\n"
+"     *\n"
+"     * @return array<string, mixed>\n"
+"     */\n"
+"    public function toArray(Request $request): array\n"
+"    {\n"
+"        return [\n"
+"            'data' => $this->collection,\n"
+"            'links' => [\n"
+"                'self' => 'link-value',\n"
+"            ],\n"
+"        ];\n"
+"    }\n"
+"}\n"
+msgstr ""
+
+#: docs/10.x/eloquent-resources.md:block 63 (paragraph)
+msgid "Like singular resources, resource collections may be returned directly from routes or controllers:"
+msgstr ""
+
+#: docs/10.x/eloquent-resources.md:block 66 (header)
+msgid "Data Wrapping"
+msgstr ""
+
+#: docs/10.x/eloquent-resources.md:block 67 (paragraph)
+msgid "By default, your outermost resource is wrapped in a `data` key when the resource response is converted to JSON. So, for example, a typical resource collection response looks like the following:"
+msgstr ""
+
+#: docs/10.x/eloquent-resources.md:block 68 (code)
+msgid ""
+"{\n"
+"    \"data\": [\n"
+"        {\n"
+"            \"id\": 1,\n"
+"            \"name\": \"Eladio Schroeder Sr.\",\n"
+"            \"email\": \"therese28@example.com\"\n"
+"        },\n"
+"        {\n"
+"            \"id\": 2,\n"
+"            \"name\": \"Liliana Mayert\",\n"
+"            \"email\": \"evandervort@example.com\"\n"
+"        }\n"
+"    ]\n"
+"}\n"
+msgstr ""
+
+#: docs/10.x/eloquent-resources.md:block 69 (paragraph)
+msgid "If you would like to use a custom key instead of `data`, you may define a `$wrap` attribute on the resource class:"
+msgstr ""
+
+#: docs/10.x/eloquent-resources.md:block 70 (code)
+msgid ""
+"<?php\n"
+"\n"
+"namespace App\\Http\\Resources;\n"
+"\n"
+"use Illuminate\\Http\\Resources\\Json\\JsonResource;\n"
+"\n"
+"class UserResource extends JsonResource\n"
+"{\n"
+"    /**\n"
+"     * The \"data\" wrapper that should be applied.\n"
+"     *\n"
+"     * @var string|null\n"
+"     */\n"
+"    public static $wrap = 'user';\n"
+"}\n"
+msgstr ""
+
+#: docs/10.x/eloquent-resources.md:block 71 (paragraph)
+msgid "If you would like to disable the wrapping of the outermost resource, you should invoke the `withoutWrapping` method on the base `Illuminate\\Http\\Resources\\Json\\JsonResource` class. Typically, you should call this method from your `AppServiceProvider` or another [service provider](/docs/{{version}}/providers) that is loaded on every request to your application:"
+msgstr ""
+
+#: docs/10.x/eloquent-resources.md:block 72 (code)
+msgid ""
+"<?php\n"
+"\n"
+"namespace App\\Providers;\n"
+"\n"
+"use Illuminate\\Http\\Resources\\Json\\JsonResource;\n"
+"use Illuminate\\Support\\ServiceProvider;\n"
+"\n"
+"class AppServiceProvider extends ServiceProvider\n"
+"{\n"
+"    /**\n"
+"     * Register any application services.\n"
+"     */\n"
+"    public function register(): void\n"
+"    {\n"
+"        // ...\n"
+"    }\n"
+"\n"
+"    /**\n"
+"     * Bootstrap any application services.\n"
+"     */\n"
+"    public function boot(): void\n"
+"    {\n"
+"        JsonResource::withoutWrapping();\n"
+"    }\n"
+"}\n"
+msgstr ""
+
+#: docs/10.x/eloquent-resources.md:block 73 (quote)
+msgid "**Warning** The `withoutWrapping` method only affects the outermost response and will not remove `data` keys that you manually add to your own resource collections."
+msgstr ""
+
+#: docs/10.x/eloquent-resources.md:block 75 (header)
+msgid "Wrapping Nested Resources"
+msgstr ""
+
+#: docs/10.x/eloquent-resources.md:block 76 (paragraph)
+msgid "You have total freedom to determine how your resource's relationships are wrapped. If you would like all resource collections to be wrapped in a `data` key, regardless of their nesting, you should define a resource collection class for each resource and return the collection within a `data` key."
+msgstr ""
+
+#: docs/10.x/eloquent-resources.md:block 77 (paragraph)
+msgid "You may be wondering if this will cause your outermost resource to be wrapped in two `data` keys. Don't worry, Laravel will never let your resources be accidentally double-wrapped, so you don't have to be concerned about the nesting level of the resource collection you are transforming:"
+msgstr ""
+
+#: docs/10.x/eloquent-resources.md:block 78 (code)
+msgid ""
+"<?php\n"
+"\n"
+"namespace App\\Http\\Resources;\n"
+"\n"
+"use Illuminate\\Http\\Resources\\Json\\ResourceCollection;\n"
+"\n"
+"class CommentsCollection extends ResourceCollection\n"
+"{\n"
+"    /**\n"
+"     * Transform the resource collection into an array.\n"
+"     *\n"
+"     * @return array<string, mixed>\n"
+"     */\n"
+"    public function toArray(Request $request): array\n"
+"    {\n"
+"        return ['data' => $this->collection];\n"
+"    }\n"
+"}\n"
+msgstr ""
+
+#: docs/10.x/eloquent-resources.md:block 80 (header)
+msgid "Data Wrapping And Pagination"
+msgstr ""
+
+#: docs/10.x/eloquent-resources.md:block 81 (paragraph)
+msgid "When returning paginated collections via a resource response, Laravel will wrap your resource data in a `data` key even if the `withoutWrapping` method has been called. This is because paginated responses always contain `meta` and `links` keys with information about the paginator's state:"
+msgstr ""
+
+#: docs/10.x/eloquent-resources.md:block 82 (code)
+msgid ""
+"{\n"
+"    \"data\": [\n"
+"        {\n"
+"            \"id\": 1,\n"
+"            \"name\": \"Eladio Schroeder Sr.\",\n"
+"            \"email\": \"therese28@example.com\"\n"
+"        },\n"
+"        {\n"
+"            \"id\": 2,\n"
+"            \"name\": \"Liliana Mayert\",\n"
+"            \"email\": \"evandervort@example.com\"\n"
+"        }\n"
+"    ],\n"
+"    \"links\":{\n"
+"        \"first\": \"http://example.com/pagination?page=1\",\n"
+"        \"last\": \"http://example.com/pagination?page=1\",\n"
+"        \"prev\": null,\n"
+"        \"next\": null\n"
+"    },\n"
+"    \"meta\":{\n"
+"        \"current_page\": 1,\n"
+"        \"from\": 1,\n"
+"        \"last_page\": 1,\n"
+"        \"path\": \"http://example.com/pagination\",\n"
+"        \"per_page\": 15,\n"
+"        \"to\": 10,\n"
+"        \"total\": 10\n"
+"    }\n"
+"}\n"
+msgstr ""
+
+#: docs/10.x/eloquent-resources.md:block 84 (header)
+msgid "Pagination"
+msgstr ""
+
+#: docs/10.x/eloquent-resources.md:block 85 (paragraph)
+msgid "You may pass a Laravel paginator instance to the `collection` method of a resource or to a custom resource collection:"
+msgstr ""
+
+#: docs/10.x/eloquent-resources.md:block 86 (code)
+msgid ""
+"use App\\Http\\Resources\\UserCollection;\n"
+"use App\\Models\\User;\n"
+"\n"
+"Route::get('/users', function () {\n"
+"    return new UserCollection(User::paginate());\n"
+"});\n"
+msgstr ""
+
+#: docs/10.x/eloquent-resources.md:block 87 (paragraph)
+msgid "Paginated responses always contain `meta` and `links` keys with information about the paginator's state:"
+msgstr ""
+
+#: docs/10.x/eloquent-resources.md:block 90 (header)
+msgid "Conditional Attributes"
+msgstr ""
+
+#: docs/10.x/eloquent-resources.md:block 91 (paragraph)
+msgid "Sometimes you may wish to only include an attribute in a resource response if a given condition is met. For example, you may wish to only include a value if the current user is an \"administrator\". Laravel provides a variety of helper methods to assist you in this situation. The `when` method may be used to conditionally add an attribute to a resource response:"
+msgstr ""
+
+#: docs/10.x/eloquent-resources.md:block 92 (code)
+msgid ""
+"/**\n"
+" * Transform the resource into an array.\n"
+" *\n"
+" * @return array<string, mixed>\n"
+" */\n"
+"public function toArray(Request $request): array\n"
+"{\n"
+"    return [\n"
+"        'id' => $this->id,\n"
+"        'name' => $this->name,\n"
+"        'email' => $this->email,\n"
+"        'secret' => $this->when($request->user()->isAdmin(), 'secret-value'),\n"
+"        'created_at' => $this->created_at,\n"
+"        'updated_at' => $this->updated_at,\n"
+"    ];\n"
+"}\n"
+msgstr ""
+
+#: docs/10.x/eloquent-resources.md:block 93 (paragraph)
+msgid "In this example, the `secret` key will only be returned in the final resource response if the authenticated user's `isAdmin` method returns `true`. If the method returns `false`, the `secret` key will be removed from the resource response before it is sent to the client. The `when` method allows you to expressively define your resources without resorting to conditional statements when building the array."
+msgstr ""
+
+#: docs/10.x/eloquent-resources.md:block 94 (paragraph)
+msgid "The `when` method also accepts a closure as its second argument, allowing you to calculate the resulting value only if the given condition is `true`:"
+msgstr ""
+
+#: docs/10.x/eloquent-resources.md:block 95 (code)
+msgid ""
+"'secret' => $this->when($request->user()->isAdmin(), function () {\n"
+"    return 'secret-value';\n"
+"}),\n"
+msgstr ""
+
+#: docs/10.x/eloquent-resources.md:block 96 (paragraph)
+msgid "The `whenHas` method may be used to include an attribute if it is actually present on the underlying model:"
+msgstr ""
+
+#: docs/10.x/eloquent-resources.md:block 97 (code)
+msgid "'name' => $this->whenHas('name'),\n"
+msgstr ""
+
+#: docs/10.x/eloquent-resources.md:block 98 (paragraph)
+msgid "Additionally, the `whenNotNull` method may be used to include an attribute in the resource response if the attribute is not null:"
+msgstr ""
+
+#: docs/10.x/eloquent-resources.md:block 99 (code)
+msgid "'name' => $this->whenNotNull($this->name),\n"
+msgstr ""
+
+#: docs/10.x/eloquent-resources.md:block 101 (header)
+msgid "Merging Conditional Attributes"
+msgstr ""
+
+#: docs/10.x/eloquent-resources.md:block 102 (paragraph)
+msgid "Sometimes you may have several attributes that should only be included in the resource response based on the same condition. In this case, you may use the `mergeWhen` method to include the attributes in the response only when the given condition is `true`:"
+msgstr ""
+
+#: docs/10.x/eloquent-resources.md:block 103 (code)
+msgid ""
+"/**\n"
+" * Transform the resource into an array.\n"
+" *\n"
+" * @return array<string, mixed>\n"
+" */\n"
+"public function toArray(Request $request): array\n"
+"{\n"
+"    return [\n"
+"        'id' => $this->id,\n"
+"        'name' => $this->name,\n"
+"        'email' => $this->email,\n"
+"        $this->mergeWhen($request->user()->isAdmin(), [\n"
+"            'first-secret' => 'value',\n"
+"            'second-secret' => 'value',\n"
+"        ]),\n"
+"        'created_at' => $this->created_at,\n"
+"        'updated_at' => $this->updated_at,\n"
+"    ];\n"
+"}\n"
+msgstr ""
+
+#: docs/10.x/eloquent-resources.md:block 104 (paragraph)
+msgid "Again, if the given condition is `false`, these attributes will be removed from the resource response before it is sent to the client."
+msgstr ""
+
+#: docs/10.x/eloquent-resources.md:block 105 (quote)
+msgid "**Warning** The `mergeWhen` method should not be used within arrays that mix string and numeric keys. Furthermore, it should not be used within arrays with numeric keys that are not ordered sequentially."
+msgstr ""
+
+#: docs/10.x/eloquent-resources.md:block 107 (header)
+msgid "Conditional Relationships"
+msgstr ""
+
+#: docs/10.x/eloquent-resources.md:block 108 (paragraph)
+msgid "In addition to conditionally loading attributes, you may conditionally include relationships on your resource responses based on if the relationship has already been loaded on the model. This allows your controller to decide which relationships should be loaded on the model and your resource can easily include them only when they have actually been loaded. Ultimately, this makes it easier to avoid \"N+1\" query problems within your resources."
+msgstr ""
+
+#: docs/10.x/eloquent-resources.md:block 109 (paragraph)
+msgid "The `whenLoaded` method may be used to conditionally load a relationship. In order to avoid unnecessarily loading relationships, this method accepts the name of the relationship instead of the relationship itself:"
+msgstr ""
+
+#: docs/10.x/eloquent-resources.md:block 110 (code)
+msgid ""
+"use App\\Http\\Resources\\PostResource;\n"
+"\n"
+"/**\n"
+" * Transform the resource into an array.\n"
+" *\n"
+" * @return array<string, mixed>\n"
+" */\n"
+"public function toArray(Request $request): array\n"
+"{\n"
+"    return [\n"
+"        'id' => $this->id,\n"
+"        'name' => $this->name,\n"
+"        'email' => $this->email,\n"
+"        'posts' => PostResource::collection($this->whenLoaded('posts')),\n"
+"        'created_at' => $this->created_at,\n"
+"        'updated_at' => $this->updated_at,\n"
+"    ];\n"
+"}\n"
+msgstr ""
+
+#: docs/10.x/eloquent-resources.md:block 111 (paragraph)
+msgid "In this example, if the relationship has not been loaded, the `posts` key will be removed from the resource response before it is sent to the client."
+msgstr ""
+
+#: docs/10.x/eloquent-resources.md:block 113 (header)
+msgid "Conditional Relationship Counts"
+msgstr ""
+
+#: docs/10.x/eloquent-resources.md:block 114 (paragraph)
+msgid "In addition to conditionally including relationships, you may conditionally include relationship \"counts\" on your resource responses based on if the relationship's count has been loaded on the model:"
+msgstr ""
+
+#: docs/10.x/eloquent-resources.md:block 115 (code)
+msgid "new UserResource($user->loadCount('posts'));\n"
+msgstr ""
+
+#: docs/10.x/eloquent-resources.md:block 116 (paragraph)
+msgid "The `whenCounted` method may be used to conditionally include a relationship's count in your resource response. This method avoids unnecessarily including the attribute if the relationships' count is not present:"
+msgstr ""
+
+#: docs/10.x/eloquent-resources.md:block 117 (code)
+msgid ""
+"/**\n"
+" * Transform the resource into an array.\n"
+" *\n"
+" * @return array<string, mixed>\n"
+" */\n"
+"public function toArray(Request $request): array\n"
+"{\n"
+"    return [\n"
+"        'id' => $this->id,\n"
+"        'name' => $this->name,\n"
+"        'email' => $this->email,\n"
+"        'posts_count' => $this->whenCounted('posts'),\n"
+"        'created_at' => $this->created_at,\n"
+"        'updated_at' => $this->updated_at,\n"
+"    ];\n"
+"}\n"
+msgstr ""
+
+#: docs/10.x/eloquent-resources.md:block 118 (paragraph)
+msgid "In this example, if the `posts` relationship's count has not been loaded, the `posts_count` key will be removed from the resource response before it is sent to the client."
+msgstr ""
+
+#: docs/10.x/eloquent-resources.md:block 120 (header)
+msgid "Conditional Pivot Information"
+msgstr ""
+
+#: docs/10.x/eloquent-resources.md:block 121 (paragraph)
+msgid "In addition to conditionally including relationship information in your resource responses, you may conditionally include data from the intermediate tables of many-to-many relationships using the `whenPivotLoaded` method. The `whenPivotLoaded` method accepts the name of the pivot table as its first argument. The second argument should be a closure that returns the value to be returned if the pivot information is available on the model:"
+msgstr ""
+
+#: docs/10.x/eloquent-resources.md:block 122 (code)
+msgid ""
+"/**\n"
+" * Transform the resource into an array.\n"
+" *\n"
+" * @return array<string, mixed>\n"
+" */\n"
+"public function toArray(Request $request): array\n"
+"{\n"
+"    return [\n"
+"        'id' => $this->id,\n"
+"        'name' => $this->name,\n"
+"        'expires_at' => $this->whenPivotLoaded('role_user', function () {\n"
+"            return $this->pivot->expires_at;\n"
+"        }),\n"
+"    ];\n"
+"}\n"
+msgstr ""
+
+#: docs/10.x/eloquent-resources.md:block 123 (paragraph)
+msgid "If your relationship is using a [custom intermediate table model](/docs/{{version}}/eloquent-relationships#defining-custom-intermediate-table-models), you may pass an instance of the intermediate table model as the first argument to the `whenPivotLoaded` method:"
+msgstr ""
+
+#: docs/10.x/eloquent-resources.md:block 124 (code)
+msgid ""
+"'expires_at' => $this->whenPivotLoaded(new Membership, function () {\n"
+"    return $this->pivot->expires_at;\n"
+"}),\n"
+msgstr ""
+
+#: docs/10.x/eloquent-resources.md:block 125 (paragraph)
+msgid "If your intermediate table is using an accessor other than `pivot`, you may use the `whenPivotLoadedAs` method:"
+msgstr ""
+
+#: docs/10.x/eloquent-resources.md:block 126 (code)
+msgid ""
+"/**\n"
+" * Transform the resource into an array.\n"
+" *\n"
+" * @return array<string, mixed>\n"
+" */\n"
+"public function toArray(Request $request): array\n"
+"{\n"
+"    return [\n"
+"        'id' => $this->id,\n"
+"        'name' => $this->name,\n"
+"        'expires_at' => $this->whenPivotLoadedAs('subscription', 'role_user', function () {\n"
+"            return $this->subscription->expires_at;\n"
+"        }),\n"
+"    ];\n"
+"}\n"
+msgstr ""
+
+#: docs/10.x/eloquent-resources.md:block 128 (header)
+msgid "Adding Meta Data"
+msgstr ""
+
+#: docs/10.x/eloquent-resources.md:block 129 (paragraph)
+msgid "Some JSON API standards require the addition of meta data to your resource and resource collections responses. This often includes things like `links` to the resource or related resources, or meta data about the resource itself. If you need to return additional meta data about a resource, include it in your `toArray` method. For example, you might include `link` information when transforming a resource collection:"
+msgstr ""
+
+#: docs/10.x/eloquent-resources.md:block 130 (code)
+msgid ""
+"/**\n"
+" * Transform the resource into an array.\n"
+" *\n"
+" * @return array<string, mixed>\n"
+" */\n"
+"public function toArray(Request $request): array\n"
+"{\n"
+"    return [\n"
+"        'data' => $this->collection,\n"
+"        'links' => [\n"
+"            'self' => 'link-value',\n"
+"        ],\n"
+"    ];\n"
+"}\n"
+msgstr ""
+
+#: docs/10.x/eloquent-resources.md:block 131 (paragraph)
+msgid "When returning additional meta data from your resources, you never have to worry about accidentally overriding the `links` or `meta` keys that are automatically added by Laravel when returning paginated responses. Any additional `links` you define will be merged with the links provided by the paginator."
+msgstr ""
+
+#: docs/10.x/eloquent-resources.md:block 133 (header)
+msgid "Top Level Meta Data"
+msgstr ""
+
+#: docs/10.x/eloquent-resources.md:block 134 (paragraph)
+msgid "Sometimes you may wish to only include certain meta data with a resource response if the resource is the outermost resource being returned. Typically, this includes meta information about the response as a whole. To define this meta data, add a `with` method to your resource class. This method should return an array of meta data to be included with the resource response only when the resource is the outermost resource being transformed:"
+msgstr ""
+
+#: docs/10.x/eloquent-resources.md:block 135 (code)
+msgid ""
+"<?php\n"
+"\n"
+"namespace App\\Http\\Resources;\n"
+"\n"
+"use Illuminate\\Http\\Resources\\Json\\ResourceCollection;\n"
+"\n"
+"class UserCollection extends ResourceCollection\n"
+"{\n"
+"    /**\n"
+"     * Transform the resource collection into an array.\n"
+"     *\n"
+"     * @return array<string, mixed>\n"
+"     */\n"
+"    public function toArray(Request $request): array\n"
+"    {\n"
+"        return parent::toArray($request);\n"
+"    }\n"
+"\n"
+"    /**\n"
+"     * Get additional data that should be returned with the resource array.\n"
+"     *\n"
+"     * @return array<string, mixed>\n"
+"     */\n"
+"    public function with(Request $request): array\n"
+"    {\n"
+"        return [\n"
+"            'meta' => [\n"
+"                'key' => 'value',\n"
+"            ],\n"
+"        ];\n"
+"    }\n"
+"}\n"
+msgstr ""
+
+#: docs/10.x/eloquent-resources.md:block 137 (header)
+msgid "Adding Meta Data When Constructing Resources"
+msgstr ""
+
+#: docs/10.x/eloquent-resources.md:block 138 (paragraph)
+msgid "You may also add top-level data when constructing resource instances in your route or controller. The `additional` method, which is available on all resources, accepts an array of data that should be added to the resource response:"
+msgstr ""
+
+#: docs/10.x/eloquent-resources.md:block 139 (code)
+msgid ""
+"return (new UserCollection(User::all()->load('roles')))\n"
+"                ->additional(['meta' => [\n"
+"                    'key' => 'value',\n"
+"                ]]);\n"
+msgstr ""
+
+#: docs/10.x/eloquent-resources.md:block 141 (header)
+msgid "Resource Responses"
+msgstr ""
+
+#: docs/10.x/eloquent-resources.md:block 142 (paragraph)
+msgid "As you have already read, resources may be returned directly from routes and controllers:"
+msgstr ""
+
+#: docs/10.x/eloquent-resources.md:block 144 (paragraph)
+msgid "However, sometimes you may need to customize the outgoing HTTP response before it is sent to the client. There are two ways to accomplish this. First, you may chain the `response` method onto the resource. This method will return an `Illuminate\\Http\\JsonResponse` instance, giving you full control over the response's headers:"
+msgstr ""
+
+#: docs/10.x/eloquent-resources.md:block 145 (code)
+msgid ""
+"use App\\Http\\Resources\\UserResource;\n"
+"use App\\Models\\User;\n"
+"\n"
+"Route::get('/user', function () {\n"
+"    return (new UserResource(User::find(1)))\n"
+"                ->response()\n"
+"                ->header('X-Value', 'True');\n"
+"});\n"
+msgstr ""
+
+#: docs/10.x/eloquent-resources.md:block 146 (paragraph)
+msgid "Alternatively, you may define a `withResponse` method within the resource itself. This method will be called when the resource is returned as the outermost resource in a response:"
+msgstr ""
+
+#: docs/10.x/eloquent-resources.md:block 147 (code)
+msgid ""
+"<?php\n"
+"\n"
+"namespace App\\Http\\Resources;\n"
+"\n"
+"use Illuminate\\Http\\JsonResponse;\n"
+"use Illuminate\\Http\\Request;\n"
+"use Illuminate\\Http\\Resources\\Json\\JsonResource;\n"
+"\n"
+"class UserResource extends JsonResource\n"
+"{\n"
+"    /**\n"
+"     * Transform the resource into an array.\n"
+"     *\n"
+"     * @return array<string, mixed>\n"
+"     */\n"
+"    public function toArray(Request $request): array\n"
+"    {\n"
+"        return [\n"
+"            'id' => $this->id,\n"
+"        ];\n"
+"    }\n"
+"\n"
+"    /**\n"
+"     * Customize the outgoing response for the resource.\n"
+"     */\n"
+"    public function withResponse(Request $request, JsonResponse $response): void\n"
+"    {\n"
+"        $response->header('X-Value', 'True');\n"
+"    }\n"
+"}\n"
 msgstr ""
 
 #: docs/8.x/eloquent-resources.md:block 18 (quote)
 msgid "{tip} This is a high-level overview of resources and resource collections. You are highly encouraged to read the other sections of this documentation to gain a deeper understanding of the customization and power offered to you by resources."
-msgstr ""
-
-#: docs/8.x/eloquent-resources.md:block 19 (paragraph)
-msgid "Before diving into all of the options available to you when writing resources, let's first take a high-level look at how resources are used within Laravel. A resource class represents a single model that needs to be transformed into a JSON structure. For example, here is a simple `UserResource` resource class:"
 msgstr ""
 
 #: docs/8.x/eloquent-resources.md:block 20 (code)
@@ -134,14 +987,6 @@ msgid ""
 "}\n"
 msgstr ""
 
-#: docs/8.x/eloquent-resources.md:block 21 (paragraph)
-msgid "Every resource class defines a `toArray` method which returns the array of attributes that should be converted to JSON when the resource is returned as a response from a route or controller method."
-msgstr ""
-
-#: docs/8.x/eloquent-resources.md:block 22 (paragraph)
-msgid "Note that we can access model properties directly from the `$this` variable. This is because a resource class will automatically proxy property and method access down to the underlying model for convenient access. Once the resource is defined, it may be returned from a route or controller. The resource accepts the underlying model instance via its constructor:"
-msgstr ""
-
 #: docs/8.x/eloquent-resources.md:block 23 (code)
 msgid ""
 "use App\\Http\\Resources\\UserResource;\n"
@@ -150,32 +995,6 @@ msgid ""
 "Route::get('/user/{id}', function ($id) {\n"
 "    return new UserResource(User::findOrFail($id));\n"
 "});\n"
-msgstr ""
-
-#: docs/8.x/eloquent-resources.md:block 26 (paragraph)
-msgid "If you are returning a collection of resources or a paginated response, you should use the `collection` method provided by your resource class when creating the resource instance in your route or controller:"
-msgstr ""
-
-#: docs/8.x/eloquent-resources.md:block 27 (code)
-msgid ""
-"use App\\Http\\Resources\\UserResource;\n"
-"use App\\Models\\User;\n"
-"\n"
-"Route::get('/users', function () {\n"
-"    return UserResource::collection(User::all());\n"
-"});\n"
-msgstr ""
-
-#: docs/8.x/eloquent-resources.md:block 28 (paragraph)
-msgid "Note that this does not allow any addition of custom meta data that may need to be returned with your collection. If you would like to customize the resource collection response, you may create a dedicated resource to represent the collection:"
-msgstr ""
-
-#: docs/8.x/eloquent-resources.md:block 29 (code)
-msgid "php artisan make:resource UserCollection\n"
-msgstr ""
-
-#: docs/8.x/eloquent-resources.md:block 30 (paragraph)
-msgid "Once the resource collection class has been generated, you may easily define any meta data that should be included with the response:"
 msgstr ""
 
 #: docs/8.x/eloquent-resources.md:block 31 (code)
@@ -206,114 +1025,8 @@ msgid ""
 "}\n"
 msgstr ""
 
-#: docs/8.x/eloquent-resources.md:block 32 (paragraph)
-msgid "After defining your resource collection, it may be returned from a route or controller:"
-msgstr ""
-
-#: docs/8.x/eloquent-resources.md:block 33 (code)
-msgid ""
-"use App\\Http\\Resources\\UserCollection;\n"
-"use App\\Models\\User;\n"
-"\n"
-"Route::get('/users', function () {\n"
-"    return new UserCollection(User::all());\n"
-"});\n"
-msgstr ""
-
-#: docs/8.x/eloquent-resources.md:block 35 (header)
-msgid "Preserving Collection Keys"
-msgstr ""
-
-#: docs/8.x/eloquent-resources.md:block 36 (paragraph)
-msgid "When returning a resource collection from a route, Laravel resets the collection's keys so that they are in numerical order. However, you may add a `preserveKeys` property to your resource class indicating whether a collection's original keys should be preserved:"
-msgstr ""
-
-#: docs/8.x/eloquent-resources.md:block 37 (code)
-msgid ""
-"<?php\n"
-"\n"
-"namespace App\\Http\\Resources;\n"
-"\n"
-"use Illuminate\\Http\\Resources\\Json\\JsonResource;\n"
-"\n"
-"class UserResource extends JsonResource\n"
-"{\n"
-"    /**\n"
-"     * Indicates if the resource's collection keys should be preserved.\n"
-"     *\n"
-"     * @var bool\n"
-"     */\n"
-"    public $preserveKeys = true;\n"
-"}\n"
-msgstr ""
-
-#: docs/8.x/eloquent-resources.md:block 38 (paragraph)
-msgid "When the `preserveKeys` property is set to `true`, collection keys will be preserved when the collection is returned from a route or controller:"
-msgstr ""
-
-#: docs/8.x/eloquent-resources.md:block 39 (code)
-msgid ""
-"use App\\Http\\Resources\\UserResource;\n"
-"use App\\Models\\User;\n"
-"\n"
-"Route::get('/users', function () {\n"
-"    return UserResource::collection(User::all()->keyBy->id);\n"
-"});\n"
-msgstr ""
-
-#: docs/8.x/eloquent-resources.md:block 41 (header)
-msgid "Customizing The Underlying Resource Class"
-msgstr ""
-
-#: docs/8.x/eloquent-resources.md:block 42 (paragraph)
-msgid "Typically, the `$this->collection` property of a resource collection is automatically populated with the result of mapping each item of the collection to its singular resource class. The singular resource class is assumed to be the collection's class name without the trailing `Collection` portion of the class name. In addition, depending on your personal preference, the singular resource class may or may not be suffixed with `Resource`."
-msgstr ""
-
-#: docs/8.x/eloquent-resources.md:block 43 (paragraph)
-msgid "For example, `UserCollection` will attempt to map the given user instances into the `UserResource` resource. To customize this behavior, you may override the `$collects` property of your resource collection:"
-msgstr ""
-
-#: docs/8.x/eloquent-resources.md:block 44 (code)
-msgid ""
-"<?php\n"
-"\n"
-"namespace App\\Http\\Resources;\n"
-"\n"
-"use Illuminate\\Http\\Resources\\Json\\ResourceCollection;\n"
-"\n"
-"class UserCollection extends ResourceCollection\n"
-"{\n"
-"    /**\n"
-"     * The resource that this resource collects.\n"
-"     *\n"
-"     * @var string\n"
-"     */\n"
-"    public $collects = Member::class;\n"
-"}\n"
-msgstr ""
-
-#: docs/8.x/eloquent-resources.md:block 46 (header)
-msgid "Writing Resources"
-msgstr ""
-
 #: docs/8.x/eloquent-resources.md:block 47 (quote)
 msgid "{tip} If you have not read the [concept overview](#concept-overview), you are highly encouraged to do so before proceeding with this documentation."
-msgstr ""
-
-#: docs/8.x/eloquent-resources.md:block 48 (paragraph)
-msgid "In essence, resources are simple. They only need to transform a given model into an array. So, each resource contains a `toArray` method which translates your model's attributes into an API friendly array that can be returned from your application's routes or controllers:"
-msgstr ""
-
-#: docs/8.x/eloquent-resources.md:block 50 (paragraph)
-msgid "Once a resource has been defined, it may be returned directly from a route or controller:"
-msgstr ""
-
-#: docs/8.x/eloquent-resources.md:block 53 (header)
-msgid "Relationships"
-msgstr ""
-
-#: docs/8.x/eloquent-resources.md:block 54 (paragraph)
-msgid "If you would like to include related resources in your response, you may add them to the array returned by your resource's `toArray` method. In this example, we will use the `PostResource` resource's `collection` method to add the user's blog posts to the resource response:"
 msgstr ""
 
 #: docs/8.x/eloquent-resources.md:block 55 (code)
@@ -343,26 +1056,6 @@ msgstr ""
 msgid "{tip} If you would like to include relationships only when they have already been loaded, check out the documentation on [conditional relationships](#conditional-relationships)."
 msgstr ""
 
-#: docs/8.x/eloquent-resources.md:block 59 (paragraph)
-msgid "While resources transform a single model into an array, resource collections transform a collection of models into an array. However, it is not absolutely necessary to define a resource collection class for each one of your models since all resources provide a `collection` method to generate an \"ad-hoc\" resource collection on the fly:"
-msgstr ""
-
-#: docs/8.x/eloquent-resources.md:block 61 (paragraph)
-msgid "However, if you need to customize the meta data returned with the collection, it is necessary to define your own resource collection:"
-msgstr ""
-
-#: docs/8.x/eloquent-resources.md:block 63 (paragraph)
-msgid "Like singular resources, resource collections may be returned directly from routes or controllers:"
-msgstr ""
-
-#: docs/8.x/eloquent-resources.md:block 66 (header)
-msgid "Data Wrapping"
-msgstr ""
-
-#: docs/8.x/eloquent-resources.md:block 67 (paragraph)
-msgid "By default, your outermost resource is wrapped in a `data` key when the resource response is converted to JSON. So, for example, a typical resource collection response looks like the following:"
-msgstr ""
-
 #: docs/8.x/eloquent-resources.md:block 68 (code)
 msgid ""
 "{\n"
@@ -379,10 +1072,6 @@ msgid ""
 "        }\n"
 "    ]\n"
 "}\n"
-msgstr ""
-
-#: docs/8.x/eloquent-resources.md:block 69 (paragraph)
-msgid "If you would like to use a custom key instead of `data`, you may define a `$wrap` attribute on the resource class:"
 msgstr ""
 
 #: docs/8.x/eloquent-resources.md:block 70 (code)
@@ -402,10 +1091,6 @@ msgid ""
 "     */\n"
 "    public static $wrap = 'user';\n"
 "}\n"
-msgstr ""
-
-#: docs/8.x/eloquent-resources.md:block 71 (paragraph)
-msgid "If you would like to disable the wrapping of the outermost resource, you should invoke the `withoutWrapping` method on the base `Illuminate\\Http\\Resources\\Json\\JsonResource` class. Typically, you should call this method from your `AppServiceProvider` or another [service provider](/docs/{{version}}/providers) that is loaded on every request to your application:"
 msgstr ""
 
 #: docs/8.x/eloquent-resources.md:block 72 (code)
@@ -445,18 +1130,6 @@ msgstr ""
 msgid "{note} The `withoutWrapping` method only affects the outermost response and will not remove `data` keys that you manually add to your own resource collections."
 msgstr ""
 
-#: docs/8.x/eloquent-resources.md:block 75 (header)
-msgid "Wrapping Nested Resources"
-msgstr ""
-
-#: docs/8.x/eloquent-resources.md:block 76 (paragraph)
-msgid "You have total freedom to determine how your resource's relationships are wrapped. If you would like all resource collections to be wrapped in a `data` key, regardless of their nesting, you should define a resource collection class for each resource and return the collection within a `data` key."
-msgstr ""
-
-#: docs/8.x/eloquent-resources.md:block 77 (paragraph)
-msgid "You may be wondering if this will cause your outermost resource to be wrapped in two `data` keys. Don't worry, Laravel will never let your resources be accidentally double-wrapped, so you don't have to be concerned about the nesting level of the resource collection you are transforming:"
-msgstr ""
-
 #: docs/8.x/eloquent-resources.md:block 78 (code)
 msgid ""
 "<?php\n"
@@ -478,14 +1151,6 @@ msgid ""
 "        return ['data' => $this->collection];\n"
 "    }\n"
 "}\n"
-msgstr ""
-
-#: docs/8.x/eloquent-resources.md:block 80 (header)
-msgid "Data Wrapping And Pagination"
-msgstr ""
-
-#: docs/8.x/eloquent-resources.md:block 81 (paragraph)
-msgid "When returning paginated collections via a resource response, Laravel will wrap your resource data in a `data` key even if the `withoutWrapping` method has been called. This is because paginated responses always contain `meta` and `links` keys with information about the paginator's state:"
 msgstr ""
 
 #: docs/8.x/eloquent-resources.md:block 82 (code)
@@ -521,36 +1186,6 @@ msgid ""
 "}\n"
 msgstr ""
 
-#: docs/8.x/eloquent-resources.md:block 84 (header)
-msgid "Pagination"
-msgstr ""
-
-#: docs/8.x/eloquent-resources.md:block 85 (paragraph)
-msgid "You may pass a Laravel paginator instance to the `collection` method of a resource or to a custom resource collection:"
-msgstr ""
-
-#: docs/8.x/eloquent-resources.md:block 86 (code)
-msgid ""
-"use App\\Http\\Resources\\UserCollection;\n"
-"use App\\Models\\User;\n"
-"\n"
-"Route::get('/users', function () {\n"
-"    return new UserCollection(User::paginate());\n"
-"});\n"
-msgstr ""
-
-#: docs/8.x/eloquent-resources.md:block 87 (paragraph)
-msgid "Paginated responses always contain `meta` and `links` keys with information about the paginator's state:"
-msgstr ""
-
-#: docs/8.x/eloquent-resources.md:block 90 (header)
-msgid "Conditional Attributes"
-msgstr ""
-
-#: docs/8.x/eloquent-resources.md:block 91 (paragraph)
-msgid "Sometimes you may wish to only include an attribute in a resource response if a given condition is met. For example, you may wish to only include a value if the current user is an \"administrator\". Laravel provides a variety of helper methods to assist you in this situation. The `when` method may be used to conditionally add an attribute to a resource response:"
-msgstr ""
-
 #: docs/8.x/eloquent-resources.md:block 92 (code)
 msgid ""
 "use Illuminate\\Support\\Facades\\Auth;\n"
@@ -574,27 +1209,11 @@ msgid ""
 "}\n"
 msgstr ""
 
-#: docs/8.x/eloquent-resources.md:block 93 (paragraph)
-msgid "In this example, the `secret` key will only be returned in the final resource response if the authenticated user's `isAdmin` method returns `true`. If the method returns `false`, the `secret` key will be removed from the resource response before it is sent to the client. The `when` method allows you to expressively define your resources without resorting to conditional statements when building the array."
-msgstr ""
-
-#: docs/8.x/eloquent-resources.md:block 94 (paragraph)
-msgid "The `when` method also accepts a closure as its second argument, allowing you to calculate the resulting value only if the given condition is `true`:"
-msgstr ""
-
 #: docs/8.x/eloquent-resources.md:block 95 (code)
 msgid ""
 "'secret' => $this->when(Auth::user()->isAdmin(), function () {\n"
 "    return 'secret-value';\n"
 "}),\n"
-msgstr ""
-
-#: docs/8.x/eloquent-resources.md:block 97 (header)
-msgid "Merging Conditional Attributes"
-msgstr ""
-
-#: docs/8.x/eloquent-resources.md:block 98 (paragraph)
-msgid "Sometimes you may have several attributes that should only be included in the resource response based on the same condition. In this case, you may use the `mergeWhen` method to include the attributes in the response only when the given condition is `true`:"
 msgstr ""
 
 #: docs/8.x/eloquent-resources.md:block 99 (code)
@@ -621,24 +1240,8 @@ msgid ""
 "}\n"
 msgstr ""
 
-#: docs/8.x/eloquent-resources.md:block 100 (paragraph)
-msgid "Again, if the given condition is `false`, these attributes will be removed from the resource response before it is sent to the client."
-msgstr ""
-
 #: docs/8.x/eloquent-resources.md:block 101 (quote)
 msgid "{note} The `mergeWhen` method should not be used within arrays that mix string and numeric keys. Furthermore, it should not be used within arrays with numeric keys that are not ordered sequentially."
-msgstr ""
-
-#: docs/8.x/eloquent-resources.md:block 103 (header)
-msgid "Conditional Relationships"
-msgstr ""
-
-#: docs/8.x/eloquent-resources.md:block 104 (paragraph)
-msgid "In addition to conditionally loading attributes, you may conditionally include relationships on your resource responses based on if the relationship has already been loaded on the model. This allows your controller to decide which relationships should be loaded on the model and your resource can easily include them only when they have actually been loaded. Ultimately, this makes it easier to avoid \"N+1\" query problems within your resources."
-msgstr ""
-
-#: docs/8.x/eloquent-resources.md:block 105 (paragraph)
-msgid "The `whenLoaded` method may be used to conditionally load a relationship. In order to avoid unnecessarily loading relationships, this method accepts the name of the relationship instead of the relationship itself:"
 msgstr ""
 
 #: docs/8.x/eloquent-resources.md:block 106 (code)
@@ -664,18 +1267,6 @@ msgid ""
 "}\n"
 msgstr ""
 
-#: docs/8.x/eloquent-resources.md:block 107 (paragraph)
-msgid "In this example, if the relationship has not been loaded, the `posts` key will be removed from the resource response before it is sent to the client."
-msgstr ""
-
-#: docs/8.x/eloquent-resources.md:block 109 (header)
-msgid "Conditional Pivot Information"
-msgstr ""
-
-#: docs/8.x/eloquent-resources.md:block 110 (paragraph)
-msgid "In addition to conditionally including relationship information in your resource responses, you may conditionally include data from the intermediate tables of many-to-many relationships using the `whenPivotLoaded` method. The `whenPivotLoaded` method accepts the name of the pivot table as its first argument. The second argument should be a closure that returns the value to be returned if the pivot information is available on the model:"
-msgstr ""
-
 #: docs/8.x/eloquent-resources.md:block 111 (code)
 msgid ""
 "/**\n"
@@ -694,21 +1285,6 @@ msgid ""
 "        }),\n"
 "    ];\n"
 "}\n"
-msgstr ""
-
-#: docs/8.x/eloquent-resources.md:block 112 (paragraph)
-msgid "If your relationship is using a [custom intermediate table model](/docs/{{version}}/eloquent-relationships#defining-custom-intermediate-table-models), you may pass an instance of the intermediate table model as the first argument to the `whenPivotLoaded` method:"
-msgstr ""
-
-#: docs/8.x/eloquent-resources.md:block 113 (code)
-msgid ""
-"'expires_at' => $this->whenPivotLoaded(new Membership, function () {\n"
-"    return $this->pivot->expires_at;\n"
-"}),\n"
-msgstr ""
-
-#: docs/8.x/eloquent-resources.md:block 114 (paragraph)
-msgid "If your intermediate table is using an accessor other than `pivot`, you may use the `whenPivotLoadedAs` method:"
 msgstr ""
 
 #: docs/8.x/eloquent-resources.md:block 115 (code)
@@ -731,14 +1307,6 @@ msgid ""
 "}\n"
 msgstr ""
 
-#: docs/8.x/eloquent-resources.md:block 117 (header)
-msgid "Adding Meta Data"
-msgstr ""
-
-#: docs/8.x/eloquent-resources.md:block 118 (paragraph)
-msgid "Some JSON API standards require the addition of meta data to your resource and resource collections responses. This often includes things like `links` to the resource or related resources, or meta data about the resource itself. If you need to return additional meta data about a resource, include it in your `toArray` method. For example, you might include `link` information when transforming a resource collection:"
-msgstr ""
-
 #: docs/8.x/eloquent-resources.md:block 119 (code)
 msgid ""
 "/**\n"
@@ -756,18 +1324,6 @@ msgid ""
 "        ],\n"
 "    ];\n"
 "}\n"
-msgstr ""
-
-#: docs/8.x/eloquent-resources.md:block 120 (paragraph)
-msgid "When returning additional meta data from your resources, you never have to worry about accidentally overriding the `links` or `meta` keys that are automatically added by Laravel when returning paginated responses. Any additional `links` you define will be merged with the links provided by the paginator."
-msgstr ""
-
-#: docs/8.x/eloquent-resources.md:block 122 (header)
-msgid "Top Level Meta Data"
-msgstr ""
-
-#: docs/8.x/eloquent-resources.md:block 123 (paragraph)
-msgid "Sometimes you may wish to only include certain meta data with a resource response if the resource is the outermost resource being returned. Typically, this includes meta information about the response as a whole. To define this meta data, add a `with` method to your resource class. This method should return an array of meta data to be included with the resource response only when the resource is the outermost resource being transformed:"
 msgstr ""
 
 #: docs/8.x/eloquent-resources.md:block 124 (code)
@@ -808,50 +1364,6 @@ msgid ""
 "}\n"
 msgstr ""
 
-#: docs/8.x/eloquent-resources.md:block 126 (header)
-msgid "Adding Meta Data When Constructing Resources"
-msgstr ""
-
-#: docs/8.x/eloquent-resources.md:block 127 (paragraph)
-msgid "You may also add top-level data when constructing resource instances in your route or controller. The `additional` method, which is available on all resources, accepts an array of data that should be added to the resource response:"
-msgstr ""
-
-#: docs/8.x/eloquent-resources.md:block 128 (code)
-msgid ""
-"return (new UserCollection(User::all()->load('roles')))\n"
-"                ->additional(['meta' => [\n"
-"                    'key' => 'value',\n"
-"                ]]);\n"
-msgstr ""
-
-#: docs/8.x/eloquent-resources.md:block 130 (header)
-msgid "Resource Responses"
-msgstr ""
-
-#: docs/8.x/eloquent-resources.md:block 131 (paragraph)
-msgid "As you have already read, resources may be returned directly from routes and controllers:"
-msgstr ""
-
-#: docs/8.x/eloquent-resources.md:block 133 (paragraph)
-msgid "However, sometimes you may need to customize the outgoing HTTP response before it is sent to the client. There are two ways to accomplish this. First, you may chain the `response` method onto the resource. This method will return an `Illuminate\\Http\\JsonResponse` instance, giving you full control over the response's headers:"
-msgstr ""
-
-#: docs/8.x/eloquent-resources.md:block 134 (code)
-msgid ""
-"use App\\Http\\Resources\\UserResource;\n"
-"use App\\Models\\User;\n"
-"\n"
-"Route::get('/user', function () {\n"
-"    return (new UserResource(User::find(1)))\n"
-"                ->response()\n"
-"                ->header('X-Value', 'True');\n"
-"});\n"
-msgstr ""
-
-#: docs/8.x/eloquent-resources.md:block 135 (paragraph)
-msgid "Alternatively, you may define a `withResponse` method within the resource itself. This method will be called when the resource is returned as the outermost resource in a response:"
-msgstr ""
-
 #: docs/8.x/eloquent-resources.md:block 136 (code)
 msgid ""
 "<?php\n"
@@ -889,92 +1401,6 @@ msgid ""
 "}\n"
 msgstr ""
 
-#: docs/9.x/eloquent-resources.md:block 18 (quote)
-msgid "**Note** This is a high-level overview of resources and resource collections. You are highly encouraged to read the other sections of this documentation to gain a deeper understanding of the customization and power offered to you by resources."
-msgstr ""
-
-#: docs/9.x/eloquent-resources.md:block 47 (quote)
-msgid "**Note** If you have not read the [concept overview](#concept-overview), you are highly encouraged to do so before proceeding with this documentation."
-msgstr ""
-
-#: docs/9.x/eloquent-resources.md:block 56 (quote)
-msgid "**Note** If you would like to include relationships only when they have already been loaded, check out the documentation on [conditional relationships](#conditional-relationships)."
-msgstr ""
-
-#: docs/9.x/eloquent-resources.md:block 68 (code)
-msgid ""
-"{\n"
-"    \"data\": [\n"
-"        {\n"
-"            \"id\": 1,\n"
-"            \"name\": \"Eladio Schroeder Sr.\",\n"
-"            \"email\": \"therese28@example.com\"\n"
-"        },\n"
-"        {\n"
-"            \"id\": 2,\n"
-"            \"name\": \"Liliana Mayert\",\n"
-"            \"email\": \"evandervort@example.com\"\n"
-"        }\n"
-"    ]\n"
-"}\n"
-msgstr ""
-
-#: docs/9.x/eloquent-resources.md:block 70 (code)
-msgid ""
-"<?php\n"
-"\n"
-"namespace App\\Http\\Resources;\n"
-"\n"
-"use Illuminate\\Http\\Resources\\Json\\JsonResource;\n"
-"\n"
-"class UserResource extends JsonResource\n"
-"{\n"
-"    /**\n"
-"     * The \"data\" wrapper that should be applied.\n"
-"     *\n"
-"     * @var string|null\n"
-"     */\n"
-"    public static $wrap = 'user';\n"
-"}\n"
-msgstr ""
-
-#: docs/9.x/eloquent-resources.md:block 73 (quote)
-msgid "**Warning** The `withoutWrapping` method only affects the outermost response and will not remove `data` keys that you manually add to your own resource collections."
-msgstr ""
-
-#: docs/9.x/eloquent-resources.md:block 82 (code)
-msgid ""
-"{\n"
-"    \"data\": [\n"
-"        {\n"
-"            \"id\": 1,\n"
-"            \"name\": \"Eladio Schroeder Sr.\",\n"
-"            \"email\": \"therese28@example.com\"\n"
-"        },\n"
-"        {\n"
-"            \"id\": 2,\n"
-"            \"name\": \"Liliana Mayert\",\n"
-"            \"email\": \"evandervort@example.com\"\n"
-"        }\n"
-"    ],\n"
-"    \"links\":{\n"
-"        \"first\": \"http://example.com/pagination?page=1\",\n"
-"        \"last\": \"http://example.com/pagination?page=1\",\n"
-"        \"prev\": null,\n"
-"        \"next\": null\n"
-"    },\n"
-"    \"meta\":{\n"
-"        \"current_page\": 1,\n"
-"        \"from\": 1,\n"
-"        \"last_page\": 1,\n"
-"        \"path\": \"http://example.com/pagination\",\n"
-"        \"per_page\": 15,\n"
-"        \"to\": 10,\n"
-"        \"total\": 10\n"
-"    }\n"
-"}\n"
-msgstr ""
-
 #: docs/9.x/eloquent-resources.md:block 92 (code)
 msgid ""
 "/**\n"
@@ -994,29 +1420,6 @@ msgid ""
 "        'updated_at' => $this->updated_at,\n"
 "    ];\n"
 "}\n"
-msgstr ""
-
-#: docs/9.x/eloquent-resources.md:block 95 (code)
-msgid ""
-"'secret' => $this->when($request->user()->isAdmin(), function () {\n"
-"    return 'secret-value';\n"
-"}),\n"
-msgstr ""
-
-#: docs/9.x/eloquent-resources.md:block 96 (paragraph)
-msgid "The `whenHas` method may be used to include an attribute if it is actually present on the underlying model:"
-msgstr ""
-
-#: docs/9.x/eloquent-resources.md:block 97 (code)
-msgid "'name' => $this->whenHas('name'),\n"
-msgstr ""
-
-#: docs/9.x/eloquent-resources.md:block 98 (paragraph)
-msgid "Additionally, the `whenNotNull` method may be used to include an attribute in the resource response if the attribute is not null:"
-msgstr ""
-
-#: docs/9.x/eloquent-resources.md:block 99 (code)
-msgid "'name' => $this->whenNotNull($this->name),\n"
 msgstr ""
 
 #: docs/9.x/eloquent-resources.md:block 103 (code)
@@ -1043,26 +1446,6 @@ msgid ""
 "}\n"
 msgstr ""
 
-#: docs/9.x/eloquent-resources.md:block 105 (quote)
-msgid "**Warning** The `mergeWhen` method should not be used within arrays that mix string and numeric keys. Furthermore, it should not be used within arrays with numeric keys that are not ordered sequentially."
-msgstr ""
-
-#: docs/9.x/eloquent-resources.md:block 113 (header)
-msgid "Conditional Relationship Counts"
-msgstr ""
-
-#: docs/9.x/eloquent-resources.md:block 114 (paragraph)
-msgid "In addition to conditionally including relationships, you may conditionally include relationship \"counts\" on your resource responses based on if the relationship's count has been loaded on the model:"
-msgstr ""
-
-#: docs/9.x/eloquent-resources.md:block 115 (code)
-msgid "new UserResource($user->loadCount('posts'));\n"
-msgstr ""
-
-#: docs/9.x/eloquent-resources.md:block 116 (paragraph)
-msgid "The `whenCounted` method may be used to conditionally include a relationship's count in your resource response. This method avoids unnecessarily including the attribute if the relationships' count is not present:"
-msgstr ""
-
 #: docs/9.x/eloquent-resources.md:block 117 (code)
 msgid ""
 "/**\n"
@@ -1081,388 +1464,5 @@ msgid ""
 "        'created_at' => $this->created_at,\n"
 "        'updated_at' => $this->updated_at,\n"
 "    ];\n"
-"}\n"
-msgstr ""
-
-#: docs/9.x/eloquent-resources.md:block 118 (paragraph)
-msgid "In this example, if the `posts` relationship's count has not been loaded, the `posts_count` key will be removed from the resource response before it is sent to the client."
-msgstr ""
-
-#: docs/master/eloquent-resources.md:block 20 (code)
-msgid ""
-"<?php\n"
-"\n"
-"namespace App\\Http\\Resources;\n"
-"\n"
-"use Illuminate\\Http\\Request;\n"
-"use Illuminate\\Http\\Resources\\Json\\JsonResource;\n"
-"\n"
-"class UserResource extends JsonResource\n"
-"{\n"
-"    /**\n"
-"     * Transform the resource into an array.\n"
-"     *\n"
-"     * @return array<string, mixed>\n"
-"     */\n"
-"    public function toArray(Request $request): array\n"
-"    {\n"
-"        return [\n"
-"            'id' => $this->id,\n"
-"            'name' => $this->name,\n"
-"            'email' => $this->email,\n"
-"            'created_at' => $this->created_at,\n"
-"            'updated_at' => $this->updated_at,\n"
-"        ];\n"
-"    }\n"
-"}\n"
-msgstr ""
-
-#: docs/master/eloquent-resources.md:block 23 (code)
-msgid ""
-"use App\\Http\\Resources\\UserResource;\n"
-"use App\\Models\\User;\n"
-"\n"
-"Route::get('/user/{id}', function (string $id) {\n"
-"    return new UserResource(User::findOrFail($id));\n"
-"});\n"
-msgstr ""
-
-#: docs/master/eloquent-resources.md:block 31 (code)
-msgid ""
-"<?php\n"
-"\n"
-"namespace App\\Http\\Resources;\n"
-"\n"
-"use Illuminate\\Http\\Request;\n"
-"use Illuminate\\Http\\Resources\\Json\\ResourceCollection;\n"
-"\n"
-"class UserCollection extends ResourceCollection\n"
-"{\n"
-"    /**\n"
-"     * Transform the resource collection into an array.\n"
-"     *\n"
-"     * @return array<int|string, mixed>\n"
-"     */\n"
-"    public function toArray(Request $request): array\n"
-"    {\n"
-"        return [\n"
-"            'data' => $this->collection,\n"
-"            'links' => [\n"
-"                'self' => 'link-value',\n"
-"            ],\n"
-"        ];\n"
-"    }\n"
-"}\n"
-msgstr ""
-
-#: docs/master/eloquent-resources.md:block 55 (code)
-msgid ""
-"use App\\Http\\Resources\\PostResource;\n"
-"use Illuminate\\Http\\Request;\n"
-"\n"
-"/**\n"
-" * Transform the resource into an array.\n"
-" *\n"
-" * @return array<string, mixed>\n"
-" */\n"
-"public function toArray(Request $request): array\n"
-"{\n"
-"    return [\n"
-"        'id' => $this->id,\n"
-"        'name' => $this->name,\n"
-"        'email' => $this->email,\n"
-"        'posts' => PostResource::collection($this->posts),\n"
-"        'created_at' => $this->created_at,\n"
-"        'updated_at' => $this->updated_at,\n"
-"    ];\n"
-"}\n"
-msgstr ""
-
-#: docs/master/eloquent-resources.md:block 62 (code)
-msgid ""
-"<?php\n"
-"\n"
-"namespace App\\Http\\Resources;\n"
-"\n"
-"use Illuminate\\Http\\Resources\\Json\\ResourceCollection;\n"
-"\n"
-"class UserCollection extends ResourceCollection\n"
-"{\n"
-"    /**\n"
-"     * Transform the resource collection into an array.\n"
-"     *\n"
-"     * @return array<string, mixed>\n"
-"     */\n"
-"    public function toArray(Request $request): array\n"
-"    {\n"
-"        return [\n"
-"            'data' => $this->collection,\n"
-"            'links' => [\n"
-"                'self' => 'link-value',\n"
-"            ],\n"
-"        ];\n"
-"    }\n"
-"}\n"
-msgstr ""
-
-#: docs/master/eloquent-resources.md:block 72 (code)
-msgid ""
-"<?php\n"
-"\n"
-"namespace App\\Providers;\n"
-"\n"
-"use Illuminate\\Http\\Resources\\Json\\JsonResource;\n"
-"use Illuminate\\Support\\ServiceProvider;\n"
-"\n"
-"class AppServiceProvider extends ServiceProvider\n"
-"{\n"
-"    /**\n"
-"     * Register any application services.\n"
-"     */\n"
-"    public function register(): void\n"
-"    {\n"
-"        // ...\n"
-"    }\n"
-"\n"
-"    /**\n"
-"     * Bootstrap any application services.\n"
-"     */\n"
-"    public function boot(): void\n"
-"    {\n"
-"        JsonResource::withoutWrapping();\n"
-"    }\n"
-"}\n"
-msgstr ""
-
-#: docs/master/eloquent-resources.md:block 78 (code)
-msgid ""
-"<?php\n"
-"\n"
-"namespace App\\Http\\Resources;\n"
-"\n"
-"use Illuminate\\Http\\Resources\\Json\\ResourceCollection;\n"
-"\n"
-"class CommentsCollection extends ResourceCollection\n"
-"{\n"
-"    /**\n"
-"     * Transform the resource collection into an array.\n"
-"     *\n"
-"     * @return array<string, mixed>\n"
-"     */\n"
-"    public function toArray(Request $request): array\n"
-"    {\n"
-"        return ['data' => $this->collection];\n"
-"    }\n"
-"}\n"
-msgstr ""
-
-#: docs/master/eloquent-resources.md:block 92 (code)
-msgid ""
-"/**\n"
-" * Transform the resource into an array.\n"
-" *\n"
-" * @return array<string, mixed>\n"
-" */\n"
-"public function toArray(Request $request): array\n"
-"{\n"
-"    return [\n"
-"        'id' => $this->id,\n"
-"        'name' => $this->name,\n"
-"        'email' => $this->email,\n"
-"        'secret' => $this->when($request->user()->isAdmin(), 'secret-value'),\n"
-"        'created_at' => $this->created_at,\n"
-"        'updated_at' => $this->updated_at,\n"
-"    ];\n"
-"}\n"
-msgstr ""
-
-#: docs/master/eloquent-resources.md:block 103 (code)
-msgid ""
-"/**\n"
-" * Transform the resource into an array.\n"
-" *\n"
-" * @return array<string, mixed>\n"
-" */\n"
-"public function toArray(Request $request): array\n"
-"{\n"
-"    return [\n"
-"        'id' => $this->id,\n"
-"        'name' => $this->name,\n"
-"        'email' => $this->email,\n"
-"        $this->mergeWhen($request->user()->isAdmin(), [\n"
-"            'first-secret' => 'value',\n"
-"            'second-secret' => 'value',\n"
-"        ]),\n"
-"        'created_at' => $this->created_at,\n"
-"        'updated_at' => $this->updated_at,\n"
-"    ];\n"
-"}\n"
-msgstr ""
-
-#: docs/master/eloquent-resources.md:block 110 (code)
-msgid ""
-"use App\\Http\\Resources\\PostResource;\n"
-"\n"
-"/**\n"
-" * Transform the resource into an array.\n"
-" *\n"
-" * @return array<string, mixed>\n"
-" */\n"
-"public function toArray(Request $request): array\n"
-"{\n"
-"    return [\n"
-"        'id' => $this->id,\n"
-"        'name' => $this->name,\n"
-"        'email' => $this->email,\n"
-"        'posts' => PostResource::collection($this->whenLoaded('posts')),\n"
-"        'created_at' => $this->created_at,\n"
-"        'updated_at' => $this->updated_at,\n"
-"    ];\n"
-"}\n"
-msgstr ""
-
-#: docs/master/eloquent-resources.md:block 117 (code)
-msgid ""
-"/**\n"
-" * Transform the resource into an array.\n"
-" *\n"
-" * @return array<string, mixed>\n"
-" */\n"
-"public function toArray(Request $request): array\n"
-"{\n"
-"    return [\n"
-"        'id' => $this->id,\n"
-"        'name' => $this->name,\n"
-"        'email' => $this->email,\n"
-"        'posts_count' => $this->whenCounted('posts'),\n"
-"        'created_at' => $this->created_at,\n"
-"        'updated_at' => $this->updated_at,\n"
-"    ];\n"
-"}\n"
-msgstr ""
-
-#: docs/master/eloquent-resources.md:block 122 (code)
-msgid ""
-"/**\n"
-" * Transform the resource into an array.\n"
-" *\n"
-" * @return array<string, mixed>\n"
-" */\n"
-"public function toArray(Request $request): array\n"
-"{\n"
-"    return [\n"
-"        'id' => $this->id,\n"
-"        'name' => $this->name,\n"
-"        'expires_at' => $this->whenPivotLoaded('role_user', function () {\n"
-"            return $this->pivot->expires_at;\n"
-"        }),\n"
-"    ];\n"
-"}\n"
-msgstr ""
-
-#: docs/master/eloquent-resources.md:block 126 (code)
-msgid ""
-"/**\n"
-" * Transform the resource into an array.\n"
-" *\n"
-" * @return array<string, mixed>\n"
-" */\n"
-"public function toArray(Request $request): array\n"
-"{\n"
-"    return [\n"
-"        'id' => $this->id,\n"
-"        'name' => $this->name,\n"
-"        'expires_at' => $this->whenPivotLoadedAs('subscription', 'role_user', function () {\n"
-"            return $this->subscription->expires_at;\n"
-"        }),\n"
-"    ];\n"
-"}\n"
-msgstr ""
-
-#: docs/master/eloquent-resources.md:block 130 (code)
-msgid ""
-"/**\n"
-" * Transform the resource into an array.\n"
-" *\n"
-" * @return array<string, mixed>\n"
-" */\n"
-"public function toArray(Request $request): array\n"
-"{\n"
-"    return [\n"
-"        'data' => $this->collection,\n"
-"        'links' => [\n"
-"            'self' => 'link-value',\n"
-"        ],\n"
-"    ];\n"
-"}\n"
-msgstr ""
-
-#: docs/master/eloquent-resources.md:block 135 (code)
-msgid ""
-"<?php\n"
-"\n"
-"namespace App\\Http\\Resources;\n"
-"\n"
-"use Illuminate\\Http\\Resources\\Json\\ResourceCollection;\n"
-"\n"
-"class UserCollection extends ResourceCollection\n"
-"{\n"
-"    /**\n"
-"     * Transform the resource collection into an array.\n"
-"     *\n"
-"     * @return array<string, mixed>\n"
-"     */\n"
-"    public function toArray(Request $request): array\n"
-"    {\n"
-"        return parent::toArray($request);\n"
-"    }\n"
-"\n"
-"    /**\n"
-"     * Get additional data that should be returned with the resource array.\n"
-"     *\n"
-"     * @return array<string, mixed>\n"
-"     */\n"
-"    public function with(Request $request): array\n"
-"    {\n"
-"        return [\n"
-"            'meta' => [\n"
-"                'key' => 'value',\n"
-"            ],\n"
-"        ];\n"
-"    }\n"
-"}\n"
-msgstr ""
-
-#: docs/master/eloquent-resources.md:block 147 (code)
-msgid ""
-"<?php\n"
-"\n"
-"namespace App\\Http\\Resources;\n"
-"\n"
-"use Illuminate\\Http\\JsonResponse;\n"
-"use Illuminate\\Http\\Request;\n"
-"use Illuminate\\Http\\Resources\\Json\\JsonResource;\n"
-"\n"
-"class UserResource extends JsonResource\n"
-"{\n"
-"    /**\n"
-"     * Transform the resource into an array.\n"
-"     *\n"
-"     * @return array<string, mixed>\n"
-"     */\n"
-"    public function toArray(Request $request): array\n"
-"    {\n"
-"        return [\n"
-"            'id' => $this->id,\n"
-"        ];\n"
-"    }\n"
-"\n"
-"    /**\n"
-"     * Customize the outgoing response for the resource.\n"
-"     */\n"
-"    public function withResponse(Request $request, JsonResponse $response): void\n"
-"    {\n"
-"        $response->header('X-Value', 'True');\n"
-"    }\n"
 "}\n"
 msgstr ""

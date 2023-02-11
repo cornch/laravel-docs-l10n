@@ -2,68 +2,163 @@
 msgid ""
 msgstr ""
 
-#: docs/8.x/hashing.md:block 1 (header)
+#: docs/10.x/hashing.md:block 1 (header)
 msgid "Hashing"
 msgstr ""
 
-#: docs/8.x/hashing.md:block 2 (unordered list)
+#: docs/10.x/hashing.md:block 2 (unordered list)
 msgid "[Introduction](#introduction)"
 msgstr ""
 
-#: docs/8.x/hashing.md:block 2 (unordered list)
+#: docs/10.x/hashing.md:block 2 (unordered list)
 msgid "[Configuration](#configuration)"
 msgstr ""
 
-#: docs/8.x/hashing.md:block 2 (unordered list)
+#: docs/10.x/hashing.md:block 2 (unordered list)
 msgid "[Basic Usage](#basic-usage)"
 msgstr ""
 
-#: docs/8.x/hashing.md:block 2 (unordered list)
+#: docs/10.x/hashing.md:block 2 (unordered list)
 msgid "[Hashing Passwords](#hashing-passwords)"
 msgstr ""
 
-#: docs/8.x/hashing.md:block 2 (unordered list)
+#: docs/10.x/hashing.md:block 2 (unordered list)
 msgid "[Verifying That A Password Matches A Hash](#verifying-that-a-password-matches-a-hash)"
 msgstr ""
 
-#: docs/8.x/hashing.md:block 2 (unordered list)
+#: docs/10.x/hashing.md:block 2 (unordered list)
 msgid "[Determining If A Password Needs To Be Rehashed](#determining-if-a-password-needs-to-be-rehashed)"
 msgstr ""
 
-#: docs/8.x/hashing.md:block 4 (header)
+#: docs/10.x/hashing.md:block 4 (header)
 msgid "Introduction"
 msgstr ""
 
-#: docs/8.x/hashing.md:block 5 (paragraph)
+#: docs/10.x/hashing.md:block 5 (paragraph)
 msgid "The Laravel `Hash` [facade](/docs/{{version}}/facades) provides secure Bcrypt and Argon2 hashing for storing user passwords. If you are using one of the [Laravel application starter kits](/docs/{{version}}/starter-kits), Bcrypt will be used for registration and authentication by default."
 msgstr ""
 
-#: docs/8.x/hashing.md:block 6 (paragraph)
+#: docs/10.x/hashing.md:block 6 (paragraph)
 msgid "Bcrypt is a great choice for hashing passwords because its \"work factor\" is adjustable, which means that the time it takes to generate a hash can be increased as hardware power increases. When hashing passwords, slow is good. The longer an algorithm takes to hash a password, the longer it takes malicious users to generate \"rainbow tables\" of all possible string hash values that may be used in brute force attacks against applications."
 msgstr ""
 
-#: docs/8.x/hashing.md:block 8 (header)
+#: docs/10.x/hashing.md:block 8 (header)
 msgid "Configuration"
 msgstr ""
 
-#: docs/8.x/hashing.md:block 9 (paragraph)
+#: docs/10.x/hashing.md:block 9 (paragraph)
 msgid "The default hashing driver for your application is configured in your application's `config/hashing.php` configuration file. There are currently several supported drivers: [Bcrypt](https://en.wikipedia.org/wiki/Bcrypt) and [Argon2](https://en.wikipedia.org/wiki/Argon2) (Argon2i and Argon2id variants)."
+msgstr ""
+
+#: docs/10.x/hashing.md:block 11 (header)
+msgid "Basic Usage"
+msgstr ""
+
+#: docs/10.x/hashing.md:block 13 (header)
+msgid "Hashing Passwords"
+msgstr ""
+
+#: docs/10.x/hashing.md:block 14 (paragraph)
+msgid "You may hash a password by calling the `make` method on the `Hash` facade:"
+msgstr ""
+
+#: docs/10.x/hashing.md:block 15 (code)
+msgid ""
+"<?php\n"
+"\n"
+"namespace App\\Http\\Controllers;\n"
+"\n"
+"use App\\Http\\Controllers\\Controller;\n"
+"use Illuminate\\Http\\Request;\n"
+"use Illuminate\\Http\\Response;\n"
+"use Illuminate\\Support\\Facades\\Hash;\n"
+"\n"
+"class PasswordController extends Controller\n"
+"{\n"
+"    /**\n"
+"     * Update the password for the user.\n"
+"     */\n"
+"    public function update(Request $request): Response\n"
+"    {\n"
+"        // Validate the new password length...\n"
+"\n"
+"        $request->user()->fill([\n"
+"            'password' => Hash::make($request->newPassword)\n"
+"        ])->save();\n"
+"\n"
+"        return response()->noContent();\n"
+"    }\n"
+"}\n"
+msgstr ""
+
+#: docs/10.x/hashing.md:block 17 (header)
+msgid "Adjusting The Bcrypt Work Factor"
+msgstr ""
+
+#: docs/10.x/hashing.md:block 18 (paragraph)
+msgid "If you are using the Bcrypt algorithm, the `make` method allows you to manage the work factor of the algorithm using the `rounds` option; however, the default work factor managed by Laravel is acceptable for most applications:"
+msgstr ""
+
+#: docs/10.x/hashing.md:block 19 (code)
+msgid ""
+"$hashed = Hash::make('password', [\n"
+"    'rounds' => 12,\n"
+"]);\n"
+msgstr ""
+
+#: docs/10.x/hashing.md:block 21 (header)
+msgid "Adjusting The Argon2 Work Factor"
+msgstr ""
+
+#: docs/10.x/hashing.md:block 22 (paragraph)
+msgid "If you are using the Argon2 algorithm, the `make` method allows you to manage the work factor of the algorithm using the `memory`, `time`, and `threads` options; however, the default values managed by Laravel are acceptable for most applications:"
+msgstr ""
+
+#: docs/10.x/hashing.md:block 23 (code)
+msgid ""
+"$hashed = Hash::make('password', [\n"
+"    'memory' => 1024,\n"
+"    'time' => 2,\n"
+"    'threads' => 2,\n"
+"]);\n"
+msgstr ""
+
+#: docs/10.x/hashing.md:block 24 (quote)
+msgid "**Note** For more information on these options, please refer to the [official PHP documentation regarding Argon hashing](https://secure.php.net/manual/en/function.password-hash.php)."
+msgstr ""
+
+#: docs/10.x/hashing.md:block 26 (header)
+msgid "Verifying That A Password Matches A Hash"
+msgstr ""
+
+#: docs/10.x/hashing.md:block 27 (paragraph)
+msgid "The `check` method provided by the `Hash` facade allows you to verify that a given plain-text string corresponds to a given hash:"
+msgstr ""
+
+#: docs/10.x/hashing.md:block 28 (code)
+msgid ""
+"if (Hash::check('plain-text', $hashedPassword)) {\n"
+"    // The passwords match...\n"
+"}\n"
+msgstr ""
+
+#: docs/10.x/hashing.md:block 30 (header)
+msgid "Determining If A Password Needs To Be Rehashed"
+msgstr ""
+
+#: docs/10.x/hashing.md:block 31 (paragraph)
+msgid "The `needsRehash` method provided by the `Hash` facade allows you to determine if the work factor used by the hasher has changed since the password was hashed. Some applications choose to perform this check during the application's authentication process:"
+msgstr ""
+
+#: docs/10.x/hashing.md:block 32 (code)
+msgid ""
+"if (Hash::needsRehash($hashed)) {\n"
+"    $hashed = Hash::make('plain-text');\n"
+"}\n"
 msgstr ""
 
 #: docs/8.x/hashing.md:block 10 (quote)
 msgid "{note} The Argon2i driver requires PHP 7.2.0 or greater and the Argon2id driver requires PHP 7.3.0 or greater."
-msgstr ""
-
-#: docs/8.x/hashing.md:block 12 (header)
-msgid "Basic Usage"
-msgstr ""
-
-#: docs/8.x/hashing.md:block 14 (header)
-msgid "Hashing Passwords"
-msgstr ""
-
-#: docs/8.x/hashing.md:block 15 (paragraph)
-msgid "You may hash a password by calling the `make` method on the `Hash` facade:"
 msgstr ""
 
 #: docs/8.x/hashing.md:block 16 (code)
@@ -95,101 +190,6 @@ msgid ""
 "}\n"
 msgstr ""
 
-#: docs/8.x/hashing.md:block 18 (header)
-msgid "Adjusting The Bcrypt Work Factor"
-msgstr ""
-
-#: docs/8.x/hashing.md:block 19 (paragraph)
-msgid "If you are using the Bcrypt algorithm, the `make` method allows you to manage the work factor of the algorithm using the `rounds` option; however, the default work factor managed by Laravel is acceptable for most applications:"
-msgstr ""
-
-#: docs/8.x/hashing.md:block 20 (code)
-msgid ""
-"$hashed = Hash::make('password', [\n"
-"    'rounds' => 12,\n"
-"]);\n"
-msgstr ""
-
-#: docs/8.x/hashing.md:block 22 (header)
-msgid "Adjusting The Argon2 Work Factor"
-msgstr ""
-
-#: docs/8.x/hashing.md:block 23 (paragraph)
-msgid "If you are using the Argon2 algorithm, the `make` method allows you to manage the work factor of the algorithm using the `memory`, `time`, and `threads` options; however, the default values managed by Laravel are acceptable for most applications:"
-msgstr ""
-
-#: docs/8.x/hashing.md:block 24 (code)
-msgid ""
-"$hashed = Hash::make('password', [\n"
-"    'memory' => 1024,\n"
-"    'time' => 2,\n"
-"    'threads' => 2,\n"
-"]);\n"
-msgstr ""
-
 #: docs/8.x/hashing.md:block 25 (quote)
 msgid "{tip} For more information on these options, please refer to the [official PHP documentation regarding Argon hashing](https://secure.php.net/manual/en/function.password-hash.php)."
-msgstr ""
-
-#: docs/8.x/hashing.md:block 27 (header)
-msgid "Verifying That A Password Matches A Hash"
-msgstr ""
-
-#: docs/8.x/hashing.md:block 28 (paragraph)
-msgid "The `check` method provided by the `Hash` facade allows you to verify that a given plain-text string corresponds to a given hash:"
-msgstr ""
-
-#: docs/8.x/hashing.md:block 29 (code)
-msgid ""
-"if (Hash::check('plain-text', $hashedPassword)) {\n"
-"    // The passwords match...\n"
-"}\n"
-msgstr ""
-
-#: docs/8.x/hashing.md:block 31 (header)
-msgid "Determining If A Password Needs To Be Rehashed"
-msgstr ""
-
-#: docs/8.x/hashing.md:block 32 (paragraph)
-msgid "The `needsRehash` method provided by the `Hash` facade allows you to determine if the work factor used by the hasher has changed since the password was hashed. Some applications choose to perform this check during the application's authentication process:"
-msgstr ""
-
-#: docs/8.x/hashing.md:block 33 (code)
-msgid ""
-"if (Hash::needsRehash($hashed)) {\n"
-"    $hashed = Hash::make('plain-text');\n"
-"}\n"
-msgstr ""
-
-#: docs/9.x/hashing.md:block 24 (quote)
-msgid "**Note** For more information on these options, please refer to the [official PHP documentation regarding Argon hashing](https://secure.php.net/manual/en/function.password-hash.php)."
-msgstr ""
-
-#: docs/master/hashing.md:block 15 (code)
-msgid ""
-"<?php\n"
-"\n"
-"namespace App\\Http\\Controllers;\n"
-"\n"
-"use App\\Http\\Controllers\\Controller;\n"
-"use Illuminate\\Http\\Request;\n"
-"use Illuminate\\Http\\Response;\n"
-"use Illuminate\\Support\\Facades\\Hash;\n"
-"\n"
-"class PasswordController extends Controller\n"
-"{\n"
-"    /**\n"
-"     * Update the password for the user.\n"
-"     */\n"
-"    public function update(Request $request): Response\n"
-"    {\n"
-"        // Validate the new password length...\n"
-"\n"
-"        $request->user()->fill([\n"
-"            'password' => Hash::make($request->newPassword)\n"
-"        ])->save();\n"
-"\n"
-"        return response()->noContent();\n"
-"    }\n"
-"}\n"
 msgstr ""

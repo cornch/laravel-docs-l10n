@@ -10,7 +10,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
-"PO-Revision-Date: 2023-02-11 10:27\n"
+"PO-Revision-Date: 2023-02-11 12:58\n"
 
 #: docs/10.x/broadcasting.md:block 1 (header)
 msgid "Broadcasting"
@@ -190,7 +190,7 @@ msgstr "支援的 Driver"
 
 #: docs/10.x/broadcasting.md:block 11 (paragraph)
 msgid "By default, Laravel includes two server-side broadcasting drivers for you to choose from: [Pusher Channels](https://pusher.com/channels) and [Ably](https://ably.com). However, community driven packages such as [laravel-websockets](https://beyondco.de/docs/laravel-websockets/getting-started/introduction) and [soketi](https://docs.soketi.app/) provide additional broadcasting drivers that do not require commercial broadcasting providers."
-msgstr ""
+msgstr "預設情況下，Laravel 包含了兩個伺服器端廣播 Driver 可供選擇：[Pusher Channels](https://pusher.com/channels) 與 [Ably](https://ably.com)。不過，也有如 [laravel-websockets](https://beyondco.de/docs/laravel-websockets/getting-started/introduction) 與 [soketi](https://docs.soketi.app/) 這樣由社群開發的套件提供不需要商業 Broadcast Provider 的額外 Broadcast Driver。"
 
 #: docs/10.x/broadcasting.md:block 12 (quote)
 msgid "**Note** Before diving into event broadcasting, make sure you have read Laravel's documentation on [events and listeners](/docs/{{version}}/events)."
@@ -288,11 +288,11 @@ msgstr "Ably"
 
 #: docs/10.x/broadcasting.md:block 41 (quote)
 msgid "**Note** The documentation below discusses how to use Ably in \"Pusher compatibility\" mode. However, the Ably team maintains a broadcaster and Echo client that is able to take advantage of the unique capabilities offered by Ably. For more information on using the Ably maintained drivers, please [consult Ably's Laravel broadcaster documentation](https://github.com/ably/laravel-broadcaster)."
-msgstr ""
+msgstr "**Note** 下方的說明文件討論了如何在「Pusher 相容模式 (Pusher Compatibility)」下使用 Ably。不過，Ably 團隊還維護了一個 Broadcaster 程式與可使用 Ably 特別功能的 Echo 用戶端。更多有關使用 Ably 維護的 Driver 的資訊，請[參考 Ably 的 Laravel Broadcaster 說明文件 (英語)](https://github.com/ably/laravel-broadcaster)。"
 
 #: docs/10.x/broadcasting.md:block 42 (paragraph)
 msgid "If you plan to broadcast your events using [Ably](https://ably.com), you should install the Ably PHP SDK using the Composer package manager:"
-msgstr ""
+msgstr "若有打算要使用 [Ably](https://ably.com)，則請使用 Composer 套件管理員來安裝 Ably 的 PHP SDK："
 
 #: docs/10.x/broadcasting.md:block 43 (code)
 msgid "composer require ably/ably-php\n"
@@ -462,7 +462,7 @@ msgstr "概念概覽"
 
 #: docs/10.x/broadcasting.md:block 87 (paragraph)
 msgid "Laravel's event broadcasting allows you to broadcast your server-side Laravel events to your client-side JavaScript application using a driver-based approach to WebSockets. Currently, Laravel ships with [Pusher Channels](https://pusher.com/channels) and [Ably](https://ably.com) drivers. The events may be easily consumed on the client-side using the [Laravel Echo](#client-side-installation) JavaScript package."
-msgstr ""
+msgstr "Laravel 的事件廣播功能能讓你以基於 Driver 的方法來將伺服器端的 Laravel 事件通過 WebSockets 廣播到用戶端 JavaScript 上。目前，Laravel 隨附了 [Pusher Channels](https://pusher.com/channels) 與 [Ably](https://ably.com) 兩個 Driver。可以在用戶端使用 [Laravel Echo](#client-side-installation) JavaScript 套件來輕鬆取得事件。"
 
 #: docs/10.x/broadcasting.md:block 88 (paragraph)
 msgid "Events are broadcast over \"channels\", which may be specified as public or private. Any visitor to your application may subscribe to a public channel without any authentication or authorization; however, in order to subscribe to a private channel, a user must be authenticated and authorized to listen on that channel."
@@ -679,7 +679,36 @@ msgid "<?php\n\n"
 "        ];\n"
 "    }\n"
 "}\n"
-msgstr ""
+msgstr "<?php\n\n"
+"namespace App\\Events;\n\n"
+"use App\\Models\\User;\n"
+"use Illuminate\\Broadcasting\\Channel;\n"
+"use Illuminate\\Broadcasting\\InteractsWithSockets;\n"
+"use Illuminate\\Broadcasting\\PresenceChannel;\n"
+"use Illuminate\\Broadcasting\\PrivateChannel;\n"
+"use Illuminate\\Contracts\\Broadcasting\\ShouldBroadcast;\n"
+"use Illuminate\\Queue\\SerializesModels;\n\n"
+"class ServerCreated implements ShouldBroadcast\n"
+"{\n"
+"    use SerializesModels;\n\n"
+"    /**\n"
+"     * Create a new event instance.\n"
+"     */\n"
+"    public function __construct(\n"
+"        public User $user,\n"
+"    ) {}\n\n"
+"    /**\n"
+"     * Get the channels the event should broadcast on.\n"
+"     *\n"
+"     * @return array<int, \\Illuminate\\Broadcasting\\Channel>\n"
+"     */\n"
+"    public function broadcastOn(): array\n"
+"    {\n"
+"        return [\n"
+"            new PrivateChannel('user.'.$this->user->id),\n"
+"        ];\n"
+"    }\n"
+"}\n"
 
 #: docs/10.x/broadcasting.md:block 118 (paragraph)
 msgid "After implementing the `ShouldBroadcast` interface, you only need to [fire the event](/docs/{{version}}/events) as you normally would. Once the event has been fired, a [queued job](/docs/{{version}}/queues) will automatically broadcast the event using your specified broadcast driver."

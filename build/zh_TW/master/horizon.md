@@ -1,52 +1,55 @@
 ---
-contributors: {}
+contributors:
+  14684796:
+    avatarUrl: https://crowdin-static.downloads.crowdin.com/avatar/14684796/medium/60f7dc21ec0bf9cfcb61983640bb4809_default.png
+    name: cornch
 crowdinUrl: https://crowdin.com/translate/laravel-docs/83/en-zhtw
-progress: 0
-updatedAt: '2023-02-05T10:35:00Z'
+progress: 25
+updatedAt: '2023-02-07T11:21:00Z'
 ---
 
 # Laravel Horizon
 
-- [Introduction](#introduction)
-- [Installation](#installation)
-   - [Configuration](#configuration)
-   - [Balancing Strategies](#balancing-strategies)
-   - [Dashboard Authorization](#dashboard-authorization)
+- [簡介](#introduction)
+- [安裝](#installation)
+   - [設定](#configuration)
+   - [負載平衡策略](#balancing-strategies)
+   - [主控台的權限控制](#dashboard-authorization)
    - [Silenced Jobs](#silenced-jobs)
-- [Upgrading Horizon](#upgrading-horizon)
-- [Running Horizon](#running-horizon)
-   - [Deploying Horizon](#deploying-horizon)
-- [Tags](#tags)
-- [Notifications](#notifications)
-- [Metrics](#metrics)
-- [Deleting Failed Jobs](#deleting-failed-jobs)
-- [Clearing Jobs From Queues](#clearing-jobs-from-queues)
+- [升級 Horizon](#upgrading-horizon)
+- [執行 Horizon](#running-horizon)
+   - [部署 Horizon](#deploying-horizon)
+- [Tag](#tags)
+- [Notification](#notifications)
+- [Metric](#metrics)
+- [刪除失敗的 Job](#deleting-failed-jobs)
+- [在佇列中清除 Job](#clearing-jobs-from-queues)
 
 <a name="introduction"></a>
 
-## Introduction
+## 簡介
 
 > **Note** Before digging into Laravel Horizon, you should familiarize yourself with Laravel's base [queue services](/docs/{{version}}/queues). Horizon augments Laravel's queue with additional features that may be confusing if you are not already familiar with the basic queue features offered by Laravel.
 
-[Laravel Horizon](https://github.com/laravel/horizon) provides a beautiful dashboard and code-driven configuration for your Laravel powered [Redis queues](/docs/{{version}}/queues). Horizon allows you to easily monitor key metrics of your queue system such as job throughput, runtime, and job failures.
+[Laravel Horizon](https://github.com/laravel/horizon) 提供了一個功能強大的主控台，並且可使用程式碼來調整 Laravel 驅動的 [Redis Queue](/docs/{{version}}/queues) 的設定。使用 Horizon，就能輕鬆的監控佇列系統上的一些關鍵指標，如 Job 吞吐量、執行時間、失敗的 Job。
 
-When using Horizon, all of your queue worker configuration is stored in a single, simple configuration file. By defining your application's worker configuration in a version controlled file, you may easily scale or modify your application's queue workers when deploying your application.
+在使用 Horizon 時，所有 Queue Worker 的設定都保存在簡單且單一的一個設定檔中。只要把專案的 Worker 設定保存在版本控制的檔案中，就能輕鬆地在部署專案時擴增或調整 Queue Worker。
 
 <img src="https://laravel.com/img/docs/horizon-example.png">
 
 <a name="installation"></a>
 
-## Installation
+## 安裝
 
 > **Warning** Laravel Horizon requires that you use [Redis](https://redis.io) to power your queue. Therefore, you should ensure that your queue connection is set to `redis` in your application's `config/queue.php` configuration file.
 
-You may install Horizon into your project using the Composer package manager:
+可以使用 Composer 套件管理員來將 Horizon 安裝到專案中：
 
 ```shell
 composer require laravel/horizon
 ```
 
-After installing Horizon, publish its assets using the `horizon:install` Artisan command:
+安裝好 Horizon 後，使用 `horizon:install` Artisan 指令來安裝 Horizon 的素材：
 
 ```shell
 php artisan horizon:install
@@ -54,17 +57,17 @@ php artisan horizon:install
 
 <a name="configuration"></a>
 
-### Configuration
+### 設定
 
-After publishing Horizon's assets, its primary configuration file will be located at `config/horizon.php`. This configuration file allows you to configure the queue worker options for your application. Each configuration option includes a description of its purpose, so be sure to thoroughly explore this file.
+安裝好 Horizon 的素材後，主要設定檔會被放到 `config/horizon.php`。在這個設定檔中，我們可以調整 Queue Worker 的設定。每個設定選項都包含了有關該選項功能的說明，因此建議先仔細看過這個設定檔。
 
 > **Warning** Horizon uses a Redis connection named `horizon` internally. This Redis connection name is reserved and should not be assigned to another Redis connection in the `database.php` configuration file or as the value of the `use` option in the `horizon.php` configuration file.
 
 <a name="environments"></a>
 
-#### Environments
+#### 環境
 
-After installation, the primary Horizon configuration option that you should familiarize yourself with is the `environments` configuration option. This configuration option is an array of environments that your application runs on and defines the worker process options for each environment. By default, this entry contains a `production` and `local` environment. However, you are free to add more environments as needed:
+安裝好後，我們首先要熟悉的 Horizon 設定是 `environments` 選項。這個設定選項是一組環境的陣列，這些環境是專案會執行的。在這個選項中，要為各個環境定義 Worker 處理程序的設定。預設情況下，`environments` 選項中包含了 `production` 與 `local` 兩個環境。不過，可以按照需求任意加上更多的環境：
 
     'environments' => [
         'production' => [
@@ -82,13 +85,13 @@ After installation, the primary Horizon configuration option that you should fam
         ],
     ],
 
-When you start Horizon, it will use the worker process configuration options for the environment that your application is running on. Typically, the environment is determined by the value of the `APP_ENV` [environment variable](/docs/{{version}}/configuration#determining-the-current-environment). For example, the default `local` Horizon environment is configured to start three worker processes and automatically balance the number of worker processes assigned to each queue. The default `production` environment is configured to start a maximum of 10 worker processes and automatically balance the number of worker processes assigned to each queue.
+啟動 Horizon 時，Horizon 會使用目前專案所執行的環境所對應的 Worker 設定。一般來說，會從 `APP_ENV` [環境變數](/docs/{{version}}/configuration#determining-the-current-environment)中來判斷專案所在的環境。舉例來說，預設的 `local` Horizon 環境已設定好啟動三個 Worker 處理程序，並且會自動為各個 Queue 負載平衡分配 Worker 處理程序的數量。預設的 `production` 環境設定好啟動 10 個 Worker，並自動負載平衡分配 Worker 數量給各個 Queue。
 
 > **Warning** You should ensure that the `environments` portion of your `horizon` configuration file contains an entry for each [environment](/docs/{{version}}/configuration#environment-configuration) on which you plan to run Horizon.
 
 <a name="supervisors"></a>
 
-#### Supervisors
+#### Supervisor
 
 As you can see in Horizon's default configuration file, each environment can contain one or more "supervisors". By default, the configuration file defines this supervisor as `supervisor-1`; however, you are free to name your supervisors whatever you want. Each supervisor is essentially responsible for "supervising" a group of worker processes and takes care of balancing worker processes across queues.
 

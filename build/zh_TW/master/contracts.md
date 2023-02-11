@@ -5,7 +5,7 @@ contributors:
     name: cornch
 crowdinUrl: https://crowdin.com/translate/laravel-docs/33/en-zhtw
 progress: 100
-updatedAt: '2023-01-25T09:52:00Z'
+updatedAt: '2023-02-07T13:01:00Z'
 ---
 
 # Contract
@@ -14,7 +14,7 @@ updatedAt: '2023-01-25T09:52:00Z'
    - [Contract Vs. Facade](#contracts-vs-facades)
 - [什麼時候使用 Contract](#when-to-use-contracts)
 - [如何使用 Contract](#how-to-use-contracts)
-- [Contract 參照](#contract-reference)
+- [Contract 對照表](#contract-reference)
 
 <a name="introduction"></a>
 
@@ -22,35 +22,35 @@ updatedAt: '2023-01-25T09:52:00Z'
 
 Laravel 的「Contract」是一組介面，這些介面定義了框架提供的核心服務。舉例來說，`Illuminate\Contracts\Queue\Queue` Contract 定義了佇列任務所需要的方法；而 `Illuminate\Contracts\Mail\Mailer` Contract 則定義了寄送 E-Mail 所需要的方法。
 
-各個 Contract 都有對應框架所提供的實作。舉例來說，Laravel 提供改了一個有數種 Driver 的佇列實作，以及一個由 [Symfony Mailer](https://symfony.com/doc/6.0/mailer.html/) 驅動的 Mailer 實作。
+在 Laravel 中，每個 Contract 都有其相對應的實作。舉例來說，在 Laravel 中的 Queue 實作支援多種 Driver，而 Mailer 實作則由 [Symfony Mailer](https://symfony.com/doc/6.0/mailer.html/) 驅動。
 
-所有的 Laravel Contract 都放在 [Contract 自己的 GitHub 儲存庫](https://github.com/illuminate/contracts)內。該儲存庫提供了所有可用 Contract 的快速參照點，同時也一個單一、解藕的套件，可以在製作與 Laravel 服務互動的套件時使用。
+所有的 Laravel Contract 都放在 [Contract 自己的 GitHub 儲存庫](https://github.com/illuminate/contracts)內。使用該儲存庫，就可以快速參照到所有的 Contract，並且，在製作使用到 Laravel 服務的套件時，也可以作為一個單一、解藕的套件來使用。
 
 <a name="contracts-vs-facades"></a>
 
 ### Contract Vs. Facade
 
-Laravel 的 [Facade](/docs/{{version}}/facades) 與輔助函式提供了在不使用型別提示或是從 Service Container 中解析 Contract 的情況下簡單地使用 Laravel 服務的方法。在大多數的情況下，各個 Facade 都有其對應的 Contract。
+使用 Laravel 的 [Facade](/docs/{{version}}/facades) 或輔助函式，就可以在不使用型別提示，或是從 Service Container 中解析 Contract 的情況下輕鬆使用各種 Laravel 服務。在大多數的情況下，各個 Facade 都有其對應的 Contract。
 
-與 Facade 不同，使用 Facade 不需要在類別的建構函式內要求這些類別。Contract 可以讓你為類別定義明顯的依賴。某些開發人員偏好明顯定義依賴，因此他們也偏好使用 Contract；而其他開發人員則比較享受 Facade 帶來的方便性。**一般來說，大多數專案在開發期間都可以使用 Facade 而不會遇到問題。**
+使用 Facade 時，不需要在類別的建構函式內要求這些類別。而與 Contract 與 Facade 不同的是，Contract 可以讓你為類別顯式 (Explicitly) 定義其相依性項目。某些開發人員偏好顯式定義相依性項目，因此他們也偏好使用 Contract；而其他開發人員則比較享受 Facade 帶來的方便性。**一般來說，大多數專案在開發期間都可以使用 Facade 而不會遇到問題。**
 
 <a name="when-to-use-contracts"></a>
 
 ## 什麼時候使用 Contract
 
-要決定使用 Contract 還是 Facade，取決於個人偏好以及開發團隊的偏好。Contract 與 Facade 都提供了能建立強健的、經得起測試的 Laravel 應用程式的能力。Contract 與 Facade 並非互斥。你可以在專案中某些部分使用 Facade、其他部分則使用 Contract。只要能保持類別的職責專一，Contract 與 Facade 基本上就沒什麼差異。
+要決定使用 Contract 還是 Facade，取決於個人以及開發團隊的偏好。不論使用 Contract 還是 Facade，在 Laravel 中都可獲得相同的強健性與可測試性。Contract 與 Facade 並非互斥。你可以在專案中某些部分使用 Facade、其他部分則使用 Contract。只要能保持類別的職責專一，使用 Contract 或 Facade 基本上就沒什麼差別。
 
-通常來說，在開發期間，使用 Facade 對於大多數的專案來說都不會遇到什麼問題。不過若你在做的是會整合多個 PHP 框架的套件，則可以使用 `illuminate/contracts` 套件來定義與 Laravel 服務的整合。不需要在套件的 `composer.json` 檔中 require 整個 Laravel 的實際實作。
+通常來說，在開發期間，使用 Facade 對於大多數的專案來說都不會遇到什麼問題。不過若你在做的是會整合多個 PHP 框架的套件，則可以使用 `illuminate/contracts` 套件來定義與 Laravel 服務的整合。不需要在套件的 `composer.json` 檔中 require 整個 Laravel 的實際 (Concrete) 實作。
 
 <a name="how-to-use-contracts"></a>
 
 ## 如何使用 Contract
 
-那麼，如何取得某個 Contract 的實作呢？這其實很簡單。
+那麼，如何取得某個 Contract 的實作呢？其實很簡單。
 
-Laravel 中，許多類型的類別都會通過 [Service Container](/docs/{{version}}/container) 來解析。包含 Controller、事件監聽程式、Middleware、佇列任務、甚至是路由閉包。因此，若要取得一個 Contract 的實作，只需要在被解析類別的建構函式上對介面進行「型別提示」即可。
+在 Laravel 中，許多類型的類別都會通過 [Service Container](/docs/{{version}}/container) 來解析。包含 Controller、Event Listener、Middleware、放入佇列的 Job、甚至是 Route 閉包。因此，若要取得一個 Contract 的實作，只需要在被解析類別的 Contractor 上對介面進行「型別提示 (Type-Hint)」即可。
 
-舉例來說，來看看這個事件監聽程式：
+舉例來說，來看看這個 Event Listner：
 
     <?php
     
@@ -86,15 +86,15 @@ Laravel 中，許多類型的類別都會通過 [Service Container](/docs/{{vers
         }
     }
 
-When the event listener is resolved, the service container will read the type-hints on the constructor of the class, and inject the appropriate value. To learn more about registering things in the service container, check out [its documentation](/docs/{{version}}/container).
+當 Event Listner 被解析時，Service Container 會讀取該類別中 Constractor 的型別提示，並插入合適的值。要瞭解更多有關如何向 Service Container 註冊東西的資訊，請參考 [Service Container 的說明文件](/docs/{{version}}/container)。
 
 <a name="contract-reference"></a>
 
-## Contract 參照
+## Contract 對照表
 
-這個表格提供了所有 Laravel Contract 的快速參照，及其相等的 Facade：
+下列表格是所有 Laravel Contract 與其對應 Facade 的對照表：
 
-| Contract | 參照的 Facade |
+| Contract | 對應的 Facade |
 | --- | --- |
 | [Illuminate\Contracts\Auth\Access\Authorizable](https://github.com/illuminate/contracts/blob/{{version}}/Auth/Access/Authorizable.php) |  &nbsp; |
 | [Illuminate\Contracts\Auth\Access\Gate](https://github.com/illuminate/contracts/blob/{{version}}/Auth/Access/Gate.php) | `Gate` |

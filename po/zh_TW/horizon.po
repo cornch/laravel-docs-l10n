@@ -10,7 +10,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
-"PO-Revision-Date: 2023-02-28 10:22\n"
+"PO-Revision-Date: 2023-02-28 11:24\n"
 
 #: docs/10.x/horizon.md:block 1 (header)
 msgid "Laravel Horizon"
@@ -382,7 +382,7 @@ msgstr "php artisan horizon:pause\n\n"
 
 #: docs/10.x/horizon.md:block 67 (paragraph)
 msgid "You may also pause and continue specific Horizon [supervisors](#supervisors) using the `horizon:pause-supervisor` and `horizon:continue-supervisor` Artisan commands:"
-msgstr ""
+msgstr "可以使用 `horizon:pause-supervisor` 與 `horizon:continue-supervisor` Artisan 指令來暫停或繼續特定的 Horizon [Supervisor](#supervisors)："
 
 #: docs/10.x/horizon.md:block 68 (code)
 msgid "php artisan horizon:pause-supervisor supervisor-1\n\n"
@@ -392,7 +392,7 @@ msgstr "php artisan horizon:pause-supervisor supervisor-1\n\n"
 
 #: docs/10.x/horizon.md:block 69 (paragraph)
 msgid "You may check the current status of the Horizon process using the `horizon:status` Artisan command:"
-msgstr ""
+msgstr "可以使用 `horizon:status` Artisan 指令來檢查目前 Horizon 處理程序的狀態："
 
 #: docs/10.x/horizon.md:block 70 (code)
 msgid "php artisan horizon:status\n"
@@ -400,7 +400,7 @@ msgstr "php artisan horizon:status\n"
 
 #: docs/10.x/horizon.md:block 71 (paragraph)
 msgid "You may gracefully terminate the Horizon process using the `horizon:terminate` Artisan command. Any jobs that are currently being processed by will be completed and then Horizon will stop executing:"
-msgstr ""
+msgstr "可以使用 `horizon:terminate` Artisan 指令來正常終止 Horizon 處理程序。Horizon 會先完成目前正在處理的 Job，然後再停止執行："
 
 #: docs/10.x/horizon.md:block 72 (code)
 msgid "php artisan horizon:terminate\n"
@@ -408,23 +408,23 @@ msgstr "php artisan horizon:terminate\n"
 
 #: docs/10.x/horizon.md:block 74 (header)
 msgid "Deploying Horizon"
-msgstr ""
+msgstr "部署 Horizon"
 
 #: docs/10.x/horizon.md:block 75 (paragraph)
 msgid "When you're ready to deploy Horizon to your application's actual server, you should configure a process monitor to monitor the `php artisan horizon` command and restart it if it exits unexpectedly. Don't worry, we'll discuss how to install a process monitor below."
-msgstr ""
+msgstr "當要將 Horizon 部署到實際執行專案的伺服器時，請設定一個處理程序監控程式 (Process Monitor) 來監控 `php artisan horizon` 指令，並在該指令異常終止時重新啟動該指令。別擔心，我們會在下方討論如何安裝處理程序監控程式。"
 
 #: docs/10.x/horizon.md:block 76 (paragraph)
 msgid "During your application's deployment process, you should instruct the Horizon process to terminate so that it will be restarted by your process monitor and receive your code changes:"
-msgstr ""
+msgstr "在專案的部署過程中，需要告訴 Horizon 處理程序先停止執行，好讓處理程序監控程式可以重新啟動 Horizon，以反應出程式碼上的更改："
 
 #: docs/10.x/horizon.md:block 79 (header)
 msgid "Installing Supervisor"
-msgstr ""
+msgstr "安裝 Supervisor"
 
 #: docs/10.x/horizon.md:block 80 (paragraph)
 msgid "Supervisor is a process monitor for the Linux operating system and will automatically restart your `horizon` process if it stops executing. To install Supervisor on Ubuntu, you may use the following command. If you are not using Ubuntu, you can likely install Supervisor using your operating system's package manager:"
-msgstr ""
+msgstr "Supervisor 是一個用於 Linux 作業系統的處理程序監控程式。Supervisor 可以在 `horizon` 處理程序停止執行的時候自動重啟啟動 `horizon`。若要在 Ubuntu 上安裝 Supervisor，可以使用下列指令。若你不是用 Ubuntu，則通常也可以使用作業系統的套件管理員來安裝："
 
 #: docs/10.x/horizon.md:block 81 (code)
 msgid "sudo apt-get install supervisor\n"
@@ -432,15 +432,15 @@ msgstr "sudo apt-get install supervisor\n"
 
 #: docs/10.x/horizon.md:block 82 (quote)
 msgid "**Note** If configuring Supervisor yourself sounds overwhelming, consider using [Laravel Forge](https://forge.laravel.com), which will automatically install and configure Supervisor for your Laravel projects."
-msgstr ""
+msgstr "**Note** 如果你覺得要設定 Supervisor 太難、太複雜的話，可以考慮使用 [Laravel Forge](https://forge.laravel.com)。Laravel Forge 會自動幫你為 Laravel 專案安裝並設定 Supervisor。"
 
 #: docs/10.x/horizon.md:block 84 (header)
 msgid "Supervisor Configuration"
-msgstr ""
+msgstr "Supervisor 設定"
 
 #: docs/10.x/horizon.md:block 85 (paragraph)
 msgid "Supervisor configuration files are typically stored within your server's `/etc/supervisor/conf.d` directory. Within this directory, you may create any number of configuration files that instruct supervisor how your processes should be monitored. For example, let's create a `horizon.conf` file that starts and monitors a `horizon` process:"
-msgstr ""
+msgstr "Supervisor 設定檔一般都存放伺服器的 `/etc/supervisor/conf.d` 目錄下。在該目錄中，我們可以建立任意數量的設定檔，以告訴 Supervisor 要如何監看這些處理程序。舉例來說，我們先建立一個用於啟動並監看 `horizon` 處理程序的 `horizon.conf` 檔案："
 
 #: docs/10.x/horizon.md:block 86 (code)
 msgid "[program:horizon]\n"
@@ -464,37 +464,39 @@ msgstr "[program:horizon]\n"
 
 #: docs/10.x/horizon.md:block 87 (paragraph)
 msgid "When defining your Supervisor configuration, you should ensure that the value of `stopwaitsecs` is greater than the number of seconds consumed by your longest running job. Otherwise, Supervisor may kill the job before it is finished processing."
-msgstr ""
+msgstr "在定義 Supervisor 設定檔時，請確保 `stopwaitsecs` 值比花費時間最多的 Job 所需執行的秒數還要大。若該值設定不對，可能會讓 Supervisor 在 Job 處理完成前就終止該 Job。"
 
 #: docs/10.x/horizon.md:block 88 (quote)
 msgid "**Warning** While the examples above are valid for Ubuntu based servers, the location and file extension expected of Supervisor configuration files may vary between other server operating systems. Please consult your server's documentation for more information."
-msgstr ""
+msgstr "**Warning** 雖然上方的範例適用於基於 Ubuntu 的伺服器，但在不同的作業系統中，Supervisor 設定檔的位置與檔案的副檔名可能有所不同。更多資訊請參考你使用的伺服器之說明文件。"
 
 #: docs/10.x/horizon.md:block 90 (header)
 msgid "Starting Supervisor"
-msgstr ""
+msgstr "啟動 Supervisor"
 
 #: docs/10.x/horizon.md:block 91 (paragraph)
 msgid "Once the configuration file has been created, you may update the Supervisor configuration and start the monitored processes using the following commands:"
-msgstr ""
+msgstr "建立好設定檔後，可使用下列指令來更新 Supervisor 的設定檔並開始監看這些處理程序："
 
 #: docs/10.x/horizon.md:block 92 (code)
 msgid "sudo supervisorctl reread\n\n"
 "sudo supervisorctl update\n\n"
 "sudo supervisorctl start horizon\n"
-msgstr ""
+msgstr "sudo supervisorctl reread\n\n"
+"sudo supervisorctl update\n\n"
+"sudo supervisorctl start horizon\n"
 
 #: docs/10.x/horizon.md:block 93 (quote)
 msgid "**Note** For more information on running Supervisor, consult the [Supervisor documentation](http://supervisord.org/index.html)."
-msgstr ""
+msgstr "**Note** 更多有關執行 Supervisor 的資訊，請參考 [Supervisor 的說明文件](http://supervisord.org/index.html)。"
 
 #: docs/10.x/horizon.md:block 95 (header)
 msgid "Tags"
-msgstr ""
+msgstr "標籤"
 
 #: docs/10.x/horizon.md:block 96 (paragraph)
 msgid "Horizon allows you to assign “tags” to jobs, including mailables, broadcast events, notifications, and queued event listeners. In fact, Horizon will intelligently and automatically tag most jobs depending on the Eloquent models that are attached to the job. For example, take a look at the following job:"
-msgstr ""
+msgstr "在 Horizon 中，我們可以給 Job 加上「標籤」。這些可加上標籤的 Job 包含 Mailable、Broadcast、Event、Notification、以及放入佇列的 Event Listener。事實上，Horizon 會依據 Job 上附加的 Eloquent Model 來自動為大多數的 Job 加上標籤。舉例來說，看看下面的例子："
 
 #: docs/10.x/horizon.md:block 97 (code)
 msgid "<?php\n\n"

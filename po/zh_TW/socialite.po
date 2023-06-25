@@ -10,7 +10,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
-"PO-Revision-Date: 2023-04-10 00:17\n"
+"PO-Revision-Date: 2023-06-25 09:23\n"
 
 #: docs/10.x/socialite.md:block 1 (header)
 msgid "Laravel Socialite"
@@ -156,7 +156,7 @@ msgstr "登入與檔案儲存"
 
 #: docs/10.x/socialite.md:block 29 (paragraph)
 msgid "Once the user has been retrieved from the OAuth provider, you may determine if the user exists in your application's database and [authenticate the user](/docs/{{version}}/authentication#authenticate-a-user-instance). If the user does not exist in your application's database, you will typically create a new record in your database to represent the user:"
-msgstr ""
+msgstr "從 OAuth Provider 取得使用者後，就可以判斷該使用者是否存在我們的網站中，並[登入該使用者](/docs/{{version}}/authentication#authenticate-a-user-instance)。如果使用者不存在網站資料庫中，可以在資料庫中建立："
 
 #: docs/10.x/socialite.md:block 30 (code)
 msgid "use App\\Models\\User;\n"
@@ -175,30 +175,48 @@ msgid "use App\\Models\\User;\n"
 "    Auth::login($user);\n\n"
 "    return redirect('/dashboard');\n"
 "});\n"
-msgstr ""
+msgstr "use App\\Models\\User;\n"
+"use Illuminate\\Support\\Facades\\Auth;\n"
+"use Laravel\\Socialite\\Facades\\Socialite;\n\n"
+"Route::get('/auth/callback', function () {\n"
+"    $githubUser = Socialite::driver('github')->user();\n\n"
+"    $user = User::updateOrCreate([\n"
+"        'github_id' => $githubUser->id,\n"
+"    ], [\n"
+"        'name' => $githubUser->name,\n"
+"        'email' => $githubUser->email,\n"
+"        'github_token' => $githubUser->token,\n"
+"        'github_refresh_token' => $githubUser->refreshToken,\n"
+"    ]);\n\n"
+"    Auth::login($user);\n\n"
+"    return redirect('/dashboard');\n"
+"});\n"
 
 #: docs/10.x/socialite.md:block 31 (quote)
 msgid "**Note** For more information regarding what user information is available from specific OAuth providers, please consult the documentation on [retrieving user details](#retrieving-user-details)."
-msgstr ""
+msgstr "**Note** 有關各個 OAuth Provider 所提供的使用者資訊，請參考說明文件中有關[取得使用者詳細資料](#retrieving-user-details)的部分。"
 
 #: docs/10.x/socialite.md:block 33 (header)
 msgid "Access Scopes"
-msgstr ""
+msgstr "Access Scope (存取範圍)"
 
 #: docs/10.x/socialite.md:block 34 (paragraph)
 msgid "Before redirecting the user, you may use the `scopes` method to specify the \"scopes\" that should be included in the authentication request. This method will merge all previously specified scopes with the scopes that you specify:"
-msgstr ""
+msgstr "在為使用者重新導向前，我們可以使用 `scopes` 方法來指定這個登入驗證 Request 中要包含的「Scope (範圍)」。此方法會將所指定的 Scopes 與先前指定的所有 Scopes 合併起來："
 
 #: docs/10.x/socialite.md:block 35 (code)
 msgid "use Laravel\\Socialite\\Facades\\Socialite;\n\n"
 "return Socialite::driver('github')\n"
 "    ->scopes(['read:user', 'public_repo'])\n"
 "    ->redirect();\n"
-msgstr ""
+msgstr "use Laravel\\Socialite\\Facades\\Socialite;\n\n"
+"return Socialite::driver('github')\n"
+"    ->scopes(['read:user', 'public_repo'])\n"
+"    ->redirect();\n"
 
 #: docs/10.x/socialite.md:block 36 (paragraph)
 msgid "You can overwrite all existing scopes on the authentication request using the `setScopes` method:"
-msgstr ""
+msgstr "可以使用 `setScopes` 方法來複寫登入驗證 Request 上的所有已存在的 Scopes："
 
 #: docs/10.x/socialite.md:block 37 (code)
 msgid "return Socialite::driver('github')\n"

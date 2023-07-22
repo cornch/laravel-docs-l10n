@@ -10,7 +10,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
-"PO-Revision-Date: 2023-07-22 07:29\n"
+"PO-Revision-Date: 2023-07-22 09:20\n"
 
 #: docs/10.x/octane.md:block 1 (header)
 msgid "Laravel Octane"
@@ -541,11 +541,11 @@ msgstr "use App\\Service;\n"
 
 #: docs/10.x/octane.md:block 105 (paragraph)
 msgid "In this example, if the `Service` instance is resolved during the application boot process, the container will be injected into the service and that same container will be held by the `Service` instance on subsequent requests. This **may** not be a problem for your particular application; however, it can lead to the container unexpectedly missing bindings that were added later in the boot cycle or by a subsequent request."
-msgstr ""
+msgstr "在這個例子中，若該 `Service` 實體是在網站啟動過程中被解析的，則在解析時，會插入 Container 到該 Service 中。在接下來的 Request 中，Service 實體上都將擁有相同的 Container 實體。對於部分專案來說，此狀況 **或許**不是個問題。不過，在啟動時，若由繫結是在解析 Service 實體之後才被加入到 Container 中的，或是在接下來的 Request 中有其他繫結被加入到 Container 中，則 Service 實體上的 Container 可能會缺少這些繫結。"
 
 #: docs/10.x/octane.md:block 106 (paragraph)
 msgid "As a work-around, you could either stop registering the binding as a singleton, or you could inject a container resolver closure into the service that always resolves the current container instance:"
-msgstr ""
+msgstr "針對此問題的解決方法有兩種，一種方法是不用單例來註冊繫結，而另一種方法則是將一個用於解析 Container 的 ^[Closure](閉包) 插入到 Service 中，以隨時解析為最新的 Container 實體："
 
 #: docs/10.x/octane.md:block 107 (code)
 msgid "use App\\Service;\n"
@@ -569,15 +569,15 @@ msgstr "use App\\Service;\n"
 
 #: docs/10.x/octane.md:block 108 (paragraph)
 msgid "The global `app` helper and the `Container::getInstance()` method will always return the latest version of the application container."
-msgstr ""
+msgstr "全域補助函式 `app` 以及 `Container::getInstance()` 方法都會回傳最新版的 Container。"
 
 #: docs/10.x/octane.md:block 110 (header)
 msgid "Request Injection"
-msgstr ""
+msgstr "插入 Request"
 
 #: docs/10.x/octane.md:block 111 (paragraph)
 msgid "In general, you should avoid injecting the application service container or HTTP request instance into the constructors of other objects. For example, the following binding injects the entire request instance into an object that is bound as a singleton:"
-msgstr ""
+msgstr "一般來說，我們應該避免將 Service Container 或 HTTP Request 實體插入到其他物件的 Constructor 中。舉例來說，下列繫結會將整個 Request 實體插入到被繫結為單例 (Singleton) 的物件中："
 
 #: docs/10.x/octane.md:block 112 (code)
 msgid "use App\\Service;\n"
@@ -605,11 +605,11 @@ msgstr "use App\\Service;\n"
 
 #: docs/10.x/octane.md:block 113 (paragraph)
 msgid "In this example, if the `Service` instance is resolved during the application boot process, the HTTP request will be injected into the service and that same request will be held by the `Service` instance on subsequent requests. Therefore, all headers, input, and query string data will be incorrect, as well as all other request data."
-msgstr ""
+msgstr "在此例子中，若 `Service` 實體是在網站啟動過程中被解析的，則 HTTP Request 實體會被插入到 Service 實體內，並且在接下來的 Request 中，該 Service 實體都將擁有同一個 Request 實體。因此，所有的 Header、Input、Query String，以及其他 Request 資料都會是不正確的。"
 
 #: docs/10.x/octane.md:block 114 (paragraph)
 msgid "As a work-around, you could either stop registering the binding as a singleton, or you could inject a request resolver closure into the service that always resolves the current request instance. Or, the most recommended approach is simply to pass the specific request information your object needs to one of the object's methods at runtime:"
-msgstr ""
+msgstr "針對此問題，有幾種解決方法。第一種方法就是不要使用單例來註冊繫結，或者，可以將一個用於解析 Request 的 Closure 傳入給 Service 以隨時解析最新的 Request 實體。另一種方法，也是最推薦的作法，就是在執行階段時，只在 Request 中取出該物件所需的資訊，然後只傳入這些資訊到該物件的方法中："
 
 #: docs/10.x/octane.md:block 115 (code)
 msgid "use App\\Service;\n"
@@ -635,15 +635,15 @@ msgstr "use App\\Service;\n"
 
 #: docs/10.x/octane.md:block 116 (paragraph)
 msgid "The global `request` helper will always return the request the application is currently handling and is therefore safe to use within your application."
-msgstr ""
+msgstr "全域輔助函式 `request` 會回傳網站目前正在處理的 Request，因此在專案中可以安全地使用該函式。"
 
 #: docs/10.x/octane.md:block 117 (quote)
 msgid "**Warning** It is acceptable to type-hint the `Illuminate\\Http\\Request` instance on your controller methods and route closures."
-msgstr ""
+msgstr "**Warning** 在 Controller 方法或 Route Closure 中，可型別提示 `Illuminate\\Http\\Request`。"
 
 #: docs/10.x/octane.md:block 119 (header)
 msgid "Configuration Repository Injection"
-msgstr ""
+msgstr "插入 Configuration Repository"
 
 #: docs/10.x/octane.md:block 120 (paragraph)
 msgid "In general, you should avoid injecting the configuration repository instance into the constructors of other objects. For example, the following binding injects the configuration repository into an object that is bound as a singleton:"
@@ -727,7 +727,19 @@ msgid "use App\\Service;\n"
 "        // ...\n"
 "    ];\n"
 "}\n"
-msgstr ""
+msgstr "use App\\Service;\n"
+"use Illuminate\\Http\\Request;\n"
+"use Illuminate\\Support\\Str;\n\n"
+"/**\n"
+" * Handle an incoming request.\n"
+" */\n"
+"public function index(Request $request): array\n"
+"{\n"
+"    Service::$data[] = Str::random(10);\n\n"
+"    return [\n"
+"        // ...\n"
+"    ];\n"
+"}\n"
 
 #: docs/10.x/octane.md:block 130 (paragraph)
 msgid "While building your application, you should take special care to avoid creating these types of memory leaks. It is recommended that you monitor your application's memory usage during local development to ensure you are not introducing new memory leaks into your application."

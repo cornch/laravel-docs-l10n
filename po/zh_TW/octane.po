@@ -10,7 +10,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
-"PO-Revision-Date: 2023-07-22 14:06\n"
+"PO-Revision-Date: 2023-07-22 15:09\n"
 
 #: docs/10.x/octane.md:block 1 (header)
 msgid "Laravel Octane"
@@ -775,23 +775,23 @@ msgstr "use App\\User;\n"
 
 #: docs/10.x/octane.md:block 136 (paragraph)
 msgid "Concurrent tasks processed by Octane utilize Swoole's \"task workers\", and execute within an entirely different process than the incoming request. The amount of workers available to process concurrent tasks is determined by the `--task-workers` directive on the `octane:start` command:"
-msgstr ""
+msgstr "Octane 使用 Swoole 的「Task Worker」來處理併行的任務，並在與處理連入 Request 不同的處理程序中執行。在執行 `octane:start` 指令時，可以使用 `--task-workers` 指示詞來指定處理併行任務時可用的 Worker 數量："
 
 #: docs/10.x/octane.md:block 138 (paragraph)
 msgid "When invoking the `concurrently` method, you should not provide more than 1024 tasks due to limitations imposed by Swoole's task system."
-msgstr ""
+msgstr "呼叫 `concurrently` 方法時，由於 Swoole 任務系統的限制，請不要傳入超過 1024 個任務。"
 
 #: docs/10.x/octane.md:block 140 (header)
 msgid "Ticks & Intervals"
-msgstr ""
+msgstr "Tick 與 Interval"
 
 #: docs/10.x/octane.md:block 142 (paragraph)
 msgid "When using Swoole, you may register \"tick\" operations that will be executed every specified number of seconds. You may register \"tick\" callbacks via the `tick` method. The first argument provided to the `tick` method should be a string that represents the name of the ticker. The second argument should be a callable that will be invoked at the specified interval."
-msgstr ""
+msgstr "在使用 Swoole 時，可以註冊一個「Tick」動作。每隔指定秒數時，就會執行一次該動作。可以使用 `tick` 方法來註冊「Tick」^[Callback](回呼)。`tick` 方法的第一個引數為字串，代表該 Ticker 的名稱。第二個引數則為每個特定間隔會被呼叫的 Callable。"
 
 #: docs/10.x/octane.md:block 143 (paragraph)
 msgid "In this example, we will register a closure to be invoked every 10 seconds. Typically, the `tick` method should be called within the `boot` method of one of your application's service providers:"
-msgstr ""
+msgstr "在這個例子中，我們會註冊一個沒隔 10 秒會被執行的 Closure。一般來說，應在專案中某個 Service Provider 內的 `boot` 方法中呼叫 `tick` 方法："
 
 #: docs/10.x/octane.md:block 144 (code)
 msgid "Octane::tick('simple-ticker', fn () => ray('Ticking...'))\n"
@@ -801,7 +801,7 @@ msgstr "Octane::tick('simple-ticker', fn () => ray('Ticking...'))\n"
 
 #: docs/10.x/octane.md:block 145 (paragraph)
 msgid "Using the `immediate` method, you may instruct Octane to immediately invoke the tick callback when the Octane server initially boots, and every N seconds thereafter:"
-msgstr ""
+msgstr "使用 `immediate` 方法，就可以讓 Octane 在 Octane 伺服器一啟動後馬上呼叫該 Tick Callback，並在接下來的每 N 秒執行："
 
 #: docs/10.x/octane.md:block 146 (code)
 msgid "Octane::tick('simple-ticker', fn () => ray('Ticking...'))\n"
@@ -813,15 +813,15 @@ msgstr "Octane::tick('simple-ticker', fn () => ray('Ticking...'))\n"
 
 #: docs/10.x/octane.md:block 148 (header)
 msgid "The Octane Cache"
-msgstr ""
+msgstr "Octane Cache"
 
 #: docs/10.x/octane.md:block 150 (paragraph)
 msgid "When using Swoole, you may leverage the Octane cache driver, which provides read and write speeds of up to 2 million operations per second. Therefore, this cache driver is an excellent choice for applications that need extreme read / write speeds from their caching layer."
-msgstr ""
+msgstr "使用 Swoole 時，可以使用 Octane 的 Cache Driver。Octane 的 Cache Driver 提供了最快 2 百萬讀寫 / 秒的讀寫速度。因此，對於在快取層上需要高度讀寫速度的專案，Octane 的 Cache Driver 是很好的選擇。"
 
 #: docs/10.x/octane.md:block 151 (paragraph)
 msgid "This cache driver is powered by [Swoole tables](https://www.swoole.co.uk/docs/modules/swoole-table). All data stored in the cache is available to all workers on the server. However, the cached data will be flushed when the server is restarted:"
-msgstr ""
+msgstr "該 Cache Driver 由 [Swoole Table](https://www.swoole.co.uk/docs/modules/swoole-table) 驅動。儲存在 Cache 中的所有資料可在 Swoole Server 中的所有 Worker 中取用。不過，若重新啟動 Server，則已快取的資料會被清除。"
 
 #: docs/10.x/octane.md:block 152 (code)
 msgid "Cache::store('octane')->put('framework', 'Laravel', 30);\n"
@@ -829,15 +829,15 @@ msgstr "Cache::store('octane')->put('framework', 'Laravel', 30);\n"
 
 #: docs/10.x/octane.md:block 153 (quote)
 msgid "**Note** The maximum number of entries allowed in the Octane cache may be defined in your application's `octane` configuration file."
-msgstr ""
+msgstr "**Note** 可存在 Octane Cache 中的最大資料筆數可在專案的 `octane` 設定檔中定義。"
 
 #: docs/10.x/octane.md:block 155 (header)
 msgid "Cache Intervals"
-msgstr ""
+msgstr "Cache 週期"
 
 #: docs/10.x/octane.md:block 156 (paragraph)
 msgid "In addition to the typical methods provided by Laravel's cache system, the Octane cache driver features interval based caches. These caches are automatically refreshed at the specified interval and should be registered within the `boot` method of one of your application's service providers. For example, the following cache will be refreshed every five seconds:"
-msgstr ""
+msgstr "除了 Laravel 的 Cache 系統所提供的一般方法外，Octane 的 Cache Driver 還提供了基於週期的快取。這些快取會在特定週期後被自動重新整理。需要在專案中某個 Service Provider 內的 `boot` 方法中註冊這些快取。舉例來說，下列快取每隔 5 秒就會被重新整理："
 
 #: docs/10.x/octane.md:block 157 (code)
 msgid "use Illuminate\\Support\\Str;\n\n"
@@ -851,15 +851,15 @@ msgstr "use Illuminate\\Support\\Str;\n\n"
 
 #: docs/10.x/octane.md:block 159 (header)
 msgid "Tables"
-msgstr ""
+msgstr "Table"
 
 #: docs/10.x/octane.md:block 161 (paragraph)
 msgid "When using Swoole, you may define and interact with your own arbitrary [Swoole tables](https://www.swoole.co.uk/docs/modules/swoole-table). Swoole tables provide extreme performance throughput and the data in these tables can be accessed by all workers on the server. However, the data within them will be lost when the server is restarted."
-msgstr ""
+msgstr "使用 Swoole 時，也可以定義與使用任意的 [Swoole Table](https://www.swoole.co.uk/docs/modules/swoole-table)。Swoole Table 提供了超快的吞吐效能。而存在 Swoole Table 中的資料可被 Swoole Server 中的所有 Worker 存取。不過，一旦重新啟動 Server，存在 Swoole Table 中的資料就會消失。"
 
 #: docs/10.x/octane.md:block 162 (paragraph)
 msgid "Tables should be defined within the `tables` configuration array of your application's `octane` configuration file. An example table that allows a maximum of 1000 rows is already configured for you. The maximum size of string columns may be configured by specifying the column size after the column type as seen below:"
-msgstr ""
+msgstr "可以在專案的 `octane` 設定檔中 `tables` 設定陣列內定義 Swoole Table。在設定檔中，已包含了一個允許最多 1000 行資料的範例 Table 定義。可像下面範例這樣在欄位型別後指定字串欄位的最大大小："
 
 #: docs/10.x/octane.md:block 163 (code)
 msgid "'tables' => [\n"
@@ -877,7 +877,7 @@ msgstr "'tables' => [\n"
 
 #: docs/10.x/octane.md:block 164 (paragraph)
 msgid "To access a table, you may use the `Octane::table` method:"
-msgstr ""
+msgstr "若要存取 Swoole Table，可使用 `Octane::table` 方法："
 
 #: docs/10.x/octane.md:block 165 (code)
 msgid "use Laravel\\Octane\\Facades\\Octane;\n\n"
@@ -895,7 +895,7 @@ msgstr "use Laravel\\Octane\\Facades\\Octane;\n\n"
 
 #: docs/10.x/octane.md:block 166 (quote)
 msgid "**Warning** The column types supported by Swoole tables are: `string`, `int`, and `float`."
-msgstr ""
+msgstr "**Warning** Swoole 所支援的欄位型別為：`string`、`int`，與 `float`。"
 
 #: docs/8.x/octane.md:block 5 (paragraph)
 msgid "[Laravel Octane](https://github.com/laravel/octane) supercharges your application's performance by serving your application using high-powered application servers, including [Open Swoole](https://swoole.co.uk), [Swoole](https://github.com/swoole/swoole-src), and [RoadRunner](https://roadrunner.dev). Octane boots your application once, keeps it in memory, and then feeds it requests at supersonic speeds."
@@ -933,11 +933,11 @@ msgstr "{tip} 若你還未準備好自行管理伺服器設定，或不擅長設
 
 #: docs/8.x/octane.md:block 66 (paragraph)
 msgid "Before using this feature, you should ensure that [Node](https://nodejs.org) is installed within your local development environment. In addition, you should install the [Chokidar](https://github.com/paulmillr/chokidar) file-watching library within your project:library:"
-msgstr ""
+msgstr "在使用此功能前，請先確認本機開發環境上是否有安裝 [Node](https://nodejs.org)。此外，也需要在專案中安裝 [Chokidar](https://github.com/paulmillr/chokidar) 檔案監控套件："
 
 #: docs/8.x/octane.md:block 77 (paragraph)
 msgid "To help prevent stray memory leaks, Octane can gracefully restart a worker once it has handled a given number of requests. To instruct Octane to do this, you may use the `--max-requests` option:"
-msgstr ""
+msgstr "為了協助避免造成 Memory Leak，可以讓 Octane 在處理給定數量的 Request 後重新柔性重新啟動 (Gracefully Restart) Worker。若要讓 Octane 在處理一定數量後重新啟動 Server，可以使用 `--max-requests` 選項："
 
 #: docs/8.x/octane.md:block 99 (code)
 msgid "use App\\Service;\n\n"
@@ -1031,7 +1031,7 @@ msgstr "use App\\Service;\n\n"
 
 #: docs/8.x/octane.md:block 112 (quote)
 msgid "{note} It is acceptable to type-hint the `Illuminate\\Http\\Request` instance on your controller methods and route closures."
-msgstr ""
+msgstr "{note} 在 Controller 方法或 Route Closure 中，可型別提示 `Illuminate\\Http\\Request`。"
 
 #: docs/8.x/octane.md:block 116 (code)
 msgid "use App\\Service;\n\n"
@@ -1109,11 +1109,11 @@ msgstr "use App\\Service;\n"
 
 #: docs/8.x/octane.md:block 128 (quote)
 msgid "{note} This feature requires [Swoole](#swoole)."
-msgstr ""
+msgstr "{note} 使用此功能時必須使用 [Swoole](#swoole)。"
 
 #: docs/8.x/octane.md:block 147 (quote)
 msgid "{tip} The maximum number of entries allowed in the Octane cache may be defined in your application's `octane` configuration file."
-msgstr ""
+msgstr "{tip} 可存在 Octane Cache 中的最大資料筆數可在專案的 `octane` 設定檔中定義。"
 
 #: docs/8.x/octane.md:block 151 (code)
 msgid "use Illuminate\\Support\\Str;\n\n"
@@ -1127,7 +1127,7 @@ msgstr "use Illuminate\\Support\\Str;\n\n"
 
 #: docs/8.x/octane.md:block 160 (quote)
 msgid "{note} The column types supported by Swoole tables are: `string`, `int`, and `float`."
-msgstr ""
+msgstr "{note} Swoole 所支援的欄位型別為：`string`、`int`，與 `float`。"
 
 #: docs/9.x/octane.md:block 14 (quote)
 msgid "**Warning** Laravel Octane requires [PHP 8.0+](https://php.net/releases/)."

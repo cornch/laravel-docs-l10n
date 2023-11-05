@@ -10,7 +10,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
-"PO-Revision-Date: 2023-11-05 13:29\n"
+"PO-Revision-Date: 2023-11-05 14:58\n"
 
 #: docs/10.x/eloquent.md:block 1 (header)
 msgid "Eloquent: Getting Started"
@@ -182,7 +182,7 @@ msgstr "Laravel Bootcamp"
 
 #: docs/10.x/eloquent.md:block 8 (paragraph)
 msgid "If you're new to Laravel, feel free to jump into the [Laravel Bootcamp](https://bootcamp.laravel.com). The Laravel Bootcamp will walk you through building your first Laravel application using Eloquent. It's a great way to get a tour of everything that Laravel and Eloquent have to offer."
-msgstr ""
+msgstr "如果你第一次接觸 Laravel，歡迎參考 [Laravel Bootcamp (英語)](https://bootcamp.laravel.com)。Laravel Bootcamp 會帶領你使用 Eloquent 來建立你的第一個 Laravel 專案。Laravel Bootcamp 是學習各種有關 Laravel 與 Eloquent 相關技術的好地方。"
 
 #: docs/10.x/eloquent.md:block 10 (header)
 msgid "Generating Model Classes"
@@ -230,7 +230,27 @@ msgid "# Generate a model and a FlightFactory class...\n"
 "# Generate a pivot model...\n"
 "php artisan make:model Member --pivot\n"
 "php artisan make:model Member -p\n"
-msgstr ""
+msgstr "# 產生 Model 與一個 FlightFactory 類別...\n"
+"php artisan make:model Flight --factory\n"
+"php artisan make:model Flight -f\n\n"
+"# 產生 Model 與一個 FlightSeeder 類別...\n"
+"php artisan make:model Flight --seed\n"
+"php artisan make:model Flight -s\n\n"
+"# 產生 Model 與一個 FlightController 類別...\n"
+"php artisan make:model Flight --controller\n"
+"php artisan make:model Flight -c\n\n"
+"# 產生 Model、FlightController 資源類別、以及 Form Request 類別...\n"
+"php artisan make:model Flight --controller --resource --requests\n"
+"php artisan make:model Flight -crR\n\n"
+"# 產生 Model 與一個 FlightPolicy 類別...\n"
+"php artisan make:model Flight --policy\n\n"
+"# 產生 Migration、Factory、Seeder、與 Controller...\n"
+"php artisan make:model Flight -mfsc\n\n"
+"# 產生 Model、Migration、Factory、Seeder、Policy、Controller、與 Form Requests...\n"
+"php artisan make:model Flight --all\n\n"
+"# 產生樞紐 Model...\n"
+"php artisan make:model Member --pivot\n"
+"php artisan make:model Member -p\n"
 
 #: docs/10.x/eloquent.md:block 18 (header)
 msgid "Inspecting Models"
@@ -1166,7 +1186,26 @@ msgid "<?php\n\n"
 "        return redirect('/flights');\n"
 "    }\n"
 "}\n"
-msgstr ""
+msgstr "<?php\n\n"
+"namespace App\\Http\\Controllers;\n\n"
+"use App\\Http\\Controllers\\Controller;\n"
+"use App\\Models\\Flight;\n"
+"use Illuminate\\Http\\RedirectResponse;\n"
+"use Illuminate\\Http\\Request;\n\n"
+"class FlightController extends Controller\n"
+"{\n"
+"    /**\n"
+"     * Store a new flight in the database.\n"
+"     */\n"
+"    public function store(Request $request): RedirectResponse\n"
+"    {\n"
+"        // 驗證 Request...\n\n"
+"        $flight = new Flight;\n\n"
+"        $flight->name = $request->name;\n\n"
+"        $flight->save();\n\n"
+"        return redirect('/flights');\n"
+"    }\n"
+"}\n"
 
 #: docs/10.x/eloquent.md:block 162 (paragraph)
 msgid "In this example, we assign the `name` field from the incoming HTTP request to the `name` attribute of the `App\\Models\\Flight` model instance. When we call the `save` method, a record will be inserted into the database. The model's `created_at` and `updated_at` timestamps will automatically be set when the `save` method is called, so there is no need to set them manually."
@@ -1975,15 +2014,15 @@ msgstr "使用全域 Scope，就可以將某個查詢條件套用到給定 Model
 
 #: docs/10.x/eloquent.md:block 301 (header)
 msgid "Generating Scopes"
-msgstr ""
+msgstr "產生 Scope"
 
 #: docs/10.x/eloquent.md:block 302 (paragraph)
 msgid "To generate a new global scope, you may invoke the `make:scope` Artisan command, which will place the generated scope in your application's `app/Models/Scopes` directory:"
-msgstr ""
+msgstr "若要產生新的全域 Scope，可以呼叫 `make:scope` Artisan 指令。該指令會在專案的 `app/Models/Scopes` 目錄下產生 Scope："
 
 #: docs/10.x/eloquent.md:block 303 (code)
 msgid "php artisan make:scope AncientScope\n"
-msgstr ""
+msgstr "php artisan make:scope AncientScope\n"
 
 #: docs/10.x/eloquent.md:block 305 (header)
 msgid "Writing Global Scopes"
@@ -1991,7 +2030,7 @@ msgstr "撰寫全域 Scope"
 
 #: docs/10.x/eloquent.md:block 306 (paragraph)
 msgid "Writing a global scope is simple. First, use the `make:scope` command to generate a class that implements the `Illuminate\\Database\\Eloquent\\Scope` interface. The `Scope` interface requires you to implement one method: `apply`. The `apply` method may add `where` constraints or other types of clauses to the query as needed:"
-msgstr ""
+msgstr "撰寫全域 Scope 很簡單。首先，使用 `make:scope` 指令來產生一個實作了 `Illuminate\\Database\\Eloquent\\Scope` 介面的類別。`Scope` 介面要求要實作一個方法：`apply`。`apply` 方法可用來在 Query 上依照需求加入 `where` 條件限制或其他類型的子句："
 
 #: docs/10.x/eloquent.md:block 307 (code)
 msgid "<?php\n\n"
@@ -2243,7 +2282,7 @@ msgstr "不過，因為這麼做可能會很麻煩，因此 Laravel 提供了一
 
 #: docs/10.x/eloquent.md:block 339 (code)
 msgid "$users = User::popular()->orWhere->active()->get();\n"
-msgstr ""
+msgstr "$users = User::popular()->orWhere->active()->get();\n"
 
 #: docs/10.x/eloquent.md:block 341 (header)
 msgid "Dynamic Scopes"
@@ -2268,7 +2307,20 @@ msgid "<?php\n\n"
 "        $query->where('type', $type);\n"
 "    }\n"
 "}\n"
-msgstr ""
+msgstr "<?php\n\n"
+"namespace App\\Models;\n\n"
+"use Illuminate\\Database\\Eloquent\\Builder;\n"
+"use Illuminate\\Database\\Eloquent\\Model;\n\n"
+"class User extends Model\n"
+"{\n"
+"    /**\n"
+"     * Scope a query to only include users of a given type.\n"
+"     */\n"
+"    public function scopeOfType(Builder $query, string $type): void\n"
+"    {\n"
+"        $query->where('type', $type);\n"
+"    }\n"
+"}\n"
 
 #: docs/10.x/eloquent.md:block 344 (paragraph)
 msgid "Once the expected arguments have been added to your scope method's signature, you may pass the arguments when calling the scope:"
@@ -2600,7 +2652,7 @@ msgstr "Observer 與資料庫 Transaction"
 
 #: docs/10.x/eloquent.md:block 382 (paragraph)
 msgid "When models are being created within a database transaction, you may want to instruct an observer to only execute its event handlers after the database transaction is committed. You may accomplish this by implementing the `ShouldHandleEventsAfterCommit` interface on your observer. If a database transaction is not in progress, the event handlers will execute immediately:"
-msgstr ""
+msgstr "若 Model 是在資料庫 Transaction 內建立的，則我們可能會想讓 Observer 只在資料庫 Transaction 被 Commit 後才執行其事件處理常式。為此，可以在 Observer 上實作 `ShouldHandleEventsAfterCommit` 介面。若沒有在執行資料庫 Transaction，則該 Event Handler 會立即執行："
 
 #: docs/10.x/eloquent.md:block 383 (code)
 msgid "<?php\n\n"
@@ -2617,7 +2669,20 @@ msgid "<?php\n\n"
 "        // ...\n"
 "    }\n"
 "}\n"
-msgstr ""
+msgstr "<?php\n\n"
+"namespace App\\Observers;\n\n"
+"use App\\Models\\User;\n"
+"use Illuminate\\Contracts\\Events\\ShouldHandleEventsAfterCommit;\n\n"
+"class UserObserver implements ShouldHandleEventsAfterCommit\n"
+"{\n"
+"    /**\n"
+"     * Handle the User \"created\" event.\n"
+"     */\n"
+"    public function created(User $user): void\n"
+"    {\n"
+"        // ...\n"
+"    }\n"
+"}\n"
 
 #: docs/10.x/eloquent.md:block 385 (header)
 msgid "Muting Events"
@@ -3987,14 +4052,17 @@ msgstr "<?php\n\n"
 
 #: docs/master/eloquent.md:block 221 (paragraph)
 msgid "Eloquent's `upsert` method may be used to update or create records in a single, atomic operation. The method's first argument consists of the values to insert or update, while the second argument lists the column(s) that uniquely identify records within the associated table. The method's third and final argument is an array of the columns that should be updated if a matching record already exists in the database. The `upsert` method will automatically set the `created_at` and `updated_at` timestamps if timestamps are enabled on the model:"
-msgstr ""
+msgstr "Eloquent 的 `upsert` 方法可用來以 ^[Atomic](不可部分完成) 的單一查詢來更新或建立紀錄。該方法的第一個引數為用來插入或更新的值，而第二個引數則列出用來在相關資料表上識別出紀錄唯一性的欄位。該方法的第三個與最後一個引數是一組包含欄位的陣列，這些欄位是在資料庫中有相符紀錄時會更新的欄位。若 Model 上有啟用時戳，則 `upsert` 方法會自動設定 `created_at` 與 `updated_at` 時戳："
 
 #: docs/master/eloquent.md:block 222 (code)
 msgid "Flight::upsert([\n"
 "    ['departure' => 'Oakland', 'destination' => 'San Diego', 'price' => 99],\n"
 "    ['departure' => 'Chicago', 'destination' => 'New York', 'price' => 150]\n"
 "], uniqueBy: ['departure', 'destination'], update: ['price']);\n"
-msgstr ""
+msgstr "Flight::upsert([\n"
+"    ['departure' => 'Oakland', 'destination' => 'San Diego', 'price' => 99],\n"
+"    ['departure' => 'Chicago', 'destination' => 'New York', 'price' => 150]\n"
+"], uniqueBy: ['departure', 'destination'], update: ['price']);\n"
 
 #: docs/master/eloquent.md:block 346 (code)
 msgid "<?php\n\n"

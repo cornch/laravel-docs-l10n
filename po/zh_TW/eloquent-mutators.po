@@ -10,7 +10,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
-"PO-Revision-Date: 2023-11-05 16:08\n"
+"PO-Revision-Date: 2023-11-05 17:17\n"
 
 #: docs/10.x/eloquent-mutators.md:block 1 (header)
 msgid "Eloquent: Mutators & Casting"
@@ -804,7 +804,7 @@ msgstr "日期型別轉換、序列化、與時區"
 
 #: docs/10.x/eloquent-mutators.md:block 88 (paragraph)
 msgid "By default, the `date` and `datetime` casts will serialize dates to a UTC ISO-8601 date string (`YYYY-MM-DDTHH:MM:SS.uuuuuuZ`), regardless of the timezone specified in your application's `timezone` configuration option. You are strongly encouraged to always use this serialization format, as well as to store your application's dates in the UTC timezone by not changing your application's `timezone` configuration option from its default `UTC` value. Consistently using the UTC timezone throughout your application will provide the maximum level of interoperability with other date manipulation libraries written in PHP and JavaScript."
-msgstr ""
+msgstr "預設情況下，不論專案的 `timezone` 設定選項設為哪個時區，`date` 與 `datetime` 都會將日期序列化為 UTC 的 ISO-8601 日期字串 (`YYYY-MM-DDTHH:MM:SS.uuuuuuZ`)。我們強烈建議你保持使用這個序列化格式，也建議你只將專案的 `timezone` 設定選項設為預設的 `UTC`，並讓專案中以 UTC 來儲存所有的日期時間。在專案中保持一致地使用 UTC 時區，可為其他 PHP 與 JavaScript 的日期操作函示庫提供最大的互用性。"
 
 #: docs/10.x/eloquent-mutators.md:block 89 (paragraph)
 msgid "If a custom format is applied to the `date` or `datetime` cast, such as `datetime:Y-m-d H:i:s`, the inner timezone of the Carbon instance will be used during date serialization. Typically, this will be the timezone specified in your application's `timezone` configuration option."
@@ -1160,15 +1160,15 @@ msgstr "**Note** 若有打算要將包含數值物件的 Eloquent Model 序列�
 
 #: docs/10.x/eloquent-mutators.md:block 130 (header)
 msgid "Value Object Caching"
-msgstr ""
+msgstr "數值物件的快取"
 
 #: docs/10.x/eloquent-mutators.md:block 131 (paragraph)
 msgid "When attributes that are cast to value objects are resolved, they are cached by Eloquent. Therefore, the same object instance will be returned if the attribute is accessed again."
-msgstr ""
+msgstr "當在解析會被轉換為數值物件的屬性時，Eloquent 會快取這些物件。因此，再次存取該屬性時，會回傳同一個物件實體。"
 
 #: docs/10.x/eloquent-mutators.md:block 132 (paragraph)
 msgid "If you would like to disable the object caching behavior of custom cast classes, you may declare a public `withoutObjectCaching` property on your custom cast class:"
-msgstr ""
+msgstr "若要禁用自定 Cast 類別的物件快取行為，可在自定 Cast 類別上宣告一個 public 的 `withoutObjectCaching` 屬性："
 
 #: docs/10.x/eloquent-mutators.md:block 133 (code)
 msgid "class Address implements CastsAttributes\n"
@@ -1176,7 +1176,11 @@ msgid "class Address implements CastsAttributes\n"
 "    public bool $withoutObjectCaching = true;\n\n"
 "    // ...\n"
 "}\n"
-msgstr ""
+msgstr "class Address implements CastsAttributes\n"
+"{\n"
+"    public bool $withoutObjectCaching = true;\n\n"
+"    // ...\n"
+"}\n"
 
 #: docs/10.x/eloquent-mutators.md:block 135 (header)
 msgid "Array / JSON Serialization"
@@ -1255,7 +1259,30 @@ msgid "<?php\n\n"
 "                    : hash($this->algorithm, $value);\n"
 "    }\n"
 "}\n"
-msgstr ""
+msgstr "<?php\n\n"
+"namespace App\\Casts;\n\n"
+"use Illuminate\\Contracts\\Database\\Eloquent\\CastsInboundAttributes;\n"
+"use Illuminate\\Database\\Eloquent\\Model;\n\n"
+"class Hash implements CastsInboundAttributes\n"
+"{\n"
+"    /**\n"
+"     * Create a new cast class instance.\n"
+"     */\n"
+"    public function __construct(\n"
+"        protected string|null $algorithm = null,\n"
+"    ) {}\n\n"
+"    /**\n"
+"     * Prepare the given value for storage.\n"
+"     *\n"
+"     * @param  array<string, mixed>  $attributes\n"
+"     */\n"
+"    public function set(Model $model, string $key, mixed $value, array $attributes): string\n"
+"    {\n"
+"        return is_null($this->algorithm)\n"
+"                    ? bcrypt($value)\n"
+"                    : hash($this->algorithm, $value);\n"
+"    }\n"
+"}\n"
 
 #: docs/10.x/eloquent-mutators.md:block 147 (header)
 msgid "Cast Parameters"

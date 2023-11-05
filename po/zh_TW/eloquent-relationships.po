@@ -10,7 +10,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
-"PO-Revision-Date: 2023-11-05 13:29\n"
+"PO-Revision-Date: 2023-11-05 17:17\n"
 
 #: docs/10.x/eloquent-relationships.md:block 1 (header)
 msgid "Eloquent: Relationships"
@@ -714,11 +714,11 @@ msgstr "**Warning** 由於 PostgreSQL 不支援在 UUID 欄位上執行 `MAX` �
 
 #: docs/10.x/eloquent-relationships.md:block 83 (header)
 msgid "Converting \"Many\" Relationships To Has One Relationships"
-msgstr ""
+msgstr "將「Many」關聯轉換為 Has One 關聯"
 
 #: docs/10.x/eloquent-relationships.md:block 84 (paragraph)
 msgid "Often, when retrieving a single model using the `latestOfMany`, `oldestOfMany`, or `ofMany` methods, you already have a \"has many\" relationship defined for the same model. For convenience, Laravel allows you to easily convert this relationship into a \"has one\" relationship by invoking the `one` method on the relationship:"
-msgstr ""
+msgstr "在使用 `latestOfMany`, `oldestOfMany` 或 `ofMany` 方法來取得單一 Model 時，常常都是在這個 Model 上已經有定義「Has Many」關聯的情況。針對此狀況，Laravel 提供了一個方便的作法：你只要在關聯上呼叫 `one` 方法，就可以輕鬆地將此關聯轉換為「Has One」關聯："
 
 #: docs/10.x/eloquent-relationships.md:block 85 (code)
 msgid "/**\n"
@@ -735,7 +735,20 @@ msgid "/**\n"
 "{\n"
 "    return $this->orders()->one()->ofMany('price', 'max');\n"
 "}\n"
-msgstr ""
+msgstr "/**\n"
+" * Get the user's orders.\n"
+" */\n"
+"public function orders(): HasMany\n"
+"{\n"
+"    return $this->hasMany(Order::class);\n"
+"}\n\n"
+"/**\n"
+" * Get the user's largest order.\n"
+" */\n"
+"public function largestOrder(): HasOne\n"
+"{\n"
+"    return $this->orders()->one()->ofMany('price', 'max');\n"
+"}\n"
 
 #: docs/10.x/eloquent-relationships.md:block 87 (header)
 msgid "Advanced Has One Of Many Relationships"
@@ -2127,7 +2140,7 @@ msgstr "$user->posts()\n"
 
 #: docs/10.x/eloquent-relationships.md:block 287 (paragraph)
 msgid "The example above will generate the following SQL. As you can see, the `or` clause instructs the query to return *any* post with greater than 100 votes. The query is no longer constrained to a specific user:"
-msgstr ""
+msgstr "上述的例子會產生下列的 SQL。如你所見，`or` 子句會讓查詢回傳 **所有** 大於 100 得票數的貼文。這個查詢不會被限制在任何特定使用者上："
 
 #: docs/10.x/eloquent-relationships.md:block 288 (code)
 msgid "select *\n"
@@ -2929,7 +2942,11 @@ msgid "use App\\Models\\User;\n"
 "$users = User::with(['posts' => function (Builder $query) {\n"
 "    $query->where('title', 'like', '%code%');\n"
 "}])->get();\n"
-msgstr ""
+msgstr "use App\\Models\\User;\n"
+"use Illuminate\\Contracts\\Database\\Eloquent\\Builder;\n\n"
+"$users = User::with(['posts' => function (Builder $query) {\n"
+"    $query->where('title', 'like', '%code%');\n"
+"}])->get();\n"
 
 #: docs/10.x/eloquent-relationships.md:block 418 (paragraph)
 msgid "In this example, Eloquent will only eager load posts where the post's `title` column contains the word `code`. You may call other [query builder](/docs/{{version}}/queries) methods to further customize the eager loading operation:"
@@ -2967,7 +2984,17 @@ msgid "use Illuminate\\Database\\Eloquent\\Relations\\MorphTo;\n\n"
 "        },\n"
 "    ]);\n"
 "}])->get();\n"
-msgstr ""
+msgstr "use Illuminate\\Database\\Eloquent\\Relations\\MorphTo;\n\n"
+"$comments = Comment::with(['commentable' => function (MorphTo $morphTo) {\n"
+"    $morphTo->constrain([\n"
+"        Post::class => function ($query) {\n"
+"            $query->whereNull('hidden_at');\n"
+"        },\n"
+"        Video::class => function ($query) {\n"
+"            $query->where('type', 'educational');\n"
+"        },\n"
+"    ]);\n"
+"}])->get();\n"
 
 #: docs/10.x/eloquent-relationships.md:block 425 (paragraph)
 msgid "In this example, Eloquent will only eager load posts that have not been hidden and videos that have a `type` value of \"educational\"."
@@ -3102,7 +3129,10 @@ msgid "Model::handleLazyLoadingViolationUsing(function (Model $model, string $re
 "    $class = $model::class;\n\n"
 "    info(\"Attempted to lazy load [{$relation}] on model [{$class}].\");\n"
 "});\n"
-msgstr ""
+msgstr "Model::handleLazyLoadingViolationUsing(function (Model $model, string $relation) {\n"
+"    $class = $model::class;\n\n"
+"    info(\"Attempted to lazy load [{$relation}] on model [{$class}].\");\n"
+"});\n"
 
 #: docs/10.x/eloquent-relationships.md:block 455 (header)
 msgid "Inserting & Updating Related Models"
@@ -3182,11 +3212,11 @@ msgstr "$post = Post::find(1);\n\n"
 
 #: docs/10.x/eloquent-relationships.md:block 469 (paragraph)
 msgid "The `pushQuietly` method may be used to save a model and its associated relationships without raising any events:"
-msgstr ""
+msgstr "`pushQuietly` 方法可用在不產生任何 Event 的情況下來保存 Model 於其關聯："
 
 #: docs/10.x/eloquent-relationships.md:block 470 (code)
 msgid "$post->pushQuietly();\n"
-msgstr ""
+msgstr "$post->pushQuietly();\n"
 
 #: docs/10.x/eloquent-relationships.md:block 472 (header)
 msgid "The `create` Method"
@@ -3226,7 +3256,7 @@ msgstr "$post = Post::find(1);\n\n"
 
 #: docs/10.x/eloquent-relationships.md:block 477 (paragraph)
 msgid "The `createQuietly` and `createManyQuietly` methods may be used to create a model(s) without dispatching any events:"
-msgstr ""
+msgstr "`createQuietly` 與 `createManyQuietly` 方法可用來在不分派任何 Event 的情況下建立 Model："
 
 #: docs/10.x/eloquent-relationships.md:block 478 (code)
 msgid "$user = User::find(1);\n\n"
@@ -3237,7 +3267,14 @@ msgid "$user = User::find(1);\n\n"
 "    ['title' => 'First post.'],\n"
 "    ['title' => 'Second post.'],\n"
 "]);\n"
-msgstr ""
+msgstr "$user = User::find(1);\n\n"
+"$user->posts()->createQuietly([\n"
+"    'title' => 'Post title.',\n"
+"]);\n\n"
+"$user->posts()->createManyQuietly([\n"
+"    ['title' => 'First post.'],\n"
+"    ['title' => 'Second post.'],\n"
+"]);\n"
 
 #: docs/10.x/eloquent-relationships.md:block 479 (paragraph)
 msgid "You may also use the `findOrNew`, `firstOrNew`, `firstOrCreate`, and `updateOrCreate` methods to [create and update models on relationships](/docs/{{version}}/eloquent#upserts)."

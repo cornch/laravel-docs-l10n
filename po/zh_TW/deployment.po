@@ -10,7 +10,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
-"PO-Revision-Date: 2023-11-05 13:29\n"
+"PO-Revision-Date: 2023-11-05 14:58\n"
 
 #: docs/10.x/deployment.md:block 1 (header)
 msgid "Deployment"
@@ -42,19 +42,19 @@ msgstr "[Autoloader 的最佳化](#autoloader-optimization)"
 
 #: docs/10.x/deployment.md:block 2 (unordered list)
 msgid "[Caching Configuration](#optimizing-configuration-loading)"
-msgstr ""
+msgstr "[快取設定檔](#optimizing-configuration-loading)"
 
 #: docs/10.x/deployment.md:block 2 (unordered list)
 msgid "[Caching Events](#caching-events)"
-msgstr ""
+msgstr "[快取 Event](#caching-events)"
 
 #: docs/10.x/deployment.md:block 2 (unordered list)
 msgid "[Caching Routes](#optimizing-route-loading)"
-msgstr ""
+msgstr "[快取 Route](#optimizing-route-loading)"
 
 #: docs/10.x/deployment.md:block 2 (unordered list)
 msgid "[Caching Views](#optimizing-view-loading)"
-msgstr ""
+msgstr "[快取 View](#optimizing-view-loading)"
 
 #: docs/10.x/deployment.md:block 2 (unordered list)
 msgid "[Debug Mode](#debug-mode)"
@@ -62,7 +62,7 @@ msgstr "[偵錯模式](#debug-mode)"
 
 #: docs/10.x/deployment.md:block 2 (unordered list)
 msgid "[Easy Deployment With Forge / Vapor](#deploying-with-forge-or-vapor)"
-msgstr ""
+msgstr "[使用 Forge 或 Vapor 來輕鬆部署](#deploying-with-forge-or-vapor)"
 
 #: docs/10.x/deployment.md:block 4 (header)
 msgid "Introduction"
@@ -177,7 +177,30 @@ msgid "server {\n"
 "        deny all;\n"
 "    }\n"
 "}\n"
-msgstr ""
+msgstr "server {\n"
+"    listen 80;\n"
+"    listen [::]:80;\n"
+"    server_name example.com;\n"
+"    root /srv/example.com/public;\n\n"
+"    add_header X-Frame-Options \"SAMEORIGIN\";\n"
+"    add_header X-Content-Type-Options \"nosniff\";\n\n"
+"    index index.php;\n\n"
+"    charset utf-8;\n\n"
+"    location / {\n"
+"        try_files $uri $uri/ /index.php?$query_string;\n"
+"    }\n\n"
+"    location = /favicon.ico { access_log off; log_not_found off; }\n"
+"    location = /robots.txt  { access_log off; log_not_found off; }\n\n"
+"    error_page 404 /index.php;\n\n"
+"    location ~ \\.php$ {\n"
+"        fastcgi_pass unix:/var/run/php/php8.2-fpm.sock;\n"
+"        fastcgi_param SCRIPT_FILENAME $realpath_root$fastcgi_script_name;\n"
+"        include fastcgi_params;\n"
+"    }\n\n"
+"    location ~ /\\.(?!well-known).* {\n"
+"        deny all;\n"
+"    }\n"
+"}\n"
 
 #: docs/10.x/deployment.md:block 20 (header)
 msgid "Optimization"
@@ -201,7 +224,7 @@ msgstr "**Note** 除了最佳化 Autoloader 外，也應確保有將 `composer.l
 
 #: docs/10.x/deployment.md:block 27 (header)
 msgid "Caching Configuration"
-msgstr ""
+msgstr "快取設定檔"
 
 #: docs/10.x/deployment.md:block 28 (paragraph)
 msgid "When deploying your application to production, you should make sure that you run the `config:cache` Artisan command during your deployment process:"
@@ -221,19 +244,19 @@ msgstr "**Warning** 若在部署流程中執行了 `config:cache` 指令，應�
 
 #: docs/10.x/deployment.md:block 33 (header)
 msgid "Caching Events"
-msgstr ""
+msgstr "快取 Event"
 
 #: docs/10.x/deployment.md:block 34 (paragraph)
 msgid "If your application is utilizing [event discovery](/docs/{{version}}/events#event-discovery), you should cache your application's event to listener mappings during your deployment process. This can be accomplished by invoking the `event:cache` Artisan command during deployment:"
-msgstr ""
+msgstr "若你的專案使用 [Event Discovery](/docs/{{version}}/events#event-discovery)，則應在部署流程中快取專案的 Event 與 Listener 的映射。只要在部署時呼叫 `event:cache` Artisan 指令即可快取 Event："
 
 #: docs/10.x/deployment.md:block 35 (code)
 msgid "php artisan event:cache\n"
-msgstr ""
+msgstr "php artisan event:cache\n"
 
 #: docs/10.x/deployment.md:block 37 (header)
 msgid "Caching Routes"
-msgstr ""
+msgstr "快取 Route"
 
 #: docs/10.x/deployment.md:block 38 (paragraph)
 msgid "If you are building a large application with many routes, you should make sure that you are running the `route:cache` Artisan command during your deployment process:"
@@ -249,7 +272,7 @@ msgstr "該指令可將所有的路由註冊減少為快取檔案內的單一方
 
 #: docs/10.x/deployment.md:block 42 (header)
 msgid "Caching Views"
-msgstr ""
+msgstr "快取 View"
 
 #: docs/10.x/deployment.md:block 43 (paragraph)
 msgid "When deploying your application to production, you should make sure that you run the `view:cache` Artisan command during your deployment process:"
@@ -273,11 +296,11 @@ msgstr "config/app.php 設定檔中的 debug 選項用來判斷錯誤在實際�
 
 #: docs/10.x/deployment.md:block 49 (quote)
 msgid "**Warning** **In your production environment, this value should always be `false`. If the `APP_DEBUG` variable is set to `true` in production, you risk exposing sensitive configuration values to your application's end users.**"
-msgstr ""
+msgstr "**Warning** **在正式環境上，這個值一定要是 `false`。若在正式環境上將 `APP_DEBUG` 變數設為 `true`，則會有將機敏設定值暴露給應用程式終端使用者的風險。**"
 
 #: docs/10.x/deployment.md:block 51 (header)
 msgid "Easy Deployment With Forge / Vapor"
-msgstr ""
+msgstr "使用 Forge 或 Vapor 來輕鬆部署"
 
 #: docs/10.x/deployment.md:block 53 (header)
 msgid "Laravel Forge"

@@ -10,7 +10,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
-"PO-Revision-Date: 2023-11-05 13:29\n"
+"PO-Revision-Date: 2023-11-05 17:17\n"
 
 #: docs/10.x/eloquent-resources.md:block 1 (header)
 msgid "Eloquent: API Resources"
@@ -366,7 +366,7 @@ msgstr "**Note** 若你還未閱讀《[概念概覽](#concept-overview)》，我
 
 #: docs/10.x/eloquent-resources.md:block 48 (paragraph)
 msgid "Resources only need to transform a given model into an array. So, each resource contains a `toArray` method which translates your model's attributes into an API friendly array that can be returned from your application's routes or controllers:"
-msgstr ""
+msgstr "Resource 只負責把給定的 Model 轉換為陣列。因此，每個 Resource 都包含了一個 `toArray` 方法，可用來將 Model 的屬性轉換為對適合用在 API 的陣列，並讓你能在路由或 Controller 內回傳這個陣列："
 
 #: docs/10.x/eloquent-resources.md:block 50 (paragraph)
 msgid "Once a resource has been defined, it may be returned directly from a route or controller:"
@@ -452,7 +452,27 @@ msgid "<?php\n\n"
 "        ];\n"
 "    }\n"
 "}\n"
-msgstr ""
+msgstr "<?php\n\n"
+"namespace App\\Http\\Resources;\n\n"
+"use Illuminate\\Http\\Request;\n"
+"use Illuminate\\Http\\Resources\\Json\\ResourceCollection;\n\n"
+"class UserCollection extends ResourceCollection\n"
+"{\n"
+"    /**\n"
+"     * Transform the resource collection into an array.\n"
+"     *\n"
+"     * @return array<string, mixed>\n"
+"     */\n"
+"    public function toArray(Request $request): array\n"
+"    {\n"
+"        return [\n"
+"            'data' => $this->collection,\n"
+"            'links' => [\n"
+"                'self' => 'link-value',\n"
+"            ],\n"
+"        ];\n"
+"    }\n"
+"}\n"
 
 #: docs/10.x/eloquent-resources.md:block 63 (paragraph)
 msgid "Like singular resources, resource collections may be returned directly from routes or controllers:"
@@ -660,7 +680,35 @@ msgid "{\n"
 "        \"total\": 10\n"
 "    }\n"
 "}\n"
-msgstr ""
+msgstr "{\n"
+"    \"data\": [\n"
+"        {\n"
+"            \"id\": 1,\n"
+"            \"name\": \"Eladio Schroeder Sr.\",\n"
+"            \"email\": \"therese28@example.com\"\n"
+"        },\n"
+"        {\n"
+"            \"id\": 2,\n"
+"            \"name\": \"Liliana Mayert\",\n"
+"            \"email\": \"evandervort@example.com\"\n"
+"        }\n"
+"    ],\n"
+"    \"links\":{\n"
+"        \"first\": \"http://example.com/users?page=1\",\n"
+"        \"last\": \"http://example.com/users?page=1\",\n"
+"        \"prev\": null,\n"
+"        \"next\": null\n"
+"    },\n"
+"    \"meta\":{\n"
+"        \"current_page\": 1,\n"
+"        \"from\": 1,\n"
+"        \"last_page\": 1,\n"
+"        \"path\": \"http://example.com/users\",\n"
+"        \"per_page\": 15,\n"
+"        \"to\": 10,\n"
+"        \"total\": 10\n"
+"    }\n"
+"}\n"
 
 #: docs/10.x/eloquent-resources.md:block 84 (header)
 msgid "Pagination"
@@ -688,11 +736,11 @@ msgstr "所有經過分頁的回應都會包含 `meta` 與 `links` 等關於 Pag
 
 #: docs/10.x/eloquent-resources.md:block 90 (header)
 msgid "Customizing The Pagination Information"
-msgstr ""
+msgstr "自訂分頁的資訊"
 
 #: docs/10.x/eloquent-resources.md:block 91 (paragraph)
 msgid "If you would like to customize the information included in the `links` or `meta` keys of the pagination response, you may define a `paginationInformation` method on the resource. This method will receive the `$paginated` data and the array of `$default` information, which is an array containing the `links` and `meta` keys:"
-msgstr ""
+msgstr "若想自定分頁 Response 中 `links` 或 `meta` 索引鍵內所包含的資訊，可在 Resource 上定義 `paginationInformation` 方法。該方法會收到一個 `$paginated` 資料，以及一個陣列的 `$default` 資訊。`$default` 是一個包含 `links` 與 `meta` 索引鍵的陣列："
 
 #: docs/10.x/eloquent-resources.md:block 92 (code)
 msgid "/**\n"
@@ -708,7 +756,19 @@ msgid "/**\n"
 "    $default['links']['custom'] = 'https://example.com';\n\n"
 "    return $default;\n"
 "}\n"
-msgstr ""
+msgstr "/**\n"
+" * Customize the pagination information for the resource.\n"
+" *\n"
+" * @param  \\Illuminate\\Http\\Request  $request\n"
+" * @param  array $paginated\n"
+" * @param  array $default\n"
+" * @return array\n"
+" */\n"
+"public function paginationInformation($request, $paginated, $default)\n"
+"{\n"
+"    $default['links']['custom'] = 'https://example.com';\n\n"
+"    return $default;\n"
+"}\n"
 
 #: docs/10.x/eloquent-resources.md:block 94 (header)
 msgid "Conditional Attributes"
@@ -948,14 +1008,17 @@ msgstr "在這個範例中，若 `posts` 關聯的計數未載入，則 `posts_c
 
 #: docs/10.x/eloquent-resources.md:block 123 (paragraph)
 msgid "Other types of aggregates, such as `avg`, `sum`, `min`, and `max` may also be conditionally loaded using the `whenAggregated` method:"
-msgstr ""
+msgstr "其他的匯總類型，如 `avg`, `sum`, min` 與 `max` 也可以使用 `whenAggregated` 方法來有條件地載入："
 
 #: docs/10.x/eloquent-resources.md:block 124 (code)
 msgid "'words_avg' => $this->whenAggregated('posts', 'words', 'avg'),\n"
 "'words_sum' => $this->whenAggregated('posts', 'words', 'sum'),\n"
 "'words_min' => $this->whenAggregated('posts', 'words', 'min'),\n"
 "'words_max' => $this->whenAggregated('posts', 'words', 'max'),\n"
-msgstr ""
+msgstr "'words_avg' => $this->whenAggregated('posts', 'words', 'avg'),\n"
+"'words_sum' => $this->whenAggregated('posts', 'words', 'sum'),\n"
+"'words_min' => $this->whenAggregated('posts', 'words', 'min'),\n"
+"'words_max' => $this->whenAggregated('posts', 'words', 'max'),\n"
 
 #: docs/10.x/eloquent-resources.md:block 126 (header)
 msgid "Conditional Pivot Information"

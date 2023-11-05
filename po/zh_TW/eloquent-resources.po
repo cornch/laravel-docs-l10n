@@ -10,7 +10,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
-"PO-Revision-Date: 2023-02-11 10:27\n"
+"PO-Revision-Date: 2023-11-05 13:29\n"
 
 #: docs/10.x/eloquent-resources.md:block 1 (header)
 msgid "Eloquent: API Resources"
@@ -365,8 +365,8 @@ msgid "**Note** If you have not read the [concept overview](#concept-overview), 
 msgstr "**Note** 若你還未閱讀《[概念概覽](#concept-overview)》，我們強烈建議你在繼續之前先閱讀該段落。"
 
 #: docs/10.x/eloquent-resources.md:block 48 (paragraph)
-msgid "In essence, resources are simple. They only need to transform a given model into an array. So, each resource contains a `toArray` method which translates your model's attributes into an API friendly array that can be returned from your application's routes or controllers:"
-msgstr "從本質上來說，Resource 很簡單。Resource 只負責把給定的 Model 轉換為陣列。因此，每個 Resource 都包含了一個 `toArray` 方法，可用來將 Model 的屬性轉換為對適合用在 API 的陣列，並讓你能在路由或 Controller 內回傳這個陣列："
+msgid "Resources only need to transform a given model into an array. So, each resource contains a `toArray` method which translates your model's attributes into an API friendly array that can be returned from your application's routes or controllers:"
+msgstr ""
 
 #: docs/10.x/eloquent-resources.md:block 50 (paragraph)
 msgid "Once a resource has been defined, it may be returned directly from a route or controller:"
@@ -433,6 +433,7 @@ msgstr "不過，若有需要定義與 Collection 一起回傳的詮釋資料 (M
 #: docs/10.x/eloquent-resources.md:block 62 (code)
 msgid "<?php\n\n"
 "namespace App\\Http\\Resources;\n\n"
+"use Illuminate\\Http\\Request;\n"
 "use Illuminate\\Http\\Resources\\Json\\ResourceCollection;\n\n"
 "class UserCollection extends ResourceCollection\n"
 "{\n"
@@ -451,26 +452,7 @@ msgid "<?php\n\n"
 "        ];\n"
 "    }\n"
 "}\n"
-msgstr "<?php\n\n"
-"namespace App\\Http\\Resources;\n\n"
-"use Illuminate\\Http\\Resources\\Json\\ResourceCollection;\n\n"
-"class UserCollection extends ResourceCollection\n"
-"{\n"
-"    /**\n"
-"     * Transform the resource collection into an array.\n"
-"     *\n"
-"     * @return array<string, mixed>\n"
-"     */\n"
-"    public function toArray(Request $request): array\n"
-"    {\n"
-"        return [\n"
-"            'data' => $this->collection,\n"
-"            'links' => [\n"
-"                'self' => 'link-value',\n"
-"            ],\n"
-"        ];\n"
-"    }\n"
-"}\n"
+msgstr ""
 
 #: docs/10.x/eloquent-resources.md:block 63 (paragraph)
 msgid "Like singular resources, resource collections may be returned directly from routes or controllers:"
@@ -663,8 +645,8 @@ msgid "{\n"
 "        }\n"
 "    ],\n"
 "    \"links\":{\n"
-"        \"first\": \"http://example.com/pagination?page=1\",\n"
-"        \"last\": \"http://example.com/pagination?page=1\",\n"
+"        \"first\": \"http://example.com/users?page=1\",\n"
+"        \"last\": \"http://example.com/users?page=1\",\n"
 "        \"prev\": null,\n"
 "        \"next\": null\n"
 "    },\n"
@@ -672,41 +654,13 @@ msgid "{\n"
 "        \"current_page\": 1,\n"
 "        \"from\": 1,\n"
 "        \"last_page\": 1,\n"
-"        \"path\": \"http://example.com/pagination\",\n"
+"        \"path\": \"http://example.com/users\",\n"
 "        \"per_page\": 15,\n"
 "        \"to\": 10,\n"
 "        \"total\": 10\n"
 "    }\n"
 "}\n"
-msgstr "{\n"
-"    \"data\": [\n"
-"        {\n"
-"            \"id\": 1,\n"
-"            \"name\": \"Eladio Schroeder Sr.\",\n"
-"            \"email\": \"therese28@example.com\"\n"
-"        },\n"
-"        {\n"
-"            \"id\": 2,\n"
-"            \"name\": \"Liliana Mayert\",\n"
-"            \"email\": \"evandervort@example.com\"\n"
-"        }\n"
-"    ],\n"
-"    \"links\":{\n"
-"        \"first\": \"http://example.com/pagination?page=1\",\n"
-"        \"last\": \"http://example.com/pagination?page=1\",\n"
-"        \"prev\": null,\n"
-"        \"next\": null\n"
-"    },\n"
-"    \"meta\":{\n"
-"        \"current_page\": 1,\n"
-"        \"from\": 1,\n"
-"        \"last_page\": 1,\n"
-"        \"path\": \"http://example.com/pagination\",\n"
-"        \"per_page\": 15,\n"
-"        \"to\": 10,\n"
-"        \"total\": 10\n"
-"    }\n"
-"}\n"
+msgstr ""
 
 #: docs/10.x/eloquent-resources.md:block 84 (header)
 msgid "Pagination"
@@ -733,14 +687,38 @@ msgid "Paginated responses always contain `meta` and `links` keys with informati
 msgstr "所有經過分頁的回應都會包含 `meta` 與 `links` 等關於 Paginator 狀態的資訊："
 
 #: docs/10.x/eloquent-resources.md:block 90 (header)
+msgid "Customizing The Pagination Information"
+msgstr ""
+
+#: docs/10.x/eloquent-resources.md:block 91 (paragraph)
+msgid "If you would like to customize the information included in the `links` or `meta` keys of the pagination response, you may define a `paginationInformation` method on the resource. This method will receive the `$paginated` data and the array of `$default` information, which is an array containing the `links` and `meta` keys:"
+msgstr ""
+
+#: docs/10.x/eloquent-resources.md:block 92 (code)
+msgid "/**\n"
+" * Customize the pagination information for the resource.\n"
+" *\n"
+" * @param  \\Illuminate\\Http\\Request  $request\n"
+" * @param  array $paginated\n"
+" * @param  array $default\n"
+" * @return array\n"
+" */\n"
+"public function paginationInformation($request, $paginated, $default)\n"
+"{\n"
+"    $default['links']['custom'] = 'https://example.com';\n\n"
+"    return $default;\n"
+"}\n"
+msgstr ""
+
+#: docs/10.x/eloquent-resources.md:block 94 (header)
 msgid "Conditional Attributes"
 msgstr "有條件的屬性"
 
-#: docs/10.x/eloquent-resources.md:block 91 (paragraph)
+#: docs/10.x/eloquent-resources.md:block 95 (paragraph)
 msgid "Sometimes you may wish to only include an attribute in a resource response if a given condition is met. For example, you may wish to only include a value if the current user is an \"administrator\". Laravel provides a variety of helper methods to assist you in this situation. The `when` method may be used to conditionally add an attribute to a resource response:"
 msgstr "有時候，我們只想在滿足特定條件的時候才在 Resource 回應內包含某個屬性。舉例來說，我們或許會只在目前使用者是「管理員 (Administrator)」時才將某個值包含在回應內。Laravel 為這種情況提供了一個輔助函式。可以使用 `when` 來有條件地在 Resource 回應內新增屬性："
 
-#: docs/10.x/eloquent-resources.md:block 92 (code)
+#: docs/10.x/eloquent-resources.md:block 96 (code)
 msgid "/**\n"
 " * Transform the resource into an array.\n"
 " *\n"
@@ -774,15 +752,15 @@ msgstr "/**\n"
 "    ];\n"
 "}\n"
 
-#: docs/10.x/eloquent-resources.md:block 93 (paragraph)
+#: docs/10.x/eloquent-resources.md:block 97 (paragraph)
 msgid "In this example, the `secret` key will only be returned in the final resource response if the authenticated user's `isAdmin` method returns `true`. If the method returns `false`, the `secret` key will be removed from the resource response before it is sent to the client. The `when` method allows you to expressively define your resources without resorting to conditional statements when building the array."
 msgstr "在這個例子中，只有在已登入使用者的 `idAdmin` 方法回傳 `true` 時，最終的 Resource 回應內才會包含 `secret` 索引鍵。若 `isAdmin` 方法回傳 `false`，則在 Resource 回應回傳給用戶端之前，`secret` 索引鍵就會被移除。使用 `when` 方法就可以用一種語意化的方法來定義 Resource，而不需要建立陣列時使用條件式陳述式。"
 
-#: docs/10.x/eloquent-resources.md:block 94 (paragraph)
+#: docs/10.x/eloquent-resources.md:block 98 (paragraph)
 msgid "The `when` method also accepts a closure as its second argument, allowing you to calculate the resulting value only if the given condition is `true`:"
 msgstr "`when` 的第二個引數也可以傳入一個閉包。可以使用這個閉包來只在條件為 `true` 時計算結果值："
 
-#: docs/10.x/eloquent-resources.md:block 95 (code)
+#: docs/10.x/eloquent-resources.md:block 99 (code)
 msgid "'secret' => $this->when($request->user()->isAdmin(), function () {\n"
 "    return 'secret-value';\n"
 "}),\n"
@@ -790,31 +768,31 @@ msgstr "'secret' => $this->when($request->user()->isAdmin(), function () {\n"
 "    return 'secret-value';\n"
 "}),\n"
 
-#: docs/10.x/eloquent-resources.md:block 96 (paragraph)
+#: docs/10.x/eloquent-resources.md:block 100 (paragraph)
 msgid "The `whenHas` method may be used to include an attribute if it is actually present on the underlying model:"
 msgstr "`whenHas` 方法可用來在當底層 Model 內真的有包含某個屬性時將該屬性包含進來："
 
-#: docs/10.x/eloquent-resources.md:block 97 (code)
+#: docs/10.x/eloquent-resources.md:block 101 (code)
 msgid "'name' => $this->whenHas('name'),\n"
 msgstr "'name' => $this->whenHas('name'),\n"
 
-#: docs/10.x/eloquent-resources.md:block 98 (paragraph)
+#: docs/10.x/eloquent-resources.md:block 102 (paragraph)
 msgid "Additionally, the `whenNotNull` method may be used to include an attribute in the resource response if the attribute is not null:"
 msgstr "此外，當屬性不為 null 時，也可以使用 `whereNotNull` 來在 Resource Response 中包含某個屬性："
 
-#: docs/10.x/eloquent-resources.md:block 99 (code)
+#: docs/10.x/eloquent-resources.md:block 103 (code)
 msgid "'name' => $this->whenNotNull($this->name),\n"
 msgstr "'name' => $this->whenNotNull($this->name),\n"
 
-#: docs/10.x/eloquent-resources.md:block 101 (header)
+#: docs/10.x/eloquent-resources.md:block 105 (header)
 msgid "Merging Conditional Attributes"
 msgstr "合併有條件的屬性"
 
-#: docs/10.x/eloquent-resources.md:block 102 (paragraph)
+#: docs/10.x/eloquent-resources.md:block 106 (paragraph)
 msgid "Sometimes you may have several attributes that should only be included in the resource response based on the same condition. In this case, you may use the `mergeWhen` method to include the attributes in the response only when the given condition is `true`:"
 msgstr "有時候，我們可能會有數個屬性想依據相同的條件來被包含在 Resource 回應中。在這種情況下，可以使用 `mergeWhen` 方法來只在給定條件為 `true` 時將這些屬性包含在回應中："
 
-#: docs/10.x/eloquent-resources.md:block 103 (code)
+#: docs/10.x/eloquent-resources.md:block 107 (code)
 msgid "/**\n"
 " * Transform the resource into an array.\n"
 " *\n"
@@ -854,27 +832,27 @@ msgstr "/**\n"
 "    ];\n"
 "}\n"
 
-#: docs/10.x/eloquent-resources.md:block 104 (paragraph)
+#: docs/10.x/eloquent-resources.md:block 108 (paragraph)
 msgid "Again, if the given condition is `false`, these attributes will be removed from the resource response before it is sent to the client."
 msgstr "跟剛才一樣，如果給定條件為 `false`，則這些屬性將在傳回給用戶端前被從 Resource 回應中移除。"
 
-#: docs/10.x/eloquent-resources.md:block 105 (quote)
+#: docs/10.x/eloquent-resources.md:block 109 (quote)
 msgid "**Warning** The `mergeWhen` method should not be used within arrays that mix string and numeric keys. Furthermore, it should not be used within arrays with numeric keys that are not ordered sequentially."
 msgstr "**Warning** `mergeWhen` 方法不可使用在組合使用數字與字串索引鍵的陣列上。此外，`mergeWhen` 也不能使用在數字索引鍵沒有連續的陣列上。"
 
-#: docs/10.x/eloquent-resources.md:block 107 (header)
+#: docs/10.x/eloquent-resources.md:block 111 (header)
 msgid "Conditional Relationships"
 msgstr "有條件的關聯"
 
-#: docs/10.x/eloquent-resources.md:block 108 (paragraph)
+#: docs/10.x/eloquent-resources.md:block 112 (paragraph)
 msgid "In addition to conditionally loading attributes, you may conditionally include relationships on your resource responses based on if the relationship has already been loaded on the model. This allows your controller to decide which relationships should be loaded on the model and your resource can easily include them only when they have actually been loaded. Ultimately, this makes it easier to avoid \"N+1\" query problems within your resources."
 msgstr "除了有條件地載入屬性外，我們還能依據關聯是否已載入到 Model 上來有條件地將關聯包含在 Resource 回應中。這樣一來，我們的 Controller 就能決定要載入哪些關聯，而 Resource 就可以輕鬆地在有載入這些關聯的時候才將這些關聯包含在回應中。最後，這麼做就能輕鬆地在 Resource 內避免「N+1」查詢。"
 
-#: docs/10.x/eloquent-resources.md:block 109 (paragraph)
+#: docs/10.x/eloquent-resources.md:block 113 (paragraph)
 msgid "The `whenLoaded` method may be used to conditionally load a relationship. In order to avoid unnecessarily loading relationships, this method accepts the name of the relationship instead of the relationship itself:"
 msgstr "可以使用 `whenLoaded` 方法來有條件地載入關聯。為了避免不必要地載入關聯，這個方法接受關聯的名稱，而非關聯物件本身："
 
-#: docs/10.x/eloquent-resources.md:block 110 (code)
+#: docs/10.x/eloquent-resources.md:block 114 (code)
 msgid "use App\\Http\\Resources\\PostResource;\n\n"
 "/**\n"
 " * Transform the resource into an array.\n"
@@ -910,27 +888,27 @@ msgstr "use App\\Http\\Resources\\PostResource;\n\n"
 "    ];\n"
 "}\n"
 
-#: docs/10.x/eloquent-resources.md:block 111 (paragraph)
+#: docs/10.x/eloquent-resources.md:block 115 (paragraph)
 msgid "In this example, if the relationship has not been loaded, the `posts` key will be removed from the resource response before it is sent to the client."
 msgstr "在這個例子中，若尚未載入關聯，則在回傳給用戶端前 `posts` 索引鍵就會被移除。"
 
-#: docs/10.x/eloquent-resources.md:block 113 (header)
+#: docs/10.x/eloquent-resources.md:block 117 (header)
 msgid "Conditional Relationship Counts"
 msgstr "條件式關聯的計數"
 
-#: docs/10.x/eloquent-resources.md:block 114 (paragraph)
+#: docs/10.x/eloquent-resources.md:block 118 (paragraph)
 msgid "In addition to conditionally including relationships, you may conditionally include relationship \"counts\" on your resource responses based on if the relationship's count has been loaded on the model:"
 msgstr "除了可有條件地包含關聯外，我們也可以依據關聯的計數是否已載入到 Model 上來將關聯的「計數 (Count)」包含到 Resource Response 上："
 
-#: docs/10.x/eloquent-resources.md:block 115 (code)
+#: docs/10.x/eloquent-resources.md:block 119 (code)
 msgid "new UserResource($user->loadCount('posts'));\n"
 msgstr "new UserResource($user->loadCount('posts'));\n"
 
-#: docs/10.x/eloquent-resources.md:block 116 (paragraph)
+#: docs/10.x/eloquent-resources.md:block 120 (paragraph)
 msgid "The `whenCounted` method may be used to conditionally include a relationship's count in your resource response. This method avoids unnecessarily including the attribute if the relationships' count is not present:"
 msgstr "`whenCounted` 方法可用來有條件地在 Resource Response 上包含關聯的計數。使用該方法也能避免在關聯沒有計數時將其包含進來："
 
-#: docs/10.x/eloquent-resources.md:block 117 (code)
+#: docs/10.x/eloquent-resources.md:block 121 (code)
 msgid "/**\n"
 " * Transform the resource into an array.\n"
 " *\n"
@@ -964,19 +942,30 @@ msgstr "/**\n"
 "    ];\n"
 "}\n"
 
-#: docs/10.x/eloquent-resources.md:block 118 (paragraph)
+#: docs/10.x/eloquent-resources.md:block 122 (paragraph)
 msgid "In this example, if the `posts` relationship's count has not been loaded, the `posts_count` key will be removed from the resource response before it is sent to the client."
 msgstr "在這個範例中，若 `posts` 關聯的計數未載入，則 `posts_count` 索引鍵就會在傳給用戶端前被移除。"
 
-#: docs/10.x/eloquent-resources.md:block 120 (header)
+#: docs/10.x/eloquent-resources.md:block 123 (paragraph)
+msgid "Other types of aggregates, such as `avg`, `sum`, `min`, and `max` may also be conditionally loaded using the `whenAggregated` method:"
+msgstr ""
+
+#: docs/10.x/eloquent-resources.md:block 124 (code)
+msgid "'words_avg' => $this->whenAggregated('posts', 'words', 'avg'),\n"
+"'words_sum' => $this->whenAggregated('posts', 'words', 'sum'),\n"
+"'words_min' => $this->whenAggregated('posts', 'words', 'min'),\n"
+"'words_max' => $this->whenAggregated('posts', 'words', 'max'),\n"
+msgstr ""
+
+#: docs/10.x/eloquent-resources.md:block 126 (header)
 msgid "Conditional Pivot Information"
 msgstr "有條件的樞紐 (Pivot) 資訊"
 
-#: docs/10.x/eloquent-resources.md:block 121 (paragraph)
+#: docs/10.x/eloquent-resources.md:block 127 (paragraph)
 msgid "In addition to conditionally including relationship information in your resource responses, you may conditionally include data from the intermediate tables of many-to-many relationships using the `whenPivotLoaded` method. The `whenPivotLoaded` method accepts the name of the pivot table as its first argument. The second argument should be a closure that returns the value to be returned if the pivot information is available on the model:"
 msgstr "除了有條件地將關聯資訊加到 Resource 回應內之外，我們還能使用 `whenPivotLoaded` 方法來有條件地包含 Many-to-many 關聯的中介資料表中的資料庫。`whenPivotLoaded` 方法的第一個引數為樞紐資料表的名稱，第二個引數則為一個閉包，該閉包應回傳當 Model 上有樞紐資訊時要回傳的值："
 
-#: docs/10.x/eloquent-resources.md:block 122 (code)
+#: docs/10.x/eloquent-resources.md:block 128 (code)
 msgid "/**\n"
 " * Transform the resource into an array.\n"
 " *\n"
@@ -1008,11 +997,11 @@ msgstr "/**\n"
 "    ];\n"
 "}\n"
 
-#: docs/10.x/eloquent-resources.md:block 123 (paragraph)
+#: docs/10.x/eloquent-resources.md:block 129 (paragraph)
 msgid "If your relationship is using a [custom intermediate table model](/docs/{{version}}/eloquent-relationships#defining-custom-intermediate-table-models), you may pass an instance of the intermediate table model as the first argument to the `whenPivotLoaded` method:"
 msgstr "若關聯使用[自訂的中介資料表 Model](/docs/{{version}}/eloquent-relationships#defining-custom-intermediate-table-models)，則應講樞紐資料表的實體作為第一個引數傳給 `whenPivotLoaded` 方法："
 
-#: docs/10.x/eloquent-resources.md:block 124 (code)
+#: docs/10.x/eloquent-resources.md:block 130 (code)
 msgid "'expires_at' => $this->whenPivotLoaded(new Membership, function () {\n"
 "    return $this->pivot->expires_at;\n"
 "}),\n"
@@ -1020,11 +1009,11 @@ msgstr "'expires_at' => $this->whenPivotLoaded(new Membership, function () {\n"
 "    return $this->pivot->expires_at;\n"
 "}),\n"
 
-#: docs/10.x/eloquent-resources.md:block 125 (paragraph)
+#: docs/10.x/eloquent-resources.md:block 131 (paragraph)
 msgid "If your intermediate table is using an accessor other than `pivot`, you may use the `whenPivotLoadedAs` method:"
 msgstr "若中介資料表使用 `pivot` 以外的存取方法，則可以使用 `whenPivotLoadesAs` 方法："
 
-#: docs/10.x/eloquent-resources.md:block 126 (code)
+#: docs/10.x/eloquent-resources.md:block 132 (code)
 msgid "/**\n"
 " * Transform the resource into an array.\n"
 " *\n"
@@ -1056,15 +1045,15 @@ msgstr "/**\n"
 "    ];\n"
 "}\n"
 
-#: docs/10.x/eloquent-resources.md:block 128 (header)
+#: docs/10.x/eloquent-resources.md:block 134 (header)
 msgid "Adding Meta Data"
 msgstr "新增詮釋資料"
 
-#: docs/10.x/eloquent-resources.md:block 129 (paragraph)
+#: docs/10.x/eloquent-resources.md:block 135 (paragraph)
 msgid "Some JSON API standards require the addition of meta data to your resource and resource collections responses. This often includes things like `links` to the resource or related resources, or meta data about the resource itself. If you need to return additional meta data about a resource, include it in your `toArray` method. For example, you might include `link` information when transforming a resource collection:"
 msgstr "有的 JSON API 標準中要求要有 Resource 與 Resource Collection 回應的詮釋資料 (Meta Data)。通常包含如 Resource 或關聯 Resource 的連結 (`links`)、或是有關 Resource 本身的詮釋資料等。若想回傳關於 Resource 的額外詮釋資料，請將這些資料包含在 `toArray` 方法內。舉例來說，我們可能會想在轉換 Resource Collection 時包含 `link` 資訊："
 
-#: docs/10.x/eloquent-resources.md:block 130 (code)
+#: docs/10.x/eloquent-resources.md:block 136 (code)
 msgid "/**\n"
 " * Transform the resource into an array.\n"
 " *\n"
@@ -1094,19 +1083,19 @@ msgstr "/**\n"
 "    ];\n"
 "}\n"
 
-#: docs/10.x/eloquent-resources.md:block 131 (paragraph)
+#: docs/10.x/eloquent-resources.md:block 137 (paragraph)
 msgid "When returning additional meta data from your resources, you never have to worry about accidentally overriding the `links` or `meta` keys that are automatically added by Laravel when returning paginated responses. Any additional `links` you define will be merged with the links provided by the paginator."
 msgstr "當從 Resource 內回傳額外的詮釋資料時，不需擔心是否會不小心複寫在回傳經過分頁的資料時 Laravel 自動新增的 `links` 或 `meta` 等資料。若有定義額外的 `links`，這些 `links` 會跟 Paginator 提供的連結合併在一起。"
 
-#: docs/10.x/eloquent-resources.md:block 133 (header)
+#: docs/10.x/eloquent-resources.md:block 139 (header)
 msgid "Top Level Meta Data"
 msgstr "最上層的詮釋資料"
 
-#: docs/10.x/eloquent-resources.md:block 134 (paragraph)
+#: docs/10.x/eloquent-resources.md:block 140 (paragraph)
 msgid "Sometimes you may wish to only include certain meta data with a resource response if the resource is the outermost resource being returned. Typically, this includes meta information about the response as a whole. To define this meta data, add a `with` method to your resource class. This method should return an array of meta data to be included with the resource response only when the resource is the outermost resource being transformed:"
 msgstr "有時候，我們可能會想只在當目前 Resource 是回傳的最外層 Resource 時才包含某些詮釋資料。一般來說，這種情況的詮釋資料就是對於回應的詮釋資料。若要定義這種詮釋資料，可在 Resource 類別內加上一個 `with` 方法。這個方法應回傳一組包含詮釋資料的陣列，用以在目前 Resource 是最外層 Resource 時包含在 Resource 回應內："
 
-#: docs/10.x/eloquent-resources.md:block 135 (code)
+#: docs/10.x/eloquent-resources.md:block 141 (code)
 msgid "<?php\n\n"
 "namespace App\\Http\\Resources;\n\n"
 "use Illuminate\\Http\\Resources\\Json\\ResourceCollection;\n\n"
@@ -1164,15 +1153,15 @@ msgstr "<?php\n\n"
 "    }\n"
 "}\n"
 
-#: docs/10.x/eloquent-resources.md:block 137 (header)
+#: docs/10.x/eloquent-resources.md:block 143 (header)
 msgid "Adding Meta Data When Constructing Resources"
 msgstr "在建立 Resource 時加上詮釋資料"
 
-#: docs/10.x/eloquent-resources.md:block 138 (paragraph)
+#: docs/10.x/eloquent-resources.md:block 144 (paragraph)
 msgid "You may also add top-level data when constructing resource instances in your route or controller. The `additional` method, which is available on all resources, accepts an array of data that should be added to the resource response:"
 msgstr "我們也可以在路由或 Controller 內建構 Resource 時加上最上層的資料。 所有 Resource 內都提供了一個 `additional` 方法，可將要加到 Resource 回應內的資料放在陣列中傳給該方法："
 
-#: docs/10.x/eloquent-resources.md:block 139 (code)
+#: docs/10.x/eloquent-resources.md:block 145 (code)
 msgid "return (new UserCollection(User::all()->load('roles')))\n"
 "                ->additional(['meta' => [\n"
 "                    'key' => 'value',\n"
@@ -1182,19 +1171,19 @@ msgstr "return (new UserCollection(User::all()->load('roles')))\n"
 "                    'key' => 'value',\n"
 "                ]]);\n"
 
-#: docs/10.x/eloquent-resources.md:block 141 (header)
+#: docs/10.x/eloquent-resources.md:block 147 (header)
 msgid "Resource Responses"
 msgstr "Resource 回應"
 
-#: docs/10.x/eloquent-resources.md:block 142 (paragraph)
+#: docs/10.x/eloquent-resources.md:block 148 (paragraph)
 msgid "As you have already read, resources may be returned directly from routes and controllers:"
 msgstr "剛才已經讀過，我們可以直接從路由或 Controller 內回傳 Resource："
 
-#: docs/10.x/eloquent-resources.md:block 144 (paragraph)
+#: docs/10.x/eloquent-resources.md:block 150 (paragraph)
 msgid "However, sometimes you may need to customize the outgoing HTTP response before it is sent to the client. There are two ways to accomplish this. First, you may chain the `response` method onto the resource. This method will return an `Illuminate\\Http\\JsonResponse` instance, giving you full control over the response's headers:"
 msgstr "不過，有的時候我們會需要在回應被傳回用戶端前自訂外連 HTTP 回應。有兩種方法可以自訂外連 HTTP 回應。第一種方法，我們可以將 `response` 方法串連到 Resource 後面。該方法會回傳一個 `Illuminate\\Http\\JsonResponse` 實體，讓我們能對回應的標頭有完整的控制權："
 
-#: docs/10.x/eloquent-resources.md:block 145 (code)
+#: docs/10.x/eloquent-resources.md:block 151 (code)
 msgid "use App\\Http\\Resources\\UserResource;\n"
 "use App\\Models\\User;\n\n"
 "Route::get('/user', function () {\n"
@@ -1210,11 +1199,11 @@ msgstr "use App\\Http\\Resources\\UserResource;\n"
 "                ->header('X-Value', 'True');\n"
 "});\n"
 
-#: docs/10.x/eloquent-resources.md:block 146 (paragraph)
+#: docs/10.x/eloquent-resources.md:block 152 (paragraph)
 msgid "Alternatively, you may define a `withResponse` method within the resource itself. This method will be called when the resource is returned as the outermost resource in a response:"
 msgstr "或者，也可以在 Resource 裡面定義一個 `withResponse`。這個方法會在該 Resource 是回應中最外層 Resource 時被呼叫："
 
-#: docs/10.x/eloquent-resources.md:block 147 (code)
+#: docs/10.x/eloquent-resources.md:block 153 (code)
 msgid "<?php\n\n"
 "namespace App\\Http\\Resources;\n\n"
 "use Illuminate\\Http\\JsonResponse;\n"
@@ -1377,6 +1366,10 @@ msgstr "<?php\n\n"
 #: docs/8.x/eloquent-resources.md:block 47 (quote)
 msgid "{tip} If you have not read the [concept overview](#concept-overview), you are highly encouraged to do so before proceeding with this documentation."
 msgstr "{tip} 若你還未閱讀[概念概覽](#concept-overview)，我們強烈建議你在繼續之前先閱讀該段落。"
+
+#: docs/8.x/eloquent-resources.md:block 48 (paragraph)
+msgid "In essence, resources are simple. They only need to transform a given model into an array. So, each resource contains a `toArray` method which translates your model's attributes into an API friendly array that can be returned from your application's routes or controllers:"
+msgstr "從本質上來說，Resource 很簡單。Resource 只負責把給定的 Model 轉換為陣列。因此，每個 Resource 都包含了一個 `toArray` 方法，可用來將 Model 的屬性轉換為對適合用在 API 的陣列，並讓你能在路由或 Controller 內回傳這個陣列："
 
 #: docs/8.x/eloquent-resources.md:block 55 (code)
 msgid "use App\\Http\\Resources\\PostResource;\n\n"
@@ -1978,6 +1971,66 @@ msgstr "<?php\n\n"
 "    }\n"
 "}\n"
 
+#: docs/9.x/eloquent-resources.md:block 82 (code)
+msgid "{\n"
+"    \"data\": [\n"
+"        {\n"
+"            \"id\": 1,\n"
+"            \"name\": \"Eladio Schroeder Sr.\",\n"
+"            \"email\": \"therese28@example.com\"\n"
+"        },\n"
+"        {\n"
+"            \"id\": 2,\n"
+"            \"name\": \"Liliana Mayert\",\n"
+"            \"email\": \"evandervort@example.com\"\n"
+"        }\n"
+"    ],\n"
+"    \"links\":{\n"
+"        \"first\": \"http://example.com/pagination?page=1\",\n"
+"        \"last\": \"http://example.com/pagination?page=1\",\n"
+"        \"prev\": null,\n"
+"        \"next\": null\n"
+"    },\n"
+"    \"meta\":{\n"
+"        \"current_page\": 1,\n"
+"        \"from\": 1,\n"
+"        \"last_page\": 1,\n"
+"        \"path\": \"http://example.com/pagination\",\n"
+"        \"per_page\": 15,\n"
+"        \"to\": 10,\n"
+"        \"total\": 10\n"
+"    }\n"
+"}\n"
+msgstr "{\n"
+"    \"data\": [\n"
+"        {\n"
+"            \"id\": 1,\n"
+"            \"name\": \"Eladio Schroeder Sr.\",\n"
+"            \"email\": \"therese28@example.com\"\n"
+"        },\n"
+"        {\n"
+"            \"id\": 2,\n"
+"            \"name\": \"Liliana Mayert\",\n"
+"            \"email\": \"evandervort@example.com\"\n"
+"        }\n"
+"    ],\n"
+"    \"links\":{\n"
+"        \"first\": \"http://example.com/pagination?page=1\",\n"
+"        \"last\": \"http://example.com/pagination?page=1\",\n"
+"        \"prev\": null,\n"
+"        \"next\": null\n"
+"    },\n"
+"    \"meta\":{\n"
+"        \"current_page\": 1,\n"
+"        \"from\": 1,\n"
+"        \"last_page\": 1,\n"
+"        \"path\": \"http://example.com/pagination\",\n"
+"        \"per_page\": 15,\n"
+"        \"to\": 10,\n"
+"        \"total\": 10\n"
+"    }\n"
+"}\n"
+
 #: docs/9.x/eloquent-resources.md:block 92 (code)
 msgid "/**\n"
 " * Transform the resource into an array.\n"
@@ -2090,5 +2143,47 @@ msgstr "/**\n"
 "        'created_at' => $this->created_at,\n"
 "        'updated_at' => $this->updated_at,\n"
 "    ];\n"
+"}\n"
+
+#: docs/master/eloquent-resources.md:block 62 (code)
+msgid "<?php\n\n"
+"namespace App\\Http\\Resources;\n\n"
+"use Illuminate\\Http\\Resources\\Json\\ResourceCollection;\n\n"
+"class UserCollection extends ResourceCollection\n"
+"{\n"
+"    /**\n"
+"     * Transform the resource collection into an array.\n"
+"     *\n"
+"     * @return array<string, mixed>\n"
+"     */\n"
+"    public function toArray(Request $request): array\n"
+"    {\n"
+"        return [\n"
+"            'data' => $this->collection,\n"
+"            'links' => [\n"
+"                'self' => 'link-value',\n"
+"            ],\n"
+"        ];\n"
+"    }\n"
+"}\n"
+msgstr "<?php\n\n"
+"namespace App\\Http\\Resources;\n\n"
+"use Illuminate\\Http\\Resources\\Json\\ResourceCollection;\n\n"
+"class UserCollection extends ResourceCollection\n"
+"{\n"
+"    /**\n"
+"     * Transform the resource collection into an array.\n"
+"     *\n"
+"     * @return array<string, mixed>\n"
+"     */\n"
+"    public function toArray(Request $request): array\n"
+"    {\n"
+"        return [\n"
+"            'data' => $this->collection,\n"
+"            'links' => [\n"
+"                'self' => 'link-value',\n"
+"            ],\n"
+"        ];\n"
+"    }\n"
 "}\n"
 

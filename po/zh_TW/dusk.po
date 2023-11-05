@@ -10,7 +10,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
-"PO-Revision-Date: 2023-11-05 13:29\n"
+"PO-Revision-Date: 2023-11-05 14:58\n"
 
 #: docs/10.x/dusk.md:block 1 (header)
 msgid "Laravel Dusk"
@@ -138,7 +138,7 @@ msgstr "[JavaScript 對話方塊](#javascript-dialogs)"
 
 #: docs/10.x/dusk.md:block 2 (unordered list)
 msgid "[Interacting With Inline Frames](#interacting-with-iframes)"
-msgstr ""
+msgstr "[處理 IFrame](#interacting-with-iframes)"
 
 #: docs/10.x/dusk.md:block 2 (unordered list)
 msgid "[Scoping Selectors](#scoping-selectors)"
@@ -210,7 +210,7 @@ msgstr "[GitHub Actions](#running-tests-on-github-actions)"
 
 #: docs/10.x/dusk.md:block 2 (unordered list)
 msgid "[Chipper CI](#running-tests-on-chipper-ci)"
-msgstr ""
+msgstr "[Chipper CI](#running-tests-on-chipper-ci)"
 
 #: docs/10.x/dusk.md:block 4 (header)
 msgid "Introduction"
@@ -492,7 +492,7 @@ msgstr "/**\n"
 
 #: docs/10.x/dusk.md:block 53 (paragraph)
 msgid "If you would like to execute code before or after database truncation is performed, you may define `beforeTruncatingDatabase` or `afterTruncatingDatabase` methods on your test class:"
-msgstr ""
+msgstr "若想在資料庫修剪 (Truncation) 進行前後執行程式碼，可在測試類別中定義 `beforeTruncatingDatabase` 或 `afterTruncatingDatabase` 方法："
 
 #: docs/10.x/dusk.md:block 54 (code)
 msgid "/**\n"
@@ -509,7 +509,20 @@ msgid "/**\n"
 "{\n"
 "    //\n"
 "}\n"
-msgstr ""
+msgstr "/**\n"
+" * Perform any work that should take place before the database has started truncating.\n"
+" */\n"
+"protected function beforeTruncatingDatabase(): void\n"
+"{\n"
+"    //\n"
+"}\n\n"
+"/**\n"
+" * Perform any work that should take place after the database has finished truncating.\n"
+" */\n"
+"protected function afterTruncatingDatabase(): void\n"
+"{\n"
+"    //\n"
+"}\n"
 
 #: docs/10.x/dusk.md:block 56 (header)
 msgid "Running Tests"
@@ -533,7 +546,7 @@ msgstr "php artisan dusk:fails\n"
 
 #: docs/10.x/dusk.md:block 61 (paragraph)
 msgid "The `dusk` command accepts any argument that is normally accepted by the PHPUnit test runner, such as allowing you to only run the tests for a given [group](https://phpunit.readthedocs.io/en/10.1/annotations.html#group):"
-msgstr ""
+msgstr "`dusk` 指令接受所有一般 PHPUnit 測試執行程式所接受的引數，如可以只執行特定[群組](https://phpunit.readthedocs.io/en/10.1/annotations.html#group)內的測試："
 
 #: docs/10.x/dusk.md:block 62 (code)
 msgid "php artisan dusk --group=foo\n"
@@ -999,12 +1012,13 @@ msgstr "// HTML...\n\n"
 
 #: docs/10.x/dusk.md:block 152 (paragraph)
 msgid "If desired, you may customize the HTML attribute that the Dusk selector utilizes via the `selectorHtmlAttribute` method. Typically, this method should be called from the `boot` method of your application's `AppServiceProvider`:"
-msgstr ""
+msgstr "若有需要，可以使用 `selectorHtmlAttribute` 方法來自定 Dusk Selector 使用的 HTML 屬性。一般來說，應在專案中 `AppServiceProvider` 內 `boot` 方法中呼叫該方法："
 
 #: docs/10.x/dusk.md:block 153 (code)
 msgid "use Laravel\\Dusk\\Dusk;\n\n"
 "Dusk::selectorHtmlAttribute('data-dusk');\n"
-msgstr ""
+msgstr "use Laravel\\Dusk\\Dusk;\n\n"
+"Dusk::selectorHtmlAttribute('data-dusk');\n"
 
 #: docs/10.x/dusk.md:block 155 (header)
 msgid "Text, Values, & Attributes"
@@ -1274,11 +1288,11 @@ msgstr "**Note** 所有的輔助按鍵，如 `{command}` 都以 `{}` 字元來�
 
 #: docs/10.x/dusk.md:block 229 (header)
 msgid "Fluent Keyboard Interactions"
-msgstr ""
+msgstr "流暢地使用鍵盤"
 
 #: docs/10.x/dusk.md:block 230 (paragraph)
 msgid "Dusk also provides a `withKeyboard` method, allowing you to fluently perform complex keyboard interactions via the `Laravel\\Dusk\\Keyboard` class. The `Keyboard` class provides `press`, `release`, `type`, and `pause` methods:"
-msgstr ""
+msgstr "Dusk 還提供了一個 `withKeyboard` 方法，讓你能使用 `Laravel\\Dusk\\Keyboard` 類別來流暢地進行複雜的鍵盤動作。`Keyboard` 類別提供了 `press`, `release`, `type` 與 `pause` 方法："
 
 #: docs/10.x/dusk.md:block 231 (code)
 msgid "use Laravel\\Dusk\\Keyboard;\n\n"
@@ -1288,15 +1302,21 @@ msgid "use Laravel\\Dusk\\Keyboard;\n\n"
 "        ->release('c')\n"
 "        ->type(['c', 'e', 'o']);\n"
 "});\n"
-msgstr ""
+msgstr "use Laravel\\Dusk\\Keyboard;\n\n"
+"$browser->withKeyboard(function (Keyboard $keyboard) {\n"
+"    $keyboard->press('c')\n"
+"        ->pause(1000)\n"
+"        ->release('c')\n"
+"        ->type(['c', 'e', 'o']);\n"
+"});\n"
 
 #: docs/10.x/dusk.md:block 233 (header)
 msgid "Keyboard Macros"
-msgstr ""
+msgstr "鍵盤巨集"
 
 #: docs/10.x/dusk.md:block 234 (paragraph)
 msgid "If you would like to define custom keyboard interactions that you can easily re-use throughout your test suite, you may use the `macro` method provided by the `Keyboard` class. Typically, you should call this method from a [service provider's](/docs/{{version}}/providers) `boot` method:"
-msgstr ""
+msgstr "若想定義可在各個測試內重複使用的自訂鍵盤動作，可使用 `Keyboard` 類別上的 `macro` 方法。一半來說，該方法應在某個 [Service Provider](/docs/{{version}}/providers) 的 `boot` 方法內呼叫："
 
 #: docs/10.x/dusk.md:block 235 (code)
 msgid "<?php\n\n"
@@ -1326,18 +1346,47 @@ msgid "<?php\n\n"
 "        });\n"
 "    }\n"
 "}\n"
-msgstr ""
+msgstr "<?php\n\n"
+"namespace App\\Providers;\n\n"
+"use Facebook\\WebDriver\\WebDriverKeys;\n"
+"use Illuminate\\Support\\ServiceProvider;\n"
+"use Laravel\\Dusk\\Keyboard;\n"
+"use Laravel\\Dusk\\OperatingSystem;\n\n"
+"class DuskServiceProvider extends ServiceProvider\n"
+"{\n"
+"    /**\n"
+"     * Register Dusk's browser macros.\n"
+"     */\n"
+"    public function boot(): void\n"
+"    {\n"
+"        Keyboard::macro('copy', function (string $element = null) {\n"
+"            $this->type([\n"
+"                OperatingSystem::onMac() ? WebDriverKeys::META : WebDriverKeys::CONTROL, 'c',\n"
+"            ]);\n\n"
+"            return $this;\n"
+"        });\n\n"
+"        Keyboard::macro('paste', function (string $element = null) {\n"
+"            $this->type([\n"
+"                OperatingSystem::onMac() ? WebDriverKeys::META : WebDriverKeys::CONTROL, 'v',\n"
+"            ]);\n\n"
+"            return $this;\n"
+"        });\n"
+"    }\n"
+"}\n"
 
 #: docs/10.x/dusk.md:block 236 (paragraph)
 msgid "The `macro` function accepts a name as its first argument and a closure as its second. The macro's closure will be executed when calling the macro as a method on a `Keyboard` instance:"
-msgstr ""
+msgstr "`macro` 方法接受一個名稱作為其第一個引數，以及閉包作為其第二個引數。當在 `Keyboard` 實體上以方法呼叫該 Macro 時，會執行該 Macro 的閉包："
 
 #: docs/10.x/dusk.md:block 237 (code)
 msgid "$browser->click('@textarea')\n"
 "    ->withKeyboard(fn (Keyboard $keyboard) => $keyboard->copy())\n"
 "    ->click('@another-textarea')\n"
 "    ->withKeyboard(fn (Keyboard $keyboard) => $keyboard->paste());\n"
-msgstr ""
+msgstr "$browser->click('@textarea')\n"
+"    ->withKeyboard(fn (Keyboard $keyboard) => $keyboard->copy())\n"
+"    ->click('@another-textarea')\n"
+"    ->withKeyboard(fn (Keyboard $keyboard) => $keyboard->paste());\n"
 
 #: docs/10.x/dusk.md:block 239 (header)
 msgid "Using The Mouse"
@@ -1403,11 +1452,11 @@ msgstr "$browser->clickAndHold()\n"
 
 #: docs/10.x/dusk.md:block 254 (paragraph)
 msgid "The `controlClick` method may be used to simulate the `ctrl+click` event within the browser:"
-msgstr ""
+msgstr "`controlClick` 方法可用來在瀏覽器上模擬 `ctrl+click` 事件："
 
 #: docs/10.x/dusk.md:block 255 (code)
 msgid "$browser->controlClick();\n"
-msgstr ""
+msgstr "$browser->controlClick();\n"
 
 #: docs/10.x/dusk.md:block 257 (header)
 msgid "Mouseover"
@@ -1501,11 +1550,11 @@ msgstr "$browser->dismissDialog();\n"
 
 #: docs/10.x/dusk.md:block 281 (header)
 msgid "Interacting With Inline Frames"
-msgstr ""
+msgstr "處理 IFrame"
 
 #: docs/10.x/dusk.md:block 282 (paragraph)
 msgid "If you need to interact with elements within an iframe, you may use the `withinFrame` method. All element interactions that take place within the closure provided to the `withinFrame` method will be scoped to the context of the specified iframe:"
-msgstr ""
+msgstr "若有需要操作 iframe 中的元素，可以使用 `withinFrame` 方法。在提供給 `withinFrame` 方法的 Closure 中，所有的元素互動都會被限制在指定 iframe 的範圍內："
 
 #: docs/10.x/dusk.md:block 283 (code)
 msgid "$browser->withinFrame('#credit-card-details', function ($browser) {\n"
@@ -1514,7 +1563,12 @@ msgid "$browser->withinFrame('#credit-card-details', function ($browser) {\n"
 "        ->type('input[name=\"cvc\"]', '123');\n"
 "    })->press('Pay');\n"
 "});\n"
-msgstr ""
+msgstr "$browser->withinFrame('#credit-card-details', function ($browser) {\n"
+"    $browser->type('input[name=\"cardnumber\"]', '4242424242424242')\n"
+"        ->type('input[name=\"exp-date\"]', '12/24')\n"
+"        ->type('input[name=\"cvc\"]', '123');\n"
+"    })->press('Pay');\n"
+"});\n"
 
 #: docs/10.x/dusk.md:block 285 (header)
 msgid "Scoping Selectors"
@@ -3453,15 +3507,56 @@ msgid "name: CI\n"
 "        with:\n"
 "          name: console\n"
 "          path: tests/Browser/console\n"
-msgstr ""
+msgstr "name: CI\n"
+"on: [push]\n"
+"jobs:\n\n"
+"  dusk-php:\n"
+"    runs-on: ubuntu-latest\n"
+"    env:\n"
+"      APP_URL: \"http://127.0.0.1:8000\"\n"
+"      DB_USERNAME: root\n"
+"      DB_PASSWORD: root\n"
+"      MAIL_MAILER: log\n"
+"    steps:\n"
+"      - uses: actions/checkout@v4\n"
+"      - name: Prepare The Environment\n"
+"        run: cp .env.example .env\n"
+"      - name: Create Database\n"
+"        run: |\n"
+"          sudo systemctl start mysql\n"
+"          mysql --user=\"root\" --password=\"root\" -e \"CREATE DATABASE \\`my-database\\` character set UTF8mb4 collate utf8mb4_bin;\"\n"
+"      - name: Install Composer Dependencies\n"
+"        run: composer install --no-progress --prefer-dist --optimize-autoloader\n"
+"      - name: Generate Application Key\n"
+"        run: php artisan key:generate\n"
+"      - name: Upgrade Chrome Driver\n"
+"        run: php artisan dusk:chrome-driver --detect\n"
+"      - name: Start Chrome Driver\n"
+"        run: ./vendor/laravel/dusk/bin/chromedriver-linux &\n"
+"      - name: Run Laravel Server\n"
+"        run: php artisan serve --no-reload &\n"
+"      - name: Run Dusk Tests\n"
+"        run: php artisan dusk\n"
+"      - name: Upload Screenshots\n"
+"        if: failure()\n"
+"        uses: actions/upload-artifact@v2\n"
+"        with:\n"
+"          name: screenshots\n"
+"          path: tests/Browser/screenshots\n"
+"      - name: Upload Console Logs\n"
+"        if: failure()\n"
+"        uses: actions/upload-artifact@v2\n"
+"        with:\n"
+"          name: console\n"
+"          path: tests/Browser/console\n"
 
 #: docs/10.x/dusk.md:block 749 (header)
 msgid "Chipper CI"
-msgstr ""
+msgstr "Chipper CI"
 
 #: docs/10.x/dusk.md:block 750 (paragraph)
 msgid "If you are using [Chipper CI](https://chipperci.com) to run your Dusk tests, you may use the following configuration file as a starting point. We will use PHP's built-in server to run Laravel so we can listen for requests:"
-msgstr ""
+msgstr "若使用 [Chipper CI](https://chipperci.com) 來執行 Dusk 測試，則可使用下列設定檔作為起始點。我們會使用 PHP 的內建伺服器來執行 Laravel 以監聽 Request："
 
 #: docs/10.x/dusk.md:block 751 (code)
 msgid "# file .chipperci.yml\n"
@@ -3496,11 +3591,42 @@ msgid "# file .chipperci.yml\n"
 "      sleep 2\n"
 "      php artisan dusk:chrome-driver $CHROME_DRIVER\n"
 "      php artisan dusk --env=ci\n"
-msgstr ""
+msgstr "# file .chipperci.yml\n"
+"version: 1\n\n"
+"environment:\n"
+"  php: 8.2\n"
+"  node: 16\n\n"
+"# Include Chrome in the build environment\n"
+"services:\n"
+"  - dusk\n\n"
+"# Build all commits\n"
+"on:\n"
+"   push:\n"
+"      branches: .*\n\n"
+"pipeline:\n"
+"  - name: Setup\n"
+"    cmd: |\n"
+"      cp -v .env.example .env\n"
+"      composer install --no-interaction --prefer-dist --optimize-autoloader\n"
+"      php artisan key:generate\n"
+"      \n"
+"      # Create a dusk env file, ensuring APP_URL uses BUILD_HOST\n"
+"      cp -v .env .env.dusk.ci\n"
+"      sed -i \"s@APP_URL=.*@APP_URL=http://$BUILD_HOST:8000@g\" .env.dusk.ci\n\n"
+"  - name: Compile Assets\n"
+"    cmd: |\n"
+"      npm ci --no-audit\n"
+"      npm run build\n\n"
+"  - name: Browser Tests\n"
+"    cmd: |\n"
+"      php -S [::0]:8000 -t public 2>server.log &\n"
+"      sleep 2\n"
+"      php artisan dusk:chrome-driver $CHROME_DRIVER\n"
+"      php artisan dusk --env=ci\n"
 
 #: docs/10.x/dusk.md:block 752 (paragraph)
 msgid "To learn more about running Dusk tests on Chipper CI, including how to use databases, consult the [official Chipper CI documentation](https://chipperci.com/docs/testing/laravel-dusk-new/)."
-msgstr ""
+msgstr "若要瞭解更多有關在 Chipper CI 上執行 Dusk 測試的資訊，包含如何使用資料庫等，請參考[官方的 Chipper CI 說明文件](https://chipperci.com/docs/testing/laravel-dusk-new/)。"
 
 #: docs/8.x/dusk.md:block 2 (unordered list)
 msgid "[Database Migrations](#migrations)"

@@ -10,7 +10,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
-"PO-Revision-Date: 2023-11-05 13:29\n"
+"PO-Revision-Date: 2023-11-05 14:58\n"
 
 #: docs/10.x/artisan.md:block 1 (header)
 msgid "Artisan Console"
@@ -66,7 +66,7 @@ msgstr "[輸入說明](#input-descriptions)"
 
 #: docs/10.x/artisan.md:block 2 (unordered list)
 msgid "[Prompting For Missing Input](#prompting-for-missing-input)"
-msgstr ""
+msgstr "[為未提供的輸入進行提示](#prompting-for-missing-input)"
 
 #: docs/10.x/artisan.md:block 2 (unordered list)
 msgid "[Command I/O](#command-io)"
@@ -436,11 +436,11 @@ msgstr "php artisan mail:send 1 --isolated=12\n"
 
 #: docs/10.x/artisan.md:block 74 (header)
 msgid "Lock ID"
-msgstr ""
+msgstr "Lock ID"
 
 #: docs/10.x/artisan.md:block 75 (paragraph)
 msgid "By default, Laravel will use the command's name to generate the string key that is used to acquire the atomic lock in your application's cache. However, you may customize this key by defining an `isolatableId` method on your Artisan command class, allowing you to integrate the command's arguments or options into the key:"
-msgstr ""
+msgstr "預設情況下，Laravel 會使用該指令的名稱來產生一組字串索引鍵，以用在專案快取中取得 Atomic Lock。不過，只要在 Artisan Command 類別上定義 `isolatebleId` 方法，就可以自定這個索引鍵，讓你能將該指令的引數或選項整合進索引鍵中："
 
 #: docs/10.x/artisan.md:block 76 (code)
 msgid "/**\n"
@@ -450,7 +450,13 @@ msgid "/**\n"
 "{\n"
 "    return $this->argument('user');\n"
 "}\n"
-msgstr ""
+msgstr "/**\n"
+" * Get the isolatable ID for the command.\n"
+" */\n"
+"public function isolatableId(): string\n"
+"{\n"
+"    return $this->argument('user');\n"
+"}\n"
 
 #: docs/10.x/artisan.md:block 78 (header)
 msgid "Lock Expiration Time"
@@ -606,11 +612,11 @@ msgstr "'mail:send {user} {--Q|queue}'\n"
 
 #: docs/10.x/artisan.md:block 108 (paragraph)
 msgid "When invoking the command on your terminal, option shortcuts should be prefixed with a single hyphen and no `=` character should be included when specifying a value for the option:"
-msgstr ""
+msgstr "在終端機中呼叫指令時，選項捷徑前面應該只有一個減號，且在指定選項值時不應加上 `=` 字元："
 
 #: docs/10.x/artisan.md:block 109 (code)
 msgid "php artisan mail:send 1 -Qdefault\n"
-msgstr ""
+msgstr "php artisan mail:send 1 -Qdefault\n"
 
 #: docs/10.x/artisan.md:block 111 (header)
 msgid "Input Arrays"
@@ -688,11 +694,11 @@ msgstr "/**\n"
 
 #: docs/10.x/artisan.md:block 129 (header)
 msgid "Prompting For Missing Input"
-msgstr ""
+msgstr "為未提供的輸入進行提示"
 
 #: docs/10.x/artisan.md:block 130 (paragraph)
 msgid "If your command contains required arguments, the user will receive an error message when they are not provided. Alternatively, you may configure your command to automatically prompt the user when required arguments are missing by implementing the `PromptsForMissingInput` interface:"
-msgstr ""
+msgstr "當指令有包含必填的引數時，若使用者未提供這些引數，則會產生錯誤訊息。除了產生錯誤訊息外，只要實作 `PromptsForMissingInput` ^[Interface](介面)，就可以讓 Command 在使用者未提供必填引數時自動提示使用者輸入。"
 
 #: docs/10.x/artisan.md:block 131 (code)
 msgid "<?php\n\n"
@@ -709,11 +715,24 @@ msgid "<?php\n\n"
 "    protected $signature = 'mail:send {user}';\n\n"
 "    // ...\n"
 "}\n"
-msgstr ""
+msgstr "<?php\n\n"
+"namespace App\\Console\\Commands;\n\n"
+"use Illuminate\\Console\\Command;\n"
+"use Illuminate\\Contracts\\Console\\PromptsForMissingInput;\n\n"
+"class SendEmails extends Command implements PromptsForMissingInput\n"
+"{\n"
+"    /**\n"
+"     * The name and signature of the console command.\n"
+"     *\n"
+"     * @var string\n"
+"     */\n"
+"    protected $signature = 'mail:send {user}';\n\n"
+"    // ...\n"
+"}\n"
 
 #: docs/10.x/artisan.md:block 132 (paragraph)
 msgid "If Laravel needs to gather a required argument from the user, it will automatically ask the user for the argument by intelligently phrasing the question using either the argument name or description. If you wish to customize the question used to gather the required argument, you may implement the `promptForMissingArgumentsUsing` method, returning an array of questions keyed by the argument names:"
-msgstr ""
+msgstr "當 Laravel 需要從使用者取得必填引數時，Laravel 會自動智慧地使用引數名稱與說明來產生提問，並向使用者要求輸入。若想自定必填引數的提問，可實作 `promptForMissingArgumentsUsing` 方法，並回傳一組以引數名稱為索引鍵的問題陣列："
 
 #: docs/10.x/artisan.md:block 133 (code)
 msgid "/**\n"
@@ -727,21 +746,33 @@ msgid "/**\n"
 "        'user' => 'Which user ID should receive the mail?',\n"
 "    ];\n"
 "}\n"
-msgstr ""
+msgstr "/**\n"
+" * Prompt for missing input arguments using the returned questions.\n"
+" *\n"
+" * @return array\n"
+" */\n"
+"protected function promptForMissingArgumentsUsing()\n"
+"{\n"
+"    return [\n"
+"        'user' => 'Which user ID should receive the mail?',\n"
+"    ];\n"
+"}\n"
 
 #: docs/10.x/artisan.md:block 134 (paragraph)
 msgid "You may also provide placeholder text by using a tuple containing the question and placeholder:"
-msgstr ""
+msgstr "也可以使用包含提問與預留位置 (Placeholder) 的 ^[Tuple](有序元素) 來提供預留位置文字："
 
 #: docs/10.x/artisan.md:block 135 (code)
 msgid "return [\n"
 "    'user' => ['Which user ID should receive the mail?', 'E.g. 123'],\n"
 "];\n"
-msgstr ""
+msgstr "return [\n"
+"    'user' => ['Which user ID should receive the mail?', 'E.g. 123'],\n"
+"];\n"
 
 #: docs/10.x/artisan.md:block 136 (paragraph)
 msgid "If you would like complete control over the prompt, you may provide a closure that should prompt the user and return their answer:"
-msgstr ""
+msgstr "若想完全控制提示，可以提供一個 Closure 以用於向使用者提問並回傳使用者提供的答案："
 
 #: docs/10.x/artisan.md:block 137 (code)
 msgid "use App\\Models\\User;\n"
@@ -756,15 +787,26 @@ msgid "use App\\Models\\User;\n"
 "            : []\n"
 "    ),\n"
 "];\n"
-msgstr ""
+msgstr "use App\\Models\\User;\n"
+"use function Laravel\\Prompts\\search;\n\n"
+"// ...\n\n"
+"return [\n"
+"    'user' => fn () => search(\n"
+"        label: 'Search for a user:',\n"
+"        placeholder: 'E.g. Taylor Otwell',\n"
+"        options: fn ($value) => strlen($value) > 0\n"
+"            ? User::where('name', 'like', \"%{$value}%\")->pluck('name', 'id')\n"
+"            : []\n"
+"    ),\n"
+"];\n"
 
 #: docs/10.x/artisan.md:block 138 (quote)
 msgid "**Note** The comprehensive [Laravel Prompts](/docs/{{version}}/prompts) documentation includes additional information on the available prompts and their usage."
-msgstr ""
+msgstr "**Note** 完整的 [Laravel Prompts](/docs/{{version}}/prompts) 說明文件中包含了有關可用的提示及其使用方法的更多資訊。"
 
 #: docs/10.x/artisan.md:block 139 (paragraph)
 msgid "If you wish to prompt the user to select or enter [options](#options), you may include prompts in your command's `handle` method. However, if you only wish to prompt the user when they have also been automatically prompted for missing arguments, then you may implement the `afterPromptingForMissingArguments` method:"
-msgstr ""
+msgstr "若想提示使用者選擇或輸入[選項](#options)，則可在 Command 的 `handle` 方法中包含提示。不過，若只想在使用者同時被提示未提供的引數時提示使用者，則可實作 `afterPromptingForMissingArguments` 方法："
 
 #: docs/10.x/artisan.md:block 140 (code)
 msgid "use Symfony\\Component\\Console\\Input\\InputInterface;\n"
@@ -785,7 +827,24 @@ msgid "use Symfony\\Component\\Console\\Input\\InputInterface;\n"
 "        default: $this->option('queue')\n"
 "    ));\n"
 "}\n"
-msgstr ""
+msgstr "use Symfony\\Component\\Console\\Input\\InputInterface;\n"
+"use Symfony\\Component\\Console\\Output\\OutputInterface;\n"
+"use function Laravel\\Prompts\\confirm;\n\n"
+"// ...\n\n"
+"/**\n"
+" * Perform actions after the user was prompted for missing arguments.\n"
+" *\n"
+" * @param  \\Symfony\\Component\\Console\\Input\\InputInterface  $input\n"
+" * @param  \\Symfony\\Component\\Console\\Output\\OutputInterface  $output\n"
+" * @return void\n"
+" */\n"
+"protected function afterPromptingForMissingArguments(InputInterface $input, OutputInterface $output)\n"
+"{\n"
+"    $input->setOption('queue', confirm(\n"
+"        label: 'Would you like to queue the mail?',\n"
+"        default: $this->option('queue')\n"
+"    ));\n"
+"}\n"
 
 #: docs/10.x/artisan.md:block 142 (header)
 msgid "Command I/O"
@@ -843,7 +902,7 @@ msgstr "為輸入進行提示"
 
 #: docs/10.x/artisan.md:block 153 (quote)
 msgid "**Note** [Laravel Prompts](/docs/{{version}}/prompts) is a PHP package for adding beautiful and user-friendly forms to your command-line applications, with browser-like features including placeholder text and validation."
-msgstr ""
+msgstr "**Note** [Laravel Prompts](/docs/{{version}}/prompts) 是一個 PHP 套件，可用來在 CLI 應用程式中新增好看且對使用者友善的表單，並具有類似瀏覽器中的功能，如預留位置文字與表單驗證。"
 
 #: docs/10.x/artisan.md:block 154 (paragraph)
 msgid "In addition to displaying output, you may also ask the user to provide input during the execution of your command. The `ask` method will prompt the user with the given question, accept their input, and then return the user's input back to your command:"

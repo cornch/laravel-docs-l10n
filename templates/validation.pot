@@ -79,7 +79,7 @@ msgid "[Customizing The Error Messages](#manual-customizing-the-error-messages)"
 msgstr ""
 
 #: docs/10.x/validation.md:block 2 (unordered list)
-msgid "[After Validation Hook](#after-validation-hook)"
+msgid "[Performing Additional Validation](#performing-additional-validation)"
 msgstr ""
 
 #: docs/10.x/validation.md:block 2 (unordered list)
@@ -200,7 +200,6 @@ msgid ""
 "\n"
 "namespace App\\Http\\Controllers;\n"
 "\n"
-"use App\\Http\\Controllers\\Controller;\n"
 "use Illuminate\\Http\\RedirectResponse;\n"
 "use Illuminate\\Http\\Request;\n"
 "use Illuminate\\View\\View;\n"
@@ -250,7 +249,7 @@ msgid ""
 "/**\n"
 " * Store a new blog post.\n"
 " */\n"
-"public function store(Request $request): Response\n"
+"public function store(Request $request): RedirectResponse\n"
 "{\n"
 "    $validated = $request->validate([\n"
 "        'title' => 'required|unique:posts|max:255',\n"
@@ -259,7 +258,7 @@ msgid ""
 "\n"
 "    // The blog post is valid...\n"
 "\n"
-"    return response()->noContent();\n"
+"    return redirect('/posts');\n"
 "}\n"
 msgstr ""
 
@@ -380,34 +379,38 @@ msgid "Customizing The Error Messages"
 msgstr ""
 
 #: docs/10.x/validation.md:block 49 (paragraph)
-msgid "Laravel's built-in validation rules each have an error message that is located in your application's `lang/en/validation.php` file. Within this file, you will find a translation entry for each validation rule. You are free to change or modify these messages based on the needs of your application."
+msgid "Laravel's built-in validation rules each have an error message that is located in your application's `lang/en/validation.php` file. If your application does not have a `lang` directory, you may instruct Laravel to create it using the `lang:publish` Artisan command."
 msgstr ""
 
 #: docs/10.x/validation.md:block 50 (paragraph)
+msgid "Within the `lang/en/validation.php` file, you will find a translation entry for each validation rule. You are free to change or modify these messages based on the needs of your application."
+msgstr ""
+
+#: docs/10.x/validation.md:block 51 (paragraph)
 msgid "In addition, you may copy this file to another language directory to translate the messages for your application's language. To learn more about Laravel localization, check out the complete [localization documentation](/docs/{{version}}/localization)."
 msgstr ""
 
-#: docs/10.x/validation.md:block 51 (quote)
+#: docs/10.x/validation.md:block 52 (quote)
 msgid "**Warning** By default, the Laravel application skeleton does not include the `lang` directory. If you would like to customize Laravel's language files, you may publish them via the `lang:publish` Artisan command."
 msgstr ""
 
-#: docs/10.x/validation.md:block 53 (header)
+#: docs/10.x/validation.md:block 54 (header)
 msgid "XHR Requests & Validation"
 msgstr ""
 
-#: docs/10.x/validation.md:block 54 (paragraph)
+#: docs/10.x/validation.md:block 55 (paragraph)
 msgid "In this example, we used a traditional form to send data to the application. However, many applications receive XHR requests from a JavaScript powered frontend. When using the `validate` method during an XHR request, Laravel will not generate a redirect response. Instead, Laravel generates a [JSON response containing all of the validation errors](#validation-error-response-format). This JSON response will be sent with a 422 HTTP status code."
 msgstr ""
 
-#: docs/10.x/validation.md:block 56 (header)
+#: docs/10.x/validation.md:block 57 (header)
 msgid "The `@error` Directive"
 msgstr ""
 
-#: docs/10.x/validation.md:block 57 (paragraph)
+#: docs/10.x/validation.md:block 58 (paragraph)
 msgid "You may use the `@error` [Blade](/docs/{{version}}/blade) directive to quickly determine if validation error messages exist for a given attribute. Within an `@error` directive, you may echo the `$message` variable to display the error message:"
 msgstr ""
 
-#: docs/10.x/validation.md:block 58 (code)
+#: docs/10.x/validation.md:block 59 (code)
 msgid ""
 "<!-- /resources/views/post/create.blade.php -->\n"
 "\n"
@@ -423,47 +426,47 @@ msgid ""
 "@enderror\n"
 msgstr ""
 
-#: docs/10.x/validation.md:block 59 (paragraph)
+#: docs/10.x/validation.md:block 60 (paragraph)
 msgid "If you are using [named error bags](#named-error-bags), you may pass the name of the error bag as the second argument to the `@error` directive:"
 msgstr ""
 
-#: docs/10.x/validation.md:block 60 (code)
+#: docs/10.x/validation.md:block 61 (code)
 msgid "<input ... class=\"@error('title', 'post') is-invalid @enderror\">\n"
 msgstr ""
 
-#: docs/10.x/validation.md:block 62 (header)
+#: docs/10.x/validation.md:block 63 (header)
 msgid "Repopulating Forms"
 msgstr ""
 
-#: docs/10.x/validation.md:block 63 (paragraph)
+#: docs/10.x/validation.md:block 64 (paragraph)
 msgid "When Laravel generates a redirect response due to a validation error, the framework will automatically [flash all of the request's input to the session](/docs/{{version}}/session#flash-data). This is done so that you may conveniently access the input during the next request and repopulate the form that the user attempted to submit."
 msgstr ""
 
-#: docs/10.x/validation.md:block 64 (paragraph)
+#: docs/10.x/validation.md:block 65 (paragraph)
 msgid "To retrieve flashed input from the previous request, invoke the `old` method on an instance of `Illuminate\\Http\\Request`. The `old` method will pull the previously flashed input data from the [session](/docs/{{version}}/session):"
 msgstr ""
 
-#: docs/10.x/validation.md:block 65 (code)
+#: docs/10.x/validation.md:block 66 (code)
 msgid "$title = $request->old('title');\n"
 msgstr ""
 
-#: docs/10.x/validation.md:block 66 (paragraph)
+#: docs/10.x/validation.md:block 67 (paragraph)
 msgid "Laravel also provides a global `old` helper. If you are displaying old input within a [Blade template](/docs/{{version}}/blade), it is more convenient to use the `old` helper to repopulate the form. If no old input exists for the given field, `null` will be returned:"
 msgstr ""
 
-#: docs/10.x/validation.md:block 67 (code)
+#: docs/10.x/validation.md:block 68 (code)
 msgid "<input type=\"text\" name=\"title\" value=\"{{ old('title') }}\">\n"
 msgstr ""
 
-#: docs/10.x/validation.md:block 69 (header)
+#: docs/10.x/validation.md:block 70 (header)
 msgid "A Note On Optional Fields"
 msgstr ""
 
-#: docs/10.x/validation.md:block 70 (paragraph)
+#: docs/10.x/validation.md:block 71 (paragraph)
 msgid "By default, Laravel includes the `TrimStrings` and `ConvertEmptyStringsToNull` middleware in your application's global middleware stack. These middleware are listed in the stack by the `App\\Http\\Kernel` class. Because of this, you will often need to mark your \"optional\" request fields as `nullable` if you do not want the validator to consider `null` values as invalid. For example:"
 msgstr ""
 
-#: docs/10.x/validation.md:block 71 (code)
+#: docs/10.x/validation.md:block 72 (code)
 msgid ""
 "$request->validate([\n"
 "    'title' => 'required|unique:posts|max:255',\n"
@@ -472,23 +475,23 @@ msgid ""
 "]);\n"
 msgstr ""
 
-#: docs/10.x/validation.md:block 72 (paragraph)
+#: docs/10.x/validation.md:block 73 (paragraph)
 msgid "In this example, we are specifying that the `publish_at` field may be either `null` or a valid date representation. If the `nullable` modifier is not added to the rule definition, the validator would consider `null` an invalid date."
 msgstr ""
 
-#: docs/10.x/validation.md:block 74 (header)
+#: docs/10.x/validation.md:block 75 (header)
 msgid "Validation Error Response Format"
 msgstr ""
 
-#: docs/10.x/validation.md:block 75 (paragraph)
+#: docs/10.x/validation.md:block 76 (paragraph)
 msgid "When your application throws a `Illuminate\\Validation\\ValidationException` exception and the incoming HTTP request is expecting a JSON response, Laravel will automatically format the error messages for you and return a `422 Unprocessable Entity` HTTP response."
 msgstr ""
 
-#: docs/10.x/validation.md:block 76 (paragraph)
+#: docs/10.x/validation.md:block 77 (paragraph)
 msgid "Below, you can review an example of the JSON response format for validation errors. Note that nested error keys are flattened into \"dot\" notation format:"
 msgstr ""
 
-#: docs/10.x/validation.md:block 77 (code)
+#: docs/10.x/validation.md:block 78 (code)
 msgid ""
 "{\n"
 "    \"message\": \"The team name must be a string. (and 4 more errors)\",\n"
@@ -510,31 +513,31 @@ msgid ""
 "}\n"
 msgstr ""
 
-#: docs/10.x/validation.md:block 79 (header)
+#: docs/10.x/validation.md:block 80 (header)
 msgid "Form Request Validation"
 msgstr ""
 
-#: docs/10.x/validation.md:block 81 (header)
+#: docs/10.x/validation.md:block 82 (header)
 msgid "Creating Form Requests"
 msgstr ""
 
-#: docs/10.x/validation.md:block 82 (paragraph)
+#: docs/10.x/validation.md:block 83 (paragraph)
 msgid "For more complex validation scenarios, you may wish to create a \"form request\". Form requests are custom request classes that encapsulate their own validation and authorization logic. To create a form request class, you may use the `make:request` Artisan CLI command:"
 msgstr ""
 
-#: docs/10.x/validation.md:block 83 (code)
+#: docs/10.x/validation.md:block 84 (code)
 msgid "php artisan make:request StorePostRequest\n"
 msgstr ""
 
-#: docs/10.x/validation.md:block 84 (paragraph)
+#: docs/10.x/validation.md:block 85 (paragraph)
 msgid "The generated form request class will be placed in the `app/Http/Requests` directory. If this directory does not exist, it will be created when you run the `make:request` command. Each form request generated by Laravel has two methods: `authorize` and `rules`."
 msgstr ""
 
-#: docs/10.x/validation.md:block 85 (paragraph)
+#: docs/10.x/validation.md:block 86 (paragraph)
 msgid "As you might have guessed, the `authorize` method is responsible for determining if the currently authenticated user can perform the action represented by the request, while the `rules` method returns the validation rules that should apply to the request's data:"
 msgstr ""
 
-#: docs/10.x/validation.md:block 86 (code)
+#: docs/10.x/validation.md:block 87 (code)
 msgid ""
 "/**\n"
 " * Get the validation rules that apply to the request.\n"
@@ -550,20 +553,20 @@ msgid ""
 "}\n"
 msgstr ""
 
-#: docs/10.x/validation.md:block 87 (quote)
+#: docs/10.x/validation.md:block 88 (quote)
 msgid "**Note** You may type-hint any dependencies you require within the `rules` method's signature. They will automatically be resolved via the Laravel [service container](/docs/{{version}}/container)."
 msgstr ""
 
-#: docs/10.x/validation.md:block 88 (paragraph)
+#: docs/10.x/validation.md:block 89 (paragraph)
 msgid "So, how are the validation rules evaluated? All you need to do is type-hint the request on your controller method. The incoming form request is validated before the controller method is called, meaning you do not need to clutter your controller with any validation logic:"
 msgstr ""
 
-#: docs/10.x/validation.md:block 89 (code)
+#: docs/10.x/validation.md:block 90 (code)
 msgid ""
 "/**\n"
 " * Store a new blog post.\n"
 " */\n"
-"public function store(StorePostRequest $request): Response\n"
+"public function store(StorePostRequest $request): RedirectResponse\n"
 "{\n"
 "    // The incoming request is valid...\n"
 "\n"
@@ -576,48 +579,86 @@ msgid ""
 "\n"
 "    // Store the blog post...\n"
 "\n"
-"    return response()->noContent();\n"
+"    return redirect('/posts');\n"
 "}\n"
 msgstr ""
 
-#: docs/10.x/validation.md:block 90 (paragraph)
+#: docs/10.x/validation.md:block 91 (paragraph)
 msgid "If validation fails, a redirect response will be generated to send the user back to their previous location. The errors will also be flashed to the session so they are available for display. If the request was an XHR request, an HTTP response with a 422 status code will be returned to the user including a [JSON representation of the validation errors](#validation-error-response-format)."
 msgstr ""
 
-#: docs/10.x/validation.md:block 92 (header)
-msgid "Adding After Hooks To Form Requests"
+#: docs/10.x/validation.md:block 92 (quote)
+msgid "**Note** Need to add real-time form request validation to your Inertia powered Laravel frontend? Check out [Laravel Precognition](/docs/{{version}}/precognition)."
 msgstr ""
 
-#: docs/10.x/validation.md:block 93 (paragraph)
-msgid "If you would like to add an \"after\" validation hook to a form request, you may use the `withValidator` method. This method receives the fully constructed validator, allowing you to call any of its methods before the validation rules are actually evaluated:"
+#: docs/10.x/validation.md:block 94 (header)
+msgid "Performing Additional Validation"
 msgstr ""
 
-#: docs/10.x/validation.md:block 94 (code)
+#: docs/10.x/validation.md:block 95 (paragraph)
+msgid "Sometimes you need to perform additional validation after your initial validation is complete. You can accomplish this using the form request's `after` method."
+msgstr ""
+
+#: docs/10.x/validation.md:block 96 (paragraph)
+msgid "The `after` method should return an array of callables or closures which will be invoked after validation is complete. The given callables will receive an `Illuminate\\Validation\\Validator` instance, allowing you to raise additional error messages if necessary:"
+msgstr ""
+
+#: docs/10.x/validation.md:block 97 (code)
 msgid ""
 "use Illuminate\\Validation\\Validator;\n"
 "\n"
 "/**\n"
-" * Configure the validator instance.\n"
+" * Get the \"after\" validation callables for the request.\n"
 " */\n"
-"public function withValidator(Validator $validator): void\n"
+"public function after(): array\n"
 "{\n"
-"    $validator->after(function (Validator $validator) {\n"
-"        if ($this->somethingElseIsInvalid()) {\n"
-"            $validator->errors()->add('field', 'Something is wrong with this field!');\n"
+"    return [\n"
+"        function (Validator $validator) {\n"
+"            if ($this->somethingElseIsInvalid()) {\n"
+"                $validator->errors()->add(\n"
+"                    'field',\n"
+"                    'Something is wrong with this field!'\n"
+"                );\n"
+"            }\n"
 "        }\n"
-"    });\n"
+"    ];\n"
 "}\n"
 msgstr ""
 
-#: docs/10.x/validation.md:block 96 (header)
-msgid "Stopping On First Validation Failure Attribute"
+#: docs/10.x/validation.md:block 98 (paragraph)
+msgid "As noted, the array returned by the `after` method may also contain invokable classes. The `__invoke` method of these classes will receive an `Illuminate\\Validation\\Validator` instance:"
 msgstr ""
 
-#: docs/10.x/validation.md:block 97 (paragraph)
+#: docs/10.x/validation.md:block 99 (code)
+msgid ""
+"use App\\Validation\\ValidateShippingTime;\n"
+"use App\\Validation\\ValidateUserStatus;\n"
+"use Illuminate\\Validation\\Validator;\n"
+"\n"
+"/**\n"
+" * Get the \"after\" validation callables for the request.\n"
+" */\n"
+"public function after(): array\n"
+"{\n"
+"    return [\n"
+"        new ValidateUserStatus,\n"
+"        new ValidateShippingTime,\n"
+"        function (Validator $validator) {\n"
+"            //\n"
+"        }\n"
+"    ];\n"
+"}\n"
+msgstr ""
+
+#: docs/10.x/validation.md:block 101 (header)
+msgid "Stopping On The First Validation Failure"
+msgstr ""
+
+#: docs/10.x/validation.md:block 102 (paragraph)
 msgid "By adding a `stopOnFirstFailure` property to your request class, you may inform the validator that it should stop validating all attributes once a single validation failure has occurred:"
 msgstr ""
 
-#: docs/10.x/validation.md:block 98 (code)
+#: docs/10.x/validation.md:block 103 (code)
 msgid ""
 "/**\n"
 " * Indicates if the validator should stop on the first rule failure.\n"
@@ -627,15 +668,15 @@ msgid ""
 "protected $stopOnFirstFailure = true;\n"
 msgstr ""
 
-#: docs/10.x/validation.md:block 100 (header)
+#: docs/10.x/validation.md:block 105 (header)
 msgid "Customizing The Redirect Location"
 msgstr ""
 
-#: docs/10.x/validation.md:block 101 (paragraph)
+#: docs/10.x/validation.md:block 106 (paragraph)
 msgid "As previously discussed, a redirect response will be generated to send the user back to their previous location when form request validation fails. However, you are free to customize this behavior. To do so, define a `$redirect` property on your form request:"
 msgstr ""
 
-#: docs/10.x/validation.md:block 102 (code)
+#: docs/10.x/validation.md:block 107 (code)
 msgid ""
 "/**\n"
 " * The URI that users should be redirected to if validation fails.\n"
@@ -645,11 +686,11 @@ msgid ""
 "protected $redirect = '/dashboard';\n"
 msgstr ""
 
-#: docs/10.x/validation.md:block 103 (paragraph)
+#: docs/10.x/validation.md:block 108 (paragraph)
 msgid "Or, if you would like to redirect users to a named route, you may define a `$redirectRoute` property instead:"
 msgstr ""
 
-#: docs/10.x/validation.md:block 104 (code)
+#: docs/10.x/validation.md:block 109 (code)
 msgid ""
 "/**\n"
 " * The route that users should be redirected to if validation fails.\n"
@@ -659,15 +700,15 @@ msgid ""
 "protected $redirectRoute = 'dashboard';\n"
 msgstr ""
 
-#: docs/10.x/validation.md:block 106 (header)
+#: docs/10.x/validation.md:block 111 (header)
 msgid "Authorizing Form Requests"
 msgstr ""
 
-#: docs/10.x/validation.md:block 107 (paragraph)
+#: docs/10.x/validation.md:block 112 (paragraph)
 msgid "The form request class also contains an `authorize` method. Within this method, you may determine if the authenticated user actually has the authority to update a given resource. For example, you may determine if a user actually owns a blog comment they are attempting to update. Most likely, you will interact with your [authorization gates and policies](/docs/{{version}}/authorization) within this method:"
 msgstr ""
 
-#: docs/10.x/validation.md:block 108 (code)
+#: docs/10.x/validation.md:block 113 (code)
 msgid ""
 "use App\\Models\\Comment;\n"
 "\n"
@@ -682,31 +723,31 @@ msgid ""
 "}\n"
 msgstr ""
 
-#: docs/10.x/validation.md:block 109 (paragraph)
+#: docs/10.x/validation.md:block 114 (paragraph)
 msgid "Since all form requests extend the base Laravel request class, we may use the `user` method to access the currently authenticated user. Also, note the call to the `route` method in the example above. This method grants you access to the URI parameters defined on the route being called, such as the `{comment}` parameter in the example below:"
 msgstr ""
 
-#: docs/10.x/validation.md:block 110 (code)
+#: docs/10.x/validation.md:block 115 (code)
 msgid "Route::post('/comment/{comment}');\n"
 msgstr ""
 
-#: docs/10.x/validation.md:block 111 (paragraph)
+#: docs/10.x/validation.md:block 116 (paragraph)
 msgid "Therefore, if your application is taking advantage of [route model binding](/docs/{{version}}/routing#route-model-binding), your code may be made even more succinct by accessing the resolved model as a property of the request:"
 msgstr ""
 
-#: docs/10.x/validation.md:block 112 (code)
+#: docs/10.x/validation.md:block 117 (code)
 msgid "return $this->user()->can('update', $this->comment);\n"
 msgstr ""
 
-#: docs/10.x/validation.md:block 113 (paragraph)
+#: docs/10.x/validation.md:block 118 (paragraph)
 msgid "If the `authorize` method returns `false`, an HTTP response with a 403 status code will automatically be returned and your controller method will not execute."
 msgstr ""
 
-#: docs/10.x/validation.md:block 114 (paragraph)
+#: docs/10.x/validation.md:block 119 (paragraph)
 msgid "If you plan to handle authorization logic for the request in another part of your application, you may simply return `true` from the `authorize` method:"
 msgstr ""
 
-#: docs/10.x/validation.md:block 115 (code)
+#: docs/10.x/validation.md:block 120 (code)
 msgid ""
 "/**\n"
 " * Determine if the user is authorized to make this request.\n"
@@ -717,15 +758,15 @@ msgid ""
 "}\n"
 msgstr ""
 
-#: docs/10.x/validation.md:block 116 (quote)
+#: docs/10.x/validation.md:block 121 (quote)
 msgid "**Note** You may type-hint any dependencies you need within the `authorize` method's signature. They will automatically be resolved via the Laravel [service container](/docs/{{version}}/container)."
 msgstr ""
 
-#: docs/10.x/validation.md:block 119 (paragraph)
+#: docs/10.x/validation.md:block 124 (paragraph)
 msgid "You may customize the error messages used by the form request by overriding the `messages` method. This method should return an array of attribute / rule pairs and their corresponding error messages:"
 msgstr ""
 
-#: docs/10.x/validation.md:block 120 (code)
+#: docs/10.x/validation.md:block 125 (code)
 msgid ""
 "/**\n"
 " * Get the error messages for the defined validation rules.\n"
@@ -741,15 +782,15 @@ msgid ""
 "}\n"
 msgstr ""
 
-#: docs/10.x/validation.md:block 122 (header)
+#: docs/10.x/validation.md:block 127 (header)
 msgid "Customizing The Validation Attributes"
 msgstr ""
 
-#: docs/10.x/validation.md:block 123 (paragraph)
+#: docs/10.x/validation.md:block 128 (paragraph)
 msgid "Many of Laravel's built-in validation rule error messages contain an `:attribute` placeholder. If you would like the `:attribute` placeholder of your validation message to be replaced with a custom attribute name, you may specify the custom names by overriding the `attributes` method. This method should return an array of attribute / name pairs:"
 msgstr ""
 
-#: docs/10.x/validation.md:block 124 (code)
+#: docs/10.x/validation.md:block 129 (code)
 msgid ""
 "/**\n"
 " * Get custom attributes for validator errors.\n"
@@ -764,15 +805,15 @@ msgid ""
 "}\n"
 msgstr ""
 
-#: docs/10.x/validation.md:block 126 (header)
+#: docs/10.x/validation.md:block 131 (header)
 msgid "Preparing Input For Validation"
 msgstr ""
 
-#: docs/10.x/validation.md:block 127 (paragraph)
+#: docs/10.x/validation.md:block 132 (paragraph)
 msgid "If you need to prepare or sanitize any data from the request before you apply your validation rules, you may use the `prepareForValidation` method:"
 msgstr ""
 
-#: docs/10.x/validation.md:block 128 (code)
+#: docs/10.x/validation.md:block 133 (code)
 msgid ""
 "use Illuminate\\Support\\Str;\n"
 "\n"
@@ -787,14 +828,12 @@ msgid ""
 "}\n"
 msgstr ""
 
-#: docs/10.x/validation.md:block 129 (paragraph)
+#: docs/10.x/validation.md:block 134 (paragraph)
 msgid "Likewise, if you need to normalize any request data after validation is complete, you may use the `passedValidation` method:"
 msgstr ""
 
-#: docs/10.x/validation.md:block 130 (code)
+#: docs/10.x/validation.md:block 135 (code)
 msgid ""
-"use Illuminate\\Support\\Str;\n"
-"\n"
 "/**\n"
 " * Handle a passed validation attempt.\n"
 " */\n"
@@ -804,23 +843,22 @@ msgid ""
 "}\n"
 msgstr ""
 
-#: docs/10.x/validation.md:block 132 (header)
+#: docs/10.x/validation.md:block 137 (header)
 msgid "Manually Creating Validators"
 msgstr ""
 
-#: docs/10.x/validation.md:block 133 (paragraph)
+#: docs/10.x/validation.md:block 138 (paragraph)
 msgid "If you do not want to use the `validate` method on the request, you may create a validator instance manually using the `Validator` [facade](/docs/{{version}}/facades). The `make` method on the facade generates a new validator instance:"
 msgstr ""
 
-#: docs/10.x/validation.md:block 134 (code)
+#: docs/10.x/validation.md:block 139 (code)
 msgid ""
 "<?php\n"
 "\n"
 "namespace App\\Http\\Controllers;\n"
 "\n"
-"use App\\Http\\Controllers\\Controller;\n"
+"use Illuminate\\Http\\RedirectResponse;\n"
 "use Illuminate\\Http\\Request;\n"
-"use Illuminate\\Http\\Response;\n"
 "use Illuminate\\Support\\Facades\\Validator;\n"
 "\n"
 "class PostController extends Controller\n"
@@ -828,7 +866,7 @@ msgid ""
 "    /**\n"
 "     * Store a new blog post.\n"
 "     */\n"
-"    public function store(Request $request): Response\n"
+"    public function store(Request $request): RedirectResponse\n"
 "    {\n"
 "        $validator = Validator::make($request->all(), [\n"
 "            'title' => 'required|unique:posts|max:255',\n"
@@ -850,39 +888,39 @@ msgid ""
 "\n"
 "        // Store the blog post...\n"
 "\n"
-"        return response()->noContent();\n"
+"        return redirect('/posts');\n"
 "    }\n"
 "}\n"
 msgstr ""
 
-#: docs/10.x/validation.md:block 135 (paragraph)
+#: docs/10.x/validation.md:block 140 (paragraph)
 msgid "The first argument passed to the `make` method is the data under validation. The second argument is an array of the validation rules that should be applied to the data."
 msgstr ""
 
-#: docs/10.x/validation.md:block 136 (paragraph)
+#: docs/10.x/validation.md:block 141 (paragraph)
 msgid "After determining whether the request validation failed, you may use the `withErrors` method to flash the error messages to the session. When using this method, the `$errors` variable will automatically be shared with your views after redirection, allowing you to easily display them back to the user. The `withErrors` method accepts a validator, a `MessageBag`, or a PHP `array`."
 msgstr ""
 
-#: docs/10.x/validation.md:block 138 (paragraph)
+#: docs/10.x/validation.md:block 143 (paragraph)
 msgid "The `stopOnFirstFailure` method will inform the validator that it should stop validating all attributes once a single validation failure has occurred:"
 msgstr ""
 
-#: docs/10.x/validation.md:block 139 (code)
+#: docs/10.x/validation.md:block 144 (code)
 msgid ""
 "if ($validator->stopOnFirstFailure()->fails()) {\n"
 "    // ...\n"
 "}\n"
 msgstr ""
 
-#: docs/10.x/validation.md:block 141 (header)
+#: docs/10.x/validation.md:block 146 (header)
 msgid "Automatic Redirection"
 msgstr ""
 
-#: docs/10.x/validation.md:block 142 (paragraph)
+#: docs/10.x/validation.md:block 147 (paragraph)
 msgid "If you would like to create a validator instance manually but still take advantage of the automatic redirection offered by the HTTP request's `validate` method, you may call the `validate` method on an existing validator instance. If validation fails, the user will automatically be redirected or, in the case of an XHR request, a [JSON response will be returned](#validation-error-response-format):"
 msgstr ""
 
-#: docs/10.x/validation.md:block 143 (code)
+#: docs/10.x/validation.md:block 148 (code)
 msgid ""
 "Validator::make($request->all(), [\n"
 "    'title' => 'required|unique:posts|max:255',\n"
@@ -890,11 +928,11 @@ msgid ""
 "])->validate();\n"
 msgstr ""
 
-#: docs/10.x/validation.md:block 144 (paragraph)
+#: docs/10.x/validation.md:block 149 (paragraph)
 msgid "You may use the `validateWithBag` method to store the error messages in a [named error bag](#named-error-bags) if validation fails:"
 msgstr ""
 
-#: docs/10.x/validation.md:block 145 (code)
+#: docs/10.x/validation.md:block 150 (code)
 msgid ""
 "Validator::make($request->all(), [\n"
 "    'title' => 'required|unique:posts|max:255',\n"
@@ -902,42 +940,42 @@ msgid ""
 "])->validateWithBag('post');\n"
 msgstr ""
 
-#: docs/10.x/validation.md:block 147 (header)
+#: docs/10.x/validation.md:block 152 (header)
 msgid "Named Error Bags"
 msgstr ""
 
-#: docs/10.x/validation.md:block 148 (paragraph)
+#: docs/10.x/validation.md:block 153 (paragraph)
 msgid "If you have multiple forms on a single page, you may wish to name the `MessageBag` containing the validation errors, allowing you to retrieve the error messages for a specific form. To achieve this, pass a name as the second argument to `withErrors`:"
 msgstr ""
 
-#: docs/10.x/validation.md:block 149 (code)
+#: docs/10.x/validation.md:block 154 (code)
 msgid "return redirect('register')->withErrors($validator, 'login');\n"
 msgstr ""
 
-#: docs/10.x/validation.md:block 150 (paragraph)
+#: docs/10.x/validation.md:block 155 (paragraph)
 msgid "You may then access the named `MessageBag` instance from the `$errors` variable:"
 msgstr ""
 
-#: docs/10.x/validation.md:block 151 (code)
+#: docs/10.x/validation.md:block 156 (code)
 msgid "{{ $errors->login->first('email') }}\n"
 msgstr ""
 
-#: docs/10.x/validation.md:block 154 (paragraph)
+#: docs/10.x/validation.md:block 159 (paragraph)
 msgid "If needed, you may provide custom error messages that a validator instance should use instead of the default error messages provided by Laravel. There are several ways to specify custom messages. First, you may pass the custom messages as the third argument to the `Validator::make` method:"
 msgstr ""
 
-#: docs/10.x/validation.md:block 155 (code)
+#: docs/10.x/validation.md:block 160 (code)
 msgid ""
 "$validator = Validator::make($input, $rules, $messages = [\n"
 "    'required' => 'The :attribute field is required.',\n"
 "]);\n"
 msgstr ""
 
-#: docs/10.x/validation.md:block 156 (paragraph)
+#: docs/10.x/validation.md:block 161 (paragraph)
 msgid "In this example, the `:attribute` placeholder will be replaced by the actual name of the field under validation. You may also utilize other placeholders in validation messages. For example:"
 msgstr ""
 
-#: docs/10.x/validation.md:block 157 (code)
+#: docs/10.x/validation.md:block 162 (code)
 msgid ""
 "$messages = [\n"
 "    'same' => 'The :attribute and :other must match.',\n"
@@ -947,52 +985,47 @@ msgid ""
 "];\n"
 msgstr ""
 
-#: docs/10.x/validation.md:block 159 (header)
+#: docs/10.x/validation.md:block 164 (header)
 msgid "Specifying A Custom Message For A Given Attribute"
 msgstr ""
 
-#: docs/10.x/validation.md:block 160 (paragraph)
+#: docs/10.x/validation.md:block 165 (paragraph)
 msgid "Sometimes you may wish to specify a custom error message only for a specific attribute. You may do so using \"dot\" notation. Specify the attribute's name first, followed by the rule:"
 msgstr ""
 
-#: docs/10.x/validation.md:block 161 (code)
+#: docs/10.x/validation.md:block 166 (code)
 msgid ""
 "$messages = [\n"
 "    'email.required' => 'We need to know your email address!',\n"
 "];\n"
 msgstr ""
 
-#: docs/10.x/validation.md:block 163 (header)
+#: docs/10.x/validation.md:block 168 (header)
 msgid "Specifying Custom Attribute Values"
 msgstr ""
 
-#: docs/10.x/validation.md:block 164 (paragraph)
+#: docs/10.x/validation.md:block 169 (paragraph)
 msgid "Many of Laravel's built-in error messages include an `:attribute` placeholder that is replaced with the name of the field or attribute under validation. To customize the values used to replace these placeholders for specific fields, you may pass an array of custom attributes as the fourth argument to the `Validator::make` method:"
 msgstr ""
 
-#: docs/10.x/validation.md:block 165 (code)
+#: docs/10.x/validation.md:block 170 (code)
 msgid ""
 "$validator = Validator::make($input, $rules, $messages, [\n"
 "    'email' => 'email address',\n"
 "]);\n"
 msgstr ""
 
-#: docs/10.x/validation.md:block 167 (header)
-msgid "After Validation Hook"
+#: docs/10.x/validation.md:block 173 (paragraph)
+msgid "Sometimes you need to perform additional validation after your initial validation is complete. You can accomplish this using the validator's `after` method. The `after` method accepts a closure or an array of callables which will be invoked after validation is complete. The given callables will receive an `Illuminate\\Validation\\Validator` instance, allowing you to raise additional error messages if necessary:"
 msgstr ""
 
-#: docs/10.x/validation.md:block 168 (paragraph)
-msgid "You may also attach callbacks to be run after validation is completed. This allows you to easily perform further validation and even add more error messages to the message collection. To get started, call the `after` method on a validator instance:"
-msgstr ""
-
-#: docs/10.x/validation.md:block 169 (code)
+#: docs/10.x/validation.md:block 174 (code)
 msgid ""
-"use Illuminate\\Support\\Facades;\n"
-"use Illuminate\\Validation\\Validator;\n"
+"use Illuminate\\Support\\Facades\\Validator;\n"
 "\n"
-"$validator = Facades\\Validator::make(/* ... */);\n"
+"$validator = Validator::make(/* ... */);\n"
 "\n"
-"$validator->after(function (Validator $validator) {\n"
+"$validator->after(function ($validator) {\n"
 "    if ($this->somethingElseIsInvalid()) {\n"
 "        $validator->errors()->add(\n"
 "            'field', 'Something is wrong with this field!'\n"
@@ -1005,26 +1038,44 @@ msgid ""
 "}\n"
 msgstr ""
 
-#: docs/10.x/validation.md:block 171 (header)
+#: docs/10.x/validation.md:block 175 (paragraph)
+msgid "As noted, the `after` method also accepts an array of callables, which is particularly convenient if your \"after validation\" logic is encapsulated in invokable classes, which will receive an `Illuminate\\Validation\\Validator` instance via their `__invoke` method:"
+msgstr ""
+
+#: docs/10.x/validation.md:block 176 (code)
+msgid ""
+"use App\\Validation\\ValidateShippingTime;\n"
+"use App\\Validation\\ValidateUserStatus;\n"
+"\n"
+"$validator->after([\n"
+"    new ValidateUserStatus,\n"
+"    new ValidateShippingTime,\n"
+"    function ($validator) {\n"
+"        // ...\n"
+"    },\n"
+"]);\n"
+msgstr ""
+
+#: docs/10.x/validation.md:block 178 (header)
 msgid "Working With Validated Input"
 msgstr ""
 
-#: docs/10.x/validation.md:block 172 (paragraph)
+#: docs/10.x/validation.md:block 179 (paragraph)
 msgid "After validating incoming request data using a form request or a manually created validator instance, you may wish to retrieve the incoming request data that actually underwent validation. This can be accomplished in several ways. First, you may call the `validated` method on a form request or validator instance. This method returns an array of the data that was validated:"
 msgstr ""
 
-#: docs/10.x/validation.md:block 173 (code)
+#: docs/10.x/validation.md:block 180 (code)
 msgid ""
 "$validated = $request->validated();\n"
 "\n"
 "$validated = $validator->validated();\n"
 msgstr ""
 
-#: docs/10.x/validation.md:block 174 (paragraph)
+#: docs/10.x/validation.md:block 181 (paragraph)
 msgid "Alternatively, you may call the `safe` method on a form request or validator instance. This method returns an instance of `Illuminate\\Support\\ValidatedInput`. This object exposes `only`, `except`, and `all` methods to retrieve a subset of the validated data or the entire array of validated data:"
 msgstr ""
 
-#: docs/10.x/validation.md:block 175 (code)
+#: docs/10.x/validation.md:block 182 (code)
 msgid ""
 "$validated = $request->safe()->only(['name', 'email']);\n"
 "\n"
@@ -1033,11 +1084,11 @@ msgid ""
 "$validated = $request->safe()->all();\n"
 msgstr ""
 
-#: docs/10.x/validation.md:block 176 (paragraph)
+#: docs/10.x/validation.md:block 183 (paragraph)
 msgid "In addition, the `Illuminate\\Support\\ValidatedInput` instance may be iterated over and accessed like an array:"
 msgstr ""
 
-#: docs/10.x/validation.md:block 177 (code)
+#: docs/10.x/validation.md:block 184 (code)
 msgid ""
 "// Validated data may be iterated...\n"
 "foreach ($request->safe() as $key => $value) {\n"
@@ -1050,114 +1101,114 @@ msgid ""
 "$email = $validated['email'];\n"
 msgstr ""
 
-#: docs/10.x/validation.md:block 178 (paragraph)
+#: docs/10.x/validation.md:block 185 (paragraph)
 msgid "If you would like to add additional fields to the validated data, you may call the `merge` method:"
 msgstr ""
 
-#: docs/10.x/validation.md:block 179 (code)
+#: docs/10.x/validation.md:block 186 (code)
 msgid "$validated = $request->safe()->merge(['name' => 'Taylor Otwell']);\n"
 msgstr ""
 
-#: docs/10.x/validation.md:block 180 (paragraph)
+#: docs/10.x/validation.md:block 187 (paragraph)
 msgid "If you would like to retrieve the validated data as a [collection](/docs/{{version}}/collections) instance, you may call the `collect` method:"
 msgstr ""
 
-#: docs/10.x/validation.md:block 181 (code)
+#: docs/10.x/validation.md:block 188 (code)
 msgid "$collection = $request->safe()->collect();\n"
 msgstr ""
 
-#: docs/10.x/validation.md:block 183 (header)
+#: docs/10.x/validation.md:block 190 (header)
 msgid "Working With Error Messages"
 msgstr ""
 
-#: docs/10.x/validation.md:block 184 (paragraph)
+#: docs/10.x/validation.md:block 191 (paragraph)
 msgid "After calling the `errors` method on a `Validator` instance, you will receive an `Illuminate\\Support\\MessageBag` instance, which has a variety of convenient methods for working with error messages. The `$errors` variable that is automatically made available to all views is also an instance of the `MessageBag` class."
 msgstr ""
 
-#: docs/10.x/validation.md:block 186 (header)
+#: docs/10.x/validation.md:block 193 (header)
 msgid "Retrieving The First Error Message For A Field"
 msgstr ""
 
-#: docs/10.x/validation.md:block 187 (paragraph)
+#: docs/10.x/validation.md:block 194 (paragraph)
 msgid "To retrieve the first error message for a given field, use the `first` method:"
 msgstr ""
 
-#: docs/10.x/validation.md:block 188 (code)
+#: docs/10.x/validation.md:block 195 (code)
 msgid ""
 "$errors = $validator->errors();\n"
 "\n"
 "echo $errors->first('email');\n"
 msgstr ""
 
-#: docs/10.x/validation.md:block 190 (header)
+#: docs/10.x/validation.md:block 197 (header)
 msgid "Retrieving All Error Messages For A Field"
 msgstr ""
 
-#: docs/10.x/validation.md:block 191 (paragraph)
+#: docs/10.x/validation.md:block 198 (paragraph)
 msgid "If you need to retrieve an array of all the messages for a given field, use the `get` method:"
 msgstr ""
 
-#: docs/10.x/validation.md:block 192 (code)
+#: docs/10.x/validation.md:block 199 (code)
 msgid ""
 "foreach ($errors->get('email') as $message) {\n"
 "    // ...\n"
 "}\n"
 msgstr ""
 
-#: docs/10.x/validation.md:block 193 (paragraph)
+#: docs/10.x/validation.md:block 200 (paragraph)
 msgid "If you are validating an array form field, you may retrieve all of the messages for each of the array elements using the `*` character:"
 msgstr ""
 
-#: docs/10.x/validation.md:block 194 (code)
+#: docs/10.x/validation.md:block 201 (code)
 msgid ""
 "foreach ($errors->get('attachments.*') as $message) {\n"
 "    // ...\n"
 "}\n"
 msgstr ""
 
-#: docs/10.x/validation.md:block 196 (header)
+#: docs/10.x/validation.md:block 203 (header)
 msgid "Retrieving All Error Messages For All Fields"
 msgstr ""
 
-#: docs/10.x/validation.md:block 197 (paragraph)
+#: docs/10.x/validation.md:block 204 (paragraph)
 msgid "To retrieve an array of all messages for all fields, use the `all` method:"
 msgstr ""
 
-#: docs/10.x/validation.md:block 198 (code)
+#: docs/10.x/validation.md:block 205 (code)
 msgid ""
 "foreach ($errors->all() as $message) {\n"
 "    // ...\n"
 "}\n"
 msgstr ""
 
-#: docs/10.x/validation.md:block 200 (header)
+#: docs/10.x/validation.md:block 207 (header)
 msgid "Determining If Messages Exist For A Field"
 msgstr ""
 
-#: docs/10.x/validation.md:block 201 (paragraph)
+#: docs/10.x/validation.md:block 208 (paragraph)
 msgid "The `has` method may be used to determine if any error messages exist for a given field:"
 msgstr ""
 
-#: docs/10.x/validation.md:block 202 (code)
+#: docs/10.x/validation.md:block 209 (code)
 msgid ""
 "if ($errors->has('email')) {\n"
 "    // ...\n"
 "}\n"
 msgstr ""
 
-#: docs/10.x/validation.md:block 204 (header)
+#: docs/10.x/validation.md:block 211 (header)
 msgid "Specifying Custom Messages In Language Files"
 msgstr ""
 
-#: docs/10.x/validation.md:block 209 (header)
+#: docs/10.x/validation.md:block 217 (header)
 msgid "Custom Messages For Specific Attributes"
 msgstr ""
 
-#: docs/10.x/validation.md:block 210 (paragraph)
+#: docs/10.x/validation.md:block 218 (paragraph)
 msgid "You may customize the error messages used for specified attribute and rule combinations within your application's validation language files. To do so, add your message customizations to the `custom` array of your application's `lang/xx/validation.php` language file:"
 msgstr ""
 
-#: docs/10.x/validation.md:block 211 (code)
+#: docs/10.x/validation.md:block 219 (code)
 msgid ""
 "'custom' => [\n"
 "    'email' => [\n"
@@ -1167,49 +1218,49 @@ msgid ""
 "],\n"
 msgstr ""
 
-#: docs/10.x/validation.md:block 213 (header)
+#: docs/10.x/validation.md:block 221 (header)
 msgid "Specifying Attributes In Language Files"
 msgstr ""
 
-#: docs/10.x/validation.md:block 214 (paragraph)
+#: docs/10.x/validation.md:block 222 (paragraph)
 msgid "Many of Laravel's built-in error messages include an `:attribute` placeholder that is replaced with the name of the field or attribute under validation. If you would like the `:attribute` portion of your validation message to be replaced with a custom value, you may specify the custom attribute name in the `attributes` array of your `lang/xx/validation.php` language file:"
 msgstr ""
 
-#: docs/10.x/validation.md:block 215 (code)
+#: docs/10.x/validation.md:block 223 (code)
 msgid ""
 "'attributes' => [\n"
 "    'email' => 'email address',\n"
 "],\n"
 msgstr ""
 
-#: docs/10.x/validation.md:block 218 (header)
+#: docs/10.x/validation.md:block 226 (header)
 msgid "Specifying Values In Language Files"
 msgstr ""
 
-#: docs/10.x/validation.md:block 219 (paragraph)
+#: docs/10.x/validation.md:block 227 (paragraph)
 msgid "Some of Laravel's built-in validation rule error messages contain a `:value` placeholder that is replaced with the current value of the request attribute. However, you may occasionally need the `:value` portion of your validation message to be replaced with a custom representation of the value. For example, consider the following rule that specifies that a credit card number is required if the `payment_type` has a value of `cc`:"
 msgstr ""
 
-#: docs/10.x/validation.md:block 220 (code)
+#: docs/10.x/validation.md:block 228 (code)
 msgid ""
 "Validator::make($request->all(), [\n"
 "    'credit_card_number' => 'required_if:payment_type,cc'\n"
 "]);\n"
 msgstr ""
 
-#: docs/10.x/validation.md:block 221 (paragraph)
+#: docs/10.x/validation.md:block 229 (paragraph)
 msgid "If this validation rule fails, it will produce the following error message:"
 msgstr ""
 
-#: docs/10.x/validation.md:block 222 (code)
+#: docs/10.x/validation.md:block 230 (code)
 msgid "The credit card number field is required when payment type is cc.\n"
 msgstr ""
 
-#: docs/10.x/validation.md:block 223 (paragraph)
+#: docs/10.x/validation.md:block 231 (paragraph)
 msgid "Instead of displaying `cc` as the payment type value, you may specify a more user-friendly value representation in your `lang/xx/validation.php` language file by defining a `values` array:"
 msgstr ""
 
-#: docs/10.x/validation.md:block 224 (code)
+#: docs/10.x/validation.md:block 232 (code)
 msgid ""
 "'values' => [\n"
 "    'payment_type' => [\n"
@@ -1218,131 +1269,131 @@ msgid ""
 "],\n"
 msgstr ""
 
-#: docs/10.x/validation.md:block 226 (paragraph)
+#: docs/10.x/validation.md:block 234 (paragraph)
 msgid "After defining this value, the validation rule will produce the following error message:"
 msgstr ""
 
-#: docs/10.x/validation.md:block 227 (code)
+#: docs/10.x/validation.md:block 235 (code)
 msgid "The credit card number field is required when payment type is credit card.\n"
 msgstr ""
 
-#: docs/10.x/validation.md:block 229 (header)
+#: docs/10.x/validation.md:block 237 (header)
 msgid "Available Validation Rules"
 msgstr ""
 
-#: docs/10.x/validation.md:block 230 (paragraph)
+#: docs/10.x/validation.md:block 238 (paragraph)
 msgid "Below is a list of all available validation rules and their function:"
 msgstr ""
 
-#: docs/10.x/validation.md:block 233 (paragraph)
-msgid "[Accepted](#rule-accepted) [Accepted If](#rule-accepted-if) [Active URL](#rule-active-url) [After (Date)](#rule-after) [After Or Equal (Date)](#rule-after-or-equal) [Alpha](#rule-alpha) [Alpha Dash](#rule-alpha-dash) [Alpha Numeric](#rule-alpha-num) [Array](#rule-array) [Ascii](#rule-ascii) [Bail](#rule-bail) [Before (Date)](#rule-before) [Before Or Equal (Date)](#rule-before-or-equal) [Between](#rule-between) [Boolean](#rule-boolean) [Confirmed](#rule-confirmed) [Current Password](#rule-current-password) [Date](#rule-date) [Date Equals](#rule-date-equals) [Date Format](#rule-date-format) [Decimal](#rule-decimal) [Declined](#rule-declined) [Declined If](#rule-declined-if) [Different](#rule-different) [Digits](#rule-digits) [Digits Between](#rule-digits-between) [Dimensions (Image Files)](#rule-dimensions) [Distinct](#rule-distinct) [Doesnt Start With](#rule-doesnt-start-with) [Doesnt End With](#rule-doesnt-end-with) [Email](#rule-email) [Ends With](#rule-ends-with) [Enum](#rule-enum) [Exclude](#rule-exclude) [Exclude If](#rule-exclude-if) [Exclude Unless](#rule-exclude-unless) [Exclude With](#rule-exclude-with) [Exclude Without](#rule-exclude-without) [Exists (Database)](#rule-exists) [File](#rule-file) [Filled](#rule-filled) [Greater Than](#rule-gt) [Greater Than Or Equal](#rule-gte) [Image (File)](#rule-image) [In](#rule-in) [In Array](#rule-in-array) [Integer](#rule-integer) [IP Address](#rule-ip) [JSON](#rule-json) [Less Than](#rule-lt) [Less Than Or Equal](#rule-lte) [Lowercase](#rule-lowercase) [MAC Address](#rule-mac) [Max](#rule-max) [Max Digits](#rule-max-digits) [MIME Types](#rule-mimetypes) [MIME Type By File Extension](#rule-mimes) [Min](#rule-min) [Min Digits](#rule-min-digits) [Missing](#rule-missing) [Missing If](#rule-missing-if) [Missing Unless](#rule-missing-unless) [Missing With](#rule-missing-with) [Missing With All](#rule-missing-with-all) [Multiple Of](#rule-multiple-of) [Not In](#rule-not-in) [Not Regex](#rule-not-regex) [Nullable](#rule-nullable) [Numeric](#rule-numeric) [Password](#rule-password) [Present](#rule-present) [Prohibited](#rule-prohibited) [Prohibited If](#rule-prohibited-if) [Prohibited Unless](#rule-prohibited-unless) [Prohibits](#rule-prohibits) [Regular Expression](#rule-regex) [Required](#rule-required) [Required If](#rule-required-if) [Required Unless](#rule-required-unless) [Required With](#rule-required-with) [Required With All](#rule-required-with-all) [Required Without](#rule-required-without) [Required Without All](#rule-required-without-all) [Required Array Keys](#rule-required-array-keys) [Same](#rule-same) [Size](#rule-size) [Sometimes](#validating-when-present) [Starts With](#rule-starts-with) [String](#rule-string) [Timezone](#rule-timezone) [Unique (Database)](#rule-unique) [Uppercase](#rule-uppercase) [URL](#rule-url) [ULID](#rule-ulid) [UUID](#rule-uuid)"
+#: docs/10.x/validation.md:block 241 (paragraph)
+msgid "[Accepted](#rule-accepted) [Accepted If](#rule-accepted-if) [Active URL](#rule-active-url) [After (Date)](#rule-after) [After Or Equal (Date)](#rule-after-or-equal) [Alpha](#rule-alpha) [Alpha Dash](#rule-alpha-dash) [Alpha Numeric](#rule-alpha-num) [Array](#rule-array) [Ascii](#rule-ascii) [Bail](#rule-bail) [Before (Date)](#rule-before) [Before Or Equal (Date)](#rule-before-or-equal) [Between](#rule-between) [Boolean](#rule-boolean) [Confirmed](#rule-confirmed) [Current Password](#rule-current-password) [Date](#rule-date) [Date Equals](#rule-date-equals) [Date Format](#rule-date-format) [Decimal](#rule-decimal) [Declined](#rule-declined) [Declined If](#rule-declined-if) [Different](#rule-different) [Digits](#rule-digits) [Digits Between](#rule-digits-between) [Dimensions (Image Files)](#rule-dimensions) [Distinct](#rule-distinct) [Doesnt Start With](#rule-doesnt-start-with) [Doesnt End With](#rule-doesnt-end-with) [Email](#rule-email) [Ends With](#rule-ends-with) [Enum](#rule-enum) [Exclude](#rule-exclude) [Exclude If](#rule-exclude-if) [Exclude Unless](#rule-exclude-unless) [Exclude With](#rule-exclude-with) [Exclude Without](#rule-exclude-without) [Exists (Database)](#rule-exists) [File](#rule-file) [Filled](#rule-filled) [Greater Than](#rule-gt) [Greater Than Or Equal](#rule-gte) [Image (File)](#rule-image) [In](#rule-in) [In Array](#rule-in-array) [Integer](#rule-integer) [IP Address](#rule-ip) [JSON](#rule-json) [Less Than](#rule-lt) [Less Than Or Equal](#rule-lte) [Lowercase](#rule-lowercase) [MAC Address](#rule-mac) [Max](#rule-max) [Max Digits](#rule-max-digits) [MIME Types](#rule-mimetypes) [MIME Type By File Extension](#rule-mimes) [Min](#rule-min) [Min Digits](#rule-min-digits) [Missing](#rule-missing) [Missing If](#rule-missing-if) [Missing Unless](#rule-missing-unless) [Missing With](#rule-missing-with) [Missing With All](#rule-missing-with-all) [Multiple Of](#rule-multiple-of) [Not In](#rule-not-in) [Not Regex](#rule-not-regex) [Nullable](#rule-nullable) [Numeric](#rule-numeric) [Password](#rule-password) [Present](#rule-present) [Prohibited](#rule-prohibited) [Prohibited If](#rule-prohibited-if) [Prohibited Unless](#rule-prohibited-unless) [Prohibits](#rule-prohibits) [Regular Expression](#rule-regex) [Required](#rule-required) [Required If](#rule-required-if) [Required If Accepted](#rule-required-if-accepted) [Required Unless](#rule-required-unless) [Required With](#rule-required-with) [Required With All](#rule-required-with-all) [Required Without](#rule-required-without) [Required Without All](#rule-required-without-all) [Required Array Keys](#rule-required-array-keys) [Same](#rule-same) [Size](#rule-size) [Sometimes](#validating-when-present) [Starts With](#rule-starts-with) [String](#rule-string) [Timezone](#rule-timezone) [Unique (Database)](#rule-unique) [Uppercase](#rule-uppercase) [URL](#rule-url) [ULID](#rule-ulid) [UUID](#rule-uuid)"
 msgstr ""
 
-#: docs/10.x/validation.md:block 236 (header)
+#: docs/10.x/validation.md:block 244 (header)
 msgid "accepted"
 msgstr ""
 
-#: docs/10.x/validation.md:block 237 (paragraph)
+#: docs/10.x/validation.md:block 245 (paragraph)
 msgid "The field under validation must be `\"yes\"`, `\"on\"`, `1`, or `true`. This is useful for validating \"Terms of Service\" acceptance or similar fields."
 msgstr ""
 
-#: docs/10.x/validation.md:block 239 (header)
+#: docs/10.x/validation.md:block 247 (header)
 msgid "accepted_if:anotherfield,value,..."
 msgstr ""
 
-#: docs/10.x/validation.md:block 240 (paragraph)
+#: docs/10.x/validation.md:block 248 (paragraph)
 msgid "The field under validation must be `\"yes\"`, `\"on\"`, `1`, or `true` if another field under validation is equal to a specified value. This is useful for validating \"Terms of Service\" acceptance or similar fields."
 msgstr ""
 
-#: docs/10.x/validation.md:block 242 (header)
+#: docs/10.x/validation.md:block 250 (header)
 msgid "active_url"
 msgstr ""
 
-#: docs/10.x/validation.md:block 243 (paragraph)
+#: docs/10.x/validation.md:block 251 (paragraph)
 msgid "The field under validation must have a valid A or AAAA record according to the `dns_get_record` PHP function. The hostname of the provided URL is extracted using the `parse_url` PHP function before being passed to `dns_get_record`."
 msgstr ""
 
-#: docs/10.x/validation.md:block 245 (header)
+#: docs/10.x/validation.md:block 253 (header)
 msgid "after:*date*"
 msgstr ""
 
-#: docs/10.x/validation.md:block 246 (paragraph)
+#: docs/10.x/validation.md:block 254 (paragraph)
 msgid "The field under validation must be a value after a given date. The dates will be passed into the `strtotime` PHP function in order to be converted to a valid `DateTime` instance:"
 msgstr ""
 
-#: docs/10.x/validation.md:block 247 (code)
+#: docs/10.x/validation.md:block 255 (code)
 msgid "'start_date' => 'required|date|after:tomorrow'\n"
 msgstr ""
 
-#: docs/10.x/validation.md:block 248 (paragraph)
+#: docs/10.x/validation.md:block 256 (paragraph)
 msgid "Instead of passing a date string to be evaluated by `strtotime`, you may specify another field to compare against the date:"
 msgstr ""
 
-#: docs/10.x/validation.md:block 249 (code)
+#: docs/10.x/validation.md:block 257 (code)
 msgid "'finish_date' => 'required|date|after:start_date'\n"
 msgstr ""
 
-#: docs/10.x/validation.md:block 251 (header)
+#: docs/10.x/validation.md:block 259 (header)
 msgid "after_or_equal:*date*"
 msgstr ""
 
-#: docs/10.x/validation.md:block 252 (paragraph)
+#: docs/10.x/validation.md:block 260 (paragraph)
 msgid "The field under validation must be a value after or equal to the given date. For more information, see the [after](#rule-after) rule."
 msgstr ""
 
-#: docs/10.x/validation.md:block 254 (header)
+#: docs/10.x/validation.md:block 262 (header)
 msgid "alpha"
 msgstr ""
 
-#: docs/10.x/validation.md:block 255 (paragraph)
+#: docs/10.x/validation.md:block 263 (paragraph)
 msgid "The field under validation must be entirely Unicode alphabetic characters contained in [`\\p{L}`](https://util.unicode.org/UnicodeJsps/list-unicodeset.jsp?a=%5B%3AL%3A%5D&g=&i=) and [`\\p{M}`](https://util.unicode.org/UnicodeJsps/list-unicodeset.jsp?a=%5B%3AM%3A%5D&g=&i=)."
 msgstr ""
 
-#: docs/10.x/validation.md:block 256 (paragraph)
+#: docs/10.x/validation.md:block 264 (paragraph)
 msgid "To restrict this validation rule to characters in the ASCII range (`a-z` and `A-Z`), you may provide the `ascii` option to the validation rule:"
 msgstr ""
 
-#: docs/10.x/validation.md:block 257 (code)
+#: docs/10.x/validation.md:block 265 (code)
 msgid "'username' => 'alpha:ascii',\n"
 msgstr ""
 
-#: docs/10.x/validation.md:block 259 (header)
+#: docs/10.x/validation.md:block 267 (header)
 msgid "alpha_dash"
 msgstr ""
 
-#: docs/10.x/validation.md:block 260 (paragraph)
+#: docs/10.x/validation.md:block 268 (paragraph)
 msgid "The field under validation must be entirely Unicode alpha-numeric characters contained in [`\\p{L}`](https://util.unicode.org/UnicodeJsps/list-unicodeset.jsp?a=%5B%3AL%3A%5D&g=&i=), [`\\p{M}`](https://util.unicode.org/UnicodeJsps/list-unicodeset.jsp?a=%5B%3AM%3A%5D&g=&i=), [`\\p{N}`](https://util.unicode.org/UnicodeJsps/list-unicodeset.jsp?a=%5B%3AN%3A%5D&g=&i=), as well as ASCII dashes (`-`) and ASCII underscores (`_`)."
 msgstr ""
 
-#: docs/10.x/validation.md:block 262 (code)
+#: docs/10.x/validation.md:block 270 (code)
 msgid "'username' => 'alpha_dash:ascii',\n"
 msgstr ""
 
-#: docs/10.x/validation.md:block 264 (header)
+#: docs/10.x/validation.md:block 272 (header)
 msgid "alpha_num"
 msgstr ""
 
-#: docs/10.x/validation.md:block 265 (paragraph)
+#: docs/10.x/validation.md:block 273 (paragraph)
 msgid "The field under validation must be entirely Unicode alpha-numeric characters contained in [`\\p{L}`](https://util.unicode.org/UnicodeJsps/list-unicodeset.jsp?a=%5B%3AL%3A%5D&g=&i=), [`\\p{M}`](https://util.unicode.org/UnicodeJsps/list-unicodeset.jsp?a=%5B%3AM%3A%5D&g=&i=), and [`\\p{N}`](https://util.unicode.org/UnicodeJsps/list-unicodeset.jsp?a=%5B%3AN%3A%5D&g=&i=)."
 msgstr ""
 
-#: docs/10.x/validation.md:block 267 (code)
+#: docs/10.x/validation.md:block 275 (code)
 msgid "'username' => 'alpha_num:ascii',\n"
 msgstr ""
 
-#: docs/10.x/validation.md:block 269 (header)
+#: docs/10.x/validation.md:block 277 (header)
 msgid "array"
 msgstr ""
 
-#: docs/10.x/validation.md:block 270 (paragraph)
+#: docs/10.x/validation.md:block 278 (paragraph)
 msgid "The field under validation must be a PHP `array`."
 msgstr ""
 
-#: docs/10.x/validation.md:block 271 (paragraph)
+#: docs/10.x/validation.md:block 279 (paragraph)
 msgid "When additional values are provided to the `array` rule, each key in the input array must be present within the list of values provided to the rule. In the following example, the `admin` key in the input array is invalid since it is not contained in the list of values provided to the `array` rule:"
 msgstr ""
 
-#: docs/10.x/validation.md:block 272 (code)
+#: docs/10.x/validation.md:block 280 (code)
 msgid ""
 "use Illuminate\\Support\\Facades\\Validator;\n"
 "\n"
@@ -1359,115 +1410,115 @@ msgid ""
 "]);\n"
 msgstr ""
 
-#: docs/10.x/validation.md:block 273 (paragraph)
+#: docs/10.x/validation.md:block 281 (paragraph)
 msgid "In general, you should always specify the array keys that are allowed to be present within your array."
 msgstr ""
 
-#: docs/10.x/validation.md:block 275 (header)
+#: docs/10.x/validation.md:block 283 (header)
 msgid "ascii"
 msgstr ""
 
-#: docs/10.x/validation.md:block 276 (paragraph)
+#: docs/10.x/validation.md:block 284 (paragraph)
 msgid "The field under validation must be entirely 7-bit ASCII characters."
 msgstr ""
 
-#: docs/10.x/validation.md:block 278 (header)
+#: docs/10.x/validation.md:block 286 (header)
 msgid "bail"
 msgstr ""
 
-#: docs/10.x/validation.md:block 279 (paragraph)
+#: docs/10.x/validation.md:block 287 (paragraph)
 msgid "Stop running validation rules for the field after the first validation failure."
 msgstr ""
 
-#: docs/10.x/validation.md:block 280 (paragraph)
+#: docs/10.x/validation.md:block 288 (paragraph)
 msgid "While the `bail` rule will only stop validating a specific field when it encounters a validation failure, the `stopOnFirstFailure` method will inform the validator that it should stop validating all attributes once a single validation failure has occurred:"
 msgstr ""
 
-#: docs/10.x/validation.md:block 283 (header)
+#: docs/10.x/validation.md:block 291 (header)
 msgid "before:*date*"
 msgstr ""
 
-#: docs/10.x/validation.md:block 284 (paragraph)
+#: docs/10.x/validation.md:block 292 (paragraph)
 msgid "The field under validation must be a value preceding the given date. The dates will be passed into the PHP `strtotime` function in order to be converted into a valid `DateTime` instance. In addition, like the [`after`](#rule-after) rule, the name of another field under validation may be supplied as the value of `date`."
 msgstr ""
 
-#: docs/10.x/validation.md:block 286 (header)
+#: docs/10.x/validation.md:block 294 (header)
 msgid "before_or_equal:*date*"
 msgstr ""
 
-#: docs/10.x/validation.md:block 287 (paragraph)
+#: docs/10.x/validation.md:block 295 (paragraph)
 msgid "The field under validation must be a value preceding or equal to the given date. The dates will be passed into the PHP `strtotime` function in order to be converted into a valid `DateTime` instance. In addition, like the [`after`](#rule-after) rule, the name of another field under validation may be supplied as the value of `date`."
 msgstr ""
 
-#: docs/10.x/validation.md:block 289 (header)
+#: docs/10.x/validation.md:block 297 (header)
 msgid "between:*min*,*max*"
 msgstr ""
 
-#: docs/10.x/validation.md:block 290 (paragraph)
+#: docs/10.x/validation.md:block 298 (paragraph)
 msgid "The field under validation must have a size between the given *min* and *max* (inclusive). Strings, numerics, arrays, and files are evaluated in the same fashion as the [`size`](#rule-size) rule."
 msgstr ""
 
-#: docs/10.x/validation.md:block 292 (header)
+#: docs/10.x/validation.md:block 300 (header)
 msgid "boolean"
 msgstr ""
 
-#: docs/10.x/validation.md:block 293 (paragraph)
+#: docs/10.x/validation.md:block 301 (paragraph)
 msgid "The field under validation must be able to be cast as a boolean. Accepted input are `true`, `false`, `1`, `0`, `\"1\"`, and `\"0\"`."
 msgstr ""
 
-#: docs/10.x/validation.md:block 295 (header)
+#: docs/10.x/validation.md:block 303 (header)
 msgid "confirmed"
 msgstr ""
 
-#: docs/10.x/validation.md:block 296 (paragraph)
+#: docs/10.x/validation.md:block 304 (paragraph)
 msgid "The field under validation must have a matching field of `{field}_confirmation`. For example, if the field under validation is `password`, a matching `password_confirmation` field must be present in the input."
 msgstr ""
 
-#: docs/10.x/validation.md:block 298 (header)
+#: docs/10.x/validation.md:block 306 (header)
 msgid "current_password"
 msgstr ""
 
-#: docs/10.x/validation.md:block 299 (paragraph)
+#: docs/10.x/validation.md:block 307 (paragraph)
 msgid "The field under validation must match the authenticated user's password. You may specify an [authentication guard](/docs/{{version}}/authentication) using the rule's first parameter:"
 msgstr ""
 
-#: docs/10.x/validation.md:block 300 (code)
+#: docs/10.x/validation.md:block 308 (code)
 msgid "'password' => 'current_password:api'\n"
 msgstr ""
 
-#: docs/10.x/validation.md:block 302 (header)
+#: docs/10.x/validation.md:block 310 (header)
 msgid "date"
 msgstr ""
 
-#: docs/10.x/validation.md:block 303 (paragraph)
+#: docs/10.x/validation.md:block 311 (paragraph)
 msgid "The field under validation must be a valid, non-relative date according to the `strtotime` PHP function."
 msgstr ""
 
-#: docs/10.x/validation.md:block 305 (header)
+#: docs/10.x/validation.md:block 313 (header)
 msgid "date_equals:*date*"
 msgstr ""
 
-#: docs/10.x/validation.md:block 306 (paragraph)
+#: docs/10.x/validation.md:block 314 (paragraph)
 msgid "The field under validation must be equal to the given date. The dates will be passed into the PHP `strtotime` function in order to be converted into a valid `DateTime` instance."
 msgstr ""
 
-#: docs/10.x/validation.md:block 308 (header)
+#: docs/10.x/validation.md:block 316 (header)
 msgid "date_format:*format*,..."
 msgstr ""
 
-#: docs/10.x/validation.md:block 309 (paragraph)
+#: docs/10.x/validation.md:block 317 (paragraph)
 msgid "The field under validation must match one of the given *formats*. You should use **either** `date` or `date_format` when validating a field, not both. This validation rule supports all formats supported by PHP's [DateTime](https://www.php.net/manual/en/class.datetime.php) class."
 msgstr ""
 
-#: docs/10.x/validation.md:block 311 (header)
+#: docs/10.x/validation.md:block 319 (header)
 msgid "decimal:*min*,*max*"
 msgstr ""
 
-#: docs/10.x/validation.md:block 312 (paragraph)
+#: docs/10.x/validation.md:block 320 (paragraph)
 msgid "The field under validation must be numeric and must contain the specified number of decimal places:"
 msgstr ""
 
-#: docs/10.x/validation.md:block 313 (code)
+#: docs/10.x/validation.md:block 321 (code)
 msgid ""
 "// Must have exactly two decimal places (9.99)...\n"
 "'price' => 'decimal:2'\n"
@@ -1476,75 +1527,75 @@ msgid ""
 "'price' => 'decimal:2,4'\n"
 msgstr ""
 
-#: docs/10.x/validation.md:block 315 (header)
+#: docs/10.x/validation.md:block 323 (header)
 msgid "declined"
 msgstr ""
 
-#: docs/10.x/validation.md:block 316 (paragraph)
+#: docs/10.x/validation.md:block 324 (paragraph)
 msgid "The field under validation must be `\"no\"`, `\"off\"`, `0`, or `false`."
 msgstr ""
 
-#: docs/10.x/validation.md:block 318 (header)
+#: docs/10.x/validation.md:block 326 (header)
 msgid "declined_if:anotherfield,value,..."
 msgstr ""
 
-#: docs/10.x/validation.md:block 319 (paragraph)
+#: docs/10.x/validation.md:block 327 (paragraph)
 msgid "The field under validation must be `\"no\"`, `\"off\"`, `0`, or `false` if another field under validation is equal to a specified value."
 msgstr ""
 
-#: docs/10.x/validation.md:block 321 (header)
+#: docs/10.x/validation.md:block 329 (header)
 msgid "different:*field*"
 msgstr ""
 
-#: docs/10.x/validation.md:block 322 (paragraph)
+#: docs/10.x/validation.md:block 330 (paragraph)
 msgid "The field under validation must have a different value than *field*."
 msgstr ""
 
-#: docs/10.x/validation.md:block 324 (header)
+#: docs/10.x/validation.md:block 332 (header)
 msgid "digits:*value*"
 msgstr ""
 
-#: docs/10.x/validation.md:block 325 (paragraph)
+#: docs/10.x/validation.md:block 333 (paragraph)
 msgid "The integer under validation must have an exact length of *value*."
 msgstr ""
 
-#: docs/10.x/validation.md:block 327 (header)
+#: docs/10.x/validation.md:block 335 (header)
 msgid "digits_between:*min*,*max*"
 msgstr ""
 
-#: docs/10.x/validation.md:block 328 (paragraph)
+#: docs/10.x/validation.md:block 336 (paragraph)
 msgid "The integer validation must have a length between the given *min* and *max*."
 msgstr ""
 
-#: docs/10.x/validation.md:block 330 (header)
+#: docs/10.x/validation.md:block 338 (header)
 msgid "dimensions"
 msgstr ""
 
-#: docs/10.x/validation.md:block 331 (paragraph)
+#: docs/10.x/validation.md:block 339 (paragraph)
 msgid "The file under validation must be an image meeting the dimension constraints as specified by the rule's parameters:"
 msgstr ""
 
-#: docs/10.x/validation.md:block 332 (code)
+#: docs/10.x/validation.md:block 340 (code)
 msgid "'avatar' => 'dimensions:min_width=100,min_height=200'\n"
 msgstr ""
 
-#: docs/10.x/validation.md:block 333 (paragraph)
+#: docs/10.x/validation.md:block 341 (paragraph)
 msgid "Available constraints are: *min_width*, *max_width*, *min_height*, *max_height*, *width*, *height*, *ratio*."
 msgstr ""
 
-#: docs/10.x/validation.md:block 334 (paragraph)
+#: docs/10.x/validation.md:block 342 (paragraph)
 msgid "A *ratio* constraint should be represented as width divided by height. This can be specified either by a fraction like `3/2` or a float like `1.5`:"
 msgstr ""
 
-#: docs/10.x/validation.md:block 335 (code)
+#: docs/10.x/validation.md:block 343 (code)
 msgid "'avatar' => 'dimensions:ratio=3/2'\n"
 msgstr ""
 
-#: docs/10.x/validation.md:block 336 (paragraph)
+#: docs/10.x/validation.md:block 344 (paragraph)
 msgid "Since this rule requires several arguments, you may use the `Rule::dimensions` method to fluently construct the rule:"
 msgstr ""
 
-#: docs/10.x/validation.md:block 337 (code)
+#: docs/10.x/validation.md:block 345 (code)
 msgid ""
 "use Illuminate\\Support\\Facades\\Validator;\n"
 "use Illuminate\\Validation\\Rule;\n"
@@ -1557,115 +1608,115 @@ msgid ""
 "]);\n"
 msgstr ""
 
-#: docs/10.x/validation.md:block 339 (header)
+#: docs/10.x/validation.md:block 347 (header)
 msgid "distinct"
 msgstr ""
 
-#: docs/10.x/validation.md:block 340 (paragraph)
+#: docs/10.x/validation.md:block 348 (paragraph)
 msgid "When validating arrays, the field under validation must not have any duplicate values:"
 msgstr ""
 
-#: docs/10.x/validation.md:block 341 (code)
+#: docs/10.x/validation.md:block 349 (code)
 msgid "'foo.*.id' => 'distinct'\n"
 msgstr ""
 
-#: docs/10.x/validation.md:block 342 (paragraph)
+#: docs/10.x/validation.md:block 350 (paragraph)
 msgid "Distinct uses loose variable comparisons by default. To use strict comparisons, you may add the `strict` parameter to your validation rule definition:"
 msgstr ""
 
-#: docs/10.x/validation.md:block 343 (code)
+#: docs/10.x/validation.md:block 351 (code)
 msgid "'foo.*.id' => 'distinct:strict'\n"
 msgstr ""
 
-#: docs/10.x/validation.md:block 344 (paragraph)
+#: docs/10.x/validation.md:block 352 (paragraph)
 msgid "You may add `ignore_case` to the validation rule's arguments to make the rule ignore capitalization differences:"
 msgstr ""
 
-#: docs/10.x/validation.md:block 345 (code)
+#: docs/10.x/validation.md:block 353 (code)
 msgid "'foo.*.id' => 'distinct:ignore_case'\n"
 msgstr ""
 
-#: docs/10.x/validation.md:block 347 (header)
+#: docs/10.x/validation.md:block 355 (header)
 msgid "doesnt_start_with:*foo*,*bar*,..."
 msgstr ""
 
-#: docs/10.x/validation.md:block 348 (paragraph)
+#: docs/10.x/validation.md:block 356 (paragraph)
 msgid "The field under validation must not start with one of the given values."
 msgstr ""
 
-#: docs/10.x/validation.md:block 350 (header)
+#: docs/10.x/validation.md:block 358 (header)
 msgid "doesnt_end_with:*foo*,*bar*,..."
 msgstr ""
 
-#: docs/10.x/validation.md:block 351 (paragraph)
+#: docs/10.x/validation.md:block 359 (paragraph)
 msgid "The field under validation must not end with one of the given values."
 msgstr ""
 
-#: docs/10.x/validation.md:block 353 (header)
+#: docs/10.x/validation.md:block 361 (header)
 msgid "email"
 msgstr ""
 
-#: docs/10.x/validation.md:block 354 (paragraph)
+#: docs/10.x/validation.md:block 362 (paragraph)
 msgid "The field under validation must be formatted as an email address. This validation rule utilizes the [`egulias/email-validator`](https://github.com/egulias/EmailValidator) package for validating the email address. By default, the `RFCValidation` validator is applied, but you can apply other validation styles as well:"
 msgstr ""
 
-#: docs/10.x/validation.md:block 355 (code)
+#: docs/10.x/validation.md:block 363 (code)
 msgid "'email' => 'email:rfc,dns'\n"
 msgstr ""
 
-#: docs/10.x/validation.md:block 356 (paragraph)
+#: docs/10.x/validation.md:block 364 (paragraph)
 msgid "The example above will apply the `RFCValidation` and `DNSCheckValidation` validations. Here's a full list of validation styles you can apply:"
 msgstr ""
 
-#: docs/10.x/validation.md:block 358 (unordered list)
+#: docs/10.x/validation.md:block 366 (unordered list)
 msgid "`rfc`: `RFCValidation`"
 msgstr ""
 
-#: docs/10.x/validation.md:block 358 (unordered list)
+#: docs/10.x/validation.md:block 366 (unordered list)
 msgid "`strict`: `NoRFCWarningsValidation`"
 msgstr ""
 
-#: docs/10.x/validation.md:block 358 (unordered list)
+#: docs/10.x/validation.md:block 366 (unordered list)
 msgid "`dns`: `DNSCheckValidation`"
 msgstr ""
 
-#: docs/10.x/validation.md:block 358 (unordered list)
+#: docs/10.x/validation.md:block 366 (unordered list)
 msgid "`spoof`: `SpoofCheckValidation`"
 msgstr ""
 
-#: docs/10.x/validation.md:block 358 (unordered list)
+#: docs/10.x/validation.md:block 366 (unordered list)
 msgid "`filter`: `FilterEmailValidation`"
 msgstr ""
 
-#: docs/10.x/validation.md:block 358 (unordered list)
+#: docs/10.x/validation.md:block 366 (unordered list)
 msgid "`filter_unicode`: `FilterEmailValidation::unicode()`"
 msgstr ""
 
-#: docs/10.x/validation.md:block 360 (paragraph)
+#: docs/10.x/validation.md:block 368 (paragraph)
 msgid "The `filter` validator, which uses PHP's `filter_var` function, ships with Laravel and was Laravel's default email validation behavior prior to Laravel version 5.8."
 msgstr ""
 
-#: docs/10.x/validation.md:block 361 (quote)
+#: docs/10.x/validation.md:block 369 (quote)
 msgid "**Warning** The `dns` and `spoof` validators require the PHP `intl` extension."
 msgstr ""
 
-#: docs/10.x/validation.md:block 363 (header)
+#: docs/10.x/validation.md:block 371 (header)
 msgid "ends_with:*foo*,*bar*,..."
 msgstr ""
 
-#: docs/10.x/validation.md:block 364 (paragraph)
+#: docs/10.x/validation.md:block 372 (paragraph)
 msgid "The field under validation must end with one of the given values."
 msgstr ""
 
-#: docs/10.x/validation.md:block 366 (header)
+#: docs/10.x/validation.md:block 374 (header)
 msgid "enum"
 msgstr ""
 
-#: docs/10.x/validation.md:block 367 (paragraph)
+#: docs/10.x/validation.md:block 375 (paragraph)
 msgid "The `Enum` rule is a class based rule that validates whether the field under validation contains a valid enum value. The `Enum` rule accepts the name of the enum as its only constructor argument:"
 msgstr ""
 
-#: docs/10.x/validation.md:block 368 (code)
+#: docs/10.x/validation.md:block 376 (code)
 msgid ""
 "use App\\Enums\\ServerStatus;\n"
 "use Illuminate\\Validation\\Rules\\Enum;\n"
@@ -1675,31 +1726,27 @@ msgid ""
 "]);\n"
 msgstr ""
 
-#: docs/10.x/validation.md:block 369 (quote)
-msgid "**Warning** Enums are only available on PHP 8.1+."
-msgstr ""
-
-#: docs/10.x/validation.md:block 371 (header)
+#: docs/10.x/validation.md:block 378 (header)
 msgid "exclude"
 msgstr ""
 
-#: docs/10.x/validation.md:block 372 (paragraph)
+#: docs/10.x/validation.md:block 379 (paragraph)
 msgid "The field under validation will be excluded from the request data returned by the `validate` and `validated` methods."
 msgstr ""
 
-#: docs/10.x/validation.md:block 374 (header)
+#: docs/10.x/validation.md:block 381 (header)
 msgid "exclude_if:*anotherfield*,*value*"
 msgstr ""
 
-#: docs/10.x/validation.md:block 375 (paragraph)
+#: docs/10.x/validation.md:block 382 (paragraph)
 msgid "The field under validation will be excluded from the request data returned by the `validate` and `validated` methods if the *anotherfield* field is equal to *value*."
 msgstr ""
 
-#: docs/10.x/validation.md:block 376 (paragraph)
+#: docs/10.x/validation.md:block 383 (paragraph)
 msgid "If complex conditional exclusion logic is required, you may utilize the `Rule::excludeIf` method. This method accepts a boolean or a closure. When given a closure, the closure should return `true` or `false` to indicate if the field under validation should be excluded:"
 msgstr ""
 
-#: docs/10.x/validation.md:block 377 (code)
+#: docs/10.x/validation.md:block 384 (code)
 msgid ""
 "use Illuminate\\Support\\Facades\\Validator;\n"
 "use Illuminate\\Validation\\Rule;\n"
@@ -1713,83 +1760,83 @@ msgid ""
 "]);\n"
 msgstr ""
 
-#: docs/10.x/validation.md:block 379 (header)
+#: docs/10.x/validation.md:block 386 (header)
 msgid "exclude_unless:*anotherfield*,*value*"
 msgstr ""
 
-#: docs/10.x/validation.md:block 380 (paragraph)
+#: docs/10.x/validation.md:block 387 (paragraph)
 msgid "The field under validation will be excluded from the request data returned by the `validate` and `validated` methods unless *anotherfield*'s field is equal to *value*. If *value* is `null` (`exclude_unless:name,null`), the field under validation will be excluded unless the comparison field is `null` or the comparison field is missing from the request data."
 msgstr ""
 
-#: docs/10.x/validation.md:block 382 (header)
+#: docs/10.x/validation.md:block 389 (header)
 msgid "exclude_with:*anotherfield*"
 msgstr ""
 
-#: docs/10.x/validation.md:block 383 (paragraph)
+#: docs/10.x/validation.md:block 390 (paragraph)
 msgid "The field under validation will be excluded from the request data returned by the `validate` and `validated` methods if the *anotherfield* field is present."
 msgstr ""
 
-#: docs/10.x/validation.md:block 385 (header)
+#: docs/10.x/validation.md:block 392 (header)
 msgid "exclude_without:*anotherfield*"
 msgstr ""
 
-#: docs/10.x/validation.md:block 386 (paragraph)
+#: docs/10.x/validation.md:block 393 (paragraph)
 msgid "The field under validation will be excluded from the request data returned by the `validate` and `validated` methods if the *anotherfield* field is not present."
 msgstr ""
 
-#: docs/10.x/validation.md:block 388 (header)
+#: docs/10.x/validation.md:block 395 (header)
 msgid "exists:*table*,*column*"
 msgstr ""
 
-#: docs/10.x/validation.md:block 389 (paragraph)
+#: docs/10.x/validation.md:block 396 (paragraph)
 msgid "The field under validation must exist in a given database table."
 msgstr ""
 
-#: docs/10.x/validation.md:block 391 (header)
+#: docs/10.x/validation.md:block 398 (header)
 msgid "Basic Usage Of Exists Rule"
 msgstr ""
 
-#: docs/10.x/validation.md:block 392 (code)
+#: docs/10.x/validation.md:block 399 (code)
 msgid "'state' => 'exists:states'\n"
 msgstr ""
 
-#: docs/10.x/validation.md:block 393 (paragraph)
+#: docs/10.x/validation.md:block 400 (paragraph)
 msgid "If the `column` option is not specified, the field name will be used. So, in this case, the rule will validate that the `states` database table contains a record with a `state` column value matching the request's `state` attribute value."
 msgstr ""
 
-#: docs/10.x/validation.md:block 395 (header)
+#: docs/10.x/validation.md:block 402 (header)
 msgid "Specifying A Custom Column Name"
 msgstr ""
 
-#: docs/10.x/validation.md:block 396 (paragraph)
+#: docs/10.x/validation.md:block 403 (paragraph)
 msgid "You may explicitly specify the database column name that should be used by the validation rule by placing it after the database table name:"
 msgstr ""
 
-#: docs/10.x/validation.md:block 397 (code)
+#: docs/10.x/validation.md:block 404 (code)
 msgid "'state' => 'exists:states,abbreviation'\n"
 msgstr ""
 
-#: docs/10.x/validation.md:block 398 (paragraph)
+#: docs/10.x/validation.md:block 405 (paragraph)
 msgid "Occasionally, you may need to specify a specific database connection to be used for the `exists` query. You can accomplish this by prepending the connection name to the table name:"
 msgstr ""
 
-#: docs/10.x/validation.md:block 399 (code)
+#: docs/10.x/validation.md:block 406 (code)
 msgid "'email' => 'exists:connection.staff,email'\n"
 msgstr ""
 
-#: docs/10.x/validation.md:block 400 (paragraph)
+#: docs/10.x/validation.md:block 407 (paragraph)
 msgid "Instead of specifying the table name directly, you may specify the Eloquent model which should be used to determine the table name:"
 msgstr ""
 
-#: docs/10.x/validation.md:block 401 (code)
+#: docs/10.x/validation.md:block 408 (code)
 msgid "'user_id' => 'exists:App\\Models\\User,id'\n"
 msgstr ""
 
-#: docs/10.x/validation.md:block 402 (paragraph)
+#: docs/10.x/validation.md:block 409 (paragraph)
 msgid "If you would like to customize the query executed by the validation rule, you may use the `Rule` class to fluently define the rule. In this example, we'll also specify the validation rules as an array instead of using the `|` character to delimit them:"
 msgstr ""
 
-#: docs/10.x/validation.md:block 403 (code)
+#: docs/10.x/validation.md:block 410 (code)
 msgid ""
 "use Illuminate\\Database\\Query\\Builder;\n"
 "use Illuminate\\Support\\Facades\\Validator;\n"
@@ -1805,63 +1852,63 @@ msgid ""
 "]);\n"
 msgstr ""
 
-#: docs/10.x/validation.md:block 404 (paragraph)
+#: docs/10.x/validation.md:block 411 (paragraph)
 msgid "You may explicitly specify the database column name that should be used by the `exists` rule generated by the `Rule::exists` method by providing the column name as the second argument to the `exists` method:"
 msgstr ""
 
-#: docs/10.x/validation.md:block 405 (code)
+#: docs/10.x/validation.md:block 412 (code)
 msgid "'state' => Rule::exists('states', 'abbreviation'),\n"
 msgstr ""
 
-#: docs/10.x/validation.md:block 407 (header)
+#: docs/10.x/validation.md:block 414 (header)
 msgid "file"
 msgstr ""
 
-#: docs/10.x/validation.md:block 408 (paragraph)
+#: docs/10.x/validation.md:block 415 (paragraph)
 msgid "The field under validation must be a successfully uploaded file."
 msgstr ""
 
-#: docs/10.x/validation.md:block 410 (header)
+#: docs/10.x/validation.md:block 417 (header)
 msgid "filled"
 msgstr ""
 
-#: docs/10.x/validation.md:block 411 (paragraph)
+#: docs/10.x/validation.md:block 418 (paragraph)
 msgid "The field under validation must not be empty when it is present."
 msgstr ""
 
-#: docs/10.x/validation.md:block 413 (header)
+#: docs/10.x/validation.md:block 420 (header)
 msgid "gt:*field*"
 msgstr ""
 
-#: docs/10.x/validation.md:block 414 (paragraph)
-msgid "The field under validation must be greater than the given *field*. The two fields must be of the same type. Strings, numerics, arrays, and files are evaluated using the same conventions as the [`size`](#rule-size) rule."
+#: docs/10.x/validation.md:block 421 (paragraph)
+msgid "The field under validation must be greater than the given *field* or *value*. The two fields must be of the same type. Strings, numerics, arrays, and files are evaluated using the same conventions as the [`size`](#rule-size) rule."
 msgstr ""
 
-#: docs/10.x/validation.md:block 416 (header)
+#: docs/10.x/validation.md:block 423 (header)
 msgid "gte:*field*"
 msgstr ""
 
-#: docs/10.x/validation.md:block 417 (paragraph)
-msgid "The field under validation must be greater than or equal to the given *field*. The two fields must be of the same type. Strings, numerics, arrays, and files are evaluated using the same conventions as the [`size`](#rule-size) rule."
+#: docs/10.x/validation.md:block 424 (paragraph)
+msgid "The field under validation must be greater than or equal to the given *field* or *value*. The two fields must be of the same type. Strings, numerics, arrays, and files are evaluated using the same conventions as the [`size`](#rule-size) rule."
 msgstr ""
 
-#: docs/10.x/validation.md:block 419 (header)
+#: docs/10.x/validation.md:block 426 (header)
 msgid "image"
 msgstr ""
 
-#: docs/10.x/validation.md:block 420 (paragraph)
+#: docs/10.x/validation.md:block 427 (paragraph)
 msgid "The file under validation must be an image (jpg, jpeg, png, bmp, gif, svg, or webp)."
 msgstr ""
 
-#: docs/10.x/validation.md:block 422 (header)
+#: docs/10.x/validation.md:block 429 (header)
 msgid "in:*foo*,*bar*,..."
 msgstr ""
 
-#: docs/10.x/validation.md:block 423 (paragraph)
+#: docs/10.x/validation.md:block 430 (paragraph)
 msgid "The field under validation must be included in the given list of values. Since this rule often requires you to `implode` an array, the `Rule::in` method may be used to fluently construct the rule:"
 msgstr ""
 
-#: docs/10.x/validation.md:block 424 (code)
+#: docs/10.x/validation.md:block 431 (code)
 msgid ""
 "use Illuminate\\Support\\Facades\\Validator;\n"
 "use Illuminate\\Validation\\Rule;\n"
@@ -1874,11 +1921,11 @@ msgid ""
 "]);\n"
 msgstr ""
 
-#: docs/10.x/validation.md:block 425 (paragraph)
+#: docs/10.x/validation.md:block 432 (paragraph)
 msgid "When the `in` rule is combined with the `array` rule, each value in the input array must be present within the list of values provided to the `in` rule. In the following example, the `LAS` airport code in the input array is invalid since it is not contained in the list of airports provided to the `in` rule:"
 msgstr ""
 
-#: docs/10.x/validation.md:block 426 (code)
+#: docs/10.x/validation.md:block 433 (code)
 msgid ""
 "use Illuminate\\Support\\Facades\\Validator;\n"
 "use Illuminate\\Validation\\Rule;\n"
@@ -1896,219 +1943,219 @@ msgid ""
 "]);\n"
 msgstr ""
 
-#: docs/10.x/validation.md:block 428 (header)
+#: docs/10.x/validation.md:block 435 (header)
 msgid "in_array:*anotherfield*.*"
 msgstr ""
 
-#: docs/10.x/validation.md:block 429 (paragraph)
+#: docs/10.x/validation.md:block 436 (paragraph)
 msgid "The field under validation must exist in *anotherfield*'s values."
 msgstr ""
 
-#: docs/10.x/validation.md:block 431 (header)
+#: docs/10.x/validation.md:block 438 (header)
 msgid "integer"
 msgstr ""
 
-#: docs/10.x/validation.md:block 432 (paragraph)
+#: docs/10.x/validation.md:block 439 (paragraph)
 msgid "The field under validation must be an integer."
 msgstr ""
 
-#: docs/10.x/validation.md:block 433 (quote)
+#: docs/10.x/validation.md:block 440 (quote)
 msgid "**Warning** This validation rule does not verify that the input is of the \"integer\" variable type, only that the input is of a type accepted by PHP's `FILTER_VALIDATE_INT` rule. If you need to validate the input as being a number please use this rule in combination with [the `numeric` validation rule](#rule-numeric)."
 msgstr ""
 
-#: docs/10.x/validation.md:block 435 (header)
+#: docs/10.x/validation.md:block 442 (header)
 msgid "ip"
 msgstr ""
 
-#: docs/10.x/validation.md:block 436 (paragraph)
+#: docs/10.x/validation.md:block 443 (paragraph)
 msgid "The field under validation must be an IP address."
 msgstr ""
 
-#: docs/10.x/validation.md:block 438 (header)
+#: docs/10.x/validation.md:block 445 (header)
 msgid "ipv4"
 msgstr ""
 
-#: docs/10.x/validation.md:block 439 (paragraph)
+#: docs/10.x/validation.md:block 446 (paragraph)
 msgid "The field under validation must be an IPv4 address."
 msgstr ""
 
-#: docs/10.x/validation.md:block 441 (header)
+#: docs/10.x/validation.md:block 448 (header)
 msgid "ipv6"
 msgstr ""
 
-#: docs/10.x/validation.md:block 442 (paragraph)
+#: docs/10.x/validation.md:block 449 (paragraph)
 msgid "The field under validation must be an IPv6 address."
 msgstr ""
 
-#: docs/10.x/validation.md:block 444 (header)
+#: docs/10.x/validation.md:block 451 (header)
 msgid "json"
 msgstr ""
 
-#: docs/10.x/validation.md:block 445 (paragraph)
+#: docs/10.x/validation.md:block 452 (paragraph)
 msgid "The field under validation must be a valid JSON string."
 msgstr ""
 
-#: docs/10.x/validation.md:block 447 (header)
+#: docs/10.x/validation.md:block 454 (header)
 msgid "lt:*field*"
 msgstr ""
 
-#: docs/10.x/validation.md:block 448 (paragraph)
+#: docs/10.x/validation.md:block 455 (paragraph)
 msgid "The field under validation must be less than the given *field*. The two fields must be of the same type. Strings, numerics, arrays, and files are evaluated using the same conventions as the [`size`](#rule-size) rule."
 msgstr ""
 
-#: docs/10.x/validation.md:block 450 (header)
+#: docs/10.x/validation.md:block 457 (header)
 msgid "lte:*field*"
 msgstr ""
 
-#: docs/10.x/validation.md:block 451 (paragraph)
+#: docs/10.x/validation.md:block 458 (paragraph)
 msgid "The field under validation must be less than or equal to the given *field*. The two fields must be of the same type. Strings, numerics, arrays, and files are evaluated using the same conventions as the [`size`](#rule-size) rule."
 msgstr ""
 
-#: docs/10.x/validation.md:block 453 (header)
+#: docs/10.x/validation.md:block 460 (header)
 msgid "lowercase"
 msgstr ""
 
-#: docs/10.x/validation.md:block 454 (paragraph)
+#: docs/10.x/validation.md:block 461 (paragraph)
 msgid "The field under validation must be lowercase."
 msgstr ""
 
-#: docs/10.x/validation.md:block 456 (header)
+#: docs/10.x/validation.md:block 463 (header)
 msgid "mac_address"
 msgstr ""
 
-#: docs/10.x/validation.md:block 457 (paragraph)
+#: docs/10.x/validation.md:block 464 (paragraph)
 msgid "The field under validation must be a MAC address."
 msgstr ""
 
-#: docs/10.x/validation.md:block 459 (header)
+#: docs/10.x/validation.md:block 466 (header)
 msgid "max:*value*"
 msgstr ""
 
-#: docs/10.x/validation.md:block 460 (paragraph)
+#: docs/10.x/validation.md:block 467 (paragraph)
 msgid "The field under validation must be less than or equal to a maximum *value*. Strings, numerics, arrays, and files are evaluated in the same fashion as the [`size`](#rule-size) rule."
 msgstr ""
 
-#: docs/10.x/validation.md:block 462 (header)
+#: docs/10.x/validation.md:block 469 (header)
 msgid "max_digits:*value*"
 msgstr ""
 
-#: docs/10.x/validation.md:block 463 (paragraph)
+#: docs/10.x/validation.md:block 470 (paragraph)
 msgid "The integer under validation must have a maximum length of *value*."
 msgstr ""
 
-#: docs/10.x/validation.md:block 465 (header)
+#: docs/10.x/validation.md:block 472 (header)
 msgid "mimetypes:*text/plain*,..."
 msgstr ""
 
-#: docs/10.x/validation.md:block 466 (paragraph)
+#: docs/10.x/validation.md:block 473 (paragraph)
 msgid "The file under validation must match one of the given MIME types:"
 msgstr ""
 
-#: docs/10.x/validation.md:block 467 (code)
+#: docs/10.x/validation.md:block 474 (code)
 msgid "'video' => 'mimetypes:video/avi,video/mpeg,video/quicktime'\n"
 msgstr ""
 
-#: docs/10.x/validation.md:block 468 (paragraph)
+#: docs/10.x/validation.md:block 475 (paragraph)
 msgid "To determine the MIME type of the uploaded file, the file's contents will be read and the framework will attempt to guess the MIME type, which may be different from the client's provided MIME type."
 msgstr ""
 
-#: docs/10.x/validation.md:block 470 (header)
+#: docs/10.x/validation.md:block 477 (header)
 msgid "mimes:*foo*,*bar*,..."
 msgstr ""
 
-#: docs/10.x/validation.md:block 471 (paragraph)
+#: docs/10.x/validation.md:block 478 (paragraph)
 msgid "The file under validation must have a MIME type corresponding to one of the listed extensions."
 msgstr ""
 
-#: docs/10.x/validation.md:block 473 (header)
+#: docs/10.x/validation.md:block 480 (header)
 msgid "Basic Usage Of MIME Rule"
 msgstr ""
 
-#: docs/10.x/validation.md:block 474 (code)
+#: docs/10.x/validation.md:block 481 (code)
 msgid "'photo' => 'mimes:jpg,bmp,png'\n"
 msgstr ""
 
-#: docs/10.x/validation.md:block 475 (paragraph)
+#: docs/10.x/validation.md:block 482 (paragraph)
 msgid "Even though you only need to specify the extensions, this rule actually validates the MIME type of the file by reading the file's contents and guessing its MIME type. A full listing of MIME types and their corresponding extensions may be found at the following location:"
 msgstr ""
 
-#: docs/10.x/validation.md:block 476 (paragraph)
+#: docs/10.x/validation.md:block 483 (paragraph)
 msgid "<https://svn.apache.org/repos/asf/httpd/httpd/trunk/docs/conf/mime.types>"
 msgstr ""
 
-#: docs/10.x/validation.md:block 478 (header)
+#: docs/10.x/validation.md:block 485 (header)
 msgid "min:*value*"
 msgstr ""
 
-#: docs/10.x/validation.md:block 479 (paragraph)
+#: docs/10.x/validation.md:block 486 (paragraph)
 msgid "The field under validation must have a minimum *value*. Strings, numerics, arrays, and files are evaluated in the same fashion as the [`size`](#rule-size) rule."
 msgstr ""
 
-#: docs/10.x/validation.md:block 481 (header)
+#: docs/10.x/validation.md:block 488 (header)
 msgid "min_digits:*value*"
 msgstr ""
 
-#: docs/10.x/validation.md:block 482 (paragraph)
+#: docs/10.x/validation.md:block 489 (paragraph)
 msgid "The integer under validation must have a minimum length of *value*."
 msgstr ""
 
-#: docs/10.x/validation.md:block 484 (header)
+#: docs/10.x/validation.md:block 491 (header)
 msgid "multiple_of:*value*"
 msgstr ""
 
-#: docs/10.x/validation.md:block 485 (paragraph)
+#: docs/10.x/validation.md:block 492 (paragraph)
 msgid "The field under validation must be a multiple of *value*."
 msgstr ""
 
-#: docs/10.x/validation.md:block 487 (header)
+#: docs/10.x/validation.md:block 494 (header)
 msgid "missing"
 msgstr ""
 
-#: docs/10.x/validation.md:block 488 (paragraph)
+#: docs/10.x/validation.md:block 495 (paragraph)
 msgid "The field under validation must not be present in the input data."
 msgstr ""
 
-#: docs/10.x/validation.md:block 490 (header)
+#: docs/10.x/validation.md:block 497 (header)
 msgid "missing_if:*anotherfield*,*value*,..."
 msgstr ""
 
-#: docs/10.x/validation.md:block 491 (paragraph)
+#: docs/10.x/validation.md:block 498 (paragraph)
 msgid "The field under validation must not be present if the *anotherfield* field is equal to any *value*."
 msgstr ""
 
-#: docs/10.x/validation.md:block 493 (header)
+#: docs/10.x/validation.md:block 500 (header)
 msgid "missing_unless:*anotherfield*,*value*"
 msgstr ""
 
-#: docs/10.x/validation.md:block 494 (paragraph)
+#: docs/10.x/validation.md:block 501 (paragraph)
 msgid "The field under validation must not be present unless the *anotherfield* field is equal to any *value*."
 msgstr ""
 
-#: docs/10.x/validation.md:block 496 (header)
+#: docs/10.x/validation.md:block 503 (header)
 msgid "missing_with:*foo*,*bar*,..."
 msgstr ""
 
-#: docs/10.x/validation.md:block 497 (paragraph)
+#: docs/10.x/validation.md:block 504 (paragraph)
 msgid "The field under validation must not be present *only if* any of the other specified fields are present."
 msgstr ""
 
-#: docs/10.x/validation.md:block 499 (header)
+#: docs/10.x/validation.md:block 506 (header)
 msgid "missing_with_all:*foo*,*bar*,..."
 msgstr ""
 
-#: docs/10.x/validation.md:block 500 (paragraph)
+#: docs/10.x/validation.md:block 507 (paragraph)
 msgid "The field under validation must not be present *only if* all of the other specified fields are present."
 msgstr ""
 
-#: docs/10.x/validation.md:block 502 (header)
+#: docs/10.x/validation.md:block 509 (header)
 msgid "not_in:*foo*,*bar*,..."
 msgstr ""
 
-#: docs/10.x/validation.md:block 503 (paragraph)
+#: docs/10.x/validation.md:block 510 (paragraph)
 msgid "The field under validation must not be included in the given list of values. The `Rule::notIn` method may be used to fluently construct the rule:"
 msgstr ""
 
-#: docs/10.x/validation.md:block 504 (code)
+#: docs/10.x/validation.md:block 511 (code)
 msgid ""
 "use Illuminate\\Validation\\Rule;\n"
 "\n"
@@ -2120,95 +2167,95 @@ msgid ""
 "]);\n"
 msgstr ""
 
-#: docs/10.x/validation.md:block 506 (header)
+#: docs/10.x/validation.md:block 513 (header)
 msgid "not_regex:*pattern*"
 msgstr ""
 
-#: docs/10.x/validation.md:block 507 (paragraph)
+#: docs/10.x/validation.md:block 514 (paragraph)
 msgid "The field under validation must not match the given regular expression."
 msgstr ""
 
-#: docs/10.x/validation.md:block 508 (paragraph)
+#: docs/10.x/validation.md:block 515 (paragraph)
 msgid "Internally, this rule uses the PHP `preg_match` function. The pattern specified should obey the same formatting required by `preg_match` and thus also include valid delimiters. For example: `'email' => 'not_regex:/^.+$/i'`."
 msgstr ""
 
-#: docs/10.x/validation.md:block 509 (quote)
+#: docs/10.x/validation.md:block 516 (quote)
 msgid "**Warning** When using the `regex` / `not_regex` patterns, it may be necessary to specify your validation rules using an array instead of using `|` delimiters, especially if the regular expression contains a `|` character."
 msgstr ""
 
-#: docs/10.x/validation.md:block 511 (header)
+#: docs/10.x/validation.md:block 518 (header)
 msgid "nullable"
 msgstr ""
 
-#: docs/10.x/validation.md:block 512 (paragraph)
+#: docs/10.x/validation.md:block 519 (paragraph)
 msgid "The field under validation may be `null`."
 msgstr ""
 
-#: docs/10.x/validation.md:block 514 (header)
+#: docs/10.x/validation.md:block 521 (header)
 msgid "numeric"
 msgstr ""
 
-#: docs/10.x/validation.md:block 515 (paragraph)
+#: docs/10.x/validation.md:block 522 (paragraph)
 msgid "The field under validation must be [numeric](https://www.php.net/manual/en/function.is-numeric.php)."
 msgstr ""
 
-#: docs/10.x/validation.md:block 517 (header)
+#: docs/10.x/validation.md:block 524 (header)
 msgid "password"
 msgstr ""
 
-#: docs/10.x/validation.md:block 518 (paragraph)
+#: docs/10.x/validation.md:block 525 (paragraph)
 msgid "The field under validation must match the authenticated user's password."
 msgstr ""
 
-#: docs/10.x/validation.md:block 519 (quote)
+#: docs/10.x/validation.md:block 526 (quote)
 msgid "**Warning** This rule was renamed to `current_password` with the intention of removing it in Laravel 9. Please use the [Current Password](#rule-current-password) rule instead."
 msgstr ""
 
-#: docs/10.x/validation.md:block 521 (header)
+#: docs/10.x/validation.md:block 528 (header)
 msgid "present"
 msgstr ""
 
-#: docs/10.x/validation.md:block 522 (paragraph)
+#: docs/10.x/validation.md:block 529 (paragraph)
 msgid "The field under validation must exist in the input data."
 msgstr ""
 
-#: docs/10.x/validation.md:block 524 (header)
+#: docs/10.x/validation.md:block 531 (header)
 msgid "prohibited"
 msgstr ""
 
-#: docs/10.x/validation.md:block 525 (paragraph)
+#: docs/10.x/validation.md:block 532 (paragraph)
 msgid "The field under validation must be missing or empty. A field is \"empty\" if it meets one of the following criteria:"
 msgstr ""
 
-#: docs/10.x/validation.md:block 527 (unordered list)
+#: docs/10.x/validation.md:block 534 (unordered list)
 msgid "The value is `null`."
 msgstr ""
 
-#: docs/10.x/validation.md:block 527 (unordered list)
+#: docs/10.x/validation.md:block 534 (unordered list)
 msgid "The value is an empty string."
 msgstr ""
 
-#: docs/10.x/validation.md:block 527 (unordered list)
+#: docs/10.x/validation.md:block 534 (unordered list)
 msgid "The value is an empty array or empty `Countable` object."
 msgstr ""
 
-#: docs/10.x/validation.md:block 527 (unordered list)
+#: docs/10.x/validation.md:block 534 (unordered list)
 msgid "The value is an uploaded file with an empty path."
 msgstr ""
 
-#: docs/10.x/validation.md:block 530 (header)
+#: docs/10.x/validation.md:block 537 (header)
 msgid "prohibited_if:*anotherfield*,*value*,..."
 msgstr ""
 
-#: docs/10.x/validation.md:block 531 (paragraph)
+#: docs/10.x/validation.md:block 538 (paragraph)
 msgid "The field under validation must be missing or empty if the *anotherfield* field is equal to any *value*. A field is \"empty\" if it meets one of the following criteria:"
 msgstr ""
 
-#: docs/10.x/validation.md:block 535 (paragraph)
+#: docs/10.x/validation.md:block 542 (paragraph)
 msgid "If complex conditional prohibition logic is required, you may utilize the `Rule::prohibitedIf` method. This method accepts a boolean or a closure. When given a closure, the closure should return `true` or `false` to indicate if the field under validation should be prohibited:"
 msgstr ""
 
-#: docs/10.x/validation.md:block 536 (code)
+#: docs/10.x/validation.md:block 543 (code)
 msgid ""
 "use Illuminate\\Support\\Facades\\Validator;\n"
 "use Illuminate\\Validation\\Rule;\n"
@@ -2222,63 +2269,63 @@ msgid ""
 "]);\n"
 msgstr ""
 
-#: docs/10.x/validation.md:block 538 (header)
+#: docs/10.x/validation.md:block 545 (header)
 msgid "prohibited_unless:*anotherfield*,*value*,..."
 msgstr ""
 
-#: docs/10.x/validation.md:block 539 (paragraph)
+#: docs/10.x/validation.md:block 546 (paragraph)
 msgid "The field under validation must be missing or empty unless the *anotherfield* field is equal to any *value*. A field is \"empty\" if it meets one of the following criteria:"
 msgstr ""
 
-#: docs/10.x/validation.md:block 544 (header)
+#: docs/10.x/validation.md:block 551 (header)
 msgid "prohibits:*anotherfield*,..."
 msgstr ""
 
-#: docs/10.x/validation.md:block 545 (paragraph)
+#: docs/10.x/validation.md:block 552 (paragraph)
 msgid "If the field under validation is not missing or empty, all fields in *anotherfield* must be missing or empty. A field is \"empty\" if it meets one of the following criteria:"
 msgstr ""
 
-#: docs/10.x/validation.md:block 550 (header)
+#: docs/10.x/validation.md:block 557 (header)
 msgid "regex:*pattern*"
 msgstr ""
 
-#: docs/10.x/validation.md:block 551 (paragraph)
+#: docs/10.x/validation.md:block 558 (paragraph)
 msgid "The field under validation must match the given regular expression."
 msgstr ""
 
-#: docs/10.x/validation.md:block 552 (paragraph)
+#: docs/10.x/validation.md:block 559 (paragraph)
 msgid "Internally, this rule uses the PHP `preg_match` function. The pattern specified should obey the same formatting required by `preg_match` and thus also include valid delimiters. For example: `'email' => 'regex:/^.+@.+$/i'`."
 msgstr ""
 
-#: docs/10.x/validation.md:block 553 (quote)
+#: docs/10.x/validation.md:block 560 (quote)
 msgid "**Warning** When using the `regex` / `not_regex` patterns, it may be necessary to specify rules in an array instead of using `|` delimiters, especially if the regular expression contains a `|` character."
 msgstr ""
 
-#: docs/10.x/validation.md:block 555 (header)
+#: docs/10.x/validation.md:block 562 (header)
 msgid "required"
 msgstr ""
 
-#: docs/10.x/validation.md:block 556 (paragraph)
+#: docs/10.x/validation.md:block 563 (paragraph)
 msgid "The field under validation must be present in the input data and not empty. A field is \"empty\" if it meets one of the following criteria:"
 msgstr ""
 
-#: docs/10.x/validation.md:block 558 (unordered list)
+#: docs/10.x/validation.md:block 565 (unordered list)
 msgid "The value is an uploaded file with no path."
 msgstr ""
 
-#: docs/10.x/validation.md:block 561 (header)
+#: docs/10.x/validation.md:block 568 (header)
 msgid "required_if:*anotherfield*,*value*,..."
 msgstr ""
 
-#: docs/10.x/validation.md:block 562 (paragraph)
+#: docs/10.x/validation.md:block 569 (paragraph)
 msgid "The field under validation must be present and not empty if the *anotherfield* field is equal to any *value*."
 msgstr ""
 
-#: docs/10.x/validation.md:block 563 (paragraph)
+#: docs/10.x/validation.md:block 570 (paragraph)
 msgid "If you would like to construct a more complex condition for the `required_if` rule, you may use the `Rule::requiredIf` method. This method accepts a boolean or a closure. When passed a closure, the closure should return `true` or `false` to indicate if the field under validation is required:"
 msgstr ""
 
-#: docs/10.x/validation.md:block 564 (code)
+#: docs/10.x/validation.md:block 571 (code)
 msgid ""
 "use Illuminate\\Support\\Facades\\Validator;\n"
 "use Illuminate\\Validation\\Rule;\n"
@@ -2292,71 +2339,79 @@ msgid ""
 "]);\n"
 msgstr ""
 
-#: docs/10.x/validation.md:block 566 (header)
+#: docs/10.x/validation.md:block 573 (header)
+msgid "required_if_accepted:_anotherfield,..."
+msgstr ""
+
+#: docs/10.x/validation.md:block 574 (paragraph)
+msgid "The field under validation must be present and not empty if the *anotherfield* field is equal to `yes`, `on`, `1`, `\"1\"`, `true`, or `\"true\"`."
+msgstr ""
+
+#: docs/10.x/validation.md:block 576 (header)
 msgid "required_unless:*anotherfield*,*value*,..."
 msgstr ""
 
-#: docs/10.x/validation.md:block 567 (paragraph)
+#: docs/10.x/validation.md:block 577 (paragraph)
 msgid "The field under validation must be present and not empty unless the *anotherfield* field is equal to any *value*. This also means *anotherfield* must be present in the request data unless *value* is `null`. If *value* is `null` (`required_unless:name,null`), the field under validation will be required unless the comparison field is `null` or the comparison field is missing from the request data."
 msgstr ""
 
-#: docs/10.x/validation.md:block 569 (header)
+#: docs/10.x/validation.md:block 579 (header)
 msgid "required_with:*foo*,*bar*,..."
 msgstr ""
 
-#: docs/10.x/validation.md:block 570 (paragraph)
+#: docs/10.x/validation.md:block 580 (paragraph)
 msgid "The field under validation must be present and not empty *only if* any of the other specified fields are present and not empty."
 msgstr ""
 
-#: docs/10.x/validation.md:block 572 (header)
+#: docs/10.x/validation.md:block 582 (header)
 msgid "required_with_all:*foo*,*bar*,..."
 msgstr ""
 
-#: docs/10.x/validation.md:block 573 (paragraph)
+#: docs/10.x/validation.md:block 583 (paragraph)
 msgid "The field under validation must be present and not empty *only if* all of the other specified fields are present and not empty."
 msgstr ""
 
-#: docs/10.x/validation.md:block 575 (header)
+#: docs/10.x/validation.md:block 585 (header)
 msgid "required_without:*foo*,*bar*,..."
 msgstr ""
 
-#: docs/10.x/validation.md:block 576 (paragraph)
+#: docs/10.x/validation.md:block 586 (paragraph)
 msgid "The field under validation must be present and not empty *only when* any of the other specified fields are empty or not present."
 msgstr ""
 
-#: docs/10.x/validation.md:block 578 (header)
+#: docs/10.x/validation.md:block 588 (header)
 msgid "required_without_all:*foo*,*bar*,..."
 msgstr ""
 
-#: docs/10.x/validation.md:block 579 (paragraph)
+#: docs/10.x/validation.md:block 589 (paragraph)
 msgid "The field under validation must be present and not empty *only when* all of the other specified fields are empty or not present."
 msgstr ""
 
-#: docs/10.x/validation.md:block 581 (header)
+#: docs/10.x/validation.md:block 591 (header)
 msgid "required_array_keys:*foo*,*bar*,..."
 msgstr ""
 
-#: docs/10.x/validation.md:block 582 (paragraph)
+#: docs/10.x/validation.md:block 592 (paragraph)
 msgid "The field under validation must be an array and must contain at least the specified keys."
 msgstr ""
 
-#: docs/10.x/validation.md:block 584 (header)
+#: docs/10.x/validation.md:block 594 (header)
 msgid "same:*field*"
 msgstr ""
 
-#: docs/10.x/validation.md:block 585 (paragraph)
+#: docs/10.x/validation.md:block 595 (paragraph)
 msgid "The given *field* must match the field under validation."
 msgstr ""
 
-#: docs/10.x/validation.md:block 587 (header)
+#: docs/10.x/validation.md:block 597 (header)
 msgid "size:*value*"
 msgstr ""
 
-#: docs/10.x/validation.md:block 588 (paragraph)
+#: docs/10.x/validation.md:block 598 (paragraph)
 msgid "The field under validation must have a size matching the given *value*. For string data, *value* corresponds to the number of characters. For numeric data, *value* corresponds to a given integer value (the attribute must also have the `numeric` or `integer` rule). For an array, *size* corresponds to the `count` of the array. For files, *size* corresponds to the file size in kilobytes. Let's look at some examples:"
 msgstr ""
 
-#: docs/10.x/validation.md:block 589 (code)
+#: docs/10.x/validation.md:block 599 (code)
 msgid ""
 "// Validate that a string is exactly 12 characters long...\n"
 "'title' => 'size:12';\n"
@@ -2371,81 +2426,93 @@ msgid ""
 "'image' => 'file|size:512';\n"
 msgstr ""
 
-#: docs/10.x/validation.md:block 591 (header)
+#: docs/10.x/validation.md:block 601 (header)
 msgid "starts_with:*foo*,*bar*,..."
 msgstr ""
 
-#: docs/10.x/validation.md:block 592 (paragraph)
+#: docs/10.x/validation.md:block 602 (paragraph)
 msgid "The field under validation must start with one of the given values."
 msgstr ""
 
-#: docs/10.x/validation.md:block 594 (header)
+#: docs/10.x/validation.md:block 604 (header)
 msgid "string"
 msgstr ""
 
-#: docs/10.x/validation.md:block 595 (paragraph)
+#: docs/10.x/validation.md:block 605 (paragraph)
 msgid "The field under validation must be a string. If you would like to allow the field to also be `null`, you should assign the `nullable` rule to the field."
 msgstr ""
 
-#: docs/10.x/validation.md:block 597 (header)
+#: docs/10.x/validation.md:block 607 (header)
 msgid "timezone"
 msgstr ""
 
-#: docs/10.x/validation.md:block 598 (paragraph)
-msgid "The field under validation must be a valid timezone identifier according to the `timezone_identifiers_list` PHP function."
+#: docs/10.x/validation.md:block 608 (paragraph)
+msgid "The field under validation must be a valid timezone identifier according to the `DateTimeZone::listIdentifiers` method."
 msgstr ""
 
-#: docs/10.x/validation.md:block 600 (header)
+#: docs/10.x/validation.md:block 609 (paragraph)
+msgid "The arguments [accepted by the `DateTimeZone::listIdentifiers` method](https://www.php.net/manual/en/datetimezone.listidentifiers.php) may also be provided to this validation rule:"
+msgstr ""
+
+#: docs/10.x/validation.md:block 610 (code)
+msgid ""
+"'timezone' => 'required|timezone:all';\n"
+"\n"
+"'timezone' => 'required|timezone:Africa';\n"
+"\n"
+"'timezone' => 'required|timezone:per_country,US';\n"
+msgstr ""
+
+#: docs/10.x/validation.md:block 612 (header)
 msgid "unique:*table*,*column*"
 msgstr ""
 
-#: docs/10.x/validation.md:block 601 (paragraph)
+#: docs/10.x/validation.md:block 613 (paragraph)
 msgid "The field under validation must not exist within the given database table."
 msgstr ""
 
-#: docs/10.x/validation.md:block 602 (paragraph)
+#: docs/10.x/validation.md:block 614 (paragraph)
 msgid "**Specifying A Custom Table / Column Name:**"
 msgstr ""
 
-#: docs/10.x/validation.md:block 604 (code)
+#: docs/10.x/validation.md:block 616 (code)
 msgid "'email' => 'unique:App\\Models\\User,email_address'\n"
 msgstr ""
 
-#: docs/10.x/validation.md:block 605 (paragraph)
+#: docs/10.x/validation.md:block 617 (paragraph)
 msgid "The `column` option may be used to specify the field's corresponding database column. If the `column` option is not specified, the name of the field under validation will be used."
 msgstr ""
 
-#: docs/10.x/validation.md:block 606 (code)
+#: docs/10.x/validation.md:block 618 (code)
 msgid "'email' => 'unique:users,email_address'\n"
 msgstr ""
 
-#: docs/10.x/validation.md:block 607 (paragraph)
+#: docs/10.x/validation.md:block 619 (paragraph)
 msgid "**Specifying A Custom Database Connection**"
 msgstr ""
 
-#: docs/10.x/validation.md:block 608 (paragraph)
+#: docs/10.x/validation.md:block 620 (paragraph)
 msgid "Occasionally, you may need to set a custom connection for database queries made by the Validator. To accomplish this, you may prepend the connection name to the table name:"
 msgstr ""
 
-#: docs/10.x/validation.md:block 609 (code)
+#: docs/10.x/validation.md:block 621 (code)
 msgid "'email' => 'unique:connection.users,email_address'\n"
 msgstr ""
 
-#: docs/10.x/validation.md:block 610 (paragraph)
+#: docs/10.x/validation.md:block 622 (paragraph)
 msgid "**Forcing A Unique Rule To Ignore A Given ID:**"
 msgstr ""
 
-#: docs/10.x/validation.md:block 611 (paragraph)
+#: docs/10.x/validation.md:block 623 (paragraph)
 msgid "Sometimes, you may wish to ignore a given ID during unique validation. For example, consider an \"update profile\" screen that includes the user's name, email address, and location. You will probably want to verify that the email address is unique. However, if the user only changes the name field and not the email field, you do not want a validation error to be thrown because the user is already the owner of the email address in question."
 msgstr ""
 
-#: docs/10.x/validation.md:block 612 (paragraph)
+#: docs/10.x/validation.md:block 624 (paragraph)
 msgid "To instruct the validator to ignore the user's ID, we'll use the `Rule` class to fluently define the rule. In this example, we'll also specify the validation rules as an array instead of using the `|` character to delimit the rules:"
 msgstr ""
 
-#: docs/10.x/validation.md:block 613 (code)
+#: docs/10.x/validation.md:block 625 (code)
 msgid ""
-"use Illuminate\\Database\\Eloquent\\Builder;\n"
 "use Illuminate\\Support\\Facades\\Validator;\n"
 "use Illuminate\\Validation\\Rule;\n"
 "\n"
@@ -2457,91 +2524,102 @@ msgid ""
 "]);\n"
 msgstr ""
 
-#: docs/10.x/validation.md:block 614 (quote)
+#: docs/10.x/validation.md:block 626 (quote)
 msgid "**Warning** You should never pass any user controlled request input into the `ignore` method. Instead, you should only pass a system generated unique ID such as an auto-incrementing ID or UUID from an Eloquent model instance. Otherwise, your application will be vulnerable to an SQL injection attack."
 msgstr ""
 
-#: docs/10.x/validation.md:block 615 (paragraph)
+#: docs/10.x/validation.md:block 627 (paragraph)
 msgid "Instead of passing the model key's value to the `ignore` method, you may also pass the entire model instance. Laravel will automatically extract the key from the model:"
 msgstr ""
 
-#: docs/10.x/validation.md:block 616 (code)
+#: docs/10.x/validation.md:block 628 (code)
 msgid "Rule::unique('users')->ignore($user)\n"
 msgstr ""
 
-#: docs/10.x/validation.md:block 617 (paragraph)
+#: docs/10.x/validation.md:block 629 (paragraph)
 msgid "If your table uses a primary key column name other than `id`, you may specify the name of the column when calling the `ignore` method:"
 msgstr ""
 
-#: docs/10.x/validation.md:block 618 (code)
+#: docs/10.x/validation.md:block 630 (code)
 msgid "Rule::unique('users')->ignore($user->id, 'user_id')\n"
 msgstr ""
 
-#: docs/10.x/validation.md:block 619 (paragraph)
+#: docs/10.x/validation.md:block 631 (paragraph)
 msgid "By default, the `unique` rule will check the uniqueness of the column matching the name of the attribute being validated. However, you may pass a different column name as the second argument to the `unique` method:"
 msgstr ""
 
-#: docs/10.x/validation.md:block 620 (code)
+#: docs/10.x/validation.md:block 632 (code)
 msgid "Rule::unique('users', 'email_address')->ignore($user->id)\n"
 msgstr ""
 
-#: docs/10.x/validation.md:block 621 (paragraph)
+#: docs/10.x/validation.md:block 633 (paragraph)
 msgid "**Adding Additional Where Clauses:**"
 msgstr ""
 
-#: docs/10.x/validation.md:block 622 (paragraph)
+#: docs/10.x/validation.md:block 634 (paragraph)
 msgid "You may specify additional query conditions by customizing the query using the `where` method. For example, let's add a query condition that scopes the query to only search records that have an `account_id` column value of `1`:"
 msgstr ""
 
-#: docs/10.x/validation.md:block 623 (code)
+#: docs/10.x/validation.md:block 635 (code)
 msgid "'email' => Rule::unique('users')->where(fn (Builder $query) => $query->where('account_id', 1))\n"
 msgstr ""
 
-#: docs/10.x/validation.md:block 625 (header)
+#: docs/10.x/validation.md:block 637 (header)
 msgid "uppercase"
 msgstr ""
 
-#: docs/10.x/validation.md:block 626 (paragraph)
+#: docs/10.x/validation.md:block 638 (paragraph)
 msgid "The field under validation must be uppercase."
 msgstr ""
 
-#: docs/10.x/validation.md:block 628 (header)
+#: docs/10.x/validation.md:block 640 (header)
 msgid "url"
 msgstr ""
 
-#: docs/10.x/validation.md:block 629 (paragraph)
+#: docs/10.x/validation.md:block 641 (paragraph)
 msgid "The field under validation must be a valid URL."
 msgstr ""
 
-#: docs/10.x/validation.md:block 631 (header)
+#: docs/10.x/validation.md:block 642 (paragraph)
+msgid "If you would like to specify the URL protocols that should be considered valid, you may pass the protocols as validation rule parameters:"
+msgstr ""
+
+#: docs/10.x/validation.md:block 643 (code)
+msgid ""
+"'url' => 'url:http,https',\n"
+"\n"
+"'game' => 'url:minecraft,steam',\n"
+msgstr ""
+
+#: docs/10.x/validation.md:block 645 (header)
 msgid "ulid"
 msgstr ""
 
-#: docs/10.x/validation.md:block 632 (paragraph)
+#: docs/10.x/validation.md:block 646 (paragraph)
 msgid "The field under validation must be a valid [Universally Unique Lexicographically Sortable Identifier](https://github.com/ulid/spec) (ULID)."
 msgstr ""
 
-#: docs/10.x/validation.md:block 634 (header)
+#: docs/10.x/validation.md:block 648 (header)
 msgid "uuid"
 msgstr ""
 
-#: docs/10.x/validation.md:block 635 (paragraph)
+#: docs/10.x/validation.md:block 649 (paragraph)
 msgid "The field under validation must be a valid RFC 4122 (version 1, 3, 4, or 5) universally unique identifier (UUID)."
 msgstr ""
 
-#: docs/10.x/validation.md:block 637 (header)
+#: docs/10.x/validation.md:block 651 (header)
 msgid "Conditionally Adding Rules"
 msgstr ""
 
-#: docs/10.x/validation.md:block 639 (header)
+#: docs/10.x/validation.md:block 653 (header)
 msgid "Skipping Validation When Fields Have Certain Values"
 msgstr ""
 
-#: docs/10.x/validation.md:block 640 (paragraph)
+#: docs/10.x/validation.md:block 654 (paragraph)
 msgid "You may occasionally wish to not validate a given field if another field has a given value. You may accomplish this using the `exclude_if` validation rule. In this example, the `appointment_date` and `doctor_name` fields will not be validated if the `has_appointment` field has a value of `false`:"
 msgstr ""
 
-#: docs/10.x/validation.md:block 641 (code)
+#: docs/10.x/validation.md:block 655 (code)
 msgid ""
 "use Illuminate\\Support\\Facades\\Validator;\n"
 "\n"
@@ -2552,11 +2630,11 @@ msgid ""
 "]);\n"
 msgstr ""
 
-#: docs/10.x/validation.md:block 642 (paragraph)
+#: docs/10.x/validation.md:block 656 (paragraph)
 msgid "Alternatively, you may use the `exclude_unless` rule to not validate a given field unless another field has a given value:"
 msgstr ""
 
-#: docs/10.x/validation.md:block 643 (code)
+#: docs/10.x/validation.md:block 657 (code)
 msgid ""
 "$validator = Validator::make($data, [\n"
 "    'has_appointment' => 'required|boolean',\n"
@@ -2565,38 +2643,38 @@ msgid ""
 "]);\n"
 msgstr ""
 
-#: docs/10.x/validation.md:block 645 (header)
+#: docs/10.x/validation.md:block 659 (header)
 msgid "Validating When Present"
 msgstr ""
 
-#: docs/10.x/validation.md:block 646 (paragraph)
+#: docs/10.x/validation.md:block 660 (paragraph)
 msgid "In some situations, you may wish to run validation checks against a field **only** if that field is present in the data being validated. To quickly accomplish this, add the `sometimes` rule to your rule list:"
 msgstr ""
 
-#: docs/10.x/validation.md:block 647 (code)
+#: docs/10.x/validation.md:block 661 (code)
 msgid ""
 "$v = Validator::make($data, [\n"
 "    'email' => 'sometimes|required|email',\n"
 "]);\n"
 msgstr ""
 
-#: docs/10.x/validation.md:block 648 (paragraph)
+#: docs/10.x/validation.md:block 662 (paragraph)
 msgid "In the example above, the `email` field will only be validated if it is present in the `$data` array."
 msgstr ""
 
-#: docs/10.x/validation.md:block 649 (quote)
+#: docs/10.x/validation.md:block 663 (quote)
 msgid "**Note** If you are attempting to validate a field that should always be present but may be empty, check out [this note on optional fields](#a-note-on-optional-fields)."
 msgstr ""
 
-#: docs/10.x/validation.md:block 651 (header)
+#: docs/10.x/validation.md:block 665 (header)
 msgid "Complex Conditional Validation"
 msgstr ""
 
-#: docs/10.x/validation.md:block 652 (paragraph)
+#: docs/10.x/validation.md:block 666 (paragraph)
 msgid "Sometimes you may wish to add validation rules based on more complex conditional logic. For example, you may wish to require a given field only if another field has a greater value than 100. Or, you may need two fields to have a given value only when another field is present. Adding these validation rules doesn't have to be a pain. First, create a `Validator` instance with your *static rules* that never change:"
 msgstr ""
 
-#: docs/10.x/validation.md:block 653 (code)
+#: docs/10.x/validation.md:block 667 (code)
 msgid ""
 "use Illuminate\\Support\\Facades\\Validator;\n"
 "\n"
@@ -2606,11 +2684,11 @@ msgid ""
 "]);\n"
 msgstr ""
 
-#: docs/10.x/validation.md:block 654 (paragraph)
+#: docs/10.x/validation.md:block 668 (paragraph)
 msgid "Let's assume our web application is for game collectors. If a game collector registers with our application and they own more than 100 games, we want them to explain why they own so many games. For example, perhaps they run a game resale shop, or maybe they just enjoy collecting games. To conditionally add this requirement, we can use the `sometimes` method on the `Validator` instance."
 msgstr ""
 
-#: docs/10.x/validation.md:block 655 (code)
+#: docs/10.x/validation.md:block 669 (code)
 msgid ""
 "use Illuminate\\Support\\Fluent;\n"
 "\n"
@@ -2619,30 +2697,30 @@ msgid ""
 "});\n"
 msgstr ""
 
-#: docs/10.x/validation.md:block 656 (paragraph)
+#: docs/10.x/validation.md:block 670 (paragraph)
 msgid "The first argument passed to the `sometimes` method is the name of the field we are conditionally validating. The second argument is a list of the rules we want to add. If the closure passed as the third argument returns `true`, the rules will be added. This method makes it a breeze to build complex conditional validations. You may even add conditional validations for several fields at once:"
 msgstr ""
 
-#: docs/10.x/validation.md:block 657 (code)
+#: docs/10.x/validation.md:block 671 (code)
 msgid ""
 "$validator->sometimes(['reason', 'cost'], 'required', function (Fluent $input) {\n"
 "    return $input->games >= 100;\n"
 "});\n"
 msgstr ""
 
-#: docs/10.x/validation.md:block 658 (quote)
+#: docs/10.x/validation.md:block 672 (quote)
 msgid "**Note** The `$input` parameter passed to your closure will be an instance of `Illuminate\\Support\\Fluent` and may be used to access your input and files under validation."
 msgstr ""
 
-#: docs/10.x/validation.md:block 660 (header)
+#: docs/10.x/validation.md:block 674 (header)
 msgid "Complex Conditional Array Validation"
 msgstr ""
 
-#: docs/10.x/validation.md:block 661 (paragraph)
+#: docs/10.x/validation.md:block 675 (paragraph)
 msgid "Sometimes you may want to validate a field based on another field in the same nested array whose index you do not know. In these situations, you may allow your closure to receive a second argument which will be the current individual item in the array being validated:"
 msgstr ""
 
-#: docs/10.x/validation.md:block 662 (code)
+#: docs/10.x/validation.md:block 676 (code)
 msgid ""
 "$input = [\n"
 "    'channels' => [\n"
@@ -2666,48 +2744,31 @@ msgid ""
 "});\n"
 msgstr ""
 
-#: docs/10.x/validation.md:block 663 (paragraph)
+#: docs/10.x/validation.md:block 677 (paragraph)
 msgid "Like the `$input` parameter passed to the closure, the `$item` parameter is an instance of `Illuminate\\Support\\Fluent` when the attribute data is an array; otherwise, it is a string."
 msgstr ""
 
-#: docs/10.x/validation.md:block 665 (header)
+#: docs/10.x/validation.md:block 679 (header)
 msgid "Validating Arrays"
 msgstr ""
 
-#: docs/10.x/validation.md:block 666 (paragraph)
+#: docs/10.x/validation.md:block 680 (paragraph)
 msgid "As discussed in the [`array` validation rule documentation](#rule-array), the `array` rule accepts a list of allowed array keys. If any additional keys are present within the array, validation will fail:"
 msgstr ""
 
-#: docs/10.x/validation.md:block 667 (code)
-msgid ""
-"use Illuminate\\Support\\Facades\\Validator;\n"
-"\n"
-"$input = [\n"
-"    'user' => [\n"
-"        'name' => 'Taylor Otwell',\n"
-"        'username' => 'taylorotwell',\n"
-"        'admin' => true,\n"
-"    ],\n"
-"];\n"
-"\n"
-"Validator::make($input, [\n"
-"    'user' => 'array:username,locale',\n"
-"]);\n"
-msgstr ""
-
-#: docs/10.x/validation.md:block 668 (paragraph)
+#: docs/10.x/validation.md:block 682 (paragraph)
 msgid "In general, you should always specify the array keys that are allowed to be present within your array. Otherwise, the validator's `validate` and `validated` methods will return all of the validated data, including the array and all of its keys, even if those keys were not validated by other nested array validation rules."
 msgstr ""
 
-#: docs/10.x/validation.md:block 670 (header)
+#: docs/10.x/validation.md:block 684 (header)
 msgid "Validating Nested Array Input"
 msgstr ""
 
-#: docs/10.x/validation.md:block 671 (paragraph)
+#: docs/10.x/validation.md:block 685 (paragraph)
 msgid "Validating nested array based form input fields doesn't have to be a pain. You may use \"dot notation\" to validate attributes within an array. For example, if the incoming HTTP request contains a `photos[profile]` field, you may validate it like so:"
 msgstr ""
 
-#: docs/10.x/validation.md:block 672 (code)
+#: docs/10.x/validation.md:block 686 (code)
 msgid ""
 "use Illuminate\\Support\\Facades\\Validator;\n"
 "\n"
@@ -2716,11 +2777,11 @@ msgid ""
 "]);\n"
 msgstr ""
 
-#: docs/10.x/validation.md:block 673 (paragraph)
+#: docs/10.x/validation.md:block 687 (paragraph)
 msgid "You may also validate each element of an array. For example, to validate that each email in a given array input field is unique, you may do the following:"
 msgstr ""
 
-#: docs/10.x/validation.md:block 674 (code)
+#: docs/10.x/validation.md:block 688 (code)
 msgid ""
 "$validator = Validator::make($request->all(), [\n"
 "    'person.*.email' => 'email|unique:users',\n"
@@ -2728,11 +2789,11 @@ msgid ""
 "]);\n"
 msgstr ""
 
-#: docs/10.x/validation.md:block 675 (paragraph)
+#: docs/10.x/validation.md:block 689 (paragraph)
 msgid "Likewise, you may use the `*` character when specifying [custom validation messages in your language files](#custom-messages-for-specific-attributes), making it a breeze to use a single validation message for array based fields:"
 msgstr ""
 
-#: docs/10.x/validation.md:block 676 (code)
+#: docs/10.x/validation.md:block 690 (code)
 msgid ""
 "'custom' => [\n"
 "    'person.*.email' => [\n"
@@ -2741,15 +2802,15 @@ msgid ""
 "],\n"
 msgstr ""
 
-#: docs/10.x/validation.md:block 678 (header)
+#: docs/10.x/validation.md:block 692 (header)
 msgid "Accessing Nested Array Data"
 msgstr ""
 
-#: docs/10.x/validation.md:block 679 (paragraph)
+#: docs/10.x/validation.md:block 693 (paragraph)
 msgid "Sometimes you may need to access the value for a given nested array element when assigning validation rules to the attribute. You may accomplish this using the `Rule::forEach` method. The `forEach` method accepts a closure that will be invoked for each iteration of the array attribute under validation and will receive the attribute's value and explicit, fully-expanded attribute name. The closure should return an array of rules to assign to the array element:"
 msgstr ""
 
-#: docs/10.x/validation.md:block 680 (code)
+#: docs/10.x/validation.md:block 694 (code)
 msgid ""
 "use App\\Rules\\HasPermission;\n"
 "use Illuminate\\Support\\Facades\\Validator;\n"
@@ -2765,15 +2826,15 @@ msgid ""
 "]);\n"
 msgstr ""
 
-#: docs/10.x/validation.md:block 682 (header)
+#: docs/10.x/validation.md:block 696 (header)
 msgid "Error Message Indexes & Positions"
 msgstr ""
 
-#: docs/10.x/validation.md:block 683 (paragraph)
+#: docs/10.x/validation.md:block 697 (paragraph)
 msgid "When validating arrays, you may want to reference the index or position of a particular item that failed validation within the error message displayed by your application. To accomplish this, you may include the `:index` (starts from `0`) and `:position` (starts from `1`) placeholders within your [custom validation message](#manual-customizing-the-error-messages):"
 msgstr ""
 
-#: docs/10.x/validation.md:block 684 (code)
+#: docs/10.x/validation.md:block 698 (code)
 msgid ""
 "use Illuminate\\Support\\Facades\\Validator;\n"
 "\n"
@@ -2797,19 +2858,27 @@ msgid ""
 "]);\n"
 msgstr ""
 
-#: docs/10.x/validation.md:block 685 (paragraph)
+#: docs/10.x/validation.md:block 699 (paragraph)
 msgid "Given the example above, validation will fail and the user will be presented with the following error of *\"Please describe photo #2.\"*"
 msgstr ""
 
-#: docs/10.x/validation.md:block 687 (header)
+#: docs/10.x/validation.md:block 700 (paragraph)
+msgid "If necessary, you may reference more deeply nested indexes and positions via `second-index`, `second-position`, `third-index`, `third-position`, etc."
+msgstr ""
+
+#: docs/10.x/validation.md:block 701 (code)
+msgid "'photos.*.attributes.*.string' => 'Invalid attribute for photo #:second-position.',\n"
+msgstr ""
+
+#: docs/10.x/validation.md:block 703 (header)
 msgid "Validating Files"
 msgstr ""
 
-#: docs/10.x/validation.md:block 688 (paragraph)
+#: docs/10.x/validation.md:block 704 (paragraph)
 msgid "Laravel provides a variety of validation rules that may be used to validate uploaded files, such as `mimes`, `image`, `min`, and `max`. While you are free to specify these rules individually when validating files, Laravel also offers a fluent file validation rule builder that you may find convenient:"
 msgstr ""
 
-#: docs/10.x/validation.md:block 689 (code)
+#: docs/10.x/validation.md:block 705 (code)
 msgid ""
 "use Illuminate\\Support\\Facades\\Validator;\n"
 "use Illuminate\\Validation\\Rules\\File;\n"
@@ -2824,13 +2893,14 @@ msgid ""
 "]);\n"
 msgstr ""
 
-#: docs/10.x/validation.md:block 690 (paragraph)
+#: docs/10.x/validation.md:block 706 (paragraph)
 msgid "If your application accepts images uploaded by your users, you may use the `File` rule's `image` constructor method to indicate that the uploaded file should be an image. In addition, the `dimensions` rule may be used to limit the dimensions of the image:"
 msgstr ""
 
-#: docs/10.x/validation.md:block 691 (code)
+#: docs/10.x/validation.md:block 707 (code)
 msgid ""
 "use Illuminate\\Support\\Facades\\Validator;\n"
+"use Illuminate\\Validation\\Rule;\n"
 "use Illuminate\\Validation\\Rules\\File;\n"
 "\n"
 "Validator::validate($input, [\n"
@@ -2844,27 +2914,42 @@ msgid ""
 "]);\n"
 msgstr ""
 
-#: docs/10.x/validation.md:block 692 (quote)
+#: docs/10.x/validation.md:block 708 (quote)
 msgid "**Note** More information regarding validating image dimensions may be found in the [dimension rule documentation](#rule-dimensions)."
 msgstr ""
 
-#: docs/10.x/validation.md:block 694 (header)
+#: docs/10.x/validation.md:block 710 (header)
+msgid "File Sizes"
+msgstr ""
+
+#: docs/10.x/validation.md:block 711 (paragraph)
+msgid "For convenience, minimum and maximum file sizes may be specified as a string with a suffix indicating the file size units. The `kb`, `mb`, `gb`, and `tb` suffixes are supported:"
+msgstr ""
+
+#: docs/10.x/validation.md:block 712 (code)
+msgid ""
+"File::image()\n"
+"    ->min('1kb')\n"
+"    ->max('10mb')\n"
+msgstr ""
+
+#: docs/10.x/validation.md:block 714 (header)
 msgid "File Types"
 msgstr ""
 
-#: docs/10.x/validation.md:block 695 (paragraph)
+#: docs/10.x/validation.md:block 715 (paragraph)
 msgid "Even though you only need to specify the extensions when invoking the `types` method, this method actually validates the MIME type of the file by reading the file's contents and guessing its MIME type. A full listing of MIME types and their corresponding extensions may be found at the following location:"
 msgstr ""
 
-#: docs/10.x/validation.md:block 698 (header)
+#: docs/10.x/validation.md:block 718 (header)
 msgid "Validating Passwords"
 msgstr ""
 
-#: docs/10.x/validation.md:block 699 (paragraph)
+#: docs/10.x/validation.md:block 719 (paragraph)
 msgid "To ensure that passwords have an adequate level of complexity, you may use Laravel's `Password` rule object:"
 msgstr ""
 
-#: docs/10.x/validation.md:block 700 (code)
+#: docs/10.x/validation.md:block 720 (code)
 msgid ""
 "use Illuminate\\Support\\Facades\\Validator;\n"
 "use Illuminate\\Validation\\Rules\\Password;\n"
@@ -2874,11 +2959,11 @@ msgid ""
 "]);\n"
 msgstr ""
 
-#: docs/10.x/validation.md:block 701 (paragraph)
+#: docs/10.x/validation.md:block 721 (paragraph)
 msgid "The `Password` rule object allows you to easily customize the password complexity requirements for your application, such as specifying that passwords require at least one letter, number, symbol, or characters with mixed casing:"
 msgstr ""
 
-#: docs/10.x/validation.md:block 702 (code)
+#: docs/10.x/validation.md:block 722 (code)
 msgid ""
 "// Require at least 8 characters...\n"
 "Password::min(8)\n"
@@ -2896,33 +2981,33 @@ msgid ""
 "Password::min(8)->symbols()\n"
 msgstr ""
 
-#: docs/10.x/validation.md:block 703 (paragraph)
+#: docs/10.x/validation.md:block 723 (paragraph)
 msgid "In addition, you may ensure that a password has not been compromised in a public password data breach leak using the `uncompromised` method:"
 msgstr ""
 
-#: docs/10.x/validation.md:block 704 (code)
+#: docs/10.x/validation.md:block 724 (code)
 msgid "Password::min(8)->uncompromised()\n"
 msgstr ""
 
-#: docs/10.x/validation.md:block 705 (paragraph)
+#: docs/10.x/validation.md:block 725 (paragraph)
 msgid "Internally, the `Password` rule object uses the [k-Anonymity](https://en.wikipedia.org/wiki/K-anonymity) model to determine if a password has been leaked via the [haveibeenpwned.com](https://haveibeenpwned.com) service without sacrificing the user's privacy or security."
 msgstr ""
 
-#: docs/10.x/validation.md:block 706 (paragraph)
+#: docs/10.x/validation.md:block 726 (paragraph)
 msgid "By default, if a password appears at least once in a data leak, it will be considered compromised. You can customize this threshold using the first argument of the `uncompromised` method:"
 msgstr ""
 
-#: docs/10.x/validation.md:block 707 (code)
+#: docs/10.x/validation.md:block 727 (code)
 msgid ""
 "// Ensure the password appears less than 3 times in the same data leak...\n"
 "Password::min(8)->uncompromised(3);\n"
 msgstr ""
 
-#: docs/10.x/validation.md:block 708 (paragraph)
+#: docs/10.x/validation.md:block 728 (paragraph)
 msgid "Of course, you may chain all the methods in the examples above:"
 msgstr ""
 
-#: docs/10.x/validation.md:block 709 (code)
+#: docs/10.x/validation.md:block 729 (code)
 msgid ""
 "Password::min(8)\n"
 "    ->letters()\n"
@@ -2932,15 +3017,15 @@ msgid ""
 "    ->uncompromised()\n"
 msgstr ""
 
-#: docs/10.x/validation.md:block 711 (header)
+#: docs/10.x/validation.md:block 731 (header)
 msgid "Defining Default Password Rules"
 msgstr ""
 
-#: docs/10.x/validation.md:block 712 (paragraph)
+#: docs/10.x/validation.md:block 732 (paragraph)
 msgid "You may find it convenient to specify the default validation rules for passwords in a single location of your application. You can easily accomplish this using the `Password::defaults` method, which accepts a closure. The closure given to the `defaults` method should return the default configuration of the Password rule. Typically, the `defaults` rule should be called within the `boot` method of one of your application's service providers:"
 msgstr ""
 
-#: docs/10.x/validation.md:block 713 (code)
+#: docs/10.x/validation.md:block 733 (code)
 msgid ""
 "use Illuminate\\Validation\\Rules\\Password;\n"
 "\n"
@@ -2959,19 +3044,19 @@ msgid ""
 "}\n"
 msgstr ""
 
-#: docs/10.x/validation.md:block 714 (paragraph)
+#: docs/10.x/validation.md:block 734 (paragraph)
 msgid "Then, when you would like to apply the default rules to a particular password undergoing validation, you may invoke the `defaults` method with no arguments:"
 msgstr ""
 
-#: docs/10.x/validation.md:block 715 (code)
+#: docs/10.x/validation.md:block 735 (code)
 msgid "'password' => ['required', Password::defaults()],\n"
 msgstr ""
 
-#: docs/10.x/validation.md:block 716 (paragraph)
+#: docs/10.x/validation.md:block 736 (paragraph)
 msgid "Occasionally, you may want to attach additional validation rules to your default password validation rules. You may use the `rules` method to accomplish this:"
 msgstr ""
 
-#: docs/10.x/validation.md:block 717 (code)
+#: docs/10.x/validation.md:block 737 (code)
 msgid ""
 "use App\\Rules\\ZxcvbnRule;\n"
 "\n"
@@ -2982,27 +3067,27 @@ msgid ""
 "});\n"
 msgstr ""
 
-#: docs/10.x/validation.md:block 719 (header)
+#: docs/10.x/validation.md:block 739 (header)
 msgid "Custom Validation Rules"
 msgstr ""
 
-#: docs/10.x/validation.md:block 721 (header)
+#: docs/10.x/validation.md:block 741 (header)
 msgid "Using Rule Objects"
 msgstr ""
 
-#: docs/10.x/validation.md:block 722 (paragraph)
+#: docs/10.x/validation.md:block 742 (paragraph)
 msgid "Laravel provides a variety of helpful validation rules; however, you may wish to specify some of your own. One method of registering custom validation rules is using rule objects. To generate a new rule object, you may use the `make:rule` Artisan command. Let's use this command to generate a rule that verifies a string is uppercase. Laravel will place the new rule in the `app/Rules` directory. If this directory does not exist, Laravel will create it when you execute the Artisan command to create your rule:"
 msgstr ""
 
-#: docs/10.x/validation.md:block 723 (code)
+#: docs/10.x/validation.md:block 743 (code)
 msgid "php artisan make:rule Uppercase\n"
 msgstr ""
 
-#: docs/10.x/validation.md:block 724 (paragraph)
+#: docs/10.x/validation.md:block 744 (paragraph)
 msgid "Once the rule has been created, we are ready to define its behavior. A rule object contains a single method: `validate`. This method receives the attribute name, its value, and a callback that should be invoked on failure with the validation error message:"
 msgstr ""
 
-#: docs/10.x/validation.md:block 725 (code)
+#: docs/10.x/validation.md:block 745 (code)
 msgid ""
 "<?php\n"
 "\n"
@@ -3025,11 +3110,11 @@ msgid ""
 "}\n"
 msgstr ""
 
-#: docs/10.x/validation.md:block 726 (paragraph)
+#: docs/10.x/validation.md:block 746 (paragraph)
 msgid "Once the rule has been defined, you may attach it to a validator by passing an instance of the rule object with your other validation rules:"
 msgstr ""
 
-#: docs/10.x/validation.md:block 727 (code)
+#: docs/10.x/validation.md:block 747 (code)
 msgid ""
 "use App\\Rules\\Uppercase;\n"
 "\n"
@@ -3038,41 +3123,41 @@ msgid ""
 "]);\n"
 msgstr ""
 
-#: docs/10.x/validation.md:block 728 (header)
+#: docs/10.x/validation.md:block 748 (header)
 msgid "Translating Validation Messages"
 msgstr ""
 
-#: docs/10.x/validation.md:block 729 (paragraph)
+#: docs/10.x/validation.md:block 749 (paragraph)
 msgid "Instead of providing a literal error message to the `$fail` closure, you may also provide a [translation string key](/docs/{{version}}/localization) and instruct Laravel to translate the error message:"
 msgstr ""
 
-#: docs/10.x/validation.md:block 730 (code)
+#: docs/10.x/validation.md:block 750 (code)
 msgid ""
 "if (strtoupper($value) !== $value) {\n"
 "    $fail('validation.uppercase')->translate();\n"
 "}\n"
 msgstr ""
 
-#: docs/10.x/validation.md:block 731 (paragraph)
+#: docs/10.x/validation.md:block 751 (paragraph)
 msgid "If necessary, you may provide placeholder replacements and the preferred language as the first and second arguments to the `translate` method:"
 msgstr ""
 
-#: docs/10.x/validation.md:block 732 (code)
+#: docs/10.x/validation.md:block 752 (code)
 msgid ""
 "$fail('validation.location')->translate([\n"
 "    'value' => $this->value,\n"
 "], 'fr')\n"
 msgstr ""
 
-#: docs/10.x/validation.md:block 733 (header)
+#: docs/10.x/validation.md:block 753 (header)
 msgid "Accessing Additional Data"
 msgstr ""
 
-#: docs/10.x/validation.md:block 734 (paragraph)
+#: docs/10.x/validation.md:block 754 (paragraph)
 msgid "If your custom validation rule class needs to access all of the other data undergoing validation, your rule class may implement the `Illuminate\\Contracts\\Validation\\DataAwareRule` interface. This interface requires your class to define a `setData` method. This method will automatically be invoked by Laravel (before validation proceeds) with all of the data under validation:"
 msgstr ""
 
-#: docs/10.x/validation.md:block 735 (code)
+#: docs/10.x/validation.md:block 755 (code)
 msgid ""
 "<?php\n"
 "\n"
@@ -3096,7 +3181,6 @@ msgid ""
 "     * Set the data under validation.\n"
 "     *\n"
 "     * @param  array<string, mixed>  $data\n"
-"     * @return $this\n"
 "     */\n"
 "    public function setData(array $data): static\n"
 "    {\n"
@@ -3107,11 +3191,11 @@ msgid ""
 "}\n"
 msgstr ""
 
-#: docs/10.x/validation.md:block 736 (paragraph)
+#: docs/10.x/validation.md:block 756 (paragraph)
 msgid "Or, if your validation rule requires access to the validator instance performing the validation, you may implement the `ValidatorAwareRule` interface:"
 msgstr ""
 
-#: docs/10.x/validation.md:block 737 (code)
+#: docs/10.x/validation.md:block 757 (code)
 msgid ""
 "<?php\n"
 "\n"
@@ -3144,17 +3228,18 @@ msgid ""
 "}\n"
 msgstr ""
 
-#: docs/10.x/validation.md:block 739 (header)
+#: docs/10.x/validation.md:block 759 (header)
 msgid "Using Closures"
 msgstr ""
 
-#: docs/10.x/validation.md:block 740 (paragraph)
+#: docs/10.x/validation.md:block 760 (paragraph)
 msgid "If you only need the functionality of a custom rule once throughout your application, you may use a closure instead of a rule object. The closure receives the attribute's name, the attribute's value, and a `$fail` callback that should be called if validation fails:"
 msgstr ""
 
-#: docs/10.x/validation.md:block 741 (code)
+#: docs/10.x/validation.md:block 761 (code)
 msgid ""
 "use Illuminate\\Support\\Facades\\Validator;\n"
+"use Closure;\n"
 "\n"
 "$validator = Validator::make($request->all(), [\n"
 "    'title' => [\n"
@@ -3169,15 +3254,15 @@ msgid ""
 "]);\n"
 msgstr ""
 
-#: docs/10.x/validation.md:block 743 (header)
+#: docs/10.x/validation.md:block 763 (header)
 msgid "Implicit Rules"
 msgstr ""
 
-#: docs/10.x/validation.md:block 744 (paragraph)
+#: docs/10.x/validation.md:block 764 (paragraph)
 msgid "By default, when an attribute being validated is not present or contains an empty string, normal validation rules, including custom rules, are not run. For example, the [`unique`](#rule-unique) rule will not be run against an empty string:"
 msgstr ""
 
-#: docs/10.x/validation.md:block 745 (code)
+#: docs/10.x/validation.md:block 765 (code)
 msgid ""
 "use Illuminate\\Support\\Facades\\Validator;\n"
 "\n"
@@ -3188,16 +3273,20 @@ msgid ""
 "Validator::make($input, $rules)->passes(); // true\n"
 msgstr ""
 
-#: docs/10.x/validation.md:block 746 (paragraph)
+#: docs/10.x/validation.md:block 766 (paragraph)
 msgid "For a custom rule to run even when an attribute is empty, the rule must imply that the attribute is required. To quickly generate a new implicit rule object, you may use the `make:rule` Artisan command with the `--implicit` option:"
 msgstr ""
 
-#: docs/10.x/validation.md:block 747 (code)
+#: docs/10.x/validation.md:block 767 (code)
 msgid "php artisan make:rule Uppercase --implicit\n"
 msgstr ""
 
-#: docs/10.x/validation.md:block 748 (quote)
+#: docs/10.x/validation.md:block 768 (quote)
 msgid "**Warning** An \"implicit\" rule only *implies* that the attribute is required. Whether it actually invalidates a missing or empty attribute is up to you."
+msgstr ""
+
+#: docs/8.x/validation.md:block 2 (unordered list)
+msgid "[After Validation Hook](#after-validation-hook)"
 msgstr ""
 
 #: docs/8.x/validation.md:block 2 (unordered list)
@@ -3331,6 +3420,14 @@ msgstr ""
 msgid "If validation fails, a redirect response will be generated to send the user back to their previous location. The errors will also be flashed to the session so they are available for display. If the request was an XHR request, an HTTP response with a 422 status code will be returned to the user including a JSON representation of the validation errors."
 msgstr ""
 
+#: docs/8.x/validation.md:block 86 (header)
+msgid "Adding After Hooks To Form Requests"
+msgstr ""
+
+#: docs/8.x/validation.md:block 87 (paragraph)
+msgid "If you would like to add an \"after\" validation hook to a form request, you may use the `withValidator` method. This method receives the fully constructed validator, allowing you to call any of its methods before the validation rules are actually evaluated:"
+msgstr ""
+
 #: docs/8.x/validation.md:block 88 (code)
 msgid ""
 "/**\n"
@@ -3347,6 +3444,10 @@ msgid ""
 "        }\n"
 "    });\n"
 "}\n"
+msgstr ""
+
+#: docs/8.x/validation.md:block 90 (header)
+msgid "Stopping On First Validation Failure Attribute"
 msgstr ""
 
 #: docs/8.x/validation.md:block 102 (code)
@@ -3478,6 +3579,14 @@ msgstr ""
 msgid "If you would like to create a validator instance manually but still take advantage of the automatic redirection offered by the HTTP request's `validate` method, you may call the `validate` method on an existing validator instance. If validation fails, the user will automatically be redirected or, in the case of an XHR request, a JSON response will be returned:"
 msgstr ""
 
+#: docs/8.x/validation.md:block 159 (header)
+msgid "After Validation Hook"
+msgstr ""
+
+#: docs/8.x/validation.md:block 160 (paragraph)
+msgid "You may also attach callbacks to be run after validation is completed. This allows you to easily perform further validation and even add more error messages to the message collection. To get started, call the `after` method on a validator instance:"
+msgstr ""
+
 #: docs/8.x/validation.md:block 161 (code)
 msgid ""
 "$validator = Validator::make(...);\n"
@@ -3564,6 +3673,23 @@ msgstr ""
 msgid "The field under validation must be entirely alpha-numeric characters."
 msgstr ""
 
+#: docs/8.x/validation.md:block 255 (code)
+msgid ""
+"use Illuminate\\Support\\Facades\\Validator;\n"
+"\n"
+"$input = [\n"
+"    'user' => [\n"
+"        'name' => 'Taylor Otwell',\n"
+"        'username' => 'taylorotwell',\n"
+"        'admin' => true,\n"
+"    ],\n"
+"];\n"
+"\n"
+"Validator::make($input, [\n"
+"    'user' => 'array:username,locale',\n"
+"]);\n"
+msgstr ""
+
 #: docs/8.x/validation.md:block 257 (paragraph)
 msgid "If you would like, you may instruct Laravel's validator to never include unvalidated array keys in the \"validated\" data it returns, even if you use the `array` rule without specifying a list of allowed keys. To accomplish this, you may call the validator's `excludeUnvalidatedArrayKeys` method in the `boot` method of your application's `AppServiceProvider`. After doing so, the validator will include array keys in the \"validated\" data it returns only when those keys were specifically validated by [nested array rules](#validating-arrays):"
 msgstr ""
@@ -3624,6 +3750,14 @@ msgid ""
 "        }),\n"
 "    ],\n"
 "]);\n"
+msgstr ""
+
+#: docs/8.x/validation.md:block 379 (paragraph)
+msgid "The field under validation must be greater than the given *field*. The two fields must be of the same type. Strings, numerics, arrays, and files are evaluated using the same conventions as the [`size`](#rule-size) rule."
+msgstr ""
+
+#: docs/8.x/validation.md:block 382 (paragraph)
+msgid "The field under validation must be greater than or equal to the given *field*. The two fields must be of the same type. Strings, numerics, arrays, and files are evaluated using the same conventions as the [`size`](#rule-size) rule."
 msgstr ""
 
 #: docs/8.x/validation.md:block 391 (code)
@@ -3704,17 +3838,8 @@ msgid ""
 "]);\n"
 msgstr ""
 
-#: docs/8.x/validation.md:block 538 (code)
-msgid ""
-"use Illuminate\\Support\\Facades\\Validator;\n"
-"use Illuminate\\Validation\\Rule;\n"
-"\n"
-"Validator::make($data, [\n"
-"    'email' => [\n"
-"        'required',\n"
-"        Rule::unique('users')->ignore($user->id),\n"
-"    ],\n"
-"]);\n"
+#: docs/8.x/validation.md:block 523 (paragraph)
+msgid "The field under validation must be a valid timezone identifier according to the `timezone_identifiers_list` PHP function."
 msgstr ""
 
 #: docs/8.x/validation.md:block 539 (quote)
@@ -3961,6 +4086,10 @@ msgstr ""
 msgid "{note} An \"implicit\" rule only *implies* that the attribute is required. Whether it actually invalidates a missing or empty attribute is up to you."
 msgstr ""
 
+#: docs/9.x/validation.md:block 49 (paragraph)
+msgid "Laravel's built-in validation rules each have an error message that is located in your application's `lang/en/validation.php` file. Within this file, you will find a translation entry for each validation rule. You are free to change or modify these messages based on the needs of your application."
+msgstr ""
+
 #: docs/9.x/validation.md:block 129 (code)
 msgid ""
 "use Illuminate\\Support\\Str;\n"
@@ -3993,6 +4122,14 @@ msgid ""
 "}\n"
 msgstr ""
 
+#: docs/9.x/validation.md:block 229 (paragraph)
+msgid "[Accepted](#rule-accepted) [Accepted If](#rule-accepted-if) [Active URL](#rule-active-url) [After (Date)](#rule-after) [After Or Equal (Date)](#rule-after-or-equal) [Alpha](#rule-alpha) [Alpha Dash](#rule-alpha-dash) [Alpha Numeric](#rule-alpha-num) [Array](#rule-array) [Ascii](#rule-ascii) [Bail](#rule-bail) [Before (Date)](#rule-before) [Before Or Equal (Date)](#rule-before-or-equal) [Between](#rule-between) [Boolean](#rule-boolean) [Confirmed](#rule-confirmed) [Current Password](#rule-current-password) [Date](#rule-date) [Date Equals](#rule-date-equals) [Date Format](#rule-date-format) [Decimal](#rule-decimal) [Declined](#rule-declined) [Declined If](#rule-declined-if) [Different](#rule-different) [Digits](#rule-digits) [Digits Between](#rule-digits-between) [Dimensions (Image Files)](#rule-dimensions) [Distinct](#rule-distinct) [Doesnt Start With](#rule-doesnt-start-with) [Doesnt End With](#rule-doesnt-end-with) [Email](#rule-email) [Ends With](#rule-ends-with) [Enum](#rule-enum) [Exclude](#rule-exclude) [Exclude If](#rule-exclude-if) [Exclude Unless](#rule-exclude-unless) [Exclude With](#rule-exclude-with) [Exclude Without](#rule-exclude-without) [Exists (Database)](#rule-exists) [File](#rule-file) [Filled](#rule-filled) [Greater Than](#rule-gt) [Greater Than Or Equal](#rule-gte) [Image (File)](#rule-image) [In](#rule-in) [In Array](#rule-in-array) [Integer](#rule-integer) [IP Address](#rule-ip) [JSON](#rule-json) [Less Than](#rule-lt) [Less Than Or Equal](#rule-lte) [Lowercase](#rule-lowercase) [MAC Address](#rule-mac) [Max](#rule-max) [Max Digits](#rule-max-digits) [MIME Types](#rule-mimetypes) [MIME Type By File Extension](#rule-mimes) [Min](#rule-min) [Min Digits](#rule-min-digits) [Missing](#rule-missing) [Missing If](#rule-missing-if) [Missing Unless](#rule-missing-unless) [Missing With](#rule-missing-with) [Missing With All](#rule-missing-with-all) [Multiple Of](#rule-multiple-of) [Not In](#rule-not-in) [Not Regex](#rule-not-regex) [Nullable](#rule-nullable) [Numeric](#rule-numeric) [Password](#rule-password) [Present](#rule-present) [Prohibited](#rule-prohibited) [Prohibited If](#rule-prohibited-if) [Prohibited Unless](#rule-prohibited-unless) [Prohibits](#rule-prohibits) [Regular Expression](#rule-regex) [Required](#rule-required) [Required If](#rule-required-if) [Required Unless](#rule-required-unless) [Required With](#rule-required-with) [Required With All](#rule-required-with-all) [Required Without](#rule-required-without) [Required Without All](#rule-required-without-all) [Required Array Keys](#rule-required-array-keys) [Same](#rule-same) [Size](#rule-size) [Sometimes](#validating-when-present) [Starts With](#rule-starts-with) [String](#rule-string) [Timezone](#rule-timezone) [Unique (Database)](#rule-unique) [Uppercase](#rule-uppercase) [URL](#rule-url) [ULID](#rule-ulid) [UUID](#rule-uuid)"
+msgstr ""
+
+#: docs/9.x/validation.md:block 365 (quote)
+msgid "**Warning** Enums are only available on PHP 8.1+."
+msgstr ""
+
 #: docs/9.x/validation.md:block 619 (code)
 msgid "'email' => Rule::unique('users')->where(fn ($query) => $query->where('account_id', 1))\n"
 msgstr ""
@@ -4010,6 +4147,22 @@ msgid ""
 "            new HasPermission('manage-company', $value),\n"
 "        ];\n"
 "    }),\n"
+"]);\n"
+msgstr ""
+
+#: docs/9.x/validation.md:block 687 (code)
+msgid ""
+"use Illuminate\\Support\\Facades\\Validator;\n"
+"use Illuminate\\Validation\\Rules\\File;\n"
+"\n"
+"Validator::validate($input, [\n"
+"    'photo' => [\n"
+"        'required',\n"
+"        File::image()\n"
+"            ->min(1024)\n"
+"            ->max(12 * 1024)\n"
+"            ->dimensions(Rule::dimensions()->maxWidth(1000)->maxHeight(500)),\n"
+"    ],\n"
 "]);\n"
 msgstr ""
 
@@ -4120,4 +4273,238 @@ msgstr ""
 
 #: docs/9.x/validation.md:block 743 (code)
 msgid "php artisan make:rule Uppercase --invokable --implicit\n"
+msgstr ""
+
+#: docs/master/validation.md:block 18 (code)
+msgid ""
+"<?php\n"
+"\n"
+"namespace App\\Http\\Controllers;\n"
+"\n"
+"use App\\Http\\Controllers\\Controller;\n"
+"use Illuminate\\Http\\RedirectResponse;\n"
+"use Illuminate\\Http\\Request;\n"
+"use Illuminate\\View\\View;\n"
+"\n"
+"class PostController extends Controller\n"
+"{\n"
+"    /**\n"
+"     * Show the form to create a new blog post.\n"
+"     */\n"
+"    public function create(): View\n"
+"    {\n"
+"        return view('post.create');\n"
+"    }\n"
+"\n"
+"    /**\n"
+"     * Store a new blog post.\n"
+"     */\n"
+"    public function store(Request $request): RedirectResponse\n"
+"    {\n"
+"        // Validate and store the blog post...\n"
+"\n"
+"        $post = /** ... */\n"
+"\n"
+"        return to_route('post.show', ['post' => $post->id]);\n"
+"    }\n"
+"}\n"
+msgstr ""
+
+#: docs/master/validation.md:block 24 (code)
+msgid ""
+"/**\n"
+" * Store a new blog post.\n"
+" */\n"
+"public function store(Request $request): Response\n"
+"{\n"
+"    $validated = $request->validate([\n"
+"        'title' => 'required|unique:posts|max:255',\n"
+"        'body' => 'required',\n"
+"    ]);\n"
+"\n"
+"    // The blog post is valid...\n"
+"\n"
+"    return response()->noContent();\n"
+"}\n"
+msgstr ""
+
+#: docs/master/validation.md:block 89 (code)
+msgid ""
+"/**\n"
+" * Store a new blog post.\n"
+" */\n"
+"public function store(StorePostRequest $request): Response\n"
+"{\n"
+"    // The incoming request is valid...\n"
+"\n"
+"    // Retrieve the validated input data...\n"
+"    $validated = $request->validated();\n"
+"\n"
+"    // Retrieve a portion of the validated input data...\n"
+"    $validated = $request->safe()->only(['name', 'email']);\n"
+"    $validated = $request->safe()->except(['name', 'email']);\n"
+"\n"
+"    // Store the blog post...\n"
+"\n"
+"    return response()->noContent();\n"
+"}\n"
+msgstr ""
+
+#: docs/master/validation.md:block 94 (code)
+msgid ""
+"use Illuminate\\Validation\\Validator;\n"
+"\n"
+"/**\n"
+" * Configure the validator instance.\n"
+" */\n"
+"public function withValidator(Validator $validator): void\n"
+"{\n"
+"    $validator->after(function (Validator $validator) {\n"
+"        if ($this->somethingElseIsInvalid()) {\n"
+"            $validator->errors()->add('field', 'Something is wrong with this field!');\n"
+"        }\n"
+"    });\n"
+"}\n"
+msgstr ""
+
+#: docs/master/validation.md:block 130 (code)
+msgid ""
+"use Illuminate\\Support\\Str;\n"
+"\n"
+"/**\n"
+" * Handle a passed validation attempt.\n"
+" */\n"
+"protected function passedValidation(): void\n"
+"{\n"
+"    $this->replace(['name' => 'Taylor']);\n"
+"}\n"
+msgstr ""
+
+#: docs/master/validation.md:block 134 (code)
+msgid ""
+"<?php\n"
+"\n"
+"namespace App\\Http\\Controllers;\n"
+"\n"
+"use App\\Http\\Controllers\\Controller;\n"
+"use Illuminate\\Http\\Request;\n"
+"use Illuminate\\Http\\Response;\n"
+"use Illuminate\\Support\\Facades\\Validator;\n"
+"\n"
+"class PostController extends Controller\n"
+"{\n"
+"    /**\n"
+"     * Store a new blog post.\n"
+"     */\n"
+"    public function store(Request $request): Response\n"
+"    {\n"
+"        $validator = Validator::make($request->all(), [\n"
+"            'title' => 'required|unique:posts|max:255',\n"
+"            'body' => 'required',\n"
+"        ]);\n"
+"\n"
+"        if ($validator->fails()) {\n"
+"            return redirect('post/create')\n"
+"                        ->withErrors($validator)\n"
+"                        ->withInput();\n"
+"        }\n"
+"\n"
+"        // Retrieve the validated input...\n"
+"        $validated = $validator->validated();\n"
+"\n"
+"        // Retrieve a portion of the validated input...\n"
+"        $validated = $validator->safe()->only(['name', 'email']);\n"
+"        $validated = $validator->safe()->except(['name', 'email']);\n"
+"\n"
+"        // Store the blog post...\n"
+"\n"
+"        return response()->noContent();\n"
+"    }\n"
+"}\n"
+msgstr ""
+
+#: docs/master/validation.md:block 169 (code)
+msgid ""
+"use Illuminate\\Support\\Facades;\n"
+"use Illuminate\\Validation\\Validator;\n"
+"\n"
+"$validator = Facades\\Validator::make(/* ... */);\n"
+"\n"
+"$validator->after(function (Validator $validator) {\n"
+"    if ($this->somethingElseIsInvalid()) {\n"
+"        $validator->errors()->add(\n"
+"            'field', 'Something is wrong with this field!'\n"
+"        );\n"
+"    }\n"
+"});\n"
+"\n"
+"if ($validator->fails()) {\n"
+"    // ...\n"
+"}\n"
+msgstr ""
+
+#: docs/master/validation.md:block 613 (code)
+msgid ""
+"use Illuminate\\Database\\Eloquent\\Builder;\n"
+"use Illuminate\\Support\\Facades\\Validator;\n"
+"use Illuminate\\Validation\\Rule;\n"
+"\n"
+"Validator::make($data, [\n"
+"    'email' => [\n"
+"        'required',\n"
+"        Rule::unique('users')->ignore($user->id),\n"
+"    ],\n"
+"]);\n"
+msgstr ""
+
+#: docs/master/validation.md:block 735 (code)
+msgid ""
+"<?php\n"
+"\n"
+"namespace App\\Rules;\n"
+"\n"
+"use Illuminate\\Contracts\\Validation\\DataAwareRule;\n"
+"use Illuminate\\Contracts\\Validation\\ValidationRule;\n"
+"\n"
+"class Uppercase implements DataAwareRule, ValidationRule\n"
+"{\n"
+"    /**\n"
+"     * All of the data under validation.\n"
+"     *\n"
+"     * @var array<string, mixed>\n"
+"     */\n"
+"    protected $data = [];\n"
+"\n"
+"    // ...\n"
+"\n"
+"    /**\n"
+"     * Set the data under validation.\n"
+"     *\n"
+"     * @param  array<string, mixed>  $data\n"
+"     * @return $this\n"
+"     */\n"
+"    public function setData(array $data): static\n"
+"    {\n"
+"        $this->data = $data;\n"
+"\n"
+"        return $this;\n"
+"    }\n"
+"}\n"
+msgstr ""
+
+#: docs/master/validation.md:block 741 (code)
+msgid ""
+"use Illuminate\\Support\\Facades\\Validator;\n"
+"\n"
+"$validator = Validator::make($request->all(), [\n"
+"    'title' => [\n"
+"        'required',\n"
+"        'max:255',\n"
+"        function (string $attribute, mixed $value, Closure $fail) {\n"
+"            if ($value === 'foo') {\n"
+"                $fail(\"The {$attribute} is invalid.\");\n"
+"            }\n"
+"        },\n"
+"    ],\n"
+"]);\n"
 msgstr ""

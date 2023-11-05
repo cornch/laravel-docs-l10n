@@ -151,7 +151,7 @@ msgid ""
 msgstr ""
 
 #: docs/10.x/migrations.md:block 18 (paragraph)
-msgid "When you execute this command, Laravel will write a \"schema\" file to your application's `database/schema` directory. The schema file's name will correspond to the database connection. Now, when you attempt to migrate your database and no other migrations have been executed, Laravel will execute first the SQL statements of the schema file of the database connection you are using. After executing the schema file's statements, Laravel will execute any remaining migrations that were not part of the schema dump."
+msgid "When you execute this command, Laravel will write a \"schema\" file to your application's `database/schema` directory. The schema file's name will correspond to the database connection. Now, when you attempt to migrate your database and no other migrations have been executed, Laravel will first execute the SQL statements in the schema file of the database connection you are using. After executing the schema file's SQL statements, Laravel will execute any remaining migrations that were not part of the schema dump."
 msgstr ""
 
 #: docs/10.x/migrations.md:block 19 (paragraph)
@@ -332,22 +332,30 @@ msgid "php artisan migrate:rollback --batch=3\n"
 msgstr ""
 
 #: docs/10.x/migrations.md:block 57 (paragraph)
-msgid "The `migrate:reset` command will roll back all of your application's migrations:"
+msgid "If you would like to see the SQL statements that will be executed by the migrations without actually running them, you may provide the `--pretend` flag to the `migrate:rollback` command:"
 msgstr ""
 
 #: docs/10.x/migrations.md:block 58 (code)
+msgid "php artisan migrate:rollback --pretend\n"
+msgstr ""
+
+#: docs/10.x/migrations.md:block 59 (paragraph)
+msgid "The `migrate:reset` command will roll back all of your application's migrations:"
+msgstr ""
+
+#: docs/10.x/migrations.md:block 60 (code)
 msgid "php artisan migrate:reset\n"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 60 (header)
+#: docs/10.x/migrations.md:block 62 (header)
 msgid "Roll Back & Migrate Using A Single Command"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 61 (paragraph)
+#: docs/10.x/migrations.md:block 63 (paragraph)
 msgid "The `migrate:refresh` command will roll back all of your migrations and then execute the `migrate` command. This command effectively re-creates your entire database:"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 62 (code)
+#: docs/10.x/migrations.md:block 64 (code)
 msgid ""
 "php artisan migrate:refresh\n"
 "\n"
@@ -355,46 +363,46 @@ msgid ""
 "php artisan migrate:refresh --seed\n"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 63 (paragraph)
+#: docs/10.x/migrations.md:block 65 (paragraph)
 msgid "You may roll back and re-migrate a limited number of migrations by providing the `step` option to the `refresh` command. For example, the following command will roll back and re-migrate the last five migrations:"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 64 (code)
+#: docs/10.x/migrations.md:block 66 (code)
 msgid "php artisan migrate:refresh --step=5\n"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 66 (header)
+#: docs/10.x/migrations.md:block 68 (header)
 msgid "Drop All Tables & Migrate"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 67 (paragraph)
+#: docs/10.x/migrations.md:block 69 (paragraph)
 msgid "The `migrate:fresh` command will drop all tables from the database and then execute the `migrate` command:"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 68 (code)
+#: docs/10.x/migrations.md:block 70 (code)
 msgid ""
 "php artisan migrate:fresh\n"
 "\n"
 "php artisan migrate:fresh --seed\n"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 69 (quote)
+#: docs/10.x/migrations.md:block 71 (quote)
 msgid "**Warning** The `migrate:fresh` command will drop all database tables regardless of their prefix. This command should be used with caution when developing on a database that is shared with other applications."
 msgstr ""
 
-#: docs/10.x/migrations.md:block 71 (header)
+#: docs/10.x/migrations.md:block 73 (header)
 msgid "Tables"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 73 (header)
+#: docs/10.x/migrations.md:block 75 (header)
 msgid "Creating Tables"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 74 (paragraph)
+#: docs/10.x/migrations.md:block 76 (paragraph)
 msgid "To create a new database table, use the `create` method on the `Schema` facade. The `create` method accepts two arguments: the first is the name of the table, while the second is a closure which receives a `Blueprint` object that may be used to define the new table:"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 75 (code)
+#: docs/10.x/migrations.md:block 77 (code)
 msgid ""
 "use Illuminate\\Database\\Schema\\Blueprint;\n"
 "use Illuminate\\Support\\Facades\\Schema;\n"
@@ -407,19 +415,19 @@ msgid ""
 "});\n"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 76 (paragraph)
+#: docs/10.x/migrations.md:block 78 (paragraph)
 msgid "When creating the table, you may use any of the schema builder's [column methods](#creating-columns) to define the table's columns."
 msgstr ""
 
-#: docs/10.x/migrations.md:block 78 (header)
+#: docs/10.x/migrations.md:block 80 (header)
 msgid "Checking For Table / Column Existence"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 79 (paragraph)
+#: docs/10.x/migrations.md:block 81 (paragraph)
 msgid "You may check for the existence of a table or column using the `hasTable` and `hasColumn` methods:"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 80 (code)
+#: docs/10.x/migrations.md:block 82 (code)
 msgid ""
 "if (Schema::hasTable('users')) {\n"
 "    // The \"users\" table exists...\n"
@@ -430,26 +438,26 @@ msgid ""
 "}\n"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 82 (header)
+#: docs/10.x/migrations.md:block 84 (header)
 msgid "Database Connection & Table Options"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 83 (paragraph)
+#: docs/10.x/migrations.md:block 85 (paragraph)
 msgid "If you want to perform a schema operation on a database connection that is not your application's default connection, use the `connection` method:"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 84 (code)
+#: docs/10.x/migrations.md:block 86 (code)
 msgid ""
 "Schema::connection('sqlite')->create('users', function (Blueprint $table) {\n"
 "    $table->id();\n"
 "});\n"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 85 (paragraph)
+#: docs/10.x/migrations.md:block 87 (paragraph)
 msgid "In addition, a few other properties and methods may be used to define other aspects of the table's creation. The `engine` property may be used to specify the table's storage engine when using MySQL:"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 86 (code)
+#: docs/10.x/migrations.md:block 88 (code)
 msgid ""
 "Schema::create('users', function (Blueprint $table) {\n"
 "    $table->engine = 'InnoDB';\n"
@@ -458,11 +466,11 @@ msgid ""
 "});\n"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 87 (paragraph)
+#: docs/10.x/migrations.md:block 89 (paragraph)
 msgid "The `charset` and `collation` properties may be used to specify the character set and collation for the created table when using MySQL:"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 88 (code)
+#: docs/10.x/migrations.md:block 90 (code)
 msgid ""
 "Schema::create('users', function (Blueprint $table) {\n"
 "    $table->charset = 'utf8mb4';\n"
@@ -472,11 +480,11 @@ msgid ""
 "});\n"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 89 (paragraph)
+#: docs/10.x/migrations.md:block 91 (paragraph)
 msgid "The `temporary` method may be used to indicate that the table should be \"temporary\". Temporary tables are only visible to the current connection's database session and are dropped automatically when the connection is closed:"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 90 (code)
+#: docs/10.x/migrations.md:block 92 (code)
 msgid ""
 "Schema::create('calculations', function (Blueprint $table) {\n"
 "    $table->temporary();\n"
@@ -485,11 +493,11 @@ msgid ""
 "});\n"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 91 (paragraph)
+#: docs/10.x/migrations.md:block 93 (paragraph)
 msgid "If you would like to add a \"comment\" to a database table, you may invoke the `comment` method on the table instance. Table comments are currently only supported by MySQL and Postgres:"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 92 (code)
+#: docs/10.x/migrations.md:block 94 (code)
 msgid ""
 "Schema::create('calculations', function (Blueprint $table) {\n"
 "    $table->comment('Business calculations');\n"
@@ -498,15 +506,15 @@ msgid ""
 "});\n"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 94 (header)
+#: docs/10.x/migrations.md:block 96 (header)
 msgid "Updating Tables"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 95 (paragraph)
+#: docs/10.x/migrations.md:block 97 (paragraph)
 msgid "The `table` method on the `Schema` facade may be used to update existing tables. Like the `create` method, the `table` method accepts two arguments: the name of the table and a closure that receives a `Blueprint` instance you may use to add columns or indexes to the table:"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 96 (code)
+#: docs/10.x/migrations.md:block 98 (code)
 msgid ""
 "use Illuminate\\Database\\Schema\\Blueprint;\n"
 "use Illuminate\\Support\\Facades\\Schema;\n"
@@ -516,901 +524,905 @@ msgid ""
 "});\n"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 98 (header)
+#: docs/10.x/migrations.md:block 100 (header)
 msgid "Renaming / Dropping Tables"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 99 (paragraph)
+#: docs/10.x/migrations.md:block 101 (paragraph)
 msgid "To rename an existing database table, use the `rename` method:"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 100 (code)
+#: docs/10.x/migrations.md:block 102 (code)
 msgid ""
 "use Illuminate\\Support\\Facades\\Schema;\n"
 "\n"
 "Schema::rename($from, $to);\n"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 101 (paragraph)
+#: docs/10.x/migrations.md:block 103 (paragraph)
 msgid "To drop an existing table, you may use the `drop` or `dropIfExists` methods:"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 102 (code)
+#: docs/10.x/migrations.md:block 104 (code)
 msgid ""
 "Schema::drop('users');\n"
 "\n"
 "Schema::dropIfExists('users');\n"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 104 (header)
+#: docs/10.x/migrations.md:block 106 (header)
 msgid "Renaming Tables With Foreign Keys"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 105 (paragraph)
+#: docs/10.x/migrations.md:block 107 (paragraph)
 msgid "Before renaming a table, you should verify that any foreign key constraints on the table have an explicit name in your migration files instead of letting Laravel assign a convention based name. Otherwise, the foreign key constraint name will refer to the old table name."
 msgstr ""
 
-#: docs/10.x/migrations.md:block 107 (header)
+#: docs/10.x/migrations.md:block 109 (header)
 msgid "Columns"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 109 (header)
+#: docs/10.x/migrations.md:block 111 (header)
 msgid "Creating Columns"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 110 (paragraph)
+#: docs/10.x/migrations.md:block 112 (paragraph)
 msgid "The `table` method on the `Schema` facade may be used to update existing tables. Like the `create` method, the `table` method accepts two arguments: the name of the table and a closure that receives an `Illuminate\\Database\\Schema\\Blueprint` instance you may use to add columns to the table:"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 113 (header)
+#: docs/10.x/migrations.md:block 115 (header)
 msgid "Available Column Types"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 114 (paragraph)
+#: docs/10.x/migrations.md:block 116 (paragraph)
 msgid "The schema builder blueprint offers a variety of methods that correspond to the different types of columns you can add to your database tables. Each of the available methods are listed in the table below:"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 117 (paragraph)
+#: docs/10.x/migrations.md:block 119 (paragraph)
 msgid "[bigIncrements](#column-method-bigIncrements) [bigInteger](#column-method-bigInteger) [binary](#column-method-binary) [boolean](#column-method-boolean) [char](#column-method-char) [dateTimeTz](#column-method-dateTimeTz) [dateTime](#column-method-dateTime) [date](#column-method-date) [decimal](#column-method-decimal) [double](#column-method-double) [enum](#column-method-enum) [float](#column-method-float) [foreignId](#column-method-foreignId) [foreignIdFor](#column-method-foreignIdFor) [foreignUlid](#column-method-foreignUlid) [foreignUuid](#column-method-foreignUuid) [geometryCollection](#column-method-geometryCollection) [geometry](#column-method-geometry) [id](#column-method-id) [increments](#column-method-increments) [integer](#column-method-integer) [ipAddress](#column-method-ipAddress) [json](#column-method-json) [jsonb](#column-method-jsonb) [lineString](#column-method-lineString) [longText](#column-method-longText) [macAddress](#column-method-macAddress) [mediumIncrements](#column-method-mediumIncrements) [mediumInteger](#column-method-mediumInteger) [mediumText](#column-method-mediumText) [morphs](#column-method-morphs) [multiLineString](#column-method-multiLineString) [multiPoint](#column-method-multiPoint) [multiPolygon](#column-method-multiPolygon) [nullableMorphs](#column-method-nullableMorphs) [nullableTimestamps](#column-method-nullableTimestamps) [nullableUlidMorphs](#column-method-nullableUlidMorphs) [nullableUuidMorphs](#column-method-nullableUuidMorphs) [point](#column-method-point) [polygon](#column-method-polygon) [rememberToken](#column-method-rememberToken) [set](#column-method-set) [smallIncrements](#column-method-smallIncrements) [smallInteger](#column-method-smallInteger) [softDeletesTz](#column-method-softDeletesTz) [softDeletes](#column-method-softDeletes) [string](#column-method-string) [text](#column-method-text) [timeTz](#column-method-timeTz) [time](#column-method-time) [timestampTz](#column-method-timestampTz) [timestamp](#column-method-timestamp) [timestampsTz](#column-method-timestampsTz) [timestamps](#column-method-timestamps) [tinyIncrements](#column-method-tinyIncrements) [tinyInteger](#column-method-tinyInteger) [tinyText](#column-method-tinyText) [unsignedBigInteger](#column-method-unsignedBigInteger) [unsignedDecimal](#column-method-unsignedDecimal) [unsignedInteger](#column-method-unsignedInteger) [unsignedMediumInteger](#column-method-unsignedMediumInteger) [unsignedSmallInteger](#column-method-unsignedSmallInteger) [unsignedTinyInteger](#column-method-unsignedTinyInteger) [ulidMorphs](#column-method-ulidMorphs) [uuidMorphs](#column-method-uuidMorphs) [ulid](#column-method-ulid) [uuid](#column-method-uuid) [year](#column-method-year)"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 120 (header)
+#: docs/10.x/migrations.md:block 122 (header)
 msgid "`bigIncrements()` {.collection-method .first-collection-method}"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 121 (paragraph)
+#: docs/10.x/migrations.md:block 123 (paragraph)
 msgid "The `bigIncrements` method creates an auto-incrementing `UNSIGNED BIGINT` (primary key) equivalent column:"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 122 (code)
+#: docs/10.x/migrations.md:block 124 (code)
 msgid "$table->bigIncrements('id');\n"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 124 (header)
+#: docs/10.x/migrations.md:block 126 (header)
 msgid "`bigInteger()` {.collection-method}"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 125 (paragraph)
+#: docs/10.x/migrations.md:block 127 (paragraph)
 msgid "The `bigInteger` method creates a `BIGINT` equivalent column:"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 126 (code)
+#: docs/10.x/migrations.md:block 128 (code)
 msgid "$table->bigInteger('votes');\n"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 128 (header)
+#: docs/10.x/migrations.md:block 130 (header)
 msgid "`binary()` {.collection-method}"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 129 (paragraph)
+#: docs/10.x/migrations.md:block 131 (paragraph)
 msgid "The `binary` method creates a `BLOB` equivalent column:"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 130 (code)
+#: docs/10.x/migrations.md:block 132 (code)
 msgid "$table->binary('photo');\n"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 132 (header)
+#: docs/10.x/migrations.md:block 134 (header)
 msgid "`boolean()` {.collection-method}"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 133 (paragraph)
+#: docs/10.x/migrations.md:block 135 (paragraph)
 msgid "The `boolean` method creates a `BOOLEAN` equivalent column:"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 134 (code)
+#: docs/10.x/migrations.md:block 136 (code)
 msgid "$table->boolean('confirmed');\n"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 136 (header)
+#: docs/10.x/migrations.md:block 138 (header)
 msgid "`char()` {.collection-method}"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 137 (paragraph)
+#: docs/10.x/migrations.md:block 139 (paragraph)
 msgid "The `char` method creates a `CHAR` equivalent column with of a given length:"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 138 (code)
+#: docs/10.x/migrations.md:block 140 (code)
 msgid "$table->char('name', 100);\n"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 140 (header)
+#: docs/10.x/migrations.md:block 142 (header)
 msgid "`dateTimeTz()` {.collection-method}"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 141 (paragraph)
+#: docs/10.x/migrations.md:block 143 (paragraph)
 msgid "The `dateTimeTz` method creates a `DATETIME` (with timezone) equivalent column with an optional precision (total digits):"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 142 (code)
+#: docs/10.x/migrations.md:block 144 (code)
 msgid "$table->dateTimeTz('created_at', $precision = 0);\n"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 144 (header)
+#: docs/10.x/migrations.md:block 146 (header)
 msgid "`dateTime()` {.collection-method}"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 145 (paragraph)
+#: docs/10.x/migrations.md:block 147 (paragraph)
 msgid "The `dateTime` method creates a `DATETIME` equivalent column with an optional precision (total digits):"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 146 (code)
+#: docs/10.x/migrations.md:block 148 (code)
 msgid "$table->dateTime('created_at', $precision = 0);\n"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 148 (header)
+#: docs/10.x/migrations.md:block 150 (header)
 msgid "`date()` {.collection-method}"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 149 (paragraph)
+#: docs/10.x/migrations.md:block 151 (paragraph)
 msgid "The `date` method creates a `DATE` equivalent column:"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 150 (code)
+#: docs/10.x/migrations.md:block 152 (code)
 msgid "$table->date('created_at');\n"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 152 (header)
+#: docs/10.x/migrations.md:block 154 (header)
 msgid "`decimal()` {.collection-method}"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 153 (paragraph)
+#: docs/10.x/migrations.md:block 155 (paragraph)
 msgid "The `decimal` method creates a `DECIMAL` equivalent column with the given precision (total digits) and scale (decimal digits):"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 154 (code)
+#: docs/10.x/migrations.md:block 156 (code)
 msgid "$table->decimal('amount', $precision = 8, $scale = 2);\n"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 156 (header)
+#: docs/10.x/migrations.md:block 158 (header)
 msgid "`double()` {.collection-method}"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 157 (paragraph)
+#: docs/10.x/migrations.md:block 159 (paragraph)
 msgid "The `double` method creates a `DOUBLE` equivalent column with the given precision (total digits) and scale (decimal digits):"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 158 (code)
+#: docs/10.x/migrations.md:block 160 (code)
 msgid "$table->double('amount', 8, 2);\n"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 160 (header)
+#: docs/10.x/migrations.md:block 162 (header)
 msgid "`enum()` {.collection-method}"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 161 (paragraph)
+#: docs/10.x/migrations.md:block 163 (paragraph)
 msgid "The `enum` method creates a `ENUM` equivalent column with the given valid values:"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 162 (code)
+#: docs/10.x/migrations.md:block 164 (code)
 msgid "$table->enum('difficulty', ['easy', 'hard']);\n"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 164 (header)
+#: docs/10.x/migrations.md:block 166 (header)
 msgid "`float()` {.collection-method}"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 165 (paragraph)
+#: docs/10.x/migrations.md:block 167 (paragraph)
 msgid "The `float` method creates a `FLOAT` equivalent column with the given precision (total digits) and scale (decimal digits):"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 166 (code)
+#: docs/10.x/migrations.md:block 168 (code)
 msgid "$table->float('amount', 8, 2);\n"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 168 (header)
+#: docs/10.x/migrations.md:block 170 (header)
 msgid "`foreignId()` {.collection-method}"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 169 (paragraph)
+#: docs/10.x/migrations.md:block 171 (paragraph)
 msgid "The `foreignId` method creates an `UNSIGNED BIGINT` equivalent column:"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 170 (code)
+#: docs/10.x/migrations.md:block 172 (code)
 msgid "$table->foreignId('user_id');\n"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 172 (header)
+#: docs/10.x/migrations.md:block 174 (header)
 msgid "`foreignIdFor()` {.collection-method}"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 173 (paragraph)
-msgid "The `foreignIdFor` method adds a `{column}_id UNSIGNED BIGINT` equivalent column for a given model class:"
+#: docs/10.x/migrations.md:block 175 (paragraph)
+msgid "The `foreignIdFor` method adds a `{column}_id` equivalent column for a given model class. The column type will be `UNSIGNED BIGINT`, `CHAR(36)`, or `CHAR(26)` depending on the model key type:"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 174 (code)
+#: docs/10.x/migrations.md:block 176 (code)
 msgid "$table->foreignIdFor(User::class);\n"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 176 (header)
+#: docs/10.x/migrations.md:block 178 (header)
 msgid "`foreignUlid()` {.collection-method}"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 177 (paragraph)
+#: docs/10.x/migrations.md:block 179 (paragraph)
 msgid "The `foreignUlid` method creates a `ULID` equivalent column:"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 178 (code)
+#: docs/10.x/migrations.md:block 180 (code)
 msgid "$table->foreignUlid('user_id');\n"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 180 (header)
+#: docs/10.x/migrations.md:block 182 (header)
 msgid "`foreignUuid()` {.collection-method}"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 181 (paragraph)
+#: docs/10.x/migrations.md:block 183 (paragraph)
 msgid "The `foreignUuid` method creates a `UUID` equivalent column:"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 182 (code)
+#: docs/10.x/migrations.md:block 184 (code)
 msgid "$table->foreignUuid('user_id');\n"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 184 (header)
+#: docs/10.x/migrations.md:block 186 (header)
 msgid "`geometryCollection()` {.collection-method}"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 185 (paragraph)
+#: docs/10.x/migrations.md:block 187 (paragraph)
 msgid "The `geometryCollection` method creates a `GEOMETRYCOLLECTION` equivalent column:"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 186 (code)
+#: docs/10.x/migrations.md:block 188 (code)
 msgid "$table->geometryCollection('positions');\n"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 188 (header)
+#: docs/10.x/migrations.md:block 190 (header)
 msgid "`geometry()` {.collection-method}"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 189 (paragraph)
+#: docs/10.x/migrations.md:block 191 (paragraph)
 msgid "The `geometry` method creates a `GEOMETRY` equivalent column:"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 190 (code)
+#: docs/10.x/migrations.md:block 192 (code)
 msgid "$table->geometry('positions');\n"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 192 (header)
+#: docs/10.x/migrations.md:block 194 (header)
 msgid "`id()` {.collection-method}"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 193 (paragraph)
+#: docs/10.x/migrations.md:block 195 (paragraph)
 msgid "The `id` method is an alias of the `bigIncrements` method. By default, the method will create an `id` column; however, you may pass a column name if you would like to assign a different name to the column:"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 194 (code)
+#: docs/10.x/migrations.md:block 196 (code)
 msgid "$table->id();\n"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 196 (header)
+#: docs/10.x/migrations.md:block 198 (header)
 msgid "`increments()` {.collection-method}"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 197 (paragraph)
+#: docs/10.x/migrations.md:block 199 (paragraph)
 msgid "The `increments` method creates an auto-incrementing `UNSIGNED INTEGER` equivalent column as a primary key:"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 198 (code)
+#: docs/10.x/migrations.md:block 200 (code)
 msgid "$table->increments('id');\n"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 200 (header)
+#: docs/10.x/migrations.md:block 202 (header)
 msgid "`integer()` {.collection-method}"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 201 (paragraph)
+#: docs/10.x/migrations.md:block 203 (paragraph)
 msgid "The `integer` method creates an `INTEGER` equivalent column:"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 202 (code)
+#: docs/10.x/migrations.md:block 204 (code)
 msgid "$table->integer('votes');\n"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 204 (header)
+#: docs/10.x/migrations.md:block 206 (header)
 msgid "`ipAddress()` {.collection-method}"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 205 (paragraph)
+#: docs/10.x/migrations.md:block 207 (paragraph)
 msgid "The `ipAddress` method creates a `VARCHAR` equivalent column:"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 206 (code)
+#: docs/10.x/migrations.md:block 208 (code)
 msgid "$table->ipAddress('visitor');\n"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 208 (header)
+#: docs/10.x/migrations.md:block 209 (paragraph)
+msgid "When using Postgres, an `INET` column will be created."
+msgstr ""
+
+#: docs/10.x/migrations.md:block 211 (header)
 msgid "`json()` {.collection-method}"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 209 (paragraph)
+#: docs/10.x/migrations.md:block 212 (paragraph)
 msgid "The `json` method creates a `JSON` equivalent column:"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 210 (code)
+#: docs/10.x/migrations.md:block 213 (code)
 msgid "$table->json('options');\n"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 212 (header)
+#: docs/10.x/migrations.md:block 215 (header)
 msgid "`jsonb()` {.collection-method}"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 213 (paragraph)
+#: docs/10.x/migrations.md:block 216 (paragraph)
 msgid "The `jsonb` method creates a `JSONB` equivalent column:"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 214 (code)
+#: docs/10.x/migrations.md:block 217 (code)
 msgid "$table->jsonb('options');\n"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 216 (header)
+#: docs/10.x/migrations.md:block 219 (header)
 msgid "`lineString()` {.collection-method}"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 217 (paragraph)
+#: docs/10.x/migrations.md:block 220 (paragraph)
 msgid "The `lineString` method creates a `LINESTRING` equivalent column:"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 218 (code)
+#: docs/10.x/migrations.md:block 221 (code)
 msgid "$table->lineString('positions');\n"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 220 (header)
+#: docs/10.x/migrations.md:block 223 (header)
 msgid "`longText()` {.collection-method}"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 221 (paragraph)
+#: docs/10.x/migrations.md:block 224 (paragraph)
 msgid "The `longText` method creates a `LONGTEXT` equivalent column:"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 222 (code)
+#: docs/10.x/migrations.md:block 225 (code)
 msgid "$table->longText('description');\n"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 224 (header)
+#: docs/10.x/migrations.md:block 227 (header)
 msgid "`macAddress()` {.collection-method}"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 225 (paragraph)
+#: docs/10.x/migrations.md:block 228 (paragraph)
 msgid "The `macAddress` method creates a column that is intended to hold a MAC address. Some database systems, such as PostgreSQL, have a dedicated column type for this type of data. Other database systems will use a string equivalent column:"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 226 (code)
+#: docs/10.x/migrations.md:block 229 (code)
 msgid "$table->macAddress('device');\n"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 228 (header)
+#: docs/10.x/migrations.md:block 231 (header)
 msgid "`mediumIncrements()` {.collection-method}"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 229 (paragraph)
+#: docs/10.x/migrations.md:block 232 (paragraph)
 msgid "The `mediumIncrements` method creates an auto-incrementing `UNSIGNED MEDIUMINT` equivalent column as a primary key:"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 230 (code)
+#: docs/10.x/migrations.md:block 233 (code)
 msgid "$table->mediumIncrements('id');\n"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 232 (header)
+#: docs/10.x/migrations.md:block 235 (header)
 msgid "`mediumInteger()` {.collection-method}"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 233 (paragraph)
+#: docs/10.x/migrations.md:block 236 (paragraph)
 msgid "The `mediumInteger` method creates a `MEDIUMINT` equivalent column:"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 234 (code)
+#: docs/10.x/migrations.md:block 237 (code)
 msgid "$table->mediumInteger('votes');\n"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 236 (header)
+#: docs/10.x/migrations.md:block 239 (header)
 msgid "`mediumText()` {.collection-method}"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 237 (paragraph)
+#: docs/10.x/migrations.md:block 240 (paragraph)
 msgid "The `mediumText` method creates a `MEDIUMTEXT` equivalent column:"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 238 (code)
+#: docs/10.x/migrations.md:block 241 (code)
 msgid "$table->mediumText('description');\n"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 240 (header)
+#: docs/10.x/migrations.md:block 243 (header)
 msgid "`morphs()` {.collection-method}"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 241 (paragraph)
-msgid "The `morphs` method is a convenience method that adds a `{column}_id` `UNSIGNED BIGINT` equivalent column and a `{column}_type` `VARCHAR` equivalent column."
+#: docs/10.x/migrations.md:block 244 (paragraph)
+msgid "The `morphs` method is a convenience method that adds a `{column}_id` equivalent column and a `{column}_type` `VARCHAR` equivalent column. The column type for the `{column}_id` will be `UNSIGNED BIGINT`, `CHAR(36)`, or `CHAR(26)` depending on the model key type."
 msgstr ""
 
-#: docs/10.x/migrations.md:block 242 (paragraph)
+#: docs/10.x/migrations.md:block 245 (paragraph)
 msgid "This method is intended to be used when defining the columns necessary for a polymorphic [Eloquent relationship](/docs/{{version}}/eloquent-relationships). In the following example, `taggable_id` and `taggable_type` columns would be created:"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 243 (code)
+#: docs/10.x/migrations.md:block 246 (code)
 msgid "$table->morphs('taggable');\n"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 245 (header)
+#: docs/10.x/migrations.md:block 248 (header)
 msgid "`multiLineString()` {.collection-method}"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 246 (paragraph)
+#: docs/10.x/migrations.md:block 249 (paragraph)
 msgid "The `multiLineString` method creates a `MULTILINESTRING` equivalent column:"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 247 (code)
+#: docs/10.x/migrations.md:block 250 (code)
 msgid "$table->multiLineString('positions');\n"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 249 (header)
+#: docs/10.x/migrations.md:block 252 (header)
 msgid "`multiPoint()` {.collection-method}"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 250 (paragraph)
+#: docs/10.x/migrations.md:block 253 (paragraph)
 msgid "The `multiPoint` method creates a `MULTIPOINT` equivalent column:"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 251 (code)
+#: docs/10.x/migrations.md:block 254 (code)
 msgid "$table->multiPoint('positions');\n"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 253 (header)
+#: docs/10.x/migrations.md:block 256 (header)
 msgid "`multiPolygon()` {.collection-method}"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 254 (paragraph)
+#: docs/10.x/migrations.md:block 257 (paragraph)
 msgid "The `multiPolygon` method creates a `MULTIPOLYGON` equivalent column:"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 255 (code)
+#: docs/10.x/migrations.md:block 258 (code)
 msgid "$table->multiPolygon('positions');\n"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 257 (header)
+#: docs/10.x/migrations.md:block 260 (header)
 msgid "`nullableTimestamps()` {.collection-method}"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 258 (paragraph)
+#: docs/10.x/migrations.md:block 261 (paragraph)
 msgid "The `nullableTimestamps` method is an alias of the [timestamps](#column-method-timestamps) method:"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 259 (code)
+#: docs/10.x/migrations.md:block 262 (code)
 msgid "$table->nullableTimestamps(0);\n"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 261 (header)
+#: docs/10.x/migrations.md:block 264 (header)
 msgid "`nullableMorphs()` {.collection-method}"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 262 (paragraph)
+#: docs/10.x/migrations.md:block 265 (paragraph)
 msgid "The method is similar to the [morphs](#column-method-morphs) method; however, the columns that are created will be \"nullable\":"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 263 (code)
+#: docs/10.x/migrations.md:block 266 (code)
 msgid "$table->nullableMorphs('taggable');\n"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 265 (header)
+#: docs/10.x/migrations.md:block 268 (header)
 msgid "`nullableUlidMorphs()` {.collection-method}"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 266 (paragraph)
+#: docs/10.x/migrations.md:block 269 (paragraph)
 msgid "The method is similar to the [ulidMorphs](#column-method-ulidMorphs) method; however, the columns that are created will be \"nullable\":"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 267 (code)
+#: docs/10.x/migrations.md:block 270 (code)
 msgid "$table->nullableUlidMorphs('taggable');\n"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 269 (header)
+#: docs/10.x/migrations.md:block 272 (header)
 msgid "`nullableUuidMorphs()` {.collection-method}"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 270 (paragraph)
+#: docs/10.x/migrations.md:block 273 (paragraph)
 msgid "The method is similar to the [uuidMorphs](#column-method-uuidMorphs) method; however, the columns that are created will be \"nullable\":"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 271 (code)
+#: docs/10.x/migrations.md:block 274 (code)
 msgid "$table->nullableUuidMorphs('taggable');\n"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 273 (header)
+#: docs/10.x/migrations.md:block 276 (header)
 msgid "`point()` {.collection-method}"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 274 (paragraph)
+#: docs/10.x/migrations.md:block 277 (paragraph)
 msgid "The `point` method creates a `POINT` equivalent column:"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 275 (code)
+#: docs/10.x/migrations.md:block 278 (code)
 msgid "$table->point('position');\n"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 277 (header)
+#: docs/10.x/migrations.md:block 280 (header)
 msgid "`polygon()` {.collection-method}"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 278 (paragraph)
+#: docs/10.x/migrations.md:block 281 (paragraph)
 msgid "The `polygon` method creates a `POLYGON` equivalent column:"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 279 (code)
+#: docs/10.x/migrations.md:block 282 (code)
 msgid "$table->polygon('position');\n"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 281 (header)
+#: docs/10.x/migrations.md:block 284 (header)
 msgid "`rememberToken()` {.collection-method}"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 282 (paragraph)
+#: docs/10.x/migrations.md:block 285 (paragraph)
 msgid "The `rememberToken` method creates a nullable, `VARCHAR(100)` equivalent column that is intended to store the current \"remember me\" [authentication token](/docs/{{version}}/authentication#remembering-users):"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 283 (code)
+#: docs/10.x/migrations.md:block 286 (code)
 msgid "$table->rememberToken();\n"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 285 (header)
+#: docs/10.x/migrations.md:block 288 (header)
 msgid "`set()` {.collection-method}"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 286 (paragraph)
+#: docs/10.x/migrations.md:block 289 (paragraph)
 msgid "The `set` method creates a `SET` equivalent column with the given list of valid values:"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 287 (code)
+#: docs/10.x/migrations.md:block 290 (code)
 msgid "$table->set('flavors', ['strawberry', 'vanilla']);\n"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 289 (header)
+#: docs/10.x/migrations.md:block 292 (header)
 msgid "`smallIncrements()` {.collection-method}"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 290 (paragraph)
+#: docs/10.x/migrations.md:block 293 (paragraph)
 msgid "The `smallIncrements` method creates an auto-incrementing `UNSIGNED SMALLINT` equivalent column as a primary key:"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 291 (code)
+#: docs/10.x/migrations.md:block 294 (code)
 msgid "$table->smallIncrements('id');\n"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 293 (header)
+#: docs/10.x/migrations.md:block 296 (header)
 msgid "`smallInteger()` {.collection-method}"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 294 (paragraph)
+#: docs/10.x/migrations.md:block 297 (paragraph)
 msgid "The `smallInteger` method creates a `SMALLINT` equivalent column:"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 295 (code)
+#: docs/10.x/migrations.md:block 298 (code)
 msgid "$table->smallInteger('votes');\n"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 297 (header)
+#: docs/10.x/migrations.md:block 300 (header)
 msgid "`softDeletesTz()` {.collection-method}"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 298 (paragraph)
+#: docs/10.x/migrations.md:block 301 (paragraph)
 msgid "The `softDeletesTz` method adds a nullable `deleted_at` `TIMESTAMP` (with timezone) equivalent column with an optional precision (total digits). This column is intended to store the `deleted_at` timestamp needed for Eloquent's \"soft delete\" functionality:"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 299 (code)
+#: docs/10.x/migrations.md:block 302 (code)
 msgid "$table->softDeletesTz($column = 'deleted_at', $precision = 0);\n"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 301 (header)
+#: docs/10.x/migrations.md:block 304 (header)
 msgid "`softDeletes()` {.collection-method}"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 302 (paragraph)
+#: docs/10.x/migrations.md:block 305 (paragraph)
 msgid "The `softDeletes` method adds a nullable `deleted_at` `TIMESTAMP` equivalent column with an optional precision (total digits). This column is intended to store the `deleted_at` timestamp needed for Eloquent's \"soft delete\" functionality:"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 303 (code)
+#: docs/10.x/migrations.md:block 306 (code)
 msgid "$table->softDeletes($column = 'deleted_at', $precision = 0);\n"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 305 (header)
+#: docs/10.x/migrations.md:block 308 (header)
 msgid "`string()` {.collection-method}"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 306 (paragraph)
+#: docs/10.x/migrations.md:block 309 (paragraph)
 msgid "The `string` method creates a `VARCHAR` equivalent column of the given length:"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 307 (code)
+#: docs/10.x/migrations.md:block 310 (code)
 msgid "$table->string('name', 100);\n"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 309 (header)
+#: docs/10.x/migrations.md:block 312 (header)
 msgid "`text()` {.collection-method}"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 310 (paragraph)
+#: docs/10.x/migrations.md:block 313 (paragraph)
 msgid "The `text` method creates a `TEXT` equivalent column:"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 311 (code)
+#: docs/10.x/migrations.md:block 314 (code)
 msgid "$table->text('description');\n"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 313 (header)
+#: docs/10.x/migrations.md:block 316 (header)
 msgid "`timeTz()` {.collection-method}"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 314 (paragraph)
+#: docs/10.x/migrations.md:block 317 (paragraph)
 msgid "The `timeTz` method creates a `TIME` (with timezone) equivalent column with an optional precision (total digits):"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 315 (code)
+#: docs/10.x/migrations.md:block 318 (code)
 msgid "$table->timeTz('sunrise', $precision = 0);\n"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 317 (header)
+#: docs/10.x/migrations.md:block 320 (header)
 msgid "`time()` {.collection-method}"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 318 (paragraph)
+#: docs/10.x/migrations.md:block 321 (paragraph)
 msgid "The `time` method creates a `TIME` equivalent column with an optional precision (total digits):"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 319 (code)
+#: docs/10.x/migrations.md:block 322 (code)
 msgid "$table->time('sunrise', $precision = 0);\n"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 321 (header)
+#: docs/10.x/migrations.md:block 324 (header)
 msgid "`timestampTz()` {.collection-method}"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 322 (paragraph)
+#: docs/10.x/migrations.md:block 325 (paragraph)
 msgid "The `timestampTz` method creates a `TIMESTAMP` (with timezone) equivalent column with an optional precision (total digits):"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 323 (code)
+#: docs/10.x/migrations.md:block 326 (code)
 msgid "$table->timestampTz('added_at', $precision = 0);\n"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 325 (header)
+#: docs/10.x/migrations.md:block 328 (header)
 msgid "`timestamp()` {.collection-method}"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 326 (paragraph)
+#: docs/10.x/migrations.md:block 329 (paragraph)
 msgid "The `timestamp` method creates a `TIMESTAMP` equivalent column with an optional precision (total digits):"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 327 (code)
+#: docs/10.x/migrations.md:block 330 (code)
 msgid "$table->timestamp('added_at', $precision = 0);\n"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 329 (header)
+#: docs/10.x/migrations.md:block 332 (header)
 msgid "`timestampsTz()` {.collection-method}"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 330 (paragraph)
+#: docs/10.x/migrations.md:block 333 (paragraph)
 msgid "The `timestampsTz` method creates `created_at` and `updated_at` `TIMESTAMP` (with timezone) equivalent columns with an optional precision (total digits):"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 331 (code)
+#: docs/10.x/migrations.md:block 334 (code)
 msgid "$table->timestampsTz($precision = 0);\n"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 333 (header)
+#: docs/10.x/migrations.md:block 336 (header)
 msgid "`timestamps()` {.collection-method}"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 334 (paragraph)
+#: docs/10.x/migrations.md:block 337 (paragraph)
 msgid "The `timestamps` method creates `created_at` and `updated_at` `TIMESTAMP` equivalent columns with an optional precision (total digits):"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 335 (code)
+#: docs/10.x/migrations.md:block 338 (code)
 msgid "$table->timestamps($precision = 0);\n"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 337 (header)
+#: docs/10.x/migrations.md:block 340 (header)
 msgid "`tinyIncrements()` {.collection-method}"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 338 (paragraph)
+#: docs/10.x/migrations.md:block 341 (paragraph)
 msgid "The `tinyIncrements` method creates an auto-incrementing `UNSIGNED TINYINT` equivalent column as a primary key:"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 339 (code)
+#: docs/10.x/migrations.md:block 342 (code)
 msgid "$table->tinyIncrements('id');\n"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 341 (header)
+#: docs/10.x/migrations.md:block 344 (header)
 msgid "`tinyInteger()` {.collection-method}"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 342 (paragraph)
+#: docs/10.x/migrations.md:block 345 (paragraph)
 msgid "The `tinyInteger` method creates a `TINYINT` equivalent column:"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 343 (code)
+#: docs/10.x/migrations.md:block 346 (code)
 msgid "$table->tinyInteger('votes');\n"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 345 (header)
+#: docs/10.x/migrations.md:block 348 (header)
 msgid "`tinyText()` {.collection-method}"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 346 (paragraph)
+#: docs/10.x/migrations.md:block 349 (paragraph)
 msgid "The `tinyText` method creates a `TINYTEXT` equivalent column:"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 347 (code)
+#: docs/10.x/migrations.md:block 350 (code)
 msgid "$table->tinyText('notes');\n"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 349 (header)
+#: docs/10.x/migrations.md:block 352 (header)
 msgid "`unsignedBigInteger()` {.collection-method}"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 350 (paragraph)
+#: docs/10.x/migrations.md:block 353 (paragraph)
 msgid "The `unsignedBigInteger` method creates an `UNSIGNED BIGINT` equivalent column:"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 351 (code)
+#: docs/10.x/migrations.md:block 354 (code)
 msgid "$table->unsignedBigInteger('votes');\n"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 353 (header)
+#: docs/10.x/migrations.md:block 356 (header)
 msgid "`unsignedDecimal()` {.collection-method}"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 354 (paragraph)
+#: docs/10.x/migrations.md:block 357 (paragraph)
 msgid "The `unsignedDecimal` method creates an `UNSIGNED DECIMAL` equivalent column with an optional precision (total digits) and scale (decimal digits):"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 355 (code)
+#: docs/10.x/migrations.md:block 358 (code)
 msgid "$table->unsignedDecimal('amount', $precision = 8, $scale = 2);\n"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 357 (header)
+#: docs/10.x/migrations.md:block 360 (header)
 msgid "`unsignedInteger()` {.collection-method}"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 358 (paragraph)
+#: docs/10.x/migrations.md:block 361 (paragraph)
 msgid "The `unsignedInteger` method creates an `UNSIGNED INTEGER` equivalent column:"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 359 (code)
+#: docs/10.x/migrations.md:block 362 (code)
 msgid "$table->unsignedInteger('votes');\n"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 361 (header)
+#: docs/10.x/migrations.md:block 364 (header)
 msgid "`unsignedMediumInteger()` {.collection-method}"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 362 (paragraph)
+#: docs/10.x/migrations.md:block 365 (paragraph)
 msgid "The `unsignedMediumInteger` method creates an `UNSIGNED MEDIUMINT` equivalent column:"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 363 (code)
+#: docs/10.x/migrations.md:block 366 (code)
 msgid "$table->unsignedMediumInteger('votes');\n"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 365 (header)
+#: docs/10.x/migrations.md:block 368 (header)
 msgid "`unsignedSmallInteger()` {.collection-method}"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 366 (paragraph)
+#: docs/10.x/migrations.md:block 369 (paragraph)
 msgid "The `unsignedSmallInteger` method creates an `UNSIGNED SMALLINT` equivalent column:"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 367 (code)
+#: docs/10.x/migrations.md:block 370 (code)
 msgid "$table->unsignedSmallInteger('votes');\n"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 369 (header)
+#: docs/10.x/migrations.md:block 372 (header)
 msgid "`unsignedTinyInteger()` {.collection-method}"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 370 (paragraph)
+#: docs/10.x/migrations.md:block 373 (paragraph)
 msgid "The `unsignedTinyInteger` method creates an `UNSIGNED TINYINT` equivalent column:"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 371 (code)
+#: docs/10.x/migrations.md:block 374 (code)
 msgid "$table->unsignedTinyInteger('votes');\n"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 373 (header)
+#: docs/10.x/migrations.md:block 376 (header)
 msgid "`ulidMorphs()` {.collection-method}"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 374 (paragraph)
+#: docs/10.x/migrations.md:block 377 (paragraph)
 msgid "The `ulidMorphs` method is a convenience method that adds a `{column}_id` `CHAR(26)` equivalent column and a `{column}_type` `VARCHAR` equivalent column."
 msgstr ""
 
-#: docs/10.x/migrations.md:block 375 (paragraph)
+#: docs/10.x/migrations.md:block 378 (paragraph)
 msgid "This method is intended to be used when defining the columns necessary for a polymorphic [Eloquent relationship](/docs/{{version}}/eloquent-relationships) that use ULID identifiers. In the following example, `taggable_id` and `taggable_type` columns would be created:"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 376 (code)
+#: docs/10.x/migrations.md:block 379 (code)
 msgid "$table->ulidMorphs('taggable');\n"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 378 (header)
+#: docs/10.x/migrations.md:block 381 (header)
 msgid "`uuidMorphs()` {.collection-method}"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 379 (paragraph)
+#: docs/10.x/migrations.md:block 382 (paragraph)
 msgid "The `uuidMorphs` method is a convenience method that adds a `{column}_id` `CHAR(36)` equivalent column and a `{column}_type` `VARCHAR` equivalent column."
 msgstr ""
 
-#: docs/10.x/migrations.md:block 380 (paragraph)
+#: docs/10.x/migrations.md:block 383 (paragraph)
 msgid "This method is intended to be used when defining the columns necessary for a polymorphic [Eloquent relationship](/docs/{{version}}/eloquent-relationships) that use UUID identifiers. In the following example, `taggable_id` and `taggable_type` columns would be created:"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 381 (code)
+#: docs/10.x/migrations.md:block 384 (code)
 msgid "$table->uuidMorphs('taggable');\n"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 383 (header)
+#: docs/10.x/migrations.md:block 386 (header)
 msgid "`ulid()` {.collection-method}"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 384 (paragraph)
+#: docs/10.x/migrations.md:block 387 (paragraph)
 msgid "The `ulid` method creates a `ULID` equivalent column:"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 385 (code)
+#: docs/10.x/migrations.md:block 388 (code)
 msgid "$table->ulid('id');\n"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 387 (header)
+#: docs/10.x/migrations.md:block 390 (header)
 msgid "`uuid()` {.collection-method}"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 388 (paragraph)
+#: docs/10.x/migrations.md:block 391 (paragraph)
 msgid "The `uuid` method creates a `UUID` equivalent column:"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 389 (code)
+#: docs/10.x/migrations.md:block 392 (code)
 msgid "$table->uuid('id');\n"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 391 (header)
+#: docs/10.x/migrations.md:block 394 (header)
 msgid "`year()` {.collection-method}"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 392 (paragraph)
+#: docs/10.x/migrations.md:block 395 (paragraph)
 msgid "The `year` method creates a `YEAR` equivalent column:"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 393 (code)
+#: docs/10.x/migrations.md:block 396 (code)
 msgid "$table->year('birth_year');\n"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 395 (header)
+#: docs/10.x/migrations.md:block 398 (header)
 msgid "Column Modifiers"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 396 (paragraph)
+#: docs/10.x/migrations.md:block 399 (paragraph)
 msgid "In addition to the column types listed above, there are several column \"modifiers\" you may use when adding a column to a database table. For example, to make the column \"nullable\", you may use the `nullable` method:"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 397 (code)
+#: docs/10.x/migrations.md:block 400 (code)
 msgid ""
 "use Illuminate\\Database\\Schema\\Blueprint;\n"
 "use Illuminate\\Support\\Facades\\Schema;\n"
@@ -1420,171 +1432,171 @@ msgid ""
 "});\n"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 398 (paragraph)
+#: docs/10.x/migrations.md:block 401 (paragraph)
 msgid "The following table contains all of the available column modifiers. This list does not include [index modifiers](#creating-indexes):"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 399 (table)
+#: docs/10.x/migrations.md:block 402 (table)
 msgid "Modifier"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 399 (table)
+#: docs/10.x/migrations.md:block 402 (table)
 msgid "Description"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 399 (table)
+#: docs/10.x/migrations.md:block 402 (table)
 msgid "`->after('column')`"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 399 (table)
+#: docs/10.x/migrations.md:block 402 (table)
 msgid "Place the column \"after\" another column (MySQL)."
 msgstr ""
 
-#: docs/10.x/migrations.md:block 399 (table)
+#: docs/10.x/migrations.md:block 402 (table)
 msgid "`->autoIncrement()`"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 399 (table)
+#: docs/10.x/migrations.md:block 402 (table)
 msgid "Set INTEGER columns as auto-incrementing (primary key)."
 msgstr ""
 
-#: docs/10.x/migrations.md:block 399 (table)
+#: docs/10.x/migrations.md:block 402 (table)
 msgid "`->charset('utf8mb4')`"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 399 (table)
+#: docs/10.x/migrations.md:block 402 (table)
 msgid "Specify a character set for the column (MySQL)."
 msgstr ""
 
-#: docs/10.x/migrations.md:block 399 (table)
+#: docs/10.x/migrations.md:block 402 (table)
 msgid "`->collation('utf8mb4_unicode_ci')`"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 399 (table)
+#: docs/10.x/migrations.md:block 402 (table)
 msgid "Specify a collation for the column (MySQL/PostgreSQL/SQL Server)."
 msgstr ""
 
-#: docs/10.x/migrations.md:block 399 (table)
+#: docs/10.x/migrations.md:block 402 (table)
 msgid "`->comment('my comment')`"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 399 (table)
+#: docs/10.x/migrations.md:block 402 (table)
 msgid "Add a comment to a column (MySQL/PostgreSQL)."
 msgstr ""
 
-#: docs/10.x/migrations.md:block 399 (table)
+#: docs/10.x/migrations.md:block 402 (table)
 msgid "`->default($value)`"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 399 (table)
+#: docs/10.x/migrations.md:block 402 (table)
 msgid "Specify a \"default\" value for the column."
 msgstr ""
 
-#: docs/10.x/migrations.md:block 399 (table)
+#: docs/10.x/migrations.md:block 402 (table)
 msgid "`->first()`"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 399 (table)
+#: docs/10.x/migrations.md:block 402 (table)
 msgid "Place the column \"first\" in the table (MySQL)."
 msgstr ""
 
-#: docs/10.x/migrations.md:block 399 (table)
+#: docs/10.x/migrations.md:block 402 (table)
 msgid "`->from($integer)`"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 399 (table)
+#: docs/10.x/migrations.md:block 402 (table)
 msgid "Set the starting value of an auto-incrementing field (MySQL / PostgreSQL)."
 msgstr ""
 
-#: docs/10.x/migrations.md:block 399 (table)
+#: docs/10.x/migrations.md:block 402 (table)
 msgid "`->invisible()`"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 399 (table)
+#: docs/10.x/migrations.md:block 402 (table)
 msgid "Make the column \"invisible\" to `SELECT *` queries (MySQL)."
 msgstr ""
 
-#: docs/10.x/migrations.md:block 399 (table)
+#: docs/10.x/migrations.md:block 402 (table)
 msgid "`->nullable($value = true)`"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 399 (table)
+#: docs/10.x/migrations.md:block 402 (table)
 msgid "Allow NULL values to be inserted into the column."
 msgstr ""
 
-#: docs/10.x/migrations.md:block 399 (table)
+#: docs/10.x/migrations.md:block 402 (table)
 msgid "`->storedAs($expression)`"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 399 (table)
+#: docs/10.x/migrations.md:block 402 (table)
 msgid "Create a stored generated column (MySQL / PostgreSQL)."
 msgstr ""
 
-#: docs/10.x/migrations.md:block 399 (table)
+#: docs/10.x/migrations.md:block 402 (table)
 msgid "`->unsigned()`"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 399 (table)
+#: docs/10.x/migrations.md:block 402 (table)
 msgid "Set INTEGER columns as UNSIGNED (MySQL)."
 msgstr ""
 
-#: docs/10.x/migrations.md:block 399 (table)
+#: docs/10.x/migrations.md:block 402 (table)
 msgid "`->useCurrent()`"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 399 (table)
+#: docs/10.x/migrations.md:block 402 (table)
 msgid "Set TIMESTAMP columns to use CURRENT_TIMESTAMP as default value."
 msgstr ""
 
-#: docs/10.x/migrations.md:block 399 (table)
+#: docs/10.x/migrations.md:block 402 (table)
 msgid "`->useCurrentOnUpdate()`"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 399 (table)
-msgid "Set TIMESTAMP columns to use CURRENT_TIMESTAMP when a record is updated."
+#: docs/10.x/migrations.md:block 402 (table)
+msgid "Set TIMESTAMP columns to use CURRENT_TIMESTAMP when a record is updated (MySQL)."
 msgstr ""
 
-#: docs/10.x/migrations.md:block 399 (table)
+#: docs/10.x/migrations.md:block 402 (table)
 msgid "`->virtualAs($expression)`"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 399 (table)
-msgid "Create a virtual generated column (MySQL)."
+#: docs/10.x/migrations.md:block 402 (table)
+msgid "Create a virtual generated column (MySQL / PostgreSQL / SQLite)."
 msgstr ""
 
-#: docs/10.x/migrations.md:block 399 (table)
+#: docs/10.x/migrations.md:block 402 (table)
 msgid "`->generatedAs($expression)`"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 399 (table)
+#: docs/10.x/migrations.md:block 402 (table)
 msgid "Create an identity column with specified sequence options (PostgreSQL)."
 msgstr ""
 
-#: docs/10.x/migrations.md:block 399 (table)
+#: docs/10.x/migrations.md:block 402 (table)
 msgid "`->always()`"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 399 (table)
+#: docs/10.x/migrations.md:block 402 (table)
 msgid "Defines the precedence of sequence values over input for an identity column (PostgreSQL)."
 msgstr ""
 
-#: docs/10.x/migrations.md:block 399 (table)
+#: docs/10.x/migrations.md:block 402 (table)
 msgid "`->isGeometry()`"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 399 (table)
+#: docs/10.x/migrations.md:block 402 (table)
 msgid "Set spatial column type to `geometry` - the default type is `geography` (PostgreSQL)."
 msgstr ""
 
-#: docs/10.x/migrations.md:block 401 (header)
+#: docs/10.x/migrations.md:block 404 (header)
 msgid "Default Expressions"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 402 (paragraph)
+#: docs/10.x/migrations.md:block 405 (paragraph)
 msgid "The `default` modifier accepts a value or an `Illuminate\\Database\\Query\\Expression` instance. Using an `Expression` instance will prevent Laravel from wrapping the value in quotes and allow you to use database specific functions. One situation where this is particularly useful is when you need to assign default values to JSON columns:"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 403 (code)
+#: docs/10.x/migrations.md:block 406 (code)
 msgid ""
 "<?php\n"
 "\n"
@@ -1609,19 +1621,19 @@ msgid ""
 "};\n"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 404 (quote)
+#: docs/10.x/migrations.md:block 407 (quote)
 msgid "**Warning** Support for default expressions depends on your database driver, database version, and the field type. Please refer to your database's documentation."
 msgstr ""
 
-#: docs/10.x/migrations.md:block 406 (header)
+#: docs/10.x/migrations.md:block 409 (header)
 msgid "Column Order"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 407 (paragraph)
+#: docs/10.x/migrations.md:block 410 (paragraph)
 msgid "When using the MySQL database, the `after` method may be used to add columns after an existing column in the schema:"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 408 (code)
+#: docs/10.x/migrations.md:block 411 (code)
 msgid ""
 "$table->after('password', function (Blueprint $table) {\n"
 "    $table->string('address_line1');\n"
@@ -1630,49 +1642,49 @@ msgid ""
 "});\n"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 410 (header)
+#: docs/10.x/migrations.md:block 413 (header)
 msgid "Modifying Columns"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 411 (paragraph)
+#: docs/10.x/migrations.md:block 414 (paragraph)
 msgid "The `change` method allows you to modify the type and attributes of existing columns. For example, you may wish to increase the size of a `string` column. To see the `change` method in action, let's increase the size of the `name` column from 25 to 50. To accomplish this, we simply define the new state of the column and then call the `change` method:"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 412 (code)
+#: docs/10.x/migrations.md:block 415 (code)
 msgid ""
 "Schema::table('users', function (Blueprint $table) {\n"
 "    $table->string('name', 50)->change();\n"
 "});\n"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 413 (paragraph)
+#: docs/10.x/migrations.md:block 416 (paragraph)
 msgid "When modifying a column, you must explicitly include all of the modifiers you want to keep on the column definition - any missing attribute will be dropped. For example, to retain the `unsigned`, `default`, and `comment` attributes, you must call each modifier explicitly when changing the column:"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 414 (code)
+#: docs/10.x/migrations.md:block 417 (code)
 msgid ""
 "Schema::table('users', function (Blueprint $table) {\n"
 "    $table->integer('votes')->unsigned()->default(1)->comment('my comment')->change();\n"
 "});\n"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 416 (header)
+#: docs/10.x/migrations.md:block 419 (header)
 msgid "Modifying Columns On SQLite"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 417 (paragraph)
+#: docs/10.x/migrations.md:block 420 (paragraph)
 msgid "If your application is utilizing an SQLite database, you must install the `doctrine/dbal` package using the Composer package manager before modifying a column. The Doctrine DBAL library is used to determine the current state of the column and to create the SQL queries needed to make the requested changes to your column:"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 418 (code)
+#: docs/10.x/migrations.md:block 421 (code)
 msgid "composer require doctrine/dbal\n"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 419 (paragraph)
+#: docs/10.x/migrations.md:block 422 (paragraph)
 msgid "If you plan to modify columns created using the `timestamp` method, you must also add the following configuration to your application's `config/database.php` configuration file:"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 420 (code)
+#: docs/10.x/migrations.md:block 423 (code)
 msgid ""
 "use Illuminate\\Database\\DBAL\\TimestampType;\n"
 "\n"
@@ -1683,152 +1695,152 @@ msgid ""
 "],\n"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 421 (quote)
+#: docs/10.x/migrations.md:block 424 (quote)
 msgid "**Warning** When using the `doctrine/dbal` package, the following column types can be modified: `bigInteger`, `binary`, `boolean`, `char`, `date`, `dateTime`, `dateTimeTz`, `decimal`, `double`, `integer`, `json`, `longText`, `mediumText`, `smallInteger`, `string`, `text`, `time`, `tinyText`, `unsignedBigInteger`, `unsignedInteger`, `unsignedSmallInteger`, `ulid`, and `uuid`."
 msgstr ""
 
-#: docs/10.x/migrations.md:block 423 (header)
+#: docs/10.x/migrations.md:block 426 (header)
 msgid "Renaming Columns"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 424 (paragraph)
+#: docs/10.x/migrations.md:block 427 (paragraph)
 msgid "To rename a column, you may use the `renameColumn` method provided by the schema builder:"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 425 (code)
+#: docs/10.x/migrations.md:block 428 (code)
 msgid ""
 "Schema::table('users', function (Blueprint $table) {\n"
 "    $table->renameColumn('from', 'to');\n"
 "});\n"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 427 (header)
+#: docs/10.x/migrations.md:block 430 (header)
 msgid "Renaming Columns On Legacy Databases"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 428 (paragraph)
+#: docs/10.x/migrations.md:block 431 (paragraph)
 msgid "If you are running a database installation older than one of the following releases, you should ensure that you have installed the `doctrine/dbal` library via the Composer package manager before renaming a column:"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 430 (unordered list)
+#: docs/10.x/migrations.md:block 433 (unordered list)
 msgid "MySQL < `8.0.3`"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 430 (unordered list)
+#: docs/10.x/migrations.md:block 433 (unordered list)
 msgid "MariaDB < `10.5.2`"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 430 (unordered list)
+#: docs/10.x/migrations.md:block 433 (unordered list)
 msgid "SQLite < `3.25.0`"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 433 (header)
+#: docs/10.x/migrations.md:block 436 (header)
 msgid "Dropping Columns"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 434 (paragraph)
+#: docs/10.x/migrations.md:block 437 (paragraph)
 msgid "To drop a column, you may use the `dropColumn` method on the schema builder:"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 435 (code)
+#: docs/10.x/migrations.md:block 438 (code)
 msgid ""
 "Schema::table('users', function (Blueprint $table) {\n"
 "    $table->dropColumn('votes');\n"
 "});\n"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 436 (paragraph)
+#: docs/10.x/migrations.md:block 439 (paragraph)
 msgid "You may drop multiple columns from a table by passing an array of column names to the `dropColumn` method:"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 437 (code)
+#: docs/10.x/migrations.md:block 440 (code)
 msgid ""
 "Schema::table('users', function (Blueprint $table) {\n"
 "    $table->dropColumn(['votes', 'avatar', 'location']);\n"
 "});\n"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 439 (header)
+#: docs/10.x/migrations.md:block 442 (header)
 msgid "Dropping Columns On Legacy Databases"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 440 (paragraph)
+#: docs/10.x/migrations.md:block 443 (paragraph)
 msgid "If you are running a version of SQLite prior to `3.35.0`, you must install the `doctrine/dbal` package via the Composer package manager before the `dropColumn` method may be used. Dropping or modifying multiple columns within a single migration while using this package is not supported."
 msgstr ""
 
-#: docs/10.x/migrations.md:block 442 (header)
+#: docs/10.x/migrations.md:block 445 (header)
 msgid "Available Command Aliases"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 443 (paragraph)
+#: docs/10.x/migrations.md:block 446 (paragraph)
 msgid "Laravel provides several convenient methods related to dropping common types of columns. Each of these methods is described in the table below:"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 444 (table)
+#: docs/10.x/migrations.md:block 447 (table)
 msgid "Command"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 444 (table)
+#: docs/10.x/migrations.md:block 447 (table)
 msgid "`$table->dropMorphs('morphable');`"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 444 (table)
+#: docs/10.x/migrations.md:block 447 (table)
 msgid "Drop the `morphable_id` and `morphable_type` columns."
 msgstr ""
 
-#: docs/10.x/migrations.md:block 444 (table)
+#: docs/10.x/migrations.md:block 447 (table)
 msgid "`$table->dropRememberToken();`"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 444 (table)
+#: docs/10.x/migrations.md:block 447 (table)
 msgid "Drop the `remember_token` column."
 msgstr ""
 
-#: docs/10.x/migrations.md:block 444 (table)
+#: docs/10.x/migrations.md:block 447 (table)
 msgid "`$table->dropSoftDeletes();`"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 444 (table)
+#: docs/10.x/migrations.md:block 447 (table)
 msgid "Drop the `deleted_at` column."
 msgstr ""
 
-#: docs/10.x/migrations.md:block 444 (table)
+#: docs/10.x/migrations.md:block 447 (table)
 msgid "`$table->dropSoftDeletesTz();`"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 444 (table)
+#: docs/10.x/migrations.md:block 447 (table)
 msgid "Alias of `dropSoftDeletes()` method."
 msgstr ""
 
-#: docs/10.x/migrations.md:block 444 (table)
+#: docs/10.x/migrations.md:block 447 (table)
 msgid "`$table->dropTimestamps();`"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 444 (table)
+#: docs/10.x/migrations.md:block 447 (table)
 msgid "Drop the `created_at` and `updated_at` columns."
 msgstr ""
 
-#: docs/10.x/migrations.md:block 444 (table)
+#: docs/10.x/migrations.md:block 447 (table)
 msgid "`$table->dropTimestampsTz();`"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 444 (table)
+#: docs/10.x/migrations.md:block 447 (table)
 msgid "Alias of `dropTimestamps()` method."
 msgstr ""
 
-#: docs/10.x/migrations.md:block 446 (header)
+#: docs/10.x/migrations.md:block 449 (header)
 msgid "Indexes"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 448 (header)
+#: docs/10.x/migrations.md:block 451 (header)
 msgid "Creating Indexes"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 449 (paragraph)
+#: docs/10.x/migrations.md:block 452 (paragraph)
 msgid "The Laravel schema builder supports several types of indexes. The following example creates a new `email` column and specifies that its values should be unique. To create the index, we can chain the `unique` method onto the column definition:"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 450 (code)
+#: docs/10.x/migrations.md:block 453 (code)
 msgid ""
 "use Illuminate\\Database\\Schema\\Blueprint;\n"
 "use Illuminate\\Support\\Facades\\Schema;\n"
@@ -1838,103 +1850,103 @@ msgid ""
 "});\n"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 451 (paragraph)
+#: docs/10.x/migrations.md:block 454 (paragraph)
 msgid "Alternatively, you may create the index after defining the column. To do so, you should call the `unique` method on the schema builder blueprint. This method accepts the name of the column that should receive a unique index:"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 452 (code)
+#: docs/10.x/migrations.md:block 455 (code)
 msgid "$table->unique('email');\n"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 453 (paragraph)
+#: docs/10.x/migrations.md:block 456 (paragraph)
 msgid "You may even pass an array of columns to an index method to create a compound (or composite) index:"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 454 (code)
+#: docs/10.x/migrations.md:block 457 (code)
 msgid "$table->index(['account_id', 'created_at']);\n"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 455 (paragraph)
+#: docs/10.x/migrations.md:block 458 (paragraph)
 msgid "When creating an index, Laravel will automatically generate an index name based on the table, column names, and the index type, but you may pass a second argument to the method to specify the index name yourself:"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 456 (code)
+#: docs/10.x/migrations.md:block 459 (code)
 msgid "$table->unique('email', 'unique_email');\n"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 458 (header)
+#: docs/10.x/migrations.md:block 461 (header)
 msgid "Available Index Types"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 459 (paragraph)
+#: docs/10.x/migrations.md:block 462 (paragraph)
 msgid "Laravel's schema builder blueprint class provides methods for creating each type of index supported by Laravel. Each index method accepts an optional second argument to specify the name of the index. If omitted, the name will be derived from the names of the table and column(s) used for the index, as well as the index type. Each of the available index methods is described in the table below:"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 460 (table)
+#: docs/10.x/migrations.md:block 463 (table)
 msgid "`$table->primary('id');`"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 460 (table)
+#: docs/10.x/migrations.md:block 463 (table)
 msgid "Adds a primary key."
 msgstr ""
 
-#: docs/10.x/migrations.md:block 460 (table)
+#: docs/10.x/migrations.md:block 463 (table)
 msgid "`$table->primary(['id', 'parent_id']);`"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 460 (table)
+#: docs/10.x/migrations.md:block 463 (table)
 msgid "Adds composite keys."
 msgstr ""
 
-#: docs/10.x/migrations.md:block 460 (table)
+#: docs/10.x/migrations.md:block 463 (table)
 msgid "`$table->unique('email');`"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 460 (table)
+#: docs/10.x/migrations.md:block 463 (table)
 msgid "Adds a unique index."
 msgstr ""
 
-#: docs/10.x/migrations.md:block 460 (table)
+#: docs/10.x/migrations.md:block 463 (table)
 msgid "`$table->index('state');`"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 460 (table)
+#: docs/10.x/migrations.md:block 463 (table)
 msgid "Adds an index."
 msgstr ""
 
-#: docs/10.x/migrations.md:block 460 (table)
+#: docs/10.x/migrations.md:block 463 (table)
 msgid "`$table->fullText('body');`"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 460 (table)
+#: docs/10.x/migrations.md:block 463 (table)
 msgid "Adds a full text index (MySQL/PostgreSQL)."
 msgstr ""
 
-#: docs/10.x/migrations.md:block 460 (table)
+#: docs/10.x/migrations.md:block 463 (table)
 msgid "`$table->fullText('body')->language('english');`"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 460 (table)
+#: docs/10.x/migrations.md:block 463 (table)
 msgid "Adds a full text index of the specified language (PostgreSQL)."
 msgstr ""
 
-#: docs/10.x/migrations.md:block 460 (table)
+#: docs/10.x/migrations.md:block 463 (table)
 msgid "`$table->spatialIndex('location');`"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 460 (table)
+#: docs/10.x/migrations.md:block 463 (table)
 msgid "Adds a spatial index (except SQLite)."
 msgstr ""
 
-#: docs/10.x/migrations.md:block 462 (header)
+#: docs/10.x/migrations.md:block 465 (header)
 msgid "Index Lengths & MySQL / MariaDB"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 463 (paragraph)
+#: docs/10.x/migrations.md:block 466 (paragraph)
 msgid "By default, Laravel uses the `utf8mb4` character set. If you are running a version of MySQL older than the 5.7.7 release or MariaDB older than the 10.2.2 release, you may need to manually configure the default string length generated by migrations in order for MySQL to create indexes for them. You may configure the default string length by calling the `Schema::defaultStringLength` method within the `boot` method of your `App\\Providers\\AppServiceProvider` class:"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 464 (code)
+#: docs/10.x/migrations.md:block 467 (code)
 msgid ""
 "use Illuminate\\Support\\Facades\\Schema;\n"
 "\n"
@@ -1947,94 +1959,94 @@ msgid ""
 "}\n"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 465 (paragraph)
+#: docs/10.x/migrations.md:block 468 (paragraph)
 msgid "Alternatively, you may enable the `innodb_large_prefix` option for your database. Refer to your database's documentation for instructions on how to properly enable this option."
 msgstr ""
 
-#: docs/10.x/migrations.md:block 467 (header)
+#: docs/10.x/migrations.md:block 470 (header)
 msgid "Renaming Indexes"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 468 (paragraph)
+#: docs/10.x/migrations.md:block 471 (paragraph)
 msgid "To rename an index, you may use the `renameIndex` method provided by the schema builder blueprint. This method accepts the current index name as its first argument and the desired name as its second argument:"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 469 (code)
+#: docs/10.x/migrations.md:block 472 (code)
 msgid "$table->renameIndex('from', 'to')\n"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 470 (quote)
+#: docs/10.x/migrations.md:block 473 (quote)
 msgid "**Warning** If your application is utilizing an SQLite database, you must install the `doctrine/dbal` package via the Composer package manager before the `renameIndex` method may be used."
 msgstr ""
 
-#: docs/10.x/migrations.md:block 472 (header)
+#: docs/10.x/migrations.md:block 475 (header)
 msgid "Dropping Indexes"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 473 (paragraph)
+#: docs/10.x/migrations.md:block 476 (paragraph)
 msgid "To drop an index, you must specify the index's name. By default, Laravel automatically assigns an index name based on the table name, the name of the indexed column, and the index type. Here are some examples:"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 474 (table)
+#: docs/10.x/migrations.md:block 477 (table)
 msgid "`$table->dropPrimary('users_id_primary');`"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 474 (table)
+#: docs/10.x/migrations.md:block 477 (table)
 msgid "Drop a primary key from the \"users\" table."
 msgstr ""
 
-#: docs/10.x/migrations.md:block 474 (table)
+#: docs/10.x/migrations.md:block 477 (table)
 msgid "`$table->dropUnique('users_email_unique');`"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 474 (table)
+#: docs/10.x/migrations.md:block 477 (table)
 msgid "Drop a unique index from the \"users\" table."
 msgstr ""
 
-#: docs/10.x/migrations.md:block 474 (table)
+#: docs/10.x/migrations.md:block 477 (table)
 msgid "`$table->dropIndex('geo_state_index');`"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 474 (table)
+#: docs/10.x/migrations.md:block 477 (table)
 msgid "Drop a basic index from the \"geo\" table."
 msgstr ""
 
-#: docs/10.x/migrations.md:block 474 (table)
+#: docs/10.x/migrations.md:block 477 (table)
 msgid "`$table->dropFullText('posts_body_fulltext');`"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 474 (table)
+#: docs/10.x/migrations.md:block 477 (table)
 msgid "Drop a full text index from the \"posts\" table."
 msgstr ""
 
-#: docs/10.x/migrations.md:block 474 (table)
+#: docs/10.x/migrations.md:block 477 (table)
 msgid "`$table->dropSpatialIndex('geo_location_spatialindex');`"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 474 (table)
+#: docs/10.x/migrations.md:block 477 (table)
 msgid "Drop a spatial index from the \"geo\" table (except SQLite)."
 msgstr ""
 
-#: docs/10.x/migrations.md:block 475 (paragraph)
+#: docs/10.x/migrations.md:block 478 (paragraph)
 msgid "If you pass an array of columns into a method that drops indexes, the conventional index name will be generated based on the table name, columns, and index type:"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 476 (code)
+#: docs/10.x/migrations.md:block 479 (code)
 msgid ""
 "Schema::table('geo', function (Blueprint $table) {\n"
 "    $table->dropIndex(['state']); // Drops index 'geo_state_index'\n"
 "});\n"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 478 (header)
+#: docs/10.x/migrations.md:block 481 (header)
 msgid "Foreign Key Constraints"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 479 (paragraph)
+#: docs/10.x/migrations.md:block 482 (paragraph)
 msgid "Laravel also provides support for creating foreign key constraints, which are used to force referential integrity at the database level. For example, let's define a `user_id` column on the `posts` table that references the `id` column on a `users` table:"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 480 (code)
+#: docs/10.x/migrations.md:block 483 (code)
 msgid ""
 "use Illuminate\\Database\\Schema\\Blueprint;\n"
 "use Illuminate\\Support\\Facades\\Schema;\n"
@@ -2046,33 +2058,35 @@ msgid ""
 "});\n"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 481 (paragraph)
+#: docs/10.x/migrations.md:block 484 (paragraph)
 msgid "Since this syntax is rather verbose, Laravel provides additional, terser methods that use conventions to provide a better developer experience. When using the `foreignId` method to create your column, the example above can be rewritten like so:"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 482 (code)
+#: docs/10.x/migrations.md:block 485 (code)
 msgid ""
 "Schema::table('posts', function (Blueprint $table) {\n"
 "    $table->foreignId('user_id')->constrained();\n"
 "});\n"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 483 (paragraph)
-msgid "The `foreignId` method creates an `UNSIGNED BIGINT` equivalent column, while the `constrained` method will use conventions to determine the table and column name being referenced. If your table name does not match Laravel's conventions, you may specify the table name by passing it as an argument to the `constrained` method:"
+#: docs/10.x/migrations.md:block 486 (paragraph)
+msgid "The `foreignId` method creates an `UNSIGNED BIGINT` equivalent column, while the `constrained` method will use conventions to determine the table and column being referenced. If your table name does not match Laravel's conventions, you may manually provide it to the `constrained` method. In addition, the name that should be assigned to the generated index may be specified as well:"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 484 (code)
+#: docs/10.x/migrations.md:block 487 (code)
 msgid ""
 "Schema::table('posts', function (Blueprint $table) {\n"
-"    $table->foreignId('user_id')->constrained('users');\n"
+"    $table->foreignId('user_id')->constrained(\n"
+"        table: 'users', indexName: 'posts_user_id'\n"
+"    );\n"
 "});\n"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 485 (paragraph)
+#: docs/10.x/migrations.md:block 488 (paragraph)
 msgid "You may also specify the desired action for the \"on delete\" and \"on update\" properties of the constraint:"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 486 (code)
+#: docs/10.x/migrations.md:block 489 (code)
 msgid ""
 "$table->foreignId('user_id')\n"
 "      ->constrained()\n"
@@ -2080,94 +2094,94 @@ msgid ""
 "      ->onDelete('cascade');\n"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 487 (paragraph)
+#: docs/10.x/migrations.md:block 490 (paragraph)
 msgid "An alternative, expressive syntax is also provided for these actions:"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 488 (table)
+#: docs/10.x/migrations.md:block 491 (table)
 msgid "Method"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 488 (table)
+#: docs/10.x/migrations.md:block 491 (table)
 msgid "`$table->cascadeOnUpdate();`"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 488 (table)
+#: docs/10.x/migrations.md:block 491 (table)
 msgid "Updates should cascade."
 msgstr ""
 
-#: docs/10.x/migrations.md:block 488 (table)
+#: docs/10.x/migrations.md:block 491 (table)
 msgid "`$table->restrictOnUpdate();`"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 488 (table)
+#: docs/10.x/migrations.md:block 491 (table)
 msgid "Updates should be restricted."
 msgstr ""
 
-#: docs/10.x/migrations.md:block 488 (table)
+#: docs/10.x/migrations.md:block 491 (table)
 msgid "`$table->cascadeOnDelete();`"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 488 (table)
+#: docs/10.x/migrations.md:block 491 (table)
 msgid "Deletes should cascade."
 msgstr ""
 
-#: docs/10.x/migrations.md:block 488 (table)
+#: docs/10.x/migrations.md:block 491 (table)
 msgid "`$table->restrictOnDelete();`"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 488 (table)
+#: docs/10.x/migrations.md:block 491 (table)
 msgid "Deletes should be restricted."
 msgstr ""
 
-#: docs/10.x/migrations.md:block 488 (table)
+#: docs/10.x/migrations.md:block 491 (table)
 msgid "`$table->nullOnDelete();`"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 488 (table)
+#: docs/10.x/migrations.md:block 491 (table)
 msgid "Deletes should set the foreign key value to null."
 msgstr ""
 
-#: docs/10.x/migrations.md:block 489 (paragraph)
+#: docs/10.x/migrations.md:block 492 (paragraph)
 msgid "Any additional [column modifiers](#column-modifiers) must be called before the `constrained` method:"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 490 (code)
+#: docs/10.x/migrations.md:block 493 (code)
 msgid ""
 "$table->foreignId('user_id')\n"
 "      ->nullable()\n"
 "      ->constrained();\n"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 492 (header)
+#: docs/10.x/migrations.md:block 495 (header)
 msgid "Dropping Foreign Keys"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 493 (paragraph)
+#: docs/10.x/migrations.md:block 496 (paragraph)
 msgid "To drop a foreign key, you may use the `dropForeign` method, passing the name of the foreign key constraint to be deleted as an argument. Foreign key constraints use the same naming convention as indexes. In other words, the foreign key constraint name is based on the name of the table and the columns in the constraint, followed by a \"_foreign\" suffix:"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 494 (code)
+#: docs/10.x/migrations.md:block 497 (code)
 msgid "$table->dropForeign('posts_user_id_foreign');\n"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 495 (paragraph)
+#: docs/10.x/migrations.md:block 498 (paragraph)
 msgid "Alternatively, you may pass an array containing the column name that holds the foreign key to the `dropForeign` method. The array will be converted to a foreign key constraint name using Laravel's constraint naming conventions:"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 496 (code)
+#: docs/10.x/migrations.md:block 499 (code)
 msgid "$table->dropForeign(['user_id']);\n"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 498 (header)
+#: docs/10.x/migrations.md:block 501 (header)
 msgid "Toggling Foreign Key Constraints"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 499 (paragraph)
+#: docs/10.x/migrations.md:block 502 (paragraph)
 msgid "You may enable or disable foreign key constraints within your migrations by using the following methods:"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 500 (code)
+#: docs/10.x/migrations.md:block 503 (code)
 msgid ""
 "Schema::enableForeignKeyConstraints();\n"
 "\n"
@@ -2178,67 +2192,67 @@ msgid ""
 "});\n"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 501 (quote)
+#: docs/10.x/migrations.md:block 504 (quote)
 msgid "**Warning** SQLite disables foreign key constraints by default. When using SQLite, make sure to [enable foreign key support](/docs/{{version}}/database#configuration) in your database configuration before attempting to create them in your migrations. In addition, SQLite only supports foreign keys upon creation of the table and [not when tables are altered](https://www.sqlite.org/omitted.html)."
 msgstr ""
 
-#: docs/10.x/migrations.md:block 503 (header)
+#: docs/10.x/migrations.md:block 506 (header)
 msgid "Events"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 504 (paragraph)
+#: docs/10.x/migrations.md:block 507 (paragraph)
 msgid "For convenience, each migration operation will dispatch an [event](/docs/{{version}}/events). All of the following events extend the base `Illuminate\\Database\\Events\\MigrationEvent` class:"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 505 (table)
+#: docs/10.x/migrations.md:block 508 (table)
 msgid "Class"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 505 (table)
+#: docs/10.x/migrations.md:block 508 (table)
 msgid "`Illuminate\\Database\\Events\\MigrationsStarted`"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 505 (table)
+#: docs/10.x/migrations.md:block 508 (table)
 msgid "A batch of migrations is about to be executed."
 msgstr ""
 
-#: docs/10.x/migrations.md:block 505 (table)
+#: docs/10.x/migrations.md:block 508 (table)
 msgid "`Illuminate\\Database\\Events\\MigrationsEnded`"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 505 (table)
+#: docs/10.x/migrations.md:block 508 (table)
 msgid "A batch of migrations has finished executing."
 msgstr ""
 
-#: docs/10.x/migrations.md:block 505 (table)
+#: docs/10.x/migrations.md:block 508 (table)
 msgid "`Illuminate\\Database\\Events\\MigrationStarted`"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 505 (table)
+#: docs/10.x/migrations.md:block 508 (table)
 msgid "A single migration is about to be executed."
 msgstr ""
 
-#: docs/10.x/migrations.md:block 505 (table)
+#: docs/10.x/migrations.md:block 508 (table)
 msgid "`Illuminate\\Database\\Events\\MigrationEnded`"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 505 (table)
+#: docs/10.x/migrations.md:block 508 (table)
 msgid "A single migration has finished executing."
 msgstr ""
 
-#: docs/10.x/migrations.md:block 505 (table)
+#: docs/10.x/migrations.md:block 508 (table)
 msgid "`Illuminate\\Database\\Events\\SchemaDumped`"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 505 (table)
+#: docs/10.x/migrations.md:block 508 (table)
 msgid "A database schema dump has completed."
 msgstr ""
 
-#: docs/10.x/migrations.md:block 505 (table)
+#: docs/10.x/migrations.md:block 508 (table)
 msgid "`Illuminate\\Database\\Events\\SchemaLoaded`"
 msgstr ""
 
-#: docs/10.x/migrations.md:block 505 (table)
+#: docs/10.x/migrations.md:block 508 (table)
 msgid "An existing database schema dump has loaded."
 msgstr ""
 
@@ -2353,6 +2367,18 @@ msgstr ""
 
 #: docs/8.x/migrations.md:block 108 (paragraph)
 msgid "[bigIncrements](#column-method-bigIncrements) [bigInteger](#column-method-bigInteger) [binary](#column-method-binary) [boolean](#column-method-boolean) [char](#column-method-char) [dateTimeTz](#column-method-dateTimeTz) [dateTime](#column-method-dateTime) [date](#column-method-date) [decimal](#column-method-decimal) [double](#column-method-double) [enum](#column-method-enum) [float](#column-method-float) [foreignId](#column-method-foreignId) [foreignIdFor](#column-method-foreignIdFor) [foreignUuid](#column-method-foreignUuid) [geometryCollection](#column-method-geometryCollection) [geometry](#column-method-geometry) [id](#column-method-id) [increments](#column-method-increments) [integer](#column-method-integer) [ipAddress](#column-method-ipAddress) [json](#column-method-json) [jsonb](#column-method-jsonb) [lineString](#column-method-lineString) [longText](#column-method-longText) [macAddress](#column-method-macAddress) [mediumIncrements](#column-method-mediumIncrements) [mediumInteger](#column-method-mediumInteger) [mediumText](#column-method-mediumText) [morphs](#column-method-morphs) [multiLineString](#column-method-multiLineString) [multiPoint](#column-method-multiPoint) [multiPolygon](#column-method-multiPolygon) [nullableMorphs](#column-method-nullableMorphs) [nullableTimestamps](#column-method-nullableTimestamps) [nullableUuidMorphs](#column-method-nullableUuidMorphs) [point](#column-method-point) [polygon](#column-method-polygon) [rememberToken](#column-method-rememberToken) [set](#column-method-set) [smallIncrements](#column-method-smallIncrements) [smallInteger](#column-method-smallInteger) [softDeletesTz](#column-method-softDeletesTz) [softDeletes](#column-method-softDeletes) [string](#column-method-string) [text](#column-method-text) [timeTz](#column-method-timeTz) [time](#column-method-time) [timestampTz](#column-method-timestampTz) [timestamp](#column-method-timestamp) [timestampsTz](#column-method-timestampsTz) [timestamps](#column-method-timestamps) [tinyIncrements](#column-method-tinyIncrements) [tinyInteger](#column-method-tinyInteger) [tinyText](#column-method-tinyText) [unsignedBigInteger](#column-method-unsignedBigInteger) [unsignedDecimal](#column-method-unsignedDecimal) [unsignedInteger](#column-method-unsignedInteger) [unsignedMediumInteger](#column-method-unsignedMediumInteger) [unsignedSmallInteger](#column-method-unsignedSmallInteger) [unsignedTinyInteger](#column-method-unsignedTinyInteger) [uuidMorphs](#column-method-uuidMorphs) [uuid](#column-method-uuid) [year](#column-method-year)"
+msgstr ""
+
+#: docs/8.x/migrations.md:block 164 (paragraph)
+msgid "The `foreignIdFor` method adds a `{column}_id UNSIGNED BIGINT` equivalent column for a given model class:"
+msgstr ""
+
+#: docs/8.x/migrations.md:block 228 (paragraph)
+msgid "The `morphs` method is a convenience method that adds a `{column}_id` `UNSIGNED BIGINT` equivalent column and a `{column}_type` `VARCHAR` equivalent column."
+msgstr ""
+
+#: docs/8.x/migrations.md:block 373 (table)
+msgid "Set TIMESTAMP columns to use CURRENT_TIMESTAMP when a record is updated."
 msgstr ""
 
 #: docs/8.x/migrations.md:block 377 (code)
@@ -2473,6 +2499,17 @@ msgid ""
 "}\n"
 msgstr ""
 
+#: docs/8.x/migrations.md:block 452 (paragraph)
+msgid "The `foreignId` method creates an `UNSIGNED BIGINT` equivalent column, while the `constrained` method will use conventions to determine the table and column name being referenced. If your table name does not match Laravel's conventions, you may specify the table name by passing it as an argument to the `constrained` method:"
+msgstr ""
+
+#: docs/8.x/migrations.md:block 453 (code)
+msgid ""
+"Schema::table('posts', function (Blueprint $table) {\n"
+"    $table->foreignId('user_id')->constrained('users');\n"
+"});\n"
+msgstr ""
+
 #: docs/8.x/migrations.md:block 469 (code)
 msgid ""
 "Schema::enableForeignKeyConstraints();\n"
@@ -2482,6 +2519,10 @@ msgstr ""
 
 #: docs/8.x/migrations.md:block 470 (quote)
 msgid "{note} SQLite disables foreign key constraints by default. When using SQLite, make sure to [enable foreign key support](/docs/{{version}}/database#configuration) in your database configuration before attempting to create them in your migrations. In addition, SQLite only supports foreign keys upon creation of the table and [not when tables are altered](https://www.sqlite.org/omitted.html)."
+msgstr ""
+
+#: docs/9.x/migrations.md:block 18 (paragraph)
+msgid "When you execute this command, Laravel will write a \"schema\" file to your application's `database/schema` directory. The schema file's name will correspond to the database connection. Now, when you attempt to migrate your database and no other migrations have been executed, Laravel will execute first the SQL statements of the schema file of the database connection you are using. After executing the schema file's statements, Laravel will execute any remaining migrations that were not part of the schema dump."
 msgstr ""
 
 #: docs/9.x/migrations.md:block 27 (code)
@@ -2558,4 +2599,8 @@ msgstr ""
 
 #: docs/9.x/migrations.md:block 422 (quote)
 msgid "**Warning** The following column types can be modified: `bigInteger`, `binary`, `boolean`, `char`, `date`, `dateTime`, `dateTimeTz`, `decimal`, `double`, `integer`, `json`, `longText`, `mediumText`, `smallInteger`, `string`, `text`, `time`, `tinyText`, `unsignedBigInteger`, `unsignedInteger`, `unsignedSmallInteger`, and `uuid`. To modify a `timestamp` column type a [Doctrine type must be registered](#prerequisites)."
+msgstr ""
+
+#: docs/master/migrations.md:block 399 (table)
+msgid "Create a virtual generated column (MySQL)."
 msgstr ""

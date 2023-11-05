@@ -55,6 +55,10 @@ msgid "[File URLs](#file-urls)"
 msgstr ""
 
 #: docs/10.x/filesystem.md:block 2 (unordered list)
+msgid "[Temporary URLs](#temporary-urls)"
+msgstr ""
+
+#: docs/10.x/filesystem.md:block 2 (unordered list)
 msgid "[File Metadata](#file-metadata)"
 msgstr ""
 
@@ -88,6 +92,10 @@ msgstr ""
 
 #: docs/10.x/filesystem.md:block 2 (unordered list)
 msgid "[Directories](#directories)"
+msgstr ""
+
+#: docs/10.x/filesystem.md:block 2 (unordered list)
+msgid "[Testing](#testing)"
 msgstr ""
 
 #: docs/10.x/filesystem.md:block 2 (unordered list)
@@ -186,7 +194,7 @@ msgid "Before using the S3 driver, you will need to install the Flysystem S3 pac
 msgstr ""
 
 #: docs/10.x/filesystem.md:block 30 (code)
-msgid "composer require league/flysystem-aws-s3-v3 \"^3.0\"\n"
+msgid "composer require league/flysystem-aws-s3-v3 \"^3.0\" --with-all-dependencies\n"
 msgstr ""
 
 #: docs/10.x/filesystem.md:block 31 (paragraph)
@@ -255,6 +263,10 @@ msgid ""
 "    // Settings for SSH key based authentication with encryption password...\n"
 "    'privateKey' => env('SFTP_PRIVATE_KEY'),\n"
 "    'passphrase' => env('SFTP_PASSPHRASE'),\n"
+"\n"
+"    // Settings for file / directory permissions...\n"
+"    'visibility' => 'private', // `private` = 0600, `public` = 0644\n"
+"    'directory_visibility' => 'private', // `private` = 0700, `public` = 0755\n"
 "\n"
 "    // Optional SFTP Settings...\n"
 "    // 'hostFingerprint' => env('SFTP_HOST_FINGERPRINT'),\n"
@@ -401,74 +413,100 @@ msgid "$contents = Storage::get('file.jpg');\n"
 msgstr ""
 
 #: docs/10.x/filesystem.md:block 78 (paragraph)
-msgid "The `exists` method may be used to determine if a file exists on the disk:"
+msgid "If the file you are retrieving contains JSON, you may use the `json` method to retrieve the file and decode its contents:"
 msgstr ""
 
 #: docs/10.x/filesystem.md:block 79 (code)
+msgid "$orders = Storage::json('orders.json');\n"
+msgstr ""
+
+#: docs/10.x/filesystem.md:block 80 (paragraph)
+msgid "The `exists` method may be used to determine if a file exists on the disk:"
+msgstr ""
+
+#: docs/10.x/filesystem.md:block 81 (code)
 msgid ""
 "if (Storage::disk('s3')->exists('file.jpg')) {\n"
 "    // ...\n"
 "}\n"
 msgstr ""
 
-#: docs/10.x/filesystem.md:block 80 (paragraph)
+#: docs/10.x/filesystem.md:block 82 (paragraph)
 msgid "The `missing` method may be used to determine if a file is missing from the disk:"
 msgstr ""
 
-#: docs/10.x/filesystem.md:block 81 (code)
+#: docs/10.x/filesystem.md:block 83 (code)
 msgid ""
 "if (Storage::disk('s3')->missing('file.jpg')) {\n"
 "    // ...\n"
 "}\n"
 msgstr ""
 
-#: docs/10.x/filesystem.md:block 83 (header)
+#: docs/10.x/filesystem.md:block 85 (header)
 msgid "Downloading Files"
 msgstr ""
 
-#: docs/10.x/filesystem.md:block 84 (paragraph)
+#: docs/10.x/filesystem.md:block 86 (paragraph)
 msgid "The `download` method may be used to generate a response that forces the user's browser to download the file at the given path. The `download` method accepts a filename as the second argument to the method, which will determine the filename that is seen by the user downloading the file. Finally, you may pass an array of HTTP headers as the third argument to the method:"
 msgstr ""
 
-#: docs/10.x/filesystem.md:block 85 (code)
+#: docs/10.x/filesystem.md:block 87 (code)
 msgid ""
 "return Storage::download('file.jpg');\n"
 "\n"
 "return Storage::download('file.jpg', $name, $headers);\n"
 msgstr ""
 
-#: docs/10.x/filesystem.md:block 87 (header)
+#: docs/10.x/filesystem.md:block 89 (header)
 msgid "File URLs"
 msgstr ""
 
-#: docs/10.x/filesystem.md:block 88 (paragraph)
+#: docs/10.x/filesystem.md:block 90 (paragraph)
 msgid "You may use the `url` method to get the URL for a given file. If you are using the `local` driver, this will typically just prepend `/storage` to the given path and return a relative URL to the file. If you are using the `s3` driver, the fully qualified remote URL will be returned:"
 msgstr ""
 
-#: docs/10.x/filesystem.md:block 89 (code)
+#: docs/10.x/filesystem.md:block 91 (code)
 msgid ""
 "use Illuminate\\Support\\Facades\\Storage;\n"
 "\n"
 "$url = Storage::url('file.jpg');\n"
 msgstr ""
 
-#: docs/10.x/filesystem.md:block 90 (paragraph)
+#: docs/10.x/filesystem.md:block 92 (paragraph)
 msgid "When using the `local` driver, all files that should be publicly accessible should be placed in the `storage/app/public` directory. Furthermore, you should [create a symbolic link](#the-public-disk) at `public/storage` which points to the `storage/app/public` directory."
 msgstr ""
 
-#: docs/10.x/filesystem.md:block 91 (quote)
+#: docs/10.x/filesystem.md:block 93 (quote)
 msgid "**Warning** When using the `local` driver, the return value of `url` is not URL encoded. For this reason, we recommend always storing your files using names that will create valid URLs."
 msgstr ""
 
-#: docs/10.x/filesystem.md:block 93 (header)
+#: docs/10.x/filesystem.md:block 95 (header)
+msgid "URL Host Customization"
+msgstr ""
+
+#: docs/10.x/filesystem.md:block 96 (paragraph)
+msgid "If you would like to pre-define the host for URLs generated using the `Storage` facade, you may add a `url` option to the disk's configuration array:"
+msgstr ""
+
+#: docs/10.x/filesystem.md:block 97 (code)
+msgid ""
+"'public' => [\n"
+"    'driver' => 'local',\n"
+"    'root' => storage_path('app/public'),\n"
+"    'url' => env('APP_URL').'/storage',\n"
+"    'visibility' => 'public',\n"
+"],\n"
+msgstr ""
+
+#: docs/10.x/filesystem.md:block 99 (header)
 msgid "Temporary URLs"
 msgstr ""
 
-#: docs/10.x/filesystem.md:block 94 (paragraph)
+#: docs/10.x/filesystem.md:block 100 (paragraph)
 msgid "Using the `temporaryUrl` method, you may create temporary URLs to files stored using the `s3` driver. This method accepts a path and a `DateTime` instance specifying when the URL should expire:"
 msgstr ""
 
-#: docs/10.x/filesystem.md:block 95 (code)
+#: docs/10.x/filesystem.md:block 101 (code)
 msgid ""
 "use Illuminate\\Support\\Facades\\Storage;\n"
 "\n"
@@ -477,11 +515,11 @@ msgid ""
 ");\n"
 msgstr ""
 
-#: docs/10.x/filesystem.md:block 96 (paragraph)
+#: docs/10.x/filesystem.md:block 102 (paragraph)
 msgid "If you need to specify additional [S3 request parameters](https://docs.aws.amazon.com/AmazonS3/latest/API/RESTObjectGET.html#RESTObjectGET-requests), you may pass the array of request parameters as the third argument to the `temporaryUrl` method:"
 msgstr ""
 
-#: docs/10.x/filesystem.md:block 97 (code)
+#: docs/10.x/filesystem.md:block 103 (code)
 msgid ""
 "$url = Storage::temporaryUrl(\n"
 "    'file.jpg',\n"
@@ -493,11 +531,11 @@ msgid ""
 ");\n"
 msgstr ""
 
-#: docs/10.x/filesystem.md:block 98 (paragraph)
+#: docs/10.x/filesystem.md:block 104 (paragraph)
 msgid "If you need to customize how temporary URLs are created for a specific storage disk, you can use the `buildTemporaryUrlsUsing` method. For example, this can be useful if you have a controller that allows you to download files stored via a disk that doesn't typically support temporary URLs. Usually, this method should be called from the `boot` method of a service provider:"
 msgstr ""
 
-#: docs/10.x/filesystem.md:block 99 (code)
+#: docs/10.x/filesystem.md:block 105 (code)
 msgid ""
 "<?php\n"
 "\n"
@@ -515,90 +553,99 @@ msgid ""
 "     */\n"
 "    public function boot(): void\n"
 "    {\n"
-"        Storage::disk('local')->buildTemporaryUrlsUsing(function (string $path, DateTime $expiration, array $options) {\n"
-"            return URL::temporarySignedRoute(\n"
-"                'files.download',\n"
-"                $expiration,\n"
-"                array_merge($options, ['path' => $path])\n"
-"            );\n"
-"        });\n"
+"        Storage::disk('local')->buildTemporaryUrlsUsing(\n"
+"            function (string $path, DateTime $expiration, array $options) {\n"
+"                return URL::temporarySignedRoute(\n"
+"                    'files.download',\n"
+"                    $expiration,\n"
+"                    array_merge($options, ['path' => $path])\n"
+"                );\n"
+"            }\n"
+"        );\n"
 "    }\n"
 "}\n"
 msgstr ""
 
-#: docs/10.x/filesystem.md:block 101 (header)
-msgid "URL Host Customization"
+#: docs/10.x/filesystem.md:block 107 (header)
+msgid "Temporary Upload URLs"
 msgstr ""
 
-#: docs/10.x/filesystem.md:block 102 (paragraph)
-msgid "If you would like to pre-define the host for URLs generated using the `Storage` facade, you may add a `url` option to the disk's configuration array:"
+#: docs/10.x/filesystem.md:block 108 (quote)
+msgid "**Warning** The ability to generate temporary upload URLs is only supported by the `s3` driver."
 msgstr ""
 
-#: docs/10.x/filesystem.md:block 103 (code)
-msgid ""
-"'public' => [\n"
-"    'driver' => 'local',\n"
-"    'root' => storage_path('app/public'),\n"
-"    'url' => env('APP_URL').'/storage',\n"
-"    'visibility' => 'public',\n"
-"],\n"
+#: docs/10.x/filesystem.md:block 109 (paragraph)
+msgid "If you need to generate a temporary URL that can be used to upload a file directly from your client-side application, you may use the `temporaryUploadUrl` method. This method accepts a path and a `DateTime` instance specifying when the URL should expire. The `temporaryUploadUrl` method returns an associative array which may be destructured into the upload URL and the headers that should be included with the upload request:"
 msgstr ""
 
-#: docs/10.x/filesystem.md:block 105 (header)
-msgid "File Metadata"
-msgstr ""
-
-#: docs/10.x/filesystem.md:block 106 (paragraph)
-msgid "In addition to reading and writing files, Laravel can also provide information about the files themselves. For example, the `size` method may be used to get the size of a file in bytes:"
-msgstr ""
-
-#: docs/10.x/filesystem.md:block 107 (code)
+#: docs/10.x/filesystem.md:block 110 (code)
 msgid ""
 "use Illuminate\\Support\\Facades\\Storage;\n"
 "\n"
-"$size = Storage::size('file.jpg');\n"
+"['url' => $url, 'headers' => $headers] = Storage::temporaryUploadUrl(\n"
+"    'file.jpg', now()->addMinutes(5)\n"
+");\n"
 msgstr ""
 
-#: docs/10.x/filesystem.md:block 108 (paragraph)
-msgid "The `lastModified` method returns the UNIX timestamp of the last time the file was modified:"
-msgstr ""
-
-#: docs/10.x/filesystem.md:block 109 (code)
-msgid "$time = Storage::lastModified('file.jpg');\n"
-msgstr ""
-
-#: docs/10.x/filesystem.md:block 110 (paragraph)
-msgid "The MIME type of a given file may be obtained via the `mimeType` method:"
-msgstr ""
-
-#: docs/10.x/filesystem.md:block 111 (code)
-msgid "$mime = Storage::mimeType('file.jpg')\n"
+#: docs/10.x/filesystem.md:block 111 (paragraph)
+msgid "This method is primarily useful in serverless environments that require the client-side application to directly upload files to a cloud storage system such as Amazon S3."
 msgstr ""
 
 #: docs/10.x/filesystem.md:block 113 (header)
-msgid "File Paths"
+msgid "File Metadata"
 msgstr ""
 
 #: docs/10.x/filesystem.md:block 114 (paragraph)
-msgid "You may use the `path` method to get the path for a given file. If you are using the `local` driver, this will return the absolute path to the file. If you are using the `s3` driver, this method will return the relative path to the file in the S3 bucket:"
+msgid "In addition to reading and writing files, Laravel can also provide information about the files themselves. For example, the `size` method may be used to get the size of a file in bytes:"
 msgstr ""
 
 #: docs/10.x/filesystem.md:block 115 (code)
 msgid ""
 "use Illuminate\\Support\\Facades\\Storage;\n"
 "\n"
-"$path = Storage::path('file.jpg');\n"
+"$size = Storage::size('file.jpg');\n"
 msgstr ""
 
-#: docs/10.x/filesystem.md:block 117 (header)
-msgid "Storing Files"
+#: docs/10.x/filesystem.md:block 116 (paragraph)
+msgid "The `lastModified` method returns the UNIX timestamp of the last time the file was modified:"
+msgstr ""
+
+#: docs/10.x/filesystem.md:block 117 (code)
+msgid "$time = Storage::lastModified('file.jpg');\n"
 msgstr ""
 
 #: docs/10.x/filesystem.md:block 118 (paragraph)
-msgid "The `put` method may be used to store file contents on a disk. You may also pass a PHP `resource` to the `put` method, which will use Flysystem's underlying stream support. Remember, all file paths should be specified relative to the \"root\" location configured for the disk:"
+msgid "The MIME type of a given file may be obtained via the `mimeType` method:"
 msgstr ""
 
 #: docs/10.x/filesystem.md:block 119 (code)
+msgid "$mime = Storage::mimeType('file.jpg');\n"
+msgstr ""
+
+#: docs/10.x/filesystem.md:block 121 (header)
+msgid "File Paths"
+msgstr ""
+
+#: docs/10.x/filesystem.md:block 122 (paragraph)
+msgid "You may use the `path` method to get the path for a given file. If you are using the `local` driver, this will return the absolute path to the file. If you are using the `s3` driver, this method will return the relative path to the file in the S3 bucket:"
+msgstr ""
+
+#: docs/10.x/filesystem.md:block 123 (code)
+msgid ""
+"use Illuminate\\Support\\Facades\\Storage;\n"
+"\n"
+"$path = Storage::path('file.jpg');\n"
+msgstr ""
+
+#: docs/10.x/filesystem.md:block 125 (header)
+msgid "Storing Files"
+msgstr ""
+
+#: docs/10.x/filesystem.md:block 126 (paragraph)
+msgid "The `put` method may be used to store file contents on a disk. You may also pass a PHP `resource` to the `put` method, which will use Flysystem's underlying stream support. Remember, all file paths should be specified relative to the \"root\" location configured for the disk:"
+msgstr ""
+
+#: docs/10.x/filesystem.md:block 127 (code)
 msgid ""
 "use Illuminate\\Support\\Facades\\Storage;\n"
 "\n"
@@ -607,26 +654,26 @@ msgid ""
 "Storage::put('file.jpg', $resource);\n"
 msgstr ""
 
-#: docs/10.x/filesystem.md:block 121 (header)
+#: docs/10.x/filesystem.md:block 129 (header)
 msgid "Failed Writes"
 msgstr ""
 
-#: docs/10.x/filesystem.md:block 122 (paragraph)
+#: docs/10.x/filesystem.md:block 130 (paragraph)
 msgid "If the `put` method (or other \"write\" operations) is unable to write the file to disk, `false` will be returned:"
 msgstr ""
 
-#: docs/10.x/filesystem.md:block 123 (code)
+#: docs/10.x/filesystem.md:block 131 (code)
 msgid ""
 "if (! Storage::put('file.jpg', $contents)) {\n"
 "    // The file could not be written to disk...\n"
 "}\n"
 msgstr ""
 
-#: docs/10.x/filesystem.md:block 124 (paragraph)
+#: docs/10.x/filesystem.md:block 132 (paragraph)
 msgid "If you wish, you may define the `throw` option within your filesystem disk's configuration array. When this option is defined as `true`, \"write\" methods such as `put` will throw an instance of `League\\Flysystem\\UnableToWriteFile` when write operations fail:"
 msgstr ""
 
-#: docs/10.x/filesystem.md:block 125 (code)
+#: docs/10.x/filesystem.md:block 133 (code)
 msgid ""
 "'public' => [\n"
 "    'driver' => 'local',\n"
@@ -635,45 +682,45 @@ msgid ""
 "],\n"
 msgstr ""
 
-#: docs/10.x/filesystem.md:block 127 (header)
+#: docs/10.x/filesystem.md:block 135 (header)
 msgid "Prepending & Appending To Files"
 msgstr ""
 
-#: docs/10.x/filesystem.md:block 128 (paragraph)
+#: docs/10.x/filesystem.md:block 136 (paragraph)
 msgid "The `prepend` and `append` methods allow you to write to the beginning or end of a file:"
 msgstr ""
 
-#: docs/10.x/filesystem.md:block 129 (code)
+#: docs/10.x/filesystem.md:block 137 (code)
 msgid ""
 "Storage::prepend('file.log', 'Prepended Text');\n"
 "\n"
 "Storage::append('file.log', 'Appended Text');\n"
 msgstr ""
 
-#: docs/10.x/filesystem.md:block 131 (header)
+#: docs/10.x/filesystem.md:block 139 (header)
 msgid "Copying & Moving Files"
 msgstr ""
 
-#: docs/10.x/filesystem.md:block 132 (paragraph)
+#: docs/10.x/filesystem.md:block 140 (paragraph)
 msgid "The `copy` method may be used to copy an existing file to a new location on the disk, while the `move` method may be used to rename or move an existing file to a new location:"
 msgstr ""
 
-#: docs/10.x/filesystem.md:block 133 (code)
+#: docs/10.x/filesystem.md:block 141 (code)
 msgid ""
 "Storage::copy('old/file.jpg', 'new/file.jpg');\n"
 "\n"
 "Storage::move('old/file.jpg', 'new/file.jpg');\n"
 msgstr ""
 
-#: docs/10.x/filesystem.md:block 135 (header)
+#: docs/10.x/filesystem.md:block 143 (header)
 msgid "Automatic Streaming"
 msgstr ""
 
-#: docs/10.x/filesystem.md:block 136 (paragraph)
+#: docs/10.x/filesystem.md:block 144 (paragraph)
 msgid "Streaming files to storage offers significantly reduced memory usage. If you would like Laravel to automatically manage streaming a given file to your storage location, you may use the `putFile` or `putFileAs` method. This method accepts either an `Illuminate\\Http\\File` or `Illuminate\\Http\\UploadedFile` instance and will automatically stream the file to your desired location:"
 msgstr ""
 
-#: docs/10.x/filesystem.md:block 137 (code)
+#: docs/10.x/filesystem.md:block 145 (code)
 msgid ""
 "use Illuminate\\Http\\File;\n"
 "use Illuminate\\Support\\Facades\\Storage;\n"
@@ -685,27 +732,27 @@ msgid ""
 "$path = Storage::putFileAs('photos', new File('/path/to/photo'), 'photo.jpg');\n"
 msgstr ""
 
-#: docs/10.x/filesystem.md:block 138 (paragraph)
+#: docs/10.x/filesystem.md:block 146 (paragraph)
 msgid "There are a few important things to note about the `putFile` method. Note that we only specified a directory name and not a filename. By default, the `putFile` method will generate a unique ID to serve as the filename. The file's extension will be determined by examining the file's MIME type. The path to the file will be returned by the `putFile` method so you can store the path, including the generated filename, in your database."
 msgstr ""
 
-#: docs/10.x/filesystem.md:block 139 (paragraph)
+#: docs/10.x/filesystem.md:block 147 (paragraph)
 msgid "The `putFile` and `putFileAs` methods also accept an argument to specify the \"visibility\" of the stored file. This is particularly useful if you are storing the file on a cloud disk such as Amazon S3 and would like the file to be publicly accessible via generated URLs:"
 msgstr ""
 
-#: docs/10.x/filesystem.md:block 140 (code)
+#: docs/10.x/filesystem.md:block 148 (code)
 msgid "Storage::putFile('photos', new File('/path/to/photo'), 'public');\n"
 msgstr ""
 
-#: docs/10.x/filesystem.md:block 142 (header)
+#: docs/10.x/filesystem.md:block 150 (header)
 msgid "File Uploads"
 msgstr ""
 
-#: docs/10.x/filesystem.md:block 143 (paragraph)
+#: docs/10.x/filesystem.md:block 151 (paragraph)
 msgid "In web applications, one of the most common use-cases for storing files is storing user uploaded files such as photos and documents. Laravel makes it very easy to store uploaded files using the `store` method on an uploaded file instance. Call the `store` method with the path at which you wish to store the uploaded file:"
 msgstr ""
 
-#: docs/10.x/filesystem.md:block 144 (code)
+#: docs/10.x/filesystem.md:block 152 (code)
 msgid ""
 "<?php\n"
 "\n"
@@ -728,68 +775,68 @@ msgid ""
 "}\n"
 msgstr ""
 
-#: docs/10.x/filesystem.md:block 145 (paragraph)
+#: docs/10.x/filesystem.md:block 153 (paragraph)
 msgid "There are a few important things to note about this example. Note that we only specified a directory name, not a filename. By default, the `store` method will generate a unique ID to serve as the filename. The file's extension will be determined by examining the file's MIME type. The path to the file will be returned by the `store` method so you can store the path, including the generated filename, in your database."
 msgstr ""
 
-#: docs/10.x/filesystem.md:block 146 (paragraph)
+#: docs/10.x/filesystem.md:block 154 (paragraph)
 msgid "You may also call the `putFile` method on the `Storage` facade to perform the same file storage operation as the example above:"
 msgstr ""
 
-#: docs/10.x/filesystem.md:block 147 (code)
+#: docs/10.x/filesystem.md:block 155 (code)
 msgid "$path = Storage::putFile('avatars', $request->file('avatar'));\n"
 msgstr ""
 
-#: docs/10.x/filesystem.md:block 149 (header)
+#: docs/10.x/filesystem.md:block 157 (header)
 msgid "Specifying A File Name"
 msgstr ""
 
-#: docs/10.x/filesystem.md:block 150 (paragraph)
+#: docs/10.x/filesystem.md:block 158 (paragraph)
 msgid "If you do not want a filename to be automatically assigned to your stored file, you may use the `storeAs` method, which receives the path, the filename, and the (optional) disk as its arguments:"
 msgstr ""
 
-#: docs/10.x/filesystem.md:block 151 (code)
+#: docs/10.x/filesystem.md:block 159 (code)
 msgid ""
 "$path = $request->file('avatar')->storeAs(\n"
 "    'avatars', $request->user()->id\n"
 ");\n"
 msgstr ""
 
-#: docs/10.x/filesystem.md:block 152 (paragraph)
+#: docs/10.x/filesystem.md:block 160 (paragraph)
 msgid "You may also use the `putFileAs` method on the `Storage` facade, which will perform the same file storage operation as the example above:"
 msgstr ""
 
-#: docs/10.x/filesystem.md:block 153 (code)
+#: docs/10.x/filesystem.md:block 161 (code)
 msgid ""
 "$path = Storage::putFileAs(\n"
 "    'avatars', $request->file('avatar'), $request->user()->id\n"
 ");\n"
 msgstr ""
 
-#: docs/10.x/filesystem.md:block 154 (quote)
+#: docs/10.x/filesystem.md:block 162 (quote)
 msgid "**Warning** Unprintable and invalid unicode characters will automatically be removed from file paths. Therefore, you may wish to sanitize your file paths before passing them to Laravel's file storage methods. File paths are normalized using the `League\\Flysystem\\WhitespacePathNormalizer::normalizePath` method."
 msgstr ""
 
-#: docs/10.x/filesystem.md:block 156 (header)
+#: docs/10.x/filesystem.md:block 164 (header)
 msgid "Specifying A Disk"
 msgstr ""
 
-#: docs/10.x/filesystem.md:block 157 (paragraph)
+#: docs/10.x/filesystem.md:block 165 (paragraph)
 msgid "By default, this uploaded file's `store` method will use your default disk. If you would like to specify another disk, pass the disk name as the second argument to the `store` method:"
 msgstr ""
 
-#: docs/10.x/filesystem.md:block 158 (code)
+#: docs/10.x/filesystem.md:block 166 (code)
 msgid ""
 "$path = $request->file('avatar')->store(\n"
 "    'avatars/'.$request->user()->id, 's3'\n"
 ");\n"
 msgstr ""
 
-#: docs/10.x/filesystem.md:block 159 (paragraph)
+#: docs/10.x/filesystem.md:block 167 (paragraph)
 msgid "If you are using the `storeAs` method, you may pass the disk name as the third argument to the method:"
 msgstr ""
 
-#: docs/10.x/filesystem.md:block 160 (code)
+#: docs/10.x/filesystem.md:block 168 (code)
 msgid ""
 "$path = $request->file('avatar')->storeAs(\n"
 "    'avatars',\n"
@@ -798,15 +845,15 @@ msgid ""
 ");\n"
 msgstr ""
 
-#: docs/10.x/filesystem.md:block 162 (header)
+#: docs/10.x/filesystem.md:block 170 (header)
 msgid "Other Uploaded File Information"
 msgstr ""
 
-#: docs/10.x/filesystem.md:block 163 (paragraph)
+#: docs/10.x/filesystem.md:block 171 (paragraph)
 msgid "If you would like to get the original name and extension of the uploaded file, you may do so using the `getClientOriginalName` and `getClientOriginalExtension` methods:"
 msgstr ""
 
-#: docs/10.x/filesystem.md:block 164 (code)
+#: docs/10.x/filesystem.md:block 172 (code)
 msgid ""
 "$file = $request->file('avatar');\n"
 "\n"
@@ -814,11 +861,11 @@ msgid ""
 "$extension = $file->getClientOriginalExtension();\n"
 msgstr ""
 
-#: docs/10.x/filesystem.md:block 165 (paragraph)
+#: docs/10.x/filesystem.md:block 173 (paragraph)
 msgid "However, keep in mind that the `getClientOriginalName` and `getClientOriginalExtension` methods are considered unsafe, as the file name and extension may be tampered with by a malicious user. For this reason, you should typically prefer the `hashName` and `extension` methods to get a name and an extension for the given file upload:"
 msgstr ""
 
-#: docs/10.x/filesystem.md:block 166 (code)
+#: docs/10.x/filesystem.md:block 174 (code)
 msgid ""
 "$file = $request->file('avatar');\n"
 "\n"
@@ -826,41 +873,41 @@ msgid ""
 "$extension = $file->extension(); // Determine the file's extension based on the file's MIME type...\n"
 msgstr ""
 
-#: docs/10.x/filesystem.md:block 168 (header)
+#: docs/10.x/filesystem.md:block 176 (header)
 msgid "File Visibility"
 msgstr ""
 
-#: docs/10.x/filesystem.md:block 169 (paragraph)
+#: docs/10.x/filesystem.md:block 177 (paragraph)
 msgid "In Laravel's Flysystem integration, \"visibility\" is an abstraction of file permissions across multiple platforms. Files may either be declared `public` or `private`. When a file is declared `public`, you are indicating that the file should generally be accessible to others. For example, when using the S3 driver, you may retrieve URLs for `public` files."
 msgstr ""
 
-#: docs/10.x/filesystem.md:block 170 (paragraph)
+#: docs/10.x/filesystem.md:block 178 (paragraph)
 msgid "You can set the visibility when writing the file via the `put` method:"
 msgstr ""
 
-#: docs/10.x/filesystem.md:block 171 (code)
+#: docs/10.x/filesystem.md:block 179 (code)
 msgid ""
 "use Illuminate\\Support\\Facades\\Storage;\n"
 "\n"
 "Storage::put('file.jpg', $contents, 'public');\n"
 msgstr ""
 
-#: docs/10.x/filesystem.md:block 172 (paragraph)
+#: docs/10.x/filesystem.md:block 180 (paragraph)
 msgid "If the file has already been stored, its visibility can be retrieved and set via the `getVisibility` and `setVisibility` methods:"
 msgstr ""
 
-#: docs/10.x/filesystem.md:block 173 (code)
+#: docs/10.x/filesystem.md:block 181 (code)
 msgid ""
 "$visibility = Storage::getVisibility('file.jpg');\n"
 "\n"
 "Storage::setVisibility('file.jpg', 'public');\n"
 msgstr ""
 
-#: docs/10.x/filesystem.md:block 174 (paragraph)
+#: docs/10.x/filesystem.md:block 182 (paragraph)
 msgid "When interacting with uploaded files, you may use the `storePublicly` and `storePubliclyAs` methods to store the uploaded file with `public` visibility:"
 msgstr ""
 
-#: docs/10.x/filesystem.md:block 175 (code)
+#: docs/10.x/filesystem.md:block 183 (code)
 msgid ""
 "$path = $request->file('avatar')->storePublicly('avatars', 's3');\n"
 "\n"
@@ -871,15 +918,15 @@ msgid ""
 ");\n"
 msgstr ""
 
-#: docs/10.x/filesystem.md:block 177 (header)
+#: docs/10.x/filesystem.md:block 185 (header)
 msgid "Local Files & Visibility"
 msgstr ""
 
-#: docs/10.x/filesystem.md:block 178 (paragraph)
+#: docs/10.x/filesystem.md:block 186 (paragraph)
 msgid "When using the `local` driver, `public` [visibility](#file-visibility) translates to `0755` permissions for directories and `0644` permissions for files. You can modify the permissions mappings in your application's `filesystems` configuration file:"
 msgstr ""
 
-#: docs/10.x/filesystem.md:block 179 (code)
+#: docs/10.x/filesystem.md:block 187 (code)
 msgid ""
 "'local' => [\n"
 "    'driver' => 'local',\n"
@@ -897,15 +944,15 @@ msgid ""
 "],\n"
 msgstr ""
 
-#: docs/10.x/filesystem.md:block 181 (header)
+#: docs/10.x/filesystem.md:block 189 (header)
 msgid "Deleting Files"
 msgstr ""
 
-#: docs/10.x/filesystem.md:block 182 (paragraph)
+#: docs/10.x/filesystem.md:block 190 (paragraph)
 msgid "The `delete` method accepts a single filename or an array of files to delete:"
 msgstr ""
 
-#: docs/10.x/filesystem.md:block 183 (code)
+#: docs/10.x/filesystem.md:block 191 (code)
 msgid ""
 "use Illuminate\\Support\\Facades\\Storage;\n"
 "\n"
@@ -914,30 +961,30 @@ msgid ""
 "Storage::delete(['file.jpg', 'file2.jpg']);\n"
 msgstr ""
 
-#: docs/10.x/filesystem.md:block 184 (paragraph)
+#: docs/10.x/filesystem.md:block 192 (paragraph)
 msgid "If necessary, you may specify the disk that the file should be deleted from:"
 msgstr ""
 
-#: docs/10.x/filesystem.md:block 185 (code)
+#: docs/10.x/filesystem.md:block 193 (code)
 msgid ""
 "use Illuminate\\Support\\Facades\\Storage;\n"
 "\n"
 "Storage::disk('s3')->delete('path/file.jpg');\n"
 msgstr ""
 
-#: docs/10.x/filesystem.md:block 187 (header)
+#: docs/10.x/filesystem.md:block 195 (header)
 msgid "Directories"
 msgstr ""
 
-#: docs/10.x/filesystem.md:block 189 (header)
+#: docs/10.x/filesystem.md:block 197 (header)
 msgid "Get All Files Within A Directory"
 msgstr ""
 
-#: docs/10.x/filesystem.md:block 190 (paragraph)
+#: docs/10.x/filesystem.md:block 198 (paragraph)
 msgid "The `files` method returns an array of all of the files in a given directory. If you would like to retrieve a list of all files within a given directory including all subdirectories, you may use the `allFiles` method:"
 msgstr ""
 
-#: docs/10.x/filesystem.md:block 191 (code)
+#: docs/10.x/filesystem.md:block 199 (code)
 msgid ""
 "use Illuminate\\Support\\Facades\\Storage;\n"
 "\n"
@@ -946,66 +993,117 @@ msgid ""
 "$files = Storage::allFiles($directory);\n"
 msgstr ""
 
-#: docs/10.x/filesystem.md:block 193 (header)
+#: docs/10.x/filesystem.md:block 201 (header)
 msgid "Get All Directories Within A Directory"
 msgstr ""
 
-#: docs/10.x/filesystem.md:block 194 (paragraph)
+#: docs/10.x/filesystem.md:block 202 (paragraph)
 msgid "The `directories` method returns an array of all the directories within a given directory. Additionally, you may use the `allDirectories` method to get a list of all directories within a given directory and all of its subdirectories:"
 msgstr ""
 
-#: docs/10.x/filesystem.md:block 195 (code)
+#: docs/10.x/filesystem.md:block 203 (code)
 msgid ""
 "$directories = Storage::directories($directory);\n"
 "\n"
 "$directories = Storage::allDirectories($directory);\n"
 msgstr ""
 
-#: docs/10.x/filesystem.md:block 197 (header)
+#: docs/10.x/filesystem.md:block 205 (header)
 msgid "Create A Directory"
 msgstr ""
 
-#: docs/10.x/filesystem.md:block 198 (paragraph)
+#: docs/10.x/filesystem.md:block 206 (paragraph)
 msgid "The `makeDirectory` method will create the given directory, including any needed subdirectories:"
 msgstr ""
 
-#: docs/10.x/filesystem.md:block 199 (code)
+#: docs/10.x/filesystem.md:block 207 (code)
 msgid "Storage::makeDirectory($directory);\n"
 msgstr ""
 
-#: docs/10.x/filesystem.md:block 201 (header)
+#: docs/10.x/filesystem.md:block 209 (header)
 msgid "Delete A Directory"
 msgstr ""
 
-#: docs/10.x/filesystem.md:block 202 (paragraph)
+#: docs/10.x/filesystem.md:block 210 (paragraph)
 msgid "Finally, the `deleteDirectory` method may be used to remove a directory and all of its files:"
 msgstr ""
 
-#: docs/10.x/filesystem.md:block 203 (code)
+#: docs/10.x/filesystem.md:block 211 (code)
 msgid "Storage::deleteDirectory($directory);\n"
 msgstr ""
 
-#: docs/10.x/filesystem.md:block 205 (header)
+#: docs/10.x/filesystem.md:block 213 (header)
+msgid "Testing"
+msgstr ""
+
+#: docs/10.x/filesystem.md:block 214 (paragraph)
+msgid "The `Storage` facade's `fake` method allows you to easily generate a fake disk that, combined with the file generation utilities of the `Illuminate\\Http\\UploadedFile` class, greatly simplifies the testing of file uploads. For example:"
+msgstr ""
+
+#: docs/10.x/filesystem.md:block 215 (code)
+msgid ""
+"<?php\n"
+"\n"
+"namespace Tests\\Feature;\n"
+"\n"
+"use Illuminate\\Http\\UploadedFile;\n"
+"use Illuminate\\Support\\Facades\\Storage;\n"
+"use Tests\\TestCase;\n"
+"\n"
+"class ExampleTest extends TestCase\n"
+"{\n"
+"    public function test_albums_can_be_uploaded(): void\n"
+"    {\n"
+"        Storage::fake('photos');\n"
+"\n"
+"        $response = $this->json('POST', '/photos', [\n"
+"            UploadedFile::fake()->image('photo1.jpg'),\n"
+"            UploadedFile::fake()->image('photo2.jpg')\n"
+"        ]);\n"
+"\n"
+"        // Assert one or more files were stored...\n"
+"        Storage::disk('photos')->assertExists('photo1.jpg');\n"
+"        Storage::disk('photos')->assertExists(['photo1.jpg', 'photo2.jpg']);\n"
+"\n"
+"        // Assert one or more files were not stored...\n"
+"        Storage::disk('photos')->assertMissing('missing.jpg');\n"
+"        Storage::disk('photos')->assertMissing(['missing.jpg', 'non-existing.jpg']);\n"
+"\n"
+"        // Assert that a given directory is empty...\n"
+"        Storage::disk('photos')->assertDirectoryEmpty('/wallpapers');\n"
+"    }\n"
+"}\n"
+msgstr ""
+
+#: docs/10.x/filesystem.md:block 216 (paragraph)
+msgid "By default, the `fake` method will delete all files in its temporary directory. If you would like to keep these files, you may use the \"persistentFake\" method instead. For more information on testing file uploads, you may consult the [HTTP testing documentation's information on file uploads](/docs/{{version}}/http-tests#testing-file-uploads)."
+msgstr ""
+
+#: docs/10.x/filesystem.md:block 217 (quote)
+msgid "**Warning** The `image` method requires the [GD extension](https://www.php.net/manual/en/book.image.php)."
+msgstr ""
+
+#: docs/10.x/filesystem.md:block 219 (header)
 msgid "Custom Filesystems"
 msgstr ""
 
-#: docs/10.x/filesystem.md:block 206 (paragraph)
+#: docs/10.x/filesystem.md:block 220 (paragraph)
 msgid "Laravel's Flysystem integration provides support for several \"drivers\" out of the box; however, Flysystem is not limited to these and has adapters for many other storage systems. You can create a custom driver if you want to use one of these additional adapters in your Laravel application."
 msgstr ""
 
-#: docs/10.x/filesystem.md:block 207 (paragraph)
+#: docs/10.x/filesystem.md:block 221 (paragraph)
 msgid "In order to define a custom filesystem you will need a Flysystem adapter. Let's add a community maintained Dropbox adapter to our project:"
 msgstr ""
 
-#: docs/10.x/filesystem.md:block 208 (code)
+#: docs/10.x/filesystem.md:block 222 (code)
 msgid "composer require spatie/flysystem-dropbox\n"
 msgstr ""
 
-#: docs/10.x/filesystem.md:block 209 (paragraph)
+#: docs/10.x/filesystem.md:block 223 (paragraph)
 msgid "Next, you can register the driver within the `boot` method of one of your application's [service providers](/docs/{{version}}/providers). To accomplish this, you should use the `extend` method of the `Storage` facade:"
 msgstr ""
 
-#: docs/10.x/filesystem.md:block 210 (code)
+#: docs/10.x/filesystem.md:block 224 (code)
 msgid ""
 "<?php\n"
 "\n"
@@ -1049,11 +1147,11 @@ msgid ""
 "}\n"
 msgstr ""
 
-#: docs/10.x/filesystem.md:block 211 (paragraph)
+#: docs/10.x/filesystem.md:block 225 (paragraph)
 msgid "The first argument of the `extend` method is the name of the driver and the second is a closure that receives the `$app` and `$config` variables. The closure must return an instance of `Illuminate\\Filesystem\\FilesystemAdapter`. The `$config` variable contains the values defined in `config/filesystems.php` for the specified disk."
 msgstr ""
 
-#: docs/10.x/filesystem.md:block 212 (paragraph)
+#: docs/10.x/filesystem.md:block 226 (paragraph)
 msgid "Once you have created and registered the extension's service provider, you may use the `dropbox` driver in your `config/filesystems.php` configuration file."
 msgstr ""
 
@@ -1119,7 +1217,7 @@ msgid "Caching"
 msgstr ""
 
 #: docs/8.x/filesystem.md:block 51 (paragraph)
-msgid "To enable caching for a given disk, you may add a `cache` directive to the disk's configuration options. The `cache` option should be an array of caching options containing the `disk` name, the `expire` time in seconds, and the cache `prefix`:"
+msgid "To enable caching for a given disk, you may add a `cache` directive to the disk's configuration options. The `cache` option should be an array of caching options containing the cache `store` name, the `expire` time in seconds, and the cache `prefix`:"
 msgstr ""
 
 #: docs/8.x/filesystem.md:block 52 (code)
@@ -1247,6 +1345,39 @@ msgstr ""
 msgid "The first argument of the `extend` method is the name of the driver and the second is a closure that receives the `$app` and `$config` variables. The closure must return an instance of `League\\Flysystem\\Filesystem`. The `$config` variable contains the values defined in `config/filesystems.php` for the specified disk."
 msgstr ""
 
+#: docs/9.x/filesystem.md:block 30 (code)
+msgid "composer require league/flysystem-aws-s3-v3 \"^3.0\"\n"
+msgstr ""
+
+#: docs/9.x/filesystem.md:block 43 (code)
+msgid ""
+"'sftp' => [\n"
+"    'driver' => 'sftp',\n"
+"    'host' => env('SFTP_HOST'),\n"
+"\n"
+"    // Settings for basic authentication...\n"
+"    'username' => env('SFTP_USERNAME'),\n"
+"    'password' => env('SFTP_PASSWORD'),\n"
+"\n"
+"    // Settings for SSH key based authentication with encryption password...\n"
+"    'privateKey' => env('SFTP_PRIVATE_KEY'),\n"
+"    'passphrase' => env('SFTP_PASSPHRASE'),\n"
+"\n"
+"    // Optional SFTP Settings...\n"
+"    // 'hostFingerprint' => env('SFTP_HOST_FINGERPRINT'),\n"
+"    // 'maxTries' => 4,\n"
+"    // 'passphrase' => env('SFTP_PASSPHRASE'),\n"
+"    // 'port' => env('SFTP_PORT', 22),\n"
+"    // 'root' => env('SFTP_ROOT', ''),\n"
+"    // 'timeout' => 30,\n"
+"    // 'useAgent' => true,\n"
+"],\n"
+msgstr ""
+
+#: docs/9.x/filesystem.md:block 111 (code)
+msgid "$mime = Storage::mimeType('file.jpg')\n"
+msgstr ""
+
 #: docs/9.x/filesystem.md:block 210 (code)
 msgid ""
 "<?php\n"
@@ -1288,6 +1419,35 @@ msgid ""
 "                new Filesystem($adapter, $config),\n"
 "                $adapter,\n"
 "                $config\n"
+"            );\n"
+"        });\n"
+"    }\n"
+"}\n"
+msgstr ""
+
+#: docs/master/filesystem.md:block 99 (code)
+msgid ""
+"<?php\n"
+"\n"
+"namespace App\\Providers;\n"
+"\n"
+"use DateTime;\n"
+"use Illuminate\\Support\\Facades\\Storage;\n"
+"use Illuminate\\Support\\Facades\\URL;\n"
+"use Illuminate\\Support\\ServiceProvider;\n"
+"\n"
+"class AppServiceProvider extends ServiceProvider\n"
+"{\n"
+"    /**\n"
+"     * Bootstrap any application services.\n"
+"     */\n"
+"    public function boot(): void\n"
+"    {\n"
+"        Storage::disk('local')->buildTemporaryUrlsUsing(function (string $path, DateTime $expiration, array $options) {\n"
+"            return URL::temporarySignedRoute(\n"
+"                'files.download',\n"
+"                $expiration,\n"
+"                array_merge($options, ['path' => $path])\n"
 "            );\n"
 "        });\n"
 "    }\n"

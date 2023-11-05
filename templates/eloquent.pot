@@ -171,7 +171,7 @@ msgid "Laravel Bootcamp"
 msgstr ""
 
 #: docs/10.x/eloquent.md:block 8 (paragraph)
-msgid "If you're new to Laravel, feel free to jump into the [Laravel Bootcamp](https://bootcamp.laravel.com). The Laravel Bootcamp will walk you through building your first Laravel application using Eloquent. It's a great way to get a tour of everything the Laravel and Eloquent have to offer."
+msgid "If you're new to Laravel, feel free to jump into the [Laravel Bootcamp](https://bootcamp.laravel.com). The Laravel Bootcamp will walk you through building your first Laravel application using Eloquent. It's a great way to get a tour of everything that Laravel and Eloquent have to offer."
 msgstr ""
 
 #: docs/10.x/eloquent.md:block 10 (header)
@@ -227,6 +227,7 @@ msgid ""
 "\n"
 "# Generate a pivot model...\n"
 "php artisan make:model Member --pivot\n"
+"php artisan make:model Member -p\n"
 msgstr ""
 
 #: docs/10.x/eloquent.md:block 18 (header)
@@ -611,35 +612,15 @@ msgstr ""
 msgid "Model::preventSilentlyDiscardingAttributes(! $this->app->isProduction());\n"
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 76 (paragraph)
-msgid "Finally, you may instruct Eloquent to throw an exception if you attempt to access an attribute on a model when that attribute was not actually retrieved from the database or when the attribute does not exist. For example, this may occur when you forget to add an attribute to the `select` clause of an Eloquent query:"
-msgstr ""
-
-#: docs/10.x/eloquent.md:block 77 (code)
-msgid "Model::preventAccessingMissingAttributes(! $this->app->isProduction());\n"
-msgstr ""
-
-#: docs/10.x/eloquent.md:block 79 (header)
-msgid "Enabling Eloquent \"Strict Mode\""
-msgstr ""
-
-#: docs/10.x/eloquent.md:block 80 (paragraph)
-msgid "For convenience, you may enable all three of the methods discussed above by simply invoking the `shouldBeStrict` method:"
-msgstr ""
-
-#: docs/10.x/eloquent.md:block 81 (code)
-msgid "Model::shouldBeStrict(! $this->app->isProduction());\n"
-msgstr ""
-
-#: docs/10.x/eloquent.md:block 83 (header)
+#: docs/10.x/eloquent.md:block 77 (header)
 msgid "Retrieving Models"
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 84 (paragraph)
+#: docs/10.x/eloquent.md:block 78 (paragraph)
 msgid "Once you have created a model and [its associated database table](/docs/{{version}}/migrations#writing-migrations), you are ready to start retrieving data from your database. You can think of each Eloquent model as a powerful [query builder](/docs/{{version}}/queries) allowing you to fluently query the database table associated with the model. The model's `all` method will retrieve all of the records from the model's associated database table:"
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 85 (code)
+#: docs/10.x/eloquent.md:block 79 (code)
 msgid ""
 "use App\\Models\\Flight;\n"
 "\n"
@@ -648,15 +629,15 @@ msgid ""
 "}\n"
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 87 (header)
+#: docs/10.x/eloquent.md:block 81 (header)
 msgid "Building Queries"
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 88 (paragraph)
+#: docs/10.x/eloquent.md:block 82 (paragraph)
 msgid "The Eloquent `all` method will return all of the results in the model's table. However, since each Eloquent model serves as a [query builder](/docs/{{version}}/queries), you may add additional constraints to queries and then invoke the `get` method to retrieve the results:"
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 89 (code)
+#: docs/10.x/eloquent.md:block 83 (code)
 msgid ""
 "$flights = Flight::where('active', 1)\n"
 "               ->orderBy('name')\n"
@@ -664,30 +645,30 @@ msgid ""
 "               ->get();\n"
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 90 (quote)
+#: docs/10.x/eloquent.md:block 84 (quote)
 msgid "**Note** Since Eloquent models are query builders, you should review all of the methods provided by Laravel's [query builder](/docs/{{version}}/queries). You may use any of these methods when writing your Eloquent queries."
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 92 (header)
+#: docs/10.x/eloquent.md:block 86 (header)
 msgid "Refreshing Models"
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 93 (paragraph)
+#: docs/10.x/eloquent.md:block 87 (paragraph)
 msgid "If you already have an instance of an Eloquent model that was retrieved from the database, you can \"refresh\" the model using the `fresh` and `refresh` methods. The `fresh` method will re-retrieve the model from the database. The existing model instance will not be affected:"
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 94 (code)
+#: docs/10.x/eloquent.md:block 88 (code)
 msgid ""
 "$flight = Flight::where('number', 'FR 900')->first();\n"
 "\n"
 "$freshFlight = $flight->fresh();\n"
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 95 (paragraph)
+#: docs/10.x/eloquent.md:block 89 (paragraph)
 msgid "The `refresh` method will re-hydrate the existing model using fresh data from the database. In addition, all of its loaded relationships will be refreshed as well:"
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 96 (code)
+#: docs/10.x/eloquent.md:block 90 (code)
 msgid ""
 "$flight = Flight::where('number', 'FR 900')->first();\n"
 "\n"
@@ -698,19 +679,19 @@ msgid ""
 "$flight->number; // \"FR 900\"\n"
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 98 (header)
+#: docs/10.x/eloquent.md:block 92 (header)
 msgid "Collections"
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 99 (paragraph)
+#: docs/10.x/eloquent.md:block 93 (paragraph)
 msgid "As we have seen, Eloquent methods like `all` and `get` retrieve multiple records from the database. However, these methods don't return a plain PHP array. Instead, an instance of `Illuminate\\Database\\Eloquent\\Collection` is returned."
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 100 (paragraph)
+#: docs/10.x/eloquent.md:block 94 (paragraph)
 msgid "The Eloquent `Collection` class extends Laravel's base `Illuminate\\Support\\Collection` class, which provides a [variety of helpful methods](/docs/{{version}}/collections#available-methods) for interacting with data collections. For example, the `reject` method may be used to remove models from a collection based on the results of an invoked closure:"
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 101 (code)
+#: docs/10.x/eloquent.md:block 95 (code)
 msgid ""
 "$flights = Flight::where('destination', 'Paris')->get();\n"
 "\n"
@@ -719,34 +700,34 @@ msgid ""
 "});\n"
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 102 (paragraph)
+#: docs/10.x/eloquent.md:block 96 (paragraph)
 msgid "In addition to the methods provided by Laravel's base collection class, the Eloquent collection class provides [a few extra methods](/docs/{{version}}/eloquent-collections#available-methods) that are specifically intended for interacting with collections of Eloquent models."
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 103 (paragraph)
+#: docs/10.x/eloquent.md:block 97 (paragraph)
 msgid "Since all of Laravel's collections implement PHP's iterable interfaces, you may loop over collections as if they were an array:"
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 104 (code)
+#: docs/10.x/eloquent.md:block 98 (code)
 msgid ""
 "foreach ($flights as $flight) {\n"
 "    echo $flight->name;\n"
 "}\n"
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 106 (header)
+#: docs/10.x/eloquent.md:block 100 (header)
 msgid "Chunking Results"
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 107 (paragraph)
+#: docs/10.x/eloquent.md:block 101 (paragraph)
 msgid "Your application may run out of memory if you attempt to load tens of thousands of Eloquent records via the `all` or `get` methods. Instead of using these methods, the `chunk` method may be used to process large numbers of models more efficiently."
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 108 (paragraph)
+#: docs/10.x/eloquent.md:block 102 (paragraph)
 msgid "The `chunk` method will retrieve a subset of Eloquent models, passing them to a closure for processing. Since only the current chunk of Eloquent models is retrieved at a time, the `chunk` method will provide significantly reduced memory usage when working with a large number of models:"
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 109 (code)
+#: docs/10.x/eloquent.md:block 103 (code)
 msgid ""
 "use App\\Models\\Flight;\n"
 "use Illuminate\\Database\\Eloquent\\Collection;\n"
@@ -758,15 +739,15 @@ msgid ""
 "});\n"
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 110 (paragraph)
+#: docs/10.x/eloquent.md:block 104 (paragraph)
 msgid "The first argument passed to the `chunk` method is the number of records you wish to receive per \"chunk\". The closure passed as the second argument will be invoked for each chunk that is retrieved from the database. A database query will be executed to retrieve each chunk of records passed to the closure."
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 111 (paragraph)
+#: docs/10.x/eloquent.md:block 105 (paragraph)
 msgid "If you are filtering the results of the `chunk` method based on a column that you will also be updating while iterating over the results, you should use the `chunkById` method. Using the `chunk` method in these scenarios could lead to unexpected and inconsistent results. Internally, the `chunkById` method will always retrieve models with an `id` column greater than the last model in the previous chunk:"
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 112 (code)
+#: docs/10.x/eloquent.md:block 106 (code)
 msgid ""
 "Flight::where('departed', true)\n"
 "    ->chunkById(200, function (Collection $flights) {\n"
@@ -774,15 +755,15 @@ msgid ""
 "    }, $column = 'id');\n"
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 114 (header)
+#: docs/10.x/eloquent.md:block 108 (header)
 msgid "Chunking Using Lazy Collections"
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 115 (paragraph)
+#: docs/10.x/eloquent.md:block 109 (paragraph)
 msgid "The `lazy` method works similarly to [the `chunk` method](#chunking-results) in the sense that, behind the scenes, it executes the query in chunks. However, instead of passing each chunk directly into a callback as is, the `lazy` method returns a flattened [`LazyCollection`](/docs/{{version}}/collections#lazy-collections) of Eloquent models, which lets you interact with the results as a single stream:"
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 116 (code)
+#: docs/10.x/eloquent.md:block 110 (code)
 msgid ""
 "use App\\Models\\Flight;\n"
 "\n"
@@ -791,42 +772,42 @@ msgid ""
 "}\n"
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 117 (paragraph)
+#: docs/10.x/eloquent.md:block 111 (paragraph)
 msgid "If you are filtering the results of the `lazy` method based on a column that you will also be updating while iterating over the results, you should use the `lazyById` method. Internally, the `lazyById` method will always retrieve models with an `id` column greater than the last model in the previous chunk:"
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 118 (code)
+#: docs/10.x/eloquent.md:block 112 (code)
 msgid ""
 "Flight::where('departed', true)\n"
 "    ->lazyById(200, $column = 'id')\n"
 "    ->each->update(['departed' => false]);\n"
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 119 (paragraph)
+#: docs/10.x/eloquent.md:block 113 (paragraph)
 msgid "You may filter the results based on the descending order of the `id` using the `lazyByIdDesc` method."
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 121 (header)
+#: docs/10.x/eloquent.md:block 115 (header)
 msgid "Cursors"
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 122 (paragraph)
+#: docs/10.x/eloquent.md:block 116 (paragraph)
 msgid "Similar to the `lazy` method, the `cursor` method may be used to significantly reduce your application's memory consumption when iterating through tens of thousands of Eloquent model records."
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 123 (paragraph)
+#: docs/10.x/eloquent.md:block 117 (paragraph)
 msgid "The `cursor` method will only execute a single database query; however, the individual Eloquent models will not be hydrated until they are actually iterated over. Therefore, only one Eloquent model is kept in memory at any given time while iterating over the cursor."
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 124 (quote)
+#: docs/10.x/eloquent.md:block 118 (quote)
 msgid "**Warning** Since the `cursor` method only ever holds a single Eloquent model in memory at a time, it cannot eager load relationships. If you need to eager load relationships, consider using [the `lazy` method](#chunking-using-lazy-collections) instead."
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 125 (paragraph)
+#: docs/10.x/eloquent.md:block 119 (paragraph)
 msgid "Internally, the `cursor` method uses PHP [generators](https://www.php.net/manual/en/language.generators.overview.php) to implement this functionality:"
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 126 (code)
+#: docs/10.x/eloquent.md:block 120 (code)
 msgid ""
 "use App\\Models\\Flight;\n"
 "\n"
@@ -835,11 +816,11 @@ msgid ""
 "}\n"
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 127 (paragraph)
+#: docs/10.x/eloquent.md:block 121 (paragraph)
 msgid "The `cursor` returns an `Illuminate\\Support\\LazyCollection` instance. [Lazy collections](/docs/{{version}}/collections#lazy-collections) allow you to use many of the collection methods available on typical Laravel collections while only loading a single model into memory at a time:"
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 128 (code)
+#: docs/10.x/eloquent.md:block 122 (code)
 msgid ""
 "use App\\Models\\User;\n"
 "\n"
@@ -852,27 +833,27 @@ msgid ""
 "}\n"
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 129 (paragraph)
+#: docs/10.x/eloquent.md:block 123 (paragraph)
 msgid "Although the `cursor` method uses far less memory than a regular query (by only holding a single Eloquent model in memory at a time), it will still eventually run out of memory. This is [due to PHP's PDO driver internally caching all raw query results in its buffer](https://www.php.net/manual/en/mysqlinfo.concepts.buffering.php). If you're dealing with a very large number of Eloquent records, consider using [the `lazy` method](#chunking-using-lazy-collections) instead."
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 131 (header)
+#: docs/10.x/eloquent.md:block 125 (header)
 msgid "Advanced Subqueries"
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 133 (header)
+#: docs/10.x/eloquent.md:block 127 (header)
 msgid "Subquery Selects"
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 134 (paragraph)
+#: docs/10.x/eloquent.md:block 128 (paragraph)
 msgid "Eloquent also offers advanced subquery support, which allows you to pull information from related tables in a single query. For example, let's imagine that we have a table of flight `destinations` and a table of `flights` to destinations. The `flights` table contains an `arrived_at` column which indicates when the flight arrived at the destination."
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 135 (paragraph)
+#: docs/10.x/eloquent.md:block 129 (paragraph)
 msgid "Using the subquery functionality available to the query builder's `select` and `addSelect` methods, we can select all of the `destinations` and the name of the flight that most recently arrived at that destination using a single query:"
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 136 (code)
+#: docs/10.x/eloquent.md:block 130 (code)
 msgid ""
 "use App\\Models\\Destination;\n"
 "use App\\Models\\Flight;\n"
@@ -884,15 +865,15 @@ msgid ""
 "])->get();\n"
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 138 (header)
+#: docs/10.x/eloquent.md:block 132 (header)
 msgid "Subquery Ordering"
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 139 (paragraph)
+#: docs/10.x/eloquent.md:block 133 (paragraph)
 msgid "In addition, the query builder's `orderBy` function supports subqueries. Continuing to use our flight example, we may use this functionality to sort all destinations based on when the last flight arrived at that destination. Again, this may be done while executing a single database query:"
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 140 (code)
+#: docs/10.x/eloquent.md:block 134 (code)
 msgid ""
 "return Destination::orderByDesc(\n"
 "    Flight::select('arrived_at')\n"
@@ -902,15 +883,15 @@ msgid ""
 ")->get();\n"
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 142 (header)
+#: docs/10.x/eloquent.md:block 136 (header)
 msgid "Retrieving Single Models / Aggregates"
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 143 (paragraph)
+#: docs/10.x/eloquent.md:block 137 (paragraph)
 msgid "In addition to retrieving all of the records matching a given query, you may also retrieve single records using the `find`, `first`, or `firstWhere` methods. Instead of returning a collection of models, these methods return a single model instance:"
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 144 (code)
+#: docs/10.x/eloquent.md:block 138 (code)
 msgid ""
 "use App\\Models\\Flight;\n"
 "\n"
@@ -924,11 +905,11 @@ msgid ""
 "$flight = Flight::firstWhere('active', 1);\n"
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 145 (paragraph)
+#: docs/10.x/eloquent.md:block 139 (paragraph)
 msgid "Sometimes you may wish to perform some other action if no results are found. The `findOr` and `firstOr` methods will return a single model instance or, if no results are found, execute the given closure. The value returned by the closure will be considered the result of the method:"
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 146 (code)
+#: docs/10.x/eloquent.md:block 140 (code)
 msgid ""
 "$flight = Flight::findOr(1, function () {\n"
 "    // ...\n"
@@ -939,26 +920,26 @@ msgid ""
 "});\n"
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 148 (header)
+#: docs/10.x/eloquent.md:block 142 (header)
 msgid "Not Found Exceptions"
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 149 (paragraph)
+#: docs/10.x/eloquent.md:block 143 (paragraph)
 msgid "Sometimes you may wish to throw an exception if a model is not found. This is particularly useful in routes or controllers. The `findOrFail` and `firstOrFail` methods will retrieve the first result of the query; however, if no result is found, an `Illuminate\\Database\\Eloquent\\ModelNotFoundException` will be thrown:"
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 150 (code)
+#: docs/10.x/eloquent.md:block 144 (code)
 msgid ""
 "$flight = Flight::findOrFail(1);\n"
 "\n"
 "$flight = Flight::where('legs', '>', 3)->firstOrFail();\n"
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 151 (paragraph)
+#: docs/10.x/eloquent.md:block 145 (paragraph)
 msgid "If the `ModelNotFoundException` is not caught, a 404 HTTP response is automatically sent back to the client:"
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 152 (code)
+#: docs/10.x/eloquent.md:block 146 (code)
 msgid ""
 "use App\\Models\\Flight;\n"
 "\n"
@@ -967,19 +948,19 @@ msgid ""
 "});\n"
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 154 (header)
+#: docs/10.x/eloquent.md:block 148 (header)
 msgid "Retrieving Or Creating Models"
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 155 (paragraph)
+#: docs/10.x/eloquent.md:block 149 (paragraph)
 msgid "The `firstOrCreate` method will attempt to locate a database record using the given column / value pairs. If the model can not be found in the database, a record will be inserted with the attributes resulting from merging the first array argument with the optional second array argument:"
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 156 (paragraph)
+#: docs/10.x/eloquent.md:block 150 (paragraph)
 msgid "The `firstOrNew` method, like `firstOrCreate`, will attempt to locate a record in the database matching the given attributes. However, if a model is not found, a new model instance will be returned. Note that the model returned by `firstOrNew` has not yet been persisted to the database. You will need to manually call the `save` method to persist it:"
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 157 (code)
+#: docs/10.x/eloquent.md:block 151 (code)
 msgid ""
 "use App\\Models\\Flight;\n"
 "\n"
@@ -1006,34 +987,34 @@ msgid ""
 ");\n"
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 159 (header)
+#: docs/10.x/eloquent.md:block 153 (header)
 msgid "Retrieving Aggregates"
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 160 (paragraph)
+#: docs/10.x/eloquent.md:block 154 (paragraph)
 msgid "When interacting with Eloquent models, you may also use the `count`, `sum`, `max`, and other [aggregate methods](/docs/{{version}}/queries#aggregates) provided by the Laravel [query builder](/docs/{{version}}/queries). As you might expect, these methods return a scalar value instead of an Eloquent model instance:"
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 161 (code)
+#: docs/10.x/eloquent.md:block 155 (code)
 msgid ""
 "$count = Flight::where('active', 1)->count();\n"
 "\n"
 "$max = Flight::where('active', 1)->max('price');\n"
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 163 (header)
+#: docs/10.x/eloquent.md:block 157 (header)
 msgid "Inserting & Updating Models"
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 165 (header)
+#: docs/10.x/eloquent.md:block 159 (header)
 msgid "Inserts"
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 166 (paragraph)
+#: docs/10.x/eloquent.md:block 160 (paragraph)
 msgid "Of course, when using Eloquent, we don't only need to retrieve models from the database. We also need to insert new records. Thankfully, Eloquent makes it simple. To insert a new record into the database, you should instantiate a new model instance and set attributes on the model. Then, call the `save` method on the model instance:"
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 167 (code)
+#: docs/10.x/eloquent.md:block 161 (code)
 msgid ""
 "<?php\n"
 "\n"
@@ -1041,15 +1022,15 @@ msgid ""
 "\n"
 "use App\\Http\\Controllers\\Controller;\n"
 "use App\\Models\\Flight;\n"
+"use Illuminate\\Http\\RedirectResponse;\n"
 "use Illuminate\\Http\\Request;\n"
-"use Illuminate\\Http\\Response;\n"
 "\n"
 "class FlightController extends Controller\n"
 "{\n"
 "    /**\n"
 "     * Store a new flight in the database.\n"
 "     */\n"
-"    public function store(Request $request): Response\n"
+"    public function store(Request $request): RedirectResponse\n"
 "    {\n"
 "        // Validate the request...\n"
 "\n"
@@ -1059,20 +1040,20 @@ msgid ""
 "\n"
 "        $flight->save();\n"
 "\n"
-"        return response()->noContent();\n"
+"        return redirect('/flights');\n"
 "    }\n"
 "}\n"
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 168 (paragraph)
+#: docs/10.x/eloquent.md:block 162 (paragraph)
 msgid "In this example, we assign the `name` field from the incoming HTTP request to the `name` attribute of the `App\\Models\\Flight` model instance. When we call the `save` method, a record will be inserted into the database. The model's `created_at` and `updated_at` timestamps will automatically be set when the `save` method is called, so there is no need to set them manually."
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 169 (paragraph)
+#: docs/10.x/eloquent.md:block 163 (paragraph)
 msgid "Alternatively, you may use the `create` method to \"save\" a new model using a single PHP statement. The inserted model instance will be returned to you by the `create` method:"
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 170 (code)
+#: docs/10.x/eloquent.md:block 164 (code)
 msgid ""
 "use App\\Models\\Flight;\n"
 "\n"
@@ -1081,19 +1062,19 @@ msgid ""
 "]);\n"
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 171 (paragraph)
+#: docs/10.x/eloquent.md:block 165 (paragraph)
 msgid "However, before using the `create` method, you will need to specify either a `fillable` or `guarded` property on your model class. These properties are required because all Eloquent models are protected against mass assignment vulnerabilities by default. To learn more about mass assignment, please consult the [mass assignment documentation](#mass-assignment)."
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 173 (header)
+#: docs/10.x/eloquent.md:block 167 (header)
 msgid "Updates"
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 174 (paragraph)
+#: docs/10.x/eloquent.md:block 168 (paragraph)
 msgid "The `save` method may also be used to update models that already exist in the database. To update a model, you should retrieve it and set any attributes you wish to update. Then, you should call the model's `save` method. Again, the `updated_at` timestamp will automatically be updated, so there is no need to manually set its value:"
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 175 (code)
+#: docs/10.x/eloquent.md:block 169 (code)
 msgid ""
 "use App\\Models\\Flight;\n"
 "\n"
@@ -1104,42 +1085,42 @@ msgid ""
 "$flight->save();\n"
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 177 (header)
+#: docs/10.x/eloquent.md:block 171 (header)
 msgid "Mass Updates"
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 178 (paragraph)
+#: docs/10.x/eloquent.md:block 172 (paragraph)
 msgid "Updates can also be performed against models that match a given query. In this example, all flights that are `active` and have a `destination` of `San Diego` will be marked as delayed:"
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 179 (code)
+#: docs/10.x/eloquent.md:block 173 (code)
 msgid ""
 "Flight::where('active', 1)\n"
 "      ->where('destination', 'San Diego')\n"
 "      ->update(['delayed' => 1]);\n"
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 180 (paragraph)
+#: docs/10.x/eloquent.md:block 174 (paragraph)
 msgid "The `update` method expects an array of column and value pairs representing the columns that should be updated. The `update` method returns the number of affected rows."
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 181 (quote)
+#: docs/10.x/eloquent.md:block 175 (quote)
 msgid "**Warning** When issuing a mass update via Eloquent, the `saving`, `saved`, `updating`, and `updated` model events will not be fired for the updated models. This is because the models are never actually retrieved when issuing a mass update."
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 183 (header)
+#: docs/10.x/eloquent.md:block 177 (header)
 msgid "Examining Attribute Changes"
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 184 (paragraph)
+#: docs/10.x/eloquent.md:block 178 (paragraph)
 msgid "Eloquent provides the `isDirty`, `isClean`, and `wasChanged` methods to examine the internal state of your model and determine how its attributes have changed from when the model was originally retrieved."
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 185 (paragraph)
+#: docs/10.x/eloquent.md:block 179 (paragraph)
 msgid "The `isDirty` method determines if any of the model's attributes have been changed since the model was retrieved. You may pass a specific attribute name or an array of attributes to the `isDirty` method to determine if any of the attributes are \"dirty\". The `isClean` method will determine if an attribute has remained unchanged since the model was retrieved. This method also accepts an optional attribute argument:"
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 186 (code)
+#: docs/10.x/eloquent.md:block 180 (code)
 msgid ""
 "use App\\Models\\User;\n"
 "\n"
@@ -1167,11 +1148,11 @@ msgid ""
 "$user->isClean(); // true\n"
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 187 (paragraph)
+#: docs/10.x/eloquent.md:block 181 (paragraph)
 msgid "The `wasChanged` method determines if any attributes were changed when the model was last saved within the current request cycle. If needed, you may pass an attribute name to see if a particular attribute was changed:"
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 188 (code)
+#: docs/10.x/eloquent.md:block 182 (code)
 msgid ""
 "$user = User::create([\n"
 "    'first_name' => 'Taylor',\n"
@@ -1190,11 +1171,11 @@ msgid ""
 "$user->wasChanged(['first_name', 'title']); // true\n"
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 189 (paragraph)
+#: docs/10.x/eloquent.md:block 183 (paragraph)
 msgid "The `getOriginal` method returns an array containing the original attributes of the model regardless of any changes to the model since it was retrieved. If needed, you may pass a specific attribute name to get the original value of a particular attribute:"
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 190 (code)
+#: docs/10.x/eloquent.md:block 184 (code)
 msgid ""
 "$user = User::find(1);\n"
 "\n"
@@ -1208,27 +1189,27 @@ msgid ""
 "$user->getOriginal(); // Array of original attributes...\n"
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 192 (header)
+#: docs/10.x/eloquent.md:block 186 (header)
 msgid "Mass Assignment"
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 193 (paragraph)
+#: docs/10.x/eloquent.md:block 187 (paragraph)
 msgid "You may use the `create` method to \"save\" a new model using a single PHP statement. The inserted model instance will be returned to you by the method:"
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 195 (paragraph)
+#: docs/10.x/eloquent.md:block 189 (paragraph)
 msgid "However, before using the `create` method, you will need to specify either a `fillable` or `guarded` property on your model class. These properties are required because all Eloquent models are protected against mass assignment vulnerabilities by default."
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 196 (paragraph)
+#: docs/10.x/eloquent.md:block 190 (paragraph)
 msgid "A mass assignment vulnerability occurs when a user passes an unexpected HTTP request field and that field changes a column in your database that you did not expect. For example, a malicious user might send an `is_admin` parameter through an HTTP request, which is then passed to your model's `create` method, allowing the user to escalate themselves to an administrator."
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 197 (paragraph)
+#: docs/10.x/eloquent.md:block 191 (paragraph)
 msgid "So, to get started, you should define which model attributes you want to make mass assignable. You may do this using the `$fillable` property on the model. For example, let's make the `name` attribute of our `Flight` model mass assignable:"
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 198 (code)
+#: docs/10.x/eloquent.md:block 192 (code)
 msgid ""
 "<?php\n"
 "\n"
@@ -1247,31 +1228,31 @@ msgid ""
 "}\n"
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 199 (paragraph)
+#: docs/10.x/eloquent.md:block 193 (paragraph)
 msgid "Once you have specified which attributes are mass assignable, you may use the `create` method to insert a new record in the database. The `create` method returns the newly created model instance:"
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 200 (code)
+#: docs/10.x/eloquent.md:block 194 (code)
 msgid "$flight = Flight::create(['name' => 'London to Paris']);\n"
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 201 (paragraph)
+#: docs/10.x/eloquent.md:block 195 (paragraph)
 msgid "If you already have a model instance, you may use the `fill` method to populate it with an array of attributes:"
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 202 (code)
+#: docs/10.x/eloquent.md:block 196 (code)
 msgid "$flight->fill(['name' => 'Amsterdam to Frankfurt']);\n"
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 204 (header)
+#: docs/10.x/eloquent.md:block 198 (header)
 msgid "Mass Assignment & JSON Columns"
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 205 (paragraph)
+#: docs/10.x/eloquent.md:block 199 (paragraph)
 msgid "When assigning JSON columns, each column's mass assignable key must be specified in your model's `$fillable` array. For security, Laravel does not support updating nested JSON attributes when using the `guarded` property:"
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 206 (code)
+#: docs/10.x/eloquent.md:block 200 (code)
 msgid ""
 "/**\n"
 " * The attributes that are mass assignable.\n"
@@ -1283,15 +1264,15 @@ msgid ""
 "];\n"
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 208 (header)
+#: docs/10.x/eloquent.md:block 202 (header)
 msgid "Allowing Mass Assignment"
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 209 (paragraph)
+#: docs/10.x/eloquent.md:block 203 (paragraph)
 msgid "If you would like to make all of your attributes mass assignable, you may define your model's `$guarded` property as an empty array. If you choose to unguard your model, you should take special care to always hand-craft the arrays passed to Eloquent's `fill`, `create`, and `update` methods:"
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 210 (code)
+#: docs/10.x/eloquent.md:block 204 (code)
 msgid ""
 "/**\n"
 " * The attributes that aren't mass assignable.\n"
@@ -1301,19 +1282,19 @@ msgid ""
 "protected $guarded = [];\n"
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 212 (header)
+#: docs/10.x/eloquent.md:block 206 (header)
 msgid "Mass Assignment Exceptions"
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 213 (paragraph)
+#: docs/10.x/eloquent.md:block 207 (paragraph)
 msgid "By default, attributes that are not included in the `$fillable` array are silently discarded when performing mass-assignment operations. In production, this is expected behavior; however, during local development it can lead to confusion as to why model changes are not taking effect."
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 214 (paragraph)
+#: docs/10.x/eloquent.md:block 208 (paragraph)
 msgid "If you wish, you may instruct Laravel to throw an exception when attempting to fill an unfillable attribute by invoking the `preventSilentlyDiscardingAttributes` method. Typically, this method should be invoked within the `boot` method of one of your application's service providers:"
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 215 (code)
+#: docs/10.x/eloquent.md:block 209 (code)
 msgid ""
 "use Illuminate\\Database\\Eloquent\\Model;\n"
 "\n"
@@ -1326,19 +1307,19 @@ msgid ""
 "}\n"
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 217 (header)
+#: docs/10.x/eloquent.md:block 211 (header)
 msgid "Upserts"
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 218 (paragraph)
+#: docs/10.x/eloquent.md:block 212 (paragraph)
 msgid "Occasionally, you may need to update an existing model or create a new model if no matching model exists. Like the `firstOrCreate` method, the `updateOrCreate` method persists the model, so there's no need to manually call the `save` method."
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 219 (paragraph)
+#: docs/10.x/eloquent.md:block 213 (paragraph)
 msgid "In the example below, if a flight exists with a `departure` location of `Oakland` and a `destination` location of `San Diego`, its `price` and `discounted` columns will be updated. If no such flight exists, a new flight will be created which has the attributes resulting from merging the first argument array with the second argument array:"
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 220 (code)
+#: docs/10.x/eloquent.md:block 214 (code)
 msgid ""
 "$flight = Flight::updateOrCreate(\n"
 "    ['departure' => 'Oakland', 'destination' => 'San Diego'],\n"
@@ -1346,11 +1327,11 @@ msgid ""
 ");\n"
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 221 (paragraph)
+#: docs/10.x/eloquent.md:block 215 (paragraph)
 msgid "If you would like to perform multiple \"upserts\" in a single query, then you should use the `upsert` method instead. The method's first argument consists of the values to insert or update, while the second argument lists the column(s) that uniquely identify records within the associated table. The method's third and final argument is an array of the columns that should be updated if a matching record already exists in the database. The `upsert` method will automatically set the `created_at` and `updated_at` timestamps if timestamps are enabled on the model:"
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 222 (code)
+#: docs/10.x/eloquent.md:block 216 (code)
 msgid ""
 "Flight::upsert([\n"
 "    ['departure' => 'Oakland', 'destination' => 'San Diego', 'price' => 99],\n"
@@ -1358,19 +1339,19 @@ msgid ""
 "], ['departure', 'destination'], ['price']);\n"
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 223 (quote)
+#: docs/10.x/eloquent.md:block 217 (quote)
 msgid "**Warning** All databases except SQL Server require the columns in the second argument of the `upsert` method to have a \"primary\" or \"unique\" index. In addition, the MySQL database driver ignores the second argument of the `upsert` method and always uses the \"primary\" and \"unique\" indexes of the table to detect existing records."
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 225 (header)
+#: docs/10.x/eloquent.md:block 219 (header)
 msgid "Deleting Models"
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 226 (paragraph)
+#: docs/10.x/eloquent.md:block 220 (paragraph)
 msgid "To delete a model, you may call the `delete` method on the model instance:"
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 227 (code)
+#: docs/10.x/eloquent.md:block 221 (code)
 msgid ""
 "use App\\Models\\Flight;\n"
 "\n"
@@ -1379,23 +1360,23 @@ msgid ""
 "$flight->delete();\n"
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 228 (paragraph)
+#: docs/10.x/eloquent.md:block 222 (paragraph)
 msgid "You may call the `truncate` method to delete all of the model's associated database records. The `truncate` operation will also reset any auto-incrementing IDs on the model's associated table:"
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 229 (code)
+#: docs/10.x/eloquent.md:block 223 (code)
 msgid "Flight::truncate();\n"
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 231 (header)
+#: docs/10.x/eloquent.md:block 225 (header)
 msgid "Deleting An Existing Model By Its Primary Key"
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 232 (paragraph)
+#: docs/10.x/eloquent.md:block 226 (paragraph)
 msgid "In the example above, we are retrieving the model from the database before calling the `delete` method. However, if you know the primary key of the model, you may delete the model without explicitly retrieving it by calling the `destroy` method. In addition to accepting the single primary key, the `destroy` method will accept multiple primary keys, an array of primary keys, or a [collection](/docs/{{version}}/collections) of primary keys:"
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 233 (code)
+#: docs/10.x/eloquent.md:block 227 (code)
 msgid ""
 "Flight::destroy(1);\n"
 "\n"
@@ -1406,35 +1387,35 @@ msgid ""
 "Flight::destroy(collect([1, 2, 3]));\n"
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 234 (quote)
+#: docs/10.x/eloquent.md:block 228 (quote)
 msgid "**Warning** The `destroy` method loads each model individually and calls the `delete` method so that the `deleting` and `deleted` events are properly dispatched for each model."
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 236 (header)
+#: docs/10.x/eloquent.md:block 230 (header)
 msgid "Deleting Models Using Queries"
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 237 (paragraph)
+#: docs/10.x/eloquent.md:block 231 (paragraph)
 msgid "Of course, you may build an Eloquent query to delete all models matching your query's criteria. In this example, we will delete all flights that are marked as inactive. Like mass updates, mass deletes will not dispatch model events for the models that are deleted:"
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 238 (code)
+#: docs/10.x/eloquent.md:block 232 (code)
 msgid "$deleted = Flight::where('active', 0)->delete();\n"
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 239 (quote)
+#: docs/10.x/eloquent.md:block 233 (quote)
 msgid "**Warning** When executing a mass delete statement via Eloquent, the `deleting` and `deleted` model events will not be dispatched for the deleted models. This is because the models are never actually retrieved when executing the delete statement."
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 241 (header)
+#: docs/10.x/eloquent.md:block 235 (header)
 msgid "Soft Deleting"
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 242 (paragraph)
+#: docs/10.x/eloquent.md:block 236 (paragraph)
 msgid "In addition to actually removing records from your database, Eloquent can also \"soft delete\" models. When models are soft deleted, they are not actually removed from your database. Instead, a `deleted_at` attribute is set on the model indicating the date and time at which the model was \"deleted\". To enable soft deletes for a model, add the `Illuminate\\Database\\Eloquent\\SoftDeletes` trait to the model:"
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 243 (code)
+#: docs/10.x/eloquent.md:block 237 (code)
 msgid ""
 "<?php\n"
 "\n"
@@ -1449,15 +1430,15 @@ msgid ""
 "}\n"
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 244 (quote)
+#: docs/10.x/eloquent.md:block 238 (quote)
 msgid "**Note** The `SoftDeletes` trait will automatically cast the `deleted_at` attribute to a `DateTime` / `Carbon` instance for you."
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 245 (paragraph)
+#: docs/10.x/eloquent.md:block 239 (paragraph)
 msgid "You should also add the `deleted_at` column to your database table. The Laravel [schema builder](/docs/{{version}}/migrations) contains a helper method to create this column:"
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 246 (code)
+#: docs/10.x/eloquent.md:block 240 (code)
 msgid ""
 "use Illuminate\\Database\\Schema\\Blueprint;\n"
 "use Illuminate\\Support\\Facades\\Schema;\n"
@@ -1471,85 +1452,85 @@ msgid ""
 "});\n"
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 247 (paragraph)
+#: docs/10.x/eloquent.md:block 241 (paragraph)
 msgid "Now, when you call the `delete` method on the model, the `deleted_at` column will be set to the current date and time. However, the model's database record will be left in the table. When querying a model that uses soft deletes, the soft deleted models will automatically be excluded from all query results."
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 248 (paragraph)
+#: docs/10.x/eloquent.md:block 242 (paragraph)
 msgid "To determine if a given model instance has been soft deleted, you may use the `trashed` method:"
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 249 (code)
+#: docs/10.x/eloquent.md:block 243 (code)
 msgid ""
 "if ($flight->trashed()) {\n"
 "    // ...\n"
 "}\n"
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 251 (header)
+#: docs/10.x/eloquent.md:block 245 (header)
 msgid "Restoring Soft Deleted Models"
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 252 (paragraph)
+#: docs/10.x/eloquent.md:block 246 (paragraph)
 msgid "Sometimes you may wish to \"un-delete\" a soft deleted model. To restore a soft deleted model, you may call the `restore` method on a model instance. The `restore` method will set the model's `deleted_at` column to `null`:"
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 253 (code)
+#: docs/10.x/eloquent.md:block 247 (code)
 msgid "$flight->restore();\n"
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 254 (paragraph)
+#: docs/10.x/eloquent.md:block 248 (paragraph)
 msgid "You may also use the `restore` method in a query to restore multiple models. Again, like other \"mass\" operations, this will not dispatch any model events for the models that are restored:"
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 255 (code)
+#: docs/10.x/eloquent.md:block 249 (code)
 msgid ""
 "Flight::withTrashed()\n"
 "        ->where('airline_id', 1)\n"
 "        ->restore();\n"
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 256 (paragraph)
+#: docs/10.x/eloquent.md:block 250 (paragraph)
 msgid "The `restore` method may also be used when building [relationship](/docs/{{version}}/eloquent-relationships) queries:"
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 257 (code)
+#: docs/10.x/eloquent.md:block 251 (code)
 msgid "$flight->history()->restore();\n"
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 259 (header)
+#: docs/10.x/eloquent.md:block 253 (header)
 msgid "Permanently Deleting Models"
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 260 (paragraph)
+#: docs/10.x/eloquent.md:block 254 (paragraph)
 msgid "Sometimes you may need to truly remove a model from your database. You may use the `forceDelete` method to permanently remove a soft deleted model from the database table:"
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 261 (code)
+#: docs/10.x/eloquent.md:block 255 (code)
 msgid "$flight->forceDelete();\n"
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 262 (paragraph)
+#: docs/10.x/eloquent.md:block 256 (paragraph)
 msgid "You may also use the `forceDelete` method when building Eloquent relationship queries:"
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 263 (code)
+#: docs/10.x/eloquent.md:block 257 (code)
 msgid "$flight->history()->forceDelete();\n"
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 265 (header)
+#: docs/10.x/eloquent.md:block 259 (header)
 msgid "Querying Soft Deleted Models"
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 267 (header)
+#: docs/10.x/eloquent.md:block 261 (header)
 msgid "Including Soft Deleted Models"
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 268 (paragraph)
+#: docs/10.x/eloquent.md:block 262 (paragraph)
 msgid "As noted above, soft deleted models will automatically be excluded from query results. However, you may force soft deleted models to be included in a query's results by calling the `withTrashed` method on the query:"
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 269 (code)
+#: docs/10.x/eloquent.md:block 263 (code)
 msgid ""
 "use App\\Models\\Flight;\n"
 "\n"
@@ -1558,38 +1539,38 @@ msgid ""
 "                ->get();\n"
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 270 (paragraph)
+#: docs/10.x/eloquent.md:block 264 (paragraph)
 msgid "The `withTrashed` method may also be called when building a [relationship](/docs/{{version}}/eloquent-relationships) query:"
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 271 (code)
+#: docs/10.x/eloquent.md:block 265 (code)
 msgid "$flight->history()->withTrashed()->get();\n"
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 273 (header)
+#: docs/10.x/eloquent.md:block 267 (header)
 msgid "Retrieving Only Soft Deleted Models"
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 274 (paragraph)
+#: docs/10.x/eloquent.md:block 268 (paragraph)
 msgid "The `onlyTrashed` method will retrieve **only** soft deleted models:"
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 275 (code)
+#: docs/10.x/eloquent.md:block 269 (code)
 msgid ""
 "$flights = Flight::onlyTrashed()\n"
 "                ->where('airline_id', 1)\n"
 "                ->get();\n"
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 277 (header)
+#: docs/10.x/eloquent.md:block 271 (header)
 msgid "Pruning Models"
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 278 (paragraph)
+#: docs/10.x/eloquent.md:block 272 (paragraph)
 msgid "Sometimes you may want to periodically delete models that are no longer needed. To accomplish this, you may add the `Illuminate\\Database\\Eloquent\\Prunable` or `Illuminate\\Database\\Eloquent\\MassPrunable` trait to the models you would like to periodically prune. After adding one of the traits to the model, implement a `prunable` method which returns an Eloquent query builder that resolves the models that are no longer needed:"
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 279 (code)
+#: docs/10.x/eloquent.md:block 273 (code)
 msgid ""
 "<?php\n"
 "\n"
@@ -1613,11 +1594,11 @@ msgid ""
 "}\n"
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 280 (paragraph)
+#: docs/10.x/eloquent.md:block 274 (paragraph)
 msgid "When marking models as `Prunable`, you may also define a `pruning` method on the model. This method will be called before the model is deleted. This method can be useful for deleting any additional resources associated with the model, such as stored files, before the model is permanently removed from the database:"
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 281 (code)
+#: docs/10.x/eloquent.md:block 275 (code)
 msgid ""
 "/**\n"
 " * Prepare the model for pruning.\n"
@@ -1628,11 +1609,11 @@ msgid ""
 "}\n"
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 282 (paragraph)
+#: docs/10.x/eloquent.md:block 276 (paragraph)
 msgid "After configuring your prunable model, you should schedule the `model:prune` Artisan command in your application's `App\\Console\\Kernel` class. You are free to choose the appropriate interval at which this command should be run:"
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 283 (code)
+#: docs/10.x/eloquent.md:block 277 (code)
 msgid ""
 "/**\n"
 " * Define the application's command schedule.\n"
@@ -1643,49 +1624,49 @@ msgid ""
 "}\n"
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 284 (paragraph)
+#: docs/10.x/eloquent.md:block 278 (paragraph)
 msgid "Behind the scenes, the `model:prune` command will automatically detect \"Prunable\" models within your application's `app/Models` directory. If your models are in a different location, you may use the `--model` option to specify the model class names:"
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 285 (code)
+#: docs/10.x/eloquent.md:block 279 (code)
 msgid ""
 "$schedule->command('model:prune', [\n"
 "    '--model' => [Address::class, Flight::class],\n"
 "])->daily();\n"
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 286 (paragraph)
+#: docs/10.x/eloquent.md:block 280 (paragraph)
 msgid "If you wish to exclude certain models from being pruned while pruning all other detected models, you may use the `--except` option:"
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 287 (code)
+#: docs/10.x/eloquent.md:block 281 (code)
 msgid ""
 "$schedule->command('model:prune', [\n"
 "    '--except' => [Address::class, Flight::class],\n"
 "])->daily();\n"
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 288 (paragraph)
+#: docs/10.x/eloquent.md:block 282 (paragraph)
 msgid "You may test your `prunable` query by executing the `model:prune` command with the `--pretend` option. When pretending, the `model:prune` command will simply report how many records would be pruned if the command were to actually run:"
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 289 (code)
+#: docs/10.x/eloquent.md:block 283 (code)
 msgid "php artisan model:prune --pretend\n"
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 290 (quote)
+#: docs/10.x/eloquent.md:block 284 (quote)
 msgid "**Warning** Soft deleting models will be permanently deleted (`forceDelete`) if they match the prunable query."
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 292 (header)
+#: docs/10.x/eloquent.md:block 286 (header)
 msgid "Mass Pruning"
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 293 (paragraph)
+#: docs/10.x/eloquent.md:block 287 (paragraph)
 msgid "When models are marked with the `Illuminate\\Database\\Eloquent\\MassPrunable` trait, models are deleted from the database using mass-deletion queries. Therefore, the `pruning` method will not be invoked, nor will the `deleting` and `deleted` model events be dispatched. This is because the models are never actually retrieved before deletion, thus making the pruning process much more efficient:"
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 294 (code)
+#: docs/10.x/eloquent.md:block 288 (code)
 msgid ""
 "<?php\n"
 "\n"
@@ -1709,15 +1690,15 @@ msgid ""
 "}\n"
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 296 (header)
+#: docs/10.x/eloquent.md:block 290 (header)
 msgid "Replicating Models"
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 297 (paragraph)
+#: docs/10.x/eloquent.md:block 291 (paragraph)
 msgid "You may create an unsaved copy of an existing model instance using the `replicate` method. This method is particularly useful when you have model instances that share many of the same attributes:"
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 298 (code)
+#: docs/10.x/eloquent.md:block 292 (code)
 msgid ""
 "use App\\Models\\Address;\n"
 "\n"
@@ -1736,11 +1717,11 @@ msgid ""
 "$billing->save();\n"
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 299 (paragraph)
+#: docs/10.x/eloquent.md:block 293 (paragraph)
 msgid "To exclude one or more attributes from being replicated to the new model, you may pass an array to the `replicate` method:"
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 300 (code)
+#: docs/10.x/eloquent.md:block 294 (code)
 msgid ""
 "$flight = Flight::create([\n"
 "    'destination' => 'LAX',\n"
@@ -1755,31 +1736,39 @@ msgid ""
 "]);\n"
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 302 (header)
+#: docs/10.x/eloquent.md:block 296 (header)
 msgid "Query Scopes"
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 304 (header)
+#: docs/10.x/eloquent.md:block 298 (header)
 msgid "Global Scopes"
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 305 (paragraph)
+#: docs/10.x/eloquent.md:block 299 (paragraph)
 msgid "Global scopes allow you to add constraints to all queries for a given model. Laravel's own [soft delete](#soft-deleting) functionality utilizes global scopes to only retrieve \"non-deleted\" models from the database. Writing your own global scopes can provide a convenient, easy way to make sure every query for a given model receives certain constraints."
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 307 (header)
+#: docs/10.x/eloquent.md:block 301 (header)
+msgid "Generating Scopes"
+msgstr ""
+
+#: docs/10.x/eloquent.md:block 302 (paragraph)
+msgid "To generate a new global scope, you may invoke the `make:scope` Artisan command, which will place the generated scope in your application's `app/Models/Scopes` directory:"
+msgstr ""
+
+#: docs/10.x/eloquent.md:block 303 (code)
+msgid "php artisan make:scope AncientScope\n"
+msgstr ""
+
+#: docs/10.x/eloquent.md:block 305 (header)
 msgid "Writing Global Scopes"
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 308 (paragraph)
-msgid "Writing a global scope is simple. First, define a class that implements the `Illuminate\\Database\\Eloquent\\Scope` interface. Laravel does not have a conventional location where you should place scope classes, so you are free to place this class in any directory that you wish."
+#: docs/10.x/eloquent.md:block 306 (paragraph)
+msgid "Writing a global scope is simple. First, use the `make:scope` command to generate a class that implements the `Illuminate\\Database\\Eloquent\\Scope` interface. The `Scope` interface requires you to implement one method: `apply`. The `apply` method may add `where` constraints or other types of clauses to the query as needed:"
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 309 (paragraph)
-msgid "The `Scope` interface requires you to implement one method: `apply`. The `apply` method may add `where` constraints or other types of clauses to the query as needed:"
-msgstr ""
-
-#: docs/10.x/eloquent.md:block 310 (code)
+#: docs/10.x/eloquent.md:block 307 (code)
 msgid ""
 "<?php\n"
 "\n"
@@ -1801,19 +1790,19 @@ msgid ""
 "}\n"
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 311 (quote)
+#: docs/10.x/eloquent.md:block 308 (quote)
 msgid "**Note** If your global scope is adding columns to the select clause of the query, you should use the `addSelect` method instead of `select`. This will prevent the unintentional replacement of the query's existing select clause."
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 313 (header)
+#: docs/10.x/eloquent.md:block 310 (header)
 msgid "Applying Global Scopes"
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 314 (paragraph)
+#: docs/10.x/eloquent.md:block 311 (paragraph)
 msgid "To assign a global scope to a model, you should override the model's `booted` method and invoke the model's `addGlobalScope` method. The `addGlobalScope` method accepts an instance of your scope as its only argument:"
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 315 (code)
+#: docs/10.x/eloquent.md:block 312 (code)
 msgid ""
 "<?php\n"
 "\n"
@@ -1834,23 +1823,23 @@ msgid ""
 "}\n"
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 316 (paragraph)
+#: docs/10.x/eloquent.md:block 313 (paragraph)
 msgid "After adding the scope in the example above to the `App\\Models\\User` model, a call to the `User::all()` method will execute the following SQL query:"
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 317 (code)
+#: docs/10.x/eloquent.md:block 314 (code)
 msgid "select * from `users` where `created_at` < 0021-02-18 00:00:00\n"
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 319 (header)
+#: docs/10.x/eloquent.md:block 316 (header)
 msgid "Anonymous Global Scopes"
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 320 (paragraph)
+#: docs/10.x/eloquent.md:block 317 (paragraph)
 msgid "Eloquent also allows you to define global scopes using closures, which is particularly useful for simple scopes that do not warrant a separate class of their own. When defining a global scope using a closure, you should provide a scope name of your own choosing as the first argument to the `addGlobalScope` method:"
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 321 (code)
+#: docs/10.x/eloquent.md:block 318 (code)
 msgid ""
 "<?php\n"
 "\n"
@@ -1873,31 +1862,31 @@ msgid ""
 "}\n"
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 323 (header)
+#: docs/10.x/eloquent.md:block 320 (header)
 msgid "Removing Global Scopes"
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 324 (paragraph)
+#: docs/10.x/eloquent.md:block 321 (paragraph)
 msgid "If you would like to remove a global scope for a given query, you may use the `withoutGlobalScope` method. This method accepts the class name of the global scope as its only argument:"
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 325 (code)
+#: docs/10.x/eloquent.md:block 322 (code)
 msgid "User::withoutGlobalScope(AncientScope::class)->get();\n"
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 326 (paragraph)
+#: docs/10.x/eloquent.md:block 323 (paragraph)
 msgid "Or, if you defined the global scope using a closure, you should pass the string name that you assigned to the global scope:"
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 327 (code)
+#: docs/10.x/eloquent.md:block 324 (code)
 msgid "User::withoutGlobalScope('ancient')->get();\n"
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 328 (paragraph)
+#: docs/10.x/eloquent.md:block 325 (paragraph)
 msgid "If you would like to remove several or even all of the query's global scopes, you may use the `withoutGlobalScopes` method:"
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 329 (code)
+#: docs/10.x/eloquent.md:block 326 (code)
 msgid ""
 "// Remove all of the global scopes...\n"
 "User::withoutGlobalScopes()->get();\n"
@@ -1908,19 +1897,19 @@ msgid ""
 "])->get();\n"
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 331 (header)
+#: docs/10.x/eloquent.md:block 328 (header)
 msgid "Local Scopes"
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 332 (paragraph)
+#: docs/10.x/eloquent.md:block 329 (paragraph)
 msgid "Local scopes allow you to define common sets of query constraints that you may easily re-use throughout your application. For example, you may need to frequently retrieve all users that are considered \"popular\". To define a scope, prefix an Eloquent model method with `scope`."
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 333 (paragraph)
+#: docs/10.x/eloquent.md:block 330 (paragraph)
 msgid "Scopes should always return the same query builder instance or `void`:"
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 334 (code)
+#: docs/10.x/eloquent.md:block 331 (code)
 msgid ""
 "<?php\n"
 "\n"
@@ -1949,54 +1938,55 @@ msgid ""
 "}\n"
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 336 (header)
+#: docs/10.x/eloquent.md:block 333 (header)
 msgid "Utilizing A Local Scope"
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 337 (paragraph)
+#: docs/10.x/eloquent.md:block 334 (paragraph)
 msgid "Once the scope has been defined, you may call the scope methods when querying the model. However, you should not include the `scope` prefix when calling the method. You can even chain calls to various scopes:"
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 338 (code)
+#: docs/10.x/eloquent.md:block 335 (code)
 msgid ""
 "use App\\Models\\User;\n"
 "\n"
 "$users = User::popular()->active()->orderBy('created_at')->get();\n"
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 339 (paragraph)
+#: docs/10.x/eloquent.md:block 336 (paragraph)
 msgid "Combining multiple Eloquent model scopes via an `or` query operator may require the use of closures to achieve the correct [logical grouping](/docs/{{version}}/queries#logical-grouping):"
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 340 (code)
+#: docs/10.x/eloquent.md:block 337 (code)
 msgid ""
 "$users = User::popular()->orWhere(function (Builder $query) {\n"
 "    $query->active();\n"
 "})->get();\n"
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 341 (paragraph)
+#: docs/10.x/eloquent.md:block 338 (paragraph)
 msgid "However, since this can be cumbersome, Laravel provides a \"higher order\" `orWhere` method that allows you to fluently chain scopes together without the use of closures:"
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 342 (code)
-msgid "$users = App\\Models\\User::popular()->orWhere->active()->get();\n"
+#: docs/10.x/eloquent.md:block 339 (code)
+msgid "$users = User::popular()->orWhere->active()->get();\n"
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 344 (header)
+#: docs/10.x/eloquent.md:block 341 (header)
 msgid "Dynamic Scopes"
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 345 (paragraph)
+#: docs/10.x/eloquent.md:block 342 (paragraph)
 msgid "Sometimes you may wish to define a scope that accepts parameters. To get started, just add your additional parameters to your scope method's signature. Scope parameters should be defined after the `$query` parameter:"
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 346 (code)
+#: docs/10.x/eloquent.md:block 343 (code)
 msgid ""
 "<?php\n"
 "\n"
 "namespace App\\Models;\n"
 "\n"
+"use Illuminate\\Database\\Eloquent\\Builder;\n"
 "use Illuminate\\Database\\Eloquent\\Model;\n"
 "\n"
 "class User extends Model\n"
@@ -2011,23 +2001,23 @@ msgid ""
 "}\n"
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 347 (paragraph)
+#: docs/10.x/eloquent.md:block 344 (paragraph)
 msgid "Once the expected arguments have been added to your scope method's signature, you may pass the arguments when calling the scope:"
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 348 (code)
+#: docs/10.x/eloquent.md:block 345 (code)
 msgid "$users = User::ofType('admin')->get();\n"
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 350 (header)
+#: docs/10.x/eloquent.md:block 347 (header)
 msgid "Comparing Models"
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 351 (paragraph)
+#: docs/10.x/eloquent.md:block 348 (paragraph)
 msgid "Sometimes you may need to determine if two models are the \"same\" or not. The `is` and `isNot` methods may be used to quickly verify two models have the same primary key, table, and database connection or not:"
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 352 (code)
+#: docs/10.x/eloquent.md:block 349 (code)
 msgid ""
 "if ($post->is($anotherPost)) {\n"
 "    // ...\n"
@@ -2038,38 +2028,38 @@ msgid ""
 "}\n"
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 353 (paragraph)
+#: docs/10.x/eloquent.md:block 350 (paragraph)
 msgid "The `is` and `isNot` methods are also available when using the `belongsTo`, `hasOne`, `morphTo`, and `morphOne` [relationships](/docs/{{version}}/eloquent-relationships). This method is particularly helpful when you would like to compare a related model without issuing a query to retrieve that model:"
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 354 (code)
+#: docs/10.x/eloquent.md:block 351 (code)
 msgid ""
 "if ($post->author()->is($user)) {\n"
 "    // ...\n"
 "}\n"
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 356 (header)
+#: docs/10.x/eloquent.md:block 353 (header)
 msgid "Events"
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 357 (quote)
+#: docs/10.x/eloquent.md:block 354 (quote)
 msgid "**Note** Want to broadcast your Eloquent events directly to your client-side application? Check out Laravel's [model event broadcasting](/docs/{{version}}/broadcasting#model-broadcasting)."
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 358 (paragraph)
+#: docs/10.x/eloquent.md:block 355 (paragraph)
 msgid "Eloquent models dispatch several events, allowing you to hook into the following moments in a model's lifecycle: `retrieved`, `creating`, `created`, `updating`, `updated`, `saving`, `saved`, `deleting`, `deleted`, `trashed`, `forceDeleting`, `forceDeleted`, `restoring`, `restored`, and `replicating`."
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 359 (paragraph)
+#: docs/10.x/eloquent.md:block 356 (paragraph)
 msgid "The `retrieved` event will dispatch when an existing model is retrieved from the database. When a new model is saved for the first time, the `creating` and `created` events will dispatch. The `updating` / `updated` events will dispatch when an existing model is modified and the `save` method is called. The `saving` / `saved` events will dispatch when a model is created or updated - even if the model's attributes have not been changed. Event names ending with `-ing` are dispatched before any changes to the model are persisted, while events ending with `-ed` are dispatched after the changes to the model are persisted."
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 360 (paragraph)
+#: docs/10.x/eloquent.md:block 357 (paragraph)
 msgid "To start listening to model events, define a `$dispatchesEvents` property on your Eloquent model. This property maps various points of the Eloquent model's lifecycle to your own [event classes](/docs/{{version}}/events). Each model event class should expect to receive an instance of the affected model via its constructor:"
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 361 (code)
+#: docs/10.x/eloquent.md:block 358 (code)
 msgid ""
 "<?php\n"
 "\n"
@@ -2096,23 +2086,23 @@ msgid ""
 "}\n"
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 362 (paragraph)
+#: docs/10.x/eloquent.md:block 359 (paragraph)
 msgid "After defining and mapping your Eloquent events, you may use [event listeners](/docs/{{version}}/events#defining-listeners) to handle the events."
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 363 (quote)
+#: docs/10.x/eloquent.md:block 360 (quote)
 msgid "**Warning** When issuing a mass update or delete query via Eloquent, the `saved`, `updated`, `deleting`, and `deleted` model events will not be dispatched for the affected models. This is because the models are never actually retrieved when performing mass updates or deletes."
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 365 (header)
+#: docs/10.x/eloquent.md:block 362 (header)
 msgid "Using Closures"
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 366 (paragraph)
+#: docs/10.x/eloquent.md:block 363 (paragraph)
 msgid "Instead of using custom event classes, you may register closures that execute when various model events are dispatched. Typically, you should register these closures in the `booted` method of your model:"
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 367 (code)
+#: docs/10.x/eloquent.md:block 364 (code)
 msgid ""
 "<?php\n"
 "\n"
@@ -2134,11 +2124,11 @@ msgid ""
 "}\n"
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 368 (paragraph)
+#: docs/10.x/eloquent.md:block 365 (paragraph)
 msgid "If needed, you may utilize [queueable anonymous event listeners](/docs/{{version}}/events#queuable-anonymous-event-listeners) when registering model events. This will instruct Laravel to execute the model event listener in the background using your application's [queue](/docs/{{version}}/queues):"
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 369 (code)
+#: docs/10.x/eloquent.md:block 366 (code)
 msgid ""
 "use function Illuminate\\Events\\queueable;\n"
 "\n"
@@ -2147,27 +2137,27 @@ msgid ""
 "}));\n"
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 371 (header)
+#: docs/10.x/eloquent.md:block 368 (header)
 msgid "Observers"
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 373 (header)
+#: docs/10.x/eloquent.md:block 370 (header)
 msgid "Defining Observers"
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 374 (paragraph)
+#: docs/10.x/eloquent.md:block 371 (paragraph)
 msgid "If you are listening for many events on a given model, you may use observers to group all of your listeners into a single class. Observer classes have method names which reflect the Eloquent events you wish to listen for. Each of these methods receives the affected model as their only argument. The `make:observer` Artisan command is the easiest way to create a new observer class:"
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 375 (code)
+#: docs/10.x/eloquent.md:block 372 (code)
 msgid "php artisan make:observer UserObserver --model=User\n"
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 376 (paragraph)
+#: docs/10.x/eloquent.md:block 373 (paragraph)
 msgid "This command will place the new observer in your `app/Observers` directory. If this directory does not exist, Artisan will create it for you. Your fresh observer will look like the following:"
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 377 (code)
+#: docs/10.x/eloquent.md:block 374 (code)
 msgid ""
 "<?php\n"
 "\n"
@@ -2219,11 +2209,11 @@ msgid ""
 "}\n"
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 378 (paragraph)
+#: docs/10.x/eloquent.md:block 375 (paragraph)
 msgid "To register an observer, you need to call the `observe` method on the model you wish to observe. You may register observers in the `boot` method of your application's `App\\Providers\\EventServiceProvider` service provider:"
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 379 (code)
+#: docs/10.x/eloquent.md:block 376 (code)
 msgid ""
 "use App\\Models\\User;\n"
 "use App\\Observers\\UserObserver;\n"
@@ -2237,11 +2227,11 @@ msgid ""
 "}\n"
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 380 (paragraph)
+#: docs/10.x/eloquent.md:block 377 (paragraph)
 msgid "Alternatively, you may list your observers within an `$observers` property of your applications' `App\\Providers\\EventServiceProvider` class:"
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 381 (code)
+#: docs/10.x/eloquent.md:block 378 (code)
 msgid ""
 "use App\\Models\\User;\n"
 "use App\\Observers\\UserObserver;\n"
@@ -2256,35 +2246,29 @@ msgid ""
 "];\n"
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 382 (quote)
+#: docs/10.x/eloquent.md:block 379 (quote)
 msgid "**Note** There are additional events an observer can listen to, such as `saving` and `retrieved`. These events are described within the [events](#events) documentation."
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 384 (header)
+#: docs/10.x/eloquent.md:block 381 (header)
 msgid "Observers & Database Transactions"
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 385 (paragraph)
-msgid "When models are being created within a database transaction, you may want to instruct an observer to only execute its event handlers after the database transaction is committed. You may accomplish this by defining an `$afterCommit` property on the observer. If a database transaction is not in progress, the event handlers will execute immediately:"
+#: docs/10.x/eloquent.md:block 382 (paragraph)
+msgid "When models are being created within a database transaction, you may want to instruct an observer to only execute its event handlers after the database transaction is committed. You may accomplish this by implementing the `ShouldHandleEventsAfterCommit` interface on your observer. If a database transaction is not in progress, the event handlers will execute immediately:"
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 386 (code)
+#: docs/10.x/eloquent.md:block 383 (code)
 msgid ""
 "<?php\n"
 "\n"
 "namespace App\\Observers;\n"
 "\n"
 "use App\\Models\\User;\n"
+"use Illuminate\\Contracts\\Events\\ShouldHandleEventsAfterCommit;\n"
 "\n"
-"class UserObserver\n"
+"class UserObserver implements ShouldHandleEventsAfterCommit\n"
 "{\n"
-"    /**\n"
-"     * Handle events after all transactions are committed.\n"
-"     *\n"
-"     * @var bool\n"
-"     */\n"
-"    public $afterCommit = true;\n"
-"\n"
 "    /**\n"
 "     * Handle the User \"created\" event.\n"
 "     */\n"
@@ -2295,15 +2279,15 @@ msgid ""
 "}\n"
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 388 (header)
+#: docs/10.x/eloquent.md:block 385 (header)
 msgid "Muting Events"
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 389 (paragraph)
+#: docs/10.x/eloquent.md:block 386 (paragraph)
 msgid "You may occasionally need to temporarily \"mute\" all events fired by a model. You may achieve this using the `withoutEvents` method. The `withoutEvents` method accepts a closure as its only argument. Any code executed within this closure will not dispatch model events, and any value returned by the closure will be returned by the `withoutEvents` method:"
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 390 (code)
+#: docs/10.x/eloquent.md:block 387 (code)
 msgid ""
 "use App\\Models\\User;\n"
 "\n"
@@ -2314,15 +2298,15 @@ msgid ""
 "});\n"
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 392 (header)
+#: docs/10.x/eloquent.md:block 389 (header)
 msgid "Saving A Single Model Without Events"
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 393 (paragraph)
+#: docs/10.x/eloquent.md:block 390 (paragraph)
 msgid "Sometimes you may wish to \"save\" a given model without dispatching any events. You may accomplish this using the `saveQuietly` method:"
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 394 (code)
+#: docs/10.x/eloquent.md:block 391 (code)
 msgid ""
 "$user = User::findOrFail(1);\n"
 "\n"
@@ -2331,11 +2315,11 @@ msgid ""
 "$user->saveQuietly();\n"
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 395 (paragraph)
+#: docs/10.x/eloquent.md:block 392 (paragraph)
 msgid "You may also \"update\", \"delete\", \"soft delete\", \"restore\", and \"replicate\" a given model without dispatching any events:"
 msgstr ""
 
-#: docs/10.x/eloquent.md:block 396 (code)
+#: docs/10.x/eloquent.md:block 393 (code)
 msgid ""
 "$user->deleteQuietly();\n"
 "$user->forceDeleteQuietly();\n"
@@ -2348,6 +2332,37 @@ msgstr ""
 
 #: docs/8.x/eloquent.md:block 6 (quote)
 msgid "{tip} Before getting started, be sure to configure a database connection in your application's `config/database.php` configuration file. For more information on configuring your database, check out [the database configuration documentation](/docs/{{version}}/database#configuration)."
+msgstr ""
+
+#: docs/8.x/eloquent.md:block 14 (code)
+msgid ""
+"# Generate a model and a FlightFactory class...\n"
+"php artisan make:model Flight --factory\n"
+"php artisan make:model Flight -f\n"
+"\n"
+"# Generate a model and a FlightSeeder class...\n"
+"php artisan make:model Flight --seed\n"
+"php artisan make:model Flight -s\n"
+"\n"
+"# Generate a model and a FlightController class...\n"
+"php artisan make:model Flight --controller\n"
+"php artisan make:model Flight -c\n"
+"\n"
+"# Generate a model, FlightController resource class, and form request classes...\n"
+"php artisan make:model Flight --controller --resource --requests\n"
+"php artisan make:model Flight -crR\n"
+"\n"
+"# Generate a model and a FlightPolicy class...\n"
+"php artisan make:model Flight --policy\n"
+"\n"
+"# Generate a model and a migration, factory, seeder, and controller...\n"
+"php artisan make:model Flight -mfsc\n"
+"\n"
+"# Shortcut to generate a model, migration, factory, seeder, policy, controller, and form requests...\n"
+"php artisan make:model Flight --all\n"
+"\n"
+"# Generate a pivot model...\n"
+"php artisan make:model Member --pivot\n"
 msgstr ""
 
 #: docs/8.x/eloquent.md:block 18 (code)
@@ -2666,6 +2681,14 @@ msgid ""
 "}\n"
 msgstr ""
 
+#: docs/8.x/eloquent.md:block 271 (paragraph)
+msgid "Writing a global scope is simple. First, define a class that implements the `Illuminate\\Database\\Eloquent\\Scope` interface. Laravel does not have a conventional location where you should place scope classes, so you are free to place this class in any directory that you wish."
+msgstr ""
+
+#: docs/8.x/eloquent.md:block 272 (paragraph)
+msgid "The `Scope` interface requires you to implement one method: `apply`. The `apply` method may add `where` constraints or other types of clauses to the query as needed:"
+msgstr ""
+
 #: docs/8.x/eloquent.md:block 273 (code)
 msgid ""
 "<?php\n"
@@ -2776,6 +2799,10 @@ msgid ""
 "        $query->where('active', 1);\n"
 "    }\n"
 "}\n"
+msgstr ""
+
+#: docs/8.x/eloquent.md:block 305 (code)
+msgid "$users = App\\Models\\User::popular()->orWhere->active()->get();\n"
 msgstr ""
 
 #: docs/8.x/eloquent.md:block 309 (code)
@@ -2971,6 +2998,10 @@ msgstr ""
 msgid "{tip} There are additional events an observer can listen to, such as `saving` and `retrieved`. These events are described within the [events](#events) documentation."
 msgstr ""
 
+#: docs/8.x/eloquent.md:block 346 (paragraph)
+msgid "When models are being created within a database transaction, you may want to instruct an observer to only execute its event handlers after the database transaction is committed. You may accomplish this by defining an `$afterCommit` property on the observer. If a database transaction is not in progress, the event handlers will execute immediately:"
+msgstr ""
+
 #: docs/8.x/eloquent.md:block 347 (code)
 msgid ""
 "<?php\n"
@@ -3012,6 +3043,10 @@ msgid ""
 "});\n"
 msgstr ""
 
+#: docs/9.x/eloquent.md:block 8 (paragraph)
+msgid "If you're new to Laravel, feel free to jump into the [Laravel Bootcamp](https://bootcamp.laravel.com). The Laravel Bootcamp will walk you through building your first Laravel application using Eloquent. It's a great way to get a tour of everything the Laravel and Eloquent have to offer."
+msgstr ""
+
 #: docs/9.x/eloquent.md:block 48 (code)
 msgid ""
 "use Ramsey\\Uuid\\Uuid;\n"
@@ -3050,6 +3085,26 @@ msgid ""
 "{\n"
 "    Model::preventLazyLoading(! $this->app->isProduction());\n"
 "}\n"
+msgstr ""
+
+#: docs/9.x/eloquent.md:block 76 (paragraph)
+msgid "Finally, you may instruct Eloquent to throw an exception if you attempt to access an attribute on a model when that attribute was not actually retrieved from the database or when the attribute does not exist. For example, this may occur when you forget to add an attribute to the `select` clause of an Eloquent query:"
+msgstr ""
+
+#: docs/9.x/eloquent.md:block 77 (code)
+msgid "Model::preventAccessingMissingAttributes(! $this->app->isProduction());\n"
+msgstr ""
+
+#: docs/9.x/eloquent.md:block 79 (header)
+msgid "Enabling Eloquent \"Strict Mode\""
+msgstr ""
+
+#: docs/9.x/eloquent.md:block 80 (paragraph)
+msgid "For convenience, you may enable all three of the methods discussed above by simply invoking the `shouldBeStrict` method:"
+msgstr ""
+
+#: docs/9.x/eloquent.md:block 81 (code)
+msgid "Model::shouldBeStrict(! $this->app->isProduction());\n"
 msgstr ""
 
 #: docs/9.x/eloquent.md:block 215 (code)
@@ -3179,6 +3234,96 @@ msgid ""
 "    public function forceDeleted(User $user)\n"
 "    {\n"
 "        //\n"
+"    }\n"
+"}\n"
+msgstr ""
+
+#: docs/master/eloquent.md:block 167 (code)
+msgid ""
+"<?php\n"
+"\n"
+"namespace App\\Http\\Controllers;\n"
+"\n"
+"use App\\Http\\Controllers\\Controller;\n"
+"use App\\Models\\Flight;\n"
+"use Illuminate\\Http\\Request;\n"
+"use Illuminate\\Http\\Response;\n"
+"\n"
+"class FlightController extends Controller\n"
+"{\n"
+"    /**\n"
+"     * Store a new flight in the database.\n"
+"     */\n"
+"    public function store(Request $request): Response\n"
+"    {\n"
+"        // Validate the request...\n"
+"\n"
+"        $flight = new Flight;\n"
+"\n"
+"        $flight->name = $request->name;\n"
+"\n"
+"        $flight->save();\n"
+"\n"
+"        return response()->noContent();\n"
+"    }\n"
+"}\n"
+msgstr ""
+
+#: docs/master/eloquent.md:block 221 (paragraph)
+msgid "Eloquent's `upsert` method may be used to update or create records in a single, atomic operation. The method's first argument consists of the values to insert or update, while the second argument lists the column(s) that uniquely identify records within the associated table. The method's third and final argument is an array of the columns that should be updated if a matching record already exists in the database. The `upsert` method will automatically set the `created_at` and `updated_at` timestamps if timestamps are enabled on the model:"
+msgstr ""
+
+#: docs/master/eloquent.md:block 222 (code)
+msgid ""
+"Flight::upsert([\n"
+"    ['departure' => 'Oakland', 'destination' => 'San Diego', 'price' => 99],\n"
+"    ['departure' => 'Chicago', 'destination' => 'New York', 'price' => 150]\n"
+"], uniqueBy: ['departure', 'destination'], update: ['price']);\n"
+msgstr ""
+
+#: docs/master/eloquent.md:block 346 (code)
+msgid ""
+"<?php\n"
+"\n"
+"namespace App\\Models;\n"
+"\n"
+"use Illuminate\\Database\\Eloquent\\Model;\n"
+"\n"
+"class User extends Model\n"
+"{\n"
+"    /**\n"
+"     * Scope a query to only include users of a given type.\n"
+"     */\n"
+"    public function scopeOfType(Builder $query, string $type): void\n"
+"    {\n"
+"        $query->where('type', $type);\n"
+"    }\n"
+"}\n"
+msgstr ""
+
+#: docs/master/eloquent.md:block 386 (code)
+msgid ""
+"<?php\n"
+"\n"
+"namespace App\\Observers;\n"
+"\n"
+"use App\\Models\\User;\n"
+"\n"
+"class UserObserver\n"
+"{\n"
+"    /**\n"
+"     * Handle events after all transactions are committed.\n"
+"     *\n"
+"     * @var bool\n"
+"     */\n"
+"    public $afterCommit = true;\n"
+"\n"
+"    /**\n"
+"     * Handle the User \"created\" event.\n"
+"     */\n"
+"    public function created(User $user): void\n"
+"    {\n"
+"        // ...\n"
 "    }\n"
 "}\n"
 msgstr ""

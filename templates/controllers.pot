@@ -83,10 +83,18 @@ msgid "Basic Controllers"
 msgstr ""
 
 #: docs/10.x/controllers.md:block 10 (paragraph)
-msgid "Let's take a look at an example of a basic controller. Note that the controller extends the base controller class included with Laravel: `App\\Http\\Controllers\\Controller`:"
+msgid "To quickly generate a new controller, you may run the `make:controller` Artisan command. By default, all of the controllers for your application are stored in the `app/Http/Controllers` directory:"
 msgstr ""
 
 #: docs/10.x/controllers.md:block 11 (code)
+msgid "php artisan make:controller UserController\n"
+msgstr ""
+
+#: docs/10.x/controllers.md:block 12 (paragraph)
+msgid "Let's take a look at an example of a basic controller. A controller may have any number of public methods which will respond to incoming HTTP requests:"
+msgstr ""
+
+#: docs/10.x/controllers.md:block 13 (code)
 msgid ""
 "<?php\n"
 "\n"
@@ -109,96 +117,91 @@ msgid ""
 "}\n"
 msgstr ""
 
-#: docs/10.x/controllers.md:block 12 (paragraph)
-msgid "You can define a route to this controller method like so:"
+#: docs/10.x/controllers.md:block 14 (paragraph)
+msgid "Once you have written a controller class and method, you may define a route to the controller method like so:"
 msgstr ""
 
-#: docs/10.x/controllers.md:block 13 (code)
+#: docs/10.x/controllers.md:block 15 (code)
 msgid ""
 "use App\\Http\\Controllers\\UserController;\n"
 "\n"
 "Route::get('/user/{id}', [UserController::class, 'show']);\n"
 msgstr ""
 
-#: docs/10.x/controllers.md:block 14 (paragraph)
+#: docs/10.x/controllers.md:block 16 (paragraph)
 msgid "When an incoming request matches the specified route URI, the `show` method on the `App\\Http\\Controllers\\UserController` class will be invoked and the route parameters will be passed to the method."
 msgstr ""
 
-#: docs/10.x/controllers.md:block 15 (quote)
+#: docs/10.x/controllers.md:block 17 (quote)
 msgid "**Note** Controllers are not **required** to extend a base class. However, you will not have access to convenient features such as the `middleware` and `authorize` methods."
 msgstr ""
 
-#: docs/10.x/controllers.md:block 17 (header)
+#: docs/10.x/controllers.md:block 19 (header)
 msgid "Single Action Controllers"
 msgstr ""
 
-#: docs/10.x/controllers.md:block 18 (paragraph)
+#: docs/10.x/controllers.md:block 20 (paragraph)
 msgid "If a controller action is particularly complex, you might find it convenient to dedicate an entire controller class to that single action. To accomplish this, you may define a single `__invoke` method within the controller:"
 msgstr ""
 
-#: docs/10.x/controllers.md:block 19 (code)
+#: docs/10.x/controllers.md:block 21 (code)
 msgid ""
 "<?php\n"
 "\n"
 "namespace App\\Http\\Controllers;\n"
-"\n"
-"use App\\Models\\User;\n"
-"use Illuminate\\Http\\Response;\n"
 "\n"
 "class ProvisionServer extends Controller\n"
 "{\n"
 "    /**\n"
 "     * Provision a new web server.\n"
 "     */\n"
-"    public function __invoke(): Response\n"
+"    public function __invoke()\n"
 "    {\n"
 "        // ...\n"
-"\n"
-"        return response()->noContent();\n"
 "    }\n"
 "}\n"
 msgstr ""
 
-#: docs/10.x/controllers.md:block 20 (paragraph)
+#: docs/10.x/controllers.md:block 22 (paragraph)
 msgid "When registering routes for single action controllers, you do not need to specify a controller method. Instead, you may simply pass the name of the controller to the router:"
 msgstr ""
 
-#: docs/10.x/controllers.md:block 21 (code)
+#: docs/10.x/controllers.md:block 23 (code)
 msgid ""
 "use App\\Http\\Controllers\\ProvisionServer;\n"
 "\n"
 "Route::post('/server', ProvisionServer::class);\n"
 msgstr ""
 
-#: docs/10.x/controllers.md:block 22 (paragraph)
+#: docs/10.x/controllers.md:block 24 (paragraph)
 msgid "You may generate an invokable controller by using the `--invokable` option of the `make:controller` Artisan command:"
 msgstr ""
 
-#: docs/10.x/controllers.md:block 23 (code)
+#: docs/10.x/controllers.md:block 25 (code)
 msgid "php artisan make:controller ProvisionServer --invokable\n"
 msgstr ""
 
-#: docs/10.x/controllers.md:block 24 (quote)
+#: docs/10.x/controllers.md:block 26 (quote)
 msgid "**Note** Controller stubs may be customized using [stub publishing](/docs/{{version}}/artisan#stub-customization)."
 msgstr ""
 
-#: docs/10.x/controllers.md:block 26 (header)
+#: docs/10.x/controllers.md:block 28 (header)
 msgid "Controller Middleware"
 msgstr ""
 
-#: docs/10.x/controllers.md:block 27 (paragraph)
+#: docs/10.x/controllers.md:block 29 (paragraph)
 msgid "[Middleware](/docs/{{version}}/middleware) may be assigned to the controller's routes in your route files:"
 msgstr ""
 
-#: docs/10.x/controllers.md:block 28 (code)
+#: docs/10.x/controllers.md:block 30 (code)
 msgid "Route::get('profile', [UserController::class, 'show'])->middleware('auth');\n"
 msgstr ""
 
-#: docs/10.x/controllers.md:block 29 (paragraph)
+#: docs/10.x/controllers.md:block 31 (paragraph)
 msgid "Or, you may find it convenient to specify middleware within your controller's constructor. Using the `middleware` method within your controller's constructor, you can assign middleware to the controller's actions:"
 msgstr ""
 
-#: docs/10.x/controllers.md:block 30 (code)
+#: docs/10.x/controllers.md:block 32 (code)
 msgid ""
 "class UserController extends Controller\n"
 "{\n"
@@ -214,11 +217,11 @@ msgid ""
 "}\n"
 msgstr ""
 
-#: docs/10.x/controllers.md:block 31 (paragraph)
+#: docs/10.x/controllers.md:block 33 (paragraph)
 msgid "Controllers also allow you to register middleware using a closure. This provides a convenient way to define an inline middleware for a single controller without defining an entire middleware class:"
 msgstr ""
 
-#: docs/10.x/controllers.md:block 32 (code)
+#: docs/10.x/controllers.md:block 34 (code)
 msgid ""
 "use Closure;\n"
 "use Illuminate\\Http\\Request;\n"
@@ -228,42 +231,42 @@ msgid ""
 "});\n"
 msgstr ""
 
-#: docs/10.x/controllers.md:block 34 (header)
+#: docs/10.x/controllers.md:block 36 (header)
 msgid "Resource Controllers"
 msgstr ""
 
-#: docs/10.x/controllers.md:block 35 (paragraph)
+#: docs/10.x/controllers.md:block 37 (paragraph)
 msgid "If you think of each Eloquent model in your application as a \"resource\", it is typical to perform the same sets of actions against each resource in your application. For example, imagine your application contains a `Photo` model and a `Movie` model. It is likely that users can create, read, update, or delete these resources."
 msgstr ""
 
-#: docs/10.x/controllers.md:block 36 (paragraph)
+#: docs/10.x/controllers.md:block 38 (paragraph)
 msgid "Because of this common use case, Laravel resource routing assigns the typical create, read, update, and delete (\"CRUD\") routes to a controller with a single line of code. To get started, we can use the `make:controller` Artisan command's `--resource` option to quickly create a controller to handle these actions:"
 msgstr ""
 
-#: docs/10.x/controllers.md:block 37 (code)
+#: docs/10.x/controllers.md:block 39 (code)
 msgid "php artisan make:controller PhotoController --resource\n"
 msgstr ""
 
-#: docs/10.x/controllers.md:block 38 (paragraph)
+#: docs/10.x/controllers.md:block 40 (paragraph)
 msgid "This command will generate a controller at `app/Http/Controllers/PhotoController.php`. The controller will contain a method for each of the available resource operations. Next, you may register a resource route that points to the controller:"
 msgstr ""
 
-#: docs/10.x/controllers.md:block 39 (code)
+#: docs/10.x/controllers.md:block 41 (code)
 msgid ""
 "use App\\Http\\Controllers\\PhotoController;\n"
 "\n"
 "Route::resource('photos', PhotoController::class);\n"
 msgstr ""
 
-#: docs/10.x/controllers.md:block 40 (paragraph)
+#: docs/10.x/controllers.md:block 42 (paragraph)
 msgid "This single route declaration creates multiple routes to handle a variety of actions on the resource. The generated controller will already have methods stubbed for each of these actions. Remember, you can always get a quick overview of your application's routes by running the `route:list` Artisan command."
 msgstr ""
 
-#: docs/10.x/controllers.md:block 41 (paragraph)
+#: docs/10.x/controllers.md:block 43 (paragraph)
 msgid "You may even register many resource controllers at once by passing an array to the `resources` method:"
 msgstr ""
 
-#: docs/10.x/controllers.md:block 42 (code)
+#: docs/10.x/controllers.md:block 44 (code)
 msgid ""
 "Route::resources([\n"
 "    'photos' => PhotoController::class,\n"
@@ -271,123 +274,123 @@ msgid ""
 "]);\n"
 msgstr ""
 
-#: docs/10.x/controllers.md:block 44 (header)
+#: docs/10.x/controllers.md:block 46 (header)
 msgid "Actions Handled By Resource Controller"
 msgstr ""
 
-#: docs/10.x/controllers.md:block 45 (table)
+#: docs/10.x/controllers.md:block 47 (table)
 msgid "Verb"
 msgstr ""
 
-#: docs/10.x/controllers.md:block 45 (table)
+#: docs/10.x/controllers.md:block 47 (table)
 msgid "URI"
 msgstr ""
 
-#: docs/10.x/controllers.md:block 45 (table)
+#: docs/10.x/controllers.md:block 47 (table)
 msgid "Action"
 msgstr ""
 
-#: docs/10.x/controllers.md:block 45 (table)
+#: docs/10.x/controllers.md:block 47 (table)
 msgid "Route Name"
 msgstr ""
 
-#: docs/10.x/controllers.md:block 45 (table)
+#: docs/10.x/controllers.md:block 47 (table)
 msgid "GET"
 msgstr ""
 
-#: docs/10.x/controllers.md:block 45 (table)
+#: docs/10.x/controllers.md:block 47 (table)
 msgid "`/photos`"
 msgstr ""
 
-#: docs/10.x/controllers.md:block 45 (table)
+#: docs/10.x/controllers.md:block 47 (table)
 msgid "index"
 msgstr ""
 
-#: docs/10.x/controllers.md:block 45 (table)
+#: docs/10.x/controllers.md:block 47 (table)
 msgid "photos.index"
 msgstr ""
 
-#: docs/10.x/controllers.md:block 45 (table)
+#: docs/10.x/controllers.md:block 47 (table)
 msgid "`/photos/create`"
 msgstr ""
 
-#: docs/10.x/controllers.md:block 45 (table)
+#: docs/10.x/controllers.md:block 47 (table)
 msgid "create"
 msgstr ""
 
-#: docs/10.x/controllers.md:block 45 (table)
+#: docs/10.x/controllers.md:block 47 (table)
 msgid "photos.create"
 msgstr ""
 
-#: docs/10.x/controllers.md:block 45 (table)
+#: docs/10.x/controllers.md:block 47 (table)
 msgid "POST"
 msgstr ""
 
-#: docs/10.x/controllers.md:block 45 (table)
+#: docs/10.x/controllers.md:block 47 (table)
 msgid "store"
 msgstr ""
 
-#: docs/10.x/controllers.md:block 45 (table)
+#: docs/10.x/controllers.md:block 47 (table)
 msgid "photos.store"
 msgstr ""
 
-#: docs/10.x/controllers.md:block 45 (table)
+#: docs/10.x/controllers.md:block 47 (table)
 msgid "`/photos/{photo}`"
 msgstr ""
 
-#: docs/10.x/controllers.md:block 45 (table)
+#: docs/10.x/controllers.md:block 47 (table)
 msgid "show"
 msgstr ""
 
-#: docs/10.x/controllers.md:block 45 (table)
+#: docs/10.x/controllers.md:block 47 (table)
 msgid "photos.show"
 msgstr ""
 
-#: docs/10.x/controllers.md:block 45 (table)
+#: docs/10.x/controllers.md:block 47 (table)
 msgid "`/photos/{photo}/edit`"
 msgstr ""
 
-#: docs/10.x/controllers.md:block 45 (table)
+#: docs/10.x/controllers.md:block 47 (table)
 msgid "edit"
 msgstr ""
 
-#: docs/10.x/controllers.md:block 45 (table)
+#: docs/10.x/controllers.md:block 47 (table)
 msgid "photos.edit"
 msgstr ""
 
-#: docs/10.x/controllers.md:block 45 (table)
+#: docs/10.x/controllers.md:block 47 (table)
 msgid "PUT/PATCH"
 msgstr ""
 
-#: docs/10.x/controllers.md:block 45 (table)
+#: docs/10.x/controllers.md:block 47 (table)
 msgid "update"
 msgstr ""
 
-#: docs/10.x/controllers.md:block 45 (table)
+#: docs/10.x/controllers.md:block 47 (table)
 msgid "photos.update"
 msgstr ""
 
-#: docs/10.x/controllers.md:block 45 (table)
+#: docs/10.x/controllers.md:block 47 (table)
 msgid "DELETE"
 msgstr ""
 
-#: docs/10.x/controllers.md:block 45 (table)
+#: docs/10.x/controllers.md:block 47 (table)
 msgid "destroy"
 msgstr ""
 
-#: docs/10.x/controllers.md:block 45 (table)
+#: docs/10.x/controllers.md:block 47 (table)
 msgid "photos.destroy"
 msgstr ""
 
-#: docs/10.x/controllers.md:block 47 (header)
+#: docs/10.x/controllers.md:block 49 (header)
 msgid "Customizing Missing Model Behavior"
 msgstr ""
 
-#: docs/10.x/controllers.md:block 48 (paragraph)
+#: docs/10.x/controllers.md:block 50 (paragraph)
 msgid "Typically, a 404 HTTP response will be generated if an implicitly bound resource model is not found. However, you may customize this behavior by calling the `missing` method when defining your resource route. The `missing` method accepts a closure that will be invoked if an implicitly bound model can not be found for any of the resource's routes:"
 msgstr ""
 
-#: docs/10.x/controllers.md:block 49 (code)
+#: docs/10.x/controllers.md:block 51 (code)
 msgid ""
 "use App\\Http\\Controllers\\PhotoController;\n"
 "use Illuminate\\Http\\Request;\n"
@@ -399,62 +402,62 @@ msgid ""
 "        });\n"
 msgstr ""
 
-#: docs/10.x/controllers.md:block 51 (header)
+#: docs/10.x/controllers.md:block 53 (header)
 msgid "Soft Deleted Models"
 msgstr ""
 
-#: docs/10.x/controllers.md:block 52 (paragraph)
+#: docs/10.x/controllers.md:block 54 (paragraph)
 msgid "Typically, implicit model binding will not retrieve models that have been [soft deleted](/docs/{{version}}/eloquent#soft-deleting), and will instead return a 404 HTTP response. However, you can instruct the framework to allow soft deleted models by invoking the `withTrashed` method when defining your resource route:"
 msgstr ""
 
-#: docs/10.x/controllers.md:block 53 (code)
+#: docs/10.x/controllers.md:block 55 (code)
 msgid ""
 "use App\\Http\\Controllers\\PhotoController;\n"
 "\n"
 "Route::resource('photos', PhotoController::class)->withTrashed();\n"
 msgstr ""
 
-#: docs/10.x/controllers.md:block 54 (paragraph)
+#: docs/10.x/controllers.md:block 56 (paragraph)
 msgid "Calling `withTrashed` with no arguments will allow soft deleted models for the `show`, `edit`, and `update` resource routes. You may specify a subset of these routes by passing an array to the `withTrashed` method:"
 msgstr ""
 
-#: docs/10.x/controllers.md:block 55 (code)
+#: docs/10.x/controllers.md:block 57 (code)
 msgid "Route::resource('photos', PhotoController::class)->withTrashed(['show']);\n"
 msgstr ""
 
-#: docs/10.x/controllers.md:block 57 (header)
+#: docs/10.x/controllers.md:block 59 (header)
 msgid "Specifying The Resource Model"
 msgstr ""
 
-#: docs/10.x/controllers.md:block 58 (paragraph)
+#: docs/10.x/controllers.md:block 60 (paragraph)
 msgid "If you are using [route model binding](/docs/{{version}}/routing#route-model-binding) and would like the resource controller's methods to type-hint a model instance, you may use the `--model` option when generating the controller:"
 msgstr ""
 
-#: docs/10.x/controllers.md:block 59 (code)
+#: docs/10.x/controllers.md:block 61 (code)
 msgid "php artisan make:controller PhotoController --model=Photo --resource\n"
 msgstr ""
 
-#: docs/10.x/controllers.md:block 61 (header)
+#: docs/10.x/controllers.md:block 63 (header)
 msgid "Generating Form Requests"
 msgstr ""
 
-#: docs/10.x/controllers.md:block 62 (paragraph)
+#: docs/10.x/controllers.md:block 64 (paragraph)
 msgid "You may provide the `--requests` option when generating a resource controller to instruct Artisan to generate [form request classes](/docs/{{version}}/validation#form-request-validation) for the controller's storage and update methods:"
 msgstr ""
 
-#: docs/10.x/controllers.md:block 63 (code)
+#: docs/10.x/controllers.md:block 65 (code)
 msgid "php artisan make:controller PhotoController --model=Photo --resource --requests\n"
 msgstr ""
 
-#: docs/10.x/controllers.md:block 65 (header)
+#: docs/10.x/controllers.md:block 67 (header)
 msgid "Partial Resource Routes"
 msgstr ""
 
-#: docs/10.x/controllers.md:block 66 (paragraph)
+#: docs/10.x/controllers.md:block 68 (paragraph)
 msgid "When declaring a resource route, you may specify a subset of actions the controller should handle instead of the full set of default actions:"
 msgstr ""
 
-#: docs/10.x/controllers.md:block 67 (code)
+#: docs/10.x/controllers.md:block 69 (code)
 msgid ""
 "use App\\Http\\Controllers\\PhotoController;\n"
 "\n"
@@ -467,26 +470,26 @@ msgid ""
 "]);\n"
 msgstr ""
 
-#: docs/10.x/controllers.md:block 69 (header)
+#: docs/10.x/controllers.md:block 71 (header)
 msgid "API Resource Routes"
 msgstr ""
 
-#: docs/10.x/controllers.md:block 70 (paragraph)
+#: docs/10.x/controllers.md:block 72 (paragraph)
 msgid "When declaring resource routes that will be consumed by APIs, you will commonly want to exclude routes that present HTML templates such as `create` and `edit`. For convenience, you may use the `apiResource` method to automatically exclude these two routes:"
 msgstr ""
 
-#: docs/10.x/controllers.md:block 71 (code)
+#: docs/10.x/controllers.md:block 73 (code)
 msgid ""
 "use App\\Http\\Controllers\\PhotoController;\n"
 "\n"
 "Route::apiResource('photos', PhotoController::class);\n"
 msgstr ""
 
-#: docs/10.x/controllers.md:block 72 (paragraph)
+#: docs/10.x/controllers.md:block 74 (paragraph)
 msgid "You may register many API resource controllers at once by passing an array to the `apiResources` method:"
 msgstr ""
 
-#: docs/10.x/controllers.md:block 73 (code)
+#: docs/10.x/controllers.md:block 75 (code)
 msgid ""
 "use App\\Http\\Controllers\\PhotoController;\n"
 "use App\\Http\\Controllers\\PostController;\n"
@@ -497,117 +500,117 @@ msgid ""
 "]);\n"
 msgstr ""
 
-#: docs/10.x/controllers.md:block 74 (paragraph)
+#: docs/10.x/controllers.md:block 76 (paragraph)
 msgid "To quickly generate an API resource controller that does not include the `create` or `edit` methods, use the `--api` switch when executing the `make:controller` command:"
 msgstr ""
 
-#: docs/10.x/controllers.md:block 75 (code)
+#: docs/10.x/controllers.md:block 77 (code)
 msgid "php artisan make:controller PhotoController --api\n"
 msgstr ""
 
-#: docs/10.x/controllers.md:block 77 (header)
+#: docs/10.x/controllers.md:block 79 (header)
 msgid "Nested Resources"
 msgstr ""
 
-#: docs/10.x/controllers.md:block 78 (paragraph)
+#: docs/10.x/controllers.md:block 80 (paragraph)
 msgid "Sometimes you may need to define routes to a nested resource. For example, a photo resource may have multiple comments that may be attached to the photo. To nest the resource controllers, you may use \"dot\" notation in your route declaration:"
 msgstr ""
 
-#: docs/10.x/controllers.md:block 79 (code)
+#: docs/10.x/controllers.md:block 81 (code)
 msgid ""
 "use App\\Http\\Controllers\\PhotoCommentController;\n"
 "\n"
 "Route::resource('photos.comments', PhotoCommentController::class);\n"
 msgstr ""
 
-#: docs/10.x/controllers.md:block 80 (paragraph)
+#: docs/10.x/controllers.md:block 82 (paragraph)
 msgid "This route will register a nested resource that may be accessed with URIs like the following:"
 msgstr ""
 
-#: docs/10.x/controllers.md:block 81 (code)
+#: docs/10.x/controllers.md:block 83 (code)
 msgid "/photos/{photo}/comments/{comment}\n"
 msgstr ""
 
-#: docs/10.x/controllers.md:block 83 (header)
+#: docs/10.x/controllers.md:block 85 (header)
 msgid "Scoping Nested Resources"
 msgstr ""
 
-#: docs/10.x/controllers.md:block 84 (paragraph)
+#: docs/10.x/controllers.md:block 86 (paragraph)
 msgid "Laravel's [implicit model binding](/docs/{{version}}/routing#implicit-model-binding-scoping) feature can automatically scope nested bindings such that the resolved child model is confirmed to belong to the parent model. By using the `scoped` method when defining your nested resource, you may enable automatic scoping as well as instruct Laravel which field the child resource should be retrieved by. For more information on how to accomplish this, please see the documentation on [scoping resource routes](#restful-scoping-resource-routes)."
 msgstr ""
 
-#: docs/10.x/controllers.md:block 86 (header)
+#: docs/10.x/controllers.md:block 88 (header)
 msgid "Shallow Nesting"
 msgstr ""
 
-#: docs/10.x/controllers.md:block 87 (paragraph)
+#: docs/10.x/controllers.md:block 89 (paragraph)
 msgid "Often, it is not entirely necessary to have both the parent and the child IDs within a URI since the child ID is already a unique identifier. When using unique identifiers such as auto-incrementing primary keys to identify your models in URI segments, you may choose to use \"shallow nesting\":"
 msgstr ""
 
-#: docs/10.x/controllers.md:block 88 (code)
+#: docs/10.x/controllers.md:block 90 (code)
 msgid ""
 "use App\\Http\\Controllers\\CommentController;\n"
 "\n"
 "Route::resource('photos.comments', CommentController::class)->shallow();\n"
 msgstr ""
 
-#: docs/10.x/controllers.md:block 89 (paragraph)
+#: docs/10.x/controllers.md:block 91 (paragraph)
 msgid "This route definition will define the following routes:"
 msgstr ""
 
-#: docs/10.x/controllers.md:block 90 (table)
+#: docs/10.x/controllers.md:block 92 (table)
 msgid "`/photos/{photo}/comments`"
 msgstr ""
 
-#: docs/10.x/controllers.md:block 90 (table)
+#: docs/10.x/controllers.md:block 92 (table)
 msgid "photos.comments.index"
 msgstr ""
 
-#: docs/10.x/controllers.md:block 90 (table)
+#: docs/10.x/controllers.md:block 92 (table)
 msgid "`/photos/{photo}/comments/create`"
 msgstr ""
 
-#: docs/10.x/controllers.md:block 90 (table)
+#: docs/10.x/controllers.md:block 92 (table)
 msgid "photos.comments.create"
 msgstr ""
 
-#: docs/10.x/controllers.md:block 90 (table)
+#: docs/10.x/controllers.md:block 92 (table)
 msgid "photos.comments.store"
 msgstr ""
 
-#: docs/10.x/controllers.md:block 90 (table)
+#: docs/10.x/controllers.md:block 92 (table)
 msgid "`/comments/{comment}`"
 msgstr ""
 
-#: docs/10.x/controllers.md:block 90 (table)
+#: docs/10.x/controllers.md:block 92 (table)
 msgid "comments.show"
 msgstr ""
 
-#: docs/10.x/controllers.md:block 90 (table)
+#: docs/10.x/controllers.md:block 92 (table)
 msgid "`/comments/{comment}/edit`"
 msgstr ""
 
-#: docs/10.x/controllers.md:block 90 (table)
+#: docs/10.x/controllers.md:block 92 (table)
 msgid "comments.edit"
 msgstr ""
 
-#: docs/10.x/controllers.md:block 90 (table)
+#: docs/10.x/controllers.md:block 92 (table)
 msgid "comments.update"
 msgstr ""
 
-#: docs/10.x/controllers.md:block 90 (table)
+#: docs/10.x/controllers.md:block 92 (table)
 msgid "comments.destroy"
 msgstr ""
 
-#: docs/10.x/controllers.md:block 92 (header)
+#: docs/10.x/controllers.md:block 94 (header)
 msgid "Naming Resource Routes"
 msgstr ""
 
-#: docs/10.x/controllers.md:block 93 (paragraph)
+#: docs/10.x/controllers.md:block 95 (paragraph)
 msgid "By default, all resource controller actions have a route name; however, you can override these names by passing a `names` array with your desired route names:"
 msgstr ""
 
-#: docs/10.x/controllers.md:block 94 (code)
+#: docs/10.x/controllers.md:block 96 (code)
 msgid ""
 "use App\\Http\\Controllers\\PhotoController;\n"
 "\n"
@@ -616,15 +619,15 @@ msgid ""
 "]);\n"
 msgstr ""
 
-#: docs/10.x/controllers.md:block 96 (header)
+#: docs/10.x/controllers.md:block 98 (header)
 msgid "Naming Resource Route Parameters"
 msgstr ""
 
-#: docs/10.x/controllers.md:block 97 (paragraph)
+#: docs/10.x/controllers.md:block 99 (paragraph)
 msgid "By default, `Route::resource` will create the route parameters for your resource routes based on the \"singularized\" version of the resource name. You can easily override this on a per resource basis using the `parameters` method. The array passed into the `parameters` method should be an associative array of resource names and parameter names:"
 msgstr ""
 
-#: docs/10.x/controllers.md:block 98 (code)
+#: docs/10.x/controllers.md:block 100 (code)
 msgid ""
 "use App\\Http\\Controllers\\AdminUserController;\n"
 "\n"
@@ -633,23 +636,23 @@ msgid ""
 "]);\n"
 msgstr ""
 
-#: docs/10.x/controllers.md:block 99 (paragraph)
+#: docs/10.x/controllers.md:block 101 (paragraph)
 msgid "The example above generates the following URI for the resource's `show` route:"
 msgstr ""
 
-#: docs/10.x/controllers.md:block 100 (code)
+#: docs/10.x/controllers.md:block 102 (code)
 msgid "/users/{admin_user}\n"
 msgstr ""
 
-#: docs/10.x/controllers.md:block 102 (header)
+#: docs/10.x/controllers.md:block 104 (header)
 msgid "Scoping Resource Routes"
 msgstr ""
 
-#: docs/10.x/controllers.md:block 103 (paragraph)
+#: docs/10.x/controllers.md:block 105 (paragraph)
 msgid "Laravel's [scoped implicit model binding](/docs/{{version}}/routing#implicit-model-binding-scoping) feature can automatically scope nested bindings such that the resolved child model is confirmed to belong to the parent model. By using the `scoped` method when defining your nested resource, you may enable automatic scoping as well as instruct Laravel which field the child resource should be retrieved by:"
 msgstr ""
 
-#: docs/10.x/controllers.md:block 104 (code)
+#: docs/10.x/controllers.md:block 106 (code)
 msgid ""
 "use App\\Http\\Controllers\\PhotoCommentController;\n"
 "\n"
@@ -658,27 +661,27 @@ msgid ""
 "]);\n"
 msgstr ""
 
-#: docs/10.x/controllers.md:block 105 (paragraph)
+#: docs/10.x/controllers.md:block 107 (paragraph)
 msgid "This route will register a scoped nested resource that may be accessed with URIs like the following:"
 msgstr ""
 
-#: docs/10.x/controllers.md:block 106 (code)
+#: docs/10.x/controllers.md:block 108 (code)
 msgid "/photos/{photo}/comments/{comment:slug}\n"
 msgstr ""
 
-#: docs/10.x/controllers.md:block 107 (paragraph)
+#: docs/10.x/controllers.md:block 109 (paragraph)
 msgid "When using a custom keyed implicit binding as a nested route parameter, Laravel will automatically scope the query to retrieve the nested model by its parent using conventions to guess the relationship name on the parent. In this case, it will be assumed that the `Photo` model has a relationship named `comments` (the plural of the route parameter name) which can be used to retrieve the `Comment` model."
 msgstr ""
 
-#: docs/10.x/controllers.md:block 109 (header)
+#: docs/10.x/controllers.md:block 111 (header)
 msgid "Localizing Resource URIs"
 msgstr ""
 
-#: docs/10.x/controllers.md:block 110 (paragraph)
+#: docs/10.x/controllers.md:block 112 (paragraph)
 msgid "By default, `Route::resource` will create resource URIs using English verbs and plural rules. If you need to localize the `create` and `edit` action verbs, you may use the `Route::resourceVerbs` method. This may be done at the beginning of the `boot` method within your application's `App\\Providers\\RouteServiceProvider`:"
 msgstr ""
 
-#: docs/10.x/controllers.md:block 111 (code)
+#: docs/10.x/controllers.md:block 113 (code)
 msgid ""
 "/**\n"
 " * Define your route model bindings, pattern filters, etc.\n"
@@ -694,26 +697,26 @@ msgid ""
 "}\n"
 msgstr ""
 
-#: docs/10.x/controllers.md:block 112 (paragraph)
+#: docs/10.x/controllers.md:block 114 (paragraph)
 msgid "Laravel's pluralizer supports [several different languages which you may configure based on your needs](/docs/{{version}}/localization#pluralization-language). Once the verbs and pluralization language have been customized, a resource route registration such as `Route::resource('publicacion', PublicacionController::class)` will produce the following URIs:"
 msgstr ""
 
-#: docs/10.x/controllers.md:block 113 (code)
+#: docs/10.x/controllers.md:block 115 (code)
 msgid ""
 "/publicacion/crear\n"
 "\n"
 "/publicacion/{publicaciones}/editar\n"
 msgstr ""
 
-#: docs/10.x/controllers.md:block 115 (header)
+#: docs/10.x/controllers.md:block 117 (header)
 msgid "Supplementing Resource Controllers"
 msgstr ""
 
-#: docs/10.x/controllers.md:block 116 (paragraph)
+#: docs/10.x/controllers.md:block 118 (paragraph)
 msgid "If you need to add additional routes to a resource controller beyond the default set of resource routes, you should define those routes before your call to the `Route::resource` method; otherwise, the routes defined by the `resource` method may unintentionally take precedence over your supplemental routes:"
 msgstr ""
 
-#: docs/10.x/controllers.md:block 117 (code)
+#: docs/10.x/controllers.md:block 119 (code)
 msgid ""
 "use App\\Http\\Controller\\PhotoController;\n"
 "\n"
@@ -721,19 +724,19 @@ msgid ""
 "Route::resource('photos', PhotoController::class);\n"
 msgstr ""
 
-#: docs/10.x/controllers.md:block 118 (quote)
+#: docs/10.x/controllers.md:block 120 (quote)
 msgid "**Note** Remember to keep your controllers focused. If you find yourself routinely needing methods outside of the typical set of resource actions, consider splitting your controller into two, smaller controllers."
 msgstr ""
 
-#: docs/10.x/controllers.md:block 120 (header)
+#: docs/10.x/controllers.md:block 122 (header)
 msgid "Singleton Resource Controllers"
 msgstr ""
 
-#: docs/10.x/controllers.md:block 121 (paragraph)
+#: docs/10.x/controllers.md:block 123 (paragraph)
 msgid "Sometimes, your application will have resources that may only have a single instance. For example, a user's \"profile\" can be edited or updated, but a user may not have more than one \"profile\". Likewise, an image may have a single \"thumbnail\". These resources are called \"singleton resources\", meaning one and only one instance of the resource may exist. In these scenarios, you may register a \"singleton\" resource controller:"
 msgstr ""
 
-#: docs/10.x/controllers.md:block 122 (code)
+#: docs/10.x/controllers.md:block 124 (code)
 msgid ""
 "use App\\Http\\Controllers\\ProfileController;\n"
 "use Illuminate\\Support\\Facades\\Route;\n"
@@ -741,135 +744,135 @@ msgid ""
 "Route::singleton('profile', ProfileController::class);\n"
 msgstr ""
 
-#: docs/10.x/controllers.md:block 123 (paragraph)
+#: docs/10.x/controllers.md:block 125 (paragraph)
 msgid "The singleton resource definition above will register the following routes. As you can see, \"creation\" routes are not registered for singleton resources, and the registered routes do not accept an identifier since only one instance of the resource may exist:"
 msgstr ""
 
-#: docs/10.x/controllers.md:block 124 (table)
+#: docs/10.x/controllers.md:block 126 (table)
 msgid "`/profile`"
 msgstr ""
 
-#: docs/10.x/controllers.md:block 124 (table)
+#: docs/10.x/controllers.md:block 126 (table)
 msgid "profile.show"
 msgstr ""
 
-#: docs/10.x/controllers.md:block 124 (table)
+#: docs/10.x/controllers.md:block 126 (table)
 msgid "`/profile/edit`"
 msgstr ""
 
-#: docs/10.x/controllers.md:block 124 (table)
+#: docs/10.x/controllers.md:block 126 (table)
 msgid "profile.edit"
 msgstr ""
 
-#: docs/10.x/controllers.md:block 124 (table)
+#: docs/10.x/controllers.md:block 126 (table)
 msgid "profile.update"
 msgstr ""
 
-#: docs/10.x/controllers.md:block 125 (paragraph)
+#: docs/10.x/controllers.md:block 127 (paragraph)
 msgid "Singleton resources may also be nested within a standard resource:"
 msgstr ""
 
-#: docs/10.x/controllers.md:block 126 (code)
+#: docs/10.x/controllers.md:block 128 (code)
 msgid "Route::singleton('photos.thumbnail', ThumbnailController::class);\n"
 msgstr ""
 
-#: docs/10.x/controllers.md:block 127 (paragraph)
+#: docs/10.x/controllers.md:block 129 (paragraph)
 msgid "In this example, the `photos` resource would receive all of the [standard resource routes](#actions-handled-by-resource-controller); however, the `thumbnail` resource would be a singleton resource with the following routes:"
 msgstr ""
 
-#: docs/10.x/controllers.md:block 128 (table)
+#: docs/10.x/controllers.md:block 130 (table)
 msgid "`/photos/{photo}/thumbnail`"
 msgstr ""
 
-#: docs/10.x/controllers.md:block 128 (table)
+#: docs/10.x/controllers.md:block 130 (table)
 msgid "photos.thumbnail.show"
 msgstr ""
 
-#: docs/10.x/controllers.md:block 128 (table)
+#: docs/10.x/controllers.md:block 130 (table)
 msgid "`/photos/{photo}/thumbnail/edit`"
 msgstr ""
 
-#: docs/10.x/controllers.md:block 128 (table)
+#: docs/10.x/controllers.md:block 130 (table)
 msgid "photos.thumbnail.edit"
 msgstr ""
 
-#: docs/10.x/controllers.md:block 128 (table)
+#: docs/10.x/controllers.md:block 130 (table)
 msgid "photos.thumbnail.update"
 msgstr ""
 
-#: docs/10.x/controllers.md:block 130 (header)
+#: docs/10.x/controllers.md:block 132 (header)
 msgid "Creatable Singleton Resources"
 msgstr ""
 
-#: docs/10.x/controllers.md:block 131 (paragraph)
+#: docs/10.x/controllers.md:block 133 (paragraph)
 msgid "Occasionally, you may want to define creation and storage routes for a singleton resource. To accomplish this, you may invoke the `creatable` method when registering the singleton resource route:"
 msgstr ""
 
-#: docs/10.x/controllers.md:block 132 (code)
+#: docs/10.x/controllers.md:block 134 (code)
 msgid "Route::singleton('photos.thumbnail', ThumbnailController::class)->creatable();\n"
 msgstr ""
 
-#: docs/10.x/controllers.md:block 133 (paragraph)
+#: docs/10.x/controllers.md:block 135 (paragraph)
 msgid "In this example, the following routes will be registered. As you can see, a `DELETE` route will also be registered for creatable singleton resources:"
 msgstr ""
 
-#: docs/10.x/controllers.md:block 134 (table)
+#: docs/10.x/controllers.md:block 136 (table)
 msgid "`/photos/{photo}/thumbnail/create`"
 msgstr ""
 
-#: docs/10.x/controllers.md:block 134 (table)
+#: docs/10.x/controllers.md:block 136 (table)
 msgid "photos.thumbnail.create"
 msgstr ""
 
-#: docs/10.x/controllers.md:block 134 (table)
+#: docs/10.x/controllers.md:block 136 (table)
 msgid "photos.thumbnail.store"
 msgstr ""
 
-#: docs/10.x/controllers.md:block 134 (table)
+#: docs/10.x/controllers.md:block 136 (table)
 msgid "photos.thumbnail.destroy"
 msgstr ""
 
-#: docs/10.x/controllers.md:block 135 (paragraph)
+#: docs/10.x/controllers.md:block 137 (paragraph)
 msgid "If you would like Laravel to register the `DELETE` route for a singleton resource but not register the creation or storage routes, you may utilize the `destroyable` method:"
 msgstr ""
 
-#: docs/10.x/controllers.md:block 136 (code)
+#: docs/10.x/controllers.md:block 138 (code)
 msgid "Route::singleton(...)->destroyable();\n"
 msgstr ""
 
-#: docs/10.x/controllers.md:block 138 (header)
+#: docs/10.x/controllers.md:block 140 (header)
 msgid "API Singleton Resources"
 msgstr ""
 
-#: docs/10.x/controllers.md:block 139 (paragraph)
+#: docs/10.x/controllers.md:block 141 (paragraph)
 msgid "The `apiSingleton` method may be used to register a singleton resource that will be manipulated via an API, thus rendering the `create` and `edit` routes unnecessary:"
 msgstr ""
 
-#: docs/10.x/controllers.md:block 140 (code)
+#: docs/10.x/controllers.md:block 142 (code)
 msgid "Route::apiSingleton('profile', ProfileController::class);\n"
 msgstr ""
 
-#: docs/10.x/controllers.md:block 141 (paragraph)
+#: docs/10.x/controllers.md:block 143 (paragraph)
 msgid "Of course, API singleton resources may also be `creatable`, which will register `store` and `destroy` routes for the resource:"
 msgstr ""
 
-#: docs/10.x/controllers.md:block 142 (code)
+#: docs/10.x/controllers.md:block 144 (code)
 msgid "Route::apiSingleton('photos.thumbnail', ProfileController::class)->creatable();\n"
 msgstr ""
 
-#: docs/10.x/controllers.md:block 144 (header)
+#: docs/10.x/controllers.md:block 146 (header)
 msgid "Dependency Injection & Controllers"
 msgstr ""
 
-#: docs/10.x/controllers.md:block 146 (header)
+#: docs/10.x/controllers.md:block 148 (header)
 msgid "Constructor Injection"
 msgstr ""
 
-#: docs/10.x/controllers.md:block 147 (paragraph)
+#: docs/10.x/controllers.md:block 149 (paragraph)
 msgid "The Laravel [service container](/docs/{{version}}/container) is used to resolve all Laravel controllers. As a result, you are able to type-hint any dependencies your controller may need in its constructor. The declared dependencies will automatically be resolved and injected into the controller instance:"
 msgstr ""
 
-#: docs/10.x/controllers.md:block 148 (code)
+#: docs/10.x/controllers.md:block 150 (code)
 msgid ""
 "<?php\n"
 "\n"
@@ -888,60 +891,61 @@ msgid ""
 "}\n"
 msgstr ""
 
-#: docs/10.x/controllers.md:block 150 (header)
+#: docs/10.x/controllers.md:block 152 (header)
 msgid "Method Injection"
 msgstr ""
 
-#: docs/10.x/controllers.md:block 151 (paragraph)
+#: docs/10.x/controllers.md:block 153 (paragraph)
 msgid "In addition to constructor injection, you may also type-hint dependencies on your controller's methods. A common use-case for method injection is injecting the `Illuminate\\Http\\Request` instance into your controller methods:"
 msgstr ""
 
-#: docs/10.x/controllers.md:block 152 (code)
+#: docs/10.x/controllers.md:block 154 (code)
 msgid ""
 "<?php\n"
 "\n"
 "namespace App\\Http\\Controllers;\n"
 "\n"
+"use Illuminate\\Http\\RedirectResponse;\n"
 "use Illuminate\\Http\\Request;\n"
-"use Illuminate\\Http\\Response;\n"
 "\n"
 "class UserController extends Controller\n"
 "{\n"
 "    /**\n"
 "     * Store a new user.\n"
 "     */\n"
-"    public function store(Request $request): Response\n"
+"    public function store(Request $request): RedirectResponse\n"
 "    {\n"
 "        $name = $request->name;\n"
 "\n"
-"        // ...\n"
+"        // Store the user...\n"
 "\n"
-"        return response()->noContent();\n"
+"        return redirect('/users');\n"
 "    }\n"
 "}\n"
 msgstr ""
 
-#: docs/10.x/controllers.md:block 153 (paragraph)
+#: docs/10.x/controllers.md:block 155 (paragraph)
 msgid "If your controller method is also expecting input from a route parameter, list your route arguments after your other dependencies. For example, if your route is defined like so:"
 msgstr ""
 
-#: docs/10.x/controllers.md:block 154 (code)
+#: docs/10.x/controllers.md:block 156 (code)
 msgid ""
 "use App\\Http\\Controllers\\UserController;\n"
 "\n"
 "Route::put('/user/{id}', [UserController::class, 'update']);\n"
 msgstr ""
 
-#: docs/10.x/controllers.md:block 155 (paragraph)
+#: docs/10.x/controllers.md:block 157 (paragraph)
 msgid "You may still type-hint the `Illuminate\\Http\\Request` and access your `id` parameter by defining your controller method as follows:"
 msgstr ""
 
-#: docs/10.x/controllers.md:block 156 (code)
+#: docs/10.x/controllers.md:block 158 (code)
 msgid ""
 "<?php\n"
 "\n"
 "namespace App\\Http\\Controllers;\n"
 "\n"
+"use Illuminate\\Http\\RedirectResponse;\n"
 "use Illuminate\\Http\\Request;\n"
 "\n"
 "class UserController extends Controller\n"
@@ -949,13 +953,17 @@ msgid ""
 "    /**\n"
 "     * Update the given user.\n"
 "     */\n"
-"    public function update(Request $request, string $id): Response\n"
+"    public function update(Request $request, string $id): RedirectResponse\n"
 "    {\n"
-"        // ...\n"
+"        // Update the user...\n"
 "\n"
-"        return response()->noContent();\n"
+"        return redirect('/users');\n"
 "    }\n"
 "}\n"
+msgstr ""
+
+#: docs/8.x/controllers.md:block 10 (paragraph)
+msgid "Let's take a look at an example of a basic controller. Note that the controller extends the base controller class included with Laravel: `App\\Http\\Controllers\\Controller`:"
 msgstr ""
 
 #: docs/8.x/controllers.md:block 11 (code)
@@ -982,6 +990,10 @@ msgid ""
 "        ]);\n"
 "    }\n"
 "}\n"
+msgstr ""
+
+#: docs/8.x/controllers.md:block 12 (paragraph)
+msgid "You can define a route to this controller method like so:"
 msgstr ""
 
 #: docs/8.x/controllers.md:block 15 (quote)
@@ -1201,27 +1213,72 @@ msgid ""
 "}\n"
 msgstr ""
 
-#: docs/master/controllers.md:block 148 (code)
+#: docs/master/controllers.md:block 19 (code)
 msgid ""
 "<?php\n"
 "\n"
 "namespace App\\Http\\Controllers;\n"
 "\n"
-"use App\\Repositories\\UserRepository;\n"
+"use App\\Models\\User;\n"
+"use Illuminate\\Http\\Response;\n"
+"\n"
+"class ProvisionServer extends Controller\n"
+"{\n"
+"    /**\n"
+"     * Provision a new web server.\n"
+"     */\n"
+"    public function __invoke(): Response\n"
+"    {\n"
+"        // ...\n"
+"\n"
+"        return response()->noContent();\n"
+"    }\n"
+"}\n"
+msgstr ""
+
+#: docs/master/controllers.md:block 152 (code)
+msgid ""
+"<?php\n"
+"\n"
+"namespace App\\Http\\Controllers;\n"
+"\n"
+"use Illuminate\\Http\\Request;\n"
+"use Illuminate\\Http\\Response;\n"
 "\n"
 "class UserController extends Controller\n"
 "{\n"
 "    /**\n"
-"     * The user repository instance.\n"
+"     * Store a new user.\n"
 "     */\n"
-"    protected $users;\n"
-"\n"
-"    /**\n"
-"     * Create a new controller instance.\n"
-"     */\n"
-"    public function __construct(UserRepository $users)\n"
+"    public function store(Request $request): Response\n"
 "    {\n"
-"        $this->users = $users;\n"
+"        $name = $request->name;\n"
+"\n"
+"        // ...\n"
+"\n"
+"        return response()->noContent();\n"
+"    }\n"
+"}\n"
+msgstr ""
+
+#: docs/master/controllers.md:block 156 (code)
+msgid ""
+"<?php\n"
+"\n"
+"namespace App\\Http\\Controllers;\n"
+"\n"
+"use Illuminate\\Http\\Request;\n"
+"\n"
+"class UserController extends Controller\n"
+"{\n"
+"    /**\n"
+"     * Update the given user.\n"
+"     */\n"
+"    public function update(Request $request, string $id): Response\n"
+"    {\n"
+"        // ...\n"
+"\n"
+"        return response()->noContent();\n"
 "    }\n"
 "}\n"
 msgstr ""

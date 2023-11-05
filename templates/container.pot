@@ -144,7 +144,7 @@ msgid ""
 "}\n"
 "\n"
 "Route::get('/', function (Service $service) {\n"
-"    die(get_class($service));\n"
+"    die($service::class);\n"
 "});\n"
 msgstr ""
 
@@ -231,19 +231,30 @@ msgid ""
 "});\n"
 msgstr ""
 
-#: docs/10.x/container.md:block 34 (quote)
+#: docs/10.x/container.md:block 34 (paragraph)
+msgid "You may use the `bindIf` method to register a container binding only if a binding has not already been registered for the given type:"
+msgstr ""
+
+#: docs/10.x/container.md:block 35 (code)
+msgid ""
+"$this->app->bindIf(Transistor::class, function (Application $app) {\n"
+"    return new Transistor($app->make(PodcastParser::class));\n"
+"});\n"
+msgstr ""
+
+#: docs/10.x/container.md:block 36 (quote)
 msgid "**Note** There is no need to bind classes into the container if they do not depend on any interfaces. The container does not need to be instructed on how to build these objects, since it can automatically resolve these objects using reflection."
 msgstr ""
 
-#: docs/10.x/container.md:block 36 (header)
+#: docs/10.x/container.md:block 38 (header)
 msgid "Binding A Singleton"
 msgstr ""
 
-#: docs/10.x/container.md:block 37 (paragraph)
+#: docs/10.x/container.md:block 39 (paragraph)
 msgid "The `singleton` method binds a class or interface into the container that should only be resolved one time. Once a singleton binding is resolved, the same object instance will be returned on subsequent calls into the container:"
 msgstr ""
 
-#: docs/10.x/container.md:block 38 (code)
+#: docs/10.x/container.md:block 40 (code)
 msgid ""
 "use App\\Services\\Transistor;\n"
 "use App\\Services\\PodcastParser;\n"
@@ -254,15 +265,26 @@ msgid ""
 "});\n"
 msgstr ""
 
-#: docs/10.x/container.md:block 40 (header)
-msgid "Binding Scoped Singletons"
-msgstr ""
-
 #: docs/10.x/container.md:block 41 (paragraph)
-msgid "The `scoped` method binds a class or interface into the container that should only be resolved one time within a given Laravel request / job lifecycle. While this method is similar to the `singleton` method, instances registered using the `scoped` method will be flushed whenever the Laravel application starts a new \"lifecycle\", such as when a [Laravel Octane](/docs/{{version}}/octane) worker processes a new request or when a Laravel [queue worker](/docs/{{version}}/queues) processes a new job:"
+msgid "You may use the `singletonIf` method to register a singleton container binding only if a binding has not already been registered for the given type:"
 msgstr ""
 
 #: docs/10.x/container.md:block 42 (code)
+msgid ""
+"$this->app->singletonIf(Transistor::class, function (Application $app) {\n"
+"    return new Transistor($app->make(PodcastParser::class));\n"
+"});\n"
+msgstr ""
+
+#: docs/10.x/container.md:block 44 (header)
+msgid "Binding Scoped Singletons"
+msgstr ""
+
+#: docs/10.x/container.md:block 45 (paragraph)
+msgid "The `scoped` method binds a class or interface into the container that should only be resolved one time within a given Laravel request / job lifecycle. While this method is similar to the `singleton` method, instances registered using the `scoped` method will be flushed whenever the Laravel application starts a new \"lifecycle\", such as when a [Laravel Octane](/docs/{{version}}/octane) worker processes a new request or when a Laravel [queue worker](/docs/{{version}}/queues) processes a new job:"
+msgstr ""
+
+#: docs/10.x/container.md:block 46 (code)
 msgid ""
 "use App\\Services\\Transistor;\n"
 "use App\\Services\\PodcastParser;\n"
@@ -273,15 +295,15 @@ msgid ""
 "});\n"
 msgstr ""
 
-#: docs/10.x/container.md:block 44 (header)
+#: docs/10.x/container.md:block 48 (header)
 msgid "Binding Instances"
 msgstr ""
 
-#: docs/10.x/container.md:block 45 (paragraph)
+#: docs/10.x/container.md:block 49 (paragraph)
 msgid "You may also bind an existing object instance into the container using the `instance` method. The given instance will always be returned on subsequent calls into the container:"
 msgstr ""
 
-#: docs/10.x/container.md:block 46 (code)
+#: docs/10.x/container.md:block 50 (code)
 msgid ""
 "use App\\Services\\Transistor;\n"
 "use App\\Services\\PodcastParser;\n"
@@ -291,15 +313,15 @@ msgid ""
 "$this->app->instance(Transistor::class, $service);\n"
 msgstr ""
 
-#: docs/10.x/container.md:block 48 (header)
+#: docs/10.x/container.md:block 52 (header)
 msgid "Binding Interfaces To Implementations"
 msgstr ""
 
-#: docs/10.x/container.md:block 49 (paragraph)
+#: docs/10.x/container.md:block 53 (paragraph)
 msgid "A very powerful feature of the service container is its ability to bind an interface to a given implementation. For example, let's assume we have an `EventPusher` interface and a `RedisEventPusher` implementation. Once we have coded our `RedisEventPusher` implementation of this interface, we can register it with the service container like so:"
 msgstr ""
 
-#: docs/10.x/container.md:block 50 (code)
+#: docs/10.x/container.md:block 54 (code)
 msgid ""
 "use App\\Contracts\\EventPusher;\n"
 "use App\\Services\\RedisEventPusher;\n"
@@ -307,11 +329,11 @@ msgid ""
 "$this->app->bind(EventPusher::class, RedisEventPusher::class);\n"
 msgstr ""
 
-#: docs/10.x/container.md:block 51 (paragraph)
+#: docs/10.x/container.md:block 55 (paragraph)
 msgid "This statement tells the container that it should inject the `RedisEventPusher` when a class needs an implementation of `EventPusher`. Now we can type-hint the `EventPusher` interface in the constructor of a class that is resolved by the container. Remember, controllers, event listeners, middleware, and various other types of classes within Laravel applications are always resolved using the container:"
 msgstr ""
 
-#: docs/10.x/container.md:block 52 (code)
+#: docs/10.x/container.md:block 56 (code)
 msgid ""
 "use App\\Contracts\\EventPusher;\n"
 "\n"
@@ -323,15 +345,15 @@ msgid ""
 ") {}\n"
 msgstr ""
 
-#: docs/10.x/container.md:block 54 (header)
+#: docs/10.x/container.md:block 58 (header)
 msgid "Contextual Binding"
 msgstr ""
 
-#: docs/10.x/container.md:block 55 (paragraph)
+#: docs/10.x/container.md:block 59 (paragraph)
 msgid "Sometimes you may have two classes that utilize the same interface, but you wish to inject different implementations into each class. For example, two controllers may depend on different implementations of the `Illuminate\\Contracts\\Filesystem\\Filesystem` [contract](/docs/{{version}}/contracts). Laravel provides a simple, fluent interface for defining this behavior:"
 msgstr ""
 
-#: docs/10.x/container.md:block 56 (code)
+#: docs/10.x/container.md:block 60 (code)
 msgid ""
 "use App\\Http\\Controllers\\PhotoController;\n"
 "use App\\Http\\Controllers\\UploadController;\n"
@@ -352,15 +374,15 @@ msgid ""
 "          });\n"
 msgstr ""
 
-#: docs/10.x/container.md:block 58 (header)
+#: docs/10.x/container.md:block 62 (header)
 msgid "Binding Primitives"
 msgstr ""
 
-#: docs/10.x/container.md:block 59 (paragraph)
+#: docs/10.x/container.md:block 63 (paragraph)
 msgid "Sometimes you may have a class that receives some injected classes, but also needs an injected primitive value such as an integer. You may easily use contextual binding to inject any value your class may need:"
 msgstr ""
 
-#: docs/10.x/container.md:block 60 (code)
+#: docs/10.x/container.md:block 64 (code)
 msgid ""
 "use App\\Http\\Controllers\\UserController;\n"
 "\n"
@@ -369,37 +391,37 @@ msgid ""
 "          ->give($value);\n"
 msgstr ""
 
-#: docs/10.x/container.md:block 61 (paragraph)
+#: docs/10.x/container.md:block 65 (paragraph)
 msgid "Sometimes a class may depend on an array of [tagged](#tagging) instances. Using the `giveTagged` method, you may easily inject all of the container bindings with that tag:"
 msgstr ""
 
-#: docs/10.x/container.md:block 62 (code)
+#: docs/10.x/container.md:block 66 (code)
 msgid ""
 "$this->app->when(ReportAggregator::class)\n"
 "    ->needs('$reports')\n"
 "    ->giveTagged('reports');\n"
 msgstr ""
 
-#: docs/10.x/container.md:block 63 (paragraph)
+#: docs/10.x/container.md:block 67 (paragraph)
 msgid "If you need to inject a value from one of your application's configuration files, you may use the `giveConfig` method:"
 msgstr ""
 
-#: docs/10.x/container.md:block 64 (code)
+#: docs/10.x/container.md:block 68 (code)
 msgid ""
 "$this->app->when(ReportAggregator::class)\n"
 "    ->needs('$timezone')\n"
 "    ->giveConfig('app.timezone');\n"
 msgstr ""
 
-#: docs/10.x/container.md:block 66 (header)
+#: docs/10.x/container.md:block 70 (header)
 msgid "Binding Typed Variadics"
 msgstr ""
 
-#: docs/10.x/container.md:block 67 (paragraph)
+#: docs/10.x/container.md:block 71 (paragraph)
 msgid "Occasionally, you may have a class that receives an array of typed objects using a variadic constructor argument:"
 msgstr ""
 
-#: docs/10.x/container.md:block 68 (code)
+#: docs/10.x/container.md:block 72 (code)
 msgid ""
 "<?php\n"
 "\n"
@@ -427,11 +449,11 @@ msgid ""
 "}\n"
 msgstr ""
 
-#: docs/10.x/container.md:block 69 (paragraph)
+#: docs/10.x/container.md:block 73 (paragraph)
 msgid "Using contextual binding, you may resolve this dependency by providing the `give` method with a closure that returns an array of resolved `Filter` instances:"
 msgstr ""
 
-#: docs/10.x/container.md:block 70 (code)
+#: docs/10.x/container.md:block 74 (code)
 msgid ""
 "$this->app->when(Firewall::class)\n"
 "          ->needs(Filter::class)\n"
@@ -444,11 +466,11 @@ msgid ""
 "          });\n"
 msgstr ""
 
-#: docs/10.x/container.md:block 71 (paragraph)
+#: docs/10.x/container.md:block 75 (paragraph)
 msgid "For convenience, you may also just provide an array of class names to be resolved by the container whenever `Firewall` needs `Filter` instances:"
 msgstr ""
 
-#: docs/10.x/container.md:block 72 (code)
+#: docs/10.x/container.md:block 76 (code)
 msgid ""
 "$this->app->when(Firewall::class)\n"
 "          ->needs(Filter::class)\n"
@@ -459,30 +481,30 @@ msgid ""
 "          ]);\n"
 msgstr ""
 
-#: docs/10.x/container.md:block 74 (header)
+#: docs/10.x/container.md:block 78 (header)
 msgid "Variadic Tag Dependencies"
 msgstr ""
 
-#: docs/10.x/container.md:block 75 (paragraph)
+#: docs/10.x/container.md:block 79 (paragraph)
 msgid "Sometimes a class may have a variadic dependency that is type-hinted as a given class (`Report ...$reports`). Using the `needs` and `giveTagged` methods, you may easily inject all of the container bindings with that [tag](#tagging) for the given dependency:"
 msgstr ""
 
-#: docs/10.x/container.md:block 76 (code)
+#: docs/10.x/container.md:block 80 (code)
 msgid ""
 "$this->app->when(ReportAggregator::class)\n"
 "    ->needs(Report::class)\n"
 "    ->giveTagged('reports');\n"
 msgstr ""
 
-#: docs/10.x/container.md:block 78 (header)
+#: docs/10.x/container.md:block 82 (header)
 msgid "Tagging"
 msgstr ""
 
-#: docs/10.x/container.md:block 79 (paragraph)
+#: docs/10.x/container.md:block 83 (paragraph)
 msgid "Occasionally, you may need to resolve all of a certain \"category\" of binding. For example, perhaps you are building a report analyzer that receives an array of many different `Report` interface implementations. After registering the `Report` implementations, you can assign them a tag using the `tag` method:"
 msgstr ""
 
-#: docs/10.x/container.md:block 80 (code)
+#: docs/10.x/container.md:block 84 (code)
 msgid ""
 "$this->app->bind(CpuReport::class, function () {\n"
 "    // ...\n"
@@ -495,67 +517,78 @@ msgid ""
 "$this->app->tag([CpuReport::class, MemoryReport::class], 'reports');\n"
 msgstr ""
 
-#: docs/10.x/container.md:block 81 (paragraph)
+#: docs/10.x/container.md:block 85 (paragraph)
 msgid "Once the services have been tagged, you may easily resolve them all via the container's `tagged` method:"
 msgstr ""
 
-#: docs/10.x/container.md:block 82 (code)
+#: docs/10.x/container.md:block 86 (code)
 msgid ""
 "$this->app->bind(ReportAnalyzer::class, function (Application $app) {\n"
 "    return new ReportAnalyzer($app->tagged('reports'));\n"
 "});\n"
 msgstr ""
 
-#: docs/10.x/container.md:block 84 (header)
+#: docs/10.x/container.md:block 88 (header)
 msgid "Extending Bindings"
 msgstr ""
 
-#: docs/10.x/container.md:block 85 (paragraph)
+#: docs/10.x/container.md:block 89 (paragraph)
 msgid "The `extend` method allows the modification of resolved services. For example, when a service is resolved, you may run additional code to decorate or configure the service. The `extend` method accepts two arguments, the service class you're extending and a closure that should return the modified service. The closure receives the service being resolved and the container instance:"
 msgstr ""
 
-#: docs/10.x/container.md:block 86 (code)
+#: docs/10.x/container.md:block 90 (code)
 msgid ""
 "$this->app->extend(Service::class, function (Service $service, Application $app) {\n"
 "    return new DecoratedService($service);\n"
 "});\n"
 msgstr ""
 
-#: docs/10.x/container.md:block 88 (header)
+#: docs/10.x/container.md:block 92 (header)
 msgid "Resolving"
 msgstr ""
 
-#: docs/10.x/container.md:block 90 (header)
+#: docs/10.x/container.md:block 94 (header)
 msgid "The `make` Method"
 msgstr ""
 
-#: docs/10.x/container.md:block 91 (paragraph)
+#: docs/10.x/container.md:block 95 (paragraph)
 msgid "You may use the `make` method to resolve a class instance from the container. The `make` method accepts the name of the class or interface you wish to resolve:"
 msgstr ""
 
-#: docs/10.x/container.md:block 92 (code)
+#: docs/10.x/container.md:block 96 (code)
 msgid ""
 "use App\\Services\\Transistor;\n"
 "\n"
 "$transistor = $this->app->make(Transistor::class);\n"
 msgstr ""
 
-#: docs/10.x/container.md:block 93 (paragraph)
-msgid "If some of your class' dependencies are not resolvable via the container, you may inject them by passing them as an associative array into the `makeWith` method. For example, we may manually pass the `$id` constructor argument required by the `Transistor` service:"
+#: docs/10.x/container.md:block 97 (paragraph)
+msgid "If some of your class's dependencies are not resolvable via the container, you may inject them by passing them as an associative array into the `makeWith` method. For example, we may manually pass the `$id` constructor argument required by the `Transistor` service:"
 msgstr ""
 
-#: docs/10.x/container.md:block 94 (code)
+#: docs/10.x/container.md:block 98 (code)
 msgid ""
 "use App\\Services\\Transistor;\n"
 "\n"
 "$transistor = $this->app->makeWith(Transistor::class, ['id' => 1]);\n"
 msgstr ""
 
-#: docs/10.x/container.md:block 95 (paragraph)
+#: docs/10.x/container.md:block 99 (paragraph)
+msgid "The `bound` method may be used to determine if a class or interface has been explicitly bound in the container:"
+msgstr ""
+
+#: docs/10.x/container.md:block 100 (code)
+msgid ""
+"if ($this->app->bound(Transistor::class)) {\n"
+"    // ...\n"
+"}\n"
+msgstr ""
+
+#: docs/10.x/container.md:block 101 (paragraph)
 msgid "If you are outside of a service provider in a location of your code that does not have access to the `$app` variable, you may use the `App` [facade](/docs/{{version}}/facades) or the `app` [helper](/docs/{{version}}/helpers#method-app) to resolve a class instance from the container:"
 msgstr ""
 
-#: docs/10.x/container.md:block 96 (code)
+#: docs/10.x/container.md:block 102 (code)
 msgid ""
 "use App\\Services\\Transistor;\n"
 "use Illuminate\\Support\\Facades\\App;\n"
@@ -565,11 +598,11 @@ msgid ""
 "$transistor = app(Transistor::class);\n"
 msgstr ""
 
-#: docs/10.x/container.md:block 97 (paragraph)
-msgid "If you would like to have the Laravel container instance itself injected into a class that is being resolved by the container, you may type-hint the `Illuminate\\Container\\Container` class on your class' constructor:"
+#: docs/10.x/container.md:block 103 (paragraph)
+msgid "If you would like to have the Laravel container instance itself injected into a class that is being resolved by the container, you may type-hint the `Illuminate\\Container\\Container` class on your class's constructor:"
 msgstr ""
 
-#: docs/10.x/container.md:block 98 (code)
+#: docs/10.x/container.md:block 104 (code)
 msgid ""
 "use Illuminate\\Container\\Container;\n"
 "\n"
@@ -581,19 +614,19 @@ msgid ""
 ") {}\n"
 msgstr ""
 
-#: docs/10.x/container.md:block 100 (header)
+#: docs/10.x/container.md:block 106 (header)
 msgid "Automatic Injection"
 msgstr ""
 
-#: docs/10.x/container.md:block 101 (paragraph)
+#: docs/10.x/container.md:block 107 (paragraph)
 msgid "Alternatively, and importantly, you may type-hint the dependency in the constructor of a class that is resolved by the container, including [controllers](/docs/{{version}}/controllers), [event listeners](/docs/{{version}}/events), [middleware](/docs/{{version}}/middleware), and more. Additionally, you may type-hint dependencies in the `handle` method of [queued jobs](/docs/{{version}}/queues). In practice, this is how most of your objects should be resolved by the container."
 msgstr ""
 
-#: docs/10.x/container.md:block 102 (paragraph)
+#: docs/10.x/container.md:block 108 (paragraph)
 msgid "For example, you may type-hint a repository defined by your application in a controller's constructor. The repository will automatically be resolved and injected into the class:"
 msgstr ""
 
-#: docs/10.x/container.md:block 103 (code)
+#: docs/10.x/container.md:block 109 (code)
 msgid ""
 "<?php\n"
 "\n"
@@ -623,15 +656,15 @@ msgid ""
 "}\n"
 msgstr ""
 
-#: docs/10.x/container.md:block 105 (header)
+#: docs/10.x/container.md:block 111 (header)
 msgid "Method Invocation & Injection"
 msgstr ""
 
-#: docs/10.x/container.md:block 106 (paragraph)
+#: docs/10.x/container.md:block 112 (paragraph)
 msgid "Sometimes you may wish to invoke a method on an object instance while allowing the container to automatically inject that method's dependencies. For example, given the following class:"
 msgstr ""
 
-#: docs/10.x/container.md:block 107 (code)
+#: docs/10.x/container.md:block 113 (code)
 msgid ""
 "<?php\n"
 "\n"
@@ -653,11 +686,11 @@ msgid ""
 "}\n"
 msgstr ""
 
-#: docs/10.x/container.md:block 108 (paragraph)
+#: docs/10.x/container.md:block 114 (paragraph)
 msgid "You may invoke the `generate` method via the container like so:"
 msgstr ""
 
-#: docs/10.x/container.md:block 109 (code)
+#: docs/10.x/container.md:block 115 (code)
 msgid ""
 "use App\\UserReport;\n"
 "use Illuminate\\Support\\Facades\\App;\n"
@@ -665,11 +698,11 @@ msgid ""
 "$report = App::call([new UserReport, 'generate']);\n"
 msgstr ""
 
-#: docs/10.x/container.md:block 110 (paragraph)
+#: docs/10.x/container.md:block 116 (paragraph)
 msgid "The `call` method accepts any PHP callable. The container's `call` method may even be used to invoke a closure while automatically injecting its dependencies:"
 msgstr ""
 
-#: docs/10.x/container.md:block 111 (code)
+#: docs/10.x/container.md:block 117 (code)
 msgid ""
 "use App\\Repositories\\UserRepository;\n"
 "use Illuminate\\Support\\Facades\\App;\n"
@@ -679,15 +712,15 @@ msgid ""
 "});\n"
 msgstr ""
 
-#: docs/10.x/container.md:block 113 (header)
+#: docs/10.x/container.md:block 119 (header)
 msgid "Container Events"
 msgstr ""
 
-#: docs/10.x/container.md:block 114 (paragraph)
+#: docs/10.x/container.md:block 120 (paragraph)
 msgid "The service container fires an event each time it resolves an object. You may listen to this event using the `resolving` method:"
 msgstr ""
 
-#: docs/10.x/container.md:block 115 (code)
+#: docs/10.x/container.md:block 121 (code)
 msgid ""
 "use App\\Services\\Transistor;\n"
 "use Illuminate\\Contracts\\Foundation\\Application;\n"
@@ -701,19 +734,19 @@ msgid ""
 "});\n"
 msgstr ""
 
-#: docs/10.x/container.md:block 116 (paragraph)
+#: docs/10.x/container.md:block 122 (paragraph)
 msgid "As you can see, the object being resolved will be passed to the callback, allowing you to set any additional properties on the object before it is given to its consumer."
 msgstr ""
 
-#: docs/10.x/container.md:block 118 (header)
+#: docs/10.x/container.md:block 124 (header)
 msgid "PSR-11"
 msgstr ""
 
-#: docs/10.x/container.md:block 119 (paragraph)
+#: docs/10.x/container.md:block 125 (paragraph)
 msgid "Laravel's service container implements the [PSR-11](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-11-container.md) interface. Therefore, you may type-hint the PSR-11 container interface to obtain an instance of the Laravel container:"
 msgstr ""
 
-#: docs/10.x/container.md:block 120 (code)
+#: docs/10.x/container.md:block 126 (code)
 msgid ""
 "use App\\Services\\Transistor;\n"
 "use Psr\\Container\\ContainerInterface;\n"
@@ -725,7 +758,7 @@ msgid ""
 "});\n"
 msgstr ""
 
-#: docs/10.x/container.md:block 121 (paragraph)
+#: docs/10.x/container.md:block 127 (paragraph)
 msgid "An exception is thrown if the given identifier can't be resolved. The exception will be an instance of `Psr\\Container\\NotFoundExceptionInterface` if the identifier was never bound. If the identifier was bound but was unable to be resolved, an instance of `Psr\\Container\\ContainerExceptionInterface` will be thrown."
 msgstr ""
 
@@ -937,6 +970,10 @@ msgid ""
 "});\n"
 msgstr ""
 
+#: docs/8.x/container.md:block 93 (paragraph)
+msgid "If some of your class' dependencies are not resolvable via the container, you may inject them by passing them as an associative array into the `makeWith` method. For example, we may manually pass the `$id` constructor argument required by the `Transistor` service:"
+msgstr ""
+
 #: docs/8.x/container.md:block 95 (paragraph)
 msgid "If you are outside of a service provider in a location of your code that does not have access to the `$app` variable, you may use the `App` [facade](/docs/{{version}}/facades) to resolve a class instance from the container:"
 msgstr ""
@@ -947,6 +984,10 @@ msgid ""
 "use Illuminate\\Support\\Facades\\App;\n"
 "\n"
 "$transistor = App::make(Transistor::class);\n"
+msgstr ""
+
+#: docs/8.x/container.md:block 97 (paragraph)
+msgid "If you would like to have the Laravel container instance itself injected into a class that is being resolved by the container, you may type-hint the `Illuminate\\Container\\Container` class on your class' constructor:"
 msgstr ""
 
 #: docs/8.x/container.md:block 98 (code)
@@ -1054,140 +1095,16 @@ msgid ""
 "});\n"
 msgstr ""
 
-#: docs/master/container.md:block 7 (code)
+#: docs/master/container.md:block 13 (code)
 msgid ""
 "<?php\n"
 "\n"
-"namespace App\\Http\\Controllers;\n"
-"\n"
-"use App\\Http\\Controllers\\Controller;\n"
-"use App\\Repositories\\UserRepository;\n"
-"use App\\Models\\User;\n"
-"use Illuminate\\View\\View;\n"
-"\n"
-"class UserController extends Controller\n"
+"class Service\n"
 "{\n"
-"    /**\n"
-"     * The user repository implementation.\n"
-"     *\n"
-"     * @var UserRepository\n"
-"     */\n"
-"    protected $users;\n"
-"\n"
-"    /**\n"
-"     * Create a new controller instance.\n"
-"     */\n"
-"    public function __construct(UserRepository $users)\n"
-"    {\n"
-"        $this->users = $users;\n"
-"    }\n"
-"\n"
-"    /**\n"
-"     * Show the profile for the given user.\n"
-"     */\n"
-"    public function show(string $id): View\n"
-"    {\n"
-"        $user = $this->users->find($id);\n"
-"\n"
-"        return view('user.profile', ['user' => $user]);\n"
-"    }\n"
+"    // ...\n"
 "}\n"
-msgstr ""
-
-#: docs/master/container.md:block 52 (code)
-msgid ""
-"use App\\Contracts\\EventPusher;\n"
 "\n"
-"/**\n"
-" * Create a new class instance.\n"
-" */\n"
-"public function __construct(EventPusher $pusher)\n"
-"{\n"
-"    $this->pusher = $pusher;\n"
-"}\n"
-msgstr ""
-
-#: docs/master/container.md:block 68 (code)
-msgid ""
-"<?php\n"
-"\n"
-"use App\\Models\\Filter;\n"
-"use App\\Services\\Logger;\n"
-"\n"
-"class Firewall\n"
-"{\n"
-"    /**\n"
-"     * The logger instance.\n"
-"     *\n"
-"     * @var \\App\\Services\\Logger\n"
-"     */\n"
-"    protected $logger;\n"
-"\n"
-"    /**\n"
-"     * The filter instances.\n"
-"     *\n"
-"     * @var array\n"
-"     */\n"
-"    protected $filters;\n"
-"\n"
-"    /**\n"
-"     * Create a new class instance.\n"
-"     */\n"
-"    public function __construct(Logger $logger, Filter ...$filters)\n"
-"    {\n"
-"        $this->logger = $logger;\n"
-"        $this->filters = $filters;\n"
-"    }\n"
-"}\n"
-msgstr ""
-
-#: docs/master/container.md:block 98 (code)
-msgid ""
-"use Illuminate\\Container\\Container;\n"
-"\n"
-"/**\n"
-" * Create a new class instance.\n"
-" */\n"
-"public function __construct(Container $container)\n"
-"{\n"
-"    $this->container = $container;\n"
-"}\n"
-msgstr ""
-
-#: docs/master/container.md:block 103 (code)
-msgid ""
-"<?php\n"
-"\n"
-"namespace App\\Http\\Controllers;\n"
-"\n"
-"use App\\Repositories\\UserRepository;\n"
-"use App\\Models\\User;\n"
-"\n"
-"class UserController extends Controller\n"
-"{\n"
-"    /**\n"
-"     * The user repository instance.\n"
-"     *\n"
-"     * @var \\App\\Repositories\\UserRepository\n"
-"     */\n"
-"    protected $users;\n"
-"\n"
-"    /**\n"
-"     * Create a new controller instance.\n"
-"     */\n"
-"    public function __construct(UserRepository $users)\n"
-"    {\n"
-"        $this->users = $users;\n"
-"    }\n"
-"\n"
-"    /**\n"
-"     * Show the user with the given ID.\n"
-"     */\n"
-"    public function show(string $id): User\n"
-"    {\n"
-"        $user = $this->users->findOrFail($id);\n"
-"\n"
-"        return $user;\n"
-"    }\n"
-"}\n"
+"Route::get('/', function (Service $service) {\n"
+"    die(get_class($service));\n"
+"});\n"
 msgstr ""

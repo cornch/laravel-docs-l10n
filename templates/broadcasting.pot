@@ -163,7 +163,7 @@ msgid "In many modern web applications, WebSockets are used to implement realtim
 msgstr ""
 
 #: docs/10.x/broadcasting.md:block 6 (paragraph)
-msgid "For example, imagine your application is able to export a user's data to a CSV file and email it to them. However, creating this CSV file takes several minutes so you choose to create and mail the CSV within a [queued job](/docs/{{version}}/queues). When the CSV has been created and mailed to the user, we can use event broadcasting to dispatch a `App\\Events\\UserDataExported` event that is received by our application's JavaScript. Once the event is received, we can display a message to the user that their CSV has been emailed to them without them ever needing to refresh the page."
+msgid "For example, imagine your application is able to export a user's data to a CSV file and email it to them. However, creating this CSV file takes several minutes so you choose to create and mail the CSV within a [queued job](/docs/{{version}}/queues). When the CSV has been created and mailed to the user, we can use event broadcasting to dispatch an `App\\Events\\UserDataExported` event that is received by our application's JavaScript. Once the event is received, we can display a message to the user that their CSV has been emailed to them without them ever needing to refresh the page."
 msgstr ""
 
 #: docs/10.x/broadcasting.md:block 7 (paragraph)
@@ -275,7 +275,7 @@ msgid "Ably"
 msgstr ""
 
 #: docs/10.x/broadcasting.md:block 41 (quote)
-msgid "**Note** The documentation below discusses how to use Ably in \"Pusher compatibility\" mode. However, the Ably team maintains a broadcaster and Echo client that is able to take advantage of the unique capabilities offered by Ably. For more information on using the Ably maintained drivers, please [consult Ably's Laravel broadcaster documentation](https://github.com/ably/laravel-broadcaster)."
+msgid "**Note** The documentation below discusses how to use Ably in \"Pusher compatibility\" mode. However, the Ably team recommends and maintains a broadcaster and Echo client that is able to take advantage of the unique capabilities offered by Ably. For more information on using the Ably maintained drivers, please [consult Ably's Laravel broadcaster documentation](https://github.com/ably/laravel-broadcaster)."
 msgstr ""
 
 #: docs/10.x/broadcasting.md:block 42 (paragraph)
@@ -780,7 +780,7 @@ msgid "When broadcast events are dispatched within database transactions, they m
 msgstr ""
 
 #: docs/10.x/broadcasting.md:block 146 (paragraph)
-msgid "If your queue connection's `after_commit` configuration option is set to `false`, you may still indicate that a particular broadcast event should be dispatched after all open database transactions have been committed by defining an `$afterCommit` property on the event class:"
+msgid "If your queue connection's `after_commit` configuration option is set to `false`, you may still indicate that a particular broadcast event should be dispatched after all open database transactions have been committed by implementing the `ShouldDispatchAfterCommit` interface on the event class:"
 msgstr ""
 
 #: docs/10.x/broadcasting.md:block 147 (code)
@@ -790,13 +790,12 @@ msgid ""
 "namespace App\\Events;\n"
 "\n"
 "use Illuminate\\Contracts\\Broadcasting\\ShouldBroadcast;\n"
+"use Illuminate\\Contracts\\Events\\ShouldDispatchAfterCommit;\n"
 "use Illuminate\\Queue\\SerializesModels;\n"
 "\n"
-"class ServerCreated implements ShouldBroadcast\n"
+"class ServerCreated implements ShouldBroadcast, ShouldDispatchAfterCommit\n"
 "{\n"
 "    use SerializesModels;\n"
-"\n"
-"    public $afterCommit = true;\n"
 "}\n"
 msgstr ""
 
@@ -893,15 +892,23 @@ msgid ""
 "});\n"
 msgstr ""
 
-#: docs/10.x/broadcasting.md:block 173 (header)
+#: docs/10.x/broadcasting.md:block 172 (paragraph)
+msgid "You may view a list of your application's broadcast authorization callbacks using the `channel:list` Artisan command:"
+msgstr ""
+
+#: docs/10.x/broadcasting.md:block 173 (code)
+msgid "php artisan channel:list\n"
+msgstr ""
+
+#: docs/10.x/broadcasting.md:block 175 (header)
 msgid "Authorization Callback Model Binding"
 msgstr ""
 
-#: docs/10.x/broadcasting.md:block 174 (paragraph)
+#: docs/10.x/broadcasting.md:block 176 (paragraph)
 msgid "Just like HTTP routes, channel routes may also take advantage of implicit and explicit [route model binding](/docs/{{version}}/routing#route-model-binding). For example, instead of receiving a string or numeric order ID, you may request an actual `Order` model instance:"
 msgstr ""
 
-#: docs/10.x/broadcasting.md:block 175 (code)
+#: docs/10.x/broadcasting.md:block 177 (code)
 msgid ""
 "use App\\Models\\Order;\n"
 "use App\\Models\\User;\n"
@@ -911,53 +918,53 @@ msgid ""
 "});\n"
 msgstr ""
 
-#: docs/10.x/broadcasting.md:block 176 (quote)
+#: docs/10.x/broadcasting.md:block 178 (quote)
 msgid "**Warning** Unlike HTTP route model binding, channel model binding does not support automatic [implicit model binding scoping](/docs/{{version}}/routing#implicit-model-binding-scoping). However, this is rarely a problem because most channels can be scoped based on a single model's unique, primary key."
 msgstr ""
 
-#: docs/10.x/broadcasting.md:block 178 (header)
+#: docs/10.x/broadcasting.md:block 180 (header)
 msgid "Authorization Callback Authentication"
 msgstr ""
 
-#: docs/10.x/broadcasting.md:block 179 (paragraph)
+#: docs/10.x/broadcasting.md:block 181 (paragraph)
 msgid "Private and presence broadcast channels authenticate the current user via your application's default authentication guard. If the user is not authenticated, channel authorization is automatically denied and the authorization callback is never executed. However, you may assign multiple, custom guards that should authenticate the incoming request if necessary:"
 msgstr ""
 
-#: docs/10.x/broadcasting.md:block 180 (code)
+#: docs/10.x/broadcasting.md:block 182 (code)
 msgid ""
 "Broadcast::channel('channel', function () {\n"
 "    // ...\n"
 "}, ['guards' => ['web', 'admin']]);\n"
 msgstr ""
 
-#: docs/10.x/broadcasting.md:block 182 (header)
+#: docs/10.x/broadcasting.md:block 184 (header)
 msgid "Defining Channel Classes"
 msgstr ""
 
-#: docs/10.x/broadcasting.md:block 183 (paragraph)
+#: docs/10.x/broadcasting.md:block 185 (paragraph)
 msgid "If your application is consuming many different channels, your `routes/channels.php` file could become bulky. So, instead of using closures to authorize channels, you may use channel classes. To generate a channel class, use the `make:channel` Artisan command. This command will place a new channel class in the `App/Broadcasting` directory."
 msgstr ""
 
-#: docs/10.x/broadcasting.md:block 184 (code)
+#: docs/10.x/broadcasting.md:block 186 (code)
 msgid "php artisan make:channel OrderChannel\n"
 msgstr ""
 
-#: docs/10.x/broadcasting.md:block 185 (paragraph)
+#: docs/10.x/broadcasting.md:block 187 (paragraph)
 msgid "Next, register your channel in your `routes/channels.php` file:"
 msgstr ""
 
-#: docs/10.x/broadcasting.md:block 186 (code)
+#: docs/10.x/broadcasting.md:block 188 (code)
 msgid ""
 "use App\\Broadcasting\\OrderChannel;\n"
 "\n"
 "Broadcast::channel('orders.{order}', OrderChannel::class);\n"
 msgstr ""
 
-#: docs/10.x/broadcasting.md:block 187 (paragraph)
+#: docs/10.x/broadcasting.md:block 189 (paragraph)
 msgid "Finally, you may place the authorization logic for your channel in the channel class' `join` method. This `join` method will house the same logic you would have typically placed in your channel authorization closure. You may also take advantage of channel model binding:"
 msgstr ""
 
-#: docs/10.x/broadcasting.md:block 188 (code)
+#: docs/10.x/broadcasting.md:block 190 (code)
 msgid ""
 "<?php\n"
 "\n"
@@ -986,38 +993,38 @@ msgid ""
 "}\n"
 msgstr ""
 
-#: docs/10.x/broadcasting.md:block 189 (quote)
+#: docs/10.x/broadcasting.md:block 191 (quote)
 msgid "**Note** Like many other classes in Laravel, channel classes will automatically be resolved by the [service container](/docs/{{version}}/container). So, you may type-hint any dependencies required by your channel in its constructor."
 msgstr ""
 
-#: docs/10.x/broadcasting.md:block 191 (header)
+#: docs/10.x/broadcasting.md:block 193 (header)
 msgid "Broadcasting Events"
 msgstr ""
 
-#: docs/10.x/broadcasting.md:block 192 (paragraph)
+#: docs/10.x/broadcasting.md:block 194 (paragraph)
 msgid "Once you have defined an event and marked it with the `ShouldBroadcast` interface, you only need to fire the event using the event's dispatch method. The event dispatcher will notice that the event is marked with the `ShouldBroadcast` interface and will queue the event for broadcasting:"
 msgstr ""
 
-#: docs/10.x/broadcasting.md:block 195 (header)
+#: docs/10.x/broadcasting.md:block 197 (header)
 msgid "Only To Others"
 msgstr ""
 
-#: docs/10.x/broadcasting.md:block 196 (paragraph)
+#: docs/10.x/broadcasting.md:block 198 (paragraph)
 msgid "When building an application that utilizes event broadcasting, you may occasionally need to broadcast an event to all subscribers to a given channel except for the current user. You may accomplish this using the `broadcast` helper and the `toOthers` method:"
 msgstr ""
 
-#: docs/10.x/broadcasting.md:block 197 (code)
+#: docs/10.x/broadcasting.md:block 199 (code)
 msgid ""
 "use App\\Events\\OrderShipmentStatusUpdated;\n"
 "\n"
 "broadcast(new OrderShipmentStatusUpdated($update))->toOthers();\n"
 msgstr ""
 
-#: docs/10.x/broadcasting.md:block 198 (paragraph)
+#: docs/10.x/broadcasting.md:block 200 (paragraph)
 msgid "To better understand when you may want to use the `toOthers` method, let's imagine a task list application where a user may create a new task by entering a task name. To create a task, your application might make a request to a `/task` URL which broadcasts the task's creation and returns a JSON representation of the new task. When your JavaScript application receives the response from the end-point, it might directly insert the new task into its task list like so:"
 msgstr ""
 
-#: docs/10.x/broadcasting.md:block 199 (code)
+#: docs/10.x/broadcasting.md:block 201 (code)
 msgid ""
 "axios.post('/task', task)\n"
 "    .then((response) => {\n"
@@ -1025,46 +1032,46 @@ msgid ""
 "    });\n"
 msgstr ""
 
-#: docs/10.x/broadcasting.md:block 200 (paragraph)
+#: docs/10.x/broadcasting.md:block 202 (paragraph)
 msgid "However, remember that we also broadcast the task's creation. If your JavaScript application is also listening for this event in order to add tasks to the task list, you will have duplicate tasks in your list: one from the end-point and one from the broadcast. You may solve this by using the `toOthers` method to instruct the broadcaster to not broadcast the event to the current user."
 msgstr ""
 
-#: docs/10.x/broadcasting.md:block 201 (quote)
+#: docs/10.x/broadcasting.md:block 203 (quote)
 msgid "**Warning** Your event must use the `Illuminate\\Broadcasting\\InteractsWithSockets` trait in order to call the `toOthers` method."
 msgstr ""
 
-#: docs/10.x/broadcasting.md:block 204 (paragraph)
+#: docs/10.x/broadcasting.md:block 206 (paragraph)
 msgid "When you initialize a Laravel Echo instance, a socket ID is assigned to the connection. If you are using a global [Axios](https://github.com/mzabriskie/axios) instance to make HTTP requests from your JavaScript application, the socket ID will automatically be attached to every outgoing request as a `X-Socket-ID` header. Then, when you call the `toOthers` method, Laravel will extract the socket ID from the header and instruct the broadcaster to not broadcast to any connections with that socket ID."
 msgstr ""
 
-#: docs/10.x/broadcasting.md:block 205 (paragraph)
+#: docs/10.x/broadcasting.md:block 207 (paragraph)
 msgid "If you are not using a global Axios instance, you will need to manually configure your JavaScript application to send the `X-Socket-ID` header with all outgoing requests. You may retrieve the socket ID using the `Echo.socketId` method:"
 msgstr ""
 
-#: docs/10.x/broadcasting.md:block 206 (code)
+#: docs/10.x/broadcasting.md:block 208 (code)
 msgid "var socketId = Echo.socketId();\n"
 msgstr ""
 
-#: docs/10.x/broadcasting.md:block 208 (header)
+#: docs/10.x/broadcasting.md:block 210 (header)
 msgid "Customizing The Connection"
 msgstr ""
 
-#: docs/10.x/broadcasting.md:block 209 (paragraph)
+#: docs/10.x/broadcasting.md:block 211 (paragraph)
 msgid "If your application interacts with multiple broadcast connections and you want to broadcast an event using a broadcaster other than your default, you may specify which connection to push an event to using the `via` method:"
 msgstr ""
 
-#: docs/10.x/broadcasting.md:block 210 (code)
+#: docs/10.x/broadcasting.md:block 212 (code)
 msgid ""
 "use App\\Events\\OrderShipmentStatusUpdated;\n"
 "\n"
 "broadcast(new OrderShipmentStatusUpdated($update))->via('pusher');\n"
 msgstr ""
 
-#: docs/10.x/broadcasting.md:block 211 (paragraph)
+#: docs/10.x/broadcasting.md:block 213 (paragraph)
 msgid "Alternatively, you may specify the event's broadcast connection by calling the `broadcastVia` method within the event's constructor. However, before doing so, you should ensure that the event class uses the `InteractsWithBroadcasting` trait:"
 msgstr ""
 
-#: docs/10.x/broadcasting.md:block 212 (code)
+#: docs/10.x/broadcasting.md:block 214 (code)
 msgid ""
 "<?php\n"
 "\n"
@@ -1092,19 +1099,19 @@ msgid ""
 "}\n"
 msgstr ""
 
-#: docs/10.x/broadcasting.md:block 214 (header)
+#: docs/10.x/broadcasting.md:block 216 (header)
 msgid "Receiving Broadcasts"
 msgstr ""
 
-#: docs/10.x/broadcasting.md:block 216 (header)
+#: docs/10.x/broadcasting.md:block 218 (header)
 msgid "Listening For Events"
 msgstr ""
 
-#: docs/10.x/broadcasting.md:block 217 (paragraph)
+#: docs/10.x/broadcasting.md:block 219 (paragraph)
 msgid "Once you have [installed and instantiated Laravel Echo](#client-side-installation), you are ready to start listening for events that are broadcast from your Laravel application. First, use the `channel` method to retrieve an instance of a channel, then call the `listen` method to listen for a specified event:"
 msgstr ""
 
-#: docs/10.x/broadcasting.md:block 218 (code)
+#: docs/10.x/broadcasting.md:block 220 (code)
 msgid ""
 "Echo.channel(`orders.${this.order.id}`)\n"
 "    .listen('OrderShipmentStatusUpdated', (e) => {\n"
@@ -1112,11 +1119,11 @@ msgid ""
 "    });\n"
 msgstr ""
 
-#: docs/10.x/broadcasting.md:block 219 (paragraph)
+#: docs/10.x/broadcasting.md:block 221 (paragraph)
 msgid "If you would like to listen for events on a private channel, use the `private` method instead. You may continue to chain calls to the `listen` method to listen for multiple events on a single channel:"
 msgstr ""
 
-#: docs/10.x/broadcasting.md:block 220 (code)
+#: docs/10.x/broadcasting.md:block 222 (code)
 msgid ""
 "Echo.private(`orders.${this.order.id}`)\n"
 "    .listen(/* ... */)\n"
@@ -1124,49 +1131,49 @@ msgid ""
 "    .listen(/* ... */);\n"
 msgstr ""
 
-#: docs/10.x/broadcasting.md:block 222 (header)
+#: docs/10.x/broadcasting.md:block 224 (header)
 msgid "Stop Listening For Events"
 msgstr ""
 
-#: docs/10.x/broadcasting.md:block 223 (paragraph)
+#: docs/10.x/broadcasting.md:block 225 (paragraph)
 msgid "If you would like to stop listening to a given event without [leaving the channel](#leaving-a-channel), you may use the `stopListening` method:"
 msgstr ""
 
-#: docs/10.x/broadcasting.md:block 224 (code)
+#: docs/10.x/broadcasting.md:block 226 (code)
 msgid ""
 "Echo.private(`orders.${this.order.id}`)\n"
 "    .stopListening('OrderShipmentStatusUpdated')\n"
 msgstr ""
 
-#: docs/10.x/broadcasting.md:block 226 (header)
+#: docs/10.x/broadcasting.md:block 228 (header)
 msgid "Leaving A Channel"
 msgstr ""
 
-#: docs/10.x/broadcasting.md:block 227 (paragraph)
+#: docs/10.x/broadcasting.md:block 229 (paragraph)
 msgid "To leave a channel, you may call the `leaveChannel` method on your Echo instance:"
 msgstr ""
 
-#: docs/10.x/broadcasting.md:block 228 (code)
+#: docs/10.x/broadcasting.md:block 230 (code)
 msgid "Echo.leaveChannel(`orders.${this.order.id}`);\n"
 msgstr ""
 
-#: docs/10.x/broadcasting.md:block 229 (paragraph)
+#: docs/10.x/broadcasting.md:block 231 (paragraph)
 msgid "If you would like to leave a channel and also its associated private and presence channels, you may call the `leave` method:"
 msgstr ""
 
-#: docs/10.x/broadcasting.md:block 230 (code)
+#: docs/10.x/broadcasting.md:block 232 (code)
 msgid "Echo.leave(`orders.${this.order.id}`);\n"
 msgstr ""
 
-#: docs/10.x/broadcasting.md:block 232 (header)
+#: docs/10.x/broadcasting.md:block 234 (header)
 msgid "Namespaces"
 msgstr ""
 
-#: docs/10.x/broadcasting.md:block 233 (paragraph)
+#: docs/10.x/broadcasting.md:block 235 (paragraph)
 msgid "You may have noticed in the examples above that we did not specify the full `App\\Events` namespace for the event classes. This is because Echo will automatically assume the events are located in the `App\\Events` namespace. However, you may configure the root namespace when you instantiate Echo by passing a `namespace` configuration option:"
 msgstr ""
 
-#: docs/10.x/broadcasting.md:block 234 (code)
+#: docs/10.x/broadcasting.md:block 236 (code)
 msgid ""
 "window.Echo = new Echo({\n"
 "    broadcaster: 'pusher',\n"
@@ -1175,11 +1182,11 @@ msgid ""
 "});\n"
 msgstr ""
 
-#: docs/10.x/broadcasting.md:block 235 (paragraph)
+#: docs/10.x/broadcasting.md:block 237 (paragraph)
 msgid "Alternatively, you may prefix event classes with a `.` when subscribing to them using Echo. This will allow you to always specify the fully-qualified class name:"
 msgstr ""
 
-#: docs/10.x/broadcasting.md:block 236 (code)
+#: docs/10.x/broadcasting.md:block 238 (code)
 msgid ""
 "Echo.channel('orders')\n"
 "    .listen('.Namespace\\\\Event\\\\Class', (e) => {\n"
@@ -1187,27 +1194,27 @@ msgid ""
 "    });\n"
 msgstr ""
 
-#: docs/10.x/broadcasting.md:block 238 (header)
+#: docs/10.x/broadcasting.md:block 240 (header)
 msgid "Presence Channels"
 msgstr ""
 
-#: docs/10.x/broadcasting.md:block 239 (paragraph)
+#: docs/10.x/broadcasting.md:block 241 (paragraph)
 msgid "Presence channels build on the security of private channels while exposing the additional feature of awareness of who is subscribed to the channel. This makes it easy to build powerful, collaborative application features such as notifying users when another user is viewing the same page or listing the inhabitants of a chat room."
 msgstr ""
 
-#: docs/10.x/broadcasting.md:block 241 (header)
+#: docs/10.x/broadcasting.md:block 243 (header)
 msgid "Authorizing Presence Channels"
 msgstr ""
 
-#: docs/10.x/broadcasting.md:block 242 (paragraph)
+#: docs/10.x/broadcasting.md:block 244 (paragraph)
 msgid "All presence channels are also private channels; therefore, users must be [authorized to access them](#authorizing-channels). However, when defining authorization callbacks for presence channels, you will not return `true` if the user is authorized to join the channel. Instead, you should return an array of data about the user."
 msgstr ""
 
-#: docs/10.x/broadcasting.md:block 243 (paragraph)
+#: docs/10.x/broadcasting.md:block 245 (paragraph)
 msgid "The data returned by the authorization callback will be made available to the presence channel event listeners in your JavaScript application. If the user is not authorized to join the presence channel, you should return `false` or `null`:"
 msgstr ""
 
-#: docs/10.x/broadcasting.md:block 244 (code)
+#: docs/10.x/broadcasting.md:block 246 (code)
 msgid ""
 "use App\\Models\\User;\n"
 "\n"
@@ -1218,15 +1225,15 @@ msgid ""
 "});\n"
 msgstr ""
 
-#: docs/10.x/broadcasting.md:block 246 (header)
+#: docs/10.x/broadcasting.md:block 248 (header)
 msgid "Joining Presence Channels"
 msgstr ""
 
-#: docs/10.x/broadcasting.md:block 247 (paragraph)
+#: docs/10.x/broadcasting.md:block 249 (paragraph)
 msgid "To join a presence channel, you may use Echo's `join` method. The `join` method will return a `PresenceChannel` implementation which, along with exposing the `listen` method, allows you to subscribe to the `here`, `joining`, and `leaving` events."
 msgstr ""
 
-#: docs/10.x/broadcasting.md:block 248 (code)
+#: docs/10.x/broadcasting.md:block 250 (code)
 msgid ""
 "Echo.join(`chat.${roomId}`)\n"
 "    .here((users) => {\n"
@@ -1243,19 +1250,19 @@ msgid ""
 "    });\n"
 msgstr ""
 
-#: docs/10.x/broadcasting.md:block 249 (paragraph)
+#: docs/10.x/broadcasting.md:block 251 (paragraph)
 msgid "The `here` callback will be executed immediately once the channel is joined successfully, and will receive an array containing the user information for all of the other users currently subscribed to the channel. The `joining` method will be executed when a new user joins a channel, while the `leaving` method will be executed when a user leaves the channel. The `error` method will be executed when the authentication endpoint returns a HTTP status code other than 200 or if there is a problem parsing the returned JSON."
 msgstr ""
 
-#: docs/10.x/broadcasting.md:block 251 (header)
+#: docs/10.x/broadcasting.md:block 253 (header)
 msgid "Broadcasting To Presence Channels"
 msgstr ""
 
-#: docs/10.x/broadcasting.md:block 252 (paragraph)
+#: docs/10.x/broadcasting.md:block 254 (paragraph)
 msgid "Presence channels may receive events just like public or private channels. Using the example of a chatroom, we may want to broadcast `NewMessage` events to the room's presence channel. To do so, we'll return an instance of `PresenceChannel` from the event's `broadcastOn` method:"
 msgstr ""
 
-#: docs/10.x/broadcasting.md:block 253 (code)
+#: docs/10.x/broadcasting.md:block 255 (code)
 msgid ""
 "/**\n"
 " * Get the channels the event should broadcast on.\n"
@@ -1265,27 +1272,27 @@ msgid ""
 "public function broadcastOn(): array\n"
 "{\n"
 "    return [\n"
-"        new PresenceChannel('room.'.$this->message->room_id),\n"
+"        new PresenceChannel('chat.'.$this->message->room_id),\n"
 "    ];\n"
 "}\n"
 msgstr ""
 
-#: docs/10.x/broadcasting.md:block 254 (paragraph)
+#: docs/10.x/broadcasting.md:block 256 (paragraph)
 msgid "As with other events, you may use the `broadcast` helper and the `toOthers` method to exclude the current user from receiving the broadcast:"
 msgstr ""
 
-#: docs/10.x/broadcasting.md:block 255 (code)
+#: docs/10.x/broadcasting.md:block 257 (code)
 msgid ""
 "broadcast(new NewMessage($message));\n"
 "\n"
 "broadcast(new NewMessage($message))->toOthers();\n"
 msgstr ""
 
-#: docs/10.x/broadcasting.md:block 256 (paragraph)
+#: docs/10.x/broadcasting.md:block 258 (paragraph)
 msgid "As typical of other types of events, you may listen for events sent to presence channels using Echo's `listen` method:"
 msgstr ""
 
-#: docs/10.x/broadcasting.md:block 257 (code)
+#: docs/10.x/broadcasting.md:block 259 (code)
 msgid ""
 "Echo.join(`chat.${roomId}`)\n"
 "    .here(/* ... */)\n"
@@ -1296,27 +1303,27 @@ msgid ""
 "    });\n"
 msgstr ""
 
-#: docs/10.x/broadcasting.md:block 259 (header)
+#: docs/10.x/broadcasting.md:block 261 (header)
 msgid "Model Broadcasting"
 msgstr ""
 
-#: docs/10.x/broadcasting.md:block 260 (quote)
+#: docs/10.x/broadcasting.md:block 262 (quote)
 msgid "**Warning** Before reading the following documentation about model broadcasting, we recommend you become familiar with the general concepts of Laravel's model broadcasting services as well as how to manually create and listen to broadcast events."
 msgstr ""
 
-#: docs/10.x/broadcasting.md:block 261 (paragraph)
+#: docs/10.x/broadcasting.md:block 263 (paragraph)
 msgid "It is common to broadcast events when your application's [Eloquent models](/docs/{{version}}/eloquent) are created, updated, or deleted. Of course, this can easily be accomplished by manually [defining custom events for Eloquent model state changes](/docs/{{version}}/eloquent#events) and marking those events with the `ShouldBroadcast` interface."
 msgstr ""
 
-#: docs/10.x/broadcasting.md:block 262 (paragraph)
+#: docs/10.x/broadcasting.md:block 264 (paragraph)
 msgid "However, if you are not using these events for any other purposes in your application, it can be cumbersome to create event classes for the sole purpose of broadcasting them. To remedy this, Laravel allows you to indicate that an Eloquent model should automatically broadcast its state changes."
 msgstr ""
 
-#: docs/10.x/broadcasting.md:block 263 (paragraph)
+#: docs/10.x/broadcasting.md:block 265 (paragraph)
 msgid "To get started, your Eloquent model should use the `Illuminate\\Database\\Eloquent\\BroadcastsEvents` trait. In addition, the model should define a `broadcastOn` method, which will return an array of channels that the model's events should broadcast on:"
 msgstr ""
 
-#: docs/10.x/broadcasting.md:block 264 (code)
+#: docs/10.x/broadcasting.md:block 266 (code)
 msgid ""
 "<?php\n"
 "\n"
@@ -1353,15 +1360,15 @@ msgid ""
 "}\n"
 msgstr ""
 
-#: docs/10.x/broadcasting.md:block 265 (paragraph)
+#: docs/10.x/broadcasting.md:block 267 (paragraph)
 msgid "Once your model includes this trait and defines its broadcast channels, it will begin automatically broadcasting events when a model instance is created, updated, deleted, trashed, or restored."
 msgstr ""
 
-#: docs/10.x/broadcasting.md:block 266 (paragraph)
+#: docs/10.x/broadcasting.md:block 268 (paragraph)
 msgid "In addition, you may have noticed that the `broadcastOn` method receives a string `$event` argument. This argument contains the type of event that has occurred on the model and will have a value of `created`, `updated`, `deleted`, `trashed`, or `restored`. By inspecting the value of this variable, you may determine which channels (if any) the model should broadcast to for a particular event:"
 msgstr ""
 
-#: docs/10.x/broadcasting.md:block 267 (code)
+#: docs/10.x/broadcasting.md:block 269 (code)
 msgid ""
 "/**\n"
 " * Get the channels that model events should broadcast on.\n"
@@ -1377,15 +1384,15 @@ msgid ""
 "}\n"
 msgstr ""
 
-#: docs/10.x/broadcasting.md:block 269 (header)
+#: docs/10.x/broadcasting.md:block 271 (header)
 msgid "Customizing Model Broadcasting Event Creation"
 msgstr ""
 
-#: docs/10.x/broadcasting.md:block 270 (paragraph)
+#: docs/10.x/broadcasting.md:block 272 (paragraph)
 msgid "Occasionally, you may wish to customize how Laravel creates the underlying model broadcasting event. You may accomplish this by defining a `newBroadcastableEvent` method on your Eloquent model. This method should return an `Illuminate\\Database\\Eloquent\\BroadcastableModelEventOccurred` instance:"
 msgstr ""
 
-#: docs/10.x/broadcasting.md:block 271 (code)
+#: docs/10.x/broadcasting.md:block 273 (code)
 msgid ""
 "use Illuminate\\Database\\Eloquent\\BroadcastableModelEventOccurred;\n"
 "\n"
@@ -1400,23 +1407,23 @@ msgid ""
 "}\n"
 msgstr ""
 
-#: docs/10.x/broadcasting.md:block 273 (header)
+#: docs/10.x/broadcasting.md:block 275 (header)
 msgid "Model Broadcasting Conventions"
 msgstr ""
 
-#: docs/10.x/broadcasting.md:block 275 (header)
+#: docs/10.x/broadcasting.md:block 277 (header)
 msgid "Channel Conventions"
 msgstr ""
 
-#: docs/10.x/broadcasting.md:block 276 (paragraph)
+#: docs/10.x/broadcasting.md:block 278 (paragraph)
 msgid "As you may have noticed, the `broadcastOn` method in the model example above did not return `Channel` instances. Instead, Eloquent models were returned directly. If an Eloquent model instance is returned by your model's `broadcastOn` method (or is contained in an array returned by the method), Laravel will automatically instantiate a private channel instance for the model using the model's class name and primary key identifier as the channel name."
 msgstr ""
 
-#: docs/10.x/broadcasting.md:block 277 (paragraph)
+#: docs/10.x/broadcasting.md:block 279 (paragraph)
 msgid "So, an `App\\Models\\User` model with an `id` of `1` would be converted into a `Illuminate\\Broadcasting\\PrivateChannel` instance with a name of `App.Models.User.1`. Of course, in addition to returning Eloquent model instances from your model's `broadcastOn` method, you may return complete `Channel` instances in order to have full control over the model's channel names:"
 msgstr ""
 
-#: docs/10.x/broadcasting.md:block 278 (code)
+#: docs/10.x/broadcasting.md:block 280 (code)
 msgid ""
 "use Illuminate\\Broadcasting\\PrivateChannel;\n"
 "\n"
@@ -1433,35 +1440,35 @@ msgid ""
 "}\n"
 msgstr ""
 
-#: docs/10.x/broadcasting.md:block 279 (paragraph)
+#: docs/10.x/broadcasting.md:block 281 (paragraph)
 msgid "If you plan to explicitly return a channel instance from your model's `broadcastOn` method, you may pass an Eloquent model instance to the channel's constructor. When doing so, Laravel will use the model channel conventions discussed above to convert the Eloquent model into a channel name string:"
 msgstr ""
 
-#: docs/10.x/broadcasting.md:block 280 (code)
+#: docs/10.x/broadcasting.md:block 282 (code)
 msgid "return [new Channel($this->user)];\n"
 msgstr ""
 
-#: docs/10.x/broadcasting.md:block 281 (paragraph)
-msgid "If you need to determine the channel name of a model, you may call the `broadcastChannel` method on any model instance. For example, this method returns the string `App.Models.User.1` for a `App\\Models\\User` model with an `id` of `1`:"
+#: docs/10.x/broadcasting.md:block 283 (paragraph)
+msgid "If you need to determine the channel name of a model, you may call the `broadcastChannel` method on any model instance. For example, this method returns the string `App.Models.User.1` for an `App\\Models\\User` model with an `id` of `1`:"
 msgstr ""
 
-#: docs/10.x/broadcasting.md:block 282 (code)
+#: docs/10.x/broadcasting.md:block 284 (code)
 msgid "$user->broadcastChannel()\n"
 msgstr ""
 
-#: docs/10.x/broadcasting.md:block 284 (header)
+#: docs/10.x/broadcasting.md:block 286 (header)
 msgid "Event Conventions"
 msgstr ""
 
-#: docs/10.x/broadcasting.md:block 285 (paragraph)
+#: docs/10.x/broadcasting.md:block 287 (paragraph)
 msgid "Since model broadcast events are not associated with an \"actual\" event within your application's `App\\Events` directory, they are assigned a name and a payload based on conventions. Laravel's convention is to broadcast the event using the class name of the model (not including the namespace) and the name of the model event that triggered the broadcast."
 msgstr ""
 
-#: docs/10.x/broadcasting.md:block 286 (paragraph)
+#: docs/10.x/broadcasting.md:block 288 (paragraph)
 msgid "So, for example, an update to the `App\\Models\\Post` model would broadcast an event to your client-side application as `PostUpdated` with the following payload:"
 msgstr ""
 
-#: docs/10.x/broadcasting.md:block 287 (code)
+#: docs/10.x/broadcasting.md:block 289 (code)
 msgid ""
 "{\n"
 "    \"model\": {\n"
@@ -1474,15 +1481,15 @@ msgid ""
 "}\n"
 msgstr ""
 
-#: docs/10.x/broadcasting.md:block 288 (paragraph)
+#: docs/10.x/broadcasting.md:block 290 (paragraph)
 msgid "The deletion of the `App\\Models\\User` model would broadcast an event named `UserDeleted`."
 msgstr ""
 
-#: docs/10.x/broadcasting.md:block 289 (paragraph)
+#: docs/10.x/broadcasting.md:block 291 (paragraph)
 msgid "If you would like, you may define a custom broadcast name and payload by adding a `broadcastAs` and `broadcastWith` method to your model. These methods receive the name of the model event / operation that is occurring, allowing you to customize the event's name and payload for each model operation. If `null` is returned from the `broadcastAs` method, Laravel will use the model broadcasting event name conventions discussed above when broadcasting the event:"
 msgstr ""
 
-#: docs/10.x/broadcasting.md:block 290 (code)
+#: docs/10.x/broadcasting.md:block 292 (code)
 msgid ""
 "/**\n"
 " * The model event's broadcast name.\n"
@@ -1509,23 +1516,23 @@ msgid ""
 "}\n"
 msgstr ""
 
-#: docs/10.x/broadcasting.md:block 292 (header)
+#: docs/10.x/broadcasting.md:block 294 (header)
 msgid "Listening For Model Broadcasts"
 msgstr ""
 
-#: docs/10.x/broadcasting.md:block 293 (paragraph)
+#: docs/10.x/broadcasting.md:block 295 (paragraph)
 msgid "Once you have added the `BroadcastsEvents` trait to your model and defined your model's `broadcastOn` method, you are ready to start listening for broadcasted model events within your client-side application. Before getting started, you may wish to consult the complete documentation on [listening for events](#listening-for-events)."
 msgstr ""
 
-#: docs/10.x/broadcasting.md:block 294 (paragraph)
+#: docs/10.x/broadcasting.md:block 296 (paragraph)
 msgid "First, use the `private` method to retrieve an instance of a channel, then call the `listen` method to listen for a specified event. Typically, the channel name given to the `private` method should correspond to Laravel's [model broadcasting conventions](#model-broadcasting-conventions)."
 msgstr ""
 
-#: docs/10.x/broadcasting.md:block 295 (paragraph)
+#: docs/10.x/broadcasting.md:block 297 (paragraph)
 msgid "Once you have obtained a channel instance, you may use the `listen` method to listen for a particular event. Since model broadcast events are not associated with an \"actual\" event within your application's `App\\Events` directory, the [event name](#model-broadcasting-event-conventions) must be prefixed with a `.` to indicate it does not belong to a particular namespace. Each model broadcast event has a `model` property which contains all of the broadcastable properties of the model:"
 msgstr ""
 
-#: docs/10.x/broadcasting.md:block 296 (code)
+#: docs/10.x/broadcasting.md:block 298 (code)
 msgid ""
 "Echo.private(`App.Models.User.${this.user.id}`)\n"
 "    .listen('.PostUpdated', (e) => {\n"
@@ -1533,23 +1540,23 @@ msgid ""
 "    });\n"
 msgstr ""
 
-#: docs/10.x/broadcasting.md:block 298 (header)
+#: docs/10.x/broadcasting.md:block 300 (header)
 msgid "Client Events"
 msgstr ""
 
-#: docs/10.x/broadcasting.md:block 299 (quote)
+#: docs/10.x/broadcasting.md:block 301 (quote)
 msgid "**Note** When using [Pusher Channels](https://pusher.com/channels), you must enable the \"Client Events\" option in the \"App Settings\" section of your [application dashboard](https://dashboard.pusher.com/) in order to send client events."
 msgstr ""
 
-#: docs/10.x/broadcasting.md:block 300 (paragraph)
+#: docs/10.x/broadcasting.md:block 302 (paragraph)
 msgid "Sometimes you may wish to broadcast an event to other connected clients without hitting your Laravel application at all. This can be particularly useful for things like \"typing\" notifications, where you want to alert users of your application that another user is typing a message on a given screen."
 msgstr ""
 
-#: docs/10.x/broadcasting.md:block 301 (paragraph)
+#: docs/10.x/broadcasting.md:block 303 (paragraph)
 msgid "To broadcast client events, you may use Echo's `whisper` method:"
 msgstr ""
 
-#: docs/10.x/broadcasting.md:block 302 (code)
+#: docs/10.x/broadcasting.md:block 304 (code)
 msgid ""
 "Echo.private(`chat.${roomId}`)\n"
 "    .whisper('typing', {\n"
@@ -1557,11 +1564,11 @@ msgid ""
 "    });\n"
 msgstr ""
 
-#: docs/10.x/broadcasting.md:block 303 (paragraph)
+#: docs/10.x/broadcasting.md:block 305 (paragraph)
 msgid "To listen for client events, you may use the `listenForWhisper` method:"
 msgstr ""
 
-#: docs/10.x/broadcasting.md:block 304 (code)
+#: docs/10.x/broadcasting.md:block 306 (code)
 msgid ""
 "Echo.private(`chat.${roomId}`)\n"
 "    .listenForWhisper('typing', (e) => {\n"
@@ -1569,19 +1576,19 @@ msgid ""
 "    });\n"
 msgstr ""
 
-#: docs/10.x/broadcasting.md:block 306 (header)
+#: docs/10.x/broadcasting.md:block 308 (header)
 msgid "Notifications"
 msgstr ""
 
-#: docs/10.x/broadcasting.md:block 307 (paragraph)
+#: docs/10.x/broadcasting.md:block 309 (paragraph)
 msgid "By pairing event broadcasting with [notifications](/docs/{{version}}/notifications), your JavaScript application may receive new notifications as they occur without needing to refresh the page. Before getting started, be sure to read over the documentation on using [the broadcast notification channel](/docs/{{version}}/notifications#broadcast-notifications)."
 msgstr ""
 
-#: docs/10.x/broadcasting.md:block 308 (paragraph)
+#: docs/10.x/broadcasting.md:block 310 (paragraph)
 msgid "Once you have configured a notification to use the broadcast channel, you may listen for the broadcast events using Echo's `notification` method. Remember, the channel name should match the class name of the entity receiving the notifications:"
 msgstr ""
 
-#: docs/10.x/broadcasting.md:block 309 (code)
+#: docs/10.x/broadcasting.md:block 311 (code)
 msgid ""
 "Echo.private(`App.Models.User.${userId}`)\n"
 "    .notification((notification) => {\n"
@@ -1589,8 +1596,12 @@ msgid ""
 "    });\n"
 msgstr ""
 
-#: docs/10.x/broadcasting.md:block 310 (paragraph)
+#: docs/10.x/broadcasting.md:block 312 (paragraph)
 msgid "In this example, all notifications sent to `App\\Models\\User` instances via the `broadcast` channel would be received by the callback. A channel authorization callback for the `App.Models.User.{id}` channel is included in the default `BroadcastServiceProvider` that ships with the Laravel framework."
+msgstr ""
+
+#: docs/8.x/broadcasting.md:block 6 (paragraph)
+msgid "For example, imagine your application is able to export a user's data to a CSV file and email it to them. However, creating this CSV file takes several minutes so you choose to create and mail the CSV within a [queued job](/docs/{{version}}/queues). When the CSV has been created and mailed to the user, we can use event broadcasting to dispatch a `App\\Events\\UserDataExported` event that is received by our application's JavaScript. Once the event is received, we can display a message to the user that their CSV has been emailed to them without them ever needing to refresh the page."
 msgstr ""
 
 #: docs/8.x/broadcasting.md:block 11 (paragraph)
@@ -1670,7 +1681,7 @@ msgid ""
 "\n"
 "namespace App\\Events;\n"
 "\n"
-"use App\\Order;\n"
+"use App\\Models\\Order;\n"
 "use Illuminate\\Broadcasting\\Channel;\n"
 "use Illuminate\\Broadcasting\\InteractsWithSockets;\n"
 "use Illuminate\\Broadcasting\\PresenceChannel;\n"
@@ -1820,6 +1831,27 @@ msgid ""
 "public function broadcastWhen()\n"
 "{\n"
 "    return $this->order->value > 100;\n"
+"}\n"
+msgstr ""
+
+#: docs/8.x/broadcasting.md:block 142 (paragraph)
+msgid "If your queue connection's `after_commit` configuration option is set to `false`, you may still indicate that a particular broadcast event should be dispatched after all open database transactions have been committed by defining an `$afterCommit` property on the event class:"
+msgstr ""
+
+#: docs/8.x/broadcasting.md:block 143 (code)
+msgid ""
+"<?php\n"
+"\n"
+"namespace App\\Events;\n"
+"\n"
+"use Illuminate\\Contracts\\Broadcasting\\ShouldBroadcast;\n"
+"use Illuminate\\Queue\\SerializesModels;\n"
+"\n"
+"class ServerCreated implements ShouldBroadcast\n"
+"{\n"
+"    use SerializesModels;\n"
+"\n"
+"    public $afterCommit = true;\n"
 "}\n"
 msgstr ""
 
@@ -2104,6 +2136,10 @@ msgid ""
 "}\n"
 msgstr ""
 
+#: docs/8.x/broadcasting.md:block 277 (paragraph)
+msgid "If you need to determine the channel name of a model, you may call the `broadcastChannel` method on any model instance. For example, this method returns the string `App.Models.User.1` for a `App\\Models\\User` model with an `id` of `1`:"
+msgstr ""
+
 #: docs/8.x/broadcasting.md:block 286 (code)
 msgid ""
 "/**\n"
@@ -2139,31 +2175,6 @@ msgstr ""
 msgid "{tip} When using [Pusher Channels](https://pusher.com/channels), you must enable the \"Client Events\" option in the \"App Settings\" section of your [application dashboard](https://dashboard.pusher.com/) in order to send client events."
 msgstr ""
 
-#: docs/9.x/broadcasting.md:block 96 (code)
-msgid ""
-"<?php\n"
-"\n"
-"namespace App\\Events;\n"
-"\n"
-"use App\\Models\\Order;\n"
-"use Illuminate\\Broadcasting\\Channel;\n"
-"use Illuminate\\Broadcasting\\InteractsWithSockets;\n"
-"use Illuminate\\Broadcasting\\PresenceChannel;\n"
-"use Illuminate\\Broadcasting\\PrivateChannel;\n"
-"use Illuminate\\Contracts\\Broadcasting\\ShouldBroadcast;\n"
-"use Illuminate\\Queue\\SerializesModels;\n"
-"\n"
-"class OrderShipmentStatusUpdated implements ShouldBroadcast\n"
-"{\n"
-"    /**\n"
-"     * The order instance.\n"
-"     *\n"
-"     * @var \\App\\Order\n"
-"     */\n"
-"    public $order;\n"
-"}\n"
-msgstr ""
-
 #: docs/9.x/broadcasting.md:block 253 (code)
 msgid ""
 "Echo.join(`chat.${roomId}`)\n"
@@ -2193,49 +2204,21 @@ msgid ""
 "}\n"
 msgstr ""
 
-#: docs/master/broadcasting.md:block 115 (code)
+#: docs/master/broadcasting.md:block 41 (quote)
+msgid "**Note** The documentation below discusses how to use Ably in \"Pusher compatibility\" mode. However, the Ably team maintains a broadcaster and Echo client that is able to take advantage of the unique capabilities offered by Ably. For more information on using the Ably maintained drivers, please [consult Ably's Laravel broadcaster documentation](https://github.com/ably/laravel-broadcaster)."
+msgstr ""
+
+#: docs/master/broadcasting.md:block 253 (code)
 msgid ""
-"<?php\n"
-"\n"
-"namespace App\\Events;\n"
-"\n"
-"use App\\Models\\User;\n"
-"use Illuminate\\Broadcasting\\Channel;\n"
-"use Illuminate\\Broadcasting\\InteractsWithSockets;\n"
-"use Illuminate\\Broadcasting\\PresenceChannel;\n"
-"use Illuminate\\Broadcasting\\PrivateChannel;\n"
-"use Illuminate\\Contracts\\Broadcasting\\ShouldBroadcast;\n"
-"use Illuminate\\Queue\\SerializesModels;\n"
-"\n"
-"class ServerCreated implements ShouldBroadcast\n"
+"/**\n"
+" * Get the channels the event should broadcast on.\n"
+" *\n"
+" * @return array<int, \\Illuminate\\Broadcasting\\Channel>\n"
+" */\n"
+"public function broadcastOn(): array\n"
 "{\n"
-"    use SerializesModels;\n"
-"\n"
-"    /**\n"
-"     * The user that created the server.\n"
-"     *\n"
-"     * @var \\App\\Models\\User\n"
-"     */\n"
-"    public $user;\n"
-"\n"
-"    /**\n"
-"     * Create a new event instance.\n"
-"     */\n"
-"    public function __construct(User $user)\n"
-"    {\n"
-"        $this->user = $user;\n"
-"    }\n"
-"\n"
-"    /**\n"
-"     * Get the channels the event should broadcast on.\n"
-"     *\n"
-"     * @return array<int, \\Illuminate\\Broadcasting\\Channel>\n"
-"     */\n"
-"    public function broadcastOn(): array\n"
-"    {\n"
-"        return [\n"
-"            new PrivateChannel('user.'.$this->user->id),\n"
-"        ];\n"
-"    }\n"
+"    return [\n"
+"        new PresenceChannel('room.'.$this->message->room_id),\n"
+"    ];\n"
 "}\n"
 msgstr ""

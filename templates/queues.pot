@@ -35,6 +35,10 @@ msgid "[Unique Jobs](#unique-jobs)"
 msgstr ""
 
 #: docs/10.x/queues.md:block 2 (unordered list)
+msgid "[Encrypted Jobs](#encrypted-jobs)"
+msgstr ""
+
+#: docs/10.x/queues.md:block 2 (unordered list)
 msgid "[Job Middleware](#job-middleware)"
 msgstr ""
 
@@ -183,6 +187,22 @@ msgid "[Monitoring Your Queues](#monitoring-your-queues)"
 msgstr ""
 
 #: docs/10.x/queues.md:block 2 (unordered list)
+msgid "[Testing](#testing)"
+msgstr ""
+
+#: docs/10.x/queues.md:block 2 (unordered list)
+msgid "[Faking A Subset Of Jobs](#faking-a-subset-of-jobs)"
+msgstr ""
+
+#: docs/10.x/queues.md:block 2 (unordered list)
+msgid "[Testing Job Chains](#testing-job-chains)"
+msgstr ""
+
+#: docs/10.x/queues.md:block 2 (unordered list)
+msgid "[Testing Job Batches](#testing-job-batches)"
+msgstr ""
+
+#: docs/10.x/queues.md:block 2 (unordered list)
 msgid "[Job Events](#job-events)"
 msgstr ""
 
@@ -272,15 +292,19 @@ msgstr ""
 msgid "In order to use the `redis` queue driver, you should configure a Redis database connection in your `config/database.php` configuration file."
 msgstr ""
 
-#: docs/10.x/queues.md:block 27 (paragraph)
-msgid "**Redis Cluster**"
+#: docs/10.x/queues.md:block 27 (quote)
+msgid "**Warning** The `serializer` and `compression` Redis options are not supported by the `redis` queue driver."
 msgstr ""
 
 #: docs/10.x/queues.md:block 28 (paragraph)
+msgid "**Redis Cluster**"
+msgstr ""
+
+#: docs/10.x/queues.md:block 29 (paragraph)
 msgid "If your Redis queue connection uses a Redis Cluster, your queue names must contain a [key hash tag](https://redis.io/docs/reference/cluster-spec/#hash-tags). This is required in order to ensure all of the Redis keys for a given queue are placed into the same hash slot:"
 msgstr ""
 
-#: docs/10.x/queues.md:block 29 (code)
+#: docs/10.x/queues.md:block 30 (code)
 msgid ""
 "'redis' => [\n"
 "    'driver' => 'redis',\n"
@@ -290,19 +314,19 @@ msgid ""
 "],\n"
 msgstr ""
 
-#: docs/10.x/queues.md:block 30 (paragraph)
+#: docs/10.x/queues.md:block 31 (paragraph)
 msgid "**Blocking**"
 msgstr ""
 
-#: docs/10.x/queues.md:block 31 (paragraph)
+#: docs/10.x/queues.md:block 32 (paragraph)
 msgid "When using the Redis queue, you may use the `block_for` configuration option to specify how long the driver should wait for a job to become available before iterating through the worker loop and re-polling the Redis database."
 msgstr ""
 
-#: docs/10.x/queues.md:block 32 (paragraph)
+#: docs/10.x/queues.md:block 33 (paragraph)
 msgid "Adjusting this value based on your queue load can be more efficient than continually polling the Redis database for new jobs. For instance, you may set the value to `5` to indicate that the driver should block for five seconds while waiting for a job to become available:"
 msgstr ""
 
-#: docs/10.x/queues.md:block 33 (code)
+#: docs/10.x/queues.md:block 34 (code)
 msgid ""
 "'redis' => [\n"
 "    'driver' => 'redis',\n"
@@ -313,63 +337,63 @@ msgid ""
 "],\n"
 msgstr ""
 
-#: docs/10.x/queues.md:block 34 (quote)
+#: docs/10.x/queues.md:block 35 (quote)
 msgid "**Warning** Setting `block_for` to `0` will cause queue workers to block indefinitely until a job is available. This will also prevent signals such as `SIGTERM` from being handled until the next job has been processed."
 msgstr ""
 
-#: docs/10.x/queues.md:block 36 (header)
+#: docs/10.x/queues.md:block 37 (header)
 msgid "Other Driver Prerequisites"
 msgstr ""
 
-#: docs/10.x/queues.md:block 37 (paragraph)
+#: docs/10.x/queues.md:block 38 (paragraph)
 msgid "The following dependencies are needed for the listed queue drivers. These dependencies may be installed via the Composer package manager:"
 msgstr ""
 
-#: docs/10.x/queues.md:block 39 (unordered list)
+#: docs/10.x/queues.md:block 40 (unordered list)
 msgid "Amazon SQS: `aws/aws-sdk-php ~3.0`"
 msgstr ""
 
-#: docs/10.x/queues.md:block 39 (unordered list)
+#: docs/10.x/queues.md:block 40 (unordered list)
 msgid "Beanstalkd: `pda/pheanstalk ~4.0`"
 msgstr ""
 
-#: docs/10.x/queues.md:block 39 (unordered list)
+#: docs/10.x/queues.md:block 40 (unordered list)
 msgid "Redis: `predis/predis ~1.0` or phpredis PHP extension"
 msgstr ""
 
-#: docs/10.x/queues.md:block 42 (header)
+#: docs/10.x/queues.md:block 43 (header)
 msgid "Creating Jobs"
 msgstr ""
 
-#: docs/10.x/queues.md:block 44 (header)
+#: docs/10.x/queues.md:block 45 (header)
 msgid "Generating Job Classes"
 msgstr ""
 
-#: docs/10.x/queues.md:block 45 (paragraph)
+#: docs/10.x/queues.md:block 46 (paragraph)
 msgid "By default, all of the queueable jobs for your application are stored in the `app/Jobs` directory. If the `app/Jobs` directory doesn't exist, it will be created when you run the `make:job` Artisan command:"
 msgstr ""
 
-#: docs/10.x/queues.md:block 46 (code)
+#: docs/10.x/queues.md:block 47 (code)
 msgid "php artisan make:job ProcessPodcast\n"
 msgstr ""
 
-#: docs/10.x/queues.md:block 47 (paragraph)
+#: docs/10.x/queues.md:block 48 (paragraph)
 msgid "The generated class will implement the `Illuminate\\Contracts\\Queue\\ShouldQueue` interface, indicating to Laravel that the job should be pushed onto the queue to run asynchronously."
 msgstr ""
 
-#: docs/10.x/queues.md:block 48 (quote)
+#: docs/10.x/queues.md:block 49 (quote)
 msgid "**Note** Job stubs may be customized using [stub publishing](/docs/{{version}}/artisan#stub-customization)."
 msgstr ""
 
-#: docs/10.x/queues.md:block 50 (header)
+#: docs/10.x/queues.md:block 51 (header)
 msgid "Class Structure"
 msgstr ""
 
-#: docs/10.x/queues.md:block 51 (paragraph)
+#: docs/10.x/queues.md:block 52 (paragraph)
 msgid "Job classes are very simple, normally containing only a `handle` method that is invoked when the job is processed by the queue. To get started, let's take a look at an example job class. In this example, we'll pretend we manage a podcast publishing service and need to process the uploaded podcast files before they are published:"
 msgstr ""
 
-#: docs/10.x/queues.md:block 52 (code)
+#: docs/10.x/queues.md:block 53 (code)
 msgid ""
 "<?php\n"
 "\n"
@@ -404,27 +428,27 @@ msgid ""
 "}\n"
 msgstr ""
 
-#: docs/10.x/queues.md:block 53 (paragraph)
+#: docs/10.x/queues.md:block 54 (paragraph)
 msgid "In this example, note that we were able to pass an [Eloquent model](/docs/{{version}}/eloquent) directly into the queued job's constructor. Because of the `SerializesModels` trait that the job is using, Eloquent models and their loaded relationships will be gracefully serialized and unserialized when the job is processing."
 msgstr ""
 
-#: docs/10.x/queues.md:block 54 (paragraph)
+#: docs/10.x/queues.md:block 55 (paragraph)
 msgid "If your queued job accepts an Eloquent model in its constructor, only the identifier for the model will be serialized onto the queue. When the job is actually handled, the queue system will automatically re-retrieve the full model instance and its loaded relationships from the database. This approach to model serialization allows for much smaller job payloads to be sent to your queue driver."
 msgstr ""
 
-#: docs/10.x/queues.md:block 56 (header)
+#: docs/10.x/queues.md:block 57 (header)
 msgid "`handle` Method Dependency Injection"
 msgstr ""
 
-#: docs/10.x/queues.md:block 57 (paragraph)
+#: docs/10.x/queues.md:block 58 (paragraph)
 msgid "The `handle` method is invoked when the job is processed by the queue. Note that we are able to type-hint dependencies on the `handle` method of the job. The Laravel [service container](/docs/{{version}}/container) automatically injects these dependencies."
 msgstr ""
 
-#: docs/10.x/queues.md:block 58 (paragraph)
+#: docs/10.x/queues.md:block 59 (paragraph)
 msgid "If you would like to take total control over how the container injects dependencies into the `handle` method, you may use the container's `bindMethod` method. The `bindMethod` method accepts a callback which receives the job and the container. Within the callback, you are free to invoke the `handle` method however you wish. Typically, you should call this method from the `boot` method of your `App\\Providers\\AppServiceProvider` [service provider](/docs/{{version}}/providers):"
 msgstr ""
 
-#: docs/10.x/queues.md:block 59 (code)
+#: docs/10.x/queues.md:block 60 (code)
 msgid ""
 "use App\\Jobs\\ProcessPodcast;\n"
 "use App\\Services\\AudioProcessor;\n"
@@ -435,19 +459,23 @@ msgid ""
 "});\n"
 msgstr ""
 
-#: docs/10.x/queues.md:block 60 (quote)
+#: docs/10.x/queues.md:block 61 (quote)
 msgid "**Warning** Binary data, such as raw image contents, should be passed through the `base64_encode` function before being passed to a queued job. Otherwise, the job may not properly serialize to JSON when being placed on the queue."
 msgstr ""
 
-#: docs/10.x/queues.md:block 62 (header)
+#: docs/10.x/queues.md:block 63 (header)
 msgid "Queued Relationships"
 msgstr ""
 
-#: docs/10.x/queues.md:block 63 (paragraph)
-msgid "Because loaded relationships also get serialized, the serialized job string can sometimes become quite large. To prevent relations from being serialized, you can call the `withoutRelations` method on the model when setting a property value. This method will return an instance of the model without its loaded relationships:"
+#: docs/10.x/queues.md:block 64 (paragraph)
+msgid "Because all loaded Eloquent model relationships also get serialized when a job is queued, the serialized job string can sometimes become quite large. Furthermore, when a job is deserialized and model relationships are re-retrieved from the database, they will be retrieved in their entirety. Any previous relationship constraints that were applied before the model was serialized during the job queueing process will not be applied when the job is deserialized. Therefore, if you wish to work with a subset of a given relationship, you should re-constrain that relationship within your queued job."
 msgstr ""
 
-#: docs/10.x/queues.md:block 64 (code)
+#: docs/10.x/queues.md:block 65 (paragraph)
+msgid "Or, to prevent relations from being serialized, you can call the `withoutRelations` method on the model when setting a property value. This method will return an instance of the model without its loaded relationships:"
+msgstr ""
+
+#: docs/10.x/queues.md:block 66 (code)
 msgid ""
 "/**\n"
 " * Create a new job instance.\n"
@@ -458,23 +486,41 @@ msgid ""
 "}\n"
 msgstr ""
 
-#: docs/10.x/queues.md:block 65 (paragraph)
-msgid "Furthermore, when a job is deserialized and model relationships are re-retrieved from the database, they will be retrieved in their entirety. Any previous relationship constraints that were applied before the model was serialized during the job queueing process will not be applied when the job is deserialized. Therefore, if you wish to work with a subset of a given relationship, you should re-constrain that relationship within your queued job."
+#: docs/10.x/queues.md:block 67 (paragraph)
+msgid "If you are using PHP constructor property promotion and would like to indicate that an Eloquent model should not have its relations serialized, you may use the `WithoutRelations` attribute:"
 msgstr ""
 
-#: docs/10.x/queues.md:block 67 (header)
-msgid "Unique Jobs"
-msgstr ""
-
-#: docs/10.x/queues.md:block 68 (quote)
-msgid "**Warning** Unique jobs require a cache driver that supports [locks](/docs/{{version}}/cache#atomic-locks). Currently, the `memcached`, `redis`, `dynamodb`, `database`, `file`, and `array` cache drivers support atomic locks. In addition, unique job constraints do not apply to jobs within batches."
+#: docs/10.x/queues.md:block 68 (code)
+msgid ""
+"use Illuminate\\Queue\\Attributes\\WithoutRelations;\n"
+"\n"
+"/**\n"
+" * Create a new job instance.\n"
+" */\n"
+"public function __construct(\n"
+"    #[WithoutRelations]\n"
+"    public Podcast $podcast\n"
+") {\n"
+"}\n"
 msgstr ""
 
 #: docs/10.x/queues.md:block 69 (paragraph)
+msgid "If a job receives a collection or array of Eloquent models instead of a single model, the models within that collection will not have their relationships restored when the job is deserialized and executed. This is to prevent excessive resource usage on jobs that deal with large numbers of models."
+msgstr ""
+
+#: docs/10.x/queues.md:block 71 (header)
+msgid "Unique Jobs"
+msgstr ""
+
+#: docs/10.x/queues.md:block 72 (quote)
+msgid "**Warning** Unique jobs require a cache driver that supports [locks](/docs/{{version}}/cache#atomic-locks). Currently, the `memcached`, `redis`, `dynamodb`, `database`, `file`, and `array` cache drivers support atomic locks. In addition, unique job constraints do not apply to jobs within batches."
+msgstr ""
+
+#: docs/10.x/queues.md:block 73 (paragraph)
 msgid "Sometimes, you may want to ensure that only one instance of a specific job is on the queue at any point in time. You may do so by implementing the `ShouldBeUnique` interface on your job class. This interface does not require you to define any additional methods on your class:"
 msgstr ""
 
-#: docs/10.x/queues.md:block 70 (code)
+#: docs/10.x/queues.md:block 74 (code)
 msgid ""
 "<?php\n"
 "\n"
@@ -487,19 +533,19 @@ msgid ""
 "}\n"
 msgstr ""
 
-#: docs/10.x/queues.md:block 71 (paragraph)
+#: docs/10.x/queues.md:block 75 (paragraph)
 msgid "In the example above, the `UpdateSearchIndex` job is unique. So, the job will not be dispatched if another instance of the job is already on the queue and has not finished processing."
 msgstr ""
 
-#: docs/10.x/queues.md:block 72 (paragraph)
+#: docs/10.x/queues.md:block 76 (paragraph)
 msgid "In certain cases, you may want to define a specific \"key\" that makes the job unique or you may want to specify a timeout beyond which the job no longer stays unique. To accomplish this, you may define `uniqueId` and `uniqueFor` properties or methods on your job class:"
 msgstr ""
 
-#: docs/10.x/queues.md:block 73 (code)
+#: docs/10.x/queues.md:block 77 (code)
 msgid ""
 "<?php\n"
 "\n"
-"use App\\Product;\n"
+"use App\\Models\\Product;\n"
 "use Illuminate\\Contracts\\Queue\\ShouldQueue;\n"
 "use Illuminate\\Contracts\\Queue\\ShouldBeUnique;\n"
 "\n"
@@ -520,7 +566,7 @@ msgid ""
 "    public $uniqueFor = 3600;\n"
 "\n"
 "    /**\n"
-"     * The unique ID of the job.\n"
+"     * Get the unique ID for the job.\n"
 "     */\n"
 "    public function uniqueId(): string\n"
 "    {\n"
@@ -529,27 +575,27 @@ msgid ""
 "}\n"
 msgstr ""
 
-#: docs/10.x/queues.md:block 74 (paragraph)
+#: docs/10.x/queues.md:block 78 (paragraph)
 msgid "In the example above, the `UpdateSearchIndex` job is unique by a product ID. So, any new dispatches of the job with the same product ID will be ignored until the existing job has completed processing. In addition, if the existing job is not processed within one hour, the unique lock will be released and another job with the same unique key can be dispatched to the queue."
 msgstr ""
 
-#: docs/10.x/queues.md:block 75 (quote)
+#: docs/10.x/queues.md:block 79 (quote)
 msgid "**Warning** If your application dispatches jobs from multiple web servers or containers, you should ensure that all of your servers are communicating with the same central cache server so that Laravel can accurately determine if a job is unique."
 msgstr ""
 
-#: docs/10.x/queues.md:block 77 (header)
+#: docs/10.x/queues.md:block 81 (header)
 msgid "Keeping Jobs Unique Until Processing Begins"
 msgstr ""
 
-#: docs/10.x/queues.md:block 78 (paragraph)
+#: docs/10.x/queues.md:block 82 (paragraph)
 msgid "By default, unique jobs are \"unlocked\" after a job completes processing or fails all of its retry attempts. However, there may be situations where you would like your job to unlock immediately before it is processed. To accomplish this, your job should implement the `ShouldBeUniqueUntilProcessing` contract instead of the `ShouldBeUnique` contract:"
 msgstr ""
 
-#: docs/10.x/queues.md:block 79 (code)
+#: docs/10.x/queues.md:block 83 (code)
 msgid ""
 "<?php\n"
 "\n"
-"use App\\Product;\n"
+"use App\\Models\\Product;\n"
 "use Illuminate\\Contracts\\Queue\\ShouldQueue;\n"
 "use Illuminate\\Contracts\\Queue\\ShouldBeUniqueUntilProcessing;\n"
 "\n"
@@ -559,15 +605,15 @@ msgid ""
 "}\n"
 msgstr ""
 
-#: docs/10.x/queues.md:block 81 (header)
+#: docs/10.x/queues.md:block 85 (header)
 msgid "Unique Job Locks"
 msgstr ""
 
-#: docs/10.x/queues.md:block 82 (paragraph)
+#: docs/10.x/queues.md:block 86 (paragraph)
 msgid "Behind the scenes, when a `ShouldBeUnique` job is dispatched, Laravel attempts to acquire a [lock](/docs/{{version}}/cache#atomic-locks) with the `uniqueId` key. If the lock is not acquired, the job is not dispatched. This lock is released when the job completes processing or fails all of its retry attempts. By default, Laravel will use the default cache driver to obtain this lock. However, if you wish to use another driver for acquiring the lock, you may define a `uniqueVia` method that returns the cache driver that should be used:"
 msgstr ""
 
-#: docs/10.x/queues.md:block 83 (code)
+#: docs/10.x/queues.md:block 87 (code)
 msgid ""
 "use Illuminate\\Contracts\\Cache\\Repository;\n"
 "use Illuminate\\Support\\Facades\\Cache;\n"
@@ -586,19 +632,40 @@ msgid ""
 "}\n"
 msgstr ""
 
-#: docs/10.x/queues.md:block 84 (quote)
+#: docs/10.x/queues.md:block 88 (quote)
 msgid "**Note** If you only need to limit the concurrent processing of a job, use the [`WithoutOverlapping`](/docs/{{version}}/queues#preventing-job-overlaps) job middleware instead."
 msgstr ""
 
-#: docs/10.x/queues.md:block 86 (header)
+#: docs/10.x/queues.md:block 90 (header)
+msgid "Encrypted Jobs"
+msgstr ""
+
+#: docs/10.x/queues.md:block 91 (paragraph)
+msgid "Laravel allows you to ensure the privacy and integrity of a job's data via [encryption](/docs/{{version}}/encryption). To get started, simply add the `ShouldBeEncrypted` interface to the job class. Once this interface has been added to the class, Laravel will automatically encrypt your job before pushing it onto a queue:"
+msgstr ""
+
+#: docs/10.x/queues.md:block 92 (code)
+msgid ""
+"<?php\n"
+"\n"
+"use Illuminate\\Contracts\\Queue\\ShouldBeEncrypted;\n"
+"use Illuminate\\Contracts\\Queue\\ShouldQueue;\n"
+"\n"
+"class UpdateSearchIndex implements ShouldQueue, ShouldBeEncrypted\n"
+"{\n"
+"    // ...\n"
+"}\n"
+msgstr ""
+
+#: docs/10.x/queues.md:block 94 (header)
 msgid "Job Middleware"
 msgstr ""
 
-#: docs/10.x/queues.md:block 87 (paragraph)
+#: docs/10.x/queues.md:block 95 (paragraph)
 msgid "Job middleware allow you to wrap custom logic around the execution of queued jobs, reducing boilerplate in the jobs themselves. For example, consider the following `handle` method which leverages Laravel's Redis rate limiting features to allow only one job to process every five seconds:"
 msgstr ""
 
-#: docs/10.x/queues.md:block 88 (code)
+#: docs/10.x/queues.md:block 96 (code)
 msgid ""
 "use Illuminate\\Support\\Facades\\Redis;\n"
 "\n"
@@ -619,15 +686,15 @@ msgid ""
 "}\n"
 msgstr ""
 
-#: docs/10.x/queues.md:block 89 (paragraph)
+#: docs/10.x/queues.md:block 97 (paragraph)
 msgid "While this code is valid, the implementation of the `handle` method becomes noisy since it is cluttered with Redis rate limiting logic. In addition, this rate limiting logic must be duplicated for any other jobs that we want to rate limit."
 msgstr ""
 
-#: docs/10.x/queues.md:block 90 (paragraph)
+#: docs/10.x/queues.md:block 98 (paragraph)
 msgid "Instead of rate limiting in the handle method, we could define a job middleware that handles rate limiting. Laravel does not have a default location for job middleware, so you are welcome to place job middleware anywhere in your application. In this example, we will place the middleware in an `app/Jobs/Middleware` directory:"
 msgstr ""
 
-#: docs/10.x/queues.md:block 91 (code)
+#: docs/10.x/queues.md:block 99 (code)
 msgid ""
 "<?php\n"
 "\n"
@@ -647,7 +714,7 @@ msgid ""
 "    {\n"
 "        Redis::throttle('key')\n"
 "                ->block(0)->allow(1)->every(5)\n"
-"                ->then(function () use (object $job, Closure $next) {\n"
+"                ->then(function () use ($job, $next) {\n"
 "                    // Lock obtained...\n"
 "\n"
 "                    $next($job);\n"
@@ -660,15 +727,15 @@ msgid ""
 "}\n"
 msgstr ""
 
-#: docs/10.x/queues.md:block 92 (paragraph)
+#: docs/10.x/queues.md:block 100 (paragraph)
 msgid "As you can see, like [route middleware](/docs/{{version}}/middleware), job middleware receive the job being processed and a callback that should be invoked to continue processing the job."
 msgstr ""
 
-#: docs/10.x/queues.md:block 93 (paragraph)
+#: docs/10.x/queues.md:block 101 (paragraph)
 msgid "After creating job middleware, they may be attached to a job by returning them from the job's `middleware` method. This method does not exist on jobs scaffolded by the `make:job` Artisan command, so you will need to manually add it to your job class:"
 msgstr ""
 
-#: docs/10.x/queues.md:block 94 (code)
+#: docs/10.x/queues.md:block 102 (code)
 msgid ""
 "use App\\Jobs\\Middleware\\RateLimited;\n"
 "\n"
@@ -683,23 +750,23 @@ msgid ""
 "}\n"
 msgstr ""
 
-#: docs/10.x/queues.md:block 95 (quote)
+#: docs/10.x/queues.md:block 103 (quote)
 msgid "**Note** Job middleware can also be assigned to queueable event listeners, mailables, and notifications."
 msgstr ""
 
-#: docs/10.x/queues.md:block 97 (header)
+#: docs/10.x/queues.md:block 105 (header)
 msgid "Rate Limiting"
 msgstr ""
 
-#: docs/10.x/queues.md:block 98 (paragraph)
+#: docs/10.x/queues.md:block 106 (paragraph)
 msgid "Although we just demonstrated how to write your own rate limiting job middleware, Laravel actually includes a rate limiting middleware that you may utilize to rate limit jobs. Like [route rate limiters](/docs/{{version}}/routing#defining-rate-limiters), job rate limiters are defined using the `RateLimiter` facade's `for` method."
 msgstr ""
 
-#: docs/10.x/queues.md:block 99 (paragraph)
+#: docs/10.x/queues.md:block 107 (paragraph)
 msgid "For example, you may wish to allow users to backup their data once per hour while imposing no such limit on premium customers. To accomplish this, you may define a `RateLimiter` in the `boot` method of your `AppServiceProvider`:"
 msgstr ""
 
-#: docs/10.x/queues.md:block 100 (code)
+#: docs/10.x/queues.md:block 108 (code)
 msgid ""
 "use Illuminate\\Cache\\RateLimiting\\Limit;\n"
 "use Illuminate\\Support\\Facades\\RateLimiter;\n"
@@ -717,19 +784,19 @@ msgid ""
 "}\n"
 msgstr ""
 
-#: docs/10.x/queues.md:block 101 (paragraph)
+#: docs/10.x/queues.md:block 109 (paragraph)
 msgid "In the example above, we defined an hourly rate limit; however, you may easily define a rate limit based on minutes using the `perMinute` method. In addition, you may pass any value you wish to the `by` method of the rate limit; however, this value is most often used to segment rate limits by customer:"
 msgstr ""
 
-#: docs/10.x/queues.md:block 102 (code)
+#: docs/10.x/queues.md:block 110 (code)
 msgid "return Limit::perMinute(50)->by($job->user->id);\n"
 msgstr ""
 
-#: docs/10.x/queues.md:block 103 (paragraph)
-msgid "Once you have defined your rate limit, you may attach the rate limiter to your backup job using the `Illuminate\\Queue\\Middleware\\RateLimited` middleware. Each time the job exceeds the rate limit, this middleware will release the job back to the queue with an appropriate delay based on the rate limit duration."
+#: docs/10.x/queues.md:block 111 (paragraph)
+msgid "Once you have defined your rate limit, you may attach the rate limiter to your job using the `Illuminate\\Queue\\Middleware\\RateLimited` middleware. Each time the job exceeds the rate limit, this middleware will release the job back to the queue with an appropriate delay based on the rate limit duration."
 msgstr ""
 
-#: docs/10.x/queues.md:block 104 (code)
+#: docs/10.x/queues.md:block 112 (code)
 msgid ""
 "use Illuminate\\Queue\\Middleware\\RateLimited;\n"
 "\n"
@@ -744,15 +811,15 @@ msgid ""
 "}\n"
 msgstr ""
 
-#: docs/10.x/queues.md:block 105 (paragraph)
+#: docs/10.x/queues.md:block 113 (paragraph)
 msgid "Releasing a rate limited job back onto the queue will still increment the job's total number of `attempts`. You may wish to tune your `tries` and `maxExceptions` properties on your job class accordingly. Or, you may wish to use the [`retryUntil` method](#time-based-attempts) to define the amount of time until the job should no longer be attempted."
 msgstr ""
 
-#: docs/10.x/queues.md:block 106 (paragraph)
+#: docs/10.x/queues.md:block 114 (paragraph)
 msgid "If you do not want a job to be retried when it is rate limited, you may use the `dontRelease` method:"
 msgstr ""
 
-#: docs/10.x/queues.md:block 107 (code)
+#: docs/10.x/queues.md:block 115 (code)
 msgid ""
 "/**\n"
 " * Get the middleware the job should pass through.\n"
@@ -765,23 +832,23 @@ msgid ""
 "}\n"
 msgstr ""
 
-#: docs/10.x/queues.md:block 108 (quote)
+#: docs/10.x/queues.md:block 116 (quote)
 msgid "**Note** If you are using Redis, you may use the `Illuminate\\Queue\\Middleware\\RateLimitedWithRedis` middleware, which is fine-tuned for Redis and more efficient than the basic rate limiting middleware."
 msgstr ""
 
-#: docs/10.x/queues.md:block 110 (header)
+#: docs/10.x/queues.md:block 118 (header)
 msgid "Preventing Job Overlaps"
 msgstr ""
 
-#: docs/10.x/queues.md:block 111 (paragraph)
+#: docs/10.x/queues.md:block 119 (paragraph)
 msgid "Laravel includes an `Illuminate\\Queue\\Middleware\\WithoutOverlapping` middleware that allows you to prevent job overlaps based on an arbitrary key. This can be helpful when a queued job is modifying a resource that should only be modified by one job at a time."
 msgstr ""
 
-#: docs/10.x/queues.md:block 112 (paragraph)
+#: docs/10.x/queues.md:block 120 (paragraph)
 msgid "For example, let's imagine you have a queued job that updates a user's credit score and you want to prevent credit score update job overlaps for the same user ID. To accomplish this, you can return the `WithoutOverlapping` middleware from your job's `middleware` method:"
 msgstr ""
 
-#: docs/10.x/queues.md:block 113 (code)
+#: docs/10.x/queues.md:block 121 (code)
 msgid ""
 "use Illuminate\\Queue\\Middleware\\WithoutOverlapping;\n"
 "\n"
@@ -796,11 +863,11 @@ msgid ""
 "}\n"
 msgstr ""
 
-#: docs/10.x/queues.md:block 114 (paragraph)
+#: docs/10.x/queues.md:block 122 (paragraph)
 msgid "Any overlapping jobs of the same type will be released back to the queue. You may also specify the number of seconds that must elapse before the released job will be attempted again:"
 msgstr ""
 
-#: docs/10.x/queues.md:block 115 (code)
+#: docs/10.x/queues.md:block 123 (code)
 msgid ""
 "/**\n"
 " * Get the middleware the job should pass through.\n"
@@ -813,11 +880,11 @@ msgid ""
 "}\n"
 msgstr ""
 
-#: docs/10.x/queues.md:block 116 (paragraph)
+#: docs/10.x/queues.md:block 124 (paragraph)
 msgid "If you wish to immediately delete any overlapping jobs so that they will not be retried, you may use the `dontRelease` method:"
 msgstr ""
 
-#: docs/10.x/queues.md:block 117 (code)
+#: docs/10.x/queues.md:block 125 (code)
 msgid ""
 "/**\n"
 " * Get the middleware the job should pass through.\n"
@@ -830,11 +897,11 @@ msgid ""
 "}\n"
 msgstr ""
 
-#: docs/10.x/queues.md:block 118 (paragraph)
+#: docs/10.x/queues.md:block 126 (paragraph)
 msgid "The `WithoutOverlapping` middleware is powered by Laravel's atomic lock feature. Sometimes, your job may unexpectedly fail or timeout in such a way that the lock is not released. Therefore, you may explicitly define a lock expiration time using the `expireAfter` method. For example, the example below will instruct Laravel to release the `WithoutOverlapping` lock three minutes after the job has started processing:"
 msgstr ""
 
-#: docs/10.x/queues.md:block 119 (code)
+#: docs/10.x/queues.md:block 127 (code)
 msgid ""
 "/**\n"
 " * Get the middleware the job should pass through.\n"
@@ -847,19 +914,19 @@ msgid ""
 "}\n"
 msgstr ""
 
-#: docs/10.x/queues.md:block 120 (quote)
+#: docs/10.x/queues.md:block 128 (quote)
 msgid "**Warning** The `WithoutOverlapping` middleware requires a cache driver that supports [locks](/docs/{{version}}/cache#atomic-locks). Currently, the `memcached`, `redis`, `dynamodb`, `database`, `file`, and `array` cache drivers support atomic locks."
 msgstr ""
 
-#: docs/10.x/queues.md:block 122 (header)
+#: docs/10.x/queues.md:block 130 (header)
 msgid "Sharing Lock Keys Across Job Classes"
 msgstr ""
 
-#: docs/10.x/queues.md:block 123 (paragraph)
+#: docs/10.x/queues.md:block 131 (paragraph)
 msgid "By default, the `WithoutOverlapping` middleware will only prevent overlapping jobs of the same class. So, although two different job classes may use the same lock key, they will not be prevented from overlapping. However, you can instruct Laravel to apply the key across job classes using the `shared` method:"
 msgstr ""
 
-#: docs/10.x/queues.md:block 124 (code)
+#: docs/10.x/queues.md:block 132 (code)
 msgid ""
 "use Illuminate\\Queue\\Middleware\\WithoutOverlapping;\n"
 "\n"
@@ -890,19 +957,19 @@ msgid ""
 "}\n"
 msgstr ""
 
-#: docs/10.x/queues.md:block 126 (header)
+#: docs/10.x/queues.md:block 134 (header)
 msgid "Throttling Exceptions"
 msgstr ""
 
-#: docs/10.x/queues.md:block 127 (paragraph)
+#: docs/10.x/queues.md:block 135 (paragraph)
 msgid "Laravel includes a `Illuminate\\Queue\\Middleware\\ThrottlesExceptions` middleware that allows you to throttle exceptions. Once the job throws a given number of exceptions, all further attempts to execute the job are delayed until a specified time interval lapses. This middleware is particularly useful for jobs that interact with third-party services that are unstable."
 msgstr ""
 
-#: docs/10.x/queues.md:block 128 (paragraph)
+#: docs/10.x/queues.md:block 136 (paragraph)
 msgid "For example, let's imagine a queued job that interacts with a third-party API that begins throwing exceptions. To throttle exceptions, you can return the `ThrottlesExceptions` middleware from your job's `middleware` method. Typically, this middleware should be paired with a job that implements [time based attempts](#time-based-attempts):"
 msgstr ""
 
-#: docs/10.x/queues.md:block 129 (code)
+#: docs/10.x/queues.md:block 137 (code)
 msgid ""
 "use DateTime;\n"
 "use Illuminate\\Queue\\Middleware\\ThrottlesExceptions;\n"
@@ -926,15 +993,15 @@ msgid ""
 "}\n"
 msgstr ""
 
-#: docs/10.x/queues.md:block 130 (paragraph)
+#: docs/10.x/queues.md:block 138 (paragraph)
 msgid "The first constructor argument accepted by the middleware is the number of exceptions the job can throw before being throttled, while the second constructor argument is the number of minutes that should elapse before the job is attempted again once it has been throttled. In the code example above, if the job throws 10 exceptions within 5 minutes, we will wait 5 minutes before attempting the job again."
 msgstr ""
 
-#: docs/10.x/queues.md:block 131 (paragraph)
+#: docs/10.x/queues.md:block 139 (paragraph)
 msgid "When a job throws an exception but the exception threshold has not yet been reached, the job will typically be retried immediately. However, you may specify the number of minutes such a job should be delayed by calling the `backoff` method when attaching the middleware to the job:"
 msgstr ""
 
-#: docs/10.x/queues.md:block 132 (code)
+#: docs/10.x/queues.md:block 140 (code)
 msgid ""
 "use Illuminate\\Queue\\Middleware\\ThrottlesExceptions;\n"
 "\n"
@@ -949,11 +1016,11 @@ msgid ""
 "}\n"
 msgstr ""
 
-#: docs/10.x/queues.md:block 133 (paragraph)
+#: docs/10.x/queues.md:block 141 (paragraph)
 msgid "Internally, this middleware uses Laravel's cache system to implement rate limiting, and the job's class name is utilized as the cache \"key\". You may override this key by calling the `by` method when attaching the middleware to your job. This may be useful if you have multiple jobs interacting with the same third-party service and you would like them to share a common throttling \"bucket\":"
 msgstr ""
 
-#: docs/10.x/queues.md:block 134 (code)
+#: docs/10.x/queues.md:block 142 (code)
 msgid ""
 "use Illuminate\\Queue\\Middleware\\ThrottlesExceptions;\n"
 "\n"
@@ -968,19 +1035,19 @@ msgid ""
 "}\n"
 msgstr ""
 
-#: docs/10.x/queues.md:block 135 (quote)
+#: docs/10.x/queues.md:block 143 (quote)
 msgid "**Note** If you are using Redis, you may use the `Illuminate\\Queue\\Middleware\\ThrottlesExceptionsWithRedis` middleware, which is fine-tuned for Redis and more efficient than the basic exception throttling middleware."
 msgstr ""
 
-#: docs/10.x/queues.md:block 137 (header)
+#: docs/10.x/queues.md:block 145 (header)
 msgid "Dispatching Jobs"
 msgstr ""
 
-#: docs/10.x/queues.md:block 138 (paragraph)
+#: docs/10.x/queues.md:block 146 (paragraph)
 msgid "Once you have written your job class, you may dispatch it using the `dispatch` method on the job itself. The arguments passed to the `dispatch` method will be given to the job's constructor:"
 msgstr ""
 
-#: docs/10.x/queues.md:block 139 (code)
+#: docs/10.x/queues.md:block 147 (code)
 msgid ""
 "<?php\n"
 "\n"
@@ -989,15 +1056,15 @@ msgid ""
 "use App\\Http\\Controllers\\Controller;\n"
 "use App\\Jobs\\ProcessPodcast;\n"
 "use App\\Models\\Podcast;\n"
+"use Illuminate\\Http\\RedirectResponse;\n"
 "use Illuminate\\Http\\Request;\n"
-"use Illuminate\\Http\\Response;\n"
 "\n"
 "class PodcastController extends Controller\n"
 "{\n"
 "    /**\n"
 "     * Store a new podcast.\n"
 "     */\n"
-"    public function store(Request $request): Response\n"
+"    public function store(Request $request): RedirectResponse\n"
 "    {\n"
 "        $podcast = Podcast::create(/* ... */);\n"
 "\n"
@@ -1005,35 +1072,35 @@ msgid ""
 "\n"
 "        ProcessPodcast::dispatch($podcast);\n"
 "\n"
-"        return response()->noContent();\n"
+"        return redirect('/podcasts');\n"
 "    }\n"
 "}\n"
 msgstr ""
 
-#: docs/10.x/queues.md:block 140 (paragraph)
+#: docs/10.x/queues.md:block 148 (paragraph)
 msgid "If you would like to conditionally dispatch a job, you may use the `dispatchIf` and `dispatchUnless` methods:"
 msgstr ""
 
-#: docs/10.x/queues.md:block 141 (code)
+#: docs/10.x/queues.md:block 149 (code)
 msgid ""
 "ProcessPodcast::dispatchIf($accountActive, $podcast);\n"
 "\n"
 "ProcessPodcast::dispatchUnless($accountSuspended, $podcast);\n"
 msgstr ""
 
-#: docs/10.x/queues.md:block 142 (paragraph)
+#: docs/10.x/queues.md:block 150 (paragraph)
 msgid "In new Laravel applications, the `sync` driver is the default queue driver. This driver executes jobs synchronously in the foreground of the current request, which is often convenient during local development. If you would like to actually begin queueing jobs for background processing, you may specify a different queue driver within your application's `config/queue.php` configuration file."
 msgstr ""
 
-#: docs/10.x/queues.md:block 144 (header)
+#: docs/10.x/queues.md:block 152 (header)
 msgid "Delayed Dispatching"
 msgstr ""
 
-#: docs/10.x/queues.md:block 145 (paragraph)
+#: docs/10.x/queues.md:block 153 (paragraph)
 msgid "If you would like to specify that a job should not be immediately available for processing by a queue worker, you may use the `delay` method when dispatching the job. For example, let's specify that a job should not be available for processing until 10 minutes after it has been dispatched:"
 msgstr ""
 
-#: docs/10.x/queues.md:block 146 (code)
+#: docs/10.x/queues.md:block 154 (code)
 msgid ""
 "<?php\n"
 "\n"
@@ -1042,15 +1109,15 @@ msgid ""
 "use App\\Http\\Controllers\\Controller;\n"
 "use App\\Jobs\\ProcessPodcast;\n"
 "use App\\Models\\Podcast;\n"
+"use Illuminate\\Http\\RedirectResponse;\n"
 "use Illuminate\\Http\\Request;\n"
-"use Illuminate\\Http\\Response;\n"
 "\n"
 "class PodcastController extends Controller\n"
 "{\n"
 "    /**\n"
 "     * Store a new podcast.\n"
 "     */\n"
-"    public function store(Request $request): Response\n"
+"    public function store(Request $request): RedirectResponse\n"
 "    {\n"
 "        $podcast = Podcast::create(/* ... */);\n"
 "\n"
@@ -1059,35 +1126,35 @@ msgid ""
 "        ProcessPodcast::dispatch($podcast)\n"
 "                    ->delay(now()->addMinutes(10));\n"
 "\n"
-"        return response()->noContent();\n"
+"        return redirect('/podcasts');\n"
 "    }\n"
 "}\n"
 msgstr ""
 
-#: docs/10.x/queues.md:block 147 (quote)
+#: docs/10.x/queues.md:block 155 (quote)
 msgid "**Warning** The Amazon SQS queue service has a maximum delay time of 15 minutes."
 msgstr ""
 
-#: docs/10.x/queues.md:block 149 (header)
+#: docs/10.x/queues.md:block 157 (header)
 msgid "Dispatching After The Response Is Sent To Browser"
 msgstr ""
 
-#: docs/10.x/queues.md:block 150 (paragraph)
+#: docs/10.x/queues.md:block 158 (paragraph)
 msgid "Alternatively, the `dispatchAfterResponse` method delays dispatching a job until after the HTTP response is sent to the user's browser if your web server is using FastCGI. This will still allow the user to begin using the application even though a queued job is still executing. This should typically only be used for jobs that take about a second, such as sending an email. Since they are processed within the current HTTP request, jobs dispatched in this fashion do not require a queue worker to be running in order for them to be processed:"
 msgstr ""
 
-#: docs/10.x/queues.md:block 151 (code)
+#: docs/10.x/queues.md:block 159 (code)
 msgid ""
 "use App\\Jobs\\SendNotification;\n"
 "\n"
 "SendNotification::dispatchAfterResponse();\n"
 msgstr ""
 
-#: docs/10.x/queues.md:block 152 (paragraph)
+#: docs/10.x/queues.md:block 160 (paragraph)
 msgid "You may also `dispatch` a closure and chain the `afterResponse` method onto the `dispatch` helper to execute a closure after the HTTP response has been sent to the browser:"
 msgstr ""
 
-#: docs/10.x/queues.md:block 153 (code)
+#: docs/10.x/queues.md:block 161 (code)
 msgid ""
 "use App\\Mail\\WelcomeMessage;\n"
 "use Illuminate\\Support\\Facades\\Mail;\n"
@@ -1097,15 +1164,15 @@ msgid ""
 "})->afterResponse();\n"
 msgstr ""
 
-#: docs/10.x/queues.md:block 155 (header)
+#: docs/10.x/queues.md:block 163 (header)
 msgid "Synchronous Dispatching"
 msgstr ""
 
-#: docs/10.x/queues.md:block 156 (paragraph)
+#: docs/10.x/queues.md:block 164 (paragraph)
 msgid "If you would like to dispatch a job immediately (synchronously), you may use the `dispatchSync` method. When using this method, the job will not be queued and will be executed immediately within the current process:"
 msgstr ""
 
-#: docs/10.x/queues.md:block 157 (code)
+#: docs/10.x/queues.md:block 165 (code)
 msgid ""
 "<?php\n"
 "\n"
@@ -1114,15 +1181,15 @@ msgid ""
 "use App\\Http\\Controllers\\Controller;\n"
 "use App\\Jobs\\ProcessPodcast;\n"
 "use App\\Models\\Podcast;\n"
+"use Illuminate\\Http\\RedirectResponse;\n"
 "use Illuminate\\Http\\Request;\n"
-"use Illuminate\\Http\\Response;\n"
 "\n"
 "class PodcastController extends Controller\n"
 "{\n"
 "    /**\n"
 "     * Store a new podcast.\n"
 "     */\n"
-"    public function store(Request $request): Response\n"
+"    public function store(Request $request): RedirectResponse\n"
 "    {\n"
 "        $podcast = Podcast::create(/* ... */);\n"
 "\n"
@@ -1130,24 +1197,24 @@ msgid ""
 "\n"
 "        ProcessPodcast::dispatchSync($podcast);\n"
 "\n"
-"        return response()->noContent();\n"
+"        return redirect('/podcasts');\n"
 "    }\n"
 "}\n"
 msgstr ""
 
-#: docs/10.x/queues.md:block 159 (header)
+#: docs/10.x/queues.md:block 167 (header)
 msgid "Jobs & Database Transactions"
 msgstr ""
 
-#: docs/10.x/queues.md:block 160 (paragraph)
+#: docs/10.x/queues.md:block 168 (paragraph)
 msgid "While it is perfectly fine to dispatch jobs within database transactions, you should take special care to ensure that your job will actually be able to execute successfully. When dispatching a job within a transaction, it is possible that the job will be processed by a worker before the parent transaction has committed. When this happens, any updates you have made to models or database records during the database transaction(s) may not yet be reflected in the database. In addition, any models or database records created within the transaction(s) may not exist in the database."
 msgstr ""
 
-#: docs/10.x/queues.md:block 161 (paragraph)
+#: docs/10.x/queues.md:block 169 (paragraph)
 msgid "Thankfully, Laravel provides several methods of working around this problem. First, you may set the `after_commit` connection option in your queue connection's configuration array:"
 msgstr ""
 
-#: docs/10.x/queues.md:block 162 (code)
+#: docs/10.x/queues.md:block 170 (code)
 msgid ""
 "'redis' => [\n"
 "    'driver' => 'redis',\n"
@@ -1156,50 +1223,50 @@ msgid ""
 "],\n"
 msgstr ""
 
-#: docs/10.x/queues.md:block 163 (paragraph)
+#: docs/10.x/queues.md:block 171 (paragraph)
 msgid "When the `after_commit` option is `true`, you may dispatch jobs within database transactions; however, Laravel will wait until the open parent database transactions have been committed before actually dispatching the job. Of course, if no database transactions are currently open, the job will be dispatched immediately."
 msgstr ""
 
-#: docs/10.x/queues.md:block 164 (paragraph)
+#: docs/10.x/queues.md:block 172 (paragraph)
 msgid "If a transaction is rolled back due to an exception that occurs during the transaction, the jobs that were dispatched during that transaction will be discarded."
 msgstr ""
 
-#: docs/10.x/queues.md:block 165 (quote)
+#: docs/10.x/queues.md:block 173 (quote)
 msgid "**Note** Setting the `after_commit` configuration option to `true` will also cause any queued event listeners, mailables, notifications, and broadcast events to be dispatched after all open database transactions have been committed."
 msgstr ""
 
-#: docs/10.x/queues.md:block 167 (header)
+#: docs/10.x/queues.md:block 175 (header)
 msgid "Specifying Commit Dispatch Behavior Inline"
 msgstr ""
 
-#: docs/10.x/queues.md:block 168 (paragraph)
+#: docs/10.x/queues.md:block 176 (paragraph)
 msgid "If you do not set the `after_commit` queue connection configuration option to `true`, you may still indicate that a specific job should be dispatched after all open database transactions have been committed. To accomplish this, you may chain the `afterCommit` method onto your dispatch operation:"
 msgstr ""
 
-#: docs/10.x/queues.md:block 169 (code)
+#: docs/10.x/queues.md:block 177 (code)
 msgid ""
 "use App\\Jobs\\ProcessPodcast;\n"
 "\n"
 "ProcessPodcast::dispatch($podcast)->afterCommit();\n"
 msgstr ""
 
-#: docs/10.x/queues.md:block 170 (paragraph)
+#: docs/10.x/queues.md:block 178 (paragraph)
 msgid "Likewise, if the `after_commit` configuration option is set to `true`, you may indicate that a specific job should be dispatched immediately without waiting for any open database transactions to commit:"
 msgstr ""
 
-#: docs/10.x/queues.md:block 171 (code)
+#: docs/10.x/queues.md:block 179 (code)
 msgid "ProcessPodcast::dispatch($podcast)->beforeCommit();\n"
 msgstr ""
 
-#: docs/10.x/queues.md:block 173 (header)
+#: docs/10.x/queues.md:block 181 (header)
 msgid "Job Chaining"
 msgstr ""
 
-#: docs/10.x/queues.md:block 174 (paragraph)
+#: docs/10.x/queues.md:block 182 (paragraph)
 msgid "Job chaining allows you to specify a list of queued jobs that should be run in sequence after the primary job has executed successfully. If one job in the sequence fails, the rest of the jobs will not be run. To execute a queued job chain, you may use the `chain` method provided by the `Bus` facade. Laravel's command bus is a lower level component that queued job dispatching is built on top of:"
 msgstr ""
 
-#: docs/10.x/queues.md:block 175 (code)
+#: docs/10.x/queues.md:block 183 (code)
 msgid ""
 "use App\\Jobs\\OptimizePodcast;\n"
 "use App\\Jobs\\ProcessPodcast;\n"
@@ -1213,11 +1280,11 @@ msgid ""
 "])->dispatch();\n"
 msgstr ""
 
-#: docs/10.x/queues.md:block 176 (paragraph)
+#: docs/10.x/queues.md:block 184 (paragraph)
 msgid "In addition to chaining job class instances, you may also chain closures:"
 msgstr ""
 
-#: docs/10.x/queues.md:block 177 (code)
+#: docs/10.x/queues.md:block 185 (code)
 msgid ""
 "Bus::chain([\n"
 "    new ProcessPodcast,\n"
@@ -1228,19 +1295,19 @@ msgid ""
 "])->dispatch();\n"
 msgstr ""
 
-#: docs/10.x/queues.md:block 178 (quote)
+#: docs/10.x/queues.md:block 186 (quote)
 msgid "**Warning** Deleting jobs using the `$this->delete()` method within the job will not prevent chained jobs from being processed. The chain will only stop executing if a job in the chain fails."
 msgstr ""
 
-#: docs/10.x/queues.md:block 180 (header)
+#: docs/10.x/queues.md:block 188 (header)
 msgid "Chain Connection & Queue"
 msgstr ""
 
-#: docs/10.x/queues.md:block 181 (paragraph)
+#: docs/10.x/queues.md:block 189 (paragraph)
 msgid "If you would like to specify the connection and queue that should be used for the chained jobs, you may use the `onConnection` and `onQueue` methods. These methods specify the queue connection and queue name that should be used unless the queued job is explicitly assigned a different connection / queue:"
 msgstr ""
 
-#: docs/10.x/queues.md:block 182 (code)
+#: docs/10.x/queues.md:block 190 (code)
 msgid ""
 "Bus::chain([\n"
 "    new ProcessPodcast,\n"
@@ -1249,15 +1316,15 @@ msgid ""
 "])->onConnection('redis')->onQueue('podcasts')->dispatch();\n"
 msgstr ""
 
-#: docs/10.x/queues.md:block 184 (header)
+#: docs/10.x/queues.md:block 192 (header)
 msgid "Chain Failures"
 msgstr ""
 
-#: docs/10.x/queues.md:block 185 (paragraph)
+#: docs/10.x/queues.md:block 193 (paragraph)
 msgid "When chaining jobs, you may use the `catch` method to specify a closure that should be invoked if a job within the chain fails. The given callback will receive the `Throwable` instance that caused the job failure:"
 msgstr ""
 
-#: docs/10.x/queues.md:block 186 (code)
+#: docs/10.x/queues.md:block 194 (code)
 msgid ""
 "use Illuminate\\Support\\Facades\\Bus;\n"
 "use Throwable;\n"
@@ -1271,23 +1338,23 @@ msgid ""
 "})->dispatch();\n"
 msgstr ""
 
-#: docs/10.x/queues.md:block 187 (quote)
+#: docs/10.x/queues.md:block 195 (quote)
 msgid "**Warning** Since chain callbacks are serialized and executed at a later time by the Laravel queue, you should not use the `$this` variable within chain callbacks."
 msgstr ""
 
-#: docs/10.x/queues.md:block 189 (header)
+#: docs/10.x/queues.md:block 197 (header)
 msgid "Customizing The Queue & Connection"
 msgstr ""
 
-#: docs/10.x/queues.md:block 191 (header)
+#: docs/10.x/queues.md:block 199 (header)
 msgid "Dispatching To A Particular Queue"
 msgstr ""
 
-#: docs/10.x/queues.md:block 192 (paragraph)
+#: docs/10.x/queues.md:block 200 (paragraph)
 msgid "By pushing jobs to different queues, you may \"categorize\" your queued jobs and even prioritize how many workers you assign to various queues. Keep in mind, this does not push jobs to different queue \"connections\" as defined by your queue configuration file, but only to specific queues within a single connection. To specify the queue, use the `onQueue` method when dispatching the job:"
 msgstr ""
 
-#: docs/10.x/queues.md:block 193 (code)
+#: docs/10.x/queues.md:block 201 (code)
 msgid ""
 "<?php\n"
 "\n"
@@ -1296,15 +1363,15 @@ msgid ""
 "use App\\Http\\Controllers\\Controller;\n"
 "use App\\Jobs\\ProcessPodcast;\n"
 "use App\\Models\\Podcast;\n"
+"use Illuminate\\Http\\RedirectResponse;\n"
 "use Illuminate\\Http\\Request;\n"
-"use Illuminate\\Http\\Response;\n"
 "\n"
 "class PodcastController extends Controller\n"
 "{\n"
 "    /**\n"
 "     * Store a new podcast.\n"
 "     */\n"
-"    public function store(Request $request): Response\n"
+"    public function store(Request $request): RedirectResponse\n"
 "    {\n"
 "        $podcast = Podcast::create(/* ... */);\n"
 "\n"
@@ -1312,16 +1379,16 @@ msgid ""
 "\n"
 "        ProcessPodcast::dispatch($podcast)->onQueue('processing');\n"
 "\n"
-"        return response()->noContent();\n"
+"        return redirect('/podcasts');\n"
 "    }\n"
 "}\n"
 msgstr ""
 
-#: docs/10.x/queues.md:block 194 (paragraph)
+#: docs/10.x/queues.md:block 202 (paragraph)
 msgid "Alternatively, you may specify the job's queue by calling the `onQueue` method within the job's constructor:"
 msgstr ""
 
-#: docs/10.x/queues.md:block 195 (code)
+#: docs/10.x/queues.md:block 203 (code)
 msgid ""
 "<?php\n"
 "\n"
@@ -1347,15 +1414,15 @@ msgid ""
 "}\n"
 msgstr ""
 
-#: docs/10.x/queues.md:block 197 (header)
+#: docs/10.x/queues.md:block 205 (header)
 msgid "Dispatching To A Particular Connection"
 msgstr ""
 
-#: docs/10.x/queues.md:block 198 (paragraph)
+#: docs/10.x/queues.md:block 206 (paragraph)
 msgid "If your application interacts with multiple queue connections, you may specify which connection to push a job to using the `onConnection` method:"
 msgstr ""
 
-#: docs/10.x/queues.md:block 199 (code)
+#: docs/10.x/queues.md:block 207 (code)
 msgid ""
 "<?php\n"
 "\n"
@@ -1364,15 +1431,15 @@ msgid ""
 "use App\\Http\\Controllers\\Controller;\n"
 "use App\\Jobs\\ProcessPodcast;\n"
 "use App\\Models\\Podcast;\n"
+"use Illuminate\\Http\\RedirectResponse;\n"
 "use Illuminate\\Http\\Request;\n"
-"use Illuminate\\Http\\Response;\n"
 "\n"
 "class PodcastController extends Controller\n"
 "{\n"
 "    /**\n"
 "     * Store a new podcast.\n"
 "     */\n"
-"    public function store(Request $request): Response\n"
+"    public function store(Request $request): RedirectResponse\n"
 "    {\n"
 "        $podcast = Podcast::create(/* ... */);\n"
 "\n"
@@ -1380,27 +1447,27 @@ msgid ""
 "\n"
 "        ProcessPodcast::dispatch($podcast)->onConnection('sqs');\n"
 "\n"
-"        return response()->noContent();\n"
+"        return redirect('/podcasts');\n"
 "    }\n"
 "}\n"
 msgstr ""
 
-#: docs/10.x/queues.md:block 200 (paragraph)
+#: docs/10.x/queues.md:block 208 (paragraph)
 msgid "You may chain the `onConnection` and `onQueue` methods together to specify the connection and the queue for a job:"
 msgstr ""
 
-#: docs/10.x/queues.md:block 201 (code)
+#: docs/10.x/queues.md:block 209 (code)
 msgid ""
 "ProcessPodcast::dispatch($podcast)\n"
 "              ->onConnection('sqs')\n"
 "              ->onQueue('processing');\n"
 msgstr ""
 
-#: docs/10.x/queues.md:block 202 (paragraph)
+#: docs/10.x/queues.md:block 210 (paragraph)
 msgid "Alternatively, you may specify the job's connection by calling the `onConnection` method within the job's constructor:"
 msgstr ""
 
-#: docs/10.x/queues.md:block 203 (code)
+#: docs/10.x/queues.md:block 211 (code)
 msgid ""
 "<?php\n"
 "\n"
@@ -1426,35 +1493,35 @@ msgid ""
 "}\n"
 msgstr ""
 
-#: docs/10.x/queues.md:block 205 (header)
+#: docs/10.x/queues.md:block 213 (header)
 msgid "Specifying Max Job Attempts / Timeout Values"
 msgstr ""
 
-#: docs/10.x/queues.md:block 207 (header)
+#: docs/10.x/queues.md:block 215 (header)
 msgid "Max Attempts"
 msgstr ""
 
-#: docs/10.x/queues.md:block 208 (paragraph)
+#: docs/10.x/queues.md:block 216 (paragraph)
 msgid "If one of your queued jobs is encountering an error, you likely do not want it to keep retrying indefinitely. Therefore, Laravel provides various ways to specify how many times or for how long a job may be attempted."
 msgstr ""
 
-#: docs/10.x/queues.md:block 209 (paragraph)
+#: docs/10.x/queues.md:block 217 (paragraph)
 msgid "One approach to specifying the maximum number of times a job may be attempted is via the `--tries` switch on the Artisan command line. This will apply to all jobs processed by the worker unless the job being processed specifies the number of times it may be attempted:"
 msgstr ""
 
-#: docs/10.x/queues.md:block 210 (code)
+#: docs/10.x/queues.md:block 218 (code)
 msgid "php artisan queue:work --tries=3\n"
 msgstr ""
 
-#: docs/10.x/queues.md:block 211 (paragraph)
-msgid "If a job exceeds its maximum number of attempts, it will be considered a \"failed\" job. For more information on handling failed jobs, consult the [failed job documentation](#dealing-with-failed-jobs). If `--tries=0` is provided to the `queue:work` command, the job will retried indefinitely."
+#: docs/10.x/queues.md:block 219 (paragraph)
+msgid "If a job exceeds its maximum number of attempts, it will be considered a \"failed\" job. For more information on handling failed jobs, consult the [failed job documentation](#dealing-with-failed-jobs). If `--tries=0` is provided to the `queue:work` command, the job will be retried indefinitely."
 msgstr ""
 
-#: docs/10.x/queues.md:block 212 (paragraph)
+#: docs/10.x/queues.md:block 220 (paragraph)
 msgid "You may take a more granular approach by defining the maximum number of times a job may be attempted on the job class itself. If the maximum number of attempts is specified on the job, it will take precedence over the `--tries` value provided on the command line:"
 msgstr ""
 
-#: docs/10.x/queues.md:block 213 (code)
+#: docs/10.x/queues.md:block 221 (code)
 msgid ""
 "<?php\n"
 "\n"
@@ -1471,15 +1538,15 @@ msgid ""
 "}\n"
 msgstr ""
 
-#: docs/10.x/queues.md:block 215 (header)
+#: docs/10.x/queues.md:block 223 (header)
 msgid "Time Based Attempts"
 msgstr ""
 
-#: docs/10.x/queues.md:block 216 (paragraph)
+#: docs/10.x/queues.md:block 224 (paragraph)
 msgid "As an alternative to defining how many times a job may be attempted before it fails, you may define a time at which the job should no longer be attempted. This allows a job to be attempted any number of times within a given time frame. To define the time at which a job should no longer be attempted, add a `retryUntil` method to your job class. This method should return a `DateTime` instance:"
 msgstr ""
 
-#: docs/10.x/queues.md:block 217 (code)
+#: docs/10.x/queues.md:block 225 (code)
 msgid ""
 "use DateTime;\n"
 "\n"
@@ -1492,19 +1559,19 @@ msgid ""
 "}\n"
 msgstr ""
 
-#: docs/10.x/queues.md:block 218 (quote)
+#: docs/10.x/queues.md:block 226 (quote)
 msgid "**Note** You may also define a `tries` property or `retryUntil` method on your [queued event listeners](/docs/{{version}}/events#queued-event-listeners)."
 msgstr ""
 
-#: docs/10.x/queues.md:block 220 (header)
+#: docs/10.x/queues.md:block 228 (header)
 msgid "Max Exceptions"
 msgstr ""
 
-#: docs/10.x/queues.md:block 221 (paragraph)
+#: docs/10.x/queues.md:block 229 (paragraph)
 msgid "Sometimes you may wish to specify that a job may be attempted many times, but should fail if the retries are triggered by a given number of unhandled exceptions (as opposed to being released by the `release` method directly). To accomplish this, you may define a `maxExceptions` property on your job class:"
 msgstr ""
 
-#: docs/10.x/queues.md:block 222 (code)
+#: docs/10.x/queues.md:block 230 (code)
 msgid ""
 "<?php\n"
 "\n"
@@ -1543,39 +1610,35 @@ msgid ""
 "}\n"
 msgstr ""
 
-#: docs/10.x/queues.md:block 223 (paragraph)
+#: docs/10.x/queues.md:block 231 (paragraph)
 msgid "In this example, the job is released for ten seconds if the application is unable to obtain a Redis lock and will continue to be retried up to 25 times. However, the job will fail if three unhandled exceptions are thrown by the job."
 msgstr ""
 
-#: docs/10.x/queues.md:block 225 (header)
+#: docs/10.x/queues.md:block 233 (header)
 msgid "Timeout"
 msgstr ""
 
-#: docs/10.x/queues.md:block 226 (quote)
-msgid "**Warning** The `pcntl` PHP extension must be installed in order to specify job timeouts."
-msgstr ""
-
-#: docs/10.x/queues.md:block 227 (paragraph)
+#: docs/10.x/queues.md:block 234 (paragraph)
 msgid "Often, you know roughly how long you expect your queued jobs to take. For this reason, Laravel allows you to specify a \"timeout\" value. By default, the timeout value is 60 seconds. If a job is processing for longer than the number of seconds specified by the timeout value, the worker processing the job will exit with an error. Typically, the worker will be restarted automatically by a [process manager configured on your server](#supervisor-configuration)."
 msgstr ""
 
-#: docs/10.x/queues.md:block 228 (paragraph)
+#: docs/10.x/queues.md:block 235 (paragraph)
 msgid "The maximum number of seconds that jobs can run may be specified using the `--timeout` switch on the Artisan command line:"
 msgstr ""
 
-#: docs/10.x/queues.md:block 229 (code)
+#: docs/10.x/queues.md:block 236 (code)
 msgid "php artisan queue:work --timeout=30\n"
 msgstr ""
 
-#: docs/10.x/queues.md:block 230 (paragraph)
+#: docs/10.x/queues.md:block 237 (paragraph)
 msgid "If the job exceeds its maximum attempts by continually timing out, it will be marked as failed."
 msgstr ""
 
-#: docs/10.x/queues.md:block 231 (paragraph)
+#: docs/10.x/queues.md:block 238 (paragraph)
 msgid "You may also define the maximum number of seconds a job should be allowed to run on the job class itself. If the timeout is specified on the job, it will take precedence over any timeout specified on the command line:"
 msgstr ""
 
-#: docs/10.x/queues.md:block 232 (code)
+#: docs/10.x/queues.md:block 239 (code)
 msgid ""
 "<?php\n"
 "\n"
@@ -1592,19 +1655,23 @@ msgid ""
 "}\n"
 msgstr ""
 
-#: docs/10.x/queues.md:block 233 (paragraph)
+#: docs/10.x/queues.md:block 240 (paragraph)
 msgid "Sometimes, IO blocking processes such as sockets or outgoing HTTP connections may not respect your specified timeout. Therefore, when using these features, you should always attempt to specify a timeout using their APIs as well. For example, when using Guzzle, you should always specify a connection and request timeout value."
 msgstr ""
 
-#: docs/10.x/queues.md:block 235 (header)
+#: docs/10.x/queues.md:block 241 (quote)
+msgid "**Warning** The `pcntl` PHP extension must be installed in order to specify job timeouts. In addition, a job's \"timeout\" value should always be less than its [\"retry after\"](#job-expiration) value. Otherwise, the job may be re-attempted before it has actually finished executing or timed out."
+msgstr ""
+
+#: docs/10.x/queues.md:block 243 (header)
 msgid "Failing On Timeout"
 msgstr ""
 
-#: docs/10.x/queues.md:block 236 (paragraph)
+#: docs/10.x/queues.md:block 244 (paragraph)
 msgid "If you would like to indicate that a job should be marked as [failed](#dealing-with-failed-jobs) on timeout, you may define the `$failOnTimeout` property on the job class:"
 msgstr ""
 
-#: docs/10.x/queues.md:block 237 (code)
+#: docs/10.x/queues.md:block 245 (code)
 msgid ""
 "/**\n"
 " * Indicate if the job should be marked as failed on timeout.\n"
@@ -1614,23 +1681,23 @@ msgid ""
 "public $failOnTimeout = true;\n"
 msgstr ""
 
-#: docs/10.x/queues.md:block 239 (header)
+#: docs/10.x/queues.md:block 247 (header)
 msgid "Error Handling"
 msgstr ""
 
-#: docs/10.x/queues.md:block 240 (paragraph)
+#: docs/10.x/queues.md:block 248 (paragraph)
 msgid "If an exception is thrown while the job is being processed, the job will automatically be released back onto the queue so it may be attempted again. The job will continue to be released until it has been attempted the maximum number of times allowed by your application. The maximum number of attempts is defined by the `--tries` switch used on the `queue:work` Artisan command. Alternatively, the maximum number of attempts may be defined on the job class itself. More information on running the queue worker [can be found below](#running-the-queue-worker)."
 msgstr ""
 
-#: docs/10.x/queues.md:block 242 (header)
+#: docs/10.x/queues.md:block 250 (header)
 msgid "Manually Releasing A Job"
 msgstr ""
 
-#: docs/10.x/queues.md:block 243 (paragraph)
+#: docs/10.x/queues.md:block 251 (paragraph)
 msgid "Sometimes you may wish to manually release a job back onto the queue so that it can be attempted again at a later time. You may accomplish this by calling the `release` method:"
 msgstr ""
 
-#: docs/10.x/queues.md:block 244 (code)
+#: docs/10.x/queues.md:block 252 (code)
 msgid ""
 "/**\n"
 " * Execute the job.\n"
@@ -1643,23 +1710,26 @@ msgid ""
 "}\n"
 msgstr ""
 
-#: docs/10.x/queues.md:block 245 (paragraph)
-msgid "By default, the `release` method will release the job back onto the queue for immediate processing. However, by passing an integer to the `release` method you may instruct the queue to not make the job available for processing until a given number of seconds has elapsed:"
+#: docs/10.x/queues.md:block 253 (paragraph)
+msgid "By default, the `release` method will release the job back onto the queue for immediate processing. However, you may instruct the queue to not make the job available for processing until a given number of seconds has elapsed by passing an integer or date instance to the `release` method:"
 msgstr ""
 
-#: docs/10.x/queues.md:block 246 (code)
-msgid "$this->release(10);\n"
+#: docs/10.x/queues.md:block 254 (code)
+msgid ""
+"$this->release(10);\n"
+"\n"
+"$this->release(now()->addSeconds(10));\n"
 msgstr ""
 
-#: docs/10.x/queues.md:block 248 (header)
+#: docs/10.x/queues.md:block 256 (header)
 msgid "Manually Failing A Job"
 msgstr ""
 
-#: docs/10.x/queues.md:block 249 (paragraph)
+#: docs/10.x/queues.md:block 257 (paragraph)
 msgid "Occasionally you may need to manually mark a job as \"failed\". To do so, you may call the `fail` method:"
 msgstr ""
 
-#: docs/10.x/queues.md:block 250 (code)
+#: docs/10.x/queues.md:block 258 (code)
 msgid ""
 "/**\n"
 " * Execute the job.\n"
@@ -1672,45 +1742,45 @@ msgid ""
 "}\n"
 msgstr ""
 
-#: docs/10.x/queues.md:block 251 (paragraph)
+#: docs/10.x/queues.md:block 259 (paragraph)
 msgid "If you would like to mark your job as failed because of an exception that you have caught, you may pass the exception to the `fail` method. Or, for convenience, you may pass a string error message which will be converted to an exception for you:"
 msgstr ""
 
-#: docs/10.x/queues.md:block 252 (code)
+#: docs/10.x/queues.md:block 260 (code)
 msgid ""
 "$this->fail($exception);\n"
 "\n"
 "$this->fail('Something went wrong.');\n"
 msgstr ""
 
-#: docs/10.x/queues.md:block 253 (quote)
+#: docs/10.x/queues.md:block 261 (quote)
 msgid "**Note** For more information on failed jobs, check out the [documentation on dealing with job failures](#dealing-with-failed-jobs)."
 msgstr ""
 
-#: docs/10.x/queues.md:block 255 (header)
+#: docs/10.x/queues.md:block 263 (header)
 msgid "Job Batching"
 msgstr ""
 
-#: docs/10.x/queues.md:block 256 (paragraph)
+#: docs/10.x/queues.md:block 264 (paragraph)
 msgid "Laravel's job batching feature allows you to easily execute a batch of jobs and then perform some action when the batch of jobs has completed executing. Before getting started, you should create a database migration to build a table to contain meta information about your job batches, such as their completion percentage. This migration may be generated using the `queue:batches-table` Artisan command:"
 msgstr ""
 
-#: docs/10.x/queues.md:block 257 (code)
+#: docs/10.x/queues.md:block 265 (code)
 msgid ""
 "php artisan queue:batches-table\n"
 "\n"
 "php artisan migrate\n"
 msgstr ""
 
-#: docs/10.x/queues.md:block 259 (header)
+#: docs/10.x/queues.md:block 267 (header)
 msgid "Defining Batchable Jobs"
 msgstr ""
 
-#: docs/10.x/queues.md:block 260 (paragraph)
+#: docs/10.x/queues.md:block 268 (paragraph)
 msgid "To define a batchable job, you should [create a queueable job](#creating-jobs) as normal; however, you should add the `Illuminate\\Bus\\Batchable` trait to the job class. This trait provides access to a `batch` method which may be used to retrieve the current batch that the job is executing within:"
 msgstr ""
 
-#: docs/10.x/queues.md:block 261 (code)
+#: docs/10.x/queues.md:block 269 (code)
 msgid ""
 "<?php\n"
 "\n"
@@ -1743,15 +1813,15 @@ msgid ""
 "}\n"
 msgstr ""
 
-#: docs/10.x/queues.md:block 263 (header)
+#: docs/10.x/queues.md:block 271 (header)
 msgid "Dispatching Batches"
 msgstr ""
 
-#: docs/10.x/queues.md:block 264 (paragraph)
+#: docs/10.x/queues.md:block 272 (paragraph)
 msgid "To dispatch a batch of jobs, you should use the `batch` method of the `Bus` facade. Of course, batching is primarily useful when combined with completion callbacks. So, you may use the `then`, `catch`, and `finally` methods to define completion callbacks for the batch. Each of these callbacks will receive an `Illuminate\\Bus\\Batch` instance when they are invoked. In this example, we will imagine we are queueing a batch of jobs that each process a given number of rows from a CSV file:"
 msgstr ""
 
-#: docs/10.x/queues.md:block 265 (code)
+#: docs/10.x/queues.md:block 273 (code)
 msgid ""
 "use App\\Jobs\\ImportCsv;\n"
 "use Illuminate\\Bus\\Batch;\n"
@@ -1775,23 +1845,23 @@ msgid ""
 "return $batch->id;\n"
 msgstr ""
 
-#: docs/10.x/queues.md:block 266 (paragraph)
+#: docs/10.x/queues.md:block 274 (paragraph)
 msgid "The batch's ID, which may be accessed via the `$batch->id` property, may be used to [query the Laravel command bus](#inspecting-batches) for information about the batch after it has been dispatched."
 msgstr ""
 
-#: docs/10.x/queues.md:block 267 (quote)
+#: docs/10.x/queues.md:block 275 (quote)
 msgid "**Warning** Since batch callbacks are serialized and executed at a later time by the Laravel queue, you should not use the `$this` variable within the callbacks."
 msgstr ""
 
-#: docs/10.x/queues.md:block 269 (header)
+#: docs/10.x/queues.md:block 277 (header)
 msgid "Naming Batches"
 msgstr ""
 
-#: docs/10.x/queues.md:block 270 (paragraph)
+#: docs/10.x/queues.md:block 278 (paragraph)
 msgid "Some tools such as Laravel Horizon and Laravel Telescope may provide more user-friendly debug information for batches if batches are named. To assign an arbitrary name to a batch, you may call the `name` method while defining the batch:"
 msgstr ""
 
-#: docs/10.x/queues.md:block 271 (code)
+#: docs/10.x/queues.md:block 279 (code)
 msgid ""
 "$batch = Bus::batch([\n"
 "    // ...\n"
@@ -1800,15 +1870,15 @@ msgid ""
 "})->name('Import CSV')->dispatch();\n"
 msgstr ""
 
-#: docs/10.x/queues.md:block 273 (header)
+#: docs/10.x/queues.md:block 281 (header)
 msgid "Batch Connection & Queue"
 msgstr ""
 
-#: docs/10.x/queues.md:block 274 (paragraph)
+#: docs/10.x/queues.md:block 282 (paragraph)
 msgid "If you would like to specify the connection and queue that should be used for the batched jobs, you may use the `onConnection` and `onQueue` methods. All batched jobs must execute within the same connection and queue:"
 msgstr ""
 
-#: docs/10.x/queues.md:block 275 (code)
+#: docs/10.x/queues.md:block 283 (code)
 msgid ""
 "$batch = Bus::batch([\n"
 "    // ...\n"
@@ -1817,15 +1887,15 @@ msgid ""
 "})->onConnection('redis')->onQueue('imports')->dispatch();\n"
 msgstr ""
 
-#: docs/10.x/queues.md:block 277 (header)
+#: docs/10.x/queues.md:block 285 (header)
 msgid "Chains Within Batches"
 msgstr ""
 
-#: docs/10.x/queues.md:block 278 (paragraph)
+#: docs/10.x/queues.md:block 286 (paragraph)
 msgid "You may define a set of [chained jobs](#job-chaining) within a batch by placing the chained jobs within an array. For example, we may execute two job chains in parallel and execute a callback when both job chains have finished processing:"
 msgstr ""
 
-#: docs/10.x/queues.md:block 279 (code)
+#: docs/10.x/queues.md:block 287 (code)
 msgid ""
 "use App\\Jobs\\ReleasePodcast;\n"
 "use App\\Jobs\\SendPodcastReleaseNotification;\n"
@@ -1846,15 +1916,15 @@ msgid ""
 "})->dispatch();\n"
 msgstr ""
 
-#: docs/10.x/queues.md:block 281 (header)
+#: docs/10.x/queues.md:block 289 (header)
 msgid "Adding Jobs To Batches"
 msgstr ""
 
-#: docs/10.x/queues.md:block 282 (paragraph)
+#: docs/10.x/queues.md:block 290 (paragraph)
 msgid "Sometimes it may be useful to add additional jobs to a batch from within a batched job. This pattern can be useful when you need to batch thousands of jobs which may take too long to dispatch during a web request. So, instead, you may wish to dispatch an initial batch of \"loader\" jobs that hydrate the batch with even more jobs:"
 msgstr ""
 
-#: docs/10.x/queues.md:block 283 (code)
+#: docs/10.x/queues.md:block 291 (code)
 msgid ""
 "$batch = Bus::batch([\n"
 "    new LoadImportBatch,\n"
@@ -1865,11 +1935,11 @@ msgid ""
 "})->name('Import Contacts')->dispatch();\n"
 msgstr ""
 
-#: docs/10.x/queues.md:block 284 (paragraph)
+#: docs/10.x/queues.md:block 292 (paragraph)
 msgid "In this example, we will use the `LoadImportBatch` job to hydrate the batch with additional jobs. To accomplish this, we may use the `add` method on the batch instance that may be accessed via the job's `batch` method:"
 msgstr ""
 
-#: docs/10.x/queues.md:block 285 (code)
+#: docs/10.x/queues.md:block 293 (code)
 msgid ""
 "use App\\Jobs\\ImportContacts;\n"
 "use Illuminate\\Support\\Collection;\n"
@@ -1889,19 +1959,19 @@ msgid ""
 "}\n"
 msgstr ""
 
-#: docs/10.x/queues.md:block 286 (quote)
+#: docs/10.x/queues.md:block 294 (quote)
 msgid "**Warning** You may only add jobs to a batch from within a job that belongs to the same batch."
 msgstr ""
 
-#: docs/10.x/queues.md:block 288 (header)
+#: docs/10.x/queues.md:block 296 (header)
 msgid "Inspecting Batches"
 msgstr ""
 
-#: docs/10.x/queues.md:block 289 (paragraph)
+#: docs/10.x/queues.md:block 297 (paragraph)
 msgid "The `Illuminate\\Bus\\Batch` instance that is provided to batch completion callbacks has a variety of properties and methods to assist you in interacting with and inspecting a given batch of jobs:"
 msgstr ""
 
-#: docs/10.x/queues.md:block 290 (code)
+#: docs/10.x/queues.md:block 298 (code)
 msgid ""
 "// The UUID of the batch...\n"
 "$batch->id;\n"
@@ -1934,19 +2004,19 @@ msgid ""
 "$batch->cancelled();\n"
 msgstr ""
 
-#: docs/10.x/queues.md:block 292 (header)
+#: docs/10.x/queues.md:block 300 (header)
 msgid "Returning Batches From Routes"
 msgstr ""
 
-#: docs/10.x/queues.md:block 293 (paragraph)
+#: docs/10.x/queues.md:block 301 (paragraph)
 msgid "All `Illuminate\\Bus\\Batch` instances are JSON serializable, meaning you can return them directly from one of your application's routes to retrieve a JSON payload containing information about the batch, including its completion progress. This makes it convenient to display information about the batch's completion progress in your application's UI."
 msgstr ""
 
-#: docs/10.x/queues.md:block 294 (paragraph)
+#: docs/10.x/queues.md:block 302 (paragraph)
 msgid "To retrieve a batch by its ID, you may use the `Bus` facade's `findBatch` method:"
 msgstr ""
 
-#: docs/10.x/queues.md:block 295 (code)
+#: docs/10.x/queues.md:block 303 (code)
 msgid ""
 "use Illuminate\\Support\\Facades\\Bus;\n"
 "use Illuminate\\Support\\Facades\\Route;\n"
@@ -1956,15 +2026,15 @@ msgid ""
 "});\n"
 msgstr ""
 
-#: docs/10.x/queues.md:block 297 (header)
+#: docs/10.x/queues.md:block 305 (header)
 msgid "Cancelling Batches"
 msgstr ""
 
-#: docs/10.x/queues.md:block 298 (paragraph)
+#: docs/10.x/queues.md:block 306 (paragraph)
 msgid "Sometimes you may need to cancel a given batch's execution. This can be accomplished by calling the `cancel` method on the `Illuminate\\Bus\\Batch` instance:"
 msgstr ""
 
-#: docs/10.x/queues.md:block 299 (code)
+#: docs/10.x/queues.md:block 307 (code)
 msgid ""
 "/**\n"
 " * Execute the job.\n"
@@ -1981,11 +2051,11 @@ msgid ""
 "}\n"
 msgstr ""
 
-#: docs/10.x/queues.md:block 300 (paragraph)
+#: docs/10.x/queues.md:block 308 (paragraph)
 msgid "As you may have noticed in the previous examples, batched jobs should typically determine if their corresponding batch has been cancelled before continuing execution. However, for convenience, you may assign the `SkipIfBatchCancelled` [middleware](#job-middleware) to the job instead. As its name indicates, this middleware will instruct Laravel to not process the job if its corresponding batch has been cancelled:"
 msgstr ""
 
-#: docs/10.x/queues.md:block 301 (code)
+#: docs/10.x/queues.md:block 309 (code)
 msgid ""
 "use Illuminate\\Queue\\Middleware\\SkipIfBatchCancelled;\n"
 "\n"
@@ -1998,23 +2068,23 @@ msgid ""
 "}\n"
 msgstr ""
 
-#: docs/10.x/queues.md:block 303 (header)
+#: docs/10.x/queues.md:block 311 (header)
 msgid "Batch Failures"
 msgstr ""
 
-#: docs/10.x/queues.md:block 304 (paragraph)
+#: docs/10.x/queues.md:block 312 (paragraph)
 msgid "When a batched job fails, the `catch` callback (if assigned) will be invoked. This callback is only invoked for the first job that fails within the batch."
 msgstr ""
 
-#: docs/10.x/queues.md:block 306 (header)
+#: docs/10.x/queues.md:block 314 (header)
 msgid "Allowing Failures"
 msgstr ""
 
-#: docs/10.x/queues.md:block 307 (paragraph)
+#: docs/10.x/queues.md:block 315 (paragraph)
 msgid "When a job within a batch fails, Laravel will automatically mark the batch as \"cancelled\". If you wish, you may disable this behavior so that a job failure does not automatically mark the batch as cancelled. This may be accomplished by calling the `allowFailures` method while dispatching the batch:"
 msgstr ""
 
-#: docs/10.x/queues.md:block 308 (code)
+#: docs/10.x/queues.md:block 316 (code)
 msgid ""
 "$batch = Bus::batch([\n"
 "    // ...\n"
@@ -2023,63 +2093,63 @@ msgid ""
 "})->allowFailures()->dispatch();\n"
 msgstr ""
 
-#: docs/10.x/queues.md:block 310 (header)
+#: docs/10.x/queues.md:block 318 (header)
 msgid "Retrying Failed Batch Jobs"
 msgstr ""
 
-#: docs/10.x/queues.md:block 311 (paragraph)
+#: docs/10.x/queues.md:block 319 (paragraph)
 msgid "For convenience, Laravel provides a `queue:retry-batch` Artisan command that allows you to easily retry all of the failed jobs for a given batch. The `queue:retry-batch` command accepts the UUID of the batch whose failed jobs should be retried:"
 msgstr ""
 
-#: docs/10.x/queues.md:block 312 (code)
+#: docs/10.x/queues.md:block 320 (code)
 msgid "php artisan queue:retry-batch 32dbc76c-4f82-4749-b610-a639fe0099b5\n"
 msgstr ""
 
-#: docs/10.x/queues.md:block 314 (header)
+#: docs/10.x/queues.md:block 322 (header)
 msgid "Pruning Batches"
 msgstr ""
 
-#: docs/10.x/queues.md:block 315 (paragraph)
+#: docs/10.x/queues.md:block 323 (paragraph)
 msgid "Without pruning, the `job_batches` table can accumulate records very quickly. To mitigate this, you should [schedule](/docs/{{version}}/scheduling) the `queue:prune-batches` Artisan command to run daily:"
 msgstr ""
 
-#: docs/10.x/queues.md:block 316 (code)
+#: docs/10.x/queues.md:block 324 (code)
 msgid "$schedule->command('queue:prune-batches')->daily();\n"
 msgstr ""
 
-#: docs/10.x/queues.md:block 317 (paragraph)
+#: docs/10.x/queues.md:block 325 (paragraph)
 msgid "By default, all finished batches that are more than 24 hours old will be pruned. You may use the `hours` option when calling the command to determine how long to retain batch data. For example, the following command will delete all batches that finished over 48 hours ago:"
 msgstr ""
 
-#: docs/10.x/queues.md:block 318 (code)
+#: docs/10.x/queues.md:block 326 (code)
 msgid "$schedule->command('queue:prune-batches --hours=48')->daily();\n"
 msgstr ""
 
-#: docs/10.x/queues.md:block 319 (paragraph)
+#: docs/10.x/queues.md:block 327 (paragraph)
 msgid "Sometimes, your `jobs_batches` table may accumulate batch records for batches that never completed successfully, such as batches where a job failed and that job was never retried successfully. You may instruct the `queue:prune-batches` command to prune these unfinished batch records using the `unfinished` option:"
 msgstr ""
 
-#: docs/10.x/queues.md:block 320 (code)
+#: docs/10.x/queues.md:block 328 (code)
 msgid "$schedule->command('queue:prune-batches --hours=48 --unfinished=72')->daily();\n"
 msgstr ""
 
-#: docs/10.x/queues.md:block 321 (paragraph)
+#: docs/10.x/queues.md:block 329 (paragraph)
 msgid "Likewise, your `jobs_batches` table may also accumulate batch records for cancelled batches. You may instruct the `queue:prune-batches` command to prune these cancelled batch records using the `cancelled` option:"
 msgstr ""
 
-#: docs/10.x/queues.md:block 322 (code)
+#: docs/10.x/queues.md:block 330 (code)
 msgid "$schedule->command('queue:prune-batches --hours=48 --cancelled=72')->daily();\n"
 msgstr ""
 
-#: docs/10.x/queues.md:block 324 (header)
+#: docs/10.x/queues.md:block 332 (header)
 msgid "Queueing Closures"
 msgstr ""
 
-#: docs/10.x/queues.md:block 325 (paragraph)
+#: docs/10.x/queues.md:block 333 (paragraph)
 msgid "Instead of dispatching a job class to the queue, you may also dispatch a closure. This is great for quick, simple tasks that need to be executed outside of the current request cycle. When dispatching closures to the queue, the closure's code content is cryptographically signed so that it can not be modified in transit:"
 msgstr ""
 
-#: docs/10.x/queues.md:block 326 (code)
+#: docs/10.x/queues.md:block 334 (code)
 msgid ""
 "$podcast = App\\Podcast::find(1);\n"
 "\n"
@@ -2088,11 +2158,11 @@ msgid ""
 "});\n"
 msgstr ""
 
-#: docs/10.x/queues.md:block 327 (paragraph)
+#: docs/10.x/queues.md:block 335 (paragraph)
 msgid "Using the `catch` method, you may provide a closure that should be executed if the queued closure fails to complete successfully after exhausting all of your queue's [configured retry attempts](#max-job-attempts-and-timeout):"
 msgstr ""
 
-#: docs/10.x/queues.md:block 328 (code)
+#: docs/10.x/queues.md:block 336 (code)
 msgid ""
 "use Throwable;\n"
 "\n"
@@ -2103,257 +2173,257 @@ msgid ""
 "});\n"
 msgstr ""
 
-#: docs/10.x/queues.md:block 329 (quote)
+#: docs/10.x/queues.md:block 337 (quote)
 msgid "**Warning** Since `catch` callbacks are serialized and executed at a later time by the Laravel queue, you should not use the `$this` variable within `catch` callbacks."
 msgstr ""
 
-#: docs/10.x/queues.md:block 331 (header)
+#: docs/10.x/queues.md:block 339 (header)
 msgid "Running The Queue Worker"
 msgstr ""
 
-#: docs/10.x/queues.md:block 333 (header)
+#: docs/10.x/queues.md:block 341 (header)
 msgid "The `queue:work` Command"
 msgstr ""
 
-#: docs/10.x/queues.md:block 334 (paragraph)
+#: docs/10.x/queues.md:block 342 (paragraph)
 msgid "Laravel includes an Artisan command that will start a queue worker and process new jobs as they are pushed onto the queue. You may run the worker using the `queue:work` Artisan command. Note that once the `queue:work` command has started, it will continue to run until it is manually stopped or you close your terminal:"
 msgstr ""
 
-#: docs/10.x/queues.md:block 335 (code)
+#: docs/10.x/queues.md:block 343 (code)
 msgid "php artisan queue:work\n"
 msgstr ""
 
-#: docs/10.x/queues.md:block 336 (quote)
+#: docs/10.x/queues.md:block 344 (quote)
 msgid "**Note** To keep the `queue:work` process running permanently in the background, you should use a process monitor such as [Supervisor](#supervisor-configuration) to ensure that the queue worker does not stop running."
 msgstr ""
 
-#: docs/10.x/queues.md:block 337 (paragraph)
+#: docs/10.x/queues.md:block 345 (paragraph)
 msgid "You may include the `-v` flag when invoking the `queue:work` command if you would like the processed job IDs to be included in the command's output:"
 msgstr ""
 
-#: docs/10.x/queues.md:block 338 (code)
+#: docs/10.x/queues.md:block 346 (code)
 msgid "php artisan queue:work -v\n"
 msgstr ""
 
-#: docs/10.x/queues.md:block 339 (paragraph)
+#: docs/10.x/queues.md:block 347 (paragraph)
 msgid "Remember, queue workers are long-lived processes and store the booted application state in memory. As a result, they will not notice changes in your code base after they have been started. So, during your deployment process, be sure to [restart your queue workers](#queue-workers-and-deployment). In addition, remember that any static state created or modified by your application will not be automatically reset between jobs."
 msgstr ""
 
-#: docs/10.x/queues.md:block 340 (paragraph)
+#: docs/10.x/queues.md:block 348 (paragraph)
 msgid "Alternatively, you may run the `queue:listen` command. When using the `queue:listen` command, you don't have to manually restart the worker when you want to reload your updated code or reset the application state; however, this command is significantly less efficient than the `queue:work` command:"
 msgstr ""
 
-#: docs/10.x/queues.md:block 341 (code)
+#: docs/10.x/queues.md:block 349 (code)
 msgid "php artisan queue:listen\n"
 msgstr ""
 
-#: docs/10.x/queues.md:block 343 (header)
+#: docs/10.x/queues.md:block 351 (header)
 msgid "Running Multiple Queue Workers"
 msgstr ""
 
-#: docs/10.x/queues.md:block 344 (paragraph)
+#: docs/10.x/queues.md:block 352 (paragraph)
 msgid "To assign multiple workers to a queue and process jobs concurrently, you should simply start multiple `queue:work` processes. This can either be done locally via multiple tabs in your terminal or in production using your process manager's configuration settings. [When using Supervisor](#supervisor-configuration), you may use the `numprocs` configuration value."
 msgstr ""
 
-#: docs/10.x/queues.md:block 346 (header)
+#: docs/10.x/queues.md:block 354 (header)
 msgid "Specifying The Connection & Queue"
 msgstr ""
 
-#: docs/10.x/queues.md:block 347 (paragraph)
+#: docs/10.x/queues.md:block 355 (paragraph)
 msgid "You may also specify which queue connection the worker should utilize. The connection name passed to the `work` command should correspond to one of the connections defined in your `config/queue.php` configuration file:"
 msgstr ""
 
-#: docs/10.x/queues.md:block 348 (code)
+#: docs/10.x/queues.md:block 356 (code)
 msgid "php artisan queue:work redis\n"
 msgstr ""
 
-#: docs/10.x/queues.md:block 349 (paragraph)
+#: docs/10.x/queues.md:block 357 (paragraph)
 msgid "By default, the `queue:work` command only processes jobs for the default queue on a given connection. However, you may customize your queue worker even further by only processing particular queues for a given connection. For example, if all of your emails are processed in an `emails` queue on your `redis` queue connection, you may issue the following command to start a worker that only processes that queue:"
 msgstr ""
 
-#: docs/10.x/queues.md:block 350 (code)
+#: docs/10.x/queues.md:block 358 (code)
 msgid "php artisan queue:work redis --queue=emails\n"
 msgstr ""
 
-#: docs/10.x/queues.md:block 352 (header)
+#: docs/10.x/queues.md:block 360 (header)
 msgid "Processing A Specified Number Of Jobs"
 msgstr ""
 
-#: docs/10.x/queues.md:block 353 (paragraph)
+#: docs/10.x/queues.md:block 361 (paragraph)
 msgid "The `--once` option may be used to instruct the worker to only process a single job from the queue:"
 msgstr ""
 
-#: docs/10.x/queues.md:block 354 (code)
+#: docs/10.x/queues.md:block 362 (code)
 msgid "php artisan queue:work --once\n"
 msgstr ""
 
-#: docs/10.x/queues.md:block 355 (paragraph)
+#: docs/10.x/queues.md:block 363 (paragraph)
 msgid "The `--max-jobs` option may be used to instruct the worker to process the given number of jobs and then exit. This option may be useful when combined with [Supervisor](#supervisor-configuration) so that your workers are automatically restarted after processing a given number of jobs, releasing any memory they may have accumulated:"
 msgstr ""
 
-#: docs/10.x/queues.md:block 356 (code)
+#: docs/10.x/queues.md:block 364 (code)
 msgid "php artisan queue:work --max-jobs=1000\n"
 msgstr ""
 
-#: docs/10.x/queues.md:block 358 (header)
+#: docs/10.x/queues.md:block 366 (header)
 msgid "Processing All Queued Jobs & Then Exiting"
 msgstr ""
 
-#: docs/10.x/queues.md:block 359 (paragraph)
+#: docs/10.x/queues.md:block 367 (paragraph)
 msgid "The `--stop-when-empty` option may be used to instruct the worker to process all jobs and then exit gracefully. This option can be useful when processing Laravel queues within a Docker container if you wish to shutdown the container after the queue is empty:"
 msgstr ""
 
-#: docs/10.x/queues.md:block 360 (code)
+#: docs/10.x/queues.md:block 368 (code)
 msgid "php artisan queue:work --stop-when-empty\n"
 msgstr ""
 
-#: docs/10.x/queues.md:block 362 (header)
+#: docs/10.x/queues.md:block 370 (header)
 msgid "Processing Jobs For A Given Number Of Seconds"
 msgstr ""
 
-#: docs/10.x/queues.md:block 363 (paragraph)
+#: docs/10.x/queues.md:block 371 (paragraph)
 msgid "The `--max-time` option may be used to instruct the worker to process jobs for the given number of seconds and then exit. This option may be useful when combined with [Supervisor](#supervisor-configuration) so that your workers are automatically restarted after processing jobs for a given amount of time, releasing any memory they may have accumulated:"
 msgstr ""
 
-#: docs/10.x/queues.md:block 364 (code)
+#: docs/10.x/queues.md:block 372 (code)
 msgid ""
 "# Process jobs for one hour and then exit...\n"
 "php artisan queue:work --max-time=3600\n"
 msgstr ""
 
-#: docs/10.x/queues.md:block 366 (header)
+#: docs/10.x/queues.md:block 374 (header)
 msgid "Worker Sleep Duration"
 msgstr ""
 
-#: docs/10.x/queues.md:block 367 (paragraph)
+#: docs/10.x/queues.md:block 375 (paragraph)
 msgid "When jobs are available on the queue, the worker will keep processing jobs with no delay in between jobs. However, the `sleep` option determines how many seconds the worker will \"sleep\" if there are no jobs available. Of course, while sleeping, the worker will not process any new jobs:"
 msgstr ""
 
-#: docs/10.x/queues.md:block 368 (code)
+#: docs/10.x/queues.md:block 376 (code)
 msgid "php artisan queue:work --sleep=3\n"
 msgstr ""
 
-#: docs/10.x/queues.md:block 370 (header)
+#: docs/10.x/queues.md:block 378 (header)
 msgid "Resource Considerations"
 msgstr ""
 
-#: docs/10.x/queues.md:block 371 (paragraph)
+#: docs/10.x/queues.md:block 379 (paragraph)
 msgid "Daemon queue workers do not \"reboot\" the framework before processing each job. Therefore, you should release any heavy resources after each job completes. For example, if you are doing image manipulation with the GD library, you should free the memory with `imagedestroy` when you are done processing the image."
 msgstr ""
 
-#: docs/10.x/queues.md:block 373 (header)
+#: docs/10.x/queues.md:block 381 (header)
 msgid "Queue Priorities"
 msgstr ""
 
-#: docs/10.x/queues.md:block 374 (paragraph)
+#: docs/10.x/queues.md:block 382 (paragraph)
 msgid "Sometimes you may wish to prioritize how your queues are processed. For example, in your `config/queue.php` configuration file, you may set the default `queue` for your `redis` connection to `low`. However, occasionally you may wish to push a job to a `high` priority queue like so:"
 msgstr ""
 
-#: docs/10.x/queues.md:block 375 (code)
+#: docs/10.x/queues.md:block 383 (code)
 msgid "dispatch((new Job)->onQueue('high'));\n"
 msgstr ""
 
-#: docs/10.x/queues.md:block 376 (paragraph)
+#: docs/10.x/queues.md:block 384 (paragraph)
 msgid "To start a worker that verifies that all of the `high` queue jobs are processed before continuing to any jobs on the `low` queue, pass a comma-delimited list of queue names to the `work` command:"
 msgstr ""
 
-#: docs/10.x/queues.md:block 377 (code)
+#: docs/10.x/queues.md:block 385 (code)
 msgid "php artisan queue:work --queue=high,low\n"
 msgstr ""
 
-#: docs/10.x/queues.md:block 379 (header)
+#: docs/10.x/queues.md:block 387 (header)
 msgid "Queue Workers & Deployment"
 msgstr ""
 
-#: docs/10.x/queues.md:block 380 (paragraph)
+#: docs/10.x/queues.md:block 388 (paragraph)
 msgid "Since queue workers are long-lived processes, they will not notice changes to your code without being restarted. So, the simplest way to deploy an application using queue workers is to restart the workers during your deployment process. You may gracefully restart all of the workers by issuing the `queue:restart` command:"
 msgstr ""
 
-#: docs/10.x/queues.md:block 381 (code)
+#: docs/10.x/queues.md:block 389 (code)
 msgid "php artisan queue:restart\n"
 msgstr ""
 
-#: docs/10.x/queues.md:block 382 (paragraph)
+#: docs/10.x/queues.md:block 390 (paragraph)
 msgid "This command will instruct all queue workers to gracefully exit after they finish processing their current job so that no existing jobs are lost. Since the queue workers will exit when the `queue:restart` command is executed, you should be running a process manager such as [Supervisor](#supervisor-configuration) to automatically restart the queue workers."
 msgstr ""
 
-#: docs/10.x/queues.md:block 383 (quote)
+#: docs/10.x/queues.md:block 391 (quote)
 msgid "**Note** The queue uses the [cache](/docs/{{version}}/cache) to store restart signals, so you should verify that a cache driver is properly configured for your application before using this feature."
 msgstr ""
 
-#: docs/10.x/queues.md:block 385 (header)
+#: docs/10.x/queues.md:block 393 (header)
 msgid "Job Expirations & Timeouts"
 msgstr ""
 
-#: docs/10.x/queues.md:block 387 (header)
+#: docs/10.x/queues.md:block 395 (header)
 msgid "Job Expiration"
 msgstr ""
 
-#: docs/10.x/queues.md:block 388 (paragraph)
+#: docs/10.x/queues.md:block 396 (paragraph)
 msgid "In your `config/queue.php` configuration file, each queue connection defines a `retry_after` option. This option specifies how many seconds the queue connection should wait before retrying a job that is being processed. For example, if the value of `retry_after` is set to `90`, the job will be released back onto the queue if it has been processing for 90 seconds without being released or deleted. Typically, you should set the `retry_after` value to the maximum number of seconds your jobs should reasonably take to complete processing."
 msgstr ""
 
-#: docs/10.x/queues.md:block 389 (quote)
+#: docs/10.x/queues.md:block 397 (quote)
 msgid "**Warning** The only queue connection which does not contain a `retry_after` value is Amazon SQS. SQS will retry the job based on the [Default Visibility Timeout](https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/AboutVT.html) which is managed within the AWS console."
 msgstr ""
 
-#: docs/10.x/queues.md:block 391 (header)
+#: docs/10.x/queues.md:block 399 (header)
 msgid "Worker Timeouts"
 msgstr ""
 
-#: docs/10.x/queues.md:block 392 (paragraph)
+#: docs/10.x/queues.md:block 400 (paragraph)
 msgid "The `queue:work` Artisan command exposes a `--timeout` option. By default, the `--timeout` value is 60 seconds. If a job is processing for longer than the number of seconds specified by the timeout value, the worker processing the job will exit with an error. Typically, the worker will be restarted automatically by a [process manager configured on your server](#supervisor-configuration):"
 msgstr ""
 
-#: docs/10.x/queues.md:block 393 (code)
+#: docs/10.x/queues.md:block 401 (code)
 msgid "php artisan queue:work --timeout=60\n"
 msgstr ""
 
-#: docs/10.x/queues.md:block 394 (paragraph)
+#: docs/10.x/queues.md:block 402 (paragraph)
 msgid "The `retry_after` configuration option and the `--timeout` CLI option are different, but work together to ensure that jobs are not lost and that jobs are only successfully processed once."
 msgstr ""
 
-#: docs/10.x/queues.md:block 395 (quote)
+#: docs/10.x/queues.md:block 403 (quote)
 msgid "**Warning** The `--timeout` value should always be at least several seconds shorter than your `retry_after` configuration value. This will ensure that a worker processing a frozen job is always terminated before the job is retried. If your `--timeout` option is longer than your `retry_after` configuration value, your jobs may be processed twice."
 msgstr ""
 
-#: docs/10.x/queues.md:block 397 (header)
+#: docs/10.x/queues.md:block 405 (header)
 msgid "Supervisor Configuration"
 msgstr ""
 
-#: docs/10.x/queues.md:block 398 (paragraph)
+#: docs/10.x/queues.md:block 406 (paragraph)
 msgid "In production, you need a way to keep your `queue:work` processes running. A `queue:work` process may stop running for a variety of reasons, such as an exceeded worker timeout or the execution of the `queue:restart` command."
 msgstr ""
 
-#: docs/10.x/queues.md:block 399 (paragraph)
+#: docs/10.x/queues.md:block 407 (paragraph)
 msgid "For this reason, you need to configure a process monitor that can detect when your `queue:work` processes exit and automatically restart them. In addition, process monitors can allow you to specify how many `queue:work` processes you would like to run concurrently. Supervisor is a process monitor commonly used in Linux environments and we will discuss how to configure it in the following documentation."
 msgstr ""
 
-#: docs/10.x/queues.md:block 401 (header)
+#: docs/10.x/queues.md:block 409 (header)
 msgid "Installing Supervisor"
 msgstr ""
 
-#: docs/10.x/queues.md:block 402 (paragraph)
+#: docs/10.x/queues.md:block 410 (paragraph)
 msgid "Supervisor is a process monitor for the Linux operating system, and will automatically restart your `queue:work` processes if they fail. To install Supervisor on Ubuntu, you may use the following command:"
 msgstr ""
 
-#: docs/10.x/queues.md:block 403 (code)
+#: docs/10.x/queues.md:block 411 (code)
 msgid "sudo apt-get install supervisor\n"
 msgstr ""
 
-#: docs/10.x/queues.md:block 404 (quote)
+#: docs/10.x/queues.md:block 412 (quote)
 msgid "**Note** If configuring and managing Supervisor yourself sounds overwhelming, consider using [Laravel Forge](https://forge.laravel.com), which will automatically install and configure Supervisor for your production Laravel projects."
 msgstr ""
 
-#: docs/10.x/queues.md:block 406 (header)
+#: docs/10.x/queues.md:block 414 (header)
 msgid "Configuring Supervisor"
 msgstr ""
 
-#: docs/10.x/queues.md:block 407 (paragraph)
+#: docs/10.x/queues.md:block 415 (paragraph)
 msgid "Supervisor configuration files are typically stored in the `/etc/supervisor/conf.d` directory. Within this directory, you may create any number of configuration files that instruct supervisor how your processes should be monitored. For example, let's create a `laravel-worker.conf` file that starts and monitors `queue:work` processes:"
 msgstr ""
 
-#: docs/10.x/queues.md:block 408 (code)
+#: docs/10.x/queues.md:block 416 (code)
 msgid ""
 "[program:laravel-worker]\n"
 "process_name=%(program_name)s_%(process_num)02d\n"
@@ -2369,75 +2439,75 @@ msgid ""
 "stopwaitsecs=3600\n"
 msgstr ""
 
-#: docs/10.x/queues.md:block 409 (paragraph)
+#: docs/10.x/queues.md:block 417 (paragraph)
 msgid "In this example, the `numprocs` directive will instruct Supervisor to run eight `queue:work` processes and monitor all of them, automatically restarting them if they fail. You should change the `command` directive of the configuration to reflect your desired queue connection and worker options."
 msgstr ""
 
-#: docs/10.x/queues.md:block 410 (quote)
+#: docs/10.x/queues.md:block 418 (quote)
 msgid "**Warning** You should ensure that the value of `stopwaitsecs` is greater than the number of seconds consumed by your longest running job. Otherwise, Supervisor may kill the job before it is finished processing."
 msgstr ""
 
-#: docs/10.x/queues.md:block 412 (header)
+#: docs/10.x/queues.md:block 420 (header)
 msgid "Starting Supervisor"
 msgstr ""
 
-#: docs/10.x/queues.md:block 413 (paragraph)
+#: docs/10.x/queues.md:block 421 (paragraph)
 msgid "Once the configuration file has been created, you may update the Supervisor configuration and start the processes using the following commands:"
 msgstr ""
 
-#: docs/10.x/queues.md:block 414 (code)
+#: docs/10.x/queues.md:block 422 (code)
 msgid ""
 "sudo supervisorctl reread\n"
 "\n"
 "sudo supervisorctl update\n"
 "\n"
-"sudo supervisorctl start laravel-worker:*\n"
+"sudo supervisorctl start \"laravel-worker:*\"\n"
 msgstr ""
 
-#: docs/10.x/queues.md:block 415 (paragraph)
+#: docs/10.x/queues.md:block 423 (paragraph)
 msgid "For more information on Supervisor, consult the [Supervisor documentation](http://supervisord.org/index.html)."
 msgstr ""
 
-#: docs/10.x/queues.md:block 417 (header)
+#: docs/10.x/queues.md:block 425 (header)
 msgid "Dealing With Failed Jobs"
 msgstr ""
 
-#: docs/10.x/queues.md:block 418 (paragraph)
+#: docs/10.x/queues.md:block 426 (paragraph)
 msgid "Sometimes your queued jobs will fail. Don't worry, things don't always go as planned! Laravel includes a convenient way to [specify the maximum number of times a job should be attempted](#max-job-attempts-and-timeout). After an asynchronous job has exceeded this number of attempts, it will be inserted into the `failed_jobs` database table. [Synchronously dispatched jobs](/docs/{{version}}/queues#synchronous-dispatching) that fail are not stored in this table and their exceptions are immediately handled by the application."
 msgstr ""
 
-#: docs/10.x/queues.md:block 419 (paragraph)
+#: docs/10.x/queues.md:block 427 (paragraph)
 msgid "A migration to create the `failed_jobs` table is typically already present in new Laravel applications. However, if your application does not contain a migration for this table, you may use the `queue:failed-table` command to create the migration:"
 msgstr ""
 
-#: docs/10.x/queues.md:block 420 (code)
+#: docs/10.x/queues.md:block 428 (code)
 msgid ""
 "php artisan queue:failed-table\n"
 "\n"
 "php artisan migrate\n"
 msgstr ""
 
-#: docs/10.x/queues.md:block 421 (paragraph)
+#: docs/10.x/queues.md:block 429 (paragraph)
 msgid "When running a [queue worker](#running-the-queue-worker) process, you may specify the maximum number of times a job should be attempted using the `--tries` switch on the `queue:work` command. If you do not specify a value for the `--tries` option, jobs will only be attempted once or as many times as specified by the job class' `$tries` property:"
 msgstr ""
 
-#: docs/10.x/queues.md:block 422 (code)
+#: docs/10.x/queues.md:block 430 (code)
 msgid "php artisan queue:work redis --tries=3\n"
 msgstr ""
 
-#: docs/10.x/queues.md:block 423 (paragraph)
+#: docs/10.x/queues.md:block 431 (paragraph)
 msgid "Using the `--backoff` option, you may specify how many seconds Laravel should wait before retrying a job that has encountered an exception. By default, a job is immediately released back onto the queue so that it may be attempted again:"
 msgstr ""
 
-#: docs/10.x/queues.md:block 424 (code)
+#: docs/10.x/queues.md:block 432 (code)
 msgid "php artisan queue:work redis --tries=3 --backoff=3\n"
 msgstr ""
 
-#: docs/10.x/queues.md:block 425 (paragraph)
+#: docs/10.x/queues.md:block 433 (paragraph)
 msgid "If you would like to configure how many seconds Laravel should wait before retrying a job that has encountered an exception on a per-job basis, you may do so by defining a `backoff` property on your job class:"
 msgstr ""
 
-#: docs/10.x/queues.md:block 426 (code)
+#: docs/10.x/queues.md:block 434 (code)
 msgid ""
 "/**\n"
 " * The number of seconds to wait before retrying the job.\n"
@@ -2447,11 +2517,11 @@ msgid ""
 "public $backoff = 3;\n"
 msgstr ""
 
-#: docs/10.x/queues.md:block 427 (paragraph)
+#: docs/10.x/queues.md:block 435 (paragraph)
 msgid "If you require more complex logic for determining the job's backoff time, you may define a `backoff` method on your job class:"
 msgstr ""
 
-#: docs/10.x/queues.md:block 428 (code)
+#: docs/10.x/queues.md:block 436 (code)
 msgid ""
 "/**\n"
 "* Calculate the number of seconds to wait before retrying the job.\n"
@@ -2462,11 +2532,11 @@ msgid ""
 "}\n"
 msgstr ""
 
-#: docs/10.x/queues.md:block 429 (paragraph)
-msgid "You may easily configure \"exponential\" backoffs by returning an array of backoff values from the `backoff` method. In this example, the retry delay will be 1 second for the first retry, 5 seconds for the second retry, and 10 seconds for the third retry:"
+#: docs/10.x/queues.md:block 437 (paragraph)
+msgid "You may easily configure \"exponential\" backoffs by returning an array of backoff values from the `backoff` method. In this example, the retry delay will be 1 second for the first retry, 5 seconds for the second retry, 10 seconds for the third retry, and 10 seconds for every subsequent retry if there are more attempts remaining:"
 msgstr ""
 
-#: docs/10.x/queues.md:block 430 (code)
+#: docs/10.x/queues.md:block 438 (code)
 msgid ""
 "/**\n"
 "* Calculate the number of seconds to wait before retrying the job.\n"
@@ -2479,15 +2549,15 @@ msgid ""
 "}\n"
 msgstr ""
 
-#: docs/10.x/queues.md:block 432 (header)
+#: docs/10.x/queues.md:block 440 (header)
 msgid "Cleaning Up After Failed Jobs"
 msgstr ""
 
-#: docs/10.x/queues.md:block 433 (paragraph)
+#: docs/10.x/queues.md:block 441 (paragraph)
 msgid "When a particular job fails, you may want to send an alert to your users or revert any actions that were partially completed by the job. To accomplish this, you may define a `failed` method on your job class. The `Throwable` instance that caused the job to fail will be passed to the `failed` method:"
 msgstr ""
 
-#: docs/10.x/queues.md:block 434 (code)
+#: docs/10.x/queues.md:block 442 (code)
 msgid ""
 "<?php\n"
 "\n"
@@ -2530,87 +2600,87 @@ msgid ""
 "}\n"
 msgstr ""
 
-#: docs/10.x/queues.md:block 435 (quote)
+#: docs/10.x/queues.md:block 443 (quote)
 msgid "**Warning** A new instance of the job is instantiated before invoking the `failed` method; therefore, any class property modifications that may have occurred within the `handle` method will be lost."
 msgstr ""
 
-#: docs/10.x/queues.md:block 437 (header)
+#: docs/10.x/queues.md:block 445 (header)
 msgid "Retrying Failed Jobs"
 msgstr ""
 
-#: docs/10.x/queues.md:block 438 (paragraph)
+#: docs/10.x/queues.md:block 446 (paragraph)
 msgid "To view all of the failed jobs that have been inserted into your `failed_jobs` database table, you may use the `queue:failed` Artisan command:"
 msgstr ""
 
-#: docs/10.x/queues.md:block 439 (code)
+#: docs/10.x/queues.md:block 447 (code)
 msgid "php artisan queue:failed\n"
 msgstr ""
 
-#: docs/10.x/queues.md:block 440 (paragraph)
+#: docs/10.x/queues.md:block 448 (paragraph)
 msgid "The `queue:failed` command will list the job ID, connection, queue, failure time, and other information about the job. The job ID may be used to retry the failed job. For instance, to retry a failed job that has an ID of `ce7bb17c-cdd8-41f0-a8ec-7b4fef4e5ece`, issue the following command:"
 msgstr ""
 
-#: docs/10.x/queues.md:block 441 (code)
+#: docs/10.x/queues.md:block 449 (code)
 msgid "php artisan queue:retry ce7bb17c-cdd8-41f0-a8ec-7b4fef4e5ece\n"
 msgstr ""
 
-#: docs/10.x/queues.md:block 442 (paragraph)
+#: docs/10.x/queues.md:block 450 (paragraph)
 msgid "If necessary, you may pass multiple IDs to the command:"
 msgstr ""
 
-#: docs/10.x/queues.md:block 443 (code)
+#: docs/10.x/queues.md:block 451 (code)
 msgid "php artisan queue:retry ce7bb17c-cdd8-41f0-a8ec-7b4fef4e5ece 91401d2c-0784-4f43-824c-34f94a33c24d\n"
 msgstr ""
 
-#: docs/10.x/queues.md:block 444 (paragraph)
+#: docs/10.x/queues.md:block 452 (paragraph)
 msgid "You may also retry all of the failed jobs for a particular queue:"
 msgstr ""
 
-#: docs/10.x/queues.md:block 445 (code)
+#: docs/10.x/queues.md:block 453 (code)
 msgid "php artisan queue:retry --queue=name\n"
 msgstr ""
 
-#: docs/10.x/queues.md:block 446 (paragraph)
+#: docs/10.x/queues.md:block 454 (paragraph)
 msgid "To retry all of your failed jobs, execute the `queue:retry` command and pass `all` as the ID:"
 msgstr ""
 
-#: docs/10.x/queues.md:block 447 (code)
+#: docs/10.x/queues.md:block 455 (code)
 msgid "php artisan queue:retry all\n"
 msgstr ""
 
-#: docs/10.x/queues.md:block 448 (paragraph)
+#: docs/10.x/queues.md:block 456 (paragraph)
 msgid "If you would like to delete a failed job, you may use the `queue:forget` command:"
 msgstr ""
 
-#: docs/10.x/queues.md:block 449 (code)
+#: docs/10.x/queues.md:block 457 (code)
 msgid "php artisan queue:forget 91401d2c-0784-4f43-824c-34f94a33c24d\n"
 msgstr ""
 
-#: docs/10.x/queues.md:block 450 (quote)
+#: docs/10.x/queues.md:block 458 (quote)
 msgid "**Note** When using [Horizon](/docs/{{version}}/horizon), you should use the `horizon:forget` command to delete a failed job instead of the `queue:forget` command."
 msgstr ""
 
-#: docs/10.x/queues.md:block 451 (paragraph)
+#: docs/10.x/queues.md:block 459 (paragraph)
 msgid "To delete all of your failed jobs from the `failed_jobs` table, you may use the `queue:flush` command:"
 msgstr ""
 
-#: docs/10.x/queues.md:block 452 (code)
+#: docs/10.x/queues.md:block 460 (code)
 msgid "php artisan queue:flush\n"
 msgstr ""
 
-#: docs/10.x/queues.md:block 454 (header)
+#: docs/10.x/queues.md:block 462 (header)
 msgid "Ignoring Missing Models"
 msgstr ""
 
-#: docs/10.x/queues.md:block 455 (paragraph)
+#: docs/10.x/queues.md:block 463 (paragraph)
 msgid "When injecting an Eloquent model into a job, the model is automatically serialized before being placed on the queue and re-retrieved from the database when the job is processed. However, if the model has been deleted while the job was waiting to be processed by a worker, your job may fail with a `ModelNotFoundException`."
 msgstr ""
 
-#: docs/10.x/queues.md:block 456 (paragraph)
+#: docs/10.x/queues.md:block 464 (paragraph)
 msgid "For convenience, you may choose to automatically delete jobs with missing models by setting your job's `deleteWhenMissingModels` property to `true`. When this property is set to `true`, Laravel will quietly discard the job without raising an exception:"
 msgstr ""
 
-#: docs/10.x/queues.md:block 457 (code)
+#: docs/10.x/queues.md:block 465 (code)
 msgid ""
 "/**\n"
 " * Delete the job if its models no longer exist.\n"
@@ -2620,51 +2690,51 @@ msgid ""
 "public $deleteWhenMissingModels = true;\n"
 msgstr ""
 
-#: docs/10.x/queues.md:block 459 (header)
+#: docs/10.x/queues.md:block 467 (header)
 msgid "Pruning Failed Jobs"
 msgstr ""
 
-#: docs/10.x/queues.md:block 460 (paragraph)
+#: docs/10.x/queues.md:block 468 (paragraph)
 msgid "You may prune the records in your application's `failed_jobs` table by invoking the `queue:prune-failed` Artisan command:"
 msgstr ""
 
-#: docs/10.x/queues.md:block 461 (code)
+#: docs/10.x/queues.md:block 469 (code)
 msgid "php artisan queue:prune-failed\n"
 msgstr ""
 
-#: docs/10.x/queues.md:block 462 (paragraph)
+#: docs/10.x/queues.md:block 470 (paragraph)
 msgid "By default, all the failed job records that are more than 24 hours old will be pruned. If you provide the `--hours` option to the command, only the failed job records that were inserted within the last N number of hours will be retained. For example, the following command will delete all the failed job records that were inserted more than 48 hours ago:"
 msgstr ""
 
-#: docs/10.x/queues.md:block 463 (code)
+#: docs/10.x/queues.md:block 471 (code)
 msgid "php artisan queue:prune-failed --hours=48\n"
 msgstr ""
 
-#: docs/10.x/queues.md:block 465 (header)
+#: docs/10.x/queues.md:block 473 (header)
 msgid "Storing Failed Jobs In DynamoDB"
 msgstr ""
 
-#: docs/10.x/queues.md:block 466 (paragraph)
+#: docs/10.x/queues.md:block 474 (paragraph)
 msgid "Laravel also provides support for storing your failed job records in [DynamoDB](https://aws.amazon.com/dynamodb) instead of a relational database table. However, you must create a DynamoDB table to store all of the failed job records. Typically, this table should be named `failed_jobs`, but you should name the table based on the value of the `queue.failed.table` configuration value within your application's `queue` configuration file."
 msgstr ""
 
-#: docs/10.x/queues.md:block 467 (paragraph)
+#: docs/10.x/queues.md:block 475 (paragraph)
 msgid "The `failed_jobs` table should have a string primary partition key named `application` and a string primary sort key named `uuid`. The `application` portion of the key will contain your application's name as defined by the `name` configuration value within your application's `app` configuration file. Since the application name is part of the DynamoDB table's key, you can use the same table to store failed jobs for multiple Laravel applications."
 msgstr ""
 
-#: docs/10.x/queues.md:block 468 (paragraph)
+#: docs/10.x/queues.md:block 476 (paragraph)
 msgid "In addition, ensure that you install the AWS SDK so that your Laravel application can communicate with Amazon DynamoDB:"
 msgstr ""
 
-#: docs/10.x/queues.md:block 469 (code)
+#: docs/10.x/queues.md:block 477 (code)
 msgid "composer require aws/aws-sdk-php\n"
 msgstr ""
 
-#: docs/10.x/queues.md:block 470 (paragraph)
+#: docs/10.x/queues.md:block 478 (paragraph)
 msgid "Next, set the `queue.failed.driver` configuration option's value to `dynamodb`. In addition, you should define `key`, `secret`, and `region` configuration options within the failed job configuration array. These options will be used to authenticate with AWS. When using the `dynamodb` driver, the `queue.failed.database` configuration option is unnecessary:"
 msgstr ""
 
-#: docs/10.x/queues.md:block 471 (code)
+#: docs/10.x/queues.md:block 479 (code)
 msgid ""
 "'failed' => [\n"
 "    'driver' => env('QUEUE_FAILED_DRIVER', 'dynamodb'),\n"
@@ -2675,27 +2745,27 @@ msgid ""
 "],\n"
 msgstr ""
 
-#: docs/10.x/queues.md:block 473 (header)
+#: docs/10.x/queues.md:block 481 (header)
 msgid "Disabling Failed Job Storage"
 msgstr ""
 
-#: docs/10.x/queues.md:block 474 (paragraph)
+#: docs/10.x/queues.md:block 482 (paragraph)
 msgid "You may instruct Laravel to discard failed jobs without storing them by setting the `queue.failed.driver` configuration option's value to `null`. Typically, this may be accomplished via the `QUEUE_FAILED_DRIVER` environment variable:"
 msgstr ""
 
-#: docs/10.x/queues.md:block 475 (code)
+#: docs/10.x/queues.md:block 483 (code)
 msgid "QUEUE_FAILED_DRIVER=null\n"
 msgstr ""
 
-#: docs/10.x/queues.md:block 477 (header)
+#: docs/10.x/queues.md:block 485 (header)
 msgid "Failed Job Events"
 msgstr ""
 
-#: docs/10.x/queues.md:block 478 (paragraph)
+#: docs/10.x/queues.md:block 486 (paragraph)
 msgid "If you would like to register an event listener that will be invoked when a job fails, you may use the `Queue` facade's `failing` method. For example, we may attach a closure to this event from the `boot` method of the `AppServiceProvider` that is included with Laravel:"
 msgstr ""
 
-#: docs/10.x/queues.md:block 479 (code)
+#: docs/10.x/queues.md:block 487 (code)
 msgid ""
 "<?php\n"
 "\n"
@@ -2729,55 +2799,55 @@ msgid ""
 "}\n"
 msgstr ""
 
-#: docs/10.x/queues.md:block 481 (header)
+#: docs/10.x/queues.md:block 489 (header)
 msgid "Clearing Jobs From Queues"
 msgstr ""
 
-#: docs/10.x/queues.md:block 482 (quote)
+#: docs/10.x/queues.md:block 490 (quote)
 msgid "**Note** When using [Horizon](/docs/{{version}}/horizon), you should use the `horizon:clear` command to clear jobs from the queue instead of the `queue:clear` command."
 msgstr ""
 
-#: docs/10.x/queues.md:block 483 (paragraph)
+#: docs/10.x/queues.md:block 491 (paragraph)
 msgid "If you would like to delete all jobs from the default queue of the default connection, you may do so using the `queue:clear` Artisan command:"
 msgstr ""
 
-#: docs/10.x/queues.md:block 484 (code)
+#: docs/10.x/queues.md:block 492 (code)
 msgid "php artisan queue:clear\n"
 msgstr ""
 
-#: docs/10.x/queues.md:block 485 (paragraph)
+#: docs/10.x/queues.md:block 493 (paragraph)
 msgid "You may also provide the `connection` argument and `queue` option to delete jobs from a specific connection and queue:"
 msgstr ""
 
-#: docs/10.x/queues.md:block 486 (code)
+#: docs/10.x/queues.md:block 494 (code)
 msgid "php artisan queue:clear redis --queue=emails\n"
 msgstr ""
 
-#: docs/10.x/queues.md:block 487 (quote)
+#: docs/10.x/queues.md:block 495 (quote)
 msgid "**Warning** Clearing jobs from queues is only available for the SQS, Redis, and database queue drivers. In addition, the SQS message deletion process takes up to 60 seconds, so jobs sent to the SQS queue up to 60 seconds after you clear the queue might also be deleted."
 msgstr ""
 
-#: docs/10.x/queues.md:block 489 (header)
+#: docs/10.x/queues.md:block 497 (header)
 msgid "Monitoring Your Queues"
 msgstr ""
 
-#: docs/10.x/queues.md:block 490 (paragraph)
+#: docs/10.x/queues.md:block 498 (paragraph)
 msgid "If your queue receives a sudden influx of jobs, it could become overwhelmed, leading to a long wait time for jobs to complete. If you wish, Laravel can alert you when your queue job count exceeds a specified threshold."
 msgstr ""
 
-#: docs/10.x/queues.md:block 491 (paragraph)
+#: docs/10.x/queues.md:block 499 (paragraph)
 msgid "To get started, you should schedule the `queue:monitor` command to [run every minute](/docs/{{version}}/scheduling). The command accepts the names of the queues you wish to monitor as well as your desired job count threshold:"
 msgstr ""
 
-#: docs/10.x/queues.md:block 492 (code)
+#: docs/10.x/queues.md:block 500 (code)
 msgid "php artisan queue:monitor redis:default,redis:deployments --max=100\n"
 msgstr ""
 
-#: docs/10.x/queues.md:block 493 (paragraph)
+#: docs/10.x/queues.md:block 501 (paragraph)
 msgid "Scheduling this command alone is not enough to trigger a notification alerting you of the queue's overwhelmed status. When the command encounters a queue that has a job count exceeding your threshold, an `Illuminate\\Queue\\Events\\QueueBusy` event will be dispatched. You may listen for this event within your application's `EventServiceProvider` in order to send a notification to you or your development team:"
 msgstr ""
 
-#: docs/10.x/queues.md:block 494 (code)
+#: docs/10.x/queues.md:block 502 (code)
 msgid ""
 "use App\\Notifications\\QueueHasLongWaitTime;\n"
 "use Illuminate\\Queue\\Events\\QueueBusy;\n"
@@ -2800,15 +2870,198 @@ msgid ""
 "}\n"
 msgstr ""
 
-#: docs/10.x/queues.md:block 496 (header)
+#: docs/10.x/queues.md:block 504 (header)
+msgid "Testing"
+msgstr ""
+
+#: docs/10.x/queues.md:block 505 (paragraph)
+msgid "When testing code that dispatches jobs, you may wish to instruct Laravel to not actually execute the job itself, since the job's code can be tested directly and separately of the code that dispatches it. Of course, to test the job itself, you may instantiate a job instance and invoke the `handle` method directly in your test."
+msgstr ""
+
+#: docs/10.x/queues.md:block 506 (paragraph)
+msgid "You may use the `Queue` facade's `fake` method to prevent queued jobs from actually being pushed to the queue. After calling the `Queue` facade's `fake` method, you may then assert that the application attempted to push jobs to the queue:"
+msgstr ""
+
+#: docs/10.x/queues.md:block 507 (code)
+msgid ""
+"<?php\n"
+"\n"
+"namespace Tests\\Feature;\n"
+"\n"
+"use App\\Jobs\\AnotherJob;\n"
+"use App\\Jobs\\FinalJob;\n"
+"use App\\Jobs\\ShipOrder;\n"
+"use Illuminate\\Support\\Facades\\Queue;\n"
+"use Tests\\TestCase;\n"
+"\n"
+"class ExampleTest extends TestCase\n"
+"{\n"
+"    public function test_orders_can_be_shipped(): void\n"
+"    {\n"
+"        Queue::fake();\n"
+"\n"
+"        // Perform order shipping...\n"
+"\n"
+"        // Assert that no jobs were pushed...\n"
+"        Queue::assertNothingPushed();\n"
+"\n"
+"        // Assert a job was pushed to a given queue...\n"
+"        Queue::assertPushedOn('queue-name', ShipOrder::class);\n"
+"\n"
+"        // Assert a job was pushed twice...\n"
+"        Queue::assertPushed(ShipOrder::class, 2);\n"
+"\n"
+"        // Assert a job was not pushed...\n"
+"        Queue::assertNotPushed(AnotherJob::class);\n"
+"\n"
+"        // Assert that a Closure was pushed to the queue...\n"
+"        Queue::assertClosurePushed();\n"
+"    }\n"
+"}\n"
+msgstr ""
+
+#: docs/10.x/queues.md:block 508 (paragraph)
+msgid "You may pass a closure to the `assertPushed` or `assertNotPushed` methods in order to assert that a job was pushed that passes a given \"truth test\". If at least one job was pushed that passes the given truth test then the assertion will be successful:"
+msgstr ""
+
+#: docs/10.x/queues.md:block 509 (code)
+msgid ""
+"Queue::assertPushed(function (ShipOrder $job) use ($order) {\n"
+"    return $job->order->id === $order->id;\n"
+"});\n"
+msgstr ""
+
+#: docs/10.x/queues.md:block 511 (header)
+msgid "Faking A Subset Of Jobs"
+msgstr ""
+
+#: docs/10.x/queues.md:block 512 (paragraph)
+msgid "If you only need to fake specific jobs while allowing your other jobs to execute normally, you may pass the class names of the jobs that should be faked to the `fake` method:"
+msgstr ""
+
+#: docs/10.x/queues.md:block 513 (code)
+msgid ""
+"public function test_orders_can_be_shipped(): void\n"
+"{\n"
+"    Queue::fake([\n"
+"        ShipOrder::class,\n"
+"    ]);\n"
+"\n"
+"    // Perform order shipping...\n"
+"\n"
+"    // Assert a job was pushed twice...\n"
+"    Queue::assertPushed(ShipOrder::class, 2);\n"
+"}\n"
+msgstr ""
+
+#: docs/10.x/queues.md:block 514 (paragraph)
+msgid "You may fake all jobs except for a set of specified jobs using the `except` method:"
+msgstr ""
+
+#: docs/10.x/queues.md:block 515 (code)
+msgid ""
+"Queue::fake()->except([\n"
+"    ShipOrder::class,\n"
+"]);\n"
+msgstr ""
+
+#: docs/10.x/queues.md:block 517 (header)
+msgid "Testing Job Chains"
+msgstr ""
+
+#: docs/10.x/queues.md:block 518 (paragraph)
+msgid "To test job chains, you will need to utilize the `Bus` facade's faking capabilities. The `Bus` facade's `assertChained` method may be used to assert that a [chain of jobs](/docs/{{version}}/queues#job-chaining) was dispatched. The `assertChained` method accepts an array of chained jobs as its first argument:"
+msgstr ""
+
+#: docs/10.x/queues.md:block 519 (code)
+msgid ""
+"use App\\Jobs\\RecordShipment;\n"
+"use App\\Jobs\\ShipOrder;\n"
+"use App\\Jobs\\UpdateInventory;\n"
+"use Illuminate\\Support\\Facades\\Bus;\n"
+"\n"
+"Bus::fake();\n"
+"\n"
+"// ...\n"
+"\n"
+"Bus::assertChained([\n"
+"    ShipOrder::class,\n"
+"    RecordShipment::class,\n"
+"    UpdateInventory::class\n"
+"]);\n"
+msgstr ""
+
+#: docs/10.x/queues.md:block 520 (paragraph)
+msgid "As you can see in the example above, the array of chained jobs may be an array of the job's class names. However, you may also provide an array of actual job instances. When doing so, Laravel will ensure that the job instances are of the same class and have the same property values of the chained jobs dispatched by your application:"
+msgstr ""
+
+#: docs/10.x/queues.md:block 521 (code)
+msgid ""
+"Bus::assertChained([\n"
+"    new ShipOrder,\n"
+"    new RecordShipment,\n"
+"    new UpdateInventory,\n"
+"]);\n"
+msgstr ""
+
+#: docs/10.x/queues.md:block 522 (paragraph)
+msgid "You may use the `assertDispatchedWithoutChain` method to assert that a job was pushed without a chain of jobs:"
+msgstr ""
+
+#: docs/10.x/queues.md:block 523 (code)
+msgid "Bus::assertDispatchedWithoutChain(ShipOrder::class);\n"
+msgstr ""
+
+#: docs/10.x/queues.md:block 525 (header)
+msgid "Testing Job Batches"
+msgstr ""
+
+#: docs/10.x/queues.md:block 526 (paragraph)
+msgid "The `Bus` facade's `assertBatched` method may be used to assert that a [batch of jobs](/docs/{{version}}/queues#job-batching) was dispatched. The closure given to the `assertBatched` method receives an instance of `Illuminate\\Bus\\PendingBatch`, which may be used to inspect the jobs within the batch:"
+msgstr ""
+
+#: docs/10.x/queues.md:block 527 (code)
+msgid ""
+"use Illuminate\\Bus\\PendingBatch;\n"
+"use Illuminate\\Support\\Facades\\Bus;\n"
+"\n"
+"Bus::fake();\n"
+"\n"
+"// ...\n"
+"\n"
+"Bus::assertBatched(function (PendingBatch $batch) {\n"
+"    return $batch->name == 'import-csv' &&\n"
+"           $batch->jobs->count() === 10;\n"
+"});\n"
+msgstr ""
+
+#: docs/10.x/queues.md:block 529 (header)
+msgid "Testing Job / Batch Interaction"
+msgstr ""
+
+#: docs/10.x/queues.md:block 530 (paragraph)
+msgid "In addition, you may occasionally need to test an individual job's interaction with its underlying batch. For example, you may need to test if a job cancelled further processing for its batch. To accomplish this, you need to assign a fake batch to the job via the `withFakeBatch` method. The `withFakeBatch` method returns a tuple containing the job instance and the fake batch:"
+msgstr ""
+
+#: docs/10.x/queues.md:block 531 (code)
+msgid ""
+"[$job, $batch] = (new ShipOrder)->withFakeBatch();\n"
+"\n"
+"$job->handle();\n"
+"\n"
+"$this->assertTrue($batch->cancelled());\n"
+"$this->assertEmpty($batch->added);\n"
+msgstr ""
+
+#: docs/10.x/queues.md:block 533 (header)
 msgid "Job Events"
 msgstr ""
 
-#: docs/10.x/queues.md:block 497 (paragraph)
+#: docs/10.x/queues.md:block 534 (paragraph)
 msgid "Using the `before` and `after` methods on the `Queue` [facade](/docs/{{version}}/facades), you may specify callbacks to be executed before or after a queued job is processed. These callbacks are a great opportunity to perform additional logging or increment statistics for a dashboard. Typically, you should call these methods from the `boot` method of a [service provider](/docs/{{version}}/providers). For example, we may use the `AppServiceProvider` that is included with Laravel:"
 msgstr ""
 
-#: docs/10.x/queues.md:block 498 (code)
+#: docs/10.x/queues.md:block 535 (code)
 msgid ""
 "<?php\n"
 "\n"
@@ -2849,11 +3102,11 @@ msgid ""
 "}\n"
 msgstr ""
 
-#: docs/10.x/queues.md:block 499 (paragraph)
+#: docs/10.x/queues.md:block 536 (paragraph)
 msgid "Using the `looping` method on the `Queue` [facade](/docs/{{version}}/facades), you may specify callbacks that execute before the worker attempts to fetch a job from a queue. For example, you might register a closure to rollback any transactions that were left open by a previously failed job:"
 msgstr ""
 
-#: docs/10.x/queues.md:block 500 (code)
+#: docs/10.x/queues.md:block 537 (code)
 msgid ""
 "use Illuminate\\Support\\Facades\\DB;\n"
 "use Illuminate\\Support\\Facades\\Queue;\n"
@@ -2944,6 +3197,10 @@ msgstr ""
 msgid "{note} Binary data, such as raw image contents, should be passed through the `base64_encode` function before being passed to a queued job. Otherwise, the job may not properly serialize to JSON when being placed on the queue."
 msgstr ""
 
+#: docs/8.x/queues.md:block 63 (paragraph)
+msgid "Because loaded relationships also get serialized, the serialized job string can sometimes become quite large. To prevent relations from being serialized, you can call the `withoutRelations` method on the model when setting a property value. This method will return an instance of the model without its loaded relationships:"
+msgstr ""
+
 #: docs/8.x/queues.md:block 64 (code)
 msgid ""
 "/**\n"
@@ -2958,6 +3215,10 @@ msgid ""
 "}\n"
 msgstr ""
 
+#: docs/8.x/queues.md:block 65 (paragraph)
+msgid "Furthermore, when a job is deserialized and model relationships are re-retrieved from the database, they will be retrieved in their entirety. Any previous relationship constraints that were applied before the model was serialized during the job queueing process will not be applied when the job is deserialized. Therefore, if you wish to work with a subset of a given relationship, you should re-constrain that relationship within your queued job."
+msgstr ""
+
 #: docs/8.x/queues.md:block 68 (quote)
 msgid "{note} Unique jobs require a cache driver that supports [locks](/docs/{{version}}/cache#atomic-locks). Currently, the `memcached`, `redis`, `dynamodb`, `database`, `file`, and `array` cache drivers support atomic locks. In addition, unique job constraints do not apply to jobs within batches."
 msgstr ""
@@ -2966,7 +3227,7 @@ msgstr ""
 msgid ""
 "<?php\n"
 "\n"
-"use App\\Product;\n"
+"use App\\Models\\Product;\n"
 "use Illuminate\\Contracts\\Queue\\ShouldQueue;\n"
 "use Illuminate\\Contracts\\Queue\\ShouldBeUnique;\n"
 "\n"
@@ -3116,6 +3377,10 @@ msgid ""
 "                    : Limit::perHour(1)->by($job->user->id);\n"
 "    });\n"
 "}\n"
+msgstr ""
+
+#: docs/8.x/queues.md:block 102 (paragraph)
+msgid "Once you have defined your rate limit, you may attach the rate limiter to your backup job using the `Illuminate\\Queue\\Middleware\\RateLimited` middleware. Each time the job exceeds the rate limit, this middleware will release the job back to the queue with an appropriate delay based on the rate limit duration."
 msgstr ""
 
 #: docs/8.x/queues.md:block 103 (code)
@@ -3606,6 +3871,14 @@ msgid ""
 "}\n"
 msgstr ""
 
+#: docs/8.x/queues.md:block 238 (paragraph)
+msgid "By default, the `release` method will release the job back onto the queue for immediate processing. However, by passing an integer to the `release` method you may instruct the queue to not make the job available for processing until a given number of seconds has elapsed:"
+msgstr ""
+
+#: docs/8.x/queues.md:block 239 (code)
+msgid "$this->release(10);\n"
+msgstr ""
+
 #: docs/8.x/queues.md:block 243 (code)
 msgid ""
 "/**\n"
@@ -3780,6 +4053,15 @@ msgstr ""
 msgid "{note} You should ensure that the value of `stopwaitsecs` is greater than the number of seconds consumed by your longest running job. Otherwise, Supervisor may kill the job before it is finished processing."
 msgstr ""
 
+#: docs/8.x/queues.md:block 402 (code)
+msgid ""
+"sudo supervisorctl reread\n"
+"\n"
+"sudo supervisorctl update\n"
+"\n"
+"sudo supervisorctl start laravel-worker:*\n"
+msgstr ""
+
 #: docs/8.x/queues.md:block 406 (paragraph)
 msgid "Sometimes your queued jobs will fail. Don't worry, things don't always go as planned! Laravel includes a convenient way to [specify the maximum number of times a job should be attempted](#max-job-attempts-and-timeout). After a job has exceeded this number of attempts, it will be inserted into the `failed_jobs` database table. Of course, we will need to create that table if it does not already exist. To create a migration for the `failed_jobs` table, you may use the `queue:failed-table` command:"
 msgstr ""
@@ -3795,6 +4077,10 @@ msgid ""
 "{\n"
 "    return 3;\n"
 "}\n"
+msgstr ""
+
+#: docs/8.x/queues.md:block 416 (paragraph)
+msgid "You may easily configure \"exponential\" backoffs by returning an array of backoff values from the `backoff` method. In this example, the retry delay will be 1 second for the first retry, 5 seconds for the second retry, and 10 seconds for the third retry:"
 msgstr ""
 
 #: docs/8.x/queues.md:block 417 (code)
@@ -4233,6 +4519,10 @@ msgid ""
 "}\n"
 msgstr ""
 
+#: docs/9.x/queues.md:block 226 (quote)
+msgid "**Warning** The `pcntl` PHP extension must be installed in order to specify job timeouts."
+msgstr ""
+
 #: docs/9.x/queues.md:block 301 (code)
 msgid ""
 "use Illuminate\\Queue\\Middleware\\SkipIfBatchCancelled;\n"
@@ -4308,122 +4598,238 @@ msgid ""
 "}\n"
 msgstr ""
 
-#: docs/master/queues.md:block 52 (code)
+#: docs/master/queues.md:block 73 (code)
 msgid ""
 "<?php\n"
 "\n"
-"namespace App\\Jobs;\n"
-"\n"
-"use App\\Models\\Podcast;\n"
-"use App\\Services\\AudioProcessor;\n"
-"use Illuminate\\Bus\\Queueable;\n"
+"use App\\Product;\n"
 "use Illuminate\\Contracts\\Queue\\ShouldQueue;\n"
-"use Illuminate\\Foundation\\Bus\\Dispatchable;\n"
-"use Illuminate\\Queue\\InteractsWithQueue;\n"
-"use Illuminate\\Queue\\SerializesModels;\n"
+"use Illuminate\\Contracts\\Queue\\ShouldBeUnique;\n"
 "\n"
-"class ProcessPodcast implements ShouldQueue\n"
+"class UpdateSearchIndex implements ShouldQueue, ShouldBeUnique\n"
 "{\n"
-"    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;\n"
-"\n"
 "    /**\n"
-"     * The podcast instance.\n"
+"     * The product instance.\n"
 "     *\n"
-"     * @var \\App\\Models\\Podcast\n"
+"     * @var \\App\\Product\n"
 "     */\n"
-"    public $podcast;\n"
+"    public $product;\n"
 "\n"
 "    /**\n"
-"     * Create a new job instance.\n"
+"     * The number of seconds after which the job's unique lock will be released.\n"
+"     *\n"
+"     * @var int\n"
 "     */\n"
-"    public function __construct(Podcast $podcast)\n"
-"    {\n"
-"        $this->podcast = $podcast;\n"
-"    }\n"
+"    public $uniqueFor = 3600;\n"
 "\n"
 "    /**\n"
-"     * Execute the job.\n"
+"     * The unique ID of the job.\n"
 "     */\n"
-"    public function handle(AudioProcessor $processor): void\n"
+"    public function uniqueId(): string\n"
 "    {\n"
-"        // Process uploaded podcast...\n"
+"        return $this->product->id;\n"
 "    }\n"
 "}\n"
 msgstr ""
 
-#: docs/master/queues.md:block 203 (code)
+#: docs/master/queues.md:block 79 (code)
 msgid ""
 "<?php\n"
 "\n"
-"namespace App\\Jobs;\n"
+"use App\\Product;\n"
+"use Illuminate\\Contracts\\Queue\\ShouldQueue;\n"
+"use Illuminate\\Contracts\\Queue\\ShouldBeUniqueUntilProcessing;\n"
 "\n"
-" use Illuminate\\Bus\\Queueable;\n"
-" use Illuminate\\Contracts\\Queue\\ShouldQueue;\n"
-" use Illuminate\\Foundation\\Bus\\Dispatchable;\n"
-" use Illuminate\\Queue\\InteractsWithQueue;\n"
-" use Illuminate\\Queue\\SerializesModels;\n"
-"\n"
-"class ProcessPodcast implements ShouldQueue\n"
+"class UpdateSearchIndex implements ShouldQueue, ShouldBeUniqueUntilProcessing\n"
 "{\n"
-"    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;\n"
+"    // ...\n"
+"}\n"
+msgstr ""
+
+#: docs/master/queues.md:block 91 (code)
+msgid ""
+"<?php\n"
 "\n"
+"namespace App\\Jobs\\Middleware;\n"
+"\n"
+"use Closure;\n"
+"use Illuminate\\Support\\Facades\\Redis;\n"
+"\n"
+"class RateLimited\n"
+"{\n"
 "    /**\n"
-"     * Create a new job instance.\n"
+"     * Process the queued job.\n"
+"     *\n"
+"     * @param  \\Closure(object): void  $next\n"
 "     */\n"
-"    public function __construct(): void\n"
+"    public function handle(object $job, Closure $next): void\n"
 "    {\n"
-"        $this->onConnection('sqs');\n"
+"        Redis::throttle('key')\n"
+"                ->block(0)->allow(1)->every(5)\n"
+"                ->then(function () use (object $job, Closure $next) {\n"
+"                    // Lock obtained...\n"
+"\n"
+"                    $next($job);\n"
+"                }, function () use ($job) {\n"
+"                    // Could not obtain lock...\n"
+"\n"
+"                    $job->release(5);\n"
+"                });\n"
 "    }\n"
 "}\n"
 msgstr ""
 
-#: docs/master/queues.md:block 434 (code)
+#: docs/master/queues.md:block 139 (code)
 msgid ""
 "<?php\n"
 "\n"
-"namespace App\\Jobs;\n"
+"namespace App\\Http\\Controllers;\n"
 "\n"
+"use App\\Http\\Controllers\\Controller;\n"
+"use App\\Jobs\\ProcessPodcast;\n"
 "use App\\Models\\Podcast;\n"
-"use App\\Services\\AudioProcessor;\n"
-"use Illuminate\\Bus\\Queueable;\n"
-"use Illuminate\\Contracts\\Queue\\ShouldQueue;\n"
-"use Illuminate\\Queue\\InteractsWithQueue;\n"
-"use Illuminate\\Queue\\SerializesModels;\n"
-"use Throwable;\n"
+"use Illuminate\\Http\\Request;\n"
+"use Illuminate\\Http\\Response;\n"
 "\n"
-"class ProcessPodcast implements ShouldQueue\n"
+"class PodcastController extends Controller\n"
 "{\n"
-"    use InteractsWithQueue, Queueable, SerializesModels;\n"
-"\n"
 "    /**\n"
-"     * The podcast instance.\n"
-"     *\n"
-"     * @var \\App\\Podcast\n"
+"     * Store a new podcast.\n"
 "     */\n"
-"    public $podcast;\n"
-"\n"
-"    /**\n"
-"     * Create a new job instance.\n"
-"     */\n"
-"    public function __construct(Podcast $podcast)\n"
+"    public function store(Request $request): Response\n"
 "    {\n"
-"        $this->podcast = $podcast;\n"
-"    }\n"
+"        $podcast = Podcast::create(/* ... */);\n"
 "\n"
-"    /**\n"
-"     * Execute the job.\n"
-"     */\n"
-"    public function handle(AudioProcessor $processor): void\n"
-"    {\n"
-"        // Process uploaded podcast...\n"
-"    }\n"
+"        // ...\n"
 "\n"
-"    /**\n"
-"     * Handle a job failure.\n"
-"     */\n"
-"    public function failed(Throwable $exception): void\n"
-"    {\n"
-"        // Send user notification of failure, etc...\n"
+"        ProcessPodcast::dispatch($podcast);\n"
+"\n"
+"        return response()->noContent();\n"
 "    }\n"
 "}\n"
+msgstr ""
+
+#: docs/master/queues.md:block 146 (code)
+msgid ""
+"<?php\n"
+"\n"
+"namespace App\\Http\\Controllers;\n"
+"\n"
+"use App\\Http\\Controllers\\Controller;\n"
+"use App\\Jobs\\ProcessPodcast;\n"
+"use App\\Models\\Podcast;\n"
+"use Illuminate\\Http\\Request;\n"
+"use Illuminate\\Http\\Response;\n"
+"\n"
+"class PodcastController extends Controller\n"
+"{\n"
+"    /**\n"
+"     * Store a new podcast.\n"
+"     */\n"
+"    public function store(Request $request): Response\n"
+"    {\n"
+"        $podcast = Podcast::create(/* ... */);\n"
+"\n"
+"        // ...\n"
+"\n"
+"        ProcessPodcast::dispatch($podcast)\n"
+"                    ->delay(now()->addMinutes(10));\n"
+"\n"
+"        return response()->noContent();\n"
+"    }\n"
+"}\n"
+msgstr ""
+
+#: docs/master/queues.md:block 157 (code)
+msgid ""
+"<?php\n"
+"\n"
+"namespace App\\Http\\Controllers;\n"
+"\n"
+"use App\\Http\\Controllers\\Controller;\n"
+"use App\\Jobs\\ProcessPodcast;\n"
+"use App\\Models\\Podcast;\n"
+"use Illuminate\\Http\\Request;\n"
+"use Illuminate\\Http\\Response;\n"
+"\n"
+"class PodcastController extends Controller\n"
+"{\n"
+"    /**\n"
+"     * Store a new podcast.\n"
+"     */\n"
+"    public function store(Request $request): Response\n"
+"    {\n"
+"        $podcast = Podcast::create(/* ... */);\n"
+"\n"
+"        // Create podcast...\n"
+"\n"
+"        ProcessPodcast::dispatchSync($podcast);\n"
+"\n"
+"        return response()->noContent();\n"
+"    }\n"
+"}\n"
+msgstr ""
+
+#: docs/master/queues.md:block 193 (code)
+msgid ""
+"<?php\n"
+"\n"
+"namespace App\\Http\\Controllers;\n"
+"\n"
+"use App\\Http\\Controllers\\Controller;\n"
+"use App\\Jobs\\ProcessPodcast;\n"
+"use App\\Models\\Podcast;\n"
+"use Illuminate\\Http\\Request;\n"
+"use Illuminate\\Http\\Response;\n"
+"\n"
+"class PodcastController extends Controller\n"
+"{\n"
+"    /**\n"
+"     * Store a new podcast.\n"
+"     */\n"
+"    public function store(Request $request): Response\n"
+"    {\n"
+"        $podcast = Podcast::create(/* ... */);\n"
+"\n"
+"        // Create podcast...\n"
+"\n"
+"        ProcessPodcast::dispatch($podcast)->onQueue('processing');\n"
+"\n"
+"        return response()->noContent();\n"
+"    }\n"
+"}\n"
+msgstr ""
+
+#: docs/master/queues.md:block 199 (code)
+msgid ""
+"<?php\n"
+"\n"
+"namespace App\\Http\\Controllers;\n"
+"\n"
+"use App\\Http\\Controllers\\Controller;\n"
+"use App\\Jobs\\ProcessPodcast;\n"
+"use App\\Models\\Podcast;\n"
+"use Illuminate\\Http\\Request;\n"
+"use Illuminate\\Http\\Response;\n"
+"\n"
+"class PodcastController extends Controller\n"
+"{\n"
+"    /**\n"
+"     * Store a new podcast.\n"
+"     */\n"
+"    public function store(Request $request): Response\n"
+"    {\n"
+"        $podcast = Podcast::create(/* ... */);\n"
+"\n"
+"        // Create podcast...\n"
+"\n"
+"        ProcessPodcast::dispatch($podcast)->onConnection('sqs');\n"
+"\n"
+"        return response()->noContent();\n"
+"    }\n"
+"}\n"
+msgstr ""
+
+#: docs/master/queues.md:block 211 (paragraph)
+msgid "If a job exceeds its maximum number of attempts, it will be considered a \"failed\" job. For more information on handling failed jobs, consult the [failed job documentation](#dealing-with-failed-jobs). If `--tries=0` is provided to the `queue:work` command, the job will retried indefinitely."
 msgstr ""

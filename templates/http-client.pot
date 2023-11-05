@@ -220,15 +220,27 @@ msgid ""
 "]);\n"
 msgstr ""
 
-#: docs/10.x/http-client.md:block 35 (header)
+#: docs/10.x/http-client.md:block 34 (paragraph)
+msgid "Alternatively, the `withQueryParameters` method may be used:"
+msgstr ""
+
+#: docs/10.x/http-client.md:block 35 (code)
+msgid ""
+"Http::retry(3, 100)->withQueryParameters([\n"
+"    'name' => 'Taylor',\n"
+"    'page' => 1,\n"
+"])->get('http://example.com/users')\n"
+msgstr ""
+
+#: docs/10.x/http-client.md:block 37 (header)
 msgid "Sending Form URL Encoded Requests"
 msgstr ""
 
-#: docs/10.x/http-client.md:block 36 (paragraph)
+#: docs/10.x/http-client.md:block 38 (paragraph)
 msgid "If you would like to send data using the `application/x-www-form-urlencoded` content type, you should call the `asForm` method before making your request:"
 msgstr ""
 
-#: docs/10.x/http-client.md:block 37 (code)
+#: docs/10.x/http-client.md:block 39 (code)
 msgid ""
 "$response = Http::asForm()->post('http://example.com/users', [\n"
 "    'name' => 'Sara',\n"
@@ -236,41 +248,41 @@ msgid ""
 "]);\n"
 msgstr ""
 
-#: docs/10.x/http-client.md:block 39 (header)
+#: docs/10.x/http-client.md:block 41 (header)
 msgid "Sending A Raw Request Body"
 msgstr ""
 
-#: docs/10.x/http-client.md:block 40 (paragraph)
+#: docs/10.x/http-client.md:block 42 (paragraph)
 msgid "You may use the `withBody` method if you would like to provide a raw request body when making a request. The content type may be provided via the method's second argument:"
 msgstr ""
 
-#: docs/10.x/http-client.md:block 41 (code)
+#: docs/10.x/http-client.md:block 43 (code)
 msgid ""
 "$response = Http::withBody(\n"
 "    base64_encode($photo), 'image/jpeg'\n"
 ")->post('http://example.com/photo');\n"
 msgstr ""
 
-#: docs/10.x/http-client.md:block 43 (header)
+#: docs/10.x/http-client.md:block 45 (header)
 msgid "Multi-Part Requests"
 msgstr ""
 
-#: docs/10.x/http-client.md:block 44 (paragraph)
+#: docs/10.x/http-client.md:block 46 (paragraph)
 msgid "If you would like to send files as multi-part requests, you should call the `attach` method before making your request. This method accepts the name of the file and its contents. If needed, you may provide a third argument which will be considered the file's filename:"
 msgstr ""
 
-#: docs/10.x/http-client.md:block 45 (code)
+#: docs/10.x/http-client.md:block 47 (code)
 msgid ""
 "$response = Http::attach(\n"
 "    'attachment', file_get_contents('photo.jpg'), 'photo.jpg'\n"
 ")->post('http://example.com/attachments');\n"
 msgstr ""
 
-#: docs/10.x/http-client.md:block 46 (paragraph)
+#: docs/10.x/http-client.md:block 48 (paragraph)
 msgid "Instead of passing the raw contents of a file, you may pass a stream resource:"
 msgstr ""
 
-#: docs/10.x/http-client.md:block 47 (code)
+#: docs/10.x/http-client.md:block 49 (code)
 msgid ""
 "$photo = fopen('photo.jpg', 'r');\n"
 "\n"
@@ -279,15 +291,15 @@ msgid ""
 ")->post('http://example.com/attachments');\n"
 msgstr ""
 
-#: docs/10.x/http-client.md:block 49 (header)
+#: docs/10.x/http-client.md:block 51 (header)
 msgid "Headers"
 msgstr ""
 
-#: docs/10.x/http-client.md:block 50 (paragraph)
+#: docs/10.x/http-client.md:block 52 (paragraph)
 msgid "Headers may be added to requests using the `withHeaders` method. This `withHeaders` method accepts an array of key / value pairs:"
 msgstr ""
 
-#: docs/10.x/http-client.md:block 51 (code)
+#: docs/10.x/http-client.md:block 53 (code)
 msgid ""
 "$response = Http::withHeaders([\n"
 "    'X-First' => 'foo',\n"
@@ -297,31 +309,46 @@ msgid ""
 "]);\n"
 msgstr ""
 
-#: docs/10.x/http-client.md:block 52 (paragraph)
+#: docs/10.x/http-client.md:block 54 (paragraph)
 msgid "You may use the `accept` method to specify the content type that your application is expecting in response to your request:"
 msgstr ""
 
-#: docs/10.x/http-client.md:block 53 (code)
+#: docs/10.x/http-client.md:block 55 (code)
 msgid "$response = Http::accept('application/json')->get('http://example.com/users');\n"
 msgstr ""
 
-#: docs/10.x/http-client.md:block 54 (paragraph)
+#: docs/10.x/http-client.md:block 56 (paragraph)
 msgid "For convenience, you may use the `acceptJson` method to quickly specify that your application expects the `application/json` content type in response to your request:"
 msgstr ""
 
-#: docs/10.x/http-client.md:block 55 (code)
+#: docs/10.x/http-client.md:block 57 (code)
 msgid "$response = Http::acceptJson()->get('http://example.com/users');\n"
 msgstr ""
 
-#: docs/10.x/http-client.md:block 57 (header)
-msgid "Authentication"
-msgstr ""
-
 #: docs/10.x/http-client.md:block 58 (paragraph)
-msgid "You may specify basic and digest authentication credentials using the `withBasicAuth` and `withDigestAuth` methods, respectively:"
+msgid "The `withHeaders` method merges new headers into the request's existing headers. If needed, you may replace all of the headers entirely using the `replaceHeaders` method:"
 msgstr ""
 
 #: docs/10.x/http-client.md:block 59 (code)
+msgid ""
+"$response = Http::withHeaders([\n"
+"    'X-Original' => 'foo',\n"
+"])->replaceHeaders([\n"
+"    'X-Replacement' => 'bar',\n"
+"])->post('http://example.com/users', [\n"
+"    'name' => 'Taylor',\n"
+"]);\n"
+msgstr ""
+
+#: docs/10.x/http-client.md:block 61 (header)
+msgid "Authentication"
+msgstr ""
+
+#: docs/10.x/http-client.md:block 62 (paragraph)
+msgid "You may specify basic and digest authentication credentials using the `withBasicAuth` and `withDigestAuth` methods, respectively:"
+msgstr ""
+
+#: docs/10.x/http-client.md:block 63 (code)
 msgid ""
 "// Basic authentication...\n"
 "$response = Http::withBasicAuth('taylor@laravel.com', 'secret')->post(/* ... */);\n"
@@ -330,59 +357,59 @@ msgid ""
 "$response = Http::withDigestAuth('taylor@laravel.com', 'secret')->post(/* ... */);\n"
 msgstr ""
 
-#: docs/10.x/http-client.md:block 61 (header)
+#: docs/10.x/http-client.md:block 65 (header)
 msgid "Bearer Tokens"
 msgstr ""
 
-#: docs/10.x/http-client.md:block 62 (paragraph)
+#: docs/10.x/http-client.md:block 66 (paragraph)
 msgid "If you would like to quickly add a bearer token to the request's `Authorization` header, you may use the `withToken` method:"
 msgstr ""
 
-#: docs/10.x/http-client.md:block 63 (code)
+#: docs/10.x/http-client.md:block 67 (code)
 msgid "$response = Http::withToken('token')->post(/* ... */);\n"
 msgstr ""
 
-#: docs/10.x/http-client.md:block 65 (header)
+#: docs/10.x/http-client.md:block 69 (header)
 msgid "Timeout"
 msgstr ""
 
-#: docs/10.x/http-client.md:block 66 (paragraph)
-msgid "The `timeout` method may be used to specify the maximum number of seconds to wait for a response:"
+#: docs/10.x/http-client.md:block 70 (paragraph)
+msgid "The `timeout` method may be used to specify the maximum number of seconds to wait for a response. By default, the HTTP client will timeout after 30 seconds:"
 msgstr ""
 
-#: docs/10.x/http-client.md:block 67 (code)
+#: docs/10.x/http-client.md:block 71 (code)
 msgid "$response = Http::timeout(3)->get(/* ... */);\n"
 msgstr ""
 
-#: docs/10.x/http-client.md:block 68 (paragraph)
+#: docs/10.x/http-client.md:block 72 (paragraph)
 msgid "If the given timeout is exceeded, an instance of `Illuminate\\Http\\Client\\ConnectionException` will be thrown."
 msgstr ""
 
-#: docs/10.x/http-client.md:block 69 (paragraph)
+#: docs/10.x/http-client.md:block 73 (paragraph)
 msgid "You may specify the maximum number of seconds to wait while trying to connect to a server using the `connectTimeout` method:"
 msgstr ""
 
-#: docs/10.x/http-client.md:block 70 (code)
+#: docs/10.x/http-client.md:block 74 (code)
 msgid "$response = Http::connectTimeout(3)->get(/* ... */);\n"
 msgstr ""
 
-#: docs/10.x/http-client.md:block 72 (header)
+#: docs/10.x/http-client.md:block 76 (header)
 msgid "Retries"
 msgstr ""
 
-#: docs/10.x/http-client.md:block 73 (paragraph)
+#: docs/10.x/http-client.md:block 77 (paragraph)
 msgid "If you would like the HTTP client to automatically retry the request if a client or server error occurs, you may use the `retry` method. The `retry` method accepts the maximum number of times the request should be attempted and the number of milliseconds that Laravel should wait in between attempts:"
 msgstr ""
 
-#: docs/10.x/http-client.md:block 74 (code)
+#: docs/10.x/http-client.md:block 78 (code)
 msgid "$response = Http::retry(3, 100)->post(/* ... */);\n"
 msgstr ""
 
-#: docs/10.x/http-client.md:block 75 (paragraph)
+#: docs/10.x/http-client.md:block 79 (paragraph)
 msgid "If needed, you may pass a third argument to the `retry` method. The third argument should be a callable that determines if the retries should actually be attempted. For example, you may wish to only retry the request if the initial request encounters an `ConnectionException`:"
 msgstr ""
 
-#: docs/10.x/http-client.md:block 76 (code)
+#: docs/10.x/http-client.md:block 80 (code)
 msgid ""
 "use Exception;\n"
 "use Illuminate\\Http\\Client\\PendingRequest;\n"
@@ -392,14 +419,15 @@ msgid ""
 "})->post(/* ... */);\n"
 msgstr ""
 
-#: docs/10.x/http-client.md:block 77 (paragraph)
+#: docs/10.x/http-client.md:block 81 (paragraph)
 msgid "If a request attempt fails, you may wish to make a change to the request before a new attempt is made. You can achieve this by modifying the request argument provided to the callable you provided to the `retry` method. For example, you might want to retry the request with a new authorization token if the first attempt returned an authentication error:"
 msgstr ""
 
-#: docs/10.x/http-client.md:block 78 (code)
+#: docs/10.x/http-client.md:block 82 (code)
 msgid ""
 "use Exception;\n"
 "use Illuminate\\Http\\Client\\PendingRequest;\n"
+"use Illuminate\\Http\\Client\\RequestException;\n"
 "\n"
 "$response = Http::withToken($this->getToken())->retry(2, 0, function (Exception $exception, PendingRequest $request) {\n"
 "    if (! $exception instanceof RequestException || $exception->response->status() !== 401) {\n"
@@ -412,27 +440,27 @@ msgid ""
 "})->post(/* ... */);\n"
 msgstr ""
 
-#: docs/10.x/http-client.md:block 79 (paragraph)
+#: docs/10.x/http-client.md:block 83 (paragraph)
 msgid "If all of the requests fail, an instance of `Illuminate\\Http\\Client\\RequestException` will be thrown. If you would like to disable this behavior, you may provide a `throw` argument with a value of `false`. When disabled, the last response received by the client will be returned after all retries have been attempted:"
 msgstr ""
 
-#: docs/10.x/http-client.md:block 80 (code)
+#: docs/10.x/http-client.md:block 84 (code)
 msgid "$response = Http::retry(3, 100, throw: false)->post(/* ... */);\n"
 msgstr ""
 
-#: docs/10.x/http-client.md:block 81 (quote)
+#: docs/10.x/http-client.md:block 85 (quote)
 msgid "**Warning** If all of the requests fail because of a connection issue, a `Illuminate\\Http\\Client\\ConnectionException` will still be thrown even when the `throw` argument is set to `false`."
 msgstr ""
 
-#: docs/10.x/http-client.md:block 83 (header)
+#: docs/10.x/http-client.md:block 87 (header)
 msgid "Error Handling"
 msgstr ""
 
-#: docs/10.x/http-client.md:block 84 (paragraph)
+#: docs/10.x/http-client.md:block 88 (paragraph)
 msgid "Unlike Guzzle's default behavior, Laravel's HTTP client wrapper does not throw exceptions on client or server errors (`400` and `500` level responses from servers). You may determine if one of these errors was returned using the `successful`, `clientError`, or `serverError` methods:"
 msgstr ""
 
-#: docs/10.x/http-client.md:block 85 (code)
+#: docs/10.x/http-client.md:block 89 (code)
 msgid ""
 "// Determine if the status code is >= 200 and < 300...\n"
 "$response->successful();\n"
@@ -450,15 +478,15 @@ msgid ""
 "$response->onError(callable $callback);\n"
 msgstr ""
 
-#: docs/10.x/http-client.md:block 87 (header)
+#: docs/10.x/http-client.md:block 91 (header)
 msgid "Throwing Exceptions"
 msgstr ""
 
-#: docs/10.x/http-client.md:block 88 (paragraph)
+#: docs/10.x/http-client.md:block 92 (paragraph)
 msgid "If you have a response instance and would like to throw an instance of `Illuminate\\Http\\Client\\RequestException` if the response status code indicates a client or server error, you may use the `throw` or `throwIf` methods:"
 msgstr ""
 
-#: docs/10.x/http-client.md:block 89 (code)
+#: docs/10.x/http-client.md:block 93 (code)
 msgid ""
 "use Illuminate\\Http\\Client\\Response;\n"
 "\n"
@@ -488,23 +516,23 @@ msgid ""
 "return $response['user']['id'];\n"
 msgstr ""
 
-#: docs/10.x/http-client.md:block 90 (paragraph)
+#: docs/10.x/http-client.md:block 94 (paragraph)
 msgid "The `Illuminate\\Http\\Client\\RequestException` instance has a public `$response` property which will allow you to inspect the returned response."
 msgstr ""
 
-#: docs/10.x/http-client.md:block 91 (paragraph)
+#: docs/10.x/http-client.md:block 95 (paragraph)
 msgid "The `throw` method returns the response instance if no error occurred, allowing you to chain other operations onto the `throw` method:"
 msgstr ""
 
-#: docs/10.x/http-client.md:block 92 (code)
+#: docs/10.x/http-client.md:block 96 (code)
 msgid "return Http::post(/* ... */)->throw()->json();\n"
 msgstr ""
 
-#: docs/10.x/http-client.md:block 93 (paragraph)
+#: docs/10.x/http-client.md:block 97 (paragraph)
 msgid "If you would like to perform some additional logic before the exception is thrown, you may pass a closure to the `throw` method. The exception will be thrown automatically after the closure is invoked, so you do not need to re-throw the exception from within the closure:"
 msgstr ""
 
-#: docs/10.x/http-client.md:block 94 (code)
+#: docs/10.x/http-client.md:block 98 (code)
 msgid ""
 "use Illuminate\\Http\\Client\\Response;\n"
 "use Illuminate\\Http\\Client\\RequestException;\n"
@@ -514,78 +542,95 @@ msgid ""
 "})->json();\n"
 msgstr ""
 
-#: docs/10.x/http-client.md:block 96 (header)
+#: docs/10.x/http-client.md:block 100 (header)
 msgid "Guzzle Middleware"
 msgstr ""
 
-#: docs/10.x/http-client.md:block 97 (paragraph)
-msgid "Since Laravel's HTTP client is powered by Guzzle, you may take advantage of [Guzzle Middleware](https://docs.guzzlephp.org/en/stable/handlers-and-middleware.html) to manipulate the outgoing request or inspect the incoming response. To manipulate the outgoing request, register a Guzzle middleware via the `withMiddleware` method in combination with Guzzle's `mapRequest` middleware factory:"
+#: docs/10.x/http-client.md:block 101 (paragraph)
+msgid "Since Laravel's HTTP client is powered by Guzzle, you may take advantage of [Guzzle Middleware](https://docs.guzzlephp.org/en/stable/handlers-and-middleware.html) to manipulate the outgoing request or inspect the incoming response. To manipulate the outgoing request, register a Guzzle middleware via the `withRequestMiddleware` method:"
 msgstr ""
 
-#: docs/10.x/http-client.md:block 98 (code)
+#: docs/10.x/http-client.md:block 102 (code)
 msgid ""
-"use GuzzleHttp\\Middleware;\n"
 "use Illuminate\\Support\\Facades\\Http;\n"
 "use Psr\\Http\\Message\\RequestInterface;\n"
 "\n"
-"$response = Http::withMiddleware(\n"
-"    Middleware::mapRequest(function (RequestInterface $request) {\n"
-"        $request = $request->withHeader('X-Example', 'Value');\n"
-"        \n"
-"        return $request;\n"
-"    })\n"
+"$response = Http::withRequestMiddleware(\n"
+"    function (RequestInterface $request) {\n"
+"        return $request->withHeader('X-Example', 'Value');\n"
+"    }\n"
 ")->get('http://example.com');\n"
-msgstr ""
-
-#: docs/10.x/http-client.md:block 99 (paragraph)
-msgid "Likewise, you can inspect the incoming HTTP response by registering a middleware via the `withMiddleware` method in combination with Guzzle's `mapResponse` middleware factory:"
-msgstr ""
-
-#: docs/10.x/http-client.md:block 100 (code)
-msgid ""
-"use GuzzleHttp\\Middleware;\n"
-"use Illuminate\\Support\\Facades\\Http;\n"
-"use Psr\\Http\\Message\\ResponseInterface;\n"
-"\n"
-"$response = Http::withMiddleware(\n"
-"    Middleware::mapResponse(function (ResponseInterface $response) {\n"
-"        $header = $response->getHeader('X-Example');\n"
-"\n"
-"        // ...\n"
-"        \n"
-"        return $response;\n"
-"    })\n"
-")->get('http://example.com');\n"
-msgstr ""
-
-#: docs/10.x/http-client.md:block 102 (header)
-msgid "Guzzle Options"
 msgstr ""
 
 #: docs/10.x/http-client.md:block 103 (paragraph)
-msgid "You may specify additional [Guzzle request options](http://docs.guzzlephp.org/en/stable/request-options.html) using the `withOptions` method. The `withOptions` method accepts an array of key / value pairs:"
+msgid "Likewise, you can inspect the incoming HTTP response by registering a middleware via the `withResponseMiddleware` method:"
 msgstr ""
 
 #: docs/10.x/http-client.md:block 104 (code)
+msgid ""
+"use Illuminate\\Support\\Facades\\Http;\n"
+"use Psr\\Http\\Message\\ResponseInterface;\n"
+"\n"
+"$response = Http::withResponseMiddleware(\n"
+"    function (ResponseInterface $response) {\n"
+"        $header = $response->getHeader('X-Example');\n"
+"\n"
+"        // ...\n"
+"\n"
+"        return $response;\n"
+"    }\n"
+")->get('http://example.com');\n"
+msgstr ""
+
+#: docs/10.x/http-client.md:block 106 (header)
+msgid "Global Middleware"
+msgstr ""
+
+#: docs/10.x/http-client.md:block 107 (paragraph)
+msgid "Sometimes, you may want to register a middleware that applies to every outgoing request and incoming response. To accomplish this, you may use the `globalRequestMiddleware` and `globalResponseMiddleware` methods. Typically, these methods should be invoked in the `boot` method of your application's `AppServiceProvider`:"
+msgstr ""
+
+#: docs/10.x/http-client.md:block 108 (code)
+msgid ""
+"use Illuminate\\Support\\Facades\\Http;\n"
+"\n"
+"Http::globalRequestMiddleware(fn ($request) => $request->withHeader(\n"
+"    'User-Agent', 'Example Application/1.0'\n"
+"));\n"
+"\n"
+"Http::globalResponseMiddleware(fn ($response) => $response->withHeader(\n"
+"    'X-Finished-At', now()->toDateTimeString()\n"
+"));\n"
+msgstr ""
+
+#: docs/10.x/http-client.md:block 110 (header)
+msgid "Guzzle Options"
+msgstr ""
+
+#: docs/10.x/http-client.md:block 111 (paragraph)
+msgid "You may specify additional [Guzzle request options](http://docs.guzzlephp.org/en/stable/request-options.html) using the `withOptions` method. The `withOptions` method accepts an array of key / value pairs:"
+msgstr ""
+
+#: docs/10.x/http-client.md:block 112 (code)
 msgid ""
 "$response = Http::withOptions([\n"
 "    'debug' => true,\n"
 "])->get('http://example.com/users');\n"
 msgstr ""
 
-#: docs/10.x/http-client.md:block 106 (header)
+#: docs/10.x/http-client.md:block 114 (header)
 msgid "Concurrent Requests"
 msgstr ""
 
-#: docs/10.x/http-client.md:block 107 (paragraph)
+#: docs/10.x/http-client.md:block 115 (paragraph)
 msgid "Sometimes, you may wish to make multiple HTTP requests concurrently. In other words, you want several requests to be dispatched at the same time instead of issuing the requests sequentially. This can lead to substantial performance improvements when interacting with slow HTTP APIs."
 msgstr ""
 
-#: docs/10.x/http-client.md:block 108 (paragraph)
+#: docs/10.x/http-client.md:block 116 (paragraph)
 msgid "Thankfully, you may accomplish this using the `pool` method. The `pool` method accepts a closure which receives an `Illuminate\\Http\\Client\\Pool` instance, allowing you to easily add requests to the request pool for dispatching:"
 msgstr ""
 
-#: docs/10.x/http-client.md:block 109 (code)
+#: docs/10.x/http-client.md:block 117 (code)
 msgid ""
 "use Illuminate\\Http\\Client\\Pool;\n"
 "use Illuminate\\Support\\Facades\\Http;\n"
@@ -601,11 +646,11 @@ msgid ""
 "       $responses[2]->ok();\n"
 msgstr ""
 
-#: docs/10.x/http-client.md:block 110 (paragraph)
+#: docs/10.x/http-client.md:block 118 (paragraph)
 msgid "As you can see, each response instance can be accessed based on the order it was added to the pool. If you wish, you can name the requests using the `as` method, which allows you to access the corresponding responses by name:"
 msgstr ""
 
-#: docs/10.x/http-client.md:block 111 (code)
+#: docs/10.x/http-client.md:block 119 (code)
 msgid ""
 "use Illuminate\\Http\\Client\\Pool;\n"
 "use Illuminate\\Support\\Facades\\Http;\n"
@@ -619,15 +664,39 @@ msgid ""
 "return $responses['first']->ok();\n"
 msgstr ""
 
-#: docs/10.x/http-client.md:block 113 (header)
+#: docs/10.x/http-client.md:block 121 (header)
+msgid "Customizing Concurrent Requests"
+msgstr ""
+
+#: docs/10.x/http-client.md:block 122 (paragraph)
+msgid "The `pool` method cannot be chained with other HTTP client methods such as the `withHeaders` or `middleware` methods. If you want to apply custom headers or middleware to pooled requests, you should configure those options on each request in the pool:"
+msgstr ""
+
+#: docs/10.x/http-client.md:block 123 (code)
+msgid ""
+"use Illuminate\\Http\\Client\\Pool;\n"
+"use Illuminate\\Support\\Facades\\Http;\n"
+"\n"
+"$headers = [\n"
+"    'X-Example' => 'example',\n"
+"];\n"
+"\n"
+"$responses = Http::pool(fn (Pool $pool) => [\n"
+"    $pool->withHeaders($headers)->get('http://laravel.test/test'),\n"
+"    $pool->withHeaders($headers)->get('http://laravel.test/test'),\n"
+"    $pool->withHeaders($headers)->get('http://laravel.test/test'),\n"
+"]);\n"
+msgstr ""
+
+#: docs/10.x/http-client.md:block 125 (header)
 msgid "Macros"
 msgstr ""
 
-#: docs/10.x/http-client.md:block 114 (paragraph)
+#: docs/10.x/http-client.md:block 126 (paragraph)
 msgid "The Laravel HTTP client allows you to define \"macros\", which can serve as a fluent, expressive mechanism to configure common request paths and headers when interacting with services throughout your application. To get started, you may define the macro within the `boot` method of your application's `App\\Providers\\AppServiceProvider` class:"
 msgstr ""
 
-#: docs/10.x/http-client.md:block 115 (code)
+#: docs/10.x/http-client.md:block 127 (code)
 msgid ""
 "use Illuminate\\Support\\Facades\\Http;\n"
 "\n"
@@ -644,31 +713,31 @@ msgid ""
 "}\n"
 msgstr ""
 
-#: docs/10.x/http-client.md:block 116 (paragraph)
+#: docs/10.x/http-client.md:block 128 (paragraph)
 msgid "Once your macro has been configured, you may invoke it from anywhere in your application to create a pending request with the specified configuration:"
 msgstr ""
 
-#: docs/10.x/http-client.md:block 117 (code)
+#: docs/10.x/http-client.md:block 129 (code)
 msgid "$response = Http::github()->get('/');\n"
 msgstr ""
 
-#: docs/10.x/http-client.md:block 119 (header)
+#: docs/10.x/http-client.md:block 131 (header)
 msgid "Testing"
 msgstr ""
 
-#: docs/10.x/http-client.md:block 120 (paragraph)
+#: docs/10.x/http-client.md:block 132 (paragraph)
 msgid "Many Laravel services provide functionality to help you easily and expressively write tests, and Laravel's HTTP client is no exception. The `Http` facade's `fake` method allows you to instruct the HTTP client to return stubbed / dummy responses when requests are made."
 msgstr ""
 
-#: docs/10.x/http-client.md:block 122 (header)
+#: docs/10.x/http-client.md:block 134 (header)
 msgid "Faking Responses"
 msgstr ""
 
-#: docs/10.x/http-client.md:block 123 (paragraph)
+#: docs/10.x/http-client.md:block 135 (paragraph)
 msgid "For example, to instruct the HTTP client to return empty, `200` status code responses for every request, you may call the `fake` method with no arguments:"
 msgstr ""
 
-#: docs/10.x/http-client.md:block 124 (code)
+#: docs/10.x/http-client.md:block 136 (code)
 msgid ""
 "use Illuminate\\Support\\Facades\\Http;\n"
 "\n"
@@ -677,15 +746,15 @@ msgid ""
 "$response = Http::post(/* ... */);\n"
 msgstr ""
 
-#: docs/10.x/http-client.md:block 126 (header)
+#: docs/10.x/http-client.md:block 138 (header)
 msgid "Faking Specific URLs"
 msgstr ""
 
-#: docs/10.x/http-client.md:block 127 (paragraph)
+#: docs/10.x/http-client.md:block 139 (paragraph)
 msgid "Alternatively, you may pass an array to the `fake` method. The array's keys should represent URL patterns that you wish to fake and their associated responses. The `*` character may be used as a wildcard character. Any requests made to URLs that have not been faked will actually be executed. You may use the `Http` facade's `response` method to construct stub / fake responses for these endpoints:"
 msgstr ""
 
-#: docs/10.x/http-client.md:block 128 (code)
+#: docs/10.x/http-client.md:block 140 (code)
 msgid ""
 "Http::fake([\n"
 "    // Stub a JSON response for GitHub endpoints...\n"
@@ -696,11 +765,11 @@ msgid ""
 "]);\n"
 msgstr ""
 
-#: docs/10.x/http-client.md:block 129 (paragraph)
+#: docs/10.x/http-client.md:block 141 (paragraph)
 msgid "If you would like to specify a fallback URL pattern that will stub all unmatched URLs, you may use a single `*` character:"
 msgstr ""
 
-#: docs/10.x/http-client.md:block 130 (code)
+#: docs/10.x/http-client.md:block 142 (code)
 msgid ""
 "Http::fake([\n"
 "    // Stub a JSON response for GitHub endpoints...\n"
@@ -711,15 +780,15 @@ msgid ""
 "]);\n"
 msgstr ""
 
-#: docs/10.x/http-client.md:block 132 (header)
+#: docs/10.x/http-client.md:block 144 (header)
 msgid "Faking Response Sequences"
 msgstr ""
 
-#: docs/10.x/http-client.md:block 133 (paragraph)
+#: docs/10.x/http-client.md:block 145 (paragraph)
 msgid "Sometimes you may need to specify that a single URL should return a series of fake responses in a specific order. You may accomplish this using the `Http::sequence` method to build the responses:"
 msgstr ""
 
-#: docs/10.x/http-client.md:block 134 (code)
+#: docs/10.x/http-client.md:block 146 (code)
 msgid ""
 "Http::fake([\n"
 "    // Stub a series of responses for GitHub endpoints...\n"
@@ -730,11 +799,11 @@ msgid ""
 "]);\n"
 msgstr ""
 
-#: docs/10.x/http-client.md:block 135 (paragraph)
+#: docs/10.x/http-client.md:block 147 (paragraph)
 msgid "When all the responses in a response sequence have been consumed, any further requests will cause the response sequence to throw an exception. If you would like to specify a default response that should be returned when a sequence is empty, you may use the `whenEmpty` method:"
 msgstr ""
 
-#: docs/10.x/http-client.md:block 136 (code)
+#: docs/10.x/http-client.md:block 148 (code)
 msgid ""
 "Http::fake([\n"
 "    // Stub a series of responses for GitHub endpoints...\n"
@@ -745,26 +814,26 @@ msgid ""
 "]);\n"
 msgstr ""
 
-#: docs/10.x/http-client.md:block 137 (paragraph)
+#: docs/10.x/http-client.md:block 149 (paragraph)
 msgid "If you would like to fake a sequence of responses but do not need to specify a specific URL pattern that should be faked, you may use the `Http::fakeSequence` method:"
 msgstr ""
 
-#: docs/10.x/http-client.md:block 138 (code)
+#: docs/10.x/http-client.md:block 150 (code)
 msgid ""
 "Http::fakeSequence()\n"
 "        ->push('Hello World', 200)\n"
 "        ->whenEmpty(Http::response());\n"
 msgstr ""
 
-#: docs/10.x/http-client.md:block 140 (header)
+#: docs/10.x/http-client.md:block 152 (header)
 msgid "Fake Callback"
 msgstr ""
 
-#: docs/10.x/http-client.md:block 141 (paragraph)
+#: docs/10.x/http-client.md:block 153 (paragraph)
 msgid "If you require more complicated logic to determine what responses to return for certain endpoints, you may pass a closure to the `fake` method. This closure will receive an instance of `Illuminate\\Http\\Client\\Request` and should return a response instance. Within your closure, you may perform whatever logic is necessary to determine what type of response to return:"
 msgstr ""
 
-#: docs/10.x/http-client.md:block 142 (code)
+#: docs/10.x/http-client.md:block 154 (code)
 msgid ""
 "use Illuminate\\Http\\Client\\Request;\n"
 "\n"
@@ -773,15 +842,15 @@ msgid ""
 "});\n"
 msgstr ""
 
-#: docs/10.x/http-client.md:block 144 (header)
+#: docs/10.x/http-client.md:block 156 (header)
 msgid "Preventing Stray Requests"
 msgstr ""
 
-#: docs/10.x/http-client.md:block 145 (paragraph)
+#: docs/10.x/http-client.md:block 157 (paragraph)
 msgid "If you would like to ensure that all requests sent via the HTTP client have been faked throughout your individual test or complete test suite, you can call the `preventStrayRequests` method. After calling this method, any requests that do not have a corresponding fake response will throw an exception rather than making the actual HTTP request:"
 msgstr ""
 
-#: docs/10.x/http-client.md:block 146 (code)
+#: docs/10.x/http-client.md:block 158 (code)
 msgid ""
 "use Illuminate\\Support\\Facades\\Http;\n"
 "\n"
@@ -798,19 +867,19 @@ msgid ""
 "Http::get('https://laravel.com');\n"
 msgstr ""
 
-#: docs/10.x/http-client.md:block 148 (header)
+#: docs/10.x/http-client.md:block 160 (header)
 msgid "Inspecting Requests"
 msgstr ""
 
-#: docs/10.x/http-client.md:block 149 (paragraph)
+#: docs/10.x/http-client.md:block 161 (paragraph)
 msgid "When faking responses, you may occasionally wish to inspect the requests the client receives in order to make sure your application is sending the correct data or headers. You may accomplish this by calling the `Http::assertSent` method after calling `Http::fake`."
 msgstr ""
 
-#: docs/10.x/http-client.md:block 150 (paragraph)
+#: docs/10.x/http-client.md:block 162 (paragraph)
 msgid "The `assertSent` method accepts a closure which will receive an `Illuminate\\Http\\Client\\Request` instance and should return a boolean value indicating if the request matches your expectations. In order for the test to pass, at least one request must have been issued matching the given expectations:"
 msgstr ""
 
-#: docs/10.x/http-client.md:block 151 (code)
+#: docs/10.x/http-client.md:block 163 (code)
 msgid ""
 "use Illuminate\\Http\\Client\\Request;\n"
 "use Illuminate\\Support\\Facades\\Http;\n"
@@ -832,11 +901,11 @@ msgid ""
 "});\n"
 msgstr ""
 
-#: docs/10.x/http-client.md:block 152 (paragraph)
+#: docs/10.x/http-client.md:block 164 (paragraph)
 msgid "If needed, you may assert that a specific request was not sent using the `assertNotSent` method:"
 msgstr ""
 
-#: docs/10.x/http-client.md:block 153 (code)
+#: docs/10.x/http-client.md:block 165 (code)
 msgid ""
 "use Illuminate\\Http\\Client\\Request;\n"
 "use Illuminate\\Support\\Facades\\Http;\n"
@@ -853,37 +922,37 @@ msgid ""
 "});\n"
 msgstr ""
 
-#: docs/10.x/http-client.md:block 154 (paragraph)
+#: docs/10.x/http-client.md:block 166 (paragraph)
 msgid "You may use the `assertSentCount` method to assert how many requests were \"sent\" during the test:"
 msgstr ""
 
-#: docs/10.x/http-client.md:block 155 (code)
+#: docs/10.x/http-client.md:block 167 (code)
 msgid ""
 "Http::fake();\n"
 "\n"
 "Http::assertSentCount(5);\n"
 msgstr ""
 
-#: docs/10.x/http-client.md:block 156 (paragraph)
+#: docs/10.x/http-client.md:block 168 (paragraph)
 msgid "Or, you may use the `assertNothingSent` method to assert that no requests were sent during the test:"
 msgstr ""
 
-#: docs/10.x/http-client.md:block 157 (code)
+#: docs/10.x/http-client.md:block 169 (code)
 msgid ""
 "Http::fake();\n"
 "\n"
 "Http::assertNothingSent();\n"
 msgstr ""
 
-#: docs/10.x/http-client.md:block 159 (header)
+#: docs/10.x/http-client.md:block 171 (header)
 msgid "Recording Requests / Responses"
 msgstr ""
 
-#: docs/10.x/http-client.md:block 160 (paragraph)
+#: docs/10.x/http-client.md:block 172 (paragraph)
 msgid "You may use the `recorded` method to gather all requests and their corresponding responses. The `recorded` method returns a collection of arrays that contains instances of `Illuminate\\Http\\Client\\Request` and `Illuminate\\Http\\Client\\Response`:"
 msgstr ""
 
-#: docs/10.x/http-client.md:block 161 (code)
+#: docs/10.x/http-client.md:block 173 (code)
 msgid ""
 "Http::fake([\n"
 "    'https://laravel.com' => Http::response(status: 500),\n"
@@ -898,11 +967,11 @@ msgid ""
 "[$request, $response] = $recorded[0];\n"
 msgstr ""
 
-#: docs/10.x/http-client.md:block 162 (paragraph)
+#: docs/10.x/http-client.md:block 174 (paragraph)
 msgid "Additionally, the `recorded` method accepts a closure which will receive an instance of `Illuminate\\Http\\Client\\Request` and `Illuminate\\Http\\Client\\Response` and may be used to filter request / response pairs based on your expectations:"
 msgstr ""
 
-#: docs/10.x/http-client.md:block 163 (code)
+#: docs/10.x/http-client.md:block 175 (code)
 msgid ""
 "use Illuminate\\Http\\Client\\Request;\n"
 "use Illuminate\\Http\\Client\\Response;\n"
@@ -921,19 +990,19 @@ msgid ""
 "});\n"
 msgstr ""
 
-#: docs/10.x/http-client.md:block 165 (header)
+#: docs/10.x/http-client.md:block 177 (header)
 msgid "Events"
 msgstr ""
 
-#: docs/10.x/http-client.md:block 166 (paragraph)
+#: docs/10.x/http-client.md:block 178 (paragraph)
 msgid "Laravel fires three events during the process of sending HTTP requests. The `RequestSending` event is fired prior to a request being sent, while the `ResponseReceived` event is fired after a response is received for a given request. The `ConnectionFailed` event is fired if no response is received for a given request."
 msgstr ""
 
-#: docs/10.x/http-client.md:block 167 (paragraph)
+#: docs/10.x/http-client.md:block 179 (paragraph)
 msgid "The `RequestSending` and `ConnectionFailed` events both contain a public `$request` property that you may use to inspect the `Illuminate\\Http\\Client\\Request` instance. Likewise, the `ResponseReceived` event contains a `$request` property as well as a `$response` property which may be used to inspect the `Illuminate\\Http\\Client\\Response` instance. You may register event listeners for this event in your `App\\Providers\\EventServiceProvider` service provider:"
 msgstr ""
 
-#: docs/10.x/http-client.md:block 168 (code)
+#: docs/10.x/http-client.md:block 180 (code)
 msgid ""
 "/**\n"
 " * The event listener mappings for the application.\n"
@@ -981,6 +1050,10 @@ msgstr ""
 
 #: docs/8.x/http-client.md:block 57 (code)
 msgid "$response = Http::withToken('token')->post(...);\n"
+msgstr ""
+
+#: docs/8.x/http-client.md:block 60 (paragraph)
+msgid "The `timeout` method may be used to specify the maximum number of seconds to wait for a response:"
 msgstr ""
 
 #: docs/8.x/http-client.md:block 61 (code)
@@ -1132,20 +1205,68 @@ msgid ""
 "})->json();\n"
 msgstr ""
 
-#: docs/master/http-client.md:block 13 (code)
+#: docs/9.x/http-client.md:block 97 (paragraph)
+msgid "Since Laravel's HTTP client is powered by Guzzle, you may take advantage of [Guzzle Middleware](https://docs.guzzlephp.org/en/stable/handlers-and-middleware.html) to manipulate the outgoing request or inspect the incoming response. To manipulate the outgoing request, register a Guzzle middleware via the `withMiddleware` method in combination with Guzzle's `mapRequest` middleware factory:"
+msgstr ""
+
+#: docs/9.x/http-client.md:block 98 (code)
 msgid ""
-"$response->body() : string;\n"
-"$response->json($key = null) : array|mixed;\n"
-"$response->object() : object;\n"
-"$response->collect($key = null) : Illuminate\\Support\\Collection;\n"
-"$response->status() : int;\n"
-"$response->ok() : bool;\n"
-"$response->successful() : bool;\n"
-"$response->redirect(): bool;\n"
-"$response->failed() : bool;\n"
-"$response->notFound() : bool;\n"
-"$response->serverError() : bool;\n"
-"$response->clientError() : bool;\n"
-"$response->header($header) : string;\n"
-"$response->headers() : array;\n"
+"use GuzzleHttp\\Middleware;\n"
+"use Illuminate\\Support\\Facades\\Http;\n"
+"use Psr\\Http\\Message\\RequestInterface;\n"
+"\n"
+"$response = Http::withMiddleware(\n"
+"    Middleware::mapRequest(function (RequestInterface $request) {\n"
+"        $request = $request->withHeader('X-Example', 'Value');\n"
+"        \n"
+"        return $request;\n"
+"    })\n"
+")->get('http://example.com');\n"
+msgstr ""
+
+#: docs/9.x/http-client.md:block 99 (paragraph)
+msgid "Likewise, you can inspect the incoming HTTP response by registering a middleware via the `withMiddleware` method in combination with Guzzle's `mapResponse` middleware factory:"
+msgstr ""
+
+#: docs/9.x/http-client.md:block 100 (code)
+msgid ""
+"use GuzzleHttp\\Middleware;\n"
+"use Illuminate\\Support\\Facades\\Http;\n"
+"use Psr\\Http\\Message\\ResponseInterface;\n"
+"\n"
+"$response = Http::withMiddleware(\n"
+"    Middleware::mapResponse(function (ResponseInterface $response) {\n"
+"        $header = $response->getHeader('X-Example');\n"
+"\n"
+"        // ...\n"
+"        \n"
+"        return $response;\n"
+"    })\n"
+")->get('http://example.com');\n"
+msgstr ""
+
+#: docs/master/http-client.md:block 21 (code)
+msgid ""
+"Http::withUrlParameters([\n"
+"    'endpoint' => 'https://laravel.com',\n"
+"    'page' => 'docs',\n"
+"    'version' => '11.x',\n"
+"    'topic' => 'validation',\n"
+"])->get('{+endpoint}/{page}/{version}/{topic}');\n"
+msgstr ""
+
+#: docs/master/http-client.md:block 78 (code)
+msgid ""
+"use Exception;\n"
+"use Illuminate\\Http\\Client\\PendingRequest;\n"
+"\n"
+"$response = Http::withToken($this->getToken())->retry(2, 0, function (Exception $exception, PendingRequest $request) {\n"
+"    if (! $exception instanceof RequestException || $exception->response->status() !== 401) {\n"
+"        return false;\n"
+"    }\n"
+"\n"
+"    $request->withToken($this->getNewToken());\n"
+"\n"
+"    return true;\n"
+"})->post(/* ... */);\n"
 msgstr ""

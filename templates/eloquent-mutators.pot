@@ -372,6 +372,10 @@ msgid "`float`"
 msgstr ""
 
 #: docs/10.x/eloquent-mutators.md:block 45 (unordered list)
+msgid "`hashed`"
+msgstr ""
+
+#: docs/10.x/eloquent-mutators.md:block 45 (unordered list)
 msgid "`integer`"
 msgstr ""
 
@@ -442,7 +446,7 @@ msgid ""
 msgstr ""
 
 #: docs/10.x/eloquent-mutators.md:block 53 (quote)
-msgid "**Warning** Attributes that are `null` will not be cast. In addition, you should never define a cast (or an attribute) that has the same name as a relationship."
+msgid "**Warning** Attributes that are `null` will not be cast. In addition, you should never define a cast (or an attribute) that has the same name as a relationship or assign a cast to the model's primary key."
 msgstr ""
 
 #: docs/10.x/eloquent-mutators.md:block 55 (header)
@@ -450,7 +454,7 @@ msgid "Stringable Casting"
 msgstr ""
 
 #: docs/10.x/eloquent-mutators.md:block 56 (paragraph)
-msgid "You may use the `Illuminate\\Database\\Eloquent\\Casts\\AsStringable` cast class to cast a model attribute to a [fluent `Illuminate\\Support\\Stringable` object](/docs/{{version}}/helpers#fluent-strings-method-list):"
+msgid "You may use the `Illuminate\\Database\\Eloquent\\Casts\\AsStringable` cast class to cast a model attribute to a [fluent `Illuminate\\Support\\Stringable` object](/docs/{{version}}/strings#fluent-strings-method-list):"
 msgstr ""
 
 #: docs/10.x/eloquent-mutators.md:block 57 (code)
@@ -585,19 +589,38 @@ msgid ""
 "];\n"
 msgstr ""
 
-#: docs/10.x/eloquent-mutators.md:block 75 (header)
+#: docs/10.x/eloquent-mutators.md:block 74 (paragraph)
+msgid "If you would like the `AsCollection` cast to instantiate a custom collection class instead of Laravel's base collection class, you may provide the collection class name as a cast argument:"
+msgstr ""
+
+#: docs/10.x/eloquent-mutators.md:block 75 (code)
+msgid ""
+"use App\\Collections\\OptionCollection;\n"
+"use Illuminate\\Database\\Eloquent\\Casts\\AsCollection;\n"
+"\n"
+"/**\n"
+" * The attributes that should be cast.\n"
+" *\n"
+" * @var array\n"
+" */\n"
+"protected $casts = [\n"
+"    'options' => AsCollection::class.':'.OptionCollection::class,\n"
+"];\n"
+msgstr ""
+
+#: docs/10.x/eloquent-mutators.md:block 77 (header)
 msgid "Date Casting"
 msgstr ""
 
-#: docs/10.x/eloquent-mutators.md:block 76 (paragraph)
+#: docs/10.x/eloquent-mutators.md:block 78 (paragraph)
 msgid "By default, Eloquent will cast the `created_at` and `updated_at` columns to instances of [Carbon](https://github.com/briannesbitt/Carbon), which extends the PHP `DateTime` class and provides an assortment of helpful methods. You may cast additional date attributes by defining additional date casts within your model's `$casts` property array. Typically, dates should be cast using the `datetime` or `immutable_datetime` cast types."
 msgstr ""
 
-#: docs/10.x/eloquent-mutators.md:block 77 (paragraph)
+#: docs/10.x/eloquent-mutators.md:block 79 (paragraph)
 msgid "When defining a `date` or `datetime` cast, you may also specify the date's format. This format will be used when the [model is serialized to an array or JSON](/docs/{{version}}/eloquent-serialization):"
 msgstr ""
 
-#: docs/10.x/eloquent-mutators.md:block 78 (code)
+#: docs/10.x/eloquent-mutators.md:block 80 (code)
 msgid ""
 "/**\n"
 " * The attributes that should be cast.\n"
@@ -609,15 +632,15 @@ msgid ""
 "];\n"
 msgstr ""
 
-#: docs/10.x/eloquent-mutators.md:block 79 (paragraph)
+#: docs/10.x/eloquent-mutators.md:block 81 (paragraph)
 msgid "When a column is cast as a date, you may set the corresponding model attribute value to a UNIX timestamp, date string (`Y-m-d`), date-time string, or a `DateTime` / `Carbon` instance. The date's value will be correctly converted and stored in your database."
 msgstr ""
 
-#: docs/10.x/eloquent-mutators.md:block 80 (paragraph)
+#: docs/10.x/eloquent-mutators.md:block 82 (paragraph)
 msgid "You may customize the default serialization format for all of your model's dates by defining a `serializeDate` method on your model. This method does not affect how your dates are formatted for storage in the database:"
 msgstr ""
 
-#: docs/10.x/eloquent-mutators.md:block 81 (code)
+#: docs/10.x/eloquent-mutators.md:block 83 (code)
 msgid ""
 "/**\n"
 " * Prepare a date for array / JSON serialization.\n"
@@ -628,11 +651,11 @@ msgid ""
 "}\n"
 msgstr ""
 
-#: docs/10.x/eloquent-mutators.md:block 82 (paragraph)
+#: docs/10.x/eloquent-mutators.md:block 84 (paragraph)
 msgid "To specify the format that should be used when actually storing a model's dates within your database, you should define a `$dateFormat` property on your model:"
 msgstr ""
 
-#: docs/10.x/eloquent-mutators.md:block 83 (code)
+#: docs/10.x/eloquent-mutators.md:block 85 (code)
 msgid ""
 "/**\n"
 " * The storage format of the model's date columns.\n"
@@ -642,31 +665,27 @@ msgid ""
 "protected $dateFormat = 'U';\n"
 msgstr ""
 
-#: docs/10.x/eloquent-mutators.md:block 85 (header)
+#: docs/10.x/eloquent-mutators.md:block 87 (header)
 msgid "Date Casting, Serialization, & Timezones"
 msgstr ""
 
-#: docs/10.x/eloquent-mutators.md:block 86 (paragraph)
-msgid "By default, the `date` and `datetime` casts will serialize dates to a UTC ISO-8601 date string (`1986-05-28T21:05:54.000000Z`), regardless of the timezone specified in your application's `timezone` configuration option. You are strongly encouraged to always use this serialization format, as well as to store your application's dates in the UTC timezone by not changing your application's `timezone` configuration option from its default `UTC` value. Consistently using the UTC timezone throughout your application will provide the maximum level of interoperability with other date manipulation libraries written in PHP and JavaScript."
+#: docs/10.x/eloquent-mutators.md:block 88 (paragraph)
+msgid "By default, the `date` and `datetime` casts will serialize dates to a UTC ISO-8601 date string (`YYYY-MM-DDTHH:MM:SS.uuuuuuZ`), regardless of the timezone specified in your application's `timezone` configuration option. You are strongly encouraged to always use this serialization format, as well as to store your application's dates in the UTC timezone by not changing your application's `timezone` configuration option from its default `UTC` value. Consistently using the UTC timezone throughout your application will provide the maximum level of interoperability with other date manipulation libraries written in PHP and JavaScript."
 msgstr ""
 
-#: docs/10.x/eloquent-mutators.md:block 87 (paragraph)
+#: docs/10.x/eloquent-mutators.md:block 89 (paragraph)
 msgid "If a custom format is applied to the `date` or `datetime` cast, such as `datetime:Y-m-d H:i:s`, the inner timezone of the Carbon instance will be used during date serialization. Typically, this will be the timezone specified in your application's `timezone` configuration option."
 msgstr ""
 
-#: docs/10.x/eloquent-mutators.md:block 89 (header)
+#: docs/10.x/eloquent-mutators.md:block 91 (header)
 msgid "Enum Casting"
 msgstr ""
 
-#: docs/10.x/eloquent-mutators.md:block 90 (quote)
-msgid "**Warning** Enum casting is only available for PHP 8.1+."
-msgstr ""
-
-#: docs/10.x/eloquent-mutators.md:block 91 (paragraph)
+#: docs/10.x/eloquent-mutators.md:block 92 (paragraph)
 msgid "Eloquent also allows you to cast your attribute values to PHP [Enums](https://www.php.net/manual/en/language.enumerations.backed.php). To accomplish this, you may specify the attribute and enum you wish to cast in your model's `$casts` property array:"
 msgstr ""
 
-#: docs/10.x/eloquent-mutators.md:block 92 (code)
+#: docs/10.x/eloquent-mutators.md:block 93 (code)
 msgid ""
 "use App\\Enums\\ServerStatus;\n"
 "\n"
@@ -680,11 +699,11 @@ msgid ""
 "];\n"
 msgstr ""
 
-#: docs/10.x/eloquent-mutators.md:block 93 (paragraph)
+#: docs/10.x/eloquent-mutators.md:block 94 (paragraph)
 msgid "Once you have defined the cast on your model, the specified attribute will be automatically cast to and from an enum when you interact with the attribute:"
 msgstr ""
 
-#: docs/10.x/eloquent-mutators.md:block 94 (code)
+#: docs/10.x/eloquent-mutators.md:block 95 (code)
 msgid ""
 "if ($server->status == ServerStatus::Provisioned) {\n"
 "    $server->status = ServerStatus::Ready;\n"
@@ -693,15 +712,15 @@ msgid ""
 "}\n"
 msgstr ""
 
-#: docs/10.x/eloquent-mutators.md:block 96 (header)
+#: docs/10.x/eloquent-mutators.md:block 97 (header)
 msgid "Casting Arrays Of Enums"
 msgstr ""
 
-#: docs/10.x/eloquent-mutators.md:block 97 (paragraph)
+#: docs/10.x/eloquent-mutators.md:block 98 (paragraph)
 msgid "Sometimes you may need your model to store an array of enum values within a single column. To accomplish this, you may utilize the `AsEnumArrayObject` or `AsEnumCollection` casts provided by Laravel:"
 msgstr ""
 
-#: docs/10.x/eloquent-mutators.md:block 98 (code)
+#: docs/10.x/eloquent-mutators.md:block 99 (code)
 msgid ""
 "use App\\Enums\\ServerStatus;\n"
 "use Illuminate\\Database\\Eloquent\\Casts\\AsEnumCollection;\n"
@@ -716,35 +735,35 @@ msgid ""
 "];\n"
 msgstr ""
 
-#: docs/10.x/eloquent-mutators.md:block 100 (header)
+#: docs/10.x/eloquent-mutators.md:block 101 (header)
 msgid "Encrypted Casting"
 msgstr ""
 
-#: docs/10.x/eloquent-mutators.md:block 101 (paragraph)
+#: docs/10.x/eloquent-mutators.md:block 102 (paragraph)
 msgid "The `encrypted` cast will encrypt a model's attribute value using Laravel's built-in [encryption](/docs/{{version}}/encryption) features. In addition, the `encrypted:array`, `encrypted:collection`, `encrypted:object`, `AsEncryptedArrayObject`, and `AsEncryptedCollection` casts work like their unencrypted counterparts; however, as you might expect, the underlying value is encrypted when stored in your database."
 msgstr ""
 
-#: docs/10.x/eloquent-mutators.md:block 102 (paragraph)
+#: docs/10.x/eloquent-mutators.md:block 103 (paragraph)
 msgid "As the final length of the encrypted text is not predictable and is longer than its plain text counterpart, make sure the associated database column is of `TEXT` type or larger. In addition, since the values are encrypted in the database, you will not be able to query or search encrypted attribute values."
 msgstr ""
 
-#: docs/10.x/eloquent-mutators.md:block 104 (header)
+#: docs/10.x/eloquent-mutators.md:block 105 (header)
 msgid "Key Rotation"
 msgstr ""
 
-#: docs/10.x/eloquent-mutators.md:block 105 (paragraph)
+#: docs/10.x/eloquent-mutators.md:block 106 (paragraph)
 msgid "As you may know, Laravel encrypts strings using the `key` configuration value specified in your application's `app` configuration file. Typically, this value corresponds to the value of the `APP_KEY` environment variable. If you need to rotate your application's encryption key, you will need to manually re-encrypt your encrypted attributes using the new key."
 msgstr ""
 
-#: docs/10.x/eloquent-mutators.md:block 107 (header)
+#: docs/10.x/eloquent-mutators.md:block 108 (header)
 msgid "Query Time Casting"
 msgstr ""
 
-#: docs/10.x/eloquent-mutators.md:block 108 (paragraph)
+#: docs/10.x/eloquent-mutators.md:block 109 (paragraph)
 msgid "Sometimes you may need to apply casts while executing a query, such as when selecting a raw value from a table. For example, consider the following query:"
 msgstr ""
 
-#: docs/10.x/eloquent-mutators.md:block 109 (code)
+#: docs/10.x/eloquent-mutators.md:block 110 (code)
 msgid ""
 "use App\\Models\\Post;\n"
 "use App\\Models\\User;\n"
@@ -756,11 +775,11 @@ msgid ""
 "])->get();\n"
 msgstr ""
 
-#: docs/10.x/eloquent-mutators.md:block 110 (paragraph)
+#: docs/10.x/eloquent-mutators.md:block 111 (paragraph)
 msgid "The `last_posted_at` attribute on the results of this query will be a simple string. It would be wonderful if we could apply a `datetime` cast to this attribute when executing the query. Thankfully, we may accomplish this using the `withCasts` method:"
 msgstr ""
 
-#: docs/10.x/eloquent-mutators.md:block 111 (code)
+#: docs/10.x/eloquent-mutators.md:block 112 (code)
 msgid ""
 "$users = User::select([\n"
 "    'users.*',\n"
@@ -771,23 +790,23 @@ msgid ""
 "])->get();\n"
 msgstr ""
 
-#: docs/10.x/eloquent-mutators.md:block 113 (header)
+#: docs/10.x/eloquent-mutators.md:block 114 (header)
 msgid "Custom Casts"
 msgstr ""
 
-#: docs/10.x/eloquent-mutators.md:block 114 (paragraph)
+#: docs/10.x/eloquent-mutators.md:block 115 (paragraph)
 msgid "Laravel has a variety of built-in, helpful cast types; however, you may occasionally need to define your own cast types. To create a cast, execute the `make:cast` Artisan command. The new cast class will be placed in your `app/Casts` directory:"
 msgstr ""
 
-#: docs/10.x/eloquent-mutators.md:block 115 (code)
+#: docs/10.x/eloquent-mutators.md:block 116 (code)
 msgid "php artisan make:cast Json\n"
 msgstr ""
 
-#: docs/10.x/eloquent-mutators.md:block 116 (paragraph)
+#: docs/10.x/eloquent-mutators.md:block 117 (paragraph)
 msgid "All custom cast classes implement the `CastsAttributes` interface. Classes that implement this interface must define a `get` and `set` method. The `get` method is responsible for transforming a raw value from the database into a cast value, while the `set` method should transform a cast value into a raw value that can be stored in the database. As an example, we will re-implement the built-in `json` cast type as a custom cast type:"
 msgstr ""
 
-#: docs/10.x/eloquent-mutators.md:block 117 (code)
+#: docs/10.x/eloquent-mutators.md:block 118 (code)
 msgid ""
 "<?php\n"
 "\n"
@@ -821,11 +840,11 @@ msgid ""
 "}\n"
 msgstr ""
 
-#: docs/10.x/eloquent-mutators.md:block 118 (paragraph)
+#: docs/10.x/eloquent-mutators.md:block 119 (paragraph)
 msgid "Once you have defined a custom cast type, you may attach it to a model attribute using its class name:"
 msgstr ""
 
-#: docs/10.x/eloquent-mutators.md:block 119 (code)
+#: docs/10.x/eloquent-mutators.md:block 120 (code)
 msgid ""
 "<?php\n"
 "\n"
@@ -847,19 +866,19 @@ msgid ""
 "}\n"
 msgstr ""
 
-#: docs/10.x/eloquent-mutators.md:block 121 (header)
+#: docs/10.x/eloquent-mutators.md:block 122 (header)
 msgid "Value Object Casting"
 msgstr ""
 
-#: docs/10.x/eloquent-mutators.md:block 122 (paragraph)
+#: docs/10.x/eloquent-mutators.md:block 123 (paragraph)
 msgid "You are not limited to casting values to primitive types. You may also cast values to objects. Defining custom casts that cast values to objects is very similar to casting to primitive types; however, the `set` method should return an array of key / value pairs that will be used to set raw, storable values on the model."
 msgstr ""
 
-#: docs/10.x/eloquent-mutators.md:block 123 (paragraph)
+#: docs/10.x/eloquent-mutators.md:block 124 (paragraph)
 msgid "As an example, we will define a custom cast class that casts multiple model values into a single `Address` value object. We will assume the `Address` value has two public properties: `lineOne` and `lineTwo`:"
 msgstr ""
 
-#: docs/10.x/eloquent-mutators.md:block 124 (code)
+#: docs/10.x/eloquent-mutators.md:block 125 (code)
 msgid ""
 "<?php\n"
 "\n"
@@ -905,11 +924,11 @@ msgid ""
 "}\n"
 msgstr ""
 
-#: docs/10.x/eloquent-mutators.md:block 125 (paragraph)
+#: docs/10.x/eloquent-mutators.md:block 126 (paragraph)
 msgid "When casting to value objects, any changes made to the value object will automatically be synced back to the model before the model is saved:"
 msgstr ""
 
-#: docs/10.x/eloquent-mutators.md:block 126 (code)
+#: docs/10.x/eloquent-mutators.md:block 127 (code)
 msgid ""
 "use App\\Models\\User;\n"
 "\n"
@@ -920,23 +939,45 @@ msgid ""
 "$user->save();\n"
 msgstr ""
 
-#: docs/10.x/eloquent-mutators.md:block 127 (quote)
+#: docs/10.x/eloquent-mutators.md:block 128 (quote)
 msgid "**Note** If you plan to serialize your Eloquent models containing value objects to JSON or arrays, you should implement the `Illuminate\\Contracts\\Support\\Arrayable` and `JsonSerializable` interfaces on the value object."
 msgstr ""
 
-#: docs/10.x/eloquent-mutators.md:block 129 (header)
-msgid "Array / JSON Serialization"
-msgstr ""
-
-#: docs/10.x/eloquent-mutators.md:block 130 (paragraph)
-msgid "When an Eloquent model is converted to an array or JSON using the `toArray` and `toJson` methods, your custom cast value objects will typically be serialized as well as long as they implement the `Illuminate\\Contracts\\Support\\Arrayable` and `JsonSerializable` interfaces. However, when using value objects provided by third-party libraries, you may not have the ability to add these interfaces to the object."
+#: docs/10.x/eloquent-mutators.md:block 130 (header)
+msgid "Value Object Caching"
 msgstr ""
 
 #: docs/10.x/eloquent-mutators.md:block 131 (paragraph)
+msgid "When attributes that are cast to value objects are resolved, they are cached by Eloquent. Therefore, the same object instance will be returned if the attribute is accessed again."
+msgstr ""
+
+#: docs/10.x/eloquent-mutators.md:block 132 (paragraph)
+msgid "If you would like to disable the object caching behavior of custom cast classes, you may declare a public `withoutObjectCaching` property on your custom cast class:"
+msgstr ""
+
+#: docs/10.x/eloquent-mutators.md:block 133 (code)
+msgid ""
+"class Address implements CastsAttributes\n"
+"{\n"
+"    public bool $withoutObjectCaching = true;\n"
+"\n"
+"    // ...\n"
+"}\n"
+msgstr ""
+
+#: docs/10.x/eloquent-mutators.md:block 135 (header)
+msgid "Array / JSON Serialization"
+msgstr ""
+
+#: docs/10.x/eloquent-mutators.md:block 136 (paragraph)
+msgid "When an Eloquent model is converted to an array or JSON using the `toArray` and `toJson` methods, your custom cast value objects will typically be serialized as well as long as they implement the `Illuminate\\Contracts\\Support\\Arrayable` and `JsonSerializable` interfaces. However, when using value objects provided by third-party libraries, you may not have the ability to add these interfaces to the object."
+msgstr ""
+
+#: docs/10.x/eloquent-mutators.md:block 137 (paragraph)
 msgid "Therefore, you may specify that your custom cast class will be responsible for serializing the value object. To do so, your custom cast class should implement the `Illuminate\\Contracts\\Database\\Eloquent\\SerializesCastableAttributes` interface. This interface states that your class should contain a `serialize` method which should return the serialized form of your value object:"
 msgstr ""
 
-#: docs/10.x/eloquent-mutators.md:block 132 (code)
+#: docs/10.x/eloquent-mutators.md:block 138 (code)
 msgid ""
 "/**\n"
 " * Get the serialized representation of the value.\n"
@@ -949,27 +990,27 @@ msgid ""
 "}\n"
 msgstr ""
 
-#: docs/10.x/eloquent-mutators.md:block 134 (header)
+#: docs/10.x/eloquent-mutators.md:block 140 (header)
 msgid "Inbound Casting"
 msgstr ""
 
-#: docs/10.x/eloquent-mutators.md:block 135 (paragraph)
+#: docs/10.x/eloquent-mutators.md:block 141 (paragraph)
 msgid "Occasionally, you may need to write a custom cast class that only transforms values that are being set on the model and does not perform any operations when attributes are being retrieved from the model."
 msgstr ""
 
-#: docs/10.x/eloquent-mutators.md:block 136 (paragraph)
+#: docs/10.x/eloquent-mutators.md:block 142 (paragraph)
 msgid "Inbound only custom casts should implement the `CastsInboundAttributes` interface, which only requires a `set` method to be defined. The `make:cast` Artisan command may be invoked with the `--inbound` option to generate an inbound only cast class:"
 msgstr ""
 
-#: docs/10.x/eloquent-mutators.md:block 137 (code)
+#: docs/10.x/eloquent-mutators.md:block 143 (code)
 msgid "php artisan make:cast Hash --inbound\n"
 msgstr ""
 
-#: docs/10.x/eloquent-mutators.md:block 138 (paragraph)
+#: docs/10.x/eloquent-mutators.md:block 144 (paragraph)
 msgid "A classic example of an inbound only cast is a \"hashing\" cast. For example, we may define a cast that hashes inbound values via a given algorithm:"
 msgstr ""
 
-#: docs/10.x/eloquent-mutators.md:block 139 (code)
+#: docs/10.x/eloquent-mutators.md:block 145 (code)
 msgid ""
 "<?php\n"
 "\n"
@@ -984,7 +1025,7 @@ msgid ""
 "     * Create a new cast class instance.\n"
 "     */\n"
 "    public function __construct(\n"
-"        protected string $algorithm = null,\n"
+"        protected string|null $algorithm = null,\n"
 "    ) {}\n"
 "\n"
 "    /**\n"
@@ -1001,15 +1042,15 @@ msgid ""
 "}\n"
 msgstr ""
 
-#: docs/10.x/eloquent-mutators.md:block 141 (header)
+#: docs/10.x/eloquent-mutators.md:block 147 (header)
 msgid "Cast Parameters"
 msgstr ""
 
-#: docs/10.x/eloquent-mutators.md:block 142 (paragraph)
+#: docs/10.x/eloquent-mutators.md:block 148 (paragraph)
 msgid "When attaching a custom cast to a model, cast parameters may be specified by separating them from the class name using a `:` character and comma-delimiting multiple parameters. The parameters will be passed to the constructor of the cast class:"
 msgstr ""
 
-#: docs/10.x/eloquent-mutators.md:block 143 (code)
+#: docs/10.x/eloquent-mutators.md:block 149 (code)
 msgid ""
 "/**\n"
 " * The attributes that should be cast.\n"
@@ -1021,15 +1062,15 @@ msgid ""
 "];\n"
 msgstr ""
 
-#: docs/10.x/eloquent-mutators.md:block 145 (header)
+#: docs/10.x/eloquent-mutators.md:block 151 (header)
 msgid "Castables"
 msgstr ""
 
-#: docs/10.x/eloquent-mutators.md:block 146 (paragraph)
+#: docs/10.x/eloquent-mutators.md:block 152 (paragraph)
 msgid "You may want to allow your application's value objects to define their own custom cast classes. Instead of attaching the custom cast class to your model, you may alternatively attach a value object class that implements the `Illuminate\\Contracts\\Database\\Eloquent\\Castable` interface:"
 msgstr ""
 
-#: docs/10.x/eloquent-mutators.md:block 147 (code)
+#: docs/10.x/eloquent-mutators.md:block 153 (code)
 msgid ""
 "use App\\Models\\Address;\n"
 "\n"
@@ -1038,11 +1079,11 @@ msgid ""
 "];\n"
 msgstr ""
 
-#: docs/10.x/eloquent-mutators.md:block 148 (paragraph)
+#: docs/10.x/eloquent-mutators.md:block 154 (paragraph)
 msgid "Objects that implement the `Castable` interface must define a `castUsing` method that returns the class name of the custom caster class that is responsible for casting to and from the `Castable` class:"
 msgstr ""
 
-#: docs/10.x/eloquent-mutators.md:block 149 (code)
+#: docs/10.x/eloquent-mutators.md:block 155 (code)
 msgid ""
 "<?php\n"
 "\n"
@@ -1065,11 +1106,11 @@ msgid ""
 "}\n"
 msgstr ""
 
-#: docs/10.x/eloquent-mutators.md:block 150 (paragraph)
+#: docs/10.x/eloquent-mutators.md:block 156 (paragraph)
 msgid "When using `Castable` classes, you may still provide arguments in the `$casts` definition. The arguments will be passed to the `castUsing` method:"
 msgstr ""
 
-#: docs/10.x/eloquent-mutators.md:block 151 (code)
+#: docs/10.x/eloquent-mutators.md:block 157 (code)
 msgid ""
 "use App\\Models\\Address;\n"
 "\n"
@@ -1078,15 +1119,15 @@ msgid ""
 "];\n"
 msgstr ""
 
-#: docs/10.x/eloquent-mutators.md:block 153 (header)
+#: docs/10.x/eloquent-mutators.md:block 159 (header)
 msgid "Castables & Anonymous Cast Classes"
 msgstr ""
 
-#: docs/10.x/eloquent-mutators.md:block 154 (paragraph)
+#: docs/10.x/eloquent-mutators.md:block 160 (paragraph)
 msgid "By combining \"castables\" with PHP's [anonymous classes](https://www.php.net/manual/en/language.oop5.anonymous.php), you may define a value object and its casting logic as a single castable object. To accomplish this, return an anonymous class from your value object's `castUsing` method. The anonymous class should implement the `CastsAttributes` interface:"
 msgstr ""
 
-#: docs/10.x/eloquent-mutators.md:block 155 (code)
+#: docs/10.x/eloquent-mutators.md:block 161 (code)
 msgid ""
 "<?php\n"
 "\n"
@@ -1237,6 +1278,10 @@ msgstr ""
 msgid "{note} Attributes that are `null` will not be cast. In addition, you should never define a cast (or an attribute) that has the same name as a relationship."
 msgstr ""
 
+#: docs/8.x/eloquent-mutators.md:block 42 (paragraph)
+msgid "You may use the `Illuminate\\Database\\Eloquent\\Casts\\AsStringable` cast class to cast a model attribute to a [fluent `Illuminate\\Support\\Stringable` object](/docs/{{version}}/helpers#fluent-strings-method-list):"
+msgstr ""
+
 #: docs/8.x/eloquent-mutators.md:block 67 (code)
 msgid ""
 "/**\n"
@@ -1249,6 +1294,10 @@ msgid ""
 "{\n"
 "    return $date->format('Y-m-d');\n"
 "}\n"
+msgstr ""
+
+#: docs/8.x/eloquent-mutators.md:block 72 (paragraph)
+msgid "By default, the `date` and `datetime` casts will serialize dates to a UTC ISO-8601 date string (`1986-05-28T21:05:54.000000Z`), regardless of the timezone specified in your application's `timezone` configuration option. You are strongly encouraged to always use this serialization format, as well as to store your application's dates in the UTC timezone by not changing your application's `timezone` configuration option from its default `UTC` value. Consistently using the UTC timezone throughout your application will provide the maximum level of interoperability with other date manipulation libraries written in PHP and JavaScript."
 msgstr ""
 
 #: docs/8.x/eloquent-mutators.md:block 76 (quote)
@@ -1631,6 +1680,14 @@ msgid ""
 "}\n"
 msgstr ""
 
+#: docs/9.x/eloquent-mutators.md:block 53 (quote)
+msgid "**Warning** Attributes that are `null` will not be cast. In addition, you should never define a cast (or an attribute) that has the same name as a relationship."
+msgstr ""
+
+#: docs/9.x/eloquent-mutators.md:block 90 (quote)
+msgid "**Warning** Enum casting is only available for PHP 8.1+."
+msgstr ""
+
 #: docs/9.x/eloquent-mutators.md:block 124 (code)
 msgid ""
 "<?php\n"
@@ -1695,19 +1752,11 @@ msgid ""
 "class Hash implements CastsInboundAttributes\n"
 "{\n"
 "    /**\n"
-"     * The hashing algorithm.\n"
-"     *\n"
-"     * @var string\n"
-"     */\n"
-"    protected $algorithm;\n"
-"\n"
-"    /**\n"
 "     * Create a new cast class instance.\n"
 "     */\n"
-"    public function __construct(string $algorithm = null)\n"
-"    {\n"
-"        $this->algorithm = $algorithm;\n"
-"    }\n"
+"    public function __construct(\n"
+"        protected string $algorithm = null,\n"
+"    ) {}\n"
 "\n"
 "    /**\n"
 "     * Prepare the given value for storage.\n"

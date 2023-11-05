@@ -614,18 +614,45 @@ msgid "**Warning** Because PostgreSQL does not support executing the `MAX` funct
 msgstr ""
 
 #: docs/10.x/eloquent-relationships.md:block 83 (header)
-msgid "Advanced Has One Of Many Relationships"
+msgid "Converting \"Many\" Relationships To Has One Relationships"
 msgstr ""
 
 #: docs/10.x/eloquent-relationships.md:block 84 (paragraph)
+msgid "Often, when retrieving a single model using the `latestOfMany`, `oldestOfMany`, or `ofMany` methods, you already have a \"has many\" relationship defined for the same model. For convenience, Laravel allows you to easily convert this relationship into a \"has one\" relationship by invoking the `one` method on the relationship:"
+msgstr ""
+
+#: docs/10.x/eloquent-relationships.md:block 85 (code)
+msgid ""
+"/**\n"
+" * Get the user's orders.\n"
+" */\n"
+"public function orders(): HasMany\n"
+"{\n"
+"    return $this->hasMany(Order::class);\n"
+"}\n"
+"\n"
+"/**\n"
+" * Get the user's largest order.\n"
+" */\n"
+"public function largestOrder(): HasOne\n"
+"{\n"
+"    return $this->orders()->one()->ofMany('price', 'max');\n"
+"}\n"
+msgstr ""
+
+#: docs/10.x/eloquent-relationships.md:block 87 (header)
+msgid "Advanced Has One Of Many Relationships"
+msgstr ""
+
+#: docs/10.x/eloquent-relationships.md:block 88 (paragraph)
 msgid "It is possible to construct more advanced \"has one of many\" relationships. For example, a `Product` model may have many associated `Price` models that are retained in the system even after new pricing is published. In addition, new pricing data for the product may be able to be published in advance to take effect at a future date via a `published_at` column."
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 85 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 89 (paragraph)
 msgid "So, in summary, we need to retrieve the latest published pricing where the published date is not in the future. In addition, if two prices have the same published date, we will prefer the price with the greatest ID. To accomplish this, we must pass an array to the `ofMany` method that contains the sortable columns which determine the latest price. In addition, a closure will be provided as the second argument to the `ofMany` method. This closure will be responsible for adding additional publish date constraints to the relationship query:"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 86 (code)
+#: docs/10.x/eloquent-relationships.md:block 90 (code)
 msgid ""
 "/**\n"
 " * Get the current pricing for the product.\n"
@@ -641,19 +668,19 @@ msgid ""
 "}\n"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 88 (header)
+#: docs/10.x/eloquent-relationships.md:block 92 (header)
 msgid "Has One Through"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 89 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 93 (paragraph)
 msgid "The \"has-one-through\" relationship defines a one-to-one relationship with another model. However, this relationship indicates that the declaring model can be matched with one instance of another model by proceeding *through* a third model."
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 90 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 94 (paragraph)
 msgid "For example, in a vehicle repair shop application, each `Mechanic` model may be associated with one `Car` model, and each `Car` model may be associated with one `Owner` model. While the mechanic and the owner have no direct relationship within the database, the mechanic can access the owner *through* the `Car` model. Let's look at the tables necessary to define this relationship:"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 91 (code)
+#: docs/10.x/eloquent-relationships.md:block 95 (code)
 msgid ""
 "mechanics\n"
 "    id - integer\n"
@@ -670,11 +697,11 @@ msgid ""
 "    car_id - integer\n"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 92 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 96 (paragraph)
 msgid "Now that we have examined the table structure for the relationship, let's define the relationship on the `Mechanic` model:"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 93 (code)
+#: docs/10.x/eloquent-relationships.md:block 97 (code)
 msgid ""
 "<?php\n"
 "\n"
@@ -695,15 +722,15 @@ msgid ""
 "}\n"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 94 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 98 (paragraph)
 msgid "The first argument passed to the `hasOneThrough` method is the name of the final model we wish to access, while the second argument is the name of the intermediate model."
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 95 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 99 (paragraph)
 msgid "Or, if the relevant relationships have already been defined on all of the models involved in the relationship, you may fluently define a \"has-one-through\" relationship by invoking the `through` method and supplying the names of those relationships. For example, if the `Mechanic` model has a `cars` relationship and the `Car` model has an `owner` relationship, you may define a \"has-one-through\" relationship connecting the mechanic and the owner like so:"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 96 (code)
+#: docs/10.x/eloquent-relationships.md:block 100 (code)
 msgid ""
 "// String based syntax...\n"
 "return $this->through('cars')->has('owner');\n"
@@ -712,15 +739,15 @@ msgid ""
 "return $this->throughCars()->hasOwner();\n"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 98 (header)
+#: docs/10.x/eloquent-relationships.md:block 102 (header)
 msgid "Key Conventions"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 99 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 103 (paragraph)
 msgid "Typical Eloquent foreign key conventions will be used when performing the relationship's queries. If you would like to customize the keys of the relationship, you may pass them as the third and fourth arguments to the `hasOneThrough` method. The third argument is the name of the foreign key on the intermediate model. The fourth argument is the name of the foreign key on the final model. The fifth argument is the local key, while the sixth argument is the local key of the intermediate model:"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 100 (code)
+#: docs/10.x/eloquent-relationships.md:block 104 (code)
 msgid ""
 "class Mechanic extends Model\n"
 "{\n"
@@ -741,19 +768,19 @@ msgid ""
 "}\n"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 101 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 105 (paragraph)
 msgid "Or, as discussed earlier, if the relevant relationships have already been defined on all of the models involved in the relationship, you may fluently define a \"has-one-through\" relationship by invoking the `through` method and supplying the names of those relationships. This approach offers the advantage of reusing the key conventions already defined on the existing relationships:"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 104 (header)
+#: docs/10.x/eloquent-relationships.md:block 108 (header)
 msgid "Has Many Through"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 105 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 109 (paragraph)
 msgid "The \"has-many-through\" relationship provides a convenient way to access distant relations via an intermediate relation. For example, let's assume we are building a deployment platform like [Laravel Vapor](https://vapor.laravel.com). A `Project` model might access many `Deployment` models through an intermediate `Environment` model. Using this example, you could easily gather all deployments for a given project. Let's look at the tables required to define this relationship:"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 106 (code)
+#: docs/10.x/eloquent-relationships.md:block 110 (code)
 msgid ""
 "projects\n"
 "    id - integer\n"
@@ -770,11 +797,11 @@ msgid ""
 "    commit_hash - string\n"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 107 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 111 (paragraph)
 msgid "Now that we have examined the table structure for the relationship, let's define the relationship on the `Project` model:"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 108 (code)
+#: docs/10.x/eloquent-relationships.md:block 112 (code)
 msgid ""
 "<?php\n"
 "\n"
@@ -795,15 +822,15 @@ msgid ""
 "}\n"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 109 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 113 (paragraph)
 msgid "The first argument passed to the `hasManyThrough` method is the name of the final model we wish to access, while the second argument is the name of the intermediate model."
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 110 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 114 (paragraph)
 msgid "Or, if the relevant relationships have already been defined on all of the models involved in the relationship, you may fluently define a \"has-many-through\" relationship by invoking the `through` method and supplying the names of those relationships. For example, if the `Project` model has a `environments` relationship and the `Environment` model has a `deployments` relationship, you may define a \"has-many-through\" relationship connecting the project and the deployments like so:"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 111 (code)
+#: docs/10.x/eloquent-relationships.md:block 115 (code)
 msgid ""
 "// String based syntax...\n"
 "return $this->through('environments')->has('deployments');\n"
@@ -812,15 +839,15 @@ msgid ""
 "return $this->throughEnvironments()->hasDeployments();\n"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 112 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 116 (paragraph)
 msgid "Though the `Deployment` model's table does not contain a `project_id` column, the `hasManyThrough` relation provides access to a project's deployments via `$project->deployments`. To retrieve these models, Eloquent inspects the `project_id` column on the intermediate `Environment` model's table. After finding the relevant environment IDs, they are used to query the `Deployment` model's table."
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 115 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 119 (paragraph)
 msgid "Typical Eloquent foreign key conventions will be used when performing the relationship's queries. If you would like to customize the keys of the relationship, you may pass them as the third and fourth arguments to the `hasManyThrough` method. The third argument is the name of the foreign key on the intermediate model. The fourth argument is the name of the foreign key on the final model. The fifth argument is the local key, while the sixth argument is the local key of the intermediate model:"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 116 (code)
+#: docs/10.x/eloquent-relationships.md:block 120 (code)
 msgid ""
 "class Project extends Model\n"
 "{\n"
@@ -838,31 +865,31 @@ msgid ""
 "}\n"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 117 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 121 (paragraph)
 msgid "Or, as discussed earlier, if the relevant relationships have already been defined on all of the models involved in the relationship, you may fluently define a \"has-many-through\" relationship by invoking the `through` method and supplying the names of those relationships. This approach offers the advantage of reusing the key conventions already defined on the existing relationships:"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 120 (header)
+#: docs/10.x/eloquent-relationships.md:block 124 (header)
 msgid "Many To Many Relationships"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 121 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 125 (paragraph)
 msgid "Many-to-many relations are slightly more complicated than `hasOne` and `hasMany` relationships. An example of a many-to-many relationship is a user that has many roles and those roles are also shared by other users in the application. For example, a user may be assigned the role of \"Author\" and \"Editor\"; however, those roles may also be assigned to other users as well. So, a user has many roles and a role has many users."
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 123 (header)
+#: docs/10.x/eloquent-relationships.md:block 127 (header)
 msgid "Table Structure"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 124 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 128 (paragraph)
 msgid "To define this relationship, three database tables are needed: `users`, `roles`, and `role_user`. The `role_user` table is derived from the alphabetical order of the related model names and contains `user_id` and `role_id` columns. This table is used as an intermediate table linking the users and roles."
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 125 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 129 (paragraph)
 msgid "Remember, since a role can belong to many users, we cannot simply place a `user_id` column on the `roles` table. This would mean that a role could only belong to a single user. In order to provide support for roles being assigned to multiple users, the `role_user` table is needed. We can summarize the relationship's table structure like so:"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 126 (code)
+#: docs/10.x/eloquent-relationships.md:block 130 (code)
 msgid ""
 "users\n"
 "    id - integer\n"
@@ -877,15 +904,15 @@ msgid ""
 "    role_id - integer\n"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 128 (header)
+#: docs/10.x/eloquent-relationships.md:block 132 (header)
 msgid "Model Structure"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 129 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 133 (paragraph)
 msgid "Many-to-many relationships are defined by writing a method that returns the result of the `belongsToMany` method. The `belongsToMany` method is provided by the `Illuminate\\Database\\Eloquent\\Model` base class that is used by all of your application's Eloquent models. For example, let's define a `roles` method on our `User` model. The first argument passed to this method is the name of the related model class:"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 130 (code)
+#: docs/10.x/eloquent-relationships.md:block 134 (code)
 msgid ""
 "<?php\n"
 "\n"
@@ -906,11 +933,11 @@ msgid ""
 "}\n"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 131 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 135 (paragraph)
 msgid "Once the relationship is defined, you may access the user's roles using the `roles` dynamic relationship property:"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 132 (code)
+#: docs/10.x/eloquent-relationships.md:block 136 (code)
 msgid ""
 "use App\\Models\\User;\n"
 "\n"
@@ -921,35 +948,35 @@ msgid ""
 "}\n"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 133 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 137 (paragraph)
 msgid "Since all relationships also serve as query builders, you may add further constraints to the relationship query by calling the `roles` method and continuing to chain conditions onto the query:"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 134 (code)
+#: docs/10.x/eloquent-relationships.md:block 138 (code)
 msgid "$roles = User::find(1)->roles()->orderBy('name')->get();\n"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 135 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 139 (paragraph)
 msgid "To determine the table name of the relationship's intermediate table, Eloquent will join the two related model names in alphabetical order. However, you are free to override this convention. You may do so by passing a second argument to the `belongsToMany` method:"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 136 (code)
+#: docs/10.x/eloquent-relationships.md:block 140 (code)
 msgid "return $this->belongsToMany(Role::class, 'role_user');\n"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 137 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 141 (paragraph)
 msgid "In addition to customizing the name of the intermediate table, you may also customize the column names of the keys on the table by passing additional arguments to the `belongsToMany` method. The third argument is the foreign key name of the model on which you are defining the relationship, while the fourth argument is the foreign key name of the model that you are joining to:"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 138 (code)
+#: docs/10.x/eloquent-relationships.md:block 142 (code)
 msgid "return $this->belongsToMany(Role::class, 'role_user', 'user_id', 'role_id');\n"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 141 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 145 (paragraph)
 msgid "To define the \"inverse\" of a many-to-many relationship, you should define a method on the related model which also returns the result of the `belongsToMany` method. To complete our user / role example, let's define the `users` method on the `Role` model:"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 142 (code)
+#: docs/10.x/eloquent-relationships.md:block 146 (code)
 msgid ""
 "<?php\n"
 "\n"
@@ -970,19 +997,19 @@ msgid ""
 "}\n"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 143 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 147 (paragraph)
 msgid "As you can see, the relationship is defined exactly the same as its `User` model counterpart with the exception of referencing the `App\\Models\\User` model. Since we're reusing the `belongsToMany` method, all of the usual table and key customization options are available when defining the \"inverse\" of many-to-many relationships."
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 145 (header)
+#: docs/10.x/eloquent-relationships.md:block 149 (header)
 msgid "Retrieving Intermediate Table Columns"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 146 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 150 (paragraph)
 msgid "As you have already learned, working with many-to-many relations requires the presence of an intermediate table. Eloquent provides some very helpful ways of interacting with this table. For example, let's assume our `User` model has many `Role` models that it is related to. After accessing this relationship, we may access the intermediate table using the `pivot` attribute on the models:"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 147 (code)
+#: docs/10.x/eloquent-relationships.md:block 151 (code)
 msgid ""
 "use App\\Models\\User;\n"
 "\n"
@@ -993,54 +1020,54 @@ msgid ""
 "}\n"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 148 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 152 (paragraph)
 msgid "Notice that each `Role` model we retrieve is automatically assigned a `pivot` attribute. This attribute contains a model representing the intermediate table."
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 149 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 153 (paragraph)
 msgid "By default, only the model keys will be present on the `pivot` model. If your intermediate table contains extra attributes, you must specify them when defining the relationship:"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 150 (code)
+#: docs/10.x/eloquent-relationships.md:block 154 (code)
 msgid "return $this->belongsToMany(Role::class)->withPivot('active', 'created_by');\n"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 151 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 155 (paragraph)
 msgid "If you would like your intermediate table to have `created_at` and `updated_at` timestamps that are automatically maintained by Eloquent, call the `withTimestamps` method when defining the relationship:"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 152 (code)
+#: docs/10.x/eloquent-relationships.md:block 156 (code)
 msgid "return $this->belongsToMany(Role::class)->withTimestamps();\n"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 153 (quote)
+#: docs/10.x/eloquent-relationships.md:block 157 (quote)
 msgid "**Warning** Intermediate tables that utilize Eloquent's automatically maintained timestamps are required to have both `created_at` and `updated_at` timestamp columns."
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 155 (header)
+#: docs/10.x/eloquent-relationships.md:block 159 (header)
 msgid "Customizing The `pivot` Attribute Name"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 156 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 160 (paragraph)
 msgid "As noted previously, attributes from the intermediate table may be accessed on models via the `pivot` attribute. However, you are free to customize the name of this attribute to better reflect its purpose within your application."
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 157 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 161 (paragraph)
 msgid "For example, if your application contains users that may subscribe to podcasts, you likely have a many-to-many relationship between users and podcasts. If this is the case, you may wish to rename your intermediate table attribute to `subscription` instead of `pivot`. This can be done using the `as` method when defining the relationship:"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 158 (code)
+#: docs/10.x/eloquent-relationships.md:block 162 (code)
 msgid ""
 "return $this->belongsToMany(Podcast::class)\n"
 "                ->as('subscription')\n"
 "                ->withTimestamps();\n"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 159 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 163 (paragraph)
 msgid "Once the custom intermediate table attribute has been specified, you may access the intermediate table data using the customized name:"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 160 (code)
+#: docs/10.x/eloquent-relationships.md:block 164 (code)
 msgid ""
 "$users = User::with('podcasts')->get();\n"
 "\n"
@@ -1049,15 +1076,15 @@ msgid ""
 "}\n"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 162 (header)
+#: docs/10.x/eloquent-relationships.md:block 166 (header)
 msgid "Filtering Queries Via Intermediate Table Columns"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 163 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 167 (paragraph)
 msgid "You can also filter the results returned by `belongsToMany` relationship queries using the `wherePivot`, `wherePivotIn`, `wherePivotNotIn`, `wherePivotBetween`, `wherePivotNotBetween`, `wherePivotNull`, and `wherePivotNotNull` methods when defining the relationship:"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 164 (code)
+#: docs/10.x/eloquent-relationships.md:block 168 (code)
 msgid ""
 "return $this->belongsToMany(Role::class)\n"
 "                ->wherePivot('approved', 1);\n"
@@ -1085,34 +1112,34 @@ msgid ""
 "                ->wherePivotNotNull('expired_at');\n"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 166 (header)
+#: docs/10.x/eloquent-relationships.md:block 170 (header)
 msgid "Ordering Queries Via Intermediate Table Columns"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 167 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 171 (paragraph)
 msgid "You can order the results returned by `belongsToMany` relationship queries using the `orderByPivot` method. In the following example, we will retrieve all of the latest badges for the user:"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 168 (code)
+#: docs/10.x/eloquent-relationships.md:block 172 (code)
 msgid ""
 "return $this->belongsToMany(Badge::class)\n"
 "                ->where('rank', 'gold')\n"
 "                ->orderByPivot('created_at', 'desc');\n"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 170 (header)
+#: docs/10.x/eloquent-relationships.md:block 174 (header)
 msgid "Defining Custom Intermediate Table Models"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 171 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 175 (paragraph)
 msgid "If you would like to define a custom model to represent the intermediate table of your many-to-many relationship, you may call the `using` method when defining the relationship. Custom pivot models give you the opportunity to define additional behavior on the pivot model, such as methods and casts."
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 172 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 176 (paragraph)
 msgid "Custom many-to-many pivot models should extend the `Illuminate\\Database\\Eloquent\\Relations\\Pivot` class while custom polymorphic many-to-many pivot models should extend the `Illuminate\\Database\\Eloquent\\Relations\\MorphPivot` class. For example, we may define a `Role` model which uses a custom `RoleUser` pivot model:"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 173 (code)
+#: docs/10.x/eloquent-relationships.md:block 177 (code)
 msgid ""
 "<?php\n"
 "\n"
@@ -1133,11 +1160,11 @@ msgid ""
 "}\n"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 174 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 178 (paragraph)
 msgid "When defining the `RoleUser` model, you should extend the `Illuminate\\Database\\Eloquent\\Relations\\Pivot` class:"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 175 (code)
+#: docs/10.x/eloquent-relationships.md:block 179 (code)
 msgid ""
 "<?php\n"
 "\n"
@@ -1151,19 +1178,19 @@ msgid ""
 "}\n"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 176 (quote)
+#: docs/10.x/eloquent-relationships.md:block 180 (quote)
 msgid "**Warning** Pivot models may not use the `SoftDeletes` trait. If you need to soft delete pivot records consider converting your pivot model to an actual Eloquent model."
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 178 (header)
+#: docs/10.x/eloquent-relationships.md:block 182 (header)
 msgid "Custom Pivot Models And Incrementing IDs"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 179 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 183 (paragraph)
 msgid "If you have defined a many-to-many relationship that uses a custom pivot model, and that pivot model has an auto-incrementing primary key, you should ensure your custom pivot model class defines an `incrementing` property that is set to `true`."
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 180 (code)
+#: docs/10.x/eloquent-relationships.md:block 184 (code)
 msgid ""
 "/**\n"
 " * Indicates if the IDs are auto-incrementing.\n"
@@ -1173,23 +1200,23 @@ msgid ""
 "public $incrementing = true;\n"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 182 (header)
+#: docs/10.x/eloquent-relationships.md:block 186 (header)
 msgid "Polymorphic Relationships"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 183 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 187 (paragraph)
 msgid "A polymorphic relationship allows the child model to belong to more than one type of model using a single association. For example, imagine you are building an application that allows users to share blog posts and videos. In such an application, a `Comment` model might belong to both the `Post` and `Video` models."
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 185 (header)
+#: docs/10.x/eloquent-relationships.md:block 189 (header)
 msgid "One To One (Polymorphic)"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 188 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 192 (paragraph)
 msgid "A one-to-one polymorphic relation is similar to a typical one-to-one relation; however, the child model can belong to more than one type of model using a single association. For example, a blog `Post` and a `User` may share a polymorphic relation to an `Image` model. Using a one-to-one polymorphic relation allows you to have a single table of unique images that may be associated with posts and users. First, let's examine the table structure:"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 189 (code)
+#: docs/10.x/eloquent-relationships.md:block 193 (code)
 msgid ""
 "posts\n"
 "    id - integer\n"
@@ -1206,15 +1233,15 @@ msgid ""
 "    imageable_type - string\n"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 190 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 194 (paragraph)
 msgid "Note the `imageable_id` and `imageable_type` columns on the `images` table. The `imageable_id` column will contain the ID value of the post or user, while the `imageable_type` column will contain the class name of the parent model. The `imageable_type` column is used by Eloquent to determine which \"type\" of parent model to return when accessing the `imageable` relation. In this case, the column would contain either `App\\Models\\Post` or `App\\Models\\User`."
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 193 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 197 (paragraph)
 msgid "Next, let's examine the model definitions needed to build this relationship:"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 194 (code)
+#: docs/10.x/eloquent-relationships.md:block 198 (code)
 msgid ""
 "<?php\n"
 "\n"
@@ -1263,15 +1290,15 @@ msgid ""
 "}\n"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 196 (header)
+#: docs/10.x/eloquent-relationships.md:block 200 (header)
 msgid "Retrieving The Relationship"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 197 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 201 (paragraph)
 msgid "Once your database table and models are defined, you may access the relationships via your models. For example, to retrieve the image for a post, we can access the `image` dynamic relationship property:"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 198 (code)
+#: docs/10.x/eloquent-relationships.md:block 202 (code)
 msgid ""
 "use App\\Models\\Post;\n"
 "\n"
@@ -1280,11 +1307,11 @@ msgid ""
 "$image = $post->image;\n"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 199 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 203 (paragraph)
 msgid "You may retrieve the parent of the polymorphic model by accessing the name of the method that performs the call to `morphTo`. In this case, that is the `imageable` method on the `Image` model. So, we will access that method as a dynamic relationship property:"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 200 (code)
+#: docs/10.x/eloquent-relationships.md:block 204 (code)
 msgid ""
 "use App\\Models\\Image;\n"
 "\n"
@@ -1293,15 +1320,15 @@ msgid ""
 "$imageable = $image->imageable;\n"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 201 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 205 (paragraph)
 msgid "The `imageable` relation on the `Image` model will return either a `Post` or `User` instance, depending on which type of model owns the image."
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 204 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 208 (paragraph)
 msgid "If necessary, you may specify the name of the \"id\" and \"type\" columns utilized by your polymorphic child model. If you do so, ensure that you always pass the name of the relationship as the first argument to the `morphTo` method. Typically, this value should match the method name, so you may use PHP's `__FUNCTION__` constant:"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 205 (code)
+#: docs/10.x/eloquent-relationships.md:block 209 (code)
 msgid ""
 "/**\n"
 " * Get the model that the image belongs to.\n"
@@ -1312,15 +1339,15 @@ msgid ""
 "}\n"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 207 (header)
+#: docs/10.x/eloquent-relationships.md:block 211 (header)
 msgid "One To Many (Polymorphic)"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 210 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 214 (paragraph)
 msgid "A one-to-many polymorphic relation is similar to a typical one-to-many relation; however, the child model can belong to more than one type of model using a single association. For example, imagine users of your application can \"comment\" on posts and videos. Using polymorphic relationships, you may use a single `comments` table to contain comments for both posts and videos. First, let's examine the table structure required to build this relationship:"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 211 (code)
+#: docs/10.x/eloquent-relationships.md:block 215 (code)
 msgid ""
 "posts\n"
 "    id - integer\n"
@@ -1339,7 +1366,7 @@ msgid ""
 "    commentable_type - string\n"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 215 (code)
+#: docs/10.x/eloquent-relationships.md:block 219 (code)
 msgid ""
 "<?php\n"
 "\n"
@@ -1388,11 +1415,11 @@ msgid ""
 "}\n"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 218 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 222 (paragraph)
 msgid "Once your database table and models are defined, you may access the relationships via your model's dynamic relationship properties. For example, to access all of the comments for a post, we can use the `comments` dynamic property:"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 219 (code)
+#: docs/10.x/eloquent-relationships.md:block 223 (code)
 msgid ""
 "use App\\Models\\Post;\n"
 "\n"
@@ -1403,11 +1430,11 @@ msgid ""
 "}\n"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 220 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 224 (paragraph)
 msgid "You may also retrieve the parent of a polymorphic child model by accessing the name of the method that performs the call to `morphTo`. In this case, that is the `commentable` method on the `Comment` model. So, we will access that method as a dynamic relationship property in order to access the comment's parent model:"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 221 (code)
+#: docs/10.x/eloquent-relationships.md:block 225 (code)
 msgid ""
 "use App\\Models\\Comment;\n"
 "\n"
@@ -1416,19 +1443,19 @@ msgid ""
 "$commentable = $comment->commentable;\n"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 222 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 226 (paragraph)
 msgid "The `commentable` relation on the `Comment` model will return either a `Post` or `Video` instance, depending on which type of model is the comment's parent."
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 224 (header)
+#: docs/10.x/eloquent-relationships.md:block 228 (header)
 msgid "One Of Many (Polymorphic)"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 225 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 229 (paragraph)
 msgid "Sometimes a model may have many related models, yet you want to easily retrieve the \"latest\" or \"oldest\" related model of the relationship. For example, a `User` model may be related to many `Image` models, but you want to define a convenient way to interact with the most recent image the user has uploaded. You may accomplish this using the `morphOne` relationship type combined with the `ofMany` methods:"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 226 (code)
+#: docs/10.x/eloquent-relationships.md:block 230 (code)
 msgid ""
 "/**\n"
 " * Get the user's most recent image.\n"
@@ -1439,7 +1466,7 @@ msgid ""
 "}\n"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 228 (code)
+#: docs/10.x/eloquent-relationships.md:block 232 (code)
 msgid ""
 "/**\n"
 " * Get the user's oldest image.\n"
@@ -1450,11 +1477,11 @@ msgid ""
 "}\n"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 230 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 234 (paragraph)
 msgid "For example, using the `ofMany` method, you may retrieve the user's most \"liked\" image. The `ofMany` method accepts the sortable column as its first argument and which aggregate function (`min` or `max`) to apply when querying for the related model:"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 231 (code)
+#: docs/10.x/eloquent-relationships.md:block 235 (code)
 msgid ""
 "/**\n"
 " * Get the user's most popular image.\n"
@@ -1465,19 +1492,19 @@ msgid ""
 "}\n"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 232 (quote)
+#: docs/10.x/eloquent-relationships.md:block 236 (quote)
 msgid "**Note** It is possible to construct more advanced \"one of many\" relationships. For more information, please consult the [has one of many documentation](#advanced-has-one-of-many-relationships)."
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 234 (header)
+#: docs/10.x/eloquent-relationships.md:block 238 (header)
 msgid "Many To Many (Polymorphic)"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 237 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 241 (paragraph)
 msgid "Many-to-many polymorphic relations are slightly more complicated than \"morph one\" and \"morph many\" relationships. For example, a `Post` model and `Video` model could share a polymorphic relation to a `Tag` model. Using a many-to-many polymorphic relation in this situation would allow your application to have a single table of unique tags that may be associated with posts or videos. First, let's examine the table structure required to build this relationship:"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 238 (code)
+#: docs/10.x/eloquent-relationships.md:block 242 (code)
 msgid ""
 "posts\n"
 "    id - integer\n"
@@ -1497,19 +1524,19 @@ msgid ""
 "    taggable_type - string\n"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 239 (quote)
+#: docs/10.x/eloquent-relationships.md:block 243 (quote)
 msgid "**Note** Before diving into polymorphic many-to-many relationships, you may benefit from reading the documentation on typical [many-to-many relationships](#many-to-many)."
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 242 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 246 (paragraph)
 msgid "Next, we're ready to define the relationships on the models. The `Post` and `Video` models will both contain a `tags` method that calls the `morphToMany` method provided by the base Eloquent model class."
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 243 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 247 (paragraph)
 msgid "The `morphToMany` method accepts the name of the related model as well as the \"relationship name\". Based on the name we assigned to our intermediate table name and the keys it contains, we will refer to the relationship as \"taggable\":"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 244 (code)
+#: docs/10.x/eloquent-relationships.md:block 248 (code)
 msgid ""
 "<?php\n"
 "\n"
@@ -1530,15 +1557,15 @@ msgid ""
 "}\n"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 247 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 251 (paragraph)
 msgid "Next, on the `Tag` model, you should define a method for each of its possible parent models. So, in this example, we will define a `posts` method and a `videos` method. Both of these methods should return the result of the `morphedByMany` method."
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 248 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 252 (paragraph)
 msgid "The `morphedByMany` method accepts the name of the related model as well as the \"relationship name\". Based on the name we assigned to our intermediate table name and the keys it contains, we will refer to the relationship as \"taggable\":"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 249 (code)
+#: docs/10.x/eloquent-relationships.md:block 253 (code)
 msgid ""
 "<?php\n"
 "\n"
@@ -1567,11 +1594,11 @@ msgid ""
 "}\n"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 252 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 256 (paragraph)
 msgid "Once your database table and models are defined, you may access the relationships via your models. For example, to access all of the tags for a post, you may use the `tags` dynamic relationship property:"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 253 (code)
+#: docs/10.x/eloquent-relationships.md:block 257 (code)
 msgid ""
 "use App\\Models\\Post;\n"
 "\n"
@@ -1582,11 +1609,11 @@ msgid ""
 "}\n"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 254 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 258 (paragraph)
 msgid "You may retrieve the parent of a polymorphic relation from the polymorphic child model by accessing the name of the method that performs the call to `morphedByMany`. In this case, that is the `posts` or `videos` methods on the `Tag` model:"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 255 (code)
+#: docs/10.x/eloquent-relationships.md:block 259 (code)
 msgid ""
 "use App\\Models\\Tag;\n"
 "\n"
@@ -1601,19 +1628,19 @@ msgid ""
 "}\n"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 257 (header)
+#: docs/10.x/eloquent-relationships.md:block 261 (header)
 msgid "Custom Polymorphic Types"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 258 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 262 (paragraph)
 msgid "By default, Laravel will use the fully qualified class name to store the \"type\" of the related model. For instance, given the one-to-many relationship example above where a `Comment` model may belong to a `Post` or a `Video` model, the default `commentable_type` would be either `App\\Models\\Post` or `App\\Models\\Video`, respectively. However, you may wish to decouple these values from your application's internal structure."
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 259 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 263 (paragraph)
 msgid "For example, instead of using the model names as the \"type\", we may use simple strings such as `post` and `video`. By doing so, the polymorphic \"type\" column values in our database will remain valid even if the models are renamed:"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 260 (code)
+#: docs/10.x/eloquent-relationships.md:block 264 (code)
 msgid ""
 "use Illuminate\\Database\\Eloquent\\Relations\\Relation;\n"
 "\n"
@@ -1623,15 +1650,15 @@ msgid ""
 "]);\n"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 261 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 265 (paragraph)
 msgid "You may call the `enforceMorphMap` method in the `boot` method of your `App\\Providers\\AppServiceProvider` class or create a separate service provider if you wish."
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 262 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 266 (paragraph)
 msgid "You may determine the morph alias of a given model at runtime using the model's `getMorphClass` method. Conversely, you may determine the fully-qualified class name associated with a morph alias using the `Relation::getMorphedModel` method:"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 263 (code)
+#: docs/10.x/eloquent-relationships.md:block 267 (code)
 msgid ""
 "use Illuminate\\Database\\Eloquent\\Relations\\Relation;\n"
 "\n"
@@ -1640,23 +1667,23 @@ msgid ""
 "$class = Relation::getMorphedModel($alias);\n"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 264 (quote)
+#: docs/10.x/eloquent-relationships.md:block 268 (quote)
 msgid "**Warning** When adding a \"morph map\" to your existing application, every morphable `*_type` column value in your database that still contains a fully-qualified class will need to be converted to its \"map\" name."
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 266 (header)
+#: docs/10.x/eloquent-relationships.md:block 270 (header)
 msgid "Dynamic Relationships"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 267 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 271 (paragraph)
 msgid "You may use the `resolveRelationUsing` method to define relations between Eloquent models at runtime. While not typically recommended for normal application development, this may occasionally be useful when developing Laravel packages."
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 268 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 272 (paragraph)
 msgid "The `resolveRelationUsing` method accepts the desired relationship name as its first argument. The second argument passed to the method should be a closure that accepts the model instance and returns a valid Eloquent relationship definition. Typically, you should configure dynamic relationships within the boot method of a [service provider](/docs/{{version}}/providers):"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 269 (code)
+#: docs/10.x/eloquent-relationships.md:block 273 (code)
 msgid ""
 "use App\\Models\\Order;\n"
 "use App\\Models\\Customer;\n"
@@ -1666,23 +1693,23 @@ msgid ""
 "});\n"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 270 (quote)
+#: docs/10.x/eloquent-relationships.md:block 274 (quote)
 msgid "**Warning** When defining dynamic relationships, always provide explicit key name arguments to the Eloquent relationship methods."
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 272 (header)
+#: docs/10.x/eloquent-relationships.md:block 276 (header)
 msgid "Querying Relations"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 273 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 277 (paragraph)
 msgid "Since all Eloquent relationships are defined via methods, you may call those methods to obtain an instance of the relationship without actually executing a query to load the related models. In addition, all types of Eloquent relationships also serve as [query builders](/docs/{{version}}/queries), allowing you to continue to chain constraints onto the relationship query before finally executing the SQL query against your database."
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 274 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 278 (paragraph)
 msgid "For example, imagine a blog application in which a `User` model has many associated `Post` models:"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 275 (code)
+#: docs/10.x/eloquent-relationships.md:block 279 (code)
 msgid ""
 "<?php\n"
 "\n"
@@ -1703,11 +1730,11 @@ msgid ""
 "}\n"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 276 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 280 (paragraph)
 msgid "You may query the `posts` relationship and add additional constraints to the relationship like so:"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 277 (code)
+#: docs/10.x/eloquent-relationships.md:block 281 (code)
 msgid ""
 "use App\\Models\\User;\n"
 "\n"
@@ -1716,19 +1743,19 @@ msgid ""
 "$user->posts()->where('active', 1)->get();\n"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 278 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 282 (paragraph)
 msgid "You are able to use any of the Laravel [query builder's](/docs/{{version}}/queries) methods on the relationship, so be sure to explore the query builder documentation to learn about all of the methods that are available to you."
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 280 (header)
+#: docs/10.x/eloquent-relationships.md:block 284 (header)
 msgid "Chaining `orWhere` Clauses After Relationships"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 281 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 285 (paragraph)
 msgid "As demonstrated in the example above, you are free to add additional constraints to relationships when querying them. However, use caution when chaining `orWhere` clauses onto a relationship, as the `orWhere` clauses will be logically grouped at the same level as the relationship constraint:"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 282 (code)
+#: docs/10.x/eloquent-relationships.md:block 286 (code)
 msgid ""
 "$user->posts()\n"
 "        ->where('active', 1)\n"
@@ -1736,22 +1763,22 @@ msgid ""
 "        ->get();\n"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 283 (paragraph)
-msgid "The example above will generate the following SQL. As you can see, the `or` clause instructs the query to return *any* user with greater than 100 votes. The query is no longer constrained to a specific user:"
+#: docs/10.x/eloquent-relationships.md:block 287 (paragraph)
+msgid "The example above will generate the following SQL. As you can see, the `or` clause instructs the query to return *any* post with greater than 100 votes. The query is no longer constrained to a specific user:"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 284 (code)
+#: docs/10.x/eloquent-relationships.md:block 288 (code)
 msgid ""
 "select *\n"
 "from posts\n"
 "where user_id = ? and active = 1 or votes >= 100\n"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 285 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 289 (paragraph)
 msgid "In most situations, you should use [logical groups](/docs/{{version}}/queries#logical-grouping) to group the conditional checks between parentheses:"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 286 (code)
+#: docs/10.x/eloquent-relationships.md:block 290 (code)
 msgid ""
 "use Illuminate\\Database\\Eloquent\\Builder;\n"
 "\n"
@@ -1763,26 +1790,26 @@ msgid ""
 "        ->get();\n"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 287 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 291 (paragraph)
 msgid "The example above will produce the following SQL. Note that the logical grouping has properly grouped the constraints and the query remains constrained to a specific user:"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 288 (code)
+#: docs/10.x/eloquent-relationships.md:block 292 (code)
 msgid ""
 "select *\n"
 "from posts\n"
 "where user_id = ? and (active = 1 or votes >= 100)\n"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 290 (header)
+#: docs/10.x/eloquent-relationships.md:block 294 (header)
 msgid "Relationship Methods Vs. Dynamic Properties"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 291 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 295 (paragraph)
 msgid "If you do not need to add additional constraints to an Eloquent relationship query, you may access the relationship as if it were a property. For example, continuing to use our `User` and `Post` example models, we may access all of a user's posts like so:"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 292 (code)
+#: docs/10.x/eloquent-relationships.md:block 296 (code)
 msgid ""
 "use App\\Models\\User;\n"
 "\n"
@@ -1793,19 +1820,19 @@ msgid ""
 "}\n"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 293 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 297 (paragraph)
 msgid "Dynamic relationship properties perform \"lazy loading\", meaning they will only load their relationship data when you actually access them. Because of this, developers often use [eager loading](#eager-loading) to pre-load relationships they know will be accessed after loading the model. Eager loading provides a significant reduction in SQL queries that must be executed to load a model's relations."
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 295 (header)
+#: docs/10.x/eloquent-relationships.md:block 299 (header)
 msgid "Querying Relationship Existence"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 296 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 300 (paragraph)
 msgid "When retrieving model records, you may wish to limit your results based on the existence of a relationship. For example, imagine you want to retrieve all blog posts that have at least one comment. To do so, you may pass the name of the relationship to the `has` and `orHas` methods:"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 297 (code)
+#: docs/10.x/eloquent-relationships.md:block 301 (code)
 msgid ""
 "use App\\Models\\Post;\n"
 "\n"
@@ -1813,31 +1840,31 @@ msgid ""
 "$posts = Post::has('comments')->get();\n"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 298 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 302 (paragraph)
 msgid "You may also specify an operator and count value to further customize the query:"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 299 (code)
+#: docs/10.x/eloquent-relationships.md:block 303 (code)
 msgid ""
 "// Retrieve all posts that have three or more comments...\n"
 "$posts = Post::has('comments', '>=', 3)->get();\n"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 300 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 304 (paragraph)
 msgid "Nested `has` statements may be constructed using \"dot\" notation. For example, you may retrieve all posts that have at least one comment that has at least one image:"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 301 (code)
+#: docs/10.x/eloquent-relationships.md:block 305 (code)
 msgid ""
 "// Retrieve posts that have at least one comment with images...\n"
 "$posts = Post::has('comments.images')->get();\n"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 302 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 306 (paragraph)
 msgid "If you need even more power, you may use the `whereHas` and `orWhereHas` methods to define additional query constraints on your `has` queries, such as inspecting the content of a comment:"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 303 (code)
+#: docs/10.x/eloquent-relationships.md:block 307 (code)
 msgid ""
 "use Illuminate\\Database\\Eloquent\\Builder;\n"
 "\n"
@@ -1852,56 +1879,56 @@ msgid ""
 "}, '>=', 10)->get();\n"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 304 (quote)
+#: docs/10.x/eloquent-relationships.md:block 308 (quote)
 msgid "**Warning** Eloquent does not currently support querying for relationship existence across databases. The relationships must exist within the same database."
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 306 (header)
+#: docs/10.x/eloquent-relationships.md:block 310 (header)
 msgid "Inline Relationship Existence Queries"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 307 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 311 (paragraph)
 msgid "If you would like to query for a relationship's existence with a single, simple where condition attached to the relationship query, you may find it more convenient to use the `whereRelation`, `orWhereRelation`, `whereMorphRelation`, and `orWhereMorphRelation` methods. For example, we may query for all posts that have unapproved comments:"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 308 (code)
+#: docs/10.x/eloquent-relationships.md:block 312 (code)
 msgid ""
 "use App\\Models\\Post;\n"
 "\n"
 "$posts = Post::whereRelation('comments', 'is_approved', false)->get();\n"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 309 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 313 (paragraph)
 msgid "Of course, like calls to the query builder's `where` method, you may also specify an operator:"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 310 (code)
+#: docs/10.x/eloquent-relationships.md:block 314 (code)
 msgid ""
 "$posts = Post::whereRelation(\n"
 "    'comments', 'created_at', '>=', now()->subHour()\n"
 ")->get();\n"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 312 (header)
+#: docs/10.x/eloquent-relationships.md:block 316 (header)
 msgid "Querying Relationship Absence"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 313 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 317 (paragraph)
 msgid "When retrieving model records, you may wish to limit your results based on the absence of a relationship. For example, imagine you want to retrieve all blog posts that **don't** have any comments. To do so, you may pass the name of the relationship to the `doesntHave` and `orDoesntHave` methods:"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 314 (code)
+#: docs/10.x/eloquent-relationships.md:block 318 (code)
 msgid ""
 "use App\\Models\\Post;\n"
 "\n"
 "$posts = Post::doesntHave('comments')->get();\n"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 315 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 319 (paragraph)
 msgid "If you need even more power, you may use the `whereDoesntHave` and `orWhereDoesntHave` methods to add additional query constraints to your `doesntHave` queries, such as inspecting the content of a comment:"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 316 (code)
+#: docs/10.x/eloquent-relationships.md:block 320 (code)
 msgid ""
 "use Illuminate\\Database\\Eloquent\\Builder;\n"
 "\n"
@@ -1910,11 +1937,11 @@ msgid ""
 "})->get();\n"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 317 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 321 (paragraph)
 msgid "You may use \"dot\" notation to execute a query against a nested relationship. For example, the following query will retrieve all posts that do not have comments; however, posts that have comments from authors that are not banned will be included in the results:"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 318 (code)
+#: docs/10.x/eloquent-relationships.md:block 322 (code)
 msgid ""
 "use Illuminate\\Database\\Eloquent\\Builder;\n"
 "\n"
@@ -1923,15 +1950,15 @@ msgid ""
 "})->get();\n"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 320 (header)
+#: docs/10.x/eloquent-relationships.md:block 324 (header)
 msgid "Querying Morph To Relationships"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 321 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 325 (paragraph)
 msgid "To query the existence of \"morph to\" relationships, you may use the `whereHasMorph` and `whereDoesntHaveMorph` methods. These methods accept the name of the relationship as their first argument. Next, the methods accept the names of the related models that you wish to include in the query. Finally, you may provide a closure which customizes the relationship query:"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 322 (code)
+#: docs/10.x/eloquent-relationships.md:block 326 (code)
 msgid ""
 "use App\\Models\\Comment;\n"
 "use App\\Models\\Post;\n"
@@ -1957,11 +1984,11 @@ msgid ""
 ")->get();\n"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 323 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 327 (paragraph)
 msgid "You may occasionally need to add query constraints based on the \"type\" of the related polymorphic model. The closure passed to the `whereHasMorph` method may receive a `$type` value as its second argument. This argument allows you to inspect the \"type\" of the query that is being built:"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 324 (code)
+#: docs/10.x/eloquent-relationships.md:block 328 (code)
 msgid ""
 "use Illuminate\\Database\\Eloquent\\Builder;\n"
 "\n"
@@ -1976,15 +2003,15 @@ msgid ""
 ")->get();\n"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 326 (header)
+#: docs/10.x/eloquent-relationships.md:block 330 (header)
 msgid "Querying All Related Models"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 327 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 331 (paragraph)
 msgid "Instead of passing an array of possible polymorphic models, you may provide `*` as a wildcard value. This will instruct Laravel to retrieve all of the possible polymorphic types from the database. Laravel will execute an additional query in order to perform this operation:"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 328 (code)
+#: docs/10.x/eloquent-relationships.md:block 332 (code)
 msgid ""
 "use Illuminate\\Database\\Eloquent\\Builder;\n"
 "\n"
@@ -1993,19 +2020,19 @@ msgid ""
 "})->get();\n"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 330 (header)
+#: docs/10.x/eloquent-relationships.md:block 334 (header)
 msgid "Aggregating Related Models"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 332 (header)
+#: docs/10.x/eloquent-relationships.md:block 336 (header)
 msgid "Counting Related Models"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 333 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 337 (paragraph)
 msgid "Sometimes you may want to count the number of related models for a given relationship without actually loading the models. To accomplish this, you may use the `withCount` method. The `withCount` method will place a `{relation}_count` attribute on the resulting models:"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 334 (code)
+#: docs/10.x/eloquent-relationships.md:block 338 (code)
 msgid ""
 "use App\\Models\\Post;\n"
 "\n"
@@ -2016,11 +2043,11 @@ msgid ""
 "}\n"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 335 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 339 (paragraph)
 msgid "By passing an array to the `withCount` method, you may add the \"counts\" for multiple relations as well as add additional constraints to the queries:"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 336 (code)
+#: docs/10.x/eloquent-relationships.md:block 340 (code)
 msgid ""
 "use Illuminate\\Database\\Eloquent\\Builder;\n"
 "\n"
@@ -2032,11 +2059,11 @@ msgid ""
 "echo $posts[0]->comments_count;\n"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 337 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 341 (paragraph)
 msgid "You may also alias the relationship count result, allowing multiple counts on the same relationship:"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 338 (code)
+#: docs/10.x/eloquent-relationships.md:block 342 (code)
 msgid ""
 "use Illuminate\\Database\\Eloquent\\Builder;\n"
 "\n"
@@ -2051,56 +2078,56 @@ msgid ""
 "echo $posts[0]->pending_comments_count;\n"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 340 (header)
+#: docs/10.x/eloquent-relationships.md:block 344 (header)
 msgid "Deferred Count Loading"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 341 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 345 (paragraph)
 msgid "Using the `loadCount` method, you may load a relationship count after the parent model has already been retrieved:"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 342 (code)
+#: docs/10.x/eloquent-relationships.md:block 346 (code)
 msgid ""
 "$book = Book::first();\n"
 "\n"
 "$book->loadCount('genres');\n"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 343 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 347 (paragraph)
 msgid "If you need to set additional query constraints on the count query, you may pass an array keyed by the relationships you wish to count. The array values should be closures which receive the query builder instance:"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 344 (code)
+#: docs/10.x/eloquent-relationships.md:block 348 (code)
 msgid ""
 "$book->loadCount(['reviews' => function (Builder $query) {\n"
 "    $query->where('rating', 5);\n"
 "}])\n"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 346 (header)
+#: docs/10.x/eloquent-relationships.md:block 350 (header)
 msgid "Relationship Counting & Custom Select Statements"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 347 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 351 (paragraph)
 msgid "If you're combining `withCount` with a `select` statement, ensure that you call `withCount` after the `select` method:"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 348 (code)
+#: docs/10.x/eloquent-relationships.md:block 352 (code)
 msgid ""
 "$posts = Post::select(['title', 'body'])\n"
 "                ->withCount('comments')\n"
 "                ->get();\n"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 350 (header)
+#: docs/10.x/eloquent-relationships.md:block 354 (header)
 msgid "Other Aggregate Functions"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 351 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 355 (paragraph)
 msgid "In addition to the `withCount` method, Eloquent provides `withMin`, `withMax`, `withAvg`, `withSum`, and `withExists` methods. These methods will place a `{relation}_{function}_{column}` attribute on your resulting models:"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 352 (code)
+#: docs/10.x/eloquent-relationships.md:block 356 (code)
 msgid ""
 "use App\\Models\\Post;\n"
 "\n"
@@ -2111,11 +2138,11 @@ msgid ""
 "}\n"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 353 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 357 (paragraph)
 msgid "If you wish to access the result of the aggregate function using another name, you may specify your own alias:"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 354 (code)
+#: docs/10.x/eloquent-relationships.md:block 358 (code)
 msgid ""
 "$posts = Post::withSum('comments as total_comments', 'votes')->get();\n"
 "\n"
@@ -2124,45 +2151,45 @@ msgid ""
 "}\n"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 355 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 359 (paragraph)
 msgid "Like the `loadCount` method, deferred versions of these methods are also available. These additional aggregate operations may be performed on Eloquent models that have already been retrieved:"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 356 (code)
+#: docs/10.x/eloquent-relationships.md:block 360 (code)
 msgid ""
 "$post = Post::first();\n"
 "\n"
 "$post->loadSum('comments', 'votes');\n"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 357 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 361 (paragraph)
 msgid "If you're combining these aggregate methods with a `select` statement, ensure that you call the aggregate methods after the `select` method:"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 358 (code)
+#: docs/10.x/eloquent-relationships.md:block 362 (code)
 msgid ""
 "$posts = Post::select(['title', 'body'])\n"
 "                ->withExists('comments')\n"
 "                ->get();\n"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 360 (header)
+#: docs/10.x/eloquent-relationships.md:block 364 (header)
 msgid "Counting Related Models On Morph To Relationships"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 361 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 365 (paragraph)
 msgid "If you would like to eager load a \"morph to\" relationship, as well as related model counts for the various entities that may be returned by that relationship, you may utilize the `with` method in combination with the `morphTo` relationship's `morphWithCount` method."
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 362 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 366 (paragraph)
 msgid "In this example, let's assume that `Photo` and `Post` models may create `ActivityFeed` models. We will assume the `ActivityFeed` model defines a \"morph to\" relationship named `parentable` that allows us to retrieve the parent `Photo` or `Post` model for a given `ActivityFeed` instance. Additionally, let's assume that `Photo` models \"have many\" `Tag` models and `Post` models \"have many\" `Comment` models."
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 363 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 367 (paragraph)
 msgid "Now, let's imagine we want to retrieve `ActivityFeed` instances and eager load the `parentable` parent models for each `ActivityFeed` instance. In addition, we want to retrieve the number of tags that are associated with each parent photo and the number of comments that are associated with each parent post:"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 364 (code)
+#: docs/10.x/eloquent-relationships.md:block 368 (code)
 msgid ""
 "use Illuminate\\Database\\Eloquent\\Relations\\MorphTo;\n"
 "\n"
@@ -2175,11 +2202,11 @@ msgid ""
 "    }])->get();\n"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 367 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 371 (paragraph)
 msgid "Let's assume we have already retrieved a set of `ActivityFeed` models and now we would like to load the nested relationship counts for the various `parentable` models associated with the activity feeds. You may use the `loadMorphCount` method to accomplish this:"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 368 (code)
+#: docs/10.x/eloquent-relationships.md:block 372 (code)
 msgid ""
 "$activities = ActivityFeed::with('parentable')->get();\n"
 "\n"
@@ -2189,15 +2216,15 @@ msgid ""
 "]);\n"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 370 (header)
+#: docs/10.x/eloquent-relationships.md:block 374 (header)
 msgid "Eager Loading"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 371 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 375 (paragraph)
 msgid "When accessing Eloquent relationships as properties, the related models are \"lazy loaded\". This means the relationship data is not actually loaded until you first access the property. However, Eloquent can \"eager load\" relationships at the time you query the parent model. Eager loading alleviates the \"N + 1\" query problem. To illustrate the N + 1 query problem, consider a `Book` model that \"belongs to\" to an `Author` model:"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 372 (code)
+#: docs/10.x/eloquent-relationships.md:block 376 (code)
 msgid ""
 "<?php\n"
 "\n"
@@ -2218,11 +2245,11 @@ msgid ""
 "}\n"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 373 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 377 (paragraph)
 msgid "Now, let's retrieve all books and their authors:"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 374 (code)
+#: docs/10.x/eloquent-relationships.md:block 378 (code)
 msgid ""
 "use App\\Models\\Book;\n"
 "\n"
@@ -2233,15 +2260,15 @@ msgid ""
 "}\n"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 375 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 379 (paragraph)
 msgid "This loop will execute one query to retrieve all of the books within the database table, then another query for each book in order to retrieve the book's author. So, if we have 25 books, the code above would run 26 queries: one for the original book, and 25 additional queries to retrieve the author of each book."
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 376 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 380 (paragraph)
 msgid "Thankfully, we can use eager loading to reduce this operation to just two queries. When building a query, you may specify which relationships should be eager loaded using the `with` method:"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 377 (code)
+#: docs/10.x/eloquent-relationships.md:block 381 (code)
 msgid ""
 "$books = Book::with('author')->get();\n"
 "\n"
@@ -2250,46 +2277,46 @@ msgid ""
 "}\n"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 378 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 382 (paragraph)
 msgid "For this operation, only two queries will be executed - one query to retrieve all of the books and one query to retrieve all of the authors for all of the books:"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 379 (code)
+#: docs/10.x/eloquent-relationships.md:block 383 (code)
 msgid ""
 "select * from books\n"
 "\n"
 "select * from authors where id in (1, 2, 3, 4, 5, ...)\n"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 381 (header)
+#: docs/10.x/eloquent-relationships.md:block 385 (header)
 msgid "Eager Loading Multiple Relationships"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 382 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 386 (paragraph)
 msgid "Sometimes you may need to eager load several different relationships. To do so, just pass an array of relationships to the `with` method:"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 383 (code)
+#: docs/10.x/eloquent-relationships.md:block 387 (code)
 msgid "$books = Book::with(['author', 'publisher'])->get();\n"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 385 (header)
+#: docs/10.x/eloquent-relationships.md:block 389 (header)
 msgid "Nested Eager Loading"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 386 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 390 (paragraph)
 msgid "To eager load a relationship's relationships, you may use \"dot\" syntax. For example, let's eager load all of the book's authors and all of the author's personal contacts:"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 387 (code)
+#: docs/10.x/eloquent-relationships.md:block 391 (code)
 msgid "$books = Book::with('author.contacts')->get();\n"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 388 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 392 (paragraph)
 msgid "Alternatively, you may specify nested eager loaded relationships by providing a nested array to the `with` method, which can be convenient when eager loading multiple nested relationships:"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 389 (code)
+#: docs/10.x/eloquent-relationships.md:block 393 (code)
 msgid ""
 "$books = Book::with([\n"
 "    'author' => [\n"
@@ -2299,15 +2326,15 @@ msgid ""
 "])->get();\n"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 391 (header)
+#: docs/10.x/eloquent-relationships.md:block 395 (header)
 msgid "Nested Eager Loading `morphTo` Relationships"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 392 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 396 (paragraph)
 msgid "If you would like to eager load a `morphTo` relationship, as well as nested relationships on the various entities that may be returned by that relationship, you may use the `with` method in combination with the `morphTo` relationship's `morphWith` method. To help illustrate this method, let's consider the following model:"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 393 (code)
+#: docs/10.x/eloquent-relationships.md:block 397 (code)
 msgid ""
 "<?php\n"
 "\n"
@@ -2326,15 +2353,15 @@ msgid ""
 "}\n"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 394 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 398 (paragraph)
 msgid "In this example, let's assume `Event`, `Photo`, and `Post` models may create `ActivityFeed` models. Additionally, let's assume that `Event` models belong to a `Calendar` model, `Photo` models are associated with `Tag` models, and `Post` models belong to an `Author` model."
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 395 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 399 (paragraph)
 msgid "Using these model definitions and relationships, we may retrieve `ActivityFeed` model instances and eager load all `parentable` models and their respective nested relationships:"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 396 (code)
+#: docs/10.x/eloquent-relationships.md:block 400 (code)
 msgid ""
 "use Illuminate\\Database\\Eloquent\\Relations\\MorphTo;\n"
 "\n"
@@ -2348,31 +2375,31 @@ msgid ""
 "    }])->get();\n"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 398 (header)
+#: docs/10.x/eloquent-relationships.md:block 402 (header)
 msgid "Eager Loading Specific Columns"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 399 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 403 (paragraph)
 msgid "You may not always need every column from the relationships you are retrieving. For this reason, Eloquent allows you to specify which columns of the relationship you would like to retrieve:"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 400 (code)
+#: docs/10.x/eloquent-relationships.md:block 404 (code)
 msgid "$books = Book::with('author:id,name,book_id')->get();\n"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 401 (quote)
+#: docs/10.x/eloquent-relationships.md:block 405 (quote)
 msgid "**Warning** When using this feature, you should always include the `id` column and any relevant foreign key columns in the list of columns you wish to retrieve."
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 403 (header)
+#: docs/10.x/eloquent-relationships.md:block 407 (header)
 msgid "Eager Loading By Default"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 404 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 408 (paragraph)
 msgid "Sometimes you might want to always load some relationships when retrieving a model. To accomplish this, you may define a `$with` property on the model:"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 405 (code)
+#: docs/10.x/eloquent-relationships.md:block 409 (code)
 msgid ""
 "<?php\n"
 "\n"
@@ -2408,110 +2435,109 @@ msgid ""
 "}\n"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 406 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 410 (paragraph)
 msgid "If you would like to remove an item from the `$with` property for a single query, you may use the `without` method:"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 407 (code)
+#: docs/10.x/eloquent-relationships.md:block 411 (code)
 msgid "$books = Book::without('author')->get();\n"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 408 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 412 (paragraph)
 msgid "If you would like to override all items within the `$with` property for a single query, you may use the `withOnly` method:"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 409 (code)
+#: docs/10.x/eloquent-relationships.md:block 413 (code)
 msgid "$books = Book::withOnly('genre')->get();\n"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 411 (header)
+#: docs/10.x/eloquent-relationships.md:block 415 (header)
 msgid "Constraining Eager Loads"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 412 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 416 (paragraph)
 msgid "Sometimes you may wish to eager load a relationship but also specify additional query conditions for the eager loading query. You can accomplish this by passing an array of relationships to the `with` method where the array key is a relationship name and the array value is a closure that adds additional constraints to the eager loading query:"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 413 (code)
+#: docs/10.x/eloquent-relationships.md:block 417 (code)
 msgid ""
 "use App\\Models\\User;\n"
+"use Illuminate\\Contracts\\Database\\Eloquent\\Builder;\n"
 "\n"
 "$users = User::with(['posts' => function (Builder $query) {\n"
 "    $query->where('title', 'like', '%code%');\n"
 "}])->get();\n"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 414 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 418 (paragraph)
 msgid "In this example, Eloquent will only eager load posts where the post's `title` column contains the word `code`. You may call other [query builder](/docs/{{version}}/queries) methods to further customize the eager loading operation:"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 415 (code)
+#: docs/10.x/eloquent-relationships.md:block 419 (code)
 msgid ""
 "$users = User::with(['posts' => function (Builder $query) {\n"
 "    $query->orderBy('created_at', 'desc');\n"
 "}])->get();\n"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 416 (quote)
+#: docs/10.x/eloquent-relationships.md:block 420 (quote)
 msgid "**Warning** The `limit` and `take` query builder methods may not be used when constraining eager loads."
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 418 (header)
+#: docs/10.x/eloquent-relationships.md:block 422 (header)
 msgid "Constraining Eager Loading Of `morphTo` Relationships"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 419 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 423 (paragraph)
 msgid "If you are eager loading a `morphTo` relationship, Eloquent will run multiple queries to fetch each type of related model. You may add additional constraints to each of these queries using the `MorphTo` relation's `constrain` method:"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 420 (code)
+#: docs/10.x/eloquent-relationships.md:block 424 (code)
 msgid ""
-"use Illuminate\\Database\\Eloquent\\Builder;\n"
 "use Illuminate\\Database\\Eloquent\\Relations\\MorphTo;\n"
 "\n"
 "$comments = Comment::with(['commentable' => function (MorphTo $morphTo) {\n"
 "    $morphTo->constrain([\n"
-"        Post::class => function (Builder $query) {\n"
+"        Post::class => function ($query) {\n"
 "            $query->whereNull('hidden_at');\n"
 "        },\n"
-"        Video::class => function (Builder $query) {\n"
+"        Video::class => function ($query) {\n"
 "            $query->where('type', 'educational');\n"
 "        },\n"
 "    ]);\n"
 "}])->get();\n"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 421 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 425 (paragraph)
 msgid "In this example, Eloquent will only eager load posts that have not been hidden and videos that have a `type` value of \"educational\"."
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 423 (header)
+#: docs/10.x/eloquent-relationships.md:block 427 (header)
 msgid "Constraining Eager Loads With Relationship Existence"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 424 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 428 (paragraph)
 msgid "You may sometimes find yourself needing to check for the existence of a relationship while simultaneously loading the relationship based on the same conditions. For example, you may wish to only retrieve `User` models that have child `Post` models matching a given query condition while also eager loading the matching posts. You may accomplish this using the `withWhereHas` method:"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 425 (code)
+#: docs/10.x/eloquent-relationships.md:block 429 (code)
 msgid ""
 "use App\\Models\\User;\n"
-"use Illuminate\\Database\\Eloquent\\Builder;\n"
 "\n"
-"$users = User::withWhereHas('posts', function (Builder $query) {\n"
+"$users = User::withWhereHas('posts', function ($query) {\n"
 "    $query->where('featured', true);\n"
 "})->get();\n"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 427 (header)
+#: docs/10.x/eloquent-relationships.md:block 431 (header)
 msgid "Lazy Eager Loading"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 428 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 432 (paragraph)
 msgid "Sometimes you may need to eager load a relationship after the parent model has already been retrieved. For example, this may be useful if you need to dynamically decide whether to load related models:"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 429 (code)
+#: docs/10.x/eloquent-relationships.md:block 433 (code)
 msgid ""
 "use App\\Models\\Book;\n"
 "\n"
@@ -2522,38 +2548,38 @@ msgid ""
 "}\n"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 430 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 434 (paragraph)
 msgid "If you need to set additional query constraints on the eager loading query, you may pass an array keyed by the relationships you wish to load. The array values should be closure instances which receive the query instance:"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 431 (code)
+#: docs/10.x/eloquent-relationships.md:block 435 (code)
 msgid ""
 "$author->load(['books' => function (Builder $query) {\n"
 "    $query->orderBy('published_date', 'asc');\n"
 "}]);\n"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 432 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 436 (paragraph)
 msgid "To load a relationship only when it has not already been loaded, use the `loadMissing` method:"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 433 (code)
+#: docs/10.x/eloquent-relationships.md:block 437 (code)
 msgid "$book->loadMissing('author');\n"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 435 (header)
+#: docs/10.x/eloquent-relationships.md:block 439 (header)
 msgid "Nested Lazy Eager Loading & `morphTo`"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 436 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 440 (paragraph)
 msgid "If you would like to eager load a `morphTo` relationship, as well as nested relationships on the various entities that may be returned by that relationship, you may use the `loadMorph` method."
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 437 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 441 (paragraph)
 msgid "This method accepts the name of the `morphTo` relationship as its first argument, and an array of model / relationship pairs as its second argument. To help illustrate this method, let's consider the following model:"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 441 (code)
+#: docs/10.x/eloquent-relationships.md:block 445 (code)
 msgid ""
 "$activities = ActivityFeed::with('parentable')\n"
 "    ->get()\n"
@@ -2564,19 +2590,19 @@ msgid ""
 "    ]);\n"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 443 (header)
+#: docs/10.x/eloquent-relationships.md:block 447 (header)
 msgid "Preventing Lazy Loading"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 444 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 448 (paragraph)
 msgid "As previously discussed, eager loading relationships can often provide significant performance benefits to your application. Therefore, if you would like, you may instruct Laravel to always prevent the lazy loading of relationships. To accomplish this, you may invoke the `preventLazyLoading` method offered by the base Eloquent model class. Typically, you should call this method within the `boot` method of your application's `AppServiceProvider` class."
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 445 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 449 (paragraph)
 msgid "The `preventLazyLoading` method accepts an optional boolean argument that indicates if lazy loading should be prevented. For example, you may wish to only disable lazy loading in non-production environments so that your production environment will continue to function normally even if a lazy loaded relationship is accidentally present in production code:"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 446 (code)
+#: docs/10.x/eloquent-relationships.md:block 450 (code)
 msgid ""
 "use Illuminate\\Database\\Eloquent\\Model;\n"
 "\n"
@@ -2589,36 +2615,36 @@ msgid ""
 "}\n"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 447 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 451 (paragraph)
 msgid "After preventing lazy loading, Eloquent will throw a `Illuminate\\Database\\LazyLoadingViolationException` exception when your application attempts to lazy load any Eloquent relationship."
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 448 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 452 (paragraph)
 msgid "You may customize the behavior of lazy loading violations using the `handleLazyLoadingViolationsUsing` method. For example, using this method, you may instruct lazy loading violations to only be logged instead of interrupting the application's execution with exceptions:"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 449 (code)
+#: docs/10.x/eloquent-relationships.md:block 453 (code)
 msgid ""
 "Model::handleLazyLoadingViolationUsing(function (Model $model, string $relation) {\n"
-"    $class = get_class($model);\n"
+"    $class = $model::class;\n"
 "\n"
 "    info(\"Attempted to lazy load [{$relation}] on model [{$class}].\");\n"
 "});\n"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 451 (header)
+#: docs/10.x/eloquent-relationships.md:block 455 (header)
 msgid "Inserting & Updating Related Models"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 453 (header)
+#: docs/10.x/eloquent-relationships.md:block 457 (header)
 msgid "The `save` Method"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 454 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 458 (paragraph)
 msgid "Eloquent provides convenient methods for adding new models to relationships. For example, perhaps you need to add a new comment to a post. Instead of manually setting the `post_id` attribute on the `Comment` model you may insert the comment using the relationship's `save` method:"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 455 (code)
+#: docs/10.x/eloquent-relationships.md:block 459 (code)
 msgid ""
 "use App\\Models\\Comment;\n"
 "use App\\Models\\Post;\n"
@@ -2630,15 +2656,15 @@ msgid ""
 "$post->comments()->save($comment);\n"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 456 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 460 (paragraph)
 msgid "Note that we did not access the `comments` relationship as a dynamic property. Instead, we called the `comments` method to obtain an instance of the relationship. The `save` method will automatically add the appropriate `post_id` value to the new `Comment` model."
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 457 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 461 (paragraph)
 msgid "If you need to save multiple related models, you may use the `saveMany` method:"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 458 (code)
+#: docs/10.x/eloquent-relationships.md:block 462 (code)
 msgid ""
 "$post = Post::find(1);\n"
 "\n"
@@ -2648,11 +2674,11 @@ msgid ""
 "]);\n"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 459 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 463 (paragraph)
 msgid "The `save` and `saveMany` methods will persist the given model instances, but will not add the newly persisted models to any in-memory relationships that are already loaded onto the parent model. If you plan on accessing the relationship after using the `save` or `saveMany` methods, you may wish to use the `refresh` method to reload the model and its relationships:"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 460 (code)
+#: docs/10.x/eloquent-relationships.md:block 464 (code)
 msgid ""
 "$post->comments()->save($comment);\n"
 "\n"
@@ -2662,15 +2688,15 @@ msgid ""
 "$post->comments;\n"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 462 (header)
+#: docs/10.x/eloquent-relationships.md:block 466 (header)
 msgid "Recursively Saving Models & Relationships"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 463 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 467 (paragraph)
 msgid "If you would like to `save` your model and all of its associated relationships, you may use the `push` method. In this example, the `Post` model will be saved as well as its comments and the comment's authors:"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 464 (code)
+#: docs/10.x/eloquent-relationships.md:block 468 (code)
 msgid ""
 "$post = Post::find(1);\n"
 "\n"
@@ -2680,15 +2706,23 @@ msgid ""
 "$post->push();\n"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 466 (header)
+#: docs/10.x/eloquent-relationships.md:block 469 (paragraph)
+msgid "The `pushQuietly` method may be used to save a model and its associated relationships without raising any events:"
+msgstr ""
+
+#: docs/10.x/eloquent-relationships.md:block 470 (code)
+msgid "$post->pushQuietly();\n"
+msgstr ""
+
+#: docs/10.x/eloquent-relationships.md:block 472 (header)
 msgid "The `create` Method"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 467 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 473 (paragraph)
 msgid "In addition to the `save` and `saveMany` methods, you may also use the `create` method, which accepts an array of attributes, creates a model, and inserts it into the database. The difference between `save` and `create` is that `save` accepts a full Eloquent model instance while `create` accepts a plain PHP `array`. The newly created model will be returned by the `create` method:"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 468 (code)
+#: docs/10.x/eloquent-relationships.md:block 474 (code)
 msgid ""
 "use App\\Models\\Post;\n"
 "\n"
@@ -2699,11 +2733,11 @@ msgid ""
 "]);\n"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 469 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 475 (paragraph)
 msgid "You may use the `createMany` method to create multiple related models:"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 470 (code)
+#: docs/10.x/eloquent-relationships.md:block 476 (code)
 msgid ""
 "$post = Post::find(1);\n"
 "\n"
@@ -2713,23 +2747,41 @@ msgid ""
 "]);\n"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 471 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 477 (paragraph)
+msgid "The `createQuietly` and `createManyQuietly` methods may be used to create a model(s) without dispatching any events:"
+msgstr ""
+
+#: docs/10.x/eloquent-relationships.md:block 478 (code)
+msgid ""
+"$user = User::find(1);\n"
+"\n"
+"$user->posts()->createQuietly([\n"
+"    'title' => 'Post title.',\n"
+"]);\n"
+"\n"
+"$user->posts()->createManyQuietly([\n"
+"    ['title' => 'First post.'],\n"
+"    ['title' => 'Second post.'],\n"
+"]);\n"
+msgstr ""
+
+#: docs/10.x/eloquent-relationships.md:block 479 (paragraph)
 msgid "You may also use the `findOrNew`, `firstOrNew`, `firstOrCreate`, and `updateOrCreate` methods to [create and update models on relationships](/docs/{{version}}/eloquent#upserts)."
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 472 (quote)
+#: docs/10.x/eloquent-relationships.md:block 480 (quote)
 msgid "**Note** Before using the `create` method, be sure to review the [mass assignment](/docs/{{version}}/eloquent#mass-assignment) documentation."
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 474 (header)
+#: docs/10.x/eloquent-relationships.md:block 482 (header)
 msgid "Belongs To Relationships"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 475 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 483 (paragraph)
 msgid "If you would like to assign a child model to a new parent model, you may use the `associate` method. In this example, the `User` model defines a `belongsTo` relationship to the `Account` model. This `associate` method will set the foreign key on the child model:"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 476 (code)
+#: docs/10.x/eloquent-relationships.md:block 484 (code)
 msgid ""
 "use App\\Models\\Account;\n"
 "\n"
@@ -2740,26 +2792,26 @@ msgid ""
 "$user->save();\n"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 477 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 485 (paragraph)
 msgid "To remove a parent model from a child model, you may use the `dissociate` method. This method will set the relationship's foreign key to `null`:"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 478 (code)
+#: docs/10.x/eloquent-relationships.md:block 486 (code)
 msgid ""
 "$user->account()->dissociate();\n"
 "\n"
 "$user->save();\n"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 482 (header)
+#: docs/10.x/eloquent-relationships.md:block 490 (header)
 msgid "Attaching / Detaching"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 483 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 491 (paragraph)
 msgid "Eloquent also provides methods to make working with many-to-many relationships more convenient. For example, let's imagine a user can have many roles and a role can have many users. You may use the `attach` method to attach a role to a user by inserting a record in the relationship's intermediate table:"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 484 (code)
+#: docs/10.x/eloquent-relationships.md:block 492 (code)
 msgid ""
 "use App\\Models\\User;\n"
 "\n"
@@ -2768,19 +2820,19 @@ msgid ""
 "$user->roles()->attach($roleId);\n"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 485 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 493 (paragraph)
 msgid "When attaching a relationship to a model, you may also pass an array of additional data to be inserted into the intermediate table:"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 486 (code)
+#: docs/10.x/eloquent-relationships.md:block 494 (code)
 msgid "$user->roles()->attach($roleId, ['expires' => $expires]);\n"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 487 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 495 (paragraph)
 msgid "Sometimes it may be necessary to remove a role from a user. To remove a many-to-many relationship record, use the `detach` method. The `detach` method will delete the appropriate record out of the intermediate table; however, both models will remain in the database:"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 488 (code)
+#: docs/10.x/eloquent-relationships.md:block 496 (code)
 msgid ""
 "// Detach a single role from the user...\n"
 "$user->roles()->detach($roleId);\n"
@@ -2789,11 +2841,11 @@ msgid ""
 "$user->roles()->detach();\n"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 489 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 497 (paragraph)
 msgid "For convenience, `attach` and `detach` also accept arrays of IDs as input:"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 490 (code)
+#: docs/10.x/eloquent-relationships.md:block 498 (code)
 msgid ""
 "$user = User::find(1);\n"
 "\n"
@@ -2805,55 +2857,55 @@ msgid ""
 "]);\n"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 492 (header)
+#: docs/10.x/eloquent-relationships.md:block 500 (header)
 msgid "Syncing Associations"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 493 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 501 (paragraph)
 msgid "You may also use the `sync` method to construct many-to-many associations. The `sync` method accepts an array of IDs to place on the intermediate table. Any IDs that are not in the given array will be removed from the intermediate table. So, after this operation is complete, only the IDs in the given array will exist in the intermediate table:"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 494 (code)
+#: docs/10.x/eloquent-relationships.md:block 502 (code)
 msgid "$user->roles()->sync([1, 2, 3]);\n"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 495 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 503 (paragraph)
 msgid "You may also pass additional intermediate table values with the IDs:"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 496 (code)
+#: docs/10.x/eloquent-relationships.md:block 504 (code)
 msgid "$user->roles()->sync([1 => ['expires' => true], 2, 3]);\n"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 497 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 505 (paragraph)
 msgid "If you would like to insert the same intermediate table values with each of the synced model IDs, you may use the `syncWithPivotValues` method:"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 498 (code)
+#: docs/10.x/eloquent-relationships.md:block 506 (code)
 msgid "$user->roles()->syncWithPivotValues([1, 2, 3], ['active' => true]);\n"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 499 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 507 (paragraph)
 msgid "If you do not want to detach existing IDs that are missing from the given array, you may use the `syncWithoutDetaching` method:"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 500 (code)
+#: docs/10.x/eloquent-relationships.md:block 508 (code)
 msgid "$user->roles()->syncWithoutDetaching([1, 2, 3]);\n"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 502 (header)
+#: docs/10.x/eloquent-relationships.md:block 510 (header)
 msgid "Toggling Associations"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 503 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 511 (paragraph)
 msgid "The many-to-many relationship also provides a `toggle` method which \"toggles\" the attachment status of the given related model IDs. If the given ID is currently attached, it will be detached. Likewise, if it is currently detached, it will be attached:"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 504 (code)
+#: docs/10.x/eloquent-relationships.md:block 512 (code)
 msgid "$user->roles()->toggle([1, 2, 3]);\n"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 506 (code)
+#: docs/10.x/eloquent-relationships.md:block 514 (code)
 msgid ""
 "$user->roles()->toggle([\n"
 "    1 => ['expires' => true],\n"
@@ -2861,15 +2913,15 @@ msgid ""
 "]);\n"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 508 (header)
+#: docs/10.x/eloquent-relationships.md:block 516 (header)
 msgid "Updating A Record On The Intermediate Table"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 509 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 517 (paragraph)
 msgid "If you need to update an existing row in your relationship's intermediate table, you may use the `updateExistingPivot` method. This method accepts the intermediate record foreign key and an array of attributes to update:"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 510 (code)
+#: docs/10.x/eloquent-relationships.md:block 518 (code)
 msgid ""
 "$user = User::find(1);\n"
 "\n"
@@ -2878,19 +2930,19 @@ msgid ""
 "]);\n"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 512 (header)
+#: docs/10.x/eloquent-relationships.md:block 520 (header)
 msgid "Touching Parent Timestamps"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 513 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 521 (paragraph)
 msgid "When a model defines a `belongsTo` or `belongsToMany` relationship to another model, such as a `Comment` which belongs to a `Post`, it is sometimes helpful to update the parent's timestamp when the child model is updated."
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 514 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 522 (paragraph)
 msgid "For example, when a `Comment` model is updated, you may want to automatically \"touch\" the `updated_at` timestamp of the owning `Post` so that it is set to the current date and time. To accomplish this, you may add a `touches` property to your child model containing the names of the relationships that should have their `updated_at` timestamps updated when the child model is updated:"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 515 (code)
+#: docs/10.x/eloquent-relationships.md:block 523 (code)
 msgid ""
 "<?php\n"
 "\n"
@@ -2918,7 +2970,7 @@ msgid ""
 "}\n"
 msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 516 (quote)
+#: docs/10.x/eloquent-relationships.md:block 524 (quote)
 msgid "**Warning** Parent model timestamps will only be updated if the child model is updated using Eloquent's `save` method."
 msgstr ""
 
@@ -3583,6 +3635,10 @@ msgid ""
 "}\n"
 msgstr ""
 
+#: docs/8.x/eloquent-relationships.md:block 269 (paragraph)
+msgid "The example above will generate the following SQL. As you can see, the `or` clause instructs the query to return *any* user with greater than 100 votes. The query is no longer constrained to a specific user:"
+msgstr ""
+
 #: docs/8.x/eloquent-relationships.md:block 278 (code)
 msgid ""
 "use App\\Models\\User;\n"
@@ -3721,6 +3777,23 @@ msgstr ""
 msgid "{note} The `limit` and `take` query builder methods may not be used when constraining eager loads."
 msgstr ""
 
+#: docs/8.x/eloquent-relationships.md:block 404 (code)
+msgid ""
+"use Illuminate\\Database\\Eloquent\\Builder;\n"
+"use Illuminate\\Database\\Eloquent\\Relations\\MorphTo;\n"
+"\n"
+"$comments = Comment::with(['commentable' => function (MorphTo $morphTo) {\n"
+"    $morphTo->constrain([\n"
+"        Post::class => function (Builder $query) {\n"
+"            $query->whereNull('hidden_at');\n"
+"        },\n"
+"        Video::class => function (Builder $query) {\n"
+"            $query->where('type', 'educational');\n"
+"        },\n"
+"    ]);\n"
+"}])->get();\n"
+msgstr ""
+
 #: docs/8.x/eloquent-relationships.md:block 405 (paragraph)
 msgid "In this example, Eloquent will only eager load posts that have not been hidden and videos have a `type` value of \"educational\"."
 msgstr ""
@@ -3791,11 +3864,30 @@ msgstr ""
 msgid "{note} Parent model timestamps will only be updated if the child model is updated using Eloquent's `save` method."
 msgstr ""
 
-#: docs/9.x/eloquent-relationships.md:block 425 (code)
+#: docs/master/eloquent-relationships.md:block 413 (code)
 msgid ""
 "use App\\Models\\User;\n"
 "\n"
-"$users = User::withWhereHas('posts', function ($query) {\n"
+"$users = User::with(['posts' => function (Builder $query) {\n"
+"    $query->where('title', 'like', '%code%');\n"
+"}])->get();\n"
+msgstr ""
+
+#: docs/master/eloquent-relationships.md:block 425 (code)
+msgid ""
+"use App\\Models\\User;\n"
+"use Illuminate\\Database\\Eloquent\\Builder;\n"
+"\n"
+"$users = User::withWhereHas('posts', function (Builder $query) {\n"
 "    $query->where('featured', true);\n"
 "})->get();\n"
+msgstr ""
+
+#: docs/master/eloquent-relationships.md:block 449 (code)
+msgid ""
+"Model::handleLazyLoadingViolationUsing(function (Model $model, string $relation) {\n"
+"    $class = get_class($model);\n"
+"\n"
+"    info(\"Attempted to lazy load [{$relation}] on model [{$class}].\");\n"
+"});\n"
 msgstr ""

@@ -255,6 +255,10 @@ msgid "[Handling Failed Payments](#handling-failed-payments)"
 msgstr ""
 
 #: docs/10.x/billing.md:block 2 (unordered list)
+msgid "[Confirming Payments](#confirming-payments)"
+msgstr ""
+
+#: docs/10.x/billing.md:block 2 (unordered list)
 msgid "[Strong Customer Authentication (SCA)](#strong-customer-authentication)"
 msgstr ""
 
@@ -315,7 +319,7 @@ msgid "Database Migrations"
 msgstr ""
 
 #: docs/10.x/billing.md:block 17 (paragraph)
-msgid "Cashier's service provider registers its own database migration directory, so remember to migrate your database after installing the package. The Cashier migrations will add several columns to your `users` table as well as create a new `subscriptions` table to hold all of your customer's subscriptions:"
+msgid "Cashier's service provider registers its own database migration directory, so remember to migrate your database after installing the package. The Cashier migrations will add several columns to your `users` table. It will also create a new `subscriptions` table to hold all of your customer's subscriptions and a `subscription_items` table for subscriptions with multiple prices:"
 msgstr ""
 
 #: docs/10.x/billing.md:block 18 (code)
@@ -2429,11 +2433,15 @@ msgid "`customer.deleted`"
 msgstr ""
 
 #: docs/10.x/billing.md:block 470 (unordered list)
-msgid "`invoice.payment_succeeded`"
+msgid "`payment_method.automatically_updated`"
 msgstr ""
 
 #: docs/10.x/billing.md:block 470 (unordered list)
 msgid "`invoice.payment_action_required`"
+msgstr ""
+
+#: docs/10.x/billing.md:block 470 (unordered list)
+msgid "`invoice.payment_succeeded`"
 msgstr ""
 
 #: docs/10.x/billing.md:block 471 (paragraph)
@@ -3293,70 +3301,89 @@ msgid ""
 msgstr ""
 
 #: docs/10.x/billing.md:block 644 (header)
-msgid "Strong Customer Authentication"
+msgid "Confirming Payments"
 msgstr ""
 
 #: docs/10.x/billing.md:block 645 (paragraph)
-msgid "If your business or one of your customers is based in Europe you will need to abide by the EU's Strong Customer Authentication (SCA) regulations. These regulations were imposed in September 2019 by the European Union to prevent payment fraud. Luckily, Stripe and Cashier are prepared for building SCA compliant applications."
+msgid "Some payment methods require additional data in order to confirm payments. For example, SEPA payment methods require additional \"mandate\" data during the payment process. You may provide this data to Cashier using the `withPaymentConfirmationOptions` method:"
 msgstr ""
 
-#: docs/10.x/billing.md:block 646 (quote)
-msgid "**Warning** Before getting started, review [Stripe's guide on PSD2 and SCA](https://stripe.com/guides/strong-customer-authentication) as well as their [documentation on the new SCA APIs](https://stripe.com/docs/strong-customer-authentication)."
+#: docs/10.x/billing.md:block 646 (code)
+msgid ""
+"$subscription->withPaymentConfirmationOptions([\n"
+"    'mandate_data' => '...',\n"
+"])->swap('price_xxx');\n"
 msgstr ""
 
-#: docs/10.x/billing.md:block 648 (header)
-msgid "Payments Requiring Additional Confirmation"
+#: docs/10.x/billing.md:block 647 (paragraph)
+msgid "You may consult the [Stripe API documentation](https://stripe.com/docs/api/payment_intents/confirm) to review all of the options accepted when confirming payments."
 msgstr ""
 
-#: docs/10.x/billing.md:block 649 (paragraph)
-msgid "SCA regulations often require extra verification in order to confirm and process a payment. When this happens, Cashier will throw a `Laravel\\Cashier\\Exceptions\\IncompletePayment` exception that informs you that extra verification is needed. More information on how to handle these exceptions be found can be found in the documentation on [handling failed payments](#handling-failed-payments)."
+#: docs/10.x/billing.md:block 649 (header)
+msgid "Strong Customer Authentication"
 msgstr ""
 
 #: docs/10.x/billing.md:block 650 (paragraph)
-msgid "Payment confirmation screens presented by Stripe or Cashier may be tailored to a specific bank or card issuer's payment flow and can include additional card confirmation, a temporary small charge, separate device authentication, or other forms of verification."
+msgid "If your business or one of your customers is based in Europe you will need to abide by the EU's Strong Customer Authentication (SCA) regulations. These regulations were imposed in September 2019 by the European Union to prevent payment fraud. Luckily, Stripe and Cashier are prepared for building SCA compliant applications."
 msgstr ""
 
-#: docs/10.x/billing.md:block 652 (header)
-msgid "Incomplete and Past Due State"
+#: docs/10.x/billing.md:block 651 (quote)
+msgid "**Warning** Before getting started, review [Stripe's guide on PSD2 and SCA](https://stripe.com/guides/strong-customer-authentication) as well as their [documentation on the new SCA APIs](https://stripe.com/docs/strong-customer-authentication)."
 msgstr ""
 
-#: docs/10.x/billing.md:block 653 (paragraph)
-msgid "When a payment needs additional confirmation, the subscription will remain in an `incomplete` or `past_due` state as indicated by its `stripe_status` database column. Cashier will automatically activate the customer's subscription as soon as payment confirmation is complete and your application is notified by Stripe via webhook of its completion."
+#: docs/10.x/billing.md:block 653 (header)
+msgid "Payments Requiring Additional Confirmation"
 msgstr ""
 
 #: docs/10.x/billing.md:block 654 (paragraph)
-msgid "For more information on `incomplete` and `past_due` states, please refer to [our additional documentation on these states](#incomplete-and-past-due-status)."
+msgid "SCA regulations often require extra verification in order to confirm and process a payment. When this happens, Cashier will throw a `Laravel\\Cashier\\Exceptions\\IncompletePayment` exception that informs you that extra verification is needed. More information on how to handle these exceptions be found can be found in the documentation on [handling failed payments](#handling-failed-payments)."
 msgstr ""
 
-#: docs/10.x/billing.md:block 656 (header)
-msgid "Off-Session Payment Notifications"
+#: docs/10.x/billing.md:block 655 (paragraph)
+msgid "Payment confirmation screens presented by Stripe or Cashier may be tailored to a specific bank or card issuer's payment flow and can include additional card confirmation, a temporary small charge, separate device authentication, or other forms of verification."
 msgstr ""
 
-#: docs/10.x/billing.md:block 657 (paragraph)
-msgid "Since SCA regulations require customers to occasionally verify their payment details even while their subscription is active, Cashier can send a notification to the customer when off-session payment confirmation is required. For example, this may occur when a subscription is renewing. Cashier's payment notification can be enabled by setting the `CASHIER_PAYMENT_NOTIFICATION` environment variable to a notification class. By default, this notification is disabled. Of course, Cashier includes a notification class you may use for this purpose, but you are free to provide your own notification class if desired:"
+#: docs/10.x/billing.md:block 657 (header)
+msgid "Incomplete and Past Due State"
 msgstr ""
 
-#: docs/10.x/billing.md:block 658 (code)
-msgid "CASHIER_PAYMENT_NOTIFICATION=Laravel\\Cashier\\Notifications\\ConfirmPayment\n"
+#: docs/10.x/billing.md:block 658 (paragraph)
+msgid "When a payment needs additional confirmation, the subscription will remain in an `incomplete` or `past_due` state as indicated by its `stripe_status` database column. Cashier will automatically activate the customer's subscription as soon as payment confirmation is complete and your application is notified by Stripe via webhook of its completion."
 msgstr ""
 
 #: docs/10.x/billing.md:block 659 (paragraph)
+msgid "For more information on `incomplete` and `past_due` states, please refer to [our additional documentation on these states](#incomplete-and-past-due-status)."
+msgstr ""
+
+#: docs/10.x/billing.md:block 661 (header)
+msgid "Off-Session Payment Notifications"
+msgstr ""
+
+#: docs/10.x/billing.md:block 662 (paragraph)
+msgid "Since SCA regulations require customers to occasionally verify their payment details even while their subscription is active, Cashier can send a notification to the customer when off-session payment confirmation is required. For example, this may occur when a subscription is renewing. Cashier's payment notification can be enabled by setting the `CASHIER_PAYMENT_NOTIFICATION` environment variable to a notification class. By default, this notification is disabled. Of course, Cashier includes a notification class you may use for this purpose, but you are free to provide your own notification class if desired:"
+msgstr ""
+
+#: docs/10.x/billing.md:block 663 (code)
+msgid "CASHIER_PAYMENT_NOTIFICATION=Laravel\\Cashier\\Notifications\\ConfirmPayment\n"
+msgstr ""
+
+#: docs/10.x/billing.md:block 664 (paragraph)
 msgid "To ensure that off-session payment confirmation notifications are delivered, verify that [Stripe webhooks are configured](#handling-stripe-webhooks) for your application and the `invoice.payment_action_required` webhook is enabled in your Stripe dashboard. In addition, your `Billable` model should also use Laravel's `Illuminate\\Notifications\\Notifiable` trait."
 msgstr ""
 
-#: docs/10.x/billing.md:block 660 (quote)
+#: docs/10.x/billing.md:block 665 (quote)
 msgid "**Warning** Notifications will be sent even when customers are manually making a payment that requires additional confirmation. Unfortunately, there is no way for Stripe to know that the payment was done manually or \"off-session\". But, a customer will simply see a \"Payment Successful\" message if they visit the payment page after already confirming their payment. The customer will not be allowed to accidentally confirm the same payment twice and incur an accidental second charge."
 msgstr ""
 
-#: docs/10.x/billing.md:block 662 (header)
+#: docs/10.x/billing.md:block 667 (header)
 msgid "Stripe SDK"
 msgstr ""
 
-#: docs/10.x/billing.md:block 663 (paragraph)
+#: docs/10.x/billing.md:block 668 (paragraph)
 msgid "Many of Cashier's objects are wrappers around Stripe SDK objects. If you would like to interact with the Stripe objects directly, you may conveniently retrieve them using the `asStripe` method:"
 msgstr ""
 
-#: docs/10.x/billing.md:block 664 (code)
+#: docs/10.x/billing.md:block 669 (code)
 msgid ""
 "$stripeSubscription = $subscription->asStripeSubscription();\n"
 "\n"
@@ -3365,50 +3392,50 @@ msgid ""
 "$stripeSubscription->save();\n"
 msgstr ""
 
-#: docs/10.x/billing.md:block 665 (paragraph)
+#: docs/10.x/billing.md:block 670 (paragraph)
 msgid "You may also use the `updateStripeSubscription` method to update a Stripe subscription directly:"
 msgstr ""
 
-#: docs/10.x/billing.md:block 666 (code)
+#: docs/10.x/billing.md:block 671 (code)
 msgid "$subscription->updateStripeSubscription(['application_fee_percent' => 5]);\n"
 msgstr ""
 
-#: docs/10.x/billing.md:block 667 (paragraph)
+#: docs/10.x/billing.md:block 672 (paragraph)
 msgid "You may invoke the `stripe` method on the `Cashier` class if you would like to use the `Stripe\\StripeClient` client directly. For example, you could use this method to access the `StripeClient` instance and retrieve a list of prices from your Stripe account:"
 msgstr ""
 
-#: docs/10.x/billing.md:block 668 (code)
+#: docs/10.x/billing.md:block 673 (code)
 msgid ""
 "use Laravel\\Cashier\\Cashier;\n"
 "\n"
 "$prices = Cashier::stripe()->prices->all();\n"
 msgstr ""
 
-#: docs/10.x/billing.md:block 670 (header)
+#: docs/10.x/billing.md:block 675 (header)
 msgid "Testing"
 msgstr ""
 
-#: docs/10.x/billing.md:block 671 (paragraph)
+#: docs/10.x/billing.md:block 676 (paragraph)
 msgid "When testing an application that uses Cashier, you may mock the actual HTTP requests to the Stripe API; however, this requires you to partially re-implement Cashier's own behavior. Therefore, we recommend allowing your tests to hit the actual Stripe API. While this is slower, it provides more confidence that your application is working as expected and any slow tests may be placed within their own PHPUnit testing group."
 msgstr ""
 
-#: docs/10.x/billing.md:block 672 (paragraph)
+#: docs/10.x/billing.md:block 677 (paragraph)
 msgid "When testing, remember that Cashier itself already has a great test suite, so you should only focus on testing the subscription and payment flow of your own application and not every underlying Cashier behavior."
 msgstr ""
 
-#: docs/10.x/billing.md:block 673 (paragraph)
+#: docs/10.x/billing.md:block 678 (paragraph)
 msgid "To get started, add the **testing** version of your Stripe secret to your `phpunit.xml` file:"
 msgstr ""
 
-#: docs/10.x/billing.md:block 674 (code)
+#: docs/10.x/billing.md:block 679 (code)
 msgid "<env name=\"STRIPE_SECRET\" value=\"sk_test_<your-key>\"/>\n"
 msgstr ""
 
-#: docs/10.x/billing.md:block 675 (paragraph)
+#: docs/10.x/billing.md:block 680 (paragraph)
 msgid "Now, whenever you interact with Cashier while testing, it will send actual API requests to your Stripe testing environment. For convenience, you should pre-fill your Stripe testing account with subscriptions / prices that you may use during testing."
 msgstr ""
 
-#: docs/10.x/billing.md:block 676 (quote)
+#: docs/10.x/billing.md:block 681 (quote)
 msgid "**Note** In order to test a variety of billing scenarios, such as credit card denials and failures, you may use the vast range of [testing card numbers and tokens](https://stripe.com/docs/testing) provided by Stripe."
 msgstr ""
 
@@ -3422,6 +3449,10 @@ msgstr ""
 
 #: docs/8.x/billing.md:block 14 (quote)
 msgid "{note} To ensure Cashier properly handles all Stripe events, remember to [set up Cashier's webhook handling](#handling-stripe-webhooks)."
+msgstr ""
+
+#: docs/8.x/billing.md:block 17 (paragraph)
+msgid "Cashier's service provider registers its own database migration directory, so remember to migrate your database after installing the package. The Cashier migrations will add several columns to your `users` table as well as create a new `subscriptions` table to hold all of your customer's subscriptions:"
 msgstr ""
 
 #: docs/8.x/billing.md:block 22 (code)

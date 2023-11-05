@@ -31,15 +31,19 @@ msgid "[Autoloader Optimization](#autoloader-optimization)"
 msgstr ""
 
 #: docs/10.x/deployment.md:block 2 (unordered list)
-msgid "[Optimizing Configuration Loading](#optimizing-configuration-loading)"
+msgid "[Caching Configuration](#optimizing-configuration-loading)"
 msgstr ""
 
 #: docs/10.x/deployment.md:block 2 (unordered list)
-msgid "[Optimizing Route Loading](#optimizing-route-loading)"
+msgid "[Caching Events](#caching-events)"
 msgstr ""
 
 #: docs/10.x/deployment.md:block 2 (unordered list)
-msgid "[Optimizing View Loading](#optimizing-view-loading)"
+msgid "[Caching Routes](#optimizing-route-loading)"
+msgstr ""
+
+#: docs/10.x/deployment.md:block 2 (unordered list)
+msgid "[Caching Views](#optimizing-view-loading)"
 msgstr ""
 
 #: docs/10.x/deployment.md:block 2 (unordered list)
@@ -47,7 +51,7 @@ msgid "[Debug Mode](#debug-mode)"
 msgstr ""
 
 #: docs/10.x/deployment.md:block 2 (unordered list)
-msgid "[Deploying With Forge / Vapor](#deploying-with-forge-or-vapor)"
+msgid "[Easy Deployment With Forge / Vapor](#deploying-with-forge-or-vapor)"
 msgstr ""
 
 #: docs/10.x/deployment.md:block 4 (header)
@@ -163,7 +167,7 @@ msgid ""
 "    error_page 404 /index.php;\n"
 "\n"
 "    location ~ \\.php$ {\n"
-"        fastcgi_pass unix:/var/run/php/php8.0-fpm.sock;\n"
+"        fastcgi_pass unix:/var/run/php/php8.2-fpm.sock;\n"
 "        fastcgi_param SCRIPT_FILENAME $realpath_root$fastcgi_script_name;\n"
 "        include fastcgi_params;\n"
 "    }\n"
@@ -195,7 +199,7 @@ msgid "**Note** In addition to optimizing the autoloader, you should always be s
 msgstr ""
 
 #: docs/10.x/deployment.md:block 27 (header)
-msgid "Optimizing Configuration Loading"
+msgid "Caching Configuration"
 msgstr ""
 
 #: docs/10.x/deployment.md:block 28 (paragraph)
@@ -215,75 +219,103 @@ msgid "**Warning** If you execute the `config:cache` command during your deploym
 msgstr ""
 
 #: docs/10.x/deployment.md:block 33 (header)
-msgid "Optimizing Route Loading"
+msgid "Caching Events"
 msgstr ""
 
 #: docs/10.x/deployment.md:block 34 (paragraph)
-msgid "If you are building a large application with many routes, you should make sure that you are running the `route:cache` Artisan command during your deployment process:"
+msgid "If your application is utilizing [event discovery](/docs/{{version}}/events#event-discovery), you should cache your application's event to listener mappings during your deployment process. This can be accomplished by invoking the `event:cache` Artisan command during deployment:"
 msgstr ""
 
 #: docs/10.x/deployment.md:block 35 (code)
+msgid "php artisan event:cache\n"
+msgstr ""
+
+#: docs/10.x/deployment.md:block 37 (header)
+msgid "Caching Routes"
+msgstr ""
+
+#: docs/10.x/deployment.md:block 38 (paragraph)
+msgid "If you are building a large application with many routes, you should make sure that you are running the `route:cache` Artisan command during your deployment process:"
+msgstr ""
+
+#: docs/10.x/deployment.md:block 39 (code)
 msgid "php artisan route:cache\n"
 msgstr ""
 
-#: docs/10.x/deployment.md:block 36 (paragraph)
+#: docs/10.x/deployment.md:block 40 (paragraph)
 msgid "This command reduces all of your route registrations into a single method call within a cached file, improving the performance of route registration when registering hundreds of routes."
 msgstr ""
 
-#: docs/10.x/deployment.md:block 38 (header)
-msgid "Optimizing View Loading"
+#: docs/10.x/deployment.md:block 42 (header)
+msgid "Caching Views"
 msgstr ""
 
-#: docs/10.x/deployment.md:block 39 (paragraph)
+#: docs/10.x/deployment.md:block 43 (paragraph)
 msgid "When deploying your application to production, you should make sure that you run the `view:cache` Artisan command during your deployment process:"
 msgstr ""
 
-#: docs/10.x/deployment.md:block 40 (code)
+#: docs/10.x/deployment.md:block 44 (code)
 msgid "php artisan view:cache\n"
 msgstr ""
 
-#: docs/10.x/deployment.md:block 41 (paragraph)
+#: docs/10.x/deployment.md:block 45 (paragraph)
 msgid "This command precompiles all your Blade views so they are not compiled on demand, improving the performance of each request that returns a view."
 msgstr ""
 
-#: docs/10.x/deployment.md:block 43 (header)
+#: docs/10.x/deployment.md:block 47 (header)
 msgid "Debug Mode"
 msgstr ""
 
-#: docs/10.x/deployment.md:block 44 (paragraph)
+#: docs/10.x/deployment.md:block 48 (paragraph)
 msgid "The debug option in your config/app.php configuration file determines how much information about an error is actually displayed to the user. By default, this option is set to respect the value of the `APP_DEBUG` environment variable, which is stored in your application's `.env` file."
 msgstr ""
 
-#: docs/10.x/deployment.md:block 45 (paragraph)
-msgid "**In your production environment, this value should always be `false`. If the `APP_DEBUG` variable is set to `true` in production, you risk exposing sensitive configuration values to your application's end users.**"
+#: docs/10.x/deployment.md:block 49 (quote)
+msgid "**Warning** **In your production environment, this value should always be `false`. If the `APP_DEBUG` variable is set to `true` in production, you risk exposing sensitive configuration values to your application's end users.**"
 msgstr ""
 
-#: docs/10.x/deployment.md:block 47 (header)
-msgid "Deploying With Forge / Vapor"
+#: docs/10.x/deployment.md:block 51 (header)
+msgid "Easy Deployment With Forge / Vapor"
 msgstr ""
 
-#: docs/10.x/deployment.md:block 49 (header)
+#: docs/10.x/deployment.md:block 53 (header)
 msgid "Laravel Forge"
 msgstr ""
 
-#: docs/10.x/deployment.md:block 50 (paragraph)
+#: docs/10.x/deployment.md:block 54 (paragraph)
 msgid "If you aren't quite ready to manage your own server configuration or aren't comfortable configuring all of the various services needed to run a robust Laravel application, [Laravel Forge](https://forge.laravel.com) is a wonderful alternative."
 msgstr ""
 
-#: docs/10.x/deployment.md:block 51 (paragraph)
+#: docs/10.x/deployment.md:block 55 (paragraph)
 msgid "Laravel Forge can create servers on various infrastructure providers such as DigitalOcean, Linode, AWS, and more. In addition, Forge installs and manages all of the tools needed to build robust Laravel applications, such as Nginx, MySQL, Redis, Memcached, Beanstalk, and more."
 msgstr ""
 
-#: docs/10.x/deployment.md:block 52 (quote)
+#: docs/10.x/deployment.md:block 56 (quote)
 msgid "**Note** Want a full guide to deploying with Laravel Forge? Check out the [Laravel Bootcamp](https://bootcamp.laravel.com/deploying) and the Forge [video series available on Laracasts](https://laracasts.com/series/learn-laravel-forge-2022-edition)."
 msgstr ""
 
-#: docs/10.x/deployment.md:block 54 (header)
+#: docs/10.x/deployment.md:block 58 (header)
 msgid "Laravel Vapor"
 msgstr ""
 
-#: docs/10.x/deployment.md:block 55 (paragraph)
+#: docs/10.x/deployment.md:block 59 (paragraph)
 msgid "If you would like a totally serverless, auto-scaling deployment platform tuned for Laravel, check out [Laravel Vapor](https://vapor.laravel.com). Laravel Vapor is a serverless deployment platform for Laravel, powered by AWS. Launch your Laravel infrastructure on Vapor and fall in love with the scalable simplicity of serverless. Laravel Vapor is fine-tuned by Laravel's creators to work seamlessly with the framework so you can keep writing your Laravel applications exactly like you're used to."
+msgstr ""
+
+#: docs/8.x/deployment.md:block 2 (unordered list)
+msgid "[Optimizing Configuration Loading](#optimizing-configuration-loading)"
+msgstr ""
+
+#: docs/8.x/deployment.md:block 2 (unordered list)
+msgid "[Optimizing Route Loading](#optimizing-route-loading)"
+msgstr ""
+
+#: docs/8.x/deployment.md:block 2 (unordered list)
+msgid "[Optimizing View Loading](#optimizing-view-loading)"
+msgstr ""
+
+#: docs/8.x/deployment.md:block 2 (unordered list)
+msgid "[Deploying With Forge / Vapor](#deploying-with-forge-or-vapor)"
 msgstr ""
 
 #: docs/8.x/deployment.md:block 10 (unordered list)
@@ -338,14 +370,70 @@ msgstr ""
 msgid "{tip} In addition to optimizing the autoloader, you should always be sure to include a `composer.lock` file in your project's source control repository. Your project's dependencies can be installed much faster when a `composer.lock` file is present."
 msgstr ""
 
+#: docs/8.x/deployment.md:block 27 (header)
+msgid "Optimizing Configuration Loading"
+msgstr ""
+
 #: docs/8.x/deployment.md:block 31 (quote)
 msgid "{note} If you execute the `config:cache` command during your deployment process, you should be sure that you are only calling the `env` function from within your configuration files. Once the configuration has been cached, the `.env` file will not be loaded and all calls to the `env` function for `.env` variables will return `null`."
+msgstr ""
+
+#: docs/8.x/deployment.md:block 33 (header)
+msgid "Optimizing Route Loading"
+msgstr ""
+
+#: docs/8.x/deployment.md:block 38 (header)
+msgid "Optimizing View Loading"
 msgstr ""
 
 #: docs/8.x/deployment.md:block 44 (paragraph)
 msgid "The debug option in your config/app.php configuration file determines how much information about an error is actually displayed to the user. By default, this option is set to respect the value of the APP_DEBUG environment variable, which is stored in your .env file."
 msgstr ""
 
+#: docs/8.x/deployment.md:block 45 (paragraph)
+msgid "**In your production environment, this value should always be `false`. If the `APP_DEBUG` variable is set to `true` in production, you risk exposing sensitive configuration values to your application's end users.**"
+msgstr ""
+
+#: docs/8.x/deployment.md:block 47 (header)
+msgid "Deploying With Forge / Vapor"
+msgstr ""
+
 #: docs/9.x/deployment.md:block 10 (unordered list)
 msgid "PHP >= 8.0"
+msgstr ""
+
+#: docs/9.x/deployment.md:block 18 (code)
+msgid ""
+"server {\n"
+"    listen 80;\n"
+"    listen [::]:80;\n"
+"    server_name example.com;\n"
+"    root /srv/example.com/public;\n"
+"\n"
+"    add_header X-Frame-Options \"SAMEORIGIN\";\n"
+"    add_header X-Content-Type-Options \"nosniff\";\n"
+"\n"
+"    index index.php;\n"
+"\n"
+"    charset utf-8;\n"
+"\n"
+"    location / {\n"
+"        try_files $uri $uri/ /index.php?$query_string;\n"
+"    }\n"
+"\n"
+"    location = /favicon.ico { access_log off; log_not_found off; }\n"
+"    location = /robots.txt  { access_log off; log_not_found off; }\n"
+"\n"
+"    error_page 404 /index.php;\n"
+"\n"
+"    location ~ \\.php$ {\n"
+"        fastcgi_pass unix:/var/run/php/php8.0-fpm.sock;\n"
+"        fastcgi_param SCRIPT_FILENAME $realpath_root$fastcgi_script_name;\n"
+"        include fastcgi_params;\n"
+"    }\n"
+"\n"
+"    location ~ /\\.(?!well-known).* {\n"
+"        deny all;\n"
+"    }\n"
+"}\n"
 msgstr ""

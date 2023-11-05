@@ -182,10 +182,18 @@ msgid ""
 msgstr ""
 
 #: docs/10.x/urls.md:block 37 (paragraph)
-msgid "If you would like to generate a temporary signed route URL that expires after a specified amount of time, you may use the `temporarySignedRoute` method. When Laravel validates a temporary signed route URL, it will ensure that the expiration timestamp that is encoded into the signed URL has not elapsed:"
+msgid "You may exclude the domain from the signed URL hash by providing the `absolute` argument to the `signedRoute` method:"
 msgstr ""
 
 #: docs/10.x/urls.md:block 38 (code)
+msgid "return URL::signedRoute('unsubscribe', ['user' => 1], absolute: false);\n"
+msgstr ""
+
+#: docs/10.x/urls.md:block 39 (paragraph)
+msgid "If you would like to generate a temporary signed route URL that expires after a specified amount of time, you may use the `temporarySignedRoute` method. When Laravel validates a temporary signed route URL, it will ensure that the expiration timestamp that is encoded into the signed URL has not elapsed:"
+msgstr ""
+
+#: docs/10.x/urls.md:block 40 (code)
 msgid ""
 "use Illuminate\\Support\\Facades\\URL;\n"
 "\n"
@@ -194,15 +202,15 @@ msgid ""
 ");\n"
 msgstr ""
 
-#: docs/10.x/urls.md:block 40 (header)
+#: docs/10.x/urls.md:block 42 (header)
 msgid "Validating Signed Route Requests"
 msgstr ""
 
-#: docs/10.x/urls.md:block 41 (paragraph)
+#: docs/10.x/urls.md:block 43 (paragraph)
 msgid "To verify that an incoming request has a valid signature, you should call the `hasValidSignature` method on the incoming `Illuminate\\Http\\Request` instance:"
 msgstr ""
 
-#: docs/10.x/urls.md:block 42 (code)
+#: docs/10.x/urls.md:block 44 (code)
 msgid ""
 "use Illuminate\\Http\\Request;\n"
 "\n"
@@ -215,22 +223,22 @@ msgid ""
 "})->name('unsubscribe');\n"
 msgstr ""
 
-#: docs/10.x/urls.md:block 43 (paragraph)
+#: docs/10.x/urls.md:block 45 (paragraph)
 msgid "Sometimes, you may need to allow your application's frontend to append data to a signed URL, such as when performing client-side pagination. Therefore, you can specify request query parameters that should be ignored when validating a signed URL using the `hasValidSignatureWhileIgnoring` method. Remember, ignoring parameters allows anyone to modify those parameters on the request:"
 msgstr ""
 
-#: docs/10.x/urls.md:block 44 (code)
+#: docs/10.x/urls.md:block 46 (code)
 msgid ""
 "if (! $request->hasValidSignatureWhileIgnoring(['page', 'order'])) {\n"
 "    abort(401);\n"
 "}\n"
 msgstr ""
 
-#: docs/10.x/urls.md:block 45 (paragraph)
+#: docs/10.x/urls.md:block 47 (paragraph)
 msgid "Instead of validating signed URLs using the incoming request instance, you may assign the `Illuminate\\Routing\\Middleware\\ValidateSignature` [middleware](/docs/{{version}}/middleware) to the route. If it is not already present, you may assign this middleware an alias in your HTTP kernel's `$middlewareAliases` array:"
 msgstr ""
 
-#: docs/10.x/urls.md:block 46 (code)
+#: docs/10.x/urls.md:block 48 (code)
 msgid ""
 "/**\n"
 " * The application's middleware aliases.\n"
@@ -244,26 +252,37 @@ msgid ""
 "];\n"
 msgstr ""
 
-#: docs/10.x/urls.md:block 47 (paragraph)
+#: docs/10.x/urls.md:block 49 (paragraph)
 msgid "Once you have registered the middleware in your kernel, you may attach it to a route. If the incoming request does not have a valid signature, the middleware will automatically return a `403` HTTP response:"
 msgstr ""
 
-#: docs/10.x/urls.md:block 48 (code)
+#: docs/10.x/urls.md:block 50 (code)
 msgid ""
 "Route::post('/unsubscribe/{user}', function (Request $request) {\n"
 "    // ...\n"
 "})->name('unsubscribe')->middleware('signed');\n"
 msgstr ""
 
-#: docs/10.x/urls.md:block 50 (header)
-msgid "Responding To Invalid Signed Routes"
-msgstr ""
-
 #: docs/10.x/urls.md:block 51 (paragraph)
-msgid "When someone visits a signed URL that has expired, they will receive a generic error page for the `403` HTTP status code. However, you can customize this behavior by defining a custom \"renderable\" closure for the `InvalidSignatureException` exception in your exception handler. This closure should return an HTTP response:"
+msgid "If your signed URLs do not include the domain in the URL hash, you should provide the `relative` argument to the middleware:"
 msgstr ""
 
 #: docs/10.x/urls.md:block 52 (code)
+msgid ""
+"Route::post('/unsubscribe/{user}', function (Request $request) {\n"
+"    // ...\n"
+"})->name('unsubscribe')->middleware('signed:relative');\n"
+msgstr ""
+
+#: docs/10.x/urls.md:block 54 (header)
+msgid "Responding To Invalid Signed Routes"
+msgstr ""
+
+#: docs/10.x/urls.md:block 55 (paragraph)
+msgid "When someone visits a signed URL that has expired, they will receive a generic error page for the `403` HTTP status code. However, you can customize this behavior by defining a custom \"renderable\" closure for the `InvalidSignatureException` exception in your exception handler. This closure should return an HTTP response:"
+msgstr ""
+
+#: docs/10.x/urls.md:block 56 (code)
 msgid ""
 "use Illuminate\\Routing\\Exceptions\\InvalidSignatureException;\n"
 "\n"
@@ -278,49 +297,49 @@ msgid ""
 "}\n"
 msgstr ""
 
-#: docs/10.x/urls.md:block 54 (header)
+#: docs/10.x/urls.md:block 58 (header)
 msgid "URLs For Controller Actions"
 msgstr ""
 
-#: docs/10.x/urls.md:block 55 (paragraph)
+#: docs/10.x/urls.md:block 59 (paragraph)
 msgid "The `action` function generates a URL for the given controller action:"
 msgstr ""
 
-#: docs/10.x/urls.md:block 56 (code)
+#: docs/10.x/urls.md:block 60 (code)
 msgid ""
 "use App\\Http\\Controllers\\HomeController;\n"
 "\n"
 "$url = action([HomeController::class, 'index']);\n"
 msgstr ""
 
-#: docs/10.x/urls.md:block 57 (paragraph)
+#: docs/10.x/urls.md:block 61 (paragraph)
 msgid "If the controller method accepts route parameters, you may pass an associative array of route parameters as the second argument to the function:"
 msgstr ""
 
-#: docs/10.x/urls.md:block 58 (code)
+#: docs/10.x/urls.md:block 62 (code)
 msgid "$url = action([UserController::class, 'profile'], ['id' => 1]);\n"
 msgstr ""
 
-#: docs/10.x/urls.md:block 60 (header)
+#: docs/10.x/urls.md:block 64 (header)
 msgid "Default Values"
 msgstr ""
 
-#: docs/10.x/urls.md:block 61 (paragraph)
+#: docs/10.x/urls.md:block 65 (paragraph)
 msgid "For some applications, you may wish to specify request-wide default values for certain URL parameters. For example, imagine many of your routes define a `{locale}` parameter:"
 msgstr ""
 
-#: docs/10.x/urls.md:block 62 (code)
+#: docs/10.x/urls.md:block 66 (code)
 msgid ""
 "Route::get('/{locale}/posts', function () {\n"
 "    // ...\n"
 "})->name('post.index');\n"
 msgstr ""
 
-#: docs/10.x/urls.md:block 63 (paragraph)
+#: docs/10.x/urls.md:block 67 (paragraph)
 msgid "It is cumbersome to always pass the `locale` every time you call the `route` helper. So, you may use the `URL::defaults` method to define a default value for this parameter that will always be applied during the current request. You may wish to call this method from a [route middleware](/docs/{{version}}/middleware#assigning-middleware-to-routes) so that you have access to the current request:"
 msgstr ""
 
-#: docs/10.x/urls.md:block 64 (code)
+#: docs/10.x/urls.md:block 68 (code)
 msgid ""
 "<?php\n"
 "\n"
@@ -347,23 +366,23 @@ msgid ""
 "}\n"
 msgstr ""
 
-#: docs/10.x/urls.md:block 65 (paragraph)
+#: docs/10.x/urls.md:block 69 (paragraph)
 msgid "Once the default value for the `locale` parameter has been set, you are no longer required to pass its value when generating URLs via the `route` helper."
 msgstr ""
 
-#: docs/10.x/urls.md:block 67 (header)
+#: docs/10.x/urls.md:block 71 (header)
 msgid "URL Defaults & Middleware Priority"
 msgstr ""
 
-#: docs/10.x/urls.md:block 68 (paragraph)
+#: docs/10.x/urls.md:block 72 (paragraph)
 msgid "Setting URL default values can interfere with Laravel's handling of implicit model bindings. Therefore, you should [prioritize your middleware](/docs/{{version}}/middleware#sorting-middleware) that set URL defaults to be executed before Laravel's own `SubstituteBindings` middleware. You can accomplish this by making sure your middleware occurs before the `SubstituteBindings` middleware within the `$middlewarePriority` property of your application's HTTP kernel."
 msgstr ""
 
-#: docs/10.x/urls.md:block 69 (paragraph)
+#: docs/10.x/urls.md:block 73 (paragraph)
 msgid "The `$middlewarePriority` property is defined in the base `Illuminate\\Foundation\\Http\\Kernel` class. You may copy its definition from that class and overwrite it in your application's HTTP kernel in order to modify it:"
 msgstr ""
 
-#: docs/10.x/urls.md:block 70 (code)
+#: docs/10.x/urls.md:block 74 (code)
 msgid ""
 "/**\n"
 " * The priority-sorted list of middleware.\n"

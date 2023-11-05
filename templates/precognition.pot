@@ -1,0 +1,807 @@
+#
+msgid ""
+msgstr ""
+
+#: docs/10.x/precognition.md:block 1 (header)
+msgid "Precognition"
+msgstr ""
+
+#: docs/10.x/precognition.md:block 2 (unordered list)
+msgid "[Introduction](#introduction)"
+msgstr ""
+
+#: docs/10.x/precognition.md:block 2 (unordered list)
+msgid "[Live Validation](#live-validation)"
+msgstr ""
+
+#: docs/10.x/precognition.md:block 2 (unordered list)
+msgid "[Using Vue](#using-vue)"
+msgstr ""
+
+#: docs/10.x/precognition.md:block 2 (unordered list)
+msgid "[Using Vue & Inertia](#using-vue-and-inertia)"
+msgstr ""
+
+#: docs/10.x/precognition.md:block 2 (unordered list)
+msgid "[Using React](#using-react)"
+msgstr ""
+
+#: docs/10.x/precognition.md:block 2 (unordered list)
+msgid "[Using React & Inertia](#using-react-and-inertia)"
+msgstr ""
+
+#: docs/10.x/precognition.md:block 2 (unordered list)
+msgid "[Using Alpine & Blade](#using-alpine)"
+msgstr ""
+
+#: docs/10.x/precognition.md:block 2 (unordered list)
+msgid "[Configuring Axios](#configuring-axios)"
+msgstr ""
+
+#: docs/10.x/precognition.md:block 2 (unordered list)
+msgid "[Customizing Validation Rules](#customizing-validation-rules)"
+msgstr ""
+
+#: docs/10.x/precognition.md:block 2 (unordered list)
+msgid "[Handling File Uploads](#handling-file-uploads)"
+msgstr ""
+
+#: docs/10.x/precognition.md:block 2 (unordered list)
+msgid "[Managing Side-Effects](#managing-side-effects)"
+msgstr ""
+
+#: docs/10.x/precognition.md:block 2 (unordered list)
+msgid "[Testing](#testing)"
+msgstr ""
+
+#: docs/10.x/precognition.md:block 4 (header)
+msgid "Introduction"
+msgstr ""
+
+#: docs/10.x/precognition.md:block 5 (paragraph)
+msgid "Laravel Precognition allows you to anticipate the outcome of a future HTTP request. One of the primary use cases of Precognition is the ability to provide \"live\" validation for your frontend JavaScript application without having to duplicate your application's backend validation rules. Precognition pairs especially well with Laravel's Inertia-based [starter kits](/docs/{{version}}/starter-kits)."
+msgstr ""
+
+#: docs/10.x/precognition.md:block 6 (paragraph)
+msgid "When Laravel receives a \"precognitive request\", it will execute all of the route's middleware and resolve the route's controller dependencies, including validating [form requests](/docs/{{version}}/validation#form-request-validation) - but it will not actually execute the route's controller method."
+msgstr ""
+
+#: docs/10.x/precognition.md:block 8 (header)
+msgid "Live Validation"
+msgstr ""
+
+#: docs/10.x/precognition.md:block 10 (header)
+msgid "Using Vue"
+msgstr ""
+
+#: docs/10.x/precognition.md:block 11 (paragraph)
+msgid "Using Laravel Precognition, you can offer live validation experiences to your users without having to duplicate your validation rules in your frontend Vue application. To illustrate how it works, let's build a form for creating new users within our application."
+msgstr ""
+
+#: docs/10.x/precognition.md:block 12 (paragraph)
+msgid "First, to enable Precognition for a route, the `HandlePrecognitiveRequests` middleware should be added to the route definition. You should also create a [form request](/docs/{{version}}/validation#form-request-validation) to house the route's validation rules:"
+msgstr ""
+
+#: docs/10.x/precognition.md:block 13 (code)
+msgid ""
+"use App\\Http\\Requests\\StoreUserRequest;\n"
+"use Illuminate\\Foundation\\Http\\Middleware\\HandlePrecognitiveRequests;\n"
+"\n"
+"Route::post('/users', function (StoreUserRequest $request) {\n"
+"    // ...\n"
+"})->middleware([HandlePrecognitiveRequests::class]);\n"
+msgstr ""
+
+#: docs/10.x/precognition.md:block 14 (paragraph)
+msgid "Next, you should install the Laravel Precognition frontend helpers for Vue via NPM:"
+msgstr ""
+
+#: docs/10.x/precognition.md:block 15 (code)
+msgid "npm install laravel-precognition-vue\n"
+msgstr ""
+
+#: docs/10.x/precognition.md:block 16 (paragraph)
+msgid "With the Laravel Precognition package installed, you can now create a form object using Precognition's `useForm` function, providing the HTTP method (`post`), the target URL (`/users`), and the initial form data."
+msgstr ""
+
+#: docs/10.x/precognition.md:block 17 (paragraph)
+msgid "Then, to enable live validation, invoke the form's `validate` method on each input's `change` event, providing the input's name:"
+msgstr ""
+
+#: docs/10.x/precognition.md:block 18 (code)
+msgid ""
+"<script setup>\n"
+"import { useForm } from 'laravel-precognition-vue';\n"
+"\n"
+"const form = useForm('post', '/users', {\n"
+"    name: '',\n"
+"    email: '',\n"
+"});\n"
+"\n"
+"const submit = () => form.submit();\n"
+"</script>\n"
+"\n"
+"<template>\n"
+"    <form @submit.prevent=\"submit\">\n"
+"        <label for=\"name\">Name</label>\n"
+"        <input\n"
+"            id=\"name\"\n"
+"            v-model=\"form.name\"\n"
+"            @change=\"form.validate('name')\"\n"
+"        />\n"
+"        <div v-if=\"form.invalid('name')\">\n"
+"            {{ form.errors.name }}\n"
+"        </div>\n"
+"\n"
+"        <label for=\"email\">Email</label>\n"
+"        <input\n"
+"            id=\"email\"\n"
+"            type=\"email\"\n"
+"            v-model=\"form.email\"\n"
+"            @change=\"form.validate('email')\"\n"
+"        />\n"
+"        <div v-if=\"form.invalid('email')\">\n"
+"            {{ form.errors.email }}\n"
+"        </div>\n"
+"\n"
+"        <button :disabled=\"form.processing\">\n"
+"            Create User\n"
+"        </button>\n"
+"    </form>\n"
+"</template>\n"
+msgstr ""
+
+#: docs/10.x/precognition.md:block 19 (paragraph)
+msgid "Now, as the form is filled by the user, Precognition will provide live validation output powered by the validation rules in the route's form request. When the form's inputs are changed, a debounced \"precognitive\" validation request will be sent to your Laravel application. You may configure the debounce timeout by calling the form's `setValidationTimeout` function:"
+msgstr ""
+
+#: docs/10.x/precognition.md:block 20 (code)
+msgid "form.setValidationTimeout(3000);\n"
+msgstr ""
+
+#: docs/10.x/precognition.md:block 21 (paragraph)
+msgid "When a validation request is in-flight, the form's `validating` property will be `true`:"
+msgstr ""
+
+#: docs/10.x/precognition.md:block 22 (code)
+msgid ""
+"<div v-if=\"form.validating\">\n"
+"    Validating...\n"
+"</div>\n"
+msgstr ""
+
+#: docs/10.x/precognition.md:block 23 (paragraph)
+msgid "Any validation errors returned during a validation request or a form submission will automatically populate the form's `errors` object:"
+msgstr ""
+
+#: docs/10.x/precognition.md:block 24 (code)
+msgid ""
+"<div v-if=\"form.invalid('email')\">\n"
+"    {{ form.errors.email }}\n"
+"</div>\n"
+msgstr ""
+
+#: docs/10.x/precognition.md:block 25 (paragraph)
+msgid "You can determine if the form has any errors using the form's `hasErrors` property:"
+msgstr ""
+
+#: docs/10.x/precognition.md:block 26 (code)
+msgid ""
+"<div v-if=\"form.hasErrors\">\n"
+"    <!-- ... -->\n"
+"</div>\n"
+msgstr ""
+
+#: docs/10.x/precognition.md:block 27 (paragraph)
+msgid "You may also determine if an input has passed or failed validation by passing the input's name to the form's `valid` and `invalid` functions, respectively:"
+msgstr ""
+
+#: docs/10.x/precognition.md:block 28 (code)
+msgid ""
+"<span v-if=\"form.valid('email')\">\n"
+"    ✅\n"
+"</span>\n"
+"\n"
+"<span v-else-if=\"form.invalid('email')\">\n"
+"    ❌\n"
+"</span>\n"
+msgstr ""
+
+#: docs/10.x/precognition.md:block 29 (quote)
+msgid "**Warning** A form input will only appear as valid or invalid once it has changed and a validation response has been received."
+msgstr ""
+
+#: docs/10.x/precognition.md:block 30 (paragraph)
+msgid "If you are validating a subset of a form's inputs with Precognition, it can be useful to manually clear errors. You may use the form's `forgetError` function to achieve this:"
+msgstr ""
+
+#: docs/10.x/precognition.md:block 31 (code)
+msgid ""
+"<input\n"
+"    id=\"avatar\"\n"
+"    type=\"file\"\n"
+"    @change=\"(e) => {\n"
+"        form.avatar = e.target.files[0]\n"
+"\n"
+"        form.forgetError('avatar')\n"
+"    }\"\n"
+">\n"
+msgstr ""
+
+#: docs/10.x/precognition.md:block 32 (paragraph)
+msgid "Of course, you may also execute code in reaction to the response to the form submission. The form's `submit` function returns an Axios request promise. This provides a convenient way to access the response payload, reset the form inputs on successful submission, or handle a failed request:"
+msgstr ""
+
+#: docs/10.x/precognition.md:block 33 (code)
+msgid ""
+"const submit = () => form.submit()\n"
+"    .then(response => {\n"
+"        form.reset();\n"
+"\n"
+"        alert('User created.');\n"
+"    })\n"
+"    .catch(error => {\n"
+"        alert('An error occurred.');\n"
+"    });\n"
+msgstr ""
+
+#: docs/10.x/precognition.md:block 34 (paragraph)
+msgid "You may determine if a form submission request is in-flight by inspecting the form's `processing` property:"
+msgstr ""
+
+#: docs/10.x/precognition.md:block 35 (code)
+msgid ""
+"<button :disabled=\"form.processing\">\n"
+"    Submit\n"
+"</button>\n"
+msgstr ""
+
+#: docs/10.x/precognition.md:block 37 (header)
+msgid "Using Vue & Inertia"
+msgstr ""
+
+#: docs/10.x/precognition.md:block 38 (quote)
+msgid "**Note** If you would like a head start when developing your Laravel application with Vue and Inertia, consider using one of our [starter kits](/docs/{{version}}/starter-kits). Laravel's starter kits provide backend and frontend authentication scaffolding for your new Laravel application."
+msgstr ""
+
+#: docs/10.x/precognition.md:block 39 (paragraph)
+msgid "Before using Precognition with Vue and Inertia, be sure to review our general documentation on [using Precognition with Vue](#using-vue). When using Vue with Inertia, you will need to install the Inertia compatible Precognition library via NPM:"
+msgstr ""
+
+#: docs/10.x/precognition.md:block 40 (code)
+msgid "npm install laravel-precognition-vue-inertia\n"
+msgstr ""
+
+#: docs/10.x/precognition.md:block 41 (paragraph)
+msgid "Once installed, Precognition's `useForm` function will return an Inertia [form helper](https://inertiajs.com/forms#form-helper) augmented with the validation features discussed above."
+msgstr ""
+
+#: docs/10.x/precognition.md:block 42 (paragraph)
+msgid "The form helper's `submit` method has been streamlined, removing the need to specify the HTTP method or URL. Instead, you may pass Inertia's [visit options](https://inertiajs.com/manual-visits) as the first and only argument. In addition, the `submit` method does not return a Promise as seen in the Vue example above. Instead, you may provide any of Inertia's supported [event callbacks](https://inertiajs.com/manual-visits#event-callbacks) in the visit options given to the `submit` method:"
+msgstr ""
+
+#: docs/10.x/precognition.md:block 43 (code)
+msgid ""
+"<script setup>\n"
+"import { useForm } from 'laravel-precognition-vue-inertia';\n"
+"\n"
+"const form = useForm('post', '/users', {\n"
+"    name: '',\n"
+"    email: '',\n"
+"});\n"
+"\n"
+"const submit = () => form.submit({\n"
+"    preserveScroll: true,\n"
+"    onSuccess: () => form.reset(),\n"
+"});\n"
+"</script>\n"
+msgstr ""
+
+#: docs/10.x/precognition.md:block 45 (header)
+msgid "Using React"
+msgstr ""
+
+#: docs/10.x/precognition.md:block 46 (paragraph)
+msgid "Using Laravel Precognition, you can offer live validation experiences to your users without having to duplicate your validation rules in your frontend React application. To illustrate how it works, let's build a form for creating new users within our application."
+msgstr ""
+
+#: docs/10.x/precognition.md:block 49 (paragraph)
+msgid "Next, you should install the Laravel Precognition frontend helpers for React via NPM:"
+msgstr ""
+
+#: docs/10.x/precognition.md:block 50 (code)
+msgid "npm install laravel-precognition-react\n"
+msgstr ""
+
+#: docs/10.x/precognition.md:block 52 (paragraph)
+msgid "To enable live validation, you should listen to each input's `change` and `blur` event. In the `change` event handler, you should set the form's data with the `setData` function, passing the input's name and new value. Then, in the `blur` event handler invoke the form's `validate` method, providing the input's name:"
+msgstr ""
+
+#: docs/10.x/precognition.md:block 53 (code)
+msgid ""
+"import { useForm } from 'laravel-precognition-react';\n"
+"\n"
+"export default function Form() {\n"
+"    const form = useForm('post', '/users', {\n"
+"        name: '',\n"
+"        email: '',\n"
+"    });\n"
+"\n"
+"    const submit = (e) => {\n"
+"        e.preventDefault();\n"
+"\n"
+"        form.submit();\n"
+"    };\n"
+"\n"
+"    return (\n"
+"        <form onSubmit={submit}>\n"
+"            <label for=\"name\">Name</label>\n"
+"            <input\n"
+"                id=\"name\"\n"
+"                value={form.data.name}\n"
+"                onChange={(e) => form.setData('name', e.target.value)}\n"
+"                onBlur={() => form.validate('name')}\n"
+"            />\n"
+"            {form.invalid('name') && <div>{form.errors.name}</div>}\n"
+"\n"
+"            <label for=\"email\">Email</label>\n"
+"            <input\n"
+"                id=\"email\"\n"
+"                value={form.data.email}\n"
+"                onChange={(e) => form.setData('email', e.target.value)}\n"
+"                onBlur={() => form.validate('email')}\n"
+"            />\n"
+"            {form.invalid('email') && <div>{form.errors.email}</div>}\n"
+"\n"
+"            <button disabled={form.processing}>\n"
+"                Create User\n"
+"            </button>\n"
+"        </form>\n"
+"    );\n"
+"};\n"
+msgstr ""
+
+#: docs/10.x/precognition.md:block 57 (code)
+msgid "{form.validating && <div>Validating...</div>}\n"
+msgstr ""
+
+#: docs/10.x/precognition.md:block 59 (code)
+msgid "{form.invalid('email') && <div>{form.errors.email}</div>}\n"
+msgstr ""
+
+#: docs/10.x/precognition.md:block 61 (code)
+msgid "{form.hasErrors && <div><!-- ... --></div>}\n"
+msgstr ""
+
+#: docs/10.x/precognition.md:block 63 (code)
+msgid ""
+"{form.valid('email') && <span>✅</span>}\n"
+"\n"
+"{form.invalid('email') && <span>❌</span>}\n"
+msgstr ""
+
+#: docs/10.x/precognition.md:block 66 (code)
+msgid ""
+"<input\n"
+"    id=\"avatar\"\n"
+"    type=\"file\"\n"
+"    onChange={(e) => \n"
+"        form.setData('avatar', e.target.value);\n"
+"\n"
+"        form.forgetError('avatar');\n"
+"    }\n"
+">\n"
+msgstr ""
+
+#: docs/10.x/precognition.md:block 67 (paragraph)
+msgid "Of course, you may also execute code in reaction to the response to the form submission. The form's `submit` function returns an Axios request promise. This provides a convenient way to access the response payload, reset the form's inputs on a successful form submission, or handle a failed request:"
+msgstr ""
+
+#: docs/10.x/precognition.md:block 68 (code)
+msgid ""
+"const submit = (e) => {\n"
+"    e.preventDefault();\n"
+"\n"
+"    form.submit()\n"
+"        .then(response => {\n"
+"            form.reset();\n"
+"\n"
+"            alert('User created.');\n"
+"        })\n"
+"        .catch(error => {\n"
+"            alert('An error occurred.');\n"
+"        });\n"
+"};\n"
+msgstr ""
+
+#: docs/10.x/precognition.md:block 70 (code)
+msgid ""
+"<button disabled={form.processing}>\n"
+"    Submit\n"
+"</button>\n"
+msgstr ""
+
+#: docs/10.x/precognition.md:block 72 (header)
+msgid "Using React & Inertia"
+msgstr ""
+
+#: docs/10.x/precognition.md:block 73 (quote)
+msgid "**Note** If you would like a head start when developing your Laravel application with React and Inertia, consider using one of our [starter kits](/docs/{{version}}/starter-kits). Laravel's starter kits provide backend and frontend authentication scaffolding for your new Laravel application."
+msgstr ""
+
+#: docs/10.x/precognition.md:block 74 (paragraph)
+msgid "Before using Precognition with React and Inertia, be sure to review our general documentation on [using Precognition with React](#using-react). When using React with Inertia, you will need to install the Inertia compatible Precognition library via NPM:"
+msgstr ""
+
+#: docs/10.x/precognition.md:block 75 (code)
+msgid "npm install laravel-precognition-react-inertia\n"
+msgstr ""
+
+#: docs/10.x/precognition.md:block 77 (paragraph)
+msgid "The form helper's `submit` method has been streamlined, removing the need to specify the HTTP method or URL. Instead, you may pass Inertia's [visit options](https://inertiajs.com/manual-visits) as the first and only argument. In addition, the `submit` method does not return a Promise as seen in the React example above. Instead, you may provide any of Inertia's supported [event callbacks](https://inertiajs.com/manual-visits#event-callbacks) in the visit options given to the `submit` method:"
+msgstr ""
+
+#: docs/10.x/precognition.md:block 78 (code)
+msgid ""
+"import { useForm } from 'laravel-precognition-react-inertia';\n"
+"\n"
+"const form = useForm('post', '/users', {\n"
+"    name: '',\n"
+"    email: '',\n"
+"});\n"
+"\n"
+"const submit = (e) => {\n"
+"    e.preventDefault();\n"
+"\n"
+"    form.submit({\n"
+"        preserveScroll: true,\n"
+"        onSuccess: () => form.reset(),\n"
+"    });\n"
+"};\n"
+msgstr ""
+
+#: docs/10.x/precognition.md:block 80 (header)
+msgid "Using Alpine & Blade"
+msgstr ""
+
+#: docs/10.x/precognition.md:block 81 (paragraph)
+msgid "Using Laravel Precognition, you can offer live validation experiences to your users without having to duplicate your validation rules in your frontend Alpine application. To illustrate how it works, let's build a form for creating new users within our application."
+msgstr ""
+
+#: docs/10.x/precognition.md:block 83 (code)
+msgid ""
+"use App\\Http\\Requests\\CreateUserRequest;\n"
+"use Illuminate\\Foundation\\Http\\Middleware\\HandlePrecognitiveRequests;\n"
+"\n"
+"Route::post('/users', function (CreateUserRequest $request) {\n"
+"    // ...\n"
+"})->middleware([HandlePrecognitiveRequests::class]);\n"
+msgstr ""
+
+#: docs/10.x/precognition.md:block 84 (paragraph)
+msgid "Next, you should install the Laravel Precognition frontend helpers for Alpine via NPM:"
+msgstr ""
+
+#: docs/10.x/precognition.md:block 85 (code)
+msgid "npm install laravel-precognition-alpine\n"
+msgstr ""
+
+#: docs/10.x/precognition.md:block 86 (paragraph)
+msgid "Then, register the Precognition plugin with Alpine in your `resources/js/app.js` file:"
+msgstr ""
+
+#: docs/10.x/precognition.md:block 87 (code)
+msgid ""
+"import Alpine from 'alpinejs';\n"
+"import Precognition from 'laravel-precognition-alpine';\n"
+"\n"
+"window.Alpine = Alpine;\n"
+"\n"
+"Alpine.plugin(Precognition);\n"
+"Alpine.start();\n"
+msgstr ""
+
+#: docs/10.x/precognition.md:block 88 (paragraph)
+msgid "With the Laravel Precognition package installed and registered, you can now create a form object using Precognition's `$form` \"magic\", providing the HTTP method (`post`), the target URL (`/users`), and the initial form data."
+msgstr ""
+
+#: docs/10.x/precognition.md:block 89 (paragraph)
+msgid "To enable live validation, you should bind the form's data to its relevant input and then listen to each input's `change` event. In the `change` event handler, you should invoke the form's `validate` method, providing the input's name:"
+msgstr ""
+
+#: docs/10.x/precognition.md:block 90 (code)
+msgid ""
+"<form x-data=\"{\n"
+"    form: $form('post', '/register', {\n"
+"        name: '',\n"
+"        email: '',\n"
+"    }),\n"
+"}\">\n"
+"    @csrf\n"
+"    <label for=\"name\">Name</label>\n"
+"    <input\n"
+"        id=\"name\"\n"
+"        name=\"name\"\n"
+"        x-model=\"form.name\"\n"
+"        @change=\"form.validate('name')\"\n"
+"    />\n"
+"    <template x-if=\"form.invalid('name')\">\n"
+"        <div x-text=\"form.errors.name\"></div>\n"
+"    </template>\n"
+"\n"
+"    <label for=\"email\">Email</label>\n"
+"    <input\n"
+"        id=\"email\"\n"
+"        name=\"email\"\n"
+"        x-model=\"form.email\"\n"
+"        @change=\"form.validate('email')\"\n"
+"    />\n"
+"    <template x-if=\"form.invalid('email')\">\n"
+"        <div x-text=\"form.errors.email\"></div>\n"
+"    </template>\n"
+"\n"
+"    <button :disabled=\"form.processing\">\n"
+"        Create User\n"
+"    </button>\n"
+"</form>\n"
+msgstr ""
+
+#: docs/10.x/precognition.md:block 94 (code)
+msgid ""
+"<template x-if=\"form.validating\">\n"
+"    <div>Validating...</div>\n"
+"</template>\n"
+msgstr ""
+
+#: docs/10.x/precognition.md:block 96 (code)
+msgid ""
+"<template x-if=\"form.invalid('email')\">\n"
+"    <div x-text=\"form.errors.email\"></div>\n"
+"</template>\n"
+msgstr ""
+
+#: docs/10.x/precognition.md:block 98 (code)
+msgid ""
+"<template x-if=\"form.hasErrors\">\n"
+"    <div><!-- ... --></div>\n"
+"</template>\n"
+msgstr ""
+
+#: docs/10.x/precognition.md:block 100 (code)
+msgid ""
+"<template x-if=\"form.valid('email')\">\n"
+"    <span>✅</span>\n"
+"</template>\n"
+"\n"
+"<template x-if=\"form.invalid('email')\">\n"
+"    <span>❌</span>\n"
+"</template>\n"
+msgstr ""
+
+#: docs/10.x/precognition.md:block 105 (header)
+msgid "Repopulating Old Form Data"
+msgstr ""
+
+#: docs/10.x/precognition.md:block 106 (paragraph)
+msgid "In the user creation example discussed above, we are using Precognition to perform live validation; however, we are performing a traditional server-side form submission to submit the form. So, the form should be populated with any \"old\" input and validation errors returned from the server-side form submission:"
+msgstr ""
+
+#: docs/10.x/precognition.md:block 107 (code)
+msgid ""
+"<form x-data=\"{\n"
+"    form: $form('post', '/register', {\n"
+"        name: '{{ old('name') }}',\n"
+"        email: '{{ old('email') }}',\n"
+"    }).setErrors({{ Js::from($errors->messages()) }}),\n"
+"}\">\n"
+msgstr ""
+
+#: docs/10.x/precognition.md:block 108 (paragraph)
+msgid "Alternatively, if you would like to submit the form via XHR you may use the form's `submit` function, which returns an Axios request promise:"
+msgstr ""
+
+#: docs/10.x/precognition.md:block 109 (code)
+msgid ""
+"<form \n"
+"    x-data=\"{\n"
+"        form: $form('post', '/register', {\n"
+"            name: '',\n"
+"            email: '',\n"
+"        }),\n"
+"        submit() {\n"
+"            this.form.submit()\n"
+"                .then(response => {\n"
+"                    form.reset();\n"
+"\n"
+"                    alert('User created.')\n"
+"                })\n"
+"                .catch(error => {\n"
+"                    alert('An error occurred.');\n"
+"                });\n"
+"        },\n"
+"    }\"\n"
+"    @submit.prevent=\"submit\"\n"
+">\n"
+msgstr ""
+
+#: docs/10.x/precognition.md:block 111 (header)
+msgid "Configuring Axios"
+msgstr ""
+
+#: docs/10.x/precognition.md:block 112 (paragraph)
+msgid "The Precognition validation libraries use the [Axios](https://github.com/axios/axios) HTTP client to send requests to your application's backend. For convenience, the Axios instance may be customized if required by your application. For example, when using the `laravel-precognition-vue` library, you may add additional request headers to each outgoing request in your application's `resources/js/app.js` file:"
+msgstr ""
+
+#: docs/10.x/precognition.md:block 113 (code)
+msgid ""
+"import { client } from 'laravel-precognition-vue';\n"
+"\n"
+"client.axios().defaults.headers.common['Authorization'] = authToken;\n"
+msgstr ""
+
+#: docs/10.x/precognition.md:block 114 (paragraph)
+msgid "Or, if you already have a configured Axios instance for your application, you may tell Precognition to use that instance instead:"
+msgstr ""
+
+#: docs/10.x/precognition.md:block 115 (code)
+msgid ""
+"import Axios from 'axios';\n"
+"import { client } from 'laravel-precognition-vue';\n"
+"\n"
+"window.axios = Axios.create()\n"
+"window.axios.defaults.headers.common['Authorization'] = authToken;\n"
+"\n"
+"client.use(window.axios)\n"
+msgstr ""
+
+#: docs/10.x/precognition.md:block 116 (quote)
+msgid "**Warning** The Inertia flavored Precognition libraries will only use the configured Axios instance for validation requests. Form submissions will always be sent by Inertia."
+msgstr ""
+
+#: docs/10.x/precognition.md:block 118 (header)
+msgid "Customizing Validation Rules"
+msgstr ""
+
+#: docs/10.x/precognition.md:block 119 (paragraph)
+msgid "It is possible to customize the validation rules executed during a precognitive request by using the request's `isPrecognitive` method."
+msgstr ""
+
+#: docs/10.x/precognition.md:block 120 (paragraph)
+msgid "For example, on a user creation form, we may want to validate that a password is \"uncompromised\" only on the final form submission. For precognitive validation requests, we will simply validate that the password is required and has a minimum of 8 characters. Using the `isPrecognitive` method, we can customize the rules defined by our form request:"
+msgstr ""
+
+#: docs/10.x/precognition.md:block 121 (code)
+msgid ""
+"<?php\n"
+"\n"
+"namespace App\\Http\\Requests;\n"
+"\n"
+"use Illuminate\\Foundation\\Http\\FormRequest;\n"
+"use Illuminate\\Validation\\Rules\\Password;\n"
+"\n"
+"class StoreUserRequest extends FormRequest\n"
+"{\n"
+"    /**\n"
+"     * Get the validation rules that apply to the request.\n"
+"     *\n"
+"     * @return array\n"
+"     */\n"
+"    protected function rules()\n"
+"    {\n"
+"        return [\n"
+"            'password' => [\n"
+"                'required',\n"
+"                $this->isPrecognitive()\n"
+"                    ? Password::min(8)\n"
+"                    : Password::min(8)->uncompromised(),\n"
+"            ],\n"
+"            // ...\n"
+"        ];\n"
+"    }\n"
+"}\n"
+msgstr ""
+
+#: docs/10.x/precognition.md:block 123 (header)
+msgid "Handling File Uploads"
+msgstr ""
+
+#: docs/10.x/precognition.md:block 124 (paragraph)
+msgid "By default, Laravel Precognition does not upload or validate files during a precognitive validation request. This ensure that large files are not unnecessarily uploaded multiple times."
+msgstr ""
+
+#: docs/10.x/precognition.md:block 125 (paragraph)
+msgid "Because of this behavior, you should ensure that your application [customizes the corresponding form request's validation rules](#customizing-validation-rules) to specify the field is only required for full form submissions:"
+msgstr ""
+
+#: docs/10.x/precognition.md:block 126 (code)
+msgid ""
+"/**\n"
+" * Get the validation rules that apply to the request.\n"
+" *\n"
+" * @return array\n"
+" */\n"
+"protected function rules()\n"
+"{\n"
+"    return [\n"
+"        'avatar' => [\n"
+"            ...$this->isPrecognitive() ? [] : ['required'],\n"
+"            'image',\n"
+"            'mimes:jpg,png'\n"
+"            'dimensions:ratio=3/2',\n"
+"        ],\n"
+"        // ...\n"
+"    ];\n"
+"}\n"
+msgstr ""
+
+#: docs/10.x/precognition.md:block 127 (paragraph)
+msgid "If you would like to include files in every validation request, you may invoke the `validateFiles` function on your client-side form instance:"
+msgstr ""
+
+#: docs/10.x/precognition.md:block 128 (code)
+msgid "form.validateFiles();\n"
+msgstr ""
+
+#: docs/10.x/precognition.md:block 130 (header)
+msgid "Managing Side-Effects"
+msgstr ""
+
+#: docs/10.x/precognition.md:block 131 (paragraph)
+msgid "When adding the `HandlePrecognitiveRequests` middleware to a route, you should consider if there are any side-effects in *other* middleware that should be skipped during a precognitive request."
+msgstr ""
+
+#: docs/10.x/precognition.md:block 132 (paragraph)
+msgid "For example, you may have a middleware that increments the total number of \"interactions\" each user has with your application, but you may not want precognitive requests to be counted as an interaction. To accomplish this, we may check the request's `isPrecognitive` method before incrementing the interaction count:"
+msgstr ""
+
+#: docs/10.x/precognition.md:block 133 (code)
+msgid ""
+"<?php\n"
+"\n"
+"namespace App\\Http\\Middleware;\n"
+"\n"
+"use App\\Facades\\Interaction;\n"
+"use Closure;\n"
+"use Illuminate\\Http\\Request;\n"
+"\n"
+"class InteractionMiddleware\n"
+"{\n"
+"    /**\n"
+"     * Handle an incoming request.\n"
+"     */\n"
+"    public function handle(Request $request, Closure $next): mixed\n"
+"    {\n"
+"        if (! $request->isPrecognitive()) {\n"
+"            Interaction::incrementFor($request->user());\n"
+"        }\n"
+"\n"
+"        return $next($request);\n"
+"    }\n"
+"}\n"
+msgstr ""
+
+#: docs/10.x/precognition.md:block 135 (header)
+msgid "Testing"
+msgstr ""
+
+#: docs/10.x/precognition.md:block 136 (paragraph)
+msgid "If you would like to make precognitive requests in your tests, Laravel's `TestCase` includes a `withPrecognition` helper which will add the `Precognition` request header."
+msgstr ""
+
+#: docs/10.x/precognition.md:block 137 (paragraph)
+msgid "Additionally, if you would like to assert that a precognitive request was successful, e.g., did not return any validation errors, you may use the `assertSuccessfulPrecognition` method on the response:"
+msgstr ""
+
+#: docs/10.x/precognition.md:block 138 (code)
+msgid ""
+"public function test_it_validates_registration_form_with_precognition()\n"
+"{\n"
+"    $response = $this->withPrecognition()\n"
+"        ->post('/register', [\n"
+"            'name' => 'Taylor Otwell',\n"
+"        ]);\n"
+"\n"
+"    $response->assertSuccessfulPrecognition();\n"
+"    $this->assertSame(0, User::count());\n"
+"}\n"
+msgstr ""

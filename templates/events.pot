@@ -55,6 +55,10 @@ msgid "[Dispatching Events](#dispatching-events)"
 msgstr ""
 
 #: docs/10.x/events.md:block 2 (unordered list)
+msgid "[Dispatching Events After Database Transactions](#dispatching-events-after-database-transactions)"
+msgstr ""
+
+#: docs/10.x/events.md:block 2 (unordered list)
 msgid "[Event Subscribers](#event-subscribers)"
 msgstr ""
 
@@ -64,6 +68,18 @@ msgstr ""
 
 #: docs/10.x/events.md:block 2 (unordered list)
 msgid "[Registering Event Subscribers](#registering-event-subscribers)"
+msgstr ""
+
+#: docs/10.x/events.md:block 2 (unordered list)
+msgid "[Testing](#testing)"
+msgstr ""
+
+#: docs/10.x/events.md:block 2 (unordered list)
+msgid "[Faking A Subset Of Events](#faking-a-subset-of-events)"
+msgstr ""
+
+#: docs/10.x/events.md:block 2 (unordered list)
+msgid "[Scoped Events Fakes](#scoped-event-fakes)"
 msgstr ""
 
 #: docs/10.x/events.md:block 4 (header)
@@ -94,7 +110,7 @@ msgid ""
 "/**\n"
 " * The event listener mappings for the application.\n"
 " *\n"
-" * @var array\n"
+" * @var array<class-string, array<int, class-string>>\n"
 " */\n"
 "protected $listen = [\n"
 "    OrderShipped::class => [\n"
@@ -415,7 +431,7 @@ msgid "That's it! Now, when an event handled by this listener is dispatched, the
 msgstr ""
 
 #: docs/10.x/events.md:block 66 (header)
-msgid "Customizing The Queue Connection & Queue Name"
+msgid "Customizing The Queue Connection, Name, & Delay"
 msgstr ""
 
 #: docs/10.x/events.md:block 67 (paragraph)
@@ -457,7 +473,7 @@ msgid ""
 msgstr ""
 
 #: docs/10.x/events.md:block 69 (paragraph)
-msgid "If you would like to define the listener's queue connection or queue name at runtime, you may define `viaConnection` or `viaQueue` methods on the listener:"
+msgid "If you would like to define the listener's queue connection, queue name, or delay at runtime, you may define `viaConnection`, `viaQueue`, or `withDelay` methods on the listener:"
 msgstr ""
 
 #: docs/10.x/events.md:block 70 (code)
@@ -476,6 +492,14 @@ msgid ""
 "public function viaQueue(): string\n"
 "{\n"
 "    return 'listeners';\n"
+"}\n"
+"\n"
+"/**\n"
+" * Get the number of seconds before the job should be processed.\n"
+" */\n"
+"public function withDelay(OrderShipped $event): int\n"
+"{\n"
+"    return $event->highPriority ? 0 : 60;\n"
 "}\n"
 msgstr ""
 
@@ -559,7 +583,7 @@ msgid "When queued listeners are dispatched within database transactions, they m
 msgstr ""
 
 #: docs/10.x/events.md:block 82 (paragraph)
-msgid "If your queue connection's `after_commit` configuration option is set to `false`, you may still indicate that a particular queued listener should be dispatched after all open database transactions have been committed by defining an `$afterCommit` property on the listener class:"
+msgid "If your queue connection's `after_commit` configuration option is set to `false`, you may still indicate that a particular queued listener should be dispatched after all open database transactions have been committed by implementing the `ShouldHandleEventsAfterCommit` interface on the listener class:"
 msgstr ""
 
 #: docs/10.x/events.md:block 83 (code)
@@ -568,14 +592,13 @@ msgid ""
 "\n"
 "namespace App\\Listeners;\n"
 "\n"
+"use Illuminate\\Contracts\\Events\\ShouldHandleEventsAfterCommit;\n"
 "use Illuminate\\Contracts\\Queue\\ShouldQueue;\n"
 "use Illuminate\\Queue\\InteractsWithQueue;\n"
 "\n"
-"class SendShipmentNotification implements ShouldQueue\n"
+"class SendShipmentNotification implements ShouldQueue, ShouldHandleEventsAfterCommit\n"
 "{\n"
 "    use InteractsWithQueue;\n"
-"\n"
-"    public $afterCommit = true;\n"
 "}\n"
 msgstr ""
 
@@ -693,15 +716,15 @@ msgid ""
 "use App\\Events\\OrderShipped;\n"
 "use App\\Http\\Controllers\\Controller;\n"
 "use App\\Models\\Order;\n"
+"use Illuminate\\Http\\RedirectResponse;\n"
 "use Illuminate\\Http\\Request;\n"
-"use Illuminate\\Http\\Response;\n"
 "\n"
 "class OrderShipmentController extends Controller\n"
 "{\n"
 "    /**\n"
 "     * Ship the given order.\n"
 "     */\n"
-"    public function store(Request $request): Response\n"
+"    public function store(Request $request): RedirectResponse\n"
 "    {\n"
 "        $order = Order::findOrFail($request->order_id);\n"
 "\n"
@@ -709,7 +732,7 @@ msgid ""
 "\n"
 "        OrderShipped::dispatch($order);\n"
 "\n"
-"        return response()->noContent();\n"
+"        return redirect('/orders');\n"
 "    }\n"
 "}\n"
 msgstr ""
@@ -726,22 +749,59 @@ msgid ""
 msgstr ""
 
 #: docs/10.x/events.md:block 102 (quote)
-msgid "**Note** When testing, it can be helpful to assert that certain events were dispatched without actually triggering their listeners. Laravel's [built-in testing helpers](/docs/{{version}}/mocking#event-fake) makes it a cinch."
+msgid "**Note** When testing, it can be helpful to assert that certain events were dispatched without actually triggering their listeners. Laravel's [built-in testing helpers](#testing) make it a cinch."
 msgstr ""
 
 #: docs/10.x/events.md:block 104 (header)
+msgid "Dispatching Events After Database Transactions"
+msgstr ""
+
+#: docs/10.x/events.md:block 105 (paragraph)
+msgid "Sometimes, you may want to instruct Laravel to only dispatch an event after the active database transaction has committed. To do so, you may implement the `ShouldDispatchAfterCommit` interface on the event class."
+msgstr ""
+
+#: docs/10.x/events.md:block 106 (paragraph)
+msgid "This interface instructs Laravel to not dispatch the event until the current database transaction is committed. If the transaction fails, the event will be discarded. If no database transaction is in progress when the event is dispatched, the event will be dispatched immediately:"
+msgstr ""
+
+#: docs/10.x/events.md:block 107 (code)
+msgid ""
+"<?php\n"
+"\n"
+"namespace App\\Events;\n"
+"\n"
+"use App\\Models\\Order;\n"
+"use Illuminate\\Broadcasting\\InteractsWithSockets;\n"
+"use Illuminate\\Contracts\\Events\\ShouldDispatchAfterCommit;\n"
+"use Illuminate\\Foundation\\Events\\Dispatchable;\n"
+"use Illuminate\\Queue\\SerializesModels;\n"
+"\n"
+"class OrderShipped implements ShouldDispatchAfterCommit\n"
+"{\n"
+"    use Dispatchable, InteractsWithSockets, SerializesModels;\n"
+"\n"
+"    /**\n"
+"     * Create a new event instance.\n"
+"     */\n"
+"    public function __construct(\n"
+"        public Order $order,\n"
+"    ) {}\n"
+"}\n"
+msgstr ""
+
+#: docs/10.x/events.md:block 109 (header)
 msgid "Event Subscribers"
 msgstr ""
 
-#: docs/10.x/events.md:block 106 (header)
+#: docs/10.x/events.md:block 111 (header)
 msgid "Writing Event Subscribers"
 msgstr ""
 
-#: docs/10.x/events.md:block 107 (paragraph)
+#: docs/10.x/events.md:block 112 (paragraph)
 msgid "Event subscribers are classes that may subscribe to multiple events from within the subscriber class itself, allowing you to define several event handlers within a single class. Subscribers should define a `subscribe` method, which will be passed an event dispatcher instance. You may call the `listen` method on the given dispatcher to register event listeners:"
 msgstr ""
 
-#: docs/10.x/events.md:block 108 (code)
+#: docs/10.x/events.md:block 113 (code)
 msgid ""
 "<?php\n"
 "\n"
@@ -756,12 +816,12 @@ msgid ""
 "    /**\n"
 "     * Handle user login events.\n"
 "     */\n"
-"    public function handleUserLogin(string $event): void {}\n"
+"    public function handleUserLogin(Login $event): void {}\n"
 "\n"
 "    /**\n"
 "     * Handle user logout events.\n"
 "     */\n"
-"    public function handleUserLogout(string $event): void {}\n"
+"    public function handleUserLogout(Logout $event): void {}\n"
 "\n"
 "    /**\n"
 "     * Register the listeners for the subscriber.\n"
@@ -781,11 +841,11 @@ msgid ""
 "}\n"
 msgstr ""
 
-#: docs/10.x/events.md:block 109 (paragraph)
+#: docs/10.x/events.md:block 114 (paragraph)
 msgid "If your event listener methods are defined within the subscriber itself, you may find it more convenient to return an array of events and method names from the subscriber's `subscribe` method. Laravel will automatically determine the subscriber's class name when registering the event listeners:"
 msgstr ""
 
-#: docs/10.x/events.md:block 110 (code)
+#: docs/10.x/events.md:block 115 (code)
 msgid ""
 "<?php\n"
 "\n"
@@ -800,12 +860,12 @@ msgid ""
 "    /**\n"
 "     * Handle user login events.\n"
 "     */\n"
-"    public function handleUserLogin(string $event): void {}\n"
+"    public function handleUserLogin(Login $event): void {}\n"
 "\n"
 "    /**\n"
 "     * Handle user logout events.\n"
 "     */\n"
-"    public function handleUserLogout(string $event): void {}\n"
+"    public function handleUserLogout(Logout $event): void {}\n"
 "\n"
 "    /**\n"
 "     * Register the listeners for the subscriber.\n"
@@ -822,15 +882,15 @@ msgid ""
 "}\n"
 msgstr ""
 
-#: docs/10.x/events.md:block 112 (header)
+#: docs/10.x/events.md:block 117 (header)
 msgid "Registering Event Subscribers"
 msgstr ""
 
-#: docs/10.x/events.md:block 113 (paragraph)
+#: docs/10.x/events.md:block 118 (paragraph)
 msgid "After writing the subscriber, you are ready to register it with the event dispatcher. You may register subscribers using the `$subscribe` property on the `EventServiceProvider`. For example, let's add the `UserEventSubscriber` to the list:"
 msgstr ""
 
-#: docs/10.x/events.md:block 114 (code)
+#: docs/10.x/events.md:block 119 (code)
 msgid ""
 "<?php\n"
 "\n"
@@ -859,6 +919,178 @@ msgid ""
 "        UserEventSubscriber::class,\n"
 "    ];\n"
 "}\n"
+msgstr ""
+
+#: docs/10.x/events.md:block 121 (header)
+msgid "Testing"
+msgstr ""
+
+#: docs/10.x/events.md:block 122 (paragraph)
+msgid "When testing code that dispatches events, you may wish to instruct Laravel to not actually execute the event's listeners, since the listener's code can be tested directly and separately of the code that dispatches the corresponding event. Of course, to test the listener itself, you may instantiate a listener instance and invoke the `handle` method directly in your test."
+msgstr ""
+
+#: docs/10.x/events.md:block 123 (paragraph)
+msgid "Using the `Event` facade's `fake` method, you may prevent listeners from executing, execute the code under test, and then assert which events were dispatched by your application using the `assertDispatched`, `assertNotDispatched`, and `assertNothingDispatched` methods:"
+msgstr ""
+
+#: docs/10.x/events.md:block 124 (code)
+msgid ""
+"<?php\n"
+"\n"
+"namespace Tests\\Feature;\n"
+"\n"
+"use App\\Events\\OrderFailedToShip;\n"
+"use App\\Events\\OrderShipped;\n"
+"use Illuminate\\Support\\Facades\\Event;\n"
+"use Tests\\TestCase;\n"
+"\n"
+"class ExampleTest extends TestCase\n"
+"{\n"
+"    /**\n"
+"     * Test order shipping.\n"
+"     */\n"
+"    public function test_orders_can_be_shipped(): void\n"
+"    {\n"
+"        Event::fake();\n"
+"\n"
+"        // Perform order shipping...\n"
+"\n"
+"        // Assert that an event was dispatched...\n"
+"        Event::assertDispatched(OrderShipped::class);\n"
+"\n"
+"        // Assert an event was dispatched twice...\n"
+"        Event::assertDispatched(OrderShipped::class, 2);\n"
+"\n"
+"        // Assert an event was not dispatched...\n"
+"        Event::assertNotDispatched(OrderFailedToShip::class);\n"
+"\n"
+"        // Assert that no events were dispatched...\n"
+"        Event::assertNothingDispatched();\n"
+"    }\n"
+"}\n"
+msgstr ""
+
+#: docs/10.x/events.md:block 125 (paragraph)
+msgid "You may pass a closure to the `assertDispatched` or `assertNotDispatched` methods in order to assert that an event was dispatched that passes a given \"truth test\". If at least one event was dispatched that passes the given truth test then the assertion will be successful:"
+msgstr ""
+
+#: docs/10.x/events.md:block 126 (code)
+msgid ""
+"Event::assertDispatched(function (OrderShipped $event) use ($order) {\n"
+"    return $event->order->id === $order->id;\n"
+"});\n"
+msgstr ""
+
+#: docs/10.x/events.md:block 127 (paragraph)
+msgid "If you would simply like to assert that an event listener is listening to a given event, you may use the `assertListening` method:"
+msgstr ""
+
+#: docs/10.x/events.md:block 128 (code)
+msgid ""
+"Event::assertListening(\n"
+"    OrderShipped::class,\n"
+"    SendShipmentNotification::class\n"
+");\n"
+msgstr ""
+
+#: docs/10.x/events.md:block 129 (quote)
+msgid "**Warning** After calling `Event::fake()`, no event listeners will be executed. So, if your tests use model factories that rely on events, such as creating a UUID during a model's `creating` event, you should call `Event::fake()` **after** using your factories."
+msgstr ""
+
+#: docs/10.x/events.md:block 131 (header)
+msgid "Faking A Subset Of Events"
+msgstr ""
+
+#: docs/10.x/events.md:block 132 (paragraph)
+msgid "If you only want to fake event listeners for a specific set of events, you may pass them to the `fake` or `fakeFor` method:"
+msgstr ""
+
+#: docs/10.x/events.md:block 133 (code)
+msgid ""
+"/**\n"
+" * Test order process.\n"
+" */\n"
+"public function test_orders_can_be_processed(): void\n"
+"{\n"
+"    Event::fake([\n"
+"        OrderCreated::class,\n"
+"    ]);\n"
+"\n"
+"    $order = Order::factory()->create();\n"
+"\n"
+"    Event::assertDispatched(OrderCreated::class);\n"
+"\n"
+"    // Other events are dispatched as normal...\n"
+"    $order->update([...]);\n"
+"}\n"
+msgstr ""
+
+#: docs/10.x/events.md:block 134 (paragraph)
+msgid "You may fake all events except for a set of specified events using the `except` method:"
+msgstr ""
+
+#: docs/10.x/events.md:block 135 (code)
+msgid ""
+"Event::fake()->except([\n"
+"    OrderCreated::class,\n"
+"]);\n"
+msgstr ""
+
+#: docs/10.x/events.md:block 137 (header)
+msgid "Scoped Event Fakes"
+msgstr ""
+
+#: docs/10.x/events.md:block 138 (paragraph)
+msgid "If you only want to fake event listeners for a portion of your test, you may use the `fakeFor` method:"
+msgstr ""
+
+#: docs/10.x/events.md:block 139 (code)
+msgid ""
+"<?php\n"
+"\n"
+"namespace Tests\\Feature;\n"
+"\n"
+"use App\\Events\\OrderCreated;\n"
+"use App\\Models\\Order;\n"
+"use Illuminate\\Support\\Facades\\Event;\n"
+"use Tests\\TestCase;\n"
+"\n"
+"class ExampleTest extends TestCase\n"
+"{\n"
+"    /**\n"
+"     * Test order process.\n"
+"     */\n"
+"    public function test_orders_can_be_processed(): void\n"
+"    {\n"
+"        $order = Event::fakeFor(function () {\n"
+"            $order = Order::factory()->create();\n"
+"\n"
+"            Event::assertDispatched(OrderCreated::class);\n"
+"\n"
+"            return $order;\n"
+"        });\n"
+"\n"
+"        // Events are dispatched as normal and observers will run ...\n"
+"        $order->update([...]);\n"
+"    }\n"
+"}\n"
+msgstr ""
+
+#: docs/8.x/events.md:block 10 (code)
+msgid ""
+"use App\\Events\\OrderShipped;\n"
+"use App\\Listeners\\SendShipmentNotification;\n"
+"\n"
+"/**\n"
+" * The event listener mappings for the application.\n"
+" *\n"
+" * @var array\n"
+" */\n"
+"protected $listen = [\n"
+"    OrderShipped::class => [\n"
+"        SendShipmentNotification::class,\n"
+"    ],\n"
+"];\n"
 msgstr ""
 
 #: docs/8.x/events.md:block 11 (quote)
@@ -1074,6 +1306,14 @@ msgid ""
 "}\n"
 msgstr ""
 
+#: docs/8.x/events.md:block 66 (header)
+msgid "Customizing The Queue Connection & Queue Name"
+msgstr ""
+
+#: docs/8.x/events.md:block 69 (paragraph)
+msgid "If you would like to define the listener's queue connection or queue name at runtime, you may define `viaConnection` or `viaQueue` methods on the listener:"
+msgstr ""
+
 #: docs/8.x/events.md:block 70 (code)
 msgid ""
 "/**\n"
@@ -1158,6 +1398,27 @@ msgid ""
 "            $this->release(30);\n"
 "        }\n"
 "    }\n"
+"}\n"
+msgstr ""
+
+#: docs/8.x/events.md:block 82 (paragraph)
+msgid "If your queue connection's `after_commit` configuration option is set to `false`, you may still indicate that a particular queued listener should be dispatched after all open database transactions have been committed by defining an `$afterCommit` property on the listener class:"
+msgstr ""
+
+#: docs/8.x/events.md:block 83 (code)
+msgid ""
+"<?php\n"
+"\n"
+"namespace App\\Listeners;\n"
+"\n"
+"use Illuminate\\Contracts\\Queue\\ShouldQueue;\n"
+"use Illuminate\\Queue\\InteractsWithQueue;\n"
+"\n"
+"class SendShipmentNotification implements ShouldQueue\n"
+"{\n"
+"    use InteractsWithQueue;\n"
+"\n"
+"    public $afterCommit = true;\n"
 "}\n"
 msgstr ""
 
@@ -1369,34 +1630,136 @@ msgid ""
 "}\n"
 msgstr ""
 
-#: docs/master/events.md:block 49 (code)
+#: docs/9.x/events.md:block 102 (quote)
+msgid "**Note** When testing, it can be helpful to assert that certain events were dispatched without actually triggering their listeners. Laravel's [built-in testing helpers](/docs/{{version}}/mocking#event-fake) makes it a cinch."
+msgstr ""
+
+#: docs/master/events.md:block 70 (code)
+msgid ""
+"/**\n"
+" * Get the name of the listener's queue connection.\n"
+" */\n"
+"public function viaConnection(): string\n"
+"{\n"
+"    return 'sqs';\n"
+"}\n"
+"\n"
+"/**\n"
+" * Get the name of the listener's queue.\n"
+" */\n"
+"public function viaQueue(): string\n"
+"{\n"
+"    return 'listeners';\n"
+"}\n"
+msgstr ""
+
+#: docs/master/events.md:block 99 (code)
 msgid ""
 "<?php\n"
 "\n"
-"namespace App\\Events;\n"
+"namespace App\\Http\\Controllers;\n"
 "\n"
+"use App\\Events\\OrderShipped;\n"
+"use App\\Http\\Controllers\\Controller;\n"
 "use App\\Models\\Order;\n"
-"use Illuminate\\Broadcasting\\InteractsWithSockets;\n"
-"use Illuminate\\Foundation\\Events\\Dispatchable;\n"
-"use Illuminate\\Queue\\SerializesModels;\n"
+"use Illuminate\\Http\\Request;\n"
+"use Illuminate\\Http\\Response;\n"
 "\n"
-"class OrderShipped\n"
+"class OrderShipmentController extends Controller\n"
 "{\n"
-"    use Dispatchable, InteractsWithSockets, SerializesModels;\n"
-"\n"
 "    /**\n"
-"     * The order instance.\n"
-"     *\n"
-"     * @var \\App\\Models\\Order\n"
+"     * Ship the given order.\n"
 "     */\n"
-"    public $order;\n"
-"\n"
-"    /**\n"
-"     * Create a new event instance.\n"
-"     */\n"
-"    public function __construct(Order $order)\n"
+"    public function store(Request $request): Response\n"
 "    {\n"
-"        $this->order = $order;\n"
+"        $order = Order::findOrFail($request->order_id);\n"
+"\n"
+"        // Order shipment logic...\n"
+"\n"
+"        OrderShipped::dispatch($order);\n"
+"\n"
+"        return response()->noContent();\n"
+"    }\n"
+"}\n"
+msgstr ""
+
+#: docs/master/events.md:block 102 (quote)
+msgid "**Note** When testing, it can be helpful to assert that certain events were dispatched without actually triggering their listeners. Laravel's [built-in testing helpers](#testing) makes it a cinch."
+msgstr ""
+
+#: docs/master/events.md:block 108 (code)
+msgid ""
+"<?php\n"
+"\n"
+"namespace App\\Listeners;\n"
+"\n"
+"use Illuminate\\Auth\\Events\\Login;\n"
+"use Illuminate\\Auth\\Events\\Logout;\n"
+"use Illuminate\\Events\\Dispatcher;\n"
+"\n"
+"class UserEventSubscriber\n"
+"{\n"
+"    /**\n"
+"     * Handle user login events.\n"
+"     */\n"
+"    public function handleUserLogin(string $event): void {}\n"
+"\n"
+"    /**\n"
+"     * Handle user logout events.\n"
+"     */\n"
+"    public function handleUserLogout(string $event): void {}\n"
+"\n"
+"    /**\n"
+"     * Register the listeners for the subscriber.\n"
+"     */\n"
+"    public function subscribe(Dispatcher $events): void\n"
+"    {\n"
+"        $events->listen(\n"
+"            Login::class,\n"
+"            [UserEventSubscriber::class, 'handleUserLogin']\n"
+"        );\n"
+"\n"
+"        $events->listen(\n"
+"            Logout::class,\n"
+"            [UserEventSubscriber::class, 'handleUserLogout']\n"
+"        );\n"
+"    }\n"
+"}\n"
+msgstr ""
+
+#: docs/master/events.md:block 110 (code)
+msgid ""
+"<?php\n"
+"\n"
+"namespace App\\Listeners;\n"
+"\n"
+"use Illuminate\\Auth\\Events\\Login;\n"
+"use Illuminate\\Auth\\Events\\Logout;\n"
+"use Illuminate\\Events\\Dispatcher;\n"
+"\n"
+"class UserEventSubscriber\n"
+"{\n"
+"    /**\n"
+"     * Handle user login events.\n"
+"     */\n"
+"    public function handleUserLogin(string $event): void {}\n"
+"\n"
+"    /**\n"
+"     * Handle user logout events.\n"
+"     */\n"
+"    public function handleUserLogout(string $event): void {}\n"
+"\n"
+"    /**\n"
+"     * Register the listeners for the subscriber.\n"
+"     *\n"
+"     * @return array<string, string>\n"
+"     */\n"
+"    public function subscribe(Dispatcher $events): array\n"
+"    {\n"
+"        return [\n"
+"            Login::class => 'handleUserLogin',\n"
+"            Logout::class => 'handleUserLogout',\n"
+"        ];\n"
 "    }\n"
 "}\n"
 msgstr ""

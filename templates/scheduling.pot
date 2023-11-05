@@ -55,6 +55,10 @@ msgid "[Running The Scheduler](#running-the-scheduler)"
 msgstr ""
 
 #: docs/10.x/scheduling.md:block 2 (unordered list)
+msgid "[Sub-Minute Scheduled Tasks](#sub-minute-scheduled-tasks)"
+msgstr ""
+
+#: docs/10.x/scheduling.md:block 2 (unordered list)
 msgid "[Running The Scheduler Locally](#running-the-scheduler-locally)"
 msgstr ""
 
@@ -215,6 +219,62 @@ msgid "Run the task on a custom cron schedule"
 msgstr ""
 
 #: docs/10.x/scheduling.md:block 34 (table)
+msgid "`->everySecond();`"
+msgstr ""
+
+#: docs/10.x/scheduling.md:block 34 (table)
+msgid "Run the task every second"
+msgstr ""
+
+#: docs/10.x/scheduling.md:block 34 (table)
+msgid "`->everyTwoSeconds();`"
+msgstr ""
+
+#: docs/10.x/scheduling.md:block 34 (table)
+msgid "Run the task every two seconds"
+msgstr ""
+
+#: docs/10.x/scheduling.md:block 34 (table)
+msgid "`->everyFiveSeconds();`"
+msgstr ""
+
+#: docs/10.x/scheduling.md:block 34 (table)
+msgid "Run the task every five seconds"
+msgstr ""
+
+#: docs/10.x/scheduling.md:block 34 (table)
+msgid "`->everyTenSeconds();`"
+msgstr ""
+
+#: docs/10.x/scheduling.md:block 34 (table)
+msgid "Run the task every ten seconds"
+msgstr ""
+
+#: docs/10.x/scheduling.md:block 34 (table)
+msgid "`->everyFifteenSeconds();`"
+msgstr ""
+
+#: docs/10.x/scheduling.md:block 34 (table)
+msgid "Run the task every fifteen seconds"
+msgstr ""
+
+#: docs/10.x/scheduling.md:block 34 (table)
+msgid "`->everyTwentySeconds();`"
+msgstr ""
+
+#: docs/10.x/scheduling.md:block 34 (table)
+msgid "Run the task every twenty seconds"
+msgstr ""
+
+#: docs/10.x/scheduling.md:block 34 (table)
+msgid "`->everyThirtySeconds();`"
+msgstr ""
+
+#: docs/10.x/scheduling.md:block 34 (table)
+msgid "Run the task every thirty seconds"
+msgstr ""
+
+#: docs/10.x/scheduling.md:block 34 (table)
 msgid "`->everyMinute();`"
 msgstr ""
 
@@ -295,7 +355,7 @@ msgid "Run the task every hour at 17 minutes past the hour"
 msgstr ""
 
 #: docs/10.x/scheduling.md:block 34 (table)
-msgid "`->everyOddHour();`"
+msgid "`->everyOddHour($minutes = 0);`"
 msgstr ""
 
 #: docs/10.x/scheduling.md:block 34 (table)
@@ -303,7 +363,7 @@ msgid "Run the task every odd hour"
 msgstr ""
 
 #: docs/10.x/scheduling.md:block 34 (table)
-msgid "`->everyTwoHours();`"
+msgid "`->everyTwoHours($minutes = 0);`"
 msgstr ""
 
 #: docs/10.x/scheduling.md:block 34 (table)
@@ -311,7 +371,7 @@ msgid "Run the task every two hours"
 msgstr ""
 
 #: docs/10.x/scheduling.md:block 34 (table)
-msgid "`->everyThreeHours();`"
+msgid "`->everyThreeHours($minutes = 0);`"
 msgstr ""
 
 #: docs/10.x/scheduling.md:block 34 (table)
@@ -319,7 +379,7 @@ msgid "Run the task every three hours"
 msgstr ""
 
 #: docs/10.x/scheduling.md:block 34 (table)
-msgid "`->everyFourHours();`"
+msgid "`->everyFourHours($minutes = 0);`"
 msgstr ""
 
 #: docs/10.x/scheduling.md:block 34 (table)
@@ -327,7 +387,7 @@ msgid "Run the task every four hours"
 msgstr ""
 
 #: docs/10.x/scheduling.md:block 34 (table)
-msgid "`->everySixHours();`"
+msgid "`->everySixHours($minutes = 0);`"
 msgstr ""
 
 #: docs/10.x/scheduling.md:block 34 (table)
@@ -857,48 +917,96 @@ msgid "* * * * * cd /path-to-your-project && php artisan schedule:run >> /dev/nu
 msgstr ""
 
 #: docs/10.x/scheduling.md:block 107 (header)
-msgid "Running The Scheduler Locally"
+msgid "Sub-Minute Scheduled Tasks"
 msgstr ""
 
 #: docs/10.x/scheduling.md:block 108 (paragraph)
-msgid "Typically, you would not add a scheduler cron entry to your local development machine. Instead, you may use the `schedule:work` Artisan command. This command will run in the foreground and invoke the scheduler every minute until you terminate the command:"
+msgid "On most operating systems, cron jobs are limited to running a maximum of once per minute. However, Laravel's scheduler allows you to schedule tasks to run at more frequent intervals, even as often as once per second:"
 msgstr ""
 
 #: docs/10.x/scheduling.md:block 109 (code)
+msgid ""
+"$schedule->call(function () {\n"
+"    DB::table('recent_users')->delete();\n"
+"})->everySecond();\n"
+msgstr ""
+
+#: docs/10.x/scheduling.md:block 110 (paragraph)
+msgid "When sub-minute tasks are defined within your application, the `schedule:run` command will continue running until the end of the current minute instead of exiting immediately. This allows the command to invoke all required sub-minute tasks throughout the minute."
+msgstr ""
+
+#: docs/10.x/scheduling.md:block 111 (paragraph)
+msgid "Since sub-minute tasks that take longer than expected to run could delay the execution of later sub-minute tasks, it is recommend that all sub-minute tasks dispatch queued jobs or background commands to handle the actual task processing:"
+msgstr ""
+
+#: docs/10.x/scheduling.md:block 112 (code)
+msgid ""
+"use App\\Jobs\\DeleteRecentUsers;\n"
+"\n"
+"$schedule->job(new DeleteRecentUsers)->everyTenSeconds();\n"
+"\n"
+"$schedule->command('users:delete')->everyTenSeconds()->runInBackground();\n"
+msgstr ""
+
+#: docs/10.x/scheduling.md:block 114 (header)
+msgid "Interrupting Sub-Minute Tasks"
+msgstr ""
+
+#: docs/10.x/scheduling.md:block 115 (paragraph)
+msgid "As the `schedule:run` command runs for the entire minute of invocation when sub-minute tasks are defined, you may sometimes need to interrupt the command when deploying your application. Otherwise, an instance of the `schedule:run` command that is already running would continue using your application's previously deployed code until the current minute ends."
+msgstr ""
+
+#: docs/10.x/scheduling.md:block 116 (paragraph)
+msgid "To interrupt in-progress `schedule:run` invocations, you may add the `schedule:interrupt` command to your application's deployment script. This command should be invoked after your application is finished deploying:"
+msgstr ""
+
+#: docs/10.x/scheduling.md:block 117 (code)
+msgid "php artisan schedule:interrupt\n"
+msgstr ""
+
+#: docs/10.x/scheduling.md:block 119 (header)
+msgid "Running The Scheduler Locally"
+msgstr ""
+
+#: docs/10.x/scheduling.md:block 120 (paragraph)
+msgid "Typically, you would not add a scheduler cron entry to your local development machine. Instead, you may use the `schedule:work` Artisan command. This command will run in the foreground and invoke the scheduler every minute until you terminate the command:"
+msgstr ""
+
+#: docs/10.x/scheduling.md:block 121 (code)
 msgid "php artisan schedule:work\n"
 msgstr ""
 
-#: docs/10.x/scheduling.md:block 111 (header)
+#: docs/10.x/scheduling.md:block 123 (header)
 msgid "Task Output"
 msgstr ""
 
-#: docs/10.x/scheduling.md:block 112 (paragraph)
+#: docs/10.x/scheduling.md:block 124 (paragraph)
 msgid "The Laravel scheduler provides several convenient methods for working with the output generated by scheduled tasks. First, using the `sendOutputTo` method, you may send the output to a file for later inspection:"
 msgstr ""
 
-#: docs/10.x/scheduling.md:block 113 (code)
+#: docs/10.x/scheduling.md:block 125 (code)
 msgid ""
 "$schedule->command('emails:send')\n"
 "         ->daily()\n"
 "         ->sendOutputTo($filePath);\n"
 msgstr ""
 
-#: docs/10.x/scheduling.md:block 114 (paragraph)
+#: docs/10.x/scheduling.md:block 126 (paragraph)
 msgid "If you would like to append the output to a given file, you may use the `appendOutputTo` method:"
 msgstr ""
 
-#: docs/10.x/scheduling.md:block 115 (code)
+#: docs/10.x/scheduling.md:block 127 (code)
 msgid ""
 "$schedule->command('emails:send')\n"
 "         ->daily()\n"
 "         ->appendOutputTo($filePath);\n"
 msgstr ""
 
-#: docs/10.x/scheduling.md:block 116 (paragraph)
+#: docs/10.x/scheduling.md:block 128 (paragraph)
 msgid "Using the `emailOutputTo` method, you may email the output to an email address of your choice. Before emailing the output of a task, you should configure Laravel's [email services](/docs/{{version}}/mail):"
 msgstr ""
 
-#: docs/10.x/scheduling.md:block 117 (code)
+#: docs/10.x/scheduling.md:block 129 (code)
 msgid ""
 "$schedule->command('report:generate')\n"
 "         ->daily()\n"
@@ -906,30 +1014,30 @@ msgid ""
 "         ->emailOutputTo('taylor@example.com');\n"
 msgstr ""
 
-#: docs/10.x/scheduling.md:block 118 (paragraph)
+#: docs/10.x/scheduling.md:block 130 (paragraph)
 msgid "If you only want to email the output if the scheduled Artisan or system command terminates with a non-zero exit code, use the `emailOutputOnFailure` method:"
 msgstr ""
 
-#: docs/10.x/scheduling.md:block 119 (code)
+#: docs/10.x/scheduling.md:block 131 (code)
 msgid ""
 "$schedule->command('report:generate')\n"
 "         ->daily()\n"
 "         ->emailOutputOnFailure('taylor@example.com');\n"
 msgstr ""
 
-#: docs/10.x/scheduling.md:block 120 (quote)
+#: docs/10.x/scheduling.md:block 132 (quote)
 msgid "**Warning** The `emailOutputTo`, `emailOutputOnFailure`, `sendOutputTo`, and `appendOutputTo` methods are exclusive to the `command` and `exec` methods."
 msgstr ""
 
-#: docs/10.x/scheduling.md:block 122 (header)
+#: docs/10.x/scheduling.md:block 134 (header)
 msgid "Task Hooks"
 msgstr ""
 
-#: docs/10.x/scheduling.md:block 123 (paragraph)
+#: docs/10.x/scheduling.md:block 135 (paragraph)
 msgid "Using the `before` and `after` methods, you may specify code to be executed before and after the scheduled task is executed:"
 msgstr ""
 
-#: docs/10.x/scheduling.md:block 124 (code)
+#: docs/10.x/scheduling.md:block 136 (code)
 msgid ""
 "$schedule->command('emails:send')\n"
 "         ->daily()\n"
@@ -941,11 +1049,11 @@ msgid ""
 "         });\n"
 msgstr ""
 
-#: docs/10.x/scheduling.md:block 125 (paragraph)
+#: docs/10.x/scheduling.md:block 137 (paragraph)
 msgid "The `onSuccess` and `onFailure` methods allow you to specify code to be executed if the scheduled task succeeds or fails. A failure indicates that the scheduled Artisan or system command terminated with a non-zero exit code:"
 msgstr ""
 
-#: docs/10.x/scheduling.md:block 126 (code)
+#: docs/10.x/scheduling.md:block 138 (code)
 msgid ""
 "$schedule->command('emails:send')\n"
 "         ->daily()\n"
@@ -957,11 +1065,11 @@ msgid ""
 "         });\n"
 msgstr ""
 
-#: docs/10.x/scheduling.md:block 127 (paragraph)
+#: docs/10.x/scheduling.md:block 139 (paragraph)
 msgid "If output is available from your command, you may access it in your `after`, `onSuccess` or `onFailure` hooks by type-hinting an `Illuminate\\Support\\Stringable` instance as the `$output` argument of your hook's closure definition:"
 msgstr ""
 
-#: docs/10.x/scheduling.md:block 128 (code)
+#: docs/10.x/scheduling.md:block 140 (code)
 msgid ""
 "use Illuminate\\Support\\Stringable;\n"
 "\n"
@@ -975,15 +1083,15 @@ msgid ""
 "         });\n"
 msgstr ""
 
-#: docs/10.x/scheduling.md:block 130 (header)
+#: docs/10.x/scheduling.md:block 142 (header)
 msgid "Pinging URLs"
 msgstr ""
 
-#: docs/10.x/scheduling.md:block 131 (paragraph)
+#: docs/10.x/scheduling.md:block 143 (paragraph)
 msgid "Using the `pingBefore` and `thenPing` methods, the scheduler can automatically ping a given URL before or after a task is executed. This method is useful for notifying an external service, such as [Envoyer](https://envoyer.io), that your scheduled task is beginning or has finished execution:"
 msgstr ""
 
-#: docs/10.x/scheduling.md:block 132 (code)
+#: docs/10.x/scheduling.md:block 144 (code)
 msgid ""
 "$schedule->command('emails:send')\n"
 "         ->daily()\n"
@@ -991,11 +1099,11 @@ msgid ""
 "         ->thenPing($url);\n"
 msgstr ""
 
-#: docs/10.x/scheduling.md:block 133 (paragraph)
+#: docs/10.x/scheduling.md:block 145 (paragraph)
 msgid "The `pingBeforeIf` and `thenPingIf` methods may be used to ping a given URL only if a given condition is `true`:"
 msgstr ""
 
-#: docs/10.x/scheduling.md:block 134 (code)
+#: docs/10.x/scheduling.md:block 146 (code)
 msgid ""
 "$schedule->command('emails:send')\n"
 "         ->daily()\n"
@@ -1003,11 +1111,11 @@ msgid ""
 "         ->thenPingIf($condition, $url);\n"
 msgstr ""
 
-#: docs/10.x/scheduling.md:block 135 (paragraph)
+#: docs/10.x/scheduling.md:block 147 (paragraph)
 msgid "The `pingOnSuccess` and `pingOnFailure` methods may be used to ping a given URL only if the task succeeds or fails. A failure indicates that the scheduled Artisan or system command terminated with a non-zero exit code:"
 msgstr ""
 
-#: docs/10.x/scheduling.md:block 136 (code)
+#: docs/10.x/scheduling.md:block 148 (code)
 msgid ""
 "$schedule->command('emails:send')\n"
 "         ->daily()\n"
@@ -1015,23 +1123,23 @@ msgid ""
 "         ->pingOnFailure($failureUrl);\n"
 msgstr ""
 
-#: docs/10.x/scheduling.md:block 137 (paragraph)
+#: docs/10.x/scheduling.md:block 149 (paragraph)
 msgid "All of the ping methods require the Guzzle HTTP library. Guzzle is typically installed in all new Laravel projects by default, but, you may manually install Guzzle into your project using the Composer package manager if it has been accidentally removed:"
 msgstr ""
 
-#: docs/10.x/scheduling.md:block 138 (code)
+#: docs/10.x/scheduling.md:block 150 (code)
 msgid "composer require guzzlehttp/guzzle\n"
 msgstr ""
 
-#: docs/10.x/scheduling.md:block 140 (header)
+#: docs/10.x/scheduling.md:block 152 (header)
 msgid "Events"
 msgstr ""
 
-#: docs/10.x/scheduling.md:block 141 (paragraph)
+#: docs/10.x/scheduling.md:block 153 (paragraph)
 msgid "If needed, you may listen to [events](/docs/{{version}}/events) dispatched by the scheduler. Typically, event listener mappings will be defined within your application's `App\\Providers\\EventServiceProvider` class:"
 msgstr ""
 
-#: docs/10.x/scheduling.md:block 142 (code)
+#: docs/10.x/scheduling.md:block 154 (code)
 msgid ""
 "/**\n"
 " * The event listener mappings for the application.\n"
@@ -1088,6 +1196,22 @@ msgid ""
 "}\n"
 msgstr ""
 
+#: docs/8.x/scheduling.md:block 33 (table)
+msgid "`->everyTwoHours();`"
+msgstr ""
+
+#: docs/8.x/scheduling.md:block 33 (table)
+msgid "`->everyThreeHours();`"
+msgstr ""
+
+#: docs/8.x/scheduling.md:block 33 (table)
+msgid "`->everyFourHours();`"
+msgstr ""
+
+#: docs/8.x/scheduling.md:block 33 (table)
+msgid "`->everySixHours();`"
+msgstr ""
+
 #: docs/8.x/scheduling.md:block 35 (code)
 msgid ""
 "// Run once per week on Monday at 1 PM...\n"
@@ -1130,4 +1254,8 @@ msgstr ""
 
 #: docs/8.x/scheduling.md:block 109 (quote)
 msgid "{note} The `emailOutputTo`, `emailOutputOnFailure`, `sendOutputTo`, and `appendOutputTo` methods are exclusive to the `command` and `exec` methods."
+msgstr ""
+
+#: docs/9.x/scheduling.md:block 33 (table)
+msgid "`->everyOddHour();`"
 msgstr ""

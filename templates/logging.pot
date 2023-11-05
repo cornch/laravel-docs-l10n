@@ -79,7 +79,7 @@ msgid "Configuration"
 msgstr ""
 
 #: docs/10.x/logging.md:block 10 (paragraph)
-msgid "All of the configuration options for your application's logging behavior is housed in the `config/logging.php` configuration file. This file allows you to configure your application's log channels, so be sure to review each of the available channels and their options. We'll review a few common options below."
+msgid "All of the configuration options for your application's logging behavior are housed in the `config/logging.php` configuration file. This file allows you to configure your application's log channels, so be sure to review each of the available channels and their options. We'll review a few common options below."
 msgstr ""
 
 #: docs/10.x/logging.md:block 11 (paragraph)
@@ -149,14 +149,6 @@ msgstr ""
 
 #: docs/10.x/logging.md:block 20 (table)
 msgid "A Monolog factory driver that may use any supported Monolog handler"
-msgstr ""
-
-#: docs/10.x/logging.md:block 20 (table)
-msgid "`null`"
-msgstr ""
-
-#: docs/10.x/logging.md:block 20 (table)
-msgid "A driver that discards all log messages"
 msgstr ""
 
 #: docs/10.x/logging.md:block 20 (table)
@@ -425,7 +417,7 @@ msgid ""
 "     */\n"
 "    public function show(string $id): View\n"
 "    {\n"
-"        Log::info('Showing the user profile for user: '.$id);\n"
+"        Log::info('Showing the user profile for user: {id}', ['id' => $id]);\n"
 "\n"
 "        return view('user.profile', [\n"
 "            'user' => User::findOrFail($id)\n"
@@ -446,7 +438,7 @@ msgstr ""
 msgid ""
 "use Illuminate\\Support\\Facades\\Log;\n"
 "\n"
-"Log::info('User failed to login.', ['id' => $user->id]);\n"
+"Log::info('User {id} failed to login.', ['id' => $user->id]);\n"
 msgstr ""
 
 #: docs/10.x/logging.md:block 70 (paragraph)
@@ -480,7 +472,11 @@ msgid ""
 "            'request-id' => $requestId\n"
 "        ]);\n"
 "\n"
-"        return $next($request)->header('Request-Id', $requestId);\n"
+"        $response = $next($request);\n"
+"\n"
+"        $response->headers->set('Request-Id', $requestId);\n"
+"\n"
+"        return $response;\n"
 "    }\n"
 "}\n"
 msgstr ""
@@ -682,14 +678,47 @@ msgid ""
 msgstr ""
 
 #: docs/10.x/logging.md:block 108 (header)
-msgid "Creating Custom Channels Via Factories"
+msgid "Monolog Processors"
 msgstr ""
 
 #: docs/10.x/logging.md:block 109 (paragraph)
+msgid "Monolog can also process messages before logging them. You can create your own processors or use the [existing processors offered by Monolog](https://github.com/Seldaek/monolog/tree/main/src/Monolog/Processor)."
+msgstr ""
+
+#: docs/10.x/logging.md:block 110 (paragraph)
+msgid "If you would like to customize the processors for a `monolog` driver, add a `processors` configuration value to your channel's configuration:"
+msgstr ""
+
+#: docs/10.x/logging.md:block 111 (code)
+msgid ""
+" 'memory' => [\n"
+"     'driver' => 'monolog',\n"
+"     'handler' => Monolog\\Handler\\StreamHandler::class,\n"
+"     'with' => [\n"
+"         'stream' => 'php://stderr',\n"
+"     ],\n"
+"     'processors' => [\n"
+"         // Simple syntax...\n"
+"         Monolog\\Processor\\MemoryUsageProcessor::class,\n"
+"\n"
+"         // With options...\n"
+"         [\n"
+"            'processor' => Monolog\\Processor\\PsrLogMessageProcessor::class,\n"
+"            'with' => ['removeUsedContextFields' => true],\n"
+"        ],\n"
+"     ],\n"
+" ],\n"
+msgstr ""
+
+#: docs/10.x/logging.md:block 113 (header)
+msgid "Creating Custom Channels Via Factories"
+msgstr ""
+
+#: docs/10.x/logging.md:block 114 (paragraph)
 msgid "If you would like to define an entirely custom channel in which you have full control over Monolog's instantiation and configuration, you may specify a `custom` driver type in your `config/logging.php` configuration file. Your configuration should include a `via` option that contains the name of the factory class which will be invoked to create the Monolog instance:"
 msgstr ""
 
-#: docs/10.x/logging.md:block 110 (code)
+#: docs/10.x/logging.md:block 115 (code)
 msgid ""
 "'channels' => [\n"
 "    'example-custom-channel' => [\n"
@@ -699,11 +728,11 @@ msgid ""
 "],\n"
 msgstr ""
 
-#: docs/10.x/logging.md:block 111 (paragraph)
+#: docs/10.x/logging.md:block 116 (paragraph)
 msgid "Once you have configured the `custom` driver channel, you're ready to define the class that will create your Monolog instance. This class only needs a single `__invoke` method which should return the Monolog logger instance. The method will receive the channels configuration array as its only argument:"
 msgstr ""
 
-#: docs/10.x/logging.md:block 112 (code)
+#: docs/10.x/logging.md:block 117 (code)
 msgid ""
 "<?php\n"
 "\n"
@@ -721,6 +750,18 @@ msgid ""
 "        return new Logger(/* ... */);\n"
 "    }\n"
 "}\n"
+msgstr ""
+
+#: docs/8.x/logging.md:block 10 (paragraph)
+msgid "All of the configuration options for your application's logging behavior is housed in the `config/logging.php` configuration file. This file allows you to configure your application's log channels, so be sure to review each of the available channels and their options. We'll review a few common options below."
+msgstr ""
+
+#: docs/8.x/logging.md:block 19 (table)
+msgid "`null`"
+msgstr ""
+
+#: docs/8.x/logging.md:block 19 (table)
+msgid "A driver that discards all log messages"
 msgstr ""
 
 #: docs/8.x/logging.md:block 20 (quote)
@@ -758,6 +799,13 @@ msgid ""
 "        ]);\n"
 "    }\n"
 "}\n"
+msgstr ""
+
+#: docs/8.x/logging.md:block 61 (code)
+msgid ""
+"use Illuminate\\Support\\Facades\\Log;\n"
+"\n"
+"Log::info('User failed to login.', ['id' => $user->id]);\n"
 msgstr ""
 
 #: docs/8.x/logging.md:block 62 (paragraph)
@@ -890,6 +938,65 @@ msgid ""
 "    public function __invoke(array $config)\n"
 "    {\n"
 "        return new Logger(/* ... */);\n"
+"    }\n"
+"}\n"
+msgstr ""
+
+#: docs/master/logging.md:block 65 (code)
+msgid ""
+"<?php\n"
+"\n"
+"namespace App\\Http\\Controllers;\n"
+"\n"
+"use App\\Http\\Controllers\\Controller;\n"
+"use App\\Models\\User;\n"
+"use Illuminate\\Support\\Facades\\Log;\n"
+"use Illuminate\\View\\View;\n"
+"\n"
+"class UserController extends Controller\n"
+"{\n"
+"    /**\n"
+"     * Show the profile for the given user.\n"
+"     */\n"
+"    public function show(string $id): View\n"
+"    {\n"
+"        Log::info('Showing the user profile for user: '.$id);\n"
+"\n"
+"        return view('user.profile', [\n"
+"            'user' => User::findOrFail($id)\n"
+"        ]);\n"
+"    }\n"
+"}\n"
+msgstr ""
+
+#: docs/master/logging.md:block 71 (code)
+msgid ""
+"<?php\n"
+"\n"
+"namespace App\\Http\\Middleware;\n"
+"\n"
+"use Closure;\n"
+"use Illuminate\\Http\\Request;\n"
+"use Illuminate\\Support\\Facades\\Log;\n"
+"use Illuminate\\Support\\Str;\n"
+"use Symfony\\Component\\HttpFoundation\\Response;\n"
+"\n"
+"class AssignRequestId\n"
+"{\n"
+"    /**\n"
+"     * Handle an incoming request.\n"
+"     *\n"
+"     * @param  \\Closure(\\Illuminate\\Http\\Request): (\\Symfony\\Component\\HttpFoundation\\Response)  $next\n"
+"     */\n"
+"    public function handle(Request $request, Closure $next): Response\n"
+"    {\n"
+"        $requestId = (string) Str::uuid();\n"
+"\n"
+"        Log::withContext([\n"
+"            'request-id' => $requestId\n"
+"        ]);\n"
+"\n"
+"        return $next($request)->header('Request-Id', $requestId);\n"
 "    }\n"
 "}\n"
 msgstr ""

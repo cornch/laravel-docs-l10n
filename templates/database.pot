@@ -59,7 +59,7 @@ msgid "Almost every modern web application interacts with a database. Laravel ma
 msgstr ""
 
 #: docs/10.x/database.md:block 7 (unordered list)
-msgid "MariaDB 10.3+ ([Version Policy](https://mariadb.org/about/#maintenance-policy))"
+msgid "MariaDB 10.10+ ([Version Policy](https://mariadb.org/about/#maintenance-policy))"
 msgstr ""
 
 #: docs/10.x/database.md:block 7 (unordered list)
@@ -67,7 +67,7 @@ msgid "MySQL 5.7+ ([Version Policy](https://en.wikipedia.org/wiki/MySQL#Release_
 msgstr ""
 
 #: docs/10.x/database.md:block 7 (unordered list)
-msgid "PostgreSQL 10.0+ ([Version Policy](https://www.postgresql.org/support/versioning/))"
+msgid "PostgreSQL 11.0+ ([Version Policy](https://www.postgresql.org/support/versioning/))"
 msgstr ""
 
 #: docs/10.x/database.md:block 7 (unordered list)
@@ -276,41 +276,56 @@ msgid ""
 msgstr ""
 
 #: docs/10.x/database.md:block 55 (header)
-msgid "Using Named Bindings"
+msgid "Selecting Multiple Result Sets"
 msgstr ""
 
 #: docs/10.x/database.md:block 56 (paragraph)
-msgid "Instead of using `?` to represent your parameter bindings, you may execute a query using named bindings:"
+msgid "If your application calls stored procedures that return multiple result sets, you may use the `selectResultSets` method to retrieve all of the result sets returned by the stored procedure:"
 msgstr ""
 
 #: docs/10.x/database.md:block 57 (code)
-msgid "$results = DB::select('select * from users where id = :id', ['id' => 1]);\n"
+msgid ""
+"[$options, $notifications] = DB::selectResultSets(\n"
+"    \"CALL get_user_options_and_notifications(?)\", $request->user()->id\n"
+");\n"
 msgstr ""
 
 #: docs/10.x/database.md:block 59 (header)
-msgid "Running An Insert Statement"
+msgid "Using Named Bindings"
 msgstr ""
 
 #: docs/10.x/database.md:block 60 (paragraph)
-msgid "To execute an `insert` statement, you may use the `insert` method on the `DB` facade. Like `select`, this method accepts the SQL query as its first argument and bindings as its second argument:"
+msgid "Instead of using `?` to represent your parameter bindings, you may execute a query using named bindings:"
 msgstr ""
 
 #: docs/10.x/database.md:block 61 (code)
+msgid "$results = DB::select('select * from users where id = :id', ['id' => 1]);\n"
+msgstr ""
+
+#: docs/10.x/database.md:block 63 (header)
+msgid "Running An Insert Statement"
+msgstr ""
+
+#: docs/10.x/database.md:block 64 (paragraph)
+msgid "To execute an `insert` statement, you may use the `insert` method on the `DB` facade. Like `select`, this method accepts the SQL query as its first argument and bindings as its second argument:"
+msgstr ""
+
+#: docs/10.x/database.md:block 65 (code)
 msgid ""
 "use Illuminate\\Support\\Facades\\DB;\n"
 "\n"
 "DB::insert('insert into users (id, name) values (?, ?)', [1, 'Marc']);\n"
 msgstr ""
 
-#: docs/10.x/database.md:block 63 (header)
+#: docs/10.x/database.md:block 67 (header)
 msgid "Running An Update Statement"
 msgstr ""
 
-#: docs/10.x/database.md:block 64 (paragraph)
+#: docs/10.x/database.md:block 68 (paragraph)
 msgid "The `update` method should be used to update existing records in the database. The number of rows affected by the statement is returned by the method:"
 msgstr ""
 
-#: docs/10.x/database.md:block 65 (code)
+#: docs/10.x/database.md:block 69 (code)
 msgid ""
 "use Illuminate\\Support\\Facades\\DB;\n"
 "\n"
@@ -320,97 +335,97 @@ msgid ""
 ");\n"
 msgstr ""
 
-#: docs/10.x/database.md:block 67 (header)
+#: docs/10.x/database.md:block 71 (header)
 msgid "Running A Delete Statement"
 msgstr ""
 
-#: docs/10.x/database.md:block 68 (paragraph)
+#: docs/10.x/database.md:block 72 (paragraph)
 msgid "The `delete` method should be used to delete records from the database. Like `update`, the number of rows affected will be returned by the method:"
 msgstr ""
 
-#: docs/10.x/database.md:block 69 (code)
+#: docs/10.x/database.md:block 73 (code)
 msgid ""
 "use Illuminate\\Support\\Facades\\DB;\n"
 "\n"
 "$deleted = DB::delete('delete from users');\n"
 msgstr ""
 
-#: docs/10.x/database.md:block 71 (header)
+#: docs/10.x/database.md:block 75 (header)
 msgid "Running A General Statement"
 msgstr ""
 
-#: docs/10.x/database.md:block 72 (paragraph)
+#: docs/10.x/database.md:block 76 (paragraph)
 msgid "Some database statements do not return any value. For these types of operations, you may use the `statement` method on the `DB` facade:"
 msgstr ""
 
-#: docs/10.x/database.md:block 73 (code)
+#: docs/10.x/database.md:block 77 (code)
 msgid "DB::statement('drop table users');\n"
 msgstr ""
 
-#: docs/10.x/database.md:block 75 (header)
+#: docs/10.x/database.md:block 79 (header)
 msgid "Running An Unprepared Statement"
 msgstr ""
 
-#: docs/10.x/database.md:block 76 (paragraph)
+#: docs/10.x/database.md:block 80 (paragraph)
 msgid "Sometimes you may want to execute an SQL statement without binding any values. You may use the `DB` facade's `unprepared` method to accomplish this:"
 msgstr ""
 
-#: docs/10.x/database.md:block 77 (code)
+#: docs/10.x/database.md:block 81 (code)
 msgid "DB::unprepared('update users set votes = 100 where name = \"Dries\"');\n"
 msgstr ""
 
-#: docs/10.x/database.md:block 78 (quote)
+#: docs/10.x/database.md:block 82 (quote)
 msgid "**Warning** Since unprepared statements do not bind parameters, they may be vulnerable to SQL injection. You should never allow user controlled values within an unprepared statement."
 msgstr ""
 
-#: docs/10.x/database.md:block 80 (header)
+#: docs/10.x/database.md:block 84 (header)
 msgid "Implicit Commits"
 msgstr ""
 
-#: docs/10.x/database.md:block 81 (paragraph)
+#: docs/10.x/database.md:block 85 (paragraph)
 msgid "When using the `DB` facade's `statement` and `unprepared` methods within transactions you must be careful to avoid statements that cause [implicit commits](https://dev.mysql.com/doc/refman/8.0/en/implicit-commit.html). These statements will cause the database engine to indirectly commit the entire transaction, leaving Laravel unaware of the database's transaction level. An example of such a statement is creating a database table:"
 msgstr ""
 
-#: docs/10.x/database.md:block 82 (code)
+#: docs/10.x/database.md:block 86 (code)
 msgid "DB::unprepared('create table a (col varchar(1) null)');\n"
 msgstr ""
 
-#: docs/10.x/database.md:block 83 (paragraph)
+#: docs/10.x/database.md:block 87 (paragraph)
 msgid "Please refer to the MySQL manual for [a list of all statements](https://dev.mysql.com/doc/refman/8.0/en/implicit-commit.html) that trigger implicit commits."
 msgstr ""
 
-#: docs/10.x/database.md:block 85 (header)
+#: docs/10.x/database.md:block 89 (header)
 msgid "Using Multiple Database Connections"
 msgstr ""
 
-#: docs/10.x/database.md:block 86 (paragraph)
+#: docs/10.x/database.md:block 90 (paragraph)
 msgid "If your application defines multiple connections in your `config/database.php` configuration file, you may access each connection via the `connection` method provided by the `DB` facade. The connection name passed to the `connection` method should correspond to one of the connections listed in your `config/database.php` configuration file or configured at runtime using the `config` helper:"
 msgstr ""
 
-#: docs/10.x/database.md:block 87 (code)
+#: docs/10.x/database.md:block 91 (code)
 msgid ""
 "use Illuminate\\Support\\Facades\\DB;\n"
 "\n"
 "$users = DB::connection('sqlite')->select(/* ... */);\n"
 msgstr ""
 
-#: docs/10.x/database.md:block 88 (paragraph)
+#: docs/10.x/database.md:block 92 (paragraph)
 msgid "You may access the raw, underlying PDO instance of a connection using the `getPdo` method on a connection instance:"
 msgstr ""
 
-#: docs/10.x/database.md:block 89 (code)
+#: docs/10.x/database.md:block 93 (code)
 msgid "$pdo = DB::connection()->getPdo();\n"
 msgstr ""
 
-#: docs/10.x/database.md:block 91 (header)
+#: docs/10.x/database.md:block 95 (header)
 msgid "Listening For Query Events"
 msgstr ""
 
-#: docs/10.x/database.md:block 92 (paragraph)
+#: docs/10.x/database.md:block 96 (paragraph)
 msgid "If you would like to specify a closure that is invoked for each SQL query executed by your application, you may use the `DB` facade's `listen` method. This method can be useful for logging queries or debugging. You may register your query listener closure in the `boot` method of a [service provider](/docs/{{version}}/providers):"
 msgstr ""
 
-#: docs/10.x/database.md:block 93 (code)
+#: docs/10.x/database.md:block 97 (code)
 msgid ""
 "<?php\n"
 "\n"
@@ -444,15 +459,15 @@ msgid ""
 "}\n"
 msgstr ""
 
-#: docs/10.x/database.md:block 95 (header)
+#: docs/10.x/database.md:block 99 (header)
 msgid "Monitoring Cumulative Query Time"
 msgstr ""
 
-#: docs/10.x/database.md:block 96 (paragraph)
+#: docs/10.x/database.md:block 100 (paragraph)
 msgid "A common performance bottleneck of modern web applications is the amount of time they spend querying databases. Thankfully, Laravel can invoke a closure or callback of your choice when it spends too much time querying the database during a single request. To get started, provide a query time threshold (in milliseconds) and closure to the `whenQueryingForLongerThan` method. You may invoke this method in the `boot` method of a [service provider](/docs/{{version}}/providers):"
 msgstr ""
 
-#: docs/10.x/database.md:block 97 (code)
+#: docs/10.x/database.md:block 101 (code)
 msgid ""
 "<?php\n"
 "\n"
@@ -485,31 +500,12 @@ msgid ""
 "}\n"
 msgstr ""
 
-#: docs/10.x/database.md:block 99 (header)
+#: docs/10.x/database.md:block 103 (header)
 msgid "Database Transactions"
 msgstr ""
 
-#: docs/10.x/database.md:block 100 (paragraph)
-msgid "You may use the `transaction` method provided by the `DB` facade to run a set of operations within a database transaction. If an exception is thrown within the transaction closure, the transaction will automatically be rolled back and the exception is re-thrown. If the closure executes successfully, the transaction will automatically be committed. You don't need to worry about manually rolling back or committing while using the `transaction` method:"
-msgstr ""
-
-#: docs/10.x/database.md:block 101 (code)
-msgid ""
-"use Illuminate\\Support\\Facades\\DB;\n"
-"\n"
-"DB::transaction(function () {\n"
-"    DB::update('update users set votes = 1');\n"
-"\n"
-"    DB::delete('delete from posts');\n"
-"});\n"
-msgstr ""
-
-#: docs/10.x/database.md:block 103 (header)
-msgid "Handling Deadlocks"
-msgstr ""
-
 #: docs/10.x/database.md:block 104 (paragraph)
-msgid "The `transaction` method accepts an optional second argument which defines the number of times a transaction should be retried when a deadlock occurs. Once these attempts have been exhausted, an exception will be thrown:"
+msgid "You may use the `transaction` method provided by the `DB` facade to run a set of operations within a database transaction. If an exception is thrown within the transaction closure, the transaction will automatically be rolled back and the exception is re-thrown. If the closure executes successfully, the transaction will automatically be committed. You don't need to worry about manually rolling back or committing while using the `transaction` method:"
 msgstr ""
 
 #: docs/10.x/database.md:block 105 (code)
@@ -520,125 +516,144 @@ msgid ""
 "    DB::update('update users set votes = 1');\n"
 "\n"
 "    DB::delete('delete from posts');\n"
-"}, 5);\n"
+"});\n"
 msgstr ""
 
 #: docs/10.x/database.md:block 107 (header)
-msgid "Manually Using Transactions"
+msgid "Handling Deadlocks"
 msgstr ""
 
 #: docs/10.x/database.md:block 108 (paragraph)
-msgid "If you would like to begin a transaction manually and have complete control over rollbacks and commits, you may use the `beginTransaction` method provided by the `DB` facade:"
+msgid "The `transaction` method accepts an optional second argument which defines the number of times a transaction should be retried when a deadlock occurs. Once these attempts have been exhausted, an exception will be thrown:"
 msgstr ""
 
 #: docs/10.x/database.md:block 109 (code)
 msgid ""
 "use Illuminate\\Support\\Facades\\DB;\n"
 "\n"
-"DB::beginTransaction();\n"
+"DB::transaction(function () {\n"
+"    DB::update('update users set votes = 1');\n"
+"\n"
+"    DB::delete('delete from posts');\n"
+"}, 5);\n"
 msgstr ""
 
-#: docs/10.x/database.md:block 110 (paragraph)
-msgid "You can rollback the transaction via the `rollBack` method:"
-msgstr ""
-
-#: docs/10.x/database.md:block 111 (code)
-msgid "DB::rollBack();\n"
+#: docs/10.x/database.md:block 111 (header)
+msgid "Manually Using Transactions"
 msgstr ""
 
 #: docs/10.x/database.md:block 112 (paragraph)
-msgid "Lastly, you can commit a transaction via the `commit` method:"
+msgid "If you would like to begin a transaction manually and have complete control over rollbacks and commits, you may use the `beginTransaction` method provided by the `DB` facade:"
 msgstr ""
 
 #: docs/10.x/database.md:block 113 (code)
+msgid ""
+"use Illuminate\\Support\\Facades\\DB;\n"
+"\n"
+"DB::beginTransaction();\n"
+msgstr ""
+
+#: docs/10.x/database.md:block 114 (paragraph)
+msgid "You can rollback the transaction via the `rollBack` method:"
+msgstr ""
+
+#: docs/10.x/database.md:block 115 (code)
+msgid "DB::rollBack();\n"
+msgstr ""
+
+#: docs/10.x/database.md:block 116 (paragraph)
+msgid "Lastly, you can commit a transaction via the `commit` method:"
+msgstr ""
+
+#: docs/10.x/database.md:block 117 (code)
 msgid "DB::commit();\n"
 msgstr ""
 
-#: docs/10.x/database.md:block 114 (quote)
+#: docs/10.x/database.md:block 118 (quote)
 msgid "**Note** The `DB` facade's transaction methods control the transactions for both the [query builder](/docs/{{version}}/queries) and [Eloquent ORM](/docs/{{version}}/eloquent)."
 msgstr ""
 
-#: docs/10.x/database.md:block 116 (header)
+#: docs/10.x/database.md:block 120 (header)
 msgid "Connecting To The Database CLI"
 msgstr ""
 
-#: docs/10.x/database.md:block 117 (paragraph)
+#: docs/10.x/database.md:block 121 (paragraph)
 msgid "If you would like to connect to your database's CLI, you may use the `db` Artisan command:"
 msgstr ""
 
-#: docs/10.x/database.md:block 118 (code)
+#: docs/10.x/database.md:block 122 (code)
 msgid "php artisan db\n"
 msgstr ""
 
-#: docs/10.x/database.md:block 119 (paragraph)
+#: docs/10.x/database.md:block 123 (paragraph)
 msgid "If needed, you may specify a database connection name to connect to a database connection that is not the default connection:"
 msgstr ""
 
-#: docs/10.x/database.md:block 120 (code)
+#: docs/10.x/database.md:block 124 (code)
 msgid "php artisan db mysql\n"
 msgstr ""
 
-#: docs/10.x/database.md:block 122 (header)
+#: docs/10.x/database.md:block 126 (header)
 msgid "Inspecting Your Databases"
 msgstr ""
 
-#: docs/10.x/database.md:block 123 (paragraph)
+#: docs/10.x/database.md:block 127 (paragraph)
 msgid "Using the `db:show` and `db:table` Artisan commands, you can get valuable insight into your database and its associated tables. To see an overview of your database, including its size, type, number of open connections, and a summary of its tables, you may use the `db:show` command:"
 msgstr ""
 
-#: docs/10.x/database.md:block 124 (code)
+#: docs/10.x/database.md:block 128 (code)
 msgid "php artisan db:show\n"
 msgstr ""
 
-#: docs/10.x/database.md:block 125 (paragraph)
+#: docs/10.x/database.md:block 129 (paragraph)
 msgid "You may specify which database connection should be inspected by providing the database connection name to the command via the `--database` option:"
 msgstr ""
 
-#: docs/10.x/database.md:block 126 (code)
+#: docs/10.x/database.md:block 130 (code)
 msgid "php artisan db:show --database=pgsql\n"
 msgstr ""
 
-#: docs/10.x/database.md:block 127 (paragraph)
+#: docs/10.x/database.md:block 131 (paragraph)
 msgid "If you would like to include table row counts and database view details within the output of the command, you may provide the `--counts` and `--views` options, respectively. On large databases, retrieving row counts and view details can be slow:"
 msgstr ""
 
-#: docs/10.x/database.md:block 128 (code)
+#: docs/10.x/database.md:block 132 (code)
 msgid "php artisan db:show --counts --views\n"
 msgstr ""
 
-#: docs/10.x/database.md:block 130 (header)
+#: docs/10.x/database.md:block 134 (header)
 msgid "Table Overview"
 msgstr ""
 
-#: docs/10.x/database.md:block 131 (paragraph)
+#: docs/10.x/database.md:block 135 (paragraph)
 msgid "If you would like to get an overview of an individual table within your database, you may execute the `db:table` Artisan command. This command provides a general overview of a database table, including its columns, types, attributes, keys, and indexes:"
 msgstr ""
 
-#: docs/10.x/database.md:block 132 (code)
+#: docs/10.x/database.md:block 136 (code)
 msgid "php artisan db:table users\n"
 msgstr ""
 
-#: docs/10.x/database.md:block 134 (header)
+#: docs/10.x/database.md:block 138 (header)
 msgid "Monitoring Your Databases"
 msgstr ""
 
-#: docs/10.x/database.md:block 135 (paragraph)
+#: docs/10.x/database.md:block 139 (paragraph)
 msgid "Using the `db:monitor` Artisan command, you can instruct Laravel to dispatch an `Illuminate\\Database\\Events\\DatabaseBusy` event if your database is managing more than a specified number of open connections."
 msgstr ""
 
-#: docs/10.x/database.md:block 136 (paragraph)
+#: docs/10.x/database.md:block 140 (paragraph)
 msgid "To get started, you should schedule the `db:monitor` command to [run every minute](/docs/{{version}}/scheduling). The command accepts the names of the database connection configurations that you wish to monitor as well as the maximum number of open connections that should be tolerated before dispatching an event:"
 msgstr ""
 
-#: docs/10.x/database.md:block 137 (code)
+#: docs/10.x/database.md:block 141 (code)
 msgid "php artisan db:monitor --databases=mysql,pgsql --max=100\n"
 msgstr ""
 
-#: docs/10.x/database.md:block 138 (paragraph)
+#: docs/10.x/database.md:block 142 (paragraph)
 msgid "Scheduling this command alone is not enough to trigger a notification alerting you of the number of open connections. When the command encounters a database that has an open connection count that exceeds your threshold, a `DatabaseBusy` event will be dispatched. You should listen for this event within your application's `EventServiceProvider` in order to send a notification to you or your development team:"
 msgstr ""
 
-#: docs/10.x/database.md:block 139 (code)
+#: docs/10.x/database.md:block 143 (code)
 msgid ""
 "use App\\Notifications\\DatabaseApproachingMaxConnections;\n"
 "use Illuminate\\Database\\Events\\DatabaseBusy;\n"
@@ -745,6 +760,14 @@ msgstr ""
 msgid "{tip} The `DB` facade's transaction methods control the transactions for both the [query builder](/docs/{{version}}/queries) and [Eloquent ORM](/docs/{{version}}/eloquent)."
 msgstr ""
 
+#: docs/9.x/database.md:block 7 (unordered list)
+msgid "MariaDB 10.3+ ([Version Policy](https://mariadb.org/about/#maintenance-policy))"
+msgstr ""
+
+#: docs/9.x/database.md:block 7 (unordered list)
+msgid "PostgreSQL 10.0+ ([Version Policy](https://www.postgresql.org/support/versioning/))"
+msgstr ""
+
 #: docs/9.x/database.md:block 97 (code)
 msgid ""
 "<?php\n"
@@ -804,4 +827,20 @@ msgid ""
 "                ));\n"
 "    });\n"
 "}\n"
+msgstr ""
+
+#: docs/master/database.md:block 7 (unordered list)
+msgid "MariaDB 10.11+ ([Version Policy](https://mariadb.org/about/#maintenance-policy))"
+msgstr ""
+
+#: docs/master/database.md:block 7 (unordered list)
+msgid "MySQL 8.0+ ([Version Policy](https://en.wikipedia.org/wiki/MySQL#Release_history))"
+msgstr ""
+
+#: docs/master/database.md:block 7 (unordered list)
+msgid "PostgreSQL 12.0+ ([Version Policy](https://www.postgresql.org/support/versioning/))"
+msgstr ""
+
+#: docs/master/database.md:block 7 (unordered list)
+msgid "SQLite 3.35.0+"
 msgstr ""

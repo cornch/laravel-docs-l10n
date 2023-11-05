@@ -10,7 +10,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
-"PO-Revision-Date: 2023-11-05 13:29\n"
+"PO-Revision-Date: 2023-11-05 17:18\n"
 
 #: docs/10.x/errors.md:block 1 (header)
 msgid "Error Handling"
@@ -50,7 +50,7 @@ msgstr "[Reportable 與 Renderable 的 Exception](#renderable-exceptions)"
 
 #: docs/10.x/errors.md:block 2 (unordered list)
 msgid "[Throttling Reported Exceptions](#throttling-reported-exceptions)"
-msgstr ""
+msgstr "[頻率限制 Exception 的回報](#throttling-exceptions)"
 
 #: docs/10.x/errors.md:block 2 (unordered list)
 msgid "[HTTP Exceptions](#http-exceptions)"
@@ -90,11 +90,11 @@ msgstr "回報 Exception"
 
 #: docs/10.x/errors.md:block 14 (paragraph)
 msgid "All exceptions are handled by the `App\\Exceptions\\Handler` class. This class contains a `register` method where you may register custom exception reporting and rendering callbacks. We'll examine each of these concepts in detail. Exception reporting is used to log exceptions or send them to an external service like [Flare](https://flareapp.io), [Bugsnag](https://bugsnag.com), or [Sentry](https://github.com/getsentry/sentry-laravel). By default, exceptions will be logged based on your [logging](/docs/{{version}}/logging) configuration. However, you are free to log exceptions however you wish."
-msgstr ""
+msgstr "所有的 Exception 都由 `App\\Exceptions\\Handler` 類別負責處理。該類別中包含了一個 `register` 方法，可用來註冊所有自訂的 Exception 回報與轉譯回呼。我們來詳細看看其中各個概念。「回報 Exception」就是指將例外紀錄到 ^[Log](日誌)，或是傳送到如 [Flare](https://flareapp.io)、[Bugsnag](https://bugsnag.com)、[Sentry](https://github.com/getsentry/sentry-laravel) 等外部服務。預設情況下，Laravel 會使用專案的[Log](/docs/{{version}}/logging) 設定來紀錄 Exception。不過，我們也可以隨意調整 Exception 要如何紀錄。"
 
 #: docs/10.x/errors.md:block 15 (paragraph)
 msgid "If you need to report different types of exceptions in different ways, you may use the `reportable` method to register a closure that should be executed when an exception of a given type needs to be reported. Laravel will determine what type of exception the closure reports by examining the type-hint of the closure:"
-msgstr ""
+msgstr "若想以不同的方式回報不同類型的 Exception，可以使用 `reportable` 方法來註冊一個閉包。這個閉包會在給定類型的 Exception 需要回報時被呼叫。Laravel 會自動使用該閉包的^[型別提示](Type-Hint)來判斷該閉包接受什麼類型的 Exception："
 
 #: docs/10.x/errors.md:block 16 (code)
 msgid "use App\\Exceptions\\InvalidOrderException;\n\n"
@@ -146,7 +146,7 @@ msgstr "全域 Log 上下文"
 
 #: docs/10.x/errors.md:block 22 (paragraph)
 msgid "If available, Laravel automatically adds the current user's ID to every exception's log message as contextual data. You may define your own global contextual data by defining a `context` method on your application's `App\\Exceptions\\Handler` class. This information will be included in every exception's log message written by your application:"
-msgstr ""
+msgstr "當有目前使用者 ID 的時候，Laravel 會自動將使用者 ID 加到所有的例外 Log 訊息，以作為^[上下文](Context)資料。可以在專案中 `App\\Exceptions\\Handler` 類別內定義一個 `context` 方法來定義你自己的全域上下文資料。這個資料會被包含在專案輸出的所有例外 Log 訊息中："
 
 #: docs/10.x/errors.md:block 23 (code)
 msgid "/**\n"
@@ -178,7 +178,7 @@ msgstr "Exception Log 的上下文"
 
 #: docs/10.x/errors.md:block 26 (paragraph)
 msgid "While adding context to every log message can be useful, sometimes a particular exception may have unique context that you would like to include in your logs. By defining a `context` method on one of your application's exceptions, you may specify any data relevant to that exception that should be added to the exception's log entry:"
-msgstr ""
+msgstr "為所有 Log 訊息都新增額外的上下文可能會很實用，但有些特別的 Exception 可能會有一些獨特的上下文，而我們也想將這類上下文加到 Log 上。只要在 Exception 中定義一個 `context` 方法，就可以指定與該 Exception 相關的資料，將這些資料包含到例外的 Log 中："
 
 #: docs/10.x/errors.md:block 27 (code)
 msgid "<?php\n\n"
@@ -244,15 +244,15 @@ msgstr "public function isValid(string $value): bool\n"
 
 #: docs/10.x/errors.md:block 33 (header)
 msgid "Deduplicating Reported Exceptions"
-msgstr ""
+msgstr "避免重複回報的 Exception"
 
 #: docs/10.x/errors.md:block 34 (paragraph)
 msgid "If you are using the `report` function throughout your application, you may occasionally report the same exception multiple times, creating duplicate entries in your logs."
-msgstr ""
+msgstr "若你在專案中使用 `report` 函式，偶爾可能會發生同一個 Exception 被回報多次的情況，並在 Log 中造成重複的項目。"
 
 #: docs/10.x/errors.md:block 35 (paragraph)
 msgid "If you would like to ensure that a single instance of an exception is only ever reported once, you may set the `$withoutDuplicates` property to `true` within your application's `App\\Exceptions\\Handler` class:"
-msgstr ""
+msgstr "若想避免同一個 Exception 實體被回報多次，可以在 `App\\Exceptions\\Handler` 類別中將 `$withoutDuplicates` 屬性設為 `true`："
 
 #: docs/10.x/errors.md:block 36 (code)
 msgid "namespace App\\Exceptions;\n\n"
@@ -267,11 +267,22 @@ msgid "namespace App\\Exceptions;\n\n"
 "    protected $withoutDuplicates = true;\n\n"
 "    // ...\n"
 "}\n"
-msgstr ""
+msgstr "namespace App\\Exceptions;\n\n"
+"use Illuminate\\Foundation\\Exceptions\\Handler as ExceptionHandler;\n\n"
+"class Handler extends ExceptionHandler\n"
+"{\n"
+"    /**\n"
+"     * Indicates that an exception instance should only be reported once.\n"
+"     *\n"
+"     * @var bool\n"
+"     */\n"
+"    protected $withoutDuplicates = true;\n\n"
+"    // ...\n"
+"}\n"
 
 #: docs/10.x/errors.md:block 37 (paragraph)
 msgid "Now, when the `report` helper is called with the same instance of an exception, only the first call will be reported:"
-msgstr ""
+msgstr "現在，當使用相同 Exception 實體來呼叫 `report` 輔助函式時，就只有第一次呼叫會被回報："
 
 #: docs/10.x/errors.md:block 38 (code)
 msgid "$original = new RuntimeException('Whoops!');\n\n"
@@ -283,7 +294,15 @@ msgid "$original = new RuntimeException('Whoops!');\n\n"
 "}\n\n"
 "report($original); // ignored\n"
 "report($caught); // ignored\n"
-msgstr ""
+msgstr "$original = new RuntimeException('Whoops!');\n\n"
+"report($original); // 回報\n\n"
+"try {\n"
+"    throw $original;\n"
+"} catch (Throwable $caught) {\n"
+"    report($caught); // 忽略\n"
+"}\n\n"
+"report($original); // 忽略\n"
+"report($caught); // 忽略\n"
 
 #: docs/10.x/errors.md:block 40 (header)
 msgid "Exception Log Levels"
@@ -299,7 +318,7 @@ msgstr "上面也提過，即使使用了 `reportable` 方法註冊自定的 Exc
 
 #: docs/10.x/errors.md:block 43 (paragraph)
 msgid "To accomplish this, you may define a `$levels` property on your application's exception handler. This property should contain an array of exception types and their associated log levels:"
-msgstr ""
+msgstr "若要設定 Exception 的等級，請在專案的 Exception Handler 內定義一個 `$levels` 屬性。該屬性應包含一組陣列，包含 Exception 型別與其關聯的 Log 等級："
 
 #: docs/10.x/errors.md:block 44 (code)
 msgid "use PDOException;\n"
@@ -329,7 +348,7 @@ msgstr "以類型忽略例外"
 
 #: docs/10.x/errors.md:block 47 (paragraph)
 msgid "When building your application, there will be some types of exceptions you never want to report. To ignore these exceptions, define a `$dontReport` property on your application's exception handler. Any classes that you add to this property will never be reported; however, they may still have custom rendering logic:"
-msgstr ""
+msgstr "在製作專案時，有一些類型的 Exception 可能是我們想永遠忽略不回報的。若要忽略這類 Exception，請在專案的 Exception Handler 中定義一個 `$dontReport` 屬性。加入到此屬性的任何類別都不會被回報。不過，這些 Exception 還是可以有其自定轉譯邏輯："
 
 #: docs/10.x/errors.md:block 48 (code)
 msgid "use App\\Exceptions\\InvalidOrderException;\n\n"
@@ -353,7 +372,7 @@ msgstr "use App\\Exceptions\\InvalidOrderException;\n\n"
 
 #: docs/10.x/errors.md:block 49 (paragraph)
 msgid "Internally, Laravel already ignores some types of errors for you, such as exceptions resulting from 404 HTTP errors or 419 HTTP responses generated by invalid CSRF tokens. If you would like to instruct Laravel to stop ignoring a given type of exception, you may invoke the `stopIgnoring` method within your exception handler's `register` method:"
-msgstr ""
+msgstr "在 Laravel 內部，已經有一些型別的錯誤是會預設被忽略的，例如 404 HTTP 錯誤與無效 CSRF Token 產生的 419 HTTP Response 所產生的 Exception 等。若想讓 Laravel 不要忽略特定類型的 Exception，可以在 Exception Handler 的 `register` 方法中呼叫 `stopIgnoring` 方法："
 
 #: docs/10.x/errors.md:block 50 (code)
 msgid "use Symfony\\Component\\HttpKernel\\Exception\\HttpException;\n\n"
@@ -365,7 +384,15 @@ msgid "use Symfony\\Component\\HttpKernel\\Exception\\HttpException;\n\n"
 "    $this->stopIgnoring(HttpException::class);\n\n"
 "    // ...\n"
 "}\n"
-msgstr ""
+msgstr "use Symfony\\Component\\HttpKernel\\Exception\\HttpException;\n\n"
+"/**\n"
+" * Register the exception handling callbacks for the application.\n"
+" */\n"
+"public function register(): void\n"
+"{\n"
+"    $this->stopIgnoring(HttpException::class);\n\n"
+"    // ...\n"
+"}\n"
 
 #: docs/10.x/errors.md:block 52 (header)
 msgid "Rendering Exceptions"
@@ -373,11 +400,11 @@ msgstr "轉譯 Exception"
 
 #: docs/10.x/errors.md:block 53 (paragraph)
 msgid "By default, the Laravel exception handler will convert exceptions into an HTTP response for you. However, you are free to register a custom rendering closure for exceptions of a given type. You may accomplish this by invoking the `renderable` method within your exception handler."
-msgstr ""
+msgstr "預設情況下，Laravel 的 Exception Handler 會幫你把 Exception 轉成 HTTP Response。不過，我們也可以自由地為某個類型的 Exception 註冊自訂^[轉譯閉包](Rendering Closure)。只要在 Exception Handler 內呼叫 `renderable` 方法，就可以註冊轉譯閉包。"
 
 #: docs/10.x/errors.md:block 54 (paragraph)
 msgid "The closure passed to the `renderable` method should return an instance of `Illuminate\\Http\\Response`, which may be generated via the `response` helper. Laravel will determine what type of exception the closure renders by examining the type-hint of the closure:"
-msgstr ""
+msgstr "傳給 `renderable` 方法的閉包應回傳一個 `Illuminate\\Http\\Response` 的實體。可以使用 `response` 輔助函式來產生該實體。Laravel 會依照該閉包的型別提示來判斷這個閉包能轉移哪種類型的 Exception："
 
 #: docs/10.x/errors.md:block 55 (code)
 msgid "use App\\Exceptions\\InvalidOrderException;\n"
@@ -445,7 +472,7 @@ msgstr "^[可回報](Reportable)與^[可轉譯](Renderable)的 Exception"
 
 #: docs/10.x/errors.md:block 60 (paragraph)
 msgid "Instead of defining custom reporting and rendering behavior in your exception handler's `register` method, you may define `report` and `render` methods directly on your application's exceptions. When these methods exist, they will automatically be called by the framework:"
-msgstr ""
+msgstr "除了在 Exception Handler 的 `register` 方法中定義回報與轉譯行為，也可以直接在專案的 Exception 中定義 `report` 與 `render` 方法。當 Exception 中有這些方法時，Laravel 會自動呼叫該方法："
 
 #: docs/10.x/errors.md:block 61 (code)
 msgid "<?php\n\n"
@@ -553,15 +580,15 @@ msgstr "**Note** 可以在 `report` 方法中型別提示任何的^[相依性](D
 
 #: docs/10.x/errors.md:block 68 (header)
 msgid "Throttling Reported Exceptions"
-msgstr ""
+msgstr "頻率限制回報的 Exception"
 
 #: docs/10.x/errors.md:block 69 (paragraph)
 msgid "If your application reports a very large number of exceptions, you may want to throttle how many exceptions are actually logged or sent to your application's external error tracking service."
-msgstr ""
+msgstr "若你的專案會回報大量的 Exception，則你可能會想針對實際要被 Log 與傳送到專案外部錯誤追蹤服務的 Exception 進行頻率限制。"
 
 #: docs/10.x/errors.md:block 70 (paragraph)
 msgid "To take a random sample rate of exceptions, you can return a `Lottery` instance from your exception handler's `throttle` method. If your `App\\Exceptions\\Handler` class does not contain this method, you may simply add it to the class:"
-msgstr ""
+msgstr "若要對 Exception 採用隨機的採樣率，可以在 Exception Handler 的 `throttle` 方法中回傳 Lottery 實體。若 `App\\Exceptions\\Handler` 類別中沒有此方法，只需要將其加入類別即可："
 
 #: docs/10.x/errors.md:block 71 (code)
 msgid "use Illuminate\\Support\\Lottery;\n"
@@ -573,11 +600,19 @@ msgid "use Illuminate\\Support\\Lottery;\n"
 "{\n"
 "    return Lottery::odds(1, 1000);\n"
 "}\n"
-msgstr ""
+msgstr "use Illuminate\\Support\\Lottery;\n"
+"use Throwable;\n\n"
+"/**\n"
+" * Throttle incoming exceptions.\n"
+" */\n"
+"protected function throttle(Throwable $e): mixed\n"
+"{\n"
+"    return Lottery::odds(1, 1000);\n"
+"}\n"
 
 #: docs/10.x/errors.md:block 72 (paragraph)
 msgid "It is also possible to conditionally sample based on the exception type. If you would like to only sample instances of a specific exception class, you may return a `Lottery` instance only for that class:"
-msgstr ""
+msgstr "也可以根據 Exception 的型別來有條件地採樣。若只想採樣特定 Exception 類別的實體，只需要針對該類別回傳 `Lottery` 實體即可："
 
 #: docs/10.x/errors.md:block 73 (code)
 msgid "use App\\Exceptions\\ApiMonitoringException;\n"
@@ -592,11 +627,22 @@ msgid "use App\\Exceptions\\ApiMonitoringException;\n"
 "        return Lottery::odds(1, 1000);\n"
 "    }\n"
 "}\n"
-msgstr ""
+msgstr "use App\\Exceptions\\ApiMonitoringException;\n"
+"use Illuminate\\Support\\Lottery;\n"
+"use Throwable;\n\n"
+"/**\n"
+" * Throttle incoming exceptions.\n"
+" */\n"
+"protected function throttle(Throwable $e): mixed\n"
+"{\n"
+"    if ($e instanceof ApiMonitoringException) {\n"
+"        return Lottery::odds(1, 1000);\n"
+"    }\n"
+"}\n"
 
 #: docs/10.x/errors.md:block 74 (paragraph)
 msgid "You may also rate limit exceptions logged or sent to an external error tracking service by returning a `Limit` instance instead of a `Lottery`. This is useful if you want to protect against sudden bursts of exceptions flooding your logs, for example, when a third-party service used by your application is down:"
-msgstr ""
+msgstr "若不回傳 `Lottery` 而回傳 `Limit` 實體的話，就可以針對 Exception 的 Log 或傳送到外部錯誤追蹤服務進行頻率限制。這麼做可以避免突然增加的 Exception 使 Log 暴增，例如當網站使用的第三方服務突然離線的情況："
 
 #: docs/10.x/errors.md:block 75 (code)
 msgid "use Illuminate\\Broadcasting\\BroadcastException;\n"
@@ -611,11 +657,22 @@ msgid "use Illuminate\\Broadcasting\\BroadcastException;\n"
 "        return Limit::perMinute(300);\n"
 "    }\n"
 "}\n"
-msgstr ""
+msgstr "use Illuminate\\Broadcasting\\BroadcastException;\n"
+"use Illuminate\\Cache\\RateLimiting\\Limit;\n"
+"use Throwable;\n\n"
+"/**\n"
+" * Throttle incoming exceptions.\n"
+" */\n"
+"protected function throttle(Throwable $e): mixed\n"
+"{\n"
+"    if ($e instanceof BroadcastException) {\n"
+"        return Limit::perMinute(300);\n"
+"    }\n"
+"}\n"
 
 #: docs/10.x/errors.md:block 76 (paragraph)
 msgid "By default, limits will use the exception's class as the rate limit key. You can customize this by specifying your own key using the `by` method on the `Limit`:"
-msgstr ""
+msgstr "預設情況下，會使用 Exception 的類別名稱來作為頻率限制的索引鍵。可以在 `Limit` 上使用 `by` 方法來指定自定的索引鍵："
 
 #: docs/10.x/errors.md:block 77 (code)
 msgid "use Illuminate\\Broadcasting\\BroadcastException;\n"
@@ -630,11 +687,22 @@ msgid "use Illuminate\\Broadcasting\\BroadcastException;\n"
 "        return Limit::perMinute(300)->by($e->getMessage());\n"
 "    }\n"
 "}\n"
-msgstr ""
+msgstr "use Illuminate\\Broadcasting\\BroadcastException;\n"
+"use Illuminate\\Cache\\RateLimiting\\Limit;\n"
+"use Throwable;\n\n"
+"/**\n"
+" * Throttle incoming exceptions.\n"
+" */\n"
+"protected function throttle(Throwable $e): mixed\n"
+"{\n"
+"    if ($e instanceof BroadcastException) {\n"
+"        return Limit::perMinute(300)->by($e->getMessage());\n"
+"    }\n"
+"}\n"
 
 #: docs/10.x/errors.md:block 78 (paragraph)
 msgid "Of course, you may return a mixture of `Lottery` and `Limit` instances for different exceptions:"
-msgstr ""
+msgstr "當然，可以在不同的 Exception 間混合使用 `Lottery` 與 `Limit` 實體："
 
 #: docs/10.x/errors.md:block 79 (code)
 msgid "use App\\Exceptions\\ApiMonitoringException;\n"
@@ -653,7 +721,22 @@ msgid "use App\\Exceptions\\ApiMonitoringException;\n"
 "        default => Limit::none(),\n"
 "    };\n"
 "}\n"
-msgstr ""
+msgstr "use App\\Exceptions\\ApiMonitoringException;\n"
+"use Illuminate\\Broadcasting\\BroadcastException;\n"
+"use Illuminate\\Cache\\RateLimiting\\Limit;\n"
+"use Illuminate\\Support\\Lottery;\n"
+"use Throwable;\n\n"
+"/**\n"
+" * Throttle incoming exceptions.\n"
+" */\n"
+"protected function throttle(Throwable $e): mixed\n"
+"{\n"
+"    return match (true) {\n"
+"        $e instanceof BroadcastException => Limit::perMinute(300),\n"
+"        $e instanceof ApiMonitoringException => Lottery::odds(1, 1000),\n"
+"        default => Limit::none(),\n"
+"    };\n"
+"}\n"
 
 #: docs/10.x/errors.md:block 81 (header)
 msgid "HTTP Exceptions"
@@ -661,7 +744,7 @@ msgstr "HTTP Exception"
 
 #: docs/10.x/errors.md:block 82 (paragraph)
 msgid "Some exceptions describe HTTP error codes from the server. For example, this may be a \"page not found\" error (404), an \"unauthorized error\" (401), or even a developer generated 500 error. In order to generate such a response from anywhere in your application, you may use the `abort` helper:"
-msgstr ""
+msgstr "有的 Exception 是用來描述伺服器的 HTTP 錯誤代碼。例如，這些 Exception 可能是：「找不到頁面」錯誤 (404)、「未經授權」錯誤 (401) 等，甚至是開發人員造成的 500 錯誤。在你的程式中的任何地點內，若要產生這種 Response，可使用 `abort` ^[輔助函式](Helper)："
 
 #: docs/10.x/errors.md:block 83 (code)
 msgid "abort(404);\n"
@@ -673,7 +756,7 @@ msgstr "自訂 HTTP 錯誤頁面"
 
 #: docs/10.x/errors.md:block 86 (paragraph)
 msgid "Laravel makes it easy to display custom error pages for various HTTP status codes. For example, to customize the error page for 404 HTTP status codes, create a `resources/views/errors/404.blade.php` view template. This view will be rendered for all 404 errors generated by your application. The views within this directory should be named to match the HTTP status code they correspond to. The `Symfony\\Component\\HttpKernel\\Exception\\HttpException` instance raised by the `abort` function will be passed to the view as an `$exception` variable:"
-msgstr ""
+msgstr "在 Laravel 中，要給各種 HTTP 狀態碼顯示自訂錯誤頁非常容易。舉例來說，若要自訂 404 HTTP 狀態碼的錯誤頁面，請建立 `resources/views/errors/404.blade.php` View 樣板。程式中只要產生 404 錯誤，就會轉譯這個 View。在該目錄中的 View 應以對應的 HTTP 狀態碼來命名。由 `abort` 函式產生的 `Symfony\\Component\\HttpKernel\\Exception\\HttpException` 實體會以 `$exception` 變數傳給該 View："
 
 #: docs/10.x/errors.md:block 87 (code)
 msgid "<h2>{{ $exception->getMessage() }}</h2>\n"

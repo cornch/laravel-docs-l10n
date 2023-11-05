@@ -10,7 +10,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
-"PO-Revision-Date: 2023-06-25 10:37\n"
+"PO-Revision-Date: 2023-11-05 13:30\n"
 
 #: docs/10.x/socialite.md:block 1 (header)
 msgid "Laravel Socialite"
@@ -49,6 +49,10 @@ msgid "[Access Scopes](#access-scopes)"
 msgstr "[存取範圍 (Scope)](#access-scopes)"
 
 #: docs/10.x/socialite.md:block 2 (unordered list)
+msgid "[Slack Bot Scopes](#slack-bot-scopes)"
+msgstr ""
+
+#: docs/10.x/socialite.md:block 2 (unordered list)
 msgid "[Optional Parameters](#optional-parameters)"
 msgstr "[可選參數](#optional-parameters)"
 
@@ -61,8 +65,8 @@ msgid "Introduction"
 msgstr "簡介"
 
 #: docs/10.x/socialite.md:block 5 (paragraph)
-msgid "In addition to typical, form based authentication, Laravel also provides a simple, convenient way to authenticate with OAuth providers using [Laravel Socialite](https://github.com/laravel/socialite). Socialite currently supports authentication via Facebook, Twitter, LinkedIn, Google, GitHub, GitLab, and Bitbucket."
-msgstr "除了一般基於表單的登入方式之外，在 Laravel 中，還可以通過 [Laravel Socialite](https://github.com/laravel/socialite) 來以簡單、方便的方式使用 OAuth Provider 登入。目前 Socialite 支援使用 Facebook、Twitter、LinkedIn、Google、GitHub、GitLab 和 Bitbucket 等服務來進行登入。"
+msgid "In addition to typical, form based authentication, Laravel also provides a simple, convenient way to authenticate with OAuth providers using [Laravel Socialite](https://github.com/laravel/socialite). Socialite currently supports authentication via Facebook, Twitter, LinkedIn, Google, GitHub, GitLab, Bitbucket, and Slack."
+msgstr ""
 
 #: docs/10.x/socialite.md:block 6 (quote)
 msgid "**Note** Adapters for other platforms are available via the community driven [Socialite Providers](https://socialiteproviders.com/) website."
@@ -97,8 +101,8 @@ msgid "Before using Socialite, you will need to add credentials for the OAuth pr
 msgstr "在使用 Socialite 之前，需要新增你的網站要使用的 OAuth Provider 憑證 (Credential)。一般來說，可以在要用來登入的服務的儀表板中建立「開發者應用程式」來取得這些憑證。"
 
 #: docs/10.x/socialite.md:block 17 (paragraph)
-msgid "These credentials should be placed in your application's `config/services.php` configuration file, and should use the key `facebook`, `twitter` (OAuth 1.0), `twitter-oauth-2` (OAuth 2.0), `linkedin`, `google`, `github`, `gitlab`, or `bitbucket`, depending on the providers your application requires:"
-msgstr "請將這些憑證放在專案的 `config/services.php` 設定檔中，並依照你的專案所要使用的 OAuth Provider，設定 `facebook`、`twitter` (OAuth 1.0)、`twitter-oauth-2` (OAuth 2.0)、`linkedin`、`google`、`github`、`gitlab` 或 `bitbucket` 等相對應的 key："
+msgid "These credentials should be placed in your application's `config/services.php` configuration file, and should use the key `facebook`, `twitter` (OAuth 1.0), `twitter-oauth-2` (OAuth 2.0), `linkedin-openid`, `google`, `github`, `gitlab`, `bitbucket`, or `slack`, depending on the providers your application requires:"
+msgstr ""
 
 #: docs/10.x/socialite.md:block 18 (code)
 msgid "'github' => [\n"
@@ -227,14 +231,57 @@ msgstr "return Socialite::driver('github')\n"
 "    ->redirect();\n"
 
 #: docs/10.x/socialite.md:block 39 (header)
+msgid "Slack Bot Scopes"
+msgstr ""
+
+#: docs/10.x/socialite.md:block 40 (paragraph)
+msgid "Slack's API provides [different types of access tokens](https://api.slack.com/authentication/token-types), each with their own set of [permission scopes](https://api.slack.com/scopes). Socialite is compatible with both of the following Slack access tokens types:"
+msgstr ""
+
+#: docs/10.x/socialite.md:block 42 (unordered list)
+msgid "Bot (prefixed with `xoxb-`)"
+msgstr ""
+
+#: docs/10.x/socialite.md:block 42 (unordered list)
+msgid "User (prefixed with `xoxp-`)"
+msgstr ""
+
+#: docs/10.x/socialite.md:block 44 (paragraph)
+msgid "By default, the `slack` driver will generate a `user` token and invoking the driver's `user` method will return the user's details."
+msgstr ""
+
+#: docs/10.x/socialite.md:block 45 (paragraph)
+msgid "Bot tokens are primarily useful if your application will be sending notifications to external Slack workspaces that are owned by your application's users. To generate a bot token, invoke the `asBotUser` method before redirecting the user to Slack for authentication:"
+msgstr ""
+
+#: docs/10.x/socialite.md:block 46 (code)
+msgid "return Socialite::driver('slack')\n"
+"    ->asBotUser()\n"
+"    ->setScopes(['chat:write', 'chat:write.public', 'chat:write.customize'])\n"
+"    ->redirect();\n"
+msgstr ""
+
+#: docs/10.x/socialite.md:block 47 (paragraph)
+msgid "In addition, you must invoke the `asBotUser` method before invoking the `user` method after Slack redirects the user back to your application after authentication:"
+msgstr ""
+
+#: docs/10.x/socialite.md:block 48 (code)
+msgid "$user = Socialite::driver('slack')->asBotUser()->user();\n"
+msgstr ""
+
+#: docs/10.x/socialite.md:block 49 (paragraph)
+msgid "When generating a bot token, the `user` method will still return a `Laravel\\Socialite\\Two\\User` instance; however, only the `token` property will be hydrated. This token may be stored in order to [send notifications to the authenticated user's Slack workspaces](/docs/{{version}}/notifications#notifying-external-slack-workspaces)."
+msgstr ""
+
+#: docs/10.x/socialite.md:block 51 (header)
 msgid "Optional Parameters"
 msgstr "可選的參數"
 
-#: docs/10.x/socialite.md:block 40 (paragraph)
+#: docs/10.x/socialite.md:block 52 (paragraph)
 msgid "A number of OAuth providers support other optional parameters on the redirect request. To include any optional parameters in the request, call the `with` method with an associative array:"
 msgstr "有一些 OAuth Provider 還支援在重新導向 Request 上設定其他可選的參數。若要在 Request 中包含任何可選的參數，請呼叫 `with` 方法並提供一個關聯式陣列："
 
-#: docs/10.x/socialite.md:block 41 (code)
+#: docs/10.x/socialite.md:block 53 (code)
 msgid "use Laravel\\Socialite\\Facades\\Socialite;\n\n"
 "return Socialite::driver('google')\n"
 "    ->with(['hd' => 'example.com'])\n"
@@ -244,23 +291,23 @@ msgstr "use Laravel\\Socialite\\Facades\\Socialite;\n\n"
 "    ->with(['hd' => 'example.com'])\n"
 "    ->redirect();\n"
 
-#: docs/10.x/socialite.md:block 42 (quote)
+#: docs/10.x/socialite.md:block 54 (quote)
 msgid "**Warning** When using the `with` method, be careful not to pass any reserved keywords such as `state` or `response_type`."
 msgstr "**Warning** 在使用 `with` 方法時，請小心不要傳入任何保留字 (Reserved Keywords)，如 `state` 或 `response_type` 等。"
 
-#: docs/10.x/socialite.md:block 44 (header)
+#: docs/10.x/socialite.md:block 56 (header)
 msgid "Retrieving User Details"
 msgstr "取得使用者詳細資料"
 
-#: docs/10.x/socialite.md:block 45 (paragraph)
+#: docs/10.x/socialite.md:block 57 (paragraph)
 msgid "After the user is redirected back to your application's authentication callback route, you may retrieve the user's details using Socialite's `user` method. The user object returned by the `user` method provides a variety of properties and methods you may use to store information about the user in your own database."
 msgstr "使用者被重新導向到我們網站上的登入驗證 ^[Callback](回呼) Route 後，就可以使用 Socialite 的 `user` 方法來取得使用者的詳細資料。`user` 方法回傳的使用者物件提供了多種屬性與方法，我們可以將與該使用者有關的資訊存在資料庫中。"
 
-#: docs/10.x/socialite.md:block 46 (paragraph)
+#: docs/10.x/socialite.md:block 58 (paragraph)
 msgid "Differing properties and methods may be available on this object depending on whether the OAuth provider you are authenticating with supports OAuth 1.0 or OAuth 2.0:"
 msgstr "根據所使用的 OAuth Provider 是支援 OAuth 1.0 還是 OAuth 2.0，該物件上所提供的屬性與方法可能會有所不同："
 
-#: docs/10.x/socialite.md:block 47 (code)
+#: docs/10.x/socialite.md:block 59 (code)
 msgid "use Laravel\\Socialite\\Facades\\Socialite;\n\n"
 "Route::get('/auth/callback', function () {\n"
 "    $user = Socialite::driver('github')->user();\n\n"
@@ -296,49 +343,49 @@ msgstr "use Laravel\\Socialite\\Facades\\Socialite;\n\n"
 "    $user->getAvatar();\n"
 "});\n"
 
-#: docs/10.x/socialite.md:block 49 (header)
+#: docs/10.x/socialite.md:block 61 (header)
 msgid "Retrieving User Details From A Token (OAuth2)"
 msgstr "以 ^[Token](權杖) 來取得使用者詳細資料 (OAuth2)"
 
-#: docs/10.x/socialite.md:block 50 (paragraph)
+#: docs/10.x/socialite.md:block 62 (paragraph)
 msgid "If you already have a valid access token for a user, you can retrieve their user details using Socialite's `userFromToken` method:"
 msgstr "若你已經擁有使用者的有效 ^[Access Token](存取權杖)，就可使用 Socialite 的 `userFromToken` 方法來取得該使用者的詳細資料："
 
-#: docs/10.x/socialite.md:block 51 (code)
+#: docs/10.x/socialite.md:block 63 (code)
 msgid "use Laravel\\Socialite\\Facades\\Socialite;\n\n"
 "$user = Socialite::driver('github')->userFromToken($token);\n"
 msgstr "use Laravel\\Socialite\\Facades\\Socialite;\n\n"
 "$user = Socialite::driver('github')->userFromToken($token);\n"
 
-#: docs/10.x/socialite.md:block 53 (header)
+#: docs/10.x/socialite.md:block 65 (header)
 msgid "Retrieving User Details From A Token And Secret (OAuth1)"
 msgstr "以 ^[Token](權杖) 與 ^[Secret](密鑰) 來取得使用者詳細資料 (OAuth1)"
 
-#: docs/10.x/socialite.md:block 54 (paragraph)
+#: docs/10.x/socialite.md:block 66 (paragraph)
 msgid "If you already have a valid token and secret for a user, you can retrieve their user details using Socialite's `userFromTokenAndSecret` method:"
 msgstr "若你已經擁有使用者的有效 ^[Token](權杖) 與 ^[Secret](密鑰)，就可使用 Socialite 的 `userFromTokenAndSecret` 方法來取得該使用者的詳細資料："
 
-#: docs/10.x/socialite.md:block 55 (code)
+#: docs/10.x/socialite.md:block 67 (code)
 msgid "use Laravel\\Socialite\\Facades\\Socialite;\n\n"
 "$user = Socialite::driver('twitter')->userFromTokenAndSecret($token, $secret);\n"
 msgstr "use Laravel\\Socialite\\Facades\\Socialite;\n\n"
 "$user = Socialite::driver('twitter')->userFromTokenAndSecret($token, $secret);\n"
 
-#: docs/10.x/socialite.md:block 57 (header)
+#: docs/10.x/socialite.md:block 69 (header)
 msgid "Stateless Authentication"
 msgstr "^[Stateless](無周邊) 的登入驗證"
 
-#: docs/10.x/socialite.md:block 58 (paragraph)
+#: docs/10.x/socialite.md:block 70 (paragraph)
 msgid "The `stateless` method may be used to disable session state verification. This is useful when adding social authentication to a stateless API that does not utilize cookie based sessions:"
 msgstr "使用 `stateless` 方法可關閉 Session 狀態驗證。此方法適合用於在不使用 Cookie 的 Stateless API 工作階段中加入社群網站登入。"
 
-#: docs/10.x/socialite.md:block 59 (code)
+#: docs/10.x/socialite.md:block 71 (code)
 msgid "use Laravel\\Socialite\\Facades\\Socialite;\n\n"
 "return Socialite::driver('google')->stateless()->user();\n"
 msgstr "use Laravel\\Socialite\\Facades\\Socialite;\n\n"
 "return Socialite::driver('google')->stateless()->user();\n"
 
-#: docs/10.x/socialite.md:block 60 (quote)
+#: docs/10.x/socialite.md:block 72 (quote)
 msgid "**Warning** Stateless authentication is not available for the Twitter OAuth 1.0 driver."
 msgstr "**Warning** Twitter OAuth 1.0 Driver 不支援 Stateless 的登入驗證。"
 
@@ -449,4 +496,12 @@ msgstr "使用 `stateless` 方法可關閉 Session 狀態驗證。此方法適�
 #: docs/8.x/socialite.md:block 58 (quote)
 msgid "{note} Stateless authentication is not available for the Twitter driver, which uses OAuth 1.0 for authentication."
 msgstr "{note} Twitter Driver 使用 OAuth 1.0 來驗證登入，因此不支援 Stateless 的登入驗證。"
+
+#: docs/9.x/socialite.md:block 5 (paragraph)
+msgid "In addition to typical, form based authentication, Laravel also provides a simple, convenient way to authenticate with OAuth providers using [Laravel Socialite](https://github.com/laravel/socialite). Socialite currently supports authentication via Facebook, Twitter, LinkedIn, Google, GitHub, GitLab, and Bitbucket."
+msgstr "除了一般基於表單的登入方式之外，在 Laravel 中，還可以通過 [Laravel Socialite](https://github.com/laravel/socialite) 來以簡單、方便的方式使用 OAuth Provider 登入。目前 Socialite 支援使用 Facebook、Twitter、LinkedIn、Google、GitHub、GitLab 和 Bitbucket 等服務來進行登入。"
+
+#: docs/9.x/socialite.md:block 17 (paragraph)
+msgid "These credentials should be placed in your application's `config/services.php` configuration file, and should use the key `facebook`, `twitter` (OAuth 1.0), `twitter-oauth-2` (OAuth 2.0), `linkedin`, `google`, `github`, `gitlab`, or `bitbucket`, depending on the providers your application requires:"
+msgstr "請將這些憑證放在專案的 `config/services.php` 設定檔中，並依照你的專案所要使用的 OAuth Provider，設定 `facebook`、`twitter` (OAuth 1.0)、`twitter-oauth-2` (OAuth 2.0)、`linkedin`、`google`、`github`、`gitlab` 或 `bitbucket` 等相對應的 key："
 

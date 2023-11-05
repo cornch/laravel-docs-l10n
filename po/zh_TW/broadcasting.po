@@ -10,7 +10,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
-"PO-Revision-Date: 2023-11-05 13:29\n"
+"PO-Revision-Date: 2023-11-05 14:58\n"
 
 #: docs/10.x/broadcasting.md:block 1 (header)
 msgid "Broadcasting"
@@ -174,7 +174,7 @@ msgstr "在許多現代 Web App 中，都使用了 WebSocket 來提供即時更�
 
 #: docs/10.x/broadcasting.md:block 6 (paragraph)
 msgid "For example, imagine your application is able to export a user's data to a CSV file and email it to them. However, creating this CSV file takes several minutes so you choose to create and mail the CSV within a [queued job](/docs/{{version}}/queues). When the CSV has been created and mailed to the user, we can use event broadcasting to dispatch an `App\\Events\\UserDataExported` event that is received by our application's JavaScript. Once the event is received, we can display a message to the user that their CSV has been emailed to them without them ever needing to refresh the page."
-msgstr ""
+msgstr "舉例來說，假設我們的 App 可以將使用者資料匯出為 CSV 檔並以電子郵件寄出。不過，建立 CSV 檔需要數分鐘的事件，因此我們選擇將建立與寄送 CSV 檔的程式放在[佇列任務](/docs/{{version}}/queues)中。當 CSV 當建立完畢並寄給使用者後，我們可以使用「事件廣播」來將 `App\\Events\\UserDataExported` 事件分派給應用程式的 JavaScript。收到事件後，使用者就能在不重新整理的情況下看到一個訊息，表示我們已將 CSV 檔寄送出去。"
 
 #: docs/10.x/broadcasting.md:block 7 (paragraph)
 msgid "To assist you in building these types of features, Laravel makes it easy to \"broadcast\" your server-side Laravel [events](/docs/{{version}}/events) over a WebSocket connection. Broadcasting your Laravel events allows you to share the same event names and data between your server-side Laravel application and your client-side JavaScript application."
@@ -288,7 +288,7 @@ msgstr "Ably"
 
 #: docs/10.x/broadcasting.md:block 41 (quote)
 msgid "**Note** The documentation below discusses how to use Ably in \"Pusher compatibility\" mode. However, the Ably team recommends and maintains a broadcaster and Echo client that is able to take advantage of the unique capabilities offered by Ably. For more information on using the Ably maintained drivers, please [consult Ably's Laravel broadcaster documentation](https://github.com/ably/laravel-broadcaster)."
-msgstr ""
+msgstr "**Note** 下方的說明文件討論了如何在「Pusher 相容模式 (Pusher Compatibility)」下使用 Ably。不過，Ably 團隊推薦並維護了一個 Broadcaster 程式，以及一個可使用 Ably 特別功能的 Echo 用戶端。更多有關使用 Ably 維護的 Driver 的資訊，請[參考 Ably 的 Laravel Broadcaster 說明文件 (英語)](https://github.com/ably/laravel-broadcaster)。"
 
 #: docs/10.x/broadcasting.md:block 42 (paragraph)
 msgid "If you plan to broadcast your events using [Ably](https://ably.com), you should install the Ably PHP SDK using the Composer package manager:"
@@ -904,7 +904,7 @@ msgstr "當廣播事件是在資料庫 Transaction 內分派的時候，這個�
 
 #: docs/10.x/broadcasting.md:block 146 (paragraph)
 msgid "If your queue connection's `after_commit` configuration option is set to `false`, you may still indicate that a particular broadcast event should be dispatched after all open database transactions have been committed by implementing the `ShouldDispatchAfterCommit` interface on the event class:"
-msgstr ""
+msgstr "即使佇列連線的 `after_commit` 設定選項被設為 `false`，還是可以通過在 Event 類別上實作 `ShouldDispatchAfterCommit` 介面來讓 Laravel 知道要在所有開啟的資料庫 Transaction 被 Commit 後廣播該 Event："
 
 #: docs/10.x/broadcasting.md:block 147 (code)
 msgid "<?php\n\n"
@@ -916,7 +916,15 @@ msgid "<?php\n\n"
 "{\n"
 "    use SerializesModels;\n"
 "}\n"
-msgstr ""
+msgstr "<?php\n\n"
+"namespace App\\Events;\n\n"
+"use Illuminate\\Contracts\\Broadcasting\\ShouldBroadcast;\n"
+"use Illuminate\\Contracts\\Events\\ShouldDispatchAfterCommit;\n"
+"use Illuminate\\Queue\\SerializesModels;\n\n"
+"class ServerCreated implements ShouldBroadcast, ShouldDispatchAfterCommit\n"
+"{\n"
+"    use SerializesModels;\n"
+"}\n"
 
 #: docs/10.x/broadcasting.md:block 148 (quote)
 msgid "**Note** To learn more about working around these issues, please review the documentation regarding [queued jobs and database transactions](/docs/{{version}}/queues#jobs-and-database-transactions)."
@@ -1034,11 +1042,11 @@ msgstr "use App\\Models\\User;\n\n"
 
 #: docs/10.x/broadcasting.md:block 172 (paragraph)
 msgid "You may view a list of your application's broadcast authorization callbacks using the `channel:list` Artisan command:"
-msgstr ""
+msgstr "可以使用 `channel:list` Artisan 指令來檢視專案中所有 Broadcast 身分驗證回呼的列表："
 
 #: docs/10.x/broadcasting.md:block 173 (code)
 msgid "php artisan channel:list\n"
-msgstr ""
+msgstr "php artisan channel:list\n"
 
 #: docs/10.x/broadcasting.md:block 175 (header)
 msgid "Authorization Callback Model Binding"
@@ -1468,7 +1476,17 @@ msgid "/**\n"
 "        new PresenceChannel('chat.'.$this->message->room_id),\n"
 "    ];\n"
 "}\n"
-msgstr ""
+msgstr "/**\n"
+" * Get the channels the event should broadcast on.\n"
+" *\n"
+" * @return array<int, \\Illuminate\\Broadcasting\\Channel>\n"
+" */\n"
+"public function broadcastOn(): array\n"
+"{\n"
+"    return [\n"
+"        new PresenceChannel('chat.'.$this->message->room_id),\n"
+"    ];\n"
+"}\n"
 
 #: docs/10.x/broadcasting.md:block 256 (paragraph)
 msgid "As with other events, you may use the `broadcast` helper and the `toOthers` method to exclude the current user from receiving the broadcast:"
@@ -1694,7 +1712,7 @@ msgstr "return [new Channel($this->user)];\n"
 
 #: docs/10.x/broadcasting.md:block 283 (paragraph)
 msgid "If you need to determine the channel name of a model, you may call the `broadcastChannel` method on any model instance. For example, this method returns the string `App.Models.User.1` for an `App\\Models\\User` model with an `id` of `1`:"
-msgstr ""
+msgstr "若想判斷某個 Model 的頻道名稱，可以在任何 Model 實體上呼叫 `broadcastChannel` 方法。舉例來說，對於一個 `id` 為 `1` 的 `App\\Models\\User` Model，該方法會回傳一個字串 `App.Models.User.1`："
 
 #: docs/10.x/broadcasting.md:block 284 (code)
 msgid "$user->broadcastChannel()\n"

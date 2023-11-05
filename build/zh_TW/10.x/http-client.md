@@ -5,7 +5,7 @@ contributors:
     name: cornch
 crowdinUrl: https://crowdin.com/translate/laravel-docs/85/en-zhtw
 progress: 100
-updatedAt: '2023-02-11T12:59:00Z'
+updatedAt: '2023-07-22T15:09:00Z'
 ---
 
 # HTTP 用戶端
@@ -32,7 +32,7 @@ updatedAt: '2023-02-11T12:59:00Z'
 
 ## 簡介
 
-Laravel 為 [Guzzle HTTP 用戶端](http://docs.guzzlephp.org/en/stable/)提供了一個語系化的極簡 API，能讓我們快速建立外連 HTTP Request 來與其他 Web App 通訊。Laravel 的 Guzzle 包裝著重於各個常見的使用情境，並提供優秀的^[開發人員經驗](Developer Experience)。
+Laravel 為 [Guzzle HTTP 用戶端](http://docs.guzzlephp.org/en/stable/)提供了一個語意化的極簡 API，能讓我們快速建立外連 HTTP Request 來與其他 Web App 通訊。Laravel 的 Guzzle 包裝著重於各個常見的使用情境，並提供優秀的^[開發人員經驗](Developer Experience)。
 
 在開始前，先確保有將 Guzzle 套件安裝為專案的相依性套件。預設情況下，Laravel 已自動包含了這個相依性套件，但若你之前有將其移除，請使用 Composer 再安裝一次：
 

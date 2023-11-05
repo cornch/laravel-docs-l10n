@@ -5,7 +5,7 @@ contributors:
     name: cornch
 crowdinUrl: https://crowdin.com/translate/laravel-docs/143/en-zhtw
 progress: 100
-updatedAt: '2023-02-11T12:59:00Z'
+updatedAt: '2023-06-29T10:33:00Z'
 ---
 
 # Laravel Sail
@@ -456,7 +456,7 @@ sail up
 sail share
 ```
 
-在使用 `share` 指令共享網站時，應設定在 `TrustProxies` Middleware 中設定專案的 Trusted Proxies。否則，如 `url` 或 `route` 丹尼爾該產生 URL 用的輔助函式在產生 URL 時將無法判正確的 HTTP 主機名稱：
+在使用 `share` 指令共享網站時，應設定在 `TrustProxies` Middleware 中設定專案的 Trusted Proxies。否則，如 `url` 或 `route` 等產生 URL 用的輔助函式在產生 URL 時將無法判正確的 HTTP 主機名稱：
 
     /**
      * The trusted proxies for this application.

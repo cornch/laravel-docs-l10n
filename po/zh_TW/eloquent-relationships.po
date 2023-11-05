@@ -10,7 +10,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
-"PO-Revision-Date: 2023-02-11 12:59\n"
+"PO-Revision-Date: 2023-11-05 13:29\n"
 
 #: docs/10.x/eloquent-relationships.md:block 1 (header)
 msgid "Eloquent: Relationships"
@@ -713,18 +713,43 @@ msgid "**Warning** Because PostgreSQL does not support executing the `MAX` funct
 msgstr "**Warning** 由於 PostgreSQL 不支援在 UUID 欄位上執行 `MAX` 函式，因此目前一對多關聯無法搭配 PostgreSQL 的 UUID 欄位使用。"
 
 #: docs/10.x/eloquent-relationships.md:block 83 (header)
+msgid "Converting \"Many\" Relationships To Has One Relationships"
+msgstr ""
+
+#: docs/10.x/eloquent-relationships.md:block 84 (paragraph)
+msgid "Often, when retrieving a single model using the `latestOfMany`, `oldestOfMany`, or `ofMany` methods, you already have a \"has many\" relationship defined for the same model. For convenience, Laravel allows you to easily convert this relationship into a \"has one\" relationship by invoking the `one` method on the relationship:"
+msgstr ""
+
+#: docs/10.x/eloquent-relationships.md:block 85 (code)
+msgid "/**\n"
+" * Get the user's orders.\n"
+" */\n"
+"public function orders(): HasMany\n"
+"{\n"
+"    return $this->hasMany(Order::class);\n"
+"}\n\n"
+"/**\n"
+" * Get the user's largest order.\n"
+" */\n"
+"public function largestOrder(): HasOne\n"
+"{\n"
+"    return $this->orders()->one()->ofMany('price', 'max');\n"
+"}\n"
+msgstr ""
+
+#: docs/10.x/eloquent-relationships.md:block 87 (header)
 msgid "Advanced Has One Of Many Relationships"
 msgstr "進階的一對多中之一關聯"
 
-#: docs/10.x/eloquent-relationships.md:block 84 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 88 (paragraph)
 msgid "It is possible to construct more advanced \"has one of many\" relationships. For example, a `Product` model may have many associated `Price` models that are retained in the system even after new pricing is published. In addition, new pricing data for the product may be able to be published in advance to take effect at a future date via a `published_at` column."
 msgstr "我們還可以進一步地做出進階的「一對多中之一」關聯。舉例來說，`Product` Model 可能會有許多相應的 `Price` Model，這些 `Price` Model 會在每次更新商品價格後保留在系統內。此外，我們也可以進一步地通過 `published_at` 欄位來讓某個商品價格在未來的時間點生效。"
 
-#: docs/10.x/eloquent-relationships.md:block 85 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 89 (paragraph)
 msgid "So, in summary, we need to retrieve the latest published pricing where the published date is not in the future. In addition, if two prices have the same published date, we will prefer the price with the greatest ID. To accomplish this, we must pass an array to the `ofMany` method that contains the sortable columns which determine the latest price. In addition, a closure will be provided as the second argument to the `ofMany` method. This closure will be responsible for adding additional publish date constraints to the relationship query:"
 msgstr "因此，總結一下，我們會需要取得最新且已發布的價格，且發佈時間不可是未來。此外，若有兩個價格的發佈時間相同，則我們取 ID 最大的那個價格。為此，我們必須傳入一個陣列給 `ofMany` 方法，該陣列序包用來判斷最新價格的可排序欄位。此外，我們會提供一個閉包給 `ofMany` 方法作為第二個引述。這個閉包會負責為關聯查詢加上額外的發佈時間條件："
 
-#: docs/10.x/eloquent-relationships.md:block 86 (code)
+#: docs/10.x/eloquent-relationships.md:block 90 (code)
 msgid "/**\n"
 " * Get the current pricing for the product.\n"
 " */\n"
@@ -750,19 +775,19 @@ msgstr "/**\n"
 "    });\n"
 "}\n"
 
-#: docs/10.x/eloquent-relationships.md:block 88 (header)
+#: docs/10.x/eloquent-relationships.md:block 92 (header)
 msgid "Has One Through"
 msgstr "間接一對一"
 
-#: docs/10.x/eloquent-relationships.md:block 89 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 93 (paragraph)
 msgid "The \"has-one-through\" relationship defines a one-to-one relationship with another model. However, this relationship indicates that the declaring model can be matched with one instance of another model by proceeding *through* a third model."
 msgstr "「間接一對一 (has-one-through)」關聯定義了與另一個 Model 間的一對一關係。不過，使用這種關聯代表宣告關聯的 Model 可以 **通過** 一個 Model 來對應到另一個 Model 的實體。"
 
-#: docs/10.x/eloquent-relationships.md:block 90 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 94 (paragraph)
 msgid "For example, in a vehicle repair shop application, each `Mechanic` model may be associated with one `Car` model, and each `Car` model may be associated with one `Owner` model. While the mechanic and the owner have no direct relationship within the database, the mechanic can access the owner *through* the `Car` model. Let's look at the tables necessary to define this relationship:"
 msgstr "舉例來說，在汽車維修網站中，每個 `Mechanic` Model (零件) 可以跟一個 `Car` Model 關聯。而每個 `Car` Model (汽車) 則可以關聯到一個 `Owner` Model (車主)。雖然零件與車主在資料庫中並沒有直接的關聯性，但我們可以 **通過** `Car` Model 來在零件上存取車主。來看看要定義這種關聯所需的資料表："
 
-#: docs/10.x/eloquent-relationships.md:block 91 (code)
+#: docs/10.x/eloquent-relationships.md:block 95 (code)
 msgid "mechanics\n"
 "    id - integer\n"
 "    name - string\n\n"
@@ -786,11 +811,11 @@ msgstr "mechanics\n"
 "    name - string\n"
 "    car_id - integer\n"
 
-#: docs/10.x/eloquent-relationships.md:block 92 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 96 (paragraph)
 msgid "Now that we have examined the table structure for the relationship, let's define the relationship on the `Mechanic` model:"
 msgstr "現在，我們已經瞭解了這種關聯性的資料表結構。讓我們來在 `Mechanic` Model 上定義關聯："
 
-#: docs/10.x/eloquent-relationships.md:block 93 (code)
+#: docs/10.x/eloquent-relationships.md:block 97 (code)
 msgid "<?php\n\n"
 "namespace App\\Models;\n\n"
 "use Illuminate\\Database\\Eloquent\\Model;\n"
@@ -820,15 +845,15 @@ msgstr "<?php\n\n"
 "    }\n"
 "}\n"
 
-#: docs/10.x/eloquent-relationships.md:block 94 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 98 (paragraph)
 msgid "The first argument passed to the `hasOneThrough` method is the name of the final model we wish to access, while the second argument is the name of the intermediate model."
 msgstr "傳給 `hasOneThrough` 方法的第一個引述是最後我們想存取的 Model 名稱；第二個引數則是中介 Model 的名稱。"
 
-#: docs/10.x/eloquent-relationships.md:block 95 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 99 (paragraph)
 msgid "Or, if the relevant relationships have already been defined on all of the models involved in the relationship, you may fluently define a \"has-one-through\" relationship by invoking the `through` method and supplying the names of those relationships. For example, if the `Mechanic` model has a `cars` relationship and the `Car` model has an `owner` relationship, you may define a \"has-one-through\" relationship connecting the mechanic and the owner like so:"
 msgstr "或者，若這個關聯中所涉及的所有 Model 上都已定義了相關的關聯，則可以呼叫 `through` 方法，並提供這些關聯的名稱來以串聯呼叫的方式定義「has-one-through」關聯。舉例來說，若 `Mechanic` 方法中有 `cars` 關聯，而 `Car` Model 中有 `owner` 屬性，則可像這樣定義「has-one-through」關聯來將 Mechanic 與 Owner 關聯起來："
 
-#: docs/10.x/eloquent-relationships.md:block 96 (code)
+#: docs/10.x/eloquent-relationships.md:block 100 (code)
 msgid "// String based syntax...\n"
 "return $this->through('cars')->has('owner');\n\n"
 "// Dynamic syntax...\n"
@@ -838,15 +863,15 @@ msgstr "// 字串語法...\n"
 "// 動態語法...\n"
 "return $this->throughCars()->hasOwner();\n"
 
-#: docs/10.x/eloquent-relationships.md:block 98 (header)
+#: docs/10.x/eloquent-relationships.md:block 102 (header)
 msgid "Key Conventions"
 msgstr "索引鍵慣例"
 
-#: docs/10.x/eloquent-relationships.md:block 99 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 103 (paragraph)
 msgid "Typical Eloquent foreign key conventions will be used when performing the relationship's queries. If you would like to customize the keys of the relationship, you may pass them as the third and fourth arguments to the `hasOneThrough` method. The third argument is the name of the foreign key on the intermediate model. The fourth argument is the name of the foreign key on the final model. The fifth argument is the local key, while the sixth argument is the local key of the intermediate model:"
 msgstr "在進行關聯查詢時，會使用到典型的 Eloquent 外部索引鍵慣例。若想自訂關聯使用的索引鍵，則可以將自訂索引鍵傳給 `hasOneThrough` 方法的第三個與第四個引數。第三個引數為中介 Model 上的外部索引鍵名稱。第四個引數則是最終 Model 的外部索引鍵名稱。第五個引數則為內部索引鍵，而第六個引述則是中介 Model 上的內部索引鍵："
 
-#: docs/10.x/eloquent-relationships.md:block 100 (code)
+#: docs/10.x/eloquent-relationships.md:block 104 (code)
 msgid "class Mechanic extends Model\n"
 "{\n"
 "    /**\n"
@@ -882,19 +907,19 @@ msgstr "class Mechanic extends Model\n"
 "    }\n"
 "}\n"
 
-#: docs/10.x/eloquent-relationships.md:block 101 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 105 (paragraph)
 msgid "Or, as discussed earlier, if the relevant relationships have already been defined on all of the models involved in the relationship, you may fluently define a \"has-one-through\" relationship by invoking the `through` method and supplying the names of those relationships. This approach offers the advantage of reusing the key conventions already defined on the existing relationships:"
 msgstr "或者，就像剛才討論過的，若此關聯所涉及的所有 Model 中都已定義了相關的關聯，則可以呼叫 `through` 方法，並提供這些關聯的名稱，來以串聯呼叫的方式來定義「has-one-through」關聯。使用這種方式，即可重複使用現有關聯中定義的索引鍵慣例："
 
-#: docs/10.x/eloquent-relationships.md:block 104 (header)
+#: docs/10.x/eloquent-relationships.md:block 108 (header)
 msgid "Has Many Through"
 msgstr "間接一對多"
 
-#: docs/10.x/eloquent-relationships.md:block 105 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 109 (paragraph)
 msgid "The \"has-many-through\" relationship provides a convenient way to access distant relations via an intermediate relation. For example, let's assume we are building a deployment platform like [Laravel Vapor](https://vapor.laravel.com). A `Project` model might access many `Deployment` models through an intermediate `Environment` model. Using this example, you could easily gather all deployments for a given project. Let's look at the tables required to define this relationship:"
 msgstr "「間接一對多 (has-many-through)」關聯提供了一個方便的方法來通過中介關聯存取另一個關聯。舉例來說，假設我們有一個像 [Laravel Vapor](https://vapor.laravel.com) 這樣的部署平台。`Project` Model (專案)可通過一個中介的 `Environment` Model (環境) 來存取多個 `Deployment` Model (部署)。依照這個例子，我們可以很輕鬆的取得特定專案的所有部署。來看看定義這個關聯性所需的資料表："
 
-#: docs/10.x/eloquent-relationships.md:block 106 (code)
+#: docs/10.x/eloquent-relationships.md:block 110 (code)
 msgid "projects\n"
 "    id - integer\n"
 "    name - string\n\n"
@@ -918,11 +943,11 @@ msgstr "projects\n"
 "    environment_id - integer\n"
 "    commit_hash - string\n"
 
-#: docs/10.x/eloquent-relationships.md:block 107 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 111 (paragraph)
 msgid "Now that we have examined the table structure for the relationship, let's define the relationship on the `Project` model:"
 msgstr "現在，我們已經瞭解了這種關聯性的資料表結構。讓我們來在 `Project` Model 上定義關聯："
 
-#: docs/10.x/eloquent-relationships.md:block 108 (code)
+#: docs/10.x/eloquent-relationships.md:block 112 (code)
 msgid "<?php\n\n"
 "namespace App\\Models;\n\n"
 "use Illuminate\\Database\\Eloquent\\Model;\n"
@@ -952,15 +977,15 @@ msgstr "<?php\n\n"
 "    }\n"
 "}\n"
 
-#: docs/10.x/eloquent-relationships.md:block 109 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 113 (paragraph)
 msgid "The first argument passed to the `hasManyThrough` method is the name of the final model we wish to access, while the second argument is the name of the intermediate model."
 msgstr "傳給 `hasManyThrough` 方法的第一個引述是最後我們想存取的 Model 名稱；第二個引數則是中介 Model 的名稱。"
 
-#: docs/10.x/eloquent-relationships.md:block 110 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 114 (paragraph)
 msgid "Or, if the relevant relationships have already been defined on all of the models involved in the relationship, you may fluently define a \"has-many-through\" relationship by invoking the `through` method and supplying the names of those relationships. For example, if the `Project` model has a `environments` relationship and the `Environment` model has a `deployments` relationship, you may define a \"has-many-through\" relationship connecting the project and the deployments like so:"
 msgstr "或者，若這個關聯中所涉及的所有 Model 上都已定義了相關的關聯，則可以呼叫 `through` 方法，並提供這些關聯的名稱來以串聯呼叫的方式定義「has-many-through」關聯。舉例來說，若 `Project` 方法中有 `environments` 關聯，而 `Environment` Model 中有 `deployments` 屬性，則可像這樣定義「has-many-through」關聯來將 Project 與 Deployment 關聯起來："
 
-#: docs/10.x/eloquent-relationships.md:block 111 (code)
+#: docs/10.x/eloquent-relationships.md:block 115 (code)
 msgid "// String based syntax...\n"
 "return $this->through('environments')->has('deployments');\n\n"
 "// Dynamic syntax...\n"
@@ -970,15 +995,15 @@ msgstr "// 字串語法...\n"
 "// 動態語法...\n"
 "return $this->throughEnvironments()->hasDeployments();\n"
 
-#: docs/10.x/eloquent-relationships.md:block 112 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 116 (paragraph)
 msgid "Though the `Deployment` model's table does not contain a `project_id` column, the `hasManyThrough` relation provides access to a project's deployments via `$project->deployments`. To retrieve these models, Eloquent inspects the `project_id` column on the intermediate `Environment` model's table. After finding the relevant environment IDs, they are used to query the `Deployment` model's table."
 msgstr "雖然 `Deployment` Model 的資料表不包含 `project_id` 欄位，但 `hasManyThrough` 關聯可讓我們通過 `$project->deployments` 來存取專案的部署。為了取得這些 Model，Eloquent 會先在中介的 `Environment` Model 資料表上讀取 `project_id`。找到相關的環境 ID 後，再通過這些 ID 來查詢 `Deployment` Model 的資料表。"
 
-#: docs/10.x/eloquent-relationships.md:block 115 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 119 (paragraph)
 msgid "Typical Eloquent foreign key conventions will be used when performing the relationship's queries. If you would like to customize the keys of the relationship, you may pass them as the third and fourth arguments to the `hasManyThrough` method. The third argument is the name of the foreign key on the intermediate model. The fourth argument is the name of the foreign key on the final model. The fifth argument is the local key, while the sixth argument is the local key of the intermediate model:"
 msgstr "在進行關聯查詢時，會使用到典型的 Eloquent 外部索引鍵慣例。若想自訂關聯使用的索引鍵，則可以將自訂索引鍵傳給 `hasManyThrough` 方法的第三個與第四個引數。第三個引數為中介 Model 上的外部索引鍵名稱。第四個引數則是最終 Model 的外部索引鍵名稱。第五個引數則為內部索引鍵，而第六個引述則是中介 Model 上的內部索引鍵："
 
-#: docs/10.x/eloquent-relationships.md:block 116 (code)
+#: docs/10.x/eloquent-relationships.md:block 120 (code)
 msgid "class Project extends Model\n"
 "{\n"
 "    public function deployments(): HasManyThrough\n"
@@ -1008,31 +1033,31 @@ msgstr "class Project extends Model\n"
 "    }\n"
 "}\n"
 
-#: docs/10.x/eloquent-relationships.md:block 117 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 121 (paragraph)
 msgid "Or, as discussed earlier, if the relevant relationships have already been defined on all of the models involved in the relationship, you may fluently define a \"has-many-through\" relationship by invoking the `through` method and supplying the names of those relationships. This approach offers the advantage of reusing the key conventions already defined on the existing relationships:"
 msgstr "或者，就像剛才討論過的，若此關聯所涉及的所有 Model 中都已定義了相關的關聯，則可以呼叫 `through` 方法，並提供這些關聯的名稱，來以串聯呼叫的方式來定義「has-many-through」關聯。使用這種方式，即可重複使用現有關聯中定義的索引鍵慣例："
 
-#: docs/10.x/eloquent-relationships.md:block 120 (header)
+#: docs/10.x/eloquent-relationships.md:block 124 (header)
 msgid "Many To Many Relationships"
 msgstr "Many To Many 關聯"
 
-#: docs/10.x/eloquent-relationships.md:block 121 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 125 (paragraph)
 msgid "Many-to-many relations are slightly more complicated than `hasOne` and `hasMany` relationships. An example of a many-to-many relationship is a user that has many roles and those roles are also shared by other users in the application. For example, a user may be assigned the role of \"Author\" and \"Editor\"; however, those roles may also be assigned to other users as well. So, a user has many roles and a role has many users."
 msgstr "比起 `hasOne` 或 `hasMany`，多對多關聯稍微複雜一點。一個多對多關聯的例子是：一位使用者可以有多個職位，而這些職位也會被網站中的其他使用者使用。舉例來說，某位使用者可能會被設定職位「作者」與「編輯」，但這些職位也可能會被指派給其他使用者。因此，一位使用者可以有多個職位，而一個職位則可以有多位使用者。"
 
-#: docs/10.x/eloquent-relationships.md:block 123 (header)
+#: docs/10.x/eloquent-relationships.md:block 127 (header)
 msgid "Table Structure"
 msgstr "資料表結構"
 
-#: docs/10.x/eloquent-relationships.md:block 124 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 128 (paragraph)
 msgid "To define this relationship, three database tables are needed: `users`, `roles`, and `role_user`. The `role_user` table is derived from the alphabetical order of the related model names and contains `user_id` and `role_id` columns. This table is used as an intermediate table linking the users and roles."
 msgstr "要定義這種關聯，我們需要三張資料表：`users`, `roles`, 與 `role_user`。`role_user` 資料表的名稱是由關聯的 Model 名稱按照字母排序串接而來的，裡面包含了 `user_id` 與 `role_id` 欄位。這張資料表會用來作為關聯使用者與職位的中介資料表。"
 
-#: docs/10.x/eloquent-relationships.md:block 125 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 129 (paragraph)
 msgid "Remember, since a role can belong to many users, we cannot simply place a `user_id` column on the `roles` table. This would mean that a role could only belong to a single user. In order to provide support for roles being assigned to multiple users, the `role_user` table is needed. We can summarize the relationship's table structure like so:"
 msgstr "請記得，由於一個職位可以同時關聯到多位使用者，因此我們沒辦法在 `roles` 資料表上設定 `user_id` 欄位。若這麼做的話，一個職位就只能有一位使用者。為了要讓職位能被設定給多位使用者，我們會需要 `role_user` 資料表。我們可以總結一下，資料表的結構會長這樣："
 
-#: docs/10.x/eloquent-relationships.md:block 126 (code)
+#: docs/10.x/eloquent-relationships.md:block 130 (code)
 msgid "users\n"
 "    id - integer\n"
 "    name - string\n\n"
@@ -1052,15 +1077,15 @@ msgstr "users\n"
 "    user_id - integer\n"
 "    role_id - integer\n"
 
-#: docs/10.x/eloquent-relationships.md:block 128 (header)
+#: docs/10.x/eloquent-relationships.md:block 132 (header)
 msgid "Model Structure"
 msgstr "Model 架構"
 
-#: docs/10.x/eloquent-relationships.md:block 129 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 133 (paragraph)
 msgid "Many-to-many relationships are defined by writing a method that returns the result of the `belongsToMany` method. The `belongsToMany` method is provided by the `Illuminate\\Database\\Eloquent\\Model` base class that is used by all of your application's Eloquent models. For example, let's define a `roles` method on our `User` model. The first argument passed to this method is the name of the related model class:"
 msgstr "我們可以通過撰寫一個回傳 `belongsToMany` 方法執行結果的方法來定義多對多關聯。`belongsToMany` 方法是由 `Illuminate\\Database\\Eloquent\\Model` 基礎類別提供的，你的專案中所有的 Eloquent Model 都使用了這個類別。舉例來說，讓我們來在 `User` Model 上定義一個 `roles` 方法。傳入這個方法的第一個引述是關聯 Model 類別的名稱："
 
-#: docs/10.x/eloquent-relationships.md:block 130 (code)
+#: docs/10.x/eloquent-relationships.md:block 134 (code)
 msgid "<?php\n\n"
 "namespace App\\Models;\n\n"
 "use Illuminate\\Database\\Eloquent\\Model;\n"
@@ -1090,11 +1115,11 @@ msgstr "<?php\n\n"
 "    }\n"
 "}\n"
 
-#: docs/10.x/eloquent-relationships.md:block 131 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 135 (paragraph)
 msgid "Once the relationship is defined, you may access the user's roles using the `roles` dynamic relationship property:"
 msgstr "定義好關聯後，就可以使用 `roles` 動態關聯屬性來存取該使用者的角色："
 
-#: docs/10.x/eloquent-relationships.md:block 132 (code)
+#: docs/10.x/eloquent-relationships.md:block 136 (code)
 msgid "use App\\Models\\User;\n\n"
 "$user = User::find(1);\n\n"
 "foreach ($user->roles as $role) {\n"
@@ -1106,35 +1131,35 @@ msgstr "use App\\Models\\User;\n\n"
 "    // ...\n"
 "}\n"
 
-#: docs/10.x/eloquent-relationships.md:block 133 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 137 (paragraph)
 msgid "Since all relationships also serve as query builders, you may add further constraints to the relationship query by calling the `roles` method and continuing to chain conditions onto the query:"
 msgstr "由於所有的關聯也同時是 Query Builder，因此我們也能通過呼叫 `roles` 方法並繼續在查詢上串上條件來進一步給關聯加上查詢條件："
 
-#: docs/10.x/eloquent-relationships.md:block 134 (code)
+#: docs/10.x/eloquent-relationships.md:block 138 (code)
 msgid "$roles = User::find(1)->roles()->orderBy('name')->get();\n"
 msgstr "$roles = User::find(1)->roles()->orderBy('name')->get();\n"
 
-#: docs/10.x/eloquent-relationships.md:block 135 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 139 (paragraph)
 msgid "To determine the table name of the relationship's intermediate table, Eloquent will join the two related model names in alphabetical order. However, you are free to override this convention. You may do so by passing a second argument to the `belongsToMany` method:"
 msgstr "為了判斷該關聯的中介資料表表名，Eloquent 會將兩個關聯 Model 的名稱按照字母排序串接在一起。不過，這個慣例是可以隨意複寫的，只需要傳入第二個引數給 `belongsToMany` 方法即可："
 
-#: docs/10.x/eloquent-relationships.md:block 136 (code)
+#: docs/10.x/eloquent-relationships.md:block 140 (code)
 msgid "return $this->belongsToMany(Role::class, 'role_user');\n"
 msgstr "return $this->belongsToMany(Role::class, 'role_user');\n"
 
-#: docs/10.x/eloquent-relationships.md:block 137 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 141 (paragraph)
 msgid "In addition to customizing the name of the intermediate table, you may also customize the column names of the keys on the table by passing additional arguments to the `belongsToMany` method. The third argument is the foreign key name of the model on which you are defining the relationship, while the fourth argument is the foreign key name of the model that you are joining to:"
 msgstr "除了自訂中介表的表名外，也可以傳入額外的引數給 `belongsToMany` 來自訂中介表上的欄位名稱。第三個引數目前定義關聯的 Model 的外部索引鍵，而第四個引述則是要連結的 Model 的外部索引鍵："
 
-#: docs/10.x/eloquent-relationships.md:block 138 (code)
+#: docs/10.x/eloquent-relationships.md:block 142 (code)
 msgid "return $this->belongsToMany(Role::class, 'role_user', 'user_id', 'role_id');\n"
 msgstr "return $this->belongsToMany(Role::class, 'role_user', 'user_id', 'role_id');\n"
 
-#: docs/10.x/eloquent-relationships.md:block 141 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 145 (paragraph)
 msgid "To define the \"inverse\" of a many-to-many relationship, you should define a method on the related model which also returns the result of the `belongsToMany` method. To complete our user / role example, let's define the `users` method on the `Role` model:"
 msgstr "若要定義 many-to-many 的「相反」關聯，應先在關聯的 Model 上定義一個同樣回傳 `belongsToMany` 方法結果的方法。接著我們的使用者與角色的例子，我們來在 `Role` Model 上定義 `users` 方法："
 
-#: docs/10.x/eloquent-relationships.md:block 142 (code)
+#: docs/10.x/eloquent-relationships.md:block 146 (code)
 msgid "<?php\n\n"
 "namespace App\\Models;\n\n"
 "use Illuminate\\Database\\Eloquent\\Model;\n"
@@ -1164,19 +1189,19 @@ msgstr "<?php\n\n"
 "    }\n"
 "}\n"
 
-#: docs/10.x/eloquent-relationships.md:block 143 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 147 (paragraph)
 msgid "As you can see, the relationship is defined exactly the same as its `User` model counterpart with the exception of referencing the `App\\Models\\User` model. Since we're reusing the `belongsToMany` method, all of the usual table and key customization options are available when defining the \"inverse\" of many-to-many relationships."
 msgstr "如你所見，除了這邊是參照 `App\\Models\\User` 外，關聯定義跟 `User` Model 中對應的部分完全一樣。由於我們使用的還是 `belongsToMany` 方法，因此，在定義「反向」的 many-to-many 關聯時，一樣可以使用一般的資料表與索引鍵自訂選項。"
 
-#: docs/10.x/eloquent-relationships.md:block 145 (header)
+#: docs/10.x/eloquent-relationships.md:block 149 (header)
 msgid "Retrieving Intermediate Table Columns"
 msgstr "取得中介資料表欄位"
 
-#: docs/10.x/eloquent-relationships.md:block 146 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 150 (paragraph)
 msgid "As you have already learned, working with many-to-many relations requires the presence of an intermediate table. Eloquent provides some very helpful ways of interacting with this table. For example, let's assume our `User` model has many `Role` models that it is related to. After accessing this relationship, we may access the intermediate table using the `pivot` attribute on the models:"
 msgstr "讀者可能已經瞭解到，處理 Many-to-Many 關聯時必須要有一張中介資料表。Eloquent 提供了一些非常適用的方法來與中介資料表互動。舉例來說，假設 `User` Model 有許多關聯的 `Role` Model。存取這個關聯後，我們可以使用 Model 上的 `pivot` 屬性來存取中介資料表："
 
-#: docs/10.x/eloquent-relationships.md:block 147 (code)
+#: docs/10.x/eloquent-relationships.md:block 151 (code)
 msgid "use App\\Models\\User;\n\n"
 "$user = User::find(1);\n\n"
 "foreach ($user->roles as $role) {\n"
@@ -1188,43 +1213,43 @@ msgstr "use App\\Models\\User;\n\n"
 "    echo $role->pivot->created_at;\n"
 "}\n"
 
-#: docs/10.x/eloquent-relationships.md:block 148 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 152 (paragraph)
 msgid "Notice that each `Role` model we retrieve is automatically assigned a `pivot` attribute. This attribute contains a model representing the intermediate table."
 msgstr "可以注意到，我們取得的每個 `Role` 資料表都會自動獲得一個 `pivot` 屬性。這個屬性包含了一個代表中介資料表的 Model。"
 
-#: docs/10.x/eloquent-relationships.md:block 149 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 153 (paragraph)
 msgid "By default, only the model keys will be present on the `pivot` model. If your intermediate table contains extra attributes, you must specify them when defining the relationship:"
 msgstr "預設情況下，只有 Model 的索引鍵會出現在 `Pivot` Model 上。若中介資料表包含了其他額外的屬性，則需要在定義關聯時指定這些屬性："
 
-#: docs/10.x/eloquent-relationships.md:block 150 (code)
+#: docs/10.x/eloquent-relationships.md:block 154 (code)
 msgid "return $this->belongsToMany(Role::class)->withPivot('active', 'created_by');\n"
 msgstr "return $this->belongsToMany(Role::class)->withPivot('active', 'created_by');\n"
 
-#: docs/10.x/eloquent-relationships.md:block 151 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 155 (paragraph)
 msgid "If you would like your intermediate table to have `created_at` and `updated_at` timestamps that are automatically maintained by Eloquent, call the `withTimestamps` method when defining the relationship:"
 msgstr "若想讓中介資料表擁有 Eloquent 能自動維護的 `created_at` 與 `updated_at` 時戳，可在定義關聯的時候呼叫 `withTimestamps` 方法："
 
-#: docs/10.x/eloquent-relationships.md:block 152 (code)
+#: docs/10.x/eloquent-relationships.md:block 156 (code)
 msgid "return $this->belongsToMany(Role::class)->withTimestamps();\n"
 msgstr "return $this->belongsToMany(Role::class)->withTimestamps();\n"
 
-#: docs/10.x/eloquent-relationships.md:block 153 (quote)
+#: docs/10.x/eloquent-relationships.md:block 157 (quote)
 msgid "**Warning** Intermediate tables that utilize Eloquent's automatically maintained timestamps are required to have both `created_at` and `updated_at` timestamp columns."
 msgstr "**Warning** 使用 Eloquent 自動維護時戳的中介資料表會需要擁有 `created_at` 與 `updated_at` 兩個時戳欄位。"
 
-#: docs/10.x/eloquent-relationships.md:block 155 (header)
+#: docs/10.x/eloquent-relationships.md:block 159 (header)
 msgid "Customizing The `pivot` Attribute Name"
 msgstr "自訂 `pivot` 屬性名稱"
 
-#: docs/10.x/eloquent-relationships.md:block 156 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 160 (paragraph)
 msgid "As noted previously, attributes from the intermediate table may be accessed on models via the `pivot` attribute. However, you are free to customize the name of this attribute to better reflect its purpose within your application."
 msgstr "剛才也有提過，我們可以使用 `pivot` 屬性來存取中介資料表的屬性。不過，我們可以自訂這個屬性的名稱以讓其跟貼合在專案中的用途。"
 
-#: docs/10.x/eloquent-relationships.md:block 157 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 161 (paragraph)
 msgid "For example, if your application contains users that may subscribe to podcasts, you likely have a many-to-many relationship between users and podcasts. If this is the case, you may wish to rename your intermediate table attribute to `subscription` instead of `pivot`. This can be done using the `as` method when defining the relationship:"
 msgstr "舉例來說，我們的專案中可能會包含能讓使用者訂閱 Podcast 的功能，我們可能會想在使用者與 Podcast 間使用 Many-to-Many 關聯。在這個例子中，我們可能會想將中介資料表屬性的名稱從 `pivot` 改成 `subscription`。可以在定義關聯時使用 `as` 方法來完成："
 
-#: docs/10.x/eloquent-relationships.md:block 158 (code)
+#: docs/10.x/eloquent-relationships.md:block 162 (code)
 msgid "return $this->belongsToMany(Podcast::class)\n"
 "                ->as('subscription')\n"
 "                ->withTimestamps();\n"
@@ -1232,11 +1257,11 @@ msgstr "return $this->belongsToMany(Podcast::class)\n"
 "                ->as('subscription')\n"
 "                ->withTimestamps();\n"
 
-#: docs/10.x/eloquent-relationships.md:block 159 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 163 (paragraph)
 msgid "Once the custom intermediate table attribute has been specified, you may access the intermediate table data using the customized name:"
 msgstr "指定好自訂的中介資料表屬性後，就可以使用自訂的名稱來存取中介資料表資料："
 
-#: docs/10.x/eloquent-relationships.md:block 160 (code)
+#: docs/10.x/eloquent-relationships.md:block 164 (code)
 msgid "$users = User::with('podcasts')->get();\n\n"
 "foreach ($users->flatMap->podcasts as $podcast) {\n"
 "    echo $podcast->subscription->created_at;\n"
@@ -1246,15 +1271,15 @@ msgstr "$users = User::with('podcasts')->get();\n\n"
 "    echo $podcast->subscription->created_at;\n"
 "}\n"
 
-#: docs/10.x/eloquent-relationships.md:block 162 (header)
+#: docs/10.x/eloquent-relationships.md:block 166 (header)
 msgid "Filtering Queries Via Intermediate Table Columns"
 msgstr "通過中介資料表欄位來過濾查詢"
 
-#: docs/10.x/eloquent-relationships.md:block 163 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 167 (paragraph)
 msgid "You can also filter the results returned by `belongsToMany` relationship queries using the `wherePivot`, `wherePivotIn`, `wherePivotNotIn`, `wherePivotBetween`, `wherePivotNotBetween`, `wherePivotNull`, and `wherePivotNotNull` methods when defining the relationship:"
 msgstr "也可以在定義關聯時使用 `wherePivot`, `wherePivotIn`, `wherePivotNotIn`, `wherePivotBetween`, `wherePivotNotBetween`, `wherePivotNull`, 與 `wherePivotNotNull` 方法來過濾 `belongsToMany` 關聯查詢的回傳結果："
 
-#: docs/10.x/eloquent-relationships.md:block 164 (code)
+#: docs/10.x/eloquent-relationships.md:block 168 (code)
 msgid "return $this->belongsToMany(Role::class)\n"
 "                ->wherePivot('approved', 1);\n\n"
 "return $this->belongsToMany(Role::class)\n"
@@ -1292,15 +1317,15 @@ msgstr "return $this->belongsToMany(Role::class)\n"
 "                ->as('subscriptions')\n"
 "                ->wherePivotNotNull('expired_at');\n"
 
-#: docs/10.x/eloquent-relationships.md:block 166 (header)
+#: docs/10.x/eloquent-relationships.md:block 170 (header)
 msgid "Ordering Queries Via Intermediate Table Columns"
 msgstr "通過中介資料表欄位來排序查詢"
 
-#: docs/10.x/eloquent-relationships.md:block 167 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 171 (paragraph)
 msgid "You can order the results returned by `belongsToMany` relationship queries using the `orderByPivot` method. In the following example, we will retrieve all of the latest badges for the user:"
 msgstr "可以使用 `orderByPivot` 方法來排序 `belongsToMany` 關聯查詢回傳結果。在下列範例中，我們會取得使用者 (User) 的所有最新徽章 (Badge)："
 
-#: docs/10.x/eloquent-relationships.md:block 168 (code)
+#: docs/10.x/eloquent-relationships.md:block 172 (code)
 msgid "return $this->belongsToMany(Badge::class)\n"
 "                ->where('rank', 'gold')\n"
 "                ->orderByPivot('created_at', 'desc');\n"
@@ -1308,19 +1333,19 @@ msgstr "return $this->belongsToMany(Badge::class)\n"
 "                ->where('rank', 'gold')\n"
 "                ->orderByPivot('created_at', 'desc');\n"
 
-#: docs/10.x/eloquent-relationships.md:block 170 (header)
+#: docs/10.x/eloquent-relationships.md:block 174 (header)
 msgid "Defining Custom Intermediate Table Models"
 msgstr "定義自訂的中介表 Model"
 
-#: docs/10.x/eloquent-relationships.md:block 171 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 175 (paragraph)
 msgid "If you would like to define a custom model to represent the intermediate table of your many-to-many relationship, you may call the `using` method when defining the relationship. Custom pivot models give you the opportunity to define additional behavior on the pivot model, such as methods and casts."
 msgstr "若想定義一個代表多對多關聯之中介資料表的自訂 Model，則可以在定義關聯時呼叫 `using` 方法。自訂樞紐 Model (Pivot Model) 能讓我們有機會在樞紐 Model 上定義一些額外的行為，如方法或 ^[Cast](型別轉換) 等。"
 
-#: docs/10.x/eloquent-relationships.md:block 172 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 176 (paragraph)
 msgid "Custom many-to-many pivot models should extend the `Illuminate\\Database\\Eloquent\\Relations\\Pivot` class while custom polymorphic many-to-many pivot models should extend the `Illuminate\\Database\\Eloquent\\Relations\\MorphPivot` class. For example, we may define a `Role` model which uses a custom `RoleUser` pivot model:"
 msgstr "要自訂多對多樞紐 Model，則應繼承 `Illuminate\\Database\\Eloquent\\Relations\\Pivot` 類別。多型多對多的樞紐 Model 則應繼承 `Illuminate\\Database\\Eloquent\\Relations\\MorphPivot`。舉例來說，我們可以定義一個使用了 `RoleUser` 樞紐 Model 的` Role` Model："
 
-#: docs/10.x/eloquent-relationships.md:block 173 (code)
+#: docs/10.x/eloquent-relationships.md:block 177 (code)
 msgid "<?php\n\n"
 "namespace App\\Models;\n\n"
 "use Illuminate\\Database\\Eloquent\\Model;\n"
@@ -1350,11 +1375,11 @@ msgstr "<?php\n\n"
 "    }\n"
 "}\n"
 
-#: docs/10.x/eloquent-relationships.md:block 174 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 178 (paragraph)
 msgid "When defining the `RoleUser` model, you should extend the `Illuminate\\Database\\Eloquent\\Relations\\Pivot` class:"
 msgstr "定義 `RoleUser` Model 時，應繼承 `Illuminate\\Database\\Eloquent\\Relations\\Pivot` 類別："
 
-#: docs/10.x/eloquent-relationships.md:block 175 (code)
+#: docs/10.x/eloquent-relationships.md:block 179 (code)
 msgid "<?php\n\n"
 "namespace App\\Models;\n\n"
 "use Illuminate\\Database\\Eloquent\\Relations\\Pivot;\n\n"
@@ -1370,19 +1395,19 @@ msgstr "<?php\n\n"
 "    // ...\n"
 "}\n"
 
-#: docs/10.x/eloquent-relationships.md:block 176 (quote)
+#: docs/10.x/eloquent-relationships.md:block 180 (quote)
 msgid "**Warning** Pivot models may not use the `SoftDeletes` trait. If you need to soft delete pivot records consider converting your pivot model to an actual Eloquent model."
 msgstr "**Warning** 樞紐 Model 不能使用 `SoftDeletes` Trait。若有需要對樞紐紀錄作軟刪除，請考慮將樞紐 Model 改寫成真正的 Eloquent Model。"
 
-#: docs/10.x/eloquent-relationships.md:block 178 (header)
+#: docs/10.x/eloquent-relationships.md:block 182 (header)
 msgid "Custom Pivot Models And Incrementing IDs"
 msgstr "自訂樞紐 Model 並遞增 ID"
 
-#: docs/10.x/eloquent-relationships.md:block 179 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 183 (paragraph)
 msgid "If you have defined a many-to-many relationship that uses a custom pivot model, and that pivot model has an auto-incrementing primary key, you should ensure your custom pivot model class defines an `incrementing` property that is set to `true`."
 msgstr "若有定義了使用自訂樞紐 Model 的多對多關聯，且該樞紐 Model 由自動遞增的主索引鍵 (Auto-Incrementing Primary Key)，則應確保這個自訂樞紐 Model 類別由定義一個設為 `true` 的 `incrementing` 屬性。"
 
-#: docs/10.x/eloquent-relationships.md:block 180 (code)
+#: docs/10.x/eloquent-relationships.md:block 184 (code)
 msgid "/**\n"
 " * Indicates if the IDs are auto-incrementing.\n"
 " *\n"
@@ -1396,23 +1421,23 @@ msgstr "/**\n"
 " */\n"
 "public $incrementing = true;\n"
 
-#: docs/10.x/eloquent-relationships.md:block 182 (header)
+#: docs/10.x/eloquent-relationships.md:block 186 (header)
 msgid "Polymorphic Relationships"
 msgstr "Polymorphic (多型) 關聯"
 
-#: docs/10.x/eloquent-relationships.md:block 183 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 187 (paragraph)
 msgid "A polymorphic relationship allows the child model to belong to more than one type of model using a single association. For example, imagine you are building an application that allows users to share blog posts and videos. In such an application, a `Comment` model might belong to both the `Post` and `Video` models."
 msgstr "使用多型關聯，就能讓子 Model 通過單一關聯來隸屬於多種 Model。舉例來說，假設我們正在製作一個能讓使用者分享部落格貼文與影片的網站。在這種例子中，`Comment` (留言) Model 有可能隸屬於 `Post` (貼文) Model，也可能隸屬於 `Video` (影片) Model。"
 
-#: docs/10.x/eloquent-relationships.md:block 185 (header)
+#: docs/10.x/eloquent-relationships.md:block 189 (header)
 msgid "One To One (Polymorphic)"
 msgstr "一對一 (多型)"
 
-#: docs/10.x/eloquent-relationships.md:block 188 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 192 (paragraph)
 msgid "A one-to-one polymorphic relation is similar to a typical one-to-one relation; however, the child model can belong to more than one type of model using a single association. For example, a blog `Post` and a `User` may share a polymorphic relation to an `Image` model. Using a one-to-one polymorphic relation allows you to have a single table of unique images that may be associated with posts and users. First, let's examine the table structure:"
 msgstr "多型的一對一關聯於一般的一對一關聯類似。不過，在這種關聯中的子 Model 可以使用一種關聯來表示出對超過一種 Model 的從屬關係。舉例來說，部落格的 `Post` (貼文) 與 `User` (使用者) 可能會共享一個多型關聯的 `Image` (圖片) Model。使用多型的一對一關聯，就能讓我們製作一張用來儲存不重複圖片的資料表，並將該資料表關聯到貼文跟使用者上。首先，我們來看看下列資料表架構："
 
-#: docs/10.x/eloquent-relationships.md:block 189 (code)
+#: docs/10.x/eloquent-relationships.md:block 193 (code)
 msgid "posts\n"
 "    id - integer\n"
 "    name - string\n\n"
@@ -1436,15 +1461,15 @@ msgstr "posts\n"
 "    imageable_id - integer\n"
 "    imageable_type - string\n"
 
-#: docs/10.x/eloquent-relationships.md:block 190 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 194 (paragraph)
 msgid "Note the `imageable_id` and `imageable_type` columns on the `images` table. The `imageable_id` column will contain the ID value of the post or user, while the `imageable_type` column will contain the class name of the parent model. The `imageable_type` column is used by Eloquent to determine which \"type\" of parent model to return when accessing the `imageable` relation. In this case, the column would contain either `App\\Models\\Post` or `App\\Models\\User`."
 msgstr "可以注意到 `images` 資料表上的 `imageable_id` 與 `imageable_type` 欄位。`imageable_id` 欄位用來包含貼文或使用者的 ID 值，而 `imageable_type` 欄位則用來包含上層 Model 的類別名稱。`imageable_type` 是用來給 Eloquent 判斷上層 Model 的「型別 (Type)」，以在存取 `imageable` 關聯時能回傳該上層 Model。在這種情況下，這個欄位的內容會是 `App\\Models\\Post` 或 `App\\Models\\User`。"
 
-#: docs/10.x/eloquent-relationships.md:block 193 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 197 (paragraph)
 msgid "Next, let's examine the model definitions needed to build this relationship:"
 msgstr "接著，讓我們來看看要製作這種關聯所需要的 Model 定義："
 
-#: docs/10.x/eloquent-relationships.md:block 194 (code)
+#: docs/10.x/eloquent-relationships.md:block 198 (code)
 msgid "<?php\n\n"
 "namespace App\\Models;\n\n"
 "use Illuminate\\Database\\Eloquent\\Model;\n"
@@ -1522,15 +1547,15 @@ msgstr "<?php\n\n"
 "    }\n"
 "}\n"
 
-#: docs/10.x/eloquent-relationships.md:block 196 (header)
+#: docs/10.x/eloquent-relationships.md:block 200 (header)
 msgid "Retrieving The Relationship"
 msgstr "取得關聯"
 
-#: docs/10.x/eloquent-relationships.md:block 197 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 201 (paragraph)
 msgid "Once your database table and models are defined, you may access the relationships via your models. For example, to retrieve the image for a post, we can access the `image` dynamic relationship property:"
 msgstr "定義好資料庫資料表與 Model 後，就可以通過這些 Model 來存取關聯。舉例來說，若要取得一則貼文的圖片，我們可以存取 `image` 動態關聯屬性："
 
-#: docs/10.x/eloquent-relationships.md:block 198 (code)
+#: docs/10.x/eloquent-relationships.md:block 202 (code)
 msgid "use App\\Models\\Post;\n\n"
 "$post = Post::find(1);\n\n"
 "$image = $post->image;\n"
@@ -1538,11 +1563,11 @@ msgstr "use App\\Models\\Post;\n\n"
 "$post = Post::find(1);\n\n"
 "$image = $post->image;\n"
 
-#: docs/10.x/eloquent-relationships.md:block 199 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 203 (paragraph)
 msgid "You may retrieve the parent of the polymorphic model by accessing the name of the method that performs the call to `morphTo`. In this case, that is the `imageable` method on the `Image` model. So, we will access that method as a dynamic relationship property:"
 msgstr "可以通過存取呼叫 `morphTo` 之方法的名稱來取得多型 Model 的上層 Model。在這個例子中，就是 `Image` Model 的 `imageable` 方法。因此，我們可以用動態關聯屬性來存取該方法："
 
-#: docs/10.x/eloquent-relationships.md:block 200 (code)
+#: docs/10.x/eloquent-relationships.md:block 204 (code)
 msgid "use App\\Models\\Image;\n\n"
 "$image = Image::find(1);\n\n"
 "$imageable = $image->imageable;\n"
@@ -1550,15 +1575,15 @@ msgstr "use App\\Models\\Image;\n\n"
 "$image = Image::find(1);\n\n"
 "$imageable = $image->imageable;\n"
 
-#: docs/10.x/eloquent-relationships.md:block 201 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 205 (paragraph)
 msgid "The `imageable` relation on the `Image` model will return either a `Post` or `User` instance, depending on which type of model owns the image."
 msgstr "依據擁有該圖片的 Model 類型，`Image` Model 上的 `imageable` 關聯會回傳 `Post` 或 `User` 實體。"
 
-#: docs/10.x/eloquent-relationships.md:block 204 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 208 (paragraph)
 msgid "If necessary, you may specify the name of the \"id\" and \"type\" columns utilized by your polymorphic child model. If you do so, ensure that you always pass the name of the relationship as the first argument to the `morphTo` method. Typically, this value should match the method name, so you may use PHP's `__FUNCTION__` constant:"
 msgstr "若有需要，也可以指定多型子 Model 所使用的「id」與「type」欄位名稱。若要自訂這些欄位的名稱，請先確保有將關聯的名稱傳給 `morphTo` 方法的第一個引數。一般來說，這個值應該要與方法名稱相同，因此我們可以使用 PHP 的 `__FUNCTION__` 常數："
 
-#: docs/10.x/eloquent-relationships.md:block 205 (code)
+#: docs/10.x/eloquent-relationships.md:block 209 (code)
 msgid "/**\n"
 " * Get the model that the image belongs to.\n"
 " */\n"
@@ -1574,15 +1599,15 @@ msgstr "/**\n"
 "    return $this->morphTo(__FUNCTION__, 'imageable_type', 'imageable_id');\n"
 "}\n"
 
-#: docs/10.x/eloquent-relationships.md:block 207 (header)
+#: docs/10.x/eloquent-relationships.md:block 211 (header)
 msgid "One To Many (Polymorphic)"
 msgstr "一對多 (多型)"
 
-#: docs/10.x/eloquent-relationships.md:block 210 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 214 (paragraph)
 msgid "A one-to-many polymorphic relation is similar to a typical one-to-many relation; however, the child model can belong to more than one type of model using a single association. For example, imagine users of your application can \"comment\" on posts and videos. Using polymorphic relationships, you may use a single `comments` table to contain comments for both posts and videos. First, let's examine the table structure required to build this relationship:"
 msgstr "One-to-Many 的多型關聯與一般的 One-to-Many 關聯很類似。不過，在多型關聯中，可以使用單一關聯來讓子 Model 可以隸屬於多種類型的 Model。舉例來說，假設有個使用者可以在貼文與影片上「留言」的網站。若使用多型關聯，我們可以使用單一一個 `comments` 表來包含用於貼文與影片的留言。首先，來看看需要建立這種關聯的資料表結構："
 
-#: docs/10.x/eloquent-relationships.md:block 211 (code)
+#: docs/10.x/eloquent-relationships.md:block 215 (code)
 msgid "posts\n"
 "    id - integer\n"
 "    title - string\n"
@@ -1610,7 +1635,7 @@ msgstr "posts\n"
 "    commentable_id - integer\n"
 "    commentable_type - string\n"
 
-#: docs/10.x/eloquent-relationships.md:block 215 (code)
+#: docs/10.x/eloquent-relationships.md:block 219 (code)
 msgid "<?php\n\n"
 "namespace App\\Models;\n\n"
 "use Illuminate\\Database\\Eloquent\\Model;\n"
@@ -1688,11 +1713,11 @@ msgstr "<?php\n\n"
 "    }\n"
 "}\n"
 
-#: docs/10.x/eloquent-relationships.md:block 218 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 222 (paragraph)
 msgid "Once your database table and models are defined, you may access the relationships via your model's dynamic relationship properties. For example, to access all of the comments for a post, we can use the `comments` dynamic property:"
 msgstr "定義好資料表與 Model 後，就可以使用 Model 的動態關聯屬性來存取這個關聯。舉例來說，若要存取某個貼文的所有留言，我們可以使用 `comments` 動態屬性："
 
-#: docs/10.x/eloquent-relationships.md:block 219 (code)
+#: docs/10.x/eloquent-relationships.md:block 223 (code)
 msgid "use App\\Models\\Post;\n\n"
 "$post = Post::find(1);\n\n"
 "foreach ($post->comments as $comment) {\n"
@@ -1704,11 +1729,11 @@ msgstr "use App\\Models\\Post;\n\n"
 "    // ...\n"
 "}\n"
 
-#: docs/10.x/eloquent-relationships.md:block 220 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 224 (paragraph)
 msgid "You may also retrieve the parent of a polymorphic child model by accessing the name of the method that performs the call to `morphTo`. In this case, that is the `commentable` method on the `Comment` model. So, we will access that method as a dynamic relationship property in order to access the comment's parent model:"
 msgstr "也可以通過存取呼叫 `morphTo` 之方法的名稱來取得多型子 Model 的上層 Model。在這個例子中，就是 `Comment` Model 的 `commentable` 方法。因此，我們可以用動態關聯屬性來存取該方法以取得留言的上層 Model："
 
-#: docs/10.x/eloquent-relationships.md:block 221 (code)
+#: docs/10.x/eloquent-relationships.md:block 225 (code)
 msgid "use App\\Models\\Comment;\n\n"
 "$comment = Comment::find(1);\n\n"
 "$commentable = $comment->commentable;\n"
@@ -1716,19 +1741,19 @@ msgstr "use App\\Models\\Comment;\n\n"
 "$comment = Comment::find(1);\n\n"
 "$commentable = $comment->commentable;\n"
 
-#: docs/10.x/eloquent-relationships.md:block 222 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 226 (paragraph)
 msgid "The `commentable` relation on the `Comment` model will return either a `Post` or `Video` instance, depending on which type of model is the comment's parent."
 msgstr "依照不同的留言上層 Model 類型，`Comment` Model 的 `commentable` 關聯回傳的不是 `Post` 實體就是 `Video` 實體。"
 
-#: docs/10.x/eloquent-relationships.md:block 224 (header)
+#: docs/10.x/eloquent-relationships.md:block 228 (header)
 msgid "One Of Many (Polymorphic)"
 msgstr "多中之一 (多型)"
 
-#: docs/10.x/eloquent-relationships.md:block 225 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 229 (paragraph)
 msgid "Sometimes a model may have many related models, yet you want to easily retrieve the \"latest\" or \"oldest\" related model of the relationship. For example, a `User` model may be related to many `Image` models, but you want to define a convenient way to interact with the most recent image the user has uploaded. You may accomplish this using the `morphOne` relationship type combined with the `ofMany` methods:"
 msgstr "有時候，某個 Model 可能有多個關聯 Model，而我們可能會想取多個關聯 Model 中「最新」或「最舊」的關聯 Model。舉例來說，`User` Model (使用者) 可能會關聯到多個 `Image` Model (圖片)，而我們可能會想定義一種方便的方法來存取使用者最新的圖片。我們可以通過將 `morphOne` 關聯類型與 `ofMany` 方法搭配使用來達成："
 
-#: docs/10.x/eloquent-relationships.md:block 226 (code)
+#: docs/10.x/eloquent-relationships.md:block 230 (code)
 msgid "/**\n"
 " * Get the user's most recent image.\n"
 " */\n"
@@ -1744,7 +1769,7 @@ msgstr "/**\n"
 "    return $this->morphOne(Image::class, 'imageable')->latestOfMany();\n"
 "}\n"
 
-#: docs/10.x/eloquent-relationships.md:block 228 (code)
+#: docs/10.x/eloquent-relationships.md:block 232 (code)
 msgid "/**\n"
 " * Get the user's oldest image.\n"
 " */\n"
@@ -1760,11 +1785,11 @@ msgstr "/**\n"
 "    return $this->morphOne(Image::class, 'imageable')->oldestOfMany();\n"
 "}\n"
 
-#: docs/10.x/eloquent-relationships.md:block 230 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 234 (paragraph)
 msgid "For example, using the `ofMany` method, you may retrieve the user's most \"liked\" image. The `ofMany` method accepts the sortable column as its first argument and which aggregate function (`min` or `max`) to apply when querying for the related model:"
 msgstr "舉例來說，我們可以使用 `ofMany` 方法來去的使用者獲得最多「讚」的圖片。`ofMany` 方法的第一個引數為可排序的欄位，接著則是要套用哪個匯總函式 (`min` 或 `max` 等) 在關聯的 Model 上："
 
-#: docs/10.x/eloquent-relationships.md:block 231 (code)
+#: docs/10.x/eloquent-relationships.md:block 235 (code)
 msgid "/**\n"
 " * Get the user's most popular image.\n"
 " */\n"
@@ -1780,19 +1805,19 @@ msgstr "/**\n"
 "    return $this->morphOne(Image::class, 'imageable')->ofMany('likes', 'max');\n"
 "}\n"
 
-#: docs/10.x/eloquent-relationships.md:block 232 (quote)
+#: docs/10.x/eloquent-relationships.md:block 236 (quote)
 msgid "**Note** It is possible to construct more advanced \"one of many\" relationships. For more information, please consult the [has one of many documentation](#advanced-has-one-of-many-relationships)."
 msgstr "**Note** 還有辦法建立建立更進階的「One of Many」關聯。更多資訊請參考 [Has One of Many 說明文件](#advanced-has-one-of-many-relationships)。"
 
-#: docs/10.x/eloquent-relationships.md:block 234 (header)
+#: docs/10.x/eloquent-relationships.md:block 238 (header)
 msgid "Many To Many (Polymorphic)"
 msgstr "多對多 (多型)"
 
-#: docs/10.x/eloquent-relationships.md:block 237 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 241 (paragraph)
 msgid "Many-to-many polymorphic relations are slightly more complicated than \"morph one\" and \"morph many\" relationships. For example, a `Post` model and `Video` model could share a polymorphic relation to a `Tag` model. Using a many-to-many polymorphic relation in this situation would allow your application to have a single table of unique tags that may be associated with posts or videos. First, let's examine the table structure required to build this relationship:"
 msgstr "多型的 Many-to-Many 關聯比「Morph One」或「Morph Many」都稍微複雜一點。舉例來說，`Post` Model 與 `Video` Model 可以共用一個多型關聯的 `Tag` Model。在這種情況下使用多型的 Many-to-Many 可以讓我們的專案中只需要一張資料表來儲存獨立的 Tag，就可以關聯給 Post 跟 Video。首先，來看看要建立這種關聯的資料表架構："
 
-#: docs/10.x/eloquent-relationships.md:block 238 (code)
+#: docs/10.x/eloquent-relationships.md:block 242 (code)
 msgid "posts\n"
 "    id - integer\n"
 "    name - string\n\n"
@@ -1820,19 +1845,19 @@ msgstr "posts\n"
 "    taggable_id - integer\n"
 "    taggable_type - string\n"
 
-#: docs/10.x/eloquent-relationships.md:block 239 (quote)
+#: docs/10.x/eloquent-relationships.md:block 243 (quote)
 msgid "**Note** Before diving into polymorphic many-to-many relationships, you may benefit from reading the documentation on typical [many-to-many relationships](#many-to-many)."
 msgstr "**Note** 在進一步深入瞭解多型的 Many-to-Many 關聯前，我們建議你先閱讀有關普通 [Many-to-Many 關聯](#many-to-many)的說明文件。"
 
-#: docs/10.x/eloquent-relationships.md:block 242 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 246 (paragraph)
 msgid "Next, we're ready to define the relationships on the models. The `Post` and `Video` models will both contain a `tags` method that calls the `morphToMany` method provided by the base Eloquent model class."
 msgstr "接著，我們就可以開始在 Model 上定義關聯了。`Post` 與 `Video` Model 都包含了一個 `tags` 方法，該方法中會呼叫基礎 Eloquent Model 類別中的 `morphToMany` 方法。"
 
-#: docs/10.x/eloquent-relationships.md:block 243 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 247 (paragraph)
 msgid "The `morphToMany` method accepts the name of the related model as well as the \"relationship name\". Based on the name we assigned to our intermediate table name and the keys it contains, we will refer to the relationship as \"taggable\":"
 msgstr "`morphToMany` 方法接受關聯 Model 的名稱，以及「關聯名稱」。根據我們設定給中介表的名稱以及其中包含的索引鍵，我們可以將關聯推導為「taggable」："
 
-#: docs/10.x/eloquent-relationships.md:block 244 (code)
+#: docs/10.x/eloquent-relationships.md:block 248 (code)
 msgid "<?php\n\n"
 "namespace App\\Models;\n\n"
 "use Illuminate\\Database\\Eloquent\\Model;\n"
@@ -1862,15 +1887,15 @@ msgstr "<?php\n\n"
 "    }\n"
 "}\n"
 
-#: docs/10.x/eloquent-relationships.md:block 247 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 251 (paragraph)
 msgid "Next, on the `Tag` model, you should define a method for each of its possible parent models. So, in this example, we will define a `posts` method and a `videos` method. Both of these methods should return the result of the `morphedByMany` method."
 msgstr "接著，在 `Tag` Model 中，我們可以為 Tag 的各個可能的上層 Model 定義個別的方法。因此，在這個例子中，我們會定義一個 `posts` 方法與一個 `videos` 方法。這兩個方法都應回傳 `morphedByMany` 方法的結果。"
 
-#: docs/10.x/eloquent-relationships.md:block 248 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 252 (paragraph)
 msgid "The `morphedByMany` method accepts the name of the related model as well as the \"relationship name\". Based on the name we assigned to our intermediate table name and the keys it contains, we will refer to the relationship as \"taggable\":"
 msgstr "`morphedByMany` 方法接受關聯 Model 的名稱，以及「關聯名稱」。根據我們設定給中介表的名稱以及其中包含的索引鍵，我們可以將關聯推導為「taggable」："
 
-#: docs/10.x/eloquent-relationships.md:block 249 (code)
+#: docs/10.x/eloquent-relationships.md:block 253 (code)
 msgid "<?php\n\n"
 "namespace App\\Models;\n\n"
 "use Illuminate\\Database\\Eloquent\\Model;\n"
@@ -1914,11 +1939,11 @@ msgstr "<?php\n\n"
 "    }\n"
 "}\n"
 
-#: docs/10.x/eloquent-relationships.md:block 252 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 256 (paragraph)
 msgid "Once your database table and models are defined, you may access the relationships via your models. For example, to access all of the tags for a post, you may use the `tags` dynamic relationship property:"
 msgstr "定義好資料庫資料表與 Model 後，就可以通過這些 Model 來存取關聯。舉例來說，若要取得一則貼文的 Tag，我們可以使用 `tags` 動態關聯屬性："
 
-#: docs/10.x/eloquent-relationships.md:block 253 (code)
+#: docs/10.x/eloquent-relationships.md:block 257 (code)
 msgid "use App\\Models\\Post;\n\n"
 "$post = Post::find(1);\n\n"
 "foreach ($post->tags as $tag) {\n"
@@ -1930,11 +1955,11 @@ msgstr "use App\\Models\\Post;\n\n"
 "    // ...\n"
 "}\n"
 
-#: docs/10.x/eloquent-relationships.md:block 254 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 258 (paragraph)
 msgid "You may retrieve the parent of a polymorphic relation from the polymorphic child model by accessing the name of the method that performs the call to `morphedByMany`. In this case, that is the `posts` or `videos` methods on the `Tag` model:"
 msgstr "可以在多型子 Model 中通過存取呼叫 `morphedByMany` 的方法名稱來存取多型關聯的上層 Model。在這個例子中，就是 `Tag` Model 上的 `posts` 與 `videos` 方法："
 
-#: docs/10.x/eloquent-relationships.md:block 255 (code)
+#: docs/10.x/eloquent-relationships.md:block 259 (code)
 msgid "use App\\Models\\Tag;\n\n"
 "$tag = Tag::find(1);\n\n"
 "foreach ($tag->posts as $post) {\n"
@@ -1952,19 +1977,19 @@ msgstr "use App\\Models\\Tag;\n\n"
 "    // ...\n"
 "}\n"
 
-#: docs/10.x/eloquent-relationships.md:block 257 (header)
+#: docs/10.x/eloquent-relationships.md:block 261 (header)
 msgid "Custom Polymorphic Types"
 msgstr "自訂多型型別"
 
-#: docs/10.x/eloquent-relationships.md:block 258 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 262 (paragraph)
 msgid "By default, Laravel will use the fully qualified class name to store the \"type\" of the related model. For instance, given the one-to-many relationship example above where a `Comment` model may belong to a `Post` or a `Video` model, the default `commentable_type` would be either `App\\Models\\Post` or `App\\Models\\Video`, respectively. However, you may wish to decouple these values from your application's internal structure."
 msgstr "預設情況下，Laravel 會使用類別的完整格式名稱 (Fully Qualified Class Name) 來儲存關聯 Model 的「類型 (Type)」。具體而言，在上述的 One-to-Many 例子中，`Comment` Model 可以隸屬於 `Post` Model、也可以隸屬於 `Video` Model，因此預設的 `commentable_type` 就分別會是 `App\\Models\\Post` 或 `App\\Models\\Video`。不過，開發人員可能會想將這些值從專案的內部結構中解耦 (Decouple) 出來。"
 
-#: docs/10.x/eloquent-relationships.md:block 259 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 263 (paragraph)
 msgid "For example, instead of using the model names as the \"type\", we may use simple strings such as `post` and `video`. By doing so, the polymorphic \"type\" column values in our database will remain valid even if the models are renamed:"
 msgstr "舉例來說，我們可以使用像 `post` 或 `video` 等簡單的字串作為「型別」，而不是使用 Model 名稱。這樣一來，即使我們修改了 Model 的名稱，資料庫中的多型「type」欄位值也會繼續有效："
 
-#: docs/10.x/eloquent-relationships.md:block 260 (code)
+#: docs/10.x/eloquent-relationships.md:block 264 (code)
 msgid "use Illuminate\\Database\\Eloquent\\Relations\\Relation;\n\n"
 "Relation::enforceMorphMap([\n"
 "    'post' => 'App\\Models\\Post',\n"
@@ -1976,15 +2001,15 @@ msgstr "use Illuminate\\Database\\Eloquent\\Relations\\Relation;\n\n"
 "    'video' => 'App\\Models\\Video',\n"
 "]);\n"
 
-#: docs/10.x/eloquent-relationships.md:block 261 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 265 (paragraph)
 msgid "You may call the `enforceMorphMap` method in the `boot` method of your `App\\Providers\\AppServiceProvider` class or create a separate service provider if you wish."
 msgstr "可以在 `App\\Providers\\AppServiceProvider` 類別或依照需求自行的 Service Provider 中之 `boot` 方法內呼叫 `enforceMorphMap` 方法："
 
-#: docs/10.x/eloquent-relationships.md:block 262 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 266 (paragraph)
 msgid "You may determine the morph alias of a given model at runtime using the model's `getMorphClass` method. Conversely, you may determine the fully-qualified class name associated with a morph alias using the `Relation::getMorphedModel` method:"
 msgstr "我們可以使用 Model 的 `getMorphClass` 方法來在執行階段判斷給定 Model 的 Morph 別名。相反的，我們可以使用 `Relation::getMorphedModel` 方法來取得 Morph 別名的完整格式類別名稱："
 
-#: docs/10.x/eloquent-relationships.md:block 263 (code)
+#: docs/10.x/eloquent-relationships.md:block 267 (code)
 msgid "use Illuminate\\Database\\Eloquent\\Relations\\Relation;\n\n"
 "$alias = $post->getMorphClass();\n\n"
 "$class = Relation::getMorphedModel($alias);\n"
@@ -1992,23 +2017,23 @@ msgstr "use Illuminate\\Database\\Eloquent\\Relations\\Relation;\n\n"
 "$alias = $post->getMorphClass();\n\n"
 "$class = Relation::getMorphedModel($alias);\n"
 
-#: docs/10.x/eloquent-relationships.md:block 264 (quote)
+#: docs/10.x/eloquent-relationships.md:block 268 (quote)
 msgid "**Warning** When adding a \"morph map\" to your existing application, every morphable `*_type` column value in your database that still contains a fully-qualified class will need to be converted to its \"map\" name."
 msgstr "**Warning** 在專案中使用「Morph Map」時，所有的 morphable `*_type` 欄位值還是會保持原本的完整各式類別名稱，需要再更改為其「映射 (Map)」的名稱。"
 
-#: docs/10.x/eloquent-relationships.md:block 266 (header)
+#: docs/10.x/eloquent-relationships.md:block 270 (header)
 msgid "Dynamic Relationships"
 msgstr "動態關聯"
 
-#: docs/10.x/eloquent-relationships.md:block 267 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 271 (paragraph)
 msgid "You may use the `resolveRelationUsing` method to define relations between Eloquent models at runtime. While not typically recommended for normal application development, this may occasionally be useful when developing Laravel packages."
 msgstr "可以使用 `resolveRelationUsing` 方法來在執行階段定義 Eloquent Model 間的關聯。雖然對於一般的專案開發並不建議這麼做，但在開發 Laravel 套件的時候偶爾會很實用。"
 
-#: docs/10.x/eloquent-relationships.md:block 268 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 272 (paragraph)
 msgid "The `resolveRelationUsing` method accepts the desired relationship name as its first argument. The second argument passed to the method should be a closure that accepts the model instance and returns a valid Eloquent relationship definition. Typically, you should configure dynamic relationships within the boot method of a [service provider](/docs/{{version}}/providers):"
 msgstr "`resolveRelationUsing` 方法接受自訂的關聯名稱作為其第一個引述。第二個傳入該方法的引數應為閉包，該閉包應接受一個 Model 實體並回傳一個有效的 Eloquent 關聯定義。一般來說，應在某個 [Service Provider](/docs/{{version}}/providers) 內的 boot 方法中定義動態關聯。"
 
-#: docs/10.x/eloquent-relationships.md:block 269 (code)
+#: docs/10.x/eloquent-relationships.md:block 273 (code)
 msgid "use App\\Models\\Order;\n"
 "use App\\Models\\Customer;\n\n"
 "Order::resolveRelationUsing('customer', function (Order $orderModel) {\n"
@@ -2020,23 +2045,23 @@ msgstr "use App\\Models\\Order;\n"
 "    return $orderModel->belongsTo(Customer::class, 'customer_id');\n"
 "});\n"
 
-#: docs/10.x/eloquent-relationships.md:block 270 (quote)
+#: docs/10.x/eloquent-relationships.md:block 274 (quote)
 msgid "**Warning** When defining dynamic relationships, always provide explicit key name arguments to the Eloquent relationship methods."
 msgstr "**Warning** 在定義動態關聯時，請總是提供顯式的索引鍵名稱給 Eloquent 關聯方法。"
 
-#: docs/10.x/eloquent-relationships.md:block 272 (header)
+#: docs/10.x/eloquent-relationships.md:block 276 (header)
 msgid "Querying Relations"
 msgstr "查詢關聯"
 
-#: docs/10.x/eloquent-relationships.md:block 273 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 277 (paragraph)
 msgid "Since all Eloquent relationships are defined via methods, you may call those methods to obtain an instance of the relationship without actually executing a query to load the related models. In addition, all types of Eloquent relationships also serve as [query builders](/docs/{{version}}/queries), allowing you to continue to chain constraints onto the relationship query before finally executing the SQL query against your database."
 msgstr "由於所有的 Eloquent 關聯都是以方法來定義的，所以我們可以呼叫這些方法來取得關聯的實體，而不需執行查詢來載入關聯的 Model。此外，每種 Eloquent 關聯都可作為 [Query Builder](/docs/{{version}}/queries) 使用，因此我們也能在最終向資料庫執行 SQL 查詢前往關聯查詢串上一些查詢條件。"
 
-#: docs/10.x/eloquent-relationships.md:block 274 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 278 (paragraph)
 msgid "For example, imagine a blog application in which a `User` model has many associated `Post` models:"
 msgstr "舉例來說，假設我們有一個部落格網站，其中 `User` Model 可以關聯到 `Post` Model："
 
-#: docs/10.x/eloquent-relationships.md:block 275 (code)
+#: docs/10.x/eloquent-relationships.md:block 279 (code)
 msgid "<?php\n\n"
 "namespace App\\Models;\n\n"
 "use Illuminate\\Database\\Eloquent\\Model;\n"
@@ -2066,11 +2091,11 @@ msgstr "<?php\n\n"
 "    }\n"
 "}\n"
 
-#: docs/10.x/eloquent-relationships.md:block 276 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 280 (paragraph)
 msgid "You may query the `posts` relationship and add additional constraints to the relationship like so:"
 msgstr "我們可以查詢 `posts` 關聯，並在關聯上像這樣加上額外的條件："
 
-#: docs/10.x/eloquent-relationships.md:block 277 (code)
+#: docs/10.x/eloquent-relationships.md:block 281 (code)
 msgid "use App\\Models\\User;\n\n"
 "$user = User::find(1);\n\n"
 "$user->posts()->where('active', 1)->get();\n"
@@ -2078,19 +2103,19 @@ msgstr "use App\\Models\\User;\n\n"
 "$user = User::find(1);\n\n"
 "$user->posts()->where('active', 1)->get();\n"
 
-#: docs/10.x/eloquent-relationships.md:block 278 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 282 (paragraph)
 msgid "You are able to use any of the Laravel [query builder's](/docs/{{version}}/queries) methods on the relationship, so be sure to explore the query builder documentation to learn about all of the methods that are available to you."
 msgstr "在關聯上我們可以使用任何的 Laravel [Query Builder](/docs/{{version}}/queries) 方法，因此請確保有先閱讀過 Query Builder 的說明文件以瞭解有哪些方法可以使用。"
 
-#: docs/10.x/eloquent-relationships.md:block 280 (header)
+#: docs/10.x/eloquent-relationships.md:block 284 (header)
 msgid "Chaining `orWhere` Clauses After Relationships"
 msgstr "在關聯後方串上 `orWhere` 子句"
 
-#: docs/10.x/eloquent-relationships.md:block 281 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 285 (paragraph)
 msgid "As demonstrated in the example above, you are free to add additional constraints to relationships when querying them. However, use caution when chaining `orWhere` clauses onto a relationship, as the `orWhere` clauses will be logically grouped at the same level as the relationship constraint:"
 msgstr "像上面的範例中一樣，在進行查詢的時候我們可以自由地往關聯新增查詢。不過，在將 `orWhere` 自居串上關聯時要注意，因為 `orWhere` 自居可能會被邏輯性地分組在與關聯條件相同的層級上："
 
-#: docs/10.x/eloquent-relationships.md:block 282 (code)
+#: docs/10.x/eloquent-relationships.md:block 286 (code)
 msgid "$user->posts()\n"
 "        ->where('active', 1)\n"
 "        ->orWhere('votes', '>=', 100)\n"
@@ -2100,11 +2125,11 @@ msgstr "$user->posts()\n"
 "        ->orWhere('votes', '>=', 100)\n"
 "        ->get();\n"
 
-#: docs/10.x/eloquent-relationships.md:block 283 (paragraph)
-msgid "The example above will generate the following SQL. As you can see, the `or` clause instructs the query to return *any* user with greater than 100 votes. The query is no longer constrained to a specific user:"
-msgstr "上述的例子會產生下列的 SQL。如你所見，`or` 子句會讓查詢回傳 **所有** 大於 100 得票數的使用者。這個查詢不會被限制在任何特定使用者上："
+#: docs/10.x/eloquent-relationships.md:block 287 (paragraph)
+msgid "The example above will generate the following SQL. As you can see, the `or` clause instructs the query to return *any* post with greater than 100 votes. The query is no longer constrained to a specific user:"
+msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 284 (code)
+#: docs/10.x/eloquent-relationships.md:block 288 (code)
 msgid "select *\n"
 "from posts\n"
 "where user_id = ? and active = 1 or votes >= 100\n"
@@ -2112,11 +2137,11 @@ msgstr "select *\n"
 "from posts\n"
 "where user_id = ? and active = 1 or votes >= 100\n"
 
-#: docs/10.x/eloquent-relationships.md:block 285 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 289 (paragraph)
 msgid "In most situations, you should use [logical groups](/docs/{{version}}/queries#logical-grouping) to group the conditional checks between parentheses:"
 msgstr "在大多數的情況下，應該使用[邏輯群組](/docs/{{version}}/queries#logical-grouping)以將條件檢查放在括號中進行分組："
 
-#: docs/10.x/eloquent-relationships.md:block 286 (code)
+#: docs/10.x/eloquent-relationships.md:block 290 (code)
 msgid "use Illuminate\\Database\\Eloquent\\Builder;\n\n"
 "$user->posts()\n"
 "        ->where(function (Builder $query) {\n"
@@ -2132,11 +2157,11 @@ msgstr "use Illuminate\\Database\\Eloquent\\Builder;\n\n"
 "        })\n"
 "        ->get();\n"
 
-#: docs/10.x/eloquent-relationships.md:block 287 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 291 (paragraph)
 msgid "The example above will produce the following SQL. Note that the logical grouping has properly grouped the constraints and the query remains constrained to a specific user:"
 msgstr "上述的例子會產生下列 SQL。可以注意到，查詢條件已正確地進行邏輯分組，且查詢有保持限制在特定使用者上："
 
-#: docs/10.x/eloquent-relationships.md:block 288 (code)
+#: docs/10.x/eloquent-relationships.md:block 292 (code)
 msgid "select *\n"
 "from posts\n"
 "where user_id = ? and (active = 1 or votes >= 100)\n"
@@ -2144,15 +2169,15 @@ msgstr "select *\n"
 "from posts\n"
 "where user_id = ? and (active = 1 or votes >= 100)\n"
 
-#: docs/10.x/eloquent-relationships.md:block 290 (header)
+#: docs/10.x/eloquent-relationships.md:block 294 (header)
 msgid "Relationship Methods Vs. Dynamic Properties"
 msgstr "關聯方法 V.s. 動態屬性"
 
-#: docs/10.x/eloquent-relationships.md:block 291 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 295 (paragraph)
 msgid "If you do not need to add additional constraints to an Eloquent relationship query, you may access the relationship as if it were a property. For example, continuing to use our `User` and `Post` example models, we may access all of a user's posts like so:"
 msgstr "若不想在 Eloquent 關聯查詢上新增任何額外的查詢條件，則可以直接將關聯作為屬性一樣存取。舉例來說，接續使用我們的 `User` 與 `Post` 範例 Model，我們可以像這樣存取 User 的所有 Post："
 
-#: docs/10.x/eloquent-relationships.md:block 292 (code)
+#: docs/10.x/eloquent-relationships.md:block 296 (code)
 msgid "use App\\Models\\User;\n\n"
 "$user = User::find(1);\n\n"
 "foreach ($user->posts as $post) {\n"
@@ -2164,19 +2189,19 @@ msgstr "use App\\Models\\User;\n\n"
 "    // ...\n"
 "}\n"
 
-#: docs/10.x/eloquent-relationships.md:block 293 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 297 (paragraph)
 msgid "Dynamic relationship properties perform \"lazy loading\", meaning they will only load their relationship data when you actually access them. Because of this, developers often use [eager loading](#eager-loading) to pre-load relationships they know will be accessed after loading the model. Eager loading provides a significant reduction in SQL queries that must be executed to load a model's relations."
 msgstr "動態屬性會被「延遲載入 (Lazy Loading)」，這表示，這些關聯資料只有在實際存取的時候才會被載入。也因此，開發人員常常會使用[積極式載入](#eager-loading)來預先載入稍後會被存取的關聯。使用預先載入，就可以顯著地降低許多在載入 Model 關聯時會被執行的 SQL 查詢。"
 
-#: docs/10.x/eloquent-relationships.md:block 295 (header)
+#: docs/10.x/eloquent-relationships.md:block 299 (header)
 msgid "Querying Relationship Existence"
 msgstr "查詢存在的關聯"
 
-#: docs/10.x/eloquent-relationships.md:block 296 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 300 (paragraph)
 msgid "When retrieving model records, you may wish to limit your results based on the existence of a relationship. For example, imagine you want to retrieve all blog posts that have at least one comment. To do so, you may pass the name of the relationship to the `has` and `orHas` methods:"
 msgstr "在取得 Model 紀錄時，我們可能會想依據關聯是否存在來限制查詢結果。舉例來說，假設我們想取得所有至少有一篇留言的部落格貼文。為此，我們可以將關聯的名稱傳入 `has` 或 `orHas` 方法中："
 
-#: docs/10.x/eloquent-relationships.md:block 297 (code)
+#: docs/10.x/eloquent-relationships.md:block 301 (code)
 msgid "use App\\Models\\Post;\n\n"
 "// Retrieve all posts that have at least one comment...\n"
 "$posts = Post::has('comments')->get();\n"
@@ -2184,31 +2209,31 @@ msgstr "use App\\Models\\Post;\n\n"
 "// 取得所有至少有一篇留言的貼文...\n"
 "$posts = Post::has('comments')->get();\n"
 
-#: docs/10.x/eloquent-relationships.md:block 298 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 302 (paragraph)
 msgid "You may also specify an operator and count value to further customize the query:"
 msgstr "我們也可以指定一個運算子與總數來進一步自訂查詢："
 
-#: docs/10.x/eloquent-relationships.md:block 299 (code)
+#: docs/10.x/eloquent-relationships.md:block 303 (code)
 msgid "// Retrieve all posts that have three or more comments...\n"
 "$posts = Post::has('comments', '>=', 3)->get();\n"
 msgstr "// 取得所有至少有 3 篇留言的貼文...\n"
 "$posts = Post::has('comments', '>=', 3)->get();\n"
 
-#: docs/10.x/eloquent-relationships.md:block 300 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 304 (paragraph)
 msgid "Nested `has` statements may be constructed using \"dot\" notation. For example, you may retrieve all posts that have at least one comment that has at least one image:"
 msgstr "可以使用「點 (.)」標記法來撰寫巢狀的 `has` 陳述式。舉例來說，我們可以取得所有至少有一篇含有圖片的留言的部落格貼文："
 
-#: docs/10.x/eloquent-relationships.md:block 301 (code)
+#: docs/10.x/eloquent-relationships.md:block 305 (code)
 msgid "// Retrieve posts that have at least one comment with images...\n"
 "$posts = Post::has('comments.images')->get();\n"
 msgstr "// 取得有留言且這些留言至少有一張圖片的貼文...\n"
 "$posts = Post::has('comments.images')->get();\n"
 
-#: docs/10.x/eloquent-relationships.md:block 302 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 306 (paragraph)
 msgid "If you need even more power, you may use the `whereHas` and `orWhereHas` methods to define additional query constraints on your `has` queries, such as inspecting the content of a comment:"
 msgstr "若需要更多功能，可以使用 `whereHas` 或 `orWhereHas` 方法來在 `has` 查詢上定義額外的查詢條件，如檢查留言的內容等："
 
-#: docs/10.x/eloquent-relationships.md:block 303 (code)
+#: docs/10.x/eloquent-relationships.md:block 307 (code)
 msgid "use Illuminate\\Database\\Eloquent\\Builder;\n\n"
 "// Retrieve posts with at least one comment containing words like code%...\n"
 "$posts = Post::whereHas('comments', function (Builder $query) {\n"
@@ -2228,29 +2253,29 @@ msgstr "use Illuminate\\Database\\Eloquent\\Builder;\n\n"
 "    $query->where('content', 'like', 'code%');\n"
 "}, '>=', 10)->get();\n"
 
-#: docs/10.x/eloquent-relationships.md:block 304 (quote)
+#: docs/10.x/eloquent-relationships.md:block 308 (quote)
 msgid "**Warning** Eloquent does not currently support querying for relationship existence across databases. The relationships must exist within the same database."
 msgstr "**Warning** 由於 Eloquent 目前並不支援在多個資料庫間查詢關聯的存否，因此要查詢的關聯必須在同一個資料庫中。"
 
-#: docs/10.x/eloquent-relationships.md:block 306 (header)
+#: docs/10.x/eloquent-relationships.md:block 310 (header)
 msgid "Inline Relationship Existence Queries"
 msgstr "內嵌的存在關聯查詢"
 
-#: docs/10.x/eloquent-relationships.md:block 307 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 311 (paragraph)
 msgid "If you would like to query for a relationship's existence with a single, simple where condition attached to the relationship query, you may find it more convenient to use the `whereRelation`, `orWhereRelation`, `whereMorphRelation`, and `orWhereMorphRelation` methods. For example, we may query for all posts that have unapproved comments:"
 msgstr "若想要使用附加在關聯查詢上的簡單且單一的 Where 條件來查詢關聯的存否，那麼用 `whereRelation`、`orWhereRelation`、`whereMorphRelation`、`orWhereMorphRelation` 方法應該會很方便。舉例來說，我們可以查詢所有有未審核 (Unapproved) 留言的貼文："
 
-#: docs/10.x/eloquent-relationships.md:block 308 (code)
+#: docs/10.x/eloquent-relationships.md:block 312 (code)
 msgid "use App\\Models\\Post;\n\n"
 "$posts = Post::whereRelation('comments', 'is_approved', false)->get();\n"
 msgstr "use App\\Models\\Post;\n\n"
 "$posts = Post::whereRelation('comments', 'is_approved', false)->get();\n"
 
-#: docs/10.x/eloquent-relationships.md:block 309 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 313 (paragraph)
 msgid "Of course, like calls to the query builder's `where` method, you may also specify an operator:"
 msgstr "當然，就像呼叫 Query Builder 的 `where` 方法一樣，我們也可以指定運算子："
 
-#: docs/10.x/eloquent-relationships.md:block 310 (code)
+#: docs/10.x/eloquent-relationships.md:block 314 (code)
 msgid "$posts = Post::whereRelation(\n"
 "    'comments', 'created_at', '>=', now()->subHour()\n"
 ")->get();\n"
@@ -2258,25 +2283,25 @@ msgstr "$posts = Post::whereRelation(\n"
 "    'comments', 'created_at', '>=', now()->subHour()\n"
 ")->get();\n"
 
-#: docs/10.x/eloquent-relationships.md:block 312 (header)
+#: docs/10.x/eloquent-relationships.md:block 316 (header)
 msgid "Querying Relationship Absence"
 msgstr "查詢不存在的關聯"
 
-#: docs/10.x/eloquent-relationships.md:block 313 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 317 (paragraph)
 msgid "When retrieving model records, you may wish to limit your results based on the absence of a relationship. For example, imagine you want to retrieve all blog posts that **don't** have any comments. To do so, you may pass the name of the relationship to the `doesntHave` and `orDoesntHave` methods:"
 msgstr "在取得 Model 紀錄時，我們可能會想依據關聯的是否不存在來限制查詢結果。舉例來說，假設我們想取得所有 **沒有** 留言的部落格貼文。為此，我們可以將關聯的名稱傳入 `doesntHave` 或 `orDoesntHave` 方法中："
 
-#: docs/10.x/eloquent-relationships.md:block 314 (code)
+#: docs/10.x/eloquent-relationships.md:block 318 (code)
 msgid "use App\\Models\\Post;\n\n"
 "$posts = Post::doesntHave('comments')->get();\n"
 msgstr "use App\\Models\\Post;\n\n"
 "$posts = Post::doesntHave('comments')->get();\n"
 
-#: docs/10.x/eloquent-relationships.md:block 315 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 319 (paragraph)
 msgid "If you need even more power, you may use the `whereDoesntHave` and `orWhereDoesntHave` methods to add additional query constraints to your `doesntHave` queries, such as inspecting the content of a comment:"
 msgstr "若需要更多功能，可以使用 `whereDoesntHave` 或 `orWhereDoesntHave` 方法來在 `doesntHave` 查詢上加上額外的查詢條件，如檢查留言的內容等："
 
-#: docs/10.x/eloquent-relationships.md:block 316 (code)
+#: docs/10.x/eloquent-relationships.md:block 320 (code)
 msgid "use Illuminate\\Database\\Eloquent\\Builder;\n\n"
 "$posts = Post::whereDoesntHave('comments', function (Builder $query) {\n"
 "    $query->where('content', 'like', 'code%');\n"
@@ -2286,11 +2311,11 @@ msgstr "use Illuminate\\Database\\Eloquent\\Builder;\n\n"
 "    $query->where('content', 'like', 'code%');\n"
 "})->get();\n"
 
-#: docs/10.x/eloquent-relationships.md:block 317 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 321 (paragraph)
 msgid "You may use \"dot\" notation to execute a query against a nested relationship. For example, the following query will retrieve all posts that do not have comments; however, posts that have comments from authors that are not banned will be included in the results:"
 msgstr "我們也可以使用「點 (.)」標記法來對巢狀關聯進行查詢。舉例來說，下列查詢會取得所有沒有留言的貼文。不過，具有未禁言作者發表留言的文章也會被包含在結果裡面："
 
-#: docs/10.x/eloquent-relationships.md:block 318 (code)
+#: docs/10.x/eloquent-relationships.md:block 322 (code)
 msgid "use Illuminate\\Database\\Eloquent\\Builder;\n\n"
 "$posts = Post::whereDoesntHave('comments.author', function (Builder $query) {\n"
 "    $query->where('banned', 0);\n"
@@ -2300,15 +2325,15 @@ msgstr "use Illuminate\\Database\\Eloquent\\Builder;\n\n"
 "    $query->where('banned', 0);\n"
 "})->get();\n"
 
-#: docs/10.x/eloquent-relationships.md:block 320 (header)
+#: docs/10.x/eloquent-relationships.md:block 324 (header)
 msgid "Querying Morph To Relationships"
 msgstr "查詢 Morph To 關聯"
 
-#: docs/10.x/eloquent-relationships.md:block 321 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 325 (paragraph)
 msgid "To query the existence of \"morph to\" relationships, you may use the `whereHasMorph` and `whereDoesntHaveMorph` methods. These methods accept the name of the relationship as their first argument. Next, the methods accept the names of the related models that you wish to include in the query. Finally, you may provide a closure which customizes the relationship query:"
 msgstr "若要查詢「Morph To」關聯是否存在，可以使用 `whereHasMorph` 或 `whereDoesntHaveMorph` 方法。這些方法都接受關聯名稱作為其第一個引數。接著，這個方法還接受要被包含在查詢裡的關聯 Model 名稱。最後，我們還可以提供用來自訂關聯查詢的閉包："
 
-#: docs/10.x/eloquent-relationships.md:block 322 (code)
+#: docs/10.x/eloquent-relationships.md:block 326 (code)
 msgid "use App\\Models\\Comment;\n"
 "use App\\Models\\Post;\n"
 "use App\\Models\\Video;\n"
@@ -2350,11 +2375,11 @@ msgstr "use App\\Models\\Comment;\n"
 "    }\n"
 ")->get();\n"
 
-#: docs/10.x/eloquent-relationships.md:block 323 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 327 (paragraph)
 msgid "You may occasionally need to add query constraints based on the \"type\" of the related polymorphic model. The closure passed to the `whereHasMorph` method may receive a `$type` value as its second argument. This argument allows you to inspect the \"type\" of the query that is being built:"
 msgstr "有時候，我們可能會想依據多型關聯 Model 的「類型」來新增查詢條件。傳給 `whereHasMorph` 方法的閉包可接受一個 `$type` 值作為其第二個引述。使用 `$type`引述，就可以檢查正在建立的查詢是什麼「類型」："
 
-#: docs/10.x/eloquent-relationships.md:block 324 (code)
+#: docs/10.x/eloquent-relationships.md:block 328 (code)
 msgid "use Illuminate\\Database\\Eloquent\\Builder;\n\n"
 "$comments = Comment::whereHasMorph(\n"
 "    'commentable',\n"
@@ -2374,15 +2399,15 @@ msgstr "use Illuminate\\Database\\Eloquent\\Builder;\n\n"
 "    }\n"
 ")->get();\n"
 
-#: docs/10.x/eloquent-relationships.md:block 326 (header)
+#: docs/10.x/eloquent-relationships.md:block 330 (header)
 msgid "Querying All Related Models"
 msgstr "查詢所有關聯的 Model"
 
-#: docs/10.x/eloquent-relationships.md:block 327 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 331 (paragraph)
 msgid "Instead of passing an array of possible polymorphic models, you may provide `*` as a wildcard value. This will instruct Laravel to retrieve all of the possible polymorphic types from the database. Laravel will execute an additional query in order to perform this operation:"
 msgstr "我們可以提供 `*` 作為萬用字元，而不需以陣列列出所有可能的多型 Model。這樣以來 Laravel 就會從資料庫中取得所有可能的多型類型。Laravel 會執行一個額外的查詢來進行此行動："
 
-#: docs/10.x/eloquent-relationships.md:block 328 (code)
+#: docs/10.x/eloquent-relationships.md:block 332 (code)
 msgid "use Illuminate\\Database\\Eloquent\\Builder;\n\n"
 "$comments = Comment::whereHasMorph('commentable', '*', function (Builder $query) {\n"
 "    $query->where('title', 'like', 'foo%');\n"
@@ -2392,19 +2417,19 @@ msgstr "use Illuminate\\Database\\Eloquent\\Builder;\n\n"
 "    $query->where('title', 'like', 'foo%');\n"
 "})->get();\n"
 
-#: docs/10.x/eloquent-relationships.md:block 330 (header)
+#: docs/10.x/eloquent-relationships.md:block 334 (header)
 msgid "Aggregating Related Models"
 msgstr "彙總關聯的 Model"
 
-#: docs/10.x/eloquent-relationships.md:block 332 (header)
+#: docs/10.x/eloquent-relationships.md:block 336 (header)
 msgid "Counting Related Models"
 msgstr "計數關聯的 Model"
 
-#: docs/10.x/eloquent-relationships.md:block 333 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 337 (paragraph)
 msgid "Sometimes you may want to count the number of related models for a given relationship without actually loading the models. To accomplish this, you may use the `withCount` method. The `withCount` method will place a `{relation}_count` attribute on the resulting models:"
 msgstr "有時候我們可能會想知道給定關聯中關聯 Model 的數量，但又不想真正載入這些 Model。為此，我們可以使用 `withCount` 方法。`withCount` 方法會在查詢結果的 Model 中加上一個 `{關聯}_count` 屬性："
 
-#: docs/10.x/eloquent-relationships.md:block 334 (code)
+#: docs/10.x/eloquent-relationships.md:block 338 (code)
 msgid "use App\\Models\\Post;\n\n"
 "$posts = Post::withCount('comments')->get();\n\n"
 "foreach ($posts as $post) {\n"
@@ -2416,11 +2441,11 @@ msgstr "use App\\Models\\Post;\n\n"
 "    echo $post->comments_count;\n"
 "}\n"
 
-#: docs/10.x/eloquent-relationships.md:block 335 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 339 (paragraph)
 msgid "By passing an array to the `withCount` method, you may add the \"counts\" for multiple relations as well as add additional constraints to the queries:"
 msgstr "只要將陣列傳入 `withCount` 方法，就可以為多個關聯「計數」，或是在查詢上加上額外的查詢條件："
 
-#: docs/10.x/eloquent-relationships.md:block 336 (code)
+#: docs/10.x/eloquent-relationships.md:block 340 (code)
 msgid "use Illuminate\\Database\\Eloquent\\Builder;\n\n"
 "$posts = Post::withCount(['votes', 'comments' => function (Builder $query) {\n"
 "    $query->where('content', 'like', 'code%');\n"
@@ -2434,11 +2459,11 @@ msgstr "use Illuminate\\Database\\Eloquent\\Builder;\n\n"
 "echo $posts[0]->votes_count;\n"
 "echo $posts[0]->comments_count;\n"
 
-#: docs/10.x/eloquent-relationships.md:block 337 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 341 (paragraph)
 msgid "You may also alias the relationship count result, allowing multiple counts on the same relationship:"
 msgstr "也可以為關聯總數結果加上別名，這樣就能對單一關聯計算多次數量："
 
-#: docs/10.x/eloquent-relationships.md:block 338 (code)
+#: docs/10.x/eloquent-relationships.md:block 342 (code)
 msgid "use Illuminate\\Database\\Eloquent\\Builder;\n\n"
 "$posts = Post::withCount([\n"
 "    'comments',\n"
@@ -2458,25 +2483,25 @@ msgstr "use Illuminate\\Database\\Eloquent\\Builder;\n\n"
 "echo $posts[0]->comments_count;\n"
 "echo $posts[0]->pending_comments_count;\n"
 
-#: docs/10.x/eloquent-relationships.md:block 340 (header)
+#: docs/10.x/eloquent-relationships.md:block 344 (header)
 msgid "Deferred Count Loading"
 msgstr "延後 (Deferred) 數量計算的載入"
 
-#: docs/10.x/eloquent-relationships.md:block 341 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 345 (paragraph)
 msgid "Using the `loadCount` method, you may load a relationship count after the parent model has already been retrieved:"
 msgstr "使用 `loadCount` 方法，就可以在上層 Model 已經載入後再接著載入關聯的計數："
 
-#: docs/10.x/eloquent-relationships.md:block 342 (code)
+#: docs/10.x/eloquent-relationships.md:block 346 (code)
 msgid "$book = Book::first();\n\n"
 "$book->loadCount('genres');\n"
 msgstr "$book = Book::first();\n\n"
 "$book->loadCount('genres');\n"
 
-#: docs/10.x/eloquent-relationships.md:block 343 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 347 (paragraph)
 msgid "If you need to set additional query constraints on the count query, you may pass an array keyed by the relationships you wish to count. The array values should be closures which receive the query builder instance:"
 msgstr "若想在計數查詢上設定額外的查詢條件，可以傳入一組陣列，其索引鍵應為要計數的關聯。陣列的值則為一個閉包，用來接收 Query Builder 實體："
 
-#: docs/10.x/eloquent-relationships.md:block 344 (code)
+#: docs/10.x/eloquent-relationships.md:block 348 (code)
 msgid "$book->loadCount(['reviews' => function (Builder $query) {\n"
 "    $query->where('rating', 5);\n"
 "}])\n"
@@ -2484,15 +2509,15 @@ msgstr "$book->loadCount(['reviews' => function (Builder $query) {\n"
 "    $query->where('rating', 5);\n"
 "}])\n"
 
-#: docs/10.x/eloquent-relationships.md:block 346 (header)
+#: docs/10.x/eloquent-relationships.md:block 350 (header)
 msgid "Relationship Counting & Custom Select Statements"
 msgstr "關聯計數與自訂 Select 陳述式"
 
-#: docs/10.x/eloquent-relationships.md:block 347 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 351 (paragraph)
 msgid "If you're combining `withCount` with a `select` statement, ensure that you call `withCount` after the `select` method:"
 msgstr "若想組合使用 `withCount` 與 `select` 陳述式，請在 `select` 方法後再呼叫 `withCount`："
 
-#: docs/10.x/eloquent-relationships.md:block 348 (code)
+#: docs/10.x/eloquent-relationships.md:block 352 (code)
 msgid "$posts = Post::select(['title', 'body'])\n"
 "                ->withCount('comments')\n"
 "                ->get();\n"
@@ -2500,15 +2525,15 @@ msgstr "$posts = Post::select(['title', 'body'])\n"
 "                ->withCount('comments')\n"
 "                ->get();\n"
 
-#: docs/10.x/eloquent-relationships.md:block 350 (header)
+#: docs/10.x/eloquent-relationships.md:block 354 (header)
 msgid "Other Aggregate Functions"
 msgstr "其他彙總函式"
 
-#: docs/10.x/eloquent-relationships.md:block 351 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 355 (paragraph)
 msgid "In addition to the `withCount` method, Eloquent provides `withMin`, `withMax`, `withAvg`, `withSum`, and `withExists` methods. These methods will place a `{relation}_{function}_{column}` attribute on your resulting models:"
 msgstr "除了 `withCount` 方法外，Eloquent 也提供了 `withMin`, `withMax`, `withAvg`, `withSum`, 與 `withExists` 等方法。這些方法會在查詢結果的 Model 上加上一個  `{關聯}_{函式}_{欄位}` 屬性："
 
-#: docs/10.x/eloquent-relationships.md:block 352 (code)
+#: docs/10.x/eloquent-relationships.md:block 356 (code)
 msgid "use App\\Models\\Post;\n\n"
 "$posts = Post::withSum('comments', 'votes')->get();\n\n"
 "foreach ($posts as $post) {\n"
@@ -2520,11 +2545,11 @@ msgstr "use App\\Models\\Post;\n\n"
 "    echo $post->comments_sum_votes;\n"
 "}\n"
 
-#: docs/10.x/eloquent-relationships.md:block 353 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 357 (paragraph)
 msgid "If you wish to access the result of the aggregate function using another name, you may specify your own alias:"
 msgstr "若想使用另一個名稱來存取彙總函式的結果，可自行指定別名："
 
-#: docs/10.x/eloquent-relationships.md:block 354 (code)
+#: docs/10.x/eloquent-relationships.md:block 358 (code)
 msgid "$posts = Post::withSum('comments as total_comments', 'votes')->get();\n\n"
 "foreach ($posts as $post) {\n"
 "    echo $post->total_comments;\n"
@@ -2534,21 +2559,21 @@ msgstr "$posts = Post::withSum('comments as total_comments', 'votes')->get();\n\
 "    echo $post->total_comments;\n"
 "}\n"
 
-#: docs/10.x/eloquent-relationships.md:block 355 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 359 (paragraph)
 msgid "Like the `loadCount` method, deferred versions of these methods are also available. These additional aggregate operations may be performed on Eloquent models that have already been retrieved:"
 msgstr "與 `loadCount` 方法類似，Eloquent 中也有這些方法的延遲 (Deferred) 版本。可以在已經取得的 Eloquent Model 上進行這些額外的彙總運算："
 
-#: docs/10.x/eloquent-relationships.md:block 356 (code)
+#: docs/10.x/eloquent-relationships.md:block 360 (code)
 msgid "$post = Post::first();\n\n"
 "$post->loadSum('comments', 'votes');\n"
 msgstr "$post = Post::first();\n\n"
 "$post->loadSum('comments', 'votes');\n"
 
-#: docs/10.x/eloquent-relationships.md:block 357 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 361 (paragraph)
 msgid "If you're combining these aggregate methods with a `select` statement, ensure that you call the aggregate methods after the `select` method:"
 msgstr "若想組合使用這些彙總與 `select` 陳述式，請在 `select` 方法後再呼叫這些彙總函式："
 
-#: docs/10.x/eloquent-relationships.md:block 358 (code)
+#: docs/10.x/eloquent-relationships.md:block 362 (code)
 msgid "$posts = Post::select(['title', 'body'])\n"
 "                ->withExists('comments')\n"
 "                ->get();\n"
@@ -2556,23 +2581,23 @@ msgstr "$posts = Post::select(['title', 'body'])\n"
 "                ->withExists('comments')\n"
 "                ->get();\n"
 
-#: docs/10.x/eloquent-relationships.md:block 360 (header)
+#: docs/10.x/eloquent-relationships.md:block 364 (header)
 msgid "Counting Related Models On Morph To Relationships"
 msgstr "在 Morph To 關聯上計算關聯 Model 的數量"
 
-#: docs/10.x/eloquent-relationships.md:block 361 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 365 (paragraph)
 msgid "If you would like to eager load a \"morph to\" relationship, as well as related model counts for the various entities that may be returned by that relationship, you may utilize the `with` method in combination with the `morphTo` relationship's `morphWithCount` method."
 msgstr "若想積極式載入「Morph to」關聯、或是關聯 Model 計數等由關聯回傳的功能，可以使用 `morphTo` 關聯的 `morphWithCount` 方法，並搭配 `with` 方法使用。"
 
-#: docs/10.x/eloquent-relationships.md:block 362 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 366 (paragraph)
 msgid "In this example, let's assume that `Photo` and `Post` models may create `ActivityFeed` models. We will assume the `ActivityFeed` model defines a \"morph to\" relationship named `parentable` that allows us to retrieve the parent `Photo` or `Post` model for a given `ActivityFeed` instance. Additionally, let's assume that `Photo` models \"have many\" `Tag` models and `Post` models \"have many\" `Comment` models."
 msgstr "在這個例子中，我們假設 `Photo` 與 `Post` Model 會建立 `ActivityFeed` Model。假設 `ActivityFeed` Model 定義一個名為  `parentable` 的「Morph to」關聯，可讓使用者在某一 `ActivityFeed` 實體上取得上層的 `Photo` 或 `Post` Model。此外，我們也假設 `Photo` Model「Have Many (有多個)」 `Tag` Model，而 `Post` Model「Have Many」`Comment` Model。"
 
-#: docs/10.x/eloquent-relationships.md:block 363 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 367 (paragraph)
 msgid "Now, let's imagine we want to retrieve `ActivityFeed` instances and eager load the `parentable` parent models for each `ActivityFeed` instance. In addition, we want to retrieve the number of tags that are associated with each parent photo and the number of comments that are associated with each parent post:"
 msgstr "接著，來假設我們現在要去的 `ActivityFeed` 實體，並為取得的每個 `ActivityFeed` 實體積極式載入 `parentable` 上層 Model。此外，我們也想知道上層的每張圖片各有多少個 Tag、還有上層的每篇貼文各有多少則留言："
 
-#: docs/10.x/eloquent-relationships.md:block 364 (code)
+#: docs/10.x/eloquent-relationships.md:block 368 (code)
 msgid "use Illuminate\\Database\\Eloquent\\Relations\\MorphTo;\n\n"
 "$activities = ActivityFeed::with([\n"
 "    'parentable' => function (MorphTo $morphTo) {\n"
@@ -2590,11 +2615,11 @@ msgstr "use Illuminate\\Database\\Eloquent\\Relations\\MorphTo;\n\n"
 "        ]);\n"
 "    }])->get();\n"
 
-#: docs/10.x/eloquent-relationships.md:block 367 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 371 (paragraph)
 msgid "Let's assume we have already retrieved a set of `ActivityFeed` models and now we would like to load the nested relationship counts for the various `parentable` models associated with the activity feeds. You may use the `loadMorphCount` method to accomplish this:"
 msgstr "假設我們已經取得 `ActivityFeed` Model (活動摘要)，接著，我們想要載入與活動摘要關聯的各種 `parentable` Model 的巢狀關聯數量。我們可以使用 `loadMorphCount` 方法來完成："
 
-#: docs/10.x/eloquent-relationships.md:block 368 (code)
+#: docs/10.x/eloquent-relationships.md:block 372 (code)
 msgid "$activities = ActivityFeed::with('parentable')->get();\n\n"
 "$activities->loadMorphCount('parentable', [\n"
 "    Photo::class => ['tags'],\n"
@@ -2606,15 +2631,15 @@ msgstr "$activities = ActivityFeed::with('parentable')->get();\n\n"
 "    Post::class => ['comments'],\n"
 "]);\n"
 
-#: docs/10.x/eloquent-relationships.md:block 370 (header)
+#: docs/10.x/eloquent-relationships.md:block 374 (header)
 msgid "Eager Loading"
 msgstr "積極式載入"
 
-#: docs/10.x/eloquent-relationships.md:block 371 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 375 (paragraph)
 msgid "When accessing Eloquent relationships as properties, the related models are \"lazy loaded\". This means the relationship data is not actually loaded until you first access the property. However, Eloquent can \"eager load\" relationships at the time you query the parent model. Eager loading alleviates the \"N + 1\" query problem. To illustrate the N + 1 query problem, consider a `Book` model that \"belongs to\" to an `Author` model:"
 msgstr "以屬性方式存取 Eloquent 關聯時，關聯的 Model 會被「消極式載入 (Lazy Load)」。這表示，直到首次存取該屬性前，關聯資料都不會被載入。不過，Eloquent 也可以在查詢上層 Model 時就「積極式載入 (Eager Load)」關聯。積極式載入可以減少「N + 1」問題。為了示範什麼是 N + 1 問題，我們先假設有個「隸屬於 (Belongs to)」`Author` Model 的 `Book` Model："
 
-#: docs/10.x/eloquent-relationships.md:block 372 (code)
+#: docs/10.x/eloquent-relationships.md:block 376 (code)
 msgid "<?php\n\n"
 "namespace App\\Models;\n\n"
 "use Illuminate\\Database\\Eloquent\\Model;\n"
@@ -2644,11 +2669,11 @@ msgstr "<?php\n\n"
 "    }\n"
 "}\n"
 
-#: docs/10.x/eloquent-relationships.md:block 373 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 377 (paragraph)
 msgid "Now, let's retrieve all books and their authors:"
 msgstr "現在，我們來取得所有書籍與其作者："
 
-#: docs/10.x/eloquent-relationships.md:block 374 (code)
+#: docs/10.x/eloquent-relationships.md:block 378 (code)
 msgid "use App\\Models\\Book;\n\n"
 "$books = Book::all();\n\n"
 "foreach ($books as $book) {\n"
@@ -2660,15 +2685,15 @@ msgstr "use App\\Models\\Book;\n\n"
 "    echo $book->author->name;\n"
 "}\n"
 
-#: docs/10.x/eloquent-relationships.md:block 375 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 379 (paragraph)
 msgid "This loop will execute one query to retrieve all of the books within the database table, then another query for each book in order to retrieve the book's author. So, if we have 25 books, the code above would run 26 queries: one for the original book, and 25 additional queries to retrieve the author of each book."
 msgstr "這個迴圈會執行一個查詢來取得資料表中所有的書籍，然後每本書都會再執行一個查詢來取得書籍的作者。因此，若我們有 25 本書，上述程式碼就會執行 26 筆資料庫查詢：1 個查詢來取得書籍，另外 25 個額外的查詢來取得每本書的作者。"
 
-#: docs/10.x/eloquent-relationships.md:block 376 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 380 (paragraph)
 msgid "Thankfully, we can use eager loading to reduce this operation to just two queries. When building a query, you may specify which relationships should be eager loaded using the `with` method:"
 msgstr "幸好，我們可以使用積極式載入來把這一連串行動降低為只需要 2 個查詢。在建立查詢時，可以使用 `with` 方法來指定哪個關聯要被積極式載入："
 
-#: docs/10.x/eloquent-relationships.md:block 377 (code)
+#: docs/10.x/eloquent-relationships.md:block 381 (code)
 msgid "$books = Book::with('author')->get();\n\n"
 "foreach ($books as $book) {\n"
 "    echo $book->author->name;\n"
@@ -2678,45 +2703,45 @@ msgstr "$books = Book::with('author')->get();\n\n"
 "    echo $book->author->name;\n"
 "}\n"
 
-#: docs/10.x/eloquent-relationships.md:block 378 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 382 (paragraph)
 msgid "For this operation, only two queries will be executed - one query to retrieve all of the books and one query to retrieve all of the authors for all of the books:"
 msgstr "這樣一來，就只會執行 2 個查詢 —— 一個查詢去的所有的書籍，另一個查詢則取得所有書籍的作者。"
 
-#: docs/10.x/eloquent-relationships.md:block 379 (code)
+#: docs/10.x/eloquent-relationships.md:block 383 (code)
 msgid "select * from books\n\n"
 "select * from authors where id in (1, 2, 3, 4, 5, ...)\n"
 msgstr "select * from books\n\n"
 "select * from authors where id in (1, 2, 3, 4, 5, ...)\n"
 
-#: docs/10.x/eloquent-relationships.md:block 381 (header)
+#: docs/10.x/eloquent-relationships.md:block 385 (header)
 msgid "Eager Loading Multiple Relationships"
 msgstr "積極式載入多個關聯"
 
-#: docs/10.x/eloquent-relationships.md:block 382 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 386 (paragraph)
 msgid "Sometimes you may need to eager load several different relationships. To do so, just pass an array of relationships to the `with` method:"
 msgstr "有時候，我們可能需要積極式載入多個不同的關聯。要載入多個不同的關聯，只需要傳入一組包含關聯的陣列給 `with` 方法即可："
 
-#: docs/10.x/eloquent-relationships.md:block 383 (code)
+#: docs/10.x/eloquent-relationships.md:block 387 (code)
 msgid "$books = Book::with(['author', 'publisher'])->get();\n"
 msgstr "$books = Book::with(['author', 'publisher'])->get();\n"
 
-#: docs/10.x/eloquent-relationships.md:block 385 (header)
+#: docs/10.x/eloquent-relationships.md:block 389 (header)
 msgid "Nested Eager Loading"
 msgstr "巢狀積極式載入"
 
-#: docs/10.x/eloquent-relationships.md:block 386 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 390 (paragraph)
 msgid "To eager load a relationship's relationships, you may use \"dot\" syntax. For example, let's eager load all of the book's authors and all of the author's personal contacts:"
 msgstr "若要積極載入關聯的關聯，可以使用「點 (.)」標記法。舉例來說，讓我們來積極載入所有書籍的作者，以及所有作者的聯絡方式 (Contact)："
 
-#: docs/10.x/eloquent-relationships.md:block 387 (code)
+#: docs/10.x/eloquent-relationships.md:block 391 (code)
 msgid "$books = Book::with('author.contacts')->get();\n"
 msgstr "$books = Book::with('author.contacts')->get();\n"
 
-#: docs/10.x/eloquent-relationships.md:block 388 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 392 (paragraph)
 msgid "Alternatively, you may specify nested eager loaded relationships by providing a nested array to the `with` method, which can be convenient when eager loading multiple nested relationships:"
 msgstr "或者，只要傳入一組巢狀陣列給 `with` 方法，就可以積極式載入巢狀關聯。若要積極式載入多個巢狀關聯，該方法很好用："
 
-#: docs/10.x/eloquent-relationships.md:block 389 (code)
+#: docs/10.x/eloquent-relationships.md:block 393 (code)
 msgid "$books = Book::with([\n"
 "    'author' => [\n"
 "        'contacts',\n"
@@ -2730,15 +2755,15 @@ msgstr "$books = Book::with([\n"
 "    ],\n"
 "])->get();\n"
 
-#: docs/10.x/eloquent-relationships.md:block 391 (header)
+#: docs/10.x/eloquent-relationships.md:block 395 (header)
 msgid "Nested Eager Loading `morphTo` Relationships"
 msgstr "積極載入巢狀的 `morphTo` 關聯"
 
-#: docs/10.x/eloquent-relationships.md:block 392 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 396 (paragraph)
 msgid "If you would like to eager load a `morphTo` relationship, as well as nested relationships on the various entities that may be returned by that relationship, you may use the `with` method in combination with the `morphTo` relationship's `morphWith` method. To help illustrate this method, let's consider the following model:"
 msgstr "若想積極載入 `morphTo` 關聯、或是巢狀的關聯等由 morphTo 關聯回傳的功能，可以使用 `morphTo` 關聯的 `morphWith` 方法，並搭配 `with` 方法使用。為了讓我們更瞭解這個功能，我們先來看看下列 Model："
 
-#: docs/10.x/eloquent-relationships.md:block 393 (code)
+#: docs/10.x/eloquent-relationships.md:block 397 (code)
 msgid "<?php\n\n"
 "use Illuminate\\Database\\Eloquent\\Model;\n"
 "use Illuminate\\Database\\Eloquent\\Relations\\MorphTo;\n\n"
@@ -2766,15 +2791,15 @@ msgstr "<?php\n\n"
 "    }\n"
 "}\n"
 
-#: docs/10.x/eloquent-relationships.md:block 394 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 398 (paragraph)
 msgid "In this example, let's assume `Event`, `Photo`, and `Post` models may create `ActivityFeed` models. Additionally, let's assume that `Event` models belong to a `Calendar` model, `Photo` models are associated with `Tag` models, and `Post` models belong to an `Author` model."
 msgstr "在這個例子中，先假設 `Event`, `Photo`, 與 `Post` 會建立 `ActivityFeed` Model。另外，也來假設 `Event` Model 隸屬於 `Calendar` Model，而 `Photo` Model 則與 `Tag` Model 相關聯，然後 `Post` Model 隸屬於 `Author` Model。"
 
-#: docs/10.x/eloquent-relationships.md:block 395 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 399 (paragraph)
 msgid "Using these model definitions and relationships, we may retrieve `ActivityFeed` model instances and eager load all `parentable` models and their respective nested relationships:"
 msgstr "有了這些 Model 定義與關聯，我們就可以取得 `ActivityFeed` Model 實體，然後積極載入所有 `parentable` Model 與這些 `parentable` Model 的巢狀關聯："
 
-#: docs/10.x/eloquent-relationships.md:block 396 (code)
+#: docs/10.x/eloquent-relationships.md:block 400 (code)
 msgid "use Illuminate\\Database\\Eloquent\\Relations\\MorphTo;\n\n"
 "$activities = ActivityFeed::query()\n"
 "    ->with(['parentable' => function (MorphTo $morphTo) {\n"
@@ -2794,31 +2819,31 @@ msgstr "use Illuminate\\Database\\Eloquent\\Relations\\MorphTo;\n\n"
 "        ]);\n"
 "    }])->get();\n"
 
-#: docs/10.x/eloquent-relationships.md:block 398 (header)
+#: docs/10.x/eloquent-relationships.md:block 402 (header)
 msgid "Eager Loading Specific Columns"
 msgstr "積極載入特定欄位"
 
-#: docs/10.x/eloquent-relationships.md:block 399 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 403 (paragraph)
 msgid "You may not always need every column from the relationships you are retrieving. For this reason, Eloquent allows you to specify which columns of the relationship you would like to retrieve:"
 msgstr "有時候，我們可能並不像取得關聯的所有欄位。為此，Eloquent 能讓我們指定要取得關聯的哪些欄位："
 
-#: docs/10.x/eloquent-relationships.md:block 400 (code)
+#: docs/10.x/eloquent-relationships.md:block 404 (code)
 msgid "$books = Book::with('author:id,name,book_id')->get();\n"
 msgstr "$books = Book::with('author:id,name,book_id')->get();\n"
 
-#: docs/10.x/eloquent-relationships.md:block 401 (quote)
+#: docs/10.x/eloquent-relationships.md:block 405 (quote)
 msgid "**Warning** When using this feature, you should always include the `id` column and any relevant foreign key columns in the list of columns you wish to retrieve."
 msgstr "**Warning** 使用這個功能時，請務必在欄位列表中包含 `id` 欄位以及其他相關的外部索引鍵欄位。"
 
-#: docs/10.x/eloquent-relationships.md:block 403 (header)
+#: docs/10.x/eloquent-relationships.md:block 407 (header)
 msgid "Eager Loading By Default"
 msgstr "預設積極載入"
 
-#: docs/10.x/eloquent-relationships.md:block 404 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 408 (paragraph)
 msgid "Sometimes you might want to always load some relationships when retrieving a model. To accomplish this, you may define a `$with` property on the model:"
 msgstr "對於某些 Model，我們可能會希望這個 Model 總是能載入一些關聯。為此，我們可以在這種 Model 上定義一個 `$with` 屬性："
 
-#: docs/10.x/eloquent-relationships.md:block 405 (code)
+#: docs/10.x/eloquent-relationships.md:block 409 (code)
 msgid "<?php\n\n"
 "namespace App\\Models;\n\n"
 "use Illuminate\\Database\\Eloquent\\Model;\n"
@@ -2874,45 +2899,43 @@ msgstr "<?php\n\n"
 "    }\n"
 "}\n"
 
-#: docs/10.x/eloquent-relationships.md:block 406 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 410 (paragraph)
 msgid "If you would like to remove an item from the `$with` property for a single query, you may use the `without` method:"
 msgstr "若想為單一查詢移除 `$with` 屬性中的某個項目，可以使用 `without` 方法："
 
-#: docs/10.x/eloquent-relationships.md:block 407 (code)
+#: docs/10.x/eloquent-relationships.md:block 411 (code)
 msgid "$books = Book::without('author')->get();\n"
 msgstr "$books = Book::without('author')->get();\n"
 
-#: docs/10.x/eloquent-relationships.md:block 408 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 412 (paragraph)
 msgid "If you would like to override all items within the `$with` property for a single query, you may use the `withOnly` method:"
 msgstr "若想為單一查詢複寫 `$with` 屬性中的所有項目，可以使用 `withOnly` 方法："
 
-#: docs/10.x/eloquent-relationships.md:block 409 (code)
+#: docs/10.x/eloquent-relationships.md:block 413 (code)
 msgid "$books = Book::withOnly('genre')->get();\n"
 msgstr "$books = Book::withOnly('genre')->get();\n"
 
-#: docs/10.x/eloquent-relationships.md:block 411 (header)
+#: docs/10.x/eloquent-relationships.md:block 415 (header)
 msgid "Constraining Eager Loads"
 msgstr "包含查詢條件的積極載入"
 
-#: docs/10.x/eloquent-relationships.md:block 412 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 416 (paragraph)
 msgid "Sometimes you may wish to eager load a relationship but also specify additional query conditions for the eager loading query. You can accomplish this by passing an array of relationships to the `with` method where the array key is a relationship name and the array value is a closure that adds additional constraints to the eager loading query:"
 msgstr "在積極載入關聯時，我們有時候可能會希望能給積極載入查詢指定額外的查詢條件。可以通過傳入一組包含關聯的陣列給 `with` 方法來達成。這個陣列的索引鍵應為關聯的名稱，而陣列值則為要給積極載入查詢加上額外查詢條件的閉包："
 
-#: docs/10.x/eloquent-relationships.md:block 413 (code)
-msgid "use App\\Models\\User;\n\n"
+#: docs/10.x/eloquent-relationships.md:block 417 (code)
+msgid "use App\\Models\\User;\n"
+"use Illuminate\\Contracts\\Database\\Eloquent\\Builder;\n\n"
 "$users = User::with(['posts' => function (Builder $query) {\n"
 "    $query->where('title', 'like', '%code%');\n"
 "}])->get();\n"
-msgstr "use App\\Models\\User;\n\n"
-"$users = User::with(['posts' => function (Builder $query) {\n"
-"    $query->where('title', 'like', '%code%');\n"
-"}])->get();\n"
+msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 414 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 418 (paragraph)
 msgid "In this example, Eloquent will only eager load posts where the post's `title` column contains the word `code`. You may call other [query builder](/docs/{{version}}/queries) methods to further customize the eager loading operation:"
 msgstr "在這個例子中，Eloquent 只會積極載入 `title` 欄位含有關鍵字 `code` 的文章。你還可以呼叫其他的 [Query Builder](/docs/{{version}}/queries) 方法來進一步自訂積極式載入："
 
-#: docs/10.x/eloquent-relationships.md:block 415 (code)
+#: docs/10.x/eloquent-relationships.md:block 419 (code)
 msgid "$users = User::with(['posts' => function (Builder $query) {\n"
 "    $query->orderBy('created_at', 'desc');\n"
 "}])->get();\n"
@@ -2920,77 +2943,63 @@ msgstr "$users = User::with(['posts' => function (Builder $query) {\n"
 "    $query->orderBy('created_at', 'desc');\n"
 "}])->get();\n"
 
-#: docs/10.x/eloquent-relationships.md:block 416 (quote)
+#: docs/10.x/eloquent-relationships.md:block 420 (quote)
 msgid "**Warning** The `limit` and `take` query builder methods may not be used when constraining eager loads."
 msgstr "**Warning** 積極式載入不能使用 `limit` 與 `take` Query Builder 方法來作條件限制。"
 
-#: docs/10.x/eloquent-relationships.md:block 418 (header)
+#: docs/10.x/eloquent-relationships.md:block 422 (header)
 msgid "Constraining Eager Loading Of `morphTo` Relationships"
 msgstr "包含查詢條件的 `morphTo` 關聯積極載入"
 
-#: docs/10.x/eloquent-relationships.md:block 419 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 423 (paragraph)
 msgid "If you are eager loading a `morphTo` relationship, Eloquent will run multiple queries to fetch each type of related model. You may add additional constraints to each of these queries using the `MorphTo` relation's `constrain` method:"
 msgstr "在積極載入 `morphTo` 關聯時，Eloquent 會為關聯 Model 的每個類型都執行多筆查詢。我們可以使用 `MorphTo` 關聯的 `constrain` 方法來對這些查詢分別加上額外的查詢條件："
 
-#: docs/10.x/eloquent-relationships.md:block 420 (code)
-msgid "use Illuminate\\Database\\Eloquent\\Builder;\n"
-"use Illuminate\\Database\\Eloquent\\Relations\\MorphTo;\n\n"
+#: docs/10.x/eloquent-relationships.md:block 424 (code)
+msgid "use Illuminate\\Database\\Eloquent\\Relations\\MorphTo;\n\n"
 "$comments = Comment::with(['commentable' => function (MorphTo $morphTo) {\n"
 "    $morphTo->constrain([\n"
-"        Post::class => function (Builder $query) {\n"
+"        Post::class => function ($query) {\n"
 "            $query->whereNull('hidden_at');\n"
 "        },\n"
-"        Video::class => function (Builder $query) {\n"
+"        Video::class => function ($query) {\n"
 "            $query->where('type', 'educational');\n"
 "        },\n"
 "    ]);\n"
 "}])->get();\n"
-msgstr "use Illuminate\\Database\\Eloquent\\Builder;\n"
-"use Illuminate\\Database\\Eloquent\\Relations\\MorphTo;\n\n"
-"$comments = Comment::with(['commentable' => function (MorphTo $morphTo) {\n"
-"    $morphTo->constrain([\n"
-"        Post::class => function (Builder $query) {\n"
-"            $query->whereNull('hidden_at');\n"
-"        },\n"
-"        Video::class => function (Builder $query) {\n"
-"            $query->where('type', 'educational');\n"
-"        },\n"
-"    ]);\n"
-"}])->get();\n"
+msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 421 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 425 (paragraph)
 msgid "In this example, Eloquent will only eager load posts that have not been hidden and videos that have a `type` value of \"educational\"."
 msgstr "在這個範例中，Eloquent 只會積極載入非隱藏的貼文，以及 `type` 值不是「educational」的影片。"
 
-#: docs/10.x/eloquent-relationships.md:block 423 (header)
+#: docs/10.x/eloquent-relationships.md:block 427 (header)
 msgid "Constraining Eager Loads With Relationship Existence"
 msgstr "通過判斷關聯是否存在來作為 Eager Loading 的條件"
 
-#: docs/10.x/eloquent-relationships.md:block 424 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 428 (paragraph)
 msgid "You may sometimes find yourself needing to check for the existence of a relationship while simultaneously loading the relationship based on the same conditions. For example, you may wish to only retrieve `User` models that have child `Post` models matching a given query condition while also eager loading the matching posts. You may accomplish this using the `withWhereHas` method:"
 msgstr "有時候，我們可能需要檢查某個關聯是否存在，而同時又要依照這個條件來載入關聯。舉例來說，我們想取得 `User` Model，而這些 `User` Model 必須擁有滿足某個查詢條件的 `Post` Model，並且在這些 User 上積極載入符合這些條件的 `Post`。這種情況可以使用 `withWhereHas` 方法來達成："
 
-#: docs/10.x/eloquent-relationships.md:block 425 (code)
-msgid "use App\\Models\\User;\n"
-"use Illuminate\\Database\\Eloquent\\Builder;\n\n"
-"$users = User::withWhereHas('posts', function (Builder $query) {\n"
+#: docs/10.x/eloquent-relationships.md:block 429 (code)
+msgid "use App\\Models\\User;\n\n"
+"$users = User::withWhereHas('posts', function ($query) {\n"
 "    $query->where('featured', true);\n"
 "})->get();\n"
-msgstr "use App\\Models\\User;\n"
-"use Illuminate\\Database\\Eloquent\\Builder;\n\n"
-"$users = User::withWhereHas('posts', function (Builder $query) {\n"
+msgstr "use App\\Models\\User;\n\n"
+"$users = User::withWhereHas('posts', function ($query) {\n"
 "    $query->where('featured', true);\n"
 "})->get();\n"
 
-#: docs/10.x/eloquent-relationships.md:block 427 (header)
+#: docs/10.x/eloquent-relationships.md:block 431 (header)
 msgid "Lazy Eager Loading"
 msgstr "消極的積極式載入"
 
-#: docs/10.x/eloquent-relationships.md:block 428 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 432 (paragraph)
 msgid "Sometimes you may need to eager load a relationship after the parent model has already been retrieved. For example, this may be useful if you need to dynamically decide whether to load related models:"
 msgstr "有時候，我們可能需要在已取得上層 Model 後才積極載入某個關聯。舉例來說，當想動態決定是否要載入關聯 Model 時，這種功能特別適合："
 
-#: docs/10.x/eloquent-relationships.md:block 429 (code)
+#: docs/10.x/eloquent-relationships.md:block 433 (code)
 msgid "use App\\Models\\Book;\n\n"
 "$books = Book::all();\n\n"
 "if ($someCondition) {\n"
@@ -3002,11 +3011,11 @@ msgstr "use App\\Models\\Book;\n\n"
 "    $books->load('author', 'publisher');\n"
 "}\n"
 
-#: docs/10.x/eloquent-relationships.md:block 430 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 434 (paragraph)
 msgid "If you need to set additional query constraints on the eager loading query, you may pass an array keyed by the relationships you wish to load. The array values should be closure instances which receive the query instance:"
 msgstr "若想在積極載入查詢上設定額外的查詢條件，可以傳入一組陣列，其索引鍵應為要載入的關聯。陣列的值則為一個閉包，用來接收 Query Builder 實體："
 
-#: docs/10.x/eloquent-relationships.md:block 431 (code)
+#: docs/10.x/eloquent-relationships.md:block 435 (code)
 msgid "$author->load(['books' => function (Builder $query) {\n"
 "    $query->orderBy('published_date', 'asc');\n"
 "}]);\n"
@@ -3014,27 +3023,27 @@ msgstr "$author->load(['books' => function (Builder $query) {\n"
 "    $query->orderBy('published_date', 'asc');\n"
 "}]);\n"
 
-#: docs/10.x/eloquent-relationships.md:block 432 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 436 (paragraph)
 msgid "To load a relationship only when it has not already been loaded, use the `loadMissing` method:"
 msgstr "若想只在某個關聯未被載入時才載入該關聯，可使用 `loadMissing` 方法："
 
-#: docs/10.x/eloquent-relationships.md:block 433 (code)
+#: docs/10.x/eloquent-relationships.md:block 437 (code)
 msgid "$book->loadMissing('author');\n"
 msgstr "$book->loadMissing('author');\n"
 
-#: docs/10.x/eloquent-relationships.md:block 435 (header)
+#: docs/10.x/eloquent-relationships.md:block 439 (header)
 msgid "Nested Lazy Eager Loading & `morphTo`"
 msgstr "巢狀之消極的積極載入與 `morphTo`"
 
-#: docs/10.x/eloquent-relationships.md:block 436 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 440 (paragraph)
 msgid "If you would like to eager load a `morphTo` relationship, as well as nested relationships on the various entities that may be returned by that relationship, you may use the `loadMorph` method."
 msgstr "若想積極式載入 `morphTo` 關聯、或是關聯 Model 的巢狀關聯等由 morphTo 關聯所回傳的功能，可以使用 `loadMorph` 方法："
 
-#: docs/10.x/eloquent-relationships.md:block 437 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 441 (paragraph)
 msgid "This method accepts the name of the `morphTo` relationship as its first argument, and an array of model / relationship pairs as its second argument. To help illustrate this method, let's consider the following model:"
 msgstr "這個方法的第一個引數是 `morphTo` 關聯的名稱，第二個引數則是一組包含 Model / 關聯配對的陣列。為了說明這個功能，先來看看下列 Model："
 
-#: docs/10.x/eloquent-relationships.md:block 441 (code)
+#: docs/10.x/eloquent-relationships.md:block 445 (code)
 msgid "$activities = ActivityFeed::with('parentable')\n"
 "    ->get()\n"
 "    ->loadMorph('parentable', [\n"
@@ -3050,19 +3059,19 @@ msgstr "$activities = ActivityFeed::with('parentable')\n"
 "        Post::class => ['author'],\n"
 "    ]);\n"
 
-#: docs/10.x/eloquent-relationships.md:block 443 (header)
+#: docs/10.x/eloquent-relationships.md:block 447 (header)
 msgid "Preventing Lazy Loading"
 msgstr "預防消極載入"
 
-#: docs/10.x/eloquent-relationships.md:block 444 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 448 (paragraph)
 msgid "As previously discussed, eager loading relationships can often provide significant performance benefits to your application. Therefore, if you would like, you may instruct Laravel to always prevent the lazy loading of relationships. To accomplish this, you may invoke the `preventLazyLoading` method offered by the base Eloquent model class. Typically, you should call this method within the `boot` method of your application's `AppServiceProvider` class."
 msgstr "前面也說明過，對你的專案來說，積極載入關聯通常可以顯著提升效能。因此，我們可能會希望讓 Laravel 總是避免消極式載入關聯。為此，我們可以呼叫基礎 Eloquent Model 上的 `preventLazyLoading` 方法。一般來說，應該在你的專案中 `AppServiceProvider` 類別的 `boot` 方法內呼叫這個方法。"
 
-#: docs/10.x/eloquent-relationships.md:block 445 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 449 (paragraph)
 msgid "The `preventLazyLoading` method accepts an optional boolean argument that indicates if lazy loading should be prevented. For example, you may wish to only disable lazy loading in non-production environments so that your production environment will continue to function normally even if a lazy loaded relationship is accidentally present in production code:"
 msgstr "`preventLazyLoading` 方法接受一個可選的布林引數，用來判斷是否應防止消極式載入。舉例來說，我們肯跟會希望只在非正式環境下才進用消極式載入，這樣一來，就算正式環境上的程式碼內不小心有個消極式載入的關聯，正式環境也可以正常運作："
 
-#: docs/10.x/eloquent-relationships.md:block 446 (code)
+#: docs/10.x/eloquent-relationships.md:block 450 (code)
 msgid "use Illuminate\\Database\\Eloquent\\Model;\n\n"
 "/**\n"
 " * Bootstrap any application services.\n"
@@ -3080,37 +3089,34 @@ msgstr "use Illuminate\\Database\\Eloquent\\Model;\n\n"
 "    Model::preventLazyLoading(! $this->app->isProduction());\n"
 "}\n"
 
-#: docs/10.x/eloquent-relationships.md:block 447 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 451 (paragraph)
 msgid "After preventing lazy loading, Eloquent will throw a `Illuminate\\Database\\LazyLoadingViolationException` exception when your application attempts to lazy load any Eloquent relationship."
 msgstr "阻止消極式載入後，當程式嘗試要消極載入任何 Eloquent 關聯時，Eloquent 會擲回一個 `Illuminate\\Database\\LazyLoadingViolationException` 例外。"
 
-#: docs/10.x/eloquent-relationships.md:block 448 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 452 (paragraph)
 msgid "You may customize the behavior of lazy loading violations using the `handleLazyLoadingViolationsUsing` method. For example, using this method, you may instruct lazy loading violations to only be logged instead of interrupting the application's execution with exceptions:"
 msgstr "可以使用 `handleLazyLoadingViolationsUsing` 方法來自訂當發生消極載入時要如何處置。舉例來說，我們可以使用這個方法來讓 Laravel 在遇到消極載入的時候紀錄到日誌，而不是使用例外在終止程式的執行："
 
-#: docs/10.x/eloquent-relationships.md:block 449 (code)
+#: docs/10.x/eloquent-relationships.md:block 453 (code)
 msgid "Model::handleLazyLoadingViolationUsing(function (Model $model, string $relation) {\n"
-"    $class = get_class($model);\n\n"
+"    $class = $model::class;\n\n"
 "    info(\"Attempted to lazy load [{$relation}] on model [{$class}].\");\n"
 "});\n"
-msgstr "Model::handleLazyLoadingViolationUsing(function (Model $model, string $relation) {\n"
-"    $class = get_class($model);\n\n"
-"    info(\"Attempted to lazy load [{$relation}] on model [{$class}].\");\n"
-"});\n"
+msgstr ""
 
-#: docs/10.x/eloquent-relationships.md:block 451 (header)
+#: docs/10.x/eloquent-relationships.md:block 455 (header)
 msgid "Inserting & Updating Related Models"
 msgstr "插入與更新關聯的 Model"
 
-#: docs/10.x/eloquent-relationships.md:block 453 (header)
+#: docs/10.x/eloquent-relationships.md:block 457 (header)
 msgid "The `save` Method"
 msgstr "`save` 方法"
 
-#: docs/10.x/eloquent-relationships.md:block 454 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 458 (paragraph)
 msgid "Eloquent provides convenient methods for adding new models to relationships. For example, perhaps you need to add a new comment to a post. Instead of manually setting the `post_id` attribute on the `Comment` model you may insert the comment using the relationship's `save` method:"
 msgstr "Eloquent 提供了一些方便的方法來給關聯新增新 Model。舉例來說，我們可能會需要給貼文新增新留言。比起手動在 `Comment` Model 上設定 `post_id`，我們可以使用關聯的 `save` Model 來插入留言："
 
-#: docs/10.x/eloquent-relationships.md:block 455 (code)
+#: docs/10.x/eloquent-relationships.md:block 459 (code)
 msgid "use App\\Models\\Comment;\n"
 "use App\\Models\\Post;\n\n"
 "$comment = new Comment(['message' => 'A new comment.']);\n\n"
@@ -3122,15 +3128,15 @@ msgstr "use App\\Models\\Comment;\n"
 "$post = Post::find(1);\n\n"
 "$post->comments()->save($comment);\n"
 
-#: docs/10.x/eloquent-relationships.md:block 456 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 460 (paragraph)
 msgid "Note that we did not access the `comments` relationship as a dynamic property. Instead, we called the `comments` method to obtain an instance of the relationship. The `save` method will automatically add the appropriate `post_id` value to the new `Comment` model."
 msgstr "請注意，我們不是以動態屬性的方式來存取 `comment` 關聯，而是呼叫 `comments` 方法來取得關聯的實體。`save` 方法會自動為新建立的 `Comment` Model 加上適當的 `post_id` 值。"
 
-#: docs/10.x/eloquent-relationships.md:block 457 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 461 (paragraph)
 msgid "If you need to save multiple related models, you may use the `saveMany` method:"
 msgstr "若有需要保存多個關聯 Model，可以使用 `saveMany` 方法："
 
-#: docs/10.x/eloquent-relationships.md:block 458 (code)
+#: docs/10.x/eloquent-relationships.md:block 462 (code)
 msgid "$post = Post::find(1);\n\n"
 "$post->comments()->saveMany([\n"
 "    new Comment(['message' => 'A new comment.']),\n"
@@ -3142,11 +3148,11 @@ msgstr "$post = Post::find(1);\n\n"
 "    new Comment(['message' => 'Another new comment.']),\n"
 "]);\n"
 
-#: docs/10.x/eloquent-relationships.md:block 459 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 463 (paragraph)
 msgid "The `save` and `saveMany` methods will persist the given model instances, but will not add the newly persisted models to any in-memory relationships that are already loaded onto the parent model. If you plan on accessing the relationship after using the `save` or `saveMany` methods, you may wish to use the `refresh` method to reload the model and its relationships:"
 msgstr "`save` 與 `saveMany` 會將 Model 實體保存起來。不過，保存好的 Model 並不會被加到上層 Model 中已經載入到記憶體的關聯。在使用 `save` 或 `saveMany` 方法後，若有打算要存取這些關聯，可使用 `refresh` 方法來重新載入 Model 與其關聯："
 
-#: docs/10.x/eloquent-relationships.md:block 460 (code)
+#: docs/10.x/eloquent-relationships.md:block 464 (code)
 msgid "$post->comments()->save($comment);\n\n"
 "$post->refresh();\n\n"
 "// All comments, including the newly saved comment...\n"
@@ -3156,15 +3162,15 @@ msgstr "$post->comments()->save($comment);\n\n"
 "// 所有留言，包含新建立的留言...\n"
 "$post->comments;\n"
 
-#: docs/10.x/eloquent-relationships.md:block 462 (header)
+#: docs/10.x/eloquent-relationships.md:block 466 (header)
 msgid "Recursively Saving Models & Relationships"
 msgstr "遞歸保存 Model 與關聯"
 
-#: docs/10.x/eloquent-relationships.md:block 463 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 467 (paragraph)
 msgid "If you would like to `save` your model and all of its associated relationships, you may use the `push` method. In this example, the `Post` model will be saved as well as its comments and the comment's authors:"
 msgstr "若想讓 `save` 方法保存 Model 與其所有相關的關聯 Model，可以使用 `push` 方法。在這個例子中，`Post` Model、`Post` Model 的留言、留言的作者等都會一起被保存："
 
-#: docs/10.x/eloquent-relationships.md:block 464 (code)
+#: docs/10.x/eloquent-relationships.md:block 468 (code)
 msgid "$post = Post::find(1);\n\n"
 "$post->comments[0]->message = 'Message';\n"
 "$post->comments[0]->author->name = 'Author Name';\n\n"
@@ -3174,15 +3180,23 @@ msgstr "$post = Post::find(1);\n\n"
 "$post->comments[0]->author->name = 'Author Name';\n\n"
 "$post->push();\n"
 
-#: docs/10.x/eloquent-relationships.md:block 466 (header)
+#: docs/10.x/eloquent-relationships.md:block 469 (paragraph)
+msgid "The `pushQuietly` method may be used to save a model and its associated relationships without raising any events:"
+msgstr ""
+
+#: docs/10.x/eloquent-relationships.md:block 470 (code)
+msgid "$post->pushQuietly();\n"
+msgstr ""
+
+#: docs/10.x/eloquent-relationships.md:block 472 (header)
 msgid "The `create` Method"
 msgstr "`create` 方法"
 
-#: docs/10.x/eloquent-relationships.md:block 467 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 473 (paragraph)
 msgid "In addition to the `save` and `saveMany` methods, you may also use the `create` method, which accepts an array of attributes, creates a model, and inserts it into the database. The difference between `save` and `create` is that `save` accepts a full Eloquent model instance while `create` accepts a plain PHP `array`. The newly created model will be returned by the `create` method:"
 msgstr "除了 `save` 跟 `saveMany` 方法外，也可以使用 `create` 方法來建立 Model 並插入資料庫。`create` 方法接受一組包含屬性的陣列。`save` 與 `create` 間不同的地方在於：`save` 接收完整的 Eloquent Model 實體，而 `create` 接收的是純 PHP 的 `array`。`create` 方法會回傳新建立的 Model："
 
-#: docs/10.x/eloquent-relationships.md:block 468 (code)
+#: docs/10.x/eloquent-relationships.md:block 474 (code)
 msgid "use App\\Models\\Post;\n\n"
 "$post = Post::find(1);\n\n"
 "$comment = $post->comments()->create([\n"
@@ -3194,11 +3208,11 @@ msgstr "use App\\Models\\Post;\n\n"
 "    'message' => 'A new comment.',\n"
 "]);\n"
 
-#: docs/10.x/eloquent-relationships.md:block 469 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 475 (paragraph)
 msgid "You may use the `createMany` method to create multiple related models:"
 msgstr "可以使用 `createMany` 方法來建立多個關聯的 Model："
 
-#: docs/10.x/eloquent-relationships.md:block 470 (code)
+#: docs/10.x/eloquent-relationships.md:block 476 (code)
 msgid "$post = Post::find(1);\n\n"
 "$post->comments()->createMany([\n"
 "    ['message' => 'A new comment.'],\n"
@@ -3210,23 +3224,38 @@ msgstr "$post = Post::find(1);\n\n"
 "    ['message' => 'Another new comment.'],\n"
 "]);\n"
 
-#: docs/10.x/eloquent-relationships.md:block 471 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 477 (paragraph)
+msgid "The `createQuietly` and `createManyQuietly` methods may be used to create a model(s) without dispatching any events:"
+msgstr ""
+
+#: docs/10.x/eloquent-relationships.md:block 478 (code)
+msgid "$user = User::find(1);\n\n"
+"$user->posts()->createQuietly([\n"
+"    'title' => 'Post title.',\n"
+"]);\n\n"
+"$user->posts()->createManyQuietly([\n"
+"    ['title' => 'First post.'],\n"
+"    ['title' => 'Second post.'],\n"
+"]);\n"
+msgstr ""
+
+#: docs/10.x/eloquent-relationships.md:block 479 (paragraph)
 msgid "You may also use the `findOrNew`, `firstOrNew`, `firstOrCreate`, and `updateOrCreate` methods to [create and update models on relationships](/docs/{{version}}/eloquent#upserts)."
 msgstr "也可以使用 `findOrNew`, `firstOrNew`, `firstOrCreate`, 與 `updateOrCreate` 等方法來[在關聯上建立並更新 Model](/docs/{{version}}/eloquent#upserts)。"
 
-#: docs/10.x/eloquent-relationships.md:block 472 (quote)
+#: docs/10.x/eloquent-relationships.md:block 480 (quote)
 msgid "**Note** Before using the `create` method, be sure to review the [mass assignment](/docs/{{version}}/eloquent#mass-assignment) documentation."
 msgstr "**Note** 在使用 `create` 方法前，請先閱讀[大量賦值](/docs/{{version}}/eloquent#mass-assignment)的說明文件。"
 
-#: docs/10.x/eloquent-relationships.md:block 474 (header)
+#: docs/10.x/eloquent-relationships.md:block 482 (header)
 msgid "Belongs To Relationships"
 msgstr "Belongs To 關聯"
 
-#: docs/10.x/eloquent-relationships.md:block 475 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 483 (paragraph)
 msgid "If you would like to assign a child model to a new parent model, you may use the `associate` method. In this example, the `User` model defines a `belongsTo` relationship to the `Account` model. This `associate` method will set the foreign key on the child model:"
 msgstr "若想將子 Model 指派給新的上層 Model，可以使用 `associate` 方法。在這個例子中，`User` Model 定義了一個連到 `Account` Model 的 `belongsTo` 關聯。`associate` 方法會在子 Model 上設定外部索引鍵："
 
-#: docs/10.x/eloquent-relationships.md:block 476 (code)
+#: docs/10.x/eloquent-relationships.md:block 484 (code)
 msgid "use App\\Models\\Account;\n\n"
 "$account = Account::find(10);\n\n"
 "$user->account()->associate($account);\n\n"
@@ -3236,25 +3265,25 @@ msgstr "use App\\Models\\Account;\n\n"
 "$user->account()->associate($account);\n\n"
 "$user->save();\n"
 
-#: docs/10.x/eloquent-relationships.md:block 477 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 485 (paragraph)
 msgid "To remove a parent model from a child model, you may use the `dissociate` method. This method will set the relationship's foreign key to `null`:"
 msgstr "若要從子 Model 上移除上層 Model，可以使用 `dissociate` 方法。這個方法會將關聯的外部索引鍵設為 `null`："
 
-#: docs/10.x/eloquent-relationships.md:block 478 (code)
+#: docs/10.x/eloquent-relationships.md:block 486 (code)
 msgid "$user->account()->dissociate();\n\n"
 "$user->save();\n"
 msgstr "$user->account()->dissociate();\n\n"
 "$user->save();\n"
 
-#: docs/10.x/eloquent-relationships.md:block 482 (header)
+#: docs/10.x/eloquent-relationships.md:block 490 (header)
 msgid "Attaching / Detaching"
 msgstr "附加 / 解除附加"
 
-#: docs/10.x/eloquent-relationships.md:block 483 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 491 (paragraph)
 msgid "Eloquent also provides methods to make working with many-to-many relationships more convenient. For example, let's imagine a user can have many roles and a role can have many users. You may use the `attach` method to attach a role to a user by inserting a record in the relationship's intermediate table:"
 msgstr "Eloquent 還提供一些能讓處理多對多關聯更方便的方法。舉例來說，先假設一個使用者 (User) 可以有多個職位 (Role)，而一個職位可以有多個使用者。可以使用 `attach` 方法來將某個職位附加到使用者身上，`attach` 會在關聯的中介資料表上插入一筆紀錄來完成："
 
-#: docs/10.x/eloquent-relationships.md:block 484 (code)
+#: docs/10.x/eloquent-relationships.md:block 492 (code)
 msgid "use App\\Models\\User;\n\n"
 "$user = User::find(1);\n\n"
 "$user->roles()->attach($roleId);\n"
@@ -3262,19 +3291,19 @@ msgstr "use App\\Models\\User;\n\n"
 "$user = User::find(1);\n\n"
 "$user->roles()->attach($roleId);\n"
 
-#: docs/10.x/eloquent-relationships.md:block 485 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 493 (paragraph)
 msgid "When attaching a relationship to a model, you may also pass an array of additional data to be inserted into the intermediate table:"
 msgstr "在把關聯附加到 Model 上時，可以傳入一組陣列，包含額外要被插入到中介資料表上的資料："
 
-#: docs/10.x/eloquent-relationships.md:block 486 (code)
+#: docs/10.x/eloquent-relationships.md:block 494 (code)
 msgid "$user->roles()->attach($roleId, ['expires' => $expires]);\n"
 msgstr "$user->roles()->attach($roleId, ['expires' => $expires]);\n"
 
-#: docs/10.x/eloquent-relationships.md:block 487 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 495 (paragraph)
 msgid "Sometimes it may be necessary to remove a role from a user. To remove a many-to-many relationship record, use the `detach` method. The `detach` method will delete the appropriate record out of the intermediate table; however, both models will remain in the database:"
 msgstr "有時候，我們還會需要從使用者身上移除某個職位。若要移除 Many-to-Many 關聯的紀錄，請使用 `detach` 方法。`detach` 方法會從中介資料表上移除相應的紀錄。不過，使用者跟職位兩個 Model 都還會保留在資料庫中："
 
-#: docs/10.x/eloquent-relationships.md:block 488 (code)
+#: docs/10.x/eloquent-relationships.md:block 496 (code)
 msgid "// Detach a single role from the user...\n"
 "$user->roles()->detach($roleId);\n\n"
 "// Detach all roles from the user...\n"
@@ -3284,11 +3313,11 @@ msgstr "// 在使用者上取消附加單一職位...\n"
 "// 在使用者上取消附加所有職位...\n"
 "$user->roles()->detach();\n"
 
-#: docs/10.x/eloquent-relationships.md:block 489 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 497 (paragraph)
 msgid "For convenience, `attach` and `detach` also accept arrays of IDs as input:"
 msgstr "為了更方便使用，`attach` 與 `detach` 也能接受一組包含 ID 的陣列作為輸入："
 
-#: docs/10.x/eloquent-relationships.md:block 490 (code)
+#: docs/10.x/eloquent-relationships.md:block 498 (code)
 msgid "$user = User::find(1);\n\n"
 "$user->roles()->detach([1, 2, 3]);\n\n"
 "$user->roles()->attach([\n"
@@ -3302,55 +3331,55 @@ msgstr "$user = User::find(1);\n\n"
 "    2 => ['expires' => $expires],\n"
 "]);\n"
 
-#: docs/10.x/eloquent-relationships.md:block 492 (header)
+#: docs/10.x/eloquent-relationships.md:block 500 (header)
 msgid "Syncing Associations"
 msgstr "同步關聯"
 
-#: docs/10.x/eloquent-relationships.md:block 493 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 501 (paragraph)
 msgid "You may also use the `sync` method to construct many-to-many associations. The `sync` method accepts an array of IDs to place on the intermediate table. Any IDs that are not in the given array will be removed from the intermediate table. So, after this operation is complete, only the IDs in the given array will exist in the intermediate table:"
 msgstr "可以使用 `sync` 方法來設定 Many-to-Many 關聯。`sync` 方法接受一組包含 ID 的陣列，用以插入中介資料表。中介資料表中若有不在此陣列中的 ID 則會被移除。因此，完成這個操作後，中介資料表中就只會有給定陣列中的 ID："
 
-#: docs/10.x/eloquent-relationships.md:block 494 (code)
+#: docs/10.x/eloquent-relationships.md:block 502 (code)
 msgid "$user->roles()->sync([1, 2, 3]);\n"
 msgstr "$user->roles()->sync([1, 2, 3]);\n"
 
-#: docs/10.x/eloquent-relationships.md:block 495 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 503 (paragraph)
 msgid "You may also pass additional intermediate table values with the IDs:"
 msgstr "也可以使用 ID 來傳入額外的中介資料表值："
 
-#: docs/10.x/eloquent-relationships.md:block 496 (code)
+#: docs/10.x/eloquent-relationships.md:block 504 (code)
 msgid "$user->roles()->sync([1 => ['expires' => true], 2, 3]);\n"
 msgstr "$user->roles()->sync([1 => ['expires' => true], 2, 3]);\n"
 
-#: docs/10.x/eloquent-relationships.md:block 497 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 505 (paragraph)
 msgid "If you would like to insert the same intermediate table values with each of the synced model IDs, you may use the `syncWithPivotValues` method:"
 msgstr "如喔想為每個同步的 Model ID 都插入相同的中介資料表值，則可以使用 `syncWithPivotValue` 方法："
 
-#: docs/10.x/eloquent-relationships.md:block 498 (code)
+#: docs/10.x/eloquent-relationships.md:block 506 (code)
 msgid "$user->roles()->syncWithPivotValues([1, 2, 3], ['active' => true]);\n"
 msgstr "$user->roles()->syncWithPivotValues([1, 2, 3], ['active' => true]);\n"
 
-#: docs/10.x/eloquent-relationships.md:block 499 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 507 (paragraph)
 msgid "If you do not want to detach existing IDs that are missing from the given array, you may use the `syncWithoutDetaching` method:"
 msgstr "若想從給定陣列中移除現有的 ID，則可以使用 `syncWithoutDetaching` 方法："
 
-#: docs/10.x/eloquent-relationships.md:block 500 (code)
+#: docs/10.x/eloquent-relationships.md:block 508 (code)
 msgid "$user->roles()->syncWithoutDetaching([1, 2, 3]);\n"
 msgstr "$user->roles()->syncWithoutDetaching([1, 2, 3]);\n"
 
-#: docs/10.x/eloquent-relationships.md:block 502 (header)
+#: docs/10.x/eloquent-relationships.md:block 510 (header)
 msgid "Toggling Associations"
 msgstr "切換關聯"
 
-#: docs/10.x/eloquent-relationships.md:block 503 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 511 (paragraph)
 msgid "The many-to-many relationship also provides a `toggle` method which \"toggles\" the attachment status of the given related model IDs. If the given ID is currently attached, it will be detached. Likewise, if it is currently detached, it will be attached:"
 msgstr "Many-to-Many 關聯還提供了一個 `toggle` 方法，可以用來「切換 (Toggle)」給定關聯 Model ID 的附加狀態。若給定的 ID 目前是已附加的狀態，則該 ID 會被解除附加。反之，若目前未附加，則會被附加上去："
 
-#: docs/10.x/eloquent-relationships.md:block 504 (code)
+#: docs/10.x/eloquent-relationships.md:block 512 (code)
 msgid "$user->roles()->toggle([1, 2, 3]);\n"
 msgstr "$user->roles()->toggle([1, 2, 3]);\n"
 
-#: docs/10.x/eloquent-relationships.md:block 506 (code)
+#: docs/10.x/eloquent-relationships.md:block 514 (code)
 msgid "$user->roles()->toggle([\n"
 "    1 => ['expires' => true],\n"
 "    2 => ['expires' => true],\n"
@@ -3360,15 +3389,15 @@ msgstr "$user->roles()->toggle([\n"
 "    2 => ['expires' => true],\n"
 "]);\n"
 
-#: docs/10.x/eloquent-relationships.md:block 508 (header)
+#: docs/10.x/eloquent-relationships.md:block 516 (header)
 msgid "Updating A Record On The Intermediate Table"
 msgstr "更新中介資料表上的紀錄"
 
-#: docs/10.x/eloquent-relationships.md:block 509 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 517 (paragraph)
 msgid "If you need to update an existing row in your relationship's intermediate table, you may use the `updateExistingPivot` method. This method accepts the intermediate record foreign key and an array of attributes to update:"
 msgstr "若想更新關聯的中介資料表上現有的紀錄，可以使用 `updateExistingPivot` 方法。這個方法接受中介資料表的外部索引鍵以及一組包含要更新屬性的陣列："
 
-#: docs/10.x/eloquent-relationships.md:block 510 (code)
+#: docs/10.x/eloquent-relationships.md:block 518 (code)
 msgid "$user = User::find(1);\n\n"
 "$user->roles()->updateExistingPivot($roleId, [\n"
 "    'active' => false,\n"
@@ -3378,19 +3407,19 @@ msgstr "$user = User::find(1);\n\n"
 "    'active' => false,\n"
 "]);\n"
 
-#: docs/10.x/eloquent-relationships.md:block 512 (header)
+#: docs/10.x/eloquent-relationships.md:block 520 (header)
 msgid "Touching Parent Timestamps"
 msgstr "更新上層的時戳"
 
-#: docs/10.x/eloquent-relationships.md:block 513 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 521 (paragraph)
 msgid "When a model defines a `belongsTo` or `belongsToMany` relationship to another model, such as a `Comment` which belongs to a `Post`, it is sometimes helpful to update the parent's timestamp when the child model is updated."
 msgstr "若某 Model 有定義對另一個 Model 的 `belongsTo` 或 `belongsToMany` 關聯 —— 如 `Comment` Model 隸屬於 `Post` Model 等 —— 有時候，若能在子 Model 更新時也一併更新上層 Model 的時戳會很實用。"
 
-#: docs/10.x/eloquent-relationships.md:block 514 (paragraph)
+#: docs/10.x/eloquent-relationships.md:block 522 (paragraph)
 msgid "For example, when a `Comment` model is updated, you may want to automatically \"touch\" the `updated_at` timestamp of the owning `Post` so that it is set to the current date and time. To accomplish this, you may add a `touches` property to your child model containing the names of the relationships that should have their `updated_at` timestamps updated when the child model is updated:"
 msgstr "舉例來說，當 `Comment` Model 更新後，我們可能會想自動「更新 (Touch)」擁有該 `Comment` 的 `Post` Model 上的 `updated_at` 時戳，將該時戳設為目前的日期與時間。為此，我們可以在子 Model 內新增一個 `touches` 屬性，其中包含關聯的名稱。當子 Model 更新後，這些關聯的 `updated_at` 時戳也會一起更新："
 
-#: docs/10.x/eloquent-relationships.md:block 515 (code)
+#: docs/10.x/eloquent-relationships.md:block 523 (code)
 msgid "<?php\n\n"
 "namespace App\\Models;\n\n"
 "use Illuminate\\Database\\Eloquent\\Model;\n"
@@ -3432,7 +3461,7 @@ msgstr "<?php\n\n"
 "    }\n"
 "}\n"
 
-#: docs/10.x/eloquent-relationships.md:block 516 (quote)
+#: docs/10.x/eloquent-relationships.md:block 524 (quote)
 msgid "**Warning** Parent model timestamps will only be updated if the child model is updated using Eloquent's `save` method."
 msgstr "**Warning** 只有在使用 Eloquent 的 `save` 方法來更新子 Model 時，才會更新上傳 Model 的時戳。"
 
@@ -4374,6 +4403,10 @@ msgstr "<?php\n\n"
 "    }\n"
 "}\n"
 
+#: docs/8.x/eloquent-relationships.md:block 269 (paragraph)
+msgid "The example above will generate the following SQL. As you can see, the `or` clause instructs the query to return *any* user with greater than 100 votes. The query is no longer constrained to a specific user:"
+msgstr "上述的例子會產生下列的 SQL。如你所見，`or` 子句會讓查詢回傳 **所有** 大於 100 得票數的使用者。這個查詢不會被限制在任何特定使用者上："
+
 #: docs/8.x/eloquent-relationships.md:block 278 (code)
 msgid "use App\\Models\\User;\n\n"
 "$user = User::find(1);\n\n"
@@ -4556,6 +4589,32 @@ msgstr "$users = User::with(['posts' => function ($query) {\n"
 msgid "{note} The `limit` and `take` query builder methods may not be used when constraining eager loads."
 msgstr "{note} 積極式載入不能使用 `limit` 與 `take` Query Builder 方法來作條件限制。"
 
+#: docs/8.x/eloquent-relationships.md:block 404 (code)
+msgid "use Illuminate\\Database\\Eloquent\\Builder;\n"
+"use Illuminate\\Database\\Eloquent\\Relations\\MorphTo;\n\n"
+"$comments = Comment::with(['commentable' => function (MorphTo $morphTo) {\n"
+"    $morphTo->constrain([\n"
+"        Post::class => function (Builder $query) {\n"
+"            $query->whereNull('hidden_at');\n"
+"        },\n"
+"        Video::class => function (Builder $query) {\n"
+"            $query->where('type', 'educational');\n"
+"        },\n"
+"    ]);\n"
+"}])->get();\n"
+msgstr "use Illuminate\\Database\\Eloquent\\Builder;\n"
+"use Illuminate\\Database\\Eloquent\\Relations\\MorphTo;\n\n"
+"$comments = Comment::with(['commentable' => function (MorphTo $morphTo) {\n"
+"    $morphTo->constrain([\n"
+"        Post::class => function (Builder $query) {\n"
+"            $query->whereNull('hidden_at');\n"
+"        },\n"
+"        Video::class => function (Builder $query) {\n"
+"            $query->where('type', 'educational');\n"
+"        },\n"
+"    ]);\n"
+"}])->get();\n"
+
 #: docs/8.x/eloquent-relationships.md:block 405 (paragraph)
 msgid "In this example, Eloquent will only eager load posts that have not been hidden and videos have a `type` value of \"educational\"."
 msgstr "在這個範例中，Eloquent 只會積極載入非隱藏的貼文，以及 `type` 值不是「educational」的影片。"
@@ -4648,13 +4707,35 @@ msgstr "<?php\n\n"
 msgid "{note} Parent model timestamps will only be updated if the child model is updated using Eloquent's `save` method."
 msgstr "{note} 只有在使用 Eloquent 的 `save` 方法來更新子 Model 時，才會更新上傳 Model 的時戳。"
 
-#: docs/9.x/eloquent-relationships.md:block 425 (code)
+#: docs/master/eloquent-relationships.md:block 413 (code)
 msgid "use App\\Models\\User;\n\n"
-"$users = User::withWhereHas('posts', function ($query) {\n"
-"    $query->where('featured', true);\n"
-"})->get();\n"
+"$users = User::with(['posts' => function (Builder $query) {\n"
+"    $query->where('title', 'like', '%code%');\n"
+"}])->get();\n"
 msgstr "use App\\Models\\User;\n\n"
-"$users = User::withWhereHas('posts', function ($query) {\n"
+"$users = User::with(['posts' => function (Builder $query) {\n"
+"    $query->where('title', 'like', '%code%');\n"
+"}])->get();\n"
+
+#: docs/master/eloquent-relationships.md:block 425 (code)
+msgid "use App\\Models\\User;\n"
+"use Illuminate\\Database\\Eloquent\\Builder;\n\n"
+"$users = User::withWhereHas('posts', function (Builder $query) {\n"
 "    $query->where('featured', true);\n"
 "})->get();\n"
+msgstr "use App\\Models\\User;\n"
+"use Illuminate\\Database\\Eloquent\\Builder;\n\n"
+"$users = User::withWhereHas('posts', function (Builder $query) {\n"
+"    $query->where('featured', true);\n"
+"})->get();\n"
+
+#: docs/master/eloquent-relationships.md:block 449 (code)
+msgid "Model::handleLazyLoadingViolationUsing(function (Model $model, string $relation) {\n"
+"    $class = get_class($model);\n\n"
+"    info(\"Attempted to lazy load [{$relation}] on model [{$class}].\");\n"
+"});\n"
+msgstr "Model::handleLazyLoadingViolationUsing(function (Model $model, string $relation) {\n"
+"    $class = get_class($model);\n\n"
+"    info(\"Attempted to lazy load [{$relation}] on model [{$class}].\");\n"
+"});\n"
 

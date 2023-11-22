@@ -10,7 +10,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
-"PO-Revision-Date: 2023-11-05 13:29\n"
+"PO-Revision-Date: 2023-11-22 10:08\n"
 
 #: docs/10.x/filesystem.md:block 1 (header)
 msgid "File Storage"
@@ -66,7 +66,7 @@ msgstr "[檔案 URL](#file-urls)"
 
 #: docs/10.x/filesystem.md:block 2 (unordered list)
 msgid "[Temporary URLs](#temporary-urls)"
-msgstr ""
+msgstr "[時效性 URL](#temporary-urls)"
 
 #: docs/10.x/filesystem.md:block 2 (unordered list)
 msgid "[File Metadata](#file-metadata)"
@@ -106,7 +106,7 @@ msgstr "[目錄](#directories)"
 
 #: docs/10.x/filesystem.md:block 2 (unordered list)
 msgid "[Testing](#testing)"
-msgstr ""
+msgstr "[測試](#testing)"
 
 #: docs/10.x/filesystem.md:block 2 (unordered list)
 msgid "[Custom Filesystems](#custom-filesystems)"
@@ -206,7 +206,7 @@ msgstr "在使用 S3 Driver 前，需要先使用 Composer 套件管理員安裝
 
 #: docs/10.x/filesystem.md:block 30 (code)
 msgid "composer require league/flysystem-aws-s3-v3 \"^3.0\" --with-all-dependencies\n"
-msgstr ""
+msgstr "composer require league/flysystem-aws-s3-v3 \"^3.0\" --with-all-dependencies\n"
 
 #: docs/10.x/filesystem.md:block 31 (paragraph)
 msgid "The S3 driver configuration information is located in your `config/filesystems.php` configuration file. This file contains an example configuration array for an S3 driver. You are free to modify this array with your own S3 configuration and credentials. For convenience, these environment variables match the naming convention used by the AWS CLI."
@@ -292,7 +292,27 @@ msgid "'sftp' => [\n"
 "    // 'timeout' => 30,\n"
 "    // 'useAgent' => true,\n"
 "],\n"
-msgstr ""
+msgstr "'sftp' => [\n"
+"    'driver' => 'sftp',\n"
+"    'host' => env('SFTP_HOST'),\n\n"
+"    // 設定 Basic 身分認證...\n"
+"    'username' => env('SFTP_USERNAME'),\n"
+"    'password' => env('SFTP_PASSWORD'),\n\n"
+"    // 設定有加密密碼的 SSH 金鑰身分認證...\n"
+"    'privateKey' => env('SFTP_PRIVATE_KEY'),\n"
+"    'passphrase' => env('SFTP_PASSPHRASE'),\n\n"
+"    // 設定檔案與目錄的權限...\n"
+"    'visibility' => 'private', // `private` = 0600, `public` = 0644\n"
+"    'directory_visibility' => 'private', // `private` = 0700, `public` = 0755\n\n"
+"    // 可選的 SFTP 設定...\n"
+"    // 'hostFingerprint' => env('SFTP_HOST_FINGERPRINT'),\n"
+"    // 'maxTries' => 4,\n"
+"    // 'passphrase' => env('SFTP_PASSPHRASE'),\n"
+"    // 'port' => env('SFTP_PORT', 22),\n"
+"    // 'root' => env('SFTP_ROOT', ''),\n"
+"    // 'timeout' => 30,\n"
+"    // 'useAgent' => true,\n"
+"],\n"
 
 #: docs/10.x/filesystem.md:block 45 (header)
 msgid "Scoped & Read-Only Filesystems"
@@ -436,11 +456,11 @@ msgstr "$contents = Storage::get('file.jpg');\n"
 
 #: docs/10.x/filesystem.md:block 78 (paragraph)
 msgid "If the file you are retrieving contains JSON, you may use the `json` method to retrieve the file and decode its contents:"
-msgstr ""
+msgstr "若要取得的檔案包含 JSON，可使用 `json` 方法來取得該檔案並解碼其內容："
 
 #: docs/10.x/filesystem.md:block 79 (code)
 msgid "$orders = Storage::json('orders.json');\n"
-msgstr ""
+msgstr "$orders = Storage::json('orders.json');\n"
 
 #: docs/10.x/filesystem.md:block 80 (paragraph)
 msgid "The `exists` method may be used to determine if a file exists on the disk:"
@@ -593,15 +613,38 @@ msgid "<?php\n\n"
 "        );\n"
 "    }\n"
 "}\n"
-msgstr ""
+msgstr "<?php\n\n"
+"namespace App\\Providers;\n\n"
+"use DateTime;\n"
+"use Illuminate\\Support\\Facades\\Storage;\n"
+"use Illuminate\\Support\\Facades\\URL;\n"
+"use Illuminate\\Support\\ServiceProvider;\n\n"
+"class AppServiceProvider extends ServiceProvider\n"
+"{\n"
+"    /**\n"
+"     * Bootstrap any application services.\n"
+"     */\n"
+"    public function boot(): void\n"
+"    {\n"
+"        Storage::disk('local')->buildTemporaryUrlsUsing(\n"
+"            function (string $path, DateTime $expiration, array $options) {\n"
+"                return URL::temporarySignedRoute(\n"
+"                    'files.download',\n"
+"                    $expiration,\n"
+"                    array_merge($options, ['path' => $path])\n"
+"                );\n"
+"            }\n"
+"        );\n"
+"    }\n"
+"}\n"
 
 #: docs/10.x/filesystem.md:block 107 (header)
 msgid "Temporary Upload URLs"
-msgstr ""
+msgstr "時效性的上傳 URL"
 
 #: docs/10.x/filesystem.md:block 108 (quote)
 msgid "**Warning** The ability to generate temporary upload URLs is only supported by the `s3` driver."
-msgstr ""
+msgstr "**Warning** 目前只有 `s3` Driver 支援產生時效性的上傳 URL。"
 
 #: docs/10.x/filesystem.md:block 109 (paragraph)
 msgid "If you need to generate a temporary URL that can be used to upload a file directly from your client-side application, you may use the `temporaryUploadUrl` method. This method accepts a path and a `DateTime` instance specifying when the URL should expire. The `temporaryUploadUrl` method returns an associative array which may be destructured into the upload URL and the headers that should be included with the upload request:"

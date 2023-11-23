@@ -10,7 +10,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
-"PO-Revision-Date: 2023-11-22 10:08\n"
+"PO-Revision-Date: 2023-11-23 12:11\n"
 
 #: docs/10.x/filesystem.md:block 1 (header)
 msgid "File Storage"
@@ -648,18 +648,21 @@ msgstr "**Warning** 目前只有 `s3` Driver 支援產生時效性的上傳 URL�
 
 #: docs/10.x/filesystem.md:block 109 (paragraph)
 msgid "If you need to generate a temporary URL that can be used to upload a file directly from your client-side application, you may use the `temporaryUploadUrl` method. This method accepts a path and a `DateTime` instance specifying when the URL should expire. The `temporaryUploadUrl` method returns an associative array which may be destructured into the upload URL and the headers that should be included with the upload request:"
-msgstr ""
+msgstr "若有需要產生直接從用戶端應用程式上傳檔案的時效性 URL，可使用 `temporaryUploadUrl` 方法。該方法可傳入一個路徑與 `DateTime` 實體來指定該 URL 的時效。`temporaryUploadUrl` 方法會回傳一個關聯式陣列，可用來解構為 URL 與上傳 Request 要包含的 Header："
 
 #: docs/10.x/filesystem.md:block 110 (code)
 msgid "use Illuminate\\Support\\Facades\\Storage;\n\n"
 "['url' => $url, 'headers' => $headers] = Storage::temporaryUploadUrl(\n"
 "    'file.jpg', now()->addMinutes(5)\n"
 ");\n"
-msgstr ""
+msgstr "use Illuminate\\Support\\Facades\\Storage;\n\n"
+"['url' => $url, 'headers' => $headers] = Storage::temporaryUploadUrl(\n"
+"    'file.jpg', now()->addMinutes(5)\n"
+");\n"
 
 #: docs/10.x/filesystem.md:block 111 (paragraph)
 msgid "This method is primarily useful in serverless environments that require the client-side application to directly upload files to a cloud storage system such as Amazon S3."
-msgstr ""
+msgstr "此方法特別適合用在需要直接從用戶端應用程式將檔案上傳到如 Amazon S3 等雲端儲存系統的 ^[Serverless](無伺服器) 環境。"
 
 #: docs/10.x/filesystem.md:block 113 (header)
 msgid "File Metadata"
@@ -689,7 +692,7 @@ msgstr "使用 `mimeType` 方法，就可取得給定檔案的 MIME 型別："
 
 #: docs/10.x/filesystem.md:block 119 (code)
 msgid "$mime = Storage::mimeType('file.jpg');\n"
-msgstr ""
+msgstr "$mime = Storage::mimeType('file.jpg');\n"
 
 #: docs/10.x/filesystem.md:block 121 (header)
 msgid "File Paths"
@@ -1129,11 +1132,11 @@ msgstr "Storage::deleteDirectory($directory);\n"
 
 #: docs/10.x/filesystem.md:block 213 (header)
 msgid "Testing"
-msgstr ""
+msgstr "測試"
 
 #: docs/10.x/filesystem.md:block 214 (paragraph)
 msgid "The `Storage` facade's `fake` method allows you to easily generate a fake disk that, combined with the file generation utilities of the `Illuminate\\Http\\UploadedFile` class, greatly simplifies the testing of file uploads. For example:"
-msgstr ""
+msgstr "使用 `Storage` Facade 的 `fake` 方法就可輕鬆地產生 Fake Disk。Fake Disk 可以與 `Illuminate\\Http\\UploadedFile` 類別的檔案產生工具來搭配使用，讓我們能非常輕鬆地測試檔案上傳。舉例來說："
 
 #: docs/10.x/filesystem.md:block 215 (code)
 msgid "<?php\n\n"
@@ -1160,15 +1163,38 @@ msgid "<?php\n\n"
 "        Storage::disk('photos')->assertDirectoryEmpty('/wallpapers');\n"
 "    }\n"
 "}\n"
-msgstr ""
+msgstr "<?php\n\n"
+"namespace Tests\\Feature;\n\n"
+"use Illuminate\\Http\\UploadedFile;\n"
+"use Illuminate\\Support\\Facades\\Storage;\n"
+"use Tests\\TestCase;\n\n"
+"class ExampleTest extends TestCase\n"
+"{\n"
+"    public function test_albums_can_be_uploaded(): void\n"
+"    {\n"
+"        Storage::fake('photos');\n\n"
+"        $response = $this->json('POST', '/photos', [\n"
+"            UploadedFile::fake()->image('photo1.jpg'),\n"
+"            UploadedFile::fake()->image('photo2.jpg')\n"
+"        ]);\n\n"
+"        // 判斷保存了一個或多個檔案...\n"
+"        Storage::disk('photos')->assertExists('photo1.jpg');\n"
+"        Storage::disk('photos')->assertExists(['photo1.jpg', 'photo2.jpg']);\n\n"
+"        // 判斷未保存一個或多個檔案...\n"
+"        Storage::disk('photos')->assertMissing('missing.jpg');\n"
+"        Storage::disk('photos')->assertMissing(['missing.jpg', 'non-existing.jpg']);\n\n"
+"        // 判斷給定目錄是否為空...\n"
+"        Storage::disk('photos')->assertDirectoryEmpty('/wallpapers');\n"
+"    }\n"
+"}\n"
 
 #: docs/10.x/filesystem.md:block 216 (paragraph)
 msgid "By default, the `fake` method will delete all files in its temporary directory. If you would like to keep these files, you may use the \"persistentFake\" method instead. For more information on testing file uploads, you may consult the [HTTP testing documentation's information on file uploads](/docs/{{version}}/http-tests#testing-file-uploads)."
-msgstr ""
+msgstr "預設情況下，`fake` 方法會刪除其臨時目錄下的所有檔案。若想保留這些檔案，可使用「persistentFake」方法。更多有關測試檔案上傳的資訊，可參考 [HTTP 測試說明文件中有關檔案上傳的部分](/docs/{{version}}/http-tests#testing-file-uploads)。"
 
 #: docs/10.x/filesystem.md:block 217 (quote)
 msgid "**Warning** The `image` method requires the [GD extension](https://www.php.net/manual/en/book.image.php)."
-msgstr ""
+msgstr "**Warning** 需要有 [GD 擴充程式](https://www.php.net/manual/en/book.image.php) 才可使用 `image` 方法。"
 
 #: docs/10.x/filesystem.md:block 219 (header)
 msgid "Custom Filesystems"
@@ -1344,7 +1370,7 @@ msgstr "快取"
 
 #: docs/8.x/filesystem.md:block 51 (paragraph)
 msgid "To enable caching for a given disk, you may add a `cache` directive to the disk's configuration options. The `cache` option should be an array of caching options containing the cache `store` name, the `expire` time in seconds, and the cache `prefix`:"
-msgstr ""
+msgstr "若要在給定 Disk 上啟用快取，只需要在該 Disk 的設定選項中加上 `cache` 指示詞即可。`cache` 選項應為一個快取選項陣列，其中包含：`disk` 名稱、`expire` 單位為秒的有效期間、`prefix` 快取前置詞等："
 
 #: docs/8.x/filesystem.md:block 52 (code)
 msgid "'s3' => [\n"

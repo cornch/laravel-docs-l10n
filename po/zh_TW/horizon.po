@@ -10,7 +10,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
-"PO-Revision-Date: 2023-11-05 13:30\n"
+"PO-Revision-Date: 2023-11-23 13:23\n"
 
 #: docs/10.x/horizon.md:block 1 (header)
 msgid "Laravel Horizon"
@@ -196,7 +196,7 @@ msgstr "平衡策略"
 
 #: docs/10.x/horizon.md:block 35 (paragraph)
 msgid "Unlike Laravel's default queue system, Horizon allows you to choose from three worker balancing strategies: `simple`, `auto`, and `false`. The `simple` strategy splits incoming jobs evenly between worker processes:"
-msgstr ""
+msgstr "Horizon 與 Laravel 預設的 Queue 系統不同，Horizon 能讓你選擇三種不同的平衡策略：`simple`、`auto` 與 `false`。`simple` 策略會將新進的 Job 平均分給各個 Worker 處理程序："
 
 #: docs/10.x/horizon.md:block 36 (code)
 msgid "'balance' => 'simple',\n"
@@ -204,7 +204,7 @@ msgstr "'balance' => 'simple',\n"
 
 #: docs/10.x/horizon.md:block 37 (paragraph)
 msgid "The `auto` strategy, which is the configuration file's default, adjusts the number of worker processes per queue based on the current workload of the queue. For example, if your `notifications` queue has 1,000 pending jobs while your `render` queue is empty, Horizon will allocate more workers to your `notifications` queue until the queue is empty."
-msgstr ""
+msgstr "`auto` 策略則會根據目前 Queue 的負載來調整每個 Queue 的 Worker 處理程序數量，為設定檔的預設值。舉例來說，若 `notifications` Queue 有 1,000 個待處理 Job，而 `render` Queue 為空，則 Horizon 會分配更多的 Worker 給 `notifications` Queue，直到該 Queue 為空。"
 
 #: docs/10.x/horizon.md:block 38 (paragraph)
 msgid "When using the `auto` strategy, you may define the `minProcesses` and `maxProcesses` configuration options to control the minimum and the maximum number of worker processes Horizon should scale up and down to:"
@@ -226,11 +226,25 @@ msgid "'environments' => [\n"
 "        ],\n"
 "    ],\n"
 "],\n"
-msgstr ""
+msgstr "'environments' => [\n"
+"    'production' => [\n"
+"        'supervisor-1' => [\n"
+"            'connection' => 'redis',\n"
+"            'queue' => ['default'],\n"
+"            'balance' => 'auto',\n"
+"            'autoScalingStrategy' => 'time',\n"
+"            'minProcesses' => 1,\n"
+"            'maxProcesses' => 10,\n"
+"            'balanceMaxShift' => 1,\n"
+"            'balanceCooldown' => 3,\n"
+"            'tries' => 3,\n"
+"        ],\n"
+"    ],\n"
+"],\n"
 
 #: docs/10.x/horizon.md:block 40 (paragraph)
 msgid "The `autoScalingStrategy` configuration value determines if Horizon will assign more worker processes to queues based on the total amount of time it will take to clear the queue (`time` strategy) or by the total number of jobs on the queue (`size` strategy)."
-msgstr ""
+msgstr "`autoScalingStrategy` 設定值則會依據要清空 Queue 所所需的總時間 (`time` 策略) 或 Queue 中的總 Job 數量 (`size` 策略) 來判斷 Horizon 是否應指派多個 Worker Process 給 Queue。"
 
 #: docs/10.x/horizon.md:block 41 (paragraph)
 msgid "The `balanceMaxShift` and `balanceCooldown` configuration values determine how quickly Horizon will scale to meet worker demand. In the example above, a maximum of one new process will be created or destroyed every three seconds. You are free to tweak these values as necessary based on your application's needs."
@@ -630,7 +644,7 @@ msgstr "設定通知等待時間的臨界值"
 
 #: docs/10.x/horizon.md:block 112 (paragraph)
 msgid "You may configure how many seconds are considered a \"long wait\" within your application's `config/horizon.php` configuration file. The `waits` configuration option within this file allows you to control the long wait threshold for each connection / queue combination. Any undefined connection / queue combinations will default to a long wait threshold of 60 seconds:"
-msgstr ""
+msgstr "你可以在專案的 `config/horizon.php` 設定檔中設定幾秒的長度要被視為「等待時間過長」。使用這個設定檔中的 `waits` 設定選項，就可以讓你控制每個連線 / 佇列的組合設定等待時間過長臨界值。未定義的連線 / 佇列組合的等待時間臨界值預設為 60 秒："
 
 #: docs/10.x/horizon.md:block 113 (code)
 msgid "'waits' => [\n"
@@ -638,7 +652,11 @@ msgid "'waits' => [\n"
 "    'redis:default' => 60,\n"
 "    'redis:batch' => 120,\n"
 "],\n"
-msgstr ""
+msgstr "'waits' => [\n"
+"    'redis:critical' => 30,\n"
+"    'redis:default' => 60,\n"
+"    'redis:batch' => 120,\n"
+"],\n"
 
 #: docs/10.x/horizon.md:block 115 (header)
 msgid "Metrics"

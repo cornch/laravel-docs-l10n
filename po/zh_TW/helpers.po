@@ -10,7 +10,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
-"PO-Revision-Date: 2023-11-28 10:12\n"
+"PO-Revision-Date: 2023-11-28 12:05\n"
 
 #: docs/10.x/helpers.md:block 1 (header)
 msgid "Helpers"
@@ -2838,7 +2838,7 @@ msgstr "use Illuminate\\Support\\Carbon;\n\n"
 
 #: docs/10.x/helpers.md:block 611 (paragraph)
 msgid "For a thorough discussion of Carbon and its features, please consult the [official Carbon documentation](https://carbon.nesbot.com/docs/)."
-msgstr ""
+msgstr "請參考 [Carbon 的官方說明文件](https://carbon.nesbot.com/docs/)以進一步瞭解 Carbon 與其功能。"
 
 #: docs/10.x/helpers.md:block 613 (header)
 msgid "Lottery"
@@ -2908,11 +2908,11 @@ msgstr "// Lottery 結果永遠為「贏」...\n"
 
 #: docs/10.x/helpers.md:block 623 (header)
 msgid "Pipeline"
-msgstr ""
+msgstr "Pipeline"
 
 #: docs/10.x/helpers.md:block 624 (paragraph)
 msgid "Laravel's `Pipeline` facade provides a convenient way to \"pipe\" a given input through a series of invokable classes, closures, or callables, giving each class the opportunity to inspect or modify the input and invoke the next callable in the pipeline:"
-msgstr ""
+msgstr "Laravel 的 `Pipeline` Facade 是一個能將給定輸入「^[Pipe](輸送)」進一系列 Invokable 類別、閉包、或 Callable 管道的便利功能，能讓管道中一系列類別都有機會檢查並修改輸入，然後再繼續呼叫管道中的下一個 Callable："
 
 #: docs/10.x/helpers.md:block 625 (code)
 msgid "use Closure;\n"
@@ -2930,15 +2930,29 @@ msgid "use Closure;\n"
 "                },\n"
 "            ])\n"
 "            ->then(fn (User $user) => $user);\n"
-msgstr ""
+msgstr "use Closure;\n"
+"use App\\Models\\User;\n"
+"use Illuminate\\Support\\Facades\\Pipeline;\n\n"
+"$user = Pipeline::send($user)\n"
+"            ->through([\n"
+"                function (User $user, Closure $next) {\n"
+"                    // ...\n\n"
+"                    return $next($user);\n"
+"                },\n"
+"                function (User $user, Closure $next) {\n"
+"                    // ...\n\n"
+"                    return $next($user);\n"
+"                },\n"
+"            ])\n"
+"            ->then(fn (User $user) => $user);\n"
 
 #: docs/10.x/helpers.md:block 626 (paragraph)
 msgid "As you can see, each invokable class or closure in the pipeline is provided the input and a `$next` closure. Invoking the `$next` closure will invoke the next callable in the pipeline. As you may have noticed, this is very similar to [middleware](/docs/{{version}}/middleware)."
-msgstr ""
+msgstr "就像這樣，管道中的各個 Invokable 類別或閉包都會收到輸入值以及一個 `$next` 閉包。呼叫 `$next` 閉包就會呼叫管道中的下一個 Callable。讀者可能已經注意到，這個寫法跟 [Middleware](/docs/{{version}}/middleware) 非常類似。"
 
 #: docs/10.x/helpers.md:block 627 (paragraph)
 msgid "When the last callable in the pipeline invokes the `$next` closure, the callable provided to the `then` method will be invoked. Typically, this callable will simply return the given input."
-msgstr ""
+msgstr "當管道中的最後一個 Callable 呼叫了 `$next` 閉包，就會呼叫傳送給 `then` 中的 Callable。一般來說，這個 Callable 只會回傳給定的輸入。"
 
 #: docs/10.x/helpers.md:block 628 (paragraph)
 msgid "Of course, as discussed previously, you are not limited to providing closures to your pipeline. You may also provide invokable classes. If a class name is provided, the class will be instantiated via Laravel's [service container](/docs/{{version}}/container), allowing dependencies to be injected into the invokable class:"

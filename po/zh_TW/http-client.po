@@ -10,7 +10,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
-"PO-Revision-Date: 2023-11-05 13:30\n"
+"PO-Revision-Date: 2023-12-03 13:41\n"
 
 #: docs/10.x/http-client.md:block 1 (header)
 msgid "HTTP Client"
@@ -262,14 +262,17 @@ msgstr "$response = Http::get('http://example.com/users', [\n"
 
 #: docs/10.x/http-client.md:block 34 (paragraph)
 msgid "Alternatively, the `withQueryParameters` method may be used:"
-msgstr ""
+msgstr "或者，可使用 `withQueryParameters` 方法："
 
 #: docs/10.x/http-client.md:block 35 (code)
 msgid "Http::retry(3, 100)->withQueryParameters([\n"
 "    'name' => 'Taylor',\n"
 "    'page' => 1,\n"
 "])->get('http://example.com/users')\n"
-msgstr ""
+msgstr "Http::retry(3, 100)->withQueryParameters([\n"
+"    'name' => 'Taylor',\n"
+"    'page' => 1,\n"
+"])->get('http://example.com/users')\n"
 
 #: docs/10.x/http-client.md:block 37 (header)
 msgid "Sending Form URL Encoded Requests"
@@ -375,7 +378,7 @@ msgstr "$response = Http::acceptJson()->get('http://example.com/users');\n"
 
 #: docs/10.x/http-client.md:block 58 (paragraph)
 msgid "The `withHeaders` method merges new headers into the request's existing headers. If needed, you may replace all of the headers entirely using the `replaceHeaders` method:"
-msgstr ""
+msgstr "`withHeaders` 方法會將新的 Header 合併到該 Request 中已存在的 Header。若有需要，可使用 `replaceHeaders` 方法來講整個 Header 取代掉："
 
 #: docs/10.x/http-client.md:block 59 (code)
 msgid "$response = Http::withHeaders([\n"
@@ -385,7 +388,13 @@ msgid "$response = Http::withHeaders([\n"
 "])->post('http://example.com/users', [\n"
 "    'name' => 'Taylor',\n"
 "]);\n"
-msgstr ""
+msgstr "$response = Http::withHeaders([\n"
+"    'X-Original' => 'foo',\n"
+"])->replaceHeaders([\n"
+"    'X-Replacement' => 'bar',\n"
+"])->post('http://example.com/users', [\n"
+"    'name' => 'Taylor',\n"
+"]);\n"
 
 #: docs/10.x/http-client.md:block 61 (header)
 msgid "Authentication"
@@ -423,7 +432,7 @@ msgstr "逾時"
 
 #: docs/10.x/http-client.md:block 70 (paragraph)
 msgid "The `timeout` method may be used to specify the maximum number of seconds to wait for a response. By default, the HTTP client will timeout after 30 seconds:"
-msgstr ""
+msgstr "`timeout` 方法可用來指定該 Response 最長應等待多久。預設情況下，HTTP Client 會在 30 秒後逾時："
 
 #: docs/10.x/http-client.md:block 71 (code)
 msgid "$response = Http::timeout(3)->get(/* ... */);\n"
@@ -484,7 +493,16 @@ msgid "use Exception;\n"
 "    $request->withToken($this->getNewToken());\n\n"
 "    return true;\n"
 "})->post(/* ... */);\n"
-msgstr ""
+msgstr "use Exception;\n"
+"use Illuminate\\Http\\Client\\PendingRequest;\n"
+"use Illuminate\\Http\\Client\\RequestException;\n\n"
+"$response = Http::withToken($this->getToken())->retry(2, 0, function (Exception $exception, PendingRequest $request) {\n"
+"    if (! $exception instanceof RequestException || $exception->response->status() !== 401) {\n"
+"        return false;\n"
+"    }\n\n"
+"    $request->withToken($this->getNewToken());\n\n"
+"    return true;\n"
+"})->post(/* ... */);\n"
 
 #: docs/10.x/http-client.md:block 83 (paragraph)
 msgid "If all of the requests fail, an instance of `Illuminate\\Http\\Client\\RequestException` will be thrown. If you would like to disable this behavior, you may provide a `throw` argument with a value of `false`. When disabled, the last response received by the client will be returned after all retries have been attempted:"
@@ -606,7 +624,7 @@ msgstr "Guzzle Middleware"
 
 #: docs/10.x/http-client.md:block 101 (paragraph)
 msgid "Since Laravel's HTTP client is powered by Guzzle, you may take advantage of [Guzzle Middleware](https://docs.guzzlephp.org/en/stable/handlers-and-middleware.html) to manipulate the outgoing request or inspect the incoming response. To manipulate the outgoing request, register a Guzzle middleware via the `withRequestMiddleware` method:"
-msgstr ""
+msgstr "由於 Laravel 的 HTTP 用戶端使用 Guzzle，因此我們也可以使用 [Guzzle 的 Middleware 功能](https://docs.guzzlephp.org/en/stable/handlers-and-middleware.html)來對修改連外 Request，或是檢查連入的 Response。若要修改連外的 Request，可使用 `withRequestMiddleware ` 方法來註冊 Guzzle Middleware："
 
 #: docs/10.x/http-client.md:block 102 (code)
 msgid "use Illuminate\\Support\\Facades\\Http;\n"
@@ -616,11 +634,17 @@ msgid "use Illuminate\\Support\\Facades\\Http;\n"
 "        return $request->withHeader('X-Example', 'Value');\n"
 "    }\n"
 ")->get('http://example.com');\n"
-msgstr ""
+msgstr "use Illuminate\\Support\\Facades\\Http;\n"
+"use Psr\\Http\\Message\\RequestInterface;\n\n"
+"$response = Http::withRequestMiddleware(\n"
+"    function (RequestInterface $request) {\n"
+"        return $request->withHeader('X-Example', 'Value');\n"
+"    }\n"
+")->get('http://example.com');\n"
 
 #: docs/10.x/http-client.md:block 103 (paragraph)
 msgid "Likewise, you can inspect the incoming HTTP response by registering a middleware via the `withResponseMiddleware` method:"
-msgstr ""
+msgstr "類似地，我們也可以使用 `withResponseMiddleware` 方法來註冊 Middleware 以檢查連入的 HTTP Response："
 
 #: docs/10.x/http-client.md:block 104 (code)
 msgid "use Illuminate\\Support\\Facades\\Http;\n"
@@ -632,15 +656,23 @@ msgid "use Illuminate\\Support\\Facades\\Http;\n"
 "        return $response;\n"
 "    }\n"
 ")->get('http://example.com');\n"
-msgstr ""
+msgstr "use Illuminate\\Support\\Facades\\Http;\n"
+"use Psr\\Http\\Message\\ResponseInterface;\n\n"
+"$response = Http::withResponseMiddleware(\n"
+"    function (ResponseInterface $response) {\n"
+"        $header = $response->getHeader('X-Example');\n\n"
+"        // ...\n\n"
+"        return $response;\n"
+"    }\n"
+")->get('http://example.com');\n"
 
 #: docs/10.x/http-client.md:block 106 (header)
 msgid "Global Middleware"
-msgstr ""
+msgstr "全域 Middleware"
 
 #: docs/10.x/http-client.md:block 107 (paragraph)
 msgid "Sometimes, you may want to register a middleware that applies to every outgoing request and incoming response. To accomplish this, you may use the `globalRequestMiddleware` and `globalResponseMiddleware` methods. Typically, these methods should be invoked in the `boot` method of your application's `AppServiceProvider`:"
-msgstr ""
+msgstr "有時候，我們會想註冊套用到每個連外 Request 與連入 Response 的 Middleware。這時候，我們可以使用 `globalRequestMiddleware` 與 `globalResponseMiddleware` 方法。一般來說，這些方法應在專案的 `AppServiceProvider` 中 `boot` 方法內呼叫："
 
 #: docs/10.x/http-client.md:block 108 (code)
 msgid "use Illuminate\\Support\\Facades\\Http;\n\n"
@@ -650,7 +682,13 @@ msgid "use Illuminate\\Support\\Facades\\Http;\n\n"
 "Http::globalResponseMiddleware(fn ($response) => $response->withHeader(\n"
 "    'X-Finished-At', now()->toDateTimeString()\n"
 "));\n"
-msgstr ""
+msgstr "use Illuminate\\Support\\Facades\\Http;\n\n"
+"Http::globalRequestMiddleware(fn ($request) => $request->withHeader(\n"
+"    'User-Agent', 'Example Application/1.0'\n"
+"));\n\n"
+"Http::globalResponseMiddleware(fn ($response) => $response->withHeader(\n"
+"    'X-Finished-At', now()->toDateTimeString()\n"
+"));\n"
 
 #: docs/10.x/http-client.md:block 110 (header)
 msgid "Guzzle Options"
@@ -726,11 +764,11 @@ msgstr "use Illuminate\\Http\\Client\\Pool;\n"
 
 #: docs/10.x/http-client.md:block 121 (header)
 msgid "Customizing Concurrent Requests"
-msgstr ""
+msgstr "自定同時進行的 Request"
 
 #: docs/10.x/http-client.md:block 122 (paragraph)
 msgid "The `pool` method cannot be chained with other HTTP client methods such as the `withHeaders` or `middleware` methods. If you want to apply custom headers or middleware to pooled requests, you should configure those options on each request in the pool:"
-msgstr ""
+msgstr "`pool` 方法不能與其他如 `withHeaders` 或 `middleware` 等 HTTP Client 方法一起串連使用。若想講自定 Header 或 Middleware 套用到放在 Pool 中的 Request，則必須將這些選項設定到 Pool 中的各個 Request："
 
 #: docs/10.x/http-client.md:block 123 (code)
 msgid "use Illuminate\\Http\\Client\\Pool;\n"
@@ -743,7 +781,16 @@ msgid "use Illuminate\\Http\\Client\\Pool;\n"
 "    $pool->withHeaders($headers)->get('http://laravel.test/test'),\n"
 "    $pool->withHeaders($headers)->get('http://laravel.test/test'),\n"
 "]);\n"
-msgstr ""
+msgstr "use Illuminate\\Http\\Client\\Pool;\n"
+"use Illuminate\\Support\\Facades\\Http;\n\n"
+"$headers = [\n"
+"    'X-Example' => 'example',\n"
+"];\n\n"
+"$responses = Http::pool(fn (Pool $pool) => [\n"
+"    $pool->withHeaders($headers)->get('http://laravel.test/test'),\n"
+"    $pool->withHeaders($headers)->get('http://laravel.test/test'),\n"
+"    $pool->withHeaders($headers)->get('http://laravel.test/test'),\n"
+"]);\n"
 
 #: docs/10.x/http-client.md:block 125 (header)
 msgid "Macros"
@@ -1426,7 +1473,12 @@ msgid "Http::withUrlParameters([\n"
 "    'version' => '11.x',\n"
 "    'topic' => 'validation',\n"
 "])->get('{+endpoint}/{page}/{version}/{topic}');\n"
-msgstr ""
+msgstr "Http::withUrlParameters([\n"
+"    'endpoint' => 'https://laravel.com',\n"
+"    'page' => 'docs',\n"
+"    'version' => '11.x',\n"
+"    'topic' => 'validation',\n"
+"])->get('{+endpoint}/{page}/{version}/{topic}');\n"
 
 #: docs/master/http-client.md:block 78 (code)
 msgid "use Exception;\n"

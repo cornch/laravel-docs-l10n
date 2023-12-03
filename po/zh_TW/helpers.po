@@ -10,7 +10,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
-"PO-Revision-Date: 2023-11-28 12:05\n"
+"PO-Revision-Date: 2023-12-03 12:45\n"
 
 #: docs/10.x/helpers.md:block 1 (header)
 msgid "Helpers"
@@ -2956,7 +2956,7 @@ msgstr "當管道中的最後一個 Callable 呼叫了 `$next` 閉包，就會�
 
 #: docs/10.x/helpers.md:block 628 (paragraph)
 msgid "Of course, as discussed previously, you are not limited to providing closures to your pipeline. You may also provide invokable classes. If a class name is provided, the class will be instantiated via Laravel's [service container](/docs/{{version}}/container), allowing dependencies to be injected into the invokable class:"
-msgstr ""
+msgstr "當然，就像剛才討論過的，除了 Closure 外，也可以傳入 Invokable Class 給 Pipeline。若提供了 Class 名稱，則該 Class 會被 Laravel 的 [Service Container](/docs/{{version}}/container) 初始化，以將相依類別注入到 Invokable Class 中："
 
 #: docs/10.x/helpers.md:block 629 (code)
 msgid "$user = Pipeline::send($user)\n"
@@ -2966,15 +2966,21 @@ msgid "$user = Pipeline::send($user)\n"
 "                SendWelcomeEmail::class,\n"
 "            ])\n"
 "            ->then(fn (User $user) => $user);\n"
-msgstr ""
+msgstr "$user = Pipeline::send($user)\n"
+"            ->through([\n"
+"                GenerateProfilePhoto::class,\n"
+"                ActivateSubscription::class,\n"
+"                SendWelcomeEmail::class,\n"
+"            ])\n"
+"            ->then(fn (User $user) => $user);\n"
 
 #: docs/10.x/helpers.md:block 631 (header)
 msgid "Sleep"
-msgstr ""
+msgstr "Sleep"
 
 #: docs/10.x/helpers.md:block 632 (paragraph)
 msgid "Laravel's `Sleep` class is a light-weight wrapper around PHP's native `sleep` and `usleep` functions, offering greater testability while also exposing a developer friendly API for working with time:"
-msgstr ""
+msgstr "Laravel 的 `Sleep` 類別是一個輕便的 ^[Wrapper](包裝)，將 PHP 的原生 `sleep` 與 `unsleep` 函式包裝起來，提供更強的可測試性，並同時提供對開發人員更友善的時間處理 API："
 
 #: docs/10.x/helpers.md:block 633 (code)
 msgid "use Illuminate\\Support\\Sleep;\n\n"
@@ -2983,11 +2989,16 @@ msgid "use Illuminate\\Support\\Sleep;\n\n"
 "    Sleep::for(1)->second();\n\n"
 "    $waiting = /* ... */;\n"
 "}\n"
-msgstr ""
+msgstr "use Illuminate\\Support\\Sleep;\n\n"
+"$waiting = true;\n\n"
+"while ($waiting) {\n"
+"    Sleep::for(1)->second();\n\n"
+"    $waiting = /* ... */;\n"
+"}\n"
 
 #: docs/10.x/helpers.md:block 634 (paragraph)
 msgid "The `Sleep` class offers a variety of methods that allow you to work with different units of time:"
-msgstr ""
+msgstr "`Sleep` 類別提供了多個方法，能讓你處理不同單位的時間："
 
 #: docs/10.x/helpers.md:block 635 (code)
 msgid "// Pause execution for 90 seconds...\n"
@@ -3004,23 +3015,36 @@ msgid "// Pause execution for 90 seconds...\n"
 "Sleep::sleep(2);\n\n"
 "// Alias of PHP's native \"usleep\" function...\n"
 "Sleep::usleep(5000);\n"
-msgstr ""
+msgstr "// 暫停執行 90 秒...\n"
+"Sleep::for(1.5)->minutes();\n\n"
+"// 暫停執行 2 秒...\n"
+"Sleep::for(2)->seconds();\n\n"
+"// 暫停執行 500 微秒...\n"
+"Sleep::for(500)->milliseconds();\n\n"
+"// 暫停執行 5,000 毫秒...\n"
+"Sleep::for(5000)->microseconds();\n\n"
+"// 暫停直到給定時間...\n"
+"Sleep::until(now()->addMinute());\n\n"
+"// PHP 原生「sleep」方法的別名...\n"
+"Sleep::sleep(2);\n\n"
+"// PHP 原生「usleep」方法的別名...\n"
+"Sleep::usleep(5000);\n"
 
 #: docs/10.x/helpers.md:block 636 (paragraph)
 msgid "To easily combine units of time, you may use the `and` method:"
-msgstr ""
+msgstr "若要輕鬆組合搭配不同單位的時間，可使用 `and` 方法："
 
 #: docs/10.x/helpers.md:block 637 (code)
 msgid "Sleep::for(1)->second()->and(10)->milliseconds();\n"
-msgstr ""
+msgstr "Sleep::for(1)->second()->and(10)->milliseconds();\n"
 
 #: docs/10.x/helpers.md:block 639 (header)
 msgid "Testing Sleep"
-msgstr ""
+msgstr "測試 Sleep"
 
 #: docs/10.x/helpers.md:block 640 (paragraph)
 msgid "When testing code that utilizes the `Sleep` class or PHP's native sleep functions, your test will pause execution. As you might expect, this makes your test suite significantly slower. For example, imagine you are testing the following code:"
-msgstr ""
+msgstr "在測試有使用 `Sleep` 類別或 PHP 原生 sleep 函式的程式碼時，測試也會暫停執行。可想而知，這樣會使測試套件明顯變慢。舉例來說，假設我們要測試下列程式碼："
 
 #: docs/10.x/helpers.md:block 641 (code)
 msgid "$waiting = /* ... */;\n\n"
@@ -3029,11 +3053,16 @@ msgid "$waiting = /* ... */;\n\n"
 "    Sleep::for($seconds++)->seconds();\n\n"
 "    $waiting = /* ... */;\n"
 "}\n"
-msgstr ""
+msgstr "$waiting = /* ... */;\n\n"
+"$seconds = 1;\n\n"
+"while ($waiting) {\n"
+"    Sleep::for($seconds++)->seconds();\n\n"
+"    $waiting = /* ... */;\n"
+"}\n"
 
 #: docs/10.x/helpers.md:block 642 (paragraph)
 msgid "Typically, testing this code would take *at least* one second. Luckily, the `Sleep` class allows us to \"fake\" sleeping so that our test suite stays fast:"
-msgstr ""
+msgstr "一般來說，測試此程式碼會花費 **至少** 一秒鐘。所幸，`Sleep` 類別能讓我們「模擬 (Fake)」暫停，好讓我們的測試套件能保持快速："
 
 #: docs/10.x/helpers.md:block 643 (code)
 msgid "public function test_it_waits_until_ready()\n"
@@ -3041,15 +3070,19 @@ msgid "public function test_it_waits_until_ready()\n"
 "    Sleep::fake();\n\n"
 "    // ...\n"
 "}\n"
-msgstr ""
+msgstr "public function test_it_waits_until_ready()\n"
+"{\n"
+"    Sleep::fake();\n\n"
+"    // ...\n"
+"}\n"
 
 #: docs/10.x/helpers.md:block 644 (paragraph)
 msgid "When faking the `Sleep` class, the actual execution pause is by-passed, leading to a substantially faster test."
-msgstr ""
+msgstr "在模擬 (Fake) `Sleep` Class 時，會跳過實際的執行暫停，因此會使測試變快。"
 
 #: docs/10.x/helpers.md:block 645 (paragraph)
 msgid "Once the `Sleep` class has been faked, it is possible to make assertions against the expected \"sleeps\" that should have occurred. To illustrate this, let's imagine we are testing code that pauses execution three times, with each pause increasing by a single second. Using the `assertSequence` method, we can assert that our code \"slept\" for the proper amount of time while keeping our test fast:"
-msgstr ""
+msgstr "一旦模擬了 `Sleep` 類別，我們就可以針對預期應產生的「Sleep」進行 Assertion 判斷。為了說明如何進行 Assertion，我們先假設我們要測試一個會暫停執行 3 次的程式碼，每次暫停都會增加 1 秒鐘。使用 `assertSequence` 方法，就可以測試我們的程式碼是否已「Sleep」適當的時間，同時又能保持讓我們的程式快速執行："
 
 #: docs/10.x/helpers.md:block 646 (code)
 msgid "public function test_it_checks_if_ready_four_times()\n"
@@ -3062,11 +3095,20 @@ msgid "public function test_it_checks_if_ready_four_times()\n"
 "        Sleep::for(3)->seconds(),\n"
 "    ]);\n"
 "}\n"
-msgstr ""
+msgstr "public function test_it_checks_if_ready_four_times()\n"
+"{\n"
+"    Sleep::fake();\n\n"
+"    // ...\n\n"
+"    Sleep::assertSequence([\n"
+"        Sleep::for(1)->second(),\n"
+"        Sleep::for(2)->seconds(),\n"
+"        Sleep::for(3)->seconds(),\n"
+"    ]);\n"
+"}\n"
 
 #: docs/10.x/helpers.md:block 647 (paragraph)
 msgid "Of course, the `Sleep` class offers a variety of other assertions you may use when testing:"
-msgstr ""
+msgstr "當然，`Sleep` 類別還提供了各種其他的 Assertion 判斷能讓你在測試中使用："
 
 #: docs/10.x/helpers.md:block 648 (code)
 msgid "use Carbon\\CarbonInterval as Duration;\n"
@@ -3081,11 +3123,22 @@ msgid "use Carbon\\CarbonInterval as Duration;\n"
 "Sleep::assertNeverSlept();\n\n"
 "// Assert that, even if Sleep was called, no execution paused occurred...\n"
 "Sleep::assertInsomniac();\n"
-msgstr ""
+msgstr "use Carbon\\CarbonInterval as Duration;\n"
+"use Illuminate\\Support\\Sleep;\n\n"
+"// 判斷呼叫了 Sleep 3 次...\n"
+"Sleep::assertSleptTimes(3);\n\n"
+"// 判斷 Sleep 暫停的時長...\n"
+"Sleep::assertSlept(function (Duration $duration): bool {\n"
+"    return /* ... */;\n"
+"}, times: 1);\n\n"
+"// 判斷 Sleep Class 是否從未被呼叫...\n"
+"Sleep::assertNeverSlept();\n\n"
+"// 判斷即使有呼叫 Sleep，也沒有發生暫停執行...\n"
+"Sleep::assertInsomniac();\n"
 
 #: docs/10.x/helpers.md:block 649 (paragraph)
 msgid "Sometimes it may be useful to perform an action whenever a fake sleep occurs in your application code. To achieve this, you may provide a callback to the `whenFakingSleep` method. In the following example, we use Laravel's [time manipulation helpers](/docs/{{version}}/mocking#interacting-with-time) to instantly progress time by the duration of each sleep:"
-msgstr ""
+msgstr "有時，我們會需要在模擬 Sleep 發生時，執行一些動作。若要在發生模擬 Sleep 時執行動作，可提供規格回呼給 `whenFakingSleep` 方法。在下方的範例中，我們使用了 Laravel 的[時間操作輔助函式](/docs/{{version}}/mocking#interacting-with-time)來在每個 Sleep 發生的時候立即更改時間："
 
 #: docs/10.x/helpers.md:block 650 (code)
 msgid "use Carbon\\CarbonInterval as Duration;\n\n"
@@ -3095,11 +3148,17 @@ msgid "use Carbon\\CarbonInterval as Duration;\n\n"
 "    // Progress time when faking sleep...\n"
 "    $this->travel($duration->totalMilliseconds)->milliseconds();\n"
 "});\n"
-msgstr ""
+msgstr "use Carbon\\CarbonInterval as Duration;\n\n"
+"$this->freezeTime();\n\n"
+"Sleep::fake();\n\n"
+"Sleep::whenFakingSleep(function (Duration $duration) {\n"
+"    // 模擬 Sleep 時更改時間...\n"
+"    $this->travel($duration->totalMilliseconds)->milliseconds();\n"
+"});\n"
 
 #: docs/10.x/helpers.md:block 651 (paragraph)
 msgid "Laravel uses the `Sleep` class internally whenever it is pausing execution. For example, the [`retry`](#method-retry) helper uses the `Sleep` class when sleeping, allowing for improved testability when using that helper."
-msgstr ""
+msgstr "在 Laravel 內部會在需要暫停執行時使用 `Sleep` Class。舉例來說，[`retry`](#method-retry) 輔助函式會在暫停時使用 `Sleep` Class，以在使用該輔助函式時提升可測試性。"
 
 #: docs/8.x/helpers.md:block 12 (paragraph)
 msgid "[Arr::accessible](#method-array-accessible) [Arr::add](#method-array-add) [Arr::collapse](#method-array-collapse) [Arr::crossJoin](#method-array-crossjoin) [Arr::divide](#method-array-divide) [Arr::dot](#method-array-dot) [Arr::except](#method-array-except) [Arr::exists](#method-array-exists) [Arr::first](#method-array-first) [Arr::flatten](#method-array-flatten) [Arr::forget](#method-array-forget) [Arr::get](#method-array-get) [Arr::has](#method-array-has) [Arr::hasAny](#method-array-hasany) [Arr::isAssoc](#method-array-isassoc) [Arr::last](#method-array-last) [Arr::only](#method-array-only) [Arr::pluck](#method-array-pluck) [Arr::prepend](#method-array-prepend) [Arr::pull](#method-array-pull) [Arr::query](#method-array-query) [Arr::random](#method-array-random) [Arr::set](#method-array-set) [Arr::shuffle](#method-array-shuffle) [Arr::sort](#method-array-sort) [Arr::sortRecursive](#method-array-sort-recursive) [Arr::toCssClasses](#method-array-to-css-classes) [Arr::undot](#method-array-undot) [Arr::where](#method-array-where) [Arr::whereNotNull](#method-array-where-not-null) [Arr::wrap](#method-array-wrap) [data_fill](#method-data-fill) [data_get](#method-data-get) [data_set](#method-data-set) [head](#method-head) [last](#method-last)"
@@ -6521,7 +6580,7 @@ msgstr "$result = value(function ($name) {\n"
 
 #: docs/master/helpers.md:block 22 (paragraph)
 msgid "[__](#method-__) [class_basename](#method-class-basename) [e](#method-e) [preg_replace_array](#method-preg-replace-array) [Str::after](#method-str-after) [Str::afterLast](#method-str-after-last) [Str::ascii](#method-str-ascii) [Str::before](#method-str-before) [Str::beforeLast](#method-str-before-last) [Str::between](#method-str-between) [Str::betweenFirst](#method-str-between-first) [Str::camel](#method-camel-case) [Str::contains](#method-str-contains) [Str::containsAll](#method-str-contains-all) [Str::endsWith](#method-ends-with) [Str::excerpt](#method-excerpt) [Str::finish](#method-str-finish) [Str::headline](#method-str-headline) [Str::inlineMarkdown](#method-str-inline-markdown) [Str::is](#method-str-is) [Str::isAscii](#method-str-is-ascii) [Str::isJson](#method-str-is-json) [Str::isUlid](#method-str-is-ulid) [Str::isUuid](#method-str-is-uuid) [Str::kebab](#method-kebab-case) [Str::lcfirst](#method-str-lcfirst) [Str::length](#method-str-length) [Str::limit](#method-str-limit) [Str::lower](#method-str-lower) [Str::markdown](#method-str-markdown) [Str::mask](#method-str-mask) [Str::orderedUuid](#method-str-ordered-uuid) [Str::padBoth](#method-str-padboth) [Str::padLeft](#method-str-padleft) [Str::padRight](#method-str-padright) [Str::password](#method-str-password) [Str::plural](#method-str-plural) [Str::pluralStudly](#method-str-plural-studly) [Str::random](#method-str-random) [Str::remove](#method-str-remove) [Str::replace](#method-str-replace) [Str::replaceArray](#method-str-replace-array) [Str::replaceFirst](#method-str-replace-first) [Str::replaceLast](#method-str-replace-last) [Str::reverse](#method-str-reverse) [Str::singular](#method-str-singular) [Str::slug](#method-str-slug) [Str::snake](#method-snake-case) [Str::squish](#method-str-squish) [Str::start](#method-str-start) [Str::startsWith](#method-starts-with) [Str::studly](#method-studly-case) [Str::substr](#method-str-substr) [Str::substrCount](#method-str-substrcount) [Str::substrReplace](#method-str-substrreplace) [Str::swap](#method-str-swap) [Str::title](#method-title-case) [Str::toHtmlString](#method-str-to-html-string) [Str::ucfirst](#method-str-ucfirst) [Str::ucsplit](#method-str-ucsplit) [Str::upper](#method-str-upper) [Str::ulid](#method-str-ulid) [Str::uuid](#method-str-uuid) [Str::wordCount](#method-str-word-count) [Str::words](#method-str-words) [str](#method-str) [trans](#method-trans) [trans_choice](#method-trans-choice)"
-msgstr ""
+msgstr "[__](#method-__) [class_basename](#method-class-basename) [e](#method-e) [preg_replace_array](#method-preg-replace-array) [Str::after](#method-str-after) [Str::afterLast](#method-str-after-last) [Str::ascii](#method-str-ascii) [Str::before](#method-str-before) [Str::beforeLast](#method-str-before-last) [Str::between](#method-str-between) [Str::betweenFirst](#method-str-between-first) [Str::camel](#method-camel-case) [Str::contains](#method-str-contains) [Str::containsAll](#method-str-contains-all) [Str::endsWith](#method-ends-with) [Str::excerpt](#method-excerpt) [Str::finish](#method-str-finish) [Str::headline](#method-str-headline) [Str::inlineMarkdown](#method-str-inline-markdown) [Str::is](#method-str-is) [Str::isAscii](#method-str-is-ascii) [Str::isJson](#method-str-is-json) [Str::isUlid](#method-str-is-ulid) [Str::isUuid](#method-str-is-uuid) [Str::kebab](#method-kebab-case) [Str::lcfirst](#method-str-lcfirst) [Str::length](#method-str-length) [Str::limit](#method-str-limit) [Str::lower](#method-str-lower) [Str::markdown](#method-str-markdown) [Str::mask](#method-str-mask) [Str::orderedUuid](#method-str-ordered-uuid) [Str::padBoth](#method-str-padboth) [Str::padLeft](#method-str-padleft) [Str::padRight](#method-str-padright) [Str::password](#method-str-password) [Str::plural](#method-str-plural) [Str::pluralStudly](#method-str-plural-studly) [Str::random](#method-str-random) [Str::remove](#method-str-remove) [Str::replace](#method-str-replace) [Str::replaceArray](#method-str-replace-array) [Str::replaceFirst](#method-str-replace-first) [Str::replaceLast](#method-str-replace-last) [Str::reverse](#method-str-reverse) [Str::singular](#method-str-singular) [Str::slug](#method-str-slug) [Str::snake](#method-snake-case) [Str::squish](#method-str-squish) [Str::start](#method-str-start) [Str::startsWith](#method-starts-with) [Str::studly](#method-studly-case) [Str::substr](#method-str-substr) [Str::substrCount](#method-str-substrcount) [Str::substrReplace](#method-str-substrreplace) [Str::swap](#method-str-swap) [Str::title](#method-title-case) [Str::toHtmlString](#method-str-to-html-string) [Str::ucfirst](#method-str-ucfirst) [Str::ucsplit](#method-str-ucsplit) [Str::upper](#method-str-upper) [Str::ulid](#method-str-ulid) [Str::uuid](#method-str-uuid) [Str::wordCount](#method-str-word-count) [Str::words](#method-str-words) [str](#method-str) [trans](#method-trans) [trans_choice](#method-trans-choice)"
 
 #: docs/master/helpers.md:block 286 (paragraph)
 msgid "The `__` function translates the given translation string or translation key using your [language files](/docs/{{version}}/localization):"
@@ -6529,7 +6588,7 @@ msgstr "`__` 函式使用[語系檔](/docs/{{version}}/localization)來翻譯給
 
 #: docs/master/helpers.md:block 437 (header)
 msgid "`Str::password()` {.collection-method}"
-msgstr ""
+msgstr "`Str::password()` {.collection-method}"
 
 #: docs/master/helpers.md:block 438 (paragraph)
 msgid "The `Str::password` method may be used to generate a secure, random password of a given length. The password will consist of a combination of letters, numbers, symbols, and spaces. By default, passwords are 32 characters long:"

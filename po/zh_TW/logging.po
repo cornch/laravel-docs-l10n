@@ -10,7 +10,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
-"PO-Revision-Date: 2023-12-04 10:46\n"
+"PO-Revision-Date: 2023-12-04 13:10\n"
 
 #: docs/10.x/logging.md:block 1 (header)
 msgid "Logging"
@@ -798,7 +798,7 @@ msgstr "Monolog 也可以在訊息被寫入 Log 前先處理訊息。你可以�
 
 #: docs/10.x/logging.md:block 110 (paragraph)
 msgid "If you would like to customize the processors for a `monolog` driver, add a `processors` configuration value to your channel's configuration:"
-msgstr ""
+msgstr "若想為 `monolog` Driver 自定 Processor，請在 Channel 的設定中新增 `processors` 設定值："
 
 #: docs/10.x/logging.md:block 111 (code)
 msgid " 'memory' => [\n"
@@ -817,7 +817,22 @@ msgid " 'memory' => [\n"
 "        ],\n"
 "     ],\n"
 " ],\n"
-msgstr ""
+msgstr " 'memory' => [\n"
+"     'driver' => 'monolog',\n"
+"     'handler' => Monolog\\Handler\\StreamHandler::class,\n"
+"     'with' => [\n"
+"         'stream' => 'php://stderr',\n"
+"     ],\n"
+"     'processors' => [\n"
+"         // 簡易語法...\n"
+"         Monolog\\Processor\\MemoryUsageProcessor::class,\n\n"
+"         // 包含選項...\n"
+"         [\n"
+"            'processor' => Monolog\\Processor\\PsrLogMessageProcessor::class,\n"
+"            'with' => ['removeUsedContextFields' => true],\n"
+"        ],\n"
+"     ],\n"
+" ],\n"
 
 #: docs/10.x/logging.md:block 113 (header)
 msgid "Creating Custom Channels Via Factories"

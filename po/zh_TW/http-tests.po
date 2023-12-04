@@ -10,7 +10,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
-"PO-Revision-Date: 2023-11-05 13:30\n"
+"PO-Revision-Date: 2023-12-04 10:46\n"
 
 #: docs/10.x/http-tests.md:block 1 (header)
 msgid "HTTP Tests"
@@ -103,7 +103,20 @@ msgid "<?php\n\n"
 "        $response->assertStatus(200);\n"
 "    }\n"
 "}\n"
-msgstr ""
+msgstr "<?php\n\n"
+"namespace Tests\\Feature;\n\n"
+"use Tests\\TestCase;\n\n"
+"class ExampleTest extends TestCase\n"
+"{\n"
+"    /**\n"
+"     * A basic test example.\n"
+"     */\n"
+"    public function test_the_application_returns_a_successful_response(): void\n"
+"    {\n"
+"        $response = $this->get('/');\n\n"
+"        $response->assertStatus(200);\n"
+"    }\n"
+"}\n"
 
 #: docs/10.x/http-tests.md:block 7 (paragraph)
 msgid "The `get` method makes a `GET` request into the application, while the `assertStatus` method asserts that the returned response should have the given HTTP status code. In addition to this simple assertion, Laravel also contains a variety of assertions for inspecting the response headers, content, JSON structure, and more."
@@ -136,7 +149,20 @@ msgid "<?php\n\n"
 "        $response->assertStatus(200);\n"
 "    }\n"
 "}\n"
-msgstr ""
+msgstr "<?php\n\n"
+"namespace Tests\\Feature;\n\n"
+"use Tests\\TestCase;\n\n"
+"class ExampleTest extends TestCase\n"
+"{\n"
+"    /**\n"
+"     * A basic test example.\n"
+"     */\n"
+"    public function test_a_basic_request(): void\n"
+"    {\n"
+"        $response = $this->get('/');\n\n"
+"        $response->assertStatus(200);\n"
+"    }\n"
+"}\n"
 
 #: docs/10.x/http-tests.md:block 13 (paragraph)
 msgid "In general, each of your tests should only make one request to your application. Unexpected behavior may occur if multiple requests are executed within a single test method."
@@ -400,14 +426,17 @@ msgstr "$response = $this->withoutDeprecationHandling()->get('/');\n"
 
 #: docs/10.x/http-tests.md:block 43 (paragraph)
 msgid "The `assertThrows` method may be used to assert that code within a given closure throws an exception of the specified type:"
-msgstr ""
+msgstr "`assertThrows` 方法可用來判斷給定的閉包是否有擲回特定型別的 Exception："
 
 #: docs/10.x/http-tests.md:block 44 (code)
 msgid "$this->assertThrows(\n"
 "    fn () => (new ProcessOrder)->execute(),\n"
 "    OrderInvalid::class\n"
 ");\n"
-msgstr ""
+msgstr "$this->assertThrows(\n"
+"    fn () => (new ProcessOrder)->execute(),\n"
+"    OrderInvalid::class\n"
+");\n"
 
 #: docs/10.x/http-tests.md:block 46 (header)
 msgid "Testing JSON APIs"
@@ -861,7 +890,23 @@ msgid "<?php\n\n"
 "        Storage::disk('avatars')->assertExists($file->hashName());\n"
 "    }\n"
 "}\n"
-msgstr ""
+msgstr "<?php\n\n"
+"namespace Tests\\Feature;\n\n"
+"use Illuminate\\Http\\UploadedFile;\n"
+"use Illuminate\\Support\\Facades\\Storage;\n"
+"use Tests\\TestCase;\n\n"
+"class ExampleTest extends TestCase\n"
+"{\n"
+"    public function test_avatars_can_be_uploaded(): void\n"
+"    {\n"
+"        Storage::fake('avatars');\n\n"
+"        $file = UploadedFile::fake()->image('avatar.jpg');\n\n"
+"        $response = $this->post('/avatar', [\n"
+"            'avatar' => $file,\n"
+"        ]);\n\n"
+"        Storage::disk('avatars')->assertExists($file->hashName());\n"
+"    }\n"
+"}\n"
 
 #: docs/10.x/http-tests.md:block 103 (paragraph)
 msgid "If you would like to assert that a given file does not exist, you may use the `assertMissing` method provided by the `Storage` facade:"
@@ -1014,43 +1059,43 @@ msgstr "Laravel 的 `Illuminate\\Testing\\TestResponse` 類別提供了各種自
 
 #: docs/10.x/http-tests.md:block 137 (paragraph)
 msgid "[assertAccepted](#assert-accepted) [assertBadRequest](#assert-bad-request) [assertConflict](#assert-conflict) [assertCookie](#assert-cookie) [assertCookieExpired](#assert-cookie-expired) [assertCookieNotExpired](#assert-cookie-not-expired) [assertCookieMissing](#assert-cookie-missing) [assertCreated](#assert-created) [assertDontSee](#assert-dont-see) [assertDontSeeText](#assert-dont-see-text) [assertDownload](#assert-download) [assertExactJson](#assert-exact-json) [assertForbidden](#assert-forbidden) [assertFound](#assert-found) [assertGone](#assert-gone) [assertHeader](#assert-header) [assertHeaderMissing](#assert-header-missing) [assertInternalServerError](#assert-internal-server-error) [assertJson](#assert-json) [assertJsonCount](#assert-json-count) [assertJsonFragment](#assert-json-fragment) [assertJsonIsArray](#assert-json-is-array) [assertJsonIsObject](#assert-json-is-object) [assertJsonMissing](#assert-json-missing) [assertJsonMissingExact](#assert-json-missing-exact) [assertJsonMissingValidationErrors](#assert-json-missing-validation-errors) [assertJsonPath](#assert-json-path) [assertJsonMissingPath](#assert-json-missing-path) [assertJsonStructure](#assert-json-structure) [assertJsonValidationErrors](#assert-json-validation-errors) [assertJsonValidationErrorFor](#assert-json-validation-error-for) [assertLocation](#assert-location) [assertMethodNotAllowed](#assert-method-not-allowed) [assertMovedPermanently](#assert-moved-permanently) [assertContent](#assert-content) [assertNoContent](#assert-no-content) [assertStreamedContent](#assert-streamed-content) [assertNotFound](#assert-not-found) [assertOk](#assert-ok) [assertPaymentRequired](#assert-payment-required) [assertPlainCookie](#assert-plain-cookie) [assertRedirect](#assert-redirect) [assertRedirectContains](#assert-redirect-contains) [assertRedirectToRoute](#assert-redirect-to-route) [assertRedirectToSignedRoute](#assert-redirect-to-signed-route) [assertRequestTimeout](#assert-request-timeout) [assertSee](#assert-see) [assertSeeInOrder](#assert-see-in-order) [assertSeeText](#assert-see-text) [assertSeeTextInOrder](#assert-see-text-in-order) [assertServerError](#assert-server-error) [assertServiceUnavailable](#assert-server-unavailable) [assertSessionHas](#assert-session-has) [assertSessionHasInput](#assert-session-has-input) [assertSessionHasAll](#assert-session-has-all) [assertSessionHasErrors](#assert-session-has-errors) [assertSessionHasErrorsIn](#assert-session-has-errors-in) [assertSessionHasNoErrors](#assert-session-has-no-errors) [assertSessionDoesntHaveErrors](#assert-session-doesnt-have-errors) [assertSessionMissing](#assert-session-missing) [assertStatus](#assert-status) [assertSuccessful](#assert-successful) [assertTooManyRequests](#assert-too-many-requests) [assertUnauthorized](#assert-unauthorized) [assertUnprocessable](#assert-unprocessable) [assertUnsupportedMediaType](#assert-unsupported-media-type) [assertValid](#assert-valid) [assertInvalid](#assert-invalid) [assertViewHas](#assert-view-has) [assertViewHasAll](#assert-view-has-all) [assertViewIs](#assert-view-is) [assertViewMissing](#assert-view-missing)"
-msgstr ""
+msgstr "[assertAccepted](#assert-accepted) [assertBadRequest](#assert-bad-request) [assertConflict](#assert-conflict) [assertCookie](#assert-cookie) [assertCookieExpired](#assert-cookie-expired) [assertCookieNotExpired](#assert-cookie-not-expired) [assertCookieMissing](#assert-cookie-missing) [assertCreated](#assert-created) [assertDontSee](#assert-dont-see) [assertDontSeeText](#assert-dont-see-text) [assertDownload](#assert-download) [assertExactJson](#assert-exact-json) [assertForbidden](#assert-forbidden) [assertFound](#assert-found) [assertGone](#assert-gone) [assertHeader](#assert-header) [assertHeaderMissing](#assert-header-missing) [assertInternalServerError](#assert-internal-server-error) [assertJson](#assert-json) [assertJsonCount](#assert-json-count) [assertJsonFragment](#assert-json-fragment) [assertJsonIsArray](#assert-json-is-array) [assertJsonIsObject](#assert-json-is-object) [assertJsonMissing](#assert-json-missing) [assertJsonMissingExact](#assert-json-missing-exact) [assertJsonMissingValidationErrors](#assert-json-missing-validation-errors) [assertJsonPath](#assert-json-path) [assertJsonMissingPath](#assert-json-missing-path) [assertJsonStructure](#assert-json-structure) [assertJsonValidationErrors](#assert-json-validation-errors) [assertJsonValidationErrorFor](#assert-json-validation-error-for) [assertLocation](#assert-location) [assertMethodNotAllowed](#assert-method-not-allowed) [assertMovedPermanently](#assert-moved-permanently) [assertContent](#assert-content) [assertNoContent](#assert-no-content) [assertStreamedContent](#assert-streamed-content) [assertNotFound](#assert-not-found) [assertOk](#assert-ok) [assertPaymentRequired](#assert-payment-required) [assertPlainCookie](#assert-plain-cookie) [assertRedirect](#assert-redirect) [assertRedirectContains](#assert-redirect-contains) [assertRedirectToRoute](#assert-redirect-to-route) [assertRedirectToSignedRoute](#assert-redirect-to-signed-route) [assertRequestTimeout](#assert-request-timeout) [assertSee](#assert-see) [assertSeeInOrder](#assert-see-in-order) [assertSeeText](#assert-see-text) [assertSeeTextInOrder](#assert-see-text-in-order) [assertServerError](#assert-server-error) [assertServiceUnavailable](#assert-server-unavailable) [assertSessionHas](#assert-session-has) [assertSessionHasInput](#assert-session-has-input) [assertSessionHasAll](#assert-session-has-all) [assertSessionHasErrors](#assert-session-has-errors) [assertSessionHasErrorsIn](#assert-session-has-errors-in) [assertSessionHasNoErrors](#assert-session-has-no-errors) [assertSessionDoesntHaveErrors](#assert-session-doesnt-have-errors) [assertSessionMissing](#assert-session-missing) [assertStatus](#assert-status) [assertSuccessful](#assert-successful) [assertTooManyRequests](#assert-too-many-requests) [assertUnauthorized](#assert-unauthorized) [assertUnprocessable](#assert-unprocessable) [assertUnsupportedMediaType](#assert-unsupported-media-type) [assertValid](#assert-valid) [assertInvalid](#assert-invalid) [assertViewHas](#assert-view-has) [assertViewHasAll](#assert-view-has-all) [assertViewIs](#assert-view-is) [assertViewMissing](#assert-view-missing)"
 
 #: docs/10.x/http-tests.md:block 140 (header)
 msgid "assertBadRequest"
-msgstr ""
+msgstr "assertBadRequest"
 
 #: docs/10.x/http-tests.md:block 141 (paragraph)
 msgid "Assert that the response has a bad request (400) HTTP status code:"
-msgstr ""
+msgstr "判斷 Response 是否為 ^[Bad Request](錯誤要求) (400) HTTP 狀態碼："
 
 #: docs/10.x/http-tests.md:block 142 (code)
 msgid "$response->assertBadRequest();\n"
-msgstr ""
+msgstr "$response->assertBadRequest();\n"
 
 #: docs/10.x/http-tests.md:block 144 (header)
 msgid "assertAccepted"
-msgstr ""
+msgstr "assertAccepted"
 
 #: docs/10.x/http-tests.md:block 145 (paragraph)
 msgid "Assert that the response has an accepted (202) HTTP status code:"
-msgstr ""
+msgstr "判斷 Response 是否為 ^[Accepted](已接受) (202) HTTP 狀態碼："
 
 #: docs/10.x/http-tests.md:block 146 (code)
 msgid "$response->assertAccepted();\n"
-msgstr ""
+msgstr "$response->assertAccepted();\n"
 
 #: docs/10.x/http-tests.md:block 148 (header)
 msgid "assertConflict"
-msgstr ""
+msgstr "assertConflict"
 
 #: docs/10.x/http-tests.md:block 149 (paragraph)
 msgid "Assert that the response has a conflict (409) HTTP status code:"
-msgstr ""
+msgstr "判斷 Response 是否為 ^[Conflict](衝突) (409) HTTP 狀態碼："
 
 #: docs/10.x/http-tests.md:block 150 (code)
 msgid "$response->assertConflict();\n"
-msgstr ""
+msgstr "$response->assertConflict();\n"
 
 #: docs/10.x/http-tests.md:block 152 (header)
 msgid "assertCookie"
@@ -1174,7 +1219,7 @@ msgstr "assertForbidden"
 
 #: docs/10.x/http-tests.md:block 191 (paragraph)
 msgid "Assert that the response has a forbidden (403) HTTP status code:"
-msgstr "判斷 Response 是否為禁止存取 (403) HTTP 狀態碼："
+msgstr "判斷 Response 是否為 ^[Forbidden](禁止存取) (403) HTTP 狀態碼："
 
 #: docs/10.x/http-tests.md:block 192 (code)
 msgid "$response->assertForbidden();\n"
@@ -1182,27 +1227,27 @@ msgstr "$response->assertForbidden();\n"
 
 #: docs/10.x/http-tests.md:block 194 (header)
 msgid "assertFound"
-msgstr ""
+msgstr "assertFound"
 
 #: docs/10.x/http-tests.md:block 195 (paragraph)
 msgid "Assert that the response has a found (302) HTTP status code:"
-msgstr ""
+msgstr "判斷 Response 是否為 ^[Found](已找到) (302) HTTP 狀態碼："
 
 #: docs/10.x/http-tests.md:block 196 (code)
 msgid "$response->assertFound();\n"
-msgstr ""
+msgstr "$response->assertFound();\n"
 
 #: docs/10.x/http-tests.md:block 198 (header)
 msgid "assertGone"
-msgstr ""
+msgstr "assertGone"
 
 #: docs/10.x/http-tests.md:block 199 (paragraph)
 msgid "Assert that the response has a gone (410) HTTP status code:"
-msgstr ""
+msgstr "判斷 Response 是否為 ^[Gone](已不再可用) (410) HTTP 狀態碼："
 
 #: docs/10.x/http-tests.md:block 200 (code)
 msgid "$response->assertGone();\n"
-msgstr ""
+msgstr "$response->assertGone();\n"
 
 #: docs/10.x/http-tests.md:block 202 (header)
 msgid "assertHeader"
@@ -1230,15 +1275,15 @@ msgstr "$response->assertHeaderMissing($headerName);\n"
 
 #: docs/10.x/http-tests.md:block 210 (header)
 msgid "assertInternalServerError"
-msgstr ""
+msgstr "assertInternalServerError"
 
 #: docs/10.x/http-tests.md:block 211 (paragraph)
 msgid "Assert that the response has an \"Internal Server Error\" (500) HTTP status code:"
-msgstr ""
+msgstr "判斷 Response 是否為「^[Internal Server Error]內部伺服器錯誤」 (500) HTTP 狀態碼："
 
 #: docs/10.x/http-tests.md:block 212 (code)
 msgid "$response->assertInternalServerError();\n"
-msgstr ""
+msgstr "$response->assertInternalServerError();\n"
 
 #: docs/10.x/http-tests.md:block 214 (header)
 msgid "assertJson"
@@ -1538,27 +1583,27 @@ msgstr "$response->assertJsonValidationErrorFor(string $key, $responseKey = 'err
 
 #: docs/10.x/http-tests.md:block 285 (header)
 msgid "assertMethodNotAllowed"
-msgstr ""
+msgstr "assertMethodNotAllowed"
 
 #: docs/10.x/http-tests.md:block 286 (paragraph)
 msgid "Assert that the response has a method not allowed (405) HTTP status code:"
-msgstr ""
+msgstr "判斷 Response 是否為 ^[Not Allowed](不允許) (405) HTTP 狀態碼："
 
 #: docs/10.x/http-tests.md:block 287 (code)
 msgid "$response->assertMethodNotAllowed();\n"
-msgstr ""
+msgstr "$response->assertMethodNotAllowed();\n"
 
 #: docs/10.x/http-tests.md:block 289 (header)
 msgid "assertMovedPermanently"
-msgstr ""
+msgstr "assertMovedPermanently"
 
 #: docs/10.x/http-tests.md:block 290 (paragraph)
 msgid "Assert that the response has a moved permanently (301) HTTP status code:"
-msgstr ""
+msgstr "判斷 Response 是否為 ^[Moved Permanently](已永久移動) (301) HTTP 狀態碼："
 
 #: docs/10.x/http-tests.md:block 291 (code)
 msgid "$response->assertMovedPermanently();\n"
-msgstr ""
+msgstr "$response->assertMovedPermanently();\n"
 
 #: docs/10.x/http-tests.md:block 293 (header)
 msgid "assertLocation"
@@ -1614,7 +1659,7 @@ msgstr "assertNotFound"
 
 #: docs/10.x/http-tests.md:block 310 (paragraph)
 msgid "Assert that the response has a not found (404) HTTP status code:"
-msgstr "判斷 Response 是否為找不到 (404) HTTP 狀態碼："
+msgstr "判斷 Response 是否為 ^[Not Found](找不到) (404) HTTP 狀態碼："
 
 #: docs/10.x/http-tests.md:block 311 (code)
 msgid "$response->assertNotFound();\n"
@@ -1634,15 +1679,15 @@ msgstr "$response->assertOk();\n"
 
 #: docs/10.x/http-tests.md:block 317 (header)
 msgid "assertPaymentRequired"
-msgstr ""
+msgstr "assertPaymentRequired"
 
 #: docs/10.x/http-tests.md:block 318 (paragraph)
 msgid "Assert that the response has a payment required (402) HTTP status code:"
-msgstr ""
+msgstr "判斷 Response 是否為 ^[Payment Required](需要付費) (402) HTTP 狀態碼："
 
 #: docs/10.x/http-tests.md:block 319 (code)
 msgid "$response->assertPaymentRequired();\n"
-msgstr ""
+msgstr "$response->assertPaymentRequired();\n"
 
 #: docs/10.x/http-tests.md:block 321 (header)
 msgid "assertPlainCookie"
@@ -1666,7 +1711,7 @@ msgstr "判斷 Response 是否為指向給定 URI 的重新導向："
 
 #: docs/10.x/http-tests.md:block 327 (code)
 msgid "$response->assertRedirect($uri = null);\n"
-msgstr ""
+msgstr "$response->assertRedirect($uri = null);\n"
 
 #: docs/10.x/http-tests.md:block 329 (header)
 msgid "assertRedirectContains"
@@ -1690,7 +1735,7 @@ msgstr "判斷 Response 是否重新導向到給定的[命名 Route](/docs/{{ver
 
 #: docs/10.x/http-tests.md:block 335 (code)
 msgid "$response->assertRedirectToRoute($name, $parameters = []);\n"
-msgstr ""
+msgstr "$response->assertRedirectToRoute($name, $parameters = []);\n"
 
 #: docs/10.x/http-tests.md:block 337 (header)
 msgid "assertRedirectToSignedRoute"
@@ -1706,15 +1751,15 @@ msgstr "$response->assertRedirectToSignedRoute($name = null, $parameters = []);\
 
 #: docs/10.x/http-tests.md:block 341 (header)
 msgid "assertRequestTimeout"
-msgstr ""
+msgstr "assertRequestTimeout"
 
 #: docs/10.x/http-tests.md:block 342 (paragraph)
 msgid "Assert that the response has a request timeout (408) HTTP status code:"
-msgstr ""
+msgstr "判斷 Response 是否為 ^[Request Timeout](要求逾時) (408) HTTP 狀態碼："
 
 #: docs/10.x/http-tests.md:block 343 (code)
 msgid "$response->assertRequestTimeout();\n"
-msgstr ""
+msgstr "$response->assertRequestTimeout();\n"
 
 #: docs/10.x/http-tests.md:block 345 (header)
 msgid "assertSee"
@@ -1766,27 +1811,27 @@ msgstr "$response->assertSeeTextInOrder(array $values, $escaped = true);\n"
 
 #: docs/10.x/http-tests.md:block 361 (header)
 msgid "assertServerError"
-msgstr ""
+msgstr "assertServerError"
 
 #: docs/10.x/http-tests.md:block 362 (paragraph)
 msgid "Assert that the response has a server error (>= 500 , < 600) HTTP status code:"
-msgstr ""
+msgstr "判斷 Response 是否有錯誤的 HTTP 狀態碼 (>= 500 且 < 600)："
 
 #: docs/10.x/http-tests.md:block 363 (code)
 msgid "$response->assertServerError();\n"
-msgstr ""
+msgstr "$response->assertServerError();\n"
 
 #: docs/10.x/http-tests.md:block 365 (header)
 msgid "assertServiceUnavailable"
-msgstr ""
+msgstr "assertServiceUnavailable"
 
 #: docs/10.x/http-tests.md:block 366 (paragraph)
 msgid "Assert that the response has a \"Service Unavailable\" (503) HTTP status code:"
-msgstr ""
+msgstr "判斷 Response 是否為「^[Service Unavailable](服務不可用)」(503) HTTP 狀態碼："
 
 #: docs/10.x/http-tests.md:block 367 (code)
 msgid "$response->assertServiceUnavailable();\n"
-msgstr ""
+msgstr "$response->assertServiceUnavailable();\n"
 
 #: docs/10.x/http-tests.md:block 369 (header)
 msgid "assertSessionHas"
@@ -1833,7 +1878,10 @@ msgid "use Illuminate\\Support\\Facades\\Crypt;\n\n"
 "$response->assertSessionHasInput($key, function (string $value) {\n"
 "    return Crypt::decryptString($value) === 'secret';\n"
 "});\n"
-msgstr ""
+msgstr "use Illuminate\\Support\\Facades\\Crypt;\n\n"
+"$response->assertSessionHasInput($key, function (string $value) {\n"
+"    return Crypt::decryptString($value) === 'secret';\n"
+"});\n"
 
 #: docs/10.x/http-tests.md:block 381 (header)
 msgid "assertSessionHasAll"
@@ -1873,7 +1921,9 @@ msgstr "判斷 Session 內給定的 `$keys` 中是否有錯誤。若``$keys` 為
 msgid "$response->assertSessionHasErrors(\n"
 "    array $keys = [], $format = null, $errorBag = 'default'\n"
 ");\n"
-msgstr ""
+msgstr "$response->assertSessionHasErrors(\n"
+"    array $keys = [], $format = null, $errorBag = 'default'\n"
+");\n"
 
 #: docs/10.x/http-tests.md:block 390 (paragraph)
 msgid "For example, to assert that the `name` and `email` fields have validation error messages that were flashed to the session, you may invoke the `assertSessionHasErrors` method like so:"
@@ -1969,15 +2019,15 @@ msgstr "$response->assertSuccessful();\n"
 
 #: docs/10.x/http-tests.md:block 421 (header)
 msgid "assertTooManyRequests"
-msgstr ""
+msgstr "assertTooManyRequests"
 
 #: docs/10.x/http-tests.md:block 422 (paragraph)
 msgid "Assert that the response has a too many requests (429) HTTP status code:"
-msgstr ""
+msgstr "判斷 Response 是否為 ^[Too Many Requests](過多要求) (429) HTTP 狀態碼："
 
 #: docs/10.x/http-tests.md:block 423 (code)
 msgid "$response->assertTooManyRequests();\n"
-msgstr ""
+msgstr "$response->assertTooManyRequests();\n"
 
 #: docs/10.x/http-tests.md:block 425 (header)
 msgid "assertUnauthorized"
@@ -2005,15 +2055,15 @@ msgstr "$response->assertUnprocessable();\n"
 
 #: docs/10.x/http-tests.md:block 433 (header)
 msgid "assertUnsupportedMediaType"
-msgstr ""
+msgstr "assertUnsupportedMediaType"
 
 #: docs/10.x/http-tests.md:block 434 (paragraph)
 msgid "Assert that the response has an unsupported media type (415) HTTP status code:"
-msgstr ""
+msgstr "判斷 Response 是否為 ^[Unsupported Media Type](不支援的媒體格式) (415) HTTP 狀態碼："
 
 #: docs/10.x/http-tests.md:block 435 (code)
 msgid "$response->assertUnsupportedMediaType();\n"
-msgstr ""
+msgstr "$response->assertUnsupportedMediaType();\n"
 
 #: docs/10.x/http-tests.md:block 437 (header)
 msgid "assertValid"
@@ -2065,7 +2115,7 @@ msgstr "assertViewHas"
 
 #: docs/10.x/http-tests.md:block 448 (paragraph)
 msgid "Assert that the response view contains a given piece of data:"
-msgstr ""
+msgstr "判斷 Response View 中是否包含給定的一部分資料："
 
 #: docs/10.x/http-tests.md:block 449 (code)
 msgid "$response->assertViewHas($key, $value = null);\n"

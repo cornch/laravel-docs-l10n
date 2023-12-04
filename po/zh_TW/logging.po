@@ -10,7 +10,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
-"PO-Revision-Date: 2023-11-05 13:30\n"
+"PO-Revision-Date: 2023-12-04 10:46\n"
 
 #: docs/10.x/logging.md:block 1 (header)
 msgid "Logging"
@@ -90,7 +90,7 @@ msgstr "設定"
 
 #: docs/10.x/logging.md:block 10 (paragraph)
 msgid "All of the configuration options for your application's logging behavior are housed in the `config/logging.php` configuration file. This file allows you to configure your application's log channels, so be sure to review each of the available channels and their options. We'll review a few common options below."
-msgstr ""
+msgstr "用於設定程式日誌行為的設定選項都放在 `config/logging.php` 設定檔中。我們可以使用這個檔案來設定專案的日誌通道，因此建議你瞭解一下各個可用的通道與其對應的選項。稍後我們會來討論一些常見的選項。"
 
 #: docs/10.x/logging.md:block 11 (paragraph)
 msgid "By default, Laravel will use the `stack` channel when logging messages. The `stack` channel is used to aggregate multiple log channels into a single channel. For more information on building stacks, check out the [documentation below](#building-log-stacks)."
@@ -456,7 +456,25 @@ msgid "<?php\n\n"
 "        ]);\n"
 "    }\n"
 "}\n"
-msgstr ""
+msgstr "<?php\n\n"
+"namespace App\\Http\\Controllers;\n\n"
+"use App\\Http\\Controllers\\Controller;\n"
+"use App\\Models\\User;\n"
+"use Illuminate\\Support\\Facades\\Log;\n"
+"use Illuminate\\View\\View;\n\n"
+"class UserController extends Controller\n"
+"{\n"
+"    /**\n"
+"     * Show the profile for the given user.\n"
+"     */\n"
+"    public function show(string $id): View\n"
+"    {\n"
+"        Log::info('Showing the user profile for user: {id}', ['id' => $id]);\n\n"
+"        return view('user.profile', [\n"
+"            'user' => User::findOrFail($id)\n"
+"        ]);\n"
+"    }\n"
+"}\n"
 
 #: docs/10.x/logging.md:block 67 (header)
 msgid "Contextual Information"
@@ -469,7 +487,8 @@ msgstr "可以傳入一組包含^[上下文資料](Contextual Data)的陣列給�
 #: docs/10.x/logging.md:block 69 (code)
 msgid "use Illuminate\\Support\\Facades\\Log;\n\n"
 "Log::info('User {id} failed to login.', ['id' => $user->id]);\n"
-msgstr ""
+msgstr "use Illuminate\\Support\\Facades\\Log;\n\n"
+"Log::info('User {id} failed to login.', ['id' => $user->id]);\n"
 
 #: docs/10.x/logging.md:block 70 (paragraph)
 msgid "Occasionally, you may wish to specify some contextual information that should be included with all subsequent log entries in a particular channel. For example, you may wish to log a request ID that is associated with each incoming request to your application. To accomplish this, you may call the `Log` facade's `withContext` method:"
@@ -501,7 +520,31 @@ msgid "<?php\n\n"
 "        return $response;\n"
 "    }\n"
 "}\n"
-msgstr ""
+msgstr "<?php\n\n"
+"namespace App\\Http\\Middleware;\n\n"
+"use Closure;\n"
+"use Illuminate\\Http\\Request;\n"
+"use Illuminate\\Support\\Facades\\Log;\n"
+"use Illuminate\\Support\\Str;\n"
+"use Symfony\\Component\\HttpFoundation\\Response;\n\n"
+"class AssignRequestId\n"
+"{\n"
+"    /**\n"
+"     * Handle an incoming request.\n"
+"     *\n"
+"     * @param  \\Closure(\\Illuminate\\Http\\Request): (\\Symfony\\Component\\HttpFoundation\\Response)  $next\n"
+"     */\n"
+"    public function handle(Request $request, Closure $next): Response\n"
+"    {\n"
+"        $requestId = (string) Str::uuid();\n\n"
+"        Log::withContext([\n"
+"            'request-id' => $requestId\n"
+"        ]);\n\n"
+"        $response = $next($request);\n\n"
+"        $response->headers->set('Request-Id', $requestId);\n\n"
+"        return $response;\n"
+"    }\n"
+"}\n"
 
 #: docs/10.x/logging.md:block 72 (paragraph)
 msgid "If you would like to share contextual information across *all* logging channels, you may call the `Log::shareContext()` method. This method will provide the contextual information to all created channels and any channels that are created subsequently. Typically, the `shareContext` method should be called from the `boot` method of an application service provider:"
@@ -747,11 +790,11 @@ msgstr "'newrelic' => [\n"
 
 #: docs/10.x/logging.md:block 108 (header)
 msgid "Monolog Processors"
-msgstr ""
+msgstr "Monolog Processor"
 
 #: docs/10.x/logging.md:block 109 (paragraph)
 msgid "Monolog can also process messages before logging them. You can create your own processors or use the [existing processors offered by Monolog](https://github.com/Seldaek/monolog/tree/main/src/Monolog/Processor)."
-msgstr ""
+msgstr "Monolog 也可以在訊息被寫入 Log 前先處理訊息。你可以自行建立 Processor，或是使用 [Monolog 提供的現有 Processor](https://github.com/Seldaek/monolog/tree/main/src/Monolog/Processor)。"
 
 #: docs/10.x/logging.md:block 110 (paragraph)
 msgid "If you would like to customize the processors for a `monolog` driver, add a `processors` configuration value to your channel's configuration:"

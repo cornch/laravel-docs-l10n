@@ -10,7 +10,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
-"PO-Revision-Date: 2023-12-07 14:09\n"
+"PO-Revision-Date: 2023-12-07 15:18\n"
 
 #: docs/10.x/mail.md:block 1 (header)
 msgid "Mail"
@@ -1812,7 +1812,7 @@ msgstr "我們建議將 Mailable 內容與 Mailable 是否已寄送給特定使�
 
 #: docs/10.x/mail.md:block 262 (paragraph)
 msgid "You may use the `Mail` facade's `fake` method to prevent mail from being sent. After calling the `Mail` facade's `fake` method, you may then assert that mailables were instructed to be sent to users and even inspect the data the mailables received:"
-msgstr ""
+msgstr "可以使用 `Mail` Facade 的 `fake` 方法來防止郵件被寄出。呼叫 `Mail` Facade 的 `fake` 方法後，就可以判斷 Mailable 是否有被寄送給使用者，並檢查 Mailable 中的資料："
 
 #: docs/10.x/mail.md:block 263 (code)
 msgid "<?php\n\n"
@@ -1838,32 +1838,59 @@ msgid "<?php\n\n"
 "        Mail::assertSentCount(3);\n"
 "    }\n"
 "}\n"
-msgstr ""
+msgstr "<?php\n\n"
+"namespace Tests\\Feature;\n\n"
+"use App\\Mail\\OrderShipped;\n"
+"use Illuminate\\Support\\Facades\\Mail;\n"
+"use Tests\\TestCase;\n\n"
+"class ExampleTest extends TestCase\n"
+"{\n"
+"    public function test_orders_can_be_shipped(): void\n"
+"    {\n"
+"        Mail::fake();\n\n"
+"        // 進行訂單出貨...\n\n"
+"        // 判斷沒有寄出任何 Mailable...\n"
+"        Mail::assertNothingSent();\n\n"
+"        // 判斷 Mailable 是否已寄出...\n"
+"        Mail::assertSent(OrderShipped::class);\n\n"
+"        // 判斷 Mailable 是否已寄出兩次...\n"
+"        Mail::assertSent(OrderShipped::class, 2);\n\n"
+"        // 判斷 Mailable 是否未寄出...\n"
+"        Mail::assertNotSent(AnotherMailable::class);\n\n"
+"        // 判斷是否已寄出總共 3 個 Mailable...\n"
+"        Mail::assertSentCount(3);\n"
+"    }\n"
+"}\n"
 
 #: docs/10.x/mail.md:block 264 (paragraph)
 msgid "If you are queueing mailables for delivery in the background, you should use the `assertQueued` method instead of `assertSent`:"
-msgstr ""
+msgstr "若要將 Mailable 放在佇列中以在背景寄送，請使用 `assertQueued` 方法來代替 `assertSent` 方法："
 
 #: docs/10.x/mail.md:block 265 (code)
 msgid "Mail::assertQueued(OrderShipped::class);\n"
 "Mail::assertNotQueued(OrderShipped::class);\n"
 "Mail::assertNothingQueued();\n"
 "Mail::assertQueuedCount(3);\n"
-msgstr ""
+msgstr "Mail::assertQueued(OrderShipped::class);\n"
+"Mail::assertNotQueued(OrderShipped::class);\n"
+"Mail::assertNothingQueued();\n"
+"Mail::assertQueuedCount(3);\n"
 
 #: docs/10.x/mail.md:block 266 (paragraph)
 msgid "You may pass a closure to the `assertSent`, `assertNotSent`, `assertQueued`, or `assertNotQueued` methods in order to assert that a mailable was sent that passes a given \"truth test\". If at least one mailable was sent that passes the given truth test then the assertion will be successful:"
-msgstr ""
+msgstr "可以傳入一個閉包給 `assertSent`、`assertNotSent`、`assertQueued`、`assertNotQueued` 方法來判斷 Mailable 是否通過給定的「真值測試 (Truth Test)」。若至少有一個寄出的 Mailable 通過給定的真值測試，則該 Assertion 會被視為成功："
 
 #: docs/10.x/mail.md:block 267 (code)
 msgid "Mail::assertSent(function (OrderShipped $mail) use ($order) {\n"
 "    return $mail->order->id === $order->id;\n"
 "});\n"
-msgstr ""
+msgstr "Mail::assertSent(function (OrderShipped $mail) use ($order) {\n"
+"    return $mail->order->id === $order->id;\n"
+"});\n"
 
 #: docs/10.x/mail.md:block 268 (paragraph)
 msgid "When calling the `Mail` facade's assertion methods, the mailable instance accepted by the provided closure exposes helpful methods for examining the mailable:"
-msgstr ""
+msgstr "呼叫 `Mail` Facade 的 Assertion 方法時，所提供的閉包內收到的 Mailable 實體上有一些實用的方法，可用來檢查 Mailable："
 
 #: docs/10.x/mail.md:block 269 (code)
 msgid "Mail::assertSent(OrderShipped::class, function (OrderShipped $mail) use ($user) {\n"
@@ -1874,11 +1901,18 @@ msgid "Mail::assertSent(OrderShipped::class, function (OrderShipped $mail) use (
 "           $mail->hasFrom('...') &&\n"
 "           $mail->hasSubject('...');\n"
 "});\n"
-msgstr ""
+msgstr "Mail::assertSent(OrderShipped::class, function (OrderShipped $mail) use ($user) {\n"
+"    return $mail->hasTo($user->email) &&\n"
+"           $mail->hasCc('...') &&\n"
+"           $mail->hasBcc('...') &&\n"
+"           $mail->hasReplyTo('...') &&\n"
+"           $mail->hasFrom('...') &&\n"
+"           $mail->hasSubject('...');\n"
+"});\n"
 
 #: docs/10.x/mail.md:block 270 (paragraph)
 msgid "The mailable instance also includes several helpful methods for examining the attachments on a mailable:"
-msgstr ""
+msgstr "Mailable 實體也包含了多個實用方法，可用來檢查 Mailable 上的附件："
 
 #: docs/10.x/mail.md:block 271 (code)
 msgid "use Illuminate\\Mail\\Mailables\\Attachment;\n\n"
@@ -1899,18 +1933,38 @@ msgid "use Illuminate\\Mail\\Mailables\\Attachment;\n\n"
 "        Attachment::fromData(fn () => $pdfData, 'name.pdf')\n"
 "    );\n"
 "});\n"
-msgstr ""
+msgstr "use Illuminate\\Mail\\Mailables\\Attachment;\n\n"
+"Mail::assertSent(OrderShipped::class, function (OrderShipped $mail) {\n"
+"    return $mail->hasAttachment(\n"
+"        Attachment::fromPath('/path/to/file')\n"
+"                ->as('name.pdf')\n"
+"                ->withMime('application/pdf')\n"
+"    );\n"
+"});\n\n"
+"Mail::assertSent(OrderShipped::class, function (OrderShipped $mail) {\n"
+"    return $mail->hasAttachment(\n"
+"        Attachment::fromStorageDisk('s3', '/path/to/file')\n"
+"    );\n"
+"});\n\n"
+"Mail::assertSent(OrderShipped::class, function (OrderShipped $mail) use ($pdfData) {\n"
+"    return $mail->hasAttachment(\n"
+"        Attachment::fromData(fn () => $pdfData, 'name.pdf')\n"
+"    );\n"
+"});\n"
 
 #: docs/10.x/mail.md:block 272 (paragraph)
 msgid "You may have noticed that there are two methods for asserting that mail was not sent: `assertNotSent` and `assertNotQueued`. Sometimes you may wish to assert that no mail was sent **or** queued. To accomplish this, you may use the `assertNothingOutgoing` and `assertNotOutgoing` methods:"
-msgstr ""
+msgstr "讀者可能已經注意到，總共有兩個方法可用來檢查郵件是否未被送出：`assertNotSent`、`assertNotQueued`。有時候，我們可能會希望判斷沒有任何郵件被寄出，**而且** 也沒有任何郵件被放入佇列。若要判斷是否沒有郵件被寄出或放入佇列，可使用 `assertNothingOutgoing` 與 `assertNotOutgoing` 方法："
 
 #: docs/10.x/mail.md:block 273 (code)
 msgid "Mail::assertNothingOutgoing();\n\n"
 "Mail::assertNotOutgoing(function (OrderShipped $mail) use ($order) {\n"
 "    return $mail->order->id === $order->id;\n"
 "});\n"
-msgstr ""
+msgstr "Mail::assertNothingOutgoing();\n\n"
+"Mail::assertNotOutgoing(function (OrderShipped $mail) use ($order) {\n"
+"    return $mail->order->id === $order->id;\n"
+"});\n"
 
 #: docs/10.x/mail.md:block 275 (header)
 msgid "Mail & Local Development"
@@ -2148,21 +2202,23 @@ msgstr "額外的 Symfony Transport"
 
 #: docs/10.x/mail.md:block 302 (paragraph)
 msgid "Laravel includes support for some existing Symfony maintained mail transports like Mailgun and Postmark. However, you may wish to extend Laravel with support for additional Symfony maintained transports. You can do so by requiring the necessary Symfony mailer via Composer and registering the transport with Laravel. For example, you may install and register the \"Brevo\" (formerly \"Sendinblue\") Symfony mailer:"
-msgstr ""
+msgstr "Laravel 支援一些像是 Mailgun 與 Postmark 等現有 Symfony 維護的 Mail Transport。不過，有時候我們可能會需要讓 Laravel 也支援其他由 Symfony 維護的 Transport。若要讓 Laravel 支援這些 Transport，只要使用 Composer 安裝這些 Symfony Mailer，然後再向 Laravel 註冊這個 Transport。舉例來說，我們可以安裝並註冊「Brevo」(前身為「Sendinblue」) Symfony Mailer："
 
 #: docs/10.x/mail.md:block 303 (code)
 msgid "composer require symfony/brevo-mailer symfony/http-client\n"
-msgstr ""
+msgstr "composer require symfony/brevo-mailer symfony/http-client\n"
 
 #: docs/10.x/mail.md:block 304 (paragraph)
 msgid "Once the Brevo mailer package has been installed, you may add an entry for your Brevo API credentials to your application's `services` configuration file:"
-msgstr ""
+msgstr "安裝好 Brevo Mailer 套件後，就可以在專案的 `services` 設定檔中加上 Brevo 的 API 認證："
 
 #: docs/10.x/mail.md:block 305 (code)
 msgid "'brevo' => [\n"
 "    'key' => 'your-api-key',\n"
 "],\n"
-msgstr ""
+msgstr "'brevo' => [\n"
+"    'key' => 'your-api-key',\n"
+"],\n"
 
 #: docs/10.x/mail.md:block 306 (paragraph)
 msgid "Next, you may use the `Mail` facade's `extend` method to register the transport with Laravel. Typically, this should be done within the `boot` method of a service provider:"
@@ -2187,7 +2243,24 @@ msgid "use Illuminate\\Support\\Facades\\Mail;\n"
 "        );\n"
 "    });\n"
 "}\n"
-msgstr ""
+msgstr "use Illuminate\\Support\\Facades\\Mail;\n"
+"use Symfony\\Component\\Mailer\\Bridge\\Brevo\\Transport\\BrevoTransportFactory;\n"
+"use Symfony\\Component\\Mailer\\Transport\\Dsn;\n\n"
+"/**\n"
+" * Bootstrap any application services.\n"
+" */\n"
+"public function boot(): void\n"
+"{\n"
+"    Mail::extend('brevo', function () {\n"
+"        return (new BrevoTransportFactory)->create(\n"
+"            new Dsn(\n"
+"                'brevo+api',\n"
+"                'default',\n"
+"                config('services.brevo.key')\n"
+"            )\n"
+"        );\n"
+"    });\n"
+"}\n"
 
 #: docs/10.x/mail.md:block 308 (paragraph)
 msgid "Once your transport has been registered, you may create a mailer definition within your application's config/mail.php configuration file that utilizes the new transport:"
@@ -2198,7 +2271,10 @@ msgid "'brevo' => [\n"
 "    'transport' => 'brevo',\n"
 "    // ...\n"
 "],\n"
-msgstr ""
+msgstr "'brevo' => [\n"
+"    'transport' => 'brevo',\n"
+"    // ...\n"
+"],\n"
 
 #: docs/8.x/mail.md:block 2 (unordered list)
 msgid "[Customizing The SwiftMailer Message](#customizing-the-swiftmailer-message)"
@@ -3984,7 +4060,7 @@ msgstr "<?php\n\n"
 
 #: docs/master/mail.md:block 255 (paragraph)
 msgid "We suggest testing the content of your mailables separately from your tests that assert that a given mailable was \"sent\" to a specific user. Typically, the content of mailables it not relevant to the code you are testing, and it is sufficient to simply assert that Laravel was instructed to send a given mailable."
-msgstr ""
+msgstr "我們建議將 Mailable 內容與 Mailable 是否已寄送給特定使用者的測試分開來進行。一般來說，Mailable 的內容通常與要測試的程式碼不相關，因此只需要判斷 Laravel 是否有寄送給定的 Mailable 即可。"
 
 #: docs/master/mail.md:block 257 (code)
 msgid "<?php\n\n"
@@ -4008,13 +4084,35 @@ msgid "<?php\n\n"
 "        Mail::assertNotSent(AnotherMailable::class);\n"
 "    }\n"
 "}\n"
-msgstr ""
+msgstr "<?php\n\n"
+"namespace Tests\\Feature;\n\n"
+"use App\\Mail\\OrderShipped;\n"
+"use Illuminate\\Support\\Facades\\Mail;\n"
+"use Tests\\TestCase;\n\n"
+"class ExampleTest extends TestCase\n"
+"{\n"
+"    public function test_orders_can_be_shipped(): void\n"
+"    {\n"
+"        Mail::fake();\n\n"
+"        // 進行訂單出貨...\n\n"
+"        // 判斷沒有傳送 Mailable...\n"
+"        Mail::assertNothingSent();\n\n"
+"        // 判斷已傳送 Mailable...\n"
+"        Mail::assertSent(OrderShipped::class);\n\n"
+"        // 判斷 Mailable 傳送了 2 次...\n"
+"        Mail::assertSent(OrderShipped::class, 2);\n\n"
+"        // 判斷 Mailable 未傳送...\n"
+"        Mail::assertNotSent(AnotherMailable::class);\n"
+"    }\n"
+"}\n"
 
 #: docs/master/mail.md:block 259 (code)
 msgid "Mail::assertQueued(OrderShipped::class);\n\n"
 "Mail::assertNotQueued(OrderShipped::class);\n\n"
 "Mail::assertNothingQueued();\n"
-msgstr ""
+msgstr "Mail::assertQueued(OrderShipped::class);\n\n"
+"Mail::assertNotQueued(OrderShipped::class);\n\n"
+"Mail::assertNothingQueued();\n"
 
 #: docs/master/mail.md:block 301 (code)
 msgid "use Illuminate\\Support\\Facades\\Mail;\n"

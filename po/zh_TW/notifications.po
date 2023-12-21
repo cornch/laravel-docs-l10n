@@ -10,7 +10,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
-"PO-Revision-Date: 2023-11-05 13:30\n"
+"PO-Revision-Date: 2023-12-21 10:45\n"
 
 #: docs/10.x/notifications.md:block 1 (header)
 msgid "Notifications"
@@ -162,7 +162,7 @@ msgstr "[格式化簡訊通知](#formatting-sms-notifications)"
 
 #: docs/10.x/notifications.md:block 2 (unordered list)
 msgid "[Unicode Content](#unicode-content)"
-msgstr ""
+msgstr "[Unicode 內容](#unicode-content)"
 
 #: docs/10.x/notifications.md:block 2 (unordered list)
 msgid "[Customizing The \"From\" Number](#customizing-the-from-number)"
@@ -190,7 +190,7 @@ msgstr "[格式化 Slack 通知](#formatting-slack-notifications)"
 
 #: docs/10.x/notifications.md:block 2 (unordered list)
 msgid "[Slack Interactivity](#slack-interactivity)"
-msgstr ""
+msgstr "[Slack Interactivity](#slack-interactivity)"
 
 #: docs/10.x/notifications.md:block 2 (unordered list)
 msgid "[Routing Slack Notifications](#routing-slack-notifications)"
@@ -198,7 +198,7 @@ msgstr "[路由 Slack 通知](#routing-slack-notifications)"
 
 #: docs/10.x/notifications.md:block 2 (unordered list)
 msgid "[Notifying External Slack Workspaces](#notifying-external-slack-workspaces)"
-msgstr ""
+msgstr "[通知外部 Slack 工作空間](#notifying-external-slack-workspaces)"
 
 #: docs/10.x/notifications.md:block 2 (unordered list)
 msgid "[Localizing Notifications](#localizing-notifications)"
@@ -206,7 +206,7 @@ msgstr "[本土化通知](#localizing-notifications)"
 
 #: docs/10.x/notifications.md:block 2 (unordered list)
 msgid "[Testing](#testing)"
-msgstr ""
+msgstr "[測試](#testing)"
 
 #: docs/10.x/notifications.md:block 2 (unordered list)
 msgid "[Notification Events](#notification-events)"
@@ -352,7 +352,7 @@ msgstr "將通知放入佇列"
 
 #: docs/10.x/notifications.md:block 35 (quote)
 msgid "**Warning** Before queueing notifications you should configure your queue and [start a worker](/docs/{{version}}/queues#running-the-queue-worker)."
-msgstr ""
+msgstr "**Warning** 在將通知放入佇列前，請先設定好佇列並[執行一個 ^[Worker](背景工作角色)](/docs/{{version}}/queues#running-the-queue-worker)。"
 
 #: docs/10.x/notifications.md:block 36 (paragraph)
 msgid "Sending notifications can take time, especially if the channel needs to make an external API call to deliver the notification. To speed up your application's response time, let your notification be queued by adding the `ShouldQueue` interface and `Queueable` trait to your class. The interface and trait are already imported for all notifications generated using the `make:notification` command, so you may immediately add them to your notification class:"
@@ -460,7 +460,7 @@ msgstr "自訂通知的佇列連線"
 
 #: docs/10.x/notifications.md:block 53 (paragraph)
 msgid "By default, queued notifications will be queued using your application's default queue connection. If you would like to specify a different connection that should be used for a particular notification, you may call the `onConnection` method from your notification's constructor:"
-msgstr ""
+msgstr "預設情況下，放入佇列的通知會被放進專案的預設佇列連線中。若想為特定的通知指定不同的連線，可在 Notification 的 建構 Constructor 上呼叫 `onConnection` 方法："
 
 #: docs/10.x/notifications.md:block 54 (code)
 msgid "<?php\n\n"
@@ -479,7 +479,22 @@ msgid "<?php\n\n"
 "        $this->onConnection('redis');\n"
 "    }\n"
 "}\n"
-msgstr ""
+msgstr "<?php\n\n"
+"namespace App\\Notifications;\n\n"
+"use Illuminate\\Bus\\Queueable;\n"
+"use Illuminate\\Contracts\\Queue\\ShouldQueue;\n"
+"use Illuminate\\Notifications\\Notification;\n\n"
+"class InvoicePaid extends Notification implements ShouldQueue\n"
+"{\n"
+"    use Queueable;\n\n"
+"    /**\n"
+"     * Create a new notification instance.\n"
+"     */\n"
+"    public function __construct()\n"
+"    {\n"
+"        $this->onConnection('redis');\n"
+"    }\n"
+"}\n"
 
 #: docs/10.x/notifications.md:block 55 (paragraph)
 msgid "Or, if you would like to specify a specific queue connection that should be used for each notification channel supported by the notification, you may define a `viaConnections` method on your notification. This method should return an array of channel name / queue connection name pairs:"
@@ -649,7 +664,13 @@ msgid "use Illuminate\\Broadcasting\\Channel;\n"
 "            ->route('slack', '#slack-channel')\n"
 "            ->route('broadcast', [new Channel('channel-name')])\n"
 "            ->notify(new InvoicePaid($invoice));\n"
-msgstr ""
+msgstr "use Illuminate\\Broadcasting\\Channel;\n"
+"use Illuminate\\Support\\Facades\\Notification;\n\n"
+"Notification::route('mail', 'taylor@example.com')\n"
+"            ->route('vonage', '5555555555')\n"
+"            ->route('slack', '#slack-channel')\n"
+"            ->route('broadcast', [new Channel('channel-name')])\n"
+"            ->notify(new InvoicePaid($invoice));\n"
 
 #: docs/10.x/notifications.md:block 78 (paragraph)
 msgid "If you would like to provide the recipient's name when sending an on-demand notification to the `mail` route, you may provide an array that contains the email address as the key and the name as the value of the first element in the array:"
@@ -1479,7 +1500,7 @@ msgstr "php artisan notifications:table\n\n"
 
 #: docs/10.x/notifications.md:block 201 (quote)
 msgid "**Note** If your notifiable models are using [UUID or ULID primary keys](/docs/{{version}}/eloquent#uuid-and-ulid-keys), you should replace the `morphs` method with [`uuidMorphs`](docs/{{version}}/migrations#column-method-uuidMorphs) or [`ulidMorphs`](/docs/{{version}}/migrations#column-method-ulidMorphs) in the notification table migration."
-msgstr ""
+msgstr "**Note** 若 Notifiable Model 使用 [UUID 或 ULID 的主索引鍵](/docs/{{version}}/eloquent#uuid-and-ulid-keys)，請在 Notification 資料表的 Migration 中將 `morphs` 方法改成 [`uuidMorphs`](docs/{{version}}/migrations#column-method-uuidMorphs) 或 [`ulidMorphs`](/docs/{{version}}/migrations#column-method-ulidMorphs)。"
 
 #: docs/10.x/notifications.md:block 203 (header)
 msgid "Formatting Database Notifications"
@@ -1761,7 +1782,7 @@ msgstr "該套件中包含了[其專屬的設定檔](https://github.com/laravel/
 
 #: docs/10.x/notifications.md:block 258 (paragraph)
 msgid "After defining your keys, you should set a `VONAGE_SMS_FROM` environment variable that defines the phone number that your SMS messages should be sent from by default. You may generate this phone number within the Vonage control panel:"
-msgstr ""
+msgstr "定義好金鑰後，請將 `VONAGE_SMS_FROM` 設為預設要用來傳送簡訊的手機號碼。可在 Vonage 的控制面板中產生這個手機號碼："
 
 #: docs/10.x/notifications.md:block 259 (code)
 msgid "VONAGE_SMS_FROM=15556666666\n"
@@ -1933,7 +1954,7 @@ msgstr "Slack 通知"
 
 #: docs/10.x/notifications.md:block 284 (paragraph)
 msgid "Before sending Slack notifications, you should install the Slack notification channel via Composer:"
-msgstr ""
+msgstr "在傳送 Slack 通知前，請使用 Composer 安裝 Slack 通知通道："
 
 #: docs/10.x/notifications.md:block 285 (code)
 msgid "composer require laravel/slack-notification-channel\n"
@@ -1941,15 +1962,15 @@ msgstr "composer require laravel/slack-notification-channel\n"
 
 #: docs/10.x/notifications.md:block 286 (paragraph)
 msgid "Additionally, you must create a [Slack App](https://api.slack.com/apps?new_app=1) for your Slack workspace."
-msgstr ""
+msgstr "此外，也請建立為你的 Slack 工作空間一個 [Slack App](https://api.slack.com/apps?new_app=1)。"
 
 #: docs/10.x/notifications.md:block 287 (paragraph)
 msgid "If you only need to send notifications to the same Slack workspace that the App is created in, you should ensure that your App has the `chat:write`, `chat:write.public`, and `chat:write.customize` scopes. These scopes can be added from the \"OAuth & Permissions\" App management tab within Slack."
-msgstr ""
+msgstr "若只需要在該 Slack App 所在的工作空間內傳送通知，請確保該 Slack App 有 `chat:write`、`chat:write.public`，與 `chat:write.customize` Scope。可以在 Slack 中 App Management 的「OAuth & Permissions」分頁內新增這些 Scope。"
 
 #: docs/10.x/notifications.md:block 288 (paragraph)
 msgid "Next, copy the App's \"Bot User OAuth Token\" and place it within a `slack` configuration array in your application's `services.php` configuration file. This token can be found on the \"OAuth & Permissions\" tab within Slack:"
-msgstr ""
+msgstr "接著，請將該 App 的「Bot User OAuth Token」複製下來，並將其放在專案 `services.php` 設定檔中的 `slack` 設定陣列中。該 Token 可在 Slack 的「OAuth & Permissions」分頁中找到："
 
 #: docs/10.x/notifications.md:block 289 (code)
 msgid "'slack' => [\n"
@@ -1958,11 +1979,16 @@ msgid "'slack' => [\n"
 "        'channel' => env('SLACK_BOT_USER_DEFAULT_CHANNEL'),\n"
 "    ],\n"
 "],\n"
-msgstr ""
+msgstr "'slack' => [\n"
+"    'notifications' => [\n"
+"        'bot_user_oauth_token' => env('SLACK_BOT_USER_OAUTH_TOKEN'),\n"
+"        'channel' => env('SLACK_BOT_USER_DEFAULT_CHANNEL'),\n"
+"    ],\n"
+"],\n"
 
 #: docs/10.x/notifications.md:block 291 (header)
 msgid "App Distribution"
-msgstr ""
+msgstr "發佈 App"
 
 #: docs/10.x/notifications.md:block 292 (paragraph)
 msgid "If your application will be sending notifications to external Slack workspaces that are owned by your application's users, you will need to \"distribute\" your App via Slack. App distribution can be managed from your App's \"Manage Distribution\" tab within Slack. Once your App has been distributed, you may use [Socialite](/docs/{{version}}/socialite) to [obtain Slack Bot tokens](/docs/{{version}}/socialite#slack-bot-scopes) on behalf of your application's users."

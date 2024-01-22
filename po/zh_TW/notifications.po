@@ -10,7 +10,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
-"PO-Revision-Date: 2023-12-21 10:45\n"
+"PO-Revision-Date: 2024-01-22 14:09\n"
 
 #: docs/10.x/notifications.md:block 1 (header)
 msgid "Notifications"
@@ -1992,7 +1992,7 @@ msgstr "發佈 App"
 
 #: docs/10.x/notifications.md:block 292 (paragraph)
 msgid "If your application will be sending notifications to external Slack workspaces that are owned by your application's users, you will need to \"distribute\" your App via Slack. App distribution can be managed from your App's \"Manage Distribution\" tab within Slack. Once your App has been distributed, you may use [Socialite](/docs/{{version}}/socialite) to [obtain Slack Bot tokens](/docs/{{version}}/socialite#slack-bot-scopes) on behalf of your application's users."
-msgstr ""
+msgstr "若你需要將通知傳送到由網站內其他使用者管理的 Slack 工作空間，則需要通過 Slack 來「發佈 (Distribute)」你的 App。在 Slack 中，可以在 App 內的「Manage Distribution」裡管理 App 的發佈。發佈 App 後，可以使用 [Socialite](/docs/{{version}}/socialite) 來以網站使用者的名義[取得 Slack Bot 的 Token](/docs/{{version}}/socialite#slack-bot-scopes)。"
 
 #: docs/10.x/notifications.md:block 294 (header)
 msgid "Formatting Slack Notifications"
@@ -2000,7 +2000,7 @@ msgstr "格式化 Slack 通知"
 
 #: docs/10.x/notifications.md:block 295 (paragraph)
 msgid "If a notification supports being sent as a Slack message, you should define a `toSlack` method on the notification class. This method will receive a `$notifiable` entity and should return an `Illuminate\\Notifications\\Slack\\SlackMessage` instance. You can construct rich notifications using [Slack's Block Kit API](https://api.slack.com/block-kit). The following example may be previewed in [Slack's Block Kit builder](https://app.slack.com/block-kit-builder/T01KWS6K23Z#%7B%22blocks%22:%5B%7B%22type%22:%22header%22,%22text%22:%7B%22type%22:%22plain_text%22,%22text%22:%22Invoice%20Paid%22%7D%7D,%7B%22type%22:%22context%22,%22elements%22:%5B%7B%22type%22:%22plain_text%22,%22text%22:%22Customer%20%231234%22%7D%5D%7D,%7B%22type%22:%22section%22,%22text%22:%7B%22type%22:%22plain_text%22,%22text%22:%22An%20invoice%20has%20been%20paid.%22%7D,%22fields%22:%5B%7B%22type%22:%22mrkdwn%22,%22text%22:%22*Invoice%20No:*%5Cn1000%22%7D,%7B%22type%22:%22mrkdwn%22,%22text%22:%22*Invoice%20Recipient:*%5Cntaylor@laravel.com%22%7D%5D%7D,%7B%22type%22:%22divider%22%7D,%7B%22type%22:%22section%22,%22text%22:%7B%22type%22:%22plain_text%22,%22text%22:%22Congratulations!%22%7D%7D%5D%7D):"
-msgstr ""
+msgstr "若要讓某個 Notification 能支援以 Slack 訊息傳送，請在該 Notification 類別內定義 `toSlack` 方法。該方法會收到一個 `$notifiable` 實體，並應回傳 `Illuminate\\Notifications\\Slack\\SlackMessage` 實體。可以使用 [Slack 的 Block Kit API](https://api.slack.com/block-kit) 來建立 ^[Rich Notification](豐富的通知)。可以在 [Slack 的 Block Kit Builder](https://app.slack.com/block-kit-builder/T01KWS6K23Z#%7B%22blocks%22:%5B%7B%22type%22:%22header%22,%22text%22:%7B%22type%22:%22plain_text%22,%22text%22:%22Invoice%20Paid%22%7D%7D,%7B%22type%22:%22context%22,%22elements%22:%5B%7B%22type%22:%22plain_text%22,%22text%22:%22Customer%20%231234%22%7D%5D%7D,%7B%22type%22:%22section%22,%22text%22:%7B%22type%22:%22plain_text%22,%22text%22:%22An%20invoice%20has%20been%20paid.%22%7D,%22fields%22:%5B%7B%22type%22:%22mrkdwn%22,%22text%22:%22*Invoice%20No:*%5Cn1000%22%7D,%7B%22type%22:%22mrkdwn%22,%22text%22:%22*Invoice%20Recipient:*%5Cntaylor@laravel.com%22%7D%5D%7D,%7B%22type%22:%22divider%22%7D,%7B%22type%22:%22section%22,%22text%22:%7B%22type%22:%22plain_text%22,%22text%22:%22Congratulations!%22%7D%7D%5D%7D) 內預覽下列範例："
 
 #: docs/10.x/notifications.md:block 296 (code)
 msgid "use Illuminate\\Notifications\\Slack\\BlockKit\\Blocks\\ContextBlock;\n"
@@ -2028,15 +2028,39 @@ msgid "use Illuminate\\Notifications\\Slack\\BlockKit\\Blocks\\ContextBlock;\n"
 "                $block->text('Congratulations!');\n"
 "            });\n"
 "}\n"
-msgstr ""
+msgstr "use Illuminate\\Notifications\\Slack\\BlockKit\\Blocks\\ContextBlock;\n"
+"use Illuminate\\Notifications\\Slack\\BlockKit\\Blocks\\SectionBlock;\n"
+"use Illuminate\\Notifications\\Slack\\BlockKit\\Composites\\ConfirmObject;\n"
+"use Illuminate\\Notifications\\Slack\\SlackMessage;\n\n"
+"/**\n"
+" * Get the Slack representation of the notification.\n"
+" */\n"
+"public function toSlack(object $notifiable): SlackMessage\n"
+"{\n"
+"    return (new SlackMessage)\n"
+"            ->text('One of your invoices has been paid!')\n"
+"            ->headerBlock('Invoice Paid')\n"
+"            ->contextBlock(function (ContextBlock $block) {\n"
+"                $block->text('Customer #1234');\n"
+"            })\n"
+"            ->sectionBlock(function (SectionBlock $block) {\n"
+"                $block->text('An invoice has been paid.');\n"
+"                $block->field(\"*Invoice No:*\\n1000\")->markdown();\n"
+"                $block->field(\"*Invoice Recipient:*\\ntaylor@laravel.com\")->markdown();\n"
+"            })\n"
+"            ->dividerBlock()\n"
+"            ->sectionBlock(function (SectionBlock $block) {\n"
+"                $block->text('Congratulations!');\n"
+"            });\n"
+"}\n"
 
 #: docs/10.x/notifications.md:block 298 (header)
 msgid "Slack Interactivity"
-msgstr ""
+msgstr "Slack 可互動性"
 
 #: docs/10.x/notifications.md:block 299 (paragraph)
 msgid "Slack's Block Kit notification system provides powerful features to [handle user interaction](https://api.slack.com/interactivity/handling). To utilize these features, your Slack App should have \"Interactivity\" enabled and a \"Request URL\" configured that points to a URL served by your application. These settings can be managed from the \"Interactivity & Shortcuts\" App management tab within Slack."
-msgstr ""
+msgstr "Slack 的 Block Kit 通知系統提供了強大的功能，可[處理使用者的互動](https://api.slack.com/interactivity/handling)。若要使用這些功能，需要先在 Slack App 中啟用「Interactivity」，並將「Request URL」設定到一個由你的專案所管理的 URL。可以在 Slack 內的「Interactivity & Shortcuts」App 管理分頁中找到這些設定。"
 
 #: docs/10.x/notifications.md:block 300 (paragraph)
 msgid "In the following example, which utilizes the `actionsBlock` method, Slack will send a `POST` request to your \"Request URL\" with a payload containing the Slack user who clicked the button, the ID of the clicked button, and more. Your application can then determine the action to take based on the payload. You should also [verify the request](https://api.slack.com/authentication/verifying-requests-from-slack) was made by Slack:"

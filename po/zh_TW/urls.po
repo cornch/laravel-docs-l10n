@@ -10,7 +10,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
-"PO-Revision-Date: 2023-02-11 10:28\n"
+"PO-Revision-Date: 2024-06-30 08:27\n"
 
 #: docs/10.x/urls.md:block 1 (header)
 msgid "URL Generation"
@@ -191,10 +191,18 @@ msgstr "use Illuminate\\Support\\Facades\\URL;\n\n"
 "return URL::signedRoute('unsubscribe', ['user' => 1]);\n"
 
 #: docs/10.x/urls.md:block 37 (paragraph)
+msgid "You may exclude the domain from the signed URL hash by providing the `absolute` argument to the `signedRoute` method:"
+msgstr "可以提供 `absolute` 引數給 `signedRoute` 方法來在 URL 簽名 Hash 中排除網域："
+
+#: docs/10.x/urls.md:block 38 (code)
+msgid "return URL::signedRoute('unsubscribe', ['user' => 1], absolute: false);\n"
+msgstr "return URL::signedRoute('unsubscribe', ['user' => 1], absolute: false);\n"
+
+#: docs/10.x/urls.md:block 39 (paragraph)
 msgid "If you would like to generate a temporary signed route URL that expires after a specified amount of time, you may use the `temporarySignedRoute` method. When Laravel validates a temporary signed route URL, it will ensure that the expiration timestamp that is encoded into the signed URL has not elapsed:"
 msgstr "若想產生在指定時間後會過期的臨時簽名 Route URL，可以使用 `temporarySignedRoute` 方法。Laravel 在驗證臨時簽名 Route URL 時，也會確保被編碼進簽名 URL 中的過期時間時戳尚未到期："
 
-#: docs/10.x/urls.md:block 38 (code)
+#: docs/10.x/urls.md:block 40 (code)
 msgid "use Illuminate\\Support\\Facades\\URL;\n\n"
 "return URL::temporarySignedRoute(\n"
 "    'unsubscribe', now()->addMinutes(30), ['user' => 1]\n"
@@ -204,15 +212,15 @@ msgstr "use Illuminate\\Support\\Facades\\URL;\n\n"
 "    'unsubscribe', now()->addMinutes(30), ['user' => 1]\n"
 ");\n"
 
-#: docs/10.x/urls.md:block 40 (header)
+#: docs/10.x/urls.md:block 42 (header)
 msgid "Validating Signed Route Requests"
 msgstr "驗證簽名 Route 的 Request"
 
-#: docs/10.x/urls.md:block 41 (paragraph)
+#: docs/10.x/urls.md:block 43 (paragraph)
 msgid "To verify that an incoming request has a valid signature, you should call the `hasValidSignature` method on the incoming `Illuminate\\Http\\Request` instance:"
 msgstr "若要驗證連入 Request 是否有正確的簽名，可在連入的 `Illuminate\\Http\\Request` 實體上呼叫 `hasValidSignature` 方法："
 
-#: docs/10.x/urls.md:block 42 (code)
+#: docs/10.x/urls.md:block 44 (code)
 msgid "use Illuminate\\Http\\Request;\n\n"
 "Route::get('/unsubscribe/{user}', function (Request $request) {\n"
 "    if (! $request->hasValidSignature()) {\n"
@@ -228,11 +236,11 @@ msgstr "use Illuminate\\Http\\Request;\n\n"
 "    // ...\n"
 "})->name('unsubscribe');\n"
 
-#: docs/10.x/urls.md:block 43 (paragraph)
+#: docs/10.x/urls.md:block 45 (paragraph)
 msgid "Sometimes, you may need to allow your application's frontend to append data to a signed URL, such as when performing client-side pagination. Therefore, you can specify request query parameters that should be ignored when validating a signed URL using the `hasValidSignatureWhileIgnoring` method. Remember, ignoring parameters allows anyone to modify those parameters on the request:"
 msgstr "有時候，我們可能要讓程式的前端將資料附加到簽名 URL 上，例如在用戶端上做分頁時。因此，我們可以使用 `hasValidSignatureWhileIgnoring` 來指定哪些查詢參數在驗證簽名 URL 要被忽略不驗證。但請記得，忽略一個參數就能讓任何人都能修改這個參數："
 
-#: docs/10.x/urls.md:block 44 (code)
+#: docs/10.x/urls.md:block 46 (code)
 msgid "if (! $request->hasValidSignatureWhileIgnoring(['page', 'order'])) {\n"
 "    abort(401);\n"
 "}\n"
@@ -240,11 +248,11 @@ msgstr "if (! $request->hasValidSignatureWhileIgnoring(['page', 'order'])) {\n"
 "    abort(401);\n"
 "}\n"
 
-#: docs/10.x/urls.md:block 45 (paragraph)
+#: docs/10.x/urls.md:block 47 (paragraph)
 msgid "Instead of validating signed URLs using the incoming request instance, you may assign the `Illuminate\\Routing\\Middleware\\ValidateSignature` [middleware](/docs/{{version}}/middleware) to the route. If it is not already present, you may assign this middleware an alias in your HTTP kernel's `$middlewareAliases` array:"
 msgstr "除了使用連入 Request 實體來驗證簽名 URL 外，也可以將  `Illuminate\\Routing\\Middleware\\ValidateSignature` [Middleware](/docs/{{version}}/middleware) 指派給 Route。若該 Middleware 不存在，可以在 HTTP Kernel 的 `$middlewareAliases` 陣列中為該 Middleware 設定一個索引鍵："
 
-#: docs/10.x/urls.md:block 46 (code)
+#: docs/10.x/urls.md:block 48 (code)
 msgid "/**\n"
 " * The application's middleware aliases.\n"
 " *\n"
@@ -266,11 +274,11 @@ msgstr "/**\n"
 "    'signed' => \\Illuminate\\Routing\\Middleware\\ValidateSignature::class,\n"
 "];\n"
 
-#: docs/10.x/urls.md:block 47 (paragraph)
+#: docs/10.x/urls.md:block 49 (paragraph)
 msgid "Once you have registered the middleware in your kernel, you may attach it to a route. If the incoming request does not have a valid signature, the middleware will automatically return a `403` HTTP response:"
 msgstr "在 Kernel 中註冊好 Middleware 後，就可以將其附加到 Route 上。若連入的 Request 沒有正確的簽名，該 Middleware 會自動回傳一個 `403` HTTP Response："
 
-#: docs/10.x/urls.md:block 48 (code)
+#: docs/10.x/urls.md:block 50 (code)
 msgid "Route::post('/unsubscribe/{user}', function (Request $request) {\n"
 "    // ...\n"
 "})->name('unsubscribe')->middleware('signed');\n"
@@ -278,15 +286,27 @@ msgstr "Route::post('/unsubscribe/{user}', function (Request $request) {\n"
 "    // ...\n"
 "})->name('unsubscribe')->middleware('signed');\n"
 
-#: docs/10.x/urls.md:block 50 (header)
+#: docs/10.x/urls.md:block 51 (paragraph)
+msgid "If your signed URLs do not include the domain in the URL hash, you should provide the `relative` argument to the middleware:"
+msgstr "若在簽名的 URL 中，URL Hash 不包含網域，則需要在 Middleware 中包含 `relative` 引數："
+
+#: docs/10.x/urls.md:block 52 (code)
+msgid "Route::post('/unsubscribe/{user}', function (Request $request) {\n"
+"    // ...\n"
+"})->name('unsubscribe')->middleware('signed:relative');\n"
+msgstr "Route::post('/unsubscribe/{user}', function (Request $request) {\n"
+"    // ...\n"
+"})->name('unsubscribe')->middleware('signed:relative');\n"
+
+#: docs/10.x/urls.md:block 54 (header)
 msgid "Responding To Invalid Signed Routes"
 msgstr "回應無效簽名的 Route"
 
-#: docs/10.x/urls.md:block 51 (paragraph)
+#: docs/10.x/urls.md:block 55 (paragraph)
 msgid "When someone visits a signed URL that has expired, they will receive a generic error page for the `403` HTTP status code. However, you can customize this behavior by defining a custom \"renderable\" closure for the `InvalidSignatureException` exception in your exception handler. This closure should return an HTTP response:"
 msgstr "若有人瀏覽了過期的簽名 URL，則會看到 `403` HTTP 狀態碼通用的錯誤頁面。不過，我們也可以在我們的例外處理常式 (Exception Handler) 上為 `InvalidSignatureException` 例外定義一個自訂的「renderable (可轉譯的)」閉包來自訂此行為。這個閉包應回傳 HTTP Response："
 
-#: docs/10.x/urls.md:block 52 (code)
+#: docs/10.x/urls.md:block 56 (code)
 msgid "use Illuminate\\Routing\\Exceptions\\InvalidSignatureException;\n\n"
 "/**\n"
 " * Register the exception handling callbacks for the application.\n"
@@ -308,37 +328,37 @@ msgstr "use Illuminate\\Routing\\Exceptions\\InvalidSignatureException;\n\n"
 "    });\n"
 "}\n"
 
-#: docs/10.x/urls.md:block 54 (header)
+#: docs/10.x/urls.md:block 58 (header)
 msgid "URLs For Controller Actions"
 msgstr "Controller 動作的 URL"
 
-#: docs/10.x/urls.md:block 55 (paragraph)
+#: docs/10.x/urls.md:block 59 (paragraph)
 msgid "The `action` function generates a URL for the given controller action:"
 msgstr "`action` 方法可為給定的 Controller 動作產生 URL："
 
-#: docs/10.x/urls.md:block 56 (code)
+#: docs/10.x/urls.md:block 60 (code)
 msgid "use App\\Http\\Controllers\\HomeController;\n\n"
 "$url = action([HomeController::class, 'index']);\n"
 msgstr "use App\\Http\\Controllers\\HomeController;\n\n"
 "$url = action([HomeController::class, 'index']);\n"
 
-#: docs/10.x/urls.md:block 57 (paragraph)
+#: docs/10.x/urls.md:block 61 (paragraph)
 msgid "If the controller method accepts route parameters, you may pass an associative array of route parameters as the second argument to the function:"
 msgstr "若該 Controller 方法接受 Route 參數，則可將 Route 參數的關聯式陣列作為第二個引數傳給給函式："
 
-#: docs/10.x/urls.md:block 58 (code)
+#: docs/10.x/urls.md:block 62 (code)
 msgid "$url = action([UserController::class, 'profile'], ['id' => 1]);\n"
 msgstr "$url = action([UserController::class, 'profile'], ['id' => 1]);\n"
 
-#: docs/10.x/urls.md:block 60 (header)
+#: docs/10.x/urls.md:block 64 (header)
 msgid "Default Values"
 msgstr "預設值"
 
-#: docs/10.x/urls.md:block 61 (paragraph)
+#: docs/10.x/urls.md:block 65 (paragraph)
 msgid "For some applications, you may wish to specify request-wide default values for certain URL parameters. For example, imagine many of your routes define a `{locale}` parameter:"
 msgstr "在某個專案中，我們可能會想為特定的 URL 參數設定 Request 層級的預設值。舉例來說，假設我們的 Route 中很多都定義了 `{locale}` 參數："
 
-#: docs/10.x/urls.md:block 62 (code)
+#: docs/10.x/urls.md:block 66 (code)
 msgid "Route::get('/{locale}/posts', function () {\n"
 "    // ...\n"
 "})->name('post.index');\n"
@@ -346,11 +366,11 @@ msgstr "Route::get('/{locale}/posts', function () {\n"
 "    // ...\n"
 "})->name('post.index');\n"
 
-#: docs/10.x/urls.md:block 63 (paragraph)
+#: docs/10.x/urls.md:block 67 (paragraph)
 msgid "It is cumbersome to always pass the `locale` every time you call the `route` helper. So, you may use the `URL::defaults` method to define a default value for this parameter that will always be applied during the current request. You may wish to call this method from a [route middleware](/docs/{{version}}/middleware#assigning-middleware-to-routes) so that you have access to the current request:"
 msgstr "若每次呼叫 `route` 輔助函式都要傳入 `locale` 的話會很麻煩。因此。我們可以使用 `URL::defaults` 方法來為這個參數定義目前 Request 中要套用的預設值。建議在某個 [Route Middleware](/docs/{{version}}/middleware#assigning-middleware-to-routes) 中呼叫這個方法，這樣我們才能存取目前的 Request："
 
-#: docs/10.x/urls.md:block 64 (code)
+#: docs/10.x/urls.md:block 68 (code)
 msgid "<?php\n\n"
 "namespace App\\Http\\Middleware;\n\n"
 "use Closure;\n"
@@ -390,23 +410,23 @@ msgstr "<?php\n\n"
 "    }\n"
 "}\n"
 
-#: docs/10.x/urls.md:block 65 (paragraph)
+#: docs/10.x/urls.md:block 69 (paragraph)
 msgid "Once the default value for the `locale` parameter has been set, you are no longer required to pass its value when generating URLs via the `route` helper."
 msgstr "為 `locale` 參數設定好預設值後，使用 `route` 輔助函式產生 URL 時就不需要再傳入這個值了："
 
-#: docs/10.x/urls.md:block 67 (header)
+#: docs/10.x/urls.md:block 71 (header)
 msgid "URL Defaults & Middleware Priority"
 msgstr "URL 預設與 Middleware 的優先順序"
 
-#: docs/10.x/urls.md:block 68 (paragraph)
+#: docs/10.x/urls.md:block 72 (paragraph)
 msgid "Setting URL default values can interfere with Laravel's handling of implicit model bindings. Therefore, you should [prioritize your middleware](/docs/{{version}}/middleware#sorting-middleware) that set URL defaults to be executed before Laravel's own `SubstituteBindings` middleware. You can accomplish this by making sure your middleware occurs before the `SubstituteBindings` middleware within the `$middlewarePriority` property of your application's HTTP kernel."
 msgstr "設定 URL 的預設值可能會影響 Laravel 處理 Model 繫結。因此，請[調整 Middleware 的優先順序]，讓設定 URL 預設的 Middleware 在 Laravel 的 `SubstituteBindings` 之前執行。可以通過在 HTTP Kernel 的 `$middlewarePriority`(/docs/{{version}}/middleware#sorting-middleware) 中將你的 Middleware 放在 `SubstituteBindings` 之前來達成。"
 
-#: docs/10.x/urls.md:block 69 (paragraph)
+#: docs/10.x/urls.md:block 73 (paragraph)
 msgid "The `$middlewarePriority` property is defined in the base `Illuminate\\Foundation\\Http\\Kernel` class. You may copy its definition from that class and overwrite it in your application's HTTP kernel in order to modify it:"
 msgstr "`Illuminate\\Foundation\\Http\\Kernel` 類別中定義了 `$middlewarePriority` 屬性。我們可以手動從該類別中複製這個定義並在專案的 HTTP Kernel 中複寫該屬性來修改其值："
 
-#: docs/10.x/urls.md:block 70 (code)
+#: docs/10.x/urls.md:block 74 (code)
 msgid "/**\n"
 " * The priority-sorted list of middleware.\n"
 " *\n"

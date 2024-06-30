@@ -1,0 +1,453 @@
+msgid ""
+msgstr ""
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Crowdin-Project: laravel-docs\n"
+"X-Crowdin-Project-ID: 447952\n"
+"X-Crowdin-Language: zh-TW\n"
+"X-Crowdin-File: /main/templates/folio.pot\n"
+"X-Crowdin-File-ID: 186\n"
+"Project-Id-Version: laravel-docs\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Language-Team: Chinese Traditional\n"
+"Language: zh_TW\n"
+"PO-Revision-Date: 2024-06-30 08:27\n"
+
+#: docs/10.x/folio.md:block 1 (header)
+msgid "Laravel Folio"
+msgstr ""
+
+#: docs/10.x/folio.md:block 2 (unordered list)
+msgid "[Introduction](#introduction)"
+msgstr ""
+
+#: docs/10.x/folio.md:block 2 (unordered list)
+msgid "[Installation](#installation)"
+msgstr ""
+
+#: docs/10.x/folio.md:block 2 (unordered list)
+msgid "[Page Paths / URIs](#page-paths-uris)"
+msgstr ""
+
+#: docs/10.x/folio.md:block 2 (unordered list)
+msgid "[Subdomain Routing](#subdomain-routing)"
+msgstr ""
+
+#: docs/10.x/folio.md:block 2 (unordered list)
+msgid "[Creating Routes](#creating-routes)"
+msgstr ""
+
+#: docs/10.x/folio.md:block 2 (unordered list)
+msgid "[Nested Routes](#nested-routes)"
+msgstr ""
+
+#: docs/10.x/folio.md:block 2 (unordered list)
+msgid "[Index Routes](#index-routes)"
+msgstr ""
+
+#: docs/10.x/folio.md:block 2 (unordered list)
+msgid "[Route Parameters](#route-parameters)"
+msgstr ""
+
+#: docs/10.x/folio.md:block 2 (unordered list)
+msgid "[Route Model Binding](#route-model-binding)"
+msgstr ""
+
+#: docs/10.x/folio.md:block 2 (unordered list)
+msgid "[Soft Deleted Models](#soft-deleted-models)"
+msgstr ""
+
+#: docs/10.x/folio.md:block 2 (unordered list)
+msgid "[Render Hooks](#render-hooks)"
+msgstr ""
+
+#: docs/10.x/folio.md:block 2 (unordered list)
+msgid "[Named Routes](#named-routes)"
+msgstr ""
+
+#: docs/10.x/folio.md:block 2 (unordered list)
+msgid "[Middleware](#middleware)"
+msgstr ""
+
+#: docs/10.x/folio.md:block 2 (unordered list)
+msgid "[Route Caching](#route-caching)"
+msgstr ""
+
+#: docs/10.x/folio.md:block 4 (header)
+msgid "Introduction"
+msgstr ""
+
+#: docs/10.x/folio.md:block 5 (paragraph)
+msgid "[Laravel Folio](https://github.com/laravel/folio) is a powerful page based router designed to simplify routing in Laravel applications. With Laravel Folio, generating a route becomes as effortless as creating a Blade template within your application's `resources/views/pages` directory."
+msgstr ""
+
+#: docs/10.x/folio.md:block 6 (paragraph)
+msgid "For example, to create a page that is accessible at the `/greeting` URL, just create a `greeting.blade.php` file in your application's `resources/views/pages` directory:"
+msgstr ""
+
+#: docs/10.x/folio.md:block 7 (code)
+msgid "<div>\n"
+"    Hello World\n"
+"</div>\n"
+msgstr ""
+
+#: docs/10.x/folio.md:block 9 (header)
+msgid "Installation"
+msgstr ""
+
+#: docs/10.x/folio.md:block 10 (paragraph)
+msgid "To get started, install Folio into your project using the Composer package manager:"
+msgstr ""
+
+#: docs/10.x/folio.md:block 11 (code)
+msgid "composer require laravel/folio\n"
+msgstr ""
+
+#: docs/10.x/folio.md:block 12 (paragraph)
+msgid "After installing Folio, you may execute the `folio:install` Artisan command, which will install Folio's service provider into your application. This service provider registers the directory where Folio will search for routes / pages:"
+msgstr ""
+
+#: docs/10.x/folio.md:block 13 (code)
+msgid "php artisan folio:install\n"
+msgstr ""
+
+#: docs/10.x/folio.md:block 15 (header)
+msgid "Page Paths / URIs"
+msgstr ""
+
+#: docs/10.x/folio.md:block 16 (paragraph)
+msgid "By default, Folio serves pages from your application's `resources/views/pages` directory, but you may customize these directories in your Folio service provider's `boot` method."
+msgstr ""
+
+#: docs/10.x/folio.md:block 17 (paragraph)
+msgid "For example, sometimes it may be convenient to specify multiple Folio paths in the same Laravel application. You may wish to have a separate directory of Folio pages for your application's \"admin\" area, while using another directory for the rest of your application's pages."
+msgstr ""
+
+#: docs/10.x/folio.md:block 18 (paragraph)
+msgid "You may accomplish this using the `Folio::path` and `Folio::uri` methods. The `path` method registers a directory that Folio will scan for pages when routing incoming HTTP requests, while the `uri` method specifies the \"base URI\" for that directory of pages:"
+msgstr ""
+
+#: docs/10.x/folio.md:block 19 (code)
+msgid "use Laravel\\Folio\\Folio;\n\n"
+"Folio::path(resource_path('views/pages/guest'))->uri('/');\n\n"
+"Folio::path(resource_path('views/pages/admin'))\n"
+"    ->uri('/admin')\n"
+"    ->middleware([\n"
+"        '*' => [\n"
+"            'auth',\n"
+"            'verified',\n\n"
+"            // ...\n"
+"        ],\n"
+"    ]);\n"
+msgstr ""
+
+#: docs/10.x/folio.md:block 21 (header)
+msgid "Subdomain Routing"
+msgstr ""
+
+#: docs/10.x/folio.md:block 22 (paragraph)
+msgid "You may also route to pages based on the incoming request's subdomain. For example, you may wish to route requests from `admin.example.com` to a different page directory than the rest of your Folio pages. You may accomplish this by invoking the `domain` method after invoking the `Folio::path` method:"
+msgstr ""
+
+#: docs/10.x/folio.md:block 23 (code)
+msgid "use Laravel\\Folio\\Folio;\n\n"
+"Folio::domain('admin.example.com')\n"
+"    ->path(resource_path('views/pages/admin'));\n"
+msgstr ""
+
+#: docs/10.x/folio.md:block 24 (paragraph)
+msgid "The `domain` method also allows you to capture parts of the domain or subdomain as parameters. These parameters will be injected into your page template:"
+msgstr ""
+
+#: docs/10.x/folio.md:block 25 (code)
+msgid "use Laravel\\Folio\\Folio;\n\n"
+"Folio::domain('{account}.example.com')\n"
+"    ->path(resource_path('views/pages/admin'));\n"
+msgstr ""
+
+#: docs/10.x/folio.md:block 27 (header)
+msgid "Creating Routes"
+msgstr ""
+
+#: docs/10.x/folio.md:block 28 (paragraph)
+msgid "You may create a Folio route by placing a Blade template in any of your Folio mounted directories. By default, Folio mounts the `resources/views/pages` directory, but you may customize these directories in your Folio service provider's `boot` method."
+msgstr ""
+
+#: docs/10.x/folio.md:block 29 (paragraph)
+msgid "Once a Blade template has been placed in a Folio mounted directory, you may immediately access it via your browser. For example, a page placed in `pages/schedule.blade.php` may be accessed in your browser at `http://example.com/schedule`."
+msgstr ""
+
+#: docs/10.x/folio.md:block 30 (paragraph)
+msgid "To quickly view a list of all of your Folio pages / routes, you may invoke the `folio:list` Artisan command:"
+msgstr ""
+
+#: docs/10.x/folio.md:block 31 (code)
+msgid "php artisan folio:list\n"
+msgstr ""
+
+#: docs/10.x/folio.md:block 33 (header)
+msgid "Nested Routes"
+msgstr ""
+
+#: docs/10.x/folio.md:block 34 (paragraph)
+msgid "You may create a nested route by creating one or more directories within one of Folio's directories. For instance, to create a page that is accessible via `/user/profile`, create a `profile.blade.php` template within the `pages/user` directory:"
+msgstr ""
+
+#: docs/10.x/folio.md:block 35 (code)
+msgid "php artisan make:folio user/profile\n\n"
+"# pages/user/profile.blade.php → /user/profile\n"
+msgstr ""
+
+#: docs/10.x/folio.md:block 37 (header)
+msgid "Index Routes"
+msgstr ""
+
+#: docs/10.x/folio.md:block 38 (paragraph)
+msgid "Sometimes, you may wish to make a given page the \"index\" of a directory. By placing an `index.blade.php` template within a Folio directory, any requests to the root of that directory will be routed to that page:"
+msgstr ""
+
+#: docs/10.x/folio.md:block 39 (code)
+msgid "php artisan make:folio index\n"
+"# pages/index.blade.php → /\n\n"
+"php artisan make:folio users/index\n"
+"# pages/users/index.blade.php → /users\n"
+msgstr ""
+
+#: docs/10.x/folio.md:block 41 (header)
+msgid "Route Parameters"
+msgstr ""
+
+#: docs/10.x/folio.md:block 42 (paragraph)
+msgid "Often, you will need to have segments of the incoming request's URL injected into your page so that you can interact with them. For example, you may need to access the \"ID\" of the user whose profile is being displayed. To accomplish this, you may encapsulate a segment of the page's filename in square brackets:"
+msgstr ""
+
+#: docs/10.x/folio.md:block 43 (code)
+msgid "php artisan make:folio \"users/[id]\"\n\n"
+"# pages/users/[id].blade.php → /users/1\n"
+msgstr ""
+
+#: docs/10.x/folio.md:block 44 (paragraph)
+msgid "Captured segments can be accessed as variables within your Blade template:"
+msgstr ""
+
+#: docs/10.x/folio.md:block 45 (code)
+msgid "<div>\n"
+"    User {{ $id }}\n"
+"</div>\n"
+msgstr ""
+
+#: docs/10.x/folio.md:block 46 (paragraph)
+msgid "To capture multiple segments, you can prefix the encapsulated segment with three dots `...`:"
+msgstr ""
+
+#: docs/10.x/folio.md:block 47 (code)
+msgid "php artisan make:folio \"users/[...ids]\"\n\n"
+"# pages/users/[...ids].blade.php → /users/1/2/3\n"
+msgstr ""
+
+#: docs/10.x/folio.md:block 48 (paragraph)
+msgid "When capturing multiple segments, the captured segments will be injected into the page as an array:"
+msgstr ""
+
+#: docs/10.x/folio.md:block 49 (code)
+msgid "<ul>\n"
+"    @foreach ($ids as $id)\n"
+"        <li>User {{ $id }}</li>\n"
+"    @endforeach\n"
+"</ul>\n"
+msgstr ""
+
+#: docs/10.x/folio.md:block 51 (header)
+msgid "Route Model Binding"
+msgstr ""
+
+#: docs/10.x/folio.md:block 52 (paragraph)
+msgid "If a wildcard segment of your page template's filename corresponds one of your application's Eloquent models, Folio will automatically take advantage of Laravel's route model binding capabilities and attempt to inject the resolved model instance into your page:"
+msgstr ""
+
+#: docs/10.x/folio.md:block 53 (code)
+msgid "php artisan make:folio \"users/[User]\"\n\n"
+"# pages/users/[User].blade.php → /users/1\n"
+msgstr ""
+
+#: docs/10.x/folio.md:block 54 (paragraph)
+msgid "Captured models can be accessed as variables within your Blade template. The model's variable name will be converted to \"camel case\":"
+msgstr ""
+
+#: docs/10.x/folio.md:block 55 (code)
+msgid "<div>\n"
+"    User {{ $user->id }}\n"
+"</div>\n"
+msgstr ""
+
+#: docs/10.x/folio.md:block 56 (header)
+msgid "Customizing The Key"
+msgstr ""
+
+#: docs/10.x/folio.md:block 57 (paragraph)
+msgid "Sometimes you may wish to resolve bound Eloquent models using a column other than `id`. To do so, you may specify the column in the page's filename. For example, a page with the filename `[Post:slug].blade.php` will attempt to resolve the bound model via the `slug` column instead of the `id` column."
+msgstr ""
+
+#: docs/10.x/folio.md:block 58 (paragraph)
+msgid "On Windows, you should use `-` to separate the model name from the key: `[Post-slug].blade.php`."
+msgstr ""
+
+#: docs/10.x/folio.md:block 59 (header)
+msgid "Model Location"
+msgstr ""
+
+#: docs/10.x/folio.md:block 60 (paragraph)
+msgid "By default, Folio will search for your model within your application's `app/Models` directory. However, if needed, you may specify the fully-qualified model class name in your template's filename:"
+msgstr ""
+
+#: docs/10.x/folio.md:block 61 (code)
+msgid "php artisan make:folio \"users/[.App.Models.User]\"\n\n"
+"# pages/users/[.App.Models.User].blade.php → /users/1\n"
+msgstr ""
+
+#: docs/10.x/folio.md:block 63 (header)
+msgid "Soft Deleted Models"
+msgstr ""
+
+#: docs/10.x/folio.md:block 64 (paragraph)
+msgid "By default, models that have been soft deleted are not retrieved when resolving implicit model bindings. However, if you wish, you can instruct Folio to retrieve soft deleted models by invoking the `withTrashed` function within the page's template:"
+msgstr ""
+
+#: docs/10.x/folio.md:block 65 (code)
+msgid "<?php\n\n"
+"use function Laravel\\Folio\\{withTrashed};\n\n"
+"withTrashed();\n\n"
+"?>\n\n"
+"<div>\n"
+"    User {{ $user->id }}\n"
+"</div>\n"
+msgstr ""
+
+#: docs/10.x/folio.md:block 67 (header)
+msgid "Render Hooks"
+msgstr ""
+
+#: docs/10.x/folio.md:block 68 (paragraph)
+msgid "By default, Folio will return the content of the page's Blade template as the response to the incoming request. However, you may customize the response by invoking the `render` function within the page's template."
+msgstr ""
+
+#: docs/10.x/folio.md:block 69 (paragraph)
+msgid "The `render` function accepts a closure which will receive the `View` instance being rendered by Folio, allowing you to add additional data to the view or customize the entire response. In addition to receiving the `View` instance, any additional route parameters or model bindings will also be provided to the `render` closure:"
+msgstr ""
+
+#: docs/10.x/folio.md:block 70 (code)
+msgid "<?php\n\n"
+"use App\\Models\\Post;\n"
+"use Illuminate\\Support\\Facades\\Auth;\n"
+"use Illuminate\\View\\View;\n\n"
+"use function Laravel\\Folio\\render;\n\n"
+"render(function (View $view, Post $post) {\n"
+"    if (! Auth::user()->can('view', $post)) {\n"
+"        return response('Unauthorized', 403);\n"
+"    }\n\n"
+"    return $view->with('photos', $post->author->photos);\n"
+"}); ?>\n\n"
+"<div>\n"
+"    {{ $post->content }}\n"
+"</div>\n\n"
+"<div>\n"
+"    This author has also taken {{ count($photos) }} photos.\n"
+"</div>\n"
+msgstr ""
+
+#: docs/10.x/folio.md:block 72 (header)
+msgid "Named Routes"
+msgstr ""
+
+#: docs/10.x/folio.md:block 73 (paragraph)
+msgid "You may specify a name for a given page's route using the `name` function:"
+msgstr ""
+
+#: docs/10.x/folio.md:block 74 (code)
+msgid "<?php\n\n"
+"use function Laravel\\Folio\\name;\n\n"
+"name('users.index');\n"
+msgstr ""
+
+#: docs/10.x/folio.md:block 75 (paragraph)
+msgid "Just like Laravel's named routes, you may use the `route` function to generate URLs to Folio pages that have been assigned a name:"
+msgstr ""
+
+#: docs/10.x/folio.md:block 76 (code)
+msgid "<a href=\"{{ route('users.index') }}\">\n"
+"    All Users\n"
+"</a>\n"
+msgstr ""
+
+#: docs/10.x/folio.md:block 77 (paragraph)
+msgid "If the page has parameters, you may simply pass their values to the `route` function:"
+msgstr ""
+
+#: docs/10.x/folio.md:block 78 (code)
+msgid "route('users.show', ['user' => $user]);\n"
+msgstr ""
+
+#: docs/10.x/folio.md:block 80 (header)
+msgid "Middleware"
+msgstr ""
+
+#: docs/10.x/folio.md:block 81 (paragraph)
+msgid "You can apply middleware to a specific page by invoking the `middleware` function within the page's template:"
+msgstr ""
+
+#: docs/10.x/folio.md:block 82 (code)
+msgid "<?php\n\n"
+"use function Laravel\\Folio\\{middleware};\n\n"
+"middleware(['auth', 'verified']);\n\n"
+"?>\n\n"
+"<div>\n"
+"    Dashboard\n"
+"</div>\n"
+msgstr ""
+
+#: docs/10.x/folio.md:block 83 (paragraph)
+msgid "Or, to assign middleware to a group of pages, you may chain the `middleware` method after invoking the `Folio::path` method."
+msgstr ""
+
+#: docs/10.x/folio.md:block 84 (paragraph)
+msgid "To specify which pages the middleware should be applied to, the array of middleware may be keyed using the corresponding URL patterns of the pages they should be applied to. The `*` character may be utilized as a wildcard character:"
+msgstr ""
+
+#: docs/10.x/folio.md:block 85 (code)
+msgid "use Laravel\\Folio\\Folio;\n\n"
+"Folio::path(resource_path('views/pages'))->middleware([\n"
+"    'admin/*' => [\n"
+"        'auth',\n"
+"        'verified',\n\n"
+"        // ...\n"
+"    ],\n"
+"]);\n"
+msgstr ""
+
+#: docs/10.x/folio.md:block 86 (paragraph)
+msgid "You may include closures in the array of middleware to define inline, anonymous middleware:"
+msgstr ""
+
+#: docs/10.x/folio.md:block 87 (code)
+msgid "use Closure;\n"
+"use Illuminate\\Http\\Request;\n"
+"use Laravel\\Folio\\Folio;\n\n"
+"Folio::path(resource_path('views/pages'))->middleware([\n"
+"    'admin/*' => [\n"
+"        'auth',\n"
+"        'verified',\n\n"
+"        function (Request $request, Closure $next) {\n"
+"            // ...\n\n"
+"            return $next($request);\n"
+"        },\n"
+"    ],\n"
+"]);\n"
+msgstr ""
+
+#: docs/10.x/folio.md:block 89 (header)
+msgid "Route Caching"
+msgstr ""
+
+#: docs/10.x/folio.md:block 90 (paragraph)
+msgid "When using Folio, you should always take advantage of [Laravel's route caching capabilities](/docs/{{version}}/routing#route-caching). Folio listens for the `route:cache` Artisan command to ensure that Folio page definitions and route names are properly cached for maximum performance."
+msgstr ""
+

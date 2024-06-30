@@ -10,7 +10,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
-"PO-Revision-Date: 2023-02-11 12:59\n"
+"PO-Revision-Date: 2024-06-30 07:45\n"
 
 #: docs/10.x/notifications.md:block 1 (header)
 msgid "Notifications"
@@ -161,8 +161,8 @@ msgid "[Formatting SMS Notifications](#formatting-sms-notifications)"
 msgstr "[格式化簡訊通知](#formatting-sms-notifications)"
 
 #: docs/10.x/notifications.md:block 2 (unordered list)
-msgid "[Formatting Shortcode Notifications](#formatting-shortcode-notifications)"
-msgstr "[格式化 Shortcode 的通知](#formatting-shortcode-notifications)"
+msgid "[Unicode Content](#unicode-content)"
+msgstr "[Unicode 內容](#unicode-content)"
 
 #: docs/10.x/notifications.md:block 2 (unordered list)
 msgid "[Customizing The \"From\" Number](#customizing-the-from-number)"
@@ -189,16 +189,24 @@ msgid "[Formatting Slack Notifications](#formatting-slack-notifications)"
 msgstr "[格式化 Slack 通知](#formatting-slack-notifications)"
 
 #: docs/10.x/notifications.md:block 2 (unordered list)
-msgid "[Slack Attachments](#slack-attachments)"
-msgstr "[Slack 附件](#slack-attachments)"
+msgid "[Slack Interactivity](#slack-interactivity)"
+msgstr "[Slack Interactivity](#slack-interactivity)"
 
 #: docs/10.x/notifications.md:block 2 (unordered list)
 msgid "[Routing Slack Notifications](#routing-slack-notifications)"
 msgstr "[路由 Slack 通知](#routing-slack-notifications)"
 
 #: docs/10.x/notifications.md:block 2 (unordered list)
+msgid "[Notifying External Slack Workspaces](#notifying-external-slack-workspaces)"
+msgstr "[通知外部 Slack 工作空間](#notifying-external-slack-workspaces)"
+
+#: docs/10.x/notifications.md:block 2 (unordered list)
 msgid "[Localizing Notifications](#localizing-notifications)"
 msgstr "[本土化通知](#localizing-notifications)"
+
+#: docs/10.x/notifications.md:block 2 (unordered list)
+msgid "[Testing](#testing)"
+msgstr "[測試](#testing)"
 
 #: docs/10.x/notifications.md:block 2 (unordered list)
 msgid "[Notification Events](#notification-events)"
@@ -343,8 +351,8 @@ msgid "Queueing Notifications"
 msgstr "將通知放入佇列"
 
 #: docs/10.x/notifications.md:block 35 (quote)
-msgid "**Warning** Before queueing notifications you should configure your queue and [start a worker](/docs/{{version}}/queues)."
-msgstr "**Warning** 在將通知放入佇列前，請先設定好佇列，並[執行一個 ^[Worker](背景工作角色)](/docs/{{version}}/queues)。"
+msgid "**Warning** Before queueing notifications you should configure your queue and [start a worker](/docs/{{version}}/queues#running-the-queue-worker)."
+msgstr "**Warning** 在將通知放入佇列前，請先設定好佇列並[執行一個 ^[Worker](背景工作角色)](/docs/{{version}}/queues#running-the-queue-worker)。"
 
 #: docs/10.x/notifications.md:block 36 (paragraph)
 msgid "Sending notifications can take time, especially if the channel needs to make an external API call to deliver the notification. To speed up your application's response time, let your notification be queued by adding the `ShouldQueue` interface and `Queueable` trait to your class. The interface and trait are already imported for all notifications generated using the `make:notification` command, so you may immediately add them to your notification class:"
@@ -451,22 +459,42 @@ msgid "Customizing The Notification Queue Connection"
 msgstr "自訂通知的佇列連線"
 
 #: docs/10.x/notifications.md:block 53 (paragraph)
-msgid "By default, queued notifications will be queued using your application's default queue connection. If you would like to specify a different connection that should be used for a particular notification, you may define a `$connection` property on the notification class:"
-msgstr "預設情況下，佇列通知會使用專案的預設佇列連線。若想為特定通知指定不同的連線，可在 Notification 類別上定義一個 `$connection` 屬性："
+msgid "By default, queued notifications will be queued using your application's default queue connection. If you would like to specify a different connection that should be used for a particular notification, you may call the `onConnection` method from your notification's constructor:"
+msgstr "預設情況下，放入佇列的通知會被放進專案的預設佇列連線中。若想為特定的通知指定不同的連線，可在 Notification 的 建構 Constructor 上呼叫 `onConnection` 方法："
 
 #: docs/10.x/notifications.md:block 54 (code)
-msgid "/**\n"
-" * The name of the queue connection to use when queueing the notification.\n"
-" *\n"
-" * @var string\n"
-" */\n"
-"public $connection = 'redis';\n"
-msgstr "/**\n"
-" * The name of the queue connection to use when queueing the notification.\n"
-" *\n"
-" * @var string\n"
-" */\n"
-"public $connection = 'redis';\n"
+msgid "<?php\n\n"
+"namespace App\\Notifications;\n\n"
+"use Illuminate\\Bus\\Queueable;\n"
+"use Illuminate\\Contracts\\Queue\\ShouldQueue;\n"
+"use Illuminate\\Notifications\\Notification;\n\n"
+"class InvoicePaid extends Notification implements ShouldQueue\n"
+"{\n"
+"    use Queueable;\n\n"
+"    /**\n"
+"     * Create a new notification instance.\n"
+"     */\n"
+"    public function __construct()\n"
+"    {\n"
+"        $this->onConnection('redis');\n"
+"    }\n"
+"}\n"
+msgstr "<?php\n\n"
+"namespace App\\Notifications;\n\n"
+"use Illuminate\\Bus\\Queueable;\n"
+"use Illuminate\\Contracts\\Queue\\ShouldQueue;\n"
+"use Illuminate\\Notifications\\Notification;\n\n"
+"class InvoicePaid extends Notification implements ShouldQueue\n"
+"{\n"
+"    use Queueable;\n\n"
+"    /**\n"
+"     * Create a new notification instance.\n"
+"     */\n"
+"    public function __construct()\n"
+"    {\n"
+"        $this->onConnection('redis');\n"
+"    }\n"
+"}\n"
 
 #: docs/10.x/notifications.md:block 55 (paragraph)
 msgid "Or, if you would like to specify a specific queue connection that should be used for each notification channel supported by the notification, you may define a `viaConnections` method on your notification. This method should return an array of channel name / queue connection name pairs:"
@@ -629,16 +657,18 @@ msgid "Sometimes you may need to send a notification to someone who is not store
 msgstr "有時候，我們會需要將通知傳給不是我們網站使用者的人。只要使用 `Notification` Facade 上的 `route` 方法，就可以在送出通知前指定特別的通知 Route 資訊："
 
 #: docs/10.x/notifications.md:block 77 (code)
-msgid "use Illuminate\\Broadcasting\\Channel;\n\n"
+msgid "use Illuminate\\Broadcasting\\Channel;\n"
+"use Illuminate\\Support\\Facades\\Notification;\n\n"
 "Notification::route('mail', 'taylor@example.com')\n"
 "            ->route('vonage', '5555555555')\n"
-"            ->route('slack', 'https://hooks.slack.com/services/...')\n"
+"            ->route('slack', '#slack-channel')\n"
 "            ->route('broadcast', [new Channel('channel-name')])\n"
 "            ->notify(new InvoicePaid($invoice));\n"
-msgstr "use Illuminate\\Broadcasting\\Channel;\n\n"
+msgstr "use Illuminate\\Broadcasting\\Channel;\n"
+"use Illuminate\\Support\\Facades\\Notification;\n\n"
 "Notification::route('mail', 'taylor@example.com')\n"
 "            ->route('vonage', '5555555555')\n"
-"            ->route('slack', 'https://hooks.slack.com/services/...')\n"
+"            ->route('slack', '#slack-channel')\n"
 "            ->route('broadcast', [new Channel('channel-name')])\n"
 "            ->notify(new InvoicePaid($invoice));\n"
 
@@ -1468,15 +1498,19 @@ msgid "php artisan notifications:table\n\n"
 msgstr "php artisan notifications:table\n\n"
 "php artisan migrate\n"
 
-#: docs/10.x/notifications.md:block 202 (header)
+#: docs/10.x/notifications.md:block 201 (quote)
+msgid "**Note** If your notifiable models are using [UUID or ULID primary keys](/docs/{{version}}/eloquent#uuid-and-ulid-keys), you should replace the `morphs` method with [`uuidMorphs`](docs/{{version}}/migrations#column-method-uuidMorphs) or [`ulidMorphs`](/docs/{{version}}/migrations#column-method-ulidMorphs) in the notification table migration."
+msgstr "**Note** 若 Notifiable Model 使用 [UUID 或 ULID 的主索引鍵](/docs/{{version}}/eloquent#uuid-and-ulid-keys)，請在 Notification 資料表的 Migration 中將 `morphs` 方法改成 [`uuidMorphs`](docs/{{version}}/migrations#column-method-uuidMorphs) 或 [`ulidMorphs`](/docs/{{version}}/migrations#column-method-ulidMorphs)。"
+
+#: docs/10.x/notifications.md:block 203 (header)
 msgid "Formatting Database Notifications"
 msgstr "格式化資料庫通知"
 
-#: docs/10.x/notifications.md:block 203 (paragraph)
+#: docs/10.x/notifications.md:block 204 (paragraph)
 msgid "If a notification supports being stored in a database table, you should define a `toDatabase` or `toArray` method on the notification class. This method will receive a `$notifiable` entity and should return a plain PHP array. The returned array will be encoded as JSON and stored in the `data` column of your `notifications` table. Let's take a look at an example `toArray` method:"
 msgstr "若要讓某個通知支援保存在資料表中，請在該 Notification 類別上定義一個 `toDatabase` 或 `toArray` 方法。這個方法會收到一個 `$notifiable` 實體，而該方法應回傳一個純 PHP 陣列。回傳的這個陣列會被編碼為 JSON，然後保存在 `notifications` 資料表中的 `data` 欄位。來看看 `toArray` 方法的範例："
 
-#: docs/10.x/notifications.md:block 204 (code)
+#: docs/10.x/notifications.md:block 205 (code)
 msgid "/**\n"
 " * Get the array representation of the notification.\n"
 " *\n"
@@ -1502,23 +1536,23 @@ msgstr "/**\n"
 "    ];\n"
 "}\n"
 
-#: docs/10.x/notifications.md:block 206 (header)
+#: docs/10.x/notifications.md:block 207 (header)
 msgid "`toDatabase` Vs. `toArray`"
 msgstr "`toDatabase` Vs. `toArray`"
 
-#: docs/10.x/notifications.md:block 207 (paragraph)
+#: docs/10.x/notifications.md:block 208 (paragraph)
 msgid "The `toArray` method is also used by the `broadcast` channel to determine which data to broadcast to your JavaScript powered frontend. If you would like to have two different array representations for the `database` and `broadcast` channels, you should define a `toDatabase` method instead of a `toArray` method."
 msgstr "`broadcast` 通道也會使用 `toArray` 方法來判斷要將哪些資料廣播到 JavaScript 驅動的前端上。若想讓 `database` 與 `broadcast` 通道有不同的陣列呈現，請不要定義 `toArray` 方法，而是定義 `toDatabase` 方法。"
 
-#: docs/10.x/notifications.md:block 209 (header)
+#: docs/10.x/notifications.md:block 210 (header)
 msgid "Accessing The Notifications"
 msgstr "存取通知"
 
-#: docs/10.x/notifications.md:block 210 (paragraph)
+#: docs/10.x/notifications.md:block 211 (paragraph)
 msgid "Once notifications are stored in the database, you need a convenient way to access them from your notifiable entities. The `Illuminate\\Notifications\\Notifiable` trait, which is included on Laravel's default `App\\Models\\User` model, includes a `notifications` [Eloquent relationship](/docs/{{version}}/eloquent-relationships) that returns the notifications for the entity. To fetch notifications, you may access this method like any other Eloquent relationship. By default, notifications will be sorted by the `created_at` timestamp with the most recent notifications at the beginning of the collection:"
 msgstr "將通知保存在資料庫後，我們還需要一種方便的方法來在 Notifiable 實體上存取這些通知。`Illuminate\\Notifications\\Notifiable` Trait —— 也就是 Laravel 預設的 `App\\Models\\User` Model 中所包含的一個 Trait —— 包含了一個 `notifications` [Eloquent 關聯]，該關聯會回傳該實體的所有通知。若要取得通知，可像其他 Eloquent 關聯一樣存取該方法。預設情況下，會使用 `created_at` 時戳來排序通知，最新的通知會排在 Collection 的最前面："
 
-#: docs/10.x/notifications.md:block 211 (code)
+#: docs/10.x/notifications.md:block 212 (code)
 msgid "$user = App\\Models\\User::find(1);\n\n"
 "foreach ($user->notifications as $notification) {\n"
 "    echo $notification->type;\n"
@@ -1528,11 +1562,11 @@ msgstr "$user = App\\Models\\User::find(1);\n\n"
 "    echo $notification->type;\n"
 "}\n"
 
-#: docs/10.x/notifications.md:block 212 (paragraph)
+#: docs/10.x/notifications.md:block 213 (paragraph)
 msgid "If you want to retrieve only the \"unread\" notifications, you may use the `unreadNotifications` relationship. Again, these notifications will be sorted by the `created_at` timestamp with the most recent notifications at the beginning of the collection:"
 msgstr "若只想取得「未讀」的通知，可使用 `unreadNotifications` 關聯。一樣，這些通知都會使用 `created_at` 來排序，最新的通知會在 Collection 的最前面："
 
-#: docs/10.x/notifications.md:block 213 (code)
+#: docs/10.x/notifications.md:block 214 (code)
 msgid "$user = App\\Models\\User::find(1);\n\n"
 "foreach ($user->unreadNotifications as $notification) {\n"
 "    echo $notification->type;\n"
@@ -1542,19 +1576,19 @@ msgstr "$user = App\\Models\\User::find(1);\n\n"
 "    echo $notification->type;\n"
 "}\n"
 
-#: docs/10.x/notifications.md:block 214 (quote)
+#: docs/10.x/notifications.md:block 215 (quote)
 msgid "**Note** To access your notifications from your JavaScript client, you should define a notification controller for your application which returns the notifications for a notifiable entity, such as the current user. You may then make an HTTP request to that controller's URL from your JavaScript client."
 msgstr "**Note**  若要在 JavaScript 用戶端中存取通知，請定義一個用來為 Notifiable 實體 (如：目前使用者) 回傳通知的 Notification Controller。接著就可以從 JavaScript 用戶端上建立一個 HTTP Request 來連線到該 Controller 的網址。"
 
-#: docs/10.x/notifications.md:block 216 (header)
+#: docs/10.x/notifications.md:block 217 (header)
 msgid "Marking Notifications As Read"
 msgstr "將通知標記為已讀"
 
-#: docs/10.x/notifications.md:block 217 (paragraph)
+#: docs/10.x/notifications.md:block 218 (paragraph)
 msgid "Typically, you will want to mark a notification as \"read\" when a user views it. The `Illuminate\\Notifications\\Notifiable` trait provides a `markAsRead` method, which updates the `read_at` column on the notification's database record:"
 msgstr "使用者檢視過通知後，我們通常會想將這些通知設為「已讀」。`Illuminate\\Notifications\\Notifiable` Trait 提供了一個 `markAsRead` 方法，該方法會更新通知資料庫記錄上的 `read_at` 欄位："
 
-#: docs/10.x/notifications.md:block 218 (code)
+#: docs/10.x/notifications.md:block 219 (code)
 msgid "$user = App\\Models\\User::find(1);\n\n"
 "foreach ($user->unreadNotifications as $notification) {\n"
 "    $notification->markAsRead();\n"
@@ -1564,49 +1598,49 @@ msgstr "$user = App\\Models\\User::find(1);\n\n"
 "    $notification->markAsRead();\n"
 "}\n"
 
-#: docs/10.x/notifications.md:block 219 (paragraph)
+#: docs/10.x/notifications.md:block 220 (paragraph)
 msgid "However, instead of looping through each notification, you may use the `markAsRead` method directly on a collection of notifications:"
 msgstr "不過，我們不需要在每個通知上迴圈，可以直接在一組通知的 Collection 上使用 `markAsRead` 方法："
 
-#: docs/10.x/notifications.md:block 220 (code)
+#: docs/10.x/notifications.md:block 221 (code)
 msgid "$user->unreadNotifications->markAsRead();\n"
 msgstr "$user->unreadNotifications->markAsRead();\n"
 
-#: docs/10.x/notifications.md:block 221 (paragraph)
+#: docs/10.x/notifications.md:block 222 (paragraph)
 msgid "You may also use a mass-update query to mark all of the notifications as read without retrieving them from the database:"
 msgstr "也可以使用^[批次更新](Mass-Update)查詢來將所有的通知都列為已讀，而不需要先從資料庫中取出這些通知："
 
-#: docs/10.x/notifications.md:block 222 (code)
+#: docs/10.x/notifications.md:block 223 (code)
 msgid "$user = App\\Models\\User::find(1);\n\n"
 "$user->unreadNotifications()->update(['read_at' => now()]);\n"
 msgstr "$user = App\\Models\\User::find(1);\n\n"
 "$user->unreadNotifications()->update(['read_at' => now()]);\n"
 
-#: docs/10.x/notifications.md:block 223 (paragraph)
+#: docs/10.x/notifications.md:block 224 (paragraph)
 msgid "You may `delete` the notifications to remove them from the table entirely:"
 msgstr "也可以使用 `delete` 來從資料表中完全移除該通知："
 
-#: docs/10.x/notifications.md:block 224 (code)
+#: docs/10.x/notifications.md:block 225 (code)
 msgid "$user->notifications()->delete();\n"
 msgstr "$user->notifications()->delete();\n"
 
-#: docs/10.x/notifications.md:block 226 (header)
+#: docs/10.x/notifications.md:block 227 (header)
 msgid "Broadcast Notifications"
 msgstr "廣播通知"
 
-#: docs/10.x/notifications.md:block 229 (paragraph)
+#: docs/10.x/notifications.md:block 230 (paragraph)
 msgid "Before broadcasting notifications, you should configure and be familiar with Laravel's [event broadcasting](/docs/{{version}}/broadcasting) services. Event broadcasting provides a way to react to server-side Laravel events from your JavaScript powered frontend."
 msgstr "廣播通知前，請先設定並熟悉一下 Laravel 的[事件廣播](/docs/{{version}}/broadcasting)服務。使用事件廣播，就可以在 JavaScript 驅動的前端上對伺服器端 Laravel 的事件作出回應。"
 
-#: docs/10.x/notifications.md:block 231 (header)
+#: docs/10.x/notifications.md:block 232 (header)
 msgid "Formatting Broadcast Notifications"
 msgstr "格式化廣播通知"
 
-#: docs/10.x/notifications.md:block 232 (paragraph)
+#: docs/10.x/notifications.md:block 233 (paragraph)
 msgid "The `broadcast` channel broadcasts notifications using Laravel's [event broadcasting](/docs/{{version}}/broadcasting) services, allowing your JavaScript powered frontend to catch notifications in realtime. If a notification supports broadcasting, you can define a `toBroadcast` method on the notification class. This method will receive a `$notifiable` entity and should return a `BroadcastMessage` instance. If the `toBroadcast` method does not exist, the `toArray` method will be used to gather the data that should be broadcast. The returned data will be encoded as JSON and broadcast to your JavaScript powered frontend. Let's take a look at an example `toBroadcast` method:"
 msgstr "`broadcast` 通道使用的是 Laravel 的[事件廣播](/docs/{{version}}/broadcasting)服務，可讓我們在 JavaScript 驅動的前端即時取得通知。若要讓通知支援廣播，請在該 Notification 類別上定義一個 `toBroadcast` 方法。這個方法會收到一個 `$notifiable` 實體，且該方法應回傳一個 `BroadcastMessage` 實體。若 `toBroadcast` 方法不存在，則會使用 `toArray` 方法來取得要廣播的資料。回傳的資料會被編碼為 JSON，並廣播給 JavaScript 驅動的前端。來看看一個範例的 `toBroadcast` 方法："
 
-#: docs/10.x/notifications.md:block 233 (code)
+#: docs/10.x/notifications.md:block 234 (code)
 msgid "use Illuminate\\Notifications\\Messages\\BroadcastMessage;\n\n"
 "/**\n"
 " * Get the broadcastable representation of the notification.\n"
@@ -1630,15 +1664,15 @@ msgstr "use Illuminate\\Notifications\\Messages\\BroadcastMessage;\n\n"
 "    ]);\n"
 "}\n"
 
-#: docs/10.x/notifications.md:block 235 (header)
+#: docs/10.x/notifications.md:block 236 (header)
 msgid "Broadcast Queue Configuration"
 msgstr "廣播佇列設定"
 
-#: docs/10.x/notifications.md:block 236 (paragraph)
+#: docs/10.x/notifications.md:block 237 (paragraph)
 msgid "All broadcast notifications are queued for broadcasting. If you would like to configure the queue connection or queue name that is used to queue the broadcast operation, you may use the `onConnection` and `onQueue` methods of the `BroadcastMessage`:"
 msgstr "所有的廣播通知都會被放入佇列以供廣播。若想為要用來廣播的佇列連線或佇列名稱，可使用 `BroadcastMessage` 的 `onConnection` 方法與 `onQueue` 方法："
 
-#: docs/10.x/notifications.md:block 237 (code)
+#: docs/10.x/notifications.md:block 238 (code)
 msgid "return (new BroadcastMessage($data))\n"
 "                ->onConnection('sqs')\n"
 "                ->onQueue('broadcasts');\n"
@@ -1646,15 +1680,15 @@ msgstr "return (new BroadcastMessage($data))\n"
 "                ->onConnection('sqs')\n"
 "                ->onQueue('broadcasts');\n"
 
-#: docs/10.x/notifications.md:block 239 (header)
+#: docs/10.x/notifications.md:block 240 (header)
 msgid "Customizing The Notification Type"
 msgstr "自訂通知類型"
 
-#: docs/10.x/notifications.md:block 240 (paragraph)
+#: docs/10.x/notifications.md:block 241 (paragraph)
 msgid "In addition to the data you specify, all broadcast notifications also have a `type` field containing the full class name of the notification. If you would like to customize the notification `type`, you may define a `broadcastType` method on the notification class:"
 msgstr "除了指定的資料外，所有的廣播通知也會包含一個 `type` 欄位，`type` 欄位為該通知的完整類別名稱。若想自訂通知的 `type`，可在該 Notification 類別上定義一個 `broadcastType` 方法："
 
-#: docs/10.x/notifications.md:block 241 (code)
+#: docs/10.x/notifications.md:block 242 (code)
 msgid "/**\n"
 " * Get the type of the notification being broadcast.\n"
 " */\n"
@@ -1670,15 +1704,15 @@ msgstr "/**\n"
 "    return 'broadcast.message';\n"
 "}\n"
 
-#: docs/10.x/notifications.md:block 243 (header)
+#: docs/10.x/notifications.md:block 244 (header)
 msgid "Listening For Notifications"
 msgstr "監聽通知"
 
-#: docs/10.x/notifications.md:block 244 (paragraph)
+#: docs/10.x/notifications.md:block 245 (paragraph)
 msgid "Notifications will broadcast on a private channel formatted using a `{notifiable}.{id}` convention. So, if you are sending a notification to an `App\\Models\\User` instance with an ID of `1`, the notification will be broadcast on the `App.Models.User.1` private channel. When using [Laravel Echo](/docs/{{version}}/broadcasting#client-side-installation), you may easily listen for notifications on a channel using the `notification` method:"
 msgstr "通知會在使用 `{notifiable}.{id}` 這種命名慣例命名的私有頻道上廣播。所以，假設我們要將通知傳送給一個 ID 為 `1` 的 `App\\Models\\User` 實體，則該通知會被廣播到 `App.Models.User.1` 私有頻道。在使用 [Laravel Echo](/docs/{{version}}/broadcasting#client-side-installation) 時，只要使用 `notification` 方法，就可以輕鬆地在頻道上監聽通知："
 
-#: docs/10.x/notifications.md:block 245 (code)
+#: docs/10.x/notifications.md:block 246 (code)
 msgid "Echo.private('App.Models.User.' + userId)\n"
 "    .notification((notification) => {\n"
 "        console.log(notification.type);\n"
@@ -1688,15 +1722,15 @@ msgstr "Echo.private('App.Models.User.' + userId)\n"
 "        console.log(notification.type);\n"
 "    });\n"
 
-#: docs/10.x/notifications.md:block 247 (header)
+#: docs/10.x/notifications.md:block 248 (header)
 msgid "Customizing The Notification Channel"
 msgstr "自訂通知頻道"
 
-#: docs/10.x/notifications.md:block 248 (paragraph)
+#: docs/10.x/notifications.md:block 249 (paragraph)
 msgid "If you would like to customize which channel that an entity's broadcast notifications are broadcast on, you may define a `receivesBroadcastNotificationsOn` method on the notifiable entity:"
 msgstr "若想自訂某個 Notifiable 實體的通知要在哪個頻道上廣播，可在 Notifiable 的類別上定義一個 `receivesBroadcastNotificationsOn` 方法："
 
-#: docs/10.x/notifications.md:block 249 (code)
+#: docs/10.x/notifications.md:block 250 (code)
 msgid "<?php\n\n"
 "namespace App\\Models;\n\n"
 "use Illuminate\\Broadcasting\\PrivateChannel;\n"
@@ -1730,39 +1764,39 @@ msgstr "<?php\n\n"
 "    }\n"
 "}\n"
 
-#: docs/10.x/notifications.md:block 251 (header)
+#: docs/10.x/notifications.md:block 252 (header)
 msgid "SMS Notifications"
 msgstr "簡訊通知"
 
-#: docs/10.x/notifications.md:block 254 (paragraph)
+#: docs/10.x/notifications.md:block 255 (paragraph)
 msgid "Sending SMS notifications in Laravel is powered by [Vonage](https://www.vonage.com/) (formerly known as Nexmo). Before you can send notifications via Vonage, you need to install the `laravel/vonage-notification-channel` and `guzzlehttp/guzzle` packages:"
 msgstr "Laravel 的簡訊通知傳送功能由 [Vonage](https://www.vonage.com/) 驅動。(Vonage 前身為 Nexmo)。在使用 Vonage 傳送通知前，需要先安裝 `laravel/vonage-notification-channel` 與 `guzzlehttp/guzzle` Composer 套件：:"
 
-#: docs/10.x/notifications.md:block 255 (code)
+#: docs/10.x/notifications.md:block 256 (code)
 msgid "composer require laravel/vonage-notification-channel guzzlehttp/guzzle\n"
 msgstr "composer require laravel/vonage-notification-channel guzzlehttp/guzzle\n"
 
-#: docs/10.x/notifications.md:block 256 (paragraph)
+#: docs/10.x/notifications.md:block 257 (paragraph)
 msgid "The package includes a [configuration file](https://github.com/laravel/vonage-notification-channel/blob/3.x/config/vonage.php). However, you are not required to export this configuration file to your own application. You can simply use the `VONAGE_KEY` and `VONAGE_SECRET` environment variables to define your Vonage public and secret keys."
 msgstr "該套件中包含了[其專屬的設定檔](https://github.com/laravel/vonage-notification-channel/blob/3.x/config/vonage.php)。不過，並不需要將該設定檔安裝到專案中也可以使用該套件。只要將 `VONAGE_KEY` 與 `VONAGE_SECRET` 環境變數設為 Vonage 的公開金鑰與私有金鑰即可。"
 
-#: docs/10.x/notifications.md:block 257 (paragraph)
-msgid "After defining your keys, you may set a `VONAGE_SMS_FROM` environment variable that defines the phone number that your SMS messages should be sent from by default. You may generate this phone number within the Vonage control panel:"
+#: docs/10.x/notifications.md:block 258 (paragraph)
+msgid "After defining your keys, you should set a `VONAGE_SMS_FROM` environment variable that defines the phone number that your SMS messages should be sent from by default. You may generate this phone number within the Vonage control panel:"
 msgstr "定義好金鑰後，請將 `VONAGE_SMS_FROM` 設為預設要用來傳送簡訊的手機號碼。可在 Vonage 的控制面板中產生這個手機號碼："
 
-#: docs/10.x/notifications.md:block 258 (code)
+#: docs/10.x/notifications.md:block 259 (code)
 msgid "VONAGE_SMS_FROM=15556666666\n"
 msgstr "VONAGE_SMS_FROM=15556666666\n"
 
-#: docs/10.x/notifications.md:block 260 (header)
+#: docs/10.x/notifications.md:block 261 (header)
 msgid "Formatting SMS Notifications"
 msgstr "格式化簡訊通知"
 
-#: docs/10.x/notifications.md:block 261 (paragraph)
+#: docs/10.x/notifications.md:block 262 (paragraph)
 msgid "If a notification supports being sent as an SMS, you should define a `toVonage` method on the notification class. This method will receive a `$notifiable` entity and should return an `Illuminate\\Notifications\\Messages\\VonageMessage` instance:"
 msgstr "若要支援以簡訊傳送通知，請在該通知類別上定義一個 `toVonage` 方法。這個方法會收到一個 `$notifiable` 實體，而回傳值應為 `Illuminate\\Notifications\\Messages\\VonageMessage ` 實體："
 
-#: docs/10.x/notifications.md:block 262 (code)
+#: docs/10.x/notifications.md:block 263 (code)
 msgid "use Illuminate\\Notifications\\Messages\\VonageMessage;\n\n"
 "/**\n"
 " * Get the Vonage / SMS representation of the notification.\n"
@@ -1782,15 +1816,15 @@ msgstr "use Illuminate\\Notifications\\Messages\\VonageMessage;\n\n"
 "                ->content('Your SMS message content');\n"
 "}\n"
 
-#: docs/10.x/notifications.md:block 264 (header)
+#: docs/10.x/notifications.md:block 265 (header)
 msgid "Unicode Content"
 msgstr "Unicode 內容"
 
-#: docs/10.x/notifications.md:block 265 (paragraph)
+#: docs/10.x/notifications.md:block 266 (paragraph)
 msgid "If your SMS message will contain unicode characters, you should call the `unicode` method when constructing the `VonageMessage` instance:"
 msgstr "若有要傳送包含 Unicode 字元的簡訊，請在建立 `VonageMessage` 實體時呼叫 `unicode` 方法："
 
-#: docs/10.x/notifications.md:block 266 (code)
+#: docs/10.x/notifications.md:block 267 (code)
 msgid "use Illuminate\\Notifications\\Messages\\VonageMessage;\n\n"
 "/**\n"
 " * Get the Vonage / SMS representation of the notification.\n"
@@ -1812,15 +1846,15 @@ msgstr "use Illuminate\\Notifications\\Messages\\VonageMessage;\n\n"
 "                ->unicode();\n"
 "}\n"
 
-#: docs/10.x/notifications.md:block 268 (header)
+#: docs/10.x/notifications.md:block 269 (header)
 msgid "Customizing The \"From\" Number"
 msgstr "自訂「寄件」號碼"
 
-#: docs/10.x/notifications.md:block 269 (paragraph)
+#: docs/10.x/notifications.md:block 270 (paragraph)
 msgid "If you would like to send some notifications from a phone number that is different from the phone number specified by your `VONAGE_SMS_FROM` environment variable, you may call the `from` method on a `VonageMessage` instance:"
 msgstr "若想使用與 `VONAGE_SMS_FROM` 環境變數所設定之不同的號碼來傳送通知，可在 `VonageMessage` 實體上呼叫 `from` 方法："
 
-#: docs/10.x/notifications.md:block 270 (code)
+#: docs/10.x/notifications.md:block 271 (code)
 msgid "use Illuminate\\Notifications\\Messages\\VonageMessage;\n\n"
 "/**\n"
 " * Get the Vonage / SMS representation of the notification.\n"
@@ -1842,15 +1876,15 @@ msgstr "use Illuminate\\Notifications\\Messages\\VonageMessage;\n\n"
 "                ->from('15554443333');\n"
 "}\n"
 
-#: docs/10.x/notifications.md:block 272 (header)
+#: docs/10.x/notifications.md:block 273 (header)
 msgid "Adding a Client Reference"
 msgstr "新增 Client Reference"
 
-#: docs/10.x/notifications.md:block 273 (paragraph)
+#: docs/10.x/notifications.md:block 274 (paragraph)
 msgid "If you would like to keep track of costs per user, team, or client, you may add a \"client reference\" to the notification. Vonage will allow you to generate reports using this client reference so that you can better understand a particular customer's SMS usage. The client reference can be any string up to 40 characters:"
 msgstr "若想追蹤每位使用者產生的花費，可在通知上新增一個「^[Client Reference](用戶端參照)」。在 Vanage 上我們可以使用這個 Client Reference 來產生報表，以更清楚瞭解特定客戶的簡訊使用量。Client Reference 可以為最多 40 字元的任意字串："
 
-#: docs/10.x/notifications.md:block 274 (code)
+#: docs/10.x/notifications.md:block 275 (code)
 msgid "use Illuminate\\Notifications\\Messages\\VonageMessage;\n\n"
 "/**\n"
 " * Get the Vonage / SMS representation of the notification.\n"
@@ -1872,15 +1906,15 @@ msgstr "use Illuminate\\Notifications\\Messages\\VonageMessage;\n\n"
 "                ->content('Your SMS message content');\n"
 "}\n"
 
-#: docs/10.x/notifications.md:block 276 (header)
+#: docs/10.x/notifications.md:block 277 (header)
 msgid "Routing SMS Notifications"
 msgstr "為簡訊通知路由"
 
-#: docs/10.x/notifications.md:block 277 (paragraph)
+#: docs/10.x/notifications.md:block 278 (paragraph)
 msgid "To route Vonage notifications to the proper phone number, define a `routeNotificationForVonage` method on your notifiable entity:"
 msgstr "若要將簡訊通知路由到正確的手機號碼，請在 Notifiable 實體上定義一個 `routeNotificationForVonage` 方法："
 
-#: docs/10.x/notifications.md:block 278 (code)
+#: docs/10.x/notifications.md:block 279 (code)
 msgid "<?php\n\n"
 "namespace App\\Models;\n\n"
 "use Illuminate\\Foundation\\Auth\\User as Authenticatable;\n"
@@ -1914,193 +1948,291 @@ msgstr "<?php\n\n"
 "    }\n"
 "}\n"
 
-#: docs/10.x/notifications.md:block 280 (header)
+#: docs/10.x/notifications.md:block 281 (header)
 msgid "Slack Notifications"
 msgstr "Slack 通知"
 
-#: docs/10.x/notifications.md:block 283 (paragraph)
-msgid "Before you can send notifications via Slack, you must install the Slack notification channel via Composer:"
-msgstr "在開始使用 Slack 傳送通知前，請先使用 Composer 安裝 Slack 通知通道："
+#: docs/10.x/notifications.md:block 284 (paragraph)
+msgid "Before sending Slack notifications, you should install the Slack notification channel via Composer:"
+msgstr "在傳送 Slack 通知前，請使用 Composer 安裝 Slack 通知通道："
 
-#: docs/10.x/notifications.md:block 284 (code)
+#: docs/10.x/notifications.md:block 285 (code)
 msgid "composer require laravel/slack-notification-channel\n"
 msgstr "composer require laravel/slack-notification-channel\n"
 
-#: docs/10.x/notifications.md:block 285 (paragraph)
-msgid "You will also need to create a [Slack App](https://api.slack.com/apps?new_app=1) for your team. After creating the App, you should configure an \"Incoming Webhook\" for the workspace. Slack will then provide you with a webhook URL that you may use when [routing Slack notifications](#routing-slack-notifications)."
-msgstr "此外，也許為 Slack 團隊建立一個 [Slack App](https://api.slack.com/apps?new_app=1)。建立好 App 後，請為該工作空間建立一個「傳入的 WebHook」。建立之後，Slack 會提供一個 WebHook URL，在[為 Slack 通知路由](#routing-slack-notifications)時會使用到該 URL。"
+#: docs/10.x/notifications.md:block 286 (paragraph)
+msgid "Additionally, you must create a [Slack App](https://api.slack.com/apps?new_app=1) for your Slack workspace."
+msgstr "此外，也請建立為你的 Slack 工作空間一個 [Slack App](https://api.slack.com/apps?new_app=1)。"
 
-#: docs/10.x/notifications.md:block 287 (header)
+#: docs/10.x/notifications.md:block 287 (paragraph)
+msgid "If you only need to send notifications to the same Slack workspace that the App is created in, you should ensure that your App has the `chat:write`, `chat:write.public`, and `chat:write.customize` scopes. These scopes can be added from the \"OAuth & Permissions\" App management tab within Slack."
+msgstr "若只需要在該 Slack App 所在的工作空間內傳送通知，請確保該 Slack App 有 `chat:write`、`chat:write.public`，與 `chat:write.customize` Scope。可以在 Slack 中 App Management 的「OAuth & Permissions」分頁內新增這些 Scope。"
+
+#: docs/10.x/notifications.md:block 288 (paragraph)
+msgid "Next, copy the App's \"Bot User OAuth Token\" and place it within a `slack` configuration array in your application's `services.php` configuration file. This token can be found on the \"OAuth & Permissions\" tab within Slack:"
+msgstr "接著，請將該 App 的「Bot User OAuth Token」複製下來，並將其放在專案 `services.php` 設定檔中的 `slack` 設定陣列中。該 Token 可在 Slack 的「OAuth & Permissions」分頁中找到："
+
+#: docs/10.x/notifications.md:block 289 (code)
+msgid "'slack' => [\n"
+"    'notifications' => [\n"
+"        'bot_user_oauth_token' => env('SLACK_BOT_USER_OAUTH_TOKEN'),\n"
+"        'channel' => env('SLACK_BOT_USER_DEFAULT_CHANNEL'),\n"
+"    ],\n"
+"],\n"
+msgstr "'slack' => [\n"
+"    'notifications' => [\n"
+"        'bot_user_oauth_token' => env('SLACK_BOT_USER_OAUTH_TOKEN'),\n"
+"        'channel' => env('SLACK_BOT_USER_DEFAULT_CHANNEL'),\n"
+"    ],\n"
+"],\n"
+
+#: docs/10.x/notifications.md:block 291 (header)
+msgid "App Distribution"
+msgstr "發佈 App"
+
+#: docs/10.x/notifications.md:block 292 (paragraph)
+msgid "If your application will be sending notifications to external Slack workspaces that are owned by your application's users, you will need to \"distribute\" your App via Slack. App distribution can be managed from your App's \"Manage Distribution\" tab within Slack. Once your App has been distributed, you may use [Socialite](/docs/{{version}}/socialite) to [obtain Slack Bot tokens](/docs/{{version}}/socialite#slack-bot-scopes) on behalf of your application's users."
+msgstr "若你需要將通知傳送到由網站內其他使用者管理的 Slack 工作空間，則需要通過 Slack 來「發佈 (Distribute)」你的 App。在 Slack 中，可以在 App 內的「Manage Distribution」裡管理 App 的發佈。發佈 App 後，可以使用 [Socialite](/docs/{{version}}/socialite) 來以網站使用者的名義[取得 Slack Bot 的 Token](/docs/{{version}}/socialite#slack-bot-scopes)。"
+
+#: docs/10.x/notifications.md:block 294 (header)
 msgid "Formatting Slack Notifications"
 msgstr "格式化 Slack 通知"
 
-#: docs/10.x/notifications.md:block 288 (paragraph)
-msgid "If a notification supports being sent as a Slack message, you should define a `toSlack` method on the notification class. This method will receive a `$notifiable` entity and should return an `Illuminate\\Notifications\\Messages\\SlackMessage` instance. Slack messages may contain text content as well as an \"attachment\" that formats additional text or an array of fields. Let's take a look at a basic `toSlack` example:"
-msgstr "若要讓通知支援以 Slack 訊息傳送，請在該 Notification 類別上定義一個 `toSlack` 方法。這個方法會收到一個 `$notifiable` 實體，而該方法應回傳 `Illuminate\\Notifications\\Messages\\SlackMessage` 實體。Slack 訊息可以包含文字內容，也可以包含一個「^[Attachment](附件)」。Attachment 就是格式化過的額外文字，或是一組欄位的陣列。讓我們來看看一個基礎的 `toSlack` 範例："
+#: docs/10.x/notifications.md:block 295 (paragraph)
+msgid "If a notification supports being sent as a Slack message, you should define a `toSlack` method on the notification class. This method will receive a `$notifiable` entity and should return an `Illuminate\\Notifications\\Slack\\SlackMessage` instance. You can construct rich notifications using [Slack's Block Kit API](https://api.slack.com/block-kit). The following example may be previewed in [Slack's Block Kit builder](https://app.slack.com/block-kit-builder/T01KWS6K23Z#%7B%22blocks%22:%5B%7B%22type%22:%22header%22,%22text%22:%7B%22type%22:%22plain_text%22,%22text%22:%22Invoice%20Paid%22%7D%7D,%7B%22type%22:%22context%22,%22elements%22:%5B%7B%22type%22:%22plain_text%22,%22text%22:%22Customer%20%231234%22%7D%5D%7D,%7B%22type%22:%22section%22,%22text%22:%7B%22type%22:%22plain_text%22,%22text%22:%22An%20invoice%20has%20been%20paid.%22%7D,%22fields%22:%5B%7B%22type%22:%22mrkdwn%22,%22text%22:%22*Invoice%20No:*%5Cn1000%22%7D,%7B%22type%22:%22mrkdwn%22,%22text%22:%22*Invoice%20Recipient:*%5Cntaylor@laravel.com%22%7D%5D%7D,%7B%22type%22:%22divider%22%7D,%7B%22type%22:%22section%22,%22text%22:%7B%22type%22:%22plain_text%22,%22text%22:%22Congratulations!%22%7D%7D%5D%7D):"
+msgstr "若要讓某個 Notification 能支援以 Slack 訊息傳送，請在該 Notification 類別內定義 `toSlack` 方法。該方法會收到一個 `$notifiable` 實體，並應回傳 `Illuminate\\Notifications\\Slack\\SlackMessage` 實體。可以使用 [Slack 的 Block Kit API](https://api.slack.com/block-kit) 來建立 ^[Rich Notification](豐富的通知)。可以在 [Slack 的 Block Kit Builder](https://app.slack.com/block-kit-builder/T01KWS6K23Z#%7B%22blocks%22:%5B%7B%22type%22:%22header%22,%22text%22:%7B%22type%22:%22plain_text%22,%22text%22:%22Invoice%20Paid%22%7D%7D,%7B%22type%22:%22context%22,%22elements%22:%5B%7B%22type%22:%22plain_text%22,%22text%22:%22Customer%20%231234%22%7D%5D%7D,%7B%22type%22:%22section%22,%22text%22:%7B%22type%22:%22plain_text%22,%22text%22:%22An%20invoice%20has%20been%20paid.%22%7D,%22fields%22:%5B%7B%22type%22:%22mrkdwn%22,%22text%22:%22*Invoice%20No:*%5Cn1000%22%7D,%7B%22type%22:%22mrkdwn%22,%22text%22:%22*Invoice%20Recipient:*%5Cntaylor@laravel.com%22%7D%5D%7D,%7B%22type%22:%22divider%22%7D,%7B%22type%22:%22section%22,%22text%22:%7B%22type%22:%22plain_text%22,%22text%22:%22Congratulations!%22%7D%7D%5D%7D) 內預覽下列範例："
 
-#: docs/10.x/notifications.md:block 289 (code)
-msgid "use Illuminate\\Notifications\\Messages\\SlackMessage;\n\n"
+#: docs/10.x/notifications.md:block 296 (code)
+msgid "use Illuminate\\Notifications\\Slack\\BlockKit\\Blocks\\ContextBlock;\n"
+"use Illuminate\\Notifications\\Slack\\BlockKit\\Blocks\\SectionBlock;\n"
+"use Illuminate\\Notifications\\Slack\\BlockKit\\Composites\\ConfirmObject;\n"
+"use Illuminate\\Notifications\\Slack\\SlackMessage;\n\n"
 "/**\n"
 " * Get the Slack representation of the notification.\n"
 " */\n"
 "public function toSlack(object $notifiable): SlackMessage\n"
 "{\n"
 "    return (new SlackMessage)\n"
-"                ->content('One of your invoices has been paid!');\n"
+"            ->text('One of your invoices has been paid!')\n"
+"            ->headerBlock('Invoice Paid')\n"
+"            ->contextBlock(function (ContextBlock $block) {\n"
+"                $block->text('Customer #1234');\n"
+"            })\n"
+"            ->sectionBlock(function (SectionBlock $block) {\n"
+"                $block->text('An invoice has been paid.');\n"
+"                $block->field(\"*Invoice No:*\\n1000\")->markdown();\n"
+"                $block->field(\"*Invoice Recipient:*\\ntaylor@laravel.com\")->markdown();\n"
+"            })\n"
+"            ->dividerBlock()\n"
+"            ->sectionBlock(function (SectionBlock $block) {\n"
+"                $block->text('Congratulations!');\n"
+"            });\n"
 "}\n"
-msgstr "use Illuminate\\Notifications\\Messages\\SlackMessage;\n\n"
+msgstr "use Illuminate\\Notifications\\Slack\\BlockKit\\Blocks\\ContextBlock;\n"
+"use Illuminate\\Notifications\\Slack\\BlockKit\\Blocks\\SectionBlock;\n"
+"use Illuminate\\Notifications\\Slack\\BlockKit\\Composites\\ConfirmObject;\n"
+"use Illuminate\\Notifications\\Slack\\SlackMessage;\n\n"
 "/**\n"
 " * Get the Slack representation of the notification.\n"
 " */\n"
 "public function toSlack(object $notifiable): SlackMessage\n"
 "{\n"
 "    return (new SlackMessage)\n"
-"                ->content('One of your invoices has been paid!');\n"
+"            ->text('One of your invoices has been paid!')\n"
+"            ->headerBlock('Invoice Paid')\n"
+"            ->contextBlock(function (ContextBlock $block) {\n"
+"                $block->text('Customer #1234');\n"
+"            })\n"
+"            ->sectionBlock(function (SectionBlock $block) {\n"
+"                $block->text('An invoice has been paid.');\n"
+"                $block->field(\"*Invoice No:*\\n1000\")->markdown();\n"
+"                $block->field(\"*Invoice Recipient:*\\ntaylor@laravel.com\")->markdown();\n"
+"            })\n"
+"            ->dividerBlock()\n"
+"            ->sectionBlock(function (SectionBlock $block) {\n"
+"                $block->text('Congratulations!');\n"
+"            });\n"
 "}\n"
 
-#: docs/10.x/notifications.md:block 291 (header)
-msgid "Slack Attachments"
-msgstr "Slack Attachment"
+#: docs/10.x/notifications.md:block 298 (header)
+msgid "Slack Interactivity"
+msgstr "Slack 可互動性"
 
-#: docs/10.x/notifications.md:block 292 (paragraph)
-msgid "You may also add \"attachments\" to Slack messages. Attachments provide richer formatting options than simple text messages. In this example, we will send an error notification about an exception that occurred in an application, including a link to view more details about the exception:"
-msgstr "也可以在 Slack 訊息上加入「Attachment」。Attachment 比起簡單的文字訊息，有更豐富的格式可使用。在這個範例中，我們會傳送一個有關程式內發生 Exception 的錯誤訊息，其中包含了一個可用來檢視該 Exception 詳情的連結："
+#: docs/10.x/notifications.md:block 299 (paragraph)
+msgid "Slack's Block Kit notification system provides powerful features to [handle user interaction](https://api.slack.com/interactivity/handling). To utilize these features, your Slack App should have \"Interactivity\" enabled and a \"Request URL\" configured that points to a URL served by your application. These settings can be managed from the \"Interactivity & Shortcuts\" App management tab within Slack."
+msgstr "Slack 的 Block Kit 通知系統提供了強大的功能，可[處理使用者的互動](https://api.slack.com/interactivity/handling)。若要使用這些功能，需要先在 Slack App 中啟用「Interactivity」，並將「Request URL」設定到一個由你的專案所管理的 URL。可以在 Slack 內的「Interactivity & Shortcuts」App 管理分頁中找到這些設定。"
 
-#: docs/10.x/notifications.md:block 293 (code)
-msgid "use Illuminate\\Notifications\\Messages\\SlackAttachment;\n"
-"use Illuminate\\Notifications\\Messages\\SlackMessage;\n\n"
+#: docs/10.x/notifications.md:block 300 (paragraph)
+msgid "In the following example, which utilizes the `actionsBlock` method, Slack will send a `POST` request to your \"Request URL\" with a payload containing the Slack user who clicked the button, the ID of the clicked button, and more. Your application can then determine the action to take based on the payload. You should also [verify the request](https://api.slack.com/authentication/verifying-requests-from-slack) was made by Slack:"
+msgstr "下列範例使用了 `actionsBlock` 方法。Slack 會向你設定的「Request URL」傳送一個 `POST` 要求，該要求中會包含點擊按鈕的 Slack 使用者 ID 等資訊。你的 App 可以依照此資訊來判斷要進行什麼動作。你也可以[驗證該 Request](https://api.slack.com/authentication/verifying-requests-from-slack) 是否來自 Slack："
+
+#: docs/10.x/notifications.md:block 301 (code)
+msgid "use Illuminate\\Notifications\\Slack\\BlockKit\\Blocks\\ActionsBlock;\n"
+"use Illuminate\\Notifications\\Slack\\BlockKit\\Blocks\\ContextBlock;\n"
+"use Illuminate\\Notifications\\Slack\\BlockKit\\Blocks\\SectionBlock;\n"
+"use Illuminate\\Notifications\\Slack\\SlackMessage;\n\n"
 "/**\n"
 " * Get the Slack representation of the notification.\n"
 " */\n"
 "public function toSlack(object $notifiable): SlackMessage\n"
 "{\n"
-"    $url = url('/exceptions/'.$this->exception->id);\n\n"
 "    return (new SlackMessage)\n"
-"                ->error()\n"
-"                ->content('Whoops! Something went wrong.')\n"
-"                ->attachment(function (SlackAttachment $attachment) use ($url) {\n"
-"                    $attachment->title('Exception: File Not Found', $url)\n"
-"                               ->content('File [background.jpg] was not found.');\n"
-"                });\n"
+"            ->text('One of your invoices has been paid!')\n"
+"            ->headerBlock('Invoice Paid')\n"
+"            ->contextBlock(function (ContextBlock $block) {\n"
+"                $block->text('Customer #1234');\n"
+"            })\n"
+"            ->sectionBlock(function (SectionBlock $block) {\n"
+"                $block->text('An invoice has been paid.');\n"
+"            })\n"
+"            ->actionsBlock(function (ActionsBlock $block) {\n"
+"                 // ID defaults to \"button_acknowledge_invoice\"...\n"
+"                $block->button('Acknowledge Invoice')->primary();\n\n"
+"                // Manually configure the ID...\n"
+"                $block->button('Deny')->danger()->id('deny_invoice');\n"
+"            });\n"
 "}\n"
-msgstr "use Illuminate\\Notifications\\Messages\\SlackAttachment;\n"
-"use Illuminate\\Notifications\\Messages\\SlackMessage;\n\n"
+msgstr "use Illuminate\\Notifications\\Slack\\BlockKit\\Blocks\\ActionsBlock;\n"
+"use Illuminate\\Notifications\\Slack\\BlockKit\\Blocks\\ContextBlock;\n"
+"use Illuminate\\Notifications\\Slack\\BlockKit\\Blocks\\SectionBlock;\n"
+"use Illuminate\\Notifications\\Slack\\SlackMessage;\n\n"
 "/**\n"
 " * Get the Slack representation of the notification.\n"
 " */\n"
 "public function toSlack(object $notifiable): SlackMessage\n"
 "{\n"
-"    $url = url('/exceptions/'.$this->exception->id);\n\n"
 "    return (new SlackMessage)\n"
-"                ->error()\n"
-"                ->content('Whoops! Something went wrong.')\n"
-"                ->attachment(function (SlackAttachment $attachment) use ($url) {\n"
-"                    $attachment->title('Exception: File Not Found', $url)\n"
-"                               ->content('File [background.jpg] was not found.');\n"
-"                });\n"
+"            ->text('One of your invoices has been paid!')\n"
+"            ->headerBlock('Invoice Paid')\n"
+"            ->contextBlock(function (ContextBlock $block) {\n"
+"                $block->text('Customer #1234');\n"
+"            })\n"
+"            ->sectionBlock(function (SectionBlock $block) {\n"
+"                $block->text('An invoice has been paid.');\n"
+"            })\n"
+"            ->actionsBlock(function (ActionsBlock $block) {\n"
+"                 // ID 預設為 \"button_acknowledge_invoice\"...\n"
+"                $block->button('Acknowledge Invoice')->primary();\n\n"
+"                // 手動設定 ID...\n"
+"                $block->button('Deny')->danger()->id('deny_invoice');\n"
+"            });\n"
 "}\n"
 
-#: docs/10.x/notifications.md:block 294 (paragraph)
-msgid "Attachments also allow you to specify an array of data that should be presented to the user. The given data will be presented in a table-style format for easy reading:"
-msgstr "使用 Attachment 時也可以指定一組用來顯示給使用者的資料陣列。給定的資料會以表格形式呈現以讓使用者輕鬆閱讀："
+#: docs/10.x/notifications.md:block 303 (header)
+msgid "Confirmation Modals"
+msgstr "確認用 Modal (強制回應視窗)"
 
-#: docs/10.x/notifications.md:block 295 (code)
-msgid "use Illuminate\\Notifications\\Messages\\SlackAttachment;\n"
-"use Illuminate\\Notifications\\Messages\\SlackMessage;\n\n"
+#: docs/10.x/notifications.md:block 304 (paragraph)
+msgid "If you would like users to be required to confirm an action before it is performed, you may invoke the `confirm` method when defining your button. The `confirm` method accepts a message and a closure which receives a `ConfirmObject` instance:"
+msgstr "若要讓使用者在執行動作前進行確認，可在定義按鈕時呼叫 `confirm` 方法。`confirm` 方法接受一個訊息，以及一個會收到 `ConfirmObject` 實體的 Closure："
+
+#: docs/10.x/notifications.md:block 305 (code)
+msgid "use Illuminate\\Notifications\\Slack\\BlockKit\\Blocks\\ActionsBlock;\n"
+"use Illuminate\\Notifications\\Slack\\BlockKit\\Blocks\\ContextBlock;\n"
+"use Illuminate\\Notifications\\Slack\\BlockKit\\Blocks\\SectionBlock;\n"
+"use Illuminate\\Notifications\\Slack\\BlockKit\\Composites\\ConfirmObject;\n"
+"use Illuminate\\Notifications\\Slack\\SlackMessage;\n\n"
 "/**\n"
 " * Get the Slack representation of the notification.\n"
 " */\n"
 "public function toSlack(object $notifiable): SlackMessage\n"
 "{\n"
-"    $url = url('/invoices/'.$this->invoice->id);\n\n"
 "    return (new SlackMessage)\n"
-"                ->success()\n"
-"                ->content('One of your invoices has been paid!')\n"
-"                ->attachment(function (SlackAttachment $attachment) use ($url) {\n"
-"                    $attachment->title('Invoice 1322', $url)\n"
-"                               ->fields([\n"
-"                                    'Title' => 'Server Expenses',\n"
-"                                    'Amount' => '$1,234',\n"
-"                                    'Via' => 'American Express',\n"
-"                                    'Was Overdue' => ':-1:',\n"
-"                                ]);\n"
-"                });\n"
+"            ->text('One of your invoices has been paid!')\n"
+"            ->headerBlock('Invoice Paid')\n"
+"            ->contextBlock(function (ContextBlock $block) {\n"
+"                $block->text('Customer #1234');\n"
+"            })\n"
+"            ->sectionBlock(function (SectionBlock $block) {\n"
+"                $block->text('An invoice has been paid.');\n"
+"            })\n"
+"            ->actionsBlock(function (ActionsBlock $block) {\n"
+"                $block->button('Acknowledge Invoice')\n"
+"                    ->primary()\n"
+"                    ->confirm(\n"
+"                        'Acknowledge the payment and send a thank you email?',\n"
+"                        function (ConfirmObject $dialog) {\n"
+"                            $dialog->confirm('Yes');\n"
+"                            $dialog->deny('No');\n"
+"                        }\n"
+"                    );\n"
+"            });\n"
 "}\n"
-msgstr "use Illuminate\\Notifications\\Messages\\SlackAttachment;\n"
-"use Illuminate\\Notifications\\Messages\\SlackMessage;\n\n"
+msgstr "use Illuminate\\Notifications\\Slack\\BlockKit\\Blocks\\ActionsBlock;\n"
+"use Illuminate\\Notifications\\Slack\\BlockKit\\Blocks\\ContextBlock;\n"
+"use Illuminate\\Notifications\\Slack\\BlockKit\\Blocks\\SectionBlock;\n"
+"use Illuminate\\Notifications\\Slack\\BlockKit\\Composites\\ConfirmObject;\n"
+"use Illuminate\\Notifications\\Slack\\SlackMessage;\n\n"
 "/**\n"
 " * Get the Slack representation of the notification.\n"
 " */\n"
 "public function toSlack(object $notifiable): SlackMessage\n"
 "{\n"
-"    $url = url('/invoices/'.$this->invoice->id);\n\n"
 "    return (new SlackMessage)\n"
-"                ->success()\n"
-"                ->content('One of your invoices has been paid!')\n"
-"                ->attachment(function (SlackAttachment $attachment) use ($url) {\n"
-"                    $attachment->title('Invoice 1322', $url)\n"
-"                               ->fields([\n"
-"                                    'Title' => 'Server Expenses',\n"
-"                                    'Amount' => '$1,234',\n"
-"                                    'Via' => 'American Express',\n"
-"                                    'Was Overdue' => ':-1:',\n"
-"                                ]);\n"
-"                });\n"
+"            ->text('One of your invoices has been paid!')\n"
+"            ->headerBlock('Invoice Paid')\n"
+"            ->contextBlock(function (ContextBlock $block) {\n"
+"                $block->text('Customer #1234');\n"
+"            })\n"
+"            ->sectionBlock(function (SectionBlock $block) {\n"
+"                $block->text('An invoice has been paid.');\n"
+"            })\n"
+"            ->actionsBlock(function (ActionsBlock $block) {\n"
+"                $block->button('Acknowledge Invoice')\n"
+"                    ->primary()\n"
+"                    ->confirm(\n"
+"                        'Acknowledge the payment and send a thank you email?',\n"
+"                        function (ConfirmObject $dialog) {\n"
+"                            $dialog->confirm('Yes');\n"
+"                            $dialog->deny('No');\n"
+"                        }\n"
+"                    );\n"
+"            });\n"
 "}\n"
 
-#: docs/10.x/notifications.md:block 297 (header)
-msgid "Markdown Attachment Content"
-msgstr "Markdown 的 Attachment 內容"
+#: docs/10.x/notifications.md:block 307 (header)
+msgid "Inspecting Slack Blocks"
+msgstr "檢查 Slack Block"
 
-#: docs/10.x/notifications.md:block 298 (paragraph)
-msgid "If some of your attachment fields contain Markdown, you may use the `markdown` method to instruct Slack to parse and display the given attachment fields as Markdown formatted text. The values accepted by this method are: `pretext`, `text`, and / or `fields`. For more information about Slack attachment formatting, check out the [Slack API documentation](https://api.slack.com/docs/message-formatting#message_formatting):"
-msgstr "若有 Attachment 欄位包含 Markdown，可使用 `markdown` 方法來讓 Slack 以 Markdown 格式解析並顯示給定的欄位。該方法接受的值有：`pretext`、`text`、`fields`。有關 Slack Attachment 格式的更多資訊，請參考 [Slack API 說明文件](https://api.slack.com/docs/message-formatting#message_formatting)："
+#: docs/10.x/notifications.md:block 308 (paragraph)
+msgid "If you would like to quickly inspect the blocks you've been building, you can invoke the `dd` method on the `SlackMessage` instance. The `dd` method will generate and dump a URL to Slack's [Block Kit Builder](https://app.slack.com/block-kit-builder/), which displays a preview of the payload and notification in your browser. You may pass `true` to the `dd` method to dump the raw payload:"
+msgstr "若想檢查正在製作的 Block，可在 `SlackMessage` 實體上呼叫 `dd` 方法。`dd` 方法會傾印一個 [Block Kit Builder](https://app.slack.com/block-kit-builder/) 的網址，可用來在瀏覽器中預覽通知的 Payload。可傳入 `true` 給 `dd` 方法來傾印原始 Payload："
 
-#: docs/10.x/notifications.md:block 299 (code)
-msgid "use Illuminate\\Notifications\\Messages\\SlackAttachment;\n"
-"use Illuminate\\Notifications\\Messages\\SlackMessage;\n\n"
-"/**\n"
-" * Get the Slack representation of the notification.\n"
-" */\n"
-"public function toSlack(object $notifiable): SlackMessage\n"
-"{\n"
-"    $url = url('/exceptions/'.$this->exception->id);\n\n"
-"    return (new SlackMessage)\n"
-"                ->error()\n"
-"                ->content('Whoops! Something went wrong.')\n"
-"                ->attachment(function (SlackAttachment $attachment) use ($url) {\n"
-"                    $attachment->title('Exception: File Not Found', $url)\n"
-"                               ->content('File [background.jpg] was *not found*.')\n"
-"                               ->markdown(['text']);\n"
-"                });\n"
-"}\n"
-msgstr "use Illuminate\\Notifications\\Messages\\SlackAttachment;\n"
-"use Illuminate\\Notifications\\Messages\\SlackMessage;\n\n"
-"/**\n"
-" * Get the Slack representation of the notification.\n"
-" */\n"
-"public function toSlack(object $notifiable): SlackMessage\n"
-"{\n"
-"    $url = url('/exceptions/'.$this->exception->id);\n\n"
-"    return (new SlackMessage)\n"
-"                ->error()\n"
-"                ->content('Whoops! Something went wrong.')\n"
-"                ->attachment(function (SlackAttachment $attachment) use ($url) {\n"
-"                    $attachment->title('Exception: File Not Found', $url)\n"
-"                               ->content('File [background.jpg] was *not found*.')\n"
-"                               ->markdown(['text']);\n"
-"                });\n"
-"}\n"
+#: docs/10.x/notifications.md:block 309 (code)
+msgid "return (new SlackMessage)\n"
+"        ->text('One of your invoices has been paid!')\n"
+"        ->headerBlock('Invoice Paid')\n"
+"        ->dd();\n"
+msgstr "return (new SlackMessage)\n"
+"        ->text('One of your invoices has been paid!')\n"
+"        ->headerBlock('Invoice Paid')\n"
+"        ->dd();\n"
 
-#: docs/10.x/notifications.md:block 301 (header)
+#: docs/10.x/notifications.md:block 311 (header)
 msgid "Routing Slack Notifications"
 msgstr "為 Slack 通知路由"
 
-#: docs/10.x/notifications.md:block 302 (paragraph)
-msgid "To route Slack notifications to the proper Slack team and channel, define a `routeNotificationForSlack` method on your notifiable entity. This should return the webhook URL to which the notification should be delivered. Webhook URLs may be generated by adding an \"Incoming Webhook\" service to your Slack team:"
-msgstr "若要將 Slack 通知路由到正確的 Slack 團隊與頻道，請在 Notifiable 實體上定義一個 `routeNotificationForSlack` 方法。該方法應回傳該通知要傳送的 WebHook URL。若要產生 WebHook URL，可在 Slack 團隊中新增一個「傳入的 WebHook」："
+#: docs/10.x/notifications.md:block 312 (paragraph)
+msgid "To direct Slack notifications to the appropriate Slack team and channel, define a `routeNotificationForSlack` method on your notifiable model. This method can return one of three values:"
+msgstr "若要將 Slack 通知導向給指定的 Slack 團隊或頻道，請在 Notifiable Model 中定義一個 `routeNotificationForSlack` 方法。該方法可回傳以下三種值："
 
-#: docs/10.x/notifications.md:block 303 (code)
+#: docs/10.x/notifications.md:block 313 (unordered list)
+msgid "`null` - which defers routing to the channel configured in the notification itself. You may use the `to` method when building your `SlackMessage` to configure the channel within the notification."
+msgstr "`null` - 會將通知的路由延期到 Notification 本身上設定。可以在 Notification 中定義 `SlackMessage` 時使用 `to` 方法來設定。"
+
+#: docs/10.x/notifications.md:block 313 (unordered list)
+msgid "A string specifying the Slack channel to send the notification to, e.g. `#support-channel`."
+msgstr "代表要傳送通知的 Slack 頻道字串，如 `#support-channel`。"
+
+#: docs/10.x/notifications.md:block 313 (unordered list)
+msgid "A `SlackRoute` instance, which allows you to specify an OAuth token and channel name, e.g. `SlackRoute::make($this->slack_channel, $this->slack_token)`. This method should be used to send notifications to external workspaces."
+msgstr "`SlackRoute` 實體，以便指定 OAuth 權杖與頻道名稱，如 `SlackRoute::make($this->slack_channel, $this->slack_token)`。該方法可用來將通知傳送給外部工作空間。"
+
+#: docs/10.x/notifications.md:block 314 (paragraph)
+msgid "For instance, returning `#support-channel` from the `routeNotificationForSlack` method will send the notification to the `#support-channel` channel in the workspace associated with the Bot User OAuth token located in your application's `services.php` configuration file:"
+msgstr "舉例來說，若在 `routeNotificationForSlack` 中回傳 `#support-channel`，則會將通知傳送給該專案 `services.php` 設定檔中 Bot 使用者 OAuth 權杖所關聯工作空間中的 `#support-channel`："
+
+#: docs/10.x/notifications.md:block 315 (code)
 msgid "<?php\n\n"
 "namespace App\\Models;\n\n"
 "use Illuminate\\Foundation\\Auth\\User as Authenticatable;\n"
@@ -2112,9 +2244,9 @@ msgid "<?php\n\n"
 "    /**\n"
 "     * Route notifications for the Slack channel.\n"
 "     */\n"
-"    public function routeNotificationForSlack(Notification $notification): string\n"
+"    public function routeNotificationForSlack(Notification $notification): mixed\n"
 "    {\n"
-"        return 'https://hooks.slack.com/services/...';\n"
+"        return '#support-channel';\n"
 "    }\n"
 "}\n"
 msgstr "<?php\n\n"
@@ -2128,33 +2260,85 @@ msgstr "<?php\n\n"
 "    /**\n"
 "     * Route notifications for the Slack channel.\n"
 "     */\n"
-"    public function routeNotificationForSlack(Notification $notification): string\n"
+"    public function routeNotificationForSlack(Notification $notification): mixed\n"
 "    {\n"
-"        return 'https://hooks.slack.com/services/...';\n"
+"        return '#support-channel';\n"
 "    }\n"
 "}\n"
 
-#: docs/10.x/notifications.md:block 305 (header)
+#: docs/10.x/notifications.md:block 317 (header)
+msgid "Notifying External Slack Workspaces"
+msgstr "通知外部 Slack 工作空間"
+
+#: docs/10.x/notifications.md:block 318 (quote)
+msgid "**Note** Before sending notifications to external Slack workspaces, your Slack App must be [distributed](#slack-app-distribution)."
+msgstr "**Note** 在傳送通知給外部 Slack 工作空間前，必須先[發佈 (Distribute)](#slack-app-distribution) 你的 Slack App。"
+
+#: docs/10.x/notifications.md:block 319 (paragraph)
+msgid "Of course, you will often want to send notifications to the Slack workspaces owned by your application's users. To do so, you will first need to obtain a Slack OAuth token for the user. Thankfully, [Laravel Socialite](/docs/{{version}}/socialite) includes a Slack driver that will allow you to easily authenticate your application's users with Slack and [obtain a bot token](/docs/{{version}}/socialite#slack-bot-scopes)."
+msgstr "當然，我們通常都想將通知傳送給 App 使用者所在的 Slack 工作空間。為此，我們需要先取得該使用者的 Slack OAuth 權杖。方便的是，[Laravel Socialite](/docs/{{version}}/socialite) 中譯包含了一個 Slack Driver，能讓你輕鬆地使用 Slack 來登入 App 使用者，並[取得 Bot 權杖](/docs/{{version}}/socialite#slack-bot-scopes)。"
+
+#: docs/10.x/notifications.md:block 320 (paragraph)
+msgid "Once you have obtained the bot token and stored it within your application's database, you may utilize the `SlackRoute::make` method to route a notification to the user's workspace. In addition, your application will likely need to offer an opportunity for the user to specify which channel notifications should be sent to:"
+msgstr "取得 Bot 權杖並將其保存在 App 的資料庫後，就可以使用 `SlackRoute::make` 方法來定義將通知導向使用者所在工作空間的 Route。此外，你的 App 也能提供使用者自訂通知傳送頻道的功能："
+
+#: docs/10.x/notifications.md:block 321 (code)
+msgid "<?php\n\n"
+"namespace App\\Models;\n\n"
+"use Illuminate\\Foundation\\Auth\\User as Authenticatable;\n"
+"use Illuminate\\Notifications\\Notifiable;\n"
+"use Illuminate\\Notifications\\Notification;\n"
+"use Illuminate\\Notifications\\Slack\\SlackRoute;\n\n"
+"class User extends Authenticatable\n"
+"{\n"
+"    use Notifiable;\n\n"
+"    /**\n"
+"     * Route notifications for the Slack channel.\n"
+"     */\n"
+"    public function routeNotificationForSlack(Notification $notification): mixed\n"
+"    {\n"
+"        return SlackRoute::make($this->slack_channel, $this->slack_token);\n"
+"    }\n"
+"}\n"
+msgstr "<?php\n\n"
+"namespace App\\Models;\n\n"
+"use Illuminate\\Foundation\\Auth\\User as Authenticatable;\n"
+"use Illuminate\\Notifications\\Notifiable;\n"
+"use Illuminate\\Notifications\\Notification;\n"
+"use Illuminate\\Notifications\\Slack\\SlackRoute;\n\n"
+"class User extends Authenticatable\n"
+"{\n"
+"    use Notifiable;\n\n"
+"    /**\n"
+"     * Route notifications for the Slack channel.\n"
+"     */\n"
+"    public function routeNotificationForSlack(Notification $notification): mixed\n"
+"    {\n"
+"        return SlackRoute::make($this->slack_channel, $this->slack_token);\n"
+"    }\n"
+"}\n"
+
+#: docs/10.x/notifications.md:block 323 (header)
 msgid "Localizing Notifications"
 msgstr "本土化通知"
 
-#: docs/10.x/notifications.md:block 306 (paragraph)
+#: docs/10.x/notifications.md:block 324 (paragraph)
 msgid "Laravel allows you to send notifications in a locale other than the HTTP request's current locale, and will even remember this locale if the notification is queued."
 msgstr "在 Laravel 中，可以使用與 Request 中不同的語系設定來傳送通知。通知被放入佇列後依然會使用所設定的語系。"
 
-#: docs/10.x/notifications.md:block 307 (paragraph)
+#: docs/10.x/notifications.md:block 325 (paragraph)
 msgid "To accomplish this, the `Illuminate\\Notifications\\Notification` class offers a `locale` method to set the desired language. The application will change into this locale when the notification is being evaluated and then revert back to the previous locale when evaluation is complete:"
 msgstr "若要設定語系，請使用 `Illuminate\\Notifications\\Notification` 類別提供的 `locale` 方法來設定要使用的語言。在取得通知內容時，程式會先進入這個語系中，取完內容後再回到之前的語系："
 
-#: docs/10.x/notifications.md:block 308 (code)
+#: docs/10.x/notifications.md:block 326 (code)
 msgid "$user->notify((new InvoicePaid($invoice))->locale('es'));\n"
 msgstr "$user->notify((new InvoicePaid($invoice))->locale('es'));\n"
 
-#: docs/10.x/notifications.md:block 309 (paragraph)
+#: docs/10.x/notifications.md:block 327 (paragraph)
 msgid "Localization of multiple notifiable entries may also be achieved via the `Notification` facade:"
 msgstr "可以使用 `Notification` Facade 來本地化多個 Notifiable 實體："
 
-#: docs/10.x/notifications.md:block 310 (code)
+#: docs/10.x/notifications.md:block 328 (code)
 msgid "Notification::locale('es')->send(\n"
 "    $users, new InvoicePaid($invoice)\n"
 ");\n"
@@ -2162,15 +2346,15 @@ msgstr "Notification::locale('es')->send(\n"
 "    $users, new InvoicePaid($invoice)\n"
 ");\n"
 
-#: docs/10.x/notifications.md:block 312 (header)
+#: docs/10.x/notifications.md:block 330 (header)
 msgid "User Preferred Locales"
 msgstr "使用者偏好的語系"
 
-#: docs/10.x/notifications.md:block 313 (paragraph)
+#: docs/10.x/notifications.md:block 331 (paragraph)
 msgid "Sometimes, applications store each user's preferred locale. By implementing the `HasLocalePreference` contract on your notifiable model, you may instruct Laravel to use this stored locale when sending a notification:"
 msgstr "有時候，我們的程式會儲存每個使用者偏好的語言。只要在一個或多個 Notifiable Model 上實作 `HasLocalePreference` Contract，就可以讓 Laravel 在傳送通知時使用這些儲存的語系："
 
-#: docs/10.x/notifications.md:block 314 (code)
+#: docs/10.x/notifications.md:block 332 (code)
 msgid "use Illuminate\\Contracts\\Translation\\HasLocalePreference;\n\n"
 "class User extends Model implements HasLocalePreference\n"
 "{\n"
@@ -2194,23 +2378,131 @@ msgstr "use Illuminate\\Contracts\\Translation\\HasLocalePreference;\n\n"
 "    }\n"
 "}\n"
 
-#: docs/10.x/notifications.md:block 315 (paragraph)
+#: docs/10.x/notifications.md:block 333 (paragraph)
 msgid "Once you have implemented the interface, Laravel will automatically use the preferred locale when sending notifications and mailables to the model. Therefore, there is no need to call the `locale` method when using this interface:"
 msgstr "實作好該介面後，向該 Model 傳送通知或 Mailable 時，Laravel 就會自動使用偏好的語系。因此，使用該介面時不需呼叫 `locale` 方法："
 
-#: docs/10.x/notifications.md:block 318 (header)
+#: docs/10.x/notifications.md:block 336 (header)
+msgid "Testing"
+msgstr "測試"
+
+#: docs/10.x/notifications.md:block 337 (paragraph)
+msgid "You may use the `Notification` facade's `fake` method to prevent notifications from being sent. Typically, sending notifications is unrelated to the code you are actually testing. Most likely, it is sufficient to simply assert that Laravel was instructed to send a given notification."
+msgstr "可以使用 `Notification` Facade 的 `fake` 方法來避免送出 Notification。一般來說，送出 Notification 與實際要測試的程式碼是不相關的。通常，只要判斷 Laravel 是否有接到指示要送出給定的 Notification 就夠了。"
+
+#: docs/10.x/notifications.md:block 338 (paragraph)
+msgid "After calling the `Notification` facade's `fake` method, you may then assert that notifications were instructed to be sent to users and even inspect the data the notifications received:"
+msgstr "呼叫 `Notification` Facade 的 `fake` 方法後，就可以判斷是否有被要求要將該 Notification 送出給使用者，甚至還能判斷 Notification 收到的資料："
+
+#: docs/10.x/notifications.md:block 339 (code)
+msgid "<?php\n\n"
+"namespace Tests\\Feature;\n\n"
+"use App\\Notifications\\OrderShipped;\n"
+"use Illuminate\\Support\\Facades\\Notification;\n"
+"use Tests\\TestCase;\n\n"
+"class ExampleTest extends TestCase\n"
+"{\n"
+"    public function test_orders_can_be_shipped(): void\n"
+"    {\n"
+"        Notification::fake();\n\n"
+"        // Perform order shipping...\n\n"
+"        // Assert that no notifications were sent...\n"
+"        Notification::assertNothingSent();\n\n"
+"        // Assert a notification was sent to the given users...\n"
+"        Notification::assertSentTo(\n"
+"            [$user], OrderShipped::class\n"
+"        );\n\n"
+"        // Assert a notification was not sent...\n"
+"        Notification::assertNotSentTo(\n"
+"            [$user], AnotherNotification::class\n"
+"        );\n\n"
+"        // Assert that a given number of notifications were sent...\n"
+"        Notification::assertCount(3);\n"
+"    }\n"
+"}\n"
+msgstr "<?php\n\n"
+"namespace Tests\\Feature;\n\n"
+"use App\\Notifications\\OrderShipped;\n"
+"use Illuminate\\Support\\Facades\\Notification;\n"
+"use Tests\\TestCase;\n\n"
+"class ExampleTest extends TestCase\n"
+"{\n"
+"    public function test_orders_can_be_shipped(): void\n"
+"    {\n"
+"        Notification::fake();\n\n"
+"        // 處理訂單出貨...\n\n"
+"        // 判斷未有 Notification 被送出...\n"
+"        Notification::assertNothingSent();\n\n"
+"        // 判斷某個 Notification 是否被傳送至給定的使用者...\n"
+"        Notification::assertSentTo(\n"
+"            [$user], OrderShipped::class\n"
+"        );\n\n"
+"        // 判斷某個 Notification 是否未被送出...\n"
+"        Notification::assertNotSentTo(\n"
+"            [$user], AnotherNotification::class\n"
+"        );\n\n"
+"        // 測試送出了給定數量的 Notification...\n"
+"        Notification::assertCount(3);\n"
+"    }\n"
+"}\n"
+
+#: docs/10.x/notifications.md:block 340 (paragraph)
+msgid "You may pass a closure to the `assertSentTo` or `assertNotSentTo` methods in order to assert that a notification was sent that passes a given \"truth test\". If at least one notification was sent that passes the given truth test then the assertion will be successful:"
+msgstr "可以傳入一個閉包給 `assertSentTo` 或 `assertNotSentTo` 方法，來判斷某個 Notification 是否通過給定的「真值測試 (Truth Test)」。若送出的 Notification 中至少有一個 Notification 通過給定的真值測試，則該 Assertion 會被視為成功："
+
+#: docs/10.x/notifications.md:block 341 (code)
+msgid "Notification::assertSentTo(\n"
+"    $user,\n"
+"    function (OrderShipped $notification, array $channels) use ($order) {\n"
+"        return $notification->order->id === $order->id;\n"
+"    }\n"
+");\n"
+msgstr "Notification::assertSentTo(\n"
+"    $user,\n"
+"    function (OrderShipped $notification, array $channels) use ($order) {\n"
+"        return $notification->order->id === $order->id;\n"
+"    }\n"
+");\n"
+
+#: docs/10.x/notifications.md:block 344 (paragraph)
+msgid "If the code you are testing sends [on-demand notifications](#on-demand-notifications), you can test that the on-demand notification was sent via the `assertSentOnDemand` method:"
+msgstr "若要測試的程式中有傳送[隨需通知](#on-demand-notifications)，則可使用 `assertSentOnDemand` 方法來測試是否有送出隨需通知："
+
+#: docs/10.x/notifications.md:block 345 (code)
+msgid "Notification::assertSentOnDemand(OrderShipped::class);\n"
+msgstr "Notification::assertSentOnDemand(OrderShipped::class);\n"
+
+#: docs/10.x/notifications.md:block 346 (paragraph)
+msgid "By passing a closure as the second argument to the `assertSentOnDemand` method, you may determine if an on-demand notification was sent to the correct \"route\" address:"
+msgstr "若在 `assertSentOnDemand` 方法的第二個引數上傳入閉包，就能判斷隨需通知是否被送給正確的「^[Route](路由)」位址："
+
+#: docs/10.x/notifications.md:block 347 (code)
+msgid "Notification::assertSentOnDemand(\n"
+"    OrderShipped::class,\n"
+"    function (OrderShipped $notification, array $channels, object $notifiable) use ($user) {\n"
+"        return $notifiable->routes['mail'] === $user->email;\n"
+"    }\n"
+");\n"
+msgstr "Notification::assertSentOnDemand(\n"
+"    OrderShipped::class,\n"
+"    function (OrderShipped $notification, array $channels, object $notifiable) use ($user) {\n"
+"        return $notifiable->routes['mail'] === $user->email;\n"
+"    }\n"
+");\n"
+
+#: docs/10.x/notifications.md:block 349 (header)
 msgid "Notification Events"
 msgstr "通知事件"
 
-#: docs/10.x/notifications.md:block 320 (header)
+#: docs/10.x/notifications.md:block 351 (header)
 msgid "Notification Sending Event"
 msgstr "傳送中事件 - NotificationSending"
 
-#: docs/10.x/notifications.md:block 321 (paragraph)
+#: docs/10.x/notifications.md:block 352 (paragraph)
 msgid "When a notification is sending, the `Illuminate\\Notifications\\Events\\NotificationSending` [event](/docs/{{version}}/events) is dispatched by the notification system. This contains the \"notifiable\" entity and the notification instance itself. You may register listeners for this event in your application's `EventServiceProvider`:"
 msgstr "在傳送通知時，通知系統會分派一個 `Illuminate\\Notifications\\Events\\NotificationSending` [事件](/docs/{{version}}/events)。該 Event 中包含了一個「Notifiable」實體，以及通知實體本身。可以在專案的 `EventServiceProvider` 中為該 Event 註冊 Listener："
 
-#: docs/10.x/notifications.md:block 322 (code)
+#: docs/10.x/notifications.md:block 353 (code)
 msgid "use App\\Listeners\\CheckNotificationStatus;\n"
 "use Illuminate\\Notifications\\Events\\NotificationSending;\n\n"
 "/**\n"
@@ -2236,16 +2528,16 @@ msgstr "use App\\Listeners\\CheckNotificationStatus;\n"
 "    ],\n"
 "];\n"
 
-#: docs/10.x/notifications.md:block 323 (paragraph)
+#: docs/10.x/notifications.md:block 354 (paragraph)
 msgid "The notification will not be sent if an event listener for the `NotificationSending` event returns `false` from its `handle` method:"
 msgstr "若 `NotificationSending` 事件的任一監聽程式中 `handle` 方法回傳 `false`，就不會傳送該通知："
 
-#: docs/10.x/notifications.md:block 324 (code)
+#: docs/10.x/notifications.md:block 355 (code)
 msgid "use Illuminate\\Notifications\\Events\\NotificationSending;\n\n"
 "/**\n"
 " * Handle the event.\n"
 " */\n"
-"public function handle(NotificationSending $event): void\n"
+"public function handle(NotificationSending $event): bool\n"
 "{\n"
 "    return false;\n"
 "}\n"
@@ -2253,16 +2545,16 @@ msgstr "use Illuminate\\Notifications\\Events\\NotificationSending;\n\n"
 "/**\n"
 " * Handle the event.\n"
 " */\n"
-"public function handle(NotificationSending $event): void\n"
+"public function handle(NotificationSending $event): bool\n"
 "{\n"
 "    return false;\n"
 "}\n"
 
-#: docs/10.x/notifications.md:block 325 (paragraph)
+#: docs/10.x/notifications.md:block 356 (paragraph)
 msgid "Within an event listener, you may access the `notifiable`, `notification`, and `channel` properties on the event to learn more about the notification recipient or the notification itself:"
 msgstr "在 Event Listener 中，可以在該 Event 上存取 `notifiable`、`notification`、`channel` 等屬性，以取得更多有關通知收件人或通知本身的資訊："
 
-#: docs/10.x/notifications.md:block 326 (code)
+#: docs/10.x/notifications.md:block 357 (code)
 msgid "/**\n"
 " * Handle the event.\n"
 " */\n"
@@ -2282,15 +2574,15 @@ msgstr "/**\n"
 "    // $event->notification\n"
 "}\n"
 
-#: docs/10.x/notifications.md:block 328 (header)
+#: docs/10.x/notifications.md:block 359 (header)
 msgid "Notification Sent Event"
 msgstr "已傳送事件 - NotificationSent"
 
-#: docs/10.x/notifications.md:block 329 (paragraph)
+#: docs/10.x/notifications.md:block 360 (paragraph)
 msgid "When a notification is sent, the `Illuminate\\Notifications\\Events\\NotificationSent` [event](/docs/{{version}}/events) is dispatched by the notification system. This contains the \"notifiable\" entity and the notification instance itself. You may register listeners for this event in your `EventServiceProvider`:"
 msgstr "在傳送通知時，通知系統會分派一個 `Illuminate\\Notifications\\Events\\NotificationSent` [事件](/docs/{{version}}/events)。該 Event 中包含了一個「Notifiable」實體，以及通知實體本身。可以在專案的 `EventServiceProvider` 中為該 Event 註冊 Listener："
 
-#: docs/10.x/notifications.md:block 330 (code)
+#: docs/10.x/notifications.md:block 361 (code)
 msgid "use App\\Listeners\\LogNotification;\n"
 "use Illuminate\\Notifications\\Events\\NotificationSent;\n\n"
 "/**\n"
@@ -2316,15 +2608,15 @@ msgstr "use App\\Listeners\\LogNotification;\n"
 "    ],\n"
 "];\n"
 
-#: docs/10.x/notifications.md:block 331 (quote)
+#: docs/10.x/notifications.md:block 362 (quote)
 msgid "**Note** After registering listeners in your `EventServiceProvider`, use the `event:generate` Artisan command to quickly generate listener classes."
 msgstr "**Note** 在 `EventServiceProvider` 中註冊好 Listener 後，可使用 `event:generate` Artisan 指令來快速產生 Listener 類別。"
 
-#: docs/10.x/notifications.md:block 332 (paragraph)
+#: docs/10.x/notifications.md:block 363 (paragraph)
 msgid "Within an event listener, you may access the `notifiable`, `notification`, `channel`, and `response` properties on the event to learn more about the notification recipient or the notification itself:"
 msgstr "在 Event Listener 中，可以在該 Event 上存取 `notifiable`、`notification`、`channel`、`response` 等屬性，以取得更多有關通知收件人或通知本身的資訊："
 
-#: docs/10.x/notifications.md:block 333 (code)
+#: docs/10.x/notifications.md:block 364 (code)
 msgid "/**\n"
 " * Handle the event.\n"
 " */\n"
@@ -2346,19 +2638,19 @@ msgstr "/**\n"
 "    // $event->response\n"
 "}\n"
 
-#: docs/10.x/notifications.md:block 335 (header)
+#: docs/10.x/notifications.md:block 366 (header)
 msgid "Custom Channels"
 msgstr "自訂通道"
 
-#: docs/10.x/notifications.md:block 336 (paragraph)
+#: docs/10.x/notifications.md:block 367 (paragraph)
 msgid "Laravel ships with a handful of notification channels, but you may want to write your own drivers to deliver notifications via other channels. Laravel makes it simple. To get started, define a class that contains a `send` method. The method should receive two arguments: a `$notifiable` and a `$notification`."
 msgstr "Laravel 中隨附了許多通知通道，不過，我們也可以自行撰寫自訂的 Driver 來使用其他通道傳送通知。在 Laravel 中，要製作自訂 Driver 非常簡單。要開始製作自訂 Driver，請先定義一個包含 `send` 方法的類別。該方法應接收兩個引數：`$notifiable` 與 `$notification`。"
 
-#: docs/10.x/notifications.md:block 337 (paragraph)
+#: docs/10.x/notifications.md:block 368 (paragraph)
 msgid "Within the `send` method, you may call methods on the notification to retrieve a message object understood by your channel and then send the notification to the `$notifiable` instance however you wish:"
 msgstr "在 `send` 方法中，我們可以呼叫 Notification 上的方法，以取得這個頻道能理解的訊息物件，然後再將通知傳送給 `$notifiable` 實體："
 
-#: docs/10.x/notifications.md:block 338 (code)
+#: docs/10.x/notifications.md:block 369 (code)
 msgid "<?php\n\n"
 "namespace App\\Notifications;\n\n"
 "use Illuminate\\Notifications\\Notification;\n\n"
@@ -2388,11 +2680,11 @@ msgstr "<?php\n\n"
 "    }\n"
 "}\n"
 
-#: docs/10.x/notifications.md:block 339 (paragraph)
+#: docs/10.x/notifications.md:block 370 (paragraph)
 msgid "Once your notification channel class has been defined, you may return the class name from the `via` method of any of your notifications. In this example, the `toVoice` method of your notification can return whatever object you choose to represent voice messages. For example, you might define your own `VoiceMessage` class to represent these messages:"
 msgstr "定義好通知通道後，接著就可以在任何 Notification 類別內的 `via` 方法中回傳我們自訂 Driver 的類別名稱。在這個範例中，Notification 的 `toVoice` 方法可以回傳任何要用來代表^[語音](Voice)訊息的物件。舉例來說，我們可以定義一個自訂的 `VoiceMessage` 類別來代表這些訊息："
 
-#: docs/10.x/notifications.md:block 340 (code)
+#: docs/10.x/notifications.md:block 371 (code)
 msgid "<?php\n\n"
 "namespace App\\Notifications;\n\n"
 "use App\\Notifications\\Messages\\VoiceMessage;\n"
@@ -2443,6 +2735,14 @@ msgstr "<?php\n\n"
 "        // ...\n"
 "    }\n"
 "}\n"
+
+#: docs/8.x/notifications.md:block 2 (unordered list)
+msgid "[Formatting Shortcode Notifications](#formatting-shortcode-notifications)"
+msgstr "[格式化 Shortcode 的通知](#formatting-shortcode-notifications)"
+
+#: docs/8.x/notifications.md:block 2 (unordered list)
+msgid "[Slack Attachments](#slack-attachments)"
+msgstr "[Slack 附件](#slack-attachments)"
 
 #: docs/8.x/notifications.md:block 5 (paragraph)
 msgid "In addition to support for [sending email](/docs/{{version}}/mail), Laravel provides support for sending notifications across a variety of delivery channels, including email, SMS (via [Vonage](https://www.vonage.com/communications-apis/), formerly known as Nexmo), and [Slack](https://slack.com). In addition, a variety of [community built notification channels](https://laravel-notification-channels.com/about/#suggesting-a-new-channel) have been created to send notification over dozens of different channels! Notifications may also be stored in a database so they may be displayed in your web interface."
@@ -2485,6 +2785,24 @@ msgstr "/**\n"
 #: docs/8.x/notifications.md:block 35 (quote)
 msgid "{note} Before queueing notifications you should configure your queue and [start a worker](/docs/{{version}}/queues)."
 msgstr "{note} 在將通知放入佇列前，請先設定好佇列，並[執行一個 ^[Worker](背景工作角色)](/docs/{{version}}/queues)。"
+
+#: docs/8.x/notifications.md:block 47 (paragraph)
+msgid "By default, queued notifications will be queued using your application's default queue connection. If you would like to specify a different connection that should be used for a particular notification, you may define a `$connection` property on the notification class:"
+msgstr "預設情況下，佇列通知會使用專案的預設佇列連線。若想為特定通知指定不同的連線，可在 Notification 類別上定義一個 `$connection` 屬性："
+
+#: docs/8.x/notifications.md:block 48 (code)
+msgid "/**\n"
+" * The name of the queue connection to use when queueing the notification.\n"
+" *\n"
+" * @var string\n"
+" */\n"
+"public $connection = 'redis';\n"
+msgstr "/**\n"
+" * The name of the queue connection to use when queueing the notification.\n"
+" *\n"
+" * @var string\n"
+" */\n"
+"public $connection = 'redis';\n"
 
 #: docs/8.x/notifications.md:block 52 (code)
 msgid "/**\n"
@@ -3464,6 +3782,18 @@ msgstr "<?php\n\n"
 "    }\n"
 "}\n"
 
+#: docs/8.x/notifications.md:block 268 (paragraph)
+msgid "Before you can send notifications via Slack, you must install the Slack notification channel via Composer:"
+msgstr "在開始使用 Slack 傳送通知前，請先使用 Composer 安裝 Slack 通知通道："
+
+#: docs/8.x/notifications.md:block 270 (paragraph)
+msgid "You will also need to create a [Slack App](https://api.slack.com/apps?new_app=1) for your team. After creating the App, you should configure an \"Incoming Webhook\" for the workspace. Slack will then provide you with a webhook URL that you may use when [routing Slack notifications](#routing-slack-notifications)."
+msgstr "此外，也許為 Slack 團隊建立一個 [Slack App](https://api.slack.com/apps?new_app=1)。建立好 App 後，請為該工作空間建立一個「傳入的 WebHook」。建立之後，Slack 會提供一個 WebHook URL，在[為 Slack 通知路由](#routing-slack-notifications)時會使用到該 URL。"
+
+#: docs/8.x/notifications.md:block 273 (paragraph)
+msgid "If a notification supports being sent as a Slack message, you should define a `toSlack` method on the notification class. This method will receive a `$notifiable` entity and should return an `Illuminate\\Notifications\\Messages\\SlackMessage` instance. Slack messages may contain text content as well as an \"attachment\" that formats additional text or an array of fields. Let's take a look at a basic `toSlack` example:"
+msgstr "若要讓通知支援以 Slack 訊息傳送，請在該 Notification 類別上定義一個 `toSlack` 方法。這個方法會收到一個 `$notifiable` 實體，而該方法應回傳 `Illuminate\\Notifications\\Messages\\SlackMessage` 實體。Slack 訊息可以包含文字內容，也可以包含一個「^[Attachment](附件)」。Attachment 就是格式化過的額外文字，或是一組欄位的陣列。讓我們來看看一個基礎的 `toSlack` 範例："
+
 #: docs/8.x/notifications.md:block 274 (code)
 msgid "/**\n"
 " * Get the Slack representation of the notification.\n"
@@ -3487,6 +3817,14 @@ msgstr "/**\n"
 "    return (new SlackMessage)\n"
 "                ->content('One of your invoices has been paid!');\n"
 "}\n"
+
+#: docs/8.x/notifications.md:block 276 (header)
+msgid "Slack Attachments"
+msgstr "Slack Attachment"
+
+#: docs/8.x/notifications.md:block 277 (paragraph)
+msgid "You may also add \"attachments\" to Slack messages. Attachments provide richer formatting options than simple text messages. In this example, we will send an error notification about an exception that occurred in an application, including a link to view more details about the exception:"
+msgstr "也可以在 Slack 訊息上加入「Attachment」。Attachment 比起簡單的文字訊息，有更豐富的格式可使用。在這個範例中，我們會傳送一個有關程式內發生 Exception 的錯誤訊息，其中包含了一個可用來檢視該 Exception 詳情的連結："
 
 #: docs/8.x/notifications.md:block 278 (code)
 msgid "/**\n"
@@ -3523,6 +3861,10 @@ msgstr "/**\n"
 "                               ->content('File [background.jpg] was not found.');\n"
 "                });\n"
 "}\n"
+
+#: docs/8.x/notifications.md:block 279 (paragraph)
+msgid "Attachments also allow you to specify an array of data that should be presented to the user. The given data will be presented in a table-style format for easy reading:"
+msgstr "使用 Attachment 時也可以指定一組用來顯示給使用者的資料陣列。給定的資料會以表格形式呈現以讓使用者輕鬆閱讀："
 
 #: docs/8.x/notifications.md:block 280 (code)
 msgid "/**\n"
@@ -3570,6 +3912,14 @@ msgstr "/**\n"
 "                });\n"
 "}\n"
 
+#: docs/8.x/notifications.md:block 282 (header)
+msgid "Markdown Attachment Content"
+msgstr "Markdown 的 Attachment 內容"
+
+#: docs/8.x/notifications.md:block 283 (paragraph)
+msgid "If some of your attachment fields contain Markdown, you may use the `markdown` method to instruct Slack to parse and display the given attachment fields as Markdown formatted text. The values accepted by this method are: `pretext`, `text`, and / or `fields`. For more information about Slack attachment formatting, check out the [Slack API documentation](https://api.slack.com/docs/message-formatting#message_formatting):"
+msgstr "若有 Attachment 欄位包含 Markdown，可使用 `markdown` 方法來讓 Slack 以 Markdown 格式解析並顯示給定的欄位。該方法接受的值有：`pretext`、`text`、`fields`。有關 Slack Attachment 格式的更多資訊，請參考 [Slack API 說明文件](https://api.slack.com/docs/message-formatting#message_formatting)："
+
 #: docs/8.x/notifications.md:block 284 (code)
 msgid "/**\n"
 " * Get the Slack representation of the notification.\n"
@@ -3607,6 +3957,10 @@ msgstr "/**\n"
 "                               ->markdown(['text']);\n"
 "                });\n"
 "}\n"
+
+#: docs/8.x/notifications.md:block 287 (paragraph)
+msgid "To route Slack notifications to the proper Slack team and channel, define a `routeNotificationForSlack` method on your notifiable entity. This should return the webhook URL to which the notification should be delivered. Webhook URLs may be generated by adding an \"Incoming Webhook\" service to your Slack team:"
+msgstr "若要將 Slack 通知路由到正確的 Slack 團隊與頻道，請在 Notifiable 實體上定義一個 `routeNotificationForSlack` 方法。該方法應回傳該通知要傳送的 WebHook URL。若要產生 WebHook URL，可在 Slack 團隊中新增一個「傳入的 WebHook」："
 
 #: docs/8.x/notifications.md:block 288 (code)
 msgid "<?php\n\n"
@@ -3924,6 +4278,10 @@ msgstr "/**\n"
 "    return $notifiable->prefers_sms ? ['vonage'] : ['mail', 'database'];\n"
 "}\n"
 
+#: docs/9.x/notifications.md:block 35 (quote)
+msgid "**Warning** Before queueing notifications you should configure your queue and [start a worker](/docs/{{version}}/queues)."
+msgstr "**Warning** 在將通知放入佇列前，請先設定好佇列，並[執行一個 ^[Worker](背景工作角色)](/docs/{{version}}/queues)。"
+
 #: docs/9.x/notifications.md:block 50 (code)
 msgid "/**\n"
 " * Determine the notification's delivery delay.\n"
@@ -3977,6 +4335,22 @@ msgstr "/**\n"
 "        'database' => 'sync',\n"
 "    ];\n"
 "}\n"
+
+#: docs/9.x/notifications.md:block 77 (code)
+msgid "use Illuminate\\Broadcasting\\Channel;\n"
+"use Illuminate\\Support\\Facades\\Notification;\n\n"
+"Notification::route('mail', 'taylor@example.com')\n"
+"            ->route('vonage', '5555555555')\n"
+"            ->route('slack', 'https://hooks.slack.com/services/...')\n"
+"            ->route('broadcast', [new Channel('channel-name')])\n"
+"            ->notify(new InvoicePaid($invoice));\n"
+msgstr "use Illuminate\\Broadcasting\\Channel;\n"
+"use Illuminate\\Support\\Facades\\Notification;\n\n"
+"Notification::route('mail', 'taylor@example.com')\n"
+"            ->route('vonage', '5555555555')\n"
+"            ->route('slack', 'https://hooks.slack.com/services/...')\n"
+"            ->route('broadcast', [new Channel('channel-name')])\n"
+"            ->notify(new InvoicePaid($invoice));\n"
 
 #: docs/9.x/notifications.md:block 86 (code)
 msgid "/**\n"
@@ -4278,5 +4652,205 @@ msgstr "<?php\n\n"
 "    {\n"
 "        return $this->phone_number;\n"
 "    }\n"
+"}\n"
+
+#: docs/master/notifications.md:block 77 (code)
+msgid "use Illuminate\\Broadcasting\\Channel;\n\n"
+"Notification::route('mail', 'taylor@example.com')\n"
+"            ->route('vonage', '5555555555')\n"
+"            ->route('slack', 'https://hooks.slack.com/services/...')\n"
+"            ->route('broadcast', [new Channel('channel-name')])\n"
+"            ->notify(new InvoicePaid($invoice));\n"
+msgstr "use Illuminate\\Broadcasting\\Channel;\n\n"
+"Notification::route('mail', 'taylor@example.com')\n"
+"            ->route('vonage', '5555555555')\n"
+"            ->route('slack', 'https://hooks.slack.com/services/...')\n"
+"            ->route('broadcast', [new Channel('channel-name')])\n"
+"            ->notify(new InvoicePaid($invoice));\n"
+
+#: docs/master/notifications.md:block 289 (code)
+msgid "use Illuminate\\Notifications\\Messages\\SlackMessage;\n\n"
+"/**\n"
+" * Get the Slack representation of the notification.\n"
+" */\n"
+"public function toSlack(object $notifiable): SlackMessage\n"
+"{\n"
+"    return (new SlackMessage)\n"
+"                ->content('One of your invoices has been paid!');\n"
+"}\n"
+msgstr "use Illuminate\\Notifications\\Messages\\SlackMessage;\n\n"
+"/**\n"
+" * Get the Slack representation of the notification.\n"
+" */\n"
+"public function toSlack(object $notifiable): SlackMessage\n"
+"{\n"
+"    return (new SlackMessage)\n"
+"                ->content('One of your invoices has been paid!');\n"
+"}\n"
+
+#: docs/master/notifications.md:block 293 (code)
+msgid "use Illuminate\\Notifications\\Messages\\SlackAttachment;\n"
+"use Illuminate\\Notifications\\Messages\\SlackMessage;\n\n"
+"/**\n"
+" * Get the Slack representation of the notification.\n"
+" */\n"
+"public function toSlack(object $notifiable): SlackMessage\n"
+"{\n"
+"    $url = url('/exceptions/'.$this->exception->id);\n\n"
+"    return (new SlackMessage)\n"
+"                ->error()\n"
+"                ->content('Whoops! Something went wrong.')\n"
+"                ->attachment(function (SlackAttachment $attachment) use ($url) {\n"
+"                    $attachment->title('Exception: File Not Found', $url)\n"
+"                               ->content('File [background.jpg] was not found.');\n"
+"                });\n"
+"}\n"
+msgstr "use Illuminate\\Notifications\\Messages\\SlackAttachment;\n"
+"use Illuminate\\Notifications\\Messages\\SlackMessage;\n\n"
+"/**\n"
+" * Get the Slack representation of the notification.\n"
+" */\n"
+"public function toSlack(object $notifiable): SlackMessage\n"
+"{\n"
+"    $url = url('/exceptions/'.$this->exception->id);\n\n"
+"    return (new SlackMessage)\n"
+"                ->error()\n"
+"                ->content('Whoops! Something went wrong.')\n"
+"                ->attachment(function (SlackAttachment $attachment) use ($url) {\n"
+"                    $attachment->title('Exception: File Not Found', $url)\n"
+"                               ->content('File [background.jpg] was not found.');\n"
+"                });\n"
+"}\n"
+
+#: docs/master/notifications.md:block 295 (code)
+msgid "use Illuminate\\Notifications\\Messages\\SlackAttachment;\n"
+"use Illuminate\\Notifications\\Messages\\SlackMessage;\n\n"
+"/**\n"
+" * Get the Slack representation of the notification.\n"
+" */\n"
+"public function toSlack(object $notifiable): SlackMessage\n"
+"{\n"
+"    $url = url('/invoices/'.$this->invoice->id);\n\n"
+"    return (new SlackMessage)\n"
+"                ->success()\n"
+"                ->content('One of your invoices has been paid!')\n"
+"                ->attachment(function (SlackAttachment $attachment) use ($url) {\n"
+"                    $attachment->title('Invoice 1322', $url)\n"
+"                               ->fields([\n"
+"                                    'Title' => 'Server Expenses',\n"
+"                                    'Amount' => '$1,234',\n"
+"                                    'Via' => 'American Express',\n"
+"                                    'Was Overdue' => ':-1:',\n"
+"                                ]);\n"
+"                });\n"
+"}\n"
+msgstr "use Illuminate\\Notifications\\Messages\\SlackAttachment;\n"
+"use Illuminate\\Notifications\\Messages\\SlackMessage;\n\n"
+"/**\n"
+" * Get the Slack representation of the notification.\n"
+" */\n"
+"public function toSlack(object $notifiable): SlackMessage\n"
+"{\n"
+"    $url = url('/invoices/'.$this->invoice->id);\n\n"
+"    return (new SlackMessage)\n"
+"                ->success()\n"
+"                ->content('One of your invoices has been paid!')\n"
+"                ->attachment(function (SlackAttachment $attachment) use ($url) {\n"
+"                    $attachment->title('Invoice 1322', $url)\n"
+"                               ->fields([\n"
+"                                    'Title' => 'Server Expenses',\n"
+"                                    'Amount' => '$1,234',\n"
+"                                    'Via' => 'American Express',\n"
+"                                    'Was Overdue' => ':-1:',\n"
+"                                ]);\n"
+"                });\n"
+"}\n"
+
+#: docs/master/notifications.md:block 299 (code)
+msgid "use Illuminate\\Notifications\\Messages\\SlackAttachment;\n"
+"use Illuminate\\Notifications\\Messages\\SlackMessage;\n\n"
+"/**\n"
+" * Get the Slack representation of the notification.\n"
+" */\n"
+"public function toSlack(object $notifiable): SlackMessage\n"
+"{\n"
+"    $url = url('/exceptions/'.$this->exception->id);\n\n"
+"    return (new SlackMessage)\n"
+"                ->error()\n"
+"                ->content('Whoops! Something went wrong.')\n"
+"                ->attachment(function (SlackAttachment $attachment) use ($url) {\n"
+"                    $attachment->title('Exception: File Not Found', $url)\n"
+"                               ->content('File [background.jpg] was *not found*.')\n"
+"                               ->markdown(['text']);\n"
+"                });\n"
+"}\n"
+msgstr "use Illuminate\\Notifications\\Messages\\SlackAttachment;\n"
+"use Illuminate\\Notifications\\Messages\\SlackMessage;\n\n"
+"/**\n"
+" * Get the Slack representation of the notification.\n"
+" */\n"
+"public function toSlack(object $notifiable): SlackMessage\n"
+"{\n"
+"    $url = url('/exceptions/'.$this->exception->id);\n\n"
+"    return (new SlackMessage)\n"
+"                ->error()\n"
+"                ->content('Whoops! Something went wrong.')\n"
+"                ->attachment(function (SlackAttachment $attachment) use ($url) {\n"
+"                    $attachment->title('Exception: File Not Found', $url)\n"
+"                               ->content('File [background.jpg] was *not found*.')\n"
+"                               ->markdown(['text']);\n"
+"                });\n"
+"}\n"
+
+#: docs/master/notifications.md:block 303 (code)
+msgid "<?php\n\n"
+"namespace App\\Models;\n\n"
+"use Illuminate\\Foundation\\Auth\\User as Authenticatable;\n"
+"use Illuminate\\Notifications\\Notifiable;\n"
+"use Illuminate\\Notifications\\Notification;\n\n"
+"class User extends Authenticatable\n"
+"{\n"
+"    use Notifiable;\n\n"
+"    /**\n"
+"     * Route notifications for the Slack channel.\n"
+"     */\n"
+"    public function routeNotificationForSlack(Notification $notification): string\n"
+"    {\n"
+"        return 'https://hooks.slack.com/services/...';\n"
+"    }\n"
+"}\n"
+msgstr "<?php\n\n"
+"namespace App\\Models;\n\n"
+"use Illuminate\\Foundation\\Auth\\User as Authenticatable;\n"
+"use Illuminate\\Notifications\\Notifiable;\n"
+"use Illuminate\\Notifications\\Notification;\n\n"
+"class User extends Authenticatable\n"
+"{\n"
+"    use Notifiable;\n\n"
+"    /**\n"
+"     * Route notifications for the Slack channel.\n"
+"     */\n"
+"    public function routeNotificationForSlack(Notification $notification): string\n"
+"    {\n"
+"        return 'https://hooks.slack.com/services/...';\n"
+"    }\n"
+"}\n"
+
+#: docs/master/notifications.md:block 337 (code)
+msgid "use Illuminate\\Notifications\\Events\\NotificationSending;\n\n"
+"/**\n"
+" * Handle the event.\n"
+" */\n"
+"public function handle(NotificationSending $event): void\n"
+"{\n"
+"    return false;\n"
+"}\n"
+msgstr "use Illuminate\\Notifications\\Events\\NotificationSending;\n\n"
+"/**\n"
+" * Handle the event.\n"
+" */\n"
+"public function handle(NotificationSending $event): void\n"
+"{\n"
+"    return false;\n"
 "}\n"
 

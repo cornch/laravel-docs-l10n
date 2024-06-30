@@ -10,7 +10,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
-"PO-Revision-Date: 2023-02-11 12:58\n"
+"PO-Revision-Date: 2024-06-30 08:17\n"
 
 #: docs/10.x/container.md:block 1 (header)
 msgid "Service Container"
@@ -167,7 +167,7 @@ msgid "<?php\n\n"
 "    // ...\n"
 "}\n\n"
 "Route::get('/', function (Service $service) {\n"
-"    die(get_class($service));\n"
+"    die($service::class);\n"
 "});\n"
 msgstr "<?php\n\n"
 "class Service\n"
@@ -175,7 +175,7 @@ msgstr "<?php\n\n"
 "    // ...\n"
 "}\n\n"
 "Route::get('/', function (Service $service) {\n"
-"    die(get_class($service));\n"
+"    die($service::class);\n"
 "});\n"
 
 #: docs/10.x/container.md:block 14 (paragraph)
@@ -268,19 +268,31 @@ msgstr "use App\\Services\\Transistor;\n"
 "    // ...\n"
 "});\n"
 
-#: docs/10.x/container.md:block 34 (quote)
+#: docs/10.x/container.md:block 34 (paragraph)
+msgid "You may use the `bindIf` method to register a container binding only if a binding has not already been registered for the given type:"
+msgstr "可以使用 `bindIf` 方法來只在某個繫結還未被註冊到給定型別時向 Container 註冊繫結："
+
+#: docs/10.x/container.md:block 35 (code)
+msgid "$this->app->bindIf(Transistor::class, function (Application $app) {\n"
+"    return new Transistor($app->make(PodcastParser::class));\n"
+"});\n"
+msgstr "$this->app->bindIf(Transistor::class, function (Application $app) {\n"
+"    return new Transistor($app->make(PodcastParser::class));\n"
+"});\n"
+
+#: docs/10.x/container.md:block 36 (quote)
 msgid "**Note** There is no need to bind classes into the container if they do not depend on any interfaces. The container does not need to be instructed on how to build these objects, since it can automatically resolve these objects using reflection."
 msgstr "**Note** 若類別沒有依賴任何介面，就不需要將其繫結到 Container 上。不需要告訴 Container 如何建構這些物件，因為這些物件可以通過 Reflection 自動被解析。"
 
-#: docs/10.x/container.md:block 36 (header)
+#: docs/10.x/container.md:block 38 (header)
 msgid "Binding A Singleton"
 msgstr "建構單例 (Singleton)"
 
-#: docs/10.x/container.md:block 37 (paragraph)
+#: docs/10.x/container.md:block 39 (paragraph)
 msgid "The `singleton` method binds a class or interface into the container that should only be resolved one time. Once a singleton binding is resolved, the same object instance will be returned on subsequent calls into the container:"
 msgstr "`singleton` 方法可將一些只需要解析一次的類別或介面繫結至 Container 內，解析完單例繫結後，接下來呼叫 Container 都會回傳相同的物件實體："
 
-#: docs/10.x/container.md:block 38 (code)
+#: docs/10.x/container.md:block 40 (code)
 msgid "use App\\Services\\Transistor;\n"
 "use App\\Services\\PodcastParser;\n"
 "use Illuminate\\Contracts\\Foundation\\Application;\n\n"
@@ -293,38 +305,50 @@ msgstr "use App\\Services\\Transistor;\n"
 "$this->app->singleton(Transistor::class, function (Application $app) {\n"
 "    return new Transistor($app->make(PodcastParser::class));\n"
 "});\n"
-
-#: docs/10.x/container.md:block 40 (header)
-msgid "Binding Scoped Singletons"
-msgstr "繫結限定作用範圍的單例"
 
 #: docs/10.x/container.md:block 41 (paragraph)
-msgid "The `scoped` method binds a class or interface into the container that should only be resolved one time within a given Laravel request / job lifecycle. While this method is similar to the `singleton` method, instances registered using the `scoped` method will be flushed whenever the Laravel application starts a new \"lifecycle\", such as when a [Laravel Octane](/docs/{{version}}/octane) worker processes a new request or when a Laravel [queue worker](/docs/{{version}}/queues) processes a new job:"
-msgstr "`scoped` 方法用來將一些只在給定 Laravel 請求 / 任務生命週期中被解析一次的類別或介面繫結到 Container 中。雖然這個方法與 `singleton` 方法類似，不過使用 `scoped` 方法繫結的實體會在每次 Laravel 開始新「生命週期」時被清除，如：[Laravel Octane](/docs/{{version}}/octane) 背景工作角色處理新請求時，或是 Laravel [佇列背景工作角色](/docs/{{version}}/queues) 處理新任務時。"
+msgid "You may use the `singletonIf` method to register a singleton container binding only if a binding has not already been registered for the given type:"
+msgstr "可以使用 `singletonIf` 方法來只在某個繫結還未被註冊到給定型別時向 Container 註冊單例："
 
 #: docs/10.x/container.md:block 42 (code)
-msgid "use App\\Services\\Transistor;\n"
-"use App\\Services\\PodcastParser;\n"
-"use Illuminate\\Contracts\\Foundation\\Application;\n\n"
-"$this->app->scoped(Transistor::class, function (Application $app) {\n"
+msgid "$this->app->singletonIf(Transistor::class, function (Application $app) {\n"
 "    return new Transistor($app->make(PodcastParser::class));\n"
 "});\n"
-msgstr "use App\\Services\\Transistor;\n"
-"use App\\Services\\PodcastParser;\n"
-"use Illuminate\\Contracts\\Foundation\\Application;\n\n"
-"$this->app->scoped(Transistor::class, function (Application $app) {\n"
+msgstr "$this->app->singletonIf(Transistor::class, function (Application $app) {\n"
 "    return new Transistor($app->make(PodcastParser::class));\n"
 "});\n"
 
 #: docs/10.x/container.md:block 44 (header)
+msgid "Binding Scoped Singletons"
+msgstr "繫結限定作用範圍的單例"
+
+#: docs/10.x/container.md:block 45 (paragraph)
+msgid "The `scoped` method binds a class or interface into the container that should only be resolved one time within a given Laravel request / job lifecycle. While this method is similar to the `singleton` method, instances registered using the `scoped` method will be flushed whenever the Laravel application starts a new \"lifecycle\", such as when a [Laravel Octane](/docs/{{version}}/octane) worker processes a new request or when a Laravel [queue worker](/docs/{{version}}/queues) processes a new job:"
+msgstr "`scoped` 方法用來將一些只在給定 Laravel 請求 / 任務生命週期中被解析一次的類別或介面繫結到 Container 中。雖然這個方法與 `singleton` 方法類似，不過使用 `scoped` 方法繫結的實體會在每次 Laravel 開始新「生命週期」時被清除，如：[Laravel Octane](/docs/{{version}}/octane) 背景工作角色處理新請求時，或是 Laravel [佇列背景工作角色](/docs/{{version}}/queues) 處理新任務時。"
+
+#: docs/10.x/container.md:block 46 (code)
+msgid "use App\\Services\\Transistor;\n"
+"use App\\Services\\PodcastParser;\n"
+"use Illuminate\\Contracts\\Foundation\\Application;\n\n"
+"$this->app->scoped(Transistor::class, function (Application $app) {\n"
+"    return new Transistor($app->make(PodcastParser::class));\n"
+"});\n"
+msgstr "use App\\Services\\Transistor;\n"
+"use App\\Services\\PodcastParser;\n"
+"use Illuminate\\Contracts\\Foundation\\Application;\n\n"
+"$this->app->scoped(Transistor::class, function (Application $app) {\n"
+"    return new Transistor($app->make(PodcastParser::class));\n"
+"});\n"
+
+#: docs/10.x/container.md:block 48 (header)
 msgid "Binding Instances"
 msgstr "繫結實體"
 
-#: docs/10.x/container.md:block 45 (paragraph)
+#: docs/10.x/container.md:block 49 (paragraph)
 msgid "You may also bind an existing object instance into the container using the `instance` method. The given instance will always be returned on subsequent calls into the container:"
 msgstr "也可以使用 `instance` 方法來將現有的物件實體繫結到 Container 上。接下來對 Container 的呼叫都會回傳給定的實體："
 
-#: docs/10.x/container.md:block 46 (code)
+#: docs/10.x/container.md:block 50 (code)
 msgid "use App\\Services\\Transistor;\n"
 "use App\\Services\\PodcastParser;\n\n"
 "$service = new Transistor(new PodcastParser);\n\n"
@@ -334,15 +358,15 @@ msgstr "use App\\Services\\Transistor;\n"
 "$service = new Transistor(new PodcastParser);\n\n"
 "$this->app->instance(Transistor::class, $service);\n"
 
-#: docs/10.x/container.md:block 48 (header)
+#: docs/10.x/container.md:block 52 (header)
 msgid "Binding Interfaces To Implementations"
 msgstr "將介面繫結至實作"
 
-#: docs/10.x/container.md:block 49 (paragraph)
+#: docs/10.x/container.md:block 53 (paragraph)
 msgid "A very powerful feature of the service container is its ability to bind an interface to a given implementation. For example, let's assume we have an `EventPusher` interface and a `RedisEventPusher` implementation. Once we have coded our `RedisEventPusher` implementation of this interface, we can register it with the service container like so:"
 msgstr "Service Container 其中一個非常強大的功能就是能將介面繫結到給定的實作上。舉例來說，假設我們有一個 `EventPusher` 介面，以及一個 `RedisEventPusher` 實作。寫好這個介面的 `RedisEventPusher` 實作程式後，我們就像這樣將其註冊到 Service Container 上："
 
-#: docs/10.x/container.md:block 50 (code)
+#: docs/10.x/container.md:block 54 (code)
 msgid "use App\\Contracts\\EventPusher;\n"
 "use App\\Services\\RedisEventPusher;\n\n"
 "$this->app->bind(EventPusher::class, RedisEventPusher::class);\n"
@@ -350,11 +374,11 @@ msgstr "use App\\Contracts\\EventPusher;\n"
 "use App\\Services\\RedisEventPusher;\n\n"
 "$this->app->bind(EventPusher::class, RedisEventPusher::class);\n"
 
-#: docs/10.x/container.md:block 51 (paragraph)
+#: docs/10.x/container.md:block 55 (paragraph)
 msgid "This statement tells the container that it should inject the `RedisEventPusher` when a class needs an implementation of `EventPusher`. Now we can type-hint the `EventPusher` interface in the constructor of a class that is resolved by the container. Remember, controllers, event listeners, middleware, and various other types of classes within Laravel applications are always resolved using the container:"
 msgstr "這個陳述式會告訴 Container 應在有類別需要 `EventPusher` 的實作時將 `RedisEventPusher` 注入進去。接著，我們可以在某個會被 Container 解析的類別之建構函式上型別提示 `EventPusher` 介面。請記得，Laravel 專案中的 Controller、事件監聽程式、Middleware、以及其他多種類型的類別都是使用 Container 來解析的："
 
-#: docs/10.x/container.md:block 52 (code)
+#: docs/10.x/container.md:block 56 (code)
 msgid "use App\\Contracts\\EventPusher;\n\n"
 "/**\n"
 " * Create a new class instance.\n"
@@ -370,15 +394,15 @@ msgstr "use App\\Contracts\\EventPusher;\n\n"
 "    protected EventPusher $pusher\n"
 ") {}\n"
 
-#: docs/10.x/container.md:block 54 (header)
+#: docs/10.x/container.md:block 58 (header)
 msgid "Contextual Binding"
 msgstr "基於上下文的繫結"
 
-#: docs/10.x/container.md:block 55 (paragraph)
+#: docs/10.x/container.md:block 59 (paragraph)
 msgid "Sometimes you may have two classes that utilize the same interface, but you wish to inject different implementations into each class. For example, two controllers may depend on different implementations of the `Illuminate\\Contracts\\Filesystem\\Filesystem` [contract](/docs/{{version}}/contracts). Laravel provides a simple, fluent interface for defining this behavior:"
 msgstr "有時候，可能會有兩個類別使用相同的介面，但又想在各個類別上注入不同的實作。舉例來說，可能有兩個 Controller 依賴不同實作的 `Illuminate\\Contracts\\Filesystem\\Filesystem`  [Contract](/docs/{{version}}/contracts)。Laravel 提供了一個簡單但流暢的介面來定義這種行為："
 
-#: docs/10.x/container.md:block 56 (code)
+#: docs/10.x/container.md:block 60 (code)
 msgid "use App\\Http\\Controllers\\PhotoController;\n"
 "use App\\Http\\Controllers\\UploadController;\n"
 "use App\\Http\\Controllers\\VideoController;\n"
@@ -410,15 +434,15 @@ msgstr "use App\\Http\\Controllers\\PhotoController;\n"
 "              return Storage::disk('s3');\n"
 "          });\n"
 
-#: docs/10.x/container.md:block 58 (header)
+#: docs/10.x/container.md:block 62 (header)
 msgid "Binding Primitives"
 msgstr "繫結原生型別"
 
-#: docs/10.x/container.md:block 59 (paragraph)
+#: docs/10.x/container.md:block 63 (paragraph)
 msgid "Sometimes you may have a class that receives some injected classes, but also needs an injected primitive value such as an integer. You may easily use contextual binding to inject any value your class may need:"
 msgstr "有時候可能會有類別要接收注入的類別，但同時也需要注入原生型別的值，如整數。可以輕鬆地使用基於上下文的繫結來注入任何類別所需的值："
 
-#: docs/10.x/container.md:block 60 (code)
+#: docs/10.x/container.md:block 64 (code)
 msgid "use App\\Http\\Controllers\\UserController;\n\n"
 "$this->app->when(UserController::class)\n"
 "          ->needs('$variableName')\n"
@@ -428,11 +452,11 @@ msgstr "use App\\Http\\Controllers\\UserController;\n\n"
 "          ->needs('$variableName')\n"
 "          ->give($value);\n"
 
-#: docs/10.x/container.md:block 61 (paragraph)
+#: docs/10.x/container.md:block 65 (paragraph)
 msgid "Sometimes a class may depend on an array of [tagged](#tagging) instances. Using the `giveTagged` method, you may easily inject all of the container bindings with that tag:"
 msgstr "有時候，某個類別可能會依賴一個包含[有標記](#tagging)實體的陣列。使用 `giveTagged` 方法，就可以輕鬆將所有有該標籤的 Container 繫結注入進去："
 
-#: docs/10.x/container.md:block 62 (code)
+#: docs/10.x/container.md:block 66 (code)
 msgid "$this->app->when(ReportAggregator::class)\n"
 "    ->needs('$reports')\n"
 "    ->giveTagged('reports');\n"
@@ -440,11 +464,11 @@ msgstr "$this->app->when(ReportAggregator::class)\n"
 "    ->needs('$reports')\n"
 "    ->giveTagged('reports');\n"
 
-#: docs/10.x/container.md:block 63 (paragraph)
+#: docs/10.x/container.md:block 67 (paragraph)
 msgid "If you need to inject a value from one of your application's configuration files, you may use the `giveConfig` method:"
 msgstr "若有需要注入來自專案設定檔的值，則可使用 `giveConfig` 方法："
 
-#: docs/10.x/container.md:block 64 (code)
+#: docs/10.x/container.md:block 68 (code)
 msgid "$this->app->when(ReportAggregator::class)\n"
 "    ->needs('$timezone')\n"
 "    ->giveConfig('app.timezone');\n"
@@ -452,15 +476,15 @@ msgstr "$this->app->when(ReportAggregator::class)\n"
 "    ->needs('$timezone')\n"
 "    ->giveConfig('app.timezone');\n"
 
-#: docs/10.x/container.md:block 66 (header)
+#: docs/10.x/container.md:block 70 (header)
 msgid "Binding Typed Variadics"
 msgstr "繫結有型別提示的 Variadic 參數"
 
-#: docs/10.x/container.md:block 67 (paragraph)
+#: docs/10.x/container.md:block 71 (paragraph)
 msgid "Occasionally, you may have a class that receives an array of typed objects using a variadic constructor argument:"
 msgstr "有時候，某個類別可能會需要使用 Variadic 建構函式引數來接收一個包含型別提示物件的陣列："
 
-#: docs/10.x/container.md:block 68 (code)
+#: docs/10.x/container.md:block 72 (code)
 msgid "<?php\n\n"
 "use App\\Models\\Filter;\n"
 "use App\\Services\\Logger;\n\n"
@@ -504,11 +528,11 @@ msgstr "<?php\n\n"
 "    }\n"
 "}\n"
 
-#: docs/10.x/container.md:block 69 (paragraph)
+#: docs/10.x/container.md:block 73 (paragraph)
 msgid "Using contextual binding, you may resolve this dependency by providing the `give` method with a closure that returns an array of resolved `Filter` instances:"
 msgstr "若使用基於上下文的繫結，則可以提供一個閉包給 `give` 方法來解析這個依賴。該閉包應回傳解析好的 `Filter` 實體的陣列："
 
-#: docs/10.x/container.md:block 70 (code)
+#: docs/10.x/container.md:block 74 (code)
 msgid "$this->app->when(Firewall::class)\n"
 "          ->needs(Filter::class)\n"
 "          ->give(function (Application $app) {\n"
@@ -528,11 +552,11 @@ msgstr "$this->app->when(Firewall::class)\n"
 "                ];\n"
 "          });\n"
 
-#: docs/10.x/container.md:block 71 (paragraph)
+#: docs/10.x/container.md:block 75 (paragraph)
 msgid "For convenience, you may also just provide an array of class names to be resolved by the container whenever `Firewall` needs `Filter` instances:"
 msgstr "為了方便起見，當 `Firewall` 需要 `Filter` 實體的時候，也可以只提供一個包含要給 Container 解析的類別名稱的陣列："
 
-#: docs/10.x/container.md:block 72 (code)
+#: docs/10.x/container.md:block 76 (code)
 msgid "$this->app->when(Firewall::class)\n"
 "          ->needs(Filter::class)\n"
 "          ->give([\n"
@@ -548,15 +572,15 @@ msgstr "$this->app->when(Firewall::class)\n"
 "              TooLongFilter::class,\n"
 "          ]);\n"
 
-#: docs/10.x/container.md:block 74 (header)
+#: docs/10.x/container.md:block 78 (header)
 msgid "Variadic Tag Dependencies"
 msgstr "Variadic 參數的標籤依賴"
 
-#: docs/10.x/container.md:block 75 (paragraph)
+#: docs/10.x/container.md:block 79 (paragraph)
 msgid "Sometimes a class may have a variadic dependency that is type-hinted as a given class (`Report ...$reports`). Using the `needs` and `giveTagged` methods, you may easily inject all of the container bindings with that [tag](#tagging) for the given dependency:"
 msgstr "有時候，某個類別可能會有型別提示為給定類別的 Variadic 參數 (`Report ...$reports`)。只要使用 `needs` 與 `giveTagged` 方法，就可以輕鬆將所有該[標籤](#tagging)的 Container 繫結注入進給定依賴："
 
-#: docs/10.x/container.md:block 76 (code)
+#: docs/10.x/container.md:block 80 (code)
 msgid "$this->app->when(ReportAggregator::class)\n"
 "    ->needs(Report::class)\n"
 "    ->giveTagged('reports');\n"
@@ -564,15 +588,15 @@ msgstr "$this->app->when(ReportAggregator::class)\n"
 "    ->needs(Report::class)\n"
 "    ->giveTagged('reports');\n"
 
-#: docs/10.x/container.md:block 78 (header)
+#: docs/10.x/container.md:block 82 (header)
 msgid "Tagging"
 msgstr "標籤"
 
-#: docs/10.x/container.md:block 79 (paragraph)
+#: docs/10.x/container.md:block 83 (paragraph)
 msgid "Occasionally, you may need to resolve all of a certain \"category\" of binding. For example, perhaps you are building a report analyzer that receives an array of many different `Report` interface implementations. After registering the `Report` implementations, you can assign them a tag using the `tag` method:"
 msgstr "有時候，可能會需要解析特定「類別」的繫結。舉例來說，若是在製作一個報表解析程式，會接收含有不同 `Report` 介面實作的陣列。註冊好 `Report` 實作後，可以使用 `tag` 方法來標記這些實作："
 
-#: docs/10.x/container.md:block 80 (code)
+#: docs/10.x/container.md:block 84 (code)
 msgid "$this->app->bind(CpuReport::class, function () {\n"
 "    // ...\n"
 "});\n\n"
@@ -588,11 +612,11 @@ msgstr "$this->app->bind(CpuReport::class, function () {\n"
 "});\n\n"
 "$this->app->tag([CpuReport::class, MemoryReport::class], 'reports');\n"
 
-#: docs/10.x/container.md:block 81 (paragraph)
+#: docs/10.x/container.md:block 85 (paragraph)
 msgid "Once the services have been tagged, you may easily resolve them all via the container's `tagged` method:"
 msgstr "標記好服務後就可以輕鬆地通過 Container 的 `tagged` 方法來解析所有的這些服務："
 
-#: docs/10.x/container.md:block 82 (code)
+#: docs/10.x/container.md:block 86 (code)
 msgid "$this->app->bind(ReportAnalyzer::class, function (Application $app) {\n"
 "    return new ReportAnalyzer($app->tagged('reports'));\n"
 "});\n"
@@ -600,15 +624,15 @@ msgstr "$this->app->bind(ReportAnalyzer::class, function (Application $app) {\n"
 "    return new ReportAnalyzer($app->tagged('reports'));\n"
 "});\n"
 
-#: docs/10.x/container.md:block 84 (header)
+#: docs/10.x/container.md:block 88 (header)
 msgid "Extending Bindings"
 msgstr "擴充繫結"
 
-#: docs/10.x/container.md:block 85 (paragraph)
+#: docs/10.x/container.md:block 89 (paragraph)
 msgid "The `extend` method allows the modification of resolved services. For example, when a service is resolved, you may run additional code to decorate or configure the service. The `extend` method accepts two arguments, the service class you're extending and a closure that should return the modified service. The closure receives the service being resolved and the container instance:"
 msgstr "`extend` 方法能修改解析過的服務。舉例來說，當某個服務被解析後，可以執行額外的程式碼來修改或設定這個服務。`extend` 方法接受兩個引數，第一個印數為要擴充的 Service 類別，以及一個回傳經過修改服務的閉包。該閉包會接收經過解析的服務，以及 Container 實體："
 
-#: docs/10.x/container.md:block 86 (code)
+#: docs/10.x/container.md:block 90 (code)
 msgid "$this->app->extend(Service::class, function (Service $service, Application $app) {\n"
 "    return new DecoratedService($service);\n"
 "});\n"
@@ -616,39 +640,51 @@ msgstr "$this->app->extend(Service::class, function (Service $service, Applicati
 "    return new DecoratedService($service);\n"
 "});\n"
 
-#: docs/10.x/container.md:block 88 (header)
+#: docs/10.x/container.md:block 92 (header)
 msgid "Resolving"
 msgstr "解析"
 
-#: docs/10.x/container.md:block 90 (header)
+#: docs/10.x/container.md:block 94 (header)
 msgid "The `make` Method"
 msgstr "`make` 方法"
 
-#: docs/10.x/container.md:block 91 (paragraph)
+#: docs/10.x/container.md:block 95 (paragraph)
 msgid "You may use the `make` method to resolve a class instance from the container. The `make` method accepts the name of the class or interface you wish to resolve:"
 msgstr "可以使用 `make` 方法來從 Container 中解析一個類別實體。`make` 方法接收欲解析的類別或介面名稱："
 
-#: docs/10.x/container.md:block 92 (code)
+#: docs/10.x/container.md:block 96 (code)
 msgid "use App\\Services\\Transistor;\n\n"
 "$transistor = $this->app->make(Transistor::class);\n"
 msgstr "use App\\Services\\Transistor;\n\n"
 "$transistor = $this->app->make(Transistor::class);\n"
 
-#: docs/10.x/container.md:block 93 (paragraph)
-msgid "If some of your class' dependencies are not resolvable via the container, you may inject them by passing them as an associative array into the `makeWith` method. For example, we may manually pass the `$id` constructor argument required by the `Transistor` service:"
+#: docs/10.x/container.md:block 97 (paragraph)
+msgid "If some of your class's dependencies are not resolvable via the container, you may inject them by passing them as an associative array into the `makeWith` method. For example, we may manually pass the `$id` constructor argument required by the `Transistor` service:"
 msgstr "若該類別的某些依賴無法被 Container 解析，則可能需要將這些依賴以關聯式陣列傳入 `makeWith` 方法內。舉例來說，可以手動傳入 `Transistor` 服務所需要的 `$id` 建構函式引數："
 
-#: docs/10.x/container.md:block 94 (code)
+#: docs/10.x/container.md:block 98 (code)
 msgid "use App\\Services\\Transistor;\n\n"
 "$transistor = $this->app->makeWith(Transistor::class, ['id' => 1]);\n"
 msgstr "use App\\Services\\Transistor;\n\n"
 "$transistor = $this->app->makeWith(Transistor::class, ['id' => 1]);\n"
 
-#: docs/10.x/container.md:block 95 (paragraph)
+#: docs/10.x/container.md:block 99 (paragraph)
+msgid "The `bound` method may be used to determine if a class or interface has been explicitly bound in the container:"
+msgstr "`bound` 方法可用來判斷某個類別或介面是否已被明顯繫結至 Container："
+
+#: docs/10.x/container.md:block 100 (code)
+msgid "if ($this->app->bound(Transistor::class)) {\n"
+"    // ...\n"
+"}\n"
+msgstr "if ($this->app->bound(Transistor::class)) {\n"
+"    // ...\n"
+"}\n"
+
+#: docs/10.x/container.md:block 101 (paragraph)
 msgid "If you are outside of a service provider in a location of your code that does not have access to the `$app` variable, you may use the `App` [facade](/docs/{{version}}/facades) or the `app` [helper](/docs/{{version}}/helpers#method-app) to resolve a class instance from the container:"
 msgstr "若不在 Service Provider 內，而是在專案中某處無法存取 `$app` 變數的地方，可以使用 `App` [Facade](/docs/{{version}}/facades) 或 `app` [輔助函式](/docs/{{version}}/helpers#method-app) 來從 Container 內解析類別實體："
 
-#: docs/10.x/container.md:block 96 (code)
+#: docs/10.x/container.md:block 102 (code)
 msgid "use App\\Services\\Transistor;\n"
 "use Illuminate\\Support\\Facades\\App;\n\n"
 "$transistor = App::make(Transistor::class);\n\n"
@@ -658,11 +694,11 @@ msgstr "use App\\Services\\Transistor;\n"
 "$transistor = App::make(Transistor::class);\n\n"
 "$transistor = app(Transistor::class);\n"
 
-#: docs/10.x/container.md:block 97 (paragraph)
-msgid "If you would like to have the Laravel container instance itself injected into a class that is being resolved by the container, you may type-hint the `Illuminate\\Container\\Container` class on your class' constructor:"
+#: docs/10.x/container.md:block 103 (paragraph)
+msgid "If you would like to have the Laravel container instance itself injected into a class that is being resolved by the container, you may type-hint the `Illuminate\\Container\\Container` class on your class's constructor:"
 msgstr "若想將 Laravel Container 實體注入值 Container 正在解析的類別，則可以在該類別的建構函式中型別提示 `Illuminate\\Container\\Container` 類別："
 
-#: docs/10.x/container.md:block 98 (code)
+#: docs/10.x/container.md:block 104 (code)
 msgid "use Illuminate\\Container\\Container;\n\n"
 "/**\n"
 " * Create a new class instance.\n"
@@ -678,19 +714,19 @@ msgstr "use Illuminate\\Container\\Container;\n\n"
 "    protected Container $container\n"
 ") {}\n"
 
-#: docs/10.x/container.md:block 100 (header)
+#: docs/10.x/container.md:block 106 (header)
 msgid "Automatic Injection"
 msgstr "自動注入"
 
-#: docs/10.x/container.md:block 101 (paragraph)
+#: docs/10.x/container.md:block 107 (paragraph)
 msgid "Alternatively, and importantly, you may type-hint the dependency in the constructor of a class that is resolved by the container, including [controllers](/docs/{{version}}/controllers), [event listeners](/docs/{{version}}/events), [middleware](/docs/{{version}}/middleware), and more. Additionally, you may type-hint dependencies in the `handle` method of [queued jobs](/docs/{{version}}/queues). In practice, this is how most of your objects should be resolved by the container."
 msgstr "此外，還有一點很重要的是，也可以在會由 Container 解析的類別之建構函式內對依賴進行型別提示。這類類別包含 [Controller](/docs/{{version}}/controllers)、[事件處理程式](/docs/{{version}}/events)、[Middleware](/docs/{{version}/middleware) …等。此外，也可以在[佇列任務](/docs/{{version}}/queues)的 `handle` 方法內對依賴進行型別提示。實務上來說，這也是大多數由 Container 解析物件的方法。"
 
-#: docs/10.x/container.md:block 102 (paragraph)
+#: docs/10.x/container.md:block 108 (paragraph)
 msgid "For example, you may type-hint a repository defined by your application in a controller's constructor. The repository will automatically be resolved and injected into the class:"
 msgstr "舉例來說，可以在某個 Controller 的建構函式內對一個 Repository 定義進行型別提示。該 Repository 會被自動解析並插入到該類別內："
 
-#: docs/10.x/container.md:block 103 (code)
+#: docs/10.x/container.md:block 109 (code)
 msgid "<?php\n\n"
 "namespace App\\Http\\Controllers;\n\n"
 "use App\\Repositories\\UserRepository;\n"
@@ -734,15 +770,15 @@ msgstr "<?php\n\n"
 "    }\n"
 "}\n"
 
-#: docs/10.x/container.md:block 105 (header)
+#: docs/10.x/container.md:block 111 (header)
 msgid "Method Invocation & Injection"
 msgstr "方法叫用與注入"
 
-#: docs/10.x/container.md:block 106 (paragraph)
+#: docs/10.x/container.md:block 112 (paragraph)
 msgid "Sometimes you may wish to invoke a method on an object instance while allowing the container to automatically inject that method's dependencies. For example, given the following class:"
 msgstr "有時候我們可能會想在某個物件實體上叫用一個方法，並讓 Container 自動將該方法的相依內容注入進去。舉例來說，假設有下列類別："
 
-#: docs/10.x/container.md:block 107 (code)
+#: docs/10.x/container.md:block 113 (code)
 msgid "<?php\n\n"
 "namespace App;\n\n"
 "use App\\Repositories\\UserRepository;\n\n"
@@ -774,11 +810,11 @@ msgstr "<?php\n\n"
 "    }\n"
 "}\n"
 
-#: docs/10.x/container.md:block 108 (paragraph)
+#: docs/10.x/container.md:block 114 (paragraph)
 msgid "You may invoke the `generate` method via the container like so:"
 msgstr "可以使用 Container 來像這樣叫用 `generate` 方法："
 
-#: docs/10.x/container.md:block 109 (code)
+#: docs/10.x/container.md:block 115 (code)
 msgid "use App\\UserReport;\n"
 "use Illuminate\\Support\\Facades\\App;\n\n"
 "$report = App::call([new UserReport, 'generate']);\n"
@@ -786,11 +822,11 @@ msgstr "use App\\UserReport;\n"
 "use Illuminate\\Support\\Facades\\App;\n\n"
 "$report = App::call([new UserReport, 'generate']);\n"
 
-#: docs/10.x/container.md:block 110 (paragraph)
+#: docs/10.x/container.md:block 116 (paragraph)
 msgid "The `call` method accepts any PHP callable. The container's `call` method may even be used to invoke a closure while automatically injecting its dependencies:"
 msgstr "`call` 方法接受任意 PHP Callable。Container 的 `call` 方法也可以用來在叫用時自動注入其相依性："
 
-#: docs/10.x/container.md:block 111 (code)
+#: docs/10.x/container.md:block 117 (code)
 msgid "use App\\Repositories\\UserRepository;\n"
 "use Illuminate\\Support\\Facades\\App;\n\n"
 "$result = App::call(function (UserRepository $repository) {\n"
@@ -802,15 +838,15 @@ msgstr "use App\\Repositories\\UserRepository;\n"
 "    // ...\n"
 "});\n"
 
-#: docs/10.x/container.md:block 113 (header)
+#: docs/10.x/container.md:block 119 (header)
 msgid "Container Events"
 msgstr "Container 事件"
 
-#: docs/10.x/container.md:block 114 (paragraph)
+#: docs/10.x/container.md:block 120 (paragraph)
 msgid "The service container fires an event each time it resolves an object. You may listen to this event using the `resolving` method:"
 msgstr "Service Container 會在每次解析物件後觸發一個事件。可以通過 `resolving` 方法來監聽這個事件："
 
-#: docs/10.x/container.md:block 115 (code)
+#: docs/10.x/container.md:block 121 (code)
 msgid "use App\\Services\\Transistor;\n"
 "use Illuminate\\Contracts\\Foundation\\Application;\n\n"
 "$this->app->resolving(Transistor::class, function (Transistor $transistor, Application $app) {\n"
@@ -828,19 +864,19 @@ msgstr "use App\\Services\\Transistor;\n"
 "    // 當 Container 在解析任意型別的物件時會呼叫...\n"
 "});\n"
 
-#: docs/10.x/container.md:block 116 (paragraph)
+#: docs/10.x/container.md:block 122 (paragraph)
 msgid "As you can see, the object being resolved will be passed to the callback, allowing you to set any additional properties on the object before it is given to its consumer."
 msgstr "如你所見，被解析的物件會被傳入該回呼內，讓你能在物件被交給要求者之前對物件設定額外的屬性。"
 
-#: docs/10.x/container.md:block 118 (header)
+#: docs/10.x/container.md:block 124 (header)
 msgid "PSR-11"
 msgstr "PSR-11"
 
-#: docs/10.x/container.md:block 119 (paragraph)
+#: docs/10.x/container.md:block 125 (paragraph)
 msgid "Laravel's service container implements the [PSR-11](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-11-container.md) interface. Therefore, you may type-hint the PSR-11 container interface to obtain an instance of the Laravel container:"
 msgstr "Laravel 的 Service Container 實作了 [PSR-11](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-11-container.md) 介面。因此，可以型別提示 PSR-11 Container 介面來取得 Laravel Container 的實體："
 
-#: docs/10.x/container.md:block 120 (code)
+#: docs/10.x/container.md:block 126 (code)
 msgid "use App\\Services\\Transistor;\n"
 "use Psr\\Container\\ContainerInterface;\n\n"
 "Route::get('/', function (ContainerInterface $container) {\n"
@@ -854,7 +890,7 @@ msgstr "use App\\Services\\Transistor;\n"
 "    // ...\n"
 "});\n"
 
-#: docs/10.x/container.md:block 121 (paragraph)
+#: docs/10.x/container.md:block 127 (paragraph)
 msgid "An exception is thrown if the given identifier can't be resolved. The exception will be an instance of `Psr\\Container\\NotFoundExceptionInterface` if the identifier was never bound. If the identifier was bound but was unable to be resolved, an instance of `Psr\\Container\\ContainerExceptionInterface` will be thrown."
 msgstr "若給定的識別元無法被解析，則會擲回例外。若該識別元從未被繫結，則該例外為 `Psr\\Container\\NotFoundExceptionInterface` 的實體。若該識別元有被繫結過，但無法解析，則會擲回 `Psr\\Container\\ContainerExceptionInterface` 的實體。"
 
@@ -1150,6 +1186,10 @@ msgstr "$this->app->extend(Service::class, function ($service, $app) {\n"
 "    return new DecoratedService($service);\n"
 "});\n"
 
+#: docs/8.x/container.md:block 93 (paragraph)
+msgid "If some of your class' dependencies are not resolvable via the container, you may inject them by passing them as an associative array into the `makeWith` method. For example, we may manually pass the `$id` constructor argument required by the `Transistor` service:"
+msgstr "若該類別的某些依賴無法被 Container 解析，則可能需要將這些依賴以關聯式陣列傳入 `makeWith` 方法內。舉例來說，可以手動傳入 `Transistor` 服務所需要的 `$id` 建構函式引數："
+
 #: docs/8.x/container.md:block 95 (paragraph)
 msgid "If you are outside of a service provider in a location of your code that does not have access to the `$app` variable, you may use the `App` [facade](/docs/{{version}}/facades) to resolve a class instance from the container:"
 msgstr "若不在 Service Provider 內，而是在專案中的某處無法存取 `$app` 變數的地方，就可以使用 `App` [Facade](/docs/{{version}}/facades) 來從 Container 內解析類別實體："
@@ -1161,6 +1201,10 @@ msgid "use App\\Services\\Transistor;\n"
 msgstr "use App\\Services\\Transistor;\n"
 "use Illuminate\\Support\\Facades\\App;\n\n"
 "$transistor = App::make(Transistor::class);\n"
+
+#: docs/8.x/container.md:block 97 (paragraph)
+msgid "If you would like to have the Laravel container instance itself injected into a class that is being resolved by the container, you may type-hint the `Illuminate\\Container\\Container` class on your class' constructor:"
+msgstr "若想將 Laravel Container 實體注入值 Container 正在解析的類別，則可以在該類別的建構函式中型別提示 `Illuminate\\Container\\Container` 類別："
 
 #: docs/8.x/container.md:block 98 (code)
 msgid "use Illuminate\\Container\\Container;\n\n"
@@ -1316,213 +1360,21 @@ msgstr "use App\\Services\\Transistor;\n"
 "    //\n"
 "});\n"
 
-#: docs/master/container.md:block 7 (code)
+#: docs/master/container.md:block 13 (code)
 msgid "<?php\n\n"
-"namespace App\\Http\\Controllers;\n\n"
-"use App\\Http\\Controllers\\Controller;\n"
-"use App\\Repositories\\UserRepository;\n"
-"use App\\Models\\User;\n"
-"use Illuminate\\View\\View;\n\n"
-"class UserController extends Controller\n"
+"class Service\n"
 "{\n"
-"    /**\n"
-"     * The user repository implementation.\n"
-"     *\n"
-"     * @var UserRepository\n"
-"     */\n"
-"    protected $users;\n\n"
-"    /**\n"
-"     * Create a new controller instance.\n"
-"     */\n"
-"    public function __construct(UserRepository $users)\n"
-"    {\n"
-"        $this->users = $users;\n"
-"    }\n\n"
-"    /**\n"
-"     * Show the profile for the given user.\n"
-"     */\n"
-"    public function show(string $id): View\n"
-"    {\n"
-"        $user = $this->users->find($id);\n\n"
-"        return view('user.profile', ['user' => $user]);\n"
-"    }\n"
-"}\n"
+"    // ...\n"
+"}\n\n"
+"Route::get('/', function (Service $service) {\n"
+"    die(get_class($service));\n"
+"});\n"
 msgstr "<?php\n\n"
-"namespace App\\Http\\Controllers;\n\n"
-"use App\\Http\\Controllers\\Controller;\n"
-"use App\\Repositories\\UserRepository;\n"
-"use App\\Models\\User;\n"
-"use Illuminate\\View\\View;\n\n"
-"class UserController extends Controller\n"
+"class Service\n"
 "{\n"
-"    /**\n"
-"     * The user repository implementation.\n"
-"     *\n"
-"     * @var UserRepository\n"
-"     */\n"
-"    protected $users;\n\n"
-"    /**\n"
-"     * Create a new controller instance.\n"
-"     */\n"
-"    public function __construct(UserRepository $users)\n"
-"    {\n"
-"        $this->users = $users;\n"
-"    }\n\n"
-"    /**\n"
-"     * Show the profile for the given user.\n"
-"     */\n"
-"    public function show(string $id): View\n"
-"    {\n"
-"        $user = $this->users->find($id);\n\n"
-"        return view('user.profile', ['user' => $user]);\n"
-"    }\n"
-"}\n"
-
-#: docs/master/container.md:block 52 (code)
-msgid "use App\\Contracts\\EventPusher;\n\n"
-"/**\n"
-" * Create a new class instance.\n"
-" */\n"
-"public function __construct(EventPusher $pusher)\n"
-"{\n"
-"    $this->pusher = $pusher;\n"
-"}\n"
-msgstr "use App\\Contracts\\EventPusher;\n\n"
-"/**\n"
-" * Create a new class instance.\n"
-" */\n"
-"public function __construct(EventPusher $pusher)\n"
-"{\n"
-"    $this->pusher = $pusher;\n"
-"}\n"
-
-#: docs/master/container.md:block 68 (code)
-msgid "<?php\n\n"
-"use App\\Models\\Filter;\n"
-"use App\\Services\\Logger;\n\n"
-"class Firewall\n"
-"{\n"
-"    /**\n"
-"     * The logger instance.\n"
-"     *\n"
-"     * @var \\App\\Services\\Logger\n"
-"     */\n"
-"    protected $logger;\n\n"
-"    /**\n"
-"     * The filter instances.\n"
-"     *\n"
-"     * @var array\n"
-"     */\n"
-"    protected $filters;\n\n"
-"    /**\n"
-"     * Create a new class instance.\n"
-"     */\n"
-"    public function __construct(Logger $logger, Filter ...$filters)\n"
-"    {\n"
-"        $this->logger = $logger;\n"
-"        $this->filters = $filters;\n"
-"    }\n"
-"}\n"
-msgstr "<?php\n\n"
-"use App\\Models\\Filter;\n"
-"use App\\Services\\Logger;\n\n"
-"class Firewall\n"
-"{\n"
-"    /**\n"
-"     * The logger instance.\n"
-"     *\n"
-"     * @var \\App\\Services\\Logger\n"
-"     */\n"
-"    protected $logger;\n\n"
-"    /**\n"
-"     * The filter instances.\n"
-"     *\n"
-"     * @var array\n"
-"     */\n"
-"    protected $filters;\n\n"
-"    /**\n"
-"     * Create a new class instance.\n"
-"     */\n"
-"    public function __construct(Logger $logger, Filter ...$filters)\n"
-"    {\n"
-"        $this->logger = $logger;\n"
-"        $this->filters = $filters;\n"
-"    }\n"
-"}\n"
-
-#: docs/master/container.md:block 98 (code)
-msgid "use Illuminate\\Container\\Container;\n\n"
-"/**\n"
-" * Create a new class instance.\n"
-" */\n"
-"public function __construct(Container $container)\n"
-"{\n"
-"    $this->container = $container;\n"
-"}\n"
-msgstr "use Illuminate\\Container\\Container;\n\n"
-"/**\n"
-" * Create a new class instance.\n"
-" */\n"
-"public function __construct(Container $container)\n"
-"{\n"
-"    $this->container = $container;\n"
-"}\n"
-
-#: docs/master/container.md:block 103 (code)
-msgid "<?php\n\n"
-"namespace App\\Http\\Controllers;\n\n"
-"use App\\Repositories\\UserRepository;\n"
-"use App\\Models\\User;\n\n"
-"class UserController extends Controller\n"
-"{\n"
-"    /**\n"
-"     * The user repository instance.\n"
-"     *\n"
-"     * @var \\App\\Repositories\\UserRepository\n"
-"     */\n"
-"    protected $users;\n\n"
-"    /**\n"
-"     * Create a new controller instance.\n"
-"     */\n"
-"    public function __construct(UserRepository $users)\n"
-"    {\n"
-"        $this->users = $users;\n"
-"    }\n\n"
-"    /**\n"
-"     * Show the user with the given ID.\n"
-"     */\n"
-"    public function show(string $id): User\n"
-"    {\n"
-"        $user = $this->users->findOrFail($id);\n\n"
-"        return $user;\n"
-"    }\n"
-"}\n"
-msgstr "<?php\n\n"
-"namespace App\\Http\\Controllers;\n\n"
-"use App\\Repositories\\UserRepository;\n"
-"use App\\Models\\User;\n\n"
-"class UserController extends Controller\n"
-"{\n"
-"    /**\n"
-"     * The user repository instance.\n"
-"     *\n"
-"     * @var \\App\\Repositories\\UserRepository\n"
-"     */\n"
-"    protected $users;\n\n"
-"    /**\n"
-"     * Create a new controller instance.\n"
-"     */\n"
-"    public function __construct(UserRepository $users)\n"
-"    {\n"
-"        $this->users = $users;\n"
-"    }\n\n"
-"    /**\n"
-"     * Show the user with the given ID.\n"
-"     */\n"
-"    public function show(string $id): User\n"
-"    {\n"
-"        $user = $this->users->findOrFail($id);\n\n"
-"        return $user;\n"
-"    }\n"
-"}\n"
+"    // ...\n"
+"}\n\n"
+"Route::get('/', function (Service $service) {\n"
+"    die(get_class($service));\n"
+"});\n"
 

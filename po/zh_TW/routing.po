@@ -10,7 +10,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
-"PO-Revision-Date: 2023-02-11 10:28\n"
+"PO-Revision-Date: 2024-06-30 08:27\n"
 
 #: docs/10.x/routing.md:block 1 (header)
 msgid "Routing"
@@ -307,12 +307,16 @@ msgid "php artisan route:list\n"
 msgstr "php artisan route:list\n"
 
 #: docs/10.x/routing.md:block 46 (paragraph)
-msgid "By default, the route middleware that are assigned to each route will not be displayed in the `route:list` output; however, you can instruct Laravel to display the route middleware by adding the `-v` option to the command:"
-msgstr "預設情況下，指派給各個 Route 的 Middleware 不會顯示在 `route:list` 輸出中。不過，我們可以在該指令後加上 `-v` 選項來讓 Laravel 顯示 Route Middleware："
+msgid "By default, the route middleware that are assigned to each route will not be displayed in the `route:list` output; however, you can instruct Laravel to display the route middleware and middleware group names by adding the `-v` option to the command:"
+msgstr "預設情況下，指派給各個 Route 的 Middleware 不會顯示在 `route:list` 輸出中。不過，我們可以在該指令後加上 `-v` 選項來讓 Laravel 顯示 Route Middleware 與 Middleware Group 的名稱："
 
 #: docs/10.x/routing.md:block 47 (code)
-msgid "php artisan route:list -v\n"
-msgstr "php artisan route:list -v\n"
+msgid "php artisan route:list -v\n\n"
+"# Expand middleware groups...\n"
+"php artisan route:list -vv\n"
+msgstr "php artisan route:list -v\n\n"
+"# Expand middleware groups...\n"
+"php artisan route:list -vv\n"
 
 #: docs/10.x/routing.md:block 48 (paragraph)
 msgid "You may also instruct Laravel to only show routes that begin with a given URI:"
@@ -401,16 +405,16 @@ msgid "Occasionally you may need to specify a route parameter that may not alway
 msgstr "有時候，我們可能會讓某個 Route 參數不需要出現在每個 URI 上。為此，我們可以在參數名稱後方放置一個 `?` 符號。請先確定這個 Route 中對應的變數有預設值："
 
 #: docs/10.x/routing.md:block 70 (code)
-msgid "Route::get('/user/{name?}', function (string $name = null) {\n"
+msgid "Route::get('/user/{name?}', function (?string $name = null) {\n"
 "    return $name;\n"
 "});\n\n"
-"Route::get('/user/{name?}', function (string $name = 'John') {\n"
+"Route::get('/user/{name?}', function (?string $name = 'John') {\n"
 "    return $name;\n"
 "});\n"
-msgstr "Route::get('/user/{name?}', function (string $name = null) {\n"
+msgstr "Route::get('/user/{name?}', function (?string $name = null) {\n"
 "    return $name;\n"
 "});\n\n"
-"Route::get('/user/{name?}', function (string $name = 'John') {\n"
+"Route::get('/user/{name?}', function (?string $name = 'John') {\n"
 "    return $name;\n"
 "});\n"
 
@@ -774,8 +778,8 @@ msgid "Route Name Prefixes"
 msgstr "命名 Route 的名稱前置詞"
 
 #: docs/10.x/routing.md:block 132 (paragraph)
-msgid "The `name` method may be used to prefix each route name in the group with a given string. For example, you may want to prefix all of the grouped route's names with `admin`. The given string is prefixed to the route name exactly as it is specified, so we will be sure to provide the trailing `.` character in the prefix:"
-msgstr "可以使用 `name` 方法來給群組中的每個 Route 名稱都加上給定字串的前置詞。舉例來說，我們可能會想給群組 Route 中的所有 Route 名稱都加上 `admin` 前置詞。給定字串會直接以指定時的樣子被加到 Route 名稱上。因此，請確保有在前置詞後方加上 `.` 字元："
+msgid "The `name` method may be used to prefix each route name in the group with a given string. For example, you may want to prefix the names of all of the routes in the group with `admin`. The given string is prefixed to the route name exactly as it is specified, so we will be sure to provide the trailing `.` character in the prefix:"
+msgstr ""
 
 #: docs/10.x/routing.md:block 133 (code)
 msgid "Route::name('admin.')->group(function () {\n"
@@ -1206,44 +1210,78 @@ msgid "Defining Rate Limiters"
 msgstr "定義 Rate Limiter (頻率限制程式)"
 
 #: docs/10.x/routing.md:block 200 (paragraph)
-msgid "Laravel includes powerful and customizable rate limiting services that you may utilize to restrict the amount of traffic for a given route or group of routes. To get started, you should define rate limiter configurations that meet your application's needs. Typically, this should be done within the `configureRateLimiting` method of your application's `App\\Providers\\RouteServiceProvider` class."
-msgstr "Laravel 中包含了強大且可客製化的頻率限制服務，可以用來為給定的 Route 或 Route 群組限制流量。要開始使用頻率限制，我們需要先依照專案需求定義 Rate Limiter (頻率限制程式) 的設定。一般來說，應在 `App\\Providers\\RouteServiceProvider` 類別的 `configureRateLimiting` 方法中定義。"
+msgid "Laravel includes powerful and customizable rate limiting services that you may utilize to restrict the amount of traffic for a given route or group of routes. To get started, you should define rate limiter configurations that meet your application's needs."
+msgstr "Laravel 中包含了強大且可客製化的頻率限制服務，可以用來為給定的 Route 或 Route 群組限制流量。要開始使用頻率限制，我們需要先依照專案需求定義 Rate Limiter (頻率限制程式) 的設定。"
 
 #: docs/10.x/routing.md:block 201 (paragraph)
-msgid "Rate limiters are defined using the `RateLimiter` facade's `for` method. The `for` method accepts a rate limiter name and a closure that returns the limit configuration that should apply to routes that are assigned to the rate limiter. Limit configuration are instances of the `Illuminate\\Cache\\RateLimiting\\Limit` class. This class contains helpful \"builder\" methods so that you can quickly define your limit. The rate limiter name may be any string you wish:"
-msgstr "使用 `RateLimiter` Facade 的 `for` 方法來定義 Rate Limiter。`for` 方法接受 Rate Limiter 的名稱以及一個閉包。該閉包應回傳用來套用到指派了這個 Rate Limiter 上的 Route 所需要的頻率限制設定。頻率限制的設定使用 `Illuminate\\Cache\\RateLimiting\\Limit` 類別的實體。這個實體中包含了實用的「建構程式 (Builder)」，可讓你快速定義限制。Rate Limiter 的名稱可以為任意字串："
+msgid "Typically, rate limiters are defined within the `boot` method of your application's `App\\Providers\\RouteServiceProvider` class. In fact, this class already includes a rate limiter definition that is applied to the routes in your application's `routes/api.php` file:"
+msgstr "一般來說，應在 `App\\Providers\\RouteServiceProvider` 類別的 `configureRateLimiting` 方法中定義頻率限制。事實上，該類別中已包含了一組預先定義的頻率限制，會套用到專案中 `routes/api.php` 檔案內的 Route："
 
 #: docs/10.x/routing.md:block 202 (code)
 msgid "use Illuminate\\Cache\\RateLimiting\\Limit;\n"
 "use Illuminate\\Http\\Request;\n"
 "use Illuminate\\Support\\Facades\\RateLimiter;\n\n"
 "/**\n"
-" * Configure the rate limiters for the application.\n"
+" * Define your route model bindings, pattern filters, and other route configuration.\n"
 " */\n"
-"protected function configureRateLimiting(): void\n"
+"protected function boot(): void\n"
 "{\n"
-"    RateLimiter::for('global', function (Request $request) {\n"
-"        return Limit::perMinute(1000);\n"
-"    });\n"
+"    RateLimiter::for('api', function (Request $request) {\n"
+"        return Limit::perMinute(60)->by($request->user()?->id ?: $request->ip());\n"
+"    });\n\n"
+"    // ...\n"
 "}\n"
 msgstr "use Illuminate\\Cache\\RateLimiting\\Limit;\n"
 "use Illuminate\\Http\\Request;\n"
 "use Illuminate\\Support\\Facades\\RateLimiter;\n\n"
 "/**\n"
-" * Configure the rate limiters for the application.\n"
+" * Define your route model bindings, pattern filters, and other route configuration.\n"
 " */\n"
-"protected function configureRateLimiting(): void\n"
+"protected function boot(): void\n"
 "{\n"
-"    RateLimiter::for('global', function (Request $request) {\n"
-"        return Limit::perMinute(1000);\n"
-"    });\n"
+"    RateLimiter::for('api', function (Request $request) {\n"
+"        return Limit::perMinute(60)->by($request->user()?->id ?: $request->ip());\n"
+"    });\n\n"
+"    // ...\n"
 "}\n"
 
 #: docs/10.x/routing.md:block 203 (paragraph)
+msgid "Rate limiters are defined using the `RateLimiter` facade's `for` method. The `for` method accepts a rate limiter name and a closure that returns the limit configuration that should apply to routes that are assigned to the rate limiter. Limit configuration are instances of the `Illuminate\\Cache\\RateLimiting\\Limit` class. This class contains helpful \"builder\" methods so that you can quickly define your limit. The rate limiter name may be any string you wish:"
+msgstr "使用 `RateLimiter` Facade 的 `for` 方法來定義 Rate Limiter。`for` 方法接受 Rate Limiter 的名稱以及一個閉包。該閉包應回傳用來套用到指派了這個 Rate Limiter 上的 Route 所需要的頻率限制設定。頻率限制的設定使用 `Illuminate\\Cache\\RateLimiting\\Limit` 類別的實體。這個實體中包含了實用的「建構程式 (Builder)」，可讓你快速定義限制。Rate Limiter 的名稱可以為任意字串："
+
+#: docs/10.x/routing.md:block 204 (code)
+msgid "use Illuminate\\Cache\\RateLimiting\\Limit;\n"
+"use Illuminate\\Http\\Request;\n"
+"use Illuminate\\Support\\Facades\\RateLimiter;\n\n"
+"/**\n"
+" * Define your route model bindings, pattern filters, and other route configuration.\n"
+" */\n"
+"protected function boot(): void\n"
+"{\n"
+"    RateLimiter::for('global', function (Request $request) {\n"
+"        return Limit::perMinute(1000);\n"
+"    });\n\n"
+"    // ...\n"
+"}\n"
+msgstr "use Illuminate\\Cache\\RateLimiting\\Limit;\n"
+"use Illuminate\\Http\\Request;\n"
+"use Illuminate\\Support\\Facades\\RateLimiter;\n\n"
+"/**\n"
+" * Define your route model bindings, pattern filters, and other route configuration.\n"
+" */\n"
+"protected function boot(): void\n"
+"{\n"
+"    RateLimiter::for('global', function (Request $request) {\n"
+"        return Limit::perMinute(1000);\n"
+"    });\n\n"
+"    // ...\n"
+"}\n"
+
+#: docs/10.x/routing.md:block 205 (paragraph)
 msgid "If the incoming request exceeds the specified rate limit, a response with a 429 HTTP status code will automatically be returned by Laravel. If you would like to define your own response that should be returned by a rate limit, you may use the `response` method:"
 msgstr "若連入的 Request 超過了指定的頻率限制，Laravel 會自動回傳一個 429 HTTP 狀態碼。若想自訂頻率限制回傳的 Response，可使用 `response` 方法："
 
-#: docs/10.x/routing.md:block 204 (code)
+#: docs/10.x/routing.md:block 206 (code)
 msgid "RateLimiter::for('global', function (Request $request) {\n"
 "    return Limit::perMinute(1000)->response(function (Request $request, array $headers) {\n"
 "        return response('Custom response...', 429, $headers);\n"
@@ -1255,11 +1293,11 @@ msgstr "RateLimiter::for('global', function (Request $request) {\n"
 "    });\n"
 "});\n"
 
-#: docs/10.x/routing.md:block 205 (paragraph)
+#: docs/10.x/routing.md:block 207 (paragraph)
 msgid "Since rate limiter callbacks receive the incoming HTTP request instance, you may build the appropriate rate limit dynamically based on the incoming request or authenticated user:"
 msgstr "由於頻率限制程式的回呼會接收連入 HTTP Request 實體，因此我們可以依據連入 Request 或登入使用者來動態調整適當的頻率限制："
 
-#: docs/10.x/routing.md:block 206 (code)
+#: docs/10.x/routing.md:block 208 (code)
 msgid "RateLimiter::for('uploads', function (Request $request) {\n"
 "    return $request->user()->vipCustomer()\n"
 "                ? Limit::none()\n"
@@ -1271,15 +1309,15 @@ msgstr "RateLimiter::for('uploads', function (Request $request) {\n"
 "                : Limit::perMinute(100);\n"
 "});\n"
 
-#: docs/10.x/routing.md:block 208 (header)
+#: docs/10.x/routing.md:block 210 (header)
 msgid "Segmenting Rate Limits"
 msgstr "區塊化的頻率限制"
 
-#: docs/10.x/routing.md:block 209 (paragraph)
+#: docs/10.x/routing.md:block 211 (paragraph)
 msgid "Sometimes you may wish to segment rate limits by some arbitrary value. For example, you may wish to allow users to access a given route 100 times per minute per IP address. To accomplish this, you may use the `by` method when building your rate limit:"
 msgstr "有時候，我們可能會像依照某個值來做分區的頻率限制。舉例來說，我們可能會想讓某個使用者在每個 IP 位址上每分鐘只能存取某個 Route 100 次。為此，可以在設定頻率限制時使用 `by` 方法："
 
-#: docs/10.x/routing.md:block 210 (code)
+#: docs/10.x/routing.md:block 212 (code)
 msgid "RateLimiter::for('uploads', function (Request $request) {\n"
 "    return $request->user()->vipCustomer()\n"
 "                ? Limit::none()\n"
@@ -1291,11 +1329,11 @@ msgstr "RateLimiter::for('uploads', function (Request $request) {\n"
 "                : Limit::perMinute(100)->by($request->ip());\n"
 "});\n"
 
-#: docs/10.x/routing.md:block 211 (paragraph)
+#: docs/10.x/routing.md:block 213 (paragraph)
 msgid "To illustrate this feature using another example, we can limit access to the route to 100 times per minute per authenticated user ID or 10 times per minute per IP address for guests:"
 msgstr "我們來看看另一個使用這個功能的例子。我們可以像這樣限制某個 Route 對已登入使用者的限制時 100 次/分鐘，而未登入使用者則是 10 次/分鐘："
 
-#: docs/10.x/routing.md:block 212 (code)
+#: docs/10.x/routing.md:block 214 (code)
 msgid "RateLimiter::for('uploads', function (Request $request) {\n"
 "    return $request->user()\n"
 "                ? Limit::perMinute(100)->by($request->user()->id)\n"
@@ -1307,15 +1345,15 @@ msgstr "RateLimiter::for('uploads', function (Request $request) {\n"
 "                : Limit::perMinute(10)->by($request->ip());\n"
 "});\n"
 
-#: docs/10.x/routing.md:block 214 (header)
+#: docs/10.x/routing.md:block 216 (header)
 msgid "Multiple Rate Limits"
 msgstr "多個頻率限制"
 
-#: docs/10.x/routing.md:block 215 (paragraph)
+#: docs/10.x/routing.md:block 217 (paragraph)
 msgid "If needed, you may return an array of rate limits for a given rate limiter configuration. Each rate limit will be evaluated for the route based on the order they are placed within the array:"
 msgstr "當然，對於某個 Rate Limiter 的設定，我們也可以回傳一組包含頻率限制的陣列。每個頻率限制會依據陣列中的順序被套用在 Route 上："
 
-#: docs/10.x/routing.md:block 216 (code)
+#: docs/10.x/routing.md:block 218 (code)
 msgid "RateLimiter::for('login', function (Request $request) {\n"
 "    return [\n"
 "        Limit::perMinute(500),\n"
@@ -1329,15 +1367,15 @@ msgstr "RateLimiter::for('login', function (Request $request) {\n"
 "    ];\n"
 "});\n"
 
-#: docs/10.x/routing.md:block 218 (header)
+#: docs/10.x/routing.md:block 220 (header)
 msgid "Attaching Rate Limiters To Routes"
 msgstr "將 Rate Limiter 附加到 Route 上"
 
-#: docs/10.x/routing.md:block 219 (paragraph)
+#: docs/10.x/routing.md:block 221 (paragraph)
 msgid "Rate limiters may be attached to routes or route groups using the `throttle` [middleware](/docs/{{version}}/middleware). The throttle middleware accepts the name of the rate limiter you wish to assign to the route:"
 msgstr "可以使用 `throttle` [Middleware](/docs/{{version}}/middleware) 來將 Rate Limiter 附加到 Route 或 Route 群組上。這個 Throttle Middleware 接受欲指派給 Route 的 Rate Limiter 名稱："
 
-#: docs/10.x/routing.md:block 220 (code)
+#: docs/10.x/routing.md:block 222 (code)
 msgid "Route::middleware(['throttle:uploads'])->group(function () {\n"
 "    Route::post('/audio', function () {\n"
 "        // ...\n"
@@ -1355,27 +1393,27 @@ msgstr "Route::middleware(['throttle:uploads'])->group(function () {\n"
 "    });\n"
 "});\n"
 
-#: docs/10.x/routing.md:block 222 (header)
+#: docs/10.x/routing.md:block 224 (header)
 msgid "Throttling With Redis"
 msgstr "使用 Redis 來做頻率限制"
 
-#: docs/10.x/routing.md:block 223 (paragraph)
+#: docs/10.x/routing.md:block 225 (paragraph)
 msgid "Typically, the `throttle` middleware is mapped to the `Illuminate\\Routing\\Middleware\\ThrottleRequests` class. This mapping is defined in your application's HTTP kernel (`App\\Http\\Kernel`). However, if you are using Redis as your application's cache driver, you may wish to change this mapping to use the `Illuminate\\Routing\\Middleware\\ThrottleRequestsWithRedis` class. This class is more efficient at managing rate limiting using Redis:"
 msgstr "一般來說，`throttle` Middleware 被映射到 `Illuminate\\Routing\\Middleware\\ThrottleRequests` 類別。這個映射定義在程式的 HTTP Kernel (`App\\Http\\Kernel`) 中。不過，如果你使用 Redis 來作為快取的 Driver，則可以將這個映射改為使用 `Illuminate\\Routing\\Middleware\\ThrottleRequestsWithRedis` 類別。這個類別能更有效率地使用 Redis 來管理頻率限制："
 
-#: docs/10.x/routing.md:block 224 (code)
+#: docs/10.x/routing.md:block 226 (code)
 msgid "'throttle' => \\Illuminate\\Routing\\Middleware\\ThrottleRequestsWithRedis::class,\n"
 msgstr "'throttle' => \\Illuminate\\Routing\\Middleware\\ThrottleRequestsWithRedis::class,\n"
 
-#: docs/10.x/routing.md:block 226 (header)
+#: docs/10.x/routing.md:block 228 (header)
 msgid "Form Method Spoofing"
 msgstr "表單方法的變更"
 
-#: docs/10.x/routing.md:block 227 (paragraph)
+#: docs/10.x/routing.md:block 229 (paragraph)
 msgid "HTML forms do not support `PUT`, `PATCH`, or `DELETE` actions. So, when defining `PUT`, `PATCH`, or `DELETE` routes that are called from an HTML form, you will need to add a hidden `_method` field to the form. The value sent with the `_method` field will be used as the HTTP request method:"
 msgstr "HTML 表單不支援 `PUT`, `PATCH`, 與 `DELETE` 動作，因此，當我們在定義會由 HTML 表單呼叫的 `PUT`, `PATCH`, 或 `DELETE` Route 時，我們需要在表單內加上一個隱藏的 `_method` 欄位。包含在 `_method` 欄位裡的值會被當作 HTTP Request 方法使用："
 
-#: docs/10.x/routing.md:block 228 (code)
+#: docs/10.x/routing.md:block 230 (code)
 msgid "<form action=\"/example\" method=\"POST\">\n"
 "    <input type=\"hidden\" name=\"_method\" value=\"PUT\">\n"
 "    <input type=\"hidden\" name=\"_token\" value=\"{{ csrf_token() }}\">\n"
@@ -1385,11 +1423,11 @@ msgstr "<form action=\"/example\" method=\"POST\">\n"
 "    <input type=\"hidden\" name=\"_token\" value=\"{{ csrf_token() }}\">\n"
 "</form>\n"
 
-#: docs/10.x/routing.md:block 229 (paragraph)
+#: docs/10.x/routing.md:block 231 (paragraph)
 msgid "For convenience, you may use the `@method` [Blade directive](/docs/{{version}}/blade) to generate the `_method` input field:"
 msgstr "為了方便起見，也可以使用 `@method` [Blade 指示詞](/docs/{{version}}/blade)來產生 `_method` 輸入欄位："
 
-#: docs/10.x/routing.md:block 230 (code)
+#: docs/10.x/routing.md:block 232 (code)
 msgid "<form action=\"/example\" method=\"POST\">\n"
 "    @method('PUT')\n"
 "    @csrf\n"
@@ -1399,15 +1437,15 @@ msgstr "<form action=\"/example\" method=\"POST\">\n"
 "    @csrf\n"
 "</form>\n"
 
-#: docs/10.x/routing.md:block 232 (header)
+#: docs/10.x/routing.md:block 234 (header)
 msgid "Accessing The Current Route"
 msgstr "存取目前的 Route"
 
-#: docs/10.x/routing.md:block 233 (paragraph)
+#: docs/10.x/routing.md:block 235 (paragraph)
 msgid "You may use the `current`, `currentRouteName`, and `currentRouteAction` methods on the `Route` facade to access information about the route handling the incoming request:"
 msgstr "可以使用 `Route` Facade 上的 `current`, `currentRouteName` 與 `currentRouteAction` 方法來存取有關處理本次連入 Request 的 Route 資訊："
 
-#: docs/10.x/routing.md:block 234 (code)
+#: docs/10.x/routing.md:block 236 (code)
 msgid "use Illuminate\\Support\\Facades\\Route;\n\n"
 "$route = Route::current(); // Illuminate\\Routing\\Route\n"
 "$name = Route::currentRouteName(); // string\n"
@@ -1417,43 +1455,43 @@ msgstr "use Illuminate\\Support\\Facades\\Route;\n\n"
 "$name = Route::currentRouteName(); // string\n"
 "$action = Route::currentRouteAction(); // string\n"
 
-#: docs/10.x/routing.md:block 235 (paragraph)
+#: docs/10.x/routing.md:block 237 (paragraph)
 msgid "You may refer to the API documentation for both the [underlying class of the Route facade](https://laravel.com/api/{{version}}/Illuminate/Routing/Router.html) and [Route instance](https://laravel.com/api/{{version}}/Illuminate/Routing/Route.html) to review all of the methods that are available on the router and route classes."
 msgstr "請參考 [Route Facade 底層的類別](https://laravel.com/api/{{version}}/Illuminate/Routing/Router.html)與 [Route 實體](https://laravel.com/api/{{version}}/Illuminate/Routing/Route.html)的 API 說明文件以瞭解 Router 與 Route 類別提供的全部方法。"
 
-#: docs/10.x/routing.md:block 237 (header)
+#: docs/10.x/routing.md:block 239 (header)
 msgid "Cross-Origin Resource Sharing (CORS)"
 msgstr "跨原始來源資源共用 (CORS, Cross-Origin Resource Sharing)"
 
-#: docs/10.x/routing.md:block 238 (paragraph)
+#: docs/10.x/routing.md:block 240 (paragraph)
 msgid "Laravel can automatically respond to CORS `OPTIONS` HTTP requests with values that you configure. All CORS settings may be configured in your application's `config/cors.php` configuration file. The `OPTIONS` requests will automatically be handled by the `HandleCors` [middleware](/docs/{{version}}/middleware) that is included by default in your global middleware stack. Your global middleware stack is located in your application's HTTP kernel (`App\\Http\\Kernel`)."
 msgstr "Laravel 會自動依照你設定的值來回應 CORS 的 `OPTIONS` HTTP Request。可以在專案的 `config/cors.php` 設定檔中設定所有的 CORS 設定。 `HandleCors` [Middleware](/docs/{{version}}/middleware) 會自動處理 `OPTIONS` Request，該 Middleware 預設包含在全域的 Middleware Stack 中。全域的 Middleware Stack 存在 HTTP Kernel (`App\\Http\\Kernel`) 中。"
 
-#: docs/10.x/routing.md:block 239 (quote)
+#: docs/10.x/routing.md:block 241 (quote)
 msgid "**Note** For more information on CORS and CORS headers, please consult the [MDN web documentation on CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS#The_HTTP_response_headers)."
 msgstr "**Note** 更多有關 CORS 與 CORS 標頭的資訊，請參考 [MDN 網頁說明文件上的 CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS#The_HTTP_response_headers)。"
 
-#: docs/10.x/routing.md:block 241 (header)
+#: docs/10.x/routing.md:block 243 (header)
 msgid "Route Caching"
 msgstr "Route 的快取"
 
-#: docs/10.x/routing.md:block 242 (paragraph)
+#: docs/10.x/routing.md:block 244 (paragraph)
 msgid "When deploying your application to production, you should take advantage of Laravel's route cache. Using the route cache will drastically decrease the amount of time it takes to register all of your application's routes. To generate a route cache, execute the `route:cache` Artisan command:"
 msgstr "在將專案部署到正式環境時，應使用 Laravel 的 Route 快取功能。使用 Route 快取就能大大地降低註冊所有 Route 所需的時間。要產生 Route 快取，請執行 `route:cache` Artisan 指令："
 
-#: docs/10.x/routing.md:block 243 (code)
+#: docs/10.x/routing.md:block 245 (code)
 msgid "php artisan route:cache\n"
 msgstr "php artisan route:cache\n"
 
-#: docs/10.x/routing.md:block 244 (paragraph)
+#: docs/10.x/routing.md:block 246 (paragraph)
 msgid "After running this command, your cached routes file will be loaded on every request. Remember, if you add any new routes you will need to generate a fresh route cache. Because of this, you should only run the `route:cache` command during your project's deployment."
 msgstr "執行這個指令後，每個 Request 都會自動載入快取的 Route 檔。請記得，當新增新 Route 後，必須重新產生 Route 快取。因此，應在進行專案部署的時候才執行 `route:cache` 指令。"
 
-#: docs/10.x/routing.md:block 245 (paragraph)
+#: docs/10.x/routing.md:block 247 (paragraph)
 msgid "You may use the `route:clear` command to clear the route cache:"
 msgstr "可以使用 `route:clear` 指令來清除 Route 快取："
 
-#: docs/10.x/routing.md:block 246 (code)
+#: docs/10.x/routing.md:block 248 (code)
 msgid "php artisan route:clear\n"
 msgstr "php artisan route:clear\n"
 
@@ -1697,6 +1735,10 @@ msgstr "Route::domain('{account}.example.com')->group(function () {\n"
 msgid "{note} In order to ensure your subdomain routes are reachable, you should register subdomain routes before registering root domain routes. This will prevent root domain routes from overwriting subdomain routes which have the same URI path."
 msgstr "{note} 為了確保子網域 Route 有效，請在註冊任何根網域 Route 前先註冊子網域 Route。這樣可以避免根網域的 Route 去複寫到子網域 Route 中有相同 URI 路徑的 Route。"
 
+#: docs/8.x/routing.md:block 120 (paragraph)
+msgid "The `name` method may be used to prefix each route name in the group with a given string. For example, you may want to prefix all of the grouped route's names with `admin`. The given string is prefixed to the route name exactly as it is specified, so we will be sure to provide the trailing `.` character in the prefix:"
+msgstr "可以使用 `name` 方法來給群組中的每個 Route 名稱都加上給定字串的前置詞。舉例來說，我們可能會想給群組 Route 中的所有 Route 名稱都加上 `admin` 前置詞。給定字串會直接以指定時的樣子被加到 Route 名稱上。因此，請確保有在前置詞後方加上 `.` 字元："
+
 #: docs/8.x/routing.md:block 141 (code)
 msgid "/**\n"
 " * Get the route key for the model.\n"
@@ -1795,6 +1837,10 @@ msgstr "Route::fallback(function () {\n"
 msgid "{note} The fallback route should always be the last route registered by your application."
 msgstr "{note} 遞補的 Route 應該要保持為專案中最後一個註冊的 Route。"
 
+#: docs/8.x/routing.md:block 180 (paragraph)
+msgid "Laravel includes powerful and customizable rate limiting services that you may utilize to restrict the amount of traffic for a given route or group of routes. To get started, you should define rate limiter configurations that meet your application's needs. Typically, this should be done within the `configureRateLimiting` method of your application's `App\\Providers\\RouteServiceProvider` class."
+msgstr "Laravel 中包含了強大且可客製化的頻率限制服務，可以用來為給定的 Route 或 Route 群組限制流量。要開始使用頻率限制，我們需要先依照專案需求定義 Rate Limiter (頻率限制程式) 的設定。一般來說，應在 `App\\Providers\\RouteServiceProvider` 類別的 `configureRateLimiting` 方法中定義。"
+
 #: docs/8.x/routing.md:block 182 (code)
 msgid "use Illuminate\\Cache\\RateLimiting\\Limit;\n"
 "use Illuminate\\Support\\Facades\\RateLimiter;\n\n"
@@ -1857,6 +1903,14 @@ msgstr "Route::middleware(['throttle:uploads'])->group(function () {\n"
 msgid "{tip} For more information on CORS and CORS headers, please consult the [MDN web documentation on CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS#The_HTTP_response_headers)."
 msgstr "{tip} 更多有關 CORS 與 CORS 標頭的資訊，請參考 [MDN 網頁說明文件上的 CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS#The_HTTP_response_headers)。"
 
+#: docs/9.x/routing.md:block 46 (paragraph)
+msgid "By default, the route middleware that are assigned to each route will not be displayed in the `route:list` output; however, you can instruct Laravel to display the route middleware by adding the `-v` option to the command:"
+msgstr "預設情況下，指派給各個 Route 的 Middleware 不會顯示在 `route:list` 輸出中。不過，我們可以在該指令後加上 `-v` 選項來讓 Laravel 顯示 Route Middleware："
+
+#: docs/9.x/routing.md:block 47 (code)
+msgid "php artisan route:list -v\n"
+msgstr "php artisan route:list -v\n"
+
 #: docs/9.x/routing.md:block 76 (code)
 msgid "Route::get('/user/{id}/{name}', function ($id, $name) {\n"
 "    //\n"
@@ -1889,7 +1943,37 @@ msgstr "Route::get('/user/{id}/{name}', function ($id, $name) {\n"
 "    //\n"
 "})->whereIn('category', ['movie', 'song', 'painting']);\n"
 
-#: docs/9.x/routing.md:block 202 (code)
+#: docs/9.x/routing.md:block 200 (paragraph)
+msgid "Laravel includes powerful and customizable rate limiting services that you may utilize to restrict the amount of traffic for a given route or group of routes. To get started, you should define rate limiter configurations that meet your application's needs. Typically, this should be done within the `configureRateLimiting` method of your application's `App\\Providers\\RouteServiceProvider` class, which already includes a rate limiter definition that is applied to the routes in your application's `routes/api.php` file:"
+msgstr "Laravel 中包含了強大且可客製化的頻率限制服務，可以用來為給定的 Route 或 Route 群組限制流量。要開始使用頻率限制，我們需要先依照專案需求定義 Rate Limiter (頻率限制程式) 的設定。一般來說，應在 `App\\Providers\\RouteServiceProvider` 類別的 `configureRateLimiting` 方法中定義。在 `configureRateLimiting` 方法中，已預先包含了一個會套用到專案 `routes/api.php` 中 Route 的頻率限制："
+
+#: docs/9.x/routing.md:block 201 (code)
+msgid "use Illuminate\\Cache\\RateLimiting\\Limit;\n"
+"use Illuminate\\Http\\Request;\n"
+"use Illuminate\\Support\\Facades\\RateLimiter;\n\n"
+"/**\n"
+" * Configure the rate limiters for the application.\n"
+" */\n"
+"protected function configureRateLimiting(): void\n"
+"{\n"
+"    RateLimiter::for('api', function (Request $request) {\n"
+"        return Limit::perMinute(60)->by($request->user()?->id ?: $request->ip());\n"
+"    });\n"
+"}\n"
+msgstr "use Illuminate\\Cache\\RateLimiting\\Limit;\n"
+"use Illuminate\\Http\\Request;\n"
+"use Illuminate\\Support\\Facades\\RateLimiter;\n\n"
+"/**\n"
+" * Configure the rate limiters for the application.\n"
+" */\n"
+"protected function configureRateLimiting(): void\n"
+"{\n"
+"    RateLimiter::for('api', function (Request $request) {\n"
+"        return Limit::perMinute(60)->by($request->user()?->id ?: $request->ip());\n"
+"    });\n"
+"}\n"
+
+#: docs/9.x/routing.md:block 203 (code)
 msgid "use Illuminate\\Cache\\RateLimiting\\Limit;\n"
 "use Illuminate\\Http\\Request;\n"
 "use Illuminate\\Support\\Facades\\RateLimiter;\n\n"
@@ -1913,6 +1997,46 @@ msgstr "use Illuminate\\Cache\\RateLimiting\\Limit;\n"
 " * @return void\n"
 " */\n"
 "protected function configureRateLimiting()\n"
+"{\n"
+"    RateLimiter::for('global', function (Request $request) {\n"
+"        return Limit::perMinute(1000);\n"
+"    });\n"
+"}\n"
+
+#: docs/master/routing.md:block 70 (code)
+msgid "Route::get('/user/{name?}', function (string $name = null) {\n"
+"    return $name;\n"
+"});\n\n"
+"Route::get('/user/{name?}', function (string $name = 'John') {\n"
+"    return $name;\n"
+"});\n"
+msgstr "Route::get('/user/{name?}', function (string $name = null) {\n"
+"    return $name;\n"
+"});\n\n"
+"Route::get('/user/{name?}', function (string $name = 'John') {\n"
+"    return $name;\n"
+"});\n"
+
+#: docs/master/routing.md:block 203 (code)
+msgid "use Illuminate\\Cache\\RateLimiting\\Limit;\n"
+"use Illuminate\\Http\\Request;\n"
+"use Illuminate\\Support\\Facades\\RateLimiter;\n\n"
+"/**\n"
+" * Configure the rate limiters for the application.\n"
+" */\n"
+"protected function configureRateLimiting(): void\n"
+"{\n"
+"    RateLimiter::for('global', function (Request $request) {\n"
+"        return Limit::perMinute(1000);\n"
+"    });\n"
+"}\n"
+msgstr "use Illuminate\\Cache\\RateLimiting\\Limit;\n"
+"use Illuminate\\Http\\Request;\n"
+"use Illuminate\\Support\\Facades\\RateLimiter;\n\n"
+"/**\n"
+" * Configure the rate limiters for the application.\n"
+" */\n"
+"protected function configureRateLimiting(): void\n"
 "{\n"
 "    RateLimiter::for('global', function (Request $request) {\n"
 "        return Limit::perMinute(1000);\n"

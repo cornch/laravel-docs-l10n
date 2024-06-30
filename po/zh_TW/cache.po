@@ -10,7 +10,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
-"PO-Revision-Date: 2023-02-11 12:58\n"
+"PO-Revision-Date: 2024-06-30 08:17\n"
 
 #: docs/10.x/cache.md:block 1 (header)
 msgid "Cache"
@@ -51,26 +51,6 @@ msgstr "[從 Cache 內移除項目](#removing-items-from-the-cache)"
 #: docs/10.x/cache.md:block 2 (unordered list)
 msgid "[The Cache Helper](#the-cache-helper)"
 msgstr "[Cache 輔助函式](#the-cache-helper)"
-
-#: docs/10.x/cache.md:block 2 (unordered list)
-msgid "[Cache Tags](#cache-tags)"
-msgstr "[Cache 標籤](#cache-tags)"
-
-#: docs/10.x/cache.md:block 2 (unordered list)
-msgid "[Storing Tagged Cache Items](#storing-tagged-cache-items)"
-msgstr "[保存有標籤的 Cache 項目](#storing-tagged-cache-items)"
-
-#: docs/10.x/cache.md:block 2 (unordered list)
-msgid "[Accessing Tagged Cache Items](#accessing-tagged-cache-items)"
-msgstr "[存取有標籤的 Cache 項目](#accessing-tagged-cache-items)"
-
-#: docs/10.x/cache.md:block 2 (unordered list)
-msgid "[Removing Tagged Cache Items](#removing-tagged-cache-items)"
-msgstr "[移除有標籤的 Cache 項目](#removing-tagged-cache-items)"
-
-#: docs/10.x/cache.md:block 2 (unordered list)
-msgid "[Pruning Stale Cache Tags](#pruning-stale-cache-tags)"
-msgstr "[修建過時的快取 Tag](#pruning-stale-cache-tags)"
 
 #: docs/10.x/cache.md:block 2 (unordered list)
 msgid "[Atomic Locks](#atomic-locks)"
@@ -339,11 +319,17 @@ msgid "The `increment` and `decrement` methods may be used to adjust the value o
 msgstr "`increment`（遞增）與 `decrement`（遞減）方法可以用來調整快取中的整數項目值。這兩個方法都接收一個可選的第二個引數來判斷項目值所要遞增或遞減的值："
 
 #: docs/10.x/cache.md:block 55 (code)
-msgid "Cache::increment('key');\n"
+msgid "// Initialize the value if it does not exist...\n"
+"Cache::add('key', 0, now()->addHours(4));\n\n"
+"// Increment or decrement the value...\n"
+"Cache::increment('key');\n"
 "Cache::increment('key', $amount);\n"
 "Cache::decrement('key');\n"
 "Cache::decrement('key', $amount);\n"
-msgstr "Cache::increment('key');\n"
+msgstr "// 若該值不存在，則進行初始化...\n"
+"Cache::add('key', 0, now()->addHours(4));\n\n"
+"// 遞增或遞減值...\n"
+"Cache::increment('key');\n"
 "Cache::increment('key', $amount);\n"
 "Cache::decrement('key');\n"
 "Cache::decrement('key', $amount);\n"
@@ -521,90 +507,18 @@ msgid "**Note** When testing call to the global `cache` function, you may use th
 msgstr "**Note** 在測試呼叫全域的 `cache` 函式時，可以像在[測試 Facade](/docs/{{version}}/mocking#mocking-facades)一樣，使用 `Cache::shouldReceive` 方法。"
 
 #: docs/10.x/cache.md:block 103 (header)
-msgid "Cache Tags"
-msgstr "快取標籤"
-
-#: docs/10.x/cache.md:block 104 (quote)
-msgid "**Warning** Cache tags are not supported when using the `file`, `dynamodb`, or `database` cache drivers. Furthermore, when using multiple tags with caches that are stored \"forever\", performance will be best with a driver such as `memcached`, which automatically purges stale records."
-msgstr "**Warning** 使用 `file`, `dynamodb` 或 `database` 快取 Driver 時，不支援使用快取標籤。此外，在以「forever」儲存的快取上使用多重標籤時，搭配 `memcached` Driver 能取得最佳效能，這些 Driver 通常會自動移除舊的記錄。"
-
-#: docs/10.x/cache.md:block 106 (header)
-msgid "Storing Tagged Cache Items"
-msgstr "儲存標籤的快取項目"
-
-#: docs/10.x/cache.md:block 107 (paragraph)
-msgid "Cache tags allow you to tag related items in the cache and then flush all cached values that have been assigned a given tag. You may access a tagged cache by passing in an ordered array of tag names. For example, let's access a tagged cache and `put` a value into the cache:"
-msgstr "快取標籤能讓你將快取內相關的項目標記在一起，並能將所有被指派到相同標籤的快取值一起被清除。可以通過傳入包含標籤名稱的有序陣列來存取標籤快取。舉例來說，我們來存取一個被標籤的快取，並將一個值 `put` 進快取內："
-
-#: docs/10.x/cache.md:block 108 (code)
-msgid "Cache::tags(['people', 'artists'])->put('John', $john, $seconds);\n\n"
-"Cache::tags(['people', 'authors'])->put('Anne', $anne, $seconds);\n"
-msgstr "Cache::tags(['people', 'artists'])->put('John', $john, $seconds);\n\n"
-"Cache::tags(['people', 'authors'])->put('Anne', $anne, $seconds);\n"
-
-#: docs/10.x/cache.md:block 110 (header)
-msgid "Accessing Tagged Cache Items"
-msgstr "存取標籤的快取項目"
-
-#: docs/10.x/cache.md:block 111 (paragraph)
-msgid "Items stored via tags may not be accessed without also providing the tags that were used to store the value. To retrieve a tagged cache item, pass the same ordered list of tags to the `tags` method and then call the `get` method with the key you wish to retrieve:"
-msgstr "若沒有提供與保存項目時所指定的相同 Tag，就無法存取這些項目。若要取得待 Tag 的快取項目，請將相同的 Tag 以相同的順序傳入給 `tags` 方法，然後再以指定的索引鍵來呼叫 `get` 方法："
-
-#: docs/10.x/cache.md:block 112 (code)
-msgid "$john = Cache::tags(['people', 'artists'])->get('John');\n\n"
-"$anne = Cache::tags(['people', 'authors'])->get('Anne');\n"
-msgstr "$john = Cache::tags(['people', 'artists'])->get('John');\n\n"
-"$anne = Cache::tags(['people', 'authors'])->get('Anne');\n"
-
-#: docs/10.x/cache.md:block 114 (header)
-msgid "Removing Tagged Cache Items"
-msgstr "移除標籤的快取項目"
-
-#: docs/10.x/cache.md:block 115 (paragraph)
-msgid "You may flush all items that are assigned a tag or list of tags. For example, this statement would remove all caches tagged with either `people`, `authors`, or both. So, both `Anne` and `John` would be removed from the cache:"
-msgstr "可以移除有被設定一個或多個標籤的項目。舉例來說，這個陳述式可以移除所有被設為 `people`、`authors`、或是同時有這兩個標籤的快取。因此，`Anne` 與 `John` 都會被從快取內移除："
-
-#: docs/10.x/cache.md:block 116 (code)
-msgid "Cache::tags(['people', 'authors'])->flush();\n"
-msgstr "Cache::tags(['people', 'authors'])->flush();\n"
-
-#: docs/10.x/cache.md:block 117 (paragraph)
-msgid "In contrast, this statement would remove only cached values tagged with `authors`, so `Anne` would be removed, but not `John`:"
-msgstr "與之相比，下列這個陳述式只會移除被標記為 `authors` 的快取值，因此 `Anne` 會被移除，而 `John` 則不會："
-
-#: docs/10.x/cache.md:block 118 (code)
-msgid "Cache::tags('authors')->flush();\n"
-msgstr "Cache::tags('authors')->flush();\n"
-
-#: docs/10.x/cache.md:block 120 (header)
-msgid "Pruning Stale Cache Tags"
-msgstr "修建過時的快取 Tag"
-
-#: docs/10.x/cache.md:block 121 (quote)
-msgid "**Warning** Pruning stale cache tags is only necessary when using Redis as your application's cache driver."
-msgstr "**Warning** 只有當專案使用 Redis 作為快取 Driver 時，才需要修建過時的快取 Tag。"
-
-#: docs/10.x/cache.md:block 122 (paragraph)
-msgid "In order to properly prune stale cache tag entries when using the Redis cache driver, Laravel's `cache:prune-stale-tags` Artisan command should be [scheduled](/docs/{{version}}/scheduling) in your application's `App\\Console\\Kernel` class:"
-msgstr "在使用 Redis 快取 Driver 時，若要正確地修建過時的快取 Tag，請在專案的 `App\\Console\\Kernel` 類別內[排程](/docs/{{version}}/scheduling)呼叫 Laravel 的 `cache:prune-stale-tags` Artisan 指令："
-
-#: docs/10.x/cache.md:block 123 (code)
-msgid "$schedule->command('cache:prune-stale-tags')->hourly();\n"
-msgstr "$schedule->command('cache:prune-stale-tags')->hourly();\n"
-
-#: docs/10.x/cache.md:block 125 (header)
 msgid "Atomic Locks"
 msgstr "Atomic Lock (不可部分完成的鎖定)"
 
-#: docs/10.x/cache.md:block 126 (quote)
+#: docs/10.x/cache.md:block 104 (quote)
 msgid "**Warning** To utilize this feature, your application must be using the `memcached`, `redis`, `dynamodb`, `database`, `file`, or `array` cache driver as your application's default cache driver. In addition, all servers must be communicating with the same central cache server."
 msgstr "**Warning** 若要使用此功能，則應用程式必須要使用 `memcached`, `redis`, `dynamodb`, `database`, `file` 或 `array` 作為應用程式的預設快取 Driver。另外，所有的伺服器也都必須要連線至相同的中央快取伺服器。"
 
-#: docs/10.x/cache.md:block 131 (paragraph)
+#: docs/10.x/cache.md:block 109 (paragraph)
 msgid "When using the `database` cache driver, you will need to setup a table to contain your application's cache locks. You'll find an example `Schema` declaration for the table below:"
 msgstr "在使用 `database` 快取 Driver 時，需要設定包含專案快取 Lock 的資料表。下列為範例的資料表 `Schema` 宣告："
 
-#: docs/10.x/cache.md:block 132 (code)
+#: docs/10.x/cache.md:block 110 (code)
 msgid "Schema::create('cache_locks', function (Blueprint $table) {\n"
 "    $table->string('key')->primary();\n"
 "    $table->string('owner');\n"
@@ -616,15 +530,19 @@ msgstr "Schema::create('cache_locks', function (Blueprint $table) {\n"
 "    $table->integer('expiration');\n"
 "});\n"
 
-#: docs/10.x/cache.md:block 134 (header)
+#: docs/10.x/cache.md:block 111 (quote)
+msgid "**Note** If you used the `cache:table` Artisan command to create the database driver's cache table, the migration created by that command already includes a definition for the `cache_locks` table."
+msgstr "**Note** 使用 `cache:table` Artisan 指令來建立資料庫 Driver 的快取資料表時，該指令所建立的 Migration 中已包含了 `cache_locks` 資料表的定義。"
+
+#: docs/10.x/cache.md:block 113 (header)
 msgid "Managing Locks"
 msgstr "管理 Lock"
 
-#: docs/10.x/cache.md:block 135 (paragraph)
+#: docs/10.x/cache.md:block 114 (paragraph)
 msgid "Atomic locks allow for the manipulation of distributed locks without worrying about race conditions. For example, [Laravel Forge](https://forge.laravel.com) uses atomic locks to ensure that only one remote task is being executed on a server at a time. You may create and manage locks using the `Cache::lock` method:"
 msgstr "使用 Atomic Lock (不可部分完成鎖定)，在操作與分配 Lock 時即可不需理會競爭條件 (Race Condition)。舉例來說，[Laravel Forge](https://forge.laravel.com) 使用 Atomic Lock 來確保在一台伺服器上一次只有一個遠端任務在執行。可以通過 `Cache::lock` 方法來建立與管理 Lock："
 
-#: docs/10.x/cache.md:block 136 (code)
+#: docs/10.x/cache.md:block 115 (code)
 msgid "use Illuminate\\Support\\Facades\\Cache;\n\n"
 "$lock = Cache::lock('foo', 10);\n\n"
 "if ($lock->get()) {\n"
@@ -638,11 +556,11 @@ msgstr "use Illuminate\\Support\\Facades\\Cache;\n\n"
 "    $lock->release();\n"
 "}\n"
 
-#: docs/10.x/cache.md:block 137 (paragraph)
+#: docs/10.x/cache.md:block 116 (paragraph)
 msgid "The `get` method also accepts a closure. After the closure is executed, Laravel will automatically release the lock:"
 msgstr "`get` 方法也接收一個閉包。在該閉包執行後，Laravel 會自動釋放 Lock："
 
-#: docs/10.x/cache.md:block 138 (code)
+#: docs/10.x/cache.md:block 117 (code)
 msgid "Cache::lock('foo', 10)->get(function () {\n"
 "    // Lock acquired for 10 seconds and automatically released...\n"
 "});\n"
@@ -650,11 +568,11 @@ msgstr "Cache::lock('foo', 10)->get(function () {\n"
 "    // 取得 10 秒的 Lock，然後自動釋放...\n"
 "});\n"
 
-#: docs/10.x/cache.md:block 139 (paragraph)
+#: docs/10.x/cache.md:block 118 (paragraph)
 msgid "If the lock is not available at the moment you request it, you may instruct Laravel to wait for a specified number of seconds. If the lock can not be acquired within the specified time limit, an `Illuminate\\Contracts\\Cache\\LockTimeoutException` will be thrown:"
 msgstr "若在要求時無法取得 Lock，則可以告訴 Laravel 要等待多少秒的事件。若在指定的時間限制後仍無法取得 Lock，則會擲回 `Illuminate\\Contracts\\Cache\\LockTimeoutException`："
 
-#: docs/10.x/cache.md:block 140 (code)
+#: docs/10.x/cache.md:block 119 (code)
 msgid "use Illuminate\\Contracts\\Cache\\LockTimeoutException;\n\n"
 "$lock = Cache::lock('foo', 10);\n\n"
 "try {\n"
@@ -663,7 +581,7 @@ msgid "use Illuminate\\Contracts\\Cache\\LockTimeoutException;\n\n"
 "} catch (LockTimeoutException $e) {\n"
 "    // Unable to acquire lock...\n"
 "} finally {\n"
-"    optional($lock)->release();\n"
+"    $lock?->release();\n"
 "}\n"
 msgstr "use Illuminate\\Contracts\\Cache\\LockTimeoutException;\n\n"
 "$lock = Cache::lock('foo', 10);\n\n"
@@ -673,14 +591,14 @@ msgstr "use Illuminate\\Contracts\\Cache\\LockTimeoutException;\n\n"
 "} catch (LockTimeoutException $e) {\n"
 "    // 無法取得 Lock...\n"
 "} finally {\n"
-"    optional($lock)->release();\n"
+"    $lock?->release();\n"
 "}\n"
 
-#: docs/10.x/cache.md:block 141 (paragraph)
+#: docs/10.x/cache.md:block 120 (paragraph)
 msgid "The example above may be simplified by passing a closure to the `block` method. When a closure is passed to this method, Laravel will attempt to acquire the lock for the specified number of seconds and will automatically release the lock once the closure has been executed:"
 msgstr "上述範例可以通過將閉包傳入 `block` 方法來簡化。當傳入閉包給該方法後，Laravel 會嘗試在指定秒數內取得 Lock，並在閉包執行後自動釋放 Lock："
 
-#: docs/10.x/cache.md:block 142 (code)
+#: docs/10.x/cache.md:block 121 (code)
 msgid "Cache::lock('foo', 10)->block(5, function () {\n"
 "    // Lock acquired after waiting a maximum of 5 seconds...\n"
 "});\n"
@@ -688,19 +606,19 @@ msgstr "Cache::lock('foo', 10)->block(5, function () {\n"
 "    // 等待最多 5 秒取得 Lock…\n"
 "});\n"
 
-#: docs/10.x/cache.md:block 144 (header)
+#: docs/10.x/cache.md:block 123 (header)
 msgid "Managing Locks Across Processes"
 msgstr "在多個處理程序間管理 Lock"
 
-#: docs/10.x/cache.md:block 145 (paragraph)
+#: docs/10.x/cache.md:block 124 (paragraph)
 msgid "Sometimes, you may wish to acquire a lock in one process and release it in another process. For example, you may acquire a lock during a web request and wish to release the lock at the end of a queued job that is triggered by that request. In this scenario, you should pass the lock's scoped \"owner token\" to the queued job so that the job can re-instantiate the lock using the given token."
 msgstr "有的時候我們可能想要在一個處理程序內要求 Lock，並在另一個處理程序中釋放。舉例來說，我們可能會在某個網頁請求的期間內要求 Lock，並在由該請求觸發的佇列任務完成後才釋放該 Lock。在此情境中，應將該 Lock 的區域性「擁有者權杖」傳給佇列任務，以讓佇列任務可以使用給定的權杖來重新取得 Lock。"
 
-#: docs/10.x/cache.md:block 146 (paragraph)
+#: docs/10.x/cache.md:block 125 (paragraph)
 msgid "In the example below, we will dispatch a queued job if a lock is successfully acquired. In addition, we will pass the lock's owner token to the queued job via the lock's `owner` method:"
 msgstr "在下方的範例中，我們會在成功取得 Lock 後分派佇列任務。另外，我們也會通過 Lock 的 `owner` 方法來將 Lock 的擁有者權杖傳給佇列任務。"
 
-#: docs/10.x/cache.md:block 147 (code)
+#: docs/10.x/cache.md:block 126 (code)
 msgid "$podcast = Podcast::find($id);\n\n"
 "$lock = Cache::lock('processing', 120);\n\n"
 "if ($lock->get()) {\n"
@@ -712,35 +630,35 @@ msgstr "$podcast = Podcast::find($id);\n\n"
 "    ProcessPodcast::dispatch($podcast, $lock->owner());\n"
 "}\n"
 
-#: docs/10.x/cache.md:block 148 (paragraph)
+#: docs/10.x/cache.md:block 127 (paragraph)
 msgid "Within our application's `ProcessPodcast` job, we can restore and release the lock using the owner token:"
 msgstr "在專案的 `ProcessPodcast` 任務中，我們可以通過擁有者權杖來恢復與釋放 Lock："
 
-#: docs/10.x/cache.md:block 149 (code)
+#: docs/10.x/cache.md:block 128 (code)
 msgid "Cache::restoreLock('processing', $this->owner)->release();\n"
 msgstr "Cache::restoreLock('processing', $this->owner)->release();\n"
 
-#: docs/10.x/cache.md:block 150 (paragraph)
+#: docs/10.x/cache.md:block 129 (paragraph)
 msgid "If you would like to release a lock without respecting its current owner, you may use the `forceRelease` method:"
 msgstr "若想在不理會目前擁有者的情況下釋放 Lock，可以使用 `forceRelease` 方法："
 
-#: docs/10.x/cache.md:block 151 (code)
+#: docs/10.x/cache.md:block 130 (code)
 msgid "Cache::lock('processing')->forceRelease();\n"
 msgstr "Cache::lock('processing')->forceRelease();\n"
 
-#: docs/10.x/cache.md:block 153 (header)
+#: docs/10.x/cache.md:block 132 (header)
 msgid "Adding Custom Cache Drivers"
 msgstr "新增自訂快取 Driver"
 
-#: docs/10.x/cache.md:block 155 (header)
+#: docs/10.x/cache.md:block 134 (header)
 msgid "Writing The Driver"
 msgstr "撰寫 Driver"
 
-#: docs/10.x/cache.md:block 156 (paragraph)
+#: docs/10.x/cache.md:block 135 (paragraph)
 msgid "To create our custom cache driver, we first need to implement the `Illuminate\\Contracts\\Cache\\Store` [contract](/docs/{{version}}/contracts). So, a MongoDB cache implementation might look something like this:"
 msgstr "若要建立自訂快取 Driver，首先必須實作 `Illuminate\\Contracts\\Cache\\Store` [Contract](/docs/{{version}}/contracts)。因此，一個 MongoDB 的快取實作看起來會長這樣："
 
-#: docs/10.x/cache.md:block 157 (code)
+#: docs/10.x/cache.md:block 136 (code)
 msgid "<?php\n\n"
 "namespace App\\Extensions;\n\n"
 "use Illuminate\\Contracts\\Cache\\Store;\n\n"
@@ -774,11 +692,11 @@ msgstr "<?php\n\n"
 "    public function getPrefix() {}\n"
 "}\n"
 
-#: docs/10.x/cache.md:block 158 (paragraph)
+#: docs/10.x/cache.md:block 137 (paragraph)
 msgid "We just need to implement each of these methods using a MongoDB connection. For an example of how to implement each of these methods, take a look at the `Illuminate\\Cache\\MemcachedStore` in the [Laravel framework source code](https://github.com/laravel/framework). Once our implementation is complete, we can finish our custom driver registration by calling the `Cache` facade's `extend` method:"
 msgstr "我們只需要通過 MongoDB 連線來實作其中的各個方法即可。有關如何實作這些方法，請參考 [Laravel 框架原始碼](https://github.com/laravel/framework) 中的 `Illuminate\\Cache\\MemcachedStore`。實作完成後，就可以呼叫 `Cache` Facade 的 `extend` 方法來註冊自訂 Driver："
 
-#: docs/10.x/cache.md:block 159 (code)
+#: docs/10.x/cache.md:block 138 (code)
 msgid "Cache::extend('mongo', function (Application $app) {\n"
 "    return Cache::repository(new MongoStore);\n"
 "});\n"
@@ -786,26 +704,26 @@ msgstr "Cache::extend('mongo', function (Application $app) {\n"
 "    return Cache::repository(new MongoStore);\n"
 "});\n"
 
-#: docs/10.x/cache.md:block 160 (quote)
+#: docs/10.x/cache.md:block 139 (quote)
 msgid "**Note** If you're wondering where to put your custom cache driver code, you could create an `Extensions` namespace within your `app` directory. However, keep in mind that Laravel does not have a rigid application structure and you are free to organize your application according to your preferences."
 msgstr "**Note** 若不知道該將自定快取 Driver 的程式碼放在哪裡，可在 `app` 目錄內建立一個 `Extensions` 命名空間。不過，請記得，Laravel 並沒有硬性規定應用程式的架構，你可以隨意依照你的喜好來阻止程式碼。"
 
-#: docs/10.x/cache.md:block 162 (header)
+#: docs/10.x/cache.md:block 141 (header)
 msgid "Registering The Driver"
 msgstr "註冊 Driver"
 
-#: docs/10.x/cache.md:block 163 (paragraph)
+#: docs/10.x/cache.md:block 142 (paragraph)
 msgid "To register the custom cache driver with Laravel, we will use the `extend` method on the `Cache` facade. Since other service providers may attempt to read cached values within their `boot` method, we will register our custom driver within a `booting` callback. By using the `booting` callback, we can ensure that the custom driver is registered just before the `boot` method is called on our application's service providers but after the `register` method is called on all of the service providers. We will register our `booting` callback within the `register` method of our application's `App\\Providers\\AppServiceProvider` class:"
 msgstr "若要向 Laravel 註冊自訂快取 Driver，可以使用 `Cache` Facade 上的 `extend` 方法。由於其他的 Service Provider 可能會嘗試在 `boot` 方法內讀取快取值，因此我們需要將自訂 Driver 註冊在 `booting` 回呼內。只要使用了 `booting` 回呼，就能確保自訂回呼是在其他 Service Provider 的 `boot` 方法被呼叫前、以及 `App\\Providers\\AppServiceProvider` 類別的 `register` 方法被呼叫前被註冊的。我們會將 `booting` 回呼放在專案的 `App\\Providers\\AppServiceProvider` 類別中的 `register` 方法內："
 
-#: docs/10.x/cache.md:block 164 (code)
+#: docs/10.x/cache.md:block 143 (code)
 msgid "<?php\n\n"
 "namespace App\\Providers;\n\n"
 "use App\\Extensions\\MongoStore;\n"
 "use Illuminate\\Contracts\\Foundation\\Application;\n"
 "use Illuminate\\Support\\Facades\\Cache;\n"
 "use Illuminate\\Support\\ServiceProvider;\n\n"
-"class CacheServiceProvider extends ServiceProvider\n"
+"class AppServiceProvider extends ServiceProvider\n"
 "{\n"
 "    /**\n"
 "     * Register any application services.\n"
@@ -832,7 +750,7 @@ msgstr "<?php\n\n"
 "use Illuminate\\Contracts\\Foundation\\Application;\n"
 "use Illuminate\\Support\\Facades\\Cache;\n"
 "use Illuminate\\Support\\ServiceProvider;\n\n"
-"class CacheServiceProvider extends ServiceProvider\n"
+"class AppServiceProvider extends ServiceProvider\n"
 "{\n"
 "    /**\n"
 "     * Register any application services.\n"
@@ -854,23 +772,23 @@ msgstr "<?php\n\n"
 "    }\n"
 "}\n"
 
-#: docs/10.x/cache.md:block 165 (paragraph)
+#: docs/10.x/cache.md:block 144 (paragraph)
 msgid "The first argument passed to the `extend` method is the name of the driver. This will correspond to your `driver` option in the `config/cache.php` configuration file. The second argument is a closure that should return an `Illuminate\\Cache\\Repository` instance. The closure will be passed an `$app` instance, which is an instance of the [service container](/docs/{{version}}/container)."
 msgstr "傳入 `extend` 方法的第一個引數為 Driver 的名稱。這個名稱應對應到 `config/cache.php` 設定檔中的 `driver` 選項。第二個引數則是一個應回傳 `Illuminate\\Cache\\Repository` 實體的閉包。該閉包會被傳入一個 `$app` 實體，即為 [Service Container](/docs/{{version}}/container) 的實體。"
 
-#: docs/10.x/cache.md:block 166 (paragraph)
+#: docs/10.x/cache.md:block 145 (paragraph)
 msgid "Once your extension is registered, update your `config/cache.php` configuration file's `driver` option to the name of your extension."
 msgstr "註冊好擴充程式後，就可以將 `config/cache.php` 設定檔中的 `driver` 選項更新為擴充程式的名稱。"
 
-#: docs/10.x/cache.md:block 168 (header)
+#: docs/10.x/cache.md:block 147 (header)
 msgid "Events"
 msgstr "事件"
 
-#: docs/10.x/cache.md:block 169 (paragraph)
+#: docs/10.x/cache.md:block 148 (paragraph)
 msgid "To execute code on every cache operation, you may listen for the [events](/docs/{{version}}/events) fired by the cache. Typically, you should place these event listeners within your application's `App\\Providers\\EventServiceProvider` class:"
 msgstr "若要在每個快取操作時執行程式碼，可以監聽快取所觸發的[事件](/docs/{{version}}/events)。一般來說，這些事件監聽程式應放置於專案的 `App\\Providers\\EventServiceProvider` 類別："
 
-#: docs/10.x/cache.md:block 170 (code)
+#: docs/10.x/cache.md:block 149 (code)
 msgid "use App\\Listeners\\LogCacheHit;\n"
 "use App\\Listeners\\LogCacheMissed;\n"
 "use App\\Listeners\\LogKeyForgotten;\n"
@@ -925,6 +843,22 @@ msgstr "use App\\Listeners\\LogCacheHit;\n"
 "        LogKeyWritten::class,\n"
 "    ],\n"
 "];\n"
+
+#: docs/8.x/cache.md:block 2 (unordered list)
+msgid "[Cache Tags](#cache-tags)"
+msgstr "[Cache 標籤](#cache-tags)"
+
+#: docs/8.x/cache.md:block 2 (unordered list)
+msgid "[Storing Tagged Cache Items](#storing-tagged-cache-items)"
+msgstr "[保存有標籤的 Cache 項目](#storing-tagged-cache-items)"
+
+#: docs/8.x/cache.md:block 2 (unordered list)
+msgid "[Accessing Tagged Cache Items](#accessing-tagged-cache-items)"
+msgstr "[存取有標籤的 Cache 項目](#accessing-tagged-cache-items)"
+
+#: docs/8.x/cache.md:block 2 (unordered list)
+msgid "[Removing Tagged Cache Items](#removing-tagged-cache-items)"
+msgstr "[移除有標籤的 Cache 項目](#removing-tagged-cache-items)"
 
 #: docs/8.x/cache.md:block 15 (paragraph)
 msgid "When using the `database` cache driver, you will need to setup a table to contain the cache items. You'll find an example `Schema` declaration for the table below:"
@@ -996,6 +930,16 @@ msgstr "if (Cache::has('key')) {\n"
 "    //\n"
 "}\n"
 
+#: docs/8.x/cache.md:block 55 (code)
+msgid "Cache::increment('key');\n"
+"Cache::increment('key', $amount);\n"
+"Cache::decrement('key');\n"
+"Cache::decrement('key', $amount);\n"
+msgstr "Cache::increment('key');\n"
+"Cache::increment('key', $amount);\n"
+"Cache::decrement('key');\n"
+"Cache::decrement('key', $amount);\n"
+
 #: docs/8.x/cache.md:block 83 (quote)
 msgid "{tip} If you are using the Memcached driver, items that are stored \"forever\" may be removed when the cache reaches its size limit."
 msgstr "{tip} 若使用 Memcached Driver，使用「forever」儲存的項目可能會在快取達到大小限制時被移除。"
@@ -1008,13 +952,61 @@ msgstr "{note} 使用 Flush 移除快取並不理會所設定的快取「前綴�
 msgid "{tip} When testing call to the global `cache` function, you may use the `Cache::shouldReceive` method just as if you were [testing the facade](/docs/{{version}}/mocking#mocking-facades)."
 msgstr "{tip} 在測試呼叫全域的 `cache` 函式時，可以像在[測試 Facade](/docs/{{version}}/mocking#mocking-facades)一樣，使用 `Cache::shouldReceive` 方法。"
 
+#: docs/8.x/cache.md:block 103 (header)
+msgid "Cache Tags"
+msgstr "快取標籤"
+
 #: docs/8.x/cache.md:block 104 (quote)
 msgid "{note} Cache tags are not supported when using the `file`, `dynamodb`, or `database` cache drivers. Furthermore, when using multiple tags with caches that are stored \"forever\", performance will be best with a driver such as `memcached`, which automatically purges stale records."
 msgstr "{note} 使用 `file`, `dynamodb` 或 `database` 快取 Driver 時，不支援使用快取標籤。此外，在以「forever」儲存的快取上使用多重標籤時，搭配 `memcached` Driver 能取得最佳效能，這些 Driver 通常會自動移除舊的記錄。"
 
+#: docs/8.x/cache.md:block 106 (header)
+msgid "Storing Tagged Cache Items"
+msgstr "儲存標籤的快取項目"
+
+#: docs/8.x/cache.md:block 107 (paragraph)
+msgid "Cache tags allow you to tag related items in the cache and then flush all cached values that have been assigned a given tag. You may access a tagged cache by passing in an ordered array of tag names. For example, let's access a tagged cache and `put` a value into the cache:"
+msgstr "快取標籤能讓你將快取內相關的項目標記在一起，並能將所有被指派到相同標籤的快取值一起被清除。可以通過傳入包含標籤名稱的有序陣列來存取標籤快取。舉例來說，我們來存取一個被標籤的快取，並將一個值 `put` 進快取內："
+
+#: docs/8.x/cache.md:block 108 (code)
+msgid "Cache::tags(['people', 'artists'])->put('John', $john, $seconds);\n\n"
+"Cache::tags(['people', 'authors'])->put('Anne', $anne, $seconds);\n"
+msgstr "Cache::tags(['people', 'artists'])->put('John', $john, $seconds);\n\n"
+"Cache::tags(['people', 'authors'])->put('Anne', $anne, $seconds);\n"
+
+#: docs/8.x/cache.md:block 110 (header)
+msgid "Accessing Tagged Cache Items"
+msgstr "存取標籤的快取項目"
+
 #: docs/8.x/cache.md:block 111 (paragraph)
 msgid "To retrieve a tagged cache item, pass the same ordered list of tags to the `tags` method and then call the `get` method with the key you wish to retrieve:"
 msgstr "若要取得標籤的快取項目，可傳入相同的包含標籤的有序列表至 `tags` 方法內，並接著以欲存取的索引鍵來呼叫 `get` 方法："
+
+#: docs/8.x/cache.md:block 112 (code)
+msgid "$john = Cache::tags(['people', 'artists'])->get('John');\n\n"
+"$anne = Cache::tags(['people', 'authors'])->get('Anne');\n"
+msgstr "$john = Cache::tags(['people', 'artists'])->get('John');\n\n"
+"$anne = Cache::tags(['people', 'authors'])->get('Anne');\n"
+
+#: docs/8.x/cache.md:block 114 (header)
+msgid "Removing Tagged Cache Items"
+msgstr "移除標籤的快取項目"
+
+#: docs/8.x/cache.md:block 115 (paragraph)
+msgid "You may flush all items that are assigned a tag or list of tags. For example, this statement would remove all caches tagged with either `people`, `authors`, or both. So, both `Anne` and `John` would be removed from the cache:"
+msgstr "可以移除有被設定一個或多個標籤的項目。舉例來說，這個陳述式可以移除所有被設為 `people`、`authors`、或是同時有這兩個標籤的快取。因此，`Anne` 與 `John` 都會被從快取內移除："
+
+#: docs/8.x/cache.md:block 116 (code)
+msgid "Cache::tags(['people', 'authors'])->flush();\n"
+msgstr "Cache::tags(['people', 'authors'])->flush();\n"
+
+#: docs/8.x/cache.md:block 117 (paragraph)
+msgid "In contrast, this statement would remove only cached values tagged with `authors`, so `Anne` would be removed, but not `John`:"
+msgstr "與之相比，下列這個陳述式只會移除被標記為 `authors` 的快取值，因此 `Anne` 會被移除，而 `John` 則不會："
+
+#: docs/8.x/cache.md:block 118 (code)
+msgid "Cache::tags('authors')->flush();\n"
+msgstr "Cache::tags('authors')->flush();\n"
 
 #: docs/8.x/cache.md:block 121 (quote)
 msgid "{note} To utilize this feature, your application must be using the `memcached`, `redis`, `dynamodb`, `database`, `file`, or `array` cache driver as your application's default cache driver. In addition, all servers must be communicating with the same central cache server."
@@ -1039,6 +1031,28 @@ msgid "Cache::lock('foo')->get(function () {\n"
 msgstr "Cache::lock('foo')->get(function () {\n"
 "    // 立刻要求 Lock 並自動釋放……\n"
 "});\n"
+
+#: docs/8.x/cache.md:block 135 (code)
+msgid "use Illuminate\\Contracts\\Cache\\LockTimeoutException;\n\n"
+"$lock = Cache::lock('foo', 10);\n\n"
+"try {\n"
+"    $lock->block(5);\n\n"
+"    // Lock acquired after waiting a maximum of 5 seconds...\n"
+"} catch (LockTimeoutException $e) {\n"
+"    // Unable to acquire lock...\n"
+"} finally {\n"
+"    optional($lock)->release();\n"
+"}\n"
+msgstr "use Illuminate\\Contracts\\Cache\\LockTimeoutException;\n\n"
+"$lock = Cache::lock('foo', 10);\n\n"
+"try {\n"
+"    $lock->block(5);\n\n"
+"    // 等待最多 5 秒取得 Lock...\n"
+"} catch (LockTimeoutException $e) {\n"
+"    // 無法取得 Lock...\n"
+"} finally {\n"
+"    optional($lock)->release();\n"
+"}\n"
 
 #: docs/8.x/cache.md:block 154 (code)
 msgid "Cache::extend('mongo', function ($app) {\n"
@@ -1153,4 +1167,88 @@ msgstr "/**\n"
 "        'App\\Listeners\\LogKeyWritten',\n"
 "    ],\n"
 "];\n"
+
+#: docs/9.x/cache.md:block 104 (quote)
+msgid "**Warning** Cache tags are not supported when using the `file`, `dynamodb`, or `database` cache drivers. Furthermore, when using multiple tags with caches that are stored \"forever\", performance will be best with a driver such as `memcached`, which automatically purges stale records."
+msgstr "**Warning** 使用 `file`, `dynamodb` 或 `database` 快取 Driver 時，不支援使用快取標籤。此外，在以「forever」儲存的快取上使用多重標籤時，搭配 `memcached` Driver 能取得最佳效能，這些 Driver 通常會自動移除舊的記錄。"
+
+#: docs/9.x/cache.md:block 111 (paragraph)
+msgid "Items stored via tags may not be accessed without also providing the tags that were used to store the value. To retrieve a tagged cache item, pass the same ordered list of tags to the `tags` method and then call the `get` method with the key you wish to retrieve:"
+msgstr "若沒有提供與保存項目時所指定的相同 Tag，就無法存取這些項目。若要取得待 Tag 的快取項目，請將相同的 Tag 以相同的順序傳入給 `tags` 方法，然後再以指定的索引鍵來呼叫 `get` 方法："
+
+#: docs/master/cache.md:block 2 (unordered list)
+msgid "[Pruning Stale Cache Tags](#pruning-stale-cache-tags)"
+msgstr "[修建過時的快取 Tag](#pruning-stale-cache-tags)"
+
+#: docs/master/cache.md:block 120 (header)
+msgid "Pruning Stale Cache Tags"
+msgstr "修建過時的快取 Tag"
+
+#: docs/master/cache.md:block 121 (quote)
+msgid "**Warning** Pruning stale cache tags is only necessary when using Redis as your application's cache driver."
+msgstr "**Warning** 只有當專案使用 Redis 作為快取 Driver 時，才需要修建過時的快取 Tag。"
+
+#: docs/master/cache.md:block 122 (paragraph)
+msgid "In order to properly prune stale cache tag entries when using the Redis cache driver, Laravel's `cache:prune-stale-tags` Artisan command should be [scheduled](/docs/{{version}}/scheduling) in your application's `App\\Console\\Kernel` class:"
+msgstr "在使用 Redis 快取 Driver 時，若要正確地修建過時的快取 Tag，請在專案的 `App\\Console\\Kernel` 類別內[排程](/docs/{{version}}/scheduling)呼叫 Laravel 的 `cache:prune-stale-tags` Artisan 指令："
+
+#: docs/master/cache.md:block 123 (code)
+msgid "$schedule->command('cache:prune-stale-tags')->hourly();\n"
+msgstr "$schedule->command('cache:prune-stale-tags')->hourly();\n"
+
+#: docs/master/cache.md:block 164 (code)
+msgid "<?php\n\n"
+"namespace App\\Providers;\n\n"
+"use App\\Extensions\\MongoStore;\n"
+"use Illuminate\\Contracts\\Foundation\\Application;\n"
+"use Illuminate\\Support\\Facades\\Cache;\n"
+"use Illuminate\\Support\\ServiceProvider;\n\n"
+"class CacheServiceProvider extends ServiceProvider\n"
+"{\n"
+"    /**\n"
+"     * Register any application services.\n"
+"     */\n"
+"    public function register(): void\n"
+"    {\n"
+"        $this->app->booting(function () {\n"
+"             Cache::extend('mongo', function (Application $app) {\n"
+"                 return Cache::repository(new MongoStore);\n"
+"             });\n"
+"         });\n"
+"    }\n\n"
+"    /**\n"
+"     * Bootstrap any application services.\n"
+"     */\n"
+"    public function boot(): void\n"
+"    {\n"
+"        // ...\n"
+"    }\n"
+"}\n"
+msgstr "<?php\n\n"
+"namespace App\\Providers;\n\n"
+"use App\\Extensions\\MongoStore;\n"
+"use Illuminate\\Contracts\\Foundation\\Application;\n"
+"use Illuminate\\Support\\Facades\\Cache;\n"
+"use Illuminate\\Support\\ServiceProvider;\n\n"
+"class CacheServiceProvider extends ServiceProvider\n"
+"{\n"
+"    /**\n"
+"     * Register any application services.\n"
+"     */\n"
+"    public function register(): void\n"
+"    {\n"
+"        $this->app->booting(function () {\n"
+"             Cache::extend('mongo', function (Application $app) {\n"
+"                 return Cache::repository(new MongoStore);\n"
+"             });\n"
+"         });\n"
+"    }\n\n"
+"    /**\n"
+"     * Bootstrap any application services.\n"
+"     */\n"
+"    public function boot(): void\n"
+"    {\n"
+"        // ...\n"
+"    }\n"
+"}\n"
 

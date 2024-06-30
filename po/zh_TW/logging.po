@@ -10,7 +10,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
-"PO-Revision-Date: 2023-02-11 10:27\n"
+"PO-Revision-Date: 2024-06-30 08:27\n"
 
 #: docs/10.x/logging.md:block 1 (header)
 msgid "Logging"
@@ -89,7 +89,7 @@ msgid "Configuration"
 msgstr "設定"
 
 #: docs/10.x/logging.md:block 10 (paragraph)
-msgid "All of the configuration options for your application's logging behavior is housed in the `config/logging.php` configuration file. This file allows you to configure your application's log channels, so be sure to review each of the available channels and their options. We'll review a few common options below."
+msgid "All of the configuration options for your application's logging behavior are housed in the `config/logging.php` configuration file. This file allows you to configure your application's log channels, so be sure to review each of the available channels and their options. We'll review a few common options below."
 msgstr "用於設定程式日誌行為的設定選項都放在 `config/logging.php` 設定檔中。我們可以使用這個檔案來設定專案的日誌通道，因此建議你瞭解一下各個可用的通道與其對應的選項。稍後我們會來討論一些常見的選項。"
 
 #: docs/10.x/logging.md:block 11 (paragraph)
@@ -163,14 +163,6 @@ msgstr "`monolog`"
 #: docs/10.x/logging.md:block 20 (table)
 msgid "A Monolog factory driver that may use any supported Monolog handler"
 msgstr "可使用任意支援的 Monolog Handler 之 Monolog Factory Driver"
-
-#: docs/10.x/logging.md:block 20 (table)
-msgid "`null`"
-msgstr "`null`"
-
-#: docs/10.x/logging.md:block 20 (table)
-msgid "A driver that discards all log messages"
-msgstr "會取消所有 Log 訊息的 Driver"
 
 #: docs/10.x/logging.md:block 20 (table)
 msgid "`papertrail`"
@@ -458,7 +450,7 @@ msgid "<?php\n\n"
 "     */\n"
 "    public function show(string $id): View\n"
 "    {\n"
-"        Log::info('Showing the user profile for user: '.$id);\n\n"
+"        Log::info('Showing the user profile for user: {id}', ['id' => $id]);\n\n"
 "        return view('user.profile', [\n"
 "            'user' => User::findOrFail($id)\n"
 "        ]);\n"
@@ -477,7 +469,7 @@ msgstr "<?php\n\n"
 "     */\n"
 "    public function show(string $id): View\n"
 "    {\n"
-"        Log::info('Showing the user profile for user: '.$id);\n\n"
+"        Log::info('Showing the user profile for user: {id}', ['id' => $id]);\n\n"
 "        return view('user.profile', [\n"
 "            'user' => User::findOrFail($id)\n"
 "        ]);\n"
@@ -494,9 +486,9 @@ msgstr "可以傳入一組包含^[上下文資料](Contextual Data)的陣列給�
 
 #: docs/10.x/logging.md:block 69 (code)
 msgid "use Illuminate\\Support\\Facades\\Log;\n\n"
-"Log::info('User failed to login.', ['id' => $user->id]);\n"
+"Log::info('User {id} failed to login.', ['id' => $user->id]);\n"
 msgstr "use Illuminate\\Support\\Facades\\Log;\n\n"
-"Log::info('User failed to login.', ['id' => $user->id]);\n"
+"Log::info('User {id} failed to login.', ['id' => $user->id]);\n"
 
 #: docs/10.x/logging.md:block 70 (paragraph)
 msgid "Occasionally, you may wish to specify some contextual information that should be included with all subsequent log entries in a particular channel. For example, you may wish to log a request ID that is associated with each incoming request to your application. To accomplish this, you may call the `Log` facade's `withContext` method:"
@@ -523,7 +515,9 @@ msgid "<?php\n\n"
 "        Log::withContext([\n"
 "            'request-id' => $requestId\n"
 "        ]);\n\n"
-"        return $next($request)->header('Request-Id', $requestId);\n"
+"        $response = $next($request);\n\n"
+"        $response->headers->set('Request-Id', $requestId);\n\n"
+"        return $response;\n"
 "    }\n"
 "}\n"
 msgstr "<?php\n\n"
@@ -546,7 +540,9 @@ msgstr "<?php\n\n"
 "        Log::withContext([\n"
 "            'request-id' => $requestId\n"
 "        ]);\n\n"
-"        return $next($request)->header('Request-Id', $requestId);\n"
+"        $response = $next($request);\n\n"
+"        $response->headers->set('Request-Id', $requestId);\n\n"
+"        return $response;\n"
 "    }\n"
 "}\n"
 
@@ -793,14 +789,60 @@ msgstr "'newrelic' => [\n"
 "],\n"
 
 #: docs/10.x/logging.md:block 108 (header)
+msgid "Monolog Processors"
+msgstr "Monolog Processor"
+
+#: docs/10.x/logging.md:block 109 (paragraph)
+msgid "Monolog can also process messages before logging them. You can create your own processors or use the [existing processors offered by Monolog](https://github.com/Seldaek/monolog/tree/main/src/Monolog/Processor)."
+msgstr "Monolog 也可以在訊息被寫入 Log 前先處理訊息。你可以自行建立 Processor，或是使用 [Monolog 提供的現有 Processor](https://github.com/Seldaek/monolog/tree/main/src/Monolog/Processor)。"
+
+#: docs/10.x/logging.md:block 110 (paragraph)
+msgid "If you would like to customize the processors for a `monolog` driver, add a `processors` configuration value to your channel's configuration:"
+msgstr "若想為 `monolog` Driver 自定 Processor，請在 Channel 的設定中新增 `processors` 設定值："
+
+#: docs/10.x/logging.md:block 111 (code)
+msgid " 'memory' => [\n"
+"     'driver' => 'monolog',\n"
+"     'handler' => Monolog\\Handler\\StreamHandler::class,\n"
+"     'with' => [\n"
+"         'stream' => 'php://stderr',\n"
+"     ],\n"
+"     'processors' => [\n"
+"         // Simple syntax...\n"
+"         Monolog\\Processor\\MemoryUsageProcessor::class,\n\n"
+"         // With options...\n"
+"         [\n"
+"            'processor' => Monolog\\Processor\\PsrLogMessageProcessor::class,\n"
+"            'with' => ['removeUsedContextFields' => true],\n"
+"        ],\n"
+"     ],\n"
+" ],\n"
+msgstr " 'memory' => [\n"
+"     'driver' => 'monolog',\n"
+"     'handler' => Monolog\\Handler\\StreamHandler::class,\n"
+"     'with' => [\n"
+"         'stream' => 'php://stderr',\n"
+"     ],\n"
+"     'processors' => [\n"
+"         // 簡易語法...\n"
+"         Monolog\\Processor\\MemoryUsageProcessor::class,\n\n"
+"         // 包含選項...\n"
+"         [\n"
+"            'processor' => Monolog\\Processor\\PsrLogMessageProcessor::class,\n"
+"            'with' => ['removeUsedContextFields' => true],\n"
+"        ],\n"
+"     ],\n"
+" ],\n"
+
+#: docs/10.x/logging.md:block 113 (header)
 msgid "Creating Custom Channels Via Factories"
 msgstr "使用 Factory 來建立自訂通道"
 
-#: docs/10.x/logging.md:block 109 (paragraph)
+#: docs/10.x/logging.md:block 114 (paragraph)
 msgid "If you would like to define an entirely custom channel in which you have full control over Monolog's instantiation and configuration, you may specify a `custom` driver type in your `config/logging.php` configuration file. Your configuration should include a `via` option that contains the name of the factory class which will be invoked to create the Monolog instance:"
 msgstr "若想定義整個自訂通道來完整控制 Monolog 的初始化與設定，則可在 `config/logging.php` 設定檔中使用 `custom` Driver。設定中應包含一個 `via` 選項來包含建立 Monolog 實體時要叫用的 ^[Factory](工廠) 類別名稱："
 
-#: docs/10.x/logging.md:block 110 (code)
+#: docs/10.x/logging.md:block 115 (code)
 msgid "'channels' => [\n"
 "    'example-custom-channel' => [\n"
 "        'driver' => 'custom',\n"
@@ -814,11 +856,11 @@ msgstr "'channels' => [\n"
 "    ],\n"
 "],\n"
 
-#: docs/10.x/logging.md:block 111 (paragraph)
+#: docs/10.x/logging.md:block 116 (paragraph)
 msgid "Once you have configured the `custom` driver channel, you're ready to define the class that will create your Monolog instance. This class only needs a single `__invoke` method which should return the Monolog logger instance. The method will receive the channels configuration array as its only argument:"
 msgstr "設定好 `custom` Driver 通道後，就可以開始定義用來建立 Monolog 實體的類別了。這個類別只需要有一個 `__invoke` 方法就好了，該方法應回傳 Monolog ^[Logger](日誌程式)的實體。`__invoke` 方法會收到一個引數，即為該通道的設定陣列："
 
-#: docs/10.x/logging.md:block 112 (code)
+#: docs/10.x/logging.md:block 117 (code)
 msgid "<?php\n\n"
 "namespace App\\Logging;\n\n"
 "use Monolog\\Logger;\n\n"
@@ -845,6 +887,18 @@ msgstr "<?php\n\n"
 "        return new Logger(/* ... */);\n"
 "    }\n"
 "}\n"
+
+#: docs/8.x/logging.md:block 10 (paragraph)
+msgid "All of the configuration options for your application's logging behavior is housed in the `config/logging.php` configuration file. This file allows you to configure your application's log channels, so be sure to review each of the available channels and their options. We'll review a few common options below."
+msgstr "用於設定程式日誌行為的設定選項都放在 `config/logging.php` 設定檔中。我們可以使用這個檔案來設定專案的日誌通道，因此建議你瞭解一下各個可用的通道與其對應的選項。稍後我們會來討論一些常見的選項。"
+
+#: docs/8.x/logging.md:block 19 (table)
+msgid "`null`"
+msgstr "`null`"
+
+#: docs/8.x/logging.md:block 19 (table)
+msgid "A driver that discards all log messages"
+msgstr "會取消所有 Log 訊息的 Driver"
 
 #: docs/8.x/logging.md:block 20 (quote)
 msgid "{tip} Check out the documentation on [advanced channel customization](#monolog-channel-customization) to learn more about the `monolog` and `custom` drivers."
@@ -897,6 +951,12 @@ msgstr "<?php\n\n"
 "        ]);\n"
 "    }\n"
 "}\n"
+
+#: docs/8.x/logging.md:block 61 (code)
+msgid "use Illuminate\\Support\\Facades\\Log;\n\n"
+"Log::info('User failed to login.', ['id' => $user->id]);\n"
+msgstr "use Illuminate\\Support\\Facades\\Log;\n\n"
+"Log::info('User failed to login.', ['id' => $user->id]);\n"
 
 #: docs/8.x/logging.md:block 62 (paragraph)
 msgid "Occasionally, you may wish to specify some contextual information that should be included with all subsequent log entries. For example, you may wish to log a request ID that is associated with each incoming request to your application. To accomplish this, you may call the `Log` facade's `withContext` method:"
@@ -1095,6 +1155,94 @@ msgstr "<?php\n\n"
 "    public function __invoke(array $config)\n"
 "    {\n"
 "        return new Logger(/* ... */);\n"
+"    }\n"
+"}\n"
+
+#: docs/master/logging.md:block 65 (code)
+msgid "<?php\n\n"
+"namespace App\\Http\\Controllers;\n\n"
+"use App\\Http\\Controllers\\Controller;\n"
+"use App\\Models\\User;\n"
+"use Illuminate\\Support\\Facades\\Log;\n"
+"use Illuminate\\View\\View;\n\n"
+"class UserController extends Controller\n"
+"{\n"
+"    /**\n"
+"     * Show the profile for the given user.\n"
+"     */\n"
+"    public function show(string $id): View\n"
+"    {\n"
+"        Log::info('Showing the user profile for user: '.$id);\n\n"
+"        return view('user.profile', [\n"
+"            'user' => User::findOrFail($id)\n"
+"        ]);\n"
+"    }\n"
+"}\n"
+msgstr "<?php\n\n"
+"namespace App\\Http\\Controllers;\n\n"
+"use App\\Http\\Controllers\\Controller;\n"
+"use App\\Models\\User;\n"
+"use Illuminate\\Support\\Facades\\Log;\n"
+"use Illuminate\\View\\View;\n\n"
+"class UserController extends Controller\n"
+"{\n"
+"    /**\n"
+"     * Show the profile for the given user.\n"
+"     */\n"
+"    public function show(string $id): View\n"
+"    {\n"
+"        Log::info('Showing the user profile for user: '.$id);\n\n"
+"        return view('user.profile', [\n"
+"            'user' => User::findOrFail($id)\n"
+"        ]);\n"
+"    }\n"
+"}\n"
+
+#: docs/master/logging.md:block 71 (code)
+msgid "<?php\n\n"
+"namespace App\\Http\\Middleware;\n\n"
+"use Closure;\n"
+"use Illuminate\\Http\\Request;\n"
+"use Illuminate\\Support\\Facades\\Log;\n"
+"use Illuminate\\Support\\Str;\n"
+"use Symfony\\Component\\HttpFoundation\\Response;\n\n"
+"class AssignRequestId\n"
+"{\n"
+"    /**\n"
+"     * Handle an incoming request.\n"
+"     *\n"
+"     * @param  \\Closure(\\Illuminate\\Http\\Request): (\\Symfony\\Component\\HttpFoundation\\Response)  $next\n"
+"     */\n"
+"    public function handle(Request $request, Closure $next): Response\n"
+"    {\n"
+"        $requestId = (string) Str::uuid();\n\n"
+"        Log::withContext([\n"
+"            'request-id' => $requestId\n"
+"        ]);\n\n"
+"        return $next($request)->header('Request-Id', $requestId);\n"
+"    }\n"
+"}\n"
+msgstr "<?php\n\n"
+"namespace App\\Http\\Middleware;\n\n"
+"use Closure;\n"
+"use Illuminate\\Http\\Request;\n"
+"use Illuminate\\Support\\Facades\\Log;\n"
+"use Illuminate\\Support\\Str;\n"
+"use Symfony\\Component\\HttpFoundation\\Response;\n\n"
+"class AssignRequestId\n"
+"{\n"
+"    /**\n"
+"     * Handle an incoming request.\n"
+"     *\n"
+"     * @param  \\Closure(\\Illuminate\\Http\\Request): (\\Symfony\\Component\\HttpFoundation\\Response)  $next\n"
+"     */\n"
+"    public function handle(Request $request, Closure $next): Response\n"
+"    {\n"
+"        $requestId = (string) Str::uuid();\n\n"
+"        Log::withContext([\n"
+"            'request-id' => $requestId\n"
+"        ]);\n\n"
+"        return $next($request)->header('Request-Id', $requestId);\n"
 "    }\n"
 "}\n"
 

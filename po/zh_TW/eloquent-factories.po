@@ -10,7 +10,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
-"PO-Revision-Date: 2023-02-11 10:28\n"
+"PO-Revision-Date: 2024-06-30 08:27\n"
 
 #: docs/10.x/eloquent-factories.md:block 1 (header)
 msgid "Eloquent: Factories"
@@ -201,7 +201,7 @@ msgstr "use Illuminate\\Database\\Eloquent\\Factories\\Factory;\n"
 "}\n"
 
 #: docs/10.x/eloquent-factories.md:block 23 (paragraph)
-msgid "Next, define a `model` property on the corresponding factory:"
+msgid "Then, define a `model` property on the corresponding factory:"
 msgstr "接著，在對應的 Factory 上定義一個 `model` 屬性："
 
 #: docs/10.x/eloquent-factories.md:block 24 (code)
@@ -212,7 +212,7 @@ msgid "use App\\Administration\\Flight;\n"
 "    /**\n"
 "     * The name of the factory's corresponding model.\n"
 "     *\n"
-"     * @var string\n"
+"     * @var class-string<\\Illuminate\\Database\\Eloquent\\Model>\n"
 "     */\n"
 "    protected $model = Flight::class;\n"
 "}\n"
@@ -223,7 +223,7 @@ msgstr "use App\\Administration\\Flight;\n"
 "    /**\n"
 "     * The name of the factory's corresponding model.\n"
 "     *\n"
-"     * @var string\n"
+"     * @var class-string<\\Illuminate\\Database\\Eloquent\\Model>\n"
 "     */\n"
 "    protected $model = Flight::class;\n"
 "}\n"
@@ -266,39 +266,36 @@ msgstr "use Illuminate\\Database\\Eloquent\\Factories\\Factory;\n\n"
 "    });\n"
 "}\n"
 
-#: docs/10.x/eloquent-factories.md:block 30 (header)
+#: docs/10.x/eloquent-factories.md:block 31 (header)
 msgid "\"Trashed\" State"
 msgstr "「^[Trashed](已刪除)」State"
 
-#: docs/10.x/eloquent-factories.md:block 31 (paragraph)
+#: docs/10.x/eloquent-factories.md:block 32 (paragraph)
 msgid "If your Eloquent model can be [soft deleted](/docs/{{version}}/eloquent#soft-deleting), you may invoke the built-in `trashed` state method to indicate that the created model should already be \"soft deleted\". You do not need to manually define the `trashed` state as it is automatically available to all factories:"
 msgstr "若 Eloquent Model 有開啟[軟刪除](/docs/{{version}}/eloquent#soft-deleting)功能，則我們可以叫用內建的 `trashed` State 方法來代表要建立的 Model 應被標記為「已軟刪除」。所有的 Factory 都自動擁有該方法，因此不需手動定義 `trashed` State："
 
-#: docs/10.x/eloquent-factories.md:block 32 (code)
+#: docs/10.x/eloquent-factories.md:block 33 (code)
 msgid "use App\\Models\\User;\n\n"
 "$user = User::factory()->trashed()->create();\n"
 msgstr "use App\\Models\\User;\n\n"
 "$user = User::factory()->trashed()->create();\n"
 
-#: docs/10.x/eloquent-factories.md:block 34 (header)
+#: docs/10.x/eloquent-factories.md:block 35 (header)
 msgid "Factory Callbacks"
 msgstr "Factory 回呼"
 
-#: docs/10.x/eloquent-factories.md:block 35 (paragraph)
+#: docs/10.x/eloquent-factories.md:block 36 (paragraph)
 msgid "Factory callbacks are registered using the `afterMaking` and `afterCreating` methods and allow you to perform additional tasks after making or creating a model. You should register these callbacks by defining a `configure` method on your factory class. This method will be automatically called by Laravel when the factory is instantiated:"
 msgstr "Factory 回呼使用 `afterMaking` 與 `afterCreating` 方法來註冊，能讓你在產生或建立 Model 時執行額外的任務。要註冊這些回呼，應在 Factory 類別上定義一個 `configure` 方法。Laravel 會在 Factory 初始化後自動呼叫這個方法："
 
-#: docs/10.x/eloquent-factories.md:block 36 (code)
+#: docs/10.x/eloquent-factories.md:block 37 (code)
 msgid "namespace Database\\Factories;\n\n"
 "use App\\Models\\User;\n"
-"use Illuminate\\Database\\Eloquent\\Factories\\Factory;\n"
-"use Illuminate\\Support\\Str;\n\n"
+"use Illuminate\\Database\\Eloquent\\Factories\\Factory;\n\n"
 "class UserFactory extends Factory\n"
 "{\n"
 "    /**\n"
 "     * Configure the model factory.\n"
-"     *\n"
-"     * @return $this\n"
 "     */\n"
 "    public function configure(): static\n"
 "    {\n"
@@ -312,14 +309,11 @@ msgid "namespace Database\\Factories;\n\n"
 "}\n"
 msgstr "namespace Database\\Factories;\n\n"
 "use App\\Models\\User;\n"
-"use Illuminate\\Database\\Eloquent\\Factories\\Factory;\n"
-"use Illuminate\\Support\\Str;\n\n"
+"use Illuminate\\Database\\Eloquent\\Factories\\Factory;\n\n"
 "class UserFactory extends Factory\n"
 "{\n"
 "    /**\n"
 "     * Configure the model factory.\n"
-"     *\n"
-"     * @return $this\n"
 "     */\n"
 "    public function configure(): static\n"
 "    {\n"
@@ -332,53 +326,93 @@ msgstr "namespace Database\\Factories;\n\n"
 "    // ...\n"
 "}\n"
 
-#: docs/10.x/eloquent-factories.md:block 38 (header)
+#: docs/10.x/eloquent-factories.md:block 38 (paragraph)
+msgid "You may also register factory callbacks within state methods to perform additional tasks that are specific to a given state:"
+msgstr "也可以在 State 方法中註冊 Factory 回呼以在執行一些特定 State 才會用到的任務："
+
+#: docs/10.x/eloquent-factories.md:block 39 (code)
+msgid "use App\\Models\\User;\n"
+"use Illuminate\\Database\\Eloquent\\Factories\\Factory;\n\n"
+"/**\n"
+" * Indicate that the user is suspended.\n"
+" */\n"
+"public function suspended(): Factory\n"
+"{\n"
+"    return $this->state(function (array $attributes) {\n"
+"        return [\n"
+"            'account_status' => 'suspended',\n"
+"        ];\n"
+"    })->afterMaking(function (User $user) {\n"
+"        // ...\n"
+"    })->afterCreating(function (User $user) {\n"
+"        // ...\n"
+"    });\n"
+"}\n"
+msgstr "use App\\Models\\User;\n"
+"use Illuminate\\Database\\Eloquent\\Factories\\Factory;\n\n"
+"/**\n"
+" * Indicate that the user is suspended.\n"
+" */\n"
+"public function suspended(): Factory\n"
+"{\n"
+"    return $this->state(function (array $attributes) {\n"
+"        return [\n"
+"            'account_status' => 'suspended',\n"
+"        ];\n"
+"    })->afterMaking(function (User $user) {\n"
+"        // ...\n"
+"    })->afterCreating(function (User $user) {\n"
+"        // ...\n"
+"    });\n"
+"}\n"
+
+#: docs/10.x/eloquent-factories.md:block 41 (header)
 msgid "Creating Models Using Factories"
 msgstr "使用 Factory 來建立 Model"
 
-#: docs/10.x/eloquent-factories.md:block 40 (header)
+#: docs/10.x/eloquent-factories.md:block 43 (header)
 msgid "Instantiating Models"
 msgstr "產生 Model"
 
-#: docs/10.x/eloquent-factories.md:block 41 (paragraph)
+#: docs/10.x/eloquent-factories.md:block 44 (paragraph)
 msgid "Once you have defined your factories, you may use the static `factory` method provided to your models by the `Illuminate\\Database\\Eloquent\\Factories\\HasFactory` trait in order to instantiate a factory instance for that model. Let's take a look at a few examples of creating models. First, we'll use the `make` method to create models without persisting them to the database:"
 msgstr "定義好 Factory 後，就可以使用 `Illuminate\\Database\\Eloquent\\Factories\\HasFactory` trait 提供給 Model 的 `factory` 靜態方法來產生用於該 Model 的 Factory 實體。來看看一些建立 Model 的範例。首先，我們先使用 `make` 方法來在不儲存進資料庫的情況下建立 Model："
 
-#: docs/10.x/eloquent-factories.md:block 42 (code)
+#: docs/10.x/eloquent-factories.md:block 45 (code)
 msgid "use App\\Models\\User;\n\n"
 "$user = User::factory()->make();\n"
 msgstr "use App\\Models\\User;\n\n"
 "$user = User::paginate();\n"
 
-#: docs/10.x/eloquent-factories.md:block 43 (paragraph)
+#: docs/10.x/eloquent-factories.md:block 46 (paragraph)
 msgid "You may create a collection of many models using the `count` method:"
 msgstr "可以使用 `count` 方法來建立包含多個 Model 的 Collection："
 
-#: docs/10.x/eloquent-factories.md:block 44 (code)
+#: docs/10.x/eloquent-factories.md:block 47 (code)
 msgid "$users = User::factory()->count(3)->make();\n"
 msgstr "$users = User::factory()->count(3)->make();\n"
 
-#: docs/10.x/eloquent-factories.md:block 46 (header)
+#: docs/10.x/eloquent-factories.md:block 49 (header)
 msgid "Applying States"
 msgstr "套用 State"
 
-#: docs/10.x/eloquent-factories.md:block 47 (paragraph)
+#: docs/10.x/eloquent-factories.md:block 50 (paragraph)
 msgid "You may also apply any of your [states](#factory-states) to the models. If you would like to apply multiple state transformations to the models, you may simply call the state transformation methods directly:"
 msgstr "也可以將 [State](#factory-states) 套用至 Model 上。若想套用多個 State 變換到 Model 上，只需要直接呼叫 State 變換方法即可："
 
-#: docs/10.x/eloquent-factories.md:block 48 (code)
+#: docs/10.x/eloquent-factories.md:block 51 (code)
 msgid "$users = User::factory()->count(5)->suspended()->make();\n"
 msgstr "$users = User::factory()->count(5)->suspended()->make();\n"
 
-#: docs/10.x/eloquent-factories.md:block 50 (header)
+#: docs/10.x/eloquent-factories.md:block 53 (header)
 msgid "Overriding Attributes"
 msgstr "複寫屬性"
 
-#: docs/10.x/eloquent-factories.md:block 51 (paragraph)
+#: docs/10.x/eloquent-factories.md:block 54 (paragraph)
 msgid "If you would like to override some of the default values of your models, you may pass an array of values to the `make` method. Only the specified attributes will be replaced while the rest of the attributes remain set to their default values as specified by the factory:"
 msgstr "若想複寫 Model 上的一些預設值，可以傳入陣列到 `make` 方法上。只要指定要取代的屬性即可，剩下的屬性會保持 Factory 所指定的預設值："
 
-#: docs/10.x/eloquent-factories.md:block 52 (code)
+#: docs/10.x/eloquent-factories.md:block 55 (code)
 msgid "$user = User::factory()->make([\n"
 "    'name' => 'Abigail Otwell',\n"
 "]);\n"
@@ -386,11 +420,11 @@ msgstr "$user = User::factory()->make([\n"
 "    'name' => 'Abigail Otwell',\n"
 "]);\n"
 
-#: docs/10.x/eloquent-factories.md:block 53 (paragraph)
+#: docs/10.x/eloquent-factories.md:block 56 (paragraph)
 msgid "Alternatively, the `state` method may be called directly on the factory instance to perform an inline state transformation:"
 msgstr "或者，也可以直接在 Factory 實體上呼叫 `state` 方法來內嵌 State 變換："
 
-#: docs/10.x/eloquent-factories.md:block 54 (code)
+#: docs/10.x/eloquent-factories.md:block 57 (code)
 msgid "$user = User::factory()->state([\n"
 "    'name' => 'Abigail Otwell',\n"
 "])->make();\n"
@@ -398,19 +432,19 @@ msgstr "$user = User::factory()->state([\n"
 "    'name' => 'Abigail Otwell',\n"
 "])->make();\n"
 
-#: docs/10.x/eloquent-factories.md:block 55 (quote)
+#: docs/10.x/eloquent-factories.md:block 58 (quote)
 msgid "**Note** [Mass assignment protection](/docs/{{version}}/eloquent#mass-assignment) is automatically disabled when creating models using factories."
 msgstr "**Note** [大量賦值保護](/docs/{{version}}/eloquent#mass-assignment) 會在使用 Factory 建立 Model 時自動禁用。"
 
-#: docs/10.x/eloquent-factories.md:block 57 (header)
+#: docs/10.x/eloquent-factories.md:block 60 (header)
 msgid "Persisting Models"
 msgstr "保存 Model"
 
-#: docs/10.x/eloquent-factories.md:block 58 (paragraph)
+#: docs/10.x/eloquent-factories.md:block 61 (paragraph)
 msgid "The `create` method instantiates model instances and persists them to the database using Eloquent's `save` method:"
 msgstr "`create` 方法會產生 Model 實體並使用 Eloquent 的 `save` 方法來將其永久保存於資料庫內："
 
-#: docs/10.x/eloquent-factories.md:block 59 (code)
+#: docs/10.x/eloquent-factories.md:block 62 (code)
 msgid "use App\\Models\\User;\n\n"
 "// Create a single App\\Models\\User instance...\n"
 "$user = User::factory()->create();\n\n"
@@ -426,11 +460,11 @@ msgstr "use App\\Models\\User;\n\n"
 "    // 在測試中使用 Model...\n"
 "}\n"
 
-#: docs/10.x/eloquent-factories.md:block 60 (paragraph)
+#: docs/10.x/eloquent-factories.md:block 63 (paragraph)
 msgid "You may override the factory's default model attributes by passing an array of attributes to the `create` method:"
 msgstr "可以通過將一組屬性陣列傳入 `create` 方法來複寫該 Factory 的預設 Model 屬性："
 
-#: docs/10.x/eloquent-factories.md:block 61 (code)
+#: docs/10.x/eloquent-factories.md:block 64 (code)
 msgid "$user = User::factory()->create([\n"
 "    'name' => 'Abigail',\n"
 "]);\n"
@@ -438,15 +472,15 @@ msgstr "$user = User::factory()->create([\n"
 "    'name' => 'Abigail',\n"
 "]);\n"
 
-#: docs/10.x/eloquent-factories.md:block 63 (header)
+#: docs/10.x/eloquent-factories.md:block 66 (header)
 msgid "Sequences"
 msgstr "Sequence - 序列"
 
-#: docs/10.x/eloquent-factories.md:block 64 (paragraph)
+#: docs/10.x/eloquent-factories.md:block 67 (paragraph)
 msgid "Sometimes you may wish to alternate the value of a given model attribute for each created model. You may accomplish this by defining a state transformation as a sequence. For example, you may wish to alternate the value of an `admin` column between `Y` and `N` for each created user:"
 msgstr "有時候，我們可能會需要為每個建立的 Model 更改某個特定的屬性。可以通過將 State 變換定義為序列來達成。舉例來說，我們可能會想為每個建立的使用者設定 `admin` 欄位的值為 `Y` 或 `N`："
 
-#: docs/10.x/eloquent-factories.md:block 65 (code)
+#: docs/10.x/eloquent-factories.md:block 68 (code)
 msgid "use App\\Models\\User;\n"
 "use Illuminate\\Database\\Eloquent\\Factories\\Sequence;\n\n"
 "$users = User::factory()\n"
@@ -466,15 +500,15 @@ msgstr "use App\\Models\\User;\n"
 "                ))\n"
 "                ->create();\n"
 
-#: docs/10.x/eloquent-factories.md:block 66 (paragraph)
+#: docs/10.x/eloquent-factories.md:block 69 (paragraph)
 msgid "In this example, five users will be created with an `admin` value of `Y` and five users will be created with an `admin` value of `N`."
 msgstr "在上面的範例中，有五個使用者會以 `admin` 值 `Y` 建立，另外五個使用者將以 `admin` 值 `N` 建立。"
 
-#: docs/10.x/eloquent-factories.md:block 67 (paragraph)
+#: docs/10.x/eloquent-factories.md:block 70 (paragraph)
 msgid "If necessary, you may include a closure as a sequence value. The closure will be invoked each time the sequence needs a new value:"
 msgstr "若有需要，也可以提供閉包作為序列的值。該閉包會在每次序列需要新值是被叫用："
 
-#: docs/10.x/eloquent-factories.md:block 68 (code)
+#: docs/10.x/eloquent-factories.md:block 71 (code)
 msgid "use Illuminate\\Database\\Eloquent\\Factories\\Sequence;\n\n"
 "$users = User::factory()\n"
 "                ->count(10)\n"
@@ -490,11 +524,11 @@ msgstr "use Illuminate\\Database\\Eloquent\\Factories\\Sequence;\n\n"
 "                ))\n"
 "                ->create();\n"
 
-#: docs/10.x/eloquent-factories.md:block 69 (paragraph)
+#: docs/10.x/eloquent-factories.md:block 72 (paragraph)
 msgid "Within a sequence closure, you may access the `$index` or `$count` properties on the sequence instance that is injected into the closure. The `$index` property contains the number of iterations through the sequence that have occurred thus far, while the `$count` property contains the total number of times the sequence will be invoked:"
 msgstr "在 Sequence 閉包中，可以在注入到閉包中的 Sequence 實體上存取 `$index` 與 `$count` 屬性。`$index` 屬性包含了該 Sequence 到目前為止所進行的迭代數，而 `$count` 屬性則代表了該 Sequence 總過將被叫用幾次："
 
-#: docs/10.x/eloquent-factories.md:block 70 (code)
+#: docs/10.x/eloquent-factories.md:block 73 (code)
 msgid "$users = User::factory()\n"
 "                ->count(10)\n"
 "                ->sequence(fn (Sequence $sequence) => ['name' => 'Name '.$sequence->index])\n"
@@ -504,11 +538,11 @@ msgstr "$users = User::factory()\n"
 "                ->sequence(fn (Sequence $sequence) => ['name' => 'Name '.$sequence->index])\n"
 "                ->create();\n"
 
-#: docs/10.x/eloquent-factories.md:block 71 (paragraph)
+#: docs/10.x/eloquent-factories.md:block 74 (paragraph)
 msgid "For convenience, sequences may also be applied using the `sequence` method, which simply invokes the `state` method internally. The `sequence` method accepts a closure or arrays of sequenced attributes:"
 msgstr "為了讓開發起來更方便，也提供了一個 `sequence` 方法可用來套用 Sequence。該方法會在內部幫你呼叫 `state` 方法。`sequence` 方法的引數為一個陣列，或是一組會被依序套用的屬性陣列："
 
-#: docs/10.x/eloquent-factories.md:block 72 (code)
+#: docs/10.x/eloquent-factories.md:block 75 (code)
 msgid "$users = User::factory()\n"
 "                ->count(2)\n"
 "                ->sequence(\n"
@@ -524,19 +558,19 @@ msgstr "$users = User::factory()\n"
 "                )\n"
 "                ->create();\n"
 
-#: docs/10.x/eloquent-factories.md:block 74 (header)
+#: docs/10.x/eloquent-factories.md:block 77 (header)
 msgid "Factory Relationships"
 msgstr "Factory 關聯"
 
-#: docs/10.x/eloquent-factories.md:block 76 (header)
+#: docs/10.x/eloquent-factories.md:block 79 (header)
 msgid "Has Many Relationships"
 msgstr "HasMany 關聯"
 
-#: docs/10.x/eloquent-factories.md:block 77 (paragraph)
+#: docs/10.x/eloquent-factories.md:block 80 (paragraph)
 msgid "Next, let's explore building Eloquent model relationships using Laravel's fluent factory methods. First, let's assume our application has an `App\\Models\\User` model and an `App\\Models\\Post` model. Also, let's assume that the `User` model defines a `hasMany` relationship with `Post`. We can create a user that has three posts using the `has` method provided by the Laravel's factories. The `has` method accepts a factory instance:"
 msgstr "接著，來看看如何使用 Laravel 中流利的 Factory 方法建立 Eloquent Model 關聯。首先，假設專案中有個 `App\\Models\\User` Model 以及 `App\\Models\\Post` Model。然後，假設 `User` Model 中定義了對 `Post` 的 `hasMany` 關聯。我們可以使用 Laravel Factory 提供的 `has` 方法來建立一個有三篇貼文的使用者。這個 `has` 方法接受一個 Factory 實體："
 
-#: docs/10.x/eloquent-factories.md:block 78 (code)
+#: docs/10.x/eloquent-factories.md:block 81 (code)
 msgid "use App\\Models\\Post;\n"
 "use App\\Models\\User;\n\n"
 "$user = User::factory()\n"
@@ -548,11 +582,11 @@ msgstr "use App\\Models\\Post;\n"
 "            ->has(Post::factory()->count(3))\n"
 "            ->create();\n"
 
-#: docs/10.x/eloquent-factories.md:block 79 (paragraph)
+#: docs/10.x/eloquent-factories.md:block 82 (paragraph)
 msgid "By convention, when passing a `Post` model to the `has` method, Laravel will assume that the `User` model must have a `posts` method that defines the relationship. If necessary, you may explicitly specify the name of the relationship that you would like to manipulate:"
 msgstr "依照慣例，當傳入 `Post` Model 給 `has` 方法時，Laravel 會假設 `User` Model 中有定義這個關聯的 `posts` 方法。若有需要，可以明顯指定要操作的關聯名稱："
 
-#: docs/10.x/eloquent-factories.md:block 80 (code)
+#: docs/10.x/eloquent-factories.md:block 83 (code)
 msgid "$user = User::factory()\n"
 "            ->has(Post::factory()->count(3), 'posts')\n"
 "            ->create();\n"
@@ -560,11 +594,11 @@ msgstr "$user = User::factory()\n"
 "            ->has(Post::factory()->count(3), 'posts')\n"
 "            ->create();\n"
 
-#: docs/10.x/eloquent-factories.md:block 81 (paragraph)
+#: docs/10.x/eloquent-factories.md:block 84 (paragraph)
 msgid "Of course, you may perform state manipulations on the related models. In addition, you may pass a closure based state transformation if your state change requires access to the parent model:"
 msgstr "當然，也可以在關聯 Model 上進行 State 操作。此外，若 State 更改需要存取上層 Model，也可以傳入基於閉包的 State 變換："
 
-#: docs/10.x/eloquent-factories.md:block 82 (code)
+#: docs/10.x/eloquent-factories.md:block 85 (code)
 msgid "$user = User::factory()\n"
 "            ->has(\n"
 "                Post::factory()\n"
@@ -584,15 +618,15 @@ msgstr "$user = User::factory()\n"
 "            )\n"
 "            ->create();\n"
 
-#: docs/10.x/eloquent-factories.md:block 84 (header)
+#: docs/10.x/eloquent-factories.md:block 87 (header)
 msgid "Using Magic Methods"
 msgstr "使用魔術方法"
 
-#: docs/10.x/eloquent-factories.md:block 85 (paragraph)
+#: docs/10.x/eloquent-factories.md:block 88 (paragraph)
 msgid "For convenience, you may use Laravel's magic factory relationship methods to build relationships. For example, the following example will use convention to determine that the related models should be created via a `posts` relationship method on the `User` model:"
 msgstr "為了方便起見，可以使用 Laravel 的魔術 Factory 關聯方法來建立關聯。舉例來說，下列範例會使用慣例來判斷應通過 `User` Model 上的 `posts` 關聯方法來建立關聯 Model："
 
-#: docs/10.x/eloquent-factories.md:block 86 (code)
+#: docs/10.x/eloquent-factories.md:block 89 (code)
 msgid "$user = User::factory()\n"
 "            ->hasPosts(3)\n"
 "            ->create();\n"
@@ -600,11 +634,11 @@ msgstr "$user = User::factory()\n"
 "            ->hasPosts(3)\n"
 "            ->create();\n"
 
-#: docs/10.x/eloquent-factories.md:block 87 (paragraph)
+#: docs/10.x/eloquent-factories.md:block 90 (paragraph)
 msgid "When using magic methods to create factory relationships, you may pass an array of attributes to override on the related models:"
 msgstr "在使用魔術方法建立 Factory 關聯時，可以傳入包含屬性的陣列來在關聯 Model 上複寫："
 
-#: docs/10.x/eloquent-factories.md:block 88 (code)
+#: docs/10.x/eloquent-factories.md:block 91 (code)
 msgid "$user = User::factory()\n"
 "            ->hasPosts(3, [\n"
 "                'published' => false,\n"
@@ -616,11 +650,11 @@ msgstr "$user = User::factory()\n"
 "            ])\n"
 "            ->create();\n"
 
-#: docs/10.x/eloquent-factories.md:block 89 (paragraph)
+#: docs/10.x/eloquent-factories.md:block 92 (paragraph)
 msgid "You may provide a closure based state transformation if your state change requires access to the parent model:"
 msgstr "若 State 更改需要存取上層 Model，可以提供一個基於閉包的 State 變換："
 
-#: docs/10.x/eloquent-factories.md:block 90 (code)
+#: docs/10.x/eloquent-factories.md:block 93 (code)
 msgid "$user = User::factory()\n"
 "            ->hasPosts(3, function (array $attributes, User $user) {\n"
 "                return ['user_type' => $user->type];\n"
@@ -632,15 +666,15 @@ msgstr "$user = User::factory()\n"
 "            })\n"
 "            ->create();\n"
 
-#: docs/10.x/eloquent-factories.md:block 92 (header)
+#: docs/10.x/eloquent-factories.md:block 95 (header)
 msgid "Belongs To Relationships"
 msgstr "BelongsTo 關聯"
 
-#: docs/10.x/eloquent-factories.md:block 93 (paragraph)
+#: docs/10.x/eloquent-factories.md:block 96 (paragraph)
 msgid "Now that we have explored how to build \"has many\" relationships using factories, let's explore the inverse of the relationship. The `for` method may be used to define the parent model that factory created models belong to. For example, we can create three `App\\Models\\Post` model instances that belong to a single user:"
 msgstr "我們已經瞭解如何使用 Factory 來建立「Has Many」關聯了，接著來看看這種關聯的想法。使用 `for` 方法可以用來定義使用 Factory 建立的 Model 所隸屬 (Belong To) 的上層 Model。舉例來說，我們可以建立三個隸屬於單一使用者的 `App\\Models\\Post` Model 實體："
 
-#: docs/10.x/eloquent-factories.md:block 94 (code)
+#: docs/10.x/eloquent-factories.md:block 97 (code)
 msgid "use App\\Models\\Post;\n"
 "use App\\Models\\User;\n\n"
 "$posts = Post::factory()\n"
@@ -658,11 +692,11 @@ msgstr "use App\\Models\\Post;\n"
 "            ]))\n"
 "            ->create();\n"
 
-#: docs/10.x/eloquent-factories.md:block 95 (paragraph)
+#: docs/10.x/eloquent-factories.md:block 98 (paragraph)
 msgid "If you already have a parent model instance that should be associated with the models you are creating, you may pass the model instance to the `for` method:"
 msgstr "若已經有應與這些正在建立的 Model 關聯的上層 Model 實體，可以將該 Model 實體傳入 `for` 方法："
 
-#: docs/10.x/eloquent-factories.md:block 96 (code)
+#: docs/10.x/eloquent-factories.md:block 99 (code)
 msgid "$user = User::factory()->create();\n\n"
 "$posts = Post::factory()\n"
 "            ->count(3)\n"
@@ -674,11 +708,11 @@ msgstr "$user = User::factory()->create();\n\n"
 "            ->for($user)\n"
 "            ->create();\n"
 
-#: docs/10.x/eloquent-factories.md:block 99 (paragraph)
+#: docs/10.x/eloquent-factories.md:block 102 (paragraph)
 msgid "For convenience, you may use Laravel's magic factory relationship methods to define \"belongs to\" relationships. For example, the following example will use convention to determine that the three posts should belong to the `user` relationship on the `Post` model:"
 msgstr "為了方便起見，可以使用 Laravel 的魔術 Factory 關聯方法來定義「Belongs To」關聯。舉例來說，下列範例會使用慣例來判斷應使用 `Post` Model 上的 `user` 關聯方法來設定這三個貼文應隸屬於哪裡："
 
-#: docs/10.x/eloquent-factories.md:block 100 (code)
+#: docs/10.x/eloquent-factories.md:block 103 (code)
 msgid "$posts = Post::factory()\n"
 "            ->count(3)\n"
 "            ->forUser([\n"
@@ -692,15 +726,15 @@ msgstr "$posts = Post::factory()\n"
 "            ])\n"
 "            ->create();\n"
 
-#: docs/10.x/eloquent-factories.md:block 102 (header)
+#: docs/10.x/eloquent-factories.md:block 105 (header)
 msgid "Many To Many Relationships"
 msgstr "多對多關聯"
 
-#: docs/10.x/eloquent-factories.md:block 103 (paragraph)
+#: docs/10.x/eloquent-factories.md:block 106 (paragraph)
 msgid "Like [has many relationships](#has-many-relationships), \"many to many\" relationships may be created using the `has` method:"
 msgstr "與 [HasMany 關聯](#has-many-relationships)，「多對多」關聯也可以通過 `has` 方法建立："
 
-#: docs/10.x/eloquent-factories.md:block 104 (code)
+#: docs/10.x/eloquent-factories.md:block 107 (code)
 msgid "use App\\Models\\Role;\n"
 "use App\\Models\\User;\n\n"
 "$user = User::factory()\n"
@@ -712,15 +746,15 @@ msgstr "use App\\Models\\Role;\n"
 "            ->has(Role::factory()->count(3))\n"
 "            ->create();\n"
 
-#: docs/10.x/eloquent-factories.md:block 106 (header)
+#: docs/10.x/eloquent-factories.md:block 109 (header)
 msgid "Pivot Table Attributes"
 msgstr "Pivot 表屬性"
 
-#: docs/10.x/eloquent-factories.md:block 107 (paragraph)
+#: docs/10.x/eloquent-factories.md:block 110 (paragraph)
 msgid "If you need to define attributes that should be set on the pivot / intermediate table linking the models, you may use the `hasAttached` method. This method accepts an array of pivot table attribute names and values as its second argument:"
 msgstr "若有需要為這些 Model 定義關聯 Pivot／中介資料表上的屬性，則可使用 `hasAttached` 方法。這個方法接受一個陣列，其中包含 Pivot 資料表上的屬性名稱，第二個引數則為其值："
 
-#: docs/10.x/eloquent-factories.md:block 108 (code)
+#: docs/10.x/eloquent-factories.md:block 111 (code)
 msgid "use App\\Models\\Role;\n"
 "use App\\Models\\User;\n\n"
 "$user = User::factory()\n"
@@ -738,11 +772,11 @@ msgstr "use App\\Models\\Role;\n"
 "            )\n"
 "            ->create();\n"
 
-#: docs/10.x/eloquent-factories.md:block 109 (paragraph)
+#: docs/10.x/eloquent-factories.md:block 112 (paragraph)
 msgid "You may provide a closure based state transformation if your state change requires access to the related model:"
 msgstr "若 State 更改需要存取關聯 Model，可以提供一個基於閉包的 State 變換："
 
-#: docs/10.x/eloquent-factories.md:block 110 (code)
+#: docs/10.x/eloquent-factories.md:block 113 (code)
 msgid "$user = User::factory()\n"
 "            ->hasAttached(\n"
 "                Role::factory()\n"
@@ -764,11 +798,11 @@ msgstr "$user = User::factory()\n"
 "            )\n"
 "            ->create();\n"
 
-#: docs/10.x/eloquent-factories.md:block 111 (paragraph)
+#: docs/10.x/eloquent-factories.md:block 114 (paragraph)
 msgid "If you already have model instances that you would like to be attached to the models you are creating, you may pass the model instances to the `hasAttached` method. In this example, the same three roles will be attached to all three users:"
 msgstr "若已有 Model 實體想讓正在建立的 Model 附加，可以將該 Model 實體傳入 `hasAttached` 方法。在此範例中，會將三個相同的角色附加給三個使用者："
 
-#: docs/10.x/eloquent-factories.md:block 112 (code)
+#: docs/10.x/eloquent-factories.md:block 115 (code)
 msgid "$roles = Role::factory()->count(3)->create();\n\n"
 "$user = User::factory()\n"
 "            ->count(3)\n"
@@ -780,11 +814,11 @@ msgstr "$roles = Role::factory()->count(3)->create();\n\n"
 "            ->hasAttached($roles, ['active' => true])\n"
 "            ->create();\n"
 
-#: docs/10.x/eloquent-factories.md:block 115 (paragraph)
+#: docs/10.x/eloquent-factories.md:block 118 (paragraph)
 msgid "For convenience, you may use Laravel's magic factory relationship methods to define many to many relationships. For example, the following example will use convention to determine that the related models should be created via a `roles` relationship method on the `User` model:"
 msgstr "為了方便起見，可以使用 Laravel 的魔術 Factory 關聯方法來定義 Many to Many 關聯。舉例來說，下列範例會使用慣例來判斷應通過 `User` Model 上的 `roles` 關聯方法來建立關聯 Model："
 
-#: docs/10.x/eloquent-factories.md:block 116 (code)
+#: docs/10.x/eloquent-factories.md:block 119 (code)
 msgid "$user = User::factory()\n"
 "            ->hasRoles(1, [\n"
 "                'name' => 'Editor'\n"
@@ -796,29 +830,29 @@ msgstr "$user = User::factory()\n"
 "            ])\n"
 "            ->create();\n"
 
-#: docs/10.x/eloquent-factories.md:block 118 (header)
+#: docs/10.x/eloquent-factories.md:block 121 (header)
 msgid "Polymorphic Relationships"
 msgstr "多型 (Polymorphic) 關聯"
 
-#: docs/10.x/eloquent-factories.md:block 119 (paragraph)
-msgid "[Polymorphic relationships](/docs/{{version}}/eloquent-relationships#polymorphic-relationships) may also be created using factories. Polymorphic \"morph many\" relationships are created in the same way as typical \"has many\" relationships. For example, if a `App\\Models\\Post` model has a `morphMany` relationship with a `App\\Models\\Comment` model:"
+#: docs/10.x/eloquent-factories.md:block 122 (paragraph)
+msgid "[Polymorphic relationships](/docs/{{version}}/eloquent-relationships#polymorphic-relationships) may also be created using factories. Polymorphic \"morph many\" relationships are created in the same way as typical \"has many\" relationships. For example, if an `App\\Models\\Post` model has a `morphMany` relationship with an `App\\Models\\Comment` model:"
 msgstr "[多型 (Polymorphic) 關聯](/docs/{{version}}/eloquent-relationships#polymorphic-relationships) 也可以使用 Factory 來建立。可使用與一般「HasMany」關聯相同的方法來建多型「Morph Many」關聯。舉例來說，若 `App\\Models\\Post` Model 使用 `morphMany` 關聯到 `App\\Models\\Comment` Model："
 
-#: docs/10.x/eloquent-factories.md:block 120 (code)
+#: docs/10.x/eloquent-factories.md:block 123 (code)
 msgid "use App\\Models\\Post;\n\n"
 "$post = Post::factory()->hasComments(3)->create();\n"
 msgstr "use App\\Models\\Post;\n\n"
 "$post = Post::factory()->hasComments(3)->create();\n"
 
-#: docs/10.x/eloquent-factories.md:block 122 (header)
+#: docs/10.x/eloquent-factories.md:block 125 (header)
 msgid "Morph To Relationships"
 msgstr "MorphTo 關聯"
 
-#: docs/10.x/eloquent-factories.md:block 123 (paragraph)
+#: docs/10.x/eloquent-factories.md:block 126 (paragraph)
 msgid "Magic methods may not be used to create `morphTo` relationships. Instead, the `for` method must be used directly and the name of the relationship must be explicitly provided. For example, imagine that the `Comment` model has a `commentable` method that defines a `morphTo` relationship. In this situation, we may create three comments that belong to a single post by using the `for` method directly:"
 msgstr "在建立 `morphTo` 關聯時無法使用魔法方法。必須直接使用 `for` 方法，並明顯提供該關聯的名稱。舉例來說，假設 `Comment` Model 有個 `commantable` 方法，該方法定義了 `morphTo` 關聯。在這種情況下，我們可以直接使用 `for` 方法來建立三個隸屬於單一貼文的留言："
 
-#: docs/10.x/eloquent-factories.md:block 124 (code)
+#: docs/10.x/eloquent-factories.md:block 127 (code)
 msgid "$comments = Comment::factory()->count(3)->for(\n"
 "    Post::factory(), 'commentable'\n"
 ")->create();\n"
@@ -826,15 +860,15 @@ msgstr "$comments = Comment::factory()->count(3)->for(\n"
 "    Post::factory(), 'commentable'\n"
 ")->create();\n"
 
-#: docs/10.x/eloquent-factories.md:block 126 (header)
+#: docs/10.x/eloquent-factories.md:block 129 (header)
 msgid "Polymorphic Many To Many Relationships"
 msgstr "多型的多對多關聯"
 
-#: docs/10.x/eloquent-factories.md:block 127 (paragraph)
+#: docs/10.x/eloquent-factories.md:block 130 (paragraph)
 msgid "Polymorphic \"many to many\" (`morphToMany` / `morphedByMany`) relationships may be created just like non-polymorphic \"many to many\" relationships:"
 msgstr "要建立多型的「多對多」(`morphyToMany` / `morphedByMany`) 關聯，就與其他非多型的「多對多」關聯一樣："
 
-#: docs/10.x/eloquent-factories.md:block 128 (code)
+#: docs/10.x/eloquent-factories.md:block 131 (code)
 msgid "use App\\Models\\Tag;\n"
 "use App\\Models\\Video;\n\n"
 "$videos = Video::factory()\n"
@@ -852,11 +886,11 @@ msgstr "use App\\Models\\Tag;\n"
 "            )\n"
 "            ->create();\n"
 
-#: docs/10.x/eloquent-factories.md:block 129 (paragraph)
+#: docs/10.x/eloquent-factories.md:block 132 (paragraph)
 msgid "Of course, the magic `has` method may also be used to create polymorphic \"many to many\" relationships:"
 msgstr "當然，也可以使用 `has` 魔法方法來建立多型的「多對多」關聯："
 
-#: docs/10.x/eloquent-factories.md:block 130 (code)
+#: docs/10.x/eloquent-factories.md:block 133 (code)
 msgid "$videos = Video::factory()\n"
 "            ->hasTags(3, ['public' => true])\n"
 "            ->create();\n"
@@ -864,15 +898,15 @@ msgstr "$videos = Video::factory()\n"
 "            ->hasTags(3, ['public' => true])\n"
 "            ->create();\n"
 
-#: docs/10.x/eloquent-factories.md:block 132 (header)
+#: docs/10.x/eloquent-factories.md:block 135 (header)
 msgid "Defining Relationships Within Factories"
 msgstr "在 Factory 中定義關聯"
 
-#: docs/10.x/eloquent-factories.md:block 133 (paragraph)
+#: docs/10.x/eloquent-factories.md:block 136 (paragraph)
 msgid "To define a relationship within your model factory, you will typically assign a new factory instance to the foreign key of the relationship. This is normally done for the \"inverse\" relationships such as `belongsTo` and `morphTo` relationships. For example, if you would like to create a new user when creating a post, you may do the following:"
 msgstr "若要在 Model Factory 中定義關聯，則通常需要為該關聯的外部索引鍵 (Foreign Key) 指定新的 Factory 實體。一般是使用「相反」的關聯來處理，如 `belongsTo` 與 `morphTo` 關聯。舉例來說，若想在建立貼文時建立新使用者，可以像這樣："
 
-#: docs/10.x/eloquent-factories.md:block 134 (code)
+#: docs/10.x/eloquent-factories.md:block 137 (code)
 msgid "use App\\Models\\User;\n\n"
 "/**\n"
 " * Define the model's default state.\n"
@@ -902,11 +936,11 @@ msgstr "use App\\Models\\User;\n\n"
 "    ];\n"
 "}\n"
 
-#: docs/10.x/eloquent-factories.md:block 135 (paragraph)
+#: docs/10.x/eloquent-factories.md:block 138 (paragraph)
 msgid "If the relationship's columns depend on the factory that defines it you may assign a closure to an attribute. The closure will receive the factory's evaluated attribute array:"
 msgstr "若該關聯的欄位仰賴定義其的 Factory，則可以在屬性中放入閉包。該閉包會收到該 Factory 取值結果的屬性陣列："
 
-#: docs/10.x/eloquent-factories.md:block 136 (code)
+#: docs/10.x/eloquent-factories.md:block 139 (code)
 msgid "/**\n"
 " * Define the model's default state.\n"
 " *\n"
@@ -940,19 +974,19 @@ msgstr "/**\n"
 "    ];\n"
 "}\n"
 
-#: docs/10.x/eloquent-factories.md:block 138 (header)
+#: docs/10.x/eloquent-factories.md:block 141 (header)
 msgid "Recycling An Existing Model For Relationships"
 msgstr "在關聯上回收使用現有的 Model"
 
-#: docs/10.x/eloquent-factories.md:block 139 (paragraph)
+#: docs/10.x/eloquent-factories.md:block 142 (paragraph)
 msgid "If you have models that share a common relationship with another model, you may use the `recycle` method to ensure a single instance of the related model is recycled for all of the relationships created by the factory."
 msgstr "若有多個 Model 與另一個 Model 共用一個共同的關聯，則可以使用 ^[`recycle`](回收) 方法來確保 Factory 所建立的關聯都重複使用此 Model 的某個單一實體："
 
-#: docs/10.x/eloquent-factories.md:block 140 (paragraph)
+#: docs/10.x/eloquent-factories.md:block 143 (paragraph)
 msgid "For example, imagine you have `Airline`, `Flight`, and `Ticket` models, where the ticket belongs to an airline and a flight, and the flight also belongs to an airline. When creating tickets, you will probably want the same airline for both the ticket and the flight, so you may pass an airline instance to the `recycle` method:"
 msgstr "舉例來說，假設有 ^[`Airline`](航空公司)、^[`Fligh`](航班)、^[`Ticket`](機票) 三個 Model，其中，Ticket 隸屬於 (BelongsTo) Airline 與 Flight，而 Flight 也同時隸屬於 Airline。在建立 Ticket 時，我們可能會想在 Ticket 與 Flight 上都使用同一個 Airline。因此，我們可以將 Airline 實體傳給 `recycle` 方法："
 
-#: docs/10.x/eloquent-factories.md:block 141 (code)
+#: docs/10.x/eloquent-factories.md:block 144 (code)
 msgid "Ticket::factory()\n"
 "    ->recycle(Airline::factory()->create())\n"
 "    ->create();\n"
@@ -960,15 +994,15 @@ msgstr "Ticket::factory()\n"
 "    ->recycle(Airline::factory()->create())\n"
 "    ->create();\n"
 
-#: docs/10.x/eloquent-factories.md:block 142 (paragraph)
+#: docs/10.x/eloquent-factories.md:block 145 (paragraph)
 msgid "You may find the `recycle` method particularly useful if you have models belonging to a common user or team."
 msgstr "如果你的 Model 都隸屬於 (BelongsTo) 一組相同的使用者或團隊，那麼就很適合使用 `recycle` 方法。"
 
-#: docs/10.x/eloquent-factories.md:block 143 (paragraph)
+#: docs/10.x/eloquent-factories.md:block 146 (paragraph)
 msgid "The `recycle` method also accepts a collection of existing models. When a collection is provided to the `recycle` method, a random model from the collection will be chosen when the factory needs a model of that type:"
 msgstr "也可傳入一組現有 Model 的 Collection 給 `recycle` 方法。傳入 Collection 給 `recycle` 方法時，當 Factory 需要此類型的 Model 時，就會從此 Collection 中隨機選擇一個 Model："
 
-#: docs/10.x/eloquent-factories.md:block 144 (code)
+#: docs/10.x/eloquent-factories.md:block 147 (code)
 msgid "Ticket::factory()\n"
 "    ->recycle($airlines)\n"
 "    ->create();\n"
@@ -1040,6 +1074,34 @@ msgstr "use Database\\Factories\\Administration\\FlightFactory;\n\n"
 "protected static function newFactory()\n"
 "{\n"
 "    return FlightFactory::new();\n"
+"}\n"
+
+#: docs/9.x/eloquent-factories.md:block 23 (paragraph)
+msgid "Next, define a `model` property on the corresponding factory:"
+msgstr "接著，在對應的 Factory 上定義一個 `model` 屬性："
+
+#: docs/9.x/eloquent-factories.md:block 24 (code)
+msgid "use App\\Administration\\Flight;\n"
+"use Illuminate\\Database\\Eloquent\\Factories\\Factory;\n\n"
+"class FlightFactory extends Factory\n"
+"{\n"
+"    /**\n"
+"     * The name of the factory's corresponding model.\n"
+"     *\n"
+"     * @var string\n"
+"     */\n"
+"    protected $model = Flight::class;\n"
+"}\n"
+msgstr "use App\\Administration\\Flight;\n"
+"use Illuminate\\Database\\Eloquent\\Factories\\Factory;\n\n"
+"class FlightFactory extends Factory\n"
+"{\n"
+"    /**\n"
+"     * The name of the factory's corresponding model.\n"
+"     *\n"
+"     * @var string\n"
+"     */\n"
+"    protected $model = Flight::class;\n"
 "}\n"
 
 #: docs/9.x/eloquent-factories.md:block 29 (code)
@@ -1138,6 +1200,10 @@ msgstr "$users = User::factory()\n"
 "                ->sequence(fn ($sequence) => ['name' => 'Name '.$sequence->index])\n"
 "                ->create();\n"
 
+#: docs/9.x/eloquent-factories.md:block 119 (paragraph)
+msgid "[Polymorphic relationships](/docs/{{version}}/eloquent-relationships#polymorphic-relationships) may also be created using factories. Polymorphic \"morph many\" relationships are created in the same way as typical \"has many\" relationships. For example, if a `App\\Models\\Post` model has a `morphMany` relationship with a `App\\Models\\Comment` model:"
+msgstr "[多型 (Polymorphic) 關聯](/docs/{{version}}/eloquent-relationships#polymorphic-relationships) 也可以使用 Factory 來建立。可使用與一般「HasMany」關聯相同的方法來建多型「Morph Many」關聯。舉例來說，若 `App\\Models\\Post` Model 使用 `morphMany` 關聯到 `App\\Models\\Comment` Model："
+
 #: docs/9.x/eloquent-factories.md:block 134 (code)
 msgid "use App\\Models\\User;\n\n"
 "/**\n"
@@ -1200,5 +1266,49 @@ msgstr "/**\n"
 "        'title' => fake()->title(),\n"
 "        'content' => fake()->paragraph(),\n"
 "    ];\n"
+"}\n"
+
+#: docs/master/eloquent-factories.md:block 36 (code)
+msgid "namespace Database\\Factories;\n\n"
+"use App\\Models\\User;\n"
+"use Illuminate\\Database\\Eloquent\\Factories\\Factory;\n"
+"use Illuminate\\Support\\Str;\n\n"
+"class UserFactory extends Factory\n"
+"{\n"
+"    /**\n"
+"     * Configure the model factory.\n"
+"     *\n"
+"     * @return $this\n"
+"     */\n"
+"    public function configure(): static\n"
+"    {\n"
+"        return $this->afterMaking(function (User $user) {\n"
+"            // ...\n"
+"        })->afterCreating(function (User $user) {\n"
+"            // ...\n"
+"        });\n"
+"    }\n\n"
+"    // ...\n"
+"}\n"
+msgstr "namespace Database\\Factories;\n\n"
+"use App\\Models\\User;\n"
+"use Illuminate\\Database\\Eloquent\\Factories\\Factory;\n"
+"use Illuminate\\Support\\Str;\n\n"
+"class UserFactory extends Factory\n"
+"{\n"
+"    /**\n"
+"     * Configure the model factory.\n"
+"     *\n"
+"     * @return $this\n"
+"     */\n"
+"    public function configure(): static\n"
+"    {\n"
+"        return $this->afterMaking(function (User $user) {\n"
+"            // ...\n"
+"        })->afterCreating(function (User $user) {\n"
+"            // ...\n"
+"        });\n"
+"    }\n\n"
+"    // ...\n"
 "}\n"
 

@@ -10,7 +10,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
-"PO-Revision-Date: 2023-02-11 12:58\n"
+"PO-Revision-Date: 2024-06-30 08:17\n"
 
 #: docs/10.x/broadcasting.md:block 1 (header)
 msgid "Broadcasting"
@@ -173,7 +173,7 @@ msgid "In many modern web applications, WebSockets are used to implement realtim
 msgstr "在許多現代 Web App 中，都使用了 WebSocket 來提供即時更新的 UI。當某個資料在伺服器上被更新，通常會通過 WebSocket 連線來將一個訊息傳送給用戶端做處理。比起不斷從伺服器上拉取資料並反應到 UI 上，WebSocket 提供是更有效率的方案。"
 
 #: docs/10.x/broadcasting.md:block 6 (paragraph)
-msgid "For example, imagine your application is able to export a user's data to a CSV file and email it to them. However, creating this CSV file takes several minutes so you choose to create and mail the CSV within a [queued job](/docs/{{version}}/queues). When the CSV has been created and mailed to the user, we can use event broadcasting to dispatch a `App\\Events\\UserDataExported` event that is received by our application's JavaScript. Once the event is received, we can display a message to the user that their CSV has been emailed to them without them ever needing to refresh the page."
+msgid "For example, imagine your application is able to export a user's data to a CSV file and email it to them. However, creating this CSV file takes several minutes so you choose to create and mail the CSV within a [queued job](/docs/{{version}}/queues). When the CSV has been created and mailed to the user, we can use event broadcasting to dispatch an `App\\Events\\UserDataExported` event that is received by our application's JavaScript. Once the event is received, we can display a message to the user that their CSV has been emailed to them without them ever needing to refresh the page."
 msgstr "舉例來說，假設我們的 App 可以將使用者資料匯出為 CSV 檔並以電子郵件寄出。不過，建立 CSV 檔需要數分鐘的事件，因此我們選擇將建立與寄送 CSV 檔的程式放在[佇列任務](/docs/{{version}}/queues)中。當 CSV 當建立完畢並寄給使用者後，我們可以使用「事件廣播」來將 `App\\Events\\UserDataExported` 事件分派給應用程式的 JavaScript。收到事件後，使用者就能在不重新整理的情況下看到一個訊息，表示我們已將 CSV 檔寄送出去。"
 
 #: docs/10.x/broadcasting.md:block 7 (paragraph)
@@ -287,8 +287,8 @@ msgid "Ably"
 msgstr "Ably"
 
 #: docs/10.x/broadcasting.md:block 41 (quote)
-msgid "**Note** The documentation below discusses how to use Ably in \"Pusher compatibility\" mode. However, the Ably team maintains a broadcaster and Echo client that is able to take advantage of the unique capabilities offered by Ably. For more information on using the Ably maintained drivers, please [consult Ably's Laravel broadcaster documentation](https://github.com/ably/laravel-broadcaster)."
-msgstr "**Note** 下方的說明文件討論了如何在「Pusher 相容模式 (Pusher Compatibility)」下使用 Ably。不過，Ably 團隊還維護了一個 Broadcaster 程式與可使用 Ably 特別功能的 Echo 用戶端。更多有關使用 Ably 維護的 Driver 的資訊，請[參考 Ably 的 Laravel Broadcaster 說明文件 (英語)](https://github.com/ably/laravel-broadcaster)。"
+msgid "**Note** The documentation below discusses how to use Ably in \"Pusher compatibility\" mode. However, the Ably team recommends and maintains a broadcaster and Echo client that is able to take advantage of the unique capabilities offered by Ably. For more information on using the Ably maintained drivers, please [consult Ably's Laravel broadcaster documentation](https://github.com/ably/laravel-broadcaster)."
+msgstr "**Note** 下方的說明文件討論了如何在「Pusher 相容模式 (Pusher Compatibility)」下使用 Ably。不過，Ably 團隊推薦並維護了一個 Broadcaster 程式，以及一個可使用 Ably 特別功能的 Echo 用戶端。更多有關使用 Ably 維護的 Driver 的資訊，請[參考 Ably 的 Laravel Broadcaster 說明文件 (英語)](https://github.com/ably/laravel-broadcaster)。"
 
 #: docs/10.x/broadcasting.md:block 42 (paragraph)
 msgid "If you plan to broadcast your events using [Ably](https://ably.com), you should install the Ably PHP SDK using the Composer package manager:"
@@ -903,27 +903,27 @@ msgid "When broadcast events are dispatched within database transactions, they m
 msgstr "當廣播事件是在資料庫 Transaction 內分派的時候，這個事件可能會在資料庫 Transaction 被 Commit 前被佇列進行處理了。發生這種情況時，在資料庫 Transaction 期間對 Model 或資料庫記錄所做出的更新可能都還未反應到資料庫內。另外，所有在 Transaction 期間新增的 Model 或資料庫記錄也可能還未出現在資料庫內。若事件有依賴這些 Model 的話，在處理廣播事件的任務時可能會出現未預期的錯誤。"
 
 #: docs/10.x/broadcasting.md:block 146 (paragraph)
-msgid "If your queue connection's `after_commit` configuration option is set to `false`, you may still indicate that a particular broadcast event should be dispatched after all open database transactions have been committed by defining an `$afterCommit` property on the event class:"
-msgstr "若佇列連線的 `after_commit` 設定選項是 `false`，那麼就可以通過在事件類別上定義 `$afterCommit` 屬性來標示出特定的廣播事件應在資料庫 Transaction 被 Commit 後才可進行分派："
+msgid "If your queue connection's `after_commit` configuration option is set to `false`, you may still indicate that a particular broadcast event should be dispatched after all open database transactions have been committed by implementing the `ShouldDispatchAfterCommit` interface on the event class:"
+msgstr "即使佇列連線的 `after_commit` 設定選項被設為 `false`，還是可以通過在 Event 類別上實作 `ShouldDispatchAfterCommit` 介面來讓 Laravel 知道要在所有開啟的資料庫 Transaction 被 Commit 後廣播該 Event："
 
 #: docs/10.x/broadcasting.md:block 147 (code)
 msgid "<?php\n\n"
 "namespace App\\Events;\n\n"
 "use Illuminate\\Contracts\\Broadcasting\\ShouldBroadcast;\n"
+"use Illuminate\\Contracts\\Events\\ShouldDispatchAfterCommit;\n"
 "use Illuminate\\Queue\\SerializesModels;\n\n"
-"class ServerCreated implements ShouldBroadcast\n"
+"class ServerCreated implements ShouldBroadcast, ShouldDispatchAfterCommit\n"
 "{\n"
-"    use SerializesModels;\n\n"
-"    public $afterCommit = true;\n"
+"    use SerializesModels;\n"
 "}\n"
 msgstr "<?php\n\n"
 "namespace App\\Events;\n\n"
 "use Illuminate\\Contracts\\Broadcasting\\ShouldBroadcast;\n"
+"use Illuminate\\Contracts\\Events\\ShouldDispatchAfterCommit;\n"
 "use Illuminate\\Queue\\SerializesModels;\n\n"
-"class ServerCreated implements ShouldBroadcast\n"
+"class ServerCreated implements ShouldBroadcast, ShouldDispatchAfterCommit\n"
 "{\n"
-"    use SerializesModels;\n\n"
-"    public $afterCommit = true;\n"
+"    use SerializesModels;\n"
 "}\n"
 
 #: docs/10.x/broadcasting.md:block 148 (quote)
@@ -1040,15 +1040,23 @@ msgstr "use App\\Models\\User;\n\n"
 "    return $user->id === Order::findOrNew($orderId)->user_id;\n"
 "});\n"
 
-#: docs/10.x/broadcasting.md:block 173 (header)
+#: docs/10.x/broadcasting.md:block 172 (paragraph)
+msgid "You may view a list of your application's broadcast authorization callbacks using the `channel:list` Artisan command:"
+msgstr "可以使用 `channel:list` Artisan 指令來檢視專案中所有 Broadcast 身分驗證回呼的列表："
+
+#: docs/10.x/broadcasting.md:block 173 (code)
+msgid "php artisan channel:list\n"
+msgstr "php artisan channel:list\n"
+
+#: docs/10.x/broadcasting.md:block 175 (header)
 msgid "Authorization Callback Model Binding"
 msgstr "授權回呼的 Model "
 
-#: docs/10.x/broadcasting.md:block 174 (paragraph)
+#: docs/10.x/broadcasting.md:block 176 (paragraph)
 msgid "Just like HTTP routes, channel routes may also take advantage of implicit and explicit [route model binding](/docs/{{version}}/routing#route-model-binding). For example, instead of receiving a string or numeric order ID, you may request an actual `Order` model instance:"
 msgstr "就像 HTTP 路由一樣，頻道路由也能使用顯式或隱式[路由 Model ](/docs/{{version}}/routing#route-model-binding)的功能。舉例來說，可以不接收字串或數字的 Order ID，而要求實際的 `Order` Model 實體："
 
-#: docs/10.x/broadcasting.md:block 175 (code)
+#: docs/10.x/broadcasting.md:block 177 (code)
 msgid "use App\\Models\\Order;\n"
 "use App\\Models\\User;\n\n"
 "Broadcast::channel('orders.{order}', function (User $user, Order $order) {\n"
@@ -1060,19 +1068,19 @@ msgstr "use App\\Models\\Order;\n"
 "    return $user->id === $order->user_id;\n"
 "});\n"
 
-#: docs/10.x/broadcasting.md:block 176 (quote)
+#: docs/10.x/broadcasting.md:block 178 (quote)
 msgid "**Warning** Unlike HTTP route model binding, channel model binding does not support automatic [implicit model binding scoping](/docs/{{version}}/routing#implicit-model-binding-scoping). However, this is rarely a problem because most channels can be scoped based on a single model's unique, primary key."
 msgstr "**Warning** 與 HTTP 路由 Model 綁定不同，頻道的 Model 綁定不支援自動[為隱式 Model 綁定加上作用域]。不過，通常來說這不會造成問題，因為大部分的頻道都可以被放置與單一 Model 的獨立主鍵作用域內。"
 
-#: docs/10.x/broadcasting.md:block 178 (header)
+#: docs/10.x/broadcasting.md:block 180 (header)
 msgid "Authorization Callback Authentication"
 msgstr "授權回呼認證"
 
-#: docs/10.x/broadcasting.md:block 179 (paragraph)
+#: docs/10.x/broadcasting.md:block 181 (paragraph)
 msgid "Private and presence broadcast channels authenticate the current user via your application's default authentication guard. If the user is not authenticated, channel authorization is automatically denied and the authorization callback is never executed. However, you may assign multiple, custom guards that should authenticate the incoming request if necessary:"
 msgstr "私有與 Presence 廣播頻道會通過專案預設的認證 Guard 來認證目前的使用者。若使用者未登入，則頻道認證會自動拒絕，且授權回呼永遠不會被執行。不過，若有需要，也可以指定多個自訂 Guard 來認證連入請求："
 
-#: docs/10.x/broadcasting.md:block 180 (code)
+#: docs/10.x/broadcasting.md:block 182 (code)
 msgid "Broadcast::channel('channel', function () {\n"
 "    // ...\n"
 "}, ['guards' => ['web', 'admin']]);\n"
@@ -1080,33 +1088,33 @@ msgstr "Broadcast::channel('channel', function () {\n"
 "    // ...\n"
 "}, ['guards' => ['web', 'admin']]);\n"
 
-#: docs/10.x/broadcasting.md:block 182 (header)
+#: docs/10.x/broadcasting.md:block 184 (header)
 msgid "Defining Channel Classes"
 msgstr "定義 Channel 類別"
 
-#: docs/10.x/broadcasting.md:block 183 (paragraph)
+#: docs/10.x/broadcasting.md:block 185 (paragraph)
 msgid "If your application is consuming many different channels, your `routes/channels.php` file could become bulky. So, instead of using closures to authorize channels, you may use channel classes. To generate a channel class, use the `make:channel` Artisan command. This command will place a new channel class in the `App/Broadcasting` directory."
 msgstr "若你的專案會使用到許多不同的頻道，則 `routes/channels.php` 可能會變得很肥大。因此，比起使用閉包來授權頻道，我們可以改用頻道類別。要建立頻道類別，請使用 `make:channel` Artisan 指令。這個指令會在 `app/Broadcasting` 目錄內放置一個新的頻道類別。"
 
-#: docs/10.x/broadcasting.md:block 184 (code)
+#: docs/10.x/broadcasting.md:block 186 (code)
 msgid "php artisan make:channel OrderChannel\n"
 msgstr "php artisan make:channel OrderChannel\n"
 
-#: docs/10.x/broadcasting.md:block 185 (paragraph)
+#: docs/10.x/broadcasting.md:block 187 (paragraph)
 msgid "Next, register your channel in your `routes/channels.php` file:"
 msgstr "接著，在 `routes/channels.php` 檔案內註冊頻道："
 
-#: docs/10.x/broadcasting.md:block 186 (code)
+#: docs/10.x/broadcasting.md:block 188 (code)
 msgid "use App\\Broadcasting\\OrderChannel;\n\n"
 "Broadcast::channel('orders.{order}', OrderChannel::class);\n"
 msgstr "use App\\Broadcasting\\OrderChannel;\n\n"
 "Broadcast::channel('orders.{order}', OrderChannel::class);\n"
 
-#: docs/10.x/broadcasting.md:block 187 (paragraph)
+#: docs/10.x/broadcasting.md:block 189 (paragraph)
 msgid "Finally, you may place the authorization logic for your channel in the channel class' `join` method. This `join` method will house the same logic you would have typically placed in your channel authorization closure. You may also take advantage of channel model binding:"
 msgstr "最後，可以將頻道的授權邏輯放在頻道類別的 `join` 方法內。這個 `join` 方法用來放置與平常放在頻道授權閉包相同的邏輯。也可以使用頻道 Model 綁定："
 
-#: docs/10.x/broadcasting.md:block 188 (code)
+#: docs/10.x/broadcasting.md:block 190 (code)
 msgid "<?php\n\n"
 "namespace App\\Broadcasting;\n\n"
 "use App\\Models\\Order;\n"
@@ -1150,37 +1158,37 @@ msgstr "<?php\n\n"
 "    }\n"
 "}\n"
 
-#: docs/10.x/broadcasting.md:block 189 (quote)
+#: docs/10.x/broadcasting.md:block 191 (quote)
 msgid "**Note** Like many other classes in Laravel, channel classes will automatically be resolved by the [service container](/docs/{{version}}/container). So, you may type-hint any dependencies required by your channel in its constructor."
 msgstr "**Note** 與 Laravel 內其他類別一樣，頻道類別也會自動由 [Service Container](/docs/{{version}}/container) 解析。因此，我們可以在頻道的建構函式上對任何所需要的依賴進行型別提示。"
 
-#: docs/10.x/broadcasting.md:block 191 (header)
+#: docs/10.x/broadcasting.md:block 193 (header)
 msgid "Broadcasting Events"
 msgstr "廣播事件"
 
-#: docs/10.x/broadcasting.md:block 192 (paragraph)
+#: docs/10.x/broadcasting.md:block 194 (paragraph)
 msgid "Once you have defined an event and marked it with the `ShouldBroadcast` interface, you only need to fire the event using the event's dispatch method. The event dispatcher will notice that the event is marked with the `ShouldBroadcast` interface and will queue the event for broadcasting:"
 msgstr "定義好事件並將其以 `ShouldBroadcast` 介面進行標示後，我們只需要使用 dispatch 方法來觸發事件即可。事件觸發程式會注意到這個事件有被標註為 `ShouldBroadcast` 介面，並將事件放入佇列以進行廣播："
 
-#: docs/10.x/broadcasting.md:block 195 (header)
+#: docs/10.x/broadcasting.md:block 197 (header)
 msgid "Only To Others"
 msgstr "僅限其他"
 
-#: docs/10.x/broadcasting.md:block 196 (paragraph)
+#: docs/10.x/broadcasting.md:block 198 (paragraph)
 msgid "When building an application that utilizes event broadcasting, you may occasionally need to broadcast an event to all subscribers to a given channel except for the current user. You may accomplish this using the `broadcast` helper and the `toOthers` method:"
 msgstr "在建立一個有使用到事件廣播的專案時，我們可能會需要將某個事件廣播給除了目前使用者以外的所有頻道訂閱者。可以通過 `broadcast` 輔助函式以及 `toOthers` 方法來完成："
 
-#: docs/10.x/broadcasting.md:block 197 (code)
+#: docs/10.x/broadcasting.md:block 199 (code)
 msgid "use App\\Events\\OrderShipmentStatusUpdated;\n\n"
 "broadcast(new OrderShipmentStatusUpdated($update))->toOthers();\n"
 msgstr "use App\\Events\\OrderShipmentStatusUpdated;\n\n"
 "broadcast(new OrderShipmentStatusUpdated($update))->toOthers();\n"
 
-#: docs/10.x/broadcasting.md:block 198 (paragraph)
+#: docs/10.x/broadcasting.md:block 200 (paragraph)
 msgid "To better understand when you may want to use the `toOthers` method, let's imagine a task list application where a user may create a new task by entering a task name. To create a task, your application might make a request to a `/task` URL which broadcasts the task's creation and returns a JSON representation of the new task. When your JavaScript application receives the response from the end-point, it might directly insert the new task into its task list like so:"
 msgstr "為了幫助你更容易理解什麼時候會需要用到 `toOthers` 方法，我們來假設有個任務清單 App。在這個 App 中，使用者可以輸入任務名稱來新增任務。為了建立任務，這個 App 可能會向 `/task` URL 發起一個請求，該請求會將任務的建立廣播出去，並回傳代表新任務的 JSON。當 JavaScript 端從這個 End-point 收到回覆後，就可以直接將新任務插入到任務清單內。像這樣："
 
-#: docs/10.x/broadcasting.md:block 199 (code)
+#: docs/10.x/broadcasting.md:block 201 (code)
 msgid "axios.post('/task', task)\n"
 "    .then((response) => {\n"
 "        this.tasks.push(response.data);\n"
@@ -1190,45 +1198,45 @@ msgstr "axios.post('/task', task)\n"
 "        this.tasks.push(response.data);\n"
 "    });\n"
 
-#: docs/10.x/broadcasting.md:block 200 (paragraph)
+#: docs/10.x/broadcasting.md:block 202 (paragraph)
 msgid "However, remember that we also broadcast the task's creation. If your JavaScript application is also listening for this event in order to add tasks to the task list, you will have duplicate tasks in your list: one from the end-point and one from the broadcast. You may solve this by using the `toOthers` method to instruct the broadcaster to not broadcast the event to the current user."
 msgstr "不過，提醒一下，我們也會將任務的建立廣播出去。如果 JavaScript 端也會監聽這個事件來將任務新增到任務清單上，那麼列表上就會有重複的任務：一個是從 End-point 回傳回來的，另一個則是從監聽事件來的。我們可以通過使用 `toOthers` 方法來告訴廣播程式不要將該事件廣播給目前的使用者。"
 
-#: docs/10.x/broadcasting.md:block 201 (quote)
+#: docs/10.x/broadcasting.md:block 203 (quote)
 msgid "**Warning** Your event must use the `Illuminate\\Broadcasting\\InteractsWithSockets` trait in order to call the `toOthers` method."
 msgstr "**Warning** 若要呼叫 `toOthers` 方法，該事件必須要 use `Illuminate\\Broadcasting\\InteractsWithSockets` Trait。"
 
-#: docs/10.x/broadcasting.md:block 204 (paragraph)
+#: docs/10.x/broadcasting.md:block 206 (paragraph)
 msgid "When you initialize a Laravel Echo instance, a socket ID is assigned to the connection. If you are using a global [Axios](https://github.com/mzabriskie/axios) instance to make HTTP requests from your JavaScript application, the socket ID will automatically be attached to every outgoing request as a `X-Socket-ID` header. Then, when you call the `toOthers` method, Laravel will extract the socket ID from the header and instruct the broadcaster to not broadcast to any connections with that socket ID."
 msgstr "初始化 Laravel Echo 實體時，會指派一個 Socket ID 給這個連線。若是使用全域的 [Axios](https://github.com/mzabriskie/axios) 實體來在 JavaScript 端建立 HTTP 連線，則 Socket ID 會以 `X-Socket-ID` 標頭被自動附加到每個外連請求上。接著，當呼叫 `toOthers` 方法時，Laravel 會從標頭內拆出這個 Socket ID，並告知廣播程式不要廣播給有該 Socket ID 的連線。"
 
-#: docs/10.x/broadcasting.md:block 205 (paragraph)
+#: docs/10.x/broadcasting.md:block 207 (paragraph)
 msgid "If you are not using a global Axios instance, you will need to manually configure your JavaScript application to send the `X-Socket-ID` header with all outgoing requests. You may retrieve the socket ID using the `Echo.socketId` method:"
 msgstr "若你未使用全域 Axios 實體，則需要手動設定 JavaScript 端來在所有外連請求上傳送 `X-Socket-ID` 標頭。可以通過 `Echo.socketId` 方法來取得 Socket ID："
 
-#: docs/10.x/broadcasting.md:block 206 (code)
+#: docs/10.x/broadcasting.md:block 208 (code)
 msgid "var socketId = Echo.socketId();\n"
 msgstr "var socketId = Echo.socketId();\n"
 
-#: docs/10.x/broadcasting.md:block 208 (header)
+#: docs/10.x/broadcasting.md:block 210 (header)
 msgid "Customizing The Connection"
 msgstr "自訂連線"
 
-#: docs/10.x/broadcasting.md:block 209 (paragraph)
+#: docs/10.x/broadcasting.md:block 211 (paragraph)
 msgid "If your application interacts with multiple broadcast connections and you want to broadcast an event using a broadcaster other than your default, you may specify which connection to push an event to using the `via` method:"
 msgstr "若你的專案與許多不同的廣播連線互動時，如果我們想使用預設廣播程式以外的特定廣播程式來廣播事件，則可以使用 `via` 方法來指定要將事件推送給哪個連線："
 
-#: docs/10.x/broadcasting.md:block 210 (code)
+#: docs/10.x/broadcasting.md:block 212 (code)
 msgid "use App\\Events\\OrderShipmentStatusUpdated;\n\n"
 "broadcast(new OrderShipmentStatusUpdated($update))->via('pusher');\n"
 msgstr "use App\\Events\\OrderShipmentStatusUpdated;\n\n"
 "broadcast(new OrderShipmentStatusUpdated($update))->via('pusher');\n"
 
-#: docs/10.x/broadcasting.md:block 211 (paragraph)
+#: docs/10.x/broadcasting.md:block 213 (paragraph)
 msgid "Alternatively, you may specify the event's broadcast connection by calling the `broadcastVia` method within the event's constructor. However, before doing so, you should ensure that the event class uses the `InteractsWithBroadcasting` trait:"
 msgstr "或者，也可以通過在事件的建構函式 (Constructor) 內呼叫 `broadcastVia` 方法來指定事件的廣播連線。不過，這麼做的時候，請先確保這個事件類別有使用 `InteractsWithBroadcasting` Trait："
 
-#: docs/10.x/broadcasting.md:block 212 (code)
+#: docs/10.x/broadcasting.md:block 214 (code)
 msgid "<?php\n\n"
 "namespace App\\Events;\n\n"
 "use Illuminate\\Broadcasting\\Channel;\n"
@@ -1270,19 +1278,19 @@ msgstr "<?php\n\n"
 "    }\n"
 "}\n"
 
-#: docs/10.x/broadcasting.md:block 214 (header)
+#: docs/10.x/broadcasting.md:block 216 (header)
 msgid "Receiving Broadcasts"
 msgstr "接收廣播"
 
-#: docs/10.x/broadcasting.md:block 216 (header)
+#: docs/10.x/broadcasting.md:block 218 (header)
 msgid "Listening For Events"
 msgstr "監聽事件"
 
-#: docs/10.x/broadcasting.md:block 217 (paragraph)
+#: docs/10.x/broadcasting.md:block 219 (paragraph)
 msgid "Once you have [installed and instantiated Laravel Echo](#client-side-installation), you are ready to start listening for events that are broadcast from your Laravel application. First, use the `channel` method to retrieve an instance of a channel, then call the `listen` method to listen for a specified event:"
 msgstr "[安裝並設定好 Laravel Echo](#client-side-installation) 後，就可以開始監聽來自 Laravel 端廣播的事件了。首先，使用 `channel` 方法來取得頻道的實體，然後呼叫 `listen` 方法來監聽某個特定的事件："
 
-#: docs/10.x/broadcasting.md:block 218 (code)
+#: docs/10.x/broadcasting.md:block 220 (code)
 msgid "Echo.channel(`orders.${this.order.id}`)\n"
 "    .listen('OrderShipmentStatusUpdated', (e) => {\n"
 "        console.log(e.order.name);\n"
@@ -1292,11 +1300,11 @@ msgstr "Echo.channel(`orders.${this.order.id}`)\n"
 "        console.log(e.order.name);\n"
 "    });\n"
 
-#: docs/10.x/broadcasting.md:block 219 (paragraph)
+#: docs/10.x/broadcasting.md:block 221 (paragraph)
 msgid "If you would like to listen for events on a private channel, use the `private` method instead. You may continue to chain calls to the `listen` method to listen for multiple events on a single channel:"
 msgstr "若想監聽私有頻道，可使用 `private` 方法來代替。可以繼續在 `listen` 方法後方串上其他的呼叫來在單一頻道上監聽多個事件："
 
-#: docs/10.x/broadcasting.md:block 220 (code)
+#: docs/10.x/broadcasting.md:block 222 (code)
 msgid "Echo.private(`orders.${this.order.id}`)\n"
 "    .listen(/* ... */)\n"
 "    .listen(/* ... */)\n"
@@ -1306,49 +1314,49 @@ msgstr "Echo.private(`orders.${this.order.id}`)\n"
 "    .listen(/* ... */)\n"
 "    .listen(/* ... */);\n"
 
-#: docs/10.x/broadcasting.md:block 222 (header)
+#: docs/10.x/broadcasting.md:block 224 (header)
 msgid "Stop Listening For Events"
 msgstr "停止監聽事件"
 
-#: docs/10.x/broadcasting.md:block 223 (paragraph)
+#: docs/10.x/broadcasting.md:block 225 (paragraph)
 msgid "If you would like to stop listening to a given event without [leaving the channel](#leaving-a-channel), you may use the `stopListening` method:"
 msgstr "若想在不[離開頻道](#leaving-a-channel)的情況下停止監聽給定的事件，可以使用 `stopListening` 方法："
 
-#: docs/10.x/broadcasting.md:block 224 (code)
+#: docs/10.x/broadcasting.md:block 226 (code)
 msgid "Echo.private(`orders.${this.order.id}`)\n"
 "    .stopListening('OrderShipmentStatusUpdated')\n"
 msgstr "Echo.private(`orders.${this.order.id}`)\n"
 "    .stopListening('OrderShipmentStatusUpdated')\n"
 
-#: docs/10.x/broadcasting.md:block 226 (header)
+#: docs/10.x/broadcasting.md:block 228 (header)
 msgid "Leaving A Channel"
 msgstr "離開頻道"
 
-#: docs/10.x/broadcasting.md:block 227 (paragraph)
+#: docs/10.x/broadcasting.md:block 229 (paragraph)
 msgid "To leave a channel, you may call the `leaveChannel` method on your Echo instance:"
 msgstr "若要離開頻道，可以在 Echo 實體上呼叫 `leaveChannel` 方法："
 
-#: docs/10.x/broadcasting.md:block 228 (code)
+#: docs/10.x/broadcasting.md:block 230 (code)
 msgid "Echo.leaveChannel(`orders.${this.order.id}`);\n"
 msgstr "Echo.leaveChannel(`orders.${this.order.id}`);\n"
 
-#: docs/10.x/broadcasting.md:block 229 (paragraph)
+#: docs/10.x/broadcasting.md:block 231 (paragraph)
 msgid "If you would like to leave a channel and also its associated private and presence channels, you may call the `leave` method:"
 msgstr "若要離開頻道以及其關聯的私有與 Presence 頻道，可以呼叫 `leave` 方法："
 
-#: docs/10.x/broadcasting.md:block 230 (code)
+#: docs/10.x/broadcasting.md:block 232 (code)
 msgid "Echo.leave(`orders.${this.order.id}`);\n"
 msgstr "Echo.leave(`orders.${this.order.id}`);\n"
 
-#: docs/10.x/broadcasting.md:block 232 (header)
+#: docs/10.x/broadcasting.md:block 234 (header)
 msgid "Namespaces"
 msgstr "命名空間 (Namespace)"
 
-#: docs/10.x/broadcasting.md:block 233 (paragraph)
+#: docs/10.x/broadcasting.md:block 235 (paragraph)
 msgid "You may have noticed in the examples above that we did not specify the full `App\\Events` namespace for the event classes. This is because Echo will automatically assume the events are located in the `App\\Events` namespace. However, you may configure the root namespace when you instantiate Echo by passing a `namespace` configuration option:"
 msgstr "你可能已經注意到，我們並沒有為事件類別指定完整的 `App\\Events` 命名空間。這是因為，Echo 會自動假設事件都放在 `App\\Events` 命名空間下。不過，我們可以在初始化 Echo 時傳入 `namespace` 設定選項來設定要使用的根命名空間："
 
-#: docs/10.x/broadcasting.md:block 234 (code)
+#: docs/10.x/broadcasting.md:block 236 (code)
 msgid "window.Echo = new Echo({\n"
 "    broadcaster: 'pusher',\n"
 "    // ...\n"
@@ -1360,11 +1368,11 @@ msgstr "window.Echo = new Echo({\n"
 "    namespace: 'App.Other.Namespace'\n"
 "});\n"
 
-#: docs/10.x/broadcasting.md:block 235 (paragraph)
+#: docs/10.x/broadcasting.md:block 237 (paragraph)
 msgid "Alternatively, you may prefix event classes with a `.` when subscribing to them using Echo. This will allow you to always specify the fully-qualified class name:"
 msgstr "除了在初始化時設定以外，也可以在使用 Echo 訂閱事件時在事件類別的名稱前加上一個前置 `.`。這樣一來，就可以隨時使用完整的類別名稱："
 
-#: docs/10.x/broadcasting.md:block 236 (code)
+#: docs/10.x/broadcasting.md:block 238 (code)
 msgid "Echo.channel('orders')\n"
 "    .listen('.Namespace\\\\Event\\\\Class', (e) => {\n"
 "        // ...\n"
@@ -1374,27 +1382,27 @@ msgstr "Echo.channel('orders')\n"
 "        // ...\n"
 "    });\n"
 
-#: docs/10.x/broadcasting.md:block 238 (header)
+#: docs/10.x/broadcasting.md:block 240 (header)
 msgid "Presence Channels"
 msgstr "Presence 頻道"
 
-#: docs/10.x/broadcasting.md:block 239 (paragraph)
+#: docs/10.x/broadcasting.md:block 241 (paragraph)
 msgid "Presence channels build on the security of private channels while exposing the additional feature of awareness of who is subscribed to the channel. This makes it easy to build powerful, collaborative application features such as notifying users when another user is viewing the same page or listing the inhabitants of a chat room."
 msgstr "Presence 頻道擁有私有頻道的安全性，且會提供該頻道的訂閱者等額外資訊。這樣一來便能輕鬆地建立強大的協作 App 功能，如提示目前使用者由其他人正在檢視相同頁面，或是列出聊天室中的使用者狀態。"
 
-#: docs/10.x/broadcasting.md:block 241 (header)
+#: docs/10.x/broadcasting.md:block 243 (header)
 msgid "Authorizing Presence Channels"
 msgstr "授權 Presence 頻道"
 
-#: docs/10.x/broadcasting.md:block 242 (paragraph)
+#: docs/10.x/broadcasting.md:block 244 (paragraph)
 msgid "All presence channels are also private channels; therefore, users must be [authorized to access them](#authorizing-channels). However, when defining authorization callbacks for presence channels, you will not return `true` if the user is authorized to join the channel. Instead, you should return an array of data about the user."
 msgstr "所有的 Presence 頻道也同時是私有頻道。因此，使用者必須要[經過授權以存取頻道](#authorizing-channels)。不過，在為 Presence 頻道定義授權回呼時，若要授權使用者加入頻道，則不應回傳 `true`，而應回傳包含有關其他使用者資訊的陣列。"
 
-#: docs/10.x/broadcasting.md:block 243 (paragraph)
+#: docs/10.x/broadcasting.md:block 245 (paragraph)
 msgid "The data returned by the authorization callback will be made available to the presence channel event listeners in your JavaScript application. If the user is not authorized to join the presence channel, you should return `false` or `null`:"
 msgstr "由授權回呼回傳的資料可以在 JavaScript 端中的 Presence 頻道事件監聽程式中使用。若使用者未被授權加入 Presence 頻道，則應回傳 `false` 或 `null`："
 
-#: docs/10.x/broadcasting.md:block 244 (code)
+#: docs/10.x/broadcasting.md:block 246 (code)
 msgid "use App\\Models\\User;\n\n"
 "Broadcast::channel('chat.{roomId}', function (User $user, int $roomId) {\n"
 "    if ($user->canJoinRoom($roomId)) {\n"
@@ -1408,15 +1416,15 @@ msgstr "use App\\Models\\User;\n\n"
 "    }\n"
 "});\n"
 
-#: docs/10.x/broadcasting.md:block 246 (header)
+#: docs/10.x/broadcasting.md:block 248 (header)
 msgid "Joining Presence Channels"
 msgstr "加入 Presence 頻道"
 
-#: docs/10.x/broadcasting.md:block 247 (paragraph)
+#: docs/10.x/broadcasting.md:block 249 (paragraph)
 msgid "To join a presence channel, you may use Echo's `join` method. The `join` method will return a `PresenceChannel` implementation which, along with exposing the `listen` method, allows you to subscribe to the `here`, `joining`, and `leaving` events."
 msgstr "若要加入 Presence 頻道，可以使用 Echo 的 `join` 方法。`join` 方法會與所暴露的 `listen` 方法一起回傳一個 `PresenceChannel` 的實作，這樣一來你就能訂閱 `here`, `joining` 以及 `leaving` 事件。"
 
-#: docs/10.x/broadcasting.md:block 248 (code)
+#: docs/10.x/broadcasting.md:block 250 (code)
 msgid "Echo.join(`chat.${roomId}`)\n"
 "    .here((users) => {\n"
 "        // ...\n"
@@ -1444,19 +1452,19 @@ msgstr "Echo.join(`chat.${roomId}`)\n"
 "        console.error(error);\n"
 "    });\n"
 
-#: docs/10.x/broadcasting.md:block 249 (paragraph)
+#: docs/10.x/broadcasting.md:block 251 (paragraph)
 msgid "The `here` callback will be executed immediately once the channel is joined successfully, and will receive an array containing the user information for all of the other users currently subscribed to the channel. The `joining` method will be executed when a new user joins a channel, while the `leaving` method will be executed when a user leaves the channel. The `error` method will be executed when the authentication endpoint returns a HTTP status code other than 200 or if there is a problem parsing the returned JSON."
 msgstr "`here` 回呼會在成功加入頻道後被立即執行，並會收到包含所有其他目前訂閱該頻道的使用者資訊。`joining` 方法會在有新使用者加入頻道時被執行，而 `leaving` 則會在有使用者離開時被執行。`error` 方法會在認證 Endpoint 回傳除了 200 以外的 HTTP 狀態時、或是解析回傳的 JSON 時有問題時被執行。"
 
-#: docs/10.x/broadcasting.md:block 251 (header)
+#: docs/10.x/broadcasting.md:block 253 (header)
 msgid "Broadcasting To Presence Channels"
 msgstr "廣播至 Presence 頻道"
 
-#: docs/10.x/broadcasting.md:block 252 (paragraph)
+#: docs/10.x/broadcasting.md:block 254 (paragraph)
 msgid "Presence channels may receive events just like public or private channels. Using the example of a chatroom, we may want to broadcast `NewMessage` events to the room's presence channel. To do so, we'll return an instance of `PresenceChannel` from the event's `broadcastOn` method:"
 msgstr "Presence 頻道可以像公用或私有頻道一樣接收事件。以聊天室為例，我們可能像廣播 `NewMessage` 事件至聊天室的 Presence 頻道。為此，我們可以在事件的 `broadcastOn` 方法內回傳一個 `PresenceChannel` 的實體："
 
-#: docs/10.x/broadcasting.md:block 253 (code)
+#: docs/10.x/broadcasting.md:block 255 (code)
 msgid "/**\n"
 " * Get the channels the event should broadcast on.\n"
 " *\n"
@@ -1465,7 +1473,7 @@ msgid "/**\n"
 "public function broadcastOn(): array\n"
 "{\n"
 "    return [\n"
-"        new PresenceChannel('room.'.$this->message->room_id),\n"
+"        new PresenceChannel('chat.'.$this->message->room_id),\n"
 "    ];\n"
 "}\n"
 msgstr "/**\n"
@@ -1476,25 +1484,25 @@ msgstr "/**\n"
 "public function broadcastOn(): array\n"
 "{\n"
 "    return [\n"
-"        new PresenceChannel('room.'.$this->message->room_id),\n"
+"        new PresenceChannel('chat.'.$this->message->room_id),\n"
 "    ];\n"
 "}\n"
 
-#: docs/10.x/broadcasting.md:block 254 (paragraph)
+#: docs/10.x/broadcasting.md:block 256 (paragraph)
 msgid "As with other events, you may use the `broadcast` helper and the `toOthers` method to exclude the current user from receiving the broadcast:"
 msgstr "與其他事件一樣，可以使用 `broadcast` 輔助函式與 `toOthers` 方法來排除目前使用者接收該 Broadcast："
 
-#: docs/10.x/broadcasting.md:block 255 (code)
+#: docs/10.x/broadcasting.md:block 257 (code)
 msgid "broadcast(new NewMessage($message));\n\n"
 "broadcast(new NewMessage($message))->toOthers();\n"
 msgstr "broadcast(new NewMessage($message));\n\n"
 "broadcast(new NewMessage($message))->toOthers();\n"
 
-#: docs/10.x/broadcasting.md:block 256 (paragraph)
+#: docs/10.x/broadcasting.md:block 258 (paragraph)
 msgid "As typical of other types of events, you may listen for events sent to presence channels using Echo's `listen` method:"
 msgstr "與其他一般的事件一樣，也可以使用 Echo 的 `listen` 方法來監聽傳送到 Presence 頻道的事件："
 
-#: docs/10.x/broadcasting.md:block 257 (code)
+#: docs/10.x/broadcasting.md:block 259 (code)
 msgid "Echo.join(`chat.${roomId}`)\n"
 "    .here(/* ... */)\n"
 "    .joining(/* ... */)\n"
@@ -1510,27 +1518,27 @@ msgstr "Echo.join(`chat.${roomId}`)\n"
 "        // ...\n"
 "    });\n"
 
-#: docs/10.x/broadcasting.md:block 259 (header)
+#: docs/10.x/broadcasting.md:block 261 (header)
 msgid "Model Broadcasting"
 msgstr "Model 廣播"
 
-#: docs/10.x/broadcasting.md:block 260 (quote)
+#: docs/10.x/broadcasting.md:block 262 (quote)
 msgid "**Warning** Before reading the following documentation about model broadcasting, we recommend you become familiar with the general concepts of Laravel's model broadcasting services as well as how to manually create and listen to broadcast events."
 msgstr "**Warning** 在進一步閱讀有關 Model 廣播的說明文件前，我們建議讀者先瞭解有關 Laravel 的 Model 廣播服務以及如何手動建立並監聽廣播時間的一般概念。"
 
-#: docs/10.x/broadcasting.md:block 261 (paragraph)
+#: docs/10.x/broadcasting.md:block 263 (paragraph)
 msgid "It is common to broadcast events when your application's [Eloquent models](/docs/{{version}}/eloquent) are created, updated, or deleted. Of course, this can easily be accomplished by manually [defining custom events for Eloquent model state changes](/docs/{{version}}/eloquent#events) and marking those events with the `ShouldBroadcast` interface."
 msgstr "在專案的 [Eloquent Model](/docs/{{version}}/eloquent) 被建立、更新、或刪除時，我們常常會廣播事件。當然，我們可以手動[為 Eloquent Model 的狀態更改定義自訂事件](/docs/{{version}}/eloquent#events)並將這些事件標記為 `ShouldBroadcast` 來輕鬆達成："
 
-#: docs/10.x/broadcasting.md:block 262 (paragraph)
+#: docs/10.x/broadcasting.md:block 264 (paragraph)
 msgid "However, if you are not using these events for any other purposes in your application, it can be cumbersome to create event classes for the sole purpose of broadcasting them. To remedy this, Laravel allows you to indicate that an Eloquent model should automatically broadcast its state changes."
 msgstr "不過，我們讓事件在專案中負責其他功能，那麼如果只建立一個用來廣播的事件就很麻煩。為了解決這個問題，再 Laravel 中，我們可以讓 Eloquent Model 自動將其狀態更改廣播出去："
 
-#: docs/10.x/broadcasting.md:block 263 (paragraph)
+#: docs/10.x/broadcasting.md:block 265 (paragraph)
 msgid "To get started, your Eloquent model should use the `Illuminate\\Database\\Eloquent\\BroadcastsEvents` trait. In addition, the model should define a `broadcastOn` method, which will return an array of channels that the model's events should broadcast on:"
 msgstr "要開始設定自動廣播，應在 Eloquent Model 上使用 `Illuminate\\Database\\Eloquent\\BroadcastsEvents` Trait。此外，該 Model 應定義一個 `broadcastOn` 方法，並在其中回傳一組包含頻道名稱的陣列，以供 Model 事件廣播："
 
-#: docs/10.x/broadcasting.md:block 264 (code)
+#: docs/10.x/broadcasting.md:block 266 (code)
 msgid "<?php\n\n"
 "namespace App\\Models;\n\n"
 "use Illuminate\\Broadcasting\\Channel;\n"
@@ -1588,15 +1596,15 @@ msgstr "<?php\n\n"
 "    }\n"
 "}\n"
 
-#: docs/10.x/broadcasting.md:block 265 (paragraph)
+#: docs/10.x/broadcasting.md:block 267 (paragraph)
 msgid "Once your model includes this trait and defines its broadcast channels, it will begin automatically broadcasting events when a model instance is created, updated, deleted, trashed, or restored."
 msgstr "再 Model 中包含該 Trait 並定義好廣播頻道後，當 Model 實體被建立、更新、刪除、軟刪除、或是取消軟刪除後自動廣播事件。"
 
-#: docs/10.x/broadcasting.md:block 266 (paragraph)
+#: docs/10.x/broadcasting.md:block 268 (paragraph)
 msgid "In addition, you may have noticed that the `broadcastOn` method receives a string `$event` argument. This argument contains the type of event that has occurred on the model and will have a value of `created`, `updated`, `deleted`, `trashed`, or `restored`. By inspecting the value of this variable, you may determine which channels (if any) the model should broadcast to for a particular event:"
 msgstr "此外，讀者可能已經發現，`broadcastOn` 方法接收了一個字串的 `$event` 引述。這個引述包含了 Model 上所發生的事件，其值為 `created`, `updated`, `deleted`, `trashed`, 或 `restored`。只要檢查這個變數的值，就可以用來判斷對於特定事件要廣播道哪個頻道（若有的話）："
 
-#: docs/10.x/broadcasting.md:block 267 (code)
+#: docs/10.x/broadcasting.md:block 269 (code)
 msgid "/**\n"
 " * Get the channels that model events should broadcast on.\n"
 " *\n"
@@ -1622,15 +1630,15 @@ msgstr "/**\n"
 "    };\n"
 "}\n"
 
-#: docs/10.x/broadcasting.md:block 269 (header)
+#: docs/10.x/broadcasting.md:block 271 (header)
 msgid "Customizing Model Broadcasting Event Creation"
 msgstr "自訂 Model 廣播的事件建立"
 
-#: docs/10.x/broadcasting.md:block 270 (paragraph)
+#: docs/10.x/broadcasting.md:block 272 (paragraph)
 msgid "Occasionally, you may wish to customize how Laravel creates the underlying model broadcasting event. You may accomplish this by defining a `newBroadcastableEvent` method on your Eloquent model. This method should return an `Illuminate\\Database\\Eloquent\\BroadcastableModelEventOccurred` instance:"
 msgstr "有時候，我們可能會想自訂 Laravel 要如何建立 Model 廣播時使用的事件。為此，我們可以通過在 Eloquent Model 上定義一個 `newBroadcastableEvent` 來達成。該方法應回傳 `Illuminate\\Database\\Eloquent\\BroadcastableModelEventOccurred` 實體："
 
-#: docs/10.x/broadcasting.md:block 271 (code)
+#: docs/10.x/broadcasting.md:block 273 (code)
 msgid "use Illuminate\\Database\\Eloquent\\BroadcastableModelEventOccurred;\n\n"
 "/**\n"
 " * Create a new broadcastable model event for the model.\n"
@@ -1652,23 +1660,23 @@ msgstr "use Illuminate\\Database\\Eloquent\\BroadcastableModelEventOccurred;\n\n
 "    ))->dontBroadcastToCurrentUser();\n"
 "}\n"
 
-#: docs/10.x/broadcasting.md:block 273 (header)
+#: docs/10.x/broadcasting.md:block 275 (header)
 msgid "Model Broadcasting Conventions"
 msgstr "Model 廣播慣例"
 
-#: docs/10.x/broadcasting.md:block 275 (header)
+#: docs/10.x/broadcasting.md:block 277 (header)
 msgid "Channel Conventions"
 msgstr "頻道慣例"
 
-#: docs/10.x/broadcasting.md:block 276 (paragraph)
+#: docs/10.x/broadcasting.md:block 278 (paragraph)
 msgid "As you may have noticed, the `broadcastOn` method in the model example above did not return `Channel` instances. Instead, Eloquent models were returned directly. If an Eloquent model instance is returned by your model's `broadcastOn` method (or is contained in an array returned by the method), Laravel will automatically instantiate a private channel instance for the model using the model's class name and primary key identifier as the channel name."
 msgstr "讀者可能已經發現，在上方的 Model 範例中，`broadcastOn` 方法並沒有回傳 `Channel` 實體，而是直接回傳 Eloquent Model。若 Model 的 `broadcastOn` 方法回傳的是 Model 實體 (或是包含 Model 實體的陣列)，則 Laravel 會使用該 Model 的類別名稱與主索引鍵識別元作為頻道名稱，自動為該 Model 初始化一個私人頻道。"
 
-#: docs/10.x/broadcasting.md:block 277 (paragraph)
+#: docs/10.x/broadcasting.md:block 279 (paragraph)
 msgid "So, an `App\\Models\\User` model with an `id` of `1` would be converted into a `Illuminate\\Broadcasting\\PrivateChannel` instance with a name of `App.Models.User.1`. Of course, in addition to returning Eloquent model instances from your model's `broadcastOn` method, you may return complete `Channel` instances in order to have full control over the model's channel names:"
 msgstr "因此，`id` 為 `1` 的 `App\\Models\\User` Model 會被轉換為一個名稱是 `App.Models.User.1` 的 `Illuminate\\Broadcasting\\PrivateChannel` 實體。當然，除了從 Model 的 `broadcastOn` 方法內回傳 Eloquent Model 實體外，也可以回傳一個完整的 `Channel` 實體來取得對 Model 的頻道名稱的完整控制權："
 
-#: docs/10.x/broadcasting.md:block 278 (code)
+#: docs/10.x/broadcasting.md:block 280 (code)
 msgid "use Illuminate\\Broadcasting\\PrivateChannel;\n\n"
 "/**\n"
 " * Get the channels that model events should broadcast on.\n"
@@ -1694,35 +1702,35 @@ msgstr "use Illuminate\\Broadcasting\\PrivateChannel;\n\n"
 "    ];\n"
 "}\n"
 
-#: docs/10.x/broadcasting.md:block 279 (paragraph)
+#: docs/10.x/broadcasting.md:block 281 (paragraph)
 msgid "If you plan to explicitly return a channel instance from your model's `broadcastOn` method, you may pass an Eloquent model instance to the channel's constructor. When doing so, Laravel will use the model channel conventions discussed above to convert the Eloquent model into a channel name string:"
 msgstr "若有打算要從 Model 的 `broadcastOn` 方法內明顯回傳頻道實體，則可以將 Eloquent Model 實體傳入該頻道的建構函式。這樣一來，Laravel 就可以通過剛才提到的 Model 頻道慣例來將 Eloquent Model 轉換為頻道名稱字串："
 
-#: docs/10.x/broadcasting.md:block 280 (code)
+#: docs/10.x/broadcasting.md:block 282 (code)
 msgid "return [new Channel($this->user)];\n"
 msgstr "return [new Channel($this->user)];\n"
 
-#: docs/10.x/broadcasting.md:block 281 (paragraph)
-msgid "If you need to determine the channel name of a model, you may call the `broadcastChannel` method on any model instance. For example, this method returns the string `App.Models.User.1` for a `App\\Models\\User` model with an `id` of `1`:"
+#: docs/10.x/broadcasting.md:block 283 (paragraph)
+msgid "If you need to determine the channel name of a model, you may call the `broadcastChannel` method on any model instance. For example, this method returns the string `App.Models.User.1` for an `App\\Models\\User` model with an `id` of `1`:"
 msgstr "若想判斷某個 Model 的頻道名稱，可以在任何 Model 實體上呼叫 `broadcastChannel` 方法。舉例來說，對於一個 `id` 為 `1` 的 `App\\Models\\User` Model，該方法會回傳一個字串 `App.Models.User.1`："
 
-#: docs/10.x/broadcasting.md:block 282 (code)
+#: docs/10.x/broadcasting.md:block 284 (code)
 msgid "$user->broadcastChannel()\n"
 msgstr "$user->broadcastChannel()\n"
 
-#: docs/10.x/broadcasting.md:block 284 (header)
+#: docs/10.x/broadcasting.md:block 286 (header)
 msgid "Event Conventions"
 msgstr "事件慣例"
 
-#: docs/10.x/broadcasting.md:block 285 (paragraph)
+#: docs/10.x/broadcasting.md:block 287 (paragraph)
 msgid "Since model broadcast events are not associated with an \"actual\" event within your application's `App\\Events` directory, they are assigned a name and a payload based on conventions. Laravel's convention is to broadcast the event using the class name of the model (not including the namespace) and the name of the model event that triggered the broadcast."
 msgstr "由於 Model 廣播事件並不與專案的 `App\\Events` 目錄內的「真實」事件有關，這些事件只會依據慣例來指派名稱與 Payload (裝載)。Laravel 的慣例就是使用 Model 的類別名稱 (不含 Namespace) 與觸發廣播的 Model 事件來廣播。"
 
-#: docs/10.x/broadcasting.md:block 286 (paragraph)
+#: docs/10.x/broadcasting.md:block 288 (paragraph)
 msgid "So, for example, an update to the `App\\Models\\Post` model would broadcast an event to your client-side application as `PostUpdated` with the following payload:"
 msgstr "因此，對 `App\\Models\\Post` Model 進行更新，會將 `PostUpdated` 事件與下列 Payload 廣播到用戶端："
 
-#: docs/10.x/broadcasting.md:block 287 (code)
+#: docs/10.x/broadcasting.md:block 289 (code)
 msgid "{\n"
 "    \"model\": {\n"
 "        \"id\": 1,\n"
@@ -1742,15 +1750,15 @@ msgstr "{\n"
 "    \"socket\": \"someSocketId\",\n"
 "}\n"
 
-#: docs/10.x/broadcasting.md:block 288 (paragraph)
+#: docs/10.x/broadcasting.md:block 290 (paragraph)
 msgid "The deletion of the `App\\Models\\User` model would broadcast an event named `UserDeleted`."
 msgstr "刪除 `App\\Models\\Post` Model 時廣播的事件名稱會是 `UserDeleted`。"
 
-#: docs/10.x/broadcasting.md:block 289 (paragraph)
+#: docs/10.x/broadcasting.md:block 291 (paragraph)
 msgid "If you would like, you may define a custom broadcast name and payload by adding a `broadcastAs` and `broadcastWith` method to your model. These methods receive the name of the model event / operation that is occurring, allowing you to customize the event's name and payload for each model operation. If `null` is returned from the `broadcastAs` method, Laravel will use the model broadcasting event name conventions discussed above when broadcasting the event:"
 msgstr "若有需要，也可以通過在 Model 中新增一個 `broadcastAs` 與 `broadcastWith` 方法來自訂廣播的名稱與 Payload。這些方法會收到目前發生的 Model 事件或動作，好讓我們能為不同的 Model 動作自訂事件名稱與 Payload。若在 `broadcastAs` 方法中回傳 `null`，則 Laravel 會使用上方討論過的 Model 廣播事件名稱的慣例來廣播這個事件："
 
-#: docs/10.x/broadcasting.md:block 290 (code)
+#: docs/10.x/broadcasting.md:block 292 (code)
 msgid "/**\n"
 " * The model event's broadcast name.\n"
 " */\n"
@@ -1796,23 +1804,23 @@ msgstr "/**\n"
 "    };\n"
 "}\n"
 
-#: docs/10.x/broadcasting.md:block 292 (header)
+#: docs/10.x/broadcasting.md:block 294 (header)
 msgid "Listening For Model Broadcasts"
 msgstr "監聽 Model 廣播"
 
-#: docs/10.x/broadcasting.md:block 293 (paragraph)
+#: docs/10.x/broadcasting.md:block 295 (paragraph)
 msgid "Once you have added the `BroadcastsEvents` trait to your model and defined your model's `broadcastOn` method, you are ready to start listening for broadcasted model events within your client-side application. Before getting started, you may wish to consult the complete documentation on [listening for events](#listening-for-events)."
 msgstr "在 Model 中新增好 `BroadcastsEvents` Trait 並定義好 Model 的 `broadcastOn` 方法後，就可以開始在用戶端中監聽廣播出來的 Model 事件了。在開始前，建議你先閱讀有關[監聽事件](#listening-for-events)的完整說明文件。"
 
-#: docs/10.x/broadcasting.md:block 294 (paragraph)
+#: docs/10.x/broadcasting.md:block 296 (paragraph)
 msgid "First, use the `private` method to retrieve an instance of a channel, then call the `listen` method to listen for a specified event. Typically, the channel name given to the `private` method should correspond to Laravel's [model broadcasting conventions](#model-broadcasting-conventions)."
 msgstr "首先，使用 `private` 方法來取得 Channel 實體，然後呼叫 `listen` 方法來監聽特定的事件。一般來說，傳給 `private` 方法的頻道名稱應與 Laravel 的 [Model 廣播慣例](#model-broadcasting-conventions)相對應。"
 
-#: docs/10.x/broadcasting.md:block 295 (paragraph)
+#: docs/10.x/broadcasting.md:block 297 (paragraph)
 msgid "Once you have obtained a channel instance, you may use the `listen` method to listen for a particular event. Since model broadcast events are not associated with an \"actual\" event within your application's `App\\Events` directory, the [event name](#model-broadcasting-event-conventions) must be prefixed with a `.` to indicate it does not belong to a particular namespace. Each model broadcast event has a `model` property which contains all of the broadcastable properties of the model:"
 msgstr "取得 Channel 實體後，就可以使用 `listen` 方法來監聽特定的事件。由於 Model 廣播事件並不與專案中 `App\\Events` 目錄下的「真實事件」互相關聯，因此，[事件名稱](#model-broadcasting-event-conventions)前應加上一個 `.` 字元，以標識其不屬於特定的命名空間。每個 Model 廣播事件都有一個 `model` 屬性，其中包含了 Model 中所有可廣播的屬性："
 
-#: docs/10.x/broadcasting.md:block 296 (code)
+#: docs/10.x/broadcasting.md:block 298 (code)
 msgid "Echo.private(`App.Models.User.${this.user.id}`)\n"
 "    .listen('.PostUpdated', (e) => {\n"
 "        console.log(e.model);\n"
@@ -1822,23 +1830,23 @@ msgstr "Echo.private(`App.Models.User.${this.user.id}`)\n"
 "        console.log(e.model);\n"
 "    });\n"
 
-#: docs/10.x/broadcasting.md:block 298 (header)
+#: docs/10.x/broadcasting.md:block 300 (header)
 msgid "Client Events"
 msgstr "用戶端事件"
 
-#: docs/10.x/broadcasting.md:block 299 (quote)
+#: docs/10.x/broadcasting.md:block 301 (quote)
 msgid "**Note** When using [Pusher Channels](https://pusher.com/channels), you must enable the \"Client Events\" option in the \"App Settings\" section of your [application dashboard](https://dashboard.pusher.com/) in order to send client events."
 msgstr "**Note** 在使用 [Pusher Channels](https://pusher.com/channels) 時，可以在 [Application Dashboard](https://dashboard.pusher.com/) 內啟用「App Settings」中的「Client Event」，以傳送用戶端事件。"
 
-#: docs/10.x/broadcasting.md:block 300 (paragraph)
+#: docs/10.x/broadcasting.md:block 302 (paragraph)
 msgid "Sometimes you may wish to broadcast an event to other connected clients without hitting your Laravel application at all. This can be particularly useful for things like \"typing\" notifications, where you want to alert users of your application that another user is typing a message on a given screen."
 msgstr "有時候我們可能會想將事件直接廣播給其他連線的用戶端，而不經由 Laravel 端。特別像是如顯示「正在輸入」等通知時，我們只是想告訴使用者網站內的其他使用者正在特定畫面上輸入。"
 
-#: docs/10.x/broadcasting.md:block 301 (paragraph)
+#: docs/10.x/broadcasting.md:block 303 (paragraph)
 msgid "To broadcast client events, you may use Echo's `whisper` method:"
 msgstr "若要廣播用戶端事件，可以使用 Echo 的 `whisper` 方法："
 
-#: docs/10.x/broadcasting.md:block 302 (code)
+#: docs/10.x/broadcasting.md:block 304 (code)
 msgid "Echo.private(`chat.${roomId}`)\n"
 "    .whisper('typing', {\n"
 "        name: this.user.name\n"
@@ -1848,11 +1856,11 @@ msgstr "Echo.private(`chat.${roomId}`)\n"
 "        name: this.user.name\n"
 "    });\n"
 
-#: docs/10.x/broadcasting.md:block 303 (paragraph)
+#: docs/10.x/broadcasting.md:block 305 (paragraph)
 msgid "To listen for client events, you may use the `listenForWhisper` method:"
 msgstr "若要監聽用戶端事件，可以使用 `listenForWhisper` 方法："
 
-#: docs/10.x/broadcasting.md:block 304 (code)
+#: docs/10.x/broadcasting.md:block 306 (code)
 msgid "Echo.private(`chat.${roomId}`)\n"
 "    .listenForWhisper('typing', (e) => {\n"
 "        console.log(e.name);\n"
@@ -1862,19 +1870,19 @@ msgstr "Echo.private(`chat.${roomId}`)\n"
 "        console.log(e.name);\n"
 "    });\n"
 
-#: docs/10.x/broadcasting.md:block 306 (header)
+#: docs/10.x/broadcasting.md:block 308 (header)
 msgid "Notifications"
 msgstr "通知"
 
-#: docs/10.x/broadcasting.md:block 307 (paragraph)
+#: docs/10.x/broadcasting.md:block 309 (paragraph)
 msgid "By pairing event broadcasting with [notifications](/docs/{{version}}/notifications), your JavaScript application may receive new notifications as they occur without needing to refresh the page. Before getting started, be sure to read over the documentation on using [the broadcast notification channel](/docs/{{version}}/notifications#broadcast-notifications)."
 msgstr "只要將事件廣播與 [通知](/docs/{{version}}/notifications) 一起使用，JavaScript 端就可以在不重新整理的情況下接收新通知。在開始前，請先閱讀有關[廣播通知頻道](/docs/{{version}}/notifications#broadcast-notifications)的說明文件。"
 
-#: docs/10.x/broadcasting.md:block 308 (paragraph)
+#: docs/10.x/broadcasting.md:block 310 (paragraph)
 msgid "Once you have configured a notification to use the broadcast channel, you may listen for the broadcast events using Echo's `notification` method. Remember, the channel name should match the class name of the entity receiving the notifications:"
 msgstr "設定讓通知使用廣播頻道後，就可以使用 Echo 的 `notification` 方法來接收廣播。請記住，頻道的名稱應與接收通知的使用者類別名稱相符："
 
-#: docs/10.x/broadcasting.md:block 309 (code)
+#: docs/10.x/broadcasting.md:block 311 (code)
 msgid "Echo.private(`App.Models.User.${userId}`)\n"
 "    .notification((notification) => {\n"
 "        console.log(notification.type);\n"
@@ -1884,9 +1892,13 @@ msgstr "Echo.private(`App.Models.User.${userId}`)\n"
 "        console.log(notification.type);\n"
 "    });\n"
 
-#: docs/10.x/broadcasting.md:block 310 (paragraph)
+#: docs/10.x/broadcasting.md:block 312 (paragraph)
 msgid "In this example, all notifications sent to `App\\Models\\User` instances via the `broadcast` channel would be received by the callback. A channel authorization callback for the `App.Models.User.{id}` channel is included in the default `BroadcastServiceProvider` that ships with the Laravel framework."
 msgstr "在此範例中，所有通過 `broadcast` 頻道傳送給 `App\\Models\\User` 實體的通知都會被該回呼收到。用於 `App.Models.User.{id}` 的頻道授權回呼包含在 Laravel 框架附帶的 `BroadcastServiceProvider` 內。"
+
+#: docs/8.x/broadcasting.md:block 6 (paragraph)
+msgid "For example, imagine your application is able to export a user's data to a CSV file and email it to them. However, creating this CSV file takes several minutes so you choose to create and mail the CSV within a [queued job](/docs/{{version}}/queues). When the CSV has been created and mailed to the user, we can use event broadcasting to dispatch a `App\\Events\\UserDataExported` event that is received by our application's JavaScript. Once the event is received, we can display a message to the user that their CSV has been emailed to them without them ever needing to refresh the page."
+msgstr "舉例來說，假設我們的 App 可以將使用者資料匯出為 CSV 檔並以電子郵件寄出。不過，建立 CSV 檔需要數分鐘的事件，因此我們選擇將建立與寄送 CSV 檔的程式放在[佇列任務](/docs/{{version}}/queues)中。當 CSV 當建立完畢並寄給使用者後，我們可以使用「事件廣播」來將 `App\\Events\\UserDataExported` 事件分派給應用程式的 JavaScript。收到事件後，使用者就能在不重新整理的情況下看到一個訊息，表示我們已將 CSV 檔寄送出去。"
 
 #: docs/8.x/broadcasting.md:block 11 (paragraph)
 msgid "By default, Laravel includes two server-side broadcasting drivers for you to choose from: [Pusher Channels](https://pusher.com/channels) and [Ably](https://ably.io). However, community driven packages such as [laravel-websockets](https://beyondco.de/docs/laravel-websockets/getting-started/introduction) and [soketi](https://docs.soketi.app/) provide additional broadcasting drivers that do not require commercial broadcasting providers."
@@ -1975,7 +1987,7 @@ msgstr "{tip} 若想瞭解更多 Pusher 的開放原始碼替代品，請參考[
 #: docs/8.x/broadcasting.md:block 96 (code)
 msgid "<?php\n\n"
 "namespace App\\Events;\n\n"
-"use App\\Order;\n"
+"use App\\Models\\Order;\n"
 "use Illuminate\\Broadcasting\\Channel;\n"
 "use Illuminate\\Broadcasting\\InteractsWithSockets;\n"
 "use Illuminate\\Broadcasting\\PresenceChannel;\n"
@@ -1993,7 +2005,7 @@ msgid "<?php\n\n"
 "}\n"
 msgstr "<?php\n\n"
 "namespace App\\Events;\n\n"
-"use App\\Order;\n"
+"use App\\Models\\Order;\n"
 "use Illuminate\\Broadcasting\\Channel;\n"
 "use Illuminate\\Broadcasting\\InteractsWithSockets;\n"
 "use Illuminate\\Broadcasting\\PresenceChannel;\n"
@@ -2210,6 +2222,30 @@ msgstr "/**\n"
 "public function broadcastWhen()\n"
 "{\n"
 "    return $this->order->value > 100;\n"
+"}\n"
+
+#: docs/8.x/broadcasting.md:block 142 (paragraph)
+msgid "If your queue connection's `after_commit` configuration option is set to `false`, you may still indicate that a particular broadcast event should be dispatched after all open database transactions have been committed by defining an `$afterCommit` property on the event class:"
+msgstr "若佇列連線的 `after_commit` 設定選項是 `false`，那麼就可以通過在事件類別上定義 `$afterCommit` 屬性來標示出特定的廣播事件應在資料庫 Transaction 被 Commit 後才可進行分派："
+
+#: docs/8.x/broadcasting.md:block 143 (code)
+msgid "<?php\n\n"
+"namespace App\\Events;\n\n"
+"use Illuminate\\Contracts\\Broadcasting\\ShouldBroadcast;\n"
+"use Illuminate\\Queue\\SerializesModels;\n\n"
+"class ServerCreated implements ShouldBroadcast\n"
+"{\n"
+"    use SerializesModels;\n\n"
+"    public $afterCommit = true;\n"
+"}\n"
+msgstr "<?php\n\n"
+"namespace App\\Events;\n\n"
+"use Illuminate\\Contracts\\Broadcasting\\ShouldBroadcast;\n"
+"use Illuminate\\Queue\\SerializesModels;\n\n"
+"class ServerCreated implements ShouldBroadcast\n"
+"{\n"
+"    use SerializesModels;\n\n"
+"    public $afterCommit = true;\n"
 "}\n"
 
 #: docs/8.x/broadcasting.md:block 144 (quote)
@@ -2628,6 +2664,10 @@ msgstr "use Illuminate\\Broadcasting\\PrivateChannel;\n\n"
 "    return [new PrivateChannel('user.'.$this->id)];\n"
 "}\n"
 
+#: docs/8.x/broadcasting.md:block 277 (paragraph)
+msgid "If you need to determine the channel name of a model, you may call the `broadcastChannel` method on any model instance. For example, this method returns the string `App.Models.User.1` for a `App\\Models\\User` model with an `id` of `1`:"
+msgstr "若想判斷某個 Model 的頻道名稱，可以在任何 Model 實體上呼叫 `broadcastChannel` 方法。舉例來說，對於一個 `id` 為 `1` 的 `App\\Models\\User` Model，該方法會回傳一個字串 `App.Models.User.1`："
+
 #: docs/8.x/broadcasting.md:block 286 (code)
 msgid "/**\n"
 " * The model event's broadcast name.\n"
@@ -2686,44 +2726,6 @@ msgstr "/**\n"
 msgid "{tip} When using [Pusher Channels](https://pusher.com/channels), you must enable the \"Client Events\" option in the \"App Settings\" section of your [application dashboard](https://dashboard.pusher.com/) in order to send client events."
 msgstr "{tip} 在使用 [Pusher Channels](https://pusher.com/channels) 時，可以在 [Application Dashboard](https://dashboard.pusher.com/) 內啟用「App Settings」中的「Client Event」，以傳送用戶端事件。"
 
-#: docs/9.x/broadcasting.md:block 96 (code)
-msgid "<?php\n\n"
-"namespace App\\Events;\n\n"
-"use App\\Models\\Order;\n"
-"use Illuminate\\Broadcasting\\Channel;\n"
-"use Illuminate\\Broadcasting\\InteractsWithSockets;\n"
-"use Illuminate\\Broadcasting\\PresenceChannel;\n"
-"use Illuminate\\Broadcasting\\PrivateChannel;\n"
-"use Illuminate\\Contracts\\Broadcasting\\ShouldBroadcast;\n"
-"use Illuminate\\Queue\\SerializesModels;\n\n"
-"class OrderShipmentStatusUpdated implements ShouldBroadcast\n"
-"{\n"
-"    /**\n"
-"     * The order instance.\n"
-"     *\n"
-"     * @var \\App\\Order\n"
-"     */\n"
-"    public $order;\n"
-"}\n"
-msgstr "<?php\n\n"
-"namespace App\\Events;\n\n"
-"use App\\Models\\Order;\n"
-"use Illuminate\\Broadcasting\\Channel;\n"
-"use Illuminate\\Broadcasting\\InteractsWithSockets;\n"
-"use Illuminate\\Broadcasting\\PresenceChannel;\n"
-"use Illuminate\\Broadcasting\\PrivateChannel;\n"
-"use Illuminate\\Contracts\\Broadcasting\\ShouldBroadcast;\n"
-"use Illuminate\\Queue\\SerializesModels;\n\n"
-"class OrderShipmentStatusUpdated implements ShouldBroadcast\n"
-"{\n"
-"    /**\n"
-"     * The order instance.\n"
-"     *\n"
-"     * @var \\App\\Order\n"
-"     */\n"
-"    public $order;\n"
-"}\n"
-
 #: docs/9.x/broadcasting.md:block 253 (code)
 msgid "Echo.join(`chat.${roomId}`)\n"
 "    .here(/* ... */)\n"
@@ -2768,79 +2770,31 @@ msgstr "use Illuminate\\Database\\Eloquent\\BroadcastableModelEventOccurred;\n\n
 "    ))->dontBroadcastToCurrentUser();\n"
 "}\n"
 
-#: docs/master/broadcasting.md:block 115 (code)
-msgid "<?php\n\n"
-"namespace App\\Events;\n\n"
-"use App\\Models\\User;\n"
-"use Illuminate\\Broadcasting\\Channel;\n"
-"use Illuminate\\Broadcasting\\InteractsWithSockets;\n"
-"use Illuminate\\Broadcasting\\PresenceChannel;\n"
-"use Illuminate\\Broadcasting\\PrivateChannel;\n"
-"use Illuminate\\Contracts\\Broadcasting\\ShouldBroadcast;\n"
-"use Illuminate\\Queue\\SerializesModels;\n\n"
-"class ServerCreated implements ShouldBroadcast\n"
+#: docs/master/broadcasting.md:block 41 (quote)
+msgid "**Note** The documentation below discusses how to use Ably in \"Pusher compatibility\" mode. However, the Ably team maintains a broadcaster and Echo client that is able to take advantage of the unique capabilities offered by Ably. For more information on using the Ably maintained drivers, please [consult Ably's Laravel broadcaster documentation](https://github.com/ably/laravel-broadcaster)."
+msgstr "**Note** 下方的說明文件討論了如何在「Pusher 相容模式 (Pusher Compatibility)」下使用 Ably。不過，Ably 團隊還維護了一個 Broadcaster 程式與可使用 Ably 特別功能的 Echo 用戶端。更多有關使用 Ably 維護的 Driver 的資訊，請[參考 Ably 的 Laravel Broadcaster 說明文件 (英語)](https://github.com/ably/laravel-broadcaster)。"
+
+#: docs/master/broadcasting.md:block 253 (code)
+msgid "/**\n"
+" * Get the channels the event should broadcast on.\n"
+" *\n"
+" * @return array<int, \\Illuminate\\Broadcasting\\Channel>\n"
+" */\n"
+"public function broadcastOn(): array\n"
 "{\n"
-"    use SerializesModels;\n\n"
-"    /**\n"
-"     * The user that created the server.\n"
-"     *\n"
-"     * @var \\App\\Models\\User\n"
-"     */\n"
-"    public $user;\n\n"
-"    /**\n"
-"     * Create a new event instance.\n"
-"     */\n"
-"    public function __construct(User $user)\n"
-"    {\n"
-"        $this->user = $user;\n"
-"    }\n\n"
-"    /**\n"
-"     * Get the channels the event should broadcast on.\n"
-"     *\n"
-"     * @return array<int, \\Illuminate\\Broadcasting\\Channel>\n"
-"     */\n"
-"    public function broadcastOn(): array\n"
-"    {\n"
-"        return [\n"
-"            new PrivateChannel('user.'.$this->user->id),\n"
-"        ];\n"
-"    }\n"
+"    return [\n"
+"        new PresenceChannel('room.'.$this->message->room_id),\n"
+"    ];\n"
 "}\n"
-msgstr "<?php\n\n"
-"namespace App\\Events;\n\n"
-"use App\\Models\\User;\n"
-"use Illuminate\\Broadcasting\\Channel;\n"
-"use Illuminate\\Broadcasting\\InteractsWithSockets;\n"
-"use Illuminate\\Broadcasting\\PresenceChannel;\n"
-"use Illuminate\\Broadcasting\\PrivateChannel;\n"
-"use Illuminate\\Contracts\\Broadcasting\\ShouldBroadcast;\n"
-"use Illuminate\\Queue\\SerializesModels;\n\n"
-"class ServerCreated implements ShouldBroadcast\n"
+msgstr "/**\n"
+" * Get the channels the event should broadcast on.\n"
+" *\n"
+" * @return array<int, \\Illuminate\\Broadcasting\\Channel>\n"
+" */\n"
+"public function broadcastOn(): array\n"
 "{\n"
-"    use SerializesModels;\n\n"
-"    /**\n"
-"     * The user that created the server.\n"
-"     *\n"
-"     * @var \\App\\Models\\User\n"
-"     */\n"
-"    public $user;\n\n"
-"    /**\n"
-"     * Create a new event instance.\n"
-"     */\n"
-"    public function __construct(User $user)\n"
-"    {\n"
-"        $this->user = $user;\n"
-"    }\n\n"
-"    /**\n"
-"     * Get the channels the event should broadcast on.\n"
-"     *\n"
-"     * @return array<int, \\Illuminate\\Broadcasting\\Channel>\n"
-"     */\n"
-"    public function broadcastOn(): array\n"
-"    {\n"
-"        return [\n"
-"            new PrivateChannel('user.'.$this->user->id),\n"
-"        ];\n"
-"    }\n"
+"    return [\n"
+"        new PresenceChannel('room.'.$this->message->room_id),\n"
+"    ];\n"
 "}\n"
 

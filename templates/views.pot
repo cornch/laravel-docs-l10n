@@ -11,11 +11,11 @@ msgid "[Introduction](#introduction)"
 msgstr ""
 
 #: docs/10.x/views.md:block 2 (unordered list)
-msgid "[Writing Views In React / Vue](#writing-views-in-react-or-vue)"
+msgid "[Writing Views in React / Vue](#writing-views-in-react-or-vue)"
 msgstr ""
 
 #: docs/10.x/views.md:block 2 (unordered list)
-msgid "[Creating & Rendering Views](#creating-and-rendering-views)"
+msgid "[Creating and Rendering Views](#creating-and-rendering-views)"
 msgstr ""
 
 #: docs/10.x/views.md:block 2 (unordered list)
@@ -23,15 +23,15 @@ msgid "[Nested View Directories](#nested-view-directories)"
 msgstr ""
 
 #: docs/10.x/views.md:block 2 (unordered list)
-msgid "[Creating The First Available View](#creating-the-first-available-view)"
+msgid "[Creating the First Available View](#creating-the-first-available-view)"
 msgstr ""
 
 #: docs/10.x/views.md:block 2 (unordered list)
-msgid "[Determining If A View Exists](#determining-if-a-view-exists)"
+msgid "[Determining if a View Exists](#determining-if-a-view-exists)"
 msgstr ""
 
 #: docs/10.x/views.md:block 2 (unordered list)
-msgid "[Passing Data To Views](#passing-data-to-views)"
+msgid "[Passing Data to Views](#passing-data-to-views)"
 msgstr ""
 
 #: docs/10.x/views.md:block 2 (unordered list)
@@ -85,11 +85,11 @@ msgid ""
 msgstr ""
 
 #: docs/10.x/views.md:block 10 (quote)
-msgid "**Note** Looking for more information on how to write Blade templates? Check out the full [Blade documentation](/docs/{{version}}/blade) to get started."
+msgid "[!NOTE] Looking for more information on how to write Blade templates? Check out the full [Blade documentation](/docs/{{version}}/blade) to get started."
 msgstr ""
 
 #: docs/10.x/views.md:block 12 (header)
-msgid "Writing Views In React / Vue"
+msgid "Writing Views in React / Vue"
 msgstr ""
 
 #: docs/10.x/views.md:block 13 (paragraph)
@@ -101,7 +101,7 @@ msgid "Our Breeze and Jetstream [starter kits](/docs/{{version}}/starter-kits) g
 msgstr ""
 
 #: docs/10.x/views.md:block 16 (header)
-msgid "Creating & Rendering Views"
+msgid "Creating and Rendering Views"
 msgstr ""
 
 #: docs/10.x/views.md:block 17 (paragraph)
@@ -148,11 +148,11 @@ msgid "return view('admin.profile', $data);\n"
 msgstr ""
 
 #: docs/10.x/views.md:block 29 (quote)
-msgid "**Warning** View directory names should not contain the `.` character."
+msgid "[!WARNING] View directory names should not contain the `.` character."
 msgstr ""
 
 #: docs/10.x/views.md:block 31 (header)
-msgid "Creating The First Available View"
+msgid "Creating the First Available View"
 msgstr ""
 
 #: docs/10.x/views.md:block 32 (paragraph)
@@ -167,7 +167,7 @@ msgid ""
 msgstr ""
 
 #: docs/10.x/views.md:block 35 (header)
-msgid "Determining If A View Exists"
+msgid "Determining if a View Exists"
 msgstr ""
 
 #: docs/10.x/views.md:block 36 (paragraph)
@@ -178,13 +178,13 @@ msgstr ""
 msgid ""
 "use Illuminate\\Support\\Facades\\View;\n"
 "\n"
-"if (View::exists('emails.customer')) {\n"
+"if (View::exists('admin.profile')) {\n"
 "    // ...\n"
 "}\n"
 msgstr ""
 
 #: docs/10.x/views.md:block 39 (header)
-msgid "Passing Data To Views"
+msgid "Passing Data to Views"
 msgstr ""
 
 #: docs/10.x/views.md:block 40 (paragraph)
@@ -304,7 +304,7 @@ msgid ""
 msgstr ""
 
 #: docs/10.x/views.md:block 55 (quote)
-msgid "**Warning** Remember, if you create a new service provider to contain your view composer registrations, you will need to add the service provider to the `providers` array in the `config/app.php` configuration file."
+msgid "[!WARNING] Remember, if you create a new service provider to contain your view composer registrations, you will need to add the service provider to the `providers` array in the `config/app.php` configuration file."
 msgstr ""
 
 #: docs/10.x/views.md:block 56 (paragraph)
@@ -344,7 +344,7 @@ msgid "As you can see, all view composers are resolved via the [service containe
 msgstr ""
 
 #: docs/10.x/views.md:block 60 (header)
-msgid "Attaching A Composer To Multiple Views"
+msgid "Attaching a Composer to Multiple Views"
 msgstr ""
 
 #: docs/10.x/views.md:block 61 (paragraph)
@@ -416,12 +416,77 @@ msgstr ""
 msgid "php artisan view:clear\n"
 msgstr ""
 
+#: docs/11.x/views.md:block 52 (paragraph)
+msgid "Typically, view composers will be registered within one of your application's [service providers](/docs/{{version}}/providers). In this example, we'll assume that the `App\\Providers\\AppServiceProvider` will house this logic."
+msgstr ""
+
+#: docs/11.x/views.md:block 54 (code)
+msgid ""
+"<?php\n"
+"\n"
+"namespace App\\Providers;\n"
+"\n"
+"use App\\View\\Composers\\ProfileComposer;\n"
+"use Illuminate\\Support\\Facades;\n"
+"use Illuminate\\Support\\ServiceProvider;\n"
+"use Illuminate\\View\\View;\n"
+"\n"
+"class AppServiceProvider extends ServiceProvider\n"
+"{\n"
+"    /**\n"
+"     * Register any application services.\n"
+"     */\n"
+"    public function register(): void\n"
+"    {\n"
+"        // ...\n"
+"    }\n"
+"\n"
+"    /**\n"
+"     * Bootstrap any application services.\n"
+"     */\n"
+"    public function boot(): void\n"
+"    {\n"
+"        // Using class based composers...\n"
+"        Facades\\View::composer('profile', ProfileComposer::class);\n"
+"\n"
+"        // Using closure based composers...\n"
+"        Facades\\View::composer('welcome', function (View $view) {\n"
+"            // ...\n"
+"        });\n"
+"\n"
+"        Facades\\View::composer('dashboard', function (View $view) {\n"
+"            // ...\n"
+"        });\n"
+"    }\n"
+"}\n"
+msgstr ""
+
+#: docs/8.x/views.md:block 2 (unordered list)
+msgid "[Creating & Rendering Views](#creating-and-rendering-views)"
+msgstr ""
+
+#: docs/8.x/views.md:block 2 (unordered list)
+msgid "[Creating The First Available View](#creating-the-first-available-view)"
+msgstr ""
+
+#: docs/8.x/views.md:block 2 (unordered list)
+msgid "[Determining If A View Exists](#determining-if-a-view-exists)"
+msgstr ""
+
+#: docs/8.x/views.md:block 2 (unordered list)
+msgid "[Passing Data To Views](#passing-data-to-views)"
+msgstr ""
+
 #: docs/8.x/views.md:block 5 (paragraph)
 msgid "Of course, it's not practical to return entire HTML documents strings directly from your routes and controllers. Thankfully, views provide a convenient way to place all of our HTML in separate files. Views separate your controller / application logic from your presentation logic and are stored in the `resources/views` directory. A simple view might look something like this:"
 msgstr ""
 
 #: docs/8.x/views.md:block 9 (quote)
 msgid "{tip} Looking for more information on how to write Blade templates? Check out the full [Blade documentation](/docs/{{version}}/blade) to get started."
+msgstr ""
+
+#: docs/8.x/views.md:block 11 (header)
+msgid "Creating & Rendering Views"
 msgstr ""
 
 #: docs/8.x/views.md:block 12 (paragraph)
@@ -432,6 +497,14 @@ msgstr ""
 msgid "{note} View directory names should not contain the `.` character."
 msgstr ""
 
+#: docs/8.x/views.md:block 24 (header)
+msgid "Creating The First Available View"
+msgstr ""
+
+#: docs/8.x/views.md:block 28 (header)
+msgid "Determining If A View Exists"
+msgstr ""
+
 #: docs/8.x/views.md:block 30 (code)
 msgid ""
 "use Illuminate\\Support\\Facades\\View;\n"
@@ -439,6 +512,10 @@ msgid ""
 "if (View::exists('emails.customer')) {\n"
 "    //\n"
 "}\n"
+msgstr ""
+
+#: docs/8.x/views.md:block 32 (header)
+msgid "Passing Data To Views"
 msgstr ""
 
 #: docs/8.x/views.md:block 41 (code)
@@ -560,6 +637,10 @@ msgid ""
 "}\n"
 msgstr ""
 
+#: docs/8.x/views.md:block 53 (header)
+msgid "Attaching A Composer To Multiple Views"
+msgstr ""
+
 #: docs/8.x/views.md:block 55 (code)
 msgid ""
 "use App\\Views\\Composers\\MultiComposer;\n"
@@ -575,6 +656,26 @@ msgid ""
 "View::composer('*', function ($view) {\n"
 "    //\n"
 "});\n"
+msgstr ""
+
+#: docs/9.x/views.md:block 2 (unordered list)
+msgid "[Writing Views In React / Vue](#writing-views-in-react-or-vue)"
+msgstr ""
+
+#: docs/9.x/views.md:block 10 (quote)
+msgid "**Note** Looking for more information on how to write Blade templates? Check out the full [Blade documentation](/docs/{{version}}/blade) to get started."
+msgstr ""
+
+#: docs/9.x/views.md:block 12 (header)
+msgid "Writing Views In React / Vue"
+msgstr ""
+
+#: docs/9.x/views.md:block 27 (quote)
+msgid "**Warning** View directory names should not contain the `.` character."
+msgstr ""
+
+#: docs/9.x/views.md:block 53 (quote)
+msgid "**Warning** Remember, if you create a new service provider to contain your view composer registrations, you will need to add the service provider to the `providers` array in the `config/app.php` configuration file."
 msgstr ""
 
 #: docs/9.x/views.md:block 55 (code)

@@ -195,7 +195,7 @@ msgid "composer install --optimize-autoloader --no-dev\n"
 msgstr ""
 
 #: docs/10.x/deployment.md:block 25 (quote)
-msgid "**Note** In addition to optimizing the autoloader, you should always be sure to include a `composer.lock` file in your project's source control repository. Your project's dependencies can be installed much faster when a `composer.lock` file is present."
+msgid "[!NOTE] In addition to optimizing the autoloader, you should always be sure to include a `composer.lock` file in your project's source control repository. Your project's dependencies can be installed much faster when a `composer.lock` file is present."
 msgstr ""
 
 #: docs/10.x/deployment.md:block 27 (header)
@@ -215,7 +215,7 @@ msgid "This command will combine all of Laravel's configuration files into a sin
 msgstr ""
 
 #: docs/10.x/deployment.md:block 31 (quote)
-msgid "**Warning** If you execute the `config:cache` command during your deployment process, you should be sure that you are only calling the `env` function from within your configuration files. Once the configuration has been cached, the `.env` file will not be loaded and all calls to the `env` function for `.env` variables will return `null`."
+msgid "[!WARNING] If you execute the `config:cache` command during your deployment process, you should be sure that you are only calling the `env` function from within your configuration files. Once the configuration has been cached, the `.env` file will not be loaded and all calls to the `env` function for `.env` variables will return `null`."
 msgstr ""
 
 #: docs/10.x/deployment.md:block 33 (header)
@@ -271,7 +271,7 @@ msgid "The debug option in your config/app.php configuration file determines how
 msgstr ""
 
 #: docs/10.x/deployment.md:block 49 (quote)
-msgid "**Warning** **In your production environment, this value should always be `false`. If the `APP_DEBUG` variable is set to `true` in production, you risk exposing sensitive configuration values to your application's end users.**"
+msgid "[!WARNING] **In your production environment, this value should always be `false`. If the `APP_DEBUG` variable is set to `true` in production, you risk exposing sensitive configuration values to your application's end users.**"
 msgstr ""
 
 #: docs/10.x/deployment.md:block 51 (header)
@@ -291,7 +291,7 @@ msgid "Laravel Forge can create servers on various infrastructure providers such
 msgstr ""
 
 #: docs/10.x/deployment.md:block 56 (quote)
-msgid "**Note** Want a full guide to deploying with Laravel Forge? Check out the [Laravel Bootcamp](https://bootcamp.laravel.com/deploying) and the Forge [video series available on Laracasts](https://laracasts.com/series/learn-laravel-forge-2022-edition)."
+msgid "[!NOTE] Want a full guide to deploying with Laravel Forge? Check out the [Laravel Bootcamp](https://bootcamp.laravel.com/deploying) and the Forge [video series available on Laracasts](https://laracasts.com/series/learn-laravel-forge-2022-edition)."
 msgstr ""
 
 #: docs/10.x/deployment.md:block 58 (header)
@@ -300,6 +300,137 @@ msgstr ""
 
 #: docs/10.x/deployment.md:block 59 (paragraph)
 msgid "If you would like a totally serverless, auto-scaling deployment platform tuned for Laravel, check out [Laravel Vapor](https://vapor.laravel.com). Laravel Vapor is a serverless deployment platform for Laravel, powered by AWS. Launch your Laravel infrastructure on Vapor and fall in love with the scalable simplicity of serverless. Laravel Vapor is fine-tuned by Laravel's creators to work seamlessly with the framework so you can keep writing your Laravel applications exactly like you're used to."
+msgstr ""
+
+#: docs/11.x/deployment.md:block 2 (unordered list)
+msgid "[FrankenPHP](#frankenphp)"
+msgstr ""
+
+#: docs/11.x/deployment.md:block 2 (unordered list)
+msgid "[Directory Permissions](#directory-permissions)"
+msgstr ""
+
+#: docs/11.x/deployment.md:block 2 (unordered list)
+msgid "[The Health Route](#the-health-route)"
+msgstr ""
+
+#: docs/11.x/deployment.md:block 10 (unordered list)
+msgid "PHP >= 8.2"
+msgstr ""
+
+#: docs/11.x/deployment.md:block 18 (code)
+msgid ""
+"server {\n"
+"    listen 80;\n"
+"    listen [::]:80;\n"
+"    server_name example.com;\n"
+"    root /srv/example.com/public;\n"
+"\n"
+"    add_header X-Frame-Options \"SAMEORIGIN\";\n"
+"    add_header X-Content-Type-Options \"nosniff\";\n"
+"\n"
+"    index index.php;\n"
+"\n"
+"    charset utf-8;\n"
+"\n"
+"    location / {\n"
+"        try_files $uri $uri/ /index.php?$query_string;\n"
+"    }\n"
+"\n"
+"    location = /favicon.ico { access_log off; log_not_found off; }\n"
+"    location = /robots.txt  { access_log off; log_not_found off; }\n"
+"\n"
+"    error_page 404 /index.php;\n"
+"\n"
+"    location ~ \\.php$ {\n"
+"        fastcgi_pass unix:/var/run/php/php8.2-fpm.sock;\n"
+"        fastcgi_param SCRIPT_FILENAME $realpath_root$fastcgi_script_name;\n"
+"        include fastcgi_params;\n"
+"        fastcgi_hide_header X-Powered-By;\n"
+"    }\n"
+"\n"
+"    location ~ /\\.(?!well-known).* {\n"
+"        deny all;\n"
+"    }\n"
+"}\n"
+msgstr ""
+
+#: docs/11.x/deployment.md:block 20 (header)
+msgid "FrankenPHP"
+msgstr ""
+
+#: docs/11.x/deployment.md:block 21 (paragraph)
+msgid "[FrankenPHP](https://frankenphp.dev/) may also be used to serve your Laravel applications. FrankenPHP is a modern PHP application server written in Go. To serve a Laravel PHP application using FrankenPHP, you may simply invoke its `php-server` command:"
+msgstr ""
+
+#: docs/11.x/deployment.md:block 22 (code)
+msgid "frankenphp php-server -r public/\n"
+msgstr ""
+
+#: docs/11.x/deployment.md:block 23 (paragraph)
+msgid "To take advantage of more powerful features supported by FrankenPHP, such as its [Laravel Octane](/docs/{{version}}/octane) integration, HTTP/3, modern compression, or the ability to package Laravel applications as standalone binaries, please consult FrankenPHP's [Laravel documentation](https://frankenphp.dev/docs/laravel/)."
+msgstr ""
+
+#: docs/11.x/deployment.md:block 25 (header)
+msgid "Directory Permissions"
+msgstr ""
+
+#: docs/11.x/deployment.md:block 26 (paragraph)
+msgid "Laravel will need to write to the `bootstrap/cache` and `storage` directories, so you should ensure the web server process owner has permission to write to these directories."
+msgstr ""
+
+#: docs/11.x/deployment.md:block 29 (paragraph)
+msgid "When deploying your application to production, there are a variety of files that should be cached, including your configuration, events, routes, and views. Laravel provides a single, convenient `optimize` Artisan command that will cache all of these files. This command should typically be invoked as part of your application's deployment process:"
+msgstr ""
+
+#: docs/11.x/deployment.md:block 30 (code)
+msgid "php artisan optimize\n"
+msgstr ""
+
+#: docs/11.x/deployment.md:block 31 (paragraph)
+msgid "The `optimize:clear` method may be used to remove all of the cache files generated by the `optimize` command:"
+msgstr ""
+
+#: docs/11.x/deployment.md:block 32 (code)
+msgid "php artisan optimize:clear\n"
+msgstr ""
+
+#: docs/11.x/deployment.md:block 33 (paragraph)
+msgid "In the following documentation, we will discuss each of the granular optimization commands that are executed by the `optimize` command."
+msgstr ""
+
+#: docs/11.x/deployment.md:block 42 (paragraph)
+msgid "You should cache your application's auto-discovered event to listener mappings during your deployment process. This can be accomplished by invoking the `event:cache` Artisan command during deployment:"
+msgstr ""
+
+#: docs/11.x/deployment.md:block 56 (paragraph)
+msgid "The debug option in your `config/app.php` configuration file determines how much information about an error is actually displayed to the user. By default, this option is set to respect the value of the `APP_DEBUG` environment variable, which is stored in your application's `.env` file."
+msgstr ""
+
+#: docs/11.x/deployment.md:block 59 (header)
+msgid "The Health Route"
+msgstr ""
+
+#: docs/11.x/deployment.md:block 60 (paragraph)
+msgid "Laravel includes a built-in health check route that can be used to monitor the status of your application. In production, this route may be used to report the status of your application to an uptime monitor, load balancer, or orchestration system such as Kubernetes."
+msgstr ""
+
+#: docs/11.x/deployment.md:block 61 (paragraph)
+msgid "By default, the health check route is served at `/up` and will return a 200 HTTP response if the application has booted without exceptions. Otherwise, a 500 HTTP response will be returned. You may configure the URI for this route in your application's `bootstrap/app` file:"
+msgstr ""
+
+#: docs/11.x/deployment.md:block 62 (code)
+msgid ""
+"->withRouting(\n"
+"    web: __DIR__.'/../routes/web.php',\n"
+"    commands: __DIR__.'/../routes/console.php',\n"
+"    health: '/up', // [tl! remove]\n"
+"    health: '/status', // [tl! add]\n"
+")\n"
+msgstr ""
+
+#: docs/11.x/deployment.md:block 63 (paragraph)
+msgid "When HTTP requests are made to this route, Laravel will also dispatch a `Illuminate\\Foundation\\Events\\DiagnosingHealth` event, allowing you to perform additional health checks relevant to your application. Within a [listener](/docs/{{version}}/events) for this event, you may check your application's database or cache status. If you detect a problem with your application, you may simply throw an exception from the listener."
 msgstr ""
 
 #: docs/8.x/deployment.md:block 2 (unordered list)
@@ -436,4 +567,16 @@ msgid ""
 "        deny all;\n"
 "    }\n"
 "}\n"
+msgstr ""
+
+#: docs/9.x/deployment.md:block 25 (quote)
+msgid "**Note** In addition to optimizing the autoloader, you should always be sure to include a `composer.lock` file in your project's source control repository. Your project's dependencies can be installed much faster when a `composer.lock` file is present."
+msgstr ""
+
+#: docs/9.x/deployment.md:block 31 (quote)
+msgid "**Warning** If you execute the `config:cache` command during your deployment process, you should be sure that you are only calling the `env` function from within your configuration files. Once the configuration has been cached, the `.env` file will not be loaded and all calls to the `env` function for `.env` variables will return `null`."
+msgstr ""
+
+#: docs/9.x/deployment.md:block 52 (quote)
+msgid "**Note** Want a full guide to deploying with Laravel Forge? Check out the [Laravel Bootcamp](https://bootcamp.laravel.com/deploying) and the Forge [video series available on Laracasts](https://laracasts.com/series/learn-laravel-forge-2022-edition)."
 msgstr ""

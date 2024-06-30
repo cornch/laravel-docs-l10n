@@ -11,7 +11,7 @@ msgid "[Introduction](#introduction)"
 msgstr ""
 
 #: docs/10.x/sanctum.md:block 2 (unordered list)
-msgid "[How It Works](#how-it-works)"
+msgid "[How it Works](#how-it-works)"
 msgstr ""
 
 #: docs/10.x/sanctum.md:block 2 (unordered list)
@@ -99,7 +99,7 @@ msgid "[Laravel Sanctum](https://github.com/laravel/sanctum) provides a featherw
 msgstr ""
 
 #: docs/10.x/sanctum.md:block 7 (header)
-msgid "How It Works"
+msgid "How it Works"
 msgstr ""
 
 #: docs/10.x/sanctum.md:block 8 (paragraph)
@@ -135,7 +135,7 @@ msgid "Sanctum will only attempt to authenticate using cookies when the incoming
 msgstr ""
 
 #: docs/10.x/sanctum.md:block 18 (quote)
-msgid "**Note** It is perfectly fine to use Sanctum only for API token authentication or only for SPA authentication. Just because you use Sanctum does not mean you are required to use both features it offers."
+msgid "[!NOTE] It is perfectly fine to use Sanctum only for API token authentication or only for SPA authentication. Just because you use Sanctum does not mean you are required to use both features it offers."
 msgstr ""
 
 #: docs/10.x/sanctum.md:block 20 (header)
@@ -143,7 +143,7 @@ msgid "Installation"
 msgstr ""
 
 #: docs/10.x/sanctum.md:block 21 (quote)
-msgid "**Note** The most recent versions of Laravel already include Laravel Sanctum. However, if your application's `composer.json` file does not include `laravel/sanctum`, you may follow the installation instructions below."
+msgid "[!NOTE] The most recent versions of Laravel already include Laravel Sanctum. However, if your application's `composer.json` file does not include `laravel/sanctum`, you may follow the installation instructions below."
 msgstr ""
 
 #: docs/10.x/sanctum.md:block 22 (paragraph)
@@ -236,7 +236,7 @@ msgid "API Token Authentication"
 msgstr ""
 
 #: docs/10.x/sanctum.md:block 43 (quote)
-msgid "**Note** You should not use API tokens to authenticate your own first-party SPA. Instead, use Sanctum's built-in [SPA authentication features](#spa-authentication)."
+msgid "[!NOTE] You should not use API tokens to authenticate your own first-party SPA. Instead, use Sanctum's built-in [SPA authentication features](#spa-authentication)."
 msgstr ""
 
 #: docs/10.x/sanctum.md:block 45 (header)
@@ -426,137 +426,150 @@ msgid "'expiration' => 525600,\n"
 msgstr ""
 
 #: docs/10.x/sanctum.md:block 87 (paragraph)
-msgid "If you have configured a token expiration time for your application, you may also wish to [schedule a task](/docs/{{version}}/scheduling) to prune your application's expired tokens. Thankfully, Sanctum includes a `sanctum:prune-expired` Artisan command that you may use to accomplish this. For example, you may configure a scheduled tasks to delete all expired token database records that have been expired for at least 24 hours:"
+msgid "If you would like to specify the expiration time of each token independently, you may do so by providing the expiration time as the third argument to the `createToken` method:"
 msgstr ""
 
 #: docs/10.x/sanctum.md:block 88 (code)
+msgid ""
+"return $user->createToken(\n"
+"    'token-name', ['*'], now()->addWeek()\n"
+")->plainTextToken;\n"
+msgstr ""
+
+#: docs/10.x/sanctum.md:block 89 (paragraph)
+msgid "If you have configured a token expiration time for your application, you may also wish to [schedule a task](/docs/{{version}}/scheduling) to prune your application's expired tokens. Thankfully, Sanctum includes a `sanctum:prune-expired` Artisan command that you may use to accomplish this. For example, you may configure a scheduled tasks to delete all expired token database records that have been expired for at least 24 hours:"
+msgstr ""
+
+#: docs/10.x/sanctum.md:block 90 (code)
 msgid "$schedule->command('sanctum:prune-expired --hours=24')->daily();\n"
 msgstr ""
 
-#: docs/10.x/sanctum.md:block 91 (paragraph)
+#: docs/10.x/sanctum.md:block 93 (paragraph)
 msgid "Sanctum also exists to provide a simple method of authenticating single page applications (SPAs) that need to communicate with a Laravel powered API. These SPAs might exist in the same repository as your Laravel application or might be an entirely separate repository."
 msgstr ""
 
-#: docs/10.x/sanctum.md:block 92 (paragraph)
+#: docs/10.x/sanctum.md:block 94 (paragraph)
 msgid "For this feature, Sanctum does not use tokens of any kind. Instead, Sanctum uses Laravel's built-in cookie based session authentication services. This approach to authentication provides the benefits of CSRF protection, session authentication, as well as protects against leakage of the authentication credentials via XSS."
 msgstr ""
 
-#: docs/10.x/sanctum.md:block 93 (quote)
-msgid "**Warning** In order to authenticate, your SPA and API must share the same top-level domain. However, they may be placed on different subdomains. Additionally, you should ensure that you send the `Accept: application/json` header and either the `Referer` or `Origin` header with your request."
+#: docs/10.x/sanctum.md:block 95 (quote)
+msgid "[!WARNING] In order to authenticate, your SPA and API must share the same top-level domain. However, they may be placed on different subdomains. Additionally, you should ensure that you send the `Accept: application/json` header and either the `Referer` or `Origin` header with your request."
 msgstr ""
 
-#: docs/10.x/sanctum.md:block 97 (header)
+#: docs/10.x/sanctum.md:block 99 (header)
 msgid "Configuring Your First-Party Domains"
 msgstr ""
 
-#: docs/10.x/sanctum.md:block 98 (paragraph)
+#: docs/10.x/sanctum.md:block 100 (paragraph)
 msgid "First, you should configure which domains your SPA will be making requests from. You may configure these domains using the `stateful` configuration option in your `sanctum` configuration file. This configuration setting determines which domains will maintain \"stateful\" authentication using Laravel session cookies when making requests to your API."
 msgstr ""
 
-#: docs/10.x/sanctum.md:block 99 (quote)
-msgid "**Warning** If you are accessing your application via a URL that includes a port (`127.0.0.1:8000`), you should ensure that you include the port number with the domain."
+#: docs/10.x/sanctum.md:block 101 (quote)
+msgid "[!WARNING] If you are accessing your application via a URL that includes a port (`127.0.0.1:8000`), you should ensure that you include the port number with the domain."
 msgstr ""
 
-#: docs/10.x/sanctum.md:block 101 (header)
+#: docs/10.x/sanctum.md:block 103 (header)
 msgid "Sanctum Middleware"
 msgstr ""
 
-#: docs/10.x/sanctum.md:block 102 (paragraph)
+#: docs/10.x/sanctum.md:block 104 (paragraph)
 msgid "Next, you should add Sanctum's middleware to your `api` middleware group within your `app/Http/Kernel.php` file. This middleware is responsible for ensuring that incoming requests from your SPA can authenticate using Laravel's session cookies, while still allowing requests from third parties or mobile applications to authenticate using API tokens:"
 msgstr ""
 
-#: docs/10.x/sanctum.md:block 105 (header)
-msgid "CORS & Cookies"
-msgstr ""
-
-#: docs/10.x/sanctum.md:block 106 (paragraph)
-msgid "If you are having trouble authenticating with your application from a SPA that executes on a separate subdomain, you have likely misconfigured your CORS (Cross-Origin Resource Sharing) or session cookie settings."
-msgstr ""
-
-#: docs/10.x/sanctum.md:block 107 (paragraph)
-msgid "You should ensure that your application's CORS configuration is returning the `Access-Control-Allow-Credentials` header with a value of `True`. This may be accomplished by setting the `supports_credentials` option within your application's `config/cors.php` configuration file to `true`."
+#: docs/10.x/sanctum.md:block 107 (header)
+msgid "CORS and Cookies"
 msgstr ""
 
 #: docs/10.x/sanctum.md:block 108 (paragraph)
-msgid "In addition, you should enable the `withCredentials` option on your application's global `axios` instance. Typically, this should be performed in your `resources/js/bootstrap.js` file. If you are not using Axios to make HTTP requests from your frontend, you should perform the equivalent configuration on your own HTTP client:"
+msgid "If you are having trouble authenticating with your application from a SPA that executes on a separate subdomain, you have likely misconfigured your CORS (Cross-Origin Resource Sharing) or session cookie settings."
 msgstr ""
 
-#: docs/10.x/sanctum.md:block 109 (code)
-msgid "axios.defaults.withCredentials = true;\n"
+#: docs/10.x/sanctum.md:block 109 (paragraph)
+msgid "You should ensure that your application's CORS configuration is returning the `Access-Control-Allow-Credentials` header with a value of `True`. This may be accomplished by setting the `supports_credentials` option within your application's `config/cors.php` configuration file to `true`."
 msgstr ""
 
 #: docs/10.x/sanctum.md:block 110 (paragraph)
-msgid "Finally, you should ensure your application's session cookie domain configuration supports any subdomain of your root domain. You may accomplish this by prefixing the domain with a leading `.` within your application's `config/session.php` configuration file:"
+msgid "In addition, you should enable the `withCredentials` and `withXSRFToken` options on your application's global `axios` instance. Typically, this should be performed in your `resources/js/bootstrap.js` file. If you are not using Axios to make HTTP requests from your frontend, you should perform the equivalent configuration on your own HTTP client:"
 msgstr ""
 
 #: docs/10.x/sanctum.md:block 111 (code)
+msgid ""
+"axios.defaults.withCredentials = true;\n"
+"axios.defaults.withXSRFToken = true;\n"
+msgstr ""
+
+#: docs/10.x/sanctum.md:block 112 (paragraph)
+msgid "Finally, you should ensure your application's session cookie domain configuration supports any subdomain of your root domain. You may accomplish this by prefixing the domain with a leading `.` within your application's `config/session.php` configuration file:"
+msgstr ""
+
+#: docs/10.x/sanctum.md:block 113 (code)
 msgid "'domain' => '.domain.com',\n"
 msgstr ""
 
-#: docs/10.x/sanctum.md:block 113 (header)
+#: docs/10.x/sanctum.md:block 115 (header)
 msgid "Authenticating"
 msgstr ""
 
-#: docs/10.x/sanctum.md:block 115 (header)
+#: docs/10.x/sanctum.md:block 117 (header)
 msgid "CSRF Protection"
 msgstr ""
 
-#: docs/10.x/sanctum.md:block 116 (paragraph)
+#: docs/10.x/sanctum.md:block 118 (paragraph)
 msgid "To authenticate your SPA, your SPA's \"login\" page should first make a request to the `/sanctum/csrf-cookie` endpoint to initialize CSRF protection for the application:"
 msgstr ""
 
-#: docs/10.x/sanctum.md:block 117 (code)
+#: docs/10.x/sanctum.md:block 119 (code)
 msgid ""
 "axios.get('/sanctum/csrf-cookie').then(response => {\n"
 "    // Login...\n"
 "});\n"
 msgstr ""
 
-#: docs/10.x/sanctum.md:block 118 (paragraph)
+#: docs/10.x/sanctum.md:block 120 (paragraph)
 msgid "During this request, Laravel will set an `XSRF-TOKEN` cookie containing the current CSRF token. This token should then be passed in an `X-XSRF-TOKEN` header on subsequent requests, which some HTTP client libraries like Axios and the Angular HttpClient will do automatically for you. If your JavaScript HTTP library does not set the value for you, you will need to manually set the `X-XSRF-TOKEN` header to match the value of the `XSRF-TOKEN` cookie that is set by this route."
 msgstr ""
 
-#: docs/10.x/sanctum.md:block 120 (header)
+#: docs/10.x/sanctum.md:block 122 (header)
 msgid "Logging In"
 msgstr ""
 
-#: docs/10.x/sanctum.md:block 121 (paragraph)
+#: docs/10.x/sanctum.md:block 123 (paragraph)
 msgid "Once CSRF protection has been initialized, you should make a `POST` request to your Laravel application's `/login` route. This `/login` route may be [implemented manually](/docs/{{version}}/authentication#authenticating-users) or using a headless authentication package like [Laravel Fortify](/docs/{{version}}/fortify)."
 msgstr ""
 
-#: docs/10.x/sanctum.md:block 122 (paragraph)
+#: docs/10.x/sanctum.md:block 124 (paragraph)
 msgid "If the login request is successful, you will be authenticated and subsequent requests to your application's routes will automatically be authenticated via the session cookie that the Laravel application issued to your client. In addition, since your application already made a request to the `/sanctum/csrf-cookie` route, subsequent requests should automatically receive CSRF protection as long as your JavaScript HTTP client sends the value of the `XSRF-TOKEN` cookie in the `X-XSRF-TOKEN` header."
 msgstr ""
 
-#: docs/10.x/sanctum.md:block 123 (paragraph)
+#: docs/10.x/sanctum.md:block 125 (paragraph)
 msgid "Of course, if your user's session expires due to lack of activity, subsequent requests to the Laravel application may receive 401 or 419 HTTP error response. In this case, you should redirect the user to your SPA's login page."
 msgstr ""
 
-#: docs/10.x/sanctum.md:block 124 (quote)
-msgid "**Warning** You are free to write your own `/login` endpoint; however, you should ensure that it authenticates the user using the standard, [session based authentication services that Laravel provides](/docs/{{version}}/authentication#authenticating-users). Typically, this means using the `web` authentication guard."
+#: docs/10.x/sanctum.md:block 126 (quote)
+msgid "[!WARNING] You are free to write your own `/login` endpoint; however, you should ensure that it authenticates the user using the standard, [session based authentication services that Laravel provides](/docs/{{version}}/authentication#authenticating-users). Typically, this means using the `web` authentication guard."
 msgstr ""
 
-#: docs/10.x/sanctum.md:block 127 (paragraph)
+#: docs/10.x/sanctum.md:block 129 (paragraph)
 msgid "To protect routes so that all incoming requests must be authenticated, you should attach the `sanctum` authentication guard to your API routes within your `routes/api.php` file. This guard will ensure that incoming requests are authenticated as either a stateful authenticated requests from your SPA or contain a valid API token header if the request is from a third party:"
 msgstr ""
 
-#: docs/10.x/sanctum.md:block 130 (header)
+#: docs/10.x/sanctum.md:block 132 (header)
 msgid "Authorizing Private Broadcast Channels"
 msgstr ""
 
-#: docs/10.x/sanctum.md:block 131 (paragraph)
+#: docs/10.x/sanctum.md:block 133 (paragraph)
 msgid "If your SPA needs to authenticate with [private / presence broadcast channels](/docs/{{version}}/broadcasting#authorizing-channels), you should place the `Broadcast::routes` method call within your `routes/api.php` file:"
 msgstr ""
 
-#: docs/10.x/sanctum.md:block 132 (code)
+#: docs/10.x/sanctum.md:block 134 (code)
 msgid "Broadcast::routes(['middleware' => ['auth:sanctum']]);\n"
 msgstr ""
 
-#: docs/10.x/sanctum.md:block 133 (paragraph)
+#: docs/10.x/sanctum.md:block 135 (paragraph)
 msgid "Next, in order for Pusher's authorization requests to succeed, you will need to provide a custom Pusher `authorizer` when initializing [Laravel Echo](/docs/{{version}}/broadcasting#client-side-installation). This allows your application to configure Pusher to use the `axios` instance that is [properly configured for cross-domain requests](#cors-and-cookies):"
 msgstr ""
 
-#: docs/10.x/sanctum.md:block 134 (code)
+#: docs/10.x/sanctum.md:block 136 (code)
 msgid ""
 "window.Echo = new Echo({\n"
 "    broadcaster: \"pusher\",\n"
@@ -582,23 +595,23 @@ msgid ""
 "})\n"
 msgstr ""
 
-#: docs/10.x/sanctum.md:block 136 (header)
+#: docs/10.x/sanctum.md:block 138 (header)
 msgid "Mobile Application Authentication"
 msgstr ""
 
-#: docs/10.x/sanctum.md:block 137 (paragraph)
+#: docs/10.x/sanctum.md:block 139 (paragraph)
 msgid "You may also use Sanctum tokens to authenticate your mobile application's requests to your API. The process for authenticating mobile application requests is similar to authenticating third-party API requests; however, there are small differences in how you will issue the API tokens."
 msgstr ""
 
-#: docs/10.x/sanctum.md:block 140 (paragraph)
+#: docs/10.x/sanctum.md:block 142 (paragraph)
 msgid "To get started, create a route that accepts the user's email / username, password, and device name, then exchanges those credentials for a new Sanctum token. The \"device name\" given to this endpoint is for informational purposes and may be any value you wish. In general, the device name value should be a name the user would recognize, such as \"Nuno's iPhone 12\"."
 msgstr ""
 
-#: docs/10.x/sanctum.md:block 141 (paragraph)
+#: docs/10.x/sanctum.md:block 143 (paragraph)
 msgid "Typically, you will make a request to the token endpoint from your mobile application's \"login\" screen. The endpoint will return the plain-text API token which may then be stored on the mobile device and used to make additional API requests:"
 msgstr ""
 
-#: docs/10.x/sanctum.md:block 142 (code)
+#: docs/10.x/sanctum.md:block 144 (code)
 msgid ""
 "use App\\Models\\User;\n"
 "use Illuminate\\Http\\Request;\n"
@@ -624,30 +637,30 @@ msgid ""
 "});\n"
 msgstr ""
 
-#: docs/10.x/sanctum.md:block 143 (paragraph)
+#: docs/10.x/sanctum.md:block 145 (paragraph)
 msgid "When the mobile application uses the token to make an API request to your application, it should pass the token in the `Authorization` header as a `Bearer` token."
 msgstr ""
 
-#: docs/10.x/sanctum.md:block 144 (quote)
-msgid "**Note** When issuing tokens for a mobile application, you are also free to specify [token abilities](#token-abilities)."
+#: docs/10.x/sanctum.md:block 146 (quote)
+msgid "[!NOTE] When issuing tokens for a mobile application, you are also free to specify [token abilities](#token-abilities)."
 msgstr ""
 
-#: docs/10.x/sanctum.md:block 147 (paragraph)
+#: docs/10.x/sanctum.md:block 149 (paragraph)
 msgid "As previously documented, you may protect routes so that all incoming requests must be authenticated by attaching the `sanctum` authentication guard to the routes:"
 msgstr ""
 
-#: docs/10.x/sanctum.md:block 148 (code)
+#: docs/10.x/sanctum.md:block 150 (code)
 msgid ""
 "Route::middleware('auth:sanctum')->get('/user', function (Request $request) {\n"
 "    return $request->user();\n"
 "});\n"
 msgstr ""
 
-#: docs/10.x/sanctum.md:block 151 (paragraph)
+#: docs/10.x/sanctum.md:block 153 (paragraph)
 msgid "To allow users to revoke API tokens issued to mobile devices, you may list them by name, along with a \"Revoke\" button, within an \"account settings\" portion of your web application's UI. When the user clicks the \"Revoke\" button, you can delete the token from the database. Remember, you can access a user's API tokens via the `tokens` relationship provided by the `Laravel\\Sanctum\\HasApiTokens` trait:"
 msgstr ""
 
-#: docs/10.x/sanctum.md:block 152 (code)
+#: docs/10.x/sanctum.md:block 154 (code)
 msgid ""
 "// Revoke all tokens...\n"
 "$user->tokens()->delete();\n"
@@ -656,15 +669,15 @@ msgid ""
 "$user->tokens()->where('id', $tokenId)->delete();\n"
 msgstr ""
 
-#: docs/10.x/sanctum.md:block 154 (header)
+#: docs/10.x/sanctum.md:block 156 (header)
 msgid "Testing"
 msgstr ""
 
-#: docs/10.x/sanctum.md:block 155 (paragraph)
+#: docs/10.x/sanctum.md:block 157 (paragraph)
 msgid "While testing, the `Sanctum::actingAs` method may be used to authenticate a user and specify which abilities should be granted to their token:"
 msgstr ""
 
-#: docs/10.x/sanctum.md:block 156 (code)
+#: docs/10.x/sanctum.md:block 158 (code)
 msgid ""
 "use App\\Models\\User;\n"
 "use Laravel\\Sanctum\\Sanctum;\n"
@@ -682,16 +695,169 @@ msgid ""
 "}\n"
 msgstr ""
 
-#: docs/10.x/sanctum.md:block 157 (paragraph)
+#: docs/10.x/sanctum.md:block 159 (paragraph)
 msgid "If you would like to grant all abilities to the token, you should include `*` in the ability list provided to the `actingAs` method:"
 msgstr ""
 
-#: docs/10.x/sanctum.md:block 158 (code)
+#: docs/10.x/sanctum.md:block 160 (code)
 msgid ""
 "Sanctum::actingAs(\n"
 "    User::factory()->create(),\n"
 "    ['*']\n"
 ");\n"
+msgstr ""
+
+#: docs/11.x/sanctum.md:block 11 (paragraph)
+msgid "First, Sanctum is a simple package you may use to issue API tokens to your users without the complication of OAuth. This feature is inspired by GitHub and other applications which issue \"personal access tokens\". For example, imagine the \"account settings\" of your application has a screen where a user may generate an API token for their account. You may use Sanctum to generate and manage those tokens. These tokens typically have a very long expiration time (years), but may be manually revoked by the user anytime."
+msgstr ""
+
+#: docs/11.x/sanctum.md:block 15 (paragraph)
+msgid "Second, Sanctum exists to offer a simple way to authenticate single page applications (SPAs) that need to communicate with a Laravel powered API. These SPAs might exist in the same repository as your Laravel application or might be an entirely separate repository, such as an SPA created using Vue CLI or a Next.js application."
+msgstr ""
+
+#: docs/11.x/sanctum.md:block 21 (paragraph)
+msgid "You may install Laravel Sanctum via the `install:api` Artisan command:"
+msgstr ""
+
+#: docs/11.x/sanctum.md:block 22 (code)
+msgid "php artisan install:api\n"
+msgstr ""
+
+#: docs/11.x/sanctum.md:block 23 (paragraph)
+msgid "Next, if you plan to utilize Sanctum to authenticate an SPA, please refer to the [SPA Authentication](#spa-authentication) section of this documentation."
+msgstr ""
+
+#: docs/11.x/sanctum.md:block 30 (paragraph)
+msgid "Then, you may instruct Sanctum to use your custom model via the `usePersonalAccessTokenModel` method provided by Sanctum. Typically, you should call this method in the `boot` method of your application's `AppServiceProvider` file:"
+msgstr ""
+
+#: docs/11.x/sanctum.md:block 52 (paragraph)
+msgid "Sanctum also includes two middleware that may be used to verify that an incoming request is authenticated with a token that has been granted a given ability. To get started, define the following middleware aliases in your application's `bootstrap/app.php` file:"
+msgstr ""
+
+#: docs/11.x/sanctum.md:block 53 (code)
+msgid ""
+"use Laravel\\Sanctum\\Http\\Middleware\\CheckAbilities;\n"
+"use Laravel\\Sanctum\\Http\\Middleware\\CheckForAnyAbility;\n"
+"\n"
+"->withMiddleware(function (Middleware $middleware) {\n"
+"    $middleware->alias([\n"
+"        'abilities' => CheckAbilities::class,\n"
+"        'ability' => CheckForAnyAbility::class,\n"
+"    ]);\n"
+"})\n"
+msgstr ""
+
+#: docs/11.x/sanctum.md:block 62 (paragraph)
+msgid "For example, if we imagine an application that manages servers, this might mean checking that the token is authorized to update servers **and** that the server belongs to the user:"
+msgstr ""
+
+#: docs/11.x/sanctum.md:block 64 (paragraph)
+msgid "At first, allowing the `tokenCan` method to be called and always return `true` for first-party UI initiated requests may seem strange; however, it is convenient to be able to always assume an API token is available and can be inspected via the `tokenCan` method. By taking this approach, you may always call the `tokenCan` method within your application's authorization policies without worrying about whether the request was triggered from your application's UI or was initiated by one of your API's third-party consumers."
+msgstr ""
+
+#: docs/11.x/sanctum.md:block 69 (code)
+msgid ""
+"use Illuminate\\Http\\Request;\n"
+"\n"
+"Route::get('/user', function (Request $request) {\n"
+"    return $request->user();\n"
+"})->middleware('auth:sanctum');\n"
+msgstr ""
+
+#: docs/11.x/sanctum.md:block 80 (paragraph)
+msgid "If you have configured a token expiration time for your application, you may also wish to [schedule a task](/docs/{{version}}/scheduling) to prune your application's expired tokens. Thankfully, Sanctum includes a `sanctum:prune-expired` Artisan command that you may use to accomplish this. For example, you may configure a scheduled task to delete all expired token database records that have been expired for at least 24 hours:"
+msgstr ""
+
+#: docs/11.x/sanctum.md:block 81 (code)
+msgid ""
+"use Illuminate\\Support\\Facades\\Schedule;\n"
+"\n"
+"Schedule::command('sanctum:prune-expired --hours=24')->daily();\n"
+msgstr ""
+
+#: docs/11.x/sanctum.md:block 95 (paragraph)
+msgid "Next, you should instruct Laravel that incoming requests from your SPA can authenticate using Laravel's session cookies, while still allowing requests from third parties or mobile applications to authenticate using API tokens. This can be easily accomplished by invoking the `statefulApi` middleware method in your application's `bootstrap/app.php` file:"
+msgstr ""
+
+#: docs/11.x/sanctum.md:block 96 (code)
+msgid ""
+"->withMiddleware(function (Middleware $middleware) {\n"
+"    $middleware->statefulApi();\n"
+"})\n"
+msgstr ""
+
+#: docs/11.x/sanctum.md:block 99 (paragraph)
+msgid "If you are having trouble authenticating with your application from an SPA that executes on a separate subdomain, you have likely misconfigured your CORS (Cross-Origin Resource Sharing) or session cookie settings."
+msgstr ""
+
+#: docs/11.x/sanctum.md:block 100 (paragraph)
+msgid "The `config/cors.php` configuration file is not published by default. If you need to customize Laravel's CORS options, you should publish the complete `cors` configuration file using the `config:publish` Artisan command:"
+msgstr ""
+
+#: docs/11.x/sanctum.md:block 101 (code)
+msgid "php artisan config:publish cors\n"
+msgstr ""
+
+#: docs/11.x/sanctum.md:block 102 (paragraph)
+msgid "Next, you should ensure that your application's CORS configuration is returning the `Access-Control-Allow-Credentials` header with a value of `True`. This may be accomplished by setting the `supports_credentials` option within your application's `config/cors.php` configuration file to `true`."
+msgstr ""
+
+#: docs/11.x/sanctum.md:block 118 (paragraph)
+msgid "Of course, if your user's session expires due to lack of activity, subsequent requests to the Laravel application may receive a 401 or 419 HTTP error response. In this case, you should redirect the user to your SPA's login page."
+msgstr ""
+
+#: docs/11.x/sanctum.md:block 122 (paragraph)
+msgid "To protect routes so that all incoming requests must be authenticated, you should attach the `sanctum` authentication guard to your API routes within your `routes/api.php` file. This guard will ensure that incoming requests are authenticated as either stateful authenticated requests from your SPA or contain a valid API token header if the request is from a third party:"
+msgstr ""
+
+#: docs/11.x/sanctum.md:block 126 (paragraph)
+msgid "If your SPA needs to authenticate with [private / presence broadcast channels](/docs/{{version}}/broadcasting#authorizing-channels), you should remove the `channels` entry from the `withRouting` method contained in your application's `bootstrap/app.php` file. Instead, you should invoke the `withBroadcasting` method so that you may specify the correct middleware for your application's broadcasting routes:"
+msgstr ""
+
+#: docs/11.x/sanctum.md:block 127 (code)
+msgid ""
+"return Application::configure(basePath: dirname(__DIR__))\n"
+"    ->withRouting(\n"
+"        web: __DIR__.'/../routes/web.php',\n"
+"        // ...\n"
+"    )\n"
+"    ->withBroadcasting(\n"
+"        __DIR__.'/../routes/channels.php',\n"
+"        ['prefix' => 'api', 'middleware' => ['api', 'auth:sanctum']],\n"
+"    )\n"
+msgstr ""
+
+#: docs/11.x/sanctum.md:block 143 (code)
+msgid ""
+"Route::get('/user', function (Request $request) {\n"
+"    return $request->user();\n"
+"})->middleware('auth:sanctum');\n"
+msgstr ""
+
+#: docs/11.x/sanctum.md:block 151 (code)
+msgid ""
+"use App\\Models\\User;\n"
+"use Laravel\\Sanctum\\Sanctum;\n"
+"\n"
+"test('task list can be retrieved', function () {\n"
+"    Sanctum::actingAs(\n"
+"        User::factory()->create(),\n"
+"        ['view-tasks']\n"
+"    );\n"
+"\n"
+"    $response = $this->get('/api/task');\n"
+"\n"
+"    $response->assertOk();\n"
+"});\n"
+msgstr ""
+
+#: docs/8.x/sanctum.md:block 2 (unordered list)
+msgid "[How It Works](#how-it-works)"
+msgstr ""
+
+#: docs/8.x/sanctum.md:block 7 (header)
+msgid "How It Works"
 msgstr ""
 
 #: docs/8.x/sanctum.md:block 18 (quote)
@@ -761,6 +927,18 @@ msgstr ""
 msgid "{note} If you are accessing your application via a URL that includes a port (`127.0.0.1:8000`), you should ensure that you include the port number with the domain."
 msgstr ""
 
+#: docs/8.x/sanctum.md:block 99 (header)
+msgid "CORS & Cookies"
+msgstr ""
+
+#: docs/8.x/sanctum.md:block 102 (paragraph)
+msgid "In addition, you should enable the `withCredentials` option on your application's global `axios` instance. Typically, this should be performed in your `resources/js/bootstrap.js` file. If you are not using Axios to make HTTP requests from your frontend, you should perform the equivalent configuration on your own HTTP client:"
+msgstr ""
+
+#: docs/8.x/sanctum.md:block 103 (code)
+msgid "axios.defaults.withCredentials = true;\n"
+msgstr ""
+
 #: docs/8.x/sanctum.md:block 118 (quote)
 msgid "{note} You are free to write your own `/login` endpoint; however, you should ensure that it authenticates the user using the standard, [session based authentication services that Laravel provides](/docs/{{version}}/authentication#authenticating-users). Typically, this means using the `web` authentication guard."
 msgstr ""
@@ -813,6 +991,34 @@ msgid ""
 "}\n"
 msgstr ""
 
+#: docs/9.x/sanctum.md:block 18 (quote)
+msgid "**Note** It is perfectly fine to use Sanctum only for API token authentication or only for SPA authentication. Just because you use Sanctum does not mean you are required to use both features it offers."
+msgstr ""
+
+#: docs/9.x/sanctum.md:block 21 (quote)
+msgid "**Note** The most recent versions of Laravel already include Laravel Sanctum. However, if your application's `composer.json` file does not include `laravel/sanctum`, you may follow the installation instructions below."
+msgstr ""
+
+#: docs/9.x/sanctum.md:block 43 (quote)
+msgid "**Note** You should not use API tokens to authenticate your own first-party SPA. Instead, use Sanctum's built-in [SPA authentication features](#spa-authentication)."
+msgstr ""
+
 #: docs/9.x/sanctum.md:block 93 (quote)
 msgid "**Warning** In order to authenticate, your SPA and API must share the same top-level domain. However, they may be placed on different subdomains. Additionally, you should ensure that you send the `Accept: application/json` header with your request."
+msgstr ""
+
+#: docs/9.x/sanctum.md:block 99 (quote)
+msgid "**Warning** If you are accessing your application via a URL that includes a port (`127.0.0.1:8000`), you should ensure that you include the port number with the domain."
+msgstr ""
+
+#: docs/9.x/sanctum.md:block 124 (quote)
+msgid "**Warning** You are free to write your own `/login` endpoint; however, you should ensure that it authenticates the user using the standard, [session based authentication services that Laravel provides](/docs/{{version}}/authentication#authenticating-users). Typically, this means using the `web` authentication guard."
+msgstr ""
+
+#: docs/9.x/sanctum.md:block 144 (quote)
+msgid "**Note** When issuing tokens for a mobile application, you are also free to specify [token abilities](#token-abilities)."
+msgstr ""
+
+#: docs/master/sanctum.md:block 23 (paragraph)
+msgid "Next, if you plan to utilize Sanctum to authenticate a SPA, please refer to the [SPA Authentication](#spa-authentication) section of this documentation."
 msgstr ""

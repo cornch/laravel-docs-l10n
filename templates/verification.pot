@@ -31,7 +31,7 @@ msgid "[The Email Verification Handler](#the-email-verification-handler)"
 msgstr ""
 
 #: docs/10.x/verification.md:block 2 (unordered list)
-msgid "[Resending The Verification Email](#resending-the-verification-email)"
+msgid "[Resending the Verification Email](#resending-the-verification-email)"
 msgstr ""
 
 #: docs/10.x/verification.md:block 2 (unordered list)
@@ -55,7 +55,7 @@ msgid "Many web applications require users to verify their email addresses befor
 msgstr ""
 
 #: docs/10.x/verification.md:block 6 (quote)
-msgid "**Note** Want to get started fast? Install one of the [Laravel application starter kits](/docs/{{version}}/starter-kits) in a fresh Laravel application. The starter kits will take care of scaffolding your entire authentication system, including email verification support."
+msgid "[!NOTE] Want to get started fast? Install one of the [Laravel application starter kits](/docs/{{version}}/starter-kits) in a fresh Laravel application. The starter kits will take care of scaffolding your entire authentication system, including email verification support."
 msgstr ""
 
 #: docs/10.x/verification.md:block 8 (header)
@@ -147,7 +147,7 @@ msgid "The route that returns the email verification notice should be named `ver
 msgstr ""
 
 #: docs/10.x/verification.md:block 28 (quote)
-msgid "**Note** When manually implementing email verification, you are required to define the contents of the verification notice view yourself. If you would like scaffolding that includes all necessary authentication and verification views, check out the [Laravel application starter kits](/docs/{{version}}/starter-kits)."
+msgid "[!NOTE] When manually implementing email verification, you are required to define the contents of the verification notice view yourself. If you would like scaffolding that includes all necessary authentication and verification views, check out the [Laravel application starter kits](/docs/{{version}}/starter-kits)."
 msgstr ""
 
 #: docs/10.x/verification.md:block 30 (header)
@@ -178,7 +178,7 @@ msgid "Next, we can proceed directly to calling the `fulfill` method on the requ
 msgstr ""
 
 #: docs/10.x/verification.md:block 36 (header)
-msgid "Resending The Verification Email"
+msgid "Resending the Verification Email"
 msgstr ""
 
 #: docs/10.x/verification.md:block 37 (paragraph)
@@ -253,7 +253,7 @@ msgid ""
 msgstr ""
 
 #: docs/10.x/verification.md:block 51 (quote)
-msgid "**Note** To learn more about mail notifications, please consult the [mail notification documentation](/docs/{{version}}/notifications#mail-notifications)."
+msgid "[!NOTE] To learn more about mail notifications, please consult the [mail notification documentation](/docs/{{version}}/notifications#mail-notifications)."
 msgstr ""
 
 #: docs/10.x/verification.md:block 53 (header)
@@ -281,12 +281,61 @@ msgid ""
 "];\n"
 msgstr ""
 
+#: docs/11.x/verification.md:block 11 (paragraph)
+msgid "Once this interface has been added to your model, newly registered users will automatically be sent an email containing an email verification link. This happens seamlessly because Laravel automatically registers the `Illuminate\\Auth\\Listeners\\SendEmailVerificationNotification` [listener](/docs/{{version}}/events) for the `Illuminate\\Auth\\Events\\Registered` event."
+msgstr ""
+
+#: docs/11.x/verification.md:block 16 (paragraph)
+msgid "Next, your `users` table must contain an `email_verified_at` column to store the date and time that the user's email address was verified. Typically, this is included in Laravel's default `0001_01_01_000000_create_users_table.php` database migration."
+msgstr ""
+
+#: docs/11.x/verification.md:block 40 (paragraph)
+msgid "[Route middleware](/docs/{{version}}/middleware) may be used to only allow verified users to access a given route. Laravel includes a `verified` [middleware alias](/docs/{{version}}/middleware#middleware-alias), which is an alias for the `Illuminate\\Auth\\Middleware\\EnsureEmailIsVerified` middleware class. Since this alias is already automatically registered by Laravel, all you need to do is attach the `verified` middleware to a route definition. Typically, this middleware is paired with the `auth` middleware:"
+msgstr ""
+
+#: docs/11.x/verification.md:block 48 (paragraph)
+msgid "To get started, pass a closure to the `toMailUsing` method provided by the `Illuminate\\Auth\\Notifications\\VerifyEmail` notification. The closure will receive the notifiable model instance that is receiving the notification as well as the signed email verification URL that the user must visit to verify their email address. The closure should return an instance of `Illuminate\\Notifications\\Messages\\MailMessage`. Typically, you should call the `toMailUsing` method from the `boot` method of your application's `AppServiceProvider` class:"
+msgstr ""
+
+#: docs/11.x/verification.md:block 49 (code)
+msgid ""
+"use Illuminate\\Auth\\Notifications\\VerifyEmail;\n"
+"use Illuminate\\Notifications\\Messages\\MailMessage;\n"
+"\n"
+"/**\n"
+" * Bootstrap any application services.\n"
+" */\n"
+"public function boot(): void\n"
+"{\n"
+"    // ...\n"
+"\n"
+"    VerifyEmail::toMailUsing(function (object $notifiable, string $url) {\n"
+"        return (new MailMessage)\n"
+"            ->subject('Verify Email Address')\n"
+"            ->line('Click the button below to verify your email address.')\n"
+"            ->action('Verify Email Address', $url);\n"
+"    });\n"
+"}\n"
+msgstr ""
+
+#: docs/11.x/verification.md:block 53 (paragraph)
+msgid "When using the [Laravel application starter kits](/docs/{{version}}/starter-kits), Laravel dispatches an `Illuminate\\Auth\\Events\\Verified` [event](/docs/{{version}}/events) during the email verification process. If you are manually handling email verification for your application, you may wish to manually dispatch these events after verification is completed."
+msgstr ""
+
+#: docs/8.x/verification.md:block 2 (unordered list)
+msgid "[Resending The Verification Email](#resending-the-verification-email)"
+msgstr ""
+
 #: docs/8.x/verification.md:block 6 (quote)
 msgid "{tip} Want to get started fast? Install one of the [Laravel application starter kits](/docs/{{version}}/starter-kits) in a fresh Laravel application. The starter kits will take care of scaffolding your entire authentication system, including email verification support."
 msgstr ""
 
 #: docs/8.x/verification.md:block 28 (quote)
 msgid "{tip} When manually implementing email verification, you are required to define the contents of the verification notice view yourself. If you would like scaffolding that includes all necessary authentication and verification views, check out the [Laravel application starter kits](/docs/{{version}}/starter-kits)."
+msgstr ""
+
+#: docs/8.x/verification.md:block 36 (header)
+msgid "Resending The Verification Email"
 msgstr ""
 
 #: docs/8.x/verification.md:block 41 (paragraph)
@@ -341,6 +390,18 @@ msgid ""
 "];\n"
 msgstr ""
 
+#: docs/9.x/verification.md:block 6 (quote)
+msgid "**Note** Want to get started fast? Install one of the [Laravel application starter kits](/docs/{{version}}/starter-kits) in a fresh Laravel application. The starter kits will take care of scaffolding your entire authentication system, including email verification support."
+msgstr ""
+
+#: docs/9.x/verification.md:block 28 (quote)
+msgid "**Note** When manually implementing email verification, you are required to define the contents of the verification notice view yourself. If you would like scaffolding that includes all necessary authentication and verification views, check out the [Laravel application starter kits](/docs/{{version}}/starter-kits)."
+msgstr ""
+
 #: docs/9.x/verification.md:block 41 (paragraph)
 msgid "[Route middleware](/docs/{{version}}/middleware) may be used to only allow verified users to access a given route. Laravel ships with a `verified` middleware, which references the `Illuminate\\Auth\\Middleware\\EnsureEmailIsVerified` class. Since this middleware is already registered in your application's HTTP kernel, all you need to do is attach the middleware to a route definition. Typically, this middleware is paired with the `auth` middleware:"
+msgstr ""
+
+#: docs/9.x/verification.md:block 51 (quote)
+msgid "**Note** To learn more about mail notifications, please consult the [mail notification documentation](/docs/{{version}}/notifications#mail-notifications)."
 msgstr ""

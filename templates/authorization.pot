@@ -75,7 +75,7 @@ msgid "[Authorizing Actions Using Policies](#authorizing-actions-using-policies)
 msgstr ""
 
 #: docs/10.x/authorization.md:block 2 (unordered list)
-msgid "[Via The User Model](#via-the-user-model)"
+msgid "[Via the User Model](#via-the-user-model)"
 msgstr ""
 
 #: docs/10.x/authorization.md:block 2 (unordered list)
@@ -119,7 +119,7 @@ msgid "Writing Gates"
 msgstr ""
 
 #: docs/10.x/authorization.md:block 12 (quote)
-msgid "**Warning** Gates are a great way to learn the basics of Laravel's authorization features; however, when building robust Laravel applications you should consider using [policies](#creating-policies) to organize your authorization rules."
+msgid "[!WARNING] Gates are a great way to learn the basics of Laravel's authorization features; however, when building robust Laravel applications you should consider using [policies](#creating-policies) to organize your authorization rules."
 msgstr ""
 
 #: docs/10.x/authorization.md:block 13 (paragraph)
@@ -234,7 +234,7 @@ msgid ""
 msgstr ""
 
 #: docs/10.x/authorization.md:block 27 (header)
-msgid "Authorizing Or Throwing Exceptions"
+msgid "Authorizing or Throwing Exceptions"
 msgstr ""
 
 #: docs/10.x/authorization.md:block 28 (paragraph)
@@ -410,7 +410,7 @@ msgid "Inline Authorization"
 msgstr ""
 
 #: docs/10.x/authorization.md:block 58 (paragraph)
-msgid "Occasionally, you may wish to determine if the currently authenticated user is authorized to perform a given action without writing a dedicated gate that corresponds to the action. Laravel allows you to perform these types of \"inline\" authorization checks via the `Gate::allowIf` and `Gate::denyIf` methods:"
+msgid "Occasionally, you may wish to determine if the currently authenticated user is authorized to perform a given action without writing a dedicated gate that corresponds to the action. Laravel allows you to perform these types of \"inline\" authorization checks via the `Gate::allowIf` and `Gate::denyIf` methods. Inline authorization does not execute any defined [\"before\" or \"after\" authorization hooks](#intercepting-gate-checks):"
 msgstr ""
 
 #: docs/10.x/authorization.md:block 59 (code)
@@ -521,7 +521,7 @@ msgid ""
 msgstr ""
 
 #: docs/10.x/authorization.md:block 80 (quote)
-msgid "**Warning** Any policies that are explicitly mapped in your `AuthServiceProvider` will take precedence over any potentially auto-discovered policies."
+msgid "[!WARNING] Any policies that are explicitly mapped in your `AuthServiceProvider` will take precedence over any potentially auto-discovered policies."
 msgstr ""
 
 #: docs/10.x/authorization.md:block 82 (header)
@@ -570,7 +570,7 @@ msgid "If you used the `--model` option when generating your policy via the Arti
 msgstr ""
 
 #: docs/10.x/authorization.md:block 90 (quote)
-msgid "**Note** All policies are resolved via the Laravel [service container](/docs/{{version}}/container), allowing you to type-hint any needed dependencies in the policy's constructor to have them automatically injected."
+msgid "[!NOTE] All policies are resolved via the Laravel [service container](/docs/{{version}}/container), allowing you to type-hint any needed dependencies in the policy's constructor to have them automatically injected."
 msgstr ""
 
 #: docs/10.x/authorization.md:block 92 (header)
@@ -620,6 +620,10 @@ msgid ""
 "Gate::authorize('update', $post);\n"
 "\n"
 "// The action is authorized...\n"
+msgstr ""
+
+#: docs/10.x/authorization.md:block 100 (header)
+msgid "Customizing the HTTP Response Status"
 msgstr ""
 
 #: docs/10.x/authorization.md:block 101 (paragraph)
@@ -738,7 +742,7 @@ msgid "If you would like to deny all authorization checks for a particular type 
 msgstr ""
 
 #: docs/10.x/authorization.md:block 118 (quote)
-msgid "**Warning** The `before` method of a policy class will not be called if the class doesn't contain a method with a name matching the name of the ability being checked."
+msgid "[!WARNING] The `before` method of a policy class will not be called if the class doesn't contain a method with a name matching the name of the ability being checked."
 msgstr ""
 
 #: docs/10.x/authorization.md:block 120 (header)
@@ -746,7 +750,7 @@ msgid "Authorizing Actions Using Policies"
 msgstr ""
 
 #: docs/10.x/authorization.md:block 122 (header)
-msgid "Via The User Model"
+msgid "Via the User Model"
 msgstr ""
 
 #: docs/10.x/authorization.md:block 123 (paragraph)
@@ -975,7 +979,7 @@ msgid "delete"
 msgstr ""
 
 #: docs/10.x/authorization.md:block 148 (quote)
-msgid "**Note** You may use the `make:policy` command with the `--model` option to quickly generate a policy class for a given model: `php artisan make:policy PostPolicy --model=Post`."
+msgid "[!NOTE] You may use the `make:policy` command with the `--model` option to quickly generate a policy class for a given model: `php artisan make:policy PostPolicy --model=Post`."
 msgstr ""
 
 #: docs/10.x/authorization.md:block 150 (header)
@@ -1141,6 +1145,221 @@ msgid ""
 "}\n"
 msgstr ""
 
+#: docs/11.x/authorization.md:block 2 (unordered list)
+msgid "[Via the Gate Facade](#via-the-gate-facade)"
+msgstr ""
+
+#: docs/11.x/authorization.md:block 2 (unordered list)
+msgid "[Authorization & Inertia](#authorization-and-inertia)"
+msgstr ""
+
+#: docs/11.x/authorization.md:block 13 (paragraph)
+msgid "Gates are simply closures that determine if a user is authorized to perform a given action. Typically, gates are defined within the `boot` method of the `App\\Providers\\AppServiceProvider` class using the `Gate` facade. Gates always receive a user instance as their first argument and may optionally receive additional arguments such as a relevant Eloquent model."
+msgstr ""
+
+#: docs/11.x/authorization.md:block 15 (code)
+msgid ""
+"use App\\Models\\Post;\n"
+"use App\\Models\\User;\n"
+"use Illuminate\\Support\\Facades\\Gate;\n"
+"\n"
+"/**\n"
+" * Bootstrap any application services.\n"
+" */\n"
+"public function boot(): void\n"
+"{\n"
+"    Gate::define('update-post', function (User $user, Post $post) {\n"
+"        return $user->id === $post->user_id;\n"
+"    });\n"
+"}\n"
+msgstr ""
+
+#: docs/11.x/authorization.md:block 17 (code)
+msgid ""
+"use App\\Policies\\PostPolicy;\n"
+"use Illuminate\\Support\\Facades\\Gate;\n"
+"\n"
+"/**\n"
+" * Bootstrap any application services.\n"
+" */\n"
+"public function boot(): void\n"
+"{\n"
+"    Gate::define('update-post', [PostPolicy::class, 'update']);\n"
+"}\n"
+msgstr ""
+
+#: docs/11.x/authorization.md:block 28 (paragraph)
+msgid "If you would like to attempt to authorize an action and automatically throw an `Illuminate\\Auth\\Access\\AuthorizationException` if the user is not allowed to perform the given action, you may use the `Gate` facade's `authorize` method. Instances of `AuthorizationException` are automatically converted to a 403 HTTP response by Laravel:"
+msgstr ""
+
+#: docs/11.x/authorization.md:block 73 (header)
+msgid "Policy Discovery"
+msgstr ""
+
+#: docs/11.x/authorization.md:block 74 (paragraph)
+msgid "By default, Laravel automatically discover policies as long as the model and policy follow standard Laravel naming conventions. Specifically, the policies must be in a `Policies` directory at or above the directory that contains your models. So, for example, the models may be placed in the `app/Models` directory while the policies may be placed in the `app/Policies` directory. In this situation, Laravel will check for policies in `app/Models/Policies` then `app/Policies`. In addition, the policy name must match the model name and have a `Policy` suffix. So, a `User` model would correspond to a `UserPolicy` policy class."
+msgstr ""
+
+#: docs/11.x/authorization.md:block 75 (paragraph)
+msgid "If you would like to define your own policy discovery logic, you may register a custom policy discovery callback using the `Gate::guessPolicyNamesUsing` method. Typically, this method should be called from the `boot` method of your application's `AppServiceProvider`:"
+msgstr ""
+
+#: docs/11.x/authorization.md:block 78 (header)
+msgid "Manually Registering Policies"
+msgstr ""
+
+#: docs/11.x/authorization.md:block 79 (paragraph)
+msgid "Using the `Gate` facade, you may manually register policies and their corresponding models within the `boot` method of your application's `AppServiceProvider`:"
+msgstr ""
+
+#: docs/11.x/authorization.md:block 80 (code)
+msgid ""
+"use App\\Models\\Order;\n"
+"use App\\Policies\\OrderPolicy;\n"
+"use Illuminate\\Support\\Facades\\Gate;\n"
+"\n"
+"/**\n"
+" * Bootstrap any application services.\n"
+" */\n"
+"public function boot(): void\n"
+"{\n"
+"    Gate::policy(Order::class, OrderPolicy::class);\n"
+"}\n"
+msgstr ""
+
+#: docs/11.x/authorization.md:block 131 (header)
+msgid "Via the `Gate` Facade"
+msgstr ""
+
+#: docs/11.x/authorization.md:block 132 (paragraph)
+msgid "In addition to helpful methods provided to the `App\\Models\\User` model, you can always authorize actions via the `Gate` facade's `authorize` method."
+msgstr ""
+
+#: docs/11.x/authorization.md:block 134 (code)
+msgid ""
+"<?php\n"
+"\n"
+"namespace App\\Http\\Controllers;\n"
+"\n"
+"use App\\Http\\Controllers\\Controller;\n"
+"use App\\Models\\Post;\n"
+"use Illuminate\\Http\\RedirectResponse;\n"
+"use Illuminate\\Http\\Request;\n"
+"use Illuminate\\Support\\Facades\\Gate;\n"
+"\n"
+"class PostController extends Controller\n"
+"{\n"
+"    /**\n"
+"     * Update the given blog post.\n"
+"     *\n"
+"     * @throws \\Illuminate\\Auth\\Access\\AuthorizationException\n"
+"     */\n"
+"    public function update(Request $request, Post $post): RedirectResponse\n"
+"    {\n"
+"        Gate::authorize('update', $post);\n"
+"\n"
+"        // The current user can update the blog post...\n"
+"\n"
+"        return redirect('/posts');\n"
+"    }\n"
+"}\n"
+msgstr ""
+
+#: docs/11.x/authorization.md:block 138 (code)
+msgid ""
+"use App\\Models\\Post;\n"
+"use Illuminate\\Http\\RedirectResponse;\n"
+"use Illuminate\\Http\\Request;\n"
+"use Illuminate\\Support\\Facades\\Gate;\n"
+"\n"
+"/**\n"
+" * Create a new blog post.\n"
+" *\n"
+" * @throws \\Illuminate\\Auth\\Access\\AuthorizationException\n"
+" */\n"
+"public function create(Request $request): RedirectResponse\n"
+"{\n"
+"    Gate::authorize('create', Post::class);\n"
+"\n"
+"    // The current user can create blog posts...\n"
+"\n"
+"    return redirect('/posts');\n"
+"}\n"
+msgstr ""
+
+#: docs/11.x/authorization.md:block 141 (paragraph)
+msgid "Laravel includes a middleware that can authorize actions before the incoming request even reaches your routes or controllers. By default, the `Illuminate\\Auth\\Middleware\\Authorize` middleware may be attached to a route using the `can` [middleware alias](/docs/{{version}}/middleware#middleware-alias), which is automatically registered by Laravel. Let's explore an example of using the `can` middleware to authorize that a user can update a post:"
+msgstr ""
+
+#: docs/11.x/authorization.md:block 169 (code)
+msgid ""
+"/**\n"
+" * Update the given blog post.\n"
+" *\n"
+" * @throws \\Illuminate\\Auth\\Access\\AuthorizationException\n"
+" */\n"
+"public function update(Request $request, Post $post): RedirectResponse\n"
+"{\n"
+"    Gate::authorize('update', [$post, $request->category]);\n"
+"\n"
+"    // The current user can update the blog post...\n"
+"\n"
+"    return redirect('/posts');\n"
+"}\n"
+msgstr ""
+
+#: docs/11.x/authorization.md:block 171 (header)
+msgid "Authorization & Inertia"
+msgstr ""
+
+#: docs/11.x/authorization.md:block 172 (paragraph)
+msgid "Although authorization must always be handled on the server, it can often be convenient to provide your frontend application with authorization data in order to properly render your application's UI. Laravel does not define a required convention for exposing authorization information to an Inertia powered frontend."
+msgstr ""
+
+#: docs/11.x/authorization.md:block 173 (paragraph)
+msgid "However, if you are using one of Laravel's Inertia-based [starter kits](/docs/{{version}}/starter-kits), your application already contains a `HandleInertiaRequests` middleware. Within this middleware's `share` method, you may return shared data that will be provided to all Inertia pages in your application. This shared data can serve as a convenient location to define authorization information for the user:"
+msgstr ""
+
+#: docs/11.x/authorization.md:block 174 (code)
+msgid ""
+"<?php\n"
+"\n"
+"namespace App\\Http\\Middleware;\n"
+"\n"
+"use App\\Models\\Post;\n"
+"use Illuminate\\Http\\Request;\n"
+"use Inertia\\Middleware;\n"
+"\n"
+"class HandleInertiaRequests extends Middleware\n"
+"{\n"
+"    // ...\n"
+"\n"
+"    /**\n"
+"     * Define the props that are shared by default.\n"
+"     *\n"
+"     * @return array<string, mixed>\n"
+"     */\n"
+"    public function share(Request $request)\n"
+"    {\n"
+"        return [\n"
+"            ...parent::share($request),\n"
+"            'auth' => [\n"
+"                'user' => $request->user(),\n"
+"                'permissions' => [\n"
+"                    'post' => [\n"
+"                        'create' => $request->user()->can('create', Post::class),\n"
+"                    ],\n"
+"                ],\n"
+"            ],\n"
+"        ];\n"
+"    }\n"
+"}\n"
+msgstr ""
+
+#: docs/8.x/authorization.md:block 2 (unordered list)
+msgid "[Via The User Model](#via-the-user-model)"
+msgstr ""
+
 #: docs/8.x/authorization.md:block 7 (paragraph)
 msgid "You do not need to choose between exclusively using gates or exclusively using policies when building an application. Most applications will most likely contain some mixture of gates and policies, and that is perfectly fine! Gates are most applicable to actions which are not related to any model or resource, such as viewing an administrator dashboard. In contrast, policies should be used when you wish to authorize an action for a particular model or resource."
 msgstr ""
@@ -1219,6 +1438,10 @@ msgid ""
 "}\n"
 msgstr ""
 
+#: docs/8.x/authorization.md:block 27 (header)
+msgid "Authorizing Or Throwing Exceptions"
+msgstr ""
+
 #: docs/8.x/authorization.md:block 33 (code)
 msgid ""
 "use App\\Models\\Category;\n"
@@ -1258,6 +1481,10 @@ msgid ""
 "        return true;\n"
 "    }\n"
 "});\n"
+msgstr ""
+
+#: docs/8.x/authorization.md:block 52 (paragraph)
+msgid "Occasionally, you may wish to determine if the currently authenticated user is authorized to perform a given action without writing a dedicated gate that corresponds to the action. Laravel allows you to perform these types of \"inline\" authorization checks via the `Gate::allowIf` and `Gate::denyIf` methods:"
 msgstr ""
 
 #: docs/8.x/authorization.md:block 53 (code)
@@ -1432,6 +1659,10 @@ msgstr ""
 
 #: docs/8.x/authorization.md:block 106 (quote)
 msgid "{note} The `before` method of a policy class will not be called if the class doesn't contain a method with a name matching the name of the ability being checked."
+msgstr ""
+
+#: docs/8.x/authorization.md:block 110 (header)
+msgid "Via The User Model"
 msgstr ""
 
 #: docs/8.x/authorization.md:block 112 (code)
@@ -1612,6 +1843,10 @@ msgid ""
 "}\n"
 msgstr ""
 
+#: docs/9.x/authorization.md:block 12 (quote)
+msgid "**Warning** Gates are a great way to learn the basics of Laravel's authorization features; however, when building robust Laravel applications you should consider using [policies](#creating-policies) to organize your authorization rules."
+msgstr ""
+
 #: docs/9.x/authorization.md:block 59 (code)
 msgid ""
 "use Illuminate\\Support\\Facades\\Gate;\n"
@@ -1619,6 +1854,14 @@ msgid ""
 "Gate::allowIf(fn ($user) => $user->isAdministrator());\n"
 "\n"
 "Gate::denyIf(fn ($user) => $user->banned());\n"
+msgstr ""
+
+#: docs/9.x/authorization.md:block 80 (quote)
+msgid "**Warning** Any policies that are explicitly mapped in your `AuthServiceProvider` will take precedence over any potentially auto-discovered policies."
+msgstr ""
+
+#: docs/9.x/authorization.md:block 90 (quote)
+msgid "**Note** All policies are resolved via the Laravel [service container](/docs/{{version}}/container), allowing you to type-hint any needed dependencies in the policy's constructor to have them automatically injected."
 msgstr ""
 
 #: docs/9.x/authorization.md:block 102 (code)
@@ -1663,269 +1906,10 @@ msgid ""
 "}\n"
 msgstr ""
 
-#: docs/master/authorization.md:block 15 (code)
-msgid ""
-"use App\\Models\\Post;\n"
-"use App\\Models\\User;\n"
-"use Illuminate\\Support\\Facades\\Gate;\n"
-"\n"
-"/**\n"
-" * Register any authentication / authorization services.\n"
-" */\n"
-"public function boot(): void\n"
-"{\n"
-"    $this->registerPolicies();\n"
-"\n"
-"    Gate::define('update-post', function (User $user, Post $post) {\n"
-"        return $user->id === $post->user_id;\n"
-"    });\n"
-"}\n"
+#: docs/9.x/authorization.md:block 118 (quote)
+msgid "**Warning** The `before` method of a policy class will not be called if the class doesn't contain a method with a name matching the name of the ability being checked."
 msgstr ""
 
-#: docs/master/authorization.md:block 17 (code)
-msgid ""
-"use App\\Policies\\PostPolicy;\n"
-"use Illuminate\\Support\\Facades\\Gate;\n"
-"\n"
-"/**\n"
-" * Register any authentication / authorization services.\n"
-" */\n"
-"public function boot(): void\n"
-"{\n"
-"    $this->registerPolicies();\n"
-"\n"
-"    Gate::define('update-post', [PostPolicy::class, 'update']);\n"
-"}\n"
-msgstr ""
-
-#: docs/master/authorization.md:block 21 (code)
-msgid ""
-"<?php\n"
-"\n"
-"namespace App\\Http\\Controllers;\n"
-"\n"
-"use App\\Http\\Controllers\\Controller;\n"
-"use App\\Models\\Post;\n"
-"use Illuminate\\Http\\Request;\n"
-"use Illuminate\\Http\\Response;\n"
-"use Illuminate\\Support\\Facades\\Gate;\n"
-"\n"
-"class PostController extends Controller\n"
-"{\n"
-"    /**\n"
-"     * Update the given post.\n"
-"     */\n"
-"    public function update(Request $request, Post $post): Response\n"
-"    {\n"
-"        if (! Gate::allows('update-post', $post)) {\n"
-"            abort(403);\n"
-"        }\n"
-"\n"
-"        // Update the post...\n"
-"\n"
-"        return response()->noContent();\n"
-"    }\n"
-"}\n"
-msgstr ""
-
-#: docs/master/authorization.md:block 74 (code)
-msgid ""
-"<?php\n"
-"\n"
-"namespace App\\Providers;\n"
-"\n"
-"use App\\Models\\Post;\n"
-"use App\\Policies\\PostPolicy;\n"
-"use Illuminate\\Foundation\\Support\\Providers\\AuthServiceProvider as ServiceProvider;\n"
-"use Illuminate\\Support\\Facades\\Gate;\n"
-"\n"
-"class AuthServiceProvider extends ServiceProvider\n"
-"{\n"
-"    /**\n"
-"     * The policy mappings for the application.\n"
-"     *\n"
-"     * @var array\n"
-"     */\n"
-"    protected $policies = [\n"
-"        Post::class => PostPolicy::class,\n"
-"    ];\n"
-"\n"
-"    /**\n"
-"     * Register any application authentication / authorization services.\n"
-"     */\n"
-"    public function boot(): void\n"
-"    {\n"
-"        $this->registerPolicies();\n"
-"\n"
-"        // ...\n"
-"    }\n"
-"}\n"
-msgstr ""
-
-#: docs/master/authorization.md:block 112 (code)
-msgid ""
-"<?php\n"
-"\n"
-"namespace App\\Policies;\n"
-"\n"
-"use App\\Models\\Post;\n"
-"use App\\Models\\User;\n"
-"\n"
-"class PostPolicy\n"
-"{\n"
-"    /**\n"
-"     * Determine if the given post can be updated by the user.\n"
-"     */\n"
-"    public function update(?User $user, Post $post): bool\n"
-"    {\n"
-"        return optional($user)->id === $post->user_id;\n"
-"    }\n"
-"}\n"
-msgstr ""
-
-#: docs/master/authorization.md:block 124 (code)
-msgid ""
-"<?php\n"
-"\n"
-"namespace App\\Http\\Controllers;\n"
-"\n"
-"use App\\Http\\Controllers\\Controller;\n"
-"use App\\Models\\Post;\n"
-"use Illuminate\\Http\\Request;\n"
-"use Illuminate\\Http\\Response;\n"
-"\n"
-"class PostController extends Controller\n"
-"{\n"
-"    /**\n"
-"     * Update the given post.\n"
-"     */\n"
-"    public function update(Request $request, Post $post): Response\n"
-"    {\n"
-"        if ($request->user()->cannot('update', $post)) {\n"
-"            abort(403);\n"
-"        }\n"
-"\n"
-"        // Update the post...\n"
-"\n"
-"        return response()->noContent();\n"
-"    }\n"
-"}\n"
-msgstr ""
-
-#: docs/master/authorization.md:block 129 (code)
-msgid ""
-"<?php\n"
-"\n"
-"namespace App\\Http\\Controllers;\n"
-"\n"
-"use App\\Http\\Controllers\\Controller;\n"
-"use App\\Models\\Post;\n"
-"use Illuminate\\Http\\Request;\n"
-"use Illuminate\\Http\\Response;\n"
-"\n"
-"class PostController extends Controller\n"
-"{\n"
-"    /**\n"
-"     * Create a post.\n"
-"     */\n"
-"    public function store(Request $request): Response\n"
-"    {\n"
-"        if ($request->user()->cannot('create', Post::class)) {\n"
-"            abort(403);\n"
-"        }\n"
-"\n"
-"        // Create the post...\n"
-"\n"
-"        return response()->noContent();\n"
-"    }\n"
-"}\n"
-msgstr ""
-
-#: docs/master/authorization.md:block 134 (code)
-msgid ""
-"<?php\n"
-"\n"
-"namespace App\\Http\\Controllers;\n"
-"\n"
-"use App\\Http\\Controllers\\Controller;\n"
-"use App\\Models\\Post;\n"
-"use Illuminate\\Http\\Request;\n"
-"use Illuminate\\Http\\Response;\n"
-"\n"
-"class PostController extends Controller\n"
-"{\n"
-"    /**\n"
-"     * Update the given blog post.\n"
-"     *\n"
-"     * @throws \\Illuminate\\Auth\\Access\\AuthorizationException\n"
-"     */\n"
-"    public function update(Request $request, Post $post): Response\n"
-"    {\n"
-"        $this->authorize('update', $post);\n"
-"\n"
-"        // The current user can update the blog post...\n"
-"\n"
-"        return response()->noContent();\n"
-"    }\n"
-"}\n"
-msgstr ""
-
-#: docs/master/authorization.md:block 138 (code)
-msgid ""
-"use App\\Models\\Post;\n"
-"use Illuminate\\Http\\Request;\n"
-"use Illuminate\\Http\\Response;\n"
-"\n"
-"/**\n"
-" * Create a new blog post.\n"
-" *\n"
-" * @throws \\Illuminate\\Auth\\Access\\AuthorizationException\n"
-" */\n"
-"public function create(Request $request): Response\n"
-"{\n"
-"    $this->authorize('create', Post::class);\n"
-"\n"
-"    // The current user can create blog posts...\n"
-"\n"
-"    return response()->noContent();\n"
-"}\n"
-msgstr ""
-
-#: docs/master/authorization.md:block 143 (code)
-msgid ""
-"<?php\n"
-"\n"
-"namespace App\\Http\\Controllers;\n"
-"\n"
-"use App\\Http\\Controllers\\Controller;\n"
-"use App\\Models\\Post;\n"
-"use Illuminate\\Http\\Request;\n"
-"\n"
-"class PostController extends Controller\n"
-"{\n"
-"    /**\n"
-"     * Create the controller instance.\n"
-"     */\n"
-"    public function __construct()\n"
-"    {\n"
-"        $this->authorizeResource(Post::class, 'post');\n"
-"    }\n"
-"}\n"
-msgstr ""
-
-#: docs/master/authorization.md:block 179 (code)
-msgid ""
-"/**\n"
-" * Update the given blog post.\n"
-" *\n"
-" * @throws \\Illuminate\\Auth\\Access\\AuthorizationException\n"
-" */\n"
-"public function update(Request $request, Post $post): Response\n"
-"{\n"
-"    $this->authorize('update', [$post, $request->category]);\n"
-"\n"
-"    // The current user can update the blog post...\n"
-"\n"
-"    return response()->noContent();\n"
-"}\n"
+#: docs/9.x/authorization.md:block 146 (quote)
+msgid "**Note** You may use the `make:policy` command with the `--model` option to quickly generate a policy class for a given model: `php artisan make:policy PostPolicy --model=Post`."
 msgstr ""

@@ -11,7 +11,7 @@ msgid "[Introduction](#introduction)"
 msgstr ""
 
 #: docs/10.x/sail.md:block 2 (unordered list)
-msgid "[Installation & Setup](#installation)"
+msgid "[Installation and Setup](#installation)"
 msgstr ""
 
 #: docs/10.x/sail.md:block 2 (unordered list)
@@ -23,7 +23,7 @@ msgid "[Configuring A Shell Alias](#configuring-a-shell-alias)"
 msgstr ""
 
 #: docs/10.x/sail.md:block 2 (unordered list)
-msgid "[Starting & Stopping Sail](#starting-and-stopping-sail)"
+msgid "[Starting and Stopping Sail](#starting-and-stopping-sail)"
 msgstr ""
 
 #: docs/10.x/sail.md:block 2 (unordered list)
@@ -60,6 +60,10 @@ msgstr ""
 
 #: docs/10.x/sail.md:block 2 (unordered list)
 msgid "[Meilisearch](#meilisearch)"
+msgstr ""
+
+#: docs/10.x/sail.md:block 2 (unordered list)
+msgid "[Typesense](#typesense)"
 msgstr ""
 
 #: docs/10.x/sail.md:block 2 (unordered list)
@@ -127,11 +131,11 @@ msgid "Laravel Sail is supported on macOS, Linux, and Windows (via [WSL2](https:
 msgstr ""
 
 #: docs/10.x/sail.md:block 9 (header)
-msgid "Installation & Setup"
+msgid "Installation and Setup"
 msgstr ""
 
 #: docs/10.x/sail.md:block 10 (paragraph)
-msgid "Laravel Sail is automatically installed with all new Laravel applications so you may start using it immediately. To learn how to create a new Laravel application, please consult Laravel's [installation documentation](/docs/{{version}}/installation#laravel-and-docker) for your operating system. During installation, you will be asked to choose which Sail supported services your application will be interacting with."
+msgid "Laravel Sail is automatically installed with all new Laravel applications so you may start using it immediately. To learn how to create a new Laravel application, please consult Laravel's [installation documentation](/docs/{{version}}/installation#docker-installation-using-sail) for your operating system. During installation, you will be asked to choose which Sail supported services your application will be interacting with."
 msgstr ""
 
 #: docs/10.x/sail.md:block 12 (header)
@@ -163,7 +167,7 @@ msgid "./vendor/bin/sail up\n"
 msgstr ""
 
 #: docs/10.x/sail.md:block 19 (quote)
-msgid "**Warning** If you are using Docker Desktop for Linux, you should use the `default` Docker context by executing the following command: `docker context use default`."
+msgid "[!WARNING] If you are using Docker Desktop for Linux, you should use the `default` Docker context by executing the following command: `docker context use default`."
 msgstr ""
 
 #: docs/10.x/sail.md:block 21 (header)
@@ -203,7 +207,7 @@ msgid "However, instead of repeatedly typing `vendor/bin/sail` to execute Sail c
 msgstr ""
 
 #: docs/10.x/sail.md:block 33 (code)
-msgid "alias sail='[ -f sail ] && sh sail || sh vendor/bin/sail'\n"
+msgid "alias sail='sh $([ -f sail ] && echo sail || echo vendor/bin/sail)'\n"
 msgstr ""
 
 #: docs/10.x/sail.md:block 34 (paragraph)
@@ -219,7 +223,7 @@ msgid "sail up\n"
 msgstr ""
 
 #: docs/10.x/sail.md:block 38 (header)
-msgid "Starting & Stopping Sail"
+msgid "Starting and Stopping Sail"
 msgstr ""
 
 #: docs/10.x/sail.md:block 39 (paragraph)
@@ -299,7 +303,7 @@ msgid "sail composer require laravel/sanctum\n"
 msgstr ""
 
 #: docs/10.x/sail.md:block 61 (header)
-msgid "Installing Composer Dependencies For Existing Applications"
+msgid "Installing Composer Dependencies for Existing Applications"
 msgstr ""
 
 #: docs/10.x/sail.md:block 62 (paragraph)
@@ -316,12 +320,12 @@ msgid ""
 "    -u \"$(id -u):$(id -g)\" \\\n"
 "    -v \"$(pwd):/var/www/html\" \\\n"
 "    -w /var/www/html \\\n"
-"    laravelsail/php82-composer:latest \\\n"
+"    laravelsail/php83-composer:latest \\\n"
 "    composer install --ignore-platform-reqs\n"
 msgstr ""
 
 #: docs/10.x/sail.md:block 65 (paragraph)
-msgid "When using the `laravelsail/phpXX-composer` image, you should use the same version of PHP that you plan to use for your application (`80`, `81`, or `82`)."
+msgid "When using the `laravelsail/phpXX-composer` image, you should use the same version of PHP that you plan to use for your application (`80`, `81`, `82`, or `83`)."
 msgstr ""
 
 #: docs/10.x/sail.md:block 67 (header)
@@ -408,18 +412,38 @@ msgid "From your local machine, you may access Meilisearch's web based administr
 msgstr ""
 
 #: docs/10.x/sail.md:block 93 (header)
-msgid "File Storage"
+msgid "Typesense"
 msgstr ""
 
 #: docs/10.x/sail.md:block 94 (paragraph)
+msgid "If you chose to install the [Typesense](https://typesense.org) service when installing Sail, your application's `docker-compose.yml` file will contain an entry for this lightning fast, open-source search-engine that is natively integrated with [Laravel Scout](/docs/{{version}}/scout#typesense). Once you have started your containers, you may connect to the Typesense instance within your application by setting the following environment variables:"
+msgstr ""
+
+#: docs/10.x/sail.md:block 95 (code)
+msgid ""
+"TYPESENSE_HOST=typesense\n"
+"TYPESENSE_PORT=8108\n"
+"TYPESENSE_PROTOCOL=http\n"
+"TYPESENSE_API_KEY=xyz\n"
+msgstr ""
+
+#: docs/10.x/sail.md:block 96 (paragraph)
+msgid "From your local machine, you may access Typesense's API via `http://localhost:8108`."
+msgstr ""
+
+#: docs/10.x/sail.md:block 98 (header)
+msgid "File Storage"
+msgstr ""
+
+#: docs/10.x/sail.md:block 99 (paragraph)
 msgid "If you plan to use Amazon S3 to store files while running your application in its production environment, you may wish to install the [MinIO](https://min.io) service when installing Sail. MinIO provides an S3 compatible API that you may use to develop locally using Laravel's `s3` file storage driver without creating \"test\" storage buckets in your production S3 environment. If you choose to install MinIO while installing Sail, a MinIO configuration section will be added to your application's `docker-compose.yml` file."
 msgstr ""
 
-#: docs/10.x/sail.md:block 95 (paragraph)
+#: docs/10.x/sail.md:block 100 (paragraph)
 msgid "By default, your application's `filesystems` configuration file already contains a disk configuration for the `s3` disk. In addition to using this disk to interact with Amazon S3, you may use it to interact with any S3 compatible file storage service such as MinIO by simply modifying the associated environment variables that control its configuration. For example, when using MinIO, your filesystem environment variable configuration should be defined as follows:"
 msgstr ""
 
-#: docs/10.x/sail.md:block 96 (code)
+#: docs/10.x/sail.md:block 101 (code)
 msgid ""
 "FILESYSTEM_DISK=s3\n"
 "AWS_ACCESS_KEY_ID=sail\n"
@@ -430,62 +454,62 @@ msgid ""
 "AWS_USE_PATH_STYLE_ENDPOINT=true\n"
 msgstr ""
 
-#: docs/10.x/sail.md:block 97 (paragraph)
+#: docs/10.x/sail.md:block 102 (paragraph)
 msgid "In order for Laravel's Flysystem integration to generate proper URLs when using MinIO, you should define the `AWS_URL` environment variable so that it matches your application's local URL and includes the bucket name in the URL path:"
 msgstr ""
 
-#: docs/10.x/sail.md:block 98 (code)
+#: docs/10.x/sail.md:block 103 (code)
 msgid "AWS_URL=http://localhost:9000/local\n"
 msgstr ""
 
-#: docs/10.x/sail.md:block 99 (paragraph)
+#: docs/10.x/sail.md:block 104 (paragraph)
 msgid "You may create buckets via the MinIO console, which is available at `http://localhost:8900`. The default username for the MinIO console is `sail` while the default password is `password`."
 msgstr ""
 
-#: docs/10.x/sail.md:block 100 (quote)
-msgid "**Warning** Generating temporary storage URLs via the `temporaryUrl` method is not supported when using MinIO."
+#: docs/10.x/sail.md:block 105 (quote)
+msgid "[!WARNING] Generating temporary storage URLs via the `temporaryUrl` method is not supported when using MinIO."
 msgstr ""
 
-#: docs/10.x/sail.md:block 102 (header)
+#: docs/10.x/sail.md:block 107 (header)
 msgid "Running Tests"
 msgstr ""
 
-#: docs/10.x/sail.md:block 103 (paragraph)
+#: docs/10.x/sail.md:block 108 (paragraph)
 msgid "Laravel provides amazing testing support out of the box, and you may use Sail's `test` command to run your applications [feature and unit tests](/docs/{{version}}/testing). Any CLI options that are accepted by PHPUnit may also be passed to the `test` command:"
 msgstr ""
 
-#: docs/10.x/sail.md:block 104 (code)
+#: docs/10.x/sail.md:block 109 (code)
 msgid ""
 "sail test\n"
 "\n"
 "sail test --group orders\n"
 msgstr ""
 
-#: docs/10.x/sail.md:block 105 (paragraph)
+#: docs/10.x/sail.md:block 110 (paragraph)
 msgid "The Sail `test` command is equivalent to running the `test` Artisan command:"
 msgstr ""
 
-#: docs/10.x/sail.md:block 106 (code)
+#: docs/10.x/sail.md:block 111 (code)
 msgid "sail artisan test\n"
 msgstr ""
 
-#: docs/10.x/sail.md:block 107 (paragraph)
+#: docs/10.x/sail.md:block 112 (paragraph)
 msgid "By default, Sail will create a dedicated `testing` database so that your tests do not interfere with the current state of your database. In a default Laravel installation, Sail will also configure your `phpunit.xml` file to use this database when executing your tests:"
 msgstr ""
 
-#: docs/10.x/sail.md:block 108 (code)
+#: docs/10.x/sail.md:block 113 (code)
 msgid "<env name=\"DB_DATABASE\" value=\"testing\"/>\n"
 msgstr ""
 
-#: docs/10.x/sail.md:block 110 (header)
+#: docs/10.x/sail.md:block 115 (header)
 msgid "Laravel Dusk"
 msgstr ""
 
-#: docs/10.x/sail.md:block 111 (paragraph)
+#: docs/10.x/sail.md:block 116 (paragraph)
 msgid "[Laravel Dusk](/docs/{{version}}/dusk) provides an expressive, easy-to-use browser automation and testing API. Thanks to Sail, you may run these tests without ever installing Selenium or other tools on your local computer. To get started, uncomment the Selenium service in your application's `docker-compose.yml` file:"
 msgstr ""
 
-#: docs/10.x/sail.md:block 112 (code)
+#: docs/10.x/sail.md:block 117 (code)
 msgid ""
 "selenium:\n"
 "    image: 'selenium/standalone-chrome'\n"
@@ -497,11 +521,11 @@ msgid ""
 "        - sail\n"
 msgstr ""
 
-#: docs/10.x/sail.md:block 113 (paragraph)
+#: docs/10.x/sail.md:block 118 (paragraph)
 msgid "Next, ensure that the `laravel.test` service in your application's `docker-compose.yml` file has a `depends_on` entry for `selenium`:"
 msgstr ""
 
-#: docs/10.x/sail.md:block 114 (code)
+#: docs/10.x/sail.md:block 119 (code)
 msgid ""
 "depends_on:\n"
 "    - mysql\n"
@@ -509,23 +533,23 @@ msgid ""
 "    - selenium\n"
 msgstr ""
 
-#: docs/10.x/sail.md:block 115 (paragraph)
+#: docs/10.x/sail.md:block 120 (paragraph)
 msgid "Finally, you may run your Dusk test suite by starting Sail and running the `dusk` command:"
 msgstr ""
 
-#: docs/10.x/sail.md:block 116 (code)
+#: docs/10.x/sail.md:block 121 (code)
 msgid "sail dusk\n"
 msgstr ""
 
-#: docs/10.x/sail.md:block 118 (header)
-msgid "Selenium On Apple Silicon"
+#: docs/10.x/sail.md:block 123 (header)
+msgid "Selenium on Apple Silicon"
 msgstr ""
 
-#: docs/10.x/sail.md:block 119 (paragraph)
+#: docs/10.x/sail.md:block 124 (paragraph)
 msgid "If your local machine contains an Apple Silicon chip, your `selenium` service must use the `seleniarm/standalone-chromium` image:"
 msgstr ""
 
-#: docs/10.x/sail.md:block 120 (code)
+#: docs/10.x/sail.md:block 125 (code)
 msgid ""
 "selenium:\n"
 "    image: 'seleniarm/standalone-chromium'\n"
@@ -537,57 +561,57 @@ msgid ""
 "        - sail\n"
 msgstr ""
 
-#: docs/10.x/sail.md:block 122 (header)
+#: docs/10.x/sail.md:block 127 (header)
 msgid "Previewing Emails"
 msgstr ""
 
-#: docs/10.x/sail.md:block 123 (paragraph)
+#: docs/10.x/sail.md:block 128 (paragraph)
 msgid "Laravel Sail's default `docker-compose.yml` file contains a service entry for [Mailpit](https://github.com/axllent/mailpit). Mailpit intercepts emails sent by your application during local development and provides a convenient web interface so that you can preview your email messages in your browser. When using Sail, Mailpit's default host is `mailpit` and is available via port 1025:"
 msgstr ""
 
-#: docs/10.x/sail.md:block 124 (code)
+#: docs/10.x/sail.md:block 129 (code)
 msgid ""
 "MAIL_HOST=mailpit\n"
 "MAIL_PORT=1025\n"
 "MAIL_ENCRYPTION=null\n"
 msgstr ""
 
-#: docs/10.x/sail.md:block 125 (paragraph)
+#: docs/10.x/sail.md:block 130 (paragraph)
 msgid "When Sail is running, you may access the Mailpit web interface at: http://localhost:8025"
 msgstr ""
 
-#: docs/10.x/sail.md:block 127 (header)
+#: docs/10.x/sail.md:block 132 (header)
 msgid "Container CLI"
 msgstr ""
 
-#: docs/10.x/sail.md:block 128 (paragraph)
+#: docs/10.x/sail.md:block 133 (paragraph)
 msgid "Sometimes you may wish to start a Bash session within your application's container. You may use the `shell` command to connect to your application's container, allowing you to inspect its files and installed services as well execute arbitrary shell commands within the container:"
 msgstr ""
 
-#: docs/10.x/sail.md:block 129 (code)
+#: docs/10.x/sail.md:block 134 (code)
 msgid ""
 "sail shell\n"
 "\n"
 "sail root-shell\n"
 msgstr ""
 
-#: docs/10.x/sail.md:block 130 (paragraph)
+#: docs/10.x/sail.md:block 135 (paragraph)
 msgid "To start a new [Laravel Tinker](https://github.com/laravel/tinker) session, you may execute the `tinker` command:"
 msgstr ""
 
-#: docs/10.x/sail.md:block 131 (code)
+#: docs/10.x/sail.md:block 136 (code)
 msgid "sail tinker\n"
 msgstr ""
 
-#: docs/10.x/sail.md:block 133 (header)
+#: docs/10.x/sail.md:block 138 (header)
 msgid "PHP Versions"
 msgstr ""
 
-#: docs/10.x/sail.md:block 134 (paragraph)
-msgid "Sail currently supports serving your application via PHP 8.3, 8.2, 8.1, or PHP 8.0. The default PHP version used by Sail is currently PHP 8.2. To change the PHP version that is used to serve your application, you should update the `build` definition of the `laravel.test` container in your application's `docker-compose.yml` file:"
+#: docs/10.x/sail.md:block 139 (paragraph)
+msgid "Sail currently supports serving your application via PHP 8.3, 8.2, 8.1, or PHP 8.0. The default PHP version used by Sail is currently PHP 8.3. To change the PHP version that is used to serve your application, you should update the `build` definition of the `laravel.test` container in your application's `docker-compose.yml` file:"
 msgstr ""
 
-#: docs/10.x/sail.md:block 135 (code)
+#: docs/10.x/sail.md:block 140 (code)
 msgid ""
 "# PHP 8.3\n"
 "context: ./vendor/laravel/sail/runtimes/8.3\n"
@@ -602,34 +626,34 @@ msgid ""
 "context: ./vendor/laravel/sail/runtimes/8.0\n"
 msgstr ""
 
-#: docs/10.x/sail.md:block 136 (paragraph)
+#: docs/10.x/sail.md:block 141 (paragraph)
 msgid "In addition, you may wish to update your `image` name to reflect the version of PHP being used by your application. This option is also defined in your application's `docker-compose.yml` file:"
 msgstr ""
 
-#: docs/10.x/sail.md:block 137 (code)
+#: docs/10.x/sail.md:block 142 (code)
 msgid "image: sail-8.1/app\n"
 msgstr ""
 
-#: docs/10.x/sail.md:block 138 (paragraph)
+#: docs/10.x/sail.md:block 143 (paragraph)
 msgid "After updating your application's `docker-compose.yml` file, you should rebuild your container images:"
 msgstr ""
 
-#: docs/10.x/sail.md:block 139 (code)
+#: docs/10.x/sail.md:block 144 (code)
 msgid ""
 "sail build --no-cache\n"
 "\n"
 "sail up\n"
 msgstr ""
 
-#: docs/10.x/sail.md:block 141 (header)
+#: docs/10.x/sail.md:block 146 (header)
 msgid "Node Versions"
 msgstr ""
 
-#: docs/10.x/sail.md:block 142 (paragraph)
+#: docs/10.x/sail.md:block 147 (paragraph)
 msgid "Sail installs Node 20 by default. To change the Node version that is installed when building your images, you may update the `build.args` definition of the `laravel.test` service in your application's `docker-compose.yml` file:"
 msgstr ""
 
-#: docs/10.x/sail.md:block 143 (code)
+#: docs/10.x/sail.md:block 148 (code)
 msgid ""
 "build:\n"
 "    args:\n"
@@ -637,23 +661,23 @@ msgid ""
 "        NODE_VERSION: '18'\n"
 msgstr ""
 
-#: docs/10.x/sail.md:block 147 (header)
+#: docs/10.x/sail.md:block 152 (header)
 msgid "Sharing Your Site"
 msgstr ""
 
-#: docs/10.x/sail.md:block 148 (paragraph)
+#: docs/10.x/sail.md:block 153 (paragraph)
 msgid "Sometimes you may need to share your site publicly in order to preview your site for a colleague or to test webhook integrations with your application. To share your site, you may use the `share` command. After executing this command, you will be issued a random `laravel-sail.site` URL that you may use to access your application:"
 msgstr ""
 
-#: docs/10.x/sail.md:block 149 (code)
+#: docs/10.x/sail.md:block 154 (code)
 msgid "sail share\n"
 msgstr ""
 
-#: docs/10.x/sail.md:block 150 (paragraph)
+#: docs/10.x/sail.md:block 155 (paragraph)
 msgid "When sharing your site via the `share` command, you should configure your application's trusted proxies within the `TrustProxies` middleware. Otherwise, URL generation helpers such as `url` and `route` will be unable to determine the correct HTTP host that should be used during URL generation:"
 msgstr ""
 
-#: docs/10.x/sail.md:block 151 (code)
+#: docs/10.x/sail.md:block 156 (code)
 msgid ""
 "/**\n"
 " * The trusted proxies for this application.\n"
@@ -663,63 +687,63 @@ msgid ""
 "protected $proxies = '*';\n"
 msgstr ""
 
-#: docs/10.x/sail.md:block 152 (paragraph)
+#: docs/10.x/sail.md:block 157 (paragraph)
 msgid "If you would like to choose the subdomain for your shared site, you may provide the `subdomain` option when executing the `share` command:"
 msgstr ""
 
-#: docs/10.x/sail.md:block 153 (code)
+#: docs/10.x/sail.md:block 158 (code)
 msgid "sail share --subdomain=my-sail-site\n"
 msgstr ""
 
-#: docs/10.x/sail.md:block 154 (quote)
-msgid "**Note** The `share` command is powered by [Expose](https://github.com/beyondcode/expose), an open source tunneling service by [BeyondCode](https://beyondco.de)."
+#: docs/10.x/sail.md:block 159 (quote)
+msgid "[!NOTE] The `share` command is powered by [Expose](https://github.com/beyondcode/expose), an open source tunneling service by [BeyondCode](https://beyondco.de)."
 msgstr ""
 
-#: docs/10.x/sail.md:block 156 (header)
+#: docs/10.x/sail.md:block 161 (header)
 msgid "Debugging With Xdebug"
 msgstr ""
 
-#: docs/10.x/sail.md:block 157 (paragraph)
+#: docs/10.x/sail.md:block 162 (paragraph)
 msgid "Laravel Sail's Docker configuration includes support for [Xdebug](https://xdebug.org/), a popular and powerful debugger for PHP. In order to enable Xdebug, you will need to add a few variables to your application's `.env` file to [configure Xdebug](https://xdebug.org/docs/step_debug#mode). To enable Xdebug you must set the appropriate mode(s) before starting Sail:"
 msgstr ""
 
-#: docs/10.x/sail.md:block 158 (code)
+#: docs/10.x/sail.md:block 163 (code)
 msgid "SAIL_XDEBUG_MODE=develop,debug,coverage\n"
 msgstr ""
 
-#: docs/10.x/sail.md:block 159 (header)
+#: docs/10.x/sail.md:block 164 (header)
 msgid "Linux Host IP Configuration"
 msgstr ""
 
-#: docs/10.x/sail.md:block 160 (paragraph)
+#: docs/10.x/sail.md:block 165 (paragraph)
 msgid "Internally, the `XDEBUG_CONFIG` environment variable is defined as `client_host=host.docker.internal` so that Xdebug will be properly configured for Mac and Windows (WSL2). If your local machine is running Linux, you should ensure that you are running Docker Engine 17.06.0+ and Compose 1.16.0+. Otherwise, you will need to manually define this environment variable as shown below."
 msgstr ""
 
-#: docs/10.x/sail.md:block 161 (paragraph)
+#: docs/10.x/sail.md:block 166 (paragraph)
 msgid "First, you should determine the correct host IP address to add to the environment variable by running the following command. Typically, the `<container-name>` should be the name of the container that serves your application and often ends with `_laravel.test_1`:"
 msgstr ""
 
-#: docs/10.x/sail.md:block 162 (code)
+#: docs/10.x/sail.md:block 167 (code)
 msgid "docker inspect -f {{range.NetworkSettings.Networks}}{{.Gateway}}{{end}} <container-name>\n"
 msgstr ""
 
-#: docs/10.x/sail.md:block 163 (paragraph)
+#: docs/10.x/sail.md:block 168 (paragraph)
 msgid "Once you have obtained the correct host IP address, you should define the `SAIL_XDEBUG_CONFIG` variable within your application's `.env` file:"
 msgstr ""
 
-#: docs/10.x/sail.md:block 164 (code)
+#: docs/10.x/sail.md:block 169 (code)
 msgid "SAIL_XDEBUG_CONFIG=\"client_host=<host-ip-address>\"\n"
 msgstr ""
 
-#: docs/10.x/sail.md:block 166 (header)
+#: docs/10.x/sail.md:block 171 (header)
 msgid "Xdebug CLI Usage"
 msgstr ""
 
-#: docs/10.x/sail.md:block 167 (paragraph)
+#: docs/10.x/sail.md:block 172 (paragraph)
 msgid "A `sail debug` command may be used to start a debugging session when running an Artisan command:"
 msgstr ""
 
-#: docs/10.x/sail.md:block 168 (code)
+#: docs/10.x/sail.md:block 173 (code)
 msgid ""
 "# Run an Artisan command without Xdebug...\n"
 "sail artisan migrate\n"
@@ -728,40 +752,106 @@ msgid ""
 "sail debug migrate\n"
 msgstr ""
 
-#: docs/10.x/sail.md:block 170 (header)
+#: docs/10.x/sail.md:block 175 (header)
 msgid "Xdebug Browser Usage"
 msgstr ""
 
-#: docs/10.x/sail.md:block 171 (paragraph)
+#: docs/10.x/sail.md:block 176 (paragraph)
 msgid "To debug your application while interacting with the application via a web browser, follow the [instructions provided by Xdebug](https://xdebug.org/docs/step_debug#web-application) for initiating an Xdebug session from the web browser."
 msgstr ""
 
-#: docs/10.x/sail.md:block 172 (paragraph)
+#: docs/10.x/sail.md:block 177 (paragraph)
 msgid "If you're using PhpStorm, please review JetBrain's documentation regarding [zero-configuration debugging](https://www.jetbrains.com/help/phpstorm/zero-configuration-debugging.html)."
 msgstr ""
 
-#: docs/10.x/sail.md:block 173 (quote)
-msgid "**Warning** Laravel Sail relies on `artisan serve` to serve your application. The `artisan serve` command only accepts the `XDEBUG_CONFIG` and `XDEBUG_MODE` variables as of Laravel version 8.53.0. Older versions of Laravel (8.52.0 and below) do not support these variables and will not accept debug connections."
+#: docs/10.x/sail.md:block 178 (quote)
+msgid "[!WARNING] Laravel Sail relies on `artisan serve` to serve your application. The `artisan serve` command only accepts the `XDEBUG_CONFIG` and `XDEBUG_MODE` variables as of Laravel version 8.53.0. Older versions of Laravel (8.52.0 and below) do not support these variables and will not accept debug connections."
 msgstr ""
 
-#: docs/10.x/sail.md:block 175 (header)
+#: docs/10.x/sail.md:block 180 (header)
 msgid "Customization"
 msgstr ""
 
-#: docs/10.x/sail.md:block 176 (paragraph)
+#: docs/10.x/sail.md:block 181 (paragraph)
 msgid "Since Sail is just Docker, you are free to customize nearly everything about it. To publish Sail's own Dockerfiles, you may execute the `sail:publish` command:"
 msgstr ""
 
-#: docs/10.x/sail.md:block 177 (code)
+#: docs/10.x/sail.md:block 182 (code)
 msgid "sail artisan sail:publish\n"
 msgstr ""
 
-#: docs/10.x/sail.md:block 178 (paragraph)
+#: docs/10.x/sail.md:block 183 (paragraph)
 msgid "After running this command, the Dockerfiles and other configuration files used by Laravel Sail will be placed within a `docker` directory in your application's root directory. After customizing your Sail installation, you may wish to change the image name for the application container in your application's `docker-compose.yml` file. After doing so, rebuild your application's containers using the `build` command. Assigning a unique name to the application image is particularly important if you are using Sail to develop multiple Laravel applications on a single machine:"
 msgstr ""
 
-#: docs/10.x/sail.md:block 179 (code)
+#: docs/10.x/sail.md:block 184 (code)
 msgid "sail build --no-cache\n"
+msgstr ""
+
+#: docs/11.x/sail.md:block 2 (unordered list)
+msgid "[Rebuilding Sail Images](#rebuilding-sail-images)"
+msgstr ""
+
+#: docs/11.x/sail.md:block 29 (header)
+msgid "Rebuilding Sail Images"
+msgstr ""
+
+#: docs/11.x/sail.md:block 30 (paragraph)
+msgid "Sometimes you may want to completely rebuild your Sail images to ensure all of the image's packages and software are up to date. You may accomplish this using the `build` command:"
+msgstr ""
+
+#: docs/11.x/sail.md:block 31 (code)
+msgid ""
+"docker compose down -v\n"
+"\n"
+"sail build --no-cache\n"
+"\n"
+"sail up\n"
+msgstr ""
+
+#: docs/11.x/sail.md:block 62 (paragraph)
+msgid "Composer commands may be executed using the `composer` command. Laravel Sail's application container includes a Composer installation:"
+msgstr ""
+
+#: docs/11.x/sail.md:block 94 (paragraph)
+msgid "If you chose to install the [Meilisearch](https://www.meilisearch.com) service when installing Sail, your application's `docker-compose.yml` file will contain an entry for this powerful search engine that is integrated with [Laravel Scout](/docs/{{version}}/scout). Once you have started your containers, you may connect to the Meilisearch instance within your application by setting your `MEILISEARCH_HOST` environment variable to `http://meilisearch:7700`."
+msgstr ""
+
+#: docs/11.x/sail.md:block 98 (paragraph)
+msgid "If you chose to install the [Typesense](https://typesense.org) service when installing Sail, your application's `docker-compose.yml` file will contain an entry for this lightning fast, open-source search engine that is natively integrated with [Laravel Scout](/docs/{{version}}/scout#typesense). Once you have started your containers, you may connect to the Typesense instance within your application by setting the following environment variables:"
+msgstr ""
+
+#: docs/11.x/sail.md:block 112 (paragraph)
+msgid "Laravel provides amazing testing support out of the box, and you may use Sail's `test` command to run your applications [feature and unit tests](/docs/{{version}}/testing). Any CLI options that are accepted by Pest / PHPUnit may also be passed to the `test` command:"
+msgstr ""
+
+#: docs/11.x/sail.md:block 137 (paragraph)
+msgid "Sometimes you may wish to start a Bash session within your application's container. You may use the `shell` command to connect to your application's container, allowing you to inspect its files and installed services as well as execute arbitrary shell commands within the container:"
+msgstr ""
+
+#: docs/11.x/sail.md:block 146 (code)
+msgid "image: sail-8.2/app\n"
+msgstr ""
+
+#: docs/11.x/sail.md:block 159 (paragraph)
+msgid "When sharing your site via the `share` command, you should configure your application's trusted proxies using the `trustProxies` middleware method in your application's `bootstrap/app.php` file. Otherwise, URL generation helpers such as `url` and `route` will be unable to determine the correct HTTP host that should be used during URL generation:"
+msgstr ""
+
+#: docs/11.x/sail.md:block 160 (code)
+msgid ""
+"->withMiddleware(function (Middleware $middleware) {\n"
+"    $middleware->trustProxies(at: [\n"
+"        '*',\n"
+"    ]);\n"
+"})\n"
+msgstr ""
+
+#: docs/11.x/sail.md:block 181 (paragraph)
+msgid "If you're using PhpStorm, please review JetBrains' documentation regarding [zero-configuration debugging](https://www.jetbrains.com/help/phpstorm/zero-configuration-debugging.html)."
+msgstr ""
+
+#: docs/8.x/sail.md:block 2 (unordered list)
+msgid "[Installation & Setup](#installation)"
 msgstr ""
 
 #: docs/8.x/sail.md:block 2 (unordered list)
@@ -769,7 +859,15 @@ msgid "[Configuring A Bash Alias](#configuring-a-bash-alias)"
 msgstr ""
 
 #: docs/8.x/sail.md:block 2 (unordered list)
+msgid "[Starting & Stopping Sail](#starting-and-stopping-sail)"
+msgstr ""
+
+#: docs/8.x/sail.md:block 2 (unordered list)
 msgid "[MeiliSearch](#meilisearch)"
+msgstr ""
+
+#: docs/8.x/sail.md:block 9 (header)
+msgid "Installation & Setup"
 msgstr ""
 
 #: docs/8.x/sail.md:block 10 (paragraph)
@@ -794,6 +892,14 @@ msgstr ""
 
 #: docs/8.x/sail.md:block 29 (paragraph)
 msgid "Once the Bash alias has been configured, you may execute Sail commands by simply typing `sail`. The remainder of this documentation's examples will assume that you have configured this alias:"
+msgstr ""
+
+#: docs/8.x/sail.md:block 32 (header)
+msgid "Starting & Stopping Sail"
+msgstr ""
+
+#: docs/8.x/sail.md:block 55 (header)
+msgid "Installing Composer Dependencies For Existing Applications"
 msgstr ""
 
 #: docs/8.x/sail.md:block 58 (code)
@@ -856,6 +962,10 @@ msgid ""
 "        - '/dev/shm:/dev/shm'\n"
 "    networks:\n"
 "        - sail\n"
+msgstr ""
+
+#: docs/8.x/sail.md:block 105 (header)
+msgid "Selenium On Apple Silicon"
 msgstr ""
 
 #: docs/8.x/sail.md:block 107 (code)
@@ -927,8 +1037,26 @@ msgstr ""
 msgid "{note} Laravel Sail relies on `artisan serve` to serve your application. The `artisan serve` command only accepts the `XDEBUG_CONFIG` and `XDEBUG_MODE` variables as of Laravel version 8.53.0. Older versions of Laravel (8.52.0 and below) do not support these variables and will not accept debug connections."
 msgstr ""
 
+#: docs/9.x/sail.md:block 32 (code)
+msgid "alias sail='[ -f sail ] && sh sail || sh vendor/bin/sail'\n"
+msgstr ""
+
+#: docs/9.x/sail.md:block 63 (code)
+msgid ""
+"docker run --rm \\\n"
+"    -u \"$(id -u):$(id -g)\" \\\n"
+"    -v \"$(pwd):/var/www/html\" \\\n"
+"    -w /var/www/html \\\n"
+"    laravelsail/php82-composer:latest \\\n"
+"    composer install --ignore-platform-reqs\n"
+msgstr ""
+
 #: docs/9.x/sail.md:block 64 (paragraph)
 msgid "When using the `laravelsail/phpXX-composer` image, you should use the same version of PHP that you plan to use for your application (`74`, `80`, `81`, or `82`)."
+msgstr ""
+
+#: docs/9.x/sail.md:block 99 (quote)
+msgid "**Warning** Generating temporary storage URLs via the `temporaryUrl` method is not supported when using MinIO."
 msgstr ""
 
 #: docs/9.x/sail.md:block 133 (paragraph)
@@ -954,6 +1082,10 @@ msgstr ""
 msgid "Sail installs Node 18 by default. To change the Node version that is installed when building your images, you may update the `build.args` definition of the `laravel.test` service in your application's `docker-compose.yml` file:"
 msgstr ""
 
-#: docs/master/sail.md:block 89 (paragraph)
-msgid "If you chose to install the [MeiliSearch](https://www.meilisearch.com) service when installing Sail, your application's `docker-compose.yml` file will contain an entry for this powerful search-engine that is compatible with [Laravel Scout](/docs/{{version}}/scout). Once you have started your containers, you may connect to the MeiliSearch instance within your application by setting your `MEILISEARCH_HOST` environment variable to `http://meilisearch:7700`."
+#: docs/9.x/sail.md:block 153 (quote)
+msgid "**Note** The `share` command is powered by [Expose](https://github.com/beyondcode/expose), an open source tunneling service by [BeyondCode](https://beyondco.de)."
+msgstr ""
+
+#: docs/9.x/sail.md:block 172 (quote)
+msgid "**Warning** Laravel Sail relies on `artisan serve` to serve your application. The `artisan serve` command only accepts the `XDEBUG_CONFIG` and `XDEBUG_MODE` variables as of Laravel version 8.53.0. Older versions of Laravel (8.52.0 and below) do not support these variables and will not accept debug connections."
 msgstr ""

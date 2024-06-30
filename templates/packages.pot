@@ -11,7 +11,7 @@ msgid "[Introduction](#introduction)"
 msgstr ""
 
 #: docs/10.x/packages.md:block 2 (unordered list)
-msgid "[A Note On Facades](#a-note-on-facades)"
+msgid "[A Note on Facades](#a-note-on-facades)"
 msgstr ""
 
 #: docs/10.x/packages.md:block 2 (unordered list)
@@ -83,7 +83,7 @@ msgid "On the other hand, other packages are specifically intended for use with 
 msgstr ""
 
 #: docs/10.x/packages.md:block 9 (header)
-msgid "A Note On Facades"
+msgid "A Note on Facades"
 msgstr ""
 
 #: docs/10.x/packages.md:block 10 (paragraph)
@@ -117,7 +117,7 @@ msgid "Once your package has been configured for discovery, Laravel will automat
 msgstr ""
 
 #: docs/10.x/packages.md:block 17 (header)
-msgid "Opting Out Of Package Discovery"
+msgid "Opting Out of Package Discovery"
 msgstr ""
 
 #: docs/10.x/packages.md:block 18 (paragraph)
@@ -196,7 +196,7 @@ msgid "$value = config('courier.option');\n"
 msgstr ""
 
 #: docs/10.x/packages.md:block 34 (quote)
-msgid "**Warning** You should not define closures in your configuration files. They can not be serialized correctly when users execute the `config:cache` Artisan command."
+msgid "[!WARNING] You should not define closures in your configuration files. They can not be serialized correctly when users execute the `config:cache` Artisan command."
 msgstr ""
 
 #: docs/10.x/packages.md:block 36 (header)
@@ -225,7 +225,7 @@ msgid ""
 msgstr ""
 
 #: docs/10.x/packages.md:block 40 (quote)
-msgid "**Warning** This method only merges the first level of the configuration array. If your users partially define a multi-dimensional configuration array, the missing options will not be merged."
+msgid "[!WARNING] This method only merges the first level of the configuration array. If your users partially define a multi-dimensional configuration array, the missing options will not be merged."
 msgstr ""
 
 #: docs/10.x/packages.md:block 42 (header)
@@ -297,15 +297,30 @@ msgstr ""
 msgid "echo trans('courier::messages.welcome');\n"
 msgstr ""
 
-#: docs/10.x/packages.md:block 57 (header)
+#: docs/10.x/packages.md:block 56 (paragraph)
+msgid "You can register JSON translation files for your package using the `loadJsonTranslationsFrom` method. This method accepts the path to the directory that contains your package's JSON translation files:"
+msgstr ""
+
+#: docs/10.x/packages.md:block 57 (code)
+msgid ""
+"/**\n"
+" * Bootstrap any package services.\n"
+" */\n"
+"public function boot(): void\n"
+"{\n"
+"    $this->loadJsonTranslationsFrom(__DIR__.'/../lang');\n"
+"}\n"
+msgstr ""
+
+#: docs/10.x/packages.md:block 59 (header)
 msgid "Publishing Language Files"
 msgstr ""
 
-#: docs/10.x/packages.md:block 58 (paragraph)
+#: docs/10.x/packages.md:block 60 (paragraph)
 msgid "If you would like to publish your package's language files to the application's `lang/vendor` directory, you may use the service provider's `publishes` method. The `publishes` method accepts an array of package paths and their desired publish locations. For example, to publish the language files for the `courier` package, you may do the following:"
 msgstr ""
 
-#: docs/10.x/packages.md:block 59 (code)
+#: docs/10.x/packages.md:block 61 (code)
 msgid ""
 "/**\n"
 " * Bootstrap any package services.\n"
@@ -320,19 +335,19 @@ msgid ""
 "}\n"
 msgstr ""
 
-#: docs/10.x/packages.md:block 60 (paragraph)
+#: docs/10.x/packages.md:block 62 (paragraph)
 msgid "Now, when users of your package execute Laravel's `vendor:publish` Artisan command, your package's language files will be published to the specified publish location."
 msgstr ""
 
-#: docs/10.x/packages.md:block 62 (header)
+#: docs/10.x/packages.md:block 64 (header)
 msgid "Views"
 msgstr ""
 
-#: docs/10.x/packages.md:block 63 (paragraph)
+#: docs/10.x/packages.md:block 65 (paragraph)
 msgid "To register your package's [views](/docs/{{version}}/views) with Laravel, you need to tell Laravel where the views are located. You may do this using the service provider's `loadViewsFrom` method. The `loadViewsFrom` method accepts two arguments: the path to your view templates and your package's name. For example, if your package's name is `courier`, you would add the following to your service provider's `boot` method:"
 msgstr ""
 
-#: docs/10.x/packages.md:block 64 (code)
+#: docs/10.x/packages.md:block 66 (code)
 msgid ""
 "/**\n"
 " * Bootstrap any package services.\n"
@@ -343,34 +358,34 @@ msgid ""
 "}\n"
 msgstr ""
 
-#: docs/10.x/packages.md:block 65 (paragraph)
+#: docs/10.x/packages.md:block 67 (paragraph)
 msgid "Package views are referenced using the `package::view` syntax convention. So, once your view path is registered in a service provider, you may load the `dashboard` view from the `courier` package like so:"
 msgstr ""
 
-#: docs/10.x/packages.md:block 66 (code)
+#: docs/10.x/packages.md:block 68 (code)
 msgid ""
 "Route::get('/dashboard', function () {\n"
 "    return view('courier::dashboard');\n"
 "});\n"
 msgstr ""
 
-#: docs/10.x/packages.md:block 68 (header)
+#: docs/10.x/packages.md:block 70 (header)
 msgid "Overriding Package Views"
 msgstr ""
 
-#: docs/10.x/packages.md:block 69 (paragraph)
+#: docs/10.x/packages.md:block 71 (paragraph)
 msgid "When you use the `loadViewsFrom` method, Laravel actually registers two locations for your views: the application's `resources/views/vendor` directory and the directory you specify. So, using the `courier` package as an example, Laravel will first check if a custom version of the view has been placed in the `resources/views/vendor/courier` directory by the developer. Then, if the view has not been customized, Laravel will search the package view directory you specified in your call to `loadViewsFrom`. This makes it easy for package users to customize / override your package's views."
 msgstr ""
 
-#: docs/10.x/packages.md:block 71 (header)
+#: docs/10.x/packages.md:block 73 (header)
 msgid "Publishing Views"
 msgstr ""
 
-#: docs/10.x/packages.md:block 72 (paragraph)
+#: docs/10.x/packages.md:block 74 (paragraph)
 msgid "If you would like to make your views available for publishing to the application's `resources/views/vendor` directory, you may use the service provider's `publishes` method. The `publishes` method accepts an array of package view paths and their desired publish locations:"
 msgstr ""
 
-#: docs/10.x/packages.md:block 73 (code)
+#: docs/10.x/packages.md:block 75 (code)
 msgid ""
 "/**\n"
 " * Bootstrap the package services.\n"
@@ -385,19 +400,19 @@ msgid ""
 "}\n"
 msgstr ""
 
-#: docs/10.x/packages.md:block 74 (paragraph)
+#: docs/10.x/packages.md:block 76 (paragraph)
 msgid "Now, when users of your package execute Laravel's `vendor:publish` Artisan command, your package's views will be copied to the specified publish location."
 msgstr ""
 
-#: docs/10.x/packages.md:block 76 (header)
+#: docs/10.x/packages.md:block 78 (header)
 msgid "View Components"
 msgstr ""
 
-#: docs/10.x/packages.md:block 77 (paragraph)
+#: docs/10.x/packages.md:block 79 (paragraph)
 msgid "If you are building a package that utilizes Blade components or placing components in non-conventional directories, you will need to manually register your component class and its HTML tag alias so that Laravel knows where to find the component. You should typically register your components in the `boot` method of your package's service provider:"
 msgstr ""
 
-#: docs/10.x/packages.md:block 78 (code)
+#: docs/10.x/packages.md:block 80 (code)
 msgid ""
 "use Illuminate\\Support\\Facades\\Blade;\n"
 "use VendorPackage\\View\\Components\\AlertComponent;\n"
@@ -411,23 +426,23 @@ msgid ""
 "}\n"
 msgstr ""
 
-#: docs/10.x/packages.md:block 79 (paragraph)
+#: docs/10.x/packages.md:block 81 (paragraph)
 msgid "Once your component has been registered, it may be rendered using its tag alias:"
 msgstr ""
 
-#: docs/10.x/packages.md:block 80 (code)
+#: docs/10.x/packages.md:block 82 (code)
 msgid "<x-package-alert/>\n"
 msgstr ""
 
-#: docs/10.x/packages.md:block 82 (header)
+#: docs/10.x/packages.md:block 84 (header)
 msgid "Autoloading Package Components"
 msgstr ""
 
-#: docs/10.x/packages.md:block 83 (paragraph)
+#: docs/10.x/packages.md:block 85 (paragraph)
 msgid "Alternatively, you may use the `componentNamespace` method to autoload component classes by convention. For example, a `Nightshade` package might have `Calendar` and `ColorPicker` components that reside within the `Nightshade\\Views\\Components` namespace:"
 msgstr ""
 
-#: docs/10.x/packages.md:block 84 (code)
+#: docs/10.x/packages.md:block 86 (code)
 msgid ""
 "use Illuminate\\Support\\Facades\\Blade;\n"
 "\n"
@@ -440,41 +455,41 @@ msgid ""
 "}\n"
 msgstr ""
 
-#: docs/10.x/packages.md:block 85 (paragraph)
+#: docs/10.x/packages.md:block 87 (paragraph)
 msgid "This will allow the usage of package components by their vendor namespace using the `package-name::` syntax:"
 msgstr ""
 
-#: docs/10.x/packages.md:block 86 (code)
+#: docs/10.x/packages.md:block 88 (code)
 msgid ""
 "<x-nightshade::calendar />\n"
 "<x-nightshade::color-picker />\n"
 msgstr ""
 
-#: docs/10.x/packages.md:block 87 (paragraph)
+#: docs/10.x/packages.md:block 89 (paragraph)
 msgid "Blade will automatically detect the class that's linked to this component by pascal-casing the component name. Subdirectories are also supported using \"dot\" notation."
 msgstr ""
 
-#: docs/10.x/packages.md:block 89 (header)
+#: docs/10.x/packages.md:block 91 (header)
 msgid "Anonymous Components"
 msgstr ""
 
-#: docs/10.x/packages.md:block 90 (paragraph)
+#: docs/10.x/packages.md:block 92 (paragraph)
 msgid "If your package contains anonymous components, they must be placed within a `components` directory of your package's \"views\" directory (as specified by the [`loadViewsFrom` method](#views)). Then, you may render them by prefixing the component name with the package's view namespace:"
 msgstr ""
 
-#: docs/10.x/packages.md:block 91 (code)
+#: docs/10.x/packages.md:block 93 (code)
 msgid "<x-courier::alert />\n"
 msgstr ""
 
-#: docs/10.x/packages.md:block 93 (header)
+#: docs/10.x/packages.md:block 95 (header)
 msgid "\"About\" Artisan Command"
 msgstr ""
 
-#: docs/10.x/packages.md:block 94 (paragraph)
+#: docs/10.x/packages.md:block 96 (paragraph)
 msgid "Laravel's built-in `about` Artisan command provides a synopsis of the application's environment and configuration. Packages may push additional information to this command's output via the `AboutCommand` class. Typically, this information may be added from your package service provider's `boot` method:"
 msgstr ""
 
-#: docs/10.x/packages.md:block 95 (code)
+#: docs/10.x/packages.md:block 97 (code)
 msgid ""
 "use Illuminate\\Foundation\\Console\\AboutCommand;\n"
 "\n"
@@ -487,15 +502,15 @@ msgid ""
 "}\n"
 msgstr ""
 
-#: docs/10.x/packages.md:block 97 (header)
+#: docs/10.x/packages.md:block 99 (header)
 msgid "Commands"
 msgstr ""
 
-#: docs/10.x/packages.md:block 98 (paragraph)
+#: docs/10.x/packages.md:block 100 (paragraph)
 msgid "To register your package's Artisan commands with Laravel, you may use the `commands` method. This method expects an array of command class names. Once the commands have been registered, you may execute them using the [Artisan CLI](/docs/{{version}}/artisan):"
 msgstr ""
 
-#: docs/10.x/packages.md:block 99 (code)
+#: docs/10.x/packages.md:block 101 (code)
 msgid ""
 "use Courier\\Console\\Commands\\InstallCommand;\n"
 "use Courier\\Console\\Commands\\NetworkCommand;\n"
@@ -514,15 +529,15 @@ msgid ""
 "}\n"
 msgstr ""
 
-#: docs/10.x/packages.md:block 101 (header)
+#: docs/10.x/packages.md:block 103 (header)
 msgid "Public Assets"
 msgstr ""
 
-#: docs/10.x/packages.md:block 102 (paragraph)
+#: docs/10.x/packages.md:block 104 (paragraph)
 msgid "Your package may have assets such as JavaScript, CSS, and images. To publish these assets to the application's `public` directory, use the service provider's `publishes` method. In this example, we will also add a `public` asset group tag, which may be used to easily publish groups of related assets:"
 msgstr ""
 
-#: docs/10.x/packages.md:block 103 (code)
+#: docs/10.x/packages.md:block 105 (code)
 msgid ""
 "/**\n"
 " * Bootstrap any package services.\n"
@@ -535,23 +550,23 @@ msgid ""
 "}\n"
 msgstr ""
 
-#: docs/10.x/packages.md:block 104 (paragraph)
+#: docs/10.x/packages.md:block 106 (paragraph)
 msgid "Now, when your package's users execute the `vendor:publish` command, your assets will be copied to the specified publish location. Since users will typically need to overwrite the assets every time the package is updated, you may use the `--force` flag:"
 msgstr ""
 
-#: docs/10.x/packages.md:block 105 (code)
+#: docs/10.x/packages.md:block 107 (code)
 msgid "php artisan vendor:publish --tag=public --force\n"
 msgstr ""
 
-#: docs/10.x/packages.md:block 107 (header)
+#: docs/10.x/packages.md:block 109 (header)
 msgid "Publishing File Groups"
 msgstr ""
 
-#: docs/10.x/packages.md:block 108 (paragraph)
+#: docs/10.x/packages.md:block 110 (paragraph)
 msgid "You may want to publish groups of package assets and resources separately. For instance, you might want to allow your users to publish your package's configuration files without being forced to publish your package's assets. You may do this by \"tagging\" them when calling the `publishes` method from a package's service provider. For example, let's use tags to define two publish groups for the `courier` package (`courier-config` and `courier-migrations`) in the `boot` method of the package's service provider:"
 msgstr ""
 
-#: docs/10.x/packages.md:block 109 (code)
+#: docs/10.x/packages.md:block 111 (code)
 msgid ""
 "/**\n"
 " * Bootstrap any package services.\n"
@@ -568,16 +583,70 @@ msgid ""
 "}\n"
 msgstr ""
 
-#: docs/10.x/packages.md:block 110 (paragraph)
+#: docs/10.x/packages.md:block 112 (paragraph)
 msgid "Now your users may publish these groups separately by referencing their tag when executing the `vendor:publish` command:"
 msgstr ""
 
-#: docs/10.x/packages.md:block 111 (code)
+#: docs/10.x/packages.md:block 113 (code)
 msgid "php artisan vendor:publish --tag=courier-config\n"
+msgstr ""
+
+#: docs/11.x/packages.md:block 6 (paragraph)
+msgid "There are different types of packages. Some packages are stand-alone, meaning they work with any PHP framework. Carbon and Pest are examples of stand-alone packages. Any of these packages may be used with Laravel by requiring them in your `composer.json` file."
+msgstr ""
+
+#: docs/11.x/packages.md:block 13 (paragraph)
+msgid "A Laravel application's `bootstrap/providers.php` file contains the list of service providers that should be loaded by Laravel. However, instead of requiring users to manually add your service provider to the list, you may define the provider in the `extra` section of your package's `composer.json` file so that it is automatically loaded by Laravel. In addition to service providers, you may also list any [facades](/docs/{{version}}/facades) you would like to be registered:"
+msgstr ""
+
+#: docs/11.x/packages.md:block 47 (paragraph)
+msgid "If your package contains [database migrations](/docs/{{version}}/migrations), you may use the `publishesMigrations` method to inform Laravel that the given directory or file contains migrations. When Laravel publishes the migrations, it will automatically update the timestamp within their filename to reflect the current date and time:"
+msgstr ""
+
+#: docs/11.x/packages.md:block 48 (code)
+msgid ""
+"/**\n"
+" * Bootstrap any package services.\n"
+" */\n"
+"public function boot(): void\n"
+"{\n"
+"    $this->publishesMigrations([\n"
+"        __DIR__.'/../database/migrations' => database_path('migrations'),\n"
+"    ]);\n"
+"}\n"
+msgstr ""
+
+#: docs/11.x/packages.md:block 110 (code)
+msgid ""
+"/**\n"
+" * Bootstrap any package services.\n"
+" */\n"
+"public function boot(): void\n"
+"{\n"
+"    $this->publishes([\n"
+"        __DIR__.'/../config/package.php' => config_path('package.php')\n"
+"    ], 'courier-config');\n"
+"\n"
+"    $this->publishesMigrations([\n"
+"        __DIR__.'/../database/migrations/' => database_path('migrations')\n"
+"    ], 'courier-migrations');\n"
+"}\n"
+msgstr ""
+
+#: docs/8.x/packages.md:block 2 (unordered list)
+msgid "[A Note On Facades](#a-note-on-facades)"
 msgstr ""
 
 #: docs/8.x/packages.md:block 2 (unordered list)
 msgid "[Translations](#translations)"
+msgstr ""
+
+#: docs/8.x/packages.md:block 9 (header)
+msgid "A Note On Facades"
+msgstr ""
+
+#: docs/8.x/packages.md:block 17 (header)
+msgid "Opting Out Of Package Discovery"
 msgstr ""
 
 #: docs/8.x/packages.md:block 24 (paragraph)
@@ -823,6 +892,14 @@ msgid ""
 "        __DIR__.'/../database/migrations/' => database_path('migrations')\n"
 "    ], 'courier-migrations');\n"
 "}\n"
+msgstr ""
+
+#: docs/9.x/packages.md:block 34 (quote)
+msgid "**Warning** You should not define closures in your configuration files. They can not be serialized correctly when users execute the `config:cache` Artisan command."
+msgstr ""
+
+#: docs/9.x/packages.md:block 40 (quote)
+msgid "**Warning** This method only merges the first level of the configuration array. If your users partially define a multi-dimensional configuration array, the missing options will not be merged."
 msgstr ""
 
 #: docs/9.x/packages.md:block 53 (code)

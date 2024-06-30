@@ -35,7 +35,7 @@ msgid "Laravel includes a simple to use rate limiting abstraction which, in conj
 msgstr ""
 
 #: docs/10.x/rate-limiting.md:block 6 (quote)
-msgid "**Note** If you are interested in rate limiting incoming HTTP requests, please consult the [rate limiter middleware documentation](routing#rate-limiting)."
+msgid "[!NOTE] If you are interested in rate limiting incoming HTTP requests, please consult the [rate limiter middleware documentation](routing#rate-limiting)."
 msgstr ""
 
 #: docs/10.x/rate-limiting.md:block 8 (header)
@@ -114,13 +114,13 @@ msgid ""
 "    return 'Too many attempts!';\n"
 "}\n"
 "\n"
-"RateLimiter::hit('send-message:'.$user->id);\n"
+"RateLimiter::increment('send-message:'.$user->id);\n"
 "\n"
 "// Send message...\n"
 msgstr ""
 
 #: docs/10.x/rate-limiting.md:block 22 (paragraph)
-msgid "Alternatively, you may use the `remaining` method to retrieve the number of attempts remaining for a given key. If a given key has retries remaining, you may invoke the `hit` method to increment the number of total attempts:"
+msgid "Alternatively, you may use the `remaining` method to retrieve the number of attempts remaining for a given key. If a given key has retries remaining, you may invoke the `increment` method to increment the number of total attempts:"
 msgstr ""
 
 #: docs/10.x/rate-limiting.md:block 23 (code)
@@ -128,21 +128,29 @@ msgid ""
 "use Illuminate\\Support\\Facades\\RateLimiter;\n"
 "\n"
 "if (RateLimiter::remaining('send-message:'.$user->id, $perMinute = 5)) {\n"
-"    RateLimiter::hit('send-message:'.$user->id);\n"
+"    RateLimiter::increment('send-message:'.$user->id);\n"
 "\n"
 "    // Send message...\n"
 "}\n"
 msgstr ""
 
-#: docs/10.x/rate-limiting.md:block 25 (header)
+#: docs/10.x/rate-limiting.md:block 24 (paragraph)
+msgid "If you would like to increment the value for a given rate limiter key by more than one, you may provide the desired amount to the `increment` method:"
+msgstr ""
+
+#: docs/10.x/rate-limiting.md:block 25 (code)
+msgid "RateLimiter::increment('send-message:'.$user->id, amount: 5);\n"
+msgstr ""
+
+#: docs/10.x/rate-limiting.md:block 27 (header)
 msgid "Determining Limiter Availability"
 msgstr ""
 
-#: docs/10.x/rate-limiting.md:block 26 (paragraph)
+#: docs/10.x/rate-limiting.md:block 28 (paragraph)
 msgid "When a key has no more attempts left, the `availableIn` method returns the number of seconds remaining until more attempts will be available:"
 msgstr ""
 
-#: docs/10.x/rate-limiting.md:block 27 (code)
+#: docs/10.x/rate-limiting.md:block 29 (code)
 msgid ""
 "use Illuminate\\Support\\Facades\\RateLimiter;\n"
 "\n"
@@ -152,20 +160,20 @@ msgid ""
 "    return 'You may try again in '.$seconds.' seconds.';\n"
 "}\n"
 "\n"
-"RateLimiter::hit('send-message:'.$user->id);\n"
+"RateLimiter::increment('send-message:'.$user->id);\n"
 "\n"
 "// Send message...\n"
 msgstr ""
 
-#: docs/10.x/rate-limiting.md:block 29 (header)
+#: docs/10.x/rate-limiting.md:block 31 (header)
 msgid "Clearing Attempts"
 msgstr ""
 
-#: docs/10.x/rate-limiting.md:block 30 (paragraph)
+#: docs/10.x/rate-limiting.md:block 32 (paragraph)
 msgid "You may reset the number of attempts for a given rate limiter key using the `clear` method. For example, you may reset the number of attempts when a given message is read by the receiver:"
 msgstr ""
 
-#: docs/10.x/rate-limiting.md:block 31 (code)
+#: docs/10.x/rate-limiting.md:block 33 (code)
 msgid ""
 "use App\\Models\\Message;\n"
 "use Illuminate\\Support\\Facades\\RateLimiter;\n"
@@ -183,6 +191,13 @@ msgid ""
 "}\n"
 msgstr ""
 
+#: docs/11.x/rate-limiting.md:block 10 (code)
+msgid ""
+"'default' => env('CACHE_STORE', 'database'),\n"
+"\n"
+"'limiter' => 'redis',\n"
+msgstr ""
+
 #: docs/8.x/rate-limiting.md:block 6 (quote)
 msgid "{tip} If you are interested in rate limiting incoming HTTP requests, please consult the [rate limiter middleware documentation](routing#rate-limiting)."
 msgstr ""
@@ -193,6 +208,21 @@ msgid ""
 "\n"
 "if (RateLimiter::tooManyAttempts('send-message:'.$user->id, $perMinute = 5)) {\n"
 "    return 'Too many attempts!';\n"
+"}\n"
+msgstr ""
+
+#: docs/8.x/rate-limiting.md:block 20 (paragraph)
+msgid "Alternatively, you may use the `remaining` method to retrieve the number of attempts remaining for a given key. If a given key has retries remaining, you may invoke the `hit` method to increment the number of total attempts:"
+msgstr ""
+
+#: docs/8.x/rate-limiting.md:block 21 (code)
+msgid ""
+"use Illuminate\\Support\\Facades\\RateLimiter;\n"
+"\n"
+"if (RateLimiter::remaining('send-message:'.$user->id, $perMinute = 5)) {\n"
+"    RateLimiter::hit('send-message:'.$user->id);\n"
+"\n"
+"    // Send message...\n"
 "}\n"
 msgstr ""
 
@@ -226,4 +256,8 @@ msgid ""
 "\n"
 "    return $message;\n"
 "}\n"
+msgstr ""
+
+#: docs/9.x/rate-limiting.md:block 6 (quote)
+msgid "**Note** If you are interested in rate limiting incoming HTTP requests, please consult the [rate limiter middleware documentation](routing#rate-limiting)."
 msgstr ""

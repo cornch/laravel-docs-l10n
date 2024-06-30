@@ -51,7 +51,7 @@ msgid "[Testing Views](#testing-views)"
 msgstr ""
 
 #: docs/10.x/http-tests.md:block 2 (unordered list)
-msgid "[Rendering Blade & Components](#rendering-blade-and-components)"
+msgid "[Rendering Blade and Components](#rendering-blade-and-components)"
 msgstr ""
 
 #: docs/10.x/http-tests.md:block 2 (unordered list)
@@ -143,7 +143,7 @@ msgid "In general, each of your tests should only make one request to your appli
 msgstr ""
 
 #: docs/10.x/http-tests.md:block 14 (quote)
-msgid "**Note** For convenience, the CSRF middleware is automatically disabled when running tests."
+msgid "[!NOTE] For convenience, the CSRF middleware is automatically disabled when running tests."
 msgstr ""
 
 #: docs/10.x/http-tests.md:block 16 (header)
@@ -406,7 +406,7 @@ msgid "$this->assertTrue($response['created']);\n"
 msgstr ""
 
 #: docs/10.x/http-tests.md:block 51 (quote)
-msgid "**Note** The `assertJson` method converts the response to an array and utilizes `PHPUnit::assertArraySubset` to verify that the given array exists within the JSON response returned by the application. So, if there are other properties in the JSON response, this test will still pass as long as the given fragment is present."
+msgid "[!NOTE] The `assertJson` method converts the response to an array and utilizes `PHPUnit::assertArraySubset` to verify that the given array exists within the JSON response returned by the application. So, if there are other properties in the JSON response, this test will still pass as long as the given fragment is present."
 msgstr ""
 
 #: docs/10.x/http-tests.md:block 53 (header)
@@ -444,7 +444,7 @@ msgid ""
 msgstr ""
 
 #: docs/10.x/http-tests.md:block 57 (header)
-msgid "Asserting On JSON Paths"
+msgid "Asserting on JSON Paths"
 msgstr ""
 
 #: docs/10.x/http-tests.md:block 58 (paragraph)
@@ -515,7 +515,7 @@ msgid ""
 msgstr ""
 
 #: docs/10.x/http-tests.md:block 66 (header)
-msgid "Understanding The `etc` Method"
+msgid "Understanding the `etc` Method"
 msgstr ""
 
 #: docs/10.x/http-tests.md:block 67 (paragraph)
@@ -832,7 +832,7 @@ msgid ""
 msgstr ""
 
 #: docs/10.x/http-tests.md:block 125 (header)
-msgid "Rendering Blade & Components"
+msgid "Rendering Blade and Components"
 msgstr ""
 
 #: docs/10.x/http-tests.md:block 126 (paragraph)
@@ -1212,7 +1212,7 @@ msgid "$response->assertJsonMissingValidationErrors($keys);\n"
 msgstr ""
 
 #: docs/10.x/http-tests.md:block 246 (quote)
-msgid "**Note** The more generic [assertValid](#assert-valid) method may be used to assert that a response does not have validation errors that were returned as JSON **and** that no errors were flashed to session storage."
+msgid "[!NOTE] The more generic [assertValid](#assert-valid) method may be used to assert that a response does not have validation errors that were returned as JSON **and** that no errors were flashed to session storage."
 msgstr ""
 
 #: docs/10.x/http-tests.md:block 248 (header)
@@ -1349,7 +1349,7 @@ msgid "$response->assertJsonValidationErrors(array $data, $responseKey = 'errors
 msgstr ""
 
 #: docs/10.x/http-tests.md:block 279 (quote)
-msgid "**Note** The more generic [assertInvalid](#assert-invalid) method may be used to assert that a response has validation errors returned as JSON **or** that errors were flashed to session storage."
+msgid "[!NOTE] The more generic [assertInvalid](#assert-invalid) method may be used to assert that a response has validation errors returned as JSON **or** that errors were flashed to session storage."
 msgstr ""
 
 #: docs/10.x/http-tests.md:block 281 (header)
@@ -2026,6 +2026,361 @@ msgstr ""
 msgid "Laravel provides two primary validation related assertions that you may use to ensure the data provided in your request was either valid or invalid."
 msgstr ""
 
+#: docs/11.x/http-tests.md:block 6 (code)
+msgid ""
+"<?php\n"
+"\n"
+"test('the application returns a successful response', function () {\n"
+"    $response = $this->get('/');\n"
+"\n"
+"    $response->assertStatus(200);\n"
+"});\n"
+msgstr ""
+
+#: docs/11.x/http-tests.md:block 13 (code)
+msgid ""
+"<?php\n"
+"\n"
+"test('basic request', function () {\n"
+"    $response = $this->get('/');\n"
+"\n"
+"    $response->assertStatus(200);\n"
+"});\n"
+msgstr ""
+
+#: docs/11.x/http-tests.md:block 20 (code)
+msgid ""
+"<?php\n"
+"\n"
+"test('interacting with headers', function () {\n"
+"    $response = $this->withHeaders([\n"
+"        'X-Header' => 'Value',\n"
+"    ])->post('/user', ['name' => 'Sally']);\n"
+"\n"
+"    $response->assertStatus(201);\n"
+"});\n"
+msgstr ""
+
+#: docs/11.x/http-tests.md:block 25 (code)
+msgid ""
+"<?php\n"
+"\n"
+"test('interacting with cookies', function () {\n"
+"    $response = $this->withCookie('color', 'blue')->get('/');\n"
+"\n"
+"    $response = $this->withCookies([\n"
+"        'color' => 'blue',\n"
+"        'name' => 'Taylor',\n"
+"    ])->get('/');\n"
+"\n"
+"    //\n"
+"});\n"
+msgstr ""
+
+#: docs/11.x/http-tests.md:block 26 (code)
+msgid ""
+"<?php\n"
+"\n"
+"namespace Tests\\Feature;\n"
+"\n"
+"use Tests\\TestCase;\n"
+"\n"
+"class ExampleTest extends TestCase\n"
+"{\n"
+"    public function test_interacting_with_cookies(): void\n"
+"    {\n"
+"        $response = $this->withCookie('color', 'blue')->get('/');\n"
+"\n"
+"        $response = $this->withCookies([\n"
+"            'color' => 'blue',\n"
+"            'name' => 'Taylor',\n"
+"        ])->get('/');\n"
+"\n"
+"        //\n"
+"    }\n"
+"}\n"
+msgstr ""
+
+#: docs/11.x/http-tests.md:block 30 (code)
+msgid ""
+"<?php\n"
+"\n"
+"test('interacting with the session', function () {\n"
+"    $response = $this->withSession(['banned' => false])->get('/');\n"
+"\n"
+"    //\n"
+"});\n"
+msgstr ""
+
+#: docs/11.x/http-tests.md:block 31 (code)
+msgid ""
+"<?php\n"
+"\n"
+"namespace Tests\\Feature;\n"
+"\n"
+"use Tests\\TestCase;\n"
+"\n"
+"class ExampleTest extends TestCase\n"
+"{\n"
+"    public function test_interacting_with_the_session(): void\n"
+"    {\n"
+"        $response = $this->withSession(['banned' => false])->get('/');\n"
+"\n"
+"        //\n"
+"    }\n"
+"}\n"
+msgstr ""
+
+#: docs/11.x/http-tests.md:block 33 (code)
+msgid ""
+"<?php\n"
+"\n"
+"use App\\Models\\User;\n"
+"\n"
+"test('an action that requires authentication', function () {\n"
+"    $user = User::factory()->create();\n"
+"\n"
+"    $response = $this->actingAs($user)\n"
+"                     ->withSession(['banned' => false])\n"
+"                     ->get('/');\n"
+"\n"
+"    //\n"
+"});\n"
+msgstr ""
+
+#: docs/11.x/http-tests.md:block 34 (code)
+msgid ""
+"<?php\n"
+"\n"
+"namespace Tests\\Feature;\n"
+"\n"
+"use App\\Models\\User;\n"
+"use Tests\\TestCase;\n"
+"\n"
+"class ExampleTest extends TestCase\n"
+"{\n"
+"    public function test_an_action_that_requires_authentication(): void\n"
+"    {\n"
+"        $user = User::factory()->create();\n"
+"\n"
+"        $response = $this->actingAs($user)\n"
+"                         ->withSession(['banned' => false])\n"
+"                         ->get('/');\n"
+"\n"
+"        //\n"
+"    }\n"
+"}\n"
+msgstr ""
+
+#: docs/11.x/http-tests.md:block 40 (code)
+msgid ""
+"<?php\n"
+"\n"
+"test('basic test', function () {\n"
+"    $response = $this->get('/');\n"
+"\n"
+"    $response->dumpHeaders();\n"
+"\n"
+"    $response->dumpSession();\n"
+"\n"
+"    $response->dump();\n"
+"});\n"
+msgstr ""
+
+#: docs/11.x/http-tests.md:block 43 (code)
+msgid ""
+"<?php\n"
+"\n"
+"test('basic test', function () {\n"
+"    $response = $this->get('/');\n"
+"\n"
+"    $response->ddHeaders();\n"
+"\n"
+"    $response->ddSession();\n"
+"\n"
+"    $response->dd();\n"
+"});\n"
+msgstr ""
+
+#: docs/11.x/http-tests.md:block 47 (paragraph)
+msgid "Sometimes you may need to test that your application is throwing a specific exception. To accomplish this, you may \"fake\" the exception handler via the `Exceptions` facade. Once the exception handler has been faked, you may utilize the `assertReported` and `assertNotReported` methods to make assertions against exceptions that were thrown during the request:"
+msgstr ""
+
+#: docs/11.x/http-tests.md:block 48 (code)
+msgid ""
+"<?php\n"
+"\n"
+"use App\\Exceptions\\InvalidOrderException;\n"
+"use Illuminate\\Support\\Facades\\Exceptions;\n"
+"\n"
+"test('exception is thrown', function () {\n"
+"    Exceptions::fake();\n"
+"\n"
+"    $response = $this->get('/order/1');\n"
+"\n"
+"    // Assert an exception was thrown...\n"
+"    Exceptions::assertReported(InvalidOrderException::class);\n"
+"\n"
+"    // Assert against the exception...\n"
+"    Exceptions::assertReported(function (InvalidOrderException $e) {\n"
+"        return $e->getMessage() === 'The order was invalid.';\n"
+"    });\n"
+"});\n"
+msgstr ""
+
+#: docs/11.x/http-tests.md:block 49 (code)
+msgid ""
+"<?php\n"
+"\n"
+"namespace Tests\\Feature;\n"
+"\n"
+"use App\\Exceptions\\InvalidOrderException;\n"
+"use Illuminate\\Support\\Facades\\Exceptions;\n"
+"use Tests\\TestCase;\n"
+"\n"
+"class ExampleTest extends TestCase\n"
+"{\n"
+"    /**\n"
+"     * A basic test example.\n"
+"     */\n"
+"    public function test_exception_is_thrown(): void\n"
+"    {\n"
+"        Exceptions::fake();\n"
+"\n"
+"        $response = $this->get('/');\n"
+"\n"
+"        // Assert an exception was thrown...\n"
+"        Exceptions::assertReported(InvalidOrderException::class);\n"
+"\n"
+"        // Assert against the exception...\n"
+"        Exceptions::assertReported(function (InvalidOrderException $e) {\n"
+"            return $e->getMessage() === 'The order was invalid.';\n"
+"        });\n"
+"    }\n"
+"}\n"
+msgstr ""
+
+#: docs/11.x/http-tests.md:block 50 (paragraph)
+msgid "The `assertNotReported` and `assertNothingReported` methods may be used to assert that a given exception was not thrown during the request or that no exceptions were thrown:"
+msgstr ""
+
+#: docs/11.x/http-tests.md:block 51 (code)
+msgid ""
+"Exceptions::assertNotReported(InvalidOrderException::class);\n"
+"\n"
+"Exceptions::assertNothingReported();\n"
+msgstr ""
+
+#: docs/11.x/http-tests.md:block 52 (paragraph)
+msgid "You may totally disable exception handling for a given request by invoking the `withoutExceptionHandling` method before making your request:"
+msgstr ""
+
+#: docs/11.x/http-tests.md:block 61 (code)
+msgid ""
+"<?php\n"
+"\n"
+"test('making an api request', function () {\n"
+"    $response = $this->postJson('/api/user', ['name' => 'Sally']);\n"
+"\n"
+"    $response\n"
+"        ->assertStatus(201)\n"
+"        ->assertJson([\n"
+"            'created' => true,\n"
+"         ]);\n"
+"});\n"
+msgstr ""
+
+#: docs/11.x/http-tests.md:block 64 (code)
+msgid "expect($response['created'])->toBeTrue();\n"
+msgstr ""
+
+#: docs/11.x/http-tests.md:block 70 (code)
+msgid ""
+"<?php\n"
+"\n"
+"test('asserting an exact json match', function () {\n"
+"    $response = $this->postJson('/user', ['name' => 'Sally']);\n"
+"\n"
+"    $response\n"
+"        ->assertStatus(201)\n"
+"        ->assertExactJson([\n"
+"            'created' => true,\n"
+"        ]);\n"
+"});\n"
+"\n"
+msgstr ""
+
+#: docs/11.x/http-tests.md:block 75 (code)
+msgid ""
+"<?php\n"
+"\n"
+"test('asserting a json path value', function () {\n"
+"    $response = $this->postJson('/user', ['name' => 'Sally']);\n"
+"\n"
+"    $response\n"
+"        ->assertStatus(201)\n"
+"        ->assertJsonPath('team.owner.name', 'Darian');\n"
+"});\n"
+msgstr ""
+
+#: docs/11.x/http-tests.md:block 82 (code)
+msgid ""
+"use Illuminate\\Testing\\Fluent\\AssertableJson;\n"
+"\n"
+"test('fluent json', function () {\n"
+"    $response = $this->getJson('/users/1');\n"
+"\n"
+"    $response\n"
+"        ->assertJson(fn (AssertableJson $json) =>\n"
+"            $json->where('id', 1)\n"
+"                 ->where('name', 'Victoria Faith')\n"
+"                 ->where('email', fn (string $email) => str($email)->is('victoria@gmail.com'))\n"
+"                 ->whereNot('status', 'pending')\n"
+"                 ->missing('password')\n"
+"                 ->etc()\n"
+"        );\n"
+"});\n"
+msgstr ""
+
+#: docs/11.x/http-tests.md:block 120 (code)
+msgid ""
+"<?php\n"
+"\n"
+"use Illuminate\\Http\\UploadedFile;\n"
+"use Illuminate\\Support\\Facades\\Storage;\n"
+"\n"
+"test('avatars can be uploaded', function () {\n"
+"    Storage::fake('avatars');\n"
+"\n"
+"    $file = UploadedFile::fake()->image('avatar.jpg');\n"
+"\n"
+"    $response = $this->post('/avatar', [\n"
+"        'avatar' => $file,\n"
+"    ]);\n"
+"\n"
+"    Storage::disk('avatars')->assertExists($file->hashName());\n"
+"});\n"
+msgstr ""
+
+#: docs/11.x/http-tests.md:block 135 (code)
+msgid ""
+"<?php\n"
+"\n"
+"test('a welcome view can be rendered', function () {\n"
+"    $view = $this->view('welcome', ['name' => 'Taylor']);\n"
+"\n"
+"    $view->assertSee('Taylor');\n"
+"});\n"
+msgstr ""
+
+#: docs/11.x/http-tests.md:block 473 (code)
+msgid "expect($response['name'])->toBe('Taylor');\n"
+msgstr ""
+
+#: docs/8.x/http-tests.md:block 2 (unordered list)
+msgid "[Rendering Blade & Components](#rendering-blade-and-components)"
+msgstr ""
+
 #: docs/8.x/http-tests.md:block 6 (code)
 msgid ""
 "<?php\n"
@@ -2267,6 +2622,10 @@ msgid ""
 "}\n"
 msgstr ""
 
+#: docs/8.x/http-tests.md:block 55 (header)
+msgid "Asserting On JSON Paths"
+msgstr ""
+
 #: docs/8.x/http-tests.md:block 57 (code)
 msgid ""
 "<?php\n"
@@ -2314,6 +2673,10 @@ msgid ""
 "                 ->etc()\n"
 "        );\n"
 "}\n"
+msgstr ""
+
+#: docs/8.x/http-tests.md:block 62 (header)
+msgid "Understanding The `etc` Method"
 msgstr ""
 
 #: docs/8.x/http-tests.md:block 70 (code)
@@ -2415,6 +2778,10 @@ msgid ""
 "}\n"
 msgstr ""
 
+#: docs/8.x/http-tests.md:block 120 (header)
+msgid "Rendering Blade & Components"
+msgstr ""
+
 #: docs/8.x/http-tests.md:block 123 (paragraph)
 msgid "You may use the `component` method to evaluate and render a [Blade component](/docs/{{version}}/blade#components). Like the `view` method, the `component` method returns an instance of `Illuminate\\Testing\\TestView`:"
 msgstr ""
@@ -2466,6 +2833,14 @@ msgstr ""
 
 #: docs/8.x/http-tests.md:block 357 (paragraph)
 msgid "Assert that the response view contains given a piece of data:"
+msgstr ""
+
+#: docs/9.x/http-tests.md:block 14 (quote)
+msgid "**Note** For convenience, the CSRF middleware is automatically disabled when running tests."
+msgstr ""
+
+#: docs/9.x/http-tests.md:block 49 (quote)
+msgid "**Note** The `assertJson` method converts the response to an array and utilizes `PHPUnit::assertArraySubset` to verify that the given array exists within the JSON response returned by the application. So, if there are other properties in the JSON response, this test will still pass as long as the given fragment is present."
 msgstr ""
 
 #: docs/9.x/http-tests.md:block 59 (code)
@@ -2547,66 +2922,27 @@ msgstr ""
 msgid "[assertCookie](#assert-cookie) [assertCookieExpired](#assert-cookie-expired) [assertCookieNotExpired](#assert-cookie-not-expired) [assertCookieMissing](#assert-cookie-missing) [assertCreated](#assert-created) [assertDontSee](#assert-dont-see) [assertDontSeeText](#assert-dont-see-text) [assertDownload](#assert-download) [assertExactJson](#assert-exact-json) [assertForbidden](#assert-forbidden) [assertHeader](#assert-header) [assertHeaderMissing](#assert-header-missing) [assertJson](#assert-json) [assertJsonCount](#assert-json-count) [assertJsonFragment](#assert-json-fragment) [assertJsonIsArray](#assert-json-is-array) [assertJsonIsObject](#assert-json-is-object) [assertJsonMissing](#assert-json-missing) [assertJsonMissingExact](#assert-json-missing-exact) [assertJsonMissingValidationErrors](#assert-json-missing-validation-errors) [assertJsonPath](#assert-json-path) [assertJsonMissingPath](#assert-json-missing-path) [assertJsonStructure](#assert-json-structure) [assertJsonValidationErrors](#assert-json-validation-errors) [assertJsonValidationErrorFor](#assert-json-validation-error-for) [assertLocation](#assert-location) [assertContent](#assert-content) [assertNoContent](#assert-no-content) [assertStreamedContent](#assert-streamed-content) [assertNotFound](#assert-not-found) [assertOk](#assert-ok) [assertPlainCookie](#assert-plain-cookie) [assertRedirect](#assert-redirect) [assertRedirectContains](#assert-redirect-contains) [assertRedirectToRoute](#assert-redirect-to-route) [assertRedirectToSignedRoute](#assert-redirect-to-signed-route) [assertSee](#assert-see) [assertSeeInOrder](#assert-see-in-order) [assertSeeText](#assert-see-text) [assertSeeTextInOrder](#assert-see-text-in-order) [assertSessionHas](#assert-session-has) [assertSessionHasInput](#assert-session-has-input) [assertSessionHasAll](#assert-session-has-all) [assertSessionHasErrors](#assert-session-has-errors) [assertSessionHasErrorsIn](#assert-session-has-errors-in) [assertSessionHasNoErrors](#assert-session-has-no-errors) [assertSessionDoesntHaveErrors](#assert-session-doesnt-have-errors) [assertSessionMissing](#assert-session-missing) [assertStatus](#assert-status) [assertSuccessful](#assert-successful) [assertUnauthorized](#assert-unauthorized) [assertUnprocessable](#assert-unprocessable) [assertValid](#assert-valid) [assertInvalid](#assert-invalid) [assertViewHas](#assert-view-has) [assertViewHasAll](#assert-view-has-all) [assertViewIs](#assert-view-is) [assertViewMissing](#assert-view-missing)"
 msgstr ""
 
+#: docs/9.x/http-tests.md:block 220 (quote)
+msgid "**Note** The more generic [assertValid](#assert-valid) method may be used to assert that a response does not have validation errors that were returned as JSON **and** that no errors were flashed to session storage."
+msgstr ""
+
+#: docs/9.x/http-tests.md:block 253 (quote)
+msgid "**Note** The more generic [assertInvalid](#assert-invalid) method may be used to assert that a response has validation errors returned as JSON **or** that errors were flashed to session storage."
+msgstr ""
+
 #: docs/9.x/http-tests.md:block 297 (code)
 msgid "$response->assertRedirectToRoute($name = null, $parameters = []);\n"
 msgstr ""
 
-#: docs/master/http-tests.md:block 6 (code)
+#: docs/master/http-tests.md:block 20 (code)
 msgid ""
 "<?php\n"
 "\n"
-"namespace Tests\\Feature;\n"
+"tesst('interacting with headers', function () {\n"
+"    $response = $this->withHeaders([\n"
+"        'X-Header' => 'Value',\n"
+"    ])->post('/user', ['name' => 'Sally']);\n"
 "\n"
-"use Illuminate\\Foundation\\Testing\\RefreshDatabase;\n"
-"use Illuminate\\Foundation\\Testing\\WithoutMiddleware;\n"
-"use Tests\\TestCase;\n"
-"\n"
-"class ExampleTest extends TestCase\n"
-"{\n"
-"    /**\n"
-"     * A basic test example.\n"
-"     */\n"
-"    public function test_a_basic_request(): void\n"
-"    {\n"
-"        $response = $this->get('/');\n"
-"\n"
-"        $response->assertStatus(200);\n"
-"    }\n"
-"}\n"
-msgstr ""
-
-#: docs/master/http-tests.md:block 100 (code)
-msgid ""
-"<?php\n"
-"\n"
-"namespace Tests\\Feature;\n"
-"\n"
-"use Illuminate\\Foundation\\Testing\\RefreshDatabase;\n"
-"use Illuminate\\Foundation\\Testing\\WithoutMiddleware;\n"
-"use Illuminate\\Http\\UploadedFile;\n"
-"use Illuminate\\Support\\Facades\\Storage;\n"
-"use Tests\\TestCase;\n"
-"\n"
-"class ExampleTest extends TestCase\n"
-"{\n"
-"    public function test_avatars_can_be_uploaded(): void\n"
-"    {\n"
-"        Storage::fake('avatars');\n"
-"\n"
-"        $file = UploadedFile::fake()->image('avatar.jpg');\n"
-"\n"
-"        $response = $this->post('/avatar', [\n"
-"            'avatar' => $file,\n"
-"        ]);\n"
-"\n"
-"        Storage::disk('avatars')->assertExists($file->hashName());\n"
-"    }\n"
-"}\n"
-msgstr ""
-
-#: docs/master/http-tests.md:block 329 (code)
-msgid ""
-"$response->assertSessionHasInput($key, function (string $value) {\n"
-"    return Crypt::decryptString($value) === 'secret';\n"
+"    $response->assertStatus(201);\n"
 "});\n"
 msgstr ""

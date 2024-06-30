@@ -39,7 +39,7 @@ msgid "[Contextual Information](#contextual-information)"
 msgstr ""
 
 #: docs/10.x/logging.md:block 2 (unordered list)
-msgid "[Writing To Specific Channels](#writing-to-specific-channels)"
+msgid "[Writing to Specific Channels](#writing-to-specific-channels)"
 msgstr ""
 
 #: docs/10.x/logging.md:block 2 (unordered list)
@@ -47,7 +47,7 @@ msgid "[Monolog Channel Customization](#monolog-channel-customization)"
 msgstr ""
 
 #: docs/10.x/logging.md:block 2 (unordered list)
-msgid "[Customizing Monolog For Channels](#customizing-monolog-for-channels)"
+msgid "[Customizing Monolog for Channels](#customizing-monolog-for-channels)"
 msgstr ""
 
 #: docs/10.x/logging.md:block 2 (unordered list)
@@ -55,7 +55,23 @@ msgid "[Creating Monolog Handler Channels](#creating-monolog-handler-channels)"
 msgstr ""
 
 #: docs/10.x/logging.md:block 2 (unordered list)
-msgid "[Creating Custom Channels Via Factories](#creating-custom-channels-via-factories)"
+msgid "[Creating Custom Channels via Factories](#creating-custom-channels-via-factories)"
+msgstr ""
+
+#: docs/10.x/logging.md:block 2 (unordered list)
+msgid "[Tailing Log Messages Using Pail](#tailing-log-messages-using-pail)"
+msgstr ""
+
+#: docs/10.x/logging.md:block 2 (unordered list)
+msgid "[Installation](#pail-installation)"
+msgstr ""
+
+#: docs/10.x/logging.md:block 2 (unordered list)
+msgid "[Usage](#pail-usage)"
+msgstr ""
+
+#: docs/10.x/logging.md:block 2 (unordered list)
+msgid "[Filtering Logs](#pail-filtering-logs)"
 msgstr ""
 
 #: docs/10.x/logging.md:block 4 (header)
@@ -87,7 +103,7 @@ msgid "By default, Laravel will use the `stack` channel when logging messages. T
 msgstr ""
 
 #: docs/10.x/logging.md:block 13 (header)
-msgid "Configuring The Channel Name"
+msgid "Configuring the Channel Name"
 msgstr ""
 
 #: docs/10.x/logging.md:block 14 (paragraph)
@@ -192,7 +208,7 @@ msgid "A `SyslogHandler` based Monolog driver"
 msgstr ""
 
 #: docs/10.x/logging.md:block 22 (quote)
-msgid "**Note** Check out the documentation on [advanced channel customization](#monolog-channel-customization) to learn more about the `monolog` and `custom` drivers."
+msgid "[!NOTE] Check out the documentation on [advanced channel customization](#monolog-channel-customization) to learn more about the `monolog` and `custom` drivers."
 msgstr ""
 
 #: docs/10.x/logging.md:block 24 (header)
@@ -200,7 +216,7 @@ msgid "Channel Prerequisites"
 msgstr ""
 
 #: docs/10.x/logging.md:block 26 (header)
-msgid "Configuring The Single and Daily Channels"
+msgid "Configuring the Single and Daily Channels"
 msgstr ""
 
 #: docs/10.x/logging.md:block 27 (paragraph)
@@ -264,7 +280,7 @@ msgid "`7`"
 msgstr ""
 
 #: docs/10.x/logging.md:block 36 (header)
-msgid "Configuring The Papertrail Channel"
+msgid "Configuring the Papertrail Channel"
 msgstr ""
 
 #: docs/10.x/logging.md:block 37 (paragraph)
@@ -272,7 +288,7 @@ msgid "The `papertrail` channel requires the `host` and `port` configuration opt
 msgstr ""
 
 #: docs/10.x/logging.md:block 39 (header)
-msgid "Configuring The Slack Channel"
+msgid "Configuring the Slack Channel"
 msgstr ""
 
 #: docs/10.x/logging.md:block 40 (paragraph)
@@ -482,60 +498,77 @@ msgid ""
 msgstr ""
 
 #: docs/10.x/logging.md:block 72 (paragraph)
-msgid "If you would like to share contextual information across *all* logging channels, you may call the `Log::shareContext()` method. This method will provide the contextual information to all created channels and any channels that are created subsequently. Typically, the `shareContext` method should be called from the `boot` method of an application service provider:"
+msgid "If you would like to share contextual information across *all* logging channels, you may invoke the `Log::shareContext()` method. This method will provide the contextual information to all created channels and any channels that are created subsequently:"
 msgstr ""
 
 #: docs/10.x/logging.md:block 73 (code)
 msgid ""
+"<?php\n"
+"\n"
+"namespace App\\Http\\Middleware;\n"
+"\n"
+"use Closure;\n"
+"use Illuminate\\Http\\Request;\n"
 "use Illuminate\\Support\\Facades\\Log;\n"
 "use Illuminate\\Support\\Str;\n"
+"use Symfony\\Component\\HttpFoundation\\Response;\n"
 "\n"
-"class AppServiceProvider\n"
+"class AssignRequestId\n"
 "{\n"
 "    /**\n"
-"     * Bootstrap any application services.\n"
+"     * Handle an incoming request.\n"
+"     *\n"
+"     * @param  \\Closure(\\Illuminate\\Http\\Request): (\\Symfony\\Component\\HttpFoundation\\Response)  $next\n"
 "     */\n"
-"    public function boot(): void\n"
+"    public function handle(Request $request, Closure $next): Response\n"
 "    {\n"
+"        $requestId = (string) Str::uuid();\n"
+"\n"
 "        Log::shareContext([\n"
-"            'invocation-id' => (string) Str::uuid(),\n"
+"            'request-id' => $requestId\n"
 "        ]);\n"
+"\n"
+"        // ...\n"
 "    }\n"
 "}\n"
 msgstr ""
 
-#: docs/10.x/logging.md:block 75 (header)
-msgid "Writing To Specific Channels"
+#: docs/10.x/logging.md:block 74 (quote)
+msgid "[!NOTE] If you need to share log context while processing queued jobs, you may utilize [job middleware](/docs/{{version}}/queues#job-middleware)."
 msgstr ""
 
-#: docs/10.x/logging.md:block 76 (paragraph)
+#: docs/10.x/logging.md:block 76 (header)
+msgid "Writing to Specific Channels"
+msgstr ""
+
+#: docs/10.x/logging.md:block 77 (paragraph)
 msgid "Sometimes you may wish to log a message to a channel other than your application's default channel. You may use the `channel` method on the `Log` facade to retrieve and log to any channel defined in your configuration file:"
 msgstr ""
 
-#: docs/10.x/logging.md:block 77 (code)
+#: docs/10.x/logging.md:block 78 (code)
 msgid ""
 "use Illuminate\\Support\\Facades\\Log;\n"
 "\n"
 "Log::channel('slack')->info('Something happened!');\n"
 msgstr ""
 
-#: docs/10.x/logging.md:block 78 (paragraph)
+#: docs/10.x/logging.md:block 79 (paragraph)
 msgid "If you would like to create an on-demand logging stack consisting of multiple channels, you may use the `stack` method:"
 msgstr ""
 
-#: docs/10.x/logging.md:block 79 (code)
+#: docs/10.x/logging.md:block 80 (code)
 msgid "Log::stack(['single', 'slack'])->info('Something happened!');\n"
 msgstr ""
 
-#: docs/10.x/logging.md:block 81 (header)
+#: docs/10.x/logging.md:block 82 (header)
 msgid "On-Demand Channels"
 msgstr ""
 
-#: docs/10.x/logging.md:block 82 (paragraph)
+#: docs/10.x/logging.md:block 83 (paragraph)
 msgid "It is also possible to create an on-demand channel by providing the configuration at runtime without that configuration being present in your application's `logging` configuration file. To accomplish this, you may pass a configuration array to the `Log` facade's `build` method:"
 msgstr ""
 
-#: docs/10.x/logging.md:block 83 (code)
+#: docs/10.x/logging.md:block 84 (code)
 msgid ""
 "use Illuminate\\Support\\Facades\\Log;\n"
 "\n"
@@ -545,11 +578,11 @@ msgid ""
 "])->info('Something happened!');\n"
 msgstr ""
 
-#: docs/10.x/logging.md:block 84 (paragraph)
+#: docs/10.x/logging.md:block 85 (paragraph)
 msgid "You may also wish to include an on-demand channel in an on-demand logging stack. This can be achieved by including your on-demand channel instance in the array passed to the `stack` method:"
 msgstr ""
 
-#: docs/10.x/logging.md:block 85 (code)
+#: docs/10.x/logging.md:block 86 (code)
 msgid ""
 "use Illuminate\\Support\\Facades\\Log;\n"
 "\n"
@@ -561,23 +594,23 @@ msgid ""
 "Log::stack(['slack', $channel])->info('Something happened!');\n"
 msgstr ""
 
-#: docs/10.x/logging.md:block 87 (header)
+#: docs/10.x/logging.md:block 88 (header)
 msgid "Monolog Channel Customization"
 msgstr ""
 
-#: docs/10.x/logging.md:block 89 (header)
-msgid "Customizing Monolog For Channels"
-msgstr ""
-
-#: docs/10.x/logging.md:block 90 (paragraph)
-msgid "Sometimes you may need complete control over how Monolog is configured for an existing channel. For example, you may want to configure a custom Monolog `FormatterInterface` implementation for Laravel's built-in `single` channel."
+#: docs/10.x/logging.md:block 90 (header)
+msgid "Customizing Monolog for Channels"
 msgstr ""
 
 #: docs/10.x/logging.md:block 91 (paragraph)
+msgid "Sometimes you may need complete control over how Monolog is configured for an existing channel. For example, you may want to configure a custom Monolog `FormatterInterface` implementation for Laravel's built-in `single` channel."
+msgstr ""
+
+#: docs/10.x/logging.md:block 92 (paragraph)
 msgid "To get started, define a `tap` array on the channel's configuration. The `tap` array should contain a list of classes that should have an opportunity to customize (or \"tap\" into) the Monolog instance after it is created. There is no conventional location where these classes should be placed, so you are free to create a directory within your application to contain these classes:"
 msgstr ""
 
-#: docs/10.x/logging.md:block 92 (code)
+#: docs/10.x/logging.md:block 93 (code)
 msgid ""
 "'single' => [\n"
 "    'driver' => 'single',\n"
@@ -587,11 +620,11 @@ msgid ""
 "],\n"
 msgstr ""
 
-#: docs/10.x/logging.md:block 93 (paragraph)
+#: docs/10.x/logging.md:block 94 (paragraph)
 msgid "Once you have configured the `tap` option on your channel, you're ready to define the class that will customize your Monolog instance. This class only needs a single method: `__invoke`, which receives an `Illuminate\\Log\\Logger` instance. The `Illuminate\\Log\\Logger` instance proxies all method calls to the underlying Monolog instance:"
 msgstr ""
 
-#: docs/10.x/logging.md:block 94 (code)
+#: docs/10.x/logging.md:block 95 (code)
 msgid ""
 "<?php\n"
 "\n"
@@ -616,23 +649,23 @@ msgid ""
 "}\n"
 msgstr ""
 
-#: docs/10.x/logging.md:block 95 (quote)
-msgid "**Note** All of your \"tap\" classes are resolved by the [service container](/docs/{{version}}/container), so any constructor dependencies they require will automatically be injected."
+#: docs/10.x/logging.md:block 96 (quote)
+msgid "[!NOTE] All of your \"tap\" classes are resolved by the [service container](/docs/{{version}}/container), so any constructor dependencies they require will automatically be injected."
 msgstr ""
 
-#: docs/10.x/logging.md:block 97 (header)
+#: docs/10.x/logging.md:block 98 (header)
 msgid "Creating Monolog Handler Channels"
 msgstr ""
 
-#: docs/10.x/logging.md:block 98 (paragraph)
+#: docs/10.x/logging.md:block 99 (paragraph)
 msgid "Monolog has a variety of [available handlers](https://github.com/Seldaek/monolog/tree/main/src/Monolog/Handler) and Laravel does not include a built-in channel for each one. In some cases, you may wish to create a custom channel that is merely an instance of a specific Monolog handler that does not have a corresponding Laravel log driver. These channels can be easily created using the `monolog` driver."
 msgstr ""
 
-#: docs/10.x/logging.md:block 99 (paragraph)
+#: docs/10.x/logging.md:block 100 (paragraph)
 msgid "When using the `monolog` driver, the `handler` configuration option is used to specify which handler will be instantiated. Optionally, any constructor parameters the handler needs may be specified using the `with` configuration option:"
 msgstr ""
 
-#: docs/10.x/logging.md:block 100 (code)
+#: docs/10.x/logging.md:block 101 (code)
 msgid ""
 "'logentries' => [\n"
 "    'driver'  => 'monolog',\n"
@@ -644,15 +677,15 @@ msgid ""
 "],\n"
 msgstr ""
 
-#: docs/10.x/logging.md:block 102 (header)
+#: docs/10.x/logging.md:block 103 (header)
 msgid "Monolog Formatters"
 msgstr ""
 
-#: docs/10.x/logging.md:block 103 (paragraph)
+#: docs/10.x/logging.md:block 104 (paragraph)
 msgid "When using the `monolog` driver, the Monolog `LineFormatter` will be used as the default formatter. However, you may customize the type of formatter passed to the handler using the `formatter` and `formatter_with` configuration options:"
 msgstr ""
 
-#: docs/10.x/logging.md:block 104 (code)
+#: docs/10.x/logging.md:block 105 (code)
 msgid ""
 "'browser' => [\n"
 "    'driver' => 'monolog',\n"
@@ -664,11 +697,11 @@ msgid ""
 "],\n"
 msgstr ""
 
-#: docs/10.x/logging.md:block 105 (paragraph)
+#: docs/10.x/logging.md:block 106 (paragraph)
 msgid "If you are using a Monolog handler that is capable of providing its own formatter, you may set the value of the `formatter` configuration option to `default`:"
 msgstr ""
 
-#: docs/10.x/logging.md:block 106 (code)
+#: docs/10.x/logging.md:block 107 (code)
 msgid ""
 "'newrelic' => [\n"
 "    'driver' => 'monolog',\n"
@@ -677,19 +710,19 @@ msgid ""
 "],\n"
 msgstr ""
 
-#: docs/10.x/logging.md:block 108 (header)
+#: docs/10.x/logging.md:block 109 (header)
 msgid "Monolog Processors"
 msgstr ""
 
-#: docs/10.x/logging.md:block 109 (paragraph)
+#: docs/10.x/logging.md:block 110 (paragraph)
 msgid "Monolog can also process messages before logging them. You can create your own processors or use the [existing processors offered by Monolog](https://github.com/Seldaek/monolog/tree/main/src/Monolog/Processor)."
 msgstr ""
 
-#: docs/10.x/logging.md:block 110 (paragraph)
+#: docs/10.x/logging.md:block 111 (paragraph)
 msgid "If you would like to customize the processors for a `monolog` driver, add a `processors` configuration value to your channel's configuration:"
 msgstr ""
 
-#: docs/10.x/logging.md:block 111 (code)
+#: docs/10.x/logging.md:block 112 (code)
 msgid ""
 " 'memory' => [\n"
 "     'driver' => 'monolog',\n"
@@ -710,15 +743,15 @@ msgid ""
 " ],\n"
 msgstr ""
 
-#: docs/10.x/logging.md:block 113 (header)
-msgid "Creating Custom Channels Via Factories"
+#: docs/10.x/logging.md:block 114 (header)
+msgid "Creating Custom Channels via Factories"
 msgstr ""
 
-#: docs/10.x/logging.md:block 114 (paragraph)
+#: docs/10.x/logging.md:block 115 (paragraph)
 msgid "If you would like to define an entirely custom channel in which you have full control over Monolog's instantiation and configuration, you may specify a `custom` driver type in your `config/logging.php` configuration file. Your configuration should include a `via` option that contains the name of the factory class which will be invoked to create the Monolog instance:"
 msgstr ""
 
-#: docs/10.x/logging.md:block 115 (code)
+#: docs/10.x/logging.md:block 116 (code)
 msgid ""
 "'channels' => [\n"
 "    'example-custom-channel' => [\n"
@@ -728,11 +761,11 @@ msgid ""
 "],\n"
 msgstr ""
 
-#: docs/10.x/logging.md:block 116 (paragraph)
+#: docs/10.x/logging.md:block 117 (paragraph)
 msgid "Once you have configured the `custom` driver channel, you're ready to define the class that will create your Monolog instance. This class only needs a single `__invoke` method which should return the Monolog logger instance. The method will receive the channels configuration array as its only argument:"
 msgstr ""
 
-#: docs/10.x/logging.md:block 117 (code)
+#: docs/10.x/logging.md:block 118 (code)
 msgid ""
 "<?php\n"
 "\n"
@@ -752,8 +785,214 @@ msgid ""
 "}\n"
 msgstr ""
 
+#: docs/10.x/logging.md:block 120 (header)
+msgid "Tailing Log Messages Using Pail"
+msgstr ""
+
+#: docs/10.x/logging.md:block 121 (paragraph)
+msgid "Often you may need to tail your application's logs in real time. For example, when debugging an issue or when monitoring your application's logs for specific types of errors."
+msgstr ""
+
+#: docs/10.x/logging.md:block 122 (paragraph)
+msgid "Laravel Pail is a package that allows you to easily dive into your Laravel application's log files directly from the command line. Unlike the standard `tail` command, Pail is designed to work with any log driver, including Sentry or Flare. In addition, Pail provides a set of useful filters to help you quickly find what you're looking for."
+msgstr ""
+
+#: docs/10.x/logging.md:block 125 (header)
+msgid "Installation"
+msgstr ""
+
+#: docs/10.x/logging.md:block 126 (quote)
+msgid "[!WARNING] Laravel Pail requires [PHP 8.2+](https://php.net/releases/) and the [PCNTL](https://www.php.net/manual/en/book.pcntl.php) extension."
+msgstr ""
+
+#: docs/10.x/logging.md:block 127 (paragraph)
+msgid "To get started, install Pail into your project using the Composer package manager:"
+msgstr ""
+
+#: docs/10.x/logging.md:block 128 (code)
+msgid "composer require laravel/pail\n"
+msgstr ""
+
+#: docs/10.x/logging.md:block 130 (header)
+msgid "Usage"
+msgstr ""
+
+#: docs/10.x/logging.md:block 131 (paragraph)
+msgid "To start tailing logs, run the `pail` command:"
+msgstr ""
+
+#: docs/10.x/logging.md:block 132 (code)
+msgid "php artisan pail\n"
+msgstr ""
+
+#: docs/10.x/logging.md:block 133 (paragraph)
+msgid "To increase the verbosity of the output and avoid truncation (…), use the `-v` option:"
+msgstr ""
+
+#: docs/10.x/logging.md:block 134 (code)
+msgid "php artisan pail -v\n"
+msgstr ""
+
+#: docs/10.x/logging.md:block 135 (paragraph)
+msgid "For maximum verbosity and to display exception stack traces, use the `-vv` option:"
+msgstr ""
+
+#: docs/10.x/logging.md:block 136 (code)
+msgid "php artisan pail -vv\n"
+msgstr ""
+
+#: docs/10.x/logging.md:block 137 (paragraph)
+msgid "To stop tailing logs, press `Ctrl+C` at any time."
+msgstr ""
+
+#: docs/10.x/logging.md:block 139 (header)
+msgid "Filtering Logs"
+msgstr ""
+
+#: docs/10.x/logging.md:block 141 (header)
+msgid "`--filter`"
+msgstr ""
+
+#: docs/10.x/logging.md:block 142 (paragraph)
+msgid "You may use the `--filter` option to filter logs by their type, file, message, and stack trace content:"
+msgstr ""
+
+#: docs/10.x/logging.md:block 143 (code)
+msgid "php artisan pail --filter=\"QueryException\"\n"
+msgstr ""
+
+#: docs/10.x/logging.md:block 145 (header)
+msgid "`--message`"
+msgstr ""
+
+#: docs/10.x/logging.md:block 146 (paragraph)
+msgid "To filter logs by only their message, you may use the `--message` option:"
+msgstr ""
+
+#: docs/10.x/logging.md:block 147 (code)
+msgid "php artisan pail --message=\"User created\"\n"
+msgstr ""
+
+#: docs/10.x/logging.md:block 149 (header)
+msgid "`--level`"
+msgstr ""
+
+#: docs/10.x/logging.md:block 150 (paragraph)
+msgid "The `--level` option may be used to filter logs by their [log level](#log-levels):"
+msgstr ""
+
+#: docs/10.x/logging.md:block 151 (code)
+msgid "php artisan pail --level=error\n"
+msgstr ""
+
+#: docs/10.x/logging.md:block 153 (header)
+msgid "`--user`"
+msgstr ""
+
+#: docs/10.x/logging.md:block 154 (paragraph)
+msgid "To only display logs that were written while a given user was authenticated, you may provide the user's ID to the `--user` option:"
+msgstr ""
+
+#: docs/10.x/logging.md:block 155 (code)
+msgid "php artisan pail --user=1\n"
+msgstr ""
+
+#: docs/11.x/logging.md:block 10 (paragraph)
+msgid "All of the configuration options that control your application's logging behavior are housed in the `config/logging.php` configuration file. This file allows you to configure your application's log channels, so be sure to review each of the available channels and their options. We'll review a few common options below."
+msgstr ""
+
+#: docs/11.x/logging.md:block 21 (paragraph)
+msgid "By default, Monolog is instantiated with a \"channel name\" that matches the current environment, such as `production` or `local`. To change this value, you may add a `name` option to your channel's configuration:"
+msgstr ""
+
+#: docs/11.x/logging.md:block 31 (paragraph)
+msgid "Additionally, the retention policy for the `daily` channel can be configured via the `LOG_DAILY_DAYS` environment variable or by setting the `days` configuration option."
+msgstr ""
+
+#: docs/11.x/logging.md:block 37 (paragraph)
+msgid "The `papertrail` channel requires `host` and `port` configuration options. These may be defined via the `PAPERTRAIL_URL` and `PAPERTRAIL_PORT` environment variables. You can obtain these values from [Papertrail](https://help.papertrailapp.com/kb/configuration/configuring-centralized-logging-from-php-apps/#send-events-from-php-app)."
+msgstr ""
+
+#: docs/11.x/logging.md:block 40 (paragraph)
+msgid "The `slack` channel requires a `url` configuration option. This value may be defined via the `LOG_SLACK_WEBHOOK_URL` environment variable. This URL should match a URL for an [incoming webhook](https://slack.com/apps/A0F7XDUAZ-incoming-webhooks) that you have configured for your Slack team."
+msgstr ""
+
+#: docs/11.x/logging.md:block 41 (paragraph)
+msgid "By default, Slack will only receive logs at the `critical` level and above; however, you can adjust this using the `LOG_LEVEL` environment variable or by modifying the `level` configuration option within your Slack log channel's configuration array."
+msgstr ""
+
+#: docs/11.x/logging.md:block 44 (paragraph)
+msgid "PHP, Laravel, and other libraries often notify their users that some of their features have been deprecated and will be removed in a future version. If you would like to log these deprecation warnings, you may specify your preferred `deprecations` log channel using the `LOG_DEPRECATIONS_CHANNEL` environment variable, or within your application's `config/logging.php` configuration file:"
+msgstr ""
+
+#: docs/11.x/logging.md:block 45 (code)
+msgid ""
+"'deprecations' => [\n"
+"    'channel' => env('LOG_DEPRECATIONS_CHANNEL', 'null'),\n"
+"    'trace' => env('LOG_DEPRECATIONS_TRACE', false),\n"
+"],\n"
+"\n"
+"'channels' => [\n"
+"    // ...\n"
+"]\n"
+msgstr ""
+
+#: docs/11.x/logging.md:block 51 (code)
+msgid ""
+"'channels' => [\n"
+"    'stack' => [\n"
+"        'driver' => 'stack',\n"
+"        'channels' => ['syslog', 'slack'], // [tl! add]\n"
+"        'ignore_exceptions' => false,\n"
+"    ],\n"
+"\n"
+"    'syslog' => [\n"
+"        'driver' => 'syslog',\n"
+"        'level' => env('LOG_LEVEL', 'debug'),\n"
+"        'facility' => env('LOG_SYSLOG_FACILITY', LOG_USER),\n"
+"        'replace_placeholders' => true,\n"
+"    ],\n"
+"\n"
+"    'slack' => [\n"
+"        'driver' => 'slack',\n"
+"        'url' => env('LOG_SLACK_WEBHOOK_URL'),\n"
+"        'username' => env('LOG_SLACK_USERNAME', 'Laravel Log'),\n"
+"        'emoji' => env('LOG_SLACK_EMOJI', ':boom:'),\n"
+"        'level' => env('LOG_LEVEL', 'critical'),\n"
+"        'replace_placeholders' => true,\n"
+"    ],\n"
+"],\n"
+msgstr ""
+
+#: docs/11.x/logging.md:block 93 (code)
+msgid ""
+"'single' => [\n"
+"    'driver' => 'single',\n"
+"    'tap' => [App\\Logging\\CustomizeFormatter::class],\n"
+"    'path' => storage_path('logs/laravel.log'),\n"
+"    'level' => env('LOG_LEVEL', 'debug'),\n"
+"    'replace_placeholders' => true,\n"
+"],\n"
+msgstr ""
+
+#: docs/8.x/logging.md:block 2 (unordered list)
+msgid "[Writing To Specific Channels](#writing-to-specific-channels)"
+msgstr ""
+
+#: docs/8.x/logging.md:block 2 (unordered list)
+msgid "[Customizing Monolog For Channels](#customizing-monolog-for-channels)"
+msgstr ""
+
+#: docs/8.x/logging.md:block 2 (unordered list)
+msgid "[Creating Custom Channels Via Factories](#creating-custom-channels-via-factories)"
+msgstr ""
+
 #: docs/8.x/logging.md:block 10 (paragraph)
 msgid "All of the configuration options for your application's logging behavior is housed in the `config/logging.php` configuration file. This file allows you to configure your application's log channels, so be sure to review each of the available channels and their options. We'll review a few common options below."
+msgstr ""
+
+#: docs/8.x/logging.md:block 13 (header)
+msgid "Configuring The Channel Name"
 msgstr ""
 
 #: docs/8.x/logging.md:block 19 (table)
@@ -766,6 +1005,18 @@ msgstr ""
 
 #: docs/8.x/logging.md:block 20 (quote)
 msgid "{tip} Check out the documentation on [advanced channel customization](#monolog-channel-customization) to learn more about the `monolog` and `custom` drivers."
+msgstr ""
+
+#: docs/8.x/logging.md:block 24 (header)
+msgid "Configuring The Single and Daily Channels"
+msgstr ""
+
+#: docs/8.x/logging.md:block 28 (header)
+msgid "Configuring The Papertrail Channel"
+msgstr ""
+
+#: docs/8.x/logging.md:block 31 (header)
+msgid "Configuring The Slack Channel"
 msgstr ""
 
 #: docs/8.x/logging.md:block 47 (paragraph)
@@ -844,6 +1095,14 @@ msgid ""
 "}\n"
 msgstr ""
 
+#: docs/8.x/logging.md:block 65 (header)
+msgid "Writing To Specific Channels"
+msgstr ""
+
+#: docs/8.x/logging.md:block 79 (header)
+msgid "Customizing Monolog For Channels"
+msgstr ""
+
 #: docs/8.x/logging.md:block 84 (code)
 msgid ""
 "<?php\n"
@@ -875,6 +1134,10 @@ msgstr ""
 msgid "{tip} All of your \"tap\" classes are resolved by the [service container](/docs/{{version}}/container), so any constructor dependencies they require will automatically be injected."
 msgstr ""
 
+#: docs/8.x/logging.md:block 98 (header)
+msgid "Creating Custom Channels Via Factories"
+msgstr ""
+
 #: docs/8.x/logging.md:block 102 (code)
 msgid ""
 "<?php\n"
@@ -898,6 +1161,14 @@ msgid ""
 "}\n"
 msgstr ""
 
+#: docs/9.x/logging.md:block 20 (quote)
+msgid "**Note** Check out the documentation on [advanced channel customization](#monolog-channel-customization) to learn more about the `monolog` and `custom` drivers."
+msgstr ""
+
+#: docs/9.x/logging.md:block 66 (paragraph)
+msgid "If you would like to share contextual information across *all* logging channels, you may call the `Log::shareContext()` method. This method will provide the contextual information to all created channels and any channels that are created subsequently. Typically, the `shareContext` method should be called from the `boot` method of an application service provider:"
+msgstr ""
+
 #: docs/9.x/logging.md:block 67 (code)
 msgid ""
 "use Illuminate\\Support\\Facades\\Log;\n"
@@ -917,6 +1188,10 @@ msgid ""
 "        ]);\n"
 "    }\n"
 "}\n"
+msgstr ""
+
+#: docs/9.x/logging.md:block 89 (quote)
+msgid "**Note** All of your \"tap\" classes are resolved by the [service container](/docs/{{version}}/container), so any constructor dependencies they require will automatically be injected."
 msgstr ""
 
 #: docs/9.x/logging.md:block 106 (code)
@@ -942,61 +1217,6 @@ msgid ""
 "}\n"
 msgstr ""
 
-#: docs/master/logging.md:block 65 (code)
-msgid ""
-"<?php\n"
-"\n"
-"namespace App\\Http\\Controllers;\n"
-"\n"
-"use App\\Http\\Controllers\\Controller;\n"
-"use App\\Models\\User;\n"
-"use Illuminate\\Support\\Facades\\Log;\n"
-"use Illuminate\\View\\View;\n"
-"\n"
-"class UserController extends Controller\n"
-"{\n"
-"    /**\n"
-"     * Show the profile for the given user.\n"
-"     */\n"
-"    public function show(string $id): View\n"
-"    {\n"
-"        Log::info('Showing the user profile for user: '.$id);\n"
-"\n"
-"        return view('user.profile', [\n"
-"            'user' => User::findOrFail($id)\n"
-"        ]);\n"
-"    }\n"
-"}\n"
-msgstr ""
-
-#: docs/master/logging.md:block 71 (code)
-msgid ""
-"<?php\n"
-"\n"
-"namespace App\\Http\\Middleware;\n"
-"\n"
-"use Closure;\n"
-"use Illuminate\\Http\\Request;\n"
-"use Illuminate\\Support\\Facades\\Log;\n"
-"use Illuminate\\Support\\Str;\n"
-"use Symfony\\Component\\HttpFoundation\\Response;\n"
-"\n"
-"class AssignRequestId\n"
-"{\n"
-"    /**\n"
-"     * Handle an incoming request.\n"
-"     *\n"
-"     * @param  \\Closure(\\Illuminate\\Http\\Request): (\\Symfony\\Component\\HttpFoundation\\Response)  $next\n"
-"     */\n"
-"    public function handle(Request $request, Closure $next): Response\n"
-"    {\n"
-"        $requestId = (string) Str::uuid();\n"
-"\n"
-"        Log::withContext([\n"
-"            'request-id' => $requestId\n"
-"        ]);\n"
-"\n"
-"        return $next($request)->header('Request-Id', $requestId);\n"
-"    }\n"
-"}\n"
+#: docs/master/logging.md:block 37 (paragraph)
+msgid "The `papertrail` channel requires `host` and `port` configuration options. These may be defined via the `LOG_PAPERTRAIL_URL` and `LOG_PAPERTRAIL_PORT` environment variables. You can obtain these values from [Papertrail](https://help.papertrailapp.com/kb/configuration/configuring-centralized-logging-from-php-apps/#send-events-from-php-app)."
 msgstr ""

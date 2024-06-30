@@ -15,7 +15,7 @@ msgid "[Configuration](#configuration)"
 msgstr ""
 
 #: docs/10.x/encryption.md:block 2 (unordered list)
-msgid "[Using The Encrypter](#using-the-encrypter)"
+msgid "[Using the Encrypter](#using-the-encrypter)"
 msgstr ""
 
 #: docs/10.x/encryption.md:block 4 (header)
@@ -35,11 +35,11 @@ msgid "Before using Laravel's encrypter, you must set the `key` configuration op
 msgstr ""
 
 #: docs/10.x/encryption.md:block 10 (header)
-msgid "Using The Encrypter"
+msgid "Using the Encrypter"
 msgstr ""
 
 #: docs/10.x/encryption.md:block 12 (header)
-msgid "Encrypting A Value"
+msgid "Encrypting a Value"
 msgstr ""
 
 #: docs/10.x/encryption.md:block 13 (paragraph)
@@ -73,7 +73,7 @@ msgid ""
 msgstr ""
 
 #: docs/10.x/encryption.md:block 16 (header)
-msgid "Decrypting A Value"
+msgid "Decrypting a Value"
 msgstr ""
 
 #: docs/10.x/encryption.md:block 17 (paragraph)
@@ -90,6 +90,48 @@ msgid ""
 "} catch (DecryptException $e) {\n"
 "    // ...\n"
 "}\n"
+msgstr ""
+
+#: docs/11.x/encryption.md:block 2 (unordered list)
+msgid "[Gracefully Rotating Encryption Keys](#gracefully-rotating-encryption-keys)"
+msgstr ""
+
+#: docs/11.x/encryption.md:block 10 (header)
+msgid "Gracefully Rotating Encryption Keys"
+msgstr ""
+
+#: docs/11.x/encryption.md:block 11 (paragraph)
+msgid "If you change your application's encryption key, all authenticated user sessions will be logged out of your application. This is because every cookie, including session cookies, are encrypted by Laravel. In addition, it will no longer be possible to decrypt any data that was encrypted with your previous encryption key."
+msgstr ""
+
+#: docs/11.x/encryption.md:block 12 (paragraph)
+msgid "To mitigate this issue, Laravel allows you to list your previous encryption keys in your application's `APP_PREVIOUS_KEYS` environment variable. This variable may contain a comma-delimited list of all of your previous encryption keys:"
+msgstr ""
+
+#: docs/11.x/encryption.md:block 13 (code)
+msgid ""
+"APP_KEY=\"base64:J63qRTDLub5NuZvP+kb8YIorGS6qFYHKVo6u7179stY=\"\n"
+"APP_PREVIOUS_KEYS=\"base64:2nLsGFGzyoae2ax3EF2Lyq/hH6QghBGLIq5uL+Gp8/w=\"\n"
+msgstr ""
+
+#: docs/11.x/encryption.md:block 14 (paragraph)
+msgid "When you set this environment variable, Laravel will always use the \"current\" encryption key when encrypting values. However, when decrypting values, Laravel will first try the current key, and if decryption fails using the current key, Laravel will try all previous keys until one of the keys is able to decrypt the value."
+msgstr ""
+
+#: docs/11.x/encryption.md:block 15 (paragraph)
+msgid "This approach to graceful decryption allows users to keep using your application uninterrupted even if your encryption key is rotated."
+msgstr ""
+
+#: docs/8.x/encryption.md:block 2 (unordered list)
+msgid "[Using The Encrypter](#using-the-encrypter)"
+msgstr ""
+
+#: docs/8.x/encryption.md:block 10 (header)
+msgid "Using The Encrypter"
+msgstr ""
+
+#: docs/8.x/encryption.md:block 12 (header)
+msgid "Encrypting A Value"
 msgstr ""
 
 #: docs/8.x/encryption.md:block 14 (code)
@@ -120,6 +162,10 @@ msgid ""
 "}\n"
 msgstr ""
 
+#: docs/8.x/encryption.md:block 16 (header)
+msgid "Decrypting A Value"
+msgstr ""
+
 #: docs/8.x/encryption.md:block 18 (code)
 msgid ""
 "use Illuminate\\Contracts\\Encryption\\DecryptException;\n"
@@ -129,33 +175,5 @@ msgid ""
 "    $decrypted = Crypt::decryptString($encryptedValue);\n"
 "} catch (DecryptException $e) {\n"
 "    //\n"
-"}\n"
-msgstr ""
-
-#: docs/master/encryption.md:block 14 (code)
-msgid ""
-"<?php\n"
-"\n"
-"namespace App\\Http\\Controllers;\n"
-"\n"
-"use App\\Http\\Controllers\\Controller;\n"
-"use App\\Models\\User;\n"
-"use Illuminate\\Http\\Request;\n"
-"use Illuminate\\Http\\Response;\n"
-"use Illuminate\\Support\\Facades\\Crypt;\n"
-"\n"
-"class DigitalOceanTokenController extends Controller\n"
-"{\n"
-"    /**\n"
-"     * Store a DigitalOcean API token for the user.\n"
-"     */\n"
-"    public function storeSecret(Request $request): Response\n"
-"    {\n"
-"        $request->user()->fill([\n"
-"            'token' => Crypt::encryptString($request->token),\n"
-"        ])->save();\n"
-"\n"
-"        return response()->noContent();\n"
-"    }\n"
 "}\n"
 msgstr ""

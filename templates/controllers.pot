@@ -63,7 +63,7 @@ msgid "[Singleton Resource Controllers](#singleton-resource-controllers)"
 msgstr ""
 
 #: docs/10.x/controllers.md:block 2 (unordered list)
-msgid "[Dependency Injection & Controllers](#dependency-injection-and-controllers)"
+msgid "[Dependency Injection and Controllers](#dependency-injection-and-controllers)"
 msgstr ""
 
 #: docs/10.x/controllers.md:block 4 (header)
@@ -133,7 +133,7 @@ msgid "When an incoming request matches the specified route URI, the `show` meth
 msgstr ""
 
 #: docs/10.x/controllers.md:block 17 (quote)
-msgid "**Note** Controllers are not **required** to extend a base class. However, you will not have access to convenient features such as the `middleware` and `authorize` methods."
+msgid "[!NOTE] Controllers are not **required** to extend a base class. However, you will not have access to convenient features such as the `middleware` and `authorize` methods."
 msgstr ""
 
 #: docs/10.x/controllers.md:block 19 (header)
@@ -182,7 +182,7 @@ msgid "php artisan make:controller ProvisionServer --invokable\n"
 msgstr ""
 
 #: docs/10.x/controllers.md:block 26 (quote)
-msgid "**Note** Controller stubs may be customized using [stub publishing](/docs/{{version}}/artisan#stub-customization)."
+msgid "[!NOTE] Controller stubs may be customized using [stub publishing](/docs/{{version}}/artisan#stub-customization)."
 msgstr ""
 
 #: docs/10.x/controllers.md:block 28 (header)
@@ -275,7 +275,7 @@ msgid ""
 msgstr ""
 
 #: docs/10.x/controllers.md:block 46 (header)
-msgid "Actions Handled By Resource Controller"
+msgid "Actions Handled by Resource Controllers"
 msgstr ""
 
 #: docs/10.x/controllers.md:block 47 (table)
@@ -426,7 +426,7 @@ msgid "Route::resource('photos', PhotoController::class)->withTrashed(['show']);
 msgstr ""
 
 #: docs/10.x/controllers.md:block 59 (header)
-msgid "Specifying The Resource Model"
+msgid "Specifying the Resource Model"
 msgstr ""
 
 #: docs/10.x/controllers.md:block 60 (paragraph)
@@ -725,7 +725,7 @@ msgid ""
 msgstr ""
 
 #: docs/10.x/controllers.md:block 120 (quote)
-msgid "**Note** Remember to keep your controllers focused. If you find yourself routinely needing methods outside of the typical set of resource actions, consider splitting your controller into two, smaller controllers."
+msgid "[!NOTE] Remember to keep your controllers focused. If you find yourself routinely needing methods outside of the typical set of resource actions, consider splitting your controller into two, smaller controllers."
 msgstr ""
 
 #: docs/10.x/controllers.md:block 122 (header)
@@ -861,7 +861,7 @@ msgid "Route::apiSingleton('photos.thumbnail', ProfileController::class)->creata
 msgstr ""
 
 #: docs/10.x/controllers.md:block 146 (header)
-msgid "Dependency Injection & Controllers"
+msgid "Dependency Injection and Controllers"
 msgstr ""
 
 #: docs/10.x/controllers.md:block 148 (header)
@@ -962,6 +962,86 @@ msgid ""
 "}\n"
 msgstr ""
 
+#: docs/11.x/controllers.md:block 17 (quote)
+msgid "[!NOTE] Controllers are not **required** to extend a base class. However, it is sometimes convenient to extend a base controller class that contains methods that should be shared across all of your controllers."
+msgstr ""
+
+#: docs/11.x/controllers.md:block 31 (paragraph)
+msgid "Or, you may find it convenient to specify middleware within your controller class. To do so, your controller should implement the `HasMiddleware` interface, which dictates that the controller should have a static `middleware` method. From this method, you may return an array of middleware that should be applied to the controller's actions:"
+msgstr ""
+
+#: docs/11.x/controllers.md:block 32 (code)
+msgid ""
+"<?php\n"
+"\n"
+"namespace App\\Http\\Controllers;\n"
+"\n"
+"use App\\Http\\Controllers\\Controller;\n"
+"use Illuminate\\Routing\\Controllers\\HasMiddleware;\n"
+"use Illuminate\\Routing\\Controllers\\Middleware;\n"
+"\n"
+"class UserController extends Controller implements HasMiddleware\n"
+"{\n"
+"    /**\n"
+"     * Get the middleware that should be assigned to the controller.\n"
+"     */\n"
+"    public static function middleware(): array\n"
+"    {\n"
+"        return [\n"
+"            'auth',\n"
+"            new Middleware('log', only: ['index']),\n"
+"            new Middleware('subscribed', except: ['store']),\n"
+"        ];\n"
+"    }\n"
+"\n"
+"    // ...\n"
+"}\n"
+msgstr ""
+
+#: docs/11.x/controllers.md:block 33 (paragraph)
+msgid "You may also define controller middleware as closures, which provides a convenient way to define an inline middleware without writing an entire middleware class:"
+msgstr ""
+
+#: docs/11.x/controllers.md:block 34 (code)
+msgid ""
+"use Closure;\n"
+"use Illuminate\\Http\\Request;\n"
+"\n"
+"/**\n"
+" * Get the middleware that should be assigned to the controller.\n"
+" */\n"
+"public static function middleware(): array\n"
+"{\n"
+"    return [\n"
+"        function (Request $request, Closure $next) {\n"
+"            return $next($request);\n"
+"        },\n"
+"    ];\n"
+"}\n"
+msgstr ""
+
+#: docs/11.x/controllers.md:block 112 (paragraph)
+msgid "By default, `Route::resource` will create resource URIs using English verbs and plural rules. If you need to localize the `create` and `edit` action verbs, you may use the `Route::resourceVerbs` method. This may be done at the beginning of the `boot` method within your application's `App\\Providers\\AppServiceProvider`:"
+msgstr ""
+
+#: docs/11.x/controllers.md:block 113 (code)
+msgid ""
+"/**\n"
+" * Bootstrap any application services.\n"
+" */\n"
+"public function boot(): void\n"
+"{\n"
+"    Route::resourceVerbs([\n"
+"        'create' => 'crear',\n"
+"        'edit' => 'editar',\n"
+"    ]);\n"
+"}\n"
+msgstr ""
+
+#: docs/8.x/controllers.md:block 2 (unordered list)
+msgid "[Dependency Injection & Controllers](#dependency-injection-and-controllers)"
+msgstr ""
+
 #: docs/8.x/controllers.md:block 10 (paragraph)
 msgid "Let's take a look at an example of a basic controller. Note that the controller extends the base controller class included with Laravel: `App\\Http\\Controllers\\Controller`:"
 msgstr ""
@@ -1052,6 +1132,14 @@ msgid ""
 "});\n"
 msgstr ""
 
+#: docs/8.x/controllers.md:block 44 (header)
+msgid "Actions Handled By Resource Controller"
+msgstr ""
+
+#: docs/8.x/controllers.md:block 51 (header)
+msgid "Specifying The Resource Model"
+msgstr ""
+
 #: docs/8.x/controllers.md:block 104 (paragraph)
 msgid "By default, `Route::resource` will create resource URIs using English verbs. If you need to localize the `create` and `edit` action verbs, you may use the `Route::resourceVerbs` method. This may be done at the beginning of the `boot` method within your application's `App\\Providers\\RouteServiceProvider`:"
 msgstr ""
@@ -1087,6 +1175,10 @@ msgstr ""
 
 #: docs/8.x/controllers.md:block 112 (quote)
 msgid "{tip} Remember to keep your controllers focused. If you find yourself routinely needing methods outside of the typical set of resource actions, consider splitting your controller into two, smaller controllers."
+msgstr ""
+
+#: docs/8.x/controllers.md:block 114 (header)
+msgid "Dependency Injection & Controllers"
 msgstr ""
 
 #: docs/8.x/controllers.md:block 118 (code)
@@ -1191,6 +1283,10 @@ msgid ""
 "}\n"
 msgstr ""
 
+#: docs/9.x/controllers.md:block 15 (quote)
+msgid "**Note** Controllers are not **required** to extend a base class. However, you will not have access to convenient features such as the `middleware` and `authorize` methods."
+msgstr ""
+
 #: docs/9.x/controllers.md:block 19 (code)
 msgid ""
 "<?php\n"
@@ -1213,72 +1309,10 @@ msgid ""
 "}\n"
 msgstr ""
 
-#: docs/master/controllers.md:block 19 (code)
-msgid ""
-"<?php\n"
-"\n"
-"namespace App\\Http\\Controllers;\n"
-"\n"
-"use App\\Models\\User;\n"
-"use Illuminate\\Http\\Response;\n"
-"\n"
-"class ProvisionServer extends Controller\n"
-"{\n"
-"    /**\n"
-"     * Provision a new web server.\n"
-"     */\n"
-"    public function __invoke(): Response\n"
-"    {\n"
-"        // ...\n"
-"\n"
-"        return response()->noContent();\n"
-"    }\n"
-"}\n"
+#: docs/9.x/controllers.md:block 24 (quote)
+msgid "**Note** Controller stubs may be customized using [stub publishing](/docs/{{version}}/artisan#stub-customization)."
 msgstr ""
 
-#: docs/master/controllers.md:block 152 (code)
-msgid ""
-"<?php\n"
-"\n"
-"namespace App\\Http\\Controllers;\n"
-"\n"
-"use Illuminate\\Http\\Request;\n"
-"use Illuminate\\Http\\Response;\n"
-"\n"
-"class UserController extends Controller\n"
-"{\n"
-"    /**\n"
-"     * Store a new user.\n"
-"     */\n"
-"    public function store(Request $request): Response\n"
-"    {\n"
-"        $name = $request->name;\n"
-"\n"
-"        // ...\n"
-"\n"
-"        return response()->noContent();\n"
-"    }\n"
-"}\n"
-msgstr ""
-
-#: docs/master/controllers.md:block 156 (code)
-msgid ""
-"<?php\n"
-"\n"
-"namespace App\\Http\\Controllers;\n"
-"\n"
-"use Illuminate\\Http\\Request;\n"
-"\n"
-"class UserController extends Controller\n"
-"{\n"
-"    /**\n"
-"     * Update the given user.\n"
-"     */\n"
-"    public function update(Request $request, string $id): Response\n"
-"    {\n"
-"        // ...\n"
-"\n"
-"        return response()->noContent();\n"
-"    }\n"
-"}\n"
+#: docs/9.x/controllers.md:block 118 (quote)
+msgid "**Note** Remember to keep your controllers focused. If you find yourself routinely needing methods outside of the typical set of resource actions, consider splitting your controller into two, smaller controllers."
 msgstr ""

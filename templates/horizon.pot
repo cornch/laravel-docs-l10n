@@ -67,7 +67,7 @@ msgid "Introduction"
 msgstr ""
 
 #: docs/10.x/horizon.md:block 5 (quote)
-msgid "**Note** Before digging into Laravel Horizon, you should familiarize yourself with Laravel's base [queue services](/docs/{{version}}/queues). Horizon augments Laravel's queue with additional features that may be confusing if you are not already familiar with the basic queue features offered by Laravel."
+msgid "[!NOTE] Before digging into Laravel Horizon, you should familiarize yourself with Laravel's base [queue services](/docs/{{version}}/queues). Horizon augments Laravel's queue with additional features that may be confusing if you are not already familiar with the basic queue features offered by Laravel."
 msgstr ""
 
 #: docs/10.x/horizon.md:block 6 (paragraph)
@@ -83,7 +83,7 @@ msgid "Installation"
 msgstr ""
 
 #: docs/10.x/horizon.md:block 11 (quote)
-msgid "**Warning** Laravel Horizon requires that you use [Redis](https://redis.io) to power your queue. Therefore, you should ensure that your queue connection is set to `redis` in your application's `config/queue.php` configuration file."
+msgid "[!WARNING] Laravel Horizon requires that you use [Redis](https://redis.io) to power your queue. Therefore, you should ensure that your queue connection is set to `redis` in your application's `config/queue.php` configuration file."
 msgstr ""
 
 #: docs/10.x/horizon.md:block 12 (paragraph)
@@ -111,7 +111,7 @@ msgid "After publishing Horizon's assets, its primary configuration file will be
 msgstr ""
 
 #: docs/10.x/horizon.md:block 19 (quote)
-msgid "**Warning** Horizon uses a Redis connection named `horizon` internally. This Redis connection name is reserved and should not be assigned to another Redis connection in the `database.php` configuration file or as the value of the `use` option in the `horizon.php` configuration file."
+msgid "[!WARNING] Horizon uses a Redis connection named `horizon` internally. This Redis connection name is reserved and should not be assigned to another Redis connection in the `database.php` configuration file or as the value of the `use` option in the `horizon.php` configuration file."
 msgstr ""
 
 #: docs/10.x/horizon.md:block 21 (header)
@@ -146,7 +146,7 @@ msgid "When you start Horizon, it will use the worker process configuration opti
 msgstr ""
 
 #: docs/10.x/horizon.md:block 25 (quote)
-msgid "**Warning** You should ensure that the `environments` portion of your `horizon` configuration file contains an entry for each [environment](/docs/{{version}}/configuration#environment-configuration) on which you plan to run Horizon."
+msgid "[!WARNING] You should ensure that the `environments` portion of your `horizon` configuration file contains an entry for each [environment](/docs/{{version}}/configuration#environment-configuration) on which you plan to run Horizon."
 msgstr ""
 
 #: docs/10.x/horizon.md:block 27 (header)
@@ -162,34 +162,54 @@ msgid "You may add additional supervisors to a given environment if you would li
 msgstr ""
 
 #: docs/10.x/horizon.md:block 31 (header)
-msgid "Default Values"
+msgid "Maintenance Mode"
 msgstr ""
 
 #: docs/10.x/horizon.md:block 32 (paragraph)
+msgid "While your application is in [maintainance mode](/docs/{{version}}/configuration#maintenance-mode), queued jobs will not be processed by Horizon unless the supervisor's `force` option is defined as `true` within the Horizon configuration file:"
+msgstr ""
+
+#: docs/10.x/horizon.md:block 33 (code)
+msgid ""
+"'environments' => [\n"
+"    'production' => [\n"
+"        'supervisor-1' => [\n"
+"            // ...\n"
+"            'force' => true,\n"
+"        ],\n"
+"    ],\n"
+"],\n"
+msgstr ""
+
+#: docs/10.x/horizon.md:block 35 (header)
+msgid "Default Values"
+msgstr ""
+
+#: docs/10.x/horizon.md:block 36 (paragraph)
 msgid "Within Horizon's default configuration file, you will notice a `defaults` configuration option. This configuration option specifies the default values for your application's [supervisors](#supervisors). The supervisor's default configuration values will be merged into the supervisor's configuration for each environment, allowing you to avoid unnecessary repetition when defining your supervisors."
 msgstr ""
 
-#: docs/10.x/horizon.md:block 34 (header)
+#: docs/10.x/horizon.md:block 38 (header)
 msgid "Balancing Strategies"
 msgstr ""
 
-#: docs/10.x/horizon.md:block 35 (paragraph)
+#: docs/10.x/horizon.md:block 39 (paragraph)
 msgid "Unlike Laravel's default queue system, Horizon allows you to choose from three worker balancing strategies: `simple`, `auto`, and `false`. The `simple` strategy splits incoming jobs evenly between worker processes:"
 msgstr ""
 
-#: docs/10.x/horizon.md:block 36 (code)
+#: docs/10.x/horizon.md:block 40 (code)
 msgid "'balance' => 'simple',\n"
 msgstr ""
 
-#: docs/10.x/horizon.md:block 37 (paragraph)
+#: docs/10.x/horizon.md:block 41 (paragraph)
 msgid "The `auto` strategy, which is the configuration file's default, adjusts the number of worker processes per queue based on the current workload of the queue. For example, if your `notifications` queue has 1,000 pending jobs while your `render` queue is empty, Horizon will allocate more workers to your `notifications` queue until the queue is empty."
 msgstr ""
 
-#: docs/10.x/horizon.md:block 38 (paragraph)
+#: docs/10.x/horizon.md:block 42 (paragraph)
 msgid "When using the `auto` strategy, you may define the `minProcesses` and `maxProcesses` configuration options to control the minimum and the maximum number of worker processes Horizon should scale up and down to:"
 msgstr ""
 
-#: docs/10.x/horizon.md:block 39 (code)
+#: docs/10.x/horizon.md:block 43 (code)
 msgid ""
 "'environments' => [\n"
 "    'production' => [\n"
@@ -208,27 +228,27 @@ msgid ""
 "],\n"
 msgstr ""
 
-#: docs/10.x/horizon.md:block 40 (paragraph)
+#: docs/10.x/horizon.md:block 44 (paragraph)
 msgid "The `autoScalingStrategy` configuration value determines if Horizon will assign more worker processes to queues based on the total amount of time it will take to clear the queue (`time` strategy) or by the total number of jobs on the queue (`size` strategy)."
 msgstr ""
 
-#: docs/10.x/horizon.md:block 41 (paragraph)
+#: docs/10.x/horizon.md:block 45 (paragraph)
 msgid "The `balanceMaxShift` and `balanceCooldown` configuration values determine how quickly Horizon will scale to meet worker demand. In the example above, a maximum of one new process will be created or destroyed every three seconds. You are free to tweak these values as necessary based on your application's needs."
 msgstr ""
 
-#: docs/10.x/horizon.md:block 42 (paragraph)
+#: docs/10.x/horizon.md:block 46 (paragraph)
 msgid "When the `balance` option is set to `false`, the default Laravel behavior will be used, wherein queues are processed in the order they are listed in your configuration."
 msgstr ""
 
-#: docs/10.x/horizon.md:block 44 (header)
+#: docs/10.x/horizon.md:block 48 (header)
 msgid "Dashboard Authorization"
 msgstr ""
 
-#: docs/10.x/horizon.md:block 45 (paragraph)
-msgid "Horizon exposes a dashboard at the `/horizon` URI. By default, you will only be able to access this dashboard in the `local` environment. However, within your `app/Providers/HorizonServiceProvider.php` file, there is an [authorization gate](/docs/{{version}}/authorization#gates) definition. This authorization gate controls access to Horizon in **non-local** environments. You are free to modify this gate as needed to restrict access to your Horizon installation:"
+#: docs/10.x/horizon.md:block 49 (paragraph)
+msgid "The Horizon dashboard may be accessed via the `/horizon` route. By default, you will only be able to access this dashboard in the `local` environment. However, within your `app/Providers/HorizonServiceProvider.php` file, there is an [authorization gate](/docs/{{version}}/authorization#gates) definition. This authorization gate controls access to Horizon in **non-local** environments. You are free to modify this gate as needed to restrict access to your Horizon installation:"
 msgstr ""
 
-#: docs/10.x/horizon.md:block 46 (code)
+#: docs/10.x/horizon.md:block 50 (code)
 msgid ""
 "/**\n"
 " * Register the Horizon gate.\n"
@@ -245,34 +265,34 @@ msgid ""
 "}\n"
 msgstr ""
 
-#: docs/10.x/horizon.md:block 48 (header)
+#: docs/10.x/horizon.md:block 52 (header)
 msgid "Alternative Authentication Strategies"
 msgstr ""
 
-#: docs/10.x/horizon.md:block 49 (paragraph)
+#: docs/10.x/horizon.md:block 53 (paragraph)
 msgid "Remember that Laravel automatically injects the authenticated user into the gate closure. If your application is providing Horizon security via another method, such as IP restrictions, then your Horizon users may not need to \"login\". Therefore, you will need to change `function (User $user)` closure signature above to `function (User $user = null)` in order to force Laravel to not require authentication."
 msgstr ""
 
-#: docs/10.x/horizon.md:block 51 (header)
+#: docs/10.x/horizon.md:block 55 (header)
 msgid "Silenced Jobs"
 msgstr ""
 
-#: docs/10.x/horizon.md:block 52 (paragraph)
+#: docs/10.x/horizon.md:block 56 (paragraph)
 msgid "Sometimes, you may not be interested in viewing certain jobs dispatched by your application or third-party packages. Instead of these jobs taking up space in your \"Completed Jobs\" list, you can silence them. To get started, add the job's class name to the `silenced` configuration option in your application's `horizon` configuration file:"
 msgstr ""
 
-#: docs/10.x/horizon.md:block 53 (code)
+#: docs/10.x/horizon.md:block 57 (code)
 msgid ""
 "'silenced' => [\n"
 "    App\\Jobs\\ProcessPodcast::class,\n"
 "],\n"
 msgstr ""
 
-#: docs/10.x/horizon.md:block 54 (paragraph)
+#: docs/10.x/horizon.md:block 58 (paragraph)
 msgid "Alternatively, the job you wish to silence can implement the `Laravel\\Horizon\\Contracts\\Silenced` interface. If a job implements this interface, it will automatically be silenced, even if it is not present in the `silenced` configuration array:"
 msgstr ""
 
-#: docs/10.x/horizon.md:block 55 (code)
+#: docs/10.x/horizon.md:block 59 (code)
 msgid ""
 "use Laravel\\Horizon\\Contracts\\Silenced;\n"
 "\n"
@@ -284,23 +304,23 @@ msgid ""
 "}\n"
 msgstr ""
 
-#: docs/10.x/horizon.md:block 57 (header)
+#: docs/10.x/horizon.md:block 61 (header)
 msgid "Upgrading Horizon"
 msgstr ""
 
-#: docs/10.x/horizon.md:block 58 (paragraph)
+#: docs/10.x/horizon.md:block 62 (paragraph)
 msgid "When upgrading to a new major version of Horizon, it's important that you carefully review [the upgrade guide](https://github.com/laravel/horizon/blob/master/UPGRADE.md). In addition, when upgrading to any new Horizon version, you should re-publish Horizon's assets:"
 msgstr ""
 
-#: docs/10.x/horizon.md:block 59 (code)
+#: docs/10.x/horizon.md:block 63 (code)
 msgid "php artisan horizon:publish\n"
 msgstr ""
 
-#: docs/10.x/horizon.md:block 60 (paragraph)
+#: docs/10.x/horizon.md:block 64 (paragraph)
 msgid "To keep the assets up-to-date and avoid issues in future updates, you may add the `vendor:publish --tag=laravel-assets` command to the `post-update-cmd` scripts in your application's `composer.json` file:"
 msgstr ""
 
-#: docs/10.x/horizon.md:block 61 (code)
+#: docs/10.x/horizon.md:block 65 (code)
 msgid ""
 "{\n"
 "    \"scripts\": {\n"
@@ -311,93 +331,93 @@ msgid ""
 "}\n"
 msgstr ""
 
-#: docs/10.x/horizon.md:block 63 (header)
+#: docs/10.x/horizon.md:block 67 (header)
 msgid "Running Horizon"
 msgstr ""
 
-#: docs/10.x/horizon.md:block 64 (paragraph)
+#: docs/10.x/horizon.md:block 68 (paragraph)
 msgid "Once you have configured your supervisors and workers in your application's `config/horizon.php` configuration file, you may start Horizon using the `horizon` Artisan command. This single command will start all of the configured worker processes for the current environment:"
 msgstr ""
 
-#: docs/10.x/horizon.md:block 65 (code)
+#: docs/10.x/horizon.md:block 69 (code)
 msgid "php artisan horizon\n"
 msgstr ""
 
-#: docs/10.x/horizon.md:block 66 (paragraph)
+#: docs/10.x/horizon.md:block 70 (paragraph)
 msgid "You may pause the Horizon process and instruct it to continue processing jobs using the `horizon:pause` and `horizon:continue` Artisan commands:"
 msgstr ""
 
-#: docs/10.x/horizon.md:block 67 (code)
+#: docs/10.x/horizon.md:block 71 (code)
 msgid ""
 "php artisan horizon:pause\n"
 "\n"
 "php artisan horizon:continue\n"
 msgstr ""
 
-#: docs/10.x/horizon.md:block 68 (paragraph)
+#: docs/10.x/horizon.md:block 72 (paragraph)
 msgid "You may also pause and continue specific Horizon [supervisors](#supervisors) using the `horizon:pause-supervisor` and `horizon:continue-supervisor` Artisan commands:"
 msgstr ""
 
-#: docs/10.x/horizon.md:block 69 (code)
+#: docs/10.x/horizon.md:block 73 (code)
 msgid ""
 "php artisan horizon:pause-supervisor supervisor-1\n"
 "\n"
 "php artisan horizon:continue-supervisor supervisor-1\n"
 msgstr ""
 
-#: docs/10.x/horizon.md:block 70 (paragraph)
+#: docs/10.x/horizon.md:block 74 (paragraph)
 msgid "You may check the current status of the Horizon process using the `horizon:status` Artisan command:"
 msgstr ""
 
-#: docs/10.x/horizon.md:block 71 (code)
+#: docs/10.x/horizon.md:block 75 (code)
 msgid "php artisan horizon:status\n"
 msgstr ""
 
-#: docs/10.x/horizon.md:block 72 (paragraph)
+#: docs/10.x/horizon.md:block 76 (paragraph)
 msgid "You may gracefully terminate the Horizon process using the `horizon:terminate` Artisan command. Any jobs that are currently being processed by will be completed and then Horizon will stop executing:"
 msgstr ""
 
-#: docs/10.x/horizon.md:block 73 (code)
+#: docs/10.x/horizon.md:block 77 (code)
 msgid "php artisan horizon:terminate\n"
 msgstr ""
 
-#: docs/10.x/horizon.md:block 75 (header)
+#: docs/10.x/horizon.md:block 79 (header)
 msgid "Deploying Horizon"
 msgstr ""
 
-#: docs/10.x/horizon.md:block 76 (paragraph)
+#: docs/10.x/horizon.md:block 80 (paragraph)
 msgid "When you're ready to deploy Horizon to your application's actual server, you should configure a process monitor to monitor the `php artisan horizon` command and restart it if it exits unexpectedly. Don't worry, we'll discuss how to install a process monitor below."
 msgstr ""
 
-#: docs/10.x/horizon.md:block 77 (paragraph)
+#: docs/10.x/horizon.md:block 81 (paragraph)
 msgid "During your application's deployment process, you should instruct the Horizon process to terminate so that it will be restarted by your process monitor and receive your code changes:"
 msgstr ""
 
-#: docs/10.x/horizon.md:block 80 (header)
+#: docs/10.x/horizon.md:block 84 (header)
 msgid "Installing Supervisor"
 msgstr ""
 
-#: docs/10.x/horizon.md:block 81 (paragraph)
+#: docs/10.x/horizon.md:block 85 (paragraph)
 msgid "Supervisor is a process monitor for the Linux operating system and will automatically restart your `horizon` process if it stops executing. To install Supervisor on Ubuntu, you may use the following command. If you are not using Ubuntu, you can likely install Supervisor using your operating system's package manager:"
 msgstr ""
 
-#: docs/10.x/horizon.md:block 82 (code)
+#: docs/10.x/horizon.md:block 86 (code)
 msgid "sudo apt-get install supervisor\n"
 msgstr ""
 
-#: docs/10.x/horizon.md:block 83 (quote)
-msgid "**Note** If configuring Supervisor yourself sounds overwhelming, consider using [Laravel Forge](https://forge.laravel.com), which will automatically install and configure Supervisor for your Laravel projects."
+#: docs/10.x/horizon.md:block 87 (quote)
+msgid "[!NOTE] If configuring Supervisor yourself sounds overwhelming, consider using [Laravel Forge](https://forge.laravel.com), which will automatically install and configure Supervisor for your Laravel projects."
 msgstr ""
 
-#: docs/10.x/horizon.md:block 85 (header)
+#: docs/10.x/horizon.md:block 89 (header)
 msgid "Supervisor Configuration"
 msgstr ""
 
-#: docs/10.x/horizon.md:block 86 (paragraph)
+#: docs/10.x/horizon.md:block 90 (paragraph)
 msgid "Supervisor configuration files are typically stored within your server's `/etc/supervisor/conf.d` directory. Within this directory, you may create any number of configuration files that instruct supervisor how your processes should be monitored. For example, let's create a `horizon.conf` file that starts and monitors a `horizon` process:"
 msgstr ""
 
-#: docs/10.x/horizon.md:block 87 (code)
+#: docs/10.x/horizon.md:block 91 (code)
 msgid ""
 "[program:horizon]\n"
 "process_name=%(program_name)s\n"
@@ -410,23 +430,23 @@ msgid ""
 "stopwaitsecs=3600\n"
 msgstr ""
 
-#: docs/10.x/horizon.md:block 88 (paragraph)
+#: docs/10.x/horizon.md:block 92 (paragraph)
 msgid "When defining your Supervisor configuration, you should ensure that the value of `stopwaitsecs` is greater than the number of seconds consumed by your longest running job. Otherwise, Supervisor may kill the job before it is finished processing."
 msgstr ""
 
-#: docs/10.x/horizon.md:block 89 (quote)
-msgid "**Warning** While the examples above are valid for Ubuntu based servers, the location and file extension expected of Supervisor configuration files may vary between other server operating systems. Please consult your server's documentation for more information."
+#: docs/10.x/horizon.md:block 93 (quote)
+msgid "[!WARNING] While the examples above are valid for Ubuntu based servers, the location and file extension expected of Supervisor configuration files may vary between other server operating systems. Please consult your server's documentation for more information."
 msgstr ""
 
-#: docs/10.x/horizon.md:block 91 (header)
+#: docs/10.x/horizon.md:block 95 (header)
 msgid "Starting Supervisor"
 msgstr ""
 
-#: docs/10.x/horizon.md:block 92 (paragraph)
+#: docs/10.x/horizon.md:block 96 (paragraph)
 msgid "Once the configuration file has been created, you may update the Supervisor configuration and start the monitored processes using the following commands:"
 msgstr ""
 
-#: docs/10.x/horizon.md:block 93 (code)
+#: docs/10.x/horizon.md:block 97 (code)
 msgid ""
 "sudo supervisorctl reread\n"
 "\n"
@@ -435,19 +455,19 @@ msgid ""
 "sudo supervisorctl start horizon\n"
 msgstr ""
 
-#: docs/10.x/horizon.md:block 94 (quote)
-msgid "**Note** For more information on running Supervisor, consult the [Supervisor documentation](http://supervisord.org/index.html)."
+#: docs/10.x/horizon.md:block 98 (quote)
+msgid "[!NOTE] For more information on running Supervisor, consult the [Supervisor documentation](http://supervisord.org/index.html)."
 msgstr ""
 
-#: docs/10.x/horizon.md:block 96 (header)
+#: docs/10.x/horizon.md:block 100 (header)
 msgid "Tags"
 msgstr ""
 
-#: docs/10.x/horizon.md:block 97 (paragraph)
+#: docs/10.x/horizon.md:block 101 (paragraph)
 msgid "Horizon allows you to assign “tags” to jobs, including mailables, broadcast events, notifications, and queued event listeners. In fact, Horizon will intelligently and automatically tag most jobs depending on the Eloquent models that are attached to the job. For example, take a look at the following job:"
 msgstr ""
 
-#: docs/10.x/horizon.md:block 98 (code)
+#: docs/10.x/horizon.md:block 102 (code)
 msgid ""
 "<?php\n"
 "\n"
@@ -481,11 +501,11 @@ msgid ""
 "}\n"
 msgstr ""
 
-#: docs/10.x/horizon.md:block 99 (paragraph)
+#: docs/10.x/horizon.md:block 103 (paragraph)
 msgid "If this job is queued with an `App\\Models\\Video` instance that has an `id` attribute of `1`, it will automatically receive the tag `App\\Models\\Video:1`. This is because Horizon will search the job's properties for any Eloquent models. If Eloquent models are found, Horizon will intelligently tag the job using the model's class name and primary key:"
 msgstr ""
 
-#: docs/10.x/horizon.md:block 100 (code)
+#: docs/10.x/horizon.md:block 104 (code)
 msgid ""
 "use App\\Jobs\\RenderVideo;\n"
 "use App\\Models\\Video;\n"
@@ -495,15 +515,15 @@ msgid ""
 "RenderVideo::dispatch($video);\n"
 msgstr ""
 
-#: docs/10.x/horizon.md:block 102 (header)
+#: docs/10.x/horizon.md:block 106 (header)
 msgid "Manually Tagging Jobs"
 msgstr ""
 
-#: docs/10.x/horizon.md:block 103 (paragraph)
+#: docs/10.x/horizon.md:block 107 (paragraph)
 msgid "If you would like to manually define the tags for one of your queueable objects, you may define a `tags` method on the class:"
 msgstr ""
 
-#: docs/10.x/horizon.md:block 104 (code)
+#: docs/10.x/horizon.md:block 108 (code)
 msgid ""
 "class RenderVideo implements ShouldQueue\n"
 "{\n"
@@ -519,19 +539,43 @@ msgid ""
 "}\n"
 msgstr ""
 
-#: docs/10.x/horizon.md:block 106 (header)
+#: docs/10.x/horizon.md:block 110 (header)
+msgid "Manually Tagging Event Listeners"
+msgstr ""
+
+#: docs/10.x/horizon.md:block 111 (paragraph)
+msgid "When retrieving the tags for a queued event listener, Horizon will automatically pass the event instance to the `tags` method, allowing you to add event data to the tags:"
+msgstr ""
+
+#: docs/10.x/horizon.md:block 112 (code)
+msgid ""
+"class SendRenderNotifications implements ShouldQueue\n"
+"{\n"
+"    /**\n"
+"     * Get the tags that should be assigned to the listener.\n"
+"     *\n"
+"     * @return array<int, string>\n"
+"     */\n"
+"    public function tags(VideoRendered $event): array\n"
+"    {\n"
+"        return ['video:'.$event->video->id];\n"
+"    }\n"
+"}\n"
+msgstr ""
+
+#: docs/10.x/horizon.md:block 114 (header)
 msgid "Notifications"
 msgstr ""
 
-#: docs/10.x/horizon.md:block 107 (quote)
-msgid "**Warning** When configuring Horizon to send Slack or SMS notifications, you should review the [prerequisites for the relevant notification channel](/docs/{{version}}/notifications)."
+#: docs/10.x/horizon.md:block 115 (quote)
+msgid "[!WARNING] When configuring Horizon to send Slack or SMS notifications, you should review the [prerequisites for the relevant notification channel](/docs/{{version}}/notifications)."
 msgstr ""
 
-#: docs/10.x/horizon.md:block 108 (paragraph)
+#: docs/10.x/horizon.md:block 116 (paragraph)
 msgid "If you would like to be notified when one of your queues has a long wait time, you may use the `Horizon::routeMailNotificationsTo`, `Horizon::routeSlackNotificationsTo`, and `Horizon::routeSmsNotificationsTo` methods. You may call these methods from the `boot` method of your application's `App\\Providers\\HorizonServiceProvider`:"
 msgstr ""
 
-#: docs/10.x/horizon.md:block 109 (code)
+#: docs/10.x/horizon.md:block 117 (code)
 msgid ""
 "/**\n"
 " * Bootstrap any application services.\n"
@@ -546,15 +590,15 @@ msgid ""
 "}\n"
 msgstr ""
 
-#: docs/10.x/horizon.md:block 111 (header)
+#: docs/10.x/horizon.md:block 119 (header)
 msgid "Configuring Notification Wait Time Thresholds"
 msgstr ""
 
-#: docs/10.x/horizon.md:block 112 (paragraph)
+#: docs/10.x/horizon.md:block 120 (paragraph)
 msgid "You may configure how many seconds are considered a \"long wait\" within your application's `config/horizon.php` configuration file. The `waits` configuration option within this file allows you to control the long wait threshold for each connection / queue combination. Any undefined connection / queue combinations will default to a long wait threshold of 60 seconds:"
 msgstr ""
 
-#: docs/10.x/horizon.md:block 113 (code)
+#: docs/10.x/horizon.md:block 121 (code)
 msgid ""
 "'waits' => [\n"
 "    'redis:critical' => 30,\n"
@@ -563,15 +607,15 @@ msgid ""
 "],\n"
 msgstr ""
 
-#: docs/10.x/horizon.md:block 115 (header)
+#: docs/10.x/horizon.md:block 123 (header)
 msgid "Metrics"
 msgstr ""
 
-#: docs/10.x/horizon.md:block 116 (paragraph)
+#: docs/10.x/horizon.md:block 124 (paragraph)
 msgid "Horizon includes a metrics dashboard which provides information regarding your job and queue wait times and throughput. In order to populate this dashboard, you should configure Horizon's `snapshot` Artisan command to run every five minutes via your application's [scheduler](/docs/{{version}}/scheduling):"
 msgstr ""
 
-#: docs/10.x/horizon.md:block 117 (code)
+#: docs/10.x/horizon.md:block 125 (code)
 msgid ""
 "/**\n"
 " * Define the application's command schedule.\n"
@@ -582,36 +626,72 @@ msgid ""
 "}\n"
 msgstr ""
 
-#: docs/10.x/horizon.md:block 119 (header)
+#: docs/10.x/horizon.md:block 127 (header)
 msgid "Deleting Failed Jobs"
 msgstr ""
 
-#: docs/10.x/horizon.md:block 120 (paragraph)
+#: docs/10.x/horizon.md:block 128 (paragraph)
 msgid "If you would like to delete a failed job, you may use the `horizon:forget` command. The `horizon:forget` command accepts the ID or UUID of the failed job as its only argument:"
 msgstr ""
 
-#: docs/10.x/horizon.md:block 121 (code)
+#: docs/10.x/horizon.md:block 129 (code)
 msgid "php artisan horizon:forget 5\n"
 msgstr ""
 
-#: docs/10.x/horizon.md:block 123 (header)
+#: docs/10.x/horizon.md:block 131 (header)
 msgid "Clearing Jobs From Queues"
 msgstr ""
 
-#: docs/10.x/horizon.md:block 124 (paragraph)
+#: docs/10.x/horizon.md:block 132 (paragraph)
 msgid "If you would like to delete all jobs from your application's default queue, you may do so using the `horizon:clear` Artisan command:"
 msgstr ""
 
-#: docs/10.x/horizon.md:block 125 (code)
+#: docs/10.x/horizon.md:block 133 (code)
 msgid "php artisan horizon:clear\n"
 msgstr ""
 
-#: docs/10.x/horizon.md:block 126 (paragraph)
+#: docs/10.x/horizon.md:block 134 (paragraph)
 msgid "You may provide the `queue` option to delete jobs from a specific queue:"
 msgstr ""
 
-#: docs/10.x/horizon.md:block 127 (code)
+#: docs/10.x/horizon.md:block 135 (code)
 msgid "php artisan horizon:clear --queue=emails\n"
+msgstr ""
+
+#: docs/11.x/horizon.md:block 24 (paragraph)
+msgid "You may also define a wildcard environment (`*`) which will be used when no other matching environment is found:"
+msgstr ""
+
+#: docs/11.x/horizon.md:block 25 (code)
+msgid ""
+"'environments' => [\n"
+"    // ...\n"
+"\n"
+"    '*' => [\n"
+"        'supervisor-1' => [\n"
+"            'maxProcesses' => 3,\n"
+"        ],\n"
+"    ],\n"
+"],\n"
+msgstr ""
+
+#: docs/11.x/horizon.md:block 34 (paragraph)
+msgid "While your application is in [maintenance mode](/docs/{{version}}/configuration#maintenance-mode), queued jobs will not be processed by Horizon unless the supervisor's `force` option is defined as `true` within the Horizon configuration file:"
+msgstr ""
+
+#: docs/11.x/horizon.md:block 64 (paragraph)
+msgid "When upgrading to a new major version of Horizon, it's important that you carefully review [the upgrade guide](https://github.com/laravel/horizon/blob/master/UPGRADE.md)."
+msgstr ""
+
+#: docs/11.x/horizon.md:block 123 (paragraph)
+msgid "Horizon includes a metrics dashboard which provides information regarding your job and queue wait times and throughput. In order to populate this dashboard, you should configure Horizon's `snapshot` Artisan command to run every five minutes in your application's `routes/console.php` file:"
+msgstr ""
+
+#: docs/11.x/horizon.md:block 124 (code)
+msgid ""
+"use Illuminate\\Support\\Facades\\Schedule;\n"
+"\n"
+"Schedule::command('horizon:snapshot')->everyFiveMinutes();\n"
 msgstr ""
 
 #: docs/8.x/horizon.md:block 5 (quote)
@@ -666,6 +746,10 @@ msgstr ""
 
 #: docs/8.x/horizon.md:block 41 (paragraph)
 msgid "When the `balance` option is set to `false`, the default Laravel behavior will be used, which processes queues in the order they are listed in your configuration."
+msgstr ""
+
+#: docs/8.x/horizon.md:block 44 (paragraph)
+msgid "Horizon exposes a dashboard at the `/horizon` URI. By default, you will only be able to access this dashboard in the `local` environment. However, within your `app/Providers/HorizonServiceProvider.php` file, there is an [authorization gate](/docs/{{version}}/authorization#gates) definition. This authorization gate controls access to Horizon in **non-local** environments. You are free to modify this gate as needed to restrict access to your Horizon installation:"
 msgstr ""
 
 #: docs/8.x/horizon.md:block 45 (code)
@@ -826,4 +910,36 @@ msgid ""
 "{\n"
 "    $schedule->command('horizon:snapshot')->everyFiveMinutes();\n"
 "}\n"
+msgstr ""
+
+#: docs/9.x/horizon.md:block 5 (quote)
+msgid "**Note** Before digging into Laravel Horizon, you should familiarize yourself with Laravel's base [queue services](/docs/{{version}}/queues). Horizon augments Laravel's queue with additional features that may be confusing if you are not already familiar with the basic queue features offered by Laravel."
+msgstr ""
+
+#: docs/9.x/horizon.md:block 11 (quote)
+msgid "**Warning** Laravel Horizon requires that you use [Redis](https://redis.io) to power your queue. Therefore, you should ensure that your queue connection is set to `redis` in your application's `config/queue.php` configuration file."
+msgstr ""
+
+#: docs/9.x/horizon.md:block 19 (quote)
+msgid "**Warning** Horizon uses a Redis connection named `horizon` internally. This Redis connection name is reserved and should not be assigned to another Redis connection in the `database.php` configuration file or as the value of the `use` option in the `horizon.php` configuration file."
+msgstr ""
+
+#: docs/9.x/horizon.md:block 25 (quote)
+msgid "**Warning** You should ensure that the `environments` portion of your `horizon` configuration file contains an entry for each [environment](/docs/{{version}}/configuration#environment-configuration) on which you plan to run Horizon."
+msgstr ""
+
+#: docs/9.x/horizon.md:block 82 (quote)
+msgid "**Note** If configuring Supervisor yourself sounds overwhelming, consider using [Laravel Forge](https://forge.laravel.com), which will automatically install and configure Supervisor for your Laravel projects."
+msgstr ""
+
+#: docs/9.x/horizon.md:block 88 (quote)
+msgid "**Warning** While the examples above are valid for Ubuntu based servers, the location and file extension expected of Supervisor configuration files may vary between other server operating systems. Please consult your server's documentation for more information."
+msgstr ""
+
+#: docs/9.x/horizon.md:block 93 (quote)
+msgid "**Note** For more information on running Supervisor, consult the [Supervisor documentation](http://supervisord.org/index.html)."
+msgstr ""
+
+#: docs/9.x/horizon.md:block 106 (quote)
+msgid "**Warning** When configuring Horizon to send Slack or SMS notifications, you should review the [prerequisites for the relevant notification channel](/docs/{{version}}/notifications)."
 msgstr ""

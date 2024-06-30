@@ -23,7 +23,7 @@ msgid "[Global Middleware](#global-middleware)"
 msgstr ""
 
 #: docs/10.x/middleware.md:block 2 (unordered list)
-msgid "[Assigning Middleware To Routes](#assigning-middleware-to-routes)"
+msgid "[Assigning Middleware to Routes](#assigning-middleware-to-routes)"
 msgstr ""
 
 #: docs/10.x/middleware.md:block 2 (unordered list)
@@ -107,11 +107,11 @@ msgid "It's best to envision middleware as a series of \"layers\" HTTP requests 
 msgstr ""
 
 #: docs/10.x/middleware.md:block 15 (quote)
-msgid "**Note** All middleware are resolved via the [service container](/docs/{{version}}/container), so you may type-hint any dependencies you need within a middleware's constructor."
+msgid "[!NOTE] All middleware are resolved via the [service container](/docs/{{version}}/container), so you may type-hint any dependencies you need within a middleware's constructor."
 msgstr ""
 
 #: docs/10.x/middleware.md:block 17 (header)
-msgid "Middleware & Responses"
+msgid "Middleware and Responses"
 msgstr ""
 
 #: docs/10.x/middleware.md:block 18 (paragraph)
@@ -179,7 +179,7 @@ msgid "If you want a middleware to run during every HTTP request to your applica
 msgstr ""
 
 #: docs/10.x/middleware.md:block 28 (header)
-msgid "Assigning Middleware To Routes"
+msgid "Assigning Middleware to Routes"
 msgstr ""
 
 #: docs/10.x/middleware.md:block 29 (paragraph)
@@ -332,7 +332,7 @@ msgid ""
 msgstr ""
 
 #: docs/10.x/middleware.md:block 51 (quote)
-msgid "**Note** Out of the box, the `web` and `api` middleware groups are automatically applied to your application's corresponding `routes/web.php` and `routes/api.php` files by the `App\\Providers\\RouteServiceProvider`."
+msgid "[!NOTE] Out of the box, the `web` and `api` middleware groups are automatically applied to your application's corresponding `routes/web.php` and `routes/api.php` files by the `App\\Providers\\RouteServiceProvider`."
 msgstr ""
 
 #: docs/10.x/middleware.md:block 53 (header)
@@ -355,6 +355,7 @@ msgid ""
 "protected $middlewarePriority = [\n"
 "    \\Illuminate\\Foundation\\Http\\Middleware\\HandlePrecognitiveRequests::class,\n"
 "    \\Illuminate\\Cookie\\Middleware\\EncryptCookies::class,\n"
+"    \\Illuminate\\Cookie\\Middleware\\AddQueuedCookiesToResponse::class,\n"
 "    \\Illuminate\\Session\\Middleware\\StartSession::class,\n"
 "    \\Illuminate\\View\\Middleware\\ShareErrorsFromSession::class,\n"
 "    \\Illuminate\\Contracts\\Auth\\Middleware\\AuthenticatesRequests::class,\n"
@@ -408,7 +409,7 @@ msgid ""
 msgstr ""
 
 #: docs/10.x/middleware.md:block 61 (paragraph)
-msgid "Middleware parameters may be specified when defining the route by separating the middleware name and parameters with a `:`. Multiple parameters should be delimited by commas:"
+msgid "Middleware parameters may be specified when defining the route by separating the middleware name and parameters with a `:`:"
 msgstr ""
 
 #: docs/10.x/middleware.md:block 62 (code)
@@ -418,15 +419,26 @@ msgid ""
 "})->middleware('role:editor');\n"
 msgstr ""
 
-#: docs/10.x/middleware.md:block 64 (header)
+#: docs/10.x/middleware.md:block 63 (paragraph)
+msgid "Multiple parameters may be delimited by commas:"
+msgstr ""
+
+#: docs/10.x/middleware.md:block 64 (code)
+msgid ""
+"Route::put('/post/{id}', function (string $id) {\n"
+"    // ...\n"
+"})->middleware('role:editor,publisher');\n"
+msgstr ""
+
+#: docs/10.x/middleware.md:block 66 (header)
 msgid "Terminable Middleware"
 msgstr ""
 
-#: docs/10.x/middleware.md:block 65 (paragraph)
+#: docs/10.x/middleware.md:block 67 (paragraph)
 msgid "Sometimes a middleware may need to do some work after the HTTP response has been sent to the browser. If you define a `terminate` method on your middleware and your web server is using FastCGI, the `terminate` method will automatically be called after the response is sent to the browser:"
 msgstr ""
 
-#: docs/10.x/middleware.md:block 66 (code)
+#: docs/10.x/middleware.md:block 68 (code)
 msgid ""
 "<?php\n"
 "\n"
@@ -458,15 +470,15 @@ msgid ""
 "}\n"
 msgstr ""
 
-#: docs/10.x/middleware.md:block 67 (paragraph)
+#: docs/10.x/middleware.md:block 69 (paragraph)
 msgid "The `terminate` method should receive both the request and the response. Once you have defined a terminable middleware, you should add it to the list of routes or global middleware in the `app/Http/Kernel.php` file."
 msgstr ""
 
-#: docs/10.x/middleware.md:block 68 (paragraph)
+#: docs/10.x/middleware.md:block 70 (paragraph)
 msgid "When calling the `terminate` method on your middleware, Laravel will resolve a fresh instance of the middleware from the [service container](/docs/{{version}}/container). If you would like to use the same middleware instance when the `handle` and `terminate` methods are called, register the middleware with the container using the container's `singleton` method. Typically this should be done in the `register` method of your `AppServiceProvider`:"
 msgstr ""
 
-#: docs/10.x/middleware.md:block 69 (code)
+#: docs/10.x/middleware.md:block 71 (code)
 msgid ""
 "use App\\Http\\Middleware\\TerminatingMiddleware;\n"
 "\n"
@@ -477,6 +489,384 @@ msgid ""
 "{\n"
 "    $this->app->singleton(TerminatingMiddleware::class);\n"
 "}\n"
+msgstr ""
+
+#: docs/11.x/middleware.md:block 2 (unordered list)
+msgid "[Middleware Aliases](#middleware-aliases)"
+msgstr ""
+
+#: docs/11.x/middleware.md:block 6 (paragraph)
+msgid "Additional middleware can be written to perform a variety of tasks besides authentication. For example, a logging middleware might log all incoming requests to your application. A variety of middleware are included in Laravel, including middleware for authentication and CSRF protection; however, all user-defined middleware are typically located in your application's `app/Http/Middleware` directory."
+msgstr ""
+
+#: docs/11.x/middleware.md:block 26 (paragraph)
+msgid "If you want a middleware to run during every HTTP request to your application, you may append it to the global middleware stack in your application's `bootstrap/app.php` file:"
+msgstr ""
+
+#: docs/11.x/middleware.md:block 27 (code)
+msgid ""
+"use App\\Http\\Middleware\\EnsureTokenIsValid;\n"
+"\n"
+"->withMiddleware(function (Middleware $middleware) {\n"
+"     $middleware->append(EnsureTokenIsValid::class);\n"
+"})\n"
+msgstr ""
+
+#: docs/11.x/middleware.md:block 28 (paragraph)
+msgid "The `$middleware` object provided to the `withMiddleware` closure is an instance of `Illuminate\\Foundation\\Configuration\\Middleware` and is responsible for managing the middleware assigned to your application's routes. The `append` method adds the middleware to the end of the list of global middleware. If you would like to add a middleware to the beginning of the list, you should use the `prepend` method."
+msgstr ""
+
+#: docs/11.x/middleware.md:block 30 (header)
+msgid "Manually Managing Laravel's Default Global Middleware"
+msgstr ""
+
+#: docs/11.x/middleware.md:block 31 (paragraph)
+msgid "If you would like to manage Laravel's global middleware stack manually, you may provide Laravel's default stack of global middleware to the `use` method. Then, you may adjust the default middleware stack as necessary:"
+msgstr ""
+
+#: docs/11.x/middleware.md:block 32 (code)
+msgid ""
+"->withMiddleware(function (Middleware $middleware) {\n"
+"    $middleware->use([\n"
+"        // \\Illuminate\\Http\\Middleware\\TrustHosts::class,\n"
+"        \\Illuminate\\Http\\Middleware\\TrustProxies::class,\n"
+"        \\Illuminate\\Http\\Middleware\\HandleCors::class,\n"
+"        \\Illuminate\\Foundation\\Http\\Middleware\\PreventRequestsDuringMaintenance::class,\n"
+"        \\Illuminate\\Http\\Middleware\\ValidatePostSize::class,\n"
+"        \\Illuminate\\Foundation\\Http\\Middleware\\TrimStrings::class,\n"
+"        \\Illuminate\\Foundation\\Http\\Middleware\\ConvertEmptyStringsToNull::class,\n"
+"    ]);\n"
+"})\n"
+msgstr ""
+
+#: docs/11.x/middleware.md:block 36 (code)
+msgid ""
+"use App\\Http\\Middleware\\EnsureTokenIsValid;\n"
+"\n"
+"Route::get('/profile', function () {\n"
+"    // ...\n"
+"})->middleware(EnsureTokenIsValid::class);\n"
+msgstr ""
+
+#: docs/11.x/middleware.md:block 48 (paragraph)
+msgid "Sometimes you may want to group several middleware under a single key to make them easier to assign to routes. You may accomplish this using the `appendToGroup` method within your application's `bootstrap/app.php` file:"
+msgstr ""
+
+#: docs/11.x/middleware.md:block 49 (code)
+msgid ""
+"use App\\Http\\Middleware\\First;\n"
+"use App\\Http\\Middleware\\Second;\n"
+"\n"
+"->withMiddleware(function (Middleware $middleware) {\n"
+"    $middleware->appendToGroup('group-name', [\n"
+"        First::class,\n"
+"        Second::class,\n"
+"    ]);\n"
+"\n"
+"    $middleware->prependToGroup('group-name', [\n"
+"        First::class,\n"
+"        Second::class,\n"
+"    ]);\n"
+"})\n"
+msgstr ""
+
+#: docs/11.x/middleware.md:block 50 (paragraph)
+msgid "Middleware groups may be assigned to routes and controller actions using the same syntax as individual middleware:"
+msgstr ""
+
+#: docs/11.x/middleware.md:block 51 (code)
+msgid ""
+"Route::get('/', function () {\n"
+"    // ...\n"
+"})->middleware('group-name');\n"
+"\n"
+"Route::middleware(['group-name'])->group(function () {\n"
+"    // ...\n"
+"});\n"
+msgstr ""
+
+#: docs/11.x/middleware.md:block 53 (header)
+msgid "Laravel's Default Middleware Groups"
+msgstr ""
+
+#: docs/11.x/middleware.md:block 54 (paragraph)
+msgid "Laravel includes predefined `web` and `api` middleware groups that contain common middleware you may want to apply to your web and API routes. Remember, Laravel automatically applies these middleware groups to the corresponding `routes/web.php` and `routes/api.php` files:"
+msgstr ""
+
+#: docs/11.x/middleware.md:block 55 (table)
+msgid "The `web` Middleware Group"
+msgstr ""
+
+#: docs/11.x/middleware.md:block 55 (table)
+msgid "`Illuminate\\Cookie\\Middleware\\EncryptCookies`"
+msgstr ""
+
+#: docs/11.x/middleware.md:block 55 (table)
+msgid "`Illuminate\\Cookie\\Middleware\\AddQueuedCookiesToResponse`"
+msgstr ""
+
+#: docs/11.x/middleware.md:block 55 (table)
+msgid "`Illuminate\\Session\\Middleware\\StartSession`"
+msgstr ""
+
+#: docs/11.x/middleware.md:block 55 (table)
+msgid "`Illuminate\\View\\Middleware\\ShareErrorsFromSession`"
+msgstr ""
+
+#: docs/11.x/middleware.md:block 55 (table)
+msgid "`Illuminate\\Foundation\\Http\\Middleware\\ValidateCsrfToken`"
+msgstr ""
+
+#: docs/11.x/middleware.md:block 55 (table)
+msgid "`Illuminate\\Routing\\Middleware\\SubstituteBindings`"
+msgstr ""
+
+#: docs/11.x/middleware.md:block 56 (table)
+msgid "The `api` Middleware Group"
+msgstr ""
+
+#: docs/11.x/middleware.md:block 57 (paragraph)
+msgid "If you would like to append or prepend middleware to these groups, you may use the `web` and `api` methods within your application's `bootstrap/app.php` file. The `web` and `api` methods are convenient alternatives to the `appendToGroup` method:"
+msgstr ""
+
+#: docs/11.x/middleware.md:block 58 (code)
+msgid ""
+"use App\\Http\\Middleware\\EnsureTokenIsValid;\n"
+"use App\\Http\\Middleware\\EnsureUserIsSubscribed;\n"
+"\n"
+"->withMiddleware(function (Middleware $middleware) {\n"
+"    $middleware->web(append: [\n"
+"        EnsureUserIsSubscribed::class,\n"
+"    ]);\n"
+"\n"
+"    $middleware->api(prepend: [\n"
+"        EnsureTokenIsValid::class,\n"
+"    ]);\n"
+"})\n"
+msgstr ""
+
+#: docs/11.x/middleware.md:block 59 (paragraph)
+msgid "You may even replace one of Laravel's default middleware group entries with a custom middleware of your own:"
+msgstr ""
+
+#: docs/11.x/middleware.md:block 60 (code)
+msgid ""
+"use App\\Http\\Middleware\\StartCustomSession;\n"
+"use Illuminate\\Session\\Middleware\\StartSession;\n"
+"\n"
+"$middleware->web(replace: [\n"
+"    StartSession::class => StartCustomSession::class,\n"
+"]);\n"
+msgstr ""
+
+#: docs/11.x/middleware.md:block 61 (paragraph)
+msgid "Or, you may remove a middleware entirely:"
+msgstr ""
+
+#: docs/11.x/middleware.md:block 62 (code)
+msgid ""
+"$middleware->web(remove: [\n"
+"    StartSession::class,\n"
+"]);\n"
+msgstr ""
+
+#: docs/11.x/middleware.md:block 64 (header)
+msgid "Manually Managing Laravel's Default Middleware Groups"
+msgstr ""
+
+#: docs/11.x/middleware.md:block 65 (paragraph)
+msgid "If you would like to manually manage all of the middleware within Laravel's default `web` and `api` middleware groups, you may redefine the groups entirely. The example below will define the `web` and `api` middleware groups with their default middleware, allowing you to customize them as necessary:"
+msgstr ""
+
+#: docs/11.x/middleware.md:block 66 (code)
+msgid ""
+"->withMiddleware(function (Middleware $middleware) {\n"
+"    $middleware->group('web', [\n"
+"        \\Illuminate\\Cookie\\Middleware\\EncryptCookies::class,\n"
+"        \\Illuminate\\Cookie\\Middleware\\AddQueuedCookiesToResponse::class,\n"
+"        \\Illuminate\\Session\\Middleware\\StartSession::class,\n"
+"        \\Illuminate\\View\\Middleware\\ShareErrorsFromSession::class,\n"
+"        \\Illuminate\\Foundation\\Http\\Middleware\\ValidateCsrfToken::class,\n"
+"        \\Illuminate\\Routing\\Middleware\\SubstituteBindings::class,\n"
+"        // \\Illuminate\\Session\\Middleware\\AuthenticateSession::class,\n"
+"    ]);\n"
+"\n"
+"    $middleware->group('api', [\n"
+"        // \\Laravel\\Sanctum\\Http\\Middleware\\EnsureFrontendRequestsAreStateful::class,\n"
+"        // 'throttle:api',\n"
+"        \\Illuminate\\Routing\\Middleware\\SubstituteBindings::class,\n"
+"    ]);\n"
+"})\n"
+msgstr ""
+
+#: docs/11.x/middleware.md:block 67 (quote)
+msgid "[!NOTE] By default, the `web` and `api` middleware groups are automatically applied to your application's corresponding `routes/web.php` and `routes/api.php` files by the `bootstrap/app.php` file."
+msgstr ""
+
+#: docs/11.x/middleware.md:block 69 (header)
+msgid "Middleware Aliases"
+msgstr ""
+
+#: docs/11.x/middleware.md:block 70 (paragraph)
+msgid "You may assign aliases to middleware in your application's `bootstrap/app.php` file. Middleware aliases allows you to define a short alias for a given middleware class, which can be especially useful for middleware with long class names:"
+msgstr ""
+
+#: docs/11.x/middleware.md:block 71 (code)
+msgid ""
+"use App\\Http\\Middleware\\EnsureUserIsSubscribed;\n"
+"\n"
+"->withMiddleware(function (Middleware $middleware) {\n"
+"    $middleware->alias([\n"
+"        'subscribed' => EnsureUserIsSubscribed::class\n"
+"    ]);\n"
+"})\n"
+msgstr ""
+
+#: docs/11.x/middleware.md:block 72 (paragraph)
+msgid "Once the middleware alias has been defined in your application's `bootstrap/app.php` file, you may use the alias when assigning the middleware to routes:"
+msgstr ""
+
+#: docs/11.x/middleware.md:block 73 (code)
+msgid ""
+"Route::get('/profile', function () {\n"
+"    // ...\n"
+"})->middleware('subscribed');\n"
+msgstr ""
+
+#: docs/11.x/middleware.md:block 74 (paragraph)
+msgid "For convenience, some of Laravel's built-in middleware are aliased by default. For example, the `auth` middleware is an alias for the `Illuminate\\Auth\\Middleware\\Authenticate` middleware. Below is a list of the default middleware aliases:"
+msgstr ""
+
+#: docs/11.x/middleware.md:block 75 (table)
+msgid "Alias"
+msgstr ""
+
+#: docs/11.x/middleware.md:block 75 (table)
+msgid "`auth`"
+msgstr ""
+
+#: docs/11.x/middleware.md:block 75 (table)
+msgid "`Illuminate\\Auth\\Middleware\\Authenticate`"
+msgstr ""
+
+#: docs/11.x/middleware.md:block 75 (table)
+msgid "`auth.basic`"
+msgstr ""
+
+#: docs/11.x/middleware.md:block 75 (table)
+msgid "`Illuminate\\Auth\\Middleware\\AuthenticateWithBasicAuth`"
+msgstr ""
+
+#: docs/11.x/middleware.md:block 75 (table)
+msgid "`auth.session`"
+msgstr ""
+
+#: docs/11.x/middleware.md:block 75 (table)
+msgid "`Illuminate\\Session\\Middleware\\AuthenticateSession`"
+msgstr ""
+
+#: docs/11.x/middleware.md:block 75 (table)
+msgid "`cache.headers`"
+msgstr ""
+
+#: docs/11.x/middleware.md:block 75 (table)
+msgid "`Illuminate\\Http\\Middleware\\SetCacheHeaders`"
+msgstr ""
+
+#: docs/11.x/middleware.md:block 75 (table)
+msgid "`can`"
+msgstr ""
+
+#: docs/11.x/middleware.md:block 75 (table)
+msgid "`Illuminate\\Auth\\Middleware\\Authorize`"
+msgstr ""
+
+#: docs/11.x/middleware.md:block 75 (table)
+msgid "`guest`"
+msgstr ""
+
+#: docs/11.x/middleware.md:block 75 (table)
+msgid "`Illuminate\\Auth\\Middleware\\RedirectIfAuthenticated`"
+msgstr ""
+
+#: docs/11.x/middleware.md:block 75 (table)
+msgid "`password.confirm`"
+msgstr ""
+
+#: docs/11.x/middleware.md:block 75 (table)
+msgid "`Illuminate\\Auth\\Middleware\\RequirePassword`"
+msgstr ""
+
+#: docs/11.x/middleware.md:block 75 (table)
+msgid "`precognitive`"
+msgstr ""
+
+#: docs/11.x/middleware.md:block 75 (table)
+msgid "`Illuminate\\Foundation\\Http\\Middleware\\HandlePrecognitiveRequests`"
+msgstr ""
+
+#: docs/11.x/middleware.md:block 75 (table)
+msgid "`signed`"
+msgstr ""
+
+#: docs/11.x/middleware.md:block 75 (table)
+msgid "`Illuminate\\Routing\\Middleware\\ValidateSignature`"
+msgstr ""
+
+#: docs/11.x/middleware.md:block 75 (table)
+msgid "`subscribed`"
+msgstr ""
+
+#: docs/11.x/middleware.md:block 75 (table)
+msgid "`\\Spark\\Http\\Middleware\\VerifyBillableIsSubscribed`"
+msgstr ""
+
+#: docs/11.x/middleware.md:block 75 (table)
+msgid "`throttle`"
+msgstr ""
+
+#: docs/11.x/middleware.md:block 75 (table)
+msgid "`Illuminate\\Routing\\Middleware\\ThrottleRequests` or `Illuminate\\Routing\\Middleware\\ThrottleRequestsWithRedis`"
+msgstr ""
+
+#: docs/11.x/middleware.md:block 75 (table)
+msgid "`verified`"
+msgstr ""
+
+#: docs/11.x/middleware.md:block 75 (table)
+msgid "`Illuminate\\Auth\\Middleware\\EnsureEmailIsVerified`"
+msgstr ""
+
+#: docs/11.x/middleware.md:block 78 (paragraph)
+msgid "Rarely, you may need your middleware to execute in a specific order but not have control over their order when they are assigned to the route. In these situations, you may specify your middleware priority using the `priority` method in your application's `bootstrap/app.php` file:"
+msgstr ""
+
+#: docs/11.x/middleware.md:block 79 (code)
+msgid ""
+"->withMiddleware(function (Middleware $middleware) {\n"
+"    $middleware->priority([\n"
+"        \\Illuminate\\Foundation\\Http\\Middleware\\HandlePrecognitiveRequests::class,\n"
+"        \\Illuminate\\Cookie\\Middleware\\EncryptCookies::class,\n"
+"        \\Illuminate\\Cookie\\Middleware\\AddQueuedCookiesToResponse::class,\n"
+"        \\Illuminate\\Session\\Middleware\\StartSession::class,\n"
+"        \\Illuminate\\View\\Middleware\\ShareErrorsFromSession::class,\n"
+"        \\Illuminate\\Foundation\\Http\\Middleware\\ValidateCsrfToken::class,\n"
+"        \\Laravel\\Sanctum\\Http\\Middleware\\EnsureFrontendRequestsAreStateful::class,\n"
+"        \\Illuminate\\Routing\\Middleware\\ThrottleRequests::class,\n"
+"        \\Illuminate\\Routing\\Middleware\\ThrottleRequestsWithRedis::class,\n"
+"        \\Illuminate\\Routing\\Middleware\\SubstituteBindings::class,\n"
+"        \\Illuminate\\Contracts\\Auth\\Middleware\\AuthenticatesRequests::class,\n"
+"        \\Illuminate\\Auth\\Middleware\\Authorize::class,\n"
+"    ]);\n"
+"})\n"
+msgstr ""
+
+#: docs/11.x/middleware.md:block 93 (paragraph)
+msgid "The `terminate` method should receive both the request and the response. Once you have defined a terminable middleware, you should add it to the list of routes or global middleware in your application's `bootstrap/app.php` file."
+msgstr ""
+
+#: docs/8.x/middleware.md:block 2 (unordered list)
+msgid "[Assigning Middleware To Routes](#assigning-middleware-to-routes)"
 msgstr ""
 
 #: docs/8.x/middleware.md:block 12 (code)
@@ -509,6 +899,10 @@ msgstr ""
 
 #: docs/8.x/middleware.md:block 15 (quote)
 msgid "{tip} All middleware are resolved via the [service container](/docs/{{version}}/container), so you may type-hint any dependencies you need within a middleware's constructor."
+msgstr ""
+
+#: docs/8.x/middleware.md:block 17 (header)
+msgid "Middleware & Responses"
 msgstr ""
 
 #: docs/8.x/middleware.md:block 19 (code)
@@ -549,6 +943,10 @@ msgid ""
 "        return $response;\n"
 "    }\n"
 "}\n"
+msgstr ""
+
+#: docs/8.x/middleware.md:block 28 (header)
+msgid "Assigning Middleware To Routes"
 msgstr ""
 
 #: docs/8.x/middleware.md:block 29 (paragraph)
@@ -725,6 +1123,10 @@ msgid ""
 "}\n"
 msgstr ""
 
+#: docs/8.x/middleware.md:block 61 (paragraph)
+msgid "Middleware parameters may be specified when defining the route by separating the middleware name and parameters with a `:`. Multiple parameters should be delimited by commas:"
+msgstr ""
+
 #: docs/8.x/middleware.md:block 62 (code)
 msgid ""
 "Route::put('/post/{id}', function ($id) {\n"
@@ -783,6 +1185,10 @@ msgid ""
 "}\n"
 msgstr ""
 
+#: docs/9.x/middleware.md:block 15 (quote)
+msgid "**Note** All middleware are resolved via the [service container](/docs/{{version}}/container), so you may type-hint any dependencies you need within a middleware's constructor."
+msgstr ""
+
 #: docs/9.x/middleware.md:block 48 (code)
 msgid ""
 "/**\n"
@@ -807,6 +1213,29 @@ msgid ""
 "];\n"
 msgstr ""
 
-#: docs/master/middleware.md:block 35 (paragraph)
-msgid "Once the middleware alias has been defined in the HTTP kernel, you may use the alias when assigning middlware to routes:"
+#: docs/9.x/middleware.md:block 51 (quote)
+msgid "**Note** Out of the box, the `web` and `api` middleware groups are automatically applied to your application's corresponding `routes/web.php` and `routes/api.php` files by the `App\\Providers\\RouteServiceProvider`."
+msgstr ""
+
+#: docs/9.x/middleware.md:block 55 (code)
+msgid ""
+"/**\n"
+" * The priority-sorted list of middleware.\n"
+" *\n"
+" * This forces non-global middleware to always be in the given order.\n"
+" *\n"
+" * @var string[]\n"
+" */\n"
+"protected $middlewarePriority = [\n"
+"    \\Illuminate\\Foundation\\Http\\Middleware\\HandlePrecognitiveRequests::class,\n"
+"    \\Illuminate\\Cookie\\Middleware\\EncryptCookies::class,\n"
+"    \\Illuminate\\Session\\Middleware\\StartSession::class,\n"
+"    \\Illuminate\\View\\Middleware\\ShareErrorsFromSession::class,\n"
+"    \\Illuminate\\Contracts\\Auth\\Middleware\\AuthenticatesRequests::class,\n"
+"    \\Illuminate\\Routing\\Middleware\\ThrottleRequests::class,\n"
+"    \\Illuminate\\Routing\\Middleware\\ThrottleRequestsWithRedis::class,\n"
+"    \\Illuminate\\Contracts\\Session\\Middleware\\AuthenticatesSessions::class,\n"
+"    \\Illuminate\\Routing\\Middleware\\SubstituteBindings::class,\n"
+"    \\Illuminate\\Auth\\Middleware\\Authorize::class,\n"
+"];\n"
 msgstr ""

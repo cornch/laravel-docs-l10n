@@ -55,7 +55,7 @@ msgid "[Belongs To Relationships](#belongs-to-relationships)"
 msgstr ""
 
 #: docs/10.x/eloquent-factories.md:block 2 (unordered list)
-msgid "[Many To Many Relationships](#many-to-many-relationships)"
+msgid "[Many to Many Relationships](#many-to-many-relationships)"
 msgstr ""
 
 #: docs/10.x/eloquent-factories.md:block 2 (unordered list)
@@ -67,7 +67,7 @@ msgid "[Defining Relationships Within Factories](#defining-relationships-within-
 msgstr ""
 
 #: docs/10.x/eloquent-factories.md:block 2 (unordered list)
-msgid "[Recycling An Existing Model For Relationships](#recycling-an-existing-model-for-relationships)"
+msgid "[Recycling an Existing Model for Relationships](#recycling-an-existing-model-for-relationships)"
 msgstr ""
 
 #: docs/10.x/eloquent-factories.md:block 4 (header)
@@ -118,7 +118,7 @@ msgid "Via the `fake` helper, factories have access to the [Faker](https://githu
 msgstr ""
 
 #: docs/10.x/eloquent-factories.md:block 10 (quote)
-msgid "**Note** You can set your application's Faker locale by adding a `faker_locale` option to your `config/app.php` configuration file."
+msgid "[!NOTE] You can set your application's Faker locale by adding a `faker_locale` option to your `config/app.php` configuration file."
 msgstr ""
 
 #: docs/10.x/eloquent-factories.md:block 12 (header)
@@ -142,7 +142,7 @@ msgid "The new factory class will be placed in your `database/factories` directo
 msgstr ""
 
 #: docs/10.x/eloquent-factories.md:block 19 (header)
-msgid "Model & Factory Discovery Conventions"
+msgid "Model and Factory Discovery Conventions"
 msgstr ""
 
 #: docs/10.x/eloquent-factories.md:block 20 (paragraph)
@@ -356,7 +356,7 @@ msgid ""
 msgstr ""
 
 #: docs/10.x/eloquent-factories.md:block 58 (quote)
-msgid "**Note** [Mass assignment protection](/docs/{{version}}/eloquent#mass-assignment) is automatically disabled when creating models using factories."
+msgid "[!NOTE] [Mass assignment protection](/docs/{{version}}/eloquent#mass-assignment) is automatically disabled when creating models using factories."
 msgstr ""
 
 #: docs/10.x/eloquent-factories.md:block 60 (header)
@@ -599,7 +599,7 @@ msgid ""
 msgstr ""
 
 #: docs/10.x/eloquent-factories.md:block 105 (header)
-msgid "Many To Many Relationships"
+msgid "Many to Many Relationships"
 msgstr ""
 
 #: docs/10.x/eloquent-factories.md:block 106 (paragraph)
@@ -713,7 +713,7 @@ msgid ""
 msgstr ""
 
 #: docs/10.x/eloquent-factories.md:block 129 (header)
-msgid "Polymorphic Many To Many Relationships"
+msgid "Polymorphic Many to Many Relationships"
 msgstr ""
 
 #: docs/10.x/eloquent-factories.md:block 130 (paragraph)
@@ -796,7 +796,7 @@ msgid ""
 msgstr ""
 
 #: docs/10.x/eloquent-factories.md:block 141 (header)
-msgid "Recycling An Existing Model For Relationships"
+msgid "Recycling an Existing Model for Relationships"
 msgstr ""
 
 #: docs/10.x/eloquent-factories.md:block 142 (paragraph)
@@ -829,6 +829,64 @@ msgid ""
 "    ->create();\n"
 msgstr ""
 
+#: docs/11.x/eloquent-factories.md:block 7 (code)
+msgid ""
+"namespace Database\\Factories;\n"
+"\n"
+"use Illuminate\\Database\\Eloquent\\Factories\\Factory;\n"
+"use Illuminate\\Support\\Facades\\Hash;\n"
+"use Illuminate\\Support\\Str;\n"
+"\n"
+"/**\n"
+" * @extends \\Illuminate\\Database\\Eloquent\\Factories\\Factory<\\App\\Models\\User>\n"
+" */\n"
+"class UserFactory extends Factory\n"
+"{\n"
+"    /**\n"
+"     * The current password being used by the factory.\n"
+"     */\n"
+"    protected static ?string $password;\n"
+"\n"
+"    /**\n"
+"     * Define the model's default state.\n"
+"     *\n"
+"     * @return array<string, mixed>\n"
+"     */\n"
+"    public function definition(): array\n"
+"    {\n"
+"        return [\n"
+"            'name' => fake()->name(),\n"
+"            'email' => fake()->unique()->safeEmail(),\n"
+"            'email_verified_at' => now(),\n"
+"            'password' => static::$password ??= Hash::make('password'),\n"
+"            'remember_token' => Str::random(10),\n"
+"        ];\n"
+"    }\n"
+"\n"
+"    /**\n"
+"     * Indicate that the model's email address should be unverified.\n"
+"     */\n"
+"    public function unverified(): static\n"
+"    {\n"
+"        return $this->state(fn (array $attributes) => [\n"
+"            'email_verified_at' => null,\n"
+"        ]);\n"
+"    }\n"
+"}\n"
+msgstr ""
+
+#: docs/11.x/eloquent-factories.md:block 10 (quote)
+msgid "[!NOTE] You can change your application's Faker locale by updating the `faker_locale` option in your `config/app.php` configuration file."
+msgstr ""
+
+#: docs/9.x/eloquent-factories.md:block 2 (unordered list)
+msgid "[Many To Many Relationships](#many-to-many-relationships)"
+msgstr ""
+
+#: docs/9.x/eloquent-factories.md:block 2 (unordered list)
+msgid "[Recycling An Existing Model For Relationships](#recycling-an-existing-model-for-relationships)"
+msgstr ""
+
 #: docs/9.x/eloquent-factories.md:block 7 (code)
 msgid ""
 "namespace Database\\Factories;\n"
@@ -854,6 +912,14 @@ msgid ""
 "        ];\n"
 "    }\n"
 "}\n"
+msgstr ""
+
+#: docs/9.x/eloquent-factories.md:block 10 (quote)
+msgid "**Note** You can set your application's Faker locale by adding a `faker_locale` option to your `config/app.php` configuration file."
+msgstr ""
+
+#: docs/9.x/eloquent-factories.md:block 19 (header)
+msgid "Model & Factory Discovery Conventions"
 msgstr ""
 
 #: docs/9.x/eloquent-factories.md:block 22 (code)
@@ -936,6 +1002,10 @@ msgid ""
 "}\n"
 msgstr ""
 
+#: docs/9.x/eloquent-factories.md:block 55 (quote)
+msgid "**Note** [Mass assignment protection](/docs/{{version}}/eloquent#mass-assignment) is automatically disabled when creating models using factories."
+msgstr ""
+
 #: docs/9.x/eloquent-factories.md:block 68 (code)
 msgid ""
 "$users = User::factory()\n"
@@ -954,8 +1024,16 @@ msgid ""
 "                ->create();\n"
 msgstr ""
 
+#: docs/9.x/eloquent-factories.md:block 102 (header)
+msgid "Many To Many Relationships"
+msgstr ""
+
 #: docs/9.x/eloquent-factories.md:block 119 (paragraph)
 msgid "[Polymorphic relationships](/docs/{{version}}/eloquent-relationships#polymorphic-relationships) may also be created using factories. Polymorphic \"morph many\" relationships are created in the same way as typical \"has many\" relationships. For example, if a `App\\Models\\Post` model has a `morphMany` relationship with a `App\\Models\\Comment` model:"
+msgstr ""
+
+#: docs/9.x/eloquent-factories.md:block 126 (header)
+msgid "Polymorphic Many To Many Relationships"
 msgstr ""
 
 #: docs/9.x/eloquent-factories.md:block 134 (code)
@@ -997,30 +1075,6 @@ msgid ""
 "}\n"
 msgstr ""
 
-#: docs/master/eloquent-factories.md:block 36 (code)
-msgid ""
-"namespace Database\\Factories;\n"
-"\n"
-"use App\\Models\\User;\n"
-"use Illuminate\\Database\\Eloquent\\Factories\\Factory;\n"
-"use Illuminate\\Support\\Str;\n"
-"\n"
-"class UserFactory extends Factory\n"
-"{\n"
-"    /**\n"
-"     * Configure the model factory.\n"
-"     *\n"
-"     * @return $this\n"
-"     */\n"
-"    public function configure(): static\n"
-"    {\n"
-"        return $this->afterMaking(function (User $user) {\n"
-"            // ...\n"
-"        })->afterCreating(function (User $user) {\n"
-"            // ...\n"
-"        });\n"
-"    }\n"
-"\n"
-"    // ...\n"
-"}\n"
+#: docs/9.x/eloquent-factories.md:block 138 (header)
+msgid "Recycling An Existing Model For Relationships"
 msgstr ""

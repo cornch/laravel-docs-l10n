@@ -31,7 +31,7 @@ msgid "[Asynchronous Processes](#asynchronous-processes)"
 msgstr ""
 
 #: docs/10.x/processes.md:block 2 (unordered list)
-msgid "[Process IDs & Signals](#process-ids-and-signals)"
+msgid "[Process IDs and Signals](#process-ids-and-signals)"
 msgstr ""
 
 #: docs/10.x/processes.md:block 2 (unordered list)
@@ -47,7 +47,7 @@ msgid "[Naming Pool Processes](#naming-pool-processes)"
 msgstr ""
 
 #: docs/10.x/processes.md:block 2 (unordered list)
-msgid "[Pool Process IDs & Signals](#pool-process-ids-and-signals)"
+msgid "[Pool Process IDs and Signals](#pool-process-ids-and-signals)"
 msgstr ""
 
 #: docs/10.x/processes.md:block 2 (unordered list)
@@ -382,7 +382,7 @@ msgid ""
 msgstr ""
 
 #: docs/10.x/processes.md:block 74 (header)
-msgid "Process IDs & Signals"
+msgid "Process IDs and Signals"
 msgstr ""
 
 #: docs/10.x/processes.md:block 75 (paragraph)
@@ -519,7 +519,7 @@ msgid ""
 msgstr ""
 
 #: docs/10.x/processes.md:block 99 (header)
-msgid "Pool Process IDs & Signals"
+msgid "Pool Process IDs and Signals"
 msgstr ""
 
 #: docs/10.x/processes.md:block 100 (paragraph)
@@ -587,7 +587,7 @@ msgid ""
 "    {\n"
 "        Process::fake();\n"
 "\n"
-"        $response = $this->get('/');\n"
+"        $response = $this->get('/import');\n"
 "\n"
 "        // Simple process assertion...\n"
 "        Process::assertRan('bash import.sh');\n"
@@ -835,21 +835,30 @@ msgid ""
 "Process::run('bash import.sh');\n"
 msgstr ""
 
-#: docs/master/processes.md:block 61 (paragraph)
-msgid "The `pid` method may be used to retrieve the operating system assigned process ID of the running process:"
+#: docs/11.x/processes.md:block 5 (paragraph)
+msgid "Laravel provides an expressive, minimal API around the [Symfony Process component](https://symfony.com/doc/7.0/components/process.html), allowing you to conveniently invoke external processes from your Laravel application. Laravel's process features are focused on the most common use cases and a wonderful developer experience."
 msgstr ""
 
-#: docs/master/processes.md:block 62 (code)
+#: docs/11.x/processes.md:block 112 (code)
 msgid ""
-"$process = Process::start('bash import.sh');\n"
+"<?php\n"
 "\n"
-"return $process->pid();\n"
-msgstr ""
-
-#: docs/master/processes.md:block 87 (code)
-msgid "$processIds = $pool->running()->each->pid();\n"
-msgstr ""
-
-#: docs/master/processes.md:block 97 (paragraph)
-msgid "When testing this route, we can instruct Laravel to return a fake, successful process result for every invoked process by calling the `fake` method on the `Process` facade with no arguments. In addition, we can even [assert](#available-assertions) that a given process was \"ran\":"
+"use Illuminate\\Process\\PendingProcess;\n"
+"use Illuminate\\Contracts\\Process\\ProcessResult;\n"
+"use Illuminate\\Support\\Facades\\Process;\n"
+"\n"
+"test('process is invoked', function () {\n"
+"    Process::fake();\n"
+"\n"
+"    $response = $this->get('/import');\n"
+"\n"
+"    // Simple process assertion...\n"
+"    Process::assertRan('bash import.sh');\n"
+"\n"
+"    // Or, inspecting the process configuration...\n"
+"    Process::assertRan(function (PendingProcess $process, ProcessResult $result) {\n"
+"        return $process->command === 'bash import.sh' &&\n"
+"               $process->timeout === 60;\n"
+"    });\n"
+"});\n"
 msgstr ""

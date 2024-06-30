@@ -23,7 +23,7 @@ msgid "[Retrieving Environment Configuration](#retrieving-environment-configurat
 msgstr ""
 
 #: docs/10.x/configuration.md:block 2 (unordered list)
-msgid "[Determining The Current Environment](#determining-the-current-environment)"
+msgid "[Determining the Current Environment](#determining-the-current-environment)"
 msgstr ""
 
 #: docs/10.x/configuration.md:block 2 (unordered list)
@@ -107,7 +107,7 @@ msgid "If you are developing with a team, you may wish to continue including a `
 msgstr ""
 
 #: docs/10.x/configuration.md:block 21 (quote)
-msgid "**Note** Any variable in your `.env` file can be overridden by external environment variables such as server-level or system-level environment variables."
+msgid "[!NOTE] Any variable in your `.env` file can be overridden by external environment variables such as server-level or system-level environment variables."
 msgstr ""
 
 #: docs/10.x/configuration.md:block 23 (header)
@@ -219,7 +219,7 @@ msgid "The second value passed to the `env` function is the \"default value\". T
 msgstr ""
 
 #: docs/10.x/configuration.md:block 41 (header)
-msgid "Determining The Current Environment"
+msgid "Determining the Current Environment"
 msgstr ""
 
 #: docs/10.x/configuration.md:block 42 (paragraph)
@@ -249,7 +249,7 @@ msgid ""
 msgstr ""
 
 #: docs/10.x/configuration.md:block 46 (quote)
-msgid "**Note** The current application environment detection can be overridden by defining a server-level `APP_ENV` environment variable."
+msgid "[!NOTE] The current application environment detection can be overridden by defining a server-level `APP_ENV` environment variable."
 msgstr ""
 
 #: docs/10.x/configuration.md:block 48 (header)
@@ -281,7 +281,7 @@ msgid "php artisan env:encrypt --key=3UVsEgGVK36XN82KKeyLFMhvosbZN1aF\n"
 msgstr ""
 
 #: docs/10.x/configuration.md:block 56 (quote)
-msgid "**Note** The length of the key provided should match the key length required by the encryption cipher being used. By default, Laravel will use the `AES-256-CBC` cipher which requires a 32 character key. You are free to use any cipher supported by Laravel's [encrypter](/docs/{{version}}/encryption) by passing the `--cipher` option when invoking the command."
+msgid "[!NOTE] The length of the key provided should match the key length required by the encryption cipher being used. By default, Laravel will use the `AES-256-CBC` cipher which requires a 32 character key. You are free to use any cipher supported by Laravel's [encrypter](/docs/{{version}}/encryption) by passing the `--cipher` option when invoking the command."
 msgstr ""
 
 #: docs/10.x/configuration.md:block 57 (paragraph)
@@ -345,11 +345,15 @@ msgid "Accessing Configuration Values"
 msgstr ""
 
 #: docs/10.x/configuration.md:block 74 (paragraph)
-msgid "You may easily access your configuration values using the global `config` function from anywhere in your application. The configuration values may be accessed using \"dot\" syntax, which includes the name of the file and option you wish to access. A default value may also be specified and will be returned if the configuration option does not exist:"
+msgid "You may easily access your configuration values using the `Config` facade or global `config` function from anywhere in your application. The configuration values may be accessed using \"dot\" syntax, which includes the name of the file and option you wish to access. A default value may also be specified and will be returned if the configuration option does not exist:"
 msgstr ""
 
 #: docs/10.x/configuration.md:block 75 (code)
 msgid ""
+"use Illuminate\\Support\\Facades\\Config;\n"
+"\n"
+"$value = Config::get('app.timezone');\n"
+"\n"
 "$value = config('app.timezone');\n"
 "\n"
 "// Retrieve a default value if the configuration value does not exist...\n"
@@ -357,11 +361,14 @@ msgid ""
 msgstr ""
 
 #: docs/10.x/configuration.md:block 76 (paragraph)
-msgid "To set configuration values at runtime, pass an array to the `config` function:"
+msgid "To set configuration values at runtime, you may invoke the `Config` facade's `set` method or pass an array to the `config` function:"
 msgstr ""
 
 #: docs/10.x/configuration.md:block 77 (code)
-msgid "config(['app.timezone' => 'America/Chicago']);\n"
+msgid ""
+"Config::set('app.timezone', 'America/Chicago');\n"
+"\n"
+"config(['app.timezone' => 'America/Chicago']);\n"
 msgstr ""
 
 #: docs/10.x/configuration.md:block 79 (header)
@@ -393,7 +400,7 @@ msgid "php artisan config:clear\n"
 msgstr ""
 
 #: docs/10.x/configuration.md:block 86 (quote)
-msgid "**Warning** If you execute the `config:cache` command during your deployment process, you should be sure that you are only calling the `env` function from within your configuration files. Once the configuration has been cached, the `.env` file will not be loaded; therefore, the `env` function will only return external, system level environment variables."
+msgid "[!WARNING] If you execute the `config:cache` command during your deployment process, you should be sure that you are only calling the `env` function from within your configuration files. Once the configuration has been cached, the `.env` file will not be loaded; therefore, the `env` function will only return external, system level environment variables."
 msgstr ""
 
 #: docs/10.x/configuration.md:block 88 (header)
@@ -405,7 +412,7 @@ msgid "The `debug` option in your `config/app.php` configuration file determines
 msgstr ""
 
 #: docs/10.x/configuration.md:block 90 (quote)
-msgid "**Warning** For local development, you should set the `APP_DEBUG` environment variable to `true`. **In your production environment, this value should always be `false`. If the variable is set to `true` in production, you risk exposing sensitive configuration values to your application's end users.**"
+msgid "[!WARNING] For local development, you should set the `APP_DEBUG` environment variable to `true`. **In your production environment, this value should always be `false`. If the variable is set to `true` in production, you risk exposing sensitive configuration values to your application's end users.**"
 msgstr ""
 
 #: docs/10.x/configuration.md:block 92 (header)
@@ -461,71 +468,155 @@ msgid "https://example.com/1630542a-246b-4b66-afa1-dd72a4c43515\n"
 msgstr ""
 
 #: docs/10.x/configuration.md:block 106 (paragraph)
+msgid "If you would like Laravel to generate the secret token for you, you may use the `with-secret` option. The secret will be displayed to you once the application is in maintenance mode:"
+msgstr ""
+
+#: docs/10.x/configuration.md:block 107 (code)
+msgid "php artisan down --with-secret\n"
+msgstr ""
+
+#: docs/10.x/configuration.md:block 108 (paragraph)
 msgid "When accessing this hidden route, you will then be redirected to the `/` route of the application. Once the cookie has been issued to your browser, you will be able to browse the application normally as if it was not in maintenance mode."
 msgstr ""
 
-#: docs/10.x/configuration.md:block 107 (quote)
-msgid "**Note** Your maintenance mode secret should typically consist of alpha-numeric characters and, optionally, dashes. You should avoid using characters that have special meaning in URLs such as `?` or `&`."
+#: docs/10.x/configuration.md:block 109 (quote)
+msgid "[!NOTE] Your maintenance mode secret should typically consist of alpha-numeric characters and, optionally, dashes. You should avoid using characters that have special meaning in URLs such as `?` or `&`."
 msgstr ""
 
-#: docs/10.x/configuration.md:block 109 (header)
-msgid "Pre-Rendering The Maintenance Mode View"
+#: docs/10.x/configuration.md:block 111 (header)
+msgid "Pre-Rendering the Maintenance Mode View"
 msgstr ""
 
-#: docs/10.x/configuration.md:block 110 (paragraph)
+#: docs/10.x/configuration.md:block 112 (paragraph)
 msgid "If you utilize the `php artisan down` command during deployment, your users may still occasionally encounter errors if they access the application while your Composer dependencies or other infrastructure components are updating. This occurs because a significant part of the Laravel framework must boot in order to determine your application is in maintenance mode and render the maintenance mode view using the templating engine."
 msgstr ""
 
-#: docs/10.x/configuration.md:block 111 (paragraph)
+#: docs/10.x/configuration.md:block 113 (paragraph)
 msgid "For this reason, Laravel allows you to pre-render a maintenance mode view that will be returned at the very beginning of the request cycle. This view is rendered before any of your application's dependencies have loaded. You may pre-render a template of your choice using the `down` command's `render` option:"
 msgstr ""
 
-#: docs/10.x/configuration.md:block 112 (code)
+#: docs/10.x/configuration.md:block 114 (code)
 msgid "php artisan down --render=\"errors::503\"\n"
 msgstr ""
 
-#: docs/10.x/configuration.md:block 114 (header)
+#: docs/10.x/configuration.md:block 116 (header)
 msgid "Redirecting Maintenance Mode Requests"
 msgstr ""
 
-#: docs/10.x/configuration.md:block 115 (paragraph)
+#: docs/10.x/configuration.md:block 117 (paragraph)
 msgid "While in maintenance mode, Laravel will display the maintenance mode view for all application URLs the user attempts to access. If you wish, you may instruct Laravel to redirect all requests to a specific URL. This may be accomplished using the `redirect` option. For example, you may wish to redirect all requests to the `/` URI:"
 msgstr ""
 
-#: docs/10.x/configuration.md:block 116 (code)
+#: docs/10.x/configuration.md:block 118 (code)
 msgid "php artisan down --redirect=/\n"
 msgstr ""
 
-#: docs/10.x/configuration.md:block 118 (header)
+#: docs/10.x/configuration.md:block 120 (header)
 msgid "Disabling Maintenance Mode"
 msgstr ""
 
-#: docs/10.x/configuration.md:block 119 (paragraph)
+#: docs/10.x/configuration.md:block 121 (paragraph)
 msgid "To disable maintenance mode, use the `up` command:"
 msgstr ""
 
-#: docs/10.x/configuration.md:block 120 (code)
+#: docs/10.x/configuration.md:block 122 (code)
 msgid "php artisan up\n"
 msgstr ""
 
-#: docs/10.x/configuration.md:block 121 (quote)
-msgid "**Note** You may customize the default maintenance mode template by defining your own template at `resources/views/errors/503.blade.php`."
+#: docs/10.x/configuration.md:block 123 (quote)
+msgid "[!NOTE] You may customize the default maintenance mode template by defining your own template at `resources/views/errors/503.blade.php`."
 msgstr ""
 
-#: docs/10.x/configuration.md:block 123 (header)
-msgid "Maintenance Mode & Queues"
+#: docs/10.x/configuration.md:block 125 (header)
+msgid "Maintenance Mode and Queues"
 msgstr ""
 
-#: docs/10.x/configuration.md:block 124 (paragraph)
+#: docs/10.x/configuration.md:block 126 (paragraph)
 msgid "While your application is in maintenance mode, no [queued jobs](/docs/{{version}}/queues) will be handled. The jobs will continue to be handled as normal once the application is out of maintenance mode."
 msgstr ""
 
-#: docs/10.x/configuration.md:block 126 (header)
-msgid "Alternatives To Maintenance Mode"
+#: docs/10.x/configuration.md:block 128 (header)
+msgid "Alternatives to Maintenance Mode"
 msgstr ""
 
-#: docs/10.x/configuration.md:block 127 (paragraph)
+#: docs/10.x/configuration.md:block 129 (paragraph)
 msgid "Since maintenance mode requires your application to have several seconds of downtime, consider alternatives like [Laravel Vapor](https://vapor.laravel.com) and [Envoyer](https://envoyer.io) to accomplish zero-downtime deployment with Laravel."
+msgstr ""
+
+#: docs/11.x/configuration.md:block 2 (unordered list)
+msgid "[Configuration Publishing](#configuration-publishing)"
+msgstr ""
+
+#: docs/11.x/configuration.md:block 8 (header)
+msgid "The `about` Command"
+msgstr ""
+
+#: docs/11.x/configuration.md:block 9 (paragraph)
+msgid "Laravel can display an overview of your application's configuration, drivers, and environment via the `about` Artisan command."
+msgstr ""
+
+#: docs/11.x/configuration.md:block 19 (paragraph)
+msgid "Laravel's default `.env` file contains some common configuration values that may differ based on whether your application is running locally or on a production web server. These values are then read by the configuration files within the `config` directory using Laravel's `env` function."
+msgstr ""
+
+#: docs/11.x/configuration.md:block 20 (paragraph)
+msgid "If you are developing with a team, you may wish to continue including and updating the `.env.example` file with your application. By putting placeholder values in the example configuration file, other developers on your team can clearly see which environment variables are needed to run your application."
+msgstr ""
+
+#: docs/11.x/configuration.md:block 78 (paragraph)
+msgid "To assist with static analysis, the `Config` facade also provides typed configuration retrieval methods. If the retrieved configuration value does not match the expected type, an exception will be thrown:"
+msgstr ""
+
+#: docs/11.x/configuration.md:block 79 (code)
+msgid ""
+"Config::string('config-key');\n"
+"Config::integer('config-key');\n"
+"Config::float('config-key');\n"
+"Config::boolean('config-key');\n"
+"Config::array('config-key');\n"
+msgstr ""
+
+#: docs/11.x/configuration.md:block 90 (header)
+msgid "Configuration Publishing"
+msgstr ""
+
+#: docs/11.x/configuration.md:block 91 (paragraph)
+msgid "Most of Laravel's configuration files are already published in your application's `config` directory; however, certain configuration files like `cors.php` and `view.php` are not published by default, as most applications will never need to modify them."
+msgstr ""
+
+#: docs/11.x/configuration.md:block 92 (paragraph)
+msgid "However, you may use the `config:publish` Artisan command to publish any configuration files that are not published by default:"
+msgstr ""
+
+#: docs/11.x/configuration.md:block 93 (code)
+msgid ""
+"php artisan config:publish\n"
+"\n"
+"php artisan config:publish --all\n"
+msgstr ""
+
+#: docs/11.x/configuration.md:block 118 (header)
+msgid "Maintenance Mode on Multiple Servers"
+msgstr ""
+
+#: docs/11.x/configuration.md:block 119 (paragraph)
+msgid "By default, Laravel determines if your application is in maintenance mode using a file-based system. This means to activate maintenance mode, the `php artisan down` command has to be executed on each server hosting your application."
+msgstr ""
+
+#: docs/11.x/configuration.md:block 120 (paragraph)
+msgid "Alternatively, Laravel offers a cache-based method for handling maintenance mode. This method requires running the `php artisan down` command on just one server. To use this approach, modify the \"driver\" setting in the `config/app.php` file of your application to `cache`. Then, select a cache `store` that is accessible by all your servers. This ensures the maintenance mode status is consistently maintained across every server:"
+msgstr ""
+
+#: docs/11.x/configuration.md:block 121 (code)
+msgid ""
+"'maintenance' => [\n"
+"    'driver' => 'cache',\n"
+"    'store' => 'database',\n"
+"],\n"
+msgstr ""
+
+#: docs/8.x/configuration.md:block 2 (unordered list)
+msgid "[Determining The Current Environment](#determining-the-current-environment)"
 msgstr ""
 
 #: docs/8.x/configuration.md:block 13 (quote)
@@ -540,6 +631,10 @@ msgstr ""
 msgid "All of the variables listed in this file will be loaded into the `$_ENV` PHP super-global when your application receives a request. However, you may use the `env` helper to retrieve values from these variables in your configuration files. In fact, if you review the Laravel configuration files, you will notice many of the options are already using this helper:"
 msgstr ""
 
+#: docs/8.x/configuration.md:block 32 (header)
+msgid "Determining The Current Environment"
+msgstr ""
+
 #: docs/8.x/configuration.md:block 37 (quote)
 msgid "{tip} The current application environment detection can be overridden by defining a server-level `APP_ENV` environment variable."
 msgstr ""
@@ -548,8 +643,20 @@ msgstr ""
 msgid "You may easily access your configuration values using the global `config` helper function from anywhere in your application. The configuration values may be accessed using \"dot\" syntax, which includes the name of the file and option you wish to access. A default value may also be specified and will be returned if the configuration option does not exist:"
 msgstr ""
 
+#: docs/8.x/configuration.md:block 41 (code)
+msgid ""
+"$value = config('app.timezone');\n"
+"\n"
+"// Retrieve a default value if the configuration value does not exist...\n"
+"$value = config('app.timezone', 'Asia/Seoul');\n"
+msgstr ""
+
 #: docs/8.x/configuration.md:block 42 (paragraph)
 msgid "To set configuration values at runtime, pass an array to the `config` helper:"
+msgstr ""
+
+#: docs/8.x/configuration.md:block 43 (code)
+msgid "config(['app.timezone' => 'America/Chicago']);\n"
 msgstr ""
 
 #: docs/8.x/configuration.md:block 48 (quote)
@@ -568,10 +675,50 @@ msgstr ""
 msgid "{tip} Your maintenance mode secret should typically consist of alpha-numeric characters and, optionally, dashes. You should avoid using characters that have special meaning in URLs such as `?` or `&`."
 msgstr ""
 
+#: docs/8.x/configuration.md:block 71 (header)
+msgid "Pre-Rendering The Maintenance Mode View"
+msgstr ""
+
 #: docs/8.x/configuration.md:block 83 (quote)
 msgid "{tip} You may customize the default maintenance mode template by defining your own template at `resources/views/errors/503.blade.php`."
 msgstr ""
 
-#: docs/master/configuration.md:block 101 (quote)
-msgid "**Note** Your maintenance mode secret should typically consist of alpha-numeric characters and, optionally, dashes. You should avoid using characters that have special meaning in URLs such as `?`."
+#: docs/8.x/configuration.md:block 85 (header)
+msgid "Maintenance Mode & Queues"
+msgstr ""
+
+#: docs/8.x/configuration.md:block 88 (header)
+msgid "Alternatives To Maintenance Mode"
+msgstr ""
+
+#: docs/9.x/configuration.md:block 19 (quote)
+msgid "**Note** Any variable in your `.env` file can be overridden by external environment variables such as server-level or system-level environment variables."
+msgstr ""
+
+#: docs/9.x/configuration.md:block 44 (quote)
+msgid "**Note** The current application environment detection can be overridden by defining a server-level `APP_ENV` environment variable."
+msgstr ""
+
+#: docs/9.x/configuration.md:block 54 (quote)
+msgid "**Note** The length of the key provided should match the key length required by the encryption cipher being used. By default, Laravel will use the `AES-256-CBC` cipher which requires a 32 character key. You are free to use any cipher supported by Laravel's [encrypter](/docs/{{version}}/encryption) by passing the `--cipher` option when invoking the command."
+msgstr ""
+
+#: docs/9.x/configuration.md:block 72 (paragraph)
+msgid "You may easily access your configuration values using the global `config` function from anywhere in your application. The configuration values may be accessed using \"dot\" syntax, which includes the name of the file and option you wish to access. A default value may also be specified and will be returned if the configuration option does not exist:"
+msgstr ""
+
+#: docs/9.x/configuration.md:block 74 (paragraph)
+msgid "To set configuration values at runtime, pass an array to the `config` function:"
+msgstr ""
+
+#: docs/9.x/configuration.md:block 82 (quote)
+msgid "**Warning** If you execute the `config:cache` command during your deployment process, you should be sure that you are only calling the `env` function from within your configuration files. Once the configuration has been cached, the `.env` file will not be loaded; therefore, the `env` function will only return external, system level environment variables."
+msgstr ""
+
+#: docs/9.x/configuration.md:block 103 (quote)
+msgid "**Note** Your maintenance mode secret should typically consist of alpha-numeric characters and, optionally, dashes. You should avoid using characters that have special meaning in URLs such as `?` or `&`."
+msgstr ""
+
+#: docs/9.x/configuration.md:block 117 (quote)
+msgid "**Note** You may customize the default maintenance mode template by defining your own template at `resources/views/errors/503.blade.php`."
 msgstr ""

@@ -39,7 +39,7 @@ msgid "[Preventing Task Overlaps](#preventing-task-overlaps)"
 msgstr ""
 
 #: docs/10.x/scheduling.md:block 2 (unordered list)
-msgid "[Running Tasks On One Server](#running-tasks-on-one-server)"
+msgid "[Running Tasks on One Server](#running-tasks-on-one-server)"
 msgstr ""
 
 #: docs/10.x/scheduling.md:block 2 (unordered list)
@@ -51,7 +51,7 @@ msgid "[Maintenance Mode](#maintenance-mode)"
 msgstr ""
 
 #: docs/10.x/scheduling.md:block 2 (unordered list)
-msgid "[Running The Scheduler](#running-the-scheduler)"
+msgid "[Running the Scheduler](#running-the-scheduler)"
 msgstr ""
 
 #: docs/10.x/scheduling.md:block 2 (unordered list)
@@ -59,7 +59,7 @@ msgid "[Sub-Minute Scheduled Tasks](#sub-minute-scheduled-tasks)"
 msgstr ""
 
 #: docs/10.x/scheduling.md:block 2 (unordered list)
-msgid "[Running The Scheduler Locally](#running-the-scheduler-locally)"
+msgid "[Running the Scheduler Locally](#running-the-scheduler-locally)"
 msgstr ""
 
 #: docs/10.x/scheduling.md:block 2 (unordered list)
@@ -781,7 +781,7 @@ msgid ""
 msgstr ""
 
 #: docs/10.x/scheduling.md:block 71 (quote)
-msgid "**Warning** Remember that some timezones utilize daylight savings time. When daylight saving time changes occur, your scheduled task may run twice or even not run at all. For this reason, we recommend avoiding timezone scheduling when possible."
+msgid "[!WARNING] Remember that some timezones utilize daylight savings time. When daylight saving time changes occur, your scheduled task may run twice or even not run at all. For this reason, we recommend avoiding timezone scheduling when possible."
 msgstr ""
 
 #: docs/10.x/scheduling.md:block 73 (header)
@@ -813,11 +813,11 @@ msgid "Behind the scenes, the `withoutOverlapping` method utilizes your applicat
 msgstr ""
 
 #: docs/10.x/scheduling.md:block 81 (header)
-msgid "Running Tasks On One Server"
+msgid "Running Tasks on One Server"
 msgstr ""
 
 #: docs/10.x/scheduling.md:block 82 (quote)
-msgid "**Warning** To utilize this feature, your application must be using the `database`, `memcached`, `dynamodb`, or `redis` cache driver as your application's default cache driver. In addition, all servers must be communicating with the same central cache server."
+msgid "[!WARNING] To utilize this feature, your application must be using the `database`, `memcached`, `dynamodb`, or `redis` cache driver as your application's default cache driver. In addition, all servers must be communicating with the same central cache server."
 msgstr ""
 
 #: docs/10.x/scheduling.md:block 83 (paragraph)
@@ -885,7 +885,7 @@ msgid ""
 msgstr ""
 
 #: docs/10.x/scheduling.md:block 96 (quote)
-msgid "**Warning** The `runInBackground` method may only be used when scheduling tasks via the `command` and `exec` methods."
+msgid "[!WARNING] The `runInBackground` method may only be used when scheduling tasks via the `command` and `exec` methods."
 msgstr ""
 
 #: docs/10.x/scheduling.md:block 98 (header)
@@ -901,7 +901,7 @@ msgid "$schedule->command('emails:send')->evenInMaintenanceMode();\n"
 msgstr ""
 
 #: docs/10.x/scheduling.md:block 102 (header)
-msgid "Running The Scheduler"
+msgid "Running the Scheduler"
 msgstr ""
 
 #: docs/10.x/scheduling.md:block 103 (paragraph)
@@ -965,7 +965,7 @@ msgid "php artisan schedule:interrupt\n"
 msgstr ""
 
 #: docs/10.x/scheduling.md:block 119 (header)
-msgid "Running The Scheduler Locally"
+msgid "Running the Scheduler Locally"
 msgstr ""
 
 #: docs/10.x/scheduling.md:block 120 (paragraph)
@@ -1026,7 +1026,7 @@ msgid ""
 msgstr ""
 
 #: docs/10.x/scheduling.md:block 132 (quote)
-msgid "**Warning** The `emailOutputTo`, `emailOutputOnFailure`, `sendOutputTo`, and `appendOutputTo` methods are exclusive to the `command` and `exec` methods."
+msgid "[!WARNING] The `emailOutputTo`, `emailOutputOnFailure`, `sendOutputTo`, and `appendOutputTo` methods are exclusive to the `command` and `exec` methods."
 msgstr ""
 
 #: docs/10.x/scheduling.md:block 134 (header)
@@ -1169,6 +1169,406 @@ msgid ""
 "];\n"
 msgstr ""
 
+#: docs/11.x/scheduling.md:block 6 (paragraph)
+msgid "Laravel's command scheduler offers a fresh approach to managing scheduled tasks on your server. The scheduler allows you to fluently and expressively define your command schedule within your Laravel application itself. When using the scheduler, only a single cron entry is needed on your server. Your task schedule is typically defined in your application's `routes/console.php` file."
+msgstr ""
+
+#: docs/11.x/scheduling.md:block 9 (paragraph)
+msgid "You may define all of your scheduled tasks in your application's `routes/console.php` file. To get started, let's take a look at an example. In this example, we will schedule a closure to be called every day at midnight. Within the closure we will execute a database query to clear a table:"
+msgstr ""
+
+#: docs/11.x/scheduling.md:block 10 (code)
+msgid ""
+"<?php\n"
+"\n"
+"use Illuminate\\Support\\Facades\\DB;\n"
+"use Illuminate\\Support\\Facades\\Schedule;\n"
+"\n"
+"Schedule::call(function () {\n"
+"    DB::table('recent_users')->delete();\n"
+"})->daily();\n"
+msgstr ""
+
+#: docs/11.x/scheduling.md:block 12 (code)
+msgid "Schedule::call(new DeleteRecentUsers)->daily();\n"
+msgstr ""
+
+#: docs/11.x/scheduling.md:block 13 (paragraph)
+msgid "If you prefer to reserve your `routes/console.php` file for command definitions only, you may use the `withSchedule` method in your application's `bootstrap/app.php` file to define your scheduled tasks. This method accepts a closure that receives an instance of the scheduler:"
+msgstr ""
+
+#: docs/11.x/scheduling.md:block 14 (code)
+msgid ""
+"use Illuminate\\Console\\Scheduling\\Schedule;\n"
+"\n"
+"->withSchedule(function (Schedule $schedule) {\n"
+"    $schedule->call(new DeleteRecentUsers)->daily();\n"
+"})\n"
+msgstr ""
+
+#: docs/11.x/scheduling.md:block 21 (code)
+msgid ""
+"use App\\Console\\Commands\\SendEmailsCommand;\n"
+"use Illuminate\\Support\\Facades\\Schedule;\n"
+"\n"
+"Schedule::command('emails:send Taylor --force')->daily();\n"
+"\n"
+"Schedule::command(SendEmailsCommand::class, ['Taylor', '--force'])->daily();\n"
+msgstr ""
+
+#: docs/11.x/scheduling.md:block 23 (header)
+msgid "Scheduling Artisan Closure Commands"
+msgstr ""
+
+#: docs/11.x/scheduling.md:block 24 (paragraph)
+msgid "If you want to schedule an Artisan command defined by a closure, you may chain the scheduling related methods after the command's definition:"
+msgstr ""
+
+#: docs/11.x/scheduling.md:block 25 (code)
+msgid ""
+"Artisan::command('delete:recent-users', function () {\n"
+"    DB::table('recent_users')->delete();\n"
+"})->purpose('Delete recent users')->daily();\n"
+msgstr ""
+
+#: docs/11.x/scheduling.md:block 26 (paragraph)
+msgid "If you need to pass arguments to the closure command, you may provide them to the `schedule` method:"
+msgstr ""
+
+#: docs/11.x/scheduling.md:block 27 (code)
+msgid ""
+"Artisan::command('emails:send {user} {--force}', function ($user) {\n"
+"    // ...\n"
+"})->purpose('Send emails to the specified user')->schedule(['Taylor', '--force'])->daily();\n"
+msgstr ""
+
+#: docs/11.x/scheduling.md:block 31 (code)
+msgid ""
+"use App\\Jobs\\Heartbeat;\n"
+"use Illuminate\\Support\\Facades\\Schedule;\n"
+"\n"
+"Schedule::job(new Heartbeat)->everyFiveMinutes();\n"
+msgstr ""
+
+#: docs/11.x/scheduling.md:block 33 (code)
+msgid ""
+"use App\\Jobs\\Heartbeat;\n"
+"use Illuminate\\Support\\Facades\\Schedule;\n"
+"\n"
+"// Dispatch the job to the \"heartbeats\" queue on the \"sqs\" connection...\n"
+"Schedule::job(new Heartbeat, 'heartbeats', 'sqs')->everyFiveMinutes();\n"
+msgstr ""
+
+#: docs/11.x/scheduling.md:block 37 (code)
+msgid ""
+"use Illuminate\\Support\\Facades\\Schedule;\n"
+"\n"
+"Schedule::exec('node /home/forge/script.js')->daily();\n"
+msgstr ""
+
+#: docs/11.x/scheduling.md:block 45 (code)
+msgid ""
+"use Illuminate\\Support\\Facades\\Schedule;\n"
+"\n"
+"// Run once per week on Monday at 1 PM...\n"
+"Schedule::call(function () {\n"
+"    // ...\n"
+"})->weekly()->mondays()->at('13:00');\n"
+"\n"
+"// Run hourly from 8 AM to 5 PM on weekdays...\n"
+"Schedule::command('foo')\n"
+"          ->weekdays()\n"
+"          ->hourly()\n"
+"          ->timezone('America/Chicago')\n"
+"          ->between('8:00', '17:00');\n"
+msgstr ""
+
+#: docs/11.x/scheduling.md:block 53 (code)
+msgid ""
+"use Illuminate\\Support\\Facades\\Schedule;\n"
+"\n"
+"Schedule::command('emails:send')\n"
+"                ->hourly()\n"
+"                ->days([0, 3]);\n"
+msgstr ""
+
+#: docs/11.x/scheduling.md:block 55 (code)
+msgid ""
+"use Illuminate\\Support\\Facades;\n"
+"use Illuminate\\Console\\Scheduling\\Schedule;\n"
+"\n"
+"Facades\\Schedule::command('emails:send')\n"
+"                ->hourly()\n"
+"                ->days([Schedule::SUNDAY, Schedule::WEDNESDAY]);\n"
+msgstr ""
+
+#: docs/11.x/scheduling.md:block 59 (code)
+msgid ""
+"Schedule::command('emails:send')\n"
+"                    ->hourly()\n"
+"                    ->between('7:00', '22:00');\n"
+msgstr ""
+
+#: docs/11.x/scheduling.md:block 61 (code)
+msgid ""
+"Schedule::command('emails:send')\n"
+"                    ->hourly()\n"
+"                    ->unlessBetween('23:00', '4:00');\n"
+msgstr ""
+
+#: docs/11.x/scheduling.md:block 65 (code)
+msgid ""
+"Schedule::command('emails:send')->daily()->when(function () {\n"
+"    return true;\n"
+"});\n"
+msgstr ""
+
+#: docs/11.x/scheduling.md:block 67 (code)
+msgid ""
+"Schedule::command('emails:send')->daily()->skip(function () {\n"
+"    return true;\n"
+"});\n"
+msgstr ""
+
+#: docs/11.x/scheduling.md:block 72 (code)
+msgid ""
+"Schedule::command('emails:send')\n"
+"            ->daily()\n"
+"            ->environments(['staging', 'production']);\n"
+msgstr ""
+
+#: docs/11.x/scheduling.md:block 76 (code)
+msgid ""
+"use Illuminate\\Support\\Facades\\Schedule;\n"
+"\n"
+"Schedule::command('report:generate')\n"
+"         ->timezone('America/New_York')\n"
+"         ->at('2:00')\n"
+msgstr ""
+
+#: docs/11.x/scheduling.md:block 77 (paragraph)
+msgid "If you are repeatedly assigning the same timezone to all of your scheduled tasks, you can specify which timezone should be assigned to all schedules by defining a `schedule_timezone` option within your application's `app` configuration file:"
+msgstr ""
+
+#: docs/11.x/scheduling.md:block 78 (code)
+msgid ""
+"'timezone' => env('APP_TIMEZONE', 'UTC'),\n"
+"\n"
+"'schedule_timezone' => 'America/Chicago',\n"
+msgstr ""
+
+#: docs/11.x/scheduling.md:block 83 (code)
+msgid ""
+"use Illuminate\\Support\\Facades\\Schedule;\n"
+"\n"
+"Schedule::command('emails:send')->withoutOverlapping();\n"
+msgstr ""
+
+#: docs/11.x/scheduling.md:block 86 (code)
+msgid "Schedule::command('emails:send')->withoutOverlapping(10);\n"
+msgstr ""
+
+#: docs/11.x/scheduling.md:block 93 (code)
+msgid ""
+"use Illuminate\\Support\\Facades\\Schedule;\n"
+"\n"
+"Schedule::command('report:generate')\n"
+"                ->fridays()\n"
+"                ->at('17:00')\n"
+"                ->onOneServer();\n"
+msgstr ""
+
+#: docs/11.x/scheduling.md:block 97 (code)
+msgid ""
+"Schedule::job(new CheckUptime('https://laravel.com'))\n"
+"            ->name('check_uptime:laravel.com')\n"
+"            ->everyFiveMinutes()\n"
+"            ->onOneServer();\n"
+"\n"
+"Schedule::job(new CheckUptime('https://vapor.laravel.com'))\n"
+"            ->name('check_uptime:vapor.laravel.com')\n"
+"            ->everyFiveMinutes()\n"
+"            ->onOneServer();\n"
+msgstr ""
+
+#: docs/11.x/scheduling.md:block 99 (code)
+msgid ""
+"Schedule::call(fn () => User::resetApiRequestCount())\n"
+"    ->name('reset-api-request-count')\n"
+"    ->daily()\n"
+"    ->onOneServer();\n"
+msgstr ""
+
+#: docs/11.x/scheduling.md:block 103 (code)
+msgid ""
+"use Illuminate\\Support\\Facades\\Schedule;\n"
+"\n"
+"Schedule::command('analytics:report')\n"
+"         ->daily()\n"
+"         ->runInBackground();\n"
+msgstr ""
+
+#: docs/11.x/scheduling.md:block 108 (code)
+msgid "Schedule::command('emails:send')->evenInMaintenanceMode();\n"
+msgstr ""
+
+#: docs/11.x/scheduling.md:block 117 (code)
+msgid ""
+"use Illuminate\\Support\\Facades\\Schedule;\n"
+"\n"
+"Schedule::call(function () {\n"
+"    DB::table('recent_users')->delete();\n"
+"})->everySecond();\n"
+msgstr ""
+
+#: docs/11.x/scheduling.md:block 119 (paragraph)
+msgid "Since sub-minute tasks that take longer than expected to run could delay the execution of later sub-minute tasks, it is recommended that all sub-minute tasks dispatch queued jobs or background commands to handle the actual task processing:"
+msgstr ""
+
+#: docs/11.x/scheduling.md:block 120 (code)
+msgid ""
+"use App\\Jobs\\DeleteRecentUsers;\n"
+"\n"
+"Schedule::job(new DeleteRecentUsers)->everyTenSeconds();\n"
+"\n"
+"Schedule::command('users:delete')->everyTenSeconds()->runInBackground();\n"
+msgstr ""
+
+#: docs/11.x/scheduling.md:block 133 (code)
+msgid ""
+"use Illuminate\\Support\\Facades\\Schedule;\n"
+"\n"
+"Schedule::command('emails:send')\n"
+"         ->daily()\n"
+"         ->sendOutputTo($filePath);\n"
+msgstr ""
+
+#: docs/11.x/scheduling.md:block 135 (code)
+msgid ""
+"Schedule::command('emails:send')\n"
+"         ->daily()\n"
+"         ->appendOutputTo($filePath);\n"
+msgstr ""
+
+#: docs/11.x/scheduling.md:block 137 (code)
+msgid ""
+"Schedule::command('report:generate')\n"
+"         ->daily()\n"
+"         ->sendOutputTo($filePath)\n"
+"         ->emailOutputTo('taylor@example.com');\n"
+msgstr ""
+
+#: docs/11.x/scheduling.md:block 139 (code)
+msgid ""
+"Schedule::command('report:generate')\n"
+"         ->daily()\n"
+"         ->emailOutputOnFailure('taylor@example.com');\n"
+msgstr ""
+
+#: docs/11.x/scheduling.md:block 144 (code)
+msgid ""
+"use Illuminate\\Support\\Facades\\Schedule;\n"
+"\n"
+"Schedule::command('emails:send')\n"
+"         ->daily()\n"
+"         ->before(function () {\n"
+"             // The task is about to execute...\n"
+"         })\n"
+"         ->after(function () {\n"
+"             // The task has executed...\n"
+"         });\n"
+msgstr ""
+
+#: docs/11.x/scheduling.md:block 146 (code)
+msgid ""
+"Schedule::command('emails:send')\n"
+"         ->daily()\n"
+"         ->onSuccess(function () {\n"
+"             // The task succeeded...\n"
+"         })\n"
+"         ->onFailure(function () {\n"
+"             // The task failed...\n"
+"         });\n"
+msgstr ""
+
+#: docs/11.x/scheduling.md:block 148 (code)
+msgid ""
+"use Illuminate\\Support\\Stringable;\n"
+"\n"
+"Schedule::command('emails:send')\n"
+"         ->daily()\n"
+"         ->onSuccess(function (Stringable $output) {\n"
+"             // The task succeeded...\n"
+"         })\n"
+"         ->onFailure(function (Stringable $output) {\n"
+"             // The task failed...\n"
+"         });\n"
+msgstr ""
+
+#: docs/11.x/scheduling.md:block 152 (code)
+msgid ""
+"Schedule::command('emails:send')\n"
+"         ->daily()\n"
+"         ->pingBefore($url)\n"
+"         ->thenPing($url);\n"
+msgstr ""
+
+#: docs/11.x/scheduling.md:block 154 (code)
+msgid ""
+"Schedule::command('emails:send')\n"
+"         ->daily()\n"
+"         ->pingBeforeIf($condition, $url)\n"
+"         ->thenPingIf($condition, $url);\n"
+msgstr ""
+
+#: docs/11.x/scheduling.md:block 156 (code)
+msgid ""
+"Schedule::command('emails:send')\n"
+"         ->daily()\n"
+"         ->pingOnSuccess($successUrl)\n"
+"         ->pingOnFailure($failureUrl);\n"
+msgstr ""
+
+#: docs/11.x/scheduling.md:block 159 (paragraph)
+msgid "Laravel dispatches a variety of [events](/docs/{{version}}/events) during the scheduling process. You may [define listeners](/docs/{{version}}/events) for any of the following events:"
+msgstr ""
+
+#: docs/11.x/scheduling.md:block 160 (table)
+msgid "Event Name"
+msgstr ""
+
+#: docs/11.x/scheduling.md:block 160 (table)
+msgid "`Illuminate\\Console\\Events\\ScheduledTaskStarting`"
+msgstr ""
+
+#: docs/11.x/scheduling.md:block 160 (table)
+msgid "`Illuminate\\Console\\Events\\ScheduledTaskFinished`"
+msgstr ""
+
+#: docs/11.x/scheduling.md:block 160 (table)
+msgid "`Illuminate\\Console\\Events\\ScheduledBackgroundTaskFinished`"
+msgstr ""
+
+#: docs/11.x/scheduling.md:block 160 (table)
+msgid "`Illuminate\\Console\\Events\\ScheduledTaskSkipped`"
+msgstr ""
+
+#: docs/11.x/scheduling.md:block 160 (table)
+msgid "`Illuminate\\Console\\Events\\ScheduledTaskFailed`"
+msgstr ""
+
+#: docs/8.x/scheduling.md:block 2 (unordered list)
+msgid "[Running Tasks On One Server](#running-tasks-on-one-server)"
+msgstr ""
+
+#: docs/8.x/scheduling.md:block 2 (unordered list)
+msgid "[Running The Scheduler](#running-the-scheduler)"
+msgstr ""
+
+#: docs/8.x/scheduling.md:block 2 (unordered list)
+msgid "[Running The Scheduler Locally](#running-the-scheduler-locally)"
+msgstr ""
+
 #: docs/8.x/scheduling.md:block 10 (code)
 msgid ""
 "<?php\n"
@@ -1244,6 +1644,10 @@ msgstr ""
 msgid "{note} Remember that some timezones utilize daylight savings time. When daylight saving time changes occur, your scheduled task may run twice or even not run at all. For this reason, we recommend avoiding timezone scheduling when possible."
 msgstr ""
 
+#: docs/8.x/scheduling.md:block 76 (header)
+msgid "Running Tasks On One Server"
+msgstr ""
+
 #: docs/8.x/scheduling.md:block 77 (quote)
 msgid "{note} To utilize this feature, your application must be using the `database`, `memcached`, `dynamodb`, or `redis` cache driver as your application's default cache driver. In addition, all servers must be communicating with the same central cache server."
 msgstr ""
@@ -1252,10 +1656,34 @@ msgstr ""
 msgid "{note} The `runInBackground` method may only be used when scheduling tasks via the `command` and `exec` methods."
 msgstr ""
 
+#: docs/8.x/scheduling.md:block 91 (header)
+msgid "Running The Scheduler"
+msgstr ""
+
+#: docs/8.x/scheduling.md:block 96 (header)
+msgid "Running The Scheduler Locally"
+msgstr ""
+
 #: docs/8.x/scheduling.md:block 109 (quote)
 msgid "{note} The `emailOutputTo`, `emailOutputOnFailure`, `sendOutputTo`, and `appendOutputTo` methods are exclusive to the `command` and `exec` methods."
 msgstr ""
 
 #: docs/9.x/scheduling.md:block 33 (table)
 msgid "`->everyOddHour();`"
+msgstr ""
+
+#: docs/9.x/scheduling.md:block 67 (quote)
+msgid "**Warning** Remember that some timezones utilize daylight savings time. When daylight saving time changes occur, your scheduled task may run twice or even not run at all. For this reason, we recommend avoiding timezone scheduling when possible."
+msgstr ""
+
+#: docs/9.x/scheduling.md:block 78 (quote)
+msgid "**Warning** To utilize this feature, your application must be using the `database`, `memcached`, `dynamodb`, or `redis` cache driver as your application's default cache driver. In addition, all servers must be communicating with the same central cache server."
+msgstr ""
+
+#: docs/9.x/scheduling.md:block 92 (quote)
+msgid "**Warning** The `runInBackground` method may only be used when scheduling tasks via the `command` and `exec` methods."
+msgstr ""
+
+#: docs/9.x/scheduling.md:block 116 (quote)
+msgid "**Warning** The `emailOutputTo`, `emailOutputOnFailure`, `sendOutputTo`, and `appendOutputTo` methods are exclusive to the `command` and `exec` methods."
 msgstr ""

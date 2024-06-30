@@ -10,7 +10,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
-"PO-Revision-Date: 2023-02-11 10:27\n"
+"PO-Revision-Date: 2024-06-30 09:01\n"
 
 #: docs/10.x/lifecycle.md:block 1 (header)
 msgid "Request Lifecycle"
@@ -45,8 +45,8 @@ msgid "[Finishing Up](#finishing-up)"
 msgstr "[結束](#finishing-up)"
 
 #: docs/10.x/lifecycle.md:block 2 (unordered list)
-msgid "[Focus On Service Providers](#focus-on-service-providers)"
-msgstr "[專注於 Service Provider](#focus-on-service-providers)"
+msgid "[Focus on Service Providers](#focus-on-service-providers)"
+msgstr ""
 
 #: docs/10.x/lifecycle.md:block 4 (header)
 msgid "Introduction"
@@ -145,8 +145,8 @@ msgid "Finally, once the response travels back through the middleware, the HTTP 
 msgstr "最後，當 Response 回頭走過所有 Middleware 後，HTTP Kernel 的 `handle` 方法就會回傳 Response 物件，然後 `index.php` 檔案則會呼叫這個 Response 物件上的 `send` 方法。`send` 方法會將 Response 的內容送到使用者的網頁瀏覽器上。到這裡，我們走完整個 Laravel Request 生命週期的旅程了！"
 
 #: docs/10.x/lifecycle.md:block 35 (header)
-msgid "Focus On Service Providers"
-msgstr "專注於 Service Provider"
+msgid "Focus on Service Providers"
+msgstr ""
 
 #: docs/10.x/lifecycle.md:block 36 (paragraph)
 msgid "Service providers are truly the key to bootstrapping a Laravel application. The application instance is created, the service providers are registered, and the request is handed to the bootstrapped application. It's really that simple!"
@@ -160,6 +160,42 @@ msgstr "稍微瞭解 Laravel 應用程式是怎麼通過 Service Provider 製作
 msgid "By default, the `AppServiceProvider` is fairly empty. This provider is a great place to add your application's own bootstrapping and service container bindings. For large applications, you may wish to create several service providers, each with more granular bootstrapping for specific services used by your application."
 msgstr "預設情況下，`AppServiceProvider` 很空。這個 Provider 是為你的應用程式加上啟動程式以及 Service Container 繫結中的一個絕佳地點。對於大型的應用程式，則可能會想建立多個 Service Provider，每個 Service Provider 負責啟動應用程式中的一個特定服務。"
 
+#: docs/11.x/lifecycle.md:block 15 (paragraph)
+msgid "Next, the incoming request is sent to either the HTTP kernel or the console kernel, using the `handleRequest` or `handleCommand` methods of the application instance, depending on the type of request entering the application. These two kernels serve as the central location through which all requests flow. For now, let's just focus on the HTTP kernel, which is an instance of `Illuminate\\Foundation\\Http\\Kernel`."
+msgstr ""
+
+#: docs/11.x/lifecycle.md:block 16 (paragraph)
+msgid "The HTTP kernel defines an array of `bootstrappers` that will be run before the request is executed. These bootstrappers configure error handling, configure logging, [detect the application environment](/docs/{{version}}/configuration#environment-configuration), and perform other tasks that need to be done before the request is actually handled. Typically, these classes handle internal Laravel configuration that you do not need to worry about."
+msgstr ""
+
+#: docs/11.x/lifecycle.md:block 17 (paragraph)
+msgid "The HTTP kernel is also responsible for passing the request through the application's middleware stack. These middleware handle reading and writing the [HTTP session](/docs/{{version}}/session), determining if the application is in maintenance mode, [verifying the CSRF token](/docs/{{version}}/csrf), and more. We'll talk more about these soon."
+msgstr ""
+
+#: docs/11.x/lifecycle.md:block 21 (paragraph)
+msgid "One of the most important kernel bootstrapping actions is loading the [service providers](/docs/{{version}}/providers) for your application. Service providers are responsible for bootstrapping all of the framework's various components, such as the database, queue, validation, and routing components."
+msgstr ""
+
+#: docs/11.x/lifecycle.md:block 24 (paragraph)
+msgid "While the framework internally uses dozens of service providers, you also have the option to create your own. You can find a list of the user-defined or third-party service providers that your application is using in the `bootstrap/providers.php` file."
+msgstr ""
+
+#: docs/11.x/lifecycle.md:block 28 (paragraph)
+msgid "Middleware provide a convenient mechanism for filtering or examining HTTP requests entering your application. For example, Laravel includes a middleware that verifies if the user of your application is authenticated. If the user is not authenticated, the middleware will redirect the user to the login screen. However, if the user is authenticated, the middleware will allow the request to proceed further into the application. Some middleware are assigned to all routes within the application, like `PreventRequestsDuringMaintenance`, while some are only assigned to specific routes or route groups. You can learn more about middleware by reading the complete [middleware documentation](/docs/{{version}}/middleware)."
+msgstr ""
+
+#: docs/11.x/lifecycle.md:block 33 (paragraph)
+msgid "Finally, once the response travels back through the middleware, the HTTP kernel's `handle` method returns the response object to the `handleRequest` of the application instance, and this method calls the `send` method on the returned response. The `send` method sends the response content to the user's web browser. We've now completed our journey through the entire Laravel request lifecycle!"
+msgstr ""
+
+#: docs/11.x/lifecycle.md:block 37 (paragraph)
+msgid "Having a firm grasp of how a Laravel application is built and bootstrapped via service providers is very valuable. Your application's user-defined service providers are stored in the `app/Providers` directory."
+msgstr ""
+
+#: docs/8.x/lifecycle.md:block 2 (unordered list)
+msgid "[Focus On Service Providers](#focus-on-service-providers)"
+msgstr "[專注於 Service Provider](#focus-on-service-providers)"
+
 #: docs/8.x/lifecycle.md:block 21 (paragraph)
 msgid "One of the most important kernel bootstrapping actions is loading the [service providers](/docs/{{version}}/providers) for your application. All of the service providers for the application are configured in the `config/app.php` configuration file's `providers` array."
 msgstr "Kernel 啟動過程中最重要的一部分就是載入應用程式的 [Service Provider](/docs/{{version}}/providers)。應用程式中，所有的 Service Provider 都設定在 `config/app.php` 設定檔的 `providers` 陣列中。"
@@ -167,4 +203,12 @@ msgstr "Kernel 啟動過程中最重要的一部分就是載入應用程式的 [
 #: docs/8.x/lifecycle.md:block 23 (paragraph)
 msgid "Service providers are responsible for bootstrapping all of the framework's various components, such as the database, queue, validation, and routing components. Essentially every major feature offered by Laravel is bootstrapped and configured by a service provider. Since they bootstrap and configure so many features offered by the framework, service providers are the most important aspect of the entire Laravel bootstrap process."
 msgstr "Service Provider 還負責啟動 Laravel 中各種框架元件，如資料庫、佇列、認證、路由⋯⋯等。Laravel 提供的所有主要功能都由 Service Provider 進行設定。由於這些 Service Provider 負責啟動與設定 Laravel 框架中很多的功能，因此在 Laravel 啟動過程中，Service Provider 時最重要的一環。"
+
+#: docs/8.x/lifecycle.md:block 35 (header)
+msgid "Focus On Service Providers"
+msgstr "專注於 Service Provider"
+
+#: docs/master/lifecycle.md:block 17 (paragraph)
+msgid "The HTTP kernel is also responsible for passing the request though the application's middleware stack. These middleware handle reading and writing the [HTTP session](/docs/{{version}}/session), determining if the application is in maintenance mode, [verifying the CSRF token](/docs/{{version}}/csrf), and more. We'll talk more about these soon."
+msgstr ""
 

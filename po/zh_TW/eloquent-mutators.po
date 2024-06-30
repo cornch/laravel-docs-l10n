@@ -10,7 +10,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
-"PO-Revision-Date: 2023-02-11 12:59\n"
+"PO-Revision-Date: 2024-06-30 08:18\n"
 
 #: docs/10.x/eloquent-mutators.md:block 1 (header)
 msgid "Eloquent: Mutators & Casting"
@@ -443,6 +443,10 @@ msgid "`float`"
 msgstr "`float`"
 
 #: docs/10.x/eloquent-mutators.md:block 45 (unordered list)
+msgid "`hashed`"
+msgstr "`hashed`"
+
+#: docs/10.x/eloquent-mutators.md:block 45 (unordered list)
 msgid "`integer`"
 msgstr "`integer`"
 
@@ -525,16 +529,16 @@ msgstr "$user->mergeCasts([\n"
 "]);\n"
 
 #: docs/10.x/eloquent-mutators.md:block 53 (quote)
-msgid "**Warning** Attributes that are `null` will not be cast. In addition, you should never define a cast (or an attribute) that has the same name as a relationship."
-msgstr "**Warning** `null` 的屬性將不會進行型別轉換。此外，定義型別轉換 (或屬性) 時，也不應有相同名稱的關聯。"
+msgid "**Warning** Attributes that are `null` will not be cast. In addition, you should never define a cast (or an attribute) that has the same name as a relationship or assign a cast to the model's primary key."
+msgstr "**Warning** `null` 的屬性將不會進行型別轉換。此外，定義型別轉換 (或屬性) 時，其名稱不應與關聯的名稱相同，且也不可為 Model 的主索引鍵指派型別轉換。"
 
 #: docs/10.x/eloquent-mutators.md:block 55 (header)
 msgid "Stringable Casting"
 msgstr "Stringable 的型別轉換"
 
 #: docs/10.x/eloquent-mutators.md:block 56 (paragraph)
-msgid "You may use the `Illuminate\\Database\\Eloquent\\Casts\\AsStringable` cast class to cast a model attribute to a [fluent `Illuminate\\Support\\Stringable` object](/docs/{{version}}/helpers#fluent-strings-method-list):"
-msgstr "可以使用 `Illuminate\\Database\\Eloquent\\Casts\\AsStringable` 型別轉換類別來講 Model 屬性轉換為 [Fluent `Illuminate\\Support\\Stringable` 物件] (/docs/{{version}}/helpers#fluent-strings-method-list):"
+msgid "You may use the `Illuminate\\Database\\Eloquent\\Casts\\AsStringable` cast class to cast a model attribute to a [fluent `Illuminate\\Support\\Stringable` object](/docs/{{version}}/strings#fluent-strings-method-list):"
+msgstr "可以使用 `Illuminate\\Database\\Eloquent\\Casts\\AsStringable` 型別轉換類別來講 Model 屬性轉換為 [Fluent `Illuminate\\Support\\Stringable` 物件] (/docs/{{version}}/strings#fluent-strings-method-list):"
 
 #: docs/10.x/eloquent-mutators.md:block 57 (code)
 msgid "<?php\n\n"
@@ -696,19 +700,45 @@ msgstr "use Illuminate\\Database\\Eloquent\\Casts\\AsCollection;\n\n"
 "    'options' => AsCollection::class,\n"
 "];\n"
 
-#: docs/10.x/eloquent-mutators.md:block 75 (header)
+#: docs/10.x/eloquent-mutators.md:block 74 (paragraph)
+msgid "If you would like the `AsCollection` cast to instantiate a custom collection class instead of Laravel's base collection class, you may provide the collection class name as a cast argument:"
+msgstr "若想讓 `AsCollection` 型別轉換使用自定 Collection 類別而不用 Laravel 的基礎 Collection 類別，可以使用型別轉換引數的方式提供 Collection 類別的名稱："
+
+#: docs/10.x/eloquent-mutators.md:block 75 (code)
+msgid "use App\\Collections\\OptionCollection;\n"
+"use Illuminate\\Database\\Eloquent\\Casts\\AsCollection;\n\n"
+"/**\n"
+" * The attributes that should be cast.\n"
+" *\n"
+" * @var array\n"
+" */\n"
+"protected $casts = [\n"
+"    'options' => AsCollection::class.':'.OptionCollection::class,\n"
+"];\n"
+msgstr "use App\\Collections\\OptionCollection;\n"
+"use Illuminate\\Database\\Eloquent\\Casts\\AsCollection;\n\n"
+"/**\n"
+" * The attributes that should be cast.\n"
+" *\n"
+" * @var array\n"
+" */\n"
+"protected $casts = [\n"
+"    'options' => AsCollection::class.':'.OptionCollection::class,\n"
+"];\n"
+
+#: docs/10.x/eloquent-mutators.md:block 77 (header)
 msgid "Date Casting"
 msgstr "日期的型別轉換"
 
-#: docs/10.x/eloquent-mutators.md:block 76 (paragraph)
+#: docs/10.x/eloquent-mutators.md:block 78 (paragraph)
 msgid "By default, Eloquent will cast the `created_at` and `updated_at` columns to instances of [Carbon](https://github.com/briannesbitt/Carbon), which extends the PHP `DateTime` class and provides an assortment of helpful methods. You may cast additional date attributes by defining additional date casts within your model's `$casts` property array. Typically, dates should be cast using the `datetime` or `immutable_datetime` cast types."
 msgstr "預設情況下，Eloquent 會將 `created_at` 與 `updated_at` 欄位轉換為 [Carbon](https://github.com/briannesbitt/Carbon) 實體。Carbon 繼承自 PHP 的 `DateTime` 類別，並提供了各種實用方法。可以通過往 Model 的 `$casts` 屬性陣列內定義額外的日期型別轉換來給其他日期屬性進行轉換。通常來說，日期應使用 `datetime` 或 `immutable_datetime` 型別轉換類型。"
 
-#: docs/10.x/eloquent-mutators.md:block 77 (paragraph)
+#: docs/10.x/eloquent-mutators.md:block 79 (paragraph)
 msgid "When defining a `date` or `datetime` cast, you may also specify the date's format. This format will be used when the [model is serialized to an array or JSON](/docs/{{version}}/eloquent-serialization):"
 msgstr "在定義 `date` 或 `datetime` 型別轉換時，也可以指定日期的格式。該格式會在 [Model 被序列化成陣列或 JSON](/docs/{{version}}/eloquent-serialization) 時使用："
 
-#: docs/10.x/eloquent-mutators.md:block 78 (code)
+#: docs/10.x/eloquent-mutators.md:block 80 (code)
 msgid "/**\n"
 " * The attributes that should be cast.\n"
 " *\n"
@@ -726,15 +756,15 @@ msgstr "/**\n"
 "    'created_at' => 'datetime:Y-m-d',\n"
 "];\n"
 
-#: docs/10.x/eloquent-mutators.md:block 79 (paragraph)
+#: docs/10.x/eloquent-mutators.md:block 81 (paragraph)
 msgid "When a column is cast as a date, you may set the corresponding model attribute value to a UNIX timestamp, date string (`Y-m-d`), date-time string, or a `DateTime` / `Carbon` instance. The date's value will be correctly converted and stored in your database."
 msgstr "在將欄位轉換為日期時，可以將相應的 Model 屬性值設為 UNIX 時戳、日期字串 (`Y-m-d`)、日期與時間字串、或是 `DateTime` / `Carbon` 實體。日期的值會被正確地轉換並保存在資料庫中。"
 
-#: docs/10.x/eloquent-mutators.md:block 80 (paragraph)
+#: docs/10.x/eloquent-mutators.md:block 82 (paragraph)
 msgid "You may customize the default serialization format for all of your model's dates by defining a `serializeDate` method on your model. This method does not affect how your dates are formatted for storage in the database:"
 msgstr "在 Model 中定義 `serializeDate` 方法，即可為 Model 中所有的日期定義預設的序列化方法。改方法並不會影響日期儲存到資料庫時的格式化方法："
 
-#: docs/10.x/eloquent-mutators.md:block 81 (code)
+#: docs/10.x/eloquent-mutators.md:block 83 (code)
 msgid "/**\n"
 " * Prepare a date for array / JSON serialization.\n"
 " */\n"
@@ -750,11 +780,11 @@ msgstr "/**\n"
 "    return $date->format('Y-m-d');\n"
 "}\n"
 
-#: docs/10.x/eloquent-mutators.md:block 82 (paragraph)
+#: docs/10.x/eloquent-mutators.md:block 84 (paragraph)
 msgid "To specify the format that should be used when actually storing a model's dates within your database, you should define a `$dateFormat` property on your model:"
 msgstr "若要指定用來將 Model 日期保存在資料庫時使用的格式，可在 Model 中定義 `$dateFormat` 屬性："
 
-#: docs/10.x/eloquent-mutators.md:block 83 (code)
+#: docs/10.x/eloquent-mutators.md:block 85 (code)
 msgid "/**\n"
 " * The storage format of the model's date columns.\n"
 " *\n"
@@ -768,31 +798,27 @@ msgstr "/**\n"
 " */\n"
 "protected $dateFormat = 'U';\n"
 
-#: docs/10.x/eloquent-mutators.md:block 85 (header)
+#: docs/10.x/eloquent-mutators.md:block 87 (header)
 msgid "Date Casting, Serialization, & Timezones"
 msgstr "日期型別轉換、序列化、與時區"
 
-#: docs/10.x/eloquent-mutators.md:block 86 (paragraph)
-msgid "By default, the `date` and `datetime` casts will serialize dates to a UTC ISO-8601 date string (`1986-05-28T21:05:54.000000Z`), regardless of the timezone specified in your application's `timezone` configuration option. You are strongly encouraged to always use this serialization format, as well as to store your application's dates in the UTC timezone by not changing your application's `timezone` configuration option from its default `UTC` value. Consistently using the UTC timezone throughout your application will provide the maximum level of interoperability with other date manipulation libraries written in PHP and JavaScript."
-msgstr "預設情況下，不論專案的 `timezone` 設定選項設為哪個時區，`date` 與 `datetime` 都會將日期序列化為 UTC 的 ISO-8601 日期字串 (`1986-05-28T21:05:54.000000Z`)。我們強烈建議你保持使用這個序列化格式，也建議你只將專案的 `timezone` 設定選項設為預設的 `UTC`，並讓專案中以 UTC 來儲存所有的日期時間。在專案中保持一致地使用 UTC 時區，可為其他 PHP 與 JavaScript 的日期操作函示庫提供最大的互用性。"
+#: docs/10.x/eloquent-mutators.md:block 88 (paragraph)
+msgid "By default, the `date` and `datetime` casts will serialize dates to a UTC ISO-8601 date string (`YYYY-MM-DDTHH:MM:SS.uuuuuuZ`), regardless of the timezone specified in your application's `timezone` configuration option. You are strongly encouraged to always use this serialization format, as well as to store your application's dates in the UTC timezone by not changing your application's `timezone` configuration option from its default `UTC` value. Consistently using the UTC timezone throughout your application will provide the maximum level of interoperability with other date manipulation libraries written in PHP and JavaScript."
+msgstr "預設情況下，不論專案的 `timezone` 設定選項設為哪個時區，`date` 與 `datetime` 都會將日期序列化為 UTC 的 ISO-8601 日期字串 (`YYYY-MM-DDTHH:MM:SS.uuuuuuZ`)。我們強烈建議你保持使用這個序列化格式，也建議你只將專案的 `timezone` 設定選項設為預設的 `UTC`，並讓專案中以 UTC 來儲存所有的日期時間。在專案中保持一致地使用 UTC 時區，可為其他 PHP 與 JavaScript 的日期操作函示庫提供最大的互用性。"
 
-#: docs/10.x/eloquent-mutators.md:block 87 (paragraph)
+#: docs/10.x/eloquent-mutators.md:block 89 (paragraph)
 msgid "If a custom format is applied to the `date` or `datetime` cast, such as `datetime:Y-m-d H:i:s`, the inner timezone of the Carbon instance will be used during date serialization. Typically, this will be the timezone specified in your application's `timezone` configuration option."
 msgstr "若有在 `date` 或 `datetime` 型別轉換內提供自訂格式，如 `datetime:Y-m-d H:i:s`，則在進行日期序列化時，會使用 Carbon 實體內部的時區。一般來說，這個時區就是專案的 `timezone` 設定選項。"
 
-#: docs/10.x/eloquent-mutators.md:block 89 (header)
+#: docs/10.x/eloquent-mutators.md:block 91 (header)
 msgid "Enum Casting"
 msgstr "Enum 的型別轉換"
 
-#: docs/10.x/eloquent-mutators.md:block 90 (quote)
-msgid "**Warning** Enum casting is only available for PHP 8.1+."
-msgstr "**Warning** Enum 型別轉換只可在 PHP 8.1 以上使用。"
-
-#: docs/10.x/eloquent-mutators.md:block 91 (paragraph)
+#: docs/10.x/eloquent-mutators.md:block 92 (paragraph)
 msgid "Eloquent also allows you to cast your attribute values to PHP [Enums](https://www.php.net/manual/en/language.enumerations.backed.php). To accomplish this, you may specify the attribute and enum you wish to cast in your model's `$casts` property array:"
 msgstr "Eloquent 也能讓我們將屬性值轉換為 PHP 的 [Enum](https://www.php.net/manual/en/language.enumerations.backed.php)。若要轉換成 Enum，可在 Model 中的 `$casts` 屬性陣列中指定要型別轉換的屬性與 Enum："
 
-#: docs/10.x/eloquent-mutators.md:block 92 (code)
+#: docs/10.x/eloquent-mutators.md:block 93 (code)
 msgid "use App\\Enums\\ServerStatus;\n\n"
 "/**\n"
 " * The attributes that should be cast.\n"
@@ -812,11 +838,11 @@ msgstr "use App\\Enums\\ServerStatus;\n\n"
 "    'status' => ServerStatus::class,\n"
 "];\n"
 
-#: docs/10.x/eloquent-mutators.md:block 93 (paragraph)
+#: docs/10.x/eloquent-mutators.md:block 94 (paragraph)
 msgid "Once you have defined the cast on your model, the specified attribute will be automatically cast to and from an enum when you interact with the attribute:"
 msgstr "定義好 Model 的型別轉換後，每次存取該屬性時就會自動轉換對 Enum 進行轉換："
 
-#: docs/10.x/eloquent-mutators.md:block 94 (code)
+#: docs/10.x/eloquent-mutators.md:block 95 (code)
 msgid "if ($server->status == ServerStatus::Provisioned) {\n"
 "    $server->status = ServerStatus::Ready;\n\n"
 "    $server->save();\n"
@@ -826,15 +852,15 @@ msgstr "if ($server->status == ServerStatus::Provisioned) {\n"
 "    $server->save();\n"
 "}\n"
 
-#: docs/10.x/eloquent-mutators.md:block 96 (header)
+#: docs/10.x/eloquent-mutators.md:block 97 (header)
 msgid "Casting Arrays Of Enums"
 msgstr "型別轉換一組 Enum 的陣列"
 
-#: docs/10.x/eloquent-mutators.md:block 97 (paragraph)
+#: docs/10.x/eloquent-mutators.md:block 98 (paragraph)
 msgid "Sometimes you may need your model to store an array of enum values within a single column. To accomplish this, you may utilize the `AsEnumArrayObject` or `AsEnumCollection` casts provided by Laravel:"
 msgstr "有時候，我們需要在 Model 中將一組 Enum 值的陣列保存在單一一個欄位裡。這時，可以使用 Laravel 所提供的 `AsEnumArrayObject` 或 `AsEnumCollection` Cast："
 
-#: docs/10.x/eloquent-mutators.md:block 98 (code)
+#: docs/10.x/eloquent-mutators.md:block 99 (code)
 msgid "use App\\Enums\\ServerStatus;\n"
 "use Illuminate\\Database\\Eloquent\\Casts\\AsEnumCollection;\n\n"
 "/**\n"
@@ -856,35 +882,35 @@ msgstr "use App\\Enums\\ServerStatus;\n"
 "    'statuses' => AsEnumCollection::class.':'.ServerStatus::class,\n"
 "];\n"
 
-#: docs/10.x/eloquent-mutators.md:block 100 (header)
+#: docs/10.x/eloquent-mutators.md:block 101 (header)
 msgid "Encrypted Casting"
 msgstr "加密的型別轉換"
 
-#: docs/10.x/eloquent-mutators.md:block 101 (paragraph)
+#: docs/10.x/eloquent-mutators.md:block 102 (paragraph)
 msgid "The `encrypted` cast will encrypt a model's attribute value using Laravel's built-in [encryption](/docs/{{version}}/encryption) features. In addition, the `encrypted:array`, `encrypted:collection`, `encrypted:object`, `AsEncryptedArrayObject`, and `AsEncryptedCollection` casts work like their unencrypted counterparts; however, as you might expect, the underlying value is encrypted when stored in your database."
 msgstr "`encrypted` 型別轉換會通過 Laravel 的內建[加密](/docs/{{version}}/encryption)功能來加密 Model 的屬性值。此外，還有 `encrypted:array`, `encrypted:collection`, `encrypted:object`, `AsEncryptedArrayObject`, 與 `AsEncryptedCollection` 等型別轉換，這些型別轉換都與其未加密的版本一樣以相同方式運作。不過，可想而知，底層的值會先加密才保存進資料庫。"
 
-#: docs/10.x/eloquent-mutators.md:block 102 (paragraph)
+#: docs/10.x/eloquent-mutators.md:block 103 (paragraph)
 msgid "As the final length of the encrypted text is not predictable and is longer than its plain text counterpart, make sure the associated database column is of `TEXT` type or larger. In addition, since the values are encrypted in the database, you will not be able to query or search encrypted attribute values."
 msgstr "由於加密後的文字長度時無法預測的，且通常比明文的版本還要長，因此請確保其資料庫欄位為 `TEXT` 型別或更大的型別。此外，由於在資料庫中值都是經過加密的，因此你也沒辦法查詢或搜尋加密過的屬性質。"
 
-#: docs/10.x/eloquent-mutators.md:block 104 (header)
+#: docs/10.x/eloquent-mutators.md:block 105 (header)
 msgid "Key Rotation"
 msgstr "更改密鑰"
 
-#: docs/10.x/eloquent-mutators.md:block 105 (paragraph)
+#: docs/10.x/eloquent-mutators.md:block 106 (paragraph)
 msgid "As you may know, Laravel encrypts strings using the `key` configuration value specified in your application's `app` configuration file. Typically, this value corresponds to the value of the `APP_KEY` environment variable. If you need to rotate your application's encryption key, you will need to manually re-encrypt your encrypted attributes using the new key."
 msgstr "讀者可能已經知道，Laravel 會使用專案 `app` 設定檔中的 `key` 設定值來加密字串。一般來說，這個設定值對應的是 `APP_KEY` 環境變數。若有需要更改專案的加密密鑰，則我們需要使用新的密鑰來重新加密這些經過加密的屬性。"
 
-#: docs/10.x/eloquent-mutators.md:block 107 (header)
+#: docs/10.x/eloquent-mutators.md:block 108 (header)
 msgid "Query Time Casting"
 msgstr "查詢時的型別轉換"
 
-#: docs/10.x/eloquent-mutators.md:block 108 (paragraph)
+#: docs/10.x/eloquent-mutators.md:block 109 (paragraph)
 msgid "Sometimes you may need to apply casts while executing a query, such as when selecting a raw value from a table. For example, consider the following query:"
 msgstr "有時候我們可能會需要在執行查詢時套用型別轉換，例如從資料表中選擇原始資料時。舉例來說，假設有下列查詢："
 
-#: docs/10.x/eloquent-mutators.md:block 109 (code)
+#: docs/10.x/eloquent-mutators.md:block 110 (code)
 msgid "use App\\Models\\Post;\n"
 "use App\\Models\\User;\n\n"
 "$users = User::select([\n"
@@ -900,11 +926,11 @@ msgstr "use App\\Models\\Post;\n"
 "            ->whereColumn('user_id', 'users.id')\n"
 "])->get();\n"
 
-#: docs/10.x/eloquent-mutators.md:block 110 (paragraph)
+#: docs/10.x/eloquent-mutators.md:block 111 (paragraph)
 msgid "The `last_posted_at` attribute on the results of this query will be a simple string. It would be wonderful if we could apply a `datetime` cast to this attribute when executing the query. Thankfully, we may accomplish this using the `withCasts` method:"
 msgstr "查詢結果中的 `last_posted_at` 屬性會是字串。如果我們可以將 `datetime` 型別轉換在執行查詢時套用到這個屬性上就好了。好佳在，我們可以通過使用 `withCasts` 方法來達成："
 
-#: docs/10.x/eloquent-mutators.md:block 111 (code)
+#: docs/10.x/eloquent-mutators.md:block 112 (code)
 msgid "$users = User::select([\n"
 "    'users.*',\n"
 "    'last_posted_at' => Post::selectRaw('MAX(created_at)')\n"
@@ -920,23 +946,23 @@ msgstr "$users = User::select([\n"
 "    'last_posted_at' => 'datetime'\n"
 "])->get();\n"
 
-#: docs/10.x/eloquent-mutators.md:block 113 (header)
+#: docs/10.x/eloquent-mutators.md:block 114 (header)
 msgid "Custom Casts"
 msgstr "自訂型別轉換"
 
-#: docs/10.x/eloquent-mutators.md:block 114 (paragraph)
+#: docs/10.x/eloquent-mutators.md:block 115 (paragraph)
 msgid "Laravel has a variety of built-in, helpful cast types; however, you may occasionally need to define your own cast types. To create a cast, execute the `make:cast` Artisan command. The new cast class will be placed in your `app/Casts` directory:"
 msgstr "Laravel 中有各種內建的實用型別轉換類型。不過，有時候，我們還是需要定義自定 Cast。若要建立型別轉換程式，請執行 `make:cast` Artisan 指令。新建立的 Cast 類別會被放在 `app/Casts` 目錄下："
 
-#: docs/10.x/eloquent-mutators.md:block 115 (code)
+#: docs/10.x/eloquent-mutators.md:block 116 (code)
 msgid "php artisan make:cast Json\n"
 msgstr "php artisan make:cast Json\n"
 
-#: docs/10.x/eloquent-mutators.md:block 116 (paragraph)
+#: docs/10.x/eloquent-mutators.md:block 117 (paragraph)
 msgid "All custom cast classes implement the `CastsAttributes` interface. Classes that implement this interface must define a `get` and `set` method. The `get` method is responsible for transforming a raw value from the database into a cast value, while the `set` method should transform a cast value into a raw value that can be stored in the database. As an example, we will re-implement the built-in `json` cast type as a custom cast type:"
 msgstr "所有的自定 Cast 類別都實作了 `CastsAttributes` 界面。實作了這個介面的類別必須定義一組 `get` 與 `set` 方法。`get` 方法用於將儲存在資料庫內的原始值轉換為型別值；`set` 方法則負責將型別值轉換為可儲存在資料庫內的原始值。在這裡，我們將重新實作一個內建的 `json` 型別轉換類型為例："
 
-#: docs/10.x/eloquent-mutators.md:block 117 (code)
+#: docs/10.x/eloquent-mutators.md:block 118 (code)
 msgid "<?php\n\n"
 "namespace App\\Casts;\n\n"
 "use Illuminate\\Contracts\\Database\\Eloquent\\CastsAttributes;\n"
@@ -990,11 +1016,11 @@ msgstr "<?php\n\n"
 "    }\n"
 "}\n"
 
-#: docs/10.x/eloquent-mutators.md:block 118 (paragraph)
+#: docs/10.x/eloquent-mutators.md:block 119 (paragraph)
 msgid "Once you have defined a custom cast type, you may attach it to a model attribute using its class name:"
 msgstr "定義好自訂的型別轉換類型後，就可以使用類別名稱將其附加到 Model 屬性內："
 
-#: docs/10.x/eloquent-mutators.md:block 119 (code)
+#: docs/10.x/eloquent-mutators.md:block 120 (code)
 msgid "<?php\n\n"
 "namespace App\\Models;\n\n"
 "use App\\Casts\\Json;\n"
@@ -1026,19 +1052,19 @@ msgstr "<?php\n\n"
 "    ];\n"
 "}\n"
 
-#: docs/10.x/eloquent-mutators.md:block 121 (header)
+#: docs/10.x/eloquent-mutators.md:block 122 (header)
 msgid "Value Object Casting"
 msgstr "數值物件的型別轉換"
 
-#: docs/10.x/eloquent-mutators.md:block 122 (paragraph)
+#: docs/10.x/eloquent-mutators.md:block 123 (paragraph)
 msgid "You are not limited to casting values to primitive types. You may also cast values to objects. Defining custom casts that cast values to objects is very similar to casting to primitive types; however, the `set` method should return an array of key / value pairs that will be used to set raw, storable values on the model."
 msgstr "進行型別轉換時，我們不只可以將值轉換為 PHP 的原生型別，我們還可以將值轉換為物件。定義這種將值轉換為物件的自訂型別轉換就跟轉換成原生型別類似。不過，在這種型別轉換類別中的 `set` 方法應回傳一組在 Model 上用於設定原始、可儲存值的索引鍵/值配對。"
 
-#: docs/10.x/eloquent-mutators.md:block 123 (paragraph)
+#: docs/10.x/eloquent-mutators.md:block 124 (paragraph)
 msgid "As an example, we will define a custom cast class that casts multiple model values into a single `Address` value object. We will assume the `Address` value has two public properties: `lineOne` and `lineTwo`:"
 msgstr "在這裡，我們以將多個 Model 值轉換到單一 `Address` 數值物件的自訂型別轉換類別為例。我們假設 `Address` 值有兩個公用屬性：`lineOne` 與 `lineTwo`："
 
-#: docs/10.x/eloquent-mutators.md:block 124 (code)
+#: docs/10.x/eloquent-mutators.md:block 125 (code)
 msgid "<?php\n\n"
 "namespace App\\Casts;\n\n"
 "use App\\ValueObjects\\Address as AddressValueObject;\n"
@@ -1114,11 +1140,11 @@ msgstr "<?php\n\n"
 "    }\n"
 "}\n"
 
-#: docs/10.x/eloquent-mutators.md:block 125 (paragraph)
+#: docs/10.x/eloquent-mutators.md:block 126 (paragraph)
 msgid "When casting to value objects, any changes made to the value object will automatically be synced back to the model before the model is saved:"
 msgstr "對數值物件進行型別轉換時，對數值物件進行的所有更改都會在 Model 儲存前同步回 Model 上："
 
-#: docs/10.x/eloquent-mutators.md:block 126 (code)
+#: docs/10.x/eloquent-mutators.md:block 127 (code)
 msgid "use App\\Models\\User;\n\n"
 "$user = User::find(1);\n\n"
 "$user->address->lineOne = 'Updated Address Value';\n\n"
@@ -1128,23 +1154,47 @@ msgstr "use App\\Models\\User;\n\n"
 "$user->address->lineOne = 'Updated Address Value';\n\n"
 "$user->save();\n"
 
-#: docs/10.x/eloquent-mutators.md:block 127 (quote)
+#: docs/10.x/eloquent-mutators.md:block 128 (quote)
 msgid "**Note** If you plan to serialize your Eloquent models containing value objects to JSON or arrays, you should implement the `Illuminate\\Contracts\\Support\\Arrayable` and `JsonSerializable` interfaces on the value object."
 msgstr "**Note** 若有打算要將包含數值物件的 Eloquent Model 序列化為 JSON 或陣列，則該數值物件應實作 `Illuminate\\Contracts\\Support\\Arrayable` 與 `JsonSerializable` 介面。"
 
-#: docs/10.x/eloquent-mutators.md:block 129 (header)
+#: docs/10.x/eloquent-mutators.md:block 130 (header)
+msgid "Value Object Caching"
+msgstr "數值物件的快取"
+
+#: docs/10.x/eloquent-mutators.md:block 131 (paragraph)
+msgid "When attributes that are cast to value objects are resolved, they are cached by Eloquent. Therefore, the same object instance will be returned if the attribute is accessed again."
+msgstr "當在解析會被轉換為數值物件的屬性時，Eloquent 會快取這些物件。因此，再次存取該屬性時，會回傳同一個物件實體。"
+
+#: docs/10.x/eloquent-mutators.md:block 132 (paragraph)
+msgid "If you would like to disable the object caching behavior of custom cast classes, you may declare a public `withoutObjectCaching` property on your custom cast class:"
+msgstr "若要禁用自定 Cast 類別的物件快取行為，可在自定 Cast 類別上宣告一個 public 的 `withoutObjectCaching` 屬性："
+
+#: docs/10.x/eloquent-mutators.md:block 133 (code)
+msgid "class Address implements CastsAttributes\n"
+"{\n"
+"    public bool $withoutObjectCaching = true;\n\n"
+"    // ...\n"
+"}\n"
+msgstr "class Address implements CastsAttributes\n"
+"{\n"
+"    public bool $withoutObjectCaching = true;\n\n"
+"    // ...\n"
+"}\n"
+
+#: docs/10.x/eloquent-mutators.md:block 135 (header)
 msgid "Array / JSON Serialization"
 msgstr "Array / JSON 的序列化"
 
-#: docs/10.x/eloquent-mutators.md:block 130 (paragraph)
+#: docs/10.x/eloquent-mutators.md:block 136 (paragraph)
 msgid "When an Eloquent model is converted to an array or JSON using the `toArray` and `toJson` methods, your custom cast value objects will typically be serialized as well as long as they implement the `Illuminate\\Contracts\\Support\\Arrayable` and `JsonSerializable` interfaces. However, when using value objects provided by third-party libraries, you may not have the ability to add these interfaces to the object."
 msgstr "當 Eloquent Model 通過 `toArray` 與 `toJson` 轉換為陣列或 JSON 時，只要自訂的型別轉換數值物件有實作  `Illuminate\\Contracts\\Support\\Arrayable` 與 `JsonSerializable` 介面，該數值物件也會一併被序列化。不過，若我們使用的數值物件是來自第三方套件的，那我們可能就沒辦法提供這些負責序列化介面。"
 
-#: docs/10.x/eloquent-mutators.md:block 131 (paragraph)
+#: docs/10.x/eloquent-mutators.md:block 137 (paragraph)
 msgid "Therefore, you may specify that your custom cast class will be responsible for serializing the value object. To do so, your custom cast class should implement the `Illuminate\\Contracts\\Database\\Eloquent\\SerializesCastableAttributes` interface. This interface states that your class should contain a `serialize` method which should return the serialized form of your value object:"
 msgstr "因此，我們可以指定讓自訂型別轉換類別來負責處理數值物件的序列化。為此，自訂型別轉換類別應實作 `Illuminate\\Contracts\\Database\\Eloquent\\SerializesCastableAttributes` 介面。實作這個介面，就代表該類別中應包含一個 `serialize` 方法，該方法應回傳數值物件的序列化形式："
 
-#: docs/10.x/eloquent-mutators.md:block 132 (code)
+#: docs/10.x/eloquent-mutators.md:block 138 (code)
 msgid "/**\n"
 " * Get the serialized representation of the value.\n"
 " *\n"
@@ -1164,27 +1214,27 @@ msgstr "/**\n"
 "    return (string) $value;\n"
 "}\n"
 
-#: docs/10.x/eloquent-mutators.md:block 134 (header)
+#: docs/10.x/eloquent-mutators.md:block 140 (header)
 msgid "Inbound Casting"
 msgstr "輸入型別轉換"
 
-#: docs/10.x/eloquent-mutators.md:block 135 (paragraph)
+#: docs/10.x/eloquent-mutators.md:block 141 (paragraph)
 msgid "Occasionally, you may need to write a custom cast class that only transforms values that are being set on the model and does not perform any operations when attributes are being retrieved from the model."
 msgstr "有時候，我們可能會需要撰寫只在值被寫入 Model 時要進行轉換的自定 Cast 類別，而在從 Model 中取值時不進行任何操作。"
 
-#: docs/10.x/eloquent-mutators.md:block 136 (paragraph)
+#: docs/10.x/eloquent-mutators.md:block 142 (paragraph)
 msgid "Inbound only custom casts should implement the `CastsInboundAttributes` interface, which only requires a `set` method to be defined. The `make:cast` Artisan command may be invoked with the `--inbound` option to generate an inbound only cast class:"
 msgstr "^[Inbound Only](傳入限定) 自定 Cast 應實作 `CastsInboundAttributes ` 介面，該介面只要求定義 `set` 方法。在呼叫 `make:cast` Artisan 指令時使用 `--inbound` 選項，就可產生 Inbound Only 的 Cast 類別："
 
-#: docs/10.x/eloquent-mutators.md:block 137 (code)
+#: docs/10.x/eloquent-mutators.md:block 143 (code)
 msgid "php artisan make:cast Hash --inbound\n"
 msgstr "php artisan make:cast Hash --inbound\n"
 
-#: docs/10.x/eloquent-mutators.md:block 138 (paragraph)
+#: docs/10.x/eloquent-mutators.md:block 144 (paragraph)
 msgid "A classic example of an inbound only cast is a \"hashing\" cast. For example, we may define a cast that hashes inbound values via a given algorithm:"
 msgstr "Inbound Only Cast 的典型例子就是「雜湊」Cast。舉例來說，我們可以定義一個 Cast，以使用給定演算法來雜湊傳入的值："
 
-#: docs/10.x/eloquent-mutators.md:block 139 (code)
+#: docs/10.x/eloquent-mutators.md:block 145 (code)
 msgid "<?php\n\n"
 "namespace App\\Casts;\n\n"
 "use Illuminate\\Contracts\\Database\\Eloquent\\CastsInboundAttributes;\n"
@@ -1195,7 +1245,7 @@ msgid "<?php\n\n"
 "     * Create a new cast class instance.\n"
 "     */\n"
 "    public function __construct(\n"
-"        protected string $algorithm = null,\n"
+"        protected string|null $algorithm = null,\n"
 "    ) {}\n\n"
 "    /**\n"
 "     * Prepare the given value for storage.\n"
@@ -1219,7 +1269,7 @@ msgstr "<?php\n\n"
 "     * Create a new cast class instance.\n"
 "     */\n"
 "    public function __construct(\n"
-"        protected string $algorithm = null,\n"
+"        protected string|null $algorithm = null,\n"
 "    ) {}\n\n"
 "    /**\n"
 "     * Prepare the given value for storage.\n"
@@ -1234,15 +1284,15 @@ msgstr "<?php\n\n"
 "    }\n"
 "}\n"
 
-#: docs/10.x/eloquent-mutators.md:block 141 (header)
+#: docs/10.x/eloquent-mutators.md:block 147 (header)
 msgid "Cast Parameters"
 msgstr "型別轉換的參數"
 
-#: docs/10.x/eloquent-mutators.md:block 142 (paragraph)
+#: docs/10.x/eloquent-mutators.md:block 148 (paragraph)
 msgid "When attaching a custom cast to a model, cast parameters may be specified by separating them from the class name using a `:` character and comma-delimiting multiple parameters. The parameters will be passed to the constructor of the cast class:"
 msgstr "在 Model 上設定自訂型別轉換時，可以指定型別轉換的參數，請使用 `:` 字元來區分型別轉換類別名稱與參數，並使用逗號來區分多個參數。這些參數會傳給型別轉換類別的建構函式："
 
-#: docs/10.x/eloquent-mutators.md:block 143 (code)
+#: docs/10.x/eloquent-mutators.md:block 149 (code)
 msgid "/**\n"
 " * The attributes that should be cast.\n"
 " *\n"
@@ -1260,15 +1310,15 @@ msgstr "/**\n"
 "    'secret' => Hash::class.':sha256',\n"
 "];\n"
 
-#: docs/10.x/eloquent-mutators.md:block 145 (header)
+#: docs/10.x/eloquent-mutators.md:block 151 (header)
 msgid "Castables"
 msgstr "Castable"
 
-#: docs/10.x/eloquent-mutators.md:block 146 (paragraph)
+#: docs/10.x/eloquent-mutators.md:block 152 (paragraph)
 msgid "You may want to allow your application's value objects to define their own custom cast classes. Instead of attaching the custom cast class to your model, you may alternatively attach a value object class that implements the `Illuminate\\Contracts\\Database\\Eloquent\\Castable` interface:"
 msgstr "我們可以讓專案中的數值物件自己定義自己的自訂型別轉換類別。與在 Model 中設定自訂的型別轉換類別相比，我們可以設定實作了 `Illuminate\\Contracts\\Database\\Eloquent\\Castable` 介面的數值物件類別："
 
-#: docs/10.x/eloquent-mutators.md:block 147 (code)
+#: docs/10.x/eloquent-mutators.md:block 153 (code)
 msgid "use App\\Models\\Address;\n\n"
 "protected $casts = [\n"
 "    'address' => Address::class,\n"
@@ -1278,11 +1328,11 @@ msgstr "use App\\Models\\Address;\n\n"
 "    'address' => Address::class,\n"
 "];\n"
 
-#: docs/10.x/eloquent-mutators.md:block 148 (paragraph)
+#: docs/10.x/eloquent-mutators.md:block 154 (paragraph)
 msgid "Objects that implement the `Castable` interface must define a `castUsing` method that returns the class name of the custom caster class that is responsible for casting to and from the `Castable` class:"
 msgstr "實作了 `Castable` 介面的物件必須定義 `castUsing` 方法。該方法則應回傳用於對  `Castable`  類別進行型別轉換的自訂型別轉換類別名稱："
 
-#: docs/10.x/eloquent-mutators.md:block 149 (code)
+#: docs/10.x/eloquent-mutators.md:block 155 (code)
 msgid "<?php\n\n"
 "namespace App\\Models;\n\n"
 "use Illuminate\\Contracts\\Database\\Eloquent\\Castable;\n"
@@ -1316,11 +1366,11 @@ msgstr "<?php\n\n"
 "    }\n"
 "}\n"
 
-#: docs/10.x/eloquent-mutators.md:block 150 (paragraph)
+#: docs/10.x/eloquent-mutators.md:block 156 (paragraph)
 msgid "When using `Castable` classes, you may still provide arguments in the `$casts` definition. The arguments will be passed to the `castUsing` method:"
 msgstr "即使是使用 `Castable` 類別，也可以在 `$casts` 定義中提供引數。這些引數會被傳給 `castUsing` 方法："
 
-#: docs/10.x/eloquent-mutators.md:block 151 (code)
+#: docs/10.x/eloquent-mutators.md:block 157 (code)
 msgid "use App\\Models\\Address;\n\n"
 "protected $casts = [\n"
 "    'address' => Address::class.':argument',\n"
@@ -1330,15 +1380,15 @@ msgstr "use App\\Models\\Address;\n\n"
 "    'address' => Address::class.':argument',\n"
 "];\n"
 
-#: docs/10.x/eloquent-mutators.md:block 153 (header)
+#: docs/10.x/eloquent-mutators.md:block 159 (header)
 msgid "Castables & Anonymous Cast Classes"
 msgstr "Castable 與匿名型別轉換類別"
 
-#: docs/10.x/eloquent-mutators.md:block 154 (paragraph)
+#: docs/10.x/eloquent-mutators.md:block 160 (paragraph)
 msgid "By combining \"castables\" with PHP's [anonymous classes](https://www.php.net/manual/en/language.oop5.anonymous.php), you may define a value object and its casting logic as a single castable object. To accomplish this, return an anonymous class from your value object's `castUsing` method. The anonymous class should implement the `CastsAttributes` interface:"
 msgstr "通過將「Castable」與 PHP 的[匿名函式](https://www.php.net/manual/en/language.oop5.anonymous.php)搭配使用，我們就能在單一 Castable 物件內定義數值物件與其型別轉換邏輯。為此，請在數值物件的 `castUsing` 方法內回傳一個匿名類別。這個匿名類別應實作 `CastsAttributes` 介面："
 
-#: docs/10.x/eloquent-mutators.md:block 155 (code)
+#: docs/10.x/eloquent-mutators.md:block 161 (code)
 msgid "<?php\n\n"
 "namespace App\\Models;\n\n"
 "use Illuminate\\Contracts\\Database\\Eloquent\\Castable;\n"
@@ -1546,6 +1596,10 @@ msgstr "$user = App\\Models\\User::find(1);\n\n"
 msgid "{note} Attributes that are `null` will not be cast. In addition, you should never define a cast (or an attribute) that has the same name as a relationship."
 msgstr "{note} `null` 的屬性將不會進行型別轉換。此外，定義型別轉換 (或屬性) 時，也不應有相同名稱的關聯。"
 
+#: docs/8.x/eloquent-mutators.md:block 42 (paragraph)
+msgid "You may use the `Illuminate\\Database\\Eloquent\\Casts\\AsStringable` cast class to cast a model attribute to a [fluent `Illuminate\\Support\\Stringable` object](/docs/{{version}}/helpers#fluent-strings-method-list):"
+msgstr "可以使用 `Illuminate\\Database\\Eloquent\\Casts\\AsStringable` 型別轉換類別來講 Model 屬性轉換為 [Fluent `Illuminate\\Support\\Stringable` 物件] (/docs/{{version}}/helpers#fluent-strings-method-list):"
+
 #: docs/8.x/eloquent-mutators.md:block 67 (code)
 msgid "/**\n"
 " * Prepare a date for array / JSON serialization.\n"
@@ -1567,6 +1621,10 @@ msgstr "/**\n"
 "{\n"
 "    return $date->format('Y-m-d');\n"
 "}\n"
+
+#: docs/8.x/eloquent-mutators.md:block 72 (paragraph)
+msgid "By default, the `date` and `datetime` casts will serialize dates to a UTC ISO-8601 date string (`1986-05-28T21:05:54.000000Z`), regardless of the timezone specified in your application's `timezone` configuration option. You are strongly encouraged to always use this serialization format, as well as to store your application's dates in the UTC timezone by not changing your application's `timezone` configuration option from its default `UTC` value. Consistently using the UTC timezone throughout your application will provide the maximum level of interoperability with other date manipulation libraries written in PHP and JavaScript."
+msgstr "預設情況下，不論專案的 `timezone` 設定選項設為哪個時區，`date` 與 `datetime` 都會將日期序列化為 UTC 的 ISO-8601 日期字串 (`1986-05-28T21:05:54.000000Z`)。我們強烈建議你保持使用這個序列化格式，也建議你只將專案的 `timezone` 設定選項設為預設的 `UTC`，並讓專案中以 UTC 來儲存所有的日期時間。在專案中保持一致地使用 UTC 時區，可為其他 PHP 與 JavaScript 的日期操作函示庫提供最大的互用性。"
 
 #: docs/8.x/eloquent-mutators.md:block 76 (quote)
 msgid "{note} Enum casting is only available for PHP 8.1+."
@@ -2164,6 +2222,14 @@ msgstr "use App\\Support\\Address;\n"
 "    );\n"
 "}\n"
 
+#: docs/9.x/eloquent-mutators.md:block 53 (quote)
+msgid "**Warning** Attributes that are `null` will not be cast. In addition, you should never define a cast (or an attribute) that has the same name as a relationship."
+msgstr "**Warning** `null` 的屬性將不會進行型別轉換。此外，定義型別轉換 (或屬性) 時，也不應有相同名稱的關聯。"
+
+#: docs/9.x/eloquent-mutators.md:block 90 (quote)
+msgid "**Warning** Enum casting is only available for PHP 8.1+."
+msgstr "**Warning** Enum 型別轉換只可在 PHP 8.1 以上使用。"
+
 #: docs/9.x/eloquent-mutators.md:block 124 (code)
 msgid "<?php\n\n"
 "namespace App\\Casts;\n\n"
@@ -2260,18 +2326,11 @@ msgid "<?php\n\n"
 "class Hash implements CastsInboundAttributes\n"
 "{\n"
 "    /**\n"
-"     * The hashing algorithm.\n"
-"     *\n"
-"     * @var string\n"
-"     */\n"
-"    protected $algorithm;\n\n"
-"    /**\n"
 "     * Create a new cast class instance.\n"
 "     */\n"
-"    public function __construct(string $algorithm = null)\n"
-"    {\n"
-"        $this->algorithm = $algorithm;\n"
-"    }\n\n"
+"    public function __construct(\n"
+"        protected string $algorithm = null,\n"
+"    ) {}\n\n"
 "    /**\n"
 "     * Prepare the given value for storage.\n"
 "     *\n"
@@ -2291,18 +2350,11 @@ msgstr "<?php\n\n"
 "class Hash implements CastsInboundAttributes\n"
 "{\n"
 "    /**\n"
-"     * The hashing algorithm.\n"
-"     *\n"
-"     * @var string\n"
-"     */\n"
-"    protected $algorithm;\n\n"
-"    /**\n"
 "     * Create a new cast class instance.\n"
 "     */\n"
-"    public function __construct(string $algorithm = null)\n"
-"    {\n"
-"        $this->algorithm = $algorithm;\n"
-"    }\n\n"
+"    public function __construct(\n"
+"        protected string $algorithm = null,\n"
+"    ) {}\n\n"
 "    /**\n"
 "     * Prepare the given value for storage.\n"
 "     *\n"

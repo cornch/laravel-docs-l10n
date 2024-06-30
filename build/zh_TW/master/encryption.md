@@ -1,0 +1,77 @@
+---
+contributors:
+  14684796:
+    avatarUrl: https://crowdin-static.downloads.crowdin.com/avatar/14684796/medium/60f7dc21ec0bf9cfcb61983640bb4809_default.png
+    name: cornch
+crowdinUrl: https://crowdin.com/translate/laravel-docs/63/en-zhtw
+progress: 100
+updatedAt: '2024-06-30T08:26:00Z'
+---
+
+# 加密
+
+- [簡介](#introduction)
+- [設定](#configuration)
+- [使用 Encrypter](#using-the-encrypter)
+
+<a name="introduction"></a>
+
+## 簡介
+
+Laravel 的加密服務提供一個簡單且方便的介面，可讓我們通過 OpenSSL 使用 AES-256 或 AES-128 加密方法來加解密文字。Laravel 中所有的加密資訊都使用訊息驗證碼 (MAC, Message Authentication Code) 簽名，因此一旦經過加密，底層的值將無法被修改或竄改。
+
+<a name="configuration"></a>
+
+## 設定
+
+在開始使用 Laravel 的 Encrypter 前，我們必須先在 `config/app.php` 設定檔中設定 `key`。這個設定以 `APP_KEY` 環境變數提供，我們可以使用 `php artisan key:generate` 指令來產生這個變數值。`key:generate` 指令會使用 PHP 的安全隨機位元組產生器來為你的專案建立密碼學上安全的密鑰。一般來說，`APP_KEY` 環境變數會在 [Laravel 的安裝過程](/docs/{{version}}/installation)中就為你產生好了。
+
+<a name="using-the-encrypter"></a>
+
+## 使用加密程式
+
+<a name="encrypting-a-value"></a>
+
+#### 加密
+
+可以使用 `Crypt` Facade 提供的 `encryptString` 方法來加密。所有加密的值都使用 OpenSSL 與 AES-256-CBC Cipher 來加密。此外，所有加密的值都使用訊息驗證碼 (MAC, Message Authentiation Code) 簽名。整個在內的 MAC 可以防止我們去解謎任何由惡意使用者修改過的值：
+
+    <?php
+    
+    namespace App\Http\Controllers;
+    
+    use App\Http\Controllers\Controller;
+    use App\Models\User;
+    use Illuminate\Http\Request;
+    use Illuminate\Http\Response;
+    use Illuminate\Support\Facades\Crypt;
+    
+    class DigitalOceanTokenController extends Controller
+    {
+        /**
+         * Store a DigitalOcean API token for the user.
+         */
+        public function storeSecret(Request $request): Response
+        {
+            $request->user()->fill([
+                'token' => Crypt::encryptString($request->token),
+            ])->save();
+    
+            return response()->noContent();
+        }
+    }
+
+<a name="decrypting-a-value"></a>
+
+#### 解密
+
+可以使用 `Crypt` Facade 提供的 `decryptString` 方法來解密值。若該值無法被正確解密，如 MAC 無效等情況，則會擲回 `Illuminate\Contracts\Encryption\DecryptException`：
+
+    use Illuminate\Contracts\Encryption\DecryptException;
+    use Illuminate\Support\Facades\Crypt;
+    
+    try {
+        $decrypted = Crypt::decryptString($encryptedValue);
+    } catch (DecryptException $e) {
+        // ...
+    }

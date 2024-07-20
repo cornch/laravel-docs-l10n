@@ -10,7 +10,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
-"PO-Revision-Date: 2024-07-11 18:33\n"
+"PO-Revision-Date: 2024-07-20 09:48\n"
 
 #: docs/10.x/artisan.md:block 1 (header)
 msgid "Artisan Console"
@@ -186,7 +186,7 @@ msgstr "php artisan vendor:publish --provider=\"Laravel\\Tinker\\TinkerServicePr
 
 #: docs/10.x/artisan.md:block 27 (quote)
 msgid "[!WARNING] The `dispatch` helper function and `dispatch` method on the `Dispatchable` class depends on garbage collection to place the job on the queue. Therefore, when using tinker, you should use `Bus::dispatch` or `Queue::push` to dispatch jobs."
-msgstr ""
+msgstr "[!WARNING] `dispatch` 輔助函式與 `Dispatchable` 類別上的 `dispatch` 方法需要仰賴垃圾回收機制來將任務放進佇列中。因此，在使用 Tinker 時，應使用 `Bus::dispatch` 或 `Queue::push` 來分派任務。"
 
 #: docs/10.x/artisan.md:block 29 (header)
 msgid "Command Allow List"
@@ -310,7 +310,7 @@ msgstr "<?php\n\n"
 
 #: docs/10.x/artisan.md:block 48 (quote)
 msgid "[!NOTE] For greater code reuse, it is good practice to keep your console commands light and let them defer to application services to accomplish their tasks. In the example above, note that we inject a service class to do the \"heavy lifting\" of sending the e-mails."
-msgstr ""
+msgstr "[!NOTE] 為了提升程式碼重複使用率，最好保持主控台指令精簡，並將指令的任務委託給應用程式服務來完成。在上方的例子中，可以注意到我們插入了一個服務類別來處理寄送 E-Mail 的這個「重責大任」。"
 
 #: docs/10.x/artisan.md:block 50 (header)
 msgid "Closure Commands"
@@ -394,7 +394,7 @@ msgstr "可隔離的指令"
 
 #: docs/10.x/artisan.md:block 66 (quote)
 msgid "[!WARNING] To utilize this feature, your application must be using the `memcached`, `redis`, `dynamodb`, `database`, `file`, or `array` cache driver as your application's default cache driver. In addition, all servers must be communicating with the same central cache server."
-msgstr ""
+msgstr "[!WARNING] 若要使用此功能，則應用程式必須要使用 `memcached`, `redis`, `dynamodb`, `database`, `file` 或 `array` 作為應用程式的預設快取 Driver。另外，所有的伺服器也都必須要連線至相同的中央快取伺服器。"
 
 #: docs/10.x/artisan.md:block 67 (paragraph)
 msgid "Sometimes you may wish to ensure that only one instance of a command can run at a time. To accomplish this, you may implement the `Illuminate\\Contracts\\Console\\Isolatable` interface on your command class:"
@@ -694,7 +694,7 @@ msgstr "/**\n"
 
 #: docs/10.x/artisan.md:block 129 (header)
 msgid "Prompting for Missing Input"
-msgstr ""
+msgstr "為未提供的輸入進行提示"
 
 #: docs/10.x/artisan.md:block 130 (paragraph)
 msgid "If your command contains required arguments, the user will receive an error message when they are not provided. Alternatively, you may configure your command to automatically prompt the user when required arguments are missing by implementing the `PromptsForMissingInput` interface:"
@@ -787,7 +787,18 @@ msgid "use App\\Models\\User;\n"
 "            : []\n"
 "    ),\n"
 "];\n"
-msgstr ""
+msgstr "use App\\Models\\User;\n"
+"use function Laravel\\Prompts\\search;\n\n"
+"// ...\n\n"
+"return [\n"
+"    'user' => fn () => search(\n"
+"        label: 'Search for a user:',\n"
+"        placeholder: 'E.g. Taylor Otwell',\n"
+"        options: fn ($value) => strlen($value) > 0\n"
+"            ? User::where('name', 'like', \"%{$value}%\")->pluck('name', 'id')\n"
+"            : []\n"
+"    ),\n"
+"];\n"
 
 #: docs/10.x/artisan.md:block 138 (quote)
 msgid "[!NOTE] The comprehensive [Laravel Prompts](/docs/{{version}}/prompts) documentation includes additional information on the available prompts and their usage."

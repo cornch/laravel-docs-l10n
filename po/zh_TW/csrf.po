@@ -10,7 +10,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
-"PO-Revision-Date: 2023-02-11 10:27\n"
+"PO-Revision-Date: 2024-06-30 09:00\n"
 
 #: docs/10.x/csrf.md:block 1 (header)
 msgid "CSRF Protection"
@@ -45,8 +45,8 @@ msgid "Cross-site request forgeries are a type of malicious exploit whereby unau
 msgstr "CSRF (跨網站要求偽造，Cross-site Request Forgery) 是一種在通過登入使用者來進行未授權操作的惡意入侵方式。還好，Laravel 能讓你輕鬆保護網站免於遭受 [CSRF](https://zh.wikipedia.org/zh-tw/%E8%B7%A8%E7%AB%99%E8%AF%B7%E6%B1%82%E4%BC%AA%E9%80%A0) 攻擊。"
 
 #: docs/10.x/csrf.md:block 7 (header)
-msgid "An Explanation Of The Vulnerability"
-msgstr "CSRF 弱點說明"
+msgid "An Explanation of the Vulnerability"
+msgstr ""
 
 #: docs/10.x/csrf.md:block 8 (paragraph)
 msgid "In case you're not familiar with cross-site request forgeries, let's discuss an example of how this vulnerability can be exploited. Imagine your application has a `/user/email` route that accepts a `POST` request to change the authenticated user's email address. Most likely, this route expects an `email` input field to contain the email address the user would like to begin using."
@@ -179,8 +179,8 @@ msgstr "<?php\n\n"
 "}\n"
 
 #: docs/10.x/csrf.md:block 29 (quote)
-msgid "**Note** For convenience, the CSRF middleware is automatically disabled for all routes when [running tests](/docs/{{version}}/testing)."
-msgstr "**Note** 為了方便起見，在[執行測試](/docs/{{version}}/testing)時會自動禁用所有路由的 CSRF Middleware。"
+msgid "[!NOTE] For convenience, the CSRF middleware is automatically disabled for all routes when [running tests](/docs/{{version}}/testing)."
+msgstr ""
 
 #: docs/10.x/csrf.md:block 31 (header)
 msgid "X-CSRF-TOKEN"
@@ -223,12 +223,38 @@ msgid "This cookie is primarily sent as a developer convenience since some JavaS
 msgstr "由於一些 JavaScript 框架如 Angular 與 Axios 會自動在同源請求時將該 Cookie 的值放在 `X-XSRF-TOKEN` 標頭內，該 Cookie 就是為了提供開發者方便而傳送的。"
 
 #: docs/10.x/csrf.md:block 40 (quote)
-msgid "**Note** By default, the `resources/js/bootstrap.js` file includes the Axios HTTP library which will automatically send the `X-XSRF-TOKEN` header for you."
-msgstr "**Note** 預設情況下，`resources/js/bootstrap.js` 檔案已包含了 Axios HTTP 函式庫，該函式庫會自動為你傳送 `X-XSRF-TOKEN` 標頭。"
+msgid "[!NOTE] By default, the `resources/js/bootstrap.js` file includes the Axios HTTP library which will automatically send the `X-XSRF-TOKEN` header for you."
+msgstr ""
 
-#: docs/8.x/csrf.md:block 23 (paragraph)
+#: docs/11.x/csrf.md:block 20 (paragraph)
+msgid "The `Illuminate\\Foundation\\Http\\Middleware\\ValidateCsrfToken` [middleware](/docs/{{version}}/middleware), which is included in the `web` middleware group by default, will automatically verify that the token in the request input matches the token stored in the session. When these two tokens match, we know that the authenticated user is the one initiating the request."
+msgstr ""
+
+#: docs/11.x/csrf.md:block 23 (paragraph)
 msgid "If you are building an SPA that is utilizing Laravel as an API backend, you should consult the [Laravel Sanctum documentation](/docs/{{version}}/sanctum) for information on authenticating with your API and protecting against CSRF vulnerabilities."
 msgstr "若正在建立使用 Laravel 作為 API 後端的 SPA，則可以考慮參考 [Laravel Sanctum 說明文件](/docs/{{version}}/sanctum)瞭解有關使用 API 認證與保護 CSRF 弱點的資訊。"
+
+#: docs/11.x/csrf.md:block 27 (paragraph)
+msgid "Typically, you should place these kinds of routes outside of the `web` middleware group that Laravel applies to all routes in the `routes/web.php` file. However, you may also exclude specific routes by providing their URIs to the `validateCsrfTokens` method in your application's `bootstrap/app.php` file:"
+msgstr ""
+
+#: docs/11.x/csrf.md:block 28 (code)
+msgid "->withMiddleware(function (Middleware $middleware) {\n"
+"    $middleware->validateCsrfTokens(except: [\n"
+"        'stripe/*',\n"
+"        'http://example.com/foo/bar',\n"
+"        'http://example.com/foo/*',\n"
+"    ]);\n"
+"})\n"
+msgstr ""
+
+#: docs/11.x/csrf.md:block 32 (paragraph)
+msgid "In addition to checking for the CSRF token as a POST parameter, the `Illuminate\\Foundation\\Http\\Middleware\\ValidateCsrfToken` middleware, which is included in the `web` middleware group by default, will also check for the `X-CSRF-TOKEN` request header. You could, for example, store the token in an HTML `meta` tag:"
+msgstr ""
+
+#: docs/8.x/csrf.md:block 7 (header)
+msgid "An Explanation Of The Vulnerability"
+msgstr "CSRF 弱點說明"
 
 #: docs/8.x/csrf.md:block 29 (quote)
 msgid "{tip} For convenience, the CSRF middleware is automatically disabled for all routes when [running tests](/docs/{{version}}/testing)."
@@ -237,4 +263,12 @@ msgstr "{tip} 為了方便起見，在[執行測試](/docs/{{version}}/testing)�
 #: docs/8.x/csrf.md:block 40 (quote)
 msgid "{tip} By default, the `resources/js/bootstrap.js` file includes the Axios HTTP library which will automatically send the `X-XSRF-TOKEN` header for you."
 msgstr "{tip} 預設情況下，`resources/js/bootstrap.js` 檔案已包含了 Axios HTTP 函式庫，該函式庫會自動為你傳送 `X-XSRF-TOKEN` 標頭。"
+
+#: docs/9.x/csrf.md:block 29 (quote)
+msgid "**Note** For convenience, the CSRF middleware is automatically disabled for all routes when [running tests](/docs/{{version}}/testing)."
+msgstr "**Note** 為了方便起見，在[執行測試](/docs/{{version}}/testing)時會自動禁用所有路由的 CSRF Middleware。"
+
+#: docs/9.x/csrf.md:block 40 (quote)
+msgid "**Note** By default, the `resources/js/bootstrap.js` file includes the Axios HTTP library which will automatically send the `X-XSRF-TOKEN` header for you."
+msgstr "**Note** 預設情況下，`resources/js/bootstrap.js` 檔案已包含了 Axios HTTP 函式庫，該函式庫會自動為你傳送 `X-XSRF-TOKEN` 標頭。"
 

@@ -10,7 +10,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
-"PO-Revision-Date: 2024-06-30 08:27\n"
+"PO-Revision-Date: 2024-06-30 09:01\n"
 
 #: docs/10.x/pennant.md:block 1 (header)
 msgid "Laravel Pennant"
@@ -65,7 +65,7 @@ msgid "[Scope](#scope)"
 msgstr ""
 
 #: docs/10.x/pennant.md:block 2 (unordered list)
-msgid "[Specifying The Scope](#specifying-the-scope)"
+msgid "[Specifying the Scope](#specifying-the-scope)"
 msgstr ""
 
 #: docs/10.x/pennant.md:block 2 (unordered list)
@@ -117,11 +117,11 @@ msgid "[Adding Custom Pennant Drivers](#adding-custom-pennant-drivers)"
 msgstr ""
 
 #: docs/10.x/pennant.md:block 2 (unordered list)
-msgid "[Implementing The Driver](#implementing-the-driver)"
+msgid "[Implementing the Driver](#implementing-the-driver)"
 msgstr ""
 
 #: docs/10.x/pennant.md:block 2 (unordered list)
-msgid "[Registering The Driver](#registering-the-driver)"
+msgid "[Registering the Driver](#registering-the-driver)"
 msgstr ""
 
 #: docs/10.x/pennant.md:block 2 (unordered list)
@@ -276,18 +276,41 @@ msgid "<?php\n\n"
 msgstr ""
 
 #: docs/10.x/pennant.md:block 34 (quote)
-msgid "**Note** Feature classes are resolved via the [container](/docs/{{version}}/container), so you may inject dependencies into the feature class's constructor when needed."
+msgid "[!NOTE] Feature classes are resolved via the [container](/docs/{{version}}/container), so you may inject dependencies into the feature class's constructor when needed."
 msgstr ""
 
-#: docs/10.x/pennant.md:block 36 (header)
+#: docs/10.x/pennant.md:block 35 (header)
+msgid "Customizing the Stored Feature Name"
+msgstr ""
+
+#: docs/10.x/pennant.md:block 36 (paragraph)
+msgid "By default, Pennant will store the feature class's fully qualified class name. If you would like to decouple the stored feature name from the application's internal structure, you may specify a `$name` property on the feature class. The value of this property will be stored in place of the class name:"
+msgstr ""
+
+#: docs/10.x/pennant.md:block 37 (code)
+msgid "<?php\n\n"
+"namespace App\\Features;\n\n"
+"class NewApi\n"
+"{\n"
+"    /**\n"
+"     * The stored name of the feature.\n"
+"     *\n"
+"     * @var string\n"
+"     */\n"
+"    public $name = 'new-api';\n\n"
+"    // ...\n"
+"}\n"
+msgstr ""
+
+#: docs/10.x/pennant.md:block 39 (header)
 msgid "Checking Features"
 msgstr ""
 
-#: docs/10.x/pennant.md:block 37 (paragraph)
+#: docs/10.x/pennant.md:block 40 (paragraph)
 msgid "To determine if a feature is active, you may use the `active` method on the `Feature` facade. By default, features are checked against the currently authenticated user:"
 msgstr ""
 
-#: docs/10.x/pennant.md:block 38 (code)
+#: docs/10.x/pennant.md:block 41 (code)
 msgid "<?php\n\n"
 "namespace App\\Http\\Controllers;\n\n"
 "use Illuminate\\Http\\Request;\n"
@@ -308,21 +331,21 @@ msgid "<?php\n\n"
 "}\n"
 msgstr ""
 
-#: docs/10.x/pennant.md:block 39 (paragraph)
+#: docs/10.x/pennant.md:block 42 (paragraph)
 msgid "Although features are checked against the currently authenticated user by default, you may easily check the feature against another user or [scope](#scope). To accomplish this, use the `for` method offered by the `Feature` facade:"
 msgstr ""
 
-#: docs/10.x/pennant.md:block 40 (code)
+#: docs/10.x/pennant.md:block 43 (code)
 msgid "return Feature::for($user)->active('new-api')\n"
 "        ? $this->resolveNewApiResponse($request)\n"
 "        : $this->resolveLegacyApiResponse($request);\n"
 msgstr ""
 
-#: docs/10.x/pennant.md:block 41 (paragraph)
+#: docs/10.x/pennant.md:block 44 (paragraph)
 msgid "Pennant also offers some additional convenience methods that may prove useful when determining if a feature is active or not:"
 msgstr ""
 
-#: docs/10.x/pennant.md:block 42 (code)
+#: docs/10.x/pennant.md:block 45 (code)
 msgid "// Determine if all of the given features are active...\n"
 "Feature::allAreActive(['new-api', 'site-redesign']);\n\n"
 "// Determine if any of the given features are active...\n"
@@ -335,19 +358,19 @@ msgid "// Determine if all of the given features are active...\n"
 "Feature::someAreInactive(['new-api', 'site-redesign']);\n"
 msgstr ""
 
-#: docs/10.x/pennant.md:block 43 (quote)
-msgid "**Note** When using Pennant outside of an HTTP context, such as in an Artisan command or a queued job, you should typically [explicitly specify the feature's scope](#specifying-the-scope). Alternatively, you may define a [default scope](#default-scope) that accounts for both authenticated HTTP contexts and unauthenticated contexts."
+#: docs/10.x/pennant.md:block 46 (quote)
+msgid "[!NOTE] When using Pennant outside of an HTTP context, such as in an Artisan command or a queued job, you should typically [explicitly specify the feature's scope](#specifying-the-scope). Alternatively, you may define a [default scope](#default-scope) that accounts for both authenticated HTTP contexts and unauthenticated contexts."
 msgstr ""
 
-#: docs/10.x/pennant.md:block 45 (header)
+#: docs/10.x/pennant.md:block 48 (header)
 msgid "Checking Class Based Features"
 msgstr ""
 
-#: docs/10.x/pennant.md:block 46 (paragraph)
+#: docs/10.x/pennant.md:block 49 (paragraph)
 msgid "For class based features, you should provide the class name when checking the feature:"
 msgstr ""
 
-#: docs/10.x/pennant.md:block 47 (code)
+#: docs/10.x/pennant.md:block 50 (code)
 msgid "<?php\n\n"
 "namespace App\\Http\\Controllers;\n\n"
 "use App\\Features\\NewApi;\n"
@@ -369,15 +392,15 @@ msgid "<?php\n\n"
 "}\n"
 msgstr ""
 
-#: docs/10.x/pennant.md:block 49 (header)
+#: docs/10.x/pennant.md:block 52 (header)
 msgid "Conditional Execution"
 msgstr ""
 
-#: docs/10.x/pennant.md:block 50 (paragraph)
+#: docs/10.x/pennant.md:block 53 (paragraph)
 msgid "The `when` method may be used to fluently execute a given closure if a feature is active. Additionally, a second closure may be provided and will be executed if the feature is inactive:"
 msgstr ""
 
-#: docs/10.x/pennant.md:block 51 (code)
+#: docs/10.x/pennant.md:block 54 (code)
 msgid "<?php\n\n"
 "namespace App\\Http\\Controllers;\n\n"
 "use App\\Features\\NewApi;\n"
@@ -400,26 +423,26 @@ msgid "<?php\n\n"
 "}\n"
 msgstr ""
 
-#: docs/10.x/pennant.md:block 52 (paragraph)
+#: docs/10.x/pennant.md:block 55 (paragraph)
 msgid "The `unless` method serves as the inverse of the `when` method, executing the first closure if the feature is inactive:"
 msgstr ""
 
-#: docs/10.x/pennant.md:block 53 (code)
+#: docs/10.x/pennant.md:block 56 (code)
 msgid "return Feature::unless(NewApi::class,\n"
 "    fn () => $this->resolveLegacyApiResponse($request),\n"
 "    fn () => $this->resolveNewApiResponse($request),\n"
 ");\n"
 msgstr ""
 
-#: docs/10.x/pennant.md:block 55 (header)
+#: docs/10.x/pennant.md:block 58 (header)
 msgid "The `HasFeatures` Trait"
 msgstr ""
 
-#: docs/10.x/pennant.md:block 56 (paragraph)
+#: docs/10.x/pennant.md:block 59 (paragraph)
 msgid "Pennant's `HasFeatures` trait may be added to your application's `User` model (or any other model that has features) to provide a fluent, convenient way to check features directly from the model:"
 msgstr ""
 
-#: docs/10.x/pennant.md:block 57 (code)
+#: docs/10.x/pennant.md:block 60 (code)
 msgid "<?php\n\n"
 "namespace App\\Models;\n\n"
 "use Illuminate\\Foundation\\Auth\\User as Authenticatable;\n"
@@ -431,21 +454,21 @@ msgid "<?php\n\n"
 "}\n"
 msgstr ""
 
-#: docs/10.x/pennant.md:block 58 (paragraph)
+#: docs/10.x/pennant.md:block 61 (paragraph)
 msgid "Once the trait has been added to your model, you may easily check features by invoking the `features` method:"
 msgstr ""
 
-#: docs/10.x/pennant.md:block 59 (code)
+#: docs/10.x/pennant.md:block 62 (code)
 msgid "if ($user->features()->active('new-api')) {\n"
 "    // ...\n"
 "}\n"
 msgstr ""
 
-#: docs/10.x/pennant.md:block 60 (paragraph)
+#: docs/10.x/pennant.md:block 63 (paragraph)
 msgid "Of course, the `features` method provides access to many other convenient methods for interacting with features:"
 msgstr ""
 
-#: docs/10.x/pennant.md:block 61 (code)
+#: docs/10.x/pennant.md:block 64 (code)
 msgid "// Values...\n"
 "$value = $user->features()->value('purchase-button')\n"
 "$values = $user->features()->values(['new-api', 'purchase-button']);\n\n"
@@ -467,15 +490,15 @@ msgid "// Values...\n"
 ");\n"
 msgstr ""
 
-#: docs/10.x/pennant.md:block 63 (header)
+#: docs/10.x/pennant.md:block 66 (header)
 msgid "Blade Directive"
 msgstr ""
 
-#: docs/10.x/pennant.md:block 64 (paragraph)
+#: docs/10.x/pennant.md:block 67 (paragraph)
 msgid "To make checking features in Blade a seamless experience, Pennant offers a `@feature` directive:"
 msgstr ""
 
-#: docs/10.x/pennant.md:block 65 (code)
+#: docs/10.x/pennant.md:block 68 (code)
 msgid "@feature('site-redesign')\n"
 "    <!-- 'site-redesign' is active -->\n"
 "@else\n"
@@ -483,15 +506,15 @@ msgid "@feature('site-redesign')\n"
 "@endfeature\n"
 msgstr ""
 
-#: docs/10.x/pennant.md:block 67 (header)
+#: docs/10.x/pennant.md:block 70 (header)
 msgid "Middleware"
 msgstr ""
 
-#: docs/10.x/pennant.md:block 68 (paragraph)
+#: docs/10.x/pennant.md:block 71 (paragraph)
 msgid "Pennant also includes a [middleware](/docs/{{version}}/middleware) that may be used to verify the currently authenticated user has access to a feature before a route is even invoked. You may assign the middleware to a route and specify the features that are required to access the route. If any of the specified features are inactive for the currently authenticated user, a `400 Bad Request` HTTP response will be returned by the route. Multiple features may be passed to the static `using` method."
 msgstr ""
 
-#: docs/10.x/pennant.md:block 69 (code)
+#: docs/10.x/pennant.md:block 72 (code)
 msgid "use Illuminate\\Support\\Facades\\Route;\n"
 "use Laravel\\Pennant\\Middleware\\EnsureFeaturesAreActive;\n\n"
 "Route::get('/api/servers', function () {\n"
@@ -499,15 +522,15 @@ msgid "use Illuminate\\Support\\Facades\\Route;\n"
 "})->middleware(EnsureFeaturesAreActive::using('new-api', 'servers-api'));\n"
 msgstr ""
 
-#: docs/10.x/pennant.md:block 71 (header)
-msgid "Customizing The Response"
+#: docs/10.x/pennant.md:block 74 (header)
+msgid "Customizing the Response"
 msgstr ""
 
-#: docs/10.x/pennant.md:block 72 (paragraph)
+#: docs/10.x/pennant.md:block 75 (paragraph)
 msgid "If you would like to customize the response that is returned by the middleware when one of the listed features is inactive, you may use the `whenInactive` method provided by the `EnsureFeaturesAreActive` middleware. Typically, this method should be invoked within the `boot` method of one of your application's service providers:"
 msgstr ""
 
-#: docs/10.x/pennant.md:block 73 (code)
+#: docs/10.x/pennant.md:block 76 (code)
 msgid "use Illuminate\\Http\\Request;\n"
 "use Illuminate\\Http\\Response;\n"
 "use Laravel\\Pennant\\Middleware\\EnsureFeaturesAreActive;\n\n"
@@ -525,39 +548,39 @@ msgid "use Illuminate\\Http\\Request;\n"
 "}\n"
 msgstr ""
 
-#: docs/10.x/pennant.md:block 75 (header)
+#: docs/10.x/pennant.md:block 78 (header)
 msgid "In-Memory Cache"
 msgstr ""
 
-#: docs/10.x/pennant.md:block 76 (paragraph)
+#: docs/10.x/pennant.md:block 79 (paragraph)
 msgid "When checking a feature, Pennant will create an in-memory cache of the result. If you are using the `database` driver, this means that re-checking the same feature flag within a single request will not trigger additional database queries. This also ensures that the feature has a consistent result for the duration of the request."
 msgstr ""
 
-#: docs/10.x/pennant.md:block 77 (paragraph)
+#: docs/10.x/pennant.md:block 80 (paragraph)
 msgid "If you need to manually flush the in-memory cache, you may use the `flushCache` method offered by the `Feature` facade:"
 msgstr ""
 
-#: docs/10.x/pennant.md:block 78 (code)
+#: docs/10.x/pennant.md:block 81 (code)
 msgid "Feature::flushCache();\n"
 msgstr ""
 
-#: docs/10.x/pennant.md:block 80 (header)
+#: docs/10.x/pennant.md:block 83 (header)
 msgid "Scope"
 msgstr ""
 
-#: docs/10.x/pennant.md:block 82 (header)
-msgid "Specifying The Scope"
+#: docs/10.x/pennant.md:block 85 (header)
+msgid "Specifying the Scope"
 msgstr ""
 
-#: docs/10.x/pennant.md:block 83 (paragraph)
+#: docs/10.x/pennant.md:block 86 (paragraph)
 msgid "As discussed, features are typically checked against the currently authenticated user. However, this may not always suit your needs. Therefore, it is possible to specify the scope you would like to check a given feature against via the `Feature` facade's `for` method:"
 msgstr ""
 
-#: docs/10.x/pennant.md:block 85 (paragraph)
+#: docs/10.x/pennant.md:block 88 (paragraph)
 msgid "Of course, feature scopes are not limited to \"users\". Imagine you have built a new billing experience that you are rolling out to entire teams rather than individual users. Perhaps you would like the oldest teams to have a slower rollout than the newer teams. Your feature resolution closure might look something like the following:"
 msgstr ""
 
-#: docs/10.x/pennant.md:block 86 (code)
+#: docs/10.x/pennant.md:block 89 (code)
 msgid "use App\\Models\\Team;\n"
 "use Carbon\\Carbon;\n"
 "use Illuminate\\Support\\Lottery;\n"
@@ -573,26 +596,26 @@ msgid "use App\\Models\\Team;\n"
 "});\n"
 msgstr ""
 
-#: docs/10.x/pennant.md:block 87 (paragraph)
+#: docs/10.x/pennant.md:block 90 (paragraph)
 msgid "You will notice that the closure we have defined is not expecting a `User`, but is instead expecting a `Team` model. To determine if this feature is active for a user's team, you should pass the team to the `for` method offered by the `Feature` facade:"
 msgstr ""
 
-#: docs/10.x/pennant.md:block 88 (code)
+#: docs/10.x/pennant.md:block 91 (code)
 msgid "if (Feature::for($user->team)->active('billing-v2')) {\n"
 "    return redirect()->to('/billing/v2');\n"
 "}\n\n"
 "// ...\n"
 msgstr ""
 
-#: docs/10.x/pennant.md:block 90 (header)
+#: docs/10.x/pennant.md:block 93 (header)
 msgid "Default Scope"
 msgstr ""
 
-#: docs/10.x/pennant.md:block 91 (paragraph)
+#: docs/10.x/pennant.md:block 94 (paragraph)
 msgid "It is also possible to customize the default scope Pennant uses to check features. For example, maybe all of your features are checked against the currently authenticated user's team instead of the user. Instead of having to call `Feature::for($user->team)` every time you check a feature, you may instead specify the team as the default scope. Typically, this should be done in one of your application's service providers:"
 msgstr ""
 
-#: docs/10.x/pennant.md:block 92 (code)
+#: docs/10.x/pennant.md:block 95 (code)
 msgid "<?php\n\n"
 "namespace App\\Providers;\n\n"
 "use Illuminate\\Support\\Facades\\Auth;\n"
@@ -611,33 +634,33 @@ msgid "<?php\n\n"
 "}\n"
 msgstr ""
 
-#: docs/10.x/pennant.md:block 93 (paragraph)
+#: docs/10.x/pennant.md:block 96 (paragraph)
 msgid "If no scope is explicitly provided via the `for` method, the feature check will now use the currently authenticated user's team as the default scope:"
 msgstr ""
 
-#: docs/10.x/pennant.md:block 94 (code)
+#: docs/10.x/pennant.md:block 97 (code)
 msgid "Feature::active('billing-v2');\n\n"
 "// Is now equivalent to...\n\n"
 "Feature::for($user->team)->active('billing-v2');\n"
 msgstr ""
 
-#: docs/10.x/pennant.md:block 96 (header)
+#: docs/10.x/pennant.md:block 99 (header)
 msgid "Nullable Scope"
 msgstr ""
 
-#: docs/10.x/pennant.md:block 97 (paragraph)
+#: docs/10.x/pennant.md:block 100 (paragraph)
 msgid "If the scope you provide when checking a feature is `null` and the feature's definition does not support `null` via a nullable type or by including `null` in a union type, Pennant will automatically return `false` as the feature's result value."
 msgstr ""
 
-#: docs/10.x/pennant.md:block 98 (paragraph)
+#: docs/10.x/pennant.md:block 101 (paragraph)
 msgid "So, if the scope you are passing to a feature is potentially `null` and you want the feature's value resolver to be invoked, you should account for that in your feature's definition. A `null` scope may occur if you check a feature within an Artisan command, queued job, or unauthenticated route. Since there is usually not an authenticated user in these contexts, the default scope will be `null`."
 msgstr ""
 
-#: docs/10.x/pennant.md:block 99 (paragraph)
+#: docs/10.x/pennant.md:block 102 (paragraph)
 msgid "If you do not always [explicitly specify your feature scope](#specifying-the-scope) then you should ensure the scope's type is \"nullable\" and handle the `null` scope value within your feature definition logic:"
 msgstr ""
 
-#: docs/10.x/pennant.md:block 100 (code)
+#: docs/10.x/pennant.md:block 103 (code)
 msgid "use App\\Models\\User;\n"
 "use Illuminate\\Support\\Lottery;\n"
 "use Laravel\\Pennant\\Feature;\n\n"
@@ -650,23 +673,23 @@ msgid "use App\\Models\\User;\n"
 "});\n"
 msgstr ""
 
-#: docs/10.x/pennant.md:block 102 (header)
+#: docs/10.x/pennant.md:block 105 (header)
 msgid "Identifying Scope"
 msgstr ""
 
-#: docs/10.x/pennant.md:block 103 (paragraph)
+#: docs/10.x/pennant.md:block 106 (paragraph)
 msgid "Pennant's built-in `array` and `database` storage drivers know how to properly store scope identifiers for all PHP data types as well as Eloquent models. However, if your application utilizes a third-party Pennant driver, that driver may not know how to properly store an identifier for an Eloquent model or other custom types in your application."
 msgstr ""
 
-#: docs/10.x/pennant.md:block 104 (paragraph)
+#: docs/10.x/pennant.md:block 107 (paragraph)
 msgid "In light of this, Pennant allows you to format scope values for storage by implementing the `FeatureScopeable` contract on the objects in your application that are used as Pennant scopes."
 msgstr ""
 
-#: docs/10.x/pennant.md:block 105 (paragraph)
+#: docs/10.x/pennant.md:block 108 (paragraph)
 msgid "For example, imagine you are using two different feature drivers in a single application: the built-in `database` driver and a third-party \"Flag Rocket\" driver. The \"Flag Rocket\" driver does not know how to properly store an Eloquent model. Instead, it requires a `FlagRocketUser` instance. By implementing the `toFeatureIdentifier` defined by the `FeatureScopeable` contract, we can customize the storable scope value provided to each driver used by our application:"
 msgstr ""
 
-#: docs/10.x/pennant.md:block 106 (code)
+#: docs/10.x/pennant.md:block 109 (code)
 msgid "<?php\n\n"
 "namespace App\\Models;\n\n"
 "use FlagRocket\\FlagRocketUser;\n"
@@ -687,19 +710,19 @@ msgid "<?php\n\n"
 "}\n"
 msgstr ""
 
-#: docs/10.x/pennant.md:block 108 (header)
+#: docs/10.x/pennant.md:block 111 (header)
 msgid "Serializing Scope"
 msgstr ""
 
-#: docs/10.x/pennant.md:block 109 (paragraph)
+#: docs/10.x/pennant.md:block 112 (paragraph)
 msgid "By default, Pennant will use a fully qualified class name when storing a feature associated with an Eloquent model. If you are already using an [Eloquent morph map](/docs/{{version}}/eloquent-relationships#custom-polymorphic-types), you may choose to have Pennant also use the morph map to decouple the stored feature from your application structure."
 msgstr ""
 
-#: docs/10.x/pennant.md:block 110 (paragraph)
+#: docs/10.x/pennant.md:block 113 (paragraph)
 msgid "To achieve this, after defining your Eloquent morph map in a service provider, you may invoke the `Feature` facade's `useMorphMap` method:"
 msgstr ""
 
-#: docs/10.x/pennant.md:block 111 (code)
+#: docs/10.x/pennant.md:block 114 (code)
 msgid "use Illuminate\\Database\\Eloquent\\Relations\\Relation;\n"
 "use Laravel\\Pennant\\Feature;\n\n"
 "Relation::enforceMorphMap([\n"
@@ -709,19 +732,19 @@ msgid "use Illuminate\\Database\\Eloquent\\Relations\\Relation;\n"
 "Feature::useMorphMap();\n"
 msgstr ""
 
-#: docs/10.x/pennant.md:block 113 (header)
+#: docs/10.x/pennant.md:block 116 (header)
 msgid "Rich Feature Values"
 msgstr ""
 
-#: docs/10.x/pennant.md:block 114 (paragraph)
+#: docs/10.x/pennant.md:block 117 (paragraph)
 msgid "Until now, we have primarily shown features as being in a binary state, meaning they are either \"active\" or \"inactive\", but Pennant also allows you to store rich values as well."
 msgstr ""
 
-#: docs/10.x/pennant.md:block 115 (paragraph)
+#: docs/10.x/pennant.md:block 118 (paragraph)
 msgid "For example, imagine you are testing three new colors for the \"Buy now\" button of your application. Instead of returning `true` or `false` from the feature definition, you may instead return a string:"
 msgstr ""
 
-#: docs/10.x/pennant.md:block 116 (code)
+#: docs/10.x/pennant.md:block 119 (code)
 msgid "use Illuminate\\Support\\Arr;\n"
 "use Laravel\\Pennant\\Feature;\n\n"
 "Feature::define('purchase-button', fn (User $user) => Arr::random([\n"
@@ -731,19 +754,19 @@ msgid "use Illuminate\\Support\\Arr;\n"
 "]));\n"
 msgstr ""
 
-#: docs/10.x/pennant.md:block 117 (paragraph)
+#: docs/10.x/pennant.md:block 120 (paragraph)
 msgid "You may retrieve the value of the `purchase-button` feature using the `value` method:"
 msgstr ""
 
-#: docs/10.x/pennant.md:block 118 (code)
+#: docs/10.x/pennant.md:block 121 (code)
 msgid "$color = Feature::value('purchase-button');\n"
 msgstr ""
 
-#: docs/10.x/pennant.md:block 119 (paragraph)
+#: docs/10.x/pennant.md:block 122 (paragraph)
 msgid "Pennant's included Blade directive also makes it easy to conditionally render content based on the current value of the feature:"
 msgstr ""
 
-#: docs/10.x/pennant.md:block 120 (code)
+#: docs/10.x/pennant.md:block 123 (code)
 msgid "@feature('purchase-button', 'blue-sapphire')\n"
 "    <!-- 'blue-sapphire' is active -->\n"
 "@elsefeature('purchase-button', 'seafoam-green')\n"
@@ -753,41 +776,41 @@ msgid "@feature('purchase-button', 'blue-sapphire')\n"
 "@endfeature\n"
 msgstr ""
 
-#: docs/10.x/pennant.md:block 121 (quote)
-msgid "**Note** When using rich values, it is important to know that a feature is considered \"active\" when it has any value other than `false`."
+#: docs/10.x/pennant.md:block 124 (quote)
+msgid "[!NOTE] When using rich values, it is important to know that a feature is considered \"active\" when it has any value other than `false`."
 msgstr ""
 
-#: docs/10.x/pennant.md:block 122 (paragraph)
+#: docs/10.x/pennant.md:block 125 (paragraph)
 msgid "When calling the [conditional `when`](#conditional-execution) method, the feature's rich value will be provided to the first closure:"
 msgstr ""
 
-#: docs/10.x/pennant.md:block 123 (code)
+#: docs/10.x/pennant.md:block 126 (code)
 msgid "Feature::when('purchase-button',\n"
 "    fn ($color) => /* ... */,\n"
 "    fn () => /* ... */,\n"
 ");\n"
 msgstr ""
 
-#: docs/10.x/pennant.md:block 124 (paragraph)
+#: docs/10.x/pennant.md:block 127 (paragraph)
 msgid "Likewise, when calling the conditional `unless` method, the feature's rich value will be provided to the optional second closure:"
 msgstr ""
 
-#: docs/10.x/pennant.md:block 125 (code)
+#: docs/10.x/pennant.md:block 128 (code)
 msgid "Feature::unless('purchase-button',\n"
 "    fn () => /* ... */,\n"
 "    fn ($color) => /* ... */,\n"
 ");\n"
 msgstr ""
 
-#: docs/10.x/pennant.md:block 127 (header)
+#: docs/10.x/pennant.md:block 130 (header)
 msgid "Retrieving Multiple Features"
 msgstr ""
 
-#: docs/10.x/pennant.md:block 128 (paragraph)
+#: docs/10.x/pennant.md:block 131 (paragraph)
 msgid "The `values` method allows the retrieval of multiple features for a given scope:"
 msgstr ""
 
-#: docs/10.x/pennant.md:block 129 (code)
+#: docs/10.x/pennant.md:block 132 (code)
 msgid "Feature::values(['billing-v2', 'purchase-button']);\n\n"
 "// [\n"
 "//     'billing-v2' => false,\n"
@@ -795,11 +818,11 @@ msgid "Feature::values(['billing-v2', 'purchase-button']);\n\n"
 "// ]\n"
 msgstr ""
 
-#: docs/10.x/pennant.md:block 130 (paragraph)
+#: docs/10.x/pennant.md:block 133 (paragraph)
 msgid "Or, you may use the `all` method to retrieve the values of all defined features for a given scope:"
 msgstr ""
 
-#: docs/10.x/pennant.md:block 131 (code)
+#: docs/10.x/pennant.md:block 134 (code)
 msgid "Feature::all();\n\n"
 "// [\n"
 "//     'billing-v2' => false,\n"
@@ -808,15 +831,15 @@ msgid "Feature::all();\n\n"
 "// ]\n"
 msgstr ""
 
-#: docs/10.x/pennant.md:block 132 (paragraph)
+#: docs/10.x/pennant.md:block 135 (paragraph)
 msgid "However, class based features are dynamically registered and are not known by Pennant until they are explicitly checked. This means your application's class based features may not appear in the results returned by the `all` method if they have not already been checked during the current request."
 msgstr ""
 
-#: docs/10.x/pennant.md:block 133 (paragraph)
+#: docs/10.x/pennant.md:block 136 (paragraph)
 msgid "If you would like to ensure that feature classes are always included when using the `all` method, you may use Pennant's feature discovery capabilities. To get started, invoke the `discover` method in one of your application's service providers:"
 msgstr ""
 
-#: docs/10.x/pennant.md:block 134 (code)
+#: docs/10.x/pennant.md:block 137 (code)
 msgid "<?php\n\n"
 "namespace App\\Providers;\n\n"
 "use Illuminate\\Support\\ServiceProvider;\n"
@@ -834,11 +857,11 @@ msgid "<?php\n\n"
 "}\n"
 msgstr ""
 
-#: docs/10.x/pennant.md:block 135 (paragraph)
+#: docs/10.x/pennant.md:block 138 (paragraph)
 msgid "The `discover` method will register all of the feature classes in your application's `app/Features` directory. The `all` method will now include these classes in its results, regardless of whether they have been checked during the current request:"
 msgstr ""
 
-#: docs/10.x/pennant.md:block 136 (code)
+#: docs/10.x/pennant.md:block 139 (code)
 msgid "Feature::all();\n\n"
 "// [\n"
 "//     'App\\Features\\NewApi' => true,\n"
@@ -848,19 +871,19 @@ msgid "Feature::all();\n\n"
 "// ]\n"
 msgstr ""
 
-#: docs/10.x/pennant.md:block 138 (header)
+#: docs/10.x/pennant.md:block 141 (header)
 msgid "Eager Loading"
 msgstr ""
 
-#: docs/10.x/pennant.md:block 139 (paragraph)
+#: docs/10.x/pennant.md:block 142 (paragraph)
 msgid "Although Pennant keeps an in-memory cache of all resolved features for a single request, it is still possible to encounter performance issues. To alleviate this, Pennant offers the ability to eager load feature values."
 msgstr ""
 
-#: docs/10.x/pennant.md:block 140 (paragraph)
+#: docs/10.x/pennant.md:block 143 (paragraph)
 msgid "To illustrate this, imagine that we are checking if a feature is active within a loop:"
 msgstr ""
 
-#: docs/10.x/pennant.md:block 141 (code)
+#: docs/10.x/pennant.md:block 144 (code)
 msgid "use Laravel\\Pennant\\Feature;\n\n"
 "foreach ($users as $user) {\n"
 "    if (Feature::for($user)->active('notifications-beta')) {\n"
@@ -869,11 +892,11 @@ msgid "use Laravel\\Pennant\\Feature;\n\n"
 "}\n"
 msgstr ""
 
-#: docs/10.x/pennant.md:block 142 (paragraph)
+#: docs/10.x/pennant.md:block 145 (paragraph)
 msgid "Assuming we are using the database driver, this code will execute a database query for every user in the loop - executing potentially hundreds of queries. However, using Pennant's `load` method, we can remove this potential performance bottleneck by eager loading the feature values for a collection of users or scopes:"
 msgstr ""
 
-#: docs/10.x/pennant.md:block 143 (code)
+#: docs/10.x/pennant.md:block 146 (code)
 msgid "Feature::for($users)->load(['notifications-beta']);\n\n"
 "foreach ($users as $user) {\n"
 "    if (Feature::for($user)->active('notifications-beta')) {\n"
@@ -882,11 +905,11 @@ msgid "Feature::for($users)->load(['notifications-beta']);\n\n"
 "}\n"
 msgstr ""
 
-#: docs/10.x/pennant.md:block 144 (paragraph)
+#: docs/10.x/pennant.md:block 147 (paragraph)
 msgid "To load feature values only when they have not already been loaded, you may use the `loadMissing` method:"
 msgstr ""
 
-#: docs/10.x/pennant.md:block 145 (code)
+#: docs/10.x/pennant.md:block 148 (code)
 msgid "Feature::for($users)->loadMissing([\n"
 "    'new-api',\n"
 "    'purchase-button',\n"
@@ -894,19 +917,19 @@ msgid "Feature::for($users)->loadMissing([\n"
 "]);\n"
 msgstr ""
 
-#: docs/10.x/pennant.md:block 147 (header)
+#: docs/10.x/pennant.md:block 150 (header)
 msgid "Updating Values"
 msgstr ""
 
-#: docs/10.x/pennant.md:block 148 (paragraph)
+#: docs/10.x/pennant.md:block 151 (paragraph)
 msgid "When a feature's value is resolved for the first time, the underlying driver will store the result in storage. This is often necessary to ensure a consistent experience for your users across requests. However, at times, you may want to manually update the feature's stored value."
 msgstr ""
 
-#: docs/10.x/pennant.md:block 149 (paragraph)
+#: docs/10.x/pennant.md:block 152 (paragraph)
 msgid "To accomplish this, you may use the `activate` and `deactivate` methods to toggle a feature \"on\" or \"off\":"
 msgstr ""
 
-#: docs/10.x/pennant.md:block 150 (code)
+#: docs/10.x/pennant.md:block 153 (code)
 msgid "use Laravel\\Pennant\\Feature;\n\n"
 "// Activate the feature for the default scope...\n"
 "Feature::activate('new-api');\n\n"
@@ -914,97 +937,113 @@ msgid "use Laravel\\Pennant\\Feature;\n\n"
 "Feature::for($user->team)->deactivate('billing-v2');\n"
 msgstr ""
 
-#: docs/10.x/pennant.md:block 151 (paragraph)
+#: docs/10.x/pennant.md:block 154 (paragraph)
 msgid "It is also possible to manually set a rich value for a feature by providing a second argument to the `activate` method:"
 msgstr ""
 
-#: docs/10.x/pennant.md:block 152 (code)
+#: docs/10.x/pennant.md:block 155 (code)
 msgid "Feature::activate('purchase-button', 'seafoam-green');\n"
 msgstr ""
 
-#: docs/10.x/pennant.md:block 153 (paragraph)
+#: docs/10.x/pennant.md:block 156 (paragraph)
 msgid "To instruct Pennant to forget the stored value for a feature, you may use the `forget` method. When the feature is checked again, Pennant will resolve the feature's value from its feature definition:"
 msgstr ""
 
-#: docs/10.x/pennant.md:block 154 (code)
+#: docs/10.x/pennant.md:block 157 (code)
 msgid "Feature::forget('purchase-button');\n"
 msgstr ""
 
-#: docs/10.x/pennant.md:block 156 (header)
+#: docs/10.x/pennant.md:block 159 (header)
 msgid "Bulk Updates"
 msgstr ""
 
-#: docs/10.x/pennant.md:block 157 (paragraph)
+#: docs/10.x/pennant.md:block 160 (paragraph)
 msgid "To update stored feature values in bulk, you may use the `activateForEveryone` and `deactivateForEveryone` methods."
 msgstr ""
 
-#: docs/10.x/pennant.md:block 158 (paragraph)
+#: docs/10.x/pennant.md:block 161 (paragraph)
 msgid "For example, imagine you are now confident in the `new-api` feature's stability and have landed on the best `'purchase-button'` color for your checkout flow - you can update the stored value for all users accordingly:"
 msgstr ""
 
-#: docs/10.x/pennant.md:block 159 (code)
+#: docs/10.x/pennant.md:block 162 (code)
 msgid "use Laravel\\Pennant\\Feature;\n\n"
 "Feature::activateForEveryone('new-api');\n\n"
 "Feature::activateForEveryone('purchase-button', 'seafoam-green');\n"
 msgstr ""
 
-#: docs/10.x/pennant.md:block 160 (paragraph)
+#: docs/10.x/pennant.md:block 163 (paragraph)
 msgid "Alternatively, you may deactivate the feature for all users:"
 msgstr ""
 
-#: docs/10.x/pennant.md:block 161 (code)
+#: docs/10.x/pennant.md:block 164 (code)
 msgid "Feature::deactivateForEveryone('new-api');\n"
 msgstr ""
 
-#: docs/10.x/pennant.md:block 162 (quote)
-msgid "**Note** This will only update the resolved feature values that have been stored by Pennant's storage driver. You will also need to update the feature definition in your application."
+#: docs/10.x/pennant.md:block 165 (quote)
+msgid "[!NOTE] This will only update the resolved feature values that have been stored by Pennant's storage driver. You will also need to update the feature definition in your application."
 msgstr ""
 
-#: docs/10.x/pennant.md:block 164 (header)
+#: docs/10.x/pennant.md:block 167 (header)
 msgid "Purging Features"
 msgstr ""
 
-#: docs/10.x/pennant.md:block 165 (paragraph)
+#: docs/10.x/pennant.md:block 168 (paragraph)
 msgid "Sometimes, it can be useful to purge an entire feature from storage. This is typically necessary if you have removed the feature from your application or you have made adjustments to the feature's definition that you would like to rollout to all users."
 msgstr ""
 
-#: docs/10.x/pennant.md:block 166 (paragraph)
+#: docs/10.x/pennant.md:block 169 (paragraph)
 msgid "You may remove all stored values for a feature using the `purge` method:"
 msgstr ""
 
-#: docs/10.x/pennant.md:block 167 (code)
+#: docs/10.x/pennant.md:block 170 (code)
 msgid "// Purging a single feature...\n"
 "Feature::purge('new-api');\n\n"
 "// Purging multiple features...\n"
 "Feature::purge(['new-api', 'purchase-button']);\n"
 msgstr ""
 
-#: docs/10.x/pennant.md:block 168 (paragraph)
+#: docs/10.x/pennant.md:block 171 (paragraph)
 msgid "If you would like to purge *all* features from storage, you may invoke the `purge` method without any arguments:"
 msgstr ""
 
-#: docs/10.x/pennant.md:block 169 (code)
+#: docs/10.x/pennant.md:block 172 (code)
 msgid "Feature::purge();\n"
 msgstr ""
 
-#: docs/10.x/pennant.md:block 170 (paragraph)
-msgid "As it can be useful to purge features as part of your application's deployment pipeline, Pennant includes a `pennant:purge` Artisan command:"
+#: docs/10.x/pennant.md:block 173 (paragraph)
+msgid "As it can be useful to purge features as part of your application's deployment pipeline, Pennant includes a `pennant:purge` Artisan command which will purge the provided features from storage:"
 msgstr ""
 
-#: docs/10.x/pennant.md:block 171 (code)
+#: docs/10.x/pennant.md:block 174 (code)
 msgid "php artisan pennant:purge new-api\n\n"
 "php artisan pennant:purge new-api purchase-button\n"
 msgstr ""
 
-#: docs/10.x/pennant.md:block 173 (header)
+#: docs/10.x/pennant.md:block 175 (paragraph)
+msgid "It is also possible to purge all features *except* those in a given feature list. For example, imagine you wanted to purge all features but keep the values for the \"new-api\" and \"purchase-button\" features in storage. To accomplish this, you can pass those feature names to the `--except` option:"
+msgstr ""
+
+#: docs/10.x/pennant.md:block 176 (code)
+msgid "php artisan pennant:purge --except=new-api --except=purchase-button\n"
+msgstr ""
+
+#: docs/10.x/pennant.md:block 177 (paragraph)
+msgid "For convenience, the `pennant:purge` command also supports an `--except-registered` flag. This flag indicates that all features except those explicitly registered in a service provider should be purged:"
+msgstr ""
+
+#: docs/10.x/pennant.md:block 178 (code)
+msgid "php artisan pennant:purge --except-registered\n"
+msgstr ""
+
+#: docs/10.x/pennant.md:block 180 (header)
 msgid "Testing"
 msgstr ""
 
-#: docs/10.x/pennant.md:block 174 (paragraph)
+#: docs/10.x/pennant.md:block 181 (paragraph)
 msgid "When testing code that interacts with feature flags, the easiest way to control the feature flag's returned value in your tests is to simply re-define the feature. For example, imagine you have the following feature defined in one of your application's service provider:"
 msgstr ""
 
-#: docs/10.x/pennant.md:block 175 (code)
+#: docs/10.x/pennant.md:block 182 (code)
 msgid "use Illuminate\\Support\\Arr;\n"
 "use Laravel\\Pennant\\Feature;\n\n"
 "Feature::define('purchase-button', fn () => Arr::random([\n"
@@ -1014,11 +1053,11 @@ msgid "use Illuminate\\Support\\Arr;\n"
 "]));\n"
 msgstr ""
 
-#: docs/10.x/pennant.md:block 176 (paragraph)
+#: docs/10.x/pennant.md:block 183 (paragraph)
 msgid "To modify the feature's returned value in your tests, you may re-define the feature at the beginning of the test. The following test will always pass, even though the `Arr::random()` implementation is still present in the service provider:"
 msgstr ""
 
-#: docs/10.x/pennant.md:block 177 (code)
+#: docs/10.x/pennant.md:block 184 (code)
 msgid "use Laravel\\Pennant\\Feature;\n\n"
 "public function test_it_can_control_feature_values()\n"
 "{\n"
@@ -1027,11 +1066,11 @@ msgid "use Laravel\\Pennant\\Feature;\n\n"
 "}\n"
 msgstr ""
 
-#: docs/10.x/pennant.md:block 178 (paragraph)
+#: docs/10.x/pennant.md:block 185 (paragraph)
 msgid "The same approach may be used for class based features:"
 msgstr ""
 
-#: docs/10.x/pennant.md:block 179 (code)
+#: docs/10.x/pennant.md:block 186 (code)
 msgid "use App\\Features\\NewApi;\n"
 "use Laravel\\Pennant\\Feature;\n\n"
 "public function test_it_can_control_feature_values()\n"
@@ -1041,19 +1080,19 @@ msgid "use App\\Features\\NewApi;\n"
 "}\n"
 msgstr ""
 
-#: docs/10.x/pennant.md:block 180 (paragraph)
+#: docs/10.x/pennant.md:block 187 (paragraph)
 msgid "If your feature is returning a `Lottery` instance, there are a handful of useful [testing helpers available](/docs/{{version}}/helpers#testing-lotteries)."
 msgstr ""
 
-#: docs/10.x/pennant.md:block 182 (header)
+#: docs/10.x/pennant.md:block 189 (header)
 msgid "Store Configuration"
 msgstr ""
 
-#: docs/10.x/pennant.md:block 183 (paragraph)
+#: docs/10.x/pennant.md:block 190 (paragraph)
 msgid "You may configure the store that Pennant will use during testing by defining the `PENNANT_STORE` environment variable in your application's `phpunit.xml` file:"
 msgstr ""
 
-#: docs/10.x/pennant.md:block 184 (code)
+#: docs/10.x/pennant.md:block 191 (code)
 msgid "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
 "<phpunit colors=\"true\">\n"
 "    <!-- ... -->\n"
@@ -1064,19 +1103,19 @@ msgid "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
 "</phpunit>\n"
 msgstr ""
 
-#: docs/10.x/pennant.md:block 186 (header)
+#: docs/10.x/pennant.md:block 193 (header)
 msgid "Adding Custom Pennant Drivers"
 msgstr ""
 
-#: docs/10.x/pennant.md:block 188 (header)
-msgid "Implementing The Driver"
+#: docs/10.x/pennant.md:block 195 (header)
+msgid "Implementing the Driver"
 msgstr ""
 
-#: docs/10.x/pennant.md:block 189 (paragraph)
+#: docs/10.x/pennant.md:block 196 (paragraph)
 msgid "If none of Pennant's existing storage drivers fit your application's needs, you may write your own storage driver. Your custom driver should implement the `Laravel\\Pennant\\Contracts\\Driver` interface:"
 msgstr ""
 
-#: docs/10.x/pennant.md:block 190 (code)
+#: docs/10.x/pennant.md:block 197 (code)
 msgid "<?php\n\n"
 "namespace App\\Extensions;\n\n"
 "use Laravel\\Pennant\\Contracts\\Driver;\n\n"
@@ -1093,23 +1132,23 @@ msgid "<?php\n\n"
 "}\n"
 msgstr ""
 
-#: docs/10.x/pennant.md:block 191 (paragraph)
+#: docs/10.x/pennant.md:block 198 (paragraph)
 msgid "Now, we just need to implement each of these methods using a Redis connection. For an example of how to implement each of these methods, take a look at the `Laravel\\Pennant\\Drivers\\DatabaseDriver` in the [Pennant source code](https://github.com/laravel/pennant/blob/1.x/src/Drivers/DatabaseDriver.php)"
 msgstr ""
 
-#: docs/10.x/pennant.md:block 192 (quote)
-msgid "**Note** Laravel does not ship with a directory to contain your extensions. You are free to place them anywhere you like. In this example, we have created an `Extensions` directory to house the `RedisFeatureDriver`."
+#: docs/10.x/pennant.md:block 199 (quote)
+msgid "[!NOTE] Laravel does not ship with a directory to contain your extensions. You are free to place them anywhere you like. In this example, we have created an `Extensions` directory to house the `RedisFeatureDriver`."
 msgstr ""
 
-#: docs/10.x/pennant.md:block 194 (header)
-msgid "Registering The Driver"
+#: docs/10.x/pennant.md:block 201 (header)
+msgid "Registering the Driver"
 msgstr ""
 
-#: docs/10.x/pennant.md:block 195 (paragraph)
+#: docs/10.x/pennant.md:block 202 (paragraph)
 msgid "Once your driver has been implemented, you are ready to register it with Laravel. To add additional drivers to Pennant, you may use the `extend` method provided by the `Feature` facade. You should call the `extend` method from the `boot` method of one of your application's [service provider](/docs/{{version}}/providers):"
 msgstr ""
 
-#: docs/10.x/pennant.md:block 196 (code)
+#: docs/10.x/pennant.md:block 203 (code)
 msgid "<?php\n\n"
 "namespace App\\Providers;\n\n"
 "use App\\Extensions\\RedisFeatureDriver;\n"
@@ -1137,11 +1176,11 @@ msgid "<?php\n\n"
 "}\n"
 msgstr ""
 
-#: docs/10.x/pennant.md:block 197 (paragraph)
+#: docs/10.x/pennant.md:block 204 (paragraph)
 msgid "Once the driver has been registered, you may use the `redis` driver in your application's `config/pennant.php` configuration file:"
 msgstr ""
 
-#: docs/10.x/pennant.md:block 198 (code)
+#: docs/10.x/pennant.md:block 205 (code)
 msgid "'stores' => [\n\n"
 "    'redis' => [\n"
 "        'driver' => 'redis',\n"
@@ -1151,35 +1190,35 @@ msgid "'stores' => [\n\n"
 "],\n"
 msgstr ""
 
-#: docs/10.x/pennant.md:block 200 (header)
+#: docs/10.x/pennant.md:block 207 (header)
 msgid "Events"
 msgstr ""
 
-#: docs/10.x/pennant.md:block 201 (paragraph)
+#: docs/10.x/pennant.md:block 208 (paragraph)
 msgid "Pennant dispatches a variety of events that can be useful when tracking feature flags throughout your application."
 msgstr ""
 
-#: docs/10.x/pennant.md:block 202 (header)
+#: docs/10.x/pennant.md:block 209 (header)
 msgid "`Laravel\\Pennant\\Events\\RetrievingKnownFeature`"
 msgstr ""
 
-#: docs/10.x/pennant.md:block 203 (paragraph)
+#: docs/10.x/pennant.md:block 210 (paragraph)
 msgid "This event is dispatched the first time a known feature is retrieved during a request for a specific scope. This event can be useful to create and track metrics against the feature flags that are being used throughout your application."
 msgstr ""
 
-#: docs/10.x/pennant.md:block 204 (header)
+#: docs/10.x/pennant.md:block 211 (header)
 msgid "`Laravel\\Pennant\\Events\\RetrievingUnknownFeature`"
 msgstr ""
 
-#: docs/10.x/pennant.md:block 205 (paragraph)
+#: docs/10.x/pennant.md:block 212 (paragraph)
 msgid "This event is dispatched the first time an unknown feature is retrieved during a request for a specific scope. This event can be useful if you have intended to remove a feature flag, but may have accidentally left some stray references to it throughout your application."
 msgstr ""
 
-#: docs/10.x/pennant.md:block 206 (paragraph)
+#: docs/10.x/pennant.md:block 213 (paragraph)
 msgid "For example, you may find it useful to listen for this event and `report` or throw an exception when it occurs:"
 msgstr ""
 
-#: docs/10.x/pennant.md:block 207 (code)
+#: docs/10.x/pennant.md:block 214 (code)
 msgid "<?php\n\n"
 "namespace App\\Providers;\n\n"
 "use Illuminate\\Foundation\\Support\\Providers\\EventServiceProvider as ServiceProvider;\n"
@@ -1199,45 +1238,164 @@ msgid "<?php\n\n"
 "}\n"
 msgstr ""
 
-#: docs/10.x/pennant.md:block 208 (header)
+#: docs/10.x/pennant.md:block 215 (header)
 msgid "`Laravel\\Pennant\\Events\\DynamicallyDefiningFeature`"
 msgstr ""
 
-#: docs/10.x/pennant.md:block 209 (paragraph)
+#: docs/10.x/pennant.md:block 216 (paragraph)
 msgid "This event is dispatched when a class based feature is being dynamically checked for the first time during a request."
 msgstr ""
 
-#: docs/master/pennant.md:block 5 (paragraph)
-msgid "[Laravel Pennant](https://github.com/laravel/pennant) is a simple and lightweight feature flag package - without the cruft. Feature flags enable you to incrementally roll out new application features with confidence, A/B test new interface designs, compliment a trunk-based development strategy, and much more."
+#: docs/11.x/pennant.md:block 184 (code)
+msgid "use Laravel\\Pennant\\Feature;\n\n"
+"test('it can control feature values', function () {\n"
+"    Feature::define('purchase-button', 'seafoam-green');\n\n"
+"    expect(Feature::value('purchase-button'))->toBe('seafoam-green');\n"
+"});\n"
 msgstr ""
 
-#: docs/master/pennant.md:block 68 (paragraph)
-msgid "Pennant also includes a [middleware](/docs/{{version}}/middleware) that may be used to verify the currently authenticated user has access to a feature before a route is even invoked. To get started, you should add a middleware alias for the `EnsureFeaturesAreActive` middleware to your application's `app/Http/Kernel.php` file:"
+#: docs/11.x/pennant.md:block 187 (code)
+msgid "use Laravel\\Pennant\\Feature;\n\n"
+"test('it can control feature values', function () {\n"
+"    Feature::define(NewApi::class, true);\n\n"
+"    expect(Feature::value(NewApi::class))->toBeTrue();\n"
+"});\n"
 msgstr ""
 
-#: docs/master/pennant.md:block 69 (code)
-msgid "use Laravel\\Pennant\\Middleware\\EnsureFeaturesAreActive;\n\n"
-"protected $middlewareAliases = [\n"
-"    // ...\n"
-"    'features' => EnsureFeaturesAreActive::class,\n"
-"];\n"
+#: docs/11.x/pennant.md:block 211 (header)
+msgid "`Laravel\\Pennant\\Events\\FeatureRetrieved`"
 msgstr ""
 
-#: docs/master/pennant.md:block 70 (paragraph)
-msgid "Next, you may assign the middleware to a route and specify the features that are required to access the route. If any of the specified features are inactive for the currently authenticated user, a `400 Bad Request` HTTP response will be returned by the route. Multiple features may be specified using a comma-delimited list:"
+#: docs/11.x/pennant.md:block 212 (paragraph)
+msgid "This event is dispatched whenever a [feature is checked](#checking-features). This event may be useful for creating and tracking metrics against a feature flag's usage throughout your application."
 msgstr ""
 
-#: docs/master/pennant.md:block 71 (code)
-msgid "Route::get('/api/servers', function () {\n"
-"    // ...\n"
-"})->middleware(['features:new-api,servers-api']);\n"
+#: docs/11.x/pennant.md:block 213 (header)
+msgid "`Laravel\\Pennant\\Events\\FeatureResolved`"
 msgstr ""
 
-#: docs/master/pennant.md:block 99 (paragraph)
-msgid "If the scope you are passing to a feature is potentially `null`, you should account for that in your feature's definition. A `null` scope may occur if you check a feature within an Artisan command, queued job, or unauthenticated route. Since there is usually not an authenticated user in these contexts, the default scope will be `null`."
+#: docs/11.x/pennant.md:block 214 (paragraph)
+msgid "This event is dispatched the first time a feature's value is resolved for a specific scope."
 msgstr ""
 
-#: docs/master/pennant.md:block 100 (paragraph)
-msgid "If you do not always [explictly specify your feature scope](#specifying-the-scope) then you should ensure the scope's type is \"nullable\" and handle the `null` scope value within your feature definition logic:"
+#: docs/11.x/pennant.md:block 215 (header)
+msgid "`Laravel\\Pennant\\Events\\UnknownFeatureResolved`"
+msgstr ""
+
+#: docs/11.x/pennant.md:block 216 (paragraph)
+msgid "This event is dispatched the first time an unknown feature is resolved for a specific scope. Listening to this event may be useful if you have intended to remove a feature flag but have accidentally left stray references to it throughout your application:"
+msgstr ""
+
+#: docs/11.x/pennant.md:block 217 (code)
+msgid "<?php\n\n"
+"namespace App\\Providers;\n\n"
+"use Illuminate\\Support\\ServiceProvider;\n"
+"use Illuminate\\Support\\Facades\\Event;\n"
+"use Illuminate\\Support\\Facades\\Log;\n"
+"use Laravel\\Pennant\\Events\\UnknownFeatureResolved;\n\n"
+"class AppServiceProvider extends ServiceProvider\n"
+"{\n"
+"    /**\n"
+"     * Bootstrap any application services.\n"
+"     */\n"
+"    public function boot(): void\n"
+"    {\n"
+"        Event::listen(function (UnknownFeatureResolved $event) {\n"
+"            Log::error(\"Resolving unknown feature [{$event->feature}].\");\n"
+"        });\n"
+"    }\n"
+"}\n"
+msgstr ""
+
+#: docs/11.x/pennant.md:block 218 (header)
+msgid "`Laravel\\Pennant\\Events\\DynamicallyRegisteringFeatureClass`"
+msgstr ""
+
+#: docs/11.x/pennant.md:block 219 (paragraph)
+msgid "This event is dispatched when a [class based feature](#class-based-features) is dynamically checked for the first time during a request."
+msgstr ""
+
+#: docs/11.x/pennant.md:block 220 (header)
+msgid "`Laravel\\Pennant\\Events\\UnexpectedNullScopeEncountered`"
+msgstr ""
+
+#: docs/11.x/pennant.md:block 221 (paragraph)
+msgid "This event is dispatched when a `null` scope is passed to a feature definition that [doesn't support null](#nullable-scope)."
+msgstr ""
+
+#: docs/11.x/pennant.md:block 222 (paragraph)
+msgid "This situation is handled gracefully and the feature will return `false`. However, if you would like to opt out of this feature's default graceful behavior, you may register a listener for this event in the `boot` method of your application's `AppServiceProvider`:"
+msgstr ""
+
+#: docs/11.x/pennant.md:block 223 (code)
+msgid "use Illuminate\\Support\\Facades\\Log;\n"
+"use Laravel\\Pennant\\Events\\UnexpectedNullScopeEncountered;\n\n"
+"/**\n"
+" * Bootstrap any application services.\n"
+" */\n"
+"public function boot(): void\n"
+"{\n"
+"    Event::listen(UnexpectedNullScopeEncountered::class, fn () => abort(500));\n"
+"}\n\n"
+msgstr ""
+
+#: docs/11.x/pennant.md:block 224 (header)
+msgid "`Laravel\\Pennant\\Events\\FeatureUpdated`"
+msgstr ""
+
+#: docs/11.x/pennant.md:block 225 (paragraph)
+msgid "This event is dispatched when updating a feature for a scope, usually by calling `activate` or `deactivate`."
+msgstr ""
+
+#: docs/11.x/pennant.md:block 226 (header)
+msgid "`Laravel\\Pennant\\Events\\FeatureUpdatedForAllScopes`"
+msgstr ""
+
+#: docs/11.x/pennant.md:block 227 (paragraph)
+msgid "This event is dispatched when updating a feature for all scopes, usually by calling `activateForEveryone` or `deactivateForEveryone`."
+msgstr ""
+
+#: docs/11.x/pennant.md:block 228 (header)
+msgid "`Laravel\\Pennant\\Events\\FeatureDeleted`"
+msgstr ""
+
+#: docs/11.x/pennant.md:block 229 (paragraph)
+msgid "This event is dispatched when deleting a feature for a scope, usually by calling `forget`."
+msgstr ""
+
+#: docs/11.x/pennant.md:block 230 (header)
+msgid "`Laravel\\Pennant\\Events\\FeaturesPurged`"
+msgstr ""
+
+#: docs/11.x/pennant.md:block 231 (paragraph)
+msgid "This event is dispatched when purging specific features."
+msgstr ""
+
+#: docs/11.x/pennant.md:block 232 (header)
+msgid "`Laravel\\Pennant\\Events\\AllFeaturesPurged`"
+msgstr ""
+
+#: docs/11.x/pennant.md:block 233 (paragraph)
+msgid "This event is dispatched when purging all features."
+msgstr ""
+
+#: docs/master/pennant.md:block 216 (code)
+msgid "<?php\n\n"
+"namespace App\\Providers;\n\n"
+"use Illuminate\\Support\\ServiceProvider;\n"
+"use Illuminate\\Support\\Facades\\Event;\n"
+"use Laravel\\Pennant\\Events\\RetrievingUnknownFeature;\n\n"
+"class AppServiceProvider extends ServiceProvider\n"
+"{\n"
+"    /**\n"
+"     * Bootstrap any application services.\n"
+"     */\n"
+"    public function boot(): void\n"
+"    {\n"
+"        Event::listen(function (RetrievingUnknownFeature $event) {\n"
+"            report(\"Resolving unknown feature [{$event->feature}].\");\n"
+"        });\n"
+"    }\n"
+"}\n"
 msgstr ""
 

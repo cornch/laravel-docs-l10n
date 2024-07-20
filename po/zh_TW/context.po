@@ -1,0 +1,444 @@
+msgid ""
+msgstr ""
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Crowdin-Project: laravel-docs\n"
+"X-Crowdin-Project-ID: 447952\n"
+"X-Crowdin-Language: zh-TW\n"
+"X-Crowdin-File: /main/templates/context.pot\n"
+"X-Crowdin-File-ID: 194\n"
+"Project-Id-Version: laravel-docs\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Language-Team: Chinese Traditional\n"
+"Language: zh_TW\n"
+"PO-Revision-Date: 2024-06-30 09:02\n"
+
+#: docs/11.x/context.md:block 1 (header)
+msgid "Context"
+msgstr ""
+
+#: docs/11.x/context.md:block 2 (unordered list)
+msgid "[Introduction](#introduction)"
+msgstr ""
+
+#: docs/11.x/context.md:block 2 (unordered list)
+msgid "[How it Works](#how-it-works)"
+msgstr ""
+
+#: docs/11.x/context.md:block 2 (unordered list)
+msgid "[Capturing Context](#capturing-context)"
+msgstr ""
+
+#: docs/11.x/context.md:block 2 (unordered list)
+msgid "[Stacks](#stacks)"
+msgstr ""
+
+#: docs/11.x/context.md:block 2 (unordered list)
+msgid "[Retrieving Context](#retrieving-context)"
+msgstr ""
+
+#: docs/11.x/context.md:block 2 (unordered list)
+msgid "[Determining Item Existence](#determining-item-existence)"
+msgstr ""
+
+#: docs/11.x/context.md:block 2 (unordered list)
+msgid "[Removing Context](#removing-context)"
+msgstr ""
+
+#: docs/11.x/context.md:block 2 (unordered list)
+msgid "[Hidden Context](#hidden-context)"
+msgstr ""
+
+#: docs/11.x/context.md:block 2 (unordered list)
+msgid "[Events](#events)"
+msgstr ""
+
+#: docs/11.x/context.md:block 2 (unordered list)
+msgid "[Dehydrating](#dehydrating)"
+msgstr ""
+
+#: docs/11.x/context.md:block 2 (unordered list)
+msgid "[Hydrated](#hydrated)"
+msgstr ""
+
+#: docs/11.x/context.md:block 4 (header)
+msgid "Introduction"
+msgstr ""
+
+#: docs/11.x/context.md:block 5 (paragraph)
+msgid "Laravel's \"context\" capabilities enable you to capture, retrieve, and share information throughout requests, jobs, and commands executing within your application. This captured information is also included in logs written by your application, giving you deeper insight into the surrounding code execution history that occurred before a log entry was written and allowing you to trace execution flows throughout a distributed system."
+msgstr ""
+
+#: docs/11.x/context.md:block 7 (header)
+msgid "How it Works"
+msgstr ""
+
+#: docs/11.x/context.md:block 8 (paragraph)
+msgid "The best way to understand Laravel's context capabilities is to see it in action using the built-in logging features. To get started, you may [add information to the context](#capturing-context) using the `Context` facade. In this example, we will use a [middleware](/docs/{{version}}/middleware) to add the request URL and a unique trace ID to the context on every incoming request:"
+msgstr ""
+
+#: docs/11.x/context.md:block 9 (code)
+msgid "<?php\n\n"
+"namespace App\\Http\\Middleware;\n\n"
+"use Closure;\n"
+"use Illuminate\\Http\\Request;\n"
+"use Illuminate\\Support\\Facades\\Context;\n"
+"use Illuminate\\Support\\Str;\n"
+"use Symfony\\Component\\HttpFoundation\\Response;\n\n"
+"class AddContext\n"
+"{\n"
+"    /**\n"
+"     * Handle an incoming request.\n"
+"     */\n"
+"    public function handle(Request $request, Closure $next): Response\n"
+"    {\n"
+"        Context::add('url', $request->url());\n"
+"        Context::add('trace_id', Str::uuid()->toString());\n\n"
+"        return $next($request);\n"
+"    }\n"
+"}\n"
+msgstr ""
+
+#: docs/11.x/context.md:block 10 (paragraph)
+msgid "Information added to the context is automatically appended as metadata to any [log entries](/docs/{{version}}/logging) that are written throughout the request. Appending context as metadata allows information passed to individual log entries to be differentiated from the information shared via `Context`. For example, imagine we write the following log entry:"
+msgstr ""
+
+#: docs/11.x/context.md:block 11 (code)
+msgid "Log::info('User authenticated.', ['auth_id' => Auth::id()]);\n"
+msgstr ""
+
+#: docs/11.x/context.md:block 12 (paragraph)
+msgid "The written log will contain the `auth_id` passed to the log entry, but it will also contain the context's `url` and `trace_id` as metadata:"
+msgstr ""
+
+#: docs/11.x/context.md:block 13 (code)
+msgid "User authenticated. {\"auth_id\":27} {\"url\":\"https://example.com/login\",\"trace_id\":\"e04e1a11-e75c-4db3-b5b5-cfef4ef56697\"}\n"
+msgstr ""
+
+#: docs/11.x/context.md:block 14 (paragraph)
+msgid "Information added to the context is also made available to jobs dispatched to the queue. For example, imagine we dispatch a `ProcessPodcast` job to the queue after adding some information to the context:"
+msgstr ""
+
+#: docs/11.x/context.md:block 15 (code)
+msgid "// In our middleware...\n"
+"Context::add('url', $request->url());\n"
+"Context::add('trace_id', Str::uuid()->toString());\n\n"
+"// In our controller...\n"
+"ProcessPodcast::dispatch($podcast);\n"
+msgstr ""
+
+#: docs/11.x/context.md:block 16 (paragraph)
+msgid "When the job is dispatched, any information currently stored in the context is captured and shared with the job. The captured information is then hydrated back into the current context while the job is executing. So, if our job's handle method was to write to the log:"
+msgstr ""
+
+#: docs/11.x/context.md:block 17 (code)
+msgid "class ProcessPodcast implements ShouldQueue\n"
+"{\n"
+"    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;\n\n"
+"    // ...\n\n"
+"    /**\n"
+"     * Execute the job.\n"
+"     */\n"
+"    public function handle(): void\n"
+"    {\n"
+"        Log::info('Processing podcast.', [\n"
+"            'podcast_id' => $this->podcast->id,\n"
+"        ]);\n\n"
+"        // ...\n"
+"    }\n"
+"}\n"
+msgstr ""
+
+#: docs/11.x/context.md:block 18 (paragraph)
+msgid "The resulting log entry would contain the information that was added to the context during the request that originally dispatched the job:"
+msgstr ""
+
+#: docs/11.x/context.md:block 19 (code)
+msgid "Processing podcast. {\"podcast_id\":95} {\"url\":\"https://example.com/login\",\"trace_id\":\"e04e1a11-e75c-4db3-b5b5-cfef4ef56697\"}\n"
+msgstr ""
+
+#: docs/11.x/context.md:block 20 (paragraph)
+msgid "Although we have focused on the built-in logging related features of Laravel's context, the following documentation will illustrate how context allows you to share information across the HTTP request / queued job boundary and even how to add [hidden context data](#hidden-context) that is not written with log entries."
+msgstr ""
+
+#: docs/11.x/context.md:block 22 (header)
+msgid "Capturing Context"
+msgstr ""
+
+#: docs/11.x/context.md:block 23 (paragraph)
+msgid "You may store information in the current context using the `Context` facade's `add` method:"
+msgstr ""
+
+#: docs/11.x/context.md:block 24 (code)
+msgid "use Illuminate\\Support\\Facades\\Context;\n\n"
+"Context::add('key', 'value');\n"
+msgstr ""
+
+#: docs/11.x/context.md:block 25 (paragraph)
+msgid "To add multiple items at once, you may pass an associative array to the `add` method:"
+msgstr ""
+
+#: docs/11.x/context.md:block 26 (code)
+msgid "Context::add([\n"
+"    'first_key' => 'value',\n"
+"    'second_key' => 'value',\n"
+"]);\n"
+msgstr ""
+
+#: docs/11.x/context.md:block 27 (paragraph)
+msgid "The `add` method will override any existing value that shares the same key. If you only wish to add information to the context if the key does not already exist, you may use the `addIf` method:"
+msgstr ""
+
+#: docs/11.x/context.md:block 28 (code)
+msgid "Context::add('key', 'first');\n\n"
+"Context::get('key');\n"
+"// \"first\"\n\n"
+"Context::addIf('key', 'second');\n\n"
+"Context::get('key');\n"
+"// \"first\"\n"
+msgstr ""
+
+#: docs/11.x/context.md:block 30 (header)
+msgid "Conditional Context"
+msgstr ""
+
+#: docs/11.x/context.md:block 31 (paragraph)
+msgid "The `when` method may be used to add data to the context based on a given condition. The first closure provided to the `when` method will be invoked if the given condition evaluates to `true`, while the second closure will be invoked if the condition evaluates to `false`:"
+msgstr ""
+
+#: docs/11.x/context.md:block 32 (code)
+msgid "use Illuminate\\Support\\Facades\\Auth;\n"
+"use Illuminate\\Support\\Facades\\Context;\n\n"
+"Context::when(\n"
+"    Auth::user()->isAdmin(),\n"
+"    fn ($context) => $context->add('permissions', Auth::user()->permissions),\n"
+"    fn ($context) => $context->add('permissions', []),\n"
+");\n"
+msgstr ""
+
+#: docs/11.x/context.md:block 34 (header)
+msgid "Stacks"
+msgstr ""
+
+#: docs/11.x/context.md:block 35 (paragraph)
+msgid "Context offers the ability to create \"stacks\", which are lists of data stored in the order that they were added. You can add information to a stack by invoking the `push` method:"
+msgstr ""
+
+#: docs/11.x/context.md:block 36 (code)
+msgid "use Illuminate\\Support\\Facades\\Context;\n\n"
+"Context::push('breadcrumbs', 'first_value');\n\n"
+"Context::push('breadcrumbs', 'second_value', 'third_value');\n\n"
+"Context::get('breadcrumbs');\n"
+"// [\n"
+"//     'first_value',\n"
+"//     'second_value',\n"
+"//     'third_value',\n"
+"// ]\n"
+msgstr ""
+
+#: docs/11.x/context.md:block 37 (paragraph)
+msgid "Stacks can be useful to capture historical information about a request, such as events that are happening throughout your application. For example, you could create an event listener to push to a stack every time a query is executed, capturing the query SQL and duration as a tuple:"
+msgstr ""
+
+#: docs/11.x/context.md:block 38 (code)
+msgid "use Illuminate\\Support\\Facades\\Context;\n"
+"use Illuminate\\Support\\Facades\\DB;\n\n"
+"DB::listen(function ($event) {\n"
+"    Context::push('queries', [$event->time, $event->sql]);\n"
+"});\n"
+msgstr ""
+
+#: docs/11.x/context.md:block 40 (header)
+msgid "Retrieving Context"
+msgstr ""
+
+#: docs/11.x/context.md:block 41 (paragraph)
+msgid "You may retrieve information from the context using the `Context` facade's `get` method:"
+msgstr ""
+
+#: docs/11.x/context.md:block 42 (code)
+msgid "use Illuminate\\Support\\Facades\\Context;\n\n"
+"$value = Context::get('key');\n"
+msgstr ""
+
+#: docs/11.x/context.md:block 43 (paragraph)
+msgid "The `only` method may be used to retrieve a subset of the information in the context:"
+msgstr ""
+
+#: docs/11.x/context.md:block 44 (code)
+msgid "$data = Context::only(['first_key', 'second_key']);\n"
+msgstr ""
+
+#: docs/11.x/context.md:block 45 (paragraph)
+msgid "The `pull` method may be used to retrieve information from the context and immediately remove it from the context:"
+msgstr ""
+
+#: docs/11.x/context.md:block 46 (code)
+msgid "$value = Context::pull('key');\n"
+msgstr ""
+
+#: docs/11.x/context.md:block 47 (paragraph)
+msgid "If you would like to retrieve all of the information stored in the context, you may invoke the `all` method:"
+msgstr ""
+
+#: docs/11.x/context.md:block 48 (code)
+msgid "$data = Context::all();\n"
+msgstr ""
+
+#: docs/11.x/context.md:block 50 (header)
+msgid "Determining Item Existence"
+msgstr ""
+
+#: docs/11.x/context.md:block 51 (paragraph)
+msgid "You may use the `has` method to determine if the context has any value stored for the given key:"
+msgstr ""
+
+#: docs/11.x/context.md:block 52 (code)
+msgid "use Illuminate\\Support\\Facades\\Context;\n\n"
+"if (Context::has('key')) {\n"
+"    // ...\n"
+"}\n"
+msgstr ""
+
+#: docs/11.x/context.md:block 53 (paragraph)
+msgid "The `has` method will return `true` regardless of the value stored. So, for example, a key with a `null` value will be considered present:"
+msgstr ""
+
+#: docs/11.x/context.md:block 54 (code)
+msgid "Context::add('key', null);\n\n"
+"Context::has('key');\n"
+"// true\n"
+msgstr ""
+
+#: docs/11.x/context.md:block 56 (header)
+msgid "Removing Context"
+msgstr ""
+
+#: docs/11.x/context.md:block 57 (paragraph)
+msgid "The `forget` method may be used to remove a key and its value from the current context:"
+msgstr ""
+
+#: docs/11.x/context.md:block 58 (code)
+msgid "use Illuminate\\Support\\Facades\\Context;\n\n"
+"Context::add(['first_key' => 1, 'second_key' => 2]);\n\n"
+"Context::forget('first_key');\n\n"
+"Context::all();\n\n"
+"// ['second_key' => 2]\n"
+msgstr ""
+
+#: docs/11.x/context.md:block 59 (paragraph)
+msgid "You may forget several keys at once by providing an array to the `forget` method:"
+msgstr ""
+
+#: docs/11.x/context.md:block 60 (code)
+msgid "Context::forget(['first_key', 'second_key']);\n"
+msgstr ""
+
+#: docs/11.x/context.md:block 62 (header)
+msgid "Hidden Context"
+msgstr ""
+
+#: docs/11.x/context.md:block 63 (paragraph)
+msgid "Context offers the ability to store \"hidden\" data. This hidden information is not appended to logs, and is not accessible via the data retrieval methods documented above. Context provides a different set of methods to interact with hidden context information:"
+msgstr ""
+
+#: docs/11.x/context.md:block 64 (code)
+msgid "use Illuminate\\Support\\Facades\\Context;\n\n"
+"Context::addHidden('key', 'value');\n\n"
+"Context::getHidden('key');\n"
+"// 'value'\n\n"
+"Context::get('key');\n"
+"// null\n"
+msgstr ""
+
+#: docs/11.x/context.md:block 65 (paragraph)
+msgid "The \"hidden\" methods mirror the functionality of the non-hidden methods documented above:"
+msgstr ""
+
+#: docs/11.x/context.md:block 66 (code)
+msgid "Context::addHidden(/* ... */);\n"
+"Context::addHiddenIf(/* ... */);\n"
+"Context::pushHidden(/* ... */);\n"
+"Context::getHidden(/* ... */);\n"
+"Context::pullHidden(/* ... */);\n"
+"Context::onlyHidden(/* ... */);\n"
+"Context::allHidden(/* ... */);\n"
+"Context::hasHidden(/* ... */);\n"
+"Context::forgetHidden(/* ... */);\n"
+msgstr ""
+
+#: docs/11.x/context.md:block 68 (header)
+msgid "Events"
+msgstr ""
+
+#: docs/11.x/context.md:block 69 (paragraph)
+msgid "Context dispatches two events that allow you to hook into the hydration and dehydration process of the context."
+msgstr ""
+
+#: docs/11.x/context.md:block 70 (paragraph)
+msgid "To illustrate how these events may be used, imagine that in a middleware of your application you set the `app.locale` configuration value based on the incoming HTTP request's `Accept-Language` header. Context's events allow you to capture this value during the request and restore it on the queue, ensuring notifications sent on the queue have the correct `app.locale` value. We can use context's events and [hidden](#hidden-context) data to achieve this, which the following documentation will illustrate."
+msgstr ""
+
+#: docs/11.x/context.md:block 72 (header)
+msgid "Dehydrating"
+msgstr ""
+
+#: docs/11.x/context.md:block 73 (paragraph)
+msgid "Whenever a job is dispatched to the queue the data in the context is \"dehydrated\" and captured alongside the job's payload. The `Context::dehydrating` method allows you to register a closure that will be invoked during the dehydration process. Within this closure, you may make changes to the data that will be shared with the queued job."
+msgstr ""
+
+#: docs/11.x/context.md:block 74 (paragraph)
+msgid "Typically, you should register `dehydrating` callbacks within the `boot` method of your application's `AppServiceProvider` class:"
+msgstr ""
+
+#: docs/11.x/context.md:block 75 (code)
+msgid "use Illuminate\\Log\\Context\\Repository;\n"
+"use Illuminate\\Support\\Facades\\Config;\n"
+"use Illuminate\\Support\\Facades\\Context;\n\n"
+"/**\n"
+" * Bootstrap any application services.\n"
+" */\n"
+"public function boot(): void\n"
+"{\n"
+"    Context::dehydrating(function (Repository $context) {\n"
+"        $context->addHidden('locale', Config::get('app.locale'));\n"
+"    });\n"
+"}\n"
+msgstr ""
+
+#: docs/11.x/context.md:block 76 (quote)
+msgid "[!NOTE] You should not use the `Context` facade within the `dehydrating` callback, as that will change the context of the current process. Ensure you only make changes to the repository passed to the callback."
+msgstr ""
+
+#: docs/11.x/context.md:block 78 (header)
+msgid "Hydrated"
+msgstr ""
+
+#: docs/11.x/context.md:block 79 (paragraph)
+msgid "Whenever a queued job begins executing on the queue, any context that was shared with the job will be \"hydrated\" back into the current context. The `Context::hydrated` method allows you to register a closure that will be invoked during the hydration process."
+msgstr ""
+
+#: docs/11.x/context.md:block 80 (paragraph)
+msgid "Typically, you should register `hydrated` callbacks within the `boot` method of your application's `AppServiceProvider` class:"
+msgstr ""
+
+#: docs/11.x/context.md:block 81 (code)
+msgid "use Illuminate\\Log\\Context\\Repository;\n"
+"use Illuminate\\Support\\Facades\\Config;\n"
+"use Illuminate\\Support\\Facades\\Context;\n\n"
+"/**\n"
+" * Bootstrap any application services.\n"
+" */\n"
+"public function boot(): void\n"
+"{\n"
+"    Context::hydrated(function (Repository $context) {\n"
+"        if ($context->hasHidden('locale')) {\n"
+"            Config::set('app.locale', $context->getHidden('locale'));\n"
+"        }\n"
+"    });\n"
+"}\n"
+msgstr ""
+
+#: docs/11.x/context.md:block 82 (quote)
+msgid "[!NOTE] You should not use the `Context` facade within the `hydrated` callback and instead ensure you only make changes to the repository passed to the callback."
+msgstr ""
+

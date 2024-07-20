@@ -10,7 +10,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
-"PO-Revision-Date: 2024-06-30 08:26\n"
+"PO-Revision-Date: 2024-06-30 09:00\n"
 
 #: docs/10.x/encryption.md:block 1 (header)
 msgid "Encryption"
@@ -25,8 +25,8 @@ msgid "[Configuration](#configuration)"
 msgstr "[設定](#configuration)"
 
 #: docs/10.x/encryption.md:block 2 (unordered list)
-msgid "[Using The Encrypter](#using-the-encrypter)"
-msgstr "[使用 Encrypter](#using-the-encrypter)"
+msgid "[Using the Encrypter](#using-the-encrypter)"
+msgstr ""
 
 #: docs/10.x/encryption.md:block 4 (header)
 msgid "Introduction"
@@ -45,12 +45,12 @@ msgid "Before using Laravel's encrypter, you must set the `key` configuration op
 msgstr "在開始使用 Laravel 的 Encrypter 前，我們必須先在 `config/app.php` 設定檔中設定 `key`。這個設定以 `APP_KEY` 環境變數提供，我們可以使用 `php artisan key:generate` 指令來產生這個變數值。`key:generate` 指令會使用 PHP 的安全隨機位元組產生器來為你的專案建立密碼學上安全的密鑰。一般來說，`APP_KEY` 環境變數會在 [Laravel 的安裝過程](/docs/{{version}}/installation)中就為你產生好了。"
 
 #: docs/10.x/encryption.md:block 10 (header)
-msgid "Using The Encrypter"
-msgstr "使用加密程式"
+msgid "Using the Encrypter"
+msgstr ""
 
 #: docs/10.x/encryption.md:block 12 (header)
-msgid "Encrypting A Value"
-msgstr "加密"
+msgid "Encrypting a Value"
+msgstr ""
 
 #: docs/10.x/encryption.md:block 13 (paragraph)
 msgid "You may encrypt a value using the `encryptString` method provided by the `Crypt` facade. All encrypted values are encrypted using OpenSSL and the AES-256-CBC cipher. Furthermore, all encrypted values are signed with a message authentication code (MAC). The integrated message authentication code will prevent the decryption of any values that have been tampered with by malicious users:"
@@ -95,8 +95,8 @@ msgstr "<?php\n\n"
 "}\n"
 
 #: docs/10.x/encryption.md:block 16 (header)
-msgid "Decrypting A Value"
-msgstr "解密"
+msgid "Decrypting a Value"
+msgstr ""
 
 #: docs/10.x/encryption.md:block 17 (paragraph)
 msgid "You may decrypt values using the `decryptString` method provided by the `Crypt` facade. If the value can not be properly decrypted, such as when the message authentication code is invalid, an `Illuminate\\Contracts\\Encryption\\DecryptException` will be thrown:"
@@ -117,6 +117,47 @@ msgstr "use Illuminate\\Contracts\\Encryption\\DecryptException;\n"
 "} catch (DecryptException $e) {\n"
 "    // ...\n"
 "}\n"
+
+#: docs/11.x/encryption.md:block 2 (unordered list)
+msgid "[Gracefully Rotating Encryption Keys](#gracefully-rotating-encryption-keys)"
+msgstr ""
+
+#: docs/11.x/encryption.md:block 10 (header)
+msgid "Gracefully Rotating Encryption Keys"
+msgstr ""
+
+#: docs/11.x/encryption.md:block 11 (paragraph)
+msgid "If you change your application's encryption key, all authenticated user sessions will be logged out of your application. This is because every cookie, including session cookies, are encrypted by Laravel. In addition, it will no longer be possible to decrypt any data that was encrypted with your previous encryption key."
+msgstr ""
+
+#: docs/11.x/encryption.md:block 12 (paragraph)
+msgid "To mitigate this issue, Laravel allows you to list your previous encryption keys in your application's `APP_PREVIOUS_KEYS` environment variable. This variable may contain a comma-delimited list of all of your previous encryption keys:"
+msgstr ""
+
+#: docs/11.x/encryption.md:block 13 (code)
+msgid "APP_KEY=\"base64:J63qRTDLub5NuZvP+kb8YIorGS6qFYHKVo6u7179stY=\"\n"
+"APP_PREVIOUS_KEYS=\"base64:2nLsGFGzyoae2ax3EF2Lyq/hH6QghBGLIq5uL+Gp8/w=\"\n"
+msgstr ""
+
+#: docs/11.x/encryption.md:block 14 (paragraph)
+msgid "When you set this environment variable, Laravel will always use the \"current\" encryption key when encrypting values. However, when decrypting values, Laravel will first try the current key, and if decryption fails using the current key, Laravel will try all previous keys until one of the keys is able to decrypt the value."
+msgstr ""
+
+#: docs/11.x/encryption.md:block 15 (paragraph)
+msgid "This approach to graceful decryption allows users to keep using your application uninterrupted even if your encryption key is rotated."
+msgstr ""
+
+#: docs/8.x/encryption.md:block 2 (unordered list)
+msgid "[Using The Encrypter](#using-the-encrypter)"
+msgstr "[使用 Encrypter](#using-the-encrypter)"
+
+#: docs/8.x/encryption.md:block 10 (header)
+msgid "Using The Encrypter"
+msgstr "使用加密程式"
+
+#: docs/8.x/encryption.md:block 12 (header)
+msgid "Encrypting A Value"
+msgstr "加密"
 
 #: docs/8.x/encryption.md:block 14 (code)
 msgid "<?php\n\n"
@@ -162,6 +203,10 @@ msgstr "<?php\n\n"
 "    }\n"
 "}\n"
 
+#: docs/8.x/encryption.md:block 16 (header)
+msgid "Decrypting A Value"
+msgstr "解密"
+
 #: docs/8.x/encryption.md:block 18 (code)
 msgid "use Illuminate\\Contracts\\Encryption\\DecryptException;\n"
 "use Illuminate\\Support\\Facades\\Crypt;\n\n"
@@ -176,47 +221,5 @@ msgstr "use Illuminate\\Contracts\\Encryption\\DecryptException;\n"
 "    $decrypted = Crypt::decryptString($encryptedValue);\n"
 "} catch (DecryptException $e) {\n"
 "    //\n"
-"}\n"
-
-#: docs/master/encryption.md:block 14 (code)
-msgid "<?php\n\n"
-"namespace App\\Http\\Controllers;\n\n"
-"use App\\Http\\Controllers\\Controller;\n"
-"use App\\Models\\User;\n"
-"use Illuminate\\Http\\Request;\n"
-"use Illuminate\\Http\\Response;\n"
-"use Illuminate\\Support\\Facades\\Crypt;\n\n"
-"class DigitalOceanTokenController extends Controller\n"
-"{\n"
-"    /**\n"
-"     * Store a DigitalOcean API token for the user.\n"
-"     */\n"
-"    public function storeSecret(Request $request): Response\n"
-"    {\n"
-"        $request->user()->fill([\n"
-"            'token' => Crypt::encryptString($request->token),\n"
-"        ])->save();\n\n"
-"        return response()->noContent();\n"
-"    }\n"
-"}\n"
-msgstr "<?php\n\n"
-"namespace App\\Http\\Controllers;\n\n"
-"use App\\Http\\Controllers\\Controller;\n"
-"use App\\Models\\User;\n"
-"use Illuminate\\Http\\Request;\n"
-"use Illuminate\\Http\\Response;\n"
-"use Illuminate\\Support\\Facades\\Crypt;\n\n"
-"class DigitalOceanTokenController extends Controller\n"
-"{\n"
-"    /**\n"
-"     * Store a DigitalOcean API token for the user.\n"
-"     */\n"
-"    public function storeSecret(Request $request): Response\n"
-"    {\n"
-"        $request->user()->fill([\n"
-"            'token' => Crypt::encryptString($request->token),\n"
-"        ])->save();\n\n"
-"        return response()->noContent();\n"
-"    }\n"
 "}\n"
 

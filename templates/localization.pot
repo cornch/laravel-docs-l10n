@@ -1,461 +1,300 @@
-#
 msgid ""
 msgstr ""
 
-#: docs/10.x/localization.md:block 1 (header)
+#: ./docs/8.x/localization.md:1
+#: ./docs/9.x/localization.md:1
+#: ./docs/10.x/localization.md:1
+#: ./docs/11.x/localization.md:1
+#: ./docs/master/localization.md:1
+msgctxt "H1"
 msgid "Localization"
 msgstr ""
 
-#: docs/10.x/localization.md:block 2 (unordered list)
+#: ./docs/8.x/localization.md:3
+#: ./docs/9.x/localization.md:3
+#: ./docs/10.x/localization.md:3
+#: ./docs/11.x/localization.md:3
+#: ./docs/master/localization.md:3
+msgctxt "P"
 msgid "[Introduction](#introduction)"
 msgstr ""
 
-#: docs/10.x/localization.md:block 2 (unordered list)
+#: ./docs/10.x/localization.md:4
+#: ./docs/11.x/localization.md:4
+#: ./docs/master/localization.md:4
+msgctxt "P"
 msgid "[Publishing the Language Files](#publishing-the-language-files)"
 msgstr ""
 
-#: docs/10.x/localization.md:block 2 (unordered list)
-msgid "[Configuring the Locale](#configuring-the-locale)"
-msgstr ""
-
-#: docs/10.x/localization.md:block 2 (unordered list)
-msgid "[Pluralization Language](#pluralization-language)"
-msgstr ""
-
-#: docs/10.x/localization.md:block 2 (unordered list)
-msgid "[Defining Translation Strings](#defining-translation-strings)"
-msgstr ""
-
-#: docs/10.x/localization.md:block 2 (unordered list)
-msgid "[Using Short Keys](#using-short-keys)"
-msgstr ""
-
-#: docs/10.x/localization.md:block 2 (unordered list)
-msgid "[Using Translation Strings as Keys](#using-translation-strings-as-keys)"
-msgstr ""
-
-#: docs/10.x/localization.md:block 2 (unordered list)
-msgid "[Retrieving Translation Strings](#retrieving-translation-strings)"
-msgstr ""
-
-#: docs/10.x/localization.md:block 2 (unordered list)
-msgid "[Replacing Parameters in Translation Strings](#replacing-parameters-in-translation-strings)"
-msgstr ""
-
-#: docs/10.x/localization.md:block 2 (unordered list)
-msgid "[Pluralization](#pluralization)"
-msgstr ""
-
-#: docs/10.x/localization.md:block 2 (unordered list)
-msgid "[Overriding Package Language Files](#overriding-package-language-files)"
-msgstr ""
-
-#: docs/10.x/localization.md:block 4 (header)
-msgid "Introduction"
-msgstr ""
-
-#: docs/10.x/localization.md:block 5 (quote)
-msgid "[!NOTE] By default, the Laravel application skeleton does not include the `lang` directory. If you would like to customize Laravel's language files, you may publish them via the `lang:publish` Artisan command."
-msgstr ""
-
-#: docs/10.x/localization.md:block 6 (paragraph)
-msgid "Laravel's localization features provide a convenient way to retrieve strings in various languages, allowing you to easily support multiple languages within your application."
-msgstr ""
-
-#: docs/10.x/localization.md:block 7 (paragraph)
-msgid "Laravel provides two ways to manage translation strings. First, language strings may be stored in files within the application's `lang` directory. Within this directory, there may be subdirectories for each language supported by the application. This is the approach Laravel uses to manage translation strings for built-in Laravel features such as validation error messages:"
-msgstr ""
-
-#: docs/10.x/localization.md:block 8 (code)
-msgid ""
-"/lang\n"
-"    /en\n"
-"        messages.php\n"
-"    /es\n"
-"        messages.php\n"
-msgstr ""
-
-#: docs/10.x/localization.md:block 9 (paragraph)
-msgid "Or, translation strings may be defined within JSON files that are placed within the `lang` directory. When taking this approach, each language supported by your application would have a corresponding JSON file within this directory. This approach is recommended for applications that have a large number of translatable strings:"
-msgstr ""
-
-#: docs/10.x/localization.md:block 10 (code)
-msgid ""
-"/lang\n"
-"    en.json\n"
-"    es.json\n"
-msgstr ""
-
-#: docs/10.x/localization.md:block 11 (paragraph)
-msgid "We'll discuss each approach to managing translation strings within this documentation."
-msgstr ""
-
-#: docs/10.x/localization.md:block 13 (header)
-msgid "Publishing the Language Files"
-msgstr ""
-
-#: docs/10.x/localization.md:block 14 (paragraph)
-msgid "By default, the Laravel application skeleton does not include the `lang` directory. If you would like to customize Laravel's language files or create your own, you should scaffold the `lang` directory via the `lang:publish` Artisan command. The `lang:publish` command will create the `lang` directory in your application and publish the default set of language files used by Laravel:"
-msgstr ""
-
-#: docs/10.x/localization.md:block 15 (code)
-msgid "php artisan lang:publish\n"
-msgstr ""
-
-#: docs/10.x/localization.md:block 17 (header)
-msgid "Configuring the Locale"
-msgstr ""
-
-#: docs/10.x/localization.md:block 18 (paragraph)
-msgid "The default language for your application is stored in the `config/app.php` configuration file's `locale` configuration option. You are free to modify this value to suit the needs of your application."
-msgstr ""
-
-#: docs/10.x/localization.md:block 19 (paragraph)
-msgid "You may modify the default language for a single HTTP request at runtime using the `setLocale` method provided by the `App` facade:"
-msgstr ""
-
-#: docs/10.x/localization.md:block 20 (code)
-msgid ""
-"use Illuminate\\Support\\Facades\\App;\n"
-"\n"
-"Route::get('/greeting/{locale}', function (string $locale) {\n"
-"    if (! in_array($locale, ['en', 'es', 'fr'])) {\n"
-"        abort(400);\n"
-"    }\n"
-"\n"
-"    App::setLocale($locale);\n"
-"\n"
-"    // ...\n"
-"});\n"
-msgstr ""
-
-#: docs/10.x/localization.md:block 21 (paragraph)
-msgid "You may configure a \"fallback language\", which will be used when the active language does not contain a given translation string. Like the default language, the fallback language is also configured in the `config/app.php` configuration file:"
-msgstr ""
-
-#: docs/10.x/localization.md:block 22 (code)
-msgid "'fallback_locale' => 'en',\n"
-msgstr ""
-
-#: docs/10.x/localization.md:block 24 (header)
-msgid "Determining the Current Locale"
-msgstr ""
-
-#: docs/10.x/localization.md:block 25 (paragraph)
-msgid "You may use the `currentLocale` and `isLocale` methods on the `App` facade to determine the current locale or check if the locale is a given value:"
-msgstr ""
-
-#: docs/10.x/localization.md:block 26 (code)
-msgid ""
-"use Illuminate\\Support\\Facades\\App;\n"
-"\n"
-"$locale = App::currentLocale();\n"
-"\n"
-"if (App::isLocale('en')) {\n"
-"    // ...\n"
-"}\n"
-msgstr ""
-
-#: docs/10.x/localization.md:block 28 (header)
-msgid "Pluralization Language"
-msgstr ""
-
-#: docs/10.x/localization.md:block 29 (paragraph)
-msgid "You may instruct Laravel's \"pluralizer\", which is used by Eloquent and other portions of the framework to convert singular strings to plural strings, to use a language other than English. This may be accomplished by invoking the `useLanguage` method within the `boot` method of one of your application's service providers. The pluralizer's currently supported languages are: `french`, `norwegian-bokmal`, `portuguese`, `spanish`, and `turkish`:"
-msgstr ""
-
-#: docs/10.x/localization.md:block 30 (code)
-msgid ""
-"use Illuminate\\Support\\Pluralizer;\n"
-"\n"
-"/**\n"
-" * Bootstrap any application services.\n"
-" */\n"
-"public function boot(): void\n"
-"{\n"
-"    Pluralizer::useLanguage('spanish');     \n"
-"\n"
-"    // ...     \n"
-"}\n"
-msgstr ""
-
-#: docs/10.x/localization.md:block 31 (quote)
-msgid "[!WARNING] If you customize the pluralizer's language, you should explicitly define your Eloquent model's [table names](/docs/{{version}}/eloquent#table-names)."
-msgstr ""
-
-#: docs/10.x/localization.md:block 33 (header)
-msgid "Defining Translation Strings"
-msgstr ""
-
-#: docs/10.x/localization.md:block 35 (header)
-msgid "Using Short Keys"
-msgstr ""
-
-#: docs/10.x/localization.md:block 36 (paragraph)
-msgid "Typically, translation strings are stored in files within the `lang` directory. Within this directory, there should be a subdirectory for each language supported by your application. This is the approach Laravel uses to manage translation strings for built-in Laravel features such as validation error messages:"
-msgstr ""
-
-#: docs/10.x/localization.md:block 38 (paragraph)
-msgid "All language files return an array of keyed strings. For example:"
-msgstr ""
-
-#: docs/10.x/localization.md:block 39 (code)
-msgid ""
-"<?php\n"
-"\n"
-"// lang/en/messages.php\n"
-"\n"
-"return [\n"
-"    'welcome' => 'Welcome to our application!',\n"
-"];\n"
-msgstr ""
-
-#: docs/10.x/localization.md:block 40 (quote)
-msgid "[!WARNING] For languages that differ by territory, you should name the language directories according to the ISO 15897. For example, \"en_GB\" should be used for British English rather than \"en-gb\"."
-msgstr ""
-
-#: docs/10.x/localization.md:block 42 (header)
-msgid "Using Translation Strings as Keys"
-msgstr ""
-
-#: docs/10.x/localization.md:block 43 (paragraph)
-msgid "For applications with a large number of translatable strings, defining every string with a \"short key\" can become confusing when referencing the keys in your views and it is cumbersome to continually invent keys for every translation string supported by your application."
-msgstr ""
-
-#: docs/10.x/localization.md:block 44 (paragraph)
-msgid "For this reason, Laravel also provides support for defining translation strings using the \"default\" translation of the string as the key. Language files that use translation strings as keys are stored as JSON files in the `lang` directory. For example, if your application has a Spanish translation, you should create a `lang/es.json` file:"
-msgstr ""
-
-#: docs/10.x/localization.md:block 45 (code)
-msgid ""
-"{\n"
-"    \"I love programming.\": \"Me encanta programar.\"\n"
-"}\n"
-msgstr ""
-
-#: docs/10.x/localization.md:block 46 (header)
-msgid "Key / File Conflicts"
-msgstr ""
-
-#: docs/10.x/localization.md:block 47 (paragraph)
-msgid "You should not define translation string keys that conflict with other translation filenames. For example, translating `__('Action')` for the \"NL\" locale while a `nl/action.php` file exists but a `nl.json` file does not exist will result in the translator returning the entire contents of `nl/action.php`."
-msgstr ""
-
-#: docs/10.x/localization.md:block 49 (header)
-msgid "Retrieving Translation Strings"
-msgstr ""
-
-#: docs/10.x/localization.md:block 50 (paragraph)
-msgid "You may retrieve translation strings from your language files using the `__` helper function. If you are using \"short keys\" to define your translation strings, you should pass the file that contains the key and the key itself to the `__` function using \"dot\" syntax. For example, let's retrieve the `welcome` translation string from the `lang/en/messages.php` language file:"
-msgstr ""
-
-#: docs/10.x/localization.md:block 51 (code)
-msgid "echo __('messages.welcome');\n"
-msgstr ""
-
-#: docs/10.x/localization.md:block 52 (paragraph)
-msgid "If the specified translation string does not exist, the `__` function will return the translation string key. So, using the example above, the `__` function would return `messages.welcome` if the translation string does not exist."
-msgstr ""
-
-#: docs/10.x/localization.md:block 53 (paragraph)
-msgid "If you are using your [default translation strings as your translation keys](#using-translation-strings-as-keys), you should pass the default translation of your string to the `__` function;"
-msgstr ""
-
-#: docs/10.x/localization.md:block 54 (code)
-msgid "echo __('I love programming.');\n"
-msgstr ""
-
-#: docs/10.x/localization.md:block 55 (paragraph)
-msgid "Again, if the translation string does not exist, the `__` function will return the translation string key that it was given."
-msgstr ""
-
-#: docs/10.x/localization.md:block 56 (paragraph)
-msgid "If you are using the [Blade templating engine](/docs/{{version}}/blade), you may use the `{{ }}` echo syntax to display the translation string:"
-msgstr ""
-
-#: docs/10.x/localization.md:block 57 (code)
-msgid "{{ __('messages.welcome') }}\n"
-msgstr ""
-
-#: docs/10.x/localization.md:block 59 (header)
-msgid "Replacing Parameters in Translation Strings"
-msgstr ""
-
-#: docs/10.x/localization.md:block 60 (paragraph)
-msgid "If you wish, you may define placeholders in your translation strings. All placeholders are prefixed with a `:`. For example, you may define a welcome message with a placeholder name:"
-msgstr ""
-
-#: docs/10.x/localization.md:block 61 (code)
-msgid "'welcome' => 'Welcome, :name',\n"
-msgstr ""
-
-#: docs/10.x/localization.md:block 62 (paragraph)
-msgid "To replace the placeholders when retrieving a translation string, you may pass an array of replacements as the second argument to the `__` function:"
-msgstr ""
-
-#: docs/10.x/localization.md:block 63 (code)
-msgid "echo __('messages.welcome', ['name' => 'dayle']);\n"
-msgstr ""
-
-#: docs/10.x/localization.md:block 64 (paragraph)
-msgid "If your placeholder contains all capital letters, or only has its first letter capitalized, the translated value will be capitalized accordingly:"
-msgstr ""
-
-#: docs/10.x/localization.md:block 65 (code)
-msgid ""
-"'welcome' => 'Welcome, :NAME', // Welcome, DAYLE\n"
-"'goodbye' => 'Goodbye, :Name', // Goodbye, Dayle\n"
-msgstr ""
-
-#: docs/10.x/localization.md:block 67 (header)
-msgid "Object Replacement Formatting"
-msgstr ""
-
-#: docs/10.x/localization.md:block 68 (paragraph)
-msgid "If you attempt to provide an object as a translation placeholder, the object's `__toString` method will be invoked. The [`__toString`](https://www.php.net/manual/en/language.oop5.magic.php#object.tostring) method is one of PHP's built-in \"magic methods\". However, sometimes you may not have control over the `__toString` method of a given class, such as when the class that you are interacting with belongs to a third-party library."
-msgstr ""
-
-#: docs/10.x/localization.md:block 69 (paragraph)
-msgid "In these cases, Laravel allows you to register a custom formatting handler for that particular type of object. To accomplish this, you should invoke the translator's `stringable` method. The `stringable` method accepts a closure, which should type-hint the type of object that it is responsible for formatting. Typically, the `stringable` method should be invoked within the `boot` method of your application's `AppServiceProvider` class:"
-msgstr ""
-
-#: docs/10.x/localization.md:block 70 (code)
-msgid ""
-"use Illuminate\\Support\\Facades\\Lang;\n"
-"use Money\\Money;\n"
-"\n"
-"/**\n"
-" * Bootstrap any application services.\n"
-" */\n"
-"public function boot(): void\n"
-"{\n"
-"    Lang::stringable(function (Money $money) {\n"
-"        return $money->formatTo('en_GB');\n"
-"    });\n"
-"}\n"
-msgstr ""
-
-#: docs/10.x/localization.md:block 72 (header)
-msgid "Pluralization"
-msgstr ""
-
-#: docs/10.x/localization.md:block 73 (paragraph)
-msgid "Pluralization is a complex problem, as different languages have a variety of complex rules for pluralization; however, Laravel can help you translate strings differently based on pluralization rules that you define. Using a `|` character, you may distinguish singular and plural forms of a string:"
-msgstr ""
-
-#: docs/10.x/localization.md:block 74 (code)
-msgid "'apples' => 'There is one apple|There are many apples',\n"
-msgstr ""
-
-#: docs/10.x/localization.md:block 75 (paragraph)
-msgid "Of course, pluralization is also supported when using [translation strings as keys](#using-translation-strings-as-keys):"
-msgstr ""
-
-#: docs/10.x/localization.md:block 76 (code)
-msgid ""
-"{\n"
-"    \"There is one apple|There are many apples\": \"Hay una manzana|Hay muchas manzanas\"\n"
-"}\n"
-msgstr ""
-
-#: docs/10.x/localization.md:block 77 (paragraph)
-msgid "You may even create more complex pluralization rules which specify translation strings for multiple ranges of values:"
-msgstr ""
-
-#: docs/10.x/localization.md:block 78 (code)
-msgid "'apples' => '{0} There are none|[1,19] There are some|[20,*] There are many',\n"
-msgstr ""
-
-#: docs/10.x/localization.md:block 79 (paragraph)
-msgid "After defining a translation string that has pluralization options, you may use the `trans_choice` function to retrieve the line for a given \"count\". In this example, since the count is greater than one, the plural form of the translation string is returned:"
-msgstr ""
-
-#: docs/10.x/localization.md:block 80 (code)
-msgid "echo trans_choice('messages.apples', 10);\n"
-msgstr ""
-
-#: docs/10.x/localization.md:block 81 (paragraph)
-msgid "You may also define placeholder attributes in pluralization strings. These placeholders may be replaced by passing an array as the third argument to the `trans_choice` function:"
-msgstr ""
-
-#: docs/10.x/localization.md:block 82 (code)
-msgid ""
-"'minutes_ago' => '{1} :value minute ago|[2,*] :value minutes ago',\n"
-"\n"
-"echo trans_choice('time.minutes_ago', 5, ['value' => 5]);\n"
-msgstr ""
-
-#: docs/10.x/localization.md:block 83 (paragraph)
-msgid "If you would like to display the integer value that was passed to the `trans_choice` function, you may use the built-in `:count` placeholder:"
-msgstr ""
-
-#: docs/10.x/localization.md:block 84 (code)
-msgid "'apples' => '{0} There are none|{1} There is one|[2,*] There are :count',\n"
-msgstr ""
-
-#: docs/10.x/localization.md:block 86 (header)
-msgid "Overriding Package Language Files"
-msgstr ""
-
-#: docs/10.x/localization.md:block 87 (paragraph)
-msgid "Some packages may ship with their own language files. Instead of changing the package's core files to tweak these lines, you may override them by placing files in the `lang/vendor/{package}/{locale}` directory."
-msgstr ""
-
-#: docs/10.x/localization.md:block 88 (paragraph)
-msgid "So, for example, if you need to override the English translation strings in `messages.php` for a package named `skyrim/hearthfire`, you should place a language file at: `lang/vendor/hearthfire/en/messages.php`. Within this file, you should only define the translation strings you wish to override. Any translation strings you don't override will still be loaded from the package's original language files."
-msgstr ""
-
-#: docs/11.x/localization.md:block 18 (paragraph)
-msgid "The default language for your application is stored in the `config/app.php` configuration file's `locale` configuration option, which is typically set using the `APP_LOCALE` environment variable. You are free to modify this value to suit the needs of your application."
-msgstr ""
-
-#: docs/11.x/localization.md:block 19 (paragraph)
-msgid "You may also configure a \"fallback language\", which will be used when the default language does not contain a given translation string. Like the default language, the fallback language is also configured in the `config/app.php` configuration file, and its value is typically set using the `APP_FALLBACK_LOCALE` environment variable."
-msgstr ""
-
-#: docs/8.x/localization.md:block 2 (unordered list)
+#: ./docs/8.x/localization.md:4
+#: ./docs/9.x/localization.md:4
+msgctxt "P"
 msgid "[Configuring The Locale](#configuring-the-locale)"
 msgstr ""
 
-#: docs/8.x/localization.md:block 2 (unordered list)
+#: ./docs/10.x/localization.md:5
+#: ./docs/11.x/localization.md:5
+#: ./docs/master/localization.md:5
+msgctxt "P"
+msgid "[Configuring the Locale](#configuring-the-locale)"
+msgstr ""
+
+#: ./docs/8.x/localization.md:5
+#: ./docs/9.x/localization.md:6
+#: ./docs/10.x/localization.md:7
+#: ./docs/11.x/localization.md:7
+#: ./docs/master/localization.md:7
+msgctxt "P"
+msgid "[Defining Translation Strings](#defining-translation-strings)"
+msgstr ""
+
+#: ./docs/9.x/localization.md:5
+#: ./docs/10.x/localization.md:6
+#: ./docs/11.x/localization.md:6
+#: ./docs/master/localization.md:6
+msgctxt "P"
+msgid "[Pluralization Language](#pluralization-language)"
+msgstr ""
+
+#: ./docs/8.x/localization.md:6
+#: ./docs/9.x/localization.md:7
+#: ./docs/10.x/localization.md:8
+#: ./docs/11.x/localization.md:8
+#: ./docs/master/localization.md:8
+msgctxt "P"
+msgid "[Using Short Keys](#using-short-keys)"
+msgstr ""
+
+#: ./docs/8.x/localization.md:7
+#: ./docs/9.x/localization.md:8
+msgctxt "P"
 msgid "[Using Translation Strings As Keys](#using-translation-strings-as-keys)"
 msgstr ""
 
-#: docs/8.x/localization.md:block 2 (unordered list)
+#: ./docs/8.x/localization.md:8
+#: ./docs/9.x/localization.md:9
+#: ./docs/10.x/localization.md:10
+#: ./docs/11.x/localization.md:10
+#: ./docs/master/localization.md:10
+msgctxt "P"
+msgid "[Retrieving Translation Strings](#retrieving-translation-strings)"
+msgstr ""
+
+#: ./docs/10.x/localization.md:9
+#: ./docs/11.x/localization.md:9
+#: ./docs/master/localization.md:9
+msgctxt "P"
+msgid "[Using Translation Strings as Keys](#using-translation-strings-as-keys)"
+msgstr ""
+
+#: ./docs/8.x/localization.md:9
+#: ./docs/9.x/localization.md:10
+msgctxt "P"
 msgid "[Replacing Parameters In Translation Strings](#replacing-parameters-in-translation-strings)"
 msgstr ""
 
-#: docs/8.x/localization.md:block 6 (paragraph)
+#: ./docs/8.x/localization.md:10
+#: ./docs/9.x/localization.md:11
+#: ./docs/10.x/localization.md:12
+#: ./docs/11.x/localization.md:12
+#: ./docs/master/localization.md:12
+msgctxt "P"
+msgid "[Pluralization](#pluralization)"
+msgstr ""
+
+#: ./docs/10.x/localization.md:11
+#: ./docs/11.x/localization.md:11
+#: ./docs/master/localization.md:11
+msgctxt "P"
+msgid "[Replacing Parameters in Translation Strings](#replacing-parameters-in-translation-strings)"
+msgstr ""
+
+#: ./docs/8.x/localization.md:11
+#: ./docs/9.x/localization.md:12
+#: ./docs/10.x/localization.md:13
+#: ./docs/11.x/localization.md:13
+#: ./docs/master/localization.md:13
+msgctxt "P"
+msgid "[Overriding Package Language Files](#overriding-package-language-files)"
+msgstr ""
+
+#: ./docs/8.x/localization.md:13
+#: ./docs/9.x/localization.md:14
+#: ./docs/10.x/localization.md:15
+#: ./docs/11.x/localization.md:15
+#: ./docs/master/localization.md:15
+#~ msgctxt "P"
+#~ msgid "<a name=\"introduction\"></a>"
+#~ msgstr ""
+
+#: ./docs/8.x/localization.md:14
+#: ./docs/9.x/localization.md:15
+#: ./docs/10.x/localization.md:16
+#: ./docs/11.x/localization.md:16
+#: ./docs/master/localization.md:16
+msgctxt "H2"
+msgid "Introduction"
+msgstr ""
+
+#: ./docs/8.x/localization.md:16
+#: ./docs/9.x/localization.md:17
+#: ./docs/10.x/localization.md:21
+#: ./docs/11.x/localization.md:21
+#: ./docs/master/localization.md:21
+msgctxt "P"
+msgid "Laravel's localization features provide a convenient way to retrieve strings in various languages, allowing you to easily support multiple languages within your application."
+msgstr ""
+
+#: ./docs/8.x/localization.md:18
+msgctxt "P"
 msgid "Laravel provides two ways to manage translation strings. First, language strings may be stored in files within the `resources/lang` directory. Within this directory, there may be subdirectories for each language supported by the application. This is the approach Laravel uses to manage translation strings for built-in Laravel features such as validation error messages:"
 msgstr ""
 
-#: docs/8.x/localization.md:block 7 (code)
+#: ./docs/10.x/localization.md:19
+#: ./docs/11.x/localization.md:19
+#: ./docs/master/localization.md:19
+msgctxt "P"
+msgid "By default, the Laravel application skeleton does not include the `lang` directory. If you would like to customize Laravel's language files, you may publish them via the `lang:publish` Artisan command."
+msgstr ""
+
+#: ./docs/9.x/localization.md:19
+msgctxt "P"
+msgid "Laravel provides two ways to manage translation strings. First, language strings may be stored in files within the `lang` directory. Within this directory, there may be subdirectories for each language supported by the application. This is the approach Laravel uses to manage translation strings for built-in Laravel features such as validation error messages:"
+msgstr ""
+
+#: ./docs/8.x/localization.md:20
+#: ./docs/8.x/localization.md:80
+msgctxt "CODE"
 msgid ""
 "/resources\n"
 "    /lang\n"
 "        /en\n"
 "            messages.php\n"
 "        /es\n"
-"            messages.php\n"
+"            messages.php"
 msgstr ""
 
-#: docs/8.x/localization.md:block 8 (paragraph)
+#: ./docs/9.x/localization.md:21
+#: ./docs/9.x/localization.md:101
+#: ./docs/10.x/localization.md:25
+#: ./docs/10.x/localization.md:112
+#: ./docs/11.x/localization.md:25
+#: ./docs/11.x/localization.md:110
+#: ./docs/master/localization.md:25
+#: ./docs/master/localization.md:110
+msgctxt "CODE"
+msgid ""
+"/lang\n"
+"    /en\n"
+"        messages.php\n"
+"    /es\n"
+"        messages.php"
+msgstr ""
+
+#: ./docs/10.x/localization.md:23
+#: ./docs/11.x/localization.md:23
+#: ./docs/master/localization.md:23
+msgctxt "P"
+msgid "Laravel provides two ways to manage translation strings. First, language strings may be stored in files within the application's `lang` directory. Within this directory, there may be subdirectories for each language supported by the application. This is the approach Laravel uses to manage translation strings for built-in Laravel features such as validation error messages:"
+msgstr ""
+
+#: ./docs/8.x/localization.md:27
+msgctxt "P"
 msgid "Or, translation strings may be defined within JSON files that are placed within the `resources/lang` directory. When taking this approach, each language supported by your application would have a corresponding JSON file within this directory. This approach is recommended for application's that have a large number of translatable strings:"
 msgstr ""
 
-#: docs/8.x/localization.md:block 9 (code)
+#: ./docs/9.x/localization.md:27
+#: ./docs/10.x/localization.md:31
+#: ./docs/11.x/localization.md:31
+#: ./docs/master/localization.md:31
+msgctxt "P"
+msgid "Or, translation strings may be defined within JSON files that are placed within the `lang` directory. When taking this approach, each language supported by your application would have a corresponding JSON file within this directory. This approach is recommended for applications that have a large number of translatable strings:"
+msgstr ""
+
+#: ./docs/8.x/localization.md:29
+msgctxt "CODE"
 msgid ""
 "/resources\n"
 "    /lang\n"
 "        en.json\n"
-"        es.json\n"
+"        es.json"
 msgstr ""
 
-#: docs/8.x/localization.md:block 12 (header)
+#: ./docs/9.x/localization.md:29
+#: ./docs/10.x/localization.md:33
+#: ./docs/11.x/localization.md:33
+#: ./docs/master/localization.md:33
+msgctxt "CODE"
+msgid ""
+"/lang\n"
+"    en.json\n"
+"    es.json"
+msgstr ""
+
+#: ./docs/8.x/localization.md:34
+#: ./docs/9.x/localization.md:33
+#: ./docs/10.x/localization.md:37
+#: ./docs/11.x/localization.md:37
+#: ./docs/master/localization.md:37
+msgctxt "P"
+msgid "We'll discuss each approach to managing translation strings within this documentation."
+msgstr ""
+
+#: ./docs/8.x/localization.md:36
+#: ./docs/9.x/localization.md:35
+#: ./docs/10.x/localization.md:48
+#: ./docs/11.x/localization.md:48
+#: ./docs/master/localization.md:48
+#~ msgctxt "P"
+#~ msgid "<a name=\"configuring-the-locale\"></a>"
+#~ msgstr ""
+
+#: ./docs/8.x/localization.md:37
+#: ./docs/9.x/localization.md:36
+msgctxt "H3"
 msgid "Configuring The Locale"
 msgstr ""
 
-#: docs/8.x/localization.md:block 15 (code)
+#: ./docs/10.x/localization.md:39
+#: ./docs/11.x/localization.md:39
+#: ./docs/master/localization.md:39
+#~ msgctxt "P"
+#~ msgid "<a name=\"publishing-the-language-files\"></a>"
+#~ msgstr ""
+
+#: ./docs/8.x/localization.md:39
+#: ./docs/9.x/localization.md:38
+#: ./docs/10.x/localization.md:51
+msgctxt "P"
+msgid "The default language for your application is stored in the `config/app.php` configuration file's `locale` configuration option. You are free to modify this value to suit the needs of your application."
+msgstr ""
+
+#: ./docs/10.x/localization.md:40
+#: ./docs/11.x/localization.md:40
+#: ./docs/master/localization.md:40
+msgctxt "H3"
+msgid "Publishing the Language Files"
+msgstr ""
+
+#: ./docs/8.x/localization.md:41
+#: ./docs/9.x/localization.md:40
+#: ./docs/10.x/localization.md:53
+#: ./docs/11.x/localization.md:55
+#: ./docs/master/localization.md:55
+msgctxt "P"
+msgid "You may modify the default language for a single HTTP request at runtime using the `setLocale` method provided by the `App` facade:"
+msgstr ""
+
+#: ./docs/10.x/localization.md:42
+#: ./docs/11.x/localization.md:42
+#: ./docs/master/localization.md:42
+msgctxt "P"
+msgid "By default, the Laravel application skeleton does not include the `lang` directory. If you would like to customize Laravel's language files or create your own, you should scaffold the `lang` directory via the `lang:publish` Artisan command. The `lang:publish` command will create the `lang` directory in your application and publish the default set of language files used by Laravel:"
+msgstr ""
+
+#: ./docs/8.x/localization.md:43
+#: ./docs/9.x/localization.md:42
+msgctxt "CODE"
 msgid ""
 "use Illuminate\\Support\\Facades\\App;\n"
 "\n"
@@ -467,14 +306,94 @@ msgid ""
 "    App::setLocale($locale);\n"
 "\n"
 "    //\n"
-"});\n"
+"});"
 msgstr ""
 
-#: docs/8.x/localization.md:block 19 (header)
+#: ./docs/10.x/localization.md:44
+#: ./docs/11.x/localization.md:44
+#: ./docs/master/localization.md:44
+msgctxt "CODE: shell"
+msgid "php artisan lang:publish"
+msgstr ""
+
+#: ./docs/10.x/localization.md:49
+#: ./docs/11.x/localization.md:49
+#: ./docs/master/localization.md:49
+msgctxt "H3"
+msgid "Configuring the Locale"
+msgstr ""
+
+#: ./docs/11.x/localization.md:51
+#: ./docs/master/localization.md:51
+msgctxt "P"
+msgid "The default language for your application is stored in the `config/app.php` configuration file's `locale` configuration option, which is typically set using the `APP_LOCALE` environment variable. You are free to modify this value to suit the needs of your application."
+msgstr ""
+
+#: ./docs/11.x/localization.md:53
+#: ./docs/master/localization.md:53
+msgctxt "P"
+msgid "You may also configure a \"fallback language\", which will be used when the default language does not contain a given translation string. Like the default language, the fallback language is also configured in the `config/app.php` configuration file, and its value is typically set using the `APP_FALLBACK_LOCALE` environment variable."
+msgstr ""
+
+#: ./docs/10.x/localization.md:55
+#: ./docs/11.x/localization.md:57
+#: ./docs/master/localization.md:57
+msgctxt "CODE"
+msgid ""
+"use Illuminate\\Support\\Facades\\App;\n"
+"\n"
+"Route::get('/greeting/{locale}', function (string $locale) {\n"
+"    if (! in_array($locale, ['en', 'es', 'fr'])) {\n"
+"        abort(400);\n"
+"    }\n"
+"\n"
+"    App::setLocale($locale);\n"
+"\n"
+"    // ...\n"
+"});"
+msgstr ""
+
+#: ./docs/8.x/localization.md:55
+#: ./docs/9.x/localization.md:54
+#: ./docs/10.x/localization.md:67
+msgctxt "P"
+msgid "You may configure a \"fallback language\", which will be used when the active language does not contain a given translation string. Like the default language, the fallback language is also configured in the `config/app.php` configuration file:"
+msgstr ""
+
+#: ./docs/8.x/localization.md:57
+#: ./docs/9.x/localization.md:56
+#: ./docs/10.x/localization.md:69
+msgctxt "CODE"
+msgid "'fallback_locale' => 'en',"
+msgstr ""
+
+#: ./docs/8.x/localization.md:59
+#: ./docs/9.x/localization.md:58
+#: ./docs/10.x/localization.md:71
+#: ./docs/11.x/localization.md:69
+#: ./docs/master/localization.md:69
+#~ msgctxt "P"
+#~ msgid "<a name=\"determining-the-current-locale\"></a>"
+#~ msgstr ""
+
+#: ./docs/8.x/localization.md:60
+#: ./docs/9.x/localization.md:59
+msgctxt "H4"
 msgid "Determining The Current Locale"
 msgstr ""
 
-#: docs/8.x/localization.md:block 21 (code)
+#: ./docs/8.x/localization.md:62
+#: ./docs/9.x/localization.md:61
+#: ./docs/10.x/localization.md:74
+#: ./docs/11.x/localization.md:72
+#: ./docs/master/localization.md:72
+msgctxt "P"
+msgid "You may use the `currentLocale` and `isLocale` methods on the `App` facade to determine the current locale or check if the locale is a given value:"
+msgstr ""
+
+#: ./docs/8.x/localization.md:64
+#: ./docs/9.x/localization.md:63
+msgctxt "CODE"
 msgid ""
 "use Illuminate\\Support\\Facades\\App;\n"
 "\n"
@@ -482,61 +401,92 @@ msgid ""
 "\n"
 "if (App::isLocale('en')) {\n"
 "    //\n"
-"}\n"
+"}"
 msgstr ""
 
-#: docs/8.x/localization.md:block 26 (paragraph)
-msgid "Typically, translation strings are stored in files within the `resources/lang` directory. Within this directory, there should be a subdirectory for each language supported by your application. This is the approach Laravel uses to manage translation strings for built-in Laravel features such as validation error messages:"
+#: ./docs/9.x/localization.md:71
+#: ./docs/10.x/localization.md:84
+#: ./docs/11.x/localization.md:82
+#: ./docs/master/localization.md:82
+#~ msgctxt "P"
+#~ msgid "<a name=\"pluralization-language\"></a>"
+#~ msgstr ""
+
+#: ./docs/10.x/localization.md:72
+#: ./docs/11.x/localization.md:70
+#: ./docs/master/localization.md:70
+msgctxt "H4"
+msgid "Determining the Current Locale"
 msgstr ""
 
-#: docs/8.x/localization.md:block 29 (code)
+#: ./docs/8.x/localization.md:72
+#: ./docs/9.x/localization.md:93
+#: ./docs/10.x/localization.md:104
+#: ./docs/11.x/localization.md:102
+#: ./docs/master/localization.md:102
+#~ msgctxt "P"
+#~ msgid "<a name=\"defining-translation-strings\"></a>"
+#~ msgstr ""
+
+#: ./docs/9.x/localization.md:72
+#: ./docs/10.x/localization.md:85
+#: ./docs/11.x/localization.md:83
+#: ./docs/master/localization.md:83
+msgctxt "H3"
+msgid "Pluralization Language"
+msgstr ""
+
+#: ./docs/8.x/localization.md:73
+#: ./docs/9.x/localization.md:94
+#: ./docs/10.x/localization.md:105
+#: ./docs/11.x/localization.md:103
+#: ./docs/master/localization.md:103
+msgctxt "H2"
+msgid "Defining Translation Strings"
+msgstr ""
+
+#: ./docs/9.x/localization.md:74
+#: ./docs/10.x/localization.md:87
+#: ./docs/11.x/localization.md:85
+#: ./docs/master/localization.md:85
+msgctxt "P"
+msgid "You may instruct Laravel's \"pluralizer\", which is used by Eloquent and other portions of the framework to convert singular strings to plural strings, to use a language other than English. This may be accomplished by invoking the `useLanguage` method within the `boot` method of one of your application's service providers. The pluralizer's currently supported languages are: `french`, `norwegian-bokmal`, `portuguese`, `spanish`, and `turkish`:"
+msgstr ""
+
+#: ./docs/8.x/localization.md:75
+#: ./docs/9.x/localization.md:96
+#: ./docs/10.x/localization.md:107
+#: ./docs/11.x/localization.md:105
+#: ./docs/master/localization.md:105
+#~ msgctxt "P"
+#~ msgid "<a name=\"using-short-keys\"></a>"
+#~ msgstr ""
+
+#: ./docs/10.x/localization.md:76
+#: ./docs/11.x/localization.md:74
+#: ./docs/master/localization.md:74
+msgctxt "CODE"
 msgid ""
-"<?php\n"
+"use Illuminate\\Support\\Facades\\App;\n"
 "\n"
-"// resources/lang/en/messages.php\n"
+"$locale = App::currentLocale();\n"
 "\n"
-"return [\n"
-"    'welcome' => 'Welcome to our application!',\n"
-"];\n"
+"if (App::isLocale('en')) {\n"
+"    // ...\n"
+"}"
 msgstr ""
 
-#: docs/8.x/localization.md:block 30 (quote)
-msgid "{note} For languages that differ by territory, you should name the language directories according to the ISO 15897. For example, \"en_GB\" should be used for British English rather than \"en-gb\"."
+#: ./docs/8.x/localization.md:76
+#: ./docs/9.x/localization.md:97
+#: ./docs/10.x/localization.md:108
+#: ./docs/11.x/localization.md:106
+#: ./docs/master/localization.md:106
+msgctxt "H3"
+msgid "Using Short Keys"
 msgstr ""
 
-#: docs/8.x/localization.md:block 32 (header)
-msgid "Using Translation Strings As Keys"
-msgstr ""
-
-#: docs/8.x/localization.md:block 34 (paragraph)
-msgid "For this reason, Laravel also provides support for defining translation strings using the \"default\" translation of the string as the key. Translation files that use translation strings as keys are stored as JSON files in the `resources/lang` directory. For example, if your application has a Spanish translation, you should create a `resources/lang/es.json` file:"
-msgstr ""
-
-#: docs/8.x/localization.md:block 37 (paragraph)
-msgid "You should not define translation string keys that conflict with other translation filenames. For example, translating `__('Action')` for the \"NL\" locale while a `nl/action.php` file exists but a `nl.json` file does not exist will result in the translator returning the contents of `nl/action.php`."
-msgstr ""
-
-#: docs/8.x/localization.md:block 40 (paragraph)
-msgid "You may retrieve translation strings from your language files using the `__` helper function. If you are using \"short keys\" to define your translation strings, you should pass the file that contains the key and the key itself to the `__` function using \"dot\" syntax. For example, let's retrieve the `welcome` translation string from the `resources/lang/en/messages.php` language file:"
-msgstr ""
-
-#: docs/8.x/localization.md:block 49 (header)
-msgid "Replacing Parameters In Translation Strings"
-msgstr ""
-
-#: docs/8.x/localization.md:block 72 (paragraph)
-msgid "Some packages may ship with their own language files. Instead of changing the package's core files to tweak these lines, you may override them by placing files in the `resources/lang/vendor/{package}/{locale}` directory."
-msgstr ""
-
-#: docs/8.x/localization.md:block 73 (paragraph)
-msgid "So, for example, if you need to override the English translation strings in `messages.php` for a package named `skyrim/hearthfire`, you should place a language file at: `resources/lang/vendor/hearthfire/en/messages.php`. Within this file, you should only define the translation strings you wish to override. Any translation strings you don't override will still be loaded from the package's original language files."
-msgstr ""
-
-#: docs/9.x/localization.md:block 6 (paragraph)
-msgid "Laravel provides two ways to manage translation strings. First, language strings may be stored in files within the `lang` directory. Within this directory, there may be subdirectories for each language supported by the application. This is the approach Laravel uses to manage translation strings for built-in Laravel features such as validation error messages:"
-msgstr ""
-
-#: docs/9.x/localization.md:block 25 (code)
+#: ./docs/9.x/localization.md:76
+msgctxt "CODE"
 msgid ""
 "use Illuminate\\Support\\Pluralizer;\n"
 "\n"
@@ -550,22 +500,510 @@ msgid ""
 "    Pluralizer::useLanguage('spanish');     \n"
 "\n"
 "    // ...     \n"
-"}\n"
+"}"
 msgstr ""
 
-#: docs/9.x/localization.md:block 26 (quote)
-msgid "**Warning** If you customize the pluralizer's language, you should explicitly define your Eloquent model's [table names](/docs/{{version}}/eloquent#table-names)."
+#: ./docs/8.x/localization.md:78
+msgctxt "P"
+msgid "Typically, translation strings are stored in files within the `resources/lang` directory. Within this directory, there should be a subdirectory for each language supported by your application. This is the approach Laravel uses to manage translation strings for built-in Laravel features such as validation error messages:"
 msgstr ""
 
-#: docs/9.x/localization.md:block 35 (quote)
-msgid "**Warning** For languages that differ by territory, you should name the language directories according to the ISO 15897. For example, \"en_GB\" should be used for British English rather than \"en-gb\"."
+#: ./docs/11.x/localization.md:87
+msgctxt "CODE"
+msgid ""
+"use Illuminate\\Support\\Pluralizer;\n"
+"\n"
+"/**\n"
+" * Bootstrap any application services.\n"
+" */\n"
+"public function boot(): void\n"
+"{\n"
+"    Pluralizer::useLanguage('spanish');\n"
+"\n"
+"    // ...\n"
+"}"
 msgstr ""
 
-#: docs/9.x/localization.md:block 39 (paragraph)
+#: ./docs/8.x/localization.md:87
+#: ./docs/9.x/localization.md:107
+#: ./docs/10.x/localization.md:118
+#: ./docs/11.x/localization.md:116
+#: ./docs/master/localization.md:116
+msgctxt "P"
+msgid "All language files return an array of keyed strings. For example:"
+msgstr ""
+
+#: ./docs/10.x/localization.md:89
+#: ./docs/master/localization.md:87
+msgctxt "CODE"
+msgid ""
+"use Illuminate\\Support\\Pluralizer;\n"
+"\n"
+"/**\n"
+" * Bootstrap any application services.\n"
+" */\n"
+"public function boot(): void\n"
+"{\n"
+"    Pluralizer::useLanguage('spanish');     \n"
+"\n"
+"    // ...     \n"
+"}"
+msgstr ""
+
+#: ./docs/8.x/localization.md:89
+msgctxt "CODE"
+msgid ""
+"<?php\n"
+"\n"
+"// resources/lang/en/messages.php\n"
+"\n"
+"return [\n"
+"    'welcome' => 'Welcome to our application!',\n"
+"];"
+msgstr ""
+
+#: ./docs/9.x/localization.md:91
+#: ./docs/10.x/localization.md:102
+#: ./docs/11.x/localization.md:100
+#: ./docs/master/localization.md:100
+msgctxt "P"
+msgid "If you customize the pluralizer's language, you should explicitly define your Eloquent model's [table names](/docs/{{version}}/eloquent#table-names)."
+msgstr ""
+
+#: ./docs/8.x/localization.md:97
+#: ./docs/9.x/localization.md:118
+#: ./docs/10.x/localization.md:129
+#: ./docs/11.x/localization.md:127
+#: ./docs/master/localization.md:127
+msgctxt "P"
+msgid "For languages that differ by territory, you should name the language directories according to the ISO 15897. For example, \"en_GB\" should be used for British English rather than \"en-gb\"."
+msgstr ""
+
+#: ./docs/8.x/localization.md:99
+#: ./docs/9.x/localization.md:120
+#: ./docs/10.x/localization.md:131
+#: ./docs/11.x/localization.md:129
+#: ./docs/master/localization.md:129
+#~ msgctxt "P"
+#~ msgid "<a name=\"using-translation-strings-as-keys\"></a>"
+#~ msgstr ""
+
+#: ./docs/9.x/localization.md:99
+#: ./docs/10.x/localization.md:110
+#: ./docs/11.x/localization.md:108
+#: ./docs/master/localization.md:108
+msgctxt "P"
+msgid "Typically, translation strings are stored in files within the `lang` directory. Within this directory, there should be a subdirectory for each language supported by your application. This is the approach Laravel uses to manage translation strings for built-in Laravel features such as validation error messages:"
+msgstr ""
+
+#: ./docs/8.x/localization.md:100
+#: ./docs/9.x/localization.md:121
+msgctxt "H3"
+msgid "Using Translation Strings As Keys"
+msgstr ""
+
+#: ./docs/8.x/localization.md:102
+#: ./docs/9.x/localization.md:123
+#: ./docs/10.x/localization.md:134
+#: ./docs/11.x/localization.md:132
+#: ./docs/master/localization.md:132
+msgctxt "P"
+msgid "For applications with a large number of translatable strings, defining every string with a \"short key\" can become confusing when referencing the keys in your views and it is cumbersome to continually invent keys for every translation string supported by your application."
+msgstr ""
+
+#: ./docs/8.x/localization.md:104
+msgctxt "P"
+msgid "For this reason, Laravel also provides support for defining translation strings using the \"default\" translation of the string as the key. Translation files that use translation strings as keys are stored as JSON files in the `resources/lang` directory. For example, if your application has a Spanish translation, you should create a `resources/lang/es.json` file:"
+msgstr ""
+
+#: ./docs/8.x/localization.md:106
+#: ./docs/9.x/localization.md:127
+#: ./docs/10.x/localization.md:138
+#: ./docs/11.x/localization.md:136
+#: ./docs/master/localization.md:136
+msgctxt "CODE: js"
+msgid ""
+"{\n"
+"    \"I love programming.\": \"Me encanta programar.\"\n"
+"}"
+msgstr ""
+
+#: ./docs/9.x/localization.md:109
+#: ./docs/10.x/localization.md:120
+#: ./docs/11.x/localization.md:118
+#: ./docs/master/localization.md:118
+msgctxt "CODE"
+msgid ""
+"<?php\n"
+"\n"
+"// lang/en/messages.php\n"
+"\n"
+"return [\n"
+"    'welcome' => 'Welcome to our application!',\n"
+"];"
+msgstr ""
+
+#: ./docs/8.x/localization.md:112
+#: ./docs/9.x/localization.md:133
+#: ./docs/10.x/localization.md:144
+#: ./docs/11.x/localization.md:142
+#: ./docs/master/localization.md:142
+msgctxt "H4"
+msgid "Key / File Conflicts"
+msgstr ""
+
+#: ./docs/8.x/localization.md:114
+#: ./docs/9.x/localization.md:135
+msgctxt "P"
+msgid "You should not define translation string keys that conflict with other translation filenames. For example, translating `__('Action')` for the \"NL\" locale while a `nl/action.php` file exists but a `nl.json` file does not exist will result in the translator returning the contents of `nl/action.php`."
+msgstr ""
+
+#: ./docs/8.x/localization.md:116
+#: ./docs/9.x/localization.md:137
+#: ./docs/10.x/localization.md:148
+#: ./docs/11.x/localization.md:146
+#: ./docs/master/localization.md:146
+#~ msgctxt "P"
+#~ msgid "<a name=\"retrieving-translation-strings\"></a>"
+#~ msgstr ""
+
+#: ./docs/8.x/localization.md:117
+#: ./docs/9.x/localization.md:138
+#: ./docs/10.x/localization.md:149
+#: ./docs/11.x/localization.md:147
+#: ./docs/master/localization.md:147
+msgctxt "H2"
+msgid "Retrieving Translation Strings"
+msgstr ""
+
+#: ./docs/8.x/localization.md:119
+msgctxt "P"
+msgid "You may retrieve translation strings from your language files using the `__` helper function. If you are using \"short keys\" to define your translation strings, you should pass the file that contains the key and the key itself to the `__` function using \"dot\" syntax. For example, let's retrieve the `welcome` translation string from the `resources/lang/en/messages.php` language file:"
+msgstr ""
+
+#: ./docs/8.x/localization.md:121
+#: ./docs/9.x/localization.md:142
+#: ./docs/10.x/localization.md:153
+#: ./docs/11.x/localization.md:151
+#: ./docs/master/localization.md:151
+msgctxt "CODE"
+msgid "echo __('messages.welcome');"
+msgstr ""
+
+#: ./docs/8.x/localization.md:123
+#: ./docs/9.x/localization.md:144
+#: ./docs/10.x/localization.md:155
+#: ./docs/11.x/localization.md:153
+#: ./docs/master/localization.md:153
+msgctxt "P"
+msgid "If the specified translation string does not exist, the `__` function will return the translation string key. So, using the example above, the `__` function would return `messages.welcome` if the translation string does not exist."
+msgstr ""
+
+#: ./docs/8.x/localization.md:125
+#: ./docs/9.x/localization.md:146
+#: ./docs/10.x/localization.md:157
+#: ./docs/11.x/localization.md:155
+#: ./docs/master/localization.md:155
+msgctxt "P"
+msgid "If you are using your [default translation strings as your translation keys](#using-translation-strings-as-keys), you should pass the default translation of your string to the `__` function;"
+msgstr ""
+
+#: ./docs/9.x/localization.md:125
+msgctxt "P"
 msgid "For this reason, Laravel also provides support for defining translation strings using the \"default\" translation of the string as the key. Translation files that use translation strings as keys are stored as JSON files in the `lang` directory. For example, if your application has a Spanish translation, you should create a `lang/es.json` file:"
 msgstr ""
 
-#: docs/9.x/localization.md:block 65 (code)
+#: ./docs/8.x/localization.md:127
+#: ./docs/9.x/localization.md:148
+#: ./docs/10.x/localization.md:159
+#: ./docs/11.x/localization.md:157
+#: ./docs/master/localization.md:157
+msgctxt "CODE"
+msgid "echo __('I love programming.');"
+msgstr ""
+
+#: ./docs/8.x/localization.md:129
+#: ./docs/9.x/localization.md:150
+#: ./docs/10.x/localization.md:161
+#: ./docs/11.x/localization.md:159
+#: ./docs/master/localization.md:159
+msgctxt "P"
+msgid "Again, if the translation string does not exist, the `__` function will return the translation string key that it was given."
+msgstr ""
+
+#: ./docs/8.x/localization.md:131
+#: ./docs/9.x/localization.md:152
+#: ./docs/10.x/localization.md:163
+#: ./docs/11.x/localization.md:161
+#: ./docs/master/localization.md:161
+msgctxt "P"
+msgid "If you are using the [Blade templating engine](/docs/{{version}}/blade), you may use the `{{ }}` echo syntax to display the translation string:"
+msgstr ""
+
+#: ./docs/10.x/localization.md:132
+#: ./docs/11.x/localization.md:130
+#: ./docs/master/localization.md:130
+msgctxt "H3"
+msgid "Using Translation Strings as Keys"
+msgstr ""
+
+#: ./docs/8.x/localization.md:133
+#: ./docs/9.x/localization.md:154
+#: ./docs/10.x/localization.md:165
+#: ./docs/11.x/localization.md:163
+#: ./docs/master/localization.md:163
+msgctxt "CODE"
+msgid "{{ __('messages.welcome') }}"
+msgstr ""
+
+#: ./docs/8.x/localization.md:135
+#: ./docs/9.x/localization.md:156
+#: ./docs/10.x/localization.md:167
+#: ./docs/11.x/localization.md:165
+#: ./docs/master/localization.md:165
+#~ msgctxt "P"
+#~ msgid "<a name=\"replacing-parameters-in-translation-strings\"></a>"
+#~ msgstr ""
+
+#: ./docs/10.x/localization.md:136
+#: ./docs/11.x/localization.md:134
+#: ./docs/master/localization.md:134
+msgctxt "P"
+msgid "For this reason, Laravel also provides support for defining translation strings using the \"default\" translation of the string as the key. Language files that use translation strings as keys are stored as JSON files in the `lang` directory. For example, if your application has a Spanish translation, you should create a `lang/es.json` file:"
+msgstr ""
+
+#: ./docs/8.x/localization.md:136
+#: ./docs/9.x/localization.md:157
+msgctxt "H3"
+msgid "Replacing Parameters In Translation Strings"
+msgstr ""
+
+#: ./docs/8.x/localization.md:138
+#: ./docs/9.x/localization.md:159
+#: ./docs/10.x/localization.md:170
+#: ./docs/11.x/localization.md:168
+#: ./docs/master/localization.md:168
+msgctxt "P"
+msgid "If you wish, you may define placeholders in your translation strings. All placeholders are prefixed with a `:`. For example, you may define a welcome message with a placeholder name:"
+msgstr ""
+
+#: ./docs/8.x/localization.md:140
+#: ./docs/9.x/localization.md:161
+#: ./docs/10.x/localization.md:172
+#: ./docs/11.x/localization.md:170
+#: ./docs/master/localization.md:170
+msgctxt "CODE"
+msgid "'welcome' => 'Welcome, :name',"
+msgstr ""
+
+#: ./docs/9.x/localization.md:140
+#: ./docs/10.x/localization.md:151
+#: ./docs/11.x/localization.md:149
+#: ./docs/master/localization.md:149
+msgctxt "P"
+msgid "You may retrieve translation strings from your language files using the `__` helper function. If you are using \"short keys\" to define your translation strings, you should pass the file that contains the key and the key itself to the `__` function using \"dot\" syntax. For example, let's retrieve the `welcome` translation string from the `lang/en/messages.php` language file:"
+msgstr ""
+
+#: ./docs/8.x/localization.md:142
+#: ./docs/9.x/localization.md:163
+#: ./docs/10.x/localization.md:174
+#: ./docs/11.x/localization.md:172
+#: ./docs/master/localization.md:172
+msgctxt "P"
+msgid "To replace the placeholders when retrieving a translation string, you may pass an array of replacements as the second argument to the `__` function:"
+msgstr ""
+
+#: ./docs/8.x/localization.md:144
+#: ./docs/9.x/localization.md:165
+#: ./docs/10.x/localization.md:176
+#: ./docs/11.x/localization.md:174
+#: ./docs/master/localization.md:174
+msgctxt "CODE"
+msgid "echo __('messages.welcome', ['name' => 'dayle']);"
+msgstr ""
+
+#: ./docs/10.x/localization.md:146
+#: ./docs/11.x/localization.md:144
+#: ./docs/master/localization.md:144
+msgctxt "P"
+msgid "You should not define translation string keys that conflict with other translation filenames. For example, translating `__('Action')` for the \"NL\" locale while a `nl/action.php` file exists but a `nl.json` file does not exist will result in the translator returning the entire contents of `nl/action.php`."
+msgstr ""
+
+#: ./docs/8.x/localization.md:146
+#: ./docs/9.x/localization.md:167
+#: ./docs/10.x/localization.md:178
+#: ./docs/11.x/localization.md:176
+#: ./docs/master/localization.md:176
+msgctxt "P"
+msgid "If your placeholder contains all capital letters, or only has its first letter capitalized, the translated value will be capitalized accordingly:"
+msgstr ""
+
+#: ./docs/8.x/localization.md:148
+#: ./docs/9.x/localization.md:169
+#: ./docs/10.x/localization.md:180
+#: ./docs/11.x/localization.md:178
+#: ./docs/master/localization.md:178
+msgctxt "CODE"
+msgid ""
+"'welcome' => 'Welcome, :NAME', // Welcome, DAYLE\n"
+"'goodbye' => 'Goodbye, :Name', // Goodbye, Dayle"
+msgstr ""
+
+#: ./docs/8.x/localization.md:151
+#: ./docs/9.x/localization.md:194
+#: ./docs/10.x/localization.md:203
+#: ./docs/11.x/localization.md:201
+#: ./docs/master/localization.md:201
+#~ msgctxt "P"
+#~ msgid "<a name=\"pluralization\"></a>"
+#~ msgstr ""
+
+#: ./docs/8.x/localization.md:152
+#: ./docs/9.x/localization.md:195
+#: ./docs/10.x/localization.md:204
+#: ./docs/11.x/localization.md:202
+#: ./docs/master/localization.md:202
+msgctxt "H3"
+msgid "Pluralization"
+msgstr ""
+
+#: ./docs/8.x/localization.md:154
+#: ./docs/9.x/localization.md:197
+#: ./docs/10.x/localization.md:206
+#: ./docs/11.x/localization.md:204
+#: ./docs/master/localization.md:204
+msgctxt "P"
+msgid "Pluralization is a complex problem, as different languages have a variety of complex rules for pluralization; however, Laravel can help you translate strings differently based on pluralization rules that you define. Using a `|` character, you may distinguish singular and plural forms of a string:"
+msgstr ""
+
+#: ./docs/8.x/localization.md:156
+#: ./docs/9.x/localization.md:199
+#: ./docs/10.x/localization.md:208
+#: ./docs/11.x/localization.md:206
+#: ./docs/master/localization.md:206
+msgctxt "CODE"
+msgid "'apples' => 'There is one apple|There are many apples',"
+msgstr ""
+
+#: ./docs/8.x/localization.md:158
+#: ./docs/9.x/localization.md:201
+#: ./docs/10.x/localization.md:210
+#: ./docs/11.x/localization.md:208
+#: ./docs/master/localization.md:208
+msgctxt "P"
+msgid "Of course, pluralization is also supported when using [translation strings as keys](#using-translation-strings-as-keys):"
+msgstr ""
+
+#: ./docs/8.x/localization.md:160
+#: ./docs/9.x/localization.md:203
+#: ./docs/10.x/localization.md:212
+#: ./docs/11.x/localization.md:210
+#: ./docs/master/localization.md:210
+msgctxt "CODE: js"
+msgid ""
+"{\n"
+"    \"There is one apple|There are many apples\": \"Hay una manzana|Hay muchas manzanas\"\n"
+"}"
+msgstr ""
+
+#: ./docs/8.x/localization.md:166
+#: ./docs/9.x/localization.md:209
+#: ./docs/10.x/localization.md:218
+#: ./docs/11.x/localization.md:216
+#: ./docs/master/localization.md:216
+msgctxt "P"
+msgid "You may even create more complex pluralization rules which specify translation strings for multiple ranges of values:"
+msgstr ""
+
+#: ./docs/10.x/localization.md:168
+#: ./docs/11.x/localization.md:166
+#: ./docs/master/localization.md:166
+msgctxt "H3"
+msgid "Replacing Parameters in Translation Strings"
+msgstr ""
+
+#: ./docs/8.x/localization.md:168
+#: ./docs/9.x/localization.md:211
+#: ./docs/10.x/localization.md:220
+#: ./docs/11.x/localization.md:218
+#: ./docs/master/localization.md:218
+msgctxt "CODE"
+msgid "'apples' => '{0} There are none|[1,19] There are some|[20,*] There are many',"
+msgstr ""
+
+#: ./docs/8.x/localization.md:170
+#: ./docs/9.x/localization.md:213
+#: ./docs/10.x/localization.md:222
+#: ./docs/11.x/localization.md:220
+#: ./docs/master/localization.md:220
+msgctxt "P"
+msgid "After defining a translation string that has pluralization options, you may use the `trans_choice` function to retrieve the line for a given \"count\". In this example, since the count is greater than one, the plural form of the translation string is returned:"
+msgstr ""
+
+#: ./docs/8.x/localization.md:172
+#: ./docs/9.x/localization.md:215
+#: ./docs/10.x/localization.md:224
+#: ./docs/11.x/localization.md:222
+#: ./docs/master/localization.md:222
+msgctxt "CODE"
+msgid "echo trans_choice('messages.apples', 10);"
+msgstr ""
+
+#: ./docs/9.x/localization.md:172
+#: ./docs/10.x/localization.md:183
+#: ./docs/11.x/localization.md:181
+#: ./docs/master/localization.md:181
+#~ msgctxt "P"
+#~ msgid "<a name=\"object-replacement-formatting\"></a>"
+#~ msgstr ""
+
+#: ./docs/9.x/localization.md:173
+#: ./docs/10.x/localization.md:184
+#: ./docs/11.x/localization.md:182
+#: ./docs/master/localization.md:182
+msgctxt "H4"
+msgid "Object Replacement Formatting"
+msgstr ""
+
+#: ./docs/8.x/localization.md:174
+#: ./docs/9.x/localization.md:217
+#: ./docs/10.x/localization.md:226
+#: ./docs/11.x/localization.md:224
+#: ./docs/master/localization.md:224
+msgctxt "P"
+msgid "You may also define placeholder attributes in pluralization strings. These placeholders may be replaced by passing an array as the third argument to the `trans_choice` function:"
+msgstr ""
+
+#: ./docs/9.x/localization.md:175
+#: ./docs/10.x/localization.md:186
+#: ./docs/11.x/localization.md:184
+#: ./docs/master/localization.md:184
+msgctxt "P"
+msgid "If you attempt to provide an object as a translation placeholder, the object's `__toString` method will be invoked. The [`__toString`](https://www.php.net/manual/en/language.oop5.magic.php#object.tostring) method is one of PHP's built-in \"magic methods\". However, sometimes you may not have control over the `__toString` method of a given class, such as when the class that you are interacting with belongs to a third-party library."
+msgstr ""
+
+#: ./docs/8.x/localization.md:176
+#: ./docs/9.x/localization.md:219
+#: ./docs/10.x/localization.md:228
+#: ./docs/11.x/localization.md:226
+#: ./docs/master/localization.md:226
+msgctxt "CODE"
+msgid ""
+"'minutes_ago' => '{1} :value minute ago|[2,*] :value minutes ago',\n"
+"\n"
+"echo trans_choice('time.minutes_ago', 5, ['value' => 5]);"
+msgstr ""
+
+#: ./docs/9.x/localization.md:177
+#: ./docs/10.x/localization.md:188
+#: ./docs/11.x/localization.md:186
+#: ./docs/master/localization.md:186
+msgctxt "P"
+msgid "In these cases, Laravel allows you to register a custom formatting handler for that particular type of object. To accomplish this, you should invoke the translator's `stringable` method. The `stringable` method accepts a closure, which should type-hint the type of object that it is responsible for formatting. Typically, the `stringable` method should be invoked within the `boot` method of your application's `AppServiceProvider` class:"
+msgstr ""
+
+#: ./docs/9.x/localization.md:179
+msgctxt "CODE"
 msgid ""
 "use Illuminate\\Support\\Facades\\Lang;\n"
 "use Money\\Money;\n"
@@ -580,5 +1018,86 @@ msgid ""
 "    Lang::stringable(function (Money $money) {\n"
 "        return $money->formatTo('en_GB');\n"
 "    });\n"
-"}\n"
+"}"
+msgstr ""
+
+#: ./docs/8.x/localization.md:180
+#: ./docs/9.x/localization.md:223
+#: ./docs/10.x/localization.md:232
+#: ./docs/11.x/localization.md:230
+#: ./docs/master/localization.md:230
+msgctxt "P"
+msgid "If you would like to display the integer value that was passed to the `trans_choice` function, you may use the built-in `:count` placeholder:"
+msgstr ""
+
+#: ./docs/8.x/localization.md:182
+#: ./docs/9.x/localization.md:225
+#: ./docs/10.x/localization.md:234
+#: ./docs/11.x/localization.md:232
+#: ./docs/master/localization.md:232
+msgctxt "CODE"
+msgid "'apples' => '{0} There are none|{1} There is one|[2,*] There are :count',"
+msgstr ""
+
+#: ./docs/8.x/localization.md:184
+#: ./docs/9.x/localization.md:227
+#: ./docs/10.x/localization.md:236
+#: ./docs/11.x/localization.md:234
+#: ./docs/master/localization.md:234
+#~ msgctxt "P"
+#~ msgid "<a name=\"overriding-package-language-files\"></a>"
+#~ msgstr ""
+
+#: ./docs/8.x/localization.md:185
+#: ./docs/9.x/localization.md:228
+#: ./docs/10.x/localization.md:237
+#: ./docs/11.x/localization.md:235
+#: ./docs/master/localization.md:235
+msgctxt "H2"
+msgid "Overriding Package Language Files"
+msgstr ""
+
+#: ./docs/8.x/localization.md:187
+msgctxt "P"
+msgid "Some packages may ship with their own language files. Instead of changing the package's core files to tweak these lines, you may override them by placing files in the `resources/lang/vendor/{package}/{locale}` directory."
+msgstr ""
+
+#: ./docs/8.x/localization.md:189
+msgctxt "P"
+msgid "So, for example, if you need to override the English translation strings in `messages.php` for a package named `skyrim/hearthfire`, you should place a language file at: `resources/lang/vendor/hearthfire/en/messages.php`. Within this file, you should only define the translation strings you wish to override. Any translation strings you don't override will still be loaded from the package's original language files."
+msgstr ""
+
+#: ./docs/10.x/localization.md:190
+#: ./docs/11.x/localization.md:188
+#: ./docs/master/localization.md:188
+msgctxt "CODE"
+msgid ""
+"use Illuminate\\Support\\Facades\\Lang;\n"
+"use Money\\Money;\n"
+"\n"
+"/**\n"
+" * Bootstrap any application services.\n"
+" */\n"
+"public function boot(): void\n"
+"{\n"
+"    Lang::stringable(function (Money $money) {\n"
+"        return $money->formatTo('en_GB');\n"
+"    });\n"
+"}"
+msgstr ""
+
+#: ./docs/9.x/localization.md:230
+#: ./docs/10.x/localization.md:239
+#: ./docs/11.x/localization.md:237
+#: ./docs/master/localization.md:237
+msgctxt "P"
+msgid "Some packages may ship with their own language files. Instead of changing the package's core files to tweak these lines, you may override them by placing files in the `lang/vendor/{package}/{locale}` directory."
+msgstr ""
+
+#: ./docs/9.x/localization.md:232
+#: ./docs/10.x/localization.md:241
+#: ./docs/11.x/localization.md:239
+#: ./docs/master/localization.md:239
+msgctxt "P"
+msgid "So, for example, if you need to override the English translation strings in `messages.php` for a package named `skyrim/hearthfire`, you should place a language file at: `lang/vendor/hearthfire/en/messages.php`. Within this file, you should only define the translation strings you wish to override. Any translation strings you don't override will still be loaded from the package's original language files."
 msgstr ""

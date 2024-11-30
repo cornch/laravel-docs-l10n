@@ -1,0 +1,186 @@
+msgid ""
+msgstr ""
+
+#: ./docs/11.x/concurrency.md:1
+msgctxt "H1"
+msgid "Concurrency"
+msgstr ""
+
+#: ./docs/11.x/concurrency.md:3
+msgctxt "P"
+msgid "[Introduction](#introduction)"
+msgstr ""
+
+#: ./docs/11.x/concurrency.md:4
+msgctxt "P"
+msgid "[Running Concurrent Tasks](#running-concurrent-tasks)"
+msgstr ""
+
+#: ./docs/11.x/concurrency.md:5
+msgctxt "P"
+msgid "[Deferring Concurrent Tasks](#deferring-concurrent-tasks)"
+msgstr ""
+
+#: ./docs/11.x/concurrency.md:7
+#~ msgctxt "P"
+#~ msgid "<a name=\"introduction\"></a>"
+#~ msgstr ""
+
+#: ./docs/11.x/concurrency.md:8
+msgctxt "H2"
+msgid "Introduction"
+msgstr ""
+
+#: ./docs/11.x/concurrency.md:11
+msgctxt "P"
+msgid "Laravel's `Concurrency` facade is currently in beta while we gather community feedback."
+msgstr ""
+
+#: ./docs/11.x/concurrency.md:13
+msgctxt "P"
+msgid "Sometimes you may need to execute several slow tasks which do not depend on one another. In many cases, significant performance improvements can be realized by executing the tasks concurrently. Laravel's `Concurrency` facade provides a simple, convenient API for executing closures concurrently."
+msgstr ""
+
+#: ./docs/11.x/concurrency.md:15
+#~ msgctxt "P"
+#~ msgid "<a name=\"concurrency-compatibility\"></a>"
+#~ msgstr ""
+
+#: ./docs/11.x/concurrency.md:16
+msgctxt "H4"
+msgid "Concurrency Compatibility"
+msgstr ""
+
+#: ./docs/11.x/concurrency.md:18
+msgctxt "P"
+msgid "If you upgraded to Laravel 11.x from a Laravel 10.x application, you may need to add the `ConcurrencyServiceProvider` to the `providers` array in your application's `config/app.php` configuration file:"
+msgstr ""
+
+#: ./docs/11.x/concurrency.md:20
+msgctxt "CODE: php"
+msgid ""
+"'providers' => ServiceProvider::defaultProviders()->merge([\n"
+"    /*\n"
+"     * Package Service Providers...\n"
+"     */\n"
+"    Illuminate\\Concurrency\\ConcurrencyServiceProvider::class, // [tl! add]\n"
+"\n"
+"    /*\n"
+"     * Application Service Providers...\n"
+"     */\n"
+"    App\\Providers\\AppServiceProvider::class,\n"
+"    App\\Providers\\AuthServiceProvider::class,\n"
+"    // App\\Providers\\BroadcastServiceProvider::class,\n"
+"    App\\Providers\\EventServiceProvider::class,\n"
+"    App\\Providers\\RouteServiceProvider::class,\n"
+"])->toArray(),"
+msgstr ""
+
+#: ./docs/11.x/concurrency.md:38
+#~ msgctxt "P"
+#~ msgid "<a name=\"how-it-works\"></a>"
+#~ msgstr ""
+
+#: ./docs/11.x/concurrency.md:39
+msgctxt "H4"
+msgid "How it Works"
+msgstr ""
+
+#: ./docs/11.x/concurrency.md:41
+msgctxt "P"
+msgid "Laravel achieves concurrency by serializing the given closures and dispatching them to a hidden Artisan CLI command, which unserializes the closures and invokes it within its own PHP process. After the closure has been invoked, the resulting value is serialized back to the parent process."
+msgstr ""
+
+#: ./docs/11.x/concurrency.md:43
+msgctxt "P"
+msgid "The `Concurrency` facade supports three drivers: `process` (the default), `fork`, and `sync`."
+msgstr ""
+
+#: ./docs/11.x/concurrency.md:45
+msgctxt "P"
+msgid "The `fork` driver offers improved performance compared to the default `process` driver, but it may only be used within PHP's CLI context, as PHP does not support forking during web requests. Before using the `fork` driver, you need to install the `spatie/fork` package:"
+msgstr ""
+
+#: ./docs/11.x/concurrency.md:47
+msgctxt "CODE: bash"
+msgid "composer require spatie/fork"
+msgstr ""
+
+#: ./docs/11.x/concurrency.md:51
+msgctxt "P"
+msgid "The `sync` driver is primarily useful during testing when you want to disable all concurrency and simply execute the given closures in sequence within the parent process."
+msgstr ""
+
+#: ./docs/11.x/concurrency.md:53
+#~ msgctxt "P"
+#~ msgid "<a name=\"running-concurrent-tasks\"></a>"
+#~ msgstr ""
+
+#: ./docs/11.x/concurrency.md:54
+msgctxt "H2"
+msgid "Running Concurrent Tasks"
+msgstr ""
+
+#: ./docs/11.x/concurrency.md:56
+msgctxt "P"
+msgid "To run concurrent tasks, you may invoke the `Concurrency` facade's `run` method. The `run` method accepts an array of closures which should be executed simultaneously in child PHP processes:"
+msgstr ""
+
+#: ./docs/11.x/concurrency.md:58
+msgctxt "CODE: php"
+msgid ""
+"use Illuminate\\Support\\Facades\\Concurrency;\n"
+"use Illuminate\\Support\\Facades\\DB;\n"
+"\n"
+"[$userCount, $orderCount] = Concurrency::run([\n"
+"    fn () => DB::table('users')->count(),\n"
+"    fn () => DB::table('orders')->count(),\n"
+"]);"
+msgstr ""
+
+#: ./docs/11.x/concurrency.md:68
+msgctxt "P"
+msgid "To use a specific driver, you may use the `driver` method:"
+msgstr ""
+
+#: ./docs/11.x/concurrency.md:70
+msgctxt "CODE: php"
+msgid "$results = Concurrency::driver('fork')->run(...);"
+msgstr ""
+
+#: ./docs/11.x/concurrency.md:74
+msgctxt "P"
+msgid "Or, to change the default concurrency driver, you should publish the `concurrency` configuration file via the `config:publish` Artisan command and update the `default` option within the file:"
+msgstr ""
+
+#: ./docs/11.x/concurrency.md:76
+msgctxt "CODE: bash"
+msgid "php artisan config:publish concurrency"
+msgstr ""
+
+#: ./docs/11.x/concurrency.md:80
+#~ msgctxt "P"
+#~ msgid "<a name=\"deferring-concurrent-tasks\"></a>"
+#~ msgstr ""
+
+#: ./docs/11.x/concurrency.md:81
+msgctxt "H2"
+msgid "Deferring Concurrent Tasks"
+msgstr ""
+
+#: ./docs/11.x/concurrency.md:83
+msgctxt "P"
+msgid "If you would like to execute an array of closures concurrently, but are not interested in the results returned by those closures, you should consider using the `defer` method. When the `defer` method is invoked, the given closures are not executed immediately. Instead, Laravel will execute the closures concurrently after the HTTP response has been sent to the user:"
+msgstr ""
+
+#: ./docs/11.x/concurrency.md:85
+msgctxt "CODE: php"
+msgid ""
+"use App\\Services\\Metrics;\n"
+"use Illuminate\\Support\\Facades\\Concurrency;\n"
+"\n"
+"Concurrency::defer([\n"
+"    fn () => Metrics::report('users'),\n"
+"    fn () => Metrics::report('orders'),\n"
+"]);"
+msgstr ""

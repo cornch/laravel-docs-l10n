@@ -1,429 +1,394 @@
 msgid ""
 msgstr ""
+"Content-Type: text/plain; charset=UTF-8\n"
+"Language: zh_TW\n"
+"Language-Team: Chinese Traditional\n"
+"PO-Revision-Date: 2024-06-30 08:15\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Crowdin-Project: laravel-docs\n"
-"X-Crowdin-Project-ID: 447952\n"
-"X-Crowdin-Language: zh-TW\n"
+"Project-Id-Version: laravel-docs\n"
 "X-Crowdin-File: /main/templates/mocking.pot\n"
 "X-Crowdin-File-ID: 107\n"
-"Project-Id-Version: laravel-docs\n"
-"Content-Type: text/plain; charset=UTF-8\n"
-"Language-Team: Chinese Traditional\n"
-"Language: zh_TW\n"
-"PO-Revision-Date: 2024-06-30 08:15\n"
+"X-Crowdin-Language: zh-TW\n"
+"X-Crowdin-Project: laravel-docs\n"
+"X-Crowdin-Project-ID: 447952\n"
 
-#: docs/10.x/mocking.md:block 1 (header)
+#: ./docs/8.x/mocking.md:1
+#: ./docs/9.x/mocking.md:1
+#: ./docs/10.x/mocking.md:1
+#: ./docs/11.x/mocking.md:1
+#: ./docs/master/mocking.md:1
+msgctxt "H1"
 msgid "Mocking"
 msgstr "Mock"
 
-#: docs/10.x/mocking.md:block 2 (unordered list)
+#: ./docs/8.x/mocking.md:3
+#: ./docs/9.x/mocking.md:3
+#: ./docs/10.x/mocking.md:3
+#: ./docs/11.x/mocking.md:3
+#: ./docs/master/mocking.md:3
+msgctxt "P"
 msgid "[Introduction](#introduction)"
 msgstr "[簡介](#introduction)"
 
-#: docs/10.x/mocking.md:block 2 (unordered list)
+#: ./docs/8.x/mocking.md:4
+#: ./docs/9.x/mocking.md:4
+#: ./docs/10.x/mocking.md:4
+#: ./docs/11.x/mocking.md:4
+#: ./docs/master/mocking.md:4
+msgctxt "P"
 msgid "[Mocking Objects](#mocking-objects)"
 msgstr "[Mock 物件](#mocking-objects)"
 
-#: docs/10.x/mocking.md:block 2 (unordered list)
+#: ./docs/8.x/mocking.md:5
+#: ./docs/9.x/mocking.md:5
+#: ./docs/10.x/mocking.md:5
+#: ./docs/11.x/mocking.md:5
+#: ./docs/master/mocking.md:5
+msgctxt "P"
 msgid "[Mocking Facades](#mocking-facades)"
 msgstr "[Mock Facade](#mocking-facades)"
 
-#: docs/10.x/mocking.md:block 2 (unordered list)
+#: ./docs/8.x/mocking.md:6
+#: ./docs/9.x/mocking.md:6
+#: ./docs/10.x/mocking.md:6
+#: ./docs/11.x/mocking.md:6
+#: ./docs/master/mocking.md:6
+msgctxt "P"
 msgid "[Facade Spies](#facade-spies)"
 msgstr "[Facade 的 Spy](#facade-spies)"
 
-#: docs/10.x/mocking.md:block 2 (unordered list)
-msgid "[Interacting With Time](#interacting-with-time)"
-msgstr "[處理時間](#interacting-with-time)"
-
-#: docs/10.x/mocking.md:block 4 (header)
-msgid "Introduction"
-msgstr "簡介"
-
-#: docs/10.x/mocking.md:block 5 (paragraph)
-msgid "When testing Laravel applications, you may wish to \"mock\" certain aspects of your application so they are not actually executed during a given test. For example, when testing a controller that dispatches an event, you may wish to mock the event listeners so they are not actually executed during the test. This allows you to only test the controller's HTTP response without worrying about the execution of the event listeners since the event listeners can be tested in their own test case."
-msgstr "在測試 Laravel 專案時，我們有時候會需要「^[Mock](模擬)」某部分的程式，好讓執行測試時不要真的執行這一部分程式。舉例來說，在測試會分派 Event 的 Controller 時，我們可能會想 Mock 該 Event 的 Listener，讓這些 Event Listener 在測試階段不要真的被執行。這樣一來，我們就可以只測試 Controller 的 HTTP Response，而不需擔心 Event Listener 的執行，因為這些 Event Listener 可以在其自己的測試例中測試。"
-
-#: docs/10.x/mocking.md:block 6 (paragraph)
-msgid "Laravel provides helpful methods for mocking events, jobs, and other facades out of the box. These helpers primarily provide a convenience layer over Mockery so you do not have to manually make complicated Mockery method calls."
-msgstr "Laravel 提供了各種開箱即用的實用方法，可用於 Mock Event、Job、與其他 Facade。這些輔助函式主要提供一個 Mockery 之上的方便層，讓我們不需手動進行複雜的 Mockery 方法呼叫。"
-
-#: docs/10.x/mocking.md:block 8 (header)
-msgid "Mocking Objects"
-msgstr "Mock 物件"
-
-#: docs/10.x/mocking.md:block 9 (paragraph)
-msgid "When mocking an object that is going to be injected into your application via Laravel's [service container](/docs/{{version}}/container), you will need to bind your mocked instance into the container as an `instance` binding. This will instruct the container to use your mocked instance of the object instead of constructing the object itself:"
-msgstr "若要 Mock 一些會被  Laravel [Service Container](/docs/{{version}}/container) 插入到程式中的物件，只需要使用 `instance` 繫結來將 Mock 後的實體繫結到 Container 中。這樣一來，Container 就會使用 Mock 後的物件實體，而不會再重新建立一個物件："
-
-#: docs/10.x/mocking.md:block 10 (code)
-msgid "use App\\Service;\n"
-"use Mockery;\n"
-"use Mockery\\MockInterface;\n\n"
-"public function test_something_can_be_mocked(): void\n"
-"{\n"
-"    $this->instance(\n"
-"        Service::class,\n"
-"        Mockery::mock(Service::class, function (MockInterface $mock) {\n"
-"            $mock->shouldReceive('process')->once();\n"
-"        })\n"
-"    );\n"
-"}\n"
-msgstr "use App\\Service;\n"
-"use Mockery;\n"
-"use Mockery\\MockInterface;\n\n"
-"public function test_something_can_be_mocked(): void\n"
-"{\n"
-"    $this->instance(\n"
-"        Service::class,\n"
-"        Mockery::mock(Service::class, function (MockInterface $mock) {\n"
-"            $mock->shouldReceive('process')->once();\n"
-"        })\n"
-"    );\n"
-"}\n"
-
-#: docs/10.x/mocking.md:block 11 (paragraph)
-msgid "In order to make this more convenient, you may use the `mock` method that is provided by Laravel's base test case class. For example, the following example is equivalent to the example above:"
-msgstr "為了讓這個過程更方便，我們可以使用 Laravel 基礎測試例 Class 中的 `mock` 方法。舉例來說，下面這個範例與上一個範例是相等的："
-
-#: docs/10.x/mocking.md:block 12 (code)
-msgid "use App\\Service;\n"
-"use Mockery\\MockInterface;\n\n"
-"$mock = $this->mock(Service::class, function (MockInterface $mock) {\n"
-"    $mock->shouldReceive('process')->once();\n"
-"});\n"
-msgstr "use App\\Service;\n"
-"use Mockery\\MockInterface;\n\n"
-"$mock = $this->mock(Service::class, function (MockInterface $mock) {\n"
-"    $mock->shouldReceive('process')->once();\n"
-"});\n"
-
-#: docs/10.x/mocking.md:block 13 (paragraph)
-msgid "You may use the `partialMock` method when you only need to mock a few methods of an object. The methods that are not mocked will be executed normally when called:"
-msgstr "若只需要 Mock 某個物件的一部分方法，可使用 `partialMock` 方法。若呼叫了未被 Mock 的方法，則這些方法會正常執行："
-
-#: docs/10.x/mocking.md:block 14 (code)
-msgid "use App\\Service;\n"
-"use Mockery\\MockInterface;\n\n"
-"$mock = $this->partialMock(Service::class, function (MockInterface $mock) {\n"
-"    $mock->shouldReceive('process')->once();\n"
-"});\n"
-msgstr "use App\\Service;\n"
-"use Mockery\\MockInterface;\n\n"
-"$mock = $this->partialMock(Service::class, function (MockInterface $mock) {\n"
-"    $mock->shouldReceive('process')->once();\n"
-"});\n"
-
-#: docs/10.x/mocking.md:block 15 (paragraph)
-msgid "Similarly, if you want to [spy](http://docs.mockery.io/en/latest/reference/spies.html) on an object, Laravel's base test case class offers a `spy` method as a convenient wrapper around the `Mockery::spy` method. Spies are similar to mocks; however, spies record any interaction between the spy and the code being tested, allowing you to make assertions after the code is executed:"
-msgstr "類似的，若我們想 [Spy](http://docs.mockery.io/en/latest/reference/spies.html) 某個物件，Laravel 的基礎測試 Class 中也提供了一個 `spy` 方法來作為 `Mockery::spy` 方法的方便包裝。Spy 與 Mock 類似；不過，Spy 會記錄所有 Spy 與正在測試的程式碼間的互動，能讓我們在程式碼執行後進行 Assertion："
-
-#: docs/10.x/mocking.md:block 16 (code)
-msgid "use App\\Service;\n\n"
-"$spy = $this->spy(Service::class);\n\n"
-"// ...\n\n"
-"$spy->shouldHaveReceived('process');\n"
-msgstr "use App\\Service;\n\n"
-"$spy = $this->spy(Service::class);\n\n"
-"// ...\n\n"
-"$spy->shouldHaveReceived('process');\n"
-
-#: docs/10.x/mocking.md:block 18 (header)
-msgid "Mocking Facades"
-msgstr "Mock Facade"
-
-#: docs/10.x/mocking.md:block 19 (paragraph)
-msgid "Unlike traditional static method calls, [facades](/docs/{{version}}/facades) (including [real-time facades](/docs/{{version}}/facades#real-time-facades)) may be mocked. This provides a great advantage over traditional static methods and grants you the same testability that you would have if you were using traditional dependency injection. When testing, you may often want to mock a call to a Laravel facade that occurs in one of your controllers. For example, consider the following controller action:"
-msgstr "與傳統的靜態方法呼叫不同，[Facade] (包含即時 Facade) 是可以被 Mock 的。這樣一來，我們還是能使用傳統的靜態方法呼叫，同時又不會失去傳統相依性插入所帶來的可測試性。在測試時，我們通常會想 Mock 在 Controller 中的某個 Laravel Facade 呼叫。舉例來說，來看看下列 Controller 動作："
-
-#: docs/10.x/mocking.md:block 20 (code)
-msgid "<?php\n\n"
-"namespace App\\Http\\Controllers;\n\n"
-"use Illuminate\\Support\\Facades\\Cache;\n\n"
-"class UserController extends Controller\n"
-"{\n"
-"    /**\n"
-"     * Retrieve a list of all users of the application.\n"
-"     */\n"
-"    public function index(): array\n"
-"    {\n"
-"        $value = Cache::get('key');\n\n"
-"        return [\n"
-"            // ...\n"
-"        ];\n"
-"    }\n"
-"}\n"
-msgstr "<?php\n\n"
-"namespace App\\Http\\Controllers;\n\n"
-"use Illuminate\\Support\\Facades\\Cache;\n\n"
-"class UserController extends Controller\n"
-"{\n"
-"    /**\n"
-"     * Retrieve a list of all users of the application.\n"
-"     */\n"
-"    public function index(): array\n"
-"    {\n"
-"        $value = Cache::get('key');\n\n"
-"        return [\n"
-"            // ...\n"
-"        ];\n"
-"    }\n"
-"}\n"
-
-#: docs/10.x/mocking.md:block 21 (paragraph)
-msgid "We can mock the call to the `Cache` facade by using the `shouldReceive` method, which will return an instance of a [Mockery](https://github.com/padraic/mockery) mock. Since facades are actually resolved and managed by the Laravel [service container](/docs/{{version}}/container), they have much more testability than a typical static class. For example, let's mock our call to the `Cache` facade's `get` method:"
-msgstr "我們可以使用 `shouldReceive` 方法來 Mock `Cache` Facade 的呼叫。該方法會回傳 [Mockery](https://github.com/padraic/mockery) 的 Mock 實體。由於Facade 會實際上會由 Laravel 的 [Service Container](/docs/{{version}}/container) 來解析與管理，因此比起傳統的靜態類別，Facade 有更好的可測試性。舉例來說，我們來 Mock `Cache` Facade 的 `get` 方法呼叫："
-
-#: docs/10.x/mocking.md:block 22 (code)
-msgid "<?php\n\n"
-"namespace Tests\\Feature;\n\n"
-"use Illuminate\\Support\\Facades\\Cache;\n"
-"use Tests\\TestCase;\n\n"
-"class UserControllerTest extends TestCase\n"
-"{\n"
-"    public function test_get_index(): void\n"
-"    {\n"
-"        Cache::shouldReceive('get')\n"
-"                    ->once()\n"
-"                    ->with('key')\n"
-"                    ->andReturn('value');\n\n"
-"        $response = $this->get('/users');\n\n"
-"        // ...\n"
-"    }\n"
-"}\n"
-msgstr "<?php\n\n"
-"namespace Tests\\Feature;\n\n"
-"use Illuminate\\Support\\Facades\\Cache;\n"
-"use Tests\\TestCase;\n\n"
-"class UserControllerTest extends TestCase\n"
-"{\n"
-"    public function test_get_index(): void\n"
-"    {\n"
-"        Cache::shouldReceive('get')\n"
-"                    ->once()\n"
-"                    ->with('key')\n"
-"                    ->andReturn('value');\n\n"
-"        $response = $this->get('/users');\n\n"
-"        // ...\n"
-"    }\n"
-"}\n"
-
-#: docs/10.x/mocking.md:block 23 (quote)
-msgid "**Warning** You should not mock the `Request` facade. Instead, pass the input you desire into the [HTTP testing methods](/docs/{{version}}/http-tests) such as `get` and `post` when running your test. Likewise, instead of mocking the `Config` facade, call the `Config::set` method in your tests."
-msgstr "**Warning** 請不要 Mock `Request` Facade。在執行測試時，請將要測試的輸入傳給如 `get` 或 `post` 等的 [HTTP 測試方法](/docs/{{version}}/http-tests)。類似地，請不要 Mock `Config` Facade，請在測試中執行 `Config::set` 方法。"
-
-#: docs/10.x/mocking.md:block 25 (header)
-msgid "Facade Spies"
-msgstr "Facade 的 Spy"
-
-#: docs/10.x/mocking.md:block 26 (paragraph)
-msgid "If you would like to [spy](http://docs.mockery.io/en/latest/reference/spies.html) on a facade, you may call the `spy` method on the corresponding facade. Spies are similar to mocks; however, spies record any interaction between the spy and the code being tested, allowing you to make assertions after the code is executed:"
-msgstr "若想 [Spy](http://docs.mockery.io/en/latest/reference/spies.html) 某個 Facade，則可在對應的 Facade 上呼叫 `spy` 方法。Spy 與 Mock 類似；不過，Spy 會記錄所有 Spy 與正在測試的程式碼間的互動，能讓我們在程式碼執行後進行 Assertion："
-
-#: docs/10.x/mocking.md:block 27 (code)
-msgid "use Illuminate\\Support\\Facades\\Cache;\n\n"
-"public function test_values_are_be_stored_in_cache(): void\n"
-"{\n"
-"    Cache::spy();\n\n"
-"    $response = $this->get('/');\n\n"
-"    $response->assertStatus(200);\n\n"
-"    Cache::shouldHaveReceived('put')->once()->with('name', 'Taylor', 10);\n"
-"}\n"
-msgstr "use Illuminate\\Support\\Facades\\Cache;\n\n"
-"public function test_values_are_be_stored_in_cache(): void\n"
-"{\n"
-"    Cache::spy();\n\n"
-"    $response = $this->get('/');\n\n"
-"    $response->assertStatus(200);\n\n"
-"    Cache::shouldHaveReceived('put')->once()->with('name', 'Taylor', 10);\n"
-"}\n"
-
-#: docs/10.x/mocking.md:block 29 (header)
-msgid "Interacting With Time"
-msgstr "處理時間"
-
-#: docs/10.x/mocking.md:block 30 (paragraph)
-msgid "When testing, you may occasionally need to modify the time returned by helpers such as `now` or `Illuminate\\Support\\Carbon::now()`. Thankfully, Laravel's base feature test class includes helpers that allow you to manipulate the current time:"
-msgstr "在測試的時候，我們有時候會想要更改如 `now` 或 `Illuminate\\Support\\Carbon::now()` 等輔助函式所回傳的時間。幸好，Laravel 的基礎功能測試 (Feature Test) Class 中，有包含一個可以更改目前時間的輔助函式："
-
-#: docs/10.x/mocking.md:block 31 (code)
-msgid "use Illuminate\\Support\\Carbon;\n\n"
-"public function test_time_can_be_manipulated(): void\n"
-"{\n"
-"    // Travel into the future...\n"
-"    $this->travel(5)->milliseconds();\n"
-"    $this->travel(5)->seconds();\n"
-"    $this->travel(5)->minutes();\n"
-"    $this->travel(5)->hours();\n"
-"    $this->travel(5)->days();\n"
-"    $this->travel(5)->weeks();\n"
-"    $this->travel(5)->years();\n\n"
-"    // Travel into the past...\n"
-"    $this->travel(-5)->hours();\n\n"
-"    // Travel to an explicit time...\n"
-"    $this->travelTo(now()->subHours(6));\n\n"
-"    // Return back to the present time...\n"
-"    $this->travelBack();\n"
-"}\n"
-msgstr "use Illuminate\\Support\\Carbon;\n\n"
-"public function test_time_can_be_manipulated(): void\n"
-"{\n"
-"    // 時間旅行到未來...\n"
-"    $this->travel(5)->milliseconds();\n"
-"    $this->travel(5)->seconds();\n"
-"    $this->travel(5)->minutes();\n"
-"    $this->travel(5)->hours();\n"
-"    $this->travel(5)->days();\n"
-"    $this->travel(5)->weeks();\n"
-"    $this->travel(5)->years();\n\n"
-"    // 時間旅行到過去...\n"
-"    $this->travel(-5)->hours();\n\n"
-"    // 時間旅行到一個特定的時間...\n"
-"    $this->travelTo(now()->subHours(6));\n\n"
-"    // 回到目前時間...\n"
-"    $this->travelBack();\n"
-"}\n"
-
-#: docs/10.x/mocking.md:block 32 (paragraph)
-msgid "You may also provide a closure to the various time travel methods. The closure will be invoked with time frozen at the specified time. Once the closure has executed, time will resume as normal:"
-msgstr "也可以提供一個閉包給各個時間旅行方法。呼叫該閉包時，會傳入所凍結的特定時間。執行該閉包後，時間就會恢復正常："
-
-#: docs/10.x/mocking.md:block 33 (code)
-msgid "$this->travel(5)->days(function () {\n"
-"    // Test something five days into the future...\n"
-"});\n\n"
-"$this->travelTo(now()->subDays(10), function () {\n"
-"    // Test something during a given moment...\n"
-"});\n"
-msgstr "$this->travel(5)->days(function () {\n"
-"    // 時間旅行到未來的五天後，並測試某些功能...\n"
-"});\n\n"
-"$this->travelTo(now()->subDays(10), function () {\n"
-"    // 在特定的時間測試某些功能...\n"
-"});\n"
-
-#: docs/10.x/mocking.md:block 34 (paragraph)
-msgid "The `freezeTime` method may be used to freeze the current time. Similarly, the `freezeSecond` method will freeze the current time but at the start of the current second:"
-msgstr "`freezeTime` 方法可用來凍結目前的時間。類似地，`freezeSecond` 方法會凍結目前時間，並回到目前秒數的開端："
-
-#: docs/10.x/mocking.md:block 35 (code)
-msgid "use Illuminate\\Support\\Carbon;\n\n"
-"// Freeze time and resume normal time after executing closure...\n"
-"$this->freezeTime(function (Carbon $time) {\n"
-"    // ...\n"
-"});\n\n"
-"// Freeze time at the current second and resume normal time after executing closure...\n"
-"$this->freezeSecond(function (Carbon $time) {\n"
-"    // ...\n"
-"})\n"
-msgstr "use Illuminate\\Support\\Carbon;\n\n"
-"// 凍結時間，並在執行 Closure 後恢復正常時間...\n"
-"$this->freezeTime(function (Carbon $time) {\n"
-"    // ...\n"
-"});\n\n"
-"// 將時間凍結在目前的秒數，並在執行閉包後恢復正常時間...\n"
-"$this->freezeSecond(function (Carbon $time) {\n"
-"    // ...\n"
-"})\n"
-
-#: docs/10.x/mocking.md:block 36 (paragraph)
-msgid "As you would expect, all of the methods discussed above are primarily useful for testing time sensitive application behavior, such as locking inactive posts on a discussion forum:"
-msgstr "就像預期的一樣，上方所討論的所有方法主要都適合用來測試與時間相關的程式行為，例如在討論區中鎖定非活躍的貼文："
-
-#: docs/10.x/mocking.md:block 37 (code)
-msgid "use App\\Models\\Thread;\n\n"
-"public function test_forum_threads_lock_after_one_week_of_inactivity()\n"
-"{\n"
-"    $thread = Thread::factory()->create();\n"
-"    \n"
-"    $this->travel(1)->week();\n"
-"    \n"
-"    $this->assertTrue($thread->isLockedByInactivity());\n"
-"}\n"
-msgstr "use App\\Models\\Thread;\n\n"
-"public function test_forum_threads_lock_after_one_week_of_inactivity()\n"
-"{\n"
-"    $thread = Thread::factory()->create();\n"
-"    \n"
-"    $this->travel(1)->week();\n"
-"    \n"
-"    $this->assertTrue($thread->isLockedByInactivity());\n"
-"}\n"
-
-#: docs/8.x/mocking.md:block 2 (unordered list)
+#: ./docs/8.x/mocking.md:7
+#: ./docs/9.x/mocking.md:7
+msgctxt "P"
 msgid "[Bus Fake](#bus-fake)"
 msgstr "[Bus Fake](#bus-fake)"
 
-#: docs/8.x/mocking.md:block 2 (unordered list)
+#: ./docs/8.x/mocking.md:8
+#: ./docs/9.x/mocking.md:8
+msgctxt "P"
 msgid "[Job Chains](#bus-job-chains)"
 msgstr "[Job Chain](#bus-job-chains)"
 
-#: docs/8.x/mocking.md:block 2 (unordered list)
+#: ./docs/8.x/mocking.md:9
+#: ./docs/9.x/mocking.md:9
+msgctxt "P"
 msgid "[Job Batches](#job-batches)"
 msgstr "[批次 Job](#job-batches)"
 
-#: docs/8.x/mocking.md:block 2 (unordered list)
+#: ./docs/8.x/mocking.md:10
+#: ./docs/9.x/mocking.md:10
+msgctxt "P"
 msgid "[Event Fake](#event-fake)"
 msgstr "[Event Fake](#event-fake)"
 
-#: docs/8.x/mocking.md:block 2 (unordered list)
+#: ./docs/8.x/mocking.md:11
+#: ./docs/9.x/mocking.md:11
+msgctxt "P"
 msgid "[Scoped Event Fakes](#scoped-event-fakes)"
 msgstr "[限定範圍的 Event Fake](#scoped-event-fakes)"
 
-#: docs/8.x/mocking.md:block 2 (unordered list)
+#: ./docs/8.x/mocking.md:12
+#: ./docs/9.x/mocking.md:12
+msgctxt "P"
 msgid "[HTTP Fake](#http-fake)"
 msgstr "[HTTP Fake](#http-fake)"
 
-#: docs/8.x/mocking.md:block 2 (unordered list)
+#: ./docs/8.x/mocking.md:13
+#: ./docs/9.x/mocking.md:13
+msgctxt "P"
 msgid "[Mail Fake](#mail-fake)"
 msgstr "[Mail Fake](#mail-fake)"
 
-#: docs/8.x/mocking.md:block 2 (unordered list)
+#: ./docs/8.x/mocking.md:14
+#: ./docs/9.x/mocking.md:14
+msgctxt "P"
 msgid "[Notification Fake](#notification-fake)"
 msgstr "[Notification Fake](#notification-fake)"
 
-#: docs/8.x/mocking.md:block 2 (unordered list)
+#: ./docs/8.x/mocking.md:15
+#: ./docs/9.x/mocking.md:15
+msgctxt "P"
 msgid "[Queue Fake](#queue-fake)"
 msgstr "[Queue Fake](#queue-fake)"
 
-#: docs/8.x/mocking.md:block 2 (unordered list)
+#: ./docs/8.x/mocking.md:16
+#: ./docs/9.x/mocking.md:16
+msgctxt "P"
 msgid "[Job Chains](#job-chains)"
 msgstr "[Job Chain](#job-chains)"
 
-#: docs/8.x/mocking.md:block 2 (unordered list)
+#: ./docs/8.x/mocking.md:17
+#: ./docs/9.x/mocking.md:17
+msgctxt "P"
 msgid "[Storage Fake](#storage-fake)"
 msgstr "[Storage Fake](#storage-fake)"
 
-#: docs/8.x/mocking.md:block 10 (code)
-msgid "use App\\Service;\n"
-"use Mockery;\n"
-"use Mockery\\MockInterface;\n\n"
-"public function test_something_can_be_mocked()\n"
-"{\n"
-"    $this->instance(\n"
-"        Service::class,\n"
-"        Mockery::mock(Service::class, function (MockInterface $mock) {\n"
-"            $mock->shouldReceive('process')->once();\n"
-"        })\n"
-"    );\n"
-"}\n"
-msgstr "use App\\Service;\n"
-"use Mockery;\n"
-"use Mockery\\MockInterface;\n\n"
-"public function test_something_can_be_mocked()\n"
-"{\n"
-"    $this->instance(\n"
-"        Service::class,\n"
-"        Mockery::mock(Service::class, function (MockInterface $mock) {\n"
-"            $mock->shouldReceive('process')->once();\n"
-"        })\n"
-"    );\n"
-"}\n"
+#: ./docs/8.x/mocking.md:18
+#: ./docs/9.x/mocking.md:18
+#: ./docs/10.x/mocking.md:7
+#: ./docs/11.x/mocking.md:7
+#: ./docs/master/mocking.md:7
+msgctxt "P"
+msgid "[Interacting With Time](#interacting-with-time)"
+msgstr "[處理時間](#interacting-with-time)"
 
-#: docs/8.x/mocking.md:block 20 (code)
-msgid "<?php\n\n"
-"namespace App\\Http\\Controllers;\n\n"
-"use Illuminate\\Support\\Facades\\Cache;\n\n"
+#: ./docs/8.x/mocking.md:20
+#: ./docs/9.x/mocking.md:20
+#: ./docs/10.x/mocking.md:9
+#: ./docs/11.x/mocking.md:9
+#: ./docs/master/mocking.md:9
+#~ msgctxt "P"
+#~ msgid "<a name=\"introduction\"></a>"
+#~ msgstr ""
+
+#: ./docs/10.x/mocking.md:21
+#: ./docs/11.x/mocking.md:36
+#: ./docs/master/mocking.md:36
+msgctxt "CODE"
+msgid ""
+"use App\\Service;\n"
+"use Mockery;\n"
+"use Mockery\\MockInterface;\n"
+"\n"
+"public function test_something_can_be_mocked(): void\n"
+"{\n"
+"    $this->instance(\n"
+"        Service::class,\n"
+"        Mockery::mock(Service::class, function (MockInterface $mock) {\n"
+"            $mock->shouldReceive('process')->once();\n"
+"        })\n"
+"    );\n"
+"}"
+msgstr ""
+
+#: ./docs/11.x/mocking.md:21
+#: ./docs/master/mocking.md:21
+msgctxt "CODE: php tab=Pest"
+msgid ""
+"use App\\Service;\n"
+"use Mockery;\n"
+"use Mockery\\MockInterface;\n"
+"\n"
+"test('something can be mocked', function () {\n"
+"    $this->instance(\n"
+"        Service::class,\n"
+"        Mockery::mock(Service::class, function (MockInterface $mock) {\n"
+"            $mock->shouldReceive('process')->once();\n"
+"        })\n"
+"    );\n"
+"});"
+msgstr ""
+
+#: ./docs/8.x/mocking.md:21
+#: ./docs/9.x/mocking.md:21
+#: ./docs/10.x/mocking.md:10
+#: ./docs/11.x/mocking.md:10
+#: ./docs/master/mocking.md:10
+msgctxt "H2"
+msgid "Introduction"
+msgstr "簡介"
+
+#: ./docs/8.x/mocking.md:23
+#: ./docs/9.x/mocking.md:23
+#: ./docs/10.x/mocking.md:12
+#: ./docs/11.x/mocking.md:12
+#: ./docs/master/mocking.md:12
+msgctxt "P"
+msgid "When testing Laravel applications, you may wish to \"mock\" certain aspects of your application so they are not actually executed during a given test. For example, when testing a controller that dispatches an event, you may wish to mock the event listeners so they are not actually executed during the test. This allows you to only test the controller's HTTP response without worrying about the execution of the event listeners since the event listeners can be tested in their own test case."
+msgstr "在測試 Laravel 專案時，我們有時候會需要「^[Mock](模擬)」某部分的程式，好讓執行測試時不要真的執行這一部分程式。舉例來說，在測試會分派 Event 的 Controller 時，我們可能會想 Mock 該 Event 的 Listener，讓這些 Event Listener 在測試階段不要真的被執行。這樣一來，我們就可以只測試 Controller 的 HTTP Response，而不需擔心 Event Listener 的執行，因為這些 Event Listener 可以在其自己的測試例中測試。"
+
+#: ./docs/8.x/mocking.md:25
+#: ./docs/9.x/mocking.md:25
+#: ./docs/10.x/mocking.md:14
+#: ./docs/11.x/mocking.md:14
+#: ./docs/master/mocking.md:14
+msgctxt "P"
+msgid "Laravel provides helpful methods for mocking events, jobs, and other facades out of the box. These helpers primarily provide a convenience layer over Mockery so you do not have to manually make complicated Mockery method calls."
+msgstr "Laravel 提供了各種開箱即用的實用方法，可用於 Mock Event、Job、與其他 Facade。這些輔助函式主要提供一個 Mockery 之上的方便層，讓我們不需手動進行複雜的 Mockery 方法呼叫。"
+
+#: ./docs/8.x/mocking.md:27
+#: ./docs/9.x/mocking.md:27
+#: ./docs/10.x/mocking.md:16
+#: ./docs/11.x/mocking.md:16
+#: ./docs/master/mocking.md:16
+#~ msgctxt "P"
+#~ msgid "<a name=\"mocking-objects\"></a>"
+#~ msgstr ""
+
+#: ./docs/8.x/mocking.md:28
+#: ./docs/9.x/mocking.md:28
+#: ./docs/10.x/mocking.md:17
+#: ./docs/11.x/mocking.md:17
+#: ./docs/master/mocking.md:17
+msgctxt "H2"
+msgid "Mocking Objects"
+msgstr "Mock 物件"
+
+#: ./docs/8.x/mocking.md:30
+#: ./docs/9.x/mocking.md:30
+#: ./docs/10.x/mocking.md:19
+#: ./docs/11.x/mocking.md:19
+#: ./docs/master/mocking.md:19
+msgctxt "P"
+msgid "When mocking an object that is going to be injected into your application via Laravel's [service container](/docs/{{version}}/container), you will need to bind your mocked instance into the container as an `instance` binding. This will instruct the container to use your mocked instance of the object instead of constructing the object itself:"
+msgstr "若要 Mock 一些會被  Laravel [Service Container](/docs/{{version}}/container) 插入到程式中的物件，只需要使用 `instance` 繫結來將 Mock 後的實體繫結到 Container 中。這樣一來，Container 就會使用 Mock 後的物件實體，而不會再重新建立一個物件："
+
+#: ./docs/8.x/mocking.md:32
+#: ./docs/9.x/mocking.md:32
+msgctxt "CODE"
+msgid ""
+"use App\\Service;\n"
+"use Mockery;\n"
+"use Mockery\\MockInterface;\n"
+"\n"
+"public function test_something_can_be_mocked()\n"
+"{\n"
+"    $this->instance(\n"
+"        Service::class,\n"
+"        Mockery::mock(Service::class, function (MockInterface $mock) {\n"
+"            $mock->shouldReceive('process')->once();\n"
+"        })\n"
+"    );\n"
+"}"
+msgstr ""
+
+#: ./docs/8.x/mocking.md:46
+#: ./docs/9.x/mocking.md:46
+#: ./docs/10.x/mocking.md:35
+#: ./docs/11.x/mocking.md:52
+#: ./docs/master/mocking.md:52
+msgctxt "P"
+msgid "In order to make this more convenient, you may use the `mock` method that is provided by Laravel's base test case class. For example, the following example is equivalent to the example above:"
+msgstr "為了讓這個過程更方便，我們可以使用 Laravel 基礎測試例 Class 中的 `mock` 方法。舉例來說，下面這個範例與上一個範例是相等的："
+
+#: ./docs/8.x/mocking.md:48
+#: ./docs/9.x/mocking.md:48
+#: ./docs/10.x/mocking.md:37
+#: ./docs/11.x/mocking.md:54
+#: ./docs/master/mocking.md:54
+msgctxt "CODE"
+msgid ""
+"use App\\Service;\n"
+"use Mockery\\MockInterface;\n"
+"\n"
+"$mock = $this->mock(Service::class, function (MockInterface $mock) {\n"
+"    $mock->shouldReceive('process')->once();\n"
+"});"
+msgstr ""
+
+#: ./docs/8.x/mocking.md:55
+#: ./docs/9.x/mocking.md:55
+#: ./docs/10.x/mocking.md:44
+#: ./docs/11.x/mocking.md:61
+#: ./docs/master/mocking.md:61
+msgctxt "P"
+msgid "You may use the `partialMock` method when you only need to mock a few methods of an object. The methods that are not mocked will be executed normally when called:"
+msgstr "若只需要 Mock 某個物件的一部分方法，可使用 `partialMock` 方法。若呼叫了未被 Mock 的方法，則這些方法會正常執行："
+
+#: ./docs/8.x/mocking.md:57
+#: ./docs/9.x/mocking.md:57
+#: ./docs/10.x/mocking.md:46
+#: ./docs/11.x/mocking.md:63
+#: ./docs/master/mocking.md:63
+msgctxt "CODE"
+msgid ""
+"use App\\Service;\n"
+"use Mockery\\MockInterface;\n"
+"\n"
+"$mock = $this->partialMock(Service::class, function (MockInterface $mock) {\n"
+"    $mock->shouldReceive('process')->once();\n"
+"});"
+msgstr ""
+
+#: ./docs/8.x/mocking.md:64
+#: ./docs/9.x/mocking.md:64
+#: ./docs/10.x/mocking.md:53
+#: ./docs/11.x/mocking.md:70
+#: ./docs/master/mocking.md:70
+msgctxt "P"
+msgid "Similarly, if you want to [spy](http://docs.mockery.io/en/latest/reference/spies.html) on an object, Laravel's base test case class offers a `spy` method as a convenient wrapper around the `Mockery::spy` method. Spies are similar to mocks; however, spies record any interaction between the spy and the code being tested, allowing you to make assertions after the code is executed:"
+msgstr "類似的，若我們想 [Spy](http://docs.mockery.io/en/latest/reference/spies.html) 某個物件，Laravel 的基礎測試 Class 中也提供了一個 `spy` 方法來作為 `Mockery::spy` 方法的方便包裝。Spy 與 Mock 類似；不過，Spy 會記錄所有 Spy 與正在測試的程式碼間的互動，能讓我們在程式碼執行後進行 Assertion："
+
+#: ./docs/8.x/mocking.md:66
+#: ./docs/9.x/mocking.md:66
+#: ./docs/10.x/mocking.md:55
+#: ./docs/11.x/mocking.md:72
+#: ./docs/master/mocking.md:72
+msgctxt "CODE"
+msgid ""
+"use App\\Service;\n"
+"\n"
+"$spy = $this->spy(Service::class);\n"
+"\n"
+"// ...\n"
+"\n"
+"$spy->shouldHaveReceived('process');"
+msgstr ""
+
+#: ./docs/10.x/mocking.md:68
+#: ./docs/11.x/mocking.md:85
+#: ./docs/master/mocking.md:85
+msgctxt "CODE"
+msgid ""
+"<?php\n"
+"\n"
+"namespace App\\Http\\Controllers;\n"
+"\n"
+"use Illuminate\\Support\\Facades\\Cache;\n"
+"\n"
+"class UserController extends Controller\n"
+"{\n"
+"    /**\n"
+"     * Retrieve a list of all users of the application.\n"
+"     */\n"
+"    public function index(): array\n"
+"    {\n"
+"        $value = Cache::get('key');\n"
+"\n"
+"        return [\n"
+"            // ...\n"
+"        ];\n"
+"    }\n"
+"}"
+msgstr ""
+
+#: ./docs/8.x/mocking.md:74
+#: ./docs/9.x/mocking.md:74
+#: ./docs/10.x/mocking.md:63
+#: ./docs/11.x/mocking.md:80
+#: ./docs/master/mocking.md:80
+#~ msgctxt "P"
+#~ msgid "<a name=\"mocking-facades\"></a>"
+#~ msgstr ""
+
+#: ./docs/8.x/mocking.md:75
+#: ./docs/9.x/mocking.md:75
+#: ./docs/10.x/mocking.md:64
+#: ./docs/11.x/mocking.md:81
+#: ./docs/master/mocking.md:81
+msgctxt "H2"
+msgid "Mocking Facades"
+msgstr "Mock Facade"
+
+#: ./docs/8.x/mocking.md:77
+#: ./docs/9.x/mocking.md:77
+#: ./docs/10.x/mocking.md:66
+#: ./docs/11.x/mocking.md:83
+#: ./docs/master/mocking.md:83
+msgctxt "P"
+msgid "Unlike traditional static method calls, [facades](/docs/{{version}}/facades) (including [real-time facades](/docs/{{version}}/facades#real-time-facades)) may be mocked. This provides a great advantage over traditional static methods and grants you the same testability that you would have if you were using traditional dependency injection. When testing, you may often want to mock a call to a Laravel facade that occurs in one of your controllers. For example, consider the following controller action:"
+msgstr "與傳統的靜態方法呼叫不同，[Facade] (包含即時 Facade) 是可以被 Mock 的。這樣一來，我們還是能使用傳統的靜態方法呼叫，同時又不會失去傳統相依性插入所帶來的可測試性。在測試時，我們通常會想 Mock 在 Controller 中的某個 Laravel Facade 呼叫。舉例來說，來看看下列 Controller 動作："
+
+#: ./docs/8.x/mocking.md:79
+#: ./docs/9.x/mocking.md:79
+msgctxt "CODE"
+msgid ""
+"<?php\n"
+"\n"
+"namespace App\\Http\\Controllers;\n"
+"\n"
+"use Illuminate\\Support\\Facades\\Cache;\n"
+"\n"
 "class UserController extends Controller\n"
 "{\n"
 "    /**\n"
@@ -433,34 +398,63 @@ msgid "<?php\n\n"
 "     */\n"
 "    public function index()\n"
 "    {\n"
-"        $value = Cache::get('key');\n\n"
+"        $value = Cache::get('key');\n"
+"\n"
 "        //\n"
 "    }\n"
-"}\n"
-msgstr "<?php\n\n"
-"namespace App\\Http\\Controllers;\n\n"
-"use Illuminate\\Support\\Facades\\Cache;\n\n"
-"class UserController extends Controller\n"
-"{\n"
-"    /**\n"
-"     * Retrieve a list of all users of the application.\n"
-"     *\n"
-"     * @return \\Illuminate\\Http\\Response\n"
-"     */\n"
-"    public function index()\n"
-"    {\n"
-"        $value = Cache::get('key');\n\n"
-"        //\n"
-"    }\n"
-"}\n"
+"}"
+msgstr ""
 
-#: docs/8.x/mocking.md:block 22 (code)
-msgid "<?php\n\n"
-"namespace Tests\\Feature;\n\n"
+#: ./docs/10.x/mocking.md:91
+#: ./docs/11.x/mocking.md:125
+#: ./docs/master/mocking.md:125
+msgctxt "CODE"
+msgid ""
+"<?php\n"
+"\n"
+"namespace Tests\\Feature;\n"
+"\n"
+"use Illuminate\\Support\\Facades\\Cache;\n"
+"use Tests\\TestCase;\n"
+"\n"
+"class UserControllerTest extends TestCase\n"
+"{\n"
+"    public function test_get_index(): void\n"
+"    {\n"
+"        Cache::shouldReceive('get')\n"
+"                    ->once()\n"
+"                    ->with('key')\n"
+"                    ->andReturn('value');\n"
+"\n"
+"        $response = $this->get('/users');\n"
+"\n"
+"        // ...\n"
+"    }\n"
+"}"
+msgstr ""
+
+#: ./docs/8.x/mocking.md:100
+#: ./docs/9.x/mocking.md:100
+#: ./docs/10.x/mocking.md:89
+#: ./docs/11.x/mocking.md:106
+#: ./docs/master/mocking.md:106
+msgctxt "P"
+msgid "We can mock the call to the `Cache` facade by using the `shouldReceive` method, which will return an instance of a [Mockery](https://github.com/padraic/mockery) mock. Since facades are actually resolved and managed by the Laravel [service container](/docs/{{version}}/container), they have much more testability than a typical static class. For example, let's mock our call to the `Cache` facade's `get` method:"
+msgstr "我們可以使用 `shouldReceive` 方法來 Mock `Cache` Facade 的呼叫。該方法會回傳 [Mockery](https://github.com/padraic/mockery) 的 Mock 實體。由於Facade 會實際上會由 Laravel 的 [Service Container](/docs/{{version}}/container) 來解析與管理，因此比起傳統的靜態類別，Facade 有更好的可測試性。舉例來說，我們來 Mock `Cache` Facade 的 `get` 方法呼叫："
+
+#: ./docs/8.x/mocking.md:102
+#: ./docs/9.x/mocking.md:102
+msgctxt "CODE"
+msgid ""
+"<?php\n"
+"\n"
+"namespace Tests\\Feature;\n"
+"\n"
 "use Illuminate\\Foundation\\Testing\\RefreshDatabase;\n"
 "use Illuminate\\Foundation\\Testing\\WithoutMiddleware;\n"
 "use Illuminate\\Support\\Facades\\Cache;\n"
-"use Tests\\TestCase;\n\n"
+"use Tests\\TestCase;\n"
+"\n"
 "class UserControllerTest extends TestCase\n"
 "{\n"
 "    public function testGetIndex()\n"
@@ -468,1276 +462,113 @@ msgid "<?php\n\n"
 "        Cache::shouldReceive('get')\n"
 "                    ->once()\n"
 "                    ->with('key')\n"
-"                    ->andReturn('value');\n\n"
-"        $response = $this->get('/users');\n\n"
+"                    ->andReturn('value');\n"
+"\n"
+"        $response = $this->get('/users');\n"
+"\n"
 "        // ...\n"
 "    }\n"
-"}\n"
-msgstr "<?php\n\n"
-"namespace Tests\\Feature;\n\n"
-"use Illuminate\\Foundation\\Testing\\RefreshDatabase;\n"
-"use Illuminate\\Foundation\\Testing\\WithoutMiddleware;\n"
+"}"
+msgstr ""
+
+#: ./docs/11.x/mocking.md:108
+#: ./docs/master/mocking.md:108
+msgctxt "CODE: php tab=Pest"
+msgid ""
+"<?php\n"
+"\n"
 "use Illuminate\\Support\\Facades\\Cache;\n"
-"use Tests\\TestCase;\n\n"
-"class UserControllerTest extends TestCase\n"
+"\n"
+"test('get index', function () {\n"
+"    Cache::shouldReceive('get')\n"
+"                ->once()\n"
+"                ->with('key')\n"
+"                ->andReturn('value');\n"
+"\n"
+"    $response = $this->get('/users');\n"
+"\n"
+"    // ...\n"
+"});"
+msgstr ""
+
+#: ./docs/10.x/mocking.md:121
+#: ./docs/11.x/mocking.md:173
+#: ./docs/master/mocking.md:173
+msgctxt "CODE"
+msgid ""
+"use Illuminate\\Support\\Facades\\Cache;\n"
+"\n"
+"public function test_values_are_be_stored_in_cache(): void\n"
 "{\n"
-"    public function testGetIndex()\n"
-"    {\n"
-"        Cache::shouldReceive('get')\n"
-"                    ->once()\n"
-"                    ->with('key')\n"
-"                    ->andReturn('value');\n\n"
-"        $response = $this->get('/users');\n\n"
-"        // ...\n"
-"    }\n"
-"}\n"
+"    Cache::spy();\n"
+"\n"
+"    $response = $this->get('/');\n"
+"\n"
+"    $response->assertStatus(200);\n"
+"\n"
+"    Cache::shouldHaveReceived('put')->once()->with('name', 'Taylor', 10);\n"
+"}"
+msgstr ""
 
-#: docs/8.x/mocking.md:block 23 (quote)
-msgid "{note} You should not mock the `Request` facade. Instead, pass the input you desire into the [HTTP testing methods](/docs/{{version}}/http-tests) such as `get` and `post` when running your test. Likewise, instead of mocking the `Config` facade, call the `Config::set` method in your tests."
-msgstr "{note} 請不要 Mock `Request` Facade。在執行測試時，請將要測試的輸入傳給如 `get` 或 `post` 等的 [HTTP 測試方法](/docs/{{version}}/http-tests)。類似地，請不要 Mock `Config` Facade，請在測試中執行 `Config::set` 方法。"
+#: ./docs/8.x/mocking.md:126
+#: ./docs/9.x/mocking.md:127
+#: ./docs/10.x/mocking.md:114
+#: ./docs/11.x/mocking.md:150
+#: ./docs/master/mocking.md:150
+msgctxt "P"
+msgid "You should not mock the `Request` facade. Instead, pass the input you desire into the [HTTP testing methods](/docs/{{version}}/http-tests) such as `get` and `post` when running your test. Likewise, instead of mocking the `Config` facade, call the `Config::set` method in your tests."
+msgstr "請不要 Mock `Request` Facade。在執行測試時，請將要測試的輸入傳給如 `get` 或 `post` 等的 [HTTP 測試方法](/docs/{{version}}/http-tests)。類似地，請不要 Mock `Config` Facade，請在測試中執行 `Config::set` 方法。"
 
-#: docs/8.x/mocking.md:block 27 (code)
-msgid "use Illuminate\\Support\\Facades\\Cache;\n\n"
+#: ./docs/8.x/mocking.md:128
+#: ./docs/9.x/mocking.md:129
+#: ./docs/10.x/mocking.md:116
+#: ./docs/11.x/mocking.md:152
+#: ./docs/master/mocking.md:152
+#~ msgctxt "P"
+#~ msgid "<a name=\"facade-spies\"></a>"
+#~ msgstr ""
+
+#: ./docs/8.x/mocking.md:129
+#: ./docs/9.x/mocking.md:130
+#: ./docs/10.x/mocking.md:117
+#: ./docs/11.x/mocking.md:153
+#: ./docs/master/mocking.md:153
+msgctxt "H3"
+msgid "Facade Spies"
+msgstr "Facade 的 Spy"
+
+#: ./docs/8.x/mocking.md:131
+#: ./docs/9.x/mocking.md:132
+#: ./docs/10.x/mocking.md:119
+#: ./docs/11.x/mocking.md:155
+#: ./docs/master/mocking.md:155
+msgctxt "P"
+msgid "If you would like to [spy](http://docs.mockery.io/en/latest/reference/spies.html) on a facade, you may call the `spy` method on the corresponding facade. Spies are similar to mocks; however, spies record any interaction between the spy and the code being tested, allowing you to make assertions after the code is executed:"
+msgstr "若想 [Spy](http://docs.mockery.io/en/latest/reference/spies.html) 某個 Facade，則可在對應的 Facade 上呼叫 `spy` 方法。Spy 與 Mock 類似；不過，Spy 會記錄所有 Spy 與正在測試的程式碼間的互動，能讓我們在程式碼執行後進行 Assertion："
+
+#: ./docs/8.x/mocking.md:133
+#: ./docs/9.x/mocking.md:134
+msgctxt "CODE"
+msgid ""
+"use Illuminate\\Support\\Facades\\Cache;\n"
+"\n"
 "public function test_values_are_be_stored_in_cache()\n"
 "{\n"
-"    Cache::spy();\n\n"
-"    $response = $this->get('/');\n\n"
-"    $response->assertStatus(200);\n\n"
+"    Cache::spy();\n"
+"\n"
+"    $response = $this->get('/');\n"
+"\n"
+"    $response->assertStatus(200);\n"
+"\n"
 "    Cache::shouldHaveReceived('put')->once()->with('name', 'Taylor', 10);\n"
-"}\n"
-msgstr "use Illuminate\\Support\\Facades\\Cache;\n\n"
-"public function test_values_are_be_stored_in_cache()\n"
-"{\n"
-"    Cache::spy();\n\n"
-"    $response = $this->get('/');\n\n"
-"    $response->assertStatus(200);\n\n"
-"    Cache::shouldHaveReceived('put')->once()->with('name', 'Taylor', 10);\n"
-"}\n"
-
-#: docs/8.x/mocking.md:block 29 (header)
-msgid "Bus Fake"
-msgstr "Bus Fake"
-
-#: docs/8.x/mocking.md:block 30 (paragraph)
-msgid "When testing code that dispatches jobs, you typically want to assert that a given job was dispatched but not actually queue or execute the job. This is because the job's execution can normally be tested in a separate test class."
-msgstr "在測試會分派 Job 的程式時，一般來說我們會想判斷給定的 Job 是否有被分派，而不是真的將該 Job 放入 Queue 裡執行。這是因為，Job 的執行一般來說可以在其獨立的測試 Class 中測試。"
-
-#: docs/8.x/mocking.md:block 31 (paragraph)
-msgid "You may use the `Bus` facade's `fake` method to prevent jobs from being dispatched to the queue. Then, after executing the code under test, you may inspect which jobs the application attempted to dispatch using the `assertDispatched` and `assertNotDispatched` methods:"
-msgstr "我們可以使用 `Bus` Facade 的 `fake` 方法來避免 Job 被分派到 Queue 中。接著，在測試中執行程式碼後，我們就可以使用 `assertDispatched` 與 `assertNotDispatched` 方法來檢查程式嘗試分派了什麼 Job："
-
-#: docs/8.x/mocking.md:block 32 (code)
-msgid "<?php\n\n"
-"namespace Tests\\Feature;\n\n"
-"use App\\Jobs\\ShipOrder;\n"
-"use Illuminate\\Foundation\\Testing\\RefreshDatabase;\n"
-"use Illuminate\\Foundation\\Testing\\WithoutMiddleware;\n"
-"use Illuminate\\Support\\Facades\\Bus;\n"
-"use Tests\\TestCase;\n\n"
-"class ExampleTest extends TestCase\n"
-"{\n"
-"    public function test_orders_can_be_shipped()\n"
-"    {\n"
-"        Bus::fake();\n\n"
-"        // Perform order shipping...\n\n"
-"        // Assert that a job was dispatched...\n"
-"        Bus::assertDispatched(ShipOrder::class);\n\n"
-"        // Assert a job was not dispatched...\n"
-"        Bus::assertNotDispatched(AnotherJob::class);\n\n"
-"        // Assert that a job was dispatched synchronously...\n"
-"        Bus::assertDispatchedSync(AnotherJob::class);\n\n"
-"        // Assert that a job was not dipatched synchronously...\n"
-"        Bus::assertNotDispatchedSync(AnotherJob::class);\n\n"
-"        // Assert that a job was dispatched after the response was sent...\n"
-"        Bus::assertDispatchedAfterResponse(AnotherJob::class);\n\n"
-"        // Assert a job was not dispatched after response was sent...\n"
-"        Bus::assertNotDispatchedAfterResponse(AnotherJob::class);\n\n"
-"        // Assert no jobs were dispatched...\n"
-"        Bus::assertNothingDispatched();\n"
-"    }\n"
-"}\n"
-msgstr "<?php\n\n"
-"namespace Tests\\Feature;\n\n"
-"use App\\Jobs\\ShipOrder;\n"
-"use Illuminate\\Foundation\\Testing\\RefreshDatabase;\n"
-"use Illuminate\\Foundation\\Testing\\WithoutMiddleware;\n"
-"use Illuminate\\Support\\Facades\\Bus;\n"
-"use Tests\\TestCase;\n\n"
-"class ExampleTest extends TestCase\n"
-"{\n"
-"    public function test_orders_can_be_shipped()\n"
-"    {\n"
-"        Bus::fake();\n\n"
-"        // 進行訂單出貨...\n\n"
-"        // 判斷 Job 已被分派...\n"
-"        Bus::assertDispatched(ShipOrder::class);\n\n"
-"        // 判斷 Job 未被分派...\n"
-"        Bus::assertNotDispatched(AnotherJob::class);\n\n"
-"        // 判斷 Job 被同步分派...\n"
-"        Bus::assertDispatchedSync(AnotherJob::class);\n\n"
-"        // 判斷 Job 未被同步分派...\n"
-"        Bus::assertNotDispatchedSync(AnotherJob::class);\n\n"
-"        // 判斷 Job 在 Response 被送出後才分派...\n"
-"        Bus::assertDispatchedAfterResponse(AnotherJob::class);\n\n"
-"        // 判斷 Job 並未在 Response 被送出後才分派...\n"
-"        Bus::assertNotDispatchedAfterResponse(AnotherJob::class);\n\n"
-"        // 判斷未分派任何 Job...\n"
-"        Bus::assertNothingDispatched();\n"
-"    }\n"
-"}\n"
-
-#: docs/8.x/mocking.md:block 33 (paragraph)
-msgid "You may pass a closure to the available methods in order to assert that a job was dispatched that passes a given \"truth test\". If at least one job was dispatched that passes the given truth test then the assertion will be successful. For example, you may wish to assert that a job was dispatched for a specific order:"
-msgstr "可以傳入一個閉包給這些可用的方法，來判斷某個 Job 是否通過給定的「真值測試 (Truth Test)」。若分派的 Job 中至少有一個 Job 有通過給真值測試，則 Assertion 會被視為成功。舉例來說，我們可以判斷是否有對某個特定訂單分派 Job："
-
-#: docs/8.x/mocking.md:block 34 (code)
-msgid "Bus::assertDispatched(function (ShipOrder $job) use ($order) {\n"
-"    return $job->order->id === $order->id;\n"
-"});\n"
-msgstr "Bus::assertDispatched(function (ShipOrder $job) use ($order) {\n"
-"    return $job->order->id === $order->id;\n"
-"});\n"
-
-#: docs/8.x/mocking.md:block 36 (header)
-msgid "Job Chains"
-msgstr "Job Chain"
-
-#: docs/8.x/mocking.md:block 37 (paragraph)
-msgid "The `Bus` facade's `assertChained` method may be used to assert that a [chain of jobs](/docs/{{version}}/queues#job-chaining) was dispatched. The `assertChained` method accepts an array of chained jobs as its first argument:"
-msgstr "`Bus` Facade 的 `assertChained` 方法可用來判斷是否有分派某個[串聯的 Job](/docs/{{version}}/queues#job-chaining)。`assertChained` 方法接受一組串聯 Job 的陣列作為其第一個引數："
-
-#: docs/8.x/mocking.md:block 38 (code)
-msgid "use App\\Jobs\\RecordShipment;\n"
-"use App\\Jobs\\ShipOrder;\n"
-"use App\\Jobs\\UpdateInventory;\n"
-"use Illuminate\\Support\\Facades\\Bus;\n\n"
-"Bus::assertChained([\n"
-"    ShipOrder::class,\n"
-"    RecordShipment::class,\n"
-"    UpdateInventory::class\n"
-"]);\n"
-msgstr "use App\\Jobs\\RecordShipment;\n"
-"use App\\Jobs\\ShipOrder;\n"
-"use App\\Jobs\\UpdateInventory;\n"
-"use Illuminate\\Support\\Facades\\Bus;\n\n"
-"Bus::assertChained([\n"
-"    ShipOrder::class,\n"
-"    RecordShipment::class,\n"
-"    UpdateInventory::class\n"
-"]);\n"
-
-#: docs/8.x/mocking.md:block 39 (paragraph)
-msgid "As you can see in the example above, the array of chained jobs may be an array of the job's class names. However, you may also provide an array of actual job instances. When doing so, Laravel will ensure that the job instances are of the same class and have the same property values of the chained jobs dispatched by your application:"
-msgstr "就像上述範例中可看到的一樣，串聯 Job 的陣列就是一組包含 Job 類別名稱的陣列。不過，也可以提供一組實際 Job 實體的陣列。當提供的陣列為 Job 實體的陣列時，Laravel 會確保程式所分派的串聯 Job 都具是相同的類別，且擁有相同的屬性值："
-
-#: docs/8.x/mocking.md:block 40 (code)
-msgid "Bus::assertChained([\n"
-"    new ShipOrder,\n"
-"    new RecordShipment,\n"
-"    new UpdateInventory,\n"
-"]);\n"
-msgstr "Bus::assertChained([\n"
-"    new ShipOrder,\n"
-"    new RecordShipment,\n"
-"    new UpdateInventory,\n"
-"]);\n"
-
-#: docs/8.x/mocking.md:block 42 (header)
-msgid "Job Batches"
-msgstr "批次 Job"
-
-#: docs/8.x/mocking.md:block 43 (paragraph)
-msgid "The `Bus` facade's `assertBatched` method may be used to assert that a [batch of jobs](/docs/{{version}}/queues#job-batching) was dispatched. The closure given to the `assertBatched` method receives an instance of `Illuminate\\Bus\\PendingBatch`, which may be used to inspect the jobs within the batch:"
-msgstr "`Bus` Facade 的 `assertBatched` 方法可用來判斷是否有分派[Job 批次]。提供給 `assertBatched` 方法的閉包會收到 `Illuminate\\Bus\\PendingBatch` 的實體，該實體可用來檢查批次中的 Job："
-
-#: docs/8.x/mocking.md:block 44 (code)
-msgid "use Illuminate\\Bus\\PendingBatch;\n"
-"use Illuminate\\Support\\Facades\\Bus;\n\n"
-"Bus::assertBatched(function (PendingBatch $batch) {\n"
-"    return $batch->name == 'import-csv' &&\n"
-"           $batch->jobs->count() === 10;\n"
-"});\n"
-msgstr "use Illuminate\\Bus\\PendingBatch;\n"
-"use Illuminate\\Support\\Facades\\Bus;\n\n"
-"Bus::assertBatched(function (PendingBatch $batch) {\n"
-"    return $batch->name == 'import-csv' &&\n"
-"           $batch->jobs->count() === 10;\n"
-"});\n"
-
-#: docs/8.x/mocking.md:block 46 (header)
-msgid "Event Fake"
-msgstr "Event Fake"
-
-#: docs/8.x/mocking.md:block 47 (paragraph)
-msgid "When testing code that dispatches events, you may wish to instruct Laravel to not actually execute the event's listeners. Using the `Event` facade's `fake` method, you may prevent listeners from executing, execute the code under test, and then assert which events were dispatched by your application using the `assertDispatched`, `assertNotDispatched`, and `assertNothingDispatched` methods:"
-msgstr "在測試會分派 Event 的程式時，我們可能會希望 Laravel 不要真的去執行 Event 的 Listener。使用 `Event` Facade 的 `fake` 方法，就可避免執行真正的 Listener，在測試中執行程式碼，然後使用 `assertDispatched`、`assertNotDispatched`、`assertNothingDispatched` 等方法來判斷程式分派了哪些 Event："
-
-#: docs/8.x/mocking.md:block 48 (code)
-msgid "<?php\n\n"
-"namespace Tests\\Feature;\n\n"
-"use App\\Events\\OrderFailedToShip;\n"
-"use App\\Events\\OrderShipped;\n"
-"use Illuminate\\Foundation\\Testing\\RefreshDatabase;\n"
-"use Illuminate\\Foundation\\Testing\\WithoutMiddleware;\n"
-"use Illuminate\\Support\\Facades\\Event;\n"
-"use Tests\\TestCase;\n\n"
-"class ExampleTest extends TestCase\n"
-"{\n"
-"    /**\n"
-"     * Test order shipping.\n"
-"     */\n"
-"    public function test_orders_can_be_shipped()\n"
-"    {\n"
-"        Event::fake();\n\n"
-"        // Perform order shipping...\n\n"
-"        // Assert that an event was dispatched...\n"
-"        Event::assertDispatched(OrderShipped::class);\n\n"
-"        // Assert an event was dispatched twice...\n"
-"        Event::assertDispatched(OrderShipped::class, 2);\n\n"
-"        // Assert an event was not dispatched...\n"
-"        Event::assertNotDispatched(OrderFailedToShip::class);\n\n"
-"        // Assert that no events were dispatched...\n"
-"        Event::assertNothingDispatched();\n"
-"    }\n"
-"}\n"
-msgstr "<?php\n\n"
-"namespace Tests\\Feature;\n\n"
-"use App\\Events\\OrderFailedToShip;\n"
-"use App\\Events\\OrderShipped;\n"
-"use Illuminate\\Foundation\\Testing\\RefreshDatabase;\n"
-"use Illuminate\\Foundation\\Testing\\WithoutMiddleware;\n"
-"use Illuminate\\Support\\Facades\\Event;\n"
-"use Tests\\TestCase;\n\n"
-"class ExampleTest extends TestCase\n"
-"{\n"
-"    /**\n"
-"     * Test order shipping.\n"
-"     */\n"
-"    public function test_orders_can_be_shipped()\n"
-"    {\n"
-"        Event::fake();\n\n"
-"        // 進行訂單出貨...\n\n"
-"        // 判斷某個 Event 是否有被分派...\n"
-"        Event::assertDispatched(OrderShipped::class);\n\n"
-"        // 判斷某個 Event 是否有被分派兩次...\n"
-"        Event::assertDispatched(OrderShipped::class, 2);\n\n"
-"        // 判斷某個 Event 是否未被分派...\n"
-"        Event::assertNotDispatched(OrderFailedToShip::class);\n\n"
-"        // 判斷是否未有 Event 被分派...\n"
-"        Event::assertNothingDispatched();\n"
-"    }\n"
-"}\n"
-
-#: docs/8.x/mocking.md:block 49 (paragraph)
-msgid "You may pass a closure to the `assertDispatched` or `assertNotDispatched` methods in order to assert that an event was dispatched that passes a given \"truth test\". If at least one event was dispatched that passes the given truth test then the assertion will be successful:"
-msgstr "可以傳入一個閉包給 `assertDispatched` 或 `assertNotDispatched` 方法，來判斷某個 Event 是否通過給定的「真值測試 (Truth Test)」。若分派的 Event 中至少有一個 Event 通過給定的真值測試，則該 Assertion 會被視為成功："
-
-#: docs/8.x/mocking.md:block 50 (code)
-msgid "Event::assertDispatched(function (OrderShipped $event) use ($order) {\n"
-"    return $event->order->id === $order->id;\n"
-"});\n"
-msgstr "Event::assertDispatched(function (OrderShipped $event) use ($order) {\n"
-"    return $event->order->id === $order->id;\n"
-"});\n"
-
-#: docs/8.x/mocking.md:block 51 (paragraph)
-msgid "If you would simply like to assert that an event listener is listening to a given event, you may use the `assertListening` method:"
-msgstr "若只想判斷某個 Event Listener 是否有在監聽給定的 Event，可使用 `assertListening` 方法："
-
-#: docs/8.x/mocking.md:block 52 (code)
-msgid "Event::assertListening(\n"
-"    OrderShipped::class,\n"
-"    SendShipmentNotification::class\n"
-");\n"
-msgstr "Event::assertListening(\n"
-"    OrderShipped::class,\n"
-"    SendShipmentNotification::class\n"
-");\n"
-
-#: docs/8.x/mocking.md:block 53 (quote)
-msgid "{note} After calling `Event::fake()`, no event listeners will be executed. So, if your tests use model factories that rely on events, such as creating a UUID during a model's `creating` event, you should call `Event::fake()` **after** using your factories."
-msgstr "{note} 呼叫 `Event::fake()` 後，就不會執行 Event Listener。因此，若有測試使用的 Model Factory 仰賴於 Event，如在 Model 的 `creating` Event 上建立 UUID 等，請在使用完 Factory **之後** 再呼叫 `Event::fake()`。"
-
-#: docs/8.x/mocking.md:block 55 (header)
-msgid "Faking A Subset Of Events"
-msgstr "Fake 一小部分的 Event"
-
-#: docs/8.x/mocking.md:block 56 (paragraph)
-msgid "If you only want to fake event listeners for a specific set of events, you may pass them to the `fake` or `fakeFor` method:"
-msgstr "若只想為一部分 Event 來 Fake Event Listener，則可將這些 Event 傳入`fake` 或 `fakeFor` 方法："
-
-#: docs/8.x/mocking.md:block 57 (code)
-msgid "/**\n"
-" * Test order process.\n"
-" */\n"
-"public function test_orders_can_be_processed()\n"
-"{\n"
-"    Event::fake([\n"
-"        OrderCreated::class,\n"
-"    ]);\n\n"
-"    $order = Order::factory()->create();\n\n"
-"    Event::assertDispatched(OrderCreated::class);\n\n"
-"    // Other events are dispatched as normal...\n"
-"    $order->update([...]);\n"
-"}\n"
-msgstr "/**\n"
-" * Test order process.\n"
-" */\n"
-"public function test_orders_can_be_processed()\n"
-"{\n"
-"    Event::fake([\n"
-"        OrderCreated::class,\n"
-"    ]);\n\n"
-"    $order = Order::factory()->create();\n\n"
-"    Event::assertDispatched(OrderCreated::class);\n\n"
-"    // 其他 Event 會被正常分派...\n"
-"    $order->update([...]);\n"
-"}\n"
-
-#: docs/8.x/mocking.md:block 59 (header)
-msgid "Scoped Event Fakes"
-msgstr "限定範圍的 Event Fake"
-
-#: docs/8.x/mocking.md:block 60 (paragraph)
-msgid "If you only want to fake event listeners for a portion of your test, you may use the `fakeFor` method:"
-msgstr "若只想未一部分的測試 Fake Event Listener，則可使用 `fakeFor` 方法："
-
-#: docs/8.x/mocking.md:block 61 (code)
-msgid "<?php\n\n"
-"namespace Tests\\Feature;\n\n"
-"use App\\Events\\OrderCreated;\n"
-"use App\\Models\\Order;\n"
-"use Illuminate\\Foundation\\Testing\\RefreshDatabase;\n"
-"use Illuminate\\Support\\Facades\\Event;\n"
-"use Illuminate\\Foundation\\Testing\\WithoutMiddleware;\n"
-"use Tests\\TestCase;\n\n"
-"class ExampleTest extends TestCase\n"
-"{\n"
-"    /**\n"
-"     * Test order process.\n"
-"     */\n"
-"    public function test_orders_can_be_processed()\n"
-"    {\n"
-"        $order = Event::fakeFor(function () {\n"
-"            $order = Order::factory()->create();\n\n"
-"            Event::assertDispatched(OrderCreated::class);\n\n"
-"            return $order;\n"
-"        });\n\n"
-"        // Events are dispatched as normal and observers will run ...\n"
-"        $order->update([...]);\n"
-"    }\n"
-"}\n"
-msgstr "<?php\n\n"
-"namespace Tests\\Feature;\n\n"
-"use App\\Events\\OrderCreated;\n"
-"use App\\Models\\Order;\n"
-"use Illuminate\\Foundation\\Testing\\RefreshDatabase;\n"
-"use Illuminate\\Support\\Facades\\Event;\n"
-"use Illuminate\\Foundation\\Testing\\WithoutMiddleware;\n"
-"use Tests\\TestCase;\n\n"
-"class ExampleTest extends TestCase\n"
-"{\n"
-"    /**\n"
-"     * Test order process.\n"
-"     */\n"
-"    public function test_orders_can_be_processed()\n"
-"    {\n"
-"        $order = Event::fakeFor(function () {\n"
-"            $order = Order::factory()->create();\n\n"
-"            Event::assertDispatched(OrderCreated::class);\n\n"
-"            return $order;\n"
-"        });\n\n"
-"        // Event 會被正常分派，且會執行 Observer...\n"
-"        $order->update([...]);\n"
-"    }\n"
-"}\n"
-
-#: docs/8.x/mocking.md:block 63 (header)
-msgid "HTTP Fake"
-msgstr "HTTP Fake"
-
-#: docs/8.x/mocking.md:block 64 (paragraph)
-msgid "The `Http` facade's `fake` method allows you to instruct the HTTP client to return stubbed / dummy responses when requests are made. For more information on faking outgoing HTTP requests, please consult the [HTTP Client testing documentation](/docs/{{version}}/http-client#testing)."
-msgstr "使用 `Http` Facade 的 `fake` 方法，我們就能讓 HTTP 用戶端在建立 Request 時回傳 ^[Stubbed](預先填充好的)、假的 Response。更多有關模擬外連 HTTP Request 的資訊，請參考 [HTTP 用戶端的測試文件](/docs/{{version}}/http-client#testing)。"
-
-#: docs/8.x/mocking.md:block 66 (header)
-msgid "Mail Fake"
-msgstr "Mail Fake"
-
-#: docs/8.x/mocking.md:block 67 (paragraph)
-msgid "You may use the `Mail` facade's `fake` method to prevent mail from being sent. Typically, sending mail is unrelated to the code you are actually testing. Most likely, it is sufficient to simply assert that Laravel was instructed to send a given mailable."
-msgstr "可以使用 `Mail` Facade 的 `fake` 方法來避免寄出 Mail。一般來說，寄送 Mail 與實際要測試的程式碼是不相關的。通常，只要判斷 Laravel 是否有接到指示要寄出給定 Mailable 就夠了。"
-
-#: docs/8.x/mocking.md:block 68 (paragraph)
-msgid "After calling the `Mail` facade's `fake` method, you may then assert that [mailables](/docs/{{version}}/mail) were instructed to be sent to users and even inspect the data the mailables received:"
-msgstr "呼叫 `Mail` Facade 的 `fake` 方法後，就可以判斷是否有被要求要將該 [Mailable](/docs/{{version}}/mail) 寄出給使用者，甚至還能判斷 Mailable 收到的資料："
-
-#: docs/8.x/mocking.md:block 69 (code)
-msgid "<?php\n\n"
-"namespace Tests\\Feature;\n\n"
-"use App\\Mail\\OrderShipped;\n"
-"use Illuminate\\Foundation\\Testing\\RefreshDatabase;\n"
-"use Illuminate\\Foundation\\Testing\\WithoutMiddleware;\n"
-"use Illuminate\\Support\\Facades\\Mail;\n"
-"use Tests\\TestCase;\n\n"
-"class ExampleTest extends TestCase\n"
-"{\n"
-"    public function test_orders_can_be_shipped()\n"
-"    {\n"
-"        Mail::fake();\n\n"
-"        // Perform order shipping...\n\n"
-"        // Assert that no mailables were sent...\n"
-"        Mail::assertNothingSent();\n\n"
-"        // Assert that a mailable was sent...\n"
-"        Mail::assertSent(OrderShipped::class);\n\n"
-"        // Assert a mailable was sent twice...\n"
-"        Mail::assertSent(OrderShipped::class, 2);\n\n"
-"        // Assert a mailable was not sent...\n"
-"        Mail::assertNotSent(AnotherMailable::class);\n"
-"    }\n"
-"}\n"
-msgstr "<?php\n\n"
-"namespace Tests\\Feature;\n\n"
-"use App\\Mail\\OrderShipped;\n"
-"use Illuminate\\Foundation\\Testing\\RefreshDatabase;\n"
-"use Illuminate\\Foundation\\Testing\\WithoutMiddleware;\n"
-"use Illuminate\\Support\\Facades\\Mail;\n"
-"use Tests\\TestCase;\n\n"
-"class ExampleTest extends TestCase\n"
-"{\n"
-"    public function test_orders_can_be_shipped()\n"
-"    {\n"
-"        Mail::fake();\n\n"
-"        // 進行訂單出貨...\n\n"
-"        // 判斷未有 Mailable 被寄出...\n"
-"        Mail::assertNothingSent();\n\n"
-"        // 判斷某個 Mailable 有被寄出...\n"
-"        Mail::assertSent(OrderShipped::class);\n\n"
-"        // 判斷某個 Mailable 有被寄出兩次...\n"
-"        Mail::assertSent(OrderShipped::class, 2);\n\n"
-"        // 判斷某個 Mailable 是否未被寄出...\n"
-"        Mail::assertNotSent(AnotherMailable::class);\n"
-"    }\n"
-"}\n"
-
-#: docs/8.x/mocking.md:block 70 (paragraph)
-msgid "If you are queueing mailables for delivery in the background, you should use the `assertQueued` method instead of `assertSent`:"
-msgstr "若將 Mailable 放在佇列中以在背景寄送，請使用 `assertQueued` 方法，而不是 `assertSent` 方法："
-
-#: docs/8.x/mocking.md:block 71 (code)
-msgid "Mail::assertQueued(OrderShipped::class);\n\n"
-"Mail::assertNotQueued(OrderShipped::class);\n\n"
-"Mail::assertNothingQueued();\n"
-msgstr "Mail::assertQueued(OrderShipped::class);\n\n"
-"Mail::assertNotQueued(OrderShipped::class);\n\n"
-"Mail::assertNothingQueued();\n"
-
-#: docs/8.x/mocking.md:block 72 (paragraph)
-msgid "You may pass a closure to the `assertSent`, `assertNotSent`, `assertQueued`, or `assertNotQueued` methods in order to assert that a mailable was sent that passes a given \"truth test\". If at least one mailable was sent that passes the given truth test then the assertion will be successful:"
-msgstr "可以傳入一個閉包給 `assertSent`、`assertNotSent`、`assertQueued`、`assertNotQueued` 方法來判斷 Mailable 是否通過給定的「真值測試 (Truth Test)」。若至少有一個寄出的 Mailable 通過給定的真值測試，則該 Assertion 會被視為成功："
-
-#: docs/8.x/mocking.md:block 73 (code)
-msgid "Mail::assertSent(function (OrderShipped $mail) use ($order) {\n"
-"    return $mail->order->id === $order->id;\n"
-"});\n"
-msgstr "Mail::assertSent(function (OrderShipped $mail) use ($order) {\n"
-"    return $mail->order->id === $order->id;\n"
-"});\n"
-
-#: docs/8.x/mocking.md:block 74 (paragraph)
-msgid "When calling the `Mail` facade's assertion methods, the mailable instance accepted by the provided closure exposes helpful methods for examining the recipients of the mailable:"
-msgstr "呼叫 `Mail` Facade 的 Assertion 方法時，所提供的閉包內收到的 Mailable 實體上有一些實用的方法，可用來檢查 Mailable 的收件者："
-
-#: docs/8.x/mocking.md:block 75 (code)
-msgid "Mail::assertSent(OrderShipped::class, function ($mail) use ($user) {\n"
-"    return $mail->hasTo($user->email) &&\n"
-"           $mail->hasCc('...') &&\n"
-"           $mail->hasBcc('...');\n"
-"});\n"
-msgstr "Mail::assertSent(OrderShipped::class, function ($mail) use ($user) {\n"
-"    return $mail->hasTo($user->email) &&\n"
-"           $mail->hasCc('...') &&\n"
-"           $mail->hasBcc('...');\n"
-"});\n"
-
-#: docs/8.x/mocking.md:block 76 (paragraph)
-msgid "You may have noticed that there are two methods for asserting that mail was not sent: `assertNotSent` and `assertNotQueued`. Sometimes you may wish to assert that no mail was sent **or** queued. To accomplish this, you may use the `assertNothingOutgoing` and `assertNotOutgoing` methods:"
-msgstr "讀者可能已經注意到，總共有兩個方法可用來檢查郵件是否未被送出：`assertNotSent`、`assertNotQueued`。有時候，我們可能會希望判斷沒有任何郵件被寄出，**而且** 也沒有任何郵件被放入佇列。若要判斷是否沒有郵件被寄出或放入佇列，可使用 `assertNothingOutgoing` 與 `assertNotOutgoing` 方法："
-
-#: docs/8.x/mocking.md:block 77 (code)
-msgid "Mail::assertNothingOutgoing();\n\n"
-"Mail::assertNotOutgoing(function (OrderShipped $mail) use ($order) {\n"
-"    return $mail->order->id === $order->id;\n"
-"});\n"
-msgstr "Mail::assertNothingOutgoing();\n\n"
-"Mail::assertNotOutgoing(function (OrderShipped $mail) use ($order) {\n"
-"    return $mail->order->id === $order->id;\n"
-"});\n"
-
-#: docs/8.x/mocking.md:block 79 (header)
-msgid "Notification Fake"
-msgstr "Notification Fake"
-
-#: docs/8.x/mocking.md:block 80 (paragraph)
-msgid "You may use the `Notification` facade's `fake` method to prevent notifications from being sent. Typically, sending notifications is unrelated to the code you are actually testing. Most likely, it is sufficient to simply assert that Laravel was instructed to send a given notification."
-msgstr "可以使用 `Notification` Facade 的 `fake` 方法來避免送出 Notification。一般來說，送出 Notification 與實際要測試的程式碼是不相關的。通常，只要判斷 Laravel 是否有接到指示要送出給定的 Notification 就夠了。"
-
-#: docs/8.x/mocking.md:block 81 (paragraph)
-msgid "After calling the `Notification` facade's `fake` method, you may then assert that [notifications](/docs/{{version}}/notifications) were instructed to be sent to users and even inspect the data the notifications received:"
-msgstr "呼叫 `Notification` Facade 的 `fake` 方法後，就可以判斷是否有被要求要將該 [Notification](/docs/{{version}}/notification) 送出給使用者，甚至還能判斷 Notification 收到的資料："
-
-#: docs/8.x/mocking.md:block 82 (code)
-msgid "<?php\n\n"
-"namespace Tests\\Feature;\n\n"
-"use App\\Notifications\\OrderShipped;\n"
-"use Illuminate\\Foundation\\Testing\\RefreshDatabase;\n"
-"use Illuminate\\Foundation\\Testing\\WithoutMiddleware;\n"
-"use Illuminate\\Support\\Facades\\Notification;\n"
-"use Tests\\TestCase;\n\n"
-"class ExampleTest extends TestCase\n"
-"{\n"
-"    public function test_orders_can_be_shipped()\n"
-"    {\n"
-"        Notification::fake();\n\n"
-"        // Perform order shipping...\n\n"
-"        // Assert that no notifications were sent...\n"
-"        Notification::assertNothingSent();\n\n"
-"        // Assert a notification was sent to the given users...\n"
-"        Notification::assertSentTo(\n"
-"            [$user], OrderShipped::class\n"
-"        );\n\n"
-"        // Assert a notification was not sent...\n"
-"        Notification::assertNotSentTo(\n"
-"            [$user], AnotherNotification::class\n"
-"        );\n"
-"    }\n"
-"}\n"
-msgstr "<?php\n\n"
-"namespace Tests\\Feature;\n\n"
-"use App\\Notifications\\OrderShipped;\n"
-"use Illuminate\\Foundation\\Testing\\RefreshDatabase;\n"
-"use Illuminate\\Foundation\\Testing\\WithoutMiddleware;\n"
-"use Illuminate\\Support\\Facades\\Notification;\n"
-"use Tests\\TestCase;\n\n"
-"class ExampleTest extends TestCase\n"
-"{\n"
-"    public function test_orders_can_be_shipped()\n"
-"    {\n"
-"        Notification::fake();\n\n"
-"        // 處理訂單出貨...\n\n"
-"        // 判斷未有 Notification 被送出...\n"
-"        Notification::assertNothingSent();\n\n"
-"        // 判斷某個 Notification 是否被傳送至給定的使用者...\n"
-"        Notification::assertSentTo(\n"
-"            [$user], OrderShipped::class\n"
-"        );\n\n"
-"        // 判斷某個 Notification 是否未被送出...\n"
-"        Notification::assertNotSentTo(\n"
-"            [$user], AnotherNotification::class\n"
-"        );\n"
-"    }\n"
-"}\n"
-
-#: docs/8.x/mocking.md:block 83 (paragraph)
-msgid "You may pass a closure to the `assertSentTo` or `assertNotSentTo` methods in order to assert that a notification was sent that passes a given \"truth test\". If at least one notification was sent that passes the given truth test then the assertion will be successful:"
-msgstr "可以傳入一個閉包給 `assertSentTo` 或 `assertNotSentTo` 方法，來判斷某個 Notification 是否通過給定的「真值測試 (Truth Test)」。若送出的 Notification 中至少有一個 Notification 通過給定的真值測試，則該 Assertion 會被視為成功："
-
-#: docs/8.x/mocking.md:block 84 (code)
-msgid "Notification::assertSentTo(\n"
-"    $user,\n"
-"    function (OrderShipped $notification, $channels) use ($order) {\n"
-"        return $notification->order->id === $order->id;\n"
-"    }\n"
-");\n"
-msgstr "Notification::assertSentTo(\n"
-"    $user,\n"
-"    function (OrderShipped $notification, $channels) use ($order) {\n"
-"        return $notification->order->id === $order->id;\n"
-"    }\n"
-");\n"
-
-#: docs/8.x/mocking.md:block 86 (header)
-msgid "On-Demand Notifications"
-msgstr "隨需通知"
-
-#: docs/8.x/mocking.md:block 87 (paragraph)
-msgid "If the code you are testing sends [on-demand notifications](/docs/{{version}}/notifications#on-demand-notifications), you will need to assert that the notification was sent to an `Illuminate\\Notifications\\AnonymousNotifiable` instance:"
-msgstr "若要測試的程式碼有傳送[隨需通知](/docs/{{version}}/notifications#on-demand-notifications)，則我們需要判斷該 Notification 是否有傳送給 `Illuminate\\Notifications\\AnonymousNotifiable` 實體："
-
-#: docs/8.x/mocking.md:block 88 (code)
-msgid "use Illuminate\\Notifications\\AnonymousNotifiable;\n\n"
-"Notification::assertSentTo(\n"
-"    new AnonymousNotifiable, OrderShipped::class\n"
-");\n"
-msgstr "use Illuminate\\Notifications\\AnonymousNotifiable;\n\n"
-"Notification::assertSentTo(\n"
-"    new AnonymousNotifiable, OrderShipped::class\n"
-");\n"
-
-#: docs/8.x/mocking.md:block 89 (paragraph)
-msgid "By passing a closure as the third argument to the notification assertion methods, you may determine if an on-demand notification was sent to the correct \"route\" address:"
-msgstr "若在 Notification Assertion 方法的第三個引數上傳入閉包，就能判斷隨需通知是否被送給正確的「^[Route](路由)」位址："
-
-#: docs/8.x/mocking.md:block 90 (code)
-msgid "Notification::assertSentTo(\n"
-"    new AnonymousNotifiable,\n"
-"    OrderShipped::class,\n"
-"    function ($notification, $channels, $notifiable) use ($user) {\n"
-"        return $notifiable->routes['mail'] === $user->email;\n"
-"    }\n"
-");\n"
-msgstr "Notification::assertSentTo(\n"
-"    new AnonymousNotifiable,\n"
-"    OrderShipped::class,\n"
-"    function ($notification, $channels, $notifiable) use ($user) {\n"
-"        return $notifiable->routes['mail'] === $user->email;\n"
-"    }\n"
-");\n"
-
-#: docs/8.x/mocking.md:block 92 (header)
-msgid "Queue Fake"
-msgstr "Queue Fake"
-
-#: docs/8.x/mocking.md:block 93 (paragraph)
-msgid "You may use the `Queue` facade's `fake` method to prevent queued jobs from being pushed to the queue. Most likely, it is sufficient to simply assert that Laravel was instructed to push a given job to the queue since the queued jobs themselves may be tested in another test class."
-msgstr "可以使用 `Queue` Facade 的 `fake` 方法來避免放入佇列的 Job 被推入到佇列中。通常來說，這麼做就可以判斷 Laravel 有被指示要將給定的 Job 推入到佇列中了。因為，我們可以在其獨立的測試 Class 中測試放入佇列的 Job。"
-
-#: docs/8.x/mocking.md:block 94 (paragraph)
-msgid "After calling the `Queue` facade's `fake` method, you may then assert that the application attempted to push jobs to the queue:"
-msgstr "呼叫 `Queue` Facade 的 `fake` 方法後，就可以判斷程式是否有嘗試將 Job 推入到佇列中："
-
-#: docs/8.x/mocking.md:block 95 (code)
-msgid "<?php\n\n"
-"namespace Tests\\Feature;\n\n"
-"use App\\Jobs\\AnotherJob;\n"
-"use App\\Jobs\\FinalJob;\n"
-"use App\\Jobs\\ShipOrder;\n"
-"use Illuminate\\Foundation\\Testing\\RefreshDatabase;\n"
-"use Illuminate\\Foundation\\Testing\\WithoutMiddleware;\n"
-"use Illuminate\\Support\\Facades\\Queue;\n"
-"use Tests\\TestCase;\n\n"
-"class ExampleTest extends TestCase\n"
-"{\n"
-"    public function test_orders_can_be_shipped()\n"
-"    {\n"
-"        Queue::fake();\n\n"
-"        // Perform order shipping...\n\n"
-"        // Assert that no jobs were pushed...\n"
-"        Queue::assertNothingPushed();\n\n"
-"        // Assert a job was pushed to a given queue...\n"
-"        Queue::assertPushedOn('queue-name', ShipOrder::class);\n\n"
-"        // Assert a job was pushed twice...\n"
-"        Queue::assertPushed(ShipOrder::class, 2);\n\n"
-"        // Assert a job was not pushed...\n"
-"        Queue::assertNotPushed(AnotherJob::class);\n"
-"    }\n"
-"}\n"
-msgstr "<?php\n\n"
-"namespace Tests\\Feature;\n\n"
-"use App\\Jobs\\AnotherJob;\n"
-"use App\\Jobs\\FinalJob;\n"
-"use App\\Jobs\\ShipOrder;\n"
-"use Illuminate\\Foundation\\Testing\\RefreshDatabase;\n"
-"use Illuminate\\Foundation\\Testing\\WithoutMiddleware;\n"
-"use Illuminate\\Support\\Facades\\Queue;\n"
-"use Tests\\TestCase;\n\n"
-"class ExampleTest extends TestCase\n"
-"{\n"
-"    public function test_orders_can_be_shipped()\n"
-"    {\n"
-"        Queue::fake();\n\n"
-"        // 進行訂單出貨...\n\n"
-"        // 判斷是否未有 Job 被推入...\n"
-"        Queue::assertNothingPushed();\n\n"
-"        // 判斷某個 Job 是否被推入到給定的佇列中...\n"
-"        Queue::assertPushedOn('queue-name', ShipOrder::class);\n\n"
-"        // 判斷某個 Job 是否被推入到佇列中兩次...\n"
-"        Queue::assertPushed(ShipOrder::class, 2);\n\n"
-"        // 判斷某個 Job 是否未被推入佇列...\n"
-"        Queue::assertNotPushed(AnotherJob::class);\n"
-"    }\n"
-"}\n"
-
-#: docs/8.x/mocking.md:block 96 (paragraph)
-msgid "You may pass a closure to the `assertPushed` or `assertNotPushed` methods in order to assert that a job was pushed that passes a given \"truth test\". If at least one job was pushed that passes the given truth test then the assertion will be successful:"
-msgstr "可以傳入一個閉包給 `assertPushed` 或 `assertNotPushed` 方法，來判斷某個 Job 是否通過給定的「真值測試 (Truth Test)」。若被推入的 Job 中至少有一個 Job 通過給定的真值測試，則該 Assertion 會被視為成功："
-
-#: docs/8.x/mocking.md:block 97 (code)
-msgid "Queue::assertPushed(function (ShipOrder $job) use ($order) {\n"
-"    return $job->order->id === $order->id;\n"
-"});\n"
-msgstr "Queue::assertPushed(function (ShipOrder $job) use ($order) {\n"
-"    return $job->order->id === $order->id;\n"
-"});\n"
-
-#: docs/8.x/mocking.md:block 100 (paragraph)
-msgid "The `Queue` facade's `assertPushedWithChain` and `assertPushedWithoutChain` methods may be used to inspect the job chain of a pushed job. The `assertPushedWithChain` method accepts the primary job as its first argument and an array of chained jobs as its second argument:"
-msgstr "`Queue` Facade 的 `assertPushedWithChain` 與 `assertPushedWithoutChain` 方法可用來檢查串聯 Job 或是被推入佇列的 Job。`assertPushedWithChain` 方法的第一個引數未主要的 Job，而第二個引數則為一組包含串聯 Job 的陣列："
-
-#: docs/8.x/mocking.md:block 101 (code)
-msgid "use App\\Jobs\\RecordShipment;\n"
-"use App\\Jobs\\ShipOrder;\n"
-"use App\\Jobs\\UpdateInventory;\n"
-"use Illuminate\\Support\\Facades\\Queue;\n\n"
-"Queue::assertPushedWithChain(ShipOrder::class, [\n"
-"    RecordShipment::class,\n"
-"    UpdateInventory::class\n"
-"]);\n"
-msgstr "use App\\Jobs\\RecordShipment;\n"
-"use App\\Jobs\\ShipOrder;\n"
-"use App\\Jobs\\UpdateInventory;\n"
-"use Illuminate\\Support\\Facades\\Queue;\n\n"
-"Queue::assertPushedWithChain(ShipOrder::class, [\n"
-"    RecordShipment::class,\n"
-"    UpdateInventory::class\n"
-"]);\n"
-
-#: docs/8.x/mocking.md:block 103 (code)
-msgid "Queue::assertPushedWithChain(ShipOrder::class, [\n"
-"    new RecordShipment,\n"
-"    new UpdateInventory,\n"
-"]);\n"
-msgstr "Queue::assertPushedWithChain(ShipOrder::class, [\n"
-"    new RecordShipment,\n"
-"    new UpdateInventory,\n"
-"]);\n"
-
-#: docs/8.x/mocking.md:block 104 (paragraph)
-msgid "You may use the `assertPushedWithoutChain` method to assert that a job was pushed without a chain of jobs:"
-msgstr "可以使用 `assertPushedWithoutChain` 方法來判斷 Job 被推入 Queue 但未包含串聯 Job："
-
-#: docs/8.x/mocking.md:block 105 (code)
-msgid "Queue::assertPushedWithoutChain(ShipOrder::class);\n"
-msgstr "Queue::assertPushedWithoutChain(ShipOrder::class);\n"
-
-#: docs/8.x/mocking.md:block 107 (header)
-msgid "Storage Fake"
-msgstr "Storage Fake"
-
-#: docs/8.x/mocking.md:block 108 (paragraph)
-msgid "The `Storage` facade's `fake` method allows you to easily generate a fake disk that, combined with the file generation utilities of the `Illuminate\\Http\\UploadedFile` class, greatly simplifies the testing of file uploads. For example:"
-msgstr "使用 `Storage` Facade 的 `fake` 方法就可輕鬆地產生 Fake Disk。Fake Disk 可以與 `Illuminate\\Http\\UploadedFile` 類別的檔案產生工具來搭配使用，讓我們能非常輕鬆地測試檔案上傳。舉例來說："
-
-#: docs/8.x/mocking.md:block 109 (code)
-msgid "<?php\n\n"
-"namespace Tests\\Feature;\n\n"
-"use Illuminate\\Foundation\\Testing\\RefreshDatabase;\n"
-"use Illuminate\\Foundation\\Testing\\WithoutMiddleware;\n"
-"use Illuminate\\Http\\UploadedFile;\n"
-"use Illuminate\\Support\\Facades\\Storage;\n"
-"use Tests\\TestCase;\n\n"
-"class ExampleTest extends TestCase\n"
-"{\n"
-"    public function test_albums_can_be_uploaded()\n"
-"    {\n"
-"        Storage::fake('photos');\n\n"
-"        $response = $this->json('POST', '/photos', [\n"
-"            UploadedFile::fake()->image('photo1.jpg'),\n"
-"            UploadedFile::fake()->image('photo2.jpg')\n"
-"        ]);\n\n"
-"        // Assert one or more files were stored...\n"
-"        Storage::disk('photos')->assertExists('photo1.jpg');\n"
-"        Storage::disk('photos')->assertExists(['photo1.jpg', 'photo2.jpg']);\n\n"
-"        // Assert one or more files were not stored...\n"
-"        Storage::disk('photos')->assertMissing('missing.jpg');\n"
-"        Storage::disk('photos')->assertMissing(['missing.jpg', 'non-existing.jpg']);\n"
-"    }\n"
-"}\n"
-msgstr "<?php\n\n"
-"namespace Tests\\Feature;\n\n"
-"use Illuminate\\Foundation\\Testing\\RefreshDatabase;\n"
-"use Illuminate\\Foundation\\Testing\\WithoutMiddleware;\n"
-"use Illuminate\\Http\\UploadedFile;\n"
-"use Illuminate\\Support\\Facades\\Storage;\n"
-"use Tests\\TestCase;\n\n"
-"class ExampleTest extends TestCase\n"
-"{\n"
-"    public function test_albums_can_be_uploaded()\n"
-"    {\n"
-"        Storage::fake('photos');\n\n"
-"        $response = $this->json('POST', '/photos', [\n"
-"            UploadedFile::fake()->image('photo1.jpg'),\n"
-"            UploadedFile::fake()->image('photo2.jpg')\n"
-"        ]);\n\n"
-"        // 判斷保存了一個或多個檔案...\n"
-"        Storage::disk('photos')->assertExists('photo1.jpg');\n"
-"        Storage::disk('photos')->assertExists(['photo1.jpg', 'photo2.jpg']);\n\n"
-"        // 判斷未保存一個或多個檔案...\n"
-"        Storage::disk('photos')->assertMissing('missing.jpg');\n"
-"        Storage::disk('photos')->assertMissing(['missing.jpg', 'non-existing.jpg']);\n"
-"    }\n"
-"}\n"
-
-#: docs/8.x/mocking.md:block 110 (paragraph)
-msgid "For more information on testing file uploads, you may consult the [HTTP testing documentation's information on file uploads](/docs/{{version}}/http-tests#testing-file-uploads)."
-msgstr "更多有關測試檔案上傳的資訊，請參考 [HTTP 測試說明文件中的檔案上傳部分](/docs/{{version}}/http-tests#testing-file-uploads)。"
-
-#: docs/8.x/mocking.md:block 111 (quote)
-msgid "{tip} By default, the `fake` method will delete all files in its temporary directory. If you would like to keep these files, you may use the \"persistentFake\" method instead."
-msgstr "{tip} 預設情況下，`fake` 方法會刪除所有其臨時目錄下的所有檔案。若想保留這些檔案，可使用「persistentFake」方法。"
-
-#: docs/8.x/mocking.md:block 115 (code)
-msgid "public function testTimeCanBeManipulated()\n"
-"{\n"
-"    // Travel into the future...\n"
-"    $this->travel(5)->milliseconds();\n"
-"    $this->travel(5)->seconds();\n"
-"    $this->travel(5)->minutes();\n"
-"    $this->travel(5)->hours();\n"
-"    $this->travel(5)->days();\n"
-"    $this->travel(5)->weeks();\n"
-"    $this->travel(5)->years();\n\n"
-"    // Travel into the past...\n"
-"    $this->travel(-5)->hours();\n\n"
-"    // Travel to an explicit time...\n"
-"    $this->travelTo(now()->subHours(6));\n\n"
-"    // Return back to the present time...\n"
-"    $this->travelBack();\n"
-"}\n"
-msgstr "public function testTimeCanBeManipulated()\n"
-"{\n"
-"    // 穿越到未來...\n"
-"    $this->travel(5)->milliseconds();\n"
-"    $this->travel(5)->seconds();\n"
-"    $this->travel(5)->minutes();\n"
-"    $this->travel(5)->hours();\n"
-"    $this->travel(5)->days();\n"
-"    $this->travel(5)->weeks();\n"
-"    $this->travel(5)->years();\n\n"
-"    // 穿越到過去...\n"
-"    $this->travel(-5)->hours();\n\n"
-"    // 穿越到一個特定的時間...\n"
-"    $this->travelTo(now()->subHours(6));\n\n"
-"    // 回到目前時間...\n"
-"    $this->travelBack();\n"
-"}\n"
-
-#: docs/9.x/mocking.md:block 32 (code)
-msgid "<?php\n\n"
-"namespace Tests\\Feature;\n\n"
-"use App\\Jobs\\ShipOrder;\n"
-"use Illuminate\\Foundation\\Testing\\RefreshDatabase;\n"
-"use Illuminate\\Foundation\\Testing\\WithoutMiddleware;\n"
-"use Illuminate\\Support\\Facades\\Bus;\n"
-"use Tests\\TestCase;\n\n"
-"class ExampleTest extends TestCase\n"
-"{\n"
-"    public function test_orders_can_be_shipped()\n"
-"    {\n"
-"        Bus::fake();\n\n"
-"        // Perform order shipping...\n\n"
-"        // Assert that a job was dispatched...\n"
-"        Bus::assertDispatched(ShipOrder::class);\n\n"
-"        // Assert a job was not dispatched...\n"
-"        Bus::assertNotDispatched(AnotherJob::class);\n\n"
-"        // Assert that a job was dispatched synchronously...\n"
-"        Bus::assertDispatchedSync(AnotherJob::class);\n\n"
-"        // Assert that a job was not dispatched synchronously...\n"
-"        Bus::assertNotDispatchedSync(AnotherJob::class);\n\n"
-"        // Assert that a job was dispatched after the response was sent...\n"
-"        Bus::assertDispatchedAfterResponse(AnotherJob::class);\n\n"
-"        // Assert a job was not dispatched after response was sent...\n"
-"        Bus::assertNotDispatchedAfterResponse(AnotherJob::class);\n\n"
-"        // Assert no jobs were dispatched...\n"
-"        Bus::assertNothingDispatched();\n"
-"    }\n"
-"}\n"
-msgstr "<?php\n\n"
-"namespace Tests\\Feature;\n\n"
-"use App\\Jobs\\ShipOrder;\n"
-"use Illuminate\\Foundation\\Testing\\RefreshDatabase;\n"
-"use Illuminate\\Foundation\\Testing\\WithoutMiddleware;\n"
-"use Illuminate\\Support\\Facades\\Bus;\n"
-"use Tests\\TestCase;\n\n"
-"class ExampleTest extends TestCase\n"
-"{\n"
-"    public function test_orders_can_be_shipped()\n"
-"    {\n"
-"        Bus::fake();\n\n"
-"        // 進行訂單出貨...\n\n"
-"        // 判斷 Job 已被分派...\n"
-"        Bus::assertDispatched(ShipOrder::class);\n\n"
-"        // 判斷 Job 未被分派...\n"
-"        Bus::assertNotDispatched(AnotherJob::class);\n\n"
-"        // 判斷 Job 被同步分派...\n"
-"        Bus::assertDispatchedSync(AnotherJob::class);\n\n"
-"        // 判斷 Job 未被同步分派...\n"
-"        Bus::assertNotDispatchedSync(AnotherJob::class);\n\n"
-"        // 判斷 Job 在 Response 被送出後才分派...\n"
-"        Bus::assertDispatchedAfterResponse(AnotherJob::class);\n\n"
-"        // 判斷 Job 並未在 Response 被送出後才分派...\n"
-"        Bus::assertNotDispatchedAfterResponse(AnotherJob::class);\n\n"
-"        // 判斷未分派任何 Job...\n"
-"        Bus::assertNothingDispatched();\n"
-"    }\n"
-"}\n"
-
-#: docs/9.x/mocking.md:block 36 (header)
-msgid "Faking A Subset Of Jobs"
-msgstr "Fake 一小部分的 Job"
-
-#: docs/9.x/mocking.md:block 37 (paragraph)
-msgid "If you only want to prevent certain jobs from being dispatched, you may pass the jobs that should be faked to the `fake` method:"
-msgstr "若只想避免特定 Job 被分派，可將要 Fake 的 Job 傳給 `fake` 方法："
-
-#: docs/9.x/mocking.md:block 38 (code)
-msgid "/**\n"
-" * Test order process.\n"
-" */\n"
-"public function test_orders_can_be_shipped()\n"
-"{\n"
-"    Bus::fake([\n"
-"        ShipOrder::class,\n"
-"    ]);\n\n"
-"    // ...\n"
-"}\n"
-msgstr "/**\n"
-" * Test order process.\n"
-" */\n"
-"public function test_orders_can_be_shipped()\n"
-"{\n"
-"    Bus::fake([\n"
-"        ShipOrder::class,\n"
-"    ]);\n\n"
-"    // ...\n"
-"}\n"
-
-#: docs/9.x/mocking.md:block 39 (paragraph)
-msgid "You may fake all jobs except for a set of specified jobs using the `except` method:"
-msgstr "也可以使用 `fakeExcept` 方法來 Fake 除了一組特定 Job 外的所有 Event："
-
-#: docs/9.x/mocking.md:block 40 (code)
-msgid "Bus::fake()->except([\n"
-"    ShipOrder::class,\n"
-"]);\n"
-msgstr "Bus::fake()->except([\n"
-"    ShipOrder::class,\n"
-"]);\n"
-
-#: docs/9.x/mocking.md:block 52 (header)
-msgid "Testing Job / Batch Interaction"
-msgstr "測試 Job 或批次行為"
-
-#: docs/9.x/mocking.md:block 53 (paragraph)
-msgid "In addition, you may occasionally need to test an individual job's interaction with its underlying batch. For example, you may need to test if a job cancelled further processing for its batch. To accomplish this, you need to assign a fake batch to the job via the `withFakeBatch` method. The `withFakeBatch` method returns a tuple containing the job instance and the fake batch:"
-msgstr "除此之外，我們有時候也需要測試個別 Job 與其底層批次的互動。舉例來說，我們可能需要測試某個 Job 是否取消了批次中剩下的流程。這時，我們需要使用 `withFakeBatch` 方法來將一個 Fake 的 Batch 指派給該 Job。`withFakeBatch` 方法會回傳一個包含 Job 實體與 Fake Batch 的陣列："
-
-#: docs/9.x/mocking.md:block 54 (code)
-msgid "[$job, $batch] = (new ShipOrder)->withFakeBatch();\n\n"
-"$job->handle();\n\n"
-"$this->assertTrue($batch->cancelled());\n"
-"$this->assertEmpty($batch->added);\n"
-msgstr "[$job, $batch] = (new ShipOrder)->withFakeBatch();\n\n"
-"$job->handle();\n\n"
-"$this->assertTrue($batch->cancelled());\n"
-"$this->assertEmpty($batch->added);\n"
-
-#: docs/9.x/mocking.md:block 63 (quote)
-msgid "**Warning** After calling `Event::fake()`, no event listeners will be executed. So, if your tests use model factories that rely on events, such as creating a UUID during a model's `creating` event, you should call `Event::fake()` **after** using your factories."
-msgstr "**Warning** 呼叫 `Event::fake()` 後，就不會執行 Event Listener。因此，若有測試使用的 Model Factory 仰賴於 Event，如在 Model 的 `creating` Event 上建立 UUID 等，請在使用完 Factory **之後** 再呼叫 `Event::fake()`。"
-
-#: docs/9.x/mocking.md:block 68 (paragraph)
-msgid "You may fake all events except for a set of specified events using the `except` method:"
-msgstr "也可以使用 `except` 方法來 Fake 除了一組特定 Event 外的所有 Event："
-
-#: docs/9.x/mocking.md:block 69 (code)
-msgid "Event::fake()->except([\n"
-"    OrderCreated::class,\n"
-"]);\n"
-msgstr "Event::fake()->except([\n"
-"    OrderCreated::class,\n"
-"]);\n"
-
-#: docs/9.x/mocking.md:block 86 (paragraph)
-msgid "When calling the `Mail` facade's assertion methods, the mailable instance accepted by the provided closure exposes helpful methods for examining the mailable:"
-msgstr "呼叫 `Mail` Facade 的 Assertion 方法時，所提供的閉包內收到的 Mailable 實體上有一些實用的方法，可用來檢查 Mailable："
-
-#: docs/9.x/mocking.md:block 87 (code)
-msgid "Mail::assertSent(OrderShipped::class, function ($mail) use ($user) {\n"
-"    return $mail->hasTo($user->email) &&\n"
-"           $mail->hasCc('...') &&\n"
-"           $mail->hasBcc('...') &&\n"
-"           $mail->hasReplyTo('...') &&\n"
-"           $mail->hasFrom('...') &&\n"
-"           $mail->hasSubject('...');\n"
-"});\n"
-msgstr "Mail::assertSent(OrderShipped::class, function ($mail) use ($user) {\n"
-"    return $mail->hasTo($user->email) &&\n"
-"           $mail->hasCc('...') &&\n"
-"           $mail->hasBcc('...') &&\n"
-"           $mail->hasReplyTo('...') &&\n"
-"           $mail->hasFrom('...') &&\n"
-"           $mail->hasSubject('...');\n"
-"});\n"
-
-#: docs/9.x/mocking.md:block 88 (paragraph)
-msgid "The mailable instance also includes several helpful methods for examining the attachments on a mailable:"
-msgstr "Mailable 實體也包含了多個實用方法，可用來檢查 Mailable 上的附件："
-
-#: docs/9.x/mocking.md:block 89 (code)
-msgid "use Illuminate\\Mail\\Mailables\\Attachment;\n\n"
-"Mail::assertSent(OrderShipped::class, function ($mail) {\n"
-"    return $mail->hasAttachment(\n"
-"        Attachment::fromPath('/path/to/file')\n"
-"                ->as('name.pdf')\n"
-"                ->withMime('application/pdf')\n"
-"    );\n"
-"});\n\n"
-"Mail::assertSent(OrderShipped::class, function ($mail) {\n"
-"    return $mail->hasAttachment(\n"
-"        Attachment::fromStorageDisk('s3', '/path/to/file')\n"
-"    );\n"
-"});\n\n"
-"Mail::assertSent(OrderShipped::class, function ($mail) use ($pdfData) {\n"
-"    return $mail->hasAttachment(\n"
-"        Attachment::fromData(fn () => $pdfData, 'name.pdf')\n"
-"    );\n"
-"});\n"
-msgstr "use Illuminate\\Mail\\Mailables\\Attachment;\n\n"
-"Mail::assertSent(OrderShipped::class, function ($mail) {\n"
-"    return $mail->hasAttachment(\n"
-"        Attachment::fromPath('/path/to/file')\n"
-"                ->as('name.pdf')\n"
-"                ->withMime('application/pdf')\n"
-"    );\n"
-"});\n\n"
-"Mail::assertSent(OrderShipped::class, function ($mail) {\n"
-"    return $mail->hasAttachment(\n"
-"        Attachment::fromStorageDisk('s3', '/path/to/file')\n"
-"    );\n"
-"});\n\n"
-"Mail::assertSent(OrderShipped::class, function ($mail) use ($pdfData) {\n"
-"    return $mail->hasAttachment(\n"
-"        Attachment::fromData(fn () => $pdfData, 'name.pdf')\n"
-"    );\n"
-"});\n"
-
-#: docs/9.x/mocking.md:block 93 (header)
-msgid "Testing Mailable Content"
-msgstr "測試 Mailable 的內容"
-
-#: docs/9.x/mocking.md:block 94 (paragraph)
-msgid "We suggest testing the content of your mailables separately from your tests that assert that a given mailable was \"sent\" to a specific user. To learn how to test the content of your mailables, check out our documentation on the [testing mailables](/docs/{{version}}/mail#testing-mailables)."
-msgstr "在測試郵件是否有寄給特定使用者時，我們建議與 Mailable 的內容分開測試。若要瞭解如何測試郵件是否有寄出，請參考有關[測試 Mailable](/docs/{{version}}/mail#testing-mailables) 的說明文件。"
-
-#: docs/9.x/mocking.md:block 99 (code)
-msgid "<?php\n\n"
-"namespace Tests\\Feature;\n\n"
-"use App\\Notifications\\OrderShipped;\n"
-"use Illuminate\\Foundation\\Testing\\RefreshDatabase;\n"
-"use Illuminate\\Foundation\\Testing\\WithoutMiddleware;\n"
-"use Illuminate\\Support\\Facades\\Notification;\n"
-"use Tests\\TestCase;\n\n"
-"class ExampleTest extends TestCase\n"
-"{\n"
-"    public function test_orders_can_be_shipped()\n"
-"    {\n"
-"        Notification::fake();\n\n"
-"        // Perform order shipping...\n\n"
-"        // Assert that no notifications were sent...\n"
-"        Notification::assertNothingSent();\n\n"
-"        // Assert a notification was sent to the given users...\n"
-"        Notification::assertSentTo(\n"
-"            [$user], OrderShipped::class\n"
-"        );\n\n"
-"        // Assert a notification was not sent...\n"
-"        Notification::assertNotSentTo(\n"
-"            [$user], AnotherNotification::class\n"
-"        );\n\n"
-"        // Assert that a given number of notifications were sent...\n"
-"        Notification::assertCount(3);\n"
-"    }\n"
-"}\n"
-msgstr "<?php\n\n"
-"namespace Tests\\Feature;\n\n"
-"use App\\Notifications\\OrderShipped;\n"
-"use Illuminate\\Foundation\\Testing\\RefreshDatabase;\n"
-"use Illuminate\\Foundation\\Testing\\WithoutMiddleware;\n"
-"use Illuminate\\Support\\Facades\\Notification;\n"
-"use Tests\\TestCase;\n\n"
-"class ExampleTest extends TestCase\n"
-"{\n"
-"    public function test_orders_can_be_shipped()\n"
-"    {\n"
-"        Notification::fake();\n\n"
-"        // 處理訂單出貨...\n\n"
-"        // 判斷未有 Notification 被送出...\n"
-"        Notification::assertNothingSent();\n\n"
-"        // 判斷某個 Notification 是否被傳送至給定的使用者...\n"
-"        Notification::assertSentTo(\n"
-"            [$user], OrderShipped::class\n"
-"        );\n\n"
-"        // 判斷某個 Notification 是否未被送出...\n"
-"        Notification::assertNotSentTo(\n"
-"            [$user], AnotherNotification::class\n"
-"        );\n\n"
-"        // 測試送出了給定數量的 Notification...\n"
-"        Notification::assertCount(3);\n"
-"    }\n"
-"}\n"
-
-#: docs/9.x/mocking.md:block 104 (paragraph)
-msgid "If the code you are testing sends [on-demand notifications](/docs/{{version}}/notifications#on-demand-notifications), you can test that the on-demand notification was sent via the `assertSentOnDemand` method:"
-msgstr "若要測試的程式中有傳送[隨需通知]，則可使用 `assertSentOnDemand` 方法來測試是否有送出隨需通知："
-
-#: docs/9.x/mocking.md:block 105 (code)
-msgid "Notification::assertSentOnDemand(OrderShipped::class);\n"
-msgstr "Notification::assertSentOnDemand(OrderShipped::class);\n"
-
-#: docs/9.x/mocking.md:block 106 (paragraph)
-msgid "By passing a closure as the second argument to the `assertSentOnDemand` method, you may determine if an on-demand notification was sent to the correct \"route\" address:"
-msgstr "若在 `assertSentOnDemand` 方法的第二個引數上傳入閉包，就能判斷隨需通知是否被送給正確的「^[Route](路由)」位址："
-
-#: docs/9.x/mocking.md:block 107 (code)
-msgid "Notification::assertSentOnDemand(\n"
-"    OrderShipped::class,\n"
-"    function ($notification, $channels, $notifiable) use ($user) {\n"
-"        return $notifiable->routes['mail'] === $user->email;\n"
-"    }\n"
-");\n"
-msgstr "Notification::assertSentOnDemand(\n"
-"    OrderShipped::class,\n"
-"    function ($notification, $channels, $notifiable) use ($user) {\n"
-"        return $notifiable->routes['mail'] === $user->email;\n"
-"    }\n"
-");\n"
-
-#: docs/9.x/mocking.md:block 115 (paragraph)
-msgid "If you only need to fake specific jobs while allowing your other jobs to execute normally, you may pass the class names of the jobs that should be faked to the `fake` method:"
-msgstr "若只想 Fake 特定的 Job，並讓其他 Job 都被正常執行，可以傳入要被 Fake 的 Job 類別名稱給 `fake` 方法："
-
-#: docs/9.x/mocking.md:block 116 (code)
-msgid "public function test_orders_can_be_shipped()\n"
-"{\n"
-"    Queue::fake([\n"
-"        ShipOrder::class,\n"
-"    ]);\n"
-"    \n"
-"    // Perform order shipping...\n\n"
-"    // Assert a job was pushed twice...\n"
-"    Queue::assertPushed(ShipOrder::class, 2);\n"
-"}\n"
-msgstr "public function test_orders_can_be_shipped()\n"
-"{\n"
-"    Queue::fake([\n"
-"        ShipOrder::class,\n"
-"    ]);\n"
-"    \n"
-"    // 進行訂單出貨...\n\n"
-"    // 判斷 Job 是否被推入 2 次...\n"
-"    Queue::assertPushed(ShipOrder::class, 2);\n"
-"}\n"
-
-#: docs/9.x/mocking.md:block 128 (code)
-msgid "<?php\n\n"
-"namespace Tests\\Feature;\n\n"
-"use Illuminate\\Foundation\\Testing\\RefreshDatabase;\n"
-"use Illuminate\\Foundation\\Testing\\WithoutMiddleware;\n"
-"use Illuminate\\Http\\UploadedFile;\n"
-"use Illuminate\\Support\\Facades\\Storage;\n"
-"use Tests\\TestCase;\n\n"
-"class ExampleTest extends TestCase\n"
-"{\n"
-"    public function test_albums_can_be_uploaded()\n"
-"    {\n"
-"        Storage::fake('photos');\n\n"
-"        $response = $this->json('POST', '/photos', [\n"
-"            UploadedFile::fake()->image('photo1.jpg'),\n"
-"            UploadedFile::fake()->image('photo2.jpg')\n"
-"        ]);\n\n"
-"        // Assert one or more files were stored...\n"
-"        Storage::disk('photos')->assertExists('photo1.jpg');\n"
-"        Storage::disk('photos')->assertExists(['photo1.jpg', 'photo2.jpg']);\n\n"
-"        // Assert one or more files were not stored...\n"
-"        Storage::disk('photos')->assertMissing('missing.jpg');\n"
-"        Storage::disk('photos')->assertMissing(['missing.jpg', 'non-existing.jpg']);\n\n"
-"        // Assert that a given directory is empty...\n"
-"        Storage::disk('photos')->assertDirectoryEmpty('/wallpapers');\n"
-"    }\n"
-"}\n"
-msgstr "<?php\n\n"
-"namespace Tests\\Feature;\n\n"
-"use Illuminate\\Foundation\\Testing\\RefreshDatabase;\n"
-"use Illuminate\\Foundation\\Testing\\WithoutMiddleware;\n"
-"use Illuminate\\Http\\UploadedFile;\n"
-"use Illuminate\\Support\\Facades\\Storage;\n"
-"use Tests\\TestCase;\n\n"
-"class ExampleTest extends TestCase\n"
-"{\n"
-"    public function test_albums_can_be_uploaded()\n"
-"    {\n"
-"        Storage::fake('photos');\n\n"
-"        $response = $this->json('POST', '/photos', [\n"
-"            UploadedFile::fake()->image('photo1.jpg'),\n"
-"            UploadedFile::fake()->image('photo2.jpg')\n"
-"        ]);\n\n"
-"        // 判斷保存了一個或多個檔案...\n"
-"        Storage::disk('photos')->assertExists('photo1.jpg');\n"
-"        Storage::disk('photos')->assertExists(['photo1.jpg', 'photo2.jpg']);\n\n"
-"        // 判斷未保存一個或多個檔案...\n"
-"        Storage::disk('photos')->assertMissing('missing.jpg');\n"
-"        Storage::disk('photos')->assertMissing(['missing.jpg', 'non-existing.jpg']);\n\n"
-"        // 判斷給定目錄是否為空...\n"
-"        Storage::disk('photos')->assertDirectoryEmpty('/wallpapers');\n"
-"    }\n"
-"}\n"
-
-#: docs/9.x/mocking.md:block 129 (paragraph)
-msgid "By default, the `fake` method will delete all files in its temporary directory. If you would like to keep these files, you may use the \"persistentFake\" method instead. For more information on testing file uploads, you may consult the [HTTP testing documentation's information on file uploads](/docs/{{version}}/http-tests#testing-file-uploads)."
-msgstr "預設情況下，`fake` 方法會刪除其臨時目錄下的所有檔案。若想保留這些檔案，可使用「persistentFake」方法。更多有關測試檔案上傳的資訊，可參考 [HTTP 測試說明文件中有關檔案上傳的部分](/docs/{{version}}/http-tests#testing-file-uploads)。"
-
-#: docs/9.x/mocking.md:block 130 (quote)
-msgid "**Warning** The `image` method requires the [GD extension](https://www.php.net/manual/en/book.image.php)."
-msgstr "**Warning** 要使用 `image` 方法則需要有 [GD 擴充程式](https://www.php.net/manual/en/book.image.php)。"
-
-#: docs/9.x/mocking.md:block 134 (code)
-msgid "use Illuminate\\Support\\Carbon;\n\n"
-"public function testTimeCanBeManipulated()\n"
-"{\n"
-"    // Travel into the future...\n"
-"    $this->travel(5)->milliseconds();\n"
-"    $this->travel(5)->seconds();\n"
-"    $this->travel(5)->minutes();\n"
-"    $this->travel(5)->hours();\n"
-"    $this->travel(5)->days();\n"
-"    $this->travel(5)->weeks();\n"
-"    $this->travel(5)->years();\n\n"
-"    // Freeze time and resume normal time after executing closure...\n"
-"    $this->freezeTime(function (Carbon $time) {\n"
-"        // ...\n"
-"    });\n\n"
-"    // Travel into the past...\n"
-"    $this->travel(-5)->hours();\n\n"
-"    // Travel to an explicit time...\n"
-"    $this->travelTo(now()->subHours(6));\n\n"
-"    // Return back to the present time...\n"
-"    $this->travelBack();\n"
-"}\n"
-msgstr "use Illuminate\\Support\\Carbon;\n\n"
-"public function testTimeCanBeManipulated()\n"
-"{\n"
-"    // 穿越到未來...\n"
-"    $this->travel(5)->milliseconds();\n"
-"    $this->travel(5)->seconds();\n"
-"    $this->travel(5)->minutes();\n"
-"    $this->travel(5)->hours();\n"
-"    $this->travel(5)->days();\n"
-"    $this->travel(5)->weeks();\n"
-"    $this->travel(5)->years();\n\n"
-"    // 停止時間，並在執行完閉包後恢復回正常的時間...\n"
-"    $this->freezeTime(function (Carbon $time) {\n"
-"        // ...\n"
-"    });\n\n"
-"    // 穿越到過去...\n"
-"    $this->travel(-5)->hours();\n\n"
-"    // 穿越到特定的時間...\n"
-"    $this->travelTo(now()->subHours(6));\n\n"
-"    // 回到目前時間...\n"
-"    $this->travelBack();\n"
-"}\n"
-
-#: docs/master/mocking.md:block 31 (code)
-msgid "use Illuminate\\Support\\Carbon;\n\n"
+"}"
+msgstr ""
+
+#: ./docs/10.x/mocking.md:139
+msgctxt "CODE"
+msgid ""
+"use Illuminate\\Support\\Carbon;\n"
+"\n"
 "public function test_time_can_be_manipulated(): void\n"
 "{\n"
 "    // Travel into the future...\n"
@@ -1747,38 +578,1411 @@ msgid "use Illuminate\\Support\\Carbon;\n\n"
 "    $this->travel(5)->hours();\n"
 "    $this->travel(5)->days();\n"
 "    $this->travel(5)->weeks();\n"
-"    $this->travel(5)->years();\n\n"
-"    // Freeze time and resume normal time after executing closure...\n"
-"    $this->freezeTime(function (Carbon $time) {\n"
-"        // ...\n"
-"    });\n\n"
+"    $this->travel(5)->years();\n"
+"\n"
 "    // Travel into the past...\n"
-"    $this->travel(-5)->hours();\n\n"
+"    $this->travel(-5)->hours();\n"
+"\n"
 "    // Travel to an explicit time...\n"
-"    $this->travelTo(now()->subHours(6));\n\n"
+"    $this->travelTo(now()->subHours(6));\n"
+"\n"
 "    // Return back to the present time...\n"
 "    $this->travelBack();\n"
-"}\n"
-msgstr "use Illuminate\\Support\\Carbon;\n\n"
-"public function testTimeCanBeManipulated(): void\n"
+"}"
+msgstr ""
+
+#: ./docs/8.x/mocking.md:146
+#: ./docs/9.x/mocking.md:147
+#~ msgctxt "P"
+#~ msgid "<a name=\"bus-fake\"></a>"
+#~ msgstr ""
+
+#: ./docs/8.x/mocking.md:147
+#: ./docs/9.x/mocking.md:148
+msgctxt "H2"
+msgid "Bus Fake"
+msgstr "Bus Fake"
+
+#: ./docs/8.x/mocking.md:149
+#: ./docs/9.x/mocking.md:150
+msgctxt "P"
+msgid "When testing code that dispatches jobs, you typically want to assert that a given job was dispatched but not actually queue or execute the job. This is because the job's execution can normally be tested in a separate test class."
+msgstr "在測試會分派 Job 的程式時，一般來說我們會想判斷給定的 Job 是否有被分派，而不是真的將該 Job 放入 Queue 裡執行。這是因為，Job 的執行一般來說可以在其獨立的測試 Class 中測試。"
+
+#: ./docs/8.x/mocking.md:151
+#: ./docs/9.x/mocking.md:152
+msgctxt "P"
+msgid "You may use the `Bus` facade's `fake` method to prevent jobs from being dispatched to the queue. Then, after executing the code under test, you may inspect which jobs the application attempted to dispatch using the `assertDispatched` and `assertNotDispatched` methods:"
+msgstr "我們可以使用 `Bus` Facade 的 `fake` 方法來避免 Job 被分派到 Queue 中。接著，在測試中執行程式碼後，我們就可以使用 `assertDispatched` 與 `assertNotDispatched` 方法來檢查程式嘗試分派了什麼 Job："
+
+#: ./docs/8.x/mocking.md:153
+msgctxt "CODE"
+msgid ""
+"<?php\n"
+"\n"
+"namespace Tests\\Feature;\n"
+"\n"
+"use App\\Jobs\\ShipOrder;\n"
+"use Illuminate\\Foundation\\Testing\\RefreshDatabase;\n"
+"use Illuminate\\Foundation\\Testing\\WithoutMiddleware;\n"
+"use Illuminate\\Support\\Facades\\Bus;\n"
+"use Tests\\TestCase;\n"
+"\n"
+"class ExampleTest extends TestCase\n"
 "{\n"
-"    // 穿越到未來...\n"
+"    public function test_orders_can_be_shipped()\n"
+"    {\n"
+"        Bus::fake();\n"
+"\n"
+"        // Perform order shipping...\n"
+"\n"
+"        // Assert that a job was dispatched...\n"
+"        Bus::assertDispatched(ShipOrder::class);\n"
+"\n"
+"        // Assert a job was not dispatched...\n"
+"        Bus::assertNotDispatched(AnotherJob::class);\n"
+"\n"
+"        // Assert that a job was dispatched synchronously...\n"
+"        Bus::assertDispatchedSync(AnotherJob::class);\n"
+"\n"
+"        // Assert that a job was not dipatched synchronously...\n"
+"        Bus::assertNotDispatchedSync(AnotherJob::class);\n"
+"\n"
+"        // Assert that a job was dispatched after the response was sent...\n"
+"        Bus::assertDispatchedAfterResponse(AnotherJob::class);\n"
+"\n"
+"        // Assert a job was not dispatched after response was sent...\n"
+"        Bus::assertNotDispatchedAfterResponse(AnotherJob::class);\n"
+"\n"
+"        // Assert no jobs were dispatched...\n"
+"        Bus::assertNothingDispatched();\n"
+"    }\n"
+"}"
+msgstr ""
+
+#: ./docs/9.x/mocking.md:154
+msgctxt "CODE"
+msgid ""
+"<?php\n"
+"\n"
+"namespace Tests\\Feature;\n"
+"\n"
+"use App\\Jobs\\ShipOrder;\n"
+"use Illuminate\\Foundation\\Testing\\RefreshDatabase;\n"
+"use Illuminate\\Foundation\\Testing\\WithoutMiddleware;\n"
+"use Illuminate\\Support\\Facades\\Bus;\n"
+"use Tests\\TestCase;\n"
+"\n"
+"class ExampleTest extends TestCase\n"
+"{\n"
+"    public function test_orders_can_be_shipped()\n"
+"    {\n"
+"        Bus::fake();\n"
+"\n"
+"        // Perform order shipping...\n"
+"\n"
+"        // Assert that a job was dispatched...\n"
+"        Bus::assertDispatched(ShipOrder::class);\n"
+"\n"
+"        // Assert a job was not dispatched...\n"
+"        Bus::assertNotDispatched(AnotherJob::class);\n"
+"\n"
+"        // Assert that a job was dispatched synchronously...\n"
+"        Bus::assertDispatchedSync(AnotherJob::class);\n"
+"\n"
+"        // Assert that a job was not dispatched synchronously...\n"
+"        Bus::assertNotDispatchedSync(AnotherJob::class);\n"
+"\n"
+"        // Assert that a job was dispatched after the response was sent...\n"
+"        Bus::assertDispatchedAfterResponse(AnotherJob::class);\n"
+"\n"
+"        // Assert a job was not dispatched after response was sent...\n"
+"        Bus::assertNotDispatchedAfterResponse(AnotherJob::class);\n"
+"\n"
+"        // Assert no jobs were dispatched...\n"
+"        Bus::assertNothingDispatched();\n"
+"    }\n"
+"}"
+msgstr ""
+
+#: ./docs/11.x/mocking.md:157
+#: ./docs/master/mocking.md:157
+msgctxt "CODE: php tab=Pest"
+msgid ""
+"<?php\n"
+"\n"
+"use Illuminate\\Support\\Facades\\Cache;\n"
+"\n"
+"test('values are be stored in cache', function () {\n"
+"    Cache::spy();\n"
+"\n"
+"    $response = $this->get('/');\n"
+"\n"
+"    $response->assertStatus(200);\n"
+"\n"
+"    Cache::shouldHaveReceived('put')->once()->with('name', 'Taylor', 10);\n"
+"});"
+msgstr ""
+
+#: ./docs/10.x/mocking.md:162
+#: ./docs/11.x/mocking.md:238
+#: ./docs/master/mocking.md:238
+msgctxt "P"
+msgid "You may also provide a closure to the various time travel methods. The closure will be invoked with time frozen at the specified time. Once the closure has executed, time will resume as normal:"
+msgstr "也可以提供一個閉包給各個時間旅行方法。呼叫該閉包時，會傳入所凍結的特定時間。執行該閉包後，時間就會恢復正常："
+
+#: ./docs/10.x/mocking.md:164
+#: ./docs/11.x/mocking.md:240
+#: ./docs/master/mocking.md:240
+msgctxt "CODE"
+msgid ""
+"$this->travel(5)->days(function () {\n"
+"    // Test something five days into the future...\n"
+"});\n"
+"\n"
+"$this->travelTo(now()->subDays(10), function () {\n"
+"    // Test something during a given moment...\n"
+"});"
+msgstr ""
+
+#: ./docs/10.x/mocking.md:172
+#: ./docs/11.x/mocking.md:248
+#: ./docs/master/mocking.md:248
+msgctxt "P"
+msgid "The `freezeTime` method may be used to freeze the current time. Similarly, the `freezeSecond` method will freeze the current time but at the start of the current second:"
+msgstr "`freezeTime` 方法可用來凍結目前的時間。類似地，`freezeSecond` 方法會凍結目前時間，並回到目前秒數的開端："
+
+#: ./docs/10.x/mocking.md:174
+#: ./docs/11.x/mocking.md:250
+#: ./docs/master/mocking.md:250
+msgctxt "CODE"
+msgid ""
+"use Illuminate\\Support\\Carbon;\n"
+"\n"
+"// Freeze time and resume normal time after executing closure...\n"
+"$this->freezeTime(function (Carbon $time) {\n"
+"    // ...\n"
+"});\n"
+"\n"
+"// Freeze time at the current second and resume normal time after executing closure...\n"
+"$this->freezeSecond(function (Carbon $time) {\n"
+"    // ...\n"
+"})"
+msgstr ""
+
+#: ./docs/10.x/mocking.md:186
+#: ./docs/11.x/mocking.md:262
+#: ./docs/master/mocking.md:262
+msgctxt "P"
+msgid "As you would expect, all of the methods discussed above are primarily useful for testing time sensitive application behavior, such as locking inactive posts on a discussion forum:"
+msgstr "就像預期的一樣，上方所討論的所有方法主要都適合用來測試與時間相關的程式行為，例如在討論區中鎖定非活躍的貼文："
+
+#: ./docs/10.x/mocking.md:188
+msgctxt "CODE"
+msgid ""
+"use App\\Models\\Thread;\n"
+"\n"
+"public function test_forum_threads_lock_after_one_week_of_inactivity()\n"
+"{\n"
+"    $thread = Thread::factory()->create();\n"
+"    \n"
+"    $this->travel(1)->week();\n"
+"    \n"
+"    $this->assertTrue($thread->isLockedByInactivity());\n"
+"}"
+msgstr ""
+
+#: ./docs/11.x/mocking.md:193
+#: ./docs/master/mocking.md:193
+msgctxt "CODE: php tab=Pest"
+msgid ""
+"test('time can be manipulated', function () {\n"
+"    // Travel into the future...\n"
 "    $this->travel(5)->milliseconds();\n"
 "    $this->travel(5)->seconds();\n"
 "    $this->travel(5)->minutes();\n"
 "    $this->travel(5)->hours();\n"
 "    $this->travel(5)->days();\n"
 "    $this->travel(5)->weeks();\n"
-"    $this->travel(5)->years();\n\n"
-"    // 停止時間，並在執行完閉包後恢復回正常的時間...\n"
+"    $this->travel(5)->years();\n"
+"\n"
+"    // Travel into the past...\n"
+"    $this->travel(-5)->hours();\n"
+"\n"
+"    // Travel to an explicit time...\n"
+"    $this->travelTo(now()->subHours(6));\n"
+"\n"
+"    // Return back to the present time...\n"
+"    $this->travelBack();\n"
+"});"
+msgstr ""
+
+#: ./docs/8.x/mocking.md:194
+#: ./docs/9.x/mocking.md:195
+msgctxt "P"
+msgid "You may pass a closure to the available methods in order to assert that a job was dispatched that passes a given \"truth test\". If at least one job was dispatched that passes the given truth test then the assertion will be successful. For example, you may wish to assert that a job was dispatched for a specific order:"
+msgstr "可以傳入一個閉包給這些可用的方法，來判斷某個 Job 是否通過給定的「真值測試 (Truth Test)」。若分派的 Job 中至少有一個 Job 有通過給真值測試，則 Assertion 會被視為成功。舉例來說，我們可以判斷是否有對某個特定訂單分派 Job："
+
+#: ./docs/8.x/mocking.md:196
+#: ./docs/9.x/mocking.md:197
+msgctxt "CODE"
+msgid ""
+"Bus::assertDispatched(function (ShipOrder $job) use ($order) {\n"
+"    return $job->order->id === $order->id;\n"
+"});"
+msgstr ""
+
+#: ./docs/8.x/mocking.md:200
+#: ./docs/9.x/mocking.md:224
+#~ msgctxt "P"
+#~ msgid "<a name=\"bus-job-chains\"></a>"
+#~ msgstr ""
+
+#: ./docs/8.x/mocking.md:201
+#: ./docs/8.x/mocking.md:543
+#: ./docs/9.x/mocking.md:225
+#: ./docs/9.x/mocking.md:630
+msgctxt "H3"
+msgid "Job Chains"
+msgstr "Job Chain"
+
+#: ./docs/9.x/mocking.md:201
+#~ msgctxt "P"
+#~ msgid "<a name=\"faking-a-subset-of-jobs\"></a>"
+#~ msgstr ""
+
+#: ./docs/9.x/mocking.md:202
+msgctxt "H4"
+msgid "Faking A Subset Of Jobs"
+msgstr "Fake 一小部分的 Job"
+
+#: ./docs/8.x/mocking.md:203
+#: ./docs/9.x/mocking.md:227
+msgctxt "P"
+msgid "The `Bus` facade's `assertChained` method may be used to assert that a [chain of jobs](/docs/{{version}}/queues#job-chaining) was dispatched. The `assertChained` method accepts an array of chained jobs as its first argument:"
+msgstr "`Bus` Facade 的 `assertChained` 方法可用來判斷是否有分派某個[串聯的 Job](/docs/{{version}}/queues#job-chaining)。`assertChained` 方法接受一組串聯 Job 的陣列作為其第一個引數："
+
+#: ./docs/9.x/mocking.md:204
+msgctxt "P"
+msgid "If you only want to prevent certain jobs from being dispatched, you may pass the jobs that should be faked to the `fake` method:"
+msgstr "若只想避免特定 Job 被分派，可將要 Fake 的 Job 傳給 `fake` 方法："
+
+#: ./docs/8.x/mocking.md:205
+#: ./docs/9.x/mocking.md:229
+msgctxt "CODE"
+msgid ""
+"use App\\Jobs\\RecordShipment;\n"
+"use App\\Jobs\\ShipOrder;\n"
+"use App\\Jobs\\UpdateInventory;\n"
+"use Illuminate\\Support\\Facades\\Bus;\n"
+"\n"
+"Bus::assertChained([\n"
+"    ShipOrder::class,\n"
+"    RecordShipment::class,\n"
+"    UpdateInventory::class\n"
+"]);"
+msgstr ""
+
+#: ./docs/9.x/mocking.md:206
+msgctxt "CODE"
+msgid ""
+"/**\n"
+" * Test order process.\n"
+" */\n"
+"public function test_orders_can_be_shipped()\n"
+"{\n"
+"    Bus::fake([\n"
+"        ShipOrder::class,\n"
+"    ]);\n"
+"\n"
+"    // ...\n"
+"}"
+msgstr ""
+
+#: ./docs/11.x/mocking.md:215
+#: ./docs/master/mocking.md:215
+msgctxt "CODE: php tab=PHPUnit"
+msgid ""
+"public function test_time_can_be_manipulated(): void\n"
+"{\n"
+"    // Travel into the future...\n"
+"    $this->travel(5)->milliseconds();\n"
+"    $this->travel(5)->seconds();\n"
+"    $this->travel(5)->minutes();\n"
+"    $this->travel(5)->hours();\n"
+"    $this->travel(5)->days();\n"
+"    $this->travel(5)->weeks();\n"
+"    $this->travel(5)->years();\n"
+"\n"
+"    // Travel into the past...\n"
+"    $this->travel(-5)->hours();\n"
+"\n"
+"    // Travel to an explicit time...\n"
+"    $this->travelTo(now()->subHours(6));\n"
+"\n"
+"    // Return back to the present time...\n"
+"    $this->travelBack();\n"
+"}"
+msgstr ""
+
+#: ./docs/8.x/mocking.md:216
+#: ./docs/8.x/mocking.md:557
+#: ./docs/9.x/mocking.md:240
+#: ./docs/9.x/mocking.md:644
+msgctxt "P"
+msgid "As you can see in the example above, the array of chained jobs may be an array of the job's class names. However, you may also provide an array of actual job instances. When doing so, Laravel will ensure that the job instances are of the same class and have the same property values of the chained jobs dispatched by your application:"
+msgstr "就像上述範例中可看到的一樣，串聯 Job 的陣列就是一組包含 Job 類別名稱的陣列。不過，也可以提供一組實際 Job 實體的陣列。當提供的陣列為 Job 實體的陣列時，Laravel 會確保程式所分派的串聯 Job 都具是相同的類別，且擁有相同的屬性值："
+
+#: ./docs/8.x/mocking.md:218
+#: ./docs/9.x/mocking.md:242
+msgctxt "CODE"
+msgid ""
+"Bus::assertChained([\n"
+"    new ShipOrder,\n"
+"    new RecordShipment,\n"
+"    new UpdateInventory,\n"
+"]);"
+msgstr ""
+
+#: ./docs/9.x/mocking.md:218
+msgctxt "P"
+msgid "You may fake all jobs except for a set of specified jobs using the `except` method:"
+msgstr "也可以使用 `fakeExcept` 方法來 Fake 除了一組特定 Job 外的所有 Event："
+
+#: ./docs/9.x/mocking.md:220
+msgctxt "CODE"
+msgid ""
+"Bus::fake()->except([\n"
+"    ShipOrder::class,\n"
+"]);"
+msgstr ""
+
+#: ./docs/8.x/mocking.md:224
+#: ./docs/9.x/mocking.md:248
+#~ msgctxt "P"
+#~ msgid "<a name=\"job-batches\"></a>"
+#~ msgstr ""
+
+#: ./docs/8.x/mocking.md:225
+#: ./docs/9.x/mocking.md:249
+msgctxt "H3"
+msgid "Job Batches"
+msgstr "批次 Job"
+
+#: ./docs/8.x/mocking.md:227
+#: ./docs/9.x/mocking.md:251
+msgctxt "P"
+msgid "The `Bus` facade's `assertBatched` method may be used to assert that a [batch of jobs](/docs/{{version}}/queues#job-batching) was dispatched. The closure given to the `assertBatched` method receives an instance of `Illuminate\\Bus\\PendingBatch`, which may be used to inspect the jobs within the batch:"
+msgstr "`Bus` Facade 的 `assertBatched` 方法可用來判斷是否有分派[Job 批次]。提供給 `assertBatched` 方法的閉包會收到 `Illuminate\\Bus\\PendingBatch` 的實體，該實體可用來檢查批次中的 Job："
+
+#: ./docs/8.x/mocking.md:229
+#: ./docs/9.x/mocking.md:253
+msgctxt "CODE"
+msgid ""
+"use Illuminate\\Bus\\PendingBatch;\n"
+"use Illuminate\\Support\\Facades\\Bus;\n"
+"\n"
+"Bus::assertBatched(function (PendingBatch $batch) {\n"
+"    return $batch->name == 'import-csv' &&\n"
+"           $batch->jobs->count() === 10;\n"
+"});"
+msgstr ""
+
+#: ./docs/8.x/mocking.md:237
+#: ./docs/9.x/mocking.md:273
+#~ msgctxt "P"
+#~ msgid "<a name=\"event-fake\"></a>"
+#~ msgstr ""
+
+#: ./docs/8.x/mocking.md:238
+#: ./docs/9.x/mocking.md:274
+msgctxt "H2"
+msgid "Event Fake"
+msgstr "Event Fake"
+
+#: ./docs/8.x/mocking.md:240
+#: ./docs/9.x/mocking.md:276
+msgctxt "P"
+msgid "When testing code that dispatches events, you may wish to instruct Laravel to not actually execute the event's listeners. Using the `Event` facade's `fake` method, you may prevent listeners from executing, execute the code under test, and then assert which events were dispatched by your application using the `assertDispatched`, `assertNotDispatched`, and `assertNothingDispatched` methods:"
+msgstr "在測試會分派 Event 的程式時，我們可能會希望 Laravel 不要真的去執行 Event 的 Listener。使用 `Event` Facade 的 `fake` 方法，就可避免執行真正的 Listener，在測試中執行程式碼，然後使用 `assertDispatched`、`assertNotDispatched`、`assertNothingDispatched` 等方法來判斷程式分派了哪些 Event："
+
+#: ./docs/8.x/mocking.md:242
+#: ./docs/9.x/mocking.md:278
+msgctxt "CODE"
+msgid ""
+"<?php\n"
+"\n"
+"namespace Tests\\Feature;\n"
+"\n"
+"use App\\Events\\OrderFailedToShip;\n"
+"use App\\Events\\OrderShipped;\n"
+"use Illuminate\\Foundation\\Testing\\RefreshDatabase;\n"
+"use Illuminate\\Foundation\\Testing\\WithoutMiddleware;\n"
+"use Illuminate\\Support\\Facades\\Event;\n"
+"use Tests\\TestCase;\n"
+"\n"
+"class ExampleTest extends TestCase\n"
+"{\n"
+"    /**\n"
+"     * Test order shipping.\n"
+"     */\n"
+"    public function test_orders_can_be_shipped()\n"
+"    {\n"
+"        Event::fake();\n"
+"\n"
+"        // Perform order shipping...\n"
+"\n"
+"        // Assert that an event was dispatched...\n"
+"        Event::assertDispatched(OrderShipped::class);\n"
+"\n"
+"        // Assert an event was dispatched twice...\n"
+"        Event::assertDispatched(OrderShipped::class, 2);\n"
+"\n"
+"        // Assert an event was not dispatched...\n"
+"        Event::assertNotDispatched(OrderFailedToShip::class);\n"
+"\n"
+"        // Assert that no events were dispatched...\n"
+"        Event::assertNothingDispatched();\n"
+"    }\n"
+"}"
+msgstr ""
+
+#: ./docs/9.x/mocking.md:261
+#~ msgctxt "P"
+#~ msgid "<a name=\"testing-job-batch-interaction\"></a>"
+#~ msgstr ""
+
+#: ./docs/9.x/mocking.md:262
+msgctxt "H4"
+msgid "Testing Job / Batch Interaction"
+msgstr "測試 Job 或批次行為"
+
+#: ./docs/11.x/mocking.md:264
+#: ./docs/master/mocking.md:264
+msgctxt "CODE: php tab=Pest"
+msgid ""
+"use App\\Models\\Thread;\n"
+"\n"
+"test('forum threads lock after one week of inactivity', function () {\n"
+"    $thread = Thread::factory()->create();\n"
+"\n"
+"    $this->travel(1)->week();\n"
+"\n"
+"    expect($thread->isLockedByInactivity())->toBeTrue();\n"
+"});"
+msgstr ""
+
+#: ./docs/9.x/mocking.md:264
+msgctxt "P"
+msgid "In addition, you may occasionally need to test an individual job's interaction with its underlying batch. For example, you may need to test if a job cancelled further processing for its batch. To accomplish this, you need to assign a fake batch to the job via the `withFakeBatch` method. The `withFakeBatch` method returns a tuple containing the job instance and the fake batch:"
+msgstr "除此之外，我們有時候也需要測試個別 Job 與其底層批次的互動。舉例來說，我們可能需要測試某個 Job 是否取消了批次中剩下的流程。這時，我們需要使用 `withFakeBatch` 方法來將一個 Fake 的 Batch 指派給該 Job。`withFakeBatch` 方法會回傳一個包含 Job 實體與 Fake Batch 的陣列："
+
+#: ./docs/9.x/mocking.md:266
+msgctxt "CODE"
+msgid ""
+"[$job, $batch] = (new ShipOrder)->withFakeBatch();\n"
+"\n"
+"$job->handle();\n"
+"\n"
+"$this->assertTrue($batch->cancelled());\n"
+"$this->assertEmpty($batch->added);"
+msgstr ""
+
+#: ./docs/11.x/mocking.md:276
+#: ./docs/master/mocking.md:276
+msgctxt "CODE: php tab=PHPUnit"
+msgid ""
+"use App\\Models\\Thread;\n"
+"\n"
+"public function test_forum_threads_lock_after_one_week_of_inactivity()\n"
+"{\n"
+"    $thread = Thread::factory()->create();\n"
+"\n"
+"    $this->travel(1)->week();\n"
+"\n"
+"    $this->assertTrue($thread->isLockedByInactivity());\n"
+"}"
+msgstr ""
+
+#: ./docs/8.x/mocking.md:278
+#: ./docs/9.x/mocking.md:314
+msgctxt "P"
+msgid "You may pass a closure to the `assertDispatched` or `assertNotDispatched` methods in order to assert that an event was dispatched that passes a given \"truth test\". If at least one event was dispatched that passes the given truth test then the assertion will be successful:"
+msgstr "可以傳入一個閉包給 `assertDispatched` 或 `assertNotDispatched` 方法，來判斷某個 Event 是否通過給定的「真值測試 (Truth Test)」。若分派的 Event 中至少有一個 Event 通過給定的真值測試，則該 Assertion 會被視為成功："
+
+#: ./docs/8.x/mocking.md:280
+#: ./docs/9.x/mocking.md:316
+msgctxt "CODE"
+msgid ""
+"Event::assertDispatched(function (OrderShipped $event) use ($order) {\n"
+"    return $event->order->id === $order->id;\n"
+"});"
+msgstr ""
+
+#: ./docs/8.x/mocking.md:284
+#: ./docs/9.x/mocking.md:320
+msgctxt "P"
+msgid "If you would simply like to assert that an event listener is listening to a given event, you may use the `assertListening` method:"
+msgstr "若只想判斷某個 Event Listener 是否有在監聽給定的 Event，可使用 `assertListening` 方法："
+
+#: ./docs/8.x/mocking.md:286
+#: ./docs/9.x/mocking.md:322
+msgctxt "CODE"
+msgid ""
+"Event::assertListening(\n"
+"    OrderShipped::class,\n"
+"    SendShipmentNotification::class\n"
+");"
+msgstr ""
+
+#: ./docs/8.x/mocking.md:291
+#: ./docs/9.x/mocking.md:328
+msgctxt "P"
+msgid "After calling `Event::fake()`, no event listeners will be executed. So, if your tests use model factories that rely on events, such as creating a UUID during a model's `creating` event, you should call `Event::fake()` **after** using your factories."
+msgstr "呼叫 `Event::fake()` 後，就不會執行 Event Listener。因此，若有測試使用的 Model Factory 仰賴於 Event，如在 Model 的 `creating` Event 上建立 UUID 等，請在使用完 Factory **之後** 再呼叫 `Event::fake()`。"
+
+#: ./docs/8.x/mocking.md:293
+#: ./docs/9.x/mocking.md:330
+#~ msgctxt "P"
+#~ msgid "<a name=\"faking-a-subset-of-events\"></a>"
+#~ msgstr ""
+
+#: ./docs/8.x/mocking.md:294
+#: ./docs/9.x/mocking.md:331
+msgctxt "H4"
+msgid "Faking A Subset Of Events"
+msgstr "Fake 一小部分的 Event"
+
+#: ./docs/8.x/mocking.md:296
+#: ./docs/9.x/mocking.md:333
+msgctxt "P"
+msgid "If you only want to fake event listeners for a specific set of events, you may pass them to the `fake` or `fakeFor` method:"
+msgstr "若只想為一部分 Event 來 Fake Event Listener，則可將這些 Event 傳入`fake` 或 `fakeFor` 方法："
+
+#: ./docs/8.x/mocking.md:298
+#: ./docs/9.x/mocking.md:335
+msgctxt "CODE"
+msgid ""
+"/**\n"
+" * Test order process.\n"
+" */\n"
+"public function test_orders_can_be_processed()\n"
+"{\n"
+"    Event::fake([\n"
+"        OrderCreated::class,\n"
+"    ]);\n"
+"\n"
+"    $order = Order::factory()->create();\n"
+"\n"
+"    Event::assertDispatched(OrderCreated::class);\n"
+"\n"
+"    // Other events are dispatched as normal...\n"
+"    $order->update([...]);\n"
+"}"
+msgstr ""
+
+#: ./docs/8.x/mocking.md:315
+#: ./docs/9.x/mocking.md:358
+#~ msgctxt "P"
+#~ msgid "<a name=\"scoped-event-fakes\"></a>"
+#~ msgstr ""
+
+#: ./docs/8.x/mocking.md:316
+#: ./docs/9.x/mocking.md:359
+msgctxt "H3"
+msgid "Scoped Event Fakes"
+msgstr "限定範圍的 Event Fake"
+
+#: ./docs/8.x/mocking.md:318
+#: ./docs/9.x/mocking.md:361
+msgctxt "P"
+msgid "If you only want to fake event listeners for a portion of your test, you may use the `fakeFor` method:"
+msgstr "若只想未一部分的測試 Fake Event Listener，則可使用 `fakeFor` 方法："
+
+#: ./docs/8.x/mocking.md:320
+#: ./docs/9.x/mocking.md:363
+msgctxt "CODE"
+msgid ""
+"<?php\n"
+"\n"
+"namespace Tests\\Feature;\n"
+"\n"
+"use App\\Events\\OrderCreated;\n"
+"use App\\Models\\Order;\n"
+"use Illuminate\\Foundation\\Testing\\RefreshDatabase;\n"
+"use Illuminate\\Support\\Facades\\Event;\n"
+"use Illuminate\\Foundation\\Testing\\WithoutMiddleware;\n"
+"use Tests\\TestCase;\n"
+"\n"
+"class ExampleTest extends TestCase\n"
+"{\n"
+"    /**\n"
+"     * Test order process.\n"
+"     */\n"
+"    public function test_orders_can_be_processed()\n"
+"    {\n"
+"        $order = Event::fakeFor(function () {\n"
+"            $order = Order::factory()->create();\n"
+"\n"
+"            Event::assertDispatched(OrderCreated::class);\n"
+"\n"
+"            return $order;\n"
+"        });\n"
+"\n"
+"        // Events are dispatched as normal and observers will run ...\n"
+"        $order->update([...]);\n"
+"    }\n"
+"}"
+msgstr ""
+
+#: ./docs/8.x/mocking.md:351
+#: ./docs/9.x/mocking.md:394
+#~ msgctxt "P"
+#~ msgid "<a name=\"http-fake\"></a>"
+#~ msgstr ""
+
+#: ./docs/8.x/mocking.md:352
+#: ./docs/9.x/mocking.md:395
+msgctxt "H2"
+msgid "HTTP Fake"
+msgstr "HTTP Fake"
+
+#: ./docs/9.x/mocking.md:352
+msgctxt "P"
+msgid "You may fake all events except for a set of specified events using the `except` method:"
+msgstr "也可以使用 `except` 方法來 Fake 除了一組特定 Event 外的所有 Event："
+
+#: ./docs/8.x/mocking.md:354
+#: ./docs/9.x/mocking.md:397
+msgctxt "P"
+msgid "The `Http` facade's `fake` method allows you to instruct the HTTP client to return stubbed / dummy responses when requests are made. For more information on faking outgoing HTTP requests, please consult the [HTTP Client testing documentation](/docs/{{version}}/http-client#testing)."
+msgstr "使用 `Http` Facade 的 `fake` 方法，我們就能讓 HTTP 用戶端在建立 Request 時回傳 ^[Stubbed](預先填充好的)、假的 Response。更多有關模擬外連 HTTP Request 的資訊，請參考 [HTTP 用戶端的測試文件](/docs/{{version}}/http-client#testing)。"
+
+#: ./docs/9.x/mocking.md:354
+msgctxt "CODE"
+msgid ""
+"Event::fake()->except([\n"
+"    OrderCreated::class,\n"
+"]);"
+msgstr ""
+
+#: ./docs/8.x/mocking.md:356
+#: ./docs/9.x/mocking.md:399
+#~ msgctxt "P"
+#~ msgid "<a name=\"mail-fake\"></a>"
+#~ msgstr ""
+
+#: ./docs/8.x/mocking.md:357
+#: ./docs/9.x/mocking.md:400
+msgctxt "H2"
+msgid "Mail Fake"
+msgstr "Mail Fake"
+
+#: ./docs/8.x/mocking.md:359
+#: ./docs/9.x/mocking.md:402
+msgctxt "P"
+msgid "You may use the `Mail` facade's `fake` method to prevent mail from being sent. Typically, sending mail is unrelated to the code you are actually testing. Most likely, it is sufficient to simply assert that Laravel was instructed to send a given mailable."
+msgstr "可以使用 `Mail` Facade 的 `fake` 方法來避免寄出 Mail。一般來說，寄送 Mail 與實際要測試的程式碼是不相關的。通常，只要判斷 Laravel 是否有接到指示要寄出給定 Mailable 就夠了。"
+
+#: ./docs/8.x/mocking.md:361
+#: ./docs/9.x/mocking.md:404
+msgctxt "P"
+msgid "After calling the `Mail` facade's `fake` method, you may then assert that [mailables](/docs/{{version}}/mail) were instructed to be sent to users and even inspect the data the mailables received:"
+msgstr "呼叫 `Mail` Facade 的 `fake` 方法後，就可以判斷是否有被要求要將該 [Mailable](/docs/{{version}}/mail) 寄出給使用者，甚至還能判斷 Mailable 收到的資料："
+
+#: ./docs/8.x/mocking.md:363
+#: ./docs/9.x/mocking.md:406
+msgctxt "CODE"
+msgid ""
+"<?php\n"
+"\n"
+"namespace Tests\\Feature;\n"
+"\n"
+"use App\\Mail\\OrderShipped;\n"
+"use Illuminate\\Foundation\\Testing\\RefreshDatabase;\n"
+"use Illuminate\\Foundation\\Testing\\WithoutMiddleware;\n"
+"use Illuminate\\Support\\Facades\\Mail;\n"
+"use Tests\\TestCase;\n"
+"\n"
+"class ExampleTest extends TestCase\n"
+"{\n"
+"    public function test_orders_can_be_shipped()\n"
+"    {\n"
+"        Mail::fake();\n"
+"\n"
+"        // Perform order shipping...\n"
+"\n"
+"        // Assert that no mailables were sent...\n"
+"        Mail::assertNothingSent();\n"
+"\n"
+"        // Assert that a mailable was sent...\n"
+"        Mail::assertSent(OrderShipped::class);\n"
+"\n"
+"        // Assert a mailable was sent twice...\n"
+"        Mail::assertSent(OrderShipped::class, 2);\n"
+"\n"
+"        // Assert a mailable was not sent...\n"
+"        Mail::assertNotSent(AnotherMailable::class);\n"
+"    }\n"
+"}"
+msgstr ""
+
+#: ./docs/8.x/mocking.md:395
+#: ./docs/9.x/mocking.md:438
+msgctxt "P"
+msgid "If you are queueing mailables for delivery in the background, you should use the `assertQueued` method instead of `assertSent`:"
+msgstr "若將 Mailable 放在佇列中以在背景寄送，請使用 `assertQueued` 方法，而不是 `assertSent` 方法："
+
+#: ./docs/8.x/mocking.md:397
+#: ./docs/9.x/mocking.md:440
+msgctxt "CODE"
+msgid ""
+"Mail::assertQueued(OrderShipped::class);\n"
+"\n"
+"Mail::assertNotQueued(OrderShipped::class);\n"
+"\n"
+"Mail::assertNothingQueued();"
+msgstr ""
+
+#: ./docs/8.x/mocking.md:403
+#: ./docs/9.x/mocking.md:446
+msgctxt "P"
+msgid "You may pass a closure to the `assertSent`, `assertNotSent`, `assertQueued`, or `assertNotQueued` methods in order to assert that a mailable was sent that passes a given \"truth test\". If at least one mailable was sent that passes the given truth test then the assertion will be successful:"
+msgstr "可以傳入一個閉包給 `assertSent`、`assertNotSent`、`assertQueued`、`assertNotQueued` 方法來判斷 Mailable 是否通過給定的「真值測試 (Truth Test)」。若至少有一個寄出的 Mailable 通過給定的真值測試，則該 Assertion 會被視為成功："
+
+#: ./docs/8.x/mocking.md:405
+#: ./docs/9.x/mocking.md:448
+msgctxt "CODE"
+msgid ""
+"Mail::assertSent(function (OrderShipped $mail) use ($order) {\n"
+"    return $mail->order->id === $order->id;\n"
+"});"
+msgstr ""
+
+#: ./docs/8.x/mocking.md:409
+msgctxt "P"
+msgid "When calling the `Mail` facade's assertion methods, the mailable instance accepted by the provided closure exposes helpful methods for examining the recipients of the mailable:"
+msgstr "呼叫 `Mail` Facade 的 Assertion 方法時，所提供的閉包內收到的 Mailable 實體上有一些實用的方法，可用來檢查 Mailable 的收件者："
+
+#: ./docs/8.x/mocking.md:411
+msgctxt "CODE"
+msgid ""
+"Mail::assertSent(OrderShipped::class, function ($mail) use ($user) {\n"
+"    return $mail->hasTo($user->email) &&\n"
+"           $mail->hasCc('...') &&\n"
+"           $mail->hasBcc('...');\n"
+"});"
+msgstr ""
+
+#: ./docs/8.x/mocking.md:417
+#: ./docs/9.x/mocking.md:487
+msgctxt "P"
+msgid "You may have noticed that there are two methods for asserting that mail was not sent: `assertNotSent` and `assertNotQueued`. Sometimes you may wish to assert that no mail was sent **or** queued. To accomplish this, you may use the `assertNothingOutgoing` and `assertNotOutgoing` methods:"
+msgstr "讀者可能已經注意到，總共有兩個方法可用來檢查郵件是否未被送出：`assertNotSent`、`assertNotQueued`。有時候，我們可能會希望判斷沒有任何郵件被寄出，**而且** 也沒有任何郵件被放入佇列。若要判斷是否沒有郵件被寄出或放入佇列，可使用 `assertNothingOutgoing` 與 `assertNotOutgoing` 方法："
+
+#: ./docs/8.x/mocking.md:419
+#: ./docs/9.x/mocking.md:489
+msgctxt "CODE"
+msgid ""
+"Mail::assertNothingOutgoing();\n"
+"\n"
+"Mail::assertNotOutgoing(function (OrderShipped $mail) use ($order) {\n"
+"    return $mail->order->id === $order->id;\n"
+"});"
+msgstr ""
+
+#: ./docs/8.x/mocking.md:425
+#: ./docs/9.x/mocking.md:500
+#~ msgctxt "P"
+#~ msgid "<a name=\"notification-fake\"></a>"
+#~ msgstr ""
+
+#: ./docs/8.x/mocking.md:426
+#: ./docs/9.x/mocking.md:501
+msgctxt "H2"
+msgid "Notification Fake"
+msgstr "Notification Fake"
+
+#: ./docs/8.x/mocking.md:428
+#: ./docs/9.x/mocking.md:503
+msgctxt "P"
+msgid "You may use the `Notification` facade's `fake` method to prevent notifications from being sent. Typically, sending notifications is unrelated to the code you are actually testing. Most likely, it is sufficient to simply assert that Laravel was instructed to send a given notification."
+msgstr "可以使用 `Notification` Facade 的 `fake` 方法來避免送出 Notification。一般來說，送出 Notification 與實際要測試的程式碼是不相關的。通常，只要判斷 Laravel 是否有接到指示要送出給定的 Notification 就夠了。"
+
+#: ./docs/8.x/mocking.md:430
+#: ./docs/9.x/mocking.md:505
+msgctxt "P"
+msgid "After calling the `Notification` facade's `fake` method, you may then assert that [notifications](/docs/{{version}}/notifications) were instructed to be sent to users and even inspect the data the notifications received:"
+msgstr "呼叫 `Notification` Facade 的 `fake` 方法後，就可以判斷是否有被要求要將該 [Notification](/docs/{{version}}/notification) 送出給使用者，甚至還能判斷 Notification 收到的資料："
+
+#: ./docs/8.x/mocking.md:432
+msgctxt "CODE"
+msgid ""
+"<?php\n"
+"\n"
+"namespace Tests\\Feature;\n"
+"\n"
+"use App\\Notifications\\OrderShipped;\n"
+"use Illuminate\\Foundation\\Testing\\RefreshDatabase;\n"
+"use Illuminate\\Foundation\\Testing\\WithoutMiddleware;\n"
+"use Illuminate\\Support\\Facades\\Notification;\n"
+"use Tests\\TestCase;\n"
+"\n"
+"class ExampleTest extends TestCase\n"
+"{\n"
+"    public function test_orders_can_be_shipped()\n"
+"    {\n"
+"        Notification::fake();\n"
+"\n"
+"        // Perform order shipping...\n"
+"\n"
+"        // Assert that no notifications were sent...\n"
+"        Notification::assertNothingSent();\n"
+"\n"
+"        // Assert a notification was sent to the given users...\n"
+"        Notification::assertSentTo(\n"
+"            [$user], OrderShipped::class\n"
+"        );\n"
+"\n"
+"        // Assert a notification was not sent...\n"
+"        Notification::assertNotSentTo(\n"
+"            [$user], AnotherNotification::class\n"
+"        );\n"
+"    }\n"
+"}"
+msgstr ""
+
+#: ./docs/9.x/mocking.md:452
+msgctxt "P"
+msgid "When calling the `Mail` facade's assertion methods, the mailable instance accepted by the provided closure exposes helpful methods for examining the mailable:"
+msgstr "呼叫 `Mail` Facade 的 Assertion 方法時，所提供的閉包內收到的 Mailable 實體上有一些實用的方法，可用來檢查 Mailable："
+
+#: ./docs/9.x/mocking.md:454
+msgctxt "CODE"
+msgid ""
+"Mail::assertSent(OrderShipped::class, function ($mail) use ($user) {\n"
+"    return $mail->hasTo($user->email) &&\n"
+"           $mail->hasCc('...') &&\n"
+"           $mail->hasBcc('...') &&\n"
+"           $mail->hasReplyTo('...') &&\n"
+"           $mail->hasFrom('...') &&\n"
+"           $mail->hasSubject('...');\n"
+"});"
+msgstr ""
+
+#: ./docs/9.x/mocking.md:463
+msgctxt "P"
+msgid "The mailable instance also includes several helpful methods for examining the attachments on a mailable:"
+msgstr "Mailable 實體也包含了多個實用方法，可用來檢查 Mailable 上的附件："
+
+#: ./docs/8.x/mocking.md:465
+#: ./docs/9.x/mocking.md:543
+msgctxt "P"
+msgid "You may pass a closure to the `assertSentTo` or `assertNotSentTo` methods in order to assert that a notification was sent that passes a given \"truth test\". If at least one notification was sent that passes the given truth test then the assertion will be successful:"
+msgstr "可以傳入一個閉包給 `assertSentTo` 或 `assertNotSentTo` 方法，來判斷某個 Notification 是否通過給定的「真值測試 (Truth Test)」。若送出的 Notification 中至少有一個 Notification 通過給定的真值測試，則該 Assertion 會被視為成功："
+
+#: ./docs/9.x/mocking.md:465
+msgctxt "CODE"
+msgid ""
+"use Illuminate\\Mail\\Mailables\\Attachment;\n"
+"\n"
+"Mail::assertSent(OrderShipped::class, function ($mail) {\n"
+"    return $mail->hasAttachment(\n"
+"        Attachment::fromPath('/path/to/file')\n"
+"                ->as('name.pdf')\n"
+"                ->withMime('application/pdf')\n"
+"    );\n"
+"});\n"
+"\n"
+"Mail::assertSent(OrderShipped::class, function ($mail) {\n"
+"    return $mail->hasAttachment(\n"
+"        Attachment::fromStorageDisk('s3', '/path/to/file')\n"
+"    );\n"
+"});\n"
+"\n"
+"Mail::assertSent(OrderShipped::class, function ($mail) use ($pdfData) {\n"
+"    return $mail->hasAttachment(\n"
+"        Attachment::fromData(fn () => $pdfData, 'name.pdf')\n"
+"    );\n"
+"});"
+msgstr ""
+
+#: ./docs/8.x/mocking.md:467
+#: ./docs/9.x/mocking.md:545
+msgctxt "CODE"
+msgid ""
+"Notification::assertSentTo(\n"
+"    $user,\n"
+"    function (OrderShipped $notification, $channels) use ($order) {\n"
+"        return $notification->order->id === $order->id;\n"
+"    }\n"
+");"
+msgstr ""
+
+#: ./docs/8.x/mocking.md:474
+#: ./docs/9.x/mocking.md:552
+#~ msgctxt "P"
+#~ msgid "<a name=\"on-demand-notifications\"></a>"
+#~ msgstr ""
+
+#: ./docs/8.x/mocking.md:475
+#: ./docs/9.x/mocking.md:553
+msgctxt "H4"
+msgid "On-Demand Notifications"
+msgstr "隨需通知"
+
+#: ./docs/8.x/mocking.md:477
+msgctxt "P"
+msgid "If the code you are testing sends [on-demand notifications](/docs/{{version}}/notifications#on-demand-notifications), you will need to assert that the notification was sent to an `Illuminate\\Notifications\\AnonymousNotifiable` instance:"
+msgstr "若要測試的程式碼有傳送[隨需通知](/docs/{{version}}/notifications#on-demand-notifications)，則我們需要判斷該 Notification 是否有傳送給 `Illuminate\\Notifications\\AnonymousNotifiable` 實體："
+
+#: ./docs/8.x/mocking.md:479
+msgctxt "CODE"
+msgid ""
+"use Illuminate\\Notifications\\AnonymousNotifiable;\n"
+"\n"
+"Notification::assertSentTo(\n"
+"    new AnonymousNotifiable, OrderShipped::class\n"
+");"
+msgstr ""
+
+#: ./docs/8.x/mocking.md:485
+msgctxt "P"
+msgid "By passing a closure as the third argument to the notification assertion methods, you may determine if an on-demand notification was sent to the correct \"route\" address:"
+msgstr "若在 Notification Assertion 方法的第三個引數上傳入閉包，就能判斷隨需通知是否被送給正確的「^[Route](路由)」位址："
+
+#: ./docs/8.x/mocking.md:487
+msgctxt "CODE"
+msgid ""
+"Notification::assertSentTo(\n"
+"    new AnonymousNotifiable,\n"
+"    OrderShipped::class,\n"
+"    function ($notification, $channels, $notifiable) use ($user) {\n"
+"        return $notifiable->routes['mail'] === $user->email;\n"
+"    }\n"
+");"
+msgstr ""
+
+#: ./docs/8.x/mocking.md:495
+#: ./docs/9.x/mocking.md:568
+#~ msgctxt "P"
+#~ msgid "<a name=\"queue-fake\"></a>"
+#~ msgstr ""
+
+#: ./docs/9.x/mocking.md:495
+#~ msgctxt "P"
+#~ msgid "<a name=\"testing-mailable-content\"></a>"
+#~ msgstr ""
+
+#: ./docs/8.x/mocking.md:496
+#: ./docs/9.x/mocking.md:569
+msgctxt "H2"
+msgid "Queue Fake"
+msgstr "Queue Fake"
+
+#: ./docs/9.x/mocking.md:496
+msgctxt "H4"
+msgid "Testing Mailable Content"
+msgstr "測試 Mailable 的內容"
+
+#: ./docs/8.x/mocking.md:498
+#: ./docs/9.x/mocking.md:571
+msgctxt "P"
+msgid "You may use the `Queue` facade's `fake` method to prevent queued jobs from being pushed to the queue. Most likely, it is sufficient to simply assert that Laravel was instructed to push a given job to the queue since the queued jobs themselves may be tested in another test class."
+msgstr "可以使用 `Queue` Facade 的 `fake` 方法來避免放入佇列的 Job 被推入到佇列中。通常來說，這麼做就可以判斷 Laravel 有被指示要將給定的 Job 推入到佇列中了。因為，我們可以在其獨立的測試 Class 中測試放入佇列的 Job。"
+
+#: ./docs/9.x/mocking.md:498
+msgctxt "P"
+msgid "We suggest testing the content of your mailables separately from your tests that assert that a given mailable was \"sent\" to a specific user. To learn how to test the content of your mailables, check out our documentation on the [testing mailables](/docs/{{version}}/mail#testing-mailables)."
+msgstr "在測試郵件是否有寄給特定使用者時，我們建議與 Mailable 的內容分開測試。若要瞭解如何測試郵件是否有寄出，請參考有關[測試 Mailable](/docs/{{version}}/mail#testing-mailables) 的說明文件。"
+
+#: ./docs/8.x/mocking.md:500
+#: ./docs/9.x/mocking.md:573
+msgctxt "P"
+msgid "After calling the `Queue` facade's `fake` method, you may then assert that the application attempted to push jobs to the queue:"
+msgstr "呼叫 `Queue` Facade 的 `fake` 方法後，就可以判斷程式是否有嘗試將 Job 推入到佇列中："
+
+#: ./docs/8.x/mocking.md:502
+#: ./docs/9.x/mocking.md:575
+msgctxt "CODE"
+msgid ""
+"<?php\n"
+"\n"
+"namespace Tests\\Feature;\n"
+"\n"
+"use App\\Jobs\\AnotherJob;\n"
+"use App\\Jobs\\FinalJob;\n"
+"use App\\Jobs\\ShipOrder;\n"
+"use Illuminate\\Foundation\\Testing\\RefreshDatabase;\n"
+"use Illuminate\\Foundation\\Testing\\WithoutMiddleware;\n"
+"use Illuminate\\Support\\Facades\\Queue;\n"
+"use Tests\\TestCase;\n"
+"\n"
+"class ExampleTest extends TestCase\n"
+"{\n"
+"    public function test_orders_can_be_shipped()\n"
+"    {\n"
+"        Queue::fake();\n"
+"\n"
+"        // Perform order shipping...\n"
+"\n"
+"        // Assert that no jobs were pushed...\n"
+"        Queue::assertNothingPushed();\n"
+"\n"
+"        // Assert a job was pushed to a given queue...\n"
+"        Queue::assertPushedOn('queue-name', ShipOrder::class);\n"
+"\n"
+"        // Assert a job was pushed twice...\n"
+"        Queue::assertPushed(ShipOrder::class, 2);\n"
+"\n"
+"        // Assert a job was not pushed...\n"
+"        Queue::assertNotPushed(AnotherJob::class);\n"
+"    }\n"
+"}"
+msgstr ""
+
+#: ./docs/9.x/mocking.md:507
+msgctxt "CODE"
+msgid ""
+"<?php\n"
+"\n"
+"namespace Tests\\Feature;\n"
+"\n"
+"use App\\Notifications\\OrderShipped;\n"
+"use Illuminate\\Foundation\\Testing\\RefreshDatabase;\n"
+"use Illuminate\\Foundation\\Testing\\WithoutMiddleware;\n"
+"use Illuminate\\Support\\Facades\\Notification;\n"
+"use Tests\\TestCase;\n"
+"\n"
+"class ExampleTest extends TestCase\n"
+"{\n"
+"    public function test_orders_can_be_shipped()\n"
+"    {\n"
+"        Notification::fake();\n"
+"\n"
+"        // Perform order shipping...\n"
+"\n"
+"        // Assert that no notifications were sent...\n"
+"        Notification::assertNothingSent();\n"
+"\n"
+"        // Assert a notification was sent to the given users...\n"
+"        Notification::assertSentTo(\n"
+"            [$user], OrderShipped::class\n"
+"        );\n"
+"\n"
+"        // Assert a notification was not sent...\n"
+"        Notification::assertNotSentTo(\n"
+"            [$user], AnotherNotification::class\n"
+"        );\n"
+"\n"
+"        // Assert that a given number of notifications were sent...\n"
+"        Notification::assertCount(3);\n"
+"    }\n"
+"}"
+msgstr ""
+
+#: ./docs/8.x/mocking.md:536
+#: ./docs/9.x/mocking.md:609
+msgctxt "P"
+msgid "You may pass a closure to the `assertPushed` or `assertNotPushed` methods in order to assert that a job was pushed that passes a given \"truth test\". If at least one job was pushed that passes the given truth test then the assertion will be successful:"
+msgstr "可以傳入一個閉包給 `assertPushed` 或 `assertNotPushed` 方法，來判斷某個 Job 是否通過給定的「真值測試 (Truth Test)」。若被推入的 Job 中至少有一個 Job 通過給定的真值測試，則該 Assertion 會被視為成功："
+
+#: ./docs/8.x/mocking.md:538
+#: ./docs/9.x/mocking.md:611
+msgctxt "CODE"
+msgid ""
+"Queue::assertPushed(function (ShipOrder $job) use ($order) {\n"
+"    return $job->order->id === $order->id;\n"
+"});"
+msgstr ""
+
+#: ./docs/8.x/mocking.md:542
+#: ./docs/9.x/mocking.md:629
+#~ msgctxt "P"
+#~ msgid "<a name=\"job-chains\"></a>"
+#~ msgstr ""
+
+#: ./docs/8.x/mocking.md:545
+#: ./docs/9.x/mocking.md:632
+msgctxt "P"
+msgid "The `Queue` facade's `assertPushedWithChain` and `assertPushedWithoutChain` methods may be used to inspect the job chain of a pushed job. The `assertPushedWithChain` method accepts the primary job as its first argument and an array of chained jobs as its second argument:"
+msgstr "`Queue` Facade 的 `assertPushedWithChain` 與 `assertPushedWithoutChain` 方法可用來檢查串聯 Job 或是被推入佇列的 Job。`assertPushedWithChain` 方法的第一個引數未主要的 Job，而第二個引數則為一組包含串聯 Job 的陣列："
+
+#: ./docs/8.x/mocking.md:547
+#: ./docs/9.x/mocking.md:634
+msgctxt "CODE"
+msgid ""
+"use App\\Jobs\\RecordShipment;\n"
+"use App\\Jobs\\ShipOrder;\n"
+"use App\\Jobs\\UpdateInventory;\n"
+"use Illuminate\\Support\\Facades\\Queue;\n"
+"\n"
+"Queue::assertPushedWithChain(ShipOrder::class, [\n"
+"    RecordShipment::class,\n"
+"    UpdateInventory::class\n"
+"]);"
+msgstr ""
+
+#: ./docs/9.x/mocking.md:555
+msgctxt "P"
+msgid "If the code you are testing sends [on-demand notifications](/docs/{{version}}/notifications#on-demand-notifications), you can test that the on-demand notification was sent via the `assertSentOnDemand` method:"
+msgstr "若要測試的程式中有傳送[隨需通知]，則可使用 `assertSentOnDemand` 方法來測試是否有送出隨需通知："
+
+#: ./docs/9.x/mocking.md:557
+msgctxt "CODE"
+msgid "Notification::assertSentOnDemand(OrderShipped::class);"
+msgstr ""
+
+#: ./docs/8.x/mocking.md:559
+#: ./docs/9.x/mocking.md:646
+msgctxt "CODE"
+msgid ""
+"Queue::assertPushedWithChain(ShipOrder::class, [\n"
+"    new RecordShipment,\n"
+"    new UpdateInventory,\n"
+"]);"
+msgstr ""
+
+#: ./docs/9.x/mocking.md:559
+msgctxt "P"
+msgid "By passing a closure as the second argument to the `assertSentOnDemand` method, you may determine if an on-demand notification was sent to the correct \"route\" address:"
+msgstr "若在 `assertSentOnDemand` 方法的第二個引數上傳入閉包，就能判斷隨需通知是否被送給正確的「^[Route](路由)」位址："
+
+#: ./docs/9.x/mocking.md:561
+msgctxt "CODE"
+msgid ""
+"Notification::assertSentOnDemand(\n"
+"    OrderShipped::class,\n"
+"    function ($notification, $channels, $notifiable) use ($user) {\n"
+"        return $notifiable->routes['mail'] === $user->email;\n"
+"    }\n"
+");"
+msgstr ""
+
+#: ./docs/8.x/mocking.md:564
+#: ./docs/9.x/mocking.md:651
+msgctxt "P"
+msgid "You may use the `assertPushedWithoutChain` method to assert that a job was pushed without a chain of jobs:"
+msgstr "可以使用 `assertPushedWithoutChain` 方法來判斷 Job 被推入 Queue 但未包含串聯 Job："
+
+#: ./docs/8.x/mocking.md:566
+#: ./docs/9.x/mocking.md:653
+msgctxt "CODE"
+msgid "Queue::assertPushedWithoutChain(ShipOrder::class);"
+msgstr ""
+
+#: ./docs/8.x/mocking.md:568
+#: ./docs/9.x/mocking.md:655
+#~ msgctxt "P"
+#~ msgid "<a name=\"storage-fake\"></a>"
+#~ msgstr ""
+
+#: ./docs/8.x/mocking.md:569
+#: ./docs/9.x/mocking.md:656
+msgctxt "H2"
+msgid "Storage Fake"
+msgstr "Storage Fake"
+
+#: ./docs/8.x/mocking.md:571
+#: ./docs/9.x/mocking.md:658
+msgctxt "P"
+msgid "The `Storage` facade's `fake` method allows you to easily generate a fake disk that, combined with the file generation utilities of the `Illuminate\\Http\\UploadedFile` class, greatly simplifies the testing of file uploads. For example:"
+msgstr "使用 `Storage` Facade 的 `fake` 方法就可輕鬆地產生 Fake Disk。Fake Disk 可以與 `Illuminate\\Http\\UploadedFile` 類別的檔案產生工具來搭配使用，讓我們能非常輕鬆地測試檔案上傳。舉例來說："
+
+#: ./docs/8.x/mocking.md:573
+msgctxt "CODE"
+msgid ""
+"<?php\n"
+"\n"
+"namespace Tests\\Feature;\n"
+"\n"
+"use Illuminate\\Foundation\\Testing\\RefreshDatabase;\n"
+"use Illuminate\\Foundation\\Testing\\WithoutMiddleware;\n"
+"use Illuminate\\Http\\UploadedFile;\n"
+"use Illuminate\\Support\\Facades\\Storage;\n"
+"use Tests\\TestCase;\n"
+"\n"
+"class ExampleTest extends TestCase\n"
+"{\n"
+"    public function test_albums_can_be_uploaded()\n"
+"    {\n"
+"        Storage::fake('photos');\n"
+"\n"
+"        $response = $this->json('POST', '/photos', [\n"
+"            UploadedFile::fake()->image('photo1.jpg'),\n"
+"            UploadedFile::fake()->image('photo2.jpg')\n"
+"        ]);\n"
+"\n"
+"        // Assert one or more files were stored...\n"
+"        Storage::disk('photos')->assertExists('photo1.jpg');\n"
+"        Storage::disk('photos')->assertExists(['photo1.jpg', 'photo2.jpg']);\n"
+"\n"
+"        // Assert one or more files were not stored...\n"
+"        Storage::disk('photos')->assertMissing('missing.jpg');\n"
+"        Storage::disk('photos')->assertMissing(['missing.jpg', 'non-existing.jpg']);\n"
+"    }\n"
+"}"
+msgstr ""
+
+#: ./docs/8.x/mocking.md:604
+msgctxt "P"
+msgid "For more information on testing file uploads, you may consult the [HTTP testing documentation's information on file uploads](/docs/{{version}}/http-tests#testing-file-uploads)."
+msgstr "更多有關測試檔案上傳的資訊，請參考 [HTTP 測試說明文件中的檔案上傳部分](/docs/{{version}}/http-tests#testing-file-uploads)。"
+
+#: ./docs/8.x/mocking.md:606
+msgctxt "P"
+msgid "By default, the `fake` method will delete all files in its temporary directory. If you would like to keep these files, you may use the \"persistentFake\" method instead."
+msgstr ""
+
+#: ./docs/8.x/mocking.md:608
+#: ./docs/9.x/mocking.md:699
+#: ./docs/10.x/mocking.md:134
+#: ./docs/11.x/mocking.md:188
+#: ./docs/master/mocking.md:188
+#~ msgctxt "P"
+#~ msgid "<a name=\"interacting-with-time\"></a>"
+#~ msgstr ""
+
+#: ./docs/8.x/mocking.md:609
+#: ./docs/9.x/mocking.md:700
+#: ./docs/10.x/mocking.md:135
+#: ./docs/11.x/mocking.md:189
+#: ./docs/master/mocking.md:189
+msgctxt "H2"
+msgid "Interacting With Time"
+msgstr "處理時間"
+
+#: ./docs/8.x/mocking.md:611
+#: ./docs/9.x/mocking.md:702
+#: ./docs/10.x/mocking.md:137
+#: ./docs/11.x/mocking.md:191
+#: ./docs/master/mocking.md:191
+msgctxt "P"
+msgid "When testing, you may occasionally need to modify the time returned by helpers such as `now` or `Illuminate\\Support\\Carbon::now()`. Thankfully, Laravel's base feature test class includes helpers that allow you to manipulate the current time:"
+msgstr "在測試的時候，我們有時候會想要更改如 `now` 或 `Illuminate\\Support\\Carbon::now()` 等輔助函式所回傳的時間。幸好，Laravel 的基礎功能測試 (Feature Test) Class 中，有包含一個可以更改目前時間的輔助函式："
+
+#: ./docs/8.x/mocking.md:613
+msgctxt "CODE"
+msgid ""
+"public function testTimeCanBeManipulated()\n"
+"{\n"
+"    // Travel into the future...\n"
+"    $this->travel(5)->milliseconds();\n"
+"    $this->travel(5)->seconds();\n"
+"    $this->travel(5)->minutes();\n"
+"    $this->travel(5)->hours();\n"
+"    $this->travel(5)->days();\n"
+"    $this->travel(5)->weeks();\n"
+"    $this->travel(5)->years();\n"
+"\n"
+"    // Travel into the past...\n"
+"    $this->travel(-5)->hours();\n"
+"\n"
+"    // Travel to an explicit time...\n"
+"    $this->travelTo(now()->subHours(6));\n"
+"\n"
+"    // Return back to the present time...\n"
+"    $this->travelBack();\n"
+"}"
+msgstr ""
+
+#: ./docs/9.x/mocking.md:615
+msgctxt "P"
+msgid "If you only need to fake specific jobs while allowing your other jobs to execute normally, you may pass the class names of the jobs that should be faked to the `fake` method:"
+msgstr "若只想 Fake 特定的 Job，並讓其他 Job 都被正常執行，可以傳入要被 Fake 的 Job 類別名稱給 `fake` 方法："
+
+#: ./docs/9.x/mocking.md:617
+msgctxt "CODE"
+msgid ""
+"public function test_orders_can_be_shipped()\n"
+"{\n"
+"    Queue::fake([\n"
+"        ShipOrder::class,\n"
+"    ]);\n"
+"    \n"
+"    // Perform order shipping...\n"
+"\n"
+"    // Assert a job was pushed twice...\n"
+"    Queue::assertPushed(ShipOrder::class, 2);\n"
+"}"
+msgstr ""
+
+#: ./docs/9.x/mocking.md:660
+msgctxt "CODE"
+msgid ""
+"<?php\n"
+"\n"
+"namespace Tests\\Feature;\n"
+"\n"
+"use Illuminate\\Foundation\\Testing\\RefreshDatabase;\n"
+"use Illuminate\\Foundation\\Testing\\WithoutMiddleware;\n"
+"use Illuminate\\Http\\UploadedFile;\n"
+"use Illuminate\\Support\\Facades\\Storage;\n"
+"use Tests\\TestCase;\n"
+"\n"
+"class ExampleTest extends TestCase\n"
+"{\n"
+"    public function test_albums_can_be_uploaded()\n"
+"    {\n"
+"        Storage::fake('photos');\n"
+"\n"
+"        $response = $this->json('POST', '/photos', [\n"
+"            UploadedFile::fake()->image('photo1.jpg'),\n"
+"            UploadedFile::fake()->image('photo2.jpg')\n"
+"        ]);\n"
+"\n"
+"        // Assert one or more files were stored...\n"
+"        Storage::disk('photos')->assertExists('photo1.jpg');\n"
+"        Storage::disk('photos')->assertExists(['photo1.jpg', 'photo2.jpg']);\n"
+"\n"
+"        // Assert one or more files were not stored...\n"
+"        Storage::disk('photos')->assertMissing('missing.jpg');\n"
+"        Storage::disk('photos')->assertMissing(['missing.jpg', 'non-existing.jpg']);\n"
+"\n"
+"        // Assert that a given directory is empty...\n"
+"        Storage::disk('photos')->assertDirectoryEmpty('/wallpapers');\n"
+"    }\n"
+"}"
+msgstr ""
+
+#: ./docs/9.x/mocking.md:694
+msgctxt "P"
+msgid "By default, the `fake` method will delete all files in its temporary directory. If you would like to keep these files, you may use the \"persistentFake\" method instead. For more information on testing file uploads, you may consult the [HTTP testing documentation's information on file uploads](/docs/{{version}}/http-tests#testing-file-uploads)."
+msgstr "預設情況下，`fake` 方法會刪除其臨時目錄下的所有檔案。若想保留這些檔案，可使用「persistentFake」方法。更多有關測試檔案上傳的資訊，可參考 [HTTP 測試說明文件中有關檔案上傳的部分](/docs/{{version}}/http-tests#testing-file-uploads)。"
+
+#: ./docs/9.x/mocking.md:697
+msgctxt "P"
+msgid "The `image` method requires the [GD extension](https://www.php.net/manual/en/book.image.php)."
+msgstr "要使用 `image` 方法則需要有 [GD 擴充程式](https://www.php.net/manual/en/book.image.php)。"
+
+#: ./docs/9.x/mocking.md:704
+msgctxt "CODE"
+msgid ""
+"use Illuminate\\Support\\Carbon;\n"
+"\n"
+"public function testTimeCanBeManipulated()\n"
+"{\n"
+"    // Travel into the future...\n"
+"    $this->travel(5)->milliseconds();\n"
+"    $this->travel(5)->seconds();\n"
+"    $this->travel(5)->minutes();\n"
+"    $this->travel(5)->hours();\n"
+"    $this->travel(5)->days();\n"
+"    $this->travel(5)->weeks();\n"
+"    $this->travel(5)->years();\n"
+"\n"
+"    // Freeze time and resume normal time after executing closure...\n"
 "    $this->freezeTime(function (Carbon $time) {\n"
 "        // ...\n"
-"    });\n\n"
-"    // 穿越到過去...\n"
-"    $this->travel(-5)->hours();\n\n"
-"    // 穿越到特定的時間...\n"
-"    $this->travelTo(now()->subHours(6));\n\n"
-"    // 回到目前時間...\n"
+"    });\n"
+"\n"
+"    // Travel into the past...\n"
+"    $this->travel(-5)->hours();\n"
+"\n"
+"    // Travel to an explicit time...\n"
+"    $this->travelTo(now()->subHours(6));\n"
+"\n"
+"    // Return back to the present time...\n"
 "    $this->travelBack();\n"
-"}\n"
-
+"}"
+msgstr ""

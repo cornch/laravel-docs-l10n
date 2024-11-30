@@ -1,98 +1,98 @@
 msgid ""
 msgstr ""
 
+# H1
 #: ./docs/11.x/context.md:1
-msgctxt "H1"
 msgid "Context"
 msgstr ""
 
+# P
 #: ./docs/11.x/context.md:3
-msgctxt "P"
 msgid "[Introduction](#introduction)"
 msgstr ""
 
+# P
 #: ./docs/11.x/context.md:4
-msgctxt "P"
 msgid "[How it Works](#how-it-works)"
 msgstr ""
 
+# P
 #: ./docs/11.x/context.md:5
-msgctxt "P"
 msgid "[Capturing Context](#capturing-context)"
 msgstr ""
 
+# P
 #: ./docs/11.x/context.md:6
-msgctxt "P"
 msgid "[Stacks](#stacks)"
 msgstr ""
 
+# P
 #: ./docs/11.x/context.md:7
-msgctxt "P"
 msgid "[Retrieving Context](#retrieving-context)"
 msgstr ""
 
+# P
 #: ./docs/11.x/context.md:8
-msgctxt "P"
 msgid "[Determining Item Existence](#determining-item-existence)"
 msgstr ""
 
+# P
 #: ./docs/11.x/context.md:9
-msgctxt "P"
 msgid "[Removing Context](#removing-context)"
 msgstr ""
 
+# P
 #: ./docs/11.x/context.md:10
-msgctxt "P"
 msgid "[Hidden Context](#hidden-context)"
 msgstr ""
 
+# P
 #: ./docs/11.x/context.md:11
-msgctxt "P"
 msgid "[Events](#events)"
 msgstr ""
 
+# P
 #: ./docs/11.x/context.md:12
-msgctxt "P"
 msgid "[Dehydrating](#dehydrating)"
 msgstr ""
 
+# P
 #: ./docs/11.x/context.md:13
-msgctxt "P"
 msgid "[Hydrated](#hydrated)"
 msgstr ""
 
+# P
 #: ./docs/11.x/context.md:15
-#~ msgctxt "P"
 #~ msgid "<a name=\"introduction\"></a>"
 #~ msgstr ""
 
+# H2
 #: ./docs/11.x/context.md:16
-msgctxt "H2"
 msgid "Introduction"
 msgstr ""
 
+# P
 #: ./docs/11.x/context.md:18
-msgctxt "P"
 msgid "Laravel's \"context\" capabilities enable you to capture, retrieve, and share information throughout requests, jobs, and commands executing within your application. This captured information is also included in logs written by your application, giving you deeper insight into the surrounding code execution history that occurred before a log entry was written and allowing you to trace execution flows throughout a distributed system."
 msgstr ""
 
+# P
 #: ./docs/11.x/context.md:20
-#~ msgctxt "P"
 #~ msgid "<a name=\"how-it-works\"></a>"
 #~ msgstr ""
 
+# H3
 #: ./docs/11.x/context.md:21
-msgctxt "H3"
 msgid "How it Works"
 msgstr ""
 
+# P
 #: ./docs/11.x/context.md:23
-msgctxt "P"
 msgid "The best way to understand Laravel's context capabilities is to see it in action using  the built-in logging features. To get started, you may [add information to the context](#capturing-context) using the `Context` facade. In this example, we will use a [middleware](/docs/{{version}}/middleware) to add the request URL and a unique trace ID to the context on every incoming request:"
 msgstr ""
 
+# CODE: php
 #: ./docs/11.x/context.md:25
-msgctxt "CODE: php"
 msgid ""
 "<?php\n"
 "\n"
@@ -119,33 +119,33 @@ msgid ""
 "}"
 msgstr ""
 
+# P
 #: ./docs/11.x/context.md:51
-msgctxt "P"
 msgid "Information added to the context is automatically appended as metadata to any [log entries](/docs/{{version}}/logging) that are written throughout the request. Appending context as metadata allows information passed to individual log entries to be differentiated from the information shared via `Context`. For example, imagine we write the following log entry:"
 msgstr ""
 
+# CODE: php
 #: ./docs/11.x/context.md:53
-msgctxt "CODE: php"
 msgid "Log::info('User authenticated.', ['auth_id' => Auth::id()]);"
 msgstr ""
 
+# P
 #: ./docs/11.x/context.md:57
-msgctxt "P"
 msgid "The written log will contain the `auth_id` passed to the log entry, but it will also contain the context's `url` and `trace_id` as metadata:"
 msgstr ""
 
+# CODE
 #: ./docs/11.x/context.md:59
-msgctxt "CODE"
 msgid "User authenticated. {\"auth_id\":27} {\"url\":\"https://example.com/login\",\"trace_id\":\"e04e1a11-e75c-4db3-b5b5-cfef4ef56697\"}"
 msgstr ""
 
+# P
 #: ./docs/11.x/context.md:63
-msgctxt "P"
 msgid "Information added to the context is also made available to jobs dispatched to the queue. For example, imagine we dispatch a `ProcessPodcast` job to the queue after adding some information to the context:"
 msgstr ""
 
+# CODE: php
 #: ./docs/11.x/context.md:65
-msgctxt "CODE: php"
 msgid ""
 "// In our middleware...\n"
 "Context::add('url', $request->url());\n"
@@ -155,13 +155,13 @@ msgid ""
 "ProcessPodcast::dispatch($podcast);"
 msgstr ""
 
+# P
 #: ./docs/11.x/context.md:74
-msgctxt "P"
 msgid "When the job is dispatched, any information currently stored in the context is captured and shared with the job. The captured information is then hydrated back into the current context while the job is executing. So, if our job's handle method was to write to the log:"
 msgstr ""
 
+# CODE: php
 #: ./docs/11.x/context.md:76
-msgctxt "CODE: php"
 msgid ""
 "class ProcessPodcast implements ShouldQueue\n"
 "{\n"
@@ -183,51 +183,51 @@ msgid ""
 "}"
 msgstr ""
 
+# P
 #: ./docs/11.x/context.md:97
-msgctxt "P"
 msgid "The resulting log entry would contain the information that was added to the context during the request that originally dispatched the job:"
 msgstr ""
 
+# CODE
 #: ./docs/11.x/context.md:99
-msgctxt "CODE"
 msgid "Processing podcast. {\"podcast_id\":95} {\"url\":\"https://example.com/login\",\"trace_id\":\"e04e1a11-e75c-4db3-b5b5-cfef4ef56697\"}"
 msgstr ""
 
+# P
 #: ./docs/11.x/context.md:103
-msgctxt "P"
 msgid "Although we have focused on the built-in logging related features of Laravel's context, the following documentation will illustrate how context allows you to share information across the HTTP request / queued job boundary and even how to add [hidden context data](#hidden-context) that is not written with log entries."
 msgstr ""
 
+# P
 #: ./docs/11.x/context.md:105
-#~ msgctxt "P"
 #~ msgid "<a name=\"capturing-context\"></a>"
 #~ msgstr ""
 
+# H2
 #: ./docs/11.x/context.md:106
-msgctxt "H2"
 msgid "Capturing Context"
 msgstr ""
 
+# P
 #: ./docs/11.x/context.md:108
-msgctxt "P"
 msgid "You may store information in the current context using the `Context` facade's `add` method:"
 msgstr ""
 
+# CODE: php
 #: ./docs/11.x/context.md:110
-msgctxt "CODE: php"
 msgid ""
 "use Illuminate\\Support\\Facades\\Context;\n"
 "\n"
 "Context::add('key', 'value');"
 msgstr ""
 
+# P
 #: ./docs/11.x/context.md:116
-msgctxt "P"
 msgid "To add multiple items at once, you may pass an associative array to the `add` method:"
 msgstr ""
 
+# CODE: php
 #: ./docs/11.x/context.md:118
-msgctxt "CODE: php"
 msgid ""
 "Context::add([\n"
 "    'first_key' => 'value',\n"
@@ -235,13 +235,13 @@ msgid ""
 "]);"
 msgstr ""
 
+# P
 #: ./docs/11.x/context.md:125
-msgctxt "P"
 msgid "The `add` method will override any existing value that shares the same key. If you only wish to add information to the context if the key does not already exist, you may use the `addIf` method:"
 msgstr ""
 
+# CODE: php
 #: ./docs/11.x/context.md:127
-msgctxt "CODE: php"
 msgid ""
 "Context::add('key', 'first');\n"
 "\n"
@@ -254,23 +254,23 @@ msgid ""
 "// \"first\""
 msgstr ""
 
+# P
 #: ./docs/11.x/context.md:139
-#~ msgctxt "P"
 #~ msgid "<a name=\"conditional-context\"></a>"
 #~ msgstr ""
 
+# H4
 #: ./docs/11.x/context.md:140
-msgctxt "H4"
 msgid "Conditional Context"
 msgstr ""
 
+# P
 #: ./docs/11.x/context.md:142
-msgctxt "P"
 msgid "The `when` method may be used to add data to the context based on a given condition. The first closure provided to the `when` method will be invoked if the given condition evaluates to `true`, while the second closure will be invoked if the condition evaluates to `false`:"
 msgstr ""
 
+# CODE: php
 #: ./docs/11.x/context.md:144
-msgctxt "CODE: php"
 msgid ""
 "use Illuminate\\Support\\Facades\\Auth;\n"
 "use Illuminate\\Support\\Facades\\Context;\n"
@@ -282,23 +282,23 @@ msgid ""
 ");"
 msgstr ""
 
+# P
 #: ./docs/11.x/context.md:155
-#~ msgctxt "P"
 #~ msgid "<a name=\"stacks\"></a>"
 #~ msgstr ""
 
+# H3
 #: ./docs/11.x/context.md:156
-msgctxt "H3"
 msgid "Stacks"
 msgstr ""
 
+# P
 #: ./docs/11.x/context.md:158
-msgctxt "P"
 msgid "Context offers the ability to create \"stacks\", which are lists of data stored in the order that they were added. You can add information to a stack by invoking the `push` method:"
 msgstr ""
 
+# CODE: php
 #: ./docs/11.x/context.md:160
-msgctxt "CODE: php"
 msgid ""
 "use Illuminate\\Support\\Facades\\Context;\n"
 "\n"
@@ -314,13 +314,13 @@ msgid ""
 "// ]"
 msgstr ""
 
+# P
 #: ./docs/11.x/context.md:175
-msgctxt "P"
 msgid "Stacks can be useful to capture historical information about a request, such as events that are happening throughout your application. For example, you could create an event listener to push to a stack every time a query is executed, capturing the query SQL and duration as a tuple:"
 msgstr ""
 
+# CODE: php
 #: ./docs/11.x/context.md:177
-msgctxt "CODE: php"
 msgid ""
 "use Illuminate\\Support\\Facades\\Context;\n"
 "use Illuminate\\Support\\Facades\\DB;\n"
@@ -330,13 +330,13 @@ msgid ""
 "});"
 msgstr ""
 
+# P
 #: ./docs/11.x/context.md:186
-msgctxt "P"
 msgid "You may determine if a value is in a stack using the `stackContains` and `hiddenStackContains` methods:"
 msgstr ""
 
+# CODE: php
 #: ./docs/11.x/context.md:188
-msgctxt "CODE: php"
 msgid ""
 "if (Context::stackContains('breadcrumbs', 'first_value')) {\n"
 "    //\n"
@@ -347,13 +347,13 @@ msgid ""
 "}"
 msgstr ""
 
+# P
 #: ./docs/11.x/context.md:198
-msgctxt "P"
 msgid "The `stackContains` and `hiddenStackContains` methods also accept a closure as their second argument, allowing more control over the value comparison operation:"
 msgstr ""
 
+# CODE: php
 #: ./docs/11.x/context.md:200
-msgctxt "CODE: php"
 msgid ""
 "use Illuminate\\Support\\Facades\\Context;\n"
 "use Illuminate\\Support\\Str;\n"
@@ -363,56 +363,56 @@ msgid ""
 "});"
 msgstr ""
 
+# P
 #: ./docs/11.x/context.md:209
-#~ msgctxt "P"
 #~ msgid "<a name=\"retrieving-context\"></a>"
 #~ msgstr ""
 
+# H2
 #: ./docs/11.x/context.md:210
-msgctxt "H2"
 msgid "Retrieving Context"
 msgstr ""
 
+# P
 #: ./docs/11.x/context.md:212
-msgctxt "P"
 msgid "You may retrieve information from the context using the `Context` facade's `get` method:"
 msgstr ""
 
+# CODE: php
 #: ./docs/11.x/context.md:214
-msgctxt "CODE: php"
 msgid ""
 "use Illuminate\\Support\\Facades\\Context;\n"
 "\n"
 "$value = Context::get('key');"
 msgstr ""
 
+# P
 #: ./docs/11.x/context.md:220
-msgctxt "P"
 msgid "The `only` method may be used to retrieve a subset of the information in the context:"
 msgstr ""
 
+# CODE: php
 #: ./docs/11.x/context.md:222
-msgctxt "CODE: php"
 msgid "$data = Context::only(['first_key', 'second_key']);"
 msgstr ""
 
+# P
 #: ./docs/11.x/context.md:226
-msgctxt "P"
 msgid "The `pull` method may be used to retrieve information from the context and immediately remove it from the context:"
 msgstr ""
 
+# CODE: php
 #: ./docs/11.x/context.md:228
-msgctxt "CODE: php"
 msgid "$value = Context::pull('key');"
 msgstr ""
 
+# P
 #: ./docs/11.x/context.md:232
-msgctxt "P"
 msgid "If context data is stored in a [stack](#stacks), you may pop items from the stack using the `pop` method:"
 msgstr ""
 
+# CODE: php
 #: ./docs/11.x/context.md:234
-msgctxt "CODE: php"
 msgid ""
 "Context::push('breadcrumbs', 'first_value', 'second_value');\n"
 "\n"
@@ -423,33 +423,33 @@ msgid ""
 "// ['first_value'] "
 msgstr ""
 
+# P
 #: ./docs/11.x/context.md:244
-msgctxt "P"
 msgid "If you would like to retrieve all of the information stored in the context, you may invoke the `all` method:"
 msgstr ""
 
+# CODE: php
 #: ./docs/11.x/context.md:246
-msgctxt "CODE: php"
 msgid "$data = Context::all();"
 msgstr ""
 
+# P
 #: ./docs/11.x/context.md:250
-#~ msgctxt "P"
 #~ msgid "<a name=\"determining-item-existence\"></a>"
 #~ msgstr ""
 
+# H3
 #: ./docs/11.x/context.md:251
-msgctxt "H3"
 msgid "Determining Item Existence"
 msgstr ""
 
+# P
 #: ./docs/11.x/context.md:253
-msgctxt "P"
 msgid "You may use the `has` method to determine if the context has any value stored for the given key:"
 msgstr ""
 
+# CODE: php
 #: ./docs/11.x/context.md:255
-msgctxt "CODE: php"
 msgid ""
 "use Illuminate\\Support\\Facades\\Context;\n"
 "\n"
@@ -458,13 +458,13 @@ msgid ""
 "}"
 msgstr ""
 
+# P
 #: ./docs/11.x/context.md:263
-msgctxt "P"
 msgid "The `has` method will return `true` regardless of the value stored. So, for example, a key with a `null` value will be considered present:"
 msgstr ""
 
+# CODE: php
 #: ./docs/11.x/context.md:265
-msgctxt "CODE: php"
 msgid ""
 "Context::add('key', null);\n"
 "\n"
@@ -472,23 +472,23 @@ msgid ""
 "// true"
 msgstr ""
 
+# P
 #: ./docs/11.x/context.md:272
-#~ msgctxt "P"
 #~ msgid "<a name=\"removing-context\"></a>"
 #~ msgstr ""
 
+# H2
 #: ./docs/11.x/context.md:273
-msgctxt "H2"
 msgid "Removing Context"
 msgstr ""
 
+# P
 #: ./docs/11.x/context.md:275
-msgctxt "P"
 msgid "The `forget` method may be used to remove a key and its value from the current context:"
 msgstr ""
 
+# CODE: php
 #: ./docs/11.x/context.md:277
-msgctxt "CODE: php"
 msgid ""
 "use Illuminate\\Support\\Facades\\Context;\n"
 "\n"
@@ -501,33 +501,33 @@ msgid ""
 "// ['second_key' => 2]"
 msgstr ""
 
+# P
 #: ./docs/11.x/context.md:289
-msgctxt "P"
 msgid "You may forget several keys at once by providing an array to the `forget` method:"
 msgstr ""
 
+# CODE: php
 #: ./docs/11.x/context.md:291
-msgctxt "CODE: php"
 msgid "Context::forget(['first_key', 'second_key']);"
 msgstr ""
 
+# P
 #: ./docs/11.x/context.md:295
-#~ msgctxt "P"
 #~ msgid "<a name=\"hidden-context\"></a>"
 #~ msgstr ""
 
+# H2
 #: ./docs/11.x/context.md:296
-msgctxt "H2"
 msgid "Hidden Context"
 msgstr ""
 
+# P
 #: ./docs/11.x/context.md:298
-msgctxt "P"
 msgid "Context offers the ability to store \"hidden\" data. This hidden information is not appended to logs, and is not accessible via the data retrieval methods documented above. Context provides a different set of methods to interact with hidden context information:"
 msgstr ""
 
+# CODE: php
 #: ./docs/11.x/context.md:300
-msgctxt "CODE: php"
 msgid ""
 "use Illuminate\\Support\\Facades\\Context;\n"
 "\n"
@@ -540,13 +540,13 @@ msgid ""
 "// null"
 msgstr ""
 
+# P
 #: ./docs/11.x/context.md:312
-msgctxt "P"
 msgid "The \"hidden\" methods mirror the functionality of the non-hidden methods documented above:"
 msgstr ""
 
+# CODE: php
 #: ./docs/11.x/context.md:314
-msgctxt "CODE: php"
 msgid ""
 "Context::addHidden(/* ... */);\n"
 "Context::addHiddenIf(/* ... */);\n"
@@ -560,48 +560,48 @@ msgid ""
 "Context::forgetHidden(/* ... */);"
 msgstr ""
 
+# P
 #: ./docs/11.x/context.md:327
-#~ msgctxt "P"
 #~ msgid "<a name=\"events\"></a>"
 #~ msgstr ""
 
+# H2
 #: ./docs/11.x/context.md:328
-msgctxt "H2"
 msgid "Events"
 msgstr ""
 
+# P
 #: ./docs/11.x/context.md:330
-msgctxt "P"
 msgid "Context dispatches two events that allow you to hook into the hydration and dehydration process of the context."
 msgstr ""
 
+# P
 #: ./docs/11.x/context.md:332
-msgctxt "P"
 msgid "To illustrate how these events may be used, imagine that in a middleware of your application you set the `app.locale` configuration value based on the incoming HTTP request's `Accept-Language` header. Context's events allow you to capture this value during the request and restore it on the queue, ensuring notifications sent on the queue have the correct `app.locale` value. We can use context's events and [hidden](#hidden-context) data to achieve this, which the following documentation will illustrate."
 msgstr ""
 
+# P
 #: ./docs/11.x/context.md:334
-#~ msgctxt "P"
 #~ msgid "<a name=\"dehydrating\"></a>"
 #~ msgstr ""
 
+# H3
 #: ./docs/11.x/context.md:335
-msgctxt "H3"
 msgid "Dehydrating"
 msgstr ""
 
+# P
 #: ./docs/11.x/context.md:337
-msgctxt "P"
 msgid "Whenever a job is dispatched to the queue the data in the context is \"dehydrated\" and captured alongside the job's payload. The `Context::dehydrating` method allows you to register a closure that will be invoked during the dehydration process. Within this closure, you may make changes to the data that will be shared with the queued job."
 msgstr ""
 
+# P
 #: ./docs/11.x/context.md:339
-msgctxt "P"
 msgid "Typically, you should register `dehydrating` callbacks within the `boot` method of your application's `AppServiceProvider` class:"
 msgstr ""
 
+# CODE: php
 #: ./docs/11.x/context.md:341
-msgctxt "CODE: php"
 msgid ""
 "use Illuminate\\Log\\Context\\Repository;\n"
 "use Illuminate\\Support\\Facades\\Config;\n"
@@ -618,33 +618,33 @@ msgid ""
 "}"
 msgstr ""
 
+# P
 #: ./docs/11.x/context.md:358
-msgctxt "P"
 msgid "You should not use the `Context` facade within the `dehydrating` callback, as that will change the context of the current process. Ensure you only make changes to the repository passed to the callback."
 msgstr ""
 
+# P
 #: ./docs/11.x/context.md:360
-#~ msgctxt "P"
 #~ msgid "<a name=\"hydrated\"></a>"
 #~ msgstr ""
 
+# H3
 #: ./docs/11.x/context.md:361
-msgctxt "H3"
 msgid "Hydrated"
 msgstr ""
 
+# P
 #: ./docs/11.x/context.md:363
-msgctxt "P"
 msgid "Whenever a queued job begins executing on the queue, any context that was shared with the job will be \"hydrated\" back into the current context. The `Context::hydrated` method allows you to register a closure that will be invoked during the hydration process."
 msgstr ""
 
+# P
 #: ./docs/11.x/context.md:365
-msgctxt "P"
 msgid "Typically, you should register `hydrated` callbacks within the `boot` method of your application's `AppServiceProvider` class:"
 msgstr ""
 
+# CODE: php
 #: ./docs/11.x/context.md:367
-msgctxt "CODE: php"
 msgid ""
 "use Illuminate\\Log\\Context\\Repository;\n"
 "use Illuminate\\Support\\Facades\\Config;\n"
@@ -663,7 +663,7 @@ msgid ""
 "}"
 msgstr ""
 
+# P
 #: ./docs/11.x/context.md:386
-msgctxt "P"
 msgid "You should not use the `Context` facade within the `hydrated` callback and instead ensure you only make changes to the repository passed to the callback."
 msgstr ""

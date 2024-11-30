@@ -1,11 +1,8 @@
 ---
-contributors:
-  14684796:
-    avatarUrl: https://crowdin-static.downloads.crowdin.com/avatar/14684796/medium/60f7dc21ec0bf9cfcb61983640bb4809_default.png
-    name: cornch
-crowdinUrl: https://crowdin.com/translate/laravel-docs/45/en-zhtw
-progress: 100
+crowdinUrl: 'https://crowdin.com/translate/laravel-docs/45/en-zhtw'
 updatedAt: '2024-06-30T08:18:00Z'
+contributors: {  }
+progress: 60.16
 ---
 
 # 部署
@@ -13,13 +10,15 @@ updatedAt: '2024-06-30T08:18:00Z'
 - [簡介](#introduction)
 - [伺服器需求](#server-requirements)
 - [伺服器設定](#server-configuration)
-   - [Nginx](#nginx)
+  - [Nginx](#nginx)
+  
 - [最佳化](#optimization)
-   - [Autoloader 的最佳化](#autoloader-optimization)
-   - [快取設定檔](#optimizing-configuration-loading)
-   - [快取 Event](#caching-events)
-   - [快取 Route](#optimizing-route-loading)
-   - [快取 View](#optimizing-view-loading)
+  - [Autoloader 的最佳化](#autoloader-optimization)
+  - [快取設定檔](#optimizing-configuration-loading)
+  - [快取 Event](#caching-events)
+  - [快取 Route](#optimizing-route-loading)
+  - [快取 View](#optimizing-view-loading)
+  
 - [偵錯模式](#debug-mode)
 - [使用 Forge 或 Vapor 來輕鬆部署](#deploying-with-forge-or-vapor)
 
@@ -36,7 +35,6 @@ updatedAt: '2024-06-30T08:18:00Z'
 Laravel Framework 有一些系統需求。請確保網頁伺服器有達到下列最小 PHP 版本需求與擴充套件需求：
 
 <div class="content-list" markdown="1">
-
 - PHP >= 8.1
 - Ctype PHP 擴充套件
 - cURL PHP 擴充套件
@@ -53,7 +51,6 @@ Laravel Framework 有一些系統需求。請確保網頁伺服器有達到下�
 - XML PHP 擴充套件
 
 </div>
-
 <a name="server-configuration"></a>
 
 ## 伺服器設定
@@ -100,7 +97,6 @@ server {
     }
 }
 ```
-
 <a name="optimization"></a>
 
 ## 最佳化
@@ -114,8 +110,8 @@ server {
 ```shell
 composer install --optimize-autoloader --no-dev
 ```
-
-> **Note** 除了最佳化 Autoloader 外，也應確保有將 `composer.lock` 檔案加到專案的版本控制儲存庫內。當有 `composer.lock` 檔時，專案的相依性套件可以安裝得更快。
+> [!NOTE]  
+> 除了最佳化 Autoloader 外，也應確保有將 `composer.lock` 檔案加到專案的版本控制儲存庫內。當有 `composer.lock` 檔時，專案的相依性套件可以安裝得更快。
 
 <a name="optimizing-configuration-loading"></a>
 
@@ -126,10 +122,10 @@ composer install --optimize-autoloader --no-dev
 ```shell
 php artisan config:cache
 ```
-
 該指令會將所有的 Laravel 設定檔合併為單一、經過快取的檔案。使用快取檔通常可以減少一些框架在載入設定值時讀取檔案系統的次數。
 
-> **Warning** 若在部署流程中執行了 `config:cache` 指令，應確保只有在設定檔中呼叫 `env` 函式。設定檔被快取後，就不會再載入 `.env` 檔了。所有 `env` 函式查詢 `.env` 變數的呼叫都會回傳 `null`。
+> [!WARNING]  
+> 若在部署流程中執行了 `config:cache` 指令，應確保只有在設定檔中呼叫 `env` 函式。設定檔被快取後，就不會再載入 `.env` 檔了。所有 `env` 函式查詢 `.env` 變數的呼叫都會回傳 `null`。
 
 <a name="caching-events"></a>
 
@@ -140,7 +136,6 @@ php artisan config:cache
 ```shell
 php artisan event:cache
 ```
-
 <a name="optimizing-route-loading"></a>
 
 ### 快取 Route
@@ -150,7 +145,6 @@ php artisan event:cache
 ```shell
 php artisan route:cache
 ```
-
 該指令可將所有的路由註冊減少為快取檔案內的單一方法呼叫，在註冊上百個路由時，可藉此提升路由註冊的效能。
 
 <a name="optimizing-view-loading"></a>
@@ -162,7 +156,6 @@ php artisan route:cache
 ```shell
 php artisan view:cache
 ```
-
 該指令會預先編譯所有的 Blade View，這樣一來這些 View 就不會只在有需要的時候才進行編譯，可藉此提升每個有回傳 View 的請求效能。
 
 <a name="debug-mode"></a>
@@ -171,7 +164,8 @@ php artisan view:cache
 
 config/app.php 設定檔中的 debug 選項用來判斷錯誤在實際顯示給使用者時要包含多少資訊。預設情況下，這個選項被設為依照 `APP_DEBUG` 環境變數值，該環境變數儲存於專案的 `.env` 檔內。
 
-> **Warning** **在正式環境上，這個值一定要是 `false`。若在正式環境上將 `APP_DEBUG` 變數設為 `true`，則會有將機敏設定值暴露給應用程式終端使用者的風險。**
+> [!WARNING]  
+> **在正式環境上，這個值一定要是 `false`。若在正式環境上將 `APP_DEBUG` 變數設為 `true`，則會有將機敏設定值暴露給應用程式終端使用者的風險。**
 
 <a name="deploying-with-forge-or-vapor"></a>
 
@@ -185,7 +179,8 @@ config/app.php 設定檔中的 debug 選項用來判斷錯誤在實際顯示給�
 
 Laravel Forge 可以在如 DigitalOcean, Linode, AWS… 等各種基礎建設提供商上建立伺服器。此外，Forge 還可以負責安裝並管理各種執行大型 Laravel 專案所需的工具，如 Nginx, MySQL, Redis, Memcached, Beanstalk… 等。
 
-> **Note** 需要一篇使用 Laravel Forge 來部署網站的完整教學嗎？請參考 [Laravel Bootcamp (英語)](https://bootcamp.laravel.com/deploying) 以及 [Laracasts 上的 Forge 影片系列 (英語)](https://laracasts.com/series/learn-laravel-forge-2022-edition)。
+> [!NOTE]  
+> 需要一篇使用 Laravel Forge 來部署網站的完整教學嗎？請參考 [Laravel Bootcamp (英語)](https://bootcamp.laravel.com/deploying) 以及 [Laracasts 上的 Forge 影片系列 (英語)](https://laracasts.com/series/learn-laravel-forge-2022-edition)。
 
 <a name="laravel-vapor"></a>
 

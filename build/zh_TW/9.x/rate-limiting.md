@@ -1,28 +1,28 @@
 ---
-contributors:
-  14684796:
-    avatarUrl: https://crowdin-static.downloads.crowdin.com/avatar/14684796/medium/60f7dc21ec0bf9cfcb61983640bb4809_default.png
-    name: cornch
-crowdinUrl: https://crowdin.com/translate/laravel-docs/127/en-zhtw
-progress: 100
+crowdinUrl: 'https://crowdin.com/translate/laravel-docs/127/en-zhtw'
 updatedAt: '2024-06-30T08:27:00Z'
+contributors: {  }
+progress: 47.73
 ---
 
 # 頻率限制
 
 - [簡介](#introduction)
-   - [快取設定](#cache-configuration)
+  - [快取設定](#cache-configuration)
+  
 - [基礎用法](#basic-usage)
-   - [手動增加嘗試次數](#manually-incrementing-attempts)
-   - [清除嘗試次數](#clearing-attempts)
+  - [手動增加嘗試次數](#manually-incrementing-attempts)
+  - [清除嘗試次數](#clearing-attempts)
+  
 
 <a name="introduction"></a>
 
 ## 簡介
 
-Laravel 中內建了一個簡單易用的頻率限制抽象功能，該功能會與專案的 <cache> 搭配使用，讓我們能輕鬆限制指定時間內任何動作的頻率。
+Laravel includes a simple to use rate limiting abstraction which, in conjunction with your application's [cache](cache), provides an easy way to limit any action during a specified window of time.
 
-> **Note** 若想對連入 HTTP Request 的頻率限制，請參考 [Rate Limiter Middleware 的說明文件](routing#rate-limiting)。
+> [!NOTE]  
+> 若想對連入 HTTP Request 的頻率限制，請參考 [Rate Limiter Middleware 的說明文件](routing#rate-limiting)。
 
 <a name="cache-configuration"></a>
 
@@ -33,7 +33,6 @@ Laravel 中內建了一個簡單易用的頻率限制抽象功能，該功能會
     'default' => 'memcached',
     
     'limiter' => 'redis',
-
 <a name="basic-usage"></a>
 
 ## 基礎用法
@@ -48,14 +47,13 @@ Laravel 中內建了一個簡單易用的頻率限制抽象功能，該功能會
         'send-message:'.$user->id,
         $perMinute = 5,
         function() {
-            // 傳送訊息...
+            // Send message...
         }
     );
     
     if (! $executed) {
       return 'Too many messages sent!';
     }
-
 <a name="manually-incrementing-attempts"></a>
 
 ### 手動增加嘗試次數
@@ -67,7 +65,6 @@ Laravel 中內建了一個簡單易用的頻率限制抽象功能，該功能會
     if (RateLimiter::tooManyAttempts('send-message:'.$user->id, $perMinute = 5)) {
         return 'Too many attempts!';
     }
-
 或者，也可以使用 `remaining` 方法來取得給定索引鍵剩下的嘗試次數。若給定的索引鍵還有可嘗試的次數，則可叫用 `hit` 方法來增加總嘗試次數：
 
     use Illuminate\Support\Facades\RateLimiter;
@@ -75,9 +72,8 @@ Laravel 中內建了一個簡單易用的頻率限制抽象功能，該功能會
     if (RateLimiter::remaining('send-message:'.$user->id, $perMinute = 5)) {
         RateLimiter::hit('send-message:'.$user->id);
     
-        // 傳送訊息...
+        // Send message...
     }
-
 <a name="determining-limiter-availability"></a>
 
 #### 判斷 Limiter 是否可用
@@ -91,7 +87,6 @@ Laravel 中內建了一個簡單易用的頻率限制抽象功能，該功能會
     
         return 'You may try again in '.$seconds.' seconds.';
     }
-
 <a name="clearing-attempts"></a>
 
 ### 清除嘗試次數

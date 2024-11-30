@@ -1,25 +1,26 @@
 ---
-contributors:
-  14684796:
-    avatarUrl: https://crowdin-static.downloads.crowdin.com/avatar/14684796/medium/60f7dc21ec0bf9cfcb61983640bb4809_default.png
-    name: cornch
-crowdinUrl: https://crowdin.com/translate/laravel-docs/175/en-zhtw
-progress: 100
+crowdinUrl: 'https://crowdin.com/translate/laravel-docs/175/en-zhtw'
 updatedAt: '2024-06-30T08:27:00Z'
+contributors: {  }
+progress: 53.77
 ---
 
 # View
 
 - [簡介](#introduction)
-   - [以 React 或 Vue 來撰寫 View](#writing-views-in-react-or-vue)
+  - [以 React 或 Vue 來撰寫 View](#writing-views-in-react-or-vue)
+  
 - [建立與轉譯 View](#creating-and-rendering-views)
-   - [巢狀的 View 目錄](#nested-view-directories)
-   - [建立第一個 View](#creating-the-first-available-view)
-   - [判斷 View 是否存在](#determining-if-a-view-exists)
+  - [巢狀的 View 目錄](#nested-view-directories)
+  - [建立第一個 View](#creating-the-first-available-view)
+  - [判斷 View 是否存在](#determining-if-a-view-exists)
+  
 - [將資料傳給 View](#passing-data-to-views)
-   - [在所有 View 間共享資料](#sharing-data-with-all-views)
+  - [在所有 View 間共享資料](#sharing-data-with-all-views)
+  
 - [View Composer](#view-composers)
-   - [View Creator](#view-creators)
+  - [View Creator](#view-creators)
+  
 - [最佳化 View](#optimizing-views)
 
 <a name="introduction"></a>
@@ -31,7 +32,7 @@ updatedAt: '2024-06-30T08:27:00Z'
 使用 View 就可從 Controller / 應用程式的邏輯中將顯示邏輯拆出來並放在 `resources/views` 目錄下。使用 Laravel 時，View 樣板通常使用 [Blade 樣板語言撰寫](/docs/{{version}}/blade)。一個簡單的 View 看起來可能像這樣：
 
 ```blade
-<!-- View 保存於 resources/views/greeting.blade.php -->
+<!-- View stored in resources/views/greeting.blade.php -->
 
 <html>
     <body>
@@ -39,14 +40,13 @@ updatedAt: '2024-06-30T08:27:00Z'
     </body>
 </html>
 ```
-
 這個 View 保存在 `resources/views/greeting.blade.php`，因此我們可以像這樣使用全域的 `view` 輔助函式來回傳 View：
 
     Route::get('/', function () {
         return view('greeting', ['name' => 'James']);
     });
-
-> **Note** 想瞭解更多有關如何撰寫 Blade 樣板的資訊嗎？請參考完整的 [Blade 說明文件](/docs/{{version}}/blade)來入門 Blade 樣板。
+> [!NOTE]  
+> 想瞭解更多有關如何撰寫 Blade 樣板的資訊嗎？請參考完整的 [Blade 說明文件](/docs/{{version}}/blade)來入門 Blade 樣板。
 
 <a name="writing-views-in-react-or-vue"></a>
 
@@ -67,13 +67,11 @@ Laravel 的 Breeze 與 Jetstream [入門套件](/docs/{{version}}/starter-kits) 
     Route::get('/', function () {
         return view('greeting', ['name' => 'James']);
     });
-
 也可以使用 `View` Facade 來回傳 `View`：
 
     use Illuminate\Support\Facades\View;
     
     return View::make('greeting', ['name' => 'James']);
-
 就像我們可以看到的，傳給 `view` 輔助函式的第一個引數是 View 檔案在 `resources/view` 目錄下對應的名稱。第二個引數是一組資料陣列，包含要提供給 View 的資料。在這個情況下，我們傳入了一個 `name` 變數，並在 View 裡面使用 [Blade 語法](/docs/{{version}}/blade)來顯示。
 
 <a name="nested-view-directories"></a>
@@ -83,8 +81,8 @@ Laravel 的 Breeze 與 Jetstream [入門套件](/docs/{{version}}/starter-kits) 
 View 也可以巢狀放置在 `resources/views` 目錄中的子目錄。可使用「點 (.)」標記法來參照巢狀的 View。舉例來說，若有個 View 保存在 `resources/views/admin/profile.blade.php`，則我們可以在我們程式的 Route 或 Controller 中像這樣回傳這個 View：
 
     return view('admin.profile', $data);
-
-> **Warning** View 目錄的名稱不可包含 `.` 字元。
+> [!WARNING]  
+> View 目錄的名稱不可包含 `.` 字元。
 
 <a name="creating-the-first-available-view"></a>
 
@@ -95,7 +93,6 @@ View 也可以巢狀放置在 `resources/views` 目錄中的子目錄。可使�
     use Illuminate\Support\Facades\View;
     
     return View::first(['custom.admin', 'admin'], $data);
-
 <a name="determining-if-a-view-exists"></a>
 
 ### 判斷某個 View 是否存在
@@ -107,7 +104,6 @@ View 也可以巢狀放置在 `resources/views` 目錄中的子目錄。可使�
     if (View::exists('emails.customer')) {
         //
     }
-
 <a name="passing-data-to-views"></a>
 
 ## 將資料傳給 View
@@ -115,7 +111,6 @@ View 也可以巢狀放置在 `resources/views` 目錄中的子目錄。可使�
 就像我們在前一個範例中看到的一樣，我們可以傳入一組資料陣列給 View 來讓這些資料在 View 中可用：
 
     return view('greetings', ['name' => 'Victoria']);
-
 用這種方式傳遞資料時，這些專遞的資料應該是有索引鍵 / 值配對的陣列。將資料提供給 View 後，就可以使用這些資料的索引鍵來在 View 中存取其值，如 `<?php echo $name; ?>`。
 
 除了將完整的資料陣列傳給 `view` 輔助函式外，也可以使用 `with` 方法來將單一資料項目提供給 View。`with` 方法會回傳 View 物件的實體，這樣一來我們就能在回傳 View 前繼續串上其他方法呼叫：
@@ -123,7 +118,6 @@ View 也可以巢狀放置在 `resources/views` 目錄中的子目錄。可使�
     return view('greeting')
                 ->with('name', 'Victoria')
                 ->with('occupation', 'Astronaut');
-
 <a name="sharing-data-with-all-views"></a>
 
 ### 在所有 View 間共用資料
@@ -158,7 +152,6 @@ View 也可以巢狀放置在 `resources/views` 目錄中的子目錄。可使�
             View::share('key', 'value');
         }
     }
-
 <a name="view-composers"></a>
 
 ## View Composer
@@ -205,8 +198,8 @@ View Composer 是 View 在轉譯時會呼叫的回呼或類別方法。若你有
             });
         }
     }
-
-> **Warning** 請記得，若要建立一個新的 Service Provider 來放置 View ‘Composer 的註冊，就需要將這個新建立的 Service Provider 新增到 `config/app.php` 設定檔的 `providers` 陣列。
+> [!WARNING]  
+> 請記得，若要建立一個新的 Service Provider 來放置 View ‘Composer 的註冊，就需要將這個新建立的 Service Provider 新增到 `config/app.php` 設定檔的 `providers` 陣列。
 
 現在，我們已經註冊好 Composer 了。每當轉譯 `profile` View 時，就會執行 `App\View\Composers\ProfileComposer` 類別的 `compose` 方法。我慢來看看這個 Composer 類別的例子：
 
@@ -248,7 +241,6 @@ View Composer 是 View 在轉譯時會呼叫的回呼或類別方法。若你有
             $view->with('count', $this->users->count());
         }
     }
-
 就像我們可以看到的，所有的 View Composer 都會經過 [Service Container] 解析，因此我們可以在 Composer 的 Constructor (建構函式) 上型別提示 (Type-Hint) 任何需要的相依性。
 
 <a name="attaching-a-composer-to-multiple-views"></a>
@@ -263,13 +255,11 @@ View Composer 是 View 在轉譯時會呼叫的回呼或類別方法。若你有
         ['profile', 'dashboard'],
         MultiComposer::class
     );
-
 `composer` 方法也接受使用 `*` 字元作為萬用字元。這樣我們就可以將某個 Composer 附加到所有 View 上：
 
     View::composer('*', function ($view) {
         //
     });
-
 <a name="view-creators"></a>
 
 ### View Creator
@@ -280,7 +270,6 @@ View "Creator" 與 View Composer 非常類似。不過，View Creator 會在 Vie
     use Illuminate\Support\Facades\View;
     
     View::creator('profile', ProfileCreator::class);
-
 <a name="optimizing-views"></a>
 
 ## 最佳化 View
@@ -292,7 +281,6 @@ View "Creator" 與 View Composer 非常類似。不過，View Creator 會在 Vie
 ```shell
 php artisan view:cache
 ```
-
 可以使用 `view:clear` 指令來清除 View 快取：
 
 ```shell

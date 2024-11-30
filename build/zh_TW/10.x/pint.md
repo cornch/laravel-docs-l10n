@@ -1,11 +1,8 @@
 ---
-contributors:
-  14684796:
-    avatarUrl: https://crowdin-static.downloads.crowdin.com/avatar/14684796/medium/60f7dc21ec0bf9cfcb61983640bb4809_default.png
-    name: cornch
-crowdinUrl: https://crowdin.com/translate/laravel-docs/178/en-zhtw
-progress: 100
+crowdinUrl: 'https://crowdin.com/translate/laravel-docs/178/en-zhtw'
 updatedAt: '2024-06-30T08:27:00Z'
+contributors: {  }
+progress: 46.67
 ---
 
 # Laravel Pint
@@ -14,15 +11,16 @@ updatedAt: '2024-06-30T08:27:00Z'
 - [安裝](#installation)
 - [執行 Pint](#running-pint)
 - [設定 Pint](#configuring-pint)
-   - [預設](#presets)
-   - [規則](#rules)
-   - [排除檔案或資料夾](#excluding-files-or-folders)
+  - [預設](#presets)
+  - [規則](#rules)
+  - [排除檔案或資料夾](#excluding-files-or-folders)
+  
 
 <a name="introduction"></a>
 
 ## 簡介
 
-[Laravel Pint](https://github.com/laravel/pint) 是一款專為極簡主義者涉及的主導性 (Opinionated) PHP ^[Code Style Fixer](程式碼風格修正程式)。Pint 以 PHP-CS-Fixer 為基礎，並讓其保持簡單，以確保你的 Code Style 保持乾淨與統一。
+[Laravel Pint](https://github.com/laravel/pint) 是一款專為極簡主義者涉及的主導性 (Opinionated) PHP ^[Code Style Fixer](%E7%A8%8B%E5%BC%8F%E7%A2%BC%E9%A2%A8%E6%A0%BC%E4%BF%AE%E6%AD%A3%E7%A8%8B%E5%BC%8F)。Pint 以 PHP-CS-Fixer 為基礎，並讓其保持簡單，以確保你的 Code Style 保持乾淨與統一。
 
 在所有新建立的 Laravel 專案中，會自動安裝 Pint，因此你可以馬上開始使用。預設情況下，Pint 並不需要任何設定，會自動使用 Laravel 的主導性 Coding Style 來修正程式碼中的 Coding Style 問題。
 
@@ -35,7 +33,6 @@ Pint 已包含在最近釋出的 Laravel 框架中，因此通常不需要進行
 ```shell
 composer require laravel/pint --dev
 ```
-
 <a name="running-pint"></a>
 
 ## 執行 Pint
@@ -45,7 +42,6 @@ composer require laravel/pint --dev
 ```shell
 ./vendor/bin/pint
 ```
-
 也可以針對特定檔案或目錄來執行 Pint：
 
 ```shell
@@ -53,25 +49,21 @@ composer require laravel/pint --dev
 
 ./vendor/bin/pint app/Models/User.php
 ```
-
 Pint 會列出其更新的檔案列表。只要在呼叫 Pint 時提供 `-v` 選項，就可以檢視更多關於 Pint 所做出更改的詳情：
 
 ```shell
 ./vendor/bin/pint -v
 ```
-
 若只想讓 Pint 偵測程式碼中的 Coding Style 錯誤而不實際更改檔案，可以使用 `--test` 選項：
 
 ```shell
 ./vendor/bin/pint --test
 ```
-
 若要根據 Git 來讓 Pint 只修改包含未 Commit 更改的檔案，可使用 `--dirty` 選項：
 
 ```shell
 ./vendor/bin/pint --dirty
 ```
-
 <a name="configuring-pint"></a>
 
 ## 設定 Pint
@@ -83,13 +75,11 @@ Pint 會列出其更新的檔案列表。只要在呼叫 Pint 時提供 `-v` 選
     "preset": "laravel"
 }
 ```
-
 此外，若要使用特定資料夾中的 `pint.json` 檔，可在呼叫 Pint 時提供 `--config` 選項：
 
 ```shell
 pint --config vendor/my-company/coding-style/pint.json
 ```
-
 <a name="presets"></a>
 
 ### 預設
@@ -99,7 +89,6 @@ pint --config vendor/my-company/coding-style/pint.json
 ```shell
 pint --preset psr12
 ```
-
 若有需要，也可以在專案的 `pint.json` 檔案中設定預設：
 
 ```json
@@ -107,7 +96,6 @@ pint --preset psr12
     "preset": "psr12"
 }
 ```
-
 Pint 目前支援的預設有：`laravel`、`per`、`psr12`、`symfony`。
 
 <a name="rules"></a>
@@ -131,7 +119,6 @@ Pint 目前支援的預設有：`laravel`、`per`、`psr12`、`symfony`。
     }
 }
 ```
-
 Pint 以 [PHP-CS-Fixer](https://github.com/FriendsOfPHP/PHP-CS-Fixer) 為基礎製作，因此，你可以使用 PHP-CS-Fixer 的規則來修正專案中的 Coding Style 問題： [PHP-CS-Fixer Configurator](https://mlocati.github.io/php-cs-fixer-configurator)。
 
 <a name="excluding-files-or-folders"></a>
@@ -147,7 +134,6 @@ Pint 以 [PHP-CS-Fixer](https://github.com/FriendsOfPHP/PHP-CS-Fixer) 為基礎�
     ]
 }
 ```
-
 若有需要排除所有符合特定檔名規則的檔案，可使用 `notName` 選項：
 
 ```json
@@ -157,7 +143,6 @@ Pint 以 [PHP-CS-Fixer](https://github.com/FriendsOfPHP/PHP-CS-Fixer) 為基礎�
     ]
 }
 ```
-
 若有需要排除特定路徑的檔案，可使用 `notPath` 設定選項：
 
 ```json

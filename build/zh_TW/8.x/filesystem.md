@@ -1,31 +1,32 @@
 ---
-contributors:
-  14684796:
-    avatarUrl: https://crowdin-static.downloads.crowdin.com/avatar/14684796/medium/60f7dc21ec0bf9cfcb61983640bb4809_default.png
-    name: cornch
-crowdinUrl: https://crowdin.com/translate/laravel-docs/73/en-zhtw
-progress: 100
+crowdinUrl: 'https://crowdin.com/translate/laravel-docs/73/en-zhtw'
 updatedAt: '2024-06-30T08:26:00Z'
+contributors: {  }
+progress: 51.96
 ---
 
 # 檔案存放空間
 
 - [簡介](#introduction)
 - [設定](#configuration)
-   - [Local Driver](#the-local-driver)
-   - [Public Disk](#the-public-disk)
-   - [Driver 前置需求](#driver-prerequisites)
-   - [與 Amazon S3 相容的檔案系統](#amazon-s3-compatible-filesystems)
-   - [快取](#caching)
+  - [Local Driver](#the-local-driver)
+  - [Public Disk](#the-public-disk)
+  - [Driver 前置需求](#driver-prerequisites)
+  - [與 Amazon S3 相容的檔案系統](#amazon-s3-compatible-filesystems)
+  - [快取](#caching)
+  
 - [取得 Disk 實體](#obtaining-disk-instances)
-   - [隨需建立的 Disk](#on-demand-disks)
+  - [隨需建立的 Disk](#on-demand-disks)
+  
 - [取得檔案](#retrieving-files)
-   - [下載檔案](#downloading-files)
-   - [檔案 URL](#file-urls)
-   - [檔案的詮釋資料](#file-metadata)
+  - [下載檔案](#downloading-files)
+  - [檔案 URL](#file-urls)
+  - [檔案的詮釋資料](#file-metadata)
+  
 - [保存檔案](#storing-files)
-   - [檔案上傳](#file-uploads)
-   - [檔案的可見性 (Visibility)](#file-visibility)
+  - [檔案上傳](#file-uploads)
+  - [檔案的可見性 (Visibility)](#file-visibility)
+  
 - [刪除檔案](#deleting-files)
 - [目錄](#directories)
 - [自訂檔案系統](#custom-filesystems)
@@ -40,11 +41,12 @@ updatedAt: '2024-06-30T08:26:00Z'
 
 ## 設定
 
-Laravel 的檔案系統設定檔位在 `config/filesystems.php`。在這個檔案中，我們可以設定所有的檔案系統「^[Disk](磁碟)」。各個 Disk 都代表了一個特定的儲存空間 Driver 與儲存位置。該設定檔內已包含了各個支援 Driver 的範例設定，讓你能修改這些設定來反映出儲存空間偏好與認證方式。
+Laravel 的檔案系統設定檔位在 `config/filesystems.php`。在這個檔案中，我們可以設定所有的檔案系統「^[Disk](%E7%A3%81%E7%A2%9F)」。各個 Disk 都代表了一個特定的儲存空間 Driver 與儲存位置。該設定檔內已包含了各個支援 Driver 的範例設定，讓你能修改這些設定來反映出儲存空間偏好與認證方式。
 
 `local` Driver 負責處理保存在執行該 Laravel 專案之本機伺服器上的檔案。而 `s3` Driver 則用來將檔案寫入 Amazon 的 S3 雲端儲存服務。
 
-> {tip} 可以隨意設定多個 Disk，甚至也可以設定多個使用相同 Driver 的 Disk。
+> [!TIP]  
+> 可以隨意設定多個 Disk，甚至也可以設定多個使用相同 Driver 的 Disk。
 
 <a name="the-local-driver"></a>
 
@@ -55,7 +57,6 @@ Laravel 的檔案系統設定檔位在 `config/filesystems.php`。在這個檔�
     use Illuminate\Support\Facades\Storage;
     
     Storage::disk('local')->put('example.txt', 'Contents');
-
 <a name="the-public-disk"></a>
 
 ### 「Public」Disk
@@ -67,18 +68,15 @@ Laravel 的檔案系統設定檔位在 `config/filesystems.php`。在這個檔�
 若要建立符號連結，可使用 `storage:link` Artisan 指令：
 
     php artisan storage:link
-
 保存檔案並建立好符號連結後，就可以使用 `asset` 輔助函式來建立該檔案的 URL：
 
     echo asset('storage/file.txt');
-
 也可以在 `filesystems` 設定檔中設定其他符號連結。在執行 `storage:link` 指令時，會建立設定中的各個符號連結：
 
     'links' => [
         public_path('storage') => storage_path('app/public'),
         public_path('images') => storage_path('app/images'),
     ],
-
 <a name="driver-prerequisites"></a>
 
 ### Driver 的前置需求
@@ -92,7 +90,7 @@ Laravel 的檔案系統設定檔位在 `config/filesystems.php`。在這個檔�
 - Amazon S3: `composer require --with-all-dependencies league/flysystem-aws-s3-v3 "^1.0"`
 - SFTP: `composer require league/flysystem-sftp "~1.0"`
 
-此外，也可選擇安裝 ^[Cached Adapter](快取配接器) 來增加效能：
+此外，也可選擇安裝 ^[Cached Adapter](%E5%BF%AB%E5%8F%96%E9%85%8D%E6%8E%A5%E5%99%A8) 來增加效能：
 
 - CachedAdapter: `composer require league/flysystem-cached-adapter "~1.0"`
 
@@ -114,14 +112,13 @@ Laravel 的 Flysystem 整合可以完美配合 FTP。不過，Laravel 的預設 
         'username' => env('FTP_USERNAME'),
         'password' => env('FTP_PASSWORD'),
     
-        // 可選的 FTP 設定...
+        // Optional FTP Settings...
         // 'port' => env('FTP_PORT', 21),
         // 'root' => env('FTP_ROOT'),
         // 'passive' => true,
         // 'ssl' => true,
         // 'timeout' => 30,
     ],
-
 <a name="sftp-driver-configuration"></a>
 
 #### SFTP Driver 設定
@@ -132,11 +129,11 @@ Laravel 的 Flysystem 整合可以完美配合 SFTP。不過，Laravel 的預設
         'driver' => 'sftp',
         'host' => env('SFTP_HOST'),
         
-        // 設定 Basic 身份認證...
+        // Settings for basic authentication...
         'username' => env('SFTP_USERNAME'),
         'password' => env('SFTP_PASSWORD'),
     
-        // 設定有加密密碼之基於 SSH 金鑰的身份認證...
+        // Settings for SSH key based authentication with encryption password...
         'privateKey' => env('SFTP_PRIVATE_KEY'),
         'password' => env('SFTP_PASSWORD'),
     
@@ -145,7 +142,6 @@ Laravel 的 Flysystem 整合可以完美配合 SFTP。不過，Laravel 的預設
         // 'root' => env('SFTP_ROOT'),
         // 'timeout' => 30,
     ],
-
 <a name="amazon-s3-compatible-filesystems"></a>
 
 ### 相容於 Amazon S3 的檔案系統
@@ -155,7 +151,6 @@ Laravel 的 Flysystem 整合可以完美配合 SFTP。不過，Laravel 的預設
 一般來說，為 Disk 設定要使用服務的認證資訊後，就只需要更改 `url` 設定選項即可。這個選項值通常是以 `AWS_ENGPOINT` 環境變數定義的：
 
     'endpoint' => env('AWS_ENDPOINT', 'https://minio:9000'),
-
 <a name="caching"></a>
 
 ### 快取
@@ -165,7 +160,7 @@ Laravel 的 Flysystem 整合可以完美配合 SFTP。不過，Laravel 的預設
     's3' => [
         'driver' => 's3',
     
-        // 其他的 Disk 選項...
+        // Other Disk Options...
     
         'cache' => [
             'store' => 'memcached',
@@ -173,7 +168,6 @@ Laravel 的 Flysystem 整合可以完美配合 SFTP。不過，Laravel 的預設
             'prefix' => 'cache-prefix',
         ],
     ],
-
 <a name="obtaining-disk-instances"></a>
 
 ## 取得 Disk 實體
@@ -183,11 +177,9 @@ Laravel 的 Flysystem 整合可以完美配合 SFTP。不過，Laravel 的預設
     use Illuminate\Support\Facades\Storage;
     
     Storage::put('avatars/1', $content);
-
 若你的專案使用多個 Disk，可使用 `Storage` Facade 上的 `disk` 方法來在特定 Disk 上處理檔案：
 
     Storage::disk('s3')->put('avatars/1', $content);
-
 <a name="on-demand-disks"></a>
 
 ### 隨需提供的 Disk
@@ -204,7 +196,6 @@ $disk = Storage::build([
 
 $disk->put('image.jpg', $content);
 ```
-
 <a name="retrieving-files"></a>
 
 ## 取得檔案
@@ -212,19 +203,16 @@ $disk->put('image.jpg', $content);
 `get` 方法可用來取得檔案內容。該方法會回傳檔案的原始字串內容。請記得，所有檔案路徑都是相對於該 Disk 所指定的「root」根目錄：
 
     $contents = Storage::get('file.jpg');
-
 `exists` 方法可用來判斷某個檔案是否存在於 Disk 上：
 
     if (Storage::disk('s3')->exists('file.jpg')) {
         // ...
     }
-
 可使用 `missing` 方法來判斷 Disk 上是否不存在這個檔案：
 
     if (Storage::disk('s3')->missing('file.jpg')) {
         // ...
     }
-
 <a name="downloading-files"></a>
 
 ### 下載檔案
@@ -234,7 +222,6 @@ $disk->put('image.jpg', $content);
     return Storage::download('file.jpg');
     
     return Storage::download('file.jpg', $name, $headers);
-
 <a name="file-urls"></a>
 
 ### 檔案 URL
@@ -244,10 +231,10 @@ $disk->put('image.jpg', $content);
     use Illuminate\Support\Facades\Storage;
     
     $url = Storage::url('file.jpg');
-
 使用 `local` Driver 時，所有要供公開存取的檔案都應放在 `storage/app/public` 目錄內。此外，也應[建立一個符號連結](#the-public-disk)來將 `public/storage` 指向 `storage/app/public` 目錄。
 
-> {note} 使用 `local` Driver 時，`url` 的回傳值未經過 URL 編碼。因此，我們建議你只使用能產生有效 URL 的檔名來保存檔案。
+> [!NOTE]  
+> 使用 `local` Driver 時，`url` 的回傳值未經過 URL 編碼。因此，我們建議你只使用能產生有效 URL 的檔名來保存檔案。
 
 <a name="temporary-urls"></a>
 
@@ -260,7 +247,6 @@ $disk->put('image.jpg', $content);
     $url = Storage::temporaryUrl(
         'file.jpg', now()->addMinutes(5)
     );
-
 若想指定額外的 [S3 Request 參數](https://docs.aws.amazon.com/AmazonS3/latest/API/RESTObjectGET.html#RESTObjectGET-requests)，只需要將 Request 參數陣列作為第三個引數傳給 `temporaryUrl` 方法即可：
 
     $url = Storage::temporaryUrl(
@@ -271,7 +257,6 @@ $disk->put('image.jpg', $content);
             'ResponseContentDisposition' => 'attachment; filename=file2.jpg',
         ]
     );
-
 若有需要自訂某個存放 Disk 要如何產生臨時 URL，可以使用 `buildTemporaryUrlsUsing` 方法。舉例來說，若有檔案儲存在不支援時效性 URL 的 Driver 上，而在某個 Controller 上我們又想讓使用者能下載這些檔案，就很適合使用這個方法。一般來說，應在某個 Service Provider 的 `boot` 方法內呼叫這個方法：
 
     <?php
@@ -300,7 +285,6 @@ $disk->put('image.jpg', $content);
             });
         }
     }
-
 <a name="url-host-customization"></a>
 
 #### 自訂 URL 主機
@@ -313,7 +297,6 @@ $disk->put('image.jpg', $content);
         'url' => env('APP_URL').'/storage',
         'visibility' => 'public',
     ],
-
 <a name="file-metadata"></a>
 
 ### 檔案詮釋資料
@@ -323,11 +306,9 @@ $disk->put('image.jpg', $content);
     use Illuminate\Support\Facades\Storage;
     
     $size = Storage::size('file.jpg');
-
 `lastModified` 方法回傳以 UNIX ^[時戳](Timestamp)表示的檔案最後修改時間：
 
     $time = Storage::lastModified('file.jpg');
-
 <a name="file-paths"></a>
 
 #### 檔案路徑
@@ -337,7 +318,6 @@ $disk->put('image.jpg', $content);
     use Illuminate\Support\Facades\Storage;
     
     $path = Storage::path('file.jpg');
-
 <a name="storing-files"></a>
 
 ## 保存檔案
@@ -349,7 +329,6 @@ $disk->put('image.jpg', $content);
     Storage::put('file.jpg', $contents);
     
     Storage::put('file.jpg', $resource);
-
 <a name="automatic-streaming"></a>
 
 #### 自動串流
@@ -359,18 +338,16 @@ $disk->put('image.jpg', $content);
     use Illuminate\Http\File;
     use Illuminate\Support\Facades\Storage;
     
-    // 自訂為檔案名稱產生一個不重複的 ID...
+    // Automatically generate a unique ID for filename...
     $path = Storage::putFile('photos', new File('/path/to/photo'));
     
-    // 手動指定檔案名稱...
+    // Manually specify a filename...
     $path = Storage::putFileAs('photos', new File('/path/to/photo'), 'photo.jpg');
-
 有關 `putFile` 方法，還有幾點重要事項要注意。請注意，我們只有指定資料夾名稱，而未指定檔案名稱。預設情況下，`putFile` 會自動產生一個不重複 ID 來作為檔案名稱。檔案的副檔名會依照該檔案的 MIME 來判斷。`putFile` 方法會回傳該檔案包含檔名的路徑，好讓我們能保存該路徑到資料庫中。
 
 `putFile` 與 `putFileAs` 方法也接受一個用來指定保存檔案「^[可見度](Visibility)」的引數。若你使用 Amazon S3 等雲端 Disk 來儲存檔案且想產生能公開存取的 URL，這個功能就特別實用：
 
     Storage::putFile('photos', new File('/path/to/photo'), 'public');
-
 <a name="prepending-appending-to-files"></a>
 
 #### 將內容加到檔案的最前面或最後面
@@ -380,7 +357,6 @@ $disk->put('image.jpg', $content);
     Storage::prepend('file.log', 'Prepended Text');
     
     Storage::append('file.log', 'Appended Text');
-
 <a name="copying-moving-files"></a>
 
 #### 複製與移動檔案
@@ -390,7 +366,6 @@ $disk->put('image.jpg', $content);
     Storage::copy('old/file.jpg', 'new/file.jpg');
     
     Storage::move('old/file.jpg', 'new/file.jpg');
-
 <a name="file-uploads"></a>
 
 ### 檔案上傳
@@ -419,13 +394,11 @@ $disk->put('image.jpg', $content);
             return $path;
         }
     }
-
 在這個範例中還有幾點重要事項要注意。請注意，我們只有指定資料夾名稱，而未指定檔案名稱。預設情況下，`store` 會自動產生一個不重複 ID 來作為檔案名稱。檔案的副檔名會依照該檔案的 MIME 來判斷。`store` 方法會回傳該檔案包含檔名的路徑，好讓我們能保存該路徑到資料庫中。
 
 也可以呼叫 `Storage` Facade 上的 `putFile` 方法進行與上方範例相同的檔案存放操作：
 
     $path = Storage::putFile('avatars', $request->file('avatar'));
-
 <a name="specifying-a-file-name"></a>
 
 #### 指定檔案名稱
@@ -435,14 +408,13 @@ $disk->put('image.jpg', $content);
     $path = $request->file('avatar')->storeAs(
         'avatars', $request->user()->id
     );
-
 也可以呼叫 `Storage` Facade 上的 `putFileAs` 方法進行與上方範例相同的檔案存放操作：
 
     $path = Storage::putFileAs(
         'avatars', $request->file('avatar'), $request->user()->id
     );
-
-> {note} 路徑中若有^[不可列印](Unprintable)或無效的 Unicode 字元，則會被自動移除。因此，在將檔案路徑傳給 Laravel 的檔案存放方法前，我們可能會想先^[消毒](Sanitize)檔案路徑。可使用 `League\Flysystem\Util::normalizePath` 來^[正常化](Normalize)檔案路徑。
+> [!NOTE]  
+> Unprintable and invalid unicode characters will automatically be removed from file paths. Therefore, you may wish to sanitize your file paths before passing them to Laravel's file storage methods. File paths are normalized using the `League\Flysystem\Util::normalizePath` method.
 
 <a name="specifying-a-disk"></a>
 
@@ -453,7 +425,6 @@ $disk->put('image.jpg', $content);
     $path = $request->file('avatar')->store(
         'avatars/'.$request->user()->id, 's3'
     );
-
 若使用 `storeAs` 方法，則可將 Disk 名稱作為第三引數傳給該方法：
 
     $path = $request->file('avatar')->storeAs(
@@ -461,7 +432,6 @@ $disk->put('image.jpg', $content);
         $request->user()->id,
         's3'
     );
-
 <a name="other-uploaded-file-information"></a>
 
 #### 其他上傳檔案的資訊
@@ -472,14 +442,12 @@ $disk->put('image.jpg', $content);
     
     $name = $file->getClientOriginalName();
     $extension = $file->getClientOriginalExtension();
-
 不過，請注意，應將 `getClientOriginalName` 與 `getClientOriginalExtension` 方法視為不安全的，因為惡意使用者可以偽造檔案名稱與副檔名。因此，建議一般還是使用 `hashName` 與 `extension` 方法來取得給定上傳檔案的檔名與副檔名：
 
     $file = $request->file('avatar');
     
-    $name = $file->hashName(); // 產生一個不重複、隨機的名稱...
-    $extension = $file->extension(); // 依據檔案的 MIME 型別判斷檔案的副檔名...
-
+    $name = $file->hashName(); // Generate a unique, random name...
+    $extension = $file->extension(); // Determine the file's extension based on the file's MIME type...
 <a name="file-visibility"></a>
 
 ### 檔案可見度
@@ -491,13 +459,11 @@ $disk->put('image.jpg', $content);
     use Illuminate\Support\Facades\Storage;
     
     Storage::put('file.jpg', $contents, 'public');
-
 若檔案已被保存，則可使用 `getVisibility` 來取得可見度，並使用 `setVisibility` 來設定可見度：
 
     $visibility = Storage::getVisibility('file.jpg');
     
     Storage::setVisibility('file.jpg', 'public');
-
 在處理上傳的檔案時，應使用 `storePublicly` 與 `storePubliclyAs` 方法來以 `public` 可見度保存上傳的檔案：
 
     $path = $request->file('avatar')->storePublicly('avatars', 's3');
@@ -507,7 +473,6 @@ $disk->put('image.jpg', $content);
         $request->user()->id,
         's3'
     );
-
 <a name="local-files-and-visibility"></a>
 
 #### 本機檔案與可見度
@@ -528,7 +493,6 @@ $disk->put('image.jpg', $content);
             ],
         ],
     ],
-
 <a name="deleting-files"></a>
 
 ## 刪除檔案
@@ -540,13 +504,11 @@ $disk->put('image.jpg', $content);
     Storage::delete('file.jpg');
     
     Storage::delete(['file.jpg', 'file2.jpg']);
-
 若有需要，也可指定要在哪個 Disk 上刪除檔案：
 
     use Illuminate\Support\Facades\Storage;
     
     Storage::disk('s3')->delete('path/file.jpg');
-
 <a name="directories"></a>
 
 ## 目錄
@@ -562,7 +524,6 @@ $disk->put('image.jpg', $content);
     $files = Storage::files($directory);
     
     $files = Storage::allFiles($directory);
-
 <a name="get-all-directories-within-a-directory"></a>
 
 #### 取得目錄內的所有目錄
@@ -572,7 +533,6 @@ $disk->put('image.jpg', $content);
     $directories = Storage::directories($directory);
     
     $directories = Storage::allDirectories($directory);
-
 <a name="create-a-directory"></a>
 
 #### 建立目錄
@@ -580,7 +540,6 @@ $disk->put('image.jpg', $content);
 `makeDirectory` 方法會建立給定的目錄，包含所有需要的子目錄：
 
     Storage::makeDirectory($directory);
-
 <a name="delete-a-directory"></a>
 
 #### 刪除目錄
@@ -588,7 +547,6 @@ $disk->put('image.jpg', $content);
 最後，可使用 `deleteDirectory` 方法來移除某個目錄與其中所有檔案：
 
     Storage::deleteDirectory($directory);
-
 <a name="custom-filesystems"></a>
 
 ## 自訂 Filesystem
@@ -598,7 +556,6 @@ Laravel 的 Flysystem 整合預設提供了多種可用的「Driver」。不過�
 若要定義自訂檔案系統，我們首先需要一個 Flysystem Adapter。我們先來在專案中新增一個由社群維護的 Dropbox Adapter：
 
     composer require spatie/flysystem-dropbox
-
 接著，我們可以在專案的其中一個 [Service Provider](/docs/{{version}}/providers) 中 `boot` 方法內註冊這個 Driver。若要註冊 Driver，請使用 `Storage` Facade 的 `extend` 方法：
 
     <?php
@@ -639,7 +596,6 @@ Laravel 的 Flysystem 整合預設提供了多種可用的「Driver」。不過�
             });
         }
     }
-
 傳入 `extend` 方法的第一個引數是 Driver 的名稱，而第二個引數則是一本接收了 `$app` 與 `$config` 變數的閉包。該閉包應回傳 `League\Flysystem\Filesystem` 的實體。`$config` 變數則包含了定義在 `config/filesystems.php` 中指定 Disk 的設定值。
 
 建立並註冊好擴充的 Service Provider 後，就可以在 `config/filesystems.php` 設定當中使用 `dropbox` Driver。

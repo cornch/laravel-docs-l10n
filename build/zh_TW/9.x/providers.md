@@ -1,19 +1,17 @@
 ---
-contributors:
-  14684796:
-    avatarUrl: https://crowdin-static.downloads.crowdin.com/avatar/14684796/medium/60f7dc21ec0bf9cfcb61983640bb4809_default.png
-    name: cornch
-crowdinUrl: https://crowdin.com/translate/laravel-docs/121/en-zhtw
-progress: 100
+crowdinUrl: 'https://crowdin.com/translate/laravel-docs/121/en-zhtw'
 updatedAt: '2024-06-30T08:15:00Z'
+contributors: {  }
+progress: 53.13
 ---
 
 # Service Provider
 
 - [簡介](#introduction)
 - [撰寫 ServiceProvider](#writing-service-providers)
-   - [Register 方法](#the-register-method)
-   - [Boot 方法](#the-boot-method)
+  - [Register 方法](#the-register-method)
+  - [Boot 方法](#the-boot-method)
+  
 - [註冊 Provider](#registering-providers)
 - [延遲的 Provider](#deferred-providers)
 
@@ -29,7 +27,8 @@ Service Provider 是 Laravel 中負責啟動應用程式的中心點。不過是
 
 在本篇概覽中，讀者將可以學習到如何撰寫你自己的 Service Provider，並將這些 Provider 註冊到 Laravel 專案上。
 
-> **Note** 若想瞭解 Laravel 如何處理 Request 以及其內部如何運作，請參考我們有關 Laravel [Request 的生命週期](/docs/{{version}}/lifecycle)說明文件。
+> [!NOTE]  
+> 若想瞭解 Laravel 如何處理 Request 以及其內部如何運作，請參考我們有關 Laravel [Request 的生命週期](/docs/{{version}}/lifecycle)說明文件。
 
 <a name="writing-service-providers"></a>
 
@@ -42,7 +41,6 @@ Artisan CLI 提供了一個 `make:provider` 指令來新增新 Provider：
 ```shell
 php artisan make:provider RiakServiceProvider
 ```
-
 <a name="the-register-method"></a>
 
 ### Register 方法
@@ -72,7 +70,6 @@ php artisan make:provider RiakServiceProvider
             });
         }
     }
-
 這個 Service Provider 只註冊了一個 `register` 方法，我們使用這個方法來向 Service Container 定義 `App\Services\Riak\Connection` 的實作。若你不熟悉 Laravel 的 Service Container，請參考 [Service Container 的說明文件](/docs/{{version}}/container)。
 
 <a name="the-bindings-and-singletons-properties"></a>
@@ -113,7 +110,6 @@ php artisan make:provider RiakServiceProvider
             ServerProvider::class => ServerToolsProvider::class,
         ];
     }
-
 <a name="the-boot-method"></a>
 
 ### Boot 方法
@@ -141,7 +137,6 @@ php artisan make:provider RiakServiceProvider
             });
         }
     }
-
 <a name="boot-method-dependency-injection"></a>
 
 #### Boot 方法的相依性插入
@@ -162,7 +157,6 @@ php artisan make:provider RiakServiceProvider
             //
         });
     }
-
 <a name="registering-providers"></a>
 
 ## 註冊 Provider
@@ -172,11 +166,10 @@ php artisan make:provider RiakServiceProvider
 若要註冊 Provider，請將其加到該陣列中：
 
     'providers' => [
-        // 其他 Service Provider
+        // Other Service Providers
     
         App\Providers\ComposerServiceProvider::class,
     ],
-
 <a name="deferred-providers"></a>
 
 ## 延遲的 Provider

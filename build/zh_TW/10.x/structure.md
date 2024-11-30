@@ -1,41 +1,40 @@
 ---
-contributors:
-  14684796:
-    avatarUrl: https://crowdin-static.downloads.crowdin.com/avatar/14684796/medium/60f7dc21ec0bf9cfcb61983640bb4809_default.png
-    name: cornch
-crowdinUrl: https://crowdin.com/translate/laravel-docs/159/en-zhtw
-progress: 100
+crowdinUrl: 'https://crowdin.com/translate/laravel-docs/159/en-zhtw'
 updatedAt: '2023-02-11T10:28:00Z'
+contributors: {  }
+progress: 69.7
 ---
 
 # 目錄結構
 
 - [簡介](#introduction)
 - [Root 目錄](#the-root-directory)
-   - [`app` 目錄](#the-root-app-directory)
-   - [`bootstrap` 目錄](#the-bootstrap-directory)
-   - [`config` 目錄](#the-config-directory)
-   - [`database` 目錄](#the-database-directory)
-   - [`public` 目錄](#the-public-directory)
-   - [`resources` 目錄](#the-resources-directory)
-   - [`routes` 目錄](#the-routes-directory)
-   - [`storage` 目錄](#the-storage-directory)
-   - [`tests` 目錄](#the-tests-directory)
-   - [`vendor` 目錄](#the-vendor-directory)
+  - [`app` 目錄](#the-root-app-directory)
+  - [`bootstrap` 目錄](#the-bootstrap-directory)
+  - [`config` 目錄](#the-config-directory)
+  - [`database` 目錄](#the-database-directory)
+  - [`public` 目錄](#the-public-directory)
+  - [`resources` 目錄](#the-resources-directory)
+  - [`routes` 目錄](#the-routes-directory)
+  - [`storage` 目錄](#the-storage-directory)
+  - [`tests` 目錄](#the-tests-directory)
+  - [`vendor` 目錄](#the-vendor-directory)
+  
 - [App 目錄](#the-app-directory)
-   - [`Broadcasting` 目錄](#the-broadcasting-directory)
-   - [`Console` 目錄](#the-console-directory)
-   - [`Events` 目錄](#the-events-directory)
-   - [`Exceptions` 目錄](#the-exceptions-directory)
-   - [`Http` 目錄](#the-http-directory)
-   - [`Jobs` 目錄](#the-jobs-directory)
-   - [`Listeners` 目錄](#the-listeners-directory)
-   - [`Mail` 目錄](#the-mail-directory)
-   - [`Models` 目錄](#the-models-directory)
-   - [`Notifications` 目錄](#the-notifications-directory)
-   - [`Policies` 目錄](#the-policies-directory)
-   - [`Providers` 目錄](#the-providers-directory)
-   - [`Rules` 目錄](#the-rules-directory)
+  - [`Broadcasting` 目錄](#the-broadcasting-directory)
+  - [`Console` 目錄](#the-console-directory)
+  - [`Events` 目錄](#the-events-directory)
+  - [`Exceptions` 目錄](#the-exceptions-directory)
+  - [`Http` 目錄](#the-http-directory)
+  - [`Jobs` 目錄](#the-jobs-directory)
+  - [`Listeners` 目錄](#the-listeners-directory)
+  - [`Mail` 目錄](#the-mail-directory)
+  - [`Models` 目錄](#the-models-directory)
+  - [`Notifications` 目錄](#the-notifications-directory)
+  - [`Policies` 目錄](#the-policies-directory)
+  - [`Providers` 目錄](#the-providers-directory)
+  - [`Rules` 目錄](#the-rules-directory)
+  
 
 <a name="introduction"></a>
 
@@ -43,7 +42,8 @@ updatedAt: '2023-02-11T10:28:00Z'
 
 不論專案大小，Laravel 預設的目錄結構都可提供一個不錯的起始點。不過，你也可以隨意調整要如何整理你的專案。Laravel 幾乎不限制 Class 要放在哪裡 —— 只要 Composer 可以自動載入 (Autoload) 該 Class 即可。
 
-> **Note** 是 Laravel 新手嗎？請參考 [Laravel Bootcamp (英語)](https://bootcamp.laravel.com) 來瞭解 Laravel 框架，同時我們也會帶領你建立你的第一個 Laravel 專案。
+> [!NOTE]  
+> 是 Laravel 新手嗎？請參考 [Laravel Bootcamp (英語)](https://bootcamp.laravel.com) 來瞭解 Laravel 框架，同時我們也會帶領你建立你的第一個 Laravel 專案。
 
 <a name="the-root-directory"></a>
 
@@ -107,6 +107,8 @@ updatedAt: '2023-02-11T10:28:00Z'
 
 `storage/app/public` 目錄可用來儲存使用者產生的檔案，如個人資料頭像等應可公開存取的檔案。開發人員應建立一個 `public/storage` 符號連結 (Symbolic Link) 連結到這個目錄。可以使用 `php artisan storage:link` Artisan 指令來建立這個連結。
 
+The location of the `storage` directory can be modified via the `LARAVEL_STORAGE_PATH` environment variable.
+
 <a name="the-tests-directory"></a>
 
 #### Tests 目錄
@@ -129,7 +131,8 @@ updatedAt: '2023-02-11T10:28:00Z'
 
 其他的資料夾則會在使用 `make` Artisan 指令產生類別時產生在 `app` 目錄下。舉例來說，執行了 `make:job` Artisan 指令來產生 Job 類別後，才會產生 `app/Jobs` 目錄。
 
-> **Note** `app` 目錄內的許多類別都可以通過指令來由 Artisan 產生。若要檢視所有可用的指令，請在終端機中執行 `php artisan list make` 指令。
+> [!NOTE]  
+> `app` 目錄內的許多類別都可以通過指令來由 Artisan 產生。若要檢視所有可用的指令，請在終端機中執行 `php artisan list make` 指令。
 
 <a name="the-broadcasting-directory"></a>
 

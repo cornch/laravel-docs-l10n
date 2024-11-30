@@ -1,22 +1,20 @@
 ---
-contributors:
-  14684796:
-    avatarUrl: https://crowdin-static.downloads.crowdin.com/avatar/14684796/medium/60f7dc21ec0bf9cfcb61983640bb4809_default.png
-    name: cornch
-crowdinUrl: https://crowdin.com/translate/laravel-docs/93/en-zhtw
-progress: 100
+crowdinUrl: 'https://crowdin.com/translate/laravel-docs/93/en-zhtw'
 updatedAt: '2023-02-11T10:27:00Z'
+contributors: {  }
+progress: 67.24
 ---
 
 # Request 的生命週期
 
 - [簡介](#introduction)
 - [生命週期概覽](#lifecycle-overview)
-   - [第一步](#first-steps)
-   - [HTTP Kernel 與 Console Kernel](#http-console-kernels)
-   - [Service Provider](#service-providers)
-   - [路由](#routing)
-   - [結束](#finishing-up)
+  - [第一步](#first-steps)
+  - [HTTP Kernel 與 Console Kernel](#http-console-kernels)
+  - [Service Provider](#service-providers)
+  - [路由](#routing)
+  - [結束](#finishing-up)
+  
 - [專注於 Service Provider](#focus-on-service-providers)
 
 <a name="introduction"></a>

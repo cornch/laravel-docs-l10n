@@ -1,38 +1,41 @@
 ---
-contributors:
-  14684796:
-    avatarUrl: https://crowdin-static.downloads.crowdin.com/avatar/14684796/medium/60f7dc21ec0bf9cfcb61983640bb4809_default.png
-    name: cornch
-crowdinUrl: https://crowdin.com/translate/laravel-docs/141/en-zhtw
-progress: 99
+crowdinUrl: 'https://crowdin.com/translate/laravel-docs/141/en-zhtw'
 updatedAt: '2024-06-30T08:27:00Z'
+contributors:
+    14684796: { name: cornch, avatarUrl: 'https://crowdin-static.downloads.crowdin.com/avatar/14684796/medium/60f7dc21ec0bf9cfcb61983640bb4809_default.png' }
+progress: 45.86
 ---
 
 # 路由
 
 - [基礎路由](#basic-routing)
-   - [重新導向的 Route](#redirect-routes)
-   - [View Route](#view-routes)
-   - [Route 列表](#the-route-list)
+  - [重新導向的 Route](#redirect-routes)
+  - [View Route](#view-routes)
+  - [Route 列表](#the-route-list)
+  
 - [Route 參數](#route-parameters)
-   - [必填參數](#required-parameters)
-   - [可選參數](#parameters-optional-parameters)
-   - [正規表示式的條件限制](#parameters-regular-expression-constraints)
+  - [必填參數](#required-parameters)
+  - [可選參數](#parameters-optional-parameters)
+  - [正規表示式的條件限制](#parameters-regular-expression-constraints)
+  
 - [命名 Route](#named-routes)
 - [Route 群組](#route-groups)
-   - [Middleware](#route-group-middleware)
-   - [Controller](#route-group-controllers)
-   - [子網域的路由](#route-group-subdomain-routing)
-   - [Route 前置詞](#route-group-prefixes)
-   - [Route 名稱的前置詞](#route-group-name-prefixes)
+  - [Middleware](#route-group-middleware)
+  - [Controller](#route-group-controllers)
+  - [子網域的路由](#route-group-subdomain-routing)
+  - [Route 前置詞](#route-group-prefixes)
+  - [Route 名稱的前置詞](#route-group-name-prefixes)
+  
 - [Route 的 Model 繫結](#route-model-binding)
-   - [隱式繫結](#implicit-binding)
-   - [隱式 Enum 繫結](#implicit-enum-binding)
-   - [顯式繫結](#explicit-binding)
+  - [隱式繫結](#implicit-binding)
+  - [隱式 Enum 繫結](#implicit-enum-binding)
+  - [顯式繫結](#explicit-binding)
+  
 - [遞補 Route](#fallback-routes)
 - [頻率限制](#rate-limiting)
-   - [定義 Rate Limiter](#defining-rate-limiters)
-   - [在 Route 上附加 Rate Limiter](#attaching-rate-limiters-to-routes)
+  - [定義 Rate Limiter](#defining-rate-limiters)
+  - [在 Route 上附加 Rate Limiter](#attaching-rate-limiters-to-routes)
+  
 - [Form Method 的模擬](#form-method-spoofing)
 - [存取目前 Route](#accessing-the-current-route)
 - [跨原始來源資源共用 (CORS, Cross-Origin Resource Sharing)(#cors)
@@ -49,7 +52,6 @@ updatedAt: '2024-06-30T08:27:00Z'
     Route::get('/greeting', function () {
         return 'Hello World';
     });
-
 <a name="the-default-route-files"></a>
 
 #### 預設的 Route 檔案
@@ -61,7 +63,6 @@ Laravel 中所有的 Route 都在 Route 檔案中定義，這些檔案位在 `ro
     use App\Http\Controllers\UserController;
     
     Route::get('/user', [UserController::class, 'index']);
-
 `routes/api.php` 檔案中定義的 Route 放在巢狀放置在 `RouteServiceProvider` 中的 Route 群組內。在這個群組中，Laravel 會自動加上 `/api` URI 前置詞 (Prefix)，因此在這個檔案中，我們不需手動在所有 Route 前方加上 `/api`。我們也可以修改 `RouteServiceProvider` 類別來修改這個前置詞以及其他一些 Route 群組的選項。
 
 <a name="available-router-methods"></a>
@@ -76,7 +77,6 @@ Laravel 中所有的 Route 都在 Route 檔案中定義，這些檔案位在 `ro
     Route::patch($uri, $callback);
     Route::delete($uri, $callback);
     Route::options($uri, $callback);
-
 有時候，我們可能需要註冊一個能回應多個 HTTP 動詞的 Route。這時可以使用 `match` 方法。或者，我們甚至可以使用 `any` 方法來註冊一個回應所有 HTTP 動詞的 Route：
 
     Route::match(['get', 'post'], '/', function () {
@@ -86,8 +86,8 @@ Laravel 中所有的 Route 都在 Route 檔案中定義，這些檔案位在 `ro
     Route::any('/', function () {
         //
     });
-
-> **Note** 註冊多個共享同 URI 的 Route 時，應將這些 `any`, `match`, 與 `redirect` 方法的 Route 定義在 `get`, `post`, `put`, `patch`, `delete`, 與 `options` 方法定義之前。這樣一來可以確保連入的 Request 被配對到正確的 Route 上。
+> [!NOTE]  
+> 註冊多個共享同 URI 的 Route 時，應將這些 `any`, `match`, 與 `redirect` 方法的 Route 定義在 `get`, `post`, `put`, `patch`, `delete`, 與 `options` 方法定義之前。這樣一來可以確保連入的 Request 被配對到正確的 Route 上。
 
 <a name="dependency-injection"></a>
 
@@ -100,7 +100,6 @@ Laravel 中所有的 Route 都在 Route 檔案中定義，這些檔案位在 `ro
     Route::get('/users', function (Request $request) {
         // ...
     });
-
 <a name="csrf-protection"></a>
 
 #### CSRF 保護
@@ -111,7 +110,6 @@ Laravel 中所有的 Route 都在 Route 檔案中定義，這些檔案位在 `ro
         @csrf
         ...
     </form>
-
 <a name="redirect-routes"></a>
 
 ### 重新導向的 Route
@@ -119,16 +117,14 @@ Laravel 中所有的 Route 都在 Route 檔案中定義，這些檔案位在 `ro
 若想定義可以重新導向到另一個 URI 的 Route，可以使用 `Route::redirect` 方法。這個方法提供了一個方便的捷徑，讓你不需要為了簡單的重新導向定義完整的 Route 或 Controller：
 
     Route::redirect('/here', '/there');
-
 預設情況下，`Route::redirect` 回傳 `302` 狀態碼。我們可以使用可選的第三個參數來自訂狀態碼：
 
     Route::redirect('/here', '/there', 301);
-
 或者，我們也可以使用 `Route::permanentRedirect` 方法來回傳 `301` 狀態碼：
 
     Route::permanentRedirect('/here', '/there');
-
-> **Warning** 在重新導向 Route 中使用 Route 參數時，有幾個參數名稱是 Laravel 的保留字，無法使用：`destination` 與 `status`。
+> [!WARNING]  
+> 在重新導向 Route 中使用 Route 參數時，有幾個參數名稱是 Laravel 的保留字，無法使用：`destination` 與 `status`。
 
 <a name="view-routes"></a>
 
@@ -139,8 +135,8 @@ Laravel 中所有的 Route 都在 Route 檔案中定義，這些檔案位在 `ro
     Route::view('/welcome', 'welcome');
     
     Route::view('/welcome', 'welcome', ['name' => 'Taylor']);
-
-> **Warning** 在 View 的 Route 中使用 Route 參數時，有幾個參數名稱是 Laravel 的保留字，無法使用：`view`、`data`、`status`、`header`。
+> [!WARNING]  
+> 在 View 的 Route 中使用 Route 參數時，有幾個參數名稱是 Laravel 的保留字，無法使用：`view`、`data`、`status`、`header`。
 
 <a name="the-route-list"></a>
 
@@ -151,31 +147,26 @@ Laravel 中所有的 Route 都在 Route 檔案中定義，這些檔案位在 `ro
 ```shell
 php artisan route:list
 ```
-
 預設情況下，指派給各個 Route 的 Middleware 不會顯示在 `route:list` 輸出中。不過，我們可以在該指令後加上 `-v` 選項來讓 Laravel 顯示 Route Middleware：
 
 ```shell
 php artisan route:list -v
 ```
-
 也可以讓 Laravel 值顯示以給定 URI 開頭的 Route：
 
 ```shell
 php artisan route:list --path=api
 ```
-
 此外，也可以在執行 `route:list` 指令時提供 `--except-vendor` 選項來讓 Laravel 隱藏由第三方套件所定義的 Route：
 
 ```shell
 php artisan route:list --except-vendor
 ```
-
 類似地，執行 `route:list` 指令時，也可以提供 `--only-vendor` 選項來讓 Laravel 只顯示第三方套件定義的 Route：
 
 ```shell
 php artisan route:list --only-vendor
 ```
-
 <a name="route-parameters"></a>
 
 ## Route 參數
@@ -189,13 +180,11 @@ php artisan route:list --only-vendor
     Route::get('/user/{id}', function ($id) {
         return 'User '.$id;
     });
-
 根據 Route 的需求，我們可以定義不限數量的 Route 參數：
 
     Route::get('/posts/{post}/comments/{comment}', function ($postId, $commentId) {
         //
     });
-
 Route 參數必須要包裝在 `{}` 大括號中，且只能使用字母。在 Route 參數名稱中也可以使用 (`_`)。Route 參數會依照順序插入到 Route 的回呼或 Controller 上 —— Route 的回呼或 Controller 中的名稱並不影響。
 
 <a name="parameters-and-dependency-injection"></a>
@@ -209,7 +198,6 @@ Route 參數必須要包裝在 `{}` 大括號中，且只能使用字母。在 R
     Route::get('/user/{id}', function (Request $request, $id) {
         return 'User '.$id;
     });
-
 <a name="parameters-optional-parameters"></a>
 
 ### 可選的參數
@@ -223,7 +211,6 @@ Route 參數必須要包裝在 `{}` 大括號中，且只能使用字母。在 R
     Route::get('/user/{name?}', function ($name = 'John') {
         return $name;
     });
-
 <a name="parameters-regular-expression-constraints"></a>
 
 ### 正規表示式條件
@@ -241,7 +228,6 @@ Route 參數必須要包裝在 `{}` 大括號中，且只能使用字母。在 R
     Route::get('/user/{id}/{name}', function ($id, $name) {
         //
     })->where(['id' => '[0-9]+', 'name' => '[a-z]+']);
-
 為了方便起見，一些常用的正規式都有輔助方法，可以讓你快速將這些格式套用到 Route 上：
 
     Route::get('/user/{id}/{name}', function ($id, $name) {
@@ -263,7 +249,6 @@ Route 參數必須要包裝在 `{}` 大括號中，且只能使用字母。在 R
     Route::get('/category/{category}', function ($category) {
         //
     })->whereIn('category', ['movie', 'song', 'painting']);
-
 若連入 Request 不符合 Route 的格式限制，則會回傳 404 HTTP Response。
 
 <a name="parameters-global-constraints"></a>
@@ -281,13 +266,11 @@ Route 參數必須要包裝在 `{}` 大括號中，且只能使用字母。在 R
     {
         Route::pattern('id', '[0-9]+');
     }
-
 定義好之後，這個規則會自動套用到有使用這個參數名稱的 Route：
 
     Route::get('/user/{id}', function ($id) {
-        // 只會在 {id} 為數字時執行...
+        // Only executed if {id} is numeric...
     });
-
 <a name="parameters-encoded-forward-slashes"></a>
 
 #### 編碼斜線
@@ -297,8 +280,8 @@ Laravel 的路由元件能接受除了 `/` 外的所有字元出現在 Route 的
     Route::get('/search/{search}', function ($search) {
         return $search;
     })->where('search', '.*');
-
-> **Warning** 只有最後一個 Route 片段才支援編碼斜線。
+> [!WARNING]  
+> 只有最後一個 Route 片段才支援編碼斜線。
 
 <a name="named-routes"></a>
 
@@ -309,15 +292,14 @@ Laravel 的路由元件能接受除了 `/` 外的所有字元出現在 Route 的
     Route::get('/user/profile', function () {
         //
     })->name('profile');
-
 也可以為 Controller 動作指定 Route 名稱：
 
     Route::get(
         '/user/profile',
         [UserProfileController::class, 'show']
     )->name('profile');
-
-> **Warning** Route 名稱不可重複。
+> [!WARNING]  
+> Route 名稱不可重複。
 
 <a name="generating-urls-to-named-routes"></a>
 
@@ -325,14 +307,13 @@ Laravel 的路由元件能接受除了 `/` 外的所有字元出現在 Route 的
 
 給某個 Route 指定好名稱後，我們就可以使用 Laravel 的 `route` 與 `redirect` 輔助函式來在產生 URL 或重新導向時使用 Route 的名稱：
 
-    // 產生 URL...
+    // Generating URLs...
     $url = route('profile');
     
-    // 產生重新導向...
+    // Generating Redirects...
     return redirect()->route('profile');
     
     return to_route('profile');
-
 若命名 Route 有定義參數，則可以將這些參數作為第二個引數傳給 `route` 函式。傳入的參數會自動依照正確位置插入到產生的 URL 裡：
 
     Route::get('/user/{id}/profile', function ($id) {
@@ -340,7 +321,6 @@ Laravel 的路由元件能接受除了 `/` 外的所有字元出現在 Route 的
     })->name('profile');
     
     $url = route('profile', ['id' => 1]);
-
 若該陣列中有傳入額外的參數，則這些額外的索引鍵 / 值配對會自動被插入到產生的 URL 中之查詢字串 (Query String) 上：
 
     Route::get('/user/{id}/profile', function ($id) {
@@ -350,8 +330,8 @@ Laravel 的路由元件能接受除了 `/` 外的所有字元出現在 Route 的
     $url = route('profile', ['id' => 1, 'photos' => 'yes']);
     
     // /user/1/profile?photos=yes
-
-> **Note** 有時候，我們可能會想為 URL 引數指定 Request 層級的預設值，例如目前使用的語系等。為此，可以使用 [`URL::defaults` 方法](/docs/{{version}}/urls#default-values)。
+> [!NOTE]  
+> 有時候，我們可能會想為 URL 引數指定 Request 層級的預設值，例如目前使用的語系等。為此，可以使用 [`URL::defaults` 方法](/docs/{{version}}/urls#default-values)。
 
 <a name="inspecting-the-current-route"></a>
 
@@ -375,7 +355,6 @@ Middleware 上檢查目前的 Route 名稱：
     
         return $next($request);
     }
-
 <a name="route-groups"></a>
 
 ## Route 群組
@@ -392,14 +371,13 @@ Middleware 上檢查目前的 Route 名稱：
 
     Route::middleware(['first', 'second'])->group(function () {
         Route::get('/', function () {
-            // 使用 first 與 second Middleware...
+            // Uses first & second middleware...
         });
     
         Route::get('/user/profile', function () {
-            // 使用 first 與 second Middleware...
+            // Uses first & second middleware...
         });
     });
-
 <a name="route-group-controllers"></a>
 
 ### Controller
@@ -412,7 +390,6 @@ Middleware 上檢查目前的 Route 名稱：
         Route::get('/orders/{id}', 'show');
         Route::post('/orders', 'store');
     });
-
 <a name="route-group-subdomain-routing"></a>
 
 ### 子網域路由
@@ -424,8 +401,8 @@ Route 群組也可以用來處理子網域路由。我們可以像在設定 Rout
             //
         });
     });
-
-> **Warning** 為了確保子網域 Route 有效，請在註冊任何根網域 Route 前先註冊子網域 Route。這樣可以避免根網域的 Route 去複寫到子網域 Route 中有相同 URI 路徑的 Route。
+> [!WARNING]  
+> 為了確保子網域 Route 有效，請在註冊任何根網域 Route 前先註冊子網域 Route。這樣可以避免根網域的 Route 去複寫到子網域 Route 中有相同 URI 路徑的 Route。
 
 <a name="route-group-prefixes"></a>
 
@@ -435,10 +412,9 @@ Route 群組也可以用來處理子網域路由。我們可以像在設定 Rout
 
     Route::prefix('admin')->group(function () {
         Route::get('/users', function () {
-            // 配對到「/admin/users」URL
+            // Matches The "/admin/users" URL
         });
     });
-
 <a name="route-group-name-prefixes"></a>
 
 ### 命名 Route 的名稱前置詞
@@ -447,10 +423,9 @@ Route 群組也可以用來處理子網域路由。我們可以像在設定 Rout
 
     Route::name('admin.')->group(function () {
         Route::get('/users', function () {
-            // Route 被指派名稱為「admin.users」...
+            // Route assigned name "admin.users"...
         })->name('users');
     });
-
 <a name="route-model-binding"></a>
 
 ## Route 的 Model 繫結
@@ -468,7 +443,6 @@ Route 群組也可以用來處理子網域路由。我們可以像在設定 Rout
     Route::get('/users/{user}', function (User $user) {
         return $user->email;
     });
-
 由於 `$user` 變數有型別提示為 `App\Models\User` Eloquent Model，且該變數名稱符合 `{user}` URI 片段，因此 Laravel 會自動將 ID 符合 Request URI 中相應值的 Model 實體插入進去。若資料庫中找不到對應的 Model 實體，則會自動產生 404 HTTP Response。
 
 當然，在使用 Controller 方法時也能使用隱式繫結。再強調一次，必須注意 `{user}` URI 片段要符合 Controller 中有 `App\Models\User` 型別提示的 `$user` 變數：
@@ -476,15 +450,14 @@ Route 群組也可以用來處理子網域路由。我們可以像在設定 Rout
     use App\Http\Controllers\UserController;
     use App\Models\User;
     
-    // Route 定義...
+    // Route definition...
     Route::get('/users/{user}', [UserController::class, 'show']);
     
-    // Controller 方法定義...
+    // Controller method definition...
     public function show(User $user)
     {
         return view('user.profile', ['user' => $user]);
     }
-
 <a name="implicit-soft-deleted-models"></a>
 
 #### 軟刪除的 Model
@@ -496,8 +469,7 @@ Route 群組也可以用來處理子網域路由。我們可以像在設定 Rout
     Route::get('/users/{user}', function (User $user) {
         return $user->email;
     })->withTrashed();
-
-<a name="customizing-the-key"></a> <a name="customizing-the-default-key-name"></a>
+<a name="customizing-the-default-key-name"></a>
 
 #### 自訂索引鍵
 
@@ -508,7 +480,6 @@ Route 群組也可以用來處理子網域路由。我們可以像在設定 Rout
     Route::get('/posts/{post:slug}', function (Post $post) {
         return $post;
     });
-
 若想讓 Model 繫結在給定 Model 類別上總是使用 `id` 以外的其他欄位，可以在 Eloquent Model 上複寫 `getRouteKeyName` 方法：
 
     /**
@@ -520,7 +491,6 @@ Route 群組也可以用來處理子網域路由。我們可以像在設定 Rout
     {
         return 'slug';
     }
-
 <a name="implicit-model-binding-scoping"></a>
 
 #### 自訂索引鍵與作用範圍
@@ -533,7 +503,6 @@ Route 群組也可以用來處理子網域路由。我們可以像在設定 Rout
     Route::get('/users/{user}/posts/{post:slug}', function (User $user, Post $post) {
         return $post;
     });
-
 當使用自訂鍵值的隱式繫結作為巢狀路由參數時，Laravel 會自動以慣例推測其上層 Model 上的關聯名稱來將限制巢狀 Model 的查詢範圍。在這個例子中，Laravel 會假設 `User` Model 有個名為 `posts` 的關聯 (即路由參數名稱的複數形)，該關聯將用於取得 `Post` Model。
 
 若有需要的話，就算沒有提供自訂索引鍵，我們還是可以告訴 Laravel 要如何限定「子」繫結的限定。為此，我們可以在定義 Route 時叫用 `scopeBindings` 方法：
@@ -544,7 +513,6 @@ Route 群組也可以用來處理子網域路由。我們可以像在設定 Rout
     Route::get('/users/{user}/posts/{post}', function (User $user, Post $post) {
         return $post;
     })->scopeBindings();
-
 或者，也可以讓整個 Route 定義群組使用限定範圍的繫結：
 
     Route::scopeBindings()->group(function () {
@@ -552,13 +520,11 @@ Route 群組也可以用來處理子網域路由。我們可以像在設定 Rout
             return $post;
         });
     });
-
 類似地，也可以通過呼叫 `withoutScopedBindings` 方法來明顯讓 Laravel 不使用限定範圍的繫結：
 
     Route::get('/users/{user}/posts/{post:slug}', function (User $user, Post $post) {
         return $post;
     })->withoutScopedBindings();
-
 <a name="customizing-missing-model-behavior"></a>
 
 #### 自訂找不到 Model 的行為
@@ -574,7 +540,6 @@ Route 群組也可以用來處理子網域路由。我們可以像在設定 Rout
             ->missing(function (Request $request) {
                 return Redirect::route('locations.index');
             });
-
 <a name="implicit-enum-binding"></a>
 
 ### 隱式 Enum 繫結
@@ -592,7 +557,6 @@ enum Category: string
     case People = 'people';
 }
 ```
-
 我們可以定義一個只有當 `{category}` 路由片段為 `fruits` 或 `people` 時才會被叫用的路由。若為其他值，Laravel 會回傳 HTTP 404 Response：
 
 ```php
@@ -603,7 +567,6 @@ Route::get('/categories/{category}', function (Category $category) {
     return $category->value;
 });
 ```
-
 <a name="explicit-binding"></a>
 
 ### 顯式繫結
@@ -624,7 +587,6 @@ Model 繫結不一定要使用 Laravel 的隱式的，隱式繫結是基於慣�
     
         // ...
     }
-
 接著，請定義含有 `{user}` 參數的 Route：
 
     use App\Models\User;
@@ -632,7 +594,6 @@ Model 繫結不一定要使用 Laravel 的隱式的，隱式繫結是基於慣�
     Route::get('/users/{user}', function (User $user) {
         //
     });
-
 我們已經將所有 `{user}` 參數繫結到 `App\Models\User` Model 上了。`User` Model 的實體會被插入到這個 Route 中。因此，舉例來說，對 `users/1` 的 Request 將會插入一個資料庫中 ID 為 `1` 的 `User` 實體。
 
 若資料庫中找不到相符合的 Model 實體，則會自動產生 404 HTTP Response。
@@ -659,7 +620,6 @@ Model 繫結不一定要使用 Laravel 的隱式的，隱式繫結是基於慣�
     
         // ...
     }
-
 或者，我們也可以在 Eloquent Model 上複寫 `resolveRouteBinding` 方法。這個方法會接收 URI 片段中的值，並應回傳要插入到 Route 中的類別實體：
 
     /**
@@ -673,7 +633,6 @@ Model 繫結不一定要使用 Laravel 的隱式的，隱式繫結是基於慣�
     {
         return $this->where('name', $value)->firstOrFail();
     }
-
 如有 Route 是使用[限定範圍的隱式細節](#implicit-model-binding-scoping)，則在解析上層 Model 的子繫結時會使用 `resolveChildRouteBinding` 方法：
 
     /**
@@ -688,7 +647,6 @@ Model 繫結不一定要使用 Laravel 的隱式的，隱式繫結是基於慣�
     {
         return parent::resolveChildRouteBinding($childType, $value, $field);
     }
-
 <a name="fallback-routes"></a>
 
 ## 遞補的 Route
@@ -698,8 +656,8 @@ Model 繫結不一定要使用 Laravel 的隱式的，隱式繫結是基於慣�
     Route::fallback(function () {
         //
     });
-
-> **Warning** 遞補的 Route 應該要保持為專案中最後一個註冊的 Route。
+> [!WARNING]  
+> 遞補的 Route 應該要保持為專案中最後一個註冊的 Route。
 
 <a name="rate-limiting"></a>
 
@@ -726,7 +684,6 @@ protected function configureRateLimiting(): void
     });
 }
 ```
-
 使用 `RateLimiter` Facade 的 `for` 方法來定義 Rate Limiter。`for` 方法接受 Rate Limiter 的名稱以及一個閉包。該閉包應回傳用來套用到指派了這個 Rate Limiter 上的 Route 所需要的頻率限制設定。頻率限制的設定使用 `Illuminate\Cache\RateLimiting\Limit` 類別的實體。這個實體中包含了實用的「建構程式 (Builder)」，可讓你快速定義限制。Rate Limiter 的名稱可以為任意字串：
 
     use Illuminate\Cache\RateLimiting\Limit;
@@ -744,7 +701,6 @@ protected function configureRateLimiting(): void
             return Limit::perMinute(1000);
         });
     }
-
 若連入的 Request 超過了指定的頻率限制，Laravel 會自動回傳一個 429 HTTP 狀態碼。若想自訂頻率限制回傳的 Response，可使用 `response` 方法：
 
     RateLimiter::for('global', function (Request $request) {
@@ -752,7 +708,6 @@ protected function configureRateLimiting(): void
             return response('Custom response...', 429, $headers);
         });
     });
-
 由於頻率限制程式的回呼會接收連入 HTTP Request 實體，因此我們可以依據連入 Request 或登入使用者來動態調整適當的頻率限制：
 
     RateLimiter::for('uploads', function (Request $request) {
@@ -760,7 +715,6 @@ protected function configureRateLimiting(): void
                     ? Limit::none()
                     : Limit::perMinute(100);
     });
-
 <a name="segmenting-rate-limits"></a>
 
 #### 區塊化的頻率限制
@@ -772,7 +726,6 @@ protected function configureRateLimiting(): void
                     ? Limit::none()
                     : Limit::perMinute(100)->by($request->ip());
     });
-
 我們來看看另一個使用這個功能的例子。我們可以像這樣限制某個 Route 對已登入使用者的限制時 100 次/分鐘，而未登入使用者則是 10 次/分鐘：
 
     RateLimiter::for('uploads', function (Request $request) {
@@ -780,7 +733,6 @@ protected function configureRateLimiting(): void
                     ? Limit::perMinute(100)->by($request->user()->id)
                     : Limit::perMinute(10)->by($request->ip());
     });
-
 <a name="multiple-rate-limits"></a>
 
 #### 多個頻率限制
@@ -793,7 +745,6 @@ protected function configureRateLimiting(): void
             Limit::perMinute(3)->by($request->input('email')),
         ];
     });
-
 <a name="attaching-rate-limiters-to-routes"></a>
 
 ### 將 Rate Limiter 附加到 Route 上
@@ -809,7 +760,6 @@ protected function configureRateLimiting(): void
             //
         });
     });
-
 <a name="throttling-with-redis"></a>
 
 #### 使用 Redis 來做頻率限制
@@ -817,7 +767,6 @@ protected function configureRateLimiting(): void
 一般來說，`throttle` Middleware 被映射到 `Illuminate\Routing\Middleware\ThrottleRequests` 類別。這個映射定義在程式的 HTTP Kernel (`App\Http\Kernel`) 中。不過，如果你使用 Redis 來作為快取的 Driver，則可以將這個映射改為使用 `Illuminate\Routing\Middleware\ThrottleRequestsWithRedis` 類別。這個類別能更有效率地使用 Redis 來管理頻率限制：
 
     'throttle' => \Illuminate\Routing\Middleware\ThrottleRequestsWithRedis::class,
-
 <a name="form-method-spoofing"></a>
 
 ## 表單方法的變更
@@ -828,14 +777,12 @@ HTML 表單不支援 `PUT`, `PATCH`, 與 `DELETE` 動作，因此，當我們在
         <input type="hidden" name="_method" value="PUT">
         <input type="hidden" name="_token" value="{{ csrf_token() }}">
     </form>
-
 為了方便起見，也可以使用 `@method` [Blade 指示詞](/docs/{{version}}/blade)來產生 `_method` 輸入欄位：
 
     <form action="/example" method="POST">
         @method('PUT')
         @csrf
     </form>
-
 <a name="accessing-the-current-route"></a>
 
 ## 存取目前的 Route
@@ -847,7 +794,6 @@ HTML 表單不支援 `PUT`, `PATCH`, 與 `DELETE` 動作，因此，當我們在
     $route = Route::current(); // Illuminate\Routing\Route
     $name = Route::currentRouteName(); // string
     $action = Route::currentRouteAction(); // string
-
 請參考 [Route Facade 底層的類別](https://laravel.com/api/{{version}}/Illuminate/Routing/Router.html)與 [Route 實體](https://laravel.com/api/{{version}}/Illuminate/Routing/Route.html)的 API 說明文件以瞭解 Router 與 Route 類別提供的全部方法。
 
 <a name="cors"></a>
@@ -856,7 +802,8 @@ HTML 表單不支援 `PUT`, `PATCH`, 與 `DELETE` 動作，因此，當我們在
 
 Laravel 會自動依照你設定的值來回應 CORS 的 `OPTIONS` HTTP Request。可以在專案的 `config/cors.php` 設定檔中設定所有的 CORS 設定。 `HandleCors` [Middleware](/docs/{{version}}/middleware) 會自動處理 `OPTIONS` Request，該 Middleware 預設包含在全域的 Middleware Stack 中。全域的 Middleware Stack 存在 HTTP Kernel (`App\Http\Kernel`) 中。
 
-> **Note** 更多有關 CORS 與 CORS 標頭的資訊，請參考 [MDN 網頁說明文件上的 CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS#The_HTTP_response_headers)。
+> [!NOTE]  
+> 更多有關 CORS 與 CORS 標頭的資訊，請參考 [MDN 網頁說明文件上的 CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS#The_HTTP_response_headers)。
 
 <a name="route-caching"></a>
 
@@ -867,7 +814,6 @@ Laravel 會自動依照你設定的值來回應 CORS 的 `OPTIONS` HTTP Request�
 ```shell
 php artisan route:cache
 ```
-
 執行這個指令後，每個 Request 都會自動載入快取的 Route 檔。請記得，當新增新 Route 後，必須重新產生 Route 快取。因此，應在進行專案部署的時候才執行 `route:cache` 指令。
 
 可以使用 `route:clear` 指令來清除 Route 快取：

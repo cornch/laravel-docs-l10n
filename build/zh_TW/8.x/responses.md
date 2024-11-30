@@ -1,29 +1,29 @@
 ---
-contributors:
-  14684796:
-    avatarUrl: https://crowdin-static.downloads.crowdin.com/avatar/14684796/medium/60f7dc21ec0bf9cfcb61983640bb4809_default.png
-    name: cornch
-crowdinUrl: https://crowdin.com/translate/laravel-docs/139/en-zhtw
-progress: 100
+crowdinUrl: 'https://crowdin.com/translate/laravel-docs/139/en-zhtw'
 updatedAt: '2023-02-11T10:28:00Z'
+contributors: {  }
+progress: 46.75
 ---
 
 # HTTP Response
 
 - [建立 Response](#creating-responses)
-   - [在 Response 上附加標頭](#attaching-headers-to-responses)
-   - [在 Response 上附加 Cookie](#attaching-cookies-to-responses)
-   - [Cookie 與加密](#cookies-and-encryption)
+  - [在 Response 上附加標頭](#attaching-headers-to-responses)
+  - [在 Response 上附加 Cookie](#attaching-cookies-to-responses)
+  - [Cookie 與加密](#cookies-and-encryption)
+  
 - [重新導向](#redirects)
-   - [重新導向之命名 Route](#redirecting-named-routes)
-   - [重新導向至 Controller 動作](#redirecting-controller-actions)
-   - [重新導向至外部網域](#redirecting-external-domains)
-   - [重新導向並帶上快閃存入的 Session 資料](#redirecting-with-flashed-session-data)
+  - [重新導向之命名 Route](#redirecting-named-routes)
+  - [重新導向至 Controller 動作](#redirecting-controller-actions)
+  - [重新導向至外部網域](#redirecting-external-domains)
+  - [重新導向並帶上快閃存入的 Session 資料](#redirecting-with-flashed-session-data)
+  
 - [其他 Response 類型](#other-response-types)
-   - [View Response](#view-responses)
-   - [JSON Response](#json-responses)
-   - [檔案下載](#file-downloads)
-   - [File Response](#file-responses)
+  - [View Response](#view-responses)
+  - [JSON Response](#json-responses)
+  - [檔案下載](#file-downloads)
+  - [File Response](#file-responses)
+  
 - [Response Macro](#response-macros)
 
 <a name="creating-responses"></a>
@@ -39,14 +39,13 @@ updatedAt: '2023-02-11T10:28:00Z'
     Route::get('/', function () {
         return 'Hello World';
     });
-
 除了從 Route 與 Controller 中回傳字串外，也可以回傳陣列。Laravel 會自動將陣列轉換為 JSON 回應：
 
     Route::get('/', function () {
         return [1, 2, 3];
     });
-
-> {tip} 你知道你也可以從 Route 或 Controller 中回傳 [Eloquent Collection](/docs/{{version}}/eloquent-collections) 嗎？回傳的 Eloquent Collection 會自動被轉為 JSON。試試看吧！
+> [!TIP]  
+> 你知道你也可以從 Route 或 Controller 中回傳 [Eloquent Collection](/docs/{{version}}/eloquent-collections) 嗎？回傳的 Eloquent Collection 會自動被轉為 JSON。試試看吧！
 
 <a name="response-objects"></a>
 
@@ -60,7 +59,6 @@ updatedAt: '2023-02-11T10:28:00Z'
         return response('Hello World', 200)
                       ->header('Content-Type', 'text/plain');
     });
-
 <a name="eloquent-models-and-collections"></a>
 
 #### Eloquent Model 與 Collection
@@ -72,7 +70,6 @@ updatedAt: '2023-02-11T10:28:00Z'
     Route::get('/user/{user}', function (User $user) {
         return $user;
     });
-
 <a name="attaching-headers-to-responses"></a>
 
 ### 將標頭附加到 Response
@@ -83,7 +80,6 @@ updatedAt: '2023-02-11T10:28:00Z'
                 ->header('Content-Type', $type)
                 ->header('X-Header-One', 'Header Value')
                 ->header('X-Header-Two', 'Header Value');
-
 或者，我們也可以使用 `withHeaders` 方法來指定一組包含標頭的陣列，來將該陣列加到 Response 上：
 
     return response($content)
@@ -92,7 +88,6 @@ updatedAt: '2023-02-11T10:28:00Z'
                     'X-Header-One' => 'Header Value',
                     'X-Header-Two' => 'Header Value',
                 ]);
-
 <a name="cache-control-middleware"></a>
 
 #### 快取 Controller Middleware
@@ -108,7 +103,6 @@ Laravel 中提供了一個 `cache.headers` Middleware，可以使用該 Middlewa
             // ...
         });
     });
-
 <a name="attaching-cookies-to-responses"></a>
 
 ### 附加 Cookie 到 Response
@@ -118,19 +112,16 @@ Laravel 中提供了一個 `cache.headers` Middleware，可以使用該 Middlewa
     return response('Hello World')->cookie(
         'name', 'value', $minutes
     );
-
 `cookie` 方法還接受一些更多的引數，但這些引數很少用。一般來說，這些引數的功能跟 PHP 原生的 [setcookie](https://secure.php.net/manual/en/function.setcookie.php) 方法一樣：
 
     return response('Hello World')->cookie(
         'name', 'value', $minutes, $path, $domain, $secure, $httpOnly
     );
-
 若想要與連出的 Response 一起送出 Cookie，但目前還未有 Response 實體的話，可使用 `Cookie` Facade 來將 Cookie 「放到佇列」，以在 Response 送出的時候將其附加上去。`queue` (佇列) 方法接受要用來建立 Cookie 實體的引數。這些佇列中的 Cookie 會在連出 Response 被送到瀏覽器前被附加上去：
 
     use Illuminate\Support\Facades\Cookie;
     
     Cookie::queue('name', 'value', $minutes);
-
 <a name="generating-cookie-instances"></a>
 
 #### 產生 Cookie 實體
@@ -140,7 +131,6 @@ Laravel 中提供了一個 `cache.headers` Middleware，可以使用該 Middlewa
     $cookie = cookie('name', 'value', $minutes);
     
     return response('Hello World')->cookie($cookie);
-
 <a name="expiring-cookies-early"></a>
 
 #### 提早讓 Cookie 過期
@@ -148,11 +138,9 @@ Laravel 中提供了一個 `cache.headers` Middleware，可以使用該 Middlewa
 可以在連外 Response 上使用 `withoutCookie` 方法來讓 Cookie 無效，以將 Cookie 移除：
 
     return response('Hello World')->withoutCookie('name');
-
 若還未有連外 Response 實體，則可以使用 `Cookie` Facade 的 `expire` 方法來讓 Cookie 過期：
 
     Cookie::expire('name');
-
 <a name="cookies-and-encryption"></a>
 
 ### Cookie 與加密
@@ -167,7 +155,6 @@ Laravel 中提供了一個 `cache.headers` Middleware，可以使用該 Middlewa
     protected $except = [
         'cookie_name',
     ];
-
 <a name="redirects"></a>
 
 ## 重新導向
@@ -177,15 +164,13 @@ Redirect Response (重新導向回應) 是 `Illuminate\Http\RedirectResponse` �
     Route::get('/dashboard', function () {
         return redirect('home/dashboard');
     });
-
 有時候（如：使用者送出了無效的表單時），我們可能會想把使用者重新導向到使用者瀏覽的前一個位置。為此，我們可以使用全域的 `back` 輔助函式。由於這個功能使用了 [Session](/docs/{{version}}/session)，因此請確保呼叫 `back` 函式的 Route 有使用 `web` Middleware 群組：
 
     Route::post('/user/profile', function () {
-        // 驗證 Request...
+        // Validate the request...
     
         return back()->withInput();
     });
-
 <a name="redirecting-named-routes"></a>
 
 ### 重新導向到命名 Route
@@ -193,23 +178,20 @@ Redirect Response (重新導向回應) 是 `Illuminate\Http\RedirectResponse` �
 呼叫 `redirect` 輔助函式時若沒有帶上任何參數，則會回傳 `Illuminate\Routing\Redirector` 實體，這樣我們就可以呼叫 `Redirect` 實體上的所有方法。舉例來說，若要為某個命名 Route 產生 `RedirectResponse`，可以使用 `route` 方法：
 
     return redirect()->route('login');
-
 若 Route 有參數，則可將這些 Route 參數作為第二個引數傳給 `route` 方法：
 
-    // 給有下列 URI 的 Route：/profile/{id}
+    // For a route with the following URI: /profile/{id}
     
     return redirect()->route('profile', ['id' => 1]);
-
 <a name="populating-parameters-via-eloquent-models"></a>
 
 #### 使用 Eloquent Model 來填充參數
 
 若要重新導向的 Route 中有個可從 Eloquent Model 中填充的「ID」參數，則可傳入 Model。會自動取出 ID：
 
-    // 給有下列 URI 的 Route：/profile/{id}
+    // For a route with the following URI: /profile/{id}
     
     return redirect()->route('profile', [$user]);
-
 若想自訂放在 Route 參數中的值，可在 Route 的參數定義中指定欄位 (`/profile/{id:slug}`)，或是在 Eloquent Model 中複寫 `getRouteKey` 方法：
 
     /**
@@ -221,7 +203,6 @@ Redirect Response (重新導向回應) 是 `Illuminate\Http\RedirectResponse` �
     {
         return $this->slug;
     }
-
 <a name="redirecting-controller-actions"></a>
 
 ### 重新導向到 Controller 動作
@@ -231,13 +212,11 @@ Redirect Response (重新導向回應) 是 `Illuminate\Http\RedirectResponse` �
     use App\Http\Controllers\UserController;
     
     return redirect()->action([UserController::class, 'index']);
-
 若這個 Controller 的 Route 有要求參數，則可將這些參數作為第二個引數傳給 `action` 方法：
 
     return redirect()->action(
         [UserController::class, 'profile'], ['id' => 1]
     );
-
 <a name="redirecting-external-domains"></a>
 
 ### 重新導向到外部網域
@@ -245,7 +224,6 @@ Redirect Response (重新導向回應) 是 `Illuminate\Http\RedirectResponse` �
 有時候，我們會需要重新導向到程式外部的網域。為此，可以呼叫 `away` 方法。該方法會建立一個 `RedirectResponse`，並且不會做額外的 URL 編碼或驗證：
 
     return redirect()->away('https://www.google.com');
-
 <a name="redirecting-with-flashed-session-data"></a>
 
 ### 重新導向時帶上快閃存入的 Session 資料
@@ -257,7 +235,6 @@ Redirect Response (重新導向回應) 是 `Illuminate\Http\RedirectResponse` �
     
         return redirect('dashboard')->with('status', 'Profile updated!');
     });
-
 使用者被重新導向後，我們就可以從 [Session](/docs/{{version}}/session) 中顯示出剛才快閃存入的資料。舉例來說，我們可以使用 [Blade 語法](/docs/{{version}}/blade)：
 
     @if (session('status'))
@@ -265,7 +242,6 @@ Redirect Response (重新導向回應) 是 `Illuminate\Http\RedirectResponse` �
             {{ session('status') }}
         </div>
     @endif
-
 <a name="redirecting-with-input"></a>
 
 #### 重新導向時帶上輸入
@@ -273,7 +249,6 @@ Redirect Response (重新導向回應) 是 `Illuminate\Http\RedirectResponse` �
 可以使用 `RedirectResponse` 實體提供的 `withInput` 方法來在將使用者重新導向到新位置前先將目前 Request 的輸入資料快閃存入 Session 中。通常來說我們會在表單驗證錯誤時這麼做。將輸入資料快閃存入 Session 後，我們就可以在下一個 Request 中輕鬆地[取得這些資料](/docs/{{version}}/requests#retrieving-old-input)並將其填回表單中：
 
     return back()->withInput();
-
 <a name="other-response-types"></a>
 
 ## 其他 Response 類型
@@ -289,7 +264,6 @@ Redirect Response (重新導向回應) 是 `Illuminate\Http\RedirectResponse` �
     return response()
                 ->view('hello', $data, 200)
                 ->header('Content-Type', $type);
-
 當然，若不需要傳入自訂 HTTP 狀態或自訂標頭的話，應該使用全域的 `view` 輔助函式。
 
 <a name="json-responses"></a>
@@ -302,13 +276,11 @@ Redirect Response (重新導向回應) 是 `Illuminate\Http\RedirectResponse` �
         'name' => 'Abigail',
         'state' => 'CA',
     ]);
-
 若想建立 JSONP Response，則可在使用 `json` 方法時搭配使用 `withCallback` 方法：
 
     return response()
                 ->json(['name' => 'Abigail', 'state' => 'CA'])
                 ->withCallback($request->input('callback'));
-
 <a name="file-downloads"></a>
 
 ### 檔案下載
@@ -318,8 +290,8 @@ Redirect Response (重新導向回應) 是 `Illuminate\Http\RedirectResponse` �
     return response()->download($pathToFile);
     
     return response()->download($pathToFile, $name, $headers);
-
-> {note} Symfony HttpFoundation —— 負責處理檔案下載的類別 —— 要求下載的檔案名稱必須為 ASCII。
+> [!NOTE]  
+> Symfony HttpFoundation —— 負責處理檔案下載的類別 —— 要求下載的檔案名稱必須為 ASCII。
 
 <a name="streamed-downloads"></a>
 
@@ -334,7 +306,6 @@ Redirect Response (重新導向回應) 是 `Illuminate\Http\RedirectResponse` �
                     ->contents()
                     ->readme('laravel', 'laravel')['contents'];
     }, 'laravel-readme.md');
-
 <a name="file-responses"></a>
 
 ### File Response
@@ -344,7 +315,6 @@ Redirect Response (重新導向回應) 是 `Illuminate\Http\RedirectResponse` �
     return response()->file($pathToFile);
     
     return response()->file($pathToFile, $headers);
-
 <a name="response-macros"></a>
 
 ## Response Macro
@@ -372,7 +342,6 @@ Redirect Response (重新導向回應) 是 `Illuminate\Http\RedirectResponse` �
             });
         }
     }
-
 `macro` 方法接受一個名稱作為其第一個引數，以及閉包作為其第二個引數。當在 `ResponseFactory` 的實作或 `response` 輔助函式上呼叫給定的 Macro 名稱時，會執行該 Macro 的閉包：
 
     return response()->caps('foo');

@@ -1,17 +1,15 @@
 ---
-contributors:
-  14684796:
-    avatarUrl: https://crowdin-static.downloads.crowdin.com/avatar/14684796/medium/60f7dc21ec0bf9cfcb61983640bb4809_default.png
-    name: cornch
-crowdinUrl: https://crowdin.com/translate/laravel-docs/41/en-zhtw
-progress: 100
+crowdinUrl: 'https://crowdin.com/translate/laravel-docs/41/en-zhtw'
 updatedAt: '2024-06-30T08:17:00Z'
+contributors: {  }
+progress: 53.6
 ---
 
 # 資料庫測試
 
 - [簡介](#introduction)
-   - [在每個測試之後重設資料庫](#resetting-the-database-after-each-test)
+  - [在每個測試之後重設資料庫](#resetting-the-database-after-each-test)
+  
 - [Model Factory](#model-factories)
 - [執行 Seeder](#running-seeders)
 - [可用的 Assertion](#available-assertions)
@@ -52,7 +50,6 @@ Laravel 提供了數種實用工具與 Assertion (判斷提示) 讓你能更輕�
             // ...
         }
     }
-
 當資料庫架構 (Schema) 已是最新的時候， `Illuminate\Foundation\Testing\RefreshDatabase` Trait 將不會執行資料庫遷移 (Migration)，只會在資料庫 Transaction 中執行測試。因此，在未使用該 Trait 中的測試例中，若有新增紀錄，將會保留在資料庫中。
 
 若想完整重設資料庫，請改用 `Illuminate\Foundation\Testing\DatabaseMigrations` 或 `Illuminate\Foundation\Testing\DatabaseTruncation` Trait。不過，這兩種方式都會比 `RefreshDatabase` Trait 慢很多。
@@ -73,7 +70,6 @@ Laravel 提供了數種實用工具與 Assertion (判斷提示) 讓你能更輕�
     
         // ...
     }
-
 <a name="running-seeders"></a>
 
 ## 執行 Seeder
@@ -117,7 +113,6 @@ Laravel 提供了數種實用工具與 Assertion (判斷提示) 讓你能更輕�
             ]);
         }
     }
-
 或者，也可以使用 `RefreshDatabase` Trait 來讓 Laravel 在每次測試前都自動執行資料庫 Seed。可以通過在基礎測試類別上定義 `$seed` 屬性來完成：
 
     <?php
@@ -137,7 +132,6 @@ Laravel 提供了數種實用工具與 Assertion (判斷提示) 讓你能更輕�
          */
         protected $seed = true;
     }
-
 當 `$seed` 屬性為 `true` 時，各個使用了 `RefreshDatabase` Trait 的測試都會在開始前先執行 `Database\Seeders\DatabaseSeeder` 類別。不過，也可以通過在測試類別內定義 `$seeder` 屬性來指定要執行的 Seeder。
 
     use Database\Seeders\OrderStatusSeeder;
@@ -148,7 +142,6 @@ Laravel 提供了數種實用工具與 Assertion (判斷提示) 讓你能更輕�
      * @var string
      */
     protected $seeder = OrderStatusSeeder::class;
-
 <a name="available-assertions"></a>
 
 ## 可用的 Assertion
@@ -162,7 +155,6 @@ Laravel 為 [PHPUnit] 功能測試提供了多個資料庫 Assertion。我們會
 判斷資料庫中的某個資料表是否包含給定數量的記錄：
 
     $this->assertDatabaseCount('users', 5);
-
 <a name="assert-database-has"></a>
 
 #### assertDatabaseHas
@@ -172,7 +164,6 @@ Laravel 為 [PHPUnit] 功能測試提供了多個資料庫 Assertion。我們會
     $this->assertDatabaseHas('users', [
         'email' => 'sally@example.com',
     ]);
-
 <a name="assert-database-missing"></a>
 
 #### assertDatabaseMissing
@@ -182,7 +173,6 @@ Laravel 為 [PHPUnit] 功能測試提供了多個資料庫 Assertion。我們會
     $this->assertDatabaseMissing('users', [
         'email' => 'sally@example.com',
     ]);
-
 <a name="assert-deleted"></a>
 
 #### assertSoftDeleted
@@ -190,7 +180,6 @@ Laravel 為 [PHPUnit] 功能測試提供了多個資料庫 Assertion。我們會
 `assertSoftDeleted` 方法可用來判斷給定 Eloquent Model 是否已「軟刪除 (Soft Delete)」：
 
     $this->assertSoftDeleted($user);
-
 <a name="assert-not-deleted"></a>
 
 #### assertNotSoftDeleted
@@ -198,7 +187,6 @@ Laravel 為 [PHPUnit] 功能測試提供了多個資料庫 Assertion。我們會
 `assertNotSoftDeleted` 方法可用來判斷給定 Eloquent Model 是否未被「軟刪除 (Soft Delete)」：
 
     $this->assertNotSoftDeleted($user);
-
 <a name="assert-model-exists"></a>
 
 #### assertModelExists
@@ -210,7 +198,6 @@ Laravel 為 [PHPUnit] 功能測試提供了多個資料庫 Assertion。我們會
     $user = User::factory()->create();
     
     $this->assertModelExists($user);
-
 <a name="assert-model-missing"></a>
 
 #### assertModelMissing
@@ -224,7 +211,6 @@ Laravel 為 [PHPUnit] 功能測試提供了多個資料庫 Assertion。我們會
     $user->delete();
     
     $this->assertModelMissing($user);
-
 <a name="expects-database-query-count"></a>
 
 #### expectsDatabaseQueryCount
@@ -233,4 +219,4 @@ Laravel 為 [PHPUnit] 功能測試提供了多個資料庫 Assertion。我們會
 
     $this->expectsDatabaseQueryCount(5);
     
-    // 測試...
+    // Test...

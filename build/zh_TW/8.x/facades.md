@@ -1,19 +1,17 @@
 ---
-contributors:
-  14684796:
-    avatarUrl: https://crowdin-static.downloads.crowdin.com/avatar/14684796/medium/60f7dc21ec0bf9cfcb61983640bb4809_default.png
-    name: cornch
-crowdinUrl: https://crowdin.com/translate/laravel-docs/71/en-zhtw
-progress: 100
+crowdinUrl: 'https://crowdin.com/translate/laravel-docs/71/en-zhtw'
 updatedAt: '2024-06-30T08:26:00Z'
+contributors: {  }
+progress: 80.27
 ---
 
 # Facade
 
 - [簡介](#introduction)
 - [什麼時候使用 Facade](#when-to-use-contracts)
-   - [Facades Vs. 相依性插入](#facades-vs-dependency-injection)
-   - [Facades Vs. 輔助函式](#facades-vs-helper-functions)
+  - [Facades Vs. 相依性插入](#facades-vs-dependency-injection)
+  - [Facades Vs. 輔助函式](#facades-vs-helper-functions)
+  
 - [Facade 是怎麼運作的](#how-facades-work)
 - [即時 Facade](#real-time-facades)
 - [Facade 類別參照](#facade-class-reference)
@@ -34,7 +32,6 @@ Laravel 中所有的 Facade 都定義在 `Illuminate\Support\Facades` Namespace 
     Route::get('/cache', function () {
         return Cache::get('key');
     });
-
 在 Laravel 說明文件中，有許多的範例都使用 Facade 來示範 Laravel 的許多功能：
 
 <a name="helper-functions"></a>
@@ -58,7 +55,6 @@ Laravel 中所有的 Facade 都定義在 `Illuminate\Support\Facades` Namespace 
             // ...
         ]);
     });
-
 <a name="when-to-use-facades"></a>
 
 ## 什麼時候要使用 Facade？
@@ -80,7 +76,6 @@ Facade 提供了許多的好處。Facade 提供了簡介、好記憶的語法，
     Route::get('/cache', function () {
         return Cache::get('key');
     });
-
 使用 Laravel 的 Facade 測試方法，我們就能撰寫下列測試，並驗證 `Cache::get` 方法是否有使用預期的引數呼叫：
 
     use Illuminate\Support\Facades\Cache;
@@ -100,7 +95,6 @@ Facade 提供了許多的好處。Facade 提供了簡介、好記憶的語法，
     
         $response->assertSee('value');
     }
-
 <a name="facades-vs-helper-functions"></a>
 
 ### Facades Vs. 輔助函式
@@ -110,13 +104,11 @@ Facade 提供了許多的好處。Facade 提供了簡介、好記憶的語法，
     return Illuminate\Support\Facades\View::make('profile');
     
     return view('profile');
-
 在實務上，使用 Facade 方法與輔助函式並沒有不同，使用輔助函式時，我們還是可以像對 Facade 一樣測試這些功能。舉例來說，假設有下列 Route：
 
     Route::get('/cache', function () {
         return cache('key');
     });
-
 在 Laravel 中，`cache` 輔助函式會去呼叫 `Cache` Facade 底層類別的 `get` 方法。因此，雖然我們在使用的是輔助函式，但我們可以撰寫下列這樣的測試來驗證該方法是否有用我們給定的引數呼叫：
 
     use Illuminate\Support\Facades\Cache;
@@ -136,7 +128,6 @@ Facade 提供了許多的好處。Facade 提供了簡介、好記憶的語法，
     
         $response->assertSee('value');
     }
-
 <a name="how-facades-work"></a>
 
 ## Facade 是如何運作的？
@@ -167,7 +158,6 @@ Facade 提供了許多的好處。Facade 提供了簡介、好記憶的語法，
             return view('profile', ['user' => $user]);
         }
     }
-
 可以注意到，在檔案最上端，我們「Import」了 `Cache` Facade。這個 Facade 會作為代理來讓我們存取底層 `Illuminate\Contracts\Cache\Factory` 介面的實作。使用 Facade 呼叫的所有方法都會被傳到 Laravel 快取系統的底層實體上。
 
 若我們打開 `Illuminate\Support\Facades\Cache` 類別看，會發現裡面沒有靜態的 `get` 方法：
@@ -181,7 +171,6 @@ Facade 提供了許多的好處。Facade 提供了簡介、好記憶的語法，
          */
         protected static function getFacadeAccessor() { return 'cache'; }
     }
-
 沒有 `get` 方法，`Cache` Facade 只有繼承了基礎的 `Facade` 類別並定義了 `getFacadeAccessor()` 方法。這個方法的功能就是用來回傳 Service Container 繫結的名稱。當使用者在 `Cache` Facade 上參照任何靜態方法時，Laravel 會去從 [Service Container](/docs/{{version}}/container) 中解析出 `cache` 繫結，然後在這個物件上執行要求的方法 (在這個例子中就是 `get`)。
 
 <a name="real-time-facades"></a>
@@ -212,7 +201,6 @@ Facade 提供了許多的好處。Facade 提供了簡介、好記憶的語法，
             $publisher->publish($this);
         }
     }
-
 將 Publisher 實作插入到這個方法後，只要 Mock 這個插入的 Publisher，我們就能輕鬆地在分離的狀態下測試這個方法。不過，這樣一來每次我們呼叫 `publish` 方法也都需要傳入一個 Publisher 實體。使用即時 Facade，我們一樣可以能保有可測試性，又不需要顯式傳入 `Publisher` 實體。若要產生即時 Facade，請在 Import 類別的 Namespace 前方加上 `Facades`：
 
     <?php
@@ -236,7 +224,6 @@ Facade 提供了許多的好處。Facade 提供了簡介、好記憶的語法，
             Publisher::publish($this);
         }
     }
-
 在使用即時 Facade 時，Laravel 會使用 `Facades` 前置詞後方的介面或類別名稱來從 Service Container 上解析出 Publisher 實作。測試時，我們可以使用 Laravel 的內建 Facade 測試工具來 Mock 這個方法呼叫：
 
     <?php
@@ -266,7 +253,6 @@ Facade 提供了許多的好處。Facade 提供了簡介、好記憶的語法，
             $podcast->publish();
         }
     }
-
 <a name="facade-class-reference"></a>
 
 ## Facade 類別參照
@@ -280,9 +266,9 @@ Facade 提供了許多的好處。Facade 提供了簡介、好記憶的語法，
 | Auth | [Illuminate\Auth\AuthManager](https://laravel.com/api/{{version}}/Illuminate/Auth/AuthManager.html) | `auth` |
 | Auth (實體) | [Illuminate\Contracts\Auth\Guard](https://laravel.com/api/{{version}}/Illuminate/Contracts/Auth/Guard.html) | `auth.driver` |
 | Blade | [Illuminate\View\Compilers\BladeCompiler](https://laravel.com/api/{{version}}/Illuminate/View/Compilers/BladeCompiler.html) | `blade.compiler` |
-| Broadcast | [Illuminate\Contracts\Broadcasting\Factory](https://laravel.com/api/{{version}}/Illuminate/Contracts/Broadcasting/Factory.html) | &nbsp; |
-| Broadcast (實體) | [Illuminate\Contracts\Broadcasting\Broadcaster](https://laravel.com/api/{{version}}/Illuminate/Contracts/Broadcasting/Broadcaster.html) | &nbsp; |
-| Bus | [Illuminate\Contracts\Bus\Dispatcher](https://laravel.com/api/{{version}}/Illuminate/Contracts/Bus/Dispatcher.html) | &nbsp; |
+| Broadcast | [Illuminate\Contracts\Broadcasting\Factory](https://laravel.com/api/{{version}}/Illuminate/Contracts/Broadcasting/Factory.html) |   |
+| Broadcast (實體) | [Illuminate\Contracts\Broadcasting\Broadcaster](https://laravel.com/api/{{version}}/Illuminate/Contracts/Broadcasting/Broadcaster.html) |   |
+| Bus | [Illuminate\Contracts\Bus\Dispatcher](https://laravel.com/api/{{version}}/Illuminate/Contracts/Bus/Dispatcher.html) |   |
 | Cache | [Illuminate\Cache\CacheManager](https://laravel.com/api/{{version}}/Illuminate/Cache/CacheManager.html) | `cache` |
 | Cache (實體) | [Illuminate\Cache\Repository](https://laravel.com/api/{{version}}/Illuminate/Cache/Repository.html) | `cache.store` |
 | Config | [Illuminate\Config\Repository](https://laravel.com/api/{{version}}/Illuminate/Config/Repository.html) | `config` |
@@ -293,32 +279,32 @@ Facade 提供了許多的好處。Facade 提供了簡介、好記憶的語法，
 | DB (實體) | [Illuminate\Database\Connection](https://laravel.com/api/{{version}}/Illuminate/Database/Connection.html) | `db.connection` |
 | Event | [Illuminate\Events\Dispatcher](https://laravel.com/api/{{version}}/Illuminate/Events/Dispatcher.html) | `events` |
 | File | [Illuminate\Filesystem\Filesystem](https://laravel.com/api/{{version}}/Illuminate/Filesystem/Filesystem.html) | `files` |
-| Gate | [Illuminate\Contracts\Auth\Access\Gate](https://laravel.com/api/{{version}}/Illuminate/Contracts/Auth/Access/Gate.html) | &nbsp; |
+| Gate | [Illuminate\Contracts\Auth\Access\Gate](https://laravel.com/api/{{version}}/Illuminate/Contracts/Auth/Access/Gate.html) |   |
 | Hash | [Illuminate\Contracts\Hashing\Hasher](https://laravel.com/api/{{version}}/Illuminate/Contracts/Hashing/Hasher.html) | `hash` |
-| Http | [Illuminate\Http\Client\Factory](https://laravel.com/api/{{version}}/Illuminate/Http/Client/Factory.html) | &nbsp; |
+| Http | [Illuminate\Http\Client\Factory](https://laravel.com/api/{{version}}/Illuminate/Http/Client/Factory.html) |   |
 | Lang | [Illuminate\Translation\Translator](https://laravel.com/api/{{version}}/Illuminate/Translation/Translator.html) | `translator` |
 | Log | [Illuminate\Log\LogManager](https://laravel.com/api/{{version}}/Illuminate/Log/LogManager.html) | `log` |
 | Mail | [Illuminate\Mail\Mailer](https://laravel.com/api/{{version}}/Illuminate/Mail/Mailer.html) | `mailer` |
-| Notification | [Illuminate\Notifications\ChannelManager](https://laravel.com/api/{{version}}/Illuminate/Notifications/ChannelManager.html) | &nbsp; |
+| Notification | [Illuminate\Notifications\ChannelManager](https://laravel.com/api/{{version}}/Illuminate/Notifications/ChannelManager.html) |   |
 | Password | [Illuminate\Auth\Passwords\PasswordBrokerManager](https://laravel.com/api/{{version}}/Illuminate/Auth/Passwords/PasswordBrokerManager.html) | `auth.password` |
 | Password (實體) | [Illuminate\Auth\Passwords\PasswordBroker](https://laravel.com/api/{{version}}/Illuminate/Auth/Passwords/PasswordBroker.html) | `auth.password.broker` |
 | Queue | [Illuminate\Queue\QueueManager](https://laravel.com/api/{{version}}/Illuminate/Queue/QueueManager.html) | `queue` |
 | Queue (實體) | [Illuminate\Contracts\Queue\Queue](https://laravel.com/api/{{version}}/Illuminate/Contracts/Queue/Queue.html) | `queue.connection` |
-| Queue (基礎類別) | [Illuminate\Queue\Queue](https://laravel.com/api/{{version}}/Illuminate/Queue/Queue.html) | &nbsp; |
+| Queue (基礎類別) | [Illuminate\Queue\Queue](https://laravel.com/api/{{version}}/Illuminate/Queue/Queue.html) |   |
 | Redirect | [Illuminate\Routing\Redirector](https://laravel.com/api/{{version}}/Illuminate/Routing/Redirector.html) | `redirect` |
 | Redis | [Illuminate\Redis\RedisManager](https://laravel.com/api/{{version}}/Illuminate/Redis/RedisManager.html) | `redis` |
 | Redis (實體) | [Illuminate\Redis\Connections\Connection](https://laravel.com/api/{{version}}/Illuminate/Redis/Connections/Connection.html) | `redis.connection` |
 | Request | [Illuminate\Http\Request](https://laravel.com/api/{{version}}/Illuminate/Http/Request.html) | `request` |
-| Response | [Illuminate\Contracts\Routing\ResponseFactory](https://laravel.com/api/{{version}}/Illuminate/Contracts/Routing/ResponseFactory.html) | &nbsp; |
-| Response (實體) | [Illuminate\Http\Response](https://laravel.com/api/{{version}}/Illuminate/Http/Response.html) | &nbsp; |
+| Response | [Illuminate\Contracts\Routing\ResponseFactory](https://laravel.com/api/{{version}}/Illuminate/Contracts/Routing/ResponseFactory.html) |   |
+| Response (實體) | [Illuminate\Http\Response](https://laravel.com/api/{{version}}/Illuminate/Http/Response.html) |   |
 | Route | [Illuminate\Routing\Router](https://laravel.com/api/{{version}}/Illuminate/Routing/Router.html) | `router` |
-| Schema | [Illuminate\Database\Schema\Builder](https://laravel.com/api/{{version}}/Illuminate/Database/Schema/Builder.html) | &nbsp; |
+| Schema | [Illuminate\Database\Schema\Builder](https://laravel.com/api/{{version}}/Illuminate/Database/Schema/Builder.html) |   |
 | Session | [Illuminate\Session\SessionManager](https://laravel.com/api/{{version}}/Illuminate/Session/SessionManager.html) | `session` |
 | Session (實體) | [Illuminate\Session\Store](https://laravel.com/api/{{version}}/Illuminate/Session/Store.html) | `session.store` |
 | Storage | [Illuminate\Filesystem\FilesystemManager](https://laravel.com/api/{{version}}/Illuminate/Filesystem/FilesystemManager.html) | `filesystem` |
 | Storage (實體) | [Illuminate\Contracts\Filesystem\Filesystem](https://laravel.com/api/{{version}}/Illuminate/Contracts/Filesystem/Filesystem.html) | `filesystem.disk` |
 | URL | [Illuminate\Routing\UrlGenerator](https://laravel.com/api/{{version}}/Illuminate/Routing/UrlGenerator.html) | `url` |
 | Validator | [Illuminate\Validation\Factory](https://laravel.com/api/{{version}}/Illuminate/Validation/Factory.html) | `validator` |
-| Validator (實體) | [Illuminate\Validation\Validator](https://laravel.com/api/{{version}}/Illuminate/Validation/Validator.html) | &nbsp; |
+| Validator (實體) | [Illuminate\Validation\Validator](https://laravel.com/api/{{version}}/Illuminate/Validation/Validator.html) |   |
 | View | [Illuminate\View\Factory](https://laravel.com/api/{{version}}/Illuminate/View/Factory.html) | `view` |
-| View (實體) | [Illuminate\View\View](https://laravel.com/api/{{version}}/Illuminate/View/View.html) | &nbsp; |
+| View (實體) | [Illuminate\View\View](https://laravel.com/api/{{version}}/Illuminate/View/View.html) |   |

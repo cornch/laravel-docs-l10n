@@ -1,36 +1,36 @@
 ---
-contributors:
-  14684796:
-    avatarUrl: https://crowdin-static.downloads.crowdin.com/avatar/14684796/medium/60f7dc21ec0bf9cfcb61983640bb4809_default.png
-    name: cornch
-crowdinUrl: https://crowdin.com/translate/laravel-docs/69/en-zhtw
-progress: 100
+crowdinUrl: 'https://crowdin.com/translate/laravel-docs/69/en-zhtw'
 updatedAt: '2024-06-30T08:26:00Z'
+contributors: {  }
+progress: 44.54
 ---
 
 # 事件 - Event
 
 - [簡介](#introduction)
 - [註冊 Event 與 Listener](#registering-events-and-listeners)
-   - [產生 Event 與 Listener](#generating-events-and-listeners)
-   - [手動註冊 Event](#manually-registering-events)
-   - [Event Discovery](#event-discovery)
+  - [產生 Event 與 Listener](#generating-events-and-listeners)
+  - [手動註冊 Event](#manually-registering-events)
+  - [Event Discovery](#event-discovery)
+  
 - [定義 Event](#defining-events)
 - [定義 Listener](#defining-listeners)
 - [在佇列中處理的 Event Listener](#queued-event-listeners)
-   - [手動使用佇列](#manually-interacting-with-the-queue)
-   - [在佇列中執行的 Event Listener 與資料庫 Transaction](#queued-event-listeners-and-database-transactions)
-   - [處理失敗的任務](#handling-failed-jobs)
+  - [手動使用佇列](#manually-interacting-with-the-queue)
+  - [在佇列中執行的 Event Listener 與資料庫 Transaction](#queued-event-listeners-and-database-transactions)
+  - [處理失敗的任務](#handling-failed-jobs)
+  
 - [分派 Event](#dispatching-events)
 - [Event Subscriber](#event-subscribers)
-   - [撰寫 Event Subscriber](#writing-event-subscribers)
-   - [註冊 Event Subscriber](#registering-event-subscribers)
+  - [撰寫 Event Subscriber](#writing-event-subscribers)
+  - [註冊 Event Subscriber](#registering-event-subscribers)
+  
 
 <a name="introduction"></a>
 
 ## 簡介
 
-Laravel 的 ^[Event](事件) 提供了一種簡單的 Observer 設計模式實作，能讓你^[註冊](Subscribe)與^[監聽](Listen)程式內發生的多種事件。Event 類別一般儲存在 `app/Events` 目錄下，而 ^[Listener](監聽程式) 則一般儲存在 `app/Listeners` 目錄。若在專案內沒看到這些目錄的話請別擔心，在使用 Artisan 指令產生 Event 跟 Listener 的時候會自動建立。
+Laravel 的 ^[Event](%E4%BA%8B%E4%BB%B6) 提供了一種簡單的 Observer 設計模式實作，能讓你^[註冊](Subscribe)與^[監聽](Listen)程式內發生的多種事件。Event 類別一般儲存在 `app/Events` 目錄下，而 ^[Listener](%E7%9B%A3%E8%81%BD%E7%A8%8B%E5%BC%8F) 則一般儲存在 `app/Listeners` 目錄。若在專案內沒看到這些目錄的話請別擔心，在使用 Artisan 指令產生 Event 跟 Listener 的時候會自動建立。
 
 Event 是以各種層面^[解耦](Decouple)程式的好方法，因為一個 Event 可以由多個不互相依賴的 Listener。舉例來說，我們可能會想在訂單出貨的時候傳送 Slack 通知給使用者。除了耦合訂單處理的程式碼跟 Slack 通知的程式碼外，我們可以產生一個 `App\Events\OrderShipped` 事件，然後使用一個 Listener 來接收並分派 Slack 通知。
 
@@ -53,8 +53,8 @@ Event 是以各種層面^[解耦](Decouple)程式的好方法，因為一個 Eve
             SendShipmentNotification::class,
         ],
     ];
-
-> **Note** 可以使用 `event:list` 指令來顯示程式中註冊的所有 Event 與 Listener 列表。
+> [!NOTE]  
+> 可以使用 `event:list` 指令來顯示程式中註冊的所有 Event 與 Listener 列表。
 
 <a name="generating-events-and-listeners"></a>
 
@@ -65,7 +65,6 @@ Event 是以各種層面^[解耦](Decouple)程式的好方法，因為一個 Eve
 ```shell
 php artisan event:generate
 ```
-
 或者，也可以使用 `make:event` 與 `make:listener` Artisan 指令來產生個別的 Event 與 Listener：
 
 ```shell
@@ -73,7 +72,6 @@ php artisan make:event PodcastProcessed
 
 php artisan make:listener SendPodcastNotification --event=PodcastProcessed
 ```
-
 <a name="manually-registering-events"></a>
 
 ### 手動註冊 Event
@@ -100,7 +98,6 @@ php artisan make:listener SendPodcastNotification --event=PodcastProcessed
             //
         });
     }
-
 <a name="queuable-anonymous-event-listeners"></a>
 
 #### 可放入佇列的匿名 Event Listener
@@ -122,13 +119,11 @@ php artisan make:listener SendPodcastNotification --event=PodcastProcessed
             //
         }));
     }
-
 就像佇列任務一樣，可以使用 `onConnection`、`onQueue`、`delay` 等方法來自訂放入佇列之 Listener 的執行：
 
     Event::listen(queueable(function (PodcastProcessed $event) {
         //
     })->onConnection('redis')->onQueue('podcasts')->delay(now()->addSeconds(10)));
-
 若想處理執行失敗的匿名佇列 Listener，可在定義 `queueable` Listener`時提供一個閉包給`catch`方法。這個閉包會收到 Event 實體以及一個導致 Listener 失敗的`Throwable` 實體：
 
     use App\Events\PodcastProcessed;
@@ -139,9 +134,8 @@ php artisan make:listener SendPodcastNotification --event=PodcastProcessed
     Event::listen(queueable(function (PodcastProcessed $event) {
         //
     })->catch(function (PodcastProcessed $event, Throwable $e) {
-        // 在佇列中執行的 Listener 執行失敗了...
+        // The queued listener failed...
     }));
-
 <a name="wildcard-event-listeners"></a>
 
 #### 萬用字元 Event Listener
@@ -151,7 +145,6 @@ php artisan make:listener SendPodcastNotification --event=PodcastProcessed
     Event::listen('event.*', function ($eventName, array $data) {
         //
     });
-
 <a name="event-discovery"></a>
 
 ### Event Discovery
@@ -175,7 +168,6 @@ Laravel 會使用 PHP 的 Reflection 服務來搜尋 Listener 類別以尋找 Ev
             //
         }
     }
-
 Event Discovery 預設是關閉的，但可以在 `EventServiceProvider` 上複寫 `shouldDiscoverEvents` 方法來啟用：
 
     /**
@@ -187,7 +179,6 @@ Event Discovery 預設是關閉的，但可以在 `EventServiceProvider` 上複�
     {
         return true;
     }
-
 預設情況下，會掃描專案 `app/Listeners` 目錄下的所有 Listener。若想定義其他要掃描的目錄，可在 `EventServiceProvider` 上複寫 `discoverEventsWithin` 方法：
 
     /**
@@ -201,7 +192,6 @@ Event Discovery 預設是關閉的，但可以在 `EventServiceProvider` 上複�
             $this->app->path('Listeners'),
         ];
     }
-
 <a name="event-discovery-in-production"></a>
 
 #### 在正式環境下使用 Event Discovery
@@ -245,7 +235,6 @@ Event 類別基本上就是一個資料容器，用來保存與該 Event 有關�
             $this->order = $order;
         }
     }
-
 就像這樣，這個 Event 類別中並不包含邏輯。這個類別只是已付款訂單 `App\Models\Order` 實體的容器而已。若要使用 PHP 的 `serialize` 方法序列化這個 Event 物件時 (如：[佇列 Listener] 會序列化 Event)，這個 Event 使用的 `SerializesModels` Trait 會妥善序列化所有的 Eloquent Model。
 
 <a name="defining-listeners"></a>
@@ -283,8 +272,8 @@ Event 類別基本上就是一個資料容器，用來保存與該 Event 有關�
             // Access the order using $event->order...
         }
     }
-
-> **Note** 也可以在 Event Listener 的 ^[Constructor](建構函式) 中型別提示任何的相依性。所有的 Event Listener 都會使用 Laravel [Service Provider](/docs/{{version}}/container) 解析，所以這些相依性也會自動被插入。
+> [!NOTE]  
+> 也可以在 Event Listener 的 ^[Constructor](%E5%BB%BA%E6%A7%8B%E5%87%BD%E5%BC%8F) 中型別提示任何的相依性。所有的 Event Listener 都會使用 Laravel [Service Provider](/docs/{{version}}/container) 解析，所以這些相依性也會自動被插入。
 
 <a name="stopping-the-propagation-of-an-event"></a>
 
@@ -296,9 +285,9 @@ Event 類別基本上就是一個資料容器，用來保存與該 Event 有關�
 
 ## 放入佇列的 Event Listener
 
-若你的 Listener 要處理一些很慢的任務 (如寄送 E-Mail 或產生 HTTP Request)，則 Listener 放入佇列可獲得許多好處。在使用佇列 Listener 前，請先確定已[設定佇列](/docs/{{version}}/queues)，並在伺服器或本機開發環境上開啟一個 ^[Queue Worker](佇列背景工作程式)。
+若你的 Listener 要處理一些很慢的任務 (如寄送 E-Mail 或產生 HTTP Request)，則 Listener 放入佇列可獲得許多好處。在使用佇列 Listener 前，請先確定已[設定佇列](/docs/{{version}}/queues)，並在伺服器或本機開發環境上開啟一個 ^[Queue Worker](%E4%BD%87%E5%88%97%E8%83%8C%E6%99%AF%E5%B7%A5%E4%BD%9C%E7%A8%8B%E5%BC%8F)。
 
-要將 Listener 指定為放在佇列裡執行，請在該 Listener 類別上加上 `ShouldQueue` 介面。由 `event:generate` 與 `make:listener` Artisan 指令產生的 Listener 都已先將這個介面匯入到目前的 ^[Namespace](命名空間) 下了，因此我們可以直接使用該介面：
+要將 Listener 指定為放在佇列裡執行，請在該 Listener 類別上加上 `ShouldQueue` 介面。由 `event:generate` 與 `make:listener` Artisan 指令產生的 Listener 都已先將這個介面匯入到目前的 ^[Namespace](%E5%91%BD%E5%90%8D%E7%A9%BA%E9%96%93) 下了，因此我們可以直接使用該介面：
 
     <?php
     
@@ -311,8 +300,7 @@ Event 類別基本上就是一個資料容器，用來保存與該 Event 有關�
     {
         //
     }
-
-就這樣！之後，當這個 Listener 要處理的 Event 被^[分派](Dispatch)後，Event ^[Dispatcher](分派程式) 就會自動使用 Laravel 的[佇列系統](/docs/{{version}}/queues)來將這個 Listener 放入佇列。若佇列在執行該 Listener 時沒有^[擲回](Throw)任何 Exception，則該佇列任務會在執行完畢後自動刪除。
+就這樣！之後，當這個 Listener 要處理的 Event 被^[分派](Dispatch)後，Event ^[Dispatcher](%E5%88%86%E6%B4%BE%E7%A8%8B%E5%BC%8F) 就會自動使用 Laravel 的[佇列系統](/docs/{{version}}/queues)來將這個 Listener 放入佇列。若佇列在執行該 Listener 時沒有^[擲回](Throw)任何 Exception，則該佇列任務會在執行完畢後自動刪除。
 
 <a name="customizing-the-queue-connection-queue-name"></a>
 
@@ -350,7 +338,6 @@ Event 類別基本上就是一個資料容器，用來保存與該 Event 有關�
          */
         public $delay = 60;
     }
-
 若想在執行階段定義 Listener 的佇列連線或佇列名稱，可以在 Listener 上定義 `viaConnection` 或 `viaQueue` 方法：
 
     /**
@@ -372,7 +359,6 @@ Event 類別基本上就是一個資料容器，用來保存與該 Event 有關�
     {
         return 'listeners';
     }
-
 <a name="conditionally-queueing-listeners"></a>
 
 #### 有條件地將 Listener 放入佇列
@@ -410,7 +396,6 @@ Event 類別基本上就是一個資料容器，用來保存與該 Event 有關�
             return $event->order->subtotal >= 5000;
         }
     }
-
 <a name="manually-interacting-with-the-queue"></a>
 
 ### 手動使用佇列
@@ -442,7 +427,6 @@ Event 類別基本上就是一個資料容器，用來保存與該 Event 有關�
             }
         }
     }
-
 <a name="queued-event-listeners-and-database-transactions"></a>
 
 ### 佇列的 Event Listener 與資料庫 Transaction
@@ -464,8 +448,8 @@ Event 類別基本上就是一個資料容器，用來保存與該 Event 有關�
     
         public $afterCommit = true;
     }
-
-> **Note** 要瞭解更多有關這類問題的解決方法，請參考有關[佇列任務與資料庫 Transaction](/docs/{{version}}/queues#jobs-and-database-transactions) 有關的說明文件。
+> [!NOTE]  
+> 要瞭解更多有關這類問題的解決方法，請參考有關[佇列任務與資料庫 Transaction](/docs/{{version}}/queues#jobs-and-database-transactions) 有關的說明文件。
 
 <a name="handling-failed-jobs"></a>
 
@@ -508,7 +492,6 @@ Event 類別基本上就是一個資料容器，用來保存與該 Event 有關�
             //
         }
     }
-
 <a name="specifying-queued-listener-maximum-attempts"></a>
 
 #### 指定佇列 Listener 的最大嘗試次數
@@ -536,7 +519,6 @@ Event 類別基本上就是一個資料容器，用來保存與該 Event 有關�
          */
         public $tries = 5;
     }
-
 除了定義 Listener 重試多少次要視為失敗以外，也可以限制 Listener 嘗試執行的時間長度。這樣一來，在指定的時間範圍內，Listener 就可以不斷重試。若要定義最長可重試時間，請在 Listener 類別中定義一個 `retryUntil` 方法。該方法應回傳 `DateTime` 實體：
 
     /**
@@ -548,7 +530,6 @@ Event 類別基本上就是一個資料容器，用來保存與該 Event 有關�
     {
         return now()->addMinutes(5);
     }
-
 <a name="dispatching-events"></a>
 
 ## 分派 Event
@@ -581,14 +562,13 @@ Event 類別基本上就是一個資料容器，用來保存與該 Event 有關�
             OrderShipped::dispatch($order);
         }
     }
-
 若想要有條件地分派 Event，可使用 `dispatchIf` 與` `dispatchUnless` 方法：
 
     OrderShipped::dispatchIf($condition, $order);
     
     OrderShipped::dispatchUnless($condition, $order);
-
-> **Note** 在測試時，若能在不實際觸發 Listener 的情況下判斷是否有分派特定 Event 會很實用。Laravel 的[內建測試輔助函式](/docs/{{version}}/mocking#event-fake)就能讓我們在不實際觸發 Listener 的情況下分派 Event。
+> [!NOTE]  
+> 在測試時，若能在不實際觸發 Listener 的情況下判斷是否有分派特定 Event 會很實用。Laravel 的[內建測試輔助函式](/docs/{{version}}/mocking#event-fake)就能讓我們在不實際觸發 Listener 的情況下分派 Event。
 
 <a name="event-subscribers"></a>
 
@@ -638,7 +618,6 @@ Event Subscriber 是一種類別，在 Subscriber 類別內可以^[訂閱](Subsc
             );
         }
     }
-
 在 Subscriber 內可以定義 Event Listener 方法，但比起這麼做，在 Subscriber 的 `subscribe` 方法內回傳一組包含 Event 與方法名稱的陣列應該會更方便。在註冊 Event Listener 時，Laravel 會自動判斷該 Subscriber 的類別名稱：
 
     <?php
@@ -674,7 +653,6 @@ Event Subscriber 是一種類別，在 Subscriber 類別內可以^[訂閱](Subsc
             ];
         }
     }
-
 <a name="registering-event-subscribers"></a>
 
 ### 註冊 Event Subscriber

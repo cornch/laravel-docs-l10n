@@ -1,8 +1,8 @@
 ---
-contributors: {}
-crowdinUrl: https://crowdin.com/translate/laravel-docs/190/en-zhtw
-progress: 0
+crowdinUrl: 'https://crowdin.com/translate/laravel-docs/190/en-zhtw'
 updatedAt: '2024-06-30T08:27:00Z'
+contributors: {  }
+progress: 0.0
 ---
 
 # Prompts
@@ -10,20 +10,22 @@ updatedAt: '2024-06-30T08:27:00Z'
 - [Introduction](#introduction)
 - [Installation](#installation)
 - [Available Prompts](#available-prompts)
-   - [Text](#text)
-   - [Password](#password)
-   - [Confirm](#confirm)
-   - [Select](#select)
-   - [Multi-select](#multiselect)
-   - [Suggest](#suggest)
-   - [Search](#search)
-   - [Multi-search](#multisearch)
+  - [Text](#text)
+  - [Password](#password)
+  - [Confirm](#confirm)
+  - [Select](#select)
+  - [Multi-select](#multiselect)
+  - [Suggest](#suggest)
+  - [Search](#search)
+  - [Multi-search](#multisearch)
+  - [Pause](#pause)
+  
 - [Informational Messages](#informational-messages)
 - [Tables](#tables)
 - [Spin](#spin)
 - [Progress Bar](#progress)
 - [Terminal Considerations](#terminal-considerations)
-- [Unsupported Environments & Fallbacks](#fallbacks)
+- [Unsupported Environments and Fallbacks](#fallbacks)
 
 <a name="introduction"></a>
 
@@ -32,10 +34,10 @@ updatedAt: '2024-06-30T08:27:00Z'
 [Laravel Prompts](https://github.com/laravel/prompts) is a PHP package for adding beautiful and user-friendly forms to your command-line applications, with browser-like features including placeholder text and validation.
 
 <img src="https://laravel.com/img/docs/prompts-example.png">
-
 Laravel Prompts is perfect for accepting user input in your [Artisan console commands](/docs/{{version}}/artisan#writing-commands), but it may also be used in any command-line PHP project.
 
-> **Note** Laravel Prompts supports macOS, Linux, and Windows with WSL. For more information, please see our documentation on [unsupported environments & fallbacks](#fallbacks).
+> [!NOTE]  
+> Laravel Prompts supports macOS, Linux, and Windows with WSL. For more information, please see our documentation on [unsupported environments & fallbacks](#fallbacks).
 
 <a name="installation"></a>
 
@@ -48,7 +50,6 @@ Laravel Prompts may also be installed in your other PHP projects by using the Co
 ```shell
 composer require laravel/prompts
 ```
-
 <a name="available-prompts"></a>
 
 ## Available Prompts
@@ -64,7 +65,6 @@ use function Laravel\Prompts\text;
 
 $name = text('What is your name?');
 ```
-
 You may also include placeholder text, a default value, and an informational hint:
 
 ```php
@@ -75,7 +75,6 @@ $name = text(
     hint: 'This will be displayed on your profile.'
 );
 ```
-
 <a name="text-required"></a>
 
 #### Required Values
@@ -88,7 +87,6 @@ $name = text(
     required: true
 );
 ```
-
 If you would like to customize the validation message, you may also pass a string:
 
 ```php
@@ -97,7 +95,6 @@ $name = text(
     required: 'Your name is required.'
 );
 ```
-
 <a name="text-validation"></a>
 
 #### Additional Validation
@@ -114,7 +111,6 @@ $name = text(
     }
 );
 ```
-
 The closure will receive the value that has been entered and may return an error message, or `null` if the validation passes.
 
 <a name="password"></a>
@@ -128,7 +124,6 @@ use function Laravel\Prompts\password;
 
 $password = password('What is your password?');
 ```
-
 You may also include placeholder text and an informational hint:
 
 ```php
@@ -138,7 +133,6 @@ $password = password(
     hint: 'Minimum 8 characters.'
 );
 ```
-
 <a name="password-required"></a>
 
 #### Required Values
@@ -151,7 +145,6 @@ $password = password(
     required: true
 );
 ```
-
 If you would like to customize the validation message, you may also pass a string:
 
 ```php
@@ -160,7 +153,6 @@ $password = password(
     required: 'The password is required.'
 );
 ```
-
 <a name="password-validation"></a>
 
 #### Additional Validation
@@ -176,7 +168,6 @@ $password = password(
     }
 );
 ```
-
 The closure will receive the value that has been entered and may return an error message, or `null` if the validation passes.
 
 <a name="confirm"></a>
@@ -190,7 +181,6 @@ use function Laravel\Prompts\confirm;
 
 $confirmed = confirm('Do you accept the terms?');
 ```
-
 You may also include a default value, customized wording for the "Yes" and "No" labels, and an informational hint:
 
 ```php
@@ -202,7 +192,6 @@ $confirmed = confirm(
     hint: 'The terms must be accepted to continue.'
 );
 ```
-
 <a name="confirm-required"></a>
 
 #### Requiring "Yes"
@@ -215,7 +204,6 @@ $confirmed = confirm(
     required: true
 );
 ```
-
 If you would like to customize the validation message, you may also pass a string:
 
 ```php
@@ -224,7 +212,6 @@ $confirmed = confirm(
     required: 'You must accept the terms to continue.'
 );
 ```
-
 <a name="select"></a>
 
 ### Select
@@ -239,7 +226,6 @@ $role = select(
     ['Member', 'Contributor', 'Owner'],
 );
 ```
-
 You may also specify the default choice and an informational hint:
 
 ```php
@@ -250,7 +236,6 @@ $role = select(
     hint: 'The role may be changed at any time.'
 );
 ```
-
 You may also pass an associative array to the `options` argument to have the selected key returned instead of its value:
 
 ```php
@@ -264,7 +249,6 @@ $role = select(
     default: 'owner'
 );
 ```
-
 Up to five options will be displayed before the list begins to scroll. You may customize this by passing the `scroll` argument:
 
 ```php
@@ -274,7 +258,6 @@ $role = select(
     scroll: 10
 );
 ```
-
 <a name="select-validation"></a>
 
 #### Validation
@@ -295,7 +278,6 @@ $role = select(
             : null
 );
 ```
-
 If the `options` argument is an associative array, then the closure will receive the selected key, otherwise it will receive the selected value. The closure may return an error message, or `null` if the validation passes.
 
 <a name="multiselect"></a>
@@ -312,7 +294,6 @@ $permissions = multiselect(
     ['Read', 'Create', 'Update', 'Delete']
 );
 ```
-
 You may also specify default choices and an informational hint:
 
 ```php
@@ -325,7 +306,6 @@ $permissions = multiselect(
     hint: 'Permissions may be updated at any time.'
 );
 ```
-
 You may also pass an associative array to the `options` argument to return the selected options' keys instead of their values:
 
 ```
@@ -340,7 +320,6 @@ $permissions = multiselect(
     default: ['read', 'create']
 );
 ```
-
 Up to five options will be displayed before the list begins to scroll. You may customize this by passing the `scroll` argument:
 
 ```php
@@ -350,7 +329,6 @@ $categories = multiselect(
     scroll: 10
 );
 ```
-
 <a name="multiselect-required"></a>
 
 #### Requiring a Value
@@ -364,7 +342,6 @@ $categories = multiselect(
     required: true,
 );
 ```
-
 If you would like to customize the validation message, you may provide a string to the `required` argument:
 
 ```php
@@ -374,7 +351,6 @@ $categories = multiselect(
     required: 'You must select at least one category',
 );
 ```
-
 <a name="multiselect-validation"></a>
 
 #### Validation
@@ -382,7 +358,7 @@ $categories = multiselect(
 You may pass a closure to the `validate` argument if you need to present an option but prevent it from being selected:
 
 ```
-$permissions = select(
+$permissions = multiselect(
     label: 'What permissions should the user have?',
     options: [
         'read' => 'Read',
@@ -395,7 +371,6 @@ $permissions = select(
         : null
 );
 ```
-
 If the `options` argument is an associative array then the closure will receive the selected keys, otherwise it will receive the selected values. The closure may return an error message, or `null` if the validation passes.
 
 <a name="suggest"></a>
@@ -409,7 +384,6 @@ use function Laravel\Prompts\suggest;
 
 $name = suggest('What is your name?', ['Taylor', 'Dayle']);
 ```
-
 Alternatively, you may pass a closure as the second argument to the `suggest` function. The closure will be called each time the user types an input character. The closure should accept a string parameter containing the user's input so far and return an array of options for auto-completion:
 
 ```php
@@ -419,7 +393,6 @@ $name = suggest(
         ->filter(fn ($name) => Str::contains($name, $value, ignoreCase: true))
 )
 ```
-
 You may also include placeholder text, a default value, and an informational hint:
 
 ```php
@@ -431,7 +404,6 @@ $name = suggest(
     hint: 'This will be displayed on your profile.'
 );
 ```
-
 <a name="suggest-required"></a>
 
 #### Required Values
@@ -445,7 +417,6 @@ $name = suggest(
     required: true
 );
 ```
-
 If you would like to customize the validation message, you may also pass a string:
 
 ```php
@@ -455,7 +426,6 @@ $name = suggest(
     required: 'Your name is required.'
 );
 ```
-
 <a name="suggest-validation"></a>
 
 #### Additional Validation
@@ -473,7 +443,6 @@ $name = suggest(
     }
 );
 ```
-
 The closure will receive the value that has been entered and may return an error message, or `null` if the validation passes.
 
 <a name="search"></a>
@@ -492,7 +461,6 @@ $id = search(
         : []
 );
 ```
-
 The closure will receive the text that has been typed by the user so far and must return an array of options. If you return an associative array then the selected option's key will be returned, otherwise its value will be returned instead.
 
 You may also include placeholder text and an informational hint:
@@ -507,7 +475,6 @@ $id = search(
     hint: 'The user will receive an email immediately.'
 );
 ```
-
 Up to five options will be displayed before the list begins to scroll. You may customize this by passing the `scroll` argument:
 
 ```php
@@ -519,7 +486,6 @@ $id = search(
     scroll: 10
 );
 ```
-
 <a name="search-validation"></a>
 
 #### Validation
@@ -541,7 +507,6 @@ $id = search(
     }
 );
 ```
-
 If the `options` closure returns an associative array, then the closure will receive the selected key, otherwise, it will receive the selected value. The closure may return an error message, or `null` if the validation passes.
 
 <a name="multisearch"></a>
@@ -560,7 +525,6 @@ $ids = multisearch(
         : []
 );
 ```
-
 The closure will receive the text that has been typed by the user so far and must return an array of options. If you return an associative array then the selected options' keys will be returned; otherwise, their values will be returned instead.
 
 You may also include placeholder text and an informational hint:
@@ -575,7 +539,6 @@ $ids = multisearch(
     hint: 'The user will receive an email immediately.'
 );
 ```
-
 Up to five options will be displayed before the list begins to scroll. You may customize this by providing the `scroll` argument:
 
 ```php
@@ -587,7 +550,6 @@ $ids = multisearch(
     scroll: 10
 );
 ```
-
 <a name="multisearch-required"></a>
 
 #### Requiring a Value
@@ -603,7 +565,6 @@ $ids = multisearch(
     required: true,
 );
 ```
-
 If you would like to customize the validation message, you may also provide a string to the `required` argument:
 
 ```php
@@ -615,7 +576,6 @@ $ids = multisearch(
     required: 'You must select at least one user.'
 );
 ```
-
 <a name="multisearch-validation"></a>
 
 #### Validation
@@ -637,12 +597,22 @@ $ids = multisearch(
     }
 );
 ```
-
 If the `options` closure returns an associative array, then the closure will receive the selected keys; otherwise, it will receive the selected values. The closure may return an error message, or `null` if the validation passes.
 
+<a name="pause"></a>
+
+### Pause
+
+The `pause` function may be used to display informational text to the user and wait for them to confirm their desire to proceed by pressing the Enter / Return key:
+
+```php
+use function Laravel\Prompts\pause;
+
+pause('Press ENTER to continue.');
+```
 <a name="informational-messages"></a>
 
-### Informational Messages
+## Informational Messages
 
 The `note`, `info`, `warning`, `error`, and `alert` functions may be used to display informational messages:
 
@@ -651,10 +621,9 @@ use function Laravel\Prompts\info;
 
 info('Package installed successfully.');
 ```
-
 <a name="tables"></a>
 
-### Tables
+## Tables
 
 The `table` function makes it easy to display multiple rows and columns of data. All you need to do is provide the column names and the data for the table:
 
@@ -666,10 +635,9 @@ table(
     User::all(['name', 'email'])
 );
 ```
-
 <a name="spin"></a>
 
-### Spin
+## Spin
 
 The `spin` function displays a spinner along with an optional message while executing a specified callback. It serves to indicate ongoing processes and returns the callback's results upon completion:
 
@@ -681,8 +649,8 @@ $response = spin(
     'Fetching response...'
 );
 ```
-
-> **Warning** The `spin` function requires the `pcntl` PHP extension to animate the spinner. When this extension is not available, a static version of the spinner will appear instead.
+> [!WARNING]  
+> The `spin` function requires the `pcntl` PHP extension to animate the spinner. When this extension is not available, a static version of the spinner will appear instead.
 
 <a name="progress"></a>
 
@@ -699,7 +667,6 @@ $users = progress(
     callback: fn ($user) => $this->performTask($user),
 );
 ```
-
 The `progress` function acts like a map function and will return an array containing the return value of each iteration of your callback.
 
 The callback may also accept the `\Laravel\Prompts\Progress` instance, allowing you to modify the label and hint on each iteration:
@@ -718,7 +685,6 @@ $users = progress(
     hint: 'This may take some time.',
 );
 ```
-
 Sometimes, you may need more manual control over how a progress bar is advanced. First, define the total number of steps the process will iterate through. Then, advance the progress bar via the `advance` method after processing each item:
 
 ```php
@@ -736,10 +702,9 @@ foreach ($users as $user) {
 
 $progress->finish();
 ```
-
 <a name="terminal-considerations"></a>
 
-### Terminal Considerations
+## Terminal Considerations
 
 <a name="terminal-width"></a>
 
@@ -755,13 +720,14 @@ For any prompts that accept the `scroll` argument, the configured value will aut
 
 <a name="fallbacks"></a>
 
-### Unsupported Environments & Fallbacks
+## Unsupported Environments and Fallbacks
 
 Laravel Prompts supports macOS, Linux, and Windows with WSL. Due to limitations in the Windows version of PHP, it is not currently possible to use Laravel Prompts on Windows outside of WSL.
 
 For this reason, Laravel Prompts supports falling back to an alternative implementation such as the [Symfony Console Question Helper](https://symfony.com/doc/current/components/console/helpers/questionhelper.html).
 
-> **Note** When using Laravel Prompts with the Laravel framework, fallbacks for each prompt have been configured for you and will be automatically enabled in unsupported environments.
+> [!NOTE]  
+> When using Laravel Prompts with the Laravel framework, fallbacks for each prompt have been configured for you and will be automatically enabled in unsupported environments.
 
 <a name="fallback-conditions"></a>
 
@@ -776,7 +742,6 @@ Prompt::fallbackWhen(
     ! $input->isInteractive() || windows_os() || app()->runningUnitTests()
 );
 ```
-
 <a name="fallback-behavior"></a>
 
 #### Fallback Behavior
@@ -810,5 +775,4 @@ TextPrompt::fallbackUsing(function (TextPrompt $prompt) use ($input, $output) {
         ->askQuestion($question);
 });
 ```
-
 Fallbacks must be configured individually for each prompt class. The closure will receive an instance of the prompt class and must return an appropriate type for the prompt.

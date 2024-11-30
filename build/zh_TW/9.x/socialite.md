@@ -1,11 +1,8 @@
 ---
-contributors:
-  14684796:
-    avatarUrl: https://crowdin-static.downloads.crowdin.com/avatar/14684796/medium/60f7dc21ec0bf9cfcb61983640bb4809_default.png
-    name: cornch
-crowdinUrl: https://crowdin.com/translate/laravel-docs/155/en-zhtw
-progress: 89
+crowdinUrl: 'https://crowdin.com/translate/laravel-docs/155/en-zhtw'
 updatedAt: '2024-06-30T08:27:00Z'
+contributors: {  }
+progress: 56.73
 ---
 
 # Laravel Socialite
@@ -15,10 +12,11 @@ updatedAt: '2024-06-30T08:27:00Z'
 - [更新 Socialite](#upgrading-socialite)
 - [設定](#configuration)
 - [身份認證](#authentication)
-   - [Routing](#routing)
-   - [身份認證與檔案儲存](#authentication-and-storage)
-   - [存取範圍 (Scope)](#access-scopes)
-   - [可選參數](#optional-parameters)
+  - [Routing](#routing)
+  - [身份認證與檔案儲存](#authentication-and-storage)
+  - [存取範圍 (Scope)](#access-scopes)
+  - [可選參數](#optional-parameters)
+  
 - [取得使用者的詳細資訊](#retrieving-user-details)
 
 <a name="introduction"></a>
@@ -27,7 +25,8 @@ updatedAt: '2024-06-30T08:27:00Z'
 
 除了一般基於表單的登入方式之外，在 Laravel 中，還可以通過 [Laravel Socialite](https://github.com/laravel/socialite) 來以簡單、方便的方式使用 OAuth Provider 登入。目前 Socialite 支援使用 Facebook、Twitter、LinkedIn、Google、GitHub、GitLab 和 Bitbucket 等服務來進行登入。
 
-> **Note** [Socialite Providers](https://socialiteproviders.com/) 網站上還提供了由社群維護的其他平台的 Adapter。
+> [!NOTE]  
+> [Socialite Providers](https://socialiteproviders.com/) 網站上還提供了由社群維護的其他平台的 Adapter。
 
 <a name="installation"></a>
 
@@ -38,7 +37,6 @@ updatedAt: '2024-06-30T08:27:00Z'
 ```shell
 composer require laravel/socialite
 ```
-
 <a name="upgrading-socialite"></a>
 
 ## 更新 Socialite
@@ -58,8 +56,8 @@ composer require laravel/socialite
         'client_secret' => env('GITHUB_CLIENT_SECRET'),
         'redirect' => 'http://example.com/callback-url',
     ],
-
-> **Note** 如果 `redirect` 選項包含相對路徑，則會為自動解析成完整的 URL。
+> [!NOTE]  
+> 如果 `redirect` 選項包含相對路徑，則會為自動解析成完整的 URL。
 
 <a name="authentication"></a>
 
@@ -82,7 +80,6 @@ composer require laravel/socialite
     
         // $user->token
     });
-
 `Socialite` Facade 上的 `redirect` 方法負責將使用者重新導向到 OAuth Provider。當使用者同意登入要求後，`user` 方法會檢查傳入的 Request，並向 OAuth Provider 取得使用者的資訊。
 
 <a name="authentication-and-storage"></a>
@@ -111,8 +108,8 @@ composer require laravel/socialite
     
         return redirect('/dashboard');
     });
-
-> **Note** 有關各個 OAuth Provider 所提供的使用者資訊，請參考說明文件中有關[取得使用者詳細資料](#retrieving-user-details)的部分。
+> [!NOTE]  
+> 有關各個 OAuth Provider 所提供的使用者資訊，請參考說明文件中有關[取得使用者詳細資料](#retrieving-user-details)的部分。
 
 <a name="access-scopes"></a>
 
@@ -125,13 +122,11 @@ composer require laravel/socialite
     return Socialite::driver('github')
         ->scopes(['read:user', 'public_repo'])
         ->redirect();
-
 可以使用 `setScopes` 方法來複寫登入驗證 Request 上的所有已存在的 Scopes：
 
     return Socialite::driver('github')
         ->setScopes(['read:user', 'public_repo'])
         ->redirect();
-
 <a name="optional-parameters"></a>
 
 ### 可選的參數
@@ -143,14 +138,14 @@ composer require laravel/socialite
     return Socialite::driver('google')
         ->with(['hd' => 'example.com'])
         ->redirect();
-
-> **Warning** 在使用 `with` 方法時，請小心不要傳入任何保留字 (Reserved Keywords)，如 `state` 或 `response_type` 等。
+> [!WARNING]  
+> 在使用 `with` 方法時，請小心不要傳入任何保留字 (Reserved Keywords)，如 `state` 或 `response_type` 等。
 
 <a name="retrieving-user-details"></a>
 
 ## 取得使用者詳細資料
 
-使用者被重新導向到我們網站上的登入驗證 ^[Callback](回呼) Route 後，就可以使用 Socialite 的 `user` 方法來取得使用者的詳細資料。`user` 方法回傳的使用者物件提供了多種屬性與方法，我們可以將與該使用者有關的資訊存在資料庫中。
+使用者被重新導向到我們網站上的登入驗證 ^[Callback](%E5%9B%9E%E5%91%BC) Route 後，就可以使用 Socialite 的 `user` 方法來取得使用者的詳細資料。`user` 方法回傳的使用者物件提供了多種屬性與方法，我們可以將與該使用者有關的資訊存在資料庫中。
 
 根據所使用的 OAuth Provider 是支援 OAuth 1.0 還是 OAuth 2.0，該物件上所提供的屬性與方法可能會有所不同：
 
@@ -159,51 +154,48 @@ composer require laravel/socialite
     Route::get('/auth/callback', function () {
         $user = Socialite::driver('github')->user();
     
-        // OAuth 2.0 Provider...
+        // OAuth 2.0 providers...
         $token = $user->token;
         $refreshToken = $user->refreshToken;
         $expiresIn = $user->expiresIn;
     
-        // OAuth 1.0 Provider...
+        // OAuth 1.0 providers...
         $token = $user->token;
         $tokenSecret = $user->tokenSecret;
     
-        // 所有 Provider...
+        // All providers...
         $user->getId();
         $user->getNickname();
         $user->getName();
         $user->getEmail();
         $user->getAvatar();
     });
-
 <a name="retrieving-user-details-from-a-token-oauth2"></a>
 
-#### 以 ^[Token](權杖) 來取得使用者詳細資料 (OAuth2)
+#### 以 ^[Token](%E6%AC%8A%E6%9D%96) 來取得使用者詳細資料 (OAuth2)
 
-若你已經擁有使用者的有效 ^[Access Token](存取權杖)，就可使用 Socialite 的 `userFromToken` 方法來取得該使用者的詳細資料：
+若你已經擁有使用者的有效 ^[Access Token](%E5%AD%98%E5%8F%96%E6%AC%8A%E6%9D%96)，就可使用 Socialite 的 `userFromToken` 方法來取得該使用者的詳細資料：
 
     use Laravel\Socialite\Facades\Socialite;
     
     $user = Socialite::driver('github')->userFromToken($token);
-
 <a name="retrieving-user-details-from-a-token-and-secret-oauth1"></a>
 
-#### 以 ^[Token](權杖) 與 ^[Secret](密鑰) 來取得使用者詳細資料 (OAuth1)
+#### 以 ^[Token](%E6%AC%8A%E6%9D%96) 與 ^[Secret](%E5%AF%86%E9%91%B0) 來取得使用者詳細資料 (OAuth1)
 
-若你已經擁有使用者的有效 ^[Token](權杖) 與 ^[Secret](密鑰)，就可使用 Socialite 的 `userFromTokenAndSecret` 方法來取得該使用者的詳細資料：
+若你已經擁有使用者的有效 ^[Token](%E6%AC%8A%E6%9D%96) 與 ^[Secret](%E5%AF%86%E9%91%B0)，就可使用 Socialite 的 `userFromTokenAndSecret` 方法來取得該使用者的詳細資料：
 
     use Laravel\Socialite\Facades\Socialite;
     
     $user = Socialite::driver('twitter')->userFromTokenAndSecret($token, $secret);
-
 <a name="stateless-authentication"></a>
 
-#### ^[Stateless](無周邊) 的登入驗證
+#### ^[Stateless](%E7%84%A1%E5%91%A8%E9%82%8A) 的登入驗證
 
 使用 `stateless` 方法可關閉 Session 狀態驗證。此方法適合用於在不使用 Cookie 的 Stateless API 工作階段中加入社群網站登入。
 
     use Laravel\Socialite\Facades\Socialite;
     
     return Socialite::driver('google')->stateless()->user();
-
-> **Warning** Twitter OAuth 1.0 Driver 不支援 Stateless 的登入驗證。
+> [!WARNING]  
+> Twitter OAuth 1.0 Driver 不支援 Stateless 的登入驗證。

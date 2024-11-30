@@ -1,35 +1,37 @@
 ---
-contributors:
-  14684796:
-    avatarUrl: https://crowdin-static.downloads.crowdin.com/avatar/14684796/medium/60f7dc21ec0bf9cfcb61983640bb4809_default.png
-    name: cornch
-crowdinUrl: https://crowdin.com/translate/laravel-docs/99/en-zhtw
-progress: 100
+crowdinUrl: 'https://crowdin.com/translate/laravel-docs/99/en-zhtw'
 updatedAt: '2024-06-30T08:27:00Z'
+contributors: {  }
+progress: 47.9
 ---
 
 # 郵件
 
 - [簡介](#introduction)
-   - [設定](#configuration)
-   - [Driver 前置需求](#driver-prerequisites)
-   - [Failover 設定](#failover-configuration)
+  - [設定](#configuration)
+  - [Driver 前置需求](#driver-prerequisites)
+  - [Failover 設定](#failover-configuration)
+  
 - [產生 Mailable](#generating-mailables)
 - [撰寫 Mailable](#writing-mailables)
-   - [設定寄件人](#configuring-the-sender)
-   - [設定 View](#configuring-the-view)
-   - [View 資料](#view-data)
-   - [附加檔案](#attachments)
-   - [內嵌的附加檔案](#inline-attachments)
-   - [自訂 SwiftMailer 訊息](#customizing-the-swiftmailer-message)
+  - [設定寄件人](#configuring-the-sender)
+  - [設定 View](#configuring-the-view)
+  - [View 資料](#view-data)
+  - [附加檔案](#attachments)
+  - [內嵌的附加檔案](#inline-attachments)
+  - [自訂 SwiftMailer 訊息](#customizing-the-swiftmailer-message)
+  
 - [Markdown 的 Mailable](#markdown-mailables)
-   - [產生 Markdown 的 Mailable](#generating-markdown-mailables)
-   - [撰寫 Markdown 訊息](#writing-markdown-messages)
-   - [自定元件](#customizing-the-components)
+  - [產生 Markdown 的 Mailable](#generating-markdown-mailables)
+  - [撰寫 Markdown 訊息](#writing-markdown-messages)
+  - [自定元件](#customizing-the-components)
+  
 - [傳送郵件](#sending-mail)
-   - [將郵件放入佇列](#queueing-mail)
+  - [將郵件放入佇列](#queueing-mail)
+  
 - [轉譯 Mailable](#rendering-mailables)
-   - [在瀏覽器中預覽 Mailable](#previewing-mailables-in-the-browser)
+  - [在瀏覽器中預覽 Mailable](#previewing-mailables-in-the-browser)
+  
 - [本土化 Mailable](#localizing-mailables)
 - [測試 Mailable](#testing-mailables)
 - [郵件與本機開發](#mail-and-local-development)
@@ -45,7 +47,7 @@ updatedAt: '2024-06-30T08:27:00Z'
 
 ### 設定
 
-可以使用專案的 `config/mail.php` 設定檔來設定 Laravel 的郵件服務。在這個檔案中，每個 ^[Mailer](郵件傳送程式) 都可以有不同的設定，甚至還可以設定不同的「Transport」設定，這樣我們就可以在程式中使用不同的電子郵件服務來寄送不同的訊息。舉例來說，我們可以使用 Postmark 來寄送交易電子郵件，並使用 Amazon SES 來傳送大量寄送的電子郵件。
+可以使用專案的 `config/mail.php` 設定檔來設定 Laravel 的郵件服務。在這個檔案中，每個 ^[Mailer](%E9%83%B5%E4%BB%B6%E5%82%B3%E9%80%81%E7%A8%8B%E5%BC%8F) 都可以有不同的設定，甚至還可以設定不同的「Transport」設定，這樣我們就可以在程式中使用不同的電子郵件服務來寄送不同的訊息。舉例來說，我們可以使用 Postmark 來寄送交易電子郵件，並使用 Amazon SES 來傳送大量寄送的電子郵件。
 
 在 `mail` 設定檔中，可以看到一個 `mailers` 設定陣列。這個陣列中包含了 Laravel 支援的各個主要郵件 Driver / Transport 範例設定，而其中 `default` 設定值用來判斷專案預設要使用哪個 Mailer 來傳送電子郵件訊息。
 
@@ -56,7 +58,6 @@ updatedAt: '2024-06-30T08:27:00Z'
 如 Mailgun 與 Postmark 等基於 API 的 Driver 在寄送郵件時通常會比 SMTP 伺服器來得簡單快速。若可能的話，我們建議你從這幾個 Driver 中選一個使用。這些基於 API 的 Driver 都要求要有 Guzzle HTTP 函式庫，可以通過 Composer 套件管理員來安裝 Guzzle HTTP 函式庫：
 
     composer require guzzlehttp/guzzle
-
 <a name="mailgun-driver"></a>
 
 #### Mailgun Driver
@@ -67,7 +68,6 @@ updatedAt: '2024-06-30T08:27:00Z'
         'domain' => env('MAILGUN_DOMAIN'),
         'secret' => env('MAILGUN_SECRET'),
     ],
-
 若你使用的 [Mailgun 地區](https://documentation.mailgun.com/en/latest/api-intro.html#mailgun-regions)不是美國的話，請在 `services` 設定檔中定義該地區的 Endpoint：
 
     'mailgun' => [
@@ -75,7 +75,6 @@ updatedAt: '2024-06-30T08:27:00Z'
         'secret' => env('MAILGUN_SECRET'),
         'endpoint' => env('MAILGUN_ENDPOINT', 'api.eu.mailgun.net'),
     ],
-
 <a name="postmark-driver"></a>
 
 #### Postmark Driver
@@ -83,20 +82,17 @@ updatedAt: '2024-06-30T08:27:00Z'
 若要使用 Postmark Driver，請使用 Composer 安裝 Postmark 的 SwiftMailer Transport：
 
     composer require wildbit/swiftmailer-postmark
-
 接著，請安裝 Guzzle HTTP 函式庫。然後，在 `config/mail.php` 設定檔中將 `default` 選項設為 `postmark`。最後，請確認一下 `config/services.php` 設定檔中是否包含下列選項：
 
     'postmark' => [
         'token' => env('POSTMARK_TOKEN'),
     ],
-
 若想為給定 Mailer 指定 Postmark ^[訊息串流](Message Stream)，請在該 Mailer 的設定陣列中加上 `message_stream_id` 設定選項。該設定陣列可在 `config/mail.php` 設定檔中找到：
 
     'postmark' => [
         'transport' => 'postmark',
         'message_stream_id' => env('POSTMARK_MESSAGE_STREAM_ID'),
     ],
-
 這樣一來，我們就能設定多個 Postmark Mailer，並給不同 Mailer 設定不同的訊息串流。
 
 <a name="ses-driver"></a>
@@ -108,7 +104,6 @@ updatedAt: '2024-06-30T08:27:00Z'
 ```bash
 composer require aws/aws-sdk-php
 ```
-
 接著，請在 `config/mail.php` 設定檔中將 `default` 選項設為 `ses`，然後確認一下 `config/services.php` 設定檔中是否包含下列選項：
 
     'ses' => [
@@ -116,7 +111,6 @@ composer require aws/aws-sdk-php
         'secret' => env('AWS_SECRET_ACCESS_KEY'),
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
-
 若要通過 Session Token 使用 AWS 的 [Temporary Credential](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_temp_use-resources.html)，請在專案的 SES 設定中加上 `token` 索引鍵：
 
     'ses' => [
@@ -125,7 +119,6 @@ composer require aws/aws-sdk-php
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
         'token' => env('AWS_SESSION_TOKEN'),
     ],
-
 若想定義要讓 Laravel 在寄送郵件時要傳給 AWS SDK 之 `SendRawEmail` 方法的[額外的選項](https://docs.aws.amazon.com/aws-sdk-php/v3/api/api-email-2010-12-01.html#sendrawemail)，可在 `ses` 設定中定義一個 `options` 陣列：
 
     'ses' => [
@@ -139,7 +132,6 @@ composer require aws/aws-sdk-php
             ],
         ],
     ],
-
 <a name="failover-configuration"></a>
 
 ### Failover 設定
@@ -160,11 +152,9 @@ composer require aws/aws-sdk-php
     
         // ...
     ],
-
 定義好 Failover Mailer 後，請將 `mail` 設定檔中的 `default` 設定索引鍵設為該 Failover Mailer 的名稱，以將其設為預設 Mailer。
 
     'default' => env('MAIL_MAILER', 'failover'),
-
 <a name="generating-mailables"></a>
 
 ## 產生 Mailable
@@ -172,14 +162,14 @@ composer require aws/aws-sdk-php
 在撰寫 Laravel 專案時，程式所寄出的所有郵件都以「Mailable」類別的形式呈現。這些類別保存在 `app/Mail` 目錄中。若沒看到這個目錄，請別擔心。使用 `make:mail` Artisan 指令初次建立 Mailable 類別時會自動產生該目錄：
 
     php artisan make:mail OrderShipped
-
 <a name="writing-mailables"></a>
 
 ## 撰寫 Mailable
 
 產生好 Mailable 類別後，請打開該類別，我們來看看裡面的內容。首先，可以注意到所有的 Mailable 類別都在 `build` 方法內進行設定。在該方法中，可呼叫如 `form`、`view`、`attach` 等方法來設定 E-Mail 的顯示方式與寄送設定。
 
-> {tip} 也可以在 Mailable 的 `build` 方法上對相依性項目進行型別提示。Laravel 的 [Service Container](/docs/{{version}}/container) 會自動插入這些相依性項目。
+> [!TIP]  
+> You may type-hint dependencies on the mailable's `build` method. The Laravel [service container](/docs/{{version}}/container) automatically injects these dependencies.
 
 <a name="configuring-the-sender"></a>
 
@@ -201,7 +191,6 @@ composer require aws/aws-sdk-php
         return $this->from('example@example.com', 'Example')
                     ->view('emails.orders.shipped');
     }
-
 <a name="using-a-global-from-address"></a>
 
 #### 使用全域的 `from` 位址
@@ -209,11 +198,9 @@ composer require aws/aws-sdk-php
 不過，若你的專案中所有的郵件都使用相同的寄件人位址，在每個產生的 Mailable 類別內都呼叫 `from` 方法會很麻煩。比起在每個 Mailable 內呼叫 `from` 方法，我們可以在 `config/mail.php` 設定檔中指定一個全域的「from」位址。若 Mailable 類別內沒有指定「from」位址，就會使用這個全域的位址：
 
     'from' => ['address' => 'example@example.com', 'name' => 'App Name'],
-
 ​此外，也可以在 `config/mail.php` 設定檔中定義一個全域的「reply_to」位址：
 
     'reply_to' => ['address' => 'example@example.com', 'name' => 'App Name'],
-
 <a name="configuring-the-view"></a>
 
 ### ​設定 View
@@ -229,8 +216,8 @@ composer require aws/aws-sdk-php
     {
         return $this->view('emails.orders.shipped');
     }
-
-> {tip} 可以建立一個 `resources/views/emails` 目錄來放置所有的郵件樣板。不過，不一定要放在這個目錄，可以隨意放在 `resources/views` 目錄下。
+> [!TIP]  
+> 可以建立一個 `resources/views/emails` 目錄來放置所有的郵件樣板。不過，不一定要放在這個目錄，可以隨意放在 `resources/views` 目錄下。
 
 <a name="plain-text-emails"></a>
 
@@ -248,7 +235,6 @@ composer require aws/aws-sdk-php
         return $this->view('emails.orders.shipped')
                     ->text('emails.orders.shipped_plain');
     }
-
 <a name="view-data"></a>
 
 ### View 資料
@@ -257,7 +243,7 @@ composer require aws/aws-sdk-php
 
 #### 使用公開屬性
 
-一般來說，在轉譯 HTML 版本的郵件時，我們會需要將資料傳入 View 來在其中使用。要將資料傳入 View 有兩種方法。第一種方法，即是在 Mailable 類別裡的公用變數，在 View 裡面可以直接使用。因此，舉例來說，我們可以將資料傳入 Mailable 類別的 ^[Constructor](建構函式) 內，然後將資料設為該類別中定義的公用變數：
+一般來說，在轉譯 HTML 版本的郵件時，我們會需要將資料傳入 View 來在其中使用。要將資料傳入 View 有兩種方法。第一種方法，即是在 Mailable 類別裡的公用變數，在 View 裡面可以直接使用。因此，舉例來說，我們可以將資料傳入 Mailable 類別的 ^[Constructor](%E5%BB%BA%E6%A7%8B%E5%87%BD%E5%BC%8F) 內，然後將資料設為該類別中定義的公用變數：
 
     <?php
     
@@ -300,13 +286,11 @@ composer require aws/aws-sdk-php
             return $this->view('emails.orders.shipped');
         }
     }
-
 將資料設為公用變數後，在 View 中就自動可以使用該資料。因此在 Blade 樣板中，我們可以像存取其他資料一樣存取這些資料：
 
     <div>
         Price: {{ $order->price }}
     </div>
-
 <a name="via-the-with-method"></a>
 
 #### 通過 `with` 方法：
@@ -358,13 +342,11 @@ composer require aws/aws-sdk-php
                         ]);
         }
     }
-
 使用 `with` 方法傳入資料後，在 View 中就自動可以使用該資料。因此在 Blade 樣板中，我們可以像存取其他資料一樣存取這些資料：
 
     <div>
         Price: {{ $orderPrice }}
     </div>
-
 <a name="attachments"></a>
 
 ### 附加檔案
@@ -381,7 +363,6 @@ composer require aws/aws-sdk-php
         return $this->view('emails.orders.shipped')
                     ->attach('/path/to/file');
     }
-
 將檔案附加至訊息時，也可傳入一個陣列給 `attach` 方法來指定要顯示的檔案名稱與 / 或 MIME 類型：
 
     /**
@@ -397,7 +378,6 @@ composer require aws/aws-sdk-php
                         'mime' => 'application/pdf',
                     ]);
     }
-
 <a name="attaching-files-from-disk"></a>
 
 #### 從 Disk 中附加檔案
@@ -414,7 +394,6 @@ composer require aws/aws-sdk-php
        return $this->view('emails.orders.shipped')
                    ->attachFromStorage('/path/to/file');
     }
-
 若有需要，可使用 `attachFromStorage` 方法的第三與第四個引數來指定檔案名稱與其他額外的選項：
 
     /**
@@ -429,7 +408,6 @@ composer require aws/aws-sdk-php
                        'mime' => 'application/pdf'
                    ]);
     }
-
 若想指定預設以外的 Disk，可使用 `attachFromStorageDisk` 方法：
 
     /**
@@ -442,7 +420,6 @@ composer require aws/aws-sdk-php
        return $this->view('emails.orders.shipped')
                    ->attachFromStorageDisk('s3', '/path/to/file');
     }
-
 <a name="raw-data-attachments"></a>
 
 #### 原始資料附加檔案
@@ -461,7 +438,6 @@ composer require aws/aws-sdk-php
                         'mime' => 'application/pdf',
                     ]);
     }
-
 <a name="inline-attachments"></a>
 
 ### 內嵌的附加檔案
@@ -473,8 +449,8 @@ composer require aws/aws-sdk-php
     
         <img src="{{ $message->embed($pathToImage) }}">
     </body>
-
-> {note} `$message` 變數無法在純文字訊息樣板中使用，因為純文字樣板無法使用內嵌的附加檔案。
+> [!NOTE]  
+> `$message` 變數無法在純文字訊息樣板中使用，因為純文字樣板無法使用內嵌的附加檔案。
 
 <a name="embedding-raw-data-attachments"></a>
 
@@ -487,7 +463,6 @@ composer require aws/aws-sdk-php
     
         <img src="{{ $message->embedData($data, 'example-image.jpg') }}">
     </body>
-
 <a name="customizing-the-swiftmailer-message"></a>
 
 ### 自訂 SwiftMailer 訊息
@@ -511,7 +486,6 @@ composer require aws/aws-sdk-php
     
         return $this;
     }
-
 <a name="markdown-mailables"></a>
 
 ## Markdown 的 Mailer
@@ -525,7 +499,6 @@ Markdown Mailer 訊息可讓我們在 Mailable 內使用內建樣板與 [Mail No
 若要產生有對應 Markdown 樣板的 Mailable，請使用 `make:mail` Artisan 指令的 `--markdown` 選項：
 
     php artisan make:mail OrderShipped --markdown=emails.orders.shipped
-
 接著，在 `build` 方法內設定 Mailable 時，不呼叫 `view` 方法，而是改呼叫 `markdown` 方法。`makrdown` 方法接受 Markdown 樣板的名稱，以及一組用來提供給樣板的可選資料陣列：
 
     /**
@@ -540,7 +513,6 @@ Markdown Mailer 訊息可讓我們在 Mailable 內使用內建樣板與 [Mail No
                         'url' => $this->orderUrl,
                     ]);
     }
-
 <a name="writing-markdown-messages"></a>
 
 ### 撰寫 Markdown 訊息
@@ -559,8 +531,8 @@ Markdown 的 Markdown 使用 Blade 元件與 Markdown 格式的組合，讓我�
     Thanks,<br>
     {{ config('app.name') }}
     @endcomponent
-
-> {tip} 在撰寫 Markdown 郵件時請不要增加縮排。依據 Markdown 標準，Markdown 解析程式會將縮排的內容轉譯為程式碼區塊。
+> [!TIP]  
+> 在撰寫 Markdown 郵件時請不要增加縮排。依據 Markdown 標準，Markdown 解析程式會將縮排的內容轉譯為程式碼區塊。
 
 <a name="button-component"></a>
 
@@ -571,7 +543,6 @@ Button 元件轉譯一個置中的按鈕連結。這個元件接受兩個引數�
     @component('mail::button', ['url' => $url, 'color' => 'success'])
     View Order
     @endcomponent
-
 <a name="panel-component"></a>
 
 #### Panel 元件
@@ -581,7 +552,6 @@ Panel 元件將給定的文字區塊轉譯在一個面板中，面板的底色�
     @component('mail::panel')
     This is the panel content.
     @endcomponent
-
 <a name="table-component"></a>
 
 #### Table 元件
@@ -594,15 +564,13 @@ Table 元件可讓我們將 Markdown 表格轉為 HTML 表格。該元件接受�
     | Col 2 is      | Centered      | $10      |
     | Col 3 is      | Right-Aligned | $20      |
     @endcomponent
-
 <a name="customizing-the-components"></a>
 
 ### 自訂元件
 
-可以將所有的 Markdown 郵件元件匯出到專案內來自訂這些元件。若要匯出元件，請使用 `vendor:publish` Artisan 指令來^[安裝](Publish) `laravel-mail` 素材標籤：
+可以將所有的 Markdown 郵件元件匯出到專案內來自訂這些元件。若要匯出元件，請使用 `vendor:publish` Artisan  指令來^[安裝](Publish) `laravel-mail` 素材標籤：
 
     php artisan vendor:publish --tag=laravel-mail
-
 這個指令會將 Markdown 郵件元件安裝到 `resources/views/vendor/mail` 目錄下。`mail` 目錄會包含 `html` 與 `text` 目錄，這些目錄中包含了所有可用元件對應的呈現方式。可以隨意自訂這些元件。
 
 <a name="customizing-the-css"></a>
@@ -648,14 +616,12 @@ Table 元件可讓我們將 Markdown 表格轉為 HTML 表格。該元件接受�
             Mail::to($request->user())->send(new OrderShipped($order));
         }
     }
-
-傳送訊息時，除了「to」方法能用來指定收件人外，還可以指定「^[CC](副本)」與「^[BCC](密件副本)」收件人。可將「to」、「cc」、「bcc」等方法串聯使用，以指定這些方法對應的收件人：
+傳送訊息時，除了「to」方法能用來指定收件人外，還可以指定「^[CC](%E5%89%AF%E6%9C%AC)」與「^[BCC](%E5%AF%86%E4%BB%B6%E5%89%AF%E6%9C%AC)」收件人。可將「to」、「cc」、「bcc」等方法串聯使用，以指定這些方法對應的收件人：
 
     Mail::to($request->user())
         ->cc($moreUsers)
         ->bcc($evenMoreUsers)
         ->send(new OrderShipped($order));
-
 <a name="looping-over-recipients"></a>
 
 #### 在收件人中迴圈
@@ -665,7 +631,6 @@ Table 元件可讓我們將 Markdown 表格轉為 HTML 表格。該元件接受�
     foreach (['taylor@example.com', 'dries@example.com'] as $recipient) {
         Mail::to($recipient)->send(new OrderShipped($order));
     }
-
 <a name="sending-mail-via-a-specific-mailer"></a>
 
 #### 使用指定的 Mailer 來傳送郵件
@@ -675,7 +640,6 @@ Table 元件可讓我們將 Markdown 表格轉為 HTML 表格。該元件接受�
     Mail::mailer('postmark')
             ->to($request->user())
             ->send(new OrderShipped($order));
-
 <a name="queueing-mail"></a>
 
 ### 將郵件放入佇列
@@ -690,7 +654,6 @@ Table 元件可讓我們將 Markdown 表格轉為 HTML 表格。該元件接受�
         ->cc($moreUsers)
         ->bcc($evenMoreUsers)
         ->queue(new OrderShipped($order));
-
 這個方法會自動將任務推入佇列，這樣訊息就會在背景傳送。在使用這個功能前，會需要先[設定佇列](/docs/{{version}}/queues)。
 
 <a name="delayed-message-queueing"></a>
@@ -703,7 +666,6 @@ Table 元件可讓我們將 Markdown 表格轉為 HTML 表格。該元件接受�
         ->cc($moreUsers)
         ->bcc($evenMoreUsers)
         ->later(now()->addMinutes(10), new OrderShipped($order));
-
 <a name="pushing-to-specific-queues"></a>
 
 #### 推入指定的佇列
@@ -718,7 +680,6 @@ Table 元件可讓我們將 Markdown 表格轉為 HTML 表格。該元件接受�
         ->cc($moreUsers)
         ->bcc($evenMoreUsers)
         ->queue($message);
-
 <a name="queueing-by-default"></a>
 
 #### 預設佇列
@@ -731,7 +692,6 @@ Table 元件可讓我們將 Markdown 表格轉為 HTML 表格。該元件接受�
     {
         //
     }
-
 <a name="queued-mailables-and-database-transactions"></a>
 
 #### 佇列的 Mailable 與資料庫 Transaction
@@ -743,7 +703,6 @@ Table 元件可讓我們將 Markdown 表格轉為 HTML 表格。該元件接受�
     Mail::to($request->user())->send(
         (new OrderShipped($order))->afterCommit()
     );
-
 或者，也可以在 Mailable 的 Constructor 上呼叫 `afterCommit` 方法：
 
     <?php
@@ -769,8 +728,8 @@ Table 元件可讓我們將 Markdown 表格轉為 HTML 表格。該元件接受�
             $this->afterCommit();
         }
     }
-
-> {tip} 要瞭解更多有關這類問題的解決方法，請參考有關[佇列任務與資料庫 Transaction](/docs/{{version}}/queues#jobs-and-database-transactions) 有關的說明文件。
+> [!TIP]  
+> 要瞭解更多有關這類問題的解決方法，請參考有關[佇列任務與資料庫 Transaction](/docs/{{version}}/queues#jobs-and-database-transactions) 有關的說明文件。
 
 <a name="rendering-mailables"></a>
 
@@ -784,7 +743,6 @@ Table 元件可讓我們將 Markdown 表格轉為 HTML 表格。該元件接受�
     $invoice = Invoice::find(1);
     
     return (new InvoicePaid($invoice))->render();
-
 <a name="previewing-mailables-in-the-browser"></a>
 
 ### 在瀏覽器內預覽 Mailable
@@ -796,8 +754,8 @@ Table 元件可讓我們將 Markdown 表格轉為 HTML 表格。該元件接受�
     
         return new App\Mail\InvoicePaid($invoice);
     });
-
-> {note} 在瀏覽器中預覽 Mailable 時，不會轉譯[內嵌的附件](#inline-attachments)。若要瀏覽有內嵌附件的 Mailable，請將郵件傳送到如 [MailHog](https://github.com/mailhog/MailHog) 或 [HELO](https://usehelo.com) 之類的郵件測試程式。
+> [!NOTE]  
+> [Inline attachments](#inline-attachments) will not be rendered when a mailable is previewed in your browser. To preview these mailables, you should send them to an email testing application such as [MailHog](https://github.com/mailhog/MailHog) or [HELO](https://usehelo.com).
 
 <a name="localizing-mailables"></a>
 
@@ -810,7 +768,6 @@ Table 元件可讓我們將 Markdown 表格轉為 HTML 表格。該元件接受�
     Mail::to($request->user())->locale('es')->send(
         new OrderShipped($order)
     );
-
 <a name="user-preferred-locales"></a>
 
 ### 使用者偏好的語系
@@ -831,18 +788,16 @@ Table 元件可讓我們將 Markdown 表格轉為 HTML 表格。該元件接受�
             return $this->locale;
         }
     }
-
 實作好該介面後，向該 Model 寄送 Mailable 或通知時，Laravel 會自動使用偏好的語系。因此，使用該介面時不需呼叫 `locale` 方法：
 
     Mail::to($request->user())->send(new OrderShipped($order));
-
 <a name="testing-mailables"></a>
 
 ## 測試 Mailable
 
 Laravel 提供了多種可測試 Mailable 是否包含於其內容的方便方法。這些方法是：`assertSeeInHtml`、`assertDontSeeInHtml`、`assertSeeInText`、`assertDontSeeInText`。
 
-就和預期的一樣，有「HTML」的^ [Assertion](判斷提示) 判斷 HTML 版本的 Mailable 是否包含給定字串，而「Text」版本的 Assertion 則判斷純文字版本的 Mailable 是否包含給定字串：
+就和預期的一樣，有「HTML」的^ [Assertion](%E5%88%A4%E6%96%B7%E6%8F%90%E7%A4%BA) 判斷 HTML 版本的 Mailable 是否包含給定字串，而「Text」版本的 Assertion 則判斷純文字版本的 Mailable 是否包含給定字串：
 
     use App\Mail\InvoicePaid;
     use App\Models\User;
@@ -859,7 +814,6 @@ Laravel 提供了多種可測試 Mailable 是否包含於其內容的方便方�
         $mailable->assertSeeInText($user->email);
         $mailable->assertSeeInText('Invoice Paid');
     }
-
 <a name="testing-mailable-sending"></a>
 
 #### 測試 Mailable 的寄送
@@ -905,7 +859,6 @@ Laravel 提供了多種可測試 Mailable 是否包含於其內容的方便方�
             Mail::alwaysTo('taylor@example.com');
         }
     }
-
 <a name="events"></a>
 
 ## 事件

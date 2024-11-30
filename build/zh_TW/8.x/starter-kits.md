@@ -1,20 +1,18 @@
 ---
-contributors:
-  14684796:
-    avatarUrl: https://crowdin-static.downloads.crowdin.com/avatar/14684796/medium/60f7dc21ec0bf9cfcb61983640bb4809_default.png
-    name: cornch
-crowdinUrl: https://crowdin.com/translate/laravel-docs/157/en-zhtw
-progress: 79
+crowdinUrl: 'https://crowdin.com/translate/laravel-docs/157/en-zhtw'
 updatedAt: '2024-06-30T08:27:00Z'
+contributors: {  }
+progress: 51.04
 ---
 
 # 入門套件
 
 - [簡介](#introduction)
 - [Laravel Breeze](#laravel-breeze)
-   - [安裝](#laravel-breeze-installation)
-   - [Breeze & Inertia](#breeze-and-inertia)
-   - [Breeze & Next.js / API](#breeze-and-next)
+  - [安裝](#laravel-breeze-installation)
+  - [Breeze & Inertia](#breeze-and-inertia)
+  - [Breeze & Next.js / API](#breeze-and-next)
+  
 - [Laravel Jetstream](#laravel-jetstream)
 
 <a name="introduction"></a>
@@ -46,13 +44,11 @@ cd example-app
 
 php artisan migrate
 ```
-
 建立好 Laravel 專案後，可以使用 Composer 來安裝 Laravel Breeze：
 
 ```bash
-composer require laravel/breeze:1.9.2
+composer require laravel/breeze:1.9.2 
 ```
-
 安裝好 Laravel Breeze 套件後，執行 `breeze:install` Artisan 指令。這個指令會將登入用 View、路由、Controller、以及其他一些資源安裝到專案中。Laravel Breeze 會將其所有程式碼安裝到專案中，因此對於 Breeze 的功能與實作你擁有完整的控制權與可見性。安裝好 Breeze 之後，你需要接著編譯資源，這樣網站才會有 CSS 檔可用：
 
 ```nothing
@@ -62,10 +58,10 @@ npm install
 npm run dev
 php artisan migrate
 ```
-
 接著，在瀏覽器中打開網站的 `/login` 或 `/register` 網址。Breeze 中所有的路由都定義在 `routes/auth.php` 中。
 
-> {tip} 要瞭解更多有關如何編譯網站的 CSS 與 JavaScript 的資訊，請參考 [Laravel Mix 說明文件](/docs/{{version}}/mix#running-mix)。
+> [!TIP]  
+> To learn more about compiling your application's CSS and JavaScript, check out the [Laravel Mix documentation](/docs/{{version}}/mix#running-mix).
 
 <a name="breeze-and-inertia"></a>
 
@@ -76,7 +72,7 @@ Laravel Breeze 也提供了由 Vue 或 React 驅動的 [Inertia.js](https://iner
 ```nothing
 php artisan breeze:install vue
 
-// 或是...
+// Or...
 
 php artisan breeze:install react
 
@@ -84,7 +80,6 @@ npm install
 npm run dev
 php artisan migrate
 ```
-
 <a name="breeze-and-next"></a>
 
 ### Breeze & Next.js / API
@@ -96,7 +91,6 @@ php artisan breeze:install api
 
 php artisan migrate
 ```
-
 在安裝時，Breeze 也會在專案的 `.env` 檔案中新增一個 `FRONTEND_URL` 環境變數。這個網址就是 JavaScript 程式的網址。通常來說，在開發期間，這個網址會是 `http://localhost:3000`。
 
 <a name="next-reference-implementation"></a>

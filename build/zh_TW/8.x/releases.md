@@ -1,17 +1,15 @@
 ---
-contributors:
-  14684796:
-    avatarUrl: https://crowdin-static.downloads.crowdin.com/avatar/14684796/medium/60f7dc21ec0bf9cfcb61983640bb4809_default.png
-    name: cornch
-crowdinUrl: https://crowdin.com/translate/laravel-docs/135/en-zhtw
-progress: 100
+crowdinUrl: 'https://crowdin.com/translate/laravel-docs/135/en-zhtw'
 updatedAt: '2024-06-30T08:27:00Z'
+contributors: {  }
+progress: 50.7
 ---
 
 # 版本資訊
 
 - [版本策略](#versioning-scheme)
-   - [例外](#exceptions)
+  - [例外](#exceptions)
+  
 - [支援政策](#support-policy)
 - [Laravel 8](#laravel-8)
 
@@ -45,7 +43,7 @@ Laravel 及其第一方套件都遵守 [語義化版本](https://semver.org/lang
 | 7 | 7.2 - 8.0 | 2020 年 3 月 3 日 | 2020 年 10 月 6 日 | 2021 年 3 月 3 日 |
 | 8 | 7.3 - 8.1 | 2020 年 9 月 8 日 | 2022 年 7 月 26 日 | 2023 年 1 月 24 日 |
 | 9 | 8.0 - 8.1 | 2022 年 2 月 8 日 | 2023 年 8 月 8 日 | 2024 年 2 月 6 日 |
-| 10 | 8.1 | 2023 年 2 月 7 日 | 2024 年 8 月 6 日 | 2025 年 2 月 4 日 |
+| 10 | 8.1 - 8.3 | 2023 年 2 月 14 日 | 2024 年 8 月 6 日 | 2025 年 2 月 4 日 |
 
 <div class="version-colors">
     <div class="end-of-life">
@@ -57,7 +55,6 @@ Laravel 及其第一方套件都遵守 [語義化版本](https://semver.org/lang
         <div>Security fixes only</div>
     </div>
 </div>
-
 (*) 支援的 PHP 版本
 
 <a name="laravel-8"></a>
@@ -123,13 +120,11 @@ Eloquent 的 [Model Factory](/docs/{{version}}/database-testing#defining-model-f
             ];
         }
     }
-
 由於產生的 Model 中包含了新的 `HasFactory` Trait，因此我們可以這樣使用 Model Factory：
 
     use App\Models\User;
     
     User::factory()->count(50)->create();
-
 由於 Model Factory 已經是一般的 PHP 類別了，因此 State 的變換應通過類別方法來撰寫。此外，也可以依照需求在 Eloquent Model Factory 內加上任何其他的輔助函式。
 
 舉例來說，`User` Model 可能會有個 `suspended` 狀態，用於修改 Model 中預設的屬性值。可以通過基礎 Factory 的 `state` 方法來定義狀態變換。可以任意為狀態方法命名。不管怎麼樣，這個方法就只是個單純的 PHP 方法而已：
@@ -145,13 +140,11 @@ Eloquent 的 [Model Factory](/docs/{{version}}/database-testing#defining-model-f
             'account_status' => 'suspended',
         ]);
     }
-
 定義好狀態變換方法後，我們可以這樣使用：
 
     use App\Models\User;
     
     User::factory()->count(5)->suspended()->create();
-
 就像前面提到的一樣，Laravel 8 的 Model Factory 包含了對關聯的第一手支援。因此，假設我們的 `User` Model 有個 `posts` 關聯方法，我們只需要執行下列程式碼就能產生一個有 3 篇貼文的使用者：
 
     $users = User::factory()
@@ -159,7 +152,6 @@ Eloquent 的 [Model Factory](/docs/{{version}}/database-testing#defining-model-f
                     'published' => false,
                 ])
                 ->create();
-
 為了減緩升級的過程，我們提供了 [laravel/legacy-factories](https://github.com/laravel/legacy-factories) 套件來在 Laravel 8.x 中提供舊版 Model Factory 的支援。
 
 Laravel 的全新 Factory 包含了其他更多我們認為你會喜歡的功能。要瞭解更多有關 Model Factory 的資訊，請參考[資料庫測試說明文件](/docs/{{version}}/database-testing#defining-model-factories)。
@@ -174,9 +166,8 @@ Laravel 的全新 Factory 包含了其他更多我們認為你會喜歡的功能
 
     php artisan schema:dump
     
-    // 傾印目前的資料庫結構，並刪除所有現存的 Migration...
+    // Dump the current database schema and prune all existing migrations...
     php artisan schema:dump --prune
-
 執行該指令時，Laravel 會將一個「結構描述 (Schema)」檔案寫入 `database/schema` 目錄內。接著，當要遷移資料庫且尚未執行過任何遷移時，Laravel 會先執行該結構描述檔的 SQL。執行玩結構描述檔的指令後，Laravel 才會接著執行不在該結構描述傾印中剩下的遷移。
 
 <a name="job-batching"></a>
@@ -202,15 +193,14 @@ Laravel 的批次任務功能能讓你輕鬆地執行一系列的任務，並接
         new ProcessPodcast(Podcast::find(4)),
         new ProcessPodcast(Podcast::find(5)),
     ])->then(function (Batch $batch) {
-        // 所有任務都成功執行...
+        // All jobs completed successfully...
     })->catch(function (Batch $batch, Throwable $e) {
-        // 第一個偵測到失敗的任務...
+        // First batch job failure detected...
     })->finally(function (Batch $batch) {
-        // 批次執行完畢...
+        // The batch has finished executing...
     })->dispatch();
     
     return $batch->id;
-
 要瞭解更多有關批次任務的資訊，請參考[佇列說明文件](/docs/{{version}}/queues#job-batching)。
 
 <a name="improved-rate-limiting"></a>
@@ -229,7 +219,6 @@ Laravel 的請求頻率限制功能現在有了更多的彈性與能力，且仍
     RateLimiter::for('global', function (Request $request) {
         return Limit::perMinute(1000);
     });
-
 由於頻率限制程式的回呼會接收連入 HTTP 請求實體，因此我們可以依據連入請求或登入使用者來動態調整適當的頻率限制：
 
     RateLimiter::for('uploads', function (Request $request) {
@@ -237,7 +226,6 @@ Laravel 的請求頻率限制功能現在有了更多的彈性與能力，且仍
                     ? Limit::none()
                     : Limit::perMinute(100);
     });
-
 有時候，我們可能會像以某些任意數值來設定頻率限制。舉例來說，我們可能會想限制給定的路由：每個 IP 位址每分鐘只能存取 100 次。為此，可以在設定頻率限制時使用 `by` 方法：
 
     RateLimiter::for('uploads', function (Request $request) {
@@ -245,7 +233,6 @@ Laravel 的請求頻率限制功能現在有了更多的彈性與能力，且仍
                     ? Limit::none()
                     : Limit::perMinute(100)->by($request->ip());
     });
-
 可以使用 `throttle` [Middleware](/docs/{{version}}/middleware) 來將頻率限制程式附加到路由或路由群組上。這個 Throttle Middleware 接受欲指派給路由的頻率限制程式名稱：
 
     Route::middleware(['throttle:uploads'])->group(function () {
@@ -257,7 +244,6 @@ Laravel 的請求頻率限制功能現在有了更多的彈性與能力，且仍
             //
         });
     });
-
 要瞭解更多有關頻率限制的資訊，請參考[路由說明文件](/docs/{{version}}/routing#rate-limiting)。
 
 <a name="improved-maintenance-mode"></a>
@@ -271,11 +257,9 @@ Laravel 的請求頻率限制功能現在有了更多的彈性與能力，且仍
 在維護模式下，可以使用 `secret` 選項來指定一個用來繞過維護模式的權杖：
 
     php artisan down --secret="1630542a-246b-4b66-afa1-dd72a4c43515"
-
 將應用程式放入維護模式後，可以瀏覽符合該權杖的應用程式網址，Laravel 會簽發一個繞過維護模式的 Cookie 給瀏覽器：
 
     https://example.com/1630542a-246b-4b66-afa1-dd72a4c43515
-
 在存取該隱藏路由時，會接著被重新導向至應用程式的 `/` 路由。該 Cookie 被簽發給瀏覽器後，就可以像沒有在維護模式一樣正常地瀏覽應用程式。
 
 <a name="pre-rendering-the-maintenance-mode-view"></a>
@@ -287,7 +271,6 @@ Laravel 的請求頻率限制功能現在有了更多的彈性與能力，且仍
 基於此原因，現在，Laravel 能讓你預先轉譯維護模式 View，並在整個請求週期的一開始就將其回傳。這個 View 會在任何應用程式的依賴載入前就預先被轉譯。可以使用 `down` 指令的 `render` 選項來預轉譯所選的樣板：
 
     php artisan down --render="errors::503"
-
 <a name="closure-dispatch-chain-catch"></a>
 
 ### 閉包分派與顆串連的 `catch`
@@ -301,9 +284,8 @@ Laravel 的請求頻率限制功能現在有了更多的彈性與能力，且仍
     dispatch(function () use ($podcast) {
         $podcast->publish();
     })->catch(function (Throwable $e) {
-        // 任務執行失敗...
+        // This job has failed...
     });
-
 <a name="dynamic-blade-components"></a>
 
 ### 動態 Blade 元件
@@ -313,7 +295,6 @@ Laravel 的請求頻率限制功能現在有了更多的彈性與能力，且仍
 有時候我們可能會需要轉譯元件，但在執行階段前並不知道要轉譯哪個元件。對於這種情況，現在，我們可以使用 Laravel 的內建「dynamic-component」動態元件來依照執行階段的值或變數進行轉譯：
 
     <x-dynamic-component :component="$componentName" class="mt-4" />
-
 要瞭解更多有關 Blade 元件的資訊，請參考 [Blade 的說明文件](/docs/{{version}}/blade#components)。
 
 <a name="event-listener-improvements"></a>
@@ -330,7 +311,6 @@ Laravel 的請求頻率限制功能現在有了更多的彈性與能力，且仍
     Event::listen(function (PodcastProcessed $event) {
         //
     });
-
 此外，可以使用 `Illuminate\Events\queueable` 方法來將基於閉包的事件監聽程式標記為要放入佇列 (Queueable)：
 
     use App\Events\PodcastProcessed;
@@ -340,13 +320,11 @@ Laravel 的請求頻率限制功能現在有了更多的彈性與能力，且仍
     Event::listen(queueable(function (PodcastProcessed $event) {
         //
     }));
-
 就像佇列任務一樣，可以使用 `onConnection`, `onQueue`, 與 `delay` 方法來自訂放入佇列的監聽程式的執行：
 
     Event::listen(queueable(function (PodcastProcessed $event) {
         //
     })->onConnection('redis')->onQueue('podcasts')->delay(now()->addSeconds(10)));
-
 若想在匿名的佇列監聽程式執行失敗時進行處理，可以在定義 `queueable` 監聽程式時提供一個閉包給 `catch` 方法：
 
     use App\Events\PodcastProcessed;
@@ -357,9 +335,8 @@ Laravel 的請求頻率限制功能現在有了更多的彈性與能力，且仍
     Event::listen(queueable(function (PodcastProcessed $event) {
         //
     })->catch(function (PodcastProcessed $event, Throwable $e) {
-        // 佇列中的 Listener 執行失敗...
+        // The queued listener failed...
     }));
-
 <a name="time-testing-helpers"></a>
 
 ### 時間測試輔助函式
@@ -379,16 +356,15 @@ Laravel 的請求頻率限制功能現在有了更多的彈性與能力，且仍
         $this->travel(5)->weeks();
         $this->travel(5)->years();
     
-        // 時間旅行回到過去...
+        // Travel into the past...
         $this->travel(-5)->hours();
     
-        // 時間旅行到一個特定的時間...
+        // Travel to an explicit time...
         $this->travelTo(now()->subHours(6));
     
-        // 回到目前時間...
+        // Return back to the present time...
         $this->travelBack();
     }
-
 <a name="artisan-serve-improvements"></a>
 
 ### Artisan `serve` 的改進
@@ -412,13 +388,12 @@ Laravel 的分頁程式 (Paginator) 已更新為預設使用 [Tailwind CSS](http
     use App\Http\Controllers\UserController;
     
     Route::get('/users', [UserController::class, 'index']);
-
 與呼叫 `actions` 相關的方法也應使用相同的 Callable 語法：
 
     action([UserController::class, 'index']);
     
     return Redirect::action([UserController::class, 'index']);
-
 若你偏好使用 Laravel 7.x 風格的 Controller 路由前置，只需要在專案的 `RouteServiceProvider` 中加上 `$namespace` 屬性即可。
 
-> {note} 這個更改只會影響新安裝的 Laravel 8.x 專案。對於從 Laravel 7.x 升級來的專案，`RouteServiceProvider` 內還是會有 `$namespace` 屬性。
+> [!NOTE]  
+> This change only affects new Laravel 8.x applications. Applications upgrading from Laravel 7.x will still have the `$namespace` property in their `RouteServiceProvider`.

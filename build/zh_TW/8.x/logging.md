@@ -1,28 +1,28 @@
 ---
-contributors:
-  14684796:
-    avatarUrl: https://crowdin-static.downloads.crowdin.com/avatar/14684796/medium/60f7dc21ec0bf9cfcb61983640bb4809_default.png
-    name: cornch
-crowdinUrl: https://crowdin.com/translate/laravel-docs/97/en-zhtw
-progress: 100
+crowdinUrl: 'https://crowdin.com/translate/laravel-docs/97/en-zhtw'
 updatedAt: '2024-06-30T08:27:00Z'
+contributors: {  }
+progress: 46.69
 ---
 
 # 日誌
 
 - [簡介](#introduction)
 - [設定](#configuration)
-   - [可用的通道 Driver](#available-channel-drivers)
-   - [通道的前置需求](#channel-prerequisites)
-   - [記錄 Deprecation Warning](#logging-deprecation-warnings)
+  - [可用的通道 Driver](#available-channel-drivers)
+  - [通道的前置需求](#channel-prerequisites)
+  - [記錄 Deprecation Warning](#logging-deprecation-warnings)
+  
 - [建立 Log Stack](#building-log-stacks)
 - [撰寫 Log 訊息](#writing-log-messages)
-   - [上下文資訊](#contextual-information)
-   - [寫入特定通道](#writing-to-specific-channels)
+  - [上下文資訊](#contextual-information)
+  - [寫入特定通道](#writing-to-specific-channels)
+  
 - [自訂的 Monolog 通道](#monolog-channel-customization)
-   - [為某個通道自訂 Monolog](#customizing-monolog-for-channels)
-   - [建立 Monolog Handler 的通道](#creating-monolog-handler-channels)
-   - [使用 Factory 建立自定通道](#creating-custom-channels-via-factories)
+  - [為某個通道自訂 Monolog](#customizing-monolog-for-channels)
+  - [建立 Monolog Handler 的通道](#creating-monolog-handler-channels)
+  - [使用 Factory 建立自定通道](#creating-custom-channels-via-factories)
+  
 
 <a name="introduction"></a>
 
@@ -53,7 +53,6 @@ Laravel 的 Log 紀錄是基於「^[通道](Channel)」的。每個通道都代�
         'name' => 'channel-name',
         'channels' => ['single', 'slack'],
     ],
-
 <a name="available-channel-drivers"></a>
 
 ### 可用的通道 Driver
@@ -73,7 +72,8 @@ Laravel 的 Log 紀錄是基於「^[通道](Channel)」的。每個通道都代�
 | `stack` | 會建立「多通道」通道的包裝 |
 | `syslog` | 基於 `SyslogHandler` 的 Monolog Driver |
 
-> {tip} 請閱讀[進階的通道客製化](#monolog-channel-customization)以瞭解更多有關 `monolog` 與 `custom` Driver 的資訊。
+> [!TIP]  
+> 請閱讀[進階的通道客製化](#monolog-channel-customization)以瞭解更多有關 `monolog` 與 `custom` Driver 的資訊。
 
 <a name="channel-prerequisites"></a>
 
@@ -116,7 +116,6 @@ PHP、Laravel、或是其他函式庫等，通常會通知使用者其部分功�
     'channels' => [
         ...
     ]
-
 或者，也可以定義一個名為 `deprecations` 的日誌通道。若有該名稱的通道，Laravel 會使用該通道來紀錄 Deprecation 日誌：
 
     'channels' => [
@@ -125,12 +124,11 @@ PHP、Laravel、或是其他函式庫等，通常會通知使用者其部分功�
             'path' => storage_path('logs/php-deprecation-warnings.log'),
         ],
     ],
-
 <a name="building-log-stacks"></a>
 
 ## 建立日誌 Stack
 
-剛才也提到過，`stack` Driver 能讓我們將多個通道組合為單一日誌通道來更方便地使用。為了說明如何使用日誌的 ^[Stack](堆疊)，我們先來看看下面這個可能出現在正式專案中的範例設定檔：
+剛才也提到過，`stack` Driver 能讓我們將多個通道組合為單一日誌通道來更方便地使用。為了說明如何使用日誌的 ^[Stack](%E5%A0%86%E7%96%8A)，我們先來看看下面這個可能出現在正式專案中的範例設定檔：
 
     'channels' => [
         'stack' => [
@@ -151,7 +149,6 @@ PHP、Laravel、或是其他函式庫等，通常會通知使用者其部分功�
             'level' => 'critical',
         ],
     ],
-
 讓我們來逐步分析這個設定檔。首先，可以注意到 `stack` 通道使用 `channels` 選項來彙總了另外兩個通道：`syslog` 與 `slack`。所以，在紀錄日誌訊息時，這兩個頻道都可能會去紀錄該訊息。不過，我們稍後會看到，實際上這兩個通道會依照訊息的嚴重程度 (「^[等級](Level)」) 來判斷是否要紀錄訊息。
 
 <a name="log-levels"></a>
@@ -163,11 +160,9 @@ PHP、Laravel、或是其他函式庫等，通常會通知使用者其部分功�
 所以，假設我們使用 `debug` 方法來紀錄訊息：
 
     Log::debug('An informational message.');
-
 在我們的設定檔中，`syslog` 通道會將該訊息寫到^[系統日誌](System Log)中。不過，因為這個訊息不是 `critical` 或以上的等級，因此這個訊息不會被傳送到 Slack。不過，若我們紀錄 `emergency` 等級的訊息，則該訊息就會被送到系統日誌與 Slack 兩個地方，因為 `emergency` 等級大於我們為這兩個通道設定的最小等級門檻：
 
     Log::emergency('The system is down!');
-
 <a name="writing-log-messages"></a>
 
 ## 寫入日誌訊息
@@ -184,7 +179,6 @@ PHP、Laravel、或是其他函式庫等，通常會通知使用者其部分功�
     Log::notice($message);
     Log::info($message);
     Log::debug($message);
-
 可以呼叫這些方法來以對應等級紀錄訊息。預設情況下，這些訊息會被寫入到 `logging` 設定檔中預設的日誌通道中。
 
     <?php
@@ -212,7 +206,6 @@ PHP、Laravel、或是其他函式庫等，通常會通知使用者其部分功�
             ]);
         }
     }
-
 <a name="contextual-information"></a>
 
 ### 有上下文的資訊
@@ -222,7 +215,6 @@ PHP、Laravel、或是其他函式庫等，通常會通知使用者其部分功�
     use Illuminate\Support\Facades\Log;
     
     Log::info('User failed to login.', ['id' => $user->id]);
-
 有時候，我們可能會想讓某些上下文資訊被包含在接下來所有紀錄的日誌中。舉例來說，我們紀錄能關聯上連入 Request 的 Request ID。為此，可呼叫 `Log` Facade 的 `withContext` 方法：
 
     <?php
@@ -253,7 +245,6 @@ PHP、Laravel、或是其他函式庫等，通常會通知使用者其部分功�
             return $next($request)->header('Request-Id', $requestId);
         }
     }
-
 <a name="writing-to-specific-channels"></a>
 
 ### 寫入指定的通道
@@ -263,11 +254,9 @@ PHP、Laravel、或是其他函式庫等，通常會通知使用者其部分功�
     use Illuminate\Support\Facades\Log;
     
     Log::channel('slack')->info('Something happened!');
-
 若想視需要建立由多個通道組合成的日誌 Stack，可使用 `stack` 方法：
 
     Log::stack(['single', 'slack'])->info('Something happened!');
-
 <a name="on-demand-channels"></a>
 
 #### 視需要建立的通道
@@ -280,7 +269,6 @@ PHP、Laravel、或是其他函式庫等，通常會通知使用者其部分功�
       'driver' => 'single',
       'path' => storage_path('logs/custom.log'),
     ])->info('Something happened!');
-
 也可以在視需要建立的日誌 Stack 中包含一個視需要建立的通道。只要在傳給 `stack` 方法的陣列中包含一個視需要建立的通道實體即可：
 
     use Illuminate\Support\Facades\Log;
@@ -291,7 +279,6 @@ PHP、Laravel、或是其他函式庫等，通常會通知使用者其部分功�
     ]);
     
     Log::stack(['slack', $channel])->info('Something happened!');
-
 <a name="monolog-channel-customization"></a>
 
 ## 自訂 Monolog 通道
@@ -310,7 +297,6 @@ PHP、Laravel、或是其他函式庫等，通常會通知使用者其部分功�
         'path' => storage_path('logs/laravel.log'),
         'level' => 'debug',
     ],
-
 在通道上設定好 `tap` 選項後，就可以開始定義用來自訂 Monolog 實體的類別了。這個類別只需要有一個方法即可：`__invoke`。該方法會收到 `Illuminate\Log\Logger` 實體，該實體會將所有的方法呼叫代理到底層的 Monolog 實體：
 
     <?php
@@ -336,16 +322,16 @@ PHP、Laravel、或是其他函式庫等，通常會通知使用者其部分功�
             }
         }
     }
-
-> {tip} 所有的「Tap」類別都會由 [Service Container](/docs/{{version}}/container) 解析，所以在 ^[Constructor](建構函式) 中要求的相依性都會自動被插入。
+> [!TIP]  
+> 所有的「Tap」類別都會由 [Service Container](/docs/{{version}}/container) 解析，所以在 ^[Constructor](%E5%BB%BA%E6%A7%8B%E5%87%BD%E5%BC%8F) 中要求的相依性都會自動被插入。
 
 <a name="creating-monolog-handler-channels"></a>
 
 ### 建立 Monolog Handler 通道
 
-Monolog 中有多個[可用的 Handler](https://github.com/Seldaek/monolog/tree/main/src/Monolog/Handler)，Laravel 並未為每個 Handler 都提供一個內建的通道。在某些情況下，我們可能會想給一些沒有對應 Laravel 日誌 Driver 的 Monolog Handler 建立實體作為自訂通道。只要使用 `monolog` Driver 就可以輕鬆地建立這類通道。
+Monolog has a variety of [available handlers](https://github.com/Seldaek/monolog/tree/main/src/Monolog/Handler) and Laravel does not include a built-in channel for each one. In some cases, you may wish to create a custom channel that is merely an instance of a specific Monolog handler that does not have a corresponding Laravel log driver.  These channels can be easily created using the `monolog` driver.
 
-使用 `monolog` Driver 時，`handler` 設定選項可用來指定要初始化哪個 Handler。然後，也可以選擇性地使用 `with` 設定選項來指定該 Handler 的 ^[Constructor](建構函式) 所需要的參數：
+使用 `monolog` Driver 時，`handler` 設定選項可用來指定要初始化哪個 Handler。然後，也可以選擇性地使用 `with` 設定選項來指定該 Handler 的 ^[Constructor](%E5%BB%BA%E6%A7%8B%E5%87%BD%E5%BC%8F) 所需要的參數：
 
     'logentries' => [
         'driver'  => 'monolog',
@@ -355,7 +341,6 @@ Monolog 中有多個[可用的 Handler](https://github.com/Seldaek/monolog/tree/
             'port' => '10000',
         ],
     ],
-
 <a name="monolog-formatters"></a>
 
 #### Monolog 格式
@@ -370,7 +355,6 @@ Monolog 中有多個[可用的 Handler](https://github.com/Seldaek/monolog/tree/
             'dateFormat' => 'Y-m-d',
         ],
     ],
-
 若使用的 Monolog Handler 本身就有提供格式化工具，則可以將 `formatter` 設定選項設為 `default`：
 
     'newrelic' => [
@@ -378,12 +362,11 @@ Monolog 中有多個[可用的 Handler](https://github.com/Seldaek/monolog/tree/
         'handler' => Monolog\Handler\NewRelicHandler::class,
         'formatter' => 'default',
     ],
-
 <a name="creating-custom-channels-via-factories"></a>
 
 ### 使用 Factory 來建立自訂通道
 
-若想定義整個自訂通道來完整控制 Monolog 的初始化與設定，則可在 `config/logging.php` 設定檔中使用 `custom` Driver。設定中應包含一個 `via` 選項來包含建立 Monolog 實體時要叫用的 ^[Factory](工廠) 類別名稱：
+若想定義整個自訂通道來完整控制 Monolog 的初始化與設定，則可在 `config/logging.php` 設定檔中使用 `custom` Driver。設定中應包含一個 `via` 選項來包含建立 Monolog 實體時要叫用的 ^[Factory](%E5%B7%A5%E5%BB%A0) 類別名稱：
 
     'channels' => [
         'example-custom-channel' => [
@@ -391,8 +374,7 @@ Monolog 中有多個[可用的 Handler](https://github.com/Seldaek/monolog/tree/
             'via' => App\Logging\CreateCustomLogger::class,
         ],
     ],
-
-設定好 `custom` Driver 通道後，就可以開始定義用來建立 Monolog 實體的類別了。這個類別只需要有一個 `__invoke` 方法就好了，該方法應回傳 Monolog ^[Logger](日誌程式)的實體。`__invoke` 方法會收到一個引數，即為該通道的設定陣列：
+設定好 `custom` Driver 通道後，就可以開始定義用來建立 Monolog 實體的類別了。這個類別只需要有一個 `__invoke` 方法就好了，該方法應回傳 Monolog ^[Logger](%E6%97%A5%E8%AA%8C%E7%A8%8B%E5%BC%8F)的實體。`__invoke` 方法會收到一個引數，即為該通道的設定陣列：
 
     <?php
     

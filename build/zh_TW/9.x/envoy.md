@@ -1,11 +1,8 @@
 ---
-contributors:
-  14684796:
-    avatarUrl: https://crowdin-static.downloads.crowdin.com/avatar/14684796/medium/60f7dc21ec0bf9cfcb61983640bb4809_default.png
-    name: cornch
-crowdinUrl: https://crowdin.com/translate/laravel-docs/65/en-zhtw
-progress: 100
+crowdinUrl: 'https://crowdin.com/translate/laravel-docs/65/en-zhtw'
 updatedAt: '2023-02-11T10:27:00Z'
+contributors: {  }
+progress: 60.33
 ---
 
 # Laravel Envoy
@@ -13,19 +10,22 @@ updatedAt: '2023-02-11T10:27:00Z'
 - [簡介](#introduction)
 - [安裝](#installation)
 - [撰寫任務](#writing-tasks)
-   - [定義任務](#defining-tasks)
-   - [多伺服器](#multiple-servers)
-   - [設定](#setup)
-   - [變數](#variables)
-   - [Story](#stories)
-   - [Hook](#completion-hooks)
+  - [定義任務](#defining-tasks)
+  - [多伺服器](#multiple-servers)
+  - [設定](#setup)
+  - [變數](#variables)
+  - [Story](#stories)
+  - [Hook](#completion-hooks)
+  
 - [執行任務](#running-tasks)
-   - [確認任務的執行](#confirming-task-execution)
+  - [確認任務的執行](#confirming-task-execution)
+  
 - [通知](#notifications)
-   - [Slack](#slack)
-   - [Discord](#discord)
-   - [Telegram](#telegram)
-   - [Microsoft Teams](#microsoft-teams)
+  - [Slack](#slack)
+  - [Discord](#discord)
+  - [Telegram](#telegram)
+  - [Microsoft Teams](#microsoft-teams)
+  
 
 <a name="introduction"></a>
 
@@ -42,13 +42,11 @@ updatedAt: '2023-02-11T10:27:00Z'
 ```shell
 composer require laravel/envoy --dev
 ```
-
 安裝好 Envoy 後，Envoy 執行檔就會被放在專案的 `vendor/bin` 目錄下：
 
 ```shell
 php vendor/bin/envoy
 ```
-
 <a name="writing-tasks"></a>
 
 ## 撰寫任務
@@ -69,7 +67,6 @@ php vendor/bin/envoy
     php artisan queue:restart
 @endtask
 ```
-
 就像這樣，檔案最上方定義了一組 `@servers` 的陣列，可以在定義任務的 `on` 選項中參照到這些伺服器。`@servers` 定義必須保持在同一行內。在 `@task` 定義內，應放置所有該任務在伺服器上被呼叫時要執行的 Shell 指令。
 
 <a name="local-tasks"></a>
@@ -81,7 +78,6 @@ php vendor/bin/envoy
 ```blade
 @servers(['localhost' => '127.0.0.1'])
 ```
-
 <a name="importing-envoy-tasks"></a>
 
 #### 匯入 Envoy 任務
@@ -91,7 +87,6 @@ php vendor/bin/envoy
 ```blade
 @import('vendor/package/Envoy.blade.php')
 ```
-
 <a name="multiple-servers"></a>
 
 ### 多個伺服器
@@ -107,7 +102,6 @@ php vendor/bin/envoy
     php artisan migrate --force
 @endtask
 ```
-
 <a name="parallel-execution"></a>
 
 #### 平行執行
@@ -123,7 +117,6 @@ php vendor/bin/envoy
     php artisan migrate --force
 @endtask
 ```
-
 <a name="setup"></a>
 
 ### 設定
@@ -135,7 +128,6 @@ php vendor/bin/envoy
     $now = new DateTime;
 @endsetup
 ```
-
 若有需要在任務執行前 require 其他的 PHP 的哪敢，可以在 `Envoy.blade.php` 檔案的頂端使用 `@include` 指示詞：
 
 ```blade
@@ -145,7 +137,6 @@ php vendor/bin/envoy
     # ...
 @endtask
 ```
-
 <a name="variables"></a>
 
 ### 變數
@@ -155,7 +146,6 @@ php vendor/bin/envoy
 ```shell
 php vendor/bin/envoy run deploy --branch=master
 ```
-
 可以使用 Blade 的「echo」語法來在任務中存取這些選項。在任務中，也可以定義 Blade 的 `if` 陳述式與迴圈。舉例來說，我們來看看一個在執行 `git pull` 指令前先檢查 `$branch` 變數是否存在的範例：
 
 ```blade
@@ -171,7 +161,6 @@ php vendor/bin/envoy run deploy --branch=master
     php artisan migrate --force
 @endtask
 ```
-
 <a name="stories"></a>
 
 ### Story
@@ -196,13 +185,11 @@ php vendor/bin/envoy run deploy --branch=master
     composer install
 @endtask
 ```
-
 寫好 Story 後，就可以像執行任務一樣執行 Story：
 
 ```shell
 php vendor/bin/envoy run deploy
 ```
-
 <a name="completion-hooks"></a>
 
 ### Hook
@@ -224,7 +211,6 @@ php vendor/bin/envoy run deploy
     }
 @endbefore
 ```
-
 <a name="completion-after"></a>
 
 #### `@after`
@@ -238,7 +224,6 @@ php vendor/bin/envoy run deploy
     }
 @endafter
 ```
-
 <a name="completion-error"></a>
 
 #### `@error`
@@ -252,7 +237,6 @@ php vendor/bin/envoy run deploy
     }
 @enderror
 ```
-
 <a name="completion-success"></a>
 
 #### `@success`
@@ -264,7 +248,6 @@ php vendor/bin/envoy run deploy
     // ...
 @endsuccess
 ```
-
 <a name="completion-finished"></a>
 
 #### `@finished`
@@ -274,11 +257,10 @@ php vendor/bin/envoy run deploy
 ```blade
 @finished
     if ($exitCode > 0) {
-        // 其中一個任務有錯誤...
+        // There were errors in one of the tasks...
     }
 @endfinished
 ```
-
 <a name="running-tasks"></a>
 
 ## 執行任務
@@ -288,7 +270,6 @@ php vendor/bin/envoy run deploy
 ```shell
 php vendor/bin/envoy run deploy
 ```
-
 <a name="confirming-task-execution"></a>
 
 ### 確認任務的執行
@@ -302,7 +283,6 @@ php vendor/bin/envoy run deploy
     php artisan migrate
 @endtask
 ```
-
 <a name="notifications"></a>
 
 ## 通知
@@ -320,7 +300,6 @@ Envoy 支援在當任務執行完畢後將通知傳送給 [Slack](https://slack.
     @slack('webhook-url', '#bots')
 @endfinished
 ```
-
 預設情況下，Envoy 會傳送描述已執行任務的訊息給通知頻道。不過，只要傳入第三個引數給 `@slack` 指示詞，就可以使用自定訊息來複寫這個訊息：
 
 ```blade
@@ -328,7 +307,6 @@ Envoy 支援在當任務執行完畢後將通知傳送給 [Slack](https://slack.
     @slack('webhook-url', '#bots', 'Hello, Slack.')
 @endfinished
 ```
-
 <a name="discord"></a>
 
 ### Discord
@@ -340,7 +318,6 @@ Envoy 也支援在各個任務執行完畢後傳送通知給 [Discord](https://d
     @discord('discord-webhook-url')
 @endfinished
 ```
-
 <a name="telegram"></a>
 
 ### Telegram
@@ -352,7 +329,6 @@ Envoy 也支援在各個任務執行完畢後傳送通知到 [Telegram](https://
     @telegram('bot-id','chat-id')
 @endfinished
 ```
-
 <a name="microsoft-teams"></a>
 
 ### Microsoft Teams

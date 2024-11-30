@@ -1,35 +1,37 @@
 ---
-contributors:
-  14684796:
-    avatarUrl: https://crowdin-static.downloads.crowdin.com/avatar/14684796/medium/60f7dc21ec0bf9cfcb61983640bb4809_default.png
-    name: cornch
-crowdinUrl: https://crowdin.com/translate/laravel-docs/21/en-zhtw
-progress: 100
+crowdinUrl: 'https://crowdin.com/translate/laravel-docs/21/en-zhtw'
 updatedAt: '2024-06-30T08:17:00Z'
+contributors: {  }
+progress: 45.78
 ---
 
 # 快取
 
 - [簡介](#introduction)
 - [設定](#configuration)
-   - [Driver 前置需求](#driver-prerequisites)
+  - [Driver 前置需求](#driver-prerequisites)
+  
 - [使用 Cache](#cache-usage)
-   - [取得 Cache 實體](#obtaining-a-cache-instance)
-   - [從 Cache 中取得項目](#retrieving-items-from-the-cache)
-   - [在 Cache 內儲存項目](#storing-items-in-the-cache)
-   - [從 Cache 內移除項目](#removing-items-from-the-cache)
-   - [Cache 輔助函式](#the-cache-helper)
+  - [取得 Cache 實體](#obtaining-a-cache-instance)
+  - [從 Cache 中取得項目](#retrieving-items-from-the-cache)
+  - [在 Cache 內儲存項目](#storing-items-in-the-cache)
+  - [從 Cache 內移除項目](#removing-items-from-the-cache)
+  - [Cache 輔助函式](#the-cache-helper)
+  
 - [Cache 標籤](#cache-tags)
-   - [保存有標籤的 Cache 項目](#storing-tagged-cache-items)
-   - [存取有標籤的 Cache 項目](#accessing-tagged-cache-items)
-   - [移除有標籤的 Cache 項目](#removing-tagged-cache-items)
+  - [保存有標籤的 Cache 項目](#storing-tagged-cache-items)
+  - [存取有標籤的 Cache 項目](#accessing-tagged-cache-items)
+  - [移除有標籤的 Cache 項目](#removing-tagged-cache-items)
+  
 - [Atomic Lock](#atomic-locks)
-   - [Driver 前置需求](#lock-driver-prerequisites)
-   - [管理 Lock](#managing-locks)
-   - [在不同處理程序間管理 Lock](#managing-locks-across-processes)
+  - [Driver 前置需求](#lock-driver-prerequisites)
+  - [管理 Lock](#managing-locks)
+  - [在不同處理程序間管理 Lock](#managing-locks-across-processes)
+  
 - [新增自訂的 Cache Driver](#adding-custom-cache-drivers)
-   - [撰寫 Driver](#writing-the-driver)
-   - [註冊 Driver](#registering-the-driver)
+  - [撰寫 Driver](#writing-the-driver)
+  - [註冊 Driver](#registering-the-driver)
+  
 - [事件](#events)
 
 <a name="introduction"></a>
@@ -63,8 +65,8 @@ updatedAt: '2024-06-30T08:17:00Z'
         $table->text('value');
         $table->integer('expiration');
     });
-
-> {tip} 可以使用 `php artisan cache:table` Artisan 指令來產生包含正確 Schema 的 Migration。
+> [!TIP]  
+> 可以使用 `php artisan cache:table` Artisan 指令來產生包含正確 Schema 的 Migration。
 
 <a name="memcached"></a>
 
@@ -81,7 +83,6 @@ updatedAt: '2024-06-30T08:17:00Z'
             ],
         ],
     ],
-
 若有需要，可以將 `host` 選項設為 UNIX Socket 路徑。若設定為 UNIX Socket，則 `port` 選項應設為 `0`：
 
     'memcached' => [
@@ -91,7 +92,6 @@ updatedAt: '2024-06-30T08:17:00Z'
             'weight' => 100
         ],
     ],
-
 <a name="redis"></a>
 
 #### Redis
@@ -138,7 +138,6 @@ updatedAt: '2024-06-30T08:17:00Z'
             //
         }
     }
-
 <a name="accessing-multiple-cache-stores"></a>
 
 #### 存取多個快取儲存
@@ -148,7 +147,6 @@ updatedAt: '2024-06-30T08:17:00Z'
     $value = Cache::store('file')->get('foo');
     
     Cache::store('redis')->put('bar', 'baz', 600); // 10 Minutes
-
 <a name="retrieving-items-from-the-cache"></a>
 
 ### 自快取內取得項目
@@ -158,13 +156,11 @@ updatedAt: '2024-06-30T08:17:00Z'
     $value = Cache::get('key');
     
     $value = Cache::get('key', 'default');
-
 也可以傳入一個閉包來作為預設值。若指定項目不存在於快取內，則該閉包的結果會被回傳。傳入閉包可讓你暫緩從資料庫或其他外部服務取得預設值的過程：
 
     $value = Cache::get('key', function () {
         return DB::table(...)->get();
     });
-
 <a name="checking-for-item-existence"></a>
 
 #### 檢查項目是否存在
@@ -174,7 +170,6 @@ updatedAt: '2024-06-30T08:17:00Z'
     if (Cache::has('key')) {
         //
     }
-
 <a name="incrementing-decrementing-values"></a>
 
 #### 遞增或遞減值
@@ -185,7 +180,6 @@ updatedAt: '2024-06-30T08:17:00Z'
     Cache::increment('key', $amount);
     Cache::decrement('key');
     Cache::decrement('key', $amount);
-
 <a name="retrieve-store"></a>
 
 #### 取得與儲存
@@ -195,7 +189,6 @@ updatedAt: '2024-06-30T08:17:00Z'
     $value = Cache::remember('users', $seconds, function () {
         return DB::table('users')->get();
     });
-
 若該項目不存在於快取內，則傳入 `remember` 的閉包會被執行，並將其結果放入快取內。
 
 可以使用 `rememberForever` 方法來從快取內取得項目，並在項目不存在時將其永久保存在快取內：
@@ -203,7 +196,6 @@ updatedAt: '2024-06-30T08:17:00Z'
     $value = Cache::rememberForever('users', function () {
         return DB::table('users')->get();
     });
-
 <a name="retrieve-delete"></a>
 
 #### 取得或刪除
@@ -211,7 +203,6 @@ updatedAt: '2024-06-30T08:17:00Z'
 若有需要從快取內取得並同時刪除項目，則可以使用 `pull` 方法。與 `get` 方法類似，當項目不存在於快取內時，會回傳 `null`：
 
     $value = Cache::pull('key');
-
 <a name="storing-items-in-the-cache"></a>
 
 ### 將項目存入快取
@@ -219,15 +210,12 @@ updatedAt: '2024-06-30T08:17:00Z'
 可以使用 `Cache` Facade 上的 `put` 方法來將項目存入快取：
 
     Cache::put('key', 'value', $seconds = 10);
-
 若未傳入儲存時間給 `put` 方法，則該項目將被永久儲存：
 
     Cache::put('key', 'value');
-
 除了將秒數作為整數傳入，也可以傳入一個 `DateTime` 實體來代表指定的快取項目過期時間：
 
     Cache::put('key', 'value', now()->addMinutes(10));
-
 <a name="store-if-not-present"></a>
 
 #### 當不存在時儲存
@@ -235,7 +223,6 @@ updatedAt: '2024-06-30T08:17:00Z'
 `add` 方法會只在項目不存在於快取儲存內時將項目加進快取內。該方法會在項目有真正被加進快取後回傳 `true`。否則，該方法會回傳 `false`。`add` 方法是一個不可部分完成的操作（Atomic）：
 
     Cache::add('key', 'value', $seconds);
-
 <a name="storing-items-forever"></a>
 
 #### 永久儲存項目
@@ -243,8 +230,8 @@ updatedAt: '2024-06-30T08:17:00Z'
 `forever` 方法可用來將項目永久儲存於快取。由於這些項目永遠不會過期，因此這些項目必須手動使用 `forget` 方法來移除：
 
     Cache::forever('key', 'value');
-
-> {tip} 若使用 Memcached Driver，使用「forever」儲存的項目可能會在快取達到大小限制時被移除。
+> [!TIP]  
+> 若使用 Memcached Driver，使用「forever」儲存的項目可能會在快取達到大小限制時被移除。
 
 <a name="removing-items-from-the-cache"></a>
 
@@ -253,18 +240,16 @@ updatedAt: '2024-06-30T08:17:00Z'
 可以使用 `forget` 方法來自快取內移除項目：
 
     Cache::forget('key');
-
 也可以提供 0 或負數的過期時間來移除項目：
 
     Cache::put('key', 'value', 0);
     
     Cache::put('key', 'value', -5);
-
 可以使用 `flush` 方法來移除整個快取：
 
     Cache::flush();
-
-> {note} 使用 Flush 移除快取並不理會所設定的快取「前綴」，會將快取內所有的項目都移除。當快取有與其他應用程式共用時，在清除快取前請三思。
+> [!NOTE]  
+> 使用 Flush 移除快取並不理會所設定的快取「^[Prefix](%E5%89%8D%E7%BD%AE%E8%A9%9E)」，會將快取內所有的項目都移除。當快取有與其他應用程式共用時，在清除快取前請三思。
 
 <a name="the-cache-helper"></a>
 
@@ -273,26 +258,25 @@ updatedAt: '2024-06-30T08:17:00Z'
 除了使用 `Cache` Facade，也可以使用全域的 `cache` 函式來自快取內取得與儲存資料。當使用單一的字串引數呼叫 `cache` 方法時，會回傳給定索引鍵的值：
 
     $value = cache('key');
-
 若傳入一組索引鍵／值配對的陣列以及一個過期時間給該函式，則會將數值初存在快取內一段給定的期間：
 
     cache(['key' => 'value'], $seconds);
     
     cache(['key' => 'value'], now()->addMinutes(10));
-
 當 `cache` 方法被呼叫，但未傳入任何引數時，會回傳 `Illuminate\Contracts\Cache\Factory` 實作的實體，可以讓你呼叫其他快取方法：
 
     cache()->remember('users', $seconds, function () {
         return DB::table('users')->get();
     });
-
-> {tip} 在測試呼叫全域的 `cache` 函式時，可以像在[測試 Facade](/docs/{{version}}/mocking#mocking-facades)一樣，使用 `Cache::shouldReceive` 方法。
+> [!TIP]  
+> 在測試呼叫全域的 `cache` 函式時，可以像在[測試 Facade](/docs/{{version}}/mocking#mocking-facades)一樣，使用 `Cache::shouldReceive` 方法。
 
 <a name="cache-tags"></a>
 
 ## 快取標籤
 
-> {note} 使用 `file`, `dynamodb` 或 `database` 快取 Driver 時，不支援使用快取標籤。此外，在以「forever」儲存的快取上使用多重標籤時，搭配 `memcached` Driver 能取得最佳效能，這些 Driver 通常會自動移除舊的記錄。
+> [!NOTE]  
+> 使用 `file`, `dynamodb` 或 `database` 快取 Driver 時，不支援使用快取標籤。此外，在以「forever」儲存的快取上使用多重標籤時，搭配 `memcached` Driver 能取得最佳效能，這些 Driver 通常會自動移除舊的記錄。
 
 <a name="storing-tagged-cache-items"></a>
 
@@ -303,7 +287,6 @@ updatedAt: '2024-06-30T08:17:00Z'
     Cache::tags(['people', 'artists'])->put('John', $john, $seconds);
     
     Cache::tags(['people', 'authors'])->put('Anne', $anne, $seconds);
-
 <a name="accessing-tagged-cache-items"></a>
 
 ### 存取標籤的快取項目
@@ -313,7 +296,6 @@ updatedAt: '2024-06-30T08:17:00Z'
     $john = Cache::tags(['people', 'artists'])->get('John');
     
     $anne = Cache::tags(['people', 'authors'])->get('Anne');
-
 <a name="removing-tagged-cache-items"></a>
 
 ### 移除標籤的快取項目
@@ -321,16 +303,15 @@ updatedAt: '2024-06-30T08:17:00Z'
 可以移除有被設定一個或多個標籤的項目。舉例來說，這個陳述式可以移除所有被設為 `people`、`authors`、或是同時有這兩個標籤的快取。因此，`Anne` 與 `John` 都會被從快取內移除：
 
     Cache::tags(['people', 'authors'])->flush();
-
 與之相比，下列這個陳述式只會移除被標記為 `authors` 的快取值，因此 `Anne` 會被移除，而 `John` 則不會：
 
     Cache::tags('authors')->flush();
-
 <a name="atomic-locks"></a>
 
 ## Atomic Lock (不可部分完成的鎖定)
 
-> {note} 若要使用此功能，則應用程式必須要使用 `memcached`, `redis`, `dynamodb`, `database`, `file` 或 `array` 作為應用程式的預設快取 Driver。另外，所有的伺服器也都必須要連線至相同的中央快取伺服器。
+> [!NOTE]  
+> 若要使用此功能，則應用程式必須要使用 `memcached`, `redis`, `dynamodb`, `database`, `file` 或 `array` 作為應用程式的預設快取 Driver。另外，所有的伺服器也都必須要連線至相同的中央快取伺服器。
 
 <a name="lock-driver-prerequisites"></a>
 
@@ -347,7 +328,6 @@ updatedAt: '2024-06-30T08:17:00Z'
         $table->string('owner');
         $table->integer('expiration');
     });
-
 <a name="managing-locks"></a>
 
 ### 管理 Lock
@@ -363,13 +343,11 @@ updatedAt: '2024-06-30T08:17:00Z'
     
         $lock->release();
     }
-
 `get` 方法也接收一個閉包。在該閉包執行後，Laravel 會自動釋放 Lock：
 
     Cache::lock('foo')->get(function () {
-        // 立刻要求 Lock 並自動釋放……
+        // Lock acquired indefinitely and automatically released...
     });
-
 若在要求時無法取得 Lock，則可以告訴 Laravel 要等待多少秒的事件。若在指定的時間限制後仍無法取得 Lock，則會擲回 `Illuminate\Contracts\Cache\LockTimeoutException`：
 
     use Illuminate\Contracts\Cache\LockTimeoutException;
@@ -379,19 +357,17 @@ updatedAt: '2024-06-30T08:17:00Z'
     try {
         $lock->block(5);
     
-        // 等待最多 5 秒取得 Lock...
+        // Lock acquired after waiting a maximum of 5 seconds...
     } catch (LockTimeoutException $e) {
-        // 無法取得 Lock...
+        // Unable to acquire lock...
     } finally {
         optional($lock)->release();
     }
-
 上述範例可以通過將閉包傳入 `block` 方法來簡化。當傳入閉包給該方法後，Laravel 會嘗試在指定秒數內取得 Lock，並在閉包執行後自動釋放 Lock：
 
     Cache::lock('foo', 10)->block(5, function () {
-        // 等待最多 5 秒取得 Lock…
+        // Lock acquired after waiting a maximum of 5 seconds...
     });
-
 <a name="managing-locks-across-processes"></a>
 
 ### 在多個處理程序間管理 Lock
@@ -407,15 +383,12 @@ updatedAt: '2024-06-30T08:17:00Z'
     if ($lock->get()) {
         ProcessPodcast::dispatch($podcast, $lock->owner());
     }
-
 在專案的 `ProcessPodcast` 任務中，我們可以通過擁有者權杖來恢復與釋放 Lock：
 
     Cache::restoreLock('processing', $this->owner)->release();
-
 若想在不理會目前擁有者的情況下釋放 Lock，可以使用 `forceRelease` 方法：
 
     Cache::lock('processing')->forceRelease();
-
 <a name="adding-custom-cache-drivers"></a>
 
 ## 新增自訂快取 Driver
@@ -445,14 +418,13 @@ updatedAt: '2024-06-30T08:17:00Z'
         public function flush() {}
         public function getPrefix() {}
     }
-
 我們只需要通過 MongoDB 連線來實作其中的各個方法即可。有關如何實作這些方法，請參考 [Laravel 框架原始碼](https://github.com/laravel/framework) 中的 `Illuminate\Cache\MemcachedStore`。實作完成後，就可以呼叫 `Cache` Facade 的 `extend` 方法來註冊自訂 Driver：
 
     Cache::extend('mongo', function ($app) {
         return Cache::repository(new MongoStore);
     });
-
-> {tip} 若不知道該將自定快取 Driver 的程式碼放在哪裡，可在 `app` 目錄內建立一個 `Extensions` 命名空間。不過，請記得，Laravel 並沒有硬性規定應用程式的架構，你可以隨意依照你的喜好來阻止程式碼。
+> [!TIP]  
+> 若不知道該將自定快取 Driver 的程式碼放在哪裡，可在 `app` 目錄內建立一個 `Extensions` 命名空間。不過，請記得，Laravel 並沒有硬性規定應用程式的架構，你可以隨意依照你的喜好來阻止程式碼。
 
 <a name="registering-the-driver"></a>
 
@@ -494,7 +466,6 @@ updatedAt: '2024-06-30T08:17:00Z'
             //
         }
     }
-
 傳入 `extend` 方法的第一個引數為 Driver 的名稱。這個名稱應對應到 `config/cache.php` 設定檔中的 `driver` 選項。第二個引數則是一個應回傳 `Illuminate\Cache\Repository` 實體的閉包。該閉包會被傳入一個 `$app` 實體，即為 [Service Container](/docs/{{version}}/container) 的實體。
 
 註冊好擴充程式後，就可以將 `config/cache.php` 設定檔中的 `driver` 選項更新為擴充程式的名稱。

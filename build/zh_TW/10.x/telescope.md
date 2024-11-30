@@ -1,45 +1,45 @@
 ---
-contributors:
-  14684796:
-    avatarUrl: https://crowdin-static.downloads.crowdin.com/avatar/14684796/medium/60f7dc21ec0bf9cfcb61983640bb4809_default.png
-    name: cornch
-crowdinUrl: https://crowdin.com/translate/laravel-docs/161/en-zhtw
-progress: 100
+crowdinUrl: 'https://crowdin.com/translate/laravel-docs/161/en-zhtw'
 updatedAt: '2024-06-30T08:27:00Z'
+contributors: {  }
+progress: 60.8
 ---
 
 # Laravel Telescope
 
 - [簡介](#introduction)
 - [安裝](#installation)
-   - [只在本機上安裝](#local-only-installation)
-   - [設定](#configuration)
-   - [修剪資料](#data-pruning)
-   - [主控台的權限控制](#dashboard-authorization)
+  - [只在本機上安裝](#local-only-installation)
+  - [設定](#configuration)
+  - [修剪資料](#data-pruning)
+  - [主控台的權限控制](#dashboard-authorization)
+  
 - [升級 Telescope](#upgrading-telescope)
 - [篩選](#filtering)
-   - [Entry](#filtering-entries)
-   - [Batch](#filtering-batches)
+  - [Entry](#filtering-entries)
+  - [Batch](#filtering-batches)
+  
 - [Tag](#tagging)
 - [可用的 Watcher](#available-watchers)
-   - [Batch Watcher](#batch-watcher)
-   - [Cache Watcher](#cache-watcher)
-   - [指令 Watcher](#command-watcher)
-   - [Dump Watcher](#dump-watcher)
-   - [Event Watcher](#event-watcher)
-   - [Exception Watcher](#exception-watcher)
-   - [Gate Watcher](#gate-watcher)
-   - [HTTP Client Watcher](#http-client-watcher)
-   - [Job Watcher](#job-watcher)
-   - [Log Watcher](#log-watcher)
-   - [Mail Watcher](#mail-watcher)
-   - [Model Watcher](#model-watcher)
-   - [Notification Watcher](#notification-watcher)
-   - [Query Watcher](#query-watcher)
-   - [Redis Watcher](#redis-watcher)
-   - [Request Watcher](#request-watcher)
-   - [Schedule Watcher](#schedule-watcher)
-   - [View Watcher](#view-watcher)
+  - [Batch Watcher](#batch-watcher)
+  - [Cache Watcher](#cache-watcher)
+  - [指令 Watcher](#command-watcher)
+  - [Dump Watcher](#dump-watcher)
+  - [Event Watcher](#event-watcher)
+  - [Exception Watcher](#exception-watcher)
+  - [Gate Watcher](#gate-watcher)
+  - [HTTP Client Watcher](#http-client-watcher)
+  - [Job Watcher](#job-watcher)
+  - [Log Watcher](#log-watcher)
+  - [Mail Watcher](#mail-watcher)
+  - [Model Watcher](#model-watcher)
+  - [Notification Watcher](#notification-watcher)
+  - [Query Watcher](#query-watcher)
+  - [Redis Watcher](#redis-watcher)
+  - [Request Watcher](#request-watcher)
+  - [Schedule Watcher](#schedule-watcher)
+  - [View Watcher](#view-watcher)
+  
 - [顯示使用者的顯示圖片](#displaying-user-avatars)
 
 <a name="introduction"></a>
@@ -49,7 +49,6 @@ updatedAt: '2024-06-30T08:27:00Z'
 [Laravel Telescope](https://github.com/laravel/telescope) 是 Laravel 本機開發環境的好夥伴。在 Telescope 中，可以檢視連入 Request、Exception、Log 項目、資料庫查詢、放入佇列的 Job、Mail、Cache 操作、排程任務、變數傾印⋯⋯等。
 
 <img src="https://laravel.com/img/docs/telescope-example.png">
-
 <a name="installation"></a>
 
 ## 安裝
@@ -59,7 +58,6 @@ updatedAt: '2024-06-30T08:27:00Z'
 ```shell
 composer require laravel/telescope
 ```
-
 安裝好 Telescope 後，使用 `telescope:install` Artisan 指令來將 Telescope 的素材安裝到專案中。安裝好 Telescope 後，也請一併執行 `migrate` 指令來建立保存 Telescope 資料所需要的資料表：
 
 ```shell
@@ -67,6 +65,7 @@ php artisan telescope:install
 
 php artisan migrate
 ```
+Finally, you may access the Telescope dashboard via the `/telescope` route.
 
 <a name="migration-customization"></a>
 
@@ -87,7 +86,6 @@ php artisan telescope:install
 
 php artisan migrate
 ```
-
 執行 `telescope:install` 後，請從專案的 `config/app.php` 設定檔中移除 `TelescopeServiceProvider` Service Provider 的註冊。然後，請在 `App\Providers\AppServiceProvider` 類別中的 `register` 方法內手動註冊 Telescope 的 Service Provider。先檢查目前環境是否為 `local`，再註冊 Provider：
 
     /**
@@ -100,7 +98,6 @@ php artisan migrate
             $this->app->register(TelescopeServiceProvider::class);
         }
     }
-
 最後，也請在 `composer.json` 檔中加上下列內容來防止 Telescope 套件被 [Auto-Discover](/docs/{{version}}/packages#package-discovery)：
 
 ```json
@@ -112,7 +109,6 @@ php artisan migrate
     }
 },
 ```
-
 <a name="configuration"></a>
 
 ### 設定
@@ -122,7 +118,6 @@ php artisan migrate
 若有需要，可以使用 `enabled` 設定選項來完全禁用 Telescope 的資料蒐集：
 
     'enabled' => env('TELESCOPE_ENABLED', true),
-
 <a name="data-pruning"></a>
 
 ### 資料修剪
@@ -130,16 +125,14 @@ php artisan migrate
 若未^[修建](Prune)批次，則 `telescope_entries` 資料表很快就會變得很大。為了避免這個狀況，應[定期](/docs/{{version}}/scheduling)每日執行 `telescope:prune` Artisan 指令：
 
     $schedule->command('telescope:prune')->daily();
-
 預設情況下，所有超過 24 小時的資料都會被修建掉。可以在呼叫該指令時使用 `hours` 選項來指定 Telescope 的資料要被保留多久。舉例來說，下列指令會刪除建立超過 48 小時的所有資料：
 
     $schedule->command('telescope:prune --hours=48')->daily();
-
 <a name="dashboard-authorization"></a>
 
 ### 主控台的權限控制
 
-可以在 `/telescope` Route 上存取 Telescope 的主控台。預設情況下，只有在 `local` 環境下可以存取主控台。在 `app/Providers/TelescopeServiceProvider.php` 檔案中，定義了一個[授權 Gate](/docs/{{version}}/authorization#gates)。這個授權 Gate 控制了在**非 local** 環境下的 Telescope 存取。可以依照需求調整這個 Gate 來限制 Telescope 的存取：
+The Telescope dashboard may be accessed via the `/telescope` route. By default, you will only be able to access this dashboard in the `local` environment. Within your `app/Providers/TelescopeServiceProvider.php` file, there is an [authorization gate](/docs/{{version}}/authorization#gates) definition. This authorization gate controls access to Telescope in **non-local** environments. You are free to modify this gate as needed to restrict access to your Telescope installation:
 
     use App\Models\User;
     
@@ -156,8 +149,8 @@ php artisan migrate
             ]);
         });
     }
-
-> **Warning** 請確定有在正式環境中將 `APP_ENV` 環境變數設為 `production`。否則會讓任何人都能存取 Telescope。
+> [!WARNING]  
+> 請確定有在正式環境中將 `APP_ENV` 環境變數設為 `production`。否則會讓任何人都能存取 Telescope。
 
 <a name="upgrading-telescope"></a>
 
@@ -170,7 +163,6 @@ php artisan migrate
 ```shell
 php artisan telescope:publish
 ```
-
 為了確保素材在最新版本並避免在未來的更新中造成問題，可以將 `vendor:publish --tag=laravel-assets` 指令加到 `composer.json` 檔中的 `post-update-cmd` Script 中：
 
 ```json
@@ -182,7 +174,6 @@ php artisan telescope:publish
     }
 }
 ```
-
 <a name="filtering"></a>
 
 ## 篩選
@@ -215,7 +206,6 @@ php artisan telescope:publish
                 $entry->hasMonitoredTag();
         });
     }
-
 <a name="filtering-batches"></a>
 
 ### Batch
@@ -247,7 +237,6 @@ php artisan telescope:publish
                 });
         });
     }
-
 <a name="tagging"></a>
 
 ## Tag
@@ -270,7 +259,6 @@ php artisan telescope:publish
                         : [];
         });
      }
-
 <a name="available-watchers"></a>
 
 ## 可用的 Watcher
@@ -282,7 +270,6 @@ Telescope 的「Watcher」負責在 Request 或主控台指令被執行時取得
         Watchers\CommandWatcher::class => true,
         ...
     ],
-
 有的 Watcher 也支援一些客製化選項：
 
     'watchers' => [
@@ -292,7 +279,6 @@ Telescope 的「Watcher」負責在 Request 或主控台指令被執行時取得
         ],
         ...
     ],
-
 <a name="batch-watcher"></a>
 
 ### Batch Watcher
@@ -318,7 +304,6 @@ Command Watcher 會在 Artisan 指令執行時紀錄指令的引數、選項、�
         ],
         ...
     ],
-
 <a name="dump-watcher"></a>
 
 ### Dump Watcher
@@ -329,7 +314,7 @@ Dump Watcher 會將變數傾印紀錄並顯示在 Telescope 內。在使用 Lara
 
 ### Event Watcher
 
-Event Watcher 會紀錄專案所分派的任何 [Event](/docs/{{version}}/events) 的 ^[Payload](承載)、Listener、與 Broadcast 資料。Event Watcher 會忽略 Laravel 框架內部的 Event。
+Event Watcher 會紀錄專案所分派的任何 [Event](/docs/{{version}}/events) 的 ^[Payload](%E6%89%BF%E8%BC%89)、Listener、與 Broadcast 資料。Event Watcher 會忽略 Laravel 框架內部的 Event。
 
 <a name="exception-watcher"></a>
 
@@ -350,7 +335,6 @@ Gate Watcher 會紀錄專案中所有 [Gate 與 Policy](/docs/{{version}}/author
         ],
         ...
     ],
-
 <a name="http-client-watcher"></a>
 
 ### HTTP Client Watcher
@@ -379,7 +363,6 @@ Log Watcher 會紀錄專案所寫入的任何 [Log 資料](/docs/{{version}}/log
     
         // ...
     ],
-
 <a name="mail-watcher"></a>
 
 ### Mail Watcher
@@ -399,7 +382,6 @@ Model Watcher 會在每次有 Eloquent [Model Event](/docs/{{version}}/eloquent#
         ],
         ...
     ],
-
 若想紀錄某個特定 Request 中有多少的 Model 被重新回填 (Hydrate)，可以啟用 `hydrations` 選項：
 
     'watchers' => [
@@ -410,7 +392,6 @@ Model Watcher 會在每次有 Eloquent [Model Event](/docs/{{version}}/eloquent#
         ],
         ...
     ],
-
 <a name="notification-watcher"></a>
 
 ### Notification Watcher
@@ -430,7 +411,6 @@ Query Watcher 會紀錄專案中執行的所有查詢之原始 SQL、繫結、�
         ],
         ...
     ],
-
 <a name="redis-watcher"></a>
 
 ### Redis Watcher
@@ -450,7 +430,6 @@ Request Watcher 會紀錄專案所處理的所有 Request 之 Header、Session�
         ],
         ...
     ],
-
 <a name="schedule-watcher"></a>
 
 ### Schedule Watcher

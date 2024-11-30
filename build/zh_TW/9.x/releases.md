@@ -1,11 +1,8 @@
 ---
-contributors:
-  14684796:
-    avatarUrl: https://crowdin-static.downloads.crowdin.com/avatar/14684796/medium/60f7dc21ec0bf9cfcb61983640bb4809_default.png
-    name: cornch
-crowdinUrl: https://crowdin.com/translate/laravel-docs/135/en-zhtw
-progress: 100
+crowdinUrl: 'https://crowdin.com/translate/laravel-docs/135/en-zhtw'
 updatedAt: '2024-06-30T08:27:00Z'
+contributors: {  }
+progress: 50.7
 ---
 
 # 版本資訊
@@ -40,7 +37,7 @@ Laravel 及其第一方套件都遵守 [語義化版本](https://semver.org/lang
 | 7 | 7.2 - 8.0 | 2020 年 3 月 3 日 | 2020 年 10 月 6 日 | 2021 年 3 月 3 日 |
 | 8 | 7.3 - 8.1 | 2020 年 9 月 8 日 | 2022 年 7 月 26 日 | 2023 年 1 月 24 日 |
 | 9 | 8.0 - 8.2 | 2022 年 2 月 8 日 | 2023 年 8 月 8 日 | 2024 年 2 月 6 日 |
-| 10 | 8.1 - 8.2 | 2023 年第 1 季 | 2024 年 8 月 6 日 | 2025 年 2 月 4 日 |
+| 10 | 8.1 - 8.3 | 2023 年 2 月 14 日 | 2024 年 8 月 6 日 | 2025 年 2 月 4 日 |
 
 <div class="version-colors">
     <div class="end-of-life">
@@ -52,7 +49,6 @@ Laravel 及其第一方套件都遵守 [語義化版本](https://semver.org/lang
         <div>Security fixes only</div>
     </div>
 </div>
-
 (*) 支援的 PHP 版本
 
 <a name="laravel-9"></a>
@@ -95,7 +91,7 @@ Laravel 9.x 更新了上游的 Flysystem 相依性套件為 Flysystem 3.x。Flys
 
 ### 改進過的 Eloquent 存取子與更動子
 
-*改進過的 Eloquent ^[Accessor](存取子) 與 ^[Mutator](更動子) 由 [Taylor Otwell](https://github.com/taylorotwell) 參與貢獻*。
+*改進過的 Eloquent ^[Accessor](%E5%AD%98%E5%8F%96%E5%AD%90) 與 ^[Mutator](%E6%9B%B4%E5%8B%95%E5%AD%90) 由 [Taylor Otwell](https://github.com/taylorotwell) 參與貢獻*。
 
 Laravel 9.x 提供了一種定義 Eloquent [存取子與更動子](/docs/{{version}}/eloquent-mutators#accessors-and-mutators)的全新方法。在之前版本的 Laravel 中，唯一一種定義存取子與更動子的方法就只有在 Model 中像這樣定義由前置詞的方法：
 
@@ -110,7 +106,6 @@ public function setNameAttribute($value)
     $this->attributes['name'] = $value;
 }
 ```
-
 不過，在 Laravel 9.x 中，只需要標示回傳型別為 `Illuminate\Database\Eloquent\Casts\Attribute`，就可以使用不含前置詞的單一一個方法來定義存取子與更動子：
 
 ```php
@@ -124,7 +119,6 @@ public function name(): Attribute
     );
 }
 ```
-
 此外，這種定義存取子的新方法也會將以屬性回傳的物件值快取起來，就跟[自訂型別轉換類別](/docs/{{version}}/eloquent-mutators#custom-casts)一樣：
 
 ```php
@@ -145,12 +139,12 @@ public function address(): Attribute
     );
 }
 ```
-
 <a name="enum-casting"></a>
 
 ### Enum Eloquent 屬性型別轉換
 
-> **Warning** Enum 型別轉換只可在 PHP 8.1 以上使用。
+> [!WARNING]  
+> Enum 型別轉換只可在 PHP 8.1 以上使用。
 
 *Enum 型別轉換由 [Mohamed Said](https://github.com/themsaid) 參與貢獻*。
 
@@ -166,7 +160,6 @@ public function address(): Attribute
     protected $casts = [
         'status' => ServerStatus::class,
     ];
-
 定義好 Model 的型別轉換後，每次存取該屬性時就會自動轉換對 Enum 進行轉換：
 
     if ($server->status == ServerStatus::Provisioned) {
@@ -174,7 +167,6 @@ public function address(): Attribute
     
         $server->save();
     }
-
 <a name="implicit-route-bindings-with-enums"></a>
 
 ### 使用 Enum 的隱式路由繫結
@@ -190,7 +182,6 @@ enum Category: string
     case People = 'people';
 }
 ```
-
 我們可以定義一個只有當 `{category}` 路由片段為 `fruits` 或 `people` 時才會被叫用的路由。若為其他值，則會回傳 HTTP 404 回應：
 
 ```php
@@ -198,7 +189,6 @@ Route::get('/categories/{category}', function (Category $category) {
     return $category->value;
 });
 ```
-
 <a name="forced-scoping-of-route-bindings"></a>
 
 ### Route 繫結的強制限定範圍
@@ -213,7 +203,6 @@ Route::get('/categories/{category}', function (Category $category) {
     Route::get('/users/{user}/posts/{post:slug}', function (User $user, Post $post) {
         return $post;
     });
-
 在巢狀路由參數中使用自訂索引鍵的隱式繫結時，Laravel 會自動使用慣例來猜測上層 Model 的關聯名稱，並在查詢巢狀 Model 時以此限定查詢範圍。不過，在以前版本的 Laravel 中，只有在子路由繫結上使用自訂索引鍵時才可使用此功能。
 
 不過，在 Laravel 9.x 中，就算沒有提供自訂索引鍵，我們還是可以告訴 Laravel 要如何對「子」繫結限定範圍。為此，我們可以在定義路由時叫用 `scopeBindings` 方法：
@@ -224,7 +213,6 @@ Route::get('/categories/{category}', function (Category $category) {
     Route::get('/users/{user}/posts/{post}', function (User $user, Post $post) {
         return $post;
     })->scopeBindings();
-
 或者，也可以讓整個路由定義群組使用限定範圍的繫結：
 
     Route::scopeBindings()->group(function () {
@@ -232,7 +220,6 @@ Route::get('/categories/{category}', function (Category $category) {
             return $post;
         });
     });
-
 <a name="controller-route-groups"></a>
 
 ### Controller 路由群組
@@ -247,7 +234,6 @@ Route::get('/categories/{category}', function (Category $category) {
         Route::get('/orders/{id}', 'show');
         Route::post('/orders', 'store');
     });
-
 <a name="full-text"></a>
 
 ### 全文索引與 Where 子句
@@ -257,13 +243,11 @@ Route::get('/categories/{category}', function (Category $category) {
 現在，在使用 MySQL 或 PostgresSQL 時，我們可以在欄位定義中新增 `fullText` 方法來產生全文索引 (Full Text Indexes)：
 
     $table->text('bio')->fullText();
-
 此外，也可以使用 `whereFullText` 與 `orWhereFullText` 方法來在查詢中為有[全文索引](/docs/{{version}}/migrations#available-index-types)的欄位加上全文「where」子句。Laravel 會依據底層的資料庫系統將這些方法轉換為適當的 SQL。舉例來說，使用 MySQL 的專案會產生 `MATCH AGAINST` 子句：
 
     $users = DB::table('users')
                ->whereFullText('bio', 'web developer')
                ->get();
-
 <a name="laravel-scout-database-engine"></a>
 
 ### Laravel Scout 資料庫引擎
@@ -287,7 +271,6 @@ use Illuminate\Support\Facades\Blade;
 
 return Blade::render('Hello, {{ $name }}', ['name' => 'Julian Bashir']);
 ```
-
 類似地，只要將元件實體傳給 `renderComponent` 方法，就可轉譯給定的類別元件：
 
 ```php
@@ -295,7 +278,6 @@ use App\View\Components\HelloComponent;
 
 return Blade::renderComponent(new HelloComponent('Julian Bashir'));
 ```
-
 <a name="slot-name-shortcut"></a>
 
 ### Slot 名稱捷徑
@@ -313,7 +295,6 @@ return Blade::renderComponent(new HelloComponent('Julian Bashir'));
     <strong>Whoops!</strong> Something went wrong!
 </x-alert>
 ```
-
 不過，從 Laravel 9.x 開始，就可以使用更方便簡潔的語法來指定 Slot 的名稱：
 
 ```xml
@@ -321,7 +302,6 @@ return Blade::renderComponent(new HelloComponent('Julian Bashir'));
     Server Error
 </x-slot>
 ```
-
 <a name="checked-selected-blade-directives"></a>
 
 ### Checked / Selected Blade 指示詞
@@ -336,7 +316,6 @@ return Blade::renderComponent(new HelloComponent('Julian Bashir'));
         value="active"
         @checked(old('active', $user->active)) />
 ```
-
 類似地，`@selected` 指示詞可用來表示給定 Select 選項應為「^[已選擇](Selected)」：
 
 ```blade
@@ -348,7 +327,6 @@ return Blade::renderComponent(new HelloComponent('Julian Bashir'));
     @endforeach
 </select>
 ```
-
 <a name="bootstrap-5-pagination-views"></a>
 
 ### Bootstrap 5 的分頁 View
@@ -368,7 +346,6 @@ return Blade::renderComponent(new HelloComponent('Julian Bashir'));
     {
         Paginator::useBootstrapFive();
     }
-
 <a name="improved-validation-of-nested-array-data"></a>
 
 ### 對巢狀陣列資料認證的改進
@@ -389,7 +366,6 @@ return Blade::renderComponent(new HelloComponent('Julian Bashir'));
             ];
         }),
     ]);
-
 <a name="laravel-breeze-api"></a>
 
 ### Laravel Breeze API 與 Next.js
@@ -409,7 +385,6 @@ Ignition 是由 Spatie 製作的開放原始碼例外偵錯頁面。Ignition 現
 <p align="center">
 <img width="100%" src="https://user-images.githubusercontent.com/483853/149235404-f7caba56-ebdf-499e-9883-cac5d5610369.png"/>
 </p>
-
 <a name="improved-route-list"></a>
 
 ### 改進過的 `route:list` CLI 輸出
@@ -421,7 +396,6 @@ Laravel 9.x 更新中的 `route:list` CLI 已大幅改進，能讓你在探索�
 <p align="center">
 <img src="https://user-images.githubusercontent.com/5457236/148321982-38c8b869-f188-4f42-a3cc-a03451d5216c.png"/>
 </p>
-
 <a name="test-coverage-support-on-artisan-test-Command"></a>
 
 ### 使用 Artisan `test` 指令來取得測試覆蓋率
@@ -433,23 +407,19 @@ Laravel 9.x 更新中的 `route:list` CLI 已大幅改進，能讓你在探索�
 ```shell
 php artisan test --coverage
 ```
-
 測試覆蓋率會直接顯示在 CLI 輸出中。
 
 <p align="center">
 <img width="100%" src="https://user-images.githubusercontent.com/5457236/150133237-440290c2-3538-4d8e-8eac-4fdd5ec7bd9e.png"/>
 </p>
-
 此外，若想指定測試覆蓋率的最小百分比值，可以使用 `--min` 選項。當沒滿足最小值時，測試套件就會執行失敗：
 
 ```shell
 php artisan test --coverage --min=80.3
 ```
-
 <p align="center">
 <img width="100%" src="https://user-images.githubusercontent.com/5457236/149989853-a29a7629-2bfa-4bf3-bbf7-cdba339ec157.png"/>
 </p>
-
 <a name="soketi-echo-server"></a>
 
 ### Soketi Echo 伺服器
@@ -471,7 +441,6 @@ Laravel 9.x 在 Collection 元件上新增了改進過的、「^[泛型](Generic
 <p align="center">
 <img width="100%" src="https://user-images.githubusercontent.com/5457236/151783350-ed301660-1e09-44c1-b549-85c6db3f078d.gif"/>
 </p>
-
 <a name="new-helpers"></a>
 
 ### 新的輔助函式
@@ -487,13 +456,11 @@ Laravel 9.x 提供了兩個新的方便輔助函式，可以讓你在你自己�
     $string = str('Taylor')->append(' Otwell');
     
     // 'Taylor Otwell'
-
 若沒有提供引數給 `str` 函式，則 `str` 會回傳一個 `Illuminate\Support\Str` 的實體：
 
     $snake = str()->snake('LaravelFramework');
     
     // 'laravel_framework'
-
 <a name="new-helpers-to-route"></a>
 
 #### `to_route`
@@ -501,7 +468,6 @@ Laravel 9.x 提供了兩個新的方便輔助函式，可以讓你在你自己�
 `to_route` 方法會產生一個跳轉到給定命名路由的重新導向 HTTP 回應，讓我們能在路由與 Controller 中以更富語意的方法跳轉到命名路由：
 
     return to_route('users.show', ['user' => 1]);
-
 若有需要，也可以傳入一個用於跳轉的 HTTP 狀態碼以及一些額外的回應標頭作為 to_route 方法的第三與第四個引數：
 
     return to_route('users.show', ['user' => 1], 302, ['X-Framework' => 'Laravel']);

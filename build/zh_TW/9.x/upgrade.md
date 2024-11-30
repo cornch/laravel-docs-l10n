@@ -1,11 +1,8 @@
 ---
-contributors:
-  14684796:
-    avatarUrl: https://crowdin-static.downloads.crowdin.com/avatar/14684796/medium/60f7dc21ec0bf9cfcb61983640bb4809_default.png
-    name: cornch
-crowdinUrl: https://crowdin.com/translate/laravel-docs/165/en-zhtw
-progress: 92
+crowdinUrl: 'https://crowdin.com/translate/laravel-docs/165/en-zhtw'
 updatedAt: '2024-06-30T08:27:00Z'
+contributors: {  }
+progress: 45.51
 ---
 
 # 升級指南
@@ -17,19 +14,16 @@ updatedAt: '2024-06-30T08:27:00Z'
 ## 高度影響的更改
 
 <div class="content-list" markdown="1">
-
 - [更新相依性套件](#updating-dependencies)
 - [Flysystem 3.x](#flysystem-3)
 - [Symfony Mailer](#symfony-mailer)
 
 </div>
-
 <a name="medium-impact-changes"></a>
 
 ## 中度影響的更改
 
 <div class="content-list" markdown="1">
-
 - [Belongs To Many 的 `firstOrNew`、`firstOrCreate`、`updateOrCreate` 等方法](#belongs-to-many-first-or-new)
 - [自訂型別轉換與 `null`](#custom-casts-and-null)
 - [預設 HTTP 用戶端的逾時設定](#http-client-default-timeout)
@@ -42,7 +36,6 @@ updatedAt: '2024-06-30T08:27:00Z'
 - [未驗證的陣列索引鍵](#unvalidated-array-keys)
 
 </div>
-
 <a name="upgrade-9.0"></a>
 
 ## 從 8.x 升級到 9.0
@@ -51,7 +44,8 @@ updatedAt: '2024-06-30T08:27:00Z'
 
 #### 預計升級所需時間：30 分鐘
 
-> **Note** 雖然我們已經儘可能地在本說明文件中涵蓋所有^[中斷性變更](Breaking Change)。不過，在 Laravel 中，有些中斷性變更存在一些比較不明顯的地方，且這些更改中幾乎不太會影響到你的專案。 想節省時間嗎？可以使用 [Laravel Shift](https://laravelshift.com/) 來協助你快速升級你的專案。
+> [!NOTE]  
+> 雖然我們已經儘可能地在本說明文件中涵蓋所有^[中斷性變更](Breaking Change)。不過，在 Laravel 中，有些中斷性變更存在一些比較不明顯的地方，且這些更改中幾乎不太會影響到你的專案。 想節省時間嗎？可以使用 [Laravel Shift](https://laravelshift.com/) 來協助你快速升級你的專案。
 
 <a name="updating-dependencies"></a>
 
@@ -68,22 +62,18 @@ Laravel 先已要求 PHP 最小版本為 8.0.2。
 請在專案的 `composer.json` 檔案中更新下列相依性套件：
 
 <div class="content-list" markdown="1">
-
 - `laravel/framework` 升級為 `^9.0`
 - `nunomaduro/collision` 升級為 `^6.1`
 
 </div>
-
 此外，請在專案的 `composer.json` 檔中將 `facade/ignition` 改為 `"spatie/laravel-ignition": "^1.0"`，並將 `pusher/pusher-php-server` (若有的話) 改為`"pusher/pusher-php-server": "^5.0"`。
 
 此外，下列第一方專案也有更新新的版本以支援 Laravel 9.x。若有使用這些套件，請在升級前先閱讀各套件的升級指南：
 
 <div class="content-list" markdown="1">
-
 - [Vonage 通知通道 (v3.0)](https://github.com/laravel/vonage-notification-channel/blob/3.x/UPGRADE.md) (用以取代 Nexmo)
 
 </div>
-
 最後，請檢視你的專案使用的其他第三方套件，確認一下是否有使用支援 Laravel 9 的版本。
 
 <a name="php-return-types"></a>
@@ -93,7 +83,6 @@ Laravel 先已要求 PHP 最小版本為 8.0.2。
 對於一些如 `offsetGet`、`offSet` ⋯⋯等方法，PHP 已經開始進入一個要求回傳型別的過渡階段。因此，Laravel 9 也開始在程式碼中實作這些回傳型別。一般來說，應該是不會影響使用者的程式碼。不過，若你有複寫 Laravel 核心類別中的這些要求回傳型別的方法，則請在你的專案或套件程式碼中加上回傳型別：
 
 <div class="content-list" markdown="1">
-
 - `count(): int`
 - `getIterator(): Traversable`
 - `getSize(): int`
@@ -104,11 +93,9 @@ Laravel 先已要求 PHP 最小版本為 8.0.2。
 - `offsetUnset($key): void`
 
 </div>
-
 此外，PHP `SessionHandlerInterface` 的方法實作中也有新增回傳型別。一樣，通常這不會影響到你的專案或套件程式碼：
 
 <div class="content-list" markdown="1">
-
 - `open($savePath, $sessionName): bool`
 - `close(): bool`
 - `read($sessionId): string|false`
@@ -117,7 +104,6 @@ Laravel 先已要求 PHP 最小版本為 8.0.2。
 - `gc($lifetime): int`
 
 </div>
-
 <a name="application"></a>
 
 ### Application
@@ -131,12 +117,10 @@ Laravel 先已要求 PHP 最小版本為 8.0.2。
 `Illuminate\Contracts\Foundation\Application` 介面的 `storagePath` 方法已更新為接受一個 `$path` 引數。若你有實作這個介面，請更新該實作：
 
     public function storagePath($path = '');
-
 類似地，`Illuminate\Foundation\Application` 類別的 `langPath` 方法現在也更新為接受一個 `$path` 引數：
 
     public function langPath($path = '');
-
-#### ^[Exception Handler](例外處理常式) 的 `ignore` 方法
+#### ^[Exception Handler](%E4%BE%8B%E5%A4%96%E8%99%95%E7%90%86%E5%B8%B8%E5%BC%8F) 的 `ignore` 方法
 
 **受影響的可能：低**
 
@@ -145,7 +129,6 @@ Exception Handler 的 `ignore` 方法現在已從 `protected` 改為 `public`。
 ```php
 public function ignore(string $class);
 ```
-
 #### Exception Handler 的 Contract 繫結
 
 **受影響的可能：非常低**
@@ -177,7 +160,6 @@ public function ignore(string $class);
 ```php
 public function sole($key = null, $operator = null, $value = null);
 ```
-
 #### `reduceWithKeys` 方法
 
 `reduceWithKeys` 方法已被移除，因為 `reduce` 方法提供的功能與 `reduceWithKeys` 相同。只要將呼叫 `reduceWithKeys` 的程式碼改成呼叫 `reduce` 即可。
@@ -203,7 +185,6 @@ public function sole($key = null, $operator = null, $value = null);
 ```php
 public function giveConfig($key, $default = null);
 ```
-
 ### 資料庫
 
 <a name="postgres-schema-configuration"></a>
@@ -254,14 +235,13 @@ public function set($model, $key, $value, $attributes)
     ];
 }
 ```
-
 <a name="belongs-to-many-first-or-new"></a>
 
 #### Belongs To Many `firstOrNew`、`firstOrCreate`、`updateOrCreate` 方法
 
 **受影響的可能性：中等**
 
-`belongsToMany` 關聯的 `firstOrNew`、`firstOrCreate`、`updateOrCreate` 等方法都接受傳入一組屬性陣列作為第一個引數。在之前版本的 Laravel 中，這組屬性變數會先與「^[Pivot](樞紐)」/中介資料表上現有的紀錄做比較。
+`belongsToMany` 關聯的 `firstOrNew`、`firstOrCreate`、`updateOrCreate` 等方法都接受傳入一組屬性陣列作為第一個引數。在之前版本的 Laravel 中，這組屬性變數會先與「^[Pivot](%E6%A8%9E%E7%B4%90)」/中介資料表上現有的紀錄做比較。
 
 不過，由於這個行為是未預期的，且一般來說我們不會想要這個行為。因此，現在這幾個方法已改為以 Model 上對應的資料表來跟屬性陣列做比較：
 
@@ -270,7 +250,6 @@ $user->roles()->updateOrCreate([
     'name' => 'Administrator',
 ]);
 ```
-
 此外，`firstOrCreate` 方法現已接受一個 `$values` 陣列作為其第二個引數。建立關聯 Model 時若還未有關聯 Model，會將這個陣列與該方法的第一個引數 (`$attributes`) 合併。這個更改即讓該方法與其他關聯型別上提供的 `firstOrCreate` 保持一致：
 
 ```php
@@ -280,7 +259,6 @@ $user->roles()->firstOrCreate([
     'created_by' => $user->id,
 ]);
 ```
-
 #### `touch` 方法
 
 **受影響的可能：低**
@@ -290,7 +268,6 @@ $user->roles()->firstOrCreate([
 ```php
 public function touch($attribute = null);
 ```
-
 ### Encryption
 
 #### `Encrypter` Contract
@@ -302,7 +279,6 @@ public function touch($attribute = null);
 ```php
 public function getKey();
 ```
-
 ### Facade
 
 #### `getFacadeAccessor` 方法
@@ -322,7 +298,6 @@ protected static function getFacadeAccessor()
     return Example::class;
 }
 ```
-
 ### Filesystem
 
 #### `FILESYSTEM_DRIVER` 環境變數
@@ -368,7 +343,6 @@ Laravel 9.x 以從 [Flysystem](https://flysystem.thephpleague.com/v2/docs/) 1.x 
     'throw' => true,
 ],
 ```
-
 #### 讀取不存在的檔案
 
 若嘗試讀取不存在的檔案，現在會回傳 `null`。在之前版本的 Laravel 中，會^[擲回](Throw) `Illuminate\Contracts\Filesystem\FileNotFoundException`。
@@ -401,7 +375,6 @@ Storage::extend('dropbox', function ($app, $config) {
     return new Filesystem(new DropboxAdapter($client));
 });
 ```
-
 不過，在 Laravel 9.x 中，傳給 `Storage::extend` 方法的回呼應直接回傳一個 `Illuminate\Filesystem\FilesystemAdapter` 的實體：
 
 ```php
@@ -423,7 +396,6 @@ Storage::extend('dropbox', function ($app, $config) {
     );
 });
 ```
-
 #### SFTP Private-Public Key Passphrase
 
 If your application is using Flysystem's SFTP adapter and private-public key authentication, the `password` configuration item that is used to decrypt the private key should be renamed to `passphrase`.
@@ -459,21 +431,19 @@ $collection->when(true, function ($collection) {
     $collection->merge([1, 2, 3]);
 });
 ```
-
 因此，在之前版本的 Laravel 中，若傳遞閉包給 `when` 或 `unless` 方法，則一定會執行給定的條件式動作，因為在對閉包物件 (或其他物件) 做鬆散比較時，結果一定會是 `true`。通常來說這會導致一些未預期的結果，因為開發人員通常會預期使用閉包的 **結果** 來作為判斷是否執行條件式動作的布林值。
 
 因此，在 Laravel 9.x 中，傳給 `when` 或 `unless` 方法的閉包會被執行，而該閉包回傳的值會被用來當作 `when` 與 `unless` 方法要判斷的布林值：
 
 ```php
 $collection->when(function ($collection) {
-    // 會執行這個閉包...
+    // This closure is executed...
     return false;
 }, function ($collection) {
-    // 因為第一個閉包回傳「false」，因此不會執行這個閉包...
+    // Not executed since first closure returned "false"...
     $collection->merge([1, 2, 3]);
 });
 ```
-
 ### HTTP 用戶端
 
 <a name="http-client-default-timeout"></a>
@@ -487,7 +457,6 @@ $collection->when(function ($collection) {
 若想為給定 Request 指定更長的逾時設定，可使用 `timeout` 方法：
 
     $response = Http::timeout(120)->get(/* ... */);
-
 #### HTTP Fake 與 Middleware
 
 **受影響的可能：低**
@@ -498,7 +467,7 @@ $collection->when(function ($collection) {
 
 **受影響的可能：低**
 
-在之前版本的 Laravel 中，叫用 `Http::fake()` 方法不會影響到插入到類別 ^[Constructor](建構函式) 上的 `Illuminate\Http\Client\Factory` 實體。不過，在 Laravel 9.x 中，`Http::fake()` 會確保使用相依性插入所插入到其他類別的 HTTP 用戶端回傳的是 Fake 過的 Response。這個行為也讓 `Http::fake()` 與其他 Facade、Fake 更一致。
+在之前版本的 Laravel 中，叫用 `Http::fake()` 方法不會影響到插入到類別 ^[Constructor](%E5%BB%BA%E6%A7%8B%E5%87%BD%E5%BC%8F) 上的 `Illuminate\Http\Client\Factory` 實體。不過，在 Laravel 9.x 中，`Http::fake()` 會確保使用相依性插入所插入到其他類別的 HTTP 用戶端回傳的是 Fake 過的 Response。這個行為也讓 `Http::fake()` 與其他 Facade、Fake 更一致。
 
 <a name="symfony-mailer"></a>
 
@@ -515,13 +484,11 @@ Laravel 9.x 中，其中一個最大的更改就是將 SwiftMailer 更改為 Sym
 ```shell
 composer require symfony/mailgun-mailer symfony/http-client
 ```
-
 請從專案中移除 `wildbit/swiftmailer-postmark` Composer 套件，並改 Require `symfony/postmark-mailer` 與 `symfony/http-client` Composer 套件：
 
 ```shell
 composer require symfony/postmark-mailer symfony/http-client
 ```
-
 #### 回傳型別的更新
 
 `Illuminate\Mail\Mailer` 的 `send`、`html`、`raw`、`plain` 等方法將不再回傳 `void`，而是回傳一個 `Illuminate\Mail\SentMessage` 實體。這個物件中包含了一個 `Symfony\Component\Mailer\SentMessage` 實體，可以通過 `getSymfonySentMessage` 方法來取得該實體，或是在該物件上動態呼叫方法：
@@ -545,8 +512,8 @@ composer require symfony/postmark-mailer symfony/http-client
             'Custom-Header', 'Header Value'
         );
     });
-
-> **Warning** 請稍微檢視一下 [Symfony Mailer 說明文件](https://symfony.com/doc/6.0/mailer.html#creating-sending-messages)以瞭解所有使用 `Symfony\Component\Mime\Email` 物件的方法。
+> [!WARNING]  
+> 請稍微檢視一下 [Symfony Mailer 說明文件](https://symfony.com/doc/6.0/mailer.html#creating-sending-messages)以瞭解所有使用 `Symfony\Component\Mime\Email` 物件的方法。
 
 下面詳細列出了針對這些改名過的方法。其中許多方法都是用來直接使用 SwiftMailer / Symfony Mailer 的低階方法，所以在大多數 Laravel 專案中並不常用：
 
@@ -567,7 +534,6 @@ composer require symfony/postmark-mailer symfony/http-client
     
     MailManager::createTransport($config);
     MailManager::createSymfonyTransport($config);
-
 #### 經過代理的 `Illuminate\Mail\Message` 方法
 
 `Illuminate\Mail\Message` 一般來說都會將不存在的方法代理到底層的 `Swift_Message` 實體上。不過，現在，不存在的方法會改為代理到 `Symfony\Component\Mime\Email` 實體上。因此，若先前有任何仰賴這個將不存在方法代理到 SwiftMailer 的程式碼都應改為使用其在 Symfony Mailer 中相應的部分。
@@ -589,7 +555,6 @@ composer require symfony/postmark-mailer symfony/http-client
         ->subject('Order Shipped')
         ->html('<h1>HTML</h1>')
         ->text('Plain Text');
-
 #### 產生的 Message ID
 
 SwiftMailer 提供了可使用 `mime.idgenerator.idright` 設定選項來定義要包含在產生之 Message ID 中的自訂網域。Symfony Mailer 不支援這個功能。Symfony Mailer 只會依據寄件人自動產生 Message ID。
@@ -619,9 +584,9 @@ SwiftMailer 提供了可使用 `mime.idgenerator.idright` 設定選項來定義�
         // Laravel 9.x...
         'verify_peer' => false,
     ],
-
 若要瞭解更多可用的選項，請參考 [Symfony Mailer 說明文件](https://symfony.com/doc/6.0/mailer.html#transport-setup)。
 
+> [!WARNING]  
 > **note** 雖然有上述這樣的範例，但一般來說建議不要禁用 SSL 驗證，因為有可能會導致「^[中間人](man-in-the-middle, MITM)」攻擊
 
 #### SMTP `auth_mode`
@@ -663,14 +628,13 @@ Laravel 的 `opis/closure` 相依性套件現已改為 `laravel/serializable-clo
 ```php
 public function flush($hours = null);
 ```
-
 ### Session
 
 #### `getSession` 方法
 
 **受影響的可能：低**
 
-Laravel 的 `Illuminate\Http\Request` 類別所繼承的 `Symfony\Component\HttpFoundaton\Request` 類別現已提供了一個 `getSession` 方法，可用來取得目前的 Session ^[Storage Handler](存放空間處理常式)。Laravel 說明文件中並未提及該方法，因為大多數的 Laravel 專案都使用 Laravel 自己的 `session` 方法來處理 Session。
+Laravel 的 `Illuminate\Http\Request` 類別所繼承的 `Symfony\Component\HttpFoundaton\Request` 類別現已提供了一個 `getSession` 方法，可用來取得目前的 Session ^[Storage Handler](%E5%AD%98%E6%94%BE%E7%A9%BA%E9%96%93%E8%99%95%E7%90%86%E5%B8%B8%E5%BC%8F)。Laravel 說明文件中並未提及該方法，因為大多數的 Laravel 專案都使用 Laravel 自己的 `session` 方法來處理 Session。
 
 之前，`getSession` 方法會回傳 `Illuminate\Session\Store` 實體或 `null`。不過，由於 Symfony 6.x 版本強制回傳型別為 `Symfony\Component\HttpFoundation\Session\SessionInterface`，因此 `getSession` 現在會回傳一個 `SessionInterface` 實作，或是當沒有可用的 Session 時會^[擲回](Throw) `\Symfony\Component\HttpFoundation\Exception\SessionNotFoundException` Exception。
 
@@ -695,10 +659,10 @@ Laravel 的 `Illuminate\Http\Request` 類別所繼承的 `Symfony\Component\Http
 接著，在 `app/Http/Middleware/TrustProxies.php` 中，請更新 `$headers` 屬性的定義：
 
 ```php
-// 舊的...
+// Before...
 protected $headers = Request::HEADER_X_FORWARDED_ALL;
 
-// 新的...
+// After...
 protected $headers =
     Request::HEADER_X_FORWARDED_FOR |
     Request::HEADER_X_FORWARDED_HOST |
@@ -706,13 +670,11 @@ protected $headers =
     Request::HEADER_X_FORWARDED_PROTO |
     Request::HEADER_X_FORWARDED_AWS_ELB;
 ```
-
 最後，請從專案中移除 `fideloper/proxy` Composer 相依性套件：
 
 ```shell
 composer remove fideloper/proxy
 ```
-
 ### 表單驗證
 
 #### Form Request 的 `validated` 方法
@@ -724,7 +686,6 @@ Form Request 提供的 `validated` 方法現已接受 `$key` 與 `$default` 兩�
 ```php
 public function validated($key = null, $default = null)
 ```
-
 <a name="the-password-rule"></a>
 
 #### `password` 規則
@@ -758,7 +719,6 @@ public function boot()
     Validator::includeUnvalidatedArrayKeys();
 }
 ```
-
 <a name="miscellaneous"></a>
 
 ### 其他

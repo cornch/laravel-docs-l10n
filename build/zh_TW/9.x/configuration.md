@@ -1,21 +1,19 @@
 ---
-contributors:
-  14684796:
-    avatarUrl: https://crowdin-static.downloads.crowdin.com/avatar/14684796/medium/60f7dc21ec0bf9cfcb61983640bb4809_default.png
-    name: cornch
-crowdinUrl: https://crowdin.com/translate/laravel-docs/27/en-zhtw
-progress: 100
+crowdinUrl: 'https://crowdin.com/translate/laravel-docs/27/en-zhtw'
 updatedAt: '2024-06-30T08:17:00Z'
+contributors: {  }
+progress: 58.47
 ---
 
 # 設定
 
 - [簡介](#introduction)
 - [環境組態](#environment-configuration)
-   - [環境變數型別](#environment-variable-types)
-   - [取得環境設定](#retrieving-environment-configuration)
-   - [判斷目前的環境](#determining-the-current-environment)
-   - [加密環境變數檔案](#encrypting-environment-files)
+  - [環境變數型別](#environment-variable-types)
+  - [取得環境設定](#retrieving-environment-configuration)
+  - [判斷目前的環境](#determining-the-current-environment)
+  - [加密環境變數檔案](#encrypting-environment-files)
+  
 - [存取設定值](#accessing-configuration-values)
 - [設定快取](#configuration-caching)
 - [偵錯模式](#debug-mode)
@@ -38,13 +36,11 @@ updatedAt: '2024-06-30T08:17:00Z'
 ```shell
 php artisan about
 ```
-
 若只想檢視專案概覽輸出的特定一部分，可使用 `--only` 選項來篩選出要檢視的部分：
 
 ```shell
 php artisan about --only=environment
 ```
-
 <a name="environment-configuration"></a>
 
 ## 環境組態
@@ -53,11 +49,12 @@ php artisan about --only=environment
 
 為了輕鬆達成此目標，Laravel 使用了 [DotEnv](https://github.com/vlucas/phpdotenv) PHP 函式庫。在全新的 Laravel 安裝上，專案的根目錄中會包含一個定義了許多常見環境變數的 `.env.example` 檔案。在 Laravel 的安裝過程中，這個檔案會自動被複製為 `.env`。
 
-Laravel 的預設 `.env` 檔包含了一些可能會依據專案是在本機還是正式環境上執行而不同的常見設定值。這些值接著會在 `config` 目錄中的 Laravel 設定檔內通過 Laravel 的 `env` 函式來取用。
+Laravel 的預設 `.env` 檔包含了一些可能會依據專案是在本機還是正式環境上執行而不同的常見設定值。這些值接著會在 `config` 目錄中的  Laravel 設定檔內通過 Laravel 的 `env` 函式來取用。
 
 若是與團隊協作開發，可能會想繼續將 `.env.example` 檔案包含在專案中。只要在範例設定檔中填入一些預留位置值，團隊中的其他開發人員就能清楚地知道要執行專案需要哪些環境變數。
 
-> **Note** 任何 `.env` 檔內的變數都可通過外部環境變數來複寫，如伺服器等級或是系統等級的環境變數。
+> [!NOTE]  
+> 任何 `.env` 檔內的變數都可通過外部環境變數來複寫，如伺服器等級或是系統等級的環境變數。
 
 <a name="environment-file-security"></a>
 
@@ -95,7 +92,6 @@ Laravel 的預設 `.env` 檔包含了一些可能會依據專案是在本機還�
 ```ini
 APP_NAME="My Application"
 ```
-
 <a name="retrieving-environment-configuration"></a>
 
 ### 取得環境設定
@@ -103,7 +99,6 @@ APP_NAME="My Application"
 在 `.env` 檔案中列出的所有變數都會在網站接收到請求的時候被載入進 `$_ENV` PHP 超全域變數內。不過，可以使用 `env` 函式來在設定檔中取得這些變數。事實上，若閱讀 Laravel 的設定檔，就會發現其中許多選項已經使用到這個函式了：
 
     'debug' => env('APP_DEBUG', false),
-
 傳入 `env` 函式的第二個值為「預設值」。該值會在環境變數中沒有給定索引鍵的時候被回傳。
 
 <a name="determining-the-current-environment"></a>
@@ -115,18 +110,17 @@ APP_NAME="My Application"
     use Illuminate\Support\Facades\App;
     
     $environment = App::environment();
-
 可以傳入引數給 `environment` 方法來判斷目前環境是否符合給定的值。該方法會在目前環境符合任何一個給定值的時候回傳 `true`：
 
     if (App::environment('local')) {
-        // 目前環境為 local
+        // The environment is local
     }
     
     if (App::environment(['local', 'staging'])) {
-        // 目前環境不是 local 就是 staging...
+        // The environment is either local OR staging...
     }
-
-> **Note** 可以通過在伺服器等級上定義 `APP_ENV` 環境變數來複寫網站偵測到的應用程式環境。
+> [!NOTE]  
+> 可以通過在伺服器等級上定義 `APP_ENV` 環境變數來複寫網站偵測到的應用程式環境。
 
 <a name="encrypting-environment-files"></a>
 
@@ -143,21 +137,19 @@ APP_NAME="My Application"
 ```shell
 php artisan env:encrypt
 ```
-
 執行 `env:encrypt` 指令後，該指令會加密你的 `.env` 檔，然後將加密後的內容存放在 `.env.encrypted` 檔案中。該指令的輸出中會包含用於解密的金鑰，請將這個金鑰保存在安全的密碼管理器中。若要自行提供加密金鑰，請在呼叫該指令時提供 `--key` 選項：
 
 ```shell
 php artisan env:encrypt --key=3UVsEgGVK36XN82KKeyLFMhvosbZN1aF
 ```
-
-> **Note** 金鑰的長度應符合所使用的加密 Cipher 的密鑰長度要求。預設情況下，Laravel 會使用 `AES-256-CBC` Cipher，該 Cipher 要求使用 32 位元的字串。你可以在呼叫該指令時傳入 `--cipher` 選項來自由選擇 Laravel [encrypter](/docs/{{version}}/encryption) 所支援的任意 Cipher。
+> [!NOTE]  
+> 金鑰的長度應符合所使用的加密 Cipher 的密鑰長度要求。預設情況下，Laravel 會使用 `AES-256-CBC` Cipher，該 Cipher 要求使用 32 位元的字串。你可以在呼叫該指令時傳入 `--cipher` 選項來自由選擇 Laravel [encrypter](/docs/{{version}}/encryption) 所支援的任意 Cipher。
 
 若你的專案有多個環境變數檔，如 `.env` 與 `env.stagin`，可以使用 `--env` 選項來提供要加密的環境變數檔名稱：
 
 ```shell
 php artisan env:encrypt --env=staging
 ```
-
 <a name="decryption"></a>
 
 #### 解密
@@ -167,13 +159,11 @@ php artisan env:encrypt --env=staging
 ```shell
 php artisan env:decrypt
 ```
-
 或者，也可以使用 `--key` 選項來直接提供金鑰給該指令：
 
 ```shell
 php artisan env:decrypt --key=3UVsEgGVK36XN82KKeyLFMhvosbZN1aF
 ```
-
 呼叫 `env:decrypt` 選項時，Laravel 會解密 `.env.encrypted` 檔案，並將解密後的內容放到 `.env` 檔內。
 
 也可以提供 `--cipher` 選項給 `env:decrypt` 指令來使用自定的加密 Cipher：
@@ -181,19 +171,16 @@ php artisan env:decrypt --key=3UVsEgGVK36XN82KKeyLFMhvosbZN1aF
 ```shell
 php artisan env:decrypt --key=qUWuNRdfuImXcKxZ --cipher=AES-128-CBC
 ```
-
 若你的專案有多個環境變數檔，如 `.env` 與 `env.stagin`，可以使用 `--env` 選項來提供要解密的環境變數檔名稱：
 
 ```shell
 php artisan env:decrypt --env=staging
 ```
-
 若要複寫現有的環境變數檔，可提供 `--force` 選項給 `env:decrypt` 選項：
 
 ```shell
 php artisan env:decrypt --force
 ```
-
 <a name="accessing-configuration-values"></a>
 
 ## 存取設定值
@@ -202,13 +189,11 @@ php artisan env:decrypt --force
 
     $value = config('app.timezone');
     
-    // 若設定值不存在時，取得預設值...
+    // Retrieve a default value if the configuration value does not exist...
     $value = config('app.timezone', 'Asia/Seoul');
-
 若要在執行階段修改設定值，可以傳入陣列進 `config` 函式：
 
     config(['app.timezone' => 'America/Chicago']);
-
 <a name="configuration-caching"></a>
 
 ## 設定快取
@@ -222,8 +207,8 @@ php artisan env:decrypt --force
 ```shell
 php artisan config:clear
 ```
-
-> **Warning** 若在部署流程中執行了 `config:cache` 指令，應確保只有在設定檔中呼叫 `env` 函式。設定檔被快取後，就不會再載入 `.env` 檔了。因此，`env` 函式只會回傳外部的、系統等級的環境變數。
+> [!WARNING]  
+> 若在部署流程中執行了 `config:cache` 指令，應確保只有在設定檔中呼叫 `env` 函式。設定檔被快取後，就不會再載入 `.env` 檔了。因此，`env` 函式只會回傳外部的、系統等級的環境變數。
 
 <a name="debug-mode"></a>
 
@@ -244,19 +229,16 @@ php artisan config:clear
 ```shell
 php artisan down
 ```
-
 若想要在所有維護模式回應中傳送 `Refresh` HTTP 標頭，則請在叫用 `down` 指令時提供 `refresh` 選項。`Refresh` 表頭會告訴瀏覽器：在指定 N 秒後，重新整理頁面：
 
 ```shell
 php artisan down --refresh=15
 ```
-
 也可以傳入一個 `retry` 選項給 `down` 指令，會用來設為 `Retry-After` HTTP 標頭的值，雖然一般的瀏覽器都會忽略這個標頭：
 
 ```shell
 php artisan down --retry=60
 ```
-
 <a name="bypassing-maintenance-mode"></a>
 
 #### 繞過維護模式
@@ -266,16 +248,15 @@ php artisan down --retry=60
 ```shell
 php artisan down --secret="1630542a-246b-4b66-afa1-dd72a4c43515"
 ```
-
 將應用程式放入維護模式後，可以瀏覽符合該權杖的應用程式網址，Laravel 會簽發一個繞過維護模式的 Cookie 給瀏覽器：
 
 ```shell
 https://example.com/1630542a-246b-4b66-afa1-dd72a4c43515
 ```
-
 在存取該隱藏路由時，會接著被重新導向至應用程式的 `/` 路由。該 Cookie 被簽發給瀏覽器後，就可以像沒有在維護模式一樣正常地瀏覽應用程式。
 
-> **Note** 維護模式的密碼通常來說應該要由字母與數字字元組成，並可選地包含減號 (`-`, Dash)。應避免一些在 URL 中由特殊意義的字元，如 `?` 或 `&`。
+> [!NOTE]  
+> 維護模式的密碼通常來說應該要由字母與數字字元組成，並可選地包含減號 (`-`, Dash)。應避免一些在 URL 中由特殊意義的字元，如 `?` 或 `&`。
 
 <a name="pre-rendering-the-maintenance-mode-view"></a>
 
@@ -288,7 +269,6 @@ https://example.com/1630542a-246b-4b66-afa1-dd72a4c43515
 ```shell
 php artisan down --render="errors::503"
 ```
-
 <a name="redirecting-maintenance-mode-requests"></a>
 
 #### 重新導向維護模式的請求
@@ -298,7 +278,6 @@ php artisan down --render="errors::503"
 ```shell
 php artisan down --redirect=/
 ```
-
 <a name="disabling-maintenance-mode"></a>
 
 #### 禁用維護模式
@@ -308,8 +287,8 @@ php artisan down --redirect=/
 ```shell
 php artisan up
 ```
-
-> **Note** 可以通過在 `resources/views/errors/503.blade.php` 中定義你自己的樣板來自定預設的維護模式樣板。
+> [!NOTE]  
+> 可以通過在 `resources/views/errors/503.blade.php` 中定義你自己的樣板來自定預設的維護模式樣板。
 
 <a name="maintenance-mode-queues"></a>
 

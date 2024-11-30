@@ -1,11 +1,8 @@
 ---
-contributors:
-  14684796:
-    avatarUrl: https://crowdin-static.downloads.crowdin.com/avatar/14684796/medium/60f7dc21ec0bf9cfcb61983640bb4809_default.png
-    name: cornch
-crowdinUrl: https://crowdin.com/translate/laravel-docs/79/en-zhtw
-progress: 100
+crowdinUrl: 'https://crowdin.com/translate/laravel-docs/79/en-zhtw'
 updatedAt: '2024-06-30T08:27:00Z'
+contributors: {  }
+progress: 44.75
 ---
 
 # 輔助函式
@@ -33,67 +30,274 @@ Laravel 提供了多種全域 PHP「輔助函式」。這些函式中，大部�
         display: block;
     }
 </style>
-
 <a name="arrays-and-objects-method-list"></a>
 
 ### 陣列與物件
 
 <div class="collection-method-list" markdown="1">
-
-[Arr::accessible](#method-array-accessible) [Arr::add](#method-array-add) [Arr::collapse](#method-array-collapse) [Arr::crossJoin](#method-array-crossjoin) [Arr::divide](#method-array-divide) [Arr::dot](#method-array-dot) [Arr::except](#method-array-except) [Arr::exists](#method-array-exists) [Arr::first](#method-array-first) [Arr::flatten](#method-array-flatten) [Arr::forget](#method-array-forget) [Arr::get](#method-array-get) [Arr::has](#method-array-has) [Arr::hasAny](#method-array-hasany) [Arr::isAssoc](#method-array-isassoc) [Arr::last](#method-array-last) [Arr::only](#method-array-only) [Arr::pluck](#method-array-pluck) [Arr::prepend](#method-array-prepend) [Arr::pull](#method-array-pull) [Arr::query](#method-array-query) [Arr::random](#method-array-random) [Arr::set](#method-array-set) [Arr::shuffle](#method-array-shuffle) [Arr::sort](#method-array-sort) [Arr::sortRecursive](#method-array-sort-recursive) [Arr::toCssClasses](#method-array-to-css-classes) [Arr::undot](#method-array-undot) [Arr::where](#method-array-where) [Arr::whereNotNull](#method-array-where-not-null) [Arr::wrap](#method-array-wrap) [data_fill](#method-data-fill) [data_get](#method-data-get) [data_set](#method-data-set) [head](#method-head) [last](#method-last)
+[Arr::accessible](#method-array-accessible)
+[Arr::add](#method-array-add)
+[Arr::collapse](#method-array-collapse)
+[Arr::crossJoin](#method-array-crossjoin)
+[Arr::divide](#method-array-divide)
+[Arr::dot](#method-array-dot)
+[Arr::except](#method-array-except)
+[Arr::exists](#method-array-exists)
+[Arr::first](#method-array-first)
+[Arr::flatten](#method-array-flatten)
+[Arr::forget](#method-array-forget)
+[Arr::get](#method-array-get)
+[Arr::has](#method-array-has)
+[Arr::hasAny](#method-array-hasany)
+[Arr::isAssoc](#method-array-isassoc)
+[Arr::last](#method-array-last)
+[Arr::only](#method-array-only)
+[Arr::pluck](#method-array-pluck)
+[Arr::prepend](#method-array-prepend)
+[Arr::pull](#method-array-pull)
+[Arr::query](#method-array-query)
+[Arr::random](#method-array-random)
+[Arr::set](#method-array-set)
+[Arr::shuffle](#method-array-shuffle)
+[Arr::sort](#method-array-sort)
+[Arr::sortRecursive](#method-array-sort-recursive)
+[Arr::toCssClasses](#method-array-to-css-classes)
+[Arr::undot](#method-array-undot)
+[Arr::where](#method-array-where)
+[Arr::whereNotNull](#method-array-where-not-null)
+[Arr::wrap](#method-array-wrap)
+[data_fill](#method-data-fill)
+[data_get](#method-data-get)
+[data_set](#method-data-set)
+[head](#method-head)
+[last](#method-last)
 
 </div>
-
 <a name="paths-method-list"></a>
 
 ### 路徑
 
 <div class="collection-method-list" markdown="1">
-
-[app_path](#method-app-path) [base_path](#method-base-path) [config_path](#method-config-path) [database_path](#method-database-path) [mix](#method-mix) [public_path](#method-public-path) [resource_path](#method-resource-path) [storage_path](#method-storage-path)
+[app_path](#method-app-path)
+[base_path](#method-base-path)
+[config_path](#method-config-path)
+[database_path](#method-database-path)
+[mix](#method-mix)
+[public_path](#method-public-path)
+[resource_path](#method-resource-path)
+[storage_path](#method-storage-path)
 
 </div>
-
 <a name="strings-method-list"></a>
 
 ### 字串
 
 <div class="collection-method-list" markdown="1">
-
-[__](#method-__) [class_basename](#method-class-basename) [e](#method-e) [preg_replace_array](#method-preg-replace-array) [Str::after](#method-str-after) [Str::afterLast](#method-str-after-last) [Str::ascii](#method-str-ascii) [Str::before](#method-str-before) [Str::beforeLast](#method-str-before-last) [Str::between](#method-str-between) [Str::camel](#method-camel-case) [Str::contains](#method-str-contains) [Str::containsAll](#method-str-contains-all) [Str::endsWith](#method-ends-with) [Str::finish](#method-str-finish) [Str::headline](#method-str-headline) [Str::is](#method-str-is) [Str::isAscii](#method-str-is-ascii) [Str::isUuid](#method-str-is-uuid) [Str::kebab](#method-kebab-case) [Str::length](#method-str-length) [Str::limit](#method-str-limit) [Str::lower](#method-str-lower) [Str::markdown](#method-str-markdown) [Str::mask](#method-str-mask) [Str::orderedUuid](#method-str-ordered-uuid) [Str::padBoth](#method-str-padboth) [Str::padLeft](#method-str-padleft) [Str::padRight](#method-str-padright) [Str::plural](#method-str-plural) [Str::pluralStudly](#method-str-plural-studly) [Str::random](#method-str-random) [Str::remove](#method-str-remove) [Str::replace](#method-str-replace) [Str::replaceArray](#method-str-replace-array) [Str::replaceFirst](#method-str-replace-first) [Str::replaceLast](#method-str-replace-last) [Str::reverse](#method-str-reverse) [Str::singular](#method-str-singular) [Str::slug](#method-str-slug) [Str::snake](#method-snake-case) [Str::start](#method-str-start) [Str::startsWith](#method-starts-with) [Str::studly](#method-studly-case) [Str::substr](#method-str-substr) [Str::substrCount](#method-str-substrcount) [Str::substrReplace](#method-str-substrreplace) [Str::title](#method-title-case) [Str::toHtmlString](#method-str-to-html-string) [Str::ucfirst](#method-str-ucfirst) [Str::upper](#method-str-upper) [Str::uuid](#method-str-uuid) [Str::wordCount](#method-str-word-count) [Str::words](#method-str-words) [trans](#method-trans) [trans_choice](#method-trans-choice)
+[__](#method-__)
+[class_basename](#method-class-basename)
+[e](#method-e)
+[preg_replace_array](#method-preg-replace-array)
+[Str::after](#method-str-after)
+[Str::afterLast](#method-str-after-last)
+[Str::ascii](#method-str-ascii)
+[Str::before](#method-str-before)
+[Str::beforeLast](#method-str-before-last)
+[Str::between](#method-str-between)
+[Str::camel](#method-camel-case)
+[Str::contains](#method-str-contains)
+[Str::containsAll](#method-str-contains-all)
+[Str::endsWith](#method-ends-with)
+[Str::finish](#method-str-finish)
+[Str::headline](#method-str-headline)
+[Str::is](#method-str-is)
+[Str::isAscii](#method-str-is-ascii)
+[Str::isUuid](#method-str-is-uuid)
+[Str::kebab](#method-kebab-case)
+[Str::length](#method-str-length)
+[Str::limit](#method-str-limit)
+[Str::lower](#method-str-lower)
+[Str::markdown](#method-str-markdown)
+[Str::mask](#method-str-mask)
+[Str::orderedUuid](#method-str-ordered-uuid)
+[Str::padBoth](#method-str-padboth)
+[Str::padLeft](#method-str-padleft)
+[Str::padRight](#method-str-padright)
+[Str::plural](#method-str-plural)
+[Str::pluralStudly](#method-str-plural-studly)
+[Str::random](#method-str-random)
+[Str::remove](#method-str-remove)
+[Str::replace](#method-str-replace)
+[Str::replaceArray](#method-str-replace-array)
+[Str::replaceFirst](#method-str-replace-first)
+[Str::replaceLast](#method-str-replace-last)
+[Str::reverse](#method-str-reverse)
+[Str::singular](#method-str-singular)
+[Str::slug](#method-str-slug)
+[Str::snake](#method-snake-case)
+[Str::start](#method-str-start)
+[Str::startsWith](#method-starts-with)
+[Str::studly](#method-studly-case)
+[Str::substr](#method-str-substr)
+[Str::substrCount](#method-str-substrcount)
+[Str::substrReplace](#method-str-substrreplace)
+[Str::title](#method-title-case)
+[Str::toHtmlString](#method-str-to-html-string)
+[Str::ucfirst](#method-str-ucfirst)
+[Str::upper](#method-str-upper)
+[Str::uuid](#method-str-uuid)
+[Str::wordCount](#method-str-word-count)
+[Str::words](#method-str-words)
+[trans](#method-trans)
+[trans_choice](#method-trans-choice)
 
 </div>
-
 <a name="fluent-strings-method-list"></a>
 
 ### Fluent 字串
 
 <div class="collection-method-list" markdown="1">
-
-[after](#method-fluent-str-after) [afterLast](#method-fluent-str-after-last) [append](#method-fluent-str-append) [ascii](#method-fluent-str-ascii) [basename](#method-fluent-str-basename) [before](#method-fluent-str-before) [beforeLast](#method-fluent-str-before-last) [between](#method-fluent-str-between) [camel](#method-fluent-str-camel) [contains](#method-fluent-str-contains) [containsAll](#method-fluent-str-contains-all) [dirname](#method-fluent-str-dirname) [endsWith](#method-fluent-str-ends-with) [exactly](#method-fluent-str-exactly) [explode](#method-fluent-str-explode) [finish](#method-fluent-str-finish) [is](#method-fluent-str-is) [isAscii](#method-fluent-str-is-ascii) [isEmpty](#method-fluent-str-is-empty) [isNotEmpty](#method-fluent-str-is-not-empty) [isUuid](#method-fluent-str-is-uuid) [kebab](#method-fluent-str-kebab) [length](#method-fluent-str-length) [limit](#method-fluent-str-limit) [lower](#method-fluent-str-lower) [ltrim](#method-fluent-str-ltrim) [markdown](#method-fluent-str-markdown) [mask](#method-fluent-str-mask) [match](#method-fluent-str-match) [matchAll](#method-fluent-str-match-all) [padBoth](#method-fluent-str-padboth) [padLeft](#method-fluent-str-padleft) [padRight](#method-fluent-str-padright) [pipe](#method-fluent-str-pipe) [plural](#method-fluent-str-plural) [prepend](#method-fluent-str-prepend) [remove](#method-fluent-str-remove) [replace](#method-fluent-str-replace) [replaceArray](#method-fluent-str-replace-array) [replaceFirst](#method-fluent-str-replace-first) [replaceLast](#method-fluent-str-replace-last) [replaceMatches](#method-fluent-str-replace-matches) [rtrim](#method-fluent-str-rtrim) [scan](#method-fluent-str-scan) [singular](#method-fluent-str-singular) [slug](#method-fluent-str-slug) [snake](#method-fluent-str-snake) [split](#method-fluent-str-split) [start](#method-fluent-str-start) [startsWith](#method-fluent-str-starts-with) [studly](#method-fluent-str-studly) [substr](#method-fluent-str-substr) [substrReplace](#method-fluent-str-substrreplace) [tap](#method-fluent-str-tap) [test](#method-fluent-str-test) [title](#method-fluent-str-title) [trim](#method-fluent-str-trim) [ucfirst](#method-fluent-str-ucfirst) [upper](#method-fluent-str-upper) [when](#method-fluent-str-when) [whenContains](#method-fluent-str-when-contains) [whenContainsAll](#method-fluent-str-when-contains-all) [whenEmpty](#method-fluent-str-when-empty) [whenNotEmpty](#method-fluent-str-when-not-empty) [whenStartsWith](#method-fluent-str-when-starts-with) [whenEndsWith](#method-fluent-str-when-ends-with) [whenExactly](#method-fluent-str-when-exactly) [whenIs](#method-fluent-str-when-is) [whenIsAscii](#method-fluent-str-when-is-ascii) [whenIsUuid](#method-fluent-str-when-is-uuid) [whenTest](#method-fluent-str-when-test) [wordCount](#method-fluent-str-word-count) [words](#method-fluent-str-words)
+[after](#method-fluent-str-after)
+[afterLast](#method-fluent-str-after-last)
+[append](#method-fluent-str-append)
+[ascii](#method-fluent-str-ascii)
+[basename](#method-fluent-str-basename)
+[before](#method-fluent-str-before)
+[beforeLast](#method-fluent-str-before-last)
+[between](#method-fluent-str-between)
+[camel](#method-fluent-str-camel)
+[contains](#method-fluent-str-contains)
+[containsAll](#method-fluent-str-contains-all)
+[dirname](#method-fluent-str-dirname)
+[endsWith](#method-fluent-str-ends-with)
+[exactly](#method-fluent-str-exactly)
+[explode](#method-fluent-str-explode)
+[finish](#method-fluent-str-finish)
+[is](#method-fluent-str-is)
+[isAscii](#method-fluent-str-is-ascii)
+[isEmpty](#method-fluent-str-is-empty)
+[isNotEmpty](#method-fluent-str-is-not-empty)
+[isUuid](#method-fluent-str-is-uuid)
+[kebab](#method-fluent-str-kebab)
+[length](#method-fluent-str-length)
+[limit](#method-fluent-str-limit)
+[lower](#method-fluent-str-lower)
+[ltrim](#method-fluent-str-ltrim)
+[markdown](#method-fluent-str-markdown)
+[mask](#method-fluent-str-mask)
+[match](#method-fluent-str-match)
+[matchAll](#method-fluent-str-match-all)
+[padBoth](#method-fluent-str-padboth)
+[padLeft](#method-fluent-str-padleft)
+[padRight](#method-fluent-str-padright)
+[pipe](#method-fluent-str-pipe)
+[plural](#method-fluent-str-plural)
+[prepend](#method-fluent-str-prepend)
+[remove](#method-fluent-str-remove)
+[replace](#method-fluent-str-replace)
+[replaceArray](#method-fluent-str-replace-array)
+[replaceFirst](#method-fluent-str-replace-first)
+[replaceLast](#method-fluent-str-replace-last)
+[replaceMatches](#method-fluent-str-replace-matches)
+[rtrim](#method-fluent-str-rtrim)
+[scan](#method-fluent-str-scan)
+[singular](#method-fluent-str-singular)
+[slug](#method-fluent-str-slug)
+[snake](#method-fluent-str-snake)
+[split](#method-fluent-str-split)
+[start](#method-fluent-str-start)
+[startsWith](#method-fluent-str-starts-with)
+[studly](#method-fluent-str-studly)
+[substr](#method-fluent-str-substr)
+[substrReplace](#method-fluent-str-substrreplace)
+[tap](#method-fluent-str-tap)
+[test](#method-fluent-str-test)
+[title](#method-fluent-str-title)
+[trim](#method-fluent-str-trim)
+[ucfirst](#method-fluent-str-ucfirst)
+[upper](#method-fluent-str-upper)
+[when](#method-fluent-str-when)
+[whenContains](#method-fluent-str-when-contains)
+[whenContainsAll](#method-fluent-str-when-contains-all)
+[whenEmpty](#method-fluent-str-when-empty)
+[whenNotEmpty](#method-fluent-str-when-not-empty)
+[whenStartsWith](#method-fluent-str-when-starts-with)
+[whenEndsWith](#method-fluent-str-when-ends-with)
+[whenExactly](#method-fluent-str-when-exactly)
+[whenIs](#method-fluent-str-when-is)
+[whenIsAscii](#method-fluent-str-when-is-ascii)
+[whenIsUuid](#method-fluent-str-when-is-uuid)
+[whenTest](#method-fluent-str-when-test)
+[wordCount](#method-fluent-str-word-count)
+[words](#method-fluent-str-words)
 
 </div>
-
 <a name="urls-method-list"></a>
 
 ### URL
 
 <div class="collection-method-list" markdown="1">
-
-[action](#method-action) [asset](#method-asset) [route](#method-route) [secure_asset](#method-secure-asset) [secure_url](#method-secure-url) [url](#method-url)
+[action](#method-action)
+[asset](#method-asset)
+[route](#method-route)
+[secure_asset](#method-secure-asset)
+[secure_url](#method-secure-url)
+[url](#method-url)
 
 </div>
-
 <a name="miscellaneous-method-list"></a>
 
 ### 其他
 
 <div class="collection-method-list" markdown="1">
-
-[abort](#method-abort) [abort_if](#method-abort-if) [abort_unless](#method-abort-unless) [app](#method-app) [auth](#method-auth) [back](#method-back) [bcrypt](#method-bcrypt) [blank](#method-blank) [broadcast](#method-broadcast) [cache](#method-cache) [class_uses_recursive](#method-class-uses-recursive) [collect](#method-collect) [config](#method-config) [cookie](#method-cookie) [csrf_field](#method-csrf-field) [csrf_token](#method-csrf-token) [dd](#method-dd) [dispatch](#method-dispatch) [dump](#method-dump) [env](#method-env) [event](#method-event) [filled](#method-filled) [info](#method-info) [logger](#method-logger) [method_field](#method-method-field) [now](#method-now) [old](#method-old) [optional](#method-optional) [policy](#method-policy) [redirect](#method-redirect) [report](#method-report) [request](#method-request) [rescue](#method-rescue) [resolve](#method-resolve) [response](#method-response) [retry](#method-retry) [session](#method-session) [tap](#method-tap) [throw_if](#method-throw-if) [throw_unless](#method-throw-unless) [today](#method-today) [trait_uses_recursive](#method-trait-uses-recursive) [transform](#method-transform) [validator](#method-validator) [value](#method-value) [view](#method-view) [with](#method-with)
+[abort](#method-abort)
+[abort_if](#method-abort-if)
+[abort_unless](#method-abort-unless)
+[app](#method-app)
+[auth](#method-auth)
+[back](#method-back)
+[bcrypt](#method-bcrypt)
+[blank](#method-blank)
+[broadcast](#method-broadcast)
+[cache](#method-cache)
+[class_uses_recursive](#method-class-uses-recursive)
+[collect](#method-collect)
+[config](#method-config)
+[cookie](#method-cookie)
+[csrf_field](#method-csrf-field)
+[csrf_token](#method-csrf-token)
+[dd](#method-dd)
+[dispatch](#method-dispatch)
+[dump](#method-dump)
+[env](#method-env)
+[event](#method-event)
+[filled](#method-filled)
+[info](#method-info)
+[logger](#method-logger)
+[method_field](#method-method-field)
+[now](#method-now)
+[old](#method-old)
+[optional](#method-optional)
+[policy](#method-policy)
+[redirect](#method-redirect)
+[report](#method-report)
+[request](#method-request)
+[rescue](#method-rescue)
+[resolve](#method-resolve)
+[response](#method-response)
+[retry](#method-retry)
+[session](#method-session)
+[tap](#method-tap)
+[throw_if](#method-throw-if)
+[throw_unless](#method-throw-unless)
+[today](#method-today)
+[trait_uses_recursive](#method-trait-uses-recursive)
+[transform](#method-transform)
+[validator](#method-validator)
+[value](#method-value)
+[view](#method-view)
+[with](#method-with)
 
 </div>
-
 <a name="method-listing"></a>
 
 ## 方法清單
@@ -107,7 +311,6 @@ Laravel 提供了多種全域 PHP「輔助函式」。這些函式中，大部�
         margin-top: 50px;
     }
 </style>
-
 <a name="arrays"></a>
 
 ## 陣列與物件
@@ -136,7 +339,6 @@ Laravel 提供了多種全域 PHP「輔助函式」。這些函式中，大部�
     $isAccessible = Arr::accessible(new stdClass);
     
     // false
-
 <a name="method-array-add"></a>
 
 #### `Arr::add()` {.collection-method}
@@ -152,7 +354,6 @@ Laravel 提供了多種全域 PHP「輔助函式」。這些函式中，大部�
     $array = Arr::add(['name' => 'Desk', 'price' => null], 'price', 100);
     
     // ['name' => 'Desk', 'price' => 100]
-
 <a name="method-array-collapse"></a>
 
 #### `Arr::collapse()` {.collection-method}
@@ -164,7 +365,6 @@ Laravel 提供了多種全域 PHP「輔助函式」。這些函式中，大部�
     $array = Arr::collapse([[1, 2, 3], [4, 5, 6], [7, 8, 9]]);
     
     // [1, 2, 3, 4, 5, 6, 7, 8, 9]
-
 <a name="method-array-crossjoin"></a>
 
 #### `Arr::crossJoin()` {.collection-method}
@@ -198,7 +398,6 @@ Laravel 提供了多種全域 PHP「輔助函式」。這些函式中，大部�
             [2, 'b', 'II'],
         ]
     */
-
 <a name="method-array-divide"></a>
 
 #### `Arr::divide()` {.collection-method}
@@ -212,7 +411,6 @@ Laravel 提供了多種全域 PHP「輔助函式」。這些函式中，大部�
     // $keys: ['name']
     
     // $values: ['Desk']
-
 <a name="method-array-dot"></a>
 
 #### `Arr::dot()` {.collection-method}
@@ -226,7 +424,6 @@ Laravel 提供了多種全域 PHP「輔助函式」。這些函式中，大部�
     $flattened = Arr::dot($array);
     
     // ['products.desk.price' => 100]
-
 <a name="method-array-except"></a>
 
 #### `Arr::except()` {.collection-method}
@@ -240,7 +437,6 @@ Laravel 提供了多種全域 PHP「輔助函式」。這些函式中，大部�
     $filtered = Arr::except($array, ['price']);
     
     // ['name' => 'Desk']
-
 <a name="method-array-exists"></a>
 
 #### `Arr::exists()` {.collection-method}
@@ -258,7 +454,6 @@ Laravel 提供了多種全域 PHP「輔助函式」。這些函式中，大部�
     $exists = Arr::exists($array, 'salary');
     
     // false
-
 <a name="method-array-first"></a>
 
 #### `Arr::first()` {.collection-method}
@@ -274,13 +469,11 @@ Laravel 提供了多種全域 PHP「輔助函式」。這些函式中，大部�
     });
     
     // 200
-
 也可以在第三個引數上提供一個預設值給該方法。若沒有任何值通過條件測試，就會回傳這個預設值：
 
     use Illuminate\Support\Arr;
     
     $first = Arr::first($array, $callback, $default);
-
 <a name="method-array-flatten"></a>
 
 #### `Arr::flatten()` {.collection-method}
@@ -294,7 +487,6 @@ Laravel 提供了多種全域 PHP「輔助函式」。這些函式中，大部�
     $flattened = Arr::flatten($array);
     
     // ['Joe', 'PHP', 'Ruby']
-
 <a name="method-array-forget"></a>
 
 #### `Arr::forget()` {.collection-method}
@@ -308,7 +500,6 @@ Laravel 提供了多種全域 PHP「輔助函式」。這些函式中，大部�
     Arr::forget($array, 'products.desk');
     
     // ['products' => []]
-
 <a name="method-array-get"></a>
 
 #### `Arr::get()` {.collection-method}
@@ -322,7 +513,6 @@ Laravel 提供了多種全域 PHP「輔助函式」。這些函式中，大部�
     $price = Arr::get($array, 'products.desk.price');
     
     // 100
-
 `Arr::get` 還接受一個預設值。若指定的索引鍵不存在時會回傳該預設值：
 
     use Illuminate\Support\Arr;
@@ -330,7 +520,6 @@ Laravel 提供了多種全域 PHP「輔助函式」。這些函式中，大部�
     $discount = Arr::get($array, 'products.desk.discount', 0);
     
     // 0
-
 <a name="method-array-has"></a>
 
 #### `Arr::has()` {.collection-method}
@@ -348,7 +537,6 @@ Laravel 提供了多種全域 PHP「輔助函式」。這些函式中，大部�
     $contains = Arr::has($array, ['product.price', 'product.discount']);
     
     // false
-
 <a name="method-array-hasany"></a>
 
 #### `Arr::hasAny()` {.collection-method}
@@ -370,7 +558,6 @@ Laravel 提供了多種全域 PHP「輔助函式」。這些函式中，大部�
     $contains = Arr::hasAny($array, ['category', 'product.discount']);
     
     // false
-
 <a name="method-array-isassoc"></a>
 
 #### `Arr::isAssoc()` {.collection-method}
@@ -386,7 +573,6 @@ Laravel 提供了多種全域 PHP「輔助函式」。這些函式中，大部�
     $isAssoc = Arr::isAssoc([1, 2, 3]);
     
     // false
-
 <a name="method-array-last"></a>
 
 #### `Arr::last()` {.collection-method}
@@ -402,13 +588,11 @@ Laravel 提供了多種全域 PHP「輔助函式」。這些函式中，大部�
     });
     
     // 300
-
 可以在第三個引數上提供一個預設值給該方法。若沒有任何值通過條件測試，就會回傳這個預設值：
 
     use Illuminate\Support\Arr;
     
     $last = Arr::last($array, $callback, $default);
-
 <a name="method-array-only"></a>
 
 #### `Arr::only()` {.collection-method}
@@ -422,7 +606,6 @@ Laravel 提供了多種全域 PHP「輔助函式」。這些函式中，大部�
     $slice = Arr::only($array, ['name', 'price']);
     
     // ['name' => 'Desk', 'price' => 100]
-
 <a name="method-array-pluck"></a>
 
 #### `Arr::pluck()` {.collection-method}
@@ -439,7 +622,6 @@ Laravel 提供了多種全域 PHP「輔助函式」。這些函式中，大部�
     $names = Arr::pluck($array, 'developer.name');
     
     // ['Taylor', 'Abigail']
-
 也可以指定產生的清單要如何設定索引鍵：
 
     use Illuminate\Support\Arr;
@@ -447,7 +629,6 @@ Laravel 提供了多種全域 PHP「輔助函式」。這些函式中，大部�
     $names = Arr::pluck($array, 'developer.name', 'developer.id');
     
     // [1 => 'Taylor', 2 => 'Abigail']
-
 <a name="method-array-prepend"></a>
 
 #### `Arr::prepend()` {.collection-method}
@@ -461,7 +642,6 @@ Laravel 提供了多種全域 PHP「輔助函式」。這些函式中，大部�
     $array = Arr::prepend($array, 'zero');
     
     // ['zero', 'one', 'two', 'three', 'four']
-
 若有需要，也可以指定該值要使用的索引鍵：
 
     use Illuminate\Support\Arr;
@@ -471,7 +651,6 @@ Laravel 提供了多種全域 PHP「輔助函式」。這些函式中，大部�
     $array = Arr::prepend($array, 'Desk', 'name');
     
     // ['name' => 'Desk', 'price' => 100]
-
 <a name="method-array-pull"></a>
 
 #### `Arr::pull()` {.collection-method}
@@ -487,13 +666,11 @@ Laravel 提供了多種全域 PHP「輔助函式」。這些函式中，大部�
     // $name: Desk
     
     // $array: ['price' => 100]
-
 可以在第三個引數上提供一個預設值給該方法。若指定的索引鍵不存在，就會回傳這個預設值：
 
     use Illuminate\Support\Arr;
     
     $value = Arr::pull($array, $key, $default);
-
 <a name="method-array-query"></a>
 
 #### `Arr::query()` {.collection-method}
@@ -513,7 +690,6 @@ Laravel 提供了多種全域 PHP「輔助函式」。這些函式中，大部�
     Arr::query($array);
     
     // name=Taylor&order[column]=created_at&order[direction]=desc
-
 <a name="method-array-random"></a>
 
 #### `Arr::random()` {.collection-method}
@@ -526,16 +702,14 @@ Laravel 提供了多種全域 PHP「輔助函式」。這些函式中，大部�
     
     $random = Arr::random($array);
     
-    // 4 - (隨機取得)
-
+    // 4 - (retrieved randomly)
 也可以在第二個引數上指定要回傳項目的數量。請注意，若有提供第二個引數，就算只要求一個項目，還是會回傳一組陣列：
 
     use Illuminate\Support\Arr;
     
     $items = Arr::random($array, 2);
     
-    // [2, 5] - (隨機取得)
-
+    // [2, 5] - (retrieved randomly)
 <a name="method-array-set"></a>
 
 #### `Arr::set()` {.collection-method}
@@ -549,7 +723,6 @@ Laravel 提供了多種全域 PHP「輔助函式」。這些函式中，大部�
     Arr::set($array, 'products.desk.price', 200);
     
     // ['products' => ['desk' => ['price' => 200]]]
-
 <a name="method-array-shuffle"></a>
 
 #### `Arr::shuffle()` {.collection-method}
@@ -560,8 +733,7 @@ Laravel 提供了多種全域 PHP「輔助函式」。這些函式中，大部�
     
     $array = Arr::shuffle([1, 2, 3, 4, 5]);
     
-    // [3, 2, 5, 1, 4] - (隨機產生)
-
+    // [3, 2, 5, 1, 4] - (generated randomly)
 <a name="method-array-sort"></a>
 
 #### `Arr::sort()` {.collection-method}
@@ -575,7 +747,6 @@ Laravel 提供了多種全域 PHP「輔助函式」。這些函式中，大部�
     $sorted = Arr::sort($array);
     
     // ['Chair', 'Desk', 'Table']
-
 也可以使用給定閉包的執行結果來排序陣列：
 
     use Illuminate\Support\Arr;
@@ -597,7 +768,6 @@ Laravel 提供了多種全域 PHP「輔助函式」。這些函式中，大部�
             ['name' => 'Table'],
         ]
     */
-
 <a name="method-array-sort-recursive"></a>
 
 #### `Arr::sortRecursive()` {.collection-method}
@@ -621,7 +791,6 @@ Laravel 提供了多種全域 PHP「輔助函式」。這些函式中，大部�
             ['Li', 'Roman', 'Taylor'],
         ]
     */
-
 <a name="method-array-to-css-classes"></a>
 
 #### `Arr::toCssClasses()` {.collection-method}
@@ -640,7 +809,6 @@ Laravel 提供了多種全域 PHP「輔助函式」。這些函式中，大部�
     /*
         'p-4 bg-red'
     */
-
 該方法用於提供了 Laravel 的「[將 Class 於 Blade 元件的 Attribute Bag 合併](/docs/{{version}}/blade#conditionally-merge-classes)」功能，以及 `@class` [Blade 指示詞](/docs/{{version}}/blade#conditional-classes)。
 
 <a name="method-array-undot"></a>
@@ -659,7 +827,6 @@ Laravel 提供了多種全域 PHP「輔助函式」。這些函式中，大部�
     $array = Arr::undot($array);
     
     // ['user' => ['name' => 'Kevin Malone', 'occupation' => 'Accountant']]
-
 <a name="method-array-where"></a>
 
 #### `Arr::where()` {.collection-method}
@@ -675,7 +842,6 @@ Laravel 提供了多種全域 PHP「輔助函式」。這些函式中，大部�
     });
     
     // [1 => '200', 3 => '400']
-
 <a name="method-array-where-not-null"></a>
 
 #### `Arr::whereNotNull()` {.collection-method}
@@ -689,7 +855,6 @@ Laravel 提供了多種全域 PHP「輔助函式」。這些函式中，大部�
     $filtered = Arr::whereNotNull($array);
     
     // [0 => 0]
-
 <a name="method-array-wrap"></a>
 
 #### `Arr::wrap()` {.collection-method}
@@ -703,7 +868,6 @@ Laravel 提供了多種全域 PHP「輔助函式」。這些函式中，大部�
     $array = Arr::wrap($string);
     
     // ['Laravel']
-
 若給定值為 `null`，則會回傳空陣列：
 
     use Illuminate\Support\Arr;
@@ -711,7 +875,6 @@ Laravel 提供了多種全域 PHP「輔助函式」。這些函式中，大部�
     $array = Arr::wrap(null);
     
     // []
-
 <a name="method-data-fill"></a>
 
 #### `data_fill()` {.collection-method}
@@ -727,7 +890,6 @@ Laravel 提供了多種全域 PHP「輔助函式」。這些函式中，大部�
     data_fill($data, 'products.desk.discount', 10);
     
     // ['products' => ['desk' => ['price' => 100, 'discount' => 10]]]
-
 該方法也支援使用星號作為萬用字元，會填上對應的目標：
 
     $data = [
@@ -747,7 +909,6 @@ Laravel 提供了多種全域 PHP「輔助函式」。這些函式中，大部�
             ],
         ]
     */
-
 <a name="method-data-get"></a>
 
 #### `data_get()` {.collection-method}
@@ -759,13 +920,11 @@ Laravel 提供了多種全域 PHP「輔助函式」。這些函式中，大部�
     $price = data_get($data, 'products.desk.price');
     
     // 100
-
 `data_get` 還接受一個預設值。若找不到指定的索引鍵時會回傳該預設值：
 
     $discount = data_get($data, 'products.desk.discount', 0);
     
     // 0
-
 該方法也接受使用星號來作為萬用字元，可以套用到陣列或物件上的任何索引鍵：
 
     $data = [
@@ -776,7 +935,6 @@ Laravel 提供了多種全域 PHP「輔助函式」。這些函式中，大部�
     data_get($data, '*.name');
     
     // ['Desk 1', 'Desk 2'];
-
 <a name="method-data-set"></a>
 
 #### `data_set()` {.collection-method}
@@ -788,7 +946,6 @@ Laravel 提供了多種全域 PHP「輔助函式」。這些函式中，大部�
     data_set($data, 'products.desk.price', 200);
     
     // ['products' => ['desk' => ['price' => 200]]]
-
 該函式也接受使用星號作為萬用字元，會為設定相應的目標賦值：
 
     $data = [
@@ -808,7 +965,6 @@ Laravel 提供了多種全域 PHP「輔助函式」。這些函式中，大部�
             ],
         ]
     */
-
 預設情況下，會複寫現有的值。若只想為不存在的項目賦值，可傳入 `false` 作為第四個引數給該函式：
 
     $data = ['products' => ['desk' => ['price' => 100]]];
@@ -816,7 +972,6 @@ Laravel 提供了多種全域 PHP「輔助函式」。這些函式中，大部�
     data_set($data, 'products.desk.price', 200, $overwrite = false);
     
     // ['products' => ['desk' => ['price' => 100]]]
-
 <a name="method-head"></a>
 
 #### `head()` {.collection-method}
@@ -828,7 +983,6 @@ Laravel 提供了多種全域 PHP「輔助函式」。這些函式中，大部�
     $first = head($array);
     
     // 100
-
 <a name="method-last"></a>
 
 #### `last()` {.collection-method}
@@ -840,7 +994,6 @@ Laravel 提供了多種全域 PHP「輔助函式」。這些函式中，大部�
     $last = last($array);
     
     // 300
-
 <a name="paths"></a>
 
 ## 路徑
@@ -854,7 +1007,6 @@ Laravel 提供了多種全域 PHP「輔助函式」。這些函式中，大部�
     $path = app_path();
     
     $path = app_path('Http/Controllers/Controller.php');
-
 <a name="method-base-path"></a>
 
 #### `base_path()` {.collection-method}
@@ -864,7 +1016,6 @@ Laravel 提供了多種全域 PHP「輔助函式」。這些函式中，大部�
     $path = base_path();
     
     $path = base_path('vendor/bin');
-
 <a name="method-config-path"></a>
 
 #### `config_path()` {.collection-method}
@@ -874,7 +1025,6 @@ Laravel 提供了多種全域 PHP「輔助函式」。這些函式中，大部�
     $path = config_path();
     
     $path = config_path('app.php');
-
 <a name="method-database-path"></a>
 
 #### `database_path()` {.collection-method}
@@ -884,7 +1034,6 @@ Laravel 提供了多種全域 PHP「輔助函式」。這些函式中，大部�
     $path = database_path();
     
     $path = database_path('factories/UserFactory.php');
-
 <a name="method-mix"></a>
 
 #### `mix()` {.collection-method}
@@ -892,7 +1041,6 @@ Laravel 提供了多種全域 PHP「輔助函式」。這些函式中，大部�
 `mix` 函式回傳[版本化的 Mix 檔案](/docs/{{version}}/mix)路徑：
 
     $path = mix('css/app.css');
-
 <a name="method-public-path"></a>
 
 #### `public_path()` {.collection-method}
@@ -902,7 +1050,6 @@ Laravel 提供了多種全域 PHP「輔助函式」。這些函式中，大部�
     $path = public_path();
     
     $path = public_path('css/app.css');
-
 <a name="method-resource-path"></a>
 
 #### `resource_path()` {.collection-method}
@@ -912,7 +1059,6 @@ Laravel 提供了多種全域 PHP「輔助函式」。這些函式中，大部�
     $path = resource_path();
     
     $path = resource_path('sass/app.scss');
-
 <a name="method-storage-path"></a>
 
 #### `storage_path()` {.collection-method}
@@ -922,7 +1068,6 @@ Laravel 提供了多種全域 PHP「輔助函式」。這些函式中，大部�
     $path = storage_path();
     
     $path = storage_path('app/file.txt');
-
 <a name="strings"></a>
 
 ## 字串
@@ -936,7 +1081,6 @@ Laravel 提供了多種全域 PHP「輔助函式」。這些函式中，大部�
     echo __('Welcome to our application');
     
     echo __('messages.welcome');
-
 若指定的翻譯字串或翻譯索引鍵不存在時，`__` 函式會回傳給定的值。因此，在上述範例中，若 `messages.welcome` 索引鍵不存在，`__` 函式會回傳 `messages.welcome`。
 
 <a name="method-class-basename"></a>
@@ -948,7 +1092,6 @@ Laravel 提供了多種全域 PHP「輔助函式」。這些函式中，大部�
     $class = class_basename('Foo\Bar\Baz');
     
     // Baz
-
 <a name="method-e"></a>
 
 #### `e()` {.collection-method}
@@ -958,7 +1101,6 @@ Laravel 提供了多種全域 PHP「輔助函式」。這些函式中，大部�
     echo e('<html>foo</html>');
     
     // &lt;html&gt;foo&lt;/html&gt;
-
 <a name="method-preg-replace-array"></a>
 
 #### `preg_replace_array()` {.collection-method}
@@ -970,7 +1112,6 @@ Laravel 提供了多種全域 PHP「輔助函式」。這些函式中，大部�
     $replaced = preg_replace_array('/:[a-z_]+/', ['8:30', '9:00'], $string);
     
     // The event will take place between 8:30 and 9:00
-
 <a name="method-str-after"></a>
 
 #### `Str::after()` {.collection-method}
@@ -982,7 +1123,6 @@ Laravel 提供了多種全域 PHP「輔助函式」。這些函式中，大部�
     $slice = Str::after('This is my name', 'This is');
     
     // ' my name'
-
 <a name="method-str-after-last"></a>
 
 #### `Str::afterLast()` {.collection-method}
@@ -994,7 +1134,6 @@ Laravel 提供了多種全域 PHP「輔助函式」。這些函式中，大部�
     $slice = Str::afterLast('App\Http\Controllers\Controller', '\\');
     
     // 'Controller'
-
 <a name="method-str-ascii"></a>
 
 #### `Str::ascii()` {.collection-method}
@@ -1006,7 +1145,6 @@ Laravel 提供了多種全域 PHP「輔助函式」。這些函式中，大部�
     $slice = Str::ascii('û');
     
     // 'u'
-
 <a name="method-str-before"></a>
 
 #### `Str::before()` {.collection-method}
@@ -1018,7 +1156,6 @@ Laravel 提供了多種全域 PHP「輔助函式」。這些函式中，大部�
     $slice = Str::before('This is my name', 'my name');
     
     // 'This is '
-
 <a name="method-str-before-last"></a>
 
 #### `Str::beforeLast()` {.collection-method}
@@ -1030,7 +1167,6 @@ Laravel 提供了多種全域 PHP「輔助函式」。這些函式中，大部�
     $slice = Str::beforeLast('This is my name', 'is');
     
     // 'This '
-
 <a name="method-str-between"></a>
 
 #### `Str::between()` {.collection-method}
@@ -1042,7 +1178,6 @@ Laravel 提供了多種全域 PHP「輔助函式」。這些函式中，大部�
     $slice = Str::between('This is my name', 'This', 'name');
     
     // ' is my '
-
 <a name="method-camel-case"></a>
 
 #### `Str::camel()` {.collection-method}
@@ -1054,7 +1189,6 @@ Laravel 提供了多種全域 PHP「輔助函式」。這些函式中，大部�
     $converted = Str::camel('foo_bar');
     
     // fooBar
-
 <a name="method-str-contains"></a>
 
 #### `Str::contains()` {.collection-method}
@@ -1066,7 +1200,6 @@ Laravel 提供了多種全域 PHP「輔助函式」。這些函式中，大部�
     $contains = Str::contains('This is my name', 'my');
     
     // true
-
 也可以傳入一組要判斷的陣列值，來判斷給定字串中是否有包含該陣列中任何一個值：
 
     use Illuminate\Support\Str;
@@ -1074,7 +1207,6 @@ Laravel 提供了多種全域 PHP「輔助函式」。這些函式中，大部�
     $contains = Str::contains('This is my name', ['my', 'foo']);
     
     // true
-
 <a name="method-str-contains-all"></a>
 
 #### `Str::containsAll()` {.collection-method}
@@ -1086,7 +1218,6 @@ Laravel 提供了多種全域 PHP「輔助函式」。這些函式中，大部�
     $containsAll = Str::containsAll('This is my name', ['my', 'name']);
     
     // true
-
 <a name="method-ends-with"></a>
 
 #### `Str::endsWith()` {.collection-method}
@@ -1098,7 +1229,6 @@ Str::endsWith` 方法可判斷給定字串是否以給定值結尾：
     $result = Str::endsWith('This is my name', 'name');
     
     // true
-
 也可以傳入一組陣列值來判斷給定字串的結尾是否符合該陣列內的其中一項：
 
     use Illuminate\Support\Str;
@@ -1110,7 +1240,6 @@ Str::endsWith` 方法可判斷給定字串是否以給定值結尾：
     $result = Str::endsWith('This is my name', ['this', 'foo']);
     
     // false
-
 <a name="method-str-finish"></a>
 
 #### `Str::finish()` {.collection-method}
@@ -1126,7 +1255,6 @@ Str::endsWith` 方法可判斷給定字串是否以給定值結尾：
     $adjusted = Str::finish('this/string/', '/');
     
     // this/string/
-
 <a name="method-str-headline"></a>
 
 #### `Str::headline()` {.collection-method}
@@ -1142,7 +1270,6 @@ Str::endsWith` 方法可判斷給定字串是否以給定值結尾：
     $headline = Str::headline('EmailNotificationSent');
     
     // Email Notification Sent
-
 <a name="method-str-is"></a>
 
 #### `Str::is()` {.collection-method}
@@ -1158,7 +1285,6 @@ Str::endsWith` 方法可判斷給定字串是否以給定值結尾：
     $matches = Str::is('baz*', 'foobar');
     
     // false
-
 <a name="method-str-is-ascii"></a>
 
 #### `Str::isAscii()` {.collection-method}
@@ -1174,7 +1300,6 @@ Str::endsWith` 方法可判斷給定字串是否以給定值結尾：
     $isAscii = Str::isAscii('ü');
     
     // false
-
 <a name="method-str-is-uuid"></a>
 
 #### `Str::isUuid()` {.collection-method}
@@ -1190,7 +1315,6 @@ Str::endsWith` 方法可判斷給定字串是否以給定值結尾：
     $isUuid = Str::isUuid('laravel');
     
     // false
-
 <a name="method-kebab-case"></a>
 
 #### `Str::kebab()` {.collection-method}
@@ -1202,7 +1326,6 @@ Str::endsWith` 方法可判斷給定字串是否以給定值結尾：
     $converted = Str::kebab('fooBar');
     
     // foo-bar
-
 <a name="method-str-length"></a>
 
 #### `Str::length()` {.collection-method}
@@ -1214,7 +1337,6 @@ Str::endsWith` 方法可判斷給定字串是否以給定值結尾：
     $length = Str::length('Laravel');
     
     // 7
-
 <a name="method-str-limit"></a>
 
 #### `Str::limit()` {.collection-method}
@@ -1226,7 +1348,6 @@ Str::endsWith` 方法可判斷給定字串是否以給定值結尾：
     $truncated = Str::limit('The quick brown fox jumps over the lazy dog', 20);
     
     // The quick brown fox...
-
 也可以傳入第三個引數給該方法，以更改當字串被截斷時要加在最後方的內容：
 
     use Illuminate\Support\Str;
@@ -1234,7 +1355,6 @@ Str::endsWith` 方法可判斷給定字串是否以給定值結尾：
     $truncated = Str::limit('The quick brown fox jumps over the lazy dog', 20, ' (...)');
     
     // The quick brown fox (...)
-
 <a name="method-str-lower"></a>
 
 #### `Str::lower()` {.collection-method}
@@ -1246,7 +1366,6 @@ Str::endsWith` 方法可判斷給定字串是否以給定值結尾：
     $converted = Str::lower('LARAVEL');
     
     // laravel
-
 <a name="method-str-markdown"></a>
 
 #### `Str::markdown()` {.collection-method}
@@ -1264,7 +1383,6 @@ Str::endsWith` 方法可判斷給定字串是否以給定值結尾：
     ]);
     
     // <h1>Taylor Otwell</h1>
-
 <a name="method-str-mask"></a>
 
 #### `Str::mask()` {.collection-method}
@@ -1276,13 +1394,11 @@ Str::endsWith` 方法可判斷給定字串是否以給定值結尾：
     $string = Str::mask('taylor@example.com', '*', 3);
     
     // tay***************
-
 若有需要，`mask` 方法的第三個引數可提供負數，這樣 `mask` 就會從字串結尾起給定的長度開始打碼：
 
     $string = Str::mask('taylor@example.com', '*', -15, 3);
     
     // tay***@example.com
-
 <a name="method-str-ordered-uuid"></a>
 
 #### `Str::orderedUuid()` {.collection-method}
@@ -1292,7 +1408,6 @@ Str::endsWith` 方法可判斷給定字串是否以給定值結尾：
     use Illuminate\Support\Str;
     
     return (string) Str::orderedUuid();
-
 <a name="method-str-padboth"></a>
 
 #### `Str::padBoth()` {.collection-method}
@@ -1308,7 +1423,6 @@ Str::endsWith` 方法可判斷給定字串是否以給定值結尾：
     $padded = Str::padBoth('James', 10);
     
     // '  James   '
-
 <a name="method-str-padleft"></a>
 
 #### `Str::padLeft()` {.collection-method}
@@ -1324,7 +1438,6 @@ Str::endsWith` 方法可判斷給定字串是否以給定值結尾：
     $padded = Str::padLeft('James', 10);
     
     // '     James'
-
 <a name="method-str-padright"></a>
 
 #### `Str::padRight()` {.collection-method}
@@ -1340,7 +1453,6 @@ Str::endsWith` 方法可判斷給定字串是否以給定值結尾：
     $padded = Str::padRight('James', 10);
     
     // 'James     '
-
 <a name="method-str-plural"></a>
 
 #### `Str::plural()` {.collection-method}
@@ -1356,7 +1468,6 @@ Str::endsWith` 方法可判斷給定字串是否以給定值結尾：
     $plural = Str::plural('child');
     
     // children
-
 也可以提供一個整數作為該方法的第二個引數，用來判斷要取得該字串的單數或複數型：
 
     use Illuminate\Support\Str;
@@ -1368,7 +1479,6 @@ Str::endsWith` 方法可判斷給定字串是否以給定值結尾：
     $singular = Str::plural('child', 1);
     
     // child
-
 <a name="method-str-plural-studly"></a>
 
 #### `Str::pluralStudly()` {.collection-method}
@@ -1384,7 +1494,6 @@ Str::endsWith` 方法可判斷給定字串是否以給定值結尾：
     $plural = Str::pluralStudly('UserFeedback');
     
     // UserFeedback
-
 也可以提供一個整數作為該方法的第二個引數，用來判斷要取得該字串的單數或複數型：
 
     use Illuminate\Support\Str;
@@ -1396,7 +1505,6 @@ Str::endsWith` 方法可判斷給定字串是否以給定值結尾：
     $singular = Str::pluralStudly('VerifiedHuman', 1);
     
     // VerifiedHuman
-
 <a name="method-str-random"></a>
 
 #### `Str::random()` {.collection-method}
@@ -1406,7 +1514,6 @@ Str::endsWith` 方法可判斷給定字串是否以給定值結尾：
     use Illuminate\Support\Str;
     
     $random = Str::random(40);
-
 <a name="method-str-remove"></a>
 
 #### `Str::remove()` {.collection-method}
@@ -1420,7 +1527,6 @@ Str::endsWith` 方法可判斷給定字串是否以給定值結尾：
     $removed = Str::remove('e', $string);
     
     // Ptr Pipr pickd a pck of pickld ppprs.
-
 也可以傳入 `false` 作為第三個引數給 `remove` 方法來在移除字串時忽略大小寫差異：
 
 <a name="method-str-replace"></a>
@@ -1436,7 +1542,6 @@ Str::endsWith` 方法可判斷給定字串是否以給定值結尾：
     $replaced = Str::replace('8.x', '9.x', $string);
     
     // Laravel 9.x
-
 <a name="method-str-replace-array"></a>
 
 #### `Str::replaceArray()` {.collection-method}
@@ -1450,7 +1555,6 @@ Str::endsWith` 方法可判斷給定字串是否以給定值結尾：
     $replaced = Str::replaceArray('?', ['8:30', '9:00'], $string);
     
     // The event will take place between 8:30 and 9:00
-
 <a name="method-str-replace-first"></a>
 
 #### `Str::replaceFirst()` {.collection-method}
@@ -1462,7 +1566,6 @@ Str::endsWith` 方法可判斷給定字串是否以給定值結尾：
     $replaced = Str::replaceFirst('the', 'a', 'the quick brown fox jumps over the lazy dog');
     
     // a quick brown fox jumps over the lazy dog
-
 <a name="method-str-replace-last"></a>
 
 #### `Str::replaceLast()` {.collection-method}
@@ -1474,7 +1577,6 @@ Str::endsWith` 方法可判斷給定字串是否以給定值結尾：
     $replaced = Str::replaceLast('the', 'a', 'the quick brown fox jumps over the lazy dog');
     
     // the quick brown fox jumps over a lazy dog
-
 <a name="method-str-reverse"></a>
 
 #### `Str::reverse()` {.collection-method}
@@ -1486,7 +1588,6 @@ Str::endsWith` 方法可判斷給定字串是否以給定值結尾：
     $reversed = Str::reverse('Hello World');
     
     // dlroW olleH
-
 <a name="method-str-singular"></a>
 
 #### `Str::singular()` {.collection-method}
@@ -1502,7 +1603,6 @@ Str::endsWith` 方法可判斷給定字串是否以給定值結尾：
     $singular = Str::singular('children');
     
     // child
-
 <a name="method-str-slug"></a>
 
 #### `Str::slug()` {.collection-method}
@@ -1514,7 +1614,6 @@ Str::endsWith` 方法可判斷給定字串是否以給定值結尾：
     $slug = Str::slug('Laravel 5 Framework', '-');
     
     // laravel-5-framework
-
 <a name="method-snake-case"></a>
 
 #### `Str::snake()` {.collection-method}
@@ -1530,7 +1629,6 @@ Str::endsWith` 方法可判斷給定字串是否以給定值結尾：
     $converted = Str::snake('fooBar', '-');
     
     // foo-bar
-
 <a name="method-str-start"></a>
 
 #### `Str::start()` {.collection-method}
@@ -1546,7 +1644,6 @@ Str::endsWith` 方法可判斷給定字串是否以給定值結尾：
     $adjusted = Str::start('/this/string', '/');
     
     // /this/string
-
 <a name="method-starts-with"></a>
 
 #### `Str::startsWith()` {.collection-method}
@@ -1558,13 +1655,11 @@ Str::startsWith` 方法可判斷給定字串是否以給定值起始：
     $result = Str::startsWith('This is my name', 'This');
     
     // true
-
 若傳入一組陣列，當字串以給定值中任何一個值開頭時，`startsWith` 方法會回傳 `true`：
 
     $result = Str::startsWith('This is my name', ['This', 'That', 'There']);
     
     // true
-
 <a name="method-studly-case"></a>
 
 #### `Str::studly()` {.collection-method}
@@ -1576,7 +1671,6 @@ Str::startsWith` 方法可判斷給定字串是否以給定值起始：
     $converted = Str::studly('foo_bar');
     
     // FooBar
-
 <a name="method-str-substr"></a>
 
 #### `Str::substr()` {.collection-method}
@@ -1588,7 +1682,6 @@ Str::startsWith` 方法可判斷給定字串是否以給定值起始：
     $converted = Str::substr('The Laravel Framework', 4, 7);
     
     // Laravel
-
 <a name="method-str-substrcount"></a>
 
 #### `Str::substrCount()` {.collection-method}
@@ -1600,7 +1693,6 @@ Str::startsWith` 方法可判斷給定字串是否以給定值起始：
     $count = Str::substrCount('If you like ice cream, you will like snow cones.', 'like');
     
     // 2
-
 <a name="method-str-substrreplace"></a>
 
 #### `Str::substrReplace()` {.collection-method}
@@ -1614,7 +1706,6 @@ Str::startsWith` 方法可判斷給定字串是否以給定值起始：
     
     $result = Str::substrReplace('1300', ':', 2, 0); 
     // 13:00
-
 <a name="method-title-case"></a>
 
 #### `Str::title()` {.collection-method}
@@ -1626,7 +1717,6 @@ Str::startsWith` 方法可判斷給定字串是否以給定值起始：
     $converted = Str::title('a nice title uses the correct case');
     
     // A Nice Title Uses The Correct Case
-
 <a name="method-str-to-html-string"></a>
 
 #### `Str::toHtmlString()` {.collection-method}
@@ -1636,7 +1726,6 @@ Str::startsWith` 方法可判斷給定字串是否以給定值起始：
     use Illuminate\Support\Str;
     
     $htmlString = Str::of('Nuno Maduro')->toHtmlString();
-
 <a name="method-str-ucfirst"></a>
 
 #### `Str::ucfirst()` {.collection-method}
@@ -1648,7 +1737,6 @@ Str::startsWith` 方法可判斷給定字串是否以給定值起始：
     $string = Str::ucfirst('foo bar');
     
     // Foo bar
-
 <a name="method-str-upper"></a>
 
 #### `Str::upper()` {.collection-method}
@@ -1660,7 +1748,6 @@ Str::startsWith` 方法可判斷給定字串是否以給定值起始：
     $string = Str::upper('laravel');
     
     // LARAVEL
-
 <a name="method-str-uuid"></a>
 
 #### `Str::uuid()` {.collection-method}
@@ -1670,7 +1757,6 @@ Str::startsWith` 方法可判斷給定字串是否以給定值起始：
     use Illuminate\Support\Str;
     
     return (string) Str::uuid();
-
 <a name="method-str-word-count"></a>
 
 #### `Str::wordCount()` {.collection-method}
@@ -1682,7 +1768,6 @@ use Illuminate\Support\Str;
 
 Str::wordCount('Hello, world!'); // 2
 ```
-
 <a name="method-str-words"></a>
 
 #### `Str::words()` {.collection-method}
@@ -1694,7 +1779,6 @@ Str::wordCount('Hello, world!'); // 2
     return Str::words('Perfectly balanced, as all things should be.', 3, ' >>>');
     
     // Perfectly balanced, as >>>
-
 <a name="method-trans"></a>
 
 #### `trans()` {.collection-method}
@@ -1702,7 +1786,6 @@ Str::wordCount('Hello, world!'); // 2
 `trans` 函式使用[語系檔](/docs/{{version}}/localization)來翻譯給定的翻譯字串或翻譯索引鍵：
 
     echo trans('messages.welcome');
-
 若指定的翻譯字串或翻譯索引鍵不存在時，`trans` 函式會回傳給定的值。因此，在上述範例中，若 `messages.welcome` 索引鍵不存在，`trans` 函式會回傳 `messages.welcome`。
 
 <a name="method-trans-choice"></a>
@@ -1712,7 +1795,6 @@ Str::wordCount('Hello, world!'); // 2
 `trans_choice` 函式會翻譯有詞形變化的翻譯索引鍵：
 
     echo trans_choice('messages.notifications', $unreadCount);
-
 若指定的翻譯字串或翻譯索引鍵不存在時，`trans_choice` 函式會回傳給定的值。因此，在上述範例中，若 `messages.notifications` 索引鍵不存在，`trans_choice` 函式會回傳 `messages.welcome`。
 
 <a name="fluent-strings"></a>
@@ -1732,7 +1814,6 @@ Fluent 字串提供處理字串值一個更流暢、物件導向的介面。我�
     $slice = Str::of('This is my name')->after('This is');
     
     // ' my name'
-
 <a name="method-fluent-str-after-last"></a>
 
 #### `afterLast` {.collection-method}
@@ -1744,7 +1825,6 @@ Fluent 字串提供處理字串值一個更流暢、物件導向的介面。我�
     $slice = Str::of('App\Http\Controllers\Controller')->afterLast('\\');
     
     // 'Controller'
-
 <a name="method-fluent-str-append"></a>
 
 #### `append` {.collection-method}
@@ -1756,7 +1836,6 @@ Fluent 字串提供處理字串值一個更流暢、物件導向的介面。我�
     $string = Str::of('Taylor')->append(' Otwell');
     
     // 'Taylor Otwell'
-
 <a name="method-fluent-str-ascii"></a>
 
 #### `ascii` {.collection-method}
@@ -1768,7 +1847,6 @@ Fluent 字串提供處理字串值一個更流暢、物件導向的介面。我�
     $string = Str::of('ü')->ascii();
     
     // 'u'
-
 <a name="method-fluent-str-basename"></a>
 
 #### `basename` {.collection-method}
@@ -1780,7 +1858,6 @@ Fluent 字串提供處理字串值一個更流暢、物件導向的介面。我�
     $string = Str::of('/foo/bar/baz')->basename();
     
     // 'baz'
-
 若有需要，也可以提供要從最後一個元件中移除的「副檔名」：
 
     use Illuminate\Support\Str;
@@ -1788,7 +1865,6 @@ Fluent 字串提供處理字串值一個更流暢、物件導向的介面。我�
     $string = Str::of('/foo/bar/baz.jpg')->basename('.jpg');
     
     // 'baz'
-
 <a name="method-fluent-str-before"></a>
 
 #### `before` {.collection-method}
@@ -1800,7 +1876,6 @@ Fluent 字串提供處理字串值一個更流暢、物件導向的介面。我�
     $slice = Str::of('This is my name')->before('my name');
     
     // 'This is '
-
 <a name="method-fluent-str-before-last"></a>
 
 #### `beforeLast` {.collection-method}
@@ -1812,7 +1887,6 @@ Fluent 字串提供處理字串值一個更流暢、物件導向的介面。我�
     $slice = Str::of('This is my name')->beforeLast('is');
     
     // 'This '
-
 <a name="method-fluent-str-between"></a>
 
 #### `between` {.collection-method}
@@ -1824,7 +1898,6 @@ Fluent 字串提供處理字串值一個更流暢、物件導向的介面。我�
     $converted = Str::of('This is my name')->between('This', 'name');
     
     // ' is my '
-
 <a name="method-fluent-str-camel"></a>
 
 #### `camel` {.collection-method}
@@ -1836,7 +1909,6 @@ Fluent 字串提供處理字串值一個更流暢、物件導向的介面。我�
     $converted = Str::of('foo_bar')->camel();
     
     // fooBar
-
 <a name="method-fluent-str-contains"></a>
 
 #### `contains` {.collection-method}
@@ -1848,7 +1920,6 @@ Fluent 字串提供處理字串值一個更流暢、物件導向的介面。我�
     $contains = Str::of('This is my name')->contains('my');
     
     // true
-
 也可以傳入一組要判斷的陣列值，來判斷給定字串中是否有包含該陣列中任何一個值：
 
     use Illuminate\Support\Str;
@@ -1856,7 +1927,6 @@ Fluent 字串提供處理字串值一個更流暢、物件導向的介面。我�
     $contains = Str::of('This is my name')->contains(['my', 'foo']);
     
     // true
-
 <a name="method-fluent-str-contains-all"></a>
 
 #### `containsAll` {.collection-method}
@@ -1868,7 +1938,6 @@ Fluent 字串提供處理字串值一個更流暢、物件導向的介面。我�
     $containsAll = Str::of('This is my name')->containsAll(['my', 'name']);
     
     // true
-
 <a name="method-fluent-str-dirname"></a>
 
 #### `dirname` {.collection-method}
@@ -1880,7 +1949,6 @@ Fluent 字串提供處理字串值一個更流暢、物件導向的介面。我�
     $string = Str::of('/foo/bar/baz')->dirname();
     
     // '/foo/bar'
-
 若有需要，也可以指定要去的多少層以上的目錄：
 
     use Illuminate\Support\Str;
@@ -1888,7 +1956,6 @@ Fluent 字串提供處理字串值一個更流暢、物件導向的介面。我�
     $string = Str::of('/foo/bar/baz')->dirname(2);
     
     // '/foo'
-
 <a name="method-fluent-str-ends-with"></a>
 
 #### `endsWith` {.collection-method}
@@ -1900,7 +1967,6 @@ Fluent 字串提供處理字串值一個更流暢、物件導向的介面。我�
     $result = Str::of('This is my name')->endsWith('name');
     
     // true
-
 也可以傳入一組陣列值來判斷給定字串的結尾是否符合該陣列內的其中一項：
 
     use Illuminate\Support\Str;
@@ -1912,7 +1978,6 @@ Fluent 字串提供處理字串值一個更流暢、物件導向的介面。我�
     $result = Str::of('This is my name')->endsWith(['this', 'foo']);
     
     // false
-
 <a name="method-fluent-str-exactly"></a>
 
 #### `exactly` {.collection-method}
@@ -1924,7 +1989,6 @@ Fluent 字串提供處理字串值一個更流暢、物件導向的介面。我�
     $result = Str::of('Laravel')->exactly('Laravel');
     
     // true
-
 <a name="method-fluent-str-explode"></a>
 
 #### `explode` {.collection-method}
@@ -1936,7 +2000,6 @@ Fluent 字串提供處理字串值一個更流暢、物件導向的介面。我�
     $collection = Str::of('foo bar baz')->explode(' ');
     
     // collect(['foo', 'bar', 'baz'])
-
 <a name="method-fluent-str-finish"></a>
 
 #### `finish` {.collection-method}
@@ -1952,7 +2015,6 @@ Fluent 字串提供處理字串值一個更流暢、物件導向的介面。我�
     $adjusted = Str::of('this/string/')->finish('/');
     
     // this/string/
-
 <a name="method-fluent-str-is"></a>
 
 #### `is` {.collection-method}
@@ -1968,7 +2030,6 @@ Fluent 字串提供處理字串值一個更流暢、物件導向的介面。我�
     $matches = Str::of('foobar')->is('baz*');
     
     // false
-
 <a name="method-fluent-str-is-ascii"></a>
 
 #### `isAscii` {.collection-method}
@@ -1984,7 +2045,6 @@ Fluent 字串提供處理字串值一個更流暢、物件導向的介面。我�
     $result = Str::of('ü')->isAscii();
     
     // false
-
 <a name="method-fluent-str-is-empty"></a>
 
 #### `isEmpty` {.collection-method}
@@ -2000,7 +2060,6 @@ Fluent 字串提供處理字串值一個更流暢、物件導向的介面。我�
     $result = Str::of('Laravel')->trim()->isEmpty();
     
     // false
-
 <a name="method-fluent-str-is-not-empty"></a>
 
 #### `isNotEmpty` {.collection-method}
@@ -2016,7 +2075,6 @@ Fluent 字串提供處理字串值一個更流暢、物件導向的介面。我�
     $result = Str::of('Laravel')->trim()->isNotEmpty();
     
     // true
-
 <a name="method-fluent-str-is-uuid"></a>
 
 #### `isUuid` {.collection-method}
@@ -2032,7 +2090,6 @@ Fluent 字串提供處理字串值一個更流暢、物件導向的介面。我�
     $result = Str::of('Taylor')->isUuid();
     
     // false
-
 <a name="method-fluent-str-kebab"></a>
 
 #### `kebab` {.collection-method}
@@ -2044,7 +2101,6 @@ Fluent 字串提供處理字串值一個更流暢、物件導向的介面。我�
     $converted = Str::of('fooBar')->kebab();
     
     // foo-bar
-
 <a name="method-fluent-str-length"></a>
 
 #### `length` {.collection-method}
@@ -2056,7 +2112,6 @@ Fluent 字串提供處理字串值一個更流暢、物件導向的介面。我�
     $length = Str::of('Laravel')->length();
     
     // 7
-
 <a name="method-fluent-str-limit"></a>
 
 #### `limit` {.collection-method}
@@ -2068,7 +2123,6 @@ Fluent 字串提供處理字串值一個更流暢、物件導向的介面。我�
     $truncated = Str::of('The quick brown fox jumps over the lazy dog')->limit(20);
     
     // The quick brown fox...
-
 也可以傳入第二個引數，以更改當字串被截斷時要加在最後方的內容：
 
     use Illuminate\Support\Str;
@@ -2076,7 +2130,6 @@ Fluent 字串提供處理字串值一個更流暢、物件導向的介面。我�
     $truncated = Str::of('The quick brown fox jumps over the lazy dog')->limit(20, ' (...)');
     
     // The quick brown fox (...)
-
 <a name="method-fluent-str-lower"></a>
 
 #### `lower` {.collection-method}
@@ -2088,7 +2141,6 @@ Fluent 字串提供處理字串值一個更流暢、物件導向的介面。我�
     $result = Str::of('LARAVEL')->lower();
     
     // 'laravel'
-
 <a name="method-fluent-str-ltrim"></a>
 
 #### `ltrim` {.collection-method}
@@ -2104,7 +2156,6 @@ Fluent 字串提供處理字串值一個更流暢、物件導向的介面。我�
     $string = Str::of('/Laravel/')->ltrim('/');
     
     // 'Laravel/'
-
 <a name="method-fluent-str-markdown"></a>
 
 #### `markdown` {.collection-method}
@@ -2122,7 +2173,6 @@ Fluent 字串提供處理字串值一個更流暢、物件導向的介面。我�
     ]);
     
     // <h1>Taylor Otwell</h1>
-
 <a name="method-fluent-str-mask"></a>
 
 #### `mask` {.collection-method}
@@ -2134,13 +2184,11 @@ Fluent 字串提供處理字串值一個更流暢、物件導向的介面。我�
     $string = Str::of('taylor@example.com')->mask('*', 3);
     
     // tay***************
-
 若有需要，`mask` 方法的第三個引數可提供負數，這樣 `mask` 就會從字串結尾起給定的長度開始打碼：
 
     $string = Str::of('taylor@example.com')->mask('*', -15, 3);
     
     // tay***@example.com
-
 <a name="method-fluent-str-match"></a>
 
 #### `match` {.collection-method}
@@ -2156,7 +2204,6 @@ Fluent 字串提供處理字串值一個更流暢、物件導向的介面。我�
     $result = Str::of('foo bar')->match('/foo (.*)/');
     
     // 'bar'
-
 <a name="method-fluent-str-match-all"></a>
 
 #### `matchAll` {.collection-method}
@@ -2168,7 +2215,6 @@ Fluent 字串提供處理字串值一個更流暢、物件導向的介面。我�
     $result = Str::of('bar foo bar')->matchAll('/bar/');
     
     // collect(['bar', 'bar'])
-
 也可以在正規式中指定^[分組](Matching Group)，Laravel 會回傳一個包含這些分組的 Collection：
 
     use Illuminate\Support\Str;
@@ -2176,7 +2222,6 @@ Fluent 字串提供處理字串值一個更流暢、物件導向的介面。我�
     $result = Str::of('bar fun bar fly')->matchAll('/f(\w*)/');
     
     // collect(['un', 'ly']);
-
 若未找到相符合的內容，會回傳空 Collection。
 
 <a name="method-fluent-str-padboth"></a>
@@ -2194,7 +2239,6 @@ Fluent 字串提供處理字串值一個更流暢、物件導向的介面。我�
     $padded = Str::of('James')->padBoth(10);
     
     // '  James   '
-
 <a name="method-fluent-str-padleft"></a>
 
 #### `padLeft` {.collection-method}
@@ -2210,7 +2254,6 @@ Fluent 字串提供處理字串值一個更流暢、物件導向的介面。我�
     $padded = Str::of('James')->padLeft(10);
     
     // '     James'
-
 <a name="method-fluent-str-padright"></a>
 
 #### `padRight` {.collection-method}
@@ -2226,7 +2269,6 @@ Fluent 字串提供處理字串值一個更流暢、物件導向的介面。我�
     $padded = Str::of('James')->padRight(10);
     
     // 'James     '
-
 <a name="method-fluent-str-pipe"></a>
 
 #### `pipe` {.collection-method}
@@ -2244,7 +2286,6 @@ Fluent 字串提供處理字串值一個更流暢、物件導向的介面。我�
     });
     
     // 'bar'
-
 <a name="method-fluent-str-plural"></a>
 
 #### `plural` {.collection-method}
@@ -2260,7 +2301,6 @@ Fluent 字串提供處理字串值一個更流暢、物件導向的介面。我�
     $plural = Str::of('child')->plural();
     
     // children
-
 也可以提供一個整數作為該方法的第二個引數，用來判斷要取得該字串的單數或複數型：
 
     use Illuminate\Support\Str;
@@ -2272,7 +2312,6 @@ Fluent 字串提供處理字串值一個更流暢、物件導向的介面。我�
     $plural = Str::of('child')->plural(1);
     
     // child
-
 <a name="method-fluent-str-prepend"></a>
 
 #### `prepend` {.collection-method}
@@ -2284,7 +2323,6 @@ Fluent 字串提供處理字串值一個更流暢、物件導向的介面。我�
     $string = Str::of('Framework')->prepend('Laravel ');
     
     // Laravel Framework
-
 <a name="method-fluent-str-remove"></a>
 
 #### `remove` {.collection-method}
@@ -2296,7 +2334,6 @@ Fluent 字串提供處理字串值一個更流暢、物件導向的介面。我�
     $string = Str::of('Arkansas is quite beautiful!')->remove('quite');
     
     // Arkansas is beautiful!
-
 也可以傳入 `false` 作為第二個引數，來在移除字串時忽略大小寫差異：
 
 <a name="method-fluent-str-replace"></a>
@@ -2310,7 +2347,6 @@ Fluent 字串提供處理字串值一個更流暢、物件導向的介面。我�
     $replaced = Str::of('Laravel 6.x')->replace('6.x', '7.x');
     
     // Laravel 7.x
-
 <a name="method-fluent-str-replace-array"></a>
 
 #### `replaceArray` {.collection-method}
@@ -2324,7 +2360,6 @@ Fluent 字串提供處理字串值一個更流暢、物件導向的介面。我�
     $replaced = Str::of($string)->replaceArray('?', ['8:30', '9:00']);
     
     // The event will take place between 8:30 and 9:00
-
 <a name="method-fluent-str-replace-first"></a>
 
 #### `replaceFirst` {.collection-method}
@@ -2336,7 +2371,6 @@ Fluent 字串提供處理字串值一個更流暢、物件導向的介面。我�
     $replaced = Str::of('the quick brown fox jumps over the lazy dog')->replaceFirst('the', 'a');
     
     // a quick brown fox jumps over the lazy dog
-
 <a name="method-fluent-str-replace-last"></a>
 
 #### `replaceLast` {.collection-method}
@@ -2348,7 +2382,6 @@ Fluent 字串提供處理字串值一個更流暢、物件導向的介面。我�
     $replaced = Str::of('the quick brown fox jumps over the lazy dog')->replaceLast('the', 'a');
     
     // the quick brown fox jumps over a lazy dog
-
 <a name="method-fluent-str-replace-matches"></a>
 
 #### `replaceMatches` {.collection-method}
@@ -2360,7 +2393,6 @@ Fluent 字串提供處理字串值一個更流暢、物件導向的介面。我�
     $replaced = Str::of('(+1) 501-555-1000')->replaceMatches('/[^A-Za-z0-9]++/', '')
     
     // '15015551000'
-
 `replaceMatches` 也接受一個閉包，每當有符合格式的部分時，就會將符合的部分傳給該閉包，讓我們能在閉包內處理取代邏輯，並在閉包內回傳要取代的值：
 
     use Illuminate\Support\Str;
@@ -2370,7 +2402,6 @@ Fluent 字串提供處理字串值一個更流暢、物件導向的介面。我�
     });
     
     // '[1][2][3]'
-
 <a name="method-fluent-str-rtrim"></a>
 
 #### `rtrim` {.collection-method}
@@ -2386,7 +2417,6 @@ Fluent 字串提供處理字串值一個更流暢、物件導向的介面。我�
     $string = Str::of('/Laravel/')->rtrim('/');
     
     // '/Laravel'
-
 <a name="method-fluent-str-scan"></a>
 
 #### `scan` {.collection-method}
@@ -2398,7 +2428,6 @@ Fluent 字串提供處理字串值一個更流暢、物件導向的介面。我�
     $collection = Str::of('filename.jpg')->scan('%[^.].%s');
     
     // collect(['filename', 'jpg'])
-
 <a name="method-fluent-str-singular"></a>
 
 #### `singular` {.collection-method}
@@ -2414,7 +2443,6 @@ Fluent 字串提供處理字串值一個更流暢、物件導向的介面。我�
     $singular = Str::of('children')->singular();
     
     // child
-
 <a name="method-fluent-str-slug"></a>
 
 #### `slug` {.collection-method}
@@ -2426,7 +2454,6 @@ Fluent 字串提供處理字串值一個更流暢、物件導向的介面。我�
     $slug = Str::of('Laravel Framework')->slug('-');
     
     // laravel-framework
-
 <a name="method-fluent-str-snake"></a>
 
 #### `snake` {.collection-method}
@@ -2438,7 +2465,6 @@ Fluent 字串提供處理字串值一個更流暢、物件導向的介面。我�
     $converted = Str::of('fooBar')->snake();
     
     // foo_bar
-
 <a name="method-fluent-str-split"></a>
 
 #### `split` {.collection-method}
@@ -2450,7 +2476,6 @@ Fluent 字串提供處理字串值一個更流暢、物件導向的介面。我�
     $segments = Str::of('one, two, three')->split('/[\s,]+/');
     
     // collect(["one", "two", "three"])
-
 <a name="method-fluent-str-start"></a>
 
 #### `start` {.collection-method}
@@ -2466,7 +2491,6 @@ Fluent 字串提供處理字串值一個更流暢、物件導向的介面。我�
     $adjusted = Str::of('/this/string')->start('/');
     
     // /this/string
-
 <a name="method-fluent-str-starts-with"></a>
 
 #### `startsWith` {.collection-method}
@@ -2478,7 +2502,6 @@ startsWith` 方法可判斷給定字串是否以給定值起始：
     $result = Str::of('This is my name')->startsWith('This');
     
     // true
-
 <a name="method-fluent-str-studly"></a>
 
 #### `studly` {.collection-method}
@@ -2490,7 +2513,6 @@ startsWith` 方法可判斷給定字串是否以給定值起始：
     $converted = Str::of('foo_bar')->studly();
     
     // FooBar
-
 <a name="method-fluent-str-substr"></a>
 
 #### `substr` {.collection-method}
@@ -2506,7 +2528,6 @@ startsWith` 方法可判斷給定字串是否以給定值起始：
     $string = Str::of('Laravel Framework')->substr(8, 5);
     
     // Frame
-
 <a name="method-fluent-str-substrreplace"></a>
 
 #### `substrReplace` {.collection-method}
@@ -2522,7 +2543,6 @@ startsWith` 方法可判斷給定字串是否以給定值起始：
     $string = Str::of('The Framework')->substrReplace(' Laravel', 3, 0);
     
     // The Laravel Framework
-
 <a name="method-fluent-str-tap"></a>
 
 #### `tap` {.collection-method}
@@ -2539,7 +2559,6 @@ startsWith` 方法可判斷給定字串是否以給定值起始：
         ->upper();
     
     // LARAVEL FRAMEWORK
-
 <a name="method-fluent-str-test"></a>
 
 #### `test` {.collection-method}
@@ -2551,7 +2570,6 @@ startsWith` 方法可判斷給定字串是否以給定值起始：
     $result = Str::of('Laravel Framework')->test('/Laravel/');
     
     // true
-
 <a name="method-fluent-str-title"></a>
 
 #### `title` {.collection-method}
@@ -2563,7 +2581,6 @@ startsWith` 方法可判斷給定字串是否以給定值起始：
     $converted = Str::of('a nice title uses the correct case')->title();
     
     // A Nice Title Uses The Correct Case
-
 <a name="method-fluent-str-trim"></a>
 
 #### `trim` {.collection-method}
@@ -2579,7 +2596,6 @@ startsWith` 方法可判斷給定字串是否以給定值起始：
     $string = Str::of('/Laravel/')->trim('/');
     
     // 'Laravel'
-
 <a name="method-fluent-str-ucfirst"></a>
 
 #### `ucfirst` {.collection-method}
@@ -2591,7 +2607,6 @@ startsWith` 方法可判斷給定字串是否以給定值起始：
     $string = Str::of('foo bar')->ucfirst();
     
     // Foo bar
-
 <a name="method-fluent-str-upper"></a>
 
 #### `upper` {.collection-method}
@@ -2603,7 +2618,6 @@ startsWith` 方法可判斷給定字串是否以給定值起始：
     $adjusted = Str::of('laravel')->upper();
     
     // LARAVEL
-
 <a name="method-fluent-str-when"></a>
 
 #### `when` {.collection-method}
@@ -2618,7 +2632,6 @@ startsWith` 方法可判斷給定字串是否以給定值起始：
                     });
     
     // 'Taylor Otwell'
-
 若有需要，也可以傳入另一個閉包作為第三個引數給 `when` 方法。第三個引數上的閉包會在條件參數為 `false` 時被執行。
 
 <a name="method-fluent-str-when-contains"></a>
@@ -2635,7 +2648,6 @@ startsWith` 方法可判斷給定字串是否以給定值起始：
                 });
     
     // 'Tony Stark'
-
 若有需要，也可以傳入另一個閉包作為第三個引數給 `whenContains` 方法。當字串內未包含給定值時會執行第三個引數上的閉包。
 
 也可以傳入一組要判斷的陣列值，來判斷給定字串中是否有包含該陣列中任何一個值：
@@ -2648,7 +2660,6 @@ startsWith` 方法可判斷給定字串是否以給定值起始：
                 });
     
     // Tony Stark
-
 <a name="method-fluent-str-when-contains-all"></a>
 
 #### `whenContainsAll` {.collection-method}
@@ -2663,7 +2674,6 @@ startsWith` 方法可判斷給定字串是否以給定值起始：
                     });
     
     // 'Tony Stark'
-
 若有需要，也可以傳入另一個閉包作為第三個引數給 `when` 方法。第三個引數上的閉包會在條件參數為 `false` 時被執行。
 
 <a name="method-fluent-str-when-empty"></a>
@@ -2679,7 +2689,6 @@ startsWith` 方法可判斷給定字串是否以給定值起始：
     });
     
     // 'Laravel'
-
 <a name="method-fluent-str-when-not-empty"></a>
 
 #### `whenNotEmpty` {.collection-method}
@@ -2693,7 +2702,6 @@ startsWith` 方法可判斷給定字串是否以給定值起始：
     });
     
     // 'Laravel Framework'
-
 <a name="method-fluent-str-when-starts-with"></a>
 
 #### `whenStartsWith` {.collection-method}
@@ -2707,7 +2715,6 @@ startsWith` 方法可判斷給定字串是否以給定值起始：
     });
     
     // 'Disney World'
-
 <a name="method-fluent-str-when-ends-with"></a>
 
 #### `whenEndsWith` {.collection-method}
@@ -2721,7 +2728,6 @@ startsWith` 方法可判斷給定字串是否以給定值起始：
     });
     
     // 'Disney World'
-
 <a name="method-fluent-str-when-exactly"></a>
 
 #### `whenExactly` {.collection-method}
@@ -2735,7 +2741,6 @@ startsWith` 方法可判斷給定字串是否以給定值起始：
     });
     
     // 'Laravel'
-
 <a name="method-fluent-str-when-is"></a>
 
 #### `whenIs` {.collection-method}
@@ -2749,7 +2754,6 @@ startsWith` 方法可判斷給定字串是否以給定值起始：
     });
     
     // 'foo/bar/baz'
-
 <a name="method-fluent-str-when-is-ascii"></a>
 
 #### `whenIsAscii` {.collection-method}
@@ -2763,7 +2767,6 @@ startsWith` 方法可判斷給定字串是否以給定值起始：
     });
     
     // 'Laravel'
-
 <a name="method-fluent-str-when-is-uuid"></a>
 
 #### `whenIsUuid` {.collection-method}
@@ -2777,7 +2780,6 @@ startsWith` 方法可判斷給定字串是否以給定值起始：
     });
     
     // 'a0a2a2d2'
-
 <a name="method-fluent-str-when-test"></a>
 
 #### `whenTest` {.collection-method}
@@ -2791,7 +2793,6 @@ startsWith` 方法可判斷給定字串是否以給定值起始：
     });
     
     // 'Laravel Framework'
-
 <a name="method-fluent-str-word-count"></a>
 
 #### `wordCount` {.collection-method}
@@ -2803,7 +2804,6 @@ use Illuminate\Support\Str;
 
 Str::of('Hello, world!')->wordCount(); // 2
 ```
-
 <a name="method-fluent-str-words"></a>
 
 #### `words` {.collection-method}
@@ -2815,7 +2815,6 @@ Str::of('Hello, world!')->wordCount(); // 2
     $string = Str::of('Perfectly balanced, as all things should be.')->words(3, ' >>>');
     
     // Perfectly balanced, as >>>
-
 <a name="urls"></a>
 
 ## URL
@@ -2829,11 +2828,9 @@ Str::of('Hello, world!')->wordCount(); // 2
     use App\Http\Controllers\HomeController;
     
     $url = action([HomeController::class, 'index']);
-
 若該方法接受 Route 參數，請將這些 Route 參數作為第二個引數傳給該方法：
 
     $url = action([UserController::class, 'profile'], ['id' => 1]);
-
 <a name="method-asset"></a>
 
 #### `asset()` {.collection-method}
@@ -2841,13 +2838,11 @@ Str::of('Hello, world!')->wordCount(); // 2
 `asset` 方法使用目前 Request 的 Scheme (HTTP 或 HTTPS) 來產生素材 URL：
 
     $url = asset('img/photo.jpg');
-
 可以在 `.env` 檔案中設定 `ASSET_URL` 變數來設定素材 URL 的主機名稱。若你將素材放在如 Amazon S3 或其他 CDN 之類的外部服務上，就很適合這樣設定：
 
     // ASSET_URL=http://example.com/assets
     
     $url = asset('img/photo.jpg'); // http://example.com/assets/img/photo.jpg
-
 <a name="method-route"></a>
 
 #### `route()` {.collection-method}
@@ -2855,15 +2850,12 @@ Str::of('Hello, world!')->wordCount(); // 2
 `route` 函式產生給定[命名 Route](/docs/{{version}}/routing#named-routes) 的 URL：
 
     $url = route('route.name');
-
 若該 Route 接受參數，請將這些參數作為第二個引數傳給該方法：
 
     $url = route('route.name', ['id' => 1]);
-
 預設情況下，`route` 函式回傳絕對 URL。若想產生相對 URL，請傳入 `false` 作為第三個引數給該函式：
 
     $url = route('route.name', ['id' => 1], false);
-
 <a name="method-secure-asset"></a>
 
 #### `secure_asset()` {.collection-method}
@@ -2871,7 +2863,6 @@ Str::of('Hello, world!')->wordCount(); // 2
 `secure_asset` 函式使用 HTTPS 為素材產生 URL：
 
     $url = secure_asset('img/photo.jpg');
-
 <a name="method-secure-url"></a>
 
 #### `secure_url()` {.collection-method}
@@ -2881,7 +2872,6 @@ Str::of('Hello, world!')->wordCount(); // 2
     $url = secure_url('user/profile');
     
     $url = secure_url('user/profile', [1]);
-
 <a name="method-url"></a>
 
 #### `url()` {.collection-method}
@@ -2891,7 +2881,6 @@ Str::of('Hello, world!')->wordCount(); // 2
     $url = url('user/profile');
     
     $url = url('user/profile', [1]);
-
 若未提供路徑，則會回傳 `Illuminate\Routing\UrlGenerator` 實體：
 
     $current = url()->current();
@@ -2899,7 +2888,6 @@ Str::of('Hello, world!')->wordCount(); // 2
     $full = url()->full();
     
     $previous = url()->previous();
-
 <a name="miscellaneous"></a>
 
 ## 其他
@@ -2908,14 +2896,12 @@ Str::of('Hello, world!')->wordCount(); // 2
 
 #### `abort()` {.collection-method}
 
-`abort` 函式會擲回 [HTTP Exception](/docs/{{version}}/errors#http-exceptions)。HTTP Exception 會被 [^[Exception Handler](例外處理常式)](/docs/{{version}}/errors#the-exception-handler) 轉譯：
+`abort` 函式會擲回 [HTTP Exception](/docs/{{version}}/errors#http-exceptions)。HTTP Exception 會被 [^[Exception Handler](%E4%BE%8B%E5%A4%96%E8%99%95%E7%90%86%E5%B8%B8%E5%BC%8F)](/docs/{{version}}/errors#the-exception-handler) 轉譯：
 
     abort(403);
-
 也可以提供 Exception 訊息與要傳送給瀏覽器的自訂 HTTP Response 標頭：
 
     abort(403, 'Unauthorized.', $headers);
-
 <a name="method-abort-if"></a>
 
 #### `abort_if()` {.collection-method}
@@ -2923,7 +2909,6 @@ Str::of('Hello, world!')->wordCount(); // 2
 `abort_if` 函式會在給定布林運算式取值為 `true` 時擲回一個 HTTP Exception：
 
     abort_if(! Auth::user()->isAdmin(), 403);
-
 與 `abort` 方法類似，我們也可以在第三個引數上提供 Exception 的 Response 文字，並在第四個引數上提供一組自訂 Response 標頭陣列。
 
 <a name="method-abort-unless"></a>
@@ -2933,7 +2918,6 @@ Str::of('Hello, world!')->wordCount(); // 2
 `abort_unless` 函式會在給定布林運算式取值為 `false` 時擲回一個 HTTP Exception：
 
     abort_unless(Auth::user()->isAdmin(), 403);
-
 與 `abort` 方法類似，我們也可以在第三個引數上提供 Exception 的 Response 文字，並在第四個引數上提供一組自訂 Response 標頭陣列。
 
 <a name="method-app"></a>
@@ -2943,11 +2927,9 @@ Str::of('Hello, world!')->wordCount(); // 2
 `app` 函式回傳 [Service Container](/docs/{{version}}/container) 實體：
 
     $container = app();
-
 也可以傳入一個類別或介面名稱來用 Container 解析：
 
     $api = app('HelpSpot\API');
-
 <a name="method-auth"></a>
 
 #### `auth()` {.collection-method}
@@ -2955,11 +2937,9 @@ Str::of('Hello, world!')->wordCount(); // 2
 `auth` 函式回傳 [Authenticator](/docs/{{version}}/authentication) 的實體。可以使用 `auth` 函式來作為 `Auth` Facade 的替代：
 
     $user = auth()->user();
-
 若有需要，可以指定要存取的 Guard 實體：
 
     $user = auth('admin')->user();
-
 <a name="method-back"></a>
 
 #### `back()` {.collection-method}
@@ -2969,7 +2949,6 @@ Str::of('Hello, world!')->wordCount(); // 2
     return back($status = 302, $headers = [], $fallback = '/');
     
     return back();
-
 <a name="method-bcrypt"></a>
 
 #### `bcrypt()` {.collection-method}
@@ -2977,7 +2956,6 @@ Str::of('Hello, world!')->wordCount(); // 2
 `bcrypt` 方法使用 Bcrypt 來[雜湊](/docs/{{version}}/hashing)給定的值。也可以使用這個函式來作為 `Hash` Facade 的替代：
 
     $password = bcrypt('my-secret-password');
-
 <a name="method-blank"></a>
 
 #### `blank()` {.collection-method}
@@ -2996,7 +2974,6 @@ Str::of('Hello, world!')->wordCount(); // 2
     blank(false);
     
     // false
-
 請參考 [`filled`](#method-filled) 方法以瞭解與 `blank` 相反的方法。
 
 <a name="method-broadcast"></a>
@@ -3008,7 +2985,6 @@ Str::of('Hello, world!')->wordCount(); // 2
     broadcast(new UserRegistered($user));
     
     broadcast(new UserRegistered($user))->toOthers();
-
 <a name="method-cache"></a>
 
 #### `cache()` {.collection-method}
@@ -3018,13 +2994,11 @@ Str::of('Hello, world!')->wordCount(); // 2
     $value = cache('key');
     
     $value = cache('key', 'default');
-
 可以傳入一組索引鍵 / 值配對的陣列給該函式來將項目加入快取中。也請傳入單位為秒的快取值有效期間：
 
     cache(['key' => 'value'], 300);
     
     cache(['key' => 'value'], now()->addSeconds(10));
-
 <a name="method-class-uses-recursive"></a>
 
 #### `class_uses_recursive()` {.collection-method}
@@ -3032,7 +3006,6 @@ Str::of('Hello, world!')->wordCount(); // 2
 `class_uses_recursive` 函式回傳某個類別使用的所有 Trait，包含其所有^[上層](Parent)類別使用的 Trait：
 
     $traits = class_uses_recursive(App\Models\User::class);
-
 <a name="method-collect"></a>
 
 #### `collect()` {.collection-method}
@@ -3040,7 +3013,6 @@ Str::of('Hello, world!')->wordCount(); // 2
 `collect` 函式使用給定值來建立一個 [Collection](/docs/{{version}}/collections) 實體：
 
     $collection = collect(['taylor', 'abigail']);
-
 <a name="method-config"></a>
 
 #### `config()` {.collection-method}
@@ -3050,11 +3022,9 @@ Str::of('Hello, world!')->wordCount(); // 2
     $value = config('app.timezone');
     
     $value = config('app.timezone', $default);
-
 也可以在執行階段傳入一組索引鍵 / 值配對的陣列來設定設定值。不過，請注意，該函式只會影響目前 Request 的設定值，並不會實際更新設定：
 
     config(['app.debug' => true]);
-
 <a name="method-cookie"></a>
 
 #### `cookie()` {.collection-method}
@@ -3062,7 +3032,6 @@ Str::of('Hello, world!')->wordCount(); // 2
 `cookie` 函式建立一個新的 [Cookie](/docs/{{version}}/requests#cookies) 實體：
 
     $cookie = cookie('name', 'value', $minutes);
-
 <a name="method-csrf-field"></a>
 
 #### `csrf_field()` {.collection-method}
@@ -3070,7 +3039,6 @@ Str::of('Hello, world!')->wordCount(); // 2
 `csrf_field` 函式產生一個包含 CSRF Token 的 HTML `hidden` 輸入欄位。舉例來說，在 [Blade 語法](/docs/{{version}}/blade)中可這樣使用：
 
     {{ csrf_field() }}
-
 <a name="method-csrf-token"></a>
 
 #### `csrf_token()` {.collection-method}
@@ -3078,7 +3046,6 @@ Str::of('Hello, world!')->wordCount(); // 2
 `csrf_token` 函式可取得目前 CSRF Token 的值：
 
     $token = csrf_token();
-
 <a name="method-dd"></a>
 
 #### `dd()` {.collection-method}
@@ -3088,7 +3055,6 @@ Str::of('Hello, world!')->wordCount(); // 2
     dd($value);
     
     dd($value1, $value2, $value3, ...);
-
 若不想結束目前的指令碼執行，請改為使用 [`dump`](#method-dump) 方法。
 
 <a name="method-dispatch"></a>
@@ -3098,7 +3064,6 @@ Str::of('Hello, world!')->wordCount(); // 2
 `dispatch` 方法將給定 [Job](/docs/{{version}}/queues#creating-jobs) 推入 Laravel 的 [Job 佇列](/docs/{{version}}/queues) 中：
 
     dispatch(new App\Jobs\SendEmails);
-
 <a name="method-dump"></a>
 
 #### `dump()` {.collection-method}
@@ -3108,7 +3073,6 @@ Str::of('Hello, world!')->wordCount(); // 2
     dump($value);
     
     dump($value1, $value2, $value3, ...);
-
 若想在傾印變數後停止執行指令碼，請使用 [`dd`](#method-dd) 函式來代替。
 
 <a name="method-env"></a>
@@ -3120,8 +3084,8 @@ Str::of('Hello, world!')->wordCount(); // 2
     $env = env('APP_ENV');
     
     $env = env('APP_ENV', 'production');
-
-> {note} 若在部署流程中執行了 `config:cache` 指令，應確保只有在設定檔中呼叫 `env` 函式。設定檔被快取後，就不會再載入 `.env` 檔了。所有 `env` 函式查詢 `.env` 變數的呼叫都會回傳 `null`。
+> [!NOTE]  
+> 若在部署流程中執行了 `config:cache` 指令，應確保只有在設定檔中呼叫 `env` 函式。設定檔被快取後，就不會再載入 `.env` 檔了。所有 `env` 函式查詢 `.env` 變數的呼叫都會回傳 `null`。
 
 <a name="method-event"></a>
 
@@ -3130,7 +3094,6 @@ Str::of('Hello, world!')->wordCount(); // 2
 `event` 函式將給定 [Event](/docs/{{version}}/events) ^[分派](Dispatch)給其 Listener：
 
     event(new UserRegistered($user));
-
 <a name="method-filled"></a>
 
 #### `filled()` {.collection-method}
@@ -3149,7 +3112,6 @@ Str::of('Hello, world!')->wordCount(); // 2
     filled(collect());
     
     // false
-
 請參考 [blank](#method-blank) 方法以瞭解與 `filled` 相反的方法。
 
 <a name="method-info"></a>
@@ -3159,11 +3121,9 @@ Str::of('Hello, world!')->wordCount(); // 2
 `info` 函式寫入 info 等級的資訊至程式的 [日誌](/docs/{{version}}/logging) 中：
 
     info('Some helpful information!');
-
 也可以傳入一組包含上下文資料的陣列給該函式：
 
     info('User login attempt failed.', ['id' => $user->id]);
-
 <a name="method-logger"></a>
 
 #### `logger()` {.collection-method}
@@ -3171,15 +3131,12 @@ Str::of('Hello, world!')->wordCount(); // 2
 `logger` 函式可用來寫入 `debug` 等級的訊息至[日誌](/docs/{{version}}/logging)中：
 
     logger('Debug message');
-
 也可以傳入一組包含上下文資料的陣列給該函式：
 
     logger('User has logged in.', ['id' => $user->id]);
-
 若未傳入任何值給該方法，則會回傳 [Logger](/docs/{{version}}/errors#logging) 實體：
 
     logger()->error('You are not allowed here.');
-
 <a name="method-method-field"></a>
 
 #### `method_field()` {.collection-method}
@@ -3189,7 +3146,6 @@ Str::of('Hello, world!')->wordCount(); // 2
     <form method="POST">
         {{ method_field('DELETE') }}
     </form>
-
 <a name="method-now"></a>
 
 #### `now()` {.collection-method}
@@ -3197,7 +3153,6 @@ Str::of('Hello, world!')->wordCount(); // 2
 `now` 函式建立一個目前時間的新 `Illuminate\Support\Carbon` 實體：
 
     $now = now();
-
 <a name="method-old"></a>
 
 #### `old()` {.collection-method}
@@ -3207,7 +3162,6 @@ Str::of('Hello, world!')->wordCount(); // 2
     $value = old('value');
     
     $value = old('value', 'default');
-
 <a name="method-optional"></a>
 
 #### `optional()` {.collection-method}
@@ -3217,13 +3171,11 @@ Str::of('Hello, world!')->wordCount(); // 2
     return optional($user->address)->street;
     
     {!! old('name', optional($user)->name) !!}
-
 `optional` 函式也接受閉包作為其第二個引數。若第一個引數傳入的值不是 null 時會叫用該閉包：
 
     return optional(User::find($id), function ($user) {
         return $user->name;
     });
-
 <a name="method-policy"></a>
 
 #### `policy()` {.collection-method}
@@ -3231,7 +3183,6 @@ Str::of('Hello, world!')->wordCount(); // 2
 `policy` 方法取得給定類別的 [Policy](/docs/{{version}}/authorization#creating-policies) 實體：
 
     $policy = policy(App\Models\User::class);
-
 <a name="method-redirect"></a>
 
 #### `redirect()` {.collection-method}
@@ -3243,7 +3194,6 @@ Str::of('Hello, world!')->wordCount(); // 2
     return redirect('/home');
     
     return redirect()->route('route.name');
-
 <a name="method-report"></a>
 
 #### `report()` {.collection-method}
@@ -3251,11 +3201,9 @@ Str::of('Hello, world!')->wordCount(); // 2
 `report` 函式會使用 [Exception Handler](/docs/{{version}}/errors#the-exception-handler) 來回報 Exception：
 
     report($e);
-
 `report` 函式也接受一個字串作為其引數。若傳入字串給該函式時，`report` 會使用給定的字串作為訊息來建立 Exception：
 
     report('Something went wrong.');
-
 <a name="method-request"></a>
 
 #### `request()` {.collection-method}
@@ -3265,7 +3213,6 @@ Str::of('Hello, world!')->wordCount(); // 2
     $request = request();
     
     $value = request('key', $default);
-
 <a name="method-rescue"></a>
 
 #### `rescue()` {.collection-method}
@@ -3275,7 +3222,6 @@ Str::of('Hello, world!')->wordCount(); // 2
     return rescue(function () {
         return $this->method();
     });
-
 也可以傳入第二個引數給 `rescue` 函式。執行閉包時若有發生 Exception，就會使用這個引數來當作回傳的「預設」值：
 
     return rescue(function () {
@@ -3287,7 +3233,6 @@ Str::of('Hello, world!')->wordCount(); // 2
     }, function () {
         return $this->failure();
     });
-
 <a name="method-resolve"></a>
 
 #### `resolve()` {.collection-method}
@@ -3295,7 +3240,6 @@ Str::of('Hello, world!')->wordCount(); // 2
 `resolve` 函式使用 [Service Container](/docs/{{version}}/container) 來將給定的類別或介面名稱解析為實體：
 
     $api = resolve('HelpSpot\API');
-
 <a name="method-response"></a>
 
 #### `response()` {.collection-method}
@@ -3305,7 +3249,6 @@ Str::of('Hello, world!')->wordCount(); // 2
     return response('Hello World', 200, $headers);
     
     return response()->json(['foo' => 'bar'], 200, $headers);
-
 <a name="method-retry"></a>
 
 #### `retry()` {.collection-method}
@@ -3313,9 +3256,8 @@ Str::of('Hello, world!')->wordCount(); // 2
 `retry` 函式會嘗試執行給定的閉包，直到達到最大嘗試次數限制。若該回呼未^[擲回](Throw) Exception，則會回傳該回呼的回傳值。若回呼擲回 Exception，就會自動嘗試重新執行回呼。達到最大嘗試次數後，就會擲回 Exception：
 
     return retry(5, function () {
-        // 嘗試 5 次，每次嘗試間暫停 100ms...
+        // Attempt 5 times while resting 100ms in between attempts...
     }, 100);
-
 若想自動手動計算每次長時間要暫停的毫秒數，可傳入閉包作為第三個引數給 `retry` 函式：
 
     return retry(5, function () {
@@ -3323,7 +3265,6 @@ Str::of('Hello, world!')->wordCount(); // 2
     }, function ($attempt) {
         return $attempt * 100;
     });
-
 若只想在特定條件下重試，可傳入一個閉包作為第四個引數給 `retry` 函式：
 
     return retry(5, function () {
@@ -3331,7 +3272,6 @@ Str::of('Hello, world!')->wordCount(); // 2
     }, 100, function ($exception) {
         return $exception instanceof RetryException;
     });
-
 <a name="method-session"></a>
 
 #### `session()` {.collection-method}
@@ -3339,17 +3279,14 @@ Str::of('Hello, world!')->wordCount(); // 2
 `session` 函式可用來取得或設定 [Session](/docs/{{version}}/session) 值：
 
     $value = session('key');
-
 可以傳入一組索引鍵 / 值配對的陣列給該函式來賦值：
 
     session(['chairs' => 7, 'instruments' => 3]);
-
 若未傳入任何值給該方法，則會回傳 Session Store 實體：
 
     $value = session()->get('key');
     
     session()->put('key', $value);
-
 <a name="method-tap"></a>
 
 #### `tap()` {.collection-method}
@@ -3361,20 +3298,17 @@ Str::of('Hello, world!')->wordCount(); // 2
     
         $user->save();
     });
-
 若未傳入閉包給 `tap` 函式，則可呼叫任何給定 `$value` 上的方法。無論呼叫的方法回傳什麼值，在此處都會回傳 `$value`。舉例來說，Eloquent `update` 方法一般會回傳整數。不過，若我們可以將 `update` 方法的呼叫串在 `tap` 函式後方，來強制把該方法的回傳值改為 Model 實體：
 
     $user = tap($user)->update([
         'name' => $name,
         'email' => $email,
     ]);
-
 若要將 `tap` 方法加到類別上，可以將 `Illuminate\Support\Traits\Tappable` Trait 加到類別中。該 Trait 的 `tap` 方法接受一個閉包作為其唯一的引數。物件實體本身會被傳入該閉包中，並由 `tap` 方法回傳：
 
     return $user->tap(function ($user) {
         //
     });
-
 <a name="method-throw-if"></a>
 
 #### `throw_if()` {.collection-method}
@@ -3388,7 +3322,6 @@ Str::of('Hello, world!')->wordCount(); // 2
         AuthorizationException::class,
         'You are not allowed to access this page.'
     );
-
 <a name="method-throw-unless"></a>
 
 #### `throw_unless()` {.collection-method}
@@ -3402,7 +3335,6 @@ Str::of('Hello, world!')->wordCount(); // 2
         AuthorizationException::class,
         'You are not allowed to access this page.'
     );
-
 <a name="method-today"></a>
 
 #### `today()` {.collection-method}
@@ -3410,7 +3342,6 @@ Str::of('Hello, world!')->wordCount(); // 2
 `today` 函式建立一個目前日期的新 `Illuminate\Support\Carbon` 實體：
 
     $today = today();
-
 <a name="method-trait-uses-recursive"></a>
 
 #### `trait_uses_recursive()` {.collection-method}
@@ -3418,7 +3349,6 @@ Str::of('Hello, world!')->wordCount(); // 2
 `trait_uses_recursive` 函式回傳該 Trait 使用的所有 Trait：
 
     $traits = trait_uses_recursive(\Illuminate\Notifications\Notifiable::class);
-
 <a name="method-transform"></a>
 
 #### `transform()` {.collection-method}
@@ -3432,13 +3362,11 @@ Str::of('Hello, world!')->wordCount(); // 2
     $result = transform(5, $callback);
     
     // 10
-
 可傳入預設值或閉包作為第三個引數給該函式。若給定值為空白時，會回傳這個值：
 
     $result = transform(null, $callback, 'The value is blank');
     
     // The value is blank
-
 <a name="method-validator"></a>
 
 #### `validator()` {.collection-method}
@@ -3446,7 +3374,6 @@ Str::of('Hello, world!')->wordCount(); // 2
 `validator` 函式使用給定的引數來建立一個新的 [Validator](/docs/{{version}}/validation) 實體。可以用來當作是 `Validator` Facade 的替代：
 
     $validator = validator($data, $rules, $messages);
-
 <a name="method-value"></a>
 
 #### `value()` {.collection-method}
@@ -3462,7 +3389,6 @@ Str::of('Hello, world!')->wordCount(); // 2
     });
     
     // false
-
 <a name="method-view"></a>
 
 #### `view()` {.collection-method}
@@ -3470,7 +3396,6 @@ Str::of('Hello, world!')->wordCount(); // 2
 `view` 函式可取得一個 [View](/docs/{{version}}/views) 實體：
 
     return view('auth.login');
-
 <a name="method-with"></a>
 
 #### `with()` {.collection-method}

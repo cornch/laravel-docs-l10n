@@ -1,43 +1,46 @@
 ---
-contributors:
-  14684796:
-    avatarUrl: https://crowdin-static.downloads.crowdin.com/avatar/14684796/medium/60f7dc21ec0bf9cfcb61983640bb4809_default.png
-    name: cornch
-crowdinUrl: https://crowdin.com/translate/laravel-docs/123/en-zhtw
-progress: 100
+crowdinUrl: 'https://crowdin.com/translate/laravel-docs/123/en-zhtw'
 updatedAt: '2024-06-30T08:15:00Z'
+contributors: {  }
+progress: 47.26
 ---
 
 # 資料庫：Query Builder
 
 - [簡介](#introduction)
 - [執行資料庫查詢](#running-database-queries)
-   - [將結果分段](#chunking-results)
-   - [延遲的查詢結果資料流](#streaming-results-lazily)
-   - [彙總](#aggregates)
+  - [將結果分段](#chunking-results)
+  - [延遲的查詢結果資料流](#streaming-results-lazily)
+  - [彙總](#aggregates)
+  
 - [Select 陳述式](#select-statements)
 - [原始陳述式](#raw-expressions)
 - [Join](#joins)
 - [Union](#unions)
 - [基礎的 Where 子句](#basic-where-clauses)
-   - [Where 子句](#where-clauses)
-   - [Or Where 子句](#or-where-clauses)
-   - [JSON Where 子句](#json-where-clauses)
-   - [其他 Where 子句](#additional-where-clauses)
-   - [邏輯群組](#logical-grouping)
+  - [Where 子句](#where-clauses)
+  - [Or Where 子句](#or-where-clauses)
+  - [JSON Where 子句](#json-where-clauses)
+  - [其他 Where 子句](#additional-where-clauses)
+  - [邏輯群組](#logical-grouping)
+  
 - [進階 Where 子句](#advanced-where-clauses)
-   - [Where Exists 子句](#where-exists-clauses)
-   - [Subquery Where 子句](#subquery-where-clauses)
+  - [Where Exists 子句](#where-exists-clauses)
+  - [Subquery Where 子句](#subquery-where-clauses)
+  
 - [Order、Group、Limit、Offset](#ordering-grouping-limit-and-offset)
-   - [Order](#ordering)
-   - [Group](#grouping)
-   - [Limit 與 Offset](#limit-and-offset)
+  - [Order](#ordering)
+  - [Group](#grouping)
+  - [Limit 與 Offset](#limit-and-offset)
+  
 - [條件式子句](#conditional-clauses)
 - [Insert 陳述式](#insert-statements)
-   - [Upsert](#upserts)
+  - [Upsert](#upserts)
+  
 - [Update 陳述式](#update-statements)
-   - [更新 JSON 欄位](#updating-json-columns)
-   - [遞增與遞減](#increment-and-decrement)
+  - [更新 JSON 欄位](#updating-json-columns)
+  - [遞增與遞減](#increment-and-decrement)
+  
 - [Delete 陳述式](#delete-statements)
 - [悲觀鎖定](#pessimistic-locking)
 - [偵錯](#debugging)
@@ -50,7 +53,8 @@ Laravel 的資料庫 Query Builder 提供了方便流暢的介面，可用於建
 
 Laravel 的 Query Builder 使用 PDO 參數繫結來保護網站免於 SQL 注入攻擊。在將字串作為查詢繫結傳入 Query Builder 時，不需要清理或消毒字串。
 
-> {note} PDO 不支援繫結欄位名稱。因此，絕對不要在查詢中以使用者輸入的值來參照欄位名稱。「order by」欄位亦同。
+> [!NOTE]  
+> PDO 不支援繫結欄位名稱。因此，絕對不要在查詢中以使用者輸入的值來參照欄位名稱。「order by」欄位亦同。
 
 <a name="running-database-queries"></a>
 
@@ -83,7 +87,6 @@ Laravel 的 Query Builder 使用 PDO 參數繫結來保護網站免於 SQL 注�
             return view('user.index', ['users' => $users]);
         }
     }
-
 `Illuminate\Support\Collection` 實體的 `get` 方法會以 PHP `stdClass` 物件來回傳查詢的結果。要存取各個欄位的值時，我們可以把該物件上的屬性當作欄位來存取：
 
     use Illuminate\Support\Facades\DB;
@@ -93,8 +96,8 @@ Laravel 的 Query Builder 使用 PDO 參數繫結來保護網站免於 SQL 注�
     foreach ($users as $user) {
         echo $user->name;
     }
-
-> {tip} Laravel 的 Collection 提供了許多用於 Map 與 Reduce 資料的超強大功能。有關 Laravel Collection 的更多資訊，請參考 [Collection 說明文件](/docs/{{version}}/collections)。
+> [!TIP]  
+> **Note**Laravel 的 Collection 提供了許多用於 Map 與 Reduce 資料的超強大功能。有關 Laravel Collection 的更多資訊，請參考 [Collection 說明文件](/docs/{{version}}/collections)。
 
 <a name="retrieving-a-single-row-column-from-a-table"></a>
 
@@ -105,15 +108,12 @@ Laravel 的 Query Builder 使用 PDO 參數繫結來保護網站免於 SQL 注�
     $user = DB::table('users')->where('name', 'John')->first();
     
     return $user->email;
-
 若不需要整行的資料庫，可以使用 `value` 方法來從一筆記錄中取得單一值。該方法會直接回傳欄位的值：
 
     $email = DB::table('users')->where('name', 'John')->value('email');
-
 若要使用 `id` 欄位的值來取得某一行，可使用 `find` 方法：
 
     $user = DB::table('users')->find(3);
-
 <a name="retrieving-a-list-of-column-values"></a>
 
 #### 取得一組欄位值的清單
@@ -127,7 +127,6 @@ Laravel 的 Query Builder 使用 PDO 參數繫結來保護網站免於 SQL 注�
     foreach ($titles as $title) {
         echo $title;
     }
-
 我們也可以提供第二個引數給 `pluck` 來指定要在產生的 Collection 中使用哪個欄位來當作索引鍵：
 
     $titles = DB::table('users')->pluck('title', 'name');
@@ -135,7 +134,6 @@ Laravel 的 Query Builder 使用 PDO 參數繫結來保護網站免於 SQL 注�
     foreach ($titles as $name => $title) {
         echo $title;
     }
-
 <a name="chunking-results"></a>
 
 ### 將查詢結果分段
@@ -149,15 +147,13 @@ Laravel 的 Query Builder 使用 PDO 參數繫結來保護網站免於 SQL 注�
             //
         }
     });
-
 我們也可以在閉包中回傳 `false` 來停止處理接下來的分段：
 
     DB::table('users')->orderBy('id')->chunk(100, function ($users) {
-        // 處理資料...
+        // Process the records...
     
         return false;
     });
-
 若要在為結果分段的同時更新資料庫中的資料，則分段的結果可能會不如預期。若要在為查詢結果分段的同時更新所取得的資料，最好該用 `chunkById` 方法。該方法會自動使用資料的主索引鍵來將結果分頁：
 
     DB::table('users')->where('active', false)
@@ -168,8 +164,8 @@ Laravel 的 Query Builder 使用 PDO 參數繫結來保護網站免於 SQL 注�
                     ->update(['active' => true]);
             }
         });
-
-> {note} 在分段閉包中更新或刪除資料時，所有對主索引鍵或外部索引鍵所做出的更改都有可能影響分段的資料庫查詢。更新或刪除資料也有可能讓某些資料不被包含在分段的結果中。
+> [!NOTE]  
+> 在分段閉包中更新或刪除資料時，所有對主索引鍵或外部索引鍵所做出的更改都有可能影響分段的資料庫查詢。更新或刪除資料也有可能讓某些資料不被包含在分段的結果中。
 
 <a name="streaming-results-lazily"></a>
 
@@ -184,7 +180,6 @@ DB::table('users')->orderBy('id')->lazy()->each(function ($user) {
     //
 });
 ```
-
 一樣，若要在迭代查詢結果的同時更新這些資料的話，最好該用 `lazyById` 或 `lazyByIdDesc` 方法。這些方法會自動使用這些資料的主索引鍵來為查詢結果分頁：
 
 ```php
@@ -195,8 +190,8 @@ DB::table('users')->where('active', false)
             ->update(['active' => true]);
     });
 ```
-
-> {note} 在迭代時更新或刪除資料時，所有對主索引鍵或外部索引鍵所做出的更改都有可能影響分段的資料庫查詢。更新或刪除資料也有可能讓某些資料不被包含查詢結果中。
+> [!NOTE]  
+> 在迭代時更新或刪除資料時，所有對主索引鍵或外部索引鍵所做出的更改都有可能影響分段的資料庫查詢。更新或刪除資料也有可能讓某些資料不被包含查詢結果中。
 
 <a name="aggregates"></a>
 
@@ -209,13 +204,11 @@ Query Builder 還提供了許多用來取得彙總值的方法，如 `count`、`
     $users = DB::table('users')->count();
     
     $price = DB::table('orders')->max('price');
-
 當然，我們也可以使用其他閉包來組合使用這些方法，以微調這些彙總值的計算方法：
 
     $price = DB::table('orders')
                     ->where('finalized', 1)
                     ->avg('price');
-
 <a name="determining-if-records-exist"></a>
 
 #### 判斷資料是否存在
@@ -229,7 +222,6 @@ Query Builder 還提供了許多用來取得彙總值的方法，如 `count`、`
     if (DB::table('orders')->where('finalized', 1)->doesntExist()) {
         // ...
     }
-
 <a name="select-statements"></a>
 
 ## Select 陳述式
@@ -245,30 +237,27 @@ Query Builder 還提供了許多用來取得彙總值的方法，如 `count`、`
     $users = DB::table('users')
                 ->select('name', 'email as user_email')
                 ->get();
-
 可使用 `distinct` 方法來強制查詢只回傳不重複的結果：
 
     $users = DB::table('users')->distinct()->get();
-
 若已經有現有的 Query Builder 實體，而想在現有的 select 子句內新增欄位的話，可使用 `addSelect` 方法：
 
     $query = DB::table('users')->select('name');
     
     $users = $query->addSelect('age')->get();
-
 <a name="raw-expressions"></a>
 
 ## Raw 運算式
 
-有時候，我們會需要在查詢中插入任意字串。若要建立 ^[Raw](原始的) 字串運算式，可使用 `DB` Facade 提供的 `raw` 方法：
+有時候，我們會需要在查詢中插入任意字串。若要建立 ^[Raw](%E5%8E%9F%E5%A7%8B%E7%9A%84) 字串運算式，可使用 `DB` Facade 提供的 `raw` 方法：
 
     $users = DB::table('users')
                  ->select(DB::raw('count(*) as user_count, status'))
                  ->where('status', '<>', 1)
                  ->groupBy('status')
                  ->get();
-
-> {note} Raw 運算式會直接以字串形式插入到查詢中，因此在使用上必須格外小心，以避免 SQL Injection 弱點。
+> [!NOTE]  
+> Raw 陳述式會直接以字串形式插入到查詢中，因此在使用上必須格外小心，以避免 SQL Injection 弱點。
 
 <a name="raw-methods"></a>
 
@@ -285,7 +274,6 @@ Query Builder 還提供了許多用來取得彙總值的方法，如 `count`、`
     $orders = DB::table('orders')
                     ->selectRaw('price * ? as price_with_tax', [1.0825])
                     ->get();
-
 <a name="whereraw-orwhereraw"></a>
 
 #### `whereRaw / orWhereRaw`
@@ -295,7 +283,6 @@ Query Builder 還提供了許多用來取得彙總值的方法，如 `count`、`
     $orders = DB::table('orders')
                     ->whereRaw('price > IF(state = "TX", ?, 100)', [200])
                     ->get();
-
 <a name="havingraw-orhavingraw"></a>
 
 #### `havingRaw / orHavingRaw`
@@ -307,7 +294,6 @@ Query Builder 還提供了許多用來取得彙總值的方法，如 `count`、`
                     ->groupBy('department')
                     ->havingRaw('SUM(price) > ?', [2500])
                     ->get();
-
 <a name="orderbyraw"></a>
 
 #### `orderByRaw`
@@ -317,7 +303,6 @@ Query Builder 還提供了許多用來取得彙總值的方法，如 `count`、`
     $orders = DB::table('orders')
                     ->orderByRaw('updated_at - created_at DESC')
                     ->get();
-
 <a name="groupbyraw"></a>
 
 ### `groupByRaw`
@@ -328,7 +313,6 @@ Query Builder 還提供了許多用來取得彙總值的方法，如 `count`、`
                     ->select('city', 'state')
                     ->groupByRaw('city, state')
                     ->get();
-
 <a name="joins"></a>
 
 ## Join
@@ -346,7 +330,6 @@ Query Builder 也可用來在查詢內加入 Join 子句。若要使用基本的
                 ->join('orders', 'users.id', '=', 'orders.user_id')
                 ->select('users.*', 'contacts.phone', 'orders.price')
                 ->get();
-
 <a name="left-join-right-join-clause"></a>
 
 #### Left Join 與 Right Join 子句
@@ -360,7 +343,6 @@ Query Builder 也可用來在查詢內加入 Join 子句。若要使用基本的
     $users = DB::table('users')
                 ->rightJoin('posts', 'users.id', '=', 'posts.user_id')
                 ->get();
-
 <a name="cross-join-clause"></a>
 
 #### Cross Join 子句
@@ -370,7 +352,6 @@ Query Builder 也可用來在查詢內加入 Join 子句。若要使用基本的
     $sizes = DB::table('sizes')
                 ->crossJoin('colors')
                 ->get();
-
 <a name="advanced-join-clauses"></a>
 
 #### 進階的 Join 子句
@@ -382,7 +363,6 @@ Query Builder 也可用來在查詢內加入 Join 子句。若要使用基本的
                 $join->on('users.id', '=', 'contacts.user_id')->orOn(...);
             })
             ->get();
-
 若想在 Join 上使用「Where」子句，可使用 `JoinClause` 實體提供的 `where` 與 `orWhere` 方法。除了直接比較兩個欄位外，也可以使用這些方法將欄位與值相比較：
 
     DB::table('users')
@@ -391,7 +371,6 @@ Query Builder 也可用來在查詢內加入 Join 子句。若要使用基本的
                      ->where('contacts.user_id', '>', 5);
             })
             ->get();
-
 <a name="subquery-joins"></a>
 
 #### 子查詢的 Join
@@ -407,7 +386,6 @@ Query Builder 也可用來在查詢內加入 Join 子句。若要使用基本的
             ->joinSub($latestPosts, 'latest_posts', function ($join) {
                 $join->on('users.id', '=', 'latest_posts.user_id');
             })->get();
-
 <a name="unions"></a>
 
 ## Union
@@ -423,7 +401,6 @@ Laravel 的 Query Builder 還提供了一個可用來「Union」兩個或多個�
                 ->whereNull('last_name')
                 ->union($first)
                 ->get();
-
 除了 `union` 方法外，Laravel 的 Query Builder 還提供了一個 `unionAll` 方法。在使用 `unionAll` 方法結合的查詢中，若有重複記錄，將保留這些重複的記錄。`unionAll` 方法的^[簽章](Signature)與 `union` 方法相同。
 
 <a name="basic-where-clauses"></a>
@@ -442,11 +419,9 @@ Laravel 的 Query Builder 還提供了一個可用來「Union」兩個或多個�
                     ->where('votes', '=', 100)
                     ->where('age', '>', 35)
                     ->get();
-
 為了方便起見，如果要驗證欄位是否 `=` 給定的值，我們可以直接將該值傳給 `where` 方法的第二個引數。這時，Laravel 會假設要使用的是 `=` 運算子：
 
     $users = DB::table('users')->where('votes', 100)->get();
-
 與剛才提到的一樣，只要是做使用的資料庫系統所支援的運算子，我們都可以使用：
 
     $users = DB::table('users')
@@ -460,15 +435,14 @@ Laravel 的 Query Builder 還提供了一個可用來「Union」兩個或多個�
     $users = DB::table('users')
                     ->where('name', 'like', 'T%')
                     ->get();
-
 也可以傳入一組條件陣列給 `where` 函式。陣列中的各個元素都應為一個包含三個引數的陣列，這三個引數就是平常傳給 `where` 方法的值：
 
     $users = DB::table('users')->where([
         ['status', '=', '1'],
         ['subscribed', '<>', '1'],
     ])->get();
-
-> {note} PDO 不支援繫結欄位名稱。因此，絕對不要在查詢中以使用者輸入的值來參照欄位名稱。「order by」欄位亦同。
+> [!NOTE]  
+> PDO 不支援繫結欄位名稱。因此，絕對不要在查詢中以使用者輸入的值來參照欄位名稱。「order by」欄位亦同。
 
 <a name="or-where-clauses"></a>
 
@@ -480,7 +454,6 @@ Laravel 的 Query Builder 還提供了一個可用來「Union」兩個或多個�
                         ->where('votes', '>', 100)
                         ->orWhere('name', 'John')
                         ->get();
-
 若將「or」條件放入括號中分組，則傳入一個閉包作為 `orWhere` 的第一個引數：
 
     $users = DB::table('users')
@@ -490,14 +463,13 @@ Laravel 的 Query Builder 還提供了一個可用來「Union」兩個或多個�
                           ->where('votes', '>', 50);
                 })
                 ->get();
-
 上述範例會產生下列 SQL：
 
 ```sql
 select * from users where votes > 100 or (name = 'Abigail' and votes > 50)
 ```
-
-> {note} 請總是將 `orWhere` 分組起來，以避免在有套用全域 Scope 時產生未預期的行為。
+> [!NOTE]  
+> 請總是將 `orWhere` 分組起來，以避免在有套用全域 Scope 時產生未預期的行為。
 
 <a name="json-where-clauses"></a>
 
@@ -508,19 +480,16 @@ select * from users where votes > 100 or (name = 'Abigail' and votes > 50)
     $users = DB::table('users')
                     ->where('preferences->dining->meal', 'salad')
                     ->get();
-
 也可以使用 `whereJsonContains` 來查詢 JSON 陣列。SQLite 資料庫目前不支援該功能：
 
     $users = DB::table('users')
                     ->whereJsonContains('options->languages', 'en')
                     ->get();
-
 若專案使用 MySQL 或 PostgreSQL 資料庫，則可遺傳一組陣列值給 `whereJsonContains` 方法：
 
     $users = DB::table('users')
                     ->whereJsonContains('options->languages', ['en', 'de'])
                     ->get();
-
 也可使用 `whereJsonLength` 方法來以長度查詢 JSON 陣列：
 
     $users = DB::table('users')
@@ -530,7 +499,6 @@ select * from users where votes > 100 or (name = 'Abigail' and votes > 50)
     $users = DB::table('users')
                     ->whereJsonLength('options->languages', '>', 1)
                     ->get();
-
 <a name="additional-where-clauses"></a>
 
 ### 額外的 Where 子句
@@ -542,7 +510,6 @@ select * from users where votes > 100 or (name = 'Abigail' and votes > 50)
     $users = DB::table('users')
                ->whereBetween('votes', [1, 100])
                ->get();
-
 **whereNotBetween / orWhereNotBetween**
 
 `whereNotBetween` 方法檢查某個欄位的值是否不介於兩個值之間：
@@ -550,7 +517,6 @@ select * from users where votes > 100 or (name = 'Abigail' and votes > 50)
     $users = DB::table('users')
                         ->whereNotBetween('votes', [1, 100])
                         ->get();
-
 **whereIn / whereNotIn / orWhereIn / orWhereNotIn**
 
 `whereIn` 方法可檢查給定欄位的值是否包含在給定陣列中：
@@ -558,14 +524,13 @@ select * from users where votes > 100 or (name = 'Abigail' and votes > 50)
     $users = DB::table('users')
                         ->whereIn('id', [1, 2, 3])
                         ->get();
-
 `whereNotIn` 方法可檢查給定欄位的值是否不包含在給定陣列中：
 
     $users = DB::table('users')
                         ->whereNotIn('id', [1, 2, 3])
                         ->get();
-
-> {note} 若要在查詢中加上大量的整數陣列，可使用 `whereIntegerInRaw` 與 `whereIntegerNotInRaw` 等方法來有效降低記憶體使用量。
+> [!NOTE]  
+> 若要在查詢中加上大量的整數陣列，可使用 `whereIntegerInRaw` 與 `whereIntegerNotInRaw` 等方法來有效降低記憶體使用量。
 
 **whereNull / whereNotNull / orWhereNull / orWhereNotNull**
 
@@ -574,13 +539,11 @@ select * from users where votes > 100 or (name = 'Abigail' and votes > 50)
     $users = DB::table('users')
                     ->whereNull('updated_at')
                     ->get();
-
 `whereNotNull` 方法檢查給定欄位的值是否不為 `NULL`：
 
     $users = DB::table('users')
                     ->whereNotNull('updated_at')
                     ->get();
-
 **whereDate / whereMonth / whereDay / whereYear / whereTime**
 
 `whereDate` 方法可用來將欄位值與特定日期比較：
@@ -588,31 +551,26 @@ select * from users where votes > 100 or (name = 'Abigail' and votes > 50)
     $users = DB::table('users')
                     ->whereDate('created_at', '2016-12-31')
                     ->get();
-
 `whereMonth` 方法可用來將欄位值與特定月份比較：
 
     $users = DB::table('users')
                     ->whereMonth('created_at', '12')
                     ->get();
-
 `whereDay` 方法可用來將欄位值與特定日比較：
 
     $users = DB::table('users')
                     ->whereDay('created_at', '31')
                     ->get();
-
 `whereYear` 方法可用來將欄位值與特定年份比較：
 
     $users = DB::table('users')
                     ->whereYear('created_at', '2016')
                     ->get();
-
 `whereTime` 方法可用來將欄位值與特定時間比較：
 
     $users = DB::table('users')
                     ->whereTime('created_at', '=', '11:20:45')
                     ->get();
-
 **whereColumn / orWhereColumn**
 
 `whereColumn` 方法可用來檢查兩個欄位是否相等：
@@ -620,13 +578,11 @@ select * from users where votes > 100 or (name = 'Abigail' and votes > 50)
     $users = DB::table('users')
                     ->whereColumn('first_name', 'last_name')
                     ->get();
-
 也可以穿入比較運算子給 `whereColumn` 方法：
 
     $users = DB::table('users')
                     ->whereColumn('updated_at', '>', 'created_at')
                     ->get();
-
 也可以穿入一組欄位比較陣列給 `whereColumn` 方法。傳入的條件會使用 `and` 運算子組合起來：
 
     $users = DB::table('users')
@@ -634,7 +590,6 @@ select * from users where votes > 100 or (name = 'Abigail' and votes > 50)
                         ['first_name', '=', 'last_name'],
                         ['updated_at', '>', 'created_at'],
                     ])->get();
-
 <a name="logical-grouping"></a>
 
 ### 邏輯分組
@@ -648,14 +603,13 @@ select * from users where votes > 100 or (name = 'Abigail' and votes > 50)
                          ->orWhere('title', '=', 'Admin');
                })
                ->get();
-
 就像這樣，傳入閉包給 `where` 就代表要讓 Query Builder 開啟一個條件限制的分組。該閉包會收到一個 Query Builder 實體，我們可以使用這個實體來在括號分組內設定其中要包含的條件限制。上述範例會產生這樣的 SQL：
 
 ```sql
 select * from users where name = 'John' and (votes > 100 or title = 'Admin')
 ```
-
-> {note} 請總是將 `orWhere` 分組起來，以避免在有套用全域 Scope 時產生未預期的行為。
+> [!NOTE]  
+> 請總是將 `orWhere` 分組起來，以避免在有套用全域 Scope 時產生未預期的行為。
 
 <a name="advanced-where-clauses"></a>
 
@@ -674,7 +628,6 @@ select * from users where name = 'John' and (votes > 100 or title = 'Admin')
                          ->whereColumn('orders.user_id', 'users.id');
                })
                ->get();
-
 上述查詢會產生下列 SQL：
 
 ```sql
@@ -685,7 +638,6 @@ where exists (
     where orders.user_id = users.id
 )
 ```
-
 <a name="subquery-where-clauses"></a>
 
 ### 子查詢的 Where 子句
@@ -701,7 +653,6 @@ where exists (
             ->orderByDesc('membership.start_date')
             ->limit(1);
     }, 'Pro')->get();
-
 或者，有時候我們還需要建立將某個欄位與子查詢結果比較的「where」子句。若要將欄位與子查詢的結果比較，請傳入一個欄位名稱、運算子、以及一個閉包給 `where` 方法。舉例來說，下列查詢會取得所有的收入 (Income) 記錄，其中，這些收入記錄的金額 (Amount) 必須小於平均值：
 
     use App\Models\Income;
@@ -709,7 +660,6 @@ where exists (
     $incomes = Income::where('amount', '<', function ($query) {
         $query->selectRaw('avg(i.amount)')->from('incomes as i');
     })->get();
-
 <a name="ordering-grouping-limit-and-offset"></a>
 
 ## Order、Group、Limit、Offset
@@ -727,14 +677,12 @@ where exists (
     $users = DB::table('users')
                     ->orderBy('name', 'desc')
                     ->get();
-
 若要使用多個欄位來排序，只需要叫用所需次數的 `orderBy` 方法即可：
 
     $users = DB::table('users')
                     ->orderBy('name', 'desc')
                     ->orderBy('email', 'asc')
                     ->get();
-
 <a name="latest-oldest"></a>
 
 #### `latest` 與 `oldest` 方法
@@ -744,7 +692,6 @@ where exists (
     $user = DB::table('users')
                     ->latest()
                     ->first();
-
 <a name="random-ordering"></a>
 
 #### 隨機排序
@@ -754,7 +701,6 @@ where exists (
     $randomUser = DB::table('users')
                     ->inRandomOrder()
                     ->first();
-
 <a name="removing-existing-orderings"></a>
 
 #### 移除現有的排序
@@ -764,13 +710,11 @@ where exists (
     $query = DB::table('users')->orderBy('name');
     
     $unorderedUsers = $query->reorder()->get();
-
 在呼叫 `reorder` 方法時也可以傳入欄位名稱與方向。若有傳入欄位名稱與方向，即可移除所有已套用的「order by」子句，並在查詢上套用全新的排序設定：
 
     $query = DB::table('users')->orderBy('name');
     
     $usersOrderedByEmail = $query->reorder('email', 'desc')->get();
-
 <a name="grouping"></a>
 
 ### 分組
@@ -785,7 +729,6 @@ where exists (
                     ->groupBy('account_id')
                     ->having('account_id', '>', 100)
                     ->get();
-
 我們也可以使用 `havingBetween` 方法來使用給定的範圍篩選查詢結果：
 
     $report = DB::table('orders')
@@ -793,14 +736,12 @@ where exists (
                     ->groupBy('customer_id')
                     ->havingBetween('number_of_orders', [5, 15])
                     ->get();
-
 也可以傳入多個引數給 `groupBy` 方法來分組多個欄位：
 
     $users = DB::table('users')
                     ->groupBy('first_name', 'status')
                     ->having('account_id', '>', 100)
                     ->get();
-
 若要建立更複雜的 `having` 陳述式，請參考 [`havingRaw`](#raw-methods) 方法。
 
 <a name="limit-and-offset"></a>
@@ -814,14 +755,12 @@ where exists (
 我們可以使用 `skip` 與 `take` 方法來限制查詢所回傳的結果數 (take)，或是在查詢中跳過特定數量的結果 (skip)：
 
     $users = DB::table('users')->skip(10)->take(5)->get();
-
 或者，我們也可以使用 `limit` 與 `offset` 方法。這兩個方法的功能與 `take` 跟 `skip` 方法相同：
 
     $users = DB::table('users')
                     ->offset(10)
                     ->limit(5)
                     ->get();
-
 <a name="conditional-clauses"></a>
 
 ## 條件式子句
@@ -835,7 +774,6 @@ where exists (
                         return $query->where('role_id', $role);
                     })
                     ->get();
-
 `when` 方法只會在第一個引數為 `true` 時才執行給定的閉包。若第一個引數為 `false`，則將不會執行該閉包。因此，在上述的範例中，只有在 `role` 欄位有出現在連入 Request 中，且取值為 `true` 值，才會叫用傳給 `when` 方法的閉包。
 
 我們也可以傳入另一個閉包給 `when` 方法，作為其第三個引數。只有在第一個引數取值為 `false` 時才會被執行。為了說明使用這個功能的情況，在這裡我們用這個功能來為查詢設定預設的排序：
@@ -849,7 +787,6 @@ where exists (
                         return $query->orderBy('name');
                     })
                     ->get();
-
 <a name="insert-statements"></a>
 
 ## Insert 陳述式
@@ -860,34 +797,32 @@ Laravel 的 Query Builder 還提供了一個 `insert` 方法，可用來將資�
         'email' => 'kayla@example.com',
         'votes' => 0
     ]);
-
 我們也可以傳入一組陣列的陣列來一次插入多筆記錄。其中，每個陣列都代表了要插入到資料表的一筆資料：
 
     DB::table('users')->insert([
         ['email' => 'picard@example.com', 'votes' => 0],
         ['email' => 'janeway@example.com', 'votes' => 0],
     ]);
-
 `insertOrIgnore` 方法在將資料插入資料庫時會忽略期間發生的錯誤：
 
     DB::table('users')->insertOrIgnore([
         ['id' => 1, 'email' => 'sisko@example.com'],
         ['id' => 2, 'email' => 'archer@example.com'],
     ]);
-
-> {note} `insertOrIgnore` 會忽略因重複資料而引發的錯誤，並且會依照資料庫引擎的不同而可能忽略其他不同類型的錯誤。舉例來說，`insertOrIgnore` 可以用來[繞過 MySQL 的「嚴格模式 - Strict Mode」](https://dev.mysql.com/doc/refman/en/sql-mode.html#ignore-effect-on-execution)。
+> [!NOTE]  
+> `insertOrIgnore` will ignore duplicate records and also may ignore other types of errors depending on the database engine. For example, `insertOrIgnore` will [bypass MySQL's strict mode](https://dev.mysql.com/doc/refman/en/sql-mode.html#ignore-effect-on-execution).
 
 <a name="auto-incrementing-ids"></a>
 
-#### ^[Auto-Increment](自動遞增) 的 ID
+#### ^[Auto-Increment](%E8%87%AA%E5%8B%95%E9%81%9E%E5%A2%9E) 的 ID
 
 若資料表有 Auto-Increment 的 ID，則可使用 `insertGetId` 方法來插入一筆資料，並取得該 ID：
 
     $id = DB::table('users')->insertGetId(
         ['email' => 'john@example.com', 'votes' => 0]
     );
-
-> {note} 使用 PostgreSQL 時，`insertGetId` 方法預設 Auto-Increment 的欄位名稱為 `id`。若想從不同的「^[Sequence](序列)」中取得 ID，則請傳入欄位名稱給 `insertGetId` 方法的第二個因數。
+> [!NOTE]  
+> 使用 PostgreSQL 時，`insertGetId` 方法預設 Auto-Increment 的欄位名稱為 `id`。若想從不同的「^[Sequence](%E5%BA%8F%E5%88%97)」中取得 ID，則請傳入欄位名稱給 `insertGetId` 方法的第二個因數。
 
 <a name="upserts"></a>
 
@@ -899,10 +834,10 @@ Laravel 的 Query Builder 還提供了一個 `insert` 方法，可用來將資�
         ['departure' => 'Oakland', 'destination' => 'San Diego', 'price' => 99],
         ['departure' => 'Chicago', 'destination' => 'New York', 'price' => 150]
     ], ['departure', 'destination'], ['price']);
-
 在上述範例中，Laravel 會嘗試插入量比記錄。若資料庫中已有相同的 `depature` 與 `destination` 欄位值，則 Laravel 會更新該筆資料的 `price` 欄位。
 
-> {note} 除了 SQL Server 以外，所有的資料庫都要求 `upsert` 方法第二個引數中的欄位必須有「Primary」或「Unique」索引。此外，MySQL 資料庫 Driver 會忽略 `upsert` 方法的第二個引數，該 Driver 只會使用該資料表的「Primary」與「Unique」索引來判斷現有的記錄。
+> [!NOTE]  
+> 除了 SQL Server 以外，所有的資料庫都要求 `upsert` 方法第二個引數中的欄位必須有「Primary」或「Unique」索引。此外，MySQL 資料庫 Driver 會忽略 `upsert` 方法的第二個引數，該 Driver 只會使用該資料表的「Primary」與「Unique」索引來判斷現有的記錄。
 
 <a name="update-statements"></a>
 
@@ -913,7 +848,6 @@ Laravel 的 Query Builder 還提供了一個 `insert` 方法，可用來將資�
     $affected = DB::table('users')
                   ->where('id', 1)
                   ->update(['votes' => 1]);
-
 <a name="update-or-insert"></a>
 
 #### Update Or Insert
@@ -927,7 +861,6 @@ Laravel 的 Query Builder 還提供了一個 `insert` 方法，可用來將資�
             ['email' => 'john@example.com', 'name' => 'John'],
             ['votes' => '2']
         );
-
 <a name="updating-json-columns"></a>
 
 ### 更新 JSON 欄位
@@ -937,7 +870,6 @@ Laravel 的 Query Builder 還提供了一個 `insert` 方法，可用來將資�
     $affected = DB::table('users')
                   ->where('id', 1)
                   ->update(['options->enabled' => true]);
-
 <a name="increment-and-decrement"></a>
 
 ### 遞增與遞減
@@ -951,11 +883,9 @@ Laravel 的 Query Builder 還提供了用來遞增與遞減給定欄位值的方
     DB::table('users')->decrement('votes');
     
     DB::table('users')->decrement('votes', 5);
-
 在遞增或遞減時，也可以指定其他要更新的欄位：
 
     DB::table('users')->increment('votes', 1, ['name' => 'John']);
-
 <a name="delete-statements"></a>
 
 ## Delete 陳述式
@@ -965,11 +895,9 @@ Laravel 的 Query Builder 還提供了用來遞增與遞減給定欄位值的方
     $deleted = DB::table('users')->delete();
     
     $deleted = DB::table('users')->where('votes', '>', 100)->delete();
-
-若想 ^[Truncate](截斷) 整張資料表，也就是從資料表中移除所有資料，並將 Auto-Increment 的 ID 重設為 0，則可使用 `truncate` 方法：
+若想 ^[Truncate](%E6%88%AA%E6%96%B7) 整張資料表，也就是從資料表中移除所有資料，並將 Auto-Increment 的 ID 重設為 0，則可使用 `truncate` 方法：
 
     DB::table('users')->truncate();
-
 <a name="table-truncation-and-postgresql"></a>
 
 #### Truncate 資料表與 PostgreSQL
@@ -986,14 +914,12 @@ Laravel 的 Query Builder 中，還包含了一些能讓我們在執行 `select`
             ->where('votes', '>', 100)
             ->sharedLock()
             ->get();
-
 或者，我們也可以使用 `lockForUpdate` 方法。「For Update」Lock 可防止 Select 陳述式所取得的資料被修改，並且讓其他 Shared Lock 無法 Select 該資料：
 
     DB::table('users')
             ->where('votes', '>', 100)
             ->lockForUpdate()
             ->get();
-
 <a name="debugging"></a>
 
 ## 偵錯

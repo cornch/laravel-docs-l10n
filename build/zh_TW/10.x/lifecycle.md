@@ -1,23 +1,21 @@
 ---
-contributors:
-  14684796:
-    avatarUrl: https://crowdin-static.downloads.crowdin.com/avatar/14684796/medium/60f7dc21ec0bf9cfcb61983640bb4809_default.png
-    name: cornch
-crowdinUrl: https://crowdin.com/translate/laravel-docs/93/en-zhtw
-progress: 100
+crowdinUrl: 'https://crowdin.com/translate/laravel-docs/93/en-zhtw'
 updatedAt: '2023-02-11T10:27:00Z'
+contributors: {  }
+progress: 67.24
 ---
 
 # Request 的生命週期
 
 - [簡介](#introduction)
 - [生命週期概覽](#lifecycle-overview)
-   - [第一步](#first-steps)
-   - [HTTP Kernel 與 Console Kernel](#http-console-kernels)
-   - [Service Provider](#service-providers)
-   - [路由](#routing)
-   - [結束](#finishing-up)
-- [專注於 Service Provider](#focus-on-service-providers)
+  - [第一步](#first-steps)
+  - [HTTP Kernel 與 Console Kernel](#http-console-kernels)
+  - [Service Provider](#service-providers)
+  - [路由](#routing)
+  - [結束](#finishing-up)
+  
+- [Focus on Service Providers](#focus-on-service-providers)
 
 <a name="introduction"></a>
 
@@ -83,7 +81,7 @@ Route 或 Controller 方法回傳 Response 之後，這個 Response 會再反過
 
 <a name="focus-on-service-providers"></a>
 
-## 專注於 Service Provider
+## Focus on Service Providers
 
 Service Provider 真的是啟動 Laravel 應用程式的關鍵。建立應用程式實體，然後註冊 Service Provider、最後再將 Request 交給已啟動的應用程式。真的就只有這麼簡單！
 

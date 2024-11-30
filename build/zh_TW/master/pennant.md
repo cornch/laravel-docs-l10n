@@ -1,8 +1,8 @@
 ---
-contributors: {}
-crowdinUrl: https://crowdin.com/translate/laravel-docs/183/en-zhtw
-progress: 0
+crowdinUrl: 'https://crowdin.com/translate/laravel-docs/183/en-zhtw'
 updatedAt: '2024-06-30T08:27:00Z'
+contributors: {  }
+progress: 0.0
 ---
 
 # Laravel Pennant
@@ -11,34 +11,41 @@ updatedAt: '2024-06-30T08:27:00Z'
 - [Installation](#installation)
 - [Configuration](#configuration)
 - [Defining Features](#defining-features)
-   - [Class Based Features](#class-based-features)
+  - [Class Based Features](#class-based-features)
+  
 - [Checking Features](#checking-features)
-   - [Conditional Execution](#conditional-execution)
-   - [The `HasFeatures` Trait](#the-has-features-trait)
-   - [Blade Directive](#blade-directive)
-   - [Middleware](#middleware)
-   - [In-Memory Cache](#in-memory-cache)
+  - [Conditional Execution](#conditional-execution)
+  - [The `HasFeatures` Trait](#the-has-features-trait)
+  - [Blade Directive](#blade-directive)
+  - [Middleware](#middleware)
+  - [In-Memory Cache](#in-memory-cache)
+  
 - [Scope](#scope)
-   - [Specifying The Scope](#specifying-the-scope)
-   - [Default Scope](#default-scope)
-   - [Nullable Scope](#nullable-scope)
-   - [Identifying Scope](#identifying-scope)
+  - [Specifying the Scope](#specifying-the-scope)
+  - [Default Scope](#default-scope)
+  - [Nullable Scope](#nullable-scope)
+  - [Identifying Scope](#identifying-scope)
+  - [Serializing Scope](#serializing-scope)
+  
 - [Rich Feature Values](#rich-feature-values)
+- [Retrieving Multiple Features](#retrieving-multiple-features)
 - [Eager Loading](#eager-loading)
 - [Updating Values](#updating-values)
-   - [Bulk Updates](#bulk-updates)
-   - [Purging Features](#purging-features)
+  - [Bulk Updates](#bulk-updates)
+  - [Purging Features](#purging-features)
+  
 - [Testing](#testing)
 - [Adding Custom Pennant Drivers](#adding-custom-pennant-drivers)
-   - [Implementing The Driver](#implementing-the-driver)
-   - [Registering The Driver](#registering-the-driver)
+  - [Implementing the Driver](#implementing-the-driver)
+  - [Registering the Driver](#registering-the-driver)
+  
 - [Events](#events)
 
 <a name="introduction"></a>
 
 ## Introduction
 
-[Laravel Pennant](https://github.com/laravel/pennant) is a simple and lightweight feature flag package - without the cruft. Feature flags enable you to incrementally roll out new application features with confidence, A/B test new interface designs, compliment a trunk-based development strategy, and much more.
+[Laravel Pennant](https://github.com/laravel/pennant) is a simple and light-weight feature flag package - without the cruft. Feature flags enable you to incrementally roll out new application features with confidence, A/B test new interface designs, complement a trunk-based development strategy, and much more.
 
 <a name="installation"></a>
 
@@ -49,19 +56,16 @@ First, install Pennant into your project using the Composer package manager:
 ```shell
 composer require laravel/pennant
 ```
-
 Next, you should publish the Pennant configuration and migration files using the `vendor:publish` Artisan command:
 
 ```shell
 php artisan vendor:publish --provider="Laravel\Pennant\PennantServiceProvider"
 ```
-
 Finally, you should run your application's database migrations. This will create a `features` table that Pennant uses to power its `database` driver:
 
 ```shell
 php artisan migrate
 ```
-
 <a name="configuration"></a>
 
 ## Configuration
@@ -103,7 +107,6 @@ class AppServiceProvider extends ServiceProvider
     }
 }
 ```
-
 As you can see, we have the following rules for our feature:
 
 - All internal team members should be using the new API.
@@ -115,7 +118,6 @@ The first time the `new-api` feature is checked for a given user, the result of 
 For convenience, if a feature definition only returns a lottery, you may omit the closure completely:
 
     Feature::define('site-redesign', Lottery::odds(1, 1000));
-
 <a name="class-based-features"></a>
 
 ### Class Based Features
@@ -125,7 +127,6 @@ Pennant also allows you to define class based features. Unlike closure based fea
 ```shell
 php artisan pennant:feature NewApi
 ```
-
 When writing a feature class, you only need to define a `resolve` method, which will be invoked to resolve the feature's initial value for a given scope. Again, the scope will typically be the currently authenticated user:
 
 ```php
@@ -150,9 +151,30 @@ class NewApi
     }
 }
 ```
+> [!NOTE]  
+> Feature classes are resolved via the [container](/docs/{{version}}/container), so you may inject dependencies into the feature class's constructor when needed.
 
-> **Note** Feature classes are resolved via the [container](/docs/{{version}}/container), so you may inject dependencies into the feature class's constructor when needed.
+#### Customizing the Stored Feature Name
 
+By default, Pennant will store the feature class's fully qualified class name. If you would like to decouple the stored feature name from the application's internal structure, you may specify a `$name` property on the feature class. The value of this property will be stored in place of the class name:
+
+```php
+<?php
+
+namespace App\Features;
+
+class NewApi
+{
+    /**
+     * The stored name of the feature.
+     *
+     * @var string
+     */
+    public $name = 'new-api';
+
+    // ...
+}
+```
 <a name="checking-features"></a>
 
 ## Checking Features
@@ -183,7 +205,6 @@ class PodcastController
     // ...
 }
 ```
-
 Although features are checked against the currently authenticated user by default, you may easily check the feature against another user or [scope](#scope). To accomplish this, use the `for` method offered by the `Feature` facade:
 
 ```php
@@ -191,7 +212,6 @@ return Feature::for($user)->active('new-api')
         ? $this->resolveNewApiResponse($request)
         : $this->resolveLegacyApiResponse($request);
 ```
-
 Pennant also offers some additional convenience methods that may prove useful when determining if a feature is active or not:
 
 ```php
@@ -210,8 +230,8 @@ Feature::allAreInactive(['new-api', 'site-redesign']);
 // Determine if any of the given features are inactive...
 Feature::someAreInactive(['new-api', 'site-redesign']);
 ```
-
-> **Note** When using Pennant outside of an HTTP context, such as in an Artisan command or a queued job, you should typically [explicitly specify the feature's scope](#specifying-the-scope). Alternatively, you may define a [default scope](#default-scope) that accounts for both authenticated HTTP contexts and unauthenticated contexts.
+> [!NOTE]  
+> When using Pennant outside of an HTTP context, such as in an Artisan command or a queued job, you should typically [explicitly specify the feature's scope](#specifying-the-scope). Alternatively, you may define a [default scope](#default-scope) that accounts for both authenticated HTTP contexts and unauthenticated contexts.
 
 <a name="checking-class-based-features"></a>
 
@@ -244,7 +264,6 @@ class PodcastController
     // ...
 }
 ```
-
 <a name="conditional-execution"></a>
 
 ### Conditional Execution
@@ -275,14 +294,12 @@ The `when` method may be used to fluently execute a given closure if a feature i
     
         // ...
     }
-
 The `unless` method serves as the inverse of the `when` method, executing the first closure if the feature is inactive:
 
     return Feature::unless(NewApi::class,
         fn () => $this->resolveLegacyApiResponse($request),
         fn () => $this->resolveNewApiResponse($request),
     );
-
 <a name="the-has-features-trait"></a>
 
 ### The `HasFeatures` Trait
@@ -304,7 +321,6 @@ class User extends Authenticatable
     // ...
 }
 ```
-
 Once the trait has been added to your model, you may easily check features by invoking the `features` method:
 
 ```php
@@ -312,7 +328,6 @@ if ($user->features()->active('new-api')) {
     // ...
 }
 ```
-
 Of course, the `features` method provides access to many other convenient methods for interacting with features:
 
 ```php
@@ -340,7 +355,6 @@ $user->features()->unless('new-api',
     fn () => /* ... */,
 );
 ```
-
 <a name="blade-directive"></a>
 
 ### Blade Directive
@@ -354,33 +368,23 @@ To make checking features in Blade a seamless experience, Pennant offers a `@fea
     <!-- 'site-redesign' is inactive -->
 @endfeature
 ```
-
 <a name="middleware"></a>
 
 ### Middleware
 
-Pennant also includes a [middleware](/docs/{{version}}/middleware) that may be used to verify the currently authenticated user has access to a feature before a route is even invoked. To get started, you should add a middleware alias for the `EnsureFeaturesAreActive` middleware to your application's `app/Http/Kernel.php` file:
+Pennant also includes a [middleware](/docs/{{version}}/middleware) that may be used to verify the currently authenticated user has access to a feature before a route is even invoked. You may assign the middleware to a route and specify the features that are required to access the route. If any of the specified features are inactive for the currently authenticated user, a `400 Bad Request` HTTP response will be returned by the route. Multiple features may be passed to the static `using` method.
 
 ```php
+use Illuminate\Support\Facades\Route;
 use Laravel\Pennant\Middleware\EnsureFeaturesAreActive;
 
-protected $middlewareAliases = [
-    // ...
-    'features' => EnsureFeaturesAreActive::class,
-];
-```
-
-Next, you may assign the middleware to a route and specify the features that are required to access the route. If any of the specified features are inactive for the currently authenticated user, a `400 Bad Request` HTTP response will be returned by the route. Multiple features may be specified using a comma-delimited list:
-
-```php
 Route::get('/api/servers', function () {
     // ...
-})->middleware(['features:new-api,servers-api']);
+})->middleware(EnsureFeaturesAreActive::using('new-api', 'servers-api'));
 ```
-
 <a name="customizing-the-response"></a>
 
-#### Customizing The Response
+#### Customizing the Response
 
 If you would like to customize the response that is returned by the middleware when one of the listed features is inactive, you may use the `whenInactive` method provided by the `EnsureFeaturesAreActive` middleware. Typically, this method should be invoked within the `boot` method of one of your application's service providers:
 
@@ -403,7 +407,6 @@ public function boot(): void
     // ...
 }
 ```
-
 <a name="in-memory-cache"></a>
 
 ### In-Memory Cache
@@ -413,14 +416,13 @@ When checking a feature, Pennant will create an in-memory cache of the result. I
 If you need to manually flush the in-memory cache, you may use the `flushCache` method offered by the `Feature` facade:
 
     Feature::flushCache();
-
 <a name="scope"></a>
 
 ## Scope
 
 <a name="specifying-the-scope"></a>
 
-### Specifying The Scope
+### Specifying the Scope
 
 As discussed, features are typically checked against the currently authenticated user. However, this may not always suit your needs. Therefore, it is possible to specify the scope you would like to check a given feature against via the `Feature` facade's `for` method:
 
@@ -429,7 +431,6 @@ return Feature::for($user)->active('new-api')
         ? $this->resolveNewApiResponse($request)
         : $this->resolveLegacyApiResponse($request);
 ```
-
 Of course, feature scopes are not limited to "users". Imagine you have built a new billing experience that you are rolling out to entire teams rather than individual users. Perhaps you would like the oldest teams to have a slower rollout than the newer teams. Your feature resolution closure might look something like the following:
 
 ```php
@@ -450,7 +451,6 @@ Feature::define('billing-v2', function (Team $team) {
     return Lottery::odds(1 / 1000);
 });
 ```
-
 You will notice that the closure we have defined is not expecting a `User`, but is instead expecting a `Team` model. To determine if this feature is active for a user's team, you should pass the team to the `for` method offered by the `Feature` facade:
 
 ```php
@@ -460,7 +460,6 @@ if (Feature::for($user->team)->active('billing-v2')) {
 
 // ...
 ```
-
 <a name="default-scope"></a>
 
 ### Default Scope
@@ -489,7 +488,6 @@ class AppServiceProvider extends ServiceProvider
     }
 }
 ```
-
 If no scope is explicitly provided via the `for` method, the feature check will now use the currently authenticated user's team as the default scope:
 
 ```php
@@ -499,14 +497,15 @@ Feature::active('billing-v2');
 
 Feature::for($user->team)->active('billing-v2');
 ```
-
 <a name="nullable-scope"></a>
 
 ### Nullable Scope
 
-If the scope you are passing to a feature is potentially `null`, you should account for that in your feature's definition. A `null` scope may occur if you check a feature within an Artisan command, queued job, or unauthenticated route. Since there is usually not an authenticated user in these contexts, the default scope will be `null`.
+If the scope you provide when checking a feature is `null` and the feature's definition does not support `null` via a nullable type or by including `null` in a union type, Pennant will automatically return `false` as the feature's result value.
 
-If you do not always [explictly specify your feature scope](#specifying-the-scope) then you should ensure the scope's type is "nullable" and handle the `null` scope value within your feature definition logic:
+So, if the scope you are passing to a feature is potentially `null` and you want the feature's value resolver to be invoked, you should account for that in your feature's definition. A `null` scope may occur if you check a feature within an Artisan command, queued job, or unauthenticated route. Since there is usually not an authenticated user in these contexts, the default scope will be `null`.
+
+If you do not always [explicitly specify your feature scope](#specifying-the-scope) then you should ensure the scope's type is "nullable" and handle the `null` scope value within your feature definition logic:
 
 ```php
 use App\Models\User;
@@ -521,7 +520,6 @@ Feature::define('new-api', fn (User|null $user) => match (true) {// [tl! add]
     default => Lottery::odds(1 / 100),
 });
 ```
-
 <a name="identifying-scope"></a>
 
 ### Identifying Scope
@@ -555,7 +553,25 @@ class User extends Model implements FeatureScopeable
     }
 }
 ```
+<a name="serializing-scope"></a>
 
+### Serializing Scope
+
+By default, Pennant will use a fully qualified class name when storing a feature associated with an Eloquent model. If you are already using an [Eloquent morph map](/docs/{{version}}/eloquent-relationships#custom-polymorphic-types), you may choose to have Pennant also use the morph map to decouple the stored feature from your application structure.
+
+To achieve this, after defining your Eloquent morph map in a service provider, you may invoke the `Feature` facade's `useMorphMap` method:
+
+```php
+use Illuminate\Database\Eloquent\Relations\Relation;
+use Laravel\Pennant\Feature;
+
+Relation::enforceMorphMap([
+    'post' => 'App\Models\Post',
+    'video' => 'App\Models\Video',
+]);
+
+Feature::useMorphMap();
+```
 <a name="rich-feature-values"></a>
 
 ## Rich Feature Values
@@ -574,13 +590,11 @@ Feature::define('purchase-button', fn (User $user) => Arr::random([
     'tart-orange',
 ]));
 ```
-
 You may retrieve the value of the `purchase-button` feature using the `value` method:
 
 ```php
 $color = Feature::value('purchase-button');
 ```
-
 Pennant's included Blade directive also makes it easy to conditionally render content based on the current value of the feature:
 
 ```blade
@@ -592,9 +606,81 @@ Pennant's included Blade directive also makes it easy to conditionally render co
     <!-- 'tart-orange' is active -->
 @endfeature
 ```
+> [!NOTE]  
+> When using rich values, it is important to know that a feature is considered "active" when it has any value other than `false`.
 
-> **Note** When using rich values, it is important to know that a feature is considered "active" when it has any value other than `false`.
+When calling the [conditional `when`](#conditional-execution) method, the feature's rich value will be provided to the first closure:
 
+    Feature::when('purchase-button',
+        fn ($color) => /* ... */,
+        fn () => /* ... */,
+    );
+Likewise, when calling the conditional `unless` method, the feature's rich value will be provided to the optional second closure:
+
+    Feature::unless('purchase-button',
+        fn () => /* ... */,
+        fn ($color) => /* ... */,
+    );
+<a name="retrieving-multiple-features"></a>
+
+## Retrieving Multiple Features
+
+The `values` method allows the retrieval of multiple features for a given scope:
+
+```php
+Feature::values(['billing-v2', 'purchase-button']);
+
+// [
+//     'billing-v2' => false,
+//     'purchase-button' => 'blue-sapphire',
+// ]
+```
+Or, you may use the `all` method to retrieve the values of all defined features for a given scope:
+
+```php
+Feature::all();
+
+// [
+//     'billing-v2' => false,
+//     'purchase-button' => 'blue-sapphire',
+//     'site-redesign' => true,
+// ]
+```
+However, class based features are dynamically registered and are not known by Pennant until they are explicitly checked. This means your application's class based features may not appear in the results returned by the `all` method if they have not already been checked during the current request.
+
+If you would like to ensure that feature classes are always included when using the `all` method, you may use Pennant's feature discovery capabilities. To get started, invoke the `discover` method in one of your application's service providers:
+
+    <?php
+    
+    namespace App\Providers;
+    
+    use Illuminate\Support\ServiceProvider;
+    use Laravel\Pennant\Feature;
+    
+    class AppServiceProvider extends ServiceProvider
+    {
+        /**
+         * Bootstrap any application services.
+         */
+        public function boot(): void
+        {
+            Feature::discover();
+    
+            // ...
+        }
+    }
+The `discover` method will register all of the feature classes in your application's `app/Features` directory. The `all` method will now include these classes in its results, regardless of whether they have been checked during the current request:
+
+```php
+Feature::all();
+
+// [
+//     'App\Features\NewApi' => true,
+//     'billing-v2' => false,
+//     'purchase-button' => 'blue-sapphire',
+//     'site-redesign' => true,
+// ]
+```
 <a name="eager-loading"></a>
 
 ## Eager Loading
@@ -612,7 +698,6 @@ foreach ($users as $user) {
     }
 }
 ```
-
 Assuming we are using the database driver, this code will execute a database query for every user in the loop - executing potentially hundreds of queries. However, using Pennant's `load` method, we can remove this potential performance bottleneck by eager loading the feature values for a collection of users or scopes:
 
 ```php
@@ -624,7 +709,6 @@ foreach ($users as $user) {
     }
 }
 ```
-
 To load feature values only when they have not already been loaded, you may use the `loadMissing` method:
 
 ```php
@@ -634,7 +718,6 @@ Feature::for($users)->loadMissing([
     'notifications-beta',
 ]);
 ```
-
 <a name="updating-values"></a>
 
 ## Updating Values
@@ -652,19 +735,16 @@ Feature::activate('new-api');
 // Deactivate the feature for the given scope...
 Feature::for($user->team)->deactivate('billing-v2');
 ```
-
 It is also possible to manually set a rich value for a feature by providing a second argument to the `activate` method:
 
 ```php
 Feature::activate('purchase-button', 'seafoam-green');
 ```
-
 To instruct Pennant to forget the stored value for a feature, you may use the `forget` method. When the feature is checked again, Pennant will resolve the feature's value from its feature definition:
 
 ```php
 Feature::forget('purchase-button');
 ```
-
 <a name="bulk-updates"></a>
 
 ### Bulk Updates
@@ -680,14 +760,13 @@ Feature::activateForEveryone('new-api');
 
 Feature::activateForEveryone('purchase-button', 'seafoam-green');
 ```
-
 Alternatively, you may deactivate the feature for all users:
 
 ```php
 Feature::deactivateForEveryone('new-api');
 ```
-
-> **Note** This will only update the resolved feature values that have been stored by Pennant's storage driver. You will also need to update the feature definition in your application.
+> [!NOTE]  
+> This will only update the resolved feature values that have been stored by Pennant's storage driver. You will also need to update the feature definition in your application.
 
 <a name="purging-features"></a>
 
@@ -704,21 +783,28 @@ Feature::purge('new-api');
 // Purging multiple features...
 Feature::purge(['new-api', 'purchase-button']);
 ```
-
 If you would like to purge *all* features from storage, you may invoke the `purge` method without any arguments:
 
 ```php
 Feature::purge();
 ```
-
-As it can be useful to purge features as part of your application's deployment pipeline, Pennant includes a `pennant:purge` Artisan command:
+As it can be useful to purge features as part of your application's deployment pipeline, Pennant includes a `pennant:purge` Artisan command which will purge the provided features from storage:
 
 ```sh
 php artisan pennant:purge new-api
 
 php artisan pennant:purge new-api purchase-button
 ```
+It is also possible to purge all features *except* those in a given feature list. For example, imagine you wanted to purge all features but keep the values for the "new-api" and "purchase-button" features in storage. To accomplish this, you can pass those feature names to the `--except` option:
 
+```sh
+php artisan pennant:purge --except=new-api --except=purchase-button
+```
+For convenience, the `pennant:purge` command also supports an `--except-registered` flag. This flag indicates that all features except those explicitly registered in a service provider should be purged:
+
+```sh
+php artisan pennant:purge --except-registered
+```
 <a name="testing"></a>
 
 ## Testing
@@ -735,9 +821,17 @@ Feature::define('purchase-button', fn () => Arr::random([
     'tart-orange',
 ]));
 ```
-
 To modify the feature's returned value in your tests, you may re-define the feature at the beginning of the test. The following test will always pass, even though the `Arr::random()` implementation is still present in the service provider:
 
+```php
+use Laravel\Pennant\Feature;
+
+test('it can control feature values', function () {
+    Feature::define('purchase-button', 'seafoam-green');
+
+    expect(Feature::value('purchase-button'))->toBe('seafoam-green');
+});
+```
 ```php
 use Laravel\Pennant\Feature;
 
@@ -748,9 +842,17 @@ public function test_it_can_control_feature_values()
     $this->assertSame('seafoam-green', Feature::value('purchase-button'));
 }
 ```
-
 The same approach may be used for class based features:
 
+```php
+use Laravel\Pennant\Feature;
+
+test('it can control feature values', function () {
+    Feature::define(NewApi::class, true);
+
+    expect(Feature::value(NewApi::class))->toBeTrue();
+});
+```
 ```php
 use App\Features\NewApi;
 use Laravel\Pennant\Feature;
@@ -762,16 +864,31 @@ public function test_it_can_control_feature_values()
     $this->assertTrue(Feature::value(NewApi::class));
 }
 ```
-
 If your feature is returning a `Lottery` instance, there are a handful of useful [testing helpers available](/docs/{{version}}/helpers#testing-lotteries).
 
+<a name="store-configuration"></a>
+
+#### Store Configuration
+
+You may configure the store that Pennant will use during testing by defining the `PENNANT_STORE` environment variable in your application's `phpunit.xml` file:
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit colors="true">
+    <!-- ... -->
+    <php>
+        <env name="PENNANT_STORE" value="array"/>
+        <!-- ... -->
+    </php>
+</phpunit>
+```
 <a name="adding-custom-pennant-drivers"></a>
 
 ## Adding Custom Pennant Drivers
 
 <a name="implementing-the-driver"></a>
 
-#### Implementing The Driver
+#### Implementing the Driver
 
 If none of Pennant's existing storage drivers fit your application's needs, you may write your own storage driver. Your custom driver should implement the `Laravel\Pennant\Contracts\Driver` interface:
 
@@ -794,14 +911,14 @@ class RedisFeatureDriver implements Driver
     public function purge(array|null $features): void {}
 }
 ```
-
 Now, we just need to implement each of these methods using a Redis connection. For an example of how to implement each of these methods, take a look at the `Laravel\Pennant\Drivers\DatabaseDriver` in the [Pennant source code](https://github.com/laravel/pennant/blob/1.x/src/Drivers/DatabaseDriver.php)
 
-> **Note** Laravel does not ship with a directory to contain your extensions. You are free to place them anywhere you like. In this example, we have created an `Extensions` directory to house the `RedisFeatureDriver`.
+> [!NOTE]  
+> Laravel does not ship with a directory to contain your extensions. You are free to place them anywhere you like. In this example, we have created an `Extensions` directory to house the `RedisFeatureDriver`.
 
 <a name="registering-the-driver"></a>
 
-#### Registering The Driver
+#### Registering the Driver
 
 Once your driver has been implemented, you are ready to register it with Laravel. To add additional drivers to Pennant, you may use the `extend` method provided by the `Feature` facade. You should call the `extend` method from the `boot` method of one of your application's [service provider](/docs/{{version}}/providers):
 
@@ -836,7 +953,6 @@ class AppServiceProvider extends ServiceProvider
     }
 }
 ```
-
 Once the driver has been registered, you may use the `redis` driver in your application's `config/pennant.php` configuration file:
 
     'stores' => [
@@ -849,7 +965,6 @@ Once the driver has been registered, you may use the `redis` driver in your appl
         // ...
     
     ],
-
 <a name="events"></a>
 
 ## Events
@@ -871,14 +986,14 @@ For example, you may find it useful to listen for this event and `report` or thr
 
 namespace App\Providers;
 
-use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
+use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Event;
 use Laravel\Pennant\Events\RetrievingUnknownFeature;
 
-class EventServiceProvider extends ServiceProvider
+class AppServiceProvider extends ServiceProvider
 {
     /**
-     * Register any other events for your application.
+     * Bootstrap any application services.
      */
     public function boot(): void
     {
@@ -888,53 +1003,6 @@ class EventServiceProvider extends ServiceProvider
     }
 }
 ```
-
 ### `Laravel\Pennant\Events\DynamicallyDefiningFeature`
 
 This event is dispatched when a class based feature is being dynamically checked for the first time during a request.
-
-<a name="testing"></a>
-
-## Testing
-
-When testing code that interacts with feature flags, the easiest way to control the feature flag's returned value in your tests is to simply re-define the feature. For example, imagine you have the following feature defined in one of your application's service provider:
-
-```php
-use Illuminate\Support\Arr;
-use Laravel\Pennant\Feature;
-
-Feature::define('purchase-button', fn () => Arr::random([
-    'blue-sapphire',
-    'seafoam-green',
-    'tart-orange',
-]));
-```
-
-To modify the feature's returned value in your tests, you may re-define the feature at the beginning of the test. The following test will always pass, even though the `Arr::random()` implementation is still present in the service provider:
-
-```php
-use Laravel\Pennant\Feature;
-
-public function test_it_can_control_feature_values()
-{
-    Feature::define('purchase-button', 'seafoam-green');
-
-    $this->assertSame('seafoam-green', Feature::value('purchase-button'));
-}
-```
-
-The same approach may be used for class based features:
-
-```php
-use App\Features\NewApi;
-use Laravel\Pennant\Feature;
-
-public function test_it_can_control_feature_values()
-{
-    Feature::define(NewApi::class, true);
-
-    $this->assertTrue(Feature::value(NewApi::class));
-}
-```
-
-If your feature is returning a `Lottery` instance, there are a handful of useful [testing helpers available](/docs/{{version}}/helpers#testing-lotteries).

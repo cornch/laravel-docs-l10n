@@ -1,11 +1,9 @@
 ---
-contributors:
-  14684796:
-    avatarUrl: https://crowdin-static.downloads.crowdin.com/avatar/14684796/medium/60f7dc21ec0bf9cfcb61983640bb4809_default.png
-    name: cornch
-crowdinUrl: https://crowdin.com/translate/laravel-docs/101/en-zhtw
-progress: 100
+crowdinUrl: 'https://crowdin.com/translate/laravel-docs/101/en-zhtw'
 updatedAt: '2024-06-30T08:27:00Z'
+contributors:
+    14684796: { name: cornch, avatarUrl: 'https://crowdin-static.downloads.crowdin.com/avatar/14684796/medium/60f7dc21ec0bf9cfcb61983640bb4809_default.png' }
+progress: 28.96
 ---
 
 # 中介軟體 - Middleware
@@ -13,10 +11,11 @@ updatedAt: '2024-06-30T08:27:00Z'
 - [簡介](#introduction)
 - [定義 Middleware](#defining-middleware)
 - [註冊 Middleware](#registering-middleware)
-   - [全域 Middleware](#global-middleware)
-   - [將 Middleware 指派給 Route](#assigning-middleware-to-routes)
-   - [Middleware 群組](#middleware-groups)
-   - [排序 Middleware](#sorting-middleware)
+  - [全域 Middleware](#global-middleware)
+  - [將 Middleware 指派給 Route](#assigning-middleware-to-routes)
+  - [Middleware 群組](#middleware-groups)
+  - [排序 Middleware](#sorting-middleware)
+  
 - [Middleware 參數](#middleware-parameters)
 - [可終止的 Middleware](#terminable-middleware)
 
@@ -37,7 +36,6 @@ Middleware 提供了一個機制，可檢驗與過濾進入應用程式的 HTTP 
 ```shell
 php artisan make:middleware EnsureTokenIsValid
 ```
-
 該指令會在 `app/Http/Middleware` 目錄中放置一個新的 `EnsureTokenIsValid` 類別。在這個 Middleware 中，我們要只在提供的 `token` 符合特定的值時才允許存取該 Route。`token` 不符合時，會將使用者重新導向回到 `home` URI：
 
     <?php
@@ -64,14 +62,14 @@ php artisan make:middleware EnsureTokenIsValid
             return $next($request);
         }
     }
-
 就像我們可以看到的一樣，若給定的 `token` 不符合我們的私密權杖 (Secret Token)，則這個 Middleware 會回傳一個 HTTP Redirect 給用戶端。`token` 符合時，這個 Request 就會進一步地傳給我們的程式。若要將 Request 進一步傳進我們的應用程式中 (即，讓 Middleware「通過 - Pass」)，應以 `$request` 呼叫 `$next` 回呼。
 
 最好想像成我們有「一層又一層」的 Middleware。HTTP Request 必須通過每一層的 Middleware，最後才能進入你的應用程式中。每一層 Middleware 都可以檢查 Request 的內容，甚至還能完全拒絕 Request。
 
-> **Note** 所有的 Middleware 都會經過 [Service Container] 解析，因此我們可以在 Middleware 的 Constructor (建構函式) 上型別提示 (Type-Hint) 任何需要的相依性。
+> [!NOTE]  
+> 所有的 Middleware 都會經過 [Service Container] 解析，因此我們可以在 Middleware 的 Constructor (建構函式) 上型別提示 (Type-Hint) 任何需要的相依性。
 
-<a name="before-after-middleware"></a> <a name="middleware-and-responses"></a>
+<a name="middleware-and-responses"></a>
 
 #### Middleare 與 Response
 
@@ -92,7 +90,6 @@ php artisan make:middleware EnsureTokenIsValid
             return $next($request);
         }
     }
-
 不過，這個 Middleware 會在 Request 被程式處理 **之後** 才進行其任務：
 
     <?php
@@ -112,7 +109,6 @@ php artisan make:middleware EnsureTokenIsValid
             return $response;
         }
     }
-
 <a name="registering-middleware"></a>
 
 ## 註冊 Middleware
@@ -129,7 +125,7 @@ php artisan make:middleware EnsureTokenIsValid
 
 若想將 Middleware 指派給特定的 Route，請先在專案的 `app/Http/Kernel.php` 檔案中為該 Middleware 指派一個索引鍵。預設情況下，這個類別的 `$routeMiddleware` 屬性包含了 Laravel 附帶的 Middleware。我們可以在這個列表中列出我們自己的 Middleware，並為其指派一個自訂的索引鍵：
 
-    // 在 App\Http\Kernel 類別中...
+    // Within App\Http\Kernel class...
     
     protected $routeMiddleware = [
         'auth' => \App\Http\Middleware\Authenticate::class,
@@ -142,19 +138,16 @@ php artisan make:middleware EnsureTokenIsValid
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
     ];
-
 Middleware 被定義為 HTTP Kernel 後，就可以使用 `middleware` 方法來將 Middleware 指派給 Route：
 
     Route::get('/profile', function () {
         //
     })->middleware('auth');
-
 也可以傳入一組 Middleware 陣列給 `middleware` 方法來指派多個 Middleware 給 Route：
 
     Route::get('/', function () {
         //
     })->middleware(['first', 'second']);
-
 指派 Middleware 時，也可以傳入完整類別名稱 (Fully Qualified Class Name)：
 
     use App\Http\Middleware\EnsureTokenIsValid;
@@ -162,7 +155,6 @@ Middleware 被定義為 HTTP Kernel 後，就可以使用 `middleware` 方法來
     Route::get('/profile', function () {
         //
     })->middleware(EnsureTokenIsValid::class);
-
 <a name="excluding-middleware"></a>
 
 #### 排除 Middleware
@@ -180,7 +172,6 @@ Middleware 被定義為 HTTP Kernel 後，就可以使用 `middleware` 方法來
             //
         })->withoutMiddleware([EnsureTokenIsValid::class]);
     });
-
 也可以將一組 Middleware 從整個 Route [群組](/docs/{{version}}/routing#route-groups)定義中排除：
 
     use App\Http\Middleware\EnsureTokenIsValid;
@@ -190,7 +181,6 @@ Middleware 被定義為 HTTP Kernel 後，就可以使用 `middleware` 方法來
             //
         });
     });
-
 `withoutMiddleware` 方法只能移除 Route Middleware，不能移除[全域 Middleware](#global-middleware)。
 
 <a name="middleware-groups"></a>
@@ -221,7 +211,6 @@ Laravel 中包含了預先定義的 `web` 與 `api` 兩個 Middleware 群組，�
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
         ],
     ];
-
 也可以使用相同的語法來將 Middleware 群組作為個別 Middleware 一樣指派給 Route 與 Controller 動作。同樣的，使用 Middleware 群組來一次指派多個 Middleware 給 Route 比較方便：
 
     Route::get('/', function () {
@@ -231,8 +220,8 @@ Laravel 中包含了預先定義的 `web` 與 `api` 兩個 Middleware 群組，�
     Route::middleware(['web'])->group(function () {
         //
     });
-
-> **Note** 在新安裝的 Laravel 中隨附了 `web` 與 `api` Middleware 群組，並由 `App\Providers\RouteServiceProvider` 自動套用到對應的 `routes/web.php` 與 `routes/api.php` 檔上。
+> [!NOTE]  
+> 在新安裝的 Laravel 中隨附了 `web` 與 `api` Middleware 群組，並由 `App\Providers\RouteServiceProvider` 自動套用到對應的 `routes/web.php` 與 `routes/api.php` 檔上。
 
 <a name="sorting-middleware"></a>
 
@@ -259,7 +248,6 @@ Laravel 中包含了預先定義的 `web` 與 `api` 兩個 Middleware 群組，�
         \Illuminate\Routing\Middleware\SubstituteBindings::class,
         \Illuminate\Auth\Middleware\Authorize::class,
     ];
-
 <a name="middleware-parameters"></a>
 
 ## Middleware 參數
@@ -294,13 +282,11 @@ Middleware 也可以接收額外的參數。舉例來說，若你的程式需要
         }
     
     }
-
 也可以在定義 Route 時使用 `:` 區分出 Middleware 名稱與參數來指定 Middleware 參數。多個參數請使用逗點 (,) 區隔：
 
     Route::put('/post/{id}', function ($id) {
         //
     })->middleware('role:editor');
-
 <a name="terminable-middleware"></a>
 
 ## 可終止的 Middleware
@@ -339,7 +325,6 @@ Middleware 也可以接收額外的參數。舉例來說，若你的程式需要
             // ...
         }
     }
-
 `terminate` 方法應接收 Request 與 Response。定義好可終止的 Middleware (Terminable Middleware) 後，請將其加到 Route 列表或 `app/Http/Kernel.php` 檔案中的全域 Middleware 內。
 
 呼叫 Middleware 上的 `terminate` 方法時，Laravel 會從 [Service Container] 中解析出這個 Middleware 的新實體。若想讓 `handle` 與 `terminate` 都在同一個 Middleware 實體上呼叫的話，請使用 Container 的 `singleton` 方法來想 Container 註冊這個 Middleware。一般來說，這個註冊應在 `AppServiceProvider` 的 `register` 方法中進行：

@@ -1,37 +1,38 @@
 ---
-contributors:
-  14684796:
-    avatarUrl: https://crowdin-static.downloads.crowdin.com/avatar/14684796/medium/60f7dc21ec0bf9cfcb61983640bb4809_default.png
-    name: cornch
-crowdinUrl: https://crowdin.com/translate/laravel-docs/13/en-zhtw
-progress: 100
+crowdinUrl: 'https://crowdin.com/translate/laravel-docs/13/en-zhtw'
 updatedAt: '2024-06-30T08:17:00Z'
+contributors: {  }
+progress: 49.24
 ---
 
 # 授權
 
 - [簡介](#introduction)
 - [Gate](#gates)
-   - [撰寫 Gate](#writing-gates)
-   - [授權動作](#authorizing-actions-via-gates)
-   - [Gate Response](#gate-responses)
-   - [攔截 Gate 檢查](#intercepting-gate-checks)
-   - [內嵌授權](#inline-authorization)
+  - [撰寫 Gate](#writing-gates)
+  - [授權動作](#authorizing-actions-via-gates)
+  - [Gate Response](#gate-responses)
+  - [攔截 Gate 檢查](#intercepting-gate-checks)
+  - [內嵌授權](#inline-authorization)
+  
 - [建立 Policy](#creating-policies)
-   - [產生 Policy](#generating-policies)
-   - [註冊 Policy](#registering-policies)
+  - [產生 Policy](#generating-policies)
+  - [註冊 Policy](#registering-policies)
+  
 - [撰寫 Policy](#writing-policies)
-   - [Policy 方法](#policy-methods)
-   - [Policy Response](#policy-responses)
-   - [不使用 Model 的方法](#methods-without-models)
-   - [訪客使用者](#guest-users)
-   - [Policy 篩選器](#policy-filters)
+  - [Policy 方法](#policy-methods)
+  - [Policy Response](#policy-responses)
+  - [不使用 Model 的方法](#methods-without-models)
+  - [訪客使用者](#guest-users)
+  - [Policy 篩選器](#policy-filters)
+  
 - [通過 Policy 來授權動作](#authorizing-actions-using-policies)
-   - [通過使用者 Model](#via-the-user-model)
-   - [通過 Controller 的輔助函式](#via-controller-helpers)
-   - [通過 Middleware](#via-middleware)
-   - [通過 Blade 樣板](#via-blade-templates)
-   - [提供額外的上下文](#supplying-additional-context)
+  - [通過使用者 Model](#via-the-user-model)
+  - [通過 Controller 的輔助函式](#via-controller-helpers)
+  - [通過 Middleware](#via-middleware)
+  - [通過 Blade 樣板](#via-blade-templates)
+  - [提供額外的上下文](#supplying-additional-context)
+  
 
 <a name="introduction"></a>
 
@@ -51,7 +52,8 @@ Laravel 提供了兩種主要方法來授權動作：[Gate](#gates) 與 [Policy]
 
 ### 撰寫 Gate
 
-> {note} Gate 是學習基礎 Laravel 授權功能的最好的方法。但是，在製作大型 Laravel 應用程式時，應考慮通過 [Policy](#creating-policies) 來整理各個授權規則。
+> [!NOTE]  
+> Gate 是學習基礎 Laravel 授權功能的最好的方法。但是，在製作大型 Laravel 應用程式時，應考慮通過 [Policy](#creating-policies) 來整理各個授權規則。
 
 Gate 是簡單的閉包，用來判斷使用者是否已被授權執行特定的動作。通常來說，Gate 會在 `App\Providers\AuthServiceProvider` 類別中的 `boot` 方法內通過 `Gate` Facade 來定義。Gate 會收到一個使用者實體作為其第一個引數，並且可能還會接受到額外的引數，如相關的 Eloquent Model。
 
@@ -74,7 +76,6 @@ Gate 是簡單的閉包，用來判斷使用者是否已被授權執行特定的
             return $user->id === $post->user_id;
         });
     }
-
 就像 Controller 一樣，Gate 也可以通過類別回呼陣列來定義：
 
     use App\Policies\PostPolicy;
@@ -91,7 +92,6 @@ Gate 是簡單的閉包，用來判斷使用者是否已被授權執行特定的
     
         Gate::define('update-post', [PostPolicy::class, 'update']);
     }
-
 <a name="authorizing-actions-via-gates"></a>
 
 ### 授權動作
@@ -125,27 +125,24 @@ Gate 是簡單的閉包，用來判斷使用者是否已被授權執行特定的
             // Update the post...
         }
     }
-
 如果想判斷除了目前登入使用者以外其他的使用者能否執行特定動作，可以使用 `Gate` Facade 上的 `forUser` 方法：
 
     if (Gate::forUser($user)->allows('update-post', $post)) {
-        // 該使用者可更新此貼文...
+        // The user can update the post...
     }
     
     if (Gate::forUser($user)->denies('update-post', $post)) {
-        // 該使用者不能更新此貼文...
+        // The user can't update the post...
     }
-
 可以通過 `any` 或 `none` 方法來在任何時候授權多個動作：
 
     if (Gate::any(['update-post', 'delete-post'], $post)) {
-        // 該使用者可更新或刪除此貼文...
+        // The user can update or delete the post...
     }
     
     if (Gate::none(['update-post', 'delete-post'], $post)) {
-        // 該使用者不能更新或刪除此貼文...
+        // The user can't update or delete the post...
     }
-
 <a name="authorizing-or-throwing-exceptions"></a>
 
 #### 授權或擲回例外
@@ -154,8 +151,7 @@ Gate 是簡單的閉包，用來判斷使用者是否已被授權執行特定的
 
     Gate::authorize('update-post', $post);
     
-    // 已授權可進行該動作...
-
+    // The action is authorized...
 <a name="gates-supplying-additional-context"></a>
 
 #### 提供額外的上下文
@@ -179,7 +175,6 @@ Gate 是簡單的閉包，用來判斷使用者是否已被授權執行特定的
     if (Gate::check('create-post', [$category, $pinned])) {
         // The user can create the post...
     }
-
 <a name="gate-responses"></a>
 
 ### Gate 回應
@@ -195,23 +190,20 @@ Gate 是簡單的閉包，用來判斷使用者是否已被授權執行特定的
                     ? Response::allow()
                     : Response::deny('You must be an administrator.');
     });
-
 即使從 Gate 內回傳授權回應，`Gate::allows` 方法依然會回傳簡單的布林值。不過，可以使用 `Gate::inspect` 方法來取得 Gate 回傳的完整授權回應：
 
     $response = Gate::inspect('edit-settings');
     
     if ($response->allowed()) {
-        // 已授權可進行該動作...
+        // The action is authorized...
     } else {
         echo $response->message();
     }
-
 在使用 `Gate::authorize` 方法時，若動作未被授權，會回傳 `AuthorizationException`。這時，授權回應所提供的錯誤訊息會進一步被傳給 HTTP 回應：
 
     Gate::authorize('edit-settings');
     
-    // 已授權可進行該動作...
-
+    // The action is authorized...
 <a name="intercepting-gate-checks"></a>
 
 ### 攔截 Gate 檢查
@@ -225,7 +217,6 @@ Gate 是簡單的閉包，用來判斷使用者是否已被授權執行特定的
             return true;
         }
     });
-
 若 `before` 閉包回傳了一個非 null 的結果，則該結果值會被當作權限檢查的結果。
 
 可以使用 `after` 方法來定義一個會在所有其他權限檢查後執行的閉包：
@@ -235,7 +226,6 @@ Gate 是簡單的閉包，用來判斷使用者是否已被授權執行特定的
             return true;
         }
     });
-
 與 `before` 方法類似，若 `after` 閉包回傳了非 null 的結果，則該結果會被當作權限檢查的結果。
 
 <a name="inline-authorization"></a>
@@ -251,7 +241,6 @@ Gate::allowIf(fn ($user) => $user->isAdministrator());
 
 Gate::denyIf(fn ($user) => $user->banned());
 ```
-
 若該動作未授權、或是使用者未登入，則 Laravel 會自動擲回 `Illuminate\Auth\Access\AuthorizationException` 例外。`AuthorizationException` 實體會自動由 Laravel 的例外處理常式轉換為 403 HTTP 回應。
 
 <a name="creating-policies"></a>
@@ -267,11 +256,9 @@ Policy 是用來依照特定 Model 或資源阻止授權邏輯的類別。舉例
 可以通過 `make:policy` Artisan 指令來產生 Policy。產生的 Policy 會被放在 `app/Policies` 目錄內。若專案中沒有該目錄中，則 Laravel 會自動建立：
 
     php artisan make:policy PostPolicy
-
 `make:policy` 指令會產生一個空的 Policy 類別。若想產生一個與檢視 (View)、建立 (Create)、更新 (Update)、刪除 (Delete) 資源有關的範例 方法的 Policy 類別，可以在執行指令時提供 `--model` 選項：
 
     php artisan make:policy PostPolicy --model=Post
-
 <a name="registering-policies"></a>
 
 ### 註冊 Policy
@@ -312,22 +299,21 @@ Policy 是用來依照特定 Model 或資源阻止授權邏輯的類別。舉例
             //
         }
     }
-
 <a name="policy-auto-discovery"></a>
 
 #### Policy Auto-Discovery
 
-除了手動註冊 Model Policy，只要 Model 與 Policy 都遵守 Laravel 的命名常規，Laravel 就能自動找到 Policy。講得更仔細一點，各個 Policy 應放置與 Model 目錄下或 Model 目錄上層的 `Policies` 目錄內。因此，舉例來說，Model 可能被放在 `app/Models` 目錄內，而模型則可能被放在 `app/Policies` 目錄內。此時，Laravel 會先在 `app/Models/Policies` 內檢查 Policy，然後才到 `app/Policies` 內尋找。另外，Policy 名稱也必須與 Model 名稱相同，然後在後方加上 `Policy` 後綴。如此一來，`User` Model 對應的 Policy 類別就是 `UserPolicy`。
+除了手動註冊 Model Policy，只要 Model 與 Policy 都遵守 Laravel 的命名常規，Laravel 就能自動找到 Policy。講得更仔細一點，各個 Policy 應放置與 Model 目錄下或  Model 目錄上層的 `Policies` 目錄內。因此，舉例來說，Model 可能被放在 `app/Models` 目錄內，而模型則可能被放在 `app/Policies` 目錄內。此時，Laravel 會先在 `app/Models/Policies` 內檢查 Policy，然後才到 `app/Policies` 內尋找。另外，Policy 名稱也必須與 Model 名稱相同，然後在後方加上 `Policy` 後綴。如此一來，`User` Model 對應的 Policy 類別就是 `UserPolicy`。
 
 若讀者想定義自己的 Policy Discovery 邏輯，可以通過 `Gate::guessPolicyNamesUsing` 方法來註冊自訂 Policy Discovery 閉包。通常來說，這個方法應該在專案的 `AuthServiceProvider` 內的 `boot` 方法內呼叫：
 
     use Illuminate\Support\Facades\Gate;
     
     Gate::guessPolicyNamesUsing(function ($modelClass) {
-        // 為給定 Model 回傳 Policy 類別的名稱...
+        // Return the name of the policy class for the given model...
     });
-
-> {note} 所有在 `AuthServiceProvider` 中顯式映射之 Policy 的優先級都會比 Auto-Discover 的 Policy 高。
+> [!NOTE]  
+> 所有在 `AuthServiceProvider` 中顯式映射之 Policy 的優先級都會比 Auto-Discover 的 Policy 高。
 
 <a name="writing-policies"></a>
 
@@ -362,12 +348,12 @@ Policy 是用來依照特定 Model 或資源阻止授權邏輯的類別。舉例
             return $user->id === $post->user_id;
         }
     }
-
 我們可以繼續在 Policy 內為各種所需的權限檢查定義更多額外方法。舉例來說，我們可以定義 `view` 或 `delete` 方法來對各種與 `Post` 有關的動作進行權限檢查。但不要忘了，你可以隨意為 Policy 的方法命名。
 
 通過 Artisan 主控台產生 Policy 時若有使用 `--model` 選項，則 Policy 就已經包含了 `viewAny`, `view`, `create`, `update`, `delete`, `restore` 與 `forceDelete` 動作的方法。
 
-> {tip} 所有的 Policy 都經由 Laravel 的 [Service Container](/docs/{{version}}/container) 進行解析，這樣一來，可以在 Policy 的 ^[Constructor](建構函式) 內對任何所需的相依性項目進行型別提示，這些相依性項目會被自動插入到類別內。
+> [!TIP]  
+> 所有的 Policy 都經由 Laravel 的 [Service Container](/docs/{{version}}/container) 進行解析，這樣一來，可以在 Policy 的建構函式 (Constructor) 內對任何所需的相依項進行型別提示，這些相依項會被自動插入到 Class 內。
 
 <a name="policy-responses"></a>
 
@@ -392,7 +378,6 @@ Policy 是用來依照特定 Model 或資源阻止授權邏輯的類別。舉例
                     ? Response::allow()
                     : Response::deny('You do not own this post.');
     }
-
 當從 Policy 內回傳授權回應時，`Gate::allows` 方法依然會回傳簡單的布林值。不過，可以使用 `Gate::inspect` 方法來取得 Gate 回傳的完整授權回應：
 
     use Illuminate\Support\Facades\Gate;
@@ -400,17 +385,15 @@ Policy 是用來依照特定 Model 或資源阻止授權邏輯的類別。舉例
     $response = Gate::inspect('update', $post);
     
     if ($response->allowed()) {
-        // 已授權可進行該動作...
+        // The action is authorized...
     } else {
         echo $response->message();
     }
-
 在使用 `Gate::authorize` 方法時，若動作未被授權，會回傳 `AuthorizationException`。這時，授權回應所提供的錯誤訊息會進一步被傳給 HTTP 回應：
 
     Gate::authorize('update', $post);
     
     // The action is authorized...
-
 <a name="methods-without-models"></a>
 
 ### 沒有 Model 的方法
@@ -427,7 +410,6 @@ Policy 是用來依照特定 Model 或資源阻止授權邏輯的類別。舉例
     {
         return $user->role == 'writer';
     }
-
 <a name="guest-users"></a>
 
 ### 訪客使用者
@@ -455,7 +437,6 @@ Policy 是用來依照特定 Model 或資源阻止授權邏輯的類別。舉例
             return optional($user)->id === $post->user_id;
         }
     }
-
 <a name="policy-filters"></a>
 
 ### Policy 篩選器
@@ -477,10 +458,10 @@ Policy 是用來依照特定 Model 或資源阻止授權邏輯的類別。舉例
             return true;
         }
     }
-
 若拒絕特定類型的使用者的所有授權，可以在 `before` 方法內回傳 `false`。若回傳 `null`，則權限檢查會繼續傳到 Policy 方法內。
 
-> {note} 若 Policy 類別內不含要檢查權限名稱的方法，則 `before` 方法將不會被呼叫。
+> [!NOTE]  
+> 若 Policy 類別內不含要檢查權限名稱的方法，則 `before` 方法將不會被呼叫。
 
 <a name="authorizing-actions-using-policies"></a>
 
@@ -518,7 +499,6 @@ Laravel 專案內建的 `App\Models\User` Model 中包含了兩個實用的方�
             // Update the post...
         }
     }
-
 若已為給定的 Model [註冊好 Policy](#registering-policies)，則 `can` 方法會自動呼叫適當的 Policy，並回傳布林結果值。若沒有為該 Model 註冊好的 Policy，則 `can` 方法會呼叫符合給定動作名稱的閉包 Gate。
 
 <a name="user-model-actions-that-dont-require-models"></a>
@@ -552,7 +532,6 @@ Laravel 專案內建的 `App\Models\User` Model 中包含了兩個實用的方�
             // Create the post...
         }
     }
-
 <a name="via-controller-helpers"></a>
 
 ### 通過 Controller 輔助函式
@@ -587,7 +566,6 @@ Laravel 專案內建的 `App\Models\User` Model 中包含了兩個實用的方�
             // The current user can update the blog post...
         }
     }
-
 <a name="controller-actions-that-dont-require-models"></a>
 
 #### 不需要 Model 的動作
@@ -611,7 +589,6 @@ Laravel 專案內建的 `App\Models\User` Model 中包含了兩個實用的方�
     
         // The current user can create blog posts...
     }
-
 <a name="authorizing-resource-controllers"></a>
 
 #### 授權 Resource Controller
@@ -640,7 +617,6 @@ Laravel 專案內建的 `App\Models\User` Model 中包含了兩個實用的方�
             $this->authorizeResource(Post::class, 'post');
         }
     }
-
 下列 Controller 方法會映射到其對應的 Policy 方法。當請求被路由到給定的 Controller 方法時，對應的 Policy 方法會在 Controller 方法執行前被自動叫用：
 
 | Controller 方法 | Policy 方法 |
@@ -653,7 +629,8 @@ Laravel 專案內建的 `App\Models\User` Model 中包含了兩個實用的方�
 | update | update |
 | destroy | delete |
 
-> {tip} 可以使用 `--model` 選項搭配 `make:policy` 指令來快速為給定的 Model 產生 Policy：`php artisan make:policy PostPolicy --model=Post`。
+> [!TIP]  
+> 可以使用 `--model` 選項搭配 `make:policy` 指令來快速為給定的 Model 產生 Policy：`php artisan make:policy PostPolicy --model=Post`。
 
 <a name="via-middleware"></a>
 
@@ -664,9 +641,8 @@ Laravel 提供了一個可以用來在連入請求進入路由或 Controller 前
     use App\Models\Post;
     
     Route::put('/post/{post}', function (Post $post) {
-        // 目前使用者可更新該貼文...
+        // The current user may update the post...
     })->middleware('can:update,post');
-
 在此例子中，我們將兩個引數傳給了 `can` Middleware。第一個引數是我們想進行權限檢查的動作名稱，而第二個引數是我們想傳給 Policy 方法的路由參數。在這個例子中，由於我們使用了[隱式 Model 繫結](/docs/{{version}}/routing#implicit-binding)，所以會將 `App\Models\Post` Model 傳給 Policy 方法。若使用者沒有權限執行給定的動作，則這個 Middleware 會回傳狀態碼 403 的 HTTP 回應。
 
 為了方便起見，也可以使用 `can` 方法來將 `can` Middleware 附加到路由上：
@@ -674,9 +650,8 @@ Laravel 提供了一個可以用來在連入請求進入路由或 Controller 前
     use App\Models\Post;
     
     Route::put('/post/{post}', function (Post $post) {
-        // 目前使用者可更新該貼文...
+        // The current user may update the post...
     })->can('update', 'post');
-
 <a name="middleware-actions-that-dont-require-models"></a>
 
 #### 不需要 Model 的動作
@@ -684,17 +659,15 @@ Laravel 提供了一個可以用來在連入請求進入路由或 Controller 前
 再強調一次，某些 Policy 方法，如 `create`，並不要求 Model 實體。這種情況下，可以將類別名稱傳給 Middleware。這個類別名稱會用來判斷對動作進行權限檢查時要使用哪個 Policy：
 
     Route::post('/post', function () {
-        // 目前使用者可建立貼文...
+        // The current user may create posts...
     })->middleware('can:create,App\Models\Post');
-
 在字串形式的 Middleware 定義中指定完整的類別名稱可能會有點麻煩。因此，我們也可以使用 `can` 方法來將 `can` Middleware 附加到路由上：
 
     use App\Models\Post;
     
     Route::post('/post', function () {
-        // 目前使用者可建立貼文...
+        // The current user may create posts...
     })->can('create', Post::class);
-
 <a name="via-blade-templates"></a>
 
 ### 通過 Blade 樣板
@@ -703,42 +676,39 @@ Laravel 提供了一個可以用來在連入請求進入路由或 Controller 前
 
 ```html
 @can('update', $post)
-    <!-- 目前使用者可以更新貼文... -->
+    <!-- The current user can update the post... -->
 @elsecan('create', App\Models\Post::class)
-    <!-- 目前使用者可以建立新貼文... -->
+    <!-- The current user can create new posts... -->
 @else
     <!-- ... -->
 @endcan
 
 @cannot('update', $post)
-    <!-- 目前使用者不能更新貼文... -->
+    <!-- The current user cannot update the post... -->
 @elsecannot('create', App\Models\Post::class)
-    <!-- 目前使用者不能建立新貼文... -->
+    <!-- The current user cannot create new posts... -->
 @endcannot
 ```
-
 這些指示詞是撰寫 `@if` 與 `@unless` 陳述式時的方便捷徑。上方的 `@can` 與 `@cannot` 陳述式與下列陳述式相同：
 
 ```html
 @if (Auth::user()->can('update', $post))
-    <!-- 目前的使用者可更新該貼文… -->
+    <!-- The current user can update the post... -->
 @endif
 
 @unless (Auth::user()->can('update', $post))
-    <!-- 目前的使用者不可更新該貼文… -->
+    <!-- The current user cannot update the post... -->
 @endunless
 ```
-
 可以在包含一系列動作的陣列中判斷某個使用者是否有權限執行其中的任意動作。為此，請使用 `@canany` 指示詞：
 
 ```html
 @canany(['update', 'view', 'delete'], $post)
-    <!-- 目前的使用者可更新、檢視、或刪除該貼文… -->
+    <!-- The current user can update, view, or delete the post... -->
 @elsecanany(['create'], \App\Models\Post::class)
-    <!-- 目前的使用者可建立貼文… -->
+    <!-- The current user can create a post... -->
 @endcanany
 ```
-
 <a name="blade-actions-that-dont-require-models"></a>
 
 #### 不需要 Model 的動作
@@ -747,14 +717,13 @@ Laravel 提供了一個可以用來在連入請求進入路由或 Controller 前
 
 ```html
 @can('create', App\Models\Post::class)
-    <!-- 目前的使用者可建立貼文… -->
+    <!-- The current user can create posts... -->
 @endcan
 
 @cannot('create', App\Models\Post::class)
-    <!-- 目前的使用者不可建立貼文… -->
+    <!-- The current user can't create posts... -->
 @endcannot
 ```
-
 <a name="supplying-additional-context"></a>
 
 ### 提供額外的上下文
@@ -774,7 +743,6 @@ Laravel 提供了一個可以用來在連入請求進入路由或 Controller 前
         return $user->id === $post->user_id &&
                $user->canUpdateCategory($category);
     }
-
 在嘗試判斷登入使用者能否更新給定貼文時，我們可以像這樣叫用該 Policy 方法：
 
     /**

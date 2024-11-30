@@ -1,41 +1,40 @@
 ---
-contributors:
-  14684796:
-    avatarUrl: https://crowdin-static.downloads.crowdin.com/avatar/14684796/medium/60f7dc21ec0bf9cfcb61983640bb4809_default.png
-    name: cornch
-crowdinUrl: https://crowdin.com/translate/laravel-docs/159/en-zhtw
-progress: 100
+crowdinUrl: 'https://crowdin.com/translate/laravel-docs/159/en-zhtw'
 updatedAt: '2023-02-11T10:28:00Z'
+contributors: {  }
+progress: 69.7
 ---
 
 # 目錄結構
 
 - [簡介](#introduction)
 - [Root 目錄](#the-root-directory)
-   - [`app` 目錄](#the-root-app-directory)
-   - [`bootstrap` 目錄](#the-bootstrap-directory)
-   - [`config` 目錄](#the-config-directory)
-   - [`database` 目錄](#the-database-directory)
-   - [`public` 目錄](#the-public-directory)
-   - [`resources` 目錄](#the-resources-directory)
-   - [`routes` 目錄](#the-routes-directory)
-   - [`storage` 目錄](#the-storage-directory)
-   - [`tests` 目錄](#the-tests-directory)
-   - [`vendor` 目錄](#the-vendor-directory)
+  - [`app` 目錄](#the-root-app-directory)
+  - [`bootstrap` 目錄](#the-bootstrap-directory)
+  - [`config` 目錄](#the-config-directory)
+  - [`database` 目錄](#the-database-directory)
+  - [`public` 目錄](#the-public-directory)
+  - [`resources` 目錄](#the-resources-directory)
+  - [`routes` 目錄](#the-routes-directory)
+  - [`storage` 目錄](#the-storage-directory)
+  - [`tests` 目錄](#the-tests-directory)
+  - [`vendor` 目錄](#the-vendor-directory)
+  
 - [App 目錄](#the-app-directory)
-   - [`Broadcasting` 目錄](#the-broadcasting-directory)
-   - [`Console` 目錄](#the-console-directory)
-   - [`Events` 目錄](#the-events-directory)
-   - [`Exceptions` 目錄](#the-exceptions-directory)
-   - [`Http` 目錄](#the-http-directory)
-   - [`Jobs` 目錄](#the-jobs-directory)
-   - [`Listeners` 目錄](#the-listeners-directory)
-   - [`Mail` 目錄](#the-mail-directory)
-   - [`Models` 目錄](#the-models-directory)
-   - [`Notifications` 目錄](#the-notifications-directory)
-   - [`Policies` 目錄](#the-policies-directory)
-   - [`Providers` 目錄](#the-providers-directory)
-   - [`Rules` 目錄](#the-rules-directory)
+  - [`Broadcasting` 目錄](#the-broadcasting-directory)
+  - [`Console` 目錄](#the-console-directory)
+  - [`Events` 目錄](#the-events-directory)
+  - [`Exceptions` 目錄](#the-exceptions-directory)
+  - [`Http` 目錄](#the-http-directory)
+  - [`Jobs` 目錄](#the-jobs-directory)
+  - [`Listeners` 目錄](#the-listeners-directory)
+  - [`Mail` 目錄](#the-mail-directory)
+  - [`Models` 目錄](#the-models-directory)
+  - [`Notifications` 目錄](#the-notifications-directory)
+  - [`Policies` 目錄](#the-policies-directory)
+  - [`Providers` 目錄](#the-providers-directory)
+  - [`Rules` 目錄](#the-rules-directory)
+  
 
 <a name="introduction"></a>
 
@@ -43,7 +42,8 @@ updatedAt: '2023-02-11T10:28:00Z'
 
 不論專案大小，Laravel 預設的目錄結構都可提供一個不錯的起始點。不過，你也可以隨意調整要如何整理你的專案。Laravel 幾乎不限制 Class 要放在哪裡 —— 只要 Composer 可以自動載入 (Autoload) 該 Class 即可。
 
-> **Note** 是 Laravel 新手嗎？請參考 [Laravel Bootcamp (英語)](https://bootcamp.laravel.com) 來瞭解 Laravel 框架，同時我們也會帶領你建立你的第一個 Laravel 專案。
+> [!NOTE]  
+> 是 Laravel 新手嗎？請參考 [Laravel Bootcamp (英語)](https://bootcamp.laravel.com) 來瞭解 Laravel 框架，同時我們也會帶領你建立你的第一個 Laravel 專案。
 
 <a name="the-root-directory"></a>
 
@@ -89,13 +89,15 @@ updatedAt: '2023-02-11T10:28:00Z'
 
 #### Routes 目錄
 
-`routes` 目錄包含了專案的所有路由定義。預設情況下，Laravel 包含了幾個路由檔：`web.php`, `api.php`, `console.php`, 與 `channels.php`。
+The `routes` directory contains all of the route definitions for your application. By default, two route files are included with Laravel: `web.php` and `console.php`.
 
-`RouteServiceProvider` 會將 `web.php` 中的路由放在 `web` Middleware 群組中。`web` Middleware 群組提供了如 Session 狀態、CSRF 保護、以及 Cookie 加密等功能。若你的專案不使用 stateless (無狀態) 的 RESTful API，則一般來說所有的路由應該都會放在 `web.php` 檔案中。
-
-`RouteServiceProvider` 會將 `api.php` 中的路由放在 `api` Middleware 群組中。這些路由是給 Stateless 的請求用的，所以通過這些路由進入網站的請求應[使用 Token](/docs/{{version}}/sanctum)來進行登入認證，且將無法存取 Session 狀態。
+The `web.php` file contains routes that Laravel places in the `web` middleware group, which provides session state, CSRF protection, and cookie encryption. If your application does not offer a stateless, RESTful API then all your routes will most likely be defined in the `web.php` file.
 
 `console.php` 檔案用來定義所有基於閉包的主控台指令。所有的閉包都有繫結一個指令實體，使用這個指令實體就能輕鬆地與各個指令的 IO 方法互動。雖然這個檔案並不是定義 HTTP 路由，不過它定義了以主控台作為進入點進入專案的路由。
+
+Optionally, you may install additional route files for API routes (`api.php`) and broadcasting channels (`channels.php`), via the `install:api` and `install:broadcasting` Artisan commands.
+
+The `api.php` file contains routes that are intended to be stateless, so requests entering the application through these routes are intended to be authenticated [via tokens](/docs/{{version}}/sanctum) and will not have access to session state.
 
 `channels.php` 檔案用來註冊所有專案要使用的[事件廣播](/docs/{{version}}/broadcasting)頻道。
 
@@ -111,7 +113,7 @@ updatedAt: '2023-02-11T10:28:00Z'
 
 #### Tests 目錄
 
-`tests` 目錄包含了自動化測試。Laravel 預設包含了範例的 [PHPUnit](https://phpunit.de/) 單元測試與功能測試。每個測試類別都應以 `Test` 結尾。可以使用 `phpunit` 或 `php vendor/bin/phpunit` 指令來執行測試。或者，若想使用更詳細且好看的測試結果輸出，可以使用 `php artisan test` Artisan 指令。
+The `tests` directory contains your automated tests. Example [Pest](https://pestphp.com) or [PHPUnit](https://phpunit.de/) unit tests and feature tests are provided out of the box. Each test class should be suffixed with the word `Test`. You may run your tests using the `/vendor/bin/pest` or `/vendor/bin/phpunit` commands. Or, if you would like a more detailed and beautiful representation of your test results, you may run your tests using the `php artisan test` Artisan command.
 
 <a name="the-vendor-directory"></a>
 
@@ -125,11 +127,12 @@ updatedAt: '2023-02-11T10:28:00Z'
 
 在你的專案中，大多數的程式碼都會放在 `app` 資料夾中。預設情況下，該資料夾是放在 `App` Namespace 下的，且會由 Composer 依照 [PSR-4 Autoloading 標準] Autoload。
 
-`app` 目錄中包含了多個額外的目錄，如 `Console`, `Http`, 與 `Providers`。可以將 `Console` 與 `Http` 目錄想成是用來進入專案核心的 API。HTTP 協定與 CLI 是兩種與專案互動的機制，而這種機制本身則不包含應用上的邏輯。換句話說，你的專案有兩種操作方法。`Console` 目錄包含了所有 Artisan 指令，而 `Http` 目錄則包含了 Controller、Middleware、以及 Request。
+By default, the `app` directory contains the `Http`, `Models`, and `Providers` directories. However, over time, a variety of other directories will be generated inside the app directory as you use the make Artisan commands to generate classes. For example, the `app/Console` directory will not exist until you execute the `make:command` Artisan command to generate a command class.
 
-其他的資料夾則會在使用 `make` Artisan 指令產生類別時產生在 `app` 目錄下。舉例來說，執行了 `make:job` Artisan 指令來產生 Job 類別後，才會產生 `app/Jobs` 目錄。
+Both the `Console` and `Http` directories are further explained in their respective sections below, but think of the `Console` and `Http` directories as providing an API into the core of your application. The HTTP protocol and CLI are both mechanisms to interact with your application, but do not actually contain application logic. In other words, they are two ways of issuing commands to your application. The `Console` directory contains all of your Artisan commands, while the `Http` directory contains your controllers, middleware, and requests.
 
-> **Note** `app` 目錄內的許多類別都可以通過指令來由 Artisan 產生。若要檢視所有可用的指令，請在終端機中執行 `php artisan list make` 指令。
+> [!NOTE]  
+> `app` 目錄內的許多類別都可以通過指令來由 Artisan 產生。若要檢視所有可用的指令，請在終端機中執行 `php artisan list make` 指令。
 
 <a name="the-broadcasting-directory"></a>
 
@@ -141,7 +144,7 @@ updatedAt: '2023-02-11T10:28:00Z'
 
 #### Console 目錄
 
-`Console` 目錄包含所有專案使用的自訂 Artisan 指令。這些指令可以通過 `make:command` 指令來產生。這個資料夾中也包含了主控台核心 (Kernel)，主控台核心可用來註冊自訂 Artisan指令，並定義[排程任務](/docs/{{version}}/scheduling)。
+The `Console` directory contains all of the custom Artisan commands for your application. These commands may be generated using the `make:command` command.
 
 <a name="the-events-directory"></a>
 

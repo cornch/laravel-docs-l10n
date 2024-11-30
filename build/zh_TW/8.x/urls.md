@@ -1,21 +1,20 @@
 ---
-contributors:
-  14684796:
-    avatarUrl: https://crowdin-static.downloads.crowdin.com/avatar/14684796/medium/60f7dc21ec0bf9cfcb61983640bb4809_default.png
-    name: cornch
-crowdinUrl: https://crowdin.com/translate/laravel-docs/167/en-zhtw
-progress: 100
+crowdinUrl: 'https://crowdin.com/translate/laravel-docs/167/en-zhtw'
 updatedAt: '2024-06-30T08:27:00Z'
+contributors: {  }
+progress: 45.45
 ---
 
 # 產生 URL
 
 - [簡介](#introduction)
 - [基礎](#the-basics)
-   - [產生 URL](#generating-urls)
-   - [存取目前 URL](#accessing-the-current-url)
+  - [產生 URL](#generating-urls)
+  - [存取目前 URL](#accessing-the-current-url)
+  
 - [命名 Route 的 URL](#urls-for-named-routes)
-   - [簽名的 URL](#signed-urls)
+  - [簽名的 URL](#signed-urls)
+  
 - [Controller 動作的 URL](#urls-for-controller-actions)
 - [預設值](#default-values)
 
@@ -40,28 +39,25 @@ Laravel 提供了多種輔助函式，來協助你為你的專案產生 URL。�
     echo url("/posts/{$post->id}");
     
     // http://example.com/posts/1
-
 <a name="accessing-the-current-url"></a>
 
 ### 存取目前的 URL
 
 若未提供路徑給 `url` 輔助函式，則會回傳 `Illuminate\Routing\UrlGenerator` 實體，使用該實體能讓我們存取有關目前 URL 的資訊：
 
-    // 取得無 Query String 的目前 URL...
+    // Get the current URL without the query string...
     echo url()->current();
     
-    // 取得含 Query String 的目前 URL...
+    // Get the current URL including the query string...
     echo url()->full();
     
-    // 取得前一個 Request 的完整 URL...
+    // Get the full URL for the previous request...
     echo url()->previous();
-
 這些方法也可以通過 `URL` [Facade](/docs/{{version}}/facades) 來存取：
 
     use Illuminate\Support\Facades\URL;
     
     echo URL::current();
-
 <a name="urls-for-named-routes"></a>
 
 ## 命名 Route 的 URL
@@ -71,13 +67,11 @@ Laravel 提供了多種輔助函式，來協助你為你的專案產生 URL。�
     Route::get('/post/{post}', function (Post $post) {
         //
     })->name('post.show');
-
 若要產生這個 Route 的 URL，可以像這樣使用 `route` 輔助函式：
 
     echo route('post.show', ['post' => 1]);
     
     // http://example.com/post/1
-
 當然，也可以使用 `route` 輔助函式來為有多個參數的 Route 產生 URL：
 
     Route::get('/post/{post}/comment/{comment}', function (Post $post, Comment $comment) {
@@ -87,13 +81,11 @@ Laravel 提供了多種輔助函式，來協助你為你的專案產生 URL。�
     echo route('comment.show', ['post' => 1, 'comment' => 3]);
     
     // http://example.com/post/1/comment/3
-
 若有陣列元素對應不上 Route 中定義的參數時，這些元素會被加到 URL 的查詢字串上：
 
     echo route('post.show', ['post' => 1, 'search' => 'rocket']);
     
     // http://example.com/post/1?search=rocket
-
 <a name="eloquent-models"></a>
 
 #### Eloquent Model
@@ -101,7 +93,6 @@ Laravel 提供了多種輔助函式，來協助你為你的專案產生 URL。�
 我們常常會使用 [Eloquent Model](/docs/{{version}}/eloquent) 的 Route 索引鍵 (通常是主索引鍵 - Primary Key) 來產生 URL。因此，我們也可以將 Eloquent Model 作為參數值傳入。`route` 輔助函式會自動取出 Model 的 Route 索引鍵：
 
     echo route('post.show', ['post' => $post]);
-
 <a name="signed-urls"></a>
 
 ### 簽名 URL
@@ -113,7 +104,6 @@ Laravel 能讓我們輕鬆地為命名 Route 建立「簽名的 (Signed)」URL�
     use Illuminate\Support\Facades\URL;
     
     return URL::signedRoute('unsubscribe', ['user' => 1]);
-
 若想產生在指定時間後會過期的臨時簽名 Route URL，可以使用 `temporarySignedRoute` 方法。Laravel 在驗證臨時簽名 Route URL 時，也會確保被編碼進簽名 URL 中的過期時間時戳尚未到期：
 
     use Illuminate\Support\Facades\URL;
@@ -121,7 +111,6 @@ Laravel 能讓我們輕鬆地為命名 Route 建立「簽名的 (Signed)」URL�
     return URL::temporarySignedRoute(
         'unsubscribe', now()->addMinutes(30), ['user' => 1]
     );
-
 <a name="validating-signed-route-requests"></a>
 
 #### 驗證簽名 Route 的 Request
@@ -137,7 +126,6 @@ Laravel 能讓我們輕鬆地為命名 Route 建立「簽名的 (Signed)」URL�
     
         // ...
     })->name('unsubscribe');
-
 或者，我們也可以將 `Illuminate\Routing\Middleware\ValidateSignature` [Middleware](/docs/{{version}}/middleware) 指派到 Route 上。若 HTTP Kernel 的 `routeMiddleware` 陣列中沒有這個 Middleware 的話，請為該 Middleware 在該陣列中加個索引鍵：
 
     /**
@@ -150,13 +138,11 @@ Laravel 能讓我們輕鬆地為命名 Route 建立「簽名的 (Signed)」URL�
     protected $routeMiddleware = [
         'signed' => \Illuminate\Routing\Middleware\ValidateSignature::class,
     ];
-
 在 Kernel 中註冊好 Middleware 後，就可以將其附加到 Route 上。若連入的 Request 沒有正確的簽名，該 Middleware 會自動回傳一個 `403` HTTP Response：
 
     Route::post('/unsubscribe/{user}', function (Request $request) {
         // ...
     })->name('unsubscribe')->middleware('signed');
-
 <a name="responding-to-invalid-signed-routes"></a>
 
 #### 回應無效簽名的 Route
@@ -176,7 +162,6 @@ Laravel 能讓我們輕鬆地為命名 Route 建立「簽名的 (Signed)」URL�
             return response()->view('error.link-expired', [], 403);
         });
     }
-
 <a name="urls-for-controller-actions"></a>
 
 ## Controller 動作的 URL
@@ -186,11 +171,9 @@ Laravel 能讓我們輕鬆地為命名 Route 建立「簽名的 (Signed)」URL�
     use App\Http\Controllers\HomeController;
     
     $url = action([HomeController::class, 'index']);
-
 若該 Controller 方法接受 Route 參數，則可將 Route 參數的關聯式陣列作為第二個引數傳給給函式：
 
     $url = action([UserController::class, 'profile'], ['id' => 1]);
-
 <a name="default-values"></a>
 
 ## 預設值
@@ -200,7 +183,6 @@ Laravel 能讓我們輕鬆地為命名 Route 建立「簽名的 (Signed)」URL�
     Route::get('/{locale}/posts', function () {
         //
     })->name('post.index');
-
 若每次呼叫 `route` 輔助函式都要傳入 `locale` 的話會很麻煩。因此。我們可以使用 `URL::defaults` 方法來為這個參數定義目前 Request 中要套用的預設值。建議在某個 [Route Middleware](/docs/{{version}}/middleware#assigning-middleware-to-routes) 中呼叫這個方法，這樣我們才能存取目前的 Request：
 
     <?php
@@ -226,7 +208,6 @@ Laravel 能讓我們輕鬆地為命名 Route 建立「簽名的 (Signed)」URL�
             return $next($request);
         }
     }
-
 為 `locale` 參數設定好預設值後，使用 `route` 輔助函式產生 URL 時就不需要再傳入這個值了：
 
 <a name="url-defaults-middleware-priority"></a>

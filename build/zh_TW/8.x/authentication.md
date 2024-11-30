@@ -1,40 +1,45 @@
 ---
-contributors:
-  14684796:
-    avatarUrl: https://crowdin-static.downloads.crowdin.com/avatar/14684796/medium/60f7dc21ec0bf9cfcb61983640bb4809_default.png
-    name: cornch
-crowdinUrl: https://crowdin.com/translate/laravel-docs/11/en-zhtw
-progress: 100
+crowdinUrl: 'https://crowdin.com/translate/laravel-docs/11/en-zhtw'
 updatedAt: '2024-06-30T08:17:00Z'
+contributors: {  }
+progress: 53.89
 ---
 
 # 認證
 
 - [簡介](#introduction)
-   - [入門套件](#starter-kits)
-   - [資料庫選擇](#introduction-database-considerations)
-   - [生態鏈概覽](#ecosystem-overview)
+  - [入門套件](#starter-kits)
+  - [資料庫選擇](#introduction-database-considerations)
+  - [生態鏈概覽](#ecosystem-overview)
+  
 - [「驗證」快速入門](#authentication-quickstart)
-   - [安裝入門套件](#install-a-starter-kit)
-   - [取得已登入的使用者](#retrieving-the-authenticated-user)
-   - [受保護的 Route](#protecting-routes)
-   - [登入頻率限制](#login-throttling)
+  - [安裝入門套件](#install-a-starter-kit)
+  - [取得已登入的使用者](#retrieving-the-authenticated-user)
+  - [受保護的 Route](#protecting-routes)
+  - [登入頻率限制](#login-throttling)
+  
 - [手動登入使用者](#authenticating-users)
-   - [記住使用者](#remembering-users)
-   - [其他認證方法](#other-authentication-methods)
+  - [記住使用者](#remembering-users)
+  - [其他認證方法](#other-authentication-methods)
+  
 - [HTTP Basic 認證](#http-basic-authentication)
-   - [Stateless HTTP Basic 認證](#stateless-http-basic-authentication)
+  - [Stateless HTTP Basic 認證](#stateless-http-basic-authentication)
+  
 - [登出](#logging-out)
-   - [登出其他裝置上的工作階段](#invalidating-sessions-on-other-devices)
+  - [登出其他裝置上的工作階段](#invalidating-sessions-on-other-devices)
+  
 - [確認密碼](#password-confirmation)
-   - [設定](#password-confirmation-configuration)
-   - [路由](#password-confirmation-routing)
-   - [保護 Route](#password-confirmation-protecting-routes)
+  - [設定](#password-confirmation-configuration)
+  - [路由](#password-confirmation-routing)
+  - [保護 Route](#password-confirmation-protecting-routes)
+  
 - [新增自訂 Guard](#adding-custom-guards)
-   - [閉包的 Request Guard](#closure-request-guards)
+  - [閉包的 Request Guard](#closure-request-guards)
+  
 - [新增自訂的 User Provider](#adding-custom-user-providers)
-   - [UserProvider Contract](#the-user-provider-contract)
-   - [Authenticatable Contract](#the-authenticatable-contract)
+  - [UserProvider Contract](#the-user-provider-contract)
+  - [Authenticatable Contract](#the-authenticatable-contract)
+  
 - [社群登入](/docs/{{version}}/socialite)
 - [事件](#events)
 
@@ -50,7 +55,8 @@ Provider 則定義了要如何從長期儲存空間內取得使用者。Laravel 
 
 你的專案的認證設定檔位於 `config/auth.php` 內。該檔案包含了多個有文件說明的選項，可以調整 Laravel 認證服務的行為。
 
-> {tip} Guard 與 Provider 跟「角色」以及「權限」不同，不應混謠。若要瞭解如何依照權限來授權使用者的方法，請參考[授權](/docs/{{version}}/authorization) 說明文件。
+> [!TIP]  
+> Guard 與 Provider 與「角色」以及「權限」不同，不應溷肴。要瞭解如何依照權限來授權使用者的方法，請參考 [授權](/docs/{{version}}/authorization) 說明文件。
 
 <a name="starter-kits"></a>
 
@@ -132,7 +138,8 @@ Laravel Sanctum 是我們在 [Laravel Jetstream](https://jetstream.laravel.com) 
 
 ## 「認證」快速入門
 
-> {note} 這部分的文件會討論通過 [Laravel 應用程式入門套件](/docs/{{version}}/starter-kits) 來驗證使用者，這些入門套件包含了能協助你快速開始的 UI Scaffolding。若你想要直接與 Laravel 的驗證系統整合，請參考 [手動驗證使用者](#authenticating-users) 內的說明文件。
+> [!NOTE]  
+> 這部分的文件會討論通過 [Laravel 應用程式入門套件](/docs/{{version}}/starter-kits) 來驗證使用者，這些入門套件包含了能協助你快速開始的 UI Scaffolding。若你想要直接與 Laravel 的驗證系統整合，請參考 [手動驗證使用者](#authenticating-users) 內的說明文件。
 
 <a name="install-a-starter-kit"></a>
 
@@ -152,12 +159,11 @@ Laravel Breeze 是一個簡單且最小化實作出所有 Laravel 認證功能�
 
     use Illuminate\Support\Facades\Auth;
     
-    // 取得目前登入的使用者...
+    // Retrieve the currently authenticated user...
     $user = Auth::user();
     
-    // 取得目前登入使用者的 ID...
+    // Retrieve the currently authenticated user's ID...
     $id = Auth::id();
-
 另外，使用者認證後，也可以通過 `Illuminate\Http\Request` 實體來存取已登入的使用者。請記得，有型別提示的類別會自動被插入到 Controller 方法內。只要型別提示 `Illuminate\Http\Request` 物件，就可以方便地通過 Request 的 `user` 方法來在任何 Controller 方法內存取已登入的使用者：
 
     <?php
@@ -179,7 +185,6 @@ Laravel Breeze 是一個簡單且最小化實作出所有 Laravel 認證功能�
             // $request->user()
         }
     }
-
 <a name="determining-if-the-current-user-is-authenticated"></a>
 
 #### 判斷目前使用者是否已認證
@@ -191,8 +196,8 @@ Laravel Breeze 是一個簡單且最小化實作出所有 Laravel 認證功能�
     if (Auth::check()) {
         // The user is logged in...
     }
-
-> {tip} 雖然可以使用 `check` 方法來判斷使用者是否已登入，但通常可以使用 Middleware 來在使用者存取特定 Route 或 Controller 前就先驗證該使用者是否已登入。關更多詳情，參考[保護 Route](/docs/{{version}}/authentication#protecting-routes) 內的說明文件。
+> [!TIP]  
+> 雖然可以使用 `check` 方法來判斷使用者是否已登入，但通常可以使用 Middleware 來在使用者存取特定 Route 或 Controller 前就先驗證該使用者是否已登入。關更多詳情，參考[保護 Route](/docs/{{version}}/authentication#protecting-routes) 內的說明文件。
 
 <a name="protecting-routes"></a>
 
@@ -201,9 +206,8 @@ Laravel Breeze 是一個簡單且最小化實作出所有 Laravel 認證功能�
 [路由 Middleware](/docs/{{version}}/middleware) 可以用來只允許已認證的使用者存取指定的路由。Laravel 內建了一個 `auth` Middleware，這個 Middleware為 `Illuminate\Auth\Middleware\Authenticate` 類別。由於該 Middleware已預先在專案中的 HTTP Kernel 內註冊好了，所以只需要在路由定義內加上這個 Middleware 即可：
 
     Route::get('/flights', function () {
-        // 只有已登入的使用者才能存取此路由…
+        // Only authenticated users may access this route...
     })->middleware('auth');
-
 <a name="redirecting-unauthenticated-users"></a>
 
 #### 重新導向未登入的使用者
@@ -220,7 +224,6 @@ Laravel Breeze 是一個簡單且最小化實作出所有 Laravel 認證功能�
     {
         return route('login');
     }
-
 <a name="specifying-a-guard"></a>
 
 #### 指定 Guard
@@ -228,16 +231,16 @@ Laravel Breeze 是一個簡單且最小化實作出所有 Laravel 認證功能�
 在將 `auth` 中間層加到路由時，可以指定要使用哪個「Guard」來認證使用者。可以通過指定 `auth.php` 設定檔中 `guards` 陣列內對應的鍵值來指定 Guard：
 
     Route::get('/flights', function () {
-        // 只有已登入的使用者才能存取該 Route...
+        // Only authenticated users may access this route...
     })->middleware('auth:admin');
-
 <a name="login-throttling"></a>
 
 ### 登入頻率限制
 
 若使用 Laravel Breeze 或 Laravel Jetstream [入門套件](/docs/{{version}}/starter-kits)，會自動將頻率限制套用到登入限制上。預設情況下，若使用者嘗試了數次仍未提供正確的帳號密碼，則將在一分鐘之內都無法登入。登入限制是基於每個使用者的使用者名稱或電子郵件，以及其 IP 位址來區分的。
 
-> {tip} 若想在專案中的其他 Route 上提供頻率限制，請參考[頻率限制的說明文件](/docs/{{version}}/routing#rate-limiting)。
+> [!TIP]  
+> 若想在專案中的其他 Route 上提供頻率限制，請參考[頻率限制的說明文件](/docs/{{version}}/routing#rate-limiting)。
 
 <a name="authenticating-users"></a>
 
@@ -280,7 +283,6 @@ Laravel Breeze 是一個簡單且最小化實作出所有 Laravel 認證功能�
             ]);
         }
     }
-
 `attempt` 方法接收包含了索引鍵／值配對的陣列作為其第一個引數。陣列中的值會被用來在資料庫資料表中尋找使用者。因此，在上方的範例中，使用者會依照 `email` 欄位中的值來取得。若找到該使用者，則會將資料庫中儲存的密碼雜湊跟陣列中的 `password` 值進行比對。請不要將連入請求的 `password` 進行雜湊，因為框架會自動在與資料庫中雜湊密碼比對時自動對齊進行雜湊。當兩個雜湊密碼相符合時，將開始該使用者的認證 Session。
 
 請記得，Laravel 的認證服務會依據認證 Guard 的「provider」設定來從資料庫中取得使用者。預設的 `config/auth.php` 設定檔中使用了 Eloquent User Provider，並使用 `App\Models\User` Model 來取得使用者。可以依照專案需求來在設定檔中更改這些值。
@@ -296,10 +298,10 @@ Laravel 的重新導向程式中提供的 `intended` 方法可以用來將使用
 若有需要的話，也可以在認證查詢上指定除了使用者的電子郵件與密碼外的額外查詢條件。為此，只需要將查詢條件加到傳給 `attempt` 方法的陣列中即可。如，我們可以認證使用者有被標示為「啟用」：
 
     if (Auth::attempt(['email' => $email, 'password' => $password, 'active' => 1])) {
-        // 認證成功...
+        // Authentication was successful...
     }
-
-> {note} 不一定要像這個例子一樣使用 `email` 欄位，此處只是以 E-Mail 當作範例。可以使用任何在資料庫中相當於「使用者名稱」的欄位來認證。
+> [!NOTE]  
+> 不一定要像這個例子一樣使用 `email` 欄位，此處只是以 E-Mail 當作範例。可以使用任何在資料庫中相當於「使用者名稱」的欄位來認證。
 
 <a name="accessing-specific-guard-instances"></a>
 
@@ -312,7 +314,6 @@ Laravel 的重新導向程式中提供的 `intended` 方法可以用來將使用
     if (Auth::guard('admin')->attempt($credentials)) {
         // ...
     }
-
 <a name="remembering-users"></a>
 
 ### 記住使用者
@@ -324,9 +325,8 @@ Laravel 的重新導向程式中提供的 `intended` 方法可以用來將使用
     use Illuminate\Support\Facades\Auth;
     
     if (Auth::attempt(['email' => $email, 'password' => $password], $remember)) {
-        // 已記住使用者...
+        // The user is being remembered...
     }
-
 <a name="other-authentication-methods"></a>
 
 ### 其他認證方法
@@ -340,15 +340,12 @@ Laravel 的重新導向程式中提供的 `intended` 方法可以用來將使用
     use Illuminate\Support\Facades\Auth;
     
     Auth::login($user);
-
 可以將布林值傳入 `login` 方法的第二個引數。這個布林值會用來判斷該登入 Session 是否可套用「記住我」功能。請記得，啟用該功能就表示這個 Session 將永久可用，直到使用者手動登出：
 
     Auth::login($user, $remember = true);
-
 若有需要，可以在呼叫 `login` 方法前指定一個認證 Guard：
 
     Auth::guard('admin')->login($user);
-
 <a name="authenticate-a-user-by-id"></a>
 
 #### 通過 ID 認證使用者
@@ -356,11 +353,9 @@ Laravel 的重新導向程式中提供的 `intended` 方法可以用來將使用
 若要使用資料庫中的主索引鍵 (Primary Key) 來認證使用者，可以使用 `loginUsingId` 方法。該方法接受要用來認證使用者的主索引鍵值：
 
     Auth::loginUsingId(1);
-
 可以將布林值傳入 `loginUsingId` 方法的第二個引數。這個布林值會用來判斷該登入 Session 是否可套用「記住我」功能。請記得，啟用該功能就標示該 Session 將永久可用，直到使用者手動登出：
 
     Auth::loginUsingId(1, $remember = true);
-
 <a name="authenticate-a-user-once"></a>
 
 #### 僅認證使用者一次
@@ -370,7 +365,6 @@ Laravel 的重新導向程式中提供的 `intended` 方法可以用來將使用
     if (Auth::once($credentials)) {
         //
     }
-
 <a name="http-basic-authentication"></a>
 
 ## HTTP 基本認證
@@ -378,9 +372,8 @@ Laravel 的重新導向程式中提供的 `intended` 方法可以用來將使用
 [HTTP 基本認證](https://zh.wikipedia.org/zh-tw/HTTP%E5%9F%BA%E6%9C%AC%E8%AE%A4%E8%AF%81)提供了一種不需要設定專屬「登入」頁面而快速認證專案中使用者的方法。要進行 HTTP 基本認證，請將 `auth.basic` [Middleware](/docs/{{version}}/middleware) 加到路由上。`auth.basic` Middleware 已包含在 Laravel 框架內，不需要自行定義：
 
     Route::get('/profile', function () {
-        // 只有已登入使用者可以存取這個 Route...
+        // Only authenticated users may access this route...
     })->middleware('auth.basic');
-
 將該 Middleware 加到路由上後，在瀏覽器上存取該路由時會自動被提示帳號密碼。預設情況下，`auth.basic` 中間層會假設 `email` 欄位是 `users` 資料表中的使用者「帳號」欄位。
 
 <a name="a-note-on-fastcgi"></a>
@@ -391,7 +384,6 @@ Laravel 的重新導向程式中提供的 `intended` 方法可以用來將使用
 
     RewriteCond %{HTTP:Authorization} ^(.+)$
     RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
-
 <a name="stateless-http-basic-authentication"></a>
 
 ### 無周邊 HTTP 基本認證
@@ -419,13 +411,11 @@ Laravel 的重新導向程式中提供的 `intended` 方法可以用來將使用
         }
     
     }
-
 接著，請[註冊路由 Middleware](/docs/{{version}}/middleware#registering-middleware)，並將其附加到路由上：
 
     Route::get('/api/user', function () {
-        // 只有已登入使用者可以存取這個 Route...
+        // Only authenticated users may access this route...
     })->middleware('auth.basic.once');
-
 <a name="logging-out"></a>
 
 ## 登出
@@ -453,7 +443,6 @@ Laravel 的重新導向程式中提供的 `intended` 方法可以用來將使用
     
         return redirect('/');
     }
-
 <a name="invalidating-sessions-on-other-devices"></a>
 
 ### 將其他裝置上的 Session 無效化
@@ -467,13 +456,11 @@ Laravel 也提供了另一個機制，可以用來在不影響目前裝置上 Se
         \Illuminate\Session\Middleware\AuthenticateSession::class,
         // ...
     ],
-
 接著，可以使用 `Auth` Facade 提供的 `logoutOtherDevices` 方法。該方法會需要使用者確認目前密碼，而你的網站應通過一個輸入表單來接收密碼：
 
     use Illuminate\Support\Facades\Auth;
     
     Auth::logoutOtherDevices($currentPassword);
-
 當 `logoutOtherDevices` 方法被叫用後，使用者的其他 Session 將被立即無效化。這代表，使用者會被從其他所有已認證過的 Guard 中被「登出」。
 
 <a name="password-confirmation"></a>
@@ -482,7 +469,8 @@ Laravel 也提供了另一個機制，可以用來在不影響目前裝置上 Se
 
 在製作網站時，有時可能會需要使用者在執行某個操作前、或是在使用者被重新導向到網站機敏區域前要求使用者確認密碼。Laravel 提供了一個內建的 Middleware 來讓這個過程變得很輕鬆。要實作這項功能會需要定義兩個路由：一個用於顯示並要求使用者確認密碼的路由，另一個則用於確認密碼有效並將使用者重新導向至預期目的地的路由。
 
-> {tip} 下列說明文件討論了如何直接整合 Laravel 的密碼確認功能。但若想更快速地入門， [Laravel 專案入門套件](/docs/{{version}}/starter-kits) 有內建支援這個功能！
+> [!TIP]  
+> 下列說明文件討論了如何直接整合 Laravel 的密碼確認功能。但若想更快速地入門， [Laravel 專案入門套件](/docs/{{version}}/starter-kits) 有內建支援這個功能！
 
 <a name="password-confirmation-configuration"></a>
 
@@ -503,7 +491,6 @@ Laravel 也提供了另一個機制，可以用來在不影響目前裝置上 Se
     Route::get('/confirm-password', function () {
         return view('auth.confirm-password');
     })->middleware('auth')->name('password.confirm');
-
 跟我們預期的一樣，這個路由所回傳的 View 內應有一個含有 `password` 欄位的表單。此外，我們也可以隨意在該 View 中加上文字說明，來告訴使用者他們正在進入網站中受保護的區域，必須要輸入密碼來進行確認。
 
 <a name="confirming-the-password"></a>
@@ -527,7 +514,6 @@ Laravel 也提供了另一個機制，可以用來在不影響目前裝置上 Se
     
         return redirect()->intended();
     })->middleware(['auth', 'throttle:6,1']);
-
 在繼續之前，來更仔細地看看這個路由。首先，會判斷請求的 `password` 是否真的符合已認證使用者的密碼。若密碼有效，則我們會通知 Laravel 的 Session 該使用者已確認密碼了。`passwordConfirmed` 方法會在使用者的 Session 上設定一個時間戳記，這樣 Laravel 便能判斷使用者上次確認密碼是什麼時候。最後，我們將使用者重新導向至原本預定的目的地。
 
 <a name="password-confirmation-protecting-routes"></a>
@@ -543,7 +529,6 @@ Laravel 也提供了另一個機制，可以用來在不影響目前裝置上 Se
     Route::post('/settings', function () {
         // ...
     })->middleware(['password.confirm']);
-
 <a name="adding-custom-guards"></a>
 
 ## 新增自訂 Guard
@@ -576,7 +561,6 @@ Laravel 也提供了另一個機制，可以用來在不影響目前裝置上 Se
             });
         }
     }
-
 如同在上方範例中看到的一樣，傳給 `extend` 方法的閉包應回傳 `Illuminate\Contracts\Auth\Guard` 的實作。
 `Illuminate\Contracts\Auth\Guard` 這個介面中有一些定義自訂 Guard 所需要實作的方法。定義好自訂 Guard 後，就能在 `auth.php` 設定檔中的 `guards` 設定來參照自訂 Guard。
 
@@ -586,7 +570,6 @@ Laravel 也提供了另一個機制，可以用來在不影響目前裝置上 Se
             'provider' => 'users',
         ],
     ],
-
 <a name="closure-request-guards"></a>
 
 ### 閉包請求 Guard
@@ -612,7 +595,6 @@ Laravel 也提供了另一個機制，可以用來在不影響目前裝置上 Se
             return User::where('token', $request->token)->first();
         });
     }
-
 定義好自訂認證 Driver 後，可以將其設定在 `auth.php` 設定檔中的 `guards` 設定。
 
     'guards' => [
@@ -620,7 +602,6 @@ Laravel 也提供了另一個機制，可以用來在不影響目前裝置上 Se
             'driver' => 'custom-token',
         ],
     ],
-
 <a name="adding-custom-user-providers"></a>
 
 ## 新增自訂 User Provider
@@ -653,7 +634,6 @@ Laravel 也提供了另一個機制，可以用來在不影響目前裝置上 Se
             });
         }
     }
-
 通過 `provider` 方法註冊好 Provider 後，即可在 `auth.php` 設定檔內更改為新的 User Provider。首先，先定義使用這個新 Driver 的 `provider`：
 
     'providers' => [
@@ -661,7 +641,6 @@ Laravel 也提供了另一個機制，可以用來在不影響目前裝置上 Se
             'driver' => 'mongo',
         ],
     ],
-
 最後，就能在 `guards` 設定中參照這個 Provider：
 
     'guards' => [
@@ -670,7 +649,6 @@ Laravel 也提供了另一個機制，可以用來在不影響目前裝置上 Se
             'provider' => 'users',
         ],
     ],
-
 <a name="the-user-provider-contract"></a>
 
 ### User Provider Contract
@@ -691,7 +669,6 @@ Laravel 也提供了另一個機制，可以用來在不影響目前裝置上 Se
         public function retrieveByCredentials(array $credentials);
         public function validateCredentials(Authenticatable $user, array $credentials);
     }
-
 `retrieveById` 方法通常會接受一個代表使用者的索引鍵，如 MySQL 資料庫中的 Auto-Increment ID。該方法應回傳一個符合該 ID 的 `Authenticatable` 實作。
 
 `retrieveByToken` 方法通過每個使用者獨立的 `$identifier` 以及一個在資料庫中通常存在 `remember_token` 欄位的「記住我」權杖 `$token` 來取得使用者。與上個方法類似，這個方法應回傳一個符合該權杖的 `Authenticatable` 。
@@ -721,7 +698,6 @@ Laravel 也提供了另一個機制，可以用來在不影響目前裝置上 Se
         public function setRememberToken($value);
         public function getRememberTokenName();
     }
-
 這個介面很簡單。`getAuthIdentifierName` 應回傳使用者「主索引鍵 (Primary Key)」欄位的名稱，而 `getAuthIdentifier` 則回傳使用者的「主索引鍵」。當使用 MySQL 後端時，主索引鍵通常就是指派給使用者記錄的自動遞增 (Auto-Increment) 主索引鍵。
 
 有了這個介面，不論使用什麼 ORM 或儲存抽象層，認證系統都能與任何的「使用者」Class 搭配使用。預設情況下，Laravel 在 `app/Models` 目錄內包含了一個 `App\Models\User` Class，`App\Models\User` 就實作了這個介面。

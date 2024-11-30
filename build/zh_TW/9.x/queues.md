@@ -1,57 +1,61 @@
 ---
-contributors:
-  14684796:
-    avatarUrl: https://crowdin-static.downloads.crowdin.com/avatar/14684796/medium/60f7dc21ec0bf9cfcb61983640bb4809_default.png
-    name: cornch
-crowdinUrl: https://crowdin.com/translate/laravel-docs/125/en-zhtw
-progress: 98
+crowdinUrl: 'https://crowdin.com/translate/laravel-docs/125/en-zhtw'
 updatedAt: '2024-06-30T08:15:00Z'
+contributors: {  }
+progress: 47.13
 ---
 
 # 佇列 - Queue
 
 - [簡介](#introduction)
-   - [連線 Vs. 佇列](#connections-vs-queues)
-   - [Driver 注意事項與前置需求](#driver-prerequisites)
+  - [連線 Vs. 佇列](#connections-vs-queues)
+  - [Driver 注意事項與前置需求](#driver-prerequisites)
+  
 - [建立 Job](#creating-jobs)
-   - [產生 Job 類別](#generating-job-classes)
-   - [類別架構](#class-structure)
-   - [不重複 Job](#unique-jobs)
+  - [產生 Job 類別](#generating-job-classes)
+  - [類別架構](#class-structure)
+  - [不重複 Job](#unique-jobs)
+  
 - [Job Middleware](#job-middleware)
-   - [頻率限制](#rate-limiting)
-   - [避免 Job 重疊](#preventing-job-overlaps)
-   - [頻率限制的 Exception](#throttling-exceptions)
+  - [頻率限制](#rate-limiting)
+  - [避免 Job 重疊](#preventing-job-overlaps)
+  - [頻率限制的 Exception](#throttling-exceptions)
+  
 - [分派 Job](#dispatching-jobs)
-   - [延遲分派](#delayed-dispatching)
-   - [同步分派](#synchronous-dispatching)
-   - [Job 與資料庫 Transaction](#jobs-and-database-transactions)
-   - [串聯 Job](#job-chaining)
-   - [自訂佇列與連線](#customizing-the-queue-and-connection)
-   - [指定 Job 最大嘗試次數與逾時](#max-job-attempts-and-timeout)
-   - [錯誤處理](#error-handling)
+  - [延遲分派](#delayed-dispatching)
+  - [同步分派](#synchronous-dispatching)
+  - [Job 與資料庫 Transaction](#jobs-and-database-transactions)
+  - [串聯 Job](#job-chaining)
+  - [自訂佇列與連線](#customizing-the-queue-and-connection)
+  - [指定 Job 最大嘗試次數與逾時](#max-job-attempts-and-timeout)
+  - [錯誤處理](#error-handling)
+  
 - [批次 Job](#job-batching)
-   - [定義批次 Job](#defining-batchable-jobs)
-   - [分派批次](#dispatching-batches)
-   - [將 Job 加入批次中](#adding-jobs-to-batches)
-   - [檢查批次](#inspecting-batches)
-   - [取消批次](#cancelling-batches)
-   - [批次執行失敗](#batch-failures)
-   - [修剪批次](#pruning-batches)
+  - [定義批次 Job](#defining-batchable-jobs)
+  - [分派批次](#dispatching-batches)
+  - [將 Job 加入批次中](#adding-jobs-to-batches)
+  - [檢查批次](#inspecting-batches)
+  - [取消批次](#cancelling-batches)
+  - [批次執行失敗](#batch-failures)
+  - [修剪批次](#pruning-batches)
+  
 - [將閉包放入佇列](#queueing-closures)
 - [執行 Queue Worker](#running-the-queue-worker)
-   - [`queue:work` 指令](#the-queue-work-command)
-   - [佇列的優先度](#queue-priorities)
-   - [Queue Worker 與部署](#queue-workers-and-deployment)
-   - [Job 的實效性與逾時](#job-expirations-and-timeouts)
+  - [`queue:work` 指令](#the-queue-work-command)
+  - [佇列的優先度](#queue-priorities)
+  - [Queue Worker 與部署](#queue-workers-and-deployment)
+  - [Job 的實效性與逾時](#job-expirations-and-timeouts)
+  
 - [Supervisor 設定](#supervisor-configuration)
 - [處理失敗的 Job](#dealing-with-failed-jobs)
-   - [在 Job 失敗後進行清理](#cleaning-up-after-failed-jobs)
-   - [重試失敗的 Job](#retrying-failed-jobs)
-   - [忽略不存在的 Model](#ignoring-missing-models)
-   - [修剪失敗的 Job](#pruning-failed-jobs)
-   - [在 DynamoDB 中保存失敗的 Job](#storing-failed-jobs-in-dynamodb)
-   - [禁用失敗 Job 的保存](#disabling-failed-job-storage)
-   - [失敗 Job 事件](#failed-job-events)
+  - [在 Job 失敗後進行清理](#cleaning-up-after-failed-jobs)
+  - [重試失敗的 Job](#retrying-failed-jobs)
+  - [忽略不存在的 Model](#ignoring-missing-models)
+  - [修剪失敗的 Job](#pruning-failed-jobs)
+  - [在 DynamoDB 中保存失敗的 Job](#storing-failed-jobs-in-dynamodb)
+  - [禁用失敗 Job 的保存](#disabling-failed-job-storage)
+  - [失敗 Job 事件](#failed-job-events)
+  
 - [在佇列中清除 Job](#clearing-jobs-from-queues)
 - [監控佇列](#monitoring-your-queues)
 - [Job 事件](#job-events)
@@ -66,7 +70,8 @@ Laravel 的佇列為各種不同的佇列後端都提供了統一的 API。這�
 
 Laravel 的佇列設定選項保存在專案的 `config/queue.php` 設定檔中。在這個檔案內，可以看到供各個 Laravel 內建佇列 Driver 使用的連線設定，包含資料庫、[Amazon SQS](https://aws.amazon.com/sqs/)、[Redis](https://redis.io)、[Beanstalkd](https://beanstalkd.github.io/) 等 Driver，還包括一個會即時執行任務的同步佇列 (用於本機開發)。還包含一個 `null` 佇列，用於忽略佇列任務。
 
-> **Note** Laravel 現在還提供 Horizon。Horizon 是為 Redis 佇列提供的一個一個漂亮面板。更多資訊請參考完整的 [Horizon 說明文件](/docs/{{version}}/horizon)。
+> [!NOTE]  
+> Laravel 現在還提供 Horizon。Horizon 是為 Redis 佇列提供的一個一個漂亮面板。更多資訊請參考完整的 [Horizon 說明文件](/docs/{{version}}/horizon)。
 
 <a name="connections-vs-queues"></a>
 
@@ -78,18 +83,16 @@ Laravel 的佇列設定選項保存在專案的 `config/queue.php` 設定檔中�
 
     use App\Jobs\ProcessPodcast;
     
-    // 這個任務會被送到預設連線的預設佇列上...
+    // This job is sent to the default connection's default queue...
     ProcessPodcast::dispatch();
     
-    // 這個任務會被送到預設連線的「emails」佇列上...
+    // This job is sent to the default connection's "emails" queue...
     ProcessPodcast::dispatch()->onQueue('emails');
-
 有的程式沒有要將任務推送到不同佇列的需求，這些程式只需要有單一佇列就好了。不過，因為 Laravel 的 Queue Worker 可調整各個 Queue 的優先處理等級，因此如果想要調整不同任務的優先處理順序，把任務推送到不同佇列就很有用。就來來說，我們如果把任務推送到 `high` 佇列，我們就可以執行一個 Worker 來讓這個佇列以更高優先級處理：
 
 ```shell
 php artisan queue:work --queue=high,default
 ```
-
 <a name="driver-prerequisites"></a>
 
 ### Driver 注意事項與前置需求
@@ -105,11 +108,9 @@ php artisan queue:table
 
 php artisan migrate
 ```
-
 最後，別忘了更新專案 `.env` 檔中的 `QUEUE_CONNECTION` 變數來讓專案使用 `database` Driver：
 
     QUEUE_CONNECTION=database
-
 <a name="redis"></a>
 
 #### Redis
@@ -126,7 +127,6 @@ php artisan migrate
         'queue' => '{default}',
         'retry_after' => 90,
     ],
-
 **Blocking**
 
 在使用 Redis 佇列時，可使用 `block_for` 設定選項來指定 Redis Driver 在迭代 Worker 迴圈並重新讀取 Redis 資料庫來等新 Job 進來時要等待多久。
@@ -140,8 +140,8 @@ php artisan migrate
         'retry_after' => 90,
         'block_for' => 5,
     ],
-
-> **Warning** 將 `block_for` 設為 `0` 會導致 Queue Worker 在新 Job 出現前一直 Block。也會導致在處理下一個 Job 前都無法處理如 `SIGTERM` 等訊號 (Signal)。
+> [!WARNING]  
+> 將 `block_for` 設為 `0` 會導致 Queue Worker 在新 Job 出現前一直 Block。也會導致在處理下一個 Job 前都無法處理如 `SIGTERM` 等訊號 (Signal)。
 
 <a name="other-driver-prerequisites"></a>
 
@@ -150,13 +150,11 @@ php artisan migrate
 下列 Queue Driver 還需要一些相依性套件。可以使用 Composer 套件管理員來安裝這些相依性套件：
 
 <div class="content-list" markdown="1">
-
 - Amazon SQS: `aws/aws-sdk-php ~3.0`
 - Beanstalkd: `pda/pheanstalk ~4.0`
 - Redis: `predis/predis ~1.0` 或 phpredis PHP 擴充套件
 
 </div>
-
 <a name="creating-jobs"></a>
 
 ## 建立 Job
@@ -170,10 +168,10 @@ php artisan migrate
 ```shell
 php artisan make:job ProcessPodcast
 ```
-
 產生的類別會實作 `Illuminate\Contracts\Queue\ShouldQueue` 介面，這樣 Laravel 就知道該 Job 要被推入佇列並以非同步方式執行。
 
-> **Note** 可以[安裝 Stub](/docs/{{version}}/artisan#stub-customization) 來自訂 Job 的 Stub。
+> [!NOTE]  
+> 可以[安裝 Stub](/docs/{{version}}/artisan#stub-customization) 來自訂 Job 的 Stub。
 
 <a name="class-structure"></a>
 
@@ -226,8 +224,7 @@ Job 類別非常簡單，通常只包含了一個 `handle` 方法，會在佇列
             // Process uploaded podcast...
         }
     }
-
-在這個範例中，可以看到我們直接將 [Eloquent Model] 傳入佇列任務的 ^[Constructor](建構函式) 中。由於該任務有使用 `SerializesModels` Trait，所以 Eloquent Model 與已載入的關聯 Model 都會被序列化處理，並在處理任務時反序列化。
+在這個範例中，可以看到我們直接將 [Eloquent Model] 傳入佇列任務的 ^[Constructor](%E5%BB%BA%E6%A7%8B%E5%87%BD%E5%BC%8F) 中。由於該任務有使用 `SerializesModels` Trait，所以 Eloquent Model 與已載入的關聯 Model 都會被序列化處理，並在處理任務時反序列化。
 
 若佇列任務的 Constructor 中接受 Eloquent Model，則只有 Model 的^[識別元](Identifier)會被序列化進佇列中。實際要處理任務時，佇列系統會自動從資料庫中重新取得完整的 Model 實體以及已載入的關聯。通過這種序列化 Model 的做法，我們就能縮小傳入佇列 Driver 的任務^[承載](Payload)。
 
@@ -245,8 +242,8 @@ Job 類別非常簡單，通常只包含了一個 `handle` 方法，會在佇列
     $this->app->bindMethod([ProcessPodcast::class, 'handle'], function ($job, $app) {
         return $job->handle($app->make(AudioProcessor::class));
     });
-
-> **Warning** 二進位資料，如圖片等，應在傳入佇列任務前先使用 `base64_encode` 函式進行編碼。若未進行編碼，則這些資料在放入佇列時可能無法正確被序列化為 JSON。
+> [!WARNING]  
+> 二進位資料，如圖片等，應在傳入佇列任務前先使用 `base64_encode` 函式進行編碼。若未進行編碼，則這些資料在放入佇列時可能無法正確被序列化為 JSON。
 
 <a name="handling-relationships"></a>
 
@@ -264,14 +261,14 @@ Job 類別非常簡單，通常只包含了一個 `handle` 方法，會在佇列
     {
         $this->podcast = $podcast->withoutRelations();
     }
-
 此外，當任務被反序列化，然後 Model 關聯被從資料庫中重新取出時，這些關聯的資料會以完整的關聯取出。這表示，若在 Model 被任務佇列序列化前有對關聯套用任何查詢條件，在反序列化時，這些條件都不會被套用。因此，若只想處理給定關聯中的一部分，應在佇列任務中重新套用這些查詢條件。
 
 <a name="unique-jobs"></a>
 
 ### 不重複 Job
 
-> **Warning** 若要使用不重複任務，則需要使用支援 [Atomic Lock] 的快取 Driver。目前，`memcached`、`redis`、`dynamodb`、`database`、`file`、`array` 等快取 Driver 有支援 Atomic Lock。此外，不重複任務的^[條件限制](Constraint)不會被套用到批次任務中的人物上。
+> [!WARNING]  
+> 若要使用不重複任務，則需要使用支援 [Atomic Lock] 的快取 Driver。目前，`memcached`、`redis`、`dynamodb`、`database`、`file`、`array` 等快取 Driver 有支援 Atomic Lock。此外，不重複任務的^[條件限制](Constraint)不會被套用到批次任務中的人物上。
 
 有時候，我們可能會想確保某個任務在佇列中一次只能有一個實體。我們可以在 Job 類別上實作 `ShouldBeUnique` 介面來確保一次只執行一個實體。要實作這個介面，我們需要在 Class 上定義幾個額外的方法：
 
@@ -284,7 +281,6 @@ Job 類別非常簡單，通常只包含了一個 `handle` 方法，會在佇列
     {
         ...
     }
-
 在上述範例中，`UpdateSearchIndex` Job 是^[不重複](Unique)的。所以，若佇列中已經有該 Job 的另一個實體且尚未執行完畢，就不會再次分派該 Job。
 
 在某些情況下，我們可能會想指定要用來判斷 Job 是否重複的「索引鍵」，或是我們可能會想指定一個逾時時間，讓這個 Job 在執行超過該逾時後就不再判斷是否重複。為此，可在 Job 類別上定義 `uniqueId` 與 `uniqueFor` 屬性或方法：
@@ -321,10 +317,10 @@ Job 類別非常簡單，通常只包含了一個 `handle` 方法，會在佇列
             return $this->product->id;
         }
     }
-
 在上述範例中，`UpdateSearchIndex` Job 使用 Product ID 來判斷是否重複。因此，若新分派的 Job 有相同的 Product ID，則直到現存 Job 執行完畢前，這個 Job 都會被忽略。此外，若現有的 Job 在一個小時內都未被處理，這個不重複鎖定會被解除，之後若有另一個具相同重複索引鍵的 Job 將可被分派進佇列中。
 
-> **Warning** 若專案會在多個 Web Server 或 Container 上分派任務，則請確保所有的這些 Server 都使用相同的中央 Cache Server，好讓 Laravel 可精準判斷該 Job 是否不重複。
+> [!WARNING]  
+> 若專案會在多個 Web Server 或 Container 上分派任務，則請確保所有的這些 Server 都使用相同的中央 Cache Server，好讓 Laravel 可精準判斷該 Job 是否不重複。
 
 <a name="keeping-jobs-unique-until-processing-begins"></a>
 
@@ -342,12 +338,11 @@ Job 類別非常簡單，通常只包含了一個 `handle` 方法，會在佇列
     {
         // ...
     }
-
 <a name="unique-job-locks"></a>
 
 #### 不重複 Job 的鎖定
 
-當分派 `ShouldBeUnique` 時，Laravel 會在幕後使用 `uniqueId` 索引鍵來取得一個 [^[Lock](鎖定)](/docs/{{version}}/cache#atomic-locks)。若未能取得 Lock，就不會分派該 Job。當 Job 完成處理或所有嘗試都失敗後，就會解除該 Lock。預設情況下，Laravel 會使用預設的快取 Driver 來取得該 Lock。不過，若想使用其他 Driver 來取得 Lock，可定義一個 `uniqueVia` 方法，並在該方法中回傳要使用的快取 Driver：
+當分派 `ShouldBeUnique` 時，Laravel 會在幕後使用 `uniqueId` 索引鍵來取得一個 [^[Lock](%E9%8E%96%E5%AE%9A)](/docs/{{version}}/cache#atomic-locks)。若未能取得 Lock，就不會分派該 Job。當 Job 完成處理或所有嘗試都失敗後，就會解除該 Lock。預設情況下，Laravel 會使用預設的快取 Driver 來取得該 Lock。不過，若想使用其他 Driver 來取得 Lock，可定義一個 `uniqueVia` 方法，並在該方法中回傳要使用的快取 Driver：
 
     use Illuminate\Support\Facades\Cache;
     
@@ -365,8 +360,8 @@ Job 類別非常簡單，通常只包含了一個 `handle` 方法，會在佇列
             return Cache::driver('redis');
         }
     }
-
-> **Note** 若想限制某個 Job 可^[同時](Concurrent)執行的數量，請使用 [`WithoutOverlapping`](/docs/{{version}}/queues#preventing-job-overlaps) Job Middleware 而不是使用 Unique Job。
+> [!NOTE]  
+> 若想限制某個 Job 可^[同時](Concurrent)執行的數量，請使用 [`WithoutOverlapping`](/docs/{{version}}/queues#preventing-job-overlaps) Job Middleware 而不是使用 Unique Job。
 
 <a name="job-middleware"></a>
 
@@ -384,16 +379,15 @@ Job 類別非常簡單，通常只包含了一個 `handle` 方法，會在佇列
     public function handle()
     {
         Redis::throttle('key')->block(0)->allow(1)->every(5)->then(function () {
-            info('已取得 Lock...');
+            info('Lock obtained...');
     
-            // 處理 Job...
+            // Handle job...
         }, function () {
-            // 無法取得 Lock...
+            // Could not obtain lock...
     
             return $this->release(5);
         });
     }
-
 雖然我們確實可以這樣寫，但這樣一來 `handle` 方法的實作就變得很亂，因為我們的程式碼跟 Redis 頻率限制的邏輯混在一起了。此外，這樣的頻率限制邏輯一定也會與其他我們想要作頻率限制的 Job 重複。
 
 我們可以定義一個 Job Middleware 來處理頻率限制，而不用在 handle 方法內處理。Laravel 中沒有預設放置 Job Middleware 的地方，因此我們可以隨意在專案內放置這些 Job Middleware。舉例來說，我們可以把 Middleware 放在 `app/Jobs/Middleware` 目錄下：
@@ -428,7 +422,6 @@ Job 類別非常簡單，通常只包含了一個 `handle` 方法，會在佇列
                     });
         }
     }
-
 就像這樣，跟 [Route Middleware](/docs/{{version}}/middleware) 很像，Job Middleware 會收到正在處理的 Job，以及要繼續執行 Job 時要叫用的回呼。
 
 建立好 Job Middleware 後，我們就可以在 Job 的 `middleware` 方法內將這個 Middleware 附加上去了。`make:job` 產生的空 Job 不包含 `middleware` 方法，所以我們需要手動在 Job 類別中新增這個方法：
@@ -444,8 +437,8 @@ Job 類別非常簡單，通常只包含了一個 `handle` 方法，會在佇列
     {
         return [new RateLimited];
     }
-
-> **Note** Job Middleware 也可以被指派給可放入佇列的 Event Listener、Mailable、Notification 等。
+> [!NOTE]  
+> Job Middleware 也可以被指派給可放入佇列的 Event Listener、Mailable、Notification 等。
 
 <a name="rate-limiting"></a>
 
@@ -471,11 +464,9 @@ Job 類別非常簡單，通常只包含了一個 `handle` 方法，會在佇列
                         : Limit::perHour(1)->by($job->user->id);
         });
     }
-
 在上述範例中，我們定義了一個每小時的頻率限制。除了以小時來定義頻率限制外，也可以使用 `perMinute` 方法來以分鐘定義頻率限制。此外，我們也可以傳入任意值給頻率限制的 `by` 方法。傳給 `by` 的值通常是用來區分不同使用者的：
 
     return Limit::perMinute(50)->by($job->user->id);
-
 定義好頻率限制後，我們就可以使用 `Illuminate\Queue\Middleware\RateLimited` Middleware 來將這個 Rate Limiter 附加到備份 Job 上。每當這個 Job 超過頻率限制後，這個 Middleware 就會依照頻率限制的間隔，使用適當的延遲時間來將該 Job 放回到佇列中。
 
     use Illuminate\Queue\Middleware\RateLimited;
@@ -489,7 +480,6 @@ Job 類別非常簡單，通常只包含了一個 `handle` 方法，會在佇列
     {
         return [new RateLimited('backups')];
     }
-
 將受頻率限制的 Job 放回佇列後，一樣會增加 Job 的 `attemps` 總數。若有需要可以在 Job 類別上適當地設定 `tries` 與 `maxExceptions` 屬性。或者，也可以使用 [`retryUntil` 方法](#time-based-attempts) 來定義不再重新嘗試 Job 的時間。
 
 若不想讓 Job 在遇到頻率限制後重新嘗試，可使用 `dontRelease` 方法：
@@ -503,8 +493,8 @@ Job 類別非常簡單，通常只包含了一個 `handle` 方法，會在佇列
     {
         return [(new RateLimited('backups'))->dontRelease()];
     }
-
-> **Note** 若使用 Redis，可使用 `Illuminate\Queue\Middleware\RateLimitedWithRedis` Middleware。這個 Middleware 有為 Redis 做最佳化，比起一般基礎的頻率限制 Middleware 來說會更有效率。
+> [!NOTE]  
+> 若使用 Redis，可使用 `Illuminate\Queue\Middleware\RateLimitedWithRedis` Middleware。這個 Middleware 有為 Redis 做最佳化，比起一般基礎的頻率限制 Middleware 來說會更有效率。
 
 <a name="preventing-job-overlaps"></a>
 
@@ -525,7 +515,6 @@ Laravel 隨附了一個 `Illuminate\Queue\Middleware\WithoutOverlapping` Middlew
     {
         return [new WithoutOverlapping($this->user->id)];
     }
-
 每當有重疊的 Job，這些 Job 都會被重新放到佇列中。可以指定這些被重新放回佇列的 Job 在重新嘗試前必須等待多久的秒數：
 
     /**
@@ -537,7 +526,6 @@ Laravel 隨附了一個 `Illuminate\Queue\Middleware\WithoutOverlapping` Middlew
     {
         return [(new WithoutOverlapping($this->order->id))->releaseAfter(60)];
     }
-
 若想在 Job 重疊時馬上刪除這些重疊的 Job 來讓這些 Job 不被重試，請使用 `dontRelease` 方法：
 
     /**
@@ -549,7 +537,6 @@ Laravel 隨附了一個 `Illuminate\Queue\Middleware\WithoutOverlapping` Middlew
     {
         return [(new WithoutOverlapping($this->order->id))->dontRelease()];
     }
-
 `WithoutOverlapping` Middleware 使用 Laravel 的 Atomic Lock 功能提供。有時候，Job 可能會未預期地失敗或逾時，並可能未正確釋放 Lock。因此，我們可以使用 `expireAfter` 方法來顯式定義一個 Lock 的有效時間。舉例來說，下列範例會讓 Laravel 在 Job 開始處理的 3 分鐘後釋放 `WithoutOverlapping` Lock：
 
     /**
@@ -561,8 +548,8 @@ Laravel 隨附了一個 `Illuminate\Queue\Middleware\WithoutOverlapping` Middlew
     {
         return [(new WithoutOverlapping($this->order->id))->expireAfter(180)];
     }
-
-> **Warning** 若要使用 `WithoutOverlapping` Middleware，則需要使用支援 [Atomic Lock] 的快取 Driver。目前，`memcached`、`redis`、`dynamodb`、`database`、`file`、`array` 等快取 Driver 有支援 Atomic Lock。
+> [!WARNING]  
+> 若要使用 `WithoutOverlapping` Middleware，則需要使用支援 [Atomic Lock] 的快取 Driver。目前，`memcached`、`redis`、`dynamodb`、`database`、`file`、`array` 等快取 Driver 有支援 Atomic Lock。
 
 <a name="sharing-lock-keys"></a>
 
@@ -599,7 +586,6 @@ class ProviderIsUp
     }
 }
 ```
-
 <a name="throttling-exceptions"></a>
 
 ### 頻率限制的 Exception
@@ -629,7 +615,6 @@ Laravel 中隨附了一個 `Illuminate\Queue\Middleware\ThrottlesExceptions` Mid
     {
         return now()->addMinutes(5);
     }
-
 Middleware 的第一個 Constructor 引數為 Exception 的數量，當 Job 擲回這個數量的 Exception 後就會被限制執行。第二個引數則是當被限制執行後，在繼續執行之前所要等待的分鐘數。在上述的範例中，若 Job 在 5 分鐘內擲回了 10 個 Exception，則 Laravel 會等待 5 分鐘，然後再繼續嘗試執行該 Job。
 
 當 Job 擲回 Exception，但還未達到所設定的 Exception 閥值，則一般情況下會馬上重試 Job。不過，也可以在講 Middleware 附加到 Job 上時呼叫 `backoff` 方法來指定一個以分鐘為單位的數字，來指定 Job 所要延遲的時間：
@@ -645,7 +630,6 @@ Middleware 的第一個 Constructor 引數為 Exception 的數量，當 Job 擲�
     {
         return [(new ThrottlesExceptions(10, 5))->backoff(5)];
     }
-
 這個 Middleware 在內部使用了 Laravel 的快取系統來實作頻率限制，並使用了該 Job 的類別名稱來作為快取的「索引鍵」。可以在講 Middleware 附加到 Job 上時呼叫 `by` 方法來複寫這個索引鍵。當有多個 Job 都使用了同一個第三方服務時，就很適合使用這個方法來讓這些 Job 都共用相同的頻率限制：
 
     use Illuminate\Queue\Middleware\ThrottlesExceptions;
@@ -659,8 +643,8 @@ Middleware 的第一個 Constructor 引數為 Exception 的數量，當 Job 擲�
     {
         return [(new ThrottlesExceptions(10, 10))->by('key')];
     }
-
-> **Note** 若使用 Redis，可使用 `Illuminate\Queue\Middleware\ThrottlesExceptionsWithRedis` Middleware。該 Middleware 有為 Redis 最佳化，因此會比一般的 Exception 頻率限制 Middleware 還要有效率。
+> [!NOTE]  
+> 若使用 Redis，可使用 `Illuminate\Queue\Middleware\ThrottlesExceptionsWithRedis` Middleware。該 Middleware 有為 Redis 最佳化，因此會比一般的 Exception 頻率限制 Middleware 還要有效率。
 
 <a name="dispatching-jobs"></a>
 
@@ -694,13 +678,11 @@ Middleware 的第一個 Constructor 引數為 Exception 的數量，當 Job 擲�
             ProcessPodcast::dispatch($podcast);
         }
     }
-
 若想要有條件地分派 Job，可使用 `dispatchIf` 與` `dispatchUnless` 方法：
 
     ProcessPodcast::dispatchIf($accountActive, $podcast);
     
     ProcessPodcast::dispatchUnless($accountSuspended, $podcast);
-
 在新的 Laravel 專案中，預設的 Queue Driver 是 `sync` Driver。該 Driver 會在目前 Request 中的前景 (Foreground) 同步執行 Job。若想要讓 Job 被真正放進佇列中在背景執行，你需要在專案的 `config/queue.php` 設定檔中指定一個不同的 Queue Driver。
 
 <a name="delayed-dispatching"></a>
@@ -736,8 +718,8 @@ Middleware 的第一個 Constructor 引數為 Exception 的數量，當 Job 擲�
                         ->delay(now()->addMinutes(10));
         }
     }
-
-> **Warning** Amazon SQS 佇列服務的延遲時間最多只能為 15 分鐘。
+> [!WARNING]  
+> Amazon SQS 佇列服務的延遲時間最多只能為 15 分鐘。
 
 <a name="dispatching-after-the-response-is-sent-to-browser"></a>
 
@@ -748,7 +730,6 @@ Middleware 的第一個 Constructor 引數為 Exception 的數量，當 Job 擲�
     use App\Jobs\SendNotification;
     
     SendNotification::dispatchAfterResponse();
-
 也可以用 `dispatch` 分派一個閉包，然後在 `dispatch` 輔助函式後串上一個 `afterResponse` 方法來在 HTTP Response 被傳送給瀏覽器後執行這個閉包：
 
     use App\Mail\WelcomeMessage;
@@ -757,7 +738,6 @@ Middleware 的第一個 Constructor 引數為 Exception 的數量，當 Job 擲�
     dispatch(function () {
         Mail::to('taylor@example.com')->send(new WelcomeMessage);
     })->afterResponse();
-
 <a name="synchronous-dispatching"></a>
 
 ### 同步分派
@@ -790,7 +770,6 @@ Middleware 的第一個 Constructor 引數為 Exception 的數量，當 Job 擲�
             ProcessPodcast::dispatchSync($podcast);
         }
     }
-
 <a name="jobs-and-database-transactions"></a>
 
 ### Job 與資料庫 Transaction
@@ -804,12 +783,12 @@ Middleware 的第一個 Constructor 引數為 Exception 的數量，當 Job 擲�
         // ...
         'after_commit' => true,
     ],
-
 當 `after_commit` 設為 `true` 後，我們就可以在資料庫 Transaction 中分派 Job 了。Laravel 會等到未完成的上層資料庫 Transaction 都被 Commit 後才將 Job 分派出去。不過，當然，若目前沒有正在處理的資料庫 Transaction，這個 Job 會馬上被分派。
 
-若因為 Transaction 中發上 Exception 而造成 Transaction 被 ^[Roll Back](回溯)，則在這個 Transaction 間所分派的 Job 也會被取消。
+若因為 Transaction 中發上 Exception 而造成 Transaction 被 ^[Roll Back](%E5%9B%9E%E6%BA%AF)，則在這個 Transaction 間所分派的 Job 也會被取消。
 
-> **Note** 將 `after_commit` 設定選項設為 `true` 後，所有放入佇列的 Listener、Maillable、Notification、廣播事件……等都會等待到所有資料庫 Transaciton 都 Commit 後才被分派。
+> [!NOTE]  
+> 將 `after_commit` 設定選項設為 `true` 後，所有放入佇列的 Listener、Maillable、Notification、廣播事件……等都會等待到所有資料庫 Transaciton 都 Commit 後才被分派。
 
 <a name="specifying-commit-dispatch-behavior-inline"></a>
 
@@ -820,16 +799,14 @@ Middleware 的第一個 Constructor 引數為 Exception 的數量，當 Job 擲�
     use App\Jobs\ProcessPodcast;
     
     ProcessPodcast::dispatch($podcast)->afterCommit();
-
 同樣地，若 `after_commit` 選項為 `true`，則我們也可以馬上分派某個特定的 Job，而不等待資料庫 Transaction 的 Commit：
 
     ProcessPodcast::dispatch($podcast)->beforeCommit();
-
 <a name="job-chaining"></a>
 
 ### Job 的串聯
 
-通過 Job 串聯，我們就可以指定一組佇列 Job 的清單，在主要 Job 執行成功後才依序執行這組 Job。若按照順序執行的其中一個 Job 執行失敗，則剩下的 Job 都將不被執行。若要執行佇列的 Job 串聯，可使用 `Bus` Facade 中的 `chain` 方法。Laravel 的 ^[Command Bus](指令匯流排) 是一個低階的原件，佇列 Job 的分派功能就是使用這個原件製作的：
+通過 Job 串聯，我們就可以指定一組佇列 Job 的清單，在主要 Job 執行成功後才依序執行這組 Job。若按照順序執行的其中一個 Job 執行失敗，則剩下的 Job 都將不被執行。若要執行佇列的 Job 串聯，可使用 `Bus` Facade 中的 `chain` 方法。Laravel 的 ^[Command Bus](%E6%8C%87%E4%BB%A4%E5%8C%AF%E6%B5%81%E6%8E%92) 是一個低階的原件，佇列 Job 的分派功能就是使用這個原件製作的：
 
     use App\Jobs\OptimizePodcast;
     use App\Jobs\ProcessPodcast;
@@ -841,7 +818,6 @@ Middleware 的第一個 Constructor 引數為 Exception 的數量，當 Job 擲�
         new OptimizePodcast,
         new ReleasePodcast,
     ])->dispatch();
-
 除了串聯 Job 類別實體，我們也可以串聯閉包：
 
     Bus::chain([
@@ -851,8 +827,8 @@ Middleware 的第一個 Constructor 引數為 Exception 的數量，當 Job 擲�
             Podcast::update(/* ... */);
         },
     ])->dispatch();
-
-> **Warning** 在 Job 中使用 `$this->delete()` 方法來刪除 Job 是沒有辦法讓串聯的 Job 不被執行的。只有當串聯中的 Job 失敗時才會停止執行。
+> [!WARNING]  
+> 在 Job 中使用 `$this->delete()` 方法來刪除 Job 是沒有辦法讓串聯的 Job 不被執行的。只有當串聯中的 Job 失敗時才會停止執行。
 
 <a name="chain-connection-queue"></a>
 
@@ -865,7 +841,6 @@ Middleware 的第一個 Constructor 引數為 Exception 的數量，當 Job 擲�
         new OptimizePodcast,
         new ReleasePodcast,
     ])->onConnection('redis')->onQueue('podcasts')->dispatch();
-
 <a name="chain-failures"></a>
 
 #### 串聯失敗
@@ -880,10 +855,10 @@ Middleware 的第一個 Constructor 引數為 Exception 的數量，當 Job 擲�
         new OptimizePodcast,
         new ReleasePodcast,
     ])->catch(function (Throwable $e) {
-        // 在串聯中有一個 Job 執行失敗...
+        // A job within the chain has failed...
     })->dispatch();
-
-> **Warning** 由於串聯的回呼會被序列化並在稍後由 Laravel 的佇列執行，因此請不要在串聯的回呼中使用 `$this` 變數。
+> [!WARNING]  
+> 由於串聯的回呼會被序列化並在稍後由 Laravel 的佇列執行，因此請不要在串聯的回呼中使用 `$this` 變數。
 
 <a name="customizing-the-queue-and-connection"></a>
 
@@ -921,7 +896,6 @@ Middleware 的第一個 Constructor 引數為 Exception 的數量，當 Job 擲�
             ProcessPodcast::dispatch($podcast)->onQueue('processing');
         }
     }
-
 或者，也可以在 Job 的 Constructor 中呼叫 `onQueue` 方法來指定 Job 的佇列：
 
     <?php
@@ -948,7 +922,6 @@ Middleware 的第一個 Constructor 引數為 Exception 的數量，當 Job 擲�
             $this->onQueue('processing');
         }
     }
-
 <a name="dispatching-to-a-particular-connection"></a>
 
 #### 分派至特定連線
@@ -981,13 +954,11 @@ Middleware 的第一個 Constructor 引數為 Exception 的數量，當 Job 擲�
             ProcessPodcast::dispatch($podcast)->onConnection('sqs');
         }
     }
-
 也可以將 `onConnection` 與 `onQueue` 方法串聯在一起來指定 Job 的連線與佇列：
 
     ProcessPodcast::dispatch($podcast)
                   ->onConnection('sqs')
                   ->onQueue('processing');
-
 或者，也可以在 Job 的 Constructor 中呼叫 `onConnection` 來指定 Job 的連線：
 
     <?php
@@ -1014,7 +985,6 @@ Middleware 的第一個 Constructor 引數為 Exception 的數量，當 Job 擲�
             $this->onConnection('sqs');
         }
     }
-
 <a name="max-job-attempts-and-timeout"></a>
 
 ### 指定最大嘗試次數與逾時
@@ -1030,7 +1000,6 @@ Middleware 的第一個 Constructor 引數為 Exception 的數量，當 Job 擲�
 ```shell
 php artisan queue:work --tries=3
 ```
-
 若 Job 嘗試了最大嘗試次數，則這個 Job 會被視為是「^[執行失敗](Failed)」。更多有關處理執行失敗 Job 的資訊，請參考 [執行失敗 Job 的說明文件](#dealing-with-failed-jobs)。若提供 `--tries=0` 給 `queue:work` 指令，則失敗的 Job 會被無限次數重試。
 
 也可以用另一種更仔細的方法，就是在 Job 類別內定義這個 Job 的最大嘗試次數。若有在 Job 中指定最大嘗試次數，定義在 Job 類別內的次數會比指令列中 `--tries` 的值擁有更高的優先度：
@@ -1048,7 +1017,6 @@ php artisan queue:work --tries=3
          */
         public $tries = 5;
     }
-
 <a name="time-based-attempts"></a>
 
 #### 基於時間的嘗試限制
@@ -1064,8 +1032,8 @@ php artisan queue:work --tries=3
     {
         return now()->addMinutes(10);
     }
-
-> **Note** 也可以在[放入佇列的 Event Listener](/docs/{{version}}/events#queued-event-listeners) 中定義一個 `tries` 屬性或 `retryUntil` 方法。
+> [!NOTE]  
+> 也可以在[放入佇列的 Event Listener](/docs/{{version}}/events#queued-event-listeners) 中定義一個 `tries` 屬性或 `retryUntil` 方法。
 
 <a name="max-exceptions"></a>
 
@@ -1103,21 +1071,21 @@ php artisan queue:work --tries=3
         public function handle()
         {
             Redis::throttle('key')->allow(10)->every(60)->then(function () {
-                // 已取得 Lock，正在處理 Podcast...
+                // Lock obtained, process the podcast...
             }, function () {
-                // 無法取得 Lock...
+                // Unable to obtain lock...
                 return $this->release(10);
             });
         }
     }
-
 在這個例子中，這個 Job 會在程式無法在 10 秒內取得 Redis Lock 時被釋放，而這個 Job 在此期間最多可嘗試 25 次。不過，若 Job 中有擲回未處理的 Exception，則會被視為是失敗的 Job。
 
 <a name="timeout"></a>
 
 #### 逾時
 
-> **Warning** 必須安裝 `pcntl` PHP 擴充程式才可指定 Job 的逾時。
+> [!WARNING]  
+> 必須安裝 `pcntl` PHP 擴充程式才可指定 Job 的逾時。
 
 通常來說，我們知道某個佇列任務大約需要花多少時間執行。因此，在 Laravel 中，我們可以指定一個「逾時」值。預設情況下，逾時值為 60 秒。若 Job 執行超過逾時值所指定的秒數後，負責處理該 Job 的 Worker 就會以錯誤終止執行。一般來說，Worker 會自動由 [Server 上設定的 Process Manager](#supervisor-configuration) 重新開啟。
 
@@ -1126,7 +1094,6 @@ php artisan queue:work --tries=3
 ```shell
 php artisan queue:work --timeout=30
 ```
-
 若 Job 不斷執行逾時超過其最大重試次數，則該 Job 會被標記為執行失敗。
 
 也可以在 Job 類別中定義該 Job 能執行的最大秒數。若有在 Job 上指定逾時，則在 Job 類別上定義的逾時比在指令列上指定的數字擁有更高的優先度：
@@ -1144,7 +1111,6 @@ php artisan queue:work --timeout=30
          */
         public $timeout = 120;
     }
-
 有時候，如 Socket 或連外 HTTP 連線等的 IO Blocking Process 可能不適用所指定的逾時設定。因此，若有使用到這些功能，也請在這些功能的 API 上指定逾時。舉例來說，若使用 Guzzle，則可像這樣指定連線與 Request 的逾時值：
 
 <a name="failing-on-timeout"></a>
@@ -1161,7 +1127,6 @@ php artisan queue:work --timeout=30
  */
 public $failOnTimeout = true;
 ```
-
 <a name="error-handling"></a>
 
 ### 錯誤處理
@@ -1185,11 +1150,9 @@ public $failOnTimeout = true;
     
         $this->release();
     }
-
 預設情況下，`release` 方法會將 Job 釋放會佇列中並立即處理。不過，若傳入一個整數給 `release` 方法，就可以指定讓佇列等待給定秒數後才開始處理該 Job：
 
     $this->release(10);
-
 <a name="manually-failing-a-job"></a>
 
 #### 手動讓 Job 失敗
@@ -1207,14 +1170,13 @@ public $failOnTimeout = true;
     
         $this->fail();
     }
-
 若想以所 Catch 到的 Exception 來將 Job 標記為失敗，可將該 Exception 傳入 `fail` 方法。或者，為了讓開發起來更方便，也可以傳入一個錯誤訊息字串，而該字串會自動被轉為 Exception：
 
     $this->fail($exception);
     
     $this->fail('Something went wrong.');
-
-> **Note** 有關失敗 Job 的更多資訊，請參考[有關處理失敗 Job 的說明文件](#dealing-with-failed-jobs)。
+> [!NOTE]  
+> 有關失敗 Job 的更多資訊，請參考[有關處理失敗 Job 的說明文件](#dealing-with-failed-jobs)。
 
 <a name="job-batching"></a>
 
@@ -1227,7 +1189,6 @@ php artisan queue:batches-table
 
 php artisan migrate
 ```
-
 <a name="defining-batchable-jobs"></a>
 
 ### 定義可批次處理的 Job
@@ -1265,7 +1226,6 @@ php artisan migrate
             // Import a portion of the CSV file...
         }
     }
-
 <a name="dispatching-batches"></a>
 
 ### 分派批次
@@ -1284,18 +1244,18 @@ php artisan migrate
         new ImportCsv(301, 400),
         new ImportCsv(401, 500),
     ])->then(function (Batch $batch) {
-        // 所有 Job 都成功完成...
+        // All jobs completed successfully...
     })->catch(function (Batch $batch, Throwable $e) {
-        // 偵測到第一個 Job 失敗...
+        // First batch job failure detected...
     })->finally(function (Batch $batch) {
-        // 批次已完成執行...
+        // The batch has finished executing...
     })->dispatch();
     
     return $batch->id;
-
 可使用 `$batch->id` 屬性來取得該批次的 ID。在該批次被分派後，可使用這個 ID 來[向 Laravel 的 Command Bus 查詢](#inspecting-batches)有關該批次的資訊。
 
-> **Warning** 由於批次的回呼會被序列化並在稍後由 Laravel 的佇列執行，因此請不要在回呼中使用 `$this` 變數。
+> [!WARNING]  
+> 由於批次的回呼會被序列化並在稍後由 Laravel 的佇列執行，因此請不要在回呼中使用 `$this` 變數。
 
 <a name="naming-batches"></a>
 
@@ -1306,9 +1266,8 @@ php artisan migrate
     $batch = Bus::batch([
         // ...
     ])->then(function (Batch $batch) {
-        // 所有 Job 都已成功完成...
+        // All jobs completed successfully...
     })->name('Import CSV')->dispatch();
-
 <a name="batch-connection-queue"></a>
 
 #### 批次的連線與佇列
@@ -1318,9 +1277,8 @@ php artisan migrate
     $batch = Bus::batch([
         // ...
     ])->then(function (Batch $batch) {
-        // 所有 Job 都已成功完成...
+        // All jobs completed successfully...
     })->onConnection('redis')->onQueue('imports')->dispatch();
-
 <a name="chains-within-batches"></a>
 
 #### 在批次中串聯
@@ -1344,7 +1302,6 @@ php artisan migrate
     ])->then(function (Batch $batch) {
         // ...
     })->dispatch();
-
 <a name="adding-jobs-to-batches"></a>
 
 ### 將 Job 加入批次
@@ -1356,9 +1313,8 @@ php artisan migrate
         new LoadImportBatch,
         new LoadImportBatch,
     ])->then(function (Batch $batch) {
-        // 所有 Job 都成功完成...
+        // All jobs completed successfully...
     })->name('Import Contacts')->dispatch();
-
 在這個例子中，我們可以使用 `LoadImportBatch` Job 來填入其他額外的 Job。若要填入其他 Job，我們可以使用批次實體上的 `add` 方法。批次實體可使用 Job 的 `batch` 方法來取得：
 
     use App\Jobs\ImportContacts;
@@ -1379,8 +1335,8 @@ php artisan migrate
             return new ImportContacts;
         }));
     }
-
-> **Warning** 我們只能向目前 Job 正在執行的批次新增 Job。
+> [!WARNING]  
+> 我們只能向目前 Job 正在執行的批次新增 Job。
 
 <a name="inspecting-batches"></a>
 
@@ -1388,16 +1344,16 @@ php artisan migrate
 
 提供給批次處理完成回呼的 `Illuminate\Bus\Batch` 實體有許多的屬性與方法，可以讓我們處理與取得給定 Job 批次的資訊：
 
-    // 批次的 UUID...
+    // The UUID of the batch...
     $batch->id;
     
-    // 批次的名稱 (若有的話)...
+    // The name of the batch (if applicable)...
     $batch->name;
     
-    // 指派給該批次的 Job 數...
+    // The number of jobs assigned to the batch...
     $batch->totalJobs;
     
-    // 還未被佇列處理的 Job 數量...
+    // The number of jobs that have not been processed by the queue...
     $batch->pendingJobs;
     
     // The number of jobs that have failed...
@@ -1417,7 +1373,6 @@ php artisan migrate
     
     // Indicates if the batch has been cancelled...
     $batch->cancelled();
-
 <a name="returning-batches-from-routes"></a>
 
 #### 從 Route 上回傳批次
@@ -1432,7 +1387,6 @@ php artisan migrate
     Route::get('/batch/{batchId}', function (string $batchId) {
         return Bus::findBatch($batchId);
     });
-
 <a name="cancelling-batches"></a>
 
 ### 取消批次
@@ -1454,7 +1408,6 @@ php artisan migrate
             return;
         }
     }
-
 讀者可能已經從上面的範例中注意到，批次的 Job 一般都應該在繼續執行前先判斷自己所在的批次是否已被取消。不過，為了讓開發過程更方便，也可以在 Job 上指定 `SkipIfBatchCancelled` [Middleware](#job-middleware)，這樣就不需要手動檢查批次是否已被取消。就像該 Middleware 的名稱一樣，這個 Middleware 會告訴 Laravel，當 Job 對應的批次被取消時，就不要在繼續處理 Job：
 
     use Illuminate\Queue\Middleware\SkipIfBatchCancelled;
@@ -1468,7 +1421,6 @@ php artisan migrate
     {
         return [new SkipIfBatchCancelled];
     }
-
 <a name="batch-failures"></a>
 
 ### 批次失敗
@@ -1484,9 +1436,8 @@ php artisan migrate
     $batch = Bus::batch([
         // ...
     ])->then(function (Batch $batch) {
-        // 所有 Job 都已成功完成...
+        // All jobs completed successfully...
     })->allowFailures()->dispatch();
-
 <a name="retrying-failed-batch-jobs"></a>
 
 #### 重試失敗的批次 Job
@@ -1496,7 +1447,6 @@ Laravel 提供了一個方便的 `queue:retry-batch` Artisan 指令，能讓我�
 ```shell
 php artisan queue:retry-batch 32dbc76c-4f82-4749-b610-a639fe0099b5
 ```
-
 <a name="pruning-batches"></a>
 
 ### 修建批次
@@ -1504,19 +1454,15 @@ php artisan queue:retry-batch 32dbc76c-4f82-4749-b610-a639fe0099b5
 若未^[修建](Prune)批次，則 `job_batches` 資料表很快就會變得很大。為了避免這個狀況，應[定期](/docs/{{version}}/scheduling)每日執行 `queue:prune-batches` Artisan 指令：
 
     $schedule->command('queue:prune-batches')->daily();
-
 預設情況下，完成超過 24 小時的批次會被修建掉。可以在呼叫該指令時使用 `hours` 選項來指定批次資料要保留多久。舉例來說，下列指令會刪除完成超過 48 小時前的所有批次：
 
     $schedule->command('queue:prune-batches --hours=48')->daily();
-
 有時候，`jobs_batches` 資料表可能會有一些從未成功完成的批次記錄，如批次中有 Job 失敗且從每次嘗試都失敗的批次。可以在 `queue:prune-batxhes` 指令的使用 `unfinished` 選項來修剪這些未完成的批次：
 
     $schedule->command('queue:prune-batches --hours=48 --unfinished=72')->daily();
-
 類似的，`jobs_batches` 資料表可能會累積一些已取消批次的批次記錄。可以在 `queue:prune-batxhes` 指令上使用 `cancelled` 選項來修剪這些已取消的批次：
 
     $schedule->command('queue:prune-batches --hours=48 --cancelled=72')->daily();
-
 <a name="queueing-closures"></a>
 
 ## 將閉包放入佇列
@@ -1528,7 +1474,6 @@ php artisan queue:retry-batch 32dbc76c-4f82-4749-b610-a639fe0099b5
     dispatch(function () use ($podcast) {
         $podcast->publish();
     });
-
 使用 `catch` 方法，就能為佇列閉包提供一組要在所有[重試次數](#max-job-attempts-and-timeout)都失敗的時候執行的閉包：
 
     use Throwable;
@@ -1536,10 +1481,10 @@ php artisan queue:retry-batch 32dbc76c-4f82-4749-b610-a639fe0099b5
     dispatch(function () use ($podcast) {
         $podcast->publish();
     })->catch(function (Throwable $e) {
-        // 該 Job 執行失敗...
+        // This job has failed...
     });
-
-> **Warning** 由於 `catch` 的回呼會被序列化並在稍後由 Laravel 的佇列執行，因此請不要在 `catch` 的回呼中使用 `$this` 變數。
+> [!WARNING]  
+> 由於 `catch` 的回呼會被序列化並在稍後由 Laravel 的佇列執行，因此請不要在 `catch` 的回呼中使用 `$this` 變數。
 
 <a name="running-the-queue-worker"></a>
 
@@ -1549,20 +1494,19 @@ php artisan queue:retry-batch 32dbc76c-4f82-4749-b610-a639fe0099b5
 
 ### 使用 `queue:work` 指令
 
-Laravel 中隨附了一個 Artisan 指令，可用來開啟 ^[Queue Worker](佇列背景工作角色)，以在 Job 被推入佇列後處理這些 Job。可以使用 `queue:work` Artisan 指令來執行 Queue Worker。請注意，當執行 `queue:work` 指令後，該指令會持續執行，直到我們手動停止該指令或關閉終端機為止：
+Laravel 中隨附了一個 Artisan 指令，可用來開啟 ^[Queue Worker](%E4%BD%87%E5%88%97%E8%83%8C%E6%99%AF%E5%B7%A5%E4%BD%9C%E8%A7%92%E8%89%B2)，以在 Job 被推入佇列後處理這些 Job。可以使用 `queue:work` Artisan 指令來執行 Queue Worker。請注意，當執行 `queue:work` 指令後，該指令會持續執行，直到我們手動停止該指令或關閉終端機為止：
 
 ```shell
 php artisan queue:work
 ```
-
-> **Note** 若要讓 `queue:work` 處理程序在背景持續執行，請使用如 [Supervisor](#supervisor-configuration) 等的 ^[Process Monitor](處理程序監看程式)，以確保 Queue Worker 持續執行。
+> [!NOTE]  
+> 若要讓 `queue:work` 處理程序在背景持續執行，請使用如 [Supervisor](#supervisor-configuration) 等的 ^[Process Monitor](%E8%99%95%E7%90%86%E7%A8%8B%E5%BA%8F%E7%9B%A3%E7%9C%8B%E7%A8%8B%E5%BC%8F)，以確保 Queue Worker 持續執行。
 
 若想將 Job ID 包含在 `queue:work` 指令的輸出，則可在呼叫該指令時加上 `-v` 旗標：
 
 ```shell
 php artisan queue:work -v
 ```
-
 請記得，Queue Worker 是會持續執行的處理程序，且會將已開啟的程式狀態保存在記憶體中。因此，Queue Worker 開始執行後若有更改程式碼，這些 Worker 將不會知道有這些修改。所以，在部署過程中，請確保有[重新啟動 Queue Worker](#queue-workers-and-deployment)。此外，也請注意，在各個 Job 間，也不會自動重設程式所建立或修改的任何^[靜態狀態](Static State)。
 
 或者，我們也可以執行 `queue:listen` 指令。使用 `queue:listen` 指令時，若有更新程式碼或重設程式的狀態，就不需手動重新啟動 Queue Worker。不過，這個指令比起 `queue:work` 指令來說比較沒有效率：
@@ -1570,7 +1514,6 @@ php artisan queue:work -v
 ```shell
 php artisan queue:listen
 ```
-
 <a name="running-multiple-queue-workers"></a>
 
 #### 執行多個 Queue Worker
@@ -1586,13 +1529,11 @@ php artisan queue:listen
 ```shell
 php artisan queue:work redis
 ```
-
 預設情況下，`queue:work` 指令擲回處理給定連線上預設佇列的 Job。不過，我們也可以自定 Queue Worker，以處理給定連線上的特定佇列。舉例來說，若我們把所有的電子郵件都放在 `redis` 連線的 `emails` 佇列中執行，則我們可以執行下列指令來啟動一個處理該佇列的 Worker：
 
 ```shell
 php artisan queue:work redis --queue=emails
 ```
-
 <a name="processing-a-specified-number-of-jobs"></a>
 
 #### 處理指定數量的 Job
@@ -1602,13 +1543,11 @@ php artisan queue:work redis --queue=emails
 ```shell
 php artisan queue:work --once
 ```
-
 可使用 `--max-jobs` 選項來讓 Worker 只處理特定數量的 Job，然後就終止執行。該選項適合與 [Supervisor](#supervisor-configuration) 搭配使用，這樣我們就能讓 Worker 在處理特定數量的 Job 後自動重新執行，以釋出該 Worker 所積累的記憶體：
 
 ```shell
 php artisan queue:work --max-jobs=1000
 ```
-
 <a name="processing-all-queued-jobs-then-exiting"></a>
 
 #### 處理所有放入佇列的 Job 然後終止執行
@@ -1618,7 +1557,6 @@ php artisan queue:work --max-jobs=1000
 ```shell
 php artisan queue:work --stop-when-empty
 ```
-
 <a name="processing-jobs-for-a-given-number-of-seconds"></a>
 
 #### 在給定秒數內處理 Job
@@ -1626,10 +1564,9 @@ php artisan queue:work --stop-when-empty
 `--max-time` 選項可用來讓 Worker 處理給定秒數的 Job，然後終止執行。該選項是何與 [Supervisor](#supervisor-configuration) 搭配使用，以在處理 Job 給定時間後自動重新啟動 Worker，並釋放期間可能積累的記憶體：
 
 ```shell
-# 處理一小時的 Job 然後終止執行...
+# Process jobs for one hour and then exit...
 php artisan queue:work --max-time=3600
 ```
-
 <a name="worker-sleep-duration"></a>
 
 #### Worker 的休眠期間
@@ -1639,7 +1576,6 @@ php artisan queue:work --max-time=3600
 ```shell
 php artisan queue:work --sleep=3
 ```
-
 <a name="resource-considerations"></a>
 
 #### 資源上的考量
@@ -1653,13 +1589,11 @@ Daemon 型的 Queue Worker 並不會在每個 Job 處理後「重新啟動」Lar
 有時候，我們可能會向調整各個佇列的處理優先度。舉例來說，在 `config/queue.php` 設定檔中，我們可以把 `redis` 連線上的預設 `queue` 設為 `low` (低)。不過，有時候，我們可能會想像這樣把 Job 推入 `high` (高) 優先度的佇列：
 
     dispatch((new Job)->onQueue('high'));
-
 若要啟動 Worker 以驗證是否所有 `high` 佇列上的 Job 都比 `low` 佇列上的 Job 還要早被處理，只需要傳入一組以逗號分隔的佇列名稱列表給 `work` 指令即可：
 
 ```shell
 php artisan queue:work --queue=high,low
 ```
-
 <a name="queue-workers-and-deployment"></a>
 
 ### Queue Worker 與部署
@@ -1669,10 +1603,10 @@ php artisan queue:work --queue=high,low
 ```shell
 php artisan queue:restart
 ```
-
 該指令會通知所有的 Queue Worker，讓所有的 Worker 在處理完目前 Job 且在現有 Job 不遺失的情況下終止執行 Worker。由於 Queue Worker 會在 `queue:restart` 指令執行後終止執行，因此請務必使用如 [Supervisor](#supervisor-configuration) 這樣的 Process Manager 來自動重新啟動 Queue Worker。
 
-> **Note** 佇列會使用[快取](/docs/{{version}}/cache)來儲存重新啟動訊號，因此在使用此功能前請先確認專案上是否有設定好正確的快取 Driver。
+> [!NOTE]  
+> 佇列會使用[快取](/docs/{{version}}/cache)來儲存重新啟動訊號，因此在使用此功能前請先確認專案上是否有設定好正確的快取 Driver。
 
 <a name="job-expirations-and-timeouts"></a>
 
@@ -1684,7 +1618,8 @@ php artisan queue:restart
 
 在 `config/queue.php` 設定檔中，每個佇列連線都有定義一個 `retry_after` 選項。這個選項用來指定在重新嘗試目前處理的 Job 前需要等待多少秒。舉例來說，若 `retry_after` 設為 `90`，則若某個 Job 已被處理 90 秒，且期間沒有被釋放或刪除，則該 Job 會被釋放回佇列中。一般來說，應將 `retry_after` 的值設為 Job 在合理情況下要完成執行所需的最大秒數。
 
-> **Warning** 唯一一個不含 `retry_after` 值的佇列連線是 Amazon SQS。SQS 會使用[預設的 Visibility Timeout](https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/AboutVT.html) 來重試 Job。Visibility Timeout 的值由 AWS Console 中控制。
+> [!WARNING]  
+> 唯一一個不含 `retry_after` 值的佇列連線是 Amazon SQS。SQS 會使用[預設的 Visibility Timeout](https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/AboutVT.html) 來重試 Job。Visibility Timeout 的值由 AWS Console 中控制。
 
 <a name="worker-timeouts"></a>
 
@@ -1695,10 +1630,10 @@ php artisan queue:restart
 ```shell
 php artisan queue:work --timeout=60
 ```
-
 雖然 `retry_after` 設定選項與 `--timeout` CLI 選項並不相同，不過這兩個選項會互相配合使用，以確保 Job 不遺失，且 Job 只會成功執行一次。
 
-> **Warning** `--timeout` 的值必須至少比 `retry_after` 設定選項短個幾秒，以確保 Worker 在處理到當掉的 Job 時會在重試 Job 前先終止該 Job。若 `--timeout` 選項比 `retry_after` 設定值還要長的話，則 Job 就有可能會被處理兩次。
+> [!WARNING]  
+> `--timeout` 的值必須至少比 `retry_after` 設定選項短個幾秒，以確保 Worker 在處理到當掉的 Job 時會在重試 Job 前先終止該 Job。若 `--timeout` 選項比 `retry_after` 設定值還要長的話，則 Job 就有可能會被處理兩次。
 
 <a name="supervisor-configuration"></a>
 
@@ -1717,8 +1652,8 @@ Supervisor 是一個用於 Linux 作業系統的 Process Monitor，使用 Superv
 ```shell
 sudo apt-get install supervisor
 ```
-
-> **Note** 如果你覺得要設定並管理 Supervisor 太難、太複雜的話，可以考慮使用 [Laravel Forge](https://forge.laravel.com)。Laravel Forge 會幫你在 Laravel 專案的正式環境上自動安裝並設定 Supervisor。
+> [!NOTE]  
+> 如果你覺得要設定並管理 Supervisor 太難、太複雜的話，可以考慮使用 [Laravel Forge](https://forge.laravel.com)。Laravel Forge 會幫你在 Laravel 專案的正式環境上自動安裝並設定 Supervisor。
 
 <a name="configuring-supervisor"></a>
 
@@ -1740,10 +1675,10 @@ redirect_stderr=true
 stdout_logfile=/home/forge/app.com/worker.log
 stopwaitsecs=3600
 ```
-
 在這個範例中，`numprocs` 指示詞用於告訴 Supervisor 要執行 8 個 `queue:work` 處理程序，並監看這 8 個處理程序，然後當這些處理程序執行失敗時自動重新啟動。我們可以更改該設定檔中的 `command` 指示詞，以調整為所需的佇列連線與 Worker 選項。
 
-> **Warning** 請務必確保 `stopwaitsecs` 值比花費時間最多的 Job 所需執行的秒數還要大。若該值設定不對，可能會讓 Supervisor 在 Job 處理完成前就終止該 Job。
+> [!WARNING]  
+> 請務必確保 `stopwaitsecs` 值比花費時間最多的 Job 所需執行的秒數還要大。若該值設定不對，可能會讓 Supervisor 在 Job 處理完成前就終止該 Job。
 
 <a name="starting-supervisor"></a>
 
@@ -1758,7 +1693,6 @@ sudo supervisorctl update
 
 sudo supervisorctl start laravel-worker:*
 ```
-
 更多有關 Supervisor 的資訊，請參考 [Supervisor 的說明文件](http://supervisord.org/index.html)。
 
 <a name="dealing-with-failed-jobs"></a>
@@ -1774,19 +1708,16 @@ php artisan queue:failed-table
 
 php artisan migrate
 ```
-
 在執行 [Queue Worker] 處理程序時，我們可以使用 `queue:work` 指令上的 `--tries` 開關來指定某個 Job 所要嘗試執行的最大次數。若為指定 `--tries` 選項的值，則 Job 就只會嘗試執行一次，或是依照 Job 類別中 `$tries` 屬性所設定的值作為最大嘗試次數：
 
 ```shell
 php artisan queue:work redis --tries=3
 ```
-
 使用 `--backoff` 選項，就可指定當 Job 遇到 Exception 時，Laravel 要等待多少秒才重新嘗試該 Job。預設情況下，Job 會馬上被釋放回佇列中，以便重新嘗試該 Job：
 
 ```shell
 php artisan queue:work redis --tries=3 --backoff=3
 ```
-
 若想以 Job 為單位來設定當 Job 遇到 Exception 時 Laravel 要等待多少秒才重新嘗試該 Job，則可在 Job 類別上定義 `backoff` 屬性：
 
     /**
@@ -1795,7 +1726,6 @@ php artisan queue:work redis --tries=3 --backoff=3
      * @var int
      */
     public $backoff = 3;
-
 若需要使用更複雜的邏輯來判斷 Job 的 Backoff 時間，可在 Job 類別上定義 `backoff` 方法：
 
     /**
@@ -1807,7 +1737,6 @@ php artisan queue:work redis --tries=3 --backoff=3
     {
         return 3;
     }
-
 只要在 `backoff` 方法中回傳一組包含 Backoff 值的陣列，就能輕鬆地設定「指數級」的 Backoff。在這個例子中，第一次重試的延遲為 1 秒，第二次重試為 5 秒，第三次重試為 10 秒：
 
     /**
@@ -1819,7 +1748,6 @@ php artisan queue:work redis --tries=3 --backoff=3
     {
         return [1, 5, 10];
     }
-
 <a name="cleaning-up-after-failed-jobs"></a>
 
 ### 當 Job 執行失敗後進行清理
@@ -1882,8 +1810,8 @@ php artisan queue:work redis --tries=3 --backoff=3
             // Send user notification of failure, etc...
         }
     }
-
-> **Warning** 叫用 `failed` 方法前會先初始化該 Job 的一個新。因此，在 `handle` 方法中對類別屬性做出的更改都將遺失。
+> [!WARNING]  
+> 叫用 `failed` 方法前會先初始化該 Job 的一個新。因此，在 `handle` 方法中對類別屬性做出的更改都將遺失。
 
 <a name="retrying-failed-jobs"></a>
 
@@ -1894,45 +1822,39 @@ php artisan queue:work redis --tries=3 --backoff=3
 ```shell
 php artisan queue:failed
 ```
-
 `queue:failed` 指令會列出 Job ID、連線、佇列、失敗時間……等，以及其他有關該 Job 的資訊。可使用 Job ID 來重試失敗的 Job。舉例來說，若要重試 ID 為 `ce7bb17c-cdd8-41f0-a8ec-7b4fef4e5ece` 的失敗 Job，請執行下列指令：
 
 ```shell
 php artisan queue:retry ce7bb17c-cdd8-41f0-a8ec-7b4fef4e5ece
 ```
-
 若有需要，可傳入多個 ID 給該指令：
 
 ```shell
 php artisan queue:retry ce7bb17c-cdd8-41f0-a8ec-7b4fef4e5ece 91401d2c-0784-4f43-824c-34f94a33c24d
 ```
-
 也可以嘗試特定佇列中所有失敗的 Job：
 
 ```shell
 php artisan queue:retry --queue=name
 ```
-
 若要重試所有失敗的 Job，請執行 `queue:retry` 指令，並傳入 `all` 作為 ID：
 
 ```shell
 php artisan queue:retry all
 ```
-
 若想刪除失敗的 Job，可使用 `queue:forget` 指令：
 
 ```shell
 php artisan queue:forget 91401d2c-0784-4f43-824c-34f94a33c24d
 ```
-
-> **Note** 使用 [Horizon](/docs/{{version}}/horizon)，請不要使用 `queue:forget` 指令，請使用 `horizon:forget` 指令來刪除失敗的 Job。
+> [!NOTE]  
+> 使用 [Horizon](/docs/{{version}}/horizon)，請不要使用 `queue:forget` 指令，請使用 `horizon:forget` 指令來刪除失敗的 Job。
 
 若要從 `failed_jobs` 資料表中刪除所有失敗的 Job，可使用 `queue:flush` 指令：
 
 ```shell
 php artisan queue:flush
 ```
-
 <a name="ignoring-missing-models"></a>
 
 ### 忽略不存在的 Model
@@ -1947,7 +1869,6 @@ php artisan queue:flush
      * @var bool
      */
     public $deleteWhenMissingModels = true;
-
 <a name="pruning-failed-jobs"></a>
 
 ### 修剪失敗的 Job
@@ -1957,13 +1878,11 @@ php artisan queue:flush
 ```shell
 php artisan queue:prune-failed
 ```
-
 預設情況下，所有超過 24 小時的失敗 Job 記錄都會被修剪。若有提供 `--hours` 選項給該指令，則只會保留過去 N 小時中所插入的失敗 Job 記錄。舉例來說，下列指令會刪除所有插入超過 48 小時的失敗 Job 記錄：
 
 ```shell
 php artisan queue:prune-failed --hours=48
 ```
-
 <a name="storing-failed-jobs-in-dynamodb"></a>
 
 ### 排序 DynamoDB 中的失敗 Job
@@ -1977,7 +1896,6 @@ php artisan queue:prune-failed --hours=48
 ```shell
 composer require aws/aws-sdk-php
 ```
-
 接著，請設定 `queue.failed.driver` 設定選項值為 `dynamodb`。此外，也請在失敗 Job 設定陣列中定義 `key`、`secret`、`region` 等設定選項。這些選項會用來向 AWS 進行身份驗證。使用 `dynamodb` Driver 時，就不需要 `queue.failed.database` 設定選項：
 
 ```php
@@ -1989,17 +1907,15 @@ composer require aws/aws-sdk-php
     'table' => 'failed_jobs',
 ],
 ```
-
 <a name="disabling-failed-job-storage"></a>
 
 ### 不保存失敗的 Job
 
-只要將 `queue.failed.driver` 設定值設為 `null`，就可以讓 Laravel 不保存失敗的 Job 以忽略這些 Job。一般來說，可使用 `QUEUE_FAILED_DRIVER` 環境變數來調整這個值：
+只要將 `queue.failed.driver` 設定值設為 `null`，就可以讓 Laravel 不保存失敗的 Job 以忽略這些 Job。一般來說，可使用  `QUEUE_FAILED_DRIVER` 環境變數來調整這個值：
 
 ```ini
 QUEUE_FAILED_DRIVER=null
 ```
-
 <a name="failed-job-events"></a>
 
 ### 失敗 Job 的事件
@@ -2040,26 +1956,25 @@ QUEUE_FAILED_DRIVER=null
             });
         }
     }
-
 <a name="clearing-jobs-from-queues"></a>
 
 ## 在佇列中清理 Job
 
-> **Note** 使用 [Horizon](/docs/{{version}}/horizon)，請不要使用 `queue:clear` 指令，請使用 `horizon:clear` 指令來清理佇列中的 Job。
+> [!NOTE]  
+> 使用 [Horizon](/docs/{{version}}/horizon)，請不要使用 `queue:clear` 指令，請使用 `horizon:clear` 指令來清理佇列中的 Job。
 
 若想從預設連線的預設佇列中刪除所有 Job，可使用 `queue:clear` Artisan 指令：
 
 ```shell
 php artisan queue:clear
 ```
-
 可以提供 `connection` 引數與 `queue` 選項來刪除特定連線與佇列中的 Job：
 
 ```shell
 php artisan queue:clear redis --queue=emails
 ```
-
-> **Warning** 目前，只有 SQS、Redis、資料庫等佇列 Driver 能支援清除佇列中的 Job。此外，刪除 SQS Message 可能會需要至多 60 秒的時間，因此在清理佇列的 60 秒後所傳送給 SQS 佇列的 Job 也可能會被刪除。
+> [!WARNING]  
+> 目前，只有 SQS、Redis、資料庫等佇列 Driver 能支援清除佇列中的 Job。此外，刪除 SQS Message 可能會需要至多 60 秒的時間，因此在清理佇列的 60 秒後所傳送給 SQS 佇列的 Job 也可能會被刪除。
 
 <a name="monitoring-your-queues"></a>
 
@@ -2072,7 +1987,6 @@ php artisan queue:clear redis --queue=emails
 ```shell
 php artisan queue:monitor redis:default,redis:deployments --max=100
 ```
-
 若只排程執行這個指令，當佇列的負載過高時還不會觸發通知。當這個指令遇到有佇列超過指定閥值量的 Job 數時，會分派一個 `Illuminate\Queue\Events\QueueBusy` 事件。我們可以在專案的 `EventServiceProvider` 內監聽這個事件，以傳送通知給開發團隊：
 
 ```php
@@ -2098,7 +2012,6 @@ public function boot()
     });
 }
 ```
-
 <a name="job-events"></a>
 
 ## Job 事件
@@ -2146,7 +2059,6 @@ public function boot()
             });
         }
     }
-
 使用 `Queue` [Facade](/docs/{{version}}/facades) 的 `looping` 方法，我們就能指定要在 Worker 嘗試從佇列中取得 Job 前執行的回呼。舉例來說，我們可以註冊一個閉包來回溯前一個失敗 Job 中未關閉的 Transaction：
 
     use Illuminate\Support\Facades\DB;

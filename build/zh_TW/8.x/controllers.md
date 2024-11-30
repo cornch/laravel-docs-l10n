@@ -1,28 +1,27 @@
 ---
-contributors:
-  14684796:
-    avatarUrl: https://crowdin-static.downloads.crowdin.com/avatar/14684796/medium/60f7dc21ec0bf9cfcb61983640bb4809_default.png
-    name: cornch
-crowdinUrl: https://crowdin.com/translate/laravel-docs/37/en-zhtw
-progress: 100
+crowdinUrl: 'https://crowdin.com/translate/laravel-docs/37/en-zhtw'
 updatedAt: '2024-06-30T08:17:00Z'
+contributors: {  }
+progress: 61.69
 ---
 
 # 控制器 - Controller
 
 - [簡介](#introduction)
 - [撰寫 Controller](#writing-controllers)
-   - [「Controller」基礎](#basic-controllers)
-   - [單一動作的 Controller](#single-action-controllers)
+  - [「Controller」基礎](#basic-controllers)
+  - [單一動作的 Controller](#single-action-controllers)
+  
 - [Controller Middleware](#controller-middleware)
 - [Resource Controller](#resource-controllers)
-   - [部分的 Resource Route](#restful-partial-resource-routes)
-   - [巢狀 Resource](#restful-nested-resources)
-   - [命名 Resource Route](#restful-naming-resource-routes)
-   - [命名 Resource Route 的參數](#restful-naming-resource-route-parameters)
-   - [限制範圍的 Resource Route](#restful-scoping-resource-routes)
-   - [本土化 Resource URI](#restful-localizing-resource-uris)
-   - [補充 Resource Controller](#restful-supplementing-resource-controllers)
+  - [部分的 Resource Route](#restful-partial-resource-routes)
+  - [巢狀 Resource](#restful-nested-resources)
+  - [命名 Resource Route](#restful-naming-resource-routes)
+  - [命名 Resource Route 的參數](#restful-naming-resource-route-parameters)
+  - [限制範圍的 Resource Route](#restful-scoping-resource-routes)
+  - [本土化 Resource URI](#restful-localizing-resource-uris)
+  - [補充 Resource Controller](#restful-supplementing-resource-controllers)
+  
 - [相依性插入與 Controller](#dependency-injection-and-controllers)
 
 <a name="introduction"></a>
@@ -63,16 +62,15 @@ updatedAt: '2024-06-30T08:17:00Z'
             ]);
         }
     }
-
 可以像這樣定義連結到這個 Controller 的路由：
 
     use App\Http\Controllers\UserController;
     
     Route::get('/user/{id}', [UserController::class, 'show']);
-
 當有連入請求符合這個路由 URI 時，將叫用 `App\Http\Controllers\UserController` 類別的 `show` 方法，且 route 參數會被傳入這個方法內。
 
-> {tip} Controller 並**不一定**要有繼承基礎類別。不過，若不繼承基礎 Controller 的話將無法使用一些如 `middleware` 或 `authorize` 方法等方便的功能。
+> [!TIP]  
+> Controller 並**不一定**要有繼承基礎類別。不過，若不繼承基礎 Controller 的話將無法使用一些如 `middleware` 或 `authorize` 方法等方便的功能。
 
 <a name="single-action-controllers"></a>
 
@@ -99,18 +97,16 @@ updatedAt: '2024-06-30T08:17:00Z'
             // ...
         }
     }
-
 當為單一動作的 Controller 註冊路由時，不需要指定 Controller 方法。只需要傳入該 Controller 的名稱給 Router 即可：
 
     use App\Http\Controllers\ProvisionServer;
     
     Route::post('/server', ProvisionServer::class);
-
 可以通過 `make:controller` Artisan 指令的 `--invokable` 選項來建立可被叫用的 Controller：
 
     php artisan make:controller ProvisionServer --invokable
-
-> {tip} Controller 的 Stub 可通過[發佈 Stub](/docs/{{version}}/artisan#stub-customization) 來自定。
+> [!TIP]  
+> Controller 的 Stub 可通過[發佈 Stub](/docs/{{version}}/artisan#stub-customization) 來自定。
 
 <a name="controller-middleware"></a>
 
@@ -119,7 +115,6 @@ updatedAt: '2024-06-30T08:17:00Z'
 可在路由檔案中指派 [Middleware](/docs/{{version}}/middleware) 給 Controller 的路由：
 
     Route::get('profile', [UserController::class, 'show'])->middleware('auth');
-
 或者，你可能會覺得在 Controller 的建構函式內指定 Middleware 比較方便。在 Controller 的建構函式內使用 `middleware` 方法，就能指派 Middleware 給該 Controller 的動作：
 
     class UserController extends Controller
@@ -136,13 +131,11 @@ updatedAt: '2024-06-30T08:17:00Z'
             $this->middleware('subscribed')->except('store');
         }
     }
-
 Controller 也能讓你使用閉包來註冊 Middleware。這樣便提供了一種方便的方式來為單一 Controller 定義內崁 Middleware 而無需定義整個 Middleware 類別：
 
     $this->middleware(function ($request, $next) {
         return $next($request);
     });
-
 <a name="resource-controllers"></a>
 
 ## 資源 Controller
@@ -152,13 +145,11 @@ Controller 也能讓你使用閉包來註冊 Middleware。這樣便提供了一�
 由於這個常見的使用情況，Laravel 資源路由可將常見的建立 (Create)、讀取 (Read)、更新 (Update) 與刪除 (Delete) (即「CRUD」) 通過單行程式碼來指派路由。要開始建立資源路由，可使用 `make:controller` Artisan 指令的 `--resource` 選項來快速建立處理這些動作的 Controller：
 
     php artisan make:controller PhotoController --resource
-
 這個指令會在 `app/Http/Controllers/PhotoController.php` 下產生一個 Controller。該 Controller 會包含用於各個可用資源操作的方法。接著，可以註冊一個指向該 Controller 的資源路由：
 
     use App\Http\Controllers\PhotoController;
     
     Route::resource('photos', PhotoController::class);
-
 這一個路由定義會建立多個路由來處理對該資源的數種動作。剛才產生的 Controller 已經預先有了用於這幾個動作的方法了。請記得，你可以隨時通過執行 `route:list` Artisan 指令來快速檢視專案的路由。
 
 也可以通過傳入陣列給 `resources` 方法來一次註冊多個資源 Controller：
@@ -167,7 +158,6 @@ Controller 也能讓你使用閉包來註冊 Middleware。這樣便提供了一�
         'photos' => PhotoController::class,
         'posts' => PostController::class,
     ]);
-
 <a name="actions-handled-by-resource-controller"></a>
 
 #### 由資源 Controller 處理的動作
@@ -196,7 +186,6 @@ Controller 也能讓你使用閉包來註冊 Middleware。這樣便提供了一�
             ->missing(function (Request $request) {
                 return Redirect::route('photos.index');
             });
-
 <a name="specifying-the-resource-model"></a>
 
 #### 指定資源 Model
@@ -204,7 +193,6 @@ Controller 也能讓你使用閉包來註冊 Middleware。這樣便提供了一�
 若使用了[路由 Model 繫結](/docs/{{version}}/routing#route-model-binding)，且想型別提示資源 Controller 的方法，可以在產生 Controller 時使用 `--model` 選項：
 
     php artisan make:controller PhotoController --model=Photo --resource
-
 <a name="generating-form-requests"></a>
 
 #### 產生 Form Request
@@ -212,7 +200,6 @@ Controller 也能讓你使用閉包來註冊 Middleware。這樣便提供了一�
 可以在產生資源 Controller 時提供 `--requests` 選項來告訴 Artisan 要產生用於 Controller 中 storage 與 update 方法的 [Form Request 類別](/docs/{{version}}/validation#form-request-validation)：
 
     php artisan make:controller PhotoController --model=Photo --resource --requests
-
 <a name="restful-partial-resource-routes"></a>
 
 ### 部分資源路由
@@ -228,7 +215,6 @@ Controller 也能讓你使用閉包來註冊 Middleware。這樣便提供了一�
     Route::resource('photos', PhotoController::class)->except([
         'create', 'store', 'update', 'destroy'
     ]);
-
 <a name="api-resource-routes"></a>
 
 #### API 資源路由
@@ -238,7 +224,6 @@ Controller 也能讓你使用閉包來註冊 Middleware。這樣便提供了一�
     use App\Http\Controllers\PhotoController;
     
     Route::apiResource('photos', PhotoController::class);
-
 也可以通過傳入陣列給 `apiResources` 方法來一次註冊多個 API 資源 Controller：
 
     use App\Http\Controllers\PhotoController;
@@ -248,11 +233,9 @@ Controller 也能讓你使用閉包來註冊 Middleware。這樣便提供了一�
         'photos' => PhotoController::class,
         'posts' => PostController::class,
     ]);
-
 若要快速建立不包含 `create` 或 `edit` 方法的 API 資源路由，請在執行 `make:contorller` 指令時使用 `--api` 開關：
 
     php artisan make:controller PhotoController --api
-
 <a name="restful-nested-resources"></a>
 
 ### 巢狀資源
@@ -262,11 +245,9 @@ Controller 也能讓你使用閉包來註冊 Middleware。這樣便提供了一�
     use App\Http\Controllers\PhotoCommentController;
     
     Route::resource('photos.comments', PhotoCommentController::class);
-
 該路由會註冊一個巢狀資源，可使用像這樣的 URI 來存取：
 
     /photos/{photo}/comments/{comment}
-
 <a name="scoping-nested-resources"></a>
 
 #### 限定範圍的巢狀資源
@@ -282,7 +263,6 @@ Laravel 的[隱式 Model 繫結](/docs/{{version}}/routing#implicit-model-bindin
     use App\Http\Controllers\CommentController;
     
     Route::resource('photos.comments', CommentController::class)->shallow();
-
 這個路由定義會定義下列路由：
 
 | 動詞 | URI | 動作 | Route 名稱 |
@@ -306,7 +286,6 @@ Laravel 的[隱式 Model 繫結](/docs/{{version}}/routing#implicit-model-bindin
     Route::resource('photos', PhotoController::class)->names([
         'create' => 'photos.build'
     ]);
-
 <a name="restful-naming-resource-route-parameters"></a>
 
 ### 命名資源路由參數
@@ -318,11 +297,9 @@ Laravel 的[隱式 Model 繫結](/docs/{{version}}/routing#implicit-model-bindin
     Route::resource('users', AdminUserController::class)->parameters([
         'users' => 'admin_user'
     ]);
-
 上述範例會為資源的 `show` 路由產生下列 URI：
 
     /users/{admin_user}
-
 <a name="restful-scoping-resource-routes"></a>
 
 ### 限制資源路由的範圍
@@ -334,11 +311,9 @@ Laravel 的[限定範圍的隱式 Model 繫結](/docs/{{version}}/routing#implic
     Route::resource('photos.comments', PhotoCommentController::class)->scoped([
         'comment' => 'slug',
     ]);
-
 該路由會註冊一個限定範圍的巢狀資源，可使用像這樣的 URI 來存取：
 
     /photos/{photo}/comments/{comment:slug}
-
 當使用自訂鍵值的隱式繫結作為巢狀路由參數時，Laravel 會自動以慣例推測其上層 Model 上的關聯名稱來將限制巢狀 Model 的查詢範圍。在這個例子中，Laravel 會假設 `Photo` Model 有個名為 `comments` 的關聯 (即路由參數名稱的複數形)，該關聯將用於取得 `Comment` Model。
 
 <a name="restful-localizing-resource-uris"></a>
@@ -361,13 +336,11 @@ Laravel 的[限定範圍的隱式 Model 繫結](/docs/{{version}}/routing#implic
     
         // ...
     }
-
 自訂完動詞後，使用如 `Route::resource('fotos', PhotoController::class)` 註冊的資源路由就會產生下列 URI：
 
     /fotos/crear
     
     /fotos/{foto}/editar
-
 <a name="restful-supplementing-resource-controllers"></a>
 
 ### 補充資源 Controller
@@ -378,8 +351,8 @@ Laravel 的[限定範圍的隱式 Model 繫結](/docs/{{version}}/routing#implic
     
     Route::get('/photos/popular', [PhotoController::class, 'popular']);
     Route::resource('photos', PhotoController::class);
-
-> {tip} 請記得要保持 Controller 的功能專一。若發現常常需要使用除了一般資源動作以外的方法，請考慮將 Controller 拆分成兩個、更小的 Controller。
+> [!TIP]  
+> 請記得要保持 Controller 的功能專一。若發現常常需要使用除了一般資源動作以外的方法，請考慮將 Controller 拆分成兩個、更小的 Controller。
 
 <a name="dependency-injection-and-controllers"></a>
 
@@ -415,7 +388,6 @@ Laravel 的 [Service Container](/docs/{{version}}/container) 會被用來解析�
             $this->users = $users;
         }
     }
-
 <a name="method-injection"></a>
 
 #### 方法注入
@@ -443,13 +415,11 @@ Laravel 的 [Service Container](/docs/{{version}}/container) 會被用來解析�
             //
         }
     }
-
 若 Controller 方法也預期會從路由參數取得輸入，則請將路由引數放在其他依賴之後。舉例來說，若路由是像這樣定義：
 
     use App\Http\Controllers\UserController;
     
     Route::put('/user/{id}', [UserController::class, 'update']);
-
 還是可以像這樣定義 Controller 方法來型別提示 `Illuminate\Http\Request` 並取得 `id` 參數：
 
     <?php

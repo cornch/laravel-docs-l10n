@@ -1,11 +1,8 @@
 ---
-contributors:
-  14684796:
-    avatarUrl: https://crowdin-static.downloads.crowdin.com/avatar/14684796/medium/60f7dc21ec0bf9cfcb61983640bb4809_default.png
-    name: cornch
-crowdinUrl: https://crowdin.com/translate/laravel-docs/107/en-zhtw
-progress: 100
+crowdinUrl: 'https://crowdin.com/translate/laravel-docs/107/en-zhtw'
 updatedAt: '2024-06-30T08:15:00Z'
+contributors: {  }
+progress: 53.11
 ---
 
 # Mock
@@ -13,17 +10,21 @@ updatedAt: '2024-06-30T08:15:00Z'
 - [簡介](#introduction)
 - [Mock 物件](#mocking-objects)
 - [Mock Facade](#mocking-facades)
-   - [Facade 的 Spy](#facade-spies)
+  - [Facade 的 Spy](#facade-spies)
+  
 - [Bus Fake](#bus-fake)
-   - [Job Chain](#bus-job-chains)
-   - [批次 Job](#job-batches)
+  - [Job Chain](#bus-job-chains)
+  - [批次 Job](#job-batches)
+  
 - [Event Fake](#event-fake)
-   - [限定範圍的 Event Fake](#scoped-event-fakes)
+  - [限定範圍的 Event Fake](#scoped-event-fakes)
+  
 - [HTTP Fake](#http-fake)
 - [Mail Fake](#mail-fake)
 - [Notification Fake](#notification-fake)
 - [Queue Fake](#queue-fake)
-   - [Job Chain](#job-chains)
+  - [Job Chain](#job-chains)
+  
 - [Storage Fake](#storage-fake)
 - [處理時間](#interacting-with-time)
 
@@ -31,7 +32,7 @@ updatedAt: '2024-06-30T08:15:00Z'
 
 ## 簡介
 
-在測試 Laravel 專案時，我們有時候會需要「^[Mock](模擬)」某部分的程式，好讓執行測試時不要真的執行這一部分程式。舉例來說，在測試會分派 Event 的 Controller 時，我們可能會想 Mock 該 Event 的 Listener，讓這些 Event Listener 在測試階段不要真的被執行。這樣一來，我們就可以只測試 Controller 的 HTTP Response，而不需擔心 Event Listener 的執行，因為這些 Event Listener 可以在其自己的測試例中測試。
+在測試 Laravel 專案時，我們有時候會需要「^[Mock](%E6%A8%A1%E6%93%AC)」某部分的程式，好讓執行測試時不要真的執行這一部分程式。舉例來說，在測試會分派 Event 的 Controller 時，我們可能會想 Mock 該 Event 的 Listener，讓這些 Event Listener 在測試階段不要真的被執行。這樣一來，我們就可以只測試 Controller 的 HTTP Response，而不需擔心 Event Listener 的執行，因為這些 Event Listener 可以在其自己的測試例中測試。
 
 Laravel 提供了各種開箱即用的實用方法，可用於 Mock Event、Job、與其他 Facade。這些輔助函式主要提供一個 Mockery 之上的方便層，讓我們不需手動進行複雜的 Mockery 方法呼叫。
 
@@ -39,7 +40,7 @@ Laravel 提供了各種開箱即用的實用方法，可用於 Mock Event、Job�
 
 ## Mock 物件
 
-若要 Mock 一些會被 Laravel [Service Container](/docs/{{version}}/container) 插入到程式中的物件，只需要使用 `instance` 繫結來將 Mock 後的實體繫結到 Container 中。這樣一來，Container 就會使用 Mock 後的物件實體，而不會再重新建立一個物件：
+若要 Mock 一些會被  Laravel [Service Container](/docs/{{version}}/container) 插入到程式中的物件，只需要使用 `instance` 繫結來將 Mock 後的實體繫結到 Container 中。這樣一來，Container 就會使用 Mock 後的物件實體，而不會再重新建立一個物件：
 
     use App\Service;
     use Mockery;
@@ -54,7 +55,6 @@ Laravel 提供了各種開箱即用的實用方法，可用於 Mock Event、Job�
             })
         );
     }
-
 為了讓這個過程更方便，我們可以使用 Laravel 基礎測試例 Class 中的 `mock` 方法。舉例來說，下面這個範例與上一個範例是相等的：
 
     use App\Service;
@@ -63,7 +63,6 @@ Laravel 提供了各種開箱即用的實用方法，可用於 Mock Event、Job�
     $mock = $this->mock(Service::class, function (MockInterface $mock) {
         $mock->shouldReceive('process')->once();
     });
-
 若只需要 Mock 某個物件的一部分方法，可使用 `partialMock` 方法。若呼叫了未被 Mock 的方法，則這些方法會正常執行：
 
     use App\Service;
@@ -72,7 +71,6 @@ Laravel 提供了各種開箱即用的實用方法，可用於 Mock Event、Job�
     $mock = $this->partialMock(Service::class, function (MockInterface $mock) {
         $mock->shouldReceive('process')->once();
     });
-
 類似的，若我們想 [Spy](http://docs.mockery.io/en/latest/reference/spies.html) 某個物件，Laravel 的基礎測試 Class 中也提供了一個 `spy` 方法來作為 `Mockery::spy` 方法的方便包裝。Spy 與 Mock 類似；不過，Spy 會記錄所有 Spy 與正在測試的程式碼間的互動，能讓我們在程式碼執行後進行 Assertion：
 
     use App\Service;
@@ -82,7 +80,6 @@ Laravel 提供了各種開箱即用的實用方法，可用於 Mock Event、Job�
     // ...
     
     $spy->shouldHaveReceived('process');
-
 <a name="mocking-facades"></a>
 
 ## Mock Facade
@@ -109,7 +106,6 @@ Laravel 提供了各種開箱即用的實用方法，可用於 Mock Event、Job�
             //
         }
     }
-
 我們可以使用 `shouldReceive` 方法來 Mock `Cache` Facade 的呼叫。該方法會回傳 [Mockery](https://github.com/padraic/mockery) 的 Mock 實體。由於Facade 會實際上會由 Laravel 的 [Service Container](/docs/{{version}}/container) 來解析與管理，因此比起傳統的靜態類別，Facade 有更好的可測試性。舉例來說，我們來 Mock `Cache` Facade 的 `get` 方法呼叫：
 
     <?php
@@ -135,8 +131,8 @@ Laravel 提供了各種開箱即用的實用方法，可用於 Mock Event、Job�
             // ...
         }
     }
-
-> **Warning** 請不要 Mock `Request` Facade。在執行測試時，請將要測試的輸入傳給如 `get` 或 `post` 等的 [HTTP 測試方法](/docs/{{version}}/http-tests)。類似地，請不要 Mock `Config` Facade，請在測試中執行 `Config::set` 方法。
+> [!WARNING]  
+> 請不要 Mock `Request` Facade。在執行測試時，請將要測試的輸入傳給如 `get` 或 `post` 等的 [HTTP 測試方法](/docs/{{version}}/http-tests)。類似地，請不要 Mock `Config` Facade，請在測試中執行 `Config::set` 方法。
 
 <a name="facade-spies"></a>
 
@@ -156,7 +152,6 @@ Laravel 提供了各種開箱即用的實用方法，可用於 Mock Event、Job�
     
         Cache::shouldHaveReceived('put')->once()->with('name', 'Taylor', 10);
     }
-
 <a name="bus-fake"></a>
 
 ## Bus Fake
@@ -181,37 +176,35 @@ Laravel 提供了各種開箱即用的實用方法，可用於 Mock Event、Job�
         {
             Bus::fake();
     
-            // 進行訂單出貨...
+            // Perform order shipping...
     
-            // 判斷 Job 已被分派...
+            // Assert that a job was dispatched...
             Bus::assertDispatched(ShipOrder::class);
     
-            // 判斷 Job 未被分派...
+            // Assert a job was not dispatched...
             Bus::assertNotDispatched(AnotherJob::class);
     
-            // 判斷 Job 被同步分派...
+            // Assert that a job was dispatched synchronously...
             Bus::assertDispatchedSync(AnotherJob::class);
     
-            // 判斷 Job 未被同步分派...
+            // Assert that a job was not dispatched synchronously...
             Bus::assertNotDispatchedSync(AnotherJob::class);
     
-            // 判斷 Job 在 Response 被送出後才分派...
+            // Assert that a job was dispatched after the response was sent...
             Bus::assertDispatchedAfterResponse(AnotherJob::class);
     
-            // 判斷 Job 並未在 Response 被送出後才分派...
+            // Assert a job was not dispatched after response was sent...
             Bus::assertNotDispatchedAfterResponse(AnotherJob::class);
     
-            // 判斷未分派任何 Job...
+            // Assert no jobs were dispatched...
             Bus::assertNothingDispatched();
         }
     }
-
 可以傳入一個閉包給這些可用的方法，來判斷某個 Job 是否通過給定的「真值測試 (Truth Test)」。若分派的 Job 中至少有一個 Job 有通過給真值測試，則 Assertion 會被視為成功。舉例來說，我們可以判斷是否有對某個特定訂單分派 Job：
 
     Bus::assertDispatched(function (ShipOrder $job) use ($order) {
         return $job->order->id === $order->id;
     });
-
 <a name="faking-a-subset-of-jobs"></a>
 
 #### Fake 一小部分的 Job
@@ -229,13 +222,11 @@ Laravel 提供了各種開箱即用的實用方法，可用於 Mock Event、Job�
     
         // ...
     }
-
 也可以使用 `fakeExcept` 方法來 Fake 除了一組特定 Job 外的所有 Event：
 
     Bus::fake()->except([
         ShipOrder::class,
     ]);
-
 <a name="bus-job-chains"></a>
 
 ### Job Chain
@@ -252,7 +243,6 @@ Laravel 提供了各種開箱即用的實用方法，可用於 Mock Event、Job�
         RecordShipment::class,
         UpdateInventory::class
     ]);
-
 就像上述範例中可看到的一樣，串聯 Job 的陣列就是一組包含 Job 類別名稱的陣列。不過，也可以提供一組實際 Job 實體的陣列。當提供的陣列為 Job 實體的陣列時，Laravel 會確保程式所分派的串聯 Job 都具是相同的類別，且擁有相同的屬性值：
 
     Bus::assertChained([
@@ -260,7 +250,6 @@ Laravel 提供了各種開箱即用的實用方法，可用於 Mock Event、Job�
         new RecordShipment,
         new UpdateInventory,
     ]);
-
 <a name="job-batches"></a>
 
 ### 批次 Job
@@ -274,7 +263,6 @@ Laravel 提供了各種開箱即用的實用方法，可用於 Mock Event、Job�
         return $batch->name == 'import-csv' &&
                $batch->jobs->count() === 10;
     });
-
 <a name="testing-job-batch-interaction"></a>
 
 #### 測試 Job 或批次行為
@@ -287,7 +275,6 @@ Laravel 提供了各種開箱即用的實用方法，可用於 Mock Event、Job�
     
     $this->assertTrue($batch->cancelled());
     $this->assertEmpty($batch->added);
-
 <a name="event-fake"></a>
 
 ## Event Fake
@@ -314,36 +301,34 @@ Laravel 提供了各種開箱即用的實用方法，可用於 Mock Event、Job�
         {
             Event::fake();
     
-            // 進行訂單出貨...
+            // Perform order shipping...
     
-            // 判斷某個 Event 是否有被分派...
+            // Assert that an event was dispatched...
             Event::assertDispatched(OrderShipped::class);
     
-            // 判斷某個 Event 是否有被分派兩次...
+            // Assert an event was dispatched twice...
             Event::assertDispatched(OrderShipped::class, 2);
     
-            // 判斷某個 Event 是否未被分派...
+            // Assert an event was not dispatched...
             Event::assertNotDispatched(OrderFailedToShip::class);
     
-            // 判斷是否未有 Event 被分派...
+            // Assert that no events were dispatched...
             Event::assertNothingDispatched();
         }
     }
-
 可以傳入一個閉包給 `assertDispatched` 或 `assertNotDispatched` 方法，來判斷某個 Event 是否通過給定的「真值測試 (Truth Test)」。若分派的 Event 中至少有一個 Event 通過給定的真值測試，則該 Assertion 會被視為成功：
 
     Event::assertDispatched(function (OrderShipped $event) use ($order) {
         return $event->order->id === $order->id;
     });
-
 若只想判斷某個 Event Listener 是否有在監聽給定的 Event，可使用 `assertListening` 方法：
 
     Event::assertListening(
         OrderShipped::class,
         SendShipmentNotification::class
     );
-
-> **Warning** 呼叫 `Event::fake()` 後，就不會執行 Event Listener。因此，若有測試使用的 Model Factory 仰賴於 Event，如在 Model 的 `creating` Event 上建立 UUID 等，請在使用完 Factory **之後** 再呼叫 `Event::fake()`。
+> [!WARNING]  
+> 呼叫 `Event::fake()` 後，就不會執行 Event Listener。因此，若有測試使用的 Model Factory 仰賴於 Event，如在 Model 的 `creating` Event 上建立 UUID 等，請在使用完 Factory **之後** 再呼叫 `Event::fake()`。
 
 <a name="faking-a-subset-of-events"></a>
 
@@ -364,16 +349,14 @@ Laravel 提供了各種開箱即用的實用方法，可用於 Mock Event、Job�
     
         Event::assertDispatched(OrderCreated::class);
     
-        // 其他 Event 會被正常分派...
+        // Other events are dispatched as normal...
         $order->update([...]);
     }
-
 也可以使用 `except` 方法來 Fake 除了一組特定 Event 外的所有 Event：
 
     Event::fake()->except([
         OrderCreated::class,
     ]);
-
 <a name="scoped-event-fakes"></a>
 
 ### 限定範圍的 Event Fake
@@ -406,16 +389,15 @@ Laravel 提供了各種開箱即用的實用方法，可用於 Mock Event、Job�
                 return $order;
             });
     
-            // Event 會被正常分派，且會執行 Observer...
+            // Events are dispatched as normal and observers will run ...
             $order->update([...]);
         }
     }
-
 <a name="http-fake"></a>
 
 ## HTTP Fake
 
-使用 `Http` Facade 的 `fake` 方法，我們就能讓 HTTP 用戶端在建立 Request 時回傳 ^[Stubbed](預先填充好的)、假的 Response。更多有關模擬外連 HTTP Request 的資訊，請參考 [HTTP 用戶端的測試文件](/docs/{{version}}/http-client#testing)。
+使用 `Http` Facade 的 `fake` 方法，我們就能讓 HTTP 用戶端在建立 Request 時回傳 ^[Stubbed](%E9%A0%90%E5%85%88%E5%A1%AB%E5%85%85%E5%A5%BD%E7%9A%84)、假的 Response。更多有關模擬外連 HTTP Request 的資訊，請參考 [HTTP 用戶端的測試文件](/docs/{{version}}/http-client#testing)。
 
 <a name="mail-fake"></a>
 
@@ -441,22 +423,21 @@ Laravel 提供了各種開箱即用的實用方法，可用於 Mock Event、Job�
         {
             Mail::fake();
     
-            // 進行訂單出貨...
+            // Perform order shipping...
     
-            // 判斷未有 Mailable 被寄出...
+            // Assert that no mailables were sent...
             Mail::assertNothingSent();
     
-            // 判斷某個 Mailable 有被寄出...
+            // Assert that a mailable was sent...
             Mail::assertSent(OrderShipped::class);
     
-            // 判斷某個 Mailable 有被寄出兩次...
+            // Assert a mailable was sent twice...
             Mail::assertSent(OrderShipped::class, 2);
     
-            // 判斷某個 Mailable 是否未被寄出...
+            // Assert a mailable was not sent...
             Mail::assertNotSent(AnotherMailable::class);
         }
     }
-
 若將 Mailable 放在佇列中以在背景寄送，請使用 `assertQueued` 方法，而不是 `assertSent` 方法：
 
     Mail::assertQueued(OrderShipped::class);
@@ -464,13 +445,11 @@ Laravel 提供了各種開箱即用的實用方法，可用於 Mock Event、Job�
     Mail::assertNotQueued(OrderShipped::class);
     
     Mail::assertNothingQueued();
-
 可以傳入一個閉包給 `assertSent`、`assertNotSent`、`assertQueued`、`assertNotQueued` 方法來判斷 Mailable 是否通過給定的「真值測試 (Truth Test)」。若至少有一個寄出的 Mailable 通過給定的真值測試，則該 Assertion 會被視為成功：
 
     Mail::assertSent(function (OrderShipped $mail) use ($order) {
         return $mail->order->id === $order->id;
     });
-
 呼叫 `Mail` Facade 的 Assertion 方法時，所提供的閉包內收到的 Mailable 實體上有一些實用的方法，可用來檢查 Mailable：
 
     Mail::assertSent(OrderShipped::class, function ($mail) use ($user) {
@@ -481,7 +460,6 @@ Laravel 提供了各種開箱即用的實用方法，可用於 Mock Event、Job�
                $mail->hasFrom('...') &&
                $mail->hasSubject('...');
     });
-
 Mailable 實體也包含了多個實用方法，可用來檢查 Mailable 上的附件：
 
     use Illuminate\Mail\Mailables\Attachment;
@@ -505,7 +483,6 @@ Mailable 實體也包含了多個實用方法，可用來檢查 Mailable 上的�
             Attachment::fromData(fn () => $pdfData, 'name.pdf')
         );
     });
-
 讀者可能已經注意到，總共有兩個方法可用來檢查郵件是否未被送出：`assertNotSent`、`assertNotQueued`。有時候，我們可能會希望判斷沒有任何郵件被寄出，**而且** 也沒有任何郵件被放入佇列。若要判斷是否沒有郵件被寄出或放入佇列，可使用 `assertNothingOutgoing` 與 `assertNotOutgoing` 方法：
 
     Mail::assertNothingOutgoing();
@@ -513,7 +490,6 @@ Mailable 實體也包含了多個實用方法，可用來檢查 Mailable 上的�
     Mail::assertNotOutgoing(function (OrderShipped $mail) use ($order) {
         return $mail->order->id === $order->id;
     });
-
 <a name="testing-mailable-content"></a>
 
 #### 測試 Mailable 的內容
@@ -544,26 +520,25 @@ Mailable 實體也包含了多個實用方法，可用來檢查 Mailable 上的�
         {
             Notification::fake();
     
-            // 處理訂單出貨...
+            // Perform order shipping...
     
-            // 判斷未有 Notification 被送出...
+            // Assert that no notifications were sent...
             Notification::assertNothingSent();
     
-            // 判斷某個 Notification 是否被傳送至給定的使用者...
+            // Assert a notification was sent to the given users...
             Notification::assertSentTo(
                 [$user], OrderShipped::class
             );
     
-            // 判斷某個 Notification 是否未被送出...
+            // Assert a notification was not sent...
             Notification::assertNotSentTo(
                 [$user], AnotherNotification::class
             );
     
-            // 測試送出了給定數量的 Notification...
+            // Assert that a given number of notifications were sent...
             Notification::assertCount(3);
         }
     }
-
 可以傳入一個閉包給 `assertSentTo` 或 `assertNotSentTo` 方法，來判斷某個 Notification 是否通過給定的「真值測試 (Truth Test)」。若送出的 Notification 中至少有一個 Notification 通過給定的真值測試，則該 Assertion 會被視為成功：
 
     Notification::assertSentTo(
@@ -572,7 +547,6 @@ Mailable 實體也包含了多個實用方法，可用來檢查 Mailable 上的�
             return $notification->order->id === $order->id;
         }
     );
-
 <a name="on-demand-notifications"></a>
 
 #### 隨需通知
@@ -580,8 +554,7 @@ Mailable 實體也包含了多個實用方法，可用來檢查 Mailable 上的�
 若要測試的程式中有傳送[隨需通知]，則可使用 `assertSentOnDemand` 方法來測試是否有送出隨需通知：
 
     Notification::assertSentOnDemand(OrderShipped::class);
-
-若在 `assertSentOnDemand` 方法的第二個引數上傳入閉包，就能判斷隨需通知是否被送給正確的「^[Route](路由)」位址：
+若在 `assertSentOnDemand` 方法的第二個引數上傳入閉包，就能判斷隨需通知是否被送給正確的「^[Route](%E8%B7%AF%E7%94%B1)」位址：
 
     Notification::assertSentOnDemand(
         OrderShipped::class,
@@ -589,7 +562,6 @@ Mailable 實體也包含了多個實用方法，可用來檢查 Mailable 上的�
             return $notifiable->routes['mail'] === $user->email;
         }
     );
-
 <a name="queue-fake"></a>
 
 ## Queue Fake
@@ -616,28 +588,26 @@ Mailable 實體也包含了多個實用方法，可用來檢查 Mailable 上的�
         {
             Queue::fake();
     
-            // 進行訂單出貨...
+            // Perform order shipping...
     
-            // 判斷是否未有 Job 被推入...
+            // Assert that no jobs were pushed...
             Queue::assertNothingPushed();
     
-            // 判斷某個 Job 是否被推入到給定的佇列中...
+            // Assert a job was pushed to a given queue...
             Queue::assertPushedOn('queue-name', ShipOrder::class);
     
-            // 判斷某個 Job 是否被推入到佇列中兩次...
+            // Assert a job was pushed twice...
             Queue::assertPushed(ShipOrder::class, 2);
     
-            // 判斷某個 Job 是否未被推入佇列...
+            // Assert a job was not pushed...
             Queue::assertNotPushed(AnotherJob::class);
         }
     }
-
 可以傳入一個閉包給 `assertPushed` 或 `assertNotPushed` 方法，來判斷某個 Job 是否通過給定的「真值測試 (Truth Test)」。若被推入的 Job 中至少有一個 Job 通過給定的真值測試，則該 Assertion 會被視為成功：
 
     Queue::assertPushed(function (ShipOrder $job) use ($order) {
         return $job->order->id === $order->id;
     });
-
 若只想 Fake 特定的 Job，並讓其他 Job 都被正常執行，可以傳入要被 Fake 的 Job 類別名稱給 `fake` 方法：
 
     public function test_orders_can_be_shipped()
@@ -646,12 +616,11 @@ Mailable 實體也包含了多個實用方法，可用來檢查 Mailable 上的�
             ShipOrder::class,
         ]);
         
-        // 進行訂單出貨...
+        // Perform order shipping...
     
-        // 判斷 Job 是否被推入 2 次...
+        // Assert a job was pushed twice...
         Queue::assertPushed(ShipOrder::class, 2);
     }
-
 <a name="job-chains"></a>
 
 ### Job Chain
@@ -667,18 +636,15 @@ Mailable 實體也包含了多個實用方法，可用來檢查 Mailable 上的�
         RecordShipment::class,
         UpdateInventory::class
     ]);
-
 就像上述範例中可看到的一樣，串聯 Job 的陣列就是一組包含 Job 類別名稱的陣列。不過，也可以提供一組實際 Job 實體的陣列。當提供的陣列為 Job 實體的陣列時，Laravel 會確保程式所分派的串聯 Job 都具是相同的類別，且擁有相同的屬性值：
 
     Queue::assertPushedWithChain(ShipOrder::class, [
         new RecordShipment,
         new UpdateInventory,
     ]);
-
 可以使用 `assertPushedWithoutChain` 方法來判斷 Job 被推入 Queue 但未包含串聯 Job：
 
     Queue::assertPushedWithoutChain(ShipOrder::class);
-
 <a name="storage-fake"></a>
 
 ## Storage Fake
@@ -706,22 +672,22 @@ Mailable 實體也包含了多個實用方法，可用來檢查 Mailable 上的�
                 UploadedFile::fake()->image('photo2.jpg')
             ]);
     
-            // 判斷保存了一個或多個檔案...
+            // Assert one or more files were stored...
             Storage::disk('photos')->assertExists('photo1.jpg');
             Storage::disk('photos')->assertExists(['photo1.jpg', 'photo2.jpg']);
     
-            // 判斷未保存一個或多個檔案...
+            // Assert one or more files were not stored...
             Storage::disk('photos')->assertMissing('missing.jpg');
             Storage::disk('photos')->assertMissing(['missing.jpg', 'non-existing.jpg']);
     
-            // 判斷給定目錄是否為空...
+            // Assert that a given directory is empty...
             Storage::disk('photos')->assertDirectoryEmpty('/wallpapers');
         }
     }
-
 預設情況下，`fake` 方法會刪除其臨時目錄下的所有檔案。若想保留這些檔案，可使用「persistentFake」方法。更多有關測試檔案上傳的資訊，可參考 [HTTP 測試說明文件中有關檔案上傳的部分](/docs/{{version}}/http-tests#testing-file-uploads)。
 
-> **Warning** 要使用 `image` 方法則需要有 [GD 擴充程式](https://www.php.net/manual/en/book.image.php)。
+> [!WARNING]  
+> 要使用 `image` 方法則需要有 [GD 擴充程式](https://www.php.net/manual/en/book.image.php)。
 
 <a name="interacting-with-time"></a>
 
@@ -733,7 +699,7 @@ Mailable 實體也包含了多個實用方法，可用來檢查 Mailable 上的�
     
     public function testTimeCanBeManipulated()
     {
-        // 穿越到未來...
+        // Travel into the future...
         $this->travel(5)->milliseconds();
         $this->travel(5)->seconds();
         $this->travel(5)->minutes();
@@ -742,17 +708,17 @@ Mailable 實體也包含了多個實用方法，可用來檢查 Mailable 上的�
         $this->travel(5)->weeks();
         $this->travel(5)->years();
     
-        // 停止時間，並在執行完閉包後恢復回正常的時間...
+        // Freeze time and resume normal time after executing closure...
         $this->freezeTime(function (Carbon $time) {
             // ...
         });
     
-        // 穿越到過去...
+        // Travel into the past...
         $this->travel(-5)->hours();
     
-        // 穿越到特定的時間...
+        // Travel to an explicit time...
         $this->travelTo(now()->subHours(6));
     
-        // 回到目前時間...
+        // Return back to the present time...
         $this->travelBack();
     }

@@ -1,31 +1,31 @@
 ---
-contributors:
-  14684796:
-    avatarUrl: https://crowdin-static.downloads.crowdin.com/avatar/14684796/medium/60f7dc21ec0bf9cfcb61983640bb4809_default.png
-    name: cornch
-crowdinUrl: https://crowdin.com/translate/laravel-docs/181/en-zhtw
-progress: 100
+crowdinUrl: 'https://crowdin.com/translate/laravel-docs/181/en-zhtw'
 updatedAt: '2024-06-30T08:27:00Z'
+contributors: {  }
+progress: 52.78
 ---
 
 # Eloquent：Factory
 
 - [簡介](#introduction)
 - [定義 Model Factory](#defining-model-factories)
-   - [產生 Factory](#generating-factories)
-   - [State - Factory 狀態](#factory-states)
-   - [Factory 回呼](#factory-callbacks)
+  - [產生 Factory](#generating-factories)
+  - [State - Factory 狀態](#factory-states)
+  - [Factory 回呼](#factory-callbacks)
+  
 - [使用 Factory 建立 Model](#creating-models-using-factories)
-   - [初始化 Model](#instantiating-models)
-   - [保存 Model](#persisting-models)
-   - [Sequence - 序列](#sequences)
+  - [初始化 Model](#instantiating-models)
+  - [保存 Model](#persisting-models)
+  - [Sequence - 序列](#sequences)
+  
 - [Factory 關聯](#factory-relationships)
-   - [HasMany 關聯](#has-many-relationships)
-   - [BelongsTo 關聯](#belongs-to-relationships)
-   - [多對多關聯](#many-to-many-relationships)
-   - [多型關聯](#polymorphic-relationships)
-   - [在 Factory 內定義關聯](#defining-relationships-within-factories)
-   - [在關聯上回收利用現有的 Model](#recycling-an-existing-model-for-relationships)
+  - [HasMany 關聯](#has-many-relationships)
+  - [BelongsTo 關聯](#belongs-to-relationships)
+  - [Many to Many Relationships](#many-to-many-relationships)
+  - [多型關聯](#polymorphic-relationships)
+  - [在 Factory 內定義關聯](#defining-relationships-within-factories)
+  - [Recycling an Existing Model for Relationships](#recycling-an-existing-model-for-relationships)
+  
 
 <a name="introduction"></a>
 
@@ -58,12 +58,12 @@ updatedAt: '2024-06-30T08:27:00Z'
             ];
         }
     }
-
 如上所示，最基礎的 Factory 格式就像這樣，只需繼承 Laravel 的基礎 Factory 類別並定義一個 `definition` 方法。`definition` 方法應回傳一組預設的屬性值，會在使用 Factory 建立 Model 時被套用到該 Model 上。
 
 通過 `fake` 輔助函式，Factory 就可以存取 [Faker](https://github.com/FakerPHP/Faker) PHP 函式庫。該函式庫可用來方便地產生各種類型的隨機資料以進行測試或資料填充。
 
-> **Note** 可以通過在 `config/app.php` 設定檔中加上 `faker_locale` 選項來設定專案的 Faker 語系設定。
+> [!NOTE]  
+> 可以通過在 `config/app.php` 設定檔中加上 `faker_locale` 選項來設定專案的 Faker 語系設定。
 
 <a name="defining-model-factories"></a>
 
@@ -78,12 +78,11 @@ updatedAt: '2024-06-30T08:27:00Z'
 ```shell
 php artisan make:factory PostFactory
 ```
-
 新的 Factory 類別會被放在 `database/factories` 目錄內。
 
 <a name="factory-and-model-discovery-conventions"></a>
 
-#### Model 於 Factory 的自動偵測慣例
+#### Model and Factory Discovery Conventions
 
 定義好 Factory 後，就可以使用 `Illuminate\Database\Eloquent\Factories\HasFactory` Trait 提供給 Model 的靜態 `factory` 方法來為該 Model 初始化一個 Factory 實體。
 
@@ -99,7 +98,6 @@ php artisan make:factory PostFactory
     {
         return FlightFactory::new();
     }
-
 接著，在對應的 Factory 上定義一個 `model` 屬性：
 
     use App\Administration\Flight;
@@ -114,7 +112,6 @@ php artisan make:factory PostFactory
          */
         protected $model = Flight::class;
     }
-
 <a name="factory-states"></a>
 
 ### State - Factory 狀態
@@ -136,17 +133,15 @@ State 變換方法通常是呼叫 Laravel 基礎 Factory 類別所提供的 `sta
             ];
         });
     }
-
 <a name="trashed-state"></a>
 
-#### 「^[Trashed](已刪除)」State
+#### 「^[Trashed](%E5%B7%B2%E5%88%AA%E9%99%A4)」State
 
 若 Eloquent Model 有開啟[軟刪除](/docs/{{version}}/eloquent#soft-deleting)功能，則我們可以叫用內建的 `trashed` State 方法來代表要建立的 Model 應被標記為「已軟刪除」。所有的 Factory 都自動擁有該方法，因此不需手動定義 `trashed` State：
 
     use App\Models\User;
     
     $user = User::factory()->trashed()->create();
-
 <a name="factory-callbacks"></a>
 
 ### Factory 回呼
@@ -174,7 +169,6 @@ Factory 回呼使用 `afterMaking` 與 `afterCreating` 方法來註冊，能讓�
     
         // ...
     }
-
 也可以在 State 方法中註冊 Factory 回呼以在執行一些特定 State 才會用到的任務：
 
     use App\Models\User;
@@ -195,7 +189,6 @@ Factory 回呼使用 `afterMaking` 與 `afterCreating` 方法來註冊，能讓�
             // ...
         });
     }
-
 <a name="creating-models-using-factories"></a>
 
 ## 使用 Factory 來建立 Model
@@ -208,12 +201,10 @@ Factory 回呼使用 `afterMaking` 與 `afterCreating` 方法來註冊，能讓�
 
     use App\Models\User;
     
-    $user = User::paginate();
-
+    $user = User::factory()->make();
 可以使用 `count` 方法來建立包含多個 Model 的 Collection：
 
     $users = User::factory()->count(3)->make();
-
 <a name="applying-states"></a>
 
 #### 套用 State
@@ -221,7 +212,6 @@ Factory 回呼使用 `afterMaking` 與 `afterCreating` 方法來註冊，能讓�
 也可以將 [State](#factory-states) 套用至 Model 上。若想套用多個 State 變換到 Model 上，只需要直接呼叫 State 變換方法即可：
 
     $users = User::factory()->count(5)->suspended()->make();
-
 <a name="overriding-attributes"></a>
 
 #### 複寫屬性
@@ -231,14 +221,13 @@ Factory 回呼使用 `afterMaking` 與 `afterCreating` 方法來註冊，能讓�
     $user = User::factory()->make([
         'name' => 'Abigail Otwell',
     ]);
-
 或者，也可以直接在 Factory 實體上呼叫 `state` 方法來內嵌 State 變換：
 
     $user = User::factory()->state([
         'name' => 'Abigail Otwell',
     ])->make();
-
-> **Note** [大量賦值保護](/docs/{{version}}/eloquent#mass-assignment) 會在使用 Factory 建立 Model 時自動禁用。
+> [!NOTE]  
+> [大量賦值保護](/docs/{{version}}/eloquent#mass-assignment) 會在使用 Factory 建立 Model 時自動禁用。
 
 <a name="persisting-models"></a>
 
@@ -248,23 +237,16 @@ Factory 回呼使用 `afterMaking` 與 `afterCreating` 方法來註冊，能讓�
 
     use App\Models\User;
     
-    public function test_models_can_be_persisted()
-    {
-        // 建立單一 App\Models\User 實體...
-        $user = User::factory()->create();
+    // Create a single App\Models\User instance...
+    $user = User::factory()->create();
     
-        // 建立三個 App\Models\User 實體...
-        $users = User::factory()->count(3)->create();
-    
-        // 在測試中使用 Model...
-    }
-
+    // Create three App\Models\User instances...
+    $users = User::factory()->count(3)->create();
 可以通過將一組屬性陣列傳入 `create` 方法來複寫該 Factory 的預設 Model 屬性：
 
     $user = User::factory()->create([
         'name' => 'Abigail',
     ]);
-
 <a name="sequences"></a>
 
 ### Sequence - 序列
@@ -281,7 +263,6 @@ Factory 回呼使用 `afterMaking` 與 `afterCreating` 方法來註冊，能讓�
                         ['admin' => 'N'],
                     ))
                     ->create();
-
 在上面的範例中，有五個使用者會以 `admin` 值 `Y` 建立，另外五個使用者將以 `admin` 值 `N` 建立。
 
 若有需要，也可以提供閉包作為序列的值。該閉包會在每次序列需要新值是被叫用：
@@ -294,14 +275,12 @@ Factory 回呼使用 `afterMaking` 與 `afterCreating` 方法來註冊，能讓�
                         fn (Sequence $sequence) => ['role' => UserRoles::all()->random()],
                     ))
                     ->create();
-
 在 Sequence 閉包中，可以在注入到閉包中的 Sequence 實體上存取 `$index` 與 `$count` 屬性。`$index` 屬性包含了該 Sequence 到目前為止所進行的迭代數，而 `$count` 屬性則代表了該 Sequence 總過將被叫用幾次：
 
     $users = User::factory()
                     ->count(10)
                     ->sequence(fn (Sequence $sequence) => ['name' => 'Name '.$sequence->index])
                     ->create();
-
 為了讓開發起來更方便，也提供了一個 `sequence` 方法可用來套用 Sequence。該方法會在內部幫你呼叫 `state` 方法。`sequence` 方法的引數為一個陣列，或是一組會被依序套用的屬性陣列：
 
     $users = User::factory()
@@ -311,7 +290,6 @@ Factory 回呼使用 `afterMaking` 與 `afterCreating` 方法來註冊，能讓�
                         ['name' => 'Second User'],
                     )
                     ->create();
-
 <a name="factory-relationships"></a>
 
 ## Factory 關聯
@@ -328,13 +306,11 @@ Factory 回呼使用 `afterMaking` 與 `afterCreating` 方法來註冊，能讓�
     $user = User::factory()
                 ->has(Post::factory()->count(3))
                 ->create();
-
 依照慣例，當傳入 `Post` Model 給 `has` 方法時，Laravel 會假設 `User` Model 中有定義這個關聯的 `posts` 方法。若有需要，可以明顯指定要操作的關聯名稱：
 
     $user = User::factory()
                 ->has(Post::factory()->count(3), 'posts')
                 ->create();
-
 當然，也可以在關聯 Model 上進行 State 操作。此外，若 State 更改需要存取上層 Model，也可以傳入基於閉包的 State 變換：
 
     $user = User::factory()
@@ -346,7 +322,6 @@ Factory 回呼使用 `afterMaking` 與 `afterCreating` 方法來註冊，能讓�
                             })
                 )
                 ->create();
-
 <a name="has-many-relationships-using-magic-methods"></a>
 
 #### 使用魔術方法
@@ -356,7 +331,6 @@ Factory 回呼使用 `afterMaking` 與 `afterCreating` 方法來註冊，能讓�
     $user = User::factory()
                 ->hasPosts(3)
                 ->create();
-
 在使用魔術方法建立 Factory 關聯時，可以傳入包含屬性的陣列來在關聯 Model 上複寫：
 
     $user = User::factory()
@@ -364,7 +338,6 @@ Factory 回呼使用 `afterMaking` 與 `afterCreating` 方法來註冊，能讓�
                     'published' => false,
                 ])
                 ->create();
-
 若 State 更改需要存取上層 Model，可以提供一個基於閉包的 State 變換：
 
     $user = User::factory()
@@ -372,7 +345,6 @@ Factory 回呼使用 `afterMaking` 與 `afterCreating` 方法來註冊，能讓�
                     return ['user_type' => $user->type];
                 })
                 ->create();
-
 <a name="belongs-to-relationships"></a>
 
 ### BelongsTo 關聯
@@ -388,7 +360,6 @@ Factory 回呼使用 `afterMaking` 與 `afterCreating` 方法來註冊，能讓�
                     'name' => 'Jessica Archer',
                 ]))
                 ->create();
-
 若已經有應與這些正在建立的 Model 關聯的上層 Model 實體，可以將該 Model 實體傳入 `for` 方法：
 
     $user = User::factory()->create();
@@ -397,7 +368,6 @@ Factory 回呼使用 `afterMaking` 與 `afterCreating` 方法來註冊，能讓�
                 ->count(3)
                 ->for($user)
                 ->create();
-
 <a name="belongs-to-relationships-using-magic-methods"></a>
 
 #### 使用魔術方法
@@ -410,10 +380,9 @@ Factory 回呼使用 `afterMaking` 與 `afterCreating` 方法來註冊，能讓�
                     'name' => 'Jessica Archer',
                 ])
                 ->create();
-
 <a name="many-to-many-relationships"></a>
 
-### 多對多關聯
+### Many to Many Relationships
 
 與 [HasMany 關聯](#has-many-relationships)，「多對多」關聯也可以通過 `has` 方法建立：
 
@@ -423,7 +392,6 @@ Factory 回呼使用 `afterMaking` 與 `afterCreating` 方法來註冊，能讓�
     $user = User::factory()
                 ->has(Role::factory()->count(3))
                 ->create();
-
 <a name="pivot-table-attributes"></a>
 
 #### Pivot 表屬性
@@ -439,7 +407,6 @@ Factory 回呼使用 `afterMaking` 與 `afterCreating` 方法來註冊，能讓�
                     ['active' => true]
                 )
                 ->create();
-
 若 State 更改需要存取關聯 Model，可以提供一個基於閉包的 State 變換：
 
     $user = User::factory()
@@ -452,7 +419,6 @@ Factory 回呼使用 `afterMaking` 與 `afterCreating` 方法來註冊，能讓�
                     ['active' => true]
                 )
                 ->create();
-
 若已有 Model 實體想讓正在建立的 Model 附加，可以將該 Model 實體傳入 `hasAttached` 方法。在此範例中，會將三個相同的角色附加給三個使用者：
 
     $roles = Role::factory()->count(3)->create();
@@ -461,7 +427,6 @@ Factory 回呼使用 `afterMaking` 與 `afterCreating` 方法來註冊，能讓�
                 ->count(3)
                 ->hasAttached($roles, ['active' => true])
                 ->create();
-
 <a name="many-to-many-relationships-using-magic-methods"></a>
 
 #### 使用魔術方法
@@ -473,7 +438,6 @@ Factory 回呼使用 `afterMaking` 與 `afterCreating` 方法來註冊，能讓�
                     'name' => 'Editor'
                 ])
                 ->create();
-
 <a name="polymorphic-relationships"></a>
 
 ### 多型 (Polymorphic) 關聯
@@ -483,7 +447,6 @@ Factory 回呼使用 `afterMaking` 與 `afterCreating` 方法來註冊，能讓�
     use App\Models\Post;
     
     $post = Post::factory()->hasComments(3)->create();
-
 <a name="morph-to-relationships"></a>
 
 #### MorphTo 關聯
@@ -493,10 +456,9 @@ Factory 回呼使用 `afterMaking` 與 `afterCreating` 方法來註冊，能讓�
     $comments = Comment::factory()->count(3)->for(
         Post::factory(), 'commentable'
     )->create();
-
 <a name="polymorphic-many-to-many-relationships"></a>
 
-#### 多型的多對多關聯
+#### Polymorphic Many to Many Relationships
 
 要建立多型的「多對多」(`morphyToMany` / `morphedByMany`) 關聯，就與其他非多型的「多對多」關聯一樣：
 
@@ -509,13 +471,11 @@ Factory 回呼使用 `afterMaking` 與 `afterCreating` 方法來註冊，能讓�
                     ['public' => true]
                 )
                 ->create();
-
 當然，也可以使用 `has` 魔法方法來建立多型的「多對多」關聯：
 
     $videos = Video::factory()
                 ->hasTags(3, ['public' => true])
                 ->create();
-
 <a name="defining-relationships-within-factories"></a>
 
 ### 在 Factory 中定義關聯
@@ -537,7 +497,6 @@ Factory 回呼使用 `afterMaking` 與 `afterCreating` 方法來註冊，能讓�
             'content' => fake()->paragraph(),
         ];
     }
-
 若該關聯的欄位仰賴定義其的 Factory，則可以在屬性中放入閉包。該閉包會收到該 Factory 取值結果的屬性陣列：
 
     /**
@@ -556,19 +515,17 @@ Factory 回呼使用 `afterMaking` 與 `afterCreating` 方法來註冊，能讓�
             'content' => fake()->paragraph(),
         ];
     }
-
 <a name="recycling-an-existing-model-for-relationships"></a>
 
-### 在關聯上回收使用現有的 Model
+### Recycling an Existing Model for Relationships
 
-若有多個 Model 與另一個 Model 共用一個共同的關聯，則可以使用 ^[`recycle`](回收) 方法來確保 Factory 所建立的關聯都重複使用此 Model 的某個單一實體：
+若有多個 Model 與另一個 Model 共用一個共同的關聯，則可以使用 ^[`recycle`](%E5%9B%9E%E6%94%B6) 方法來確保 Factory 所建立的關聯都重複使用此 Model 的某個單一實體：
 
-舉例來說，假設有 ^[`Airline`](航空公司)、^[`Fligh`](航班)、^[`Ticket`](機票) 三個 Model，其中，Ticket 隸屬於 (BelongsTo) Airline 與 Flight，而 Flight 也同時隸屬於 Airline。在建立 Ticket 時，我們可能會想在 Ticket 與 Flight 上都使用同一個 Airline。因此，我們可以將 Airline 實體傳給 `recycle` 方法：
+舉例來說，假設有 ^[`Airline`](%E8%88%AA%E7%A9%BA%E5%85%AC%E5%8F%B8)、^[`Fligh`](%E8%88%AA%E7%8F%AD)、^[`Ticket`](%E6%A9%9F%E7%A5%A8) 三個 Model，其中，Ticket 隸屬於 (BelongsTo) Airline 與 Flight，而 Flight 也同時隸屬於 Airline。在建立 Ticket 時，我們可能會想在 Ticket 與 Flight 上都使用同一個 Airline。因此，我們可以將 Airline 實體傳給 `recycle` 方法：
 
     Ticket::factory()
         ->recycle(Airline::factory()->create())
         ->create();
-
 如果你的 Model 都隸屬於 (BelongsTo) 一組相同的使用者或團隊，那麼就很適合使用 `recycle` 方法。
 
 也可傳入一組現有 Model 的 Collection 給 `recycle` 方法。傳入 Collection 給 `recycle` 方法時，當 Factory 需要此類型的 Model 時，就會從此 Collection 中隨機選擇一個 Model：

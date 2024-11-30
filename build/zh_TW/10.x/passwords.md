@@ -1,22 +1,21 @@
 ---
-contributors:
-  14684796:
-    avatarUrl: https://crowdin-static.downloads.crowdin.com/avatar/14684796/medium/60f7dc21ec0bf9cfcb61983640bb4809_default.png
-    name: cornch
-crowdinUrl: https://crowdin.com/translate/laravel-docs/119/en-zhtw
-progress: 100
+crowdinUrl: 'https://crowdin.com/translate/laravel-docs/119/en-zhtw'
 updatedAt: '2024-06-30T08:18:00Z'
+contributors: {  }
+progress: 58.51
 ---
 
 # 重設密碼
 
 - [簡介](#introduction)
-   - [Model 的準備](#model-preparation)
-   - [資料庫的準備](#database-preparation)
-   - [設定 Trusted Hosts](#configuring-trusted-hosts)
+  - [Model 的準備](#model-preparation)
+  - [資料庫的準備](#database-preparation)
+  - [設定 Trusted Hosts](#configuring-trusted-hosts)
+  
 - [路由](#routing)
-   - [產生密碼重設連結](#requesting-the-password-reset-link)
-   - [重設密碼](#resetting-the-password)
+  - [Requesting the Password Reset Link](#requesting-the-password-reset-link)
+  - [Resetting the Password](#resetting-the-password)
+  
 - [刪除過期的 Token](#deleting-expired-tokens)
 - [自定](#password-customization)
 
@@ -26,7 +25,8 @@ updatedAt: '2024-06-30T08:18:00Z'
 
 大多數的 Web App 都提供了能讓使用者重設密碼的功能。在 Laravel 中，我們不需要為密碼重設重造輪子，Laravel 已提供了方便的服務，可讓我們傳送密碼重設連結並安全地重設密碼。
 
-> **Note** 想要快速入門嗎？請在全新的 Laravel 應用程式內安裝一個 [Laravel 應用程式入門套件](docs/{{version}}/starter-kits)。這些入門套件會幫你搞定整個驗證系統的 Scaffolding，其中也包含了重設忘記密碼的支援。
+> [!NOTE]  
+> 想要快速入門嗎？請在全新的 Laravel 應用程式內安裝一個 [Laravel 應用程式入門套件](docs/{{version}}/starter-kits)。這些入門套件會幫你搞定整個驗證系統的 Scaffolding，其中也包含了重設忘記密碼的支援。
 
 <a name="model-preparation"></a>
 
@@ -40,12 +40,11 @@ updatedAt: '2024-06-30T08:18:00Z'
 
 ### 資料庫的準備
 
-我們需要一個資料表來保存網站的密碼重設 ^[Token](權杖)。在預設 Laravel 中已包含了用於建立該資料表的 Migration，因此我們只需要進行 Migrate 即可建立該資料表：
+我們需要一個資料表來保存網站的密碼重設 ^[Token](%E6%AC%8A%E6%9D%96)。在預設 Laravel 中已包含了用於建立該資料表的 Migration，因此我們只需要進行 Migrate 即可建立該資料表：
 
 ```shell
 php artisan migrate
 ```
-
 <a name="configuring-trusted-hosts"></a>
 
 ### 設定信任的主機 (Trusted Hosts)
@@ -64,7 +63,7 @@ php artisan migrate
 
 <a name="requesting-the-password-reset-link"></a>
 
-### 要求密碼重設連結
+### Requesting the Password Reset Link
 
 <a name="the-password-reset-link-request-form"></a>
 
@@ -75,12 +74,11 @@ php artisan migrate
     Route::get('/forgot-password', function () {
         return view('auth.forgot-password');
     })->middleware('guest')->name('password.request');
-
 該 Route 所回傳的 View 應包含一個 `email` 欄位，該欄位用來讓使用者可使用給定的 E-Mail 位址要求密碼重設連結。
 
 <a name="password-reset-link-handling-the-form-submission"></a>
 
-#### 處理表單的送出
+#### Handling the Form Submission
 
 接著，我們需要定義一個 Route 來處理「忘記密碼」View 送出的表單。這個 Route 會負責驗證 E-Mail 位址，並寄出密碼重設連結給對應的使用者：
 
@@ -98,20 +96,21 @@ php artisan migrate
                     ? back()->with(['status' => __($status)])
                     : back()->withErrors(['email' => __($status)]);
     })->middleware('guest')->name('password.email');
-
 在繼續之前，我們先來詳細看看這個 Route。首先，會先驗證 Request 的 `email` 屬性。接著，我們使用 Laravel 內建的「Password Broker」(在 `Password` Facade 上) 來傳送密碼重設連結給該使用者。Password Broker 會負責使用給定的欄位 (在這個例子中是 E-Mail 位址) 來取得使用者，並使用 Laravel 內建的[通知系統](/docs/{{version}}/notifications)來傳送密碼重設連結給使用者。
 
 `sendResetLink` 方法會回傳一個「status」slug。我們可以使用 Laravel 的[本土化]輔助函式來翻譯這個「status」，以顯示使用者友善的訊息告知使用者其密碼要求狀態。密碼重設的翻譯會依據專案中的 `lang/{lang}/passwords.php` 語系檔來判斷。在 `passwords` 語系檔中，所有可能的 status slug 值都有對應的欄位。
 
-> **Note** 預設情況下，Laravel 專案的 Skeleton 中未包含 `lang` 目錄。若想自定 Laravel 的語系檔，可以使用 `lang:publish` Artisan 指令來安裝語系檔：
+> [!NOTE]  
+> 預設情況下，Laravel 專案的 Skeleton 中未包含 `lang` 目錄。若想自定 Laravel 的語系檔，可以使用 `lang:publish` Artisan 指令來安裝語系檔：
 
 讀者可能會想，在呼叫 `Password` Facade 的 `sendResetLink` 時，Laravel 是怎麼知道要如何從專案資料庫中取得使用者記錄的？其實，Laravel 的 Password Broker 使用了身份驗證系統的「User Providers」來取得資料庫記錄。Password Broker 使用的 User Provider 設定在 `config/auth.php` 設定檔中的 `password` 設定陣列中。如欲瞭解更多有關如何撰寫自定 User Provider 的資訊，請參考[身份驗證說明文件](/docs/{{version}}/authentication#adding-custom-user-providers)。
 
-> **Note** 手動實作密碼重設功能時，我們需要自行定義這些 View 的內容與 Route。若想要有包含所有必要之身份驗證與驗證 View 的 Scaffolding，請參考 [Laravel 專案入門套件](/docs/{{version}}/starter-kits)。
+> [!NOTE]  
+> 手動實作密碼重設功能時，我們需要自行定義這些 View 的內容與 Route。若想要有包含所有必要之身份驗證與驗證 View 的 Scaffolding，請參考 [Laravel 專案入門套件](/docs/{{version}}/starter-kits)。
 
 <a name="resetting-the-password"></a>
 
-### 重設密碼
+### Resetting the Password
 
 <a name="the-password-reset-form"></a>
 
@@ -122,12 +121,11 @@ php artisan migrate
     Route::get('/reset-password/{token}', function (string $token) {
         return view('auth.reset-password', ['token' => $token]);
     })->middleware('guest')->name('password.reset');
-
 該表單回傳的 View 應顯示一個表單，其中需包含 `email`、`password`、`password_confirmation` 等欄位，以及一個隱藏的 `token` 等欄位，該 `token` 欄位中應包含該 Route 所收到的私密 Token `$token` 值。
 
 <a name="password-reset-handling-the-form-submission"></a>
 
-#### 處理表單的送出
+#### Handling the Form Submission
 
 當然，我們還需要定義一個實際用來處理表單送出的 Route。這個 Route 要負責驗證連入的 Request，並更新資料庫中該使用者的密碼：
 
@@ -162,7 +160,6 @@ php artisan migrate
                     ? redirect()->route('login')->with('status', __($status))
                     : back()->withErrors(['email' => [__($status)]]);
     })->middleware('guest')->name('password.update');
-
 在繼續之前，我們先來仔細看看這個 Route。首先，在這個 Route 中會先驗證 Request 的 `token`、`email`、`password` 等欄位。接著，​我們 (通過 `Password` Facade) 使用 Laravel 內建的「Password Broker」來驗證密碼重設 Request 是否有效。
 
 若傳給 Password Broker 的 Token、E-Mail 位址、密碼等均正確，則會呼叫傳給 `reset` 方法的閉包。這個閉包會收到 User 實體以及傳給密碼重設表單的明文密碼。在該閉包中，我們就可以更新資料庫中該使用者的密碼。
@@ -180,11 +177,9 @@ php artisan migrate
 ```shell
 php artisan auth:clear-resets
 ```
-
 若想自動化這個過程，可以考慮將該指令加入專案的[排程任務](/docs/{{version}}/scheduling)中：
 
     $schedule->command('auth:clear-resets')->everyFifteenMinutes();
-
 <a name="password-customization"></a>
 
 ## 自定
@@ -207,7 +202,6 @@ php artisan auth:clear-resets
             return 'https://example.com/reset-password?token='.$token;
         });
     }
-
 <a name="reset-email-customization"></a>
 
 #### 自定重設 E-Mail

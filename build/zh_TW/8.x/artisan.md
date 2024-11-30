@@ -1,33 +1,35 @@
 ---
-contributors:
-  14684796:
-    avatarUrl: https://crowdin-static.downloads.crowdin.com/avatar/14684796/medium/60f7dc21ec0bf9cfcb61983640bb4809_default.png
-    name: cornch
-crowdinUrl: https://crowdin.com/translate/laravel-docs/9/en-zhtw
-progress: 100
+crowdinUrl: 'https://crowdin.com/translate/laravel-docs/9/en-zhtw'
 updatedAt: '2024-06-30T08:17:00Z'
+contributors: {  }
+progress: 47.22
 ---
 
 # Artisan 主控台
 
 - [簡介](#introduction)
-   - [Tinker (REPL)](#tinker)
+  - [Tinker (REPL)](#tinker)
+  
 - [撰寫指令](#writing-commands)
-   - [產生指令](#generating-commands)
-   - [指令結構](#command-structure)
-   - [閉包指令](#closure-commands)
+  - [產生指令](#generating-commands)
+  - [指令結構](#command-structure)
+  - [閉包指令](#closure-commands)
+  
 - [定義預期的輸入](#defining-input-expectations)
-   - [引數](#arguments)
-   - [選項](#options)
-   - [輸入陣列](#input-arrays)
-   - [輸入說明](#input-descriptions)
+  - [引數](#arguments)
+  - [選項](#options)
+  - [輸入陣列](#input-arrays)
+  - [輸入說明](#input-descriptions)
+  
 - [指令 I/O](#command-io)
-   - [取得輸入](#retrieving-input)
-   - [為輸入進行提示](#prompting-for-input)
-   - [撰寫輸出](#writing-output)
+  - [取得輸入](#retrieving-input)
+  - [為輸入進行提示](#prompting-for-input)
+  - [撰寫輸出](#writing-output)
+  
 - [註冊指令](#registering-commands)
 - [使用程式碼呼叫指令](#programmatically-executing-commands)
-   - [自其他指令內呼叫指令](#calling-commands-from-other-commands)
+  - [自其他指令內呼叫指令](#calling-commands-from-other-commands)
+  
 - [處理訊號 (Signal)](#signal-handling)
 - [自訂 Stub](#stub-customization)
 - [事件](#events)
@@ -39,11 +41,9 @@ updatedAt: '2024-06-30T08:17:00Z'
 Artisan 是 Laravel 內所包含的指令列界面。Artisan 是放在專案根目錄的 `artisan` 工序指令，提供多種實用指令來幫你撰寫你的專案。若要檢視所有可用的 Artisan 指令，可以使用 `list` 指令：
 
     php artisan list
-
 每個指令也包含了一個「help」畫面，用於顯示指令的說明以及可用的引數與選項。若要檢視輔助說明畫面，請在指令名稱的前面加上 `help`：
 
     php artisan help migrate
-
 <a name="laravel-sail"></a>
 
 #### Laravel Sail
@@ -51,7 +51,6 @@ Artisan 是 Laravel 內所包含的指令列界面。Artisan 是放在專案根�
 若使用 [Laravel Sail](/docs/{{version}}/sail) 作為本機開發環境，請記得使用 `sail` 指令列來叫用 Artisan 指令。Sail 會在專案的 Docker 容器內執行 Artisan 指令。
 
     ./sail artisan list
-
 <a name="tinker"></a>
 
 ### Tinker (REPL)
@@ -65,8 +64,8 @@ Laravel Tinker 是用於 Laravel 框架的強大 REPL，由 [PsySH](https://gith
 所有的 Laravel 專案預設都包含了 Tinker。但若先前曾自專案內移除 Tinker，則可使用 Composer 來安裝：
 
     composer require laravel/tinker
-
-> {tip} 想找個能與你的 Laravel 應用程式互動的圖形化 UI 嗎？試試 [Tinkerwell](https://tinkerwell.app) 吧！
+> [!TIP]  
+> 想找個能與你的 Laravel 應用程式互動的圖形化 UI 嗎？試試 [Tinkerwell](https://tinkerwell.app) 吧！
 
 <a name="usage"></a>
 
@@ -75,12 +74,11 @@ Laravel Tinker 是用於 Laravel 框架的強大 REPL，由 [PsySH](https://gith
 Tinker 可讓你在指令列內與完整的 Laravel 專案進行互動，包含 Eloquent Model、任務、事件…等。要進入 Tinker 環境，請執行 `tinker` Artisan 指令：
 
     php artisan tinker
-
 可以通過 `vendor:publish` 指令來安裝 Tinker 的設定檔：
 
     php artisan vendor:publish --provider="Laravel\Tinker\TinkerServiceProvider"
-
-> {note} `dispatch` 輔助函式與 `Dispatchable` 類別上的 `dispatch` 方法需要仰賴垃圾回收機制來將任務放進佇列中。因此，在使用 Tinker 時，應使用 `Bus::dispatch` 或 `Queue::push` 來分派任務。
+> [!NOTE]  
+> `dispatch` 輔助函式與 `Dispatchable` 類別上的 `dispatch` 方法需要仰賴垃圾回收機制來將任務放進佇列中。因此，在使用 Tinker 時，應使用 `Bus::dispatch` 或 `Queue::push` 來分派任務。
 
 <a name="command-allow-list"></a>
 
@@ -91,7 +89,6 @@ Tinker 使用一個「allow」清單來判斷哪些 Artisan 指令可在其 Shel
     'commands' => [
         // App\Console\Commands\ExampleCommand::class,
     ],
-
 <a name="classes-that-should-not-be-aliased"></a>
 
 #### 不應以別名使用的類別
@@ -101,7 +98,6 @@ Tinker 使用一個「allow」清單來判斷哪些 Artisan 指令可在其 Shel
     'dont_alias' => [
         App\Models\User::class,
     ],
-
 <a name="writing-commands"></a>
 
 ## 撰寫指令
@@ -115,7 +111,6 @@ Tinker 使用一個「allow」清單來判斷哪些 Artisan 指令可在其 Shel
 若要建立新指令，可以使用 `make:command` Artisan 指令。該指令會在 `app/Console/Commands` 目錄下建立一個新的指令類別。若你的專案中沒有這個資料夾，請別擔心——第一次執行 `make:command` Artisan 指令的時候會自動建立該資料夾：
 
     php artisan make:command SendEmails
-
 <a name="command-structure"></a>
 
 ### 指令結構
@@ -169,8 +164,8 @@ Tinker 使用一個「allow」清單來判斷哪些 Artisan 指令可在其 Shel
             $drip->send(User::find($this->argument('user')));
         }
     }
-
-> {tip} 為了提升程式碼重複使用率，最好保持主控台指令精簡，並將指令的任務委託給應用程式服務來完成。在上方的例子中，可以注意到我們插入了一個服務類別來處理寄送 E-Mail 的這個「重責大任」。
+> [!TIP]  
+> 為了提升程式碼重複使用率，最好保持主控台指令精簡，並將指令的任務委託給應用程式服務來完成。在上方的例子中，可以注意到我們插入了一個服務類別來處理寄送 E-Mail 的這個「重責大任」。
 
 <a name="closure-commands"></a>
 
@@ -187,13 +182,11 @@ Tinker 使用一個「allow」清單來判斷哪些 Artisan 指令可在其 Shel
     {
         require base_path('routes/console.php');
     }
-
 這個檔案並沒有定義 HTTP 路由，而是定義從主控台「路由」進入專案的進入點。在該檔案內，可以通過 `Artisan::command` 方法來定義基於閉包的主控台指令。`command` 方法接受 2 個引數：[指令簽章](#defining-input-expectations)，以及一個用來接收指令引數與選項的閉包：
 
     Artisan::command('mail:send {user}', function ($user) {
         $this->info("Sending email to: {$user}!");
     });
-
 這裡的閉包有綁定到該指令的基礎類別執行個體，因此可以像在完整的指令類別內一樣存取所有的輔助函式。
 
 <a name="type-hinting-dependencies"></a>
@@ -208,7 +201,6 @@ Tinker 使用一個「allow」清單來判斷哪些 Artisan 指令可在其 Shel
     Artisan::command('mail:send {user}', function (DripEmailer $drip, $user) {
         $drip->send(User::find($user));
     });
-
 <a name="closure-command-descriptions"></a>
 
 #### 閉包指令描述
@@ -218,7 +210,6 @@ Tinker 使用一個「allow」清單來判斷哪些 Artisan 指令可在其 Shel
     Artisan::command('mail:send {user}', function ($user) {
         // ...
     })->purpose('Send a marketing email to a user');
-
 <a name="defining-input-expectations"></a>
 
 ## 定義預期的輸入
@@ -237,15 +228,13 @@ Tinker 使用一個「allow」清單來判斷哪些 Artisan 指令可在其 Shel
      * @var string
      */
     protected $signature = 'mail:send {user}';
-
 也可以將引數設為可選，或是定義引數的預設值：
 
-    // 可選的引數...
+    // Optional argument...
     mail:send {user?}
     
-    // 有預設值的可選引數...
+    // Optional argument with default value...
     mail:send {user=foo}
-
 <a name="options"></a>
 
 ### 選項
@@ -258,11 +247,9 @@ Tinker 使用一個「allow」清單來判斷哪些 Artisan 指令可在其 Shel
      * @var string
      */
     protected $signature = 'mail:send {user} {--queue}';
-
 在這個例子中，呼叫該 Artisan 指令時可以指定 `--queue` 開關。若有傳入 `--queue` 開關，則該選項的值會是 `true`。否則，該值為 `false`：
 
     php artisan mail:send 1 --queue
-
 <a name="options-with-values"></a>
 
 #### 帶值的選項
@@ -275,15 +262,12 @@ Tinker 使用一個「allow」清單來判斷哪些 Artisan 指令可在其 Shel
      * @var string
      */
     protected $signature = 'mail:send {user} {--queue=}';
-
 在這個例子中，使用者可以傳入像這樣給選項帶入一個值。若在叫用該指令時未指定該選項，則其值為 `null`：
 
     php artisan mail:send 1 --queue=default
-
 可以通過在選項名稱後方加上預設值來為選項指派一個預設值。若使用者未傳入選項值，將會使用預設值：
 
     mail:send {user} {--queue=default}
-
 <a name="option-shortcuts"></a>
 
 #### 選項捷徑
@@ -291,11 +275,9 @@ Tinker 使用一個「allow」清單來判斷哪些 Artisan 指令可在其 Shel
 若要在定義選項時指定捷徑，可以在選項名稱前加上其捷徑名稱，並使用 `|` 字元來區分捷徑名稱與完整的選項名稱：
 
     mail:send {user} {--Q|queue}
-
 在終端機內叫用指令時，應在選項捷徑前加上一個減號：
 
     php artisan mail:send 1 -Q
-
 <a name="input-arrays"></a>
 
 ### 輸入陣列
@@ -303,15 +285,12 @@ Tinker 使用一個「allow」清單來判斷哪些 Artisan 指令可在其 Shel
 若想要定義預期有多個輸入值的引數或選項，則可以使用 `*` 字元。首先，來看看這樣設定引數的例子：
 
     mail:send {user*}
-
 呼叫這個方法的時候，`user` 引數在指令列中可以按照順序傳入。舉例來說，下列指令會將 `user` 的值設為一個內容為 `foo` 與 `bar` 的陣列：
 
     php artisan mail:send foo bar
-
 `*` 字元可以與可選引數組合使用來定義，這樣一來可允許有 0 個或多個引數的實體：
 
     mail:send {user?*}
-
 <a name="option-arrays"></a>
 
 #### 選項陣列
@@ -321,7 +300,6 @@ Tinker 使用一個「allow」清單來判斷哪些 Artisan 指令可在其 Shel
     mail:send {user} {--id=*}
     
     php artisan mail:send --id=1 --id=2
-
 <a name="input-descriptions"></a>
 
 ### 輸入描述
@@ -336,7 +314,6 @@ Tinker 使用一個「allow」清單來判斷哪些 Artisan 指令可在其 Shel
     protected $signature = 'mail:send
                             {user : The ID of the user}
                             {--queue : Whether the job should be queued}';
-
 <a name="command-io"></a>
 
 ## 指令 I/O
@@ -358,19 +335,16 @@ Tinker 使用一個「allow」清單來判斷哪些 Artisan 指令可在其 Shel
     
         //
     }
-
 若要將所有引數截取為陣列，則可呼叫 `arguments` 方法：
 
     $arguments = $this->arguments();
-
 我們也可像截取引數一樣使用 `option` 方法來輕鬆地截取選項。若要將所有選項截取為陣列，請呼叫 `options` 方法：
 
-    // 取得特定選項...
+    // Retrieve a specific option...
     $queueName = $this->option('queue');
     
-    // 將所有選項作為陣列取得...
+    // Retrieve all options as an array...
     $options = $this->options();
-
 <a name="prompting-for-input"></a>
 
 ### 為輸入進行提示
@@ -386,11 +360,9 @@ Tinker 使用一個「allow」清單來判斷哪些 Artisan 指令可在其 Shel
     {
         $name = $this->ask('What is your name?');
     }
-
 `secret` 方法與 `ask` 類似，但使用者在指令列輸入的過程中將看不到他們自己的輸入值。這個方法適用於像使用者詢問如密碼等機密資訊的時候：
 
     $password = $this->secret('What is the password?');
-
 <a name="asking-for-confirmation"></a>
 
 #### 要求確認
@@ -400,13 +372,11 @@ Tinker 使用一個「allow」清單來判斷哪些 Artisan 指令可在其 Shel
     if ($this->confirm('Do you wish to continue?')) {
         //
     }
-
 若有必要，也可以通過將 `true` 傳入為 `confirm` 方法的第二個引數來指定讓確認提示預設回傳 `true`：
 
     if ($this->confirm('Do you wish to continue?', true)) {
         //
     }
-
 <a name="auto-completion"></a>
 
 #### 自動補全
@@ -414,13 +384,11 @@ Tinker 使用一個「allow」清單來判斷哪些 Artisan 指令可在其 Shel
 `anticipate` 方法可以用來為可能的選項提供自動補全。不論自動補全提示了什麼，使用者一樣可以提供任意回答：
 
     $name = $this->anticipate('What is your name?', ['Taylor', 'Dayle']);
-
 另外，也可以將一個閉包傳給 `anticipate` 方法的第二個引數。這個閉包會在每次使用者輸入字元的時候被呼叫。該閉包應接受一個字串參數，其中包含了目前使用者的輸入值，並回傳用於自動補全的選項陣列：
 
     $name = $this->anticipate('What is your address?', function ($input) {
-        // 回傳自動補全的選項...
+        // Return auto-completion options...
     });
-
 <a name="multiple-choice-questions"></a>
 
 #### 多重選擇問題
@@ -432,7 +400,6 @@ Tinker 使用一個「allow」清單來判斷哪些 Artisan 指令可在其 Shel
         ['Taylor', 'Dayle'],
         $defaultIndex
     );
-
 另外，`choice` 方法也接受第 4 個與第 5 個引數，這兩個引數分別是用來判斷選擇有效回答的最大嘗試次數，以及是否允許多重選擇：
 
     $name = $this->choice(
@@ -442,7 +409,6 @@ Tinker 使用一個「allow」清單來判斷哪些 Artisan 指令可在其 Shel
         $maxAttempts = null,
         $allowMultipleSelections = false
     );
-
 <a name="writing-output"></a>
 
 ### 撰寫輸出
@@ -460,28 +426,25 @@ Tinker 使用一個「allow」清單來判斷哪些 Artisan 指令可在其 Shel
     
         $this->info('The command was successful!');
     }
-
 若要顯示錯誤訊息，可以使用 `error` 方法。錯誤訊息文字通常會以紅色顯示：
 
     $this->error('Something went wrong!');
-
 也可以使用 `line` 方法來顯示未標示色彩的純文字：
 
     $this->line('Display this on the screen');
-
 可以使用 `newLine` 方法來顯示空行：
 
-    // 寫入一行空行...
+    // Write a single blank line...
     $this->newLine();
     
-    // 寫入三行空行...
+    // Write three blank lines...
     $this->newLine(3);
-
 <a name="tables"></a>
 
 #### 表格
 
-通過 `table` 方法可以很輕鬆地正確為多行列資料進行格式化。只需要提供表格的欄位名稱與表格的資料，Laravel 就會自動計算適當的表格寬高：
+The `table` method makes it easy to correctly format multiple rows / columns of data. All you need to do is provide the column names and the data for the table and Laravel will
+automatically calculate the appropriate width and height of the table for you:
 
     use App\Models\User;
     
@@ -489,7 +452,6 @@ Tinker 使用一個「allow」清單來判斷哪些 Artisan 指令可在其 Shel
         ['Name', 'Email'],
         User::all(['name', 'email'])->toArray()
     );
-
 <a name="progress-bars"></a>
 
 #### 進度列
@@ -501,7 +463,6 @@ Tinker 使用一個「allow」清單來判斷哪些 Artisan 指令可在其 Shel
     $users = $this->withProgressBar(User::all(), function ($user) {
         $this->performTask($user);
     });
-
 有時候，我們可能需要手動控制進度列何時需要增加。首先，我們先定義整個過程所需要迭代的次數。接著，在每個項目處理完後增加進度：
 
     $users = App\Models\User::all();
@@ -517,8 +478,8 @@ Tinker 使用一個「allow」清單來判斷哪些 Artisan 指令可在其 Shel
     }
     
     $bar->finish();
-
-> {tip} 有關更進階的選項，請參考 [Symfony Progress Bar 元件說明文件](https://symfony.com/doc/current/components/console/helpers/progressbar.html)。
+> [!TIP]  
+> 有關更進階的選項，請參考 [Symfony Progress Bar 元件說明文件](https://symfony.com/doc/current/components/console/helpers/progressbar.html)。
 
 <a name="registering-commands"></a>
 
@@ -538,13 +499,11 @@ Tinker 使用一個「allow」清單來判斷哪些 Artisan 指令可在其 Shel
     
         // ...
     }
-
 若有需要的話，也可以通過將指令的類別名稱加至 `App\Console\Kernel` 類別的 `$commands` 屬性來手動註冊指令。若該屬性不存在，你可以手動建立。當 Artisan 啟動時，列在該屬性上的所有指令都會由 [Service Container](/docs/{{version}}/container) 進行解析，並向 Artisan 註冊：
 
     protected $commands = [
         Commands\SendEmails::class
     ];
-
 <a name="programmatically-executing-commands"></a>
 
 ## 通過程式碼執行指令
@@ -560,11 +519,9 @@ Tinker 使用一個「allow」清單來判斷哪些 Artisan 指令可在其 Shel
     
         //
     });
-
 或者，也可以將整個 Artisan 指令作為字串傳給 `call` 方法：
 
     Artisan::call('mail:send 1 --queue=default');
-
 <a name="passing-array-values"></a>
 
 #### 傳入陣列值
@@ -578,7 +535,6 @@ Tinker 使用一個「allow」清單來判斷哪些 Artisan 指令可在其 Shel
             '--id' => [5, 13]
         ]);
     });
-
 <a name="passing-boolean-values"></a>
 
 #### 傳入布林值
@@ -588,7 +544,6 @@ Tinker 使用一個「allow」清單來判斷哪些 Artisan 指令可在其 Shel
     $exitCode = Artisan::call('migrate:refresh', [
         '--force' => true,
     ]);
-
 <a name="queueing-artisan-commands"></a>
 
 #### 將 Artisan 指令放入佇列
@@ -604,13 +559,11 @@ Tinker 使用一個「allow」清單來判斷哪些 Artisan 指令可在其 Shel
     
         //
     });
-
 可以使用 `onConnection` 與 `onQueue` 方法來指定 Artisan 指令應分派到哪個連線或佇列上：
 
     Artisan::queue('mail:send', [
         'user' => 1, '--queue' => 'default'
     ])->onConnection('redis')->onQueue('commands');
-
 <a name="calling-commands-from-other-commands"></a>
 
 ### 在其他指令內執行指令
@@ -630,13 +583,11 @@ Tinker 使用一個「allow」清單來判斷哪些 Artisan 指令可在其 Shel
     
         //
     }
-
 若有需要呼叫另一個主控台指令並忽略其所有輸出，則可使用 `callSilently` 方法。`callSilently` 方法的簽章與 `call` 方法相同：
 
     $this->callSilently('mail:send', [
         'user' => 1, '--queue' => 'default'
     ]);
-
 <a name="signal-handling"></a>
 
 ## 處理訊號
@@ -680,7 +631,6 @@ class StartServer extends Command implements SignalableCommandInterface
     }
 }
 ```
-
 你可能已經看得出來，`getSubscribedSignals` 應回傳一個包含所有指令能處理訊號的陣列，而 `handleSignal` 則接收訊號並根據訊號進行回應。
 
 <a name="stub-customization"></a>
@@ -690,7 +640,6 @@ class StartServer extends Command implements SignalableCommandInterface
 Artisan 主控台的 `make` 指令可以用來建立各種類別，如控制器、任務、資料庫遷移，以及測試。這些類別都是使用「Stub (虛設常式)」來產生的，Stub 會依據給定的輸入來填入不同的值。不過，你可能會想對這些 Artisan 產生的檔案做一些微調。要修改這些 Stub，可以通過 `stub:publish` 指令來將這些最常見的 Stub 安裝到專案中，如此一來就能自訂這些 Stub：
 
     php artisan stub:publish
-
 安裝的 Stub 會被放在專案根目錄的 `stubs` 目錄中。對這些 Stub 做出的任何改動都會反應到使用 Artisan 的 `make` 指令所產生的對應類別上。
 
 <a name="events"></a>

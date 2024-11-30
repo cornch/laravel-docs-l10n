@@ -1,21 +1,19 @@
 ---
-contributors:
-  14684796:
-    avatarUrl: https://crowdin-static.downloads.crowdin.com/avatar/14684796/medium/60f7dc21ec0bf9cfcb61983640bb4809_default.png
-    name: cornch
-crowdinUrl: https://crowdin.com/translate/laravel-docs/157/en-zhtw
-progress: 79
+crowdinUrl: 'https://crowdin.com/translate/laravel-docs/157/en-zhtw'
 updatedAt: '2024-06-30T08:27:00Z'
+contributors: {  }
+progress: 51.04
 ---
 
 # 入門套件
 
 - [簡介](#introduction)
 - [Laravel Breeze](#laravel-breeze)
-   - [安裝](#laravel-breeze-installation)
-   - [Breeze 與 Blade](#breeze-and-blade)
-   - [Breeze & React / Vue](#breeze-and-inertia)
-   - [Breeze & Next.js / API](#breeze-and-next)
+  - [安裝](#laravel-breeze-installation)
+  - [Breeze 與 Blade](#breeze-and-blade)
+  - [Breeze & React / Vue](#breeze-and-inertia)
+  - [Breeze & Next.js / API](#breeze-and-next)
+  
 - [Laravel Jetstream](#laravel-jetstream)
 
 <a name="introduction"></a>
@@ -37,7 +35,6 @@ Laravel Breeze 的預設 View 層是由 [Blade 樣板](/docs/{{version}}/blade)�
 對於從頭開始撰寫 Laravel 專案來說，Breeze 提供了一個絕佳的起始點。而且，對於打算通過 [Laravel Livewire](https://laravel-livewire.com) 來提升 Blade 樣板功能的專案來說，Breeze 也是個不錯的選項。
 
 <img src="https://laravel.com/img/docs/breeze-register.png">
-
 #### Laravel Bootcamp
 
 如果你第一次接觸 Laravel，歡迎參考 [Laravel Bootcamp (英語)](https://bootcamp.laravel.com)。Laravel Bootcamp 會帶領你使用 Breeze 來建立你的第一個 Laravel 專案。Laravel Bootcamp 是學習各種有關 Laravel 與 Breeze 相關技術的好地方。
@@ -51,7 +48,6 @@ Laravel Breeze 的預設 View 層是由 [Blade 樣板](/docs/{{version}}/blade)�
 ```shell
 composer require laravel/breeze --dev
 ```
-
 安裝好 Breeze 後，就可以使用本文件下方討論的其中一個 Breeze「Stack」來 Scaffold 你的專案。
 
 <a name="breeze-and-blade"></a>
@@ -69,7 +65,6 @@ php artisan migrate
 npm install
 npm run dev
 ```
-
 接著，在瀏覽器中打開網站的 `/login` 或 `/register` 網址。Breeze 中所有的路由都定義在 `routes/auth.php` 中。
 
 <a name="dark-mode"></a>
@@ -81,8 +76,8 @@ npm run dev
 ```shell
 php artisan breeze:install --dark
 ```
-
-> **Note** 要瞭解更多有關如何編譯網站的 CSS 與 JavaScript 的資訊，請參考 Laravel 的 [Vite 說明文件](/docs/{{version}}/mix#running-mix)。
+> [!NOTE]  
+> 要瞭解更多有關如何編譯網站的 CSS 與 JavaScript 的資訊，請參考 Laravel 的 [Vite 說明文件](/docs/{{version}}/mix#running-mix)。
 
 <a name="breeze-and-inertia"></a>
 
@@ -95,7 +90,7 @@ Laravel Breeze 也提供了使用 [Inertia](https://inertiajs.com) 前端實作�
 ```shell
 php artisan breeze:install vue
 
-# 或是...
+# Or...
 
 php artisan breeze:install react
 
@@ -103,7 +98,6 @@ php artisan migrate
 npm install
 npm run dev
 ```
-
 接著，在瀏覽器中打開網站的 `/login` 或 `/register` 網址。Breeze 中所有的路由都定義在 `routes/auth.php` 中。
 
 <a name="server-side-rendering"></a>
@@ -116,7 +110,6 @@ npm run dev
 php artisan breeze:install vue --ssr
 php artisan breeze:install react --ssr
 ```
-
 <a name="breeze-and-next"></a>
 
 ### Breeze & Next.js / API
@@ -128,7 +121,6 @@ php artisan breeze:install api
 
 php artisan migrate
 ```
-
 在安裝過程中，Breeze 會在專案的 `.env` 檔中新增一個 `FRONTEND_URL` 環境變數。這個 URL 應為 JavaScript App 的 URL。在開發時，通常為 `http://localhost:3000`。此外，也應確認一下 `APP_URL` 是否為 `http://localhost:8000`，該網址就是 `serve` Artisan 指令的預設 URL。
 
 <a name="next-reference-implementation"></a>

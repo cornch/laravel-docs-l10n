@@ -1,18 +1,16 @@
 ---
-contributors:
-  14684796:
-    avatarUrl: https://crowdin-static.downloads.crowdin.com/avatar/14684796/medium/60f7dc21ec0bf9cfcb61983640bb4809_default.png
-    name: cornch
-crowdinUrl: https://crowdin.com/translate/laravel-docs/39/en-zhtw
-progress: 100
+crowdinUrl: 'https://crowdin.com/translate/laravel-docs/39/en-zhtw'
 updatedAt: '2023-02-11T10:27:00Z'
+contributors: {  }
+progress: 64.0
 ---
 
 # CSRF 保護
 
 - [簡介](#csrf-introduction)
 - [預防 CSRF Request](#preventing-csrf-requests)
-   - [排除 URI](#csrf-excluding-uris)
+  - [排除 URI](#csrf-excluding-uris)
+  
 - [X-CSRF-Token](#csrf-x-csrf-token)
 - [X-XSRF-Token](#csrf-x-xsrf-token)
 
@@ -37,7 +35,6 @@ CSRF (跨網站要求偽造，Cross-site Request Forgery) 是一種在通過登�
     <script>
         document.forms[0].submit();
     </script>
-
 若這個惡意網站在頁面載入後自動送出該表單，則惡意使用者只需要誘拐某個不經意的使用者瀏覽惡意網站，該使用者的 E-Mail 位址就會被修改。
 
 為了防止此一弱點，我們需要在所有連入的 `POST`, `PUT`, `PATCH` 或 `DELETE` 請求上檢查某個私密 Session 值，該 Session 值必須是惡意網站無法存取的。
@@ -59,16 +56,14 @@ Laravel 會自動為每個有效的[使用者 Session](/docs/{{version}}/session
     
         // ...
     });
-
 定義 "POST", "PUT", "PATCH", 或是 "DELETE" 的 HTML 表單時，應在表單內包含一個隱藏的 CSRF `_token` 欄位以讓 CSRF 保護 Middleware 認證該請求。為了方便起見，可以使用 `@csrf` Blade 指示詞來產生這個隱藏的權杖輸入欄位：
 
     <form method="POST" action="/profile">
         @csrf
     
-        <!-- 同等於... -->
+        <!-- Equivalent to... -->
         <input type="hidden" name="_token" value="{{ csrf_token() }}" />
     </form>
-
 預設包含在 `web` Middleware 群組內的 `App\Http\Middleware\VerifyCsrfToken` [Middleware](/docs/{{version}}/middleware) 會自動認證請求內的這個權杖是否符合儲存在 Session 內的權杖。若這兩個權杖相符，則我們就知道是登入使用者執行該請求的。
 
 <a name="csrf-tokens-and-spas"></a>
@@ -104,8 +99,8 @@ Laravel 會自動為每個有效的[使用者 Session](/docs/{{version}}/session
             'http://example.com/foo/*',
         ];
     }
-
-> {tip} 為了方便起見，在[執行測試](/docs/{{version}}/testing)時會自動禁用所有路由的 CSRF Middleware。
+> [!TIP]  
+> 為了方便起見，在[執行測試](/docs/{{version}}/testing)時會自動禁用所有路由的 CSRF Middleware。
 
 <a name="csrf-x-csrf-token"></a>
 
@@ -114,7 +109,6 @@ Laravel 會自動為每個有效的[使用者 Session](/docs/{{version}}/session
 除了使用 POST 參數來檢查 CSRF 權杖外，`App\Http\Middleware\VerifyCsrfToken` Middleware 也會檢查 `X-CSRF-TOKEN` 請求標頭。舉例來說，我們可以將該權杖儲存於 HTML `meta` 標籤內：
 
     <meta name="csrf-token" content="{{ csrf_token() }}">
-
 然後，可以讓如 jQuery 之類的函式庫自動將這個權杖加到所有請求標頭上。這樣就可為一些使用老舊 JavaScript 技術的 AJAX 程式提供簡單方便的 CSRF 保護：
 
     $.ajaxSetup({
@@ -122,7 +116,6 @@ Laravel 會自動為每個有效的[使用者 Session](/docs/{{version}}/session
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         }
     });
-
 <a name="csrf-x-xsrf-token"></a>
 
 ## X-XSRF-TOKEN
@@ -131,4 +124,5 @@ Laravel 將目前的 CSRF 權杖儲存為加密的 `XSRF-TOKEN` Cookie，會被�
 
 由於一些 JavaScript 框架如 Angular 與 Axios 會自動在同源請求時將該 Cookie 的值放在 `X-XSRF-TOKEN` 標頭內，該 Cookie 就是為了提供開發者方便而傳送的。
 
-> {tip} 預設情況下，`resources/js/bootstrap.js` 檔案已包含了 Axios HTTP 函式庫，該函式庫會自動為你傳送 `X-XSRF-TOKEN` 標頭。
+> [!TIP]  
+> 預設情況下，`resources/js/bootstrap.js` 檔案已包含了 Axios HTTP 函式庫，該函式庫會自動為你傳送 `X-XSRF-TOKEN` 標頭。

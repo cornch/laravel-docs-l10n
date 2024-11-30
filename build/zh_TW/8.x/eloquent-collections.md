@@ -1,11 +1,8 @@
 ---
-contributors:
-  14684796:
-    avatarUrl: https://crowdin-static.downloads.crowdin.com/avatar/14684796/medium/60f7dc21ec0bf9cfcb61983640bb4809_default.png
-    name: cornch
-crowdinUrl: https://crowdin.com/translate/laravel-docs/51/en-zhtw
-progress: 100
+crowdinUrl: 'https://crowdin.com/translate/laravel-docs/51/en-zhtw'
 updatedAt: '2023-02-11T10:27:00Z'
+contributors: {  }
+progress: 46.79
 ---
 
 # Eloquent：Collection
@@ -29,7 +26,6 @@ Eloquent 中，所有回傳多筆 Model 結果的方法都會回傳 `Illuminate\
     foreach ($users as $user) {
         echo $user->name;
     }
-
 不過，剛才也提到過，Collection 比起陣列來說多了很多更強大的功能。而且，Collection 也提供了多種可通過直觀介面串連使用的各個 map / reduce 操作。舉例來說，我們可以將所有非啟用狀態的 Model 移除，並取得剩餘使用者的名字：
 
     $names = User::all()->reject(function ($user) {
@@ -37,7 +33,6 @@ Eloquent 中，所有回傳多筆 Model 結果的方法都會回傳 `Illuminate\
     })->map(function ($user) {
         return $user->name;
     });
-
 <a name="eloquent-collection-conversion"></a>
 
 #### Eloquent Collection 轉換
@@ -48,7 +43,7 @@ Eloquent 中，所有回傳多筆 Model 結果的方法都會回傳 `Illuminate\
 
 ## 可用方法
 
-所有的 Eloquent Collection 都繼承自基礎 [Laravel Collection](/docs/{{version}}/collections#available-methods) 物件。因此，這些 Collection 都繼承了基礎 Collection 類別所提供的所有強大方法。
+所有的 Eloquent Collection 都繼承自基礎  [Laravel Collection](/docs/{{version}}/collections#available-methods) 物件。因此，這些 Collection 都繼承了基礎 Collection 類別所提供的所有強大方法。
 
 除此之外，`Illuminate\Database\Eloquent\Collection` 類別還提供了一組可用來處理 Model Collection 的方法。大多數的方法都會回傳 `Illuminate\Database\Eloquent\Collection` 實體。不過，有些如 `modelKeys` 之類的方法則會回傳 `Illuminate\Support\Collection` 實體。
 
@@ -70,13 +65,23 @@ Eloquent 中，所有回傳多筆 Model 結果的方法都會回傳 `Illuminate\
         margin-top: 50px;
     }
 </style>
-
 <div id="collection-method-list" markdown="1">
-
-[contains](#method-contains) [diff](#method-diff) [except](#method-except) [find](#method-find) [fresh](#method-fresh) [intersect](#method-intersect) [load](#method-load) [loadMissing](#method-loadMissing) [modelKeys](#method-modelKeys) [makeVisible](#method-makeVisible) [makeHidden](#method-makeHidden) [only](#method-only) [toQuery](#method-toquery) [unique](#method-unique)
+[contains](#method-contains)
+[diff](#method-diff)
+[except](#method-except)
+[find](#method-find)
+[fresh](#method-fresh)
+[intersect](#method-intersect)
+[load](#method-load)
+[loadMissing](#method-loadMissing)
+[modelKeys](#method-modelKeys)
+[makeVisible](#method-makeVisible)
+[makeHidden](#method-makeHidden)
+[only](#method-only)
+[toQuery](#method-toquery)
+[unique](#method-unique)
 
 </div>
-
 <a name="method-contains"></a>
 
 #### `contains($key, $operator = null, $value = null)` {.collection-method .first-collection-method}
@@ -86,7 +91,6 @@ Eloquent 中，所有回傳多筆 Model 結果的方法都會回傳 `Illuminate\
     $users->contains(1);
     
     $users->contains(User::find(1));
-
 <a name="method-diff"></a>
 
 #### `diff($items)` {.collection-method}
@@ -96,7 +100,6 @@ Eloquent 中，所有回傳多筆 Model 結果的方法都會回傳 `Illuminate\
     use App\Models\User;
     
     $users = $users->diff(User::whereIn('id', [1, 2, 3])->get());
-
 <a name="method-except"></a>
 
 #### `except($keys)` {.collection-method}
@@ -104,7 +107,6 @@ Eloquent 中，所有回傳多筆 Model 結果的方法都會回傳 `Illuminate\
 `except` 方法會回傳沒有給定主鍵的所有 Model：
 
     $users = $users->except([1, 2, 3]);
-
 <a name="method-find"></a>
 
 #### `find($key)` {.collection-method}
@@ -114,7 +116,6 @@ Eloquent 中，所有回傳多筆 Model 結果的方法都會回傳 `Illuminate\
     $users = User::all();
     
     $user = $users->find(1);
-
 <a name="method-fresh"></a>
 
 #### `fresh($with = [])` {.collection-method}
@@ -124,7 +125,6 @@ Eloquent 中，所有回傳多筆 Model 結果的方法都會回傳 `Illuminate\
     $users = $users->fresh();
     
     $users = $users->fresh('comments');
-
 <a name="method-intersect"></a>
 
 #### `intersect($items)` {.collection-method}
@@ -134,7 +134,6 @@ Eloquent 中，所有回傳多筆 Model 結果的方法都會回傳 `Illuminate\
     use App\Models\User;
     
     $users = $users->intersect(User::whereIn('id', [1, 2, 3])->get());
-
 <a name="method-load"></a>
 
 #### `load($relations)` {.collection-method}
@@ -144,7 +143,6 @@ Eloquent 中，所有回傳多筆 Model 結果的方法都會回傳 `Illuminate\
     $users->load(['comments', 'posts']);
     
     $users->load('comments.author');
-
 <a name="method-loadMissing"></a>
 
 #### `loadMissing($relations)` {.collection-method}
@@ -154,7 +152,6 @@ Eloquent 中，所有回傳多筆 Model 結果的方法都會回傳 `Illuminate\
     $users->loadMissing(['comments', 'posts']);
     
     $users->loadMissing('comments.author');
-
 <a name="method-modelKeys"></a>
 
 #### `modelKeys()` {.collection-method}
@@ -164,7 +161,6 @@ Eloquent 中，所有回傳多筆 Model 結果的方法都會回傳 `Illuminate\
     $users->modelKeys();
     
     // [1, 2, 3, 4, 5]
-
 <a name="method-makeVisible"></a>
 
 #### `makeVisible($attributes)` {.collection-method}
@@ -172,7 +168,6 @@ Eloquent 中，所有回傳多筆 Model 結果的方法都會回傳 `Illuminate\
 `makeVisible` 方法會將該 Collection 中所有 Model 上通常「隱藏 (Hidden)」的屬性[設為可見](/docs/{{version}}/eloquent-serialization#hiding-attributes-from-json)：
 
     $users = $users->makeVisible(['address', 'phone_number']);
-
 <a name="method-makeHidden"></a>
 
 #### `makeHidden($attributes)` {.collection-method}
@@ -180,7 +175,6 @@ Eloquent 中，所有回傳多筆 Model 結果的方法都會回傳 `Illuminate\
 `makeHidden` 方法會將該 Collection 中所有 Model 上通常「可見 (Visible)」的屬性[設為隱藏](/docs/{{version}}/eloquent-serialization#hiding-attributes-from-json)：
 
     $users = $users->makeHidden(['address', 'phone_number']);
-
 <a name="method-only"></a>
 
 #### `only($keys)` {.collection-method}
@@ -188,7 +182,6 @@ Eloquent 中，所有回傳多筆 Model 結果的方法都會回傳 `Illuminate\
 `except` 方法會回傳符合給定主鍵的所有 Model：
 
     $users = $users->only([1, 2, 3]);
-
 <a name="method-toquery"></a>
 
 #### `toQuery()` {.collection-method}
@@ -202,7 +195,6 @@ Eloquent 中，所有回傳多筆 Model 結果的方法都會回傳 `Illuminate\
     $users->toQuery()->update([
         'status' => 'Administrator',
     ]);
-
 <a name="method-unique"></a>
 
 #### `unique($key = null, $strict = false)` {.collection-method}
@@ -210,7 +202,6 @@ Eloquent 中，所有回傳多筆 Model 結果的方法都會回傳 `Illuminate\
 `unique` 方法會回傳該 Collection 中所有不重複的 Model。只要某個 Model 在該 Collection 中有另一個具有相同型別與相同主鍵的 Model，就會被移除：
 
     $users = $users->unique();
-
 <a name="custom-collections"></a>
 
 ## 自訂 Collection
@@ -237,5 +228,4 @@ Eloquent 中，所有回傳多筆 Model 結果的方法都會回傳 `Illuminate\
             return new UserCollection($models);
         }
     }
-
 定義好 `newCollection` 方法後，之後，在 Eloquent 通常會回傳 `Illuminate\Database\Eloquent\Collection` 實體的時候，就會變成你的自訂 Collection 實體。若想在專案中的所有 Model 上都使用某個自訂 Collection，則可在一個基礎 Model 類別上定義 `newCollection` 方法，並讓專案內所有的 Model 都繼承該基礎 Model：

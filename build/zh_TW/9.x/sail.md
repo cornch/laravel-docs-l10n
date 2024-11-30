@@ -1,40 +1,42 @@
 ---
-contributors:
-  14684796:
-    avatarUrl: https://crowdin-static.downloads.crowdin.com/avatar/14684796/medium/60f7dc21ec0bf9cfcb61983640bb4809_default.png
-    name: cornch
-crowdinUrl: https://crowdin.com/translate/laravel-docs/143/en-zhtw
-progress: 99
+crowdinUrl: 'https://crowdin.com/translate/laravel-docs/143/en-zhtw'
 updatedAt: '2024-06-30T08:27:00Z'
+contributors: {  }
+progress: 50.9
 ---
 
 # Laravel Sail
 
 - [簡介](#introduction)
 - [安裝與設定](#installation)
-   - [將 Sail 安裝至現有專案](#installing-sail-into-existing-applications)
-   - [設定 Shell Alias](#configuring-a-shell-alias)
+  - [將 Sail 安裝至現有專案](#installing-sail-into-existing-applications)
+  - [設定 Shell Alias](#configuring-a-shell-alias)
+  
 - [啟動與停止 Sail](#starting-and-stopping-sail)
 - [執行指令](#executing-sail-commands)
-   - [執行 PHP 指令](#executing-php-commands)
-   - [執行 Composer 指令](#executing-composer-commands)
-   - [執行 Artisan 指令](#executing-artisan-commands)
-   - [執行 Node 與 NPM 指令](#executing-node-npm-commands)
+  - [執行 PHP 指令](#executing-php-commands)
+  - [執行 Composer 指令](#executing-composer-commands)
+  - [執行 Artisan 指令](#executing-artisan-commands)
+  - [執行 Node 與 NPM 指令](#executing-node-npm-commands)
+  
 - [使用資料庫](#interacting-with-sail-databases)
-   - [MySQL](#mysql)
-   - [Redis](#redis)
-   - [MeiliSearch](#meilisearch)
+  - [MySQL](#mysql)
+  - [Redis](#redis)
+  - [MeiliSearch](#meilisearch)
+  
 - [檔案儲存](#file-storage)
 - [執行測試](#running-tests)
-   - [Laravel Dusk](#laravel-dusk)
+  - [Laravel Dusk](#laravel-dusk)
+  
 - [預覽 E-Mail](#previewing-emails)
 - [Container CLI](#sail-container-cli)
 - [PHP 版本](#sail-php-versions)
 - [Node 版本](#sail-node-versions)
 - [共享網站](#sharing-your-site)
 - [使用 Xdebug 來進行除錯](#debugging-with-xdebug)
-   - [使用 Xdebug CLI](#xdebug-cli-usage)
-   - [使用 Xdebug Browser](#xdebug-browser-usage)
+  - [使用 Xdebug CLI](#xdebug-cli-usage)
+  - [使用 Xdebug Browser](#xdebug-browser-usage)
+  
 - [自定](#sail-customization)
 
 <a name="introduction"></a>
@@ -62,19 +64,16 @@ Laravel Sail 已自動安裝到新的 Laravel 專案中，因此你可以馬上�
 ```shell
 composer require laravel/sail --dev
 ```
-
 安裝好 Sail 後，可以執行 `sail:install` Artisan 指令。這個指令會將 Sail 的 `docker-compose.yml` 檔案安裝到專案根目錄：
 
 ```shell
 php artisan sail:install
 ```
-
 最後，可啟動 Sail。若要繼續瞭解有關如何使用 Sail 的資訊，請繼續閱讀本說明文件中剩下的部分：
 
 ```shell
 ./vendor/bin/sail up
 ```
-
 <a name="adding-additional-services"></a>
 
 #### 新增額外服務
@@ -84,7 +83,6 @@ php artisan sail:install
 ```shell
 php artisan sail:add
 ```
-
 <a name="using-devcontainers"></a>
 
 #### 使用 Devcontainer
@@ -94,7 +92,6 @@ php artisan sail:add
 ```shell
 php artisan sail:install --devcontainer
 ```
-
 <a name="configuring-a-shell-alias"></a>
 
 ### 設定 Shell Alias
@@ -104,13 +101,11 @@ php artisan sail:install --devcontainer
 ```shell
 ./vendor/bin/sail up
 ```
-
 不過，我們可以設定 Shell Alias 以更輕鬆地執行 Sail 指令，而不需要一直重複鍵入 `vendor/bin/sail`：
 
 ```shell
 alias sail='[ -f sail ] && sh sail || sh vendor/bin/sail'
 ```
-
 為了確保此 Alias 設定總是有效，可以將此設定加到你的家目錄中的 Shell 設定檔內。如 `~/.zshrc` 或 `~/.bashrc`，接著重新啟動 Shell。
 
 設定好 Shell Alias 後，只要鍵入 `sail` 就可執行 Sail 指令。此說明文件剩下的部分都假設你已設定好此 Alias：
@@ -118,33 +113,29 @@ alias sail='[ -f sail ] && sh sail || sh vendor/bin/sail'
 ```shell
 sail up
 ```
-
 <a name="starting-and-stopping-sail"></a>
 
 ## 啟動與停止 Sail
 
 Laravel Sail 的 `docker-compose.yml` 中定義了數個 Docker Container，這些 Container 會互相配合來協助你製作 Laravel 專案。在 `docker-compose.yml` 檔案中，`services` 設定內的每一格項目都是一個 Container。`laravel.test` Container 是專案的主要 Container，用來執行你的專案：
 
-啟動 Sail 後，請確定你的本機電腦上沒有執行其他 ^[Web Server](網頁伺服器)或資料庫。若要啟動所有 `docker-compose.yml` 檔案中的 Docker Container，請執行 `up` 指令：
+啟動 Sail 後，請確定你的本機電腦上沒有執行其他 ^[Web Server](%E7%B6%B2%E9%A0%81%E4%BC%BA%E6%9C%8D%E5%99%A8)或資料庫。若要啟動所有 `docker-compose.yml` 檔案中的 Docker Container，請執行 `up` 指令：
 
 ```shell
 sail up
 ```
-
 若要在背景啟動所有 Docker Container，可使用「分離模式 (Detached Mode)」啟動 Sail：
 
 ```shell
 sail up -d
 ```
-
-啟動專案的 Docker Container 後，就可以在瀏覽器中開啟 http://localhost 來存取網站。
+Once the application's containers have been started, you may access the project in your web browser at: [http://localhost](http://localhost).
 
 若要停止所有 Container，只需要按 Ctrl + C 來停止執行 Container 即可。如果 Container 是在背景執行，可使用 `stop` 指令：
 
 ```shell
 sail stop
 ```
-
 <a name="executing-sail-commands"></a>
 
 ## 執行指令
@@ -154,13 +145,12 @@ sail stop
 **在閱讀 Laravel 的說明文件時，有時候會看到一些沒有提到 Sail 的 Composer、Artisan、Node 或 NPM 指令**。這些範例假設這些工具是安裝在你的本機電腦上。使用 Laravel Sail 作為本機開發環境時，應使用 Sail 來執行這些指令：
 
 ```shell
-# 在本機執行 Artisan 指令...
+# Running Artisan commands locally...
 php artisan queue:work
 
-# 在 Laravel Sail 內執行 Artisan 指令...
+# Running Artisan commands within Laravel Sail...
 sail artisan queue:work
 ```
-
 <a name="executing-php-commands"></a>
 
 ### 執行 PHP 指令
@@ -172,7 +162,6 @@ sail php --version
 
 sail php script.php
 ```
-
 <a name="executing-composer-commands"></a>
 
 ### 執行 Composer 指令
@@ -182,7 +171,6 @@ Composer 指令可使用 `composer` 指令執行。Laravel Sail 的應用程式 
 ```nothing
 sail composer require laravel/sanctum
 ```
-
 <a name="installing-composer-dependencies-for-existing-projects"></a>
 
 #### 為現有專案安裝 Composer 相依性套件
@@ -199,8 +187,7 @@ docker run --rm \
     laravelsail/php82-composer:latest \
     composer install --ignore-platform-reqs
 ```
-
-使用 `laravelsail/phpXX-composer` ^[Image](映像) 時，請使用與你的專案相同的 PHP 版本 (`74`, `80`, `81`, `82`)。
+使用 `laravelsail/phpXX-composer` ^[Image](%E6%98%A0%E5%83%8F) 時，請使用與你的專案相同的 PHP 版本 (`74`, `80`, `81`, `82`)。
 
 <a name="executing-artisan-commands"></a>
 
@@ -211,7 +198,6 @@ docker run --rm \
 ```shell
 sail artisan queue:work
 ```
-
 <a name="executing-node-npm-commands"></a>
 
 ### 執行 Node 與 NPM 指令
@@ -223,13 +209,11 @@ sail node --version
 
 sail npm run dev
 ```
-
 若有需要，除了 NPM 外也可使用 Yarn：
 
 ```shell
 sail yarn
 ```
-
 <a name="interacting-with-sail-databases"></a>
 
 ## 使用資料庫
@@ -268,7 +252,7 @@ sail yarn
 
 若打算在正式環境使用 Amazon S3 來儲存檔案，則建議在安裝 Sail 時安裝 [MinIO](https://min.io) 服務。MinIO 提供了與 S3 相容的 API，讓你可以在本機開發時不用在正式的 S3 環境上建立測試用的 Bucket，就能使用 Laravel 的 `s3` 檔案儲存 Driver。若在安裝 Sail 時有選擇安裝 MinIO，則 `docker-compose.yml` 檔案中就會有 MinIO 相關的設定。
 
-預設情況下，專案中的 `filesystems` 設定檔內已經有包含 `s3` Disk 的設定了。除了通過此 Disk 來使用 Amazon S3 外，只要修改該設定相關的環境變數，就可以通過這個 Disk 來使用任何如 MinIO 等 S3 相容的檔案儲存服務。舉例來說，使用 MinIO 時，應像這樣定義 ^[Filesystem](檔案系統) 環境變數：
+預設情況下，專案中的 `filesystems` 設定檔內已經有包含 `s3` Disk 的設定了。除了通過此 Disk 來使用 Amazon S3 外，只要修改該設定相關的環境變數，就可以通過這個 Disk 來使用任何如 MinIO 等 S3 相容的檔案儲存服務。舉例來說，使用 MinIO 時，應像這樣定義 ^[Filesystem](%E6%AA%94%E6%A1%88%E7%B3%BB%E7%B5%B1) 環境變數：
 
 ```ini
 FILESYSTEM_DISK=s3
@@ -279,16 +263,15 @@ AWS_BUCKET=local
 AWS_ENDPOINT=http://minio:9000
 AWS_USE_PATH_STYLE_ENDPOINT=true
 ```
-
 為了讓 Laravel 的 Flysystem 整合在使用 MinIO 時整合正確的 URL，請定義 `AWS_URL` 環境變數，並設定適用於專案本機 URL 的值，且該值應在 URL 路徑內包含 Bucket 名稱：
 
 ```ini
 AWS_URL=http://localhost:9000/local
 ```
-
 可以使用 MinIO Console 來建立 Bucket。MinIO Console 可從 `http://localhost:8900` 開啟。MinIO Console 預設的使用者名稱是 `sail`，預設密碼為 `password`。
 
-> **Warning** 使用 MinIO 時，不支援通過 `temporaryUrl` 方法來產生臨時儲存空間 URL。
+> [!WARNING]  
+> 使用 MinIO 時，不支援通過 `temporaryUrl` 方法來產生臨時儲存空間 URL。
 
 <a name="running-tests"></a>
 
@@ -301,19 +284,16 @@ sail test
 
 sail test --group orders
 ```
-
 Sail 的 `test` 指令與執行 `test` Artisan 指令相同：
 
 ```shell
 sail artisan test
 ```
-
 預設情況下，Sail 會建立一個專門的 `testing` 資料庫，以避免測試時影響到目前資料庫的狀態。在預設的 Laravel 專案中，Sail 也會調整 `phpunit.xml` 檔的設定，以在執行測試時使用這個資料庫：
 
 ```xml
 <env name="DB_DATABASE" value="testing"/>
 ```
-
 <a name="laravel-dusk"></a>
 
 ### Laravel Dusk
@@ -328,7 +308,6 @@ selenium:
     networks:
         - sail
 ```
-
 接著，請確保專案的 `docker-compose.yml` 檔案中，`laravel.test` 服務的 `depends_on` 欄位中有 `selenium`：
 
 ```yaml
@@ -337,13 +316,11 @@ depends_on:
     - redis
     - selenium
 ```
-
 最後，只要啟動 Sail 並執行 `dusk` 指令，就能執行 Dusk 的測試套件：
 
 ```shell
 sail dusk
 ```
-
 <a name="selenium-on-apple-silicon"></a>
 
 #### 在 Apple Silicon 上的 Selenium
@@ -358,7 +335,6 @@ selenium:
     networks:
         - sail
 ```
-
 <a name="previewing-emails"></a>
 
 ## 預覽 E-Mail
@@ -370,8 +346,7 @@ MAIL_HOST=mailpit
 MAIL_PORT=1025
 MAIL_ENCRYPTION=null
 ```
-
-當 Sail 有在執行時，可在此處存取 Mailpit 的 Web 界面：http://localhost:8025
+When Sail is running, you may access the Mailpit web interface at: [http://localhost:8025](http://localhost:8025)
 
 <a name="sail-container-cli"></a>
 
@@ -384,13 +359,11 @@ sail shell
 
 sail root-shell
 ```
-
 若要啟動新的 [Laravel Tinker](https://github.com/laravel/tinker) 工作階段，可執行 `tinker` 指令：
 
 ```shell
 sail tinker
 ```
-
 <a name="sail-php-versions"></a>
 
 ## PHP 版本
@@ -410,13 +383,11 @@ context: ./vendor/laravel/sail/runtimes/8.0
 # PHP 7.4
 context: ./vendor/laravel/sail/runtimes/7.4
 ```
-
 此外，也可更新 `image` 的名稱，以反應專案所使用的 PHP 版本。`image` 名稱的設定在專案的 `docker-compose.yml` 檔內：
 
 ```yaml
 image: sail-8.1/app
 ```
-
 更新好專案的 `docker-compose.yml` 後，請重新建置 Container Image：
 
 ```shell
@@ -424,7 +395,6 @@ sail build --no-cache
 
 sail up
 ```
-
 <a name="sail-node-versions"></a>
 
 ## Node 版本
@@ -437,7 +407,6 @@ build:
         WWWGROUP: '${WWWGROUP}'
         NODE_VERSION: '14'
 ```
-
 更新好專案的 `docker-compose.yml` 後，請重新建置 Container Image：
 
 ```shell
@@ -445,7 +414,6 @@ sail build --no-cache
 
 sail up
 ```
-
 <a name="sharing-your-site"></a>
 
 ## 共享網站
@@ -455,7 +423,6 @@ sail up
 ```shell
 sail share
 ```
-
 在使用 `share` 指令共享網站時，應設定在 `TrustProxies` Middleware 中設定專案的 Trusted Proxies。否則，如 `url` 或 `route` 等產生 URL 用的輔助函式在產生 URL 時將無法判正確的 HTTP 主機名稱：
 
     /**
@@ -464,14 +431,13 @@ sail share
      * @var array|string|null
      */
     protected $proxies = '*';
-
 若要選擇共享網站時使用的子網域，可在執行 `share` 指令時提供 `subdomain` 選項：
 
 ```shell
 sail share --subdomain=my-sail-site
 ```
-
-> **Note** `share` 指令由 [Expose](https://github.com/beyondcode/expose) 驅動。Expose 是由 [BeyondCode](https://beyondco.de) 提供的，開放原始碼的通道 (Tunneling) 服務。
+> [!NOTE]  
+> `share` 指令由 [Expose](https://github.com/beyondcode/expose) 驅動。Expose 是由 [BeyondCode](https://beyondco.de) 提供的，開放原始碼的通道 (Tunneling) 服務。
 
 <a name="debugging-with-xdebug"></a>
 
@@ -482,7 +448,6 @@ Laravel Sail 的 Docker 設定中也包含了對 [Xdebug](https://xdebug.org/) �
 ```ini
 SAIL_XDEBUG_MODE=develop,debug,coverage
 ```
-
 #### Linux 主機的 IP 設定
 
 在 Laravel Sail 中，`XDEBUG_CONFIG` 環境變數被設定為 `client_host=host.docker.internal`，好讓 Xdebug 能在 Mac 與 Windows (WSL2) 下被正確設定。如果你的本機裝置使用 Linux，請確保使用 17.06.0 版或更新的 Docker Engine 以及 1.16.0 版或更新的 Composer。否則，就需要像下面這樣手動定義環境變數：
@@ -492,13 +457,11 @@ SAIL_XDEBUG_MODE=develop,debug,coverage
 ```shell
 docker inspect -f {{range.NetworkSettings.Networks}}{{.Gateway}}{{end}} <container-name>
 ```
-
 取得正確的主機 IP 後，請在專案的 `.env` 檔中定義 `SAIL_XDEBUG_CONFIG` 變數：
 
 ```ini
 SAIL_XDEBUG_CONFIG="client_host=<host-ip-address>"
 ```
-
 <a name="xdebug-cli-usage"></a>
 
 ### 使用 Xdebug CLI
@@ -506,13 +469,12 @@ SAIL_XDEBUG_CONFIG="client_host=<host-ip-address>"
 `sail debug` 指令可用來在執行 Artisan 指令時啟動除錯工作階段：
 
 ```shell
-# 執行 Artisan 指令，且不使用 Xdebug...
+# Run an Artisan command without Xdebug...
 sail artisan migrate
 
-# 執行 Artisan 指令，並使用 Xdebug...
+# Run an Artisan command with Xdebug...
 sail debug migrate
 ```
-
 <a name="xdebug-browser-usage"></a>
 
 ### 使用 Xdebug Browser
@@ -521,7 +483,8 @@ sail debug migrate
 
 若使用 PhpStorm，請參考 JetBrains 的[零設定除錯](https://www.jetbrains.com/help/phpstorm/zero-configuration-debugging.html)說明文件。
 
-> **Warning** Laravel Sail 仰賴 `artisan serve` 來執行網站。只有在 8.53.0 版之後的 Laravel 中，`artisan serve` 指令才會接受 `XDEBUG_CONFIG` 與 `XDEBUG_MODE` 變數。舊版的 Laravel (8.52.0 版以前) 不接受這些變數，且不會接受除錯連線。
+> [!WARNING]  
+> Laravel Sail 仰賴 `artisan serve` 來執行網站。只有在 8.53.0 版之後的 Laravel 中，`artisan serve` 指令才會接受 `XDEBUG_CONFIG` 與 `XDEBUG_MODE` 變數。舊版的 Laravel (8.52.0 版以前) 不接受這些變數，且不會接受除錯連線。
 
 <a name="sail-customization"></a>
 
@@ -532,7 +495,6 @@ sail debug migrate
 ```shell
 sail artisan sail:publish
 ```
-
 執行該指令後，Laravel Sail 所使用的 Dockerfile 與其他設定檔會被放到專案根目錄中的 `docker` 目錄下。調整了 Sail 設定後，你可能會想在 `docker-compose.yml` 中更改專案 Container 所使用的 Image 名稱。之後，請使用 `build` 指令來重新建置專案的 Image。如果你在同一台裝置上開發多個 Laravel 專案，那麼請務必為 Image 設定不重複的名稱：
 
 ```shell

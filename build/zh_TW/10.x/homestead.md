@@ -1,62 +1,61 @@
 ---
-contributors:
-  13334671:
-    avatarUrl: https://crowdin-static.downloads.crowdin.com/avatar/13334671/medium/1eb2ac36ce24a892c96a869fce7ca359.jpg
-    name: Yi-Jyun Pan
-  14684796:
-    avatarUrl: https://crowdin-static.downloads.crowdin.com/avatar/14684796/medium/60f7dc21ec0bf9cfcb61983640bb4809_default.png
-    name: cornch
-crowdinUrl: https://crowdin.com/translate/laravel-docs/81/en-zhtw
-progress: 100
+crowdinUrl: 'https://crowdin.com/translate/laravel-docs/81/en-zhtw'
 updatedAt: '2024-06-30T08:27:00Z'
+contributors: {  }
+progress: 64.1
 ---
 
 # Laravel Homestead
 
 - [簡介](#introduction)
-- [安裝與設定](#installation)
-   - [第一步](#first-steps)
-   - [設定 Homestead](#configuring-homestead)
-   - [設定 Nginx 網站](#configuring-nginx-sites)
-   - [設定服務](#configuring-services)
-   - [啟動 Vagrant Box](#launching-the-vagrant-box)
-   - [個別專案安裝](#per-project-installation)
-   - [安裝選配功能](#installing-optional-features)
-   - [別名](#aliases)
+- [Installation and Setup](#installation-and-setup)
+  - [第一步](#first-steps)
+  - [設定 Homestead](#configuring-homestead)
+  - [設定 Nginx 網站](#configuring-nginx-sites)
+  - [設定服務](#configuring-services)
+  - [Launching the Vagrant Box](#launching-the-vagrant-box)
+  - [個別專案安裝](#per-project-installation)
+  - [安裝選配功能](#installing-optional-features)
+  - [別名](#aliases)
+  
 - [更新 Homestead](#updating-homestead)
 - [日常使用](#daily-usage)
-   - [通過 SSH 連線](#connecting-via-ssh)
-   - [新增額外的網站](#adding-additional-sites)
-   - [環境變數](#environment-variables)
-   - [通訊埠](#ports)
-   - [PHP 版本](#php-versions)
-   - [連線至資料庫](#connecting-to-databases)
-   - [資料庫備份](#database-backups)
-   - [設定 Cron 排程](#configuring-cron-schedules)
-   - [設定 MailHog](#configuring-mailhog)
-   - [設定 Minio](#configuring-minio)
-   - [Laravel Dusk](#laravel-dusk)
-   - [共享你的環境](#sharing-your-environment)
-- [除錯與分析](#debugging-and-profiling)
-   - [使用 Xdebug 來針對 Web Request 進行除錯](#debugging-web-requests)
-   - [針對 CLI 應用程式進行除錯](#debugging-cli-applications)
-   - [使用 Blackfire 來針對應用程式進行分析](#profiling-applications-with-blackfire)
+  - [Connecting via SSH](#connecting-via-ssh)
+  - [新增額外的網站](#adding-additional-sites)
+  - [環境變數](#environment-variables)
+  - [通訊埠](#ports)
+  - [PHP 版本](#php-versions)
+  - [Connecting to Databases](#connecting-to-databases)
+  - [資料庫備份](#database-backups)
+  - [設定 Cron 排程](#configuring-cron-schedules)
+  - [Configuring Mailpit](#configuring-mailpit)
+  - [設定 Minio](#configuring-minio)
+  - [Laravel Dusk](#laravel-dusk)
+  - [共享你的環境](#sharing-your-environment)
+  
+- [Debugging and Profiling](#debugging-and-profiling)
+  - [使用 Xdebug 來針對 Web Request 進行除錯](#debugging-web-requests)
+  - [針對 CLI 應用程式進行除錯](#debugging-cli-applications)
+  - [Profiling Applications With Blackfire](#profiling-applications-with-blackfire)
+  
 - [網路介面](#network-interfaces)
 - [擴充 Homestead](#extending-homestead)
 - [Provider 特定的設定](#provider-specific-settings)
-   - [VirtualBox](#provider-specific-virtualbox)
+  - [VirtualBox](#provider-specific-virtualbox)
+  
 
 <a name="introduction"></a>
 
 ## 簡介
 
-Laravel 致力於改良整個 PHP 的開發體驗，這也包含你的本機開發環境。[Laravel Homestead](https://github.com/laravel/homestead) 是一個預先封裝的 Vagrant Box，由 Laravel 官方所推出。使用 Homestead，你不需要在本機上安裝 PHP、網頁伺服器和其他伺服器軟體，就能享受完整且舒適的開發環境。
+Laravel strives to make the entire PHP development experience delightful, including your local development environment. [Laravel Homestead](https://github.com/laravel/homestead) is an official, pre-packaged Vagrant box that provides you a wonderful development environment without requiring you to install PHP, a web server, or any other server software on your local machine.
 
 [Vagrant](https://www.vagrantup.com) 讓管理和佈建 (Provision) 虛擬機器變得簡單、優雅。Vagrant Box 完全可以隨時扔掉：出問題的時候，可以在幾分鐘內銷毀並重新建立 box！
 
 Homestead 可以在 Windows、macOS 或 Linux 系統上執行，內建 Nginx、PHP、MySQL、PostgreSQL、Redis、Memcached、Node 以及所有其他有助於你開發驚豔 Laravel 專案的軟體。
 
-> **Warning** 若你使用 Windows，則必須啟用硬體虛擬化 (VT-x)。VT-x 通常可以在你的 BIOS 中啟用。若在 UEFI 系統上使用 Hyper-V，則可能必須另外停用 Hyper-V 才能存取 VT-x。
+> [!WARNING]  
+> 若你使用 Windows，則必須啟用硬體虛擬化 (VT-x)。VT-x 通常可以在你的 BIOS 中啟用。若在 UEFI 系統上使用 Hyper-V，則可能必須另外停用 Hyper-V 才能存取 VT-x。
 
 <a name="included-software"></a>
 
@@ -69,11 +68,10 @@ Homestead 可以在 Windows、macOS 或 Linux 系統上執行，內建 Nginx、P
         line-height: 1.9;
     }
 </style>
-
 <div id="software-list" markdown="1">
-
-- Ubuntu 20.04
+- Ubuntu 22.04
 - Git
+- PHP 8.3
 - PHP 8.2
 - PHP 8.1
 - PHP 8.0
@@ -94,7 +92,7 @@ Homestead 可以在 Windows、macOS 或 Linux 系統上執行，內建 Nginx、P
 - Redis
 - Memcached
 - Beanstalkd
-- Mailhog
+- Mailpit
 - avahi
 - ngrok
 - Xdebug
@@ -102,7 +100,6 @@ Homestead 可以在 Windows、macOS 或 Linux 系統上執行，內建 Nginx、P
 - wp-cli
 
 </div>
-
 <a name="optional-software"></a>
 
 ### 選裝軟體
@@ -114,9 +111,7 @@ Homestead 可以在 Windows、macOS 或 Linux 系統上執行，內建 Nginx、P
         line-height: 1.9;
     }
 </style>
-
 <div id="software-list" markdown="1">
-
 - Apache
 - Blackfire
 - Cassandra
@@ -131,7 +126,6 @@ Homestead 可以在 Windows、macOS 或 Linux 系統上執行，內建 Nginx、P
 - Grafana
 - InfluxDB
 - Logstash
-- Mailpit <small>(取代 Mailhog)</small>
 - MariaDB
 - Meilisearch
 - MinIO
@@ -148,13 +142,13 @@ Homestead 可以在 Windows、macOS 或 Linux 系統上執行，內建 Nginx、P
 - Solr
 - TimescaleDB
 - Trader <small>(PHP 擴充程式)</small>
+
 - Webdriver & Laravel Dusk 工具程式
 
 </div>
-
 <a name="installation-and-setup"></a>
 
-## 安裝與設定
+## Installation and Setup
 
 <a name="first-steps"></a>
 
@@ -173,20 +167,18 @@ Homestead 可以在 Windows、macOS 或 Linux 系統上執行，內建 Nginx、P
 
 #### 安裝 Homestead
 
-若要安裝 Homestead，請將 Homestead 的 ^[Repository](存放庫) ^[Clone](複製) 到你的宿主機上。由於 Homestead 虛擬機會成為執行你所有 Laravel 專案的伺服器主機，因此建議將該 Repository 複製到家目錄中的 `Homestead` 資料夾。在這份說明文件中，我們會將此目錄稱為「Homestead 目錄」：
+若要安裝 Homestead，請將 Homestead 的 ^[Repository](%E5%AD%98%E6%94%BE%E5%BA%AB) ^[Clone](%E8%A4%87%E8%A3%BD) 到你的宿主機上。由於 Homestead 虛擬機會成為執行你所有 Laravel 專案的伺服器主機，因此建議將該 Repository 複製到家目錄中的 `Homestead` 資料夾。在這份說明文件中，我們會將此目錄稱為「Homestead 目錄」：
 
 ```shell
 git clone https://github.com/laravel/homestead.git ~/Homestead
 ```
-
-Clone 好 Laravel Homestead 儲存庫之後，請 ^[Checkout](簽出) `release` 分支。此分支為最新穩定版的 Homestead：
+Clone 好 Laravel Homestead 儲存庫之後，請 ^[Checkout](%E7%B0%BD%E5%87%BA) `release` 分支。此分支為最新穩定版的 Homestead：
 
 ```shell
 cd ~/Homestead
 
 git checkout release
 ```
-
 接下來，請在你的 Homestead 目錄執行 `bash init.sh` 指令，以建立 `Homestead.yaml` 設定檔。`Homestead.yaml` 檔案可以讓你調整 Homestead 實體中的所有設定。這個檔案會放在 Homestead 目錄當中：
 
 ```shell
@@ -196,7 +188,6 @@ bash init.sh
 # Windows...
 init.bat
 ```
-
 <a name="configuring-homestead"></a>
 
 ### 設定 Homestead
@@ -208,8 +199,8 @@ init.bat
 `Homestead.yaml` 的 `provider` 索引鍵，用來指定要使用的 Vagrant Provider：`virtualbox` 或 `parallels`：
 
     provider: virtualbox
-
-> **Warning** 若使用 Apple Silicon，則需要 Parallels Provider。
+> [!WARNING]  
+> 若使用 Apple Silicon，則需要 Parallels Provider。
 
 <a name="configuring-shared-folders"></a>
 
@@ -222,8 +213,8 @@ folders:
     - map: ~/code/project1
       to: /home/vagrant/project1
 ```
-
-> **Warning** Windows 使用者無法使用 `~/` 路徑語法，請改用專案的完整路徑，如 `C:\Users\user\Code\project`。
+> [!WARNING]  
+> Windows 使用者無法使用 `~/` 路徑語法，請改用專案的完整路徑，如 `C:\Users\user\Code\project`。
 
 請務必為各個專案分別設定各自的共享資料夾映射 (Mapping)，而不要包含許多專案的一個大資料夾映射到虛擬機內。在映射資料夾時，虛擬機必須隨時追蹤映射目錄下的 **所有** 磁碟讀寫。若資料夾中包含了大量的檔案，可能會影響使用效能。
 
@@ -234,8 +225,8 @@ folders:
     - map: ~/code/project2
       to: /home/vagrant/project2
 ```
-
-> **Warning** 在使用 Homestead 時，千萬不要 ^[Mount](掛載) `.` (即目前目錄)。Vagrant 不會將目前目錄掛載到 `/vagrant`，且會使一些選用功能失效，並在佈建時產生未預期的結果。
+> [!WARNING]  
+> 在使用 Homestead 時，千萬不要 ^[Mount](%E6%8E%9B%E8%BC%89) `.` (即目前目錄)。Vagrant 不會將目前目錄掛載到 `/vagrant`，且會使一些選用功能失效，並在佈建時產生未預期的結果。
 
 若要啟用 [NFS](https://developer.hashicorp.com/vagrant/docs/synced-folders/nfs)，可在資料夾映射中新增 `type` 選項：
 
@@ -245,8 +236,8 @@ folders:
       to: /home/vagrant/project1
       type: "nfs"
 ```
-
-> **Warning** 在 Windows 上使用 NFS 時，請考慮安裝 [vagrant-winnfsd](https://github.com/winnfsd/vagrant-winnfsd) 外掛。此外掛會在 Homestead 虛擬機中確保檔案與目錄擁有正確的使用者與群組權限正確。
+> [!WARNING]  
+> 在 Windows 上使用 NFS 時，請考慮安裝 [vagrant-winnfsd](https://github.com/winnfsd/vagrant-winnfsd) 外掛。此外掛會在 Homestead 虛擬機中確保檔案與目錄擁有正確的使用者與群組權限正確。
 
 也可以在 `options` 索引鍵中列出其他 Vagrant [Synced Folders](https://developer.hashicorp.com/vagrant/docs/synced-folders/basic_usage) 功能所支援的選項：
 
@@ -259,7 +250,6 @@ folders:
           rsync__args: ["--verbose", "--archive", "--delete", "-zz"]
           rsync__exclude: ["node_modules"]
 ```
-
 <a name="configuring-nginx-sites"></a>
 
 ### 設定 Nginx 網站
@@ -271,10 +261,10 @@ sites:
     - map: homestead.test
       to: /home/vagrant/project1/public
 ```
-
 若在佈建 Homestead 虛擬機後更改了 `sites` 屬性，則必須在終端機中執行 `vagrant reload --provision` 指令以更新虛擬機內的 Nginx 設定。
 
-> **Warning** Homestead 的 Script 已儘量做得等冪 (Idempotent)。不過，若在佈建時遇到問題，則請執行 `vagrant destroy && vagrant up` 指令來刪除並重建虛擬機。
+> [!WARNING]  
+> Homestead 的 Script 已儘量做得等冪 (Idempotent)。不過，若在佈建時遇到問題，則請執行 `vagrant destroy && vagrant up` 指令來刪除並重建虛擬機。
 
 <a name="hostname-resolution"></a>
 
@@ -285,13 +275,11 @@ Homestead 會使用 `mDNS` 來發佈主機名稱以自動進行主機的解析 (
 自動主機名稱最適合與 Homestead 的[各專案安裝](#per-project-installation)功能。若在單一 Homestead 實體中管理多個網站，則可在你電腦中的 `hosts` 檔案內為各個網站新增其「網域」。`hosts` 檔案會將 Homstead 網站的 Request 重新導向到 Homestead 虛擬機內。在 macOS 與 Linux 中，該檔案位於 `/etc/hosts`。在 Windows 中，該檔案位於 `C:\Windows\System32\drivers\etc\hosts`。新增到該檔案中的內容應該類似這樣：
 
     192.168.56.56  homestead.test
-
 請確保其中列出的 IP 位址是 `Homestead.yaml` 檔案中所設定的 IP 位址。將網域新增到 `hosts` 檔案並重新開啟 Vagrant Box 後，就可以在網頁瀏覽器中存取這些網站：
 
 ```shell
 http://homestead.test
 ```
-
 <a name="configuring-services"></a>
 
 ### 設定服務
@@ -305,12 +293,11 @@ services:
     - disabled:
         - "mysql"
 ```
-
 指定的服務會依據其在 `enabled` 與 `disabled` 指示詞內的順序來開啟或停止。
 
 <a name="launching-the-vagrant-box"></a>
 
-### 啟動 Vagrant Box
+### Launching the Vagrant Box
 
 依照需求編輯好 `Homestead.yaml` 後，請在 Homestead 目錄中執行 `vagrant up` 指令。Vagrant 會啟動虛擬機，並設定共享資料夾與 Nginx 網站。
 
@@ -327,7 +314,6 @@ services:
 ```shell
 composer require laravel/homestead --dev
 ```
-
 安裝好 Homestead 後，請執行 Homestead 的 `make` 指令來為專案產生 `Vagrantfile` 與 `Homestead.yaml` 檔案。這些檔案會被放置在專案的跟目錄。`make` 指令會自動設定 `Homestead.yaml` 檔案中的 `sites` 與 `folders` 指示詞：
 
 ```shell
@@ -337,7 +323,6 @@ php vendor/bin/homestead make
 # Windows...
 vendor\\bin\\homestead make
 ```
-
 接著，在終端機內執行 `vagrant up` 指令後，就可以在瀏覽器中以 `http://homestead.test` 來存取你的專案。再次提醒，若未使用自動[主機名稱解析](#hostname-resolution)功能，就必須在 `/etc/hosts` 檔案中新增 `homestead.test` 或其他自定網域。
 
 <a name="installing-optional-features"></a>
@@ -357,6 +342,7 @@ features:
     - chronograf: true
     - couchdb: true
     - crystal: true
+    - dragonflydb: true
     - elasticsearch:
         version: 7.9.0
     - eventstore: true
@@ -367,12 +353,10 @@ features:
     - grafana: true
     - influxdb: true
     - logstash: true
-    - mailpit: true
     - mariadb: true
     - meilisearch: true
     - minio: true
     - mongodb: true
-    - mysql: true
     - neo4j: true
     - ohmyzsh: true
     - openresty: true
@@ -387,14 +371,14 @@ features:
     - trader: true
     - webdriver: true
 ```
-
 <a name="elasticsearch"></a>
 
 #### Elasticsearch
 
 可以在支援版本範圍內指定 Elasticsearch 的版本。指定版本時，應使用完整的版本號碼 (主版號.次版號.修正版號 / major.minor.patch)。預設的 Elasticsearch 安裝會建立一個名為「homestead」的叢集 (Cluster)。在設定 Elasticsearch 的記憶體時，不應設定大於作業系統一半的記憶體量，因此請確保 Homestead 虛擬機的記憶體量是 Elasticsearch 所使用量的兩倍。
 
-> **Note** 請參考 [Elasticsearch 說明文件](https://www.elastic.co/guide/en/elasticsearch/reference/current) 以瞭解如何自定設定。
+> [!NOTE]  
+> 請參考 [Elasticsearch 說明文件](https://www.elastic.co/guide/en/elasticsearch/reference/current) 以瞭解如何自定設定。
 
 <a name="mariadb"></a>
 
@@ -424,7 +408,6 @@ features:
 alias c='clear'
 alias ..='cd ..'
 ```
-
 更新好 `aliases` 檔案後，應使用 `vagrant reload --provision` 指令來重新佈建 Homestead 虛擬機。重新佈建可確保讓新的 Alias 套用到虛擬機裡。
 
 <a name="updating-homestead"></a>
@@ -436,7 +419,6 @@ alias ..='cd ..'
 ```shell
 vagrant destroy
 ```
-
 接著，我們需要更新 Homestead 的原始碼。若以 Clone 方式來取得 Repository，則可在之前 Clone 的路徑下執行下列指令：
 
 ```shell
@@ -444,21 +426,18 @@ git fetch
 
 git pull origin release
 ```
-
-這幾個指令會從 GitHub Repository 中 ^[Pull](拉取) 最新的 Homestead 程式碼、取得最新的 Tag、並 ^[Checkout](簽出) 最新的版本。可以在 Homestead 的 [GitHub Releases 頁](https://github.com/laravel/homestead/releases)中找到最新發佈的穩定版。
+這幾個指令會從 GitHub Repository 中 ^[Pull](%E6%8B%89%E5%8F%96) 最新的 Homestead 程式碼、取得最新的 Tag、並 ^[Checkout](%E7%B0%BD%E5%87%BA) 最新的版本。可以在 Homestead 的 [GitHub Releases 頁](https://github.com/laravel/homestead/releases)中找到最新發佈的穩定版。
 
 若使用專案的 `composer.json` 檔案來安裝 Homestead，則請確保 `composer.json` 檔案中有包含 `"laravel/homestead": "^12"`，並更新你的相依性套件：
 
 ```shell
 composer update
 ```
-
 接著，請使用 `vagrant box update` 指令來更新 Vagrant Box：
 
 ```shell
 vagrant box update
 ```
-
 更新好 Vagrant Box 後，請從 Homestead 目錄中執行 `bash init.sh` 指令以更新其他額外的 Homestead 設定檔。在執行該指令時，程式會詢問你是否要覆蓋現有的 `Homestead.yaml`、`after.sh` 與 `aliases` 檔案：
 
 ```shell
@@ -468,20 +447,18 @@ bash init.sh
 # Windows...
 init.bat
 ```
-
 最後，需要重新產生 Homestead 虛擬機以使用最新的 Vagrant 安裝：
 
 ```shell
 vagrant up
 ```
-
 <a name="daily-usage"></a>
 
 ## 日常使用
 
 <a name="connecting-via-ssh"></a>
 
-### 使用 SSH 連線
+### Connecting via SSH
 
 在 Homestead 目錄下執行 `vagrant ssh` 終端機指令就可 SSH 進虛擬機。
 
@@ -498,14 +475,13 @@ sites:
     - map: another.test
       to: /home/vagrant/project2/public
 ```
-
-> **Warning** 請確保已為該專案目錄設定好[資料夾映射](#configuring-shared-folders)，然後再新增網站。
+> [!WARNING]  
+> 請確保已為該專案目錄設定好[資料夾映射](#configuring-shared-folders)，然後再新增網站。
 
 若 Vagrant 沒有自動管理「hosts」檔案，則還需要將這個新網站加入到 hosts 檔案中。在 macOS 與 Linux 上，該檔案位於 `/etc/hosts`。在 Windows 上，該檔案位於 `C:\Windows\System32\drivers\etc\hosts`：
 
     192.168.56.56  homestead.test
     192.168.56.56  another.test
-
 新增好網站後，請在 Homestead 目錄下執行 `vagrant reload --provision` 終端機指令。
 
 <a name="site-types"></a>
@@ -520,7 +496,6 @@ sites:
       to: /home/vagrant/my-symfony-project/web
       type: "statamic"
 ```
-
 可用的網站類型包含：`apache`, `apache-proxy`, `apigility`, `expressive`, `laravel` (預設), `proxy` (用於 nginx), `silverstripe`, `statamic`, `symfony2`, `symfony4` 與 `zf`。
 
 <a name="site-parameters"></a>
@@ -537,7 +512,6 @@ sites:
           - key: FOO
             value: BAR
 ```
-
 <a name="environment-variables"></a>
 
 ### 環境變數
@@ -551,22 +525,19 @@ variables:
     - key: FOO
       value: bar
 ```
-
 更新好 `Homestead.yaml` 檔案後，請確保有執行 `vagrant reload --provision` 指令來重新佈建虛擬機。重新佈建虛擬機會更新所有已安裝 PHP 版本的 PHP-FPM 設定值，並同時更新 `vagrant` 使用者的環境。
 
 <a name="ports"></a>
 
 ### 通訊埠
 
-預設情況下，下列通訊埠會被 ^[Forward](轉送) 到 Homestead 環境中：
+預設情況下，下列通訊埠會被 ^[Forward](%E8%BD%89%E9%80%81) 到 Homestead 環境中：
 
 <div class="content-list" markdown="1">
-
-- **HTTP:** 8000 &rarr; Forward 至 80
-- **HTTPS:** 44300 &rarr; Forward 至 443
+- **HTTP:** 8000 → Forwards To 80
+- **HTTPS:** 44300 → Forwards To 443
 
 </div>
-
 <a name="forwarding-additional-ports"></a>
 
 #### Forward 額外的通訊埠
@@ -581,26 +552,23 @@ ports:
       to: 777
       protocol: udp
 ```
-
 下面列出了一些額外 Homestead 服務的通訊埠。依照需求，你可能會想將這些通訊埠從宿主機 Forward 到 Vagrant Box 中：
 
 <div class="content-list" markdown="1">
-
-- **SSH:** 2222 &rarr; 至 22
-- **ngrok UI:** 4040 &rarr; 至 4040
-- **MySQL:** 33060 &rarr; 至 3306
-- **PostgreSQL:** 54320 &rarr; 至 5432
-- **MongoDB:** 27017 &rarr; 至 27017
-- **Mailhog:** 8025 &rarr; 至 8025
-- **Minio:** 9600 &rarr; 至 9600
+- **SSH:** 2222 → To 22
+- **ngrok UI:** 4040 → To 4040
+- **MySQL:** 33060 → To 3306
+- **PostgreSQL:** 54320 → To 5432
+- **MongoDB:** 27017 → To 27017
+- **Mailpit:** 8025 → To 8025
+- **Minio:** 9600 → To 9600
 
 </div>
-
 <a name="php-versions"></a>
 
 ### PHP 版本
 
-Homestead 支援在同一個虛擬機中執行多個 PHP 版本。可以在 `Homestead.yaml` 檔案中指定某個網站要使用哪個 PHP 版本。可用的 PHP 版本為："5.6", "7.0", "7.1", "7.2", "7.3", "7.4", "8.0", "8.1" 與 "8.2" (預設值)：
+Homestead supports running multiple versions of PHP on the same virtual machine. You may specify which version of PHP to use for a given site within your `Homestead.yaml` file. The available PHP versions are: "5.6", "7.0", "7.1", "7.2", "7.3", "7.4", "8.0", "8.1", "8.2", and "8.3", (the default):
 
 ```yaml
 sites:
@@ -608,7 +576,6 @@ sites:
       to: /home/vagrant/project1/public
       php: "7.1"
 ```
-
 [在 Homestead 虛擬機中](#connecting-via-ssh)，可以通過 CLI 來使用任一支援的 PHP 版本：
 
 ```shell
@@ -621,8 +588,8 @@ php7.4 artisan list
 php8.0 artisan list
 php8.1 artisan list
 php8.2 artisan list
+php8.3 artisan list
 ```
-
 只要在 Homestead 虛擬機中執行下列指令，就可以更改 CLI 預設使用的 PHP 版本：
 
 ```shell
@@ -635,15 +602,16 @@ php74
 php80
 php81
 php82
+php83
 ```
-
 <a name="connecting-to-databases"></a>
 
-### 連線到資料庫
+### Connecting to Databases
 
 預設情況下，Homestead 已為 MySQL 與 PostgreSQL 設定好了 `homestead` 資料庫。若要從宿主機的資料庫客戶端連線到 MySQL 或 PostgreSQL 資料庫，則請連線到 `127.0.0.1` 上的 `33060` (MySQL) 或 `54320` (PostgreSQL) 通訊埠。使用者名稱與密碼為 `homestead` / `secret`。
 
-> **Warning** 當從宿主機中連線到資料庫時，應使用這些非標準的通訊埠。在 Laravel 專案的 `database` 設定檔中，應使用預設的 3306 與 5432 通訊埠，因為 Laravel 是在虛擬機**裡面**執行的。
+> [!WARNING]  
+> 當從宿主機中連線到資料庫時，應使用這些非標準的通訊埠。在 Laravel 專案的 `database` 設定檔中，應使用預設的 3306 與 5432 通訊埠，因為 Laravel 是在虛擬機**裡面**執行的。
 
 <a name="database-backups"></a>
 
@@ -652,7 +620,6 @@ php82
 Homestead 可以在 Homestead 虛擬機被刪除時自動備份資料庫。若要使用此功能，必須使用 Vagrant 2.1.0 版或更新的版本。或者，若使用較舊版本的 Vagrant，就必須安裝 `vagrant-triggers` 外掛。若要啟用自動資料庫備份，請將下列這行加入到 `Homestead.yaml` 檔案中：
 
     backup: true
-
 設定好了之後，Homestead 會在執行了 `vagrant destroy` 指令時將資料庫匯出到 `.backup/mysql_backup` 與 `.backup/postgres_backup` 目錄。這些目錄會被放在 Homestead 的安裝目錄下，或是在使用[個別專案安裝](#per-project-installation)時在專案根目錄下。
 
 <a name="configuring-cron-schedules"></a>
@@ -669,14 +636,13 @@ sites:
       to: /home/vagrant/project1/public
       schedule: true
 ```
-
 網站的 Cron Job 會被定義在 Homestead 虛擬機中的 `/etc/cron.d` 目錄。
 
-<a name="configuring-mailhog"></a>
+<a name="configuring-mailpit"></a>
 
-### 設定 MailHog
+### Configuring Mailpit
 
-[MailHog](https://github.com/mailhog/MailHog) 能讓你攔截寄出的 Email，並在不實際將郵件寄送給其收件人的情況下檢視該郵件。若要使用 MailHog，請使用下列 Email 設定來更新專案的 `.env` 檔：
+[Mailpit](https://github.com/axllent/mailpit) allows you to intercept your outgoing email and examine it without actually sending the mail to its recipients. To get started, update your application's `.env` file to use the following mail settings:
 
 ```ini
 MAIL_MAILER=smtp
@@ -686,8 +652,7 @@ MAIL_USERNAME=null
 MAIL_PASSWORD=null
 MAIL_ENCRYPTION=null
 ```
-
-設定好 MailHog 後，就可以在 `http://localhost:8025` 上存取 MailHog 的主控台。
+Once Mailpit has been configured, you may access the Mailpit dashboard at `http://localhost:8025`.
 
 <a name="configuring-minio"></a>
 
@@ -696,7 +661,6 @@ MAIL_ENCRYPTION=null
 [Minio](https://github.com/minio/minio) 是一個開放原始碼的物件存放伺服器 (Object Storage Server)，具有與 Amazon S3 相容的 API。若要安裝 Minio，請更新 `Homestead.yaml` 檔案，在 [features](#installing-optional-features) 段落中加入下列設定：
 
     minio: true
-
 預設情況下，Minio 會在 9600 通訊埠上執行。只要瀏覽 `http://localhost:9600`，就可以存取 Minio 的控制面板。預設的 Access Key 為 `homestead`，而預設的 Secret Key 為 `secretkey`。存取 Minio 時，請使用 Region `us-east-1`。
 
 若要使用 Minio，需要調整專案的 `config/filesystems.php` 設定檔中的 S3 Disk 設定。需要在 Disk 設定中新增 `use_path_style_endpoint` 選項，並將 `url` 索引鍵改為 `endpoint`：
@@ -710,7 +674,6 @@ MAIL_ENCRYPTION=null
         'endpoint' => env('AWS_URL'),
         'use_path_style_endpoint' => true,
     ]
-
 最後，請確保 `.env` 檔中有下列設定：
 
 ```ini
@@ -719,8 +682,7 @@ AWS_SECRET_ACCESS_KEY=secretkey
 AWS_DEFAULT_REGION=us-east-1
 AWS_URL=http://localhost:9600
 ```
-
-若要佈建由 Minio 驅動的「S3」^[Bucket](貯體)，請在 `Homestead.yaml` 中新增 `buckets` 指示詞。定義好 Bucket 後，請在終端機中執行 `vagrant reload --provision` 指令：
+若要佈建由 Minio 驅動的「S3」^[Bucket](%E8%B2%AF%E9%AB%94)，請在 `Homestead.yaml` 中新增 `buckets` 指示詞。定義好 Bucket 後，請在終端機中執行 `vagrant reload --provision` 指令：
 
 ```yaml
 buckets:
@@ -729,7 +691,6 @@ buckets:
     - name: your-private-bucket
       policy: none
 ```
-
 支援的 `policy` 值有： `none`, `download`, `upload` 與 `public`。
 
 <a name="laravel-dusk"></a>
@@ -742,7 +703,6 @@ buckets:
 features:
     - webdriver: true
 ```
-
 啟用 `webdriver` 功能後，請在終端機執行 `vagrant reload --provision` 指令。
 
 <a name="sharing-your-environment"></a>
@@ -756,20 +716,19 @@ features:
 ```shell
 share homestead.test
 ```
-
 執行該指令後，可以看到 Ngrok 畫面顯示在螢幕上，其中包含了網路活動紀錄，以及此共享網站的公開存取網址。若想自行指定地區、子網域、或是其他 Ngrok 執行階段選項，請將這些選項加到 `share` 指令：
 
 ```shell
 share homestead.test -region=eu -subdomain=laravel
 ```
-
 若需要使用 HTTPS 而非 HTTP 來共享內容，則可使用 `sshare` 指令來代替 `share`，以通過 HTTPS 共享。
 
-> **Warning** 提醒一下，Vagrant 本身應被視為不安全的，而當使用 `share` 指令時，會使 Vagrant 虛擬機被暴露到 ^[Internet](網際網路) 上。
+> [!WARNING]  
+> 提醒一下，Vagrant 本身應被視為不安全的，而當使用 `share` 指令時，會使 Vagrant 虛擬機被暴露到 ^[Internet](%E7%B6%B2%E9%9A%9B%E7%B6%B2%E8%B7%AF) 上。
 
 <a name="debugging-and-profiling"></a>
 
-## 除錯與分析
+## Debugging and Profiling
 
 <a name="debugging-web-requests"></a>
 
@@ -779,7 +738,8 @@ Homestead 支援使用 [Xdebug](https://xdebug.org) 來進行逐步除錯 (Step 
 
 預設情況下，Xdebug 已在執行並準備好接受任何連線。若需要在 CLI 中啟用 Xdebug，請在 Homestead 虛擬機中執行 `sudo phpenmod xdebug` 指令。接著，請依照 IDE 的說明來啟用除錯功能。最後，請使用瀏覽器擴充功能或是[書籤小程式 (Bookmarklet)](https://www.jetbrains.com/phpstorm/marklets/) 來設定讓瀏覽器觸發 Xdebug。
 
-> **Warning** 使用 Xdebug 會讓 PHP 的執行速度顯著變慢。若要禁用 Xdebug，請在 Homestead 虛擬機中執行 `sudo phpdismod xdebug` 並重新啟動 FPM 服務。
+> [!WARNING]  
+> 使用 Xdebug 會讓 PHP 的執行速度顯著變慢。若要禁用 Xdebug，請在 Homestead 虛擬機中執行 `sudo phpdismod xdebug` 並重新啟動 FPM 服務。
 
 <a name="autostarting-xdebug"></a>
 
@@ -788,12 +748,11 @@ Homestead 支援使用 [Xdebug](https://xdebug.org) 來進行逐步除錯 (Step 
 在針對會向 Web 伺服器開啟 Request 的功能性測試進行除錯時，設定自動啟動除錯會比將傳入自定 Header 或 Cookie 來觸發除錯來得容易。若要強制讓 Xdebug 自動啟動，請修改 Homestead 虛擬機中的 `/etc/php/7.x/fpm/conf.d/20-xdebug.ini` 檔案，並加入下列設定：
 
 ```ini
-; 若 Homestead.yaml 包含了與該 IP 位址的不同子網路 (Subnet)，則此位址可能會不同...
+; If Homestead.yaml contains a different subnet for the IP address, this address may be different...
 xdebug.client_host = 192.168.10.1
 xdebug.mode = debug
 xdebug.start_with_request = yes
 ```
-
 <a name="debugging-cli-applications"></a>
 
 ### 針對 CLI 程式進行除錯
@@ -801,10 +760,9 @@ xdebug.start_with_request = yes
 若要針對 PHP CLI 程式進行除錯，請在 Homestead 虛擬機中使用 `xphp` Shell 別名：
 
     xphp /path/to/script
-
 <a name="profiling-applications-with-blackfire"></a>
 
-### 使用 Blackfire 來針對程式進行分析
+### Profiling Applications With Blackfire
 
 [Blackfire](https://blackfire.io/docs/introduction) 是一個可用來分析 (Profiling) Web Request 與 CLI 應用程式的服務。Blackfire 提供了互動性的使用者介面，上面會以呼叫圖 (Call-Graph) 與時間軸來顯示分析資料。Blackfire 可用於開發、測試、與正式環境，並且不會影響到終端使用者。此外，Blackfire 還提供了針對程式碼與 `php.ini` 設定檔的效能、品質、與安全性檢查。
 
@@ -820,8 +778,7 @@ features:
         client_id: "client_id"
         client_token: "client_value"
 ```
-
-[需要有 Blackfire 帳號](https://blackfire.io/signup) 才可取得 Blackfire 的 Server ^[Credentials](認證) 與 Client Credentials。Blackfire 提供多種用於分析應用程式的選項，包含使用 CLI 工具，或是使用瀏覽器擴充功能。請[參考 Blackfire 的說明文件以瞭解更多資訊](https://blackfire.io/docs/php/integrations/laravel/index)。
+[需要有 Blackfire 帳號](https://blackfire.io/signup) 才可取得 Blackfire 的 Server ^[Credentials](%E8%AA%8D%E8%AD%89) 與 Client Credentials。Blackfire 提供多種用於分析應用程式的選項，包含使用 CLI 工具，或是使用瀏覽器擴充功能。請[參考 Blackfire 的說明文件以瞭解更多資訊](https://blackfire.io/docs/php/integrations/laravel/index)。
 
 <a name="network-interfaces"></a>
 
@@ -834,7 +791,6 @@ networks:
     - type: "private_network"
       ip: "192.168.10.20"
 ```
-
 若要啟用 [bridged](https://developer.hashicorp.com/vagrant/docs/networking/public_network) 介面，請設定該網路的 `bridge` 設定，並將網路類型改為 `public_network`：
 
 ```yaml
@@ -843,7 +799,6 @@ networks:
       ip: "192.168.10.20"
       bridge: "en1: Wi-Fi (AirPort)"
 ```
-
 若要啟用 [DHCP](https://developer.hashicorp.com/vagrant/docs/networking/public_network#dhcp)，只需要在設定檔中移除 `ip` 選項即可：
 
 ```yaml
@@ -851,7 +806,6 @@ networks:
     - type: "public_network"
       bridge: "en1: Wi-Fi (AirPort)"
 ```
-
 若要更新裝置所使用的網路，可在網路設定中新增 `dev` 選項。`dev` 預設的值為 `eth0`：
 
 ```yaml
@@ -861,7 +815,6 @@ networks:
       bridge: "en1: Wi-Fi (AirPort)"
       dev: "enp2s0"
 ```
-
 <a name="extending-homestead"></a>
 
 ## 擴充 Homestead
@@ -876,7 +829,6 @@ sudo apt-get -y \
     -o Dpkg::Options::="--force-confold" \
     install package-name
 ```
-
 <a name="user-customizations"></a>
 
 ### 使用者自定

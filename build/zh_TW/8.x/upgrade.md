@@ -1,11 +1,8 @@
 ---
-contributors:
-  14684796:
-    avatarUrl: https://crowdin-static.downloads.crowdin.com/avatar/14684796/medium/60f7dc21ec0bf9cfcb61983640bb4809_default.png
-    name: cornch
-crowdinUrl: https://crowdin.com/translate/laravel-docs/165/en-zhtw
-progress: 92
+crowdinUrl: 'https://crowdin.com/translate/laravel-docs/165/en-zhtw'
 updatedAt: '2024-06-30T08:27:00Z'
+contributors: {  }
+progress: 45.51
 ---
 
 # 升級指南
@@ -17,7 +14,6 @@ updatedAt: '2024-06-30T08:27:00Z'
 ## 高度影響的更改
 
 <div class="content-list" markdown="1">
-
 - [Model Factory](#model-factories)
 - [Queue 的 `retryAfter` 方法](#queue-retry-after-method)
 - [Queue 的 `timeoutAt` 屬性](#queue-timeout-at-property)
@@ -26,13 +22,11 @@ updatedAt: '2024-06-30T08:27:00Z'
 - [Seeder 與 Factory 的 Namespace](#seeder-factory-namespaces)
 
 </div>
-
 <a name="medium-impact-changes"></a>
 
 ## 中度影響的更改
 
 <div class="content-list" markdown="1">
-
 - [最低需求 PHP 7.3.0](#php-7.3.0-required)
 - [失敗 Job 資料表的批次支援](#failed-jobs-table-batch-support)
 - [維護模式更新](#maintenance-mode-updates)
@@ -40,7 +34,6 @@ updatedAt: '2024-06-30T08:27:00Z'
 - [`assertExactJson` 方法](#assert-exact-json-method)
 
 </div>
-
 <a name="upgrade-8.0"></a>
 
 ## 從 7.x 升級到 8.0
@@ -49,7 +42,8 @@ updatedAt: '2024-06-30T08:27:00Z'
 
 #### 預計升級所需時間：15 分鐘
 
-> {note} 我們儘量在說明文件中包含所有的^[中斷性變更](Breaking Change)。不過，在 Laravel 中，有些中斷性變更存在一些比較不明顯的地方，且這些更改中幾乎不太會影響到你的專案。
+> [!NOTE]  
+> We attempt to document every possible breaking change. Since some of these breaking changes are in obscure parts of the framework only a portion of these changes may actually affect your application.
 
 <a name="php-7.3.0-required"></a>
 
@@ -66,7 +60,6 @@ updatedAt: '2024-06-30T08:27:00Z'
 請在 `composer.json` 檔案中更新下列相依性套件：
 
 <div class="content-list" markdown="1">
-
 - `guzzlehttp/guzzle` to `^7.0.1`
 - `facade/ignition` to `^2.3.6`
 - `laravel/framework` to `^8.0`
@@ -75,18 +68,15 @@ updatedAt: '2024-06-30T08:27:00Z'
 - `phpunit/phpunit` to `^9.0`
 
 </div>
-
 下列第一方專案也有更新新的版本以支援 Laravel 8。若有使用這些套件，請在升級前先閱讀各套件的升級指南：
 
 <div class="content-list" markdown="1">
-
 - [Horizon v5.0](https://github.com/laravel/horizon/blob/master/UPGRADE.md)
 - [Passport v10.0](https://github.com/laravel/passport/blob/master/UPGRADE.md)
 - [Socialite v5.0](https://github.com/laravel/socialite/blob/master/UPGRADE.md)
 - [Telescope v4.0](https://github.com/laravel/telescope/blob/master/UPGRADE.md)
 
 </div>
-
 此外，Laravel Installer 也更新了對 `composer create-project` 與 Laravel Jetstream 的支援。從 2020 年 10 月起，4.0 版以前的安裝程式將停止運作。請儘快將全域的 Installer 升級至 `^4.0`。
 
 最後，請檢視你的專案使用的其他第三方套件，確認一下是否有使用支援 Laravel 8 的版本。
@@ -110,7 +100,6 @@ updatedAt: '2024-06-30T08:27:00Z'
     
     // Laravel 8.x - false
     isset($collection[0]);
-
 <a name="database"></a>
 
 ### 資料庫
@@ -142,7 +131,6 @@ Seeder 與 Factory 現在被放到 Namespace 下了。為了符合這項更改�
             ...
         }
     }
-
 若要使用 `laravel/legacy-factories` 套件，則不需更改 Factory 類別。不過，如果要更新 Factory，則應在這些類別內加上 `Database\Factories` Namespace。
 
 接著，在 `composer.json` 檔案中，請從 `autoload` 段落中移除 `classmap` 區塊，並為這些新放進 Namespace 的類別加上目錄映射：
@@ -154,7 +142,6 @@ Seeder 與 Factory 現在被放到 Namespace 下了。為了符合這項更改�
             "Database\\Seeders\\": "database/seeders/"
         }
     },
-
 <a name="eloquent"></a>
 
 ### Eloquent
@@ -168,7 +155,6 @@ Seeder 與 Factory 現在被放到 Namespace 下了。為了符合這項更改�
 Laravel 的 [Model Factory] 功能已完全重寫以支援新的類別格式的寫法，因此已不相容於 Laravel 7.x 風格的 Factory。不過，為了使升級過程更簡單，我們建立了新的 `laravel/legacy-factories` 套件，可讓你繼續在 Laravel 8.x 中使用現有的 Factory。可使用 Composer 來安裝這個套件：
 
     composer require laravel/legacy-factories
-
 <a name="the-castable-interface"></a>
 
 #### `Castable` 介面
@@ -178,7 +164,6 @@ Laravel 的 [Model Factory] 功能已完全重寫以支援新的類別格式的�
 `Castable` 介面的 `castUsing` 方法已更新為接受一組陣列的引數。若你有實作這個介面，請更新該實作：
 
     public static function castUsing(array $arguments);
-
 <a name="increment-decrement-events"></a>
 
 #### 遞增與遞減的事件
@@ -208,7 +193,6 @@ Laravel 的 [Model Factory] 功能已完全重寫以支援新的類別格式的�
 `Illuminate\Contracts\Events\Dispatcher` Contract 的 `listen` 方法已將 `$listener` 屬性改為可選屬性。此修改是為了要支援使用 Reflection 來自動偵測所處理的 Event 型別。若有手動實作此介面，請更改你的實作：
 
     public function listen($events, $listener = null);
-
 <a name="framework"></a>
 
 ### Laravel Framework
@@ -226,7 +210,6 @@ Laravel 的 [Model Factory] 功能已完全重寫以支援新的類別格式的�
     if (file_exists($maintenance = __DIR__.'/../storage/framework/maintenance.php')) {
         require $maintenance;
     }
-
 <a name="artisan-down-message"></a>
 
 #### `php artisan down --message` 選項
@@ -286,7 +269,6 @@ Paginator 現在使用 [Tailwind CSS Framework](https://tailwindcss.com) 作為�
     use Illuminate\Pagination\Paginator;
     
     Paginator::useBootstrap();
-
 <a name="queue"></a>
 
 ### 佇列
@@ -319,7 +301,6 @@ Paginator 現在使用 [Tailwind CSS Framework](https://tailwindcss.com) 作為�
         new OptimizePodcast,
         new ReleasePodcast
     ])->onConnection('redis')->onQueue('podcasts')->dispatch();
-
 請注意，此更改只會影響有使用 `withChain` 方法的程式。使用全域的 `dispatch` 輔助函式時，仍然可使用 `allOnQueue()` 與 `allOnConnection()`。
 
 <a name="failed-jobs-table-batch-support"></a>
@@ -336,7 +317,6 @@ Paginator 現在使用 [Tailwind CSS Framework](https://tailwindcss.com) 作為�
     Schema::table('failed_jobs', function (Blueprint $table) {
         $table->string('uuid')->after('id')->nullable()->unique();
     });
-
 接著，在 `queue` 設定檔中的 `failed.driver` 設定選項應更新為 `database-uuids`。
 
 此外，你可能也會想為現有的失敗 Job 產生 UUID：
@@ -346,7 +326,6 @@ Paginator 現在使用 [Tailwind CSS Framework](https://tailwindcss.com) 作為�
             ->where('id', $job->id)
             ->update(['uuid' => (string) Illuminate\Support\Str::uuid()]);
     });
-
 <a name="routing"></a>
 
 ### 路由
@@ -363,12 +342,11 @@ Paginator 現在使用 [Tailwind CSS Framework](https://tailwindcss.com) 作為�
 
     use App\Http\Controllers\UserController;
     
-    // 使用 PHP 的 Callable 語法...
+    // Using PHP callable syntax...
     Route::get('/users', [UserController::class, 'index']);
     
-    // 使用字串的語法...
+    // Using string syntax...
     Route::get('/users', 'App\Http\Controllers\UserController@index');
-
 在大多數情況下，此更改不會影響到從舊版升級過來的專案，因為專案中的 `RouteServiceProvider` 內 `$namespace` 應該還是包含了原本的值。不過，如果你是通過建立新專案來升級 Laravel 的，此更改就可能變成中斷性變更。
 
 若想繼續使用原本這種自動為 Controller 加上前置詞的 Route，只需要在 `RouteServiceProvider` 中為 `$namespace` 屬性設定適當的值，並在 `boot` 方法中將 Route 定義更新為使用 `$namespace` 屬性即可：
@@ -426,7 +404,6 @@ Paginator 現在使用 [Tailwind CSS Framework](https://tailwindcss.com) 作為�
             });
         }
     }
-
 <a name="scheduling"></a>
 
 ### 排程任務
@@ -459,7 +436,6 @@ Laravel 的相依性套件 `dragonmantank/cron-expression` 已從 `2.x` 版更�
      * @return mixed
      */
     public function pull($key, $default = null);
-
 <a name="testing"></a>
 
 ### 測試

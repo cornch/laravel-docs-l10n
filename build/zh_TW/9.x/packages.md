@@ -1,27 +1,26 @@
 ---
-contributors:
-  14684796:
-    avatarUrl: https://crowdin-static.downloads.crowdin.com/avatar/14684796/medium/60f7dc21ec0bf9cfcb61983640bb4809_default.png
-    name: cornch
-crowdinUrl: https://crowdin.com/translate/laravel-docs/113/en-zhtw
-progress: 100
+crowdinUrl: 'https://crowdin.com/translate/laravel-docs/113/en-zhtw'
 updatedAt: '2023-02-11T12:59:00Z'
+contributors: {  }
+progress: 52.02
 ---
 
 # 套件開發
 
 - [簡介](#introduction)
-   - [有關 Facade 的注意事項](#a-note-on-facades)
+  - [有關 Facade 的注意事項](#a-note-on-facades)
+  
 - [Package Discovery](#package-discovery)
 - [Service Provider](#service-providers)
 - [資源](#resources)
-   - [設定](#configuration)
-   - [Migration](#migrations)
-   - [Route](#routes)
-   - [翻譯](#translations)
-   - [View](#views)
-   - [View 元件](#view-components)
-   - [「About」Artisan 指令](#about-artisan-command)
+  - [設定](#configuration)
+  - [Migration](#migrations)
+  - [Route](#routes)
+  - [翻譯](#translations)
+  - [View](#views)
+  - [View 元件](#view-components)
+  - [「About」Artisan 指令](#about-artisan-command)
+  
 - [指令](#commands)
 - [公用素材](#public-assets)
 - [安裝檔案群組](#publishing-file-groups)
@@ -60,7 +59,6 @@ updatedAt: '2023-02-11T12:59:00Z'
     }
 },
 ```
-
 設定好 Discovery 後，Larave 就會在套件安裝時自動註冊套件的 Service Provider 與 Facade，帶給套件使用者一個方便的體驗。
 
 <a name="opting-out-of-package-discovery"></a>
@@ -78,7 +76,6 @@ updatedAt: '2023-02-11T12:59:00Z'
     }
 },
 ```
-
 可以在 `dont-discover` 指示詞內使用 `*` 字元來禁用所有套件的 Package Discovery：
 
 ```json
@@ -90,7 +87,6 @@ updatedAt: '2023-02-11T12:59:00Z'
     }
 },
 ```
-
 <a name="service-providers"></a>
 
 ## Service Provider
@@ -120,12 +116,11 @@ Service Provider 應繼承 `Illuminate\Support\ServiceProvider` 類別，並包�
             __DIR__.'/../config/courier.php' => config_path('courier.php'),
         ]);
     }
-
 然後，當套件使用者執行 Laravel 的 `vendor:publish` 指令時，這些檔案就會被複製到指定的^[安裝](Publish)地點。安裝好設定檔後，就可以像其他設定檔樣存取這些設定值：
 
     $value = config('courier.option');
-
-> **Warning** 請不要在設定檔中定義閉包。因為當使用者執行 `config:cache` Artisan 指令時，這些閉包沒有辦法被序列化。
+> [!WARNING]  
+> 請不要在設定檔中定義閉包。因為當使用者執行 `config:cache` Artisan 指令時，這些閉包沒有辦法被序列化。
 
 <a name="default-package-configuration"></a>
 
@@ -146,8 +141,8 @@ Service Provider 應繼承 `Illuminate\Support\ServiceProvider` 類別，並包�
             __DIR__.'/../config/courier.php', 'courier'
         );
     }
-
-> **Warning** 該方法只會合併設定陣列中的第一層。若套件使用者只定義了多為陣列中的一部分，則未定義的部分將不會被合併。
+> [!WARNING]  
+> 該方法只會合併設定陣列中的第一層。若套件使用者只定義了多為陣列中的一部分，則未定義的部分將不會被合併。
 
 <a name="routes"></a>
 
@@ -164,7 +159,6 @@ Service Provider 應繼承 `Illuminate\Support\ServiceProvider` 類別，並包�
     {
         $this->loadRoutesFrom(__DIR__.'/../routes/web.php');
     }
-
 <a name="migrations"></a>
 
 ### Migration
@@ -180,7 +174,6 @@ Service Provider 應繼承 `Illuminate\Support\ServiceProvider` 類別，並包�
     {
         $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
     }
-
 Migration 註冊好後，執行 `php artisan migrate` 指令時，就會自動執行這些 Migration。不需要將這些檔案匯出到 `database/migrations` 目錄中。
 
 <a name="translations"></a>
@@ -198,11 +191,9 @@ Migration 註冊好後，執行 `php artisan migrate` 指令時，就會自動�
     {
         $this->loadTranslationsFrom(__DIR__.'/../lang', 'courier');
     }
-
 套件的語系檔使用 `package::file.line` (`套件::檔名.行`) 語法慣例來參照。所以，`courier` 套件的 `messages` 檔案中，`welcome` 行可以這樣載入：
 
     echo trans('courier::messages.welcome');
-
 <a name="publishing-translations"></a>
 
 #### 安裝翻譯
@@ -222,7 +213,6 @@ Migration 註冊好後，執行 `php artisan migrate` 指令時，就會自動�
             __DIR__.'/../lang' => $this->app->langPath('vendor/courier'),
         ]);
     }
-
 接著，當套件使用者執行 Laravel 的 `vendor:publish` Artisan 指令後，套件的翻譯語系檔就會被安裝到指定的安裝位置內。
 
 <a name="views"></a>
@@ -240,13 +230,11 @@ Migration 註冊好後，執行 `php artisan migrate` 指令時，就會自動�
     {
         $this->loadViewsFrom(__DIR__.'/../resources/views', 'courier');
     }
-
 套件的 View 使用 `package::view` (`套件::View`) 語法慣例來參照。所以，在 Service Provider 內註冊好 View 的路徑後，就可以在 `courier` 套件中像這樣載入 `dashboard` View：
 
     Route::get('/dashboard', function () {
         return view('courier::dashboard');
     });
-
 <a name="overriding-package-views"></a>
 
 #### 覆寫套件的 View
@@ -272,7 +260,6 @@ Migration 註冊好後，執行 `php artisan migrate` 指令時，就會自動�
             __DIR__.'/../resources/views' => resource_path('views/vendor/courier'),
         ]);
     }
-
 接著，當套件使用者執行 Laravel 的 `vendor:publish` Artisan 指令後，套件的 View 就會被複製到指定的安裝位置內。
 
 <a name="view-components"></a>
@@ -293,13 +280,11 @@ Migration 註冊好後，執行 `php artisan migrate` 指令時，就會自動�
     {
         Blade::component('package-alert', AlertComponent::class);
     }
-
 註冊好元件後，便可使用其標籤別名來轉譯：
 
 ```blade
 <x-package-alert/>
 ```
-
 <a name="autoloading-package-components"></a>
 
 #### 自動載入套件元件
@@ -317,14 +302,12 @@ Migration 註冊好後，執行 `php artisan migrate` 指令時，就會自動�
     {
         Blade::componentNamespace('Nightshade\\Views\\Components', 'nightshade');
     }
-
 這樣一來，就可以讓套件元件通過其 Vendor Namespace 來使用 `package-name::` 語法：
 
 ```blade
 <x-nightshade::calendar />
 <x-nightshade::color-picker />
 ```
-
 Blade 會通過將元件名稱轉為 Pascal 命名法來自動偵測與這個元件關連的類別。也可以使用「點」語法來支援子目錄。
 
 <a name="anonymous-components"></a>
@@ -336,12 +319,11 @@ Blade 會通過將元件名稱轉為 Pascal 命名法來自動偵測與這個元
 ```blade
 <x-courier::alert />
 ```
-
 <a name="about-artisan-command"></a>
 
 ### 「About」Artisan 指令
 
-Laravel 的內建 `about` Artisan 指令提供了有關專案環境與設定的一覽。套件也可以使用 `AboutCommand` 類別來將額外資訊推入該指令的輸出中。一般來說，可在套件 Service Provider 的 `boot` 方法內加上該資訊：
+Laravel 的內建 `about` Artisan  指令提供了有關專案環境與設定的一覽。套件也可以使用 `AboutCommand` 類別來將額外資訊推入該指令的輸出中。一般來說，可在套件 Service Provider 的 `boot` 方法內加上該資訊：
 
     use Illuminate\Foundation\Console\AboutCommand;
     
@@ -354,7 +336,6 @@ Laravel 的內建 `about` Artisan 指令提供了有關專案環境與設定的�
     {
         AboutCommand::add('My Package', fn () => ['Version' => '1.0.0']);
     }
-
 <a name="commands"></a>
 
 ## 指令
@@ -378,7 +359,6 @@ Laravel 的內建 `about` Artisan 指令提供了有關專案環境與設定的�
             ]);
         }
     }
-
 <a name="public-assets"></a>
 
 ## 公用素材
@@ -396,13 +376,11 @@ Laravel 的內建 `about` Artisan 指令提供了有關專案環境與設定的�
             __DIR__.'/../public' => public_path('vendor/courier'),
         ], 'public');
     }
-
 接著，當專案使用者執行 `vendor:publish` 指令後，素材就會被複製到指定的位置。由於使用者通常會需要在每次套件更新後都覆寫這些素材，因此可以使用 `--force` 旗標：
 
 ```shell
 php artisan vendor:publish --tag=public --force
 ```
-
 <a name="publishing-file-groups"></a>
 
 ## 安裝檔案群組
@@ -424,7 +402,6 @@ php artisan vendor:publish --tag=public --force
             __DIR__.'/../database/migrations/' => database_path('migrations')
         ], 'courier-migrations');
     }
-
 接著，使用者在執行 `vendor:publish` 指令時就可以使用標籤來分別安裝這些群組：
 
 ```shell

@@ -1,34 +1,28 @@
 ---
-contributors:
-  14684796:
-    avatarUrl: https://crowdin-static.downloads.crowdin.com/avatar/14684796/medium/60f7dc21ec0bf9cfcb61983640bb4809_default.png
-    name: cornch
-crowdinUrl: https://crowdin.com/translate/laravel-docs/165/en-zhtw
-progress: 92
+crowdinUrl: 'https://crowdin.com/translate/laravel-docs/165/en-zhtw'
 updatedAt: '2024-06-30T08:27:00Z'
+contributors: {  }
+progress: 45.51
 ---
 
 # 升級指南
 
-- [從 9.x 版升級至 10.0 版](#upgrade-10.0)
+- [Upgrading to 10.0 from 9.x](#upgrade-10.0)
 
 <a name="high-impact-changes"></a>
 
 ## 高度影響的更改
 
 <div class="content-list" markdown="1">
-
 - [更新相依性套件](#updating-dependencies)
 - [更新 Minimum Stability](#updating-minimum-stability)
 
 </div>
-
 <a name="medium-impact-changes"></a>
 
 ## 中度影響的更改
 
 <div class="content-list" markdown="1">
-
 - [資料庫運算式](#database-expressions)
 - [Model 的「Dates」屬性](#model-dates-property)
 - [Monolog 3](#monolog-3)
@@ -37,13 +31,11 @@ updatedAt: '2024-06-30T08:27:00Z'
 - [語系檔目錄](#language-directory)
 
 </div>
-
 <a name="low-impact-changes"></a>
 
 ## 低影響的更改
 
 <div class="content-list" markdown="1">
-
 - [閉包的 Validation Rule 訊息](#closure-validation-rule-messages)
 - [Form Request `after` Method](#form-request-after-method)
 - [Public Path Binding](#public-path-binding)
@@ -55,16 +47,16 @@ updatedAt: '2024-06-30T08:27:00Z'
 - [ULID 欄位](#ulid-columns)
 
 </div>
-
 <a name="upgrade-10.0"></a>
 
-## 從 9.x 版升級至 10.0 版
+## Upgrading to 10.0 from 9.x
 
 <a name="estimated-upgrade-time-??-minutes"></a>
 
 #### 預計升級所需時間：10 分鐘
 
-> **Note** 雖然我們已經儘可能地在本說明文件中涵蓋所有^[中斷性變更](Breaking Change)。不過，在 Laravel 中，有些中斷性變更存在一些比較不明顯的地方，且這些更改中幾乎不太會影響到你的專案。 想節省時間嗎？可以使用 [Laravel Shift](https://laravelshift.com/) 來協助你快速升級你的專案。
+> [!NOTE]  
+> 雖然我們已經儘可能地在本說明文件中涵蓋所有^[中斷性變更](Breaking Change)。不過，在 Laravel 中，有些中斷性變更存在一些比較不明顯的地方，且這些更改中幾乎不太會影響到你的專案。 想節省時間嗎？可以使用 [Laravel Shift](https://laravelshift.com/) 來協助你快速升級你的專案。
 
 <a name="updating-dependencies"></a>
 
@@ -85,26 +77,23 @@ Laravel now requires [Composer](https://getcomposer.org) 2.2.0 or greater.
 請在專案的 `composer.json` 檔案中更新下列相依性套件：
 
 <div class="content-list" markdown="1">
-
 - `laravel/framework` 升級為 `^10.0`
 - `laravel/sanctum` to `^3.2`
 - `doctrine/dbal` to `^3.0`
 - `spatie/laravel-ignition` 升級為 `^2.0`
 - `laravel/passport` to `^11.0` ([Upgrade Guide](https://github.com/laravel/passport/blob/11.x/UPGRADE.md))
+- `laravel/ui` to `^4.0`
 
 </div>
-
 If you are upgrading to Sanctum 3.x from the 2.x release series, please consult the [Sanctum upgrade guide](https://github.com/laravel/sanctum/blob/3.x/UPGRADE.md).
 
 Furthermore, if you wish to use [PHPUnit 10](https://phpunit.de/announcements/phpunit-10.html), you should delete the `processUncoveredFiles` attribute from the `<coverage>` section of your application's `phpunit.xml` configuration file. Then, update the following dependencies in your application's `composer.json` file:
 
 <div class="content-list" markdown="1">
-
 - `nunomaduro/collision` to `^7.0`
 - `phpunit/phpunit` to `^10.0`
 
 </div>
-
 最後，請檢視你的專案使用的其他第三方套件，確認一下是否有使用支援 Laravel 10 的版本。
 
 <a name="updating-minimum-stability"></a>
@@ -116,7 +105,6 @@ You should update the `minimum-stability` setting in your application's `compose
 ```json
 "minimum-stability": "stable",
 ```
-
 ### Application
 
 <a name="public-path-binding"></a>
@@ -130,7 +118,6 @@ If your application is customizing its "public path" by binding `path.public` in
 ```php
 app()->usePublicPath(__DIR__.'/public');
 ```
-
 ### Authorization
 
 <a name="register-policies"></a>
@@ -149,11 +136,7 @@ The `registerPolicies` method of the `AuthServiceProvider` is now invoked automa
 
 **受影響的可能性：中等**
 
-Redis [cache tag](/docs/{{version}}/cache#cache-tags) support has been rewritten for better performance and storage efficiency. In previous releases of Laravel, stale cache tags would accumulate in the cache when using Redis as your application's cache driver.
-
-不過，為了正確地修建過時的快取 Tag，請在專案的 `App\Console\Kernel` 類別內[排程](/docs/{{version}}/scheduling)呼叫 Laravel 中全新的 `cache:prune-stale-tags` Artisan 指令：
-
-    $schedule->command('cache:prune-stale-tags')->hourly();
+Usage of `Cache::tags()` is only recommended for applications using Memcached. If you are using Redis as your application's cache driver, you should consider moving to Memcached or using an alternative solution.
 
 ### 資料庫
 
@@ -163,7 +146,7 @@ Redis [cache tag](/docs/{{version}}/cache#cache-tags) support has been rewritten
 
 **受影響的可能性：中等**
 
-資料庫的「^[Expression](運算式)」(通常由 `DB::raw` 產生) 在 Laravel 10.x 中已被重寫，以在未來能提供更多功能。特別是，^[Grammer](語法) 的原始字串值現在已改用 Expression 的 `getValue(Grammar $grammar)` 方法來取得。現在已不再支援通過 `(string)` 來將 Expression 型別轉換為字串。
+資料庫的「^[Expression](%E9%81%8B%E7%AE%97%E5%BC%8F)」(通常由 `DB::raw` 產生) 在 Laravel 10.x 中已被重寫，以在未來能提供更多功能。特別是，^[Grammer](%E8%AA%9E%E6%B3%95) 的原始字串值現在已改用 Expression 的 `getValue(Grammar $grammar)` 方法來取得。現在已不再支援通過 `(string)` 來將 Expression 型別轉換為字串。
 
 **一般來說，這項更改應該不會影響到終端使用者的專案**；不過，如果你的專案有手動使用 `(string)` 來將資料庫 Expression 型別轉換為字串，或是有直接在 Expression 上呼叫 `__toString` 方法，則請將這些程式碼更新為呼叫 `getValue` 方法：
 
@@ -174,7 +157,6 @@ $expression = DB::raw('select 1');
 
 $string = $expression->getValue(DB::connection()->getQueryGrammar());
 ```
-
 <a name="query-exception-constructor"></a>
 
 #### Query Exception 的 Constructor
@@ -192,11 +174,9 @@ The `Illuminate\Database\QueryException` constructor now accepts a string connec
 在 Migration 中，若在不提供任何引數的情況下執行 `ulid` 方法時，該欄位的名稱現在會是 `ulid`。在先前版本的 Laravel 中，在不提供引數的情況下呼叫該方法時，所建立的欄位被錯誤地命名為 `uuid`：
 
     $table->ulid();
-
 若要在呼叫 `ulid` 方法時明確指定欄位名稱，可傳入欄位名稱給該方法：
 
     $table->ulid('ulid');
-
 ### Eloquent
 
 <a name="model-dates-property"></a>
@@ -212,7 +192,6 @@ protected $casts = [
     'deployed_at' => 'datetime',
 ];
 ```
-
 ### 本土化
 
 <a name="language-directory"></a>
@@ -226,7 +205,6 @@ protected $casts = [
 ```shell
 php artisan lang:publish
 ```
-
 ### 日誌
 
 <a name="monolog-3"></a>
@@ -249,6 +227,14 @@ If you are using third-party logging services such as BugSnag or Rollbar, you ma
 
 停止支援 (Deprecated) 的 `Bus::dispatchNow` 與 `dispatch_now` 方法現已移除。請分別改用 `Bus::dispatchSync` 與 `dispatch_sync` 方法。
 
+<a name="dispatch-return"></a>
+
+#### The `dispatch()` Helper Return Value
+
+**受影響的可能：低**
+
+Invoking `dispatch` with a class that does not implement `Illuminate\Contracts\Queue` would previously return the result of the class's `handle` method. However, this will now return an `Illuminate\Foundation\Bus\PendingBatch` instance. You may use `dispatch_sync()` to replicate the previous behavior.
+
 ### 路由
 
 <a name="middleware-aliases"></a>
@@ -257,7 +243,7 @@ If you are using third-party logging services such as BugSnag or Rollbar, you ma
 
 **受影響的可能性：可選**
 
-在新的 Laravel 專案中，`App\Http\Kernel` 的 `$routeMiddleware` 屬性已被重新命名為 `$middlewareAliases` 以更好地反應其目的。你可以在現有的專案中重新命名此屬性。不過，重新命名這個屬性並不是必要的。
+在新的 Laravel 專案中，`App\Http\Kernel` 的 `$routeMiddleware` 屬性已被重新命名為  `$middlewareAliases` 以更好地反應其目的。你可以在現有的專案中重新命名此屬性。不過，重新命名這個屬性並不是必要的。
 
 <a name="rate-limiter-return-values"></a>
 
@@ -272,7 +258,6 @@ $value = RateLimiter::attempt('key', 10, fn () => ['example'], 1);
 
 $value; // ['example']
 ```
-
 <a name="redirect-home"></a>
 
 #### `Redirect::home` 方法
@@ -284,7 +269,6 @@ $value; // ['example']
 ```php
 return Redirect::route('home');
 ```
-
 ### 測試
 
 <a name="service-mocking"></a>
@@ -307,7 +291,7 @@ If your application uses these methods, we recommend you transition to `Event::f
 
 在撰寫基於閉包的自定 Validation Rule 時，若呼叫 `$fail` 回呼超過一次時，原本訊息會被取代，現在改為會將訊息加到陣列的尾端。一般來說，這應該不會影響到你的專案。
 
-此外，`$fail` 回呼現在會回傳一個物件。如果原本有在 Validation 閉包中 ^[Type-Hint](型別提示) 回傳型別，則可能有需要更新：
+此外，`$fail` 回呼現在會回傳一個物件。如果原本有在 Validation 閉包中 ^[Type-Hint](%E5%9E%8B%E5%88%A5%E6%8F%90%E7%A4%BA) 回傳型別，則可能有需要更新：
 
 ```php
 public function rules()
@@ -319,7 +303,22 @@ public function rules()
     ],
 }
 ```
+<a name="validation-messages-and-closure-rules"></a>
 
+#### Validation Messages and Closure Rules
+
+**受影響的可能：非常低**
+
+Previously, you could assign a failure message to a different key by providing an array to the `$fail` callback injected into Closure based validation rules. However, you should now provide the key as the first argument and the failure message as the second argument:
+
+```php
+Validator::make([
+    'foo' => 'string',
+    'bar' => [function ($attribute, $value, $fail) {
+        $fail('foo', 'Something went wrong!');
+    }],
+]);
+```
 <a name="form-request-after-method"></a>
 
 #### Form Request After Method

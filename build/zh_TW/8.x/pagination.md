@@ -1,27 +1,27 @@
 ---
-contributors:
-  14684796:
-    avatarUrl: https://crowdin-static.downloads.crowdin.com/avatar/14684796/medium/60f7dc21ec0bf9cfcb61983640bb4809_default.png
-    name: cornch
-crowdinUrl: https://crowdin.com/translate/laravel-docs/115/en-zhtw
-progress: 100
+crowdinUrl: 'https://crowdin.com/translate/laravel-docs/115/en-zhtw'
 updatedAt: '2024-06-30T08:15:00Z'
+contributors: {  }
+progress: 69.35
 ---
 
 # 資料庫：分頁
 
 - [簡介](#introduction)
 - [基礎用法](#basic-usage)
-   - [為 Query Builder 的結果分頁](#paginating-query-builder-results)
-   - [為 Eloquent 的結果分頁](#paginating-eloquent-results)
-   - [Cursor Pagination](#cursor-pagination)
-   - [手動建立 Paginator](#manually-creating-a-paginator)
-   - [自訂 URL](#customizing-pagination-urls)
+  - [為 Query Builder 的結果分頁](#paginating-query-builder-results)
+  - [為 Eloquent 的結果分頁](#paginating-eloquent-results)
+  - [Cursor Pagination](#cursor-pagination)
+  - [手動建立 Paginator](#manually-creating-a-paginator)
+  - [自訂 URL](#customizing-pagination-urls)
+  
 - [顯示 Pagination 的結果](#displaying-pagination-results)
-   - [調整 Pagination Link Window](#adjusting-the-pagination-link-window)
-   - [將結果轉為 JSON](#converting-results-to-json)
+  - [調整 Pagination Link Window](#adjusting-the-pagination-link-window)
+  - [將結果轉為 JSON](#converting-results-to-json)
+  
 - [自訂 Pagination 的 View](#customizing-the-pagination-view)
-   - [使用 Bootstrap](#using-bootstrap)
+  - [使用 Bootstrap](#using-bootstrap)
+  
 - [Paginator 與 LengthAwarePaginator 實體的方法](#paginator-instance-methods)
 - [Cursor Paginator 實體的方法](#cursor-paginator-instance-methods)
 
@@ -29,9 +29,9 @@ updatedAt: '2024-06-30T08:15:00Z'
 
 ## 簡介
 
-在其他框架中，要進行分頁非常麻煩。我們希望在 Laravel 中可以非常輕鬆地做出分頁功能。Laravel 的 ^[Paginator](分頁程式)與 [Query Builder](/docs/{{version}}/queries) 以及 [Eloquent ORM](/docs/{{version}}/eloquent) 都進行了整合，不需要進行任何設定就能非常方便輕鬆地為資料庫內的資料進行分頁。
+在其他框架中，要進行分頁非常麻煩。我們希望在 Laravel 中可以非常輕鬆地做出分頁功能。Laravel 的 ^[Paginator](%E5%88%86%E9%A0%81%E7%A8%8B%E5%BC%8F)與 [Query Builder](/docs/{{version}}/queries) 以及 [Eloquent ORM](/docs/{{version}}/eloquent) 都進行了整合，不需要進行任何設定就能非常方便輕鬆地為資料庫內的資料進行分頁。
 
-預設情況下，Paginator 產生的 HTML 相容於 [Tailwind CSS](https://tailwindcss.com/)。不過，Laravel 也有提供 Bootstrap Pagination 的支援。
+預設情況下，Paginator 產生的 HTML 相容於  [Tailwind CSS](https://tailwindcss.com/)。不過，Laravel 也有提供 Bootstrap Pagination 的支援。
 
 <a name="tailwind-jit"></a>
 
@@ -47,7 +47,6 @@ content: [
     './vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php',
 ],
 ```
-
 <a name="basic-usage"></a>
 
 ## 基礎用法
@@ -81,7 +80,6 @@ content: [
             ]);
         }
     }
-
 <a name="simple-pagination"></a>
 
 #### Simple Pagination
@@ -91,7 +89,6 @@ content: [
 因此，如果我們只需要在網站 UI 上顯示「上一頁」與「下一頁」按鈕，則可以使用 `simplePaginate` 方法來執行單一、有效率的查詢：
 
     $users = DB::table('users')->simplePaginate(15);
-
 <a name="paginating-eloquent-results"></a>
 
 ### 為 Eloquent 查詢結果進行分頁
@@ -101,19 +98,15 @@ content: [
     use App\Models\User;
     
     $users = User::paginate(15);
-
 當然，我們也可以在呼叫 `paginate` 方法前先在查詢上設定其他的查詢條件，如 `where` 子句：
 
     $users = User::where('votes', '>', 100)->paginate(15);
-
 我們也可以在 Eloquent Model 上使用 `simplePaginate` 方法進行分頁：
 
     $users = User::where('votes', '>', 100)->simplePaginate(15);
-
 類似地，也可以使用 `cursorPaginate` 來以 Cursor 為 Eloquent Model 進行分頁：
 
     $users = User::where('votes', '>', 100)->cursorPaginate(15);
-
 <a name="multiple-paginator-instances-per-page"></a>
 
 #### 在同一頁中包含多個 Paginator 實體
@@ -125,7 +118,6 @@ content: [
     $users = User::where('votes', '>', 100)->paginate(
         $perPage = 15, $columns = ['*'], $pageName = 'users'
     );
-
 <a name="cursor-pagination"></a>
 
 ### 使用 Cursor 來分頁
@@ -137,14 +129,13 @@ content: [
 ```nothing
 http://localhost/users?cursor=eyJpZCI6MTUsIl9wb2ludHNUb05leHRJdGVtcyI6dHJ1ZX0
 ```
-
 我們可以使用 Query Builder 所提供的 `cursorPaginate` 方法來建立使用 Cursor 的 Paginator 實體。該方法會回傳一個 `Illuminate\Pagination\CursorPaginator` 的實體：
 
     $users = DB::table('users')->orderBy('id')->cursorPaginate(15);
-
 取得 Cursor Paginator 實體後，就可以像使用 `paginate` 與 `simplePaginate` 方法一樣[顯示分頁結果](#displaying-pagination-results)。有關 Cursor Paginator 上所提供的實體方法之更多資訊，請參考 [Cursor Paginator 實體方法的說明文件](#cursor-paginator-instance-methods)。
 
-> {note} 查詢中功能必須要有「Order By」子句，才可使用 Cursor 的分頁。
+> [!NOTE]  
+> 查詢中功能必須要有「Order By」子句，才可使用 Cursor 的分頁。
 
 <a name="cursor-vs-offset-pagination"></a>
 
@@ -153,13 +144,12 @@ http://localhost/users?cursor=eyJpZCI6MTUsIl9wb2ludHNUb05leHRJdGVtcyI6dHJ1ZX0
 為了說明使用 Offset 的 Pagination 與使用 Cursor 的 Pagination 間有何差異，讓我們先來看看一個範例的 SQL 查詢。不管使用下面這兩個查詢中的哪個查詢，都會顯示以 `id` 排列 `users` 資料表時，「第二頁」的資料：
 
 ```sql
-# 使用 Offset 的 Pagination...
+# Offset Pagination...
 select * from users order by id asc limit 15 offset 15;
 
-# 使用 Cursor 的 Pagination...
+# Cursor Pagination...
 select * from users where id > 15 order by id asc limit 15;
 ```
-
 比起使用 Offset 的 Pagination，使用 Cursor 的 Pagination 有下列優點：
 
 - 當資料量龐大時，若「Order By」的欄位有索引，則使用 Cursor 的 Pagination 會比較有效率。這是因為，「Offset」子句會先掃描所有先前已經配對的資料。
@@ -181,7 +171,8 @@ select * from users where id > 15 order by id asc limit 15;
 
 換句話說，`Paginator` 對應 Query Builder 上的 `simplePaginate` 方法，而 `CursorPaginator` 則是對應 `cursorPaginate` 方法，`LengthAwarePaginator` 對應 `paginate` 方法。
 
-> {note} 手動建立 Paginator 實體時，應「切割 - Slice」要傳給 Paginator 的結果陣列。如果不知道要如何切割陣列，請參考 [array_slice](https://secure.php.net/manual/en/function.array-slice.php) PHP 函式。
+> [!NOTE]  
+> 手動建立 Paginator 實體時，應「切割 - Slice」要傳給 Paginator 的結果陣列。如果不知道要如何切割陣列，請參考 [array_slice](https://secure.php.net/manual/en/function.array-slice.php) PHP 函式。
 
 <a name="customizing-pagination-urls"></a>
 
@@ -198,7 +189,6 @@ select * from users where id > 15 order by id asc limit 15;
     
         //
     });
-
 <a name="appending-query-string-values"></a>
 
 #### 加上 Query String 值
@@ -214,11 +204,9 @@ select * from users where id > 15 order by id asc limit 15;
     
         //
     });
-
 若想將目前 Request 中所有的 Query String 值都加到分頁連結後，請使用 `withQueryString` 方法：
 
     $users = User::paginate(15)->withQueryString();
-
 <a name="appending-hash-fragments"></a>
 
 #### 附加 Hash Fragment
@@ -226,7 +214,6 @@ select * from users where id > 15 order by id asc limit 15;
 若想在 Paginator 產生的網址後方加上「Hash Fragment」，請使用 `fragment` 方法。舉例來說，若要在每個分頁鏈接後方加上 `#users`，則請像這樣叫用 `fragment` 方法：
 
     $users = User::paginate(15)->fragment('users');
-
 <a name="displaying-pagination-results"></a>
 
 ## 顯示分頁結果
@@ -244,7 +231,6 @@ select * from users where id > 15 order by id asc limit 15;
 
 {{ $users->links() }}
 ```
-
 `links` 方法會將分頁結果中其他頁面的連結轉譯出來。轉譯出來的這些連結都會包含適當的 `page` Query String 變數。請記得，由 `links` 方法所產生的 HTML 連結相容於 [Tailwind CSS 框架](https://tailwindcss.com)。
 
 <a name="adjusting-the-pagination-link-window"></a>
@@ -254,7 +240,6 @@ select * from users where id > 15 order by id asc limit 15;
 Paginator 在顯示分頁連結時，會顯示目前的頁碼以及該頁碼兩側各三頁的連結。只要使用 `onEachSide` 方法，就能控制 Paginator 在產生連結時目前頁碼的兩側各要顯示多少頁：
 
     {{ $users->onEachSide(5)->links() }}
-
 <a name="converting-results-to-json"></a>
 
 ### 將分頁結果轉為 JSON
@@ -266,7 +251,6 @@ Laravel 的 Paginator 類別實作了 `Illuminate\Contracts\Support\Jsonable` �
     Route::get('/users', function () {
         return User::paginate();
     });
-
 Paginator 轉換出來的 JSON 中會包含一些^[詮釋](Meta)資訊，如 `total`、`current_page`、`last_page`……等。在 JSON 陣列中，分頁結果的資料放在 `data` 索引鍵中。下列為從 Route 中回傳 Paginator 實體所產生的 JSON 範例：
 
     {
@@ -283,14 +267,13 @@ Paginator 轉換出來的 JSON 中會包含一些^[詮釋](Meta)資訊，如 `to
        "to": 15,
        "data":[
             {
-                // 資料...
+                // Record...
             },
             {
-                // 資料...
+                // Record...
             }
        ]
     }
-
 <a name="customizing-the-pagination-view"></a>
 
 ## 自訂分頁的 View
@@ -299,14 +282,12 @@ Paginator 轉換出來的 JSON 中會包含一些^[詮釋](Meta)資訊，如 `to
 
     {{ $paginator->links('view.name') }}
     
-    // 傳入額外資料給 View...
+    // Passing additional data to the view...
     {{ $paginator->links('view.name', ['foo' => 'bar']) }}
-
 不過，要自訂分頁連結最簡單的方法是使用 `vendor:publish` 來將分頁 View 安裝到 `resources/views/vendor` 目錄下：
 
     php artisan vendor:publish --tag=laravel-pagination
-
-該指令會將分頁的 View 放到專案的 `resources/views/vendor/pagination` 目錄下。該目錄下的 `tailwind.blade.php` 為預設的分頁 View。我們可以編輯該檔案來修改分頁的 HTML。
+該指令會將分頁的 View 放到專案的 `resources/views/vendor/pagination` 目錄下。該目錄下的  `tailwind.blade.php` 為預設的分頁 View。我們可以編輯該檔案來修改分頁的 HTML。
 
 若想指定用不同的檔案來作為預設的分頁 View，則可在 `App\Providers\AppServiceProvider` 類別的 `boot` 方法內叫用 Paginator 的 `defaultView` 與 `defaultSimpleView` 方法：
 
@@ -332,7 +313,6 @@ Paginator 轉換出來的 JSON 中會包含一些^[詮釋](Meta)資訊，如 `to
             Paginator::defaultSimpleView('view-name');
         }
     }
-
 <a name="using-bootstrap"></a>
 
 ### 使用 Bootstrap
@@ -350,7 +330,6 @@ Laravel 也提供了適用於 [Bootstrap CSS](https://getbootstrap.com/) 的分�
     {
         Paginator::useBootstrap();
     }
-
 <a name="paginator-instance-methods"></a>
 
 ## Paginator / LengthAwarePaginator 實體方法

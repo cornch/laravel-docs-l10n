@@ -1,11 +1,8 @@
 ---
-contributors:
-  14684796:
-    avatarUrl: https://crowdin-static.downloads.crowdin.com/avatar/14684796/medium/60f7dc21ec0bf9cfcb61983640bb4809_default.png
-    name: cornch
-crowdinUrl: https://crowdin.com/translate/laravel-docs/79/en-zhtw
-progress: 100
+crowdinUrl: 'https://crowdin.com/translate/laravel-docs/79/en-zhtw'
 updatedAt: '2024-06-30T08:27:00Z'
+contributors: {  }
+progress: 44.75
 ---
 
 # 輔助函式
@@ -13,11 +10,12 @@ updatedAt: '2024-06-30T08:27:00Z'
 - [簡介](#introduction)
 - [可用方法](#available-methods)
 - [其他公用程式](#other-utilities)
-   - [效能評定 (Benchmark)](#benchmarking)
-   - [Date - 日期](#dates)
-   - [Lottery](#lottery)
-   - [Pipeline](#pipeline)
-   - [Sleep](#sleep)
+  - [效能評定 (Benchmark)](#benchmarking)
+  - [Date - 日期](#dates)
+  - [Lottery](#lottery)
+  - [Pipeline](#pipeline)
+  - [Sleep](#sleep)
+  
 
 <a name="introduction"></a>
 
@@ -41,47 +39,168 @@ Laravel 提供了多種全域 PHP「輔助函式」。這些函式中，大部�
         white-space: nowrap;
     }
 </style>
-
 <a name="arrays-and-objects-method-list"></a>
 
 ### 陣列與物件
 
 <div class="collection-method-list" markdown="1">
-
-[Arr::accessible](#method-array-accessible) [Arr::add](#method-array-add) [Arr::collapse](#method-array-collapse) [Arr::crossJoin](#method-array-crossjoin) [Arr::divide](#method-array-divide) [Arr::dot](#method-array-dot) [Arr::except](#method-array-except) [Arr::exists](#method-array-exists) [Arr::first](#method-array-first) [Arr::flatten](#method-array-flatten) [Arr::forget](#method-array-forget) [Arr::get](#method-array-get) [Arr::has](#method-array-has) [Arr::hasAny](#method-array-hasany) [Arr::isAssoc](#method-array-isassoc) [Arr::isList](#method-array-islist) [Arr::join](#method-array-join) [Arr::keyBy](#method-array-keyby) [Arr::last](#method-array-last) [Arr::map](#method-array-map) [Arr::mapWithKeys](#method-array-map-with-keys) [Arr::only](#method-array-only) [Arr::pluck](#method-array-pluck) [Arr::prepend](#method-array-prepend) [Arr::prependKeysWith](#method-array-prependkeyswith) [Arr::pull](#method-array-pull) [Arr::query](#method-array-query) [Arr::random](#method-array-random) [Arr::set](#method-array-set) [Arr::shuffle](#method-array-shuffle) [Arr::sort](#method-array-sort) [Arr::sortDesc](#method-array-sort-desc) [Arr::sortRecursive](#method-array-sort-recursive) [Arr::sortRecursiveDesc](#method-array-sort-recursive-desc) [Arr::toCssClasses](#method-array-to-css-classes) [Arr::toCssStyles](#method-array-to-css-styles) [Arr::undot](#method-array-undot) [Arr::where](#method-array-where) [Arr::whereNotNull](#method-array-where-not-null) [Arr::wrap](#method-array-wrap) [data_fill](#method-data-fill) [data_get](#method-data-get) [data_set](#method-data-set) [data_forget](#method-data-forget) [head](#method-head) [last](#method-last)
+[Arr::accessible](#method-array-accessible)
+[Arr::add](#method-array-add)
+[Arr::collapse](#method-array-collapse)
+[Arr::crossJoin](#method-array-crossjoin)
+[Arr::divide](#method-array-divide)
+[Arr::dot](#method-array-dot)
+[Arr::except](#method-array-except)
+[Arr::exists](#method-array-exists)
+[Arr::first](#method-array-first)
+[Arr::flatten](#method-array-flatten)
+[Arr::forget](#method-array-forget)
+[Arr::get](#method-array-get)
+[Arr::has](#method-array-has)
+[Arr::hasAny](#method-array-hasany)
+[Arr::isAssoc](#method-array-isassoc)
+[Arr::isList](#method-array-islist)
+[Arr::join](#method-array-join)
+[Arr::keyBy](#method-array-keyby)
+[Arr::last](#method-array-last)
+[Arr::map](#method-array-map)
+[Arr::mapWithKeys](#method-array-map-with-keys)
+[Arr::only](#method-array-only)
+[Arr::pluck](#method-array-pluck)
+[Arr::prepend](#method-array-prepend)
+[Arr::prependKeysWith](#method-array-prependkeyswith)
+[Arr::pull](#method-array-pull)
+[Arr::query](#method-array-query)
+[Arr::random](#method-array-random)
+[Arr::set](#method-array-set)
+[Arr::shuffle](#method-array-shuffle)
+[Arr::sort](#method-array-sort)
+[Arr::sortDesc](#method-array-sort-desc)
+[Arr::sortRecursive](#method-array-sort-recursive)
+[Arr::sortRecursiveDesc](#method-array-sort-recursive-desc)
+[Arr::take](#method-array-take)
+[Arr::toCssClasses](#method-array-to-css-classes)
+[Arr::toCssStyles](#method-array-to-css-styles)
+[Arr::undot](#method-array-undot)
+[Arr::where](#method-array-where)
+[Arr::whereNotNull](#method-array-where-not-null)
+[Arr::wrap](#method-array-wrap)
+[data_fill](#method-data-fill)
+[data_get](#method-data-get)
+[data_set](#method-data-set)
+[data_forget](#method-data-forget)
+[head](#method-head)
+[last](#method-last)
 
 </div>
+<a name="numbers-method-list"></a>
 
+### Numbers
+
+<div class="collection-method-list" markdown="1">
+[Number::abbreviate](#method-number-abbreviate)
+[Number::clamp](#method-number-clamp)
+[Number::currency](#method-number-currency)
+[Number::fileSize](#method-number-file-size)
+[Number::forHumans](#method-number-for-humans)
+[Number::format](#method-number-format)
+[Number::ordinal](#method-number-ordinal)
+[Number::percentage](#method-number-percentage)
+[Number::spell](#method-number-spell)
+[Number::useLocale](#method-number-use-locale)
+[Number::withLocale](#method-number-with-locale)
+
+</div>
 <a name="paths-method-list"></a>
 
 ### 路徑
 
 <div class="collection-method-list" markdown="1">
-
-[app_path](#method-app-path) [base_path](#method-base-path) [config_path](#method-config-path) [database_path](#method-database-path) [lang_path](#method-lang-path) [mix](#method-mix) [public_path](#method-public-path) [resource_path](#method-resource-path) [storage_path](#method-storage-path)
+[app_path](#method-app-path)
+[base_path](#method-base-path)
+[config_path](#method-config-path)
+[database_path](#method-database-path)
+[lang_path](#method-lang-path)
+[mix](#method-mix)
+[public_path](#method-public-path)
+[resource_path](#method-resource-path)
+[storage_path](#method-storage-path)
 
 </div>
-
 <a name="urls-method-list"></a>
 
 ### URL
 
 <div class="collection-method-list" markdown="1">
-
-[action](#method-action) [asset](#method-asset) [route](#method-route) [secure_asset](#method-secure-asset) [secure_url](#method-secure-url) [to_route](#method-to-route) [url](#method-url)
+[action](#method-action)
+[asset](#method-asset)
+[route](#method-route)
+[secure_asset](#method-secure-asset)
+[secure_url](#method-secure-url)
+[to_route](#method-to-route)
+[url](#method-url)
 
 </div>
-
 <a name="miscellaneous-method-list"></a>
 
 ### 其他
 
 <div class="collection-method-list" markdown="1">
-
-[abort](#method-abort) [abort_if](#method-abort-if) [abort_unless](#method-abort-unless) [app](#method-app) [auth](#method-auth) [back](#method-back) [bcrypt](#method-bcrypt) [blank](#method-blank) [broadcast](#method-broadcast) [cache](#method-cache) [class_uses_recursive](#method-class-uses-recursive) [collect](#method-collect) [config](#method-config) [cookie](#method-cookie) [csrf_field](#method-csrf-field) [csrf_token](#method-csrf-token) [decrypt](#method-decrypt) [dd](#method-dd) [dispatch](#method-dispatch) [dispatch_sync](#method-dispatch-sync) [dump](#method-dump) [encrypt](#method-encrypt) [env](#method-env) [event](#method-event) [fake](#method-fake) [filled](#method-filled) [info](#method-info) [logger](#method-logger) [method_field](#method-method-field) [now](#method-now) [old](#method-old) [optional](#method-optional) [policy](#method-policy) [redirect](#method-redirect) [report](#method-report) [report_if](#method-report-if) [report_unless](#method-report-unless) [request](#method-request) [rescue](#method-rescue) [resolve](#method-resolve) [response](#method-response) [retry](#method-retry) [session](#method-session) [tap](#method-tap) [throw_if](#method-throw-if) [throw_unless](#method-throw-unless) [today](#method-today) [trait_uses_recursive](#method-trait-uses-recursive) [transform](#method-transform) [validator](#method-validator) [value](#method-value) [view](#method-view) [with](#method-with)
+[abort](#method-abort)
+[abort_if](#method-abort-if)
+[abort_unless](#method-abort-unless)
+[app](#method-app)
+[auth](#method-auth)
+[back](#method-back)
+[bcrypt](#method-bcrypt)
+[blank](#method-blank)
+[broadcast](#method-broadcast)
+[cache](#method-cache)
+[class_uses_recursive](#method-class-uses-recursive)
+[collect](#method-collect)
+[config](#method-config)
+[cookie](#method-cookie)
+[csrf_field](#method-csrf-field)
+[csrf_token](#method-csrf-token)
+[decrypt](#method-decrypt)
+[dd](#method-dd)
+[dispatch](#method-dispatch)
+[dispatch_sync](#method-dispatch-sync)
+[dump](#method-dump)
+[encrypt](#method-encrypt)
+[env](#method-env)
+[event](#method-event)
+[fake](#method-fake)
+[filled](#method-filled)
+[info](#method-info)
+[logger](#method-logger)
+[method_field](#method-method-field)
+[now](#method-now)
+[old](#method-old)
+[optional](#method-optional)
+[policy](#method-policy)
+[redirect](#method-redirect)
+[report](#method-report)
+[report_if](#method-report-if)
+[report_unless](#method-report-unless)
+[request](#method-request)
+[rescue](#method-rescue)
+[resolve](#method-resolve)
+[response](#method-response)
+[retry](#method-retry)
+[session](#method-session)
+[tap](#method-tap)
+[throw_if](#method-throw-if)
+[throw_unless](#method-throw-unless)
+[today](#method-today)
+[trait_uses_recursive](#method-trait-uses-recursive)
+[transform](#method-transform)
+[validator](#method-validator)
+[value](#method-value)
+[view](#method-view)
+[with](#method-with)
 
 </div>
-
 <a name="arrays"></a>
 
 ## 陣列與物件
@@ -110,7 +229,6 @@ Laravel 提供了多種全域 PHP「輔助函式」。這些函式中，大部�
     $isAccessible = Arr::accessible(new stdClass);
     
     // false
-
 <a name="method-array-add"></a>
 
 #### `Arr::add()` {.collection-method}
@@ -126,7 +244,6 @@ Laravel 提供了多種全域 PHP「輔助函式」。這些函式中，大部�
     $array = Arr::add(['name' => 'Desk', 'price' => null], 'price', 100);
     
     // ['name' => 'Desk', 'price' => 100]
-
 <a name="method-array-collapse"></a>
 
 #### `Arr::collapse()` {.collection-method}
@@ -138,7 +255,6 @@ Laravel 提供了多種全域 PHP「輔助函式」。這些函式中，大部�
     $array = Arr::collapse([[1, 2, 3], [4, 5, 6], [7, 8, 9]]);
     
     // [1, 2, 3, 4, 5, 6, 7, 8, 9]
-
 <a name="method-array-crossjoin"></a>
 
 #### `Arr::crossJoin()` {.collection-method}
@@ -172,7 +288,6 @@ Laravel 提供了多種全域 PHP「輔助函式」。這些函式中，大部�
             [2, 'b', 'II'],
         ]
     */
-
 <a name="method-array-divide"></a>
 
 #### `Arr::divide()` {.collection-method}
@@ -186,7 +301,6 @@ Laravel 提供了多種全域 PHP「輔助函式」。這些函式中，大部�
     // $keys: ['name']
     
     // $values: ['Desk']
-
 <a name="method-array-dot"></a>
 
 #### `Arr::dot()` {.collection-method}
@@ -200,7 +314,6 @@ Laravel 提供了多種全域 PHP「輔助函式」。這些函式中，大部�
     $flattened = Arr::dot($array);
     
     // ['products.desk.price' => 100]
-
 <a name="method-array-except"></a>
 
 #### `Arr::except()` {.collection-method}
@@ -214,7 +327,6 @@ Laravel 提供了多種全域 PHP「輔助函式」。這些函式中，大部�
     $filtered = Arr::except($array, ['price']);
     
     // ['name' => 'Desk']
-
 <a name="method-array-exists"></a>
 
 #### `Arr::exists()` {.collection-method}
@@ -232,7 +344,6 @@ Laravel 提供了多種全域 PHP「輔助函式」。這些函式中，大部�
     $exists = Arr::exists($array, 'salary');
     
     // false
-
 <a name="method-array-first"></a>
 
 #### `Arr::first()` {.collection-method}
@@ -248,13 +359,11 @@ Laravel 提供了多種全域 PHP「輔助函式」。這些函式中，大部�
     });
     
     // 200
-
 也可以在第三個引數上提供一個預設值給該方法。若沒有任何值通過條件測試，就會回傳這個預設值：
 
     use Illuminate\Support\Arr;
     
     $first = Arr::first($array, $callback, $default);
-
 <a name="method-array-flatten"></a>
 
 #### `Arr::flatten()` {.collection-method}
@@ -268,7 +377,6 @@ Laravel 提供了多種全域 PHP「輔助函式」。這些函式中，大部�
     $flattened = Arr::flatten($array);
     
     // ['Joe', 'PHP', 'Ruby']
-
 <a name="method-array-forget"></a>
 
 #### `Arr::forget()` {.collection-method}
@@ -282,7 +390,6 @@ Laravel 提供了多種全域 PHP「輔助函式」。這些函式中，大部�
     Arr::forget($array, 'products.desk');
     
     // ['products' => []]
-
 <a name="method-array-get"></a>
 
 #### `Arr::get()` {.collection-method}
@@ -296,7 +403,6 @@ Laravel 提供了多種全域 PHP「輔助函式」。這些函式中，大部�
     $price = Arr::get($array, 'products.desk.price');
     
     // 100
-
 `Arr::get` 還接受一個預設值。若指定的索引鍵不存在時會回傳該預設值：
 
     use Illuminate\Support\Arr;
@@ -304,7 +410,6 @@ Laravel 提供了多種全域 PHP「輔助函式」。這些函式中，大部�
     $discount = Arr::get($array, 'products.desk.discount', 0);
     
     // 0
-
 <a name="method-array-has"></a>
 
 #### `Arr::has()` {.collection-method}
@@ -322,7 +427,6 @@ Laravel 提供了多種全域 PHP「輔助函式」。這些函式中，大部�
     $contains = Arr::has($array, ['product.price', 'product.discount']);
     
     // false
-
 <a name="method-array-hasany"></a>
 
 #### `Arr::hasAny()` {.collection-method}
@@ -344,7 +448,6 @@ Laravel 提供了多種全域 PHP「輔助函式」。這些函式中，大部�
     $contains = Arr::hasAny($array, ['category', 'product.discount']);
     
     // false
-
 <a name="method-array-isassoc"></a>
 
 #### `Arr::isAssoc()` {.collection-method}
@@ -360,7 +463,6 @@ Laravel 提供了多種全域 PHP「輔助函式」。這些函式中，大部�
     $isAssoc = Arr::isAssoc([1, 2, 3]);
     
     // false
-
 <a name="method-array-islist"></a>
 
 #### `Arr::isList()` {.collection-method}
@@ -376,7 +478,6 @@ Laravel 提供了多種全域 PHP「輔助函式」。這些函式中，大部�
     $isList = Arr::isList(['product' => ['name' => 'Desk', 'price' => 100]]);
     
     // false
-
 <a name="method-array-join"></a>
 
 #### `Arr::join()` {.collection-method}
@@ -394,7 +495,6 @@ Laravel 提供了多種全域 PHP「輔助函式」。這些函式中，大部�
     $joined = Arr::join($array, ', ', ' and ');
     
     // Tailwind, Alpine, Laravel and Livewire
-
 <a name="method-array-keyby"></a>
 
 #### `Arr::keyBy()` {.collection-method}
@@ -416,7 +516,6 @@ Laravel 提供了多種全域 PHP「輔助函式」。這些函式中，大部�
             'prod-200' => ['product_id' => 'prod-200', 'name' => 'Chair'],
         ]
     */
-
 <a name="method-array-last"></a>
 
 #### `Arr::last()` {.collection-method}
@@ -432,13 +531,11 @@ Laravel 提供了多種全域 PHP「輔助函式」。這些函式中，大部�
     });
     
     // 300
-
 可以在第三個引數上提供一個預設值給該方法。若沒有任何值通過條件測試，就會回傳這個預設值：
 
     use Illuminate\Support\Arr;
     
     $last = Arr::last($array, $callback, $default);
-
 <a name="method-array-map"></a>
 
 #### `Arr::map()` {.collection-method}
@@ -454,7 +551,6 @@ Laravel 提供了多種全域 PHP「輔助函式」。這些函式中，大部�
     });
     
     // ['first' => 'James', 'last' => 'Kirk']
-
 <a name="method-array-map-with-keys"></a>
 
 #### `Arr::mapWithKeys()` {.collection-method}
@@ -486,7 +582,6 @@ Laravel 提供了多種全域 PHP「輔助函式」。這些函式中，大部�
             'jane@example.com' => 'Jane',
         ]
     */
-
 <a name="method-array-only"></a>
 
 #### `Arr::only()` {.collection-method}
@@ -500,7 +595,6 @@ Laravel 提供了多種全域 PHP「輔助函式」。這些函式中，大部�
     $slice = Arr::only($array, ['name', 'price']);
     
     // ['name' => 'Desk', 'price' => 100]
-
 <a name="method-array-pluck"></a>
 
 #### `Arr::pluck()` {.collection-method}
@@ -517,7 +611,6 @@ Laravel 提供了多種全域 PHP「輔助函式」。這些函式中，大部�
     $names = Arr::pluck($array, 'developer.name');
     
     // ['Taylor', 'Abigail']
-
 也可以指定產生的清單要如何設定索引鍵：
 
     use Illuminate\Support\Arr;
@@ -525,7 +618,6 @@ Laravel 提供了多種全域 PHP「輔助函式」。這些函式中，大部�
     $names = Arr::pluck($array, 'developer.name', 'developer.id');
     
     // [1 => 'Taylor', 2 => 'Abigail']
-
 <a name="method-array-prepend"></a>
 
 #### `Arr::prepend()` {.collection-method}
@@ -539,7 +631,6 @@ Laravel 提供了多種全域 PHP「輔助函式」。這些函式中，大部�
     $array = Arr::prepend($array, 'zero');
     
     // ['zero', 'one', 'two', 'three', 'four']
-
 若有需要，也可以指定該值要使用的索引鍵：
 
     use Illuminate\Support\Arr;
@@ -549,7 +640,6 @@ Laravel 提供了多種全域 PHP「輔助函式」。這些函式中，大部�
     $array = Arr::prepend($array, 'Desk', 'name');
     
     // ['name' => 'Desk', 'price' => 100]
-
 <a name="method-array-prependkeyswith"></a>
 
 #### `Arr::prependKeysWith()` {.collection-method}
@@ -571,7 +661,6 @@ Laravel 提供了多種全域 PHP「輔助函式」。這些函式中，大部�
             'product.price' => 100,
         ]
     */
-
 <a name="method-array-pull"></a>
 
 #### `Arr::pull()` {.collection-method}
@@ -587,13 +676,11 @@ Laravel 提供了多種全域 PHP「輔助函式」。這些函式中，大部�
     // $name: Desk
     
     // $array: ['price' => 100]
-
 可以在第三個引數上提供一個預設值給該方法。若指定的索引鍵不存在，就會回傳這個預設值：
 
     use Illuminate\Support\Arr;
     
     $value = Arr::pull($array, $key, $default);
-
 <a name="method-array-query"></a>
 
 #### `Arr::query()` {.collection-method}
@@ -613,7 +700,6 @@ Laravel 提供了多種全域 PHP「輔助函式」。這些函式中，大部�
     Arr::query($array);
     
     // name=Taylor&order[column]=created_at&order[direction]=desc
-
 <a name="method-array-random"></a>
 
 #### `Arr::random()` {.collection-method}
@@ -626,16 +712,14 @@ Laravel 提供了多種全域 PHP「輔助函式」。這些函式中，大部�
     
     $random = Arr::random($array);
     
-    // 4 - (隨機取得)
-
+    // 4 - (retrieved randomly)
 也可以在第二個引數上指定要回傳項目的數量。請注意，若有提供第二個引數，就算只要求一個項目，還是會回傳一組陣列：
 
     use Illuminate\Support\Arr;
     
     $items = Arr::random($array, 2);
     
-    // [2, 5] - (隨機取得)
-
+    // [2, 5] - (retrieved randomly)
 <a name="method-array-set"></a>
 
 #### `Arr::set()` {.collection-method}
@@ -649,7 +733,6 @@ Laravel 提供了多種全域 PHP「輔助函式」。這些函式中，大部�
     Arr::set($array, 'products.desk.price', 200);
     
     // ['products' => ['desk' => ['price' => 200]]]
-
 <a name="method-array-shuffle"></a>
 
 #### `Arr::shuffle()` {.collection-method}
@@ -660,8 +743,7 @@ Laravel 提供了多種全域 PHP「輔助函式」。這些函式中，大部�
     
     $array = Arr::shuffle([1, 2, 3, 4, 5]);
     
-    // [3, 2, 5, 1, 4] - (隨機產生)
-
+    // [3, 2, 5, 1, 4] - (generated randomly)
 <a name="method-array-sort"></a>
 
 #### `Arr::sort()` {.collection-method}
@@ -675,7 +757,6 @@ Laravel 提供了多種全域 PHP「輔助函式」。這些函式中，大部�
     $sorted = Arr::sort($array);
     
     // ['Chair', 'Desk', 'Table']
-
 也可以使用給定閉包的執行結果來排序陣列：
 
     use Illuminate\Support\Arr;
@@ -697,7 +778,6 @@ Laravel 提供了多種全域 PHP「輔助函式」。這些函式中，大部�
             ['name' => 'Table'],
         ]
     */
-
 <a name="method-array-sort-desc"></a>
 
 #### `Arr::sortDesc()` {.collection-method}
@@ -711,7 +791,6 @@ Laravel 提供了多種全域 PHP「輔助函式」。這些函式中，大部�
     $sorted = Arr::sortDesc($array);
     
     // ['Table', 'Desk', 'Chair']
-
 也可以使用給定閉包的執行結果來排序陣列：
 
     use Illuminate\Support\Arr;
@@ -733,7 +812,6 @@ Laravel 提供了多種全域 PHP「輔助函式」。這些函式中，大部�
             ['name' => 'Chair'],
         ]
     */
-
 <a name="method-array-sort-recursive"></a>
 
 #### `Arr::sortRecursive()` {.collection-method}
@@ -757,16 +835,34 @@ Laravel 提供了多種全域 PHP「輔助函式」。這些函式中，大部�
             ['Li', 'Roman', 'Taylor'],
         ]
     */
-
 若想讓結果以降冪排序，可使用 `Arr::sortRecursiveDesc` 方法。
 
     $sorted = Arr::sortRecursiveDesc($array);
+<a name="method-array-take"></a>
 
+#### `Arr::take()` {.collection-method}
+
+The `Arr::take` method returns a new array with the specified number of items:
+
+    use Illuminate\Support\Arr;
+    
+    $array = [0, 1, 2, 3, 4, 5];
+    
+    $chunk = Arr::take($array, 3);
+    
+    // [0, 1, 2]
+You may also pass a negative integer to take the specified number of items from the end of the array:
+
+    $array = [0, 1, 2, 3, 4, 5];
+    
+    $chunk = Arr::take($array, -2);
+    
+    // [4, 5]
 <a name="method-array-to-css-classes"></a>
 
 #### `Arr::toCssClasses()` {.collection-method}
 
-`Arr::toCssClasses` 可以有條件地編譯 CSS class 字串。該方法接受一組包含 class 的陣列，其中，陣列的索引鍵代表欲新增的 class，陣列值則是一個布林運算式。若陣列的元素有數字索引鍵，則該元素一定會被加到轉譯後的 Class 列表上：
+The `Arr::toCssClasses` method conditionally compiles a CSS class string. The method accepts an array of classes where the array key contains the class or classes you wish to add, while the value is a boolean expression. If the array element has a numeric key, it will always be included in the rendered class list:
 
     use Illuminate\Support\Arr;
     
@@ -780,7 +876,6 @@ Laravel 提供了多種全域 PHP「輔助函式」。這些函式中，大部�
     /*
         'p-4 bg-red'
     */
-
 <a name="method-array-to-css-styles"></a>
 
 #### `Arr::toCssStyles()` {.collection-method}
@@ -788,6 +883,8 @@ Laravel 提供了多種全域 PHP「輔助函式」。這些函式中，大部�
 `Arr::toCssClasses` 可以有條件地編譯 CSS Class 字串。該方法接受一組包含 Class 的陣列，其中，陣列的索引鍵代表欲新增的 Class，陣列值則是一個布林運算式。若陣列的元素有數字索引鍵，則該元素一定會被加到轉譯後的 Class 列表上：
 
 ```php
+use Illuminate\Support\Arr;
+
 $hasColor = true;
 
 $array = ['background-color: blue', 'color: blue' => $hasColor];
@@ -798,7 +895,6 @@ $classes = Arr::toCssStyles($array);
     'background-color: blue; color: blue;'
 */
 ```
-
 該方法用於提供了 Laravel 的「[將 Class 於 Blade 元件的 Attribute Bag 合併](/docs/{{version}}/blade#conditionally-merge-classes)」功能，以及 `@class` [Blade 指示詞](/docs/{{version}}/blade#conditional-classes)。
 
 <a name="method-array-undot"></a>
@@ -817,7 +913,6 @@ $classes = Arr::toCssStyles($array);
     $array = Arr::undot($array);
     
     // ['user' => ['name' => 'Kevin Malone', 'occupation' => 'Accountant']]
-
 <a name="method-array-where"></a>
 
 #### `Arr::where()` {.collection-method}
@@ -833,7 +928,6 @@ $classes = Arr::toCssStyles($array);
     });
     
     // [1 => '200', 3 => '400']
-
 <a name="method-array-where-not-null"></a>
 
 #### `Arr::whereNotNull()` {.collection-method}
@@ -847,7 +941,6 @@ $classes = Arr::toCssStyles($array);
     $filtered = Arr::whereNotNull($array);
     
     // [0 => 0]
-
 <a name="method-array-wrap"></a>
 
 #### `Arr::wrap()` {.collection-method}
@@ -861,7 +954,6 @@ $classes = Arr::toCssStyles($array);
     $array = Arr::wrap($string);
     
     // ['Laravel']
-
 若給定值為 `null`，則會回傳空陣列：
 
     use Illuminate\Support\Arr;
@@ -869,7 +961,6 @@ $classes = Arr::toCssStyles($array);
     $array = Arr::wrap(null);
     
     // []
-
 <a name="method-data-fill"></a>
 
 #### `data_fill()` {.collection-method}
@@ -885,7 +976,6 @@ $classes = Arr::toCssStyles($array);
     data_fill($data, 'products.desk.discount', 10);
     
     // ['products' => ['desk' => ['price' => 100, 'discount' => 10]]]
-
 該方法也支援使用星號作為萬用字元，會填上對應的目標：
 
     $data = [
@@ -905,7 +995,6 @@ $classes = Arr::toCssStyles($array);
             ],
         ]
     */
-
 <a name="method-data-get"></a>
 
 #### `data_get()` {.collection-method}
@@ -917,13 +1006,11 @@ $classes = Arr::toCssStyles($array);
     $price = data_get($data, 'products.desk.price');
     
     // 100
-
 `data_get` 還接受一個預設值。若找不到指定的索引鍵時會回傳該預設值：
 
     $discount = data_get($data, 'products.desk.discount', 0);
     
     // 0
-
 該方法也接受使用星號來作為萬用字元，可以套用到陣列或物件上的任何索引鍵：
 
     $data = [
@@ -934,7 +1021,6 @@ $classes = Arr::toCssStyles($array);
     data_get($data, '*.name');
     
     // ['Desk 1', 'Desk 2'];
-
 <a name="method-data-set"></a>
 
 #### `data_set()` {.collection-method}
@@ -946,7 +1032,6 @@ $classes = Arr::toCssStyles($array);
     data_set($data, 'products.desk.price', 200);
     
     // ['products' => ['desk' => ['price' => 200]]]
-
 該函式也接受使用星號作為萬用字元，會為設定相應的目標賦值：
 
     $data = [
@@ -966,7 +1051,6 @@ $classes = Arr::toCssStyles($array);
             ],
         ]
     */
-
 預設情況下，會複寫現有的值。若只想為不存在的項目賦值，可傳入 `false` 作為第四個引數給該函式：
 
     $data = ['products' => ['desk' => ['price' => 100]]];
@@ -974,7 +1058,6 @@ $classes = Arr::toCssStyles($array);
     data_set($data, 'products.desk.price', 200, overwrite: false);
     
     // ['products' => ['desk' => ['price' => 100]]]
-
 <a name="method-data-forget"></a>
 
 #### `data_forget()` {.collection-method}
@@ -986,7 +1069,6 @@ $classes = Arr::toCssStyles($array);
     data_forget($data, 'products.desk.price');
     
     // ['products' => ['desk' => []]]
-
 該函式也接受使用星號作為萬用字元，會移除相應的目標值：
 
     $data = [
@@ -1006,7 +1088,6 @@ $classes = Arr::toCssStyles($array);
             ],
         ]
     */
-
 <a name="method-head"></a>
 
 #### `head()` {.collection-method}
@@ -1018,7 +1099,6 @@ $classes = Arr::toCssStyles($array);
     $first = head($array);
     
     // 100
-
 <a name="method-last"></a>
 
 #### `last()` {.collection-method}
@@ -1030,7 +1110,233 @@ $classes = Arr::toCssStyles($array);
     $last = last($array);
     
     // 300
+<a name="numbers"></a>
 
+## Numbers
+
+<a name="method-number-abbreviate"></a>
+
+#### `Number::abbreviate()` {.collection-method}
+
+The `Number::abbreviate` method returns the human-readable format of the provided numerical value, with an abbreviation for the units:
+
+    use Illuminate\Support\Number;
+    
+    $number = Number::abbreviate(1000);
+    
+    // 1K
+    
+    $number = Number::abbreviate(489939);
+    
+    // 490K
+    
+    $number = Number::abbreviate(1230000, precision: 2);
+    
+    // 1.23M
+<a name="method-number-clamp"></a>
+
+#### `Number::clamp()` {.collection-method}
+
+The `Number::clamp` method ensures a given number stays within a specified range. If the number is lower than the minimum, the minimum value is returned. If the number is higher than the maximum, the maximum value is returned:
+
+    use Illuminate\Support\Number;
+    
+    $number = Number::clamp(105, min: 10, max: 100);
+    
+    // 100
+    
+    $number = Number::clamp(5, min: 10, max: 100);
+    
+    // 10
+    
+    $number = Number::clamp(10, min: 10, max: 100);
+    
+    // 10
+    
+    $number = Number::clamp(20, min: 10, max: 100);
+    
+    // 20
+<a name="method-number-currency"></a>
+
+#### `Number::currency()` {.collection-method}
+
+The `Number::currency` method returns the currency representation of the given value as a string:
+
+    use Illuminate\Support\Number;
+    
+    $currency = Number::currency(1000);
+    
+    // $1,000
+    
+    $currency = Number::currency(1000, in: 'EUR');
+    
+    // €1,000
+    
+    $currency = Number::currency(1000, in: 'EUR', locale: 'de');
+    
+    // 1.000 €
+<a name="method-number-file-size"></a>
+
+#### `Number::fileSize()` {.collection-method}
+
+The `Number::fileSize` method returns the file size representation of the given byte value as a string:
+
+    use Illuminate\Support\Number;
+    
+    $size = Number::fileSize(1024);
+    
+    // 1 KB
+    
+    $size = Number::fileSize(1024 * 1024);
+    
+    // 1 MB
+    
+    $size = Number::fileSize(1024, precision: 2);
+    
+    // 1.00 KB
+<a name="method-number-for-humans"></a>
+
+#### `Number::forHumans()` {.collection-method}
+
+The `Number::forHumans` method returns the human-readable format of the provided numerical value:
+
+    use Illuminate\Support\Number;
+    
+    $number = Number::forHumans(1000);
+    
+    // 1 thousand
+    
+    $number = Number::forHumans(489939);
+    
+    // 490 thousand
+    
+    $number = Number::forHumans(1230000, precision: 2);
+    
+    // 1.23 million
+<a name="method-number-format"></a>
+
+#### `Number::format()` {.collection-method}
+
+The `Number::format` method formats the given number into a locale specific string:
+
+    use Illuminate\Support\Number;
+    
+    $number = Number::format(100000);
+    
+    // 100,000
+    
+    $number = Number::format(100000, precision: 2);
+    
+    // 100,000.00
+    
+    $number = Number::format(100000.123, maxPrecision: 2);
+    
+    // 100,000.12
+    
+    $number = Number::format(100000, locale: 'de');
+    
+    // 100.000
+<a name="method-number-ordinal"></a>
+
+#### `Number::ordinal()` {.collection-method}
+
+The `Number::ordinal` method returns a number's ordinal representation:
+
+    use Illuminate\Support\Number;
+    
+    $number = Number::ordinal(1);
+    
+    // 1st
+    
+    $number = Number::ordinal(2);
+    
+    // 2nd
+    
+    $number = Number::ordinal(21);
+    
+    // 21st
+<a name="method-number-percentage"></a>
+
+#### `Number::percentage()` {.collection-method}
+
+The `Number::percentage` method returns the percentage representation of the given value as a string:
+
+    use Illuminate\Support\Number;
+    
+    $percentage = Number::percentage(10);
+    
+    // 10%
+    
+    $percentage = Number::percentage(10, precision: 2);
+    
+    // 10.00%
+    
+    $percentage = Number::percentage(10.123, maxPrecision: 2);
+    
+    // 10.12%
+    
+    $percentage = Number::percentage(10, precision: 2, locale: 'de');
+    
+    // 10,00%
+<a name="method-number-spell"></a>
+
+#### `Number::spell()` {.collection-method}
+
+The `Number::spell` method transforms the given number into a string of words:
+
+    use Illuminate\Support\Number;
+    
+    $number = Number::spell(102);
+    
+    // one hundred and two
+    
+    $number = Number::spell(88, locale: 'fr');
+    
+    // quatre-vingt-huit
+The `after` argument allows you to specify a value after which all numbers should be spelled out:
+
+    $number = Number::spell(10, after: 10);
+    
+    // 10
+    
+    $number = Number::spell(11, after: 10);
+    
+    // eleven
+The `until` argument allows you to specify a value before which all numbers should be spelled out:
+
+    $number = Number::spell(5, until: 10);
+    
+    // five
+    
+    $number = Number::spell(10, until: 10);
+    
+    // 10
+<a name="method-number-use-locale"></a>
+
+#### `Number::useLocale()` {.collection-method}
+
+The `Number::useLocale` method sets the default number locale globally, which affects how numbers and currency are formatted by subsequent invocations to the `Number` class's methods:
+
+    use Illuminate\Support\Number;
+    
+    /**
+     * Bootstrap any application services.
+     */
+    public function boot(): void
+    {
+        Number::useLocale('de');
+    }
+<a name="method-number-with-locale"></a>
+
+#### `Number::withLocale()` {.collection-method}
+
+The `Number::withLocale` method executes the given closure using the specified locale and then restores the original locale after the callback has executed:
+
+    use Illuminate\Support\Number;
+    
+    $number = Number::withLocale('de', function () {
+        return Number::format(1500);
+    });
 <a name="paths"></a>
 
 ## 路徑
@@ -1044,7 +1350,6 @@ $classes = Arr::toCssStyles($array);
     $path = app_path();
     
     $path = app_path('Http/Controllers/Controller.php');
-
 <a name="method-base-path"></a>
 
 #### `base_path()` {.collection-method}
@@ -1054,7 +1359,6 @@ $classes = Arr::toCssStyles($array);
     $path = base_path();
     
     $path = base_path('vendor/bin');
-
 <a name="method-config-path"></a>
 
 #### `config_path()` {.collection-method}
@@ -1064,7 +1368,6 @@ $classes = Arr::toCssStyles($array);
     $path = config_path();
     
     $path = config_path('app.php');
-
 <a name="method-database-path"></a>
 
 #### `database_path()` {.collection-method}
@@ -1074,7 +1377,6 @@ $classes = Arr::toCssStyles($array);
     $path = database_path();
     
     $path = database_path('factories/UserFactory.php');
-
 <a name="method-lang-path"></a>
 
 #### `lang_path()` {.collection-method}
@@ -1084,8 +1386,8 @@ $classes = Arr::toCssStyles($array);
     $path = lang_path();
     
     $path = lang_path('en/messages.php');
-
-> **Note** 預設情況下，Laravel 專案的 Skeleton 中未包含 `lang` 目錄。若想自定 Laravel 的語系檔，可以使用 `lang:publish` Artisan 指令來安裝語系檔：
+> [!NOTE]  
+> 預設情況下，Laravel 專案的 Skeleton 中未包含 `lang` 目錄。若想自定 Laravel 的語系檔，可以使用 `lang:publish` Artisan 指令來安裝語系檔：
 
 <a name="method-mix"></a>
 
@@ -1094,7 +1396,6 @@ $classes = Arr::toCssStyles($array);
 `mix` 函式回傳[版本化的 Mix 檔案](/docs/{{version}}/mix)路徑：
 
     $path = mix('css/app.css');
-
 <a name="method-public-path"></a>
 
 #### `public_path()` {.collection-method}
@@ -1104,7 +1405,6 @@ $classes = Arr::toCssStyles($array);
     $path = public_path();
     
     $path = public_path('css/app.css');
-
 <a name="method-resource-path"></a>
 
 #### `resource_path()` {.collection-method}
@@ -1114,7 +1414,6 @@ $classes = Arr::toCssStyles($array);
     $path = resource_path();
     
     $path = resource_path('sass/app.scss');
-
 <a name="method-storage-path"></a>
 
 #### `storage_path()` {.collection-method}
@@ -1124,7 +1423,6 @@ $classes = Arr::toCssStyles($array);
     $path = storage_path();
     
     $path = storage_path('app/file.txt');
-
 <a name="urls"></a>
 
 ## URL
@@ -1138,11 +1436,9 @@ $classes = Arr::toCssStyles($array);
     use App\Http\Controllers\HomeController;
     
     $url = action([HomeController::class, 'index']);
-
 若該方法接受 Route 參數，請將這些 Route 參數作為第二個引數傳給該方法：
 
     $url = action([UserController::class, 'profile'], ['id' => 1]);
-
 <a name="method-asset"></a>
 
 #### `asset()` {.collection-method}
@@ -1150,13 +1446,11 @@ $classes = Arr::toCssStyles($array);
 `asset` 方法使用目前 Request 的 Scheme (HTTP 或 HTTPS) 來產生素材 URL：
 
     $url = asset('img/photo.jpg');
-
 可以在 `.env` 檔案中設定 `ASSET_URL` 變數來設定素材 URL 的主機名稱。若你將素材放在如 Amazon S3 或其他 CDN 之類的外部服務上，就很適合這樣設定：
 
     // ASSET_URL=http://example.com/assets
     
     $url = asset('img/photo.jpg'); // http://example.com/assets/img/photo.jpg
-
 <a name="method-route"></a>
 
 #### `route()` {.collection-method}
@@ -1164,15 +1458,12 @@ $classes = Arr::toCssStyles($array);
 `route` 函式產生給定[命名 Route](/docs/{{version}}/routing#named-routes) 的 URL：
 
     $url = route('route.name');
-
 若該 Route 接受參數，請將這些參數作為第二個引數傳給該方法：
 
     $url = route('route.name', ['id' => 1]);
-
 預設情況下，`route` 函式回傳絕對 URL。若想產生相對 URL，請傳入 `false` 作為第三個引數給該函式：
 
     $url = route('route.name', ['id' => 1], false);
-
 <a name="method-secure-asset"></a>
 
 #### `secure_asset()` {.collection-method}
@@ -1180,7 +1471,6 @@ $classes = Arr::toCssStyles($array);
 `secure_asset` 函式使用 HTTPS 為素材產生 URL：
 
     $url = secure_asset('img/photo.jpg');
-
 <a name="method-secure-url"></a>
 
 #### `secure_url()` {.collection-method}
@@ -1190,7 +1480,6 @@ $classes = Arr::toCssStyles($array);
     $url = secure_url('user/profile');
     
     $url = secure_url('user/profile', [1]);
-
 <a name="method-to-route"></a>
 
 #### `to_route()` {.collection-method}
@@ -1198,11 +1487,9 @@ $classes = Arr::toCssStyles($array);
 `to_route` 函式為給定的[命名 Route](/docs/{{version}}/routing#named-routes) 產生一個[重新導向的 HTTP Response](/docs/{{version}}/responses#redirects)：
 
     return to_route('users.show', ['user' => 1]);
-
 若有需要，也可以傳入一個用於跳轉的 HTTP 狀態碼以及一些額外的回應標頭作為 `to_route` 方法的第三與第四個引數：
 
     return to_route('users.show', ['user' => 1], 302, ['X-Framework' => 'Laravel']);
-
 <a name="method-url"></a>
 
 #### `url()` {.collection-method}
@@ -1212,7 +1499,6 @@ $classes = Arr::toCssStyles($array);
     $url = url('user/profile');
     
     $url = url('user/profile', [1]);
-
 若未提供路徑，則會回傳 `Illuminate\Routing\UrlGenerator` 實體：
 
     $current = url()->current();
@@ -1220,7 +1506,6 @@ $classes = Arr::toCssStyles($array);
     $full = url()->full();
     
     $previous = url()->previous();
-
 <a name="miscellaneous"></a>
 
 ## 其他
@@ -1229,14 +1514,12 @@ $classes = Arr::toCssStyles($array);
 
 #### `abort()` {.collection-method}
 
-`abort` 函式會擲回 [HTTP Exception](/docs/{{version}}/errors#http-exceptions)。HTTP Exception 會被 [^[Exception Handler](例外處理常式)](/docs/{{version}}/errors#the-exception-handler) 轉譯：
+`abort` 函式會擲回 [HTTP Exception](/docs/{{version}}/errors#http-exceptions)。HTTP Exception 會被 [^[Exception Handler](%E4%BE%8B%E5%A4%96%E8%99%95%E7%90%86%E5%B8%B8%E5%BC%8F)](/docs/{{version}}/errors#the-exception-handler) 轉譯：
 
     abort(403);
-
 也可以提供 Exception 訊息與要傳送給瀏覽器的自訂 HTTP Response 標頭：
 
     abort(403, 'Unauthorized.', $headers);
-
 <a name="method-abort-if"></a>
 
 #### `abort_if()` {.collection-method}
@@ -1244,7 +1527,6 @@ $classes = Arr::toCssStyles($array);
 `abort_if` 函式會在給定布林運算式取值為 `true` 時擲回一個 HTTP Exception：
 
     abort_if(! Auth::user()->isAdmin(), 403);
-
 與 `abort` 方法類似，我們也可以在第三個引數上提供 Exception 的 Response 文字，並在第四個引數上提供一組自訂 Response 標頭陣列。
 
 <a name="method-abort-unless"></a>
@@ -1254,7 +1536,6 @@ $classes = Arr::toCssStyles($array);
 `abort_unless` 函式會在給定布林運算式取值為 `false` 時擲回一個 HTTP Exception：
 
     abort_unless(Auth::user()->isAdmin(), 403);
-
 與 `abort` 方法類似，我們也可以在第三個引數上提供 Exception 的 Response 文字，並在第四個引數上提供一組自訂 Response 標頭陣列。
 
 <a name="method-app"></a>
@@ -1264,11 +1545,9 @@ $classes = Arr::toCssStyles($array);
 `app` 函式回傳 [Service Container](/docs/{{version}}/container) 實體：
 
     $container = app();
-
 也可以傳入一個類別或介面名稱來用 Container 解析：
 
     $api = app('HelpSpot\API');
-
 <a name="method-auth"></a>
 
 #### `auth()` {.collection-method}
@@ -1276,11 +1555,9 @@ $classes = Arr::toCssStyles($array);
 `auth` 函式回傳 [Authenticator](/docs/{{version}}/authentication) 的實體。可以使用 `auth` 函式來作為 `Auth` Facade 的替代：
 
     $user = auth()->user();
-
 若有需要，可以指定要存取的 Guard 實體：
 
     $user = auth('admin')->user();
-
 <a name="method-back"></a>
 
 #### `back()` {.collection-method}
@@ -1290,7 +1567,6 @@ $classes = Arr::toCssStyles($array);
     return back($status = 302, $headers = [], $fallback = '/');
     
     return back();
-
 <a name="method-bcrypt"></a>
 
 #### `bcrypt()` {.collection-method}
@@ -1298,7 +1574,6 @@ $classes = Arr::toCssStyles($array);
 `bcrypt` 方法使用 Bcrypt 來[雜湊](/docs/{{version}}/hashing)給定的值。也可以使用這個函式來作為 `Hash` Facade 的替代：
 
     $password = bcrypt('my-secret-password');
-
 <a name="method-blank"></a>
 
 #### `blank()` {.collection-method}
@@ -1317,7 +1592,6 @@ $classes = Arr::toCssStyles($array);
     blank(false);
     
     // false
-
 請參考 [`filled`](#method-filled) 方法以瞭解與 `blank` 相反的方法。
 
 <a name="method-broadcast"></a>
@@ -1329,7 +1603,6 @@ $classes = Arr::toCssStyles($array);
     broadcast(new UserRegistered($user));
     
     broadcast(new UserRegistered($user))->toOthers();
-
 <a name="method-cache"></a>
 
 #### `cache()` {.collection-method}
@@ -1339,13 +1612,11 @@ $classes = Arr::toCssStyles($array);
     $value = cache('key');
     
     $value = cache('key', 'default');
-
 可以傳入一組索引鍵 / 值配對的陣列給該函式來將項目加入快取中。也請傳入單位為秒的快取值有效期間：
 
     cache(['key' => 'value'], 300);
     
     cache(['key' => 'value'], now()->addSeconds(10));
-
 <a name="method-class-uses-recursive"></a>
 
 #### `class_uses_recursive()` {.collection-method}
@@ -1353,7 +1624,6 @@ $classes = Arr::toCssStyles($array);
 `class_uses_recursive` 函式回傳某個類別使用的所有 Trait，包含其所有^[上層](Parent)類別使用的 Trait：
 
     $traits = class_uses_recursive(App\Models\User::class);
-
 <a name="method-collect"></a>
 
 #### `collect()` {.collection-method}
@@ -1361,7 +1631,6 @@ $classes = Arr::toCssStyles($array);
 `collect` 函式使用給定值來建立一個 [Collection](/docs/{{version}}/collections) 實體：
 
     $collection = collect(['taylor', 'abigail']);
-
 <a name="method-config"></a>
 
 #### `config()` {.collection-method}
@@ -1371,11 +1640,9 @@ $classes = Arr::toCssStyles($array);
     $value = config('app.timezone');
     
     $value = config('app.timezone', $default);
-
 也可以在執行階段傳入一組索引鍵 / 值配對的陣列來設定設定值。不過，請注意，該函式只會影響目前 Request 的設定值，並不會實際更新設定：
 
     config(['app.debug' => true]);
-
 <a name="method-cookie"></a>
 
 #### `cookie()` {.collection-method}
@@ -1383,7 +1650,6 @@ $classes = Arr::toCssStyles($array);
 `cookie` 函式建立一個新的 [Cookie](/docs/{{version}}/requests#cookies) 實體：
 
     $cookie = cookie('name', 'value', $minutes);
-
 <a name="method-csrf-field"></a>
 
 #### `csrf_field()` {.collection-method}
@@ -1391,7 +1657,6 @@ $classes = Arr::toCssStyles($array);
 `csrf_field` 函式產生一個包含 CSRF Token 的 HTML `hidden` 輸入欄位。舉例來說，在 [Blade 語法](/docs/{{version}}/blade)中可這樣使用：
 
     {{ csrf_field() }}
-
 <a name="method-csrf-token"></a>
 
 #### `csrf_token()` {.collection-method}
@@ -1399,7 +1664,6 @@ $classes = Arr::toCssStyles($array);
 `csrf_token` 函式可取得目前 CSRF Token 的值：
 
     $token = csrf_token();
-
 <a name="method-decrypt"></a>
 
 #### `decrypt()` {.collection-method}
@@ -1407,7 +1671,6 @@ $classes = Arr::toCssStyles($array);
 `decrypt` 函式會[解密](/docs/{{version}}/encryption)給定的值。可使用這個方法作為 `Crypt` Facade 的替代。
 
     $password = decrypt($value);
-
 <a name="method-dd"></a>
 
 #### `dd()` {.collection-method}
@@ -1417,7 +1680,6 @@ $classes = Arr::toCssStyles($array);
     dd($value);
     
     dd($value1, $value2, $value3, ...);
-
 若不想結束目前的指令碼執行，請改為使用 [`dump`](#method-dump) 方法。
 
 <a name="method-dispatch"></a>
@@ -1427,7 +1689,6 @@ $classes = Arr::toCssStyles($array);
 `dispatch` 方法將給定 [Job](/docs/{{version}}/queues#creating-jobs) 推入 Laravel 的 [Job 佇列](/docs/{{version}}/queues) 中：
 
     dispatch(new App\Jobs\SendEmails);
-
 <a name="method-dispatch-sync"></a>
 
 #### `dispatch_sync()` {.collection-method}
@@ -1435,7 +1696,6 @@ $classes = Arr::toCssStyles($array);
 `dispatch_sync` 方法將給定的 Job 推入到[同步的 (Sync)](/docs/{{version}}/queues#synchronous-dispatching) Queue 中以立即處理該 Job：
 
     dispatch_sync(new App\Jobs\SendEmails);
-
 <a name="method-dump"></a>
 
 #### `dump()` {.collection-method}
@@ -1445,7 +1705,6 @@ $classes = Arr::toCssStyles($array);
     dump($value);
     
     dump($value1, $value2, $value3, ...);
-
 若想在傾印變數後停止執行指令碼，請使用 [`dd`](#method-dd) 函式來代替。
 
 <a name="method-encrypt"></a>
@@ -1455,7 +1714,6 @@ $classes = Arr::toCssStyles($array);
 `encrypt` 函式會[加密](/docs/{{version}}/encryption)給定的值。可使用這個方法作為 `Crypt` Facade 的替代：
 
     $secret = encrypt('my-secret-value');
-
 <a name="method-env"></a>
 
 #### `env()` {.collection-method}
@@ -1465,8 +1723,8 @@ $classes = Arr::toCssStyles($array);
     $env = env('APP_ENV');
     
     $env = env('APP_ENV', 'production');
-
-> **Warning** 若在部署流程中執行了 `config:cache` 指令，應確保只有在設定檔中呼叫 `env` 函式。設定檔被快取後，就不會再載入 `.env` 檔了。所有 `env` 函式查詢 `.env` 變數的呼叫都會回傳 `null`。
+> [!WARNING]  
+> 若在部署流程中執行了 `config:cache` 指令，應確保只有在設定檔中呼叫 `env` 函式。設定檔被快取後，就不會再載入 `.env` 檔了。所有 `env` 函式查詢 `.env` 變數的呼叫都會回傳 `null`。
 
 <a name="method-event"></a>
 
@@ -1475,7 +1733,6 @@ $classes = Arr::toCssStyles($array);
 `event` 函式將給定 [Event](/docs/{{version}}/events) ^[分派](Dispatch)給其 Listener：
 
     event(new UserRegistered($user));
-
 <a name="method-fake"></a>
 
 #### `fake()` {.collection-method}
@@ -1493,11 +1750,9 @@ $classes = Arr::toCssStyles($array);
     </dl>
 @endfor
 ```
-
 預設情況下，`fake` 函式會使用 `config/app.php` 設定檔中的 `app.faker_locale` 設定選項。不過，也可以將地區選項傳入 `fake` 函式來指定地區。每個地區選項都會被解析為個別的單例：
 
     fake('nl_NL')->name()
-
 <a name="method-filled"></a>
 
 #### `filled()` {.collection-method}
@@ -1516,7 +1771,6 @@ $classes = Arr::toCssStyles($array);
     filled(collect());
     
     // false
-
 請參考 [blank](#method-blank) 方法以瞭解與 `filled` 相反的方法。
 
 <a name="method-info"></a>
@@ -1526,11 +1780,9 @@ $classes = Arr::toCssStyles($array);
 `info` 函式寫入 info 等級的資訊至程式的 [日誌](/docs/{{version}}/logging) 中：
 
     info('Some helpful information!');
-
 也可以傳入一組包含上下文資料的陣列給該函式：
 
     info('User login attempt failed.', ['id' => $user->id]);
-
 <a name="method-logger"></a>
 
 #### `logger()` {.collection-method}
@@ -1538,15 +1790,12 @@ $classes = Arr::toCssStyles($array);
 `logger` 函式可用來寫入 `debug` 等級的訊息至[日誌](/docs/{{version}}/logging)中：
 
     logger('Debug message');
-
 也可以傳入一組包含上下文資料的陣列給該函式：
 
     logger('User has logged in.', ['id' => $user->id]);
-
 若未傳入任何值給該方法，則會回傳 [Logger](/docs/{{version}}/errors#logging) 實體：
 
     logger()->error('You are not allowed here.');
-
 <a name="method-method-field"></a>
 
 #### `method_field()` {.collection-method}
@@ -1556,7 +1805,6 @@ $classes = Arr::toCssStyles($array);
     <form method="POST">
         {{ method_field('DELETE') }}
     </form>
-
 <a name="method-now"></a>
 
 #### `now()` {.collection-method}
@@ -1564,7 +1812,6 @@ $classes = Arr::toCssStyles($array);
 `now` 函式建立一個目前時間的新 `Illuminate\Support\Carbon` 實體：
 
     $now = now();
-
 <a name="method-old"></a>
 
 #### `old()` {.collection-method}
@@ -1574,15 +1821,13 @@ $classes = Arr::toCssStyles($array);
     $value = old('value');
     
     $value = old('value', 'default');
-
 由於提供給 `old` 方法第二個引數的「預設值」常常都是 Eloquent Model 的屬性，因此，在 Laravel 中，我們可以直接將整個 Eloquent Model 作為第二個引數傳給 `old` 方法即可。當我們傳入 Eloquent Model 給 `old` 方法時，Laravel 會假設傳給 `old` 方法的第一個引數即為要當作「預設值」的 Eloquent 屬性名稱：
 
     {{ old('name', $user->name) }}
     
-    // 等同於...
+    // Is equivalent to...
     
     {{ old('name', $user) }}
-
 <a name="method-optional"></a>
 
 #### `optional()` {.collection-method}
@@ -1592,13 +1837,11 @@ $classes = Arr::toCssStyles($array);
     return optional($user->address)->street;
     
     {!! old('name', optional($user)->name) !!}
-
 `optional` 函式也接受閉包作為其第二個引數。若第一個引數傳入的值不是 null 時會叫用該閉包：
 
     return optional(User::find($id), function (User $user) {
         return $user->name;
     });
-
 <a name="method-policy"></a>
 
 #### `policy()` {.collection-method}
@@ -1606,7 +1849,6 @@ $classes = Arr::toCssStyles($array);
 `policy` 方法取得給定類別的 [Policy](/docs/{{version}}/authorization#creating-policies) 實體：
 
     $policy = policy(App\Models\User::class);
-
 <a name="method-redirect"></a>
 
 #### `redirect()` {.collection-method}
@@ -1618,7 +1860,6 @@ $classes = Arr::toCssStyles($array);
     return redirect('/home');
     
     return redirect()->route('route.name');
-
 <a name="method-report"></a>
 
 #### `report()` {.collection-method}
@@ -1626,11 +1867,9 @@ $classes = Arr::toCssStyles($array);
 `report` 函式會使用 [Exception Handler](/docs/{{version}}/errors#the-exception-handler) 來回報 Exception：
 
     report($e);
-
 `report` 函式也接受一個字串作為其引數。若傳入字串給該函式時，`report` 會使用給定的字串作為訊息來建立 Exception：
 
     report('Something went wrong.');
-
 <a name="method-report-if"></a>
 
 #### `report_if()` {.collection-method}
@@ -1640,7 +1879,6 @@ $classes = Arr::toCssStyles($array);
     report_if($shouldReport, $e);
     
     report_if($shouldReport, 'Something went wrong.');
-
 <a name="method-report-unless"></a>
 
 #### `report_unless()` {.collection-method}
@@ -1650,7 +1888,6 @@ $classes = Arr::toCssStyles($array);
     report_unless($reportingDisabled, $e);
     
     report_unless($reportingDisabled, 'Something went wrong.');
-
 <a name="method-request"></a>
 
 #### `request()` {.collection-method}
@@ -1660,7 +1897,6 @@ $classes = Arr::toCssStyles($array);
     $request = request();
     
     $value = request('key', $default);
-
 <a name="method-rescue"></a>
 
 #### `rescue()` {.collection-method}
@@ -1670,7 +1906,6 @@ $classes = Arr::toCssStyles($array);
     return rescue(function () {
         return $this->method();
     });
-
 也可以傳入第二個引數給 `rescue` 函式。執行閉包時若有發生 Exception，就會使用這個引數來當作回傳的「預設」值：
 
     return rescue(function () {
@@ -1682,7 +1917,6 @@ $classes = Arr::toCssStyles($array);
     }, function () {
         return $this->failure();
     });
-
 可提供一個 `report` 引數給 `rescue` 函式來判斷 Exception 是否應以 `report` 函式回報：
 
     return rescue(function () {
@@ -1690,7 +1924,6 @@ $classes = Arr::toCssStyles($array);
     }, report: function (Throwable $throwable) {
         return $throwable instanceof InvalidArgumentException;
     });
-
 <a name="method-resolve"></a>
 
 #### `resolve()` {.collection-method}
@@ -1698,7 +1931,6 @@ $classes = Arr::toCssStyles($array);
 `resolve` 函式使用 [Service Container](/docs/{{version}}/container) 來將給定的類別或介面名稱解析為實體：
 
     $api = resolve('HelpSpot\API');
-
 <a name="method-response"></a>
 
 #### `response()` {.collection-method}
@@ -1708,7 +1940,6 @@ $classes = Arr::toCssStyles($array);
     return response('Hello World', 200, $headers);
     
     return response()->json(['foo' => 'bar'], 200, $headers);
-
 <a name="method-retry"></a>
 
 #### `retry()` {.collection-method}
@@ -1716,9 +1947,8 @@ $classes = Arr::toCssStyles($array);
 `retry` 函式會嘗試執行給定的閉包，直到達到最大嘗試次數限制。若該回呼未^[擲回](Throw) Exception，則會回傳該回呼的回傳值。若回呼擲回 Exception，就會自動嘗試重新執行回呼。達到最大嘗試次數後，就會擲回 Exception：
 
     return retry(5, function () {
-        // 嘗試 5 次，每次嘗試間暫停 100ms...
+        // Attempt 5 times while resting 100ms between attempts...
     }, 100);
-
 若想自動手動計算每次長時間要暫停的毫秒數，可傳入閉包作為第三個引數給 `retry` 函式：
 
     use Exception;
@@ -1728,13 +1958,11 @@ $classes = Arr::toCssStyles($array);
     }, function (int $attempt, Exception $exception) {
         return $attempt * 100;
     });
-
 為了方便起見，也可以提供陣列作為 `retry` 函式的第一個引數。會使用這個真累來判斷每次嘗試間要暫停多久：
 
-    return retry([100, 200] function () {
-        // 第一次重試時休息 100ms，第二次重試時休息 200ms...
+    return retry([100, 200], function () {
+        // Sleep for 100ms on first retry, 200ms on second retry...
     });
-
 若只想在特定條件下重試，可傳入一個閉包作為第四個引數給 `retry` 函式：
 
     use Exception;
@@ -1744,7 +1972,6 @@ $classes = Arr::toCssStyles($array);
     }, 100, function (Exception $exception) {
         return $exception instanceof RetryException;
     });
-
 <a name="method-session"></a>
 
 #### `session()` {.collection-method}
@@ -1752,17 +1979,14 @@ $classes = Arr::toCssStyles($array);
 `session` 函式可用來取得或設定 [Session](/docs/{{version}}/session) 值：
 
     $value = session('key');
-
 可以傳入一組索引鍵 / 值配對的陣列給該函式來賦值：
 
     session(['chairs' => 7, 'instruments' => 3]);
-
 若未傳入任何值給該方法，則會回傳 Session Store 實體：
 
     $value = session()->get('key');
     
     session()->put('key', $value);
-
 <a name="method-tap"></a>
 
 #### `tap()` {.collection-method}
@@ -1774,20 +1998,17 @@ $classes = Arr::toCssStyles($array);
     
         $user->save();
     });
-
 若未傳入閉包給 `tap` 函式，則可呼叫任何給定 `$value` 上的方法。無論呼叫的方法回傳什麼值，在此處都會回傳 `$value`。舉例來說，Eloquent `update` 方法一般會回傳整數。不過，若我們可以將 `update` 方法的呼叫串在 `tap` 函式後方，來強制把該方法的回傳值改為 Model 實體：
 
     $user = tap($user)->update([
         'name' => $name,
         'email' => $email,
     ]);
-
 若要將 `tap` 方法加到類別上，可以將 `Illuminate\Support\Traits\Tappable` Trait 加到類別中。該 Trait 的 `tap` 方法接受一個閉包作為其唯一的引數。物件實體本身會被傳入該閉包中，並由 `tap` 方法回傳：
 
     return $user->tap(function (User $user) {
         // ...
     });
-
 <a name="method-throw-if"></a>
 
 #### `throw_if()` {.collection-method}
@@ -1801,7 +2022,6 @@ $classes = Arr::toCssStyles($array);
         AuthorizationException::class,
         'You are not allowed to access this page.'
     );
-
 <a name="method-throw-unless"></a>
 
 #### `throw_unless()` {.collection-method}
@@ -1815,7 +2035,6 @@ $classes = Arr::toCssStyles($array);
         AuthorizationException::class,
         'You are not allowed to access this page.'
     );
-
 <a name="method-today"></a>
 
 #### `today()` {.collection-method}
@@ -1823,7 +2042,6 @@ $classes = Arr::toCssStyles($array);
 `today` 函式建立一個目前日期的新 `Illuminate\Support\Carbon` 實體：
 
     $today = today();
-
 <a name="method-trait-uses-recursive"></a>
 
 #### `trait_uses_recursive()` {.collection-method}
@@ -1831,7 +2049,6 @@ $classes = Arr::toCssStyles($array);
 `trait_uses_recursive` 函式回傳該 Trait 使用的所有 Trait：
 
     $traits = trait_uses_recursive(\Illuminate\Notifications\Notifiable::class);
-
 <a name="method-transform"></a>
 
 #### `transform()` {.collection-method}
@@ -1845,13 +2062,11 @@ $classes = Arr::toCssStyles($array);
     $result = transform(5, $callback);
     
     // 10
-
 可傳入預設值或閉包作為第三個引數給該函式。若給定值為空白時，會回傳這個值：
 
     $result = transform(null, $callback, 'The value is blank');
     
     // The value is blank
-
 <a name="method-validator"></a>
 
 #### `validator()` {.collection-method}
@@ -1859,7 +2074,6 @@ $classes = Arr::toCssStyles($array);
 `validator` 函式使用給定的引數來建立一個新的 [Validator](/docs/{{version}}/validation) 實體。可以用來當作是 `Validator` Facade 的替代：
 
     $validator = validator($data, $rules, $messages);
-
 <a name="method-value"></a>
 
 #### `value()` {.collection-method}
@@ -1875,7 +2089,6 @@ $classes = Arr::toCssStyles($array);
     });
     
     // false
-
 也可以傳入更多引數給 `value` 函式。若第一個引數為閉包，則這些其他的引數會被作為引數來傳給該閉包。若不是閉包，則這些引數會被忽略：
 
     $result = value(function (string $name) {
@@ -1883,7 +2096,6 @@ $classes = Arr::toCssStyles($array);
     }, 'Taylor');
     
     // 'Taylor'
-
 <a name="method-view"></a>
 
 #### `view()` {.collection-method}
@@ -1891,7 +2103,6 @@ $classes = Arr::toCssStyles($array);
 `view` 函式可取得一個 [View](/docs/{{version}}/views) 實體：
 
     return view('auth.login');
-
 <a name="method-with"></a>
 
 #### `with()` {.collection-method}
@@ -1913,7 +2124,6 @@ $classes = Arr::toCssStyles($array);
     $result = with(5, null);
     
     // 5
-
 <a name="other-utilities"></a>
 
 ## 其他公用程式
@@ -1935,17 +2145,14 @@ $classes = Arr::toCssStyles($array);
         'Scenario 1' => fn () => User::count(), // 0.5 ms
         'Scenario 2' => fn () => User::all()->count(), // 20.0 ms
     ]);
-
 預設情況下，給定回呼擲回被執行一次 (即一次迭代)，而執行所花費的時間會被顯示在瀏覽器或主控台上。
 
 若想讓該回呼被執行多次，可使用該方法的第二個引數來指定該回呼要被呼叫的迭代數。執行該回呼超過一次時，`Benchmark` 類別會回傳在各個迭代間執行該回呼所花費的平均毫秒數：
 
     Benchmark::dd(fn () => User::count(), iterations: 10); // 0.5 ms
-
 有時候，我們可能會需要針對回呼進行基準測試 (Benchmark)，並取得該回呼的回傳值。 `value` 方法將回傳一個元組 (Tuple)，其中包含該回呼的回傳值，以及執行該回呼所花費的毫秒數：
 
     [$count, $duration] = Benchmark::value(fn () => User::count());
-
 <a name="dates"></a>
 
 ### Date - 日期
@@ -1955,7 +2162,6 @@ Laravel 包含了 [Carbon](https://carbon.nesbot.com/docs/) 函式庫。Carbon �
 ```php
 $now = now();
 ```
-
 或者，也可以使用 `Illuminate\Support\Carbon` 類別來建立新的 `Carbon` 實體：
 
 ```php
@@ -1963,7 +2169,6 @@ use Illuminate\Support\Carbon;
 
 $now = Carbon::now();
 ```
-
 請參考 [Carbon 的官方說明文件](https://carbon.nesbot.com/docs/)以進一步瞭解 Carbon 與其功能。
 
 <a name="lottery"></a>
@@ -1978,8 +2183,7 @@ Laravel 的 Lottery 類別可用來依據給定的機率執行回呼。這個類
         ->winner(fn () => $user->won())
         ->loser(fn () => $user->lost())
         ->choose();
-
-也可以將 Laravel 的 Lottery 類別與其他 Laravel 功能組合使用。舉例來說，當資料庫查詢速度慢時，我們可以只將其中一部分的查詢回報給 Exception Handler。此外，由於 Lottery 類別是 callable，因此我們可以將 Lottery 實體傳給任何接受 callable 的方法：
+也可以將 Laravel 的 Lottery 類別與其他 Laravel 功能組合使用。舉例來說，當資料庫查詢速度慢時，我們可以只將其中一部分的查詢回報給 Exception Handler。此外，由於 Lottery  類別是 callable，因此我們可以將 Lottery 實體傳給任何接受 callable 的方法：
 
     use Carbon\CarbonInterval;
     use Illuminate\Support\Facades\DB;
@@ -1989,30 +2193,28 @@ Laravel 的 Lottery 類別可用來依據給定的機率執行回呼。這個類
         CarbonInterval::seconds(2),
         Lottery::odds(1, 100)->winner(fn () => report('Querying > 2 seconds.')),
     );
-
 <a name="testing-lotteries"></a>
 
 #### 測試 Lottery
 
 Laravel 提供了一些簡單的方法，能讓你輕鬆測試專案的 Lottery 呼叫：
 
-    // Lottery 結果永遠為「贏」...
+    // Lottery will always win...
     Lottery::alwaysWin();
     
-    // Lottery 結果永遠為「輸」...
+    // Lottery will always lose...
     Lottery::alwaysLose();
     
-    // Lottery 的結果會先是「贏」，然後是「輸」，接著會回到其正常的行為...
+    // Lottery will win then lose, and finally return to normal behavior...
     Lottery::fix([true, false]);
     
-    // Lottery 會回到正常行為...
+    // Lottery will return to normal behavior...
     Lottery::determineResultsNormally();
-
 <a name="pipeline"></a>
 
 ### Pipeline
 
-Laravel 的 `Pipeline` Facade 是一個能將給定輸入「^[Pipe](輸送)」進一系列 Invokable 類別、閉包、或 Callable 管道的便利功能，能讓管道中一系列類別都有機會檢查並修改輸入，然後再繼續呼叫管道中的下一個 Callable：
+Laravel 的 `Pipeline` Facade 是一個能將給定輸入「^[Pipe](%E8%BC%B8%E9%80%81)」進一系列 Invokable 類別、閉包、或 Callable 管道的便利功能，能讓管道中一系列類別都有機會檢查並修改輸入，然後再繼續呼叫管道中的下一個 Callable：
 
 ```php
 use Closure;
@@ -2034,7 +2236,6 @@ $user = Pipeline::send($user)
             ])
             ->then(fn (User $user) => $user);
 ```
-
 就像這樣，管道中的各個 Invokable 類別或閉包都會收到輸入值以及一個 `$next` 閉包。呼叫 `$next` 閉包就會呼叫管道中的下一個 Callable。讀者可能已經注意到，這個寫法跟 [Middleware](/docs/{{version}}/middleware) 非常類似。
 
 當管道中的最後一個 Callable 呼叫了 `$next` 閉包，就會呼叫傳送給 `then` 中的 Callable。一般來說，這個 Callable 只會回傳給定的輸入。
@@ -2050,12 +2251,11 @@ $user = Pipeline::send($user)
             ])
             ->then(fn (User $user) => $user);
 ```
-
 <a name="sleep"></a>
 
 ### Sleep
 
-Laravel 的 `Sleep` 類別是一個輕便的 ^[Wrapper](包裝)，將 PHP 的原生 `sleep` 與 `unsleep` 函式包裝起來，提供更強的可測試性，並同時提供對開發人員更友善的時間處理 API：
+Laravel 的 `Sleep` 類別是一個輕便的 ^[Wrapper](%E5%8C%85%E8%A3%9D)，將 PHP 的原生 `sleep` 與 `unsleep` 函式包裝起來，提供更強的可測試性，並同時提供對開發人員更友善的時間處理 API：
 
     use Illuminate\Support\Sleep;
     
@@ -2066,34 +2266,31 @@ Laravel 的 `Sleep` 類別是一個輕便的 ^[Wrapper](包裝)，將 PHP 的原
     
         $waiting = /* ... */;
     }
-
 `Sleep` 類別提供了多個方法，能讓你處理不同單位的時間：
 
-    // 暫停執行 90 秒...
+    // Pause execution for 90 seconds...
     Sleep::for(1.5)->minutes();
     
-    // 暫停執行 2 秒...
+    // Pause execution for 2 seconds...
     Sleep::for(2)->seconds();
     
-    // 暫停執行 500 微秒...
+    // Pause execution for 500 milliseconds...
     Sleep::for(500)->milliseconds();
     
-    // 暫停執行 5,000 毫秒...
+    // Pause execution for 5,000 microseconds...
     Sleep::for(5000)->microseconds();
     
-    // 暫停直到給定時間...
+    // Pause execution until a given time...
     Sleep::until(now()->addMinute());
     
-    // PHP 原生「sleep」方法的別名...
+    // Alias of PHP's native "sleep" function...
     Sleep::sleep(2);
     
-    // PHP 原生「usleep」方法的別名...
+    // Alias of PHP's native "usleep" function...
     Sleep::usleep(5000);
-
 若要輕鬆組合搭配不同單位的時間，可使用 `and` 方法：
 
     Sleep::for(1)->second()->and(10)->milliseconds();
-
 <a name="testing-sleep"></a>
 
 #### 測試 Sleep
@@ -2109,7 +2306,6 @@ Laravel 的 `Sleep` 類別是一個輕便的 ^[Wrapper](包裝)，將 PHP 的原
     
         $waiting = /* ... */;
     }
-
 一般來說，測試此程式碼會花費 **至少** 一秒鐘。所幸，`Sleep` 類別能讓我們「模擬 (Fake)」暫停，好讓我們的測試套件能保持快速：
 
     public function test_it_waits_until_ready()
@@ -2118,7 +2314,6 @@ Laravel 的 `Sleep` 類別是一個輕便的 ^[Wrapper](包裝)，將 PHP 的原
     
         // ...
     }
-
 在模擬 (Fake) `Sleep` Class 時，會跳過實際的執行暫停，因此會使測試變快。
 
 一旦模擬了 `Sleep` 類別，我們就可以針對預期應產生的「Sleep」進行 Assertion 判斷。為了說明如何進行 Assertion，我們先假設我們要測試一個會暫停執行 3 次的程式碼，每次暫停都會增加 1 秒鐘。使用 `assertSequence` 方法，就可以測試我們的程式碼是否已「Sleep」適當的時間，同時又能保持讓我們的程式快速執行：
@@ -2135,26 +2330,24 @@ Laravel 的 `Sleep` 類別是一個輕便的 ^[Wrapper](包裝)，將 PHP 的原
             Sleep::for(3)->seconds(),
         ]);
     }
-
 當然，`Sleep` 類別還提供了各種其他的 Assertion 判斷能讓你在測試中使用：
 
     use Carbon\CarbonInterval as Duration;
     use Illuminate\Support\Sleep;
     
-    // 判斷呼叫了 Sleep 3 次...
+    // Assert that sleep was called 3 times...
     Sleep::assertSleptTimes(3);
     
-    // 判斷 Sleep 暫停的時長...
+    // Assert against the duration of sleep...
     Sleep::assertSlept(function (Duration $duration): bool {
         return /* ... */;
     }, times: 1);
     
-    // 判斷 Sleep Class 是否從未被呼叫...
+    // Assert that the Sleep class was never invoked...
     Sleep::assertNeverSlept();
     
-    // 判斷即使有呼叫 Sleep，也沒有發生暫停執行...
+    // Assert that, even if Sleep was called, no execution paused occurred...
     Sleep::assertInsomniac();
-
 有時，我們會需要在模擬 Sleep 發生時，執行一些動作。若要在發生模擬 Sleep 時執行動作，可提供規格回呼給 `whenFakingSleep` 方法。在下方的範例中，我們使用了 Laravel 的[時間操作輔助函式](/docs/{{version}}/mocking#interacting-with-time)來在每個 Sleep 發生的時候立即更改時間：
 
 ```php
@@ -2165,9 +2358,8 @@ $this->freezeTime();
 Sleep::fake();
 
 Sleep::whenFakingSleep(function (Duration $duration) {
-    // 模擬 Sleep 時更改時間...
+    // Progress time when faking sleep...
     $this->travel($duration->totalMilliseconds)->milliseconds();
 });
 ```
-
 在 Laravel 內部會在需要暫停執行時使用 `Sleep` Class。舉例來說，[`retry`](#method-retry) 輔助函式會在暫停時使用 `Sleep` Class，以在使用該輔助函式時提升可測試性。

@@ -1,11 +1,8 @@
 ---
-contributors:
-  14684796:
-    avatarUrl: https://crowdin-static.downloads.crowdin.com/avatar/14684796/medium/60f7dc21ec0bf9cfcb61983640bb4809_default.png
-    name: cornch
-crowdinUrl: https://crowdin.com/translate/laravel-docs/63/en-zhtw
-progress: 100
+crowdinUrl: 'https://crowdin.com/translate/laravel-docs/63/en-zhtw'
 updatedAt: '2024-06-30T08:26:00Z'
+contributors: {  }
+progress: 36.11
 ---
 
 # 加密
@@ -60,7 +57,6 @@ Laravel 的加密服務提供一個簡單且方便的介面，可讓我們通過
             ])->save();
         }
     }
-
 <a name="decrypting-a-value"></a>
 
 #### 解密

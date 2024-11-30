@@ -1,18 +1,15 @@
 ---
-contributors:
-  14684796:
-    avatarUrl: https://crowdin-static.downloads.crowdin.com/avatar/14684796/medium/60f7dc21ec0bf9cfcb61983640bb4809_default.png
-    name: cornch
-crowdinUrl: https://crowdin.com/translate/laravel-docs/63/en-zhtw
-progress: 100
+crowdinUrl: 'https://crowdin.com/translate/laravel-docs/63/en-zhtw'
 updatedAt: '2024-06-30T08:26:00Z'
+contributors: {  }
+progress: 36.11
 ---
 
 # 加密
 
 - [簡介](#introduction)
 - [設定](#configuration)
-- [使用 Encrypter](#using-the-encrypter)
+- [Using the Encrypter](#using-the-encrypter)
 
 <a name="introduction"></a>
 
@@ -28,11 +25,11 @@ Laravel 的加密服務提供一個簡單且方便的介面，可讓我們通過
 
 <a name="using-the-encrypter"></a>
 
-## 使用加密程式
+## Using the Encrypter
 
 <a name="encrypting-a-value"></a>
 
-#### 加密
+#### Encrypting a Value
 
 可以使用 `Crypt` Facade 提供的 `encryptString` 方法來加密。所有加密的值都使用 OpenSSL 與 AES-256-CBC Cipher 來加密。此外，所有加密的值都使用訊息驗證碼 (MAC, Message Authentiation Code) 簽名。整個在內的 MAC 可以防止我們去解謎任何由惡意使用者修改過的值：
 
@@ -58,10 +55,9 @@ Laravel 的加密服務提供一個簡單且方便的介面，可讓我們通過
             return redirect('/secrets');
         }
     }
-
 <a name="decrypting-a-value"></a>
 
-#### 解密
+#### Decrypting a Value
 
 可以使用 `Crypt` Facade 提供的 `decryptString` 方法來解密值。若該值無法被正確解密，如 MAC 無效等情況，則會擲回 `Illuminate\Contracts\Encryption\DecryptException`：
 

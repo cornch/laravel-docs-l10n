@@ -1,20 +1,18 @@
 ---
-contributors:
-  14684796:
-    avatarUrl: https://crowdin-static.downloads.crowdin.com/avatar/14684796/medium/60f7dc21ec0bf9cfcb61983640bb4809_default.png
-    name: cornch
-crowdinUrl: https://crowdin.com/translate/laravel-docs/27/en-zhtw
-progress: 100
+crowdinUrl: 'https://crowdin.com/translate/laravel-docs/27/en-zhtw'
 updatedAt: '2024-06-30T08:17:00Z'
+contributors: {  }
+progress: 58.47
 ---
 
 # 設定
 
 - [簡介](#introduction)
 - [環境組態](#environment-configuration)
-   - [環境變數型別](#environment-variable-types)
-   - [取得環境設定](#retrieving-environment-configuration)
-   - [判斷目前的環境](#determining-the-current-environment)
+  - [環境變數型別](#environment-variable-types)
+  - [取得環境設定](#retrieving-environment-configuration)
+  - [判斷目前的環境](#determining-the-current-environment)
+  
 - [存取設定值](#accessing-configuration-values)
 - [設定快取](#configuration-caching)
 - [偵錯模式](#debug-mode)
@@ -36,11 +34,12 @@ updatedAt: '2024-06-30T08:17:00Z'
 
 為了輕鬆達成此目標，Laravel 使用了 [DotEnv](https://github.com/vlucas/phpdotenv) PHP 函式庫。在全新的 Laravel 安裝上，專案的根目錄中會包含一個定義了許多常見環境變數的 `.env.example` 檔案。在 Laravel 的安裝過程中，這個檔案會自動被複製為 `.env`。
 
-Laravel 的預設 `.env` 檔包含了一些可能會依據專案是在本機還是正式環境上執行而不同的常見設定值。這些值接著會在 `config` 目錄中的 Laravel 設定檔內通過 Laravel 的 `env` 函式來取用。
+Laravel 的預設 `.env` 檔包含了一些可能會依據專案是在本機還是正式環境上執行而不同的常見設定值。這些值接著會在 `config` 目錄中的  Laravel 設定檔內通過 Laravel 的 `env` 函式來取用。
 
 若是與團隊協作開發，可能會想繼續將 `.env.example` 檔案包含在專案中。只要在範例設定檔中填入一些預留位置值，團隊中的其他開發人員就能清楚地知道要執行專案需要哪些環境變數。
 
-> {tip} 任何 `.env` 檔內的變數都可通過外部環境變數來複寫，如伺服器等級或是系統等級的環境變數。
+> [!TIP]  
+> 任何 `.env` 檔內的變數都可通過外部環境變數來複寫，如伺服器等級或是系統等級的環境變數。
 
 <a name="environment-file-security"></a>
 
@@ -74,7 +73,6 @@ Laravel 的預設 `.env` 檔包含了一些可能會依據專案是在本機還�
 若有需要定義包含空白的環境變數值，則需要將值以雙引號圍起來：
 
     APP_NAME="My Application"
-
 <a name="retrieving-environment-configuration"></a>
 
 ### 取得環境設定
@@ -82,7 +80,6 @@ Laravel 的預設 `.env` 檔包含了一些可能會依據專案是在本機還�
 該檔案中列出的所有變數都會在網站接收到請求的時候被載入進 `$_ENV` PHP 超全域變數內。不過，可以使用 `env` 輔助函式來在設定檔中取得這些變數。事實上，若閱讀 Laravel 的設定檔，就會發現其中許多選項已經使用到這個輔助函式了：
 
     'debug' => env('APP_DEBUG', false),
-
 傳入 `env` 函式的第二個值為「預設值」。該值會在環境變數中沒有給定索引鍵的時候被回傳。
 
 <a name="determining-the-current-environment"></a>
@@ -94,18 +91,17 @@ Laravel 的預設 `.env` 檔包含了一些可能會依據專案是在本機還�
     use Illuminate\Support\Facades\App;
     
     $environment = App::environment();
-
 可以傳入引數給 `environment` 方法來判斷目前環境是否符合給定的值。該方法會在目前環境符合任何一個給定值的時候回傳 `true`：
 
     if (App::environment('local')) {
-        // 目前環境為 local
+        // The environment is local
     }
     
     if (App::environment(['local', 'staging'])) {
-        // 目前環境不是 local 就是 staging...
+        // The environment is either local OR staging...
     }
-
-> {tip} 應用程式判斷的目前環境可以通過在伺服器等級上定義 `APP_ENV` 環境變數來複寫。
+> [!TIP]  
+> 可以通過在伺服器等級上定義 `APP_ENV` 環境變數來複寫網站偵測到的應用程式環境。
 
 <a name="accessing-configuration-values"></a>
 
@@ -115,13 +111,11 @@ Laravel 的預設 `.env` 檔包含了一些可能會依據專案是在本機還�
 
     $value = config('app.timezone');
     
-    // 若設定值不存在時，取得預設值...
+    // Retrieve a default value if the configuration value does not exist...
     $value = config('app.timezone', 'Asia/Seoul');
-
 若要在執行階段修改設定值，可以傳入陣列進 `config` 輔助函式：
 
     config(['app.timezone' => 'America/Chicago']);
-
 <a name="configuration-caching"></a>
 
 ## 設定快取
@@ -130,7 +124,8 @@ Laravel 的預設 `.env` 檔包含了一些可能會依據專案是在本機還�
 
 `php artisan config:cache` 指令通常應放在部署流程中。該指令不應在本機開發時執行，因為在專案開發的時候會時常需要修改設定值。
 
-> {note} 若在部署流程中執行了 `config:cache` 指令，應確保只有在設定檔中呼叫 `env` 函式。設定檔被快取後，就不會再載入 `.env` 檔了。因此，`env` 函式只會回傳外部的、系統等級的環境變數。
+> [!NOTE]  
+> 若在部署流程中執行了 `config:cache` 指令，應確保只有在設定檔中呼叫 `env` 函式。設定檔被快取後，就不會再載入 `.env` 檔了。因此，`env` 函式只會回傳外部的、系統等級的環境變數。
 
 <a name="debug-mode"></a>
 
@@ -149,15 +144,12 @@ Laravel 的預設 `.env` 檔包含了一些可能會依據專案是在本機還�
 若要啟用維護模式，請執行 `down` Artisan 指令：
 
     php artisan down
-
 若想要在所有維護模式回應中傳送 `Refresh` HTTP 標頭，則請在叫用 `down` 指令時提供 `refresh` 選項。`Refresh` 表頭會告訴瀏覽器：在指定 N 秒後，重新整理頁面：
 
     php artisan down --refresh=15
-
 也可以傳入一個 `retry` 選項給 `down` 指令，會用來設為 `Retry-After` HTTP 標頭的值，雖然一般的瀏覽器都會忽略這個標頭：
 
     php artisan down --retry=60
-
 <a name="bypassing-maintenance-mode"></a>
 
 #### 繞過維護模式
@@ -165,14 +157,13 @@ Laravel 的預設 `.env` 檔包含了一些可能會依據專案是在本機還�
 即時在維護模式下，也可以使用 `secret` 選項來指定一個用來繞過維護模式的權杖：
 
     php artisan down --secret="1630542a-246b-4b66-afa1-dd72a4c43515"
-
 將應用程式放入維護模式後，可以瀏覽符合該權杖的應用程式網址，Laravel 會簽發一個繞過維護模式的 Cookie 給瀏覽器：
 
     https://example.com/1630542a-246b-4b66-afa1-dd72a4c43515
-
 在存取該隱藏路由時，會接著被重新導向至應用程式的 `/` 路由。該 Cookie 被簽發給瀏覽器後，就可以像沒有在維護模式一樣正常地瀏覽應用程式。
 
-> {tip} 維護模式的密碼通常來說應該要由字母與數字字元組成，並可選地包含減號 (`-`, Dash)。應避免一些在 URL 中由特殊意義的字元，如 `?` 或 `&`。
+> [!TIP]  
+> 維護模式的密碼通常來說應該要由字母與數字字元組成，並可選地包含減號 (`-`, Dash)。應避免一些在 URL 中由特殊意義的字元，如 `?` 或 `&`。
 
 <a name="pre-rendering-the-maintenance-mode-view"></a>
 
@@ -183,7 +174,6 @@ Laravel 的預設 `.env` 檔包含了一些可能會依據專案是在本機還�
 因為如此，Laravel 提供了可以預先轉譯維護模式 View 的功能，並能在整個請求週期的一開始就將其回傳。這個 View 會在任何應用程式的相依性套件載入前就預先被轉譯。可以使用 `down` 指令的 `render` 選項來預轉譯所選的樣板：
 
     php artisan down --render="errors::503"
-
 <a name="redirecting-maintenance-mode-requests"></a>
 
 #### 重新導向維護模式的請求
@@ -191,7 +181,6 @@ Laravel 的預設 `.env` 檔包含了一些可能會依據專案是在本機還�
 在維護模式時，不管使用者嘗試存取什麼網址，Laravel 都會顯示維護模式 View。若由需要的話，也可以讓 Laravel 將所有請求都重新導向到一個特定的 URL。可以通過使用 `redirect` 選項來完成。舉例來說，我們可能會想將所有請求都重新導向至 `/` URL：
 
     php artisan down --redirect=/
-
 <a name="disabling-maintenance-mode"></a>
 
 #### 禁用維護模式
@@ -199,8 +188,8 @@ Laravel 的預設 `.env` 檔包含了一些可能會依據專案是在本機還�
 若要禁用維護模式，請使用 `up` 指令：
 
     php artisan up
-
-> {tip} 可以通過在 `resources/views/errors/503.blade.php` 中定義你自己的樣板來自定預設的維護模式樣板。
+> [!TIP]  
+> 可以通過在 `resources/views/errors/503.blade.php` 中定義你自己的樣板來自定預設的維護模式樣板。
 
 <a name="maintenance-mode-queues"></a>
 

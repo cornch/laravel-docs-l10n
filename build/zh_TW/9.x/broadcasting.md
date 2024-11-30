@@ -1,50 +1,56 @@
 ---
-contributors:
-  14684796:
-    avatarUrl: https://crowdin-static.downloads.crowdin.com/avatar/14684796/medium/60f7dc21ec0bf9cfcb61983640bb4809_default.png
-    name: cornch
-crowdinUrl: https://crowdin.com/translate/laravel-docs/19/en-zhtw
-progress: 100
+crowdinUrl: 'https://crowdin.com/translate/laravel-docs/19/en-zhtw'
 updatedAt: '2024-06-30T08:17:00Z'
+contributors: {  }
+progress: 46.22
 ---
 
 # 廣播 - Broadcast
 
 - [簡介](#introduction)
 - [伺服器端安裝](#server-side-installation)
-   - [設定](#configuration)
-   - [Pusher Channels](#pusher-channels)
-   - [Ably](#ably)
-   - [開放原始碼替代](#open-source-alternatives)
+  - [設定](#configuration)
+  - [Pusher Channels](#pusher-channels)
+  - [Ably](#ably)
+  - [開放原始碼替代](#open-source-alternatives)
+  
 - [用戶端安裝](#client-side-installation)
-   - [Pusher Channels](#client-pusher-channels)
-   - [Ably](#client-ably)
+  - [Pusher Channels](#client-pusher-channels)
+  - [Ably](#client-ably)
+  
 - [概念概覽](#concept-overview)
-   - [使用現有的應用程式](#using-example-application)
+  - [使用現有的應用程式](#using-example-application)
+  
 - [定義 Broadcast 事件](#defining-broadcast-events)
-   - [Broadcast 名稱](#broadcast-name)
-   - [Broadcast 資料](#broadcast-data)
-   - [Broadcast 佇列](#broadcast-queue)
-   - [Broadcast 條件](#broadcast-conditions)
-   - [Broadcast 與資料庫 Transaction](#broadcasting-and-database-transactions)
+  - [Broadcast 名稱](#broadcast-name)
+  - [Broadcast 資料](#broadcast-data)
+  - [Broadcast 佇列](#broadcast-queue)
+  - [Broadcast 條件](#broadcast-conditions)
+  - [Broadcast 與資料庫 Transaction](#broadcasting-and-database-transactions)
+  
 - [授權頻道](#authorizing-channels)
-   - [定義授權路由](#defining-authorization-routes)
-   - [定義授權回呼](#defining-authorization-callbacks)
-   - [定義頻道類別](#defining-channel-classes)
+  - [定義授權路由](#defining-authorization-routes)
+  - [定義授權回呼](#defining-authorization-callbacks)
+  - [定義頻道類別](#defining-channel-classes)
+  
 - [Broadcast 事件](#broadcasting-events)
-   - [僅限其他](#only-to-others)
-   - [自訂連線](#customizing-the-connection)
+  - [僅限其他](#only-to-others)
+  - [自訂連線](#customizing-the-connection)
+  
 - [接收 Broadcast](#receiving-broadcasts)
-   - [監聽事件](#listening-for-events)
-   - [離開頻道](#leaving-a-channel)
-   - [Namespace](#namespaces)
+  - [監聽事件](#listening-for-events)
+  - [離開頻道](#leaving-a-channel)
+  - [Namespace](#namespaces)
+  
 - [Presence 頻道](#presence-channels)
-   - [授權 Precense 頻道](#authorizing-presence-channels)
-   - [加入 Presence 頻道](#joining-presence-channels)
-   - [廣播至 Presence 頻道](#broadcasting-to-presence-channels)
+  - [授權 Precense 頻道](#authorizing-presence-channels)
+  - [加入 Presence 頻道](#joining-presence-channels)
+  - [廣播至 Presence 頻道](#broadcasting-to-presence-channels)
+  
 - [廣播 Model](#model-broadcasting)
-   - [廣播 Model 的慣例](#model-broadcasting-conventions)
-   - [監聽 Model Broadcast](#listening-for-model-broadcasts)
+  - [廣播 Model 的慣例](#model-broadcasting-conventions)
+  - [監聽 Model Broadcast](#listening-for-model-broadcasts)
+  
 - [用戶端事件](#client-events)
 - [通知](#notifications)
 
@@ -66,7 +72,8 @@ updatedAt: '2024-06-30T08:17:00Z'
 
 預設情況下，Laravel 包含了兩個伺服器端廣播 Driver 可供選擇：[Pusher Channels](https://pusher.com/channels) 與 [Ably](https://ably.com)。不過，也有如 [laravel-websockets](https://beyondco.de/docs/laravel-websockets/getting-started/introduction) 與 [soketi](https://docs.soketi.app/) 這樣由社群開發的套件提供不需要商業 Broadcast Provider 的額外 Broadcast Driver。
 
-> **Note** 在深入探討事件廣播前，請先確保你已閱讀有關 [事件與監聽程式](/docs/{{version}}/events)的 Laravel 說明文件。
+> [!NOTE]  
+> 在深入探討事件廣播前，請先確保你已閱讀有關 [事件與監聽程式](/docs/{{version}}/events)的 Laravel 說明文件。
 
 <a name="server-side-installation"></a>
 
@@ -103,7 +110,6 @@ updatedAt: '2024-06-30T08:17:00Z'
 ```shell
 composer require pusher/pusher-php-server
 ```
-
 接著，應在 `config/broadcasting.php` 設定檔中設定 Pusher Channels 的憑證。該檔案中已經有包含了一個範例的 Pusher Channels 設定，讓你可以快速指定你的 Key, Secret 以及 Application ID。通常來說，這些值應該要通過 `PUSHER_APP_KEY`, `PUSHER_APP_SECRET` 與 `PUSHER_APP_ID` [環境變數](/docs/{{version}}/configuration#environment-configuration) 來設定：
 
 ```ini
@@ -112,7 +118,6 @@ PUSHER_APP_KEY=your-pusher-key
 PUSHER_APP_SECRET=your-pusher-secret
 PUSHER_APP_CLUSTER=mt1
 ```
-
 `config/broadcasting.php` 檔的 `pusher` 設定能讓你指定 Channels 所支援的額外選項 `options`，如簇集 (Cluster)。
 
 接著，需要在 `.env` 檔中更改你的 Broadcast Driver 為 `pusher`：
@@ -120,7 +125,6 @@ PUSHER_APP_CLUSTER=mt1
 ```ini
 BROADCAST_DRIVER=pusher
 ```
-
 最後，就可以安裝並設定 [Laravel Echo](#client-side-installable)。Laravel Echo 會在用戶端上接收廣播事件。
 
 <a name="pusher-compatible-open-source-alternatives"></a>
@@ -138,19 +142,16 @@ BROADCAST_DRIVER=pusher
 ```shell
 composer require ably/ably-php
 ```
-
 接著，應在 `config/broadcasting.php` 設定檔中設定 Pusher Channels 的憑證。該檔案中已經有包含了一個範例的 Ably 設定，讓你可以快速指定你的金鑰。通常來說，這個值應該要通過 `ABLY_KEY` [環境變數](/docs/{{version}}/configuration#environment-configuration) 來設定：
 
 ```ini
 ABLY_KEY=your-ably-key
 ```
-
 接著，需要在 `.env` 檔中更改你的 Broadcast Driver 為 `ably`：
 
 ```ini
 BROADCAST_DRIVER=ably
 ```
-
 最後，就可以安裝並設定 [Laravel Echo](#client-side-installable)。Laravel Echo 會在用戶端上接收廣播事件。
 
 <a name="open-source-alternatives"></a>
@@ -182,7 +183,6 @@ BROADCAST_DRIVER=ably
 ```shell
 npm install --save-dev laravel-echo pusher-js
 ```
-
 安裝好 Echo 後，就可以在網站的 JavaScript 中建立一個新的 Echo 實體。要建立新 Echo 實體最好的地方就是在 Laravel 附帶的 `resources/js/bootstrap.js` 檔案最尾端。預設情況下，這個檔案內已經包含了一個範例的 Echo 設定，只需要將其取消註解即可：
 
 ```js
@@ -198,14 +198,13 @@ window.Echo = new Echo({
     forceTLS: true
 });
 ```
-
 取消註解並依照需求調整好 Echo 設定後，就可以編譯專案素材：
 
 ```shell
 npm run dev
 ```
-
-> **Note** 要瞭解更多有關編譯應用程式 JavaScript 素材的資訊，請參考 [Vite](/docs/{{version}}/vite) 中的說明文件。
+> [!NOTE]  
+> 要瞭解更多有關編譯應用程式 JavaScript 素材的資訊，請參考 [Vite](/docs/{{version}}/vite) 中的說明文件。
 
 <a name="using-an-existing-client-instance"></a>
 
@@ -227,7 +226,6 @@ window.Echo = new Echo({
     client: new Pusher(options.key, options)
 });
 ```
-
 <a name="client-ably"></a>
 
 ### Ably
@@ -239,7 +237,6 @@ window.Echo = new Echo({
 ```shell
 npm install --save-dev laravel-echo pusher-js
 ```
-
 **在繼續之前，應先在 Ably 應用程式設定中啟用 Pusher 通訊協定。可以在 Ably 應用程式設定面板中的「Protocol Adapter Settings」這個部分內啟用此功能。**
 
 安裝好 Echo 後，就可以在網站的 JavaScript 中建立一個新的 Echo 實體。要建立新 Echo 實體最好的地方就是在 Laravel 附帶的 `resources/js/bootstrap.js` 檔案最尾端。預設情況下，這個檔案內已經包含了一個範例的 Echo 設定。不過，`bootstrap.js` 檔案中預設的範例是給 Pusher 用的。可以複製下列設定來將你的設定檔改成使用 Ably：
@@ -259,7 +256,6 @@ window.Echo = new Echo({
     encrypted: true,
 });
 ```
-
 請注意，Ably Echo 設定中參考了 `VITE_ABLY_PUBLIC_KEY` 環境變數。這個環境變數應為 Ably 的公開金鑰。公開金鑰就是 Ably 金鑰中出現在 `:` 字元之前的部分。
 
 取消註解並依照需求調整好 Echo 設定後，就可以編譯專案素材：
@@ -267,8 +263,8 @@ window.Echo = new Echo({
 ```shell
 npm run dev
 ```
-
-> **Note** 要瞭解更多有關編譯應用程式 JavaScript 素材的資訊，請參考 [Vite](/docs/{{version}}/vite) 中的說明文件。
+> [!NOTE]  
+> 要瞭解更多有關編譯應用程式 JavaScript 素材的資訊，請參考 [Vite](/docs/{{version}}/vite) 中的說明文件。
 
 <a name="concept-overview"></a>
 
@@ -278,7 +274,8 @@ Laravel 的事件廣播功能能讓你以基於 Driver 的方法來將伺服器�
 
 事件是通過「頻道 (Channel)」進行廣播的，頻道可以被設為公共或私有。任何網站的瀏覽者都可以在不登入或經過授權的情況下訂閱公開頻道。不過，如果要訂閱私有頻道，就必須要登入並經過授權才可以監聽該頻道。
 
-> **Note** 若想瞭解更多 Pusher 的開放原始碼替代品，請參考[開放原始碼替代](#open-source-alternatives)一節。
+> [!NOTE]  
+> 若想瞭解更多 Pusher 的開放原始碼替代品，請參考[開放原始碼替代](#open-source-alternatives)一節。
 
 <a name="using-example-application"></a>
 
@@ -291,7 +288,6 @@ Laravel 的事件廣播功能能讓你以基於 Driver 的方法來將伺服器�
     use App\Events\OrderShipmentStatusUpdated;
     
     OrderShipmentStatusUpdated::dispatch($order);
-
 <a name="the-shouldbroadcast-interface"></a>
 
 #### `ShouldBroadcast` 介面
@@ -319,7 +315,6 @@ Laravel 的事件廣播功能能讓你以基於 Driver 的方法來將伺服器�
          */
         public $order;
     }
-
 `ShouldBroadcast` 介面需要我們在事件中定義一個 `broadcastOn` 方法。這個方法需要回傳該事件廣播的頻道。產生的事件類別當中已經棒我們加上了一個空白的 Stub，因此我們只需要填寫詳情就好了。我們只希望建立該訂單的使用者檢視狀態更新，因此我們會將事件放在該訂單的私有頻道上廣播：
 
     /**
@@ -331,7 +326,6 @@ Laravel 的事件廣播功能能讓你以基於 Driver 的方法來將伺服器�
     {
         return new PrivateChannel('orders.'.$this->order->id);
     }
-
 <a name="example-application-authorizing-channels"></a>
 
 #### 授權頻道
@@ -343,7 +337,6 @@ Laravel 的事件廣播功能能讓你以基於 Driver 的方法來將伺服器�
     Broadcast::channel('orders.{orderId}', function ($user, $orderId) {
         return $user->id === Order::findOrNew($orderId)->user_id;
     });
-
 `channel` 方法接收 2 個引數：頻道的名稱，以及會回傳 `true` 與 `false` 的回呼。這個回呼用來判斷使用者是否已授權監聽此頻道。
 
 所有的授權回呼都會收到目前登入使用者作為其第一個引數，而接下來的引數則是其他額外的萬用字元參數。在這個例子中，我們使用了 `{orderId}` 預留位置來標示頻道名稱中的「ID」部分是萬用字元。
@@ -360,7 +353,6 @@ Echo.private(`orders.${orderId}`)
         console.log(e.order);
     });
 ```
-
 <a name="defining-broadcast-events"></a>
 
 ## 定義廣播事件
@@ -413,7 +405,6 @@ Echo.private(`orders.${orderId}`)
             return new PrivateChannel('user.'.$this->user->id);
         }
     }
-
 實作完 `ShouldBroadcast` 介面後，只需要像平常一樣[觸發事件](/docs/{{version}}/events)即可。事件被觸發後，[佇列任務](/docs/{{version}}/queues)會自動通過指定的 Broadcast Driver 來廣播事件。
 
 <a name="broadcast-name"></a>
@@ -431,13 +422,11 @@ Echo.private(`orders.${orderId}`)
     {
         return 'server.created';
     }
-
 若使用 `broadcastAs` 方法來自訂 Broadcast 名稱，則應確保註冊監聽程式時有加上前置 `.` 字元。加上該前置字元可用來告訴 Echo 不要在事件前方加上專案的命名空間：
 
     .listen('.server.created', function (e) {
         ....
     });
-
 <a name="broadcast-data"></a>
 
 ### Broadcast 資料
@@ -453,7 +442,6 @@ Echo.private(`orders.${orderId}`)
     }
 }
 ```
-
 不過，若想對 Broadcast Payload 進一步地控制，可以在事件內加上一個 `broadcastWith` 方法。這個方法應回傳一個陣列，包含要作為事件 Payload 使用的資料：
 
     /**
@@ -465,7 +453,6 @@ Echo.private(`orders.${orderId}`)
     {
         return ['id' => $this->user->id];
     }
-
 <a name="broadcast-queue"></a>
 
 ### Broadcast 佇列
@@ -485,7 +472,6 @@ Echo.private(`orders.${orderId}`)
      * @var string
      */
     public $queue = 'default';
-
 或者，你也可以通過在事件中定義 `broadcastQueue` 方法來自訂佇列名稱：
 
     /**
@@ -497,7 +483,6 @@ Echo.private(`orders.${orderId}`)
     {
         return 'default';
     }
-
 若像使用 `sync` 佇列來代替預設的佇列 Driver，可以使用 `ShouldBroadcastNow` 來代替 `ShouldBroadcast` 進行實作：
 
     <?php
@@ -508,7 +493,6 @@ Echo.private(`orders.${orderId}`)
     {
         //
     }
-
 <a name="broadcast-conditions"></a>
 
 ### Broadcast 條件
@@ -524,7 +508,6 @@ Echo.private(`orders.${orderId}`)
     {
         return $this->order->value > 100;
     }
-
 <a name="broadcasting-and-database-transactions"></a>
 
 #### Broadcast 與資料庫 Transaction
@@ -546,8 +529,8 @@ Echo.private(`orders.${orderId}`)
     
         public $afterCommit = true;
     }
-
-> **Note** 要瞭解更多有關這類問題的解決方法，請參考有關[佇列任務與資料庫 Transaction](/docs/{{version}}/queues#jobs-and-database-transactions) 有關的說明文件。
+> [!NOTE]  
+> 要瞭解更多有關這類問題的解決方法，請參考有關[佇列任務與資料庫 Transaction](/docs/{{version}}/queues#jobs-and-database-transactions) 有關的說明文件。
 
 <a name="authorizing-channels"></a>
 
@@ -562,11 +545,9 @@ Echo.private(`orders.${orderId}`)
 好佳在，在 Laravel 中定義回應頻道授權請求的路由非常容易。在 Laravel 中隨附的 `App\Providers\BroadcastServiceProvider` 內，可以看到一個 `Broadcast::routes` 方法的呼叫。這個方法會註冊 `/broadcasting/auth` 路由來處理授權請求：
 
     Broadcast::routes();
-
 `Broadcast::routes` 方法會自動將其中的路由放置於 `web` Middleware 群組內。不過，若想自訂指派的屬性，也可以傳入包含路由屬性的陣列：
 
     Broadcast::routes($attributes);
-
 <a name="customizing-the-authorization-endpoint"></a>
 
 #### 自訂授權 Endpoint
@@ -580,7 +561,6 @@ window.Echo = new Echo({
     authEndpoint: '/custom/endpoint/auth'
 });
 ```
-
 <a name="customizing-the-authorization-request"></a>
 
 #### 自訂授權 Request
@@ -608,7 +588,6 @@ window.Echo = new Echo({
     },
 })
 ```
-
 <a name="defining-authorization-callbacks"></a>
 
 ### 定義授權回呼
@@ -618,7 +597,6 @@ window.Echo = new Echo({
     Broadcast::channel('orders.{orderId}', function ($user, $orderId) {
         return $user->id === Order::findOrNew($orderId)->user_id;
     });
-
 `channel` 方法接收 2 個引數：頻道的名稱，以及會回傳 `true` 與 `false` 的回呼。這個回呼用來判斷使用者是否已授權監聽此頻道。
 
 所有的授權回呼都會收到目前登入使用者作為其第一個引數，而接下來的引數則是其他額外的萬用字元參數。在這個例子中，我們使用了 `{orderId}` 預留位置來標示頻道名稱中的「ID」部分是萬用字元。
@@ -634,8 +612,8 @@ window.Echo = new Echo({
     Broadcast::channel('orders.{order}', function ($user, Order $order) {
         return $user->id === $order->user_id;
     });
-
-> **Warning** 與 HTTP 路由 Model 綁定不同，頻道的 Model 綁定不支援自動[為隱式 Model 綁定加上作用域]。不過，通常來說這不會造成問題，因為大部分的頻道都可以被放置與單一 Model 的獨立主鍵作用域內。
+> [!WARNING]  
+> 與 HTTP 路由 Model 綁定不同，頻道的 Model 綁定不支援自動[為隱式 Model 綁定加上作用域]。不過，通常來說這不會造成問題，因為大部分的頻道都可以被放置與單一 Model 的獨立主鍵作用域內。
 
 <a name="authorization-callback-authentication"></a>
 
@@ -646,7 +624,6 @@ window.Echo = new Echo({
     Broadcast::channel('channel', function () {
         // ...
     }, ['guards' => ['web', 'admin']]);
-
 <a name="defining-channel-classes"></a>
 
 ### 定義 Channel 類別
@@ -656,13 +633,11 @@ window.Echo = new Echo({
 ```shell
 php artisan make:channel OrderChannel
 ```
-
 接著，在 `routes/channels.php` 檔案內註冊頻道：
 
     use App\Broadcasting\OrderChannel;
     
     Broadcast::channel('orders.{order}', OrderChannel::class);
-
 最後，可以將頻道的授權邏輯放在頻道類別的 `join` 方法內。這個 `join` 方法用來放置與平常放在頻道授權閉包相同的邏輯。也可以使用頻道 Model 綁定：
 
     <?php
@@ -696,8 +671,8 @@ php artisan make:channel OrderChannel
             return $user->id === $order->user_id;
         }
     }
-
-> **Note** 與 Laravel 內其他類別一樣，頻道類別也會自動由 [Service Container](/docs/{{version}}/container) 解析。因此，我們可以在頻道的建構函式上對任何所需要的依賴進行型別提示。
+> [!NOTE]  
+> 與 Laravel 內其他類別一樣，頻道類別也會自動由 [Service Container](/docs/{{version}}/container) 解析。因此，我們可以在頻道的建構函式上對任何所需要的依賴進行型別提示。
 
 <a name="broadcasting-events"></a>
 
@@ -708,7 +683,6 @@ php artisan make:channel OrderChannel
     use App\Events\OrderShipmentStatusUpdated;
     
     OrderShipmentStatusUpdated::dispatch($order);
-
 <a name="only-to-others"></a>
 
 ### 僅限其他
@@ -718,7 +692,6 @@ php artisan make:channel OrderChannel
     use App\Events\OrderShipmentStatusUpdated;
     
     broadcast(new OrderShipmentStatusUpdated($update))->toOthers();
-
 為了幫助你更容易理解什麼時候會需要用到 `toOthers` 方法，我們來假設有個任務清單 App。在這個 App 中，使用者可以輸入任務名稱來新增任務。為了建立任務，這個 App 可能會向 `/task` URL 發起一個請求，該請求會將任務的建立廣播出去，並回傳代表新任務的 JSON。當 JavaScript 端從這個 End-point 收到回覆後，就可以直接將新任務插入到任務清單內。像這樣：
 
 ```js
@@ -727,10 +700,10 @@ axios.post('/task', task)
         this.tasks.push(response.data);
     });
 ```
-
 不過，提醒一下，我們也會將任務的建立廣播出去。如果 JavaScript 端也會監聽這個事件來將任務新增到任務清單上，那麼列表上就會有重複的任務：一個是從 End-point 回傳回來的，另一個則是從監聽事件來的。我們可以通過使用 `toOthers` 方法來告訴廣播程式不要將該事件廣播給目前的使用者。
 
-> **Warning** 若要呼叫 `toOthers` 方法，該事件必須要 use `Illuminate\Broadcasting\InteractsWithSockets` Trait。
+> [!WARNING]  
+> 若要呼叫 `toOthers` 方法，該事件必須要 use `Illuminate\Broadcasting\InteractsWithSockets` Trait。
 
 <a name="only-to-others-configuration"></a>
 
@@ -743,7 +716,6 @@ axios.post('/task', task)
 ```js
 var socketId = Echo.socketId();
 ```
-
 <a name="customizing-the-connection"></a>
 
 ### 自訂連線
@@ -753,7 +725,6 @@ var socketId = Echo.socketId();
     use App\Events\OrderShipmentStatusUpdated;
     
     broadcast(new OrderShipmentStatusUpdated($update))->via('pusher');
-
 或者，也可以通過在事件的建構函式 (Constructor) 內呼叫 `broadcastVia` 方法來指定事件的廣播連線。不過，這麼做的時候，請先確保這個事件類別有使用 `InteractsWithBroadcasting` Trait：
 
     <?php
@@ -782,7 +753,6 @@ var socketId = Echo.socketId();
             $this->broadcastVia('pusher');
         }
     }
-
 <a name="receiving-broadcasts"></a>
 
 ## 接收廣播
@@ -799,7 +769,6 @@ Echo.channel(`orders.${this.order.id}`)
         console.log(e.order.name);
     });
 ```
-
 若想監聽私有頻道，可使用 `private` 方法來代替。可以繼續在 `listen` 方法後方串上其他的呼叫來在單一頻道上監聽多個事件：
 
 ```js
@@ -808,7 +777,6 @@ Echo.private(`orders.${this.order.id}`)
     .listen(/* ... */)
     .listen(/* ... */);
 ```
-
 <a name="stop-listening-for-events"></a>
 
 #### 停止監聽事件
@@ -819,7 +787,6 @@ Echo.private(`orders.${this.order.id}`)
 Echo.private(`orders.${this.order.id}`)
     .stopListening('OrderShipmentStatusUpdated')
 ```
-
 <a name="leaving-a-channel"></a>
 
 ### 離開頻道
@@ -829,13 +796,11 @@ Echo.private(`orders.${this.order.id}`)
 ```js
 Echo.leaveChannel(`orders.${this.order.id}`);
 ```
-
 若要離開頻道以及其關聯的私有與 Presence 頻道，可以呼叫 `leave` 方法：
 
 ```js
 Echo.leave(`orders.${this.order.id}`);
 ```
-
 <a name="namespaces"></a>
 
 ### 命名空間 (Namespace)
@@ -849,7 +814,6 @@ window.Echo = new Echo({
     namespace: 'App.Other.Namespace'
 });
 ```
-
 除了在初始化時設定以外，也可以在使用 Echo 訂閱事件時在事件類別的名稱前加上一個前置 `.`。這樣一來，就可以隨時使用完整的類別名稱：
 
 ```js
@@ -858,7 +822,6 @@ Echo.channel('orders')
         //
     });
 ```
-
 <a name="presence-channels"></a>
 
 ## Presence 頻道
@@ -878,7 +841,6 @@ Presence 頻道擁有私有頻道的安全性，且會提供該頻道的訂閱�
             return ['id' => $user->id, 'name' => $user->name];
         }
     });
-
 <a name="joining-presence-channels"></a>
 
 ### 加入 Presence 頻道
@@ -900,7 +862,6 @@ Echo.join(`chat.${roomId}`)
         console.error(error);
     });
 ```
-
 `here` 回呼會在成功加入頻道後被立即執行，並會收到包含所有其他目前訂閱該頻道的使用者資訊。`joining` 方法會在有新使用者加入頻道時被執行，而 `leaving` 則會在有使用者離開時被執行。`error` 方法會在認證 Endpoint 回傳除了 200 以外的 HTTP 狀態時、或是解析回傳的 JSON 時有問題時被執行。
 
 <a name="broadcasting-to-presence-channels"></a>
@@ -918,13 +879,11 @@ Presence 頻道可以像公用或私有頻道一樣接收事件。以聊天室�
     {
         return new PresenceChannel('room.'.$this->message->room_id);
     }
-
 與其他事件一樣，可以使用 `broadcast` 輔助函式與 `toOthers` 方法來排除目前使用者接收該 Broadcast：
 
     broadcast(new NewMessage($message));
     
     broadcast(new NewMessage($message))->toOthers();
-
 與其他一般的事件一樣，也可以使用 Echo 的 `listen` 方法來監聽傳送到 Presence 頻道的事件：
 
 ```js
@@ -936,12 +895,12 @@ Echo.join(`chat.${roomId}`)
         //
     });
 ```
-
 <a name="model-broadcasting"></a>
 
 ## Model 廣播
 
-> **Warning** 在進一步閱讀有關 Model 廣播的說明文件前，我們建議讀者先瞭解有關 Laravel 的 Model 廣播服務以及如何手動建立並監聽廣播時間的一般概念。
+> [!WARNING]  
+> 在進一步閱讀有關 Model 廣播的說明文件前，我們建議讀者先瞭解有關 Laravel 的 Model 廣播服務以及如何手動建立並監聽廣播時間的一般概念。
 
 在專案的 [Eloquent Model](/docs/{{version}}/eloquent) 被建立、更新、或刪除時，我們常常會廣播事件。當然，我們可以手動[為 Eloquent Model 的狀態更改定義自訂事件](/docs/{{version}}/eloquent#events)並將這些事件標記為 `ShouldBroadcast` 來輕鬆達成：
 
@@ -983,7 +942,6 @@ class Post extends Model
     }
 }
 ```
-
 再 Model 中包含該 Trait 並定義好廣播頻道後，當 Model 實體被建立、更新、刪除、軟刪除、或是取消軟刪除後自動廣播事件。
 
 此外，讀者可能已經發現，`broadcastOn` 方法接收了一個字串的 `$event` 引述。這個引述包含了 Model 上所發生的事件，其值為 `created`, `updated`, `deleted`, `trashed`, 或 `restored`。只要檢查這個變數的值，就可以用來判斷對於特定事件要廣播道哪個頻道（若有的話）：
@@ -1003,7 +961,6 @@ public function broadcastOn($event)
     };
 }
 ```
-
 <a name="customizing-model-broadcasting-event-creation"></a>
 
 #### 自訂 Model 廣播的事件建立
@@ -1026,7 +983,6 @@ protected function newBroadcastableEvent($event)
     ))->dontBroadcastToCurrentUser();
 }
 ```
-
 <a name="model-broadcasting-conventions"></a>
 
 ### Model 廣播慣例
@@ -1053,19 +1009,16 @@ public function broadcastOn($event)
     return [new PrivateChannel('user.'.$this->id)];
 }
 ```
-
 若有打算要從 Model 的 `broadcastOn` 方法內明顯回傳頻道實體，則可以將 Eloquent Model 實體傳入該頻道的建構函式。這樣一來，Laravel 就可以通過剛才提到的 Model 頻道慣例來將 Eloquent Model 轉換為頻道名稱字串：
 
 ```php
 return [new Channel($this->user)];
 ```
-
 若想判斷某個 Model 的頻道名稱，可以在任何 Model 實體上呼叫 `broadcastChannel` 方法。舉例來說，對於一個 `id` 為 `1` 的 `App\Models\User` Model，該方法會回傳一個字串 `App.Models.User.1`：
 
 ```php
 $user->broadcastChannel()
 ```
-
 <a name="model-broadcasting-event-conventions"></a>
 
 #### 事件慣例
@@ -1085,7 +1038,6 @@ $user->broadcastChannel()
     "socket": "someSocketId",
 }
 ```
-
 刪除 `App\Models\Post` Model 時廣播的事件名稱會是 `UserDeleted`。
 
 若有需要，也可以通過在 Model 中新增一個 `broadcastAs` 與 `broadcastWith` 方法來自訂廣播的名稱與 Payload。這些方法會收到目前發生的 Model 事件或動作，好讓我們能為不同的 Model 動作自訂事件名稱與 Payload。若在 `broadcastAs` 方法中回傳 `null`，則 Laravel 會使用上方討論過的 Model 廣播事件名稱的慣例來廣播這個事件：
@@ -1119,7 +1071,6 @@ public function broadcastWith($event)
     };
 }
 ```
-
 <a name="listening-for-model-broadcasts"></a>
 
 ### 監聽 Model 廣播
@@ -1136,12 +1087,12 @@ Echo.private(`App.Models.User.${this.user.id}`)
         console.log(e.model);
     });
 ```
-
 <a name="client-events"></a>
 
 ## 用戶端事件
 
-> **Note** 在使用 [Pusher Channels](https://pusher.com/channels) 時，可以在 [Application Dashboard](https://dashboard.pusher.com/) 內啟用「App Settings」中的「Client Event」，以傳送用戶端事件。
+> [!NOTE]  
+> 在使用 [Pusher Channels](https://pusher.com/channels) 時，可以在 [Application Dashboard](https://dashboard.pusher.com/) 內啟用「App Settings」中的「Client Event」，以傳送用戶端事件。
 
 有時候我們可能會想將事件直接廣播給其他連線的用戶端，而不經由 Laravel 端。特別像是如顯示「正在輸入」等通知時，我們只是想告訴使用者網站內的其他使用者正在特定畫面上輸入。
 
@@ -1153,7 +1104,6 @@ Echo.private(`chat.${roomId}`)
         name: this.user.name
     });
 ```
-
 若要監聽用戶端事件，可以使用 `listenForWhisper` 方法：
 
 ```js
@@ -1162,7 +1112,6 @@ Echo.private(`chat.${roomId}`)
         console.log(e.name);
     });
 ```
-
 <a name="notifications"></a>
 
 ## 通知
@@ -1177,5 +1126,4 @@ Echo.private(`App.Models.User.${userId}`)
         console.log(notification.type);
     });
 ```
-
 在此範例中，所有通過 `broadcast` 頻道傳送給 `App\Models\User` 實體的通知都會被該回呼收到。用於 `App.Models.User.{id}` 的頻道授權回呼包含在 Laravel 框架附帶的 `BroadcastServiceProvider` 內。

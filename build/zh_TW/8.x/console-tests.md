@@ -1,11 +1,8 @@
 ---
-contributors:
-  14684796:
-    avatarUrl: https://crowdin-static.downloads.crowdin.com/avatar/14684796/medium/60f7dc21ec0bf9cfcb61983640bb4809_default.png
-    name: cornch
-crowdinUrl: https://crowdin.com/translate/laravel-docs/29/en-zhtw
-progress: 100
+crowdinUrl: 'https://crowdin.com/translate/laravel-docs/29/en-zhtw'
 updatedAt: '2024-06-30T08:17:00Z'
+contributors: {  }
+progress: 39.62
 ---
 
 # 主控台測試
@@ -35,17 +32,14 @@ updatedAt: '2024-06-30T08:17:00Z'
     {
         $this->artisan('inspire')->assertExitCode(0);
     }
-
 可以使用 `assertNotExitCode` 方法來判斷該指令是否不以給定結束代碼終止：
 
     $this->artisan('inspire')->assertNotExitCode(1);
-
 當然，一般來說，所有以狀態碼 `0` 結束的終端機指令通常都代表成功，而非 0 的結束代碼則代表不成功。因此，為了方便起見，我們可以使用 `assertSuccessful` 與 `assertFailed` Assertion 來判斷給定的指令是否以成功結束碼退出：
 
     $this->artisan('inspire')->assertSuccessful();
     
     $this->artisan('inspire')->assertFailed();
-
 <a name="input-output-expectations"></a>
 
 ## 預期的輸入／輸出
@@ -63,7 +57,6 @@ Laravel 能讓你輕鬆地通過 `expectsQuestion` 方法來為主控台指令�
     
         $this->line('Your name is '.$name.' and you prefer '.$language.'.');
     });
-
 可以通過下列這個使用了 `expectsQuestion`, `expectsOutput`, `doesntExpectOutput` 與 `assertExitCode` 方法的測試來測試該指令：
 
     /**
@@ -80,7 +73,6 @@ Laravel 能讓你輕鬆地通過 `expectsQuestion` 方法來為主控台指令�
              ->doesntExpectOutput('Your name is Taylor Otwell and you prefer Ruby.')
              ->assertExitCode(0);
     }
-
 <a name="confirmation-expectations"></a>
 
 #### 預期確認
@@ -90,7 +82,6 @@ Laravel 能讓你輕鬆地通過 `expectsQuestion` 方法來為主控台指令�
     $this->artisan('module:import')
         ->expectsConfirmation('Do you really wish to run this command?', 'no')
         ->assertExitCode(1);
-
 <a name="table-expectations"></a>
 
 #### 預期表格

@@ -1,13 +1,6 @@
----
-contributors: {}
-crowdinUrl: https://crowdin.com/translate/laravel-docs/129/en-zhtw
-progress: 0
-updatedAt: '2022-01-29T05:47:00Z'
----
-
 # Laravel Documentation
 
-You can find the online version of the Laravel documentation at <https://laravel.com/docs>
+You can find the online version of the Laravel documentation at [https://laravel.com/docs](https://laravel.com/docs)
 
 ## Contribution Guidelines
 

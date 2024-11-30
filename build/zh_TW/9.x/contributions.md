@@ -1,11 +1,8 @@
 ---
-contributors:
-  14684796:
-    avatarUrl: https://crowdin-static.downloads.crowdin.com/avatar/14684796/medium/60f7dc21ec0bf9cfcb61983640bb4809_default.png
-    name: cornch
-crowdinUrl: https://crowdin.com/translate/laravel-docs/35/en-zhtw
-progress: 100
+crowdinUrl: 'https://crowdin.com/translate/laravel-docs/35/en-zhtw'
 updatedAt: '2024-06-30T08:17:00Z'
+contributors: {  }
+progress: 80.39
 ---
 
 # 參與貢獻指南
@@ -17,8 +14,9 @@ updatedAt: '2024-06-30T08:17:00Z'
 - [編譯素材](#compiled-assets)
 - [安全性漏洞](#security-vulnerabilities)
 - [Coding Style](#coding-style)
-   - [PHPDoc](#phpdoc)
-   - [StyleCI](#styleci)
+  - [PHPDoc](#phpdoc)
+  - [StyleCI](#styleci)
+  
 - [行為準則 - Code of Conduct](#code-of-conduct)
 
 <a name="bug-reports"></a>
@@ -34,7 +32,6 @@ updatedAt: '2024-06-30T08:17:00Z'
 Laravel 的原始碼託管於 GitHub，而各個 Laravel 專案都有各自的儲存庫：
 
 <div class="content-list" markdown="1">
-
 - [Laravel Application](https://github.com/laravel/laravel)
 - [Laravel Art](https://github.com/laravel/art)
 - [Laravel 說明文件](https://github.com/laravel/docs)
@@ -58,7 +55,6 @@ Laravel 的原始碼託管於 GitHub，而各個 Laravel 專案都有各自的�
 - [Laravel 網站](https://github.com/laravel/laravel.com-next)
 
 </div>
-
 <a name="support-questions"></a>
 
 ## 支援提問
@@ -66,7 +62,6 @@ Laravel 的原始碼託管於 GitHub，而各個 Laravel 專案都有各自的�
 Laravel 的 GitHub Issue Tracker 並不是用來提供 Laravel 說明或協助的。請改用下列其中一種管道：
 
 <div class="content-list" markdown="1">
-
 - [GitHub Discussions](https://github.com/laravel/framework/discussions)
 - [Laracasts 討論區](https://laracasts.com/discuss)
 - [Laravel.io 討論區](https://laravel.io/forum)
@@ -76,7 +71,6 @@ Laravel 的 GitHub Issue Tracker 並不是用來提供 Laravel 說明或協助�
 - [IRC](https://web.libera.chat/?nick=artisan&channels=#laravel)
 
 </div>
-
 <a name="core-development-discussion"></a>
 
 ## 核心開發討論
@@ -105,7 +99,7 @@ Laravel 的 GitHub Issue Tracker 並不是用來提供 Laravel 說明或協助�
 
 ## 安全性漏洞
 
-若在 Laravel 內發現了安全性漏洞，請傳送電子郵件給 Taylor Otwell，<a href="mailto:taylor@laravel.com">taylor@laravel.com</a>。所有的安全性漏洞都會被即時處理。
+If you discover a security vulnerability within Laravel, please send an email to Taylor Otwell at <a href="mailto:taylor@laravel.com">[taylor@laravel.com](mailto:taylor@laravel.com)</a>. All security vulnerabilities will be promptly addressed.
 
 <a name="coding-style"></a>
 
@@ -133,7 +127,6 @@ Laravel 遵守 [PSR-2](https://github.com/php-fig/fig-standards/blob/master/acce
     {
         //
     }
-
 <a name="styleci"></a>
 
 ### StyleCI
@@ -144,15 +137,16 @@ Laravel 遵守 [PSR-2](https://github.com/php-fig/fig-standards/blob/master/acce
 
 ## 行為準則 - Code of Conduct
 
-Laravel 的行為準則改編自 Ruby 的 Code of Conduct。有任何違反 Code of Conduct 的行為，可以回報給 Taylor Otwell (taylor@laravel.com)：
+The Laravel code of conduct is derived from the Ruby code of conduct. Any violations of the code of conduct may be reported to Taylor Otwell ([taylor@laravel.com](mailto:taylor@laravel.com)):
 
 <div class="content-list" markdown="1">
-
 - 參與者應容忍相反的意見。
-Participants will be tolerant of opposing views.
+  Participants will be tolerant of opposing views.
 - 參與者必須確保所使用的話語與行為不包含人身攻擊以及詆譭個人的言論。
-Participants must ensure that their language and actions are free of personal attacks and disparaging personal remarks.
+  Participants must ensure that their language and actions are free of personal attacks and disparaging personal remarks.
 - 在理解他人的文字或行為時，參與者應總是假設其為善意的。
-When interpreting the words and actions of others, participants should always assume good intentions.
+  When interpreting the words and actions of others, participants should always assume good intentions.
 - 可被合理視為騷擾的行為不會被容忍。
-Behavior that can be reasonably considered harassment will not be tolerated.
+  Behavior that can be reasonably considered harassment will not be tolerated.
+
+</div>

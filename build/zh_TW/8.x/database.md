@@ -1,21 +1,20 @@
 ---
-contributors:
-  14684796:
-    avatarUrl: https://crowdin-static.downloads.crowdin.com/avatar/14684796/medium/60f7dc21ec0bf9cfcb61983640bb4809_default.png
-    name: cornch
-crowdinUrl: https://crowdin.com/translate/laravel-docs/43/en-zhtw
-progress: 100
+crowdinUrl: 'https://crowdin.com/translate/laravel-docs/43/en-zhtw'
 updatedAt: '2024-06-30T08:17:00Z'
+contributors: {  }
+progress: 51.56
 ---
 
 # 資料庫：入門
 
 - [簡介](#introduction)
-   - [設定](#configuration)
-   - [讀寫連線](#read-and-write-connections)
+  - [設定](#configuration)
+  - [讀寫連線](#read-and-write-connections)
+  
 - [執行 SQL 查詢](#running-queries)
-   - [使用多個資料庫連線](#using-multiple-database-connections)
-   - [監聽查詢事件](#listening-for-query-events)
+  - [使用多個資料庫連線](#using-multiple-database-connections)
+  - [監聽查詢事件](#listening-for-query-events)
+  
 - [資料庫 Transaction](#database-transactions)
 - [連線至資料庫 CLI](#connecting-to-the-database-cli)
 
@@ -26,7 +25,6 @@ updatedAt: '2024-06-30T08:17:00Z'
 幾乎所有的現代網站都會與資料庫互動。比起直接使用原始 SQL，Laravel 通過[流暢的 Query Builder](/docs/{{version}}/queries)、[Eloquent ORM](/docs/{{version}}/eloquent) 等功能大大簡化了與多種支援資料庫互動的過程。目前，Laravel 對 5 種資料庫提供了第一方支援：
 
 <div class="content-list" markdown="1">
-
 - MariaDB 10.2+ ([版本政策](https://mariadb.org/about/#maintenance-policy))
 - MySQL 5.7+ ([版本政策](https://en.wikipedia.org/wiki/MySQL#Release_history))
 - PostgreSQL 9.6+ ([版本政策](https://www.postgresql.org/support/versioning/))
@@ -34,7 +32,6 @@ updatedAt: '2024-06-30T08:17:00Z'
 - SQL Server 2017+ ([版本政策](https://docs.microsoft.com/en-us/lifecycle/products/?products=sql-server))
 
 </div>
-
 <a name="configuration"></a>
 
 ### 設定
@@ -51,11 +48,9 @@ SQLite 資料庫包含在檔案系統上的單一檔案。可以在終端機內�
 
     DB_CONNECTION=sqlite
     DB_DATABASE=/absolute/path/to/database.sqlite
-
 若要在 SQLite 連線上啟用外部索引鍵條件約束 (Foreign Key Constraint)，則應將 `DB_FOREIGN_KEYS` 環境變數設為 `true`：
 
     DB_FOREIGN_KEYS=true
-
 <a name="mssql-configuration"></a>
 
 #### Microsoft SQL Server 設定
@@ -73,14 +68,11 @@ SQLite 資料庫包含在檔案系統上的單一檔案。可以在終端機內�
 ```html
 mysql://root:password@127.0.0.1/forge?charset=UTF-8
 ```
-
 這些 URL 通常遵守一種標準的結構描述規範：
 
 ```html
 driver://username:password@host:port/database?options
-驅動器://使用者名稱:密碼@主機:連接埠/資料庫?選項
 ```
-
 為了方便起見，Laravel 也支援這些 URL 作為設定多個設定選項的替代。若有提供 `url` 設定選項 (或相應的 `DATABASE_URL` 環境變數)，則會使用該值來拆出資料庫連線與金鑰資訊。
 
 <a name="read-and-write-connections"></a>
@@ -112,7 +104,6 @@ driver://username:password@host:port/database?options
         'collation' => 'utf8mb4_unicode_ci',
         'prefix' => '',
     ],
-
 請注意，在設定陣列中加入了三個新的鍵值：`read`, `write`, `stick`。`read` 與 `write` 索引鍵為一個陣列，包含單一索引鍵：`host`。其他用於 `read` 與 `write` 連線的資料庫選項會從主要的 `mysql` 設定陣列合併過來：
 
 只需要將 `mysql` 陣列中所需要複寫的值放到 `read` 與 `write` 陣列中即可。因此，在這個例子中，「read」連線的主機會是 `192.168.1.1` ，而「write」連線則會使用 `192.168.1.3`。資料庫認證、前置詞、字元集、以及其他主要 `mysql` 陣列中的選項都將在這兩個連線間共用。當 `host` 設定陣列中有多個值時，每個請求都會隨機選擇一個資料庫主機。
@@ -156,7 +147,6 @@ driver://username:password@host:port/database?options
             return view('user.index', ['users' => $users]);
         }
     }
-
 傳入 `select` 的第一個引數是 SQL 查詢，而第二個引數則是需要繫結到該查詢上的參數繫結。通常來說，這些繫結值就是 `where` 子句限制式的值。使用參數繫結即可避免 SQL 注入攻擊。
 
 `select` 方法只會回傳 `array` 作為其結果。在陣列中的各個結果都會是 PHP 的 `stdClass`，代表資料庫內的記錄：
@@ -168,7 +158,6 @@ driver://username:password@host:port/database?options
     foreach ($users as $user) {
         echo $user->name;
     }
-
 <a name="using-named-bindings"></a>
 
 #### 使用命名繫結
@@ -176,7 +165,6 @@ driver://username:password@host:port/database?options
 比起使用 `?` 來表示參數繫結，也可以使用命名繫結來執行查詢：
 
     $results = DB::select('select * from users where id = :id', ['id' => 1]);
-
 <a name="running-an-insert-statement"></a>
 
 #### 執行 INSERT 陳述式
@@ -186,7 +174,6 @@ driver://username:password@host:port/database?options
     use Illuminate\Support\Facades\DB;
     
     DB::insert('insert into users (id, name) values (?, ?)', [1, 'Marc']);
-
 <a name="running-an-update-statement"></a>
 
 #### 執行 UPDATE 陳述式
@@ -199,7 +186,6 @@ driver://username:password@host:port/database?options
         'update users set votes = 100 where name = ?',
         ['Anita']
     );
-
 <a name="running-a-delete-statement"></a>
 
 #### 執行 DELETE 陳述式
@@ -209,7 +195,6 @@ driver://username:password@host:port/database?options
     use Illuminate\Support\Facades\DB;
     
     $deleted = DB::delete('delete from users');
-
 <a name="running-a-general-statement"></a>
 
 #### 執行一般陳述式
@@ -217,7 +202,6 @@ driver://username:password@host:port/database?options
 有的資料庫陳述式並不會回傳任何值。對於這類操作，可以使用 `DB` Facade 上的 `statement` 方法：
 
     DB::statement('drop table users');
-
 <a name="running-an-unprepared-statement"></a>
 
 #### 執行非預先準備的陳述式
@@ -225,8 +209,8 @@ driver://username:password@host:port/database?options
 有的時候，我們可能會想在不繫結任何值的情況下執行 SQL 陳述式。可以使用 `DB` Facade 的 `unprepared` 方法來達成：
 
     DB::unprepared('update users set votes = 100 where name = "Dries"');
-
-> {note} 由於未預先準備的陳述式並不繫結參數，因此這些查詢可能容易遭受 SQL 注入攻擊。在未預先準備的陳述式中，不應包含使用者可控制的值。
+> [!NOTE]  
+> 由於未預先準備的陳述式並不繫結參數，因此這些查詢可能容易遭受 SQL 注入攻擊。在未預先準備的陳述式中，不應包含使用者可控制的值。
 
 <a name="implicit-commits-in-transactions"></a>
 
@@ -235,7 +219,6 @@ driver://username:password@host:port/database?options
 在 Transaction 內使用 `DB` Facade 的 `statement` 與 `unprepared` 方法時，應特別小心，以避免會導致[隱式 Commit](https://dev.mysql.com/doc/refman/8.0/en/implicit-commit.html) 的陳述式。這些陳述式會導致資料庫引擎間接地 Commit 整個 Transaction，並讓 Laravel 無從得知資料庫的 Transaction 等級。建立資料庫表就是這種陳述式的一個例子：
 
     DB::unprepared('create table a (col varchar(1) null)');
-
 有關會觸發隱式 Commit 的[這類陳述式的清單](https://dev.mysql.com/doc/refman/8.0/en/implicit-commit.html)，請參考 MySQL 操作手冊。
 
 <a name="using-multiple-database-connections"></a>
@@ -247,11 +230,9 @@ driver://username:password@host:port/database?options
     use Illuminate\Support\Facades\DB;
     
     $users = DB::connection('sqlite')->select(...);
-
 也可以通過連線實體上的 `getPdo` 方法來存取原始、底層的 PDO 實體：
 
     $pdo = DB::connection()->getPdo();
-
 <a name="listening-for-query-events"></a>
 
 ### 監聽查詢事件
@@ -291,7 +272,6 @@ driver://username:password@host:port/database?options
             });
         }
     }
-
 <a name="database-transactions"></a>
 
 ## 資料庫 Transaction
@@ -305,7 +285,6 @@ driver://username:password@host:port/database?options
     
         DB::delete('delete from posts');
     });
-
 <a name="handling-deadlocks"></a>
 
 #### 處理死結 (Deadlock)
@@ -319,7 +298,6 @@ driver://username:password@host:port/database?options
     
         DB::delete('delete from posts');
     }, 5);
-
 <a name="manually-using-transactions"></a>
 
 #### 手動使用 Transaction
@@ -329,16 +307,14 @@ driver://username:password@host:port/database?options
     use Illuminate\Support\Facades\DB;
     
     DB::beginTransaction();
-
 可以通過 `rollBack` 方法來回滾該 Transaction：
 
     DB::rollBack();
-
 最後，可以使用 `commit` 方法來 Commit Transaction：
 
     DB::commit();
-
-> {tip} `DB` Facade 的 Transaction 方法會同時控制到 [Query Builder](/docs/{{version}}/queries) 與 [Eloquent ORM](/docs/{{version}}/eloquent)。
+> [!TIP]  
+> `DB` Facade 的 Transaction 方法會同時控制到 [Query Builder](/docs/{{version}}/queries) 與 [Eloquent ORM](/docs/{{version}}/eloquent)。
 
 <a name="connecting-to-the-database-cli"></a>
 
@@ -347,7 +323,6 @@ driver://username:password@host:port/database?options
 若想連線到資料庫的 CLI，可以使用 `db` Artisan 指令：
 
     php artisan db
-
 若有需要，可以指定資料庫連線名稱來連先到非預設連線的資料庫連線：
 
     php artisan db mysql

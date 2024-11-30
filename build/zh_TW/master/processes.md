@@ -1,38 +1,40 @@
 ---
-contributors:
-  14684796:
-    avatarUrl: https://crowdin-static.downloads.crowdin.com/avatar/14684796/medium/60f7dc21ec0bf9cfcb61983640bb4809_default.png
-    name: cornch
-crowdinUrl: https://crowdin.com/translate/laravel-docs/185/en-zhtw
-progress: 100
+crowdinUrl: 'https://crowdin.com/translate/laravel-docs/185/en-zhtw'
 updatedAt: '2024-06-30T08:27:00Z'
+contributors: {  }
+progress: 54.44
 ---
 
 # Process
 
 - [簡介](#introduction)
 - [呼叫 Process](#invoking-processes)
-   - [Process 選項](#process-options)
-   - [Process 的輸出](#process-output)
+  - [Process 選項](#process-options)
+  - [Process 的輸出](#process-output)
+  - [管道 (Pipeline)](#process-pipelines)
+  
 - [非同步的 Process](#asynchronous-processes)
-   - [Process ID 與 Signal](#process-ids-and-signals)
-   - [非同步 Process 的輸出](#asynchronous-process-output)
+  - [Process IDs and Signals](#process-ids-and-signals)
+  - [非同步 Process 的輸出](#asynchronous-process-output)
+  
 - [併行地 Process](#concurrent-processes)
-   - [命名的 Pool Process](#naming-pool-processes)
-   - [Pool Process 的 ID 與 Signal](#pool-process-ids-and-signals)
+  - [命名的 Pool Process](#naming-pool-processes)
+  - [Pool Process IDs and Signals](#pool-process-ids-and-signals)
+  
 - [測試](#testing)
-   - [模擬 Process](#faking-processes)
-   - [模擬特定 Process](#faking-specific-processes)
-   - [模擬 Process 的順序](#faking-process-sequences)
-   - [模擬非同步 Process 的生命週期](#faking-asynchronous-process-lifecycles)
-   - [可用的 Assertion](#available-assertions)
-   - [避免漏掉的 Process](#preventing-stray-processes)
+  - [模擬 Process](#faking-processes)
+  - [模擬特定 Process](#faking-specific-processes)
+  - [模擬 Process 的順序](#faking-process-sequences)
+  - [模擬非同步 Process 的生命週期](#faking-asynchronous-process-lifecycles)
+  - [可用的 Assertion](#available-assertions)
+  - [避免漏掉的 Process](#preventing-stray-processes)
+  
 
 <a name="introduction"></a>
 
 ## 簡介
 
-Laravel 為 [Symfony 的 Process Component](https://symfony.com/doc/current/components/process.html) 提供了一個語意化、極簡的 API，能讓我們方便地在 Laravel 專案中呼叫外部 ^[Process](處理程序)。Laravel 的 Process 功能著重於最常見的使用情境，並提供優秀的開發人員經驗 (Developer Experience)。
+Laravel provides an expressive, minimal API around the [Symfony Process component](https://symfony.com/doc/7.0/components/process.html), allowing you to conveniently invoke external processes from your Laravel application. Laravel's process features are focused on the most common use cases and a wonderful developer experience.
 
 <a name="invoking-processes"></a>
 
@@ -47,7 +49,6 @@ $result = Process::run('ls -la');
 
 return $result->output();
 ```
-
 當然，`run` 方法回傳的 `Illuminate\Contracts\Process\ProcessResult` 實體還包含了多種可用於檢查 Process 執行結果的實用方法：
 
 ```php
@@ -59,7 +60,6 @@ $result->exitCode();
 $result->output();
 $result->errorOutput();
 ```
-
 <a name="throwing-exceptions"></a>
 
 #### 擲回 Exception
@@ -71,7 +71,6 @@ $result = Process::run('ls -la')->throw();
 
 $result = Process::run('ls -la')->throwIf($condition);
 ```
-
 <a name="process-options"></a>
 
 ### Process 選項
@@ -87,7 +86,15 @@ $result = Process::run('ls -la')->throwIf($condition);
 ```php
 $result = Process::path(__DIR__)->run('ls -la');
 ```
+<a name="input"></a>
 
+#### 輸入
+
+可以通過 `input` 方法來以「標準輸入 (Standard Input)」提供輸入給 Process：
+
+```php
+$result = Process::input('Hello World')->run('cat');
+```
 <a name="timeouts"></a>
 
 #### 逾時
@@ -97,19 +104,16 @@ $result = Process::path(__DIR__)->run('ls -la');
 ```php
 $result = Process::timeout(120)->run('bash import.sh');
 ```
-
 或者，若要完全禁用 Process 的逾時，可以呼叫 `forever` 方法：
 
 ```php
 $result = Process::forever()->run('bash import.sh');
 ```
-
 `idleTimeout` 方法可用來指定 Process 在不回傳任何輸出下可執行的最大秒數：
 
 ```php
 $result = Process::timeout(60)->idleTimeout(30)->run('bash import.sh');
 ```
-
 <a name="environment-variables"></a>
 
 #### 環境變數
@@ -121,7 +125,6 @@ $result = Process::forever()
             ->env(['IMPORT_PATH' => __DIR__])
             ->run('bash import.sh');
 ```
-
 若想從呼叫的 Process 中移除繼承的環境變數，可以提供一個值為 `false` 的環境變數：
 
 ```php
@@ -129,7 +132,6 @@ $result = Process::forever()
             ->env(['LOAD_PATH' => false])
             ->run('bash import.sh');
 ```
-
 <a name="tty-mode"></a>
 
 #### TTY 模式
@@ -139,7 +141,6 @@ $result = Process::forever()
 ```php
 Process::forever()->tty()->run('vim');
 ```
-
 <a name="process-output"></a>
 
 ### Process 的輸出
@@ -154,7 +155,6 @@ $result = Process::run('ls -la');
 echo $result->output();
 echo $result->errorOutput();
 ```
-
 不過，也可以在呼叫 `run` 方法時傳入一個 Closure 作為第二個引數來即時取得輸出。該 Closure 會收到兩個引數：輸出的「類型 (Type)」(`stdout` 或 `stderr`) 與輸出字串本身：
 
 ```php
@@ -162,7 +162,6 @@ $result = Process::run('ls -la', function (string $type, string $output) {
     echo $output;
 });
 ```
-
 Laravel 也提供了 `seeInOutput` 與 `seeInErrorOutput` 方法。通過這兩個方法，就可以方便地判斷給定的字串是否包含在該 Process 的輸出中：
 
 ```php
@@ -170,7 +169,6 @@ if (Process::run('ls -la')->seeInOutput('laravel')) {
     // ...
 }
 ```
-
 <a name="disabling-process-output"></a>
 
 #### 關閉 Process 的輸出
@@ -182,7 +180,53 @@ use Illuminate\Support\Facades\Process;
 
 $result = Process::quietly()->run('bash import.sh');
 ```
+<a name="process-pipelines"></a>
 
+### 管道
+
+有時候，我們可能會想使用某個 Process 的輸出來作為另一個 Process 的輸入。這個動作我們一般會說是把 Process 的輸出「Pipe」到另一個 Process。`Process` Facade 提供的 `pipe` 方法能讓我們輕鬆進行此動作。`pipe` 方法會同步執行被 Pipe 的Process，並回傳管道中最後一個 Process 的結果：
+
+```php
+use Illuminate\Process\Pipe;
+use Illuminate\Support\Facades\Process;
+
+$result = Process::pipe(function (Pipe $pipe) {
+    $pipe->command('cat example.txt');
+    $pipe->command('grep -i "laravel"');
+});
+
+if ($result->successful()) {
+    // ...
+}
+```
+若不需要為組成管道的個別 Process 進行自訂，則只需要傳入一組指令字串的陣列給 `pipe` 方法即可：
+
+```php
+$result = Process::pipe([
+    'cat example.txt',
+    'grep -i "laravel"',
+]);
+```
+可以在呼叫 `pipe` 方法時傳入一個 Closure 作為第二個引數來即時取得輸出。該 Closure 會收到兩個引數：輸出的「類型 (Type)」(`stdout` 或 `stderr`) 與輸出字串本身：
+
+```php
+$result = Process::pipe(function (Pipe $pipe) {
+    $pipe->command('cat example.txt');
+    $pipe->command('grep -i "laravel"');
+}, function (string $type, string $output) {
+    echo $output;
+});
+```
+Laravel 可讓你使用 `as` 方法來為管道中的各個 Process 指派一個字串索引鍵。該索引鍵也會傳入提供給 `pipe` 方法的輸出 Closure，讓你能判斷輸出屬於哪個 Process：
+
+```php
+$result = Process::pipe(function (Pipe $pipe) {
+    $pipe->as('first')->command('cat example.txt');
+    $pipe->as('second')->command('grep -i "laravel"');
+})->start(function (string $type, string $output, string $key) {
+    // ...
+});
+```
 <a name="asynchronous-processes"></a>
 
 ## 非同步的 Process
@@ -198,7 +242,6 @@ while ($process->running()) {
 
 $result = $process->wait();
 ```
-
 讀者可能已經注意到，可以通過呼叫 `wait` 方法來等待 Process 完成執行，然後再取得 Process 的結果實體：
 
 ```php
@@ -208,25 +251,22 @@ $process = Process::timeout(120)->start('bash import.sh');
 
 $result = $process->wait();
 ```
-
 <a name="process-ids-and-signals"></a>
 
-### Process 的 ID 與 Signal
+### Process IDs and Signals
 
-`pid` 方法可用來取得正在執行的 Process 由作業系統指派的 Process ID：
+`id` 方法可用來取得正在執行的 Process 由作業系統指派的 Process ID：
 
 ```php
 $process = Process::start('bash import.sh');
 
-return $process->pid();
+return $process->id();
 ```
-
 可以使用 `signal` 方法來向正在執行的 Process 傳送「訊號 (Signal)」。請參考《[PHP 說明文件](https://www.php.net/manual/en/pcntl.constants.php)》以瞭解預先定義的 Signal 常數列表：
 
 ```php
 $process->signal(SIGUSR2);
 ```
-
 <a name="asynchronous-process-output"></a>
 
 ### 非同步 Process 的輸出
@@ -243,7 +283,6 @@ while ($process->running()) {
     sleep(1);
 }
 ```
-
 與 `run` 方法類似，`start` 方法也可以在呼叫時傳入一個 Closure 作為第二個引數來即時取得輸出。該 Closure 會收到兩個引數：輸出的「類型 (Type)」(`stdout` 或 `stderr`) 與輸出字串本身：
 
 ```php
@@ -253,7 +292,6 @@ $process = Process::start('bash import.sh', function (string $type, string $outp
 
 $result = $process->wait();
 ```
-
 <a name="concurrent-processes"></a>
 
 ## 併行的 Process
@@ -280,7 +318,6 @@ while ($pool->running()->isNotEmpty()) {
 
 $results = $pool->wait();
 ```
-
 就像這樣，可以使用 `wait` 方法來等待集區 Process 完成執行並解析這些 Process 的執行結果。`wait` 方法會回傳一個可使用陣列存取的物件 (Array Accessible Object)，讓你能使用其索引鍵來存取集區中各個 Process 的 Process 執行結果實體：
 
 ```php
@@ -288,7 +325,6 @@ $results = $pool->wait();
 
 echo $results[0]->output();
 ```
-
 或者，也可以使用方便的 `concurrently` 方法來開始一組非同步 Process 集區，並馬上開始等待其執行結果。當與 PHP 的陣列解構功能搭配使用時，使用此方法就可取得富含表達性的語法：
 
 ```php
@@ -300,7 +336,6 @@ echo $results[0]->output();
 
 echo $first->output();
 ```
-
 <a name="naming-pool-processes"></a>
 
 ### 命名的 Pool Process
@@ -320,23 +355,20 @@ $results = $pool->wait();
 
 return $results['first']->output();
 ```
-
 <a name="pool-process-ids-and-signals"></a>
 
-### Pool Process 的 ID 與 Signal
+### Pool Process IDs and Signals
 
 由於 Process 集區的 `running` 方法提供了一組包含集區中所有已呼叫 Process 的 Collection，因此你可以輕鬆地存取集區中相應的 Process ID：
 
 ```php
-$processIds = $pool->running()->each->pid();
+$processIds = $pool->running()->each->id();
 ```
-
 而且，也可以在 Process 集區上使用 `signal` 方法來方便地傳送 Signal 給集區中的每一個 Process：
 
 ```php
 $pool->signal(SIGUSR2);
 ```
-
 <a name="testing"></a>
 
 ## 測試
@@ -359,9 +391,30 @@ Route::get('/import', function () {
     return 'Import complete!';
 });
 ```
-
 在測試此 Route 時，我們可以不帶任何引數呼叫 `Process` Facade 上的 `fake` 方法，讓 Laravel 在每一個被呼叫的 Process 上回傳一組模擬的成功 Process 執行結果。此外，我們還可以 [Assert](#available-assertions) 判斷給定的 Process 是否已執行：
 
+```php
+<?php
+
+use Illuminate\Process\PendingProcess;
+use Illuminate\Contracts\Process\ProcessResult;
+use Illuminate\Support\Facades\Process;
+
+test('process is invoked', function () {
+    Process::fake();
+
+    $response = $this->get('/import');
+
+    // Simple process assertion...
+    Process::assertRan('bash import.sh');
+
+    // Or, inspecting the process configuration...
+    Process::assertRan(function (PendingProcess $process, ProcessResult $result) {
+        return $process->command === 'bash import.sh' &&
+               $process->timeout === 60;
+    });
+});
+```
 ```php
 <?php
 
@@ -378,12 +431,12 @@ class ExampleTest extends TestCase
     {
         Process::fake();
 
-        $response = $this->get('/');
+        $response = $this->get('/import');
 
-        // 簡單的 Process Assertion...
+        // Simple process assertion...
         Process::assertRan('bash import.sh');
 
-        // 或者，也可以檢查 Process 的設定...
+        // Or, inspecting the process configuration...
         Process::assertRan(function (PendingProcess $process, ProcessResult $result) {
             return $process->command === 'bash import.sh' &&
                    $process->timeout === 60;
@@ -391,7 +444,6 @@ class ExampleTest extends TestCase
     }
 }
 ```
-
 剛才也提到過，在 `Process` Facade 上呼叫 `fake` 方法會讓 Laravel 為每個 Process 回傳沒有輸出的 Process 執行結果。不過，你可以使用 `Process` Facade 的 `result` 方法來輕鬆地指定模擬 Process 的輸出與結束代碼 (Exit Code)：
 
 ```php
@@ -403,7 +455,6 @@ Process::fake([
     ),
 ]);
 ```
-
 <a name="faking-specific-processes"></a>
 
 ### 模擬特定的 Process
@@ -422,7 +473,6 @@ Process::fake([
     ),
 ]);
 ```
-
 若不需要自定模擬 Process 的終止代碼或錯誤輸出，那麼使用字串來指定 Process 的模擬結果可能會更方便：
 
 ```php
@@ -431,7 +481,6 @@ Process::fake([
     'ls *' => 'Test "ls" output',
 ]);
 ```
-
 <a name="faking-process-sequences"></a>
 
 ### 模擬 Process 序列
@@ -445,7 +494,6 @@ Process::fake([
                 ->push(Process::result('Second invocation')),
 ]);
 ```
-
 <a name="faking-asynchronous-process-lifecycles"></a>
 
 ### 模擬非同步 Process 的生命週期
@@ -469,7 +517,6 @@ Route::get('/import', function () {
     return 'Done';
 });
 ```
-
 若要正確模擬此 Process，我們需要能夠描述 `running` 方法要回傳幾次 `true`。此外，我們可能還需要指定要依序回傳的多行輸出。為此，我們可以使用 `Process` Facade 的 `describe` 方法：
 
 ```php
@@ -482,14 +529,13 @@ Process::fake([
             ->iterations(3),
 ]);
 ```
-
 讓我們來仔細看看上面的範例。使用 `output` 與 `errorOutput` 方法，我們可以指定要依序回傳的多行輸出。`exitCode` 方法可用來指定模擬 Process 最終的終止代碼。最後，`iterations` 方法可用來指定 `running` 方法要回傳幾次 `true`。
 
 <a name="available-assertions"></a>
 
 ### 可用的 Assertion
 
-就像[剛才提到過的](#faking-processes)，Laravel 為功能測試 (Feature Test) 提供了多個 Process 的 ^[Assertion](判斷提示)。我們會在接下來的部分討論這些 Assertion。
+就像[剛才提到過的](#faking-processes)，Laravel 為功能測試 (Feature Test) 提供了多個 Process 的 ^[Assertion](%E5%88%A4%E6%96%B7%E6%8F%90%E7%A4%BA)。我們會在接下來的部分討論這些 Assertion。
 
 <a name="assert-process-ran"></a>
 
@@ -502,7 +548,6 @@ use Illuminate\Support\Facades\Process;
 
 Process::assertRan('ls -la');
 ```
-
 也可傳入一個 Closure 給 `assertRun` 方法。該 Closure 會收到 Process 的實體與 Process 的執行結果，讓你能檢查 Process 上的設定。若讓該 Closure 回傳 `true`，則該 Assertion 就會通過 (Pass)：
 
 ```php
@@ -512,7 +557,6 @@ Process::assertRan(fn ($process, $result) =>
     $process->timeout === 60
 );
 ```
-
 傳給 `assertRun` Closure 的 `$process` 是 `Illuminate\Process\PendingProcess` 的實體，而 `$result` 是 `Illuminate\Contracts\Process\ProcessResult` 的實體。
 
 <a name="assert-process-didnt-run"></a>
@@ -526,7 +570,6 @@ use Illuminate\Support\Facades\Process;
 
 Process::assertDidntRun('ls -la');
 ```
-
 與 `assertRun` 方法類似，`assertDidntRun` 方法也可被傳入一個 Closure。傳給 `assertDidntRun` 的 Closure 會收到 Process 實體與 Process 的執行結果，讓你能檢查 Process 上的設定。若該 Closure 回傳 `true`，則該 Assertion 就會失敗 (Fail)：
 
 ```php
@@ -534,7 +577,6 @@ Process::assertDidntRun(fn (PendingProcess $process, ProcessResult $result) =>
     $process->command === 'ls -la'
 );
 ```
-
 <a name="assert-process-ran-times"></a>
 
 #### assertRanTimes
@@ -546,7 +588,6 @@ use Illuminate\Support\Facades\Process;
 
 Process::assertRanTimes('ls -la', times: 3);
 ```
-
 也可傳入一個 Closure 給 `assertRanTimes` 方法。該 Closure 會收到 Process 的實體與 Process 的執行結果，讓你能檢查 Process 上的設定。若讓該 Closure 回傳 `true`，且該 Process 被呼叫了給定的次數，則該 Assertion 就會通過 (Pass)：
 
 ```php
@@ -554,7 +595,6 @@ Process::assertRanTimes(function (PendingProcess $process, ProcessResult $result
     return $process->command === 'ls -la';
 }, times: 3);
 ```
-
 <a name="preventing-stray-processes"></a>
 
 ### 避免漏掉的 Process
@@ -569,8 +609,8 @@ Process::assertRanTimes(function (PendingProcess $process, ProcessResult $result
         'ls *' => 'Test output...',
     ]);
     
-    // 回傳模擬的輸出...
+    // Fake response is returned...
     Process::run('ls -la');
     
-    // 擲回 Exception...
+    // An exception is thrown...
     Process::run('bash import.sh');

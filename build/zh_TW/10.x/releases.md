@@ -1,11 +1,8 @@
 ---
-contributors:
-  14684796:
-    avatarUrl: https://crowdin-static.downloads.crowdin.com/avatar/14684796/medium/60f7dc21ec0bf9cfcb61983640bb4809_default.png
-    name: cornch
-crowdinUrl: https://crowdin.com/translate/laravel-docs/135/en-zhtw
-progress: 100
+crowdinUrl: 'https://crowdin.com/translate/laravel-docs/135/en-zhtw'
 updatedAt: '2024-06-30T08:27:00Z'
+contributors: {  }
+progress: 50.7
 ---
 
 # 版本資訊
@@ -35,16 +32,14 @@ Laravel 及其第一方套件都遵守 [語義化版本](https://semver.org/lang
 所有的 Laravel 版本都提供 18 個月的 Bug 修正，以及 2 年的安全性修正。對於其他的函式庫，如 Lumen，則只有最新的主要版本會收到 Bug 修正。此外，也請參考 [Laravel 支援的](/docs/{{version}}/database#introduction)資料庫版本。
 
 <div class="overflow-auto">
-
 | 版本 | PHP (*) | 釋出日期 | Bug 修正期限 | 安全性修正期限 |
 | --- | --- | --- | --- | --- |
 | 8 | 7.3 - 8.1 | 2020 年 9 月 8 日 | 2022 年 7 月 26 日 | 2023 年 1 月 24 日 |
 | 9 | 8.0 - 8.2 | 2022 年 2 月 8 日 | 2023 年 8 月 8 日 | 2024 年 2 月 6 日 |
-| 10 | 8.1 - 8.2 | 2023 年 2 月 14 日 | 2024 年 8 月 6 日 | 2025 年 2 月 4 日 |
-| 11 | 8.2 | 2024 年第 1 季 | 2025 年 8 月 5 日 | 2026 年 2 月 3 日 |
+| 10 | 8.1 - 8.3 | 2023 年 2 月 14 日 | 2024 年 8 月 6 日 | 2025 年 2 月 4 日 |
+| 11 | 8.2 - 8.3 | March 12th, 2024 | 2025 年 8 月 5 日 | 2026 年 2 月 3 日 |
 
 </div>
-
 <div class="version-colors">
     <div class="end-of-life">
         <div class="color-box"></div>
@@ -55,7 +50,6 @@ Laravel 及其第一方套件都遵守 [語義化版本](https://semver.org/lang
         <div>Security fixes only</div>
     </div>
 </div>
-
 (*) 支援的 PHP 版本
 
 <a name="laravel-10"></a>
@@ -66,7 +60,7 @@ Laravel 及其第一方套件都遵守 [語義化版本](https://semver.org/lang
 
 因此，我們對於在目前版本中釋出新功能的承諾也將導致未來的「主要 (Major)」版本將著重於一些「維護性」的任務，如更新上游套件等，讀者稍後可以在本版本資訊內讀到。
 
-Laravel 10 在 Laravel 9.x 的基礎上繼續進行了諸多改進，包含在專案 Skeleton 中以及 Laravel 用來產生類別的 Stub 檔案中加上了回傳型別，並為所有引數加上型別。此外，我們還新增了一個對開發者友善的抽象層，可用來啟動與使用外部處理程序。而且，我們還推出了 Laravel Pennant，為你提供管理專案「^[Feature Flag](功能旗標)」的優質方案。
+Laravel 10 在 Laravel 9.x 的基礎上繼續進行了諸多改進，包含在專案 Skeleton 中以及 Laravel 用來產生類別的 Stub 檔案中加上了回傳型別，並為所有引數加上型別。此外，我們還新增了一個對開發者友善的抽象層，可用來啟動與使用外部處理程序。而且，我們還推出了 Laravel Pennant，為你提供管理專案「^[Feature Flag](%E5%8A%9F%E8%83%BD%E6%97%97%E6%A8%99)」的優質方案。
 
 <a name="php-8"></a>
 
@@ -104,7 +98,6 @@ Feature::define('new-onboarding-flow', function () {
     return Lottery::odds(1, 10);
 });
 ```
-
 定義好 Feature 後，可以輕鬆判斷目前使用者是否能存取該功能：
 
 ```php
@@ -112,7 +105,6 @@ if (Feature::active('new-onboarding-flow')) {
     // ...
 }
 ```
-
 當然，為了讓開發起來更方便，我們也提供了 Blade 指示詞：
 
 ```blade
@@ -122,7 +114,6 @@ if (Feature::active('new-onboarding-flow')) {
     </div>
 @endfeature
 ```
-
 Pennant 還提供了更多進階的功能與 API。更多資訊請參考[完整的 Pennant 說明文件](/docs/{{version}}/pennant)。
 
 <a name="process"></a>
@@ -140,7 +131,6 @@ $result = Process::run('ls -la');
 
 return $result->output();
 ```
-
 也可以使用集區 (Pool) 的方式啟動處理程序，以更方便的執行與管理平行執行的處理程序：
 
 ```php
@@ -155,7 +145,6 @@ use Illuminate\Support\Facades\Process;
 
 return $first->output();
 ```
-
 此外，也可以模擬 Process 以方便測試：
 
 ```php
@@ -165,7 +154,6 @@ Process::fake();
 
 Process::assertRan('ls -la');
 ```
-
 更多有關使用 Process 的資訊，請參考[完整的 Process 說明文件](/docs/{{version}}/processes)。
 
 <a name="test-profiling"></a>
@@ -179,13 +167,11 @@ Artisan 的 `test` 指令有了一個全新的 `--profile` 選項，能讓你輕
 ```shell
 php artisan test --profile
 ```
-
 為了方便起見，最慢的測試會直接在 CLI 的輸出中顯示出來：
 
 <p align="center">
     <img width="100%" src="https://user-images.githubusercontent.com/5457236/217328439-d8d983ec-d0fc-4cde-93d9-ae5bccf5df14.png"/>
 </p>
-
 <a name="pest-scaffolding"></a>
 
 ### Pest 的 Scaffold
@@ -195,7 +181,6 @@ php artisan test --profile
 ```shell
 laravel new example-application --pest
 ```
-
 <a name="generator-cli-prompts"></a>
 
 ### 產生 CLI 提示字元
@@ -207,9 +192,10 @@ laravel new example-application --pest
 ```shell
 php artisan make:controller
 ```
-
 <a name="horizon-telescope-facelift"></a>
 
 ### Horizon / Telescope 的全新面貌
 
 [Horizon](/docs/{{version}}/horizon) 與 [Telescope](/docs/{{version}}/telescope) 的外觀已更新為更現代的樣子，包含改進的字體、間距，以及外觀設計：
+
+<img src="https://laravel.com/img/docs/horizon-example.png">

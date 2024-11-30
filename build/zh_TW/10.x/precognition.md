@@ -1,20 +1,21 @@
 ---
-contributors: {}
-crowdinUrl: https://crowdin.com/translate/laravel-docs/188/en-zhtw
-progress: 0
+crowdinUrl: 'https://crowdin.com/translate/laravel-docs/188/en-zhtw'
 updatedAt: '2024-06-30T08:27:00Z'
+contributors: {  }
+progress: 0.0
 ---
 
 # Precognition
 
 - [Introduction](#introduction)
 - [Live Validation](#live-validation)
-   - [Using Vue](#using-vue)
-   - [Using Vue & Inertia](#using-vue-and-inertia)
-   - [Using React](#using-react)
-   - [Using React & Inertia](#using-react-and-inertia)
-   - [Using Alpine & Blade](#using-alpine)
-   - [Configuring Axios](#configuring-axios)
+  - [Using Vue](#using-vue)
+  - [Using Vue and Inertia](#using-vue-and-inertia)
+  - [Using React](#using-react)
+  - [Using React and Inertia](#using-react-and-inertia)
+  - [Using Alpine and Blade](#using-alpine)
+  - [Configuring Axios](#configuring-axios)
+  
 - [Customizing Validation Rules](#customizing-validation-rules)
 - [Handling File Uploads](#handling-file-uploads)
 - [Managing Side-Effects](#managing-side-effects)
@@ -48,13 +49,11 @@ Route::post('/users', function (StoreUserRequest $request) {
     // ...
 })->middleware([HandlePrecognitiveRequests::class]);
 ```
-
 Next, you should install the Laravel Precognition frontend helpers for Vue via NPM:
 
 ```shell
 npm install laravel-precognition-vue
 ```
-
 With the Laravel Precognition package installed, you can now create a form object using Precognition's `useForm` function, providing the HTTP method (`post`), the target URL (`/users`), and the initial form data.
 
 Then, to enable live validation, invoke the form's `validate` method on each input's `change` event, providing the input's name:
@@ -100,13 +99,11 @@ const submit = () => form.submit();
     </form>
 </template>
 ```
-
 Now, as the form is filled by the user, Precognition will provide live validation output powered by the validation rules in the route's form request. When the form's inputs are changed, a debounced "precognitive" validation request will be sent to your Laravel application. You may configure the debounce timeout by calling the form's `setValidationTimeout` function:
 
 ```js
 form.setValidationTimeout(3000);
 ```
-
 When a validation request is in-flight, the form's `validating` property will be `true`:
 
 ```html
@@ -114,7 +111,6 @@ When a validation request is in-flight, the form's `validating` property will be
     Validating...
 </div>
 ```
-
 Any validation errors returned during a validation request or a form submission will automatically populate the form's `errors` object:
 
 ```html
@@ -122,7 +118,6 @@ Any validation errors returned during a validation request or a form submission 
     {{ form.errors.email }}
 </div>
 ```
-
 You can determine if the form has any errors using the form's `hasErrors` property:
 
 ```html
@@ -130,7 +125,6 @@ You can determine if the form has any errors using the form's `hasErrors` proper
     <!-- ... -->
 </div>
 ```
-
 You may also determine if an input has passed or failed validation by passing the input's name to the form's `valid` and `invalid` functions, respectively:
 
 ```html
@@ -142,8 +136,8 @@ You may also determine if an input has passed or failed validation by passing th
     ❌
 </span>
 ```
-
-> **Warning** A form input will only appear as valid or invalid once it has changed and a validation response has been received.
+> [!WARNING]  
+> A form input will only appear as valid or invalid once it has changed and a validation response has been received.
 
 If you are validating a subset of a form's inputs with Precognition, it can be useful to manually clear errors. You may use the form's `forgetError` function to achieve this:
 
@@ -158,7 +152,6 @@ If you are validating a subset of a form's inputs with Precognition, it can be u
     }"
 >
 ```
-
 Of course, you may also execute code in reaction to the response to the form submission. The form's `submit` function returns an Axios request promise. This provides a convenient way to access the response payload, reset the form inputs on successful submission, or handle a failed request:
 
 ```js
@@ -172,7 +165,6 @@ const submit = () => form.submit()
         alert('An error occurred.');
     });
 ```
-
 You may determine if a form submission request is in-flight by inspecting the form's `processing` property:
 
 ```html
@@ -180,19 +172,18 @@ You may determine if a form submission request is in-flight by inspecting the fo
     Submit
 </button>
 ```
-
 <a name="using-vue-and-inertia"></a>
 
-### Using Vue & Inertia
+### Using Vue and Inertia
 
-> **Note** If you would like a head start when developing your Laravel application with Vue and Inertia, consider using one of our [starter kits](/docs/{{version}}/starter-kits). Laravel's starter kits provide backend and frontend authentication scaffolding for your new Laravel application.
+> [!NOTE]  
+> If you would like a head start when developing your Laravel application with Vue and Inertia, consider using one of our [starter kits](/docs/{{version}}/starter-kits). Laravel's starter kits provide backend and frontend authentication scaffolding for your new Laravel application.
 
 Before using Precognition with Vue and Inertia, be sure to review our general documentation on [using Precognition with Vue](#using-vue). When using Vue with Inertia, you will need to install the Inertia compatible Precognition library via NPM:
 
 ```shell
 npm install laravel-precognition-vue-inertia
 ```
-
 Once installed, Precognition's `useForm` function will return an Inertia [form helper](https://inertiajs.com/forms#form-helper) augmented with the validation features discussed above.
 
 The form helper's `submit` method has been streamlined, removing the need to specify the HTTP method or URL. Instead, you may pass Inertia's [visit options](https://inertiajs.com/manual-visits) as the first and only argument. In addition, the `submit` method does not return a Promise as seen in the Vue example above. Instead, you may provide any of Inertia's supported [event callbacks](https://inertiajs.com/manual-visits#event-callbacks) in the visit options given to the `submit` method:
@@ -212,7 +203,6 @@ const submit = () => form.submit({
 });
 </script>
 ```
-
 <a name="using-react"></a>
 
 ### Using React
@@ -229,13 +219,11 @@ Route::post('/users', function (StoreUserRequest $request) {
     // ...
 })->middleware([HandlePrecognitiveRequests::class]);
 ```
-
 Next, you should install the Laravel Precognition frontend helpers for React via NPM:
 
 ```shell
 npm install laravel-precognition-react
 ```
-
 With the Laravel Precognition package installed, you can now create a form object using Precognition's `useForm` function, providing the HTTP method (`post`), the target URL (`/users`), and the initial form data.
 
 To enable live validation, you should listen to each input's `change` and `blur` event. In the `change` event handler, you should set the form's data with the `setData` function, passing the input's name and new value. Then, in the `blur` event handler invoke the form's `validate` method, providing the input's name:
@@ -282,31 +270,26 @@ export default function Form() {
     );
 };
 ```
-
 Now, as the form is filled by the user, Precognition will provide live validation output powered by the validation rules in the route's form request. When the form's inputs are changed, a debounced "precognitive" validation request will be sent to your Laravel application. You may configure the debounce timeout by calling the form's `setValidationTimeout` function:
 
 ```js
 form.setValidationTimeout(3000);
 ```
-
 When a validation request is in-flight, the form's `validating` property will be `true`:
 
 ```jsx
 {form.validating && <div>Validating...</div>}
 ```
-
 Any validation errors returned during a validation request or a form submission will automatically populate the form's `errors` object:
 
 ```jsx
 {form.invalid('email') && <div>{form.errors.email}</div>}
 ```
-
 You can determine if the form has any errors using the form's `hasErrors` property:
 
 ```jsx
 {form.hasErrors && <div><!-- ... --></div>}
 ```
-
 You may also determine if an input has passed or failed validation by passing the input's name to the form's `valid` and `invalid` functions, respectively:
 
 ```jsx
@@ -314,8 +297,8 @@ You may also determine if an input has passed or failed validation by passing th
 
 {form.invalid('email') && <span>❌</span>}
 ```
-
-> **Warning** A form input will only appear as valid or invalid once it has changed and a validation response has been received.
+> [!WARNING]  
+> A form input will only appear as valid or invalid once it has changed and a validation response has been received.
 
 If you are validating a subset of a form's inputs with Precognition, it can be useful to manually clear errors. You may use the form's `forgetError` function to achieve this:
 
@@ -330,7 +313,6 @@ If you are validating a subset of a form's inputs with Precognition, it can be u
     }
 >
 ```
-
 Of course, you may also execute code in reaction to the response to the form submission. The form's `submit` function returns an Axios request promise. This provides a convenient way to access the response payload, reset the form's inputs on a successful form submission, or handle a failed request:
 
 ```js
@@ -348,7 +330,6 @@ const submit = (e) => {
         });
 };
 ```
-
 You may determine if a form submission request is in-flight by inspecting the form's `processing` property:
 
 ```html
@@ -356,19 +337,18 @@ You may determine if a form submission request is in-flight by inspecting the fo
     Submit
 </button>
 ```
-
 <a name="using-react-and-inertia"></a>
 
-### Using React & Inertia
+### Using React and Inertia
 
-> **Note** If you would like a head start when developing your Laravel application with React and Inertia, consider using one of our [starter kits](/docs/{{version}}/starter-kits). Laravel's starter kits provide backend and frontend authentication scaffolding for your new Laravel application.
+> [!NOTE]  
+> If you would like a head start when developing your Laravel application with React and Inertia, consider using one of our [starter kits](/docs/{{version}}/starter-kits). Laravel's starter kits provide backend and frontend authentication scaffolding for your new Laravel application.
 
 Before using Precognition with React and Inertia, be sure to review our general documentation on [using Precognition with React](#using-react). When using React with Inertia, you will need to install the Inertia compatible Precognition library via NPM:
 
 ```shell
 npm install laravel-precognition-react-inertia
 ```
-
 Once installed, Precognition's `useForm` function will return an Inertia [form helper](https://inertiajs.com/forms#form-helper) augmented with the validation features discussed above.
 
 The form helper's `submit` method has been streamlined, removing the need to specify the HTTP method or URL. Instead, you may pass Inertia's [visit options](https://inertiajs.com/manual-visits) as the first and only argument. In addition, the `submit` method does not return a Promise as seen in the React example above. Instead, you may provide any of Inertia's supported [event callbacks](https://inertiajs.com/manual-visits#event-callbacks) in the visit options given to the `submit` method:
@@ -390,10 +370,9 @@ const submit = (e) => {
     });
 };
 ```
-
 <a name="using-alpine"></a>
 
-### Using Alpine & Blade
+### Using Alpine and Blade
 
 Using Laravel Precognition, you can offer live validation experiences to your users without having to duplicate your validation rules in your frontend Alpine application. To illustrate how it works, let's build a form for creating new users within our application.
 
@@ -407,13 +386,11 @@ Route::post('/users', function (CreateUserRequest $request) {
     // ...
 })->middleware([HandlePrecognitiveRequests::class]);
 ```
-
 Next, you should install the Laravel Precognition frontend helpers for Alpine via NPM:
 
 ```shell
 npm install laravel-precognition-alpine
 ```
-
 Then, register the Precognition plugin with Alpine in your `resources/js/app.js` file:
 
 ```js
@@ -425,7 +402,6 @@ window.Alpine = Alpine;
 Alpine.plugin(Precognition);
 Alpine.start();
 ```
-
 With the Laravel Precognition package installed and registered, you can now create a form object using Precognition's `$form` "magic", providing the HTTP method (`post`), the target URL (`/users`), and the initial form data.
 
 To enable live validation, you should bind the form's data to its relevant input and then listen to each input's `change` event. In the `change` event handler, you should invoke the form's `validate` method, providing the input's name:
@@ -465,13 +441,11 @@ To enable live validation, you should bind the form's data to its relevant input
     </button>
 </form>
 ```
-
 Now, as the form is filled by the user, Precognition will provide live validation output powered by the validation rules in the route's form request. When the form's inputs are changed, a debounced "precognitive" validation request will be sent to your Laravel application. You may configure the debounce timeout by calling the form's `setValidationTimeout` function:
 
 ```js
 form.setValidationTimeout(3000);
 ```
-
 When a validation request is in-flight, the form's `validating` property will be `true`:
 
 ```html
@@ -479,7 +453,6 @@ When a validation request is in-flight, the form's `validating` property will be
     <div>Validating...</div>
 </template>
 ```
-
 Any validation errors returned during a validation request or a form submission will automatically populate the form's `errors` object:
 
 ```html
@@ -487,7 +460,6 @@ Any validation errors returned during a validation request or a form submission 
     <div x-text="form.errors.email"></div>
 </template>
 ```
-
 You can determine if the form has any errors using the form's `hasErrors` property:
 
 ```html
@@ -495,7 +467,6 @@ You can determine if the form has any errors using the form's `hasErrors` proper
     <div><!-- ... --></div>
 </template>
 ```
-
 You may also determine if an input has passed or failed validation by passing the input's name to the form's `valid` and `invalid` functions, respectively:
 
 ```html
@@ -507,8 +478,8 @@ You may also determine if an input has passed or failed validation by passing th
     <span>❌</span>
 </template>
 ```
-
-> **Warning** A form input will only appear as valid or invalid once it has changed and a validation response has been received.
+> [!WARNING]  
+> A form input will only appear as valid or invalid once it has changed and a validation response has been received.
 
 You may determine if a form submission request is in-flight by inspecting the form's `processing` property:
 
@@ -517,7 +488,6 @@ You may determine if a form submission request is in-flight by inspecting the fo
     Submit
 </button>
 ```
-
 <a name="repopulating-old-form-data"></a>
 
 #### Repopulating Old Form Data
@@ -532,7 +502,6 @@ In the user creation example discussed above, we are using Precognition to perfo
     }).setErrors({{ Js::from($errors->messages()) }}),
 }">
 ```
-
 Alternatively, if you would like to submit the form via XHR you may use the form's `submit` function, which returns an Axios request promise:
 
 ```html
@@ -557,7 +526,6 @@ Alternatively, if you would like to submit the form via XHR you may use the form
     @submit.prevent="submit"
 >
 ```
-
 <a name="configuring-axios"></a>
 
 ### Configuring Axios
@@ -569,7 +537,6 @@ import { client } from 'laravel-precognition-vue';
 
 client.axios().defaults.headers.common['Authorization'] = authToken;
 ```
-
 Or, if you already have a configured Axios instance for your application, you may tell Precognition to use that instance instead:
 
 ```js
@@ -581,8 +548,8 @@ window.axios.defaults.headers.common['Authorization'] = authToken;
 
 client.use(window.axios)
 ```
-
-> **Warning** The Inertia flavored Precognition libraries will only use the configured Axios instance for validation requests. Form submissions will always be sent by Inertia.
+> [!WARNING]  
+> The Inertia flavored Precognition libraries will only use the configured Axios instance for validation requests. Form submissions will always be sent by Inertia.
 
 <a name="customizing-validation-rules"></a>
 
@@ -621,7 +588,6 @@ class StoreUserRequest extends FormRequest
     }
 }
 ```
-
 <a name="handling-file-uploads"></a>
 
 ## Handling File Uploads
@@ -649,13 +615,11 @@ protected function rules()
     ];
 }
 ```
-
 If you would like to include files in every validation request, you may invoke the `validateFiles` function on your client-side form instance:
 
 ```js
 form.validateFiles();
 ```
-
 <a name="managing-side-effects"></a>
 
 ## Managing Side-Effects
@@ -688,7 +652,6 @@ class InteractionMiddleware
     }
 }
 ```
-
 <a name="testing"></a>
 
 ## Testing

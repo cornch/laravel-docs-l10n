@@ -1,11 +1,8 @@
 ---
-contributors:
-  14684796:
-    avatarUrl: https://crowdin-static.downloads.crowdin.com/avatar/14684796/medium/60f7dc21ec0bf9cfcb61983640bb4809_default.png
-    name: cornch
-crowdinUrl: https://crowdin.com/translate/laravel-docs/107/en-zhtw
-progress: 100
+crowdinUrl: 'https://crowdin.com/translate/laravel-docs/107/en-zhtw'
 updatedAt: '2024-06-30T08:15:00Z'
+contributors: {  }
+progress: 53.11
 ---
 
 # Mock
@@ -13,14 +10,15 @@ updatedAt: '2024-06-30T08:15:00Z'
 - [簡介](#introduction)
 - [Mock 物件](#mocking-objects)
 - [Mock Facade](#mocking-facades)
-   - [Facade 的 Spy](#facade-spies)
+  - [Facade 的 Spy](#facade-spies)
+  
 - [處理時間](#interacting-with-time)
 
 <a name="introduction"></a>
 
 ## 簡介
 
-在測試 Laravel 專案時，我們有時候會需要「^[Mock](模擬)」某部分的程式，好讓執行測試時不要真的執行這一部分程式。舉例來說，在測試會分派 Event 的 Controller 時，我們可能會想 Mock 該 Event 的 Listener，讓這些 Event Listener 在測試階段不要真的被執行。這樣一來，我們就可以只測試 Controller 的 HTTP Response，而不需擔心 Event Listener 的執行，因為這些 Event Listener 可以在其自己的測試例中測試。
+在測試 Laravel 專案時，我們有時候會需要「^[Mock](%E6%A8%A1%E6%93%AC)」某部分的程式，好讓執行測試時不要真的執行這一部分程式。舉例來說，在測試會分派 Event 的 Controller 時，我們可能會想 Mock 該 Event 的 Listener，讓這些 Event Listener 在測試階段不要真的被執行。這樣一來，我們就可以只測試 Controller 的 HTTP Response，而不需擔心 Event Listener 的執行，因為這些 Event Listener 可以在其自己的測試例中測試。
 
 Laravel 提供了各種開箱即用的實用方法，可用於 Mock Event、Job、與其他 Facade。這些輔助函式主要提供一個 Mockery 之上的方便層，讓我們不需手動進行複雜的 Mockery 方法呼叫。
 
@@ -28,7 +26,7 @@ Laravel 提供了各種開箱即用的實用方法，可用於 Mock Event、Job�
 
 ## Mock 物件
 
-若要 Mock 一些會被 Laravel [Service Container](/docs/{{version}}/container) 插入到程式中的物件，只需要使用 `instance` 繫結來將 Mock 後的實體繫結到 Container 中。這樣一來，Container 就會使用 Mock 後的物件實體，而不會再重新建立一個物件：
+若要 Mock 一些會被  Laravel [Service Container](/docs/{{version}}/container) 插入到程式中的物件，只需要使用 `instance` 繫結來將 Mock 後的實體繫結到 Container 中。這樣一來，Container 就會使用 Mock 後的物件實體，而不會再重新建立一個物件：
 
     use App\Service;
     use Mockery;
@@ -43,7 +41,6 @@ Laravel 提供了各種開箱即用的實用方法，可用於 Mock Event、Job�
             })
         );
     }
-
 為了讓這個過程更方便，我們可以使用 Laravel 基礎測試例 Class 中的 `mock` 方法。舉例來說，下面這個範例與上一個範例是相等的：
 
     use App\Service;
@@ -52,7 +49,6 @@ Laravel 提供了各種開箱即用的實用方法，可用於 Mock Event、Job�
     $mock = $this->mock(Service::class, function (MockInterface $mock) {
         $mock->shouldReceive('process')->once();
     });
-
 若只需要 Mock 某個物件的一部分方法，可使用 `partialMock` 方法。若呼叫了未被 Mock 的方法，則這些方法會正常執行：
 
     use App\Service;
@@ -61,7 +57,6 @@ Laravel 提供了各種開箱即用的實用方法，可用於 Mock Event、Job�
     $mock = $this->partialMock(Service::class, function (MockInterface $mock) {
         $mock->shouldReceive('process')->once();
     });
-
 類似的，若我們想 [Spy](http://docs.mockery.io/en/latest/reference/spies.html) 某個物件，Laravel 的基礎測試 Class 中也提供了一個 `spy` 方法來作為 `Mockery::spy` 方法的方便包裝。Spy 與 Mock 類似；不過，Spy 會記錄所有 Spy 與正在測試的程式碼間的互動，能讓我們在程式碼執行後進行 Assertion：
 
     use App\Service;
@@ -71,7 +66,6 @@ Laravel 提供了各種開箱即用的實用方法，可用於 Mock Event、Job�
     // ...
     
     $spy->shouldHaveReceived('process');
-
 <a name="mocking-facades"></a>
 
 ## Mock Facade
@@ -98,7 +92,6 @@ Laravel 提供了各種開箱即用的實用方法，可用於 Mock Event、Job�
             ];
         }
     }
-
 我們可以使用 `shouldReceive` 方法來 Mock `Cache` Facade 的呼叫。該方法會回傳 [Mockery](https://github.com/padraic/mockery) 的 Mock 實體。由於Facade 會實際上會由 Laravel 的 [Service Container](/docs/{{version}}/container) 來解析與管理，因此比起傳統的靜態類別，Facade 有更好的可測試性。舉例來說，我們來 Mock `Cache` Facade 的 `get` 方法呼叫：
 
     <?php
@@ -122,8 +115,8 @@ Laravel 提供了各種開箱即用的實用方法，可用於 Mock Event、Job�
             // ...
         }
     }
-
-> **Warning** 請不要 Mock `Request` Facade。在執行測試時，請將要測試的輸入傳給如 `get` 或 `post` 等的 [HTTP 測試方法](/docs/{{version}}/http-tests)。類似地，請不要 Mock `Config` Facade，請在測試中執行 `Config::set` 方法。
+> [!WARNING]  
+> 請不要 Mock `Request` Facade。在執行測試時，請將要測試的輸入傳給如 `get` 或 `post` 等的 [HTTP 測試方法](/docs/{{version}}/http-tests)。類似地，請不要 Mock `Config` Facade，請在測試中執行 `Config::set` 方法。
 
 <a name="facade-spies"></a>
 
@@ -143,7 +136,6 @@ Laravel 提供了各種開箱即用的實用方法，可用於 Mock Event、Job�
     
         Cache::shouldHaveReceived('put')->once()->with('name', 'Taylor', 10);
     }
-
 <a name="interacting-with-time"></a>
 
 ## 處理時間
@@ -154,7 +146,7 @@ Laravel 提供了各種開箱即用的實用方法，可用於 Mock Event、Job�
     
     public function test_time_can_be_manipulated(): void
     {
-        // 時間旅行到未來...
+        // Travel into the future...
         $this->travel(5)->milliseconds();
         $this->travel(5)->seconds();
         $this->travel(5)->minutes();
@@ -163,40 +155,37 @@ Laravel 提供了各種開箱即用的實用方法，可用於 Mock Event、Job�
         $this->travel(5)->weeks();
         $this->travel(5)->years();
     
-        // 時間旅行到過去...
+        // Travel into the past...
         $this->travel(-5)->hours();
     
-        // 時間旅行到一個特定的時間...
+        // Travel to an explicit time...
         $this->travelTo(now()->subHours(6));
     
-        // 回到目前時間...
+        // Return back to the present time...
         $this->travelBack();
     }
-
 也可以提供一個閉包給各個時間旅行方法。呼叫該閉包時，會傳入所凍結的特定時間。執行該閉包後，時間就會恢復正常：
 
     $this->travel(5)->days(function () {
-        // 時間旅行到未來的五天後，並測試某些功能...
+        // Test something five days into the future...
     });
     
     $this->travelTo(now()->subDays(10), function () {
-        // 在特定的時間測試某些功能...
+        // Test something during a given moment...
     });
-
 `freezeTime` 方法可用來凍結目前的時間。類似地，`freezeSecond` 方法會凍結目前時間，並回到目前秒數的開端：
 
     use Illuminate\Support\Carbon;
     
-    // 凍結時間，並在執行 Closure 後恢復正常時間...
+    // Freeze time and resume normal time after executing closure...
     $this->freezeTime(function (Carbon $time) {
         // ...
     });
     
-    // 將時間凍結在目前的秒數，並在執行閉包後恢復正常時間...
+    // Freeze time at the current second and resume normal time after executing closure...
     $this->freezeSecond(function (Carbon $time) {
         // ...
     })
-
 就像預期的一樣，上方所討論的所有方法主要都適合用來測試與時間相關的程式行為，例如在討論區中鎖定非活躍的貼文：
 
     use App\Models\Thread;

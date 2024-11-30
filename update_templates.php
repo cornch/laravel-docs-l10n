@@ -141,12 +141,7 @@ foreach ($markdownFiles as $filename => $files) {
         }
     }
 
-    $poContent = $poGenerator->generateString($translations);
-
-    // remove all msgctxt
-    $poContent = preg_replace('/^msgctxt .+\n/m', '', $poContent);
-
-    file_put_contents($potPath, $poContent);
+    $poGenerator->generateFile($translations, $potPath);
 
     render(<<<HTML
         <div>
